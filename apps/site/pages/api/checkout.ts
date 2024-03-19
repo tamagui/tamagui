@@ -3,9 +3,10 @@ import { getURL } from '@lib/helpers'
 import { protectApiRoute } from '@lib/protectApiRoute'
 import { stripe } from '@lib/stripe'
 import { createOrRetrieveCustomer } from '@lib/supabaseAdmin'
+import { getUserAccessInfo } from '@lib/user-helpers'
 
 export default apiRoute(async (req, res) => {
-  const { user } = await protectApiRoute({ req, res, shouldRedirect: true })
+  const { user, supabase } = await protectApiRoute({ req, res, shouldRedirect: true })
   // let priceId: string
 
   // const quantity =
@@ -46,18 +47,27 @@ export default apiRoute(async (req, res) => {
     couponId = req.query.coupon_id
   }
 
-  let promoCode: string | undefined
-  let promoCodeId: string | undefined
+  const userAccessInfo = await getUserAccessInfo(supabase)
 
+  let promoCode: string | undefined // this is user's input e.g. SOMEPROMO
+  let promoId: string | undefined // we use this to send to stripe, promo's id e.g. 1234
   if (req.query.promotion_code && typeof req.query.promotion_code === 'string') {
     promoCode = req.query.promotion_code
 
     const promoCodeRes = await stripe.promotionCodes.list({
       code: promoCode,
       active: true,
+      expand: ['data.coupon'],
     })
-    if (promoCodeRes.data.length > 0) {
-      promoCodeId = promoCodeRes.data[0].id
+
+    // restriction for using the takeout + bento discount for the users that aren't allowed to use it
+    const promoIsForbidden =
+      promoCode === 'TAKEOUTPLUSBENTO' && // user is using the takeout + bento promo code
+      !userAccessInfo.hasTakeoutAccess && // no takeout access
+      !products.data.some((product) => product.metadata.slug === 'universal-starter') // no takeout present in the current checkout
+
+    if (!promoIsForbidden && promoCodeRes.data.length > 0) {
+      promoId = promoCodeRes.data[0].id
     }
   }
 
@@ -95,14 +105,20 @@ export default apiRoute(async (req, res) => {
       }
     }),
     customer: stripeCustomerId,
-    discounts: promoCodeId
-      ? [{ promotion_code: promoCodeId }]
+    discounts: promoId
+      ? [{ promotion_code: promoId }]
       : couponId
-      ? [{ coupon: couponId }]
-      : undefined,
+        ? [{ coupon: couponId }]
+        : undefined,
     mode: 'payment',
     success_url: `${getURL()}/payment-finished`,
     cancel_url: `${getURL()}/takeout`,
+    // @ts-ignore
+    custom_text: {
+      submit: {
+        message: 'One-click cancel from your account on tamagui.dev/account',
+      },
+    },
   })
 
   // await supabaseAdmin
@@ -110,7 +126,8 @@ export default apiRoute(async (req, res) => {
   //   .upsert({ id: user.id, stripe_customer_id: stripeSession.customer })
 
   if (stripeSession.url) {
-    return res.redirect(303, stripeSession.url)
+    res.redirect(303, stripeSession.url)
+    return
   }
 
   throw new Error(`No stripe session URL in: ${JSON.stringify(stripeSession)}`)

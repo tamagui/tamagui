@@ -1,6 +1,6 @@
 import { protectApiRoute } from '@lib/protectApiRoute'
 import { stripe } from '@lib/stripe'
-import { NextApiHandler } from 'next'
+import type { NextApiHandler } from 'next'
 import Stripe from 'stripe'
 
 const handler: NextApiHandler = async (req, res) => {
@@ -25,7 +25,7 @@ const handler: NextApiHandler = async (req, res) => {
     .eq('id', subId)
     .single()
   if (error) {
-    console.log(error)
+    console.error(error)
     res
       .status(404)
       .json({ message: 'no subscription found with the provided id that belongs to you' })

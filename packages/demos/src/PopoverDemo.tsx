@@ -1,14 +1,6 @@
 import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp } from '@tamagui/lucide-icons'
-import {
-  Adapt,
-  Button,
-  Input,
-  Label,
-  Popover,
-  PopoverProps,
-  XStack,
-  YStack,
-} from 'tamagui'
+import type { PopoverProps } from 'tamagui'
+import { Adapt, Button, Input, Label, Popover, XStack, YStack } from 'tamagui'
 
 export function PopoverDemo() {
   return (

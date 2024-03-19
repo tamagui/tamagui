@@ -1,4 +1,4 @@
-import { ThemeTintAlt, useTint } from '@tamagui/logo'
+import { ThemeTint, ThemeTintAlt, useTint } from '@tamagui/logo'
 import { NextLink } from 'components/NextLink'
 import Link from 'next/link'
 import { memo } from 'react'
@@ -9,7 +9,6 @@ import {
   SizableText,
   Spacer,
   Text,
-  Theme,
   TooltipSimple,
   VisuallyHidden,
   XStack,
@@ -17,77 +16,78 @@ import {
   styled,
 } from 'tamagui'
 
+import { BentoIcon } from './BentoIcon'
 import { ContainerLarge } from './Container'
 import { DiscordIcon } from './DiscordIcon'
-import { useHeroHovered } from './heroState'
 import { InstallInput } from './InstallInput'
 import { seasons } from './SeasonToggleButton'
+import { TakeoutIcon } from './TakeoutIcon'
 import { TwitterIcon } from './TwitterIcon'
+import { useHeroHovered } from './heroState'
 
 export function Hero() {
-  const { tint, name } = useTint()
+  const { name } = useTint()
 
   return (
-    <Theme name={tint as any}>
+    <ThemeTint>
       <div className={`${name}-season _dsp-contents`}>
-        <YStack
-          o={0.75}
-          zi={-1}
-          pos="absolute"
-          t={0}
-          l={0}
-          r={0}
-          h={2000}
-          className="hero-blur"
-        />
         <HeroContents />
       </div>
-    </Theme>
+    </ThemeTint>
   )
 }
 
 const HeroSubTitle = memo(() => {
   const [hovered, setHovered] = useHeroHovered()
+
   return (
     <Subtitle>
       <NextLink prefetch={false} href="/docs/core/configuration">
-        <Tag theme="green_alt2" onHoverIn={() => setHovered(0)} active={hovered === 0}>
+        <Tag theme="green" onHoverIn={() => setHovered(0)} active={hovered === 0}>
           styles
         </Tag>
-      </NextLink>
-      ,{' '}
+      </NextLink>{' '}
+      ·{' '}
       <NextLink prefetch={false} href="/docs/intro/why-a-compiler">
-        <Tag theme="blue_alt2" onHoverIn={() => setHovered(1)} active={hovered === 1}>
+        <Tag theme="blue" onHoverIn={() => setHovered(1)} active={hovered === 1}>
           optimizing compiler
         </Tag>
       </NextLink>{' '}
-      &{' '}
+      ·{' '}
       <NextLink prefetch={false} href="/docs/components/stacks">
-        <Tag theme="purple_alt2" onHoverIn={() => setHovered(2)} active={hovered === 2}>
+        <Tag theme="purple" onHoverIn={() => setHovered(2)} active={hovered === 2}>
           UI&nbsp;kit
         </Tag>
       </NextLink>{' '}
-      that&nbsp;unify&nbsp;React Native + Web
+      for&nbsp;React&nbsp;·&nbsp;every&nbsp;platform
     </Subtitle>
   )
 })
 
 const HeroContents = memo(function HeroContents() {
-  const { name } = useTint()
+  const { name, tint, tintAlt } = useTint()
 
   return (
     <ContainerLarge contain="layout" pos="relative">
       <YStack
-        className="bg-grid mask-gradient-up"
         fullscreen
-        // @ts-ignore
-        top="auto"
-        height={521}
-        left={-1000}
-        right={-1000}
-        pe="none"
-        o={0.08}
-      />
+        left={-500}
+        right={-500}
+        bottom={-100}
+        style={{
+          maskImage: `linear-gradient(#000 50%, transparent)`,
+        }}
+      >
+        <YStack
+          className="bg-grid"
+          fullscreen
+          pe="none"
+          o={0.125}
+          style={{
+            maskImage: `radial-gradient(ellipse at bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0) 50%)`,
+          }}
+        />
+      </YStack>
       <YStack
         f={1}
         ov="hidden"
@@ -101,25 +101,66 @@ const HeroContents = memo(function HeroContents() {
           pb: '$4',
         }}
       >
-        <ThemeTintAlt>
-          <XStack pos="absolute" als="center" y={-80}>
-            <Link prefetch={false} href="/takeout">
-              <Button
-                bw={2}
-                boc="$color5"
-                size="$3"
-                br="$10"
-                elevation="$1"
-                fontFamily="$silkscreen"
-              >
-                Introducing Takeout 🥡
-                <Text ff="$body" fontSize="$3" color="$color10" $sm={{ dsp: 'none' }}>
-                  pro starter kit
-                </Text>
-              </Button>
-            </Link>
+        <>
+          <XStack pos="absolute" als="center" y={-80} gap="$4">
+            <ThemeTintAlt offset={-1}>
+              <Link prefetch={false} href="/takeout">
+                <Button
+                  bc="$color6"
+                  size="$3"
+                  br="$10"
+                  elevation="$0.5"
+                  fontFamily="$silkscreen"
+                  fontSize={12}
+                >
+                  Takeout
+                  <YStack y={-1} dsp="inline-flex">
+                    <TakeoutIcon scale={0.75} />
+                  </YStack>
+                  <Text
+                    y={-0.5}
+                    ff="$body"
+                    fontSize="$4"
+                    color="$color10"
+                    $sm={{ dsp: 'none' }}
+                  >
+                    starter kit
+                  </Text>
+                </Button>
+              </Link>
+            </ThemeTintAlt>
+
+            <ThemeTintAlt offset={1}>
+              <Link prefetch={false} href="/bento">
+                <Button
+                  bc="$color6"
+                  size="$3"
+                  br="$10"
+                  elevation="$0.5"
+                  fontFamily="$silkscreen"
+                  fontSize={12}
+                >
+                  Bento
+                  <YStack y={-1} dsp="inline-flex">
+                    <BentoIcon scale={0.75} />
+                  </YStack>
+                  <Text
+                    y={-0.5}
+                    ff="$body"
+                    fontSize="$4"
+                    color="$color10"
+                    $sm={{ dsp: 'none' }}
+                  >
+                    more ui
+                  </Text>
+                </Button>
+              </Link>
+            </ThemeTintAlt>
+
+            {/* <FigmaButton circular /> */}
+            {/* <GithubButton /> */}
           </XStack>
-        </ThemeTintAlt>
+        </>
 
         <YStack ai="flex-start" $gtSm={{ ai: 'center' }} gap="$4">
           <H1
@@ -131,15 +172,15 @@ const HeroContents = memo(function HeroContents() {
             $gtSm={{
               mx: 0,
               maxWidth: 800,
-              size: '$13',
-              h: 190,
+              size: '$14',
+              h: 250,
               ta: 'center',
               als: 'center',
             }}
             $gtMd={{
               maxWidth: 900,
-              size: '$14',
-              h: 240,
+              size: '$15',
+              h: 310,
             }}
             $gtLg={{
               size: '$16',
@@ -148,34 +189,24 @@ const HeroContents = memo(function HeroContents() {
               h: 310,
             }}
           >
-            <Text color="$color10">Write less,</Text>
+            <Text
+              className="clip-text"
+              style={{
+                backgroundImage: `-webkit-linear-gradient(
+                  -90deg,
+                  var(--${tintAlt}9),
+                  var(--${tint}9) 70%
+                )`,
+              }}
+            >
+              Write less
+            </Text>
             {/* add gradient to other colors: */}
-            <ThemeTintAlt offset={1}>
-              <Text
-                className="mask-gradient-left"
-                pos="absolute"
-                t={0}
-                l="1.3%"
-                color="$color8"
-                $sm={{ l: 0 }}
-              >
-                Write less,
-              </Text>
-            </ThemeTintAlt>
-            <ThemeTintAlt offset={-3}>
-              <Text
-                className="mask-gradient-right"
-                pos="absolute"
-                t={0}
-                l="1.3%"
-                color="$color6"
-                $sm={{ l: 0 }}
-              >
-                Write less,
-              </Text>
-            </ThemeTintAlt>
             <br />
-            runs&nbsp;faster
+            <span style={{ position: 'relative' }}>
+              <span style={{ opacity: 0 }}>runs&nbsp;faster</span>
+              <RunsFasterTextEffects />
+            </span>
           </H1>
 
           {name === 'halloween' && (
@@ -256,8 +287,6 @@ const HeroContents = memo(function HeroContents() {
           <ThemeTintAlt>
             <NextLink prefetch={false} href="/docs/intro/introduction">
               <Button
-                theme="active"
-                h={52}
                 accessibilityLabel="Get started (docs)"
                 fontFamily="$silkscreen"
                 size="$5"
@@ -268,10 +297,17 @@ const HeroContents = memo(function HeroContents() {
                 mx="$2"
                 tabIndex="0"
                 elevation="$1"
-                letterSpacing={-2}
                 pressStyle={{
                   elevation: '$0',
                 }}
+                // TODO this is applying in dark mode...
+                // $theme-light={{
+                //   bg: '$color1',
+                //   hoverStyle: {
+                //     bg: '$color2',
+                //     color: '$color10',
+                //   },
+                // }}
               >
                 Get started
               </Button>
@@ -317,7 +353,7 @@ const HeroContents = memo(function HeroContents() {
 })
 
 const Subtitle = styled(Paragraph, {
-  color: '$color9',
+  color: '$gray10',
   size: '$6',
   fontFamily: '$silkscreen',
   ta: 'left',
@@ -325,7 +361,7 @@ const Subtitle = styled(Paragraph, {
 
   $gtSm: {
     ta: 'center',
-    size: '$7',
+    size: '$8',
     ls: -1,
   },
 
@@ -349,25 +385,103 @@ const Tag = styled(Text, {
   px: '$1',
   mx: '$-1',
   cursor: 'pointer',
-  color: '$color',
-  bc: '$color2',
+  color: '$color10',
+  bg: '$color3',
 
   hoverStyle: {
     color: '$color',
-    bc: '$color3',
+    bg: '$color4',
   },
 
   variants: {
     active: {
       true: {
         color: '$color10',
-        bc: '$color5',
+        bg: '$color5',
 
         hoverStyle: {
           color: '$color12',
-          bc: '$color5',
+          bg: '$color5',
         },
       },
     },
   } as const,
 })
+
+const HeroText = styled(Text, {
+  position: 'absolute',
+
+  $sm: {
+    t: 0,
+    l: -4,
+  },
+
+  $gtSm: {
+    t: 2,
+  },
+
+  $gtMd: {
+    t: 4,
+  },
+
+  $gtLg: {
+    t: 8,
+  },
+})
+
+const RunsFasterTextEffects = () => {
+  return (
+    <YStack fullscreen $sm={{ x: -2.5 }}>
+      <HeroText className="clip-text rainbow" l={-4} $sm={{ l: 0 }}>
+        runs&nbsp;faster
+      </HeroText>
+      <ThemeTintAlt offset={2}>
+        <HeroText
+          className="mask-gradient-down"
+          style={{ mixBlendMode: 'hard-light' }}
+          pe="none"
+          o={0.5}
+          col="$color8"
+          $sm={{ l: 3 }}
+        >
+          runs&nbsp;faster
+        </HeroText>
+      </ThemeTintAlt>
+      <ThemeTintAlt offset={1}>
+        <HeroText
+          l={-3}
+          className="mask-gradient-up"
+          pe="none"
+          col="$color8"
+          $sm={{ l: 1.5 }}
+        >
+          runs&nbsp;faster
+        </HeroText>
+      </ThemeTintAlt>
+      <ThemeTintAlt offset={-2}>
+        <HeroText
+          l={0}
+          className="mask-gradient-right"
+          pe="none"
+          col="$color8"
+          o={0.26}
+          $sm={{ l: 3 }}
+        >
+          runs&nbsp;faster
+        </HeroText>
+      </ThemeTintAlt>
+      <ThemeTintAlt offset={-3}>
+        <HeroText
+          l={0}
+          className="mask-gradient-right"
+          pe="none"
+          col="$color8"
+          o={0.5}
+          $sm={{ l: 3 }}
+        >
+          runs&nbsp;faster
+        </HeroText>
+      </ThemeTintAlt>
+    </YStack>
+  )
+}

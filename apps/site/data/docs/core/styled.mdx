@@ -3,17 +3,17 @@ title: styled()
 description: Extend and build custom and optimizable components.
 ---
 
-<Notice>
-  If you're looking for a full list of style properties accepted by Tamagui, check the
-  [Props documentation](/docs/intro/props).
+<Notice theme="green">
+  If you're looking for a full list of style properties accepted by Tamagui, see
+  the [Styles page](/docs/intro/styles).
 </Notice>
 
 Create a new component by extending an existing one:
 
 ```tsx
-import { GetProps, Stack, styled } from 'tamagui' // or '@tamagui/core'
+import { GetProps, View, styled } from '@tamagui/core'
 
-export const Circle = styled(Stack, {
+export const Circle = styled(View, {
   name: 'Circle', // useful for debugging, and Component themes
   borderRadius: 100_000_000,
 })
@@ -33,8 +33,8 @@ Note, `tamagui` and `@tamagui/core` both export many of the same helpers, like s
 You can pass any prop that is supported by the component you are extending, even variants of the parent component. Tamagui will figure out the style props up-front, turn them into classNames, and then pass the non-style props down to the component as defaultProps.
 
 <Notice>
-  One really important and useful thing to note about Tamagui style properties: the order
-  is important! [Read more below](#order-is-important)
+  One really important and useful thing to note about Tamagui style properties:
+  the order is important! [Read more below](#order-is-important)
 </Notice>
 
 ## Variants
@@ -42,9 +42,9 @@ You can pass any prop that is supported by the component you are extending, even
 Let's add some variants:
 
 ```tsx
-import { Stack, styled } from 'tamagui' // or '@tamagui/core'
+import { View, styled } from '@tamagui/core'
 
-export const Circle = styled(Stack, {
+export const Circle = styled(View, {
   borderRadius: 100_000_000,
 
   variants: {
@@ -75,8 +75,8 @@ export const Circle = styled(Stack, {
 ```
 
 <Notice>
-  Please use `as const` for the variants definition until Typescript gains the ability to
-  infer generics as const .
+  Please use `as const` for the variants definition until Typescript gains the
+  ability to infer generics as const .
 </Notice>
 
 We can use these like so:
@@ -132,12 +132,12 @@ You can set it up as follows:
 ```tsx
 import {
   SizeTokens,
-  Stack,
+  View,
   Text,
   createStyledContext,
   styled,
   withStaticProperties,
-} from 'tamagui' // or @tamagui/core
+} from '@tamagui/core'
 
 export const ButtonContext = createStyledContext<{
   size: SizeTokens
@@ -145,7 +145,7 @@ export const ButtonContext = createStyledContext<{
   size: '$medium',
 })
 
-export const ButtonFrame = styled(Stack, {
+export const ButtonFrame = styled(View, {
   name: 'Button',
   context: ButtonContext,
 
@@ -202,10 +202,10 @@ Finally, it's important to note that the order of style properties is significan
 Lets see how it lets us control overriding styles:
 
 ```tsx
-import { Stack, StackProps } from 'tamagui' // or @tamagui/core
+import { View, ViewProps } from '@tamagui/core'
 
-export default (props: StackProps) => (
-  <Stack
+export default (props: ViewProps) => (
+  <View
     background="red"
     {...props}
     width={200}
@@ -219,16 +219,16 @@ It also is necessary for variants to make sense. Say we have a variant `huge` th
 
 ```tsx
 // this will be scale = 3
-export default (props: StackProps) => (
-  <MyStack
+export default (props: ViewProps) => (
+  <MyView
     huge
     scale={3}
   />
 )
 
 // this will be scale = 2
-export default (props: StackProps) => (
-  <MyStack
+export default (props: ViewProps) => (
+  <MyView
     scale={3}
     huge
   />
@@ -243,11 +243,35 @@ If order wasn't important, how would you expect these two different usages to wo
 
 You can skip this section unless you're building out very rich components that are nested multiple levels and need variants at each level.
 
+### Custom props that accepts tokens with `accept`
+
+If you are wrapping something like an SVG, you may want it to accept theme and token values on certain props, for example `fill`. You can do so using `accept`:
+
+```tsx
+const StyledSVG = styled(SVG, {}, {
+  accept: {
+    fill: 'color'
+  } as const
+})
+```
+
+Note the `as const`, until we can drop TypeScript 4 support. Now, your StyledSVG will properly type the `fill` property to accept token and theme values and will pass the resolved colors to the SVG component.
+
+You can also use `accept` to take in Tamagui style objects and output React Native style objects. This is useful for things like the `contentContainerStyle` prop on `ScrollView`, which expects a style object:
+
+```tsx
+const MyScrollView = styled(ScrollView, {}, {
+  accept: {
+    contentContainerStyle: 'style' // or 'textStyle'
+  } as const
+})
+```
+
 ### styleable
 
 <Notice>
-  This is an advanced pattern that is only needed if you are building a design system that
-  has complex components.
+  This is an advanced pattern that is only needed if you are building a design
+  system that has complex components.
 </Notice>
 
 Any `styled()` component will have a helper function on it called `.styleable()`.
@@ -293,15 +317,15 @@ Also note that you also must always pass the props given to `HigherOrderStyledTe
 A further note on types: if you want to add some extra props to your componentin TypeScript you should do it using the generic first argument of styleable, and do so by only passing in the _extra_ props for type performance reasons:
 
 ```tsx
-import { YStack, YStackProps } from 'tamagui'
+import { View, ViewProps } from '@tamagui/core'
 
 type ExtraProps = {
   someCustomProp: boolean
 }
 
-export type CustomProps = YStackProps & ExtraProps
+export type CustomProps = ViewProps & ExtraProps
 
-const Custom = YStack.styleable<ExtraProps>((props) => {
+const Custom = View.styleable<ExtraProps>((props) => {
   // ...
   return null
 })

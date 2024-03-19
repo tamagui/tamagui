@@ -91,7 +91,7 @@ const wrapLines = function wrapLines(ast: any[], linesToHighlight) {
 // https://github.com/gatsbyjs/gatsby/pull/26161/files
 const MULTILINE_TOKEN_SPAN = /<span class="token ([^"]+)">[^<]*\n[^<]*<\/span>/g
 
-const applyMultilineFix = function (ast) {
+const applyMultilineFix = (ast) => {
   // AST to HTML
   let html = toHtml(ast)
 
@@ -103,7 +103,7 @@ const applyMultilineFix = function (ast) {
   // HTML to AST
   const hast = unified().use(parse, { emitParseErrors: true, fragment: true }).parse(html)
 
-  return hast.children
+  return hast['children']
 }
 
 export function highlightLine(ast, lines) {

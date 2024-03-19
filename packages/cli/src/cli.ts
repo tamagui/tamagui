@@ -4,7 +4,9 @@ import chalk from 'chalk'
 
 import { generatedPackageTypes } from './add.js'
 import { disposeAll, getOptions } from './utils'
+import { loadTamagui, checkDeps } from '@tamagui/static'
 
+// exit handlers
 ;['exit', 'SIGINT'].forEach((_) => {
   process.on(_, () => {
     disposeAll()
@@ -13,6 +15,73 @@ import { disposeAll, getOptions } from './utils'
 })
 
 const COMMAND_MAP = {
+  check: {
+    description: `Checks your dependencies for inconsistent versions.`,
+    shorthands: [],
+    flags: {
+      '--help': Boolean,
+      '--debug': Boolean,
+      '--verbose': Boolean,
+    },
+    async run() {
+      const { _, ...flags } = arg(this.flags)
+      const options = await getOptions({
+        debug: flags['--debug'] ? (flags['--verbose'] ? 'verbose' : true) : false,
+        loadTamaguiOptions: true,
+      })
+
+      const instance = await checkDeps(options.paths.root, {
+        depType: ['dependencies', 'devDependencies'],
+      })
+
+      const isNonTamaguiNamedDep = {
+        'react-native-web-lite': true,
+        'react-native-web-internals': true,
+      }
+
+      for (const dep of instance.getDependencies()) {
+        if (!dep.name.includes('tamagui') && !isNonTamaguiNamedDep[dep.name]) continue
+        if (!dep.isMismatching) continue
+        console.warn(
+          `-------------------------------------------------------------------------------------------------
+
+⚠️  [tamagui] Mis-matching dependency version found in: ${dep.name}
+
+      This will cause errors in your app. To fix, make sure all tamagui dependencies
+      in your repo are on on the same version.
+          
+      Other versions used in the repo: ${dep.versions
+        .map((version) => version.version)
+        .join(', ')}
+
+-------------------------------------------------------------------------------------------------`
+        )
+      }
+    },
+  },
+
+  generate: {
+    description: `Builds your entire tamagui configuration and outputs any CSS.`,
+    shorthands: [],
+    flags: {
+      '--help': Boolean,
+      '--debug': Boolean,
+      '--verbose': Boolean,
+    },
+    async run() {
+      const { _, ...flags } = arg(this.flags)
+      const options = await getOptions({
+        debug: flags['--debug'] ? (flags['--verbose'] ? 'verbose' : true) : false,
+        loadTamaguiOptions: true,
+      })
+      process.env.TAMAGUI_KEEP_THEMES = '1'
+      await loadTamagui({
+        ...options.tamaguiOptions,
+        platform: 'web',
+      })
+    },
+  },
+
   'generate-themes': {
     shorthands: ['gt'],
     description: `Use to pre-build your themes`,
@@ -35,11 +104,15 @@ const COMMAND_MAP = {
 
       const { generateThemes, writeGeneratedThemes } = require('@tamagui/generate-themes')
 
-      await writeGeneratedThemes(
-        options.paths.dotDir,
-        outPath,
-        await generateThemes(inPath)
-      )
+      try {
+        const generated = await generateThemes(inPath)
+        await writeGeneratedThemes(options.paths.dotDir, outPath, generated)
+      } catch (err) {
+        console.error(`Error generating themes: ${err}`)
+        return
+      }
+
+      console.info(`Successfully generated themes to ${outPath}`)
     },
   },
 
@@ -81,6 +154,7 @@ const COMMAND_MAP = {
   //     await build(options)
   //   },
   // },
+
   // update: {
   //   shorthands: [],
   //   description: `Update all tamagui packages within a monorepo`,
@@ -108,6 +182,27 @@ const COMMAND_MAP = {
         debug: flags['--debug'] ? (flags['--verbose'] ? 'verbose' : true) : false,
       })
       await studio(options, flags['--remote'], flags['--build'])
+    },
+  },
+
+  'update-template': {
+    shorthands: ['ut'],
+    description: `Used to update your git repo with the source template. (e.g. Takeout)`,
+    flags: {
+      '--help': Boolean,
+      '--template-repo': String,
+      '--ignored-patterns': String,
+    },
+    async run() {
+      const { _, ...flags } = arg(this.flags)
+      const { updateTemplate } = require('./update-template')
+      if (!flags['--template-repo']) {
+        throw new Error('--template-repo is required')
+      }
+      await updateTemplate(
+        flags['--template-repo'],
+        flags['--ignored-patterns']?.split(' ')
+      )
     },
   },
 }

@@ -1,6 +1,6 @@
 import { isWeb } from '@tamagui/constants'
 
-import {
+import type {
   ConfigListener,
   TamaguiInternalConfig,
   Token,
@@ -12,7 +12,6 @@ let conf: TamaguiInternalConfig | null
 
 export const setConfig = (next: TamaguiInternalConfig) => {
   conf = next
-  configListeners.forEach((cb) => cb(next))
 }
 
 export const setConfigFont = (name: string, font: any, fontParsed: any) => {
@@ -27,7 +26,7 @@ export const getConfig = () => {
   if (!conf) {
     throw new Error(
       process.env.NODE_ENV !== 'production'
-        ? `Missing tamagui config, you either have a duplicate config, or haven't set it up. Be sure createTamagui is called before rendering. Also, make sure all of your tamagui dependencies are on the same version (\`tamagui\`, \`@tamagui/package-name\`, etc.)`
+        ? `Missing tamagui config, you either have a duplicate config, or haven't set it up. Be sure createTamagui is called before rendering. Also, make sure all of your tamagui dependencies are on the same version (\`tamagui\`, \`@tamagui/package-name\`, etc.) not just in your package.json, but in your lockfile.`
         : 'Err0'
     )
   }
@@ -72,7 +71,8 @@ export const getToken = (value: Token, group?: keyof Tokens, useVariable = isWeb
   return useVariable ? token?.variable : token?.val
 }
 
-export const getTokenValue = (value: Token, group?: keyof Tokens) => {
+export const getTokenValue = (value: Token | 'unset' | 'auto', group?: keyof Tokens) => {
+  if (value === 'unset' || value === 'auto') return
   return getToken(value, group, false)
 }
 

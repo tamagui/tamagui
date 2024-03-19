@@ -9,7 +9,13 @@
     "v2.d.ts",
     "v2.js",
     "v2-themes.js",
-    "v2-themes.d.ts"
+    "v2-themes.d.ts",
+    "v3.d.ts",
+    "v3.js",
+    "v3-themes.js",
+    "v3-themes.d.ts",
+    "dist",
+    "**/__tests__"
   ],
   "references": [
     {

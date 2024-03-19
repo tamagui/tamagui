@@ -1,4 +1,5 @@
-import { GetProps, styled } from '@tamagui/core'
+import type { GetProps } from '@tamagui/core'
+import { styled } from '@tamagui/core'
 import { YStack } from '@tamagui/stacks'
 
 export const Fieldset = styled(YStack, {

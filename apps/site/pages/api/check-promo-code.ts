@@ -1,7 +1,7 @@
+import { apiRoute } from '@lib/apiRoute'
 import { stripe } from '@lib/stripe'
-import { NextApiHandler } from 'next'
 
-const handler: NextApiHandler = async (req, res) => {
+const handler = apiRoute(async (req, res) => {
   const code = req.query.code
 
   if (typeof code !== 'string') {
@@ -21,11 +21,10 @@ const handler: NextApiHandler = async (req, res) => {
 
   if (!promo || !promo?.coupon) {
     res.status(404).json({
-      message: "promo code doesn't exist"
+      message: "promo code doesn't exist",
     })
     return
   }
   res.json(promo.coupon)
-}
-
+})
 export default handler

@@ -1,5 +1,4 @@
 import * as path from 'path'
-import { basename } from 'path'
 import * as util from 'util'
 
 import generate from '@babel/generator'
@@ -11,15 +10,15 @@ import { requireTamaguiCore } from '../helpers/requireTamaguiCore'
 import type { ClassNameObject, StyleObject, TamaguiOptions, Ternary } from '../types'
 import { babelParse } from './babelParse'
 import { buildClassName } from './buildClassName'
-import { Extractor } from './createExtractor'
+import type { Extractor } from './createExtractor'
 import { ensureImportingConcat } from './ensureImportingConcat'
 import { isSimpleSpread } from './extractHelpers'
 import { extractMediaStyle } from './extractMediaStyle'
-import { getPrefixLogs } from './getPrefixLogs'
 import { hoistClassNames } from './hoistClassNames'
 import { logLines } from './logLines'
 import { getFontFamilyClassNameFromProps } from './propsToFontFamilyCache'
 import { timer } from './timer'
+import { createLogger } from './createLogger'
 
 const mergeStyleGroups = {
   shadowOpacity: true,
@@ -47,14 +46,14 @@ export type ExtractToClassNamesProps = {
 export async function extractToClassNames({
   extractor,
   source,
-  sourcePath,
+  sourcePath = '',
   options,
   shouldPrintDebug,
 }: ExtractToClassNamesProps): Promise<ExtractedResponse | null> {
   const tm = timer()
   const { getStylesAtomic } = requireTamaguiCore('web')
 
-  if (sourcePath?.includes('node_modules')) {
+  if (sourcePath.includes('node_modules')) {
     return null
   }
 
@@ -65,11 +64,14 @@ export async function extractToClassNames({
   if (typeof source !== 'string') {
     throw new Error('`source` must be a string of javascript')
   }
-  if (sourcePath && !path.isAbsolute(sourcePath)) {
-    throw new Error('`sourcePath` must be an absolute path to a .js file')
+  if (!path.isAbsolute(sourcePath)) {
+    throw new Error(
+      '`sourcePath` must be an absolute path to a .js file, got: ' + sourcePath
+    )
   }
+
   if (!/.[tj]sx?$/i.test(sourcePath || '')) {
-    console.warn(`${sourcePath?.slice(0, 100)} - bad filename.`)
+    console.warn(`${sourcePath.slice(0, 100)} - bad filename.`)
   }
 
   if (!options.disableExtraction && !options['_disableLoadTamagui']) {
@@ -77,12 +79,7 @@ export async function extractToClassNames({
     await extractor.loadTamagui(options)
   }
 
-  const shouldLogTiming = options.logTimings ?? true
-  const start = Date.now()
-  const mem =
-    process.env.TAMAGUI_SHOW_MEMORY_USAGE && shouldLogTiming
-      ? process.memoryUsage()
-      : null
+  const printLog = createLogger(sourcePath, options)
 
   // Using a map for (officially supported) guaranteed insertion order
   let ast: t.File
@@ -90,7 +87,7 @@ export async function extractToClassNames({
   try {
     ast = babelParse(source, sourcePath)
   } catch (err) {
-    console.error('babel parse error:', sourcePath?.slice(0, 100))
+    console.error('babel parse error:', sourcePath.slice(0, 100))
     throw err
   }
 
@@ -128,8 +125,6 @@ export async function extractToClassNames({
       lineNumbers,
       programPath,
       isFlattened,
-      config,
-      completeProps,
       staticConfig,
     }) => {
       // bail out of views that don't accept className (falls back to runtime + style={})
@@ -448,29 +443,7 @@ export async function extractToClassNames({
     console.info('\n -------- output style -------- \n\n', styles)
   }
 
-  if (shouldLogTiming) {
-    const memUsed = mem
-      ? Math.round(((process.memoryUsage().heapUsed - mem.heapUsed) / 1024 / 1204) * 10) /
-        10
-      : 0
-    const path = basename(sourcePath || '')
-      .replace(/\.[jt]sx?$/, '')
-      .slice(0, 22)
-      .trim()
-      .padStart(24)
-
-    const numOptimized = `${res.optimized + res.styled}`.padStart(3)
-    const numFound = `${res.found + res.styled}`.padStart(3)
-    const numFlattened = `${res.flattened}`.padStart(3)
-    const memory = memUsed ? ` ${memUsed}MB` : ''
-    const timing = Date.now() - start
-    const timingStr = `${timing}ms`.padStart(6)
-    const pre = getPrefixLogs(options)
-    const memStr = memory ? `(${memory})` : ''
-    console.info(
-      `${pre} ${path}   ·  ${numFound} found   ·  ${numOptimized} opt   ·  ${numFlattened} flat  ${timingStr} ${memStr}`
-    )
-  }
+  printLog(res)
 
   return {
     ast,

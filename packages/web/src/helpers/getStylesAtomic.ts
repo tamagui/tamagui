@@ -3,110 +3,93 @@
  * Copyright (c) Nicolas Gallagher licensed under the MIT license.
  */
 
-import { StyleObject, simpleHash } from '@tamagui/helpers'
+import type { StyleObject } from '@tamagui/helpers'
+import { simpleHash } from '@tamagui/helpers'
 
 import { getConfig } from '../config'
-import type { DebugProp, TamaguiInternalConfig, ViewStyleWithPseudos } from '../types'
+import type { TamaguiInternalConfig, ViewStyleWithPseudos } from '../types'
 import { defaultOffset } from './defaultOffset'
+import { normalizeColor } from './normalizeColor'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty'
-import {
-  PseudoDescriptor,
-  pseudoDescriptors,
-  pseudoDescriptorsBase,
-} from './pseudoDescriptors'
+import type { PseudoDescriptor } from './pseudoDescriptors'
+import { pseudoDescriptors } from './pseudoDescriptors'
+import { transformsToString } from './transformsToString'
 
 // refactor this file away next...
 
-export function getStylesAtomic(stylesIn: ViewStyleWithPseudos, debug?: DebugProp) {
-  let res: StyleObject[] = []
-  for (const pseudoName in pseudoDescriptorsBase) {
-    const pseudoStyle = stylesIn[pseudoName]
-    if (pseudoStyle) {
-      res = [
-        ...res,
-        ...generateAtomicStyles(pseudoStyle, pseudoDescriptorsBase[pseudoName]),
-      ]
+export function getStylesAtomic(style: ViewStyleWithPseudos) {
+  styleToCSS(style)
+  const out: StyleObject[] = []
+  for (const key in style) {
+    const val = style[key]
+    if (key in pseudoDescriptors) {
+      if (val) {
+        out.push(...getStyleAtomic(val, pseudoDescriptors[key]))
+      }
+    } else {
+      const so = getStyleObject(style, key)
+      if (so) {
+        out.push(so)
+      }
     }
   }
-  res = [...res, ...generateAtomicStyles(stylesIn)]
+  return out
+}
 
-  if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-    console.info(` 🪮 getStylesAtomic`, { stylesIn, res })
+export const getStyleAtomic = (
+  style: ViewStyleWithPseudos,
+  pseudo?: PseudoDescriptor
+): StyleObject[] => {
+  styleToCSS(style)
+  const out: StyleObject[] = []
+  for (const key in style) {
+    const so = getStyleObject(style, key, pseudo)
+    if (so) {
+      out.push(so)
+    }
   }
-  return res
+  return out
 }
 
 let conf: TamaguiInternalConfig
 
-// mutates...
-
-export function transformsToString(transforms: any[]) {
-  return transforms
-    .map(
-      // { scale: 2 } => 'scale(2)'
-      // { translateX: 20 } => 'translateX(20px)'
-      // { matrix: [1,2,3,4,5,6] } => 'matrix(1,2,3,4,5,6)'
-      (transform) => {
-        const type = Object.keys(transform)[0]
-        const value = transform[type]
-        if (type === 'matrix' || type === 'matrix3d') {
-          return `${type}(${value.join(',')})`
-        }
-        return `${type}(${normalizeValueWithProperty(value, type)})`
-      }
-    )
-    .join(' ')
-}
-
-export const generateAtomicStyles = (
+const getStyleObject = (
   style: ViewStyleWithPseudos,
+  key: string,
   pseudo?: PseudoDescriptor
-): StyleObject[] => {
-  if (!style) return []
-
-  conf = conf || getConfig()
-
-  styleToCSS(style)
-
-  const out: StyleObject[] = []
-  for (const key in style) {
-    if (key in pseudoDescriptors) continue
-    let val = style[key]
-    if (val == null) continue
-
-    // transform
-    if (key === 'transform' && Array.isArray(style.transform)) {
-      val = transformsToString(val)
-    }
-
-    const value = normalizeValueWithProperty(val, key)
-    const hash = simpleHash(`${value}`)
-    const pseudoPrefix = pseudo ? `0${pseudo.name}-` : ''
-    const shortProp = conf.inverseShorthands[key] || key
-    const identifier = `_${shortProp}-${pseudoPrefix}${hash}`
-    const rules = createAtomicRules(identifier, key, value, pseudo)
-    const styleObject: StyleObject = {
-      property: key,
-      pseudo: pseudo?.name as any,
-      identifier,
-      rules,
-      value,
-    }
-    out.push(styleObject)
+): StyleObject | undefined => {
+  let val = style[key]
+  if (val == null) return
+  // transform
+  if (key === 'transform' && Array.isArray(style.transform)) {
+    val = transformsToString(val)
   }
-
-  return out
+  const value = normalizeValueWithProperty(val, key)
+  const hash = simpleHash(`${value}`)
+  const pseudoPrefix = pseudo ? `0${pseudo.name}-` : ''
+  conf ||= getConfig()
+  const shortProp = conf.inverseShorthands[key] || key
+  const identifier = `_${shortProp}-${pseudoPrefix}${hash}`
+  const rules = createAtomicRules(identifier, key, value, pseudo)
+  return {
+    property: key,
+    pseudo: pseudo?.name as any,
+    identifier,
+    rules,
+    value,
+  }
 }
 
 export function styleToCSS(style: Record<string, any>) {
   // box-shadow
-  const { shadowOffset, shadowRadius, shadowColor } = style
-  if (style.shadowRadius) {
+  const { shadowOffset, shadowRadius, shadowColor, shadowOpacity } = style
+  if (shadowRadius || shadowColor) {
     const offset = shadowOffset || defaultOffset
     const width = normalizeValueWithProperty(offset.width)
     const height = normalizeValueWithProperty(offset.height)
     const radius = normalizeValueWithProperty(shadowRadius)
-    const shadow = `${width} ${height} ${radius} ${shadowColor}`
+    const color = normalizeColor(shadowColor, shadowOpacity)
+    const shadow = `${width} ${height} ${radius} ${color}`
     style.boxShadow = style.boxShadow ? `${style.boxShadow}, ${shadow}` : shadow
     delete style.shadowOffset
     delete style.shadowRadius
@@ -149,7 +132,8 @@ const hyphenateStyleName = (key: string) => {
   return val
 }
 
-const pseudoSelectorPrefixes = (() => {
+// adding one more :root so we always override react native web styles :/
+const selectorPriority = (() => {
   const res: Record<string, string> = {}
   for (const key in pseudoDescriptors) {
     const pseudo = pseudoDescriptors[key]
@@ -164,9 +148,15 @@ function createAtomicRules(
   value: any,
   pseudo?: PseudoDescriptor
 ): string[] {
+  const pseudoSelector = pseudo
+    ? pseudo.name === 'disabled'
+      ? `[aria-disabled]`
+      : `:${pseudo.name}`
+    : ''
   const selector = pseudo
-    ? // adding one more :root so we always override react native web styles :/
-      `${pseudoSelectorPrefixes[pseudo.name]} .${identifier}:${pseudo.name}`
+    ? pseudo?.selector
+      ? `${pseudo?.selector} .${identifier}`
+      : `${selectorPriority[pseudo.name]} .${identifier}${pseudoSelector}`
     : `:root .${identifier}`
   const important = !!pseudo
 
@@ -236,7 +226,7 @@ function createAtomicRules(
   // WEIRD SYNTAX, SEE:
   //   https://stackoverflow.com/questions/40532204/media-query-for-devices-supporting-hover
   if (pseudo?.name === 'hover') {
-    rules = rules.map((r) => `@media not all and (hover: none) { ${r} }`)
+    rules = rules.map((r) => `@media (hover) {${r}}`)
   }
 
   return rules

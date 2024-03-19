@@ -1,25 +1,25 @@
-import type { IconProps } from '@tamagui/helpers-icon'
-import { themed } from '@tamagui/helpers-icon'
-import PropTypes from 'prop-types'
 import React, { memo } from 'react'
+import PropTypes from 'prop-types'
+import type { IconProps } from '@tamagui/helpers-icon'
 import {
-  Defs,
+  Svg,
+  Circle as _Circle,
   Ellipse,
   G,
-  Line,
   LinearGradient,
+  RadialGradient,
+  Line,
   Path,
   Polygon,
   Polyline,
-  RadialGradient,
   Rect,
-  Stop,
-  Svg,
   Symbol,
-  Use,
-  Circle as _Circle,
   Text as _Text,
+  Use,
+  Defs,
+  Stop,
 } from 'react-native-svg'
+import { themed } from '@tamagui/helpers-icon'
 
 const Icon = (props) => {
   const { color = 'black', size = 24, ...otherProps } = props
@@ -36,12 +36,12 @@ const Icon = (props) => {
       {...otherProps}
     >
       <_Circle cx="12" cy="12" r="10" stroke={color} />
-      <Line x1="14.31" x2="20.05" y1="8" y2="17.94" stroke={color} />
-      <Line x1="9.69" x2="21.17" y1="8" y2="8" stroke={color} />
-      <Line x1="7.38" x2="13.12" y1="12" y2="2.06" stroke={color} />
-      <Line x1="9.69" x2="3.95" y1="16" y2="6.06" stroke={color} />
-      <Line x1="14.31" x2="2.83" y1="16" y2="16" stroke={color} />
-      <Line x1="16.62" x2="10.88" y1="12" y2="21.94" stroke={color} />
+      <Path d="m14.31 8 5.74 9.94" stroke={color} />
+      <Path d="M9.69 8h11.48" stroke={color} />
+      <Path d="m7.38 12 5.74-9.94" stroke={color} />
+      <Path d="M9.69 16 3.95 6.06" stroke={color} />
+      <Path d="M14.31 16H2.83" stroke={color} />
+      <Path d="m16.62 12-5.74 9.94" stroke={color} />
     </Svg>
   )
 }

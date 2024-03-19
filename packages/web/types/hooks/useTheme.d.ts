@@ -1,6 +1,7 @@
-import { Variable } from '../createVariable';
-import { ThemeManager, ThemeManagerState } from '../helpers/ThemeManager';
-import type { DebugProp, ThemeParsed, ThemeProps, UseThemeWithStateProps, VariableVal, VariableValGeneric } from '../types';
+import type { Variable } from '../createVariable';
+import type { ThemeManagerState } from '../helpers/ThemeManager';
+import { ThemeManager } from '../helpers/ThemeManager';
+import type { DebugProp, ThemeParsed, ThemeProps, Tokens, UseThemeWithStateProps, VariableVal, VariableValGeneric } from '../types';
 export type ChangedThemeResponse = {
     state?: ThemeManagerState;
     themeManager?: ThemeManager | null;
@@ -22,11 +23,14 @@ export type ThemeGettable<Val> = Val & {
     get: (platform?: 'web') => string | (Val extends Variable<infer X> ? X extends VariableValGeneric ? any : Exclude<X, Variable> : Val extends VariableVal ? string | number : unknown);
 };
 export type UseThemeResult = {
-    [Key in keyof ThemeParsed]: ThemeGettable<ThemeParsed[Key]>;
+    [Key in keyof ThemeParsed | keyof Tokens['color']]: ThemeGettable<Key extends keyof ThemeParsed ? ThemeParsed[Key] : Variable<any>>;
+} & {
+    [Key in string & {}]?: ThemeGettable<Variable<any>>;
 };
 export declare const useTheme: (props?: ThemeProps) => UseThemeResult;
 export declare const useThemeWithState: (props: UseThemeWithStateProps) => [ChangedThemeResponse, ThemeParsed];
 export declare function getThemeProxied({ theme, name, scheme }: ThemeManagerState, deopt?: boolean, themeManager?: ThemeManager, keys?: string[], debug?: DebugProp): UseThemeResult;
 export declare const activeThemeManagers: Set<ThemeManager>;
+export declare const getThemeManager: (id: number) => ThemeManager | undefined;
 export declare const useChangeThemeEffect: (props: UseThemeWithStateProps, isRoot?: boolean, keys?: string[], shouldUpdate?: () => boolean | undefined) => ChangedThemeResponse;
 //# sourceMappingURL=useTheme.d.ts.map

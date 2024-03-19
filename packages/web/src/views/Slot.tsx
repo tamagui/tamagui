@@ -3,7 +3,8 @@
 import { composeRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
 import { composeEventHandlers } from '@tamagui/helpers'
-import { Children, ReactNode, cloneElement, forwardRef, isValidElement } from 'react'
+import type { ReactNode } from 'react'
+import { Children, cloneElement, forwardRef, isValidElement } from 'react'
 
 /* -------------------------------------------------------------------------------------------------
  * Slot
@@ -32,6 +33,8 @@ export const Slot = forwardRef<any, SlotProps>(function Slot(props, forwardedRef
   return Children.count(children) > 1 ? Children.only(null) : null
 })
 
+Slot['displayName'] = 'Slot'
+
 /* -------------------------------------------------------------------------------------------------
  * Slottable
  * -----------------------------------------------------------------------------------------------*/
@@ -39,6 +42,8 @@ export const Slot = forwardRef<any, SlotProps>(function Slot(props, forwardedRef
 export const Slottable = ({ children }: { children: ReactNode }) => {
   return <>{children}</>
 }
+
+Slottable['displayName'] = 'Slottable'
 
 /* ---------------------------------------------------------------------------------------------- */
 

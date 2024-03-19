@@ -2,17 +2,7 @@ import { getDefaultLayout } from '@lib/getDefaultLayout'
 import { ThemeTintAlt } from '@tamagui/logo'
 import { NextSeo } from 'next-seo'
 import Head from 'next/head'
-import { useState } from 'react'
-import {
-  Button,
-  EnsureFlexed,
-  H2,
-  Separator,
-  Spacer,
-  XStack,
-  YStack,
-  useThemeName,
-} from 'tamagui'
+import { Button, EnsureFlexed, H2, Separator, Spacer, XStack, YStack } from 'tamagui'
 import { LinearGradient } from 'tamagui/linear-gradient'
 
 import { Container, ContainerXL } from '../components/Container'
@@ -20,6 +10,7 @@ import { Features } from '../components/Features'
 import { LoadInter900 } from '../components/LoadFont'
 import { NextLink } from '../components/NextLink'
 import { StudioScreen1 } from '../components/StudioScreen1'
+import { ThemeNameEffect } from '../components/ThemeNameEffect'
 
 export default function StudioSplashPage() {
   // const [state, setState] = useState({
@@ -40,7 +31,8 @@ export default function StudioSplashPage() {
         <LoadInter900 />
       </Head>
 
-      {/* biome-ignore lint/a11y/useIframeTitle: <explanation> */}
+      <ThemeNameEffect />
+
       {/* <iframe
         onLoad={() => {
           setState({
@@ -66,13 +58,7 @@ export default function StudioSplashPage() {
         <LinearGradient
           pos="absolute"
           fullscreen
-          colors={[
-            '$backgroundStrong',
-            '$color2',
-            '$color2',
-            '$color2',
-            '$backgroundStrong',
-          ]}
+          colors={['$background', '$color2', '$color2', '$color2', '$background']}
         />
 
         <ContainerXL>
@@ -156,7 +142,7 @@ export default function StudioSplashPage() {
                   items={[
                     `Generate complete theme suites step-by-step.`,
                     `Visualize your design system.`,
-                    `Helpers for media queries, tokens, fonts and more`,
+                    `Export themes directly to your app.`,
                   ]}
                 />
               </YStack>
@@ -164,11 +150,12 @@ export default function StudioSplashPage() {
               <YStack px="$6" maw="50%" $sm={{ maw: '100%', p: '$2' }}>
                 <EnsureFlexed />
                 <Features
+                  soon
                   size="$5"
                   items={[
-                    <span>{soonButton} Animation test environment and visualizer.</span>,
-                    <span>{soonButton} Advanced theme editor.</span>,
-                    <span>{soonButton} Figma and local integrations.</span>,
+                    <span>Animation test environment and visualizer.</span>,
+                    <span>Advanced theme editor.</span>,
+                    <span>Figma and local integrations.</span>,
                   ]}
                 />
               </YStack>
@@ -182,11 +169,5 @@ export default function StudioSplashPage() {
     </>
   )
 }
-
-const soonButton = (
-  <Button size="$2" theme="green" br="$9" pe="none" mr="$1" y={-2} display="inline-flex">
-    Soon
-  </Button>
-)
 
 StudioSplashPage.getLayout = getDefaultLayout

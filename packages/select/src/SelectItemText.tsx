@@ -1,11 +1,12 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { GetProps, TamaguiTextElement, styled } from '@tamagui/core'
+import type { GetProps, TamaguiTextElement } from '@tamagui/core'
+import { styled } from '@tamagui/core'
 import { SizableText } from '@tamagui/text'
 import * as React from 'react'
 
 import { useSelectContext, useSelectItemParentContext } from './context'
 import { useSelectItemContext } from './SelectItem'
-import { ScopedProps } from './types'
+import type { ScopedProps } from './types'
 
 /* -------------------------------------------------------------------------------------------------
  * SelectItemText

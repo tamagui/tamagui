@@ -1,7 +1,9 @@
 import { ArrowLeft, ArrowRight, X } from '@tamagui/lucide-icons'
 import { createUseStore } from '@tamagui/use-store'
-import Image, { ImageProps } from 'next/image'
+import type { ImageProps } from 'next/image'
+import Image from 'next/image'
 import { useEffect } from 'react'
+import type { StackProps } from 'tamagui'
 import {
   AnimatePresence,
   Button,
@@ -9,7 +11,6 @@ import {
   H6,
   Paragraph,
   Spacer,
-  StackProps,
   Unspaced,
   XStack,
   YStack,
@@ -113,10 +114,10 @@ export default function TakeoutGallery() {
       <ImageGallery />
 
       <XStack
-        mx="$-4"
         ai="center"
         jc="center"
-        gap="$4"
+        gap="$6"
+        px="$4"
         $md={{
           flexDirection: 'column',
         }}
@@ -128,11 +129,11 @@ export default function TakeoutGallery() {
           alt={takeoutImages[takeoutIosImageIdx].alt}
           style={{ objectFit: 'cover', objectPosition: 'center top' }}
           wrapperProps={{
-            flexGrow: 1,
+            flex: 1,
             position: 'relative',
-            height: 400,
+            height: 300,
 
-            borderRadius: '$6',
+            borderRadius: '$12',
             overflow: 'hidden',
             $md: {
               width: '100%',
@@ -147,11 +148,11 @@ export default function TakeoutGallery() {
           alt={takeoutImages[takeoutWebImageIdx].alt}
           style={{ objectFit: 'cover', objectPosition: 'center top' }}
           wrapperProps={{
-            flexGrow: 2,
+            flex: 2,
             position: 'relative',
-            height: 400,
+            height: 300,
 
-            borderRadius: '$6',
+            borderRadius: '$12',
             overflow: 'hidden',
             $md: {
               width: '100%',
@@ -166,11 +167,11 @@ export default function TakeoutGallery() {
           alt={takeoutImages[takeoutAndroidImageIdx].alt}
           style={{ objectFit: 'cover', objectPosition: 'center top' }}
           wrapperProps={{
-            flexGrow: 1,
+            flex: 1,
             position: 'relative',
-            height: 400,
+            height: 300,
 
-            borderRadius: '$6',
+            borderRadius: '$12',
             overflow: 'hidden',
             $md: {
               width: '100%',
@@ -179,18 +180,21 @@ export default function TakeoutGallery() {
         />
       </XStack>
 
-      <Spacer />
+      <Spacer size="$8" />
 
-      <XStack fw="wrap" gap="$3" mx="$1" ai="center" jc="center">
+      <XStack fw="wrap" gap="$4" mx="$1" ai="center" jc="center">
         {takeoutImages.slice(1, 12).map((image, index) => (
           <YStack key={index} pos="relative">
             <TakeoutImage
               alt={image.alt}
               src={image.src}
               style={{ objectFit: 'cover' }}
-              width={50}
-              height={50}
+              width={100}
+              height={100}
               index={index}
+              wrapperProps={{
+                br: '$10',
+              }}
             />
           </YStack>
         ))}
@@ -199,9 +203,9 @@ export default function TakeoutGallery() {
             onPress={() => {
               store.galleryOpen = true
             }}
-            width={50}
-            height={50}
-            bc="$color12"
+            width={100}
+            height={100}
+            bg="$color12"
             br="$6"
             ov="hidden"
             elevation="$2"
@@ -253,7 +257,7 @@ const ImageGallery = () => {
           ]}
           enterStyle={{ x: 0, y: -10, opacity: 0 }}
           exitStyle={{ x: 0, y: 10, opacity: 0 }}
-          space
+          gap="$4"
         >
           <ImagesCarousel />
           <Unspaced>
@@ -322,17 +326,13 @@ const ImagesCarousel = () => {
   return (
     <XStack
       overflow="hidden"
-      backgroundColor="#00000000"
+      backgroundColor="rgba(0,0,0,0.9)"
       position="relative"
       height="100vh"
       width="100vw"
       alignItems="center"
     >
-      <AnimatePresence
-        enterVariant={enterVariant}
-        exitVariant={exitVariant}
-        exitBeforeEnter
-      >
+      <AnimatePresence enterVariant={enterVariant} exitVariant={exitVariant}>
         <YStackEnterable
           key={store.galleryImageIdx}
           animation="100ms"
@@ -407,16 +407,8 @@ const TakeoutImage = ({
       animation="100ms"
       hoverStyle={{ scale: 1.015 }}
       pressStyle={{ scale: 0.975 }}
-      borderWidth={1}
-      borderColor="$borderColor"
       {...wrapperProps}
     >
-      <YStack
-        style={{
-          boxShadow: `inset 0 0 ${+(props.width || 100) / 2.5}px rgba(0, 0, 0, 0.6)`,
-        }}
-        fullscreen
-      />
       <Image {...props} />
     </XStack>
   )

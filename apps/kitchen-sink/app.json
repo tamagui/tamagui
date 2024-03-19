@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "kitchensink",
-    "slug": "kitchensink",
-    "scheme": "kitchensink",
+    "name": "tamagui-kitchen-sink",
+    "slug": "tamagui-kitchen-sink",
+    "scheme": "tamagui-kitchen-sink",
     "version": "1.0.0",
     "jsEngine": "hermes",
     "orientation": "portrait",
@@ -16,15 +16,13 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.tamagui.kitchensink"
+      "bundleIdentifier": "com.tamagui.tamaguikitchensink"
     },
     "android": {
-      "package": "com.tamagui.kitchensink",
+      "package": "com.tamagui.tamaguikitchensink",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
@@ -35,11 +33,9 @@
     },
     "extra": {
       "eas": {
-        "projectId": "061b4470-78c7-4d6a-b850-8167fb0a3434"
+        "projectId": "5c027280-f9c1-4bba-9c75-762ba6efcecc"
       }
     },
-    "plugins": [
-      "expo-build-properties"
-    ]
+    "plugins": ["expo-font"]
   }
 }

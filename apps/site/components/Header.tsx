@@ -1,13 +1,9 @@
 import { ThemeToggle } from '@components/ThemeToggle'
-import { getDefaultAvatarImage } from '@lib/avatar'
 import { LogoWords, TamaguiLogo, ThemeTint, useTint } from '@tamagui/logo'
-import { useUser } from 'hooks/useUser'
-import { usePathname } from 'next/navigation'
 // import { useUser } from 'hooks/useUser'
 import { useRouter } from 'next/router'
 import * as React from 'react'
 import {
-  Avatar,
   Text,
   TooltipGroup,
   TooltipSimple,
@@ -18,16 +14,14 @@ import {
   isClient,
 } from 'tamagui'
 
-import { ColorToggleButton } from './ColorToggleButton'
 import { ContainerLarge } from './Container'
 import { GithubIcon } from './GithubIcon'
 import { HeaderLinks } from './HeaderLinks'
 import { HeaderMenu } from './HeaderMenu'
-import { HeaderProps } from './HeaderProps'
+import type { HeaderProps } from './HeaderProps'
 import { NextLink } from './NextLink'
 import { SearchButton } from './SearchButton'
 import { SeasonToggleButton } from './SeasonToggleButton'
-import { SponsorButton } from './SponsorButton'
 
 export function Header(props: HeaderProps) {
   const [isScrolled, setIsScrolled] = React.useState(false)
@@ -66,16 +60,13 @@ export function Header(props: HeaderProps) {
       >
         <XStack pe="auto" width="100%" maw={1120} pos="relative">
           <XStack
-            className={`ease-out all ms200 ${
-              isScrolled ? 'blur-medium hover-highlights ' : ''
-            }`}
-            bbc="$borderColor"
-            py="$1"
-            y={3}
+            className={`ease-out all ms300`}
+            py="$1.5"
+            y={0}
             ov="hidden"
             contain="paint"
             width="100%"
-            boc="transparent"
+            bc="transparent"
             br="$10"
             $sm={{
               br: 0,
@@ -85,13 +76,35 @@ export function Header(props: HeaderProps) {
             }}
             {...(isScrolled && {
               $gtSm: {
-                py: '$2',
-                y: 5,
-                boc: '$borderColor',
+                y: 6,
+              },
+            })}
+            {...(props.hasBanner && {
+              $gtSm: {
+                y: isScrolled ? 6 : 35,
               },
             })}
           >
-            <YStack o={isScrolled ? 0.75 : 0} fullscreen bc="$background" />
+            <YStack
+              pos="absolute"
+              inset={0}
+              className={'ease-out all ms100'}
+              style={{
+                ...(isScrolled && {
+                  backdropFilter: `blur(16px)`,
+                  WebkitBackdropFilter: `blur(16px)`,
+                }),
+              }}
+            />
+            <YStack
+              o={isScrolled ? 0.6 : 0}
+              className={`ease-out all ms300`}
+              fullscreen
+              bg="$color2"
+              $theme-dark={{
+                bg: '$color7',
+              }}
+            />
             <ContainerLarge>
               <ThemeTint>
                 <HeaderContents floating {...props} />
@@ -100,7 +113,7 @@ export function Header(props: HeaderProps) {
           </XStack>
           {/* do shadow separate so we can contain paint because its causing perf issues */}
           <XStack
-            className={`ease-out all ms200`}
+            className={`ease-in-out all ms200`}
             zi={-1}
             br="$10"
             fullscreen
@@ -109,8 +122,7 @@ export function Header(props: HeaderProps) {
                 py: '$2',
                 y: 5,
                 // elevation: isStudio ? '$0.5' : '$3',
-                elevation: '$3',
-                boc: '$borderColor',
+                elevation: '$10',
               },
             })}
           />
@@ -121,14 +133,13 @@ export function Header(props: HeaderProps) {
   )
 }
 
-const tooltipDelay = { open: 500, close: 150 }
+const tooltipDelay = { open: 0, close: 150 }
 
 export const HeaderContents = React.memo((props: HeaderProps) => {
   const router = useRouter()
   const isHome = router.pathname === '/'
-  const isTakeout = router.pathname === '/takeout'
-  const { setNextTint } = useTint()
-  const userSwr = useUser()
+  const tint = useTint()
+  // const isTakeout = router.pathname === '/takeout'
 
   return (
     <XStack
@@ -137,50 +148,59 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
       tag="header"
       jc="space-between"
       pos="relative"
-      py={props.floating ? 0 : '$2'}
+      py={props.minimal ? '$4' : props.floating ? 0 : '$2'}
       zi={50000}
     >
-      <XStack ai="center" gap="$4">
-        {isHome ? (
-          <YStack my={-20} onPress={setNextTint} px="$3">
-            <TamaguiLogo downscale={props.floating ? 2 : 1.5} />
-          </YStack>
-        ) : (
+      {!props.minimal && (
+        <XStack ai="center" gap="$4">
           <NextLink href="/">
-            <YStack tag="a" px="$3" cur="pointer" my={-20}>
+            <YStack
+              tag="a"
+              px="$3"
+              cur="pointer"
+              my={-20}
+              {...(isHome && {
+                onPress(e) {
+                  e.preventDefault()
+                  tint.setNextTint()
+                },
+              })}
+            >
               <TamaguiLogo downscale={props.floating ? 2 : 1.5} />
             </YStack>
           </NextLink>
-        )}
 
-        <TooltipGroup delay={tooltipDelay}>
-          <XGroup boc="$color2" bw={1} mah={32} bc="transparent" ai="center" size="$3">
-            {!isTakeout && (
+          <TooltipGroup delay={tooltipDelay}>
+            <XGroup mah={32} bc="transparent" ai="center" size="$4">
               <XGroup.Item>
                 <ThemeToggle borderWidth={0} chromeless />
               </XGroup.Item>
-            )}
-            <XGroup.Item>
-              <ColorToggleButton borderWidth={0} chromeless />
-            </XGroup.Item>
-            <XGroup.Item>
-              <SeasonToggleButton borderWidth={0} chromeless />
-            </XGroup.Item>
-          </XGroup>
-        </TooltipGroup>
+              <XGroup.Item>
+                <SeasonToggleButton borderWidth={0} chromeless />
+              </XGroup.Item>
+            </XGroup>
+          </TooltipGroup>
 
-        <SearchButton
-          size="$2"
-          br="$10"
-          elevation="$1"
-          shadowRadius={6}
-          shadowOpacity={0.0025}
-        />
+          <SearchButton size="$2" br="$10" elevation="$0.5" />
 
-        <YStack $md={{ display: 'none' }}>
-          <SponsorButton tiny />
-        </YStack>
-      </XStack>
+          <YStack $md={{ display: 'none' }}>
+            <NextLink
+              legacyBehavior={false}
+              target="_blank"
+              href="https://github.com/tamagui/tamagui"
+            >
+              <TooltipSimple delay={0} restMs={25} label="Github">
+                <YStack p="$2" opacity={0.9} hoverStyle={{ opacity: 1 }}>
+                  <VisuallyHidden>
+                    <Text>Github</Text>
+                  </VisuallyHidden>
+                  <GithubIcon width={26} />
+                </YStack>
+              </TooltipSimple>
+            </NextLink>
+          </YStack>
+        </XStack>
+      )}
 
       <XStack
         position="absolute"
@@ -206,57 +226,15 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
       </XStack>
 
       {/*  prevent layout shift */}
-      <XStack
-        h={40}
-        jc="flex-end"
-        miw={160}
-        $xs={{ miw: 80 }}
-        pointerEvents="auto"
-        tag="nav"
-      >
-        <XStack ai="center" gap="$2">
-          <HeaderLinks isHeader {...props} />
+      {!props.minimal && (
+        <XStack h={40} jc="flex-end" pointerEvents="auto" tag="nav">
+          <XStack ai="center" gap="$2">
+            <HeaderLinks isHeader {...props} />
 
-          {userSwr.data?.userDetails && (
-            <XStack ai="center" gap="$2">
-              <NextLink href="/account">
-                <Avatar circular size="$2">
-                  <Avatar.Image
-                    source={{
-                      width: 28,
-                      height: 28,
-                      uri:
-                        userSwr.data.userDetails?.avatar_url ||
-                        getDefaultAvatarImage(
-                          userSwr.data?.userDetails?.full_name ||
-                            userSwr.data?.session?.user?.email ||
-                            'User'
-                        ),
-                    }}
-                  />
-                </Avatar>
-              </NextLink>
-            </XStack>
-          )}
-
-          <NextLink
-            legacyBehavior={false}
-            target="_blank"
-            href="https://github.com/tamagui/tamagui"
-          >
-            <TooltipSimple delay={0} restMs={25} label="Star on Github">
-              <YStack p="$2" opacity={0.9} hoverStyle={{ opacity: 1 }}>
-                <VisuallyHidden>
-                  <Text>Github</Text>
-                </VisuallyHidden>
-                <GithubIcon width={23} />
-              </YStack>
-            </TooltipSimple>
-          </NextLink>
-
-          <HeaderMenu />
+            <HeaderMenu />
+          </XStack>
         </XStack>
-      </XStack>
+      )}
     </XStack>
   )
 })

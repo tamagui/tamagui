@@ -6,6 +6,7 @@ export type Frontmatter = {
   version?: string
   by?: string
   publishedAt?: string
+  draft?: boolean
   relatedIds?: string[]
   type?: 'changelog' | string
   readingTime?: { text: string; minutes: number; time: number; words: number }

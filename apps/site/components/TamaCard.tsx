@@ -60,7 +60,7 @@ export const TamaCard = ({
       >
         {/* glow */}
         {/* {glow.element} */}
-        <XStack bc="$backgroundStrong" f={1} p="$5" m={1} br="$6" space>
+        <XStack bg="$background" f={1} p="$5" m={1} br="$6" space>
           <YStack f={1} space="$2" ai="center">
             <H3
               als="flex-start"

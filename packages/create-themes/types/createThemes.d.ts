@@ -1,4 +1,4 @@
-import { Variable } from '@tamagui/core';
+import type { Variable } from '@tamagui/core';
 type AltKeys = 1 | 2;
 type Colors = {
     [key: string]: {

@@ -1,55 +1,86 @@
+import { getStore, useStoreSelector } from '@tamagui/use-store'
 import { NextLink } from 'components/NextLink'
-import * as React from 'react'
+import { createElement, useRef } from 'react'
 import { SizableText, Spacer, XStack, YStack } from 'tamagui'
 
-import { NavItemProps } from './DocsPage'
+import type { NavItemProps } from './DocsPage'
 import { ExternalIcon } from './ExternalIcon'
+
+export class DocsItemsStore {
+  index = 0
+}
 
 export const DocsRouteNavItem = function DocsRouteNavItem({
   children,
   active,
   href,
+  icon,
   pending,
-  ...props
-}: NavItemProps) {
-  const isExternal = href.startsWith('http')
+  inMenu,
+  index,
+  external,
+}: NavItemProps & {
+  icon?: any
+  inMenu?: boolean
+  index: number
+}) {
+  const isActive = useStoreSelector(DocsItemsStore, (x) => x.index === index)
+  const isExternal = external || href.startsWith('http')
+  const ref = useRef<any>()
+
   return (
-    <NextLink prefetch={false} href={href}>
+    <NextLink
+      {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+      legacyBehavior={false}
+      prefetch={false}
+      href={href}
+    >
       <XStack
-        className="docs-nav-item all ease-in ms150"
-        {...props}
-        {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+        ref={ref}
+        className="docs-nav-item"
         ai="center"
         jc="flex-end"
         px="$4"
+        py="$1"
         opacity={pending ? 0.25 : 1}
         pressStyle={{
-          backgroundColor: '$background',
+          backgroundColor: '$color025',
         }}
         pointerEvents={pending ? 'none' : ('inherit' as any)}
         pos="relative"
-        $sm={{
-          py: '$1',
+        onMouseEnter={() => {
+          getStore(DocsItemsStore).index = index
         }}
+        $sm={{
+          py: '$1.5',
+        }}
+        {...(isActive && {
+          bg: 'color-mix(in srgb, var(--color8) 10%, transparent 50%)' as any,
+        })}
+        {...(inMenu && {
+          jc: 'flex-start',
+        })}
       >
-        <YStack
-          className="sidebar-indicator"
-          o={active ? 1 : 0}
-          pos="absolute"
-          t={0}
-          b={0}
-          r={0}
-          br="$2"
-          w={3}
-          bc={active ? '$color' : '$backgroundHover'}
-        />
+        {!inMenu && (
+          <YStack
+            className="sidebar-indicator"
+            o={active ? 1 : 0}
+            pos="absolute"
+            t={0}
+            b={0}
+            r={0}
+            br="$2"
+            w={3}
+            bg={active ? '$color' : '$backgroundHover'}
+          />
+        )}
         <SizableText
           size="$4"
           lh="$3"
           cursor="pointer"
           userSelect="none"
           opacity={active ? 1 : 0.65}
-          ta="right"
+          ta={inMenu ? 'left' : 'right'}
           w="100%"
           hoverStyle={{
             o: 0.85,
@@ -60,6 +91,14 @@ export const DocsRouteNavItem = function DocsRouteNavItem({
           })}
         >
           {children}
+          {!!icon && (
+            <>
+              &nbsp;
+              {createElement(icon, {
+                size: 12,
+              })}
+            </>
+          )}
         </SizableText>
         {isExternal && (
           <XStack opacity={0.5}>
@@ -75,7 +114,7 @@ export const DocsRouteNavItem = function DocsRouteNavItem({
               size="$1"
               px="$2"
               py="$1"
-              bc="$background"
+              bg="$background"
               borderRadius="$3"
             >
               WIP

@@ -1,3 +1,800 @@
+import type { Variable } from '@tamagui/web';
+export { masks } from './masks';
+export declare const palettes: {
+    dark_blue: string[];
+    dark_gray: string[];
+    dark_green: string[];
+    dark_orange: string[];
+    dark_pink: string[];
+    dark_purple: string[];
+    dark_red: string[];
+    dark_yellow: string[];
+    light_blue: string[];
+    light_gray: string[];
+    light_green: string[];
+    light_orange: string[];
+    light_pink: string[];
+    light_purple: string[];
+    light_red: string[];
+    light_yellow: string[];
+    light: string[];
+    dark: string[];
+};
+export declare const templates: {
+    base: {
+        background: number;
+        backgroundHover: number;
+        backgroundPress: number;
+        backgroundFocus: number;
+        backgroundStrong: number;
+        backgroundTransparent: number;
+        color: number;
+        colorHover: number;
+        colorPress: number;
+        colorFocus: number;
+        colorTransparent: number;
+        borderColor: number;
+        borderColorHover: number;
+        borderColorFocus: number;
+        borderColorPress: number;
+        placeholderColor: number;
+        outlineColor: number;
+        color1: number;
+        color2: number;
+        color3: number;
+        color4: number;
+        color5: number;
+        color6: number;
+        color7: number;
+        color8: number;
+        color9: number;
+        color10: number;
+        color11: number;
+        color12: number;
+    };
+    colorLight: {
+        borderColor: number;
+        borderColorHover: number;
+        borderColorFocus: number;
+        borderColorPress: number;
+        background: number;
+        backgroundHover: number;
+        backgroundPress: number;
+        backgroundFocus: number;
+        backgroundStrong: number;
+        backgroundTransparent: number;
+        color: number;
+        colorHover: number;
+        colorPress: number;
+        colorFocus: number;
+        colorTransparent: number;
+        placeholderColor: number;
+        outlineColor: number;
+        color1: number;
+        color2: number;
+        color3: number;
+        color4: number;
+        color5: number;
+        color6: number;
+        color7: number;
+        color8: number;
+        color9: number;
+        color10: number;
+        color11: number;
+        color12: number;
+    };
+};
+export declare const maskOptions: {
+    component: {
+        override: {
+            color: number;
+            colorHover: number;
+            colorFocus: number;
+            colorPress: number;
+            shadowColor: number;
+            shadowColorHover: number;
+            shadowColorPress: number;
+            shadowColorFocus: number;
+        };
+        skip: {
+            color1: number;
+            color2: number;
+            color3: number;
+            color4: number;
+            color5: number;
+            color6: number;
+            color7: number;
+            color8: number;
+            color9: number;
+            color10: number;
+            color11: number;
+            color12: number;
+            shadowColor: number;
+            shadowColorHover: number;
+            shadowColorPress: number;
+            shadowColorFocus: number;
+        };
+        palette?: import("@tamagui/theme-builder").CreateThemePalette | undefined;
+        overrideStrategy?: "shift" | "swap" | undefined;
+        overrideSwap?: Partial<import("@tamagui/theme-builder").ThemeMask> | undefined;
+        overrideShift?: Partial<import("@tamagui/theme-builder").ThemeMask> | undefined;
+        strength?: number | undefined;
+        max?: number | undefined;
+        min?: number | undefined;
+        parentName?: string | undefined;
+    };
+    alt: {
+        palette?: import("@tamagui/theme-builder").CreateThemePalette | undefined;
+        override?: Partial<import("@tamagui/theme-builder").ThemeMask> | undefined;
+        overrideStrategy?: "shift" | "swap" | undefined;
+        overrideSwap?: Partial<import("@tamagui/theme-builder").ThemeMask> | undefined;
+        overrideShift?: Partial<import("@tamagui/theme-builder").ThemeMask> | undefined;
+        skip?: Partial<import("@tamagui/theme-builder").ThemeMask> | undefined;
+        strength?: number | undefined;
+        max?: number | undefined;
+        min?: number | undefined;
+        parentName?: string | undefined;
+    };
+    button: {
+        override: {
+            borderColor: string;
+            borderColorHover: string;
+            color: number;
+            colorHover: number;
+            colorFocus: number;
+            colorPress: number;
+            shadowColor: number;
+            shadowColorHover: number;
+            shadowColorPress: number;
+            shadowColorFocus: number;
+        };
+        skip: {
+            color1: number;
+            color2: number;
+            color3: number;
+            color4: number;
+            color5: number;
+            color6: number;
+            color7: number;
+            color8: number;
+            color9: number;
+            color10: number;
+            color11: number;
+            color12: number;
+            shadowColor: number;
+            shadowColorHover: number;
+            shadowColorPress: number;
+            shadowColorFocus: number;
+        };
+        palette?: import("@tamagui/theme-builder").CreateThemePalette | undefined;
+        overrideStrategy?: "shift" | "swap" | undefined;
+        overrideSwap?: Partial<import("@tamagui/theme-builder").ThemeMask> | undefined;
+        overrideShift?: Partial<import("@tamagui/theme-builder").ThemeMask> | undefined;
+        strength?: number | undefined;
+        max?: number | undefined;
+        min?: number | undefined;
+        parentName?: string | undefined;
+    };
+};
+export declare const tokens: {
+    color: {
+        yellow1Light: Variable<string>;
+        yellow2Light: Variable<string>;
+        yellow3Light: Variable<string>;
+        yellow4Light: Variable<string>;
+        yellow5Light: Variable<string>;
+        yellow6Light: Variable<string>;
+        yellow7Light: Variable<string>;
+        yellow8Light: Variable<string>;
+        yellow9Light: Variable<string>;
+        yellow10Light: Variable<string>;
+        yellow11Light: Variable<string>;
+        yellow12Light: Variable<string>;
+        red1Light: Variable<string>;
+        red2Light: Variable<string>;
+        red3Light: Variable<string>;
+        red4Light: Variable<string>;
+        red5Light: Variable<string>;
+        red6Light: Variable<string>;
+        red7Light: Variable<string>;
+        red8Light: Variable<string>;
+        red9Light: Variable<string>;
+        red10Light: Variable<string>;
+        red11Light: Variable<string>;
+        red12Light: Variable<string>;
+        purple1Light: Variable<string>;
+        purple2Light: Variable<string>;
+        purple3Light: Variable<string>;
+        purple4Light: Variable<string>;
+        purple5Light: Variable<string>;
+        purple6Light: Variable<string>;
+        purple7Light: Variable<string>;
+        purple8Light: Variable<string>;
+        purple9Light: Variable<string>;
+        purple10Light: Variable<string>;
+        purple11Light: Variable<string>;
+        purple12Light: Variable<string>;
+        pink1Light: Variable<string>;
+        pink2Light: Variable<string>;
+        pink3Light: Variable<string>;
+        pink4Light: Variable<string>;
+        pink5Light: Variable<string>;
+        pink6Light: Variable<string>;
+        pink7Light: Variable<string>;
+        pink8Light: Variable<string>;
+        pink9Light: Variable<string>;
+        pink10Light: Variable<string>;
+        pink11Light: Variable<string>;
+        pink12Light: Variable<string>;
+        orange1Light: Variable<string>;
+        orange2Light: Variable<string>;
+        orange3Light: Variable<string>;
+        orange4Light: Variable<string>;
+        orange5Light: Variable<string>;
+        orange6Light: Variable<string>;
+        orange7Light: Variable<string>;
+        orange8Light: Variable<string>;
+        orange9Light: Variable<string>;
+        orange10Light: Variable<string>;
+        orange11Light: Variable<string>;
+        orange12Light: Variable<string>;
+        green1Light: Variable<string>;
+        green2Light: Variable<string>;
+        green3Light: Variable<string>;
+        green4Light: Variable<string>;
+        green5Light: Variable<string>;
+        green6Light: Variable<string>;
+        green7Light: Variable<string>;
+        green8Light: Variable<string>;
+        green9Light: Variable<string>;
+        green10Light: Variable<string>;
+        green11Light: Variable<string>;
+        green12Light: Variable<string>;
+        gray1Light: Variable<string>;
+        gray2Light: Variable<string>;
+        gray3Light: Variable<string>;
+        gray4Light: Variable<string>;
+        gray5Light: Variable<string>;
+        gray6Light: Variable<string>;
+        gray7Light: Variable<string>;
+        gray8Light: Variable<string>;
+        gray9Light: Variable<string>;
+        gray10Light: Variable<string>;
+        gray11Light: Variable<string>;
+        gray12Light: Variable<string>;
+        blue1Light: Variable<string>;
+        blue2Light: Variable<string>;
+        blue3Light: Variable<string>;
+        blue4Light: Variable<string>;
+        blue5Light: Variable<string>;
+        blue6Light: Variable<string>;
+        blue7Light: Variable<string>;
+        blue8Light: Variable<string>;
+        blue9Light: Variable<string>;
+        blue10Light: Variable<string>;
+        blue11Light: Variable<string>;
+        blue12Light: Variable<string>;
+        yellow1Dark: Variable<string>;
+        yellow2Dark: Variable<string>;
+        yellow3Dark: Variable<string>;
+        yellow4Dark: Variable<string>;
+        yellow5Dark: Variable<string>;
+        yellow6Dark: Variable<string>;
+        yellow7Dark: Variable<string>;
+        yellow8Dark: Variable<string>;
+        yellow9Dark: Variable<string>;
+        yellow10Dark: Variable<string>;
+        yellow11Dark: Variable<string>;
+        yellow12Dark: Variable<string>;
+        red1Dark: Variable<string>;
+        red2Dark: Variable<string>;
+        red3Dark: Variable<string>;
+        red4Dark: Variable<string>;
+        red5Dark: Variable<string>;
+        red6Dark: Variable<string>;
+        red7Dark: Variable<string>;
+        red8Dark: Variable<string>;
+        red9Dark: Variable<string>;
+        red10Dark: Variable<string>;
+        red11Dark: Variable<string>;
+        red12Dark: Variable<string>;
+        purple1Dark: Variable<string>;
+        purple2Dark: Variable<string>;
+        purple3Dark: Variable<string>;
+        purple4Dark: Variable<string>;
+        purple5Dark: Variable<string>;
+        purple6Dark: Variable<string>;
+        purple7Dark: Variable<string>;
+        purple8Dark: Variable<string>;
+        purple9Dark: Variable<string>;
+        purple10Dark: Variable<string>;
+        purple11Dark: Variable<string>;
+        purple12Dark: Variable<string>;
+        pink1Dark: Variable<string>;
+        pink2Dark: Variable<string>;
+        pink3Dark: Variable<string>;
+        pink4Dark: Variable<string>;
+        pink5Dark: Variable<string>;
+        pink6Dark: Variable<string>;
+        pink7Dark: Variable<string>;
+        pink8Dark: Variable<string>;
+        pink9Dark: Variable<string>;
+        pink10Dark: Variable<string>;
+        pink11Dark: Variable<string>;
+        pink12Dark: Variable<string>;
+        orange1Dark: Variable<string>;
+        orange2Dark: Variable<string>;
+        orange3Dark: Variable<string>;
+        orange4Dark: Variable<string>;
+        orange5Dark: Variable<string>;
+        orange6Dark: Variable<string>;
+        orange7Dark: Variable<string>;
+        orange8Dark: Variable<string>;
+        orange9Dark: Variable<string>;
+        orange10Dark: Variable<string>;
+        orange11Dark: Variable<string>;
+        orange12Dark: Variable<string>;
+        green1Dark: Variable<string>;
+        green2Dark: Variable<string>;
+        green3Dark: Variable<string>;
+        green4Dark: Variable<string>;
+        green5Dark: Variable<string>;
+        green6Dark: Variable<string>;
+        green7Dark: Variable<string>;
+        green8Dark: Variable<string>;
+        green9Dark: Variable<string>;
+        green10Dark: Variable<string>;
+        green11Dark: Variable<string>;
+        green12Dark: Variable<string>;
+        gray1Dark: Variable<string>;
+        gray2Dark: Variable<string>;
+        gray3Dark: Variable<string>;
+        gray4Dark: Variable<string>;
+        gray5Dark: Variable<string>;
+        gray6Dark: Variable<string>;
+        gray7Dark: Variable<string>;
+        gray8Dark: Variable<string>;
+        gray9Dark: Variable<string>;
+        gray10Dark: Variable<string>;
+        gray11Dark: Variable<string>;
+        gray12Dark: Variable<string>;
+        blue1Dark: Variable<string>;
+        blue2Dark: Variable<string>;
+        blue3Dark: Variable<string>;
+        blue4Dark: Variable<string>;
+        blue5Dark: Variable<string>;
+        blue6Dark: Variable<string>;
+        blue7Dark: Variable<string>;
+        blue8Dark: Variable<string>;
+        blue9Dark: Variable<string>;
+        blue10Dark: Variable<string>;
+        blue11Dark: Variable<string>;
+        blue12Dark: Variable<string>;
+    };
+    space: {
+        0: Variable<number>;
+        0.25: Variable<number>;
+        0.5: Variable<number>;
+        0.75: Variable<number>;
+        1: Variable<number>;
+        1.5: Variable<number>;
+        2: Variable<number>;
+        2.5: Variable<number>;
+        3: Variable<number>;
+        3.5: Variable<number>;
+        4: Variable<number>;
+        true: Variable<number>;
+        4.5: Variable<number>;
+        5: Variable<number>;
+        6: Variable<number>;
+        7: Variable<number>;
+        8: Variable<number>;
+        9: Variable<number>;
+        10: Variable<number>;
+        11: Variable<number>;
+        12: Variable<number>;
+        13: Variable<number>;
+        14: Variable<number>;
+        15: Variable<number>;
+        16: Variable<number>;
+        17: Variable<number>;
+        18: Variable<number>;
+        19: Variable<number>;
+        20: Variable<number>;
+        [-0.25]: Variable<number>;
+        [-0.5]: Variable<number>;
+        [-0.75]: Variable<number>;
+        [-1]: Variable<number>;
+        [-1.5]: Variable<number>;
+        [-2]: Variable<number>;
+        [-2.5]: Variable<number>;
+        [-3]: Variable<number>;
+        [-3.5]: Variable<number>;
+        [-4]: Variable<number>;
+        "-true": Variable<number>;
+        [-4.5]: Variable<number>;
+        [-5]: Variable<number>;
+        [-6]: Variable<number>;
+        [-7]: Variable<number>;
+        [-8]: Variable<number>;
+        [-9]: Variable<number>;
+        [-10]: Variable<number>;
+        [-11]: Variable<number>;
+        [-12]: Variable<number>;
+        [-13]: Variable<number>;
+        [-14]: Variable<number>;
+        [-15]: Variable<number>;
+        [-16]: Variable<number>;
+        [-17]: Variable<number>;
+        [-18]: Variable<number>;
+        [-19]: Variable<number>;
+        [-20]: Variable<number>;
+    };
+    size: {
+        0: Variable<number>;
+        0.25: Variable<number>;
+        0.5: Variable<number>;
+        0.75: Variable<number>;
+        1: Variable<number>;
+        1.5: Variable<number>;
+        2: Variable<number>;
+        2.5: Variable<number>;
+        3: Variable<number>;
+        3.5: Variable<number>;
+        4: Variable<number>;
+        true: Variable<number>;
+        4.5: Variable<number>;
+        5: Variable<number>;
+        6: Variable<number>;
+        7: Variable<number>;
+        8: Variable<number>;
+        9: Variable<number>;
+        10: Variable<number>;
+        11: Variable<number>;
+        12: Variable<number>;
+        13: Variable<number>;
+        14: Variable<number>;
+        15: Variable<number>;
+        16: Variable<number>;
+        17: Variable<number>;
+        18: Variable<number>;
+        19: Variable<number>;
+        20: Variable<number>;
+    };
+    radius: {
+        0: Variable<number>;
+        2: Variable<number>;
+        3: Variable<number>;
+        1: Variable<number>;
+        4: Variable<number>;
+        8: Variable<number>;
+        true: Variable<number>;
+        12: Variable<number>;
+        5: Variable<number>;
+        7: Variable<number>;
+        9: Variable<number>;
+        10: Variable<number>;
+        6: Variable<number>;
+        11: Variable<number>;
+    };
+    zIndex: {
+        0: Variable<number>;
+        2: Variable<number>;
+        3: Variable<number>;
+        1: Variable<number>;
+        4: Variable<number>;
+        5: Variable<number>;
+    };
+} & Omit<{
+    color: {
+        yellow1Light: Variable<string | Variable<string>>;
+        yellow2Light: Variable<string | Variable<string>>;
+        yellow3Light: Variable<string | Variable<string>>;
+        yellow4Light: Variable<string | Variable<string>>;
+        yellow5Light: Variable<string | Variable<string>>;
+        yellow6Light: Variable<string | Variable<string>>;
+        yellow7Light: Variable<string | Variable<string>>;
+        yellow8Light: Variable<string | Variable<string>>;
+        yellow9Light: Variable<string | Variable<string>>;
+        yellow10Light: Variable<string | Variable<string>>;
+        yellow11Light: Variable<string | Variable<string>>;
+        yellow12Light: Variable<string | Variable<string>>;
+        red1Light: Variable<string | Variable<string>>;
+        red2Light: Variable<string | Variable<string>>;
+        red3Light: Variable<string | Variable<string>>;
+        red4Light: Variable<string | Variable<string>>;
+        red5Light: Variable<string | Variable<string>>;
+        red6Light: Variable<string | Variable<string>>;
+        red7Light: Variable<string | Variable<string>>;
+        red8Light: Variable<string | Variable<string>>;
+        red9Light: Variable<string | Variable<string>>;
+        red10Light: Variable<string | Variable<string>>;
+        red11Light: Variable<string | Variable<string>>;
+        red12Light: Variable<string | Variable<string>>;
+        purple1Light: Variable<string | Variable<string>>;
+        purple2Light: Variable<string | Variable<string>>;
+        purple3Light: Variable<string | Variable<string>>;
+        purple4Light: Variable<string | Variable<string>>;
+        purple5Light: Variable<string | Variable<string>>;
+        purple6Light: Variable<string | Variable<string>>;
+        purple7Light: Variable<string | Variable<string>>;
+        purple8Light: Variable<string | Variable<string>>;
+        purple9Light: Variable<string | Variable<string>>;
+        purple10Light: Variable<string | Variable<string>>;
+        purple11Light: Variable<string | Variable<string>>;
+        purple12Light: Variable<string | Variable<string>>;
+        pink1Light: Variable<string | Variable<string>>;
+        pink2Light: Variable<string | Variable<string>>;
+        pink3Light: Variable<string | Variable<string>>;
+        pink4Light: Variable<string | Variable<string>>;
+        pink5Light: Variable<string | Variable<string>>;
+        pink6Light: Variable<string | Variable<string>>;
+        pink7Light: Variable<string | Variable<string>>;
+        pink8Light: Variable<string | Variable<string>>;
+        pink9Light: Variable<string | Variable<string>>;
+        pink10Light: Variable<string | Variable<string>>;
+        pink11Light: Variable<string | Variable<string>>;
+        pink12Light: Variable<string | Variable<string>>;
+        orange1Light: Variable<string | Variable<string>>;
+        orange2Light: Variable<string | Variable<string>>;
+        orange3Light: Variable<string | Variable<string>>;
+        orange4Light: Variable<string | Variable<string>>;
+        orange5Light: Variable<string | Variable<string>>;
+        orange6Light: Variable<string | Variable<string>>;
+        orange7Light: Variable<string | Variable<string>>;
+        orange8Light: Variable<string | Variable<string>>;
+        orange9Light: Variable<string | Variable<string>>;
+        orange10Light: Variable<string | Variable<string>>;
+        orange11Light: Variable<string | Variable<string>>;
+        orange12Light: Variable<string | Variable<string>>;
+        green1Light: Variable<string | Variable<string>>;
+        green2Light: Variable<string | Variable<string>>;
+        green3Light: Variable<string | Variable<string>>;
+        green4Light: Variable<string | Variable<string>>;
+        green5Light: Variable<string | Variable<string>>;
+        green6Light: Variable<string | Variable<string>>;
+        green7Light: Variable<string | Variable<string>>;
+        green8Light: Variable<string | Variable<string>>;
+        green9Light: Variable<string | Variable<string>>;
+        green10Light: Variable<string | Variable<string>>;
+        green11Light: Variable<string | Variable<string>>;
+        green12Light: Variable<string | Variable<string>>;
+        gray1Light: Variable<string | Variable<string>>;
+        gray2Light: Variable<string | Variable<string>>;
+        gray3Light: Variable<string | Variable<string>>;
+        gray4Light: Variable<string | Variable<string>>;
+        gray5Light: Variable<string | Variable<string>>;
+        gray6Light: Variable<string | Variable<string>>;
+        gray7Light: Variable<string | Variable<string>>;
+        gray8Light: Variable<string | Variable<string>>;
+        gray9Light: Variable<string | Variable<string>>;
+        gray10Light: Variable<string | Variable<string>>;
+        gray11Light: Variable<string | Variable<string>>;
+        gray12Light: Variable<string | Variable<string>>;
+        blue1Light: Variable<string | Variable<string>>;
+        blue2Light: Variable<string | Variable<string>>;
+        blue3Light: Variable<string | Variable<string>>;
+        blue4Light: Variable<string | Variable<string>>;
+        blue5Light: Variable<string | Variable<string>>;
+        blue6Light: Variable<string | Variable<string>>;
+        blue7Light: Variable<string | Variable<string>>;
+        blue8Light: Variable<string | Variable<string>>;
+        blue9Light: Variable<string | Variable<string>>;
+        blue10Light: Variable<string | Variable<string>>;
+        blue11Light: Variable<string | Variable<string>>;
+        blue12Light: Variable<string | Variable<string>>;
+        yellow1Dark: Variable<string | Variable<string>>;
+        yellow2Dark: Variable<string | Variable<string>>;
+        yellow3Dark: Variable<string | Variable<string>>;
+        yellow4Dark: Variable<string | Variable<string>>;
+        yellow5Dark: Variable<string | Variable<string>>;
+        yellow6Dark: Variable<string | Variable<string>>;
+        yellow7Dark: Variable<string | Variable<string>>;
+        yellow8Dark: Variable<string | Variable<string>>;
+        yellow9Dark: Variable<string | Variable<string>>;
+        yellow10Dark: Variable<string | Variable<string>>;
+        yellow11Dark: Variable<string | Variable<string>>;
+        yellow12Dark: Variable<string | Variable<string>>;
+        red1Dark: Variable<string | Variable<string>>;
+        red2Dark: Variable<string | Variable<string>>;
+        red3Dark: Variable<string | Variable<string>>;
+        red4Dark: Variable<string | Variable<string>>;
+        red5Dark: Variable<string | Variable<string>>;
+        red6Dark: Variable<string | Variable<string>>;
+        red7Dark: Variable<string | Variable<string>>;
+        red8Dark: Variable<string | Variable<string>>;
+        red9Dark: Variable<string | Variable<string>>;
+        red10Dark: Variable<string | Variable<string>>;
+        red11Dark: Variable<string | Variable<string>>;
+        red12Dark: Variable<string | Variable<string>>;
+        purple1Dark: Variable<string | Variable<string>>;
+        purple2Dark: Variable<string | Variable<string>>;
+        purple3Dark: Variable<string | Variable<string>>;
+        purple4Dark: Variable<string | Variable<string>>;
+        purple5Dark: Variable<string | Variable<string>>;
+        purple6Dark: Variable<string | Variable<string>>;
+        purple7Dark: Variable<string | Variable<string>>;
+        purple8Dark: Variable<string | Variable<string>>;
+        purple9Dark: Variable<string | Variable<string>>;
+        purple10Dark: Variable<string | Variable<string>>;
+        purple11Dark: Variable<string | Variable<string>>;
+        purple12Dark: Variable<string | Variable<string>>;
+        pink1Dark: Variable<string | Variable<string>>;
+        pink2Dark: Variable<string | Variable<string>>;
+        pink3Dark: Variable<string | Variable<string>>;
+        pink4Dark: Variable<string | Variable<string>>;
+        pink5Dark: Variable<string | Variable<string>>;
+        pink6Dark: Variable<string | Variable<string>>;
+        pink7Dark: Variable<string | Variable<string>>;
+        pink8Dark: Variable<string | Variable<string>>;
+        pink9Dark: Variable<string | Variable<string>>;
+        pink10Dark: Variable<string | Variable<string>>;
+        pink11Dark: Variable<string | Variable<string>>;
+        pink12Dark: Variable<string | Variable<string>>;
+        orange1Dark: Variable<string | Variable<string>>;
+        orange2Dark: Variable<string | Variable<string>>;
+        orange3Dark: Variable<string | Variable<string>>;
+        orange4Dark: Variable<string | Variable<string>>;
+        orange5Dark: Variable<string | Variable<string>>;
+        orange6Dark: Variable<string | Variable<string>>;
+        orange7Dark: Variable<string | Variable<string>>;
+        orange8Dark: Variable<string | Variable<string>>;
+        orange9Dark: Variable<string | Variable<string>>;
+        orange10Dark: Variable<string | Variable<string>>;
+        orange11Dark: Variable<string | Variable<string>>;
+        orange12Dark: Variable<string | Variable<string>>;
+        green1Dark: Variable<string | Variable<string>>;
+        green2Dark: Variable<string | Variable<string>>;
+        green3Dark: Variable<string | Variable<string>>;
+        green4Dark: Variable<string | Variable<string>>;
+        green5Dark: Variable<string | Variable<string>>;
+        green6Dark: Variable<string | Variable<string>>;
+        green7Dark: Variable<string | Variable<string>>;
+        green8Dark: Variable<string | Variable<string>>;
+        green9Dark: Variable<string | Variable<string>>;
+        green10Dark: Variable<string | Variable<string>>;
+        green11Dark: Variable<string | Variable<string>>;
+        green12Dark: Variable<string | Variable<string>>;
+        gray1Dark: Variable<string | Variable<string>>;
+        gray2Dark: Variable<string | Variable<string>>;
+        gray3Dark: Variable<string | Variable<string>>;
+        gray4Dark: Variable<string | Variable<string>>;
+        gray5Dark: Variable<string | Variable<string>>;
+        gray6Dark: Variable<string | Variable<string>>;
+        gray7Dark: Variable<string | Variable<string>>;
+        gray8Dark: Variable<string | Variable<string>>;
+        gray9Dark: Variable<string | Variable<string>>;
+        gray10Dark: Variable<string | Variable<string>>;
+        gray11Dark: Variable<string | Variable<string>>;
+        gray12Dark: Variable<string | Variable<string>>;
+        blue1Dark: Variable<string | Variable<string>>;
+        blue2Dark: Variable<string | Variable<string>>;
+        blue3Dark: Variable<string | Variable<string>>;
+        blue4Dark: Variable<string | Variable<string>>;
+        blue5Dark: Variable<string | Variable<string>>;
+        blue6Dark: Variable<string | Variable<string>>;
+        blue7Dark: Variable<string | Variable<string>>;
+        blue8Dark: Variable<string | Variable<string>>;
+        blue9Dark: Variable<string | Variable<string>>;
+        blue10Dark: Variable<string | Variable<string>>;
+        blue11Dark: Variable<string | Variable<string>>;
+        blue12Dark: Variable<string | Variable<string>>;
+    };
+    radius: {
+        0: Variable<number>;
+        2: Variable<number>;
+        3: Variable<number>;
+        1: Variable<number>;
+        4: Variable<number>;
+        8: Variable<number>;
+        true: Variable<number>;
+        12: Variable<number>;
+        5: Variable<number>;
+        7: Variable<number>;
+        9: Variable<number>;
+        10: Variable<number>;
+        6: Variable<number>;
+        11: Variable<number>;
+    };
+    zIndex: {
+        0: Variable<number>;
+        2: Variable<number>;
+        3: Variable<number>;
+        1: Variable<number>;
+        4: Variable<number>;
+        5: Variable<number>;
+    };
+    space: {
+        0: Variable<number>;
+        0.25: Variable<number>;
+        0.5: Variable<number>;
+        0.75: Variable<number>;
+        1: Variable<number>;
+        1.5: Variable<number>;
+        2: Variable<number>;
+        2.5: Variable<number>;
+        3: Variable<number>;
+        3.5: Variable<number>;
+        4: Variable<number>;
+        true: Variable<number>;
+        4.5: Variable<number>;
+        5: Variable<number>;
+        6: Variable<number>;
+        7: Variable<number>;
+        8: Variable<number>;
+        9: Variable<number>;
+        10: Variable<number>;
+        11: Variable<number>;
+        12: Variable<number>;
+        13: Variable<number>;
+        14: Variable<number>;
+        15: Variable<number>;
+        16: Variable<number>;
+        17: Variable<number>;
+        18: Variable<number>;
+        19: Variable<number>;
+        20: Variable<number>;
+        [-0.25]: Variable<number>;
+        [-0.5]: Variable<number>;
+        [-0.75]: Variable<number>;
+        [-1]: Variable<number>;
+        [-1.5]: Variable<number>;
+        [-2]: Variable<number>;
+        [-2.5]: Variable<number>;
+        [-3]: Variable<number>;
+        [-3.5]: Variable<number>;
+        [-4]: Variable<number>;
+        "-true": Variable<number>;
+        [-4.5]: Variable<number>;
+        [-5]: Variable<number>;
+        [-6]: Variable<number>;
+        [-7]: Variable<number>;
+        [-8]: Variable<number>;
+        [-9]: Variable<number>;
+        [-10]: Variable<number>;
+        [-11]: Variable<number>;
+        [-12]: Variable<number>;
+        [-13]: Variable<number>;
+        [-14]: Variable<number>;
+        [-15]: Variable<number>;
+        [-16]: Variable<number>;
+        [-17]: Variable<number>;
+        [-18]: Variable<number>;
+        [-19]: Variable<number>;
+        [-20]: Variable<number>;
+    };
+    size: {
+        0: Variable<number>;
+        0.25: Variable<number>;
+        0.5: Variable<number>;
+        0.75: Variable<number>;
+        1: Variable<number>;
+        1.5: Variable<number>;
+        2: Variable<number>;
+        2.5: Variable<number>;
+        3: Variable<number>;
+        3.5: Variable<number>;
+        4: Variable<number>;
+        true: Variable<number>;
+        4.5: Variable<number>;
+        5: Variable<number>;
+        6: Variable<number>;
+        7: Variable<number>;
+        8: Variable<number>;
+        9: Variable<number>;
+        10: Variable<number>;
+        11: Variable<number>;
+        12: Variable<number>;
+        13: Variable<number>;
+        14: Variable<number>;
+        15: Variable<number>;
+        16: Variable<number>;
+        17: Variable<number>;
+        18: Variable<number>;
+        19: Variable<number>;
+        20: Variable<number>;
+    };
+}, "color" | "space" | "size" | "radius" | "zIndex">;
 declare const nonInherited: {
     light: {
         shadowColor: string;
@@ -222,6 +1019,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -252,6 +1050,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -282,6 +1081,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -312,6 +1112,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -342,6 +1143,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -372,6 +1174,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -402,6 +1205,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -432,6 +1236,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -462,6 +1267,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -492,6 +1298,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -522,6 +1329,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -552,6 +1360,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -582,6 +1391,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -612,6 +1422,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -642,6 +1453,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -672,6 +1484,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -702,6 +1515,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -732,6 +1546,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -762,6 +1577,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -792,6 +1608,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -822,6 +1639,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -852,6 +1670,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -882,6 +1701,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -912,6 +1732,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -942,6 +1763,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -972,6 +1794,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -1002,6 +1825,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -1032,6 +1856,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -1062,6 +1887,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -1092,6 +1918,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -1122,6 +1949,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -1152,6 +1980,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -1182,6 +2011,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -1212,6 +2042,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -1242,6 +2073,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -1272,6 +2104,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -1302,6 +2135,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -1332,6 +2166,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -1362,6 +2197,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -1392,6 +2228,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -1422,6 +2259,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -1452,6 +2290,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -1482,6 +2321,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -1512,6 +2352,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -1542,6 +2383,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -1572,6 +2414,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -1602,6 +2445,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -1632,6 +2476,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -1662,6 +2507,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -1692,6 +2538,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -1722,6 +2569,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -1752,6 +2600,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -1782,6 +2631,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -1812,6 +2662,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -1842,6 +2693,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -1872,6 +2724,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -1902,6 +2755,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -1932,6 +2786,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -1962,6 +2817,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -1992,6 +2848,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -2022,6 +2879,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -2052,6 +2910,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -2082,6 +2941,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -2112,6 +2972,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -2142,6 +3003,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -2172,6 +3034,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -2202,6 +3065,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -2232,6 +3096,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -2262,6 +3127,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -2292,6 +3158,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -2322,6 +3189,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -2352,6 +3220,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -2382,6 +3251,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -2412,6 +3282,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -2442,6 +3313,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -2472,6 +3344,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -2502,6 +3375,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -2532,6 +3406,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -2562,6 +3437,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -2592,6 +3468,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -2622,6 +3499,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -2652,6 +3530,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -2682,6 +3561,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -2712,6 +3592,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -2742,6 +3623,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -2772,6 +3654,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -2802,6 +3685,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -2832,6 +3716,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -2862,6 +3747,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -2892,6 +3778,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -2922,6 +3809,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -2952,6 +3840,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -2982,6 +3871,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -3012,6 +3902,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -3042,6 +3933,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -3072,6 +3964,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -3102,6 +3995,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -3132,6 +4026,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -3162,6 +4057,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -3192,6 +4088,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -3222,6 +4119,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -3252,6 +4150,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -3282,6 +4181,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -3312,6 +4212,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -3342,6 +4243,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -3372,6 +4274,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -3402,6 +4305,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -3432,6 +4336,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -3462,6 +4367,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -3492,6 +4398,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -3522,6 +4429,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -3552,6 +4460,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -3582,6 +4491,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -3612,6 +4522,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -3642,6 +4553,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -3672,6 +4584,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -3702,6 +4615,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -3732,6 +4646,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -3762,6 +4677,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -3792,6 +4708,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -3822,6 +4739,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -3852,6 +4770,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -3882,6 +4801,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -3912,6 +4832,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -3942,6 +4863,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -3972,6 +4894,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -4002,6 +4925,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -4032,6 +4956,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -4062,6 +4987,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -4092,6 +5018,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -4122,6 +5049,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -4152,6 +5080,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -4182,6 +5111,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -4212,6 +5142,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -4242,6 +5173,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -4272,6 +5204,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -4302,6 +5235,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -4332,6 +5266,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -4362,6 +5297,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -4392,6 +5328,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -4422,6 +5359,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -4452,6 +5390,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -4482,6 +5421,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -4512,6 +5452,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -4542,6 +5483,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -4572,6 +5514,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -4602,6 +5545,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -4632,6 +5576,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -4662,6 +5607,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -4692,6 +5638,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -4722,6 +5669,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -4752,6 +5700,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -4782,6 +5731,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -4812,6 +5762,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -4842,6 +5793,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -4872,6 +5824,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -4902,6 +5855,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -4932,6 +5886,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -4962,6 +5917,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -4992,6 +5948,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -5022,6 +5979,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -5052,6 +6010,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -5082,6 +6041,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -5112,6 +6072,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -5142,6 +6103,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -5172,6 +6134,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -5202,6 +6165,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -5232,6 +6196,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -5262,6 +6227,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -5292,6 +6258,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -5322,6 +6289,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -5352,6 +6320,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -5382,6 +6351,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -5412,6 +6382,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -5442,6 +6413,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -5472,6 +6444,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -5502,6 +6475,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -5532,6 +6506,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -5562,6 +6537,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -5592,6 +6568,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -5622,6 +6599,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -5652,6 +6630,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -5682,6 +6661,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -5712,6 +6692,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -5742,6 +6723,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -5772,6 +6754,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -5802,6 +6785,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -5832,6 +6816,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -5862,6 +6847,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -5892,6 +6878,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -5922,6 +6909,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -5952,6 +6940,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -5982,6 +6971,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -6012,6 +7002,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -6042,6 +7033,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -6072,6 +7064,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -6102,6 +7095,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -6132,6 +7126,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -6162,6 +7157,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -6192,6 +7188,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -6222,6 +7219,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -6252,6 +7250,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -6282,6 +7281,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -6312,6 +7312,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -6342,6 +7343,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -6372,6 +7374,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -6402,6 +7405,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -6432,6 +7436,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -6462,6 +7467,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -6492,6 +7498,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -6522,6 +7529,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -6552,6 +7560,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -6582,6 +7591,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -6612,6 +7622,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -6642,6 +7653,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -6672,6 +7684,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -6702,6 +7715,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -6732,6 +7746,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -6762,6 +7777,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -6792,6 +7808,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -6822,6 +7839,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -6852,6 +7870,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -6882,6 +7901,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -6912,6 +7932,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -6942,6 +7963,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -6972,6 +7994,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -7002,6 +8025,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -7032,6 +8056,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -7062,6 +8087,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -7092,6 +8118,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -7122,6 +8149,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -7152,6 +8180,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -7182,6 +8211,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -7212,6 +8242,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -7242,6 +8273,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -7272,6 +8304,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -7302,6 +8335,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -7332,6 +8366,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -7362,6 +8397,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -7392,6 +8428,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -7422,6 +8459,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -7452,6 +8490,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -7482,6 +8521,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -7512,6 +8552,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -7542,6 +8583,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -7572,6 +8614,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -7602,6 +8645,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -7632,6 +8676,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -7662,6 +8707,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -7692,6 +8738,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -7722,6 +8769,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -7752,6 +8800,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -7782,6 +8831,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -7812,6 +8862,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -7842,6 +8893,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -7872,6 +8924,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -7902,6 +8955,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -7932,6 +8986,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -7962,6 +9017,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -7992,6 +9048,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -8022,6 +9079,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -8052,6 +9110,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -8082,6 +9141,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -8112,6 +9172,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -8142,6 +9203,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -8172,6 +9234,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -8202,6 +9265,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -8232,6 +9296,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -8262,6 +9327,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -8292,6 +9358,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -8322,6 +9389,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -8352,6 +9420,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -8382,6 +9451,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -8412,6 +9482,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -8442,6 +9513,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -8472,6 +9544,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -8502,6 +9575,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -8532,6 +9606,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -8562,6 +9637,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -8592,6 +9668,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -8622,6 +9699,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -8652,6 +9730,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -8682,6 +9761,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -8712,6 +9792,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -8742,6 +9823,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -8772,6 +9854,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -8802,6 +9885,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -8832,6 +9916,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -8862,6 +9947,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -8892,6 +9978,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -8922,6 +10009,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -8952,6 +10040,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -8982,6 +10071,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -9012,6 +10102,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -9042,6 +10133,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -9072,6 +10164,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -9102,6 +10195,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -9132,6 +10226,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -9162,6 +10257,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -9192,6 +10288,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -9222,6 +10319,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -9252,6 +10350,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -9282,6 +10381,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -9312,6 +10412,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -9342,6 +10443,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -9372,6 +10474,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -9402,6 +10505,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -9432,6 +10536,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -9462,6 +10567,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -9492,6 +10598,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -9522,6 +10629,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -9552,6 +10660,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -9582,6 +10691,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -9612,6 +10722,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -9642,6 +10753,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -9672,6 +10784,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -9702,6 +10815,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -9732,6 +10846,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -9762,6 +10877,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -9792,6 +10908,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -9822,6 +10939,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -9852,6 +10970,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -9882,6 +11001,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -9912,6 +11032,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -9942,6 +11063,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -9972,6 +11094,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -10002,6 +11125,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -10032,6 +11156,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -10062,6 +11187,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -10092,6 +11218,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -10122,6 +11249,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -10152,6 +11280,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -10182,6 +11311,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -10212,6 +11342,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -10242,6 +11373,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -10272,6 +11404,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -10302,6 +11435,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -10332,6 +11466,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -10362,6 +11497,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -10392,6 +11528,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -10422,6 +11559,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -10452,6 +11590,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -10482,6 +11621,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -10512,6 +11652,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -10542,6 +11683,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -10572,6 +11714,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -10602,6 +11745,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -10632,6 +11776,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -10662,6 +11807,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -10692,6 +11838,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -10722,6 +11869,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -10752,6 +11900,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -10782,6 +11931,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -10812,6 +11962,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -10842,6 +11993,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -10872,6 +12024,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -10902,6 +12055,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -10932,6 +12086,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -10962,6 +12117,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -10992,6 +12148,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -11022,6 +12179,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -11052,6 +12210,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -11082,6 +12241,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -11112,6 +12272,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -11142,6 +12303,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -11172,6 +12334,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -11202,6 +12365,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -11232,6 +12396,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -11262,6 +12427,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -11292,6 +12458,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -11322,6 +12489,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -11352,6 +12520,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -11382,6 +12551,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -11412,6 +12582,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -11442,6 +12613,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -11472,6 +12644,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -11502,6 +12675,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -11532,6 +12706,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -11562,6 +12737,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -11592,6 +12768,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -11622,6 +12799,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -11652,6 +12830,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -11682,6 +12861,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -11712,6 +12892,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -11742,6 +12923,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -11772,6 +12954,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -11802,6 +12985,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -11832,6 +13016,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -11862,6 +13047,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -11892,6 +13078,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -11922,6 +13109,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -11952,6 +13140,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -11982,6 +13171,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -12012,6 +13202,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -12042,6 +13233,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -12072,6 +13264,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -12102,6 +13295,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -12132,6 +13326,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -12162,6 +13357,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -12192,6 +13388,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -12222,6 +13419,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -12252,6 +13450,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -12282,6 +13481,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -12312,6 +13512,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -12342,6 +13543,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -12372,6 +13574,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -12402,6 +13605,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -12432,6 +13636,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -12462,6 +13667,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -12492,6 +13698,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -12522,6 +13729,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -12552,6 +13760,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -12582,6 +13791,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -12612,6 +13822,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -12642,6 +13853,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -12672,6 +13884,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -12702,6 +13915,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -12732,6 +13946,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -12762,6 +13977,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -12792,6 +14008,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -12822,6 +14039,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -12852,6 +14070,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -12882,6 +14101,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -12912,6 +14132,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -12942,6 +14163,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -12972,6 +14194,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -13002,6 +14225,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -13032,6 +14256,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -13062,6 +14287,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -13092,6 +14318,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -13122,6 +14349,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -13152,6 +14380,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -13182,6 +14411,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -13212,6 +14442,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -13242,6 +14473,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -13272,6 +14504,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -13302,6 +14535,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -13332,6 +14566,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -13362,6 +14597,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -13392,6 +14628,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -13422,6 +14659,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -13452,6 +14690,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -13482,6 +14721,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -13512,6 +14752,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -13542,6 +14783,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -13572,6 +14814,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -13602,6 +14845,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -13632,6 +14876,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -13662,6 +14907,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -13692,6 +14938,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -13722,6 +14969,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -13752,6 +15000,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -13782,6 +15031,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -13812,6 +15062,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -13842,6 +15093,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -13872,6 +15124,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -13902,6 +15155,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -13932,6 +15186,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -13962,6 +15217,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -13992,6 +15248,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -14022,6 +15279,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -14052,6 +15310,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -14082,6 +15341,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -14112,6 +15372,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -14142,6 +15403,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -14172,6 +15434,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -14202,6 +15465,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -14232,6 +15496,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -14262,6 +15527,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -14292,6 +15558,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -14322,6 +15589,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -14352,6 +15620,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -14382,6 +15651,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -14412,6 +15682,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -14442,6 +15713,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -14472,6 +15744,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -14502,6 +15775,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -14532,6 +15806,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -14562,6 +15837,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -14592,6 +15868,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -14622,6 +15899,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -14652,6 +15930,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -14682,6 +15961,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -14712,6 +15992,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -14742,6 +16023,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -14772,6 +16054,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -14802,6 +16085,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -14832,6 +16116,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -14862,6 +16147,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -14892,6 +16178,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -14922,6 +16209,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -14952,6 +16240,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -14982,6 +16271,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -15012,6 +16302,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -15042,6 +16333,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -15072,6 +16364,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -15102,6 +16395,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -15132,6 +16426,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -15162,6 +16457,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -15192,6 +16488,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -15222,6 +16519,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -15252,6 +16550,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -15282,6 +16581,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -15312,6 +16612,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -15342,6 +16643,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -15372,6 +16674,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -15402,6 +16705,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -15432,6 +16736,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -15462,6 +16767,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -15492,6 +16798,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -15522,6 +16829,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -15552,6 +16860,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -15582,6 +16891,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -15612,6 +16922,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -15642,6 +16953,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -15672,6 +16984,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -15702,6 +17015,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -15732,6 +17046,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -15762,6 +17077,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -15792,6 +17108,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -15822,6 +17139,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -15852,6 +17170,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -15882,6 +17201,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -15912,6 +17232,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -15942,6 +17263,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -15972,6 +17294,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -16002,6 +17325,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -16032,6 +17356,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -16062,6 +17387,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -16092,6 +17418,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -16122,6 +17449,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -16152,6 +17480,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -16182,6 +17511,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -16212,6 +17542,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -16242,6 +17573,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -16272,6 +17604,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -16302,6 +17635,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -16332,6 +17666,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -16362,6 +17697,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -16392,6 +17728,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -16422,6 +17759,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -16452,6 +17790,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -16482,6 +17821,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -16512,6 +17852,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -16542,6 +17883,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -16572,6 +17914,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -16602,6 +17945,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -16632,6 +17976,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -16662,6 +18007,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -16692,6 +18038,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -16722,6 +18069,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -16752,6 +18100,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -16782,6 +18131,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -16812,6 +18162,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -16842,6 +18193,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -16872,6 +18224,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -16902,6 +18255,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -16932,6 +18286,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -16962,6 +18317,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -16992,6 +18348,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -17022,6 +18379,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -17052,6 +18410,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -17082,6 +18441,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -17112,6 +18472,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -17142,6 +18503,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -17172,6 +18534,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -17202,6 +18565,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -17232,6 +18596,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -17262,6 +18627,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -17292,6 +18658,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -17322,6 +18689,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -17352,6 +18720,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -17382,6 +18751,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -17412,6 +18782,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -17442,6 +18813,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -17472,6 +18844,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -17502,6 +18875,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -17532,6 +18906,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -17562,6 +18937,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -17592,6 +18968,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -17622,6 +18999,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -17652,6 +19030,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -17682,6 +19061,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -17712,6 +19092,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -17742,6 +19123,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -17772,6 +19154,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -17802,6 +19185,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -17832,6 +19216,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -17862,6 +19247,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -17892,6 +19278,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -17922,6 +19309,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -17952,6 +19340,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -17982,6 +19371,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -18012,6 +19402,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -18042,6 +19433,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -18072,6 +19464,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -18102,6 +19495,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -18132,6 +19526,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -18162,6 +19557,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -18192,6 +19588,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -18222,6 +19619,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -18252,6 +19650,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -18282,6 +19681,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -18312,6 +19712,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -18342,6 +19743,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -18372,6 +19774,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -18402,6 +19805,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -18432,6 +19836,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -18462,6 +19867,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -18492,6 +19898,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -18522,6 +19929,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -18552,6 +19960,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -18582,6 +19991,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -18612,6 +20022,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -18642,6 +20053,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -18672,6 +20084,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -18702,6 +20115,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -18732,6 +20146,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -18762,6 +20177,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -18792,6 +20208,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -18822,6 +20239,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -18852,6 +20270,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -18882,6 +20301,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -18912,6 +20332,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -18942,6 +20363,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -18972,6 +20394,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -19002,6 +20425,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -19032,6 +20456,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -19062,6 +20487,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -19092,6 +20518,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -19122,6 +20549,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -19152,6 +20580,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -19182,6 +20611,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -19212,6 +20642,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -19242,6 +20673,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -19272,6 +20704,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -19302,6 +20735,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -19332,6 +20766,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -19362,6 +20797,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -19392,6 +20828,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -19422,6 +20859,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -19452,6 +20890,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -19482,6 +20921,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -19512,6 +20952,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -19542,6 +20983,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -19572,6 +21014,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -19602,6 +21045,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -19632,6 +21076,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -19662,6 +21107,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -19692,6 +21138,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -19722,6 +21169,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -19752,6 +21200,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -19782,6 +21231,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -19812,6 +21262,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -19842,6 +21293,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -19872,6 +21324,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -19902,6 +21355,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -19932,6 +21386,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -19962,6 +21417,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -19992,6 +21448,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -20022,6 +21479,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -20052,6 +21510,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -20082,6 +21541,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -20112,6 +21572,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -20142,6 +21603,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -20172,6 +21634,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -20202,6 +21665,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -20232,6 +21696,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -20262,6 +21727,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -20292,6 +21758,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -20322,6 +21789,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -20352,6 +21820,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -20382,6 +21851,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -20412,6 +21882,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -20442,6 +21913,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -20472,6 +21944,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -20502,6 +21975,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -20532,6 +22006,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -20562,6 +22037,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -20592,6 +22068,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -20622,6 +22099,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -20652,6 +22130,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -20682,6 +22161,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -20712,6 +22192,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -20742,6 +22223,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -20772,6 +22254,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -20802,6 +22285,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -20832,6 +22316,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -20862,6 +22347,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -20892,6 +22378,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -20922,6 +22409,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -20952,6 +22440,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -20982,6 +22471,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -21012,6 +22502,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -21042,6 +22533,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -21072,6 +22564,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -21102,6 +22595,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -21132,6 +22626,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -21162,6 +22657,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -21192,6 +22688,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -21222,6 +22719,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -21252,6 +22750,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -21282,6 +22781,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -21312,6 +22812,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -21342,6 +22843,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -21372,6 +22874,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -21402,6 +22905,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -21432,6 +22936,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -21462,6 +22967,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -21492,6 +22998,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -21522,6 +23029,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -21552,6 +23060,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -21582,6 +23091,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -21612,6 +23122,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -21642,6 +23153,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -21672,6 +23184,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -21702,6 +23215,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -21732,6 +23246,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -21762,6 +23277,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -21792,6 +23308,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -21822,6 +23339,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -21852,6 +23370,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -21882,6 +23401,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -21912,6 +23432,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -21942,6 +23463,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -21972,6 +23494,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -22002,6 +23525,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -22032,6 +23556,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -22062,6 +23587,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -22092,6 +23618,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -22122,6 +23649,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -22152,6 +23680,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -22182,6 +23711,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -22212,6 +23742,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -22242,6 +23773,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -22272,6 +23804,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -22302,6 +23835,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -22332,6 +23866,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -22362,6 +23897,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -22392,6 +23928,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -22422,6 +23959,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -22452,6 +23990,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -22482,6 +24021,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -22512,6 +24052,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -22542,6 +24083,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -22572,6 +24114,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -22602,6 +24145,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -22632,6 +24176,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -22662,6 +24207,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -22692,6 +24238,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -22722,6 +24269,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -22752,6 +24300,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -22782,6 +24331,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -22812,6 +24362,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -22842,6 +24393,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -22872,6 +24424,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -22902,6 +24455,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -22932,6 +24486,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -22962,6 +24517,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -22992,6 +24548,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -23022,6 +24579,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -23052,6 +24610,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -23082,6 +24641,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -23112,6 +24672,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -23142,6 +24703,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -23172,6 +24734,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -23202,6 +24765,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -23232,6 +24796,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -23262,6 +24827,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -23292,6 +24858,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -23322,6 +24889,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -23352,6 +24920,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -23382,6 +24951,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -23412,6 +24982,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -23442,6 +25013,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -23472,6 +25044,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -23502,6 +25075,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -23532,6 +25106,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -23562,6 +25137,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -23592,6 +25168,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -23622,6 +25199,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -23652,6 +25230,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -23682,6 +25261,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -23712,6 +25292,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -23742,6 +25323,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -23772,6 +25354,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -23802,6 +25385,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -23832,6 +25416,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -23862,6 +25447,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -23892,6 +25478,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -23922,6 +25509,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -23952,6 +25540,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -23982,6 +25571,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -24012,6 +25602,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -24042,6 +25633,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -24072,6 +25664,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -24102,6 +25695,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -24132,6 +25726,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -24162,6 +25757,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -24192,6 +25788,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -24222,6 +25819,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -24252,6 +25850,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -24282,6 +25881,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -24312,6 +25912,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -24342,6 +25943,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -24372,6 +25974,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -24402,6 +26005,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -24432,6 +26036,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -24462,6 +26067,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -24492,6 +26098,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -24522,6 +26129,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -24552,6 +26160,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -24582,6 +26191,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -24612,6 +26222,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -24642,6 +26253,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -24672,6 +26284,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -24702,6 +26315,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -24732,6 +26346,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -24762,6 +26377,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -24792,6 +26408,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -24822,6 +26439,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -24852,6 +26470,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -24882,6 +26501,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -24912,6 +26532,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -24942,6 +26563,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -24972,6 +26594,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -25002,6 +26625,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -25032,6 +26656,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -25062,6 +26687,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -25092,6 +26718,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -25122,6 +26749,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -25152,6 +26780,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -25182,6 +26811,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -25212,6 +26842,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -25242,6 +26873,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -25272,6 +26904,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -25302,6 +26935,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -25332,6 +26966,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -25362,6 +26997,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -25392,6 +27028,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -25422,6 +27059,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -25452,6 +27090,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -25482,6 +27121,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -25512,6 +27152,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -25542,6 +27183,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -25572,6 +27214,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -25602,6 +27245,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -25632,6 +27276,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -25662,6 +27307,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -25692,6 +27338,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -25722,6 +27369,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -25752,6 +27400,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -25782,6 +27431,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -25812,6 +27462,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -25842,6 +27493,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -25872,6 +27524,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -25902,6 +27555,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -25932,6 +27586,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -25962,6 +27617,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -25992,6 +27648,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -26022,6 +27679,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -26052,6 +27710,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -26082,6 +27741,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -26112,6 +27772,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -26142,6 +27803,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -26172,6 +27834,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -26202,6 +27865,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -26232,6 +27896,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -26262,6 +27927,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -26292,6 +27958,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -26322,6 +27989,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -26352,6 +28020,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -26382,6 +28051,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -26412,6 +28082,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -26442,6 +28113,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -26472,6 +28144,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -26502,6 +28175,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -26532,6 +28206,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -26562,6 +28237,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -26592,6 +28268,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -26622,6 +28299,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -26652,6 +28330,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -26682,6 +28361,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -26712,6 +28392,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -26742,6 +28423,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -26772,6 +28454,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -26802,6 +28485,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -26832,6 +28516,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -26862,6 +28547,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -26892,6 +28578,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -26922,6 +28609,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -26952,6 +28640,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -26982,6 +28671,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -27012,6 +28702,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -27042,6 +28733,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -27072,6 +28764,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -27102,6 +28795,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -27132,6 +28826,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -27162,6 +28857,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -27192,6 +28888,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -27222,6 +28919,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -27252,6 +28950,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -27282,6 +28981,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -27312,6 +29012,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -27342,6 +29043,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -27372,6 +29074,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -27402,6 +29105,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -27432,6 +29136,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -27462,6 +29167,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -27492,6 +29198,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -27522,6 +29229,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -27552,6 +29260,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -27582,6 +29291,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -27612,6 +29322,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -27642,6 +29353,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -27672,6 +29384,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -27702,6 +29415,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -27732,6 +29446,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -27762,6 +29477,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -27792,6 +29508,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -27822,6 +29539,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -27852,6 +29570,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -27882,6 +29601,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -27912,6 +29632,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -27942,6 +29663,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -27972,6 +29694,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -28002,6 +29725,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -28032,6 +29756,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -28062,6 +29787,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -28092,6 +29818,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -28122,6 +29849,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -28152,6 +29880,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -28182,6 +29911,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -28212,6 +29942,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -28242,6 +29973,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -28272,6 +30004,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -28302,6 +30035,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -28332,6 +30066,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -28362,6 +30097,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -28392,6 +30128,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -28422,6 +30159,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -28452,6 +30190,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -28482,6 +30221,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -28512,6 +30252,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -28542,6 +30283,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -28572,6 +30314,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -28602,6 +30345,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -28632,6 +30376,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -28662,6 +30407,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -28692,6 +30438,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -28722,6 +30469,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -28752,6 +30500,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -28782,6 +30531,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -28812,6 +30562,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -28842,6 +30593,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -28872,6 +30624,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -28902,6 +30655,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -28932,6 +30686,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -28962,6 +30717,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -28992,6 +30748,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -29022,6 +30779,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -29052,6 +30810,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -29082,6 +30841,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -29112,6 +30872,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -29142,6 +30903,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -29172,6 +30934,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -29202,6 +30965,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -29232,6 +30996,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -29262,6 +31027,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -29292,6 +31058,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -29322,6 +31089,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -29352,6 +31120,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -29382,6 +31151,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -29412,6 +31182,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -29442,6 +31213,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -29472,6 +31244,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -29502,6 +31275,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -29532,6 +31306,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -29562,6 +31337,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -29592,6 +31368,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -29622,6 +31399,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -29652,6 +31430,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -29682,6 +31461,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -29712,6 +31492,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -29742,6 +31523,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -29772,6 +31554,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -29802,6 +31585,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -29832,6 +31616,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -29862,6 +31647,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -29892,6 +31678,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -29922,6 +31709,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -29952,6 +31740,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -29982,6 +31771,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -30012,6 +31802,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -30042,6 +31833,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -30072,6 +31864,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -30102,6 +31895,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -30132,6 +31926,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -30162,6 +31957,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -30192,6 +31988,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -30222,6 +32019,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -30252,6 +32050,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -30282,6 +32081,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -30312,6 +32112,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -30342,6 +32143,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -30372,6 +32174,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -30402,6 +32205,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -30432,6 +32236,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -30462,6 +32267,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -30492,6 +32298,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -30522,6 +32329,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -30552,6 +32360,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -30582,6 +32391,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -30612,6 +32422,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -30642,6 +32453,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -30672,6 +32484,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -30702,6 +32515,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -30732,6 +32546,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -30762,6 +32577,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -30792,6 +32608,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -30822,6 +32639,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -30852,6 +32670,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -30882,6 +32701,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -30912,6 +32732,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -30942,6 +32763,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -30972,6 +32794,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -31002,6 +32825,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -31032,6 +32856,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -31062,6 +32887,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -31092,6 +32918,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -31122,6 +32949,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -31152,6 +32980,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -31182,6 +33011,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -31212,6 +33042,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -31242,6 +33073,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -31272,6 +33104,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -31302,6 +33135,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -31332,6 +33166,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -31362,6 +33197,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -31392,6 +33228,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -31422,6 +33259,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -31452,6 +33290,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -31482,6 +33321,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -31512,6 +33352,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -31542,6 +33383,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -31572,6 +33414,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -31602,6 +33445,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -31632,6 +33476,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -31662,6 +33507,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -31692,6 +33538,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -31722,6 +33569,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -31752,6 +33600,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -31782,6 +33631,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -31812,6 +33662,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -31842,6 +33693,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -31872,6 +33724,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -31902,6 +33755,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -31932,6 +33786,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -31962,6 +33817,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -31992,6 +33848,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -32022,6 +33879,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -32052,6 +33910,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -32082,6 +33941,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -32112,6 +33972,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -32142,6 +34003,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -32172,6 +34034,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -32202,6 +34065,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -32232,6 +34096,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -32262,6 +34127,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -32292,6 +34158,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -32322,6 +34189,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -32352,6 +34220,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -32382,6 +34251,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -32412,6 +34282,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -32442,6 +34313,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -32472,6 +34344,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -32502,6 +34375,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -32532,6 +34406,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -32562,6 +34437,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -32592,6 +34468,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -32622,6 +34499,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -32652,6 +34530,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -32682,6 +34561,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -32712,6 +34592,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -32742,6 +34623,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -32772,6 +34654,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -32802,6 +34685,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -32832,6 +34716,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -32862,6 +34747,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -32892,6 +34778,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -32922,6 +34809,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -32952,6 +34840,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -32982,6 +34871,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -33012,6 +34902,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -33042,6 +34933,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -33072,6 +34964,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -33102,6 +34995,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -33132,6 +35026,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -33162,6 +35057,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -33192,6 +35088,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -33222,6 +35119,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -33252,6 +35150,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -33282,6 +35181,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -33312,6 +35212,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -33342,6 +35243,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -33372,6 +35274,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -33402,6 +35305,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -33432,6 +35336,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -33462,6 +35367,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -33492,6 +35398,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -33522,6 +35429,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -33552,6 +35460,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -33582,6 +35491,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -33612,6 +35522,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -33642,6 +35553,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -33672,6 +35584,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -33702,6 +35615,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -33732,6 +35646,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -33762,6 +35677,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -33792,6 +35708,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -33822,6 +35739,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -33852,6 +35770,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -33882,6 +35801,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -33912,6 +35832,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -33942,6 +35863,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -33972,6 +35894,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -34002,6 +35925,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -34032,6 +35956,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -34062,6 +35987,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -34092,6 +36018,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -34122,6 +36049,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -34152,6 +36080,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -34182,6 +36111,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -34212,6 +36142,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -34242,6 +36173,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -34272,6 +36204,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -34302,6 +36235,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -34332,6 +36266,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -34362,6 +36297,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -34392,6 +36328,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -34422,6 +36359,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -34452,6 +36390,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -34482,6 +36421,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -34512,6 +36452,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -34542,6 +36483,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -34572,6 +36514,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -34602,6 +36545,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -34632,6 +36576,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -34662,6 +36607,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -34692,6 +36638,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -34722,6 +36669,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -34752,6 +36700,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -34782,6 +36731,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -34812,6 +36762,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -34842,6 +36793,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -34872,6 +36824,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -34902,6 +36855,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -34932,6 +36886,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -34962,6 +36917,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -34992,6 +36948,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -35022,6 +36979,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -35052,6 +37010,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -35082,6 +37041,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -35112,6 +37072,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -35142,6 +37103,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -35172,6 +37134,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -35202,6 +37165,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -35232,6 +37196,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -35262,6 +37227,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -35292,6 +37258,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -35322,6 +37289,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -35352,6 +37320,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -35382,6 +37351,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -35412,6 +37382,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -35442,6 +37413,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -35472,6 +37444,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -35502,6 +37475,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -35532,6 +37506,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -35562,6 +37537,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -35592,6 +37568,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -35622,6 +37599,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -35652,6 +37630,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -35682,6 +37661,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -35712,6 +37692,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -35742,6 +37723,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -35772,6 +37754,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -35802,6 +37785,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -35832,6 +37816,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -35862,6 +37847,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -35892,6 +37878,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -35922,6 +37909,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -35952,6 +37940,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -35982,6 +37971,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -36012,6 +38002,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -36042,6 +38033,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -36072,6 +38064,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -36102,6 +38095,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -36132,6 +38126,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -36162,6 +38157,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -36192,6 +38188,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -36222,6 +38219,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -36252,6 +38250,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -36282,6 +38281,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -36312,6 +38312,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -36342,6 +38343,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -36372,6 +38374,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -36402,6 +38405,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -36432,6 +38436,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -36462,6 +38467,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -36492,6 +38498,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -36522,6 +38529,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -36552,6 +38560,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -36582,6 +38591,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -36612,6 +38622,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -36642,6 +38653,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -36672,6 +38684,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -36702,6 +38715,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -36732,6 +38746,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -36762,6 +38777,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -36792,6 +38808,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -36822,6 +38839,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -36852,6 +38870,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -36882,6 +38901,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -36912,6 +38932,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -36942,6 +38963,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -36972,6 +38994,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -37002,6 +39025,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -37032,6 +39056,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -37062,6 +39087,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -37092,6 +39118,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -37122,6 +39149,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -37152,6 +39180,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -37182,6 +39211,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -37212,6 +39242,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -37242,6 +39273,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -37272,6 +39304,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -37302,6 +39335,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -37332,6 +39366,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -37362,6 +39397,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -37392,6 +39428,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -37422,6 +39459,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -37452,6 +39490,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -37482,6 +39521,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -37512,6 +39552,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -37542,6 +39583,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -37572,6 +39614,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -37602,6 +39645,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -37632,6 +39676,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -37662,6 +39707,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -37692,6 +39738,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -37722,6 +39769,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -37752,6 +39800,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -37782,6 +39831,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -37812,6 +39862,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -37842,6 +39893,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -37872,6 +39924,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -37902,6 +39955,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -37932,6 +39986,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -37962,6 +40017,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -37992,6 +40048,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -38022,6 +40079,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -38052,6 +40110,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -38082,6 +40141,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -38112,6 +40172,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -38142,6 +40203,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -38172,6 +40234,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -38202,6 +40265,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -38232,6 +40296,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -38262,6 +40327,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -38292,6 +40358,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -38322,6 +40389,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -38352,6 +40420,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -38382,6 +40451,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -38412,6 +40482,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -38442,6 +40513,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -38472,6 +40544,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -38502,6 +40575,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -38532,6 +40606,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -38562,6 +40637,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -38592,6 +40668,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -38622,6 +40699,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -38652,6 +40730,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -38682,6 +40761,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -38712,6 +40792,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -38742,6 +40823,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -38772,6 +40854,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -38802,6 +40885,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -38832,6 +40916,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -38862,6 +40947,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -38892,6 +40978,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -38922,6 +41009,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -38952,6 +41040,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -38982,6 +41071,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -39012,6 +41102,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -39042,6 +41133,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -39072,6 +41164,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -39102,6 +41195,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -39132,6 +41226,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -39162,6 +41257,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -39192,6 +41288,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -39222,6 +41319,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -39252,6 +41350,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -39282,6 +41381,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -39312,6 +41412,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -39342,6 +41443,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -39372,6 +41474,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -39402,6 +41505,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -39432,6 +41536,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -39462,6 +41567,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -39492,6 +41598,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -39522,6 +41629,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -39552,6 +41660,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -39582,6 +41691,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -39612,6 +41722,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -39642,6 +41753,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -39672,6 +41784,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -39702,6 +41815,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -39732,6 +41846,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -39762,6 +41877,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -39792,6 +41908,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -39822,6 +41939,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -39852,6 +41970,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -39882,6 +42001,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -39912,6 +42032,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -39942,6 +42063,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -39972,6 +42094,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -40002,6 +42125,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -40032,6 +42156,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -40062,6 +42187,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -40092,6 +42218,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -40122,6 +42249,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -40152,6 +42280,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -40182,6 +42311,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -40212,6 +42342,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -40242,6 +42373,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -40272,6 +42404,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -40302,6 +42435,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -40332,6 +42466,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -40362,6 +42497,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -40392,6 +42528,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -40422,6 +42559,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -40452,6 +42590,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -40482,6 +42621,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -40512,6 +42652,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -40542,6 +42683,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -40572,6 +42714,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -40602,6 +42745,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -40632,6 +42776,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -40662,6 +42807,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -40692,6 +42838,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -40722,6 +42869,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -40752,6 +42900,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -40782,6 +42931,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -40812,6 +42962,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -40842,6 +42993,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -40872,6 +43024,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -40902,6 +43055,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -40932,6 +43086,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -40962,6 +43117,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -40992,6 +43148,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -41022,6 +43179,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -41052,6 +43210,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -41082,6 +43241,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -41112,6 +43272,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -41142,6 +43303,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -41172,6 +43334,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -41202,6 +43365,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -41232,6 +43396,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -41262,6 +43427,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -41292,6 +43458,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -41322,6 +43489,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -41352,6 +43520,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -41382,6 +43551,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -41412,6 +43582,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -41442,6 +43613,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -41472,6 +43644,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -41502,6 +43675,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -41532,6 +43706,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -41562,6 +43737,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -41592,6 +43768,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -41622,6 +43799,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -41652,6 +43830,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -41682,6 +43861,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -41712,6 +43892,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -41742,6 +43923,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -41772,6 +43954,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -41802,6 +43985,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -41832,6 +44016,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -41862,6 +44047,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -41892,6 +44078,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -41922,6 +44109,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -41952,6 +44140,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -41982,6 +44171,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -42012,6 +44202,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -42042,6 +44233,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -42072,6 +44264,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -42102,6 +44295,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -42132,6 +44326,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -42162,6 +44357,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -42192,6 +44388,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -42222,6 +44419,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -42252,6 +44450,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -42282,6 +44481,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -42312,6 +44512,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -42342,6 +44543,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -42372,6 +44574,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -42402,6 +44605,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -42432,6 +44636,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -42462,6 +44667,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -42492,6 +44698,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -42522,6 +44729,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -42552,6 +44760,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -42582,6 +44791,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -42612,6 +44822,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -42642,6 +44853,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -42672,6 +44884,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -42702,6 +44915,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -42732,6 +44946,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -42762,6 +44977,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -42792,6 +45008,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -42822,6 +45039,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -42852,6 +45070,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -42882,6 +45101,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -42912,6 +45132,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -42942,6 +45163,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -42972,6 +45194,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -43002,6 +45225,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -43032,6 +45256,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -43062,6 +45287,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -43092,6 +45318,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -43122,6 +45349,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -43152,6 +45380,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -43182,6 +45411,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -43212,6 +45442,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -43242,6 +45473,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -43272,6 +45504,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -43302,6 +45535,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -43332,6 +45566,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -43362,6 +45597,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -43392,6 +45628,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -43422,6 +45659,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -43452,6 +45690,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -43482,6 +45721,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -43512,6 +45752,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -43542,6 +45783,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -43572,6 +45814,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -43602,6 +45845,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -43632,6 +45876,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -43662,6 +45907,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -43692,6 +45938,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -43722,6 +45969,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -43752,6 +46000,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -43782,6 +46031,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -43812,6 +46062,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -43842,6 +46093,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -43872,6 +46124,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -43902,6 +46155,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -43932,6 +46186,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -43962,6 +46217,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -43992,6 +46248,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -44022,6 +46279,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -44052,6 +46310,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -44082,6 +46341,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -44112,6 +46372,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -44142,6 +46403,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -44172,6 +46434,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -44202,6 +46465,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -44232,6 +46496,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -44262,6 +46527,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -44292,6 +46558,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -44322,6 +46589,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -44352,6 +46620,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -44382,6 +46651,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -44412,6 +46682,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -44442,6 +46713,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -44472,6 +46744,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -44502,6 +46775,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -44532,6 +46806,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -44562,6 +46837,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -44592,6 +46868,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -44622,6 +46899,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -44652,6 +46930,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -44682,6 +46961,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -44712,6 +46992,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -44742,6 +47023,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -44772,6 +47054,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -44802,6 +47085,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -44832,6 +47116,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -44862,6 +47147,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -44892,6 +47178,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -44922,6 +47209,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -44952,6 +47240,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -44982,6 +47271,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -45012,6 +47302,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -45042,6 +47333,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -45072,6 +47364,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -45102,6 +47395,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -45132,6 +47426,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -45162,6 +47457,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -45192,6 +47488,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -45222,6 +47519,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -45252,6 +47550,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -45282,6 +47581,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -45312,6 +47612,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -45342,6 +47643,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -45372,6 +47674,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -45402,6 +47705,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -45432,6 +47736,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -45462,6 +47767,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -45492,6 +47798,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -45522,6 +47829,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -45552,6 +47860,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -45582,6 +47891,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -45612,6 +47922,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -45642,6 +47953,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -45672,6 +47984,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -45702,6 +48015,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -45732,6 +48046,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -45762,6 +48077,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -45792,6 +48108,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -45822,6 +48139,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -45852,6 +48170,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -45882,6 +48201,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -45912,6 +48232,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -45942,6 +48263,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -45972,6 +48294,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -46002,6 +48325,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -46032,6 +48356,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -46062,6 +48387,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -46092,6 +48418,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -46122,6 +48449,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -46152,6 +48480,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -46182,6 +48511,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -46212,6 +48542,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -46242,6 +48573,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -46272,6 +48604,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -46302,6 +48635,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -46332,6 +48666,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -46362,6 +48697,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -46392,6 +48728,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -46422,6 +48759,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -46452,6 +48790,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -46482,6 +48821,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -46512,6 +48852,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -46542,6 +48883,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -46572,6 +48914,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -46602,6 +48945,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -46632,6 +48976,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -46662,6 +49007,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -46692,6 +49038,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -46722,6 +49069,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -46752,6 +49100,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -46782,6 +49131,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -46812,6 +49162,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -46842,6 +49193,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -46872,6 +49224,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -46902,6 +49255,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -46932,6 +49286,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -46962,6 +49317,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -46992,6 +49348,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -47022,6 +49379,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -47052,6 +49410,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -47082,6 +49441,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -47112,6 +49472,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -47142,6 +49503,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -47172,6 +49534,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -47202,6 +49565,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -47232,6 +49596,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -47262,6 +49627,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -47292,6 +49658,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -47322,6 +49689,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -47352,6 +49720,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -47382,6 +49751,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -47412,6 +49782,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -47442,6 +49813,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -47472,6 +49844,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -47502,6 +49875,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -47532,6 +49906,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -47562,6 +49937,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -47592,6 +49968,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -47622,6 +49999,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -47652,6 +50030,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -47682,6 +50061,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -47712,6 +50092,7 @@ declare const themesIn: {
         borderColorFocus: string;
         borderColorPress: string;
         placeholderColor: string;
+        outlineColor: string;
         color1: string;
         color2: string;
         color3: string;
@@ -47732,5 +50113,4 @@ type ThemesOut = Omit<ThemesIn, 'light' | 'dark'> & {
     dark: ThemesIn['dark'] & typeof nonInherited.dark;
 };
 export declare const themes: ThemesOut;
-export {};
 //# sourceMappingURL=v2-themes.d.ts.map

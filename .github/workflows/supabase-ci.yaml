@@ -12,7 +12,7 @@ jobs:
 
       - uses: supabase/setup-cli@v1
         with:
-          version: 1.75.0
+          version: 1.127.4
 
       - name: Start Supabase local development setup
         run: cd apps/site && supabase start

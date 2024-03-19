@@ -1,5 +1,14 @@
-import { DefaultLayout } from '@components/DefaultLayout'
+import { Footer } from '@components/Footer'
+import { Header } from '@components/Header'
+import { ToastProvider, ToastViewport } from '@tamagui/toast'
+import { NextSeo } from 'next-seo'
+import React, { Suspense } from 'react'
+
+import { SearchProvider } from '../components/Search'
+
 import { DocsPage } from '@components/DocsPage'
+import { XStack, Paragraph } from 'tamagui'
+import { ContainerLarge } from '../components/Container'
 
 export type GetLayout<Props = any> = (
   page: React.ReactNode,
@@ -8,26 +17,59 @@ export type GetLayout<Props = any> = (
 ) => React.ReactElement
 
 export const getDefaultLayout: GetLayout = (page, pageProps, path) => {
-  const isHome = path === '/'
   const isAuthPage = path.startsWith('/login')
   const isAccountPage = path.startsWith('/account')
   const isStudio = path.startsWith('/studio')
-  const isProductLandingPage = path.startsWith('/takeout') || isStudio
+  const isTakeout = path.startsWith('/takeout')
+  // const isBento = path.startsWith('/bento')
+  const isProductLandingPage = isTakeout || isStudio
   const isBlog = path.startsWith('/blog')
   const isDocs = path.startsWith('/docs')
+  const isBento = path.startsWith('/bento')
 
-  const layout = (
-    <DefaultLayout
-      headerProps={{
-        disableNew: isBlog || isAuthPage || isProductLandingPage || isAccountPage,
-        minimal: isAuthPage || isProductLandingPage || isAccountPage,
-        showAuth: isAuthPage || isProductLandingPage || isAccountPage,
-      }}
-      hideFooter={isDocs}
-    >
-      {isDocs ? <DocsPage>{page}</DocsPage> : page}
-    </DefaultLayout>
+  const disableNew = isBlog || isAuthPage || isProductLandingPage || isAccountPage
+  const showAuth = isAuthPage || isProductLandingPage || isAccountPage
+  const hideFooter = isDocs || isTakeout || isBento
+
+  return (
+    <SearchProvider>
+      <NextSeo
+        title="Tamagui"
+        openGraph={{
+          type: 'website',
+          locale: 'en_US',
+          url: 'https://tamagui.dev',
+          siteName: 'Tamagui',
+          images: [
+            {
+              url: 'https://tamagui.dev/social.png',
+            },
+          ],
+        }}
+        twitter={{
+          handle: '@natebirdman',
+          site: '@tamagui_js',
+          cardType: 'summary_large_image',
+        }}
+      />
+
+      <Suspense fallback={null}>
+        <ToastProvider swipeDirection="horizontal">
+          <Header showAuth={showAuth} disableNew={disableNew} />
+          {isDocs ? <DocsPage>{page}</DocsPage> : page}
+
+          {!hideFooter && <Footer />}
+          <ToastViewport flexDirection="column-reverse" top="$2" left={0} right={0} />
+          <ToastViewport
+            multipleToasts
+            name="viewport-multiple"
+            flexDirection="column-reverse"
+            top="$2"
+            left={0}
+            right={0}
+          />
+        </ToastProvider>
+      </Suspense>
+    </SearchProvider>
   )
-
-  return layout
 }

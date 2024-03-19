@@ -1,4 +1,4 @@
-import * as React from 'react'
+import type * as React from 'react'
 
 import type { ViewProps } from './types'
 declare const View: React.ForwardRefExoticComponent<

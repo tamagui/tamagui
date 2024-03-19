@@ -1,7 +1,7 @@
-import { NativePlatform, NativeValue } from '@tamagui/core';
+import type { NativePlatform, NativeValue } from '@tamagui/core';
 import React from 'react';
-import { CreateNativeToastOptions, NativeToastRef } from './types';
-interface ToastImperativeOptions extends Omit<CreateNativeToastOptions, 'message'> {
+import type { CreateNativeToastOptions, NativeToastRef } from './types';
+export interface ToastImperativeOptions extends Omit<CreateNativeToastOptions, 'message'> {
     /**
      * Will show a native toast if is true or is set to the current platform. On iOS, it wraps `SPIndicator` and `SPAlert`. On Android, it wraps `ToastAndroid`. On web, it wraps Notification API. Mobile's native features are handled by `burnt`.
      */
@@ -95,6 +95,6 @@ interface ToastImperativeProviderProps {
      */
     options: ToastImperativeOptions;
 }
-export declare const ToastImperativeProvider: ({ children, options, }: ToastImperativeProviderProps) => JSX.Element;
+export declare const ToastImperativeProvider: ({ children, options, }: ToastImperativeProviderProps) => import("react/jsx-runtime").JSX.Element;
 export type { ToastImperativeProviderProps, NativePlatform, NativeValue };
 //# sourceMappingURL=ToastImperative.d.ts.map

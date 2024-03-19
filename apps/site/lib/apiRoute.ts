@@ -1,5 +1,5 @@
-import { PostgrestError } from '@supabase/supabase-js'
-import { NextApiHandler } from 'next'
+import type { PostgrestError } from '@supabase/supabase-js'
+import type { NextApiHandler } from 'next'
 
 export class HandledResponseTermination extends Error {}
 

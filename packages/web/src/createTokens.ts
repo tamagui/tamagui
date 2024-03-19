@@ -1,6 +1,6 @@
-import { Variable } from './createVariable'
+import type { Variable } from './createVariable'
 import { createVariables } from './createVariables'
-import { CreateTokens } from './types'
+import type { CreateTokens } from './types'
 
 // tokens.color.dark.red ===> { var: `color-dark-red`, val: '' }
 export function createTokens<T extends CreateTokens>(tokens: T): MakeTokens<T> {

@@ -1,6 +1,5 @@
-/// <reference types="react" />
-import { SizeTokens } from 'tamagui';
+import type { SizeTokens } from 'tamagui';
 export declare function FormsDemo(props: {
     size: SizeTokens;
-}): JSX.Element;
+}): import("react/jsx-runtime").JSX.Element;
 //# sourceMappingURL=FormsDemo.d.ts.map

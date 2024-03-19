@@ -1,12 +1,13 @@
 import { dirname, join } from 'path'
 
 import { generateThemes, writeGeneratedThemes } from '@tamagui/generate-themes'
-import { TamaguiOptions } from '@tamagui/types'
+import type { TamaguiOptions } from '@tamagui/types'
 import fs, { readFile } from 'fs-extra'
 
 import { requireTamaguiCore } from '../helpers/requireTamaguiCore'
-import { TamaguiPlatform } from '../types'
-import { BundledConfig, getBundledConfig } from './bundleConfig'
+import type { TamaguiPlatform } from '../types'
+import type { BundledConfig } from './bundleConfig'
+import { getBundledConfig } from './bundleConfig'
 
 const tamaguiDir = join(process.cwd(), '.tamagui')
 const confFile = join(tamaguiDir, 'tamagui.config.json')

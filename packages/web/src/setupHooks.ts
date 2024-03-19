@@ -1,12 +1,9 @@
 import { RefObject } from 'react'
 
-import {
-  GetStyleResult,
-  StaticConfig,
-  TamaguiComponentEvents,
-  TamaguiComponentState,
-  TamaguiElement,
-} from './types'
+import type { GetStyleResult, StaticConfig, TamaguiComponentStateRef } from './types'
+import { TamaguiElement } from './types'
+import type { TamaguiComponentState } from './interfaces/TamaguiComponentState'
+import type { TamaguiComponentEvents } from './interfaces/TamaguiComponentEvents'
 
 export const hooks: InternalHooks = {}
 
@@ -19,7 +16,8 @@ type InternalHooks = {
   usePropsTransform?: (
     elementType: any,
     props: Record<string, any>,
-    hostRef: RefObject<TamaguiElement>
+    stateRef: { current: TamaguiComponentStateRef },
+    willHydrate?: boolean
   ) => any
 
   useEvents?: (

@@ -1,3 +1,2 @@
-/// <reference types="react" />
-export declare function LinearGradientDemo(): JSX.Element;
+export declare function LinearGradientDemo(): import("react/jsx-runtime").JSX.Element;
 //# sourceMappingURL=LinearGradientDemo.d.ts.map

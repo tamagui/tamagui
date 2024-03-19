@@ -1,11 +1,5 @@
-import {
-  GetProps,
-  NativePlatform,
-  NativeValue,
-  TamaguiElement,
-  styled,
-  useEvent,
-} from '@tamagui/core'
+import type { GetProps, NativePlatform, NativeValue, TamaguiElement } from '@tamagui/core'
+import { styled, useEvent } from '@tamagui/core'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import { ThemeableStack } from '@tamagui/stacks'
 import { SizableText } from '@tamagui/text'
@@ -14,21 +8,14 @@ import * as React from 'react'
 
 import { TOAST_NAME } from './constants'
 import { ToastAnnounceExclude } from './ToastAnnounce'
-import {
-  CustomData,
-  useToast,
-  useToastController,
-  useToastState,
-} from './ToastImperative'
-import {
-  ToastExtraProps,
-  ToastImpl,
-  ToastImplFrame,
-  ToastProps,
-  useToastInteractiveContext,
-} from './ToastImpl'
-import { ScopedProps, ToastProvider, ToastProviderProps } from './ToastProvider'
-import { ToastViewport, ToastViewportProps } from './ToastViewport'
+import type { CustomData } from './ToastImperative'
+import { useToast, useToastController, useToastState } from './ToastImperative'
+import type { ToastExtraProps, ToastProps } from './ToastImpl'
+import { ToastImpl, ToastImplFrame, useToastInteractiveContext } from './ToastImpl'
+import type { ScopedProps, ToastProviderProps } from './ToastProvider'
+import { ToastProvider } from './ToastProvider'
+import type { ToastViewportProps } from './ToastViewport'
+import { ToastViewport } from './ToastViewport'
 
 /* -------------------------------------------------------------------------------------------------
  * ToastTitle

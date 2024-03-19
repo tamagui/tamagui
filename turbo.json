@@ -3,7 +3,9 @@
   "extends": ["//"],
   "pipeline": {
     "build:js": {
-      "cache": false
+      "cache": false,
+      "inputs": ["package.json", "src/**", "tamagui-build.js"],
+      "outputs": ["dist/**"]
     },
     "build": {
       "dependsOn": ["^build"],
@@ -33,9 +35,11 @@
       "cache": false
     },
     "lint": {
+      "cache": false,
       "outputs": []
     },
     "lint:fix": {
+      "cache": false,
       "outputs": ["src/**"]
     },
     "dev": {

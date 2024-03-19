@@ -1,4 +1,4 @@
-import { NodePath } from '@babel/traverse';
+import type { NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
 import type { TamaguiInternalConfig } from '@tamagui/core';
 import type { StyleObject, TamaguiOptionsWithFileInfo, Ternary } from '../types';

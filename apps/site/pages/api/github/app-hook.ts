@@ -1,8 +1,7 @@
-import { supabaseAdmin } from '@lib/supabaseAdmin'
-import { NextApiHandler } from 'next'
+import { apiRoute } from '@lib/apiRoute'
 
-const handler: NextApiHandler = async (req, res) => {
-  console.log(req.query, req.body, req.headers['x-hub-signature'], req.headers)
+const handler = apiRoute(async (req, res) => {
+  console.info(req.query, req.body, req.headers['x-hub-signature'], req.headers)
 
   switch (req.body.action) {
   }
@@ -10,6 +9,6 @@ const handler: NextApiHandler = async (req, res) => {
   res.json({
     success: true,
   })
-}
+})
 
 export default handler

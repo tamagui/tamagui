@@ -1,4 +1,4 @@
-import { SizableTextProps } from './SizableText';
+import type { SizableTextProps } from './SizableText';
 export type TextContextStyles = {
     color?: SizableTextProps['color'];
     fontWeight?: SizableTextProps['fontWeight'];

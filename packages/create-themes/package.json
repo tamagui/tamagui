@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/create-themes",
-  "version": "1.79.13",
+  "version": "1.91.5",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -23,14 +23,15 @@
     ".": {
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.js"
+      "require": "./dist/cjs/index.js",
+      "react-native": "./dist/cjs/index.native.js"
     }
   },
   "dependencies": {
-    "@tamagui/core": "1.79.13"
+    "@tamagui/core": "1.91.5"
   },
   "devDependencies": {
-    "@tamagui/build": "1.79.13"
+    "@tamagui/build": "1.91.5"
   },
   "publishConfig": {
     "access": "public"

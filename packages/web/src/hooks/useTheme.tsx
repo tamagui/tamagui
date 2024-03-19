@@ -1,25 +1,22 @@
-import { isClient, isIos, isServer } from '@tamagui/constants'
+import { isClient, isIos, isServer, isWeb } from '@tamagui/constants'
 import { useContext, useEffect, useMemo, useRef, useState } from 'react'
 
 import { getConfig } from '../config'
-import { Variable, getVariable } from '../createVariable'
-import { createProxy } from '../helpers/createProxy'
+import type { Variable } from '../createVariable'
+import { getVariable } from '../createVariable'
+import type { ThemeManagerState } from '../helpers/ThemeManager'
+import { ThemeManager, getHasThemeUpdatingProps } from '../helpers/ThemeManager'
+import { ThemeManagerIDContext } from '../helpers/ThemeManagerContext'
 import { isEqualShallow } from '../helpers/createShallowSetState'
-import {
-  ThemeManager,
-  ThemeManagerState,
-  getHasThemeUpdatingProps,
-} from '../helpers/ThemeManager'
-import { ThemeManagerContext } from '../helpers/ThemeManagerContext'
 import type {
   DebugProp,
   ThemeParsed,
   ThemeProps,
+  Tokens,
   UseThemeWithStateProps,
   VariableVal,
   VariableValGeneric,
 } from '../types'
-import { GetThemeUnwrapped } from './getThemeUnwrapped'
 
 export type ChangedThemeResponse = {
   state?: ThemeManagerState
@@ -63,13 +60,28 @@ export type ThemeGettable<Val> = Val & {
           ? any
           : Exclude<X, Variable>
         : Val extends VariableVal
-        ? string | number
-        : unknown)
+          ? string | number
+          : unknown)
 }
 
 export type UseThemeResult = {
-  [Key in keyof ThemeParsed]: ThemeGettable<ThemeParsed[Key]>
+  [Key in keyof ThemeParsed | keyof Tokens['color']]: ThemeGettable<
+    Key extends keyof ThemeParsed ? ThemeParsed[Key] : Variable<any>
+  >
+} & {
+  // fallback to other tokens
+  [Key in string & {}]?: ThemeGettable<Variable<any>>
 }
+
+// not used by anything but its technically more correct type, but its annoying to have in intellisense so leaving it
+// type SimpleTokens = NonSpecificTokens extends `$${infer Token}` ? Token : never
+// export type UseThemeWithTokens = {
+//   [Key in keyof ThemeParsed | keyof SimpleTokens]: ThemeGettable<
+//     Key extends keyof ThemeParsed
+//       ? ThemeParsed[Key]
+//       : Variable<ThemeValueGet<`$${Key}`> extends never ? any : ThemeValueGet<`$${Key}`>>
+//   >
+// }
 
 export const useTheme = (props: ThemeProps = emptyProps) => {
   const [_, theme] = useThemeWithState(props)
@@ -93,14 +105,21 @@ export const useThemeWithState = (
 
           if (
             process.env.NODE_ENV === 'development' &&
-            props.debug &&
+            typeof props.debug === 'string' &&
             props.debug !== 'profile'
           ) {
-            console.info(`  🎨 useTheme() shouldUpdate?`, next, {
-              shouldUpdateProp: props.shouldUpdate?.(),
-              keys: [...keys.current],
-            })
+            console.info(
+              `  🎨 useTheme() shouldUpdate?`,
+              next,
+              isClient
+                ? {
+                    shouldUpdateProp: props.shouldUpdate?.(),
+                    keys: [...keys.current],
+                  }
+                : ''
+            )
           }
+
           return next
         }
       : undefined
@@ -108,8 +127,8 @@ export const useThemeWithState = (
 
   const { themeManager, state } = changedThemeState
 
-  if (!state?.theme) {
-    if (process.env.NODE_ENV === 'development') {
+  if (process.env.NODE_ENV === 'development') {
+    if (!state?.theme) {
       if (process.env.TAMAGUI_DISABLE_NO_THEME_WARNING !== '1') {
         console.warn(
           `[tamagui] No theme found, this could be due to an invalid theme name (given theme props ${JSON.stringify(
@@ -128,7 +147,7 @@ export const useThemeWithState = (
   }, [state?.theme, themeManager, props.deopt, props.debug])
 
   if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
-    console.groupCollapsed('  🔹 useTheme =>', state?.name)
+    console.groupCollapsed(`  🔹 [${themeManager?.id}] useTheme =>`, state?.name)
     console.info('returning state', changedThemeState, 'from props', props)
     console.groupEnd()
   }
@@ -156,7 +175,7 @@ export function getThemeProxied(
     }
   }
 
-  return createProxy(theme, {
+  return new Proxy(theme, {
     has(_, key) {
       if (Reflect.has(theme, key)) {
         return true
@@ -167,10 +186,6 @@ export function getThemeProxied(
       }
     },
     get(_, key) {
-      if (key === GetThemeUnwrapped) {
-        return theme
-      }
-
       if (
         // dont ask me, idk why but on hermes you can see that useTheme()[undefined] passes in STRING undefined to proxy
         // if someone is crazy enough to use "undefined" as a theme key then this not working is on them
@@ -269,6 +284,22 @@ function someParentIsInversed(manager?: ThemeManager) {
 
 export const activeThemeManagers = new Set<ThemeManager>()
 
+// until WeakRef support:
+const _uidToManager = new WeakMap<Object, ThemeManager>()
+const _idToUID: Record<number, Object> = {}
+const getId = (id: number) => _idToUID[id]
+
+export const getThemeManager = (id: number) => {
+  return _uidToManager.get(getId(id)!)
+}
+
+const registerThemeManager = (t: ThemeManager) => {
+  if (!_idToUID[t.id]) {
+    const id = (_idToUID[t.id] = {})
+    _uidToManager.set(id, t)
+  }
+}
+
 export const useChangeThemeEffect = (
   props: UseThemeWithStateProps,
   isRoot = false,
@@ -276,8 +307,8 @@ export const useChangeThemeEffect = (
   shouldUpdate?: () => boolean | undefined
 ): ChangedThemeResponse => {
   const { disable } = props
-
-  const parentManager = useContext(ThemeManagerContext)
+  const parentManagerId = useContext(ThemeManagerIDContext)
+  const parentManager = getThemeManager(parentManagerId)
 
   if ((!isRoot && !parentManager) || disable) {
     return {
@@ -341,11 +372,8 @@ export const useChangeThemeEffect = (
         return
       }
 
-      if (isNewTheme && themeManager) {
-        activeThemeManagers.add(themeManager)
-      }
-
       if (isNewTheme || getShouldUpdateTheme(themeManager)) {
+        activeThemeManagers.add(themeManager)
         setThemeState(createState)
       }
 
@@ -371,7 +399,14 @@ export const useChangeThemeEffect = (
 
           if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
             // prettier-ignore
-            console.info(` 🔸 onChange`, themeManager.id, { force, shouldTryUpdate, props, name, manager, keys, })
+            console.info(` 🔸 onChange`, themeManager.id, {
+              force,
+              shouldTryUpdate,
+              props,
+              name,
+              manager,
+              keys,
+            })
           }
 
           if (shouldTryUpdate) {
@@ -384,7 +419,9 @@ export const useChangeThemeEffect = (
       return () => {
         selfListenerDispose()
         disposeChangeListener?.()
-        activeThemeManagers.delete(themeManager)
+        if (isNewTheme) {
+          activeThemeManagers.delete(themeManager)
+        }
       }
     }, [
       themeManager,
@@ -408,7 +445,7 @@ export const useChangeThemeEffect = (
     }
   }
 
-  if (isInversingOnMount) {
+  if (isWeb && isInversingOnMount) {
     return {
       isNewTheme: false,
       inversed: false,
@@ -464,7 +501,7 @@ export const useChangeThemeEffect = (
         if (nextState) {
           state = nextState
 
-          if (!prev.isNewTheme) {
+          if (!prev.isNewTheme && !isRoot) {
             themeManager = getNewThemeManager()
           } else {
             themeManager.updateState(nextState)
@@ -485,8 +522,12 @@ export const useChangeThemeEffect = (
 
     const isNewTheme = Boolean(themeManager !== parentManager || props.inverse)
 
-    // only inverse relies on this for ssr
-    const mounted = !props.inverse ? true : isRoot || prev?.mounted
+    if (isNewTheme) {
+      registerThemeManager(themeManager)
+    }
+
+    const isWebSSR = isWeb ? !getConfig().disableSSR : false
+    const mounted = isWebSSR ? isRoot || prev?.mounted : true
 
     if (!state) {
       if (isNewTheme) {
@@ -498,8 +539,15 @@ export const useChangeThemeEffect = (
     }
 
     const wasInversed = prev?.inversed
-    const nextInversed = isNewTheme && state.scheme !== parentManager?.state.scheme
-    const inversed = nextInversed ? true : wasInversed ? false : null
+    const isInherentlyInversed =
+      isNewTheme && state.scheme !== parentManager?.state.scheme
+    const inversed = isInherentlyInversed
+      ? true
+      : isWebSSR
+        ? wasInversed != null
+          ? false
+          : null
+        : props.inverse
 
     const response: ChangedThemeResponse = {
       themeManager,
@@ -509,8 +557,8 @@ export const useChangeThemeEffect = (
     }
 
     const shouldReturnPrev =
-      !force &&
       prev &&
+      !force &&
       // isEqualShallow uses the second arg as the keys so this should compare without state first...
       isEqualShallow(prev, response) &&
       // ... and then compare just the state, because we make a new state obj but is likely the same
@@ -524,7 +572,7 @@ export const useChangeThemeEffect = (
     response.state = state
 
     if (process.env.NODE_ENV === 'development' && props['debug'] && isClient) {
-      console.groupCollapsed(` 🔷 ${themeManager.id} useChangeThemeEffect createState`)
+      console.groupCollapsed(`🔷 [${themeManager.id}] useChangeThemeEffect createState`)
       const parentState = { ...parentManager?.state }
       const parentId = parentManager?.id
       const themeManagerState = { ...themeManager.state }

@@ -7,12 +7,17 @@ const cheerio = require('cheerio')
 const prettier = require('prettier')
 const lucideDir = require.resolve('lucide-static')
 
-const lucideIconsDir = path.join(lucideDir, '..', '..', 'icons')
+const lucideIconsDir = path.join(lucideDir, '..', '..', '..', 'icons')
 const rootDir = path.join(__dirname, '..')
+const outDir = path.join(rootDir, 'src/icons')
+
+fs.mkdir(outDir, () => {})
 
 glob(`${lucideIconsDir}/**.svg`, (err, icons) => {
   fs.writeFileSync(path.join(rootDir, 'src', 'index.ts'), '', 'utf-8')
 
+  console.info(`Processing`, icons)
+  
   icons.forEach((i) => {
     const svg = fs.readFileSync(i, 'utf-8')
     const id = path.basename(i, '.svg')
@@ -20,7 +25,7 @@ glob(`${lucideIconsDir}/**.svg`, (err, icons) => {
       xmlMode: true,
     })
     const fileName = path.basename(i).replace('.svg', '.tsx')
-    const location = path.join(rootDir, 'src/icons', fileName)
+    const location = path.join(outDir, fileName)
 
     // Because CSS does not exist on Native platforms
     // We need to duplicate the styles applied to the
@@ -29,7 +34,17 @@ glob(`${lucideIconsDir}/**.svg`, (err, icons) => {
     delete svgAttribs['xmlns']
     const attribsOfInterest = {}
     Object.keys(svgAttribs).forEach((key) => {
-      if (!['height', 'width', 'viewBox', 'fill', 'stroke-width', 'stroke-linecap', 'stroke-linejoin'].includes(key)) {
+      if (
+        ![
+          'height',
+          'width',
+          'viewBox',
+          'fill',
+          'stroke-width',
+          'stroke-linecap',
+          'stroke-linejoin',
+        ].includes(key)
+      ) {
         attribsOfInterest[key] = svgAttribs[key]
       }
     })
@@ -58,7 +73,7 @@ glob(`${lucideIconsDir}/**.svg`, (err, icons) => {
 
     const cname = uppercamelcase(id)
 
-    const element = `
+    const out = `
       import React, { memo } from 'react'
       import PropTypes from 'prop-types'
       import type { IconProps } from '@tamagui/helpers-icon'
@@ -134,19 +149,14 @@ glob(`${lucideIconsDir}/**.svg`, (err, icons) => {
       export const ${cname} = memo<IconProps>(themed(Icon))
     `
 
-    const component = prettier.format(element, {
-      singleQuote: true,
-      trailingComma: 'es5',
-      arrowParens: 'always',
-      plugins: [require.resolve('prettier-plugin-import-sort')],
-      parser: 'typescript',
-      semi: false,
-    })
-
-    fs.writeFileSync(location, component, 'utf-8')
+    fs.writeFileSync(location, out, 'utf-8')
 
     const exportString = `export { ${cname} } from './icons/${id}'\n`
 
     fs.appendFileSync(path.join(rootDir, 'src', 'index.ts'), exportString, 'utf-8')
   })
 })
+
+
+// run biome:
+require('child_process').execSync(`biome check --apply-unsafe src`)

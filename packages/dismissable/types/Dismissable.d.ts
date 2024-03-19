@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { DismissableBranchProps, DismissableProps } from './DismissableProps';
+import type { DismissableBranchProps, DismissableProps } from './DismissableProps';
 export declare function dispatchDiscreteCustomEvent<E extends CustomEvent>(target: E['target'], event: E): void;
 declare const Dismissable: React.ForwardRefExoticComponent<DismissableProps & {
     asChild?: boolean | undefined;

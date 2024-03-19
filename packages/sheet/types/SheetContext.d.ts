@@ -3,7 +3,7 @@ export declare const createSheetContext: <ContextValueType extends object | null
     (props: ContextValueType & {
         scope: import("@tamagui/create-context").Scope<ContextValueType>;
         children: import("react").ReactNode;
-    }): JSX.Element;
+    }): import("react/jsx-runtime").JSX.Element;
     displayName: string;
 }, (consumerName: string, scope: import("@tamagui/create-context").Scope<ContextValueType | undefined>, options?: {
     warn?: boolean | undefined;
@@ -20,6 +20,7 @@ export declare const SheetProvider: {
         setOpen: import("react").Dispatch<import("react").SetStateAction<boolean>>;
         hidden: boolean;
         contentRef: import("react").RefObject<import("@tamagui/web").TamaguiElement>;
+        handleRef: import("react").RefObject<import("@tamagui/web").TamaguiElement>;
         frameSize: number;
         setFrameSize: import("react").Dispatch<import("react").SetStateAction<number>>;
         dismissOnOverlayPress: boolean;
@@ -45,6 +46,7 @@ export declare const SheetProvider: {
             setOpen: import("react").Dispatch<import("react").SetStateAction<boolean>>;
             hidden: boolean;
             contentRef: import("react").RefObject<import("@tamagui/web").TamaguiElement>;
+            handleRef: import("react").RefObject<import("@tamagui/web").TamaguiElement>;
             frameSize: number;
             setFrameSize: import("react").Dispatch<import("react").SetStateAction<number>>;
             dismissOnOverlayPress: boolean;
@@ -61,7 +63,7 @@ export declare const SheetProvider: {
             onlyShowFrame: boolean;
         }>;
         children: import("react").ReactNode;
-    }): JSX.Element;
+    }): import("react/jsx-runtime").JSX.Element;
     displayName: string;
 }, useSheetContext: (consumerName: string, scope: import("@tamagui/create-context").Scope<{
     screenSize: number;
@@ -73,6 +75,7 @@ export declare const SheetProvider: {
     setOpen: import("react").Dispatch<import("react").SetStateAction<boolean>>;
     hidden: boolean;
     contentRef: import("react").RefObject<import("@tamagui/web").TamaguiElement>;
+    handleRef: import("react").RefObject<import("@tamagui/web").TamaguiElement>;
     frameSize: number;
     setFrameSize: import("react").Dispatch<import("react").SetStateAction<number>>;
     dismissOnOverlayPress: boolean;
@@ -99,6 +102,7 @@ export declare const SheetProvider: {
         setOpen: import("react").Dispatch<import("react").SetStateAction<boolean>>;
         hidden: boolean;
         contentRef: import("react").RefObject<import("@tamagui/web").TamaguiElement>;
+        handleRef: import("react").RefObject<import("@tamagui/web").TamaguiElement>;
         frameSize: number;
         setFrameSize: import("react").Dispatch<import("react").SetStateAction<number>>;
         dismissOnOverlayPress: boolean;
@@ -124,6 +128,7 @@ export declare const SheetProvider: {
     setOpen: import("react").Dispatch<import("react").SetStateAction<boolean>>;
     hidden: boolean;
     contentRef: import("react").RefObject<import("@tamagui/web").TamaguiElement>;
+    handleRef: import("react").RefObject<import("@tamagui/web").TamaguiElement>;
     frameSize: number;
     setFrameSize: import("react").Dispatch<import("react").SetStateAction<number>>;
     dismissOnOverlayPress: boolean;

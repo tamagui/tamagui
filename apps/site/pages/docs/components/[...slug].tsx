@@ -12,6 +12,7 @@ import React, { useEffect, useState } from 'react'
 
 import type { Frontmatter } from '../../../frontmatter'
 import { listeners } from '../../../hooks/setTinted'
+import { CustomTabs } from '../../../components/CustomTabs'
 
 const getPathFragment = (path: string) => {
   const [_, fragment] = path.split('#')
@@ -39,20 +40,19 @@ export default function DocComponentsPage({ frontmatter, code }: Doc) {
   }, [])
 
   useEffect(() => {
-    const fragment = getPathFragment(router.asPath)
-    let pathWithVersion = `${router.pathname}/${frontmatter.version}${
-      fragment ? `#${fragment}` : ''
-    }`
+    const url = new URL(location.href)
+    url.pathname = `${router.pathname}/${frontmatter.version}`
+
     if (Array.isArray(router.query.slug)) {
-      pathWithVersion = pathWithVersion.replace('[...slug]', router.query.slug[0])
+      url.pathname = url.pathname.replace('[...slug]', router.query.slug[0])
     }
-    router.replace(pathWithVersion, undefined, { shallow: true })
+    router.replace(url, undefined, { shallow: true })
   }, [])
 
   return (
     <>
       <NextSeo
-        title={`${frontmatter.title} — Tamagui — React Native Universal UI`}
+        title={`${frontmatter.title} — Tamagui — style library, design system, and UI kit for React (Native and web)`}
         description={frontmatter.description}
         openGraph={{
           images: [
@@ -78,7 +78,9 @@ export default function DocComponentsPage({ frontmatter, code }: Doc) {
       )} */}
       <MDXProvider frontmatter={frontmatter}>
         <ThemeTint disable={!isTinted}>
-          <Component components={components as any} />
+          <CustomTabs id="type" defaultValue="styled">
+            <Component components={components as any} />
+          </CustomTabs>
         </ThemeTint>
       </MDXProvider>
       <QuickNav key={frontmatter.slug} />

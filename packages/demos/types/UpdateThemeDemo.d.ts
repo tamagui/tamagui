@@ -1,3 +1,2 @@
-/// <reference types="react" />
-export declare function UpdateThemeDemo(): JSX.Element;
+export declare function UpdateThemeDemo(): import("react/jsx-runtime").JSX.Element;
 //# sourceMappingURL=UpdateThemeDemo.d.ts.map

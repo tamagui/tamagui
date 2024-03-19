@@ -1,3 +1,5 @@
+import { useContext } from 'react'
+
 import { ComponentContext } from '../contexts/ComponentContext'
 import type { AnimationDriver } from '../types'
 
@@ -7,5 +9,8 @@ interface ConfigurationProps {
 }
 
 export const Configuration = (props: ConfigurationProps) => {
-  return <ComponentContext.Provider {...props} />
+  const current = useContext(ComponentContext)
+  return <ComponentContext.Provider {...current} {...props} />
 }
+
+Configuration['displayName'] = 'Configuration'

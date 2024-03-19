@@ -4,19 +4,18 @@ import { createVariable, isVariable } from '../createVariable'
 // shared by createTamagui so extracted here
 export function ensureThemeVariable(theme: any, key: string) {
   const val = theme[key]
-  const themeKey = key
   if (!isVariable(val)) {
     theme[key] = createVariable({
-      key: themeKey,
-      name: themeKey,
+      key,
+      name: key,
       val,
     })
   } else {
-    if (val.name !== themeKey) {
+    if (val.name !== key) {
       // rename to theme name
       theme[key] = createVariable({
         key: val.name,
-        name: themeKey,
+        name: key,
         val: val.val,
       })
     }

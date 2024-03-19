@@ -7,6 +7,7 @@ module.exports = {
         platform: 'native',
         config: './tests/lib/tamagui.config.cjs',
         forceExtractStyleDefinitions: true,
+        experimentalFlattenThemesOnNative: true,
       },
     ],
     [

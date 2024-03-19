@@ -1,10 +1,10 @@
-import { useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { useConstant } from '@tamagui/use-constant'
 import { PresenceContext } from '@tamagui/use-presence'
-import { PresenceContextProps } from '@tamagui/web'
+import { type PresenceContextProps } from '@tamagui/web'
 import * as React from 'react'
 import { useId } from 'react'
 
-import { VariantLabels } from './types'
+import type { VariantLabels } from './types'
 
 interface PresenceChildProps {
   children: React.ReactElement<any>
@@ -18,68 +18,72 @@ interface PresenceChildProps {
   enterExitVariant?: string | null
 }
 
-export const PresenceChild = ({
-  children,
-  initial,
-  isPresent,
-  onExitComplete,
-  exitVariant,
-  enterVariant,
-  enterExitVariant,
-  presenceAffectsLayout,
-}: PresenceChildProps) => {
-  const presenceChildren = React.useMemo(newChildrenMap, [])
-  const id = useId() || ''
+// this memo seems to help PopoverContent from continuously re-rendering when open
+export const PresenceChild = React.memo(
+  ({
+    children,
+    initial,
+    isPresent,
+    onExitComplete,
+    exitVariant,
+    enterVariant,
+    enterExitVariant,
+    presenceAffectsLayout,
+    custom,
+  }: PresenceChildProps) => {
+    const presenceChildren = useConstant(newChildrenMap)
+    const id = useId() || ''
 
-  const context = React.useMemo(
-    (): PresenceContextProps => {
-      return {
-        id,
-        initial,
-        isPresent,
-        exitVariant,
-        enterVariant,
-        enterExitVariant,
-        onExitComplete: (id: string) => {
-          presenceChildren.set(id, true)
-          for (const isComplete of presenceChildren.values()) {
-            if (!isComplete) {
-              return // can stop searching when any is incomplete
+    const context = React.useMemo(
+      (): PresenceContextProps => {
+        return {
+          id,
+          initial,
+          isPresent,
+          custom,
+          exitVariant,
+          enterVariant,
+          enterExitVariant,
+          onExitComplete: () => {
+            presenceChildren.set(id, true)
+            for (const isComplete of presenceChildren.values()) {
+              if (!isComplete) {
+                return // can stop searching when any is incomplete
+              }
             }
-          }
-          onExitComplete?.()
-        },
-        register: (id: string) => {
-          presenceChildren.set(id, false)
-          return () => presenceChildren.delete(id)
-        },
-      }
-    },
+            onExitComplete?.()
+          },
+          register: () => {
+            presenceChildren.set(id, false)
+            return () => presenceChildren.delete(id)
+          },
+        }
+      },
+      /**
+       * If the presence of a child affects the layout of the components around it,
+       * we want to make a new context value to ensure they get re-rendered
+       * so they can detect that layout change.
+       */
+
+      // @ts-expect-error its ok
+      presenceAffectsLayout ? undefined : [isPresent, exitVariant, enterVariant]
+    )
+
+    React.useMemo(() => {
+      presenceChildren.forEach((_, key) => presenceChildren.set(key, false))
+    }, [isPresent])
+
     /**
-     * If the presence of a child affects the layout of the components around it,
-     * we want to make a new context value to ensure they get re-rendered
-     * so they can detect that layout change.
+     * If there's no animated components to fire exit animations, we want to remove this
+     * component immediately.
      */
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    presenceAffectsLayout ? undefined : [isPresent, exitVariant, enterVariant]
-  )
+    React.useEffect(() => {
+      !isPresent && !presenceChildren.size && onExitComplete?.()
+    }, [isPresent])
 
-  React.useMemo(() => {
-    presenceChildren.forEach((_, key) => presenceChildren.set(key, false))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isPresent])
-
-  /**
-   * If there's no animated components to fire exit animations, we want to remove this
-   * component immediately.
-   */
-  useIsomorphicLayoutEffect(() => {
-    !(isPresent || presenceChildren.size) && onExitComplete?.()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isPresent])
-
-  return <PresenceContext.Provider value={context}>{children}</PresenceContext.Provider>
-}
+    return <PresenceContext.Provider value={context}>{children}</PresenceContext.Provider>
+  }
+)
 
 function newChildrenMap(): Map<string, boolean> {
   return new Map()

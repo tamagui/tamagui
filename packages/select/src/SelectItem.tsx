@@ -1,10 +1,11 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
-import { ListItemFrame, ListItemProps, useListItem } from '@tamagui/list-item'
+import type { ListItemProps } from '@tamagui/list-item'
+import { ListItemFrame, useListItem } from '@tamagui/list-item'
 import * as React from 'react'
 
 import { createSelectContext, useSelectItemParentContext } from './context'
-import { ScopedProps } from './types'
+import type { ScopedProps } from './types'
 
 /* -------------------------------------------------------------------------------------------------
  * SelectItem
@@ -21,14 +22,18 @@ type SelectItemContextValue = {
 export const [SelectItemContextProvider, useSelectItemContext] =
   createSelectContext<SelectItemContextValue>(ITEM_NAME)
 
-export interface SelectItemProps extends ListItemProps {
+export interface SelectItemExtraProps {
   value: string
   index: number
   disabled?: boolean
   textValue?: string
 }
 
-export const SelectItem = ListItemFrame.styleable<SelectItemProps>(
+export interface SelectItemProps
+  extends Omit<ListItemProps, keyof SelectItemExtraProps>,
+    SelectItemExtraProps {}
+
+export const SelectItem = ListItemFrame.styleable<SelectItemExtraProps>(
   function SelectItem(props: ScopedProps<SelectItemProps>, forwardedRef) {
     const {
       __scopeSelect,
@@ -68,15 +73,14 @@ export const SelectItem = ListItemFrame.styleable<SelectItemProps>(
     } = context
 
     const [isSelected, setSelected] = React.useState(initialValue === value)
-    const [isActive, setActive] = React.useState(false)
 
     React.useEffect(() => {
       return activeIndexSubscribe((i) => {
         const isActive = index === i
-        setActive(isActive)
 
         if (isActive) {
           onActiveChange(value, index)
+          listRef?.current[index]?.focus()
         }
       })
     }, [index])
@@ -159,12 +163,6 @@ export const SelectItem = ListItemFrame.styleable<SelectItemProps>(
           }
     }, [handleSelect])
 
-    useIsomorphicLayoutEffect(() => {
-      if (isActive) {
-        listRef?.current[index]?.focus()
-      }
-    }, [isActive])
-
     return (
       <SelectItemContextProvider
         scope={__scopeSelect}
@@ -191,8 +189,14 @@ export const SelectItem = ListItemFrame.styleable<SelectItemProps>(
               hoverTheme: true,
               focusTheme: true,
               cursor: 'default',
-              outlineWidth: 0,
               size,
+              outlineOffset: -0.5,
+
+              focusVisibleStyle: {
+                outlineColor: '$outlineColor',
+                outlineWidth: 1,
+                outlineStyle: 'solid',
+              },
             })}
             {...listItemProps}
             {...selectItemProps}

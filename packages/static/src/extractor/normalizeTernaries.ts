@@ -2,7 +2,7 @@ import generate from '@babel/generator'
 import * as t from '@babel/types'
 import invariant from 'invariant'
 
-import { Ternary } from '../types'
+import type { Ternary } from '../types'
 
 export function normalizeTernaries(ternaries: Ternary[]) {
   invariant(

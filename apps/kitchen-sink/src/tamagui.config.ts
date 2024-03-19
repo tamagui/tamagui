@@ -1,7 +1,7 @@
 import { createAnimations as createAnimationsCSS } from '@tamagui/animations-css'
 import { createAnimations as createAnimationsMoti } from '@tamagui/animations-moti'
 import { createAnimations as createAnimationsNative } from '@tamagui/animations-react-native'
-import { config } from '@tamagui/config/v2'
+import { config } from '@tamagui/config/v3'
 import { createTamagui } from 'tamagui'
 
 export const animationsCSS = createAnimationsCSS({
@@ -15,6 +15,18 @@ export const animationsCSS = createAnimationsCSS({
 })
 
 export const animationsMoti = createAnimationsMoti({
+  '75ms': {
+    type: 'timing',
+    duration: 75,
+  },
+  '100ms': {
+    type: 'timing',
+    duration: 100,
+  },
+  '200ms': {
+    type: 'timing',
+    duration: 200,
+  },
   bouncy: {
     type: 'spring',
     damping: 9,
@@ -51,6 +63,18 @@ export const animationsMoti = createAnimationsMoti({
 })
 
 export const animationsNative = createAnimationsNative({
+  '75ms': {
+    type: 'timing',
+    duration: 75,
+  },
+  '100ms': {
+    type: 'timing',
+    duration: 100,
+  },
+  '200ms': {
+    type: 'timing',
+    duration: 200,
+  },
   bouncy: {
     type: 'spring',
     damping: 9,
@@ -89,7 +113,10 @@ export const animationsNative = createAnimationsNative({
 // this is used by the button test...
 config.themes = {
   ...config.themes,
+
+  // @ts-ignore
   light_green_Button: {
+    // @ts-ignore
     ...config.themes.light_green_Button,
     background: 'green',
   },
@@ -108,6 +135,9 @@ const tokens = {
     ...config.tokens.color,
     testsomethingdifferent: '#ff0000',
   },
+  // size: {
+  //   0: 10,
+  // },
 }
 
 const tamaConf = createTamagui({
@@ -121,9 +151,15 @@ const tamaConf = createTamagui({
   animations: search.includes('animationDriver=css')
     ? animationsCSS
     : search.includes('animationDriver=native')
-    ? animationsNative
-    : animationsMoti, // default moti
+      ? animationsNative
+      : animationsMoti, // default moti
   themeClassNameOnRoot: false,
+
+  defaultProps: {
+    Square: {
+      backgroundColor: 'violet',
+    },
+  },
 })
 
 export type Conf = typeof tamaConf

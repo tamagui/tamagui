@@ -45,7 +45,7 @@ export function HeroContainer({
   const contents = (
     <YStack
       className={(minimal ? '' : 'hero-gradient') + (noScroll ? '' : ' hero-scroll')}
-      boc="$borderColor"
+      bc="$borderColor"
       bw={0.5}
       mt="$4"
       mb="$4"
@@ -53,7 +53,8 @@ export function HeroContainer({
       display="flex"
       alignItems={alignItems || 'center'}
       justifyContent="center"
-      py={50}
+      pt={60}
+      pb={80}
       pos="relative"
       minHeight={300}
       borderRadius="$4"
@@ -113,7 +114,7 @@ const Card = styled(YStack, {
   y: 0,
   ov: 'hidden',
   minWidth: 180,
-  bc: '$background',
+  bg: '$background',
   minHeight: 220,
   br: '$4',
 })

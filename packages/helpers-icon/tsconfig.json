@@ -4,5 +4,10 @@
     "composite": true,
     "forceConsistentCasingInFileNames": false
   },
-  "references": []
+  "references": [],
+  "exclude": [
+    "types",
+    "dist",
+    "**/__tests__"
+  ]
 }

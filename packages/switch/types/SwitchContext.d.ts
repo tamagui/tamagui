@@ -1,4 +1,4 @@
-import { SizeTokens } from '@tamagui/core';
+import type { SizeTokens } from '@tamagui/core';
 export declare const SwitchContext: import("@tamagui/core").StyledContext<{
     checked: boolean;
     disabled?: boolean | undefined;

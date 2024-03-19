@@ -23,29 +23,29 @@ export default function App() {
     ? // solito breaking
       () => null //require('../kitchen-sink/src/features/home/screen').HomeScreen
     : demoComponentName
-    ? Demos[
-        demoComponentName.endsWith('Demo')
-          ? demoComponentName
-          : `${demoComponentName}Demo`
-      ]
-    : useCaseComponentName
-    ? TestCases[useCaseComponentName]
-    : Sandbox
+      ? Demos[
+          demoComponentName.endsWith('Demo')
+            ? demoComponentName
+            : `${demoComponentName}Demo`
+        ]
+      : useCaseComponentName
+        ? TestCases[useCaseComponentName]
+        : Sandbox
 
   return (
-    <SandboxFrame>
+    <SandboxFrame centered={!!demoComponentName}>
       <Component />
     </SandboxFrame>
   )
 }
 
-const SandboxFrame = (props: { children: any }) => {
+const SandboxFrame = (props: { children: any; centered?: boolean }) => {
   const params = new URLSearchParams(window.location.search)
   const [theme, setTheme] = useState(params.get('theme') === 'dark' ? 'dark' : 'light')
   const [screenshot] = useState(params.has('screenshot'))
   const showThemeSwitch = !screenshot
   const splitView = params.has('splitView')
-  const centered = params.has('centered')
+  const centered = props.centered ?? params.has('centered')
 
   return (
     <Provider defaultTheme={theme as any}>

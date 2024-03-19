@@ -36,13 +36,24 @@ export interface AnimatePresenceProps {
   initial?: boolean
 
   /**
-   * When a component is removed, there's no longer a chance to update its props. So if a component's `exit`
-   * prop is defined as a dynamic variant and you want to pass a new `custom` prop, you can do so via `AnimatePresence`.
-   * This will ensure all leaving components animate using the latest data.
+   * When a component is removed, there's no longer a chance to update its props directly. So if you need to update
+   * a variant for that component as it renders for the exit animation, set `custom` to an object value that
+   * is applied to the animating childrens props before they render once more to determine their final exit styles.
+   *
+   * The custom value must be JSON.stringify-able!
+   * This lets us memoize it and use it across workers for some animationd drivers.
+   *
+   * ```tsx
+   * <AnimatePresence custom={{ direction: 10 }}>
+   *   {isVisible && <Child />}
+   * </AnimatePresence>
+   *
+   * const Child = styled(View, { variants: { direction: ... } })
+   * ```
    *
    * @public
    */
-  custom?: any
+  custom?: Object
 
   /**
    * Fires when all exiting nodes have completed animating out.
@@ -75,12 +86,19 @@ export interface AnimatePresenceProps {
    */
   presenceAffectsLayout?: boolean
 
+  /**
+   * @deprecated use `custom` passing it an Object instead
+   */
   exitVariant?: string | null
 
+  /**
+   * @deprecated use `custom` passing it an Object instead
+   */
   enterVariant?: string | null
 
   /**
    * Will use a variant on the child component and apply the true styles for when its entering, false styles for when its exiting
+   * @deprecated use `custom` passing it an Object instead
    */
   enterExitVariant?: string | null
 }

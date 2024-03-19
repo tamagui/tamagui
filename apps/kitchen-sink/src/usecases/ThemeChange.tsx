@@ -19,7 +19,7 @@ export function Inner(props: { children?: any }) {
   const [theme, setTheme] = useState('yellow' as any)
 
   return (
-    <YStack bw={1} boc="red" p="$4" ai="center" jc="center" gap="$5">
+    <YStack bw={1} bc="red" p="$4" ai="center" jc="center" gap="$5">
       <pre>
         <code>
           <b>Inner</b>{' '}

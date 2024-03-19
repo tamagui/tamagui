@@ -1,21 +1,10 @@
-import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
-import { Lock, Play } from '@tamagui/lucide-icons'
+import { ThemeTint } from '@tamagui/logo'
 import { useThemeSetting } from '@tamagui/next-theme'
-import { Container } from 'components/Container'
-import { DivProps, HoverGlowProps, IS_SAFARI, useHoverGlow } from 'components/HoverGlow'
-import { NextLink } from 'components/NextLink'
+import type { DivProps, HoverGlowProps } from 'components/HoverGlow'
+import { IS_SAFARI, useHoverGlow } from 'components/HoverGlow'
 import { memo } from 'react'
-import {
-  Button,
-  H1,
-  H2,
-  HeadingProps,
-  Separator,
-  Spacer,
-  XStack,
-  YStack,
-  useComposedRefs,
-} from 'tamagui'
+import type { HeadingProps } from 'tamagui'
+import { H1, YStack, useComposedRefs } from 'tamagui'
 
 export const StudioScreen1 = memo(() => {
   const { resolvedTheme: themeName } = useThemeSetting()!

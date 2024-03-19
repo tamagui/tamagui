@@ -1,9 +1,11 @@
 import { setConfigFont } from './config'
+import { FONT_DATA_ATTRIBUTE_NAME } from './constants/constants'
 import { createFont } from './createFont'
-import { Variable } from './createVariable'
-import { DeepVariableObject, createVariables } from './createVariables'
+import type { Variable } from './createVariable'
+import type { DeepVariableObject } from './createVariables'
+import { createVariables } from './createVariables'
 import { registerCSSVariable, variableToCSS } from './helpers/registerCSSVariable'
-import { GenericFont } from './types'
+import type { GenericFont } from './types'
 
 /**
  * Runtime dynamic insert font
@@ -17,10 +19,12 @@ export function insertFont<A extends GenericFont>(
   const parsed = parseFont(tokened) as DeepVariableObject<A>
   if (process.env.TAMAGUI_TARGET === 'web' && typeof document !== 'undefined') {
     const fontVars = registerFontVariables(parsed)
-    const style = document.createElement('style')
-    style.innerText = `:root .font_${name} {${fontVars.join(';')}}`
-    style.setAttribute('data-tamagui-font', name)
-    document.head.appendChild(style)
+    const styleElement: HTMLStyleElement =
+      document.querySelector(`style[${FONT_DATA_ATTRIBUTE_NAME}="${name}"]`) ||
+      document.createElement('style')
+    styleElement.innerText = `:root .font_${name} {${fontVars.join(';')}}`
+    styleElement.setAttribute(FONT_DATA_ATTRIBUTE_NAME, name)
+    document.head.appendChild(styleElement)
   }
   setConfigFont(name, tokened, parsed)
   return parsed

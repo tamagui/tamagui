@@ -1,7 +1,5 @@
-import { createProxy } from './createProxy'
-
 export function proxyThemeVariables<A extends Object>(obj: A): A {
-  return createProxy<A>(obj || {}, {
+  return new Proxy<A>(obj || {}, {
     has(target, key) {
       return Reflect.has(target, removeStarting$(key))
     },

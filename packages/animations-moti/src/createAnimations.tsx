@@ -1,10 +1,14 @@
 import { PresenceContext, ResetPresence, usePresence } from '@tamagui/use-presence'
-import { AnimationDriver, UniversalAnimatedNumber } from '@tamagui/web'
+import {
+  stylePropsAll,
+  type AnimationDriver,
+  type UniversalAnimatedNumber,
+} from '@tamagui/web'
 import type { MotiTransition } from 'moti'
 import { useMotify } from 'moti/author'
-import { useCallback, useContext, useMemo } from 'react'
+import { useContext, useMemo } from 'react'
+import type { SharedValue } from 'react-native-reanimated'
 import Animated, {
-  SharedValue,
   cancelAnimation,
   runOnJS,
   useAnimatedReaction,
@@ -17,15 +21,85 @@ import Animated, {
 
 type ReanimatedAnimatedNumber = SharedValue<number>
 
+// function createTamaguiAnimatedComponent(tag = 'div') {
+//   const Component = Animated.createAnimatedComponent(
+//     forwardRef(({ forwardedRef, style, ...props }: any, ref) => {
+//       const composedRefs = useComposedRefs(forwardedRef, ref)
+//       const Element = props.tag || tag
+
+//       // TODO this block should be exported by web as styleToWebStyle()
+//       const webStyle = style
+//       styleToCSS(style)
+//       if (Array.isArray(webStyle.transform)) {
+//         style.transform = transformsToString(style.transform)
+//       }
+//       for (const key in style) {
+//         style[key] = normalizeValueWithProperty(style[key], key)
+//       }
+
+//       return <Element {...props} style={style} ref={composedRefs} />
+//     })
+//   )
+//   Component['acceptTagProp'] = true
+//   return Component
+// }
+
+// const AnimatedView = createTamaguiAnimatedComponent('div')
+// const AnimatedText = createTamaguiAnimatedComponent('span')
+
+const neverAnimate = {
+  alignItems: true,
+  backdropFilter: true,
+  borderBottomStyle: true,
+  borderLeftStyle: true,
+  borderRightStyle: true,
+  borderStyle: true,
+  borderTopStyle: true,
+  boxSizing: true,
+  contain: true,
+  margin: true,
+  marginTop: true,
+  marginLeft: true,
+  marginRight: true,
+  marginBottom: true,
+  cursor: true,
+  display: true,
+  flexBasis: true,
+  flexDirection: true,
+  flexShrink: true,
+  justifyContent: true,
+  maxHeight: true,
+  maxWidth: true,
+  minHeight: true,
+  minWidth: true,
+  outlineStyle: true,
+  overflow: true,
+  overflowX: true,
+  overflowY: true,
+  pointerEvents: true,
+  position: true,
+  shadowColor: true,
+  zIndex: true,
+
+  // text
+  userSelect: true,
+  fontFamily: true,
+  lineHeight: true,
+  textAlign: true,
+  textOverflow: true,
+  whiteSpace: true,
+  wordWrap: true,
+}
+
 export function createAnimations<A extends Record<string, MotiTransition>>(
   animations: A
 ): AnimationDriver<A> {
   return {
+    // View: isWeb ? AnimatedView : Animated.View,
+    // Text: isWeb ? AnimatedText : Animated.Text,
     View: Animated.View,
     Text: Animated.Text,
     isReactNative: true,
-    keepStyleSSR: true,
-    supportsCSSVars: true,
     animations,
     usePresence,
     ResetPresence,
@@ -98,61 +172,60 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
       }, [val, getStyle, derivedValue, instance])
     },
 
-    useAnimations: ({ props, presence, style, onDidAnimate }) => {
+    useAnimations: (animationProps) => {
+      const { props, presence, style, onDidAnimate, componentState } = animationProps
       const animationKey = Array.isArray(props.animation)
         ? props.animation[0]
         : props.animation
 
-      let animate: Object | undefined
-      let dontAnimate: Object | undefined
+      const isHydrating = componentState.unmounted === 'should-enter'
+      let animate = {}
+      let dontAnimate = {}
 
-      const animateOnly = props.animateOnly || ['transform', 'opacity']
-      if (animateOnly) {
-        animate = {}
-        dontAnimate = { ...style }
-        for (const key of animateOnly) {
-          if (!(key in style)) continue
-          animate[key] = style[key]
-          delete dontAnimate[key]
-        }
+      if (isHydrating) {
+        dontAnimate = style
       } else {
-        animate = { ...style }
-        dontAnimate = {}
+        const animateOnly = props.animateOnly as string[]
+        for (const key in style) {
+          if (
+            !stylePropsAll[key] ||
+            neverAnimate[key] ||
+            (animateOnly && !animateOnly.includes(key))
+          ) {
+            dontAnimate[key] = style[key]
+          } else {
+            animate[key] = style[key]
+          }
+        }
       }
 
       // without this, the driver breaks on native
       // stringifying -> parsing fixes that
       const animateStr = JSON.stringify(animate)
       const styles = useMemo(() => JSON.parse(animateStr), [animateStr])
-      const isExiting = Boolean(presence?.[1])
-      const sendExitComplete = presence?.[1]
-      const transition = animations[animationKey as keyof typeof animations]
 
-      const onDidAnimateCombined = useCallback(() => {
-        onDidAnimate?.()
-        sendExitComplete?.()
-      }, [])
+      const isExiting = Boolean(presence?.[1])
+      const presenceContext = useContext(PresenceContext)
+      const usePresenceValue = (presence || undefined) as any
+
+      type UseMotiProps = Parameters<typeof useMotify>[0]
 
       const motiProps = {
-        animate: isExiting ? undefined : styles,
-        transition,
-        onDidAnimate: onDidAnimateCombined,
-        usePresenceValue: presence as any,
-        presenceContext: useContext(PresenceContext),
+        animate: isExiting || isHydrating ? {} : styles,
+        transition: animations[animationKey as keyof typeof animations],
+        usePresenceValue,
+        presenceContext,
         exit: isExiting ? styles : undefined,
-      }
+      } satisfies UseMotiProps
 
       const moti = useMotify(motiProps)
 
-      if (process.env.NODE_ENV === 'development' && props['debug'] === 'verbose') {
-        console.info(`Moti animation:`, {
-          animate,
-          transition,
-          styles,
+      if (process.env.NODE_ENV === 'development' && props['debug']) {
+        console.info(`useMotify(`, JSON.stringify(motiProps, null, 2) + ')', {
+          animationProps,
+          motiProps,
           moti,
-          dontAnimate,
-          isExiting,
-          animateStr,
+          style: [dontAnimate, moti.style],
         })
       }
 

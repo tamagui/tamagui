@@ -1,8 +1,7 @@
-/// <reference types="react" />
-import { PopoverProps } from 'tamagui';
-export declare function PopoverDemo(): JSX.Element;
+import type { PopoverProps } from 'tamagui';
+export declare function PopoverDemo(): import("react/jsx-runtime").JSX.Element;
 export declare function Demo({ Icon, Name, ...props }: PopoverProps & {
     Icon?: any;
     Name?: string;
-}): JSX.Element;
+}): import("react/jsx-runtime").JSX.Element;
 //# sourceMappingURL=PopoverDemo.d.ts.map

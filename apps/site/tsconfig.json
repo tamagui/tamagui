@@ -5,17 +5,40 @@
     // for jumping to things properly in vscode
     "baseUrl": ".",
     "paths": {
-      "tamagui": ["../tamagui"],
-      "@tamagui/*": ["../../packages/*"],
-      "@tamagui/studio": ["../studio"],
-      "@components/*": ["./components/*"],
-      "@lib/*": ["./lib/*"],
-      "@protected/*": ["./studio/(protected)/*"],
-      "@data/*": ["./data/*"],
-      "react-native": ["react-native-web"]
+      "tamagui": [
+        "../tamagui"
+      ],
+      "@tamagui/studio": [
+        "../studio"
+      ],
+      "@tamagui/*": [
+        "../../packages/*"
+      ],
+      "@components/*": [
+        "./components/*"
+      ],
+      "@interfaces/*": [
+        "./interfaces/*"
+      ],
+      "@lib/*": [
+        "./lib/*"
+      ],
+      "@protected/*": [
+        "./studio/(protected)/*"
+      ],
+      "@data/*": [
+        "./data/*"
+      ],
+      "react-native": [
+        "react-native-web"
+      ]
     },
     "target": "es2021",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "strict": false,
     "allowJs": true,
     "noEmit": true,
@@ -27,6 +50,11 @@
     "resolveJsonModule": true,
     "incremental": true,
     "strictNullChecks": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
     // "plugins": [
     //   {
     //     "name": "next"
@@ -45,7 +73,13 @@
     "**/*.tsx",
     ".next/types/**/*.ts"
   ],
-  "exclude": ["node_modules", ".next", ".turbo", "out"],
+  "exclude": [
+    "node_modules",
+    "bento-output",
+    ".next",
+    ".turbo",
+    "out"
+  ],
   "references": [
     {
       "path": "../../packages/colors"

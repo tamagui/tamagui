@@ -4,8 +4,8 @@ on:
   pull_request:
   push:
     paths-ignore:
-      - 'assets/**'
-      - '.vscode/**'
+      - "assets/**"
+      - ".vscode/**"
     branches:
       - master
 
@@ -15,10 +15,18 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
+      - name: Unlock secrets
+        uses: sliteteam/github-action-git-crypt-unlock@1.2.0
+        env:
+          GIT_CRYPT_KEY: ${{ secrets.GIT_CRYPT_KEY }}
+
       - name: Install
         uses: ./.github/actions/install
+
       - name: Check
         run: yarn check
+
       - name: Lint
         run: yarn lint
 
@@ -28,14 +36,28 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Unlock Secrets
+        uses: sliteteam/github-action-git-crypt-unlock@1.2.0
+        env:
+          GIT_CRYPT_KEY: ${{ secrets.GIT_CRYPT_KEY }}
+
       - name: Install
         uses: ./.github/actions/install
 
       - name: Install playwright
         run: npx playwright install
 
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+
+      - name: Link Vercel Project
+        run: cd apps/site && vercel link --project site --scope=tamagui --yes --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Pull Vercel Environment Information
+        run: cd apps/site && vercel env pull .env.local --scope=tamagui --yes --token=${{ secrets.VERCEL_TOKEN }}
+
       - uses: nick-fields/retry@v2
         with:
           timeout_minutes: 15
           max_attempts: 2
-          command: 'yarn test:ci'
+          command: "yarn test:ci"

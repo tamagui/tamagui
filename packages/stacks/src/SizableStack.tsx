@@ -1,4 +1,5 @@
-import { GetProps, styled } from '@tamagui/core'
+import type { GetProps } from '@tamagui/core'
+import { styled } from '@tamagui/core'
 import { getButtonSized } from '@tamagui/get-button-sized'
 
 import { XStack } from './Stacks'

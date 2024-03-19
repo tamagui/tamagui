@@ -1,11 +1,13 @@
-import { ColorTokens, SizeTokens, ThemeTokens } from '@tamagui/core';
-import { SvgProps } from 'react-native-svg';
-export type BaseIconProps = {
+import type { GetFinalProps, SizeTokens, StackStyleBase } from '@tamagui/core';
+import type { SvgProps } from 'react-native-svg';
+export interface IconStyleProps extends StackStyleBase {
     size?: number | SizeTokens;
     strokeWidth?: number | SizeTokens;
-    color?: (ColorTokens | ThemeTokens | (string & {})) | null;
+    color?: string;
+}
+export type NonStyleProps = Omit<SvgProps, keyof IconStyleProps> & {
     disableTheme?: boolean;
     style?: SvgProps['style'];
 };
-export type IconProps = Omit<SvgProps, keyof BaseIconProps> & BaseIconProps;
+export type IconProps = GetFinalProps<NonStyleProps, IconStyleProps, {}>;
 //# sourceMappingURL=IconProps.d.ts.map

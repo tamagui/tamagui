@@ -9,6 +9,27 @@ process.env.TAMAGUI_TARGET = 'native'
 window['React'] = React
 
 describe('flatten-tests', () => {
+  test(`flattened without extra attributes`, async () => {
+    const output = await extractForNative(`
+      import { YStack } from 'tamagui/src/YStack'
+      import { useMedia } from 'tamagui'
+  
+      export function Test(isLoading) {
+        const media = useMedia()
+        
+        return (
+          <YStack
+            y={10}
+            x={20}
+            rotate="10deg"
+          />
+        )
+      }
+    `)
+
+    expect(output?.code).toContain(`<__ReactNativeView style={_sheet["0"]} />`)
+  })
+
   test('flattened media queries', async () => {
     const output = await extractForNative(`
       import { YStack } from 'tamagui/src/YStack'
@@ -55,7 +76,6 @@ describe('flatten-tests', () => {
         },
       ],
       flexDirection: 'column',
-      alignItems: 'stretch',
     })
 
     expect(sheetStyles['1']).toEqual({
@@ -77,5 +97,54 @@ describe('flatten-tests', () => {
     expect(sheetStyles['5']).toEqual({
       backgroundColor: 'blue',
     })
+  })
+
+  test(`work with experimentalFlattenThemesOnNative`, async () => {
+    const output = await extractForNative(`
+      import { YStack } from 'tamagui/src/YStack'
+  
+      export function Test(isLoading) {
+        return (
+          <YStack
+            y={10}
+            x={20}
+            rotate="10deg"
+            backgroundColor="$background"
+          />
+        )
+      }
+    `)
+
+    expect(output?.code).toMatchSnapshot()
+  })
+
+  test(`work with experimentalFlattenThemesOnNative + ternary`, async () => {
+    const output = await extractForNative(`// debug
+      import { View } from 'tamagui'
+  
+      export function Test() {
+        return (
+          <View backgroundColor={showBackground ? '$color1' : '$color2'} />
+        )
+      }
+    `)
+
+    expect(output?.code).toMatchSnapshot()
+  })
+
+  // TODO make this work:
+  test.skip(`keeps style object a single object case 2`, async () => {
+    const output = await extractForNative(`
+      import { View } from 'tamagui'
+  
+      export function Test() {
+        return (
+          <View position="absolute" key={0} right="$2" top="$2" />
+        )
+      }
+    `)
+
+    // just one sheet
+    expect(output?.code).toContain(`style={_sheet["0"]}`)
   })
 })

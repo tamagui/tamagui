@@ -151,7 +151,7 @@ height: ${parentBounds.height}`
 
   if (process.env.NODE_ENV === 'development') {
     // unset border on debug off
-    // eslint-disable-next-line react-hooks/rules-of-hooks
+
     useEffect(() => {
       if (!props.debug) {
         if (!parentNode) return
@@ -166,7 +166,6 @@ height: ${parentBounds.height}`
   // be sure to update style when restingStyle updates
   useIsomorphicLayoutEffect(() => {
     recalculate()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify({ restingStyle, style })])
 
   const parentRef = (ref?: HTMLElement | null) => setParentNode(ref || undefined)
@@ -573,7 +572,6 @@ const useGetBounds = ({
       ro.disconnect()
     }
     // onDidUpdate is event callback
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [node])
 
   return useCallback(

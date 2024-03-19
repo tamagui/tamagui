@@ -1,6 +1,13 @@
 # Contributing to `tamagui`
 
-Welcome to the Tamagui contributing guide. We appreciate your interest in contributing to Tamagui. In our effort to make Tamagui open and inclusive to all we have written a [code of conduct](#TODO), please endeavour to read through it.
+We are grateful your contributions to Tamagui. Before contributing, please:
+
+- Don't flame, troll, or otherwise act in bad faith.
+- Assume good intentions.
+- Keep your criticism constructive.
+- Attack ideas, but not people.
+
+We strive to make Tamagui open and inclusive to all.
 
 #### Table of content
 

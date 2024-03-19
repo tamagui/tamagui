@@ -1,9 +1,5 @@
-import {
-  TamaguiOptions,
-  createExtractor,
-  extractToClassNames,
-  getPragmaOptions,
-} from '@tamagui/static'
+import type { TamaguiOptions } from '@tamagui/static'
+import { createExtractor, extractToClassNames, getPragmaOptions } from '@tamagui/static'
 import type { LoaderContext } from 'webpack'
 
 Error.stackTraceLimit = Infinity
@@ -24,6 +20,12 @@ export const loader = async function loader(
 ) {
   this.cacheable(true)
   const callback = this.async()
+  const sourcePath = `${this.resourcePath}`
+
+  if (sourcePath.includes('node_modules') || sourcePath.includes('lucide-icons')) {
+    return callback(null, sourceIn)
+  }
+
   const source = sourceIn.toString()
 
   try {
@@ -32,7 +34,6 @@ export const loader = async function loader(
       platform: 'web',
       ...this.getOptions(),
     }
-    const sourcePath = `${this.resourcePath}`
 
     const { shouldDisable, shouldPrintDebug } = getPragmaOptions({
       source,

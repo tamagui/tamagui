@@ -1,6 +1,6 @@
-import React from 'react'
+import type React from 'react'
 
-import { FontLanguages, FontTokens } from '../types'
+import type { FontLanguages, FontTokens } from '../types'
 
 type FontFamilies = FontTokens extends `$${infer Token}` ? Token : never
 

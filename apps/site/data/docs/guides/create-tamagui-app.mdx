@@ -1,28 +1,38 @@
 ---
-title: Create Tamagui App
-description: Get started with helpful templates
+title: Bootstrapping
+description: Starter kits for React Native
 ---
 
 Set up a starter repo to help learn about and/or bootstrap your tamagui app:
 
 ### Templates
 
-Currently, we have two template available:
+There are four starter templates:
 
-- `starter-free` Expo, Expo Router, Solito and Next.js (with both `/pages` and `/app` dir)
-- `simple-web` (recommended for learning) Client-only web app with Webpack or Vite. Useful to understand how to set up tamagui.config.ts.
+- Free - Expo, Expo Router, Solito and Next.js (with both `/pages` and `/app`
+  dir).
+- Learn - Client-only web app with Webpack or Vite. Useful to understand how to
+  set up tamagui.config.ts.
+- [Expo Router](/docs/guides/expo) - The Expo Router default starter with
+  Tamagui added via `@tamagui/metro-plugin`.
+- [Takeout](/takeout) - A more robust, paid and supported starter kit.
 
 ### Usage
 
 ```bash
-npm create tamagui
+npm create tamagui@latest
 ```
 
-Check out [the source of the templates](https://github.com/tamagui/tamagui/tree/master/starters).
+Check out
+[the source of the templates](https://github.com/tamagui/tamagui/tree/master/starters).
 
-A big shout out to [Fernando Rojo](https://twitter.com/fernandotherojo) for creating [Solito](https://solito.dev), a great library for sharing all your views between Expo and Next.js, and the bootstrap repo we borrowed from.
+A big shout out to [Fernando Rojo](https://twitter.com/fernandotherojo) for
+creating [Solito](https://solito.dev), a great library for sharing all your
+views between Expo and Next.js, and the bootstrap repo we borrowed from.
 
 ### Starting out
+
+The starter-free app requires yarn to run.
 
 To run the app:
 
@@ -41,7 +51,8 @@ yarn native # Expo local dev (only for `starter-free`)
 - Expo SDK 48
 - Next.js 13
 
-By integrating `Tamagui`, `expo-router`, `Solito`, and, `Next.js` you can enjoy the power and simplicity of creating universal apps.
+By integrating `Tamagui`, `expo-router`, `Solito`, and, `Next.js` you can enjoy
+the power and simplicity of creating universal apps.
 
 ## 🗂 Folder layout
 
@@ -54,9 +65,11 @@ By integrating `Tamagui`, `expo-router`, `Solito`, and, `Next.js` you can enjoy 
   - `app` you'll be importing most files from `app/`
     - `features` (don't use a `screens` folder. organize by feature.)
     - `provider` (all the providers that wrap the app, and some no-ops for Web.)
-    - `navigation` only for starter-free template, contains the navigation code for RN
+    - `navigation` only for starter-free template, contains the navigation code
+      for RN
 
-You can add other folders inside of `packages/` if you know what you're doing and have a good reason to.
+You can add other folders inside of `packages/` if you know what you're doing
+and have a good reason to.
 
 ## 🏁 Start the app
 
@@ -71,7 +84,8 @@ You can add other folders inside of `packages/` if you know what you're doing an
 
 ### Pure JS dependencies
 
-If you're installing a JavaScript-only dependency that will be used across platforms, install it in `packages/app`:
+If you're installing a JavaScript-only dependency that will be used across
+platforms, install it in `packages/app`:
 
 ```bash
 cd packages/app
@@ -82,7 +96,8 @@ yarn
 
 ### Native dependencies
 
-If you're installing a library with any native code, you must install it in `apps/expo`:
+If you're installing a library with any native code, you must install it in
+`apps/expo`:
 
 ```bash
 cd apps/expo
@@ -92,7 +107,12 @@ cd ../..
 yarn
 ```
 
-You can also install the native library inside of `packages/app` if you want to get autoimport for that package inside of the `app` folder. However, you need to be careful and install the _exact_ same version in both packages. If the versions mismatch at all, you'll potentially get terrible bugs. This is a classic monorepo issue. I use `lerna-update-wizard` to help with this (you don't need to use Lerna to use that lib).
+You can also install the native library inside of `packages/app` if you want to
+get autoimport for that package inside of the `app` folder. However, you need to
+be careful and install the _exact_ same version in both packages. If the
+versions mismatch at all, you'll potentially get terrible bugs. This is a
+classic monorepo issue. I use `lerna-update-wizard` to help with this (you don't
+need to use Lerna to use that lib).
 
 ```
 

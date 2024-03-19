@@ -107,11 +107,11 @@ export function bezier(mX1: number, mY1: number, mX2: number, mY2: number) {
     const initialSlope = getSlope(guessForT, mX1, mX2)
     if (initialSlope >= NEWTON_MIN_SLOPE) {
       return newtonRaphsonIterate(aX, guessForT, mX1, mX2)
-    } else if (initialSlope === 0.0) {
-      return guessForT
-    } else {
-      return binarySubdivide(aX, intervalStart, intervalStart + kSampleStepSize, mX1, mX2)
     }
+    if (initialSlope === 0.0) {
+      return guessForT
+    }
+    return binarySubdivide(aX, intervalStart, intervalStart + kSampleStepSize, mX1, mX2)
   }
 
   return function BezierEasing(x: number) {

@@ -6,7 +6,11 @@
   "references": [
     {
       "path": "../core"
-    },
-    
+    }
+  ],
+  "exclude": [
+    "types",
+    "dist",
+    "**/__tests__"
   ]
 }

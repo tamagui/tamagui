@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/tabs",
-  "version": "1.79.13",
+  "version": "1.91.5",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -25,28 +25,29 @@
     ".": {
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.js"
+      "require": "./dist/cjs/index.js",
+      "react-native": "./dist/cjs/index.native.js"
     }
   },
   "dependencies": {
-    "@tamagui/compose-refs": "1.79.13",
-    "@tamagui/constants": "1.79.13",
-    "@tamagui/create-context": "1.79.13",
-    "@tamagui/get-button-sized": "1.79.13",
-    "@tamagui/group": "1.79.13",
-    "@tamagui/helpers": "1.79.13",
-    "@tamagui/roving-focus": "1.79.13",
-    "@tamagui/stacks": "1.79.13",
-    "@tamagui/use-controllable-state": "1.79.13",
-    "@tamagui/use-direction": "1.79.13",
-    "@tamagui/web": "1.79.13"
+    "@tamagui/compose-refs": "1.91.5",
+    "@tamagui/constants": "1.91.5",
+    "@tamagui/create-context": "1.91.5",
+    "@tamagui/get-button-sized": "1.91.5",
+    "@tamagui/group": "1.91.5",
+    "@tamagui/helpers": "1.91.5",
+    "@tamagui/roving-focus": "1.91.5",
+    "@tamagui/stacks": "1.91.5",
+    "@tamagui/use-controllable-state": "1.91.5",
+    "@tamagui/use-direction": "1.91.5",
+    "@tamagui/web": "1.91.5"
   },
   "peerDependencies": {
     "react": "*",
     "react-dom": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.79.13",
+    "@tamagui/build": "1.91.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

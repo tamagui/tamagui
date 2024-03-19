@@ -60,7 +60,7 @@ export const circular = {
     if (!('size' in props)) {
       return circularStyle
     }
-    const size = tokens.size[props.size]
+    const size = typeof props.size === 'number' ? props.size : tokens.size[props.size]
     return {
       ...circularStyle,
       width: size,

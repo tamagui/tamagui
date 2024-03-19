@@ -1,4 +1,4 @@
-import { ScopedProps, SelectScrollButtonProps } from './types'
+import type { ScopedProps, SelectScrollButtonProps } from './types'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const SelectScrollUpButton = (_: ScopedProps<SelectScrollButtonProps>) => null

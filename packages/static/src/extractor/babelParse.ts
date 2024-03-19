@@ -1,5 +1,5 @@
 import * as babelParser from '@babel/parser'
-import * as t from '@babel/types'
+import type * as t from '@babel/types'
 
 const plugins: babelParser.ParserPlugin[] = [
   'asyncGenerators',

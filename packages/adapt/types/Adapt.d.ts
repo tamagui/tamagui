@@ -1,5 +1,5 @@
 /// <reference types="react" />
-import { MediaQueryKey } from '@tamagui/core';
+import type { MediaQueryKey } from '@tamagui/core';
 type MediaQueryKeyString = MediaQueryKey extends string ? MediaQueryKey : never;
 export type AdaptProps = {
     when?: MediaQueryKeyString;
@@ -22,7 +22,7 @@ export declare const useAdaptParent: ({ Contents, }: {
 }) => {
     AdaptProvider: (props: {
         children?: any;
-    }) => JSX.Element;
+    }) => import("react/jsx-runtime").JSX.Element;
     when: When;
 };
 export declare const Adapt: (({ platform, when, children }: AdaptProps) => any) & {

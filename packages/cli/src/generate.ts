@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { CLIResolvedOptions } from '@tamagui/types'
+import type { CLIResolvedOptions } from '@tamagui/types'
 import fs from 'fs-extra'
 import { Project } from 'ts-morph'
 

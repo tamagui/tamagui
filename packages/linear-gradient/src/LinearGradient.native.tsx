@@ -4,7 +4,6 @@
  */
 
 export function LinearGradient(props) {
-  const Real = require('./LinearGradient.shared').LinearGradient
-
+  const Real = require('./LinearGradient-shared').LinearGradient
   return <Real {...props} />
 }

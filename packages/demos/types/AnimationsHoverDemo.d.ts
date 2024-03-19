@@ -1,3 +1,2 @@
-/// <reference types="react" />
-export declare function AnimationsHoverDemo(): JSX.Element;
+export declare function AnimationsHoverDemo(): import("react/jsx-runtime").JSX.Element;
 //# sourceMappingURL=AnimationsHoverDemo.d.ts.map

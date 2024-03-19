@@ -1,8 +1,10 @@
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
-import { Link, Subtitles } from '@tamagui/lucide-icons'
+import { CheckCircle, ChevronRight, Copy, Link as LinkIcon } from '@tamagui/lucide-icons'
 import { NextLink } from 'components/NextLink'
-import React, { useState } from 'react'
+import { useRouter } from 'next/router'
+import React, { forwardRef, useState } from 'react'
 import { ScrollView } from 'react-native'
+import type { ImageProps, XStackProps, TabsProps, TabsTabProps } from 'tamagui'
 import {
   Button,
   Card,
@@ -12,19 +14,19 @@ import {
   H4,
   H5,
   Image,
-  ImageProps,
   Paragraph,
   Separator,
   Spacer,
+  styled,
+  Tabs,
   Text,
   Theme,
   ThemeableStack,
   TooltipSimple,
+  withStaticProperties,
   XGroup,
   XStack,
-  XStackProps,
   YStack,
-  styled,
 } from 'tamagui'
 import { LinearGradient } from 'tamagui/linear-gradient'
 
@@ -54,6 +56,26 @@ import { TamaguiCard } from './TamaguiCard'
 import { TamaguiExamplesCode } from './TamaguiExamplesCode'
 import { UL } from './UL'
 import { unwrapText } from './unwrapText'
+import { Link } from './Link'
+import { CustomTabs } from './CustomTabs'
+import { useClipboard } from '../lib/useClipboard'
+
+const IntroParagraph = ({ children, large, disableUnwrapText, ...props }: any) => {
+  return (
+    <Paragraph
+      tag="p"
+      size={large ? '$9' : '$8'}
+      mb="$4"
+      fow={large ? '200' : '300'}
+      $sm={{
+        size: '$7',
+      }}
+      {...props}
+    >
+      {disableUnwrapText ? children : unwrapText(children)}
+    </Paragraph>
+  )
+}
 
 const TableFrame = styled(ThemeableStack, {
   bordered: true,
@@ -66,7 +88,7 @@ const Table = ({ heading, children, ...props }) => {
   return (
     <TableFrame className="no-scrollbar" overflow={'scroll' as any} {...props}>
       {!!heading && (
-        <TableCell size="$4" bc="$color1" fow="500" color="$color9">
+        <TableCell size="$4" bg="$color1" fow="500" color="$color9">
           {heading}
         </TableCell>
       )}
@@ -125,12 +147,12 @@ const TableCell = styled(Paragraph, {
   variants: {
     head: {
       true: {
-        bc: '$color1',
+        bg: '$color1',
       },
     },
     highlight: {
       true: {
-        bc: '$yellow2',
+        bg: '$yellow2',
       },
     },
   } as const,
@@ -146,10 +168,12 @@ const TableCol = styled(ThemeableStack, {
 
 const TableHighlight = styled(YStack, {
   fullscreen: true,
-  bc: '$yellow1',
+  bg: '$yellow1',
 })
 
 export const components = {
+  Tabs: CustomTabs,
+
   SocialLinksRow: () => (
     <YStack mt="$6" mx="$-4">
       <SocialLinksRow />
@@ -208,7 +232,7 @@ export const components = {
         br="$6"
         bw={1}
         o={0.8}
-        boc="$borderColor"
+        bc="$borderColor"
         {...props}
       />
     )
@@ -231,22 +255,7 @@ export const components = {
     </Button>
   ),
 
-  IntroParagraph: ({ children, large, disableUnwrapText, ...props }) => {
-    return (
-      <Paragraph
-        tag="p"
-        size={large ? '$9' : '$8'}
-        my="$4"
-        fow={large ? '200' : '300'}
-        $sm={{
-          size: '$7',
-        }}
-        {...props}
-      >
-        {disableUnwrapText ? children : unwrapText(children)}
-      </Paragraph>
-    )
-  },
+  IntroParagraph,
 
   Grid: (props) => <XStack flexWrap="wrap" jc="space-between" {...props} />,
   Card: TamaguiCard,
@@ -286,13 +295,7 @@ export const components = {
 
   h3: ({ children, id, ...props }) => (
     <LinkHeading pt="$8" mt="$-4" mb="$1" id={id}>
-      <H3
-        pos="relative"
-        width={`fit-content` as any}
-        nativeID={id}
-        data-heading
-        {...props}
-      >
+      <H3 pos="relative" width={`fit-content` as any} id={id} data-heading {...props}>
         {children}
       </H3>
       {getNonTextChildren(children)}
@@ -520,7 +523,7 @@ export const components = {
           <YStack ov="hidden" f={1} o={0.85} space>
             <Paragraph>
               Tamagui is fully OSS, self-funded and built by{' '}
-              <a href="https://twitter.com/natebirdman" target="_blank">
+              <a href="https://twitter.com/natebirdman" target="_blank" rel="noreferrer">
                 me
               </a>
               .
@@ -547,24 +550,110 @@ export const components = {
     },
   },
 
-  GetStarted: () => {
+  DocsIntro: () => {
     return (
-      <XStack gap="$4" f={1} fw="wrap" mt="$6">
+      <YStack gap="$1">
+        <ThemeTintAlt offset={2}>
+          <IntroParagraph mt="$4">
+            Tamagui makes styling React easy and fast on web, Android, and iOS. It focuses
+            on platform-native output, with an optional optimizing compiler that
+            significantly improves your app or site performance.
+          </IntroParagraph>
+
+          <Paragraph size="$6">Tamagui is three things:</Paragraph>
+
+          <UL mt="$4" gap="$2">
+            <ThemeTintAlt>
+              <LI size="$6" color="$color11">
+                {/* @ts-ignore */}
+                <Link fontSize="inherit" href="/docs/core/introduction">
+                  <CodeInline>
+                    <span style={{ color: 'var(--color12)' }}>@tamagui/core</span>
+                  </CodeInline>
+                </Link>
+                &nbsp;is a style library that expands on the React Native style API with
+                many features from CSS - all without any external dependency except for
+                React.
+              </LI>
+            </ThemeTintAlt>
+
+            <ThemeTintAlt offset={2}>
+              <LI size="$6" color="$color11">
+                {/* @ts-ignore */}
+                <Link fontSize="inherit" href="/docs/intro/compiler-install">
+                  <CodeInline>
+                    <span style={{ color: 'var(--color12)' }}>@tamagui/static</span>
+                  </CodeInline>
+                </Link>{' '}
+                is an optimizing compiler that{' '}
+                <Link
+                  // @ts-ignore
+                  fontSize="inherit"
+                  href="/docs/intro/benchmarks"
+                >
+                  significantly improves performance
+                </Link>{' '}
+                by hoisting objects and CSS at build-time, leaving behind flatter React
+                trees.
+              </LI>
+            </ThemeTintAlt>
+
+            <ThemeTintAlt offset={3}>
+              <LI size="$6" color="$color11">
+                {/* @ts-ignore */}
+                <Link fontSize="inherit" href="/docs/components/stacks">
+                  <CodeInline>
+                    <span style={{ color: 'var(--color12)' }}>tamagui</span>
+                  </CodeInline>
+                </Link>{' '}
+                is a large universal component kit in styled and unstyled forms.
+              </LI>
+            </ThemeTintAlt>
+          </UL>
+        </ThemeTintAlt>
+      </YStack>
+    )
+  },
+
+  GetStarted: () => {
+    const clipBoard = useClipboard(`npm create tamagui@latest`)
+
+    return (
+      <XStack gap="$4" f={1} fw="wrap" pt="$3" my="$5">
         <ThemeTintAlt>
           <Card f={1}>
             <Card.Header gap="$2">
-              <H4 size="$4" color="$color8">
+              <H4 size="$4" color="$color9">
                 Quick start
               </H4>
-              <Paragraph size="$6" color="$color9">
-                Bootstrap a production-ready app in seconds:
+              <Paragraph size="$4" color="$color11">
+                Choose from a few starters:
               </Paragraph>
             </Card.Header>
 
             <Card.Footer p="$6" pt={0}>
-              <Code f={1} bc="$color4" p="$3" br="$4" size="$6">
-                npm create tamagui@latest
-              </Code>
+              <XStack gap="$4" f={1}>
+                <Code f={1} bg="$color4" p="$3" br="$4" size="$5">
+                  npm create tamagui@latest
+                </Code>
+                <Button
+                  position="absolute"
+                  aria-label="Copy code to clipboard"
+                  size="$2"
+                  top="$3"
+                  right="$3"
+                  display="inline-flex"
+                  icon={clipBoard.hasCopied ? CheckCircle : Copy}
+                  onPress={() => {
+                    clipBoard.onCopy()
+                  }}
+                  $xs={{
+                    display: 'none',
+                  }}
+                >
+                  Copy
+                </Button>
+              </XStack>
             </Card.Footer>
           </Card>
         </ThemeTintAlt>
@@ -575,7 +664,8 @@ export const components = {
             animation="quickest"
             f={1}
             y={0}
-            hoverStyle={{ y: -10, bc: '$backgroundHover' }}
+            hoverStyle={{ y: -2, bg: '$backgroundHover' }}
+            pressStyle={{ y: 2, bg: '$color2' }}
           >
             <Card.Header gap="$2">
               <H4 size="$4" color="$color8">
@@ -585,6 +675,10 @@ export const components = {
                 Set up an app.
               </Paragraph>
             </Card.Header>
+
+            <Card.Footer>
+              <ChevronRight pos="absolute" b="$4" r="$4" color="$color11" />
+            </Card.Footer>
           </Card>
         </NextLink>
       </XStack>
@@ -598,13 +692,13 @@ export const components = {
       <YStack
         tag="aside"
         space="$2"
-        bc="$color1"
+        bg="$color1"
         br="$4"
         p="$5"
         px="$5"
         pb="$10"
         mx="$-2"
-        boc="$borderColor"
+        bc="$borderColor"
         bw={1}
         my="$4"
         pos="relative"
@@ -625,7 +719,7 @@ export const components = {
             l={0}
             r={0}
             height={200}
-            colors={['$backgroundTransparent', '$background']}
+            colors={['$background0', '$background']}
             zi={1000}
           >
             <Spacer f={1} />
@@ -653,7 +747,7 @@ const LinkHeading = ({ id, children, ...props }: { id: string } & XStackProps) =
   >
     {children}
     <YStack tag="span" opacity={0.3}>
-      <Link size={12} color="var(--color)" aria-hidden />
+      <LinkIcon size={12} color="var(--color)" aria-hidden />
     </YStack>
   </XStack>
 )

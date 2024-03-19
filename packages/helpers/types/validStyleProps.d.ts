@@ -1,6 +1,3 @@
-export declare const validStylesOnBaseProps: {
-    placeholderTextColor: boolean;
-};
 export declare const tokenCategories: {
     radius: {
         borderRadius: boolean;
@@ -26,10 +23,9 @@ export declare const tokenCategories: {
     };
     color: {
         outlineColor?: boolean | undefined;
+        color: boolean;
         textDecorationColor: boolean;
         textShadowColor: boolean;
-        placeholderTextColor: boolean;
-        color: boolean;
         backgroundColor: boolean;
         borderColor: boolean;
         borderBlockStartColor: boolean;
@@ -159,7 +155,6 @@ export declare const stylePropsView: {
     rotateY: boolean;
     rotateX: boolean;
     rotateZ: boolean;
-    placeholderTextColor: boolean;
     borderRadius: boolean;
     borderTopLeftRadius: boolean;
     borderTopRightRadius: boolean;
@@ -176,9 +171,9 @@ export declare const stylePropsView: {
     maxWidth: boolean;
     maxHeight: boolean;
     outlineColor?: boolean | undefined;
+    color: boolean;
     textDecorationColor: boolean;
     textShadowColor: boolean;
-    color: boolean;
     backgroundColor: boolean;
     borderColor: boolean;
     borderBlockStartColor: boolean;
@@ -203,6 +198,7 @@ export declare const stylePropsView: {
     borderTopWidth: boolean;
     borderWidth: boolean;
     transform: boolean;
+    transformOrigin: boolean;
     alignContent: boolean;
     alignItems: boolean;
     alignSelf: boolean;
@@ -277,10 +273,9 @@ export declare const stylePropsTextOnly: {
     WebkitBoxOrient?: boolean | undefined;
     textShadowOffset: boolean;
     textShadowRadius: boolean;
+    color: boolean;
     textDecorationColor: boolean;
     textShadowColor: boolean;
-    placeholderTextColor: boolean;
-    color: boolean;
     textAlign: boolean;
     textDecorationLine: boolean;
     textDecorationStyle: boolean;
@@ -304,10 +299,9 @@ export declare const stylePropsText: {
     WebkitBoxOrient?: boolean | undefined;
     textShadowOffset: boolean;
     textShadowRadius: boolean;
+    color: boolean;
     textDecorationColor: boolean;
     textShadowColor: boolean;
-    placeholderTextColor: boolean;
-    color: boolean;
     textAlign: boolean;
     textDecorationLine: boolean;
     textDecorationStyle: boolean;
@@ -416,6 +410,7 @@ export declare const stylePropsText: {
     borderTopWidth: boolean;
     borderWidth: boolean;
     transform: boolean;
+    transformOrigin: boolean;
     alignContent: boolean;
     alignItems: boolean;
     alignSelf: boolean;
@@ -481,10 +476,9 @@ export declare const stylePropsAll: {
     WebkitBoxOrient?: boolean | undefined;
     textShadowOffset: boolean;
     textShadowRadius: boolean;
+    color: boolean;
     textDecorationColor: boolean;
     textShadowColor: boolean;
-    placeholderTextColor: boolean;
-    color: boolean;
     textAlign: boolean;
     textDecorationLine: boolean;
     textDecorationStyle: boolean;
@@ -593,6 +587,7 @@ export declare const stylePropsAll: {
     borderTopWidth: boolean;
     borderWidth: boolean;
     transform: boolean;
+    transformOrigin: boolean;
     alignContent: boolean;
     alignItems: boolean;
     alignSelf: boolean;
@@ -647,11 +642,13 @@ export declare const stylePropsAll: {
     shadowRadius: boolean;
 };
 export declare const validPseudoKeys: {
+    focusVisibleStyle?: boolean | undefined;
     enterStyle: boolean;
     exitStyle: boolean;
     hoverStyle: boolean;
     pressStyle: boolean;
     focusStyle: boolean;
+    disabledStyle: boolean;
 };
 export declare const validStyles: {
     elevationAndroid?: boolean | undefined;
@@ -716,7 +713,6 @@ export declare const validStyles: {
     rotateY: boolean;
     rotateX: boolean;
     rotateZ: boolean;
-    placeholderTextColor: boolean;
     borderRadius: boolean;
     borderTopLeftRadius: boolean;
     borderTopRightRadius: boolean;
@@ -733,9 +729,9 @@ export declare const validStyles: {
     maxWidth: boolean;
     maxHeight: boolean;
     outlineColor?: boolean | undefined;
+    color: boolean;
     textDecorationColor: boolean;
     textShadowColor: boolean;
-    color: boolean;
     backgroundColor: boolean;
     borderColor: boolean;
     borderBlockStartColor: boolean;
@@ -760,6 +756,7 @@ export declare const validStyles: {
     borderTopWidth: boolean;
     borderWidth: boolean;
     transform: boolean;
+    transformOrigin: boolean;
     alignContent: boolean;
     alignItems: boolean;
     alignSelf: boolean;
@@ -812,10 +809,12 @@ export declare const validStyles: {
     direction: boolean;
     shadowOffset: boolean;
     shadowRadius: boolean;
+    focusVisibleStyle?: boolean | undefined;
     enterStyle: boolean;
     exitStyle: boolean;
     hoverStyle: boolean;
     pressStyle: boolean;
     focusStyle: boolean;
+    disabledStyle: boolean;
 };
 //# sourceMappingURL=validStyleProps.d.ts.map

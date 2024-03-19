@@ -1,11 +1,12 @@
-import { SupabaseClient, createClient } from '@supabase/supabase-js'
-import Stripe from 'stripe'
-import { Price, Product } from 'types'
+import type { SupabaseClient } from '@supabase/supabase-js'
+import { createClient } from '@supabase/supabase-js'
+import type { Price, Product } from 'site-types'
+import type Stripe from 'stripe'
 
 import { sendTakeoutWelcomeEmail } from './email'
 import { toDateTime } from './helpers'
 import { stripe } from './stripe'
-import { Database } from './supabase-types'
+import type { Database } from './supabase-types'
 
 // Note: supabaseAdmin uses the SERVICE_ROLE_KEY which you must only use in a secure server-side context
 // as it has admin priviliges and overwrites RLS policies!
@@ -230,10 +231,21 @@ export const manageSubscriptionStatusChange = async (
       throw userModel.error
     }
 
-    await sendTakeoutWelcomeEmail(email, {
-      name: userModel.data.full_name ?? email.split('@').shift()!,
-    })
-    console.info(`Welcome email request sent to Postmark for ${email}`)
+    const subscribedProducts = await Promise.all(
+      subscription.items.data.map((item) =>
+        stripe.products.retrieve(item.price.product as string)
+      )
+    )
+    const includesTakeoutStarter = subscribedProducts.some(
+      (product) => product.metadata.slug === 'universal-starter'
+    )
+    if (includesTakeoutStarter) {
+      await sendTakeoutWelcomeEmail(email, {
+        name: userModel.data.full_name ?? email.split('@').shift()!,
+      })
+      console.info(`Welcome email request sent to Postmark for ${email}`)
+    }
+    // TODO: add a welcome email for bento (just like the one above) here:
   }
 }
 
@@ -259,10 +271,33 @@ export async function addRenewalSubscription(
     )
   )
 
-  const renewalPriceIds: string[] = []
   const customerId =
     typeof session.customer === 'string' ? session.customer : session.customer!.id
+
+  const { data: userData, error: userError } = await supabaseAdmin
+    .from('customers')
+    .select('*')
+    .eq('stripe_customer_id', customerId)
+    .single()
+  if (userError) {
+    throw userError
+  }
+  const userId = userData.id
+
+  const renewalPriceIds: string[] = []
   for (const price of prices) {
+    if (price.metadata.is_lifetime) {
+      // create ownership record for the user if it's for lifetime
+      await supabaseAdmin.from('product_ownership').insert({
+        price_id: price.id,
+        user_id: userId,
+      })
+      continue
+    }
+    // else, we need to:
+    // 1. get or create a recurring price
+    // 2. set up a subscription to the price with 1 year of trial so that it starts charging after 1y
+    // we add the 1y trial because the user just paid for the first year
     if (typeof price.product === 'string' || price.product.deleted) {
       console.warn('no product object - returning')
       continue
@@ -328,7 +363,8 @@ export async function getOrCreateRenewalPriceId(price: Stripe.Price) {
       : await stripe.products.retrieve(price.product)
   if (
     !product.metadata.has_renewals || // this product doesn't need renewal prices
-    price.type === 'recurring' // this price is already a subscription price - not having this check might cause an infinite loop of creating prices
+    price.type === 'recurring' || // this price is already a subscription price - not having this check might cause an infinite loop of creating prices
+    price.metadata.is_lifetime // there is no need for creating a subscription as this is a lifetime purchase
   ) {
     return null
   }
@@ -354,4 +390,20 @@ export async function getOrCreateRenewalPriceId(price: Stripe.Price) {
     })
   }
   return renewalPriceId
+}
+
+export async function populateStripeData() {
+  // products
+  const products = await stripe.products.list({ limit: 100 })
+  for (const product of products.data) {
+    await upsertProductRecord(product)
+    console.info('populated product', product.name)
+  }
+
+  // prices
+  const prices = await stripe.prices.list({ limit: 100 })
+  for (const price of prices.data) {
+    await upsertPriceRecord(price)
+    console.info('populated price ', price.nickname)
+  }
 }

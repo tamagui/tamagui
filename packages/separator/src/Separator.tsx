@@ -17,6 +17,7 @@ export const Separator = styled(Stack, {
       true: {
         y: 0,
         x: -0.5,
+
         height: isWeb ? 'initial' : 'auto',
         // maxHeight auto WILL BE passed to style attribute, but for some reason not used?
         // almost seems like a react or browser bug, but for now `initial` works

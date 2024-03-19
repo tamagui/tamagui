@@ -1,10 +1,11 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { TamaguiElement } from '@tamagui/core'
-import { ListItem, ListItemProps } from '@tamagui/list-item'
+import { isClient, isWeb, type TamaguiElement } from '@tamagui/core'
+import type { ListItemProps } from '@tamagui/list-item'
+import { ListItem } from '@tamagui/list-item'
 import * as React from 'react'
 
 import { useSelectContext, useSelectItemParentContext } from './context'
-import { ScopedProps } from './types'
+import type { ScopedProps } from './types'
 
 /* -------------------------------------------------------------------------------------------------
  * SelectTrigger
@@ -12,6 +13,9 @@ import { ScopedProps } from './types'
 const TRIGGER_NAME = 'SelectTrigger'
 
 export type SelectTriggerProps = ListItemProps
+
+const isPointerCoarse =
+  isWeb && isClient ? window.matchMedia('(pointer:coarse)').matches : true
 
 export const SelectTrigger = React.forwardRef<TamaguiElement, SelectTriggerProps>(
   function SelectTrigger(props: ScopedProps<SelectTriggerProps>, forwardedRef) {
@@ -34,20 +38,22 @@ export const SelectTrigger = React.forwardRef<TamaguiElement, SelectTriggerProps
       <ListItem
         componentName={TRIGGER_NAME}
         unstyled={unstyled}
+        tag="button"
+        id={itemParentContext.id}
         {...(!unstyled && {
           backgrounded: true,
           radiused: true,
           hoverTheme: true,
           pressTheme: true,
           focusable: true,
-          focusStyle: {
+          focusVisibleStyle: {
             outlineStyle: 'solid',
             outlineWidth: 2,
-            outlineColor: '$borderColorFocus',
+            outlineColor: '$outlineColor',
           },
           borderWidth: 1,
+          size: itemParentContext.size,
         })}
-        size={itemParentContext.size}
         // aria-controls={context.contentId}
         aria-expanded={context.open}
         aria-autocomplete="none"
@@ -59,10 +65,18 @@ export const SelectTrigger = React.forwardRef<TamaguiElement, SelectTriggerProps
         {...(process.env.TAMAGUI_TARGET === 'web' && itemParentContext.interactions
           ? {
               ...itemParentContext.interactions.getReferenceProps(),
-              onMouseDown() {
-                context.floatingContext?.update()
-                itemParentContext.setOpen(!context.open)
-              },
+              ...(isPointerCoarse
+                ? {
+                    onPress() {
+                      itemParentContext.setOpen(!context.open)
+                    },
+                  }
+                : {
+                    onMouseDown() {
+                      context.floatingContext?.update()
+                      itemParentContext.setOpen(!context.open)
+                    },
+                  }),
             }
           : {
               onPress() {

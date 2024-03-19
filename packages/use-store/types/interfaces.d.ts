@@ -1,4 +1,4 @@
-import { StoreTracker } from './useStore';
+import type { StoreTracker } from './useStore';
 export type Selector<A = unknown, B = unknown> = (x: A) => B;
 export type UseStoreSelector<Store, Res> = (store: Store) => Res;
 export type UseStoreOptions<Store = any, SelectorRes = any> = {

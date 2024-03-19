@@ -1,10 +1,12 @@
 import { createCollection } from '@tamagui/collection'
-import { NativeValue, TamaguiElement, createStyledContext } from '@tamagui/core'
+import type { NativeValue, TamaguiElement } from '@tamagui/core'
+import { createStyledContext } from '@tamagui/core'
 import * as React from 'react'
 
 import { TOAST_CONTEXT } from './constants'
+import type { ToastImperativeOptions } from './ToastImperative'
 import { ToastImperativeProvider } from './ToastImperative'
-import { BurntToastOptions } from './types'
+import type { BurntToastOptions } from './types'
 
 /* -------------------------------------------------------------------------------------------------
  * ToastProvider
@@ -29,6 +31,7 @@ type ToastProviderContextValue = {
   onToastRemove(): void
   isFocusedToastEscapeKeyDownRef: React.MutableRefObject<boolean>
   isClosePausedRef: React.MutableRefObject<boolean>
+  options: ToastImperativeOptions
 }
 
 type ScopedProps<P> = P & { __scopeToast?: string }
@@ -97,7 +100,8 @@ const ToastProvider: React.FC<ToastProviderProps> = (
     swipeThreshold = 50,
     children,
   } = props
-  const id = providedId ?? React.useId()
+  const backupId = React.useId()
+  const id = providedId ?? backupId
   const [viewports, setViewports] = React.useState<
     ToastProviderContextValue['viewports']
   >({})
@@ -143,8 +147,25 @@ const ToastProvider: React.FC<ToastProviderProps> = (
         }, [])}
         isFocusedToastEscapeKeyDownRef={isFocusedToastEscapeKeyDownRef}
         isClosePausedRef={isClosePausedRef}
+        options={options}
       >
         <ToastImperativeProvider options={options}>{children}</ToastImperativeProvider>
+      </ToastProviderProvider>
+    </Collection.Provider>
+  )
+}
+
+export function ReprogapateToastProvider(props: {
+  children: React.ReactNode
+  context: ToastProviderContextValue
+}) {
+  const { children, context } = props
+  return (
+    <Collection.Provider __scopeCollection={TOAST_CONTEXT}>
+      <ToastProviderProvider {...context}>
+        <ToastImperativeProvider options={context.options}>
+          {children}
+        </ToastImperativeProvider>
       </ToastProviderProvider>
     </Collection.Provider>
   )

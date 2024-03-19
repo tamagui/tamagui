@@ -1,4 +1,5 @@
-import { SplitStyleProps, getSplitStyles } from '../core/src'
+import type { SplitStyleProps} from '../core/src';
+import { getSplitStyles } from '../core/src'
 import { defaultComponentState } from '../web/src/defaultComponentState'
 
 const emptyObj = {} as any

@@ -1,0 +1,18 @@
+{
+  "name": "@tamagui/monorepo-test",
+  "version": "1.91.5",
+  "module": "dist/esm",
+  "private": true,
+  "license": "MIT",
+  "author": {
+    "name": "Nate Wienert"
+  },
+  "scripts": {
+    "build": "true",
+    "test": "vitest --run --config ../vite-plugin-internal/src/vite.config.ts"
+  },
+  "devDependencies": {
+    "vitest": "^0.34.3",
+    "zx": "^7.2.3"
+  }
+}

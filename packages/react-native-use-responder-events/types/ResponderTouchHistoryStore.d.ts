@@ -5,6 +5,16 @@
  * LICENSE file in the root directory of this source tree.
  */
 import type { TouchEvent } from './types';
+export declare class ResponderTouchHistoryStore {
+    _touchHistory: {
+        touchBank: never[];
+        numberActiveTouches: number;
+        indexOfSingleActiveTouch: number;
+        mostRecentTimeStamp: number;
+    };
+    recordTouchTrack(topLevelType: string, nativeEvent: TouchEvent): void;
+    get touchHistory(): TouchHistory;
+}
 type TouchRecord = {
     currentPageX: number;
     currentPageY: number;
@@ -23,15 +33,5 @@ export type TouchHistory = {
     numberActiveTouches: number;
     touchBank: Array<TouchRecord>;
 };
-export declare class ResponderTouchHistoryStore {
-    _touchHistory: {
-        touchBank: never[];
-        numberActiveTouches: number;
-        indexOfSingleActiveTouch: number;
-        mostRecentTimeStamp: number;
-    };
-    recordTouchTrack(topLevelType: string, nativeEvent: TouchEvent): void;
-    get touchHistory(): TouchHistory;
-}
 export {};
 //# sourceMappingURL=ResponderTouchHistoryStore.d.ts.map

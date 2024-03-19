@@ -1,5 +1,6 @@
 import { isWeb } from '@tamagui/constants'
-import { FillInFont, GenericFont, createFont, getVariableValue } from '@tamagui/core'
+import type { FillInFont, GenericFont } from '@tamagui/core'
+import { createFont, getVariableValue } from '@tamagui/core'
 
 export const createCherryBombFont = <A extends GenericFont>(
   font: Partial<A> = {},

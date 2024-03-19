@@ -1,10 +1,6 @@
+import type { GetProps, TamaguiElement, UnionableString, Variable } from '@tamagui/core'
 import {
-  GetProps,
-  TamaguiElement,
-  UnionableString,
-  Variable,
   getConfig,
-  getExpandedShorthands,
   getTokens,
   getVariableValue,
   isTamaguiElement,
@@ -13,7 +9,8 @@ import {
   styled,
   useProps,
 } from '@tamagui/core'
-import { Scope, createContextScope } from '@tamagui/create-context'
+import type { Scope } from '@tamagui/create-context'
+import { createContextScope } from '@tamagui/create-context'
 import { withStaticProperties } from '@tamagui/helpers'
 import { ThemeableStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
@@ -82,7 +79,7 @@ export type GroupProps = GetProps<typeof GroupFrame> & {
 
 function createGroup(verticalDefault: boolean) {
   return withStaticProperties(
-    forwardRef<TamaguiElement, ScopedProps<GroupProps>>((props, ref) => {
+    GroupFrame.styleable<ScopedProps<GroupProps>>((props, ref) => {
       const activeProps = useProps(props)
 
       const {
@@ -100,7 +97,7 @@ function createGroup(verticalDefault: boolean) {
         borderRadius,
         forceUseItem,
         ...restProps
-      } = getExpandedShorthands(activeProps)
+      } = activeProps
 
       const vertical = orientation === 'vertical'
       const [itemChildrenCount, setItemChildrenCount] = useControllableState({
@@ -220,6 +217,7 @@ const GroupItem = (props: ScopedProps<GroupItemProps>) => {
 
   return React.cloneElement(children, {
     style: {
+      // @ts-ignore
       ...children.props?.['style'],
       ...groupItemProps,
     },

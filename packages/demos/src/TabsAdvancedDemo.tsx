@@ -1,14 +1,12 @@
 import { useState } from 'react'
+import type { StackProps, TabLayout, TabsTabProps } from 'tamagui'
 import {
   AnimatePresence,
   Button,
   H5,
   SizableText,
   Stack,
-  StackProps,
-  TabLayout,
   Tabs,
-  TabsTabProps,
   XStack,
   YStack,
   styled,
@@ -139,16 +137,34 @@ const TabsAdvancedBackground = () => {
           disablePassBorderRadius
           loop={false}
           aria-label="Manage your account"
-          space="$2"
+          gap="$2"
           backgroundColor="transparent"
         >
-          <Tabs.Tab unstyled value="tab1" onInteraction={handleOnInteraction}>
+          <Tabs.Tab
+            unstyled
+            paddingVertical="$2"
+            paddingHorizontal="$3"
+            value="tab1"
+            onInteraction={handleOnInteraction}
+          >
             <SizableText>Profile</SizableText>
           </Tabs.Tab>
-          <Tabs.Tab unstyled value="tab2" onInteraction={handleOnInteraction}>
+          <Tabs.Tab
+            unstyled
+            paddingVertical="$2"
+            paddingHorizontal="$3"
+            value="tab2"
+            onInteraction={handleOnInteraction}
+          >
             <SizableText>Connections</SizableText>
           </Tabs.Tab>
-          <Tabs.Tab unstyled value="tab3" onInteraction={handleOnInteraction}>
+          <Tabs.Tab
+            unstyled
+            paddingVertical="$2"
+            paddingHorizontal="$3"
+            value="tab3"
+            onInteraction={handleOnInteraction}
+          >
             <SizableText>Notifications</SizableText>
           </Tabs.Tab>
         </Tabs.List>
@@ -270,7 +286,8 @@ const TabsAdvancedUnderline = () => {
         >
           <Tabs.Tab
             unstyled
-            padding="$5"
+            paddingHorizontal="$3"
+            paddingVertical="$2"
             value="tab1"
             onInteraction={handleOnInteraction}
           >
@@ -278,7 +295,8 @@ const TabsAdvancedUnderline = () => {
           </Tabs.Tab>
           <Tabs.Tab
             unstyled
-            padding="$5"
+            paddingHorizontal="$3"
+            paddingVertical="$2"
             value="tab2"
             onInteraction={handleOnInteraction}
           >
@@ -286,7 +304,8 @@ const TabsAdvancedUnderline = () => {
           </Tabs.Tab>
           <Tabs.Tab
             unstyled
-            padding="$5"
+            paddingHorizontal="$3"
+            paddingVertical="$2"
             value="tab3"
             onInteraction={handleOnInteraction}
           >

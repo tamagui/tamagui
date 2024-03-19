@@ -1,11 +1,12 @@
 import { ChevronRight, Moon, Sun } from '@tamagui/lucide-icons'
 import { ScrollView } from 'react-native'
-import { UseLinkProps, useLink } from 'solito/link'
+import type { UseLinkProps } from 'solito/link'
+import { useLink } from 'solito/link'
 // import { UseLinkProps, useLink } from 'solito/link'
+import type { ListItemProps } from 'tamagui'
 import {
   Button,
   ListItem,
-  ListItemProps,
   Separator,
   Spacer,
   Switch,
@@ -20,7 +21,7 @@ import { useThemeControl } from '../../useKitchenSinkTheme'
 export function TestCasesScreen() {
   return (
     <ScrollView>
-      <YStack bc="$background" p="$3" pt="$6" pb="$8" f={1} space>
+      <YStack bg="$background" p="$3" pt="$6" pb="$8" f={1} space>
         <YStack space="$4" maw={600}>
           <YGroup size="$4" separator={<Separator />}>
             {Object.keys(TestCases).map((page) => {

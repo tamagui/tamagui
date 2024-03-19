@@ -1,4 +1,4 @@
-import { CreateMask, MaskFunction, MaskOptions } from './createThemeTypes'
+import type { CreateMask, MaskFunction, MaskOptions } from './createThemeTypes'
 import { objectEntries, objectFromEntries } from './helpers'
 import { isMinusZero } from './isMinusZero'
 
@@ -99,7 +99,8 @@ export const createShiftMask = (
           const overrideVal = override[key] as number
           out[key] = overrideStrategy === 'shift' ? value + overrideVal : overrideVal
           continue
-        } else if (typeof override?.[key] === 'string') {
+        }
+        if (typeof override?.[key] === 'string') {
           out[key] = override[key]
           continue
         }

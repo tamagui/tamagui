@@ -1,4 +1,4 @@
-import { Variable, VariableValGeneric } from '@tamagui/web';
+import type { Variable, VariableValGeneric } from '@tamagui/web';
 type GetTokenBase = Variable | string | number | undefined | VariableValGeneric;
 type GetTokenOptions = {
     shift?: number;

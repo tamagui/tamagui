@@ -5,15 +5,8 @@ import {
   ChevronUp,
   Circle,
 } from '@tamagui/lucide-icons'
-import {
-  Button,
-  Paragraph,
-  Tooltip,
-  TooltipGroup,
-  TooltipProps,
-  XStack,
-  YStack,
-} from 'tamagui'
+import type { TooltipProps } from 'tamagui'
+import { Button, Paragraph, Tooltip, TooltipGroup, XStack, YStack } from 'tamagui'
 
 export function TooltipDemo() {
   return (

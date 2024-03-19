@@ -4,6 +4,10 @@
     "composite": true,
     "removeComments": false
   },
-  "references": [
+  "references": [],
+  "exclude": [
+    "types",
+    "dist",
+    "**/__tests__"
   ]
 }

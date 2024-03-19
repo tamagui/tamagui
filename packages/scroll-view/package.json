@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/scroll-view",
-  "version": "1.79.13",
+  "version": "1.91.5",
   "sideEffects": [
     "*.css"
   ],
@@ -18,25 +18,28 @@
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
     "lint": "../../node_modules/.bin/biome check src",
-    "lint:fix": "../../node_modules/.bin/biome check --apply-unsafe src"
+    "lint:fix": "../../node_modules/.bin/biome check --apply-unsafe src",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build"
   },
   "exports": {
     "./package.json": "./package.json",
     ".": {
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.js"
+      "require": "./dist/cjs/index.js",
+      "react-native": "./dist/cjs/index.native.js"
     }
   },
   "dependencies": {
-    "@tamagui/stacks": "1.79.13",
-    "@tamagui/web": "1.79.13"
+    "@tamagui/stacks": "1.91.5",
+    "@tamagui/web": "1.91.5"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.79.13",
+    "@tamagui/build": "1.91.5",
     "react": "^18.2.0"
   },
   "publishConfig": {

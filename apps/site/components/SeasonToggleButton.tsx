@@ -1,15 +1,18 @@
-import { TamaguiLogo, setNextTintFamily, setTintFamily, useTint } from '@tamagui/logo'
-import { Button, ButtonProps, Popover, Square, Text, YStack } from 'tamagui'
+import { TamaguiLogo, setTintFamily, useTint } from '@tamagui/logo'
+import type { ButtonProps } from 'tamagui'
+import { Button, Circle, Popover, SizableText, Square, Text, YStack } from 'tamagui'
 
 export const seasons = {
-  tamagui: <TamaguiLogo downscale={2.5} />,
+  tamagui: <TamaguiLogo downscale={2} />,
   easter: '🐣',
   xmas: '🎅🏻',
+  lunar: '🧧',
+  valentine: '💘',
   halloween: '🎃',
 }
 
 export const SeasonToggleButton = (props: ButtonProps) => {
-  const { name } = useTint()
+  const { name, tint, setNextTint } = useTint()
 
   return (
     <Popover hoverable>
@@ -17,21 +20,41 @@ export const SeasonToggleButton = (props: ButtonProps) => {
         <Button
           size="$3"
           w={38}
-          onPress={setNextTintFamily}
+          onPress={(e) => {
+            setNextTint()
+            e.stopPropagation()
+          }}
           {...props}
           aria-label="Toggle theme"
+          ov="visible"
+          hoverStyle={{
+            bg: 'rgba(0,0,0,0.15)',
+          }}
         >
-          <Text>{seasons[name]}</Text>
+          <Circle
+            bc="var(--color9)"
+            o={0.85}
+            m={2}
+            size={12}
+            backgroundColor={tint as any}
+          />
+
+          {name !== 'tamagui' && (
+            <SizableText size="$8" pos="absolute" b={-10} r={-10} rotate="-10deg">
+              {seasons[name]}
+            </SizableText>
+          )}
         </Button>
       </Popover.Trigger>
 
       <Popover.Content
         enterStyle={{ y: -6, o: 0 }}
         exitStyle={{ y: -6, o: 0 }}
-        elevate
+        elevation="$4"
         p="$0"
+        t="$2"
         ov="hidden"
-        br="$4"
+        br="$8"
         animation={[
           'medium',
           {
@@ -46,25 +69,27 @@ export const SeasonToggleButton = (props: ButtonProps) => {
             return (
               <Square
                 key={optionName}
-                size="$3"
+                size="$4"
                 $sm={{ size: '$5' }}
                 hoverStyle={{
-                  bc: '$backgroundHover',
+                  bg: '$backgroundHover',
                 }}
                 pressStyle={{
-                  bc: '$backgroundPress',
+                  bg: '$backgroundPress',
                 }}
                 {...(name === optionName && {
-                  bc: '$color5',
+                  bg: '$color5',
                   hoverStyle: {
-                    bc: '$color5',
+                    bg: '$color5',
                   },
                 })}
                 onPress={() => {
                   setTintFamily(optionName as any)
                 }}
               >
-                <Text cursor="default">{seasons[optionName]}</Text>
+                <SizableText size="$6" cursor="default">
+                  {seasons[optionName]}
+                </SizableText>
               </Square>
             )
           })}

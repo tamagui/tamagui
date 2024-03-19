@@ -1,13 +1,15 @@
+import type {
+  AccumulativeShadowsProps,
+  CenterProps,
+  ContactShadowsProps,
+  RandomizedLightProps,
+} from '@react-three/drei'
 import {
   AccumulativeShadows,
-  AccumulativeShadowsProps,
   Bounds,
   Center,
-  CenterProps,
   ContactShadows,
-  ContactShadowsProps,
   RandomizedLight,
-  RandomizedLightProps,
   useBounds,
 } from '@react-three/drei'
 import * as React from 'react'

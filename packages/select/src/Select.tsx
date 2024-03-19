@@ -1,25 +1,21 @@
 import { Adapt, useAdaptParent } from '@tamagui/adapt'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
-import {
-  FontSizeTokens,
-  GetProps,
-  TamaguiElement,
-  getVariableValue,
-  styled,
-  useEvent,
-  useGet,
-} from '@tamagui/core'
+import type { FontSizeTokens, GetProps, TamaguiElement } from '@tamagui/core'
+import { getVariableValue, styled, useEvent, useGet } from '@tamagui/core'
 import { getSpace } from '@tamagui/get-token'
 import { withStaticProperties } from '@tamagui/helpers'
-import { ListItem, ListItemProps } from '@tamagui/list-item'
+import type { ListItemProps } from '@tamagui/list-item'
+import { ListItem } from '@tamagui/list-item'
 import { PortalHost } from '@tamagui/portal'
 import { Separator } from '@tamagui/separator'
+import { registerFocusable } from '@tamagui/focusable'
 import { Sheet, SheetController } from '@tamagui/sheet'
 import { ThemeableStack, XStack, YStack } from '@tamagui/stacks'
 import { Paragraph, SizableText } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
+import { useDebounce } from '@tamagui/use-debounce'
 
 import { SELECT_NAME } from './constants'
 import {
@@ -36,7 +32,7 @@ import { ITEM_TEXT_NAME, SelectItemText } from './SelectItemText'
 import { SelectScrollDownButton, SelectScrollUpButton } from './SelectScrollButton'
 import { SelectTrigger } from './SelectTrigger'
 import { SelectViewport } from './SelectViewport'
-import { ScopedProps, SelectImplProps, SelectProps } from './types'
+import type { ScopedProps, SelectImplProps, SelectProps } from './types'
 import {
   useSelectBreakpointActive,
   useShowSelectSheet,
@@ -53,43 +49,47 @@ const SelectValueFrame = styled(SizableText, {
   userSelect: 'none',
 })
 
-type SelectValueProps = GetProps<typeof SelectValueFrame> & {
+export interface SelectValueExtraProps {
   placeholder?: React.ReactNode
 }
 
-const SelectValue = SelectValueFrame.styleable<SelectValueProps>(function SelectValue(
-  {
-    __scopeSelect,
-    children: childrenProp,
-    placeholder,
-    ...props
-  }: ScopedProps<SelectValueProps>,
-  forwardedRef
-) {
-  // We ignore `className` and `style` as this part shouldn't be styled.
-  const context = useSelectContext(VALUE_NAME, __scopeSelect)
-  const itemParentContext = useSelectItemParentContext(VALUE_NAME, __scopeSelect)
-  const composedRefs = useComposedRefs(forwardedRef, context.onValueNodeChange)
-  const children = childrenProp ?? context.selectedItem
-  const isEmptyValue = context.value == null || context.value === ''
-  const selectValueChildren = isEmptyValue ? placeholder ?? children : children
+type SelectValueProps = GetProps<typeof SelectValueFrame> & SelectValueExtraProps
 
-  return (
-    <SelectValueFrame
-      {...(!props.unstyled && {
-        size: itemParentContext.size as any,
-        ellipse: true,
-      })}
-      ref={composedRefs}
-      // we don't want events from the portalled `SelectValue` children to bubble
-      // through the item they came from
-      pointerEvents="none"
-      {...props}
-    >
-      {unwrapSelectItem(selectValueChildren)}
-    </SelectValueFrame>
-  )
-})
+const SelectValue = SelectValueFrame.styleable<SelectValueExtraProps>(
+  function SelectValue(
+    {
+      __scopeSelect,
+      children: childrenProp,
+      placeholder,
+      ...props
+    }: ScopedProps<SelectValueProps>,
+    forwardedRef
+  ) {
+    // We ignore `className` and `style` as this part shouldn't be styled.
+    const context = useSelectContext(VALUE_NAME, __scopeSelect)
+    const itemParentContext = useSelectItemParentContext(VALUE_NAME, __scopeSelect)
+    const composedRefs = useComposedRefs(forwardedRef, context.onValueNodeChange)
+    const children = childrenProp ?? context.selectedItem
+    const isEmptyValue = context.value == null || context.value === ''
+    const selectValueChildren = isEmptyValue ? placeholder ?? children : children
+
+    return (
+      <SelectValueFrame
+        {...(!props.unstyled && {
+          size: itemParentContext.size as any,
+          ellipse: true,
+          // we don't want events from the portalled `SelectValue` children to bubble
+          // through the item they came from
+          pointerEvents: 'none',
+        })}
+        ref={composedRefs}
+        {...props}
+      >
+        {unwrapSelectItem(selectValueChildren)}
+      </SelectValueFrame>
+    )
+  }
+)
 
 function unwrapSelectItem(selectValueChildren: any) {
   return React.Children.map(selectValueChildren, (child) => {
@@ -215,11 +215,16 @@ const SelectGroup = React.forwardRef<TamaguiElement, SelectGroupProps>(
     const size = itemParentContext.size ?? '$true'
     const nativeSelectRef = React.useRef<HTMLSelectElement>(null)
 
-    const content = (function () {
+    const content = (() => {
       if (itemParentContext.shouldRenderWebNative) {
         return (
-          // @ts-expect-error until we support typing based on tag
-          <NativeSelectFrame asChild size={size} value={context.value}>
+          <NativeSelectFrame
+            asChild
+            size={size}
+            // @ts-expect-error until we support typing based on tag
+            value={context.value}
+            id={itemParentContext.id}
+          >
             <NativeSelectTextFrame
               // @ts-ignore it's ok since tag="select"
               onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -351,10 +356,13 @@ export const Select = withStaticProperties(
       size: sizeProp = '$true',
       onActiveChange,
       dir,
+      id,
     } = props
 
-    const id = React.useId()
-    const scopeKey = __scopeSelect ? Object.keys(__scopeSelect)[0] ?? id : id
+    const internalId = React.useId()
+    const scopeKey = __scopeSelect
+      ? Object.keys(__scopeSelect)[0] ?? internalId
+      : internalId
 
     const { when, AdaptProvider } = useAdaptParent({
       Contents: React.useCallback(
@@ -392,6 +400,19 @@ export const Select = withStaticProperties(
       emitValue(value)
     }, [value])
 
+    if (process.env.TAMAGUI_TARGET === 'native') {
+      React.useEffect(() => {
+        if (!props.id) return
+
+        return registerFocusable(props.id, {
+          focusAndSelect: () => {
+            setOpen?.((value) => !value)
+          },
+          focus: () => {},
+        })
+      }, [props.id])
+    }
+
     const [activeIndex, setActiveIndex] = React.useState<number | null>(0)
 
     const [emitValue, valueSubscribe] = useEmitter<any>()
@@ -414,15 +435,35 @@ export const Select = withStaticProperties(
         native === 'web' ||
         (Array.isArray(native) && native.includes('web')))
 
+    // TODO its calling this a bunch if you move mouse around on select items fast
+    // using a debounce for now but need to fix root issue
+    const setActiveIndexDebounced = useDebounce(
+      (index: number | null) => {
+        setActiveIndex((prev) => {
+          if (prev !== index) {
+            if (typeof index === 'number') {
+              emitActiveIndex(index)
+            }
+            return index
+          }
+          return prev
+        })
+      },
+      1,
+      {},
+      []
+    )
+
     return (
       <AdaptProvider>
         <SelectItemParentProvider
           scope={__scopeSelect}
-          initialValue={React.useMemo(() => value, [])}
+          initialValue={React.useMemo(() => value, [open])}
           size={sizeProp}
           activeIndexSubscribe={activeIndexSubscribe}
           valueSubscribe={valueSubscribe}
           setOpen={setOpen}
+          id={id}
           onChange={React.useCallback((val) => {
             setValue(val)
             emitValue(val)
@@ -451,17 +492,7 @@ export const Select = withStaticProperties(
             sheetBreakpoint={sheetBreakpoint}
             activeIndex={activeIndex}
             selectedIndex={selectedIndex}
-            setActiveIndex={React.useCallback((index) => {
-              setActiveIndex((prev) => {
-                if (prev !== index) {
-                  if (typeof index === 'number') {
-                    emitActiveIndex(index)
-                  }
-                  return index
-                }
-                return prev
-              })
-            }, [])}
+            setActiveIndex={setActiveIndexDebounced}
             value={value}
             open={open}
             native={native}

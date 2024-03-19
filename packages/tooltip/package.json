@@ -1,10 +1,10 @@
 {
   "name": "@tamagui/tooltip",
-  "version": "1.79.13",
+  "version": "1.91.5",
   "sideEffects": [
     "*.css"
   ],
-  "source": "src/index.ts",
+  "source": "src/index.tsx",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -27,32 +27,33 @@
     ".": {
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.js"
+      "require": "./dist/cjs/index.js",
+      "react-native": "./dist/cjs/index.native.js"
     }
   },
   "dependencies": {
-    "@floating-ui/react": "^0.24.7",
-    "@tamagui/compose-refs": "1.79.13",
-    "@tamagui/core": "1.79.13",
-    "@tamagui/create-context": "1.79.13",
-    "@tamagui/floating": "1.79.13",
-    "@tamagui/get-token": "1.79.13",
-    "@tamagui/helpers": "1.79.13",
-    "@tamagui/polyfill-dev": "1.79.13",
-    "@tamagui/popover": "1.79.13",
-    "@tamagui/popper": "1.79.13",
-    "@tamagui/stacks": "1.79.13",
-    "@tamagui/text": "1.79.13",
-    "@tamagui/use-controllable-state": "1.79.13"
+    "@floating-ui/react": "^0.26.6",
+    "@tamagui/compose-refs": "1.91.5",
+    "@tamagui/core": "1.91.5",
+    "@tamagui/create-context": "1.91.5",
+    "@tamagui/floating": "1.91.5",
+    "@tamagui/get-token": "1.91.5",
+    "@tamagui/helpers": "1.91.5",
+    "@tamagui/polyfill-dev": "1.91.5",
+    "@tamagui/popover": "1.91.5",
+    "@tamagui/popper": "1.91.5",
+    "@tamagui/stacks": "1.91.5",
+    "@tamagui/text": "1.91.5",
+    "@tamagui/use-controllable-state": "1.91.5"
   },
   "peerDependencies": {
     "react": "*",
     "react-native": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.79.13",
+    "@tamagui/build": "1.91.5",
     "react": "^18.2.0",
-    "react-native": "^0.72.1"
+    "react-native": "^0.73.4"
   },
   "publishConfig": {
     "access": "public"

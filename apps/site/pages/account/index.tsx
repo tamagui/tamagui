@@ -5,10 +5,10 @@ import { Notice } from '@components/Notice'
 import { StudioQueueCard } from '@components/StudioQueueCard'
 import { getDefaultAvatarImage } from '@lib/avatar'
 import { getDefaultLayout } from '@lib/getDefaultLayout'
-import { Database } from '@lib/supabase-types'
+import type { Database } from '@lib/supabase-types'
 import { withSupabase } from '@lib/withSupabase'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
-import { Provider } from '@supabase/supabase-js'
+import type { Provider } from '@supabase/supabase-js'
 import { ThemeTint } from '@tamagui/logo'
 import { CheckCircle, LogOut, Star } from '@tamagui/lucide-icons'
 import { UserGuard, useUser } from 'hooks/useUser'
@@ -102,8 +102,8 @@ const Account = () => {
 
       <XStack mt="$4" gap="$4" ai="flex-start">
         <ThemeTint>
-          <ButtonLink href="/account/subscriptions" size="$5">
-            View Subscriptions
+          <ButtonLink href="/account/items" size="$5">
+            Items & Subscriptions
           </ButtonLink>
 
           <ButtonLink href="https://studio.tamagui.dev" size="$5">
@@ -114,6 +114,10 @@ const Account = () => {
 
       <YStack>
         <UserSettings />
+      </YStack>
+
+      <YStack>
+        <Paragraph ff="$mono">User ID: {userDetails?.id}</Paragraph>
       </YStack>
     </Container>
   )

@@ -1,11 +1,12 @@
 import React from 'react'
-import { YStack, YStackProps } from 'tamagui'
+import type { YStackProps } from 'tamagui'
+import { YStack } from 'tamagui'
 
 export function RegionTable(props: YStackProps) {
   return (
     <YStack
       theme="alt1"
-      bc="$background"
+      bg="$background"
       tag="table"
       // @ts-ignore
       display="table"

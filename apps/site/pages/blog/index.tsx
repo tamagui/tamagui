@@ -53,9 +53,11 @@ Blog.getLayout = getDefaultLayout
 
 export function getStaticProps() {
   const frontmatters = getAllFrontmatter('blog')
-  const sortedFrontmatters = frontmatters.sort(
-    (a, b) =>
-      Number(new Date(b.publishedAt || '')) - Number(new Date(a.publishedAt || ''))
-  )
+  const sortedFrontmatters = frontmatters
+    .filter((x) => !x.draft)
+    .sort(
+      (a, b) =>
+        Number(new Date(b.publishedAt || '')) - Number(new Date(a.publishedAt || ''))
+    )
   return { props: { frontmatters: sortedFrontmatters } }
 }

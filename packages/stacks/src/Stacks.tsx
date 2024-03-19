@@ -1,8 +1,10 @@
-import { GetProps, Stack, styled } from '@tamagui/core'
+import type { GetProps, SizeTokens } from '@tamagui/core'
+import { View, styled } from '@tamagui/core'
 
 import { getElevation } from './getElevation'
 
 export type YStackProps = GetProps<typeof YStack>
+
 export type XStackProps = YStackProps
 export type ZStackProps = YStackProps
 
@@ -14,25 +16,49 @@ export const fullscreenStyle = {
   bottom: 0,
 } as const
 
+type Insets = {
+  top?: number
+  bottom?: number
+  left?: number
+  right?: number
+}
+
+const getInset = (val: number | SizeTokens | Insets) =>
+  val && typeof val === 'object'
+    ? val
+    : {
+        top: val,
+        left: val,
+        bottom: val,
+        right: val,
+      }
+
 const variants = {
   fullscreen: {
     true: fullscreenStyle,
   },
+
   elevation: {
     '...size': getElevation,
     ':number': getElevation,
   },
+
+  inset: getInset,
 } as const
 
-export const YStack = styled(Stack, {
+export const YStack = styled(View, {
   flexDirection: 'column',
   variants,
 })
 
-export const XStack = styled(Stack, {
+YStack['displayName'] = 'YStack'
+
+export const XStack = styled(View, {
   flexDirection: 'row',
   variants,
 })
+
+XStack['displayName'] = 'XStack'
 
 export const ZStack = styled(
   YStack,
@@ -44,3 +70,5 @@ export const ZStack = styled(
     isZStack: true,
   }
 )
+
+ZStack['displayName'] = 'ZStack'

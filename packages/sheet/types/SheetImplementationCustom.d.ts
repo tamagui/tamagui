@@ -1,6 +1,6 @@
 /// <reference types="react" />
 import { View } from 'react-native';
-import { SnapPointsMode } from './types';
+import type { SnapPointsMode } from './types';
 export declare const SheetImplementationCustom: (props: Omit<{
     open?: boolean | undefined;
     defaultOpen?: boolean | undefined;
@@ -26,5 +26,5 @@ export declare const SheetImplementationCustom: (props: Omit<{
     moveOnKeyboardChange?: boolean | undefined;
 } & {
     __scopeSheet?: import("@tamagui/create-context").Scope<any>;
-} & import("react").RefAttributes<View>, "theme" | "themeInverse"> & import("@tamagui/core").ThemeableProps) => import("react").ReactElement<any, string | import("react").JSXElementConstructor<any>> | null;
+} & import("react").RefAttributes<View>, "themeInverse" | "theme"> & import("@tamagui/core").ThemeableProps) => import("react").ReactNode;
 //# sourceMappingURL=SheetImplementationCustom.d.ts.map

@@ -1,3 +1,2 @@
-/// <reference types="react" />
-export declare function ShapesDemo(): JSX.Element;
+export declare function ShapesDemo(): import("react/jsx-runtime").JSX.Element;
 //# sourceMappingURL=ShapesDemo.d.ts.map

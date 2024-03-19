@@ -7,41 +7,40 @@ import {
   withStaticProperties,
 } from 'tamagui'
 
-export const Tooltip = withStaticProperties(
-  styled(TamaguiTooltip, {
-    delay: 0,
-    restMs: 0,
-    allowFlip: true,
-    stayInFrame: {
-      mainAxis: true,
-    },
-    placement: 'top',
-  }),
-  {
-    ...TamaguiTooltip,
-    Content: styled(TamaguiTooltip.Content, {
-      padding: 0,
-      px: 8,
-      zIndex: 1_000_000,
-      br: 6,
-      bg: '$color1',
-      enterStyle: { x: 0, y: 5, o: 0, scale: 0.9 },
-      exitStyle: { x: 0, y: 5, o: 0, scale: 0.9 },
-      scale: 1,
-      x: 0,
-      y: 0,
-      o: 1,
-      animation: [
-        'quick',
-        {
-          opacity: {
-            overshootClamping: true,
-          },
+const StyledTooltip = styled(TamaguiTooltip, {
+  delay: 0,
+  restMs: 0,
+  allowFlip: true,
+  stayInFrame: {
+    mainAxis: true,
+  },
+  placement: 'top',
+})
+
+export const Tooltip = withStaticProperties(StyledTooltip, {
+  ...TamaguiTooltip,
+  Content: styled(TamaguiTooltip.Content, {
+    padding: 0,
+    px: 8,
+    zIndex: 1_000_000,
+    br: 6,
+    bg: '$color1',
+    enterStyle: { x: 0, y: 5, o: 0, scale: 0.9 },
+    exitStyle: { x: 0, y: 5, o: 0, scale: 0.9 },
+    scale: 1,
+    x: 0,
+    y: 0,
+    o: 1,
+    animation: [
+      'quick',
+      {
+        opacity: {
+          overshootClamping: true,
         },
-      ],
-    }),
-  }
-)
+      },
+    ],
+  }),
+})
 
 const TriggerText = styled(Text, {
   fontFamily: '$body',

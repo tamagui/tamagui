@@ -1,7 +1,7 @@
 import { dirname, resolve } from 'path'
 
 import { createExtractor, extractToClassNames } from '@tamagui/static'
-import { CLIResolvedOptions } from '@tamagui/types'
+import type { CLIResolvedOptions } from '@tamagui/types'
 import chokidar from 'chokidar'
 import { readFile } from 'fs-extra'
 

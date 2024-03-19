@@ -4,8 +4,8 @@ import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { useEvent } from '@tamagui/core'
 // fixing SSR issue
 import { useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
+import type { ReactNode } from 'react'
 import React, {
-  ReactNode,
   createContext,
   memo,
   startTransition,
@@ -171,7 +171,6 @@ export const usePortal = (hostName = 'root') => {
       type: ACTIONS.REGISTER_HOST,
       hostName: hostName,
     })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const deregisterHost = useCallback(() => {
@@ -179,7 +178,6 @@ export const usePortal = (hostName = 'root') => {
       type: ACTIONS.DEREGISTER_HOST,
       hostName: hostName,
     })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const addUpdatePortal = useCallback((name: string, node: ReactNode) => {
@@ -189,7 +187,6 @@ export const usePortal = (hostName = 'root') => {
       portalName: name,
       node,
     })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const removePortal = useCallback((name: string) => {
@@ -198,7 +195,6 @@ export const usePortal = (hostName = 'root') => {
       hostName,
       portalName: name,
     })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   //#endregion
 
@@ -290,7 +286,6 @@ const PortalHostComponent = (props: PortalHostProps) => {
     return () => {
       deregisterHost()
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isServer])
   //#endregion
 

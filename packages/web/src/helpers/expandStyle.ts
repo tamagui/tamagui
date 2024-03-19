@@ -5,7 +5,7 @@
 
 import { isAndroid, isWeb } from '@tamagui/constants'
 
-import { PropMappedValue } from '../types'
+import type { PropMappedValue } from '../types'
 
 export function expandStyle(key: string, value: any): PropMappedValue {
   if (process.env.TAMAGUI_TARGET === 'web') {

@@ -9,7 +9,7 @@ import {
   useSelectContext,
   useSelectItemParentContext,
 } from './context'
-import { ScopedProps, SelectViewportProps } from './types'
+import type { ScopedProps, SelectViewportProps } from './types'
 
 export const SelectViewport = (props: ScopedProps<SelectViewportProps>) => {
   const { __scopeSelect, children } = props

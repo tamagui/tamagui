@@ -5,6 +5,7 @@
   },
   "references": [
 
-  ]
+  ],
+  "exclude": ["types"]
 }
   

@@ -13,7 +13,7 @@ export function FeaturesGrid() {
               <H4 ls={0} fontFamily="$silkscreen" ta="center">
                 Fully typed
               </H4>
-              <Paragraph theme="alt2">
+              <Paragraph theme="alt1">
                 <EnsureFlexed />
                 Typed inline styles, themes, tokens, shorthands, media queries,
                 animations, and hooks that optimize.
@@ -24,7 +24,7 @@ export function FeaturesGrid() {
               <H4 ls={0} fontFamily="$silkscreen" ta="center">
                 SSR
               </H4>
-              <Paragraph theme="alt2">
+              <Paragraph theme="alt1">
                 Server-side rendering works by default, including responsive styles,
                 themes and variants.
               </Paragraph>
@@ -34,7 +34,7 @@ export function FeaturesGrid() {
               <H4 ls={0} fontFamily="$silkscreen" ta="center">
                 Server Components
               </H4>
-              <Paragraph theme="alt2">
+              <Paragraph theme="alt1">
                 Beta support for React Server Components for bundle size reduction.
               </Paragraph>
             </YStack>
@@ -43,7 +43,7 @@ export function FeaturesGrid() {
               <H4 ls={0} fontFamily="$silkscreen" ta="center">
                 Introspection
               </H4>
-              <Paragraph theme="alt2">
+              <Paragraph theme="alt1">
                 <EnsureFlexed />
                 Multi-level debug pragma and props, compile-time JSX props for quick
                 file:line:component jump.
@@ -54,7 +54,7 @@ export function FeaturesGrid() {
               <H4 ls={0} fontFamily="$silkscreen" ta="center">
                 Compatibility
               </H4>
-              <Paragraph theme="alt2">
+              <Paragraph theme="alt1">
                 Runs entirely without plugins, with optional optimizing plugins for Metro,
                 Vite, and Webpack.
               </Paragraph>
@@ -64,7 +64,7 @@ export function FeaturesGrid() {
               <H4 ls={0} fontFamily="$silkscreen" ta="center">
                 Full Featured
               </H4>
-              <Paragraph theme="alt2">
+              <Paragraph theme="alt1">
                 A styled factory, variants, tokens, fonts, themes, media queries,
                 shorthands and more.
               </Paragraph>

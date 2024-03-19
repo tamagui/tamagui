@@ -1,10 +1,11 @@
 import { useDelayGroupContext } from '@floating-ui/react'
 import { getSpace } from '@tamagui/get-token'
-import { SizableStackProps } from '@tamagui/stacks'
+import type { SizableStackProps } from '@tamagui/stacks'
 import { Paragraph } from '@tamagui/text'
 import * as React from 'react'
 
-import { Tooltip, TooltipGroup, TooltipProps } from './Tooltip'
+import type { TooltipProps } from './Tooltip'
+import { Tooltip, TooltipGroup } from './Tooltip'
 
 export type TooltipSimpleProps = TooltipProps & {
   disabled?: boolean
@@ -17,7 +18,6 @@ export const TooltipSimple: React.FC<TooltipSimpleProps> = React.forwardRef(
   ({ label, children, contentProps, disabled, ...tooltipProps }, ref) => {
     let context
     try {
-      // eslint-disable-next-line react-hooks/rules-of-hooks
       context = useDelayGroupContext()
     } catch {
       // ok
@@ -28,8 +28,8 @@ export const TooltipSimple: React.FC<TooltipSimpleProps> = React.forwardRef(
     const contents = (
       <Tooltip
         offset={15}
-        restMs={220}
-        delay={160}
+        restMs={40}
+        delay={40}
         {...tooltipProps}
         {...(disabled ? { open: false } : null)}
       >
@@ -37,9 +37,9 @@ export const TooltipSimple: React.FC<TooltipSimpleProps> = React.forwardRef(
           {...(typeof label === 'string' && {
             'aria-label': label,
           })}
-          asChild
+          asChild="except-style"
         >
-          {React.isValidElement(child)
+          {ref && React.isValidElement(child)
             ? React.cloneElement(child, { ref } as any)
             : child}
         </Tooltip.Trigger>
@@ -50,14 +50,15 @@ export const TooltipSimple: React.FC<TooltipSimpleProps> = React.forwardRef(
           x={0}
           scale={1}
           y={0}
+          // @ts-ignore
           elevation="$1"
           opacity={1}
           paddingVertical={getSpace(tooltipProps.size || '$true', {
-            shift: -3,
+            shift: -4,
           })}
           animateOnly={['transform', 'opacity']}
           animation={[
-            'quick',
+            'quicker',
             {
               opacity: {
                 overshootClamping: true,
@@ -67,7 +68,7 @@ export const TooltipSimple: React.FC<TooltipSimpleProps> = React.forwardRef(
           {...contentProps}
         >
           <Tooltip.Arrow />
-          <Paragraph size="$2">{label}</Paragraph>
+          <Paragraph size="$3">{label}</Paragraph>
         </Tooltip.Content>
       </Tooltip>
     )

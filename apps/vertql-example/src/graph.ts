@@ -1,7 +1,9 @@
 import { createReactClient } from '@gqty/react'
-import { Cache, GQtyError, QueryFetcher, createClient } from 'gqty'
+import type { QueryFetcher} from 'gqty';
+import { Cache, GQtyError, createClient } from 'gqty'
 
-import { GeneratedSchema, generatedSchema, scalarsEnumsHash } from './schema.generated'
+import type { GeneratedSchema} from './schema.generated';
+import { generatedSchema, scalarsEnumsHash } from './schema.generated'
 
 const queryFetcher: QueryFetcher = async function (
   { query, variables, operationName },

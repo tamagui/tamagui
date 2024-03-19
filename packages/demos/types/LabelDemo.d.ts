@@ -1,3 +1,2 @@
-/// <reference types="react" />
-export declare function LabelDemo(): JSX.Element;
+export declare function LabelDemo(): import("react/jsx-runtime").JSX.Element;
 //# sourceMappingURL=LabelDemo.d.ts.map

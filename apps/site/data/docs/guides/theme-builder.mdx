@@ -9,8 +9,8 @@ demoName: ThemeBuilder
 </HeroContainer>
 
 <IntroParagraph>
-  The new theme-builder package makes creating suites of themes for Tamagui far easier,
-  with some performance benefits to boot.
+  The new theme-builder package makes creating suites of themes for Tamagui far
+  easier, with some performance benefits to boot.
 </IntroParagraph>
 
 With version 1.37 Tamagui has released two new things to help make authoring themes much easier:
@@ -23,16 +23,17 @@ The new ThemeBuilder makes it much easier to generate a suite of themes. Meanwhi
 This guide goes into `createThemeBuilder`. If you want to [skip to the API, check here](#createthemebuilder), or you can just copy-paste [a complete example here](#complete-example).
 
 <Notice>
-  You don't need to create your own theme suite. You can use our built-in themes or roll
-  your own by hand. Or you can just avoid themes altogether! This guide is for more
-  advanced use cases where you want to generate a very custom look and feel for your app.
+  You don't need to create your own theme suite. You can use our built-in themes
+  or roll your own by hand. Or you can just avoid themes altogether! This guide
+  is for more advanced use cases where you want to generate a very custom look
+  and feel for your app.
 </Notice>
 
 Before we dive in, here's a minimal createThemeBuilder example to understand what we're building towards. It generates `light`, `dark`, `light_subtle`, and `dark_subtle` themes using all the concepts we'll cover in this guide: palettes, templates, masks, and themes:
 
 <Notice>
-  Note that the @tamagui/theme-builder package requires TypeScript 5 or greater for const
-  generic support.
+  Note that the @tamagui/theme-builder package requires TypeScript 5 or greater
+  for const generic support.
 </Notice>
 
 ```tsx
@@ -109,7 +110,9 @@ A theme is simple. It's a static typed object with properties that map from name
 }
 ```
 
-You can have as many values as you want in your themes, but what's important is that they share the same shape. Of course Tamagui themes [get more interesting with their support of sub-themes](/docs/intro/themes), but the important things to remember are that themes share the same shape, and that sub-themes can be subsets of parent themes. Also, as of now, Tamagui themes generally are meant for colors.
+You can have as many values as you want in your themes, but what's important is that they share the same shape. Of course Tamagui themes [get more interesting with their support of sub-themes](/docs/intro/themes), but the important things to remember are that themes share the same shape, and that sub-themes can be subsets of parent themes.
+
+While we mostly deal with colors in this tutorial, themes can also take other strings or numbers as values. For now, this guide only focuses on color.
 
 #### Palettes
 
@@ -173,8 +176,6 @@ The `tamagui` components have standardized on the following minimum theme, so if
   backgroundFocus: string
   backgroundHover: string
   backgroundPress: string
-  backgroundStrong: string
-  backgroundTransparent: string
   borderColor: string
   borderColorFocus: string
   borderColorHover: string
@@ -195,9 +196,12 @@ The `tamagui` components have standardized on the following minimum theme, so if
 We could make a quick and hard-coded function that takes a template + palette and returns a theme, just to illustrate how they are used:
 
 ```tsx
-const createTheme = (palette: string[]) => ({
-  background: palette[0],
-  color: palette[12],
+const createTheme = (palette: string[], colorTemplate: {
+  background: number
+  color: number
+}) => ({
+  background: palette[colorTemplate.background],
+  color: palette[colorTemplate.color],
 })
 
 createTheme(dark_blue)
@@ -256,9 +260,9 @@ createTamagui({
 Note the `_subtle`. An underscore defines a sub-theme, so `dark_subtle` is a sub-theme of `dark`. In your code you can now do this:
 
 ```tsx
-import { Stack, Theme, styled } from '@tamagui/core'
+import { View, Theme, styled } from '@tamagui/core'
 
-const Square = styled(Stack, {
+const Square = styled(View, {
   background: '$background',
   width: 100,
   height: 100,
@@ -286,9 +290,9 @@ Where it gets interesting is in a final feature of sub-themes: component themes,
 Taking our example above, we can add a `name` to our `styled` call:
 
 ```tsx
-import { Stack, styled } from '@tamagui/core'
+import { View, styled } from '@tamagui/core'
 
-const Square = styled(Stack, {
+const Square = styled(View, {
   name: 'Square',
   backgroundColor: '$background',
   width: 100,

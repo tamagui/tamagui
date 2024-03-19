@@ -12,15 +12,10 @@ const Text = styled(ButtonText, {
   marginBottom: 0,
 })
 
-type CustomButtonFrameProps = GetProps<typeof Frame>
-type CustomButtonTextProps = GetProps<typeof Text>
-type ButtonProps = CustomButtonFrameProps & CustomButtonTextProps
-
 const ButtonStyled = styled(Button, {})
 
-export const ButtonCustom = Frame.styleable<ButtonProps>((props, ref) => {
-  // @ts-ignore
-  const { props: buttonProps } = useButton(props, { Text })
+export const ButtonCustom = Frame.styleable((props, ref) => {
+  const { props: buttonProps } = useButton(props as any, { Text })
 
   return (
     <>
@@ -34,5 +29,5 @@ export const ButtonCustom = Frame.styleable<ButtonProps>((props, ref) => {
         test
       </ButtonStyled>
     </>
-  )
+  ) as any
 })

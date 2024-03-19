@@ -4,7 +4,7 @@ import * as React from 'react'
 import { Platform, RootTagContext } from 'react-native'
 
 import { PortalItem } from './GorhomPortal'
-import { PortalProps } from './PortalProps'
+import type { PortalProps } from './PortalProps'
 
 const isFabric = global?.nativeFabricUIManager
 let createPortal

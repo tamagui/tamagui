@@ -3,6 +3,7 @@ import { useIsIntersecting } from '@tamagui/demos'
 import { useTint } from '@tamagui/logo'
 import { NextLink } from 'components/NextLink'
 import { memo, useEffect, useRef, useState } from 'react'
+import type { Heading, TextProps } from 'tamagui'
 import {
   Button,
   Card,
@@ -12,9 +13,7 @@ import {
   H4,
   H5,
   H6,
-  Heading,
   Paragraph,
-  TextProps,
   XStack,
   YStack,
   useDidFinishSSR,
@@ -83,6 +82,7 @@ export const HeroTypography = memo(() => {
             <YStack ai="flex-end" contain="paint layout" h={270}>
               <AnimatePresence exitBeforeEnter>
                 <AnimatedHeading
+                  disableAnimation={!isIntersecting}
                   key={`${family}1`}
                   index={0}
                   Component={H1}
@@ -92,6 +92,7 @@ export const HeroTypography = memo(() => {
                   Swappable
                 </AnimatedHeading>
                 <AnimatedHeading
+                  disableAnimation={!isIntersecting}
                   key={`${family}2`}
                   index={1}
                   Component={H2}
@@ -101,6 +102,7 @@ export const HeroTypography = memo(() => {
                   typed, compiled
                 </AnimatedHeading>
                 <AnimatedHeading
+                  disableAnimation={!isIntersecting}
                   key={`${family}3`}
                   index={2}
                   Component={H3}
@@ -110,6 +112,7 @@ export const HeroTypography = memo(() => {
                   custom per-size
                 </AnimatedHeading>
                 <AnimatedHeading
+                  disableAnimation={!isIntersecting}
                   key={`${family}4`}
                   index={3}
                   Component={H4}
@@ -119,6 +122,7 @@ export const HeroTypography = memo(() => {
                   premade or custom
                 </AnimatedHeading>
                 <AnimatedHeading
+                  disableAnimation={!isIntersecting}
                   key={`${family}5`}
                   index={4}
                   Component={H5}
@@ -128,6 +132,7 @@ export const HeroTypography = memo(() => {
                   easy to author
                 </AnimatedHeading>
                 <AnimatedHeading
+                  disableAnimation={!isIntersecting}
                   key={`${family}6`}
                   index={5}
                   Component={H6}
@@ -150,7 +155,7 @@ const OverlayCard = () => {
 
   // {/* TODO elevation not overriding? */}
   return (
-    <Card bw={1} boc="$borderColor" br="$6" elevation="$6" shadowRadius={60}>
+    <Card bw={1} bc="$borderColor" br="$6" elevation="$6" shadowRadius={60}>
       <YStack
         jc="center"
         p="$6"
@@ -184,21 +189,23 @@ const OverlayCard = () => {
 
 const AnimatedHeading = memo(
   ({
+    disableAnimation,
     Component,
     children,
     family,
     index,
     ...rest
   }: {
+    disableAnimation?: boolean
     family: string
     Component: typeof Heading
     children: any
     index: number
   } & TextProps) => {
     return (
-      <Delay by={index * 180}>
+      <Delay passThrough={disableAnimation} by={index * 180 + 20}>
         <Component
-          animation="lazy"
+          animation={disableAnimation ? null : 'lazy'}
           enterStyle={{ o: 0, y: -10 }}
           exitStyle={{ o: 0, y: 10 }}
           o={1}
@@ -223,7 +230,7 @@ const AnimatedHeading = memo(
   }
 )
 
-const Delay = ({ children, by }) => {
+const Delay = ({ children, by, passThrough }) => {
   const isMounted = useDidFinishSSR()
   const [done, setDone] = useState(false)
 
@@ -231,6 +238,10 @@ const Delay = ({ children, by }) => {
     const showTimer = setTimeout(() => setDone(true), by)
     return () => clearTimeout(showTimer)
   })
+
+  if (passThrough) {
+    return children
+  }
 
   return !isMounted || !done ? null : children
 }

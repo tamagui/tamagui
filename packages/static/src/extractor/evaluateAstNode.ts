@@ -107,15 +107,18 @@ export function evaluateAstNode(
       return (
         evaluateAstNode(exprNode.left, evalFn) + evaluateAstNode(exprNode.right, evalFn)
       )
-    } else if (exprNode.operator === '-') {
+    }
+    if (exprNode.operator === '-') {
       return (
         evaluateAstNode(exprNode.left, evalFn) - evaluateAstNode(exprNode.right, evalFn)
       )
-    } else if (exprNode.operator === '*') {
+    }
+    if (exprNode.operator === '*') {
       return (
         evaluateAstNode(exprNode.left, evalFn) * evaluateAstNode(exprNode.right, evalFn)
       )
-    } else if (exprNode.operator === '/') {
+    }
+    if (exprNode.operator === '/') {
       return (
         evaluateAstNode(exprNode.left, evalFn) / evaluateAstNode(exprNode.right, evalFn)
       )

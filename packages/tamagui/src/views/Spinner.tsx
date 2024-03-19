@@ -1,12 +1,7 @@
-import {
-  ColorTokens,
-  TamaguiElement,
-  ThemeTokens,
-  themeable,
-  useTheme,
-  variableToString,
-} from '@tamagui/core'
-import { YStack, YStackProps } from '@tamagui/stacks'
+import type { ColorTokens, TamaguiElement, ThemeTokens } from '@tamagui/core'
+import { themeable, useTheme, variableToString } from '@tamagui/core'
+import type { YStackProps } from '@tamagui/stacks'
+import { YStack } from '@tamagui/stacks'
 import * as React from 'react'
 import { ActivityIndicator } from 'react-native'
 

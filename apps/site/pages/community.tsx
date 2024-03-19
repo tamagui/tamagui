@@ -55,8 +55,8 @@ export default function Community({ frontmatters }) {
           <FlatBubbleCard w="50%" $sm={{ w: 'auto' }} ai="center" bw={0}>
             <NextLink href="/blog">
               <Button
-                bc="transparent"
-                boc="$borderColor"
+                bg="transparent"
+                bc="$borderColor"
                 bw={1}
                 mt="$-3"
                 size="$6"
@@ -110,21 +110,20 @@ export default function Community({ frontmatters }) {
 
           <Spacer size="$4" />
 
-          <FlatBubbleCard ai="center" feature bw={0} className="hero-gradient">
+          <FlatBubbleCard ai="center" feature bw={0}>
             <H2 size="$9" ta="center">
-              Design Kit
+              Figma Design Kit
             </H2>
-            <Spacer size="$2" />
-            <YStack ai="center" space>
-              <H4 size="$5">Figma Design Kit</H4>
-              <NextLink href="https://www.figma.com/community/file/1125992524818379922">
+            <Spacer size="$6" />
+            <YStack ai="center" gap>
+              <NextLink href="https://www.figma.com/community/file/1326593766534421119">
                 <YStack
                   target="_blank"
                   rel="noopener noreferrer"
                   br="$5"
                   overflow="hidden"
                   bw={0.5}
-                  boc="$borderColor"
+                  bc="$borderColor"
                 >
                   <Image
                     animation="quick"
@@ -137,7 +136,7 @@ export default function Community({ frontmatters }) {
                     }}
                     o={0.5}
                     source={{
-                      uri: '/sponsors/design-kit.jpg',
+                      uri: '/figma.png',
                       width: 1466 * 0.25,
                       height: 776 * 0.25,
                     }}
@@ -152,14 +151,14 @@ export default function Community({ frontmatters }) {
 
         <FlatBubbleCard bw={0.5} space>
           <H3 id="starter-repos" ta="center">
-            Starter repos
+            Starter repos & Guides
           </H3>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             <XStack py="$2" space="$4">
               <StarterRepoCard
-                url="https://github.com/timothymiller/t4-app"
-                name="create-t4-app"
-                author="timothymiller"
+                url="https://galaxies.dev/course/react-native-tamagui  "
+                name="Universal Apps with Tamagui (Guide)"
+                author="Simon Grimm"
               />
 
               <StarterRepoCard
@@ -217,18 +216,37 @@ export default function Community({ frontmatters }) {
 
         <FlatBubbleCard bw={0}>
           <H2 size="$9" ta="center" className="rainbow clip-text">
+            Enterprise Sponsors
+          </H2>
+        </FlatBubbleCard>
+
+        <XStack gap="$4" jc="center" ai="center" flexWrap="wrap">
+          <GoldSponsor
+            name="Uniswap"
+            bg="#FF007A"
+            link="https://uniswap.org"
+            image="/sponsors/uniswap.jpeg"
+            imageWidth={250}
+            imageHeight={250}
+          />
+
+          <GoldSponsor
+            name="Medbill AI"
+            bg="#888"
+            link="https://www.medbill.ai"
+            image="/sponsors/medbill-ai.png"
+            imageWidth={800 * 0.3}
+            imageHeight={173 * 0.3}
+          />
+        </XStack>
+
+        <FlatBubbleCard bw={0}>
+          <H2 size="$9" ta="center" color="$yellow10">
             Gold Sponsors
           </H2>
         </FlatBubbleCard>
 
-        <XStack space spaceDirection="both" flexWrap="wrap">
-          <GoldSponsor
-            name="Uniswap"
-            link="https://uniswap.org"
-            image="/sponsors/uniswap.jpeg"
-            imageWidth={150}
-            imageHeight={150}
-          />
+        <XStack gap="$4" jc="center" ai="center" flexWrap="wrap">
           <GoldSponsor
             name="Appfolio"
             link="https://www.appfolio.com/"
@@ -253,7 +271,7 @@ export default function Community({ frontmatters }) {
           </H2>
         </FlatBubbleCard>
 
-        <XStack space spaceDirection="both" flexWrap="wrap">
+        <XStack gap="$4" jc="center" ai="center" flexWrap="wrap">
           <GoldSponsor
             name="Bounty"
             link="https://bounty.co"
@@ -278,7 +296,7 @@ export default function Community({ frontmatters }) {
           </H2>
         </FlatBubbleCard>
 
-        <XStack space spaceDirection="both" flexWrap="wrap">
+        <XStack gap="$4" jc="center" ai="center" flexWrap="wrap">
           <GoldSponsor
             name="CodingScape"
             link="https://codingscape.com"
@@ -376,9 +394,10 @@ function GoldSponsor(props: {
   image: string
   imageWidth: number
   imageHeight: number
+  bg?: any
 }) {
   return (
-    <FlatBubbleCard mb="$4" flat p={0} fb={0}>
+    <FlatBubbleCard mb="$4" flat p={0} fb={0} bg={props.bg}>
       <NextLink href={props.link} target="_blank">
         <YStack
           ai="center"
@@ -417,8 +436,8 @@ function IndividualSponsor(props: { name: string; link: string }) {
               cursor="pointer"
               p="$4"
               br="$4"
-              hoverStyle={{ bc: 'rgba(0,0,0,0.1)' }}
-              pressStyle={{ bc: 'rgba(0,0,0,0.2)' }}
+              hoverStyle={{ bg: 'rgba(0,0,0,0.1)' }}
+              pressStyle={{ bg: 'rgba(0,0,0,0.2)' }}
               space
             >
               <H5 cursor="inherit" als="center" letterSpacing={4} ai="center">

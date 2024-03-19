@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/form",
-  "version": "1.79.13",
+  "version": "1.91.5",
   "sideEffects": [
     "*.css"
   ],
@@ -27,24 +27,25 @@
     ".": {
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.js"
+      "require": "./dist/cjs/index.js",
+      "react-native": "./dist/cjs/index.native.js"
     }
   },
   "dependencies": {
-    "@tamagui/compose-refs": "1.79.13",
-    "@tamagui/core": "1.79.13",
-    "@tamagui/create-context": "1.79.13",
-    "@tamagui/focusable": "1.79.13",
-    "@tamagui/get-button-sized": "1.79.13",
-    "@tamagui/get-font-sized": "1.79.13",
-    "@tamagui/helpers": "1.79.13",
-    "@tamagui/text": "1.79.13"
+    "@tamagui/compose-refs": "1.91.5",
+    "@tamagui/core": "1.91.5",
+    "@tamagui/create-context": "1.91.5",
+    "@tamagui/focusable": "1.91.5",
+    "@tamagui/get-button-sized": "1.91.5",
+    "@tamagui/get-font-sized": "1.91.5",
+    "@tamagui/helpers": "1.91.5",
+    "@tamagui/text": "1.91.5"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.79.13",
+    "@tamagui/build": "1.91.5",
     "react": "^18.2.0"
   },
   "publishConfig": {

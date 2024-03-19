@@ -1,5 +1,6 @@
 import { useEvent } from '@tamagui/use-event'
-import React, { startTransition, useEffect, useRef, useState } from 'react'
+import type React from 'react'
+import { startTransition, useEffect, useRef, useState } from 'react'
 
 // can configure to allow most-recent-wins or prop-wins
 // defaults to prop-wins

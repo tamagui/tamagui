@@ -1,20 +1,17 @@
 import { isWeb } from '@tamagui/constants'
-import {
+import type {
   GetProps,
   RadiusTokens,
   SizeTokens,
   StackProps,
   ThemeValueFallback,
-  styled,
-  usePropsAndStyle,
 } from '@tamagui/core'
+import { styled, usePropsAndStyle } from '@tamagui/core'
 import React, { forwardRef } from 'react'
 import { Image as RNImage } from 'react-native'
 
 const StyledImage = styled(RNImage, {
   name: 'Image',
-  position: 'relative',
-  source: { uri: '' },
 })
 
 type StyledImageProps = Omit<GetProps<typeof StyledImage>, 'borderRadius'> & {

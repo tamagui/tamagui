@@ -1,4 +1,5 @@
-import { Variable, createTheme, getVariableValue, isWeb } from '@tamagui/core'
+import type { Variable } from '@tamagui/core'
+import { createTheme, getVariableValue, isWeb } from '@tamagui/core'
 
 import { setColorAlpha } from './colorUtils'
 
@@ -136,7 +137,7 @@ export const createThemes = <ColorsList extends string, BaseColorList extends st
 
   function createThemesFrom<
     Name extends string,
-    GetTheme extends ThemeCreator = ThemeCreator
+    GetTheme extends ThemeCreator = ThemeCreator,
   >(
     name: Name,
     getTheme: GetTheme,

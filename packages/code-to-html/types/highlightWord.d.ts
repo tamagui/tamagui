@@ -1,2 +1,2 @@
-export declare function highlightWord(code: any): import("hast").RootContent[];
+export declare function highlightWord(code: any): any;
 //# sourceMappingURL=highlightWord.d.ts.map

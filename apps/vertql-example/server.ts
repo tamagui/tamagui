@@ -1,4 +1,4 @@
-import { Express } from 'express'
+import type { Express } from 'express'
 import { graphqlHTTP } from 'express-graphql'
 import { extractGratsSchemaAtRuntime } from 'grats'
 

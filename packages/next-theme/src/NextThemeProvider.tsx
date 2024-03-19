@@ -7,8 +7,8 @@ import { memo, useEffect, useMemo, useState } from 'react'
 import { MEDIA, colorSchemes } from './constants'
 import { getSystemTheme, getTheme } from './helpers'
 import { ThemeSettingContext } from './ThemeSettingContext'
-import { ValueObject } from './types'
-import { ThemeProviderProps, UseThemeProps } from './UseThemeProps'
+import type { ValueObject } from './types'
+import type { ThemeProviderProps, UseThemeProps } from './UseThemeProps'
 
 export const NextThemeProvider = memo(
   ({
@@ -121,12 +121,12 @@ export const NextThemeProvider = memo(
         forcedTheme && colorSchemes.includes(forcedTheme)
           ? forcedTheme
           : // If regular theme is light or dark
-          theme && colorSchemes.includes(theme)
-          ? theme
-          : // If theme is system, use the resolved version
-          theme === 'system'
-          ? resolvedTheme || null
-          : null
+            theme && colorSchemes.includes(theme)
+            ? theme
+            : // If theme is system, use the resolved version
+              theme === 'system'
+              ? resolvedTheme || null
+              : null
 
       // color-scheme tells browser how to render built-in elements like forms, scrollbars, etc.
       // if color-scheme is null, this will remove the property
@@ -229,9 +229,8 @@ const ThemeScript = memo(
       if (attribute === 'class') {
         const removeClasses = attrs.map((t: string) => `d.remove('${t}')`).join(';')
         return `var d=document.documentElement.classList;${removeClasses};`
-      } else {
-        return `var d=document.documentElement;`
       }
+      return `var d=document.documentElement;`
     })()
 
     const updateDOM = (name: string, literal?: boolean) => {

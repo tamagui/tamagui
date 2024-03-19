@@ -1,4 +1,5 @@
-import { Variable, getVariableValue } from '@tamagui/core'
+import type { Variable } from '@tamagui/core'
+import { getVariableValue } from '@tamagui/core'
 
 export const hexToRGBA = (hex: string, alpha = 1) => {
   if (!isValidHex(hex)) {

@@ -1,28 +1,17 @@
-import { existsSync } from 'fs'
-import path, { dirname, join } from 'path'
-
 import browserslist from 'browserslist'
-import buildResolver from 'esm-resolve'
 import { lazyPostCSS } from 'next/dist/build/webpack/config/blocks/css'
 import { getGlobalCssLoader } from 'next/dist/build/webpack/config/blocks/css/loaders'
-import {
-  PluginOptions as LoaderPluginOptions,
-  TamaguiPlugin,
-  shouldExclude as shouldExcludeDefault,
-} from 'tamagui-loader'
+import path from 'path'
+
+import { loadTamaguiBuildConfigSync } from '@tamagui/static'
+import type { PluginOptions as LoaderPluginOptions } from 'tamagui-loader'
+import { TamaguiPlugin } from 'tamagui-loader'
 import webpack from 'webpack'
 
 export type WithTamaguiProps = LoaderPluginOptions & {
   appDir?: boolean
-
-  /**
-   * @deprecated Deprecated, just leave it off
-   */
-  useReactNativeWebLite: boolean
   enableLegacyFontSupport?: boolean
-  aliasReactPackages?: boolean
   includeCSSTest?: RegExp | ((path: string) => boolean)
-  doesMutateThemes?: boolean
   shouldExtract?: (path: string, projectRoot: string) => boolean | undefined
   shouldExcludeFromServer?: (props: {
     context: string
@@ -31,18 +20,22 @@ export type WithTamaguiProps = LoaderPluginOptions & {
   }) => boolean | string | undefined
 }
 
-export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
+export const withTamagui = (tamaguiOptionsIn?: WithTamaguiProps) => {
   return (nextConfig: any = {}) => {
+    const tamaguiOptions = {
+      ...tamaguiOptionsIn,
+      ...loadTamaguiBuildConfigSync(tamaguiOptionsIn),
+    }
     const isAppDir = tamaguiOptions?.appDir || nextConfig.experimental?.appDir
 
     return {
       ...nextConfig,
+      transpilePackages: [
+        ...(nextConfig.transpilePackages || []),
+        'expo-linear-gradient',
+      ],
       webpack: (webpackConfig: any, options: any) => {
         const { dir, config, dev, isServer } = options
-
-        const resolver = buildResolver(join(dir, 'index.js'), {
-          constraints: 'node',
-        })
 
         // @ts-ignore
         if (typeof globalThis['__DEV__'] === 'undefined') {
@@ -50,127 +43,8 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
           globalThis['__DEV__'] = dev
         }
 
-        const isNext12 = typeof options.config?.swcMinify === 'boolean'
-        if (!isNext12) {
-          throw new Error(`Next.js 12 only supported`)
-        }
-
         const prefix = `${isServer ? ' ssr ' : ' web '} |`
-
-        const safeResolves = (resolves: [string, string][], multiple = false) => {
-          const res: string[][] = []
-          for (const [out, mod] of resolves) {
-            if (out.endsWith('$')) {
-              res.push([out, mod])
-              continue
-            }
-            try {
-              res.push([out, resolveEsm(mod)])
-              if (multiple) {
-                res.push([out, resolveEsm(mod, true)])
-              }
-            } catch (err) {
-              if (out.includes(`@gorhom/bottom-sheet`)) {
-                continue
-              }
-              if (process.env.DEBUG?.startsWith('tamagui')) {
-                console.info(prefix, `withTamagui skipping resolving ${out}`, err)
-              }
-            }
-          }
-          return res
-        }
-
-        const resolveEsm = (relativePath: string, onlyRequire = false) => {
-          if (isServer || onlyRequire) {
-            return require.resolve(relativePath)
-          }
-          const esm = resolver(relativePath)
-          return esm ? path.join(dir, esm) : require.resolve(relativePath)
-        }
-
         const SEP = path.sep
-
-        // automatically compile our given components
-        const componentsFullPaths = safeResolves(
-          tamaguiOptions.components.map(
-            (moduleName) => [moduleName, moduleName] as [string, string]
-          ),
-          true
-        )
-
-        const componentsBaseDirs = componentsFullPaths.map(([_, fullPath]) => {
-          let rootPath = dirname(fullPath as string)
-          while (rootPath.length > 1) {
-            const pkg = join(rootPath, 'package.json')
-            const hasPkg = existsSync(pkg)
-            if (hasPkg) {
-              return rootPath
-            } else {
-              rootPath = join(rootPath, '..')
-            }
-          }
-          throw new Error(`Couldn't find package.json in any path above: ${fullPath}`)
-        })
-
-        function isInComponentModule(fullPath: string) {
-          return componentsBaseDirs.some((componentDir) =>
-            fullPath.startsWith(componentDir)
-          )
-        }
-
-        // allows configuration
-        const shouldExclude = (path: string, projectRoot: string) => {
-          const res = tamaguiOptions.shouldExtract?.(path, projectRoot)
-          if (typeof res === 'boolean') {
-            return !res
-          }
-          if (isInComponentModule(path)) {
-            return false
-          }
-          return shouldExcludeDefault(path, projectRoot)
-        }
-
-        const rnw = tamaguiOptions.useReactNativeWebLite
-          ? 'react-native-web-lite'
-          : 'react-native-web'
-
-        const tamaguiAliases = Object.fromEntries(
-          safeResolves([
-            ['@tamagui/core/reset.css', '@tamagui/core/reset.css'],
-            ['@tamagui/core', '@tamagui/core'],
-            ['@tamagui/web', '@tamagui/web'],
-            // web specific light react-native-svg, optional, can use svgs but had issues with compat
-            ['react-native-svg', '@tamagui/react-native-svg'],
-            // fixes https://github.com/kentcdodds/mdx-bundler/issues/143
-            ['react/jsx-runtime.js', 'react/jsx-runtime'],
-            ['react/jsx-runtime', 'react/jsx-runtime'],
-            ['react/jsx-dev-runtime.js', 'react/jsx-dev-runtime'],
-            ['react/jsx-dev-runtime', 'react/jsx-dev-runtime'],
-            ['react-native-reanimated', 'react-native-reanimated'],
-            ['react-native$', rnw],
-            ['react-native-web$', rnw],
-            ['@testing-library/react-native', '@tamagui/proxy-worm'],
-            ['@gorhom/bottom-sheet$', '@gorhom/bottom-sheet'],
-            // fix reanimated 3
-            ['react-native/Libraries/Renderer/shims/ReactFabric', '@tamagui/proxy-worm'],
-            ...(tamaguiOptions.aliasReactPackages
-              ? ([
-                  ['react', 'react'],
-                  ['react-dom', 'react-dom'],
-                ] as any)
-              : []),
-          ])
-        )
-
-        const alias = {
-          ...(webpackConfig.resolve.alias || {}),
-          ...tamaguiAliases,
-        }
-
-        if (process.env.DEBUG) {
-          console.info('Tamagui alias:', alias)
-        }
 
         if (process.env.ANALYZE === 'true') {
           Object.assign(webpackConfig.optimization, {
@@ -178,154 +52,27 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
           })
         }
 
-        webpackConfig.resolve.alias = alias
+        const tamaguiPlugin = new TamaguiPlugin({
+          isServer,
+          ...tamaguiOptions,
+        })
 
         const defines = {
           'process.env.IS_STATIC': JSON.stringify(''),
           'process.env.TAMAGUI_TARGET': '"web"',
           'process.env.TAMAGUI_IS_SERVER': JSON.stringify(isServer ? 'true' : ''),
           __DEV__: JSON.stringify(dev),
-          ...((tamaguiOptions.outputCSS || process.env.TAMAGUI_DOES_SSR_CSS) && {
+          ...(process.env.TAMAGUI_DOES_SSR_CSS && {
             'process.env.TAMAGUI_DOES_SSR_CSS': JSON.stringify(
-              process.env.TAMAGUI_DOES_SSR_CSS ??
-                (tamaguiOptions?.doesMutateThemes === false ? true : 'mutates-themes')
+              process.env.TAMAGUI_DOES_SSR_CSS
             ),
           }),
-        }
 
-        webpackConfig.plugins.push(new webpack.DefinePlugin(defines))
-
-        const excludeExports = tamaguiOptions.excludeReactNativeWebExports
-        if (Array.isArray(excludeExports)) {
-          try {
-            const regexStr = `react-native-web(-lite)?/.*(${excludeExports.join(
-              '|'
-            )}).*js`
-            const regex = new RegExp(regexStr)
-            // console.info(prefix, 'exclude', regexStr)
-            webpackConfig.plugins.push(
-              new webpack.NormalModuleReplacementPlugin(
-                regex,
-                resolveEsm('@tamagui/proxy-worm')
-              )
-            )
-          } catch (err) {
-            console.warn(
-              `Invalid names provided to excludeReactNativeWebExports: ${excludeExports.join(
-                ', '
-              )}`
-            )
-          }
-        }
-
-        if (process.env.IGNORE_TS_CONFIG_PATHS) {
-          if (process.env.DEBUG) {
-            console.info(prefix, 'ignoring tsconfig paths')
-          }
-          if (webpackConfig.resolve.plugins[0]) {
-            delete webpackConfig.resolve.plugins[0].paths['@tamagui/*']
-            delete webpackConfig.resolve.plugins[0].paths['tamagui']
-          }
-        }
-
-        // better shaking for icons:
-        if (!isServer) {
-          nextConfig.modularizeImports ??= {}
-          nextConfig.modularizeImports['@tamagui/lucide-icons'] = {
-            transform: `@tamagui/lucide-icons/dist/esm/icons/{{kebabCase member}}`,
-            skipDefaultConversion: true,
-          }
-        }
-
-        /**
-         * Server react-native compat
-         */
-        if (isServer) {
-          const externalize = (context: string, request: string) => {
-            const fullPath = request[0] === '.' ? path.join(context, request) : request
-
-            if (tamaguiOptions.shouldExcludeFromServer) {
-              const userRes = tamaguiOptions.shouldExcludeFromServer({
-                context,
-                request,
-                fullPath,
-              })
-              if (userRes !== undefined) {
-                return userRes
-              }
-            }
-
-            if (isInComponentModule(fullPath)) {
-              return false
-            }
-
-            if (fullPath.includes('react-native-web')) {
-              // always inline react-native-web due to errors where next.js resolved the path to esm
-              return false
-            }
-
-            // must inline react-native so we can alias to react-native-web
-            if (
-              fullPath === 'react-native' ||
-              fullPath.startsWith(`react-native${SEP}`)
-            ) {
-              return false
-            }
-
-            if (
-              // feather icons uses react-native-svg which needs to be aliased
-              // fullPath.includes('/lucide-icons/') ||
-              fullPath.startsWith('react-native-web') ||
-              fullPath.includes(`node_modules${SEP}react-native-web`) ||
-              new RegExp(`^(react-dom|react)${SEP}$`).test(fullPath)
-            ) {
-              return `commonjs ${fullPath}`
-            }
-            if (
-              fullPath.startsWith('moti') ||
-              fullPath.startsWith('solito') ||
-              fullPath === 'tamagui' ||
-              fullPath.startsWith('@tamagui') ||
-              fullPath === 'react-native-safe-area-context' ||
-              fullPath === 'expo-linear-gradient' ||
-              fullPath.startsWith('@react-navigation') ||
-              fullPath.startsWith('@gorhom')
-            ) {
-              return
-            }
-            if (/^@?react-native-/.test(request)) {
-              return false
-            }
-            return true
-          }
-
-          // externalize react native things from bundle
-          webpackConfig.externals = [
-            ...webpackConfig.externals.map((external) => {
-              if (typeof external !== 'function') {
-                return external
-              }
-              // only runs on server
-              return (ctx, cb) => {
-                const isCb = typeof cb === 'function'
-                const res = externalize(ctx.context, ctx.request)
-                if (isCb) {
-                  if (typeof res === 'string') {
-                    return cb(null, res)
-                  }
-                  if (res) {
-                    return external(ctx, cb)
-                  }
-                  return cb()
-                }
-                return !res
-                  ? Promise.resolve(undefined)
-                  : typeof res === 'string'
-                  ? Promise.resolve(res)
-                  : external(ctx)
-              }
-            }),
-          ]
+          // TODO move to TamaguiPlugin
+          // optimizes inserts automatically assuming CSS wont be "removed" on page change
+          ...(tamaguiOptions.emitSingleCSSFile && {
+            'process.env.TAMAGUI_INSERT_SELECTOR_TRIES': JSON.stringify('1'),
+          }),
         }
 
         /**
@@ -399,20 +146,112 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
           }
         }
 
-        const enableStudio = options.dev && options.nextRuntime === 'nodejs' && isServer
+        webpackConfig.plugins.push(new webpack.DefinePlugin(defines))
 
-        webpackConfig.plugins.push(
-          new TamaguiPlugin({
-            enableStudio,
-            isServer,
-            exclude: (path: string) => {
-              const res = shouldExclude(path, options.dir)
-              // console.info(`shouldExclude`, res, path)
-              return res
-            },
-            ...tamaguiOptions,
-          })
-        )
+        if (process.env.IGNORE_TS_CONFIG_PATHS) {
+          if (process.env.DEBUG) {
+            console.info(prefix, 'ignoring tsconfig paths')
+          }
+          if (webpackConfig.resolve.plugins[0]) {
+            delete webpackConfig.resolve.plugins[0].paths['@tamagui/*']
+            delete webpackConfig.resolve.plugins[0].paths['tamagui']
+          }
+        }
+
+        // better shaking for icons:
+        if (!isServer) {
+          nextConfig.modularizeImports ??= {}
+          nextConfig.modularizeImports['@tamagui/lucide-icons'] = {
+            transform: `@tamagui/lucide-icons/dist/esm/icons/{{kebabCase member}}`,
+            skipDefaultConversion: true,
+          }
+        }
+
+        /**
+         * Server react-native compat
+         */
+        if (isServer) {
+          const externalize = (context: string, request: string) => {
+            const fullPath = request[0] === '.' ? path.join(context, request) : request
+
+            if (tamaguiOptions.shouldExcludeFromServer) {
+              const userRes = tamaguiOptions.shouldExcludeFromServer({
+                context,
+                request,
+                fullPath,
+              })
+              if (userRes !== undefined) {
+                return userRes
+              }
+            }
+
+            if (tamaguiPlugin.isInComponentModule(fullPath)) {
+              return false
+            }
+
+            if (fullPath.includes('react-native-web')) {
+              // always inline react-native-web due to errors where next.js resolved the path to esm
+              return false
+            }
+
+            // must inline react-native so we can alias to react-native-web
+            if (
+              fullPath === 'react-native' ||
+              fullPath.startsWith(`react-native${SEP}`)
+            ) {
+              return false
+            }
+
+            if (
+              fullPath.startsWith('moti') ||
+              fullPath.startsWith('solito') ||
+              fullPath === 'tamagui' ||
+              fullPath.startsWith('@tamagui') ||
+              fullPath === 'react-native-safe-area-context' ||
+              fullPath === 'expo-linear-gradient' ||
+              fullPath.startsWith('@react-navigation') ||
+              fullPath.startsWith('@gorhom')
+            ) {
+              return
+            }
+
+            if (/^@?react-native-/.test(request)) {
+              return false
+            }
+
+            return true
+          }
+
+          // externalize react native things from bundle
+          webpackConfig.externals = [
+            ...webpackConfig.externals.map((external) => {
+              if (typeof external !== 'function') {
+                return external
+              }
+              // only runs on server
+              return (ctx, cb) => {
+                const isCb = typeof cb === 'function'
+                const res = externalize(ctx.context, ctx.request)
+                if (isCb) {
+                  if (typeof res === 'string') {
+                    return cb(null, res)
+                  }
+                  if (res) {
+                    return external(ctx, cb)
+                  }
+                  return cb()
+                }
+                return !res
+                  ? Promise.resolve(undefined)
+                  : typeof res === 'string'
+                    ? Promise.resolve(res)
+                    : external(ctx)
+              }
+            }),
+          ]
+        }
+
+        webpackConfig.plugins.push(tamaguiPlugin)
 
         if (typeof nextConfig.webpack === 'function') {
           return nextConfig.webpack(webpackConfig, options)

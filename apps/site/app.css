@@ -1,21 +1,38 @@
 html,
 body {
   max-width: 100vw;
-  /* overflow-x: hidden;
-  overflow-y: auto; */
-  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
-    Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol';
 }
 
 body {
-  background-color: var(--backgroundStrong) !important;
+  background: var(--color2) !important;
+}
+
+.bento-fade {
+  background: linear-gradient(
+    var(--background075),
+    var(--background) 20%
+  );
+}
+
+html.t_light body:has(.strong-background)::before {
+  display: flex;
+  content: ' ';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 900px;
+  background: linear-gradient(#fff, transparent);
+  z-index: 1;
 }
 
 body {
   margin: 0;
   position: relative;
   max-width: 100vw;
-  overflow-x: hidden;
 }
 
 * {
@@ -26,6 +43,10 @@ body {
 #__next {
   display: flex;
   flex: 1;
+  max-width: 100vw;
+}
+
+:is(#__next, body, html):not(:has(.is-sticky)) {
   max-width: 100vw;
   overflow-x: hidden;
 }
@@ -117,14 +138,6 @@ span._display-1adg3ll > span._display-xoduu5 {
   );
 }
 
-.hero-blur {
-  background: radial-gradient(var(--color2) 0%, transparent 72%);
-}
-
-.t_dark .hero-blur {
-  background: radial-gradient(var(--color6) 0%, transparent 72%);
-}
-
 /* reset */
 
 p,
@@ -196,6 +209,9 @@ pre {
 .ms300 {
   transition-duration: 300ms;
 }
+.ms500 {
+  transition-duration: 500ms;
+}
 .s1,
 .ms1000 {
   transition-duration: 1s;
@@ -216,8 +232,8 @@ pre {
     0deg,
     var(--orange10),
     var(--yellow10),
-    var(--green10) 56%,
-    var(--blue10) 56.1%,
+    var(--green10),
+    var(--blue10),
     var(--pink10),
     var(--red10)
   );
@@ -295,17 +311,12 @@ iframe {
   backdrop-filter: blur(30px);
 }
 
+.blur-4 {
+  backdrop-filter: blur(4px);
+}
+
 .blur-light {
   backdrop-filter: blur(2px);
-}
-
-.hover-highlights > * {
-  opacity: 0.95;
-  transition: all ease-in 150ms;
-}
-
-.hover-highlights:hover > * {
-  opacity: 1;
 }
 
 .bg-dot-grid {
@@ -348,23 +359,21 @@ iframe {
 }
 
 .mask-gradient-right {
-  mask-image: linear-gradient(120deg, rgba(0, 0, 0, 1) 10%, transparent 60%);
-  mix-blend-mode: difference;
+  mask-image: linear-gradient(120deg, rgba(0, 0, 0, 1) 50%, transparent 100%);
 }
 
 .mask-gradient-left {
-  mask-image: linear-gradient(-100deg, rgba(0, 0, 0, 1), transparent 50%);
-  mix-blend-mode: screen;
+  mask-image: linear-gradient(-100deg, rgba(0, 0, 0, 1), transparent 100%);
 }
 
 .t_dark .mask-gradient-right {
-  mix-blend-mode: hue;
+  mix-blend-mode: color-dodge;
 }
 
-.t_dark .mask-gradient-left {
-  mix-blend-mode: screen;
+.t_dark .mask-gradient-left,
+.mix-hard-light {
+  mix-blend-mode: hard-light;
 }
-
 
 /* code highlighting */
 
@@ -606,10 +615,13 @@ textarea {
 }
 
 .text-3d {
-  text-shadow: 1px 1px 1px var(--color8), 1px 2px 1px var(--color8),
-    1px 3px 1px var(--color8), 1px 4px 1px var(--color8), 1px 5px 1px var(--color8),
-    1px 6px 1px var(--color8), 1px 7px 1px var(--color8), 1px 8px 1px var(--color8),
-    1px 9px 1px var(--color8), 1px 10px 1px var(--color8), 1px 18px 6px var(--shadowColor);
+  text-shadow: 
+    1px 1px 1px var(--color9), 1px 2px 1px var(--color9),
+    1px 3px 1px var(--color9), 1px 4px 1px var(--color9),
+    1px 5px 1px var(--color9), 1px 6px 1px var(--color9),
+    1px 7px 1px var(--color9), 1px 8px 1px var(--color9),
+    1px 9px 1px var(--color9), 1px 10px 1px var(--color9),
+    1px 28px 30px var(--background025);
 }
 
 .grain {
@@ -676,14 +688,8 @@ textarea {
   opacity: 0.3;
 }
 
-.callout {
-  text-shadow: 1px 1px 0 var(--orange9), 2px 2px 0 var(--yellow9), 3px 3px 0 var(--green9),
-    4px 4px 0 var(--blue9), 5px 5px 0 var(--purple9), 6px 6px 0 var(--pink9),
-    7px 7px 0 var(--red9), 0 0 50px rgba(0, 0, 0, 1);
-}
-
 .text-glow {
-  text-shadow: 4px 4px 0 var(--backgroundStrong);
+  text-shadow: 2px 2px 0 var(--background025);
 }
 
 .rotate-slow-right {
@@ -741,13 +747,13 @@ textarea {
 }
 
 .font-outlined {
-  text-shadow: 8px 8px var(--color), -8px -8px var(--color), -8px 8px var(--color),
-    8px -8px var(--color);
+  -webkit-text-stroke-width: 8px;
+  -webkit-text-stroke-color: var(--color);
 }
 
 .font-outlined-sm {
-  text-shadow: 1px 1px var(--color), -1px -1px var(--color), -1px 1px var(--color),
-    1px -1px var(--color);
+  text-shadow: 1px 1px var(--color), -1px -1px var(--color),
+    -1px 1px var(--color), 1px -1px var(--color);
 }
 
 .invert {
@@ -769,7 +775,7 @@ textarea {
 
 .clip-slice {
   mask-image: url(./public/heart.svg);
-  mask-size: 20% 20%;
+  mask-size: 25% 25%;
   animation: clip-fade2 90s infinite alternate;
 }
 
@@ -780,7 +786,7 @@ textarea {
 }
 
 .slice-alt {
-  mask-size: 30% 30%;
+  mask-size: 50% 50%;
   animation: clip-fade2 30s infinite alternate;
 }
 
@@ -817,7 +823,138 @@ textarea {
   -webkit-text-wrap: balance;
 }
 
-.text-wrap-pretty {
+.text-wrap-pretty, p {
   text-wrap: pretty;
   -webkit-text-wrap: pretty;
+}
+
+.tooltip {
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-decoration-color: var(--color7);
+  text-underline-offset: 6px;
+}
+
+.wander {
+  animation: wander 25s alternate-reverse infinite forwards;
+  transform-origin: top left;
+}
+
+@keyframes wander {
+  0% {
+    transform: translateX(0) translateY(0) scale(1);
+  }
+
+  25% {
+    transform: translateX(10px) translateY(10px) scale(1.06);
+  }
+
+  50% {
+    transform: translateX(-10px) translateY(-10px) scale(1.06);
+  }
+
+  75% {
+    transform: translateX(10px) translateY(-10px) scale(1);
+  }
+}
+/* 
+.shadow-breeze {
+  animation: breeze 20s alternate-reverse infinite forwards;
+}
+@keyframes breeze {
+  0% {
+    transform: translateX(1300px) translateY(-100px) scale(3.5) rotate(90deg)
+      scaleX(-1) scaleY(-1);
+  }
+
+  100% {
+    transform: translateX(1350px) translateY(0px) scale(3.5) rotate(90deg)
+      scaleX(-1) scaleY(-1);
+  }
+} */
+
+/* 
+.shadow-breeze2 {
+  animation: breeze2 35s linear alternate-reverse infinite forwards;
+}
+
+@keyframes breeze2 {
+  0% {
+    transform: translateX(0px) translateY(0px);
+  }
+
+  33% {
+    transform: translateX(15px) translateY(5px) scale(1.025);
+  }
+
+  66% {
+    transform: translateX(-15px) translateY(-15px);
+  }
+} */
+
+:root.t_light .phone-preview {
+  opacity: 0;
+}
+
+.bento-shadow {
+  text-shadow:
+    1px 1px var(--color2), 1px 2px 1px var(--color3),
+    1px 3px 1px var(--color4), 1px 4px 1px var(--color5),
+    1px 5px 1px var(--color6), 1px 6px 1px var(--color6),
+    1px 7px 1px var(--color7), 1px 8px 1px var(--color7),
+    1px 9px 1px var(--color7), 1px 12px 1px var(--color8),
+    1px 10px 150px rgba(255, 255, 255, 0.3);
+}
+
+.t_dark .bento-shadow {
+  text-shadow: 1px 1px var(--color9), 1px 2px 1px var(--color8),
+    1px 3px 1px var(--color7), 1px 4px 1px var(--color7),
+    1px 5px 1px var(--color6), 1px 6px 1px var(--color6),
+    1px 7px 1px var(--color5), 1px 8px 1px var(--color4),
+    1px 9px 1px var(--color4), 1px 11px 1px var(--color3),
+    1px 10px 40px rgba(255,255,255,0.07);
+}
+
+.bento-up-text {
+  /* mix-blend-mode: luminosity; */
+  mask-image: linear-gradient(rgba(0, 0, 0, 1), transparent, rgba(0, 0, 0, 1));
+  background-image: linear-gradient(var(--color0), var(--color7));
+  /* filter: blur(10px); */
+}
+
+.t_dark .bento-up-text {
+  mix-blend-mode: color-dodge;
+  background-image: linear-gradient(var(--background025), var(--color8));
+}
+
+.dark-shadow {
+  text-shadow: 0 10px 10px rgba(0,0,0,1);
+}
+
+.glow-shadow {
+  text-shadow: 0 20px 20px var(--background075), 0 30px 30px var(--background025);
+  mix-blend-mode: color-burn;
+}
+
+.t_dark .glow-shadow {
+  text-shadow: 0 20px 20px var(--color075), 0 30px 30px var(--color025);
+  mix-blend-mode: screen;
+}
+
+.bento-text-3 {
+  background-image: linear-gradient(var(--color7), var(--color9));
+  mix-blend-mode: hard-light;
+  opacity: 0.65;
+  text-shadow: 0 10px 20px var(--color05), 0 30px 30px var(--color025);
+}
+
+.t_dark .bento-text-3 {
+  mix-blend-mode: luminosity;
+}
+
+.mix-blend-color-burn-dodge {
+  mix-blend-mode: color-burn;
+}
+.t_dark .mix-blend-color-burn-dodge {
+  mix-blend-mode: color-dodge;
 }

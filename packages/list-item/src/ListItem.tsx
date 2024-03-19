@@ -4,25 +4,23 @@ import { getSize, getSpace } from '@tamagui/get-token'
 import { withStaticProperties } from '@tamagui/helpers'
 import { useGetThemedIcon } from '@tamagui/helpers-tamagui'
 import { ThemeableStack, YStack } from '@tamagui/stacks'
-import { SizableText, TextParentStyles, wrapChildrenInText } from '@tamagui/text'
-import {
+import type { TextParentStyles } from '@tamagui/text'
+import { SizableText, wrapChildrenInText } from '@tamagui/text'
+import type {
   FontSizeTokens,
   GetProps,
+  PropsWithoutMediaStyles,
   SizeTokens,
-  Spacer,
   ThemeableProps,
-  getTokens,
-  getVariableValue,
-  styled,
-  useProps,
 } from '@tamagui/web'
-import React, { FunctionComponent } from 'react'
+import { Spacer, getTokens, getVariableValue, styled, useProps } from '@tamagui/web'
+import type { FunctionComponent } from 'react'
+import React from 'react'
 
-type ListItemIconProps = { color?: string; size?: number }
+type ListItemIconProps = { color?: any; size?: any }
 type IconProp = JSX.Element | FunctionComponent<ListItemIconProps> | null
 
-export type ListItemProps = Omit<TextParentStyles, 'TextComponent' | 'noTextWrap'> &
-  GetProps<typeof ListItemFrame> &
+export type ListItemExtraProps = Omit<TextParentStyles, 'TextComponent' | 'noTextWrap'> &
   ThemeableProps & {
     /**
      * add icon before, passes color and size automatically if Component
@@ -60,6 +58,8 @@ export type ListItemProps = Omit<TextParentStyles, 'TextComponent' | 'noTextWrap
      */
     noTextWrap?: boolean | 'all'
   }
+
+export type ListItemProps = GetProps<typeof ListItemFrame> & ListItemExtraProps
 
 const NAME = 'ListItem'
 
@@ -182,7 +182,7 @@ export const useListItem = (
     Subtitle?: any
     Text?: any
   } = { Text: ListItemText, Subtitle: ListItemSubtitle, Title: ListItemTitle }
-) => {
+): { props: PropsWithoutMediaStyles<ListItemProps> } => {
   // careful not to destructure and re-order props, order is important
   const props = useProps(propsIn)
 
@@ -278,13 +278,12 @@ export const useListItem = (
   }
 }
 
-const ListItemComponent = ListItemFrame.styleable<ListItemProps>(function ListItem(
-  props,
-  ref
-) {
-  const { props: listItemProps } = useListItem(props)
-  return <ListItemFrame ref={ref} {...listItemProps} />
-})
+const ListItemComponent = ListItemFrame.styleable<ListItemExtraProps>(
+  function ListItem(props, ref) {
+    const { props: listItemProps } = useListItem(props)
+    return <ListItemFrame ref={ref} {...listItemProps} />
+  }
+)
 
 export const ListItem = withStaticProperties(ListItemComponent, {
   Text: ListItemText,

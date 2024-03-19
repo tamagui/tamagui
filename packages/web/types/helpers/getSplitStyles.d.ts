@@ -1,4 +1,5 @@
-import type { ComponentContextI, DebugProp, GetStyleResult, GetStyleState, SplitStyleProps, StaticConfig, TamaguiComponentState, TextStyleProps, ThemeParsed } from '../types';
+import type { TamaguiComponentState } from '../interfaces/TamaguiComponentState';
+import type { ComponentContextI, DebugProp, GetStyleResult, GetStyleState, SplitStyleProps, StaticConfig, TextStyleProps, ThemeParsed } from '../types';
 export type SplitStyles = ReturnType<typeof getSplitStyles>;
 export type SplitStyleResult = ReturnType<typeof getSplitStyles>;
 type StyleSplitter = (props: {

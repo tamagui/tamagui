@@ -1,4 +1,5 @@
-import { SizeVariantSpreadFunction, getVariableValue, isWeb } from '@tamagui/core'
+import type { SizeVariantSpreadFunction } from '@tamagui/core'
+import { getVariableValue, isWeb } from '@tamagui/core'
 import { getButtonSized } from '@tamagui/get-button-sized'
 import { getFontSized } from '@tamagui/get-font-sized'
 import { getSpace } from '@tamagui/get-token'

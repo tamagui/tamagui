@@ -1,5 +1,5 @@
 import React from 'react';
-import { RovingFocusGroupProps, RovingFocusItemProps } from './RovingFocusGroup';
+import type { RovingFocusGroupProps, RovingFocusItemProps } from './RovingFocusGroup';
 declare const RovingFocusGroup: React.ForwardRefExoticComponent<RovingFocusGroupProps & React.RefAttributes<unknown>> & {
     Item: React.ForwardRefExoticComponent<RovingFocusItemProps & React.RefAttributes<unknown>>;
 };

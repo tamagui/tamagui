@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /// <reference types="react" />
 export declare const MenuPredefinied: {
     MenuIcon: import("tamagui").TamaguiComponent<Omit<import("react-native").ViewProps, "pointerEvents" | "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").WebOnlyPressEvents & import("@tamagui/web").TamaguiComponentPropsBaseBase & {
@@ -1513,5 +1514,14 @@ export declare const MenuPredefinied: {
             unstyled?: boolean | undefined;
         };
     }>;
+=======
+import type React from 'react';
+type MenuProps = {
+    children?: React.ReactNode;
+    open?: boolean;
+    defaultOpen?: boolean;
+    trigger?: any;
+    onOpenChange?: (next: boolean) => void;
+>>>>>>> master
 };
 //# sourceMappingURL=Menu.d.ts.map

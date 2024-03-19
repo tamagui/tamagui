@@ -1,5 +1,6 @@
 import { FastForward, Pause, Rewind } from '@tamagui/lucide-icons'
 import React, { memo, useMemo } from 'react'
+import type { ThemeName, YStackProps } from 'tamagui'
 import {
   Button,
   Card,
@@ -9,10 +10,8 @@ import {
   Separator,
   Square,
   Theme,
-  ThemeName,
   XStack,
   YStack,
-  YStackProps,
 } from 'tamagui'
 
 import image from '../public/mj.jpg'
@@ -79,7 +78,7 @@ export const MediaPlayer = memo(
               w="100%"
               px="$6"
               py="$4"
-              bc="$backgroundHover"
+              bg="$backgroundHover"
               bbrr={17}
               bblr={17}
               ai="center"

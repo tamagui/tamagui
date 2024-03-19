@@ -1,11 +1,14 @@
 import React from 'react';
-import { DebugProp, SpaceDirection, SpaceValue, SpacerProps, StackProps, StackPropsBase, StaticConfig, TamaguiComponent, TamaguiElement, TextProps } from './types';
+import type { DebugProp, SpaceDirection, SpaceValue, SpacerProps, SpacerStyleProps, StackNonStyleProps, StaticConfig, TamaguiComponent, TamaguiElement } from './types';
 export declare const mouseUps: Set<Function>;
-export declare function createComponent<ComponentPropTypes extends StackProps | TextProps = {}, Ref = TamaguiElement, BaseProps = never>(staticConfig: StaticConfig): TamaguiComponent<ComponentPropTypes, Ref, BaseProps, void>;
+export declare function createComponent<ComponentPropTypes extends Record<string, any> = {}, Ref extends TamaguiElement = TamaguiElement, BaseProps = never, BaseStyles extends Object = never>(staticConfig: StaticConfig): TamaguiComponent<ComponentPropTypes, Ref, BaseProps, BaseStyles, {}>;
 export declare function Unspaced(props: {
     children?: any;
 }): any;
-export declare const Spacer: TamaguiComponent<SpacerProps, TamaguiElement, StackPropsBase, void>;
+export declare namespace Unspaced {
+    var isUnspaced: boolean;
+}
+export declare const Spacer: TamaguiComponent<SpacerProps, TamaguiElement, StackNonStyleProps, SpacerStyleProps, {}>;
 export type SpacedChildrenProps = {
     isZStack?: boolean;
     children?: React.ReactNode;

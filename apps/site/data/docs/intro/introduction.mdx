@@ -1,175 +1,33 @@
 ---
 title: Introduction
-description: Universal styles for React Native and Web
 ---
 
-<IntroParagraph>
-  Tamagui is a complete UI solution for cross-platform apps on React (web and native),
-  featuring best-in-class performance and highly platform-optimized output thanks to a
-  smart compiler.
-</IntroParagraph>
+<DocsIntro />
 
 <GetStarted />
 
----
+#### Highlights
 
-## High level
-
-The highest level part of Tamagui is `tamagui` itself, a complete UI kit built on top of `@tamagui/core`. This gives you a huge amount of progress towards a beautiful, fully working app consisting of some of the hardest components to get right, all done in a way that gives you control over their styling.
-
-### `@tamagui/core`
-
-After [configuring](/docs/core/configuration), use `@tamagui/core` as simply as:
-
-```tsx
-import { Stack, Text } from 'tamagui' // or '@tamagui/core'
-
-export const App = () => (
-  <Stack backgroundColor="red" borderRadius={10}>
-    <Text color="white">Hello</Text>
-  </Stack>
-)
-```
-
-Core also includes a `styled` utility with a `variants` field that is a very quick way to author
-props by letting you quickly type both the key and the value of the prop you expect:
-
-```tsx
-import { Stack, Theme, styled } from 'tamagui' // or '@tamagui/core'
-
-export const AvatarCircle = styled(Stack, {
-  // use direct values
-  backgroundColor: '#000',
-
-  // or use values typed in createTamagui() themes and tokens
-  shadowColor: '$color2',
-
-  pressStyle: {
-    scale: 1.05,
-  },
-
-  variants: {
-    pin: {
-      floating: {
-        position: 'absolute',
-        top: '$xs',
-        left: '$xs',
-      },
-    },
-
-    featured: {
-      true: {
-        scale: 1.1,
-        borderRadius: 12,
-      },
-    },
-  } as const,
-})
-
-export const App = () => (
-  <Theme name="light">
-    <AvatarCircle pin="floating" featured />
-  </Theme>
-)
-```
-
-Variants can also take functions to catch either all values or specific types of tokens you define in your themes.
-
-You can nest styled components multiple times:
-
-```tsx
-import { Stack, styled } from 'tamagui' // or '@tamagui/core'
-
-export const SizedHorizontal = styled(Stack, {
-  variants: {
-    size: {
-      sm: {
-        minWidth: 44,
-        height: 44,
-      },
-      lg: {
-        minWidth: 68,
-        height: 68,
-      },
-    },
-  },
-})
-
-export const SizedButton = styled(SizedHorizontal, {
-  tag: 'button',
-
-  variants: {
-    disabled: {
-      true: {
-        backgroundColor: '#ccc',
-        pointerEvents: 'none',
-      },
-    },
-  },
-})
-```
-
-Tamagui has the nice feature of fully-deterministic rendering based on the order of their definition, where the last key of the style object wins. This works both on props and styled() calls:
-
-```tsx
-import { styled } from 'tamagui' // or '@tamagui/core'
-
-import { SizedButton } from './example-above'
-
-const HeroButton = styled(SizedButton, {
-  // bigger border, of course
-  borderWidth: 4,
-  size: 'lg',
-
-  variants: {
-    outlined: {
-      true: {
-        backgroundColor: 'transparent',
-        borderColor: 'black',
-      },
-    },
-  },
-})
-
-export default (props) => (
-  <HeroButton
-    outlined
-    // overrides the borderColor in outlined
-    borderColor="red"
-    // props can override
-    {...props}
-    // eg if props = { outlined: true }, borderColor is black again
-    borderRadius={12}
-    // borderRadius is *always* 12
-  />
-)
-```
-
-This works across the Web and Native with the full typed APIs of React Native, with additional web-only API's and escape hatches that make it a great experience no matter if you're targeting Native only, Native and Web, or Web only.
-
-#### Design System
-
-Using [createTamagui](/docs/core/configuration) you can generate a fully-typed design system with colors, tokens, spacing, sizing, fonts, themes, shorthands, animations, and more, that work with well-optimized and easy to use hooks like [useMedia](/docs/core/use-media) and [useTheme](/docs/core/use-theme).
-
----
-
-### `@tamagui/static`
-
-The `@tamagui/static` package is an optimizing compiler for React that does much more than just extracting CSS styles. It significantly speeds up the runtime of apps by flattening your styled views as their call-sites, handling even tricky dynamic styles there, and outputting a `div` (on the web) or `View` (on native).
-
-There's a lot to it, and good reasons it exists, but are [discussed more on the compiler introduction](/docs/intro/why-a-compiler).
-
----
-
-### `tamagui`
-
-Above that, [the Tamagui UI Kit](/docs/components/stacks) for building full-featured app interfaces right out of the box. Featuring powerful, themeable components that scale across every size in your design system. Enjoy Radix-like composable component APIs that always visually adapt properly to each platform.
+<Highlights
+  disableLinks
+  disableTitle
+  large
+  features={[
+    `Core only has one dependency - React - but supports the full React Native View and Text API, a superset of the React Native Style API, styled(), powerful hooks, and the typed design system helpers in ~28Kb on web.`,
+    `A smart, partial-evaluating compiler gives 0-runtime performance with the ergonomics of writing your code however you want - even inline, logic-filled code is optimized.`,
+    `Every feature works at runtime and compile-time, so none of the usual limits of 0-runtime libraries, while optionally getting the same great performance.`,
+    `useTheme and useMedia hooks with signal-like granularity and dirty tracking.`,
+    `Unstyled and styled versions of all components.`,
+  ]}
+/>
 
 ---
 
 ## Community
 
-We're excited to see the community adopt Tamagui, raise issues, and provide feedback. Whether it's a feature request, bug report, or a project to showcase, please get involved!
+We're excited to see the community adopt Tamagui, raise issues, and provide
+feedback. Whether it's a feature request, bug report, or a project to showcase,
+please get involved!
 
 - [Discord](https://discord.gg/4qh6tdcVDa)
 - [Twitter](https://twitter.com/tamagui_js)
@@ -182,7 +40,10 @@ We're excited to see the community adopt Tamagui, raise issues, and provide feed
 
 A big thanks to:
 
-- [JSXStyle](https://github.com/jsxstyle/jsxstyle) for providing the original version of the compiler.
-- [Modulz](https://github.com/modulz) for the bones of the website and inspiration on some Radix-like component APIs.
+- [Stitches](https://stitches.dev) for the variants pattern.
+- [JSXStyle](https://github.com/jsxstyle/jsxstyle) for providing the original
+  version of the compiler.
+- [Modulz](https://github.com/modulz) for Radix of which we've adopted many APIs, and for the initial structure for this website.
 - [Moti](https://moti.fyi) for the foundation of the reanimated driver.
-- [Framer Motion](https://github.com/framer/motion) for the AnimatePresence functionality.
+- [Framer Motion](https://github.com/framer/motion) for the AnimatePresence
+  functionality.

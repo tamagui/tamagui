@@ -1,3 +1,2 @@
-/// <reference types="react" />
-export declare function ButtonDemo(props: any): JSX.Element;
+export declare function ButtonDemo(props: any): import("react/jsx-runtime").JSX.Element;
 //# sourceMappingURL=ButtonDemo.d.ts.map

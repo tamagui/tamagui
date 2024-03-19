@@ -18,7 +18,7 @@ export async function subset({
     await rm(outputDir, { recursive: true })
   } catch {}
   await mkdir(outputDir)
-  console.log(`Subsetting`, inputFiles)
+  console.info(`Subsetting`, inputFiles)
   await Promise.all(
     inputFiles.map(async (file) => {
       const font = await readFile(file)
@@ -52,7 +52,7 @@ const base = [
 ].map((f) => `Inter-${f}`)
 const italics = base.slice(2).map((b) => `${b}Italic`)
 
-const inputFiles = [...base, ...italics].map((f) => join('tmp', `${f}.otf`))
+const inputFiles = [...base, ...italics].map((f) => join('full', `${f}.woff2`))
 
 subset({
   inputFiles,

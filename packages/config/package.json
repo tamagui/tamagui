@@ -1,21 +1,10 @@
 {
   "name": "@tamagui/config",
-  "version": "1.79.13",
+  "version": "1.91.5",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
   "sideEffects": false,
-  "files": [
-    "v2.js",
-    "v2.d.ts",
-    "v2-reanimated.js",
-    "v2-reanimated.d.ts",
-    "v2-native.js",
-    "v2-native.d.ts",
-    "src",
-    "types",
-    "dist"
-  ],
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
@@ -29,43 +18,54 @@
     ".": {
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.js"
+      "require": "./dist/cjs/index.js",
+      "react-native": "./dist/cjs/index.native.js"
     },
     "./v2": {
       "types": "./types/v2.d.ts",
       "import": "./dist/esm/v2.js",
-      "require": "./dist/cjs/v2.js"
+      "require": "./dist/cjs/v2.js",
+      "react-native": "./dist/cjs/v2.native.js"
     },
     "./v2-reanimated": {
       "types": "./types/v2-reanimated.d.ts",
       "import": "./dist/esm/v2-reanimated.js",
-      "require": "./dist/cjs/v2-reanimated.js"
+      "require": "./dist/cjs/v2-reanimated.js",
+      "react-native": "./dist/cjs/v2-reanimated.native.js"
     },
     "./v2-native": {
       "types": "./types/v2-native.d.ts",
       "import": "./dist/esm/v2-native.js",
-      "require": "./dist/cjs/v2-native.js"
+      "require": "./dist/cjs/v2-native.js",
+      "react-native": "./dist/cjs/v2-native.native.js"
     },
     "./reanimated": {
       "types": "./types/index.reanimated.d.ts",
       "import": "./dist/esm/index.reanimated.js",
-      "require": "./dist/cjs/index.reanimated.js"
+      "require": "./dist/cjs/index.reanimated.js",
+      "react-native": "./dist/cjs/index.reanimated.native.js"
+    },
+    "./v3": {
+      "types": "./types/v3.d.ts",
+      "import": "./dist/esm/v3.js",
+      "require": "./dist/cjs/v3.js",
+      "react-native": "./dist/cjs/v3.native.js"
     }
   },
   "dependencies": {
-    "@tamagui/animations-css": "1.79.13",
-    "@tamagui/animations-moti": "1.79.13",
-    "@tamagui/animations-react-native": "1.79.13",
-    "@tamagui/colors": "1.79.13",
-    "@tamagui/font-inter": "1.79.13",
-    "@tamagui/font-silkscreen": "1.79.13",
-    "@tamagui/react-native-media-driver": "1.79.13",
-    "@tamagui/shorthands": "1.79.13",
-    "@tamagui/themes": "1.79.13",
-    "@tamagui/web": "1.79.13"
+    "@tamagui/animations-css": "1.91.5",
+    "@tamagui/animations-moti": "1.91.5",
+    "@tamagui/animations-react-native": "1.91.5",
+    "@tamagui/colors": "1.91.5",
+    "@tamagui/font-inter": "1.91.5",
+    "@tamagui/font-silkscreen": "1.91.5",
+    "@tamagui/react-native-media-driver": "1.91.5",
+    "@tamagui/shorthands": "1.91.5",
+    "@tamagui/themes": "1.91.5",
+    "@tamagui/web": "1.91.5"
   },
   "devDependencies": {
-    "@tamagui/build": "1.79.13"
+    "@tamagui/build": "1.91.5"
   },
   "publishConfig": {
     "access": "public"

@@ -4,7 +4,7 @@ export const Glow = styled(Circle, {
   // contain: 'paint',
   className: 'glow',
   rotate: '20deg',
-  bc: '$pink10',
+  bg: '$pink10',
   size: 620,
   scaleX: 0.8,
   scaleY: 1.75,

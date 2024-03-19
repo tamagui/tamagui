@@ -186,7 +186,7 @@ function updateSheetStyles(
         delete allSelectors[identifier]
       }
     } else if (!(identifier in allSelectors)) {
-      const isTransform = identifier.startsWith('_transform')
+      const isTransform = identifier.startsWith('_transform-')
       const shouldInsert = isTransform
         ? addTransform(identifier, cssRule.cssText, cssRule)
         : true
@@ -213,6 +213,7 @@ function addThemesFromCSS(cssStyleRule: CSSStyleRule, tokens?: TokensParsed) {
     colorVarToVal = {}
     for (const key in tokens.color) {
       const token = tokens.color[key]
+      // @ts-expect-error need to double check why this type is off though
       colorVarToVal[token.name] = token.val
     }
   }
@@ -228,10 +229,11 @@ function addThemesFromCSS(cssStyleRule: CSSStyleRule, tokens?: TokensParsed) {
   for (const rule of rules) {
     const sepI = rule.indexOf(':')
     if (sepI === -1) continue
-    const key = rule.slice(rule.indexOf('--') + 2, sepI)
+    const varIndex = rule.indexOf('--')
+    const key = rule.slice(varIndex === -1 ? 0 : varIndex + 2, sepI)
     const val = rule.slice(sepI + 2)
     let value: string
-    if (val[3] === '(') {
+    if (val.startsWith('var(')) {
       // var()
       const varName = val.slice(6, -1)
       const tokenVal = colorVarToVal[varName]
@@ -262,27 +264,20 @@ function addThemesFromCSS(cssStyleRule: CSSStyleRule, tokens?: TokensParsed) {
 
   // loop selectors and build deduped
   for (const selector of selectors) {
-    let scheme = selector.includes('t_dark')
-      ? 'dark'
-      : selector.includes('t_light')
-      ? 'light'
-      : ''
-    let name = selector.slice(selector.lastIndexOf('.t_') + 3)
-
-    if (name.startsWith(scheme)) {
-      // we have some hardcoded for component themes t_light_name
-      name = name.slice(scheme.length + 1)
-    }
-    // for base dark and light
-    if (scheme === name) {
-      scheme = ''
-    }
-    const themeName = `${scheme}${scheme && name ? '_' : ''}${name}`
-
-    if (dedupedEntry.names.includes(themeName)) {
+    const matches =
+      selector.match(/(.t_(light|dark))?[\s]?(.t_([a-z0-9_]+))[\s]*$/i) ||
+      ([] as string[])
+    const [_0, _1, scheme, _2, name] = matches
+    const themeName =
+      name && scheme && scheme !== name ? `${scheme}_${name}` : name || scheme
+    if (
+      !themeName ||
+      dedupedEntry.names.includes(themeName) ||
+      themeName === 'light_dark' ||
+      themeName === 'dark_light'
+    ) {
       continue
     }
-
     dedupedEntry.names.push(themeName)
   }
 
@@ -333,7 +328,7 @@ export function updateRules(identifier: string, rules: string[]) {
     return false
   }
   allRules[identifier] = rules.join(' ')
-  if (identifier.startsWith('_transform')) {
+  if (identifier.startsWith('_transform-')) {
     return addTransform(identifier, rules[0])
   }
   return true
@@ -371,6 +366,10 @@ export function insertStyleRules(rulesToInsert: RulesToInsert) {
     }
   }
 }
+
+// The way browser or next.js work you end up with CSS being removed *after* the new CSS loads for the upcoming page
+// this causes many bugs. We defaulted to "2" here for safety, meaning we sacrificed some performance
+// setting TAMAGUI_INSERT_SELECTOR_TRIES=1 will be faster so long as you are concatting your CSS together
 
 const minInsertAmt = process.env.TAMAGUI_INSERT_SELECTOR_TRIES
   ? +process.env.TAMAGUI_INSERT_SELECTOR_TRIES

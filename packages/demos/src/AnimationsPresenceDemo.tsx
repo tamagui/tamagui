@@ -12,24 +12,42 @@ import photo3 from '../../public/photo3.jpg'
 
 export const images = [photo1, photo2, photo3].map((x) => x.src || x)
 
-const YStackEnterable = styled(YStack, {
+const GalleryItem = styled(YStack, {
+  zIndex: 1,
+  x: 0,
+  opacity: 1,
+  fullscreen: true,
+
   variants: {
-    isLeft: { true: { x: -300, opacity: 0 } },
-    isRight: { true: { x: 300, opacity: 0 } },
+    // 1 = right, 0 = nowhere, -1 = left
+    going: {
+      ':number': (going) => ({
+        enterStyle: {
+          x: going > 0 ? 1000 : -1000,
+          opacity: 0,
+        },
+        exitStyle: {
+          zIndex: 0,
+          x: going < 0 ? 1000 : -1000,
+          opacity: 0,
+        },
+      }),
+    },
   } as const,
 })
 
+const wrap = (min: number, max: number, v: number) => {
+  const rangeSize = max - min
+  return ((((v - min) % rangeSize) + rangeSize) % rangeSize) + min
+}
+
 export function AnimationsPresenceDemo() {
-  const [[page, direction], setPage] = useState([0, 0])
+  const [[page, going], setPage] = useState([0, 0])
 
   const imageIndex = wrap(0, images.length, page)
-
-  const paginate = (newDirection: number) => {
-    setPage([page + newDirection, newDirection])
+  const paginate = (going: number) => {
+    setPage([page + going, going])
   }
-
-  const enterVariant = direction === 1 || direction === 0 ? 'isRight' : 'isLeft'
-  const exitVariant = direction === 1 ? 'isLeft' : 'isRight'
 
   return (
     <XStack
@@ -40,10 +58,10 @@ export function AnimationsPresenceDemo() {
       width="100%"
       alignItems="center"
     >
-      <AnimatePresence enterVariant={enterVariant} exitVariant={exitVariant}>
-        <YStackEnterable key={page} animation="bouncy" fullscreen x={0} opacity={1}>
-          <Image source={{ uri: images[imageIndex], width: 780, height: 300 }} />
-        </YStackEnterable>
+      <AnimatePresence initial={false} custom={{ going }}>
+        <GalleryItem key={page} animation="slowest" going={going}>
+          <Image source={{ uri: images[imageIndex], width: 820, height: 300 }} />
+        </GalleryItem>
       </AnimatePresence>
 
       <Button
@@ -55,6 +73,7 @@ export function AnimationsPresenceDemo() {
         circular
         elevate
         onPress={() => paginate(-1)}
+        zi={100}
       />
       <Button
         accessibilityLabel="Carousel right"
@@ -65,12 +84,8 @@ export function AnimationsPresenceDemo() {
         circular
         elevate
         onPress={() => paginate(1)}
+        zi={100}
       />
     </XStack>
   )
-}
-
-const wrap = (min: number, max: number, v: number) => {
-  const rangeSize = max - min
-  return ((((v - min) % rangeSize) + rangeSize) % rangeSize) + min
 }

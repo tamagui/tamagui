@@ -1,5 +1,6 @@
 import { AlignCenter, AlignLeft, AlignRight } from '@tamagui/lucide-icons'
-import { Label, SizeTokens, ToggleGroup, XStack, YStack } from 'tamagui'
+import type { SizeTokens } from 'tamagui'
+import { Label, ToggleGroup, XStack, YStack } from 'tamagui'
 
 export function ToggleGroupDemo() {
   return (
@@ -38,7 +39,7 @@ function ToggleGroupComponent(props: {
       <ToggleGroup
         orientation={props.orientation}
         id={id}
-        type={props.type}
+        type={props.type as any} // since this demo switches between loosen types
         size={props.size}
         disableDeactivation={props.type === 'single' ? true : undefined}
       >

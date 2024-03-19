@@ -1,9 +1,10 @@
+import { useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
 import { useForceUpdate } from '@tamagui/use-force-update'
 import { useEffect, useId, useState } from 'react'
 import { createPortal } from 'react-dom'
 
-import { ChangedThemeResponse } from '../hooks/useTheme'
-import { ThemeProps } from '../types'
+import type { ChangedThemeResponse } from '../hooks/useTheme'
+import type { ThemeProps } from '../types'
 
 let node
 
@@ -16,12 +17,8 @@ export function ThemeDebug({
   themeProps: ThemeProps
   children: any
 }) {
-  // disabled
-  if (themeProps['disable-child-theme']) {
-    return children
-  }
-
   if (process.env.NODE_ENV === 'development') {
+    const isHydrated = useDidFinishSSR()
     const [onChangeCount, setOnChangeCount] = useState(0)
     const rerender = useForceUpdate()
     const id = useId()
@@ -60,17 +57,25 @@ export function ThemeDebug({
       return () => clearTimeout(tm as any)
     }, [])
 
+    if (themeProps['disable-child-theme'] || !isHydrated) {
+      return children
+    }
+
     return (
       <>
         {createPortal(
           <code
             style={{
               whiteSpace: 'pre',
+              maxWidth: 250,
+              overflow: 'auto',
+              padding: 5,
             }}
           >
             &lt;Theme {id} /&gt;&nbsp;
             {JSON.stringify(
               {
+                propsName: themeProps.name,
                 name: themeState?.state?.name,
                 className: themeState?.state?.className,
                 inverse: themeProps.inverse,
@@ -100,3 +105,5 @@ export function ThemeDebug({
   }
   return children
 }
+
+ThemeDebug['displayName'] = 'ThemeDebug'

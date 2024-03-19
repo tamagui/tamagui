@@ -1,4 +1,4 @@
-import { CreateThemeOptions, CreateThemePalette, GenericTheme, ThemeMask } from './createThemeTypes';
+import type { CreateThemeOptions, CreateThemePalette, GenericTheme, ThemeMask } from './createThemeTypes';
 export type ThemeInfo = {
     palette: CreateThemePalette;
     definition: ThemeMask;

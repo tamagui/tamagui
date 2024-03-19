@@ -24,8 +24,8 @@ export function fixStyles(style: Record<string, any>) {
   // TODO could be native-only
   // ensure border style set by default to solid
   for (const key in borderDefaults) {
-    if (key in style && !style[borderDefaults[key]]) {
-      style[borderDefaults[key]] = 'solid'
+    if (key in style) {
+      style[borderDefaults[key]] ||= 'solid'
     }
   }
 }

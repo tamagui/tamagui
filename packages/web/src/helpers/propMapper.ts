@@ -3,7 +3,8 @@ import { tokenCategories } from '@tamagui/helpers'
 
 import { getConfig } from '../config'
 import { isDevTools } from '../constants/isDevTools'
-import { Variable, getVariableValue, isVariable } from '../createVariable'
+import type { Variable } from '../createVariable'
+import { getVariableValue, isVariable } from '../createVariable'
 import type {
   GetStyleState,
   PropMapper,
@@ -13,12 +14,15 @@ import type {
   VariantSpreadFunction,
 } from '../types'
 import { expandStyle } from './expandStyle'
-import { expandStylesAndRemoveNullishValues } from './expandStylesAndRemoveNullishValues'
+import { normalizeStyle } from './normalizeStyle'
 import { getFontsForLanguage, getVariantExtras } from './getVariantExtras'
 import { isObj } from './isObj'
 import { pseudoDescriptors } from './pseudoDescriptors'
+import { skipProps } from './skipProps'
 
 export const propMapper: PropMapper = (key, value, styleStateIn, subPropsIn) => {
+  lastFontFamilyToken = null
+
   if (!(process.env.TAMAGUI_TARGET === 'native' && isAndroid)) {
     // this shouldnt be necessary and handled in the outer loop
     if (key === 'elevationAndroid') return
@@ -38,7 +42,6 @@ export const propMapper: PropMapper = (key, value, styleStateIn, subPropsIn) => 
   // fallbackProps is awkward thanks to static
   // also we need to override the props here because subStyles pass in a sub-style props object
   const subProps = styleStateIn.styleProps.fallbackProps || subPropsIn
-
   const styleState = subProps
     ? new Proxy(styleStateIn, {
         get(_, k) {
@@ -50,19 +53,17 @@ export const propMapper: PropMapper = (key, value, styleStateIn, subPropsIn) => 
   const { conf, styleProps, fontFamily, staticConfig } = styleState
   const { variants } = staticConfig
 
-  // prettier-ignore
   if (
-    process.env.NODE_ENV === "development" &&
+    process.env.NODE_ENV === 'development' &&
     fontFamily &&
-    fontFamily[0] === "$" &&
+    fontFamily[0] === '$' &&
     !(fontFamily in conf.fontsParsed)
   ) {
-    // prettier-ignore
     console.warn(
-      `Warning: no fontFamily "${fontFamily}" found in config: ${Object.keys(conf.fontsParsed).join(
-        ", ",
-      )}`,
-    );
+      `Warning: no fontFamily "${fontFamily}" found in config: ${Object.keys(
+        conf.fontsParsed
+      ).join(', ')}`
+    )
   }
 
   if (!styleProps.noExpand) {
@@ -76,12 +77,9 @@ export const propMapper: PropMapper = (key, value, styleStateIn, subPropsIn) => 
     }
   }
 
-  let shouldReturn = false
-
   // handle shorthands
   if (!styleProps.disableExpandShorthands) {
     if (key in conf.shorthands) {
-      shouldReturn = true
       key = conf.shorthands[key]
     }
   }
@@ -94,15 +92,13 @@ export const propMapper: PropMapper = (key, value, styleStateIn, subPropsIn) => 
     }
   }
 
-  if (shouldReturn || value != null) {
+  if (value != null) {
     const result = (styleProps.noExpand ? null : expandStyle(key, value)) || [
       [key, value],
     ]
-
-    if (key === 'fontFamily') {
+    if (key === 'fontFamily' && lastFontFamilyToken) {
       fontFamilyCache.set(result, lastFontFamilyToken)
     }
-
     return result
   }
 }
@@ -184,10 +180,10 @@ const resolveVariants: StyleResolver = (
   }
 
   if (variantValue) {
-    const expanded = expandStylesAndRemoveNullishValues(
-      variantValue,
-      !!styleProps.noNormalize
-    )
+    const expanded = normalizeStyle(variantValue, !!styleProps.noNormalize)
+    if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+      console.info(`   expanding styles from `, variantValue, `to`, expanded)
+    }
     const next = Object.entries(expanded)
 
     // store any changed font family (only support variables for now)
@@ -248,6 +244,10 @@ const resolveTokensAndVariants: StyleResolver<Object> = (
     const subKey = conf.shorthands[_key] || _key
     const val = value[_key]
 
+    if (!styleProps.noSkip && subKey in skipProps) {
+      continue
+    }
+
     if (styleProps.noExpand) {
       res[subKey] = val
     } else {
@@ -285,6 +285,9 @@ const resolveTokensAndVariants: StyleResolver<Object> = (
 
     if (isVariable(val)) {
       res[subKey] = resolveVariableValue(subKey, val, styleProps.resolveValues)
+      if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+        console.info(`variable`, subKey, res[subKey])
+      }
       continue
     }
 
@@ -378,15 +381,26 @@ export const getTokenForKey = (
     return value
   }
 
-  const { theme, conf = getConfig(), context, fontFamily } = styleState
+  const { theme, conf = getConfig(), context, fontFamily, staticConfig } = styleState
 
   const tokensParsed = conf.tokensParsed
   let valOrVar: any
   let hasSet = false
+
+  const customTokenAccept = staticConfig?.accept?.[key]
+  if (customTokenAccept) {
+    const val = theme?.[value] ?? tokensParsed[customTokenAccept][value]
+    if (val != null) {
+      resolveAs = 'value' // always resolve custom tokens as values
+      valOrVar = val
+      hasSet = true
+    }
+  }
+
   if (theme && value in theme) {
     valOrVar = theme[value]
     if (process.env.NODE_ENV === 'development' && styleState.debug === 'verbose') {
-      console.info(` - resolving ${key} to theme value ${value}: ${valOrVar?.get?.()}`)
+      console.info(` - resolving ${key} to theme value ${value}: ${valOrVar?.val}`)
     }
     hasSet = true
   } else {
@@ -430,12 +444,13 @@ export const getTokenForKey = (
           }
         }
       }
-      if (!hasSet) {
-        const spaceVar = tokensParsed.space[value]
-        if (spaceVar != null) {
-          valOrVar = spaceVar
-          hasSet = true
-        }
+    }
+
+    if (!hasSet) {
+      const spaceVar = tokensParsed.space[value]
+      if (spaceVar != null) {
+        valOrVar = spaceVar
+        hasSet = true
       }
     }
   }
@@ -448,17 +463,11 @@ export const getTokenForKey = (
     return out
   }
 
-  if (
-    process.env.NODE_ENV === 'development' &&
-    isDevTools &&
-    styleState.debug === 'verbose'
-  ) {
-    console.groupCollapsed('  ﹒ propMap (val)', key, value)
-    console.info({ valOrVar, theme, hasSet }, theme ? theme[key] : '')
-    console.groupEnd()
-  }
+  // they didn't define this token don't return anything, we could warn?
 
-  return value
+  if (process.env.NODE_ENV === 'development' && styleState.debug === 'verbose') {
+    console.warn(`Warning: no token found for ${key}, omitting`)
+  }
 }
 
 function resolveVariableValue(

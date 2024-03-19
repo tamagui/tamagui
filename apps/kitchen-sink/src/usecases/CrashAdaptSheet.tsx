@@ -1,5 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
-import React from 'react'
 import { useWindowDimensions } from 'react-native'
 import { Button, H1, Dialog as TDialog, YStack } from 'tamagui'
 
@@ -17,7 +15,7 @@ export function TestModal() {
         <TDialog.Sheet modal snapPoints={[20, 40, 80]}>
           <TDialog.Sheet.Handle
             h={10}
-            bc="$background"
+            bg="$background"
             o={1} // Uncommenting this causes a rare crash on native iOS Safari
             width="25%"
             m="$0"
@@ -28,7 +26,7 @@ export function TestModal() {
             t={-40}
           />
 
-          <TDialog.Sheet.Overlay h={windowHeight} w={windowWidth} bc="$background" />
+          <TDialog.Sheet.Overlay h={windowHeight} w={windowWidth} bg="$background" />
 
           {/* Uncommenting this causes a rare crash on native iOS Safari */}
           <TDialog.Sheet.Frame theme="red">

@@ -21,6 +21,7 @@ export const media = createMedia({
   gtMd: { minWidth: 1020 + 1 },
   gtLg: { minWidth: 1280 + 1 },
   gtXl: { minWidth: 1650 + 1 },
+  pointerFine: { pointer: 'fine' },
 })
 
 // note all the non "gt" ones should be true to start to match mobile-first

@@ -1,7 +1,8 @@
 /* eslint-disable no-console */
 import { basename, relative } from 'path'
 
-import traverse, { NodePath, TraverseOptions } from '@babel/traverse'
+import type { NodePath, TraverseOptions } from '@babel/traverse'
+import traverse from '@babel/traverse'
 import * as t from '@babel/types'
 import { Color, colorLog } from '@tamagui/cli-color'
 import type {
@@ -25,7 +26,7 @@ import type {
   TamaguiOptionsWithFileInfo,
   Ternary,
 } from '../types'
-import { TamaguiProjectInfo } from './bundleConfig'
+import type { TamaguiProjectInfo } from './bundleConfig'
 import { createEvaluator, createSafeEvaluator } from './createEvaluator'
 import { evaluateAstNode } from './evaluateAstNode'
 import {
@@ -55,18 +56,6 @@ const UNTOUCHED_PROPS = {
   className: true,
 }
 
-const INLINE_EXTRACTABLE = {
-  ref: 'ref',
-  key: 'key',
-  ...(process.env.TAMAGUI_TARGET === 'web' && {
-    onPress: 'onClick',
-    onHoverIn: 'onMouseEnter',
-    onHoverOut: 'onMouseLeave',
-    onPressIn: 'onMouseDown',
-    onPressOut: 'onMouseUp',
-  }),
-}
-
 const validHooks = {
   useMedia: true,
   useTheme: true,
@@ -85,19 +74,33 @@ function isFullyDisabled(props: TamaguiOptions) {
 }
 
 export function createExtractor(
-  { logger = console }: ExtractorOptions = { logger: console }
+  { logger = console, platform = 'web' }: ExtractorOptions = { logger: console }
 ) {
   if (!process.env.TAMAGUI_TARGET) {
     console.warn('⚠️ Please set process.env.TAMAGUI_TARGET to either "web" or "native"')
     process.exit(1)
   }
 
+  const INLINE_EXTRACTABLE = {
+    ref: 'ref',
+    key: 'key',
+    ...(platform === 'web' && {
+      onPress: 'onClick',
+      onHoverIn: 'onMouseEnter',
+      onHoverOut: 'onMouseLeave',
+      onPressIn: 'onMouseDown',
+      onPressOut: 'onMouseUp',
+    }),
+  }
+
   const componentState: TamaguiComponentState = {
     focus: false,
+    focusVisible: false,
     hover: false,
     unmounted: true,
     press: false,
     pressIn: false,
+    disabled: false,
   } as const
 
   const styleProps: SplitStyleProps = {
@@ -186,7 +189,7 @@ export function createExtractor(
     }
 
     const {
-      expandStylesAndRemoveNullishValues,
+      normalizeStyle,
       getSplitStyles,
       mediaQueryConfig,
       propMapper,
@@ -305,8 +308,7 @@ export function createExtractor(
       },
     })
 
-    // @ts-ignore
-    const body =
+    const body: t.Statement[] | NodePath<t.Statement>[] =
       fileOrPath.type === 'Program' ? fileOrPath.get('body') : fileOrPath.program.body
 
     if (!isFullyDisabled(options)) {
@@ -545,7 +547,6 @@ export function createExtractor(
         const componentSkipProps = new Set([
           ...(Component.staticConfig.inlineWhenUnflattened || []),
           ...(Component.staticConfig.inlineProps || []),
-          ...(Component.staticConfig.deoptProps || []),
           // for now skip variants, will return to them
           'variants',
           'defaultVariants',
@@ -553,6 +554,8 @@ export function createExtractor(
           'fontFamily',
           'name',
           'focusStyle',
+          'focusVisibleStyle',
+          'disabledStyle',
           'hoverStyle',
           'pressStyle',
         ])
@@ -760,7 +763,14 @@ export function createExtractor(
               `${componentName} | ${codePosition} -------------------`
           )
           // prettier-ignore
-          logger.info(['\x1b[1m', '\x1b[32m', `<${originalNodeName} />`, disableDebugAttr ? '' : '🐛'].join(' '))
+          logger.info(
+            [
+              '\x1b[1m',
+              '\x1b[32m',
+              `<${originalNodeName} />`,
+              disableDebugAttr ? '' : '🐛',
+            ].join(' ')
+          )
         }
 
         // add data-* debug attributes
@@ -827,17 +837,18 @@ export function createExtractor(
           const deoptProps = new Set([
             // always de-opt animation these
             'animation',
+            'animateOnly',
+            'animatePresence',
             'disableOptimization',
 
-            ...(!isTargetingHTML ? ['pressStyle', 'focusStyle'] : []),
+            ...(!isTargetingHTML
+              ? ['pressStyle', 'focusStyle', 'focusVisibleStyle', 'disabledStyle']
+              : []),
 
             // when using a non-CSS driver, de-opt on enterStyle/exitStyle
             ...(tamaguiConfig?.animations.isReactNative
               ? ['enterStyle', 'exitStyle']
               : []),
-
-            ...(restProps.deoptProps || []),
-            ...(staticConfig.deoptProps || []),
           ])
 
           const inlineWhenUnflattened = new Set([
@@ -974,9 +985,9 @@ export function createExtractor(
                 ? // <YStack {...isSmall ? { color: 'red } : { color: 'blue }}
                   ([arg.test, arg.consequent, arg.alternate] as const)
                 : t.isLogicalExpression(arg) && arg.operator === '&&'
-                ? // <YStack {...isSmall && { color: 'red }}
-                  ([arg.left, arg.right, null] as const)
-                : null
+                  ? // <YStack {...isSmall && { color: 'red }}
+                    ([arg.left, arg.right, null] as const)
+                  : null
 
               if (conditional) {
                 const [test, alt, cons] = conditional
@@ -1035,16 +1046,6 @@ export function createExtractor(
               return attr
             }
 
-            // can still optimize the object... see hoverStyle on native
-            if (deoptProps.has(name)) {
-              shouldDeopt = true
-              inlined.set(name, name)
-              if (shouldPrintDebug) {
-                logger.info(['  ! inlining, deopted prop', name].join(' '))
-              }
-              return attr
-            }
-
             // pass className, key, and style props through untouched
             if (UNTOUCHED_PROPS[name]) {
               return attr
@@ -1094,9 +1095,8 @@ export function createExtractor(
             const [value, valuePath] = (() => {
               if (t.isJSXExpressionContainer(attribute?.value)) {
                 return [attribute.value.expression!, path.get('value')!] as const
-              } else {
-                return [attribute.value!, path.get('value')!] as const
               }
+              return [attribute.value!, path.get('value')!] as const
             })()
 
             const remove = () => {
@@ -1210,7 +1210,11 @@ export function createExtractor(
               // weird logic whats going on here
               if (didInline) {
                 if (shouldPrintDebug) {
-                  logger.info(`  bailing flattening due to attributes ${attributes}`)
+                  logger.info(
+                    `  bailing flattening due to attributes ${attributes.map((x) =>
+                      x.toString()
+                    )}`
+                  )
                 }
                 // bail
                 return attr
@@ -1243,13 +1247,12 @@ export function createExtractor(
                   name,
                   attr: path.node,
                 }
-              } else {
-                if (variants[name]) {
-                  variantValues.set(name, styleValue)
-                }
-                inlined.set(name, true)
-                return attr
               }
+              if (variants[name]) {
+                variantValues.set(name, styleValue)
+              }
+              inlined.set(name, true)
+              return attr
             }
 
             // ternaries!
@@ -1301,12 +1304,13 @@ export function createExtractor(
               return { type: 'ternary', value: staticLogical }
             }
 
-            if (options.experimentalFlattenThemesOnNative) {
+            // Disabling: this probably doesn't optimize much and needs to be done a bit differently
+            if (options.experimentalFlattenDynamicValues) {
               if (isValidStyleKey(name, staticConfig)) {
                 return {
                   type: 'dynamic-style',
                   value,
-                  name,
+                  name: tamaguiConfig?.shorthands[name] || name,
                 }
               }
             }
@@ -1465,9 +1469,8 @@ export function createExtractor(
                         // ensure media query test stays on left side (see getMediaQueryTernary)
                         test: t.logicalExpression('&&', value.test, test),
                       }))
-                    } else {
-                      logger.info(['⚠️ no ternaries?', property].join(' '))
                     }
+                    logger.info(['⚠️ no ternaries?', property].join(' '))
                   } else {
                     logger.info(['⚠️ not expression', property].join(' '))
                   }
@@ -1535,6 +1538,125 @@ export function createExtractor(
             modifiedComponents.add(parentFn)
           }
 
+          // flatten logic!
+          // fairly simple check to see if all children are text
+          const hasSpread = attrs.some(
+            (x) => x.type === 'attr' && t.isJSXSpreadAttribute(x.value)
+          )
+
+          const hasOnlyStringChildren =
+            !hasSpread &&
+            (node.selfClosing ||
+              (traversePath.node.children &&
+                traversePath.node.children.every((x) => x.type === 'JSXText')))
+
+          let themeVal = inlined.get('theme')
+
+          // on native we can't flatten when theme prop is set
+          if (platform !== 'native') {
+            inlined.delete('theme')
+          }
+
+          for (const [key] of [...inlined]) {
+            const isStaticObjectVariant =
+              staticConfig.variants?.[key] && variantValues.has(key)
+            if (INLINE_EXTRACTABLE[key] || isStaticObjectVariant) {
+              inlined.delete(key)
+            }
+          }
+
+          const canFlattenProps = inlined.size === 0
+
+          let shouldFlatten = Boolean(
+            flatNode &&
+              !shouldDeopt &&
+              canFlattenProps &&
+              !hasSpread &&
+              !staticConfig.isStyledHOC &&
+              !staticConfig.isHOC &&
+              !staticConfig.isReactNative &&
+              staticConfig.neverFlatten !== true &&
+              (staticConfig.neverFlatten === 'jsx' ? hasOnlyStringChildren : true)
+          )
+
+          const usedThemeKeys = new Set<string>()
+          // if it accesses any theme values during evaluation
+          themeAccessListeners.add((key) => {
+            if (options.experimentalFlattenThemesOnNative) {
+              usedThemeKeys.add(key)
+            }
+            if (disableExtractVariables) {
+              usedThemeKeys.add(key)
+              shouldFlatten = false
+              if (shouldPrintDebug === 'verbose') {
+                logger.info([' ! accessing theme key, avoid flatten', key].join(' '))
+              }
+            }
+          })
+
+          // only if we flatten, ensure the default styles are there
+          if (shouldFlatten) {
+            let skipMap = false
+            const defaultStyleAttrs = Object.keys(defaultProps).flatMap((key) => {
+              if (skipMap) return []
+              const value = defaultProps[key]
+              if (key === 'theme' && !themeVal) {
+                if (platform === 'native') {
+                  shouldFlatten = false
+                  skipMap = true
+                  inlined.set('theme', { value: t.stringLiteral(value) })
+                }
+                themeVal = { value: t.stringLiteral(value) }
+                return []
+              }
+              if (!isValidStyleKey(key, staticConfig)) {
+                return []
+              }
+              const name = tamaguiConfig?.shorthands[key] || key
+              if (value === undefined) {
+                logger.warn(
+                  `⚠️ Error evaluating default style for component, prop ${key} ${value}`
+                )
+                shouldDeopt = true
+                return
+              }
+              if (name[0] === '$' && mediaQueryConfig[name.slice(1)]) {
+                defaultProps[key] = undefined
+                return evaluateAttribute({
+                  node: t.jsxAttribute(
+                    t.jsxIdentifier(name),
+                    t.jsxExpressionContainer(
+                      t.objectExpression(
+                        Object.keys(value)
+                          .filter((k) => {
+                            return typeof value[k] !== 'undefined'
+                          })
+                          .map((k) => {
+                            return t.objectProperty(
+                              t.identifier(k),
+                              literalToAst(value[k])
+                            )
+                          })
+                      )
+                    )
+                  ),
+                } as any)
+              }
+              const attr: ExtractedAttrStyle = {
+                type: 'style',
+                name,
+                value: { [name]: value },
+              }
+              return attr
+            }) as ExtractedAttr[]
+
+            if (!skipMap) {
+              if (defaultStyleAttrs.length) {
+                attrs = [...defaultStyleAttrs, ...attrs]
+              }
+            }
+          }
+
           // combine ternaries
           let ternaries: Ternary[] = []
           attrs = attrs
@@ -1576,77 +1698,10 @@ export function createExtractor(
             }, [])
             .flat()
 
-          // flatten logic!
-          // fairly simple check to see if all children are text
-          const hasSpread = attrs.some(
-            (x) => x.type === 'attr' && t.isJSXSpreadAttribute(x.value)
-          )
-
-          const hasOnlyStringChildren =
-            !hasSpread &&
-            (node.selfClosing ||
-              (traversePath.node.children &&
-                traversePath.node.children.every((x) => x.type === 'JSXText')))
-
-          const themeVal = inlined.get('theme')
-
-          // on native we can't flatten when theme prop is set
-          if (platform !== 'native') {
-            inlined.delete('theme')
-          }
-
-          for (const [key] of [...inlined]) {
-            const isStaticObjectVariant =
-              staticConfig.variants?.[key] && variantValues.has(key)
-            if (INLINE_EXTRACTABLE[key] || isStaticObjectVariant) {
-              inlined.delete(key)
-            }
-          }
-
-          const canFlattenProps = inlined.size === 0
-
-          let shouldFlatten = Boolean(
-            flatNode &&
-              !shouldDeopt &&
-              canFlattenProps &&
-              !hasSpread &&
-              !staticConfig.isStyledHOC &&
-              !staticConfig.isHOC &&
-              !staticConfig.isReactNative &&
-              staticConfig.neverFlatten !== true &&
-              (staticConfig.neverFlatten === 'jsx' ? hasOnlyStringChildren : true)
-          )
-
           const shouldWrapTheme = shouldFlatten && themeVal
-          const usedThemeKeys = new Set<string>()
-
-          // if it accesses any theme values during evaluation
-          themeAccessListeners.add((key) => {
-            if (options.experimentalFlattenThemesOnNative) {
-              usedThemeKeys.add(key)
-            }
-            if (disableExtractVariables) {
-              usedThemeKeys.add(key)
-              shouldFlatten = false
-              if (shouldPrintDebug === 'verbose') {
-                logger.info([' ! accessing theme key, avoid flatten', key].join(' '))
-              }
-            }
-          })
-
-          if (shouldPrintDebug) {
-            try {
-              // prettier-ignore
-              logger.info([' flatten?', shouldFlatten, objToStr({ hasSpread, shouldDeopt, canFlattenProps, shouldWrapTheme, hasOnlyStringChildren }), 'inlined', inlined.size, [...inlined]].join(' '))
-            } catch {
-              // ok
-            }
-          }
-
           // wrap theme around children on flatten
-          // TODO move this to bottom and re-check shouldFlatten
           // account for shouldFlatten could change w the above block "if (disableExtractVariables)"
-          if (shouldFlatten && shouldWrapTheme) {
+          if (shouldWrapTheme) {
             if (!programPath) {
               console.warn(
                 `No program path found, avoiding importing flattening / importing theme in ${sourcePath}`
@@ -1693,31 +1748,27 @@ export function createExtractor(
             }
           }
 
-          // only if we flatten, ensure the default styles are there
-          if (shouldFlatten) {
-            const defaultStyleAttrs = Object.keys(defaultProps).flatMap((key) => {
-              if (!isValidStyleKey(key, staticConfig)) {
-                return []
-              }
-              const value = defaultProps[key]
-              const name = tamaguiConfig?.shorthands[key] || key
-              if (value === undefined) {
-                logger.warn(
-                  `⚠️ Error evaluating default style for component, prop ${key} ${value}`
-                )
-                shouldDeopt = true
-                return
-              }
-              const attr: ExtractedAttrStyle = {
-                type: 'style',
-                name,
-                value: { [name]: value },
-              }
-              return attr
-            }) as ExtractedAttr[]
-
-            if (defaultStyleAttrs.length) {
-              attrs = [...defaultStyleAttrs, ...attrs]
+          if (shouldPrintDebug) {
+            try {
+              // prettier-ignore
+              logger.info(
+                [
+                  ' flatten?',
+                  shouldFlatten,
+                  objToStr({
+                    hasSpread,
+                    shouldDeopt,
+                    canFlattenProps,
+                    shouldWrapTheme,
+                    hasOnlyStringChildren,
+                  }),
+                  'inlined',
+                  inlined.size,
+                  [...inlined],
+                ].join(' ')
+              )
+            } catch {
+              // ok
             }
           }
 
@@ -1745,16 +1796,13 @@ export function createExtractor(
           }
 
           // preserves order
-          function expandStylesAndRemoveNullishValuesWithoutVariants(style: any) {
+          function normalizeStyleWithoutVariants(style: any) {
             let res = {}
             for (const key in style) {
               if (staticConfig.variants && key in staticConfig.variants) {
                 mergeToEnd(res, key, style[key])
               } else {
-                const expanded = expandStylesAndRemoveNullishValues(
-                  { [key]: style[key] },
-                  true
-                )
+                const expanded = normalizeStyle({ [key]: style[key] }, true)
                 for (const key in expanded) {
                   mergeToEnd(res, key, expanded[key])
                 }
@@ -1771,9 +1819,7 @@ export function createExtractor(
             if (cur.type === 'style') {
               // remove variants because they are processed later, and can lead to invalid values here
               // see <Spacer flex /> where flex looks like a valid style, but is a variant
-              const expanded = expandStylesAndRemoveNullishValuesWithoutVariants(
-                cur.value
-              )
+              const expanded = normalizeStyleWithoutVariants(cur.value)
               // preserve order
               for (const key in expanded) {
                 mergeToEnd(foundStaticProps, key, expanded[key])
@@ -1954,6 +2000,8 @@ export function createExtractor(
             }
 
             try {
+              const beforeProcessUsedThemeKeys = usedThemeKeys.size
+
               const out = getSplitStyles(
                 props,
                 staticConfig,
@@ -1985,7 +2033,8 @@ export function createExtractor(
               }
 
               if (options.experimentalFlattenThemesOnNative) {
-                if (usedThemeKeys.size > 0) {
+                if (beforeProcessUsedThemeKeys < usedThemeKeys.size) {
+                  // we used a theme key
                   Object.entries(props).forEach(([key, value]) => {
                     if (usedThemeKeys.has(value)) {
                       outProps[key] = value
@@ -1999,7 +2048,9 @@ export function createExtractor(
                 // prettier-ignore
                 logger.info(`\n       getProps (props in): ${logLines(objToStr(props))}`)
                 // prettier-ignore
-                logger.info(`\n       getProps (outProps): ${logLines(objToStr(outProps))}`)
+                logger.info(
+                  `\n       getProps (outProps): ${logLines(objToStr(outProps))}`
+                )
               }
 
               if (out.fontFamily) {
@@ -2104,9 +2155,15 @@ export function createExtractor(
                     attr.value = styles
                   }
                   // prettier-ignore
-                  if (shouldPrintDebug) logger.info(['  * styles (in)', logLines(objToStr(attr.value))].join(' '))
+                  if (shouldPrintDebug)
+                    logger.info(
+                      ['  * styles (in)', logLines(objToStr(attr.value))].join(' ')
+                    )
                   // prettier-ignore
-                  if (shouldPrintDebug) logger.info(['  * styles (out)', logLines(objToStr(styles))].join(' '))
+                  if (shouldPrintDebug)
+                    logger.info(
+                      ['  * styles (out)', logLines(objToStr(styles))].join(' ')
+                    )
                   continue
                 }
                 case 'attr': {
@@ -2151,7 +2208,12 @@ export function createExtractor(
 
           if (shouldPrintDebug) {
             // prettier-ignore
-            logger.info(['  - attrs (ternaries/combined):\n', logLines(attrs.map(attrStr).join(', '))].join(' '))
+            logger.info(
+              [
+                '  - attrs (ternaries/combined):\n',
+                logLines(attrs.map(attrStr).join(', ')),
+              ].join(' ')
+            )
           }
 
           tm.mark('jsx-element-styles', !!shouldPrintDebug)
@@ -2199,6 +2261,7 @@ export function createExtractor(
                 }
               }
             }
+
             if (attr.type === 'dynamic-style') {
               if (existingStyleKeys.has(attr.name)) {
                 //@ts-ignore
@@ -2208,6 +2271,7 @@ export function createExtractor(
               }
             }
           }
+
           if (options.experimentalFlattenThemesOnNative) {
             attrs = attrs.filter(Boolean)
           }
@@ -2235,6 +2299,14 @@ export function createExtractor(
               }
             }
           }
+
+          // delete empty styles:
+          attrs = attrs.filter((x) => {
+            if (x.type === 'style' && Object.keys(x.value).length === 0) {
+              return false
+            }
+            return true
+          })
 
           if (shouldFlatten) {
             // DO FLATTEN
@@ -2276,7 +2348,14 @@ export function createExtractor(
 
           if (shouldPrintDebug) {
             // prettier-ignore
-            logger.info([` - inlined props (${inlined.size}):`, shouldDeopt ? ' deopted' : '', hasSpread ? ' has spread' : '', staticConfig.neverFlatten ? 'neverFlatten' : ''].join(' '))
+            logger.info(
+              [
+                ` - inlined props (${inlined.size}):`,
+                shouldDeopt ? ' deopted' : '',
+                hasSpread ? ' has spread' : '',
+                staticConfig.neverFlatten ? 'neverFlatten' : '',
+              ].join(' ')
+            )
             logger.info(`  - shouldFlatten/isFlattened: ${shouldFlatten}`)
             logger.info(`  - attrs (end):\n ${logLines(attrs.map(attrStr).join(', '))}`)
           }

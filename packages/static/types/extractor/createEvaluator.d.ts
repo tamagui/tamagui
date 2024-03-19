@@ -1,6 +1,6 @@
-import { NodePath } from '@babel/traverse';
+import type { NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
-import { TamaguiOptionsWithFileInfo } from '../types';
+import type { TamaguiOptionsWithFileInfo } from '../types';
 export declare function createEvaluator({ props, staticNamespace, sourcePath, traversePath, shouldPrintDebug, }: {
     props: TamaguiOptionsWithFileInfo;
     staticNamespace: Record<string, any>;

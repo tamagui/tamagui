@@ -44,7 +44,26 @@ export async function generateThemes(inputFile: string) {
     const requiredThemes = require(inputFilePath)
     const themes = requiredThemes['default'] || requiredThemes['themes']
     const generatedThemes = generatedThemesToTypescript(themes)
+
+    let tm: any
+    if (promise) {
+      let finished = false
+      promise.then(() => {
+        finished = true
+      })
+      // handle never finishing promise with nice error
+      tm = setTimeout(() => {
+        if (!finished) {
+          console.warn(
+            `Warning: ThemeBuilder didn't finish after a couple seconds, did you forget to call .build()?`
+          )
+        }
+      }, 2000)
+    }
+
     const themeBuilder = promise ? await promise : null
+    clearTimeout(tm)
+
     return {
       generated: generatedThemes,
       state: themeBuilder?.state,
@@ -108,13 +127,12 @@ ${baseKeys
 
   // add in the helper function to generate a theme:
   out += `
-function t(a) {
-  let res: Record<string, string> = {}
+function t(a: [number, number][]) {
+  let res: Record<string,string> = {}
   for (const [ki, vi] of a) {
-    // @ts-ignore
-    res[ks[ki]] = vs[vi]
+    res[ks[ki] as string] = vs[vi] as string
   }
-  return res
+  return res as Theme
 }
 `
 
@@ -142,13 +160,9 @@ function t(a) {
     const key = JSON.stringify(theme)
     const names = dedupedThemeToNames.get(key)!
     const name = `n${nameI}`
-    const baseTheme = `const ${name} = ${objectToJsString(
-      theme,
-      keys,
-      valueToIndex
-    )} as Theme`
+    const baseTheme = `const ${name} = ${objectToJsString(theme, keys, valueToIndex)}`
     out += `\n${baseTheme}`
-    const duplicateThemes = names.map((n) => `export const ${n} = ${name} as Theme`)
+    const duplicateThemes = names.map((n) => `export const ${n} = ${name}`)
     out += `\n\n` + duplicateThemes.join('\n')
   })
 

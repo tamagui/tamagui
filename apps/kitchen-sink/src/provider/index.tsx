@@ -1,5 +1,6 @@
 import { ToastProvider } from '@tamagui/toast'
-import { TamaguiProvider, TamaguiProviderProps } from 'tamagui'
+import type { TamaguiProviderProps } from 'tamagui';
+import { TamaguiProvider } from 'tamagui'
 
 import config from '../tamagui.config'
 import { NavigationProvider } from './navigation'

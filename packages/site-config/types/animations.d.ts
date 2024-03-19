@@ -1,4 +1,8 @@
 export declare const animations: import("@tamagui/web").AnimationDriver<{
+    '75ms': {
+        type: "timing";
+        duration: number;
+    };
     '100ms': {
         type: "timing";
         duration: number;
@@ -19,6 +23,18 @@ export declare const animations: import("@tamagui/web").AnimationDriver<{
         mass: number;
         stiffness: number;
     };
+    kindaBouncy: {
+        type: "spring";
+        damping: number;
+        mass: number;
+        stiffness: number;
+    };
+    superLazy: {
+        type: "spring";
+        damping: number;
+        mass: number;
+        stiffness: number;
+    };
     lazy: {
         type: "spring";
         damping: number;
@@ -28,6 +44,11 @@ export declare const animations: import("@tamagui/web").AnimationDriver<{
         damping: number;
         stiffness: number;
         mass: number;
+    };
+    slowest: {
+        type: "spring";
+        damping: number;
+        stiffness: number;
     };
     slow: {
         type: "spring";
@@ -48,6 +69,11 @@ export declare const animations: import("@tamagui/web").AnimationDriver<{
     };
     quicker: {
         type: "spring";
+        damping: number;
+        mass: number;
+        stiffness: number;
+    };
+    quickest: {
         damping: number;
         mass: number;
         stiffness: number;

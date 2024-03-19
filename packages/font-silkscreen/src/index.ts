@@ -1,4 +1,5 @@
-import { FillInFont, GenericFont, createFont, isWeb } from '@tamagui/core'
+import type { FillInFont, GenericFont } from '@tamagui/core'
+import { createFont, isWeb } from '@tamagui/core'
 
 export const createSilkscreenFont = <A extends GenericFont>(
   font: Partial<A> = {}
@@ -11,7 +12,7 @@ export const createSilkscreenFont = <A extends GenericFont>(
     lineHeight: Object.fromEntries(
       Object.entries(font.size || size).map(([k, v]) => [
         k,
-        typeof v === 'number' ? v * 1.2 + 6 : v,
+        typeof v === 'number' ? Math.round(v * 1.2 + 6) : v,
       ])
     ) as typeof size,
     weight: {

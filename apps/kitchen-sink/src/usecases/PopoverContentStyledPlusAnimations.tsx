@@ -8,7 +8,7 @@ export function PopoverContentStyledPlusAnimations() {
       </Popover.Trigger>
 
       <PopoverStyledContent>
-        <Popover.Arrow bw={1} boc="$borderColor" />
+        <Popover.Arrow bw={1} bc="$borderColor" />
       </PopoverStyledContent>
     </Popover>
   )

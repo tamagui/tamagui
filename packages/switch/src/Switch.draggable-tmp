@@ -208,7 +208,7 @@ export const Switch = withStaticProperties(
         })
 
         if (!isWeb) {
-          // eslint-disable-next-line react-hooks/rules-of-hooks
+          
           React.useEffect(() => {
             if (!props.id) return
             return registerFocusable(props.id, {

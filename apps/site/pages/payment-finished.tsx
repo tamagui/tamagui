@@ -12,7 +12,7 @@ export default function Page() {
   useEffect(() => {
     // take some time for stripe to hit our webhook
     const id = setTimeout(() => {
-      router.replace('/account/subscriptions')
+      router.replace('/account/items')
     }, 5_000)
     return () => {
       clearTimeout(id)

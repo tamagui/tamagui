@@ -1,43 +1,93 @@
 ---
 title: Installation
-description: How to get Tamagui set up.
+description: Get Tamagui set up, step by step
 ---
 
-We recommend using the cli to bootstrap one of the example apps, whether you use it directly or just as reference when implementing in your stack.
+We recommend using the CLI to bootstrap an example app, even if it's only for reference as you set up your existing app:
 
 ```bash
-npm create tamagui@latest
+npm create tamagui
 ```
 
 ## Install
 
-If you want tamagui with all the components:
+You can use the 0-dependency (outside of react itself) `@tamagui/core`, or move higher level with `tamagui`, which is a superset of core adding many components and hooks. We recommend yarn in general because it works well with both monorepos and React Native. Still, pnpm and npm work well too.
 
-```bash
-yarn add tamagui
-```
-
-If you just want `core` which includes the styling primitives as well as the base `Stack` and `Text` components:
+For just the core style library:
 
 ```bash
 yarn add @tamagui/core
 ```
 
-And you can now import and start using Tamagui. We do recommend [walking through configuration](#quick-configuration) for a basic design system, media queries, themes and more.
+If you want `tamagui`, you can avoid core and just:
 
-Once you start using libraries from the React Native ecosystem, you likely need some extra setup. For example, React Native supports "platform specific" file extensions (ie, bundlers should import `index.web.js` when targeting web and importing `./index.js`). Many packages also import `react-native` directly and so on the web you'll need to alias `react` to `react-native-web`.
+```bash
+yarn add tamagui
+```
 
-Tamagui does not require this to work out of the box, but eventually you'll probably want compatibility with the rest of the React Native ecosystem, so we have plugins which automate it, alongside allowing you to opt-in to the optimizing compiler.
+Add `TamaguiProvider` at the root of your app and you are fully set up:
 
-If you just want to get going, don't worry about it for now and continue to [quick configuration](#quick-configuration) or [the full configuration docs](/docs/core/configuration).
+```tsx
+// optional but recommended CSS reset:
+import '@tamagui/core/reset.css'
+import { TamaguiProvider, View } from '@tamagui/core'
 
-### Bundler plugins
+export default () => (
+  <TamaguiProvider>
+    <View width={200} height={200} backgroundColor="red" />
+  </TamaguiProvider>
+)
+```
 
-The bundler plugins generally set up platform specific extension support, alias react-native to react-native-web, and can enable the optimizing compiler.
+Tamagui doesn't require any bundler setup for either web or native.
+
+Typically you'll want to set up a few things with `createTamagui` though - for example media queries, or custom fonts.
+
+The [configuration documentation](/docs/core/configuration) covers this in detail, but if you'd like to get started quick with some decent defaults we have `@tamagui/config`:
+
+```tsx
+import { TamaguiProvider, createTamagui } from '@tamagui/core'
+import { config } from '@tamagui/config/v3'
+
+// you usually export this from a tamagui.config.ts file
+const tamaguiConfig = createTamagui(config)
+
+// make TypeScript type everything based on your config
+type Conf = typeof tamaguiConfig
+declare module '@tamagui/core' {
+  interface TamaguiCustomConfig extends Conf {}
+}
+
+export default () => {
+  return (
+    <TamaguiProvider config={tamaguiConfig}>
+      {/* your app here */}
+    </TamaguiProvider>
+  )
+}
+```
+
+You should be ready to use any component:
+
+<Preview>
+  <DemoButton />
+</Preview>
+
+```tsx class=preview line=5
+import { Button } from 'tamagui'
+
+export default function Demo() {
+  return <Button>Hello world</Button>
+}
+```
+
+From here, we'd recommend [spending some time understanding configuration](/docs/core/configuration). Tamagui works 100% the same at runtime as at compile-time, so you can wait until you're needing some extra performance to [set up the compiler](/docs/intro/compiler-install).
+
+We also have more in depth guides for [Next.js](/docs/guides/next-js), [Expo](/docs/guides/expo) and [Vite](/docs/guides/vite).
+
+Note that while Tamagui generally doesn't require any special bundler setup, React Native Web and the ecosystem of React Native packages often do, and Tamagui has a variety of plugins to aid in compatibility and make setting up the optimizing compile easy:
 
 #### Webpack
-
-You can just use the TamaguiPlugin:
 
 ```tsx
 const { TamaguiPlugin } = require('tamagui-loader')
@@ -50,7 +100,7 @@ config.plugins.push(
 )
 ```
 
-Or manually set it up:
+Or a minimal manual setup:
 
 ```tsx
 // some stuff for react-native
@@ -94,10 +144,9 @@ export default {
 }
 ```
 
-Or manually set it up:
+Or a minimal manual setup:
 
 ```tsx
-// for react-native
 config.define = {
   __DEV__: `${process.env.NODE_ENV === 'development' ? true : false}`,
   'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
@@ -127,91 +176,25 @@ config.optimizeDeps.esbuildOptions = {
 }
 ```
 
-### Native
+#### Metro
 
-For React Native or Expo you shouldn't need any plugins unless you're setting up the optimizing compiler which we highly recommend doing only once you're ready to ship your app to production. That install process is explained in the [Compiler installation docs](/docs/intro/compiler-install).
-
----
-
-## Quick configuration
-
-For an in-depth setup, check out [the full configuration docs](/docs/core/configuration). For a nice set of defaults:
-
-```sh
-yarn add @tamagui/config
-```
-
-Create a `tamagui.config.ts` file at the root of your project:
+Early support for Metro web support is here with `@tamagui/metro-plugin`:
 
 ```tsx
-// the v2 config imports the css driver on web and react-native on native
-// for reanimated: @tamagui/config/v2-reanimated
-// for react-native only: @tamagui/config/v2-native
-import { config } from '@tamagui/config/v2'
-import { createTamagui } from 'tamagui'
+// Learn more https://docs.expo.io/guides/customizing-metro
+const { getDefaultConfig } = require('expo/metro-config')
 
-const tamaguiConfig = createTamagui(config)
+/** @type {import('expo/metro-config').MetroConfig} */
+const config = getDefaultConfig(__dirname, {
+  // [Web-only]: Enables CSS support in Metro.
+  isCSSEnabled: true,
+})
 
-// this makes typescript properly type everything based on the config
-type Conf = typeof tamaguiConfig
-declare module 'tamagui' {
-  interface TamaguiCustomConfig extends Conf {}
-}
-
-export default tamaguiConfig
-
-// depending on if you chose tamagui, @tamagui/core, or @tamagui/web
-// be sure the import and declare module lines both use that same name
+// 2. Enable Tamagui
+const { withTamagui } = require('@tamagui/metro-plugin')
+module.exports = withTamagui(config, {
+  components: ['tamagui'],
+  config: './tamagui.config.ts',
+  outputCSS: './tamagui-web.css',
+})
 ```
-
-And finally, you just need to add the TamaguiProvider to your root:
-
-```tsx line=8-14
-// this provides some helpful reset styles to ensure a more consistent look
-// only import this from your web app, not native
-import '@tamagui/core/reset.css'
-
-import { TamaguiProvider } from 'tamagui'
-
-import config from './tamagui.config'
-
-export default function App() {
-  return (
-    <TamaguiProvider config={config}>
-      {/* your app here */}
-    </TamaguiProvider>
-  )
-}
-```
-
-TamaguiProvider has optional props, [see the docs for them here](/docs/core/configuration#using-tamagui-provider).
-
-### Done!
-
-You're ready to use Tamagui:
-
-<Preview>
-  <DemoButton />
-</Preview>
-
-```tsx class=preview line=5
-import { Button } from 'tamagui'
-
-export default function Demo() {
-  return <Button>Hello world</Button>
-}
-```
-
-We recommend [spending time understanding configuration](/docs/core/configuration) from here, skipping over the Compiler setup. The compiler is optional and should be saved for setting up after you've built something you'd like to test it with.
-
----
-
-#### Saving bundle size for web-only use cases
-
-If you are only targeting web, want to save some bundle size, and are ok going without the React Native specific props like gesture handlers and onLayout, you can just use `web`:
-
-```bash
-yarn add @tamagui/web
-```
-
-If you are _only_ targeting the web: `@tamagui/web` is the same library as `@tamagui/core`, except that it drops support for a few React Native specific things, mostly props: namely the `GestureResponderHandlers` and `onLayout` props are absent, and the platform methods on refs like `measureInWindow` are absent. If you are only targeting web, you can swap every reference of `tamagui` or `@tamagui/core` in this guide with `@tamagui/web`. Note that you can't use `@tamagui/web` with `tamagui` as the full `tamagui` package relies on many of these props.

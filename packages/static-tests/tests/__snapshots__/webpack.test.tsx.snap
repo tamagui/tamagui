@@ -13,10 +13,10 @@ exports[`webpack-tests > 1. extracts to a div for simple views, flat transforms 
     }
   >
     <div
-      className="  _ai-stretch _dsp-flex _fd-column _bxs-border-box _pos-relative _mih-0px _miw-0px  _scale-0hover-2 _fg-1 _fs-1 _fb-auto _btlr-100px _btrr-100px _bbrr-100px _bblr-100px _bg-red _bxsh-1670244214  test1"
+      className="  _dsp-flex _ai-stretch _fd-column _bxs-border-box _pos-relative _mih-0px _miw-0px  _fg-1 _fs-1 _fb-auto _btlr-100px _btrr-100px _bbrr-100px _bblr-100px _bg-red _bxsh-469092149 _scale-0hover-2  test1"
     >
       <span
-        className="  _ff-299667014 _dsp-inline _bxs-border-box _ww-break-word _mt-0px _mr-0px _mb-0px _ml-0px _col-675002279 font_body "
+        className="  _ff-299667014 _dsp-inline _bxs-border-box _ww-break-word _whiteSpace-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-675002279 font_body "
       >
         hello world
       </span>
@@ -27,7 +27,7 @@ exports[`webpack-tests > 1. extracts to a div for simple views, flat transforms 
 
 exports[`webpack-tests > 2. extracts className for complex views but keeps other props 1`] = `
 <span
-  className="t_dark is_inversed _dsp_contents"
+  className=" _dsp_contents"
 >
   <span
     className=" t_dark _dsp_contents is_Theme"
@@ -38,14 +38,14 @@ exports[`webpack-tests > 2. extracts className for complex views but keeps other
     }
   >
     <div
-      className="  _ai-stretch _dsp-flex _fd-row _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0  _ox-hidden _oy-hidden  who"
+      className="  _dsp-flex _ai-stretch _fd-row _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0  _ox-hidden _oy-hidden  who"
       onClick={[Function]}
     />
     <div
-      className="_ai-stretch _dsp-flex _fd-row _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _pt-2px _pb-2px _t-0px ease-in-out-top _t--14px _bg-fff35 "
+      className="_dsp-flex _ai-stretch _fd-row _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _pt-2px _pb-2px _t-0px ease-in-out-top _t--14px _bg-fff35 "
     >
       <span
-        className="  _ff-299667014 _dsp-inline _bxs-border-box _ww-break-word _mt-0px _mr-0px _mb-0px _ml-0px _col-675002279 font_body "
+        className="  _ff-299667014 _dsp-inline _bxs-border-box _ww-break-word _whiteSpace-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-675002279 font_body "
       >
         hello world
       </span>
@@ -56,7 +56,7 @@ exports[`webpack-tests > 2. extracts className for complex views but keeps other
 
 exports[`webpack-tests > 2. extracts className for complex views but keeps other props 2`] = `
 <span
-  className="t_dark is_inversed _dsp_contents"
+  className=" _dsp_contents"
 >
   <span
     className=" t_dark _dsp_contents is_Theme"
@@ -67,14 +67,14 @@ exports[`webpack-tests > 2. extracts className for complex views but keeps other
     }
   >
     <div
-      className="  _ai-stretch _dsp-flex _fd-row _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0  _ox-hidden _oy-hidden  who"
+      className="  _dsp-flex _ai-stretch _fd-row _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0  _ox-hidden _oy-hidden  who"
       onClick={[Function]}
     />
     <div
-      className="_ai-stretch _dsp-flex _fd-row _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _bg-00035 _pt-2px _pb-2px _t-0px ease-in-out-top "
+      className="_dsp-flex _ai-stretch _fd-row _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _bg-00035 _pt-2px _pb-2px _t-0px ease-in-out-top "
     >
       <span
-        className="  _ff-299667014 _dsp-inline _bxs-border-box _ww-break-word _mt-0px _mr-0px _mb-0px _ml-0px _col-675002279 font_body "
+        className="  _ff-299667014 _dsp-inline _bxs-border-box _ww-break-word _whiteSpace-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-675002279 font_body "
       >
         hello world
       </span>
@@ -85,7 +85,7 @@ exports[`webpack-tests > 2. extracts className for complex views but keeps other
 
 exports[`webpack-tests > 5. spread conditional 1`] = `
 <span
-  className="t_dark is_inversed _dsp_contents"
+  className=" _dsp_contents"
 >
   <span
     className=" t_dark _dsp_contents is_Theme"
@@ -96,10 +96,10 @@ exports[`webpack-tests > 5. spread conditional 1`] = `
     }
   >
     <div
-      className="_ai-stretch _dsp-flex _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _ox-hidden _oy-hidden _bg-blue "
+      className="_dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _ox-hidden _oy-hidden _bg-blue "
     >
       <div
-        className="_ai-stretch _dsp-flex _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _ox-hidden _oy-hidden hello-world _bg-blue "
+        className="_dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _ox-hidden _oy-hidden hello-world _bg-blue "
       />
     </div>
   </span>
@@ -108,7 +108,7 @@ exports[`webpack-tests > 5. spread conditional 1`] = `
 
 exports[`webpack-tests > 6. spread ternary 1`] = `
 <span
-  className="t_dark is_inversed _dsp_contents"
+  className=" _dsp_contents"
 >
   <span
     className=" t_dark _dsp_contents is_Theme"
@@ -119,10 +119,10 @@ exports[`webpack-tests > 6. spread ternary 1`] = `
     }
   >
     <div
-      className="_ai-stretch _dsp-flex _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _ox-hidden _oy-hidden _bg-blue "
+      className="_dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _ox-hidden _oy-hidden _bg-blue "
     >
       <span
-        className="  _ff-299667014 _dsp-inline _bxs-border-box _ww-break-word _mt-0px _mr-0px _mb-0px _ml-0px _col-675002279 font_body "
+        className="  _ff-299667014 _dsp-inline _bxs-border-box _ww-break-word _whiteSpace-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-675002279 font_body "
       >
         hello world
       </span>
@@ -133,7 +133,7 @@ exports[`webpack-tests > 6. spread ternary 1`] = `
 
 exports[`webpack-tests > 6. spread ternary 2`] = `
 <span
-  className="t_dark is_inversed _dsp_contents"
+  className=" _dsp_contents"
 >
   <span
     className=" t_dark _dsp_contents is_Theme"
@@ -144,10 +144,10 @@ exports[`webpack-tests > 6. spread ternary 2`] = `
     }
   >
     <div
-      className="_ai-stretch _dsp-flex _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _ox-hidden _oy-hidden _bg-red "
+      className="_dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _ox-hidden _oy-hidden _bg-red "
     >
       <span
-        className="  _ff-299667014 _dsp-inline _bxs-border-box _ww-break-word _mt-0px _mr-0px _mb-0px _ml-0px _col-675002279 font_body "
+        className="  _ff-299667014 _dsp-inline _bxs-border-box _ww-break-word _whiteSpace-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-675002279 font_body "
       >
         hello world
       </span>
@@ -158,7 +158,7 @@ exports[`webpack-tests > 6. spread ternary 2`] = `
 
 exports[`webpack-tests > 7. ternary + data-is 1`] = `
 <span
-  className="t_dark is_inversed _dsp_contents"
+  className=" _dsp_contents"
 >
   <span
     className=" t_dark _dsp_contents is_Theme"
@@ -169,11 +169,11 @@ exports[`webpack-tests > 7. ternary + data-is 1`] = `
     }
   >
     <div
-      className="_ai-stretch _dsp-flex _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _fs-0 _pr-11px _pl-11px _pb-10px _w-6637 _miw-500px _maw-3037"
+      className="_dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _fs-0 _pr-11px _pl-11px _pb-10px _w-6637 _miw-500px _maw-3037"
       style={{}}
     >
       <div
-        className="_ai-stretch _dsp-flex _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _w-10px _h-10px "
+        className="_dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _w-10px _h-10px "
       />
     </div>
   </span>
@@ -182,7 +182,7 @@ exports[`webpack-tests > 7. ternary + data-is 1`] = `
 
 exports[`webpack-tests > 8. styleExpansions 1`] = `
 <span
-  className="t_dark is_inversed _dsp_contents"
+  className=" _dsp_contents"
 >
   <span
     className=" t_dark _dsp_contents is_Theme"
@@ -193,14 +193,14 @@ exports[`webpack-tests > 8. styleExpansions 1`] = `
     }
   >
     <div
-      className="  _ai-stretch _dsp-flex _fd-column _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _pos-relative _t-0px _l-0px _r-0px _b-0px "
+      className="  _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _pos-relative _t-0px _l-0px _r-0px _b-0px "
     >
       <div
-        className="_ai-stretch _dsp-flex _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _bg-red"
+        className="_dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _bg-red"
         style={{}}
       >
         <div
-          className="_ai-stretch _dsp-flex _fd-column _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _pos-relative _t-0px _l-0px _r-0px _b-0px _bg-white _col-blue"
+          className="_dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _pos-relative _t-0px _l-0px _r-0px _b-0px _bg-white _col-blue"
           style={{}}
         />
       </div>
@@ -211,7 +211,7 @@ exports[`webpack-tests > 8. styleExpansions 1`] = `
 
 exports[`webpack-tests > 9. combines with classname 1`] = `
 <span
-  className="t_dark is_inversed _dsp_contents"
+  className=" _dsp_contents"
 >
   <span
     className=" t_dark _dsp_contents is_Theme"
@@ -222,7 +222,7 @@ exports[`webpack-tests > 9. combines with classname 1`] = `
     }
   >
     <div
-      className="  _ai-stretch _dsp-flex _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _pt-15px _pb-15px  home-top-dish"
+      className="  _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _pt-15px _pb-15px  home-top-dish"
     />
   </span>
 </span>
@@ -230,7 +230,7 @@ exports[`webpack-tests > 9. combines with classname 1`] = `
 
 exports[`webpack-tests > 10. extracts Text 1`] = `
 <span
-  className="t_dark is_inversed _dsp_contents"
+  className=" _dsp_contents"
 >
   <span
     className=" t_dark _dsp_contents is_Theme"
@@ -241,13 +241,13 @@ exports[`webpack-tests > 10. extracts Text 1`] = `
     }
   >
     <span
-      className="  _ff-299667014 _dsp-inline _bxs-border-box _ww-break-word _mt-0px _mr-0px _mb-0px _ml-0px _col-675002279 _fos-10px font_body "
+      className="  _ff-299667014 _dsp-inline _bxs-border-box _ww-break-word _whiteSpace-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-675002279 _fos-10px font_body "
     >
       <span
-        className="  _ff-299667014 _dsp-inline _bxs-border-box _ww-break-word _mt-0px _mr-0px _mb-0px _ml-0px _col-675002279 _ussel-auto font_body "
+        className="  _ff-299667014 _dsp-inline _bxs-border-box _ww-break-word _whiteSpace-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-675002279 _ussel-auto font_body "
       >
         <span
-          className="font_body _ff-299667014 _dsp-inline _bxs-border-box _ww-break-word _mt-0px _mr-0px _mb-0px _ml-0px _col-00035 _fos-15px _fow-600"
+          className="font_body _ff-299667014 _dsp-inline _bxs-border-box _ww-break-word _whiteSpace-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-00035 _fos-15px _fow-600"
           style={{}}
         >
           hello
@@ -260,7 +260,7 @@ exports[`webpack-tests > 10. extracts Text 1`] = `
 
 exports[`webpack-tests > 12. te  rnary multiple on same key 1`] = `
 <span
-  className="t_dark is_inversed _dsp_contents"
+  className=" _dsp_contents"
 >
   <span
     className=" t_dark _dsp_contents is_Theme"
@@ -271,7 +271,7 @@ exports[`webpack-tests > 12. te  rnary multiple on same key 1`] = `
     }
   >
     <div
-      className="_ai-stretch _dsp-flex _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _o-1 _transform- "
+      className="_dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _o-1 _transform- "
     />
   </span>
 </span>
@@ -279,7 +279,7 @@ exports[`webpack-tests > 12. te  rnary multiple on same key 1`] = `
 
 exports[`webpack-tests > 14. extracts pseudo styles and evaluates constants 1`] = `
 <span
-  className="t_dark is_inversed _dsp_contents"
+  className=" _dsp_contents"
 >
   <span
     className=" t_dark _dsp_contents is_Theme"
@@ -290,7 +290,7 @@ exports[`webpack-tests > 14. extracts pseudo styles and evaluates constants 1`] 
     }
   >
     <div
-      className="_bg-0hover-red _bg-0active-blue _ai-stretch _dsp-flex _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0"
+      className="_bg-0hover-red _bg-0active-blue _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0"
       style={{}}
     />
   </span>
@@ -299,7 +299,7 @@ exports[`webpack-tests > 14. extracts pseudo styles and evaluates constants 1`] 
 
 exports[`webpack-tests > 15. extracts spacer (complex expansion) 1`] = `
 <span
-  className="t_dark is_inversed _dsp_contents"
+  className=" _dsp_contents"
 >
   <span
     className=" t_dark _dsp_contents is_Theme"
@@ -310,10 +310,10 @@ exports[`webpack-tests > 15. extracts spacer (complex expansion) 1`] = `
     }
   >
     <span
-      className="  is_Spacer _ai-stretch _dsp-flex _fd-column _fb-auto _bxs-border-box _pos-relative _mih-1316330176 _miw-1316330176 _fs-0 _w-1316330176 _h-1316330176 _pe-none "
+      className="  is_Spacer _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-1316330176 _miw-1316330176 _fs-0 _w-1316330176 _h-1316330176 _pe-none "
     />
     <span
-      className="  is_Spacer _ai-stretch _dsp-flex _fd-column _fb-auto _bxs-border-box _pos-relative _mih-10px _miw-10px _fs-1 _pe-none _fg-1 _w-10px _h-10px "
+      className="  is_Spacer _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-10px _miw-10px _fs-1 _pe-none _fg-1 _w-10px _h-10px "
     />
   </span>
 </span>
@@ -321,7 +321,7 @@ exports[`webpack-tests > 15. extracts spacer (complex expansion) 1`] = `
 
 exports[`webpack-tests > 16. deopt when spreading multiple 1`] = `
 <span
-  className="t_dark is_inversed _dsp_contents"
+  className=" _dsp_contents"
 >
   <span
     className=" t_dark _dsp_contents is_Theme"
@@ -332,7 +332,7 @@ exports[`webpack-tests > 16. deopt when spreading multiple 1`] = `
     }
   >
     <div
-      className="_ai-stretch _dsp-flex _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-1 _fg-1 _bg-red"
+      className="_dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-1 _fg-1 _bg-red"
       conditional={true}
       style={{}}
     />

@@ -1,4 +1,4 @@
-import { MaskOptions } from '@tamagui/create-theme'
+import type { MaskOptions } from '@tamagui/create-theme'
 
 import { palettes } from './palettes'
 

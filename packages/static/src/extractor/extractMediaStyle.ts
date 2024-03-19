@@ -1,9 +1,9 @@
-import { NodePath } from '@babel/traverse'
+import type { NodePath } from '@babel/traverse'
 import * as t from '@babel/types'
 import type { TamaguiInternalConfig } from '@tamagui/core'
+import { createMediaStyle } from '@tamagui/core'
 import type { ViewStyle } from 'react-native'
 
-import { MEDIA_SEP } from '../constants'
 import { requireTamaguiCore } from '../helpers/requireTamaguiCore'
 import type { StyleObject, TamaguiOptionsWithFileInfo, Ternary } from '../types'
 import { isPresent, isValidImport } from './extractHelpers'
@@ -52,40 +52,16 @@ export function extractMediaStyle(
 
   for (const { styleObj, negate } of styleOpts) {
     const styles = getStylesAtomic(styleObj as any)
+
     const singleMediaStyles = styles.map((style) => {
-      const negKey = negate ? '0' : ''
-      const ogPrefix = style.identifier.slice(0, style.identifier.indexOf('-') + 1)
-      // adds an extra separator before and after to detect later
-      // so it goes from: "_f-[hash]"
-      // to: "_f-_sm0_[hash]" or "_f-_sm_[hash]"
-      const identifier = `${style.identifier.replace(
-        ogPrefix,
-        `${ogPrefix}${MEDIA_SEP}${key}${negKey}${MEDIA_SEP}`
-      )}`
-      const className = `.${identifier}`
-      const mediaSelector = mediaObjectToString(tamaguiConfig.media[key])
-      // screen and
-      const screenStr = negate ? 'not all' : 'screen'
-      const mediaQuery = `${screenStr} and ${mediaSelector}`
-      const precendencePrefix = mediaKeyPrecendence[key]
-      const styleInner = style.rules
-        .map((rule) => rule.replace(style.identifier, identifier))
-        .join(';')
-      // combines media queries if they already exist
-      let styleRule = ''
-      if (styleInner.includes('@media')) {
-        // combine
-        styleRule = styleInner.replace('{', ` and ${mediaQuery} {`)
-      } else {
-        styleRule = `@media ${mediaQuery} { ${precendencePrefix}${styleInner} }`
-      }
+      const mediaStyle = createMediaStyle(style, key, tamaguiConfig.media, true, negate)
+      const className = `.${mediaStyle.identifier}`
       return {
-        ...style,
-        identifier,
+        ...mediaStyle,
         className,
-        rules: [styleRule],
       }
     })
+
     if (shouldPrintDebug === 'verbose') {
       console.info(
         '  media styles:',

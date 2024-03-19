@@ -1,16 +1,12 @@
 // forked from radix https://github.com/radix-ui/primitives/blob/main/packages/react/avatar/src/Avatar.tsx
 
-import {
-  GetProps,
-  SizeTokens,
-  TamaguiElement,
-  getTokens,
-  getVariableValue,
-  styled,
-} from '@tamagui/core'
-import { Scope, createContextScope } from '@tamagui/create-context'
+import type { GetProps, SizeTokens, TamaguiElement } from '@tamagui/core'
+import { getTokens, getVariableValue, styled } from '@tamagui/core'
+import type { Scope } from '@tamagui/create-context'
+import { createContextScope } from '@tamagui/create-context'
 import { withStaticProperties } from '@tamagui/helpers'
-import { Image, ImageProps } from '@tamagui/image'
+import type { ImageProps } from '@tamagui/image'
+import { Image } from '@tamagui/image'
 import { Square, getShapeSize } from '@tamagui/shapes'
 import { YStack } from '@tamagui/stacks'
 import * as React from 'react'
@@ -68,7 +64,7 @@ const AvatarImage = React.forwardRef<TamaguiElement, AvatarImageProps>(
         <Image
           fullscreen
           {...(typeof shapeSize === 'number' &&
-            !isNaN(shapeSize) && {
+            !Number.isNaN(shapeSize) && {
               width: shapeSize,
               height: shapeSize,
             })}

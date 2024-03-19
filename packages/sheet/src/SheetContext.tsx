@@ -1,7 +1,7 @@
 import { createContextScope } from '@tamagui/create-context'
 
 import { SHEET_NAME } from './constants'
-import { SheetContextValue } from './useSheetProviderProps'
+import type { SheetContextValue } from './useSheetProviderProps'
 
 export const [createSheetContext, createSheetScope] = createContextScope(SHEET_NAME)
 

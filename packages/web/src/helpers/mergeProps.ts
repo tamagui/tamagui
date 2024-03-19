@@ -12,6 +12,7 @@
  *   - shorthands can be expanded before merging
  */
 
+import { mediaKeys } from '../hooks/useMedia'
 import { pseudoDescriptors } from './pseudoDescriptors'
 
 type AnyRecord = Record<string, any>
@@ -36,17 +37,17 @@ function mergeProp(
   key: string,
   inverseShorthands?: AnyRecord
 ) {
-  const shorthand = inverseShorthands?.[key] || null
-  if (b && (key in b || (shorthand && shorthand in b))) {
-    return
-  }
+  const longhand = inverseShorthands?.[key] || null
   const val = a[key]
-  if (key in pseudoDescriptors) {
+  if (key in pseudoDescriptors || mediaKeys.has(key)) {
     out[key] = {
       ...out[key],
       ...val,
     }
     return
   }
-  out[shorthand || key] = val
+  if (b && (key in b || (longhand && longhand in b))) {
+    return
+  }
+  out[longhand || key] = val
 }

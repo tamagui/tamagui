@@ -3,27 +3,30 @@ title: useTheme
 description: Creating and using theme values.
 ---
 
-The hook for themes allows you to access theme values at runtime. If you use any of its values for style properties, the compiler will attempt to optimize them on the web. On native, theme values are left in the render function, if React Native supports themes at some point we could compile to that.
+Access the current theme in context with `useTheme`. Tamagui themes operate much
+the same as
+[CSS variables](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties)
+do, and so
+[they can nest and override each other contextually](/docs/intro/themes).
+
+Note that the object that useTheme returns is the current theme, proxied upwards
+to every parent theme, finally proxying back to your tokens. This means it
+behaves just like CSS variables at well, at runtime.
+
+A short example:
 
 ```tsx
 import { YStack, useTheme } from 'tamagui'
 
 const App = () => {
   const theme = useTheme()
-  return <YStack backgroundColor={theme.color1} />
+
+  return <YStack backgroundColor={theme.color1.val} />
 }
 ```
 
-The `useTheme` hook returns a `Variable`. When you run `createTamagui` your returns themes are of type `ThemeParsed`. This means that all the values have been converted from this:
-
-```tsx
-{
-  background: '#000',
-  color: '#fff'
-}
-```
-
-into the type `ThemeParsed`, which maps the values in the object to type `Variable`:
+The `useTheme` hook returns your Theme turned into a `ThemeParsed`, which means
+it turns all values into a `Variable`:
 
 ```tsx
 {
@@ -42,11 +45,16 @@ into the type `ThemeParsed`, which maps the values in the object to type `Variab
 }
 ```
 
-The `useTheme` hook uses proxies to track if you access `variable` and avoid re-rendering.
-
-If you access `val` it will consider that theme value dynamic, and if the parent theme changes, it will re-render.
-
-You can use `.get()` on any value which will automatically resolve to `variable` on the web, but `val` on native.
+The `useTheme` hook further adds a `.get()` helper function on each Variable for
+extra performance. On the web, this will return the `.variable` property and
+avoid re-rendering if values change, as it assumes you are using the CSS
+variables it generates to update styles. Meanwhile on native it will return
+`.val` and re-render always. But - if you enable the
+[`fastSchemeChange` setting on createTamagui](/docs/core/configuration#settings)
+then `get()` will return a
+[DynamicColorIOS](https://reactnative.dev/docs/dynamiccolorios) on iOS and avoid
+re-rendering there too - unless you do `get('web')` in which case it will only
+optimize for web.
 
 ```tsx
 import { Stack, useTheme } from '@tamagui/core'
@@ -72,7 +80,9 @@ const App = () => {
 }
 ```
 
-You can mix and match `useMedia` and `useTheme`, and the compiler undertands most basic usages, even with nested logic or constants within the file or imports [white-listed in your build setup](/docs/compiler/install):
+You can mix and match `useMedia` and `useTheme`, and the compiler understands
+most basic usages, even with nested logic or constants within the file or
+imports [white-listed in your build setup](/docs/compiler/install):
 
 ```tsx
 import { YStack, useMedia, useTheme } from 'tamagui'
@@ -174,14 +184,18 @@ And the following CSS:
 
 ## Using outside of styling
 
-You can `useTheme()` (and `useMedia()`) at runtime. Like useMedia, useTheme will only re-render when it has to, and often you can skip re-renders altogether by either passing the values to a Tamagui styled component, or by using the helper `getVariable`:
+You can `useTheme()` (and `useMedia()`) at runtime. Like useMedia, useTheme will
+only re-render when it has to, and often you can skip re-renders altogether by
+either passing the values to a Tamagui styled component, or by using the helper
+`getVariable`:
 
 ### getVariable
 
-If you access `theme.bg.val` in your render function, the component will only re-render when theme.bg changes.
+If you access `theme.bg.val` in your render function, the component will only
+re-render when theme.bg changes.
 
 ```tsx
-import { theme, Stack } from '@tamagui/core'
+import { theme, View } from '@tamagui/core'
 
 export default () => {
   const theme = useTheme()
@@ -190,14 +204,17 @@ export default () => {
   console.log(theme.bg.val)
 
   return (
-    <Stack backgroundColor={theme.color1} />
+    <View backgroundColor={theme.color1} />
   )
 }
 ```
 
 ## Changing the theme at the hook level
 
-This is a more advanced use for building custom hooks or components, but you can pass in a theme name and a component theme name (as [discussed here](/docs/intro/themes#component-subset-themes)) to grab the right subset theme:
+This is a more advanced use for building custom hooks or components, but you can
+pass in a theme name and a component theme name (as
+[discussed here](/docs/intro/themes#component-subset-themes)) to grab the right
+subset theme:
 
 ```tsx
 function MyComponent(props) {

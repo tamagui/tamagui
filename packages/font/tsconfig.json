@@ -3,5 +3,10 @@
   "compilerOptions": {
     "composite": true,
     "strict": true
-  }
+  },
+  "exclude": [
+    "types",
+    "dist",
+    "**/__tests__"
+  ]
 }

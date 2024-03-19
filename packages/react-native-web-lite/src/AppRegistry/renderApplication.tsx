@@ -8,7 +8,7 @@
  * @flow
  */
 
-import { ComponentType, FunctionComponent, ReactNode } from 'react'
+import type { ComponentType, FunctionComponent, ReactNode } from 'react'
 import React from 'react'
 import { StyleSheet } from 'react-native-web-internals'
 import { invariant } from 'react-native-web-internals'

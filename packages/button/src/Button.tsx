@@ -3,25 +3,18 @@ import { getButtonSized } from '@tamagui/get-button-sized'
 import { withStaticProperties } from '@tamagui/helpers'
 import { useGetThemedIcon } from '@tamagui/helpers-tamagui'
 import { ButtonNestingContext, ThemeableStack } from '@tamagui/stacks'
+import type { TextContextStyles, TextParentStyles } from '@tamagui/text'
+import { SizableText, wrapChildrenInText } from '@tamagui/text'
+import type { FontSizeTokens, GetProps, SizeTokens, ThemeableProps } from '@tamagui/web'
 import {
-  SizableText,
-  TextContextStyles,
-  TextParentStyles,
-  wrapChildrenInText,
-} from '@tamagui/text'
-import {
-  FontSizeTokens,
-  GetProps,
-  SizeTokens,
-  ThemeableProps,
   createStyledContext,
   getVariableValue,
   spacedChildren,
   styled,
-  useDidFinishSSR,
   useProps,
 } from '@tamagui/web'
-import { FunctionComponent, useContext } from 'react'
+import type { FunctionComponent } from 'react'
+import { useContext } from 'react'
 
 type ButtonVariant = 'outlined'
 
@@ -47,8 +40,12 @@ export const ButtonContext = createStyledContext<
   variant: undefined,
 })
 
-type ButtonIconProps = { color?: string; size?: number }
-type IconProp = JSX.Element | FunctionComponent<ButtonIconProps> | null
+type ButtonIconProps = { color?: any; size?: any }
+type IconProp =
+  | JSX.Element
+  | FunctionComponent<ButtonIconProps>
+  | ((props: ButtonIconProps) => any)
+  | null
 
 type ButtonExtraProps = TextParentStyles &
   ThemeableProps & {
@@ -88,8 +85,8 @@ const ButtonFrame = styled(ThemeableStack, {
   name: BUTTON_NAME,
   tag: 'button',
   context: ButtonContext,
-  focusable: true,
   role: 'button',
+  focusable: true,
 
   variants: {
     unstyled: {
@@ -106,8 +103,8 @@ const ButtonFrame = styled(ThemeableStack, {
         borderWidth: 1,
         borderColor: 'transparent',
 
-        focusStyle: {
-          outlineColor: '$borderColorFocus',
+        focusVisibleStyle: {
+          outlineColor: '$outlineColor',
           outlineStyle: 'solid',
           outlineWidth: 2,
         },
@@ -130,7 +127,7 @@ const ButtonFrame = styled(ThemeableStack, {
           borderColor: '$borderColorPress',
         },
 
-        focusStyle: {
+        focusVisibleStyle: {
           backgroundColor: 'transparent',
           borderColor: '$borderColorFocus',
         },
@@ -139,6 +136,7 @@ const ButtonFrame = styled(ThemeableStack, {
 
     size: {
       '...size': getButtonSized,
+      ':number': getButtonSized,
     },
 
     disabled: {
@@ -188,13 +186,13 @@ const ButtonIcon = (props: { children: React.ReactNode; scaleIcon?: number }) =>
   return getThemedIcon(children)
 }
 
-const ButtonComponent = ButtonFrame.styleable<ButtonExtraProps>(function Button(
-  props,
-  ref
-) {
-  const { props: buttonProps } = useButton(props)
-  return <ButtonFrame {...buttonProps} ref={ref} />
-})
+const ButtonComponent = ButtonFrame.styleable<ButtonExtraProps>(
+  function Button(props, ref) {
+    // @ts-ignore
+    const { props: buttonProps } = useButton(props)
+    return <ButtonFrame {...buttonProps} ref={ref} />
+  }
+)
 
 /**
  * @deprecated Instead of useButton, see the Button docs for the newer and much improved Advanced customization pattern: https://tamagui.dev/docs/components/button
@@ -227,8 +225,10 @@ function useButton<Props extends ButtonProps>(
   { Text = Button.Text }: { Text: any } = { Text: Button.Text }
 ) {
   const isNested = useContext(ButtonNestingContext)
-  const didFinishSSR = useDidFinishSSR()
-  const propsActive = useProps(propsIn) as any as ButtonProps
+  const propsActive = useProps(propsIn, {
+    noNormalize: true,
+    noExpand: true,
+  }) as any as ButtonProps
 
   // careful not to destructure and re-order props, order is important
   const {
@@ -242,6 +242,13 @@ function useButton<Props extends ButtonProps>(
     noTextWrap,
     fontFamily,
     fontSize,
+    fontWeight,
+    fontStyle,
+    letterSpacing,
+    tag,
+    ellipse,
+    maxFontSizeMultiplier,
+
     ...restProps
   } = propsActive
 
@@ -250,8 +257,11 @@ function useButton<Props extends ButtonProps>(
   const color = propsActive.color as any
 
   const iconSize =
-    (typeof size === 'number' ? size * 0.5 : getFontSize(size as FontSizeTokens)) *
-    scaleIcon
+    (typeof size === 'number'
+      ? size * 0.5
+      : getFontSize(size as FontSizeTokens, {
+          font: fontFamily?.[0] === '$' ? (fontFamily as any) : undefined,
+        })) * scaleIcon
 
   const getThemedIcon = useGetThemedIcon({
     size: iconSize,
@@ -264,7 +274,17 @@ function useButton<Props extends ButtonProps>(
     ? [propsIn.children]
     : wrapChildrenInText(
         Text,
-        { children: propsIn.children, fontFamily, fontSize, textProps },
+        {
+          children: propsIn.children,
+          fontFamily,
+          fontSize,
+          textProps,
+          fontWeight,
+          fontStyle,
+          letterSpacing,
+          ellipse,
+          maxFontSizeMultiplier,
+        },
         Text === ButtonText && propsActive.unstyled !== true
           ? {
               unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
@@ -286,34 +306,34 @@ function useButton<Props extends ButtonProps>(
     children: [themedIcon, ...contents, themedIconAfter],
   })
 
-  // fixes SSR issue + DOM nesting issue of not allowing button in button
-  const tag = isNested
-    ? 'span'
-    : // defaults to <a /> when accessibilityRole = link
-    // see https://github.com/tamagui/tamagui/issues/505
-    propsActive.accessibilityRole === 'link'
-    ? 'a'
-    : undefined
-
   const props = {
     size,
     ...(propsIn.disabled && {
       // in rnw - false still has keyboard tabIndex, undefined = not actually focusable
       focusable: undefined,
-      // even with tabIndex unset, it will keep focusStyle on web so disable it here
-      focusStyle: {
+      // even with tabIndex unset, it will keep focusVisibleStyle on web so disable it here
+      focusVisibleStyle: {
         borderColor: '$background',
       },
     }),
-    ...(tag && {
-      tag,
-    }),
+    // fixes SSR issue + DOM nesting issue of not allowing button in button
+    tag:
+      tag ??
+      (isNested
+        ? 'span'
+        : // defaults to <a /> when accessibilityRole = link
+          // see https://github.com/tamagui/tamagui/issues/505
+          propsActive.accessibilityRole === 'link' || propsActive.role === 'link'
+          ? 'a'
+          : 'button'),
+
     ...restProps,
+
     children: (
       <ButtonNestingContext.Provider value={true}>{inner}</ButtonNestingContext.Provider>
     ),
     // forces it to be a runtime pressStyle so it passes through context text colors
-    disableClassName: didFinishSSR,
+    disableClassName: true,
   } as Props
 
   return {

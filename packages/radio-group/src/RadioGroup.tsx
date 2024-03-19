@@ -3,17 +3,20 @@
 
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
-import { GetProps, getVariableValue, styled } from '@tamagui/core'
-import { Scope, createContextScope } from '@tamagui/create-context'
+import type { GetProps } from '@tamagui/core'
+import { getVariableValue, styled } from '@tamagui/core'
+import type { Scope } from '@tamagui/create-context'
+import { createContextScope } from '@tamagui/create-context'
 import { registerFocusable } from '@tamagui/focusable'
 import { getSize } from '@tamagui/get-token'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import { useLabelContext } from '@tamagui/label'
+import { RovingFocusGroup } from '@tamagui/roving-focus'
 import { ThemeableStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { usePrevious } from '@tamagui/use-previous'
 import * as React from 'react'
-import { View } from 'react-native'
+import type { View } from 'react-native'
 
 const RADIO_GROUP_NAME = 'RadioGroup'
 
@@ -135,9 +138,12 @@ const RadioGroupItemFrame = styled(ThemeableStack, {
         focusStyle: {
           borderColor: '$borderColorHover',
           backgroundColor: '$backgroundHover',
+        },
+
+        focusVisibleStyle: {
           outlineStyle: 'solid',
           outlineWidth: 2,
-          outlineColor: '$borderColorFocus',
+          outlineColor: '$outlineColor',
         },
 
         pressStyle: {
@@ -163,7 +169,7 @@ const RadioGroupItemFrame = styled(ThemeableStack, {
           backgroundColor: '$backgroundColor',
         },
 
-        focusStyle: {
+        focusVisibleStyle: {
           outlineWidth: 0,
         },
       },
@@ -256,7 +262,6 @@ const RadioGroupItem = RadioGroupItemFrame.extractable(
       }, [])
 
       if (process.env.TAMAGUI_TARGET === 'native') {
-        // eslint-disable-next-line react-hooks/rules-of-hooks
         React.useEffect(() => {
           if (!props.id) return
           if (disabled) return
@@ -288,55 +293,64 @@ const RadioGroupItem = RadioGroupItemFrame.extractable(
             />
           ) : (
             <>
-              <RadioGroupItemFrame
-                // theme={checked ? 'active' : undefined}
-                data-state={getState(checked)}
-                data-disabled={isDisabled ? '' : undefined}
-                role="radio"
-                aria-labelledby={labelledBy}
-                aria-checked={checked}
-                aria-required={required}
-                disabled={isDisabled}
-                ref={composedRefs}
-                {...(isWeb && {
-                  type: 'button',
-                  value: value,
-                })}
-                // allow them to override all but the handlers that already compose:
-                {...itemProps}
-                onPress={composeEventHandlers(props.onPress as any, (event) => {
-                  if (!checked) {
-                    onChange?.(value)
-                  }
-
-                  if (isFormControl) {
-                    hasConsumerStoppedPropagationRef.current =
-                      event.isPropagationStopped()
-                    // if radio is in a form, stop propagation from the button so that we only propagate
-                    // one click event (from the input). We propagate changes from an input so that native
-                    // form validation works and form events reflect radio updates.
-                    if (!hasConsumerStoppedPropagationRef.current) event.stopPropagation()
-                  }
-                })}
-                {...(isWeb && {
-                  onKeyDown: composeEventHandlers(
-                    (props as React.HTMLProps<HTMLButtonElement>).onKeyDown,
-                    (event) => {
-                      // According to WAI ARIA, Checkboxes don't activate on enter keypress
-                      if (event.key === 'Enter') event.preventDefault()
+              <RovingFocusGroup.Item
+                __scopeRovingFocusGroup={RADIO_GROUP_NAME}
+                asChild="except-style"
+                focusable={!isDisabled}
+                active={checked}
+              >
+                <RadioGroupItemFrame
+                  // theme={checked ? 'active' : undefined}
+                  data-state={getState(checked)}
+                  data-disabled={isDisabled ? '' : undefined}
+                  role="radio"
+                  aria-labelledby={labelledBy}
+                  aria-checked={checked}
+                  aria-required={required}
+                  disabled={isDisabled}
+                  ref={composedRefs}
+                  {...(isWeb && {
+                    type: 'button',
+                    value: value,
+                  })}
+                  // allow them to override all but the handlers that already compose:
+                  {...itemProps}
+                  onPress={composeEventHandlers(props.onPress as any, (event) => {
+                    if (!checked) {
+                      onChange?.(value)
                     }
-                  ),
-                  onFocus: composeEventHandlers(itemProps.onFocus, () => {
-                    /**
-                     * Our `RovingFocusGroup` will focus the radio when navigating with arrow keys
-                     * and we need to "check" it in that case. We click it to "check" it (instead
-                     * of updating `context.value`) so that the radio change event fires.
-                     */
-                    if (isArrowKeyPressedRef.current)
-                      (ref.current as HTMLButtonElement)?.click()
-                  }),
-                })}
-              />
+
+                    if (isFormControl) {
+                      hasConsumerStoppedPropagationRef.current =
+                        event.isPropagationStopped()
+                      // if radio is in a form, stop propagation from the button so that we only propagate
+                      // one click event (from the input). We propagate changes from an input so that native
+                      // form validation works and form events reflect radio updates.
+                      if (!hasConsumerStoppedPropagationRef.current)
+                        event.stopPropagation()
+                    }
+                  })}
+                  {...(isWeb && {
+                    onKeyDown: composeEventHandlers(
+                      (props as React.HTMLProps<HTMLButtonElement>).onKeyDown,
+                      (event) => {
+                        // According to WAI ARIA, Checkboxes don't activate on enter keypress
+                        if (event.key === 'Enter') event.preventDefault()
+                      }
+                    ),
+                    onFocus: composeEventHandlers(itemProps.onFocus, () => {
+                      /**
+                       * Our `RovingFocusGroup` will focus the radio when navigating with arrow keys
+                       * and we need to "check" it in that case. We click it to "check" it (instead
+                       * of updating `context.value`) so that the radio change event fires.
+                       */
+                      if (isArrowKeyPressedRef.current) {
+                        ;(ref.current as HTMLButtonElement)?.click()
+                      }
+                    }),
+                  })}
+                />
+              </RovingFocusGroup.Item>
               {isFormControl && (
                 <BubbleInput
                   isHidden
@@ -490,14 +504,20 @@ const RadioGroup = withStaticProperties(
             native={native}
             accentColor={accentColor}
           >
-            <RadioGroupFrame
-              role="radiogroup"
-              aria-orientation={orientation}
-              ref={forwardedRef}
-              orientation={orientation}
-              data-disabled={disabled ? '' : undefined}
-              {...radioGroupProps}
-            />
+            <RovingFocusGroup
+              __scopeRovingFocusGroup={RADIO_GROUP_NAME}
+              orientation={orientation as any}
+              loop={true}
+            >
+              <RadioGroupFrame
+                role="radiogroup"
+                aria-orientation={orientation}
+                ref={forwardedRef}
+                orientation={orientation}
+                data-disabled={disabled ? '' : undefined}
+                {...radioGroupProps}
+              />
+            </RovingFocusGroup>
           </RadioGroupProvider>
         )
       }
@@ -512,4 +532,4 @@ const RadioGroup = withStaticProperties(
 RadioGroup.displayName = RADIO_GROUP_NAME
 
 export { createRadioGroupScope, RadioGroup }
-export type { RadioGroupProps }
+export type { RadioGroupProps, RadioGroupItemProps }

@@ -1,3 +1,2 @@
-/// <reference types="react" />
-export declare function AlertDialogDemo(): JSX.Element;
+export declare function AlertDialogDemo(): import("react/jsx-runtime").JSX.Element;
 //# sourceMappingURL=AlertDialogDemo.d.ts.map

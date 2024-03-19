@@ -1,4 +1,5 @@
-import { Tokens, getConfig } from '@tamagui/core'
+import type { Tokens } from '@tamagui/core'
+import { getConfig } from '@tamagui/core'
 import { useState } from 'react'
 import { Button, H2, H3, H4, Separator, Square, XGroup, XStack, YStack } from 'tamagui'
 
@@ -81,11 +82,12 @@ function SizeSection({ section }: { section: Section }) {
                   backgroundColor="$color5"
                   {...(section === 'spaceNegative' && {
                     backgroundColor: '$red5',
-                    size: -tokens[
-                      spaceTokensNegative.find(
-                        (t) => parseFloat(t) === -parseFloat(token)
-                      ) ?? token
-                    ]?.val,
+                    size:
+                      -tokens[
+                        spaceTokensNegative.find(
+                          (t) => parseFloat(t) === -parseFloat(token)
+                        ) ?? token
+                      ]?.val,
                   })}
                   {...(section === 'radius' && {
                     size: allTokens.size[token]?.val as any,

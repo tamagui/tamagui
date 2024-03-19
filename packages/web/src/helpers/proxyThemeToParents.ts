@@ -1,8 +1,7 @@
-import { getToken, getTokenObject, getTokens } from '../config'
-import { GetThemeUnwrapped } from '../hooks/getThemeUnwrapped'
-import { DedupedThemes, ThemeParsed } from '../types'
+import { getTokenObject } from '../config'
+import type { DedupedThemes, ThemeParsed } from '../types'
 
-export const themesRaw: Record<string, ThemeParsed> = {}
+const themesRaw: Record<string, ThemeParsed> = {}
 
 // this seems expensive but its necessary to do two loops unless we want to refactor a variety of things again
 // not *too* much work but not a big cost doing the two loops
@@ -50,9 +49,8 @@ export function proxyThemeToParents(themeName: string, theme: ThemeParsed) {
   // proxy fallback values to parent theme values
   return new Proxy(theme, {
     get(target, key) {
-      if (key === GetThemeUnwrapped) return theme
       if (
-        key == null ||
+        !key ||
         // dont ask me, idk why but on hermes you can see that useTheme()[undefined] passes in STRING undefined to proxy
         // if someone is crazy enough to use "undefined" as a theme key then this not working is on them
         key == 'undefined' ||
@@ -63,12 +61,11 @@ export function proxyThemeToParents(themeName: string, theme: ThemeParsed) {
       // check parents
       for (let i = numParents - 1; i >= 0; i--) {
         const parent = themesRaw[parents[i]]
-        if (!parent) continue
-        if (Reflect.has(parent, key)) {
+        if (parent && Reflect.has(parent, key)) {
           return Reflect.get(parent, key)
         }
       }
-      return getTokenObject(key as any) ?? Reflect.get(target, key)
+      return getTokenObject(key as any)
     },
   })
 }

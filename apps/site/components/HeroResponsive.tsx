@@ -12,6 +12,7 @@ import {
 import { demoMedia } from '@tamagui/site-config'
 import React, { startTransition, useMemo } from 'react'
 import { memo, useCallback, useEffect, useRef, useState } from 'react'
+import type { YStackProps } from 'tamagui'
 import {
   Button,
   Circle,
@@ -24,7 +25,6 @@ import {
   Theme,
   XStack,
   YStack,
-  YStackProps,
   isTouchable,
   useDebounce,
   useDidFinishSSR,
@@ -247,7 +247,7 @@ export const HeroResponsive = memo(() => {
               }}
             >
               <YStack
-                bc="$color"
+                bg="$color"
                 opacity={0.35}
                 hoverStyle={{ opacity: 0.4 }}
                 br="$8"
@@ -268,7 +268,7 @@ export const HeroResponsive = memo(() => {
           ai="center"
           jc="center"
         >
-          <XStack pos="absolute" t={0} l={0} r={0} bbw={1} boc="$color" opacity={0.1} />
+          <XStack pos="absolute" t={0} l={0} r={0} bbw={1} bc="$color" opacity={0.1} />
           <YStack pos="relative" f={1} h="100%" w="100%">
             <YStack fullscreen className="mask-gradient-down" zi={-1}>
               <YStack fullscreen bottom="auto" height={439} className="bg-grid" />
@@ -289,7 +289,7 @@ const Marker = memo(({ name, active, onPress, ...props }: any) => {
       {...props}
     >
       <XStack y={-60} ai="flex-start">
-        <YStack w={1} h={70} bc="$colorHover" opacity={active ? 0.2 : 0.05} />
+        <YStack w={1} h={70} bg="$colorHover" opacity={active ? 0.2 : 0.05} />
         <Button
           accessibilityLabel={`Responsive size ${name}`}
           borderWidth={1}
@@ -339,7 +339,7 @@ const SafariFrame = ({ children, ...props }: YStackProps) => {
       f={1}
       ov="hidden"
       br="$4"
-      boc="$borderColor"
+      bc="$borderColor"
       borderWidth={1}
       w="99%"
       {...props}
@@ -355,12 +355,12 @@ export const Safari = memo(
 
     return (
       <SafariFrame>
-        <YStack bc="$background" px="$4" jc="center" borderBottomWidth={0} h={50}>
+        <YStack bg="$background" px="$4" jc="center" borderBottomWidth={0} h={50}>
           <XStack pos="relative" ai="center" space="$4">
             <XStack space="$2">
-              <Circle bc="$red10" size={10} />
-              <Circle bc="$yellow10" size={10} />
-              <Circle bc="$green10" size={10} />
+              <Circle bg="$red10" size={10} />
+              <Circle bg="$yellow10" size={10} />
+              <Circle bg="$green10" size={10} />
             </XStack>
 
             {!isSmall && (
@@ -377,8 +377,8 @@ export const Safari = memo(
                 f={2}
                 br="$2"
                 borderWidth={1}
-                boc="$borderColor"
-                bc="$backgroundPress"
+                bc="$borderColor"
+                bg="$backgroundPress"
                 ai="center"
                 px="$2"
                 jc="center"
@@ -394,7 +394,7 @@ export const Safari = memo(
           </XStack>
         </YStack>
 
-        <XStack bc="$background" mx={-2}>
+        <XStack bg="$background" mx={-2}>
           <Tab bc="var(--green7)" btlr={0}>
             Github
           </Tab>
@@ -406,7 +406,7 @@ export const Safari = memo(
           </Tab>
         </XStack>
 
-        <YStack pos="relative" bc="$color1" h={browserHeight}>
+        <YStack pos="relative" bg="$color1" h={browserHeight}>
           <YStack h="100%" pe="none">
             {shouldLoad && (
               <YStack
@@ -494,7 +494,7 @@ const Tab = memo(({ active, children, bc, ...props }: any) => {
     <Theme name={active ? null : 'alt1'}>
       <XStack
         btw={1}
-        boc={active ? 'transparent' : '$borderColor'}
+        bc={active ? 'transparent' : '$borderColor'}
         w="33.33%"
         blw={1}
         brw={1}
@@ -502,7 +502,7 @@ const Tab = memo(({ active, children, bc, ...props }: any) => {
         bbc={active ? '$borderColor' : 'transparent'}
         btlr={active ? 0 : 4}
         btrr={active ? 0 : 4}
-        bc="$background"
+        bg="$background"
         ov="hidden"
         f={1}
         py="$1"
@@ -511,7 +511,7 @@ const Tab = memo(({ active, children, bc, ...props }: any) => {
         jc="center"
         {...props}
       >
-        <Circle size={16} bc={bc}>
+        <Circle size={16} bg={bc}>
           <Image
             width={12}
             height={12}

@@ -2,28 +2,21 @@ import '@tamagui/core/reset.css'
 
 import '../app.css'
 
-import { GetLayout } from '@lib/getDefaultLayout'
-import {
-  ColorScheme,
-  NextThemeProvider,
-  useRootTheme,
-  useThemeSetting,
-} from '@tamagui/next-theme'
-import { AppProps } from 'next/app'
+import type { GetLayout } from '@lib/getDefaultLayout'
+import type { ColorScheme } from '@tamagui/next-theme'
+import { NextThemeProvider, useRootTheme, useThemeSetting } from '@tamagui/next-theme'
+import type { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
 import { TamaguiProvider, useDebounceValue, useDidFinishSSR } from 'tamagui'
 
+import Head from 'next/head'
 import { LoadCherryBomb, LoadInter900, LoadMunro } from '../components/LoadFont'
 import config from '../tamagui.config'
 
 // import '../lib/wdyr'
 
 Error.stackTraceLimit = Infinity
-
-if (process.env.NODE_ENV === 'production') {
-  require('../public/tamagui.css')
-}
 
 // prevent next.js from prefetching stuff
 if (typeof navigator !== 'undefined') {
@@ -39,15 +32,22 @@ if (typeof navigator !== 'undefined') {
 
 export default function App(props: AppProps) {
   const [theme, setTheme] = useRootTheme()
-  const router = useRouter()
-  const themeSetting = useThemeSetting()!
+  // const router = useRouter()
+  // const themeSetting = useThemeSetting()!
 
-  useEffect(() => {
-    if (router.pathname === '/takeout' && theme !== 'dark') {
-      themeSetting.set('dark')
-      setTheme('dark')
-    }
-  }, [router.pathname, theme])
+  // to force takeout to be dark
+  // const isTakeout = router.pathname.startsWith('/takeout')
+  // useIsomorphicLayoutEffect(() => {
+  //   if (isTakeout && theme !== 'dark') {
+  //     const prev = theme
+  //     themeSetting.set('dark')
+  //     setTheme('dark')
+  //     return () => {
+  //       setTheme(prev)
+  //       themeSetting.set(prev)
+  //     }
+  //   }
+  // }, [isTakeout])
 
   const inner = useMemo(
     () => <AppContents {...props} theme={theme} setTheme={setTheme} />,
@@ -58,11 +58,11 @@ export default function App(props: AppProps) {
     <>
       <NextThemeProvider
         onChangeTheme={setTheme as any}
-        {...(router.pathname === '/takeout' && {
-          forcedTheme: 'dark',
-          enableSystem: false,
-          defaultTheme: 'dark',
-        })}
+        // {...(isTakeout && {
+        //   forcedTheme: 'dark',
+        //   enableSystem: false,
+        //   defaultTheme: 'dark',
+        // })}
       >
         {inner}
       </NextThemeProvider>
@@ -97,14 +97,14 @@ function AppContents(
 
   return (
     <>
-      <script
-        key="tamagui-animations-mount"
-        type="text/javascript"
-        dangerouslySetInnerHTML={{
-          // avoid flash of animated things on enter
-          __html: `document.documentElement.classList.add('t_unmounted')`,
-        }}
-      />
+      <Head>
+        <script
+          dangerouslySetInnerHTML={{
+            // avoid flash of animated things on enter
+            __html: `document.documentElement.classList.add('t_unmounted')`,
+          }}
+        />
+      </Head>
 
       {didHydrateDelayed && (
         <>

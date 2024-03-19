@@ -37,6 +37,9 @@ export declare const media: {
     gtXl: {
         minWidth: number;
     };
+    pointerFine: {
+        pointer: string;
+    };
 };
 export declare const mediaQueryDefaultActive: {
     xl: boolean;

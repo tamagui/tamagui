@@ -1,12 +1,10 @@
-import {
+import type {
   SizeTokens,
   SizeVariantSpreadFunction,
   StackProps,
   VariantSpreadExtras,
-  getVariableValue,
-  isAndroid,
-  isVariable,
 } from '@tamagui/core'
+import { getVariableValue, isAndroid, isVariable } from '@tamagui/core'
 
 export const getElevation: SizeVariantSpreadFunction<StackProps> = (size, extras) => {
   if (!size) return

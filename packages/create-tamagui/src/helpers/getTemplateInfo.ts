@@ -2,10 +2,17 @@ import prompts from 'prompts'
 
 import { templates } from '../templates'
 
+const validTemplates = templates.map(({ value }) => value).join(', ')
+
 export const getTemplateInfo = async (
   template?: string
 ): Promise<(typeof templates)[number]> => {
-  if (!isTemplateValid(template)) {
+  let res = getValidTemplate(template)
+  if (template && !res) {
+    console.warn(`template ${template} is not valid. valid options: ${validTemplates}`)
+    process.exit(1)
+  }
+  if (!res) {
     template = (
       await prompts({
         name: 'template',
@@ -15,13 +22,13 @@ export const getTemplateInfo = async (
       })
     ).template
   }
-  if (typeof template !== 'string' || !isTemplateValid(template)) {
-    console.warn(`template ${template} is not valid.`)
-    return await getTemplateInfo(template)
+  res = getValidTemplate(`${template}`)
+  if (!res) {
+    console.warn(`template ${template} is not valid. valid options: ${validTemplates}`)
+    process.exit(1)
   }
-
-  return templates.find((t) => t.value === template)!
+  return res
 }
 
-const isTemplateValid = (template?: string) =>
-  typeof template === 'string' && templates.some(({ value }) => value === template)
+const getValidTemplate = (template?: string) =>
+  typeof template === 'string' && templates.find(({ value }) => value === template)

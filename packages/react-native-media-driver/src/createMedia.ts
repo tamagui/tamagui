@@ -1,4 +1,5 @@
-import { MediaQueryObject, setupMatchMedia } from '@tamagui/web'
+import type { MediaQueryObject} from '@tamagui/web';
+import { setupMatchMedia } from '@tamagui/web'
 
 import { matchMedia } from './matchMedia'
 

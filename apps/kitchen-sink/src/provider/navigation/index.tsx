@@ -7,7 +7,7 @@ import { Linking, Platform } from 'react-native'
 
 import { ThemeContext } from '../../useKitchenSinkTheme'
 
-const PERSISTENCE_KEY = 'NAVIGATION_STATE_V4'
+const PERSISTENCE_KEY = 'NAVIGATION_STATE_V4_5'
 
 export function NavigationProvider({ children }: { children: React.ReactNode }) {
   const [isReady, setIsReady] = React.useState(false)

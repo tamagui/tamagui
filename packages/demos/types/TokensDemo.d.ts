@@ -1,3 +1,2 @@
-/// <reference types="react" />
-export declare function TokensDemo(): JSX.Element;
+export declare function TokensDemo(): import("react/jsx-runtime").JSX.Element;
 //# sourceMappingURL=TokensDemo.d.ts.map

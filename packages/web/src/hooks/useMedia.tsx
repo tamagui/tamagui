@@ -1,8 +1,7 @@
-import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { isServer, isWeb } from '@tamagui/constants'
 import { useRef, useSyncExternalStore } from 'react'
 
 import { getConfig } from '../config'
-import { createProxy } from '../helpers/createProxy'
 import { matchMedia } from '../helpers/matchMedia'
 import { pseudoDescriptors } from '../helpers/pseudoDescriptors'
 import type {
@@ -15,12 +14,12 @@ import type {
   TamaguiInternalConfig,
   UseMediaState,
 } from '../types'
-import { getDisableSSR, useDisableSSR } from './useDisableSSR'
+import { getDisableSSR } from './useDisableSSR'
 
 export let mediaState: MediaQueryState =
   // development only safeguard
   process.env.NODE_ENV === 'development'
-    ? createProxy(
+    ? new Proxy(
         {},
         {
           get(target, key) {
@@ -113,6 +112,8 @@ function unlisten() {
  */
 let setupVersion = -1
 export function setupMediaListeners() {
+  if (isWeb && isServer) return
+
   // avoid setting up more than once per config
   if (setupVersion === mediaVersion) return
   setupVersion = mediaVersion
@@ -143,14 +144,6 @@ export function setupMediaListeners() {
       updateCurrentState()
     }
   }
-}
-
-export function useMediaListeners(config: TamaguiInternalConfig) {
-  if (config.disableSSR) return
-
-  useIsomorphicLayoutEffect(() => {
-    setupMediaListeners()
-  }, [])
 }
 
 const listeners = new Set<any>()
@@ -197,7 +190,7 @@ function subscribe(subscriber: any) {
 export function useMedia(uid?: any, componentContext?: ComponentContextI): UseMediaState {
   const internal = useRef<UseMediaInternalState | undefined>()
   // performance boost to avoid using context twice
-  const disableSSR = componentContext ? getDisableSSR(componentContext) : useDisableSSR()
+  const disableSSR = getDisableSSR(componentContext)
   const initialState = (disableSSR || !isWeb ? mediaState : initState) || {}
 
   const state = useSyncExternalStore<MediaQueryState>(
@@ -256,32 +249,6 @@ export const getMediaImportanceIfMoreImportant = (
       ? getMediaKeyImportance(mediaKey)
       : defaultMediaImportance
   return !importancesUsed[key] || importance > importancesUsed[key] ? importance : null
-}
-
-export function mergeMediaByImportance(
-  onto: Record<string, any>,
-  mediaKey: string,
-  key: string,
-  value: any,
-  importancesUsed: Record<string, number>,
-  isSizeMedia: boolean,
-  importanceBump?: number
-) {
-  let importance = getMediaImportanceIfMoreImportant(
-    mediaKey,
-    key,
-    importancesUsed,
-    isSizeMedia
-  )
-  if (importanceBump) {
-    importance = (importance || 0) + importanceBump
-  }
-  if (importance === null) {
-    return false
-  }
-  importancesUsed[key] = importance
-  onto[key] = value
-  return true
 }
 
 function camelToHyphen(str: string) {

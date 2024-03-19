@@ -3,7 +3,7 @@ body, #root, #__next {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  min-width: 100vw;
+  min-width: calc(100vw - (100vw - 100%)); /* reserve space for scrollbar */
 }
 
 * {

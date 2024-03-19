@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'vitest'
 
 import { createFont } from '../core/src'
-import { GenericFont } from '../core/src/types'
+import type { GenericFont } from '../core/src'
 
 const font: GenericFont = {
   family: 'Inter',

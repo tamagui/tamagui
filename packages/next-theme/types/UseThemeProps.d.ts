@@ -1,4 +1,4 @@
-import { ValueObject } from './types';
+import type { ValueObject } from './types';
 export interface UseThemeProps {
     /** List of all available theme names */
     themes: string[];

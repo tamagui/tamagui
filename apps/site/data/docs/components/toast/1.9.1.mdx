@@ -39,6 +39,8 @@ This API offers a nice imperative interface, support for native toasts with a lo
 
 For native support on mobile, run `yarn add burnt` to add `burnt`, then rebuild your React Native app. React Native requires sub-dependencies with native dependencies always be hoisted to your apps package.json and Toast relies on the amazing [Burnt](https://github.com/nandorojo/burnt) library by Fernando Rojo to provide its native functionality.
 
+Note: `Burnt` [will not work](https://github.com/nandorojo/burnt?tab=readme-ov-file#expo) with Expo Go.
+
 #### Usage
 
 To display the toast natively, you should either pass an array of native platforms (`native: ["ios", "web"]`), a single platform or `true` for all platforms.

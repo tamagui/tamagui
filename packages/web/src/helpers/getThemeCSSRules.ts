@@ -1,7 +1,8 @@
 import { simpleHash } from '@tamagui/helpers'
 
 import { THEME_CLASSNAME_PREFIX } from '../constants/constants'
-import { Variable, variableToString } from '../createVariable'
+import type { Variable } from '../createVariable'
+import { variableToString } from '../createVariable'
 import type { CreateTamaguiProps, ThemeParsed } from '../types'
 import { tokensValueToVariable } from './registerCSSVariable'
 
@@ -10,12 +11,14 @@ export function getThemeCSSRules(props: {
   themeName: string
   theme: ThemeParsed
   names: string[]
+  hasDarkLight?: boolean
 }) {
   const cssRuleSets: string[] = []
 
   if (process.env.TAMAGUI_TARGET === 'native') {
     return cssRuleSets
-  } else if (
+  }
+  if (
     !process.env.TAMAGUI_DOES_SSR_CSS ||
     process.env.TAMAGUI_DOES_SSR_CSS === 'mutates-themes' ||
     process.env.TAMAGUI_DOES_SSR_CSS === 'false'
@@ -24,7 +27,9 @@ export function getThemeCSSRules(props: {
 
     // special case for SSR
     const hasDarkLight =
-      config.themes && ('light' in config.themes || 'dark' in config.themes)
+      props.hasDarkLight ??
+      (config.themes && ('light' in config.themes || 'dark' in config.themes))
+
     const CNP = `.${THEME_CLASSNAME_PREFIX}`
     let vars = ''
 
@@ -46,7 +51,7 @@ export function getThemeCSSRules(props: {
     const isDarkBase = themeName === 'dark'
     const isLightBase = themeName === 'light'
     const baseSelectors = names.map((name) => `${CNP}${name}`)
-    const selectorsSet = new Set(baseSelectors)
+    const selectorsSet = new Set(isDarkBase || isLightBase ? baseSelectors : [])
 
     // since we dont specify dark/light in classnames we have to do an awkward specificity war
     // use config.maxDarkLightNesting to determine how deep you can nest until it breaks
@@ -60,7 +65,7 @@ export function getThemeCSSRules(props: {
         if (!(isDark || isLight)) {
           // neither light nor dark subtheme, just generate one selector with :root:root which
           // will override all :root light/dark selectors generated below
-          selectorsSet.add(`:root:root ${CNP}${subName}`)
+          selectorsSet.add(`${CNP}${subName}`)
           continue
         }
 
@@ -94,20 +99,14 @@ export function getThemeCSSRules(props: {
 
           // for light/dark/light:
           selectorsSet.add(`${parentSelectors.join(' ')} ${nextChildSelector}`.trim())
-          selectorsSet.add(
-            `${parentSelectors.join(' ')} ${nextChildSelector}.is_inversed`.trim()
-          )
+          // selectorsSet.add(
+          //   `${parentSelectors.join(' ')} ${nextChildSelector}.is_inversed`.trim()
+          // )
         }
       }
     }
 
     const selectors = [...selectorsSet].sort((a, b) => a.localeCompare(b))
-
-    // let specificity = 1 //themeName.split('_').length
-
-    // if (themeName.includes('accent_Button')) {
-    //   specificity = 2
-    // }
 
     // only do our :root attach if it's not light/dark - not support sub themes on root saves a lot of effort/size
     // this isBaseTheme logic could probably be done more efficiently above
@@ -153,9 +152,9 @@ export function getThemeCSSRules(props: {
     }
 
     if (config.selectionStyles) {
-      const selectionSelectors = baseSelectors.map((s) => `${s} ::selection`).join(', ')
       const rules = config.selectionStyles(theme as any)
       if (rules) {
+        const selectionSelectors = baseSelectors.map((s) => `${s} ::selection`).join(', ')
         const styles = Object.entries(rules)
           .flatMap(([k, v]) =>
             v
@@ -163,8 +162,10 @@ export function getThemeCSSRules(props: {
               : []
           )
           .join(';')
-        const css = `${selectionSelectors} {${styles}}`
-        cssRuleSets.push(css)
+        if (styles) {
+          const css = `${selectionSelectors}{${styles}}`
+          cssRuleSets.push(css)
+        }
       }
     }
   }

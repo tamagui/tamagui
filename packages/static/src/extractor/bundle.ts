@@ -3,9 +3,42 @@ import { basename, dirname, join } from 'path'
 import esbuild from 'esbuild'
 import { pathExists, stat, writeFile } from 'fs-extra'
 
-import { TamaguiPlatform } from '../types'
+import type { TamaguiPlatform } from '../types'
 import { esbuildAliasPlugin } from './esbuildAliasPlugin'
 import { resolveWebOrNativeSpecificEntry } from './loadTamagui'
+
+export const esbuildLoaderConfig = {
+  '.js': 'jsx',
+  '.png': 'dataurl',
+  '.jpg': 'dataurl',
+  '.jpeg': 'dataurl',
+  '.svg': 'dataurl',
+  '.gif': 'dataurl',
+  '.webp': 'dataurl',
+  '.woff2': 'dataurl',
+  '.woff': 'dataurl',
+  '.eot': 'dataurl',
+  '.otf': 'dataurl',
+  '.ttf': 'dataurl',
+  '.mp4': 'file',
+  '.mpeg4': 'file',
+  '.mov': 'file',
+  '.avif': 'file',
+  '.wmv': 'file',
+  '.webm': 'file',
+  '.wav': 'file',
+  '.aac': 'file',
+  '.ogg': 'file',
+  '.flac': 'file',
+} as const
+
+const dataExtensions = Object.keys(esbuildLoaderConfig)
+  .filter(
+    (k) => esbuildLoaderConfig[k] === 'file' || esbuildLoaderConfig[k] === 'dataurl'
+  )
+  .map((k) => k.slice(1))
+
+export const esbuildIgnoreFilesRegex = new RegExp(`\.(${dataExtensions.join('|')})$`, 'i')
 
 /**
  * For internal loading of new files
@@ -25,7 +58,6 @@ function getESBuildConfig(
   if (process.env.DEBUG?.startsWith('tamagui')) {
     console.info(`Building`, entryPoints)
   }
-  const tsconfig = join(__dirname, '..', '..', '..', 'tamagui.tsconfig.json')
 
   const resolvedEntryPoints = !resolvePlatformSpecificEntries
     ? entryPoints
@@ -50,21 +82,12 @@ function getESBuildConfig(
       '.js',
     ],
     platform: 'node',
-    tsconfig,
-    loader: {
-      '.js': 'jsx',
-      '.png': 'dataurl',
-      '.jpg': 'dataurl',
-      '.jpeg': 'dataurl',
-      '.svg': 'dataurl',
-      '.gif': 'dataurl',
-      '.webp': 'dataurl',
-      '.woff2': 'dataurl',
-      '.woff': 'dataurl',
-      '.eot': 'dataurl',
-      '.otf': 'dataurl',
-      '.ttf': 'dataurl',
+    tsconfigRaw: {
+      compilerOptions: {
+        jsx: 'react-jsx',
+      },
     },
+    loader: esbuildLoaderConfig,
     logLevel: 'warning',
     plugins: [
       {
@@ -92,6 +115,13 @@ function getESBuildConfig(
           build.onResolve({ filter: /^(react-native|react-native\/.*)$/ }, (args) => {
             return {
               path: 'react-native-web-lite',
+              external: true,
+            }
+          })
+
+          build.onResolve({ filter: /react-native-reanimated/ }, (args) => {
+            return {
+              path: 'react-native-reanimated',
               external: true,
             }
           })
@@ -134,9 +164,8 @@ async function asyncLock(props: Props) {
     while (tries--) {
       if (await pathExists(props.outfile)) {
         return
-      } else {
-        await new Promise((res) => setTimeout(res, 50))
       }
+      await new Promise((res) => setTimeout(res, 50))
     }
   }
   void writeFile(lockFile, '')

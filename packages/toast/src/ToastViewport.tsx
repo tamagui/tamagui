@@ -1,19 +1,17 @@
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
-import { GetProps, TamaguiElement, styled } from '@tamagui/core'
+import type { GetProps, TamaguiElement } from '@tamagui/core'
+import { styled } from '@tamagui/core'
 import { PortalHost } from '@tamagui/portal'
 import { YStack } from '@tamagui/stacks'
 import { VisuallyHidden } from '@tamagui/visually-hidden'
 import * as React from 'react'
 
 import { TOAST_CONTEXT } from './constants'
-import {
-  Collection,
-  ScopedProps,
-  useCollection,
-  useToastProviderContext,
-} from './ToastProvider'
+import { ToastPortal } from './ToastPortal'
+import type { ScopedProps } from './ToastProvider'
+import { Collection, useCollection, useToastProviderContext } from './ToastProvider'
 
 const VIEWPORT_NAME = 'ToastViewport'
 const VIEWPORT_DEFAULT_HOTKEY = ['F8']
@@ -83,234 +81,255 @@ type ToastViewportProps = ToastViewportFrameProps & {
    * Pass this when you want to have multiple/duplicated toasts.
    */
   multipleToasts?: boolean
+  /**
+   * When true, uses a portal to render at the very top of the root TamaguiProvider.
+   */
+  portalToRoot?: boolean
 }
 
-const ToastViewport = React.forwardRef<HTMLDivElement, ScopedProps<ToastViewportProps>>(
-  (props: ScopedProps<ToastViewportProps>, forwardedRef) => {
-    const {
-      __scopeToast,
-      hotkey = VIEWPORT_DEFAULT_HOTKEY,
-      label = 'Notifications ({hotkey})',
-      name = 'default',
-      multipleToasts,
-      ...viewportProps
-    } = props
-    const context = useToastProviderContext(__scopeToast)
-    const getItems = useCollection(__scopeToast || TOAST_CONTEXT)
-    const headFocusProxyRef = React.useRef<FocusProxyElement>(null)
-    const tailFocusProxyRef = React.useRef<FocusProxyElement>(null)
-    const wrapperRef = React.useRef<HTMLDivElement>(null)
-    const ref = React.useRef<HTMLDivElement>(null)
-    const onViewportChange = React.useCallback(
-      (el: TamaguiElement) => {
-        if (context.viewports[name] !== el) context.onViewportChange(name, el)
-      },
-      [name, context.viewports]
-    )
-    const composedRefs = useComposedRefs(forwardedRef, ref, onViewportChange)
-    const hotkeyLabel = hotkey.join('+').replace(/Key/g, '').replace(/Digit/g, '')
-    const hasToasts = context.toastCount > 0
+const ToastViewport = React.memo(
+  React.forwardRef<HTMLDivElement, ScopedProps<ToastViewportProps>>(
+    (props: ScopedProps<ToastViewportProps>, forwardedRef) => {
+      const {
+        __scopeToast,
+        hotkey = VIEWPORT_DEFAULT_HOTKEY,
+        label = 'Notifications ({hotkey})',
+        name = 'default',
+        multipleToasts,
+        zIndex,
+        portalToRoot,
+        ...viewportProps
+      } = props
+      const context = useToastProviderContext(__scopeToast)
+      const getItems = useCollection(__scopeToast || TOAST_CONTEXT)
+      const headFocusProxyRef = React.useRef<FocusProxyElement>(null)
+      const tailFocusProxyRef = React.useRef<FocusProxyElement>(null)
+      const wrapperRef = React.useRef<HTMLDivElement>(null)
+      const ref = React.useRef<HTMLDivElement>(null)
+      const onViewportChange = React.useCallback(
+        (el: TamaguiElement) => {
+          if (context.viewports[name] !== el) context.onViewportChange(name, el)
+        },
+        [name, context.viewports]
+      )
+      const composedRefs = useComposedRefs(forwardedRef, ref, onViewportChange)
+      const hotkeyLabel = hotkey.join('+').replace(/Key/g, '').replace(/Digit/g, '')
+      const hasToasts = context.toastCount > 0
 
-    React.useEffect(() => {
-      if (!isWeb) return
-      if (context.toastCount === 0) return
-      const handleKeyDown = (event: KeyboardEvent) => {
-        // we use `event.code` as it is consistent regardless of meta keys that were pressed.
-        // for example, `event.key` for `Control+Alt+t` is `†` and `t !== †`
-        const isHotkeyPressed = hotkey.every(
-          (key) => (event as any)[key] || event.code === key
-        )
-        if (isHotkeyPressed) ref.current?.focus()
-      }
-      document.addEventListener('keydown', handleKeyDown)
-      return () => {
-        document.removeEventListener('keydown', handleKeyDown)
-      }
-    }, [hotkey, context.toastCount])
-
-    React.useEffect(() => {
-      if (!isWeb) return
-      if (context.toastCount === 0) return
-      const wrapper = wrapperRef.current
-      const viewport = ref.current
-      if (hasToasts && wrapper && viewport) {
-        const handlePause = () => {
-          if (!context.isClosePausedRef.current) {
-            const pauseEvent = new CustomEvent(VIEWPORT_PAUSE)
-            viewport.dispatchEvent(pauseEvent)
-            context.isClosePausedRef.current = true
-          }
-        }
-
-        const handleResume = () => {
-          if (context.isClosePausedRef.current) {
-            const resumeEvent = new CustomEvent(VIEWPORT_RESUME)
-            viewport.dispatchEvent(resumeEvent)
-            context.isClosePausedRef.current = false
-          }
-        }
-
-        const handleFocusOutResume = (event: FocusEvent) => {
-          const isFocusMovingOutside = !wrapper.contains(
-            event.relatedTarget as HTMLElement
-          )
-          if (isFocusMovingOutside) handleResume()
-        }
-
-        const handlePointerLeaveResume = () => {
-          const isFocusInside = wrapper.contains(document.activeElement)
-          if (!isFocusInside) handleResume()
-        }
-
-        // Toasts are not in the viewport React tree so we need to bind DOM events
-        wrapper.addEventListener('focusin', handlePause)
-        wrapper.addEventListener('focusout', handleFocusOutResume)
-        wrapper.addEventListener('pointermove', handlePause)
-        wrapper.addEventListener('pointerleave', handlePointerLeaveResume)
-        window.addEventListener('blur', handlePause)
-        window.addEventListener('focus', handleResume)
-        return () => {
-          wrapper.removeEventListener('focusin', handlePause)
-          wrapper.removeEventListener('focusout', handleFocusOutResume)
-          wrapper.removeEventListener('pointermove', handlePause)
-          wrapper.removeEventListener('pointerleave', handlePointerLeaveResume)
-          window.removeEventListener('blur', handlePause)
-          window.removeEventListener('focus', handleResume)
-        }
-      }
-    }, [hasToasts, context.isClosePausedRef, context.toastCount])
-
-    const getSortedTabbableCandidates = React.useCallback(
-      ({ tabbingDirection }: { tabbingDirection: 'forwards' | 'backwards' }) => {
-        const toastItems = getItems()
-        const tabbableCandidates = toastItems.map((toastItem) => {
-          const toastNode = toastItem.ref.current!
-          const toastTabbableCandidates = [toastNode, ...getTabbableCandidates(toastNode)]
-          return tabbingDirection === 'forwards'
-            ? toastTabbableCandidates
-            : toastTabbableCandidates.reverse()
-        })
-        return (
-          tabbingDirection === 'forwards'
-            ? tabbableCandidates.reverse()
-            : tabbableCandidates
-        ).flat()
-      },
-      [getItems]
-    )
-
-    React.useEffect(() => {
-      if (!isWeb) return
-      if (context.toastCount === 0) return
-
-      const viewport = ref.current
-      // We programmatically manage tabbing as we are unable to influence
-      // the source order with portals, this allows us to reverse the
-      // tab order so that it runs from most recent toast to least
-      if (viewport) {
+      React.useEffect(() => {
+        if (!isWeb) return
+        if (context.toastCount === 0) return
         const handleKeyDown = (event: KeyboardEvent) => {
-          const isMetaKey = event.altKey || event.ctrlKey || event.metaKey
-          const isTabKey = event.key === 'Tab' && !isMetaKey
+          // we use `event.code` as it is consistent regardless of meta keys that were pressed.
+          // for example, `event.key` for `Control+Alt+t` is `†` and `t !== †`
+          const isHotkeyPressed = hotkey.every(
+            (key) => (event as any)[key] || event.code === key
+          )
+          if (isHotkeyPressed) ref.current?.focus()
+        }
+        document.addEventListener('keydown', handleKeyDown)
+        return () => {
+          document.removeEventListener('keydown', handleKeyDown)
+        }
+      }, [hotkey, context.toastCount])
 
-          if (isTabKey) {
-            const focusedElement = document.activeElement
-            const isTabbingBackwards = event.shiftKey
-            const targetIsViewport = event.target === viewport
-
-            // If we're back tabbing after jumping to the viewport then we simply
-            // proxy focus out to the preceding document
-            if (targetIsViewport && isTabbingBackwards) {
-              // @ts-ignore ali TODO type
-              headFocusProxyRef.current?.focus()
-              return
-            }
-
-            const tabbingDirection = isTabbingBackwards ? 'backwards' : 'forwards'
-            const sortedCandidates = getSortedTabbableCandidates({ tabbingDirection })
-            const index = sortedCandidates.findIndex(
-              (candidate) => candidate === focusedElement
-            )
-            if (focusFirst(sortedCandidates.slice(index + 1))) {
-              event.preventDefault()
-            } else {
-              // If we can't focus that means we're at the edges so we
-              // proxy to the corresponding exit point and let the browser handle
-              // tab/shift+tab keypress and implicitly pass focus to the next valid element in the document
-              isTabbingBackwards
-                ? // @ts-ignore ali TODO type
-                  headFocusProxyRef.current?.focus()
-                : // @ts-ignore ali TODO type
-                  tailFocusProxyRef.current?.focus()
+      React.useEffect(() => {
+        if (!isWeb) return
+        if (context.toastCount === 0) return
+        const wrapper = wrapperRef.current
+        const viewport = ref.current
+        if (hasToasts && wrapper && viewport) {
+          const handlePause = () => {
+            if (!context.isClosePausedRef.current) {
+              const pauseEvent = new CustomEvent(VIEWPORT_PAUSE)
+              viewport.dispatchEvent(pauseEvent)
+              context.isClosePausedRef.current = true
             }
           }
+
+          const handleResume = () => {
+            if (context.isClosePausedRef.current) {
+              const resumeEvent = new CustomEvent(VIEWPORT_RESUME)
+              viewport.dispatchEvent(resumeEvent)
+              context.isClosePausedRef.current = false
+            }
+          }
+
+          const handleFocusOutResume = (event: FocusEvent) => {
+            const isFocusMovingOutside = !wrapper.contains(
+              event.relatedTarget as HTMLElement
+            )
+            if (isFocusMovingOutside) handleResume()
+          }
+
+          const handlePointerLeaveResume = () => {
+            const isFocusInside = wrapper.contains(document.activeElement)
+            if (!isFocusInside) handleResume()
+          }
+
+          // Toasts are not in the viewport React tree so we need to bind DOM events
+          wrapper.addEventListener('focusin', handlePause)
+          wrapper.addEventListener('focusout', handleFocusOutResume)
+          wrapper.addEventListener('pointermove', handlePause)
+          wrapper.addEventListener('pointerleave', handlePointerLeaveResume)
+          window.addEventListener('blur', handlePause)
+          window.addEventListener('focus', handleResume)
+          return () => {
+            wrapper.removeEventListener('focusin', handlePause)
+            wrapper.removeEventListener('focusout', handleFocusOutResume)
+            wrapper.removeEventListener('pointermove', handlePause)
+            wrapper.removeEventListener('pointerleave', handlePointerLeaveResume)
+            window.removeEventListener('blur', handlePause)
+            window.removeEventListener('focus', handleResume)
+          }
         }
+      }, [hasToasts, context.isClosePausedRef, context.toastCount])
 
-        // Toasts are not in the viewport React tree so we need to bind DOM events
-        viewport.addEventListener('keydown', handleKeyDown)
-        return () => viewport.removeEventListener('keydown', handleKeyDown)
-      }
-    }, [getItems, getSortedTabbableCandidates, context.toastCount])
+      const getSortedTabbableCandidates = React.useCallback(
+        ({ tabbingDirection }: { tabbingDirection: 'forwards' | 'backwards' }) => {
+          const toastItems = getItems()
+          const tabbableCandidates = toastItems.map((toastItem) => {
+            const toastNode = toastItem.ref.current!
+            const toastTabbableCandidates = [
+              toastNode,
+              ...getTabbableCandidates(toastNode),
+            ]
+            return tabbingDirection === 'forwards'
+              ? toastTabbableCandidates
+              : toastTabbableCandidates.reverse()
+          })
+          return (
+            tabbingDirection === 'forwards'
+              ? tabbableCandidates.reverse()
+              : tabbableCandidates
+          ).flat()
+        },
+        [getItems]
+      )
 
-    return (
-      <ToastViewportWrapperFrame
-        ref={wrapperRef}
-        role="region"
-        aria-label={label.replace('{hotkey}', hotkeyLabel)}
-        // // Ensure virtual cursor from landmarks menus triggers focus/blur for pause/resume
-        tabIndex={-1}
-        // // incase list has size when empty (e.g. padding), we remove pointer events so
-        // // it doesn't prevent interactions with page elements that it overlays
-        // pointerEvents={hasToasts ? undefined : 'none'}
-      >
-        {hasToasts && (
-          <FocusProxy
-            __scopeToast={__scopeToast}
-            viewportName={name}
-            ref={headFocusProxyRef}
-            onFocusFromOutsideViewport={() => {
-              const tabbableCandidates = getSortedTabbableCandidates({
-                tabbingDirection: 'forwards',
-              })
-              focusFirst(tabbableCandidates)
-            }}
-          />
-        )}
-        {/**
-         * tabindex on the the list so that it can be focused when items are removed. we focus
-         * the list instead of the viewport so it announces number of items remaining.
-         */}
-        <Collection.Slot __scopeCollection={__scopeToast || TOAST_CONTEXT}>
-          <ToastViewportFrame
-            focusable={context.toastCount > 0}
-            ref={composedRefs}
-            {...viewportProps}
-          >
-            <PortalHost
-              render={(children) => (
-                <AnimatePresence exitBeforeEnter={!multipleToasts}>
-                  {children}
-                </AnimatePresence>
-              )}
-              name={name ?? 'default'}
+      React.useEffect(() => {
+        if (!isWeb) return
+        if (context.toastCount === 0) return
+
+        const viewport = ref.current
+        // We programmatically manage tabbing as we are unable to influence
+        // the source order with portals, this allows us to reverse the
+        // tab order so that it runs from most recent toast to least
+        if (viewport) {
+          const handleKeyDown = (event: KeyboardEvent) => {
+            const isMetaKey = event.altKey || event.ctrlKey || event.metaKey
+            const isTabKey = event.key === 'Tab' && !isMetaKey
+
+            if (isTabKey) {
+              const focusedElement = document.activeElement
+              const isTabbingBackwards = event.shiftKey
+              const targetIsViewport = event.target === viewport
+
+              // If we're back tabbing after jumping to the viewport then we simply
+              // proxy focus out to the preceding document
+              if (targetIsViewport && isTabbingBackwards) {
+                // @ts-ignore ali TODO type
+                headFocusProxyRef.current?.focus()
+                return
+              }
+
+              const tabbingDirection = isTabbingBackwards ? 'backwards' : 'forwards'
+              const sortedCandidates = getSortedTabbableCandidates({ tabbingDirection })
+              const index = sortedCandidates.findIndex(
+                (candidate) => candidate === focusedElement
+              )
+              if (focusFirst(sortedCandidates.slice(index + 1))) {
+                event.preventDefault()
+              } else {
+                // If we can't focus that means we're at the edges so we
+                // proxy to the corresponding exit point and let the browser handle
+                // tab/shift+tab keypress and implicitly pass focus to the next valid element in the document
+                isTabbingBackwards
+                  ? // @ts-ignore ali TODO type
+                    headFocusProxyRef.current?.focus()
+                  : // @ts-ignore ali TODO type
+                    tailFocusProxyRef.current?.focus()
+              }
+            }
+          }
+
+          // Toasts are not in the viewport React tree so we need to bind DOM events
+          viewport.addEventListener('keydown', handleKeyDown)
+          return () => viewport.removeEventListener('keydown', handleKeyDown)
+        }
+      }, [getItems, getSortedTabbableCandidates, context.toastCount])
+
+      const contents = (
+        <ToastViewportWrapperFrame
+          ref={wrapperRef}
+          role="region"
+          aria-label={label.replace('{hotkey}', hotkeyLabel)}
+          // // Ensure virtual cursor from landmarks menus triggers focus/blur for pause/resume
+          tabIndex={-1}
+          // // incase list has size when empty (e.g. padding), we remove pointer events so
+          // // it doesn't prevent interactions with page elements that it overlays
+          // pointerEvents={hasToasts ? undefined : 'none'}
+        >
+          {hasToasts && (
+            <FocusProxy
+              __scopeToast={__scopeToast}
+              viewportName={name}
+              ref={headFocusProxyRef}
+              onFocusFromOutsideViewport={() => {
+                const tabbableCandidates = getSortedTabbableCandidates({
+                  tabbingDirection: 'forwards',
+                })
+                focusFirst(tabbableCandidates)
+              }}
             />
-          </ToastViewportFrame>
-        </Collection.Slot>
-        {hasToasts && (
-          <FocusProxy
-            __scopeToast={__scopeToast}
-            viewportName={name}
-            ref={tailFocusProxyRef}
-            onFocusFromOutsideViewport={() => {
-              const tabbableCandidates = getSortedTabbableCandidates({
-                tabbingDirection: 'backwards',
-              })
-              focusFirst(tabbableCandidates)
-            }}
-          />
-        )}
-      </ToastViewportWrapperFrame>
-    )
-  }
+          )}
+          {/**
+           * tabindex on the the list so that it can be focused when items are removed. we focus
+           * the list instead of the viewport so it announces number of items remaining.
+           */}
+          <Collection.Slot __scopeCollection={__scopeToast || TOAST_CONTEXT}>
+            <ToastViewportFrame
+              focusable={context.toastCount > 0}
+              ref={composedRefs}
+              {...viewportProps}
+            >
+              <PortalHost
+                render={(children) => (
+                  <AnimatePresence exitBeforeEnter={!multipleToasts}>
+                    {children}
+                  </AnimatePresence>
+                )}
+                name={name ?? 'default'}
+              />
+            </ToastViewportFrame>
+          </Collection.Slot>
+          {hasToasts && (
+            <FocusProxy
+              __scopeToast={__scopeToast}
+              viewportName={name}
+              ref={tailFocusProxyRef}
+              onFocusFromOutsideViewport={() => {
+                const tabbableCandidates = getSortedTabbableCandidates({
+                  tabbingDirection: 'backwards',
+                })
+                focusFirst(tabbableCandidates)
+              }}
+            />
+          )}
+        </ToastViewportWrapperFrame>
+      )
+
+      if (portalToRoot) {
+        return (
+          <ToastPortal {...(typeof zIndex === 'number' ? { zIndex } : {})}>
+            {contents}
+          </ToastPortal>
+        )
+      }
+
+      return contents
+    }
+  )
 )
 
 ToastViewport.displayName = VIEWPORT_NAME

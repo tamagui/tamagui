@@ -1,5 +1,4 @@
 import { X } from '@tamagui/lucide-icons'
-import { useState } from 'react'
 import {
   Adapt,
   Button,
@@ -21,15 +20,8 @@ export function DialogDemo() {
 }
 
 function DialogInstance() {
-  const [open, setOpen] = useState(false)
-
   return (
-    <Dialog
-      modal
-      onOpenChange={(open) => {
-        setOpen(open)
-      }}
-    >
+    <Dialog modal>
       <Dialog.Trigger asChild>
         <Button>Show Dialog</Button>
       </Dialog.Trigger>
@@ -50,7 +42,7 @@ function DialogInstance() {
       <Dialog.Portal>
         <Dialog.Overlay
           key="overlay"
-          animation="quick"
+          animation="slow"
           opacity={0.5}
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
@@ -62,7 +54,7 @@ function DialogInstance() {
           key="content"
           animateOnly={['transform', 'opacity']}
           animation={[
-            'quick',
+            'quicker',
             {
               opacity: {
                 overshootClamping: true,
@@ -96,7 +88,7 @@ function DialogInstance() {
             <DialogInstance />
 
             <Dialog.Close displayWhenAdapted asChild>
-              <Button theme="alt1" aria-label="Close">
+              <Button theme="active" aria-label="Close">
                 Save changes
               </Button>
             </Dialog.Close>

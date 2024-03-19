@@ -1,12 +1,13 @@
 {
   "name": "@tamagui/static-tests",
-  "version": "1.79.13",
+  "version": "1.91.5",
   "module": "dist/esm/index.js",
   "scripts": {
     "build": "true",
     "pretest": "RUN_PRETEST=1 node -r esbuild-register ./tests/lib/preTest.ts",
     "test-output": "node -r esbuild-register ./test-output.tsx",
     "test": "yarn test:native && yarn test:web && yarn test:webpack",
+    "test:update": "yarn test:babel:native --update && yarn test:babel:web --update && yarn test:styled:web --update && yarn test:flatten:native --update && yarn test:webpack --update",
     "test:run": "INCLUDE_CSS_COLOR_NAMES=1 vitest --config ../vite-plugin-internal/src/vite.config.ts --run",
     "test:run:web": "DISABLE_NATIVE_TEST=1 yarn test:run",
     "test:webpack": "yarn pretest && yarn test:run tests/webpack.test.tsx --reporter=verbose --singleThread",
@@ -27,8 +28,8 @@
   "devDependencies": {
     "@babel/plugin-syntax-typescript": "^7.23.3",
     "@babel/types": "^7.23.3",
-    "@tamagui/sandbox-ui": "1.79.13",
-    "@tamagui/test-design-system": "1.79.13",
+    "@tamagui/sandbox-ui": "1.91.5",
+    "@tamagui/test-design-system": "1.91.5",
     "@testing-library/react": "^14.0.0",
     "@types/babel__generator": "^7.6.4",
     "@types/babel__traverse": "^7.18.2",
@@ -42,10 +43,10 @@
     "null-loader": "^4.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-native-web": "^0.19.9",
+    "react-native-web": "^0.19.10",
     "react-test-renderer": "^18.2.0",
     "style-loader": "^3.3.3",
-    "typescript": "^5.2.2",
+    "typescript": "^5.3.3",
     "vitest": "^0.34.3",
     "webpack": "^5.88.2"
   },

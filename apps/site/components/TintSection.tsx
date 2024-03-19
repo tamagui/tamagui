@@ -1,13 +1,15 @@
 import { useOnIntersecting } from '@tamagui/demos'
-import { getTints } from '@tamagui/logo'
-import { useTint } from '@tamagui/logo'
+import { getTints, useTint } from '@tamagui/logo'
 import { useEffect, useMemo, useRef } from 'react'
-import { GetProps, XStack, YStack, styled } from 'tamagui'
+import type { LayoutRectangle } from 'react-native'
+import type { GetProps } from 'tamagui'
+import { XStack, YStack, styled } from 'tamagui'
 
 type Props = SectionProps & { themed?: boolean; index: number }
 
-// not use its fixed size
-const numIntersectingAtSection: number[] = getTints().tints.map((_) => 0)
+const numIntersectingAtSection = getTints().tints.map((_) => 0)
+
+export const tintSectionDimensions: Record<number, LayoutRectangle> = {}
 
 export const TintSection = ({ children, index, themed, zIndex, ...props }: Props) => {
   const top = useRef<HTMLElement>(null)
@@ -19,12 +21,11 @@ export const TintSection = ({ children, index, themed, zIndex, ...props }: Props
     useMemo(() => [top, mid, bottom], []),
     (entries) => {
       const count = entries.reduce((a, b) => a + (b?.isIntersecting ? 1 : 0), 0)
+      numIntersectingAtSection[index] = count
 
-      if (count < 2) {
+      if (count < 1) {
         return
       }
-
-      numIntersectingAtSection[index] = count
 
       let topIndex = -1
       let topStr = -1
@@ -43,12 +44,16 @@ export const TintSection = ({ children, index, themed, zIndex, ...props }: Props
       }
     },
     {
-      threshold: 0.1,
+      threshold: 0.2,
     }
   )
 
   return (
-    <YStack zIndex={zIndex} pos="relative">
+    <YStack
+      onLayout={(e) => (tintSectionDimensions[index] = e.nativeEvent.layout)}
+      zIndex={zIndex}
+      pos="relative"
+    >
       {useMemo(() => {
         return (
           <>
@@ -125,7 +130,7 @@ export const SectionTinted = ({
         maw: 1400,
         br: '$6',
         bw: 1,
-        boc: `$${tint}4`,
+        bc: `$${tint}4`,
         als: 'center',
         width: '100%',
       })}
@@ -136,11 +141,11 @@ export const SectionTinted = ({
         className="all ease-in ms1000"
         zi={-1}
         o={0.4}
-        bc={gradient ? (`$${tint}2` as any) : null}
+        bg={gradient ? (`$${tint}2` as any) : null}
         {...(!bubble && {
           btw: noBorderTop ? 0 : 1,
           bbw: 1,
-          boc: `$${tint}3` as any,
+          bc: `$${tint}3` as any,
         })}
       />
       {childrenMemo}

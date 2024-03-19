@@ -5,6 +5,7 @@ export const FlatBubbleCard = styled(YStack, {
   borderRadius: '$4',
   borderColor: '$borderColor',
   borderWidth: 1,
+  alignSelf: 'stretch',
   flex: 1,
 
   variants: {

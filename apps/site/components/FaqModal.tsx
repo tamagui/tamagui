@@ -73,6 +73,35 @@ export const FaqModal = () => {
               </H1>
               <XStack mt="$4" flexWrap="wrap" gap="$6" p="$4">
                 <YStack gap="$4" f={1} fb={0} minWidth={300}>
+                  <H5>How difficult is Takeout to develop on?</H5>
+
+                  <Paragraph>
+                    We encourage our customers to try the free starter repo with "npm
+                    create tamagui" to get a feel for how Takeout works at the base.
+                    Takeout is based on that code, just adding many features and
+                    refinements.
+                  </Paragraph>
+
+                  <Paragraph>
+                    Takeout is not designed for a beginner to React or React Native,
+                    instead it attempts to delivery a very high quality stack at the
+                    expense of some simplicity. If you try the free starter and find it to
+                    be comfortable, then Takeout will be an easy transition. If not, then
+                    Takeout may not be a good choice for you.
+                  </Paragraph>
+                </YStack>
+
+                <YStack gap="$4" f={1} fb={0} minWidth={300}>
+                  <H5>What development platforms do you support?</H5>
+
+                  <Paragraph>
+                    We support MacOS versions within the last three years, or for Android
+                    and Web only, the most recent version of Windows. Linux should work,
+                    but is not officially supported.
+                  </Paragraph>
+                </YStack>
+
+                <YStack gap="$4" f={1} fb={0} minWidth={300}>
                   <H5>Can I still use the starter after my subscription has ended?</H5>
                   <Paragraph>
                     Of course! the subscription is only for the bot updates. If you cancel

@@ -60,11 +60,9 @@ Here's an example:
 
 ```tsx
 import { Stack, styled } from '@tamagui/core'
-import { createSwitch, SwitchContext } from '@tamagui/switch'
+import { createSwitch } from '@tamagui/switch'
 
 const Frame = styled(Stack, {
-  context: SwitchContext,
-
   variants: {
     checked: {
       true: {
@@ -78,8 +76,6 @@ const Frame = styled(Stack, {
 })
 
 const Thumb = styled(Stack, {
-  context: SwitchContext,
-
   variants: {
     checked: {
       true: {

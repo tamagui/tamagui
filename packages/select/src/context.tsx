@@ -1,7 +1,11 @@
 import { createContextScope } from '@tamagui/create-context'
 
 import { SELECT_NAME } from './constants'
-import { ScopedProps, SelectContextValue, SelectItemParentContextValue } from './types'
+import type {
+  ScopedProps,
+  SelectContextValue,
+  SelectItemParentContextValue,
+} from './types'
 
 export const [createSelectContext, createSelectScope] = createContextScope(SELECT_NAME)
 

@@ -1,3 +1,2 @@
-/// <reference types="react" />
-export declare function AccordionDemo(): JSX.Element;
+export declare function AccordionDemo(): import("react/jsx-runtime").JSX.Element;
 //# sourceMappingURL=AccordionDemo.d.ts.map

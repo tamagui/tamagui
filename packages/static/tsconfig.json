@@ -19,5 +19,10 @@
     {
       "path": "../tamagui"
     }
+  ],
+  "exclude": [
+    "types",
+    "dist",
+    "**/__tests__"
   ]
 }

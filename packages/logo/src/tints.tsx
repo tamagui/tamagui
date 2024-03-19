@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { ThemeName } from 'tamagui'
+import type { ThemeName } from 'tamagui'
 
 type ChangeHandler = (next: TintFamily) => void
 
@@ -10,6 +10,8 @@ const familiesValues = {
   xmas: ['red', 'green', 'red', 'green', 'red', 'green', 'red'],
   easter: ['yellow', 'pink', 'yellow', 'pink', 'yellow', 'pink', 'yellow'],
   halloween: ['orange', 'gray', 'orange', 'gray', 'orange', 'gray', 'orange'],
+  valentine: ['pink', 'red', 'pink', 'red', 'pink', 'red', 'pink'],
+  lunar: ['yellow', 'red', 'red', 'red', 'red', 'red', 'yellow'],
 }
 
 type Family = keyof typeof familiesValues
@@ -26,24 +28,27 @@ type TintFamily = keyof typeof families
 
 let fam: TintFamily = DEFAULT_FAMILY
 
-const seasonalTheme = (() => {
-  const month = new Date().getMonth()
-  const day = new Date().getDate()
+// disabling - server time diff from client :/
+// const seasonalTheme = (() => {
+//   const month = new Date().getMonth()
+//   const day = new Date().getDate()
 
-  if (month === 11 && day >= 14) {
-    return 'xmas'
-  }
-  if (month === 9 && day >= 20) {
-    return 'halloween'
-  }
-  if (month === 2 && day >= 30) {
-    return 'easter'
-  }
-})()
+//   if (month === 11 && day >= 14) {
+//     return 'xmas'
+//   }
+//   if (month === 9 && day >= 20) {
+//     return 'halloween'
+//   }
+//   if (month === 2 && day >= 30) {
+//     return 'easter'
+//   }
+// })()
 
-if (seasonalTheme) {
-  setTintFamily(seasonalTheme)
-}
+// setTintFamily('valentine')
+
+// if (seasonalTheme) {
+//   setTintFamily(seasonalTheme)
+// }
 
 export function getTints() {
   return {

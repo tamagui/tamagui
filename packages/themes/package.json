@@ -1,23 +1,15 @@
 {
   "name": "@tamagui/themes",
-  "version": "1.79.13",
+  "version": "1.91.5",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
   "sideEffects": false,
-  "files": [
-    "v2.js",
-    "v2.d.ts",
-    "v2-themes.js",
-    "v2-themes.d.ts",
-    "src",
-    "types",
-    "dist"
-  ],
   "scripts": {
     "generate": "yarn generate:v1 && yarn generate:v2",
     "generate:v1": "tamagui generate-themes ./src/themes-new.ts ./src/generated-new.ts",
     "generate:v2": "tamagui generate-themes ./src/v2-themes.ts ./src/generated-v2.ts",
+    "generate:v3": "tamagui generate-themes ./src/v3-themes.ts ./src/generated-v3.ts",
     "build": "tamagui-build",
     "watch": "yarn build --watch",
     "lint": "../../node_modules/.bin/biome check src",
@@ -31,28 +23,43 @@
     ".": {
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.js"
+      "require": "./dist/cjs/index.js",
+      "react-native": "./dist/cjs/index.native.js"
     },
     "./v2": {
       "types": "./types/v2.d.ts",
       "import": "./dist/esm/v2.js",
-      "require": "./dist/cjs/v2.js"
+      "require": "./dist/cjs/v2.js",
+      "react-native": "./dist/cjs/v2.native.js"
     },
     "./v2-themes": {
       "types": "./types/v2-themes.d.ts",
       "import": "./dist/esm/v2-themes.js",
-      "require": "./dist/cjs/v2-themes.js"
+      "require": "./dist/cjs/v2-themes.js",
+      "react-native": "./dist/cjs/v2-themes.native.js"
+    },
+    "./v3": {
+      "types": "./types/v3.d.ts",
+      "import": "./dist/esm/v3.js",
+      "require": "./dist/cjs/v3.js",
+      "react-native": "./dist/cjs/v3.native.js"
+    },
+    "./v3-themes": {
+      "types": "./types/v3-themes.d.ts",
+      "import": "./dist/esm/v3-themes.js",
+      "require": "./dist/cjs/v3-themes.js",
+      "react-native": "./dist/cjs/v3-themes.native.js"
     }
   },
   "dependencies": {
-    "@tamagui/colors": "1.79.13",
-    "@tamagui/create-theme": "1.79.13",
-    "@tamagui/theme-builder": "1.79.13",
-    "@tamagui/web": "1.79.13"
+    "@tamagui/colors": "1.91.5",
+    "@tamagui/create-theme": "1.91.5",
+    "@tamagui/theme-builder": "1.91.5",
+    "@tamagui/web": "1.91.5"
   },
   "devDependencies": {
-    "@tamagui/build": "1.79.13",
-    "@tamagui/cli": "1.79.13",
+    "@tamagui/build": "1.91.5",
+    "@tamagui/cli": "1.91.5",
     "vitest": "^0.34.3"
   },
   "publishConfig": {

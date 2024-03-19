@@ -1,4 +1,4 @@
-import { FillInFont, GenericFont } from '@tamagui/core';
+import type { FillInFont, GenericFont } from '@tamagui/core';
 export declare const createCherryBombFont: <A extends GenericFont>(font?: Partial<A>, { sizeLineHeight, sizeSize, }?: {
     sizeLineHeight?: ((fontSize: number) => number) | undefined;
     sizeSize?: ((size: number) => number) | undefined;

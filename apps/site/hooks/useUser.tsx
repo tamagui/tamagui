@@ -9,11 +9,13 @@ import { useOfflineMode } from './useOfflineMode'
 const siteRootDir = process.env.NODE_ENV === 'development' ? '' : 'https://tamagui.dev'
 
 export const useUser = () => {
-  return useSWR<UserContextType>('user', {
+  return useSWR<UserContextType | null>('user', {
     fetcher: async () => {
-      const data = await fetch('/api/user').then((r) => r.json())
-
-      return data as UserContextType
+      const res = await fetch('/api/user')
+      if (res.ok) {
+        return (await res.json()) as UserContextType
+      }
+      return null
     },
     refreshInterval: 0,
   })

@@ -1,3 +1,2 @@
-/// <reference types="react" />
-export declare function ProgressDemo(): JSX.Element;
+export declare function ProgressDemo(): import("react/jsx-runtime").JSX.Element;
 //# sourceMappingURL=ProgressDemo.d.ts.map

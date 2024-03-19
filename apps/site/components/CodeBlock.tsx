@@ -5,7 +5,7 @@ import rangeParser from 'parse-numeric-range'
 import React from 'react'
 import { refractor } from 'refractor'
 import tsx from 'refractor/lang/tsx'
-import { GetProps } from 'tamagui'
+import type { GetProps } from 'tamagui'
 
 import { Code } from './Code'
 import { Pre } from './Pre'

@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { CLIResolvedOptions } from '@tamagui/types';
+import type { CLIResolvedOptions } from '@tamagui/types';
 export declare function generateTypes(options: CLIResolvedOptions): Promise<void>;
 export declare function getTypes(options: CLIResolvedOptions): Promise<{
     [k: string]: (string | undefined)[][];

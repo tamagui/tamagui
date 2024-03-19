@@ -8,6 +8,56 @@
 import type { Touch, TouchEvent } from './types'
 import { isEndish, isMoveish, isStartish } from './types'
 
+export class ResponderTouchHistoryStore {
+  _touchHistory = {
+    touchBank: [], //Array<TouchRecord>
+    numberActiveTouches: 0,
+    // If there is only one active touch, we remember its location. This prevents
+    // us having to loop through all of the touches all the time in the most
+    // common case.
+    indexOfSingleActiveTouch: -1,
+    mostRecentTimeStamp: 0,
+  }
+
+  recordTouchTrack(topLevelType: string, nativeEvent: TouchEvent): void {
+    const touchHistory = this._touchHistory
+    if (isMoveish(topLevelType)) {
+      nativeEvent.changedTouches.forEach((touch) => recordTouchMove(touch, touchHistory))
+    } else if (isStartish(topLevelType)) {
+      nativeEvent.changedTouches.forEach((touch) => recordTouchStart(touch, touchHistory))
+      touchHistory.numberActiveTouches = nativeEvent.touches.length
+      if (touchHistory.numberActiveTouches === 1) {
+        touchHistory.indexOfSingleActiveTouch = nativeEvent.touches[0].identifier
+      }
+    } else if (isEndish(topLevelType)) {
+      nativeEvent.changedTouches.forEach((touch) => recordTouchEnd(touch, touchHistory))
+      touchHistory.numberActiveTouches = nativeEvent.touches.length
+      if (touchHistory.numberActiveTouches === 1) {
+        const { touchBank } = touchHistory
+        for (let i = 0; i < touchBank.length; i++) {
+          const touchTrackToCheck = touchBank[i]
+          //  @ts-ignore
+          if (touchTrackToCheck?.touchActive) {
+            touchHistory.indexOfSingleActiveTouch = i
+            break
+          }
+        }
+        if (process.env.NODE_ENV === 'development') {
+          const activeRecord = touchBank[touchHistory.indexOfSingleActiveTouch]
+          //  @ts-ignore
+          if (!activeRecord?.touchActive) {
+            console.error('Cannot find single active touch.')
+          }
+        }
+      }
+    }
+  }
+
+  get touchHistory(): TouchHistory {
+    return this._touchHistory
+  }
+}
+
 type TouchRecord = {
   currentPageX: number
   currentPageY: number
@@ -158,54 +208,4 @@ function printTouchBank(touchHistory): string {
     printed += ` (original size: ${touchBank.length})`
   }
   return printed
-}
-
-export class ResponderTouchHistoryStore {
-  _touchHistory = {
-    touchBank: [], //Array<TouchRecord>
-    numberActiveTouches: 0,
-    // If there is only one active touch, we remember its location. This prevents
-    // us having to loop through all of the touches all the time in the most
-    // common case.
-    indexOfSingleActiveTouch: -1,
-    mostRecentTimeStamp: 0,
-  }
-
-  recordTouchTrack(topLevelType: string, nativeEvent: TouchEvent): void {
-    const touchHistory = this._touchHistory
-    if (isMoveish(topLevelType)) {
-      nativeEvent.changedTouches.forEach((touch) => recordTouchMove(touch, touchHistory))
-    } else if (isStartish(topLevelType)) {
-      nativeEvent.changedTouches.forEach((touch) => recordTouchStart(touch, touchHistory))
-      touchHistory.numberActiveTouches = nativeEvent.touches.length
-      if (touchHistory.numberActiveTouches === 1) {
-        touchHistory.indexOfSingleActiveTouch = nativeEvent.touches[0].identifier
-      }
-    } else if (isEndish(topLevelType)) {
-      nativeEvent.changedTouches.forEach((touch) => recordTouchEnd(touch, touchHistory))
-      touchHistory.numberActiveTouches = nativeEvent.touches.length
-      if (touchHistory.numberActiveTouches === 1) {
-        const { touchBank } = touchHistory
-        for (let i = 0; i < touchBank.length; i++) {
-          const touchTrackToCheck = touchBank[i]
-          //  @ts-ignore
-          if (touchTrackToCheck?.touchActive) {
-            touchHistory.indexOfSingleActiveTouch = i
-            break
-          }
-        }
-        if (process.env.NODE_ENV === 'development') {
-          const activeRecord = touchBank[touchHistory.indexOfSingleActiveTouch]
-          //  @ts-ignore
-          if (!activeRecord?.touchActive) {
-            console.error('Cannot find single active touch.')
-          }
-        }
-      }
-    }
-  }
-
-  get touchHistory(): TouchHistory {
-    return this._touchHistory
-  }
 }

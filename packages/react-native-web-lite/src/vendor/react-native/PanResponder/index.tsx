@@ -337,10 +337,6 @@ const PanResponder = {
     gestureState.vx = (nextDX - gestureState.dx) / dt
     gestureState.vy = (nextDY - gestureState.dy) / dt
 
-    if (isNaN(gestureState.vy)) {
-      debugger
-    }
-
     gestureState.dx = nextDX
     gestureState.dy = nextDY
     gestureState._accountsForMovesUpTo = touchHistory.mostRecentTimeStamp

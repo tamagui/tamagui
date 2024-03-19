@@ -1,4 +1,5 @@
-import { CheckCircle, Clipboard, Paintbrush } from '@tamagui/lucide-icons'
+import { CheckCircle, Code2, Copy, Paintbrush } from '@tamagui/lucide-icons'
+import { useStore } from '@tamagui/use-store'
 import { forwardRef, useEffect, useRef, useState } from 'react'
 import { ScrollView } from 'react-native'
 import { Button, Spacer, TooltipSimple, XStack, YStack } from 'tamagui'
@@ -9,6 +10,13 @@ import { useClipboard } from '../lib/useClipboard'
 import { Code } from './Code'
 import { ErrorBoundary } from './ErrorBoundary'
 import { Pre } from './Pre'
+
+class CollapseStore {
+  isCollapsed = true
+  setIsCollapsed(val: boolean) {
+    this.isCollapsed = val
+  }
+}
 
 export const DocCodeBlock = forwardRef((props: any, ref) => {
   const {
@@ -24,7 +32,8 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
   } = props
   const lines = Array.isArray(children) ? children.length : 0
   const isCollapsible = isHero || props.isCollapsible
-  const [isCollapsed, setIsCollapsed] = useState(isCollapsible)
+  const store = useStore(CollapseStore)
+  const { isCollapsed, setIsCollapsed } = store
   const isLong = lines > 22
   const [isCutoff, setIsCutoff] = useState(isLong && !isCollapsible)
   const [code, setCode] = useState(undefined)
@@ -34,7 +43,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
 
   // const frontmatter = useContext(FrontmatterContext)
 
-  const isPreVisible = !isCollapsed || !isCollapsible;
+  const isPreVisible = !isCollapsed || !isCollapsible
 
   useEffect(() => {
     try {
@@ -69,12 +78,12 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
       <ErrorBoundary>
         {isCollapsible && (
           <XStack
-            space="$2"
+            gap="$2"
             position="absolute"
             display="inline-flex"
             alignItems="center"
             justifyContent="flex-end"
-            top={-70}
+            top={-84}
             r="$6"
             $gtMd={{
               r: '$7',
@@ -82,16 +91,19 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
           >
             <Button
               accessibilityLabel="Show or hide code"
-              size="$2"
-              onPress={() => setIsCollapsed((x) => !x)}
+              icon={Code2}
+              size="$3"
+              zi={10}
+              onPress={() => setIsCollapsed(!isCollapsed)}
             >
               {isCollapsed ? 'Show code' : 'Hide code'}
             </Button>
             <TooltipSimple label="Toggle tint on/off">
               <Button
                 accessibilityLabel="Toggle tint on/off"
-                size="$2"
+                size="$3"
                 onPress={toggleTinted}
+                zi={10}
                 icon={Paintbrush}
               />
             </TooltipSimple>
@@ -114,7 +126,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                 l={0}
                 r={0}
                 height={200}
-                colors={['$backgroundTransparent', '$background']}
+                colors={['$background0', '$background']}
                 zi={1000}
               >
                 <Spacer f={1} />
@@ -158,13 +170,13 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
             {!disableCopy && (
               <TooltipSimple label={hasCopied ? 'Copied' : 'Copy to clipboard'}>
                 <Button
-                  aria-label="Copy code to clipboard"
                   position="absolute"
+                  aria-label="Copy code to clipboard"
                   size="$2"
                   top="$3"
                   right="$3"
                   display="inline-flex"
-                  icon={hasCopied ? CheckCircle : Clipboard}
+                  icon={hasCopied ? CheckCircle : Copy}
                   onPress={onCopy}
                   $xs={{
                     display: 'none',

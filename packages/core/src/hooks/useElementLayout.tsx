@@ -1,8 +1,6 @@
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
-import { RefObject } from 'react'
-
+import type { RefObject } from 'react'
 import { getBoundingClientRect } from '../helpers/getBoundingClientRect'
-import { getRect } from '../helpers/getRect'
 
 const LayoutHandlers = new WeakMap<Element, Function>()
 const LayoutTimeouts = new WeakMap<Element, any>()
@@ -44,26 +42,66 @@ if (typeof window !== 'undefined' && 'ResizeObserver' in window) {
   })
 }
 
+const cache = new WeakMap()
+
 export const measureLayout = (
   node: HTMLElement,
   relativeTo: HTMLElement | null,
-  callback: Function
+  callback: (
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+    left: number,
+    top: number
+  ) => void
 ) => {
   const relativeNode = relativeTo || node?.parentNode
   if (relativeNode instanceof HTMLElement) {
-    // avoid double onLayout
-    clearTimeout(LayoutTimeouts.get(relativeNode))
-    // according to react-native-web https://github.com/necolas/react-native-web/commit/b4e3427fea9bd943e3b3be13def0f4ffb3df917c
-    const tm = setTimeout(() => {
-      const relativeRect = getBoundingClientRect(relativeNode)!
-      const { height, left, top, width } = getRect(node)!
-      const x = left - relativeRect.left
-      const y = top - relativeRect.top
-      callback(x, y, width, height, left, top)
-      LayoutTimeouts.delete(relativeNode)
-    }, 0)
-    LayoutTimeouts.set(relativeNode, tm)
+    const now = Date.now()
+    cache.set(node, now)
+    Promise.all([
+      getBoundingClientRectAsync(node),
+      getBoundingClientRectAsync(relativeNode),
+    ]).then(([nodeDim, relativeNodeDim]) => {
+      if (relativeNodeDim && nodeDim && cache.get(node) === now) {
+        const { x, y, width, height, left, top } = getRelativeDimensions(
+          nodeDim,
+          relativeNodeDim
+        )
+        callback(x, y, width, height, left, top)
+      }
+    })
   }
+}
+
+const getRelativeDimensions = (a: DOMRectReadOnly, b: DOMRectReadOnly) => {
+  const { height, left, top, width } = a
+  const x = left - b.left
+  const y = top - b.top
+  return { x, y, width, height, left, top }
+}
+
+const getBoundingClientRectAsync = (
+  element: HTMLElement
+): Promise<DOMRectReadOnly | undefined> => {
+  return new Promise((resolve) => {
+    function fallbackToSync() {
+      resolve(getBoundingClientRect(element))
+    }
+    const tm = setTimeout(fallbackToSync, 10)
+    const observer = new IntersectionObserver(
+      (entries, ob) => {
+        clearTimeout(tm)
+        ob.disconnect()
+        resolve(entries[0]?.boundingClientRect)
+      },
+      {
+        threshold: 0.0001,
+      }
+    )
+    observer.observe(element)
+  })
 }
 
 export function useElementLayout(

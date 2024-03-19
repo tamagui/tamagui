@@ -1,16 +1,17 @@
 import { createRequire } from 'module'
-import { AddressInfo } from 'net'
+import type { AddressInfo } from 'net'
 import { dirname, join } from 'path'
 
 import { watchTamaguiConfig } from '@tamagui/static'
-import { CLIResolvedOptions } from '@tamagui/types'
+import type { CLIResolvedOptions } from '@tamagui/types'
 import { tamaguiExtractPlugin, tamaguiPlugin } from '@tamagui/vite-plugin'
 import viteReactPlugin from '@vitejs/plugin-react-swc'
 import chalk from 'chalk'
 import express from 'express'
 import fs, { ensureDir } from 'fs-extra'
 import { createProxyMiddleware } from 'http-proxy-middleware'
-import { InlineConfig, build, createServer } from 'vite'
+import type { InlineConfig } from 'vite'
+import { build, createServer } from 'vite'
 import entryShakingPlugin from 'vite-plugin-entry-shaking'
 import viteInspect from 'vite-plugin-inspect'
 import viteTsConfigPaths from 'vite-tsconfig-paths'
@@ -30,7 +31,7 @@ export const studio = async (
   if (!isRemote) {
     process.env.VITE_IS_LOCAL = '1'
 
-    process.stdout.on('error', function (err) {
+    process.stdout.on('error', (err) => {
       if (err.code == 'EPIPE') {
         process.exit(0)
       }
@@ -39,8 +40,6 @@ export const studio = async (
     const { default: getPort } = await import('get-port')
     const { paths } = options
     const root = dirname(dirname(resolve('@tamagui/studio')))
-
-    console.log('root', root)
 
     const [serverPort, vitePort] = await Promise.all([
       getPort({
@@ -67,12 +66,10 @@ export const studio = async (
       build: {
         rollupOptions: {},
       },
-      resolve: {
-        alias: {
-          '@tamagui/animations-moti': '@tamagui/animations-react-native',
-        },
-      },
       plugins: [
+        viteReactPlugin({
+          tsDecorators: true,
+        }),
         tamaguiPlugin({
           components: ['tamagui'],
         }),
@@ -80,9 +77,6 @@ export const studio = async (
           config: './src/tamagui.config.ts',
           disableExtraction: true,
           components: ['tamagui'],
-        }),
-        viteReactPlugin({
-          tsDecorators: true,
         }),
         viteTsConfigPaths(),
         await entryShakingPlugin({

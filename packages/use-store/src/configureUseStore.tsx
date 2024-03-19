@@ -1,4 +1,4 @@
-import { UseStoreConfig } from './interfaces'
+import type { UseStoreConfig } from './interfaces'
 
 export let configureOpts: UseStoreConfig = {}
 

@@ -1,7 +1,12 @@
 import { stylePropsTextOnly, validStyles } from '@tamagui/helpers'
 
 import { createComponent } from '../createComponent'
-import { TamaguiTextElement, TextProps, TextPropsBase } from '../types'
+import type {
+  TamaguiTextElement,
+  TextNonStyleProps,
+  TextProps,
+  TextStylePropsBase,
+} from '../types'
 
 const ellipseStyle = {
   maxWidth: '100%',
@@ -16,10 +21,24 @@ const defaultWebStyle = {
   display: 'inline',
   boxSizing: 'border-box',
   wordWrap: 'break-word',
+  whiteSpace: 'pre-wrap',
   margin: 0,
 }
 
-export const Text = createComponent<TextProps, Text, TextPropsBase>({
+const ellipsisStyle =
+  process.env.TAMAGUI_TARGET === 'web'
+    ? ellipseStyle
+    : {
+        numberOfLines: 1,
+        lineBreakMode: 'clip',
+      }
+
+export const Text = createComponent<
+  TextProps,
+  Text,
+  TextNonStyleProps,
+  TextStylePropsBase
+>({
   acceptsClassName: true,
   isText: true,
 
@@ -51,11 +70,6 @@ export const Text = createComponent<TextProps, Text, TextPropsBase>({
       },
     }),
 
-    // ??
-    ellipsizeMode: {
-      '...': () => null,
-    },
-
     ...(process.env.TAMAGUI_TARGET === 'web' && {
       selectable: {
         true: {
@@ -69,21 +83,22 @@ export const Text = createComponent<TextProps, Text, TextPropsBase>({
       },
     }),
 
+    /**
+     * @deprecated Use ellipsis instead
+     */
     ellipse: {
-      true:
-        process.env.TAMAGUI_TARGET === 'web'
-          ? ellipseStyle
-          : {
-              numberOfLines: 1,
-              lineBreakMode: 'clip',
-            },
+      true: ellipsisStyle,
+    },
+
+    ellipsis: {
+      true: ellipsisStyle,
     },
   },
-
-  deoptProps: new Set(process.env.TAMAGUI_TARGET === 'web' ? [] : ['ellipse']),
 
   validStyles: {
     ...validStyles,
     ...stylePropsTextOnly,
   },
 })
+
+Text['displayName'] = 'Text'

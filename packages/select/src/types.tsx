@@ -47,6 +47,7 @@ type DisposeFn = () => void
 export type EmitterSubscriber<Val> = (cb: (val: Val) => void) => DisposeFn
 
 export interface SelectItemParentContextValue {
+  id?: string
   initialValue?: any
   setSelectedIndex: (index: number) => void
   listRef?: MutableRefObject<Array<HTMLElement | null>>
@@ -102,11 +103,13 @@ export interface SelectContextValue {
   update?: () => void
 }
 
-export type SelectViewportProps = ThemeableStackProps & {
+export interface SelectViewportExtraProps {
   size?: SizeTokens
   disableScroll?: boolean
   unstyled?: boolean
 }
+
+export type SelectViewportProps = ThemeableStackProps & SelectViewportExtraProps
 
 export type SelectContentProps = ScopedProps<{
   children?: React.ReactNode

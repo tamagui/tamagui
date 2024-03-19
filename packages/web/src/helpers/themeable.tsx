@@ -1,6 +1,6 @@
-import React, { forwardRef } from 'react'
+import { forwardRef } from 'react'
 
-import { StaticConfig, ThemeableProps } from '../types'
+import type { StaticConfig, ThemeableProps } from '../types'
 import { Theme } from '../views/Theme'
 
 export function themeable<ComponentType extends (props: any) => any>(
@@ -10,8 +10,10 @@ export function themeable<ComponentType extends (props: any) => any>(
   const withThemeComponent = forwardRef(function WithTheme(props: ThemeableProps, ref) {
     const { themeInverse, theme, componentName, themeReset, ...rest } = props
 
-    // @ts-expect-error its ok
-    const element = <Component ref={ref} {...rest} data-disable-theme />
+    const element = (
+      // @ts-expect-error its ok
+      <Component ref={ref} {...rest} data-disable-theme />
+    )
 
     let contents = (
       <Theme

@@ -26,7 +26,7 @@ export type CreateThemeOptions = {
 };
 export type Palette = string[];
 export type Template = {
-    [key: string]: number;
+    [key: string]: number | string;
 };
 export type ThemeUsingMask<Masks = string> = MaskOptions & {
     mask: Masks;
@@ -36,7 +36,7 @@ export type ThemeUsingMask<Masks = string> = MaskOptions & {
     };
 };
 export type ThemeUsingTemplate = CreateThemeOptions & {
-    palette: string;
+    palette?: string;
     template: string;
 };
 type ThemePreDefined = {

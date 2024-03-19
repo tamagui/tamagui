@@ -1,39 +1,37 @@
 ---
-title: Stack & Text
+title: View & Text
 description: The base views of @tamagui/core.
 ---
 
-Stack and Text are functionally equivalent to React Native `View` and `Text`, they just accept the superset of props that Tamagui supports.
-
-Beyond View, Stack sets `flexDirection` to `column`.
+View and Text are functionally equivalent to React Native `View` and `Text`, they just accept the superset of props that Tamagui supports.
 
 ### Props
 
-See [the Props docs](/docs/intro/props) for the full list of properties.
+See [the Props docs](/docs/intro/props) for the full list of properties View, View and Text accept.
 
 ### Usage
 
 You can use them directly:
 
 ```tsx
-import { Stack, Text } from 'tamagui' // or '@tamagui/core'
+import { View, Text } from 'tamagui' // or '@tamagui/core'
 
 export default () => (
-  <Stack margin={10}>
+  <View margin={10}>
     <Text color="$color">Hello</Text>
-  </Stack>
+  </View>
 )
 ```
 
 We encourage you to use inline styles. Combined with [shorthands](/docs/core/configuration#shorthands) they can lead to really easy styling, and the Tamagui optimizing compiler will take care of optimizing everything for you so that there is little to no extra cost in performance:
 
 ```tsx
-import { Stack, Text } from 'tamagui' // or '@tamagui/core'
+import { View, Text } from 'tamagui' // or '@tamagui/core'
 
 export default () => (
-  <Stack mx="$sm" scale={1.2}>
+  <View mx="$sm" scale={1.2}>
     <Text c="$color">Hello</Text>
-  </Stack>
+  </View>
 )
 ```
 
@@ -47,9 +45,9 @@ export default () => (
 You can also use them [with styled](/docs/core/styled) to create your own lower level views that are meant to be re-usable:
 
 ```tsx
-import { Stack, styled } from 'tamagui' // or '@tamagui/core'
+import { View, styled } from 'tamagui' // or '@tamagui/core'
 
-export const Circle = styled(Stack, {
+export const Circle = styled(View, {
   borderRadius: 100_000_000,
 
   variants: {
@@ -80,7 +78,3 @@ export const Circle = styled(Stack, {
 ```
 
 Inline styles and `styled()` both are optimized by the compiler, so you can author styles using both depending on the use case.
-
-### View
-
-As of version `1.31` Tamagui exports a `View` as well, which has no style properties set by default (as opposed to Stack which sets the flexDirection to column by default).

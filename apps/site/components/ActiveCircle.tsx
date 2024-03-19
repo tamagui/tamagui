@@ -1,5 +1,6 @@
 import React from 'react'
-import { Circle, CircleProps, YStack } from 'tamagui'
+import type { CircleProps} from 'tamagui';
+import { Circle, YStack } from 'tamagui'
 
 export const ActiveCircle = (props: CircleProps & { isActive?: boolean }) => {
   const { isActive, backgroundColor, opacity, ...rest } = props

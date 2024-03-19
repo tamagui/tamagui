@@ -1,7 +1,9 @@
 import { forwardRef } from 'react'
 // import { SolitoImage } from 'solito/image'
-import { LinkCore, LinkCoreProps } from 'solito/link'
-import { Anchor, AnchorProps, styled } from 'tamagui'
+import type { LinkCoreProps } from 'solito/link'
+import { LinkCore } from 'solito/link'
+import type { AnchorProps } from 'tamagui'
+import { Anchor, styled } from 'tamagui'
 
 const StyledTextLink = styled(Anchor, {
   name: 'TextLink',

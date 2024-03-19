@@ -5,15 +5,10 @@ import { focusFocusable } from '@tamagui/focusable'
 import { getButtonSized } from '@tamagui/get-button-sized'
 import { getFontSized } from '@tamagui/get-font-sized'
 import { SizableText } from '@tamagui/text'
-import {
-  FontSizeTokens,
-  GetProps,
-  ReactComponentWithRef,
-  styled,
-  themeable,
-} from '@tamagui/web'
+import type { FontSizeTokens, GetProps, ReactComponentWithRef } from '@tamagui/web'
+import { styled, themeable } from '@tamagui/web'
 import * as React from 'react'
-import { View } from 'react-native'
+import type { View } from 'react-native'
 
 const NAME = 'Label'
 
@@ -170,5 +165,3 @@ export const useLabelContext = (element?: HTMLElement | null) => {
 
   return context.id
 }
-
-const Root = Label

@@ -1,4 +1,7 @@
-import { CreateThemeOptions, CreateThemePalette, GenericTheme, ThemeMask } from './createThemeTypes';
+import type { CreateThemeOptions, CreateThemePalette, GenericTheme, ThemeMask } from './createThemeTypes';
+export declare function createThemeWithPalettes<Definition extends ThemeMask, Extras extends GenericTheme = {}>(palettes: Record<string, CreateThemePalette>, defaultPalette: string, definition: Definition, options?: CreateThemeOptions, name?: string, skipCache?: boolean): {
+    [key in keyof Definition | keyof Extras]: string;
+};
 export declare function createTheme<Definition extends ThemeMask, Extras extends GenericTheme = {}>(palette: CreateThemePalette, definition: Definition, options?: CreateThemeOptions, name?: string, skipCache?: boolean): {
     [key in keyof Definition | keyof Extras]: string;
 };

@@ -2,7 +2,7 @@ import { useComposedRefs } from '@tamagui/compose-refs'
 import { useEvent } from '@tamagui/use-event'
 import * as React from 'react'
 
-import { FocusScopeProps } from './FocusScopeProps'
+import type { FocusScopeProps } from './FocusScopeProps'
 
 const AUTOFOCUS_ON_MOUNT = 'focusScope.autoFocusOnMount'
 const AUTOFOCUS_ON_UNMOUNT = 'focusScope.autoFocusOnUnmount'
@@ -66,10 +66,15 @@ export function useFocusScope(
   React.useEffect(() => {
     if (!enabled) return
     if (!trapped) return
+    const controller = new AbortController()
+
     function handleFocusIn(event: FocusEvent) {
       if (focusScope.paused || !container) return
       const target = event.target as HTMLElement | null
       if (container.contains(target)) {
+        // Set container as lastFocusedElement to prevent inputs
+        // to be refocused on blur events
+        target?.addEventListener('blur', handleBlur, { signal: controller.signal })
         lastFocusedElementRef.current = target
       } else {
         focus(lastFocusedElementRef.current, { select: true })
@@ -77,15 +82,21 @@ export function useFocusScope(
     }
 
     function handleFocusOut(event: FocusEvent) {
+      controller.abort()
       if (focusScope.paused || !container) return
       if (!container.contains(event.relatedTarget as HTMLElement | null)) {
         focus(lastFocusedElementRef.current, { select: true })
       }
     }
 
+    function handleBlur() {
+      lastFocusedElementRef.current = container
+    }
+
     document.addEventListener('focusin', handleFocusIn)
     document.addEventListener('focusout', handleFocusOut)
     return () => {
+      controller.abort()
       document.removeEventListener('focusin', handleFocusIn)
       document.removeEventListener('focusout', handleFocusOut)
     }

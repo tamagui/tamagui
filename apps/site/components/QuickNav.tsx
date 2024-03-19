@@ -1,22 +1,20 @@
 import { classNames } from '@tamagui/remove-scroll'
 import { NextLink } from 'components/NextLink'
 import { useEffect, useState } from 'react'
-import { Circle, H4, Paragraph, ScrollView, XStack, YStack } from 'tamagui'
+import { Circle, H4, Paragraph, ScrollView, Separator, XStack, YStack } from 'tamagui'
 
-import { LinkProps } from './Link'
+import type { LinkProps } from './Link'
 
 const QuickNavLink = ({ href, ...rest }: LinkProps) => (
   <NextLink href={href}>
     <Paragraph
       tag="span"
       size="$3"
-      color="$color"
-      o={0.5}
+      color="$color11"
       cursor="pointer"
       py="$0.5"
       hoverStyle={{
-        o: 1,
-        color: '$colorHover',
+        color: '$color12',
       }}
       {...rest}
     />
@@ -52,12 +50,12 @@ export function QuickNav() {
       display="none"
       $gtLg={{
         display: 'flex',
-        width: 220,
+        width: 280,
         flexShrink: 0,
         zIndex: 1,
         position: 'fixed' as any,
         left: '50%',
-        top: 105,
+        top: 130,
         marginLeft: 450,
       }}
     >
@@ -65,32 +63,28 @@ export function QuickNav() {
         tag="nav"
         aria-labelledby="site-quick-nav-heading"
         px="$5"
-        display={headings.length === 0 ? 'none' : 'block'}
-        space
+        display={headings.length === 0 ? 'none' : 'flex'}
+        gap="$2"
       >
-        <H4 size="$2" o={0.5} id="site-quick-nav-heading">
+        <H4 size="$2" mx="$2" theme="alt1" id="site-quick-nav-heading">
           Quick nav
         </H4>
-        <ScrollView maxHeight="calc(100vh - var(--space-25))">
-          <ul style={{ margin: 0, padding: 0 }}>
-            {/* loading ... {headings.length === 0 && (
-              <YStack tag="li">
-                <QuickNavLink>
-                  <YStack />
-                </QuickNavLink>
-              </YStack>
-            )} */}
+        <Separator />
 
-            {headings.map(({ id, nodeName, innerText }, i) => {
-              const level = getLevel(nodeName)
-              return (
-                <XStack key={i} tag="li" ai="center">
-                  {level > 2 && <Circle size={4} mx="$2" />}
-                  <QuickNavLink href={`#${id}`}>{innerText}</QuickNavLink>
-                </XStack>
-              )
-            })}
-          </ul>
+        <ScrollView maxHeight="calc(100vh - var(--space-25))">
+          <YStack px="$2" py="$2">
+            <ul style={{ margin: 0, padding: 0 }}>
+              {headings.map(({ id, nodeName, innerText }, i) => {
+                const level = getLevel(nodeName)
+                return (
+                  <XStack key={i} tag="li" ai="center">
+                    {level > 2 && <Circle size={4} mx="$2" />}
+                    <QuickNavLink href={`#${id}`}>{innerText}</QuickNavLink>
+                  </XStack>
+                )
+              })}
+            </ul>
+          </YStack>
         </ScrollView>
       </YStack>
     </YStack>

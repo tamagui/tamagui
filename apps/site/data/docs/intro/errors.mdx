@@ -6,24 +6,20 @@ title: Errors
 
 #### Ignorable modules
 
-This error means the compiler can't bundle some dependencies into what it reads at compile-time in order to optimize. It's not necessarily an error and usually won't de-opt.
+This error means the compiler can't bundle some dependencies into what it reads
+at compile-time in order to optimize. It's not necessarily an error and usually
+won't de-opt.
+
+To see a full stack trace set:
+
+```bash
+DEBUG=tamagui
+```
 
 To disable the warning you can set:
 
-```
+```bash
 TAMAGUI_IGNORE_BUNDLE_ERRORS=some_module_name,some_other_module_name
-```
-
-Or to disable them all (not recommended):
-
-```
+# Or to disable them all (not recommended):
 TAMAGUI_IGNORE_BUNDLE_ERRORS=true
 ```
-
-To see a full stack trace:
-
-```
-TAMAGUI_SHOW_FULL_BUNDLE_ERRORS=true
-```
-
-When Tamagui has trouble running `require` on a module, it simply replaces it with a "proxy worm", basically a Proxy that just tries to return empty objects no matter when you try and de-structure from them. This is normally fine and avoids the compiler de-opting on "weird" modules.

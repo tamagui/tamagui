@@ -179,6 +179,14 @@ export const SwitchDemo = lazyDemo(
   // @ts-ignore
   import('@tamagui/demos/demo/SwitchDemo').then((x) => x.SwitchDemo)
 )
+export const SwitchHeadlessDemo = lazyDemo(
+  // @ts-ignore
+  import('@tamagui/demos/demo/SwitchHeadlessDemo').then((x) => x.SwitchHeadlessDemo)
+)
+export const SwitchUnstyledDemo = lazyDemo(
+  // @ts-ignore
+  import('@tamagui/demos/demo/SwitchUnstyledDemo').then((x) => x.SwitchUnstyledDemo)
+)
 export const SliderDemo = lazyDemo(
   // @ts-ignore
   import('@tamagui/demos/demo/SliderDemo').then((x) => x.SliderDemo)
@@ -222,6 +230,14 @@ export const ToggleGroupDemo = lazyDemo(
 export const CheckboxDemo = lazyDemo(
   // @ts-ignore
   import('@tamagui/demos/demo/CheckboxDemo').then((x) => x.CheckboxDemo)
+)
+export const CheckboxHeadlessDemo = lazyDemo(
+  // @ts-ignore
+  import('@tamagui/demos/demo/CheckboxHeadlessDemo').then((x) => x.CheckboxHeadlessDemo)
+)
+export const CheckboxUnstyledDemo = lazyDemo(
+  // @ts-ignore
+  import('@tamagui/demos/demo/CheckboxUnstyledDemo').then((x) => x.CheckboxUnstyledDemo)
 )
 export const RadioGroupDemo = lazyDemo(
   // @ts-ignore

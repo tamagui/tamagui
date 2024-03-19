@@ -9,15 +9,16 @@ if (!serverToken) {
 const client = new postmark.ServerClient(serverToken)
 
 export function sendTakeoutWelcomeEmail(email: string, { name }: { name: string }) {
-  if (process.env.NODE_ENV === 'production') {
-    return client.sendEmailWithTemplate({
-      From: 'support@tamagui.dev',
-      To: email,
-      TemplateId: 32624033,
-      // TemplateAlias: 'takeout-welcome',
-      TemplateModel: { name, product_name: 'Takeout' },
-    })
-  } else {
-    console.log(`Not sending welcome email to ${email} since we're not on prod.`)
+  if (process.env.NODE_ENV !== 'production') {
+    console.info(`Not sending welcome email to ${email} since we're not on prod.`)
+    return
   }
+
+  return client.sendEmailWithTemplate({
+    From: 'support@tamagui.dev',
+    To: email,
+    TemplateId: 32624033,
+    // TemplateAlias: 'takeout-welcome',
+    TemplateModel: { name, product_name: 'Takeout' },
+  })
 }

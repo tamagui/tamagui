@@ -2,10 +2,18 @@ import { H4, styled } from 'tamagui'
 
 export const NavHeading = styled(H4, {
   size: '$2',
-  px: '$4',
-  ml: 'auto',
-  pt: '$1',
-  pb: '$2',
+  px: '$3',
+  pt: '$4',
+  pb: '$1',
   ls: 2,
-  o: 0.375,
+  color: '$gray9',
+
+  variants: {
+    inMenu: {
+      true: {},
+      false: {
+        ml: 'auto',
+      },
+    },
+  } as const,
 })

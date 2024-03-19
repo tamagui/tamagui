@@ -1,4 +1,4 @@
-import { CreateNativeToastsFn, HideNativeToastsFn } from './types'
+import type { CreateNativeToastsFn, HideNativeToastsFn } from './types'
 
 export const createNativeToast: CreateNativeToastsFn = (
   title,

@@ -131,7 +131,7 @@ const DT = withStaticProperties(
       w: 300,
       p: '$4',
       bbw: 1,
-      boc: '$borderColor',
+      bc: '$borderColor',
     }),
   }
 )

@@ -2,24 +2,19 @@ import { isWeb } from '@tamagui/constants'
 import { registerFocusable } from '@tamagui/focusable'
 import { getFontSize } from '@tamagui/font-size'
 import { getSize } from '@tamagui/get-token'
-import { Group, GroupProps, useGroupItem } from '@tamagui/group'
+import type { GroupProps } from '@tamagui/group'
+import { Group, useGroupItem } from '@tamagui/group'
 import { withStaticProperties } from '@tamagui/helpers'
 import { useGetThemedIcon } from '@tamagui/helpers-tamagui'
 import { RovingFocusGroup } from '@tamagui/roving-focus'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDirection } from '@tamagui/use-direction'
-import {
-  FontSizeTokens,
-  GetProps,
-  SizeTokens,
-  createStyledContext,
-  getVariableValue,
-  styled,
-  useTheme,
-} from '@tamagui/web'
+import type { FontSizeTokens, GetProps, SizeTokens } from '@tamagui/web'
+import { createStyledContext, getVariableValue, styled, useTheme } from '@tamagui/web'
 import React from 'react'
 
-import { Toggle, ToggleFrame, ToggleProps } from './Toggle'
+import type { ToggleProps } from './Toggle'
+import { Toggle, ToggleFrame } from './Toggle'
 
 const TOGGLE_GROUP_NAME = 'ToggleGroup'
 
@@ -54,6 +49,7 @@ type ToggleGroupItemProps = GetProps<typeof ToggleFrame> & {
 const ToggleGroupItem = ToggleFrame.extractable(
   React.forwardRef<ToggleGroupItemElement, ToggleGroupItemProps>(
     (props: ScopedProps<ToggleGroupItemProps>, forwardedRef) => {
+      const { disablePassStyles, ...rest } = props
       const valueContext = useToggleGroupValueContext(props.__scopeToggleGroup)
       const context = useToggleGroupContext(props.__scopeToggleGroup)
       const pressed = valueContext?.value.includes(props.value)
@@ -84,7 +80,7 @@ const ToggleGroupItem = ToggleFrame.extractable(
         return getThemedIcon(child)
       })
 
-      const commonProps = { pressed, disabled, ...sizeProps, ...props, children }
+      const commonProps = { pressed, disabled, ...sizeProps, ...rest, children }
 
       const inner = (
         <ToggleGroupItemImpl
@@ -168,9 +164,11 @@ const ToggleGroupItemImpl = React.forwardRef<
 type ScopedProps<P> = P & { __scopeToggleGroup?: string }
 
 type ToggleGroupElement = ToggleGroupImplSingleElement | ToggleGroupImplMultipleElement
+
 interface ToggleGroupSingleProps extends ToggleGroupImplSingleProps {
   type: 'single'
 }
+
 interface ToggleGroupMultipleProps extends ToggleGroupImplMultipleProps {
   type: 'multiple'
 }
@@ -183,7 +181,6 @@ const ToggleGroup = withStaticProperties(
       const { type, ...toggleGroupProps } = props
 
       if (!isWeb) {
-        // eslint-disable-next-line react-hooks/rules-of-hooks
         React.useEffect(() => {
           if (!props.id) return
           return registerFocusable(props.id, {
@@ -300,6 +297,7 @@ interface ToggleGroupImplMultipleProps extends ToggleGroupImplProps {
    * The callback that fires when the state of the toggle group changes.
    */
   onValueChange?(value: string[]): void
+  disableDeactivation?: never
 }
 
 const ToggleGroupImplMultiple = React.forwardRef<
@@ -310,6 +308,7 @@ const ToggleGroupImplMultiple = React.forwardRef<
     value: valueProp,
     defaultValue,
     onValueChange = () => {},
+    disableDeactivation,
     ...toggleGroupMultipleProps
   } = props
 

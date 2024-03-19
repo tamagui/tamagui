@@ -32,14 +32,16 @@ export const getProjectName = async (projectPath?: string) => {
   }
 
   if (!projectPath) {
-    console.log()
-    console.log('Please specify the project directory:')
-    console.log(`  ${chalk.cyan(packageJson.name)} ${chalk.green('<project-directory>')}`)
-    console.log()
-    console.log('For example:')
-    console.log(`  ${chalk.cyan(packageJson.name)} ${chalk.green('my-tamagui-app')}`)
-    console.log()
-    console.log(`Run ${chalk.cyan(`${packageJson.name} --help`)} to see all options.`)
+    console.info()
+    console.info('Please specify the project directory:')
+    console.info(
+      `  ${chalk.cyan(packageJson.name)} ${chalk.green('<project-directory>')}`
+    )
+    console.info()
+    console.info('For example:')
+    console.info(`  ${chalk.cyan(packageJson.name)} ${chalk.green('my-tamagui-app')}`)
+    console.info()
+    console.info(`Run ${chalk.cyan(`${packageJson.name} --help`)} to see all options.`)
     process.exit(1)
   }
   return projectPath

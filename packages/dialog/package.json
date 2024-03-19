@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/dialog",
-  "version": "1.79.13",
+  "version": "1.91.5",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
@@ -27,37 +27,38 @@
     ".": {
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.js"
+      "require": "./dist/cjs/index.js",
+      "react-native": "./dist/cjs/index.native.js"
     }
   },
   "dependencies": {
-    "@tamagui/adapt": "1.79.13",
-    "@tamagui/animate-presence": "1.79.13",
-    "@tamagui/aria-hidden": "1.79.13",
-    "@tamagui/compose-refs": "1.79.13",
-    "@tamagui/constants": "1.79.13",
-    "@tamagui/core": "1.79.13",
-    "@tamagui/create-context": "1.79.13",
-    "@tamagui/dismissable": "1.79.13",
-    "@tamagui/focus-scope": "1.79.13",
-    "@tamagui/helpers": "1.79.13",
-    "@tamagui/polyfill-dev": "1.79.13",
-    "@tamagui/popper": "1.79.13",
-    "@tamagui/portal": "1.79.13",
-    "@tamagui/remove-scroll": "1.79.13",
-    "@tamagui/sheet": "1.79.13",
-    "@tamagui/stacks": "1.79.13",
-    "@tamagui/text": "1.79.13",
-    "@tamagui/use-controllable-state": "1.79.13"
+    "@tamagui/adapt": "1.91.5",
+    "@tamagui/animate-presence": "1.91.5",
+    "@tamagui/aria-hidden": "1.91.5",
+    "@tamagui/compose-refs": "1.91.5",
+    "@tamagui/constants": "1.91.5",
+    "@tamagui/core": "1.91.5",
+    "@tamagui/create-context": "1.91.5",
+    "@tamagui/dismissable": "1.91.5",
+    "@tamagui/focus-scope": "1.91.5",
+    "@tamagui/helpers": "1.91.5",
+    "@tamagui/polyfill-dev": "1.91.5",
+    "@tamagui/popper": "1.91.5",
+    "@tamagui/portal": "1.91.5",
+    "@tamagui/remove-scroll": "1.91.5",
+    "@tamagui/sheet": "1.91.5",
+    "@tamagui/stacks": "1.91.5",
+    "@tamagui/text": "1.91.5",
+    "@tamagui/use-controllable-state": "1.91.5"
   },
   "peerDependencies": {
     "react": "*",
     "react-native": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.79.13",
+    "@tamagui/build": "1.91.5",
     "react": "^18.2.0",
-    "react-native": "^0.72.1"
+    "react-native": "^0.73.4"
   },
   "publishConfig": {
     "access": "public"

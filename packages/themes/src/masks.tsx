@@ -1,5 +1,5 @@
+import type { MaskDefinitions } from '@tamagui/create-theme'
 import {
-  MaskDefinitions,
   combineMasks,
   createIdentityMask,
   createInverseMask,

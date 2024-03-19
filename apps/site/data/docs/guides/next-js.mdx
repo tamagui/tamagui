@@ -28,8 +28,6 @@ module.exports = function (name, { defaultConfig }) {
     // optional advanced settings:
 
     // set to false if you never call addTheme or updateTheme
-    // when combined with outputCSS this saves you 1Kb more bundle size
-    doesMutateThemes: true, // default true
   })
 
   return {
@@ -172,9 +170,8 @@ Add this to your `_app.tsx` render output:
 ```tsx
 <NextHead>
   <script
-    key="tamagui-animations-mount"
     dangerouslySetInnerHTML={{
-      // avoid flash of animated things on enter
+      // avoid flash of entered elements before enter animations run:
       __html: `document.documentElement.classList.add('t_unmounted')`,
     }}
   />

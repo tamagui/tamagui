@@ -3,11 +3,9 @@ import { AnimatePresence } from '@tamagui/animate-presence'
 import { hideOthers } from '@tamagui/aria-hidden'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
+import type { GetProps, StackProps, TamaguiElement } from '@tamagui/core'
 import {
-  GetProps,
   GetRef,
-  StackProps,
-  TamaguiElement,
   TamaguiTextElement,
   Theme,
   View,
@@ -17,19 +15,19 @@ import {
   useMedia,
   useThemeName,
 } from '@tamagui/core'
-import { Scope, createContext, createContextScope } from '@tamagui/create-context'
-import { Dismissable, DismissableProps } from '@tamagui/dismissable'
-import { FocusScope, FocusScopeProps } from '@tamagui/focus-scope'
+import type { Scope } from '@tamagui/create-context'
+import { createContext, createContextScope } from '@tamagui/create-context'
+import type { DismissableProps } from '@tamagui/dismissable'
+import { Dismissable } from '@tamagui/dismissable'
+import type { FocusScopeProps } from '@tamagui/focus-scope'
+import { FocusScope } from '@tamagui/focus-scope'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
-import { PortalHost, PortalItem, PortalItemProps } from '@tamagui/portal'
+import type { PortalItemProps } from '@tamagui/portal'
+import { Portal, PortalHost, PortalItem } from '@tamagui/portal'
 import { RemoveScroll } from '@tamagui/remove-scroll'
 import { Overlay, Sheet, SheetController } from '@tamagui/sheet'
-import {
-  ButtonNestingContext,
-  ThemeableStack,
-  YStack,
-  YStackProps,
-} from '@tamagui/stacks'
+import type { YStackProps } from '@tamagui/stacks'
+import { ButtonNestingContext, ThemeableStack, YStack } from '@tamagui/stacks'
 import { H2, Paragraph } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
@@ -142,6 +140,8 @@ type DialogPortalProps = Omit<PortalItemProps, 'asChild'> &
   }
 
 export const DialogPortalFrame = styled(YStack, {
+  pointerEvents: 'none',
+
   variants: {
     unstyled: {
       false: {
@@ -223,12 +223,12 @@ const DialogPortal: React.FC<DialogPortalProps> = (
     setIsFullyHidden(false)
   }
 
+  const handleExitComplete = React.useCallback(() => {
+    setIsFullyHidden(true)
+  }, [])
+
   const contents = (
-    <AnimatePresence
-      onExitComplete={() => {
-        setIsFullyHidden(true)
-      }}
-    >
+    <AnimatePresence onExitComplete={handleExitComplete}>
       {isShowing ? children : null}
     </AnimatePresence>
   )
@@ -243,14 +243,25 @@ const DialogPortal: React.FC<DialogPortalProps> = (
       return null
     }
 
+    const framedContents = (
+      <PortalProvider scope={__scopeDialog} forceMount={forceMount}>
+        <DialogPortalFrame pointerEvents={isShowing ? 'auto' : 'none'} {...frameProps}>
+          {contents}
+        </DialogPortalFrame>
+      </PortalProvider>
+    )
+
+    if (isWeb) {
+      // no need for portal nonsense on web
+      return (
+        <Portal zIndex={props.zIndex ?? 100_000}>
+          <PassthroughTheme>{framedContents}</PassthroughTheme>
+        </Portal>
+      )
+    }
+
     return (
-      <DialogPortalItem __scopeDialog={__scopeDialog}>
-        <PortalProvider scope={__scopeDialog} forceMount={forceMount}>
-          <DialogPortalFrame pointerEvents={isShowing ? 'auto' : 'none'} {...frameProps}>
-            {contents}
-          </DialogPortalFrame>
-        </PortalProvider>
-      </DialogPortalItem>
+      <DialogPortalItem __scopeDialog={__scopeDialog}>{framedContents}</DialogPortalItem>
     )
   }
 
@@ -258,6 +269,16 @@ const DialogPortal: React.FC<DialogPortalProps> = (
 }
 
 DialogPortal.displayName = PORTAL_NAME
+
+const PassthroughTheme = ({ children }) => {
+  const themeName = useThemeName()
+
+  return (
+    <Theme name={themeName} forceClassName>
+      {children}
+    </Theme>
+  )
+}
 
 /* -------------------------------------------------------------------------------------------------
  * DialogOverlay
@@ -435,6 +456,9 @@ const DialogContentModal = React.forwardRef<TamaguiElement, DialogContentTypePro
         {...props}
         context={context}
         ref={composedRefs}
+        // we make sure focus isn't trapped once `DialogContent` has been closed
+        // (closed !== unmounted when animating out)
+        trapFocus={context.open}
         disableOutsidePointerEvents
         onCloseAutoFocus={composeEventHandlers(props.onCloseAutoFocus, (event) => {
           event.preventDefault()
@@ -457,6 +481,9 @@ const DialogContentModal = React.forwardRef<TamaguiElement, DialogContentTypePro
         onFocusOutside={composeEventHandlers(props.onFocusOutside, (event) =>
           event.preventDefault()
         )}
+        {...(!props.unstyled && {
+          outlineStyle: 'none',
+        })}
       >
         {children}
       </DialogContentImpl>
@@ -581,28 +608,28 @@ const DialogContentImpl = React.forwardRef<TamaguiElement, DialogContentImplProp
 
     return (
       <>
-        <FocusScope
-          loop
-          enabled={context.open}
-          trapped={trapFocus}
-          onMountAutoFocus={onOpenAutoFocus}
+        <Dismissable
+          disableOutsidePointerEvents={context.open && disableOutsidePointerEvents}
           forceUnmount={!context.open}
-          onUnmountAutoFocus={onCloseAutoFocus}
+          onEscapeKeyDown={onEscapeKeyDown}
+          onPointerDownOutside={onPointerDownOutside}
+          onFocusOutside={onFocusOutside}
+          onInteractOutside={onInteractOutside}
+          // @ts-ignore
+          ref={composedRefs}
+          onDismiss={() => context.onOpenChange(false)}
         >
-          <Dismissable
-            disableOutsidePointerEvents={context.open && disableOutsidePointerEvents}
+          <FocusScope
+            loop
+            enabled={context.open}
+            trapped={trapFocus}
+            onMountAutoFocus={onOpenAutoFocus}
             forceUnmount={!context.open}
-            onEscapeKeyDown={onEscapeKeyDown}
-            onPointerDownOutside={onPointerDownOutside}
-            onFocusOutside={onFocusOutside}
-            onInteractOutside={onInteractOutside}
-            // @ts-ignore
-            ref={composedRefs}
-            onDismiss={() => context.onOpenChange(false)}
+            onUnmountAutoFocus={onCloseAutoFocus}
           >
             {contents}
-          </Dismissable>
-        </FocusScope>
+          </FocusScope>
+        </Dismissable>
         {process.env.NODE_ENV === 'development' && (
           <>
             <TitleWarning titleId={context.titleId} />
@@ -628,7 +655,7 @@ const DialogTitleFrame = styled(H2, {
 
 type DialogTitleProps = GetProps<typeof DialogTitleFrame>
 
-const DialogTitle = React.forwardRef<TamaguiTextElement, DialogTitleProps>(
+const DialogTitle = DialogTitleFrame.styleable(
   (props: ScopedProps<DialogTitleProps>, forwardedRef) => {
     const { __scopeDialog, ...titleProps } = props
     const context = useDialogContext(TITLE_NAME, __scopeDialog)
@@ -650,20 +677,19 @@ type DialogDescriptionProps = GetProps<typeof DialogDescriptionFrame>
 
 const DESCRIPTION_NAME = 'DialogDescription'
 
-const DialogDescription = React.forwardRef<
-  GetRef<typeof DialogDescriptionFrame>,
-  DialogDescriptionProps
->((props: ScopedProps<DialogDescriptionProps>, forwardedRef) => {
-  const { __scopeDialog, ...descriptionProps } = props
-  const context = useDialogContext(DESCRIPTION_NAME, __scopeDialog)
-  return (
-    <DialogDescriptionFrame
-      id={context.descriptionId}
-      {...descriptionProps}
-      ref={forwardedRef}
-    />
-  )
-})
+const DialogDescription = DialogDescriptionFrame.styleable(
+  (props: ScopedProps<DialogDescriptionProps>, forwardedRef) => {
+    const { __scopeDialog, ...descriptionProps } = props
+    const context = useDialogContext(DESCRIPTION_NAME, __scopeDialog)
+    return (
+      <DialogDescriptionFrame
+        id={context.descriptionId}
+        {...descriptionProps}
+        ref={forwardedRef}
+      />
+    )
+  }
+)
 
 DialogDescription.displayName = DESCRIPTION_NAME
 
@@ -678,11 +704,13 @@ const DialogCloseFrame = styled(View, {
   tag: 'button',
 })
 
-type DialogCloseProps = GetProps<typeof DialogCloseFrame> & {
+export interface DialogCloseExtraProps {
   displayWhenAdapted?: boolean
 }
 
-const DialogClose = DialogCloseFrame.styleable<DialogCloseProps>(
+type DialogCloseProps = GetProps<typeof DialogCloseFrame> & DialogCloseExtraProps
+
+const DialogClose = DialogCloseFrame.styleable<DialogCloseExtraProps>(
   (props: ScopedProps<DialogCloseProps>, forwardedRef) => {
     const { __scopeDialog, displayWhenAdapted, ...closeProps } = props
     const context = useDialogContext(CLOSE_NAME, __scopeDialog, {
@@ -702,9 +730,9 @@ const DialogClose = DialogCloseFrame.styleable<DialogCloseProps>(
         tag={isInsideButton ? 'span' : 'button'}
         {...closeProps}
         ref={forwardedRef}
-        onPress={composeEventHandlers(props.onPress as any, () =>
+        onPress={composeEventHandlers(props.onPress as any, () => {
           context.onOpenChange(false)
-        )}
+        })}
       />
     )
   }

@@ -1,5 +1,5 @@
-import { Variable, VariableValGeneric, isVariable } from '@tamagui/web'
-import { getTokens } from '@tamagui/web'
+import type { Variable, VariableValGeneric } from '@tamagui/web'
+import { getTokens, isVariable } from '@tamagui/web'
 
 // technically number | undefined just for compat with the generic VariableVal
 type GetTokenBase = Variable | string | number | undefined | VariableValGeneric
@@ -68,8 +68,8 @@ export const stepTokenUpOrDown = (
       ? cacheWholeKeys
       : cacheWholeVariables
     : isString
-    ? cacheKeys
-    : cacheVariables
+      ? cacheKeys
+      : cacheVariables
 
   const tokensOrdered = cache[type]
 

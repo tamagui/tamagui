@@ -1,6 +1,6 @@
-import { ThemeDefinitions } from '@tamagui/create-theme'
+import type { ThemeDefinitions } from '@tamagui/create-theme'
 
-import { masks } from './masks'
+import type { masks } from './masks'
 import { maskOptions } from './templates'
 
 type Masks = typeof masks

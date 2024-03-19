@@ -30,7 +30,7 @@ if (typeof require !== 'undefined') {
 export function UseCases() {
   const [theme, setTheme] = useState('blue')
 
-  const memoized = useMemo(() => <Square size={100} bc="$background" />, [])
+  const memoized = useMemo(() => <Square size={100} bg="$background" />, [])
 
   return (
     <Theme name={theme as any}>
@@ -110,7 +110,7 @@ export const Sandbox = () => {
         }}
         onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
       >
-        Switch theme
+        Scheme
       </button>
 
       <style
@@ -127,7 +127,7 @@ export const Sandbox = () => {
             pointerEvents: 'auto',
             display: 'flex',
             flexDirection: 'column',
-            background: 'var(--backgroundStrong)',
+            background: 'var(--background)',
             alignItems: 'center',
             justifyContent: 'center',
             minHeight: '120vh',
@@ -136,7 +136,7 @@ export const Sandbox = () => {
         >
           {/* <SelectDemo /> */}
 
-          <Header dataSet={{ hello: 'world' }}>
+          <Header data-hello="world">
             <StyledSizableText>ok</StyledSizableText>
           </Header>
 
@@ -270,7 +270,7 @@ export const Sandbox = () => {
           {/* <DialogDemo /> */}
           {/* <InputsDemo /> */}
           {/* <SelectDemo /> */}
-          {/* <ScrollView bc="yellow" p="$1" $gtXs={{ bc: 'blue', p: '$4' }} maxHeight={200}>
+          {/* <ScrollView bc="yellow" p="$1" $gtXs={{ bg: 'blue', p: '$4' }} maxHeight={200}>
           <Square bc="red" size={100} />
           <Square bc="red" size={100} />
           <Square bc="red" size={100} />
@@ -384,7 +384,7 @@ function PerformanceTest() {
   const [t, setT] = useState('pink' as any)
   return (
     <YStack theme={t}>
-      <Square onPress={() => setT('blue')} size={100} bc="$color10" />
+      <Square onPress={() => setT('blue')} size={100} bg="$color10" />
     </YStack>
   )
 }
@@ -395,7 +395,7 @@ function UseThemeNameTest() {
   return (
     <Theme name={name as any}>
       <Button onPress={() => setname('red')}>Change</Button>
-      <Square accessibilityElementsHidden bc="$background" />
+      <Square accessibilityElementsHidden bg="$background" />
       <UseThemeNameChildTest />
     </Theme>
   )
@@ -416,7 +416,7 @@ function ThemeInverseReverseTest() {
           {/* should be light */}
           <Theme inverse>
             {/* should be dark */}
-            <Square bc="$background" size={100} />
+            <Square bg="$background" size={100} />
           </Theme>
         </Theme>
       </Theme>

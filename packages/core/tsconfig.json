@@ -2,12 +2,15 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "composite": true,
-    "strict": true,
+    "strict": true
   },
   "exclude": [
     "./native.d.ts",
     "./native-test.d.ts",
-    "./types"
+    "./types",
+    "types",
+    "dist",
+    "**/__tests__"
   ],
   "references": [
     {
@@ -15,6 +18,6 @@
     },
     {
       "path": "../use-force-update"
-    },
+    }
   ]
 }

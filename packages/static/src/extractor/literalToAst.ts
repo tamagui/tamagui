@@ -70,7 +70,8 @@ function computeProps(props) {
         ...acc,
         ...astToLiteral(prop.argument),
       }
-    } else if (prop.type !== 'ObjectMethod') {
+    }
+    if (prop.type !== 'ObjectMethod') {
       const val = astToLiteral(prop.value)
       if (val !== undefined) {
         return {

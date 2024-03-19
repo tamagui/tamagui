@@ -4,7 +4,7 @@ export function ImageDemo() {
   return (
     <Image
       source={{
-        uri: 'https://placekitten.com/200/300',
+        uri: 'https://picsum.photos/200/300',
         width: 200,
         height: 300,
       }}

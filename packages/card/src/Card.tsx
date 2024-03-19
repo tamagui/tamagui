@@ -1,6 +1,7 @@
-import { withStaticProperties } from '@tamagui/helpers'
 import { ThemeableStack } from '@tamagui/stacks'
-import { GetProps, SizeTokens, createStyledContext, styled } from '@tamagui/web'
+import type { GetProps, SizeTokens } from '@tamagui/web'
+import { createStyledContext, styled, withStaticProperties } from '@tamagui/web'
+
 const CardContext = createStyledContext({
   size: '$true' as SizeTokens,
 })

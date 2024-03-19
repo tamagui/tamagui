@@ -1,6 +1,6 @@
 // this allows us to swap between core native and web in the same process:
 
-import { TamaguiPlatform } from '../types'
+import type { TamaguiPlatform } from '../types'
 
 export function requireTamaguiCore(
   platform: TamaguiPlatform,

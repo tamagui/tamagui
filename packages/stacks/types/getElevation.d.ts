@@ -1,4 +1,4 @@
-import { SizeTokens, SizeVariantSpreadFunction, StackProps, VariantSpreadExtras } from '@tamagui/core';
+import type { SizeTokens, SizeVariantSpreadFunction, StackProps, VariantSpreadExtras } from '@tamagui/core';
 export declare const getElevation: SizeVariantSpreadFunction<StackProps>;
 export declare const getSizedElevation: (val: SizeTokens | number | boolean, { theme, tokens }: VariantSpreadExtras<any>) => {
     elevationAndroid?: number | undefined;

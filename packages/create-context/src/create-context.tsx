@@ -14,7 +14,7 @@ export function createContext<ContextValueType extends object | null>(
   function Provider(props: ContextValueType & { children: React.ReactNode }) {
     const { children, ...context } = props
     // Only re-memoize when prop values change
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
     const value = React.useMemo(() => context, Object.values(context)) as ContextValueType
     return <Context.Provider value={value}>{children}</Context.Provider>
   }
@@ -71,7 +71,7 @@ export function createContextScope(
       const { scope, children, ...context } = props
       const Context = scope?.[scopeName]?.[index] || BaseContext
       // Only re-memoize when prop values change
-      // eslint-disable-next-line react-hooks/exhaustive-deps
+
       const value = React.useMemo(
         () => context,
         Object.values(context)
@@ -99,9 +99,8 @@ export function createContextScope(
           console.warn(missingContextMessage)
         }
         return options.fallback as ContextValueType
-      } else {
-        throw new Error(missingContextMessage)
       }
+      throw new Error(missingContextMessage)
     }
 
     Provider.displayName = `${rootComponentName}Provider`
@@ -150,7 +149,7 @@ function composeContextScopes(...scopes: CreateScope[]) {
       const nextScopes = scopeHooks.reduce((nextScopes, { useScope, scopeName }) => {
         // We are calling a hook inside a callback which React warns against to avoid inconsistent
         // renders, however, scoping doesn't have render side effects so we ignore the rule.
-        // eslint-disable-next-line react-hooks/rules-of-hooks
+
         const scopeProps = useScope(overrideScopes)
         const currentScope = scopeProps[`__scope${scopeName}`]
         return { ...nextScopes, ...currentScope }

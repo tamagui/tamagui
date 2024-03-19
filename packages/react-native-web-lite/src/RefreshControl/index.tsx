@@ -8,7 +8,7 @@
  * @flow
  */
 
-import { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
 import type { ColorValue } from '../types'
 import type { ViewProps } from '../View/index'

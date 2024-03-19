@@ -10,21 +10,20 @@ export const InstallInput = memo(() => {
 
   return (
     <XStack
-      borderWidth={1}
-      borderColor="$borderColor"
+      borderWidth={0.5}
+      borderColor="$color6"
       px="$7"
       pl="$6"
       height={48}
       ai="center"
       als="center"
       elevation="$3"
-      bc="$background"
+      bg="$color2"
       br="$10"
     >
       <Paragraph
         ta="center"
         size="$5"
-        y={1}
         fontWeight="500"
         fontFamily="$mono"
         $sm={{ size: '$3' }}

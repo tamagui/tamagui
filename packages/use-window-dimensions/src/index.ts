@@ -1,6 +1,7 @@
 import { isWeb } from '@tamagui/constants'
 import { useSyncExternalStore } from 'react'
-import { Dimensions, ScaledSize } from 'react-native'
+import type { ScaledSize } from 'react-native'
+import { Dimensions } from 'react-native'
 
 /**
  * SSR safe useWindowDimensions

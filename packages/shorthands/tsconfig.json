@@ -1,10 +1,14 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "composite": true,
-    
+    "composite": true
   },
-  "references": [
-    
+  "references": [],
+  "exclude": [
+    "types",
+    "dist",
+    "**/__tests__",
+    "v2.js",
+    "v2.d.ts",
   ]
 }

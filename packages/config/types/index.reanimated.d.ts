@@ -4,17 +4,17 @@ export * from './animations.reanimated';
 export declare const config: {
     animations: import("@tamagui/web").AnimationDriver<{
         '100ms': {
-            type: string;
+            type: "timing";
             duration: number;
         };
         bouncy: {
-            type: string;
+            type: "spring";
             damping: number;
             mass: number;
             stiffness: number;
         };
         lazy: {
-            type: string;
+            type: "spring";
             damping: number;
             stiffness: number;
         };
@@ -24,18 +24,18 @@ export declare const config: {
             mass: number;
         };
         slow: {
-            type: string;
+            type: "spring";
             damping: number;
             stiffness: number;
         };
         quick: {
-            type: string;
+            type: "spring";
             damping: number;
             mass: number;
             stiffness: number;
         };
         tooltip: {
-            type: string;
+            type: "spring";
             damping: number;
             mass: number;
             stiffness: number;
@@ -774,11 +774,6 @@ export declare const config: {
             19: import("@tamagui/web").Variable<number>;
             20: import("@tamagui/web").Variable<number>;
         };
-        icon: {
-            sm: import("@tamagui/web").Variable<number>;
-            md: import("@tamagui/web").Variable<number>;
-            lg: import("@tamagui/web").Variable<number>;
-        };
     }, "zIndex" | "color" | "size" | "space" | "radius">;
     fonts: {
         heading: import("@tamagui/web").FillInFont<{
@@ -822,8 +817,8 @@ export declare const config: {
                     normal: string;
                 };
             };
-        }, 9 | 15 | 1 | 10 | 11 | 12 | 14 | 16 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 13 | "true">;
-        body: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 1 | 10 | 11 | 12 | 14 | 16 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 13 | "true">;
+        }, 9 | 15 | 1 | 10 | 5 | 14 | 11 | 12 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
+        body: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 1 | 10 | 5 | 14 | 11 | 12 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
         mono: {
             weight: {
                 1: string;
@@ -847,7 +842,7 @@ export declare const config: {
                 16: number;
             };
         };
-        silkscreen: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 1 | 10 | 11 | 12 | 14 | 16 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 13>;
+        silkscreen: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 1 | 10 | 5 | 14 | 11 | 12 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13>;
     };
     mediaQueryDefaultActive: {
         xl: boolean;

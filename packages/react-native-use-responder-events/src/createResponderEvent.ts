@@ -4,7 +4,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { ResponderTouchHistoryStore, TouchHistory } from './ResponderTouchHistoryStore'
+import type {
+  ResponderTouchHistoryStore,
+  TouchHistory,
+} from './ResponderTouchHistoryStore'
 import { getBoundingClientRect } from './utils'
 
 export type ResponderEvent = {

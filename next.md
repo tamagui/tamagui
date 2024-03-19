@@ -1,7 +1,114 @@
+- <Theme name="dark"> force below root dark causing hydration issues
+
+- Animation + shadowOffset is causing crash in iOS due to object value
+  - "auto" too
+
+- Adapt needs public API to support any adaptation
+
+- v2-3 ListItem simplification esp for performance of Select
+
+- Select Virtualization
+
+- style()
+
+- i think acceptTokens + compiler not working (see selectionColor)
+
+- settings page in takeout SSR hydration issue due to useThemeSetting
+
+- animatedStyle showing up in animated component snapshot on native
+  - add some native snapshots in ci tests
+
+- addTheme updateTheme regression needs a test
+
+- not seeing data-at props
+
+- add more web-only stlye props:
+  - filter, backdropFilter, mixBlendMode are really good for $theme-light/dark
+  - fontSmoothing, clipPath, textShadow, backgroundImage, maskImage, maskSize...
+- Group is not SSR safe because useProps is evaluating to specific media queries
+on the server and then ultimately becomes not-media-css
+
+- type to search on Select regressed
+
+- masks wasn't exported in my version of @tamagui/theme-builder (1.88.18). I had to grab it from @tamagui/themes/v2-themes instead
+
+- // TODO: pulling past the limit breaks scroll on native, need to better make ScrollView
+
+- icons move from themed() to just styled()
+
+- nextjs plugin should automatically do the t_unmounted thing if disableSSR isnt true
+
+- // TODO ?
+- make studio not build unless `studio(` in commit
+
+- native theme change warning logs + theme change speed
+
+- document popover hoverable + onOpenChange second arg via
+
+- add $mouse to takeout
+
+- bug in generated icon props
+  - https://discord.com/channels/909986013848412191/1178185816426680370/1199854688233857136
+
+- compiler - no need to setup any separate package
+
+- 2.0 rename SizableStack to Surface and simplify a bit
+
+- Remove the need for Text
+
+- document the t_unmounted / SSR
+- $theme-light in prod mode SSR issue
+- popovers work with no js
+
+- remove proxy worm swap behavior except for whitelisted ones
+- TODO
+  - process.env.TAMAGUI_TARGET === 'native' ? false : props['data-disable-theme']
+  - this looks wrong? shouldnt it be the same as on native? we may be doubling them on accident
+- Select `ListItemFrame` area is messy/slow due to inline styles and complex components
+- propMode
+
+- make styled() only not accept most non-style props
+
+- causes leftover props in DOM:
+
+<Stack
+  hitSlop={5}
+  onAccessibilityAction={[]}
+  importantForAccessibility="no"
+  needsOffscreenAlphaCompositing
+/>
+
+- useStyle and others can have forComponent types
+
+- docs:
+  - for ssr need for t_unmounted
+  - explain how ssr works
+
+- tests:
+  - SSR e2e with animations
+  - onLayout + RN or not
+  - active/focus/press styles (+ animations) (+ media queries)
+    - we have some of these but more better
+
+- TODO this is duplicated
+
+- this could work automatically? or with a simple config:
+const ScrollViewTamagui = styled(ScrollView, {
+  bg: '$background',
+  contentContainerStyle: {
+    flex: 1,
+    padding: "$md',
+  }
+})
+
+
+studio: add outlineColor and the pseudos
+studio: export for takeout option
+
 outlineWidth get smaller at smaller size
 
 studio:
-  - Scale / ScaleSelect 
+  - Scale / ScaleSelect
     should be a Menu with mini visualizations of the lum/sat scales for each
 
 - gradient style
@@ -10,7 +117,7 @@ studio:
 
 - studio:
   - instead of automatic scale:
-    - symettrical (automatic)
+    - symmetrical (automatic)
     - mirrored (inverses)
   - pre-configure themes
     - stronger, dimmer
@@ -32,7 +139,7 @@ studio:
 - studio: add partial transparent for each color step?
 
 - // TODO breaks next.js themes page
-- alt themes dont change color1-9 so you can't do color2 and then make the alt theme make it more subtle, but they should
+- alt themes don't change color1-9 so you can't do color2 and then make the alt theme make it more subtle, but they should
 
 - disableClassName breaking css animation
 - css animateOnly should always force style tag styles
@@ -82,7 +189,7 @@ type StackStyle = {
 
 const mySubStyle: StackStyle = style(Stack, {
   backgroundColor: 'red', // optimizes on web to _bg-red
-  
+
   pressStyle: {
     backgroundColor: 'blue', // optimizes on web to _press-bg-blue
   }
@@ -149,7 +256,7 @@ Studio:
   - Contrast
     - needs to be able to pick the foreground color manually
     - by default it picks a nice contrast (opposite scale end) foreground
-    - 
+    -
   - Mask themes
     - Need to be fixed in general and improved defaults
   - Final Step
@@ -174,7 +281,7 @@ Components:
 
   - Native
     - Select
-      - iOS Select as well as the newer SwiftUI menu style Picker      
+      - iOS Select as well as the newer SwiftUI menu style Picker
     - Sheet native android - https://github.com/intergalacticspacehighway/react-native-android-bottomsheet
 
   - Menu
@@ -198,7 +305,7 @@ V2:
       - col => c
       - remove bg/bc confusion
     - remove suppressHighlighting / margin 0 default from Text
-    - compiler can accummulate them and emit a file?
+    - compiler can accumulate them and emit a file?
   - basic plugins system
   - no separate UI package necessary for optimization
   - if dynamic eval flattens every usage, remove the definition
@@ -217,7 +324,7 @@ V2:
 
 - cli needs a start update command just runs diff against your `~/.tamagui/tamagui`
 
-- sheet native ios snapPoints
+- sheet native iOS snapPoints
   - pre release 2.0 version of library
   - https://github.com/dominicstop/react-native-ios-modal/blob/wip/example/src/examples/Test09.tsx
 
@@ -230,7 +337,7 @@ a package.json etc etc + zip file
 - Studio: drag and drop a font and you can configure the subset
   - automatically converts to the right output formats
   - auto generates CSS
-  - bundles it into 
+  - bundles it into
 
 - <Sheet native />
   - https://github.com/dominicstop/react-native-ios-modal
@@ -254,13 +361,13 @@ a package.json etc etc + zip file
   - add `defaultSize`, and `defaultColor`
   - add `relative()` helpers
 
-- bug: inputs rendering twice due to focusableInputHOC, if you remove that it doesnt, this is due to styled() + how it determines ComponentIn and grabs the component
+- bug: inputs rendering twice due to focusableInputHOC, if you remove that it doesn't, this is due to styled() + how it determines ComponentIn and grabs the component
 
 - document `unstyled` prop for components
 
 - docs for `@tamagui/font` and `@tamagui/theme`
 
-- https://github.com/tamagui/tamagui/pull/765 
+- https://github.com/tamagui/tamagui/pull/765
 
 - getVariableValue(props.fontFamily) doesn't look right
 
@@ -270,13 +377,13 @@ https://reactnative.dev/blog/2023/01/12/version-071#web-inspired-props-for-acces
 Ali:
 
 - [ ] document keyboard avoiding view in `Sheet.mdx`
-- [ ] input bug 
+- [ ] input bug
 - [ ] @tamagui/change-animation-driver document
 - [ ] Disable warning ENV + configuration.md docs
   - [ ] (nate) make focusStyle border darker
 - [ ] bezier on css animations
   - [ ] disablePassBorderRadius feels like a weird thing to need by default
-    - change Group's disablePassBorderRadius to something else - perhaps the negation, passBorderRadius? i'm not sure. what do you think about this @natew 
+    - change Group's disablePassBorderRadius to something else - perhaps the negation, passBorderRadius? i'm not sure. what do you think about this @natew
     alternatively we could have disablePassBorderRadius default to true only on Tabs.List. but then overriding it would feel awkward (having to pass disablePassBorderRadius={false})
   - [ ] and document on styled() page
 - native component modes
@@ -290,7 +397,7 @@ Ali:
 - light/dark theme buttons bad colors (contrast + pressStyle borders)
 
 - add JSDoc help with links to docs for components
-  - also can we somehow make intellisense sort the props in a way we want by default? itd be ncie to have style props after the others
+  - also can we somehow make intellisense sort the props in a way we want by default? it would be nice to have style props after the others
 
 - Card has a good use case for size being passed through context/css vars
 - linear-gradient next.js issue
@@ -300,7 +407,7 @@ Ali:
 - add Themes page in docs under Theme, change Theme => Design System
 - move packages to have unstyled
 - move packages from /core to /web
-- // TODO move into getSplitStyles inital `if (process.env.TAMAGUI_TARGET === 'web')` block
+- // TODO move into getSplitStyles initial `if (process.env.TAMAGUI_TARGET === 'web')` block
 
 ----
 
@@ -311,7 +418,7 @@ Ali:
 - check into shadow/elevation not showing
 - survey https://tripetto.app or gforms
 
-- unset: useful for unstyled to usnet the defaultVariatn size
+- unset: useful for unstyled to unset the defaultVariant size
 
 ---
 
@@ -336,7 +443,6 @@ Ali:
 
 - createThemes accepts array not object
 - site _app has t_unmounted helper, move that into tamagui proper
-- SimpleTooltip no sub theme looks bad on dark mode
 
 ---
 
@@ -419,7 +525,7 @@ Ali:
 - <UL /> <LI /> <OL />
 - hoverStyle={{ [XStack]: {} }}
 - <List.Section /> see (https://developer.apple.com/documentation/swiftui/list Section)
-- <GradientText /> can work native with 
+- <GradientText /> can work native with
   - https://github.com/react-native-masked-view/masked-view
 - react-native-skia / svg image support
 - beforeStyle, afterStyle could work ...
@@ -446,7 +552,7 @@ Ali:
     - Zeego uses react-native-ios-context-menu
     - https://github.com/nandorojo/zeego/blob/master/packages/zeego/src/menu/create-ios-menu/index.ios.tsx
   - android:
-    - Zeego uses 
+    - Zeego uses
     - @react-native-menu/menu
     - https://github.com/nandorojo/zeego/blob/master/packages/zeego/src/menu/create-android-menu/index.android.tsx
 
@@ -500,11 +606,17 @@ Themes can completely transform the look and feel, a button could have multiple 
 
 - 3.0 - single forward pass generates the css alongside the style object
 
-- Fix ToggleGroup active style looking really bad only sticking sometimes
   - in general we need a better system for controlling if we apply active theme or not, or letting consumers control the active styling in general on things
     - perhaps we do active theme by default (unless unstyled: true)
     - <ToggleGroup activeItemProps={{ active: true }}>
     - <ToggleGroup.Item /> then would recieve active={true}?
     - defaults to theme: 'active'
 
-- <Image borderWidth="$2" /> not turning into val via psgeorge
+- `import { _ } from '@tamagui/core'`
+  - `<_.view />` `<_.text />`
+  - put it on globalThis and override type for super quick authoring
+  - can extend with your own
+    - `<_.p />` `<_.a />` `<.img />` etc
+  - can proxy to itself allowing for naming?
+    - `<_.view.my-thing />`
+

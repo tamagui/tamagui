@@ -4,7 +4,7 @@ export function objectIdentityKey(obj: Object) {
     k += key
     const arg = obj[key]
     let type = typeof arg
-    if (!arg || type !== 'object') {
+    if (!arg || (type !== 'object' && type !== 'function')) {
       k += type + arg
     } else if (cache.has(arg)) {
       k += cache.get(arg)

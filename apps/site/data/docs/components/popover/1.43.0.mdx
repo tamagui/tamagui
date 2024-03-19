@@ -148,12 +148,6 @@ Contains every component for the popover.
       required: false,
       description: `Determines the distance the Popover appears from the target, see floating-ui offset().`,
     },
-    {
-      name: 'unstyled',
-      required: false,
-      type: `boolean`,
-      description: `Removes all default Tamagui styles.`,
-    },
   ]}
 />
 
@@ -166,6 +160,22 @@ Used to trigger opening of the popover when uncontrolled, just renders a YStack,
 Renders as SizableStack which is just a YStack (see [Stacks](/docs/components/stacks)) with an extra `size` prop that accepts any `SizeTokens`.
 
 Used to display the content of the popover.
+
+<PropsTable
+  data={[
+    {
+      name: 'size',
+      type: 'SizeTokens',
+      required: false,
+    },
+    {
+      name: 'unstyled',
+      required: false,
+      type: `boolean`,
+      description: `Removes all default Tamagui styles.`,
+    },
+  ]}
+/>
 
 ### Popover.Anchor
 

@@ -1,6 +1,7 @@
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { isTouchable } from '@tamagui/constants'
-import { MediaQueryKey, useMedia } from '@tamagui/core'
+import type { MediaQueryKey } from '@tamagui/core'
+import { useMedia } from '@tamagui/core'
 import { withStaticProperties } from '@tamagui/helpers'
 import { createContext, createElement, useContext, useMemo, useState } from 'react'
 

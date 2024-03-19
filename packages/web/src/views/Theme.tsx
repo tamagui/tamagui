@@ -1,79 +1,80 @@
 import { isWeb } from '@tamagui/constants'
-import React, {
-  Children,
-  cloneElement,
-  forwardRef,
-  isValidElement,
-  useMemo,
-  useRef,
-} from 'react'
+import React, { Children, cloneElement, forwardRef, isValidElement, useRef } from 'react'
 
 import { variableToString } from '../createVariable'
-import { ThemeManagerContext } from '../helpers/ThemeManagerContext'
-import { ChangedThemeResponse, useChangeThemeEffect } from '../hooks/useTheme'
+import { ThemeManagerIDContext } from '../helpers/ThemeManagerContext'
+import type { ChangedThemeResponse } from '../hooks/useTheme'
+import { useChangeThemeEffect } from '../hooks/useTheme'
 import type { ThemeProps } from '../types'
 import { ThemeDebug } from './ThemeDebug'
 
-export const Theme = forwardRef(function Theme(props: ThemeProps, ref) {
+export const Theme = forwardRef(function Theme({ children, ...props }: ThemeProps, ref) {
   // @ts-expect-error only for internal views
   if (props.disable) {
-    return props.children
+    return children
   }
 
   const isRoot = !!props['_isRoot']
-  const disableDirectChildTheme = props['disable-child-theme']
   const themeState = useChangeThemeEffect(props, isRoot)
+  const disableDirectChildTheme = props['disable-child-theme']
 
-  const children = useMemo(() => {
-    let children = disableDirectChildTheme
-      ? Children.map(props.children, (child) =>
-          cloneElement(child, { ['data-disable-theme']: true })
-        )
-      : props.children
+  let finalChildren = disableDirectChildTheme
+    ? Children.map(children, (child) =>
+        cloneElement(child, { ['data-disable-theme']: true })
+      )
+    : children
 
-    if (ref) {
-      try {
-        React.Children.only(children)
-        children = cloneElement(children, { ref })
-      } catch {
-        //ok
-      }
+  if (ref) {
+    try {
+      React.Children.only(finalChildren)
+      finalChildren = cloneElement(finalChildren, { ref })
+    } catch {
+      //ok
     }
+  }
 
-    if (process.env.NODE_ENV === 'development') {
-      if (props.debug === 'visualize') {
-        children = (
-          <ThemeDebug themeState={themeState} themeProps={props}>
-            {children}
-          </ThemeDebug>
-        )
-      }
+  if (process.env.NODE_ENV === 'development') {
+    if (props.debug === 'visualize') {
+      finalChildren = (
+        <ThemeDebug themeState={themeState} themeProps={props}>
+          {finalChildren}
+        </ThemeDebug>
+      )
     }
+  }
 
-    return children
-  }, [props.children, disableDirectChildTheme])
-
-  return useThemedChildren(themeState, children, props, isRoot)
+  return getThemedChildren(themeState, finalChildren, props, isRoot)
 })
-
+Theme['displayName'] = 'Theme'
 Theme['avoidForwardRef'] = true
 
-export function useThemedChildren(
+export function getThemedChildren(
   themeState: ChangedThemeResponse,
   children: any,
   props: ThemeProps,
-  isRoot = false,
-  avoidWrap = false
+  isRoot = false
 ) {
   const { themeManager, isNewTheme } = themeState
-  const { shallow, forceClassName } = props
-  const hasEverThemed = useRef(false)
-  if (isNewTheme) {
-    hasEverThemed.current = true
+
+  // its always there.. should fix type
+  if (!themeManager) {
+    throw new Error(
+      process.env.NODE_ENV === 'development'
+        ? `❌ No theme found, either incorrect name, potential duplicate tamagui deps, or TamaguiProvider not providing themes.`
+        : `❌ 005`
+    )
   }
+
+  const { shallow, forceClassName } = props
+
+  // TODO remove hook and join with the parent stateRef in createComponent
+  const hasEverThemed = useRef(false)
 
   const shouldRenderChildrenWithTheme =
     isNewTheme || props.inverse || hasEverThemed.current || forceClassName || isRoot
+  if (shouldRenderChildrenWithTheme) {
+    hasEverThemed.current = true
+  }
 
   if (!shouldRenderChildrenWithTheme) {
     return children
@@ -82,7 +83,7 @@ export function useThemedChildren(
   let next = children
 
   // each children of these children wont get the theme
-  if (shallow && themeManager) {
+  if (shallow) {
     next = Children.toArray(children).map((child) => {
       return isValidElement(child)
         ? cloneElement(
@@ -96,19 +97,17 @@ export function useThemedChildren(
     })
   }
 
-  const elementsWithContext = themeManager ? (
-    <ThemeManagerContext.Provider value={themeManager}>
+  const elementsWithContext = (
+    <ThemeManagerIDContext.Provider value={themeManager.id}>
       {next}
-    </ThemeManagerContext.Provider>
-  ) : (
-    next
+    </ThemeManagerIDContext.Provider>
   )
 
   if (forceClassName === false) {
     return elementsWithContext
   }
 
-  if (isWeb && !avoidWrap) {
+  if (isWeb) {
     return wrapThemeElements({
       children: elementsWithContext,
       themeState,
@@ -138,10 +137,6 @@ function wrapThemeElements({
   const inverse = themeState.inversed
   const requiresExtraWrapper = inverse != null || forceClassName
 
-  if (!themeState.isNewTheme && !requiresExtraWrapper) {
-    return <span className="_dsp_contents is_Theme">{children}</span>
-  }
-
   const { className, style } = getThemeClassNameAndStyle(themeState, isRoot)
 
   let themedChildren = (
@@ -156,8 +151,8 @@ function wrapThemeElements({
     const inverseClassName = name.startsWith('light')
       ? 't_light is_inversed'
       : name.startsWith('dark')
-      ? 't_dark is_inversed'
-      : ''
+        ? 't_dark is_inversed'
+        : ''
     themedChildren = (
       <span className={`${inverse ? inverseClassName : ''} _dsp_contents`}>
         {themedChildren}
@@ -168,7 +163,13 @@ function wrapThemeElements({
   return themedChildren
 }
 
+const emptyObj = {}
+
 function getThemeClassNameAndStyle(themeState: ChangedThemeResponse, isRoot = false) {
+  if (!themeState.isNewTheme) {
+    return { className: '', style: emptyObj }
+  }
+
   // in order to provide currentColor, set color by default
   const themeColor =
     themeState.state?.theme && themeState.isNewTheme

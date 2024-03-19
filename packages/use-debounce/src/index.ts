@@ -16,17 +16,15 @@ export function debounce<A extends Function>(
 
   function debounced(this: any) {
     isCancelled = false
-    // eslint-disable-next-line @typescript-eslint/no-this-alias
-    const context = this
     const args = arguments
     if (leading && !timeout) {
-      func.apply(context, args)
+      func.apply(this, args)
     }
     clearTimeout(timeout)
-    timeout = setTimeout(function () {
+    timeout = setTimeout(() => {
       timeout = null
       if (!(leading || isCancelled)) {
-        func.apply(context, args)
+        func.apply(this, args)
       }
       isCancelled = false
     }, wait)
@@ -45,7 +43,7 @@ export function useDebounce<
   A extends (...args: any) => any | undefined | null,
   DebouncedFn extends A & {
     cancel: () => void
-  }
+  },
 >(
   fn: A,
   wait: number,

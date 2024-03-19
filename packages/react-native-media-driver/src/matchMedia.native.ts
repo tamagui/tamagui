@@ -1,4 +1,4 @@
-import { MatchMedia } from '@tamagui/web'
+import type { MatchMedia } from '@tamagui/web'
 
 import { NativeMediaQueryList } from './mediaQueryList'
 

@@ -1,5 +1,6 @@
 import { getFontSized } from '@tamagui/get-font-sized'
-import { GetProps, Text, styled } from '@tamagui/web'
+import type { GetProps } from '@tamagui/web'
+import { Text, styled } from '@tamagui/web'
 
 const variants = {
   unstyled: {

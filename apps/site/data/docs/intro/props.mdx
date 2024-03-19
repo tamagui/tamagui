@@ -1,92 +1,42 @@
 ---
 title: Tamagui Props
-description: All the properties supported on base Tamagui components.
+description: All props supported on base Tamagui components.
 ---
 
-Tamagui uses a superset of the style properties that are supported in React Native and React Native Web, and flattens them onto the direct properties of Stack and Text ([see why below](#why-its-important)). So you can write:
-
-```tsx
-import { Stack } from 'tamagui' // or '@tamagui/core'
-
-export default () => <Stack padding={10} backgroundColor="red" />
-```
-
-For the full list of style and non-style props, see:
+Tamagui supports a superset of the React Native props. Start with:
 
 - [View](https://reactnative.dev/docs/view-style-props), or
 - [Text](https://reactnative.dev/docs/text-style-props)
 
-You may also want to reference the [react-native-web docs](https://necolas.github.io/react-native-web/docs/) for more on props related to:
+From there, we add [style props](/docs/intro/styles) directly onto the same
+object.
 
-- [Accessibility](https://necolas.github.io/react-native-web/docs/accessibility/)
-- [Interactions](https://necolas.github.io/react-native-web/docs/interactions/)
-- [Localization](https://necolas.github.io/react-native-web/docs/localization/)
-
-Tamagui adds a few extra props, [read those below](#tamagui-props).
-
-### Order is important
-
-Tamagui props are sensitive to their order - a very nice feature, that without which would leave you with impossible styling challenges. Let's first explain how it works, and then why it's necessary.
-
-Define a new styled component:
-
-```tsx
-const CalHeader = styled(Text, {
-  variants: {
-    isHero: {
-      true: {
-        fontSize: 36,
-        backgroundColor: 'blue',
-        color: 'white',
-      },
-    },
-  },
-})
-```
-
-And then use it in a view you're building:
-
-```tsx
-export const MyCalendar = (props: { isHero?: boolean; headerFontSize?: number }) => {
-  return (
-    <>
-      {/* ... some other components... */}
-      <CalHeader isHero={props.isHero} fontSize={props.headerFontSize}>
-        {monthName}
-      </CalHeader>
-    </>
-  )
-}
-```
-
-#### Why it's important
-
-Notice two things: `isHero` sets a variety of properties, but you want to allow overriding one of those properties, `fontSize`.
-
-If Tamagui didn't respect the order of the props on the JSX element of `CalHeader`, you wouldn't know if the `isHero` font size wins, or if the `headerFontSize` wins.
-
-CSS does a "last defined style wins", which is a huge pain because it means you have to carefully manage the order your CSS is actually loaded into the document. Tamagui could do something similar, with a "inline props always win, defined props go in order of definition", but this would be dramatically less flexible.
-
-Especially when it comes to spreading props downwards. Because Tamagui supports prop order, you have complete control over which styles you want to always win, vs which can be overridden by a user:
-
-```tsx
-export const MyCalendarHeader = (props: CalHeaderProps) => {
-  return (
-    <CalHeader isHero {...props} fontSize={36}>
-      {monthName}
-    </CalHeader>
-  )
-}
-```
-
-This component defaults to `isHero` styles, but if a user passes in `isHero` as `false`, it will disable all those styles. But because `fontSize` is **always** after the spread, it will always be set to 36.
-
-### Tamagui props
-
-Outside of flat style properties, Tamagui adds the following props:
+Finally, there are a few non-style props Tamagui adds:
 
 <PropsTable
   data={[
+    {
+      name: 'animation',
+      required: false,
+      type: 'string',
+      description: (
+        <span>
+          Apply an animation as defined in your createTamagui configuration.
+        </span>
+      ),
+    },
+
+    {
+      name: 'animateOnly',
+      required: false,
+      type: 'string[]',
+      description: (
+        <span>
+          A list of properties to animate. Note that flat transforms can only be controlled via `transform`.
+        </span>
+      ),
+    },
+
     {
       name: 'theme',
       required: false,
@@ -137,7 +87,7 @@ Outside of flat style properties, Tamagui adds the following props:
       type: 'string',
       description: (
         <span>
-          <strong>Web Only</strong>: Renders the final element as the given tag.
+          <strong>Web Only</strong>: Renders the final element as the given tag. Note: React Native Web doesn't support tag and as such if using any animation driver except CSS the tag prop will stop working. We'd recommend using "role" for most cases.
         </span>
       ),
     },
@@ -148,6 +98,7 @@ Outside of flat style properties, Tamagui adds the following props:
       type: "boolean | string | TamaguiConfig['space']",
       description: (
         <span>
+          Deprecated, use gap instead -
           Spacing is built into Tamagui and can accept a number or Token.space value. This will
           filter out any nullish child elements and insert a spacer components between the remaining
           elements.
@@ -162,27 +113,9 @@ Outside of flat style properties, Tamagui adds the following props:
       type: `'horizontal' | 'vertical' | 'both'`,
       description: (
         <span>
-          By default the space inserted is a square, but if you set it to horizontal it will be 0px tall, vertical will be 0px wide.
+          Deprecated - By default the space inserted is a square, but if you set it to horizontal it will be 0px tall, vertical will be 0px wide.
         </span>
       ),
-    },
-
-    {
-      name: 'separator',
-      required: false,
-      type: "React.ReactNode",
-      description: (
-        <span>
-          Insert a custom separator between every child. If space is provided, the separator will appear with a space on either side.
-        </span>
-      ),
-    },
-
-    {
-      name: 'fullscreen',
-      required: false,
-      type: `boolean`,
-      description: <span>Sets position absolute, and top, left, right, and bottom all to 0.</span>,
     },
 
     {
@@ -209,303 +142,4 @@ Outside of flat style properties, Tamagui adds the following props:
       ),
     },
 
-]}
-/>
-
-### Text props
-
-Text adds the additional Text-specific props from [React Native Web](https://reactnative.dev/docs/text-style-props).
-
-### Flat transform properties
-
-For styling, Tamagui adds flattened transform properties, pseudo states and media queries:
-
-<PropsTable
-  data={[
-    {
-      name: 'x',
-      required: false,
-      type: 'string | number',
-      description: 'Maps to transform: [{ translateX }]',
-    },
-    {
-      name: 'y',
-      required: false,
-      type: 'string | number',
-      description: 'Maps to transform: [{ translateY }]',
-    },
-    {
-      name: 'scale',
-      required: false,
-      type: 'string | number',
-      description: 'Maps to transform: [{ scale }]',
-    },
-    {
-      name: 'perspective',
-      required: false,
-      type: 'string | number',
-      description: 'Maps to transform: [{ perspective }]',
-    },
-    {
-      name: 'scaleX',
-      required: false,
-      type: 'string | number',
-      description: 'Maps to transform: [{ scaleX }]',
-    },
-    {
-      name: 'scaleY',
-      required: false,
-      type: 'string | number',
-      description: 'Maps to transform: [{ scaleY }]',
-    },
-    {
-      name: 'skewX',
-      required: false,
-      type: 'string | number',
-      description: 'Maps to transform: [{ skewX }]',
-    },
-    {
-      name: 'skewY',
-      required: false,
-      type: 'string | number',
-      description: 'Maps to transform: [{ skewY }]',
-    },
-    {
-      name: 'matrix',
-      required: false,
-      type: 'string | number',
-      description: 'Maps to transform: [{ matrix }]',
-    },
-    {
-      name: 'rotate',
-      required: false,
-      type: 'string | number',
-      description: 'Maps to transform: [{ rotate }]',
-    },
-    {
-      name: 'rotateY',
-      required: false,
-      type: 'string | number',
-      description: 'Maps to transform: [{ rotateY }]',
-    },
-    {
-      name: 'rotateX',
-      required: false,
-      type: 'string | number',
-      description: 'Maps to transform: [{ rotateX }]',
-    },
-    {
-      name: 'rotateZ',
-      required: false,
-      type: 'string | number',
-      description: 'Maps to transform: [{ rotateZ }]',
-    },
-  ]}
-/>
-
-### Pseudo style props
-
-Support for `hoverStyle`, `pressStyle`, and `focusStyle` is helpful as it turns what typically is complex stateful code into pure CSS on web, and a more performant StyleSheet.create (compared to inline styles) for native. They can be used with media queries as well.
-
-```tsx
-<Text color="red" hoverStyle={{ color: 'blue' }} />
-```
-
-<PropsTable
-  data={[
-    {
-      name: 'hoverStyle',
-      required: false,
-      type: 'TamaguiStyleProps',
-      description: 'Web only: Applies the given style on hover',
-    },
-    {
-      name: 'pressStyle',
-      required: false,
-      type: 'TamaguiStyleProps',
-      description: 'Applies the given style on press',
-    },
-    {
-      name: 'focusStyle',
-      required: false,
-      type: 'TamaguiStyleProps',
-      description: 'Applies the given style on focus',
-    },
-  ]}
-/>
-
-## Parent based styling
-
-Tamagui has a variety of ways to style a child based on the "parent", a parent being one of: platform, screen size, theme, or group. All of these styles use the same pattern, they use a `$` prefix for their styles, and they nest styles as a sub-object.
-
-For example you can target `$theme-light`, `$platform-ios`, or `$group-header`. For screen size, which we call media queries, they have no prefix. Instead you define media queries on `createTamagui`. For example, if you define a media query named `large`, then `$large` is the prop name.
-
-These parent style props accept all the Tamagui style props in their value object.
-
-#### Media query
-
-Based on whatever media queries you define in `createTamagui`, you can now use any of them to apply styling on native and web using the `$` prefix.
-
-If you defined your media query like:
-
-```tsx
-createTamagui({
-  media: {
-    sm: { maxWidth: 800 },
-  },
-})
-```
-
-Then you can use it like:
-
-```tsx
-<Text color="red" $sm={{ color: 'blue' }} />
-```
-
-### Theme
-
-Theme style props let you style a child based on a parent theme. At the moment, they only can target your top level themes, so if you have `light`, and `light_subtle` themes, then only `light` can be targeted.
-
-Use them like so:
-
-```tsx
-<Text $theme-dark={{ color: 'white' }} />
-```
-
-### Platform
-
-Platform style props let you style a child based on the platform the app is running on. This can be one of `ios`, `android`, `web`, or `native` (ios and android).
-
-Use it like so:
-
-```tsx
-<Text $platform-ios={{ color: 'white' }} />
-```
-
-### Group
-
-Groups are a new feature in beta that lets you define a named group, and then style children based whether they are inside a parent that is given that group name.
-
-A short example:
-
-```tsx
-<Stack group="header">
-  <Text $group-header={{ color: 'white' }} />
-</Stack>
-```
-
-This will make the Text turn white, as it's inside a parent item with `group` set to the matching `header` value.
-
-Group styles also allow for targeting the parent pseudo state:
-
-```tsx
-<Stack group="card">
-  <Text $group-card-hover={{ color: 'white' }} />
-</Stack>
-```
-
-Now only when the parent Stack is hovered the Text will turn white. The allowed psuedo modifiers are `hover` (web only), `press`, and `focus`.
-
-To make this typed, you need to set `TypeOverride` alongside the same area you set up your Tamagui types:
-
-```tsx
-declare module 'tamagui' {
-  interface TamaguiCustomConfig extends AppConfig {}
-
-  // if you want types for group styling props, define them like so:
-  interface TypeOverride {
-    groupNames(): 'a' | 'b' | 'c'
-  }
-}
-```
-
-#### Group Container
-
-The final feature of group styles is the ability to style a child only when the parent is of a certain size. On the web these are known as "container queries", which is what Tamagui outputs as CSS under the hood. They look like this:
-
-```tsx
-<Stack group="card">
-  <Text
-    $group-card-sm={{ color: 'white' }}
-    $group-card-sm-hover={{ color: 'green' }}
-  />
-</Stack>
-```
-
-Now the Text will be white, but only when the Stack matches the media query `sm`. This uses the same media query breakpoints you defined in `createTamagui({ media })`. You can see it also works with pseudo styles!
-
-_A note on group containers and native_
-
-On Native, we don't have access to the layout of a React component as it first renders. Only once we get the dimensions from the `onLayout` callback after the first render are we able to apply group container styles.
-
-Because of this, we've done two things.
-
-First, there's a new property `untilMeasured`:
-
-```tsx
-<Stack group="card" untilMeasured="hide">
-  <Text
-    $group-card-sm={{
-      color: 'white',
-    }}
-  />
-</Stack>
-```
-
-This takes two options, `show` or `hide`. If unset it defaults to `show`, which means it will render before it measures. With `hide` set, the container will be set to `opacity` 0 until it finishes measuring.
-
-Alternatively, if you know the dimensions your container will be up-front, you can set width and height on the container. When either of these are set, the children will attempt to use these values on first render and if they satisfy the media query, you'll avoid the need for a double render altogether.
-
-### Press events
-
-Press events come along for easy single-touch events:
-
-<PropsTable
-  data={[
-    {
-      name: 'onPress',
-      required: false,
-      type: '(e: PressEvent) => void',
-    },
-    {
-      name: 'onPressIn',
-      required: false,
-      type: '(e: PressEvent) => void',
-    },
-    {
-      name: 'onPressOut',
-      required: false,
-      type: '(e: PressEvent) => void',
-    },
-    {
-      name: 'onLongPress',
-      required: false,
-      type: '(e: PressEvent) => void',
-      description: 'Native only: no distinction on web between long press and click',
-    },
-  ]}
-/>
-
-Note: Internally Tamagui Stack and Text implement press events through [React Native Pressable](https://reactnative.dev/docs/pressable) - which includes some important details on how it works.
-
-### Hover events
-
-Tamagui adds events above the typical react-native/react-native-web View/Text props. These are:
-
-<PropsTable
-  data={[
-    {
-      name: 'onHoverIn',
-      required: false,
-      type: '(e: HoverEvent) => void',
-      description: 'Web only: maps to onMouseEnter',
-    },
-    {
-      name: 'onHoverOut',
-      required: false,
-      type: '(e: HoverEvent) => void',
-      description: 'Web only: maps to onMouseLeave',
-    },
-
-]}
-/>
+]} />

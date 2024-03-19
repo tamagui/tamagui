@@ -5,16 +5,34 @@
   },
   "exclude": [
     "types",
-    "animations.css/*"
+    "animations.css/*",
+    "dist",
+    "**/__tests__"
   ],
   "references": [
-    { "path": "../colors" },
-    { "path": "../shorthands" },
-    { "path": "../animations-reanimated" },
-    { "path": "../core" },
-    { "path": "../font-inter" },
-    { "path": "../font-silkscreen" },
-    { "path": "../core" },
-    { "path": "../animations-moti" }
+    {
+      "path": "../colors"
+    },
+    {
+      "path": "../shorthands"
+    },
+    {
+      "path": "../animations-reanimated"
+    },
+    {
+      "path": "../core"
+    },
+    {
+      "path": "../font-inter"
+    },
+    {
+      "path": "../font-silkscreen"
+    },
+    {
+      "path": "../core"
+    },
+    {
+      "path": "../animations-moti"
+    }
   ]
 }

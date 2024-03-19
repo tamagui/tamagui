@@ -1,7 +1,7 @@
-import { esbuildCommonjs } from '@originjs/vite-plugin-commonjs'
 import type { TamaguiOptions } from '@tamagui/static'
 import { watchTamaguiConfig } from '@tamagui/static'
 import type { Plugin } from 'vite'
+import { transformWithEsbuild } from 'vite'
 
 /**
  * For some reason envPlugin doesnt work for vitest, but process: { env: {} } breaks vitest
@@ -35,6 +35,7 @@ export function tamaguiPlugin({
   )
 
   const extensions = [
+    `.${platform}.mjs`,
     `.${platform}.js`,
     `.${platform}.jsx`,
     `.${platform}.ts`,
@@ -58,13 +59,21 @@ export function tamaguiPlugin({
       })
     },
 
+    // // fix expo-linear-gradient
+    async transform(code, id) {
+      if (!id.includes('expo-linear-gradient')) {
+        return
+      }
+      // Use the exposed transform from vite, instead of directly
+      // transforming with esbuild
+      return transformWithEsbuild(code, id, {
+        loader: 'jsx',
+        jsx: 'automatic', // 👈 this is important
+      })
+    },
+
     config(userConfig, env) {
       return {
-        plugins: [
-          //
-          // envPlugin(['NODE_ENV', 'TAMAGUI_TARGET', 'ENABLE_RSC']),
-          // viteCommonjs(),
-        ],
         define: {
           // reanimated support
           _frameTimestamp: undefined,
@@ -75,37 +84,21 @@ export function tamaguiPlugin({
           'process.env.ENABLE_STEPS': JSON.stringify(process.env.ENABLE_STEPS || ''),
           'process.env.IS_STATIC': JSON.stringify(false),
         },
-        // build: {
-        //   commonjsOptions: {
-        //     transformMixedEsModules: true,
-        //   },
-        // },
-        ssr: {
-          noExternal: noExternalSSR,
-        },
         optimizeDeps: {
+          jsx: 'transform',
+          include: platform === 'web' ? ['expo-linear-gradient'] : [],
           // disabled: false,
-          include: platform !== 'native' ? ['styleq'] : [],
           esbuildOptions: {
-            jsx: 'transform',
-            // plugins: [
-            //   esbuildCommonjs([
-            //     'styleq',
-            //     'inline-style-prefixer',
-            //     'create-react-class',
-            //     'copy-to-clipboard',
-            //     'escape-string-regexp',
-            //   ]),
-            // ],
             resolveExtensions: extensions,
             loader: {
               '.js': 'jsx',
             },
           },
         },
+        ssr: {
+          noExternal: noExternalSSR,
+        },
         resolve: {
-          // for once it extracts
-          // mainFields: ['module:jsx', 'module', 'jsnext:main', 'jsnext', 'main'],
           extensions: extensions,
           alias: {
             ...(platform !== 'native' && {

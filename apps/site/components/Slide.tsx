@@ -1,19 +1,21 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
-import {
+import type {
   FontSizeTokens,
+  SizableTextProps,
+  SizeTokens,
+  SpaceTokens,
+  ThemeName,
+  YStackProps,
+} from 'tamagui'
+import {
   H1,
   H2,
   H4,
   Paragraph,
-  SizableTextProps,
-  SizeTokens,
-  SpaceTokens,
   Spacer,
   Theme,
-  ThemeName,
   XStack,
   YStack,
-  YStackProps,
   useComposedRefs,
   usePresence,
   useThemeName,
@@ -21,7 +23,8 @@ import {
 
 import { Code } from './Code'
 import { DocCodeBlock } from './DocsCodeBlock'
-import { DivProps, useHoverGlow } from './HoverGlow'
+import type { DivProps } from './HoverGlow'
+import { useHoverGlow } from './HoverGlow'
 
 export type SlideProps = {
   title?: React.ReactNode
@@ -311,7 +314,7 @@ function getTextContent(
                   ai="center"
                   className="fade-image-in"
                   {...(item.variant === 'circled' && {
-                    bg: '$backgroundStrong',
+                    bg: '$background',
                     minWidth: 600,
                     minHeight: 600,
                     maxWidth: 600,
@@ -324,7 +327,7 @@ function getTextContent(
                     elevation: '$6',
                     ov: 'hidden',
                     bw: 5,
-                    boc: '$borderColor',
+                    bc: '$borderColor',
                   })}
                   {...(item.variant === 'centered' && {
                     als: 'center',
@@ -437,7 +440,7 @@ function getTextContent(
             case 'code-inline':
               return (
                 <Code
-                  bc="$color8"
+                  bg="$color8"
                   color="$color11"
                   px="$3"
                   py="$2"
@@ -602,8 +605,8 @@ function getTextContent(
                     item.variant === 'good'
                       ? '$green8'
                       : item.variant === 'bad'
-                      ? '$red8'
-                      : '$background'
+                        ? '$red8'
+                        : '$background'
                   }
                   p="$2"
                   br="$6"

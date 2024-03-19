@@ -1,8 +1,8 @@
-import { isWeb } from '@tamagui/constants'
+import { isClient, isWeb } from '@tamagui/constants'
 
 import { getThemes } from '../config'
 import { THEME_CLASSNAME_PREFIX, THEME_NAME_SEPARATOR } from '../constants/constants'
-import { ColorScheme, ThemeParsed, ThemeProps } from '../types'
+import type { ColorScheme, ThemeParsed, ThemeProps } from '../types'
 
 type ThemeListener = (
   name: string | null,
@@ -30,13 +30,13 @@ export type ThemeManagerState = {
 const emptyState: ThemeManagerState = { name: '' }
 
 export function getHasThemeUpdatingProps(props: ThemeProps) {
-  return props.name || props.componentName || props.inverse || props.reset
+  return Boolean(props.name || props.componentName || props.inverse || props.reset)
 }
 
 let uid = 0
 
 export class ThemeManager {
-  id = uid++
+  id = 0
   themeListeners = new Set<ThemeListener>()
   parentManager: ThemeManager | null = null
   state: ThemeManagerState = emptyState
@@ -45,6 +45,9 @@ export class ThemeManager {
     public props: ThemeProps = {},
     parentManager?: ThemeManager | 'root' | null | undefined
   ) {
+    uid = (uid + 1) % Number.MAX_VALUE
+    this.id = uid
+
     if (parentManager === 'root') {
       this.updateStateFromProps(props, false)
       return
@@ -56,7 +59,7 @@ export class ThemeManager {
           `No parent manager given, this is likely due to duplicated Tamagui dependencies. Check your lockfile for mis-matched versions. It could also be from an error somewhere else in your stack causing Tamagui to recieve undefined context, you can try putting some ErrorBoundary components around other areas of your app, or a Suspense boundary.`
         )
       }
-      throw `❌ 0`
+      throw `❌ 000`
     }
 
     // this is used in updateStateFromProps so must be set
@@ -92,10 +95,6 @@ export class ThemeManager {
   updateState(nextState: ThemeManagerState, shouldNotify = true) {
     this.state = nextState
     this._allKeys = null
-    if (process.env.NODE_ENV !== 'production') {
-      this['_numChangeEventsSent'] ??= 0
-      this['_numChangeEventsSent']++
-    }
     if (shouldNotify) {
       if (process.env.TAMAGUI_TARGET === 'native') {
         // native is way slower with queueMicrotask
@@ -153,6 +152,10 @@ export class ThemeManager {
 
   notify(forced = false) {
     this.themeListeners.forEach((cb) => cb(this.state.name, this, forced))
+    if (process.env.NODE_ENV !== 'production') {
+      this['_numChangeEventsSent'] ??= 0
+      this['_numChangeEventsSent']++
+    }
   }
 
   onChangeTheme(cb: ThemeListener, debugId?: number) {
@@ -226,24 +229,16 @@ function getState(
       ? max // component name only don't search upwards
       : 0
 
-  if (
-    process.env.NODE_ENV !== 'production' &&
-    typeof props.debug === 'string' &&
-    typeof window !== 'undefined'
-  ) {
-    console.groupCollapsed('ThemeManager.getState()')
-    console.info({ props, baseName, base, min, max })
-  }
-
   for (let i = max; i >= min; i--) {
     let prefix = base.slice(0, i).join(THEME_NAME_SEPARATOR)
 
     if (props.inverse) {
       prefix = inverseThemeName(prefix)
     }
+
     let potentials: string[] = []
 
-    if (prefix && prefix !== baseName) {
+    if (prefix && prefix !== baseName && prefix.includes(nextName)) {
       potentials.push(prefix)
     }
     if (nextName) {
@@ -257,19 +252,22 @@ function getState(
     }
 
     if (componentName && !props.reset) {
+      const baseLen = base.length
       let componentPotentials: string[] = []
       // components only look for component themes
-      if (nextName) {
-        const beforeSeparator = prefix.slice(0, prefix.indexOf(THEME_NAME_SEPARATOR))
+      if (nextName && baseLen > 1) {
+        const beforeSeparator = base[0]
         componentPotentials.push(`${beforeSeparator}_${nextName}_${componentName}`)
       }
       componentPotentials.push(`${prefix}_${componentName}`)
       if (nextName) {
         // do this one and one level up
-        const prefixLessOne = base.slice(0, i - 1).join(THEME_NAME_SEPARATOR)
-        if (prefixLessOne) {
-          const lessSpecific = `${prefixLessOne}_${nextName}_${componentName}`
-          componentPotentials.unshift(lessSpecific)
+        if (i > baseLen) {
+          const prefixLessOne = base.slice(0, i - 1).join(THEME_NAME_SEPARATOR)
+          if (prefixLessOne) {
+            const lessSpecific = `${prefixLessOne}_${nextName}_${componentName}`
+            componentPotentials.unshift(lessSpecific)
+          }
         }
         const moreSpecific = `${prefix}_${nextName}_${componentName}`
         componentPotentials.unshift(moreSpecific)
@@ -280,8 +278,13 @@ function getState(
 
     const found = potentials.find((t) => t in themes)
 
-    if (process.env.NODE_ENV !== 'production' && typeof props.debug === 'string') {
-      console.info(' getState ', {
+    if (
+      process.env.NODE_ENV !== 'production' &&
+      typeof props.debug === 'string' &&
+      isClient
+    ) {
+      console.info(` 🔷 [${manager?.id}] getState`, {
+        props,
         found,
         potentials,
         baseManager,
@@ -322,12 +325,10 @@ function getState(
     }
   }
 
-  if (
-    process.env.NODE_ENV !== 'production' &&
-    typeof props.debug === 'string' &&
-    typeof window !== 'undefined'
-  ) {
-    console.warn('ThemeManager.getState():', { result })
+  if (process.env.NODE_ENV !== 'production' && props.debug === 'verbose' && isClient) {
+    console.groupCollapsed('ThemeManager.getState()')
+    console.info({ props, baseName, base, min, max })
+    console.warn('result', { result })
     console.trace()
     console.groupEnd()
   }

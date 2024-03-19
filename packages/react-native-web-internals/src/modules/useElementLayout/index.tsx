@@ -8,7 +8,7 @@
  * @flow
  */
 
-import { ElementRef } from 'react'
+import type { ElementRef } from 'react'
 
 import type { LayoutEvent } from '../../types'
 import canUseDOM from '../canUseDOM'

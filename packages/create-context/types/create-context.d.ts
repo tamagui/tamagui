@@ -5,7 +5,7 @@ export type ScopedProps<P, K extends string> = P & {
 export declare function createContext<ContextValueType extends object | null>(rootComponentName: string, defaultContext?: ContextValueType): readonly [{
     (props: ContextValueType & {
         children: React.ReactNode;
-    }): JSX.Element;
+    }): import("react/jsx-runtime").JSX.Element;
     displayName: string;
 }, (consumerName: string) => Exclude<ContextValueType, undefined>];
 type ScopeHook = (scope: Scope) => {
@@ -22,7 +22,7 @@ export declare function createContextScope(scopeName: string, createContextScope
     (props: ContextValueType & {
         scope: Scope<ContextValueType>;
         children: React.ReactNode;
-    }): JSX.Element;
+    }): import("react/jsx-runtime").JSX.Element;
     displayName: string;
 }, (consumerName: string, scope: Scope<ContextValueType | undefined>, options?: {
     warn?: boolean | undefined;

@@ -1,5 +1,6 @@
 import { Check as CheckIcon } from '@tamagui/lucide-icons'
-import { Checkbox, CheckboxProps, Label, SizeTokens, XStack, YStack } from 'tamagui'
+import type { CheckboxProps, SizeTokens } from 'tamagui'
+import { Checkbox, Label, XStack, YStack } from 'tamagui'
 
 export function CheckboxDemo() {
   return (

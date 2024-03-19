@@ -1,10 +1,10 @@
 {
   "name": "@tamagui/select",
-  "version": "1.79.13",
+  "version": "1.91.5",
   "sideEffects": [
     "*.css"
   ],
-  "source": "src/index.ts",
+  "source": "src/index.tsx",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -27,33 +27,35 @@
     ".": {
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.js"
+      "require": "./dist/cjs/index.js",
+      "react-native": "./dist/cjs/index.native.js"
     }
   },
   "dependencies": {
-    "@floating-ui/react": "^0.24.7",
-    "@floating-ui/react-dom": "^2.0.1",
-    "@floating-ui/react-native": "^0.10.1",
-    "@tamagui/adapt": "1.79.13",
-    "@tamagui/animate-presence": "1.79.13",
-    "@tamagui/compose-refs": "1.79.13",
-    "@tamagui/constants": "1.79.13",
-    "@tamagui/core": "1.79.13",
-    "@tamagui/create-context": "1.79.13",
-    "@tamagui/dismissable": "1.79.13",
-    "@tamagui/focus-scope": "1.79.13",
-    "@tamagui/get-token": "1.79.13",
-    "@tamagui/helpers": "1.79.13",
-    "@tamagui/list-item": "1.79.13",
-    "@tamagui/portal": "1.79.13",
-    "@tamagui/remove-scroll": "1.79.13",
-    "@tamagui/separator": "1.79.13",
-    "@tamagui/sheet": "1.79.13",
-    "@tamagui/stacks": "1.79.13",
-    "@tamagui/text": "1.79.13",
-    "@tamagui/use-controllable-state": "1.79.13",
-    "@tamagui/use-event": "1.79.13",
-    "@tamagui/use-previous": "1.79.13",
+    "@floating-ui/react": "^0.26.6",
+    "@floating-ui/react-dom": "^2.0.6",
+    "@floating-ui/react-native": "^0.10.3",
+    "@tamagui/adapt": "1.91.5",
+    "@tamagui/animate-presence": "1.91.5",
+    "@tamagui/compose-refs": "1.91.5",
+    "@tamagui/constants": "1.91.5",
+    "@tamagui/core": "1.91.5",
+    "@tamagui/create-context": "1.91.5",
+    "@tamagui/dismissable": "1.91.5",
+    "@tamagui/focus-scope": "1.91.5",
+    "@tamagui/get-token": "1.91.5",
+    "@tamagui/helpers": "1.91.5",
+    "@tamagui/list-item": "1.91.5",
+    "@tamagui/portal": "1.91.5",
+    "@tamagui/remove-scroll": "1.91.5",
+    "@tamagui/separator": "1.91.5",
+    "@tamagui/sheet": "1.91.5",
+    "@tamagui/stacks": "1.91.5",
+    "@tamagui/text": "1.91.5",
+    "@tamagui/use-controllable-state": "1.91.5",
+    "@tamagui/use-debounce": "1.91.5",
+    "@tamagui/use-event": "1.91.5",
+    "@tamagui/use-previous": "1.91.5",
     "react-dom": "^18.2.0"
   },
   "peerDependencies": {
@@ -61,9 +63,9 @@
     "react-native": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.79.13",
+    "@tamagui/build": "1.91.5",
     "react": "^18.2.0",
-    "react-native": "^0.72.1"
+    "react-native": "^0.73.4"
   },
   "publishConfig": {
     "access": "public"

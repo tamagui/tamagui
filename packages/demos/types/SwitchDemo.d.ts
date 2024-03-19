@@ -1,8 +1,7 @@
-/// <reference types="react" />
-import { SizeTokens } from 'tamagui';
-export declare function SwitchDemo(): JSX.Element;
+import type { SizeTokens } from 'tamagui';
+export declare function SwitchDemo(): import("react/jsx-runtime").JSX.Element;
 export declare function SwitchWithLabel(props: {
     size: SizeTokens;
     defaultChecked?: boolean;
-}): JSX.Element;
+}): import("react/jsx-runtime").JSX.Element;
 //# sourceMappingURL=SwitchDemo.d.ts.map

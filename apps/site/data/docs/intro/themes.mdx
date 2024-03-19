@@ -3,19 +3,17 @@ title: Themes
 description: How to create and use themes in Tamagui.
 ---
 
-Themes map neatly to CSS variables for your components: they should contain colors and other values that you'd want to contextually change at any point in your React tree.
+Themes map neatly to CSS variables: they are objects whose values you want to contextually change at any point in your React tree. They are used either as the first lookup for `$` prefixed style values, or with the `useTheme` hook directly. Tamagui allows nesting themes - both the definition and at runtime. At runtime Tamagui resolves theme values upwards, ultimately all the way back to tokens.
 
-All themes must be of the same type: all objects share the same set of keys and key to value types.
+If you learn faster through example, skip to [the Quick Start](#quick-start).
 
-If you just want to dive in and copy a complete theme, check out the [Quick Start](#quick-start).
+Once you've learned the basics here, be sure to [check out the ThemeBuilder guide](/docs/guides/theme-builder) for generating more interesting theme suites.
 
-<Notice>
-  This document introduces how themes work, but as of version 1.37 we've introduced a new
-  way to create your themes that makes generating a full suite of themes much easier.
-  [Read the guide](/docs/guides/theme-builder).
+<Notice theme="green">
+  If you want a copy-paste theme generation setup, [try this gist](https://gist.github.com/natew/3be503cc5990a1142d17ffadf86a134f) for a well-structured example.
 </Notice>
 
-You can define a theme like this:
+You define a theme like this:
 
 ```tsx
 const dark = {
@@ -25,9 +23,7 @@ const dark = {
 }
 ```
 
-### Using tokens
-
-Tokens are CSS variables that _don't change contextually_. Think of them as your constants. You should put _all_ your color values into tokens first, like so:
+If you use tokens, you can share values from tokens down to themes. Tokens act as fallback values for themes, like global CSS variables vs scoped ones:
 
 ```tsx
 const tokens = createTokens({
@@ -36,29 +32,22 @@ const tokens = createTokens({
     white: '#fff',
   },
 })
-```
 
-Then, you can use them in any theme:
-
-```tsx
+// theme:
 const dark = {
   background: tokens.color.black,
   color: tokens.color.white,
 }
 ```
 
-Think of tokens as your base constants that share downwards.
+### Sub-themes
 
-## Subset themes
+One of the unique powers of Tamagui is theme nesting . Define a theme with a name in the form of `parentName_subName` and Tamagui will let you nest themes, with both `parentName` and `subName` being valid theme names.
 
-One of the real powers of Tamagui is theme nesting (we'll explain more on the importance and usage below). If you define a theme with the name in the form `[parentName]_[subName]`, Tamagui then accepts `<Theme name="[subName]" />` as though it's valid.
-
-You can do this as many times as you'd like. For example you can have the following themes:
+You can do this as many times as you'd like. Here's an example of having three levels:
 
 - `dark_green_subtle`
 - `light_green_subtle`
-
-And you're able to then access them (fully typed):
 
 ```tsx
 <Theme name="dark">
@@ -68,7 +57,7 @@ And you're able to then access them (fully typed):
 </Theme>
 ```
 
-You can also access a specific subset more directly:
+You can also access a specific sub-theme more specifically:
 
 ```tsx
 <Theme name="dark">
@@ -76,9 +65,11 @@ You can also access a specific subset more directly:
 </Theme>
 ```
 
+In general you want your themes to all be the same shape - the same named keys and typed values - but sub-themes can be sub-sets of parent themes. The `useTheme` hook and style system will resolve missing keys upwards to parent themes, and ultimately to tokens.
+
 #### Component themes
 
-Every Tamagui `styled()` component looks for it's own specific theme if you pass it the `name` property. For example:
+Every Tamagui `styled()` component looks for its own specific theme if you pass it the `name` property. For example:
 
 ```tsx
 import { Stack, styled } from 'tamagui' // or '@tamagui/core'
@@ -201,7 +192,7 @@ export default config
 Let's start with an example of inline styling with a subset of the configuration:
 
 ```tsx
-import { TamaguiProvider, createTokens, createTamagui, YStack, Theme } from 'tamagui'
+import { TamaguiProvider, createTokens, createTamagui, View, Theme } from 'tamagui'
 
 const tokens = createTokens({
   color: {
@@ -225,9 +216,9 @@ const config = createTamagui({
 
 export const App = () => (
   <TamaguiProvider config={config} defaultTheme="light">
-    <YStack backgroundColor="$red" />
+    <View backgroundColor="$red" />
     <Theme name="dark">
-      <YStack backgroundColor="$red" />
+      <View backgroundColor="$red" />
     </Theme>
   </TamaguiProvider>
 )
@@ -325,28 +316,13 @@ const light_translucent: BaseTheme = {
   backgroundFocus: 'rgba(240,240,240,0.7)',
 }
 
-// note the steps here
-// we recommend doing this because it avoids a category of confusing type errors
-
-// 1. to get ThemeNames/Theme, first create an object with all themes
-const allThemes = {
+export const allThemes = {
   dark,
   light,
   dark_translucent,
   light_translucent,
-  ...colorThemes,
-}
-
-// 2. then get the name type
-type ThemeName = keyof typeof allThemes
-
-// 3. then, create a Themes type that explicitly maps ThemeName => BaseTheme
-type Themes = {
-  [key in ThemeName]: BaseTheme
-}
-
-// 4. finally, export it with the stricter type
-export const themes: Themes = allThemes
+} satisfies {[key: string]: BaseTheme}
+// note: `satisfies` was introduced with TypeScript 4.9
 ```
 
 ## Dynamic Themes
@@ -395,22 +371,16 @@ You can configure Tamagui to not send any themes JS to the client side, so long 
 
 To enable this you need to have your bundler tree shake away the themes object you'd typically pass to `createTamagui` for the client bundle. Note this is a somewhat advanced optimization and not necessary to do right away.
 
-Here's how we do it for example on Next.js:
-
 ```tsx
-// we check for both
-//   - TAMAGUI_IS_SERVER (set to true by the @tamagui/next-plugin only when isServer = true)
-//
-// if true we keep the JS themes so the server side can use them for rendering
-// but if this is the client side bundle we just pass `{}` cast as the same type as our themes object
-//
-// tamagui automatically detects if you pass an empty object on client side and will then try and hydrate
-// your themes from CSS. this typically only takes less than a handful of ms,
-// and can save a lot of JS bundle size especially if you have many themes
-// if you only have simple themes, don't worry so much about this optimization
+import { themes as themesIn } from './your-themes-file'
+
+// We leave this value empty for production client side bundles to save on bundle size.
+// The `@tamagui/next-plugin` sets TAMAGUI_IS_SERVER automatically.
+// If you pass an empty themes object Tamagui will try to hydrate by scanning CSS in browser environments.
+// It typically takes low single-digit ms to scan and can save significantly on JS size.
 
 const themes =
-  process.env.TAMAGUI_IS_SERVER
+  process.env.TAMAGUI_IS_SERVER || process.env.NODE_ENV !== 'production'
     ? themesIn
     : ({} as typeof themesIn)
 

@@ -49,3 +49,5 @@ apps/kitchen-sink/android
 apps/site/public/talk/
 
 apps/studio/types/**
+
+.expo

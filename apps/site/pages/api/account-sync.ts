@@ -2,7 +2,7 @@ import { apiRoute } from '@lib/apiRoute'
 import { protectApiRoute } from '@lib/protectApiRoute'
 import { getArray, getSingle } from '@lib/supabase-utils'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
-import { Session } from '@supabase/auth-helpers-nextjs'
+import type { Session } from '@supabase/auth-helpers-nextjs'
 import { checkForSponsorship } from 'protected/_utils/github'
 import { siteRootDir } from 'protected/constants'
 
@@ -29,11 +29,14 @@ export default apiRoute(async (req, res) => {
     session.user?.identities?.find((identity) => identity.provider === 'github')
       ?.identity_data?.user_name
   if (
-    session.user.app_metadata.provider !== 'github' ||
+    !session.user.app_metadata.providers.includes('github') ||
     !githubLogin ||
     !userGithubToken
   ) {
-    console.error(`Failed to get github data for ${user.email}.`, { session })
+    console.error(
+      `Failed to get github data for ${user.email}. session: `,
+      JSON.stringify(session)
+    )
     res.status(403).json({
       error: 'No GitHub connection found. Connect or sync GitHub account and try again.',
       action: `${siteRootDir}/account`,
