@@ -208,7 +208,7 @@ export default declare(function tamaguiBabelPlugin(
                     if (prop.value.type === 'StringLiteral') {
                       prop.value = t.memberExpression(
                         t.identifier('theme'),
-                        t.identifier(prop.value.value.slice(1) + '.val')
+                        t.identifier(prop.value.value.slice(1) + '.get()')
                       )
                     }
                   })
