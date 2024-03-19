@@ -6,8 +6,9 @@ import {
 } from '@tamagui/web'
 import type { MotiTransition } from 'moti'
 import { useMotify } from 'moti/author'
-import { useContext, useMemo } from 'react'
+import { CSSProperties, useContext, useMemo } from 'react'
 import type { SharedValue } from 'react-native-reanimated'
+import type { TextStyle } from 'react-native'
 import Animated, {
   cancelAnimation,
   runOnJS,
@@ -47,7 +48,14 @@ type ReanimatedAnimatedNumber = SharedValue<number>
 // const AnimatedView = createTamaguiAnimatedComponent('div')
 // const AnimatedText = createTamaguiAnimatedComponent('span')
 
-const neverAnimate = {
+const neverAnimate: { [key in keyof TextStyle | keyof CSSProperties]?: boolean } = {
+  flexWrap: true,
+  flexFlow: true,
+  alignContent: true,
+  backfaceVisibility: true,
+  gap: true,
+  rowGap: true,
+  columnGap: true,
   alignItems: true,
   backdropFilter: true,
   borderBottomStyle: true,

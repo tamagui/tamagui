@@ -23,22 +23,42 @@ const StyledAnimatedWithStyleProp = styled(View, {
   },
 })
 
+const StyledButton = styled(Button, {
+  variants: {
+    disabled: {
+      true: {
+        backgroundColor: 'red',
+      },
+      false: {},
+    },
+  } as const,
+})
+
 export const Sandbox = () => {
   const [open, setOpen] = useState(false)
 
   return (
     <RNView style={{ width: '100%', height: '100%', padding: 50 }}>
       <XStack onPress={() => setOpen(!open)}>
-        <Button
+        <StyledButton
           animation="bouncy"
           debug="verbose"
-          transform={[
-            {
-              rotate: open ? '180deg' : '0deg',
-            },
-          ]}
+          disabled={open}
+          onPress={() => {
+            console.log('hi')
+            setOpen(!open)
+          }}
         >
-          <ChevronDown />
+          hello
+        </StyledButton>
+
+        <Button
+          onPress={() => {
+            console.log('hi')
+            setOpen(!open)
+          }}
+        >
+          hello123
         </Button>
       </XStack>
     </RNView>
