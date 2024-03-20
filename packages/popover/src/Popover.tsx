@@ -563,6 +563,10 @@ type Rect = {
 
 export type Popover = {
   anchorTo: (rect: Rect) => void
+  toggle: () => void
+  open: () => void
+  close: () => void
+  setOpen: (open: boolean) => void
 }
 
 export const Popover = withStaticProperties(
@@ -622,6 +626,10 @@ export const Popover = withStaticProperties(
 
       React.useImperativeHandle(forwardedRef, () => ({
         anchorTo: setAnchorTo,
+        toggle: () => setOpen(prev => !prev),
+        open: () => setOpen(true),
+        close: () => setOpen(false),
+        setOpen,
       }))
 
       // needs to be entirely memoized!
