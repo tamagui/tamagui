@@ -187,6 +187,7 @@ export const SelectItem = ListItemFrame.styleable<SelectItemExtraProps>(
               backgrounded: true,
               pressTheme: true,
               hoverTheme: true,
+              focusTheme: true,
               cursor: 'default',
               size,
               outlineOffset: -0.5,

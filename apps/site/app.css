@@ -857,7 +857,7 @@ textarea {
     transform: translateX(10px) translateY(-10px) scale(1);
   }
 }
-
+/* 
 .shadow-breeze {
   animation: breeze 20s alternate-reverse infinite forwards;
 }
@@ -871,9 +871,9 @@ textarea {
     transform: translateX(1350px) translateY(0px) scale(3.5) rotate(90deg)
       scaleX(-1) scaleY(-1);
   }
-}
+} */
 
-
+/* 
 .shadow-breeze2 {
   animation: breeze2 35s linear alternate-reverse infinite forwards;
 }
@@ -890,7 +890,7 @@ textarea {
   66% {
     transform: translateX(-15px) translateY(-15px);
   }
-}
+} */
 
 :root.t_light .phone-preview {
   opacity: 0;

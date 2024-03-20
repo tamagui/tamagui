@@ -154,12 +154,16 @@ export function createSwitch<
         resolveValues: 'none',
         forComponent: Frame,
       })
-      propsActive.size = styledContext.size ?? props.size ?? '$true'
-      propsActive.unstyled = styledContext.unstyled ?? props.unstyled ?? false
 
       const { switchProps, bubbleInput, switchRef } = useSwitch(
         // @ts-ignore
-        propsActive,
+        Object.assign(
+          {
+            size: styledContext.size ?? props.size ?? '$true',
+            unstyled: styledContext.unstyled ?? props.unstyled ?? false,
+          },
+          propsActive
+        ),
         [checked, setChecked],
         forwardedRef
       )

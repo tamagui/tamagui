@@ -164,9 +164,11 @@ const ToggleGroupItemImpl = React.forwardRef<
 type ScopedProps<P> = P & { __scopeToggleGroup?: string }
 
 type ToggleGroupElement = ToggleGroupImplSingleElement | ToggleGroupImplMultipleElement
+
 interface ToggleGroupSingleProps extends ToggleGroupImplSingleProps {
   type: 'single'
 }
+
 interface ToggleGroupMultipleProps extends ToggleGroupImplMultipleProps {
   type: 'multiple'
 }

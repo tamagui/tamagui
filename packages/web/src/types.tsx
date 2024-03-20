@@ -1592,6 +1592,7 @@ export type GetStyleState = {
   fontFamily?: string
   debug?: DebugProp
   flatTransforms?: Record<string, any>
+  skipThemeTokenResolution?: boolean
 }
 
 export type StyleResolver<Response = PropMappedValue> = (
@@ -2027,7 +2028,6 @@ export type TamaguiComponentStateRef = {
   hasAnimated?: boolean
   themeShallow?: boolean
   isListeningToTheme?: boolean
-  handleFocusVisible?: boolean
   unPress?: Function
   group?: {
     listeners: Set<GroupStateListener>

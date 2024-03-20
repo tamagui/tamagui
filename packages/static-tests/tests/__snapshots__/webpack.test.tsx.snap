@@ -13,7 +13,7 @@ exports[`webpack-tests > 1. extracts to a div for simple views, flat transforms 
     }
   >
     <div
-      className="  _dsp-flex _ai-stretch _fd-column _bxs-border-box _pos-relative _mih-0px _miw-0px  _fg-1 _fs-1 _fb-auto _btlr-100px _btrr-100px _bbrr-100px _bblr-100px _bg-red _bxsh-469092149 _scale-0hover-2  test1"
+      className="  _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-1 _fg-1 _btlr-100px _btrr-100px _bbrr-100px _bblr-100px _bg-red _bxsh-469092149 _scale-0hover-2  test1"
     >
       <span
         className="  _ff-299667014 _dsp-inline _bxs-border-box _ww-break-word _whiteSpace-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-675002279 font_body "
@@ -38,7 +38,7 @@ exports[`webpack-tests > 2. extracts className for complex views but keeps other
     }
   >
     <div
-      className="  _dsp-flex _ai-stretch _fd-row _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0  _ox-hidden _oy-hidden  who"
+      className="  _dsp-flex _ai-stretch _fd-row _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _ox-hidden _oy-hidden  who"
       onClick={[Function]}
     />
     <div
@@ -67,7 +67,7 @@ exports[`webpack-tests > 2. extracts className for complex views but keeps other
     }
   >
     <div
-      className="  _dsp-flex _ai-stretch _fd-row _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0  _ox-hidden _oy-hidden  who"
+      className="  _dsp-flex _ai-stretch _fd-row _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _ox-hidden _oy-hidden  who"
       onClick={[Function]}
     />
     <div

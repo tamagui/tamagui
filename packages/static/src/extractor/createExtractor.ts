@@ -1582,9 +1582,6 @@ export function createExtractor(
           const usedThemeKeys = new Set<string>()
           // if it accesses any theme values during evaluation
           themeAccessListeners.add((key) => {
-            if (options.experimentalFlattenThemesOnNative) {
-              usedThemeKeys.add(key)
-            }
             if (disableExtractVariables) {
               usedThemeKeys.add(key)
               shouldFlatten = false
@@ -2000,8 +1997,6 @@ export function createExtractor(
             }
 
             try {
-              const beforeProcessUsedThemeKeys = usedThemeKeys.size
-
               const out = getSplitStyles(
                 props,
                 staticConfig,
@@ -2016,7 +2011,8 @@ export function createExtractor(
                 undefined,
                 undefined,
                 undefined,
-                debugPropValue || shouldPrintDebug
+                debugPropValue || shouldPrintDebug,
+                options.experimentalFlattenThemesOnNative
               )
 
               let outProps = {
@@ -2029,17 +2025,6 @@ export function createExtractor(
               for (const key in outProps) {
                 if (deoptProps.has(key)) {
                   shouldFlatten = false
-                }
-              }
-
-              if (options.experimentalFlattenThemesOnNative) {
-                if (beforeProcessUsedThemeKeys < usedThemeKeys.size) {
-                  // we used a theme key
-                  Object.entries(props).forEach(([key, value]) => {
-                    if (usedThemeKeys.has(value)) {
-                      outProps[key] = value
-                    }
-                  })
                 }
               }
 
@@ -2114,7 +2099,9 @@ export function createExtractor(
               }
             }
 
-            prev = cur
+            if (cur.type === 'style') {
+              prev = cur
+            }
             acc.push(cur)
             return acc
           }, [])

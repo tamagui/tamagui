@@ -9,6 +9,7 @@ import type { ListItemProps } from '@tamagui/list-item'
 import { ListItem } from '@tamagui/list-item'
 import { PortalHost } from '@tamagui/portal'
 import { Separator } from '@tamagui/separator'
+import { registerFocusable } from '@tamagui/focusable'
 import { Sheet, SheetController } from '@tamagui/sheet'
 import { ThemeableStack, XStack, YStack } from '@tamagui/stacks'
 import { Paragraph, SizableText } from '@tamagui/text'
@@ -376,16 +377,11 @@ export const Select = withStaticProperties(
     const forceUpdate = React.useReducer(() => ({}), {})[1]
     const [selectedItem, setSelectedItem] = React.useState<React.ReactNode>(null)
 
-    const [open, setOpen_] = useControllableState({
+    const [open, setOpen] = useControllableState({
       prop: openProp,
       defaultProp: defaultOpen || false,
       onChange: onOpenChange,
     })
-
-    const setOpen = (...next) => {
-      console.trace('setting open2', ...next)
-      return setOpen_(...next)
-    }
 
     const [value, setValue] = useControllableState({
       prop: valueProp,
@@ -403,6 +399,19 @@ export const Select = withStaticProperties(
     React.useEffect(() => {
       emitValue(value)
     }, [value])
+
+    if (process.env.TAMAGUI_TARGET === 'native') {
+      React.useEffect(() => {
+        if (!props.id) return
+
+        return registerFocusable(props.id, {
+          focusAndSelect: () => {
+            setOpen?.((value) => !value)
+          },
+          focus: () => {},
+        })
+      }, [props.id])
+    }
 
     const [activeIndex, setActiveIndex] = React.useState<number | null>(0)
 
