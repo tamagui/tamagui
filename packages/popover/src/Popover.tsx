@@ -626,7 +626,7 @@ export const Popover = withStaticProperties(
 
       React.useImperativeHandle(forwardedRef, () => ({
         anchorTo: setAnchorTo,
-        toggle: () => setOpen(prev => !prev),
+        toggle: () => setOpen((prev) => !prev),
         open: () => setOpen(true),
         close: () => setOpen(false),
         setOpen,
