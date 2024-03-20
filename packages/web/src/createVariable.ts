@@ -29,7 +29,6 @@ export const createVariable = <A extends string | number | Variable = any>(
   if (!skipHash && isVariable(props)) return props
 
   const { key, name, val } = props
-  const _prefix = process.env.TAMAGUI_CSS_VARIABLE_PREFIX || CSS_VARIABLE_PREFIX
   return {
     [IS_VAR]: true,
     key: key!,
@@ -37,7 +36,7 @@ export const createVariable = <A extends string | number | Variable = any>(
     val: val as any,
     variable: isWeb
       ? skipHash
-        ? `var(--${_prefix}${name})`
+        ? `var(--${CSS_VARIABLE_PREFIX}${name})`
         : createCSSVariable(name)
       : '',
   }
@@ -97,6 +96,5 @@ export const createCSSVariable = (nameProp: string, includeVar = true) => {
     }
   }
   const name = simpleHash(nameProp, 60)
-  const _prefix = process.env.TAMAGUI_CSS_VARIABLE_PREFIX || CSS_VARIABLE_PREFIX
-  return includeVar ? `var(--${_prefix}${name})` : name
+  return includeVar ? `var(--${CSS_VARIABLE_PREFIX}${name})` : name
 }

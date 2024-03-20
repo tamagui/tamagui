@@ -224,7 +224,6 @@ function addThemesFromCSS(cssStyleRule: CSSStyleRule, tokens?: TokensParsed) {
     .trim()
   const rules = rulesWithBraces.split(';')
 
-  const _prefix = process.env.TAMAGUI_CSS_VARIABLE_PREFIX || CSS_VARIABLE_PREFIX
   // get theme object parsed
   const values: ThemeParsed = {}
   // build values first
@@ -232,7 +231,9 @@ function addThemesFromCSS(cssStyleRule: CSSStyleRule, tokens?: TokensParsed) {
     const sepI = rule.indexOf(':')
     if (sepI === -1) continue
     const varIndex = rule.indexOf('--')
-    const key = rule.slice(varIndex === -1 ? 0 : varIndex + 2, sepI).replace(_prefix, '')
+    const key = rule
+      .slice(varIndex === -1 ? 0 : varIndex + 2, sepI)
+      .replace(CSS_VARIABLE_PREFIX, '')
     const val = rule.slice(sepI + 2)
     let value: string
     if (val.startsWith('var(')) {
