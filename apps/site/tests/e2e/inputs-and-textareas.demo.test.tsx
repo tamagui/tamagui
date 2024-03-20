@@ -3,10 +3,28 @@ import { sleep } from 'zx'
 
 let page: Page
 
+const logs = {
+  error: [],
+  warn: [],
+  log: [],
+  info: [],
+}
+
 test.beforeAll(async ({ browser }) => {
   page = await browser.newPage()
+
+  page.on('console', (message) => {
+    logs[message.type()] ||= []
+    logs[message.type()].push(message.text())
+  })
+
   await page.goto('/docs/components/inputs')
   await page.waitForSelector('#demo')
+})
+
+test(`Loads screen with no errors or logs`, async () => {
+  expect(logs.error.length).toBe(0)
+  expect(logs.warn.length).toBe(0)
 })
 
 test('visually looks correct', async () => {
