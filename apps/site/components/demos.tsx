@@ -1,5 +1,5 @@
 import { Suspense, lazy, useEffect, useState } from 'react'
-import { Spinner } from 'tamagui'
+import { Spinner, View } from 'tamagui'
 
 function getLazyComponent(ComponentPromise: any) {
   return lazy(async () => {
@@ -27,7 +27,9 @@ export function lazyDemo(ComponentPromise: any) {
 
     return (
       <Suspense fallback={<Spinner />}>
-        <Component />
+        <View display="contents" id="demo">
+          <Component />
+        </View>
       </Suspense>
     )
   }
