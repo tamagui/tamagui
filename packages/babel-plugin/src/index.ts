@@ -208,7 +208,7 @@ export default declare(function tamaguiBabelPlugin(
                     if (prop.value.type === 'StringLiteral') {
                       prop.value = t.memberExpression(
                         t.identifier('theme'),
-                        t.identifier(prop.value.value.slice(1) + '.val')
+                        t.identifier(prop.value.value.slice(1) + '.get()')
                       )
                     }
                   })
@@ -346,27 +346,11 @@ export default declare(function tamaguiBabelPlugin(
                                         [],
                                         t.blockStatement([
                                           t.returnStatement(
-                                            t.callExpression(
-                                              t.memberExpression(
-                                                t.identifier('Object'),
-                                                t.identifier('assign')
-                                              ),
-                                              [
-                                                t.objectExpression([]),
-                                                ...hocStylesExpr.elements,
-                                                ...[],
-                                              ] as any[]
-                                            )
+                                            t.arrayExpression([...hocStylesExpr.elements])
                                           ),
                                         ])
                                       ),
                                       t.arrayExpression([
-                                        ...[...themeKeysUsed].map((k) =>
-                                          t.memberExpression(
-                                            t.identifier('theme'),
-                                            t.identifier(k)
-                                          )
-                                        ),
                                         t.spreadElement(t.identifier('_expressions')),
                                       ]),
                                     ]

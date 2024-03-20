@@ -50,7 +50,8 @@ export const propMapper: PropMapper = (key, value, styleStateIn, subPropsIn) => 
       })
     : styleStateIn
 
-  const { conf, styleProps, fontFamily, staticConfig } = styleState
+  const { conf, styleProps, fontFamily, staticConfig, skipThemeTokenResolution } =
+    styleState
   const { variants } = staticConfig
 
   if (
@@ -399,6 +400,14 @@ export const getTokenForKey = (
 
   if (theme && value in theme) {
     valOrVar = theme[value]
+    if (styleState.skipThemeTokenResolution && valOrVar?.val) {
+      if (process.env.NODE_ENV === 'development' && styleState.debug === 'verbose') {
+        console.info(
+          ` - keep original value: ${value} for ${key} due to enableFlattenThemeOnNative: true`
+        )
+      }
+      return value
+    }
     if (process.env.NODE_ENV === 'development' && styleState.debug === 'verbose') {
       console.info(` - resolving ${key} to theme value ${value}: ${valOrVar?.val}`)
     }

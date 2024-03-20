@@ -140,6 +140,19 @@ let BaseText: any
 let BaseView: any
 let hasSetupBaseViews = false
 
+const lastInteractionWasKeyboard = { value: false }
+if (isWeb && globalThis['document']) {
+  document.addEventListener('keydown', () => {
+    lastInteractionWasKeyboard.value = true
+  })
+  document.addEventListener('mousedown', () => {
+    lastInteractionWasKeyboard.value = false
+  })
+  document.addEventListener('mousemove', () => {
+    lastInteractionWasKeyboard.value = false
+  })
+}
+
 export function createComponent<
   ComponentPropTypes extends Record<string, any> = {},
   Ref extends TamaguiElement = TamaguiElement,
@@ -333,9 +346,7 @@ export function createComponent<
     // conditional but if ever true stays true
     // [animated, inversed]
     // HOOK
-    const stateRef = useRef<TamaguiComponentStateRef>({
-      handleFocusVisible: true,
-    })
+    const stateRef = useRef<TamaguiComponentStateRef>({})
     if (process.env.NODE_ENV === 'development' && time) time`stateref`
 
     /**
@@ -423,9 +434,13 @@ export function createComponent<
       : states[0]
     const setState = states[1]
 
-    // immediately update disabled state
+    // immediately update disabled state and reset component state
     if (disabled !== state.disabled) {
-      setState({ ...state, disabled })
+      setState({
+        ...state,
+        ...defaultComponentState, // removes any stale press state etc
+        disabled,
+      })
     }
 
     let setStateShallow = createShallowSetState(setState, disabled, debugProp)
@@ -850,7 +865,11 @@ export function createComponent<
           media: {},
         } satisfies GroupState
 
-        disposeGroupsListener = componentContext.groups.subscribe(
+        if (process.env.NODE_ENV === 'development' && !componentContext.groups) {
+          console.debug(`No context group found`)
+        }
+
+        disposeGroupsListener = componentContext.groups?.subscribe(
           (name, { layout, pseudo }) => {
             if (pseudo && pseudoGroups?.has(name)) {
               // we emit a partial so merge it + change reference so mergeIfNotShallowEqual runs
@@ -942,7 +961,6 @@ export function createComponent<
       ? {
           onPressOut: attachPress
             ? (e) => {
-                stateRef.current.handleFocusVisible = true
                 unPress()
                 onPressOut?.(e)
                 onMouseUp?.(e)
@@ -982,7 +1000,6 @@ export function createComponent<
           }),
           onPressIn: attachPress
             ? (e) => {
-                stateRef.current.handleFocusVisible = false
                 if (runtimePressStyle) {
                   setStateShallow({
                     press: true,
@@ -1021,7 +1038,7 @@ export function createComponent<
                 setTimeout(() => {
                   setStateShallow({
                     focus: true,
-                    focusVisible: !!stateRef.current.handleFocusVisible,
+                    focusVisible: !!lastInteractionWasKeyboard.value,
                   })
                 }, 0)
               } else {
@@ -1033,7 +1050,6 @@ export function createComponent<
               onFocus?.(e)
             },
             onBlur: (e) => {
-              stateRef.current.handleFocusVisible = true
               setStateShallow({
                 focus: false,
                 focusVisible: false,
@@ -1234,6 +1250,7 @@ export function createComponent<
         const title = `render <${element} /> (${internalID}) with props`
         if (!isWeb) {
           log(title)
+          log(`state: `, state)
           if (isDevTools) {
             log('viewProps', viewProps)
           }

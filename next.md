@@ -1,3 +1,5 @@
+- <Theme name="dark"> force below root dark causing hydration issues
+
 - Animation + shadowOffset is causing crash in iOS due to object value
   - "auto" too
 
