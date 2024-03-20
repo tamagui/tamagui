@@ -195,110 +195,7 @@ export const ListItemTitle = styled(ListItemText, {
   context: ListItemContext,
 })
 
-export const useListItem = (
-  propsIn: ListItemProps,
-  {
-    Text = ListItemText,
-    Subtitle = ListItemSubtitle,
-    Title = ListItemTitle,
-  }: {
-    Title?: any
-    Subtitle?: any
-    Text?: any
-  } = { Text: ListItemText, Subtitle: ListItemSubtitle, Title: ListItemTitle }
-): { props: PropsWithoutMediaStyles<ListItemProps> } => {
-  // careful not to destructure and re-order props, order is important
-  const props = useProps(propsIn)
-
-  const {
-    children,
-    icon,
-    iconAfter,
-    noTextWrap,
-    theme: themeName,
-    space,
-    spaceFlex,
-    scaleIcon = 1,
-    scaleSpace = 1,
-    unstyled = false,
-    subTitle,
-    title,
-
-    // text props
-    color,
-    fontWeight,
-    fontSize,
-    fontFamily,
-    letterSpacing,
-    textAlign,
-    ellipse,
-
-    ...rest
-  } = props
-
-  const textProps = {
-    color,
-    fontWeight,
-    fontSize,
-    fontFamily,
-    letterSpacing,
-    textAlign,
-    ellipse,
-    children,
-  }
-
-  const size = props.size || '$true'
-  const iconSize = getFontSize(size as any) * scaleIcon
-  const getThemedIcon = useGetThemedIcon({ size: iconSize, color: color as any })
-  const [themedIcon, themedIconAfter] = [icon, iconAfter].map(getThemedIcon)
-  const spaceSize =
-    getVariableValue(getTokens().space[props.space as any] ?? iconSize) * scaleSpace
-
-  const contents = wrapChildrenInText(Text, textProps)
-
-  return {
-    props: {
-      color,
-      ...rest,
-      children: (
-        <>
-          {themedIcon ? <>{themedIcon}</> : null}
-          {/* helper for common title/subtitle pttern */}
-          {/* biome-ignore lint/complexity/noExtraBooleanCast: <explanation> */}
-          {Boolean(title || subTitle) ? (
-            <YStack flex={1}>
-              {noTextWrap === 'all' ? title : <Title size={size}>{title}</Title>}
-              {subTitle ? (
-                <>
-                  {typeof subTitle === 'string' && noTextWrap !== 'all' ? (
-                    // TODO can use theme but we need to standardize to alt themes
-                    // or standardize on subtle colors in themes
-                    <Subtitle unstyled={unstyled} size={size}>
-                      {subTitle}
-                    </Subtitle>
-                  ) : (
-                    subTitle
-                  )}
-                </>
-              ) : null}
-              {contents}
-            </YStack>
-          ) : (
-            contents
-          )}
-          {themedIconAfter ? (
-            <>
-              <Spacer size={spaceSize} />
-              {themedIconAfter}
-            </>
-          ) : null}
-        </>
-      ),
-    },
-  }
-}
-
-const IconFrame = styled(View, {
+export const IconFrame = styled(View, {
   context: ListItemContext,
 
   variants: {
@@ -310,7 +207,7 @@ const IconFrame = styled(View, {
   } as const,
 })
 
-const ListItemIcon = IconFrame.styleable<{ scaleIcon?: number }>((props) => {
+export const ListItemIcon = IconFrame.styleable<{ scaleIcon?: number }>((props) => {
   const { children, scaleIcon = 1 } = props
   const { size, color } = ListItemContext.useStyledContext()
 
@@ -322,22 +219,7 @@ const ListItemIcon = IconFrame.styleable<{ scaleIcon?: number }>((props) => {
   return <IconFrame>{getThemedIcon(children)}</IconFrame>
 })
 
-const ListItemComponent = ListItemFrame.styleable<ListItemExtraProps>(
-  function ListItem(props, ref) {
-    const { props: listItemProps } = useListItem(props)
-    return <ListItemFrame ref={ref} {...listItemProps} />
-  }
-)
-
-const TextContent = styled(View, {
+export const TextContent = styled(View, {
   marginRight: 'auto',
   flex: 1,
-})
-
-export const ListItem = withStaticProperties(ListItemComponent, {
-  Text: ListItemText,
-  Title: ListItemTitle,
-  Subtitle: ListItemSubtitle,
-  Icon: ListItemIcon,
-  TextContent,
 })

@@ -1,2 +1,17 @@
+/// <reference types="react" />
 export * from './ListItem';
+export declare const ListItem: import("react").ForwardRefExoticComponent<import("./StyledContext").ContextProps & import("react").RefAttributes<any>> & import("@tamagui/web").StaticComponentObject<import("./StyledContext").ContextProps, any, {}, {}, {}, {}> & Omit<{}, "staticConfig" | "extractable" | "styleable"> & {
+    __tama: [import("./StyledContext").ContextProps, any, {}, {}, {}, {}];
+} & {
+    Text: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
+        size?: import("@tamagui/web").FontSizeTokens | undefined;
+        unstyled?: boolean | undefined;
+    }, import("@tamagui/web").StaticConfigPublic> | ((props: import("@tamagui/web").TextNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").TextStylePropsBase, {}>> & import("./StyledContext").ContextProps) => any);
+    Title: (props: import("@tamagui/web").TextNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").TextStylePropsBase, {}>> & import("./StyledContext").ContextProps) => any;
+    Subtitle: (props: import("@tamagui/web").TextNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").TextStylePropsBase, {}>> & import("./StyledContext").ContextProps) => any;
+    Icon: import("@tamagui/web").TamaguiComponent<{
+        after?: boolean | undefined;
+    }>;
+    TextContent: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").StackProps, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {}, {}>;
+};
 //# sourceMappingURL=index.d.ts.map
