@@ -21,6 +21,10 @@ export interface Variable<A = any> {
 
 export type MakeVariable<A = any> = A extends string | number ? Variable<A> : A
 
+function constructCSSVariableName(name: string) {
+  return `var(--${CSS_VARIABLE_PREFIX}${name})`
+}
+
 type VariableIn<A = any> = Pick<Variable<A>, 'key' | 'name' | 'val'>
 export const createVariable = <A extends string | number | Variable = any>(
   props: VariableIn<A>,
@@ -36,7 +40,7 @@ export const createVariable = <A extends string | number | Variable = any>(
     val: val as any,
     variable: isWeb
       ? skipHash
-        ? `var(--${CSS_VARIABLE_PREFIX}${name})`
+        ? constructCSSVariableName(name)
         : createCSSVariable(name)
       : '',
   }
@@ -96,5 +100,5 @@ export const createCSSVariable = (nameProp: string, includeVar = true) => {
     }
   }
   const name = simpleHash(nameProp, 60)
-  return includeVar ? `var(--${CSS_VARIABLE_PREFIX}${name})` : name
+  return includeVar ? constructCSSVariableName(name) : name
 }
