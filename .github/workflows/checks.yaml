@@ -56,6 +56,9 @@ jobs:
       - name: Pull Vercel Environment Information
         run: cd apps/site && vercel env pull .env.local --scope=tamagui --yes --token=${{ secrets.VERCEL_TOKEN }}
 
+      - name: Build Site
+        run: cd apps/site && yarn ci:build
+
       - uses: nick-fields/retry@v2
         with:
           timeout_minutes: 15
