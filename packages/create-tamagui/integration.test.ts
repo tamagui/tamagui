@@ -14,6 +14,8 @@ const PACKAGE_ROOT = __dirname
 process.env.NODE_ENV = 'test'
 $.env.NODE_ENV = 'test'
 
+const PORT = 5006
+
 const appName = 'test-app'
 
 const IS_TAMAGUI_DEV = process.env.IS_TAMAGUI_DEV
@@ -64,12 +66,12 @@ test.beforeAll(async () => {
     })
 
     await waitPort({
-      port: 3000,
+      port: PORT,
       host: 'localhost',
     })
 
     // pre-warm
-    await fetch(`http://localhost:3000`)
+    await fetch(`http://localhost:${PORT}`)
     await sleep(2000)
   } catch (err) {
     didFailInBeforeAll = true
@@ -114,7 +116,7 @@ if (IS_TAMAGUI_DEV) {
 
 if (!IS_TAMAGUI_DEV) {
   test(`Loads home screen that opens drawer`, async ({ page }) => {
-    await page.goto('http://localhost:3000/', {
+    await page.goto(`http://localhost:${PORT}/`, {
       timeout: 15_000,
     })
     await expect(page.locator('text=Welcome to Tamagui.')).toBeVisible()
@@ -129,13 +131,13 @@ if (!IS_TAMAGUI_DEV) {
 
   test(`Navigates to user page`, async ({ page }) => {
     test.setTimeout(timeout)
-    await page.goto('http://localhost:3000/', {
+    await page.goto(`http://localhost:${PORT}/`, {
       timeout: 15_000,
     })
     await expect(page.locator('a[role="link"]:has-text("Link to user")')).toBeVisible()
     await page.locator('a[role="link"]:has-text("Link to user")').click()
     await expect(page.locator('text=User ID: nate')).toBeVisible()
-    await expect(page).toHaveURL('http://localhost:3000/user/nate')
+    await expect(page).toHaveURL(`http://localhost:${PORT}/user/nate`)
   })
 
   test(`Updates the root package.json name`, async () => {
