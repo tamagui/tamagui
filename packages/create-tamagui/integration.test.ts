@@ -59,7 +59,7 @@ test.beforeAll(async () => {
     //   await $`yarn link --all ~/tamagui`
     // }
 
-    server = $`yarn web:extract`
+    server = $`yarn web:extract -p ${PORT}`
 
     server.catch((err) => {
       console.warn(`server err ${err}`)
