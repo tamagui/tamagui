@@ -57,7 +57,7 @@ jobs:
         run: cd apps/site && vercel env pull .env.local --scope=tamagui --yes --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Build Site
-        run: cd apps/site && yarn next:build && yarn next:export
+        run: cd apps/site && yarn next:build
 
       - uses: nick-fields/retry@v2
         with:
