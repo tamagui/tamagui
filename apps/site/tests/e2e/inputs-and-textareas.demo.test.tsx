@@ -24,7 +24,7 @@ test.beforeAll(async ({ browser }) => {
 })
 
 test(`Loads screen with no errors or logs`, async () => {
-  console.log(logs.error[0])
+  console.log('my error is ', logs.error[0])
   expect(logs.error.length).toBe(0)
   expect(logs.warn.length).toBe(0)
 })
