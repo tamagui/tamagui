@@ -19,10 +19,15 @@ test.beforeAll(async ({ browser }) => {
 
   page.on('console', (message) => {
     const text = message.text()
-    if (skipLogs.includes(text)) return
+    if (
+      skipLogs.some((value) => {
+        text.includes(value)
+      })
+    )
+      return
 
     logs[message.type()] ||= []
-    logs[message.type()].push(message.text())
+    logs[message.type()].push(text)
   })
 
   await page.goto('/docs/components/checkbox')
