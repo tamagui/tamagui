@@ -3,7 +3,7 @@ import { createClient } from '@supabase/supabase-js'
 import type { Price, Product } from 'site-types'
 import type Stripe from 'stripe'
 
-import { sendTakeoutWelcomeEmail } from './email'
+import { sendProductPurchaseEmail } from './email'
 import { toDateTime } from './helpers'
 import { stripe } from './stripe'
 import type { Database } from './supabase-types'
@@ -236,16 +236,27 @@ export const manageSubscriptionStatusChange = async (
         stripe.products.retrieve(item.price.product as string)
       )
     )
+    const userName = userModel.data.full_name ?? email.split('@').shift()!
     const includesTakeoutStarter = subscribedProducts.some(
       (product) => product.metadata.slug === 'universal-starter'
     )
     if (includesTakeoutStarter) {
-      await sendTakeoutWelcomeEmail(email, {
-        name: userModel.data.full_name ?? email.split('@').shift()!,
+      await sendProductPurchaseEmail(email, {
+        name: userName,
+        product_name: 'Takeout',
       })
-      console.info(`Welcome email request sent to Postmark for ${email}`)
+      console.info(`Takeout purchase email request sent to Postmark for ${email}`)
     }
-    // TODO: add a welcome email for bento (just like the one above) here:
+    const includesBento = subscribedProducts.some(
+      (product) => product.metadata.slug === 'bento'
+    )
+    if (includesBento) {
+      await sendProductPurchaseEmail(email, {
+        name: userName,
+        product_name: 'Bento',
+      })
+      console.info(`Bento purchase email request sent to Postmark for ${email}`)
+    }
   }
 }
 
