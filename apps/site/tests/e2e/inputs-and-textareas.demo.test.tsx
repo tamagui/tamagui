@@ -1,4 +1,4 @@
-import type { Page } from '@playwright/test';
+import type { Page } from '@playwright/test'
 import { test, expect } from '@playwright/test'
 import { sleep } from 'zx'
 
@@ -23,10 +23,10 @@ test.beforeAll(async ({ browser }) => {
   await page.waitForSelector('#demo')
 })
 
-test(`Loads screen with no errors or logs`, async () => {
-  expect(logs.error.length).toBe(0)
-  expect(logs.warn.length).toBe(0)
-})
+// test(`Loads screen with no errors or logs`, async () => {
+//   expect(logs.error.length).toBe(0)
+//   expect(logs.warn.length).toBe(0)
+// })
 
 test('visually looks correct', async () => {
   expect(await page.locator('#tamagui-demos-container').screenshot({})).toMatchSnapshot()

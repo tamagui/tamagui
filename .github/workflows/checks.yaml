@@ -59,8 +59,8 @@ jobs:
       - name: Build Site
         run: cd apps/site && yarn ci:build
 
-      # - uses: nick-fields/retry@v2
-      #   with:
-      #     timeout_minutes: 15
-      #     max_attempts: 2
-      #     command: "yarn test:ci"
+      - uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 15
+          max_attempts: 2
+          command: "yarn test:ci"
