@@ -9,6 +9,8 @@
   ],
   "scripts": {
     "start": "./run.js",
+    "test": "NODE_ENV=test node -r esbuild-register ../../node_modules/.bin/playwright test",
+    "test:debug": "yarn test --debug",
     "prerelease": "rimraf ./dist/",
     "prepublish": "yarn build",
     "build": "tamagui-build --skip-types --bundle --bundle-modules",
