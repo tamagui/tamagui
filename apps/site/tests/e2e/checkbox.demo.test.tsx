@@ -21,6 +21,10 @@ test.beforeAll(async ({ browser }) => {
     const text = message.text()
     if (
       skipLogs.some((value) => {
+        console.info({
+          value,
+          text,
+        })
         text.includes(value)
       })
     )
