@@ -21,8 +21,8 @@ test(`Loads home screen with no errors or logs`, async ({ page }) => {
   })
 
   await page.goto('/')
-  // expect(logs.error.length).toBe(0)
-  // expect(logs.warn.length).toBe(0)
+  expect(logs.error.length).toBe(0)
+  expect(logs.warn.length).toBe(0)
 })
 
 test(`Loads home screen content properly`, async ({ page }) => {
