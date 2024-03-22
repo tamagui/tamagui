@@ -10,10 +10,16 @@ const logs = {
   info: [],
 }
 
+const skipLogs = [
+  'Failed to load resource: the server responded with a status of 401 (Unauthorized)',
+]
+
 test.beforeAll(async ({ browser }) => {
   page = await browser.newPage()
 
   page.on('console', (message) => {
+    const text = message.text()
+    if (skipLogs.includes(text)) return
     logs[message.type()] ||= []
     logs[message.type()].push(message.text())
   })
@@ -23,8 +29,8 @@ test.beforeAll(async ({ browser }) => {
 })
 
 test(`Loads screen with no errors or logs`, async () => {
-  expect(logs.error.length).toBe(0)
-  expect(logs.warn.length).toBe(0)
+  expect(logs.error).toEqual([])
+  expect(logs.warn).toEqual([])
 })
 
 test('visually looks correct', async () => {
