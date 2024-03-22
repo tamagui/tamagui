@@ -19,6 +19,8 @@ export function BentoPartScreen({ navigation }) {
     })
   }, [name, navigation])
 
+  // console.log(Object.values(sections[name]))
+
   return (
     <ScrollView>
       <YStack jc="center" ai="center" bg="$background" minWidth="100%" px="$2">
