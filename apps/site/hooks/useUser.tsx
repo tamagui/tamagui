@@ -11,11 +11,15 @@ const siteRootDir = process.env.NODE_ENV === 'development' ? '' : 'https://tamag
 export const useUser = () => {
   return useSWR<UserContextType | null>('user', {
     fetcher: async () => {
-      const res = await fetch('/api/user')
-      if (res.ok) {
-        return (await res.json()) as UserContextType
+      try {
+        const res = await fetch('/api/user')
+        if (res.ok) {
+          return (await res.json()) as UserContextType
+        }
+        return null
+      } catch (error) {
+        return null
       }
-      return null
     },
     refreshInterval: 0,
   })
