@@ -22,7 +22,7 @@ test.beforeAll(async ({ browser }) => {
     const text = message.text()
     if (
       skipLogs.some((value) => {
-        text.includes(value)
+        return text.includes(value)
       })
     )
       return
