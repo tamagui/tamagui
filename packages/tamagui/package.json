@@ -1,8 +1,8 @@
 {
   "name": "tamagui",
   "version": "1.92.0",
+  "removeSideEffects": true,
   "sideEffects": [
-    "*.css",
     "setup.js"
   ],
   "source": "src/index.ts",

@@ -562,8 +562,23 @@ async function esbuildWriteIfChanged(
       }
 
       if (pkgRemoveSideEffects && isESM) {
+        const allowedSideEffects = pkg.sideEffects || []
+
+        const result = []
+        const lines = outString.split('\n')
+        for (const line of lines) {
+          if (
+            !line.startsWith('import ') ||
+            allowedSideEffects.some((allowed) => line.includes(allowed))
+          ) {
+            result.push(line)
+            continue
+          }
+          result.push(line.replace(/import "[^"]+";/g, ''))
+        }
+
         // match whitespace to preserve sourcemaps
-        outString = outString.replace(/\nimport "[^"]+";\n/g, '\n\n')
+        outString = result.join('\n')
       }
 
       async function flush(contents, path) {
