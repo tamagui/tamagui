@@ -18,5 +18,11 @@
   },
   "[json]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
-  }
+  },
+  "cSpell.words": [
+    "Bento",
+    "chromeless",
+    "tamagui",
+    "unselectable"
+  ]
 }
