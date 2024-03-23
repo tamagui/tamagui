@@ -1,6 +1,7 @@
 import type { StyleObject } from '@tamagui/helpers'
 import type { Properties } from 'csstype'
 import type {
+  CSSProperties,
   ComponentType,
   ForwardRefExoticComponent,
   FunctionComponent,
@@ -760,11 +761,13 @@ export type WithMediaProps<A> = {
     | ThemeMediaKeys
     | PlatformMediaKeys]?: Key extends `$platform-web`
     ? {
-        [SubKey in keyof A]?:
-          | A[SubKey]
-          | (SubKey extends keyof WebOnlyValidStyleValues
+        [SubKey in keyof A | keyof CSSProperties]?: SubKey extends keyof CSSProperties
+          ? CSSProperties[SubKey]
+          : SubKey extends keyof A
+            ? A[SubKey]
+            : SubKey extends keyof WebOnlyValidStyleValues
               ? WebOnlyValidStyleValues[SubKey]
-              : never)
+              : never
       }
     : A
 }

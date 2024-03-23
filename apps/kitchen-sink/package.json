@@ -16,7 +16,6 @@
     "pod": "./pod-install.sh",
     "android": "EXPO_NO_TELEMETRY=true yarn expo run:android",
     "ios": "yarn pod && EXPO_NO_TELEMETRY=true yarn expo run:ios",
-    "web": "EXPO_NO_TELEMETRY=true yarn expo start --web",
     "eject": "EXPO_NO_TELEMETRY=true expo eject",
     "screenshot": "node -r esbuild-register ../../node_modules/.bin/playwright test --config ./playwright-screenshot.config.ts",
     "test:native": "maestro test ./flows --exclude-tags=util",

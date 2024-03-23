@@ -1,6 +1,6 @@
 import type { StyleObject } from '@tamagui/helpers';
 import type { Properties } from 'csstype';
-import type { ComponentType, ForwardRefExoticComponent, FunctionComponent, HTMLAttributes, ReactNode, RefAttributes, RefObject } from 'react';
+import type { CSSProperties, ComponentType, ForwardRefExoticComponent, FunctionComponent, HTMLAttributes, ReactNode, RefAttributes, RefObject } from 'react';
 import type { Text as RNText, TextProps as ReactTextProps, TextStyle, View, ViewProps, ViewStyle } from 'react-native';
 import type { Variable } from './createVariable';
 import type { StyledContext } from './helpers/createStyledContext';
@@ -496,7 +496,7 @@ type ParentMediaStates = 'hover' | 'press' | 'focus' | 'focusVisible';
 export type GroupMediaKeys = `$group-${GroupNames}` | `$group-${GroupNames}-${ParentMediaStates}` | `$group-${GroupNames}-${MediaQueryKey}` | `$group-${GroupNames}-${MediaQueryKey}-${ParentMediaStates}`;
 export type WithMediaProps<A> = {
     [Key in MediaPropKeys | GroupMediaKeys | ThemeMediaKeys | PlatformMediaKeys]?: Key extends `$platform-web` ? {
-        [SubKey in keyof A]?: A[SubKey] | (SubKey extends keyof WebOnlyValidStyleValues ? WebOnlyValidStyleValues[SubKey] : never);
+        [SubKey in keyof A | keyof CSSProperties]?: SubKey extends keyof CSSProperties ? CSSProperties[SubKey] : SubKey extends keyof A ? A[SubKey] : SubKey extends keyof WebOnlyValidStyleValues ? WebOnlyValidStyleValues[SubKey] : never;
     } : A;
 };
 export type WebOnlyValidStyleValues = {
