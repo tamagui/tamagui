@@ -32,4 +32,5 @@ export const CodeInline = styled(Paragraph, {
   // @ts-ignore
   fontSize: '85%',
   p: '$1.5',
+  whiteSpace: 'pre',
 })

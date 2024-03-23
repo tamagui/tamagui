@@ -1,4 +1,4 @@
-import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
+import { TamaguiLogo, ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import { CheckCircle, ChevronRight, Copy, Link as LinkIcon } from '@tamagui/lucide-icons'
 import { NextLink } from 'components/NextLink'
 import { useRouter } from 'next/router'
@@ -210,6 +210,10 @@ export const components = {
   TooltipSimple,
 
   ...Demos,
+
+  TamaguiDemo: () => {
+    return <TamaguiLogo />
+  },
 
   Highlights,
   ThemeTint,

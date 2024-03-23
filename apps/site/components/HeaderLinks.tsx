@@ -92,7 +92,7 @@ export const HeaderLinks = (props: HeaderProps) => {
         </HeadAnchor>
       </NextLink>
 
-      <NextLink passHref prefetch={false} href="/ui/stacks">
+      <NextLink passHref prefetch={false} href="/ui/intro/1.0.0">
         <HeadAnchor
           grid={forceShowAllLinks}
           $sm={{
@@ -135,27 +135,39 @@ export const HeaderLinks = (props: HeaderProps) => {
         <SlidingPopover>
           <SlidingPopoverContent />
 
-          <SlidingPopoverTrigger id="takeout">
-            <CTAHeaderLink
-              {...props}
-              excludeRoutes={['/', '/bento', '/takeout']}
-              href="/takeout"
-              name="Takeout"
-              description="starter kit"
-              icon={<TakeoutIcon />}
-            />
-          </SlidingPopoverTrigger>
+          <XStack
+            gap="$2"
+            br="$10"
+            px="$2"
+            py={0}
+            bw={1}
+            bc="transparent"
+            hoverStyle={{
+              bc: '$color4',
+            }}
+          >
+            <SlidingPopoverTrigger id="takeout">
+              <CTAHeaderLink
+                {...props}
+                excludeRoutes={['/', '/bento', '/takeout']}
+                href="/takeout"
+                name="Takeout"
+                description="starter kit"
+                icon={<TakeoutIcon scale={0.8} />}
+              />
+            </SlidingPopoverTrigger>
 
-          <SlidingPopoverTrigger id="bento">
-            <CTAHeaderLink
-              {...props}
-              excludeRoutes={['*']}
-              href="/bento"
-              name="Bento"
-              description="starter kit"
-              icon={<BentoIcon />}
-            />
-          </SlidingPopoverTrigger>
+            <SlidingPopoverTrigger id="bento">
+              <CTAHeaderLink
+                {...props}
+                excludeRoutes={['*']}
+                href="/bento"
+                name="Bento"
+                description="starter kit"
+                icon={<BentoIcon scale={0.8} />}
+              />
+            </SlidingPopoverTrigger>
+          </XStack>
 
           {/* <SlidingPopoverTrigger id="studio">
             <NextLink passHref prefetch={false} href="/studio">

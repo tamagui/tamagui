@@ -156,10 +156,13 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
           <NextLink href="/">
             <YStack
               tag="a"
+              animation="bouncy"
               px="$3"
               cur="pointer"
               my={-20}
               {...(isHome && {
+                o: 0,
+                x: -15,
                 onPress(e) {
                   e.preventDefault()
                   tint.setNextTint()

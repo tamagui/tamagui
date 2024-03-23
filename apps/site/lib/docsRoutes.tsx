@@ -50,7 +50,7 @@ export const docsRoutes = [
 
   {
     title: 'Extras',
-    pages: [{ title: 'Lucide Icons', route: '/docs/components/lucide-icons' }],
+    pages: [{ title: 'Lucide Icons', route: '/ui/lucide-icons' }],
   },
 
   {
@@ -111,11 +111,12 @@ export const docsRoutes = [
 
   {
     isUI: true,
-    title: 'Tamagui',
+    // title: '@tamagui/ui',
     pages: [
-      { title: 'Stacks', route: '/docs/components/stacks' },
-      { title: 'Headings', route: '/docs/components/headings' },
-      { title: 'Text', route: '/docs/components/text' },
+      { title: 'Introduction', route: '/ui/intro' },
+      { title: 'Stacks', route: '/ui/stacks' },
+      { title: 'Headings', route: '/ui/headings' },
+      { title: 'Text', route: '/ui/text' },
     ],
   },
 
@@ -123,17 +124,17 @@ export const docsRoutes = [
     isUI: true,
     label: 'Forms',
     pages: [
-      { title: 'Button', route: '/docs/components/button' },
-      { title: 'Checkbox', route: '/docs/components/checkbox' },
-      { title: 'Form', route: '/docs/components/form' },
-      { title: 'Input & TextArea', route: '/docs/components/inputs' },
-      { title: 'Label', route: '/docs/components/label' },
-      { title: 'Progress', route: '/docs/components/progress' },
-      { title: 'RadioGroup', route: '/docs/components/radio-group' },
-      { title: 'Select', route: '/docs/components/select' },
-      { title: 'Slider', route: '/docs/components/slider' },
-      { title: 'Switch', route: '/docs/components/switch' },
-      { title: 'ToggleGroup', route: '/docs/components/toggle-group' },
+      { title: 'Button', route: '/ui/button' },
+      { title: 'Checkbox', route: '/ui/checkbox' },
+      { title: 'Form', route: '/ui/form' },
+      { title: 'Input & TextArea', route: '/ui/inputs' },
+      { title: 'Label', route: '/ui/label' },
+      { title: 'Progress', route: '/ui/progress' },
+      { title: 'RadioGroup', route: '/ui/radio-group' },
+      { title: 'Select', route: '/ui/select' },
+      { title: 'Slider', route: '/ui/slider' },
+      { title: 'Switch', route: '/ui/switch' },
+      { title: 'ToggleGroup', route: '/ui/toggle-group' },
     ],
   },
 
@@ -141,12 +142,12 @@ export const docsRoutes = [
     isUI: true,
     label: 'Panels',
     pages: [
-      { title: 'AlertDialog', route: '/docs/components/alert-dialog' },
-      { title: 'Dialog', route: '/docs/components/dialog' },
-      { title: 'Popover', route: '/docs/components/popover' },
-      { title: 'Sheet', route: '/docs/components/sheet' },
-      { title: 'Tooltip', route: '/docs/components/tooltip' },
-      { title: 'Toast', route: '/docs/components/toast' },
+      { title: 'AlertDialog', route: '/ui/alert-dialog' },
+      { title: 'Dialog', route: '/ui/dialog' },
+      { title: 'Popover', route: '/ui/popover' },
+      { title: 'Sheet', route: '/ui/sheet' },
+      { title: 'Tooltip', route: '/ui/tooltip' },
+      { title: 'Toast', route: '/ui/toast' },
     ],
   },
 
@@ -154,9 +155,9 @@ export const docsRoutes = [
     isUI: true,
     label: 'Organize',
     pages: [
-      { title: 'Accordion', route: '/docs/components/accordion' },
-      { title: 'Group', route: '/docs/components/group' },
-      { title: 'Tabs', route: '/docs/components/tabs' },
+      { title: 'Accordion', route: '/ui/accordion' },
+      { title: 'Group', route: '/ui/group' },
+      { title: 'Tabs', route: '/ui/tabs' },
     ],
   },
 
@@ -164,10 +165,10 @@ export const docsRoutes = [
     isUI: true,
     label: 'Content',
     pages: [
-      { title: 'Avatar', route: '/docs/components/avatar' },
-      { title: 'Card', route: '/docs/components/card' },
-      { title: 'Image', route: '/docs/components/image' },
-      { title: 'ListItem', route: '/docs/components/list-item' },
+      { title: 'Avatar', route: '/ui/avatar' },
+      { title: 'Card', route: '/ui/card' },
+      { title: 'Image', route: '/ui/image' },
+      { title: 'ListItem', route: '/ui/list-item' },
     ],
   },
 
@@ -175,9 +176,9 @@ export const docsRoutes = [
     label: 'Visual',
     isUI: true,
     pages: [
-      { title: 'LinearGradient', route: '/docs/components/linear-gradient' },
-      { title: 'Separator', route: '/docs/components/separator' },
-      { title: 'Square & Circle', route: '/docs/components/shapes' },
+      { title: 'LinearGradient', route: '/ui/linear-gradient' },
+      { title: 'Separator', route: '/ui/separator' },
+      { title: 'Square & Circle', route: '/ui/shapes' },
     ],
   },
 
@@ -185,12 +186,12 @@ export const docsRoutes = [
     label: 'Etc',
     isUI: true,
     pages: [
-      { title: 'Anchor', route: '/docs/components/anchor' },
-      { title: 'HTML Elements', route: '/docs/components/html-elements' },
-      { title: 'ScrollView', route: '/docs/components/scroll-view' },
-      { title: 'Spinner', route: '/docs/components/spinner' },
-      { title: 'Unspaced', route: '/docs/components/unspaced' },
-      { title: 'VisuallyHidden', route: '/docs/components/visually-hidden' },
+      { title: 'Anchor', route: '/ui/anchor' },
+      { title: 'HTML Elements', route: '/ui/html-elements' },
+      { title: 'ScrollView', route: '/ui/scroll-view' },
+      { title: 'Spinner', route: '/ui/spinner' },
+      { title: 'Unspaced', route: '/ui/unspaced' },
+      { title: 'VisuallyHidden', route: '/ui/visually-hidden' },
     ],
   },
 ]

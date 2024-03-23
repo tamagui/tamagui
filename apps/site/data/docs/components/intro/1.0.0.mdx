@@ -1,0 +1,42 @@
+---
+title: Tamagui UI
+description: An optional suite of fully open source components - in styled and unstyled forms.
+name: stacks
+component: Stacks
+package: stacks
+demoName: Stacks
+---
+
+# Tamagui UI
+
+<Description>
+  A suite of OSS components for all&nbsp;React&nbsp;platforms.
+</Description>
+
+Tamagui UI is a suite of fully open source components that are designed to work well on both web and native platforms. Some are fully headless, but all come in both styled and unstyled forms today.
+
+## Installation
+
+Each individual component includes installation instructions and can be installed independently, but you can also use all of the components via:
+
+```bash
+yarn add tamagui
+```
+
+## Setup
+
+One thing to understand is that `tamagui` is a superset of `@tamagui/core`, so if you've already set up core, you'll want to actually replace every reference to "@tamagui/core" to "tamagui", including removing the core dependency altogether from your package.json.
+
+Tamagui UI exports a slightly more helpful TamaguiProvider that sets up a root portal for your various toasts, dialogs, and modals. You'll want to add it to the highest point in your app, replacing any core provider:
+
+```tsx
+import { TamaguiProvider, View } from 'tamagui'
+
+export default () => (
+  <TamaguiProvider config={yourConfig}>
+    <View />
+  </TamaguiProvider>
+)
+```
+
+Other than that, there's a large amount of optional configuration through `createTamagui` that is [documented in the Core Installation docs](/docs/intro/installation).
