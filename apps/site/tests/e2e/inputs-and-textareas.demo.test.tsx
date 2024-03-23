@@ -1,6 +1,5 @@
 import type { Page } from '@playwright/test'
-import { test, expect } from '@playwright/test'
-import { sleep } from 'zx'
+import { expect, test } from '@playwright/test'
 
 let page: Page
 

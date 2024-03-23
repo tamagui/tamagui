@@ -1,11 +1,4 @@
-import type { Page} from '@playwright/test';
 import { expect, test } from '@playwright/test'
-
-let page: Page
-
-test.beforeAll(async ({ browser }) => {
-  page = await browser.newPage()
-})
 
 test(`Loads home screen with no errors or logs`, async ({ page }) => {
   const logs = {

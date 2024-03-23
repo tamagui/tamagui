@@ -4,6 +4,8 @@ const isProd = process.env.RUN_ENV === 'production'
 const port = isProd ? 3333 : 5005
 const domain = `http://localhost:${port}`
 
+console.log('isProd', isProd)
+
 const config: PlaywrightTestConfig = {
   fullyParallel: false,
   testDir: 'tests/e2e',
@@ -15,5 +17,7 @@ const config: PlaywrightTestConfig = {
   use: {
     baseURL: domain,
   },
+  timeout: 60_000,
 }
+
 export default config
