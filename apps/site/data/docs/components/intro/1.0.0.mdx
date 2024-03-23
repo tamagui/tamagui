@@ -25,9 +25,9 @@ yarn add tamagui
 
 ## Setup
 
-One thing to understand is that `tamagui` is a superset of `@tamagui/core`, so if you've already set up core, you'll want to actually replace every reference to "@tamagui/core" to "tamagui", including removing the core dependency altogether from your package.json.
+One thing to understand is that `tamagui` is a superset of `@tamagui/core`, so if you've already set up core, you'll want to actually replace every reference of "@tamagui/core" with "tamagui", including removing the core dependency altogether from your package.json.
 
-Tamagui UI exports a slightly more helpful TamaguiProvider that sets up a root portal for your various toasts, dialogs, and modals. You'll want to add it to the highest point in your app, replacing any core provider:
+When you replace everything with tamagui, you'll get a slightly more helpful TamaguiProvider that sets up a root portal for your various toasts, dialogs, and modals which you'll need to add to the highest point in your app, replacing the core provider if you use it already:
 
 ```tsx
 import { TamaguiProvider, View } from 'tamagui'
@@ -40,3 +40,5 @@ export default () => (
 ```
 
 Other than that, there's a large amount of optional configuration through `createTamagui` that is [documented in the Core Installation docs](/docs/intro/installation).
+
+You are all set!
