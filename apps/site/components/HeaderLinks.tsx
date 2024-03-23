@@ -139,11 +139,12 @@ export const HeaderLinks = (props: HeaderProps) => {
             gap="$2"
             br="$10"
             px="$2"
-            py={0}
+            height={44}
+            ai="center"
             bw={1}
             bc="transparent"
             hoverStyle={{
-              bc: '$color4',
+              bc: '$color025',
             }}
           >
             <SlidingPopoverTrigger id="takeout">
@@ -164,7 +165,11 @@ export const HeaderLinks = (props: HeaderProps) => {
                 href="/bento"
                 name="Bento"
                 description="starter kit"
-                icon={<BentoIcon scale={0.8} />}
+                icon={
+                  <YStack y={1}>
+                    <BentoIcon scale={0.8} />
+                  </YStack>
+                }
               />
             </SlidingPopoverTrigger>
           </XStack>
@@ -369,7 +374,7 @@ const CTAHeaderLink = ({
             ai="center"
             py="$2"
             px="$3"
-            br="$4"
+            br="$8"
             hoverStyle={{
               bg: '$backgroundHover',
             }}
