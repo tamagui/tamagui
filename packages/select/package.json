@@ -1,9 +1,7 @@
 {
   "name": "@tamagui/select",
   "version": "1.92.0",
-  "sideEffects": [
-    "*.css"
-  ],
+  "removeSideEffects": "true",
   "source": "src/index.tsx",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
