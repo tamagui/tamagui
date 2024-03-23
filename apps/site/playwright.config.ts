@@ -17,7 +17,7 @@ const config: PlaywrightTestConfig = {
   use: {
     baseURL: domain,
   },
-  timeout: 60_000,
+  timeout: process.env.CI ? 120_000 : 60_000,
 }
 
 export default config
