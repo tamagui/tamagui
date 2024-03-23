@@ -13,6 +13,7 @@ import {
   Theme,
   XStack,
   YStack,
+  debounce,
   getMedia,
   styled,
 } from 'tamagui'
@@ -26,7 +27,7 @@ import { NextLink } from './NextLink'
 import { TakeoutIcon } from './TakeoutIcon'
 import { LinearGradient } from 'tamagui/linear-gradient'
 import { ThemeTintAlt } from '@tamagui/logo'
-import { createShallowSetState } from '@tamagui/core'
+import { createShallowSetState, useComposedRefs } from '@tamagui/core'
 
 const HeadAnchor = styled(Paragraph, {
   tag: 'a',
@@ -88,6 +89,17 @@ export const HeaderLinks = (props: HeaderProps) => {
           }}
         >
           Docs
+        </HeadAnchor>
+      </NextLink>
+
+      <NextLink passHref prefetch={false} href="/ui/stacks">
+        <HeadAnchor
+          grid={forceShowAllLinks}
+          $sm={{
+            display: forceShowAllLinks ? 'flex' : 'none',
+          }}
+        >
+          UI
         </HeadAnchor>
       </NextLink>
 
@@ -415,6 +427,22 @@ const SlidingPopoverTrigger = YStack.styleable<{ id: string }>(
     const context = React.useContext(SlidingPopoverContext)
     const [layout, setLayout_] = React.useState<LayoutRectangle>()
     const setLayout = createShallowSetState<LayoutRectangle>(setLayout_)
+    const triggerRef = React.useRef<HTMLElement>(null)
+    const combinedRef = useComposedRefs(ref)
+
+    React.useEffect(() => {
+      const handleMove = debounce(() => {
+        const layout = triggerRef.current?.getBoundingClientRect()
+        if (layout) {
+          console.log('layout', layout)
+          setLayout(layout)
+        }
+      }, 16)
+      window.addEventListener('resize', handleMove)
+      return () => {
+        window.removeEventListener('resize', handleMove)
+      }
+    }, [])
 
     return (
       <YStack
@@ -440,7 +468,7 @@ const SlidingPopoverTrigger = YStack.styleable<{ id: string }>(
             y: e.nativeEvent.layout.top,
           })
         }}
-        ref={ref}
+        ref={combinedRef}
         {...props}
       />
     )

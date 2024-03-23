@@ -6,17 +6,29 @@ import { Input, Paragraph, Separator, Spacer, Theme, XStack, YStack } from 'tama
 
 import { useRouter } from 'next/router'
 import { DocsItemsStore, DocsRouteNavItem } from './DocsRouteNavItem'
-import { NavHeading } from './NavHeading'
 import { useDocsMenu } from './useDocsMenu'
+import { NavHeading } from './NavHeading'
 
 const fuz = new uFuzzy({})
 
-const allItems = docsRoutes.flatMap((section, sectionIndex) =>
-  section.pages?.map((page, index) => ({ page, section, sectionIndex, index }))
-)
-const allItemsStrings = allItems.map((s) =>
-  `${s?.page.title || ''} ${s?.section?.title || ''}`.trim()
-)
+const allItems = {
+  docs: docsRoutes
+    .filter((x) => !x.isUI)
+    .flatMap((section, sectionIndex) =>
+      section.pages?.map((page, index) => ({ page, section, sectionIndex, index }))
+    ),
+  ui: docsRoutes
+    .filter((x) => x.isUI)
+    .flatMap((section, sectionIndex) =>
+      section.pages?.map((page, index) => ({ page, section, sectionIndex, index }))
+    ),
+}
+const allItemsStrings = {
+  docs: allItems.docs.map((s) =>
+    `${s?.page.title || ''} ${s?.section?.title || ''}`.trim()
+  ),
+  ui: allItems.ui.map((s) => `${s?.page.title || ''} ${s?.section?.title || ''}`.trim()),
+}
 
 export const DocsMenuContents = React.memo(function DocsMenuContents({
   inMenu,
@@ -24,8 +36,14 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
   const store = useStore(DocsItemsStore)
   const router = useRouter()
   const { currentPath } = useDocsMenu()
-  const [items, setItems] = React.useState(allItems)
-  const isFiltered = items !== allItems
+  const activeSection = currentPath.startsWith('/ui') ? 'ui' : 'docs'
+  const activeItems = allItems[activeSection]
+  const [items, setItems] = React.useState(activeItems)
+  const isFiltered = items !== allItems[activeSection]
+
+  React.useEffect(() => {
+    setItems(allItems[activeSection])
+  }, [activeSection])
 
   return (
     <>
@@ -74,7 +92,7 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
             e.preventDefault()
             const found = items[store.index]
             if (found) {
-              setItems(allItems)
+              setItems(activeItems)
               setTimeout(() => {
                 router.push(found.page?.route)
               })
@@ -83,15 +101,15 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
         }}
         onChangeText={(next) => {
           if (!next) {
-            setItems(allItems)
+            setItems(activeItems)
             return
           }
-          const [indexes] = fuz.search(allItemsStrings, next)
+          const [indexes] = fuz.search(allItemsStrings[activeSection], next)
           if (!indexes?.length) {
-            setItems(allItems)
+            setItems(activeItems)
             return
           }
-          const found = indexes?.map((i) => allItems[i]) || []
+          const found = indexes?.map((i) => activeItems[i]) || []
           setItems(found)
           store.index = 0
         }}

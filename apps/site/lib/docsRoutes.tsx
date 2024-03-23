@@ -1,17 +1,14 @@
 import { Figma } from '@tamagui/lucide-icons'
+import { GithubIcon } from '../components/GithubIcon'
 
 export const docsRoutes = [
   {
+    isUI: false,
     pages: [
       { title: 'Introduction', route: '/docs/intro/introduction' },
       { title: 'Installation', route: '/docs/intro/installation' },
       // { title: 'Thinking in Tamagui', route: '/docs/intro/thinking-in-tamagui' },
       // { title: 'Comparison', route: '/docs/intro/comparison' },
-      {
-        title: 'Figma',
-        icon: Figma,
-        route: 'https://www.figma.com/community/file/1326593766534421119/tamagui-v1-2-1',
-      },
       {
         title: 'Releases',
         route: 'https://github.com/tamagui/tamagui/releases',
@@ -20,6 +17,7 @@ export const docsRoutes = [
   },
 
   {
+    isUI: false,
     title: 'Core',
     pages: [
       { title: 'Introduction', route: '/docs/core/introduction' },
@@ -41,89 +39,12 @@ export const docsRoutes = [
   },
 
   {
+    isUI: false,
     title: 'Compiler',
     pages: [
       { title: 'Background', route: '/docs/intro/why-a-compiler' },
       { title: 'Installation', route: '/docs/intro/compiler-install' },
       { title: 'Benchmarks', route: '/docs/intro/benchmarks' },
-    ],
-  },
-
-  {
-    title: 'Tamagui',
-    pages: [
-      { title: 'Stacks', route: '/docs/components/stacks' },
-      { title: 'Headings', route: '/docs/components/headings' },
-      { title: 'Text', route: '/docs/components/text' },
-    ],
-  },
-
-  {
-    label: 'Forms',
-    pages: [
-      { title: 'Button', route: '/docs/components/button' },
-      { title: 'Checkbox', route: '/docs/components/checkbox' },
-      { title: 'Form', route: '/docs/components/form' },
-      { title: 'Input & TextArea', route: '/docs/components/inputs' },
-      { title: 'Label', route: '/docs/components/label' },
-      { title: 'Progress', route: '/docs/components/progress' },
-      { title: 'RadioGroup', route: '/docs/components/radio-group' },
-      { title: 'Select', route: '/docs/components/select' },
-      { title: 'Slider', route: '/docs/components/slider' },
-      { title: 'Switch', route: '/docs/components/switch' },
-      { title: 'ToggleGroup', route: '/docs/components/toggle-group' },
-    ],
-  },
-
-  {
-    label: 'Panels',
-    pages: [
-      { title: 'AlertDialog', route: '/docs/components/alert-dialog' },
-      { title: 'Dialog', route: '/docs/components/dialog' },
-      { title: 'Popover', route: '/docs/components/popover' },
-      { title: 'Sheet', route: '/docs/components/sheet' },
-      { title: 'Tooltip', route: '/docs/components/tooltip' },
-      { title: 'Toast', route: '/docs/components/toast' },
-    ],
-  },
-
-  {
-    label: 'Organize',
-    pages: [
-      { title: 'Accordion', route: '/docs/components/accordion' },
-      { title: 'Group', route: '/docs/components/group' },
-      { title: 'Tabs', route: '/docs/components/tabs' },
-    ],
-  },
-
-  {
-    label: 'Content',
-    pages: [
-      { title: 'Avatar', route: '/docs/components/avatar' },
-      { title: 'Card', route: '/docs/components/card' },
-      { title: 'Image', route: '/docs/components/image' },
-      { title: 'ListItem', route: '/docs/components/list-item' },
-    ],
-  },
-
-  {
-    label: 'Visual',
-    pages: [
-      { title: 'LinearGradient', route: '/docs/components/linear-gradient' },
-      { title: 'Separator', route: '/docs/components/separator' },
-      { title: 'Square & Circle', route: '/docs/components/shapes' },
-    ],
-  },
-
-  {
-    label: 'Etc',
-    pages: [
-      { title: 'Anchor', route: '/docs/components/anchor' },
-      { title: 'HTML Elements', route: '/docs/components/html-elements' },
-      { title: 'ScrollView', route: '/docs/components/scroll-view' },
-      { title: 'Spinner', route: '/docs/components/spinner' },
-      { title: 'Unspaced', route: '/docs/components/unspaced' },
-      { title: 'VisuallyHidden', route: '/docs/components/visually-hidden' },
     ],
   },
 
@@ -149,6 +70,7 @@ export const docsRoutes = [
   },
 
   {
+    isUI: false,
     title: 'Tamagui Config',
     pages: [
       { title: 'Colors', route: '/docs/intro/colors' },
@@ -163,13 +85,112 @@ export const docsRoutes = [
   },
 
   {
+    isUI: false,
     title: 'Community',
     pages: [
       { title: `Community`, route: '/community' },
       { title: `Blog`, route: '/blog' },
-      { title: `GitHub`, route: 'https://github.com/tamagui/tamagui' },
+      {
+        title: 'Figma',
+        icon: Figma,
+        route: 'https://www.figma.com/community/file/1326593766534421119/tamagui-v1-2-1',
+      },
+      {
+        title: `GitHub`,
+        icon: () => (
+          <GithubIcon width={16} height={16} style={{ margin: '0 0 -2.5px 2px' }} />
+        ),
+        route: 'https://github.com/tamagui/tamagui',
+      },
       { title: `Twitter`, route: 'https://twitter.com/tamagui_js' },
       { title: `Discord`, route: 'https://discord.gg/4qh6tdcVDa' },
+    ],
+  },
+
+  // UI:
+
+  {
+    isUI: true,
+    title: 'Tamagui',
+    pages: [
+      { title: 'Stacks', route: '/docs/components/stacks' },
+      { title: 'Headings', route: '/docs/components/headings' },
+      { title: 'Text', route: '/docs/components/text' },
+    ],
+  },
+
+  {
+    isUI: true,
+    label: 'Forms',
+    pages: [
+      { title: 'Button', route: '/docs/components/button' },
+      { title: 'Checkbox', route: '/docs/components/checkbox' },
+      { title: 'Form', route: '/docs/components/form' },
+      { title: 'Input & TextArea', route: '/docs/components/inputs' },
+      { title: 'Label', route: '/docs/components/label' },
+      { title: 'Progress', route: '/docs/components/progress' },
+      { title: 'RadioGroup', route: '/docs/components/radio-group' },
+      { title: 'Select', route: '/docs/components/select' },
+      { title: 'Slider', route: '/docs/components/slider' },
+      { title: 'Switch', route: '/docs/components/switch' },
+      { title: 'ToggleGroup', route: '/docs/components/toggle-group' },
+    ],
+  },
+
+  {
+    isUI: true,
+    label: 'Panels',
+    pages: [
+      { title: 'AlertDialog', route: '/docs/components/alert-dialog' },
+      { title: 'Dialog', route: '/docs/components/dialog' },
+      { title: 'Popover', route: '/docs/components/popover' },
+      { title: 'Sheet', route: '/docs/components/sheet' },
+      { title: 'Tooltip', route: '/docs/components/tooltip' },
+      { title: 'Toast', route: '/docs/components/toast' },
+    ],
+  },
+
+  {
+    isUI: true,
+    label: 'Organize',
+    pages: [
+      { title: 'Accordion', route: '/docs/components/accordion' },
+      { title: 'Group', route: '/docs/components/group' },
+      { title: 'Tabs', route: '/docs/components/tabs' },
+    ],
+  },
+
+  {
+    isUI: true,
+    label: 'Content',
+    pages: [
+      { title: 'Avatar', route: '/docs/components/avatar' },
+      { title: 'Card', route: '/docs/components/card' },
+      { title: 'Image', route: '/docs/components/image' },
+      { title: 'ListItem', route: '/docs/components/list-item' },
+    ],
+  },
+
+  {
+    label: 'Visual',
+    isUI: true,
+    pages: [
+      { title: 'LinearGradient', route: '/docs/components/linear-gradient' },
+      { title: 'Separator', route: '/docs/components/separator' },
+      { title: 'Square & Circle', route: '/docs/components/shapes' },
+    ],
+  },
+
+  {
+    label: 'Etc',
+    isUI: true,
+    pages: [
+      { title: 'Anchor', route: '/docs/components/anchor' },
+      { title: 'HTML Elements', route: '/docs/components/html-elements' },
+      { title: 'ScrollView', route: '/docs/components/scroll-view' },
+      { title: 'Spinner', route: '/docs/components/spinner' },
+      { title: 'Unspaced', route: '/docs/components/unspaced' },
+      { title: 'VisuallyHidden', route: '/docs/components/visually-hidden' },
     ],
   },
 ]

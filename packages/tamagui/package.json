@@ -2,6 +2,9 @@
   "name": "tamagui",
   "version": "1.92.1",
   "removeSideEffects": true,
+  "alsoPublishAs": [
+    "@tamagui/ui"
+  ],
   "sideEffects": [
     "setup.js"
   ],

@@ -1,8 +1,7 @@
 import { ThemeTintAlt, useTint } from '@tamagui/logo'
 import { Menu } from '@tamagui/lucide-icons'
 import * as React from 'react'
-import type {
-  ThemeName} from 'tamagui';
+import type { ThemeName } from 'tamagui'
 import {
   Adapt,
   Button,
@@ -85,11 +84,7 @@ export const HeaderMenu = React.memo(function HeaderMenu() {
               bc: 'color-mix(in srgb, var(--color10) 30%, transparent 60%)',
             }}
           >
-            <SizableText size="$2" ff="$silkscreen">
-              Menu
-            </SizableText>
-
-            <Circle size={28} ai="center" jc="center" ml={-2} mr={-9}>
+            <Circle size={28} ai="center" jc="center">
               {userSwr.data?.userDetails ? (
                 <Avatar circular size="$2">
                   <Avatar.Image
