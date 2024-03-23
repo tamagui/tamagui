@@ -142,21 +142,17 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
 
                 const lastItem = items[index - 1]
                 const nextItem = items[index + 1]
-                const isEndingSection = !nextItem || nextItem.section !== item.section
                 const isStartingSection = !lastItem || item.section !== lastItem.section
-
-                if (isEndingSection) {
-                  return (
-                    <React.Fragment key={`${page.route}${index}`}>
-                      {contents}
-                      {!isFiltered && <Spacer />}
-                    </React.Fragment>
-                  )
-                }
+                const isEndingSection = !nextItem || nextItem.section !== item.section
 
                 if (isStartingSection) {
                   return (
-                    <YStack key={`${page.route}${index}`}>
+                    <YStack
+                      key={`${page.route}${index}`}
+                      {...(isEndingSection && {
+                        mb: '$5',
+                      })}
+                    >
                       {section.label ? (
                         <NavHeading inMenu={!!inMenu}>{section.label}</NavHeading>
                       ) : null}
@@ -178,6 +174,15 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
                       )}
                       {contents}
                     </YStack>
+                  )
+                }
+
+                if (isEndingSection) {
+                  return (
+                    <React.Fragment key={`${page.route}${index}`}>
+                      {contents}
+                      {!isFiltered && <Spacer />}
+                    </React.Fragment>
                   )
                 }
 

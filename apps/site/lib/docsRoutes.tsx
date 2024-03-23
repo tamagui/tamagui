@@ -49,12 +49,8 @@ export const docsRoutes = [
   },
 
   {
-    title: 'Extras',
-    pages: [{ title: 'Lucide Icons', route: '/ui/lucide-icons' }],
-  },
-
-  {
     title: 'Guides',
+    isUI: false,
     pages: [
       { title: 'Creating Custom Themes', route: '/docs/guides/theme-builder' },
       {
@@ -67,6 +63,12 @@ export const docsRoutes = [
       { title: 'Vite', route: '/docs/guides/vite' },
       { title: 'create-tamagui', route: '/docs/guides/create-tamagui-app' },
     ],
+  },
+
+  {
+    title: 'Extras',
+    isUI: false,
+    pages: [{ title: 'Lucide Icons', route: '/ui/lucide-icons' }],
   },
 
   {
