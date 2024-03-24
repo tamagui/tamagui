@@ -8,13 +8,17 @@ import * as t from '@babel/types'
 import { evaluateAstNode } from './evaluateAstNode'
 import { getSourceModule } from './getSourceModule'
 
+// import { fileURLToPath } from 'node:url'
+// // @ts-ignore
+// const __dirname = dirname(fileURLToPath(import.meta.url))
+
 const isLocalImport = (path: string) => path.startsWith('.') || path.startsWith('/')
 
 function resolveImportPath(sourcePath: string, path: string) {
   const sourceDir = dirname(sourcePath)
   if (isLocalImport(path)) {
     if (extname(path) === '') {
-      path += '.js'
+      path += ''
     }
     return resolve(sourceDir, path)
   }

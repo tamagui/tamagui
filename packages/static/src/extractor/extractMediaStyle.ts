@@ -1,7 +1,7 @@
 import type { NodePath } from '@babel/traverse'
 import * as t from '@babel/types'
 import type { TamaguiInternalConfig } from '@tamagui/core'
-import { createMediaStyle } from '@tamagui/core'
+import * as core from '@tamagui/core'
 import type { ViewStyle } from 'react-native'
 
 import { requireTamaguiCore } from '../helpers/requireTamaguiCore'
@@ -54,7 +54,13 @@ export function extractMediaStyle(
     const styles = getStylesAtomic(styleObj as any)
 
     const singleMediaStyles = styles.map((style) => {
-      const mediaStyle = createMediaStyle(style, key, tamaguiConfig.media, true, negate)
+      const mediaStyle = core.createMediaStyle(
+        style,
+        key,
+        tamaguiConfig.media,
+        true,
+        negate
+      )
       const className = `.${mediaStyle.identifier}`
       return {
         ...mediaStyle,

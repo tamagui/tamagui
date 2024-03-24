@@ -7,7 +7,7 @@ import * as t from '@babel/types'
 import { Color, colorLog } from '@tamagui/cli-color'
 import type { StaticConfig, TamaguiInternalConfig } from '@tamagui/web'
 import esbuild from 'esbuild'
-import { ensureDir, removeSync, writeFileSync } from 'fs-extra'
+import * as FS from 'fs-extra'
 
 import { registerRequire, setRequireResult } from '../registerRequire'
 import type { TamaguiOptions } from '../types'
@@ -115,7 +115,7 @@ export async function bundleConfig(props: TamaguiOptions) {
     if (!props.disableInitialBuild) {
       // build them to node-compat versions
       try {
-        await ensureDir(tmpDir)
+        await FS.ensureDir(tmpDir)
       } catch {
         //
       }
@@ -304,7 +304,7 @@ export function loadComponentsInner(
             ? transformAddExports(babelParse(esbuildit(fileContents, 'modern'), name))
             : fileContents
 
-          writeFileSync(loadModule, writtenContents)
+          FS.writeFileSync(loadModule, writtenContents)
 
           esbuild.buildSync({
             ...esbuildOptions,
@@ -344,7 +344,7 @@ export function loadComponentsInner(
       }
 
       const dispose = () => {
-        isDynamic && removeSync(loadModule)
+        isDynamic && FS.removeSync(loadModule)
       }
 
       try {

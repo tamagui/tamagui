@@ -1,5 +1,5 @@
 import type { TamaguiOptions } from '@tamagui/static'
-import { watchTamaguiConfig } from '@tamagui/static'
+import { default as Static } from '@tamagui/static'
 import type { Plugin } from 'vite'
 import { transformWithEsbuild } from 'vite'
 
@@ -19,7 +19,7 @@ export function tamaguiPlugin({
 }): Plugin {
   const watcher = options.disableWatchTamaguiConfig
     ? null
-    : watchTamaguiConfig({
+    : Static.watchTamaguiConfig({
         platform,
         components: ['tamagui'],
         config: './src/tamagui.config.ts',

@@ -5,14 +5,15 @@ import { Color, colorLog } from '@tamagui/cli-color'
 import type { CLIResolvedOptions, CLIUserOptions, TamaguiOptions } from '@tamagui/types'
 import type { TamaguiInternalConfig } from '@tamagui/web'
 import esbuild from 'esbuild'
-import { existsSync, outputFile, pathExists, readJSON, writeFile } from 'fs-extra'
+import * as fsExtra from 'fs-extra'
 
+import { readFile } from 'fs/promises'
 import { SHOULD_DEBUG } from '../constants'
 import { requireTamaguiCore } from '../helpers/requireTamaguiCore'
 import { minifyCSS } from '../minifyCSS'
 import { getNameToPaths, registerRequire } from '../registerRequire'
 import {
-  TamaguiProjectInfo,
+  type TamaguiProjectInfo,
   getBundledConfig,
   hasBundledConfigChanged,
   loadComponents,
@@ -23,7 +24,6 @@ import {
   generateTamaguiThemes,
 } from './generateTamaguiStudioConfig'
 import { getTamaguiConfigPathFromOptionsConfig } from './getTamaguiConfigPathFromOptionsConfig'
-import { readFile } from 'fs/promises'
 
 const getFilledOptions = (propsIn: Partial<TamaguiOptions>): TamaguiOptions => ({
   // defaults
@@ -64,7 +64,7 @@ export async function loadTamagui(
     if (outputCSS && props.platform === 'web') {
       const flush = async () => {
         colorLog(Color.FgYellow, `    ➡ [tamagui] output css: ${outputCSS}\n`)
-        await writeFile(outputCSS, css)
+        await fsExtra.writeFile(outputCSS, css)
       }
       // default to not minifying it messes up ssr parsing
       const cssOut = config.getCSS()
@@ -92,7 +92,7 @@ export async function loadTamagui(
 let waiting = false
 let hasLoggedOnce = false
 
-const generateThemesAndLog = async (options: TamaguiOptions, force = false) => {
+export const generateThemesAndLog = async (options: TamaguiOptions, force = false) => {
   if (waiting) return
   if (!options.themeBuilder) return
   try {
@@ -123,7 +123,7 @@ export function loadTamaguiBuildConfigSync(
   tamaguiOptions: Partial<TamaguiOptions> | undefined
 ) {
   const buildFilePath = tamaguiOptions?.buildFile ?? 'tamagui.build.ts'
-  if (existsSync(buildFilePath)) {
+  if (fsExtra.existsSync(buildFilePath)) {
     const registered = registerRequire('web')
     try {
       const out = require(buildFilePath).default
@@ -300,7 +300,7 @@ export async function getOptions({
   let pkgJson = {}
 
   try {
-    pkgJson = await readJSON(join(root, 'package.json'))
+    pkgJson = await fsExtra.readJSON(join(root, 'package.json'))
   } catch (err) {
     // ok
   }
@@ -334,7 +334,7 @@ export function resolveWebOrNativeSpecificEntry(entry: string) {
   const fileName = basename(resolved).replace(ext, '')
   const specificExt = process.env.TAMAGUI_TARGET === 'web' ? 'web' : 'native'
   const specificFile = join(dirname(resolved), fileName + '.' + specificExt + ext)
-  if (existsSync(specificFile)) {
+  if (fsExtra.existsSync(specificFile)) {
     return specificFile
   }
   return entry
@@ -351,7 +351,7 @@ async function getDefaultTamaguiConfigPath(root: string, configPath?: string) {
   ]
 
   for (const path of searchPaths) {
-    if (await pathExists(path)) {
+    if (await fsExtra.pathExists(path)) {
       return path
     }
   }
@@ -366,50 +366,7 @@ async function getDefaultTamaguiConfigPath(root: string, configPath?: string) {
 
 export { TamaguiProjectInfo }
 
-export async function watchTamaguiConfig(tamaguiOptions: TamaguiOptions) {
-  const options = await getOptions({ tamaguiOptions })
-
-  if (!options.tamaguiOptions.config) {
-    throw new Error(`No config`)
-  }
-
-  if (process.env.NODE_ENV === 'production') {
-    return {
-      dispose() {},
-    }
-  }
-
-  const disposeConfigWatcher = await esbuildWatchFiles(
-    options.tamaguiOptions.config,
-    () => {
-      void generateTamaguiStudioConfig(options.tamaguiOptions, null, true)
-    }
-  )
-
-  const themeBuilderInput = options.tamaguiOptions.themeBuilder?.input
-  let disposeThemesWatcher: Function | undefined
-
-  if (themeBuilderInput) {
-    let inputPath = themeBuilderInput
-    try {
-      inputPath = require.resolve(themeBuilderInput)
-    } catch {
-      // ok
-    }
-    disposeThemesWatcher = await esbuildWatchFiles(inputPath, () => {
-      void generateThemesAndLog(options.tamaguiOptions)
-    })
-  }
-
-  return {
-    dispose() {
-      disposeConfigWatcher()
-      disposeThemesWatcher?.()
-    },
-  }
-}
-
-async function esbuildWatchFiles(entry: string, onChanged: () => void) {
+export async function esbuildWatchFiles(entry: string, onChanged: () => void) {
   let hasRunOnce = false
 
   /**

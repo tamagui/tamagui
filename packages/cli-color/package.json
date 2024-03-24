@@ -1,10 +1,27 @@
 {
   "name": "@tamagui/cli-color",
   "version": "1.92.1",
-  "main": "./index.js",
+  "main": "dist/cjs",
+  "module": "dist/esm",
   "scripts": {
-    "build": "true",
-    "watch": "true"
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch",
+    "lint": "../../node_modules/.bin/biome check src",
+    "lint:fix": "../../node_modules/.bin/biome check --apply-unsafe src",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./types/index.d.ts",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.js",
+      "react-native": "./dist/cjs/index.native.js"
+    }
+  },
+  "devDependencies": {
+    "@tamagui/build": "1.92.1"
   },
   "publishConfig": {
     "access": "public"

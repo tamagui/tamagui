@@ -5,12 +5,12 @@ import type { TamaguiPlatform } from './types'
 import { esbuildIgnoreFilesRegex } from './extractor/bundle'
 
 const nameToPaths = {}
-const Module = require('module')
 
 export const getNameToPaths = () => nameToPaths
 
+const Module = require('module')
+const packageJson = require('react-native-web/package.json')
 const proxyWorm = require('@tamagui/proxy-worm')
-// TODO can swap with react-native-web-lite
 const rnw = require('react-native-web')
 
 let isRegistered = false
@@ -176,7 +176,6 @@ export function registerRequire(
   }
 }
 
-const packageJson = require('react-native-web/package.json')
 const IGNORES = process.env.TAMAGUI_IGNORE_BUNDLE_ERRORS
 const extraIgnores =
   IGNORES === 'true' ? [] : process.env.TAMAGUI_IGNORE_BUNDLE_ERRORS?.split(',')

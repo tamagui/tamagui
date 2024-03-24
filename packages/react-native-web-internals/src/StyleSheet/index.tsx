@@ -9,7 +9,7 @@
  */
 
 import { styleq } from 'styleq'
-import { localizeStyle } from 'styleq/transform-localize-style'
+import { localizeStyle } from 'styleq/transform-localize-style.js'
 
 import { canUseDOM } from '../index'
 import { atomic, classic, inline } from './compiler/index'

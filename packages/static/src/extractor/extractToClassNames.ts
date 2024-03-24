@@ -3,7 +3,7 @@ import * as util from 'util'
 
 import generate from '@babel/generator'
 import * as t from '@babel/types'
-import { concatClassName } from '@tamagui/helpers'
+import * as helpers from '@tamagui/helpers'
 import type { ViewStyle } from 'react-native'
 
 import { requireTamaguiCore } from '../helpers/requireTamaguiCore'
@@ -199,7 +199,7 @@ export async function extractToClassNames({
             } else {
               const styles = addStyles(attr.value)
               const newFontFamily = getFontFamilyClassNameFromProps(attr.value) || ''
-              const newClassNames = concatClassName(
+              const newClassNames = helpers.concatClassName(
                 styles.map((x) => x.identifier).join(' ') + newFontFamily
               )
               const existing = finalClassNames.find(

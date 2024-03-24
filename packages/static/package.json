@@ -18,6 +18,14 @@
     "lint": "../../node_modules/.bin/biome check src",
     "lint:fix": "../../node_modules/.bin/biome check --apply-unsafe src"
   },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./types/index.d.ts",
+      "require": "./dist/cjs/index.js",
+      "import": "./dist/cjs/index.js"
+    }
+  },
   "tests": {
     "parallel": true
   },
@@ -58,9 +66,6 @@
     "react-native-web": "^0.19.10",
     "react-native-web-internals": "1.92.1",
     "react-native-web-lite": "1.92.1"
-  },
-  "optionalDependencies": {
-    "lightningcss": "*"
   },
   "devDependencies": {
     "@babel/plugin-syntax-typescript": "^7.23.3",
