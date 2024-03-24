@@ -7088,7 +7088,7 @@ __metadata:
     react-native-reanimated: "npm:~3.6.2"
     react-native-safe-area-context: "npm:4.8.2"
     react-native-screens: "npm:~3.29.0"
-    react-native-web: "npm:^0.19.9"
+    react-native-web: "npm:^0.19.10"
     tamagui: "npm:^1.92.1"
     typescript: "npm:^5.3.3"
   languageName: unknown
@@ -10818,7 +10818,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-web@npm:^0.19.10, react-native-web@npm:^0.19.9":
+"react-native-web@npm:^0.19.10":
   version: 0.19.10
   resolution: "react-native-web@npm:0.19.10"
   dependencies:

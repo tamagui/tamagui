@@ -6928,7 +6928,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-web@npm:^0.19.10, react-native-web@npm:~0.19.9":
+"react-native-web@npm:^0.19.10":
   version: 0.19.10
   resolution: "react-native-web@npm:0.19.10"
   dependencies:
@@ -7548,7 +7548,7 @@ __metadata:
     mini-css-extract-plugin: "npm:^2.7.2"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
-    react-native-web: "npm:~0.19.9"
+    react-native-web: "npm:^0.19.10"
     react-refresh: "npm:^0.14.0"
     style-loader: "npm:^3.3.1"
     tamagui: "npm:^1.92.1"

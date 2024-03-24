@@ -6,7 +6,6 @@ import { loadTamagui, watchTamaguiConfig } from '@tamagui/static'
 import buildResolver from 'esm-resolve'
 import type { Compiler, RuleSetRule } from 'webpack'
 import webpack from 'webpack'
-import { shouldExclude } from './shouldExclude'
 
 export type PluginOptions = TamaguiOptions & {
   isServer?: boolean

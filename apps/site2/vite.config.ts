@@ -8,7 +8,9 @@ import { tamaguiPlugin } from '@tamagui/vite-plugin'
 
 export default defineConfig({
   plugins: [
-    tamaguiPlugin({}) as any,
+    tamaguiPlugin({
+      useReactNativeWebLite: true,
+    }) as any,
     remixCloudflareDevProxy(),
     remix(),
     tsconfigPaths(),
