@@ -1,19 +1,17 @@
-import type { MetaFunction } from '@remix-run/cloudflare'
+import type { MetaFunction } from '@remix-run/node'
+import { H1 } from 'tamagui'
 
 export const meta: MetaFunction = () => {
   return [
     { title: 'New Remix App' },
-    {
-      name: 'description',
-      content: 'Welcome to Remix! Using Vite and Cloudflare!',
-    },
+    { name: 'description', content: 'Welcome to Remix!' },
   ]
 }
 
 export default function Index() {
   return (
     <div style={{ fontFamily: 'system-ui, sans-serif', lineHeight: '1.8' }}>
-      <h1>Welcome to Remix (with Vite and Cloudflare)</h1>
+      <H1>Tamagui + Remix</H1>
       <ul>
         <li>
           <a
