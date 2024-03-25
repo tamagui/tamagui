@@ -1,5 +1,5 @@
 {
-  "name": "site2",
+  "name": "@tamagui/site2",
   "private": true,
   "sideEffects": false,
   "type": "module",
@@ -33,6 +33,7 @@
     "node-fetch": "^3.3.2",
     "typescript": "^5.3.3",
     "vite": "^5.0.12",
+    "vite-plugin-commonjs": "^0.10.1",
     "vite-tsconfig-paths": "^4.2.1",
     "wrangler": "^3.24.0"
   },

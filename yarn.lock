@@ -8475,6 +8475,33 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/site2@workspace:apps/site2":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/site2@workspace:apps/site2"
+  dependencies:
+    "@cloudflare/workers-types": "npm:^4.20230518.0"
+    "@remix-run/cloudflare": "npm:^2.8.1"
+    "@remix-run/cloudflare-pages": "npm:^2.8.1"
+    "@remix-run/dev": "npm:^2.8.1"
+    "@remix-run/react": "npm:^2.8.1"
+    "@tamagui/site-config": "npm:1.92.1"
+    "@tamagui/vite-plugin": "npm:1.92.1"
+    "@types/react": "npm:^18.2.20"
+    "@types/react-dom": "npm:^18.2.7"
+    isbot: "npm:^4.1.0"
+    miniflare: "npm:^3.20231030.4"
+    node-fetch: "npm:^3.3.2"
+    react: "npm:^18.2.0"
+    react-dom: "npm:^18.2.0"
+    tamagui: "npm:1.92.1"
+    typescript: "npm:^5.3.3"
+    vite: "npm:^5.0.12"
+    vite-plugin-commonjs: "npm:^0.10.1"
+    vite-tsconfig-paths: "npm:^4.2.1"
+    wrangler: "npm:^3.24.0"
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/site@workspace:apps/site":
   version: 0.0.0-use.local
   resolution: "@tamagui/site@workspace:apps/site"
@@ -11292,7 +11319,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"acorn@npm:^8.0.0, acorn@npm:^8.0.4, acorn@npm:^8.10.0, acorn@npm:^8.11.3, acorn@npm:^8.5.0, acorn@npm:^8.7.1, acorn@npm:^8.8.0, acorn@npm:^8.9.0":
+"acorn@npm:^8.0.0, acorn@npm:^8.0.4, acorn@npm:^8.10.0, acorn@npm:^8.11.3, acorn@npm:^8.5.0, acorn@npm:^8.7.1, acorn@npm:^8.8.0, acorn@npm:^8.8.2, acorn@npm:^8.9.0":
   version: 8.11.3
   resolution: "acorn@npm:8.11.3"
   bin:
@@ -28409,32 +28436,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"site2@workspace:apps/site2":
-  version: 0.0.0-use.local
-  resolution: "site2@workspace:apps/site2"
-  dependencies:
-    "@cloudflare/workers-types": "npm:^4.20230518.0"
-    "@remix-run/cloudflare": "npm:^2.8.1"
-    "@remix-run/cloudflare-pages": "npm:^2.8.1"
-    "@remix-run/dev": "npm:^2.8.1"
-    "@remix-run/react": "npm:^2.8.1"
-    "@tamagui/site-config": "npm:1.92.1"
-    "@tamagui/vite-plugin": "npm:1.92.1"
-    "@types/react": "npm:^18.2.20"
-    "@types/react-dom": "npm:^18.2.7"
-    isbot: "npm:^4.1.0"
-    miniflare: "npm:^3.20231030.4"
-    node-fetch: "npm:^3.3.2"
-    react: "npm:^18.2.0"
-    react-dom: "npm:^18.2.0"
-    tamagui: "npm:1.92.1"
-    typescript: "npm:^5.1.6"
-    vite: "npm:^5.1.0"
-    vite-tsconfig-paths: "npm:^4.2.1"
-    wrangler: "npm:^3.24.0"
-  languageName: unknown
-  linkType: soft
-
 "slash@npm:^2.0.0":
   version: 2.0.0
   resolution: "slash@npm:2.0.0"
@@ -30544,16 +30545,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^5.1.6":
-  version: 5.4.3
-  resolution: "typescript@npm:5.4.3"
-  bin:
-    tsc: bin/tsc
-    tsserver: bin/tsserver
-  checksum: 10/de4c69f49a7ad4b1ea66a6dcc8b055ac34eb56af059a069d8988dd811c5e649be07e042e5bf573e8d0ac3ec2f30e6c999aa651cd09f6e9cbc6113749e8b6be20
-  languageName: node
-  linkType: hard
-
 "typescript@patch:typescript@npm%3A^3.2.4#optional!builtin<compat/typescript>":
   version: 3.9.10
   resolution: "typescript@patch:typescript@npm%3A3.9.10#optional!builtin<compat/typescript>::version=3.9.10&hash=3bd3d3"
@@ -30581,16 +30572,6 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 10/c93786fcc9a70718ba1e3819bab56064ead5817004d1b8186f8ca66165f3a2d0100fee91fa64c840dcd45f994ca5d615d8e1f566d39a7470fc1e014dbb4cf15d
-  languageName: node
-  linkType: hard
-
-"typescript@patch:typescript@npm%3A^5.1.6#optional!builtin<compat/typescript>":
-  version: 5.4.3
-  resolution: "typescript@patch:typescript@npm%3A5.4.3#optional!builtin<compat/typescript>::version=5.4.3&hash=d69c25"
-  bin:
-    tsc: bin/tsc
-    tsserver: bin/tsserver
-  checksum: 10/3abea475798fdf7ee46e75dafc50c85f30fd1e7061559ec2af61646f23d16c91742703f04f0ac55be52f58ca05c02f77404b7b94bbad16278c9a54c9eeb4f4ea
   languageName: node
   linkType: hard
 
@@ -31952,6 +31933,30 @@ __metadata:
   languageName: node
   linkType: hard
 
+"vite-plugin-commonjs@npm:^0.10.1":
+  version: 0.10.1
+  resolution: "vite-plugin-commonjs@npm:0.10.1"
+  dependencies:
+    acorn: "npm:^8.8.2"
+    fast-glob: "npm:^3.2.12"
+    magic-string: "npm:^0.30.1"
+    vite-plugin-dynamic-import: "npm:^1.5.0"
+  checksum: 10/c6e6f60b2be06446b0164fb794bb6754771c44b3768345e3f347cb7c7abbaeb368fa649b0b3e0745d15791f75116d011f094b547bd6e8ecd89a4940a5cec273a
+  languageName: node
+  linkType: hard
+
+"vite-plugin-dynamic-import@npm:^1.5.0":
+  version: 1.5.0
+  resolution: "vite-plugin-dynamic-import@npm:1.5.0"
+  dependencies:
+    acorn: "npm:^8.8.2"
+    es-module-lexer: "npm:^1.2.1"
+    fast-glob: "npm:^3.2.12"
+    magic-string: "npm:^0.30.1"
+  checksum: 10/b93972a3321f75e50eefb5d987c10a9bfe22ea8d95cbb377a4a16d2c5e475f31f5ab68bafcc3f6bc1ebcf74ce9017a842b837c9f05e746b1f613342d3b9d03ce
+  languageName: node
+  linkType: hard
+
 "vite-plugin-entry-shaking@npm:^0.3.2":
   version: 0.3.2
   resolution: "vite-plugin-entry-shaking@npm:0.3.2"
@@ -32057,7 +32062,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^5.0.0, vite@npm:^5.0.11, vite@npm:^5.1.0":
+"vite@npm:^5.0.0, vite@npm:^5.0.11":
   version: 5.2.6
   resolution: "vite@npm:5.2.6"
   dependencies:
