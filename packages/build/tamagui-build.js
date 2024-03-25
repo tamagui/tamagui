@@ -616,7 +616,10 @@ async function esbuildWriteIfChanged(
                         esExtensions: ['.mjs', '.js'],
                       },
                     ],
-                  ],
+                    pkg.tamagui?.build?.skipEnvToMeta
+                      ? null
+                      : require.resolve('./babel-plugin-process-env-to-meta'),
+                  ].filter(Boolean),
                 }).code
             // output to mjs fully specified
             await flush(output, mjsOutPath)
