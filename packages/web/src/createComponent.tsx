@@ -1615,7 +1615,7 @@ function hasAnimatedStyleValue(style: Object) {
   })
 }
 
-function getMediaState(
+export function getMediaState(
   mediaGroups: Set<string>,
   layout: LayoutEvent['nativeEvent']['layout']
 ) {

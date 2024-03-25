@@ -5,6 +5,9 @@ type ThemedOptions = {
     defaultStrokeWidth?: number;
     fallbackColor?: string;
 };
-export declare function themed(Component: React.FC<IconProps>, opts?: ThemedOptions): (propsIn: IconProps) => import("react/jsx-runtime").JSX.Element;
+type Opts = ThemedOptions & {
+    noClassNames?: boolean;
+};
+export declare function themed(Component: React.FC<IconProps>, opts?: Opts): (propsIn: IconProps) => import("react/jsx-runtime").JSX.Element;
 export {};
 //# sourceMappingURL=themed.d.ts.map
