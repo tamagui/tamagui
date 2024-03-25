@@ -25,7 +25,8 @@
     },
     "./without-animated": {
       "import": "./dist/esm/without-animated.js",
-      "require": "./dist/cjs/without-animated.js"
+      "require": "./dist/cjs/without-animated.js",
+      "react-native": "./dist/cjs/without-animated.native.js"
     },
     "./dist/modules/*": "./dist/esm/modules/*/index.js",
     "./dist/exports/*": "./dist/esm/exports/*/index.js",

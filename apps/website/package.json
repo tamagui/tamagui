@@ -6,8 +6,8 @@
   "scripts": {
     "build:production": "remix vite:build",
     "dev": "remix vite:dev",
-    "lint": "../../node_modules/.bin/biome check .",
-    "lint:fix": "../../node_modules/.bin/biome check --apply-unsafe .",
+    "lint": "../../node_modules/.bin/biome check app",
+    "lint:fix": "../../node_modules/.bin/biome check --apply-unsafe app",
     "start": "remix-serve ./build/server/index.js",
     "typecheck": "tsc"
   },
