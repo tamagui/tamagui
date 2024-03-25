@@ -3,8 +3,6 @@ import { createSilkscreenFont } from '@tamagui/font-silkscreen'
 
 import { createGenericFont } from './createGenericFont'
 
-export * from './animations'
-
 const silkscreenFont = createSilkscreenFont()
 
 const headingFont = createInterFont(

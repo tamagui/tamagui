@@ -7,16 +7,14 @@ import { transformWithEsbuild } from 'vite'
  * For some reason envPlugin doesnt work for vitest, but process: { env: {} } breaks vitest
  */
 
-export function tamaguiPlugin({
-  platform = 'web',
-  ...options
-}: Partial<TamaguiOptions> & {
-  /**
-   * @deprecated Deprecated, just leave it off
-   */
-  useReactNativeWebLite?: boolean
-  disableWatchTamaguiConfig?: boolean
-}): Plugin {
+export function tamaguiPlugin(tamaguiOptionsIn: TamaguiOptions = {}): Plugin {
+  const options = {
+    ...tamaguiOptionsIn,
+    ...Static.loadTamaguiBuildConfigSync(tamaguiOptionsIn),
+  }
+
+  const { platform = 'web' } = options
+
   const watcher = options.disableWatchTamaguiConfig
     ? null
     : Static.watchTamaguiConfig({
@@ -115,6 +113,10 @@ export function tamaguiPlugin({
               ...(options.useReactNativeWebLite && {
                 'react-native': 'react-native-web-lite',
                 'react-native-web': 'react-native-web-lite',
+              }),
+              ...(options.useReactNativeWebLite === 'without-animated' && {
+                'react-native': 'react-native-web-lite/without-animated',
+                'react-native-web': 'react-native-web-lite/without-animated',
               }),
             }),
           },
