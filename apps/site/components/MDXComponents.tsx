@@ -4,8 +4,9 @@ import { NextLink } from 'components/NextLink'
 import { useRouter } from 'next/router'
 import React, { forwardRef, useState } from 'react'
 import { ScrollView } from 'react-native'
-import type { ImageProps, XStackProps, TabsProps, TabsTabProps } from 'tamagui'
+import type { ImageProps, TabsProps, TabsTabProps, XStackProps } from 'tamagui'
 import {
+  Avatar,
   Button,
   Card,
   H1,
@@ -17,24 +18,26 @@ import {
   Paragraph,
   Separator,
   Spacer,
-  styled,
   Tabs,
   Text,
   Theme,
   ThemeableStack,
   TooltipSimple,
-  withStaticProperties,
   XGroup,
   XStack,
   YStack,
+  styled,
+  withStaticProperties,
 } from 'tamagui'
 import { LinearGradient } from 'tamagui/linear-gradient'
 
+import { useClipboard } from '../lib/useClipboard'
 import { BenchmarkChart } from './BenchmarkChart'
 import { BenchmarkChartNative } from './BenchmarkChartNative'
 import { BenchmarkChartWeb } from './BenchmarkChartWeb'
 import { Code, CodeInline } from './Code'
 import { Preview } from './ComponentPreview'
+import { CustomTabs } from './CustomTabs'
 import { DataTable } from './DataTable'
 import * as Demos from './demos'
 import { DocCodeBlock } from './DocsCodeBlock'
@@ -44,7 +47,9 @@ import { HeroContainer } from './HeroContainer'
 import { ExampleAnimations } from './HeroExampleAnimations'
 import { Highlights } from './Highlights'
 import { HR } from './HR'
+import { InlineTabs } from './InlineTabs'
 import { LI } from './LI'
+import { Link } from './Link'
 import { MediaPlayer } from './MediaPlayer'
 import { Notice, NoticeFrame } from './Notice'
 import { OffsetBox } from './OffsetBox'
@@ -56,10 +61,7 @@ import { TamaguiCard } from './TamaguiCard'
 import { TamaguiExamplesCode } from './TamaguiExamplesCode'
 import { UL } from './UL'
 import { unwrapText } from './unwrapText'
-import { Link } from './Link'
-import { CustomTabs } from './CustomTabs'
-import { useClipboard } from '../lib/useClipboard'
-import { WideTabs } from './WideTabs'
+import { AvatarCard } from './AvatarCard'
 
 const IntroParagraph = ({ children, large, disableUnwrapText, ...props }: any) => {
   return (
@@ -174,7 +176,7 @@ const TableHighlight = styled(YStack, {
 
 export const components = {
   Tabs: CustomTabs,
-  WideTabs: WideTabs,
+  InlineTabs: InlineTabs,
 
   SocialLinksRow: () => (
     <YStack mt="$6" mx="$-4">
@@ -261,6 +263,8 @@ export const components = {
 
   Grid: (props) => <XStack flexWrap="wrap" jc="space-between" {...props} />,
   Card: TamaguiCard,
+
+  AvatarCard: AvatarCard,
 
   Note: (props) => (
     <YStack
