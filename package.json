@@ -59,7 +59,6 @@
     "site:prod:profile": "PROFILE=1 yarn site:prod",
     "site:prod": "yarn workspace @tamagui/site ci:build && yarn workspace @tamagui/site next:start",
     "site": "cd apps/site && ./scripts/dev.sh",
-    "site2": "yarn workspace @tamagui/site2 dev",
     "starter:native": "yarn workspace @tamagui/starter native",
     "starter:prod": "yarn workspace @tamagui/starter web:prod && yarn workspace @tamagui/starter web:prod:serve",
     "starter": "yarn workspace @tamagui/starter web",
@@ -81,7 +80,8 @@
     "watch": "./scripts/watch.sh",
     "watch:packages": "SKIP_TYPES_INITIAL=1 ultra -r --no-pretty --concurrency 400 watch",
     "watch:js": "SKIP_TYPES=1 yarn watch:packages",
-    "watch:ts": "node -r esbuild-register ./scripts/watch-ts.ts"
+    "watch:ts": "node -r esbuild-register ./scripts/watch-ts.ts",
+    "website": "yarn workspace @tamagui/website dev"
   },
   "resolutions": {
     "@types/node": "16.11.9",
