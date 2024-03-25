@@ -23,6 +23,10 @@
       "require": "./dist/cjs/index.js",
       "react-native": "./dist/cjs/index.native.js"
     },
+    "./without-animated": {
+      "import": "./dist/esm/without-animated.js",
+      "require": "./dist/cjs/without-animated.js"
+    },
     "./dist/modules/*": "./dist/esm/modules/*/index.js",
     "./dist/exports/*": "./dist/esm/exports/*/index.js",
     "./dist/*": "./dist/cjs/*/index.js"
