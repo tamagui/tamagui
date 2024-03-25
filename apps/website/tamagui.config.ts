@@ -1,4 +1,4 @@
-import { config } from '@tamagui/config'
+import { config } from '@tamagui/config/v3'
 import { createTamagui } from '@tamagui/core'
 
 // for site responsive demo

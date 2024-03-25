@@ -22,6 +22,9 @@ export default defineConfig({
         }
       },
     }),
-    analyzer(),
+    analyzer({
+      analyzerMode: 'static',
+      fileName: 'report',
+    }),
   ],
 })

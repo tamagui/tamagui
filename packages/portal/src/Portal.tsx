@@ -30,7 +30,7 @@ export const Portal = React.memo(
     }, [host])
 
     if (hostElement && props.children) {
-      return createPortal(contents, hostElement)
+      return createPortal(contents, hostElement) as any
     }
 
     // ssr return null

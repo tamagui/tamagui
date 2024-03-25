@@ -6,6 +6,11 @@
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
   "license": "MIT",
+  "tamagui": {
+    "build": {
+      "skipEnvToMeta": true
+    }
+  },
   "files": [
     "src",
     "types",

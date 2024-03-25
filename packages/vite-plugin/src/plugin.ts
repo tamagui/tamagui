@@ -24,6 +24,8 @@ export function tamaguiPlugin({
         components: ['tamagui'],
         config: './src/tamagui.config.ts',
         ...options,
+      }).catch((err) => {
+        console.error(` [Tamagui] Error watching config: ${err}`)
       })
 
   const components = [
@@ -83,6 +85,9 @@ export function tamaguiPlugin({
           'process.env.ENABLE_RSC': JSON.stringify(process.env.ENABLE_RSC || ''),
           'process.env.ENABLE_STEPS': JSON.stringify(process.env.ENABLE_STEPS || ''),
           'process.env.IS_STATIC': JSON.stringify(false),
+          ...(env.mode === 'production' && {
+            'process.env.TAMAGUI_OPTIMIZE_THEMES': JSON.stringify(true),
+          }),
         },
         optimizeDeps: {
           jsx: 'transform',
