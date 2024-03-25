@@ -23,7 +23,8 @@
     ".": {
       "types": "./types/index.d.ts",
       "require": "./dist/cjs/index.js",
-      "import": "./dist/cjs/index.js"
+      "import": "./dist/cjs/index.js",
+      "react-native": "./dist/cjs/index.native.js"
     }
   },
   "tests": {
