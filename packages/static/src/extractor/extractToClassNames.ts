@@ -101,6 +101,7 @@ export async function extractToClassNames({
   const res = await extractor.parse(ast, {
     shouldPrintDebug,
     ...options,
+    platform: 'web',
     sourcePath,
     extractStyledDefinitions: true,
     onStyleRule(identifier, rules) {

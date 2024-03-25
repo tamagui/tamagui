@@ -24,7 +24,7 @@ export async function generateTamaguiStudioConfig(
   try {
     const config = configIn ?? (await getBundledConfig(tamaguiOptions, rebuild))
     if (!config) return
-    const out = transformConfig(config, tamaguiOptions.platform)
+    const out = transformConfig(config, tamaguiOptions.platform || 'web')
 
     await FS.ensureDir(dirname(confFile))
     await FS.writeJSON(confFile, out, {
@@ -44,9 +44,13 @@ export function generateTamaguiStudioConfigSync(
 ) {
   try {
     FS.ensureDirSync(dirname(confFile))
-    FS.writeJSONSync(confFile, transformConfig(config, _tamaguiOptions.platform), {
-      spaces: 2,
-    })
+    FS.writeJSONSync(
+      confFile,
+      transformConfig(config, _tamaguiOptions.platform || 'web'),
+      {
+        spaces: 2,
+      }
+    )
   } catch (err) {
     if (process.env.DEBUG?.includes('tamagui') || process.env.IS_TAMAGUI_DEV) {
       console.warn('generateTamaguiStudioConfig error', err)

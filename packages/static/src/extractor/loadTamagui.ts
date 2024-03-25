@@ -55,7 +55,7 @@ export async function loadTamagui(
 
   // this depends on the config so run it after
   if (bundleInfo) {
-    const { createTamagui } = requireTamaguiCore(props.platform)
+    const { createTamagui } = requireTamaguiCore(props.platform || 'web')
 
     // init config
     const config = createTamagui(bundleInfo.tamaguiConfig) as any
@@ -123,6 +123,7 @@ export function loadTamaguiBuildConfigSync(
   tamaguiOptions: Partial<TamaguiOptions> | undefined
 ) {
   const buildFilePath = tamaguiOptions?.buildFile ?? 'tamagui.build.ts'
+  console.info(`Loading ${buildFilePath}`)
   if (fsExtra.existsSync(buildFilePath)) {
     const registered = registerRequire('web')
     try {
@@ -176,7 +177,7 @@ export function loadTamaguiSync({
   process.env.IS_STATIC = 'is_static'
   process.env.TAMAGUI_IS_SERVER = 'true'
 
-  const { unregister } = registerRequire(props.platform, {
+  const { unregister } = registerRequire(props.platform || 'web', {
     proxyWormImports: !!forceExports,
   })
 
@@ -202,7 +203,7 @@ export function loadTamaguiSync({
 
         // set up core
         if (tamaguiConfig) {
-          const { createTamagui } = requireTamaguiCore(props.platform)
+          const { createTamagui } = requireTamaguiCore(props.platform || 'web')
           createTamagui(tamaguiConfig as any)
         }
       }
@@ -275,7 +276,7 @@ export function loadTamaguiSync({
         console.error(`Error loading tamagui.config.ts`, err)
       }
 
-      const { createTamagui } = requireTamaguiCore(props.platform)
+      const { createTamagui } = requireTamaguiCore(props.platform || 'web')
       const { getDefaultTamaguiConfig } = require('@tamagui/config-default')
 
       return {
