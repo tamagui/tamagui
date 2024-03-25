@@ -123,7 +123,6 @@ export function loadTamaguiBuildConfigSync(
   tamaguiOptions: Partial<TamaguiOptions> | undefined
 ) {
   const buildFilePath = tamaguiOptions?.buildFile ?? 'tamagui.build.ts'
-  console.info(`Loading ${buildFilePath}`)
   if (fsExtra.existsSync(buildFilePath)) {
     const registered = registerRequire('web')
     try {

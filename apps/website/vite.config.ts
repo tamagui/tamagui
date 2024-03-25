@@ -10,9 +10,7 @@ installGlobals()
 
 export default defineConfig({
   plugins: [
-    tamaguiPlugin({
-      useReactNativeWebLite: true,
-    }) as any,
+    tamaguiPlugin() as any,
     remix(),
     tsconfigPaths(),
     commonjs({
