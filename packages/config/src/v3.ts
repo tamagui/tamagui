@@ -1,5 +1,5 @@
 import { shorthands } from '@tamagui/shorthands/v2'
-import { tokens, themes } from '@tamagui/themes/v3-themes'
+import { tokens, themes as themesIn } from '@tamagui/themes/v3-themes'
 import { animations } from './animations'
 import type { CreateTamaguiProps } from '@tamagui/web'
 
@@ -25,6 +25,10 @@ export const selectionStyles = (theme) =>
         color: theme.color11,
       }
     : null
+
+// tree shake away themes in production
+const themes =
+  process.env.TAMAGUI_OPTIMIZE_THEMES === 'true' ? ({} as typeof themesIn) : themesIn
 
 export const config = {
   animations,
