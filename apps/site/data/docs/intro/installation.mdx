@@ -83,18 +83,21 @@ export default function Demo() {
 
 From here, we'd recommend [spending some time understanding configuration](/docs/core/configuration). Tamagui works 100% the same at runtime as at compile-time, so you can wait until you're needing some extra performance to [set up the compiler](/docs/intro/compiler-install).
 
-Note that while Tamagui generally doesn't require any special bundler setup, React Native Web and the ecosystem of React Native packages often do, and Tamagui has a variety of plugins to aid in compatibility and make setting up the optimizing compile easy:
 
 ## Guides
 
-We also have more in depth guides:
+<Notice>
+  While Tamagui generally doesn't require any special bundler setup, React Native Web and the ecosystem of React Native packages often do, and Tamagui has a variety of plugins to aid in compatibility and make setting up the optimizing compile easy.
+</Notice>
+
+We also have more in-depth guides:
 
 <Spacer/>
 
 <Grid gap="$4">
-  <AvatarCard title="Next.js" img="/logos/next-js.svg" link="/docs/guides/next-js" subtitle="Full-featured React framework with great developer experience." colorOffset={2}  />
-  <AvatarCard title="Vite" img="/logos/vite.svg" link="/docs/guides/vite" subtitle="Fast and modern development server and build tool." colorOffset={1} />
-  <AvatarCard title="Expo" img="/logos/expo.svg" link="/docs/guides/expo" subtitle="Platform for creating universal native apps with JavaScript and React." colorOffset={6} />
   <AvatarCard title="Webpack" img="/logos/webpack.svg" link="/docs/guides/webpack" subtitle="Powerful module bundler for modern JavaScript applications." colorOffset={7} />
   <AvatarCard title="Metro" img="/logos/metro.svg" link="/docs/guides/metro" subtitle="Fast, scalable, and serverlessr javaScript bundler for react Native." colorOffset={3} />
+  <AvatarCard title="Vite" img="/logos/vite.svg" link="/docs/guides/vite" subtitle="Fast and modern development server and build tool." colorOffset={1} />
+  <AvatarCard title="Expo" img="/logos/expo.svg" link="/docs/guides/expo" subtitle="Platform for creating universal native apps with JavaScript and React." colorOffset={6} />
+  <AvatarCard fg={0} w="49%" $xs={{fg:0, w:"100%"}} title="Next.js" img="/logos/next-js.svg" link="/docs/guides/next-js" subtitle="Full-featured React framework with great developer experience." colorOffset={2}  />
 </Grid>

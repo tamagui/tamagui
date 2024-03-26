@@ -5,7 +5,7 @@ description: How to set up Tamagui with Next.js
 
 Check out the [source for this site](https://github.com/tamagui/tamagui/tree/master/apps/site) to see a good example of a full featured Next.js website as well, especially the `next.config.js` and `tamagui.config.ts`.
 
-### Installation
+## Install
 
 <Notice>
         Running `npm create tamagui` let's you choose the `starter-free` starter which is a very nicely configured Next.js app where you can take or leave whatever you want.
@@ -118,7 +118,7 @@ export default class Document extends NextDocument {
 }
 ```
 
-### Themes
+## Themes
 
 We've created a package that works with Tamagui to properly support SSR light/dark themes that also respect user system preference, called `@tamagui/next-theme`. It assumes your `light`/`dark` themes are named as such, but you can override it. This is pre-configured in the create-tamagui starter.
 
@@ -171,7 +171,7 @@ export default () => {
 }
 ```
 
-### Mount animations
+## Mount animations
 
 Animations that run through JS drivers and have `enterStyle` set will want to add the following script that allows for hiding those animations before the JS runs. This is the "right way" to handle things, as it allows for disabling JS entirely and not accidentally hiding all unmounted things. Meanwhile, it still properly avoids a flash of mounted style for SSR pages.
 
@@ -188,7 +188,7 @@ Add this to your `_app.tsx` render output:
 </NextHead>
 ```
 
-### Server components
+## Server components
 
 Tamagui includes Server Components support for the Next.js app directory with `use client` support. We're working on a mode with limitations that enables full server support.
 

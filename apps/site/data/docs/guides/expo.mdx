@@ -3,21 +3,36 @@ title: Expo Guide
 description: How to set up Tamagui with Expo
 ---
 
-The following steps are optional but useful for many apps, they enable the
-optimizing compiler, reanimated, as well as using `process.env.XYZ` for
-environment variables.
+We've created a new template repo for starting an Expo Router based app based on
+the Expo 3 starter repo.
 
-### Installation
+```bash
+npm create tamagui@latest --template expo-router
+```
+
+There are also [pre-made community Expo starters](/community).
+
+## Install
+
+Use this guide to set up Tamagui with Expo Native and Web.
+
+<Notice>
+    To support dark mode, update your `app.json` to `app.config.ts` and set `userInterfaceStyle` to `"automatic"`.
+</Notice>
+
+### Native
+
+Create a new [Expo](https://docs.expo.dev/get-started/create-a-project/#initialize-a-new-project) project:
+
+```bash
+npx create-expo-app -t expo-template-blank-typescript
+```
 
 <Notice>
     This guide assumes Expo is configured with TypeScript support.
 </Notice>
 
-Create a new [Expo](https://docs.expo.dev/get-started/create-a-project/#initialize-a-new-project) project
-
-```bash
-npx create-expo-app -t expo-template-blank-typescript
-```
+- The following steps are optional but useful for many apps, they enable the optimizing compiler, reanimated, as well as using `process.env.XYZ`for environment variables.
 
 Add `@tamagui/babel-plugin`:
 
@@ -31,45 +46,84 @@ Update your `babel.config.js` to include the optional `@tamagui/babel-plugin`:
 module.exports = function (api) {
     api.cache(true);
     return {
-    presets: ["babel-preset-expo"],
-    plugins: [
-        [
-        "@tamagui/babel-plugin",
-        {
-            components: ["tamagui"],
-            config: "./tamagui.config.ts",
-            logTimings: true,
-            disableExtraction: process.env.NODE_ENV === 'development'
-        },
-        ],
+        presets: ["babel-preset-expo"],
+        plugins: [
+            [
+            "@tamagui/babel-plugin",
+                {
+                    components: ["tamagui"],
+                    config: "./tamagui.config.ts",
+                    logTimings: true,
+                    disableExtraction: process.env.NODE_ENV === 'development'
+                },
+            ],
 
-        // NOTE: this is only necessary if you are using reanimated for animations
-        "react-native-reanimated/plugin",
-    ],
+            // NOTE: this is only necessary if you are using reanimated for animations
+            "react-native-reanimated/plugin",
+        ],
     };
 }
 ```
 
-If you're using a monorepo you probably want to use this Metro configuration:
+<Notice>
+    If you're using a monorepo you probably want to use [this Metro configuration](/docs/guides/metro#native).
+</Notice>
 
-```ts
-// Learn more https://docs.expo.io/guides/customizing-metro
-const { getDefaultConfig } = require('expo/metro-config');
+### Expo Router / Web
 
-/** @type {import('expo/metro-config').MetroConfig} */
-const config = getDefaultConfig(__dirname, {
-    // [Web-only]: Enables CSS support in Metro.
-    isCSSEnabled: true,
-});
+- First, follow the [Metro configuration guide](/docs/guides/metro#web-support) to enable web support.
 
-// Expo 49 issue: default metro config needs to include "mjs"
-// https://github.com/expo/expo/issues/23180
-config.resolver.sourceExts.push('mjs');
+Add your `tamagui.config.ts`:
 
-module.exports = config;
+```tsx
+import { config } from '@tamagui/config/v3'
+import { createTamagui } from 'tamagui'
+
+export const tamaguiConfig = createTamagui(config)
+
+export default tamaguiConfig
+
+export type Conf = typeof tamaguiConfig
+
+declare module 'tamagui' {
+  interface TamaguiCustomConfig extends Conf {}
+}
 ```
 
-### Loading fonts
+Then update `app/_layout.tsx`:
+
+```tsx showFull
+import '../tamagui-web.css'
+
+import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native'
+import { Stack } from 'expo-router'
+import { useColorScheme } from 'react-native'
+import { TamaguiProvider } from 'tamagui'
+
+import { tamaguiConfig } from '../tamagui.config'
+
+export default function RootLayout() {
+    const colorScheme = useColorScheme()
+
+    return (
+    // add this
+    <TamaguiProvider config={tamaguiConfig} defaultTheme={colorScheme}>
+        <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+        <Stack>
+            <Stack.Screen name='(tabs)' options={{ headerShown: false }} />
+            <Stack.Screen name='modal' options={{ presentation: 'modal' }} />
+        </Stack>
+        </ThemeProvider>
+    </TamaguiProvider>
+    )
+}
+```
+
+### Setup Tamagui
+
+From here on out you can follow the [Installation](/docs/intro/installation) and [Configuration](/docs/core/configuration) docs.
+
+## Loading fonts
 
 Install the `expo-font` package:
 
@@ -160,7 +214,7 @@ Load your fonts for React Native to recognize them. There are several ways to do
     For more information on loading fonts in Expo, see the [Expo documentation](https://docs.expo.dev/develop/user-interface/fonts/).
 </Notice>
 
-### First time starting Expo
+## First time starting Expo
 
 The first time running your project with Tamagui, be sure to clear the cache:
 

@@ -85,9 +85,14 @@ const TabsListFrame = styled(XStack, {
   marginRight: 0,
   marginBottom: 0,
   pb: '$2',
-  mt: '$4',
   zIndex: 10000,
   position: 'sticky' as any,
+
+  px: '$2',
+  ai: 'center',
+  bc: '$color4',
+  bbw: '$1',
+  br: '$2',
 
   $sm: {
     minWidth: '100%',
@@ -99,7 +104,7 @@ const TabsListFrame = styled(XStack, {
 const TabsList = (props) => {
   return (
     <TabsListFrame className="sticky">
-      <Tabs.List gap="$2" {...props} />
+      <Tabs.List gap="$3" {...props} />
     </TabsListFrame>
   )
 }
