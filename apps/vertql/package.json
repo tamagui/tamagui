@@ -26,7 +26,7 @@
     "@tamagui/vite-plugin": "1.92.1",
     "chalk": "^4.1.2",
     "citty": "^0.1.4",
-    "esbuild": "^0.19.11",
+    "esbuild": "^0.20.2",
     "express": "^4.18.2",
     "fs-extra": "^11.2.0",
     "get-port": "^7.0.0",

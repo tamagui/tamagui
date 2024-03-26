@@ -31,7 +31,7 @@
   "dependencies": {
     "@tamagui/create-theme": "1.92.1",
     "@tamagui/types": "1.92.1",
-    "esbuild-register": "^3.4.2",
+    "esbuild-register": "^3.5.0",
     "fs-extra": "^11.2.0"
   },
   "devDependencies": {
