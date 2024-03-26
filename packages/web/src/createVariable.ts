@@ -2,7 +2,6 @@ import { isWeb } from '@tamagui/constants'
 import { simpleHash } from '@tamagui/helpers'
 
 import { getConfig } from './config'
-import { CSS_VARIABLE_PREFIX } from './constants/constants'
 
 /**
  * Should rename this to Token
@@ -22,7 +21,7 @@ export interface Variable<A = any> {
 export type MakeVariable<A = any> = A extends string | number ? Variable<A> : A
 
 function constructCSSVariableName(name: string) {
-  return `var(--${CSS_VARIABLE_PREFIX}${name})`
+  return `var(--${process.env.TAMAGUI_CSS_VARIABLE_PREFIX || ''}${name})`
 }
 
 type VariableIn<A = any> = Pick<Variable<A>, 'key' | 'name' | 'val'>
