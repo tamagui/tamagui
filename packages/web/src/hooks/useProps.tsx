@@ -127,22 +127,14 @@ export function usePropsAndStyle<A extends StyleLikeObject>(
       return
     }
 
-    // parent group pseudo listening
-    let disposeGroupsListener: DisposeFn | undefined
-
-    subscribeToContextGroup({
+    return subscribeToContextGroup({
       disabled,
       componentContext,
       setStateShallow,
       state,
-      disposeGroupsListener,
       mediaGroups,
       pseudoGroups,
     })
-
-    return () => {
-      disposeGroupsListener?.()
-    }
   }, [
     disabled,
     pseudoGroups ? Object.keys([...pseudoGroups]).join('') : 0,
