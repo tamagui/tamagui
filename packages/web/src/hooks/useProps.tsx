@@ -4,17 +4,12 @@ import { ComponentContext } from '../contexts/ComponentContext'
 import { defaultComponentStateMounted } from '../defaultComponentState'
 import { useSplitStyles } from '../helpers/getSplitStyles'
 import { useSubscribeToGroup } from '../createComponent'
-import type {
-  SplitStyleProps,
-  StaticConfig,
-  ThemeParsed,
-  UseMediaState,
-  StackProps,
-} from '../types'
+import type { SplitStyleProps, StaticConfig, ThemeParsed, UseMediaState } from '../types'
 import { createShallowSetState } from '../helpers/createShallowSetState'
 import { Stack } from '../views/Stack'
 import { useMedia } from './useMedia'
 import { useThemeWithState } from './useTheme'
+import { ViewProps, ViewStyle } from '../views/View'
 
 type UsePropsOptions = Pick<
   SplitStyleProps,
@@ -30,7 +25,7 @@ export type PropsWithoutMediaStyles<A> = {
   [Key in keyof A extends `$${string}` ? never : keyof A]?: A[Key]
 }
 
-type StyleLikeObject = StackProps
+type StyleLikeObject = ViewProps & Record<string, any>
 
 /**
  * Returns props and style as a single object, expanding and merging shorthands and media queries.
@@ -60,7 +55,7 @@ export function useProps<A extends StyleLikeObject>(
  * Use sparingly, it will loop props and trigger re-render on all media queries you access.
  *
  * */
-export function useStyle<A extends StyleLikeObject>(
+export function useStyle<A extends ViewStyle & Record<string, any>>(
   props: A,
   opts?: UsePropsOptions
 ): PropsWithoutMediaStyles<A> {
@@ -86,7 +81,6 @@ export function usePropsAndStyle<A extends StyleLikeObject>(
     props.disabled ||
     props.accessibilityState?.disabled ||
     props['aria-disabled'] ||
-    // @ts-expect-error (comes from core)
     props.accessibilityDisabled ||
     false
 
@@ -133,7 +127,7 @@ export function usePropsAndStyle<A extends StyleLikeObject>(
 
   useSubscribeToGroup({
     componentContext,
-    disabled,
+    isDisabled: disabled,
     mediaGroups,
     pseudoGroups,
     shouldEnter,

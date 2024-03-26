@@ -1,4 +1,5 @@
-import type { SplitStyleProps, StaticConfig, ThemeParsed, UseMediaState, StackProps } from '../types';
+import type { SplitStyleProps, StaticConfig, ThemeParsed, UseMediaState } from '../types';
+import { ViewProps, ViewStyle } from '../views/View';
 type UsePropsOptions = Pick<SplitStyleProps, 'noExpand' | 'noNormalize' | 'noClassNames' | 'resolveValues'> & {
     disableExpandShorthands?: boolean;
     forComponent?: {
@@ -9,7 +10,7 @@ type UsePropsOptions = Pick<SplitStyleProps, 'noExpand' | 'noNormalize' | 'noCla
 export type PropsWithoutMediaStyles<A> = {
     [Key in keyof A extends `$${string}` ? never : keyof A]?: A[Key];
 };
-type StyleLikeObject = StackProps;
+type StyleLikeObject = ViewProps & Record<string, any>;
 /**
  * Returns props and style as a single object, expanding and merging shorthands and media queries.
  *
@@ -23,7 +24,7 @@ export declare function useProps<A extends StyleLikeObject>(props: A, opts?: Use
  * Use sparingly, it will loop props and trigger re-render on all media queries you access.
  *
  * */
-export declare function useStyle<A extends StyleLikeObject>(props: A, opts?: UsePropsOptions): PropsWithoutMediaStyles<A>;
+export declare function useStyle<A extends ViewStyle & Record<string, any>>(props: A, opts?: UsePropsOptions): PropsWithoutMediaStyles<A>;
 /**
  * Returns [props, styles, theme, media] fully resolved and flattened with merged media queries and shorthands with all theme and token values resolved.
  *
