@@ -48,7 +48,6 @@ import { LinearGradient } from 'tamagui/linear-gradient'
 import { getProductsForServerSideRendering } from '@lib/product-pages-server'
 import { MunroP, PurchaseButton, formatPrice, isSafariMobile } from '@lib/products-utils'
 import { ContainerXL } from '../components/Container'
-import { TakeoutFaqModal } from '../components/FaqModal'
 import { Footer } from '../components/Footer'
 import { useHoverGlow } from '../components/HoverGlow'
 import { LoadCherryBomb, LoadMunro } from '../components/LoadFont'
@@ -56,9 +55,7 @@ import { NextLink } from '../components/NextLink'
 import { seasons } from '../components/SeasonToggleButton'
 import { ThemeNameEffect } from '../components/ThemeNameEffect'
 import { useTakeoutStore } from '../hooks/useTakeoutStore'
-import { BentoAgreementModal, TakeoutAgreementModal } from './AgreementModal'
-import { BentoPoliciesModal, TakeoutPoliciesModal } from './PoliciesModal'
-import { PurchaseModal } from './PurchaseModal'
+import { PurchaseModal } from '@components/PurchaseModal'
 
 export default function TakeoutPage({
   starter,

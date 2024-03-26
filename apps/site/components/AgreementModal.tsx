@@ -2,9 +2,9 @@ import { X } from '@tamagui/lucide-icons'
 import Link from 'next/link'
 import React from 'react'
 import { Button, Dialog, Paragraph, ScrollView, Sheet, Unspaced, YStack } from 'tamagui'
-import { TakeoutLicense } from '../components/TakeoutLicense'
+import { TakeoutLicense } from './TakeoutLicense'
 import { useTakeoutStore } from '../hooks/useTakeoutStore'
-import BentoLicense from './bento-license'
+import BentoLicense from '../pages/bento-license'
 
 export const TakeoutAgreementModal = () => {
   const store = useTakeoutStore()

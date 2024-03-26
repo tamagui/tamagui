@@ -31,10 +31,10 @@ import {
   XStack,
   YStack,
 } from 'tamagui'
-import { BentoLogo } from '../components/BentoLogo'
-import { NextLink } from '../components/NextLink'
+import { BentoLogo } from './BentoLogo'
+import { NextLink } from './NextLink'
 import { useTakeoutStore } from '../hooks/useTakeoutStore'
-import type { TakeoutPageProps } from './takeout'
+import type { TakeoutPageProps } from '../pages/takeout'
 import { BentoPoliciesModal, TakeoutPoliciesModal } from './PoliciesModal'
 import { BentoAgreementModal, TakeoutAgreementModal } from './AgreementModal'
 import { TakeoutFaqModal } from '@components/FaqModal'

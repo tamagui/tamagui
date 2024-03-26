@@ -64,9 +64,9 @@ import { useUser } from 'hooks/useUser'
 import type { GetStaticProps } from 'next'
 import { useMemo, useRef, useState } from 'react'
 import { TakeoutFaqModal } from '../components/FaqModal'
-import { BentoAgreementModal, TakeoutAgreementModal } from './AgreementModal'
-import { BentoPoliciesModal, TakeoutPoliciesModal } from './PoliciesModal'
-import { PurchaseModal } from './PurchaseModal'
+import { BentoAgreementModal, TakeoutAgreementModal } from '../components/AgreementModal'
+import { BentoPoliciesModal, TakeoutPoliciesModal } from '../components/PoliciesModal'
+import { PurchaseModal } from '../components/PurchaseModal'
 
 class BentoStore {
   heroVisible = true

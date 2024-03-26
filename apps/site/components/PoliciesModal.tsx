@@ -2,9 +2,9 @@ import { X } from '@tamagui/lucide-icons'
 import Link from 'next/link'
 import React from 'react'
 import { Button, Dialog, Paragraph, ScrollView, Sheet, Unspaced, YStack } from 'tamagui'
-import { TakeoutPolicy } from '../components/TakeoutPolicy'
+import { TakeoutPolicy } from './TakeoutPolicy'
 import { useTakeoutStore } from '../hooks/useTakeoutStore'
-import BentoPolicy from './bento-policy'
+import BentoPolicy from '../pages/bento-policy'
 
 export const TakeoutPoliciesModal = () => {
   const store = useTakeoutStore()
