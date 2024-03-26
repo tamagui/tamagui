@@ -1,10 +1,16 @@
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 
 import { ComponentContext } from '../contexts/ComponentContext'
 import { defaultComponentStateMounted } from '../defaultComponentState'
 import { useSplitStyles } from '../helpers/getSplitStyles'
-import { isDisabled, useSubscribeToGroup } from '../createComponent'
-import type { SplitStyleProps, StaticConfig, ThemeParsed, UseMediaState } from '../types'
+import { isDisabled, subscribeToContextGroup } from '../createComponent'
+import type {
+  DisposeFn,
+  SplitStyleProps,
+  StaticConfig,
+  ThemeParsed,
+  UseMediaState,
+} from '../types'
 import { createShallowSetState } from '../helpers/createShallowSetState'
 import { Stack } from '../views/Stack'
 import { useMedia } from './useMedia'
@@ -118,14 +124,37 @@ export function usePropsAndStyle<A extends StyleLikeObject>(
 
   const { mediaGroups, pseudoGroups } = splitStyles
 
-  useSubscribeToGroup({
-    componentContext,
+  useEffect(() => {
+    if (disabled) {
+      return
+    }
+
+    if (state.unmounted) {
+      setStateShallow({ unmounted: false })
+      return
+    }
+
+    // parent group pseudo listening
+    let disposeGroupsListener: DisposeFn | undefined
+
+    subscribeToContextGroup({
+      disabled,
+      componentContext,
+      setStateShallow,
+      state,
+      disposeGroupsListener,
+      mediaGroups,
+      pseudoGroups,
+    })
+
+    return () => {
+      disposeGroupsListener?.()
+    }
+  }, [
     disabled,
-    mediaGroups,
-    pseudoGroups,
-    state,
-    setStateShallow,
-  })
+    pseudoGroups ? Object.keys([...pseudoGroups]).join('') : 0,
+    mediaGroups ? Object.keys([...mediaGroups]).join('') : 0,
+  ])
 
   return [splitStyles.viewProps, splitStyles.style || {}, theme, media] as any
 }

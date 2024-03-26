@@ -1,5 +1,5 @@
 import React from 'react';
-import type { ComponentContextI, DebugProp, SpaceDirection, SpaceValue, SpacerProps, SpacerStyleProps, StackNonStyleProps, StaticConfig, TamaguiComponent, TamaguiElement } from './types';
+import type { ComponentContextI, DebugProp, DisposeFn, SpaceDirection, SpaceValue, SpacerProps, SpacerStyleProps, StackNonStyleProps, StaticConfig, TamaguiComponent, TamaguiElement } from './types';
 import type { TamaguiComponentState } from './interfaces/TamaguiComponentState';
 export declare const mouseUps: Set<Function>;
 export declare function createComponent<ComponentPropTypes extends Record<string, any> = {}, Ref extends TamaguiElement = TamaguiElement, BaseProps = never, BaseStyles extends Object = never>(staticConfig: StaticConfig): TamaguiComponent<ComponentPropTypes, Ref, BaseProps, BaseStyles, {}>;
@@ -20,14 +20,14 @@ export type SpacedChildrenProps = {
     debug?: DebugProp;
 };
 export declare function spacedChildren(props: SpacedChildrenProps): React.ReactNode;
-export declare const useSubscribeToGroup: ({ disabled, setStateShallow, pseudoGroups, mediaGroups, componentContext, state, unPress, }: {
+export declare const isDisabled: (props: any) => any;
+export declare const subscribeToContextGroup: ({ disabled, setStateShallow, pseudoGroups, mediaGroups, componentContext, state, disposeGroupsListener, }: {
     disabled?: boolean | undefined;
     setStateShallow: (next?: Partial<TamaguiComponentState> | undefined) => void;
     pseudoGroups?: Set<string> | undefined;
     mediaGroups?: Set<string> | undefined;
     componentContext: ComponentContextI;
     state: TamaguiComponentState;
-    unPress?: Function | undefined;
+    disposeGroupsListener?: DisposeFn | undefined;
 }) => void;
-export declare const isDisabled: (props: any) => any;
 //# sourceMappingURL=createComponent.d.ts.map
