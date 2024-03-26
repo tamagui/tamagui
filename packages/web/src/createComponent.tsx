@@ -847,66 +847,16 @@ export function createComponent<
     const unPress = curState.unPress!
     const shouldEnter = state.unmounted
 
-    useEffect(() => {
-      if (disabled) {
-        return
-      }
-
-      if (shouldEnter) {
-        setStateShallow({ unmounted: false })
-        return
-      }
-
-      // parent group pseudo listening
-      let disposeGroupsListener: DisposeFn | undefined
-      if (pseudoGroups || mediaGroups) {
-        const current = {
-          pseudo: {},
-          media: {},
-        } satisfies GroupState
-
-        if (process.env.NODE_ENV === 'development' && !componentContext.groups) {
-          console.debug(`No context group found`)
-        }
-
-        disposeGroupsListener = componentContext.groups?.subscribe(
-          (name, { layout, pseudo }) => {
-            if (pseudo && pseudoGroups?.has(name)) {
-              // we emit a partial so merge it + change reference so mergeIfNotShallowEqual runs
-              Object.assign(current.pseudo, pseudo)
-              persist()
-            } else if (layout && mediaGroups) {
-              const mediaState = getMediaState(mediaGroups, layout)
-              const next = mergeIfNotShallowEqual(current.media, mediaState)
-              if (next !== current.media) {
-                Object.assign(current.media, next)
-                persist()
-              }
-            }
-            function persist() {
-              // force it to be referentially different so it always updates
-              const group = {
-                ...state.group,
-                [name]: current,
-              }
-              setStateShallow({
-                group,
-              })
-            }
-          }
-        )
-      }
-
-      return () => {
-        disposeGroupsListener?.()
-        mouseUps.delete(unPress)
-      }
-    }, [
-      disabled,
+    useSubscribeToGroup({
+      pseudoGroups,
+      mediaGroups,
+      state,
+      setStateShallow,
+      componentContext,
       shouldEnter,
-      pseudoGroups ? Object.keys([...pseudoGroups]).join('') : 0,
-      mediaGroups ? Object.keys([...mediaGroups]).join('') : 0,
-    ])
+      disabled,
+      unPress,
+    })
 
     // if its a group its gotta listen for pseudos to emit them to children
 
@@ -1615,7 +1565,7 @@ function hasAnimatedStyleValue(style: Object) {
   })
 }
 
-export function getMediaState(
+function getMediaState(
   mediaGroups: Set<string>,
   layout: LayoutEvent['nativeEvent']['layout']
 ) {
@@ -1628,3 +1578,84 @@ export function getMediaState(
 
 const fromPx = (val?: number | string) =>
   typeof val !== 'string' ? val : +val.replace('px', '')
+
+export const useSubscribeToGroup = ({
+  disabled = false,
+  shouldEnter,
+  setStateShallow,
+  pseudoGroups,
+  mediaGroups,
+  componentContext,
+  state,
+  unPress = () => {},
+}: {
+  disabled?: boolean
+  shouldEnter: boolean | string
+  setStateShallow: (next?: Partial<TamaguiComponentState> | undefined) => void
+  pseudoGroups?: Set<string>
+  mediaGroups?: Set<string>
+  componentContext: ComponentContextI
+  state: TamaguiComponentState
+  unPress?: Function
+}) => {
+  useEffect(() => {
+    if (disabled) {
+      return
+    }
+
+    if (shouldEnter) {
+      setStateShallow({ unmounted: false })
+      return
+    }
+
+    // parent group pseudo listening
+    let disposeGroupsListener: DisposeFn | undefined
+    if (pseudoGroups || mediaGroups) {
+      const current = {
+        pseudo: {},
+        media: {},
+      } satisfies GroupState
+
+      if (process.env.NODE_ENV === 'development' && !componentContext.groups) {
+        console.debug(`No context group found`)
+      }
+
+      disposeGroupsListener = componentContext.groups?.subscribe(
+        (name, { layout, pseudo }) => {
+          if (pseudo && pseudoGroups?.has(name)) {
+            // we emit a partial so merge it + change reference so mergeIfNotShallowEqual runs
+            Object.assign(current.pseudo, pseudo)
+            persist()
+          } else if (layout && mediaGroups) {
+            const mediaState = getMediaState(mediaGroups, layout)
+            const next = mergeIfNotShallowEqual(current.media, mediaState)
+            if (next !== current.media) {
+              Object.assign(current.media, next)
+              persist()
+            }
+          }
+          function persist() {
+            // force it to be referentially different so it always updates
+            const group = {
+              ...state.group,
+              [name]: current,
+            }
+            setStateShallow({
+              group,
+            })
+          }
+        }
+      )
+    }
+
+    return () => {
+      disposeGroupsListener?.()
+      mouseUps.delete(unPress)
+    }
+  }, [
+    disabled,
+    shouldEnter,
+    pseudoGroups ? Object.keys([...pseudoGroups]).join('') : 0,
+    mediaGroups ? Object.keys([...mediaGroups]).join('') : 0,
+  ])
+}

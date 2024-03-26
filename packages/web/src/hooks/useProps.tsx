@@ -1,23 +1,17 @@
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useState } from 'react'
 
 import { ComponentContext } from '../contexts/ComponentContext'
 import { defaultComponentStateMounted } from '../defaultComponentState'
 import { useSplitStyles } from '../helpers/getSplitStyles'
-import { getMediaState } from '../createComponent'
+import { useSubscribeToGroup } from '../createComponent'
 import type {
   SplitStyleProps,
-  StackStyle,
   StaticConfig,
   ThemeParsed,
   UseMediaState,
-  GroupState,
-  DisposeFn,
   StackProps,
 } from '../types'
-import {
-  createShallowSetState,
-  mergeIfNotShallowEqual,
-} from '../helpers/createShallowSetState'
+import { createShallowSetState } from '../helpers/createShallowSetState'
 import { Stack } from '../views/Stack'
 import { useMedia } from './useMedia'
 import { useThemeWithState } from './useTheme'
@@ -135,67 +129,17 @@ export function usePropsAndStyle<A extends StyleLikeObject>(
 
   const { mediaGroups, pseudoGroups } = splitStyles
 
-  const shouldEnter = state.unmounted
+  const shouldEnter = !!state.unmounted
 
-  useEffect(() => {
-    if (props.disabled) {
-      return
-    }
-
-    if (shouldEnter) {
-      setStateShallow({ unmounted: false })
-      return
-    }
-
-    // parent group pseudo listening
-    let disposeGroupsListener: DisposeFn | undefined
-    if (pseudoGroups || mediaGroups) {
-      const current = {
-        pseudo: {},
-        media: {},
-      } satisfies GroupState
-
-      if (process.env.NODE_ENV === 'development' && !componentContext.groups) {
-        console.debug(`No context group found`)
-      }
-
-      disposeGroupsListener = componentContext.groups?.subscribe(
-        (name, { layout, pseudo }) => {
-          if (pseudo && pseudoGroups?.has(name)) {
-            // we emit a partial so merge it + change reference so mergeIfNotShallowEqual runs
-            Object.assign(current.pseudo, pseudo)
-            persist()
-          } else if (layout && mediaGroups) {
-            const mediaState = getMediaState(mediaGroups, layout)
-            const next = mergeIfNotShallowEqual(current.media, mediaState)
-            if (next !== current.media) {
-              Object.assign(current.media, next)
-              persist()
-            }
-          }
-          function persist() {
-            // force it to be referentially different so it always updates
-            const group = {
-              ...state.group,
-              [name]: current,
-            }
-            setStateShallow({
-              group,
-            })
-          }
-        }
-      )
-    }
-
-    return () => {
-      disposeGroupsListener?.()
-    }
-  }, [
+  useSubscribeToGroup({
+    componentContext,
     disabled,
+    mediaGroups,
+    pseudoGroups,
     shouldEnter,
-    pseudoGroups ? Object.keys([...pseudoGroups]).join('') : 0,
-    mediaGroups ? Object.keys([...mediaGroups]).join('') : 0,
-  ])
+    state,
+    setStateShallow,
+  })
 
   return [splitStyles.viewProps, splitStyles.style || {}, theme, media] as any
 }
