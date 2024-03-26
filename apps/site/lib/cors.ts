@@ -3,8 +3,6 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 export function setupCors(req: NextApiRequest, res: NextApiResponse) {
   const origin = req.headers.origin
 
-  console.info('checking origin', origin, 'valid', isValidOrigin(origin))
-
   if (isValidOrigin(origin)) {
     res.setHeader('Access-Control-Allow-Origin', origin)
     res.setHeader('Access-Control-Allow-Credentials', 'true')
