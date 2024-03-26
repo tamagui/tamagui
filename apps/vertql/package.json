@@ -33,7 +33,7 @@
     "graphology": "^0.24.1",
     "graphql": "^16.8.0",
     "http-proxy-middleware": "^2.0.6",
-    "vite": "^5.0.12",
+    "vite": "^5.2.6",
     "vite-plugin-inspect": "^0.7.38",
     "vxrn": "^0.0.7"
   },

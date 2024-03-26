@@ -16,10 +16,6 @@ export type PluginOptions = TamaguiOptions & {
   disableModuleJSXEntry?: boolean
   disableWatchConfig?: boolean
   disableAliases?: boolean
-  /**
-   * @deprecated Deprecated
-   */
-  useReactNativeWebLite?: boolean
 }
 
 const dir = process.cwd()
@@ -71,9 +67,9 @@ export class TamaguiPlugin {
 
   get componentsFullPaths() {
     return this.safeResolves(
-      this.options.components.map(
+      this.options.components?.map(
         (moduleName) => [moduleName, moduleName] as [string, string]
-      ),
+      ) || [],
       true
     )
   }
