@@ -1,5 +1,5 @@
 {
-  "name": "@tamagui/website",
+  "name": "@tamagui/remix-starter",
   "private": true,
   "sideEffects": false,
   "type": "module",
@@ -17,7 +17,7 @@
     "@remix-run/node": "^2.8.1",
     "@remix-run/react": "^2.8.1",
     "@remix-run/serve": "^2.8.1",
-    "@tamagui/site-config": "^1.93.0",
+    "@tamagui/config": "^1.93.0",
     "isbot": "^4.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

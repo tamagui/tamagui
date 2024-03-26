@@ -19,7 +19,7 @@
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "import": "./dist/esm/index.js",
+      "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.js",
       "react-native": "./dist/cjs/index.native.js"
     },

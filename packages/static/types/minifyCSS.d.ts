@@ -1,2 +1,2 @@
-export declare function minifyCSS(input: string): import("lightningcss").TransformResult;
+export declare function minifyCSS(input: string): any;
 //# sourceMappingURL=minifyCSS.d.ts.map
