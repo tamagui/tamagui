@@ -854,7 +854,7 @@ export function createComponent<
       setStateShallow,
       componentContext,
       shouldEnter,
-      disabled,
+      isDisabled: disabled,
       unPress,
     })
 
@@ -1580,7 +1580,7 @@ const fromPx = (val?: number | string) =>
   typeof val !== 'string' ? val : +val.replace('px', '')
 
 export const useSubscribeToGroup = ({
-  disabled = false,
+  isDisabled = false,
   shouldEnter,
   setStateShallow,
   pseudoGroups,
@@ -1589,7 +1589,7 @@ export const useSubscribeToGroup = ({
   state,
   unPress = () => {},
 }: {
-  disabled?: boolean
+  isDisabled?: boolean
   shouldEnter: boolean | string
   setStateShallow: (next?: Partial<TamaguiComponentState> | undefined) => void
   pseudoGroups?: Set<string>
@@ -1599,7 +1599,7 @@ export const useSubscribeToGroup = ({
   unPress?: Function
 }) => {
   useEffect(() => {
-    if (disabled) {
+    if (isDisabled) {
       return
     }
 
@@ -1653,7 +1653,7 @@ export const useSubscribeToGroup = ({
       mouseUps.delete(unPress)
     }
   }, [
-    disabled,
+    isDisabled,
     shouldEnter,
     pseudoGroups ? Object.keys([...pseudoGroups]).join('') : 0,
     mediaGroups ? Object.keys([...mediaGroups]).join('') : 0,
