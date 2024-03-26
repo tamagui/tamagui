@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/collapsible",
-  "version": "1.93.1",
+  "version": "1.93.2",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -21,20 +21,20 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/animate-presence": "1.93.1",
-    "@tamagui/compose-refs": "1.93.1",
-    "@tamagui/core": "1.93.1",
-    "@tamagui/create-context": "1.93.1",
-    "@tamagui/helpers": "1.93.1",
-    "@tamagui/polyfill-dev": "1.93.1",
-    "@tamagui/stacks": "1.93.1",
-    "@tamagui/use-controllable-state": "1.93.1"
+    "@tamagui/animate-presence": "1.93.2",
+    "@tamagui/compose-refs": "1.93.2",
+    "@tamagui/core": "1.93.2",
+    "@tamagui/create-context": "1.93.2",
+    "@tamagui/helpers": "1.93.2",
+    "@tamagui/polyfill-dev": "1.93.2",
+    "@tamagui/stacks": "1.93.2",
+    "@tamagui/use-controllable-state": "1.93.2"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.93.1",
+    "@tamagui/build": "1.93.2",
     "react": "^18.2.0"
   },
   "publishConfig": {

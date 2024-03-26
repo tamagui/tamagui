@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/font-dm-serif-display",
-  "version": "1.93.1",
+  "version": "1.93.2",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -18,8 +18,8 @@
     "clean:build": "tamagui-build clean:build"
   },
   "devDependencies": {
-    "@tamagui/build": "1.93.1",
-    "@tamagui/core": "1.93.1",
+    "@tamagui/build": "1.93.2",
+    "@tamagui/core": "1.93.2",
     "subset-font": "^2.1.0"
   }
 }
