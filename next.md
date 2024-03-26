@@ -23,6 +23,7 @@ Needed features/maintenance:
   - ListItem/Button simplify APIs
   - Image/Input deprecations for web alignment
 
+- native tests (detox?)
 - 0-runtime mode
 - @tamagui/kit - includes native versions of many things
 - remove RNW - Input, Image
