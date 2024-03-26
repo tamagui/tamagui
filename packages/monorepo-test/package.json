@@ -2,6 +2,7 @@
   "name": "@tamagui/monorepo-test",
   "version": "1.92.1",
   "module": "dist/esm",
+  "type": "module",
   "private": true,
   "license": "MIT",
   "author": {

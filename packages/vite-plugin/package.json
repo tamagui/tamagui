@@ -1,7 +1,6 @@
 {
   "name": "@tamagui/vite-plugin",
   "version": "1.92.1",
-  "type": "module",
   "types": "./types/index.d.ts",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
