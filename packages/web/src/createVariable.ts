@@ -2,6 +2,7 @@ import { isWeb } from '@tamagui/constants'
 import { simpleHash } from '@tamagui/helpers'
 
 import { getConfig } from './config'
+import { CSS_VARIABLE_PREFIX } from './constants/constants'
 
 /**
  * Should rename this to Token
@@ -20,19 +21,28 @@ export interface Variable<A = any> {
 
 export type MakeVariable<A = any> = A extends string | number ? Variable<A> : A
 
+function constructCSSVariableName(name: string) {
+  return `var(--${CSS_VARIABLE_PREFIX}${name})`
+}
+
 type VariableIn<A = any> = Pick<Variable<A>, 'key' | 'name' | 'val'>
 export const createVariable = <A extends string | number | Variable = any>(
   props: VariableIn<A>,
   skipHash = false
 ): Variable<A> => {
   if (!skipHash && isVariable(props)) return props
+
   const { key, name, val } = props
   return {
     [IS_VAR]: true,
     key: key!,
     name: skipHash ? '' : simpleHash(name, 40),
     val: val as any,
-    variable: isWeb ? (skipHash ? `var(--${name})` : createCSSVariable(name)) : '',
+    variable: isWeb
+      ? skipHash
+        ? constructCSSVariableName(name)
+        : createCSSVariable(name)
+      : '',
   }
 }
 
@@ -90,5 +100,5 @@ export const createCSSVariable = (nameProp: string, includeVar = true) => {
     }
   }
   const name = simpleHash(nameProp, 60)
-  return includeVar ? `var(--${name})` : name
+  return includeVar ? constructCSSVariableName(name) : name
 }
