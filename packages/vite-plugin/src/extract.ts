@@ -3,10 +3,13 @@
 import path from 'path'
 
 import type { TamaguiOptions } from '@tamagui/static'
-import * as Static from '@tamagui/static'
+import * as StaticIn from '@tamagui/static'
 import outdent from 'outdent'
 import type { Plugin, ResolvedConfig, ViteDevServer } from 'vite'
 import { normalizePath } from 'vite'
+
+// some sort of weird esm compat
+const Static = (StaticIn['default'] || StaticIn) as typeof StaticIn
 
 const styleUpdateEvent = (fileId: string) => `tamagui-style-update:${fileId}`
 const GLOBAL_CSS_VIRTUAL_PATH = '__tamagui_global_css__.css'

@@ -1,7 +1,9 @@
 import type { TamaguiOptions } from '@tamagui/static'
-import * as Static from '@tamagui/static'
+import * as StaticIn from '@tamagui/static'
 import type { Plugin } from 'vite'
 import { transformWithEsbuild } from 'vite'
+
+const Static = (StaticIn['default'] || StaticIn) as typeof StaticIn
 
 export function tamaguiPlugin(tamaguiOptionsIn: TamaguiOptions = {}): Plugin {
   const options = {
