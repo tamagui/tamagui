@@ -396,8 +396,17 @@ export const PurchaseModal = ({
             </ScrollView>
             <Separator />
             <YStack p="$6" gap="$2">
-              <XStack jc="space-between" ai="flex-start" gap="$6">
-                <YStack width="40%">
+              <YStack
+                jc="center"
+                ai="center"
+                gap="$6"
+                $gtXs={{
+                  jc: 'space-between',
+                  ai: 'flex-start',
+                  flexDirection: 'row',
+                }}
+              >
+                <YStack width="100%" $gtXs={{ width: '40%' }}>
                   <XStack>
                     <H3 size="$11">{formatPrice(finalPrice! / 100, 'usd')}</H3>
                   </XStack>
@@ -444,7 +453,7 @@ export const PurchaseModal = ({
                 </YStack>
               </Unspaced> */}
 
-                <YStack gap="$2" width="40%">
+                <YStack gap="$2" width="100%" $gtXs={{ width: '40%' }}>
                   <NextLink
                     href={`api/checkout?${(() => {
                       const params = new URLSearchParams({
@@ -479,7 +488,7 @@ export const PurchaseModal = ({
                       Purchase
                     </PurchaseButton>
                   </NextLink>
-                  <XStack jc="space-between" gap="$10" ai="center" mb="$2">
+                  <XStack jc="space-between" gap="$4" ai="center" mb="$2">
                     <XStack
                       ai="center"
                       separator={<Separator vertical bg="$color8" my="$2" />}
@@ -550,7 +559,7 @@ export const PurchaseModal = ({
                     </Theme>
                   </XStack>
                 </YStack>
-              </XStack>
+              </YStack>
             </YStack>
           </Tabs>
           <Unspaced>
