@@ -101,6 +101,7 @@ export function tamaguiPlugin(tamaguiOptionsIn: TamaguiOptions = {}): Plugin {
           extensions: extensions,
           alias: {
             ...(platform !== 'native' && {
+              'expo-linear-gradient': '@tamagui/proxy-worm',
               'react-native/Libraries/Renderer/shims/ReactFabric': '@tamagui/proxy-worm',
               'react-native/Libraries/Utilities/codegenNativeComponent':
                 '@tamagui/proxy-worm',

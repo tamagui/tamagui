@@ -7799,7 +7799,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/logo@npm:1.92.1, @tamagui/logo@workspace:packages/logo":
+"@tamagui/logo@npm:1.92.1, @tamagui/logo@npm:^1.92.1, @tamagui/logo@workspace:packages/logo":
   version: 0.0.0-use.local
   resolution: "@tamagui/logo@workspace:packages/logo"
   dependencies:
@@ -9052,6 +9052,7 @@ __metadata:
     "@remix-run/node": "npm:^2.8.1"
     "@remix-run/react": "npm:^2.8.1"
     "@remix-run/serve": "npm:^2.8.1"
+    "@tamagui/logo": "npm:^1.92.1"
     "@tamagui/site-config": "npm:1.92.1"
     "@tamagui/vite-plugin": "npm:1.92.1"
     "@types/react": "npm:^18.2.55"

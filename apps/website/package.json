@@ -15,6 +15,7 @@
     "@remix-run/node": "^2.8.1",
     "@remix-run/react": "^2.8.1",
     "@remix-run/serve": "^2.8.1",
+    "@tamagui/logo": "^1.92.1",
     "@tamagui/site-config": "1.92.1",
     "isbot": "^4.1.0",
     "react": "^18.2.0",
