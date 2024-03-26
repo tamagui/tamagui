@@ -414,13 +414,7 @@ export function createComponent<
       : defaultComponentStateMounted
 
     // will be nice to deprecate half of these:
-    const disabled =
-      props.disabled ||
-      props.accessibilityState?.disabled ||
-      props['aria-disabled'] ||
-      // @ts-expect-error (comes from core)
-      props.accessibilityDisabled ||
-      false
+    const disabled = isDisabled(props)
 
     if (disabled != null) {
       initialState.disabled = disabled
@@ -853,8 +847,7 @@ export function createComponent<
       state,
       setStateShallow,
       componentContext,
-      shouldEnter,
-      isDisabled: disabled,
+      disabled,
       unPress,
     })
 
@@ -1580,8 +1573,7 @@ const fromPx = (val?: number | string) =>
   typeof val !== 'string' ? val : +val.replace('px', '')
 
 export const useSubscribeToGroup = ({
-  isDisabled = false,
-  shouldEnter,
+  disabled = false,
   setStateShallow,
   pseudoGroups,
   mediaGroups,
@@ -1589,8 +1581,7 @@ export const useSubscribeToGroup = ({
   state,
   unPress = () => {},
 }: {
-  isDisabled?: boolean
-  shouldEnter: boolean | string
+  disabled?: boolean
   setStateShallow: (next?: Partial<TamaguiComponentState> | undefined) => void
   pseudoGroups?: Set<string>
   mediaGroups?: Set<string>
@@ -1599,11 +1590,11 @@ export const useSubscribeToGroup = ({
   unPress?: Function
 }) => {
   useEffect(() => {
-    if (isDisabled) {
+    if (disabled) {
       return
     }
 
-    if (shouldEnter) {
+    if (state.unmounted) {
       setStateShallow({ unmounted: false })
       return
     }
@@ -1653,9 +1644,18 @@ export const useSubscribeToGroup = ({
       mouseUps.delete(unPress)
     }
   }, [
-    isDisabled,
-    shouldEnter,
+    disabled,
     pseudoGroups ? Object.keys([...pseudoGroups]).join('') : 0,
     mediaGroups ? Object.keys([...mediaGroups]).join('') : 0,
   ])
+}
+
+export const isDisabled = (props: any) => {
+  return (
+    props.disabled ||
+    props.accessibilityState?.disabled ||
+    props['aria-disabled'] ||
+    props.accessibilityDisabled ||
+    false
+  )
 }

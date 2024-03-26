@@ -3,7 +3,7 @@ import { useContext, useState } from 'react'
 import { ComponentContext } from '../contexts/ComponentContext'
 import { defaultComponentStateMounted } from '../defaultComponentState'
 import { useSplitStyles } from '../helpers/getSplitStyles'
-import { useSubscribeToGroup } from '../createComponent'
+import { isDisabled, useSubscribeToGroup } from '../createComponent'
 import type { SplitStyleProps, StaticConfig, ThemeParsed, UseMediaState } from '../types'
 import { createShallowSetState } from '../helpers/createShallowSetState'
 import { Stack } from '../views/Stack'
@@ -77,12 +77,7 @@ export function usePropsAndStyle<A extends StyleLikeObject>(
     componentName: staticConfig.componentName,
   })
 
-  const disabled =
-    props.disabled ||
-    props.accessibilityState?.disabled ||
-    props['aria-disabled'] ||
-    props.accessibilityDisabled ||
-    false
+  const disabled = isDisabled(props)
 
   const componentContext = useContext(ComponentContext as any) as any
 
@@ -123,14 +118,11 @@ export function usePropsAndStyle<A extends StyleLikeObject>(
 
   const { mediaGroups, pseudoGroups } = splitStyles
 
-  const shouldEnter = !!state.unmounted
-
   useSubscribeToGroup({
     componentContext,
-    isDisabled: disabled,
+    disabled,
     mediaGroups,
     pseudoGroups,
-    shouldEnter,
     state,
     setStateShallow,
   })

@@ -20,9 +20,8 @@ export type SpacedChildrenProps = {
     debug?: DebugProp;
 };
 export declare function spacedChildren(props: SpacedChildrenProps): React.ReactNode;
-export declare const useSubscribeToGroup: ({ isDisabled, shouldEnter, setStateShallow, pseudoGroups, mediaGroups, componentContext, state, unPress, }: {
-    isDisabled?: boolean | undefined;
-    shouldEnter: boolean | string;
+export declare const useSubscribeToGroup: ({ disabled, setStateShallow, pseudoGroups, mediaGroups, componentContext, state, unPress, }: {
+    disabled?: boolean | undefined;
     setStateShallow: (next?: Partial<TamaguiComponentState> | undefined) => void;
     pseudoGroups?: Set<string> | undefined;
     mediaGroups?: Set<string> | undefined;
@@ -30,4 +29,5 @@ export declare const useSubscribeToGroup: ({ isDisabled, shouldEnter, setStateSh
     state: TamaguiComponentState;
     unPress?: Function | undefined;
 }) => void;
+export declare const isDisabled: (props: any) => any;
 //# sourceMappingURL=createComponent.d.ts.map
