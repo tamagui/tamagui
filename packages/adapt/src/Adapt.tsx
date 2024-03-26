@@ -1,4 +1,4 @@
-import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { isAndroid, isIos, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { isTouchable } from '@tamagui/constants'
 import type { MediaQueryKey } from '@tamagui/core'
 import { useMedia } from '@tamagui/core'
@@ -9,7 +9,7 @@ type MediaQueryKeyString = MediaQueryKey extends string ? MediaQueryKey : never
 
 export type AdaptProps = {
   when?: MediaQueryKeyString
-  platform?: 'native' | 'web' | 'touch'
+  platform?: 'native' | 'web' | 'touch' | 'ios' | 'android'
   children?: any
 }
 
@@ -77,6 +77,8 @@ export const Adapt = withStaticProperties(
     if (platform === 'touch') enabled = isTouchable
     if (platform === 'native') enabled = !isWeb
     if (platform === 'web') enabled = isWeb
+    if (platform === 'ios') enabled = isIos
+    if (platform === 'android') enabled = isAndroid
 
     if (when && !media[when]) {
       enabled = false
