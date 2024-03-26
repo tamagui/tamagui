@@ -1,5 +1,5 @@
 import type { SplitStyleProps, StaticConfig, ThemeParsed, UseMediaState } from '../types';
-import { ViewProps, ViewStyle } from '../views/View';
+import type { ViewProps, ViewStyle } from '../views/View';
 type UsePropsOptions = Pick<SplitStyleProps, 'noExpand' | 'noNormalize' | 'noClassNames' | 'resolveValues'> & {
     disableExpandShorthands?: boolean;
     forComponent?: {

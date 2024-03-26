@@ -3,7 +3,11 @@ import { useContext, useEffect, useState } from 'react'
 import { ComponentContext } from '../contexts/ComponentContext'
 import { defaultComponentStateMounted } from '../defaultComponentState'
 import { useSplitStyles } from '../helpers/getSplitStyles'
-import { isDisabled, subscribeToContextGroup } from '../createComponent'
+import {
+  isDisabled,
+  subscribeToContextGroup,
+  useComponentState,
+} from '../createComponent'
 import type {
   DisposeFn,
   SplitStyleProps,
@@ -15,7 +19,8 @@ import { createShallowSetState } from '../helpers/createShallowSetState'
 import { Stack } from '../views/Stack'
 import { useMedia } from './useMedia'
 import { useThemeWithState } from './useTheme'
-import { ViewProps, ViewStyle } from '../views/View'
+import type { ViewProps, ViewStyle } from '../views/View'
+import { getConfig } from '../config'
 
 type UsePropsOptions = Pick<
   SplitStyleProps,
@@ -82,26 +87,14 @@ export function usePropsAndStyle<A extends StyleLikeObject>(
   const [themeState, theme] = useThemeWithState({
     componentName: staticConfig.componentName,
   })
-
-  const disabled = isDisabled(props)
-
   const componentContext = useContext(ComponentContext as any) as any
+  const { state, disabled, setStateShallow } = useComponentState(
+    props,
+    componentContext,
+    staticConfig,
+    getConfig()
+  )
 
-  const states = useState(defaultComponentStateMounted)
-
-  const state = props.forceStyle ? { ...states[0], [props.forceStyle]: true } : states[0]
-  const setState = states[1]
-
-  // immediately update disabled state and reset component state
-  if (disabled !== state.disabled) {
-    setState({
-      ...state,
-      ...defaultComponentStateMounted, // removes any stale press state etc
-      disabled,
-    })
-  }
-
-  let setStateShallow = createShallowSetState(setState, disabled)
   const media = useMedia()
   const splitStyles = useSplitStyles(
     props,

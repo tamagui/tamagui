@@ -132,6 +132,194 @@ if (typeof document !== 'undefined') {
   }
 }
 
+export const useComponentState = (
+  props: StackProps | TextProps,
+  { animationDriver, groups }: ComponentContextI,
+  staticConfig: StaticConfig,
+  config: TamaguiInternalConfig
+) => {
+  const useAnimations = animationDriver?.useAnimations as UseAnimationHook | undefined
+
+  const stateRef = useRef<TamaguiComponentStateRef>({})
+
+  // after we get states mount we need to turn off isAnimated for server side
+  const hasAnimationProp = Boolean(
+    'animation' in props || (props.style && hasAnimatedStyleValue(props.style))
+  )
+
+  // disable for now still ssr issues
+  const supportsCSSVars = animationDriver?.supportsCSSVars
+  const curStateRef = stateRef.current
+
+  const willBeAnimatedClient = (() => {
+    const next = !!(hasAnimationProp && !staticConfig.isHOC && useAnimations)
+    return Boolean(next || curStateRef.hasAnimated)
+  })()
+
+  const willBeAnimated = !isServer && willBeAnimatedClient
+
+  // once animated, always animated to preserve hooks / vdom structure
+  if (willBeAnimated && !curStateRef.hasAnimated) {
+    curStateRef.hasAnimated = true
+  }
+
+  // HOOK
+  const isHydrated = config?.disableSSR ? true : useDidFinishSSR()
+
+  // HOOK
+  const presence =
+    (willBeAnimated &&
+      props['animatePresence'] !== false &&
+      animationDriver?.usePresence?.()) ||
+    null
+  const presenceState = presence?.[2]
+  const isExiting = presenceState?.isPresent === false
+  const isEntering = presenceState?.isPresent === true && presenceState.initial !== false
+
+  const hasEnterStyle = !!props.enterStyle
+  // finish animated logic, avoid isAnimated when unmounted
+  const hasRNAnimation = hasAnimationProp && animationDriver?.isReactNative
+  const isReactNative = staticConfig.isReactNative
+
+  // only web server + initial client render run this when not hydrated:
+  let isAnimated = willBeAnimated
+  if (!isReactNative && hasRNAnimation && !staticConfig.isHOC && !isHydrated) {
+    isAnimated = false
+    curStateRef.willHydrate = true
+  }
+
+  if (process.env.NODE_ENV === 'development' && time) time`pre-use-state`
+
+  const hasEnterState = hasEnterStyle || isEntering
+  const needsToMount = !isHydrated || !curStateRef.host
+
+  const initialState = hasEnterState
+    ? needsToMount
+      ? defaultComponentStateShouldEnter
+      : defaultComponentState
+    : defaultComponentStateMounted
+
+  // will be nice to deprecate half of these:
+  const disabled = isDisabled(props)
+
+  if (disabled != null) {
+    initialState.disabled = disabled
+  }
+
+  // HOOK
+  const states = useState<TamaguiComponentState>(initialState)
+
+  const state = props.forceStyle ? { ...states[0], [props.forceStyle]: true } : states[0]
+  const setState = states[1]
+
+  // immediately update disabled state and reset component state
+  if (disabled !== state.disabled) {
+    setState({
+      ...state,
+      ...defaultComponentState, // removes any stale press state etc
+      disabled,
+    })
+  }
+
+  let setStateShallow = createShallowSetState(setState, disabled, props.debug)
+
+  if (isHydrated && state.unmounted === 'should-enter') {
+    state.unmounted = true
+  }
+
+  // set enter/exit variants onto our new props object
+  if (presenceState && isAnimated && isHydrated && staticConfig.variants) {
+    if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
+      console.warn(`has presenceState ${JSON.stringify(presenceState)}`)
+    }
+    const { enterVariant, exitVariant, enterExitVariant, custom } = presenceState
+    if (isObj(custom)) {
+      Object.assign(props, custom)
+    }
+    const exv = exitVariant ?? enterExitVariant
+    const env = enterVariant ?? enterExitVariant
+    if (state.unmounted && env && staticConfig.variants[env]) {
+      if (process.env.NODE_ENV === 'development' && debugProp === 'verbose') {
+        console.warn(`Animating presence ENTER "${env}"`)
+      }
+      props[env] = true
+    } else if (isExiting && exv) {
+      if (process.env.NODE_ENV === 'development' && debugProp === 'verbose') {
+        console.warn(`Animating presence EXIT "${exv}"`)
+      }
+      props[exv] = exitVariant === enterExitVariant ? false : true
+    }
+  }
+
+  const shouldAvoidClasses = Boolean(
+    !isWeb ||
+      (isAnimated && !supportsCSSVars) ||
+      !staticConfig.acceptsClassName ||
+      // on server for SSR and animation compat added the && isHydrated but perhaps we want
+      // disableClassName="until-hydrated" to be more straightforward
+      // see issue if not, Button sets disableClassName to true <Button animation="" /> with
+      // the react-native driver errors because it tries to animate var(--color) to rbga(..)
+      (props.disableClassName && isHydrated)
+  )
+
+  const groupName = props.group as any as string
+
+  if (groupName && !curStateRef.group) {
+    const listeners = new Set<GroupStateListener>()
+    curStateRef.group = {
+      listeners,
+      emit(name, state) {
+        listeners.forEach((l) => l(name, state))
+      },
+      subscribe(cb) {
+        listeners.add(cb)
+        return () => {
+          listeners.delete(cb)
+        }
+      },
+    }
+  }
+
+  if (groupName) {
+    // when we set state we also set our group state and emit an event for children listening:
+    const groupContextState = groups.state
+    const og = setStateShallow
+    setStateShallow = (state) => {
+      og(state)
+      curStateRef.group!.emit(groupName, {
+        pseudo: state,
+      })
+      // and mutate the current since its concurrent safe (children throw it in useState on mount)
+      const next = {
+        ...groupContextState[groupName],
+        ...state,
+      }
+      groupContextState[groupName] = next
+    }
+  }
+
+  return {
+    curStateRef,
+    disabled,
+    groupName,
+    hasAnimationProp,
+    hasEnterStyle,
+    isAnimated,
+    isExiting,
+    isHydrated,
+    presence,
+    presenceState,
+    setState,
+    setStateShallow,
+    shouldAvoidClasses,
+    state,
+    stateRef,
+    supportsCSSVars,
+    willBeAnimated,
+    willBeAnimatedClient,
+  }
+}
+
 /**
  * Only on native do we need the actual underlying View/Text
  * On the web we avoid react-native dep altogether.
@@ -178,7 +366,6 @@ export function createComponent<
   const {
     Component,
     isText,
-    isInput,
     isZStack,
     isHOC,
     validStyles = {},
@@ -234,7 +421,7 @@ export function createComponent<
     let styledContextProps: Object | undefined
     let overriddenContextProps: Object | undefined
     let contextValue: Object | null | undefined
-    const { context } = staticConfig
+    const { context, isReactNative } = staticConfig
 
     if (context) {
       // HOOK 3 (-1 if production)
@@ -286,7 +473,7 @@ export function createComponent<
         let overlay: HTMLSpanElement | null = null
 
         const debugVisualizerHandler = (show = false) => {
-          const node = curState.host as HTMLElement
+          const node = curStateRef.host as HTMLElement
           if (!node) return
 
           if (show) {
@@ -346,176 +533,38 @@ export function createComponent<
     // conditional but if ever true stays true
     // [animated, inversed]
     // HOOK
-    const stateRef = useRef<TamaguiComponentStateRef>({})
+
     if (process.env.NODE_ENV === 'development' && time) time`stateref`
 
     /**
      * Component state for tracking animations, pseudos
      */
-    const animationsConfig = componentContext.animationDriver
-    const useAnimations = animationsConfig?.useAnimations as UseAnimationHook | undefined
+    const animationDriver = componentContext.animationDriver
+    const useAnimations = animationDriver?.useAnimations as UseAnimationHook | undefined
 
-    // after we get states mount we need to turn off isAnimated for server side
-    const hasAnimationProp = Boolean(
-      'animation' in props || (props.style && hasAnimatedStyleValue(props.style))
-    )
-
-    // disable for now still ssr issues
-    const supportsCSSVars = animationsConfig?.supportsCSSVars
-    const curState = stateRef.current
-
-    const willBeAnimatedClient = (() => {
-      const next = !!(hasAnimationProp && !isHOC && useAnimations)
-      return Boolean(next || curState.hasAnimated)
-    })()
-
-    const willBeAnimated = !isServer && willBeAnimatedClient
-
-    // once animated, always animated to preserve hooks / vdom structure
-    if (willBeAnimated && !curState.hasAnimated) {
-      curState.hasAnimated = true
-    }
-
-    // HOOK
-    const isHydrated = config?.disableSSR ? true : useDidFinishSSR()
-
-    // HOOK
-    const presence =
-      (willBeAnimated &&
-        props['animatePresence'] !== false &&
-        animationsConfig?.usePresence?.()) ||
-      null
-    const presenceState = presence?.[2]
-    const isExiting = presenceState?.isPresent === false
-    const isEntering =
-      presenceState?.isPresent === true && presenceState.initial !== false
-
-    const hasEnterStyle = !!props.enterStyle
-    // finish animated logic, avoid isAnimated when unmounted
-    const hasRNAnimation = hasAnimationProp && animationsConfig?.isReactNative
-    const isReactNative = staticConfig.isReactNative
-
-    // only web server + initial client render run this when not hydrated:
-    let isAnimated = willBeAnimated
-    if (!isReactNative && hasRNAnimation && !isHOC && !isHydrated) {
-      isAnimated = false
-      curState.willHydrate = true
-    }
-
-    if (process.env.NODE_ENV === 'development' && time) time`pre-use-state`
-
-    const hasEnterState = hasEnterStyle || isEntering
-    const needsToMount = !isHydrated || !curState.host
-
-    const initialState = hasEnterState
-      ? needsToMount
-        ? defaultComponentStateShouldEnter
-        : defaultComponentState
-      : defaultComponentStateMounted
-
-    // will be nice to deprecate half of these:
-    const disabled = isDisabled(props)
-
-    if (disabled != null) {
-      initialState.disabled = disabled
-    }
-
-    // HOOK
-    const states = useState<TamaguiComponentState>(initialState)
-
-    const state = props.forceStyle
-      ? { ...states[0], [props.forceStyle]: true }
-      : states[0]
-    const setState = states[1]
-
-    // immediately update disabled state and reset component state
-    if (disabled !== state.disabled) {
-      setState({
-        ...state,
-        ...defaultComponentState, // removes any stale press state etc
-        disabled,
-      })
-    }
-
-    let setStateShallow = createShallowSetState(setState, disabled, debugProp)
-
-    if (isHydrated && state.unmounted === 'should-enter') {
-      state.unmounted = true
-    }
-
-    // set enter/exit variants onto our new props object
-    if (presenceState && isAnimated && isHydrated && staticConfig.variants) {
-      if (process.env.NODE_ENV === 'development' && debugProp === 'verbose') {
-        console.warn(`has presenceState ${JSON.stringify(presenceState)}`)
-      }
-      const { enterVariant, exitVariant, enterExitVariant, custom } = presenceState
-      if (isObj(custom)) {
-        Object.assign(props, custom)
-      }
-      const exv = exitVariant ?? enterExitVariant
-      const env = enterVariant ?? enterExitVariant
-      if (state.unmounted && env && staticConfig.variants[env]) {
-        if (process.env.NODE_ENV === 'development' && debugProp === 'verbose') {
-          console.warn(`Animating presence ENTER "${env}"`)
-        }
-        props[env] = true
-      } else if (isExiting && exv) {
-        if (process.env.NODE_ENV === 'development' && debugProp === 'verbose') {
-          console.warn(`Animating presence EXIT "${exv}"`)
-        }
-        props[exv] = exitVariant === enterExitVariant ? false : true
-      }
-    }
-
-    const shouldAvoidClasses = Boolean(
-      !isWeb ||
-        (isAnimated && !supportsCSSVars) ||
-        !staticConfig.acceptsClassName ||
-        // on server for SSR and animation compat added the && isHydrated but perhaps we want
-        // disableClassName="until-hydrated" to be more straightforward
-        // see issue if not, Button sets disableClassName to true <Button animation="" /> with
-        // the react-native driver errors because it tries to animate var(--color) to rbga(..)
-        (propsIn.disableClassName && isHydrated)
-    )
+    const {
+      curStateRef,
+      disabled,
+      groupName,
+      hasAnimationProp,
+      hasEnterStyle,
+      isAnimated,
+      isExiting,
+      isHydrated,
+      presence,
+      presenceState,
+      setState,
+      setStateShallow,
+      shouldAvoidClasses,
+      state,
+      stateRef,
+      supportsCSSVars,
+      willBeAnimated,
+      willBeAnimatedClient,
+    } = useComponentState(props, componentContext, staticConfig, config!)
 
     const shouldForcePseudo = !!propsIn.forceStyle
     const noClassNames = shouldAvoidClasses || shouldForcePseudo
-
-    const groupName = props.group as any as string
-
-    if (groupName && !curState.group) {
-      const listeners = new Set<GroupStateListener>()
-      curState.group = {
-        listeners,
-        emit(name, state) {
-          listeners.forEach((l) => l(name, state))
-        },
-        subscribe(cb) {
-          listeners.add(cb)
-          return () => {
-            listeners.delete(cb)
-          }
-        },
-      }
-    }
-
-    if (groupName) {
-      // when we set state we also set our group state and emit an event for children listening:
-      const groupContextState = componentContext.groups.state
-      const og = setStateShallow
-      setStateShallow = (state) => {
-        og(state)
-        curState.group!.emit(groupName, {
-          pseudo: state,
-        })
-        // and mutate the current since its concurrent safe (children throw it in useState on mount)
-        const next = {
-          ...groupContextState[groupName],
-          ...state,
-        }
-        groupContextState[groupName] = next
-      }
-    }
 
     if (process.env.NODE_ENV === 'development' && time) time`use-state`
 
@@ -533,8 +582,8 @@ export function createComponent<
 
     let elementType = isText ? BaseTextComponent : BaseViewComponent
 
-    if (animationsConfig && isAnimated) {
-      elementType = animationsConfig[isText ? 'Text' : 'View'] || elementType
+    if (animationDriver && isAnimated) {
+      elementType = animationDriver[isText ? 'Text' : 'View'] || elementType
     }
 
     // internal use only
@@ -546,19 +595,19 @@ export function createComponent<
     if (process.env.NODE_ENV === 'development' && time) time`theme-props`
 
     if (props.themeShallow) {
-      curState.themeShallow = true
+      curStateRef.themeShallow = true
     }
 
     const themeStateProps: UseThemeWithStateProps = {
       name: props.theme,
       componentName,
       disable: disableTheme,
-      shallow: curState.themeShallow,
+      shallow: curStateRef.themeShallow,
       inverse: props.themeInverse,
       debug: debugProp,
     }
 
-    if (typeof curState.isListeningToTheme === 'boolean') {
+    if (typeof curStateRef.isListeningToTheme === 'boolean') {
       themeStateProps.shouldUpdate = () => stateRef.current.isListeningToTheme
     }
 
@@ -662,14 +711,14 @@ export function createComponent<
     )
 
     // hide strategy will set this opacity = 0 until measured
-    if (props.group && props.untilMeasured === 'hide' && !curState.hasMeasured) {
+    if (props.group && props.untilMeasured === 'hide' && !curStateRef.hasMeasured) {
       splitStyles.style ||= {}
       splitStyles.style.opacity = 0
     }
 
     if (process.env.NODE_ENV === 'development' && time) time`split-styles`
 
-    curState.isListeningToTheme = splitStyles.dynamicThemeAccess
+    curStateRef.isListeningToTheme = splitStyles.dynamicThemeAccess
 
     // only listen for changes if we are using raw theme values or media space, or dynamic media (native)
     // array = space media breakpoints
@@ -799,18 +848,18 @@ export function createComponent<
         elementType,
         nonTamaguiProps,
         stateRef,
-        curState.willHydrate
+        curStateRef.willHydrate
       ) || nonTamaguiProps
 
     // HOOK (1 more):
-    if (!curState.composedRef) {
-      curState.composedRef = composeRefs<TamaguiElement>(
+    if (!curStateRef.composedRef) {
+      curStateRef.composedRef = composeRefs<TamaguiElement>(
         (x) => (stateRef.current.host = x as TamaguiElement),
         forwardedRef
       )
     }
 
-    viewProps.ref = curState.composedRef
+    viewProps.ref = curStateRef.composedRef
 
     if (process.env.NODE_ENV === 'development') {
       if (!isReactNative && !isText && isWeb && !isHOC) {
@@ -834,11 +883,11 @@ export function createComponent<
     const { pseudoGroups, mediaGroups } = splitStyles
 
     // TODO if you add a group prop setStateShallow changes identity...
-    if (!curState.unPress) {
-      curState.unPress = () => setStateShallow({ press: false, pressIn: false })
+    if (!curStateRef.unPress) {
+      curStateRef.unPress = () => setStateShallow({ press: false, pressIn: false })
     }
 
-    const unPress = curState.unPress!
+    const unPress = curStateRef.unPress!
 
     useEffect(() => {
       if (disabled) {
@@ -850,21 +899,17 @@ export function createComponent<
         return
       }
 
-      // parent group pseudo listening
-      let disposeGroupsListener: DisposeFn | undefined
-
-      subscribeToContextGroup({
+      const dispose = subscribeToContextGroup({
         disabled,
         componentContext,
         setStateShallow,
         state,
-        disposeGroupsListener,
         mediaGroups,
         pseudoGroups,
       })
 
       return () => {
-        disposeGroupsListener?.()
+        dispose?.()
         mouseUps.delete(unPress)
       }
     }, [
@@ -1126,7 +1171,7 @@ export function createComponent<
     if (process.env.NODE_ENV === 'development' && time) time`create-element`
 
     // must override context so siblings don't clobber initial state
-    const groupState = curState.group
+    const groupState = curStateRef.group
     const subGroupContext = useMemo(() => {
       if (!groupState || !groupName) return
       groupState.listeners.clear()
@@ -1237,7 +1282,6 @@ export function createComponent<
                 defaultProps,
                 elementType,
                 events,
-                initialState,
                 isAnimated,
                 isMediaArray,
                 isStringElement,
@@ -1611,7 +1655,6 @@ export const subscribeToContextGroup = ({
   mediaGroups,
   componentContext,
   state,
-  disposeGroupsListener,
 }: {
   disabled?: boolean
   setStateShallow: (next?: Partial<TamaguiComponentState> | undefined) => void
@@ -1619,7 +1662,6 @@ export const subscribeToContextGroup = ({
   mediaGroups?: Set<string>
   componentContext: ComponentContextI
   state: TamaguiComponentState
-  disposeGroupsListener?: DisposeFn
 }) => {
   // parent group pseudo listening
   if (pseudoGroups || mediaGroups) {
@@ -1632,31 +1674,29 @@ export const subscribeToContextGroup = ({
       console.debug(`No context group found`)
     }
 
-    disposeGroupsListener = componentContext.groups?.subscribe(
-      (name, { layout, pseudo }) => {
-        if (pseudo && pseudoGroups?.has(name)) {
-          // we emit a partial so merge it + change reference so mergeIfNotShallowEqual runs
-          Object.assign(current.pseudo, pseudo)
+    return componentContext.groups?.subscribe((name, { layout, pseudo }) => {
+      if (pseudo && pseudoGroups?.has(name)) {
+        // we emit a partial so merge it + change reference so mergeIfNotShallowEqual runs
+        Object.assign(current.pseudo, pseudo)
+        persist()
+      } else if (layout && mediaGroups) {
+        const mediaState = getMediaState(mediaGroups, layout)
+        const next = mergeIfNotShallowEqual(current.media, mediaState)
+        if (next !== current.media) {
+          Object.assign(current.media, next)
           persist()
-        } else if (layout && mediaGroups) {
-          const mediaState = getMediaState(mediaGroups, layout)
-          const next = mergeIfNotShallowEqual(current.media, mediaState)
-          if (next !== current.media) {
-            Object.assign(current.media, next)
-            persist()
-          }
-        }
-        function persist() {
-          // force it to be referentially different so it always updates
-          const group = {
-            ...state.group,
-            [name]: current,
-          }
-          setStateShallow({
-            group,
-          })
         }
       }
-    )
+      function persist() {
+        // force it to be referentially different so it always updates
+        const group = {
+          ...state.group,
+          [name]: current,
+        }
+        setStateShallow({
+          group,
+        })
+      }
+    })
   }
 }
