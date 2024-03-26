@@ -2,7 +2,7 @@ import React from 'react';
 import type { ComponentContextI, DebugProp, DisposeFn, SpaceDirection, SpaceValue, SpacerProps, SpacerStyleProps, StackNonStyleProps, StackProps, StaticConfig, TamaguiComponent, TamaguiComponentStateRef, TamaguiElement, TamaguiInternalConfig, TextProps } from './types';
 import type { TamaguiComponentState } from './interfaces/TamaguiComponentState';
 export declare const mouseUps: Set<Function>;
-export declare const useComponentState: (props: StackProps | TextProps, { animationDriver, groups }: ComponentContextI, staticConfig: StaticConfig, config: TamaguiInternalConfig) => {
+export declare const useComponentState: (props: StackProps | TextProps | Record<string, any>, { animationDriver, groups }: ComponentContextI, staticConfig: StaticConfig, config: TamaguiInternalConfig) => {
     curStateRef: TamaguiComponentStateRef;
     disabled: any;
     groupName: string;

@@ -1,26 +1,14 @@
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect } from 'react'
 
+import { getConfig } from '../config'
 import { ComponentContext } from '../contexts/ComponentContext'
-import { defaultComponentStateMounted } from '../defaultComponentState'
+import { subscribeToContextGroup, useComponentState } from '../createComponent'
 import { useSplitStyles } from '../helpers/getSplitStyles'
-import {
-  isDisabled,
-  subscribeToContextGroup,
-  useComponentState,
-} from '../createComponent'
-import type {
-  DisposeFn,
-  SplitStyleProps,
-  StaticConfig,
-  ThemeParsed,
-  UseMediaState,
-} from '../types'
-import { createShallowSetState } from '../helpers/createShallowSetState'
+import type { SplitStyleProps, StaticConfig, ThemeParsed, UseMediaState } from '../types'
 import { Stack } from '../views/Stack'
+import type { ViewProps, ViewStyle } from '../views/View'
 import { useMedia } from './useMedia'
 import { useThemeWithState } from './useTheme'
-import type { ViewProps, ViewStyle } from '../views/View'
-import { getConfig } from '../config'
 
 type UsePropsOptions = Pick<
   SplitStyleProps,
@@ -36,7 +24,8 @@ export type PropsWithoutMediaStyles<A> = {
   [Key in keyof A extends `$${string}` ? never : keyof A]?: A[Key]
 }
 
-type StyleLikeObject = ViewProps & Record<string, any>
+type PropsLikeObject = (ViewProps & Record<string, any>) | Object
+type StyleLikeObject = (ViewStyle & Record<string, any>) | Object
 
 /**
  * Returns props and style as a single object, expanding and merging shorthands and media queries.
@@ -44,7 +33,7 @@ type StyleLikeObject = ViewProps & Record<string, any>
  * Use sparingly, it will loop props and trigger re-render on all media queries you access.
  *
  * */
-export function useProps<A extends StyleLikeObject>(
+export function useProps<A extends PropsLikeObject>(
   props: A,
   opts?: UsePropsOptions
 ): PropsWithoutMediaStyles<A> {
@@ -66,7 +55,7 @@ export function useProps<A extends StyleLikeObject>(
  * Use sparingly, it will loop props and trigger re-render on all media queries you access.
  *
  * */
-export function useStyle<A extends ViewStyle & Record<string, any>>(
+export function useStyle<A extends StyleLikeObject>(
   props: A,
   opts?: UsePropsOptions
 ): PropsWithoutMediaStyles<A> {
@@ -79,7 +68,7 @@ export function useStyle<A extends ViewStyle & Record<string, any>>(
  * Use sparingly, it will loop props and trigger re-render on all media queries you access.
  *
  * */
-export function usePropsAndStyle<A extends StyleLikeObject>(
+export function usePropsAndStyle<A extends PropsLikeObject>(
   props: A,
   opts?: UsePropsOptions
 ): [PropsWithoutMediaStyles<A>, PropsWithoutMediaStyles<A>, ThemeParsed, UseMediaState] {

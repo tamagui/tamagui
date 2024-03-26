@@ -133,7 +133,7 @@ if (typeof document !== 'undefined') {
 }
 
 export const useComponentState = (
-  props: StackProps | TextProps,
+  props: StackProps | TextProps | Record<string, any>,
   { animationDriver, groups }: ComponentContextI,
   staticConfig: StaticConfig,
   config: TamaguiInternalConfig
@@ -239,12 +239,12 @@ export const useComponentState = (
     const exv = exitVariant ?? enterExitVariant
     const env = enterVariant ?? enterExitVariant
     if (state.unmounted && env && staticConfig.variants[env]) {
-      if (process.env.NODE_ENV === 'development' && debugProp === 'verbose') {
+      if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
         console.warn(`Animating presence ENTER "${env}"`)
       }
       props[env] = true
     } else if (isExiting && exv) {
-      if (process.env.NODE_ENV === 'development' && debugProp === 'verbose') {
+      if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
         console.warn(`Animating presence EXIT "${exv}"`)
       }
       props[exv] = exitVariant === enterExitVariant ? false : true
