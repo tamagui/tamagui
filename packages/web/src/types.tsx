@@ -1268,10 +1268,6 @@ interface ExtraStyleProps {
    * Web-only style property. Will be omitted on native.
    */
   outlineWidth?: SpaceValue
-  /**
-   * Web-only style property. Will be omitted on native.
-   */
-  userSelect?: Properties['userSelect']
 
   pointerEvents?: ViewProps['pointerEvents']
 
@@ -1404,6 +1400,7 @@ interface ExtraStyleProps {
    * @platform: web
    */
   float?: Properties['float']
+  inset?: number
   /**
    * @platform: web
    */
@@ -1505,6 +1502,10 @@ export interface TextStylePropsBase
   textOverflow?: Properties['textOverflow']
   whiteSpace?: Properties['whiteSpace']
   wordWrap?: Properties['wordWrap']
+  /** @deprecated use userSelect instead */
+  selectable?: boolean
+  /** @deprecated use verticalAlign instead */
+  textAlignVertical?: TextStyle['textAlignVertical']
 }
 
 //

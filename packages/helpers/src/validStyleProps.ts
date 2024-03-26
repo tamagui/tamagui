@@ -265,6 +265,8 @@ export const stylePropsTextOnly = {
   ...textColors,
   textShadowOffset: true,
   textShadowRadius: true,
+  userSelect: true,
+  selectable: true,
 
   // allow some web only ones
   ...(process.env.TAMAGUI_TARGET === 'web' && {
@@ -272,8 +274,6 @@ export const stylePropsTextOnly = {
     wordWrap: true,
     textOverflow: true,
     textDecorationDistance: true,
-    userSelect: true,
-    selectable: true,
     cursor: true,
     WebkitLineClamp: true,
     WebkitBoxOrient: true,
