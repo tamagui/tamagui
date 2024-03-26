@@ -3,7 +3,7 @@
 import path from 'path'
 
 import type { TamaguiOptions } from '@tamagui/static'
-import { default as Static } from '@tamagui/static'
+import * as Static from '@tamagui/static'
 import outdent from 'outdent'
 import type { Plugin, ResolvedConfig, ViteDevServer } from 'vite'
 import { normalizePath } from 'vite'

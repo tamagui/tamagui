@@ -1,5 +1,5 @@
 import type { TamaguiOptions } from '@tamagui/static'
-import { default as Static } from '@tamagui/static'
+import * as Static from '@tamagui/static'
 import type { Plugin } from 'vite'
 import { transformWithEsbuild } from 'vite'
 

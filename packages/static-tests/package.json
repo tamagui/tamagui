@@ -2,10 +2,9 @@
   "name": "@tamagui/static-tests",
   "version": "1.92.1",
   "module": "dist/esm/index.js",
-  "type": "module",
   "scripts": {
     "build": "true",
-    "pretest": "RUN_PRETEST=1 node -r esbuild-register ./tests/lib/preTest.ts",
+    "pretest": "RUN_PRETEST=1 node -r esbuild-register ./tests/lib/preTest.js",
     "test-output": "node -r esbuild-register ./test-output.tsx",
     "test": "yarn test:native && yarn test:web && yarn test:webpack",
     "test:update": "yarn test:babel:native --update && yarn test:babel:web --update && yarn test:styled:web --update && yarn test:flatten:native --update && yarn test:webpack --update",
