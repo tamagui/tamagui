@@ -1,5 +1,6 @@
 import { isClient } from '@tamagui/constants'
 
+import { CSS_VARIABLE_PREFIX } from '../constants/constants'
 import { createVariable } from '../createVariable'
 import type {
   DedupedTheme,
@@ -230,7 +231,9 @@ function addThemesFromCSS(cssStyleRule: CSSStyleRule, tokens?: TokensParsed) {
     const sepI = rule.indexOf(':')
     if (sepI === -1) continue
     const varIndex = rule.indexOf('--')
-    const key = rule.slice(varIndex === -1 ? 0 : varIndex + 2, sepI)
+    const key = rule
+      .slice(varIndex === -1 ? 0 : varIndex + 2, sepI)
+      .replace(CSS_VARIABLE_PREFIX, '')
     const val = rule.slice(sepI + 2)
     let value: string
     if (val.startsWith('var(')) {
