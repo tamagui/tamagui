@@ -55,13 +55,6 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
       extractor!.cleanupBeforeExit()
     },
 
-    writeBundle(this, options, bundle) {
-      setTimeout(() => {
-        console.warn('some sort of dangling process or osmethign, exit for now...')
-        process.exit(0)
-      }, 100)
-    },
-
     config(_userConfig, env) {
       const include = env.command === 'serve' ? ['@tamagui/core/inject-styles'] : []
       return {
