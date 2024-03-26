@@ -84,9 +84,8 @@ export default declare(function tamaguiBabelPlugin(
           const finalOptions = {
             // @ts-ignore just in case they leave it out
             platform: 'native',
-            shouldPrintDebug,
             ...options,
-          }
+          } satisfies TamaguiOptions
 
           const printLog = createLogger(sourcePath, finalOptions)
 
@@ -127,6 +126,7 @@ export default declare(function tamaguiBabelPlugin(
                 'cursor',
                 'contain',
               ]),
+              shouldPrintDebug,
               ...finalOptions,
               // disable this extraction for now at least, need to figure out merging theme vs non-theme
               // because theme need to stay in render(), whereas non-theme can be extracted
