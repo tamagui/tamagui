@@ -24,7 +24,7 @@
       "react-native": "./dist/cjs/index.native.js"
     },
     "./without-animated": {
-      "import": "./dist/esm/without-animated.js",
+      "import": "./dist/esm/without-animated.mjs",
       "require": "./dist/cjs/without-animated.js",
       "react-native": "./dist/cjs/without-animated.native.js"
     },

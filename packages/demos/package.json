@@ -34,7 +34,7 @@
     "./demo/*": {
       "types": "./types/*.d.ts",
       "node": "./dist/cjs/*.js",
-      "import": "./dist/esm/*.js",
+      "import": "./dist/esm/*.mjs",
       "require": "./dist/cjs/*.js",
       "react-native": "./dist/cjs/*.native.js"
     }

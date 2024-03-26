@@ -31,7 +31,7 @@
     },
     "./v2": {
       "types": "./types/v2.d.ts",
-      "import": "./dist/esm/v2.js",
+      "import": "./dist/esm/v2.mjs",
       "require": "./dist/cjs/v2.js",
       "react-native": "./dist/cjs/v2.native.js"
     }

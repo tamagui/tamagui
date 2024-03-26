@@ -28,25 +28,25 @@
     },
     "./v2": {
       "types": "./types/v2.d.ts",
-      "import": "./dist/esm/v2.js",
+      "import": "./dist/esm/v2.mjs",
       "require": "./dist/cjs/v2.js",
       "react-native": "./dist/cjs/v2.native.js"
     },
     "./v2-themes": {
       "types": "./types/v2-themes.d.ts",
-      "import": "./dist/esm/v2-themes.js",
+      "import": "./dist/esm/v2-themes.mjs",
       "require": "./dist/cjs/v2-themes.js",
       "react-native": "./dist/cjs/v2-themes.native.js"
     },
     "./v3": {
       "types": "./types/v3.d.ts",
-      "import": "./dist/esm/v3.js",
+      "import": "./dist/esm/v3.mjs",
       "require": "./dist/cjs/v3.js",
       "react-native": "./dist/cjs/v3.native.js"
     },
     "./v3-themes": {
       "types": "./types/v3-themes.d.ts",
-      "import": "./dist/esm/v3-themes.js",
+      "import": "./dist/esm/v3-themes.mjs",
       "require": "./dist/cjs/v3-themes.js",
       "react-native": "./dist/cjs/v3-themes.native.js"
     }

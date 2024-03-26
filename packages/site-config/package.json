@@ -29,7 +29,7 @@
     },
     "./animations.css": {
       "types": "./types/animations.css.d.ts",
-      "import": "./dist/esm/animations.js",
+      "import": "./dist/esm/animations.mjs",
       "require": "./dist/cjs/animations.js",
       "react-native": "./dist/cjs/animations.native.js"
     }

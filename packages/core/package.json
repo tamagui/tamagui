@@ -62,7 +62,7 @@
     },
     "./native": {
       "types": "./types/index.d.ts",
-      "import": "./dist/native.js",
+      "import": "./dist/native.mjs",
       "require": "./dist/native.js"
     },
     "./native-test": {
@@ -72,13 +72,13 @@
     },
     "./inject-styles": {
       "types": "./types/inject-styles.d.ts",
-      "import": "./dist/esm/inject-styles.js",
+      "import": "./dist/esm/inject-styles.mjs",
       "require": "./dist/cjs/inject-styles.js",
       "react-native": "./dist/cjs/inject-styles.native.js"
     },
     "./reactNativeTypes": {
       "types": "./types/reactNativeTypes.d.ts",
-      "import": "./dist/esm/reactNativeTypes.js",
+      "import": "./dist/esm/reactNativeTypes.mjs",
       "require": "./dist/cjs/reactNativeTypes.js",
       "react-native": "./dist/cjs/reactNativeTypes.native.js"
     }
