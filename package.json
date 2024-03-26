@@ -73,6 +73,7 @@
     "typecheck:perf": "yarn workspace @tamagui/monorepo-test test",
     "upgrade:starters:free": "cd ../starter-free && yarn && yarn upgrade:tamagui",
     "upgrade:starters:expo-router": "cd starters/expo-router && yarn && yarn upgrade:tamagui",
+    "upgrade:starters:remix": "cd starters/remix && yarn && yarn upgrade:tamagui",
     "upgrade:starters:simple-web": "cd starters/simple-web && yarn && yarn upgrade:tamagui",
     "upgrade:starters": "yarn upgrade:starters:free && yarn upgrade:starters:simple-web && yarn upgrade:starters:expo-router",
     "vercel:build": "yarn build:js && cd apps/site && yarn ci:build",
