@@ -1,4 +1,39 @@
 {
-  "extends": "../../tsconfig",
-  "compilerOptions": { "composite": true}
+  "compilerOptions": {
+    "baseUrl": ".",
+    "rootDir": ".",
+    "importHelpers": true,
+    "allowJs": false,
+    "allowSyntheticDefaultImports": true,
+    "downlevelIteration": true,
+    "esModuleInterop": true,
+    "preserveSymlinks": true,
+    "incremental": true,
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "forceConsistentCasingInFileNames": true,
+    "noEmitOnError": false,
+    "noImplicitAny": false,
+    "noImplicitReturns": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "experimentalDecorators": true,
+    "useUnknownInCatchVariables": false,
+    "preserveConstEnums": true,
+    // DONT DO THIS so jsdoc will remain
+    "removeComments": false,
+    "strict": true,
+    "skipLibCheck": true,
+    "typeRoots": ["node_modules/@types", "environment.d.ts"],
+    "sourceMap": false,
+    "target": "ESNext",
+    "types": ["node", "react"],
+    "jsx": "react-jsx",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "resolveJsonModule": true,
+  },
+  "exclude": ["node_modules"], 
+  "typeAcquisition": {
+    "enable": true
+  }
 }

@@ -8,6 +8,21 @@ import tamaConf from '../tamagui.config'
 
 const ANIMATION_DRIVERS = ['css', 'react-native'] as const
 
+const cssDriverExtra = createAnimationsCss({
+  bouncy: 'ease-in 200ms',
+  superBouncy: 'ease-in 200ms',
+  lazy: 'ease-in 600ms',
+  slow: 'ease-in 500ms',
+  quick: 'ease-in 100ms',
+  medium: 'ease-in 100ms',
+  quicker: 'ease-in 85ms',
+  quickest: 'ease-in 60ms',
+  '100ms': 'ease-in 100ms',
+  tooltip: 'ease-in 400ms',
+  '75ms': 'ease-in 75ms',
+  '200ms': 'ease-in 200ms',
+})
+
 export const useAnimationDriverToggler = () => {
   const contextValue = useContext(AnimationDriverTogglerContext)
   if (!contextValue)
@@ -32,38 +47,21 @@ export const AnimationDriverTogglerContextProvider = ({
 
   const nextDriver = () => {
     setDriverName(
-      ANIMATION_DRIVERS[
-        (ANIMATION_DRIVERS.indexOf(driverName) + 1) % ANIMATION_DRIVERS.length
-      ]
+      (prev) =>
+        ANIMATION_DRIVERS[
+          (ANIMATION_DRIVERS.indexOf(prev) + 1) % ANIMATION_DRIVERS.length
+        ]
     )
   }
 
-  const driver = useMemo(() => {
-    if (driverName === 'css')
-      return createAnimationsCss({
-        bouncy: 'ease-in 200ms',
-        superBouncy: 'ease-in 200ms',
-        lazy: 'ease-in 600ms',
-        slow: 'ease-in 500ms',
-        quick: 'ease-in 100ms',
-        medium: 'ease-in 100ms',
-        quicker: 'ease-in 85ms',
-        quickest: 'ease-in 60ms',
-        '100ms': 'ease-in 100ms',
-        tooltip: 'ease-in 400ms',
-        '75ms': 'ease-in 75ms',
-        '200ms': 'ease-in 200ms',
-      })
+  const driver = driverName === 'css' ? cssDriverExtra : tamaConf.animations
 
-    // if (driverName === 'react-native')
-    return tamaConf.animations
-    // if (driverName === 'reanimated') return createAnimationsReanimated({})
-  }, [driverName])
+  const value = useMemo(() => {
+    return { driverName, nextDriver, setDriverName, driver }
+  }, [driver, driverName])
 
   return (
-    <AnimationDriverTogglerContext.Provider
-      value={{ driverName, nextDriver, setDriverName, driver }}
-    >
+    <AnimationDriverTogglerContext.Provider value={value}>
       {children}
     </AnimationDriverTogglerContext.Provider>
   )

@@ -70,6 +70,7 @@ export declare const Sheet: import("react").ForwardRefExoticComponent<{
     zIndex?: number | undefined;
     portalProps?: import("@tamagui/portal").PortalProps | undefined;
     moveOnKeyboardChange?: boolean | undefined;
+    containerComponent?: import("react").ComponentType<any> | undefined;
 } & {
     __scopeSheet?: import("@tamagui/create-context").Scope<any>;
 } & import("react").RefAttributes<import("react-native").View>> & {
@@ -129,7 +130,7 @@ export declare const Sheet: import("react").ForwardRefExoticComponent<{
                 open?: boolean | undefined;
             }, {}];
         };
-        ScrollView: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/web/types/interfaces/TamaguiComponentPropsBaseBase").TamaguiComponentPropsBaseBase & import("react-native").ScrollViewProps, keyof import("@tamagui/core").StackStyleBase | "fullscreen" | "contentContainerStyle"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
+        ScrollView: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & import("react-native").ScrollViewProps, keyof import("@tamagui/core").StackStyleBase | "fullscreen" | "contentContainerStyle"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
             readonly contentContainerStyle?: Partial<import("@tamagui/core").GetFinalProps<import("react-native").ScrollViewProps, import("@tamagui/core").StackStyleBase, {}>> | undefined;
         }> & {
             fullscreen?: boolean | undefined;
@@ -202,7 +203,7 @@ export declare const Sheet: import("react").ForwardRefExoticComponent<{
             open?: boolean | undefined;
         }, {}];
     };
-    ScrollView: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/web/types/interfaces/TamaguiComponentPropsBaseBase").TamaguiComponentPropsBaseBase & import("react-native").ScrollViewProps, keyof import("@tamagui/core").StackStyleBase | "fullscreen" | "contentContainerStyle"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
+    ScrollView: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & import("react-native").ScrollViewProps, keyof import("@tamagui/core").StackStyleBase | "fullscreen" | "contentContainerStyle"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
         readonly contentContainerStyle?: Partial<import("@tamagui/core").GetFinalProps<import("react-native").ScrollViewProps, import("@tamagui/core").StackStyleBase, {}>> | undefined;
     }> & {
         fullscreen?: boolean | undefined;

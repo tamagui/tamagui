@@ -5,6 +5,7 @@
   },
   "linter": {
     "enabled": true,
+    "ignore": ["**/*/generated-new.ts", "**/*/generated-v2.ts", ".tamagui"],
     "rules": {
       "correctness": {
         "useExhaustiveDependencies": "off",
@@ -64,7 +65,7 @@
     "indentStyle": "space",
     "indentWidth": 2,
     "lineWidth": 90,
-    "ignore": ["**/*/generated-new.ts", "**/*/generated-v2.ts"]
+    "ignore": ["**/*/generated-new.ts", "**/*/generated-v2.ts", ".tamagui"]
   },
   "javascript": {
     "formatter": {

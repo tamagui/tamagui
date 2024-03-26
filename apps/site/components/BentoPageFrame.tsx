@@ -5,6 +5,7 @@ import Head from 'next/head'
 import { LoadCherryBomb, LoadMunro } from './LoadFont'
 import { ContainerLarge } from './Container'
 import { Footer } from './Footer'
+import { NextSeo } from 'next-seo'
 
 export const BentoPageFrame = ({
   children,
@@ -15,9 +16,26 @@ export const BentoPageFrame = ({
       <Head>
         <LoadCherryBomb />
         <LoadMunro />
+        <script src="https://cdn.paritydeals.com/banner.js" />
       </Head>
 
-      <YStack pt={85}>
+      <NextSeo
+        title="🍱 Tamagui Bento"
+        description="Tamagui Bento - Copy-paste components and screens for React and React Native"
+        openGraph={{
+          type: 'website',
+          locale: 'en_US',
+          url: 'https://tamagui.dev/bento',
+          siteName: 'Tamagui',
+          images: [
+            {
+              url: 'https://tamagui.dev/bento/social.png',
+            },
+          ],
+        }}
+      />
+
+      <YStack pt={'$8'}>
         <Theme name="tan">
           <YStack
             className={simpler ? `mask-gradient-down` : ``}
@@ -119,7 +137,10 @@ export const BentoPageFrame = ({
           contain="strict"
         >
           <ContainerLarge pos="relative">
-            <YStack pos="absolute" className="shadow-breeze2">
+            <YStack
+              pos="absolute"
+              // className="shadow-breeze2"
+            >
               <YStack
                 pos="absolute"
                 style={{
@@ -159,7 +180,7 @@ export const BentoFrond = () => (
     t={-450}
     r={180}
     pos="absolute"
-    className="shadow-breeze"
+    // className="shadow-breeze"
     zi={2}
     pe="none"
     o={0.075}

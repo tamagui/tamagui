@@ -2,7 +2,7 @@ export interface TamaguiBuildOptions {
   /**
    * module paths you want to compile with tamagui (for example ['tamagui'])
    * */
-  components: string[]
+  components?: string[]
 
   /**
    * relative path to your tamagui.config.ts
@@ -140,10 +140,16 @@ export interface TamaguiBuildOptions {
    * combine all css files into one file
    */
   emitSingleCSSFile?: boolean
+
+  /**
+   * @deprecated Deprecated, just leave it off
+   */
+  useReactNativeWebLite?: boolean | 'without-animated'
+  disableWatchTamaguiConfig?: boolean
 }
 
 export interface TamaguiOptions extends TamaguiBuildOptions {
-  platform: 'native' | 'web'
+  platform?: 'native' | 'web'
 }
 
 // for cli

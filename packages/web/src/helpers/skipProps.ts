@@ -93,6 +93,8 @@ if (process.env.TAMAGUI_TARGET === 'native') {
       elevationAndroid: 1,
       hapticFeedback: 1,
       hapticStyle: 1,
+      hitSlop: 1,
+      onAccessibilityAction: 1,
       importantForAccessibility: 1,
       lineBreakStrategyIOS: 1,
       maxFontSizeMultiplier: 1,

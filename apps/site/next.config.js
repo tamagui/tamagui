@@ -91,7 +91,7 @@ module.exports = (name, { defaultConfig }) => {
       remotePatterns: [
         {
           protocol: 'https',
-          hostname: 'placekitten.com',
+          hostname: 'picsum.photos',
           port: '',
           pathname: '/**/**',
         },
@@ -126,6 +126,16 @@ module.exports = (name, { defaultConfig }) => {
         {
           source: '/vite',
           destination: 'https://vxrn.dev',
+          permanent: true,
+        },
+        {
+          source: '/docs/components/:slug/:version',
+          destination: '/ui/:slug/:version',
+          permanent: true,
+        },
+        {
+          source: '/docs/components/:slug',
+          destination: '/ui/:slug',
           permanent: true,
         },
       ]

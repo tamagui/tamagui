@@ -208,7 +208,7 @@ export default declare(function tamaguiBabelPlugin(
                     if (prop.value.type === 'StringLiteral') {
                       prop.value = t.memberExpression(
                         t.identifier('theme'),
-                        t.identifier(prop.value.value.slice(1))
+                        t.identifier(prop.value.value.slice(1) + '.get()')
                       )
                     }
                   })
@@ -346,27 +346,11 @@ export default declare(function tamaguiBabelPlugin(
                                         [],
                                         t.blockStatement([
                                           t.returnStatement(
-                                            t.callExpression(
-                                              t.memberExpression(
-                                                t.identifier('Object'),
-                                                t.identifier('assign')
-                                              ),
-                                              [
-                                                t.objectExpression([]),
-                                                ...hocStylesExpr.elements,
-                                                ...[],
-                                              ] as any[]
-                                            )
+                                            t.arrayExpression([...hocStylesExpr.elements])
                                           ),
                                         ])
                                       ),
                                       t.arrayExpression([
-                                        ...[...themeKeysUsed].map((k) =>
-                                          t.memberExpression(
-                                            t.identifier('theme'),
-                                            t.identifier(k)
-                                          )
-                                        ),
                                         t.spreadElement(t.identifier('_expressions')),
                                       ]),
                                     ]
@@ -381,6 +365,11 @@ export default declare(function tamaguiBabelPlugin(
 
                     // @ts-ignore
                     props.node.name = WrapperIdentifier
+                    if (props.jsxPath.node.closingElement) {
+                      // @ts-ignore
+                      props.jsxPath.node.closingElement.name = WrapperIdentifier
+                    }
+
                     if (expressions.length) {
                       props.node.attributes.push(
                         t.jsxAttribute(

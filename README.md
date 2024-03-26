@@ -25,7 +25,7 @@
 
 Tamagui lets you share more code between web and native apps without sacrificing the two things that typically suffer when you do: performance and code quality.
 
-It does this with an optimizing compiler that outputs platform-specific optimizations - it turns styled components, even with complex logic or cross-module imports, into a simple `div` alongiside atomic CSS on the web, or a View with its style objects hoisted on native.
+It does this with an optimizing compiler that outputs platform-specific optimizations - it turns styled components, even with complex logic or cross-module imports, into a simple `div` alongside atomic CSS on the web, or a View with its style objects hoisted on native.
 
 The entirety of Tamagui works at compile time and runtime, and can be set up gradually, with initial usage as simple as importing it and using the base views and styled function.
 

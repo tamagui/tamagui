@@ -173,6 +173,10 @@ type Rect = {
 };
 export type Popover = {
     anchorTo: (rect: Rect) => void;
+    toggle: () => void;
+    open: () => void;
+    close: () => void;
+    setOpen: (open: boolean) => void;
 };
 export declare const Popover: React.ForwardRefExoticComponent<PopperProps & {
     open?: boolean | undefined;
@@ -337,7 +341,7 @@ export declare const Popover: React.ForwardRefExoticComponent<PopperProps & {
                 open?: boolean | undefined;
             }, {}];
         };
-        ScrollView: React.ForwardRefExoticComponent<Omit<import("@tamagui/web/types/interfaces/TamaguiComponentPropsBaseBase").TamaguiComponentPropsBaseBase & import("react-native").ScrollViewProps, keyof import("@tamagui/core").StackStyleBase | "fullscreen" | "contentContainerStyle"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
+        ScrollView: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & import("react-native").ScrollViewProps, keyof import("@tamagui/core").StackStyleBase | "fullscreen" | "contentContainerStyle"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
             readonly contentContainerStyle?: Partial<import("@tamagui/core").GetFinalProps<import("react-native").ScrollViewProps, import("@tamagui/core").StackStyleBase, {}>> | undefined;
         }> & {
             fullscreen?: boolean | undefined;

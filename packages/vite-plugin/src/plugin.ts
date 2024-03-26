@@ -1,29 +1,25 @@
 import type { TamaguiOptions } from '@tamagui/static'
-import { watchTamaguiConfig } from '@tamagui/static'
+import * as Static from '@tamagui/static'
 import type { Plugin } from 'vite'
 import { transformWithEsbuild } from 'vite'
 
-/**
- * For some reason envPlugin doesnt work for vitest, but process: { env: {} } breaks vitest
- */
+export function tamaguiPlugin(tamaguiOptionsIn: TamaguiOptions = {}): Plugin {
+  const options = {
+    ...tamaguiOptionsIn,
+    ...Static.loadTamaguiBuildConfigSync(tamaguiOptionsIn),
+  }
 
-export function tamaguiPlugin({
-  platform = 'web',
-  ...options
-}: Partial<TamaguiOptions> & {
-  /**
-   * @deprecated Deprecated, just leave it off
-   */
-  useReactNativeWebLite?: boolean
-  disableWatchTamaguiConfig?: boolean
-}): Plugin {
+  const { platform = 'web' } = options
+
   const watcher = options.disableWatchTamaguiConfig
     ? null
-    : watchTamaguiConfig({
+    : Static.watchTamaguiConfig({
         platform,
         components: ['tamagui'],
         config: './src/tamagui.config.ts',
         ...options,
+      }).catch((err) => {
+        console.error(` [Tamagui] Error watching config: ${err}`)
       })
 
   const components = [
@@ -83,6 +79,9 @@ export function tamaguiPlugin({
           'process.env.ENABLE_RSC': JSON.stringify(process.env.ENABLE_RSC || ''),
           'process.env.ENABLE_STEPS': JSON.stringify(process.env.ENABLE_STEPS || ''),
           'process.env.IS_STATIC': JSON.stringify(false),
+          ...(env.mode === 'production' && {
+            'process.env.TAMAGUI_OPTIMIZE_THEMES': JSON.stringify(true),
+          }),
         },
         optimizeDeps: {
           jsx: 'transform',
@@ -110,6 +109,10 @@ export function tamaguiPlugin({
               ...(options.useReactNativeWebLite && {
                 'react-native': 'react-native-web-lite',
                 'react-native-web': 'react-native-web-lite',
+              }),
+              ...(options.useReactNativeWebLite === 'without-animated' && {
+                'react-native': 'react-native-web-lite/without-animated',
+                'react-native-web': 'react-native-web-lite/without-animated',
               }),
             }),
           },

@@ -16,14 +16,14 @@ import {
   styled,
 } from 'tamagui'
 
+import { BentoIcon } from './BentoIcon'
 import { ContainerLarge } from './Container'
 import { DiscordIcon } from './DiscordIcon'
 import { InstallInput } from './InstallInput'
 import { seasons } from './SeasonToggleButton'
+import { TakeoutIcon } from './TakeoutIcon'
 import { TwitterIcon } from './TwitterIcon'
 import { useHeroHovered } from './heroState'
-import { TakeoutIcon } from './TakeoutIcon'
-import { BentoIcon } from './BentoIcon'
 
 export function Hero() {
   const { name } = useTint()
@@ -39,6 +39,7 @@ export function Hero() {
 
 const HeroSubTitle = memo(() => {
   const [hovered, setHovered] = useHeroHovered()
+
   return (
     <Subtitle>
       <NextLink prefetch={false} href="/docs/core/configuration">
@@ -92,7 +93,7 @@ const HeroContents = memo(function HeroContents() {
         ov="hidden"
         gap="$3"
         position="relative"
-        pt="$15"
+        pt="$16"
         mb="$4"
         $sm={{
           maxWidth: '100%',
@@ -130,7 +131,7 @@ const HeroContents = memo(function HeroContents() {
             </ThemeTintAlt>
 
             <ThemeTintAlt offset={1}>
-              <Link prefetch={false} href="/takeout">
+              <Link prefetch={false} href="/bento">
                 <Button
                   bc="$color6"
                   size="$3"

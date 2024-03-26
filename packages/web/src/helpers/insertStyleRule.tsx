@@ -213,6 +213,7 @@ function addThemesFromCSS(cssStyleRule: CSSStyleRule, tokens?: TokensParsed) {
     colorVarToVal = {}
     for (const key in tokens.color) {
       const token = tokens.color[key]
+      // @ts-expect-error need to double check why this type is off though
       colorVarToVal[token.name] = token.val
     }
   }
@@ -229,7 +230,10 @@ function addThemesFromCSS(cssStyleRule: CSSStyleRule, tokens?: TokensParsed) {
     const sepI = rule.indexOf(':')
     if (sepI === -1) continue
     const varIndex = rule.indexOf('--')
-    const key = rule.slice(varIndex === -1 ? 0 : varIndex + 2, sepI)
+    let key = rule.slice(varIndex === -1 ? 0 : varIndex + 2, sepI)
+    if (process.env.TAMAGUI_CSS_VARIABLE_PREFIX) {
+      key = key.replace(process.env.TAMAGUI_CSS_VARIABLE_PREFIX, '')
+    }
     const val = rule.slice(sepI + 2)
     let value: string
     if (val.startsWith('var(')) {

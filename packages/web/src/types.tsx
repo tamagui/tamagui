@@ -1,6 +1,7 @@
 import type { StyleObject } from '@tamagui/helpers'
 import type { Properties } from 'csstype'
 import type {
+  CSSProperties,
   ComponentType,
   ForwardRefExoticComponent,
   FunctionComponent,
@@ -172,7 +173,7 @@ type Tokenify<A extends GenericTokens> = Omit<
   zIndex: TokenifyRecord<A['zIndex']>
 }
 
-type TokenifyRecord<A extends CreateTokens[keyof CreateTokens]> = {
+type TokenifyRecord<A extends Object> = {
   [Key in keyof A]: CoerceToVariable<A[Key]>
 }
 
@@ -394,11 +395,14 @@ export type TokensParsed = {
 }
 
 type TokenPrefixed<A extends { [key: string]: any }> = {
-  [key in Ensure$Prefix<keyof A>]: A[keyof A]
+  [Key in Ensure$Prefix<keyof A> | keyof A]: A[keyof A]
 }
 
-type Ensure$Prefix<A extends string | number | symbol> = A extends string
-  ? A extends `$${string}`
+type Ensure$Prefix<A extends string | number | symbol> = A extends
+  | string
+  | number
+  | boolean
+  ? A extends `$${string | number}`
     ? A
     : `$${A}`
   : never
@@ -757,11 +761,13 @@ export type WithMediaProps<A> = {
     | ThemeMediaKeys
     | PlatformMediaKeys]?: Key extends `$platform-web`
     ? {
-        [SubKey in keyof A]?:
-          | A[SubKey]
-          | (SubKey extends keyof WebOnlyValidStyleValues
+        [SubKey in keyof A | keyof CSSProperties]?: SubKey extends keyof CSSProperties
+          ? CSSProperties[SubKey]
+          : SubKey extends keyof A
+            ? A[SubKey]
+            : SubKey extends keyof WebOnlyValidStyleValues
               ? WebOnlyValidStyleValues[SubKey]
-              : never)
+              : never
       }
     : A
 }
@@ -1745,6 +1751,7 @@ export type GetStyleState = {
   fontFamily?: string
   debug?: DebugProp
   flatTransforms?: Record<string, any>
+  skipThemeTokenResolution?: boolean
 }
 
 export type StyleResolver<Response = PropMappedValue> = (
@@ -1997,7 +2004,7 @@ export type GenericTextVariants = VariantDefinitionFromProps<StackProps, any>
 
 export type VariantSpreadExtras<Props> = {
   fonts: TamaguiConfig['fonts']
-  tokens: TamaguiConfig['tokens']
+  tokens: TokensParsed
   theme: Themes extends { [key: string]: infer B } ? B : unknown
   props: Props
   fontFamily?: FontFamilyTokens
@@ -2180,7 +2187,6 @@ export type TamaguiComponentStateRef = {
   hasAnimated?: boolean
   themeShallow?: boolean
   isListeningToTheme?: boolean
-  handleFocusVisible?: boolean
   unPress?: Function
   group?: {
     listeners: Set<GroupStateListener>

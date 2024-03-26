@@ -1,6 +1,6 @@
 import type { StyleObject } from '@tamagui/helpers';
 import type { Properties } from 'csstype';
-import type { ComponentType, ForwardRefExoticComponent, FunctionComponent, HTMLAttributes, ReactNode, RefAttributes, RefObject } from 'react';
+import type { CSSProperties, ComponentType, ForwardRefExoticComponent, FunctionComponent, HTMLAttributes, ReactNode, RefAttributes, RefObject } from 'react';
 import type { Text as RNText, TextProps as ReactTextProps, TextStyle, View, ViewProps, ViewStyle } from 'react-native';
 import type { Variable } from './createVariable';
 import type { StyledContext } from './helpers/createStyledContext';
@@ -118,7 +118,7 @@ type Tokenify<A extends GenericTokens> = Omit<{
     radius: TokenifyRecord<A['radius']>;
     zIndex: TokenifyRecord<A['zIndex']>;
 };
-type TokenifyRecord<A extends CreateTokens[keyof CreateTokens]> = {
+type TokenifyRecord<A extends Object> = {
     [Key in keyof A]: CoerceToVariable<A[Key]>;
 };
 type CoerceToVariable<A> = A extends Variable ? A : Variable<A>;
@@ -236,9 +236,9 @@ export type TokensParsed = {
 type TokenPrefixed<A extends {
     [key: string]: any;
 }> = {
-    [key in Ensure$Prefix<keyof A>]: A[keyof A];
+    [Key in Ensure$Prefix<keyof A> | keyof A]: A[keyof A];
 };
-type Ensure$Prefix<A extends string | number | symbol> = A extends string ? A extends `$${string}` ? A : `$${A}` : never;
+type Ensure$Prefix<A extends string | number | symbol> = A extends string | number | boolean ? A extends `$${string | number}` ? A : `$${A}` : never;
 export type TokensMerged = TokensParsed & Tokens;
 export type Shorthands = TamaguiConfig['shorthands'];
 export type Media = TamaguiConfig['media'];
@@ -496,7 +496,7 @@ type ParentMediaStates = 'hover' | 'press' | 'focus' | 'focusVisible';
 export type GroupMediaKeys = `$group-${GroupNames}` | `$group-${GroupNames}-${ParentMediaStates}` | `$group-${GroupNames}-${MediaQueryKey}` | `$group-${GroupNames}-${MediaQueryKey}-${ParentMediaStates}`;
 export type WithMediaProps<A> = {
     [Key in MediaPropKeys | GroupMediaKeys | ThemeMediaKeys | PlatformMediaKeys]?: Key extends `$platform-web` ? {
-        [SubKey in keyof A]?: A[SubKey] | (SubKey extends keyof WebOnlyValidStyleValues ? WebOnlyValidStyleValues[SubKey] : never);
+        [SubKey in keyof A | keyof CSSProperties]?: SubKey extends keyof CSSProperties ? CSSProperties[SubKey] : SubKey extends keyof A ? A[SubKey] : SubKey extends keyof WebOnlyValidStyleValues ? WebOnlyValidStyleValues[SubKey] : never;
     } : A;
 };
 export type WebOnlyValidStyleValues = {
@@ -998,6 +998,7 @@ export type GetStyleState = {
     fontFamily?: string;
     debug?: DebugProp;
     flatTransforms?: Record<string, any>;
+    skipThemeTokenResolution?: boolean;
 };
 export type StyleResolver<Response = PropMappedValue> = (key: string, value: any, props: SplitStyleProps, state: GetStyleState, parentVariantKey: string) => Response;
 export type PropMapper = (key: string, value: any, state: GetStyleState, subProps?: Record<string, any>) => PropMappedValue;
@@ -1129,7 +1130,7 @@ export type GenericStackVariants = VariantDefinitionFromProps<StackProps, any>;
 export type GenericTextVariants = VariantDefinitionFromProps<StackProps, any>;
 export type VariantSpreadExtras<Props> = {
     fonts: TamaguiConfig['fonts'];
-    tokens: TamaguiConfig['tokens'];
+    tokens: TokensParsed;
     theme: Themes extends {
         [key: string]: infer B;
     } ? B : unknown;
@@ -1244,7 +1245,6 @@ export type TamaguiComponentStateRef = {
     hasAnimated?: boolean;
     themeShallow?: boolean;
     isListeningToTheme?: boolean;
-    handleFocusVisible?: boolean;
     unPress?: Function;
     group?: {
         listeners: Set<GroupStateListener>;

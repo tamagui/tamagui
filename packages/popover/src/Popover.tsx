@@ -411,6 +411,10 @@ const PopoverContentImpl = React.forwardRef<
   const { open, keepChildrenMounted } = context
   const popperContext = usePopperContext(__scopePopover || POPOVER_SCOPE)
 
+  const handleExitComplete = React.useCallback(() => {
+    setIsFullyHidden?.(true)
+  }, [setIsFullyHidden])
+
   if (context.breakpointActive) {
     // unwrap the PopoverScrollView if used, as it will use the SheetScrollView if that exists
     // TODO this should be disabled through context
@@ -453,10 +457,6 @@ const PopoverContentImpl = React.forwardRef<
   //   >
 
   // const freeze = Boolean(isFullyHidden && freezeContentsWhenHidden)
-
-  const handleExitComplete = React.useCallback(() => {
-    setIsFullyHidden?.(true)
-  }, [setIsFullyHidden])
 
   return (
     <Animate
@@ -563,6 +563,10 @@ type Rect = {
 
 export type Popover = {
   anchorTo: (rect: Rect) => void
+  toggle: () => void
+  open: () => void
+  close: () => void
+  setOpen: (open: boolean) => void
 }
 
 export const Popover = withStaticProperties(
@@ -622,6 +626,10 @@ export const Popover = withStaticProperties(
 
       React.useImperativeHandle(forwardedRef, () => ({
         anchorTo: setAnchorTo,
+        toggle: () => setOpen((prev) => !prev),
+        open: () => setOpen(true),
+        close: () => setOpen(false),
+        setOpen,
       }))
 
       // needs to be entirely memoized!

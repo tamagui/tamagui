@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/focus-scope",
-  "version": "1.91.1",
+  "version": "1.92.1",
   "sideEffects": true,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -21,14 +21,14 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/compose-refs": "1.91.1",
-    "@tamagui/use-event": "1.91.1"
+    "@tamagui/compose-refs": "1.92.1",
+    "@tamagui/use-event": "1.92.1"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.91.1",
+    "@tamagui/build": "1.92.1",
     "react": "^18.2.0"
   },
   "publishConfig": {

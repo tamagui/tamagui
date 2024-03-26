@@ -70,6 +70,7 @@ declare const ProgressIndicator: import("@tamagui/core").TamaguiComponent<import
 export declare const ProgressFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     unstyled?: boolean | undefined;
     backgrounded?: boolean | undefined;
+    size?: import("@tamagui/core").SizeTokens | undefined;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
@@ -88,7 +89,6 @@ export declare const ProgressFrame: import("@tamagui/core").TamaguiComponent<imp
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-    size?: import("@tamagui/core").SizeTokens | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
 interface ProgressExtraProps {
     value?: number | null | undefined;
@@ -99,6 +99,7 @@ type ProgressProps = GetProps<typeof ProgressFrame> & ProgressExtraProps;
 declare const Progress: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     unstyled?: boolean | undefined;
     backgrounded?: boolean | undefined;
+    size?: import("@tamagui/core").SizeTokens | undefined;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
@@ -117,10 +118,10 @@ declare const Progress: React.ForwardRefExoticComponent<Omit<import("@tamagui/co
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-    size?: import("@tamagui/core").SizeTokens | undefined;
 }>, keyof ProgressExtraProps> & ProgressExtraProps & React.RefAttributes<import("@tamagui/core").TamaguiElement>> & import("@tamagui/core").StaticComponentObject<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     unstyled?: boolean | undefined;
     backgrounded?: boolean | undefined;
+    size?: import("@tamagui/core").SizeTokens | undefined;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
@@ -139,10 +140,10 @@ declare const Progress: React.ForwardRefExoticComponent<Omit<import("@tamagui/co
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-    size?: import("@tamagui/core").SizeTokens | undefined;
 }>, keyof ProgressExtraProps> & ProgressExtraProps, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & ProgressExtraProps, import("@tamagui/core").StackStyleBase, {
     unstyled?: boolean | undefined;
     backgrounded?: boolean | undefined;
+    size?: import("@tamagui/core").SizeTokens | undefined;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
@@ -161,11 +162,11 @@ declare const Progress: React.ForwardRefExoticComponent<Omit<import("@tamagui/co
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-    size?: import("@tamagui/core").SizeTokens | undefined;
 }, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig" | "extractable" | "styleable"> & {
     __tama: [Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
         unstyled?: boolean | undefined;
         backgrounded?: boolean | undefined;
+        size?: import("@tamagui/core").SizeTokens | undefined;
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
@@ -184,10 +185,10 @@ declare const Progress: React.ForwardRefExoticComponent<Omit<import("@tamagui/co
         radiused?: boolean | undefined;
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
-        size?: import("@tamagui/core").SizeTokens | undefined;
     }>, keyof ProgressExtraProps> & ProgressExtraProps, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & ProgressExtraProps, import("@tamagui/core").StackStyleBase, {
         unstyled?: boolean | undefined;
         backgrounded?: boolean | undefined;
+        size?: import("@tamagui/core").SizeTokens | undefined;
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
@@ -206,7 +207,6 @@ declare const Progress: React.ForwardRefExoticComponent<Omit<import("@tamagui/co
         radiused?: boolean | undefined;
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
-        size?: import("@tamagui/core").SizeTokens | undefined;
     }, import("@tamagui/core").StaticConfigPublic];
 } & {
     Indicator: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {

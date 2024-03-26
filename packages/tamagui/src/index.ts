@@ -1,4 +1,3 @@
-//
 import './setup'
 
 export * from '@tamagui/accordion'

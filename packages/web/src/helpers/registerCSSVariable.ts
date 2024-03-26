@@ -7,9 +7,10 @@ export const registerCSSVariable = (v: Variable | VariableVal) => {
 }
 
 export const variableToCSS = (v: Variable, unitless = false) => {
-  return `--${createCSSVariable(v.name, false)}:${
-    !unitless && typeof v.val === 'number' ? `${v.val}px` : v.val
-  }`
+  return `--${process.env.TAMAGUI_CSS_VARIABLE_PREFIX || ''}${createCSSVariable(
+    v.name,
+    false
+  )}:${!unitless && typeof v.val === 'number' ? `${v.val}px` : v.val}`
 }
 
 export const tokensValueToVariable = new Map<any, any>()

@@ -21,6 +21,7 @@ const defaultWebStyle = {
   display: 'inline',
   boxSizing: 'border-box',
   wordWrap: 'break-word',
+  whiteSpace: 'pre-wrap',
   margin: 0,
 }
 

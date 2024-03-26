@@ -53,6 +53,7 @@ export const withTamagui = (tamaguiOptionsIn?: WithTamaguiProps) => {
         }
 
         const tamaguiPlugin = new TamaguiPlugin({
+          platform: 'web',
           isServer,
           ...tamaguiOptions,
         })

@@ -7,7 +7,6 @@ import { useState } from 'react'
 import { AnimatePresence, Button, View, Text, YStack, styled, Square } from 'tamagui'
 import * as ReactNative from 'react-native'
 
-// debugger
 global.shouldDebugMoti = true
 
 const TabsList = styled(View, {

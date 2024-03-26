@@ -80,7 +80,8 @@
     "watch": "./scripts/watch.sh",
     "watch:packages": "SKIP_TYPES_INITIAL=1 ultra -r --no-pretty --concurrency 400 watch",
     "watch:js": "SKIP_TYPES=1 yarn watch:packages",
-    "watch:ts": "node -r esbuild-register ./scripts/watch-ts.ts"
+    "watch:ts": "node -r esbuild-register ./scripts/watch-ts.ts",
+    "website": "yarn workspace @tamagui/website dev"
   },
   "resolutions": {
     "@types/node": "16.11.9",

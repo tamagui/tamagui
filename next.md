@@ -1,3 +1,47 @@
+Tentpole projects:
+
+- Marketplace
+- Studio launch
+- Storybook/hosted docs
+- Takeout 2 / vxrn/stack
+
+Needed features/maintenance:
+
+- Vite + Remix support
+  - new starter
+- RSD / web alignment
+  - follow what RSD is doing + dont go beyond native support eg aspect-ratio
+  - deprecate accessibility props, "focusable" => tabIndex
+  - simple version is good
+  - lower priority - em/rem, other nice web styles that rsd/tailwind has
+- RSC support
+  - just simple views like View/Text/etc + no need for nesting themes
+  - need to remove context
+- v2 / headless
+  - deprecate some createTamagui settings that should move into settings
+    - disableSSR => settings.disableSSR
+  - ListItem/Button simplify APIs
+  - Image/Input deprecations for web alignment
+
+- 0-runtime mode
+- @tamagui/kit - includes native versions of many things
+- remove RNW - Input, Image
+
+Ongoing work:
+
+- Takeout
+- Bento
+- Core
+
+
+----
+
+
+- <Theme name="dark"> force below root dark causing hydration issues
+
+- Animation + shadowOffset is causing crash in iOS due to object value
+  - "auto" too
+
 - Adapt needs public API to support any adaptation
 
 - v2-3 ListItem simplification esp for performance of Select
