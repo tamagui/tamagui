@@ -3,10 +3,6 @@ import { default as Static } from '@tamagui/static'
 import type { Plugin } from 'vite'
 import { transformWithEsbuild } from 'vite'
 
-/**
- * For some reason envPlugin doesnt work for vitest, but process: { env: {} } breaks vitest
- */
-
 export function tamaguiPlugin(tamaguiOptionsIn: TamaguiOptions = {}): Plugin {
   const options = {
     ...tamaguiOptionsIn,

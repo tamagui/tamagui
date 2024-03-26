@@ -3,7 +3,7 @@
 import path from 'path'
 
 import type { TamaguiOptions } from '@tamagui/static'
-import * as Static from '@tamagui/static'
+import { default as Static } from '@tamagui/static'
 import outdent from 'outdent'
 import type { Plugin, ResolvedConfig, ViteDevServer } from 'vite'
 import { normalizePath } from 'vite'
@@ -71,6 +71,15 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
       extractor = Static.createExtractor({
         logger: resolvedConfig.logger,
       })
+
+      await extractor!.loadTamagui({
+        // @ts-ignore
+        components: ['tamagui'],
+        // @ts-ignore
+        platform: 'web',
+        ...options,
+      })
+
       shouldReturnCSS = true
       // TODO postcss work with postcss.config.js
       // packageName = getPackageInfo(config.root).name;
@@ -82,13 +91,6 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
 
     async resolveId(source) {
       if (source === 'tamagui.css') {
-        await extractor!.loadTamagui({
-          // @ts-ignore
-          components: ['tamagui'],
-          // @ts-ignore
-          platform: 'web',
-          ...options,
-        })
         return GLOBAL_CSS_VIRTUAL_PATH
       }
 
@@ -166,13 +168,6 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
       if (!validId.endsWith('.tsx')) {
         return
       }
-
-      // let ssr: boolean | undefined
-      // if (typeof ssrParam === 'boolean') {
-      //   ssr = ssrParam
-      // } else {
-      //   ssr = ssrParam?.ssr
-      // }
 
       const firstCommentIndex = code.indexOf('// ')
       const { shouldDisable, shouldPrintDebug } = Static.getPragmaOptions({
