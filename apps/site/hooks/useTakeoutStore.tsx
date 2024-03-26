@@ -3,13 +3,15 @@ import type Stripe from 'stripe'
 
 class TakeoutStore {
   showPurchase = false
-  showFaq = false
-  showAgreement = false
-  showPolicies = false
+  showTakeoutFaq = false
+  showTakeoutAgreement = false
+  showBentoFaq = false
+  showBentoAgreement = false
+  showTakeoutPolicies = false
+  showBentoPolicies = false
   promoInputIsOpen = false
   appliedCoupon: Stripe.Coupon | null = null
   appliedPromoCode: string | null = null
-  selectedProductsIds: string[] = []
 }
 
 export const useTakeoutStore = createUseStore(TakeoutStore)

@@ -16,6 +16,7 @@ export const BentoLogo = ({
   >
     <ThemeTintAlt offset={-1}>
       <H1
+        componentName="span"
         ff="$cherryBomb"
         px="$3"
         mx="$-3"
