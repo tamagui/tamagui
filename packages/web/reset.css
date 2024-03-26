@@ -4,6 +4,7 @@ body, #root, #__next {
   flex-direction: column;
   min-height: 100vh;
   min-width: calc(100vw - (100vw - 100%)); /* reserve space for scrollbar */
+  margin: 0;
 }
 
 * {
