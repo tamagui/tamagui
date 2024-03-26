@@ -2,6 +2,7 @@
   "name": "@tamagui/static-tests",
   "version": "1.92.1",
   "module": "dist/esm/index.js",
+  "type": "module",
   "scripts": {
     "build": "true",
     "pretest": "RUN_PRETEST=1 node -r esbuild-register ./tests/lib/preTest.ts",
