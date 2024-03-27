@@ -1,5 +1,4 @@
 import { createUseStore } from '@tamagui/use-store'
-import type Stripe from 'stripe'
 
 class TakeoutStore {
   showPurchase = false
@@ -9,9 +8,7 @@ class TakeoutStore {
   showBentoAgreement = false
   showTakeoutPolicies = false
   showBentoPolicies = false
-  promoInputIsOpen = false
-  appliedCoupon: Stripe.Coupon | null = null
-  appliedPromoCode: string | null = null
+  disableAutomaticDiscount = false
 }
 
 export const useTakeoutStore = createUseStore(TakeoutStore)

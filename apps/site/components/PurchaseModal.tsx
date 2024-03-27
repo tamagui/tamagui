@@ -38,6 +38,7 @@ import type { TakeoutPageProps } from '../pages/takeout'
 import { BentoPoliciesModal, TakeoutPoliciesModal } from './PoliciesModal'
 import { BentoAgreementModal, TakeoutAgreementModal } from './AgreementModal'
 import { TakeoutFaqModal } from '@components/FaqModal'
+import { checkDiscountEligibility } from '@lib/discount-eligibility'
 
 export const PurchaseModal = ({
   starter,
@@ -45,7 +46,6 @@ export const PurchaseModal = ({
   fontsPack,
   bento,
   defaultValue,
-  defaultCoupon,
 }: Omit<TakeoutPageProps, 'takeoutPlusBentoCoupon'> & {
   defaultValue: 'takeout' | 'bento'
 }) => {
@@ -66,7 +66,8 @@ export const PurchaseModal = ({
   const [bentoPriceId, setBentoPriceId] = useState<null | string>(
     defaultValue === 'bento' ? sortedBentoPrices[0]?.id || null : null
   )
-  const { data } = useUser()
+  const { data: user } = useUser()
+
   // const subscriptions = data?.subscriptions
   // const subscription = subscriptions?.find((sub) => {
   //   if (sub.status !== 'active') return false
@@ -103,19 +104,15 @@ export const PurchaseModal = ({
     return final
   }, [starterPriceId, bentoPriceId, starter, iconsPack, fontsPack])
 
-  const finalCoupon = store.appliedCoupon || defaultCoupon
-  // with discount applied
-  const finalPrice = useMemo(() => {
-    if (finalCoupon) {
-      if (finalCoupon.amount_off) return sum - finalCoupon.amount_off
-      if (finalCoupon.percent_off) return (sum * (100 - finalCoupon.percent_off)) / 100
-    }
-
-    return sum
-  }, [sum, finalCoupon])
-  // const hasDiscountApplied = finalPrice !== sum
-
   const noProductSelected = !bentoPriceId && !starterPriceId
+
+  const isUserEligibleForBentoTakeoutDiscount = user
+    ? checkDiscountEligibility({
+        accessInfo: user?.accessInfo,
+        purchaseContainsBento: !!bentoPriceId,
+        purchaseContainsTakeout: !!starterPriceId,
+      })
+    : false
 
   // const enable3d = useClientValue(
   //   () => !isSafariMobile && !window.location.search?.includes('disable-3d')
@@ -408,7 +405,7 @@ export const PurchaseModal = ({
               >
                 <YStack width="100%" $gtXs={{ width: '40%' }}>
                   <XStack>
-                    <H3 size="$11">{formatPrice(finalPrice! / 100, 'usd')}</H3>
+                    <H3 size="$11">{formatPrice(sum! / 100, 'usd')}</H3>
                   </XStack>
                   <Paragraph size="$2">
                     {(() => {
@@ -438,9 +435,49 @@ export const PurchaseModal = ({
                       )
                     })()}
                   </Paragraph>
-                  <Paragraph size="$1" theme="alt2">
-                    You can apply promo codes on the checkout page
-                  </Paragraph>
+                  {isUserEligibleForBentoTakeoutDiscount ? (
+                    <YStack jc="flex-start" ai="flex-start">
+                      {store.disableAutomaticDiscount ? (
+                        <>
+                          <Paragraph size="$1" theme="alt2">
+                            You can apply your promo code on the next page.
+                          </Paragraph>
+                          <SizableText
+                            cursor="pointer"
+                            style={{ textDecorationLine: 'underline' }}
+                            hoverStyle={{
+                              color: '$color11',
+                            }}
+                            size="$1"
+                            onPress={() => (store.disableAutomaticDiscount = false)}
+                          >
+                            Use my automatic discount
+                          </SizableText>
+                        </>
+                      ) : (
+                        <>
+                          <Paragraph size="$1" theme="green_alt2">
+                            You will get a discount for purchasing both Takeout and Bento.
+                          </Paragraph>
+                          <SizableText
+                            cursor="pointer"
+                            style={{ textDecorationLine: 'underline' }}
+                            hoverStyle={{
+                              color: '$color11',
+                            }}
+                            size="$1"
+                            onPress={() => (store.disableAutomaticDiscount = true)}
+                          >
+                            Disable and use my own promo
+                          </SizableText>
+                        </>
+                      )}
+                    </YStack>
+                  ) : (
+                    <Paragraph size="$1" theme="alt2">
+                      You can apply your promo code on the next page.
+                    </Paragraph>
+                  )}
                 </YStack>
                 {/* <Unspaced>
                 <YStack mt="$2" gap="$1">
@@ -456,11 +493,7 @@ export const PurchaseModal = ({
                 <YStack gap="$2" width="100%" $gtXs={{ width: '40%' }}>
                   <NextLink
                     href={`api/checkout?${(() => {
-                      const params = new URLSearchParams({
-                        // product_id: products.id,
-                        // price_id: selectedPriceId,
-                        // quantity: seats.toString(),
-                      })
+                      const params = new URLSearchParams()
                       if (starterPriceId) {
                         params.append('product_id', starter.id)
                         params.append(`price-${starter?.id}`, starterPriceId)
@@ -469,13 +502,11 @@ export const PurchaseModal = ({
                         params.append('product_id', bento.id)
                         params.append(`price-${bento?.id}`, bentoPriceId)
                       }
-
-                      if (store.appliedPromoCode) {
-                        // the coupon user applied
-                        params.append(`promotion_code`, store.appliedPromoCode)
-                      } else if (defaultCoupon) {
-                        // the coupon that's applied by default (special event, etc.)
-                        params.append(`coupon_id`, defaultCoupon.id)
+                      if (
+                        isUserEligibleForBentoTakeoutDiscount &&
+                        store.disableAutomaticDiscount
+                      ) {
+                        params.append('disable_automatic_discount', '1')
                       }
 
                       return params.toString()

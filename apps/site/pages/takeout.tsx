@@ -62,12 +62,8 @@ export default function TakeoutPage({
   fontsPack,
   iconsPack,
   bento,
-  defaultCoupon,
-  takeoutPlusBentoCoupon,
 }: TakeoutPageProps) {
   const store = useTakeoutStore()
-  const user = useUser()
-  const coupon = takeoutPlusBentoCoupon || defaultCoupon
 
   return (
     <YStack maw="100%">
@@ -169,7 +165,6 @@ export default function TakeoutPage({
 
       <PurchaseModal
         defaultValue="takeout"
-        defaultCoupon={coupon}
         starter={starter}
         iconsPack={iconsPack}
         fontsPack={fontsPack}
@@ -201,29 +196,11 @@ export default function TakeoutPage({
               </PurchaseButton>
             </YStack>
 
-            {coupon && (
-              <YStack
-                position="absolute"
-                $gtXs={{
-                  right: '5%',
-                  top: 150,
-                }}
-                $xs={{
-                  top: '65vh',
-                  left: 0,
-                  right: 0,
-                  ai: 'center',
-                  jc: 'center',
-                }}
-                zIndex="$5"
-              >
-                {!!defaultCoupon && <DiscountText defaultCoupon={defaultCoupon} />}
-              </YStack>
-            )}
+            {/* <DiscountText>Text</DiscountText> */}
 
             {/* <PromoVideo /> */}
 
-            <TakeoutHero defaultCoupon={defaultCoupon} />
+            <TakeoutHero />
           </YStack>
 
           <XStack
@@ -987,7 +964,7 @@ const TakeoutCard = ({ children, title, icon, ...props }: TakeoutCardFrameProps)
   )
 }
 
-const TakeoutHero = ({ defaultCoupon }: Pick<TakeoutPageProps, 'defaultCoupon'>) => {
+const TakeoutHero = () => {
   const enable3d = useClientValue(
     () => !isSafariMobile && !window.location.search?.includes('disable-3d')
   )
@@ -1730,15 +1707,10 @@ const HeartsRow = () => (
 )
 
 const DiscountText = ({
-  defaultCoupon,
+  children,
 }: {
-  defaultCoupon: NonNullable<TakeoutPageProps['defaultCoupon']>
+  children: React.ReactNode
 }) => {
-  const text = defaultCoupon.amount_off
-    ? `${defaultCoupon.name} (${formatPrice(defaultCoupon.amount_off / 100, 'usd')})`
-    : defaultCoupon.percent_off
-      ? `${defaultCoupon.name} (${defaultCoupon.percent_off}%)`
-      : ''
   return (
     <ThemeTintAlt offset={6}>
       <YStack m="auto" scale={1} $xs={{ scale: 1.2 }}>
@@ -1780,7 +1752,7 @@ const DiscountText = ({
             textAlign="center"
             size="$5"
           >
-            {text.trim()}
+            {children}
           </Paragraph>
         </YStack>
       </YStack>

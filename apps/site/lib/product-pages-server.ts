@@ -1,5 +1,3 @@
-import type Stripe from 'stripe'
-import { stripe } from './stripe'
 import type { Database } from './supabase-types'
 import { getArray } from './supabase-utils'
 import { supabaseAdmin } from './supabaseAdmin'
@@ -17,19 +15,7 @@ export const getProductsForServerSideRendering = async (): Promise<{
   bento: Database['public']['Tables']['products']['Row'] & {
     prices: Database['public']['Tables']['prices']['Row'][]
   }
-  defaultCoupon?: Stripe.Coupon | null
-  takeoutPlusBentoCoupon?: Stripe.Coupon | null
 }> => {
-  const defaultSitePromotionCodePromise = stripe.promotionCodes.list({
-    code: 'SITE', // ones with code SITE are considered public and will be shown here
-    active: true,
-    expand: ['data.coupon'],
-  })
-  const takeoutPlusBentoPromotionCodePromise = stripe.promotionCodes.list({
-    code: 'TAKEOUTPLUSBENTO', // ones with code TAKEOUTPLUSBENTO are considered public and will be shown here
-    active: true,
-    expand: ['data.coupon'],
-  })
   const productPromises = [
     supabaseAdmin
       .from('products')
@@ -52,31 +38,8 @@ export const getProductsForServerSideRendering = async (): Promise<{
       .eq('metadata->>slug', 'bento')
       .single(),
   ]
-  const promises = [
-    defaultSitePromotionCodePromise,
-    takeoutPlusBentoPromotionCodePromise,
-    ...productPromises,
-  ]
-  const queries = await Promise.all(promises)
-
-  // slice(2) because the first two are coupon info
-  const products = queries.slice(2) as Awaited<(typeof productPromises)[number]>[]
-  const defaultCouponList = queries[0] as Awaited<typeof defaultSitePromotionCodePromise>
-  const takeoutPlusBentoCouponList = queries[1] as Awaited<
-    typeof takeoutPlusBentoPromotionCodePromise
-  >
-
-  let defaultCoupon: Stripe.Coupon | null = null
-
-  if (defaultCouponList.data.length > 0) {
-    defaultCoupon = defaultCouponList.data[0].coupon
-  }
-
-  let takeoutPlusBentoCoupon: Stripe.Coupon | null = null
-
-  if (takeoutPlusBentoCouponList.data.length > 0) {
-    takeoutPlusBentoCoupon = takeoutPlusBentoCouponList.data[0].coupon
-  }
+  const promises = [...productPromises]
+  const products = await Promise.all(promises)
 
   if (!products.length) {
     throw new Error(`No products found`)
@@ -119,7 +82,5 @@ export const getProductsForServerSideRendering = async (): Promise<{
         (p) => p.active && !(p.metadata as Record<string, any>).hide_from_lists
       ),
     },
-    defaultCoupon,
-    takeoutPlusBentoCoupon,
   }
 }

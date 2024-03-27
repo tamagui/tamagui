@@ -63,9 +63,6 @@ import { useTakeoutStore } from 'hooks/useTakeoutStore'
 import { useUser } from 'hooks/useUser'
 import type { GetStaticProps } from 'next'
 import { useMemo, useRef, useState } from 'react'
-import { TakeoutFaqModal } from '../components/FaqModal'
-import { BentoAgreementModal, TakeoutAgreementModal } from '../components/AgreementModal'
-import { BentoPoliciesModal, TakeoutPoliciesModal } from '../components/PoliciesModal'
 import { PurchaseModal } from '../components/PurchaseModal'
 
 class BentoStore {
@@ -75,11 +72,6 @@ class BentoStore {
 
 export default function BentoPage(props: ProComponentsProps) {
   const store = useStore(BentoStore)
-
-  const user = useUser()
-  const coupon = user.data?.accessInfo.hasTakeoutAccess
-    ? props.takeoutPlusBentoCoupon
-    : props.defaultCoupon
 
   return (
     <Theme name="tan">
@@ -143,7 +135,6 @@ export default function BentoPage(props: ProComponentsProps) {
         </YStack>
         <Body />
         <PurchaseModal
-          defaultCoupon={coupon}
           bento={props.bento}
           defaultValue="bento"
           fontsPack={props.fontsPack}
