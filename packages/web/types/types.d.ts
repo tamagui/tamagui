@@ -818,7 +818,6 @@ interface ExtraStyleProps {
      * @platform: web
      */
     float?: Properties['float'];
-    inset?: number;
     /**
      * @platform: web
      */
@@ -891,6 +890,45 @@ interface ExtraStyleProps {
      * @platform: web
      */
     maskType?: Properties['maskType'];
+    borderBlockColor?: ColorTokens;
+    borderBlockStartColor?: ColorTokens;
+    borderBlockEndColor?: ColorTokens;
+    borderInlineColor?: ColorTokens;
+    borderInlineStartColor?: ColorTokens;
+    borderInlineEndColor?: ColorTokens;
+    borderBlockWidth?: SizeTokens | number;
+    borderBlockStartWidth?: SizeTokens | number;
+    borderBlockEndWidth?: SizeTokens | number;
+    borderInlineWidth?: SizeTokens | number;
+    borderInlineStartWidth?: SizeTokens | number;
+    borderInlineEndWidth?: SizeTokens | number;
+    marginBlock?: SpaceTokens | number;
+    marginBlockStart?: SpaceTokens | number;
+    marginBlockEnd?: SpaceTokens | number;
+    marginInline?: SpaceTokens | number;
+    marginInlineStart?: SpaceTokens | number;
+    marginInlineEnd?: SpaceTokens | number;
+    paddingBlock?: SpaceTokens | number;
+    paddingBlockStart?: SpaceTokens | number;
+    paddingBlockEnd?: SpaceTokens | number;
+    paddingInline?: SpaceTokens | number;
+    paddingInlineStart?: SpaceTokens | number;
+    paddingInlineEnd?: SpaceTokens | number;
+    objectFit?: React.CSSProperties['objectFit'];
+    verticalAlign?: React.CSSProperties['verticalAlign'];
+    inset?: SpaceTokens | number;
+    insetBlock?: SpaceTokens | number;
+    insetBlockStart?: SpaceTokens | number;
+    insetBlockEnd?: SpaceTokens | number;
+    insetInline?: SpaceTokens | number;
+    insetInlineStart?: SpaceTokens | number;
+    insetInlineEnd?: SpaceTokens | number;
+    blockSize?: SizeTokens | number;
+    minBlockSize?: SizeTokens | number;
+    maxBlockSize?: SizeTokens | number;
+    inlineSize?: SizeTokens | number;
+    minInlineSize?: SizeTokens | number;
+    maxInlineSize?: SizeTokens | number;
 }
 export interface ExtendBaseStackProps {
 }
