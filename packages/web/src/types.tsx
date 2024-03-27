@@ -1472,18 +1472,21 @@ interface ExtraStyleProps {
    * @platform: web
    */
   maskType?: Properties['maskType']
-  borderBlockColor?: ColorTokens
-  borderBlockStartColor?: ColorTokens
-  borderBlockEndColor?: ColorTokens
   borderInlineColor?: ColorTokens
   borderInlineStartColor?: ColorTokens
   borderInlineEndColor?: ColorTokens
-  borderBlockWidth?: SizeTokens | number
-  borderBlockStartWidth?: SizeTokens | number
-  borderBlockEndWidth?: SizeTokens | number
-  borderInlineWidth?: SizeTokens | number
-  borderInlineStartWidth?: SizeTokens | number
-  borderInlineEndWidth?: SizeTokens | number
+  borderBlockWidth?: SpaceTokens | number
+  borderBlockStartWidth?: SpaceTokens | number
+  borderBlockEndWidth?: SpaceTokens | number
+  borderInlineWidth?: SpaceTokens | number
+  borderInlineStartWidth?: SpaceTokens | number
+  borderInlineEndWidth?: SpaceTokens | number
+  borderBlockStyle?: ViewStyle['borderStyle']
+  borderBlockStartStyle?: ViewStyle['borderStyle']
+  borderBlockEndStyle?: ViewStyle['borderStyle']
+  borderInlineStyle?: ViewStyle['borderStyle']
+  borderInlineStartStyle?: ViewStyle['borderStyle']
+  borderInlineEndStyle?: ViewStyle['borderStyle']
   marginBlock?: SpaceTokens | number
   marginBlockStart?: SpaceTokens | number
   marginBlockEnd?: SpaceTokens | number
@@ -1496,8 +1499,8 @@ interface ExtraStyleProps {
   paddingInline?: SpaceTokens | number
   paddingInlineStart?: SpaceTokens | number
   paddingInlineEnd?: SpaceTokens | number
-  objectFit?: React.CSSProperties['objectFit']
-  verticalAlign?: React.CSSProperties['verticalAlign']
+  objectFit?: Properties['objectFit']
+  verticalAlign?: Properties['verticalAlign']
   inset?: SpaceTokens | number
   insetBlock?: SpaceTokens | number
   insetBlockStart?: SpaceTokens | number
