@@ -6,6 +6,10 @@
 import { isAndroid, isWeb } from '@tamagui/constants'
 
 import type { PropMappedValue } from '../types'
+import {
+  webToNativeDynamicExpansion,
+  webToNativeExpansion,
+} from '../constants/webToNativeProps'
 
 export function expandStyle(key: string, value: any): PropMappedValue {
   if (process.env.TAMAGUI_TARGET === 'web') {
@@ -40,6 +44,16 @@ export function expandStyle(key: string, value: any): PropMappedValue {
     return EXPANSIONS[key].map((key) => {
       return [key, value]
     })
+  }
+
+  if (key in webToNativeExpansion) {
+    return webToNativeExpansion[key].map((key) => {
+      return [key, value]
+    })
+  }
+
+  if (key in webToNativeDynamicExpansion) {
+    return webToNativeDynamicExpansion[key](value)
   }
 }
 
