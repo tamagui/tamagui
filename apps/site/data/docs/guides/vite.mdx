@@ -44,14 +44,14 @@ plugins: [
 
 ```tsx
 import { tamaguiExtractPlugin, tamaguiPlugin } from '@tamagui/vite-plugin'
-import react from '@vitejs/plugin-react-swc'
+import react from '@vitejs/plugin-react-swc' // or @vitejs/plugin-react
 import tamaguiConfig from './src/tamagui.config.ts'
 
 export default {
     plugins: [
         react(),
         tamaguiPlugin(tamaguiConfig),
-        // optional:
+        // optional, adds the optimizing compiler:
         process.env.NODE_ENV === 'production' ? tamaguiExtractPlugin(tamaguiConfig) : null,
     ].filter(Boolean),
 }
