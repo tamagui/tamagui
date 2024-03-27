@@ -1,4 +1,6 @@
+import { TakeoutFaqModal } from '@components/FaqModal'
 import { PoweredByStripeIcon } from '@components/PoweredByStripeIcon'
+import { checkDiscountEligibility } from '@lib/discount-eligibility'
 import {
   BentoTable,
   MunroP,
@@ -31,14 +33,21 @@ import {
   XStack,
   YStack,
 } from 'tamagui'
-import { BentoLogo } from './BentoLogo'
-import { NextLink } from './NextLink'
 import { useTakeoutStore } from '../hooks/useTakeoutStore'
 import type { TakeoutPageProps } from '../pages/takeout'
-import { BentoPoliciesModal, TakeoutPoliciesModal } from './PoliciesModal'
 import { BentoAgreementModal, TakeoutAgreementModal } from './AgreementModal'
-import { TakeoutFaqModal } from '@components/FaqModal'
-import { checkDiscountEligibility } from '@lib/discount-eligibility'
+import { BentoLogo } from './BentoLogo'
+import { NextLink } from './NextLink'
+import { BentoPoliciesModal, TakeoutPoliciesModal } from './PoliciesModal'
+
+function getPriceDescription(price: TakeoutPageProps['starter']['prices'][number]) {
+  return (
+    formatPrice(price.unit_amount! / 100, 'usd') +
+    ((price.metadata as Object)['is_lifetime']
+      ? ' lifetime access'
+      : `/${price.interval || 'year (cancel anytime)'}`)
+  )
+}
 
 export const PurchaseModal = ({
   starter,
@@ -296,8 +305,7 @@ export const PurchaseModal = ({
                                   </H4>
 
                                   <Paragraph theme="alt2">
-                                    {formatPrice(price.unit_amount! / 100, 'usd')} base +
-                                    1 year of updates
+                                    {getPriceDescription(price)}
                                   </Paragraph>
                                   {/* <Paragraph theme="alt1" size="$2">
                             {formatPrice(price.unit_amount! / (100 * 2), 'usd')}{' '}
@@ -372,8 +380,7 @@ export const PurchaseModal = ({
                                   <H4 mt="$-1">{price.description}</H4>
 
                                   <Paragraph theme="alt2">
-                                    {formatPrice(price.unit_amount! / 100, 'usd')} base +
-                                    1 year of updates
+                                    {getPriceDescription(price)}
                                   </Paragraph>
                                   {/* <Paragraph theme="alt1" size="$2">
                                 {formatPrice(price.unit_amount! / (100 * 2), 'usd')}{' '}
