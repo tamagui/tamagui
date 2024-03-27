@@ -62,7 +62,7 @@ export default apiRoute(async (req, res) => {
       })
     ) {
       // apply the "takeout + bento" coupon
-      couponId = process.env.NODE_ENV === 'production' ? 'z6tDflsV' : 'SjRwUFIw'
+      couponId = process.env.NODE_ENV === 'production' ? '1bJD4ngB' : 'SjRwUFIw'
     }
   }
 
