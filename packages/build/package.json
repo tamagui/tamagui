@@ -1,8 +1,9 @@
 {
   "name": "@tamagui/build",
-  "version": "1.92.1",
+  "version": "1.93.2",
   "bin": {
-    "tamagui-build": "tamagui-build.js"
+    "tamagui-build": "tamagui-build.js",
+    "teesx": "./teesx.sh"
   },
   "scripts": {
     "build": "true",
@@ -16,8 +17,9 @@
     "@types/fs-extra": "^9.0.13",
     "babel-plugin-fully-specified": "*",
     "chokidar": "^3.5.2",
-    "esbuild": "^0.19.11",
+    "esbuild": "^0.20.2",
     "esbuild-plugin-es5": "^2.1.0",
+    "esbuild-register": "^3.5.0",
     "execa": "^5.0.0",
     "fast-glob": "^3.2.11",
     "fs-extra": "^11.2.0",

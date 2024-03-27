@@ -12,9 +12,13 @@ type ThemedOptions = {
   fallbackColor?: string
 }
 
+type Opts = ThemedOptions & {
+  noClassNames?: boolean
+}
+
 export function themed(
   Component: React.FC<IconProps>,
-  opts: ThemedOptions = {
+  opts: Opts = {
     defaultThemeColor: process.env.DEFAULT_ICON_THEME_COLOR || '$color',
     defaultStrokeWidth: 2,
     fallbackColor: '#000',
@@ -22,6 +26,7 @@ export function themed(
 ) {
   const wrapped = (propsIn: IconProps) => {
     const [props, style, theme] = usePropsAndStyle(propsIn, {
+      ...opts,
       forComponent: Text,
       resolveValues: 'web', // iOS doesnt support dynamic values for SVG so only optimize on web
     })

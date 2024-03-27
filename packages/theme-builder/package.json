@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/theme-builder",
-  "version": "1.92.1",
+  "version": "1.93.2",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
@@ -22,17 +22,17 @@
     "./package.json": "./package.json",
     ".": {
       "types": "./types/index.d.ts",
-      "import": "./dist/esm/index.js",
+      "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.js",
       "react-native": "./dist/cjs/index.native.js"
     }
   },
   "dependencies": {
-    "@tamagui/create-theme": "1.92.1",
+    "@tamagui/create-theme": "1.93.2",
     "color2k": "^2.0.2"
   },
   "devDependencies": {
-    "@tamagui/build": "1.92.1"
+    "@tamagui/build": "1.93.2"
   },
   "publishConfig": {
     "access": "public"

@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/vertql-example",
-  "version": "1.92.1",
+  "version": "1.93.2",
   "private": true,
   "main": "index.jsx",
   "scripts": {
@@ -10,11 +10,11 @@
   "dependencies": {
     "@gqty/react": "latest",
     "@react-navigation/native": "^6.1.10",
-    "@tamagui/colors": "1.92.1",
-    "@tamagui/config": "1.92.1",
-    "@tamagui/core": "1.92.1",
-    "@tamagui/shorthands": "1.92.1",
-    "@tamagui/themes": "1.92.1",
+    "@tamagui/colors": "1.93.2",
+    "@tamagui/config": "1.93.2",
+    "@tamagui/core": "1.93.2",
+    "@tamagui/shorthands": "1.93.2",
+    "@tamagui/themes": "1.93.2",
     "express": "^4.18.2",
     "express-graphql": "^0.12.0",
     "gqty": "latest",
@@ -22,11 +22,11 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-native": "^0.73.4",
-    "tamagui": "1.92.1",
-    "vertql": "1.92.1"
+    "tamagui": "1.93.2",
+    "vertql": "1.93.2"
   },
   "devDependencies": {
     "@gqty/cli": "latest",
-    "@tamagui/cli": "1.92.1"
+    "@tamagui/cli": "1.93.2"
   }
 }

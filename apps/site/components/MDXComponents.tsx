@@ -6,6 +6,7 @@ import React, { forwardRef, useState } from 'react'
 import { ScrollView } from 'react-native'
 import type { ImageProps, XStackProps, TabsProps, TabsTabProps } from 'tamagui'
 import {
+  Adapt,
   Button,
   Card,
   H1,
@@ -185,6 +186,8 @@ export const components = {
       {props.children}
     </YStack>
   ),
+
+  Adapt,
 
   Table,
   TableCell,

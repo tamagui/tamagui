@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/group",
-  "version": "1.92.1",
+  "version": "1.93.2",
   "sideEffects": [
     "*.css"
   ],
@@ -22,19 +22,28 @@
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./types/index.d.ts",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.js",
+      "react-native": "./dist/cjs/index.native.js"
+    }
+  },
   "dependencies": {
-    "@tamagui/core": "1.92.1",
-    "@tamagui/create-context": "1.92.1",
-    "@tamagui/helpers": "1.92.1",
-    "@tamagui/stacks": "1.92.1",
-    "@tamagui/use-controllable-state": "1.92.1",
+    "@tamagui/core": "1.93.2",
+    "@tamagui/create-context": "1.93.2",
+    "@tamagui/helpers": "1.93.2",
+    "@tamagui/stacks": "1.93.2",
+    "@tamagui/use-controllable-state": "1.93.2",
     "reforest": "^0.13.0"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.92.1",
+    "@tamagui/build": "1.93.2",
     "react": "^18.2.0"
   },
   "publishConfig": {

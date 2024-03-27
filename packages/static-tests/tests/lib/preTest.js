@@ -2,8 +2,8 @@ import path from 'path'
 
 import webpack from 'webpack'
 
-import { externalizeModules } from './externalizeModules'
-import { outDir, specDir } from './test-constants'
+import { externalizeModules } from './externalizeModules.js'
+import { outDir, specDir } from './test-constants.js'
 
 const outFileWebpack = 'out-webpack.js'
 
@@ -83,10 +83,10 @@ async function extractStaticWebpackApp() {
   })
 
   await new Promise((res) => {
-    console.log('building webpack')
+    console.info('building webpack')
     compiler.run((err, result) => {
-      console.log({ err })
-      console.log(result?.toString())
+      console.info({ err })
+      console.info(result?.toString())
       res()
     })
   })
@@ -94,12 +94,12 @@ async function extractStaticWebpackApp() {
 
 export async function preTest() {
   // https://gist.github.com/mizchi/5f67109d0719ef6dd57695e1f528ce8d
-  // console.log(
+  // console.info(
   //   'disabling intergration webpack for now... https://gist.github.com/mizchi/5f67109d0719ef6dd57695e1f528ce8d'
   // )
   // return
 
-  console.log('process.env.DISABLE_PRE_TEST', process.env.DISABLE_PRE_TEST)
+  console.info('process.env.DISABLE_PRE_TEST', process.env.DISABLE_PRE_TEST)
 
   if (process.env.DISABLE_PRE_TEST) {
     return

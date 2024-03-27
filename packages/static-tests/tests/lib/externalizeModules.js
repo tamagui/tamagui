@@ -1,4 +1,4 @@
-export const externalizeModules: any = ({ context, request }, callback) => {
+export const externalizeModules = ({ context, request }, callback) => {
   if (request === './cjs/react.development.js') {
     return callback(undefined, 'react')
   }
