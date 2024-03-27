@@ -16,6 +16,7 @@ import Link from 'next/link'
 import React, { useMemo, useState } from 'react'
 import type { ThemeName } from 'tamagui'
 import {
+  AnimatePresence,
   Button,
   Dialog,
   H3,
@@ -430,61 +431,82 @@ export const PurchaseModal = ({
                       if (bentoPrice) {
                         items.push(`Bento ${bentoPrice?.description}`)
                       }
-                      if (items.length === 0) return null
+
                       return (
                         <Paragraph theme="alt2">
-                          {items
-                            .map<React.ReactNode>((item) => (
-                              <Paragraph theme="alt1">{item}</Paragraph>
-                            ))
-                            .reduce((prev, curr) => [prev, ' + ', curr])}
+                          {items.length === 0
+                            ? null
+                            : items
+                                .map<React.ReactNode>((item) => (
+                                  <Paragraph key={item} theme="alt1">
+                                    {item}
+                                  </Paragraph>
+                                ))
+                                .reduce((prev, curr) => [prev, ' + ', curr])}
                         </Paragraph>
                       )
                     })()}
                   </Paragraph>
-                  {isUserEligibleForBentoTakeoutDiscount ? (
-                    <YStack jc="flex-start" ai="flex-start">
-                      {store.disableAutomaticDiscount ? (
-                        <>
-                          <Paragraph size="$1" theme="alt2">
-                            You can apply your promo code on the next page.
-                          </Paragraph>
-                          <SizableText
-                            cursor="pointer"
-                            style={{ textDecorationLine: 'underline' }}
-                            hoverStyle={{
-                              color: '$color11',
-                            }}
-                            size="$1"
-                            onPress={() => (store.disableAutomaticDiscount = false)}
-                          >
-                            Use my automatic discount
-                          </SizableText>
-                        </>
-                      ) : (
-                        <>
-                          <Paragraph size="$1" theme="green_alt2">
-                            You will get a discount for purchasing both Takeout and Bento.
-                          </Paragraph>
-                          <SizableText
-                            cursor="pointer"
-                            style={{ textDecorationLine: 'underline' }}
-                            hoverStyle={{
-                              color: '$color11',
-                            }}
-                            size="$1"
-                            onPress={() => (store.disableAutomaticDiscount = true)}
-                          >
-                            Disable and use my own promo
-                          </SizableText>
-                        </>
-                      )}
-                    </YStack>
-                  ) : (
-                    <Paragraph size="$1" theme="alt2">
-                      You can apply your promo code on the next page.
-                    </Paragraph>
-                  )}
+                  <AnimatePresence>
+                    {isUserEligibleForBentoTakeoutDiscount ? (
+                      <YStack
+                        jc="flex-start"
+                        ai="flex-start"
+                        o={1}
+                        enterStyle={{ o: 0 }}
+                        exitStyle={{ o: 0 }}
+                        animation="quick"
+                      >
+                        {store.disableAutomaticDiscount ? (
+                          <>
+                            <Paragraph size="$1" theme="alt2">
+                              You can apply your promo code on the next page.
+                            </Paragraph>
+                            <SizableText
+                              cursor="pointer"
+                              style={{ textDecorationLine: 'underline' }}
+                              hoverStyle={{
+                                color: '$color11',
+                              }}
+                              size="$1"
+                              onPress={() => (store.disableAutomaticDiscount = false)}
+                            >
+                              Use my automatic discount
+                            </SizableText>
+                          </>
+                        ) : (
+                          <>
+                            <Paragraph size="$1" theme="green_alt2">
+                              You will get a discount for purchasing both Takeout and
+                              Bento.
+                            </Paragraph>
+                            <SizableText
+                              cursor="pointer"
+                              style={{ textDecorationLine: 'underline' }}
+                              hoverStyle={{
+                                color: '$color11',
+                              }}
+                              size="$1"
+                              onPress={() => (store.disableAutomaticDiscount = true)}
+                            >
+                              Disable and use my own promo
+                            </SizableText>
+                          </>
+                        )}
+                      </YStack>
+                    ) : (
+                      <Paragraph
+                        size="$1"
+                        theme="alt2"
+                        o={1}
+                        enterStyle={{ o: 0 }}
+                        exitStyle={{ o: 0 }}
+                        animation="quick"
+                      >
+                        You can apply your promo code on the next page.
+                      </Paragraph>
+                    )}
+                  </AnimatePresence>
                 </YStack>
                 {/* <Unspaced>
                 <YStack mt="$2" gap="$1">
