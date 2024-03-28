@@ -16,6 +16,7 @@
     "@tamagui/core": "^1.93.2",
     "@tamagui/create-theme": "^1.93.2",
     "@tamagui/react-native-svg": "^1.93.2",
+    "expo-linear-gradient": "^12.7.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-native-web": "^0.19.10",

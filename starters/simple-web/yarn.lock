@@ -4964,6 +4964,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"expo-linear-gradient@npm:^12.7.2":
+  version: 12.7.2
+  resolution: "expo-linear-gradient@npm:12.7.2"
+  peerDependencies:
+    expo: "*"
+  checksum: 10/74fc7449bc3400add8cb40173cf5f8010aa239d086a2d43031197c76a380905d126671db7d8efc332cb1e73f806e937156383092798bfb08c09e1191e606fa06
+  languageName: node
+  linkType: hard
+
 "express@npm:^4.17.3":
   version: 4.18.2
   resolution: "express@npm:4.18.2"
@@ -7684,6 +7693,7 @@ __metadata:
     css-loader: "npm:^5.2.4"
     esbuild-loader: "npm:^4.0.2"
     esbuild-register: "npm:^3.4.2"
+    expo-linear-gradient: "npm:^12.7.2"
     file-loader: "npm:^6.2.0"
     html-webpack-plugin: "npm:^5.5.0"
     mini-css-extract-plugin: "npm:^2.7.2"
