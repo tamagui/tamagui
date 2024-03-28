@@ -150,6 +150,14 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
             minItemsVisible: touch ? 10 : 4,
             referenceOverflowThreshold: 20,
           }),
+          {
+            name: 'cancel-y-from-inner',
+            async fn() {
+              return {
+                y: 0,
+              }
+            },
+          },
           offset({ crossAxis: -5 }),
         ],
   })
