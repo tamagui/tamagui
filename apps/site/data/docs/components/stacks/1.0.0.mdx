@@ -31,7 +31,7 @@ demoName: Stacks
 
 ## Usage
 
-XStack, YStack and ZStack are the base views in Tamagui, they both extend directly off the base [View](/docs/core/stack-and-text) from `@tamagui/core`.
+Tamagui UI includes optional stack views - XStack, YStack and ZStack. They extend directly off the [View](/docs/core/stack-and-text) from `@tamagui/core`.
 
 Stack props accept [every prop from react-native-web](https://necolas.github.io/react-native-web/docs/view/) View, as well as all [the style properties Tamagui supports](/docs/intro/props).
 
@@ -82,9 +82,9 @@ export default () => (
 
 ## API Reference
 
-### Stack
+### XStack, YStack, ZStack
 
-Beyond the [Tamagui Props](/docs/intro/props), stacks have two variants
+Beyond the [Tamagui Props](/docs/intro/props), the stacks add just two variants:
 
 <PropsTable
   data={[
@@ -105,78 +105,6 @@ Beyond the [Tamagui Props](/docs/intro/props), stacks have two variants
           Sets a natural looking shadow that expands out and away as the size gets bigger.
         </span>
       ),
-    },
-  ]}
-/>
-
-### ThemeableStack
-
-Adds a variety of helpers that automatically apply theme values when set to true. Useful for creating higher level components by wrapping with `styled()`:
-
-```tsx
-import { styled } from 'tamagui' // or '@tamagui/core'
-import { ThemeableStack } from 'tamagui' // or '@tamagui/stacks'
-
-const MyCard = styled(ThemeableStack, {
-  hoverTheme: true,
-  pressTheme: true,
-  focusTheme: true,
-  bordered: true,
-})
-```
-
-Beyond Stacks props, ThemeableStacks add:
-
-<PropsTable
-  data={[
-    {
-      name: 'hoverTheme',
-      required: false,
-      default: false,
-      type: 'boolean',
-      description: `Sets backgroundColor and borderColor to matching theme values on hover.`,
-    },
-    {
-      name: 'focusTheme',
-      required: false,
-      default: false,
-      type: 'boolean',
-      description: `Sets backgroundColor and borderColor to matching theme values on focus.`,
-    },
-    {
-      name: 'pressTheme',
-      required: false,
-      default: false,
-      type: 'boolean',
-      description: `Sets backgroundColor and borderColor to matching theme values on press.`,
-    },
-    {
-      name: 'pad',
-      required: false,
-      default: false,
-      type: 'boolean',
-      description: `Matches padding to size prop, if given.`,
-    },
-    {
-      name: 'elevate',
-      required: false,
-      default: false,
-      type: 'boolean',
-      description: `Matches elevation prop to size prop, if given.`,
-    },
-    {
-      name: 'bordered',
-      required: false,
-      default: false,
-      type: 'boolean | number',
-      description: `Adds a border that inherits themes.`,
-    },
-    {
-      name: 'circular',
-      required: false,
-      default: false,
-      type: 'boolean | number',
-      description: `Clamps to a circular shape and radius.`,
     },
   ]}
 />
