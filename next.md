@@ -1,3 +1,4 @@
+- document Popover.Anchor
 - Sometimes press getting stuck still on uniswap moonpay flow
 - Text vertical align issue: https://github.com/Uniswap/universe/pull/6730
 - shadowOpacity on web not applying in some case:
