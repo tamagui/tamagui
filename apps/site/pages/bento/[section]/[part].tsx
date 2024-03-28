@@ -20,7 +20,7 @@ export default function page() {
 
   return (
     <>
-      <ThemeNameEffect colorKey="$color1" />
+      <ThemeNameEffect />
       {/* <DropTamaguiConfig /> */}
 
       <BentoPageFrame>
