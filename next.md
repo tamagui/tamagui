@@ -1,3 +1,11 @@
+- Sometimes press getting stuck still on uniswap moonpay flow
+- Text vertical align issue: https://github.com/Uniswap/universe/pull/6730
+- shadowOpacity on web not applying in some case:
+  - https://github.com/Uniswap/universe/blob/a8e820e5c54f8e831bcb44c92cba850258aa650b/apps/mobile/src/components/QRCodeScanner/QRCode.tsx#L192-L194
+- negative gap not being applied
+
+---
+
 Tentpole projects:
 
 - Marketplace
@@ -34,9 +42,7 @@ Ongoing work:
 - Bento
 - Core
 
-
 ----
-
 
 - <Theme name="dark"> force below root dark causing hydration issues
 

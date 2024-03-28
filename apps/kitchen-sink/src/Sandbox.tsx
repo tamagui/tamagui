@@ -39,30 +39,36 @@ export const Sandbox = () => {
 
   return (
     <RNView style={{ width: '100%', height: '100%', padding: 50 }}>
-      <XStack onPress={() => setOpen(!open)}>
-        <StyledButton
-          animation="bouncy"
-          debug="verbose"
-          disabled={open}
-          onPress={() => {
-            console.log('hi')
-            setOpen(!open)
-          }}
-        >
-          hello
-        </StyledButton>
-
-        <Button
-          onPress={() => {
-            console.log('hi')
-            setOpen(!open)
-          }}
-        >
-          hello123
-        </Button>
-      </XStack>
+      <View w={100} h={100} shadowRadius={10} shadowColor="#000" shadowOpacity={0.25} />
     </RNView>
   )
+
+  // return (
+  //   <RNView style={{ width: '100%', height: '100%', padding: 50 }}>
+  //     <XStack onPress={() => setOpen(!open)}>
+  //       <StyledButton
+  //         animation="bouncy"
+  //         debug="verbose"
+  //         disabled={open}
+  //         onPress={() => {
+  //           console.log('hi')
+  //           setOpen(!open)
+  //         }}
+  //       >
+  //         hello
+  //       </StyledButton>
+
+  //       <Button
+  //         onPress={() => {
+  //           console.log('hi')
+  //           setOpen(!open)
+  //         }}
+  //       >
+  //         hello123
+  //       </Button>
+  //     </XStack>
+  //   </RNView>
+  // )
 
   return (
     <RNView style={{ width: '100%', height: '100%', padding: 50 }}>
