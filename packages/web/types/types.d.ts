@@ -756,12 +756,71 @@ export interface TextStylePropsBase extends Omit<TextStyle, keyof OverrideNonSty
     wordWrap?: Properties['wordWrap'];
 }
 type LooseCombinedObjects<A extends Object, B extends Object> = A | B | (A & B);
-export interface StackNonStyleProps extends Omit<ViewProps, 'hitSlop' | 'pointerEvents' | 'display' | 'children' | RNOnlyProps | keyof ExtendBaseStackProps | 'style'>, ExtendBaseStackProps, TamaguiComponentPropsBase {
+type A11yDeprecated = {
+    /**
+     * @deprecated
+     * use aria-hidden instead
+     * https://reactnative.dev/docs/accessibility#aria-hidden
+     */
+    accessibilityElementsHidden?: ViewProps['accessibilityElementsHidden'];
+    /**
+     * @deprecated
+     * native doesn't support this, so fallback to accessibilityHint on native
+     * use aria-describedby instead
+     */
+    accessibilityHint?: ViewProps['accessibilityHint'];
+    /**
+     * @deprecated
+     * use aria-label instead
+     * https://reactnative.dev/docs/accessibility#aria-label
+     */
+    accessibilityLabel?: ViewProps['accessibilityLabel'];
+    /**
+     * @deprecated
+     * use aria-labelledby instead
+     * https://reactnative.dev/docs/accessibility#aria-label
+     */
+    accessibilityLabelledBy?: ViewProps['accessibilityLabelledBy'];
+    /**
+     * @deprecated
+     * use aria-live instead
+     */
+    accessibilityLiveRegion?: ViewProps['accessibilityLiveRegion'];
+    /**
+     * @deprecated
+     * use role instead
+     */
+    accessibilityRole?: ViewProps['accessibilityRole'];
+    /**
+     * @deprecated
+     * use aria-disabled, aria-selected, aria-checked, aria-busy, and aria-expanded instead
+     * https://reactnative.dev/docs/accessibility#aria-busy
+     */
+    accessibilityState?: ViewProps['accessibilityState'];
+    /**
+     * @deprecated
+     * use aria-valuemax, aria-valuemin, aria-valuenow, and aria-valuetext instead
+     * https://reactnative.dev/docs/accessibility#aria-valuemax
+     */
+    accessibilityValue?: ViewProps['accessibilityValue'];
+    /**
+     * @deprecated
+     * use aria-modal instead
+     */
+    accessibilityViewIsModal?: ViewProps['accessibilityViewIsModal'];
+    /**
+     * @deprecated
+     * use tabIndex={0} instead
+     * make sure to fallback to accessible on native
+     */
+    accessible?: ViewProps['accessible'];
+};
+export interface StackNonStyleProps extends A11yDeprecated, Omit<ViewProps, 'hitSlop' | 'pointerEvents' | 'display' | 'children' | RNOnlyProps | keyof ExtendBaseStackProps | 'style'>, ExtendBaseStackProps, TamaguiComponentPropsBase {
     style?: StyleProp<LooseCombinedObjects<React.CSSProperties, ViewStyle>>;
 }
 export type StackStyle = WithThemeShorthandsPseudosMedia<StackStyleBase>;
 export type StackProps = StackNonStyleProps & StackStyle;
-export interface TextNonStyleProps extends Omit<ReactTextProps, 'children' | keyof WebOnlyPressEvents | RNOnlyProps | keyof ExtendBaseTextProps | 'style'>, ExtendBaseTextProps, TamaguiComponentPropsBase {
+export interface TextNonStyleProps extends A11yDeprecated, Omit<ReactTextProps, 'children' | keyof WebOnlyPressEvents | RNOnlyProps | keyof ExtendBaseTextProps | 'style'>, ExtendBaseTextProps, TamaguiComponentPropsBase {
     style?: StyleProp<LooseCombinedObjects<React.CSSProperties, TextStyle>>;
 }
 export type TextStyleProps = WithThemeShorthandsPseudosMedia<TextStylePropsBase>;
