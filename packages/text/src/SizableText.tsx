@@ -15,18 +15,20 @@ export const SizableText = styled(Text, {
     },
 
     size: getFontSized,
-
-    fontFamily: {
-      '...': (_, extras) => {
-        const size = extras.props['size'] || '$true'
-        return getFontSized(size, extras)
-      },
-    } as any,
   },
 
   defaultVariants: {
     unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
   },
 })
+
+// we are doing weird stuff to avoid bad types
+// TODO make this just work
+SizableText.staticConfig.variants!.fontFamily = {
+  '...': (_, extras) => {
+    const size = extras.props['size'] || '$true'
+    return getFontSized(size, extras)
+  },
+}
 
 export type SizableTextProps = GetProps<typeof SizableText>
