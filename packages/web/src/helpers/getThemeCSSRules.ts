@@ -45,7 +45,10 @@ export function getThemeCSSRules(props: {
         value = tokensValueToVariable.get(variable.val)!.variable
       }
       // Hash themeKey in case it has invalid chars too
-      vars += `--${simpleHash(themeKey, 40)}:${value};`
+      vars += `--${process.env.TAMAGUI_CSS_VARIABLE_PREFIX || ''}${simpleHash(
+        themeKey,
+        40
+      )}:${value};`
     }
 
     const isDarkBase = themeName === 'dark'

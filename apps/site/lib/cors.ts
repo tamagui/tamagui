@@ -17,6 +17,6 @@ function isValidOrigin(origin?: string): origin is string {
       origin.endsWith('.tamagui.dev') ||
       origin === 'stripe.com' ||
       origin.endsWith('.stripe.com') ||
-      origin === 'localhost:1421')
+      origin.endsWith('localhost:1421'))
   )
 }

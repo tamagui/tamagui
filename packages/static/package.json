@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/static",
-  "version": "1.91.4",
+  "version": "1.93.2",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs/index.js",
@@ -18,6 +18,15 @@
     "lint": "../../node_modules/.bin/biome check src",
     "lint:fix": "../../node_modules/.bin/biome check --apply-unsafe src"
   },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./types/index.d.ts",
+      "require": "./dist/cjs/index.js",
+      "import": "./dist/cjs/index.js",
+      "react-native": "./dist/cjs/index.native.js"
+    }
+  },
   "tests": {
     "parallel": true
   },
@@ -34,33 +43,30 @@
     "@babel/runtime": "^7.23.2",
     "@babel/traverse": "^7.23.3",
     "@babel/types": "^7.23.3",
-    "@tamagui/build": "1.91.4",
-    "@tamagui/cli-color": "1.91.4",
-    "@tamagui/config-default": "1.91.4",
-    "@tamagui/core": "1.91.4",
-    "@tamagui/fake-react-native": "1.91.4",
-    "@tamagui/generate-themes": "1.91.4",
-    "@tamagui/helpers": "1.91.4",
-    "@tamagui/helpers-node": "1.91.4",
-    "@tamagui/proxy-worm": "1.91.4",
-    "@tamagui/shorthands": "1.91.4",
-    "@tamagui/types": "1.91.4",
+    "@tamagui/build": "1.93.2",
+    "@tamagui/cli-color": "1.93.2",
+    "@tamagui/config-default": "1.93.2",
+    "@tamagui/core": "1.93.2",
+    "@tamagui/fake-react-native": "1.93.2",
+    "@tamagui/generate-themes": "1.93.2",
+    "@tamagui/helpers": "1.93.2",
+    "@tamagui/helpers-node": "1.93.2",
+    "@tamagui/proxy-worm": "1.93.2",
+    "@tamagui/shorthands": "1.93.2",
+    "@tamagui/types": "1.93.2",
     "babel-literal-to-ast": "^2.1.0",
     "browserslist": "^4.22.2",
     "check-dependency-version-consistency": "^4.1.0",
-    "esbuild": "^0.19.11",
-    "esbuild-register": "^3.4.2",
+    "esbuild": "^0.20.2",
+    "esbuild-register": "^3.5.0",
     "find-cache-dir": "^3.3.2",
     "find-root": "^1.1.0",
     "fs-extra": "^11.2.0",
     "invariant": "^2.2.4",
     "lodash": "^4.17.21",
     "react-native-web": "^0.19.10",
-    "react-native-web-internals": "1.91.4",
-    "react-native-web-lite": "1.91.4"
-  },
-  "optionalDependencies": {
-    "lightningcss": "*"
+    "react-native-web-internals": "1.93.2",
+    "react-native-web-lite": "1.93.2"
   },
   "devDependencies": {
     "@babel/plugin-syntax-typescript": "^7.23.3",

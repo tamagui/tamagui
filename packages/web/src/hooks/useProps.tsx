@@ -1,16 +1,12 @@
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 
+import { getConfig } from '../config'
 import { ComponentContext } from '../contexts/ComponentContext'
-import { defaultComponentStateMounted } from '../defaultComponentState'
+import { subscribeToContextGroup, useComponentState } from '../createComponent'
 import { useSplitStyles } from '../helpers/getSplitStyles'
-import type {
-  SplitStyleProps,
-  StackStyle,
-  StaticConfig,
-  ThemeParsed,
-  UseMediaState,
-} from '../types'
+import type { SplitStyleProps, StaticConfig, ThemeParsed, UseMediaState } from '../types'
 import { Stack } from '../views/Stack'
+import type { ViewProps, ViewStyle } from '../views/View'
 import { useMedia } from './useMedia'
 import { useThemeWithState } from './useTheme'
 
@@ -20,6 +16,7 @@ type UsePropsOptions = Pick<
 > & {
   disableExpandShorthands?: boolean
   forComponent?: { staticConfig: StaticConfig }
+  noClassNames?: boolean
 }
 
 export type PropsWithoutMediaStyles<A> = {
@@ -27,7 +24,8 @@ export type PropsWithoutMediaStyles<A> = {
   [Key in keyof A extends `$${string}` ? never : keyof A]?: A[Key]
 }
 
-type StyleLikeObject = (StackStyle & Record<string, any>) | Object
+type PropsLikeObject = (ViewProps & Record<string, any>) | Object
+type StyleLikeObject = (ViewStyle & Record<string, any>) | Object
 
 /**
  * Returns props and style as a single object, expanding and merging shorthands and media queries.
@@ -35,7 +33,7 @@ type StyleLikeObject = (StackStyle & Record<string, any>) | Object
  * Use sparingly, it will loop props and trigger re-render on all media queries you access.
  *
  * */
-export function useProps<A extends StyleLikeObject>(
+export function useProps<A extends PropsLikeObject>(
   props: A,
   opts?: UsePropsOptions
 ): PropsWithoutMediaStyles<A> {
@@ -70,7 +68,7 @@ export function useStyle<A extends StyleLikeObject>(
  * Use sparingly, it will loop props and trigger re-render on all media queries you access.
  *
  * */
-export function usePropsAndStyle<A extends StyleLikeObject>(
+export function usePropsAndStyle<A extends PropsLikeObject>(
   props: A,
   opts?: UsePropsOptions
 ): [PropsWithoutMediaStyles<A>, PropsWithoutMediaStyles<A>, ThemeParsed, UseMediaState] {
@@ -78,14 +76,21 @@ export function usePropsAndStyle<A extends StyleLikeObject>(
   const [themeState, theme] = useThemeWithState({
     componentName: staticConfig.componentName,
   })
-  const componentContext = useContext(ComponentContext)
+  const componentContext = useContext(ComponentContext as any) as any
+  const { state, disabled, setStateShallow } = useComponentState(
+    props,
+    componentContext,
+    staticConfig,
+    getConfig()
+  )
+
   const media = useMedia()
   const splitStyles = useSplitStyles(
     props,
     staticConfig,
     theme,
     themeState.state?.name || '',
-    defaultComponentStateMounted,
+    state,
     {
       isAnimated: false,
       mediaState: media,
@@ -98,5 +103,32 @@ export function usePropsAndStyle<A extends StyleLikeObject>(
     null,
     componentContext
   )
+
+  const { mediaGroups, pseudoGroups } = splitStyles
+
+  useEffect(() => {
+    if (disabled) {
+      return
+    }
+
+    if (state.unmounted) {
+      setStateShallow({ unmounted: false })
+      return
+    }
+
+    return subscribeToContextGroup({
+      disabled,
+      componentContext,
+      setStateShallow,
+      state,
+      mediaGroups,
+      pseudoGroups,
+    })
+  }, [
+    disabled,
+    pseudoGroups ? Object.keys([...pseudoGroups]).join('') : 0,
+    mediaGroups ? Object.keys([...mediaGroups]).join('') : 0,
+  ])
+
   return [splitStyles.viewProps, splitStyles.style || {}, theme, media] as any
 }

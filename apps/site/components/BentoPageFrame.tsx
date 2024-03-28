@@ -16,6 +16,7 @@ export const BentoPageFrame = ({
       <Head>
         <LoadCherryBomb />
         <LoadMunro />
+        <script src="https://cdn.paritydeals.com/banner.js" />
       </Head>
 
       <NextSeo
@@ -34,7 +35,7 @@ export const BentoPageFrame = ({
         }}
       />
 
-      <YStack pt={85}>
+      <YStack pt={'$8'}>
         <Theme name="tan">
           <YStack
             className={simpler ? `mask-gradient-down` : ``}
@@ -136,7 +137,10 @@ export const BentoPageFrame = ({
           contain="strict"
         >
           <ContainerLarge pos="relative">
-            <YStack pos="absolute" className="shadow-breeze2">
+            <YStack
+              pos="absolute"
+              // className="shadow-breeze2"
+            >
               <YStack
                 pos="absolute"
                 style={{
@@ -176,7 +180,7 @@ export const BentoFrond = () => (
     t={-450}
     r={180}
     pos="absolute"
-    className="shadow-breeze"
+    // className="shadow-breeze"
     zi={2}
     pe="none"
     o={0.075}

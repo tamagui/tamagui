@@ -1,3 +1,51 @@
+- Sometimes press getting stuck still on uniswap moonpay flow
+- Text vertical align issue: https://github.com/Uniswap/universe/pull/6730
+- shadowOpacity on web not applying in some case:
+  - https://github.com/Uniswap/universe/blob/a8e820e5c54f8e831bcb44c92cba850258aa650b/apps/mobile/src/components/QRCodeScanner/QRCode.tsx#L192-L194
+- negative gap not being applied
+
+---
+
+Tentpole projects:
+
+- Marketplace
+- Studio launch
+- Storybook/hosted docs
+- Takeout 2 / vxrn/stack
+
+Needed features/maintenance:
+
+- Vite + Remix support
+  - new starter
+- RSD / web alignment
+  - follow what RSD is doing + dont go beyond native support eg aspect-ratio
+  - deprecate accessibility props, "focusable" => tabIndex
+  - simple version is good
+  - lower priority - em/rem, other nice web styles that rsd/tailwind has
+- RSC support
+  - just simple views like View/Text/etc + no need for nesting themes
+  - need to remove context
+- v2 / headless
+  - deprecate some createTamagui settings that should move into settings
+    - disableSSR => settings.disableSSR
+  - ListItem/Button simplify APIs
+  - Image/Input deprecations for web alignment
+
+- native tests (detox?)
+- 0-runtime mode
+- @tamagui/kit - includes native versions of many things
+- remove RNW - Input, Image
+
+Ongoing work:
+
+- Takeout
+- Bento
+- Core
+
+----
+
+- <Theme name="dark"> force below root dark causing hydration issues
+
 - Animation + shadowOffset is causing crash in iOS due to object value
   - "auto" too
 

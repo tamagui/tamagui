@@ -361,8 +361,12 @@ const ItemDetails = (
 
         if (!res.ok) {
           alert(data?.error || `Error, response ${res.status} ${res.statusText}`)
-        } else if (data.message) {
-          alert(data.message)
+        } else {
+          if (data.url) {
+            location.href = data.url
+          } else if (data.message) {
+            alert(data.message)
+          }
         }
       }
     } finally {

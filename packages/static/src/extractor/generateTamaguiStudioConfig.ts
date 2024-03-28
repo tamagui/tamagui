@@ -2,7 +2,7 @@ import { dirname, join } from 'path'
 
 import { generateThemes, writeGeneratedThemes } from '@tamagui/generate-themes'
 import type { TamaguiOptions } from '@tamagui/types'
-import fs, { readFile } from 'fs-extra'
+import * as FS from 'fs-extra'
 
 import { requireTamaguiCore } from '../helpers/requireTamaguiCore'
 import type { TamaguiPlatform } from '../types'
@@ -24,10 +24,10 @@ export async function generateTamaguiStudioConfig(
   try {
     const config = configIn ?? (await getBundledConfig(tamaguiOptions, rebuild))
     if (!config) return
-    const out = transformConfig(config, tamaguiOptions.platform)
+    const out = transformConfig(config, tamaguiOptions.platform || 'web')
 
-    await fs.ensureDir(dirname(confFile))
-    await fs.writeJSON(confFile, out, {
+    await FS.ensureDir(dirname(confFile))
+    await FS.writeJSON(confFile, out, {
       spaces: 2,
     })
   } catch (err) {
@@ -43,10 +43,14 @@ export function generateTamaguiStudioConfigSync(
   config: BundledConfig
 ) {
   try {
-    fs.ensureDirSync(dirname(confFile))
-    fs.writeJSONSync(confFile, transformConfig(config, _tamaguiOptions.platform), {
-      spaces: 2,
-    })
+    FS.ensureDirSync(dirname(confFile))
+    FS.writeJSONSync(
+      confFile,
+      transformConfig(config, _tamaguiOptions.platform || 'web'),
+      {
+        spaces: 2,
+      }
+    )
   } catch (err) {
     if (process.env.DEBUG?.includes('tamagui') || process.env.IS_TAMAGUI_DEV) {
       console.warn('generateTamaguiStudioConfig error', err)
@@ -73,13 +77,13 @@ export async function generateTamaguiThemes(
     force ||
     (await (async () => {
       try {
-        const themeBuilderJsonExists = await fs.pathExists(
+        const themeBuilderJsonExists = await FS.pathExists(
           join(tamaguiDir, 'theme-builder.json')
         )
         if (!themeBuilderJsonExists) return true
         if (!generatedOutput) return false
         const next = generatedOutput.generated
-        const current = await readFile(outPath, 'utf-8')
+        const current = await FS.readFile(outPath, 'utf-8')
         return next !== current
       } catch (err) {
         // ok

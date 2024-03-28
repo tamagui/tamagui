@@ -1,4 +1,4 @@
-import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
+import { TamaguiLogo, ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import { CheckCircle, ChevronRight, Copy, Link as LinkIcon } from '@tamagui/lucide-icons'
 import { NextLink } from 'components/NextLink'
 import { useRouter } from 'next/router'
@@ -6,7 +6,7 @@ import React, { forwardRef, useState } from 'react'
 import { ScrollView } from 'react-native'
 import type { ImageProps, TabsProps, TabsTabProps, XStackProps } from 'tamagui'
 import {
-  Avatar,
+  Adapt,
   Button,
   Card,
   H1,
@@ -190,6 +190,8 @@ export const components = {
     </YStack>
   ),
 
+  Adapt,
+
   Table,
   TableCell,
   TableHighlight,
@@ -214,6 +216,10 @@ export const components = {
   TooltipSimple,
 
   ...Demos,
+
+  TamaguiDemo: () => {
+    return <TamaguiLogo />
+  },
 
   Highlights,
   ThemeTint,

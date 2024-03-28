@@ -31,13 +31,7 @@ export const SeasonToggleButton = (props: ButtonProps) => {
             bg: 'rgba(0,0,0,0.15)',
           }}
         >
-          <Circle
-            bc="var(--color9)"
-            o={0.85}
-            m={2}
-            size={12}
-            backgroundColor={tint as any}
-          />
+          <Circle borderColor="$color9" borderWidth={1} o={0.85} m={2} size={12} />
 
           {name !== 'tamagui' && (
             <SizableText size="$8" pos="absolute" b={-10} r={-10} rotate="-10deg">

@@ -24,7 +24,7 @@ export const getDefaultLayout: GetLayout = (page, pageProps, path) => {
   // const isBento = path.startsWith('/bento')
   const isProductLandingPage = isTakeout || isStudio
   const isBlog = path.startsWith('/blog')
-  const isDocs = path.startsWith('/docs')
+  const isDocs = path.startsWith('/docs') || path.startsWith('/ui')
   const isBento = path.startsWith('/bento')
 
   const disableNew = isBlog || isAuthPage || isProductLandingPage || isAccountPage

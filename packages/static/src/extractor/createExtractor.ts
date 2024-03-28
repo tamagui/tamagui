@@ -13,7 +13,7 @@ import type {
   TamaguiComponentState,
 } from '@tamagui/web'
 import type { ViewStyle } from 'react-native'
-import { createDOMProps } from 'react-native-web-internals'
+import * as reactNativeWebInternals from 'react-native-web-internals'
 
 import { FAILED_EVAL } from '../constants'
 import { requireTamaguiCore } from '../helpers/requireTamaguiCore'
@@ -232,7 +232,7 @@ export function createExtractor(
       return !!(
         staticConfig.validStyles?.[name] ||
         pseudoDescriptors[name] ||
-        // dont disable variants or else you lose many things flattening
+        // don't disable variants or else you lose many things flattening
         staticConfig.variants?.[name] ||
         projectInfo?.tamaguiConfig?.shorthands[name] ||
         (name[0] === '$' ? !!mediaQueryConfig[name.slice(1)] : false)
@@ -1169,7 +1169,10 @@ export function createExtractor(
               if (out) {
                 if (isTargetingHTML) {
                   // translate to DOM-compat
-                  out = createDOMProps(isTextView ? 'span' : 'div', out)
+                  out = reactNativeWebInternals.createDOMProps(
+                    isTextView ? 'span' : 'div',
+                    out
+                  )
                   // remove className - we dont use rnw styling
                   delete out.className
                 }
@@ -1582,9 +1585,6 @@ export function createExtractor(
           const usedThemeKeys = new Set<string>()
           // if it accesses any theme values during evaluation
           themeAccessListeners.add((key) => {
-            if (options.experimentalFlattenThemesOnNative) {
-              usedThemeKeys.add(key)
-            }
             if (disableExtractVariables) {
               usedThemeKeys.add(key)
               shouldFlatten = false
@@ -1879,7 +1879,10 @@ export function createExtractor(
                     if (out && isTargetingHTML) {
                       const cn = out.className
                       // translate to DOM-compat
-                      out = createDOMProps(isTextView ? 'span' : 'div', out)
+                      out = reactNativeWebInternals.createDOMProps(
+                        isTextView ? 'span' : 'div',
+                        out
+                      )
                       // remove rnw className use ours
                       out.className = cn
                     }
@@ -2000,8 +2003,6 @@ export function createExtractor(
             }
 
             try {
-              const beforeProcessUsedThemeKeys = usedThemeKeys.size
-
               const out = getSplitStyles(
                 props,
                 staticConfig,
@@ -2016,7 +2017,8 @@ export function createExtractor(
                 undefined,
                 undefined,
                 undefined,
-                debugPropValue || shouldPrintDebug
+                debugPropValue || shouldPrintDebug,
+                options.experimentalFlattenThemesOnNative
               )
 
               let outProps = {
@@ -2029,17 +2031,6 @@ export function createExtractor(
               for (const key in outProps) {
                 if (deoptProps.has(key)) {
                   shouldFlatten = false
-                }
-              }
-
-              if (options.experimentalFlattenThemesOnNative) {
-                if (beforeProcessUsedThemeKeys < usedThemeKeys.size) {
-                  // we used a theme key
-                  Object.entries(props).forEach(([key, value]) => {
-                    if (usedThemeKeys.has(value)) {
-                      outProps[key] = value
-                    }
-                  })
                 }
               }
 
@@ -2114,7 +2105,9 @@ export function createExtractor(
               }
             }
 
-            prev = cur
+            if (cur.type === 'style') {
+              prev = cur
+            }
             acc.push(cur)
             return acc
           }, [])

@@ -84,9 +84,8 @@ export default declare(function tamaguiBabelPlugin(
           const finalOptions = {
             // @ts-ignore just in case they leave it out
             platform: 'native',
-            shouldPrintDebug,
             ...options,
-          }
+          } satisfies TamaguiOptions
 
           const printLog = createLogger(sourcePath, finalOptions)
 
@@ -127,6 +126,7 @@ export default declare(function tamaguiBabelPlugin(
                 'cursor',
                 'contain',
               ]),
+              shouldPrintDebug,
               ...finalOptions,
               // disable this extraction for now at least, need to figure out merging theme vs non-theme
               // because theme need to stay in render(), whereas non-theme can be extracted
@@ -208,7 +208,7 @@ export default declare(function tamaguiBabelPlugin(
                     if (prop.value.type === 'StringLiteral') {
                       prop.value = t.memberExpression(
                         t.identifier('theme'),
-                        t.identifier(prop.value.value.slice(1) + '.val')
+                        t.identifier(prop.value.value.slice(1) + '.get()')
                       )
                     }
                   })
@@ -346,27 +346,11 @@ export default declare(function tamaguiBabelPlugin(
                                         [],
                                         t.blockStatement([
                                           t.returnStatement(
-                                            t.callExpression(
-                                              t.memberExpression(
-                                                t.identifier('Object'),
-                                                t.identifier('assign')
-                                              ),
-                                              [
-                                                t.objectExpression([]),
-                                                ...hocStylesExpr.elements,
-                                                ...[],
-                                              ] as any[]
-                                            )
+                                            t.arrayExpression([...hocStylesExpr.elements])
                                           ),
                                         ])
                                       ),
                                       t.arrayExpression([
-                                        ...[...themeKeysUsed].map((k) =>
-                                          t.memberExpression(
-                                            t.identifier('theme'),
-                                            t.identifier(k)
-                                          )
-                                        ),
                                         t.spreadElement(t.identifier('_expressions')),
                                       ]),
                                     ]

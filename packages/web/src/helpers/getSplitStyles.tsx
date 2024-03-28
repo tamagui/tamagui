@@ -97,7 +97,8 @@ type StyleSplitter = (
   context?: ComponentContextI,
   // web-only
   elementType?: string,
-  debug?: DebugProp
+  debug?: DebugProp,
+  skipThemeTokenResolution?: boolean
 ) => GetStyleResult
 
 export const PROP_SPLIT = '-'
@@ -140,7 +141,8 @@ export const getSplitStyles: StyleSplitter = (
   parentSplitStyles,
   context,
   elementType,
-  debug
+  debug,
+  skipThemeTokenResolution
 ) => {
   conf = conf || getConfig()
 
@@ -204,6 +206,7 @@ export const getSplitStyles: StyleSplitter = (
     viewProps,
     context,
     debug,
+    skipThemeTokenResolution,
   }
 
   if (
@@ -547,6 +550,8 @@ export const getSplitStyles: StyleSplitter = (
     const shouldPassThrough = shouldPassProp || isHOCShouldPassThrough
 
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+      console.groupEnd() // react native was not nesting right
+      console.groupEnd() // react native was not nesting right
       console.groupCollapsed(
         `  🔑 ${keyOg}${keyInit !== keyOg ? ` (shorthand for ${keyInit})` : ''} ${
           shouldPassThrough ? '(pass)' : ''

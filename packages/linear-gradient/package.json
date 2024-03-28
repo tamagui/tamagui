@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/linear-gradient",
-  "version": "1.91.4",
+  "version": "1.93.2",
   "sideEffects": [
     "*.css"
   ],
@@ -26,20 +26,20 @@
     "./package.json": "./package.json",
     ".": {
       "types": "./types/index.d.ts",
-      "import": "./dist/esm/index.js",
+      "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.js",
       "react-native": "./dist/cjs/index.native.js"
     }
   },
   "dependencies": {
-    "@tamagui/core": "1.91.4",
-    "@tamagui/stacks": "1.91.4"
+    "@tamagui/core": "1.93.2",
+    "@tamagui/stacks": "1.93.2"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.91.4",
+    "@tamagui/build": "1.93.2",
     "expo-linear-gradient": "^12.7.1",
     "react": "^18.2.0"
   },

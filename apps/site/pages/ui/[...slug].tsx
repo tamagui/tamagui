@@ -10,9 +10,9 @@ import { NextSeo } from 'next-seo'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 
-import type { Frontmatter } from '../../../frontmatter'
-import { listeners } from '../../../hooks/setTinted'
-import { CustomTabs } from '../../../components/CustomTabs'
+import type { Frontmatter } from '../../frontmatter'
+import { listeners } from '../../hooks/setTinted'
+import { CustomTabs } from '../../components/CustomTabs'
 
 const getPathFragment = (path: string) => {
   const [_, fragment] = path.split('#')

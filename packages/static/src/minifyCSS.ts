@@ -1,7 +1,7 @@
 import browserslist from 'browserslist'
-import { browserslistToTargets, transform } from 'lightningcss'
 
 export function minifyCSS(input: string) {
+  const { transform, browserslistToTargets } = require('lightningcss')
   return transform({
     filename: 'style.css',
     code: Buffer.from(input),

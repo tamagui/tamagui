@@ -128,6 +128,16 @@ module.exports = (name, { defaultConfig }) => {
           destination: 'https://vxrn.dev',
           permanent: true,
         },
+        {
+          source: '/docs/components/:slug/:version',
+          destination: '/ui/:slug/:version',
+          permanent: true,
+        },
+        {
+          source: '/docs/components/:slug',
+          destination: '/ui/:slug',
+          permanent: true,
+        },
       ]
     },
   }

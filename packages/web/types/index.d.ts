@@ -28,6 +28,7 @@ export * from './helpers/expandStyles';
 export * from './helpers/getExpandedShorthands';
 export * from './helpers/getSplitStyles';
 export * from './helpers/getStylesAtomic';
+export * from './createComponent';
 export * from './helpers/getThemeCSSRules';
 export * from './helpers/getVariantExtras';
 export * from './helpers/isTamaguiComponent';

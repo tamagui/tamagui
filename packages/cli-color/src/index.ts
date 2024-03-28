@@ -1,4 +1,4 @@
-const Color = {
+export const Color = {
   Reset: '\x1b[0m',
   Bright: '\x1b[1m',
   Dim: '\x1b[2m',
@@ -26,16 +26,12 @@ const Color = {
   BgWhite: '\x1b[47m',
 }
 
-function colorString(color, string) {
+export function colorString(color: string, string: string) {
   return `${color}${string}${Color.Reset}`
 }
 
-function colorLog(color, ...args) {
-  console.info(...args.map((it) => (typeof it === 'string' ? colorString(color, it) : it)))
+export function colorLog(color: string, ...args) {
+  console.info(
+    ...args.map((it) => (typeof it === 'string' ? colorString(color, it) : it))
+  )
 }
-
-Object.assign(module.exports, {
-  Color,
-  colorString,
-  colorLog,
-})
