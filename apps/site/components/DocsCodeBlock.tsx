@@ -12,7 +12,12 @@ import { ErrorBoundary } from './ErrorBoundary'
 import { Pre } from './Pre'
 
 class CollapseStore {
-  isCollapsed = true
+  isCollapsed: boolean
+
+  constructor(initialState: { isCollapsed: boolean } = { isCollapsed: true }) {
+    this.isCollapsed = initialState.isCollapsed
+  }
+
   setIsCollapsed(val: boolean) {
     this.isCollapsed = val
   }
@@ -23,6 +28,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
     className,
     children,
     id,
+    showFull = true,
     isHero = false,
     isHighlightingLines,
     showLineNumbers: showLineNumbersIn,
@@ -32,10 +38,10 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
   } = props
   const lines = Array.isArray(children) ? children.length : 0
   const isCollapsible = isHero || props.isCollapsible
-  const store = useStore(CollapseStore)
+  const store = useStore(CollapseStore, { isCollapsed: showFull })
   const { isCollapsed, setIsCollapsed } = store
   const isLong = lines > 22
-  const [isCutoff, setIsCutoff] = useState(isLong && !isCollapsible)
+  const [isCutoff, setIsCutoff] = useState(isLong && showFull)
   const [code, setCode] = useState(undefined)
   const preRef = useRef<any>(null)
   const { hasCopied, onCopy, value } = useClipboard(code)

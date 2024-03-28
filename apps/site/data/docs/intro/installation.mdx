@@ -79,118 +79,21 @@ export default function Demo() {
 
 From here, we'd recommend [spending some time understanding configuration](/docs/core/configuration). Tamagui works 100% the same at runtime as at compile-time, so you can wait until you're needing some extra performance to [set up the compiler](/docs/intro/compiler-install).
 
-We also have more in depth guides for [Next.js](/docs/guides/next-js), [Expo](/docs/guides/expo) and [Vite](/docs/guides/vite).
 
-Note that while Tamagui generally doesn't require any special bundler setup, React Native Web and the ecosystem of React Native packages often do, and Tamagui has a variety of plugins to aid in compatibility and make setting up the optimizing compile easy:
+## Guides
 
-#### Webpack
+<Notice>
+  Tamagui generally doesn't require any special bundler setup, but React Native Web and the ecosystem of React Native packages often do. Tamagui provides a variety of plugins for compatibility and simplifying compiler setup.
+</Notice>
 
-```tsx
-const { TamaguiPlugin } = require('tamagui-loader')
+We also have more in-depth guides:
 
-config.plugins.push(
-  new TamaguiPlugin({
-    config: './src/tamagui.config.ts',
-    components: ['tamagui'], // matching the yarn add you chose above
-  }),
-)
-```
+<Spacer/>
 
-Or a minimal manual setup:
-
-```tsx
-// some stuff for react-native
-config.plugins.push(
-  new webpack.DefinePlugin({
-    process: {
-      env: {
-        __DEV__: process.env.NODE_ENV === 'development' ? 'true' : 'false',
-        NODE_ENV: JSON.stringify(process.env.NODE_ENV),
-      },
-    },
-  })
-)
-
-config.resolve.alias['react-native$'] = 'react-native-web'
-
-// set up web extensions
-compiler.options.resolve.extensions = [
-  '.web.tsx',
-  '.web.ts',
-  '.web.js',
-  '.ts',
-  '.tsx',
-  '.js',
-]
-```
-
-#### Vite
-
-```tsx
-import { tamaguiExtractPlugin, tamaguiPlugin } from '@tamagui/vite-plugin'
-import react from '@vitejs/plugin-react-swc'
-
-export default {
-  plugins: [
-    react(),
-    tamaguiPlugin(tamaguiConfig),
-    // optional:
-    process.env.NODE_ENV === 'production' ? tamaguiExtractPlugin(tamaguiConfig) : null,
-  ].filter(Boolean),
-}
-```
-
-Or a minimal manual setup:
-
-```tsx
-config.define = {
-  __DEV__: `${process.env.NODE_ENV === 'development' ? true : false}`,
-  'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-}
-
-config.resolve.alias['react-native'] = 'react-native-web'
-
-// set up web extensions
-config.optimizeDeps.esbuildOptions = {
-  ...config.optimizeDeps.esbuildOptions,
-  resolveExtensions: [
-    '.web.js',
-    '.web.jsx',
-    '.web.ts',
-    '.web.tsx',
-    '.mjs',
-    '.js',
-    '.mts',
-    '.ts',
-    '.jsx',
-    '.tsx',
-    '.json'
-  ],
-  loader: {
-    '.js': 'jsx',
-  },
-}
-```
-
-#### Metro
-
-Early support for Metro web support is here with `@tamagui/metro-plugin`:
-
-```tsx
-// Learn more https://docs.expo.io/guides/customizing-metro
-const { getDefaultConfig } = require('expo/metro-config')
-
-/** @type {import('expo/metro-config').MetroConfig} */
-const config = getDefaultConfig(__dirname, {
-  // [Web-only]: Enables CSS support in Metro.
-  isCSSEnabled: true,
-})
-
-// 2. Enable Tamagui
-const { withTamagui } = require('@tamagui/metro-plugin')
-module.exports = withTamagui(config, {
-  components: ['tamagui'],
-  config: './tamagui.config.ts',
-  outputCSS: './tamagui-web.css',
-})
-```
+<Grid gap="$4">
+  <AvatarCard title="Webpack" img="/logos/webpack.svg" link="/docs/guides/webpack" subtitle="Powerful module bundler for modern JavaScript applications." colorOffset={7} />
+  <AvatarCard title="Metro" img="/logos/metro.svg" link="/docs/guides/metro" subtitle="Fast, scalable, and serverlessr javaScript bundler for react Native." colorOffset={3} />
+  <AvatarCard title="Vite" img="/logos/vite.svg" link="/docs/guides/vite" subtitle="Fast and modern development server and build tool." colorOffset={1} />
+  <AvatarCard title="Expo" img="/logos/expo.svg" link="/docs/guides/expo" subtitle="Platform for creating universal native apps with JavaScript and React." colorOffset={6} />
+  <AvatarCard fg={0} w="49%" $xs={{fg:0, w:"100%"}} title="Next.js" img="/logos/next-js.svg" link="/docs/guides/next-js" subtitle="Full-featured React framework with great developer experience." colorOffset={2}  />
+</Grid>

@@ -211,8 +211,7 @@ The `createTamagui` function receives a configuration object:
   shorthands, they override existing long-form style props.
 
 <Notice>
-  On Android you need to set the `face` option in `createFont` or else fonts
-  won't pick up different weights, due to a React Native restriction.
+  On Android you need to set the `face` option in `createFont` or else fonts won't pick up different weights, due to a React Native restriction.
 </Notice>
 
 Note, for `tamagui` (not core), it expects you to define a `true` token that
@@ -237,10 +236,7 @@ export const tokens = createTokens({
 ```
 
 <Notice>
-  The compiler will parse your tamagui.config.ts file at build-time. For this
-  reason, we recommend keeping it relatively simple. Don't import heavy
-  dependencies, and prefer to import `createTamagui` and other helpers directly
-  from @tamagui/core.
+  The compiler will parse your tamagui.config.ts file at build-time. For this reason, we recommend keeping it relatively simple. Don't import heavy dependencies, and prefer to import `createTamagui` and other helpers directly from @tamagui/core. 
 </Notice>
 
 ### Add Provider
@@ -312,9 +308,7 @@ import '@tamagui/core/reset.css'
 ```
 
 <Notice>
-  You will have to turn `isCSSEnabled` on if you're using Metro as your web
-  bundler. See [Expo's
-  docs](https://docs.expo.dev/versions/latest/config/metro/#css).
+  You will have to turn `isCSSEnabled` on if you're using Metro as your web bundler. See [Expo's docs](https://docs.expo.dev/versions/latest/config/metro/#css).
 </Notice>
 
 ### Setup media query driver
@@ -382,8 +376,7 @@ generation code from `@tamagui/core`, saving ~2kb of minified JS. If you set
 `outputCSS` option with Next.js, this will be set automatically.
 
 <Notice>
-  Make sure the style tag you insert with the `getCSS` styles is inserted after
-  any `react-native-web` style tags to ensure Tamagui overrides those styles.
+  Make sure the style tag you insert with the `getCSS` styles is inserted after any `react-native-web` style tags to ensure Tamagui overrides those styles.
 </Notice>
 
 ## Tokens
@@ -431,8 +424,7 @@ const interFont = createFont({
 ```
 
 <Notice>
-  Note, you don't need to use numbered keys, you can use `sm` or `tiny` or
-  whatever you'd like. But you do want keep those keys consistent.
+  Note, you don't need to use numbered keys, you can use `sm` or `tiny` or whatever you'd like. But you do want keep those keys consistent.
 </Notice>
 
 This gives you a lot of power over customizing every aspect of your design based
