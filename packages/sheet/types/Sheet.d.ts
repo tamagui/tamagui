@@ -2,26 +2,26 @@
 export { createSheetScope } from './SheetContext';
 export * from './types';
 export declare const Handle: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    fullscreen?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
         top?: number | undefined;
         bottom?: number | undefined;
         left?: number | undefined;
         right?: number | undefined;
     } | undefined;
+    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+    fullscreen?: boolean | undefined;
     open?: boolean | undefined;
     unstyled?: boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
 export declare const Overlay: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    fullscreen?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
         top?: number | undefined;
         bottom?: number | undefined;
         left?: number | undefined;
         right?: number | undefined;
     } | undefined;
+    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+    fullscreen?: boolean | undefined;
     open?: boolean | undefined;
     transparent?: boolean | undefined;
     circular?: boolean | undefined;
@@ -37,14 +37,14 @@ export declare const Overlay: import("@tamagui/core").TamaguiComponent<import("@
     chromeless?: boolean | "all" | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
 export declare const Frame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    fullscreen?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
         top?: number | undefined;
         bottom?: number | undefined;
         left?: number | undefined;
         right?: number | undefined;
     } | undefined;
+    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+    fullscreen?: boolean | undefined;
     unstyled?: boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
 export declare const Sheet: import("react").ForwardRefExoticComponent<{
@@ -76,14 +76,14 @@ export declare const Sheet: import("react").ForwardRefExoticComponent<{
 } & import("react").RefAttributes<import("react-native").View>> & {
     Controlled: import("react").FunctionComponent<Omit<import("./types").SheetProps, "open" | "onOpenChange"> & import("react").RefAttributes<import("react-native").View>> & {
         Frame: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-            elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-            fullscreen?: boolean | undefined;
             inset?: number | import("@tamagui/core").SizeTokens | {
                 top?: number | undefined;
                 bottom?: number | undefined;
                 left?: number | undefined;
                 right?: number | undefined;
             } | undefined;
+            elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+            fullscreen?: boolean | undefined;
             unstyled?: boolean | undefined;
         }>, keyof {
             disableHideBottomOverflow?: boolean | undefined;
@@ -95,14 +95,14 @@ export declare const Sheet: import("react").ForwardRefExoticComponent<{
             __scopeSheet?: import("@tamagui/create-context").Scope<any>;
         } & import("react").RefAttributes<unknown>>;
         Overlay: import("react").MemoExoticComponent<(propsIn: import("./types").SheetScopedProps<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-            elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-            fullscreen?: boolean | undefined;
             inset?: number | import("@tamagui/core").SizeTokens | {
                 top?: number | undefined;
                 bottom?: number | undefined;
                 left?: number | undefined;
                 right?: number | undefined;
             } | undefined;
+            elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+            fullscreen?: boolean | undefined;
             open?: boolean | undefined;
             transparent?: boolean | undefined;
             circular?: boolean | undefined;
@@ -149,14 +149,14 @@ export declare const Sheet: import("react").ForwardRefExoticComponent<{
         }>> & import("react").RefAttributes<import("react-native").ScrollView>>;
     };
     Frame: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-        fullscreen?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
             top?: number | undefined;
             bottom?: number | undefined;
             left?: number | undefined;
             right?: number | undefined;
         } | undefined;
+        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+        fullscreen?: boolean | undefined;
         unstyled?: boolean | undefined;
     }>, keyof {
         disableHideBottomOverflow?: boolean | undefined;
@@ -168,14 +168,14 @@ export declare const Sheet: import("react").ForwardRefExoticComponent<{
         __scopeSheet?: import("@tamagui/create-context").Scope<any>;
     } & import("react").RefAttributes<unknown>>;
     Overlay: import("react").MemoExoticComponent<(propsIn: import("./types").SheetScopedProps<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-        fullscreen?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
             top?: number | undefined;
             bottom?: number | undefined;
             left?: number | undefined;
             right?: number | undefined;
         } | undefined;
+        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+        fullscreen?: boolean | undefined;
         open?: boolean | undefined;
         transparent?: boolean | undefined;
         circular?: boolean | undefined;
@@ -223,14 +223,14 @@ export declare const Sheet: import("react").ForwardRefExoticComponent<{
 };
 /** @deprecated use Overlay instead  */
 export declare const SheetOverlayFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    fullscreen?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
         top?: number | undefined;
         bottom?: number | undefined;
         left?: number | undefined;
         right?: number | undefined;
     } | undefined;
+    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+    fullscreen?: boolean | undefined;
     open?: boolean | undefined;
     transparent?: boolean | undefined;
     circular?: boolean | undefined;
@@ -247,14 +247,14 @@ export declare const SheetOverlayFrame: import("@tamagui/core").TamaguiComponent
 }, import("@tamagui/core").StaticConfigPublic>;
 /** @deprecated use Overlay instead  */
 export declare const SheetHandleFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    fullscreen?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
         top?: number | undefined;
         bottom?: number | undefined;
         left?: number | undefined;
         right?: number | undefined;
     } | undefined;
+    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+    fullscreen?: boolean | undefined;
     open?: boolean | undefined;
     unstyled?: boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;

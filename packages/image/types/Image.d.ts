@@ -5,13 +5,16 @@ declare const StyledImage: import("@tamagui/core").TamaguiComponent<import("@tam
 type StyledImageProps = Omit<GetProps<typeof StyledImage>, 'borderRadius'> & {
     borderRadius?: RadiusTokens;
 };
-type BaseProps = Omit<StyledImageProps, 'width' | 'height' | 'style' | 'onLayout'> & {
+type BaseProps = Omit<StyledImageProps, 'width' | 'height' | 'style' | 'onLayout' | 'resizeMode'> & {
     width?: string | number | SizeTokens | ThemeValueFallback;
     height?: string | number | SizeTokens | ThemeValueFallback;
     /**
      * @deprecated use `source` instead to disambiguate width/height style from width/height of the actual image
      */
     src?: string | StyledImageProps['source'];
+    /** @deprecated use objectFit instead */
+    resizeMode?: StyledImageProps['resizeMode'];
+    objectFit?: React.CSSProperties['objectFit'];
 };
 export type ImageProps = BaseProps & Omit<StackProps, keyof BaseProps>;
 type RNImageType = typeof RNImage;

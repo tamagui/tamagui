@@ -700,10 +700,6 @@ interface ExtraStyleProps {
      * Web-only style property. Will be omitted on native.
      */
     outlineWidth?: SpaceValue;
-    /**
-     * Web-only style property. Will be omitted on native.
-     */
-    userSelect?: Properties['userSelect'];
     pointerEvents?: ViewProps['pointerEvents'];
     /**
      * @deprecated Use `gap`
@@ -738,6 +734,204 @@ interface ExtraStyleProps {
      * The point at which transforms originate from.
      */
     transformOrigin?: PxOrPct | 'left' | 'center' | 'right' | 'top' | 'bottom' | TwoValueTransformOrigin | `${TwoValueTransformOrigin} ${Px}`;
+    /**
+     * @platform: web
+     */
+    filter?: Properties['filter'];
+    /**
+     * @platform: web
+     */
+    backdropFilter?: Properties['backdropFilter'];
+    /**
+     * @platform: web
+     */
+    mixBlendMode?: Properties['mixBlendMode'];
+    /**
+     * @platform: web
+     */
+    backgroundImage?: Properties['backgroundImage'];
+    /**
+     * @platform: web
+     */
+    backgroundOrigin?: Properties['backgroundOrigin'];
+    /**
+     * @platform: web
+     */
+    backgroundPosition?: Properties['backgroundPosition'];
+    /**
+     * @platform: web
+     */
+    backgroundRepeat?: Properties['backgroundRepeat'];
+    /**
+     * @platform: web
+     */
+    backgroundSize?: Properties['backgroundSize'];
+    /**
+     * @platform: web
+     */
+    backgroundColor?: Properties['backgroundColor'];
+    /**
+     * @platform: web
+     */
+    backgroundClip?: Properties['backgroundClip'];
+    /**
+     * @platform: web
+     */
+    backgroundBlendMode?: Properties['backgroundBlendMode'];
+    /**
+     * @platform: web
+     */
+    backgroundAttachment?: Properties['backgroundAttachment'];
+    /**
+     * @platform: web
+     */
+    background?: Properties['background'];
+    /**
+     * @platform: web
+     */
+    clipPath?: Properties['clipPath'];
+    /**
+     * @platform: web
+     */
+    caretColor?: Properties['caretColor'];
+    /**
+     * @platform: web
+     */
+    transformStyle?: Properties['transformStyle'];
+    /**
+     * @platform: web
+     */
+    mask?: Properties['mask'];
+    /**
+     * @platform: web
+     */
+    maskImage?: Properties['maskImage'];
+    /**
+     * @platform: web
+     */
+    textEmphasis?: Properties['textEmphasis'];
+    /**
+     * @platform: web
+     */
+    borderImage?: Properties['borderImage'];
+    /**
+     * @platform: web
+     */
+    float?: Properties['float'];
+    /**
+     * @platform: web
+     */
+    content?: Properties['content'];
+    /**
+     * @platform: web
+     */
+    overflowBlock?: Properties['overflowBlock'];
+    /**
+     * @platform: web
+     */
+    overflowInline?: Properties['overflowInline'];
+    /**
+     * @platform: web
+     */
+    maskBorder?: Properties['maskBorder'];
+    /**
+     * @platform: web
+     */
+    maskBorderMode?: Properties['maskBorderMode'];
+    /**
+     * @platform: web
+     */
+    maskBorderOutset?: Properties['maskBorderOutset'];
+    /**
+     * @platform: web
+     */
+    maskBorderRepeat?: Properties['maskBorderRepeat'];
+    /**
+     * @platform: web
+     */
+    maskBorderSlice?: Properties['maskBorderSlice'];
+    /**
+     * @platform: web
+     */
+    maskBorderSource?: Properties['maskBorderSource'];
+    /**
+     * @platform: web
+     */
+    maskBorderWidth?: Properties['maskBorderWidth'];
+    /**
+     * @platform: web
+     */
+    maskClip?: Properties['maskClip'];
+    /**
+     * @platform: web
+     */
+    maskComposite?: Properties['maskComposite'];
+    /**
+     * @platform: web
+     */
+    maskMode?: Properties['maskMode'];
+    /**
+     * @platform: web
+     */
+    maskOrigin?: Properties['maskOrigin'];
+    /**
+     * @platform: web
+     */
+    maskPosition?: Properties['maskPosition'];
+    /**
+     * @platform: web
+     */
+    maskRepeat?: Properties['maskRepeat'];
+    /**
+     * @platform: web
+     */
+    maskSize?: Properties['maskSize'];
+    /**
+     * @platform: web
+     */
+    maskType?: Properties['maskType'];
+    borderInlineColor?: ColorTokens;
+    borderInlineStartColor?: ColorTokens;
+    borderInlineEndColor?: ColorTokens;
+    borderBlockWidth?: SpaceTokens | number;
+    borderBlockStartWidth?: SpaceTokens | number;
+    borderBlockEndWidth?: SpaceTokens | number;
+    borderInlineWidth?: SpaceTokens | number;
+    borderInlineStartWidth?: SpaceTokens | number;
+    borderInlineEndWidth?: SpaceTokens | number;
+    borderBlockStyle?: ViewStyle['borderStyle'];
+    borderBlockStartStyle?: ViewStyle['borderStyle'];
+    borderBlockEndStyle?: ViewStyle['borderStyle'];
+    borderInlineStyle?: ViewStyle['borderStyle'];
+    borderInlineStartStyle?: ViewStyle['borderStyle'];
+    borderInlineEndStyle?: ViewStyle['borderStyle'];
+    marginBlock?: SpaceTokens | number;
+    marginBlockStart?: SpaceTokens | number;
+    marginBlockEnd?: SpaceTokens | number;
+    marginInline?: SpaceTokens | number;
+    marginInlineStart?: SpaceTokens | number;
+    marginInlineEnd?: SpaceTokens | number;
+    paddingBlock?: SpaceTokens | number;
+    paddingBlockStart?: SpaceTokens | number;
+    paddingBlockEnd?: SpaceTokens | number;
+    paddingInline?: SpaceTokens | number;
+    paddingInlineStart?: SpaceTokens | number;
+    paddingInlineEnd?: SpaceTokens | number;
+    objectFit?: Properties['objectFit'];
+    verticalAlign?: Properties['verticalAlign'];
+    inset?: SpaceTokens | number;
+    insetBlock?: SpaceTokens | number;
+    insetBlockStart?: SpaceTokens | number;
+    insetBlockEnd?: SpaceTokens | number;
+    insetInline?: SpaceTokens | number;
+    insetInlineStart?: SpaceTokens | number;
+    insetInlineEnd?: SpaceTokens | number;
+    blockSize?: SizeTokens | number;
+    minBlockSize?: SizeTokens | number;
+    maxBlockSize?: SizeTokens | number;
+    inlineSize?: SizeTokens | number;
+    minInlineSize?: SizeTokens | number;
+    maxInlineSize?: SizeTokens | number;
 }
 export interface ExtendBaseStackProps {
 }
@@ -754,6 +948,10 @@ export interface TextStylePropsBase extends Omit<TextStyle, keyof OverrideNonSty
     textOverflow?: Properties['textOverflow'];
     whiteSpace?: Properties['whiteSpace'];
     wordWrap?: Properties['wordWrap'];
+    /** @deprecated use userSelect instead */
+    selectable?: boolean;
+    /** @deprecated use verticalAlign instead */
+    textAlignVertical?: TextStyle['textAlignVertical'];
 }
 type LooseCombinedObjects<A extends Object, B extends Object> = A | B | (A & B);
 export interface StackNonStyleProps extends Omit<ViewProps, 'hitSlop' | 'pointerEvents' | 'display' | 'children' | RNOnlyProps | keyof ExtendBaseStackProps | 'style'>, ExtendBaseStackProps, TamaguiComponentPropsBase {
