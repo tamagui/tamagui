@@ -518,6 +518,10 @@ export const getSplitStyles: StyleSplitter = (
     let isMedia: IsMediaType = !isStyleLikeKey && !isPseudo && isMediaKey(keyInit)
     let isMediaOrPseudo = Boolean(isMedia || isPseudo)
 
+    if (isMediaOrPseudo && context?.groups.state['true']) {
+      keyInit = keyInit.replace('$group-', `$group-true-`)
+    }
+
     const isStyleProp =
       isValidStyleKeyInit ||
       isMediaOrPseudo ||
