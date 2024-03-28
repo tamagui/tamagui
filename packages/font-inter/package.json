@@ -14,6 +14,15 @@
   ],
   "exports": {
     "./package.json": "./package.json",
+    "./css/100.css": "./css/100.css",
+    "./css/200.css": "./css/200.css",
+    "./css/300.css": "./css/300.css",
+    "./css/400.css": "./css/400.css",
+    "./css/500.css": "./css/500.css",
+    "./css/600.css": "./css/600.css",
+    "./css/700.css": "./css/700.css",
+    "./css/800.css": "./css/800.css",
+    "./css/900.css": "./css/900.css",
     ".": {
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
