@@ -2,9 +2,9 @@ import { useAsyncStorage } from '@react-native-async-storage/async-storage'
 import { DarkTheme, DefaultTheme, NavigationContainer } from '@react-navigation/native'
 // causes metro bundle issue it seems:
 // import * as Linking from 'expo-linking'
+import * as sections from '@tamagui/bento'
 import React, { useContext, useMemo } from 'react'
 import { Linking, Platform } from 'react-native'
-
 import { ThemeContext } from '../../useKitchenSinkTheme'
 
 const PERSISTENCE_KEY = 'NAVIGATION_STATE_V4_5'
@@ -39,6 +39,11 @@ export function NavigationProvider({ children }: { children: React.ReactNode }) 
     }
   }, [isReady])
 
+  const bentoScreens = sections.listingData.sections.reduce((acc, { sectionName }) => {
+    acc[sectionName] = `${sectionName}/:id`
+    return acc
+  }, {})
+
   const linking = useMemo(
     () => ({
       // Linking.createURL('/')
@@ -51,6 +56,8 @@ export function NavigationProvider({ children }: { children: React.ReactNode }) 
           tests: 'tests',
           test: 'test/:id',
           sandbox: 'sandbox',
+          bento: 'bento',
+          ...bentoScreens,
         },
       } as const,
     }),
