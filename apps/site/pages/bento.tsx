@@ -74,56 +74,64 @@ export default function BentoPage(props: ProComponentsProps) {
   const store = useStore(BentoStore)
 
   return (
-    <Theme name="tan">
-      <ThemeNameEffect colorKey="$color6" />
+    <>
+      <PurchaseModal
+        bento={props.bento}
+        defaultValue="bento"
+        fontsPack={props.fontsPack}
+        iconsPack={props.iconsPack}
+        starter={props.starter}
+      />
+      <Theme name="tan">
+        <ThemeNameEffect colorKey="$color6" />
 
-      <XStack
-        zi={1000}
-        // @ts-ignore
-        pos="fixed"
-        b={0}
-        l={0}
-        r={0}
-        theme="yellow"
-        bg="rgba(0,0,0,0.5)"
-      >
-        <ContainerLarge>
-          <YStack ai="center" py="$2">
-            <Paragraph size="$2" color="#fff">
-              <b>Early Access!</b> Mobile support is being improved, but you may find it
-              valuable already.
-            </Paragraph>
-          </YStack>
-        </ContainerLarge>
-      </XStack>
-
-      <BentoPageFrame>
-        <ContainerLarge
-          zi={10}
-          h={0}
-          // offset for the banner
-          mt={30}
+        <XStack
+          zi={1000}
+          // @ts-ignore
+          pos="fixed"
+          b={0}
+          l={0}
+          r={0}
+          theme="yellow"
+          bg="rgba(0,0,0,0.5)"
         >
-          <Button
-            pos="absolute"
-            t="$-10"
-            r="$8"
-            size="$2"
-            circular
-            icon={store.heroVisible ? Search : ChevronDown}
-            onPress={() => {
-              store.heroVisible = !store.heroVisible
+          <ContainerLarge>
+            <YStack ai="center" py="$2">
+              <Paragraph size="$2" color="#fff">
+                <b>Early Access!</b> Mobile support is being improved, but you may find it
+                valuable already.
+              </Paragraph>
+            </YStack>
+          </ContainerLarge>
+        </XStack>
+
+        <BentoPageFrame>
+          <ContainerLarge
+            zi={10}
+            h={0}
+            // offset for the banner
+            mt={30}
+          >
+            <Button
+              pos="absolute"
+              t="$-10"
+              r="$8"
+              size="$2"
+              circular
+              icon={store.heroVisible ? Search : ChevronDown}
+              onPress={() => {
+                store.heroVisible = !store.heroVisible
+              }}
+              bg="$background025"
+            ></Button>
+          </ContainerLarge>
+          <YStack
+            onLayout={(e) => {
+              store.heroHeight = e.nativeEvent.layout.height
             }}
-            bg="$background025"
-          ></Button>
-        </ContainerLarge>
-        <YStack
-          onLayout={(e) => {
-            store.heroHeight = e.nativeEvent.layout.height
-          }}
-        >
-          <Hero mainProduct={props.bento} />
-          {/* <YStack pos="relative" zi={10000}>
+          >
+            <Hero mainProduct={props.bento} />
+            {/* <YStack pos="relative" zi={10000}>
             <ContainerLarge>
               <YStack pos="absolute" t={-50} r={80} rotate="-10deg">
                 <BentoIcon scale={3} />
@@ -131,18 +139,12 @@ export default function BentoPage(props: ProComponentsProps) {
             </ContainerLarge>
           </YStack> */}
 
-          <Intermediate />
-        </YStack>
-        <Body />
-        <PurchaseModal
-          bento={props.bento}
-          defaultValue="bento"
-          fontsPack={props.fontsPack}
-          iconsPack={props.iconsPack}
-          starter={props.starter}
-        />
-      </BentoPageFrame>
-    </Theme>
+            <Intermediate />
+          </YStack>
+          <Body />
+        </BentoPageFrame>
+      </Theme>
+    </>
   )
 }
 

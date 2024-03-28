@@ -14,7 +14,7 @@ import { Check, X } from '@tamagui/lucide-icons'
 import { useUser } from 'hooks/useUser'
 import Link from 'next/link'
 import React, { useMemo, useState } from 'react'
-import type { ThemeName } from 'tamagui'
+import type { TabsProps, ThemeName } from 'tamagui'
 import {
   AnimatePresence,
   Button,
@@ -130,6 +130,8 @@ export const PurchaseModal = ({
 
   const [currentTab, setCurrentTab] = useState(defaultValue)
 
+  console.log('currentTab', currentTab)
+
   return (
     <Dialog
       modal
@@ -196,32 +198,28 @@ export const PurchaseModal = ({
             size="$6"
             value={currentTab}
           >
-            <Tabs.List>
+            <Tabs.List disablePassBorderRadius>
               <YStack width={'50%'} f={1}>
-                <Tabs.Tab
+                <Tab
                   onPress={() => setCurrentTab('takeout')}
-                  disableActiveTheme
+                  isActive={currentTab === 'takeout'}
                   value="takeout"
-                  backgroundColor={
-                    currentTab === 'takeout' ? '$background' : '$background075'
-                  }
                 >
                   <H4 fontFamily="$cherryBomb">
                     <ThemedTakeoutLogo />
                   </H4>
-                </Tabs.Tab>
+                </Tab>
               </YStack>
+              <Separator vertical bc="$color4" mb={2} mx={-1} />
               <YStack width={'50%'} f={1}>
-                <Tabs.Tab
+                <Tab
                   onPress={() => setCurrentTab('bento')}
-                  disableActiveTheme
+                  isActive={currentTab === 'bento'}
                   value="bento"
-                  backgroundColor={
-                    currentTab === 'bento' ? '$background' : '$background075'
-                  }
+                  end
                 >
                   <BentoLogo noShadow scale={0.2} />
-                </Tabs.Tab>
+                </Tab>
               </YStack>
             </Tabs.List>
             <ScrollView $gtSm={{ height: '60vh' }}>
@@ -652,5 +650,48 @@ const ThemedTakeoutLogo = () => {
       <Theme name={tints[5] as ThemeName}>u</Theme>
       <Theme name={tints[6] as ThemeName}>t</Theme>
     </>
+  )
+}
+
+function Tab({
+  children,
+  isActive,
+  end,
+  ...props
+}: Omit<TabsProps, 'end'> & { isActive: boolean; end?: boolean }) {
+  return (
+    <Tabs.Tab
+      group="takeoutBody"
+      unstyled
+      ov="hidden"
+      py="$4"
+      btrr={end ? '$3' : 0}
+      btlr={!end ? '$3' : 0}
+      value=""
+      disableActiveTheme
+      bbw={1}
+      bbc="transparent"
+      {...(!isActive && {
+        bbc: '$color4',
+      })}
+      {...props}
+    >
+      <YStack
+        fullscreen
+        pe="none"
+        zi={-1}
+        {...(isActive && {
+          bg: '$background',
+        })}
+        {...(!isActive && {
+          bg: '$color1',
+          o: 0.25,
+          '$group-takeoutBody-hover': {
+            o: 0.33,
+          },
+        })}
+      />
+      {children}
+    </Tabs.Tab>
   )
 }
