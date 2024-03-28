@@ -148,6 +148,9 @@ const bentoDefaults = {
   price_1OiqquFQGtHoG6xcZxZaVF2B: {
     seats: 1,
   },
+  price_1OzPhmFQGtHoG6xcGw6ArGWp: {
+    prices: 10,
+  },
   price_1OeBK5FQGtHoG6xcTB6URHYD: {
     seats: 20,
   },
@@ -162,7 +165,8 @@ export function BentoTable({
   }
   selectedPriceId: string
 }) {
-  const priceInfo = bentoDefaults[selectedPriceId]
+  const price = product?.prices.find((price) => price.id === selectedPriceId)
+  const priceInfo = price ? bentoDefaults[price.id] : null
 
   return (
     <YStack
@@ -177,7 +181,9 @@ export function BentoTable({
             Lifetime access
           </Paragraph>
           <Paragraph size="$3" theme="alt1">
-            You own the code, get updates&nbsp;for&nbsp;life
+            {price?.metadata?.['is_lifetime']
+              ? 'You own the code, get updates for life'
+              : "You own the code, get updates as long as you're subscribed"}
           </Paragraph>
         </YStack>
         <XStack f={1} ai="center" gap="$2" jc="center">
@@ -194,7 +200,7 @@ export function BentoTable({
           </Paragraph>
         </YStack>
         <XStack f={1} ai="center" gap="$2" jc="center">
-          <Paragraph size="$8">{priceInfo?.seats}</Paragraph>
+          <Paragraph size="$8">{priceInfo?.seats || '-'}</Paragraph>
         </XStack>
       </XStack>
     </YStack>
@@ -210,9 +216,8 @@ export const TakeoutTable = ({
   }
   selectedPriceId: string
 }) => {
-  const takeoutPriceInfo = getTakeoutPriceInfo(
-    product?.prices.find((price) => price.id === selectedPriceId)?.description ?? ''
-  )
+  const price = product?.prices.find((price) => price.id === selectedPriceId)
+  const takeoutPriceInfo = getTakeoutPriceInfo(price?.description ?? '')
   return (
     <YStack
       separator={<Separator o={0.35} />}
