@@ -38,7 +38,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
     return (
       <>
         {/* capture all docs pages */}
-        <ThemeNameEffect />
+        <ThemeNameEffect colorKey="$color1" />
 
         <YStack tag="article">
           <Container pos="relative">{children}</Container>
