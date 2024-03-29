@@ -64,12 +64,17 @@ export const PurchaseModal = ({
   // const prices = products.prices
   // const [selectedPriceId, setSelectedPriceId] = useState(prices[prices.length - 1].id)
 
+  console.log('bento prop:', bento)
+
   const sortedStarterPrices = (starter?.prices ?? []).sort(
     (a, b) => a.unit_amount! - b.unit_amount!
   )
-  const sortedBentoPrices = (bento?.prices ?? []).sort(
+  let sortedBentoPrices = (bento?.prices ?? []).sort(
     (a, b) => a.unit_amount! - b.unit_amount!
   )
+
+  //TODO: fallback until descriptions are updated on Stripe
+
   const [starterPriceId, setStarterPriceId] = useState<null | string>(
     defaultValue === 'takeout' ? sortedStarterPrices[0]?.id || null : null
   )
