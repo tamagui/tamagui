@@ -9,7 +9,9 @@ import { TestCasesScreen } from './features/testcases/screen'
 import { TestScreen } from './features/testcases/test-screen'
 import { SectionScreen } from './features/bento/section-screen'
 import { BentoPartScreenItem } from './features/bento/part-screen-items'
+import React from 'react'
 
+console.log('sections', sections)
 const bentoScreenNames = sections.listingData.sections.map(
   ({ sectionName }) => sectionName
 )
@@ -38,23 +40,20 @@ const Stack = createNativeStackNavigator<
 export function Navigation() {
   const bentoScreensPerElement = Object.entries(sections)
     .filter(([key]) => /\b[A-Z][a-z0-9]+(?:[A-Z][a-z0-9]+)*\b/.test(key))
-    .map(([, sectionModules]) => sectionModules)
-    .map(Object.entries)
+    .map(([, sectionModules]) => Object.entries(sectionModules as any))
     .reduce((acc, curr) => acc.concat(curr), [])
     .filter(([key]) => !['default', 'SizableText', 'Example'].includes(key))
     .map(([name, Component]) => {
       return (
         <Stack.Screen
           name={name}
-          component={Component}
+          component={Component as React.ComponentType<any>}
           options={{
             title: name,
           }}
         />
       )
     })
-
-  console.log('bentoScreensPerElement', bentoScreensPerElement)
 
   return (
     <Stack.Navigator initialRouteName="home">
