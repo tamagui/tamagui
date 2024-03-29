@@ -9031,6 +9031,7 @@ __metadata:
     "@tamagui/compose-refs": "npm:1.93.3"
     "@tamagui/constants": "npm:1.93.3"
     "@tamagui/helpers": "npm:1.93.3"
+    "@tamagui/lucide-icons": "npm:1.93.3"
     "@tamagui/normalize-css-color": "npm:1.93.3"
     "@tamagui/timer": "npm:1.93.3"
     "@tamagui/types": "npm:1.93.3"

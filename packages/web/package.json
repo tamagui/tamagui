@@ -30,6 +30,7 @@
     "@tamagui/compose-refs": "1.93.3",
     "@tamagui/constants": "1.93.3",
     "@tamagui/helpers": "1.93.3",
+    "@tamagui/lucide-icons": "1.93.3",
     "@tamagui/normalize-css-color": "1.93.3",
     "@tamagui/timer": "1.93.3",
     "@tamagui/types": "1.93.3",
