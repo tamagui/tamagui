@@ -753,6 +753,9 @@ export type GroupMediaKeys =
   | `$group-${GroupNames}-${ParentMediaStates}`
   | `$group-${GroupNames}-${MediaQueryKey}`
   | `$group-${GroupNames}-${MediaQueryKey}-${ParentMediaStates}`
+  | `$group-${ParentMediaStates}`
+  | `$group-${MediaQueryKey}`
+  | `$group-${MediaQueryKey}-${ParentMediaStates}`
 
 export type WithMediaProps<A> = {
   [Key in
