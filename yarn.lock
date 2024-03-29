@@ -9047,6 +9047,21 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/webimage@workspace:packages/webimage":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/webimage@workspace:packages/webimage"
+  dependencies:
+    "@tamagui/build": "npm:1.93.3"
+    "@tamagui/constants": "npm:1.93.3"
+    "@tamagui/core": "npm:1.93.3"
+    react: "npm:^18.2.0"
+    react-native: "npm:^0.73.4"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/website@workspace:apps/website":
   version: 0.0.0-use.local
   resolution: "@tamagui/website@workspace:apps/website"
