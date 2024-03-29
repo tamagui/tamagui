@@ -44,6 +44,22 @@ export function NavigationProvider({ children }: { children: React.ReactNode }) 
     return acc
   }, {})
 
+  const bentoElementScreens = Object.entries(sections['Inputs']).reduce(
+    (acc, component) => {
+      acc[component[0]] = `${component[0]}`
+      return acc
+    },
+    {}
+  )
+
+  let bentoScreensPerElementRoutes = Object.entries(sections)
+    .filter(([key]) => /\b[A-Z][a-z0-9]+(?:[A-Z][a-z0-9]+)*\b/.test(key))
+    .map(([, sectionModules]) => sectionModules)
+    .map(Object.entries)
+    .slice(0, -1)
+    .reduce((acc, curr) => acc.concat(curr), [])
+    .reduce((acc, [key, value]) => ({ ...acc, [key]: key }), {})
+
   const linking = useMemo(
     () => ({
       // Linking.createURL('/')
@@ -58,6 +74,8 @@ export function NavigationProvider({ children }: { children: React.ReactNode }) 
           sandbox: 'sandbox',
           bento: 'bento',
           ...bentoScreens,
+          ...bentoElementScreens,
+          ...bentoScreensPerElementRoutes,
         },
       } as const,
     }),

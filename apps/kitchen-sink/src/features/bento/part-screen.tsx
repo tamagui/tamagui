@@ -26,7 +26,8 @@ export function BentoPartScreen({ navigation }) {
       <YStack jc="center" ai="center" bg="$background" minWidth="100%" px="$2">
         {Object.values(sections[name] ?? []).map((Component, index) => {
           const ComponentElement = Component as React.ElementType
-          return <ComponentElement key={index} />
+          // add navigation prop here just for components that use it. eg: TabBar
+          return <ComponentElement key={index} navigation={navigation} />
         })}
       </YStack>
     </ScrollView>
