@@ -16,6 +16,7 @@ export type PluginOptions = TamaguiOptions & {
   disableModuleJSXEntry?: boolean
   disableWatchConfig?: boolean
   disableAliases?: boolean
+  useTamaguiSVG?: boolean
 }
 
 const dir = process.cwd()
@@ -108,7 +109,10 @@ export class TamaguiPlugin {
         ['react/jsx-dev-runtime.js', 'react/jsx-dev-runtime'],
         ['react/jsx-dev-runtime', 'react/jsx-dev-runtime'],
 
-        // @ts-expect-error deprecated
+        ...(this.options.useTamaguiSVG
+          ? [['react-native-svg', '@tamagui/react-native-svg'] as [string, string]]
+          : ([] as any)),
+
         ...(this.options.useReactNativeWebLite
           ? [
               ['react-native$', 'react-native-web-lite'],
