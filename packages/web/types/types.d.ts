@@ -493,7 +493,7 @@ export interface TypeOverride {
 }
 export type GroupNames = ReturnType<TypeOverride['groupNames']> extends 1 ? never : ReturnType<TypeOverride['groupNames']>;
 type ParentMediaStates = 'hover' | 'press' | 'focus' | 'focusVisible';
-export type GroupMediaKeys = `$group-${GroupNames}` | `$group-${GroupNames}-${ParentMediaStates}` | `$group-${GroupNames}-${MediaQueryKey}` | `$group-${GroupNames}-${MediaQueryKey}-${ParentMediaStates}`;
+export type GroupMediaKeys = `$group-${GroupNames}` | `$group-${GroupNames}-${ParentMediaStates}` | `$group-${GroupNames}-${MediaQueryKey}` | `$group-${GroupNames}-${MediaQueryKey}-${ParentMediaStates}` | `$group-${ParentMediaStates}` | `$group-${MediaQueryKey}` | `$group-${MediaQueryKey}-${ParentMediaStates}`;
 export type WithMediaProps<A> = {
     [Key in MediaPropKeys | GroupMediaKeys | ThemeMediaKeys | PlatformMediaKeys]?: Key extends `$platform-web` ? {
         [SubKey in keyof A | keyof CSSProperties]?: SubKey extends keyof CSSProperties ? CSSProperties[SubKey] : SubKey extends keyof A ? A[SubKey] : SubKey extends keyof WebOnlyValidStyleValues ? WebOnlyValidStyleValues[SubKey] : never;
