@@ -6,7 +6,11 @@ export function AccordionDemo() {
     <Accordion overflow="hidden" width="$20" type="multiple">
       <Accordion.Item value="a1">
         <Accordion.Trigger flexDirection="row" justifyContent="space-between">
-          {({ open }) => (
+          {({
+            open,
+          }: {
+            open: boolean
+          }) => (
             <>
               <Paragraph>1. Take a cold shower</Paragraph>
               <Square animation="quick" rotate={open ? '180deg' : '0deg'}>
@@ -25,7 +29,11 @@ export function AccordionDemo() {
 
       <Accordion.Item value="a2">
         <Accordion.Trigger flexDirection="row" justifyContent="space-between">
-          {({ open }) => (
+          {({
+            open,
+          }: {
+            open: boolean
+          }) => (
             <>
               <Paragraph>2. Eat 4 eggs</Paragraph>
               <Square animation="quick" rotate={open ? '180deg' : '0deg'}>
