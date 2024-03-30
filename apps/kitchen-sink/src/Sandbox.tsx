@@ -1,6 +1,6 @@
 //! tamagui-ignore
 //! debug-verbose
-// import './wdyr'
+import './wdyr'
 
 import { View as RNView } from 'react-native'
 import { View, styled, Square, Image, Tokens, YStack } from 'tamagui'

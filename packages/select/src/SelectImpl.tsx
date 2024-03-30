@@ -155,6 +155,7 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
   })
 
   const floatingRef = refs.floating
+
   const showUpArrow = open && scrollTop > SCROLL_ARROW_THRESHOLD
   const showDownArrow =
     open &&
@@ -164,15 +165,15 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
         floatingRef.current.clientHeight -
         SCROLL_ARROW_THRESHOLD
 
-  const shouldUpdate = showDownArrow || showUpArrow
+  const isScrollable = showDownArrow || showUpArrow
 
   useIsomorphicLayoutEffect(() => {
     window.addEventListener('resize', update)
-    if (open || shouldUpdate) {
+    if (open) {
       update()
     }
     return () => window.removeEventListener('resize', update)
-  }, [open, shouldUpdate])
+  }, [update, open])
 
   const onMatch = useEvent((index: number) => {
     const fn = open ? setActiveIndex : setSelectedIndex
@@ -184,7 +185,7 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
     useDismiss(context, { outsidePress: false }),
     useRole(context, { role: 'listbox' }),
     useInnerOffset(context, {
-      enabled: !fallback,
+      enabled: !fallback && isScrollable,
       onChange: setInnerOffset,
       overflowRef,
       scrollRef: refs.floating,
