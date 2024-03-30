@@ -202,7 +202,7 @@ import { TamaguiProvider } from 'tamagui'
 
 export function NextTamaguiProvider({ children }) {
     useServerInsertedHTML(() => {
-    // this first time this runs you'll get the full CSS including all themes
+    // the first time this runs you'll get the full CSS including all themes
     // after that, it will only return CSS generated since the last call
     return <style dangerouslySetInnerHTML={{ __html: Tamagui.getNewCSS() }} />
     })
