@@ -2,6 +2,7 @@ import { NextLink } from '@components/NextLink'
 import * as Sections from '@tamagui/bento'
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import {
+  AlertCircle,
   BadgeAlert,
   Banana,
   BellDot,
@@ -11,17 +12,23 @@ import {
   ChevronDown,
   CircleUserRound,
   Cog,
+  Dot,
+  Drumstick,
+  FileWarning,
   FormInput,
   Globe,
+  Hand,
   Image,
   Layout,
   Leaf,
   List,
   MessageSquareShare,
+  MessageSquareWarning,
   MousePointerClick,
   NotebookTabs,
   PanelLeft,
   PanelTop,
+  Pin,
   Puzzle,
   RectangleHorizontal,
   Search,
@@ -36,6 +43,7 @@ import {
   Button,
   Circle,
   EnsureFlexed,
+  H2,
   H3,
   H4,
   H5,
@@ -84,26 +92,6 @@ export default function BentoPage(props: ProComponentsProps) {
       />
       <Theme name="tan">
         <ThemeNameEffect colorKey="$color6" />
-
-        <XStack
-          zi={1000}
-          // @ts-ignore
-          pos="fixed"
-          b={0}
-          l={0}
-          r={0}
-          theme="yellow"
-          bg="rgba(0,0,0,0.5)"
-        >
-          <ContainerLarge>
-            <YStack ai="center" py="$2">
-              <Paragraph size="$2" color="#fff">
-                <b>Early Access!</b> Mobile support is being improved, but you may find it
-                valuable already.
-              </Paragraph>
-            </YStack>
-          </ContainerLarge>
-        </XStack>
 
         <BentoPageFrame>
           <ContainerLarge
@@ -404,6 +392,46 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['bento'] }) => 
                 </Paragraph>
               </XStack>
             </YStack>
+          </YStack>
+
+          <YStack pos="absolute" b="6%" r="$2" zi={100}>
+            <Theme name="green">
+              <XStack
+                maw={400}
+                als="center"
+                br="$6"
+                elevation="$1"
+                style={{ WebkitBackdropFilter: 'blur(4px)' }}
+              >
+                <YStack o={0.62} bg="$color10" fullscreen br="$6" />
+                <YStack py="$3.5" px="$4" f={1}>
+                  <H3 fos={17} lh="$6" color="$color2">
+                    Beta 🤙
+                  </H3>
+                  <Paragraph color="$color4" size="$3" lh="$2">
+                    More polish ongoing, some don't work on web.
+                    <br />
+                    There's&nbsp;
+                    <a
+                      href="https://github.com/tamagui/tamagui/pull/2444"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      a&nbsp;PR you can follow
+                    </a>
+                    .
+                  </Paragraph>
+                </YStack>
+                <AlertCircle
+                  pos="absolute"
+                  t="$3"
+                  r="$3"
+                  zi={100}
+                  color="$color7"
+                  size={22}
+                />
+              </XStack>
+            </Theme>
           </YStack>
 
           <YStack

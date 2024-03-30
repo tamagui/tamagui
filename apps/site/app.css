@@ -89,8 +89,9 @@ a {
 :is(.is_Paragraph a, .link a, article p a, footer a) {
   text-decoration: underline;
   text-underline-offset: 4px;
-  text-decoration-thickness: 4px;
+  text-decoration-thickness: 2px;
   text-decoration-color: var(--color6);
+  transition: text-decoration-thickness ease-in-out 100ms;
 }
 
 :is(.is_Paragraph a, .link a, article p a, footer a):hover {
@@ -99,6 +100,7 @@ a {
   text-decoration-thickness: 4px;
   text-decoration-color: var(--color8);
 }
+
 
 .is_Paragraph:has(> ul) {
   margin-bottom: 0;

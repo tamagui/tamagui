@@ -1,3 +1,6 @@
+- media query height taking into account the "safe height" is important
+- Pressability speed https://twitter.com/benschac/status/1773720310715482481
+- https://linear.app/uniswap/issue/EXT-925/tamagui-error-breaking-the-extension
 - document Popover.Anchor
 - Sometimes press getting stuck still on uniswap moonpay flow
 - Text vertical align issue: https://github.com/Uniswap/universe/pull/6730
