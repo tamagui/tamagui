@@ -149,7 +149,7 @@ const bentoDefaults = {
     seats: 1,
   },
   price_1OzPhmFQGtHoG6xcGw6ArGWp: {
-    prices: 10,
+    seats: 10,
   },
   price_1OeBK5FQGtHoG6xcTB6URHYD: {
     seats: 20,
@@ -166,6 +166,7 @@ export function BentoTable({
   selectedPriceId: string
 }) {
   const price = product?.prices.find((price) => price.id === selectedPriceId)
+  console.log('price.id', price.id)
   const priceInfo = price ? bentoDefaults[price.id] : null
 
   return (

@@ -376,7 +376,13 @@ export const PurchaseModal = ({
                                   value={price.id}
                                   id={htmlId}
                                 >
-                                  <H4 mt="$-1">{price.description}</H4>
+                                  <H4 mt="$-1">
+                                    {price.description === 'Team (Unlimited)'
+                                      ? 'Pro'
+                                      : price.description === 'Team (8-10 Users)'
+                                        ? 'Team'
+                                        : 'Personal'}
+                                  </H4>
 
                                   <Paragraph theme="alt2">
                                     {getPriceDescription(price)}
