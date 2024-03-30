@@ -40,6 +40,7 @@ import { BentoAgreementModal, TakeoutAgreementModal } from './AgreementModal'
 import { BentoLogo } from './BentoLogo'
 import { NextLink } from './NextLink'
 import { BentoPoliciesModal, TakeoutPoliciesModal } from './PoliciesModal'
+import { TakeoutLogo } from './TakeoutLogo'
 
 function getPriceDescription(price: TakeoutPageProps['starter']['prices'][number]) {
   return (
@@ -201,13 +202,12 @@ export const PurchaseModal = ({
             <Tabs.List disablePassBorderRadius>
               <YStack width={'50%'} f={1}>
                 <Tab
+                  py={12}
                   onPress={() => setCurrentTab('takeout')}
                   isActive={currentTab === 'takeout'}
                   value="takeout"
                 >
-                  <H4 fontFamily="$cherryBomb">
-                    <ThemedTakeoutLogo />
-                  </H4>
+                  <TakeoutLogo scale={0.125} />
                 </Tab>
               </YStack>
               <Separator vertical bc="$color4" mb={2} mx={-1} />
@@ -218,7 +218,7 @@ export const PurchaseModal = ({
                   value="bento"
                   end
                 >
-                  <BentoLogo noShadow scale={0.2} />
+                  <BentoLogo noShadow backgrounded scale={0.25} />
                 </Tab>
               </YStack>
             </Tabs.List>
@@ -335,6 +335,7 @@ export const PurchaseModal = ({
                     <YStack
                       f={1}
                       maw="50%"
+                      w="50%"
                       $group-takeoutBody-sm={{
                         maw: '100%',
                       }}
@@ -358,7 +359,7 @@ export const PurchaseModal = ({
 
                     <Separator vertical />
 
-                    <YStack f={2} gap="$4">
+                    <YStack gap="$4">
                       <YStack gap="$4">
                         <YStack gap="$2">
                           <RadioGroup
@@ -630,8 +631,8 @@ export const PurchaseModal = ({
             <Dialog.Close asChild>
               <Button
                 position="absolute"
-                top="$-4"
-                right="$-4"
+                top="$2"
+                right="$2"
                 size="$2"
                 circular
                 icon={X}

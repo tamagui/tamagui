@@ -166,7 +166,6 @@ export function BentoTable({
   selectedPriceId: string
 }) {
   const price = product?.prices.find((price) => price.id === selectedPriceId)
-  console.log('price.id', price.id)
   const priceInfo = price ? bentoDefaults[price.id] : null
 
   return (
