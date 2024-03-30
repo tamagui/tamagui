@@ -78,7 +78,7 @@ export declare const Group: React.ForwardRefExoticComponent<Omit<import("@tamagu
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-}>, `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | "unstyled" | "size" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | "elevation" | keyof import("@tamagui/core").StackStyleBase | "transparent" | "fullscreen" | "circular" | "inset" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless" | keyof import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+}>, `$${string}` | `$${number}` | import("@tamagui/core").GroupMediaKeys | `$theme-${string}` | `$theme-${number}` | "unstyled" | "size" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | "elevation" | keyof import("@tamagui/core").StackStyleBase | "transparent" | "fullscreen" | "circular" | "inset" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless" | keyof import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
     unstyled?: boolean | undefined;
     size?: any;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
@@ -207,7 +207,7 @@ export declare const Group: React.ForwardRefExoticComponent<Omit<import("@tamagu
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-}>, `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | "unstyled" | "size" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | "elevation" | keyof import("@tamagui/core").StackStyleBase | "transparent" | "fullscreen" | "circular" | "inset" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless" | keyof import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+}>, `$${string}` | `$${number}` | import("@tamagui/core").GroupMediaKeys | `$theme-${string}` | `$theme-${number}` | "unstyled" | "size" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | "elevation" | keyof import("@tamagui/core").StackStyleBase | "transparent" | "fullscreen" | "circular" | "inset" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless" | keyof import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
     unstyled?: boolean | undefined;
     size?: any;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
@@ -444,7 +444,7 @@ export declare const Group: React.ForwardRefExoticComponent<Omit<import("@tamagu
         radiused?: boolean | undefined;
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
-    }>, `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | "unstyled" | "size" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | "elevation" | keyof import("@tamagui/core").StackStyleBase | "transparent" | "fullscreen" | "circular" | "inset" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless" | keyof import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+    }>, `$${string}` | `$${number}` | import("@tamagui/core").GroupMediaKeys | `$theme-${string}` | `$theme-${number}` | "unstyled" | "size" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | "elevation" | keyof import("@tamagui/core").StackStyleBase | "transparent" | "fullscreen" | "circular" | "inset" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless" | keyof import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
         unstyled?: boolean | undefined;
         size?: any;
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
@@ -684,7 +684,7 @@ export declare const YGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-}>, `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | "unstyled" | "size" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | "elevation" | keyof import("@tamagui/core").StackStyleBase | "transparent" | "fullscreen" | "circular" | "inset" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless" | keyof import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+}>, `$${string}` | `$${number}` | import("@tamagui/core").GroupMediaKeys | `$theme-${string}` | `$theme-${number}` | "unstyled" | "size" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | "elevation" | keyof import("@tamagui/core").StackStyleBase | "transparent" | "fullscreen" | "circular" | "inset" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless" | keyof import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
     unstyled?: boolean | undefined;
     size?: any;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
@@ -813,7 +813,7 @@ export declare const YGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-}>, `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | "unstyled" | "size" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | "elevation" | keyof import("@tamagui/core").StackStyleBase | "transparent" | "fullscreen" | "circular" | "inset" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless" | keyof import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+}>, `$${string}` | `$${number}` | import("@tamagui/core").GroupMediaKeys | `$theme-${string}` | `$theme-${number}` | "unstyled" | "size" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | "elevation" | keyof import("@tamagui/core").StackStyleBase | "transparent" | "fullscreen" | "circular" | "inset" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless" | keyof import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
     unstyled?: boolean | undefined;
     size?: any;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
@@ -1050,7 +1050,7 @@ export declare const YGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
         radiused?: boolean | undefined;
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
-    }>, `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | "unstyled" | "size" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | "elevation" | keyof import("@tamagui/core").StackStyleBase | "transparent" | "fullscreen" | "circular" | "inset" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless" | keyof import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+    }>, `$${string}` | `$${number}` | import("@tamagui/core").GroupMediaKeys | `$theme-${string}` | `$theme-${number}` | "unstyled" | "size" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | "elevation" | keyof import("@tamagui/core").StackStyleBase | "transparent" | "fullscreen" | "circular" | "inset" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless" | keyof import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
         unstyled?: boolean | undefined;
         size?: any;
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
@@ -1290,7 +1290,7 @@ export declare const XGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-}>, `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | "unstyled" | "size" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | "elevation" | keyof import("@tamagui/core").StackStyleBase | "transparent" | "fullscreen" | "circular" | "inset" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless" | keyof import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+}>, `$${string}` | `$${number}` | import("@tamagui/core").GroupMediaKeys | `$theme-${string}` | `$theme-${number}` | "unstyled" | "size" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | "elevation" | keyof import("@tamagui/core").StackStyleBase | "transparent" | "fullscreen" | "circular" | "inset" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless" | keyof import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
     unstyled?: boolean | undefined;
     size?: any;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
@@ -1419,7 +1419,7 @@ export declare const XGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-}>, `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | "unstyled" | "size" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | "elevation" | keyof import("@tamagui/core").StackStyleBase | "transparent" | "fullscreen" | "circular" | "inset" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless" | keyof import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+}>, `$${string}` | `$${number}` | import("@tamagui/core").GroupMediaKeys | `$theme-${string}` | `$theme-${number}` | "unstyled" | "size" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | "elevation" | keyof import("@tamagui/core").StackStyleBase | "transparent" | "fullscreen" | "circular" | "inset" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless" | keyof import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
     unstyled?: boolean | undefined;
     size?: any;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
@@ -1656,7 +1656,7 @@ export declare const XGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
         radiused?: boolean | undefined;
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
-    }>, `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | "unstyled" | "size" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | "elevation" | keyof import("@tamagui/core").StackStyleBase | "transparent" | "fullscreen" | "circular" | "inset" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless" | keyof import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+    }>, `$${string}` | `$${number}` | import("@tamagui/core").GroupMediaKeys | `$theme-${string}` | `$theme-${number}` | "unstyled" | "size" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | "elevation" | keyof import("@tamagui/core").StackStyleBase | "transparent" | "fullscreen" | "circular" | "inset" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless" | keyof import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
         unstyled?: boolean | undefined;
         size?: any;
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
