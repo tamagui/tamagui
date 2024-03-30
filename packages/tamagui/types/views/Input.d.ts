@@ -163,7 +163,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
     themeShallow?: boolean | undefined;
     themeInverse?: boolean | undefined;
     tag?: "object" | "search" | "small" | "sub" | "sup" | "a" | (string & {}) | "address" | "article" | "aside" | "footer" | "header" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "main" | "nav" | "section" | "blockquote" | "dd" | "div" | "dl" | "dt" | "figcaption" | "figure" | "hr" | "li" | "ol" | "ul" | "p" | "pre" | "abbr" | "b" | "bdi" | "bdo" | "br" | "cite" | "code" | "data" | "dfn" | "em" | "i" | "kbd" | "mark" | "q" | "rp" | "rt" | "rtc" | "ruby" | "s" | "samp" | "span" | "strong" | "time" | "u" | "var" | "wbr" | "area" | "audio" | "img" | "map" | "track" | "video" | "embed" | "param" | "picture" | "source" | "canvas" | "noscript" | "script" | "del" | "ins" | "caption" | "col" | "colgroup" | "table" | "thead" | "tbody" | "td" | "th" | "tr" | "button" | "datalist" | "fieldset" | "form" | "input" | "label" | "legend" | "meter" | "optgroup" | "option" | "output" | "progress" | "select" | "textarea" | "details" | "dialog" | "menu" | "summary" | "template" | undefined;
-    group?: undefined;
+    group?: boolean | undefined;
     untilMeasured?: "hide" | "show" | undefined;
     componentName?: string | undefined;
     tabIndex?: string | number | undefined;

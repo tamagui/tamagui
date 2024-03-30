@@ -14,15 +14,7 @@ export const Sandbox = () => {
   const [open, setOpen] = useState(false)
 
   return (
-    <YStack
-      ov="auto"
-      h={200}
-      w={200}
-      bg="red"
-      onScroll={() => {
-        console.warn('>?')
-      }}
-    >
+    <YStack w={500} h={500} als="center" m="auto">
       <SelectDemo />
     </YStack>
   )
