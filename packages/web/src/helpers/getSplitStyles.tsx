@@ -97,7 +97,8 @@ type StyleSplitter = (
   context?: ComponentContextI,
   // web-only
   elementType?: string,
-  debug?: DebugProp
+  debug?: DebugProp,
+  skipThemeTokenResolution?: boolean
 ) => GetStyleResult
 
 export const PROP_SPLIT = '-'
@@ -140,7 +141,8 @@ export const getSplitStyles: StyleSplitter = (
   parentSplitStyles,
   context,
   elementType,
-  debug
+  debug,
+  skipThemeTokenResolution
 ) => {
   conf = conf || getConfig()
 
@@ -204,6 +206,7 @@ export const getSplitStyles: StyleSplitter = (
     viewProps,
     context,
     debug,
+    skipThemeTokenResolution,
   }
 
   if (
@@ -337,41 +340,6 @@ export const getSplitStyles: StyleSplitter = (
         if (keyInit === 'userSelect') {
           keyInit = 'selectable'
           valInit = valInit === 'none' ? false : true
-        } else if (keyInit === 'role') {
-          viewProps['accessibilityRole'] = accessibilityWebRoleToNativeRole[
-            valInit
-          ] as GetStyleResult['viewProps']['AccessibilityRole']
-          continue
-        } else if (keyInit.startsWith('aria-')) {
-          if (webToNativeAccessibilityDirectMap[keyInit]) {
-            const nativeA11yProp = webToNativeAccessibilityDirectMap[keyInit]
-            if (keyInit === 'aria-hidden') {
-              // accessibilityElementsHidden only works with ios, RN version >0.71.1 support aria-hidden which works for both ios/android
-              viewProps['aria-hidden'] = valInit
-            }
-            viewProps[nativeA11yProp] = valInit
-            continue
-          }
-          if (nativeAccessibilityValue[keyInit]) {
-            let field = nativeAccessibilityValue[keyInit]
-            if (viewProps['accessibilityValue']) {
-              viewProps['accessibilityValue'][field] = valInit
-            } else {
-              viewProps['accessibilityValue'] = {
-                [field]: valInit,
-              }
-            }
-          } else if (nativeAccessibilityState[keyInit]) {
-            let field = nativeAccessibilityState[keyInit]
-            if (viewProps['accessibilityState']) {
-              viewProps['accessibilityState'][field] = valInit
-            } else {
-              viewProps['accessibilityState'] = {
-                [field]: valInit,
-              }
-            }
-          }
-          continue
         } else if (keyInit.startsWith('data-')) {
           continue
         }
@@ -435,6 +403,7 @@ export const getSplitStyles: StyleSplitter = (
             viewProps[accessibilityDirectMap[keyInit]] = valInit
             continue
           }
+          // TODO: remove this in the future when react native a11y API is removed
           switch (keyInit) {
             case 'accessibilityRole': {
               if (valInit === 'none') {
@@ -515,6 +484,14 @@ export const getSplitStyles: StyleSplitter = (
     let isMedia: IsMediaType = !isStyleLikeKey && !isPseudo && isMediaKey(keyInit)
     let isMediaOrPseudo = Boolean(isMedia || isPseudo)
 
+    if (isMediaOrPseudo && keyInit.startsWith('$group-')) {
+      const name = keyInit.split('-')[1]
+      // for simple group, name is not in the key
+      if (context?.groups.subscribe && !context?.groups.state[name]) {
+        keyInit = keyInit.replace('$group-', `$group-true-`)
+      }
+    }
+
     const isStyleProp =
       isValidStyleKeyInit ||
       isMediaOrPseudo ||
@@ -547,6 +524,8 @@ export const getSplitStyles: StyleSplitter = (
     const shouldPassThrough = shouldPassProp || isHOCShouldPassThrough
 
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+      console.groupEnd() // react native was not nesting right
+      console.groupEnd() // react native was not nesting right
       console.groupCollapsed(
         `  🔑 ${keyOg}${keyInit !== keyOg ? ` (shorthand for ${keyInit})` : ''} ${
           shouldPassThrough ? '(pass)' : ''
@@ -1106,6 +1085,7 @@ export const getSplitStyles: StyleSplitter = (
   // Button for example uses disableClassName: true but renders to a 'button' element, so needs this
   if (process.env.TAMAGUI_TARGET === 'web') {
     const shouldStringifyTransforms =
+      !styleProps.noNormalize &&
       !staticConfig.isReactNative &&
       !staticConfig.isHOC &&
       (!styleProps.isAnimated || conf.animations.supportsCSSVars)

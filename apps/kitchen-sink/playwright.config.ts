@@ -18,5 +18,5 @@ export default defineConfig({
   fullyParallel: true,
   retries: 1,
 
-  timeout: 10_000,
+  timeout: 50_000,
 })

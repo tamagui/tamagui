@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/animations-reanimated",
-  "version": "1.91.3",
+  "version": "1.93.3",
   "source": "src/index.tsx",
   "sideEffects": true,
   "license": "MIT",
@@ -12,8 +12,17 @@
     "types",
     "dist"
   ],
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./types/index.d.ts",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.js",
+      "react-native": "./dist/cjs/index.native.js"
+    }
+  },
   "devDependencies": {
-    "@tamagui/build": "1.91.3"
+    "@tamagui/build": "1.93.3"
   },
   "scripts": {
     "build": "tamagui-build",

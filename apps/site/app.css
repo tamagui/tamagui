@@ -89,8 +89,9 @@ a {
 :is(.is_Paragraph a, .link a, article p a, footer a) {
   text-decoration: underline;
   text-underline-offset: 4px;
-  text-decoration-thickness: 4px;
+  text-decoration-thickness: 2px;
   text-decoration-color: var(--color6);
+  transition: text-decoration-thickness ease-in-out 100ms;
 }
 
 :is(.is_Paragraph a, .link a, article p a, footer a):hover {
@@ -99,6 +100,7 @@ a {
   text-decoration-thickness: 4px;
   text-decoration-color: var(--color8);
 }
+
 
 .is_Paragraph:has(> ul) {
   margin-bottom: 0;
@@ -857,7 +859,7 @@ textarea {
     transform: translateX(10px) translateY(-10px) scale(1);
   }
 }
-
+/* 
 .shadow-breeze {
   animation: breeze 20s alternate-reverse infinite forwards;
 }
@@ -871,9 +873,9 @@ textarea {
     transform: translateX(1350px) translateY(0px) scale(3.5) rotate(90deg)
       scaleX(-1) scaleY(-1);
   }
-}
+} */
 
-
+/* 
 .shadow-breeze2 {
   animation: breeze2 35s linear alternate-reverse infinite forwards;
 }
@@ -890,7 +892,7 @@ textarea {
   66% {
     transform: translateX(-15px) translateY(-15px);
   }
-}
+} */
 
 :root.t_light .phone-preview {
   opacity: 0;

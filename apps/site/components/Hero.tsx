@@ -93,7 +93,7 @@ const HeroContents = memo(function HeroContents() {
         ov="hidden"
         gap="$3"
         position="relative"
-        pt="$15"
+        pt="$16"
         mb="$4"
         $sm={{
           maxWidth: '100%',

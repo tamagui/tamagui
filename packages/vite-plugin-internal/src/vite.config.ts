@@ -5,12 +5,7 @@ import { join } from 'path'
 import { tamaguiPlugin } from '@tamagui/vite-plugin'
 import react from '@vitejs/plugin-react-swc'
 import { defineConfig } from 'vite'
-
-const reactNative = require('vitest-react-native')
-
-if (!process.env.TAMAGUI_TARGET) {
-  console.warn(`Must set TAMAGUI_TARGET to web or native!`)
-}
+import reactNative from 'vitest-react-native'
 
 const isNative =
   !process.env.DISABLE_REACT_NATIVE &&
@@ -56,8 +51,8 @@ const final = defineConfig({
   ...(isNative && {
     resolve: {
       alias: {
-        '@tamagui/core': require.resolve(`@tamagui/core/native-test`),
-        '@tamagui/web': require.resolve(`@tamagui/core/native-test`),
+        '@tamagui/core': `@tamagui/core/native-test`,
+        '@tamagui/web': `@tamagui/core/native-test`,
       },
       extensions: nativeExtensions,
     },

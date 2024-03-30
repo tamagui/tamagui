@@ -1,6 +1,7 @@
 import type { CLIResolvedOptions, CLIUserOptions, TamaguiOptions } from '@tamagui/types';
-import { TamaguiProjectInfo } from './bundleConfig';
+import { type TamaguiProjectInfo } from './bundleConfig';
 export declare function loadTamagui(propsIn: Partial<TamaguiOptions>): Promise<TamaguiProjectInfo | null>;
+export declare const generateThemesAndLog: (options: TamaguiOptions, force?: boolean) => Promise<void>;
 export declare function loadTamaguiBuildConfigSync(tamaguiOptions: Partial<TamaguiOptions> | undefined): TamaguiOptions;
 export declare function loadTamaguiSync({ forceExports, cacheKey, ...propsIn }: Partial<TamaguiOptions> & {
     forceExports?: boolean;
@@ -9,7 +10,5 @@ export declare function loadTamaguiSync({ forceExports, cacheKey, ...propsIn }: 
 export declare function getOptions({ root, tsconfigPath, tamaguiOptions, host, debug, }?: Partial<CLIUserOptions>): Promise<CLIResolvedOptions>;
 export declare function resolveWebOrNativeSpecificEntry(entry: string): string;
 export { TamaguiProjectInfo };
-export declare function watchTamaguiConfig(tamaguiOptions: TamaguiOptions): Promise<{
-    dispose(): void;
-}>;
+export declare function esbuildWatchFiles(entry: string, onChanged: () => void): Promise<() => void>;
 //# sourceMappingURL=loadTamagui.d.ts.map

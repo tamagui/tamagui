@@ -97,6 +97,41 @@ async function format() {
     }
   )
 
+  console.info(` repair esm mjs exports..`)
+
+  await pMap(
+    packagePaths,
+    async ({ name, location }) => {
+      if (name === '@tamagui/static') {
+        return
+      }
+
+      const cwd = join(process.cwd(), location)
+      const jsonPath = join(cwd, 'package.json')
+      const pkgJson = JSON.parse(
+        readFileSync(jsonPath, {
+          encoding: 'utf-8',
+        })
+      )
+
+      if (pkgJson.exports) {
+        Object.keys(pkgJson.exports).forEach((key) => {
+          const obj = pkgJson.exports?.[key]
+          const importField = obj?.import
+          if (importField?.endsWith('.js')) {
+            obj.import = importField.replace('.js', '.mjs')
+            writeFileSync(jsonPath, JSON.stringify(pkgJson, null, 2) + '\n', {
+              encoding: 'utf-8',
+            })
+          }
+        })
+      }
+    },
+    {
+      concurrency: 10,
+    }
+  )
+
   console.info(` repair package.json source paths..`)
 
   await pMap(

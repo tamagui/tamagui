@@ -13,6 +13,7 @@ import {
   Theme,
   XStack,
   YStack,
+  debounce,
   getMedia,
   styled,
 } from 'tamagui'
@@ -26,7 +27,7 @@ import { NextLink } from './NextLink'
 import { TakeoutIcon } from './TakeoutIcon'
 import { LinearGradient } from 'tamagui/linear-gradient'
 import { ThemeTintAlt } from '@tamagui/logo'
-import { createShallowSetState } from '@tamagui/core'
+import { createShallowSetState, useComposedRefs } from '@tamagui/core'
 
 const HeadAnchor = styled(Paragraph, {
   tag: 'a',
@@ -91,6 +92,17 @@ export const HeaderLinks = (props: HeaderProps) => {
         </HeadAnchor>
       </NextLink>
 
+      <NextLink passHref prefetch={false} href="/ui/intro/1.0.0">
+        <HeadAnchor
+          grid={forceShowAllLinks}
+          $sm={{
+            display: forceShowAllLinks ? 'flex' : 'none',
+          }}
+        >
+          UI
+        </HeadAnchor>
+      </NextLink>
+
       {forceShowAllLinks && (
         <NextLink passHref prefetch={false} href="/community">
           <HeadAnchor grid>Community</HeadAnchor>
@@ -123,27 +135,44 @@ export const HeaderLinks = (props: HeaderProps) => {
         <SlidingPopover>
           <SlidingPopoverContent />
 
-          <SlidingPopoverTrigger id="takeout">
-            <CTAHeaderLink
-              {...props}
-              excludeRoutes={['/', '/bento', '/takeout']}
-              href="/takeout"
-              name="Takeout"
-              description="starter kit"
-              icon={<TakeoutIcon />}
-            />
-          </SlidingPopoverTrigger>
+          <XStack
+            gap="$2"
+            br="$10"
+            px="$2"
+            height={44}
+            ai="center"
+            bw={1}
+            bc="transparent"
+            hoverStyle={{
+              bc: '$color025',
+            }}
+          >
+            <SlidingPopoverTrigger id="takeout">
+              <CTAHeaderLink
+                {...props}
+                excludeRoutes={['/', '/bento', '/takeout']}
+                href="/takeout"
+                name="Takeout"
+                description="starter kit"
+                icon={<TakeoutIcon scale={0.8} />}
+              />
+            </SlidingPopoverTrigger>
 
-          <SlidingPopoverTrigger id="bento">
-            <CTAHeaderLink
-              {...props}
-              excludeRoutes={['*']}
-              href="/bento"
-              name="Bento"
-              description="starter kit"
-              icon={<BentoIcon />}
-            />
-          </SlidingPopoverTrigger>
+            <SlidingPopoverTrigger id="bento">
+              <CTAHeaderLink
+                {...props}
+                excludeRoutes={['*']}
+                href="/bento"
+                name="Bento"
+                description="starter kit"
+                icon={
+                  <YStack y={1}>
+                    <BentoIcon scale={0.8} />
+                  </YStack>
+                }
+              />
+            </SlidingPopoverTrigger>
+          </XStack>
 
           {/* <SlidingPopoverTrigger id="studio">
             <NextLink passHref prefetch={false} href="/studio">
@@ -345,7 +374,7 @@ const CTAHeaderLink = ({
             ai="center"
             py="$2"
             px="$3"
-            br="$4"
+            br="$8"
             hoverStyle={{
               bg: '$backgroundHover',
             }}
@@ -415,6 +444,22 @@ const SlidingPopoverTrigger = YStack.styleable<{ id: string }>(
     const context = React.useContext(SlidingPopoverContext)
     const [layout, setLayout_] = React.useState<LayoutRectangle>()
     const setLayout = createShallowSetState<LayoutRectangle>(setLayout_)
+    const triggerRef = React.useRef<HTMLElement>(null)
+    const combinedRef = useComposedRefs(ref)
+
+    React.useEffect(() => {
+      const handleMove = debounce(() => {
+        const layout = triggerRef.current?.getBoundingClientRect()
+        if (layout) {
+          console.log('layout', layout)
+          setLayout(layout)
+        }
+      }, 16)
+      window.addEventListener('resize', handleMove)
+      return () => {
+        window.removeEventListener('resize', handleMove)
+      }
+    }, [])
 
     return (
       <YStack
@@ -440,7 +485,7 @@ const SlidingPopoverTrigger = YStack.styleable<{ id: string }>(
             y: e.nativeEvent.layout.top,
           })
         }}
-        ref={ref}
+        ref={combinedRef}
         {...props}
       />
     )

@@ -173,6 +173,10 @@ type Rect = {
 };
 export type Popover = {
     anchorTo: (rect: Rect) => void;
+    toggle: () => void;
+    open: () => void;
+    close: () => void;
+    setOpen: (open: boolean) => void;
 };
 export declare const Popover: React.ForwardRefExoticComponent<PopperProps & {
     open?: boolean | undefined;

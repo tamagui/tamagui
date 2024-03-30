@@ -1,13 +1,13 @@
 {
   "name": "@tamagui/types",
-  "version": "1.91.3",
-  "types": "./types.d.ts",
+  "version": "1.93.3",
+  "types": "./types.ts",
   "files": [
-    "types.d.ts"
+    "types.ts"
   ],
   "exports": {
     ".": {
-      "types": "./types.d.ts"
+      "types": "./types.ts"
     }
   },
   "scripts": {

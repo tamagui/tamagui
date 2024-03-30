@@ -1,6 +1,6 @@
 import type { StyleObject } from '@tamagui/helpers';
 import type { Properties } from 'csstype';
-import type { ComponentType, ForwardRefExoticComponent, FunctionComponent, HTMLAttributes, ReactNode, RefAttributes, RefObject } from 'react';
+import type { CSSProperties, ComponentType, ForwardRefExoticComponent, FunctionComponent, HTMLAttributes, ReactNode, RefAttributes, RefObject } from 'react';
 import type { Text as RNText, TextProps as ReactTextProps, TextStyle, View, ViewProps, ViewStyle } from 'react-native';
 import type { Variable } from './createVariable';
 import type { StyledContext } from './helpers/createStyledContext';
@@ -493,10 +493,10 @@ export interface TypeOverride {
 }
 export type GroupNames = ReturnType<TypeOverride['groupNames']> extends 1 ? never : ReturnType<TypeOverride['groupNames']>;
 type ParentMediaStates = 'hover' | 'press' | 'focus' | 'focusVisible';
-export type GroupMediaKeys = `$group-${GroupNames}` | `$group-${GroupNames}-${ParentMediaStates}` | `$group-${GroupNames}-${MediaQueryKey}` | `$group-${GroupNames}-${MediaQueryKey}-${ParentMediaStates}`;
+export type GroupMediaKeys = `$group-${GroupNames}` | `$group-${GroupNames}-${ParentMediaStates}` | `$group-${GroupNames}-${MediaQueryKey}` | `$group-${GroupNames}-${MediaQueryKey}-${ParentMediaStates}` | `$group-${ParentMediaStates}` | `$group-${MediaQueryKey}` | `$group-${MediaQueryKey}-${ParentMediaStates}`;
 export type WithMediaProps<A> = {
     [Key in MediaPropKeys | GroupMediaKeys | ThemeMediaKeys | PlatformMediaKeys]?: Key extends `$platform-web` ? {
-        [SubKey in keyof A]?: A[SubKey] | (SubKey extends keyof WebOnlyValidStyleValues ? WebOnlyValidStyleValues[SubKey] : never);
+        [SubKey in keyof A | keyof CSSProperties]?: SubKey extends keyof CSSProperties ? CSSProperties[SubKey] : SubKey extends keyof A ? A[SubKey] : SubKey extends keyof WebOnlyValidStyleValues ? WebOnlyValidStyleValues[SubKey] : never;
     } : A;
 };
 export type WebOnlyValidStyleValues = {
@@ -756,12 +756,71 @@ export interface TextStylePropsBase extends Omit<TextStyle, keyof OverrideNonSty
     wordWrap?: Properties['wordWrap'];
 }
 type LooseCombinedObjects<A extends Object, B extends Object> = A | B | (A & B);
-export interface StackNonStyleProps extends Omit<ViewProps, 'hitSlop' | 'pointerEvents' | 'display' | 'children' | RNOnlyProps | keyof ExtendBaseStackProps | 'style'>, ExtendBaseStackProps, TamaguiComponentPropsBase {
+type A11yDeprecated = {
+    /**
+     * @deprecated
+     * use aria-hidden instead
+     * https://reactnative.dev/docs/accessibility#aria-hidden
+     */
+    accessibilityElementsHidden?: ViewProps['accessibilityElementsHidden'];
+    /**
+     * @deprecated
+     * native doesn't support this, so fallback to accessibilityHint on native
+     * use aria-describedby instead
+     */
+    accessibilityHint?: ViewProps['accessibilityHint'];
+    /**
+     * @deprecated
+     * use aria-label instead
+     * https://reactnative.dev/docs/accessibility#aria-label
+     */
+    accessibilityLabel?: ViewProps['accessibilityLabel'];
+    /**
+     * @deprecated
+     * use aria-labelledby instead
+     * https://reactnative.dev/docs/accessibility#aria-label
+     */
+    accessibilityLabelledBy?: ViewProps['accessibilityLabelledBy'];
+    /**
+     * @deprecated
+     * use aria-live instead
+     */
+    accessibilityLiveRegion?: ViewProps['accessibilityLiveRegion'];
+    /**
+     * @deprecated
+     * use role instead
+     */
+    accessibilityRole?: ViewProps['accessibilityRole'];
+    /**
+     * @deprecated
+     * use aria-disabled, aria-selected, aria-checked, aria-busy, and aria-expanded instead
+     * https://reactnative.dev/docs/accessibility#aria-busy
+     */
+    accessibilityState?: ViewProps['accessibilityState'];
+    /**
+     * @deprecated
+     * use aria-valuemax, aria-valuemin, aria-valuenow, and aria-valuetext instead
+     * https://reactnative.dev/docs/accessibility#aria-valuemax
+     */
+    accessibilityValue?: ViewProps['accessibilityValue'];
+    /**
+     * @deprecated
+     * use aria-modal instead
+     */
+    accessibilityViewIsModal?: ViewProps['accessibilityViewIsModal'];
+    /**
+     * @deprecated
+     * use tabIndex={0} instead
+     * make sure to fallback to accessible on native
+     */
+    accessible?: ViewProps['accessible'];
+};
+export interface StackNonStyleProps extends A11yDeprecated, Omit<ViewProps, 'hitSlop' | 'pointerEvents' | 'display' | 'children' | RNOnlyProps | keyof ExtendBaseStackProps | 'style'>, ExtendBaseStackProps, TamaguiComponentPropsBase {
     style?: StyleProp<LooseCombinedObjects<React.CSSProperties, ViewStyle>>;
 }
 export type StackStyle = WithThemeShorthandsPseudosMedia<StackStyleBase>;
 export type StackProps = StackNonStyleProps & StackStyle;
-export interface TextNonStyleProps extends Omit<ReactTextProps, 'children' | keyof WebOnlyPressEvents | RNOnlyProps | keyof ExtendBaseTextProps | 'style'>, ExtendBaseTextProps, TamaguiComponentPropsBase {
+export interface TextNonStyleProps extends A11yDeprecated, Omit<ReactTextProps, 'children' | keyof WebOnlyPressEvents | RNOnlyProps | keyof ExtendBaseTextProps | 'style'>, ExtendBaseTextProps, TamaguiComponentPropsBase {
     style?: StyleProp<LooseCombinedObjects<React.CSSProperties, TextStyle>>;
 }
 export type TextStyleProps = WithThemeShorthandsPseudosMedia<TextStylePropsBase>;
@@ -842,6 +901,7 @@ export type GetStyleState = {
     fontFamily?: string;
     debug?: DebugProp;
     flatTransforms?: Record<string, any>;
+    skipThemeTokenResolution?: boolean;
 };
 export type StyleResolver<Response = PropMappedValue> = (key: string, value: any, props: SplitStyleProps, state: GetStyleState, parentVariantKey: string) => Response;
 export type PropMapper = (key: string, value: any, state: GetStyleState, subProps?: Record<string, any>) => PropMappedValue;
@@ -1088,7 +1148,6 @@ export type TamaguiComponentStateRef = {
     hasAnimated?: boolean;
     themeShallow?: boolean;
     isListeningToTheme?: boolean;
-    handleFocusVisible?: boolean;
     unPress?: Function;
     group?: {
         listeners: Set<GroupStateListener>;

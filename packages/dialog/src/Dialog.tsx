@@ -731,7 +731,6 @@ const DialogClose = DialogCloseFrame.styleable<DialogCloseExtraProps>(
         {...closeProps}
         ref={forwardedRef}
         onPress={composeEventHandlers(props.onPress as any, () => {
-          console.warn('??')
           context.onOpenChange(false)
         })}
       />

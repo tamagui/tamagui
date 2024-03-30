@@ -1,22 +1,8 @@
 import { ErrorBoundary } from '@components/ErrorBoundary'
-import { PoweredByStripeIcon } from '@components/PoweredByStripeIcon'
 import { getDefaultLayout } from '@lib/getDefaultLayout'
-import { getTakeoutPriceInfo } from '@lib/getProductInfo'
-import { stripe } from '@lib/stripe'
-import type { Database } from '@lib/supabase-types'
-import { getArray } from '@lib/supabase-utils'
-import { supabaseAdmin } from '@lib/supabaseAdmin'
 import { getSize } from '@tamagui/get-token'
 import { ThemeTint, ThemeTintAlt, useTint } from '@tamagui/logo'
-import {
-  Check,
-  CheckCircle,
-  Dot,
-  Hammer,
-  PlayCircle,
-  X,
-  XCircle,
-} from '@tamagui/lucide-icons'
+import { Check, Dot, Hammer, PlayCircle, X } from '@tamagui/lucide-icons'
 import { useClientValue, useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
 import { useUser } from 'hooks/useUser'
 import type { GetStaticProps } from 'next'
@@ -24,15 +10,10 @@ import { NextSeo } from 'next-seo'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import Image from 'next/image'
-import Link from 'next/link'
-import React, { Suspense, memo, useEffect, useMemo, useState } from 'react'
-import type Stripe from 'stripe'
+import React, { Suspense, memo, useEffect, useState } from 'react'
 import type {
-  ButtonProps,
-  CheckboxProps,
   FontSizeTokens,
   GetProps,
-  RadioGroupItemProps,
   TabLayout,
   TabsProps,
   TabsTabProps,
@@ -43,28 +24,17 @@ import type {
 import {
   AnimatePresence,
   Button,
-  Checkbox,
   Circle,
-  Dialog,
-  EnsureFlexed,
   H1,
   H2,
-  H3,
-  H4,
-  H6,
   Input,
-  Label,
   Paragraph,
-  RadioGroup,
   ScrollView,
-  Separator,
-  Sheet,
   SizableText,
   Spacer,
   Stack,
   Tabs,
   Theme,
-  Unspaced,
   XStack,
   YStack,
   composeRefs,
@@ -75,34 +45,25 @@ import {
 } from 'tamagui'
 import { LinearGradient } from 'tamagui/linear-gradient'
 
-import { BentoTable } from '@components/BentoPurchaseModal'
-import { BentoLogo } from '../components/BentoLogo'
+import { getProductsForServerSideRendering } from '@lib/product-pages-server'
+import { MunroP, PurchaseButton, formatPrice, isSafariMobile } from '@lib/products-utils'
 import { ContainerXL } from '../components/Container'
-import { FaqModal } from '../components/FaqModal'
 import { Footer } from '../components/Footer'
 import { useHoverGlow } from '../components/HoverGlow'
 import { LoadCherryBomb, LoadMunro } from '../components/LoadFont'
 import { NextLink } from '../components/NextLink'
 import { seasons } from '../components/SeasonToggleButton'
-import { TakeoutLicense } from '../components/TakeoutLicense'
-import { TakeoutPolicy } from '../components/TakeoutPolicy'
 import { ThemeNameEffect } from '../components/ThemeNameEffect'
 import { useTakeoutStore } from '../hooks/useTakeoutStore'
+import { PurchaseModal } from '@components/PurchaseModal'
 
 export default function TakeoutPage({
   starter,
   fontsPack,
   iconsPack,
   bento,
-  defaultCoupon,
-  takeoutPlusBentoCoupon,
 }: TakeoutPageProps) {
   const store = useTakeoutStore()
-  const user = useUser()
-  const coupon =
-    bento && store.selectedProductsIds.includes(bento.id)
-      ? takeoutPlusBentoCoupon
-      : defaultCoupon
 
   return (
     <YStack maw="100%">
@@ -203,15 +164,12 @@ export default function TakeoutPage({
       {/* <Glow /> */}
 
       <PurchaseModal
-        defaultCoupon={coupon}
+        defaultValue="takeout"
         starter={starter}
         iconsPack={iconsPack}
         fontsPack={fontsPack}
         bento={bento}
       />
-      <FaqModal />
-      <AgreementModal />
-      <PoliciesModal />
 
       {/* gradient on the end of the page */}
       <ThemeTint>
@@ -238,29 +196,11 @@ export default function TakeoutPage({
               </PurchaseButton>
             </YStack>
 
-            {coupon && (
-              <YStack
-                position="absolute"
-                $gtXs={{
-                  right: '5%',
-                  top: 150,
-                }}
-                $xs={{
-                  top: '65vh',
-                  left: 0,
-                  right: 0,
-                  ai: 'center',
-                  jc: 'center',
-                }}
-                zIndex="$5"
-              >
-                {!!defaultCoupon && <DiscountText defaultCoupon={defaultCoupon} />}
-              </YStack>
-            )}
+            {/* <DiscountText>Text</DiscountText> */}
 
             {/* <PromoVideo /> */}
 
-            <TakeoutHero defaultCoupon={defaultCoupon} />
+            <TakeoutHero />
           </YStack>
 
           <XStack
@@ -864,9 +804,6 @@ const CodeInline = styled(Paragraph, {
   p: '$1.5',
 })
 
-const checkCircle = <CheckCircle color="$green9" />
-const xCircle = <XCircle size={28} color="$red9" />
-
 const points = {
   // this one's only shown on modal
   monorepo: [
@@ -900,20 +837,6 @@ const points = {
   ],
 }
 
-const ua = (() => {
-  if (typeof window === 'undefined') return
-  return window.navigator.userAgent
-})()
-
-const isWebkit = (() => {
-  return !!ua?.match(/WebKit/i)
-})()
-
-const isSafariMobile = (() => {
-  const iOS = !!ua?.match(/iPad/i) || !!ua?.match(/iPhone/i)
-  return isClient && iOS && isWebkit && !ua?.match(/CriOS/i)
-})()
-
 const TakeoutBox3D = dynamic(() => import('../components/TakeoutBox3D'), { ssr: false })
 const TakeoutGallery = dynamic(() => import('../components/TakeoutGallery'), {
   ssr: false,
@@ -921,22 +844,9 @@ const TakeoutGallery = dynamic(() => import('../components/TakeoutGallery'), {
 
 const heroHeight = 1100
 
-type TakeoutPageProps = {
-  starter?: Database['public']['Tables']['products']['Row'] & {
-    prices: Database['public']['Tables']['prices']['Row'][]
-  }
-  iconsPack?: Database['public']['Tables']['products']['Row'] & {
-    prices: Database['public']['Tables']['prices']['Row'][]
-  }
-  fontsPack?: Database['public']['Tables']['products']['Row'] & {
-    prices: Database['public']['Tables']['prices']['Row'][]
-  }
-  bento?: Database['public']['Tables']['products']['Row'] & {
-    prices: Database['public']['Tables']['prices']['Row'][]
-  }
-  defaultCoupon?: Stripe.Coupon | null
-  takeoutPlusBentoCoupon?: Stripe.Coupon | null
-}
+export type TakeoutPageProps = Awaited<
+  ReturnType<typeof getProductsForServerSideRendering>
+>
 
 const TakeoutCard2Frame = styled(YStack, {
   className: 'blur-8',
@@ -1054,7 +964,7 @@ const TakeoutCard = ({ children, title, icon, ...props }: TakeoutCardFrameProps)
   )
 }
 
-const TakeoutHero = ({ defaultCoupon }: Pick<TakeoutPageProps, 'defaultCoupon'>) => {
+const TakeoutHero = () => {
   const enable3d = useClientValue(
     () => !isSafariMobile && !window.location.search?.includes('disable-3d')
   )
@@ -1306,506 +1216,6 @@ const IconFrame = styled(Stack, {
   bg: 'rgba(255, 255, 255, 0.035)',
 })
 
-function formatPrice(amount: number, currency: string) {
-  return new Intl.NumberFormat('en', {
-    style: 'currency',
-    currency: currency.toUpperCase(),
-  }).format(amount)
-}
-
-const PurchaseModal = ({
-  starter,
-  iconsPack,
-  fontsPack,
-  bento,
-  defaultCoupon,
-}: Omit<TakeoutPageProps, 'takeoutPlusBentoCoupon'>) => {
-  const products = [starter, iconsPack, fontsPack]
-  const store = useTakeoutStore()
-  const { selectedProductsIds } = store
-
-  useEffect(() => {
-    if (store.selectedProductsIds.length === 0) {
-      store.selectedProductsIds = products.map((p) => p!.id)
-    }
-  }, [store.selectedProductsIds])
-  // const prices = products.prices
-  // const [selectedPriceId, setSelectedPriceId] = useState(prices[prices.length - 1].id)
-  function setSelectedProductsIds(newSelectedProductIds: string[]) {
-    store.selectedProductsIds = newSelectedProductIds
-  }
-  const sortedStarterPrices = (starter?.prices ?? []).sort(
-    (a, b) => a.unit_amount! - b.unit_amount!
-  )
-  const sortedBentoPrices = (bento?.prices ?? []).sort(
-    (a, b) => a.unit_amount! - b.unit_amount!
-  )
-  const [starterPriceId, setStarterPriceId] = useState(sortedStarterPrices[0]?.id)
-  const [bentoPriceId, setBentoPriceId] = useState(sortedBentoPrices[0]?.id)
-  // const selectedProducts = products.filter((p) => selectedProductsIds.includes(p.id))
-  const { data } = useUser()
-  const subscriptions = data?.subscriptions
-  // const subscription = subscriptions?.find((sub) => {
-  //   if (sub.status !== 'active') return false
-  //   const price = sub.prices
-  //     ? Array.isArray(sub.prices)
-  //       ? sub.prices[0]
-  //       : sub.prices
-  //     : null
-  //   if (!price) return false
-  //   return price.product_id === products.id
-  // })
-  // const sortedPrices = prices.sort((a, b) => (a.unit_amount ?? 0) - (b.unit_amount ?? 0))
-
-  const sum = useMemo(() => {
-    if (!starter || !iconsPack || !fontsPack) {
-      return 0
-    }
-    let final = 0
-    if (selectedProductsIds.includes(starter.id)) {
-      final += starterPriceId
-        ? starter.prices.find((p) => p.id === starterPriceId)?.unit_amount ?? 0
-        : 0
-    }
-    if (selectedProductsIds.includes(iconsPack.id)) {
-      final += iconsPack.prices[0].unit_amount ?? 0
-    }
-    if (selectedProductsIds.includes(fontsPack.id)) {
-      final += fontsPack.prices[0].unit_amount ?? 0
-    }
-    if (bento && selectedProductsIds.includes(bento.id)) {
-      final += bentoPriceId
-        ? bento.prices.find((p) => p.id === bentoPriceId)?.unit_amount ?? 0
-        : 0
-    }
-    return final
-  }, [selectedProductsIds, starterPriceId, bentoPriceId, starter, iconsPack, fontsPack])
-
-  const finalCoupon = store.appliedCoupon || defaultCoupon
-  // with discount applied
-  const finalPrice = useMemo(() => {
-    if (finalCoupon) {
-      if (finalCoupon.amount_off) return sum - finalCoupon.amount_off
-      if (finalCoupon.percent_off) return (sum * (100 - finalCoupon.percent_off)) / 100
-    }
-
-    return sum
-  }, [sum, finalCoupon])
-  const hasDiscountApplied = finalPrice !== sum
-
-  const noProductSelected = selectedProductsIds.length === 0
-  const showTeamSelect = selectedProductsIds.includes(starter?.id || '')
-
-  const enable3d = useClientValue(
-    () => !isSafariMobile && !window.location.search?.includes('disable-3d')
-  )
-
-  return (
-    <Dialog
-      modal
-      open={store.showPurchase}
-      onOpenChange={(val) => {
-        store.showPurchase = val
-      }}
-    >
-      <Dialog.Adapt when="sm">
-        <Sheet zIndex={200000} modal dismissOnSnapToBottom animation="medium">
-          <Sheet.Frame padding={0} gap>
-            <Sheet.ScrollView>
-              <Dialog.Adapt.Contents />
-            </Sheet.ScrollView>
-          </Sheet.Frame>
-          <Sheet.Overlay
-            animation="lazy"
-            enterStyle={{ opacity: 0 }}
-            exitStyle={{ opacity: 0 }}
-          />
-        </Sheet>
-      </Dialog.Adapt>
-
-      <Dialog.Portal>
-        <Dialog.Overlay
-          key="overlay"
-          animation="medium"
-          className="blur-medium"
-          enterStyle={{ opacity: 0 }}
-          exitStyle={{ opacity: 0 }}
-        />
-
-        <Dialog.Content
-          theme="surface1"
-          bordered
-          elevate
-          key="content"
-          animation={[
-            'quick',
-            {
-              opacity: {
-                overshootClamping: true,
-              },
-            },
-          ]}
-          // animateOnly={['transform']}
-          enterStyle={{ y: -10, opacity: 0, scale: 0.975 }}
-          exitStyle={{ y: 10, opacity: 0, scale: 0.975 }}
-          w="90%"
-          maw={900}
-          p={0}
-        >
-          <ScrollView $gtSm={{ maxHeight: '90vh' }}>
-            <YStack group="takeoutBody" p="$6" space>
-              <XStack ai="center" jc="center" gap="$6" mx="$8">
-                <Dialog.Title
-                  ff="$silkscreen"
-                  size="$7"
-                  mt="$-3"
-                  ls={5}
-                  als="center"
-                  theme="alt2"
-                >
-                  Checkout
-                </Dialog.Title>
-              </XStack>
-
-              <YStack>
-                <YStack gap="$4" $gtSm={{ fd: 'row' }} flexWrap="wrap">
-                  <ThemeTint disable={selectedProductsIds.includes(starter?.id || '')}>
-                    <CheckboxGroupItem
-                      disabled
-                      onCheckedChange={() => {
-                        if (!starter) return
-                        const active = selectedProductsIds.includes(starter.id)
-                        setSelectedProductsIds(
-                          active
-                            ? selectedProductsIds.filter((id) => id !== starter.id)
-                            : [...selectedProductsIds, starter.id]
-                        )
-                      }}
-                      id={'takeout-starter'}
-                      checked={selectedProductsIds.includes(starter?.id || '')}
-                    >
-                      <H3 lh="$6">{starter?.name}</H3>
-                      <Paragraph size="$3" lh="$1" theme="alt2">
-                        {starter?.description}
-                      </Paragraph>
-                    </CheckboxGroupItem>
-                  </ThemeTint>
-                  <CheckboxGroupItem
-                    onCheckedChange={() => {
-                      if (!bento) return
-                      const active = selectedProductsIds.includes(bento.id)
-                      setSelectedProductsIds(
-                        active
-                          ? selectedProductsIds.filter((id) => id !== bento.id)
-                          : [...selectedProductsIds, bento.id]
-                      )
-                    }}
-                    id={'takeout-bento'}
-                    checked={bento && selectedProductsIds.includes(bento.id)}
-                  >
-                    <BentoLogo noShadow scale={0.25} />
-                    <Paragraph size="$3" lh="$1" theme="alt2">
-                      {bento?.description}
-                    </Paragraph>
-                  </CheckboxGroupItem>
-                </YStack>
-              </YStack>
-
-              <XStack f={1} gap="$4" $group-takeoutBody-sm={{ fd: 'column-reverse' }}>
-                <YStack
-                  f={1}
-                  maw="50%"
-                  $group-takeoutBody-sm={{
-                    maw: '100%',
-                  }}
-                >
-                  <EnsureFlexed />
-
-                  <YStack gap="$4">
-                    <YStack gap="$2">
-                      <H6
-                        theme="alt2"
-                        o={bento && selectedProductsIds.includes(bento.id) ? 1 : 0}
-                        animation="100ms"
-                      >
-                        {starter?.name}
-                      </H6>
-                      <TakeoutTable product={starter} selectedPriceId={starterPriceId} />
-                      <XStack
-                        mt="$2"
-                        theme="green"
-                        bg="$color3"
-                        p="$4"
-                        bw={1}
-                        bc="$color5"
-                        br="$4"
-                        gap="$3"
-                      >
-                        <Check size={24} mt={2} color="$color9" />
-                        <MunroP size="$7" color="$color11">
-                          Every plan includes the starter, icons & fonts
-                        </MunroP>
-                      </XStack>
-                    </YStack>
-
-                    {bento && selectedProductsIds.includes(bento.id) && (
-                      <YStack
-                        gap="$2"
-                        animation="100ms"
-                        o={1}
-                        enterStyle={{ o: 0 }}
-                        exitStyle={{ o: 0 }}
-                      >
-                        <H6 theme="alt2">{bento?.name}</H6>
-
-                        <BentoTable product={bento} selectedPriceId={bentoPriceId} />
-                      </YStack>
-                    )}
-                  </YStack>
-
-                  <YStack mt="$6" space="$4" ai="center">
-                    <Paragraph size="$3" theme="alt1">
-                      Instant one-click cancel your subscription from /account/items
-                    </Paragraph>
-                  </YStack>
-                </YStack>
-
-                <Separator vertical />
-
-                <YStack f={2} space="$4">
-                  <YStack
-                    opacity={showTeamSelect ? 1 : 0.25}
-                    pointerEvents={showTeamSelect ? 'auto' : 'none'}
-                    gap="$4"
-                  >
-                    <YStack gap="$2">
-                      <H6
-                        o={bento && selectedProductsIds.includes(bento.id) ? 1 : 0}
-                        animation="100ms"
-                        theme="alt2"
-                      >
-                        {starter?.name}
-                      </H6>
-                      <RadioGroup
-                        gap="$2"
-                        value={starterPriceId}
-                        onValueChange={(val) => setStarterPriceId(val)}
-                      >
-                        {sortedStarterPrices.map((price) => {
-                          const active = starterPriceId === price.id
-                          const htmlId = `price-${price.id}`
-                          return (
-                            <RadioGroupItem
-                              key={htmlId}
-                              active={active}
-                              value={price.id}
-                              id={htmlId}
-                            >
-                              <H4 mt="$-1">
-                                {price.description === 'Unlimited (+9 seats)'
-                                  ? 'Pro'
-                                  : price.description === 'Hobby (3-8 seats)'
-                                    ? 'Team'
-                                    : 'Personal'}
-                              </H4>
-
-                              <Paragraph theme="alt2">
-                                {formatPrice(price.unit_amount! / 100, 'usd')} base + 1
-                                year of updates
-                              </Paragraph>
-                              {/* <Paragraph theme="alt1" size="$2">
-                                  {formatPrice(price.unit_amount! / (100 * 2), 'usd')}{' '}
-                                  annual renewal (cancel anytime)
-                                </Paragraph> */}
-                            </RadioGroupItem>
-                          )
-                        })}
-                      </RadioGroup>
-                    </YStack>
-
-                    <Separator />
-
-                    <AnimatePresence>
-                      {bento && selectedProductsIds.includes(bento.id) && (
-                        <YStack
-                          gap="$2"
-                          o={1}
-                          enterStyle={{ o: 0 }}
-                          exitStyle={{ o: 0 }}
-                          animation="100ms"
-                        >
-                          <H6 theme="alt2">{bento.name}</H6>
-
-                          <RadioGroup
-                            gap="$2"
-                            value={bentoPriceId}
-                            onValueChange={(val) => setBentoPriceId(val)}
-                          >
-                            {sortedBentoPrices.map((price) => {
-                              const active = bentoPriceId === price.id
-                              const htmlId = `price-${price.id}`
-                              return (
-                                <RadioGroupItem
-                                  key={price.id}
-                                  active={active}
-                                  value={price.id}
-                                  id={htmlId}
-                                >
-                                  <H4 mt="$-1">{price.description}</H4>
-
-                                  <Paragraph theme="alt2">
-                                    {formatPrice(price.unit_amount! / 100, 'usd')} base +
-                                    1 year of updates
-                                  </Paragraph>
-                                  {/* <Paragraph theme="alt1" size="$2">
-                                  {formatPrice(price.unit_amount! / (100 * 2), 'usd')}{' '}
-                                  annual renewal (cancel anytime)
-                                </Paragraph> */}
-                                </RadioGroupItem>
-                              )
-                            })}
-                          </RadioGroup>
-                        </YStack>
-                      )}
-                    </AnimatePresence>
-                  </YStack>
-
-                  <Spacer size="$1" />
-
-                  <YStack space>
-                    <XStack ai="flex-end" jc="flex-end" gap="$2">
-                      {hasDiscountApplied ? (
-                        <>
-                          <H3 textDecorationLine="line-through" size="$4" theme="alt2">
-                            {formatPrice(sum! / 100, 'usd')}
-                          </H3>
-                          <H3 size="$11">{formatPrice(finalPrice! / 100, 'usd')}</H3>
-                        </>
-                      ) : (
-                        <H3 size="$11">{formatPrice(finalPrice! / 100, 'usd')}</H3>
-                      )}
-                    </XStack>
-
-                    <Unspaced>
-                      <YStack mt="$2" gap="$1">
-                        {finalCoupon ? (
-                          <SizableText textAlign="right" size="$3">
-                            Coupon "{finalCoupon.name}" is applied.
-                          </SizableText>
-                        ) : null}
-                        <PromotionInput />
-                      </YStack>
-                    </Unspaced>
-
-                    <YStack pb="$8" px="$4" space>
-                      <NextLink
-                        href={`api/checkout?${(() => {
-                          const params = new URLSearchParams({
-                            // product_id: products.id,
-                            // price_id: selectedPriceId,
-                            // quantity: seats.toString(),
-                          })
-                          for (const productId of selectedProductsIds) {
-                            params.append('product_id', productId)
-                          }
-                          params.append(`price-${starter?.id}`, starterPriceId)
-                          if (store.appliedPromoCode) {
-                            // the coupon user applied
-                            params.append(`promotion_code`, store.appliedPromoCode)
-                          } else if (defaultCoupon) {
-                            // the coupon that's applied by default (special event, etc.)
-                            params.append(`coupon_id`, defaultCoupon.id)
-                          }
-
-                          return params.toString()
-                        })()}`}
-                      >
-                        <PurchaseButton
-                          disabled={noProductSelected}
-                          opacity={noProductSelected ? 0.5 : undefined}
-                        >
-                          Purchase
-                        </PurchaseButton>
-                      </NextLink>
-                      <XStack jc="space-between" space="$2" ai="center" mb="$2">
-                        <XStack
-                          ai="center"
-                          separator={<Separator vertical bg="$color8" my="$2" />}
-                          space="$2"
-                        >
-                          <SizableText
-                            theme="alt1"
-                            cursor="pointer"
-                            onPress={() => {
-                              store.showFaq = true
-                            }}
-                            style={{ textDecorationLine: 'underline' }}
-                            hoverStyle={{
-                              color: '$color11',
-                            }}
-                            size="$2"
-                          >
-                            FAQ
-                          </SizableText>
-
-                          <SizableText
-                            theme="alt1"
-                            cursor="pointer"
-                            onPress={() => {
-                              store.showAgreement = true
-                            }}
-                            style={{ textDecorationLine: 'underline' }}
-                            hoverStyle={{
-                              color: '$color11',
-                            }}
-                            size="$2"
-                          >
-                            License
-                          </SizableText>
-
-                          <SizableText
-                            theme="alt1"
-                            cursor="pointer"
-                            onPress={() => {
-                              store.showPolicies = true
-                            }}
-                            style={{ textDecorationLine: 'underline' }}
-                            hoverStyle={{
-                              color: '$color11',
-                            }}
-                            size="$2"
-                          >
-                            Policies
-                          </SizableText>
-                        </XStack>
-                        <Theme name="alt1">
-                          <PoweredByStripeIcon width={96} height={40} />
-                        </Theme>
-                      </XStack>
-                    </YStack>
-                  </YStack>
-                </YStack>
-              </XStack>
-            </YStack>
-          </ScrollView>
-          <Unspaced>
-            <Dialog.Close asChild>
-              <Button
-                position="absolute"
-                top="$4"
-                right="$4"
-                size="$2"
-                circular
-                icon={X}
-              />
-            </Dialog.Close>
-          </Unspaced>
-        </Dialog.Content>
-      </Dialog.Portal>
-    </Dialog>
-  )
-}
-
 const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] }) => {
   const media = useMedia()
   const [ref, setRef] = useState<any>()
@@ -1998,18 +1408,6 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
   )
 })
 
-function PurchaseButton(props: ButtonProps) {
-  return (
-    <ThemeTintAlt>
-      <Theme name="surface4">
-        <Button size="$6" borderWidth={2} {...props}>
-          <Button.Text ff="$silkscreen">{props.children}</Button.Text>
-        </Button>
-      </Theme>
-    </ThemeTintAlt>
-  )
-}
-
 const Row = (props: { title: any; description: any; after: any }) => {
   const media = useMedia()
   const [showDetail, setShowDetail] = useState(false)
@@ -2078,11 +1476,6 @@ const TAKEOUT = ({ fontSize = 450, lineHeight = fontSize * 0.64, ...props }) => 
 )
 
 TakeoutPage.getLayout = getDefaultLayout
-
-const MunroP = styled(Paragraph, {
-  // className: 'pixelate',
-  fontFamily: '$munro',
-})
 
 const tabs = [{ value: '1' }, { value: '2' }, { value: '4' }, { value: '8' }]
 
@@ -2313,172 +1706,11 @@ const HeartsRow = () => (
   </XStack>
 )
 
-const AgreementModal = () => {
-  const store = useTakeoutStore()
-  return (
-    <Dialog
-      modal
-      open={store.showAgreement}
-      onOpenChange={(val) => {
-        store.showAgreement = val
-      }}
-    >
-      <Dialog.Adapt when="sm">
-        <Sheet zIndex={200000} modal dismissOnSnapToBottom>
-          <Sheet.Frame padding="$4" space>
-            <Sheet.ScrollView>
-              <Dialog.Adapt.Contents />
-            </Sheet.ScrollView>
-          </Sheet.Frame>
-          <Sheet.Overlay
-            animation="lazy"
-            enterStyle={{ opacity: 0 }}
-            exitStyle={{ opacity: 0 }}
-          />
-        </Sheet>
-      </Dialog.Adapt>
-
-      <Dialog.Portal>
-        <Dialog.Overlay
-          key="overlay"
-          animation="medium"
-          className="blur-medium"
-          enterStyle={{ opacity: 0 }}
-          exitStyle={{ opacity: 0 }}
-        />
-
-        <Dialog.Content
-          bordered
-          elevate
-          key="content"
-          animation={[
-            'quick',
-            {
-              opacity: {
-                overshootClamping: true,
-              },
-            },
-          ]}
-          enterStyle={{ y: -10, opacity: 0, scale: 0.975 }}
-          exitStyle={{ y: 10, opacity: 0, scale: 0.975 }}
-          w="90%"
-          maw={900}
-        >
-          <ScrollView>
-            <YStack $gtSm={{ maxHeight: '90vh' }} space>
-              <Paragraph>
-                <Link href="/takeout-license">Permalink to the license</Link>.
-              </Paragraph>
-
-              <TakeoutLicense />
-            </YStack>
-          </ScrollView>
-          <Unspaced>
-            <Dialog.Close asChild>
-              <Button
-                position="absolute"
-                top="$2"
-                right="$2"
-                size="$2"
-                circular
-                icon={X}
-              />
-            </Dialog.Close>
-          </Unspaced>
-        </Dialog.Content>
-      </Dialog.Portal>
-    </Dialog>
-  )
-}
-
-const PoliciesModal = () => {
-  const store = useTakeoutStore()
-  return (
-    <Dialog
-      modal
-      open={store.showPolicies}
-      onOpenChange={(val) => {
-        store.showPolicies = val
-      }}
-    >
-      <Dialog.Adapt when="sm">
-        <Sheet zIndex={200000} modal dismissOnSnapToBottom>
-          <Sheet.Frame padding="$4" space>
-            <Sheet.ScrollView>
-              <Dialog.Adapt.Contents />
-            </Sheet.ScrollView>
-          </Sheet.Frame>
-          <Sheet.Overlay
-            animation="lazy"
-            enterStyle={{ opacity: 0 }}
-            exitStyle={{ opacity: 0 }}
-          />
-        </Sheet>
-      </Dialog.Adapt>
-
-      <Dialog.Portal>
-        <Dialog.Overlay
-          key="overlay"
-          animation="medium"
-          className="blur-medium"
-          enterStyle={{ opacity: 0 }}
-          exitStyle={{ opacity: 0 }}
-        />
-
-        <Dialog.Content
-          bordered
-          elevate
-          key="content"
-          animation={[
-            'quick',
-            {
-              opacity: {
-                overshootClamping: true,
-              },
-            },
-          ]}
-          enterStyle={{ y: -10, opacity: 0, scale: 0.975 }}
-          exitStyle={{ y: 10, opacity: 0, scale: 0.975 }}
-          w="90%"
-          maw={900}
-        >
-          <ScrollView>
-            <YStack $gtSm={{ maxHeight: '90vh' }} space>
-              <Paragraph>
-                <Link href="/takeout-policy">Permalink to policies</Link>.
-              </Paragraph>
-
-              <TakeoutPolicy />
-            </YStack>
-          </ScrollView>
-          <Unspaced>
-            <Dialog.Close asChild>
-              <Button
-                position="absolute"
-                top="$2"
-                right="$2"
-                size="$2"
-                circular
-                icon={X}
-              />
-            </Dialog.Close>
-          </Unspaced>
-        </Dialog.Content>
-      </Dialog.Portal>
-    </Dialog>
-  )
-}
-
 const DiscountText = ({
-  defaultCoupon,
+  children,
 }: {
-  defaultCoupon: NonNullable<TakeoutPageProps['defaultCoupon']>
+  children: React.ReactNode
 }) => {
-  const text = defaultCoupon.amount_off
-    ? `${defaultCoupon.name} (${formatPrice(defaultCoupon.amount_off / 100, 'usd')})`
-    : defaultCoupon.percent_off
-      ? `${defaultCoupon.name} (${defaultCoupon.percent_off}%)`
-      : ''
   return (
     <ThemeTintAlt offset={6}>
       <YStack m="auto" scale={1} $xs={{ scale: 1.2 }}>
@@ -2520,7 +1752,7 @@ const DiscountText = ({
             textAlign="center"
             size="$5"
           >
-            {text.trim()}
+            {children}
           </Paragraph>
         </YStack>
       </YStack>
@@ -2602,120 +1834,6 @@ const PixelTooltip = ({
       </Paragraph>
       {children}
     </YStack>
-  )
-}
-
-const PromotionInput = () => {
-  const store = useTakeoutStore()
-
-  const [localCode, setLocalCode] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
-
-  const applyCoupon = (promoCode: string, coupon: Stripe.Coupon) => {
-    store.appliedCoupon = coupon
-    store.appliedPromoCode = promoCode
-  }
-
-  const removeCoupon = () => {
-    setLocalCode('')
-    store.appliedCoupon = null
-    store.appliedPromoCode = null
-  }
-
-  const closeField = () => {
-    setLocalCode('')
-    store.promoInputIsOpen = false
-  }
-
-  const checkPromotion = async () => {
-    setIsLoading(true)
-    try {
-      const res = await fetch(
-        `/api/check-promo-code?${new URLSearchParams({ code: localCode })}`
-      )
-      if (res.status === 200) {
-        const json = (await res.json()) as Stripe.Coupon
-        applyCoupon(localCode, json)
-      } else {
-        const json = await res.json()
-        if (json.message) {
-          alert(json.message)
-        }
-      }
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
-  return (
-    <AnimatePresence exitBeforeEnter>
-      {store.promoInputIsOpen ? (
-        <XStack
-          key="is-open"
-          animation="100ms"
-          enterStyle={{ opacity: 0 }}
-          exitStyle={{ opacity: 0 }}
-          opacity={1}
-          gap="$2"
-          jc="center"
-          ai="center"
-        >
-          {store.appliedPromoCode ? (
-            <>
-              <Paragraph theme="green_alt2">
-                Coupon {store.appliedPromoCode} applied.
-              </Paragraph>
-              <Button chromeless size="$2" onPress={removeCoupon}>
-                Remove Coupon
-              </Button>
-            </>
-          ) : (
-            <>
-              {!store.appliedPromoCode && (
-                <Button disabled={isLoading} size="$2" chromeless onPress={closeField}>
-                  Cancel
-                </Button>
-              )}
-              <Input
-                disabled={!!store.appliedPromoCode}
-                value={store.appliedPromoCode ?? localCode}
-                onChangeText={(text) => {
-                  setLocalCode(text)
-                }}
-                placeholder="Enter the code"
-                size="$2"
-              />
-              <Button
-                disabled={isLoading}
-                themeInverse
-                size="$2"
-                onPress={checkPromotion}
-              >
-                Submit
-              </Button>
-            </>
-          )}
-        </XStack>
-      ) : (
-        <Paragraph
-          key="is-not-open"
-          animation="100ms"
-          enterStyle={{ opacity: 0 }}
-          exitStyle={{ opacity: 0 }}
-          opacity={1}
-          ta="right"
-          textDecorationLine="underline"
-          cursor="pointer"
-          theme="alt2"
-          size="$2"
-          onPress={() => {
-            store.promoInputIsOpen = true
-          }}
-        >
-          Coupon
-        </Paragraph>
-      )}
-    </AnimatePresence>
   )
 }
 
@@ -2884,174 +2002,9 @@ const Lazy = (props: { children: any }) => {
   return loaded ? props.children : null
 }
 
-const CheckboxGroupItem = ({ children, ...props }: CheckboxProps) => {
-  return (
-    <Label
-      f={1}
-      htmlFor={props.id}
-      p="$4"
-      className="3d"
-      height="unset"
-      display="flex"
-      borderWidth="$0.25"
-      backgroundColor={props.checked ? '$color2' : '$color1'}
-      borderColor={props.checked ? '$color5' : '$color2'}
-      borderRadius="$4"
-      gap="$4"
-      ai="center"
-      opacity={props.disabled ? 0.75 : 1}
-      cursor={props.disabled ? 'not-allowed' : 'default'}
-      $gtSm={{
-        maw: 'calc(50% - 8px)',
-      }}
-      hoverStyle={{
-        borderColor: props.checked ? '$color7' : '$color7',
-      }}
-    >
-      <Checkbox
-        bg="$color3"
-        bc="$color5"
-        hoverStyle={{
-          bg: '$color4',
-          bc: '$color6',
-        }}
-        checked={props.checked}
-        size="$6"
-        {...props}
-      >
-        <Checkbox.Indicator
-        // backgroundColor={props.checked ? '$color8' : '$color1'}
-        >
-          <Check />
-        </Checkbox.Indicator>
-      </Checkbox>
-
-      <YStack gap="$1" f={1}>
-        {children}
-      </YStack>
-    </Label>
-  )
-}
-
-const RadioGroupItem = ({
-  children,
-  active,
-  ...props
-}: RadioGroupItemProps & { active: boolean }) => {
-  return (
-    <ThemeTint disable={!active}>
-      <Label
-        f={1}
-        htmlFor={props.id}
-        p="$4"
-        height="unset"
-        display="flex"
-        borderWidth="$0.25"
-        borderColor={active ? '$color8' : '$color5'}
-        borderRadius="$4"
-        space="$4"
-        ai="center"
-        hoverStyle={{
-          borderColor: active ? '$color10' : '$color7',
-        }}
-      >
-        <RadioGroup.Item size="$6" {...props}>
-          <RadioGroup.Indicator />
-        </RadioGroup.Item>
-
-        <YStack gap="$0" f={1}>
-          {children}
-        </YStack>
-      </Label>
-    </ThemeTint>
-  )
-}
-
-const TakeoutTable = ({
-  product,
-  selectedPriceId,
-}: {
-  product?: Database['public']['Tables']['products']['Row'] & {
-    prices: Database['public']['Tables']['prices']['Row'][]
-  }
-  selectedPriceId: string
-}) => {
-  const takeoutPriceInfo = getTakeoutPriceInfo(
-    product?.prices.find((price) => price.id === selectedPriceId)?.description ?? ''
-  )
-  return (
-    <YStack
-      separator={<Separator o={0.35} />}
-      borderWidth="$0.5"
-      borderRadius="$4"
-      borderColor="$borderColor"
-    >
-      <XStack px="$4" py="$4" gap="$3">
-        <YStack width="80%">
-          <Paragraph size="$6" fow="bold">
-            Lifetime access, 1 year of updates
-          </Paragraph>
-          <Paragraph className="text-wrap-balance" size="$3" theme="alt1">
-            You own the code for life, with updates for a year
-          </Paragraph>
-        </YStack>
-        <XStack f={1} ai="center" gap="$2" jc="center">
-          <Paragraph size="$8">{checkCircle}</Paragraph>
-        </XStack>
-      </XStack>
-      <XStack px="$4" py="$4" gap="$3">
-        <YStack width="80%">
-          <Paragraph size="$6">License Seats</Paragraph>
-          <Paragraph className="text-wrap-balance" size="$3" theme="alt1">
-            Number of people allowed to&nbsp;develop&nbsp;on&nbsp;it
-          </Paragraph>
-        </YStack>
-        <XStack f={1} ai="center" gap="$2" jc="center">
-          <Paragraph size="$8">{takeoutPriceInfo.licenseSeats}</Paragraph>
-        </XStack>
-      </XStack>
-      <XStack px="$4" py="$4" gap="$3">
-        <YStack width="80%">
-          <Paragraph size="$6">Discord Seats</Paragraph>
-          <Paragraph className="text-wrap-balance" size="$3" theme="alt1">
-            Access to the Discord #takeout room
-          </Paragraph>
-        </YStack>
-        <XStack f={1} ai="center" gap="$2" jc="center">
-          <Paragraph size="$8">{takeoutPriceInfo.discordSeats}</Paragraph>
-        </XStack>
-      </XStack>
-      <XStack px="$4" py="$4" gap="$3">
-        <YStack width="80%">
-          <Paragraph size="$6">Discord Private Channel</Paragraph>
-          <Paragraph className="text-wrap-balance" size="$3" theme="alt1">
-            Private chat for your team only
-          </Paragraph>
-        </YStack>
-        <XStack f={1} ai="center" gap="$2" jc="center">
-          <Paragraph size="$8">
-            {takeoutPriceInfo.hasDiscordPrivateChannels ? checkCircle : xCircle}
-          </Paragraph>
-        </XStack>
-      </XStack>
-      <XStack px="$4" py="$4" gap="$3">
-        <YStack width="80%">
-          <Paragraph size="$6">GitHub Seats</Paragraph>
-          <Paragraph className="text-wrap-balance" size="$3" theme="alt1">
-            Open PRs and issues on the Github repo
-          </Paragraph>
-        </YStack>
-        <XStack f={1} ai="center" gap="$2" jc="center">
-          <Paragraph size="$8">{takeoutPriceInfo.githubSeats}</Paragraph>
-        </XStack>
-      </XStack>
-    </YStack>
-  )
-}
-
 export const getStaticProps: GetStaticProps<TakeoutPageProps | any> = async () => {
   try {
-    const props = await getTakeoutProducts()
+    const props = await getProductsForServerSideRendering()
     return {
       props,
     }
@@ -3060,110 +2013,5 @@ export const getStaticProps: GetStaticProps<TakeoutPageProps | any> = async () =
     return {
       props: {},
     }
-  }
-}
-
-const getTakeoutProducts = async (): Promise<TakeoutPageProps> => {
-  const defaultSitePromotionCodePromise = stripe.promotionCodes.list({
-    code: 'SITE', // ones with code SITE are considered public and will be shown here
-    active: true,
-    expand: ['data.coupon'],
-  })
-  const takeoutPlusBentoPromotionCodePromise = stripe.promotionCodes.list({
-    code: 'TAKEOUTPLUSBENTO', // ones with code TAKEOUTPLUSBENTO are considered public and will be shown here
-    active: true,
-    expand: ['data.coupon'],
-  })
-  const productPromises = [
-    supabaseAdmin
-      .from('products')
-      .select('*, prices(*)')
-      .eq('metadata->>slug', 'universal-starter')
-      .single(),
-    supabaseAdmin
-      .from('products')
-      .select('*, prices(*)')
-      .eq('metadata->>slug', 'icon-packs')
-      .single(),
-    supabaseAdmin
-      .from('products')
-      .select('*, prices(*)')
-      .eq('metadata->>slug', 'font-packs')
-      .single(),
-    supabaseAdmin
-      .from('products')
-      .select('*, prices(*)')
-      .eq('metadata->>slug', 'bento')
-      .single(),
-  ]
-  const promises = [
-    defaultSitePromotionCodePromise,
-    takeoutPlusBentoPromotionCodePromise,
-    ...productPromises,
-  ]
-  const queries = await Promise.all(promises)
-
-  // slice(2) because the first two are coupon info
-  const products = queries.slice(2) as Awaited<(typeof productPromises)[number]>[]
-  const defaultCouponList = queries[0] as Awaited<typeof defaultSitePromotionCodePromise>
-  const takeoutPlusBentoCouponList = queries[1] as Awaited<
-    typeof takeoutPlusBentoPromotionCodePromise
-  >
-
-  let defaultCoupon: Stripe.Coupon | null = null
-
-  if (defaultCouponList.data.length > 0) {
-    defaultCoupon = defaultCouponList.data[0].coupon
-  }
-
-  let takeoutPlusBentoCoupon: Stripe.Coupon | null = null
-
-  if (takeoutPlusBentoCouponList.data.length > 0) {
-    takeoutPlusBentoCoupon = takeoutPlusBentoCouponList.data[0].coupon
-  }
-
-  if (!products.length) {
-    throw new Error(`No products found`)
-  }
-
-  for (const product of products) {
-    if (product.error) throw product.error
-    if (
-      !product.data.prices ||
-      !Array.isArray(product.data.prices) ||
-      product.data.prices.length === 0
-    ) {
-      throw new Error('No prices are attached to the product.')
-    }
-  }
-
-  return {
-    starter: {
-      ...products[0].data!,
-      name: `Takeout`,
-      prices: getArray(products[0].data!.prices!).filter(
-        (p) => p.active && !(p.metadata as Record<string, any>).hide_from_lists
-      ),
-    },
-    iconsPack: {
-      ...products[1].data!,
-      prices: getArray(products[1].data!.prices!).filter(
-        (p) => p.active && !(p.metadata as Record<string, any>).hide_from_lists
-      ),
-    },
-    fontsPack: {
-      ...products[2].data!,
-      prices: getArray(products[2].data!.prices!).filter(
-        (p) => p.active && !(p.metadata as Record<string, any>).hide_from_lists
-      ),
-    },
-    bento: {
-      ...products[3].data!,
-      prices: getArray(products[3].data!.prices!).filter(
-        (p) => p.active && !(p.metadata as Record<string, any>).hide_from_lists
-      ),
-    },
-    defaultCoupon,
-    takeoutPlusBentoCoupon,
   }
 }

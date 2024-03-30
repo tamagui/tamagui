@@ -24,7 +24,8 @@ export declare const SheetImplementationCustom: (props: Omit<{
     zIndex?: number | undefined;
     portalProps?: import("@tamagui/portal").PortalProps | undefined;
     moveOnKeyboardChange?: boolean | undefined;
+    containerComponent?: import("react").ComponentType<any> | undefined;
 } & {
     __scopeSheet?: import("@tamagui/create-context").Scope<any>;
-} & import("react").RefAttributes<View>, "themeInverse" | "theme"> & import("@tamagui/core").ThemeableProps) => import("react").ReactNode;
+} & import("react").RefAttributes<View>, "theme" | "themeInverse"> & import("@tamagui/core").ThemeableProps) => import("react").ReactNode;
 //# sourceMappingURL=SheetImplementationCustom.d.ts.map

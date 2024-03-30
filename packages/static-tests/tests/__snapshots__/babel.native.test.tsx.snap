@@ -33,12 +33,12 @@ export function Test() {
 }
 const _ReactNativeViewWrapper = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
   return React.useMemo(() => {
-    return Object.assign({}, _sheet[\\"0\\"], _expressions[0] ? _sheet[\\"1\\"] : _sheet[\\"2\\"]);
+    return [_sheet[\\"0\\"], _expressions[0] ? _sheet[\\"1\\"] : _sheet[\\"2\\"]];
   }, [..._expressions]);
 });
 const _ReactNativeViewWrapper2 = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
   return React.useMemo(() => {
-    return Object.assign({}, _sheet[\\"3\\"], _expressions[0] ? _sheet[\\"4\\"] : _sheet[\\"5\\"]);
+    return [_sheet[\\"3\\"], _expressions[0] ? _sheet[\\"4\\"] : _sheet[\\"5\\"]];
   }, [..._expressions]);
 });"
 `;
@@ -90,7 +90,14 @@ exports[`flat transform props 1`] = `
 "const __ReactNativeStyleSheet = require('react-native').StyleSheet;
 const _sheet = __ReactNativeStyleSheet.create({
   \\"0\\": {
-    \\"flexDirection\\": \\"column\\"
+    \\"flexDirection\\": \\"column\\",
+    \\"transform\\": [{
+      \\"translateY\\": 20
+    }, {
+      \\"translateX\\": 10
+    }, {
+      \\"rotate\\": \\"10deg\\"
+    }]
   },
   \\"1\\": {
     \\"transform\\": [{
@@ -100,15 +107,6 @@ const _sheet = __ReactNativeStyleSheet.create({
   \\"2\\": {
     \\"transform\\": [{
       \\"scale\\": 2
-    }]
-  },
-  \\"3\\": {
-    \\"transform\\": [{
-      \\"translateY\\": 20
-    }, {
-      \\"translateX\\": 10
-    }, {
-      \\"rotate\\": \\"10deg\\"
     }]
   }
 });
@@ -121,7 +119,7 @@ export function Test(isLoading) {
 }
 const _ReactNativeViewWrapper = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
   return React.useMemo(() => {
-    return Object.assign({}, _sheet[\\"0\\"], _expressions[0] ? _sheet[\\"1\\"] : _sheet[\\"2\\"], _sheet[\\"3\\"]);
+    return [_sheet[\\"0\\"], _expressions[0] ? _sheet[\\"1\\"] : _sheet[\\"2\\"]];
   }, [..._expressions]);
 });"
 `;
@@ -161,10 +159,10 @@ export function Test(props) {
 }
 const _ReactNativeViewWrapper = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
   return React.useMemo(() => {
-    return Object.assign({}, _sheet[\\"0\\"], {
-      \\"backgroundColor\\": theme.color
-    });
-  }, [theme.color, ..._expressions]);
+    return [_sheet[\\"0\\"], {
+      \\"backgroundColor\\": theme.color.get()
+    }];
+  }, [..._expressions]);
 });"
 `;
 
@@ -229,13 +227,13 @@ const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
 import { Paragraph } from 'tamagui';
 export function Test() {
-  return <_ReactNativeTextWrapper>hello world</__ReactNativeText>;
+  return <_ReactNativeTextWrapper>hello world</_ReactNativeTextWrapper>;
 }
 const _ReactNativeTextWrapper = __withStableStyle(__ReactNativeText, (theme, _expressions) => {
   return React.useMemo(() => {
-    return Object.assign({}, _sheet[\\"0\\"], {
-      \\"color\\": theme.color
-    });
-  }, [theme.color, ..._expressions]);
+    return [_sheet[\\"0\\"], {
+      \\"color\\": theme.color.get()
+    }];
+  }, [..._expressions]);
 });"
 `;

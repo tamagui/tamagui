@@ -1,6 +1,6 @@
 import { shorthands } from '@tamagui/shorthands/v2'
-import { tokens, themes } from '@tamagui/themes/v3-themes'
-import { animations } from './animations'
+import { tokens, themes as themesIn } from '@tamagui/themes/v3-themes'
+import { animations } from './v3-animations'
 import type { CreateTamaguiProps } from '@tamagui/web'
 
 import { fonts } from './fonts'
@@ -9,10 +9,7 @@ import { media, mediaQueryDefaultActive } from './media'
 // fix vite - react native uses global which it doesn't provide
 globalThis['global'] ||= globalThis
 
-export { animationsReactNative } from './animationsReactNative'
-export { animationsCSS } from './animationsCSS'
-
-export { animations } from './animations'
+export { animations } from './v3-animations'
 export { tokens, themes } from '@tamagui/themes/v3-themes'
 export { shorthands } from '@tamagui/shorthands/v2'
 export { fonts } from './fonts'
@@ -25,6 +22,10 @@ export const selectionStyles = (theme) =>
         color: theme.color11,
       }
     : null
+
+// tree shake away themes in production
+const themes =
+  process.env.TAMAGUI_OPTIMIZE_THEMES === 'true' ? ({} as typeof themesIn) : themesIn
 
 export const config = {
   animations,

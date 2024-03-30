@@ -7,7 +7,7 @@ import * as t from '@babel/types'
 import { Color, colorLog } from '@tamagui/cli-color'
 import type { StaticConfig, TamaguiInternalConfig } from '@tamagui/web'
 import esbuild from 'esbuild'
-import { ensureDir, removeSync, writeFileSync } from 'fs-extra'
+import * as FS from 'fs-extra'
 
 import { registerRequire, setRequireResult } from '../registerRequire'
 import type { TamaguiOptions } from '../types'
@@ -94,7 +94,7 @@ export async function bundleConfig(props: TamaguiOptions) {
       : ''
     const tmpDir = join(process.cwd(), '.tamagui')
     const configOutPath = join(tmpDir, `tamagui.config.cjs`)
-    const baseComponents = props.components.filter((x) => x !== '@tamagui/core')
+    const baseComponents = (props.components || []).filter((x) => x !== '@tamagui/core')
     const componentOutPaths = baseComponents.map((componentModule) =>
       join(
         tmpDir,
@@ -115,7 +115,7 @@ export async function bundleConfig(props: TamaguiOptions) {
     if (!props.disableInitialBuild) {
       // build them to node-compat versions
       try {
-        await ensureDir(tmpDir)
+        await FS.ensureDir(tmpDir)
       } catch {
         //
       }
@@ -132,7 +132,7 @@ export async function bundleConfig(props: TamaguiOptions) {
                 target: 'node16',
                 ...esbuildExtraOptions,
               },
-              props.platform
+              props.platform || 'web'
             )
           : null,
         ...baseComponents.map((componentModule, i) => {
@@ -145,7 +145,7 @@ export async function bundleConfig(props: TamaguiOptions) {
               target: 'node16',
               ...esbuildExtraOptions,
             },
-            props.platform
+            props.platform || 'web'
           )
         }),
       ])
@@ -167,7 +167,7 @@ export async function bundleConfig(props: TamaguiOptions) {
     }
 
     let out
-    const { unregister } = registerRequire(props.platform)
+    const { unregister } = registerRequire(props.platform || 'web')
     try {
       out = require(configOutPath)
     } catch (err) {
@@ -272,7 +272,7 @@ export function loadComponentsInner(
   props: TamaguiOptions,
   forceExports = false
 ): null | LoadedComponents[] {
-  const componentsModules = props.components
+  const componentsModules = props.components || []
 
   const key = componentsModules.join('')
 
@@ -280,7 +280,7 @@ export function loadComponentsInner(
     return cacheComponents[key]
   }
 
-  const { unregister } = registerRequire(props.platform, {
+  const { unregister } = registerRequire(props.platform || 'web', {
     proxyWormImports: forceExports,
   })
 
@@ -304,7 +304,7 @@ export function loadComponentsInner(
             ? transformAddExports(babelParse(esbuildit(fileContents, 'modern'), name))
             : fileContents
 
-          writeFileSync(loadModule, writtenContents)
+          FS.writeFileSync(loadModule, writtenContents)
 
           esbuild.buildSync({
             ...esbuildOptions,
@@ -344,7 +344,7 @@ export function loadComponentsInner(
       }
 
       const dispose = () => {
-        isDynamic && removeSync(loadModule)
+        isDynamic && FS.removeSync(loadModule)
       }
 
       try {

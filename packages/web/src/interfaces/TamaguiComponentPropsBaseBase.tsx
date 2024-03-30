@@ -161,7 +161,7 @@ export type TamaguiComponentPropsBaseBase = {
    * Marks this component as a group for use in styling children based on parents named group
    * See: https://tamagui.dev/docs/intro/props
    */
-  group?: GroupNames
+  group?: GroupNames | boolean
 
   /**
    * Works only alongside group, when children of the group are using container based sizing on native you can hide them until parent is measured.
@@ -193,7 +193,7 @@ export type TamaguiComponentPropsBaseBase = {
   /**
    * Forces the pseudo style state to be on
    */
-  forceStyle?: 'hover' | 'press' | 'focus'
+  forceStyle?: 'hover' | 'press' | 'focus' | 'focusVisible'
 
   /**
    * Disables className output of styles, instead using only inline styles

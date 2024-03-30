@@ -1,4 +1,4 @@
-import { isClient, isIos, isServer } from '@tamagui/constants'
+import { isClient, isIos, isServer, isWeb } from '@tamagui/constants'
 import { useContext, useEffect, useMemo, useRef, useState } from 'react'
 
 import { getConfig } from '../config'
@@ -10,10 +10,8 @@ import { ThemeManagerIDContext } from '../helpers/ThemeManagerContext'
 import { isEqualShallow } from '../helpers/createShallowSetState'
 import type {
   DebugProp,
-  NonSpecificTokens,
   ThemeParsed,
   ThemeProps,
-  ThemeValueGet,
   Tokens,
   UseThemeWithStateProps,
   VariableVal,
@@ -447,7 +445,7 @@ export const useChangeThemeEffect = (
     }
   }
 
-  if (isInversingOnMount) {
+  if (isWeb && isInversingOnMount) {
     return {
       isNewTheme: false,
       inversed: false,
@@ -528,8 +526,8 @@ export const useChangeThemeEffect = (
       registerThemeManager(themeManager)
     }
 
-    // only inverse relies on this for ssr
-    const mounted = !props.inverse ? true : isRoot || prev?.mounted
+    const isWebSSR = isWeb ? !getConfig().disableSSR : false
+    const mounted = isWebSSR ? isRoot || prev?.mounted : true
 
     if (!state) {
       if (isNewTheme) {
@@ -541,8 +539,15 @@ export const useChangeThemeEffect = (
     }
 
     const wasInversed = prev?.inversed
-    const nextInversed = isNewTheme && state.scheme !== parentManager?.state.scheme
-    const inversed = nextInversed ? true : wasInversed != null ? false : null
+    const isInherentlyInversed =
+      isNewTheme && state.scheme !== parentManager?.state.scheme
+    const inversed = isInherentlyInversed
+      ? true
+      : isWebSSR
+        ? wasInversed != null
+          ? false
+          : null
+        : props.inverse
 
     const response: ChangedThemeResponse = {
       themeManager,

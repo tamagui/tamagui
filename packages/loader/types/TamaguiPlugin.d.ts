@@ -9,10 +9,7 @@ export type PluginOptions = TamaguiOptions & {
     disableModuleJSXEntry?: boolean;
     disableWatchConfig?: boolean;
     disableAliases?: boolean;
-    /**
-     * @deprecated Deprecated
-     */
-    useReactNativeWebLite?: boolean;
+    useTamaguiSVG?: boolean;
 };
 export declare class TamaguiPlugin {
     options: PluginOptions;

@@ -1,4 +1,4 @@
-import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { isAndroid, isIos, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { isTouchable } from '@tamagui/constants'
 import type { MediaQueryKey } from '@tamagui/core'
 import { useMedia } from '@tamagui/core'
@@ -9,7 +9,7 @@ type MediaQueryKeyString = MediaQueryKey extends string ? MediaQueryKey : never
 
 export type AdaptProps = {
   when?: MediaQueryKeyString
-  platform?: 'native' | 'web' | 'touch'
+  platform?: 'native' | 'web' | 'touch' | 'ios' | 'android'
   children?: any
 }
 
@@ -27,7 +27,11 @@ export const AdaptParentContext = createContext<AdaptParentContextI | null>(null
 export const AdaptContents = (props: any) => {
   const context = useContext(AdaptParentContext)
   if (!context?.Contents) {
-    throw new Error('Adapt not supported by this component')
+    throw new Error(
+      process.env.NODE_ENV === 'production'
+        ? `tamagui.dev/docs/intro/errors#warning-002`
+        : `You're rendering a Tamagui <Adapt /> component without nesting it inside a parent that is able to adapt.`
+    )
   }
   return createElement(context.Contents, props)
 }
@@ -73,6 +77,8 @@ export const Adapt = withStaticProperties(
     if (platform === 'touch') enabled = isTouchable
     if (platform === 'native') enabled = !isWeb
     if (platform === 'web') enabled = isWeb
+    if (platform === 'ios') enabled = isIos
+    if (platform === 'android') enabled = isAndroid
 
     if (when && !media[when]) {
       enabled = false

@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/focus-scope",
-  "version": "1.91.3",
+  "version": "1.93.3",
   "sideEffects": true,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -20,15 +20,24 @@
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./types/index.d.ts",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.js",
+      "react-native": "./dist/cjs/index.native.js"
+    }
+  },
   "dependencies": {
-    "@tamagui/compose-refs": "1.91.3",
-    "@tamagui/use-event": "1.91.3"
+    "@tamagui/compose-refs": "1.93.3",
+    "@tamagui/use-event": "1.93.3"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.91.3",
+    "@tamagui/build": "1.93.3",
     "react": "^18.2.0"
   },
   "publishConfig": {
