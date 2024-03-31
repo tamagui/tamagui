@@ -2,26 +2,21 @@ import { getTakeoutPriceInfo } from '@lib/getProductInfo'
 import type { Database } from '@lib/supabase-types'
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import { Check, CheckCircle, XCircle } from '@tamagui/lucide-icons'
-import { useState } from 'react'
-import type Stripe from 'stripe'
 import type { ButtonProps, CheckboxProps, RadioGroupItemProps } from 'tamagui'
 import {
-  AnimatePresence,
   Button,
   Checkbox,
-  Input,
   Label,
   Paragraph,
   RadioGroup,
   Separator,
-  Theme,
   XStack,
   YStack,
   isClient,
   styled,
 } from 'tamagui'
 
-import { useTakeoutStore } from '../hooks/useTakeoutStore'
+import { useRouter } from 'next/router'
 
 const ua = (() => {
   if (typeof window === 'undefined') return
@@ -45,15 +40,19 @@ export function formatPrice(amount: number, currency: string) {
 }
 
 export function PurchaseButton(props: ButtonProps) {
-  return (
-    <ThemeTintAlt>
-      <Theme name="surface4">
-        <Button size="$6" borderWidth={2} {...props}>
-          <Button.Text ff="$silkscreen">{props.children}</Button.Text>
-        </Button>
-      </Theme>
-    </ThemeTintAlt>
+  const isBento = useRouter().pathname.startsWith('/bento')
+
+  const contents = (
+    <Button size="$6" borderWidth={2} {...props}>
+      <Button.Text ff="$silkscreen">{props.children}</Button.Text>
+    </Button>
   )
+
+  if (isBento) {
+    return contents
+  }
+
+  return <ThemeTintAlt offset={isBento ? -1 : 1}>{contents}</ThemeTintAlt>
 }
 
 export const MunroP = styled(Paragraph, {
@@ -116,31 +115,29 @@ export const RadioGroupItem = ({
   ...props
 }: RadioGroupItemProps & { active: boolean }) => {
   return (
-    <ThemeTint disable={!active}>
-      <Label
-        f={1}
-        htmlFor={props.id}
-        p="$4"
-        height="unset"
-        display="flex"
-        borderWidth="$0.25"
-        borderColor={active ? '$color8' : '$color5'}
-        borderRadius="$4"
-        space="$4"
-        ai="center"
-        hoverStyle={{
-          borderColor: active ? '$color10' : '$color7',
-        }}
-      >
-        <RadioGroup.Item size="$6" {...props}>
-          <RadioGroup.Indicator />
-        </RadioGroup.Item>
+    <Label
+      f={1}
+      htmlFor={props.id}
+      p="$4"
+      height="unset"
+      display="flex"
+      borderWidth="$0.25"
+      borderColor={active ? '$color9' : '$color5'}
+      borderRadius="$4"
+      space="$4"
+      ai="center"
+      hoverStyle={{
+        borderColor: active ? '$color10' : '$color7',
+      }}
+    >
+      <RadioGroup.Item size="$6" {...props}>
+        <RadioGroup.Indicator />
+      </RadioGroup.Item>
 
-        <YStack gap="$0" f={1}>
-          {children}
-        </YStack>
-      </Label>
-    </ThemeTint>
+      <YStack gap="$0" f={1}>
+        {children}
+      </YStack>
+    </Label>
   )
 }
 
@@ -182,8 +179,8 @@ export function BentoTable({
           </Paragraph>
           <Paragraph size="$3" theme="alt1">
             {price?.metadata?.['is_lifetime']
-              ? 'You own the code, get updates for life'
-              : "You own the code, get updates as long as you're subscribed"}
+              ? 'You own and can use the code forever, get updates forever.'
+              : "You own and can use the code for life, get updates as long as you're subscribed."}
           </Paragraph>
         </YStack>
         <XStack f={1} ai="center" gap="$2" jc="center">

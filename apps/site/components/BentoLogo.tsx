@@ -7,7 +7,6 @@ export const BentoLogo = ({
   noShadow,
   backgrounded,
 }: { children?: string; scale?: number; noShadow?: boolean; backgrounded?: boolean }) => {
-  const isDark = useThemeName() === 'dark'
   return (
     <YStack
       pe="none"
@@ -103,33 +102,33 @@ export const BentoLogo = ({
       </ThemeTintAlt>
 
       <ThemeTintAlt>
-        <H1
-          className={`${
-            noShadow && isDark ? 'dark-shadow' : 'glow-shadow'
-          } mask-gradient-up`}
-          pos="absolute"
-          t={0}
-          l={0}
-          zi={1100}
-          ff="$cherryBomb"
-          px="$3"
-          mx="$-3"
-          whiteSpace="pre"
-          color="$color8"
-          maw="100%"
-          f={1}
-          ls={-21}
-          lh={280}
-          my={-45}
-          fos={198}
-          ussel="none"
-          pe="none"
-          style={{
-            filter: noShadow ? '' : 'blur(7px)',
-          }}
-        >
-          {children}&nbsp;
-        </H1>
+        {!noShadow && (
+          <H1
+            className={`glow-shadow mask-gradient-up`}
+            pos="absolute"
+            t={0}
+            l={0}
+            zi={1100}
+            ff="$cherryBomb"
+            px="$3"
+            mx="$-3"
+            whiteSpace="pre"
+            color="$color8"
+            maw="100%"
+            f={1}
+            ls={-21}
+            lh={280}
+            my={-45}
+            fos={198}
+            ussel="none"
+            pe="none"
+            style={{
+              filter: noShadow ? '' : 'blur(7px)',
+            }}
+          >
+            {children}&nbsp;
+          </H1>
+        )}
       </ThemeTintAlt>
 
       <ThemeTintAlt offset={-2}>
