@@ -1,6 +1,6 @@
 ---
 title: Themes
-description: How to create and use themes in Tamagui.
+description: Create themes and sub-themes
 ---
 
 Themes map neatly to CSS variables: they are objects whose values you want to contextually change at any point in your React tree. They are used either as the first lookup for `$` prefixed style values, or with the `useTheme` hook directly. Tamagui allows nesting themes - both the definition and at runtime. At runtime Tamagui resolves theme values upwards, ultimately all the way back to tokens.
