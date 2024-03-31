@@ -1358,8 +1358,6 @@ const Row = (props: { title: any; description: any; after: any }) => {
       }}
       $md={{
         cursor: 'pointer',
-        // TODO ?
-        // @ts-ignore
         hoverStyle: {
           backgroundColor: 'var(--color4)',
         },
