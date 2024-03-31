@@ -1010,7 +1010,7 @@ export function createComponent<
           }),
           onPressIn: attachPress
             ? (e) => {
-                if (runtimePressStyle) {
+                if (runtimePressStyle || groupName) {
                   setStateShallow({
                     press: true,
                     pressIn: true,
