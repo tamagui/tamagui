@@ -214,11 +214,12 @@ export const useComponentState = (
 
   // immediately update disabled state and reset component state
   if (disabled !== state.disabled) {
-    setState({
-      ...state,
-      ...defaultComponentState, // removes any stale press state etc
-      disabled,
-    })
+    state.disabled = disabled
+    // if disabled remove all press/focus/hover states
+    if (disabled) {
+      Object.assign(state, defaultComponentStateMounted)
+    }
+    setState({ ...state })
   }
 
   let setStateShallow = createShallowSetState(setState, disabled, props.debug)

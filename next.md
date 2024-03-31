@@ -1,5 +1,4 @@
 - media query height taking into account the "safe height" is important
-- Pressability speed https://twitter.com/benschac/status/1773720310715482481
 - https://linear.app/uniswap/issue/EXT-925/tamagui-error-breaking-the-extension
 - document Popover.Anchor
 - Sometimes press getting stuck still on uniswap moonpay flow
@@ -19,8 +18,6 @@ Tentpole projects:
 
 Needed features/maintenance:
 
-- Vite + Remix support
-  - new starter
 - RSD / web alignment
   - follow what RSD is doing + dont go beyond native support eg aspect-ratio
   - deprecate accessibility props, "focusable" => tabIndex
@@ -70,17 +67,7 @@ Ongoing work:
 
 - addTheme updateTheme regression needs a test
 
-- not seeing data-at props
-
-- add more web-only stlye props:
-  - filter, backdropFilter, mixBlendMode are really good for $theme-light/dark
-  - fontSmoothing, clipPath, textShadow, backgroundImage, maskImage, maskSize...
-- Group is not SSR safe because useProps is evaluating to specific media queries
-on the server and then ultimately becomes not-media-css
-
 - type to search on Select regressed
-
-- masks wasn't exported in my version of @tamagui/theme-builder (1.88.18). I had to grab it from @tamagui/themes/v2-themes instead
 
 - // TODO: pulling past the limit breaks scroll on native, need to better make ScrollView
 
