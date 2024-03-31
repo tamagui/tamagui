@@ -388,7 +388,7 @@ export const PurchaseModal = ({
                                           : 'Personal'}
                                     </H4>
 
-                                    <Paragraph theme="alt2">
+                                    <Paragraph theme="gray">
                                       {getPriceDescription(price)}
                                     </Paragraph>
                                     {/* <Paragraph theme="alt1" size="$2">
