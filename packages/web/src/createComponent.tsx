@@ -963,7 +963,8 @@ export function createComponent<
           runtimeHoverStyle ||
           runtimeFocusStyle
       )
-    const needsPressState = Boolean(groupName || runtimeHoverStyle)
+
+    const needsPressState = Boolean(groupName || runtimePressStyle)
 
     if (process.env.NODE_ENV === 'development' && time) time`events-setup`
 
