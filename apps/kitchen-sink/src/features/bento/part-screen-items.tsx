@@ -30,7 +30,6 @@ export function BentoPartScreenItem({ navigation }) {
                 <LinkListItem
                   bg="$color1"
                   href={'/' + Component.name}
-                  // href={'/InputBothSideIconsExample'}
                   pressTheme
                   size="$4"
                 >
@@ -39,39 +38,8 @@ export function BentoPartScreenItem({ navigation }) {
               </YGroup.Item>
             )
           })}
-          {/* {sections.listingData.sections.map(({ parts, sectionName }) => {
-            console.log('parts', parts)
-
-            return (
-              <>
-                <YGroup.Item key={sectionName}>
-                  <ListItem>{sectionName.toUpperCase()}</ListItem>
-                </YGroup.Item>
-                {parts.map(({ name, route }) => {
-                  return (
-                    <YGroup.Item key={route}>
-                      <LinkListItem bg="$color1" href={route} pressTheme size="$4">
-                        {name}
-                      </LinkListItem>
-                    </YGroup.Item>
-                  )
-                })}
-              </>
-            )
-          })} */}
         </YGroup>
       </YStack>
     </ScrollView>
   )
-  // return (
-  //   <ScrollView>
-  //     <YStack jc="center" ai="center" bg="$background" minWidth="100%" px="$2">
-  //       {Object.values(sections[name] ?? []).map((Component, index) => {
-  //         const ComponentElement = Component as React.ElementType
-  //         // add navigation prop here just for components that use it. eg: TabBar
-  //         return <ComponentElement key={index} navigation={navigation} />
-  //       })}
-  //     </YStack>
-  //   </ScrollView>
-  // )
 }
