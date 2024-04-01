@@ -39,7 +39,7 @@ const Stack = createNativeStackNavigator<
 
 const BentoScreenContainer: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
-    <View flex={1} minWidth="100%" pt="$2">
+    <View flex={1} minWidth="100%" p="$2">
       {children}
     </View>
   )
