@@ -6,16 +6,26 @@ export const BentoFrond = () => (
     zi={2}
     pe="none"
     t={0}
-    r={0}
     pos="absolute"
     scale={2}
     y={-270}
-    x={550}
+    x={250}
+    $theme-light={{
+      o: 0.75,
+    }}
   >
-    <YStack className="frond">
+    <YStack
+      className="frond"
+      style={{
+        mask: `linear-gradient(to right, black 50%, transparent 90%)`,
+      }}
+    >
       <YStack
         rotate="270deg"
         scale={1.5}
+        style={{
+          mask: `radial-gradient(black 10%, transparent 60%) -200px -150px`,
+        }}
         x={140}
         width={640}
         height={640}

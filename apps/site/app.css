@@ -965,20 +965,19 @@ textarea {
 
 .frond {
   transform-origin: top right;
-  animation: frond 7s  ease-in-out infinite alternate-reverse;
+  animation: frond 7s ease-in-out infinite alternate-reverse;
   filter: blur(6px);
-  mask: radial-gradient(black 20%, transparent 60%) -500px 50px;
 }
 
 @keyframes frond {
   0% {
-    filter: blur(4px);
-    opacity: 0.055;
+    filter: blur(5px);
+    opacity: 0.21;
     transform: rotate(0deg);
   }
   100% {
-    filter: blur(9px);
-    opacity: 0.08;
-    transform: rotate(0.7deg);
+    filter: blur(10px);
+    opacity: 0.5;
+    transform: rotate(0.85deg);
   }
 }
