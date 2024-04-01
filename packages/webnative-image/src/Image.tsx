@@ -19,10 +19,7 @@ const StyledImage = styled(isWeb ? View : RNImage, {
 })
 
 type ImageProps = StackProps &
-  Omit<HTMLImageElement['style'], 'width' | 'height'> &
-  Omit<React.HTMLProps<HTMLImageElement>, 'width' | 'height' | 'style'> &
-  Omit<React.ImgHTMLAttributes<HTMLImageElement>, 'width' | 'height' | 'style'> &
-  Omit<RNImageProps, keyof StackProps | 'source'> & {
+  Omit<RNImageProps, keyof StackProps | 'source' | 'resizeMode'> & {
     /**
      * @deprecated
      * use src instead
@@ -33,7 +30,9 @@ type ImageProps = StackProps &
      * use objectFit instead
      */
     resizeMode?: ImageResizeMode
-  }
+  } & Omit<HTMLImageElement['style'], 'width' | 'height'> &
+  Omit<React.HTMLProps<HTMLImageElement>, 'width' | 'height' | 'style'> &
+  Omit<React.ImgHTMLAttributes<HTMLImageElement>, 'width' | 'height' | 'style'>
 
 type ImageType = React.FC<Partial<ImageProps>> & {
   getSize: RNImageType['getSize']
@@ -132,8 +131,12 @@ export const Image = StyledImage.styleable<ImageProps>((inProps, ref) => {
   }
 
   const finalProps = {
-    width,
-    height,
+    width:
+      typeof width === 'string' && width[0] === '$' ? getTokenValue(width as any) : width,
+    height:
+      typeof height === 'string' && height[0] === '$'
+        ? getTokenValue(height as any)
+        : height,
   }
 
   return (

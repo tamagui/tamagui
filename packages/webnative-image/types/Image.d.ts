@@ -3,7 +3,7 @@ import type { StackProps } from '@tamagui/core';
 import { Image as RNImage } from 'react-native';
 import type { ImageResizeMode, ImageSourcePropType, ImageProps as RNImageProps } from 'react-native';
 type RNImageType = typeof RNImage;
-type ImageProps = StackProps & Omit<HTMLImageElement['style'], 'width' | 'height'> & Omit<React.HTMLProps<HTMLImageElement>, 'width' | 'height' | 'style'> & Omit<React.ImgHTMLAttributes<HTMLImageElement>, 'width' | 'height' | 'style'> & Omit<RNImageProps, keyof StackProps | 'source'> & {
+type ImageProps = StackProps & Omit<RNImageProps, keyof StackProps | 'source' | 'resizeMode'> & {
     /**
      * @deprecated
      * use src instead
@@ -14,7 +14,7 @@ type ImageProps = StackProps & Omit<HTMLImageElement['style'], 'width' | 'height
      * use objectFit instead
      */
     resizeMode?: ImageResizeMode;
-};
+} & Omit<HTMLImageElement['style'], 'width' | 'height'> & Omit<React.HTMLProps<HTMLImageElement>, 'width' | 'height' | 'style'> & Omit<React.ImgHTMLAttributes<HTMLImageElement>, 'width' | 'height' | 'style'>;
 type ImageType = React.FC<Partial<ImageProps>> & {
     getSize: RNImageType['getSize'];
     getSizeWithHeaders: RNImageType['getSizeWithHeaders'];
