@@ -406,7 +406,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['bento'] }) => 
                     Beta 🤙
                   </H3>
                   <Paragraph color="$color4" size="$3" lh="$2">
-                    More polish ongoing, some don't work on web.
+                    More polish ongoing, some don't work on native.
                     <br />
                     There's&nbsp;
                     <a
