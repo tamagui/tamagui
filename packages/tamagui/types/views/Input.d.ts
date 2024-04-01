@@ -581,10 +581,10 @@ export declare function useInputProps(props: InputProps, ref: any): {
     skewX?: string | undefined;
     skewY?: string | undefined;
     matrix?: "unset" | number[] | undefined;
-    rotate?: string | undefined;
-    rotateY?: string | undefined;
-    rotateX?: string | undefined;
-    rotateZ?: string | undefined;
+    rotate?: "unset" | import("@tamagui/core").UnionableString | `${number}deg` | undefined;
+    rotateY?: "unset" | import("@tamagui/core").UnionableString | `${number}deg` | undefined;
+    rotateX?: "unset" | import("@tamagui/core").UnionableString | `${number}deg` | undefined;
+    rotateZ?: "unset" | import("@tamagui/core").UnionableString | `${number}deg` | undefined;
     contain?: import("csstype").Property.Contain | undefined;
     touchAction?: import("csstype").Property.TouchAction | undefined;
     cursor?: import("csstype").Property.Cursor | undefined;
