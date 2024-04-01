@@ -30,6 +30,7 @@ type ImageProps = StackProps &
      * use objectFit instead
      */
     resizeMode?: ImageResizeMode
+    objectFit?: React.CSSProperties['objectFit']
   } & Omit<HTMLImageElement['style'], 'width' | 'height'> &
   Omit<React.HTMLProps<HTMLImageElement>, 'width' | 'height' | 'style'> &
   Omit<React.ImgHTMLAttributes<HTMLImageElement>, 'width' | 'height' | 'style'>

@@ -14,6 +14,7 @@ type ImageProps = StackProps & Omit<RNImageProps, keyof StackProps | 'source' | 
      * use objectFit instead
      */
     resizeMode?: ImageResizeMode;
+    objectFit?: React.CSSProperties['objectFit'];
 } & Omit<HTMLImageElement['style'], 'width' | 'height'> & Omit<React.HTMLProps<HTMLImageElement>, 'width' | 'height' | 'style'> & Omit<React.ImgHTMLAttributes<HTMLImageElement>, 'width' | 'height' | 'style'>;
 type ImageType = React.FC<Partial<ImageProps>> & {
     getSize: RNImageType['getSize'];
