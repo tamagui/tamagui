@@ -10,7 +10,7 @@ import { TestScreen } from './features/testcases/test-screen'
 import { SectionScreen } from './features/bento/section-screen'
 import { BentoPartScreenItem } from './features/bento/part-screen-items'
 import React from 'react'
-import { View } from 'tamagui'
+import { ScrollView, View } from 'tamagui'
 
 const bentoScreenNames = sections.listingData.sections.map(
   ({ sectionName }) => sectionName
@@ -39,9 +39,9 @@ const Stack = createNativeStackNavigator<
 
 const BentoScreenContainer: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
-    <View flex={1} minWidth="100%" p="$2">
+    <ScrollView flex={1} minWidth="100%" p="$2">
       {children}
-    </View>
+    </ScrollView>
   )
 }
 
@@ -49,7 +49,9 @@ const bentoScreensPerElement = Object.entries(sections)
   .filter(([key]) => /\b[A-Z][a-z0-9]+(?:[A-Z][a-z0-9]+)*\b/.test(key))
   .map(([, sectionModules]) => Object.entries(sectionModules as any))
   .reduce((acc, curr) => acc.concat(curr), [])
-  .filter(([key]) => !['default', 'SizableText', 'Example'].includes(key))
+  .filter(
+    ([key]) => !['default', 'SizableText', 'Example', 'VerticalCheckboxes'].includes(key)
+  )
   .map(([name, _Component]: [string, any]) => {
     const Component = _Component as React.ComponentType<any>
     return (
