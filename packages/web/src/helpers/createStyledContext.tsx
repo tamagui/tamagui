@@ -1,4 +1,6 @@
-import React, { createContext, useContext, useMemo } from 'react'
+import React from 'react'
+import * as rscSafeReact from '@tamagui/rsc-safe'
+const { createContext, useContext, useMemo } = rscSafeReact
 
 import { objectIdentityKey } from './objectIdentityKey'
 

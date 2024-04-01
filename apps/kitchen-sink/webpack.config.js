@@ -98,7 +98,7 @@ module.exports = {
       components: ['tamagui', '@tamagui/sandbox-ui'],
       importsWhitelist: ['constants.js'],
       // enableDynamicEvaluation: true,
-      disableExtraction,
+      disableExtraction: false,
       themeBuilder: {
         input: '../../packages/themes/src/themes-new.ts',
         output: path.join(require.resolve('@tamagui/themes/src/themes-new.ts'), '..', 'generated-new.ts'),

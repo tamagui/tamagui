@@ -478,7 +478,7 @@ async function esbuildWriteIfChanged(
     ].filter(Boolean),
 
     treeShaking: true,
-    minifySyntax: true,
+    minifySyntax: false,
     // minifyIdentifiers: true,
     write: false,
     color: true,

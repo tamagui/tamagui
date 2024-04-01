@@ -1,5 +1,6 @@
 import { isClient, isIos, isServer, isWeb } from '@tamagui/constants'
-import { useContext, useEffect, useMemo, useRef, useState } from 'react'
+import * as rscSafeReact from '@tamagui/rsc-safe'
+const { useContext, useEffect, useMemo, useRef, useState } = rscSafeReact
 
 import { getConfig } from '../config'
 import type { Variable } from '../createVariable'
@@ -94,6 +95,7 @@ export const useThemeWithState = (
 ): [ChangedThemeResponse, ThemeParsed] => {
   const keys = useRef<string[]>([])
 
+  debugger
   const changedThemeState = useChangeThemeEffect(
     props,
     false,
@@ -302,11 +304,12 @@ const registerThemeManager = (t: ThemeManager) => {
 
 export const useChangeThemeEffect = (
   props: UseThemeWithStateProps,
-  isRoot = false,
+  isRoot = true,
   keys?: string[],
   shouldUpdate?: () => boolean | undefined
 ): ChangedThemeResponse => {
   const { disable } = props
+  debugger
   const parentManagerId = useContext(ThemeManagerIDContext)
   const parentManager = getThemeManager(parentManagerId)
 

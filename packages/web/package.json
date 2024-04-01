@@ -31,6 +31,7 @@
     "@tamagui/constants": "1.93.3",
     "@tamagui/helpers": "1.93.3",
     "@tamagui/normalize-css-color": "1.93.3",
+    "@tamagui/rsc-safe": "1.93.3",
     "@tamagui/timer": "1.93.3",
     "@tamagui/types": "1.93.3",
     "@tamagui/use-did-finish-ssr": "1.93.3",

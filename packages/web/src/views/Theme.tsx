@@ -1,5 +1,7 @@
 import { isWeb } from '@tamagui/constants'
-import React, { Children, cloneElement, forwardRef, isValidElement, useRef } from 'react'
+import React, { Children, cloneElement, forwardRef, isValidElement } from 'react'
+import * as rscSafeReact from '@tamagui/rsc-safe'
+const { useRef } = rscSafeReact
 
 import { variableToString } from '../createVariable'
 import { ThemeManagerIDContext } from '../helpers/ThemeManagerContext'
@@ -15,6 +17,7 @@ export const Theme = forwardRef(function Theme({ children, ...props }: ThemeProp
   }
 
   const isRoot = !!props['_isRoot']
+  debugger
   const themeState = useChangeThemeEffect(props, isRoot)
   const disableDirectChildTheme = props['disable-child-theme']
 

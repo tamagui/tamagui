@@ -27,6 +27,7 @@ export const ThemeProvider = (props: ThemeProviderProps) => {
     }, [props.defaultTheme, props.disableRootThemeClass, props.themeClassNameOnRoot])
   }
 
+  debugger
   return (
     <Theme
       className={props.className}

@@ -8,13 +8,15 @@ import React, {
   createElement,
   forwardRef,
   memo,
-  useContext,
-  useEffect,
+  // useContext,
+  // useEffect,
   useId,
-  useMemo,
-  useRef,
-  useState,
+  // useMemo,
+  // useRef,
+  // useState,
 } from 'react'
+import * as rscSafeReact from '@tamagui/rsc-safe'
+const { useMemo, useRef, useEffect, useState, useContext } = rscSafeReact
 
 import { devConfig, getConfig, onConfiguredOnce } from './config'
 import { stackDefaultStyles } from './constants/constants'

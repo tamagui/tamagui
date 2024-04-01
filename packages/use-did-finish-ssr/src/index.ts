@@ -1,4 +1,6 @@
-import { useSyncExternalStore } from 'react'
+// import { useSyncExternalStore } from 'react'
+import * as rscSafeReact from '@tamagui/rsc-safe'
+const { useSyncExternalStore } = rscSafeReact
 
 const emptyFn = () => {}
 const emptyFnFn = () => emptyFn

@@ -1,5 +1,7 @@
 import { isServer, isWeb } from '@tamagui/constants'
-import { useRef, useSyncExternalStore } from 'react'
+import { useSyncExternalStore } from 'react'
+import * as rscSafeReact from '@tamagui/rsc-safe'
+const { useRef } = rscSafeReact
 
 import { getConfig } from '../config'
 import { matchMedia } from '../helpers/matchMedia'

@@ -1,6 +1,6 @@
 import * as postmark from 'postmark'
 
-const serverToken = process.env.POSTMARK_SERVER_TOKEN
+const serverToken = process.env.POSTMARK_SERVER_TOKEN || 'abc'
 
 if (!serverToken) {
   throw new Error(`No POSTMARK_SERVER_TOKEN env var is set.`)

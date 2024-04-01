@@ -7,6 +7,7 @@ import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-cont
 import { Navigation } from './Navigation'
 import { Provider } from './provider'
 import { ThemeContext } from './useKitchenSinkTheme'
+import { Sandbox } from './Sandbox'
 
 if (Platform.OS === 'ios') {
   require('./iosSheetSetup')
@@ -26,7 +27,7 @@ export default function App() {
   }, [colorScheme])
 
   const children = useMemo(() => {
-    return <Navigation />
+    return <Sandbox />
   }, [])
 
   const themeContext = useMemo(() => {

@@ -3,7 +3,10 @@ import { isTouchable } from '@tamagui/constants'
 import type { MediaQueryKey } from '@tamagui/core'
 import { useMedia } from '@tamagui/core'
 import { withStaticProperties } from '@tamagui/helpers'
-import { createContext, createElement, useContext, useMemo, useState } from 'react'
+import { createContext, createElement } from 'react'
+import * as RSCSafe from '@tamagui/rsc-safe'
+
+const { useMemo, useState, useContext } = RSCSafe
 
 type MediaQueryKeyString = MediaQueryKey extends string ? MediaQueryKey : never
 

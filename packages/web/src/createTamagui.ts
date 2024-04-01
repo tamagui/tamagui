@@ -36,6 +36,7 @@ const createdConfigs = new WeakMap<any, boolean>()
 export function createTamagui<Conf extends CreateTamaguiProps>(
   configIn: Conf
 ): InferTamaguiConfig<Conf> {
+  debugger
   if (createdConfigs.has(configIn)) {
     return configIn as any
   }
@@ -280,6 +281,7 @@ ${runtimeStyles}`
   }
 
   configureMedia(config)
+  debugger
   setConfig(config)
 
   createdConfigs.set(config, true)
