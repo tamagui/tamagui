@@ -26,7 +26,7 @@ export function BentoPartScreenItem({ navigation }) {
         <YGroup size="$4" separator={<Separator />}>
           {Object.values(sections[name] ?? []).map((Component: any, index) => {
             return (
-              <YGroup.Item key={'test'}>
+              <YGroup.Item key={Component.name}>
                 <LinkListItem
                   bg="$color1"
                   href={'/' + Component.name}
