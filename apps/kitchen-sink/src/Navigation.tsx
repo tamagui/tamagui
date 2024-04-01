@@ -10,8 +10,8 @@ import { TestScreen } from './features/testcases/test-screen'
 import { SectionScreen } from './features/bento/section-screen'
 import { BentoPartScreenItem } from './features/bento/part-screen-items'
 import React from 'react'
+import { View } from 'tamagui'
 
-console.log('sections', sections)
 const bentoScreenNames = sections.listingData.sections.map(
   ({ sectionName }) => sectionName
 )
@@ -37,17 +37,29 @@ const Stack = createNativeStackNavigator<
   } & BentoScreens
 >()
 
+const BentoScreenContainer: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  return (
+    <View flex={1} minWidth="100%" pt="$2">
+      {children}
+    </View>
+  )
+}
 export function Navigation() {
   const bentoScreensPerElement = Object.entries(sections)
     .filter(([key]) => /\b[A-Z][a-z0-9]+(?:[A-Z][a-z0-9]+)*\b/.test(key))
     .map(([, sectionModules]) => Object.entries(sectionModules as any))
     .reduce((acc, curr) => acc.concat(curr), [])
     .filter(([key]) => !['default', 'SizableText', 'Example'].includes(key))
-    .map(([name, Component]) => {
+    .map(([name, _Component]: [string, any]) => {
+      const Component = _Component as React.ComponentType<any>
       return (
         <Stack.Screen
           name={name}
-          component={Component as React.ComponentType<any>}
+          component={() => (
+            <BentoScreenContainer>
+              <Component />
+            </BentoScreenContainer>
+          )}
           options={{
             title: name,
           }}
