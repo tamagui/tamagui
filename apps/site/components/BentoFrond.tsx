@@ -8,10 +8,10 @@ export const BentoFrond = () => (
     t={0}
     pos="absolute"
     scale={2.2}
-    y={-270}
+    y={-440}
     x={250}
     $theme-light={{
-      o: 0.7,
+      o: 0.8,
     }}
   >
     <YStack
@@ -24,7 +24,7 @@ export const BentoFrond = () => (
         rotate="270deg"
         scale={1.5}
         style={{
-          mask: `radial-gradient(black 10%, transparent 55%) -0px -150px`,
+          mask: `radial-gradient(black 10%, transparent 40%) -70px -220px`,
         }}
         x={140}
         width={640}
