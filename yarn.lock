@@ -6781,9 +6781,13 @@ __metadata:
     "@tamagui/toast": "npm:1.92.0"
     "@tamagui/web": "npm:1.92.0"
     "@welldone-software/why-did-you-render": "npm:^7.0.1"
+    babel-plugin-module-resolver: "npm:^5.0.0"
     burnt: "npm:^0.12.2"
     expo: "npm:~50.0.6"
+    expo-dev-client: "npm:~3.3.9"
+    expo-document-picker: "npm:~11.10.1"
     expo-font: "npm:~11.10.2"
+    expo-image-picker: "npm:~14.7.1"
     expo-linear-gradient: "npm:^12.7.1"
     expo-linking: "npm:~6.2.2"
     expo-splash-screen: "npm:~0.26.4"
@@ -10129,6 +10133,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ajv@npm:8.11.0":
+  version: 8.11.0
+  resolution: "ajv@npm:8.11.0"
+  dependencies:
+    fast-deep-equal: "npm:^3.1.1"
+    json-schema-traverse: "npm:^1.0.0"
+    require-from-string: "npm:^2.0.2"
+    uri-js: "npm:^4.2.2"
+  checksum: 10/aa0dfd6cebdedde8e77747e84e7b7c55921930974b8547f54b4156164ff70445819398face32dafda4bd4c61bbc7513d308d4c2bf769f8ea6cb9c8449f9faf54
+  languageName: node
+  linkType: hard
+
 "ajv@npm:^6.10.0, ajv@npm:^6.10.2, ajv@npm:^6.11.0, ajv@npm:^6.12.4, ajv@npm:^6.12.5, ajv@npm:^6.12.6":
   version: 6.12.6
   resolution: "ajv@npm:6.12.6"
@@ -10793,6 +10809,19 @@ __metadata:
   peerDependencies:
     "@babel/core": "*"
   checksum: 10/a561b33da1f0e976d34721f55c25c4132c24194ad5d089ac7427db229a852dcb3e83044f9ca34e380e0eba31d789cbaf73b2d8efefb95952c7daedbf83ccd4b8
+  languageName: node
+  linkType: hard
+
+"babel-plugin-module-resolver@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "babel-plugin-module-resolver@npm:5.0.0"
+  dependencies:
+    find-babel-config: "npm:^2.0.0"
+    glob: "npm:^8.0.3"
+    pkg-up: "npm:^3.1.0"
+    reselect: "npm:^4.1.7"
+    resolve: "npm:^1.22.1"
+  checksum: 10/13924d6ec9958405b2ac1a471639f75a7e486f643a6a50363b26dca7b66abd2cf1d9fe301c4e7b50c817e37e782fa06c209d958a4e0570c9ded36e0b8b6c2e48
   languageName: node
   linkType: hard
 
@@ -14977,7 +15006,58 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expo-document-picker@npm:^11.10.1":
+"expo-dev-client@npm:~3.3.9":
+  version: 3.3.11
+  resolution: "expo-dev-client@npm:3.3.11"
+  dependencies:
+    expo-dev-launcher: "npm:3.6.9"
+    expo-dev-menu: "npm:4.5.8"
+    expo-dev-menu-interface: "npm:1.7.2"
+    expo-manifests: "npm:~0.13.0"
+    expo-updates-interface: "npm:~0.15.1"
+  peerDependencies:
+    expo: "*"
+  checksum: 10/47bc686fd5fa6af14e36bcb59cdc3989e1e90bbdaac0b64b9e72f08fbd8b050e2fbec41249ea05d77f490e9199654ed35aab16f799c9c329e22a34506e48b06f
+  languageName: node
+  linkType: hard
+
+"expo-dev-launcher@npm:3.6.9":
+  version: 3.6.9
+  resolution: "expo-dev-launcher@npm:3.6.9"
+  dependencies:
+    ajv: "npm:8.11.0"
+    expo-dev-menu: "npm:4.5.8"
+    expo-manifests: "npm:~0.13.0"
+    resolve-from: "npm:^5.0.0"
+    semver: "npm:^7.5.3"
+  peerDependencies:
+    expo: "*"
+  checksum: 10/f397506ab8008b7e2f878b773a7d865a183242c58eff889a6b75330f914bcde4af2a8272fa4f57cca74d1964bb0275723adb3fac3d1982923af058f43471dfa8
+  languageName: node
+  linkType: hard
+
+"expo-dev-menu-interface@npm:1.7.2":
+  version: 1.7.2
+  resolution: "expo-dev-menu-interface@npm:1.7.2"
+  peerDependencies:
+    expo: "*"
+  checksum: 10/28df663590af53ec35014e934f61b61113f9acfdefa11dfded9be98a6f3875e32cd25750a6e1e1cccccef3ec6cc3faf08a2bf61ef02c6950e50327d1e01b84b3
+  languageName: node
+  linkType: hard
+
+"expo-dev-menu@npm:4.5.8":
+  version: 4.5.8
+  resolution: "expo-dev-menu@npm:4.5.8"
+  dependencies:
+    expo-dev-menu-interface: "npm:1.7.2"
+    semver: "npm:^7.5.3"
+  peerDependencies:
+    expo: "*"
+  checksum: 10/c40ac3a468f9fc2b10fcf50be00059fd42b8017486f6767a1df7a78178d81a0e4b0cc2dc0b8f9df7f2ecf12a6673e97bd65ab5e44316f2a4c54240c874f31957
+  languageName: node
+  linkType: hard
+
+"expo-document-picker@npm:^11.10.1, expo-document-picker@npm:~11.10.1":
   version: 11.10.1
   resolution: "expo-document-picker@npm:11.10.1"
   peerDependencies:
@@ -15015,7 +15095,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expo-image-picker@npm:^14.7.1":
+"expo-image-picker@npm:^14.7.1, expo-image-picker@npm:~14.7.1":
   version: 14.7.1
   resolution: "expo-image-picker@npm:14.7.1"
   dependencies:
@@ -15032,6 +15112,13 @@ __metadata:
   peerDependencies:
     expo: "*"
   checksum: 10/ea7a91f9795b01364080c4d7e4bf09a73c81963ea54770a64db79665c65ab4446d2f20f0a642b1d0b7e7377598c4528a4bff4cd28528e5f39e9f43660b127afc
+  languageName: node
+  linkType: hard
+
+"expo-json-utils@npm:~0.12.0":
+  version: 0.12.3
+  resolution: "expo-json-utils@npm:0.12.3"
+  checksum: 10/aefaa9fa58514665d4dd761b0f2d09bf9e3b9a36f4dc7b943b1155b1e1f6a45985c9a5370f13ba01d2c38b0a4158e574c6cf7895b3b61e56a6d665696ae0d87b
   languageName: node
   linkType: hard
 
@@ -15060,6 +15147,18 @@ __metadata:
     expo-constants: "npm:~15.4.3"
     invariant: "npm:^2.2.4"
   checksum: 10/30d750881b1003fabff17929e1b6062ed6cd243ca35cedd41082df5fd775d0c457f50e4a9e696dedc53459caac4f26d493a2819cef692633822d893c788e0f06
+  languageName: node
+  linkType: hard
+
+"expo-manifests@npm:~0.13.0":
+  version: 0.13.2
+  resolution: "expo-manifests@npm:0.13.2"
+  dependencies:
+    "@expo/config": "npm:~8.5.0"
+    expo-json-utils: "npm:~0.12.0"
+  peerDependencies:
+    expo: "*"
+  checksum: 10/446712a856bf91c7034d08ad5dc98a8a0c139271baca1b5dfb8474108228cae79bb9f4d6a93b36dc51b2a03ce1ce6762516349251fdfbf348c30788b9baf1e58
   languageName: node
   linkType: hard
 
@@ -15096,6 +15195,15 @@ __metadata:
   peerDependencies:
     expo: "*"
   checksum: 10/1ec3f5440da735542a73ef3355e71b56089d817141cda88cd01dc31bac1a286ee784d367e6e436269260f4537a3c761e5182af8eb8c5b1db1b8d8f35cd1377d9
+  languageName: node
+  linkType: hard
+
+"expo-updates-interface@npm:~0.15.1":
+  version: 0.15.3
+  resolution: "expo-updates-interface@npm:0.15.3"
+  peerDependencies:
+    expo: "*"
+  checksum: 10/9c6caf30bbf6d0e850decdfde271c61fd2508bad7c6a9649f234c2f8ca949c67647c3d07734bacce6de377cdfa7662d442d2d2e57efa587a35f85a3480436992
   languageName: node
   linkType: hard
 
@@ -15644,6 +15752,16 @@ __metadata:
     statuses: "npm:2.0.1"
     unpipe: "npm:~1.0.0"
   checksum: 10/635718cb203c6d18e6b48dfbb6c54ccb08ea470e4f474ddcef38c47edcf3227feec316f886dd701235997d8af35240cae49856721ce18f539ad038665ebbf163
+  languageName: node
+  linkType: hard
+
+"find-babel-config@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "find-babel-config@npm:2.0.0"
+  dependencies:
+    json5: "npm:^2.1.1"
+    path-exists: "npm:^4.0.0"
+  checksum: 10/06e50e920a2b35ff1c90fe33382e48aae70db4bdb6bbb58a4fdb5e687b50074e8b791a8ef2d9bb4b582c8d624d34b0cc763613c7cb585eeb352cd4521976f35a
   languageName: node
   linkType: hard
 
@@ -16419,7 +16537,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"glob@npm:^8.0.0, glob@npm:^8.0.1":
+"glob@npm:^8.0.0, glob@npm:^8.0.1, glob@npm:^8.0.3":
   version: 8.1.0
   resolution: "glob@npm:8.1.0"
   dependencies:
@@ -18928,7 +19046,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"json5@npm:^2.1.2, json5@npm:^2.2.0, json5@npm:^2.2.2, json5@npm:^2.2.3":
+"json5@npm:^2.1.1, json5@npm:^2.1.2, json5@npm:^2.2.0, json5@npm:^2.2.2, json5@npm:^2.2.3":
   version: 2.2.3
   resolution: "json5@npm:2.2.3"
   bin:
@@ -22905,6 +23023,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"pkg-up@npm:^3.1.0":
+  version: 3.1.0
+  resolution: "pkg-up@npm:3.1.0"
+  dependencies:
+    find-up: "npm:^3.0.0"
+  checksum: 10/5bac346b7c7c903613c057ae3ab722f320716199d753f4a7d053d38f2b5955460f3e6ab73b4762c62fd3e947f58e04f1343e92089e7bb6091c90877406fcd8c8
+  languageName: node
+  linkType: hard
+
 "playwright-core@npm:1.40.1":
   version: 1.40.1
   resolution: "playwright-core@npm:1.40.1"
@@ -24574,6 +24701,13 @@ __metadata:
   version: 1.0.0
   resolution: "requires-port@npm:1.0.0"
   checksum: 10/878880ee78ccdce372784f62f52a272048e2d0827c29ae31e7f99da18b62a2b9463ea03a75f277352f4697c100183debb0532371ad515a2d49d4bfe596dd4c20
+  languageName: node
+  linkType: hard
+
+"reselect@npm:^4.1.7":
+  version: 4.1.8
+  resolution: "reselect@npm:4.1.8"
+  checksum: 10/199984d9872f71cd207f4aa6e6fd2bd48d95154f7aa9b3aee3398335f39f5491059e732f28c12e9031d5d434adab2c458dc8af5afb6564d0ad37e1644445e09c
   languageName: node
   linkType: hard
 
