@@ -1236,10 +1236,10 @@ export interface TransformStyleProps {
   skewX?: string
   skewY?: string
   matrix?: number[]
-  rotate?: `${number}deg` | UnionableString
-  rotateY?: `${number}deg` | UnionableString
-  rotateX?: `${number}deg` | UnionableString
-  rotateZ?: `${number}deg` | UnionableString
+  rotate?: `${number}deg`
+  rotateY?: `${number}deg`
+  rotateX?: `${number}deg`
+  rotateZ?: `${number}deg`
 }
 
 interface ExtraStyleProps {

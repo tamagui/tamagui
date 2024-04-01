@@ -72,6 +72,7 @@ import { useUser } from 'hooks/useUser'
 import type { GetStaticProps } from 'next'
 import { useMemo, useRef, useState } from 'react'
 import { PurchaseModal } from '../components/PurchaseModal'
+import { BentoFrond } from '../components/BentoFrond'
 
 class BentoStore {
   heroVisible = true
@@ -92,6 +93,8 @@ export default function BentoPage(props: ProComponentsProps) {
       />
       <Theme name="tan">
         <ThemeNameEffect colorKey="$color6" />
+
+        <BentoFrond />
 
         <BentoPageFrame>
           <ContainerLarge
