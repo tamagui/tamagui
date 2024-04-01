@@ -55,15 +55,16 @@ export function Navigation() {
       return (
         <Stack.Screen
           name={name}
-          component={() => (
+          options={{
+            title: name,
+          }}
+        >
+          {() => (
             <BentoScreenContainer>
               <Component />
             </BentoScreenContainer>
           )}
-          options={{
-            title: name,
-          }}
-        />
+        </Stack.Screen>
       )
     })
 
