@@ -44,30 +44,30 @@ const BentoScreenContainer: React.FC<{ children: React.ReactNode }> = ({ childre
     </View>
   )
 }
-export function Navigation() {
-  const bentoScreensPerElement = Object.entries(sections)
-    .filter(([key]) => /\b[A-Z][a-z0-9]+(?:[A-Z][a-z0-9]+)*\b/.test(key))
-    .map(([, sectionModules]) => Object.entries(sectionModules as any))
-    .reduce((acc, curr) => acc.concat(curr), [])
-    .filter(([key]) => !['default', 'SizableText', 'Example'].includes(key))
-    .map(([name, _Component]: [string, any]) => {
-      const Component = _Component as React.ComponentType<any>
-      return (
-        <Stack.Screen
-          name={name}
-          options={{
-            title: name,
-          }}
-        >
-          {() => (
-            <BentoScreenContainer>
-              <Component />
-            </BentoScreenContainer>
-          )}
-        </Stack.Screen>
-      )
-    })
 
+const bentoScreensPerElement = Object.entries(sections)
+  .filter(([key]) => /\b[A-Z][a-z0-9]+(?:[A-Z][a-z0-9]+)*\b/.test(key))
+  .map(([, sectionModules]) => Object.entries(sectionModules as any))
+  .reduce((acc, curr) => acc.concat(curr), [])
+  .filter(([key]) => !['default', 'SizableText', 'Example'].includes(key))
+  .map(([name, _Component]: [string, any]) => {
+    const Component = _Component as React.ComponentType<any>
+    return (
+      <Stack.Screen
+        name={name}
+        options={{
+          title: name,
+        }}
+      >
+        {() => (
+          <BentoScreenContainer>
+            <Component />
+          </BentoScreenContainer>
+        )}
+      </Stack.Screen>
+    )
+  })
+export function Navigation() {
   return (
     <Stack.Navigator initialRouteName="home">
       <Stack.Screen
