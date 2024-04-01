@@ -1,3 +1,5 @@
 export * from './ThemeBuilder'
 export * from '@tamagui/create-theme'
-export { masks } from '@tamagui/themes'
+
+// copied from themes to avoid cyclic dep
+export { masks } from './masks'

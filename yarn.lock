@@ -8659,7 +8659,6 @@ __metadata:
   dependencies:
     "@tamagui/build": "npm:1.94.0"
     "@tamagui/create-theme": "npm:1.94.0"
-    "@tamagui/themes": "npm:1.94.0"
     color2k: "npm:^2.0.2"
   languageName: unknown
   linkType: soft

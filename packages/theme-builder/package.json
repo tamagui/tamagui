@@ -29,7 +29,6 @@
   },
   "dependencies": {
     "@tamagui/create-theme": "1.94.0",
-    "@tamagui/themes": "1.94.0",
     "color2k": "^2.0.2"
   },
   "devDependencies": {
