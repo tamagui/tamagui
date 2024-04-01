@@ -195,14 +195,16 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
       } else {
         const animateOnly = props.animateOnly as string[]
         for (const key in style) {
+          const value = style[key]
           if (
             !stylePropsAll[key] ||
             neverAnimate[key] ||
+            value === 'auto' ||
             (animateOnly && !animateOnly.includes(key))
           ) {
-            dontAnimate[key] = style[key]
+            dontAnimate[key] = value
           } else {
-            animate[key] = style[key]
+            animate[key] = value
           }
         }
       }

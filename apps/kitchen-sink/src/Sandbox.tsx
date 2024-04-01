@@ -2,13 +2,11 @@
 //! debug-verbose
 import './wdyr'
 
-import { View as RNView } from 'react-native'
-import { View, styled, Square, Image, Tokens, YStack } from 'tamagui'
+import { View, YStack, styled } from 'tamagui'
 
+import { SelectDemo } from '@tamagui/demos'
 import { useState } from 'react'
 import { TextInput } from 'react-native'
-import { ButtonDemo, SelectDemo } from '@tamagui/demos'
-import { ChevronDown } from '@tamagui/lucide-icons'
 
 export const Sandbox = () => {
   const [open, setOpen] = useState(false)
