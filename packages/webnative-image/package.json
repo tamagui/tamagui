@@ -1,5 +1,5 @@
 {
-  "name": "@tamagui/webimage",
+  "name": "@tamagui/webnative-image",
   "version": "1.93.3",
   "sideEffects": [
     "*.css"

@@ -9047,9 +9047,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/webimage@workspace:packages/webimage":
+"@tamagui/webnative-image@workspace:packages/webnative-image":
   version: 0.0.0-use.local
-  resolution: "@tamagui/webimage@workspace:packages/webimage"
+  resolution: "@tamagui/webnative-image@workspace:packages/webnative-image"
   dependencies:
     "@tamagui/build": "npm:1.93.3"
     "@tamagui/constants": "npm:1.93.3"
