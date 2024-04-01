@@ -177,13 +177,14 @@ export const BentoPageFrame = ({
 
 export const BentoFrond = () => (
   <YStack
-    t={-450}
-    r={180}
+    t={0}
+    rotate="180deg"
+    transformOrigin="center center"
     pos="absolute"
     // className="shadow-breeze"
     zi={2}
     pe="none"
-    o={0.075}
+    o={1}
     $theme-dark={{
       o: 0,
     }}
