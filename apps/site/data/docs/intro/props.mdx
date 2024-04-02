@@ -83,7 +83,7 @@ Finally, there are a few non-style props Tamagui adds:
     {
       name: 'hitSlop',
       required: false,
-      type: `number | Insets`,
+      type: `number | Insets['top'| 'bottom'| 'left'| 'right']`,
       description: (
         <span>
           Adds some area outside the typical bounds of the component for touch actions to register. Tamagui uses Pressable internally so it supports number | Insets rather than just Insets.
@@ -234,7 +234,7 @@ Finally, there are a few non-style props Tamagui adds:
     {
       name: 'asChild',
       required: false,
-      type: 'boolean | "except-style" | "except-style-web" | "web"',
+      type: `boolean | 'except-style' | 'except-style-web' | 'web'`,
       description: (
         <span>
           When true, Tamagui expects a single child element. Instead of rendering its own element, it will pass all props to that child, merging together any event handling props. When "except-style", the same behavior except Tamagui won't pass styles down from the parent, only non-style props.
