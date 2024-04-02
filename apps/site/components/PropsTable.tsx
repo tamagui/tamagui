@@ -65,7 +65,7 @@ export function PropsTable({
                 $sm={{ flexDirection: 'column' }}
               >
                 <YStack fullscreen backgroundColor="$background" zi={-1} o={0.5} />
-                <XStack miw="30%" ai="center" gap="$4">
+                <XStack miw="30%" ai="center" jc="space-between">
                   <H4
                     color="$color"
                     fow="700"
@@ -119,7 +119,7 @@ export function PropsTable({
 
                       <XStack ai="center">
                         {Boolean(defaultValue) ? (
-                          <>
+                          <XStack ai="center" gap="$1">
                             <Paragraph o={0.5} size="$2">
                               Default:&nbsp;
                             </Paragraph>
@@ -127,22 +127,28 @@ export function PropsTable({
                             <Code my="$-1" bg="$backgroundPress">
                               {defaultValue}
                             </Code>
-                          </>
+                          </XStack>
+                        ) : null}
+
+                        {Boolean(defaultValue) && (
+                          <Separator als="stretch" vertical mx="$3" my="$2" />
+                        )}
+
+                        {deprecated ? (
+                          <View
+                            w="$8"
+                            ai="center"
+                            theme="red_alt2"
+                            bg="$red2"
+                            bw={1}
+                            br="$2"
+                          >
+                            <Paragraph tag="span" size="$2" fontWeight="300">
+                              deprecated
+                            </Paragraph>
+                          </View>
                         ) : null}
                       </XStack>
-
-                      {deprecated ? (
-                        <View px="$1.5" theme="red_alt2" bg="$red2" bw={1} br="$2">
-                          <Paragraph
-                            tag="span"
-                            size="$2"
-                            fontWeight="300"
-                            textDecorationLine="none"
-                          >
-                            deprecated
-                          </Paragraph>
-                        </View>
-                      ) : null}
                     </XStack>
                   </>
                 )}
