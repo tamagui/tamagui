@@ -57,7 +57,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                     <XStack
                       group="card"
                       hoverStyle={{
-                        borderColor: '$accentColor',
+                        borderColor: '$color11',
                       }}
                       flex={1}
                       width="50%"
@@ -80,7 +80,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                         $group-card-press={{ o: 0, l: '$-4' }}
                         animation="quickest"
                       >
-                        <ChevronLeft />
+                        <ChevronLeft col="$color11" />
                       </View>
 
                       <YStack
@@ -104,7 +104,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                     <XStack
                       group="card"
                       hoverStyle={{
-                        borderColor: '$accentColor',
+                        borderColor: '$color11',
                       }}
                       flex={1}
                       width="50%"
@@ -142,7 +142,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                         $group-card-press={{ o: 0, r: '$-4' }}
                         animation="quickest"
                       >
-                        <ChevronRight />
+                        <ChevronRight col="$color11" />
                       </View>
                     </XStack>
                   </NextLink>
