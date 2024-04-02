@@ -110,6 +110,8 @@ export declare const stylePropsView: {
     outlineOffset?: boolean | undefined;
     outlineWidth?: boolean | undefined;
     touchAction?: boolean | undefined;
+    objectFit?: boolean | undefined;
+    objectPosition?: boolean | undefined;
     WebkitLineClamp: boolean;
     animationIterationCount: boolean;
     aspectRatio: boolean;
@@ -327,6 +329,8 @@ export declare const stylePropsText: {
     outlineOffset?: boolean | undefined;
     outlineWidth?: boolean | undefined;
     touchAction?: boolean | undefined;
+    objectFit?: boolean | undefined;
+    objectPosition?: boolean | undefined;
     animationIterationCount: boolean;
     aspectRatio: boolean;
     borderImageOutset: boolean;
@@ -504,6 +508,8 @@ export declare const stylePropsAll: {
     outlineOffset?: boolean | undefined;
     outlineWidth?: boolean | undefined;
     touchAction?: boolean | undefined;
+    objectFit?: boolean | undefined;
+    objectPosition?: boolean | undefined;
     animationIterationCount: boolean;
     aspectRatio: boolean;
     borderImageOutset: boolean;
@@ -668,6 +674,8 @@ export declare const validStyles: {
     outlineOffset?: boolean | undefined;
     outlineWidth?: boolean | undefined;
     touchAction?: boolean | undefined;
+    objectFit?: boolean | undefined;
+    objectPosition?: boolean | undefined;
     WebkitLineClamp: boolean;
     animationIterationCount: boolean;
     aspectRatio: boolean;
