@@ -94,13 +94,13 @@ export function PropsTable({
 
                 {!!type && (
                   <>
-                    <Separator als="stretch" vertical mx="$4" my="$2" />
+                    <Separator als="stretch" vertical mx="$3.5" my="$2" />
 
                     <XStack
                       f={2}
                       miw="30%"
                       ai="center"
-                      separator={<Separator als="stretch" vertical mx="$4" my="$2" />}
+                      separator={<Separator als="stretch" vertical mx="$3.5" my="$2" />}
                       $xs={{
                         flexDirection: 'column',
                         ai: 'flex-start',
@@ -131,7 +131,7 @@ export function PropsTable({
                         ) : null}
 
                         {Boolean(defaultValue) && (
-                          <Separator als="stretch" vertical mx="$3" my="$2" />
+                          <Separator als="stretch" vertical mx="$3.5" my="$2" />
                         )}
 
                         {deprecated ? (
