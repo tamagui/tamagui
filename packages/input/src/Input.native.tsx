@@ -4,18 +4,42 @@ import { styled, useComposedRefs } from '@tamagui/core'
 import { TextInput } from 'react-native'
 import type { TextInputProps } from 'react-native'
 import { InputProps } from './type'
+import { defaultStyles } from './shared'
 const INPUT_NAME = 'Input'
-const StyledInput = styled(TextInput, {
-  name: INPUT_NAME,
-})
+const StyledInput = styled(
+  TextInput,
+  {
+    name: INPUT_NAME,
+    ...defaultStyles,
+  },
+  {
+    isInput: true,
+
+    accept: {
+      placeholderTextColor: 'color',
+      selectionColor: 'color',
+    } as const,
+  }
+)
 
 export const Input = forwardRef<HTMLInputElement, InputProps>((inProps, forwardedRef) => {
   const {
+    // some of destructed props are just to avoid passing them to ...rest because they are not in native.
     type,
     autoCapitalize,
     autoComplete,
     autoCorrect,
     autoFocus,
+    //@ts-ignore
+    dirname,
+    max,
+    min,
+    minLength,
+    multiple,
+    name,
+    required,
+    size,
+    step,
     disabled,
     maxLength,
     placeholder,
@@ -38,7 +62,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>((inProps, forwarde
 
   const ref = React.useRef<HTMLInputElement>(null)
 
-  const composedRefs = useComposedRefs(forwardedRef, ref)
+  const composedRefs = useComposedRefs<any>(forwardedRef, ref)
 
   let secureTextEntry = false
   let cursorColor = caretColor
@@ -85,11 +109,12 @@ export const Input = forwardRef<HTMLInputElement, InputProps>((inProps, forwarde
   }
 
   const finalProps = {
+    ...rest,
     inputMode: _inputMode,
     showSoftInputOnFocus,
-    autoCapitalize: autoCapitalize as any,
-    autoComplete: autoComplete as any,
-    autoCorrect: autoCorrect as any,
+    autoCapitalize,
+    autoComplete,
+    autoCorrect,
     autoFocus,
     disabled,
     maxLength,
@@ -108,7 +133,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>((inProps, forwarde
     secureTextEntry,
     spellCheck,
     textAlign,
-  }
+  } as any
 
   useEffect(() => {
     if (!id) return
@@ -121,5 +146,5 @@ export const Input = forwardRef<HTMLInputElement, InputProps>((inProps, forwarde
       focus: () => {},
     })
   }, [id, disabled])
-  return <StyledInput ref={composedRefs as unknown as any} {...finalProps} />
+  return <StyledInput ref={composedRefs} {...finalProps} />
 })

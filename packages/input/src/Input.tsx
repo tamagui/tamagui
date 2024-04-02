@@ -1,27 +1,79 @@
-import React, { forwardRef, useCallback, useEffect } from 'react'
+import React, { forwardRef, useEffect } from 'react'
 import { registerFocusable } from '@tamagui/focusable'
-import { styled, useComposedRefs } from '@tamagui/core'
-import { TextInput } from 'react-native'
-import type { TextInputProps } from 'react-native'
+import {
+  ColorTokens,
+  View,
+  styled,
+  useComposedRefs,
+  useEvent,
+  useTheme,
+} from '@tamagui/core'
 import { InputProps } from './type'
+import { defaultStyles } from './shared'
 const INPUT_NAME = 'Input'
-const StyledInput = styled(TextInput, {
-  name: INPUT_NAME,
-})
+const StyledInput = styled(
+  View,
+  {
+    name: INPUT_NAME,
+    tag: 'input',
+    ...defaultStyles,
+  },
+  {
+    accept: {
+      placeholderTextColor: 'color',
+      selectionColor: 'color',
+    } as const,
+  }
+)
 
 export const Input = forwardRef<HTMLInputElement, InputProps>((inProps, forwardedRef) => {
   const {
+    // some of destructed props are just to avoid passing them to ...rest because they are not in web.
     type,
+    allowFontScaling,
     autoCapitalize,
+    selectTextOnFocus,
+    showSoftInputOnFocus,
+    textContentType,
+    passwordRules,
+    textBreakStrategy,
+    underlineColorAndroid,
+    selection,
+    lineBreakStrategyIOS,
     autoComplete,
     autoCorrect,
+    returnKeyLabel,
     autoFocus,
     disabled,
+    onSubmitEditing,
+    caretHidden,
     maxLength,
+    clearButtonMode,
+    clearTextOnFocus,
+    contextMenuHidden,
+    dataDetectorTypes,
     placeholder,
     readOnly,
     id,
     value,
+    enablesReturnKeyAutomatically,
+    importantForAutofill,
+    inlineImageLeft,
+    inlineImagePadding,
+    inputAccessoryViewID,
+    keyboardAppearance,
+    keyboardType,
+    cursorColor,
+    disableFullscreenUI,
+    editable,
+    maxFontSizeMultiplier,
+    multiline,
+    numberOfLines,
+    onChangeText,
+    onContentSizeChange,
+    onEndEditing,
+    onScroll,
+    onSelectionChange,
     caretColor,
     placeholderTextColor,
     onChange,
@@ -29,6 +81,11 @@ export const Input = forwardRef<HTMLInputElement, InputProps>((inProps, forwarde
     enterKeyHint,
     defaultValue,
     returnKeyType,
+    rejectResponderTermination,
+    //@ts-ignore
+    rows,
+    scrollEnabled,
+    secureTextEntry,
     selectionColor,
     inputMode,
     spellCheck,
@@ -40,75 +97,61 @@ export const Input = forwardRef<HTMLInputElement, InputProps>((inProps, forwarde
 
   const composedRefs = useComposedRefs(forwardedRef, ref)
 
-  let secureTextEntry = false
-  let cursorColor = caretColor
-  let _returnKeyType = returnKeyType
-  let _enterKeyHint = enterKeyHint
-  if (enterKeyHint === 'go') {
-    _returnKeyType = 'go'
-    _enterKeyHint = undefined
-  }
+  const _onSelectionChange = useEvent(() => {
+    const start = ref.current?.selectionStart ?? 0
+    const end = ref.current?.selectionEnd ?? 0
+    onSelectionChange?.({
+      nativeEvent: {
+        selection: {
+          end,
+          start,
+        },
+      },
+    } as any)
+  })
 
-  const _onChange: TextInputProps['onChange'] = useCallback(
-    (e) => {
-      if (onChange) {
-        onChange({
-          ...e,
-          target: {
-            value: e.nativeEvent.text,
-          },
-        } as any)
+  useEffect(() => {
+    if (onSelectionChange) {
+      ref.current?.addEventListener('selectionchange', _onSelectionChange)
+    }
+    return () => {
+      if (onSelectionChange) {
+        ref.current?.removeEventListener('selectionchange', _onSelectionChange)
       }
-    },
-    [onChange]
-  )
+    }
+  }, [])
 
-  let _inputMode = inputMode
-  if (type === 'email') {
-    _inputMode = 'email'
-  } else if (type === 'tel') {
-    _inputMode = 'tel'
-  } else if (type === 'search') {
-    _inputMode = 'search'
-  } else if (type === 'url') {
-    _inputMode = 'url'
-  } else if (type === 'password') {
-    secureTextEntry = true
-    _inputMode = 'text'
-  } else {
-    _inputMode = 'text'
-  }
-
-  let showSoftInputOnFocus = true
-  if (inputMode === 'none') {
-    showSoftInputOnFocus = false
-  }
+  useEffect(() => {
+    if (selection) {
+      ref.current?.setSelectionRange(selection.start || null, selection.end || null)
+    }
+  }, [selection?.start, selection?.end])
 
   const finalProps = {
-    inputMode: _inputMode,
-    showSoftInputOnFocus,
-    autoCapitalize: autoCapitalize as any,
-    autoComplete: autoComplete as any,
-    autoCorrect: autoCorrect as any,
+    ...rest,
+    inputMode,
+    type,
+    autoCapitalize,
+    autoComplete,
+    autoCorrect,
     autoFocus,
     disabled,
     maxLength,
     placeholder,
+    caretColor,
     readOnly,
     id,
     value,
-    cursorColor,
     placeholderTextColor,
-    onChange: _onChange,
-    blurOnSubmit,
+    onChange,
     defaultValue,
-    enterKeyHint: _enterKeyHint,
-    returnKeyType: _returnKeyType,
+    enterKeyHint,
     selectionColor,
-    secureTextEntry,
     spellCheck,
     textAlign,
-  }
+  } as any
+
+  usePseudoColorApplier(ref, placeholderTextColor, selectionColor)
 
   useEffect(() => {
     if (!id) return
@@ -121,5 +164,30 @@ export const Input = forwardRef<HTMLInputElement, InputProps>((inProps, forwarde
       focus: () => {},
     })
   }, [id, disabled])
-  return <StyledInput ref={composedRefs as unknown as any} {...finalProps} />
+  return <StyledInput ref={composedRefs} {...finalProps} />
 })
+
+function usePseudoColorApplier(
+  ref: React.RefObject<HTMLInputElement>,
+  placeholderColor?: ColorTokens,
+  selectionColor?: ColorTokens
+) {
+  const theme = useTheme()
+  useEffect(() => {
+    if (placeholderColor) {
+      ref.current?.style.setProperty(
+        '--placeholder-color',
+        theme[placeholderColor]?.variable || placeholderColor
+      )
+    }
+  }, [placeholderColor])
+
+  useEffect(() => {
+    if (selectionColor) {
+      ref.current?.style.setProperty(
+        '--selection-color',
+        theme[selectionColor]?.variable || selectionColor
+      )
+    }
+  }, [selectionColor])
+}

@@ -1,3 +1,4 @@
+import { ColorTokens } from '@tamagui/web/types'
 import type { InputHTMLAttributes } from 'react'
 import type { TextInputProps, InputModeOptions } from 'react-native'
 
@@ -15,6 +16,8 @@ export type InputProps = Omit<
     | 'editable'
     | 'enterKeyHint'
     | 'keyboardType'
+    | 'placeholderTextColor'
+    | 'selectionColor'
   > & {
     /**
      * @deprecated
@@ -41,4 +44,6 @@ export type InputProps = Omit<
      * use `type` instead of inputMode for most cases, use `inputMode="none"` to disable the soft keyboard
      */
     inputMode?: InputModeOptions
+    placeholderTextColor?: ColorTokens
+    selectionColor?: ColorTokens
   }
