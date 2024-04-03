@@ -1,3 +1,4 @@
+- move from useMedia match.addListener to addEventListener
 - 2.0 = deprecate `name` in styled first arg, move to second arg
 - 2.0 = TS 5 recent version support raise - no more `as const` needed
 - media query height taking into account the "safe height" is important
