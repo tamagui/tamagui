@@ -7,6 +7,8 @@ import {
   useComposedRefs,
   useEvent,
   useTheme,
+  validStyles,
+  stylePropsTextOnly,
 } from '@tamagui/core'
 import { InputProps } from './type'
 import { defaultStyles, inputSizeVariant } from './shared'
@@ -40,6 +42,10 @@ const StyledInput = styled(
       placeholderTextColor: 'color',
       selectionColor: 'color',
     } as const,
+    validStyles: {
+      ...validStyles,
+      ...stylePropsTextOnly,
+    },
   }
 )
 
