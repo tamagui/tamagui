@@ -94,8 +94,6 @@ export const Input = StyledInput.styleable<InputProps>((inProps, forwardedRef) =
     secureTextEntry,
     selectionColor,
     inputMode,
-    spellCheck,
-    textAlign,
     ...rest
   } = inProps
 
@@ -140,8 +138,6 @@ export const Input = StyledInput.styleable<InputProps>((inProps, forwardedRef) =
     caretColor,
     id,
     enterKeyHint,
-    spellCheck,
-    textAlign,
   } as any
 
   usePseudoColorApplier(ref, placeholderTextColor, selectionColor)
