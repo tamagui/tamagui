@@ -22,6 +22,7 @@ declare module 'tamagui' {
 
   interface TypeOverride {
     groupNames(): 'takeoutBody'
+    groupNames(): 'card'
   }
 }
 

@@ -6,18 +6,18 @@ import { BentoIcon } from './BentoIcon'
 import { NextLink } from './NextLink'
 
 export function BentoCard({ link, ...props }) {
-  const [isHovered, setHovered] = useState(false)
-
   return (
     <NextLink passHref href={link}>
       <Stack
+        group="card"
         theme="surface4"
         animation="quickest"
         bg="$background"
         f={1}
         ai="center"
         jc="center"
-        w="$20"
+        w="55%"
+        miw="$20"
         h="$17"
         mx="auto"
         padding={0}
@@ -25,8 +25,6 @@ export function BentoCard({ link, ...props }) {
         ov="hidden"
         hoverStyle={{ y: -2, bg: '$color7' }}
         pressStyle={{ y: 2, bg: '$color5' }}
-        onHoverIn={() => setHovered(true)}
-        onHoverOut={() => setHovered(false)}
       >
         <ThemeTintAlt offset={6}>
           <YStack
@@ -45,10 +43,12 @@ export function BentoCard({ link, ...props }) {
             pos="absolute"
             als="flex-end"
             animation="quicker"
-            t={isHovered ? '$-4' : '$-6'}
-            r={isHovered ? '$3' : '$-0.25'}
-            rotateZ={isHovered ? '0deg' : '-5deg'}
-            scale={isHovered ? 1.15 : 1}
+            t={'$-8'}
+            $lg={{ t: '$-6' }}
+            r={'$-0.25'}
+            rotateZ={'-5deg'}
+            scale={1}
+            $group-card-hover={{ t: '$-4.5', r: '$3.5', rotateZ: '0deg', scale: 1.15 }}
           >
             <BentoIcon scale={2.5} />
           </View>
@@ -61,7 +61,7 @@ export function BentoCard({ link, ...props }) {
             </YStack>
           </Card.Header>
 
-          <Card.Footer animation="quicker" x={isHovered ? 5 : 0}>
+          <Card.Footer animation="quicker" x={0} $group-card-hover={{ x: 5 }}>
             <ChevronRight
               size="$1"
               pos="absolute"
