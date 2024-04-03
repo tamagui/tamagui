@@ -1,5 +1,6 @@
 import type { MetaFunction } from '@remix-run/node'
 import { H1 } from 'tamagui'
+import { ThemeToggle } from '../features/theme/ThemeToggle'
 
 export const meta: MetaFunction = () => {
   return [
@@ -12,6 +13,9 @@ export default function Index() {
   return (
     <div style={{ fontFamily: 'system-ui, sans-serif', lineHeight: '1.8' }}>
       <H1>Tamagui + Remix</H1>
+
+      <ThemeToggle />
+
       <ul>
         <li>
           <a
