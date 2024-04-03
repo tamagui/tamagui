@@ -169,7 +169,7 @@ function usePseudoColorApplier(
   useEffect(() => {
     if (placeholderColor) {
       ref.current?.style.setProperty(
-        '--placeholderTextColor',
+        '--placeholderColor',
         theme[placeholderColor]?.variable || placeholderColor
       )
     }

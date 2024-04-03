@@ -58,10 +58,12 @@ a.is_Button,
   text-decoration: none;
 }
 
-input::selection {
+input::selection,
+textarea::selection {
   background-color: var(--selectionBackground) !important;
 }
 
-input::placeholder {
-  color: var(--placeholderTextColor) !important;
+input::placeholder,
+textarea::placeholder {
+  color: var(--placeholderColor) !important;
 }

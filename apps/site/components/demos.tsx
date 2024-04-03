@@ -82,6 +82,11 @@ export const InputsDemo = lazyDemo(
   // @ts-ignore
   import('@tamagui/demos/demo/InputsDemo').then((x) => x.InputsDemo)
 )
+
+export const NewInputsDemo = lazyDemo(
+  // @ts-ignore
+  import('@tamagui/demos/demo/NewInputsDemo').then((x) => x.NewInputsDemo)
+)
 export const LinearGradientDemo = lazyDemo(
   // @ts-ignore
   import('@tamagui/demos/demo/LinearGradientDemo').then((x) => x.LinearGradientDemo)
