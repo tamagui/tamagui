@@ -19,6 +19,15 @@
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
+  "exports": {
+    "./package.json": "./package.json",
+    "./reset.css": "./reset.css",
+    ".": {
+      "types": "./types/index.d.ts",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.js"
+    }
+  },
   "dependencies": {
     "@babel/preset-react": "^7.23.3",
     "@tamagui/proxy-worm": "1.94.1",
