@@ -1,9 +1,8 @@
-import { ColorTokens } from '@tamagui/web/types';
-import type { InputHTMLAttributes } from 'react';
+/// <reference types="react" />
+import { ColorTokens, StackProps, TamaguiComponentPropsBase } from '@tamagui/web/types';
 import type { TextInputProps, InputModeOptions } from 'react-native';
-export type InputProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'style' | 'className' | 'children' | 'value'> & InputHTMLAttributes<HTMLInputElement>['style'] & {
-    value?: string;
-} & Omit<TextInputProps, 'inputMode' | 'secureTextEntry' | 'onChangeText' | 'editable' | 'enterKeyHint' | 'keyboardType' | 'placeholderTextColor' | 'selectionColor'> & {
+type DetailedInputProps = React.DetailedHTMLProps<React.HTMLProps<HTMLInputElement>, HTMLInputElement>;
+export type InputProps = StackProps & Omit<DetailedInputProps, 'style' | 'className' | 'children' | 'value' | 'size' | keyof StackProps> & DetailedInputProps['style'] & Omit<TextInputProps, 'inputMode' | 'secureTextEntry' | 'onChangeText' | 'editable' | 'enterKeyHint' | 'keyboardType' | 'placeholderTextColor' | 'selectionColor'> & {
     /**
      * @deprecated
      * use type="password" instead
@@ -31,5 +30,12 @@ export type InputProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'style' | '
     inputMode?: InputModeOptions;
     placeholderTextColor?: ColorTokens;
     selectionColor?: ColorTokens;
+    tag?: TamaguiComponentPropsBase['tag'];
+    /**
+     * @deprecated
+     * use tag: 'textarea' instead
+     */
+    multiline?: boolean;
 };
+export {};
 //# sourceMappingURL=type.d.ts.map

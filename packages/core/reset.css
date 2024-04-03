@@ -59,9 +59,9 @@ a.is_Button,
 }
 
 input::selection {
-  background-color: var(--selection-color) !important;
+  background-color: var(--selectionBackground) !important;
 }
 
 input::placeholder {
-  color: var(--placeholder-color) !important;
+  color: var(--placeholderTextColor) !important;
 }

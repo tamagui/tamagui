@@ -1,3 +1,4 @@
+import type { SizeVariantSpreadFunction } from '@tamagui/core';
 export declare const defaultStyles: {
     readonly borderColor: "$borderColor";
     readonly backgroundColor: "$background";
@@ -41,4 +42,6 @@ export declare const defaultStyles: {
     readonly outlineWidth: 0;
     readonly color: "$color";
 };
+export declare const inputSizeVariant: SizeVariantSpreadFunction<any>;
+export declare const textAreaSizeVariant: SizeVariantSpreadFunction<any>;
 //# sourceMappingURL=shared.d.ts.map

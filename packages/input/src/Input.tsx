@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { registerFocusable } from '@tamagui/focusable'
 import {
   ColorTokens,
@@ -9,16 +9,33 @@ import {
   useTheme,
 } from '@tamagui/core'
 import { InputProps } from './type'
-import { defaultStyles } from './shared'
+import { defaultStyles, inputSizeVariant } from './shared'
 const INPUT_NAME = 'Input'
 const StyledInput = styled(
   View,
   {
     name: INPUT_NAME,
     tag: 'input',
-    ...defaultStyles,
+    variants: {
+      unstyled: {
+        false: defaultStyles,
+      },
+
+      size: {
+        '...size': inputSizeVariant,
+      },
+
+      disabled: {
+        true: {},
+      },
+    } as const,
+
+    defaultVariants: {
+      unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+    },
   },
   {
+    isInput: true,
     accept: {
       placeholderTextColor: 'color',
       selectionColor: 'color',
@@ -26,12 +43,10 @@ const StyledInput = styled(
   }
 )
 
-export const Input = forwardRef<HTMLInputElement, InputProps>((inProps, forwardedRef) => {
+export const Input = StyledInput.styleable<InputProps>((inProps, forwardedRef) => {
   const {
     // some of destructed props are just to avoid passing them to ...rest because they are not in web.
-    type,
     allowFontScaling,
-    autoCapitalize,
     selectTextOnFocus,
     showSoftInputOnFocus,
     textContentType,
@@ -40,22 +55,15 @@ export const Input = forwardRef<HTMLInputElement, InputProps>((inProps, forwarde
     underlineColorAndroid,
     selection,
     lineBreakStrategyIOS,
-    autoComplete,
-    autoCorrect,
     returnKeyLabel,
-    autoFocus,
     disabled,
     onSubmitEditing,
     caretHidden,
-    maxLength,
     clearButtonMode,
     clearTextOnFocus,
     contextMenuHidden,
     dataDetectorTypes,
-    placeholder,
-    readOnly,
     id,
-    value,
     enablesReturnKeyAutomatically,
     importantForAutofill,
     inlineImageLeft,
@@ -76,10 +84,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>((inProps, forwarde
     onSelectionChange,
     caretColor,
     placeholderTextColor,
-    onChange,
     blurOnSubmit,
     enterKeyHint,
-    defaultValue,
     returnKeyType,
     rejectResponderTermination,
     //@ts-ignore
@@ -130,23 +136,10 @@ export const Input = forwardRef<HTMLInputElement, InputProps>((inProps, forwarde
   const finalProps = {
     ...rest,
     inputMode,
-    type,
-    autoCapitalize,
-    autoComplete,
-    autoCorrect,
-    autoFocus,
     disabled,
-    maxLength,
-    placeholder,
     caretColor,
-    readOnly,
     id,
-    value,
-    placeholderTextColor,
-    onChange,
-    defaultValue,
     enterKeyHint,
-    selectionColor,
     spellCheck,
     textAlign,
   } as any
@@ -176,7 +169,7 @@ function usePseudoColorApplier(
   useEffect(() => {
     if (placeholderColor) {
       ref.current?.style.setProperty(
-        '--placeholder-color',
+        '--placeholderTextColor',
         theme[placeholderColor]?.variable || placeholderColor
       )
     }
@@ -185,7 +178,7 @@ function usePseudoColorApplier(
   useEffect(() => {
     if (selectionColor) {
       ref.current?.style.setProperty(
-        '--selection-color',
+        '--selectionBackground',
         theme[selectionColor]?.variable || selectionColor
       )
     }

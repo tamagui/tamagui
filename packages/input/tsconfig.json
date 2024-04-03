@@ -6,14 +6,7 @@
   "references": [
     {
       "path": "../core"
-    },
-    {
-      "path": "../font-size"
     }
   ],
-  "exclude": [
-    "types",
-    "dist",
-    "**/__tests__"
-  ]
+  "exclude": ["types", "dist", "**/__tests__"]
 }

@@ -1,16 +1,31 @@
-import React, { forwardRef, useCallback, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { registerFocusable } from '@tamagui/focusable'
 import { styled, useComposedRefs } from '@tamagui/core'
-import { TextInput } from 'react-native'
-import type { TextInputProps } from 'react-native'
+import { TextInput, NativeSyntheticEvent, TextInputChangeEventData } from 'react-native'
 import { InputProps } from './type'
-import { defaultStyles } from './shared'
+import { defaultStyles, inputSizeVariant } from './shared'
 const INPUT_NAME = 'Input'
 const StyledInput = styled(
   TextInput,
   {
     name: INPUT_NAME,
-    ...defaultStyles,
+    variants: {
+      unstyled: {
+        false: defaultStyles,
+      },
+
+      size: {
+        '...size': inputSizeVariant,
+      },
+
+      disabled: {
+        true: {},
+      },
+    } as const,
+
+    defaultVariants: {
+      unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+    },
   },
   {
     isInput: true,
@@ -22,14 +37,11 @@ const StyledInput = styled(
   }
 )
 
-export const Input = forwardRef<HTMLInputElement, InputProps>((inProps, forwardedRef) => {
+// TODO: later move most of the logic to the core package
+export const Input = StyledInput.styleable<InputProps>((inProps, forwardedRef) => {
   const {
     // some of destructed props are just to avoid passing them to ...rest because they are not in native.
     type,
-    autoCapitalize,
-    autoComplete,
-    autoCorrect,
-    autoFocus,
     //@ts-ignore
     dirname,
     max,
@@ -38,25 +50,17 @@ export const Input = forwardRef<HTMLInputElement, InputProps>((inProps, forwarde
     multiple,
     name,
     required,
-    size,
     step,
     disabled,
-    maxLength,
-    placeholder,
-    readOnly,
     id,
-    value,
     caretColor,
-    placeholderTextColor,
     onChange,
-    blurOnSubmit,
+    onInput,
     enterKeyHint,
-    defaultValue,
     returnKeyType,
-    selectionColor,
+    onKeyDown,
     inputMode,
-    spellCheck,
-    textAlign,
+    tag,
     ...rest
   } = inProps
 
@@ -73,20 +77,6 @@ export const Input = forwardRef<HTMLInputElement, InputProps>((inProps, forwarde
     _enterKeyHint = undefined
   }
 
-  const _onChange: TextInputProps['onChange'] = useCallback(
-    (e) => {
-      if (onChange) {
-        onChange({
-          ...e,
-          target: {
-            value: e.nativeEvent.text,
-          },
-        } as any)
-      }
-    },
-    [onChange]
-  )
-
   let _inputMode = inputMode
   if (type === 'email') {
     _inputMode = 'email'
@@ -99,6 +89,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>((inProps, forwarde
   } else if (type === 'password') {
     secureTextEntry = true
     _inputMode = 'text'
+  } else if (type === 'number') {
+    _inputMode = 'numeric'
   } else {
     _inputMode = 'text'
   }
@@ -112,28 +104,61 @@ export const Input = forwardRef<HTMLInputElement, InputProps>((inProps, forwarde
     ...rest,
     inputMode: _inputMode,
     showSoftInputOnFocus,
-    autoCapitalize,
-    autoComplete,
-    autoCorrect,
-    autoFocus,
     disabled,
-    maxLength,
-    placeholder,
-    readOnly,
     id,
-    value,
     cursorColor,
-    placeholderTextColor,
-    onChange: _onChange,
-    blurOnSubmit,
-    defaultValue,
     enterKeyHint: _enterKeyHint,
     returnKeyType: _returnKeyType,
-    selectionColor,
     secureTextEntry,
-    spellCheck,
-    textAlign,
   } as any
+
+  if (tag === 'textarea') {
+    finalProps.multiline = true
+  }
+
+  if (onKeyDown) {
+    finalProps.onKeyPress = (e) => {
+      const { key } = e.nativeEvent
+      if (
+        key === 'Backspace' ||
+        (tag === 'textarea' && key === 'Enter') ||
+        key.length === 1
+      ) {
+        onKeyDown({
+          key,
+          type: 'keydown',
+        } as any)
+      }
+    }
+    finalProps.onSubmitEditing = (e) => {
+      onKeyDown({
+        key: 'Enter',
+        type: 'keydown',
+      } as any)
+    }
+  }
+
+  if (onChange || onInput) {
+    finalProps.onChange = (e: NativeSyntheticEvent<TextInputChangeEventData>) => {
+      const { text } = e.nativeEvent
+      if (onChange) {
+        onChange({
+          target: {
+            value: text,
+          },
+          type: 'change',
+        } as any)
+      }
+      if (onInput != null) {
+        onInput({
+          target: {
+            value: text,
+          },
+          type: 'input',
+        } as any)
+      }
+    }
+  }
 
   useEffect(() => {
     if (!id) return
@@ -146,5 +171,5 @@ export const Input = forwardRef<HTMLInputElement, InputProps>((inProps, forwarde
       focus: () => {},
     })
   }, [id, disabled])
-  return <StyledInput ref={composedRefs} {...finalProps} />
+  return <StyledInput onChange={(e) => {}} ref={composedRefs} {...finalProps} />
 })

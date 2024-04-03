@@ -58,9 +58,10 @@ a.is_Button,
   text-decoration: none;
 }
 
-input::placeholder {
-  color: var(--placeholder-color);
-}
 input::selection {
-  background: var(--selection-color);
+  background-color: var(--selectionBackground) !important;
+}
+
+input::placeholder {
+  color: var(--placeholderTextColor) !important;
 }
