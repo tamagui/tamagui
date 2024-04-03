@@ -6785,9 +6785,9 @@ __metadata:
     burnt: "npm:^0.12.2"
     expo: "npm:~50.0.6"
     expo-dev-client: "npm:~3.3.9"
-    expo-document-picker: "npm:~11.10.1"
+    expo-document-picker: "npm:^11.10.1"
     expo-font: "npm:~11.10.2"
-    expo-image-picker: "npm:~14.7.1"
+    expo-image-picker: "npm:^14.7.1"
     expo-linear-gradient: "npm:^12.7.1"
     expo-linking: "npm:~6.2.2"
     expo-splash-screen: "npm:~0.26.4"
@@ -15057,7 +15057,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expo-document-picker@npm:^11.10.1, expo-document-picker@npm:~11.10.1":
+"expo-document-picker@npm:^11.10.1":
   version: 11.10.1
   resolution: "expo-document-picker@npm:11.10.1"
   peerDependencies:
@@ -15095,7 +15095,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expo-image-picker@npm:^14.7.1, expo-image-picker@npm:~14.7.1":
+"expo-image-picker@npm:^14.7.1":
   version: 14.7.1
   resolution: "expo-image-picker@npm:14.7.1"
   dependencies:
