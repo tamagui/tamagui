@@ -1,25 +1,25 @@
+const resizeModeMap = {
+  fill: 'stretch',
+  none: 'center',
+  'scale-down': 'contain',
+  contain: 'contain',
+  cover: 'cover',
+}
+
+const verticalAlignMap = {
+  top: 'top',
+  middle: 'center',
+  bottom: 'bottom',
+  auto: 'auto',
+}
+
 export const webToNativeDynamicExpansion = {
   objectFit: (val: any) => {
-    const resizeModeMap = {
-      fill: 'stretch',
-      none: 'center',
-      'scale-down': 'contain',
-      contain: 'contain',
-      cover: 'cover',
-    }
-
     let resizeMode = resizeModeMap[val] || 'cover'
-
     return [['resizeMode', resizeMode]]
   },
   verticalAlign: (val: any) => {
-    const data = {
-      top: 'top',
-      middle: 'center',
-      bottom: 'bottom',
-      auto: 'auto',
-    }
-    return [['textAlignVertical', data[val] || 'auto']]
+    return [['textAlignVertical', verticalAlignMap[val] || 'auto']]
   },
 } as any
 
