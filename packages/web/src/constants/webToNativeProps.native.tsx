@@ -74,7 +74,7 @@ for (const parent in expansionsNoPrefix) {
   expansionsNoPrefix[parent] = expansionsNoPrefix[parent].map((k) => `${prefix}${k}`)
 }
 
-const expensions: Record<string, string[]> = {
+const expansions: Record<string, string[]> = {
   inset: ['top', 'right', 'bottom', 'left'],
   insetBlock: ['top', 'bottom'],
   insetBlockStart: ['top'],
@@ -85,4 +85,4 @@ const expensions: Record<string, string[]> = {
   inlineSize: ['width'],
 }
 
-export const webToNativeExpansion = Object.assign(expansionsNoPrefix, expensions)
+export const webToNativeExpansion = Object.assign(expansionsNoPrefix, expansions)

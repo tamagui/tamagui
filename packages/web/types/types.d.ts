@@ -735,159 +735,159 @@ interface ExtraStyleProps {
      */
     transformOrigin?: PxOrPct | 'left' | 'center' | 'right' | 'top' | 'bottom' | TwoValueTransformOrigin | `${TwoValueTransformOrigin} ${Px}`;
     /**
-     * @platform: web
+     * Web-only style property. Will be omitted on native.
      */
     filter?: Properties['filter'];
     /**
-     * @platform: web
+     * Web-only style property. Will be omitted on native.
      */
     backdropFilter?: Properties['backdropFilter'];
     /**
-     * @platform: web
+     * Web-only style property. Will be omitted on native.
      */
     mixBlendMode?: Properties['mixBlendMode'];
     /**
-     * @platform: web
+     * Web-only style property. Will be omitted on native.
      */
     backgroundImage?: Properties['backgroundImage'];
     /**
-     * @platform: web
+     * Web-only style property. Will be omitted on native.
      */
     backgroundOrigin?: Properties['backgroundOrigin'];
     /**
-     * @platform: web
+     * Web-only style property. Will be omitted on native.
      */
     backgroundPosition?: Properties['backgroundPosition'];
     /**
-     * @platform: web
+     * Web-only style property. Will be omitted on native.
      */
     backgroundRepeat?: Properties['backgroundRepeat'];
     /**
-     * @platform: web
+     * Web-only style property. Will be omitted on native.
      */
     backgroundSize?: Properties['backgroundSize'];
     /**
-     * @platform: web
+     * Web-only style property. Will be omitted on native.
      */
     backgroundColor?: Properties['backgroundColor'];
     /**
-     * @platform: web
+     * Web-only style property. Will be omitted on native.
      */
     backgroundClip?: Properties['backgroundClip'];
     /**
-     * @platform: web
+     * Web-only style property. Will be omitted on native.
      */
     backgroundBlendMode?: Properties['backgroundBlendMode'];
     /**
-     * @platform: web
+     * Web-only style property. Will be omitted on native.
      */
     backgroundAttachment?: Properties['backgroundAttachment'];
     /**
-     * @platform: web
+     * Web-only style property. Will be omitted on native.
      */
     background?: Properties['background'];
     /**
-     * @platform: web
+     * Web-only style property. Will be omitted on native.
      */
     clipPath?: Properties['clipPath'];
     /**
-     * @platform: web
+     * Web-only style property. Will be omitted on native.
      */
     caretColor?: Properties['caretColor'];
     /**
-     * @platform: web
+     * Web-only style property. Will be omitted on native.
      */
     transformStyle?: Properties['transformStyle'];
     /**
-     * @platform: web
+     * Web-only style property. Will be omitted on native.
      */
     mask?: Properties['mask'];
     /**
-     * @platform: web
+     * Web-only style property. Will be omitted on native.
      */
     maskImage?: Properties['maskImage'];
     /**
-     * @platform: web
+     * Web-only style property. Will be omitted on native.
      */
     textEmphasis?: Properties['textEmphasis'];
     /**
-     * @platform: web
+     * Web-only style property. Will be omitted on native.
      */
     borderImage?: Properties['borderImage'];
     /**
-     * @platform: web
+     * Web-only style property. Will be omitted on native.
      */
     float?: Properties['float'];
     /**
-     * @platform: web
+     * Web-only style property. Will be omitted on native.
      */
     content?: Properties['content'];
     /**
-     * @platform: web
+     * Web-only style property. Will be omitted on native.
      */
     overflowBlock?: Properties['overflowBlock'];
     /**
-     * @platform: web
+     * Web-only style property. Will be omitted on native.
      */
     overflowInline?: Properties['overflowInline'];
     /**
-     * @platform: web
+     * Web-only style property. Will be omitted on native.
      */
     maskBorder?: Properties['maskBorder'];
     /**
-     * @platform: web
+     * Web-only style property. Will be omitted on native.
      */
     maskBorderMode?: Properties['maskBorderMode'];
     /**
-     * @platform: web
+     * Web-only style property. Will be omitted on native.
      */
     maskBorderOutset?: Properties['maskBorderOutset'];
     /**
-     * @platform: web
+     * Web-only style property. Will be omitted on native.
      */
     maskBorderRepeat?: Properties['maskBorderRepeat'];
     /**
-     * @platform: web
+     * Web-only style property. Will be omitted on native.
      */
     maskBorderSlice?: Properties['maskBorderSlice'];
     /**
-     * @platform: web
+     * Web-only style property. Will be omitted on native.
      */
     maskBorderSource?: Properties['maskBorderSource'];
     /**
-     * @platform: web
+     * Web-only style property. Will be omitted on native.
      */
     maskBorderWidth?: Properties['maskBorderWidth'];
     /**
-     * @platform: web
+     * Web-only style property. Will be omitted on native.
      */
     maskClip?: Properties['maskClip'];
     /**
-     * @platform: web
+     * Web-only style property. Will be omitted on native.
      */
     maskComposite?: Properties['maskComposite'];
     /**
-     * @platform: web
+     * Web-only style property. Will be omitted on native.
      */
     maskMode?: Properties['maskMode'];
     /**
-     * @platform: web
+     * Web-only style property. Will be omitted on native.
      */
     maskOrigin?: Properties['maskOrigin'];
     /**
-     * @platform: web
+     * Web-only style property. Will be omitted on native.
      */
     maskPosition?: Properties['maskPosition'];
     /**
-     * @platform: web
+     * Web-only style property. Will be omitted on native.
      */
     maskRepeat?: Properties['maskRepeat'];
     /**
-     * @platform: web
+     * Web-only style property. Will be omitted on native.
      */
     maskSize?: Properties['maskSize'];
     /**
-     * @platform: web
+     * Web-only style property. Will be omitted on native.
      */
     maskType?: Properties['maskType'];
     borderInlineColor?: ColorTokens;
