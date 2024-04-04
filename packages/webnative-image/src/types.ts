@@ -9,8 +9,10 @@ import type {
 
 type RNImageType = typeof RNImage
 
+type KeyofStackProps = keyof StackProps
+
 export type ImageProps = StackProps &
-  Omit<RNImageProps, keyof StackProps | 'source' | 'resizeMode' | 'style'> & {
+  Omit<RNImageProps, KeyofStackProps | 'source' | 'resizeMode' | 'style'> & {
     /**
      * @deprecated
      * use src instead
@@ -22,8 +24,11 @@ export type ImageProps = StackProps &
      */
     resizeMode?: ImageResizeMode
     objectFit?: React.CSSProperties['objectFit']
-  } & Omit<HTMLImageElement['style'], 'width' | 'height'> &
-  Omit<React.HTMLProps<HTMLImageElement>, 'width' | 'height' | 'style'> &
+    objectPosition?: React.CSSProperties['objectPosition']
+  } & Omit<
+    React.ImgHTMLAttributes<HTMLImageElement>,
+    'width' | 'height' | KeyofStackProps
+  > &
   Omit<React.ImgHTMLAttributes<HTMLImageElement>, 'width' | 'height' | 'style'>
 
 export type ImageType = React.FC<Partial<ImageProps>> & {
