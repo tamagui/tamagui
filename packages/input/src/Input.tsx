@@ -104,6 +104,7 @@ export const Input = StyledInput.styleable<InputProps>((inProps, forwardedRef) =
   } = inProps
 
   const ref = React.useRef<HTMLInputElement>(null)
+  const theme = useTheme()
 
   const composedRefs = useComposedRefs(forwardedRef, ref)
 
@@ -144,9 +145,17 @@ export const Input = StyledInput.styleable<InputProps>((inProps, forwardedRef) =
     caretColor,
     id,
     enterKeyHint,
+    style: {
+      ...(rest.style as any),
+      ...(placeholderTextColor && {
+        '--placeholderColor':
+          theme[placeholderTextColor]?.variable || placeholderTextColor,
+      }),
+      ...(selectionColor && {
+        '--selectionColor': theme[selectionColor]?.variable || selectionColor,
+      }),
+    },
   } as any
-
-  usePseudoColorApplier(ref, placeholderTextColor, selectionColor)
 
   useEffect(() => {
     if (!id) return
@@ -161,28 +170,3 @@ export const Input = StyledInput.styleable<InputProps>((inProps, forwardedRef) =
   }, [id, disabled])
   return <StyledInput ref={composedRefs} {...finalProps} />
 })
-
-function usePseudoColorApplier(
-  ref: React.RefObject<HTMLInputElement>,
-  placeholderColor?: ColorTokens,
-  selectionColor?: ColorTokens
-) {
-  const theme = useTheme()
-  useEffect(() => {
-    if (placeholderColor) {
-      ref.current?.style.setProperty(
-        '--placeholderColor',
-        theme[placeholderColor]?.variable || placeholderColor
-      )
-    }
-  }, [placeholderColor])
-
-  useEffect(() => {
-    if (selectionColor) {
-      ref.current?.style.setProperty(
-        '--selectionBackground',
-        theme[selectionColor]?.variable || selectionColor
-      )
-    }
-  }, [selectionColor])
-}

@@ -2,7 +2,7 @@
 import { ColorTokens, StackProps, TamaguiComponentPropsBase } from '@tamagui/web/types';
 import type { TextInputProps, InputModeOptions } from 'react-native';
 type DetailedInputProps = React.DetailedHTMLProps<React.HTMLProps<HTMLInputElement>, HTMLInputElement>;
-export type InputProps = StackProps & Omit<DetailedInputProps, 'style' | 'className' | 'children' | 'value' | 'size' | keyof StackProps> & DetailedInputProps['style'] & Omit<TextInputProps, 'inputMode' | 'secureTextEntry' | 'onChangeText' | 'editable' | 'enterKeyHint' | 'keyboardType' | 'placeholderTextColor' | 'selectionColor'> & {
+export type InputProps = StackProps & Omit<DetailedInputProps, 'className' | 'children' | 'value' | 'size' | keyof StackProps> & DetailedInputProps['style'] & Omit<TextInputProps, 'inputMode' | 'secureTextEntry' | 'onChangeText' | 'editable' | 'enterKeyHint' | 'keyboardType' | 'placeholderTextColor' | 'selectionColor'> & {
     /**
      * @deprecated
      * use type="password" instead

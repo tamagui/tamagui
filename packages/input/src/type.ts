@@ -8,7 +8,7 @@ type DetailedInputProps = React.DetailedHTMLProps<
 export type InputProps = StackProps &
   Omit<
     DetailedInputProps,
-    'style' | 'className' | 'children' | 'value' | 'size' | keyof StackProps
+    'className' | 'children' | 'value' | 'size' | keyof StackProps
   > &
   DetailedInputProps['style'] &
   Omit<
