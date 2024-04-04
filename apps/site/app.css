@@ -89,8 +89,9 @@ a {
 :is(.is_Paragraph a, .link a, article p a, footer a) {
   text-decoration: underline;
   text-underline-offset: 4px;
-  text-decoration-thickness: 4px;
+  text-decoration-thickness: 2px;
   text-decoration-color: var(--color6);
+  transition: text-decoration-thickness ease-in-out 100ms;
 }
 
 :is(.is_Paragraph a, .link a, article p a, footer a):hover {
@@ -99,6 +100,7 @@ a {
   text-decoration-thickness: 4px;
   text-decoration-color: var(--color8);
 }
+
 
 .is_Paragraph:has(> ul) {
   margin-bottom: 0;
@@ -308,7 +310,7 @@ iframe {
 }
 
 .blur-8 {
-  backdrop-filter: blur(30px);
+  backdrop-filter: blur(8px);
 }
 
 .blur-4 {
@@ -957,4 +959,25 @@ textarea {
 }
 .t_dark .mix-blend-color-burn-dodge {
   mix-blend-mode: color-dodge;
+}
+
+
+
+.frond {
+  transform-origin: top right;
+  animation: frond 6s ease-in-out infinite alternate-reverse;
+  filter: blur(6px);
+}
+
+@keyframes frond {
+  0% {
+    filter: blur(6px);
+    opacity: 0.138;
+    transform: rotate(0deg);
+  }
+  100% {
+    filter: blur(9px);
+    opacity: 0.26;
+    transform: rotate(0.75deg);
+  }
 }

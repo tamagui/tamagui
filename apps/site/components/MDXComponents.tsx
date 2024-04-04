@@ -62,6 +62,7 @@ import { TamaguiExamplesCode } from './TamaguiExamplesCode'
 import { UL } from './UL'
 import { unwrapText } from './unwrapText'
 import { AvatarCard } from './AvatarCard'
+import { BentoCard } from './BentoCard'
 
 const IntroParagraph = ({ children, large, disableUnwrapText, ...props }: any) => {
   return (
@@ -522,6 +523,8 @@ export const components = {
   },
 
   DemoButton: () => <Button>Hello world</Button>,
+
+  BentoCard: BentoCard,
 
   SponsorButton,
 

@@ -1,3 +1,12 @@
+- in dev mode if no checkbox indicator, warn
+  - checkbox should have a default indicator probably with a simple svg check we inline
+- Select should return focus to trigger on close
+- Popover native flicker 1 frame in wrong position
+- move from useMedia match.addListener to addEventListener
+- 2.0 = deprecate `name` in styled first arg, move to second arg
+- 2.0 = TS 5 recent version support raise - no more `as const` needed
+- media query height taking into account the "safe height" is important
+- https://linear.app/uniswap/issue/EXT-925/tamagui-error-breaking-the-extension
 - document Popover.Anchor
 - Sometimes press getting stuck still on uniswap moonpay flow
 - Text vertical align issue: https://github.com/Uniswap/universe/pull/6730
@@ -16,8 +25,6 @@ Tentpole projects:
 
 Needed features/maintenance:
 
-- Vite + Remix support
-  - new starter
 - RSD / web alignment
   - follow what RSD is doing + dont go beyond native support eg aspect-ratio
   - deprecate accessibility props, "focusable" => tabIndex
@@ -45,6 +52,10 @@ Ongoing work:
 
 ----
 
+- No need for View + Text (just Element and we can extend it later)
+  - We'd need to mimic text inhertance on native (or remove it on web)
+  - https://github.com/facebook/react-strict-dom/blob/429e2fe1cb9370c59378d9ba1f4a40676bef7555/packages/react-strict-dom/src/native/modules/createStrictDOMComponent.js#L529
+
 - <Theme name="dark"> force below root dark causing hydration issues
 
 - Animation + shadowOffset is causing crash in iOS due to object value
@@ -67,26 +78,11 @@ Ongoing work:
 
 - addTheme updateTheme regression needs a test
 
-- not seeing data-at props
-
-- add more web-only stlye props:
-  - filter, backdropFilter, mixBlendMode are really good for $theme-light/dark
-  - fontSmoothing, clipPath, textShadow, backgroundImage, maskImage, maskSize...
-- Group is not SSR safe because useProps is evaluating to specific media queries
-on the server and then ultimately becomes not-media-css
-
 - type to search on Select regressed
-
-- masks wasn't exported in my version of @tamagui/theme-builder (1.88.18). I had to grab it from @tamagui/themes/v2-themes instead
 
 - // TODO: pulling past the limit breaks scroll on native, need to better make ScrollView
 
 - icons move from themed() to just styled()
-
-- nextjs plugin should automatically do the t_unmounted thing if disableSSR isnt true
-
-- // TODO ?
-- make studio not build unless `studio(` in commit
 
 - native theme change warning logs + theme change speed
 
@@ -104,10 +100,8 @@ on the server and then ultimately becomes not-media-css
 - Remove the need for Text
 
 - document the t_unmounted / SSR
-- $theme-light in prod mode SSR issue
 - popovers work with no js
 
-- remove proxy worm swap behavior except for whitelisted ones
 - TODO
   - process.env.TAMAGUI_TARGET === 'native' ? false : props['data-disable-theme']
   - this looks wrong? shouldnt it be the same as on native? we may be doubling them on accident
@@ -115,39 +109,6 @@ on the server and then ultimately becomes not-media-css
 - propMode
 
 - make styled() only not accept most non-style props
-
-- causes leftover props in DOM:
-
-<Stack
-  hitSlop={5}
-  onAccessibilityAction={[]}
-  importantForAccessibility="no"
-  needsOffscreenAlphaCompositing
-/>
-
-- useStyle and others can have forComponent types
-
-- docs:
-  - for ssr need for t_unmounted
-  - explain how ssr works
-
-- tests:
-  - SSR e2e with animations
-  - onLayout + RN or not
-  - active/focus/press styles (+ animations) (+ media queries)
-    - we have some of these but more better
-
-- TODO this is duplicated
-
-- this could work automatically? or with a simple config:
-const ScrollViewTamagui = styled(ScrollView, {
-  bg: '$background',
-  contentContainerStyle: {
-    flex: 1,
-    padding: "$md',
-  }
-})
-
 
 studio: add outlineColor and the pseudos
 studio: export for takeout option
@@ -161,15 +122,6 @@ studio:
 - gradient style
 - "var" mode where it changes types of $ to var(--)
 - calc?
-
-- studio:
-  - instead of automatic scale:
-    - symmetrical (automatic)
-    - mirrored (inverses)
-  - pre-configure themes
-    - stronger, dimmer
-    - disabled, active
-    - outlined
 
 - get takeout users studio access
 
@@ -439,36 +391,6 @@ Ali:
 
 ---
 
-# Nate
-
-- light/dark theme buttons bad colors (contrast + pressStyle borders)
-
-- add JSDoc help with links to docs for components
-  - also can we somehow make intellisense sort the props in a way we want by default? it would be nice to have style props after the others
-
-- Card has a good use case for size being passed through context/css vars
-- linear-gradient next.js issue
-
--  I'm currently using the Selector on Native, and the animation for pulling up the modal is kind of lagging and I get spammed this error when it happens.
-
-- add Themes page in docs under Theme, change Theme => Design System
-- move packages to have unstyled
-- move packages from /core to /web
-- // TODO move into getSplitStyles initial `if (process.env.TAMAGUI_TARGET === 'web')` block
-
-----
-
-- https://github.com/tamagui/tamagui/issues/478
-- default light mode theme + not changing
-- hoverTheme={false} works, make hoverStyle={false} to unset
-- test keyboardavoidingview > scrollView - collapsing tamagui
-- check into shadow/elevation not showing
-- survey https://tripetto.app or gforms
-
-- unset: useful for unstyled to unset the defaultVariant size
-
----
-
 1.X
 
 - web forms events bubble
@@ -479,15 +401,6 @@ Ali:
 - home page sponsors with sizing and better logos
   - https://github.com/JamesIves/github-sponsors-readme-action
 - keyboard search select bug
-- variants intellisense autocomplete not suggesting, but types are right
-- improve native integration test
-- kitchen-sink in Snack demo link
-- `tamagui` cli basic version
-- VisuallyHidden + mediaquery + space
-- re-render tests:
-  - useMedia, component w/ media + style, media + css-style, media + space
-  - useTheme, component with theme used in style
-
 - createThemes accepts array not object
 - site _app has t_unmounted helper, move that into tamagui proper
 
@@ -502,10 +415,6 @@ Ali:
 - replace all RN stuff left in tamagui: Image, Input, Spinner, etc
 - Accessibility + RTL
 - tag="a" should get the typed props of a link
-- much better non-monorepo non-expo general setup experience
-- app dir support (discussions/409)
-- contrastColor (accent color) in themes (discussions/449)
-- all: unset
 
 ---
 

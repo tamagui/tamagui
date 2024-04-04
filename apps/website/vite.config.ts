@@ -9,6 +9,9 @@ import { analyzer } from 'vite-bundle-analyzer'
 installGlobals()
 
 export default defineConfig({
+  server: {
+    port: 7434,
+  },
   clearScreen: false,
   plugins: [
     tamaguiPlugin() as any,

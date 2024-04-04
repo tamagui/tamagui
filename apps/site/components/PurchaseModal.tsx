@@ -9,7 +9,7 @@ import {
   TakeoutTable,
   formatPrice,
 } from '@lib/products-utils'
-import { useTint } from '@tamagui/logo'
+import { ThemeTintAlt, useTint } from '@tamagui/logo'
 import { Check, X } from '@tamagui/lucide-icons'
 import { useUser } from 'hooks/useUser'
 import Link from 'next/link'
@@ -40,6 +40,8 @@ import { BentoAgreementModal, TakeoutAgreementModal } from './AgreementModal'
 import { BentoLogo } from './BentoLogo'
 import { NextLink } from './NextLink'
 import { BentoPoliciesModal, TakeoutPoliciesModal } from './PoliciesModal'
+import { TakeoutLogo } from './TakeoutLogo'
+import { useRouter } from 'next/router'
 
 function getPriceDescription(price: TakeoutPageProps['starter']['prices'][number]) {
   return (
@@ -130,8 +132,6 @@ export const PurchaseModal = ({
 
   const [currentTab, setCurrentTab] = useState(defaultValue)
 
-  console.log('currentTab', currentTab)
-
   return (
     <Dialog
       modal
@@ -172,7 +172,6 @@ export const PurchaseModal = ({
         />
 
         <Dialog.Content
-          theme="surface1"
           bordered
           elevate
           key="content"
@@ -201,13 +200,12 @@ export const PurchaseModal = ({
             <Tabs.List disablePassBorderRadius>
               <YStack width={'50%'} f={1}>
                 <Tab
+                  py={12}
                   onPress={() => setCurrentTab('takeout')}
                   isActive={currentTab === 'takeout'}
                   value="takeout"
                 >
-                  <H4 fontFamily="$cherryBomb">
-                    <ThemedTakeoutLogo />
-                  </H4>
+                  <TakeoutLogo scale={0.11} />
                 </Tab>
               </YStack>
               <Separator vertical bc="$color4" mb={2} mx={-1} />
@@ -218,187 +216,200 @@ export const PurchaseModal = ({
                   value="bento"
                   end
                 >
-                  <BentoLogo noShadow scale={0.2} />
+                  <BentoLogo noShadow scale={0.26} />
                 </Tab>
               </YStack>
             </Tabs.List>
             <ScrollView $gtSm={{ height: '60vh' }}>
-              <YStack f={1} group="takeoutBody" px="$4" pb="$4">
-                <Tabs.Content f={1} value="takeout">
-                  <XStack jc="flex-end" my="$2">
-                    <Button
-                      onPress={() => setStarterPriceId(null)}
-                      o={starterPriceId ? 1 : 0}
-                      size="$1"
-                      chromeless
-                    >
-                      Clear
-                    </Button>
-                  </XStack>
-                  <XStack f={1} gap="$4" $group-takeoutBody-sm={{ fd: 'column-reverse' }}>
-                    <YStack
+              <PageTheme>
+                <YStack f={1} group="takeoutBody" px="$4" pb="$4">
+                  <Tabs.Content f={1} value="takeout">
+                    <XStack jc="flex-end" my="$2">
+                      <Button
+                        onPress={() => setStarterPriceId(null)}
+                        o={starterPriceId ? 1 : 0}
+                        size="$1"
+                        chromeless
+                      >
+                        Clear
+                      </Button>
+                    </XStack>
+                    <XStack
                       f={1}
-                      maw="50%"
-                      $group-takeoutBody-sm={{
-                        maw: '100%',
-                      }}
+                      gap="$4"
+                      $group-takeoutBody-sm={{ fd: 'column-reverse' }}
                     >
-                      <YStack gap="$4">
-                        <YStack gap="$2">
-                          <TakeoutTable
-                            product={starter}
-                            selectedPriceId={starterPriceId || ''}
-                          />
-                          <XStack
-                            mt="$2"
-                            theme="green"
-                            bg="$color3"
-                            p="$4"
-                            bw={1}
-                            bc="$color5"
-                            br="$4"
-                            gap="$3"
-                          >
-                            <Check size={24} mt={2} color="$color9" />
-                            <MunroP size="$7" color="$color11">
-                              Every plan includes the starter, icons & fonts
-                            </MunroP>
-                          </XStack>
+                      <YStack
+                        f={1}
+                        maw="50%"
+                        $group-takeoutBody-sm={{
+                          maw: '100%',
+                        }}
+                      >
+                        <YStack gap="$4">
+                          <YStack gap="$2">
+                            <TakeoutTable
+                              product={starter}
+                              selectedPriceId={starterPriceId || ''}
+                            />
+                            <XStack
+                              mt="$2"
+                              theme="green"
+                              bg="$color3"
+                              p="$4"
+                              bw={1}
+                              bc="$color5"
+                              br="$4"
+                              gap="$3"
+                            >
+                              <Check size={24} mt={2} color="$color9" />
+                              <MunroP size="$7" color="$color11">
+                                Every plan includes the starter, icons & fonts
+                              </MunroP>
+                            </XStack>
+                          </YStack>
+                        </YStack>
+
+                        <YStack mt="$6" gap="$4" ai="center">
+                          <Paragraph size="$3" theme="alt1">
+                            Instant one-click cancel your subscription from{' '}
+                            <Link href="/account/items">Subscriptions</Link>
+                          </Paragraph>
                         </YStack>
                       </YStack>
 
-                      <YStack mt="$6" gap="$4" ai="center">
-                        <Paragraph size="$3" theme="alt1">
-                          Instant one-click cancel your subscription from{' '}
-                          <Link href="/account/items">Subscriptions</Link>
-                        </Paragraph>
-                      </YStack>
-                    </YStack>
+                      <Separator vertical />
 
-                    <Separator vertical />
+                      <YStack f={2} gap="$4">
+                        <YStack gap="$4">
+                          <YStack gap="$2">
+                            <RadioGroup
+                              gap="$2"
+                              value={starterPriceId || ''}
+                              onValueChange={(val) => setStarterPriceId(val)}
+                            >
+                              {sortedStarterPrices.map((price) => {
+                                const active = starterPriceId === price.id
+                                const htmlId = `price-${price.id}`
+                                return (
+                                  <RadioGroupItem
+                                    key={htmlId}
+                                    active={active}
+                                    value={price.id}
+                                    id={htmlId}
+                                  >
+                                    <H4 mt="$-1">
+                                      {price.description === 'Unlimited (+9 seats)'
+                                        ? 'Pro'
+                                        : price.description === 'Hobby (3-8 seats)'
+                                          ? 'Team'
+                                          : 'Personal'}
+                                    </H4>
 
-                    <YStack f={2} gap="$4">
-                      <YStack gap="$4">
-                        <YStack gap="$2">
-                          <RadioGroup
-                            gap="$2"
-                            value={starterPriceId || ''}
-                            onValueChange={(val) => setStarterPriceId(val)}
-                          >
-                            {sortedStarterPrices.map((price) => {
-                              const active = starterPriceId === price.id
-                              const htmlId = `price-${price.id}`
-                              return (
-                                <RadioGroupItem
-                                  key={htmlId}
-                                  active={active}
-                                  value={price.id}
-                                  id={htmlId}
-                                >
-                                  <H4 mt="$-1">
-                                    {price.description === 'Unlimited (+9 seats)'
-                                      ? 'Pro'
-                                      : price.description === 'Hobby (3-8 seats)'
-                                        ? 'Team'
-                                        : 'Personal'}
-                                  </H4>
-
-                                  <Paragraph theme="alt2">
-                                    {getPriceDescription(price)}
-                                  </Paragraph>
-                                  {/* <Paragraph theme="alt1" size="$2">
-                            {formatPrice(price.unit_amount! / (100 * 2), 'usd')}{' '}
-                            annual renewal (cancel anytime)
-                          </Paragraph> */}
-                                </RadioGroupItem>
-                              )
-                            })}
-                          </RadioGroup>
+                                    <Paragraph theme="alt2">
+                                      {getPriceDescription(price)}
+                                    </Paragraph>
+                                  </RadioGroupItem>
+                                )
+                              })}
+                            </RadioGroup>
+                          </YStack>
                         </YStack>
                       </YStack>
-                    </YStack>
-                  </XStack>
-                </Tabs.Content>
+                    </XStack>
+                  </Tabs.Content>
 
-                <Tabs.Content value="bento">
-                  <XStack jc="flex-end" my="$2">
-                    <Button
-                      onPress={() => setBentoPriceId(null)}
-                      o={bentoPriceId ? 1 : 0}
-                      size="$1"
-                      chromeless
-                    >
-                      Clear
-                    </Button>
-                  </XStack>
-                  <XStack f={1} gap="$4" $group-takeoutBody-sm={{ fd: 'column-reverse' }}>
-                    <YStack
+                  <Tabs.Content value="bento">
+                    <XStack jc="flex-end" my="$2">
+                      <Button
+                        onPress={() => setBentoPriceId(null)}
+                        o={bentoPriceId ? 1 : 0}
+                        size="$1"
+                        chromeless
+                      >
+                        Clear
+                      </Button>
+                    </XStack>
+                    <XStack
                       f={1}
-                      maw="50%"
-                      $group-takeoutBody-sm={{
-                        maw: '100%',
-                      }}
+                      gap="$4"
+                      $group-takeoutBody-sm={{ fd: 'column-reverse' }}
                     >
-                      <YStack gap="$4">
-                        <YStack gap="$2">
-                          <BentoTable
-                            product={bento}
-                            selectedPriceId={bentoPriceId || ''}
-                          />
+                      <YStack
+                        f={1}
+                        maw="50%"
+                        w="50%"
+                        $group-takeoutBody-sm={{
+                          maw: '100%',
+                        }}
+                      >
+                        <YStack gap="$4">
+                          <YStack gap="$2">
+                            <BentoTable
+                              product={bento}
+                              selectedPriceId={bentoPriceId || ''}
+                            />
+                          </YStack>
+                        </YStack>
+
+                        <YStack mt="$6" gap="$4" ai="center">
+                          <Paragraph size="$3" theme="alt1">
+                            Instant one-click cancel your subscription from{' '}
+                            <Link href="/account/items">Subscriptions</Link>
+                          </Paragraph>
                         </YStack>
                       </YStack>
 
-                      <YStack mt="$6" gap="$4" ai="center">
-                        <Paragraph size="$3" theme="alt1">
-                          Instant one-click cancel your subscription from{' '}
-                          <Link href="/account/items">Subscriptions</Link>
-                        </Paragraph>
-                      </YStack>
-                    </YStack>
+                      <Separator vertical />
 
-                    <Separator vertical />
+                      <YStack f={1} gap="$4">
+                        <YStack gap="$4">
+                          <YStack gap="$2">
+                            <RadioGroup
+                              gap="$2"
+                              value={bentoPriceId || ''}
+                              onValueChange={(val) => setBentoPriceId(val)}
+                            >
+                              {sortedBentoPrices.map((price) => {
+                                const active = bentoPriceId === price.id
+                                const htmlId = `price-${price.id}`
+                                return (
+                                  <RadioGroupItem
+                                    key={price.id}
+                                    active={active}
+                                    value={price.id}
+                                    id={htmlId}
+                                  >
+                                    <H4 mt="$-1">
+                                      {price.description === 'Team (Unlimited)'
+                                        ? 'Pro'
+                                        : price.description === 'Team (8-10 Users)'
+                                          ? 'Team'
+                                          : 'Personal'}
+                                    </H4>
 
-                    <YStack f={2} gap="$4">
-                      <YStack gap="$4">
-                        <YStack gap="$2">
-                          <RadioGroup
-                            gap="$2"
-                            value={bentoPriceId || ''}
-                            onValueChange={(val) => setBentoPriceId(val)}
-                          >
-                            {sortedBentoPrices.map((price) => {
-                              const active = bentoPriceId === price.id
-                              const htmlId = `price-${price.id}`
-                              return (
-                                <RadioGroupItem
-                                  key={price.id}
-                                  active={active}
-                                  value={price.id}
-                                  id={htmlId}
-                                >
-                                  <H4 mt="$-1">{price.description}</H4>
-
-                                  <Paragraph theme="alt2">
-                                    {getPriceDescription(price)}
-                                  </Paragraph>
-                                  {/* <Paragraph theme="alt1" size="$2">
+                                    <Paragraph theme="gray">
+                                      {getPriceDescription(price)}
+                                    </Paragraph>
+                                    {/* <Paragraph theme="alt1" size="$2">
                                 {formatPrice(price.unit_amount! / (100 * 2), 'usd')}{' '}
                                 annual renewal (cancel anytime)
                               </Paragraph> */}
-                                </RadioGroupItem>
-                              )
-                            })}
-                          </RadioGroup>
+                                  </RadioGroupItem>
+                                )
+                              })}
+                            </RadioGroup>
+                          </YStack>
                         </YStack>
                       </YStack>
-                    </YStack>
-                  </XStack>
-                </Tabs.Content>
-              </YStack>
+                    </XStack>
+                  </Tabs.Content>
+                </YStack>
+              </PageTheme>
               <Spacer size="$1" />
             </ScrollView>
             <Separator />
-            <YStack p="$6" gap="$2">
+            <YStack p="$6" gap="$2" bg="$color1">
               <YStack
                 jc="center"
                 ai="center"
@@ -409,11 +420,11 @@ export const PurchaseModal = ({
                   flexDirection: 'row',
                 }}
               >
-                <YStack width="100%" $gtXs={{ width: '40%' }}>
+                <YStack f={1} width="100%" $gtXs={{ width: '40%' }}>
                   <XStack>
                     <H3 size="$11">{formatPrice(sum! / 100, 'usd')}</H3>
                   </XStack>
-                  <Paragraph size="$2">
+                  <Paragraph theme="alt1" ellipse size="$4">
                     {(() => {
                       const items: string[] = []
                       const starterPrice = starterPriceId
@@ -430,19 +441,7 @@ export const PurchaseModal = ({
                         items.push(`Bento ${bentoPrice?.description}`)
                       }
 
-                      return (
-                        <Paragraph theme="alt2">
-                          {items.length === 0
-                            ? null
-                            : items
-                                .map<React.ReactNode>((item) => (
-                                  <Paragraph key={item} theme="alt1">
-                                    {item}
-                                  </Paragraph>
-                                ))
-                                .reduce((prev, curr) => [prev, ' + ', curr])}
-                        </Paragraph>
-                      )
+                      return items.join(' + ')
                     })()}
                   </Paragraph>
                   <AnimatePresence>
@@ -458,7 +457,7 @@ export const PurchaseModal = ({
                         {store.disableAutomaticDiscount ? (
                           <>
                             <Paragraph size="$1" theme="alt2">
-                              You can apply your promo code on the next page.
+                              You can apply a promo code on the next page.
                             </Paragraph>
                             <SizableText
                               cursor="pointer"
@@ -624,8 +623,8 @@ export const PurchaseModal = ({
             <Dialog.Close asChild>
               <Button
                 position="absolute"
-                top="$-4"
-                right="$-4"
+                top="$2"
+                right="$2"
                 size="$2"
                 circular
                 icon={X}
@@ -635,21 +634,6 @@ export const PurchaseModal = ({
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog>
-  )
-}
-
-const ThemedTakeoutLogo = () => {
-  const { tints } = useTint()
-  return (
-    <>
-      <Theme name={tints[0] as ThemeName}>T</Theme>
-      <Theme name={tints[1] as ThemeName}>a</Theme>
-      <Theme name={tints[2] as ThemeName}>k</Theme>
-      <Theme name={tints[3] as ThemeName}>e</Theme>
-      <Theme name={tints[4] as ThemeName}>o</Theme>
-      <Theme name={tints[5] as ThemeName}>u</Theme>
-      <Theme name={tints[6] as ThemeName}>t</Theme>
-    </>
   )
 }
 
@@ -667,12 +651,14 @@ function Tab({
       py="$4"
       btrr={end ? '$3' : 0}
       btlr={!end ? '$3' : 0}
+      height={90}
       value=""
       disableActiveTheme
       bbw={1}
       bbc="transparent"
       {...(!isActive && {
         bbc: '$color4',
+        bg: '$color4',
       })}
       {...props}
     >
@@ -694,4 +680,9 @@ function Tab({
       {children}
     </Tabs.Tab>
   )
+}
+
+const PageTheme = (props: { children: any }) => {
+  const isBento = useRouter().pathname.startsWith('/bento')
+  return <ThemeTintAlt offset={isBento ? -1 : 1}>{props.children}</ThemeTintAlt>
 }

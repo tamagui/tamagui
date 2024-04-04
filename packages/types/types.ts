@@ -168,7 +168,7 @@ export type CLIResolvedOptions = {
   port?: number
   host?: string
   mode: 'development' | 'production'
-  debug?: UserOptions['debug']
+  debug?: CLIUserOptions['debug']
   tsconfigPath: string
   tamaguiOptions: TamaguiOptions
   pkgJson: {

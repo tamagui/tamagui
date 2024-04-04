@@ -214,11 +214,12 @@ export const useComponentState = (
 
   // immediately update disabled state and reset component state
   if (disabled !== state.disabled) {
-    setState({
-      ...state,
-      ...defaultComponentState, // removes any stale press state etc
-      disabled,
-    })
+    state.disabled = disabled
+    // if disabled remove all press/focus/hover states
+    if (disabled) {
+      Object.assign(state, defaultComponentStateMounted)
+    }
+    setState({ ...state })
   }
 
   let setStateShallow = createShallowSetState(setState, disabled, props.debug)
@@ -963,7 +964,8 @@ export function createComponent<
           runtimeHoverStyle ||
           runtimeFocusStyle
       )
-    const needsPressState = Boolean(groupName || runtimeHoverStyle)
+
+    const needsPressState = Boolean(groupName || runtimePressStyle)
 
     if (process.env.NODE_ENV === 'development' && time) time`events-setup`
 
@@ -1010,7 +1012,7 @@ export function createComponent<
           }),
           onPressIn: attachPress
             ? (e) => {
-                if (runtimePressStyle) {
+                if (runtimePressStyle || groupName) {
                   setStateShallow({
                     press: true,
                     pressIn: true,
@@ -1675,7 +1677,7 @@ export const subscribeToContextGroup = ({
     }
 
     return componentContext.groups?.subscribe((name, { layout, pseudo }) => {
-      if (pseudo && pseudoGroups?.has(name)) {
+      if (pseudo && pseudoGroups?.has(String(name))) {
         // we emit a partial so merge it + change reference so mergeIfNotShallowEqual runs
         Object.assign(current.pseudo, pseudo)
         persist()

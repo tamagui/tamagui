@@ -1,12 +1,28 @@
-import { memo } from 'react'
-import { H1, H3, Input, Stack, Text, YStack, styled, withStaticProperties } from 'tamagui'
+import { memo, useState } from 'react'
+import {
+  Checkbox,
+  H1,
+  H3,
+  Input,
+  Stack,
+  Text,
+  XStack,
+  YStack,
+  styled,
+  useDidFinishSSR,
+  withStaticProperties,
+} from 'tamagui'
 
 import { Container } from '../components/Container'
 import { ThemeToggle } from '../components/ThemeToggle'
+import { Check } from '@tamagui/lucide-icons'
 
 export default memo(() => {
-  const uid = crypto.randomUUID()
+  const isHydrated = useDidFinishSSR()
+  const uid = isHydrated ? crypto.randomUUID() : 0
   const date = new Date().toLocaleString()
+  const [purchaseAmt, setpurchaseAmt] = useState(0)
+  const [vatpct, setvatpct] = useState(0)
 
   return (
     <>
@@ -32,7 +48,7 @@ export default memo(() => {
             </DT.Row>
             <DT.Row>
               <DT.Col bold>Invoice Status:</DT.Col>
-              <DT.Col>Paid</DT.Col>
+              <DT.Col>Paid ${purchaseAmt}</DT.Col>
             </DT.Row>
           </DT>
 
@@ -76,23 +92,53 @@ export default memo(() => {
             <H3>Purchase</H3>
             <DT.Row>
               <DT.Col bold>Item:</DT.Col>
-              <DT.Col>Tamagui Takeout</DT.Col>
+              <DT.Col gap="$4">
+                <XStack gap="$2">
+                  <Checkbox>
+                    <Checkbox.Indicator>
+                      <Check />
+                    </Checkbox.Indicator>
+                  </Checkbox>
+                  Tamagui Takeout
+                </XStack>
+                <XStack gap="$2">
+                  <Checkbox>
+                    <Checkbox.Indicator>
+                      <Check />
+                    </Checkbox.Indicator>
+                  </Checkbox>
+                  Tamagui Bento
+                </XStack>
+              </DT.Col>
             </DT.Row>
             <DT.Row>
               <DT.Col bold>Price:</DT.Col>
-              <DT.Input />
+              <DT.Input
+                onChangeText={(text) => {
+                  setpurchaseAmt(parseFloat(text))
+                }}
+              />
             </DT.Row>
             <DT.Row>
               <DT.Col bold>Vat %:</DT.Col>
-              <DT.Input />
+              <DT.Input
+                onChangeText={(text) => {
+                  setvatpct(parseFloat(text))
+                }}
+              />
             </DT.Row>
             <DT.Row>
               <DT.Col bold>Vat Amount:</DT.Col>
-              <DT.Input />
+              <DT.Input
+                value={`${purchaseAmt && vatpct ? purchaseAmt * vatpct * 0.01 : 0}`}
+              />
             </DT.Row>
             <DT.Row>
               <DT.Col bold>Total:</DT.Col>
-              <DT.Input fow="bold" />
+              <DT.Input
+                value={`${purchaseAmt + purchaseAmt * vatpct * 0.01}`}
+                fow="bold"
+              />
             </DT.Row>
           </DT>
         </YStack>

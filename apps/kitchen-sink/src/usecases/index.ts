@@ -25,6 +25,7 @@ export { StyledButtonVariantPseudoMerge } from './StyledButtonVariantPseudoMerge
 export { StyledCheckboxTheme } from './StyledCheckboxTheme'
 export { StyledHOCNamed } from './StyledHOCNamed'
 export { StyledInputFocusStyle } from './StyledInputFocusStyle'
+export { StyledButtonAnimationAuto } from './StyledButtonAnimationAuto'
 export { StyledOverridePsuedo } from './StyledOverridePsuedo'
 export { StyledRNW } from './StyledRNW'
 export { StyledStyleableInputVariant } from './StyledStyleableInputVariant'
