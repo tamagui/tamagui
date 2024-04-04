@@ -20,24 +20,29 @@ export function BentoPartScreenItem({ navigation }) {
     })
   }, [name, navigation])
 
+  const removeComponentsThatAreNotPublic = (component: any) =>
+    !['AvatarWithTitle', 'CircularAvatars'].includes(component.name)
+
   return (
     <ScrollView>
       <YStack bg="$color2" p="$3" pt="$6" pb="$8" f={1} space>
         <YGroup size="$4" separator={<Separator />}>
-          {Object.values(sections[name] ?? []).map((Component: any, index) => {
-            return (
-              <YGroup.Item key={Component.name}>
-                <LinkListItem
-                  bg="$color1"
-                  href={'/' + Component.name}
-                  pressTheme
-                  size="$4"
-                >
-                  {Component.name}
-                </LinkListItem>
-              </YGroup.Item>
-            )
-          })}
+          {Object.values(sections[name] ?? [])
+            .filter(removeComponentsThatAreNotPublic)
+            .map((Component: any, index) => {
+              return (
+                <YGroup.Item key={Component.name}>
+                  <LinkListItem
+                    bg="$color1"
+                    href={'/' + Component.name}
+                    pressTheme
+                    size="$4"
+                  >
+                    {Component.name}
+                  </LinkListItem>
+                </YGroup.Item>
+              )
+            })}
         </YGroup>
       </YStack>
     </ScrollView>
