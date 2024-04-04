@@ -37,7 +37,18 @@ const Stack = createNativeStackNavigator<
   } & BentoScreens
 >()
 
-const BentoScreenContainer: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+const BentoScreenContainer: React.FC<{ children: React.ReactNode; name: string }> = ({
+  children,
+  name,
+}) => {
+  //NOTE: Components using Flatlist can't have a ScrollView wrapper. This breaks scrolling on Android.
+  if (['FlatGrid'].includes(name)) {
+    return (
+      <View flex={1} minWidth="100%" p="$2">
+        {children}
+      </View>
+    )
+  }
   return (
     <ScrollView flex={1} minWidth="100%" p="$2">
       {children}
@@ -62,7 +73,7 @@ const bentoScreensPerElement = Object.entries(sections)
         }}
       >
         {() => (
-          <BentoScreenContainer>
+          <BentoScreenContainer name={name}>
             <Component />
           </BentoScreenContainer>
         )}
