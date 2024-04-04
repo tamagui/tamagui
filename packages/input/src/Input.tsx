@@ -124,9 +124,7 @@ export const Input = StyledInput.styleable<InputProps>((inProps, forwardedRef) =
   useEffect(() => {
     if (onSelectionChange) {
       ref.current?.addEventListener('selectionchange', _onSelectionChange)
-    }
-    return () => {
-      if (onSelectionChange) {
+      return () => {
         ref.current?.removeEventListener('selectionchange', _onSelectionChange)
       }
     }
