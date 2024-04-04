@@ -111,8 +111,6 @@ export declare const stylePropsView: {
     outlineOffset?: boolean | undefined;
     outlineWidth?: boolean | undefined;
     touchAction?: boolean | undefined;
-    lineHeight: boolean;
-    textAlign: boolean;
     WebkitLineClamp: boolean;
     animationIterationCount: boolean;
     aspectRatio: boolean;
@@ -261,6 +259,7 @@ export declare const stylePropsFont: {
     fontStyle: boolean;
     fontWeight: boolean;
     letterSpacing: boolean;
+    lineHeight: boolean;
     textTransform: boolean;
 };
 export declare const stylePropsTextOnly: {
@@ -278,6 +277,7 @@ export declare const stylePropsTextOnly: {
     color: boolean;
     textDecorationColor: boolean;
     textShadowColor: boolean;
+    textAlign: boolean;
     textDecorationLine: boolean;
     textDecorationStyle: boolean;
     fontFamily: boolean;
@@ -285,6 +285,7 @@ export declare const stylePropsTextOnly: {
     fontStyle: boolean;
     fontWeight: boolean;
     letterSpacing: boolean;
+    lineHeight: boolean;
     textTransform: boolean;
 };
 export declare const stylePropsText: {
@@ -302,6 +303,7 @@ export declare const stylePropsText: {
     color: boolean;
     textDecorationColor: boolean;
     textShadowColor: boolean;
+    textAlign: boolean;
     textDecorationLine: boolean;
     textDecorationStyle: boolean;
     fontFamily: boolean;
@@ -309,6 +311,7 @@ export declare const stylePropsText: {
     fontStyle: boolean;
     fontWeight: boolean;
     letterSpacing: boolean;
+    lineHeight: boolean;
     textTransform: boolean;
     elevationAndroid?: boolean | undefined;
     borderBottomStyle?: boolean | undefined;
@@ -326,8 +329,6 @@ export declare const stylePropsText: {
     outlineOffset?: boolean | undefined;
     outlineWidth?: boolean | undefined;
     touchAction?: boolean | undefined;
-    lineHeight: boolean;
-    textAlign: boolean;
     animationIterationCount: boolean;
     aspectRatio: boolean;
     borderImageOutset: boolean;
@@ -480,6 +481,7 @@ export declare const stylePropsAll: {
     color: boolean;
     textDecorationColor: boolean;
     textShadowColor: boolean;
+    textAlign: boolean;
     textDecorationLine: boolean;
     textDecorationStyle: boolean;
     fontFamily: boolean;
@@ -487,6 +489,7 @@ export declare const stylePropsAll: {
     fontStyle: boolean;
     fontWeight: boolean;
     letterSpacing: boolean;
+    lineHeight: boolean;
     textTransform: boolean;
     elevationAndroid?: boolean | undefined;
     borderBottomStyle?: boolean | undefined;
@@ -504,8 +507,6 @@ export declare const stylePropsAll: {
     outlineOffset?: boolean | undefined;
     outlineWidth?: boolean | undefined;
     touchAction?: boolean | undefined;
-    lineHeight: boolean;
-    textAlign: boolean;
     animationIterationCount: boolean;
     aspectRatio: boolean;
     borderImageOutset: boolean;
@@ -671,8 +672,6 @@ export declare const validStyles: {
     outlineOffset?: boolean | undefined;
     outlineWidth?: boolean | undefined;
     touchAction?: boolean | undefined;
-    lineHeight: boolean;
-    textAlign: boolean;
     WebkitLineClamp: boolean;
     animationIterationCount: boolean;
     aspectRatio: boolean;

@@ -181,8 +181,6 @@ export const stylePropsView = {
   ...tokenCategories.radius,
   ...stylePropsTransform,
   ...stylePropsUnitless,
-  lineHeight: true,
-  textAlign: true,
 
   // allow a few web only ones
 
@@ -216,11 +214,13 @@ export const stylePropsFont = {
   fontStyle: true,
   fontWeight: true,
   letterSpacing: true,
+  lineHeight: true,
   textTransform: true,
 }
 
 export const stylePropsTextOnly = {
   ...stylePropsFont,
+  textAlign: true,
   textDecorationLine: true,
   textDecorationStyle: true,
   ...textColors,
