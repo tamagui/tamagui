@@ -10,7 +10,7 @@ import {
   validStyles,
   stylePropsTextOnly,
 } from '@tamagui/core'
-import { InputProps } from './type'
+import { InputProps } from './types'
 import { defaultStyles, inputSizeVariant } from './shared'
 const INPUT_NAME = 'Input'
 const StyledInput = styled(

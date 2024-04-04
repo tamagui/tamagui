@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { registerFocusable } from '@tamagui/focusable'
 import { styled, useComposedRefs } from '@tamagui/core'
 import { TextInput, NativeSyntheticEvent, TextInputChangeEventData } from 'react-native'
-import { InputProps } from './type'
+import { InputProps } from './types'
 import { defaultStyles, inputSizeVariant } from './shared'
 const INPUT_NAME = 'Input'
 const StyledInput = styled(
