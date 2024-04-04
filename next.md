@@ -1,3 +1,6 @@
+- in dev mode if no checkbox indicator, warn
+  - checkbox should have a default indicator probably with a simple svg check we inline
+- Select should return focus to trigger on close
 - Popover native flicker 1 frame in wrong position
 - move from useMedia match.addListener to addEventListener
 - 2.0 = deprecate `name` in styled first arg, move to second arg
