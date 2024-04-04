@@ -1,13 +1,16 @@
 export const webToNativeDynamicExpansion = {
   objectFit: (val: any) => {
-    const data = {
-      contain: 'contain',
-      cover: 'cover',
+    const resizeModeMap = {
       fill: 'stretch',
       none: 'center',
-      scaleDown: 'contain',
+      'scale-down': 'contain',
+      contain: 'contain',
+      cover: 'cover',
     }
-    return [['resizeMode', data[val] || 'center']]
+
+    let resizeMode = resizeModeMap[val] || 'cover'
+
+    return [['resizeMode', resizeMode]]
   },
   verticalAlign: (val: any) => {
     const data = {
