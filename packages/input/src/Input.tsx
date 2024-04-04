@@ -1,53 +1,9 @@
 import React, { useEffect } from 'react'
 import { registerFocusable } from '@tamagui/focusable'
-import {
-  ColorTokens,
-  View,
-  styled,
-  useComposedRefs,
-  useEvent,
-  useTheme,
-  validStyles,
-  stylePropsTextOnly,
-} from '@tamagui/core'
+import { View, styled, useComposedRefs, useEvent, useTheme } from '@tamagui/core'
 import { InputProps } from './types'
-import { defaultStyles, inputSizeVariant } from './shared'
-const INPUT_NAME = 'Input'
-const StyledInput = styled(
-  View,
-  {
-    name: INPUT_NAME,
-    tag: 'input',
-    variants: {
-      unstyled: {
-        false: defaultStyles,
-      },
-
-      size: {
-        '...size': inputSizeVariant,
-      },
-
-      disabled: {
-        true: {},
-      },
-    } as const,
-
-    defaultVariants: {
-      unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
-    },
-  },
-  {
-    isInput: true,
-    accept: {
-      placeholderTextColor: 'color',
-      selectionColor: 'color',
-    } as const,
-    validStyles: {
-      ...validStyles,
-      ...stylePropsTextOnly,
-    },
-  }
-)
+import { styledBody } from './shared'
+const StyledInput = styled(View, styledBody[0], styledBody[1])
 
 export const Input = StyledInput.styleable<InputProps>((inProps, forwardedRef) => {
   const {
@@ -94,7 +50,6 @@ export const Input = StyledInput.styleable<InputProps>((inProps, forwardedRef) =
     enterKeyHint,
     returnKeyType,
     rejectResponderTermination,
-    //@ts-ignore
     rows,
     scrollEnabled,
     secureTextEntry,

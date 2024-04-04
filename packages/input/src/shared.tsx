@@ -1,4 +1,5 @@
 import type { SizeVariantSpreadFunction } from '@tamagui/core'
+import { validStyles, stylePropsTextOnly } from '@tamagui/core'
 import { getVariableValue, isWeb } from '@tamagui/core'
 import { getButtonSized } from '@tamagui/get-button-sized'
 import { getFontSized } from '@tamagui/get-font-sized'
@@ -90,3 +91,39 @@ export const textAreaSizeVariant: SizeVariantSpreadFunction<any> = (
     height,
   }
 }
+export const INPUT_NAME = 'Input'
+
+export const styledBody = [
+  {
+    name: INPUT_NAME,
+    tag: 'input',
+    variants: {
+      unstyled: {
+        false: defaultStyles,
+      },
+
+      size: {
+        '...size': inputSizeVariant,
+      },
+
+      disabled: {
+        true: {},
+      },
+    } as const,
+
+    defaultVariants: {
+      unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+    },
+  },
+  {
+    isInput: true,
+    accept: {
+      placeholderTextColor: 'color',
+      selectionColor: 'color',
+    } as const,
+    validStyles: {
+      ...validStyles,
+      ...stylePropsTextOnly,
+    },
+  },
+]

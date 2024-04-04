@@ -139,6 +139,7 @@ const demos = [
       { title: 'Checkbox', route: '/demo/checkbox' },
       { title: 'Form', route: '/demo/forms' },
       { title: 'Input + Textarea', route: '/demo/inputs' },
+      { title: 'New Input + Textarea', route: '/demo/new-inputs' },
       { title: 'Label', route: '/demo/label' },
       { title: 'Progress', route: '/demo/progress' },
       { title: 'Select', route: '/demo/select' },

@@ -3,41 +3,9 @@ import { registerFocusable } from '@tamagui/focusable'
 import { styled, useComposedRefs } from '@tamagui/core'
 import { TextInput, NativeSyntheticEvent, TextInputChangeEventData } from 'react-native'
 import { InputProps } from './types'
-import { defaultStyles, inputSizeVariant } from './shared'
-const INPUT_NAME = 'Input'
-const StyledInput = styled(
-  TextInput,
-  {
-    name: INPUT_NAME,
-    variants: {
-      unstyled: {
-        false: defaultStyles,
-      },
+import { styledBody } from './shared'
+const StyledInput = styled(TextInput, styledBody[0], styledBody[1])
 
-      size: {
-        '...size': inputSizeVariant,
-      },
-
-      disabled: {
-        true: {},
-      },
-    } as const,
-
-    defaultVariants: {
-      unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
-    },
-  },
-  {
-    isInput: true,
-
-    accept: {
-      placeholderTextColor: 'color',
-      selectionColor: 'color',
-    } as const,
-  }
-)
-
-// TODO: later move most of the logic to the core package
 export const Input = StyledInput.styleable<InputProps>((inProps, forwardedRef) => {
   const {
     // some of destructed props are just to avoid passing them to ...rest because they are not in native.
@@ -67,6 +35,8 @@ export const Input = StyledInput.styleable<InputProps>((inProps, forwardedRef) =
   const ref = React.useRef<HTMLInputElement>(null)
 
   const composedRefs = useComposedRefs<any>(forwardedRef, ref)
+
+  // TODO: later move most of the logic to the core package
 
   let secureTextEntry = false
   let cursorColor = caretColor

@@ -10,18 +10,74 @@ export declare const TextArea: import("@tamagui/web").TamaguiComponent<import("@
     selectionColor?: import("@tamagui/web").ColorTokens | undefined;
     tag?: "object" | "cite" | "data" | "form" | "label" | "span" | "summary" | "article" | "button" | "dialog" | "figure" | "img" | "main" | "menu" | "option" | "search" | "table" | (string & {}) | "address" | "aside" | "footer" | "header" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "nav" | "section" | "blockquote" | "dd" | "div" | "dl" | "dt" | "figcaption" | "hr" | "li" | "ol" | "ul" | "p" | "pre" | "a" | "abbr" | "b" | "bdi" | "bdo" | "br" | "code" | "dfn" | "em" | "i" | "kbd" | "mark" | "q" | "rp" | "rt" | "rtc" | "ruby" | "s" | "samp" | "small" | "strong" | "sub" | "sup" | "time" | "u" | "var" | "wbr" | "area" | "audio" | "map" | "track" | "video" | "embed" | "param" | "picture" | "source" | "canvas" | "noscript" | "script" | "del" | "ins" | "caption" | "col" | "colgroup" | "thead" | "tbody" | "td" | "th" | "tr" | "datalist" | "fieldset" | "input" | "legend" | "meter" | "optgroup" | "output" | "progress" | "select" | "textarea" | "details" | "template" | undefined;
     multiline?: boolean | undefined;
-}, import("@tamagui/web").StackStyleBase & {
-    readonly placeholderTextColor?: Omit<import("@tamagui/web").ColorTokens | import("@tamagui/web").ThemeValueFallbackColor, "unset"> | undefined;
-    readonly selectionColor?: Omit<import("@tamagui/web").ColorTokens | import("@tamagui/web").ThemeValueFallbackColor, "unset"> | undefined;
-} & {
-    placeholderTextColor?: Omit<import("@tamagui/web").ColorTokens | import("@tamagui/web").ThemeValueFallbackColor, "unset"> | Omit<never, "unset"> | undefined;
-    selectionColor?: Omit<import("@tamagui/web").ColorTokens | import("@tamagui/web").ThemeValueFallbackColor, "unset"> | Omit<never, "unset"> | undefined;
-}, {
+}, import("@tamagui/web").StackStyleBase, {
     disabled?: boolean | undefined;
     size?: import("@tamagui/web").SizeTokens | undefined;
     unstyled?: boolean | undefined;
-}, {
-    isInput: true;
+}, ({
+    name: string;
+    tag: string;
+    variants: {
+        readonly unstyled: {
+            readonly false: {
+                readonly borderColor: "$borderColor";
+                readonly backgroundColor: "$background";
+                readonly minWidth: 0;
+                readonly hoverStyle: {
+                    readonly borderColor: "$borderColorHover";
+                };
+                readonly focusStyle: {
+                    readonly borderColor: "$borderColorFocus";
+                };
+                readonly focusVisibleStyle: {
+                    readonly outlineColor: "$outlineColor";
+                    readonly outlineWidth: 2;
+                    readonly outlineStyle: "solid";
+                };
+                readonly tabIndex: number;
+                readonly size: "$true";
+                readonly fontFamily: "$body";
+                readonly borderWidth: 1;
+                readonly outlineWidth: 0;
+                readonly color: "$color";
+            } | {
+                readonly borderColor: "$borderColor";
+                readonly backgroundColor: "$background";
+                readonly minWidth: 0;
+                readonly hoverStyle: {
+                    readonly borderColor: "$borderColorHover";
+                };
+                readonly focusStyle: {
+                    readonly borderColor: "$borderColorFocus";
+                };
+                readonly focusVisibleStyle: {
+                    readonly outlineColor: "$outlineColor";
+                    readonly outlineWidth: 2;
+                    readonly outlineStyle: "solid";
+                };
+                readonly focusable: boolean;
+                readonly size: "$true";
+                readonly fontFamily: "$body";
+                readonly borderWidth: 1;
+                readonly outlineWidth: 0;
+                readonly color: "$color";
+            };
+        };
+        readonly size: {
+            readonly '...size': import("@tamagui/web").SizeVariantSpreadFunction<any>;
+        };
+        readonly disabled: {
+            readonly true: {};
+        };
+    };
+    defaultVariants: {
+        unstyled: boolean;
+    };
+    isInput?: undefined;
+    accept?: undefined;
+    validStyles?: undefined;
+} | {
+    isInput: boolean;
     accept: {
         readonly placeholderTextColor: "color";
         readonly selectionColor: "color";
@@ -211,10 +267,9 @@ export declare const TextArea: import("@tamagui/web").TamaguiComponent<import("@
         focusStyle: boolean;
         disabledStyle: boolean;
     };
-} & {
-    accept: {
-        placeholderTextColor: string;
-        selectionColor: string;
-    };
-}>;
+    name?: undefined;
+    tag?: undefined;
+    variants?: undefined;
+    defaultVariants?: undefined;
+}) & import("@tamagui/web").StaticConfigPublic>;
 //# sourceMappingURL=TextArea.d.ts.map
