@@ -1,4 +1,4 @@
-import { ColorTokens, StackProps, TamaguiComponentPropsBase } from '@tamagui/web/types'
+import type { ColorTokens, StackProps, TamaguiComponentPropsBase } from '@tamagui/web'
 import type { TextInputProps, InputModeOptions } from 'react-native'
 
 type DetailedInputProps = React.DetailedHTMLProps<
