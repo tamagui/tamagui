@@ -13,7 +13,15 @@ export const Sandbox = () => {
 
   return (
     <YStack w={500} h={500} als="center" m="auto">
-      <SelectDemo />
+      <YStack
+        backgroundColor="blue"
+        debug="verbose"
+        height={200}
+        shadowColor="$color"
+        shadowOffset={{ width: 0, height: 16 }}
+        shadowOpacity={0.5}
+        width={200}
+      />
     </YStack>
   )
 
