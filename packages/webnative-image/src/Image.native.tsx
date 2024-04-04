@@ -26,6 +26,8 @@ export const Image = StyledImage.styleable<ImageProps>((inProps, ref) => {
     loading,
     sizes,
     useMap,
+    onLoad,
+    onError,
     ...rest
   } = inProps
 
@@ -48,6 +50,7 @@ export const Image = StyledImage.styleable<ImageProps>((inProps, ref) => {
   }
 
   const finalProps = {
+    ...rest,
     source: {
       uri: src,
       width:
@@ -60,9 +63,30 @@ export const Image = StyledImage.styleable<ImageProps>((inProps, ref) => {
           : height,
     },
     resizeMode,
+  } as any
+
+  if (onLoad) {
+    finalProps.onLoad = (e) => {
+      const { source } = e.nativeEvent
+      onLoad({
+        target: {
+          naturalHeight: source?.height,
+          naturalWidth: source?.width,
+        },
+        type: 'load',
+      } as any)
+    }
   }
 
-  return <StyledImage {...(rest as any)} ref={ref} {...finalProps} />
+  if (onError) {
+    finalProps.onError = () => {
+      onError({
+        type: 'error',
+      } as any)
+    }
+  }
+
+  return <StyledImage ref={ref} {...finalProps} />
 }) as unknown as ImageType
 
 Image.getSize = RNImage.getSize
