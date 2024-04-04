@@ -1,7 +1,5 @@
 /* mimic the native viewport full width/height + flex */
-body,
-#root,
-#__next {
+body, #root, #__next {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
@@ -17,22 +15,12 @@ a {
   color: inherit;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+h1, h2, h3, h4, h5, h6 {
   margin: 0;
   padding: 0;
 }
 
-li,
-select,
-input,
-button,
-[role="slider"],
-[role="listbox"] {
+li, select, input, button, [role="slider"], [role="listbox"] {
   outline: none;
 }
 
@@ -40,30 +28,19 @@ button,
   all: unset;
 }
 
-p,
-input,
-textarea,
-button,
-ul,
-ol,
-li,
-pre,
-dialog {
+p, input, textarea, button, ul, ol, li, pre, dialog {
   all: unset;
   box-sizing: border-box;
 }
 
-a.is_Button,
-.is_Anchor:has(.is_Button) {
+a.is_Button, .is_Anchor:has(.is_Button) {
   text-decoration: none;
 }
 
-input::selection,
-textarea::selection {
+input::selection, textarea::selection {
   background-color: var(--selectionBackground) !important;
 }
 
-input::placeholder,
-textarea::placeholder {
+input::placeholder, textarea::placeholder {
   color: var(--placeholderColor) !important;
 }
