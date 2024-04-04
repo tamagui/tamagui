@@ -597,7 +597,8 @@ async function esbuildWriteIfChanged(
       await Promise.all([
         flush(outString, outPath),
         (async () => {
-          if (!shouldSkipMJS && isESM && mjs && outPath.endsWith('.js')) {
+          const shouldDoMJS = !shouldSkipMJS && isESM && mjs && outPath.endsWith('.js')
+          if (shouldDoMJS) {
             const mjsOutPath = outPath.replace('.js', '.mjs')
             // if bundling no need to specify as its all internal
             // and babel is bad on huge bundled files
@@ -610,7 +611,8 @@ async function esbuildWriteIfChanged(
                     [
                       require.resolve('babel-plugin-fully-specified'),
                       {
-                        ensureFileExists: true,
+                        // this doesnt work because the files dont exist as you build in random orders
+                        // ensureFileExists: true,
                         esExtensionDefault: '.mjs',
                         tryExtensions: ['.mjs', '.js'],
                         esExtensions: ['.mjs', '.js'],
@@ -621,6 +623,7 @@ async function esbuildWriteIfChanged(
                     //   : require.resolve('./babel-plugin-process-env-to-meta'),
                   ].filter(Boolean),
                 }).code
+
             // output to mjs fully specified
             await flush(output, mjsOutPath)
           }

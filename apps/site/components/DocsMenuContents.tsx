@@ -1,6 +1,6 @@
 import uFuzzy from '@leeoniya/ufuzzy'
 import { docsRoutes } from '@lib/docsRoutes'
-import { useStore } from '@tamagui/use-store'
+import { getStore, useStore } from '@tamagui/use-store'
 import * as React from 'react'
 import { Input, Paragraph, Separator, Spacer, Theme, XStack, YStack } from 'tamagui'
 
@@ -11,7 +11,7 @@ import { NavHeading } from './NavHeading'
 
 const fuz = new uFuzzy({})
 
-const allItems = {
+const sections = {
   docs: docsRoutes
     .filter((x) => !x.isUI)
     .flatMap((section, sectionIndex) =>
@@ -23,11 +23,14 @@ const allItems = {
       section.pages?.map((page, index) => ({ page, section, sectionIndex, index }))
     ),
 }
-const allItemsStrings = {
-  docs: allItems.docs.map((s) =>
+
+const allItems = [...sections.docs, ...sections.ui]
+
+const sectionStrings = {
+  docs: sections.docs.map((s) =>
     `${s?.page.title || ''} ${s?.section?.title || ''}`.trim()
   ),
-  ui: allItems.ui.map((s) => `${s?.page.title || ''} ${s?.section?.title || ''}`.trim()),
+  ui: sections.ui.map((s) => `${s?.page.title || ''} ${s?.section?.title || ''}`.trim()),
 }
 
 export const DocsMenuContents = React.memo(function DocsMenuContents({
@@ -37,12 +40,12 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
   const router = useRouter()
   const { currentPath } = useDocsMenu()
   const activeSection = currentPath.startsWith('/ui') ? 'ui' : 'docs'
-  const activeItems = allItems[activeSection]
+  const activeItems = inMenu ? allItems : sections[activeSection]
   const [items, setItems] = React.useState(activeItems)
-  const isFiltered = items !== allItems[activeSection]
+  const isFiltered = items !== activeItems
 
   React.useEffect(() => {
-    setItems(allItems[activeSection])
+    setItems(activeItems)
   }, [activeSection])
 
   return (
@@ -104,7 +107,7 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
             setItems(activeItems)
             return
           }
-          const [indexes] = fuz.search(allItemsStrings[activeSection], next)
+          const [indexes] = fuz.search(sectionStrings[activeSection], next)
           if (!indexes?.length) {
             setItems(activeItems)
             return
@@ -117,7 +120,17 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
 
       <Spacer />
 
-      <div style={{ width: '100%' }} tabIndex={0} role="listbox">
+      <div
+        style={{ width: '100%' }}
+        tabIndex={0}
+        role="listbox"
+        onMouseEnter={() => {
+          getStore(DocsItemsStore).hovered = true
+        }}
+        onMouseLeave={() => {
+          getStore(DocsItemsStore).hovered = false
+        }}
+      >
         {React.useMemo(() => {
           return (
             <>

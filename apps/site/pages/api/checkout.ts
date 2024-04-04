@@ -1,4 +1,5 @@
 import { apiRoute } from '@lib/apiRoute'
+import { checkDiscountEligibility } from '@lib/discount-eligibility'
 import { getURL } from '@lib/helpers'
 import { protectApiRoute } from '@lib/protectApiRoute'
 import { stripe } from '@lib/stripe'
@@ -43,31 +44,25 @@ export default apiRoute(async (req, res) => {
   }
   let couponId: string | undefined
 
-  if (req.query.coupon_id && typeof req.query.coupon_id === 'string') {
-    couponId = req.query.coupon_id
-  }
-
   const userAccessInfo = await getUserAccessInfo(supabase)
 
-  let promoCode: string | undefined // this is user's input e.g. SOMEPROMO
-  let promoId: string | undefined // we use this to send to stripe, promo's id e.g. 1234
-  if (req.query.promotion_code && typeof req.query.promotion_code === 'string') {
-    promoCode = req.query.promotion_code
+  const purchaseContainsBento = products.data.some(
+    (product) => product.metadata.slug === 'bento'
+  )
+  const purchaseContainsTakeout = products.data.some(
+    (product) => product.metadata.slug === 'universal-starter'
+  )
 
-    const promoCodeRes = await stripe.promotionCodes.list({
-      code: promoCode,
-      active: true,
-      expand: ['data.coupon'],
-    })
-
-    // restriction for using the takeout + bento discount for the users that aren't allowed to use it
-    const promoIsForbidden =
-      promoCode === 'TAKEOUTPLUSBENTO' && // user is using the takeout + bento promo code
-      !userAccessInfo.hasTakeoutAccess && // no takeout access
-      !products.data.some((product) => product.metadata.slug === 'universal-starter') // no takeout present in the current checkout
-
-    if (!promoIsForbidden && promoCodeRes.data.length > 0) {
-      promoId = promoCodeRes.data[0].id
+  if (!req.query.disable_automatic_discount) {
+    if (
+      checkDiscountEligibility({
+        accessInfo: userAccessInfo,
+        purchaseContainsBento,
+        purchaseContainsTakeout,
+      })
+    ) {
+      // apply the "takeout + bento" coupon
+      couponId = process.env.NODE_ENV === 'production' ? '1bJD4ngB' : 'SjRwUFIw'
     }
   }
 
@@ -105,14 +100,11 @@ export default apiRoute(async (req, res) => {
       }
     }),
     customer: stripeCustomerId,
-    discounts: promoId
-      ? [{ promotion_code: promoId }]
-      : couponId
-        ? [{ coupon: couponId }]
-        : undefined,
     mode: 'payment',
     success_url: `${getURL()}/payment-finished`,
     cancel_url: `${getURL()}/takeout`,
+    discounts: couponId ? [{ coupon: couponId }] : undefined,
+    allow_promotion_codes: couponId ? undefined : true,
     // @ts-ignore
     custom_text: {
       submit: {

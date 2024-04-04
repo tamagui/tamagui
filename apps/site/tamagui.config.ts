@@ -21,7 +21,7 @@ declare module 'tamagui' {
   interface TamaguiCustomConfig extends Conf {}
 
   interface TypeOverride {
-    groupNames(): 'takeoutBody'
+    groupNames(): 'card' | 'takeoutBody'
   }
 }
 

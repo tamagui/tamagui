@@ -13,9 +13,9 @@ export function fixStyles(style: Record<string, any>) {
   }
 
   if (
-    style.shadowRadius ||
+    style.shadowRadius != null ||
     style.shadowColor ||
-    style.shadowOpacity ||
+    style.shadowOpacity != null ||
     style.shadowOffset
   ) {
     Object.assign(style, normalizeShadow(style))

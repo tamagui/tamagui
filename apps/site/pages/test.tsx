@@ -4,7 +4,16 @@ import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import { Header } from '@tamagui/site/components/Header'
 import { SearchProvider } from '@tamagui/site/components/Search'
 import { useState } from 'react'
-import { AnimatePresence, Button, View, Text, YStack, styled, Square } from 'tamagui'
+import {
+  AnimatePresence,
+  Button,
+  View,
+  Text,
+  YStack,
+  styled,
+  Square,
+  useStyle,
+} from 'tamagui'
 import * as ReactNative from 'react-native'
 
 global.shouldDebugMoti = true
@@ -17,6 +26,16 @@ const TabsList = styled(View, {
 })
 
 function TestPage() {
+  console.log(
+    'what is',
+    useStyle({
+      enterStyle: {
+        opacity: 0,
+      },
+      opacity: 1,
+    })
+  )
+
   return (
     <div
       style={{
@@ -31,7 +50,7 @@ function TestPage() {
       {/* <Button debug="verbose" mr="$-10">
         ok
       </Button> */}
-
+      {/* 
       <Square
         size={100}
         // disabled
@@ -44,7 +63,7 @@ function TestPage() {
         pressStyle={{
           bg: 'yellow',
         }}
-      />
+      /> */}
 
       {/* <Text debug="verbose" maxWidth={300} numberOfLines={3} ellipsizeMode="middle">
         Esse laborum veniam magna sunt nulla nisi proident nisi culpa. Aliquip sit duis

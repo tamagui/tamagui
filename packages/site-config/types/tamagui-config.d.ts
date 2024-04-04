@@ -1072,4 +1072,4 @@ export declare const config: {
         cherryBomb: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 5 | 9 | 15 | 1 | 10 | 16 | 2 | 14 | 11 | 12 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
     };
 };
-//# sourceMappingURL=tamagui.config.d.ts.map
+//# sourceMappingURL=tamagui-config.d.ts.map

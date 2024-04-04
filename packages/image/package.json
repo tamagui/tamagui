@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/image",
-  "version": "1.92.1",
+  "version": "1.94.3",
   "sideEffects": [
     "*.css"
   ],
@@ -22,16 +22,25 @@
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./types/index.d.ts",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.js",
+      "react-native": "./dist/cjs/index.native.js"
+    }
+  },
   "dependencies": {
-    "@tamagui/constants": "1.92.1",
-    "@tamagui/core": "1.92.1"
+    "@tamagui/constants": "1.94.3",
+    "@tamagui/core": "1.94.3"
   },
   "peerDependencies": {
     "react": "*",
     "react-native": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.92.1",
+    "@tamagui/build": "1.94.3",
     "react": "^18.2.0",
     "react-native": "^0.73.4"
   },

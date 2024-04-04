@@ -15,14 +15,14 @@ import {
 
 import { useTakeoutStore } from '../hooks/useTakeoutStore'
 
-export const FaqModal = () => {
+export const TakeoutFaqModal = () => {
   const store = useTakeoutStore()
   return (
     <Dialog
       modal
-      open={store.showFaq}
+      open={store.showTakeoutFaq}
       onOpenChange={(val) => {
-        store.showFaq = val
+        store.showTakeoutFaq = val
       }}
     >
       <Dialog.Adapt when="sm">
@@ -196,7 +196,7 @@ export const FaqModal = () => {
                     cursor="pointer"
                     textDecorationLine="underline"
                     onPress={() => {
-                      store.showAgreement = true
+                      store.showTakeoutAgreement = true
                     }}
                   >
                     See License

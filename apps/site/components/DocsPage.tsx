@@ -4,13 +4,14 @@ import { ThemeTint, useTint } from '@tamagui/logo'
 import { NextLink } from 'components/NextLink'
 import * as React from 'react'
 import { ScrollView } from 'react-native'
-import { EnsureFlexed, Paragraph, Theme, XStack, YStack } from 'tamagui'
+import { EnsureFlexed, Paragraph, Theme, View, XStack, YStack } from 'tamagui'
 
 import { Container } from './Container'
 import { DocsMenuContents } from './DocsMenuContents'
 import { Link } from './Link'
 import { useDocsMenu } from './useDocsMenu'
 import { ThemeNameEffect } from './ThemeNameEffect'
+import { ChevronLeft, ChevronRight } from '@tamagui/lucide-icons'
 
 export const allNotPending = allDocsRoutes.filter((x) => !x['pending'])
 
@@ -38,19 +39,25 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
     return (
       <>
         {/* capture all docs pages */}
-        <ThemeNameEffect />
+        <ThemeNameEffect colorKey="$color1" />
 
         <YStack tag="article">
           <Container pos="relative">{children}</Container>
 
           <Container>
             {(previous || next) && (
-              <XStack aria-label="Pagination navigation" my="$9" jc="space-between" space>
+              <XStack
+                aria-label="Pagination navigation"
+                my="$9"
+                jc="space-between"
+                gap="$4"
+              >
                 {previous && (
-                  <NextLink href={previous.route}>
-                    <YStack
+                  <NextLink href={previous.route} passHref>
+                    <XStack
+                      group="card"
                       hoverStyle={{
-                        borderColor: '$borderColorHover',
+                        borderColor: '$color11',
                       }}
                       flex={1}
                       width="50%"
@@ -62,25 +69,45 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                         backgroundColor: '$backgroundPress',
                       }}
                       aria-label={`Previous page: ${previous.title}`}
-                      ai="flex-start"
+                      ai="center"
+                      gap="$4"
+                      animation="100ms"
                     >
-                      <Paragraph userSelect="none" theme="alt1" size="$5">
-                        Previous
-                      </Paragraph>
-                      <Paragraph userSelect="none" size="$3" color="$gray10">
-                        {previous.title}
-                      </Paragraph>
-                    </YStack>
+                      <View
+                        o={0}
+                        l="$-4"
+                        $group-card-hover={{ o: 1, l: '$0' }}
+                        $group-card-press={{ o: 0, l: '$-4' }}
+                        animation="quickest"
+                      >
+                        <ChevronLeft col="$color11" />
+                      </View>
+
+                      <YStack
+                        l="$-8"
+                        $group-card-hover={{ l: '$0' }}
+                        $group-card-press={{ l: '$-8' }}
+                        animation="quicker"
+                      >
+                        <Paragraph userSelect="none" theme="alt1" size="$5">
+                          Previous
+                        </Paragraph>
+                        <Paragraph userSelect="none" size="$3" color="$gray10">
+                          {previous.title}
+                        </Paragraph>
+                      </YStack>
+                    </XStack>
                   </NextLink>
                 )}
                 {next && (
                   <NextLink href={next.route} passHref>
-                    <YStack
+                    <XStack
+                      group="card"
                       hoverStyle={{
-                        borderColor: '$borderColorHover',
+                        borderColor: '$color11',
                       }}
-                      width="50%"
                       flex={1}
+                      width="50%"
                       p="$5"
                       borderRadius="$2"
                       borderWidth={1}
@@ -89,15 +116,35 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                         backgroundColor: '$backgroundPress',
                       }}
                       aria-label={`Previous page: ${next.title}`}
-                      ai="flex-end"
+                      ai="center"
+                      jc="flex-end"
+                      gap="$4"
+                      animation="100ms"
                     >
-                      <Paragraph userSelect="none" theme="alt1" size="$5">
-                        Next
-                      </Paragraph>
-                      <Paragraph userSelect="none" size="$3" color="$gray10">
-                        {next.title}
-                      </Paragraph>
-                    </YStack>
+                      <YStack
+                        r="$-8"
+                        $group-card-hover={{ r: '$0' }}
+                        $group-card-press={{ r: '$-8' }}
+                        animation="quicker"
+                      >
+                        <Paragraph userSelect="none" theme="alt1" size="$5">
+                          Next
+                        </Paragraph>
+                        <Paragraph userSelect="none" size="$3" color="$gray10">
+                          {next.title}
+                        </Paragraph>
+                      </YStack>
+
+                      <View
+                        o={0}
+                        r="$-4"
+                        $group-card-hover={{ o: 1, r: '$0' }}
+                        $group-card-press={{ o: 0, r: '$-4' }}
+                        animation="quickest"
+                      >
+                        <ChevronRight col="$color11" />
+                      </View>
+                    </XStack>
                   </NextLink>
                 )}
               </XStack>
