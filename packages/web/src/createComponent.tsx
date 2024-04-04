@@ -778,6 +778,10 @@ export function createComponent<
     // so the type is pretty loose
     let viewProps = nonTamaguiProps
 
+    if (!isTaggable && props.forceStyle) {
+      viewProps.forceStyle = props.forceStyle
+    }
+
     if (isHOC && _themeProp) {
       viewProps.theme = _themeProp
     }
