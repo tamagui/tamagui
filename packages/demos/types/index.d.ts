@@ -20,6 +20,7 @@ export * from './FormsDemo';
 export * from './GroupDemo';
 export * from './HeadingsDemo';
 export * from './ImageDemo';
+export * from './WebNativeImageDemo';
 export * from './InputsDemo';
 export * from './LabelDemo';
 export * from './LinearGradientDemo';
