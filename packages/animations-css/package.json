@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/animations-css",
-  "version": "1.94.3",
+  "version": "1.94.4",
   "source": "src/index.ts",
   "sideEffects": false,
   "license": "MIT",
@@ -22,14 +22,14 @@
     }
   },
   "dependencies": {
-    "@tamagui/constants": "1.94.3",
-    "@tamagui/cubic-bezier-animator": "1.94.3",
-    "@tamagui/use-presence": "1.94.3",
-    "@tamagui/web": "1.94.3",
+    "@tamagui/constants": "1.94.4",
+    "@tamagui/cubic-bezier-animator": "1.94.4",
+    "@tamagui/use-presence": "1.94.4",
+    "@tamagui/web": "1.94.4",
     "react": "^18.2.0"
   },
   "devDependencies": {
-    "@tamagui/build": "1.94.3"
+    "@tamagui/build": "1.94.4"
   },
   "scripts": {
     "build": "tamagui-build",

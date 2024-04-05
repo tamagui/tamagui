@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/switch",
-  "version": "1.94.3",
+  "version": "1.94.4",
   "sideEffects": [
     "*.css"
   ],
@@ -32,24 +32,24 @@
     }
   },
   "dependencies": {
-    "@tamagui/compose-refs": "1.94.3",
-    "@tamagui/constants": "1.94.3",
-    "@tamagui/core": "1.94.3",
-    "@tamagui/focusable": "1.94.3",
-    "@tamagui/get-token": "1.94.3",
-    "@tamagui/helpers": "1.94.3",
-    "@tamagui/label": "1.94.3",
-    "@tamagui/stacks": "1.94.3",
-    "@tamagui/switch-headless": "1.94.3",
-    "@tamagui/use-controllable-state": "1.94.3",
-    "@tamagui/use-previous": "1.94.3"
+    "@tamagui/compose-refs": "1.94.4",
+    "@tamagui/constants": "1.94.4",
+    "@tamagui/core": "1.94.4",
+    "@tamagui/focusable": "1.94.4",
+    "@tamagui/get-token": "1.94.4",
+    "@tamagui/helpers": "1.94.4",
+    "@tamagui/label": "1.94.4",
+    "@tamagui/stacks": "1.94.4",
+    "@tamagui/switch-headless": "1.94.4",
+    "@tamagui/use-controllable-state": "1.94.4",
+    "@tamagui/use-previous": "1.94.4"
   },
   "peerDependencies": {
     "react": "*",
     "react-native": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.94.3",
+    "@tamagui/build": "1.94.4",
     "react": "^18.2.0",
     "react-native": "^0.73.4"
   },
