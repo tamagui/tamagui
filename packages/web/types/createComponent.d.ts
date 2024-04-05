@@ -1,5 +1,5 @@
 import React from 'react';
-import type { ComponentContextI, DebugProp, DisposeFn, SpaceDirection, SpaceValue, SpacerProps, SpacerStyleProps, StackNonStyleProps, StackProps, StaticConfig, TamaguiComponent, TamaguiComponentStateRef, TamaguiElement, TamaguiInternalConfig, TextProps } from './types';
+import type { ComponentContextI, DebugProp, SpaceDirection, SpaceValue, SpacerProps, SpacerStyleProps, StackNonStyleProps, StackProps, StaticConfig, TamaguiComponent, TamaguiComponentStateRef, TamaguiElement, TamaguiInternalConfig, TextProps } from './types';
 import type { TamaguiComponentState } from './interfaces/TamaguiComponentState';
 export declare const mouseUps: Set<Function>;
 export declare const useComponentState: (props: StackProps | TextProps | Record<string, any>, { animationDriver, groups }: ComponentContextI, staticConfig: StaticConfig, config: TamaguiInternalConfig) => {
@@ -48,5 +48,5 @@ export declare const subscribeToContextGroup: ({ disabled, setStateShallow, pseu
     mediaGroups?: Set<string> | undefined;
     componentContext: ComponentContextI;
     state: TamaguiComponentState;
-}) => DisposeFn | undefined;
+}) => import("./types").DisposeFn | undefined;
 //# sourceMappingURL=createComponent.d.ts.map
