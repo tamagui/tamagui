@@ -17,11 +17,23 @@ Create a new [Next.js](https://nextjs.org/docs/getting-started/installation) pro
 npx create-next-app@latest
 ```
 
+<Spacer size="$6" />
+
+
+<InlineTabs id="router" defaultValue="pages">
+<InlineTabs.List>
+    <InlineTabs.Tab value="pages">Pages router</InlineTabs.Tab>
+    <InlineTabs.Tab value="app">App router</InlineTabs.Tab>
+</InlineTabs.List>
+
+<InlineTabs.Content value="pages">
 ### next.config.js
 
 To configure Tamagui for Next.js, you'll want to add the `@tamagui/next-plugin` and set it up in your next config. See the [compiler install docs](/docs/intro/compiler-install) for more options:
 
 ```tsx showFull
+const { withTamagui } = require("@tamagui/next-plugin");
+
 module.exports = function (name, { defaultConfig }) {
     let config = {
         ...defaultConfig,
@@ -70,53 +82,62 @@ You'll want to set up a `_document.tsx` and gather both the `react-native-web` s
 Note that we only are importing `react-native` here because if you use `tamagui` views like Input or Image they rely on React Native Image/Input (and therefore on the web, `react-native-web`). If you are just using core, or aren't using Image or Input in `tamagui`, you can forego the entire `AppRegistry` import and setup here. We're working on making even `tamagui` completely de-coupled from RN/RNW by building their own image and input components eventually.
 
 ```tsx
-import NextDocument, { Head, Html, Main, NextScript } from 'next/document'
+import NextDocument, { DocumentContext, Head, Html, Main, NextScript } from 'next/document'
 import { Children } from 'react'
 import { StyleSheet } from 'react-native'
 
 import Tamagui from '../tamagui.config'
 
 export default class Document extends NextDocument {
-    static async getInitialProps({ renderPage }) {
-    const page = await renderPage()
+    static async getInitialProps({ renderPage } : DocumentContext) {
+        const page = await renderPage()
 
-    // @ts-ignore RN doesn't have this type
-    const rnwStyle = StyleSheet.getSheet()
+        // @ts-ignore RN doesn't have this type
+        const rnwStyle = StyleSheet.getSheet()
 
-    return {
-        ...page,
-        styles: (
-        <>
-            <style
-            id={rnwStyle.id}
-            dangerouslySetInnerHTML={{ __html: rnwStyle.textContent }}
-            />
-            <style
-            dangerouslySetInnerHTML={{
-                __html: Tamagui.getCSS({
-                // if you are using "outputCSS" option, you should use this "exclude"
-                // if not, then you can leave the option out
-                exclude: process.env.NODE_ENV === 'production' ? 'design-system' : null,
-                }),
-            }}
-            />
-        </>
-        ),
-    }
+        return {
+            ...page,
+            styles: (
+                <>
+                    <style
+                        id={rnwStyle.id}
+                        dangerouslySetInnerHTML={{ __html: rnwStyle.textContent }}
+                    />
+                    <style
+                        dangerouslySetInnerHTML={{
+                            __html: Tamagui.getCSS({
+                            // if you are using "outputCSS" option, you should use this "exclude"
+                            // if not, then you can leave the option out
+                            exclude: process.env.NODE_ENV === 'production' ? 'design-system' : null,
+                            }),
+                        }}
+                    />
+                </>
+            ),
+        }
     }
 
     render() {
-    return (
-        <Html>
-        <body>
-            <Main />
-            <NextScript />
-        </body>
-        </Html>
-    )
+        return (
+            <Html>
+                <Head />
+                <body>
+                    <Main />
+                    <NextScript />
+                </body>
+            </Html>
+        )
     }
 }
 ```
+</InlineTabs.Content>
+
+<InlineTabs.Content value="app">
+Test
+</InlineTabs.Content>
+</InlineTabs>
+
+
 
 ## Themes
 

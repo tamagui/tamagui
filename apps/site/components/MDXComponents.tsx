@@ -32,6 +32,7 @@ import {
 import { LinearGradient } from 'tamagui/linear-gradient'
 
 import { useClipboard } from '../lib/useClipboard'
+import { AvatarCard } from './AvatarCard'
 import { BenchmarkChart } from './BenchmarkChart'
 import { BenchmarkChartNative } from './BenchmarkChartNative'
 import { BenchmarkChartWeb } from './BenchmarkChartWeb'
@@ -53,6 +54,7 @@ import { Link } from './Link'
 import { MediaPlayer } from './MediaPlayer'
 import { Notice, NoticeFrame } from './Notice'
 import { OffsetBox } from './OffsetBox'
+import { ProductCard } from './ProductCard'
 import { PropsTable } from './PropsTable'
 import { SocialLinksRow } from './SocialLinksRow'
 import { SponsorButton } from './SponsorButton'
@@ -61,8 +63,6 @@ import { TamaguiCard } from './TamaguiCard'
 import { TamaguiExamplesCode } from './TamaguiExamplesCode'
 import { UL } from './UL'
 import { unwrapText } from './unwrapText'
-import { AvatarCard } from './AvatarCard'
-import { BentoCard } from './BentoCard'
 
 const IntroParagraph = ({ children, large, disableUnwrapText, ...props }: any) => {
   return (
@@ -524,7 +524,7 @@ export const components = {
 
   DemoButton: () => <Button>Hello world</Button>,
 
-  BentoCard: BentoCard,
+  ProductCard: ProductCard,
 
   SponsorButton,
 
