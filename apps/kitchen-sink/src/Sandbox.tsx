@@ -2,7 +2,7 @@
 //! debug-verbose
 import './wdyr'
 
-import { View, YStack, styled } from 'tamagui'
+import { Checkbox, View, YStack, styled } from 'tamagui'
 
 import { SelectDemo } from '@tamagui/demos'
 import { useState } from 'react'
@@ -13,15 +13,7 @@ export const Sandbox = () => {
 
   return (
     <YStack w={500} h={500} als="center" m="auto">
-      <YStack
-        backgroundColor="blue"
-        debug="verbose"
-        height={200}
-        shadowColor="$color"
-        shadowOffset={{ width: 0, height: 16 }}
-        shadowOpacity={0.5}
-        width={200}
-      />
+      <Checkbox debug="verbose" unstyled />
     </YStack>
   )
 

@@ -1,3 +1,12 @@
+Nate:
+
+- Add Rofi to Takeout/Supabase/Stripe/Vercel
+
+---
+
+- 2.0 = redo/remove ThemeableStack
+- v3 themes: all of the focus styles in the default v3 config are kind of wack
+- activeTheme props for all components
 - in dev mode if no checkbox indicator, warn
   - checkbox should have a default indicator probably with a simple svg check we inline
 - Select should return focus to trigger on close
@@ -11,9 +20,6 @@
 - document Popover.Anchor
 - Sometimes press getting stuck still on uniswap moonpay flow
 - Text vertical align issue: https://github.com/Uniswap/universe/pull/6730
-- shadowOpacity on web not applying in some case:
-  - https://github.com/Uniswap/universe/blob/a8e820e5c54f8e831bcb44c92cba850258aa650b/apps/mobile/src/components/QRCodeScanner/QRCode.tsx#L192-L194
-- negative gap not being applied
 
 ---
 
