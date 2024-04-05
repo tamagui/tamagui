@@ -24,6 +24,7 @@ export const Input = StyledInput.styleable<InputProps>((inProps, forwardedRef) =
     caretColor,
     onChange,
     onInput,
+    rows,
     enterKeyHint,
     returnKeyType,
     onKeyDown,
@@ -80,6 +81,7 @@ export const Input = StyledInput.styleable<InputProps>((inProps, forwardedRef) =
     enterKeyHint: _enterKeyHint,
     returnKeyType: _returnKeyType,
     secureTextEntry,
+    numberOfLines: rows || rest.numberOfLines,
   } as any
 
   if (tag === 'textarea') {

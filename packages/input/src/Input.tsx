@@ -50,7 +50,6 @@ export const Input = StyledInput.styleable<InputProps>((inProps, forwardedRef) =
     enterKeyHint,
     returnKeyType,
     rejectResponderTermination,
-    rows,
     scrollEnabled,
     secureTextEntry,
     selectionColor,
