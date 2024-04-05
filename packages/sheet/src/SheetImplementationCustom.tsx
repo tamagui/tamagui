@@ -175,17 +175,27 @@ export const SheetImplementationCustom = themeable(
 
       if (hasntMeasured || isHidden) {
         // first run, we need to set to screen size before running
-        animatedNumber.setValue(screenSize, {
-          type: 'timing',
-          duration: 0,
-        })
+        animatedNumber.setValue(
+          screenSize,
+          {
+            type: 'timing',
+            duration: 0,
+          },
+          () => {
+            if (isHidden) {
+              return
+            }
 
-        if (isHidden) {
-          return
-        }
+            toValue = positions[position]
+            at.current = toValue
 
-        toValue = positions[position]
-        at.current = toValue
+            animatedNumber.setValue(toValue, {
+              type: 'spring',
+              ...animationConfig,
+            })
+          }
+        )
+        return
       }
 
       animatedNumber.setValue(toValue, {
