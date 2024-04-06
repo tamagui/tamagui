@@ -3,10 +3,8 @@ import { getCookie, setCookie } from 'cookies-next'
 import jwt from 'jsonwebtoken'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-import { whitelistGithubUsernames } from '../protected/_utils/github'
 import { HandledResponseTermination } from './apiRoute'
 import type { Database } from './supabase-types'
-import { getArray } from './supabase-utils'
 import { getUserAccessInfo } from './user-helpers'
 
 const JWT_NAME = 'tamagui_authorization'

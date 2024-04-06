@@ -152,6 +152,15 @@ const codinscapeusers = ['NathanBeesley']
 
 const callstackusers = ['troZee']
 
+export const whitelistBentoUsernames = new Set([
+  'Bankilo',
+  'meal',
+  'Bar-Cet',
+  'kamilzielinski97',
+  'WeronikaKosniowska',
+  'patrycjalobodzinska26',
+])
+
 export const whitelistGithubUsernames = [
   'natew',
   // 'alitnk', // commented out to test `takeout -> studio` access
