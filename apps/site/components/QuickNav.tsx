@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react'
 import { Circle, H4, Paragraph, ScrollView, Separator, XStack, YStack } from 'tamagui'
 
 import type { LinkProps } from './Link'
-import { ProductButton } from './ProductButton'
 
 const QuickNavLink = ({ href, ...rest }: LinkProps) => (
   <NextLink href={href}>
@@ -73,35 +72,18 @@ export function QuickNav() {
         <Separator />
 
         <ScrollView maxHeight="calc(100vh - var(--space-25))">
-          <YStack gap="$5" h="80vh" jc="space-between">
-            <YStack px="$2" py="$2">
-              <ul style={{ margin: 0, padding: 0 }}>
-                {headings.map(({ id, nodeName, innerText }, i) => {
-                  const level = getLevel(nodeName)
-                  return (
-                    <XStack key={i} tag="li" ai="center">
-                      {level > 2 && <Circle size={4} mx="$2" />}
-                      <QuickNavLink href={`#${id}`}>{innerText}</QuickNavLink>
-                    </XStack>
-                  )
-                })}
-              </ul>
-            </YStack>
-
-            <YStack gap="$2">
-              <H4 size="$2" mx="$2" theme="alt1" id="site-quick-nav-heading">
-                Products
-              </H4>
-              <Separator />
-              <YStack py="$4" gap="$4">
-                <ProductButton product="bento">
-                  A suite of nicely designed copy-paste components and screens.
-                </ProductButton>
-                <ProductButton product="takeout">
-                  A paid starter kit with Supabase, user and auth, icons, fonts, and more.
-                </ProductButton>
-              </YStack>
-            </YStack>
+          <YStack px="$2" py="$2">
+            <ul style={{ margin: 0, padding: 0 }}>
+              {headings.map(({ id, nodeName, innerText }, i) => {
+                const level = getLevel(nodeName)
+                return (
+                  <XStack key={i} tag="li" ai="center">
+                    {level > 2 && <Circle size={4} mx="$2" />}
+                    <QuickNavLink href={`#${id}`}>{innerText}</QuickNavLink>
+                  </XStack>
+                )
+              })}
+            </ul>
           </YStack>
         </ScrollView>
       </YStack>
