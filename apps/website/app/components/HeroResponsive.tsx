@@ -34,7 +34,7 @@ import {
 } from 'tamagui'
 import { LinearGradient } from 'tamagui/linear-gradient'
 
-import favicon from '../public/favicon.svg'
+import favicon from '~/assets/images/favicon.svg'
 import { Container, ContainerLarge } from './Container'
 import { HomeH2, HomeH3 } from './HomeH2'
 
@@ -515,7 +515,7 @@ const Tab = memo(({ active, children, bc, ...props }: any) => {
           <Image
             width={12}
             height={12}
-            source={{ uri: favicon.src, width: 12, height: 12 }}
+            source={{ uri: favicon, width: 12, height: 12 }}
           />
         </Circle>
         <Spacer size="$2" />

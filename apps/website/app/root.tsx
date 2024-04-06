@@ -2,6 +2,7 @@ import { Links, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/reac
 import { Providers } from './providers'
 import Tamagui from '../tamagui.config'
 import './tamagui.css'
+import './app.css'
 import '@tamagui/core/reset.css'
 import { isClient } from 'tamagui'
 

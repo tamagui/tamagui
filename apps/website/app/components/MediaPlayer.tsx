@@ -14,7 +14,7 @@ import {
   YStack,
 } from 'tamagui'
 
-import image from '../public/mj.jpg'
+import image from '~/assets/images/mj.jpg'
 
 export const MediaPlayer = memo(
   (
@@ -57,7 +57,7 @@ export const MediaPlayer = memo(
           >
             <XStack ai="center" p="$4" space="$5">
               <Square pos="relative" ov="hidden" br="$6" size="$8">
-                <Image source={{ uri: image.src, width: 90, height: 90 }} />
+                <Image source={{ uri: image, width: 90, height: 90 }} />
               </Square>
 
               <YStack als="center" y={-3} miw={165} jc="center">
