@@ -159,6 +159,9 @@ export const whitelistBentoUsernames = new Set([
   'kamilzielinski97',
   'WeronikaKosniowska',
   'patrycjalobodzinska26',
+
+  // stephen_S
+  'Stephen-Song',
 ])
 
 export const whitelistGithubUsernames = [
