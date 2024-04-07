@@ -44,7 +44,7 @@ export default apiRoute(async (req, res) => {
   }
   let couponId: string | undefined
 
-  const userAccessInfo = await getUserAccessInfo(supabase)
+  const userAccessInfo = await getUserAccessInfo(supabase, user)
 
   const purchaseContainsBento = products.data.some(
     (product) => product.metadata.slug === 'bento'

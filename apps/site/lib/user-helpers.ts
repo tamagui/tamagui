@@ -1,7 +1,7 @@
 import type { Database } from '@lib/supabase-types'
 import { getArray, getSingle } from '@lib/supabase-utils'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
-import type { SupabaseClient } from '@supabase/supabase-js'
+import type { SupabaseClient, User } from '@supabase/supabase-js'
 import {
   whitelistGithubUsernames,
   whitelistBentoUsernames,
@@ -131,7 +131,10 @@ function checkAccessToProduct(
   }
 }
 
-export async function getUserAccessInfo(supabase: SupabaseClient<Database>) {
+export async function getUserAccessInfo(
+  supabase: SupabaseClient<Database>,
+  user: User | null
+) {
   const [subscriptions, ownedProducts] = await Promise.all([
     getSubscriptions(supabase),
     getOwnedProducts(supabase),
@@ -155,7 +158,7 @@ export async function getUserAccessInfo(supabase: SupabaseClient<Database>) {
   )
   const hasTeamAccess = teamsWithAccess.length > 0
 
-  const isBentoWhitelisted = teamsWithAccess.some((team) =>
+  const isBentoWhitelisted = teams.some((team) =>
     whitelistBentoUsernames.has(team.name || '')
   )
 

@@ -58,8 +58,10 @@ export async function authorizeUserAccess(
   if (teamsResult.error) {
     throw teamsResult.error
   }
+
+  const user = (await supabase.auth.getUser()).data.user
   const { hasBentoAccess, hasStudioAccess, hasTakeoutAccess, teamsWithAccess } =
-    await getUserAccessInfo(supabase)
+    await getUserAccessInfo(supabase, user)
 
   const payload: PayloadShape = {
     hasStudioAccess,
