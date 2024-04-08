@@ -1,7 +1,7 @@
 import { join, relative } from 'path'
 
 import resolve from 'esm-resolve'
-import { realpath } from 'fs-extra'
+import * as fsExtra from 'fs-extra'
 
 export async function getVitePath(
   importer: string,
@@ -25,21 +25,21 @@ export async function getVitePath(
   if (moduleName[0] === '.') {
     // hardcode for now. :/
     return join(`apps/tamastack/src`, moduleName) + '.js'
-  } else {
-    const sourceFile = join(process.cwd(), 'index.js')
-    const resolved = resolve(sourceFile)(moduleName)
-    // figure out symlinks
-    if (!resolved) {
-      throw new Error(`❌ cant find`)
-    }
-    const real = await realpath(resolved)
-    let id = real
-    if (!absolute) {
-      id = relative(importer, real)
-    }
-    if (id.endsWith(`/react/jsx-dev-runtime.js`)) {
-      id = 'react/jsx-runtime'
-    }
-    return id
   }
+
+  const sourceFile = join(process.cwd(), 'index.js')
+  const resolved = resolve(sourceFile)(moduleName)
+  // figure out symlinks
+  if (!resolved) {
+    throw new Error(`❌ cant find`)
+  }
+  const real = await fsExtra.realpath(resolved)
+  let id = real
+  if (!absolute) {
+    id = relative(importer, real)
+  }
+  if (id.endsWith(`/react/jsx-dev-runtime.js`)) {
+    id = 'react/jsx-runtime'
+  }
+  return id
 }

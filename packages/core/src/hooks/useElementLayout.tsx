@@ -1,9 +1,9 @@
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
-import type { RefObject } from 'react'
+import { type RefObject } from 'react'
 import { getBoundingClientRect } from '../helpers/getBoundingClientRect'
 
 const LayoutHandlers = new WeakMap<Element, Function>()
-const LayoutTimeouts = new WeakMap<Element, any>()
+const resizeListeners = new Set<Function>()
 
 export type LayoutValue = {
   x: number
@@ -25,20 +25,40 @@ export type LayoutEvent = {
 let resizeObserver: ResizeObserver | null = null
 
 if (typeof window !== 'undefined' && 'ResizeObserver' in window) {
+  // node resize/move
   resizeObserver = new ResizeObserver((entries) => {
     for (const { target } of entries) {
       const onLayout = LayoutHandlers.get(target)
       if (typeof onLayout !== 'function') return
-      measureLayout(target as HTMLElement, null, (x, y, width, height, left, top) => {
-        onLayout({
-          nativeEvent: {
-            layout: { x, y, width, height, left, top },
-            target,
-          },
-          timeStamp: Date.now(),
-        })
+      measureElement(target as HTMLElement).then((event) => {
+        onLayout(event)
       })
     }
+  })
+
+  // window resize
+  if (typeof window.addEventListener === 'function') {
+    let tm
+    window.addEventListener('resize', () => {
+      clearTimeout(tm)
+      tm = setTimeout(() => {
+        resizeListeners.forEach((cb) => cb())
+      }, 4)
+    })
+  }
+}
+
+export const measureElement = async (target: HTMLElement): Promise<LayoutEvent> => {
+  return new Promise((res) => {
+    measureLayout(target, null, (x, y, width, height, left, top) => {
+      res({
+        nativeEvent: {
+          layout: { x, y, width, height, left, top },
+          target,
+        },
+        timeStamp: Date.now(),
+      })
+    })
   })
 }
 
@@ -108,14 +128,27 @@ export function useElementLayout(
   ref: RefObject<Element>,
   onLayout?: ((e: LayoutEvent) => void) | null
 ) {
+  // two effects because expensive to re-run on every change of onLayout
   useIsomorphicLayoutEffect(() => {
-    if (!resizeObserver || !onLayout) return
+    if (!onLayout) return
     const node = ref.current
     if (!node) return
     LayoutHandlers.set(node, onLayout)
+  }, [ref, onLayout])
+
+  useIsomorphicLayoutEffect(() => {
+    if (!resizeObserver) return
+    const node = ref.current
+    if (!node) return
+    if (!LayoutHandlers.has(node)) return
+    const onResize = () => {
+      measureElement(node as HTMLElement).then(onLayout)
+    }
+    resizeListeners.add(onResize)
     resizeObserver.observe(node)
     return () => {
+      resizeListeners.delete(onResize)
       resizeObserver?.unobserve(node)
     }
-  }, [ref, onLayout])
+  }, [ref])
 }

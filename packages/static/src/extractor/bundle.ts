@@ -1,7 +1,7 @@
 import { basename, dirname, join } from 'path'
 
 import esbuild from 'esbuild'
-import { pathExists, stat, writeFile } from 'fs-extra'
+import * as FS from 'fs-extra'
 
 import type { TamaguiPlatform } from '../types'
 import { esbuildAliasPlugin } from './esbuildAliasPlugin'
@@ -150,7 +150,7 @@ export async function bundle(
 // until i do fancier things w plugins:
 async function asyncLock(props: Props) {
   const lockFile = join(dirname(props.outfile), basename(props.outfile, '.lock'))
-  const lockStat = await stat(lockFile).catch(() => {
+  const lockStat = await FS.stat(lockFile).catch(() => {
     /* ok */
   })
   const lockedMsAgo = !lockStat
@@ -162,11 +162,11 @@ async function asyncLock(props: Props) {
     }
     let tries = 5
     while (tries--) {
-      if (await pathExists(props.outfile)) {
+      if (await FS.pathExists(props.outfile)) {
         return
       }
       await new Promise((res) => setTimeout(res, 50))
     }
   }
-  void writeFile(lockFile, '')
+  void FS.writeFile(lockFile, '')
 }

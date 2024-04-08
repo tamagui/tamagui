@@ -93,7 +93,7 @@ const HeroContents = memo(function HeroContents() {
         ov="hidden"
         gap="$3"
         position="relative"
-        pt="$15"
+        pt="$16"
         mb="$4"
         $sm={{
           maxWidth: '100%',
@@ -103,7 +103,7 @@ const HeroContents = memo(function HeroContents() {
       >
         <>
           <XStack pos="absolute" als="center" y={-80} gap="$4">
-            <ThemeTintAlt offset={-1}>
+            <ThemeTintAlt offset={1}>
               <Link prefetch={false} href="/takeout">
                 <Button
                   bc="$color6"
@@ -130,7 +130,7 @@ const HeroContents = memo(function HeroContents() {
               </Link>
             </ThemeTintAlt>
 
-            <ThemeTintAlt offset={1}>
+            <ThemeTintAlt offset={-1}>
               <Link prefetch={false} href="/bento">
                 <Button
                   bc="$color6"

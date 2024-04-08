@@ -59,7 +59,7 @@ export default apiRoute(async (req, res) => {
     getSubscriptions(supabase),
     getProductOwnerships(supabase),
     getUserPrivateInfo(user.id),
-    getUserAccessInfo(supabase),
+    getUserAccessInfo(supabase, user),
   ])
 
   res.json({

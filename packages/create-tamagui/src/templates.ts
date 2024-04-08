@@ -7,6 +7,7 @@ import { IS_TEST } from './create-tamagui-constants'
 import simpleWeb from './steps/simple-web'
 import expoRouter from './steps/expo-router'
 import starterFree from './steps/starter-free'
+import remix from './steps/remix'
 import takeoutSteps from './steps/takeout'
 
 const repoRoot = join(__dirname, '..', '..', '..')
@@ -64,7 +65,6 @@ export const templates = [
     },
     extraSteps: expoRouter,
   },
-
   {
     title: `Learn - Vite + Webpack, Tamagui config from scratch`,
     value: 'simple-web',
@@ -77,5 +77,18 @@ export const templates = [
       branch: 'master',
     },
     extraSteps: simpleWeb,
+  },
+  {
+    title: `Remix - Remix + Vite starter with Tamagui set up`,
+    value: 'remix',
+    type: 'included-in-monorepo',
+    hidden: false,
+    repo: {
+      url: IS_TEST ? `file://${repoRoot}` : `https://github.com/tamagui/tamagui.git`,
+      sshFallback: `git@github.com:tamagui/tamagui.git`,
+      dir: [`starters`, `remix`],
+      branch: 'master',
+    },
+    extraSteps: remix,
   },
 ] as const

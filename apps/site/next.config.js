@@ -1,33 +1,32 @@
-Error.stackTraceLimit = Infinity;
+Error.stackTraceLimit = Infinity
 
-process.env.IGNORE_TS_CONFIG_PATHS = "true";
+process.env.IGNORE_TS_CONFIG_PATHS = 'true'
 // process.env.TAMAGUI_ENABLE_DYNAMIC_LOAD = '1'
 
 /** @type {import('next').NextConfig} */
-const { withTamagui } = require("@tamagui/next-plugin");
-const withBundleAnalyzer = require("@next/bundle-analyzer");
+const { withTamagui } = require('@tamagui/next-plugin')
+const withBundleAnalyzer = require('@next/bundle-analyzer')
 
 const plugins = [
   withBundleAnalyzer({
-    enabled: process.env.NODE_ENV === "production",
-    openAnalyzer: process.env.ANALYZE === "true",
+    enabled: process.env.NODE_ENV === 'production',
+    openAnalyzer: process.env.ANALYZE === 'true',
   }),
   withTamagui(),
   (config) => {
     return {
       ...config,
       webpack(webpackConfig, options) {
-        webpackConfig.resolve.alias ??= {};
+        webpackConfig.resolve.alias ??= {}
 
         if (process.env.PROFILE) {
-          webpackConfig.resolve.alias["react-dom"] = require.resolve(
-            "react-dom/profiling"
-          );
-          webpackConfig.optimization.minimize = false;
+          webpackConfig.resolve.alias['react-dom'] =
+            require.resolve('react-dom/profiling')
+          webpackConfig.optimization.minimize = false
         }
 
-        if (process.env.ANALYZE === "true") {
-          const { StatsWriterPlugin } = require("webpack-stats-plugin");
+        if (process.env.ANALYZE === 'true') {
+          const { StatsWriterPlugin } = require('webpack-stats-plugin')
           webpackConfig.plugins.push(
             new StatsWriterPlugin({
               // filename: 'stats.json',
@@ -35,43 +34,42 @@ const plugins = [
               //   all: false,
               // },
             })
-          );
+          )
         }
 
-        if (typeof config.webpack === "function") {
-          return config.webpack(webpackConfig, options);
+        if (typeof config.webpack === 'function') {
+          return config.webpack(webpackConfig, options)
         }
 
-        return webpackConfig;
+        return webpackConfig
       },
-    };
+    }
   },
   (config) => {
     // for github pages
     if (process.env.IS_TAMAGUI_PROD) {
-      config.assetPrefix = "https://tamagui.dev";
+      config.assetPrefix = 'https://tamagui.dev'
     } else if (process.env.ON_GITHUB_PAGES) {
-      config.basePath = "/tamagui";
-      config.assetPrefix = "/tamagui/";
+      config.basePath = '/tamagui'
+      config.assetPrefix = '/tamagui/'
     }
-    return config;
+    return config
   },
-];
+]
 
 module.exports = (name, { defaultConfig }) => {
   /** @type {import('next').NextConfig} */
   let config = {
-    transpilePackages: ["expo-image-picker"],
     // output: 'export',
     // runtime: 'experimental-edge',
     outputFileTracing: true,
-    productionBrowserSourceMaps: process.env.ANALYZE === "true",
+    productionBrowserSourceMaps: process.env.ANALYZE === 'true',
     swcMinify: true,
     // must set to false if using reanimated
     // reactStrictMode: false,
     optimizeFonts: true,
     modularizeImports: {
-      "@tamagui/lucide-icons": {
+      '@tamagui/lucide-icons': {
         transform: `@tamagui/lucide-icons/dist/esm/icons/{{kebabCase member}}`,
         skipDefaultConversion: true,
       },
@@ -92,10 +90,10 @@ module.exports = (name, { defaultConfig }) => {
     images: {
       remotePatterns: [
         {
-          protocol: "https",
-          hostname: "picsum.photos",
-          port: "",
-          pathname: "/**/**",
+          protocol: 'https',
+          hostname: 'picsum.photos',
+          port: '',
+          pathname: '/**/**',
         },
       ],
     },
@@ -110,38 +108,46 @@ module.exports = (name, { defaultConfig }) => {
       ignoreBuildErrors: true,
     },
     assetPrefix:
-      process.env.VERCEL_GIT_COMMIT_REF === "master"
-        ? "https://tamagui.dev"
-        : undefined,
+      process.env.VERCEL_GIT_COMMIT_REF === 'master' ? 'https://tamagui.dev' : undefined,
 
     // Next.js config
     async redirects() {
       return [
         {
-          source: "/account/subscriptions",
-          destination: "/account/items",
+          source: '/account/subscriptions',
+          destination: '/account/items',
           permanent: false,
         },
         {
-          source: "/docs",
-          destination: "/docs/intro/introduction",
+          source: '/docs',
+          destination: '/docs/intro/introduction',
           permanent: true,
         },
         {
-          source: "/vite",
-          destination: "https://vxrn.dev",
+          source: '/vite',
+          destination: 'https://vxrn.dev',
           permanent: true,
         },
-      ];
+        {
+          source: '/docs/components/:slug/:version',
+          destination: '/ui/:slug/:version',
+          permanent: true,
+        },
+        {
+          source: '/docs/components/:slug',
+          destination: '/ui/:slug',
+          permanent: true,
+        },
+      ]
     },
-  };
+  }
 
   for (const plugin of plugins) {
     config = {
       ...config,
       ...plugin(config),
-    };
+    }
   }
 
-  return config;
-};
+  return config
+}

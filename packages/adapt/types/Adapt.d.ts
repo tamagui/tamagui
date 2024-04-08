@@ -3,7 +3,7 @@ import type { MediaQueryKey } from '@tamagui/core';
 type MediaQueryKeyString = MediaQueryKey extends string ? MediaQueryKey : never;
 export type AdaptProps = {
     when?: MediaQueryKeyString;
-    platform?: 'native' | 'web' | 'touch';
+    platform?: 'native' | 'web' | 'touch' | 'ios' | 'android';
     children?: any;
 };
 type When = MediaQueryKeyString | boolean | null;

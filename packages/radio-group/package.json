@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/radio-group",
-  "version": "1.92.0",
+  "version": "1.94.4",
   "removeSideEffects": true,
   "sideEffects": [
     "*.css"
@@ -27,30 +27,30 @@
     "./package.json": "./package.json",
     ".": {
       "types": "./types/index.d.ts",
-      "import": "./dist/esm/index.js",
+      "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.js",
       "react-native": "./dist/cjs/index.native.js"
     }
   },
   "dependencies": {
-    "@tamagui/compose-refs": "1.92.0",
-    "@tamagui/constants": "1.92.0",
-    "@tamagui/core": "1.92.0",
-    "@tamagui/create-context": "1.92.0",
-    "@tamagui/focusable": "1.92.0",
-    "@tamagui/get-token": "1.92.0",
-    "@tamagui/helpers": "1.92.0",
-    "@tamagui/label": "1.92.0",
-    "@tamagui/roving-focus": "1.92.0",
-    "@tamagui/stacks": "1.92.0",
-    "@tamagui/use-controllable-state": "1.92.0",
-    "@tamagui/use-previous": "1.92.0"
+    "@tamagui/compose-refs": "1.94.4",
+    "@tamagui/constants": "1.94.4",
+    "@tamagui/core": "1.94.4",
+    "@tamagui/create-context": "1.94.4",
+    "@tamagui/focusable": "1.94.4",
+    "@tamagui/get-token": "1.94.4",
+    "@tamagui/helpers": "1.94.4",
+    "@tamagui/label": "1.94.4",
+    "@tamagui/roving-focus": "1.94.4",
+    "@tamagui/stacks": "1.94.4",
+    "@tamagui/use-controllable-state": "1.94.4",
+    "@tamagui/use-previous": "1.94.4"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.92.0",
+    "@tamagui/build": "1.94.4",
     "react": "^18.2.0"
   },
   "publishConfig": {

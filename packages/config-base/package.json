@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/config-base",
-  "version": "1.92.0",
+  "version": "1.94.4",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -22,13 +22,13 @@
     "./package.json": "./package.json",
     ".": {
       "types": "./types/index.d.ts",
-      "import": "./dist/esm/index.js",
+      "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.js",
       "react-native": "./dist/cjs/index.native.js"
     }
   },
   "devDependencies": {
-    "@tamagui/build": "1.92.0"
+    "@tamagui/build": "1.94.4"
   },
   "publishConfig": {
     "access": "public"

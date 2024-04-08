@@ -3,7 +3,7 @@ import React from 'react'
 
 if (process.env.NODE_ENV === 'development') {
   whyDidYouRender(React, {
-    include: [/.*/],
+    include: [/.*Select.*/],
     collapseGroups: true,
     logOnDifferentValues: true,
     trackAllPureComponents: true,

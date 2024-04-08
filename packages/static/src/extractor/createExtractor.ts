@@ -13,7 +13,7 @@ import type {
   TamaguiComponentState,
 } from '@tamagui/web'
 import type { ViewStyle } from 'react-native'
-import { createDOMProps } from 'react-native-web-internals'
+import * as reactNativeWebInternals from 'react-native-web-internals'
 
 import { FAILED_EVAL } from '../constants'
 import { requireTamaguiCore } from '../helpers/requireTamaguiCore'
@@ -232,7 +232,7 @@ export function createExtractor(
       return !!(
         staticConfig.validStyles?.[name] ||
         pseudoDescriptors[name] ||
-        // dont disable variants or else you lose many things flattening
+        // don't disable variants or else you lose many things flattening
         staticConfig.variants?.[name] ||
         projectInfo?.tamaguiConfig?.shorthands[name] ||
         (name[0] === '$' ? !!mediaQueryConfig[name.slice(1)] : false)
@@ -1169,7 +1169,10 @@ export function createExtractor(
               if (out) {
                 if (isTargetingHTML) {
                   // translate to DOM-compat
-                  out = createDOMProps(isTextView ? 'span' : 'div', out)
+                  out = reactNativeWebInternals.createDOMProps(
+                    isTextView ? 'span' : 'div',
+                    out
+                  )
                   // remove className - we dont use rnw styling
                   delete out.className
                 }
@@ -1876,7 +1879,10 @@ export function createExtractor(
                     if (out && isTargetingHTML) {
                       const cn = out.className
                       // translate to DOM-compat
-                      out = createDOMProps(isTextView ? 'span' : 'div', out)
+                      out = reactNativeWebInternals.createDOMProps(
+                        isTextView ? 'span' : 'div',
+                        out
+                      )
                       // remove rnw className use ours
                       out.className = cn
                     }

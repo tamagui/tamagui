@@ -105,19 +105,37 @@ async function run() {
       await Promise.all(
         packagePaths
           .filter((i) => i.location !== '.' && !i.name.startsWith('@takeout'))
-          .map(async ({ name, location }) => {
+          .flatMap(async ({ name, location }) => {
             const cwd = path.join(process.cwd(), location)
             const json = await fs.readJSON(path.join(cwd, 'package.json'))
-            return {
+            const item = {
               name,
               cwd,
               json,
               path: path.join(cwd, 'package.json'),
               directory: location,
             }
+
+            if (json.alsoPublishAs) {
+              console.info(
+                ` ${name}: Also publishing as ${json.alsoPublishAs.join(', ')}`
+              )
+              return [
+                item,
+                ...json.alsoPublishAs.map((name) => ({
+                  ...item,
+                  json: { ...json, name },
+                  name,
+                })),
+              ]
+            }
+
+            return [item]
           })
       )
-    ).filter((x) => !x.json['tamagui-publish-skip'])
+    )
+      .flat()
+      .filter((x) => !x.json['skipPublish'])
 
     const packageJsons = allPackageJsons
       .filter((x) => {
@@ -178,7 +196,9 @@ async function run() {
     }
 
     if (!skipBuild && !finish) {
-      await spawnify(`yarn build`)
+      // lets do a full clean and build:force, to ensure we dont have weird cached or leftover files
+      await spawnify(`yarn clean:build`)
+      await spawnify(`yarn build:force`)
       await checkDistDirs()
     }
 

@@ -3,21 +3,19 @@
 import path from 'path'
 
 import type { TamaguiOptions } from '@tamagui/static'
-import {
-  createExtractor,
-  extractToClassNames,
-  getPragmaOptions,
-  loadTamaguiBuildConfigSync,
-} from '@tamagui/static'
+import * as StaticIn from '@tamagui/static'
 import outdent from 'outdent'
 import type { Plugin, ResolvedConfig, ViteDevServer } from 'vite'
 import { normalizePath } from 'vite'
+
+// some sort of weird esm compat
+const Static = (StaticIn['default'] || StaticIn) as typeof StaticIn
 
 const styleUpdateEvent = (fileId: string) => `tamagui-style-update:${fileId}`
 const GLOBAL_CSS_VIRTUAL_PATH = '__tamagui_global_css__.css'
 
 export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugin {
-  const options = loadTamaguiBuildConfigSync({
+  const options = Static.loadTamaguiBuildConfigSync({
     ...optionsIn,
     platform: 'web',
   })
@@ -30,7 +28,7 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
     }
   }
 
-  let extractor: ReturnType<typeof createExtractor> | null = null
+  let extractor: ReturnType<typeof Static.createExtractor> | null = null
   const cssMap = new Map<string, string>()
 
   let config: ResolvedConfig
@@ -57,13 +55,6 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
       extractor!.cleanupBeforeExit()
     },
 
-    writeBundle(this, options, bundle) {
-      setTimeout(() => {
-        console.warn('some sort of dangling process or osmethign, exit for now...')
-        process.exit(0)
-      }, 100)
-    },
-
     config(_userConfig, env) {
       const include = env.command === 'serve' ? ['@tamagui/core/inject-styles'] : []
       return {
@@ -73,9 +64,18 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
 
     async configResolved(resolvedConfig) {
       config = resolvedConfig
-      extractor = createExtractor({
+      extractor = Static.createExtractor({
         logger: resolvedConfig.logger,
       })
+
+      await extractor!.loadTamagui({
+        // @ts-ignore
+        components: ['tamagui'],
+        // @ts-ignore
+        platform: 'web',
+        ...options,
+      })
+
       shouldReturnCSS = true
       // TODO postcss work with postcss.config.js
       // packageName = getPackageInfo(config.root).name;
@@ -87,13 +87,6 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
 
     async resolveId(source) {
       if (source === 'tamagui.css') {
-        await extractor!.loadTamagui({
-          // @ts-ignore
-          components: ['tamagui'],
-          // @ts-ignore
-          platform: 'web',
-          ...options,
-        })
         return GLOBAL_CSS_VIRTUAL_PATH
       }
 
@@ -172,15 +165,8 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
         return
       }
 
-      // let ssr: boolean | undefined
-      // if (typeof ssrParam === 'boolean') {
-      //   ssr = ssrParam
-      // } else {
-      //   ssr = ssrParam?.ssr
-      // }
-
       const firstCommentIndex = code.indexOf('// ')
-      const { shouldDisable, shouldPrintDebug } = getPragmaOptions({
+      const { shouldDisable, shouldPrintDebug } = Static.getPragmaOptions({
         source: firstCommentIndex >= 0 ? code.slice(firstCommentIndex) : '',
         path: validId,
       })
@@ -189,7 +175,7 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
         return
       }
 
-      const extracted = await extractToClassNames({
+      const extracted = await Static.extractToClassNames({
         extractor: extractor!,
         source: code,
         sourcePath: validId,

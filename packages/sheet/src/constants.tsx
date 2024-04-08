@@ -8,5 +8,7 @@ export const SHEET_OVERLAY_NAME = 'SheetOverlay'
 
 export const SHEET_HIDDEN_STYLESHEET = isClient ? document.createElement('style') : null
 if (SHEET_HIDDEN_STYLESHEET) {
-  document.head.appendChild(SHEET_HIDDEN_STYLESHEET)
+  if (typeof document.head !== 'undefined') {
+    document.head.appendChild(SHEET_HIDDEN_STYLESHEET)
+  }
 }
