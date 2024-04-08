@@ -58,12 +58,12 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: "app_installations_subscription_item_id_fkey"
-            columns: ["subscription_item_id"]
+            foreignKeyName: 'app_installations_subscription_item_id_fkey'
+            columns: ['subscription_item_id']
             isOneToOne: false
-            referencedRelation: "subscription_items"
-            referencedColumns: ["id"]
-          }
+            referencedRelation: 'subscription_items'
+            referencedColumns: ['id']
+          },
         ]
       }
       bot_pull_requests: {
@@ -96,12 +96,12 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: "bot_pull_requests_github_installation_id_fkey"
-            columns: ["github_installation_id"]
+            foreignKeyName: 'bot_pull_requests_github_installation_id_fkey'
+            columns: ['github_installation_id']
             isOneToOne: false
-            referencedRelation: "app_installations"
-            referencedColumns: ["github_installation_id"]
-          }
+            referencedRelation: 'app_installations'
+            referencedColumns: ['github_installation_id']
+          },
         ]
       }
       claims: {
@@ -134,26 +134,26 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: "claims_product_id_fkey"
-            columns: ["product_id"]
+            foreignKeyName: 'claims_product_id_fkey'
+            columns: ['product_id']
             isOneToOne: false
-            referencedRelation: "products"
-            referencedColumns: ["id"]
+            referencedRelation: 'products'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "claims_product_ownership_id_fkey"
-            columns: ["product_ownership_id"]
+            foreignKeyName: 'claims_product_ownership_id_fkey'
+            columns: ['product_ownership_id']
             isOneToOne: false
-            referencedRelation: "product_ownership"
-            referencedColumns: ["id"]
+            referencedRelation: 'product_ownership'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "claims_subscription_id_fkey"
-            columns: ["subscription_id"]
+            foreignKeyName: 'claims_subscription_id_fkey'
+            columns: ['subscription_id']
             isOneToOne: false
-            referencedRelation: "subscriptions"
-            referencedColumns: ["id"]
-          }
+            referencedRelation: 'subscriptions'
+            referencedColumns: ['id']
+          },
         ]
       }
       customers: {
@@ -171,12 +171,12 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: "customers_id_fkey"
-            columns: ["id"]
+            foreignKeyName: 'customers_id_fkey'
+            columns: ['id']
             isOneToOne: true
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          }
+            referencedRelation: 'users'
+            referencedColumns: ['id']
+          },
         ]
       }
       discord_invites: {
@@ -200,12 +200,12 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: "discord_invites_subscription_id_fkey"
-            columns: ["subscription_id"]
+            foreignKeyName: 'discord_invites_subscription_id_fkey'
+            columns: ['subscription_id']
             isOneToOne: false
-            referencedRelation: "subscriptions"
-            referencedColumns: ["id"]
-          }
+            referencedRelation: 'subscriptions'
+            referencedColumns: ['id']
+          },
         ]
       }
       memberships: {
@@ -229,19 +229,19 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: "memberships_team_id_fkey"
-            columns: ["team_id"]
+            foreignKeyName: 'memberships_team_id_fkey'
+            columns: ['team_id']
             isOneToOne: false
-            referencedRelation: "teams"
-            referencedColumns: ["id"]
+            referencedRelation: 'teams'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "memberships_user_id_fkey"
-            columns: ["user_id"]
+            foreignKeyName: 'memberships_user_id_fkey'
+            columns: ['user_id']
             isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          }
+            referencedRelation: 'users'
+            referencedColumns: ['id']
+          },
         ]
       }
       prices: {
@@ -250,12 +250,12 @@ export interface Database {
           currency: string | null
           description: string | null
           id: string
-          interval: Database["public"]["Enums"]["pricing_plan_interval"] | null
+          interval: Database['public']['Enums']['pricing_plan_interval'] | null
           interval_count: number | null
           metadata: Json | null
           product_id: string | null
           trial_period_days: number | null
-          type: Database["public"]["Enums"]["pricing_type"] | null
+          type: Database['public']['Enums']['pricing_type'] | null
           unit_amount: number | null
         }
         Insert: {
@@ -263,12 +263,12 @@ export interface Database {
           currency?: string | null
           description?: string | null
           id: string
-          interval?: Database["public"]["Enums"]["pricing_plan_interval"] | null
+          interval?: Database['public']['Enums']['pricing_plan_interval'] | null
           interval_count?: number | null
           metadata?: Json | null
           product_id?: string | null
           trial_period_days?: number | null
-          type?: Database["public"]["Enums"]["pricing_type"] | null
+          type?: Database['public']['Enums']['pricing_type'] | null
           unit_amount?: number | null
         }
         Update: {
@@ -276,22 +276,22 @@ export interface Database {
           currency?: string | null
           description?: string | null
           id?: string
-          interval?: Database["public"]["Enums"]["pricing_plan_interval"] | null
+          interval?: Database['public']['Enums']['pricing_plan_interval'] | null
           interval_count?: number | null
           metadata?: Json | null
           product_id?: string | null
           trial_period_days?: number | null
-          type?: Database["public"]["Enums"]["pricing_type"] | null
+          type?: Database['public']['Enums']['pricing_type'] | null
           unit_amount?: number | null
         }
         Relationships: [
           {
-            foreignKeyName: "prices_product_id_fkey"
-            columns: ["product_id"]
+            foreignKeyName: 'prices_product_id_fkey'
+            columns: ['product_id']
             isOneToOne: false
-            referencedRelation: "products"
-            referencedColumns: ["id"]
-          }
+            referencedRelation: 'products'
+            referencedColumns: ['id']
+          },
         ]
       }
       product_ownership: {
@@ -315,19 +315,19 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: "product_ownership_price_id_fkey"
-            columns: ["price_id"]
+            foreignKeyName: 'product_ownership_price_id_fkey'
+            columns: ['price_id']
             isOneToOne: false
-            referencedRelation: "prices"
-            referencedColumns: ["id"]
+            referencedRelation: 'prices'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "product_ownership_user_id_fkey"
-            columns: ["user_id"]
+            foreignKeyName: 'product_ownership_user_id_fkey'
+            columns: ['user_id']
             isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          }
+            referencedRelation: 'users'
+            referencedColumns: ['id']
+          },
         ]
       }
       products: {
@@ -387,19 +387,19 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: "studio_themes_team_id_fkey"
-            columns: ["team_id"]
+            foreignKeyName: 'studio_themes_team_id_fkey'
+            columns: ['team_id']
             isOneToOne: false
-            referencedRelation: "teams"
-            referencedColumns: ["id"]
+            referencedRelation: 'teams'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "studio_themes_user_id_fkey"
-            columns: ["user_id"]
+            foreignKeyName: 'studio_themes_user_id_fkey'
+            columns: ['user_id']
             isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          }
+            referencedRelation: 'users'
+            referencedColumns: ['id']
+          },
         ]
       }
       subscription_items: {
@@ -420,19 +420,19 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: "subscription_items_price_id_fkey"
-            columns: ["price_id"]
+            foreignKeyName: 'subscription_items_price_id_fkey'
+            columns: ['price_id']
             isOneToOne: false
-            referencedRelation: "prices"
-            referencedColumns: ["id"]
+            referencedRelation: 'prices'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "subscription_items_subscription_id_fkey"
-            columns: ["subscription_id"]
+            foreignKeyName: 'subscription_items_subscription_id_fkey'
+            columns: ['subscription_id']
             isOneToOne: false
-            referencedRelation: "subscriptions"
-            referencedColumns: ["id"]
-          }
+            referencedRelation: 'subscriptions'
+            referencedColumns: ['id']
+          },
         ]
       }
       subscriptions: {
@@ -447,7 +447,7 @@ export interface Database {
           id: string
           metadata: Json | null
           quantity: number | null
-          status: Database["public"]["Enums"]["subscription_status"] | null
+          status: Database['public']['Enums']['subscription_status'] | null
           trial_end: string | null
           trial_start: string | null
           user_id: string
@@ -463,7 +463,7 @@ export interface Database {
           id: string
           metadata?: Json | null
           quantity?: number | null
-          status?: Database["public"]["Enums"]["subscription_status"] | null
+          status?: Database['public']['Enums']['subscription_status'] | null
           trial_end?: string | null
           trial_start?: string | null
           user_id: string
@@ -479,19 +479,19 @@ export interface Database {
           id?: string
           metadata?: Json | null
           quantity?: number | null
-          status?: Database["public"]["Enums"]["subscription_status"] | null
+          status?: Database['public']['Enums']['subscription_status'] | null
           trial_end?: string | null
           trial_start?: string | null
           user_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "subscriptions_user_id_fkey"
-            columns: ["user_id"]
+            foreignKeyName: 'subscriptions_user_id_fkey'
+            columns: ['user_id']
             isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          }
+            referencedRelation: 'users'
+            referencedColumns: ['id']
+          },
         ]
       }
       teams: {
@@ -530,12 +530,12 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: "teams_owner_id_fkey"
-            columns: ["owner_id"]
+            foreignKeyName: 'teams_owner_id_fkey'
+            columns: ['owner_id']
             isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          }
+            referencedRelation: 'users'
+            referencedColumns: ['id']
+          },
         ]
       }
       users: {
@@ -562,12 +562,12 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: "users_id_fkey"
-            columns: ["id"]
+            foreignKeyName: 'users_id_fkey'
+            columns: ['id']
             isOneToOne: true
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          }
+            referencedRelation: 'users'
+            referencedColumns: ['id']
+          },
         ]
       }
       users_private: {
@@ -588,12 +588,12 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: "users_private_id_fkey"
-            columns: ["id"]
+            foreignKeyName: 'users_private_id_fkey'
+            columns: ['id']
             isOneToOne: true
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          }
+            referencedRelation: 'users'
+            referencedColumns: ['id']
+          },
         ]
       }
     }
@@ -604,16 +604,16 @@ export interface Database {
       [_ in never]: never
     }
     Enums: {
-      pricing_plan_interval: "day" | "week" | "month" | "year"
-      pricing_type: "one_time" | "recurring"
+      pricing_plan_interval: 'day' | 'week' | 'month' | 'year'
+      pricing_type: 'one_time' | 'recurring'
       subscription_status:
-        | "trialing"
-        | "active"
-        | "canceled"
-        | "incomplete"
-        | "incomplete_expired"
-        | "past_due"
-        | "unpaid"
+        | 'trialing'
+        | 'active'
+        | 'canceled'
+        | 'incomplete'
+        | 'incomplete_expired'
+        | 'past_due'
+        | 'unpaid'
     }
     CompositeTypes: {
       [_ in never]: never
@@ -723,12 +723,12 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: "objects_bucketId_fkey"
-            columns: ["bucket_id"]
+            foreignKeyName: 'objects_bucketId_fkey'
+            columns: ['bucket_id']
             isOneToOne: false
-            referencedRelation: "buckets"
-            referencedColumns: ["id"]
-          }
+            referencedRelation: 'buckets'
+            referencedColumns: ['id']
+          },
         ]
       }
     }
@@ -802,81 +802,80 @@ export interface Database {
 
 export type Tables<
   PublicTableNameOrOptions extends
-    | keyof (Database["public"]["Tables"] & Database["public"]["Views"])
+    | keyof (Database['public']['Tables'] & Database['public']['Views'])
     | { schema: keyof Database },
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
-    ? keyof (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
-        Database[PublicTableNameOrOptions["schema"]]["Views"])
-    : never = never
+    ? keyof (Database[PublicTableNameOrOptions['schema']]['Tables'] &
+        Database[PublicTableNameOrOptions['schema']]['Views'])
+    : never = never,
 > = PublicTableNameOrOptions extends { schema: keyof Database }
-  ? (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
-      Database[PublicTableNameOrOptions["schema"]]["Views"])[TableName] extends {
+  ? (Database[PublicTableNameOrOptions['schema']]['Tables'] &
+      Database[PublicTableNameOrOptions['schema']]['Views'])[TableName] extends {
       Row: infer R
     }
     ? R
     : never
-  : PublicTableNameOrOptions extends keyof (Database["public"]["Tables"] &
-      Database["public"]["Views"])
-  ? (Database["public"]["Tables"] &
-      Database["public"]["Views"])[PublicTableNameOrOptions] extends {
-      Row: infer R
-    }
-    ? R
+  : PublicTableNameOrOptions extends keyof (Database['public']['Tables'] &
+        Database['public']['Views'])
+    ? (Database['public']['Tables'] &
+        Database['public']['Views'])[PublicTableNameOrOptions] extends {
+        Row: infer R
+      }
+      ? R
+      : never
     : never
-  : never
 
 export type TablesInsert<
   PublicTableNameOrOptions extends
-    | keyof Database["public"]["Tables"]
+    | keyof Database['public']['Tables']
     | { schema: keyof Database },
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
-    ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
-    : never = never
+    ? keyof Database[PublicTableNameOrOptions['schema']]['Tables']
+    : never = never,
 > = PublicTableNameOrOptions extends { schema: keyof Database }
-  ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+  ? Database[PublicTableNameOrOptions['schema']]['Tables'][TableName] extends {
       Insert: infer I
     }
     ? I
     : never
-  : PublicTableNameOrOptions extends keyof Database["public"]["Tables"]
-  ? Database["public"]["Tables"][PublicTableNameOrOptions] extends {
-      Insert: infer I
-    }
-    ? I
+  : PublicTableNameOrOptions extends keyof Database['public']['Tables']
+    ? Database['public']['Tables'][PublicTableNameOrOptions] extends {
+        Insert: infer I
+      }
+      ? I
+      : never
     : never
-  : never
 
 export type TablesUpdate<
   PublicTableNameOrOptions extends
-    | keyof Database["public"]["Tables"]
+    | keyof Database['public']['Tables']
     | { schema: keyof Database },
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
-    ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
-    : never = never
+    ? keyof Database[PublicTableNameOrOptions['schema']]['Tables']
+    : never = never,
 > = PublicTableNameOrOptions extends { schema: keyof Database }
-  ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+  ? Database[PublicTableNameOrOptions['schema']]['Tables'][TableName] extends {
       Update: infer U
     }
     ? U
     : never
-  : PublicTableNameOrOptions extends keyof Database["public"]["Tables"]
-  ? Database["public"]["Tables"][PublicTableNameOrOptions] extends {
-      Update: infer U
-    }
-    ? U
+  : PublicTableNameOrOptions extends keyof Database['public']['Tables']
+    ? Database['public']['Tables'][PublicTableNameOrOptions] extends {
+        Update: infer U
+      }
+      ? U
+      : never
     : never
-  : never
 
 export type Enums<
   PublicEnumNameOrOptions extends
-    | keyof Database["public"]["Enums"]
+    | keyof Database['public']['Enums']
     | { schema: keyof Database },
   EnumName extends PublicEnumNameOrOptions extends { schema: keyof Database }
-    ? keyof Database[PublicEnumNameOrOptions["schema"]]["Enums"]
-    : never = never
+    ? keyof Database[PublicEnumNameOrOptions['schema']]['Enums']
+    : never = never,
 > = PublicEnumNameOrOptions extends { schema: keyof Database }
-  ? Database[PublicEnumNameOrOptions["schema"]]["Enums"][EnumName]
-  : PublicEnumNameOrOptions extends keyof Database["public"]["Enums"]
-  ? Database["public"]["Enums"][PublicEnumNameOrOptions]
-  : never
-
+  ? Database[PublicEnumNameOrOptions['schema']]['Enums'][EnumName]
+  : PublicEnumNameOrOptions extends keyof Database['public']['Enums']
+    ? Database['public']['Enums'][PublicEnumNameOrOptions]
+    : never

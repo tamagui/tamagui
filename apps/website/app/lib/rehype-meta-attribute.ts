@@ -2,7 +2,7 @@
 
 const visit = require('unist-util-visit')
 
-var re = /\b([-\w]+)(?:=(?:"([^"]*)"|'([^']*)'|([^"'\s]+)))?/g
+const re = /\b([-\w]+)(?:=(?:"([^"]*)"|'([^']*)'|([^"'\s]+)))?/g
 
 export default (options = {}) => {
   return (tree) => {

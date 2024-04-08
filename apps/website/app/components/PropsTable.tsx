@@ -118,7 +118,7 @@ export function PropsTable({
                       </Paragraph>
 
                       <XStack ai="center">
-                        {Boolean(defaultValue) ? (
+                        {defaultValue ? (
                           <XStack ai="center" gap="$1">
                             <Paragraph o={0.5} size="$2">
                               Default:&nbsp;

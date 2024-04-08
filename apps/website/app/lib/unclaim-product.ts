@@ -36,7 +36,6 @@ export async function unclaimSubscription(subscription: Stripe.Subscription) {
     }
 
     switch (claimData.claim_type) {
-      case 'repo_access':
       default:
         unclaimRepoAccess({ data: claimData, claim, user })
         break

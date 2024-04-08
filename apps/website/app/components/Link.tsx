@@ -1,4 +1,4 @@
-import type { LinkProps as LinkProps } from '~/link'
+import type { LinkProps } from '~/link'
 import { Link } from '~/link'
 import React from 'react'
 import type { TextProps } from 'tamagui'

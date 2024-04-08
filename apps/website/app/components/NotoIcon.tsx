@@ -1,5 +1,5 @@
 import React from 'react'
-import type { FontSizeTokens, TextProps} from 'tamagui';
+import type { FontSizeTokens, TextProps } from 'tamagui'
 import { Text, getConfig, getVariableValue } from 'tamagui'
 
 export const NotoIcon = ({

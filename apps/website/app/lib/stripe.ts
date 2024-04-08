@@ -11,5 +11,5 @@ export const stripe = new Stripe(
       name: 'Next.js Subscription Starter',
       version: '0.1.0',
     },
-  },
+  }
 )

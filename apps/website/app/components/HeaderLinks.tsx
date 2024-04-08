@@ -451,7 +451,6 @@ const SlidingPopoverTrigger = YStack.styleable<{ id: string }>(
       const handleMove = debounce(() => {
         const layout = triggerRef.current?.getBoundingClientRect()
         if (layout) {
-          console.log('layout', layout)
           setLayout(layout)
         }
       }, 16)
