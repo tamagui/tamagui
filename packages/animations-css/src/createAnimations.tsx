@@ -30,6 +30,7 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
           if (listeners) {
             listeners.forEach((cb) => cb(next))
           }
+          // TODO: this implementation of onFinish() is not correct
           onFinish?.()
         },
         stop() {},
