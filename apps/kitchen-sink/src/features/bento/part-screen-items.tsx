@@ -21,7 +21,7 @@ export function BentoPartScreenItem({ navigation }) {
   }, [name, navigation])
 
   const removeComponentsThatAreNotPublic = (component: any) =>
-    !['AvatarWithTitle', 'CircularAvatars'].includes(component.name)
+    !['AvatarWithTitle', 'CircularAvatars', 'VerticalCheckboxes'].includes(component.name)
 
   return (
     <ScrollView>
