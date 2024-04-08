@@ -67,22 +67,22 @@ const maybeThemes =
     : ({} as Themes)
 
 export const config = {
-  defaultFont: 'body',
-  shouldAddPrefersColorThemes: true,
-  themeClassNameOnRoot: true,
   animations,
   themes: maybeThemes,
   media,
   shorthands,
   tokens,
-  mediaQueryDefaultActive,
-  selectionStyles: (theme) => ({
-    backgroundColor: theme.color5,
-    color: theme.color11,
-  }),
   settings: {
     allowedStyleValues: 'somewhat-strict-web',
     autocompleteSpecificTokens: 'except-special',
+    mediaQueryDefaultActive,
+    shouldAddPrefersColorThemes: true,
+    themeClassNameOnRoot: true,
+    selectionStyles: (theme) => ({
+      backgroundColor: theme.color5,
+      color: theme.color11,
+    }),
+    defaultFont: 'body',
     // mediaPropOrder: true,
   },
   fonts,

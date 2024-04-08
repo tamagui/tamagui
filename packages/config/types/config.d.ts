@@ -1,8 +1,5 @@
 import { themes } from '@tamagui/themes';
 export declare const configWithoutAnimations: {
-    defaultFont: string;
-    shouldAddPrefersColorThemes: true;
-    themeClassNameOnRoot: true;
     themes: typeof themes;
     media: {
         xl: {
@@ -114,6 +111,23 @@ export declare const configWithoutAnimations: {
         readonly t: "top";
         readonly w: "width";
         readonly zi: "zIndex";
+    };
+    settings: {
+        themeClassNameOnRoot: true;
+        mediaQueryDefaultActive: {
+            xl: boolean;
+            lg: boolean;
+            md: boolean;
+            sm: boolean;
+            xs: boolean;
+            xxs: boolean;
+        };
+        shouldAddPrefersColorThemes: true;
+        selectionStyles: (theme: Record<string, string>) => {
+            backgroundColor: string;
+            color: string;
+        } | null;
+        defaultFont: string;
     };
     tokens: {
         color: {
@@ -803,17 +817,5 @@ export declare const configWithoutAnimations: {
         };
         silkscreen: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 1 | 10 | 5 | 14 | 11 | 12 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13>;
     };
-    mediaQueryDefaultActive: {
-        xl: boolean;
-        lg: boolean;
-        md: boolean;
-        sm: boolean;
-        xs: boolean;
-        xxs: boolean;
-    };
-    selectionStyles: (theme: Record<string, string>) => {
-        backgroundColor: string;
-        color: string;
-    } | null;
 };
 //# sourceMappingURL=config.d.ts.map

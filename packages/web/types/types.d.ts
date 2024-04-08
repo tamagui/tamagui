@@ -182,8 +182,10 @@ export type CreateTamaguiConfig<A extends GenericTokens, B extends GenericThemes
     shorthands: C;
     media: D;
     animations: AnimationDriver<E>;
+    /** @deprecated - moved inside settings */
     onlyAllowShorthands: G;
-    defaultFont: H;
+    /** @deprecated - moved inside settings */
+    defaultFont?: H;
     settings: I;
 };
 type GetLanguagePostfix<Set> = Set extends string ? Set extends `${string}_${infer Postfix}` ? Postfix : never : never;
@@ -305,6 +307,29 @@ type GenericTamaguiSettings = {
      */
     allowedStyleValues?: AllowedStyleValuesSetting;
     /**
+     * Define a default font, for better types and default font on Text
+     */
+    defaultFont?: string;
+    /**
+     *  adds @media(prefers-color-scheme) media queries for dark/light */
+    shouldAddPrefersColorThemes?: boolean;
+    /**
+     * what's between each CSS style rule, set to "\n" to be easier to read
+     * defaults: "\n" when NODE_ENV=development, "" otherwise
+     */
+    cssStyleSeparator?: string;
+    /**
+     * Only allow shorthands when enabled
+     */
+    onlyAllowShorthands?: OnlyAllowShorthandsSetting;
+    /**
+     * Web-only: define text-selection CSS
+     */
+    selectionStyles?: (theme: Record<string, string>) => null | {
+        backgroundColor?: any;
+        color?: any;
+    };
+    /**
      * Set up if "specific tokens" ($color.name) are added to the types where tokens are allowed.
      * The VSCode autocomplete puts specific tokens above the regular ones, which leads to worse DX.
      * If true this setting removes the specific token from types for the defined categories.
@@ -325,6 +350,10 @@ type GenericTamaguiSettings = {
      */
     mediaPropOrder?: boolean;
     /**
+     * only if you put the theme classname on the html element we have to generate diff
+     */
+    themeClassNameOnRoot?: boolean;
+    /**
      * On iOS, this enables a mode where Tamagui returns color values using `DynamicColorIOS`
      * This is a React Native built in feature, you can read the docs here:
      *   https://reactnative.dev/docs/dynamiccolorios
@@ -342,6 +371,38 @@ type GenericTamaguiSettings = {
      * Then this feature is safe to turn on and will significantly speed up dark/light re-renders.
      */
     fastSchemeChange?: boolean;
+    /**
+     * *Advanced use case* For all CSS extracted views, this has no effect.
+     *
+     * For SSR compatibility on the web, Tamagui will render once with the settings
+     * from `mediaQueryDefaultActive` set for all media queries. Then, it will render
+     * again after the initial render using the proper media query values. This is so that
+     * hydration will match perfectly with the server.
+     *
+     * Setting disableSSR will avoid this second render by setting the media query state
+     * to the actual browser dimensions on initial load. This is only useful for client-only
+     * apps.
+     */
+    disableSSR?: boolean;
+    /**
+     * Disable inserting a theme class in the DOM or context, allowing you to manually place it higher.
+     * For custom use cases like integration with next-theme.
+     */
+    disableRootThemeClass?: boolean;
+    /**
+     * (Advanced)
+     * on the web, tamagui treats `dark` and `light` themes as special and
+     * generates extra CSS to avoid having to re-render the entire page.
+     * this CSS relies on specificity hacks that multiply by your sub-themes.
+     * this sets the maxiumum number of nested dark/light themes you can do
+     * defaults to 3 for a balance, but can be higher if you nest them deeply.
+     */
+    maxDarkLightNesting?: number;
+    /**
+     * for the first render, determines which media queries are true
+     * useful for SSR
+     */
+    mediaQueryDefaultActive?: Record<string, boolean>;
     /**
      * By default Tamagui won't accept anything except for style props inside all parent style
      * selectors or pseudo style selectors (like $sm, $platform-ios, or hoverStyle).
@@ -380,10 +441,14 @@ export type CreateTamaguiProps = {
     };
     settings?: Partial<GenericTamaguiSettings>;
     /**
+     * @deprecated - moved inside settings
+     *
      * Define a default font, for better types and default font on Text
      */
     defaultFont?: string;
     /**
+     * @deprecated - moved inside the settings object
+     *
      * Web-only: define text-selection CSS
      */
     selectionStyles?: (theme: Record<string, string>) => null | {
@@ -401,12 +466,13 @@ export type CreateTamaguiProps = {
      * Setting disableSSR will avoid this second render by setting the media query state
      * to the actual browser dimensions on initial load. This is only useful for client-only
      * apps.
-     *
+     * @deprecated - moved inside the settings object
      */
     disableSSR?: boolean;
     /**
      * Disable inserting a theme class in the DOM or context, allowing you to manually place it higher.
      * For custom use cases like integration with next-theme.
+     * @deprecated - moved inside the settings object
      */
     disableRootThemeClass?: boolean;
     defaultProps?: Record<string, any> & {
@@ -414,12 +480,39 @@ export type CreateTamaguiProps = {
         Text?: TextProps;
         Spacer?: SpacerProps;
     };
+    /**
+     * @deprecated - moved inside the settings object
+     * for the first render, determines which media queries are true
+     * useful for SSR
+     */
     mediaQueryDefaultActive?: Record<string, boolean>;
+    /**
+     * @deprecated - moved inside the settings object
+     * what's between each CSS style rule, set to "\n" to be easier to read
+     * defaults: "\n" when NODE_ENV=development, "" otherwise
+     */
     cssStyleSeparator?: string;
+    /**
+     * (Advanced)
+     * on the web, tamagui treats `dark` and `light` themes as special and
+     * generates extra CSS to avoid having to re-render the entire page.
+     * this CSS relies on specificity hacks that multiply by your sub-themes.
+     * this sets the maxiumum number of nested dark/light themes you can do
+     * defaults to 3 for a balance, but can be higher if you nest them deeply.
+     * @deprecated - moved inside the settings object
+     */
     maxDarkLightNesting?: number;
+    /**
+     * @deprecated - moved inside the settings object
+     *  adds @media(prefers-color-scheme) media queries for dark/light */
     shouldAddPrefersColorThemes?: boolean;
+    /**
+     * @deprecated - moved inside the settings object
+     * only if you put the theme classname on the html element we have to generate diff
+     */
     themeClassNameOnRoot?: boolean;
     /**
+     * @deprecated - moved inside the settings object
      * Only allow shorthands when enabled
      */
     onlyAllowShorthands?: OnlyAllowShorthandsSetting;
@@ -439,6 +532,7 @@ export type TamaguiInternalConfig<A extends GenericTokens = GenericTokens, B ext
     parsed: boolean;
     inverseShorthands: Record<string, string>;
     reactNative?: any;
+    /** @deprecated - moved inside settings */
     defaultFont?: H;
     fontSizeTokens: Set<string>;
     specificTokens: Record<string, Variable>;
@@ -571,7 +665,7 @@ export type Token = NonSpecificTokens | (TamaguiSettings extends {
     autocompleteSpecificTokens: false;
 } ? never : SpecificTokens);
 export type ColorStyleProp = ThemeValueFallbackColor | ColorTokens;
-type DefaultFont = TamaguiConfig['defaultFont'];
+type DefaultFont = TamaguiConfig['settings']['defaultFont'];
 export type Fonts = DefaultFont extends string ? TamaguiConfig['fonts'][DefaultFont] : never;
 export type Font = ParseFont<Fonts>;
 export type GetTokenFontKeysFor<A extends 'size' | 'weight' | 'letterSpacing' | 'family' | 'lineHeight' | 'transform' | 'style' | 'color'> = keyof TamaguiConfig['fonts']['body'][A];
@@ -616,7 +710,7 @@ export type WithThemeValues<T extends object> = {
 };
 export type NarrowShorthands = Narrow<Shorthands>;
 export type Longhands = NarrowShorthands[keyof NarrowShorthands];
-type OnlyAllowShorthands = TamaguiConfig['onlyAllowShorthands'];
+type OnlyAllowShorthands = TamaguiConfig['settings']['onlyAllowShorthands'];
 export type WithShorthands<StyleProps> = {
     [Key in keyof Shorthands]?: Shorthands[Key] extends keyof StyleProps ? StyleProps[Shorthands[Key]] | null : undefined;
 };

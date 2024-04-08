@@ -11,10 +11,15 @@ export function getVariantExtras(styleState: GetStyleState) {
 
   // should be able to just use styleState.fontFamily but no time to test for now
   const fontFamily = getVariableValue(
-    styleState.fontFamily || styleState.curProps.fontFamily || styleState.conf.defaultFont
+    styleState.fontFamily ||
+      styleState.curProps.fontFamily ||
+      styleState.conf.settings.defaultFont ||
+      styleState.conf.defaultFont
   )
 
-  const font = fonts[fontFamily] || fonts[styleState.conf.defaultFont!]
+  const font =
+    fonts[fontFamily] ||
+    fonts[styleState.conf.settings?.defaultFont! || styleState.conf.defaultFont!]
 
   const next = {
     fonts,

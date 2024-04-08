@@ -39,6 +39,9 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   if (createdConfigs.has(configIn)) {
     return configIn as any
   }
+  if (!configIn.settings) {
+    configIn.settings = {}
+  }
 
   // ensure variables
   const tokensParsed: TokensParsed = {} as any
@@ -143,7 +146,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
         }
       }
 
-      const sep = configIn.cssStyleSeparator || ''
+      const sep = configIn.settings?.cssStyleSeparator || configIn.cssStyleSeparator || ''
       function declarationsToRuleSet(decs: string[], selector = '') {
         return `:root${selector} {${sep}${[...decs].join(`;${sep}`)}${sep}}`
       }
@@ -228,6 +231,7 @@ ${runtimeStyles}`
   const getNewCSS: GetCSS = (opts) => getCSS({ ...opts, sinceLastCall: true })
 
   let defaultFontName =
+    configIn.settings.defaultFont ||
     configIn.defaultFont ||
     // uses font named "body" if present for compat
     (configIn.fonts && ('body' in configIn.fonts ? 'body' : ''))
@@ -252,12 +256,14 @@ ${runtimeStyles}`
     media: {},
     ...configIn,
     unset: {
-      fontFamily: configIn.defaultFont ? defaultFont : undefined,
+      fontFamily:
+        configIn.settings.defaultFont || configIn.defaultFont ? defaultFont : undefined,
       ...configIn.unset,
     },
     settings: {
       webContainerType: 'inline-size',
       ...configIn.settings,
+      defaultFont,
     },
     tokens: tokens as any,
     // vite made this into a function if it wasn't set
@@ -272,7 +278,6 @@ ${runtimeStyles}`
     parsed: true,
     getNewCSS,
     getCSS,
-    defaultFont,
     fontSizeTokens: fontSizeTokens || new Set(),
     specificTokens,
     // const tokens = [...getToken(tokens.size[0])]

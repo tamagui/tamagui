@@ -8,10 +8,12 @@ import { themes } from './themes'
 import { tokens } from './tokens'
 
 const config = createTamagui({
-  defaultFont: 'body',
   animations,
-  shouldAddPrefersColorThemes: true,
-  themeClassNameOnRoot: true,
+  settings: {
+    themeClassNameOnRoot: true,
+    shouldAddPrefersColorThemes: true,
+    defaultFont: 'body',
+  },
   shorthands,
   fonts,
   themes,

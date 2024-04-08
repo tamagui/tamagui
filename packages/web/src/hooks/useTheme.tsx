@@ -526,7 +526,9 @@ export const useChangeThemeEffect = (
       registerThemeManager(themeManager)
     }
 
-    const isWebSSR = isWeb ? !getConfig().disableSSR : false
+    const isWebSSR = isWeb
+      ? !getConfig().settings.disableSSR || !getConfig().disableSSR
+      : false
     const mounted = isWebSSR ? isRoot || prev?.mounted : true
 
     if (!state) {

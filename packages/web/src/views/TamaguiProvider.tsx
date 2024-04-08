@@ -19,7 +19,7 @@ export function TamaguiProvider({
 
     React.useLayoutEffect(() => {
       if (!config) return
-      if (!config.disableSSR) {
+      if (!config.settings.disableSSR || !config.disableSSR) {
         // for easier support of hidden-until-js mount animations
         // user must set t_unmounted on documentElement from SSR
         if (document.documentElement.classList.contains('t_unmounted')) {
@@ -41,8 +41,12 @@ export function TamaguiProvider({
   return (
     <ComponentContext.Provider animationDriver={config?.animations}>
       <ThemeProvider
-        themeClassNameOnRoot={config?.themeClassNameOnRoot}
-        disableRootThemeClass={config?.disableRootThemeClass}
+        themeClassNameOnRoot={
+          config?.settings?.themeClassNameOnRoot || config?.themeClassNameOnRoot
+        }
+        disableRootThemeClass={
+          config?.settings?.disableRootThemeClass || config?.disableRootThemeClass
+        }
         {...themePropsProvider}
         defaultTheme={
           themePropsProvider.defaultTheme ?? (config ? Object.keys(config.themes)[0] : '')

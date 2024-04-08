@@ -56,7 +56,7 @@ export declare const useConfiguration: () => {
         };
     };
     onlyAllowShorthands: boolean | undefined;
-    defaultFont: string | undefined;
+    defaultFont?: string | undefined;
     settings: {
         allowedStyleValues?: ((boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | {
             space?: ("number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | "percent") | undefined;
@@ -65,9 +65,22 @@ export declare const useConfiguration: () => {
             zIndex?: ("number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web")) | undefined;
             color?: ((boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | "named") | undefined;
         }) | undefined;
+        defaultFont?: string | undefined;
+        shouldAddPrefersColorThemes?: boolean | undefined;
+        cssStyleSeparator?: string | undefined;
+        onlyAllowShorthands?: boolean | undefined;
+        selectionStyles?: ((theme: Record<string, string>) => {
+            backgroundColor?: any;
+            color?: any;
+        } | null) | undefined;
         autocompleteSpecificTokens?: (boolean | "except-special") | undefined;
         mediaPropOrder?: boolean | undefined;
+        themeClassNameOnRoot?: boolean | undefined;
         fastSchemeChange?: boolean | undefined;
+        disableSSR?: boolean | undefined;
+        disableRootThemeClass?: boolean | undefined;
+        maxDarkLightNesting?: number | undefined;
+        mediaQueryDefaultActive?: Record<string, boolean> | undefined;
         webContainerType?: "unset" | "size" | "inherit" | "initial" | "revert" | "revert-layer" | "normal" | "inline-size" | undefined;
     } & Omit<{
         allowedStyleValues?: ((boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | {
@@ -77,9 +90,22 @@ export declare const useConfiguration: () => {
             zIndex?: ("number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web")) | undefined;
             color?: ((boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | "named") | undefined;
         }) | undefined;
+        defaultFont?: string | undefined;
+        shouldAddPrefersColorThemes?: boolean | undefined;
+        cssStyleSeparator?: string | undefined;
+        onlyAllowShorthands?: boolean | undefined;
+        selectionStyles?: ((theme: Record<string, string>) => {
+            backgroundColor?: any;
+            color?: any;
+        } | null) | undefined;
         autocompleteSpecificTokens?: (boolean | "except-special") | undefined;
         mediaPropOrder?: boolean | undefined;
+        themeClassNameOnRoot?: boolean | undefined;
         fastSchemeChange?: boolean | undefined;
+        disableSSR?: boolean | undefined;
+        disableRootThemeClass?: boolean | undefined;
+        maxDarkLightNesting?: number | undefined;
+        mediaQueryDefaultActive?: Record<string, boolean> | undefined;
         webContainerType?: "unset" | "size" | "inherit" | "initial" | "revert" | "revert-layer" | "normal" | "inline-size" | undefined;
     }, keyof {
         allowedStyleValues?: ((boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | {
@@ -89,9 +115,22 @@ export declare const useConfiguration: () => {
             zIndex?: ("number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web")) | undefined;
             color?: ((boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | "named") | undefined;
         }) | undefined;
+        defaultFont?: string | undefined;
+        shouldAddPrefersColorThemes?: boolean | undefined;
+        cssStyleSeparator?: string | undefined;
+        onlyAllowShorthands?: boolean | undefined;
+        selectionStyles?: ((theme: Record<string, string>) => {
+            backgroundColor?: any;
+            color?: any;
+        } | null) | undefined;
         autocompleteSpecificTokens?: (boolean | "except-special") | undefined;
         mediaPropOrder?: boolean | undefined;
+        themeClassNameOnRoot?: boolean | undefined;
         fastSchemeChange?: boolean | undefined;
+        disableSSR?: boolean | undefined;
+        disableRootThemeClass?: boolean | undefined;
+        maxDarkLightNesting?: number | undefined;
+        mediaQueryDefaultActive?: Record<string, boolean> | undefined;
         webContainerType?: "unset" | "size" | "inherit" | "initial" | "revert" | "revert-layer" | "normal" | "inline-size" | undefined;
     }>;
     tokens: Omit<{

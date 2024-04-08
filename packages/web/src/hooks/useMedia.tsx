@@ -82,7 +82,11 @@ const dispose = new Set<Function>()
 let mediaVersion = 0
 
 export const configureMedia = (config: TamaguiInternalConfig) => {
-  const { media, mediaQueryDefaultActive } = config
+  const { media } = config
+
+  const mediaQueryDefaultActive =
+    config.settings.mediaQueryDefaultActive || config.mediaQueryDefaultActive
+
   if (!media) return
   mediaVersion++
   for (const key in media) {
@@ -93,7 +97,7 @@ export const configureMedia = (config: TamaguiInternalConfig) => {
   initState = { ...mediaState }
   mediaKeysOrdered = Object.keys(media)
 
-  if (config.disableSSR) {
+  if (config.settings.disableSSR || config.disableSSR) {
     setupMediaListeners()
   } else {
     updateCurrentState()
