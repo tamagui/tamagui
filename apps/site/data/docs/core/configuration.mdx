@@ -209,8 +209,7 @@ The `createTamagui` function receives a configuration object:
   `Text`.
 
 <Notice>
-  On Android you need to set the `face` option in `createFont` or else fonts
-  won't pick up different weights, due to a React Native restriction.
+  On Android you need to set the `face` option in `createFont` or else fonts won't pick up different weights, due to a React Native restriction.
 </Notice>
 
 Note, for `tamagui` (not core), it expects you to define a `true` token that
@@ -235,10 +234,7 @@ export const tokens = createTokens({
 ```
 
 <Notice>
-  The compiler will parse your tamagui.config.ts file at build-time. For this
-  reason, we recommend keeping it relatively simple. Don't import heavy
-  dependencies, and prefer to import `createTamagui` and other helpers directly
-  from @tamagui/core.
+  The compiler will parse your tamagui.config.ts file at build-time. For this reason, we recommend keeping it relatively simple. Don't import heavy dependencies, and prefer to import `createTamagui` and other helpers directly from @tamagui/core. 
 </Notice>
 
 ### Add Provider
@@ -267,15 +263,22 @@ TamaguiProvider takes a few optional properties:
 <PropsTable
   data={[
     {
-      name: "defaultTheme",
+      name: 'defaultTheme',
       required: true,
-      type: "string",
+      type: 'string',
       description: `The initial top level theme.`,
     },
     {
-      name: "disableInjectCSS",
+      name: 'disableRootThemeClass',
       required: false,
-      type: "boolean",
+      type: 'boolean',
+      description:
+        'Disable inserting a theme class in the DOM or context, allowing you to manually place it higher. For custom use cases like integration with next-theme.',
+    },
+    {
+      name: 'disableInjectCSS',
+      required: false,
+      type: 'boolean',
       description: `By default Tamagui inserts CSS with a useLayoutEffect on load. But if you're setting up SSR you'll want to use getCSS() on the server instead and then turn on this setting.`,
     },
   ]}
@@ -303,9 +306,7 @@ import '@tamagui/core/reset.css'
 ```
 
 <Notice>
-  You will have to turn `isCSSEnabled` on if you're using Metro as your web
-  bundler. See [Expo's
-  docs](https://docs.expo.dev/versions/latest/config/metro/#css).
+  You will have to turn `isCSSEnabled` on if you're using Metro as your web bundler. See [Expo's docs](https://docs.expo.dev/versions/latest/config/metro/#css).
 </Notice>
 
 ### Setup media query driver
@@ -373,8 +374,7 @@ generation code from `@tamagui/core`, saving ~2kb of minified JS. If you set
 `outputCSS` option with Next.js, this will be set automatically.
 
 <Notice>
-  Make sure the style tag you insert with the `getCSS` styles is inserted after
-  any `react-native-web` style tags to ensure Tamagui overrides those styles.
+  Make sure the style tag you insert with the `getCSS` styles is inserted after any `react-native-web` style tags to ensure Tamagui overrides those styles.
 </Notice>
 
 ## Tokens
@@ -422,8 +422,7 @@ const interFont = createFont({
 ```
 
 <Notice>
-  Note, you don't need to use numbered keys, you can use `sm` or `tiny` or
-  whatever you'd like. But you do want keep those keys consistent.
+  Note, you don't need to use numbered keys, you can use `sm` or `tiny` or whatever you'd like. But you do want keep those keys consistent.
 </Notice>
 
 This gives you a lot of power over customizing every aspect of your design based
@@ -648,9 +647,9 @@ Where `br` expands into `borderRadius`. For a full shorthands setup, see
 <PropsTable
   data={[
     {
-      name: "settings",
+      name: 'settings',
       required: false,
-      type: "TamaguiSettings",
+      type: 'TamaguiSettings',
       description: `See Settings section below.`,
     },
   ]}
@@ -663,8 +662,65 @@ Where `br` expands into `borderRadius`. For a full shorthands setup, see
     {
       name: `allowedStyleValues`,
       required: false,
-      type: "AllowedStyleValuesSetting",
+      type: 'AllowedStyleValuesSetting',
       description: `Set up allowed values on style props, this is only a type-level validation (see below).`,
+    },
+    {
+      name: `disableSSR`,
+      type: `boolean`,
+      description: `For SSR compatibility on the web, Tamagui will render once with the settings from mediaQueryDefaultActive set for all media queries. Then, it will render again after the initial render using the proper media query values. This is so that the hydrating components will match the server. Setting disableSSR to true will avoid this and instead immediately render using the up to date media state, which is the preferrable behavior for client-side only (SPA) style apps.`,
+    },
+    {
+      name: `defaultFont`,
+      required: false,
+      type: `Map it to the regular key of the font given to createTamgui, so "body" or "heading" make sense as valiues here. This will ensure this font is the fallback for any views that don't define it.`,
+    },
+    {
+      name: 'mediaQueryDefaultActive',
+      required: false,
+      type: 'Record<string, boolean>',
+      description: `For the first render, determines which media queries are true (useful for SSR).`,
+    },
+    {
+      name: 'cssStyleSeparator',
+      required: false,
+      type: 'string',
+      description: `What's between each generated CSS style rule. Set as newline to more easily debug outputted CSS.`,
+    },
+    {
+      name: 'themeClassNameOnRoot',
+      required: false,
+      type: 'boolean',
+      default: false,
+      description: `When using next-themes or anything that does SSR and attaches the theme class to the HTML tag, set this to true to have the proper CSS theme selectors generate`,
+    },
+    {
+      name: 'shouldAddPrefersColorThemes',
+      required: false,
+      type: 'boolean',
+      default: true,
+      description: `Generates @media queries based on prefers-color-scheme for you if you have light/dark themes.`,
+    },
+    {
+      name: 'maxDarkLightNesting',
+      required: false,
+      type: 'number',
+      default: 3,
+      description: `(Advanced) On the web, tamagui treats "dark" and "light" themes as special and generates extra CSS to avoid having to re-render the entire page. This CSS relies on specificity hacks that multiply by your sub-themes. This prop sets the maximum number of nested dark/light themes you can do. Defaults to 3 for a balance, but can be higher if you nest them deeply.`,
+    },
+    {
+      name: 'onlyAllowShorthands',
+      required: false,
+      type: 'boolean',
+      default: false,
+      description: `Will remove the type for the long-form versions of any shorthands you define.`,
+    },
+    {
+      name: 'selectionStyles',
+      required: false,
+      type: '(theme) => ({ backgroundColor: Variable | string; color: Variable | string })',
+      default: false,
+      description: `On the web, will generate ::selection styles for text selection.`,
     },
     {
       name: `autocompleteSpecificTokens`,
@@ -673,80 +729,16 @@ Where `br` expands into `borderRadius`. For a full shorthands setup, see
       description: `Set up if "specific tokens" ($color.name) are added to the types where tokens are allowed (see below).`,
     },
     {
-      name: `defaultFont`,
+      name: 'mediaPropOrder',
       required: false,
-      type: `Map it to the regular key of the font given to createTamgui, so "body" or "heading" make sense as valiues here. This will ensure this font is the fallback for any views that don't define it.`,
-    },
-    {
-      name: "cssStyleSeparator",
-      required: false,
-      type: "string",
-      description: `What's between each generated CSS style rule. Set as newline to more easily debug outputted CSS.`,
-    },
-    {
-      name: "onlyAllowShorthands",
-      required: false,
-      type: "boolean",
-      default: false,
-      description: `Will remove the type for the long-form versions of any shorthands you define.`,
-    },
-    {
-      name: "selectionStyles",
-      required: false,
-      type: "(theme) => ({ backgroundColor: Variable | string; color: Variable | string })",
-      default: false,
-      description: `On the web, will generate ::selection styles for text selection.`,
-    },
-    {
-      name: "mediaQueryDefaultActive",
-      required: false,
-      type: "Record<string, boolean>",
-      description: `For the first render, determines which media queries are true (useful for SSR).`,
-    },
-    {
-      name: "themeClassNameOnRoot",
-      required: false,
-      type: "boolean",
-      default: false,
-      description: `When using next-themes or anything that does SSR and attaches the theme class to the HTML tag, set this to true to have the proper CSS theme selectors generate`,
-    },
-    {
-      name: "shouldAddPrefersColorThemes",
-      required: false,
-      type: "boolean",
-      default: true,
-      description: `Generates @media queries based on prefers-color-scheme for you if you have light/dark themes.`,
-    },
-    {
-      name: "maxDarkLightNesting",
-      required: false,
-      type: "number",
-      default: 3,
-      description: `(Advanced) On the web, tamagui treats "dark" and "light" themes as special and generates extra CSS to avoid having to re-render the entire page. This CSS relies on specificity hacks that multiply by your sub-themes. This prop sets the maximum number of nested dark/light themes you can do. Defaults to 3 for a balance, but can be higher if you nest them deeply.`,
-    },
-    {
-      name: "disableRootThemeClass",
-      required: false,
-      type: "boolean",
-      description:
-        "Disable inserting a theme class in the DOM or context, allowing you to manually place it higher. For custom use cases like integration with next-theme.",
-    },
-    {
-      name: `disableSSR`,
-      type: `boolean`,
-      description: `For SSR compatibility on the web, Tamagui will render once with the settings from mediaQueryDefaultActive set for all media queries. Then, it will render again after the initial render using the proper media query values. This is so that the hydrating components will match the server. Setting disableSSR to true will avoid this and instead immediately render using the up to date media state, which is the preferrable behavior for client-side only (SPA) style apps.`,
-    },
-    {
-      name: "mediaPropOrder",
-      required: false,
-      type: "boolean",
+      type: 'boolean',
       default: false,
       description: `(beta) Will change the behavior of media styles. By default they have a fixed specificity: they always override any $theme- or $platform- styles. With this enabled, media styles will have the same precedence as the theme and platform styles, meaning that the order of the props determines if they override.`,
     },
     {
-      name: "fastSchemeChange",
+      name: 'fastSchemeChange',
       required: false,
-      type: "boolean",
+      type: 'boolean',
       default: false,
       description: `(beta) On iOS, this enables a mode where Tamagui returns color values using DynamicColorIOS significantly speeding up dark/light re-renders. If you use theme inverse or manually change from light to dark without also changing the native color scheme, this will break. We're working on accounting for these last edge cases before removing the beta tag.`,
     },
