@@ -1,16 +1,18 @@
 import { Check as CheckIcon } from '@tamagui/lucide-icons'
 import type { CheckboxProps, SizeTokens } from 'tamagui'
-import { Checkbox, Label, XStack, YStack } from 'tamagui'
+import { Checkbox, Label, XStack, YStack, styled } from 'tamagui'
 
 export function CheckboxDemo() {
   return (
     <YStack width={300} alignItems="center" space="$2">
       <CheckboxWithLabel size="$3" />
-      <CheckboxWithLabel size="$4" defaultChecked />
-      <CheckboxWithLabel size="$5" disabled label="Accept terms (disabled)" />
     </YStack>
   )
 }
+
+const StyledIndicator = styled(Checkbox.Indicator, {
+  dog: true,
+})
 
 export function CheckboxWithLabel({
   size,
@@ -21,9 +23,9 @@ export function CheckboxWithLabel({
   return (
     <XStack width={300} alignItems="center" space="$4">
       <Checkbox id={id} size={size} {...checkboxProps}>
-        <Checkbox.Indicator>
+        <StyledIndicator cat>
           <CheckIcon />
-        </Checkbox.Indicator>
+        </StyledIndicator>
       </Checkbox>
 
       <Label size={size} htmlFor={id}>

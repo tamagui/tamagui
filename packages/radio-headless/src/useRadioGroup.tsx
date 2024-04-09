@@ -1,0 +1,246 @@
+import { useControllableState } from '@tamagui/use-controllable-state'
+import { useComposedRefs } from '@tamagui/compose-refs'
+import { isWeb } from '@tamagui/constants'
+import { registerFocusable } from '@tamagui/focusable'
+import { useLabelContext } from '@tamagui/label'
+import {
+  ReactElement,
+  SyntheticEvent,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
+import { BubbleInput } from './BubbleInput'
+import { getState } from './utils'
+import { composeEventHandlers } from '@tamagui/helpers/types'
+
+// TODO: returned names are not good, use better names
+// TODO: use function props getters as well
+
+interface UseRadioGroupParams {
+  groupContext: any
+  value?: string
+  defaultValue?: string
+  onValueChange?: (value: string) => void
+  required?: boolean
+  disabled?: boolean
+  name?: string
+  native?: boolean
+  accentColor?: string
+  orientation: 'horizontal' | 'vertical'
+  ref?: React.Ref<ReactElement>
+}
+export function useRadioGroup(params: UseRadioGroupParams) {
+  const {
+    groupContext,
+    value: valueProp,
+    onValueChange,
+    defaultValue,
+    required,
+    disabled,
+    name,
+    native,
+    accentColor,
+    orientation,
+    ref,
+  } = params
+  const [value, setValue] = useControllableState({
+    prop: valueProp,
+    defaultProp: defaultValue!,
+    onChange: onValueChange,
+  })
+
+  return {
+    groupContextParams: {
+      Context: groupContext,
+      providerProps: {
+        value,
+        onChange: setValue,
+        required,
+        disabled,
+        name,
+        native,
+        accentColor,
+      },
+    },
+    groupFrameProps: {
+      role: 'radiogroup',
+      'aria-orientation': orientation,
+      'data-disabled': disabled ? '' : undefined,
+    },
+    focusGroupProps: {
+      orientation,
+    },
+  }
+}
+
+interface UseRadioItemParams {
+  groupContext: any
+  itemContext: any
+  value: string
+  // TODO: what is this for
+  id?: string
+  labelledBy?: string
+  disabled?: boolean
+  // TODO: what is this ref for
+  ref?: any
+  onPress?: (event: any) => void
+  onKeyDown?: (event: any) => void
+  onFocus?: (event: any) => void
+}
+
+// TODO make this flexible
+type RadioGroupContextValue = {
+  value?: string
+  disabled?: boolean
+  required?: boolean
+  onChange?: (value: string) => void
+  name?: string
+  native?: boolean
+  accentColor?: string
+}
+
+const ARROW_KEYS = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight']
+
+export const useRadioItem = (params: UseRadioItemParams) => {
+  const {
+    groupContext,
+    itemContext,
+    value,
+    labelledBy: ariaLabelledby,
+    disabled: itemDisabled,
+    ref: refProp,
+    id,
+    onPress,
+    onKeyDown,
+    onFocus,
+  } = params
+  const {
+    value: groupValue,
+    disabled,
+    required,
+    onChange,
+    name,
+    native,
+    accentColor,
+  } = useContext<RadioGroupContextValue>(groupContext)
+
+  const [button, setButton] = useState<HTMLButtonElement | null>(null)
+  const hasConsumerStoppedPropagationRef = useRef(false)
+  const ref = useRef<HTMLButtonElement>(null)
+  const composedRefs = useComposedRefs(refProp, (node) => setButton(node), ref)
+  const isArrowKeyPressedRef = useRef(false)
+
+  const isFormControl = isWeb ? (button ? Boolean(button.closest('form')) : true) : false
+
+  const checked = groupValue === value
+
+  const labelId = useLabelContext(button)
+  const labelledBy = ariaLabelledby || labelId
+
+  useEffect(() => {
+    if (isWeb) {
+      const handleKeyDown = (event: KeyboardEvent) => {
+        if (ARROW_KEYS.includes(event.key)) {
+          isArrowKeyPressedRef.current = true
+        }
+      }
+      const handleKeyUp = () => {
+        isArrowKeyPressedRef.current = false
+      }
+      document.addEventListener('keydown', handleKeyDown)
+      document.addEventListener('keyup', handleKeyUp)
+      return () => {
+        document.removeEventListener('keydown', handleKeyDown)
+        document.removeEventListener('keyup', handleKeyUp)
+      }
+    }
+  }, [])
+
+  if (process.env.TAMAGUI_TARGET === 'native') {
+    useEffect(() => {
+      if (!id) return
+      if (disabled) return
+
+      return registerFocusable(id, {
+        focusAndSelect: () => {
+          onChange?.(value)
+        },
+        focus: () => {},
+      })
+    }, [id, value, disabled])
+  }
+
+  const isDisabled = disabled || itemDisabled
+
+  return {
+    itemContextParams: {
+      Context: itemContext,
+      providerProps: {
+        checked,
+      },
+      bubbleInput:
+        isWeb && isFormControl ? (
+          <BubbleInput
+            isHidden
+            control={button}
+            bubbles={!hasConsumerStoppedPropagationRef.current}
+            name={name}
+            value={value}
+            checked={checked}
+            required={required}
+            disabled={isDisabled}
+          />
+        ) : null,
+      itemFrameProps: {
+        'data-state': getState(checked),
+        'data-disabled': isDisabled ? '' : undefined,
+        role: 'radio',
+        'aria-labelledby': labelledBy,
+        'aria-checked': checked,
+        'aria-required': required,
+        disabled: isDisabled,
+        ref: composedRefs,
+        ...(isWeb && {
+          type: 'button',
+          value: value,
+        }),
+        onPress: composeEventHandlers(onPress as any, (event: SyntheticEvent) => {
+          if (!checked) {
+            onChange?.(value)
+          }
+
+          if (isFormControl) {
+            hasConsumerStoppedPropagationRef.current = event.isPropagationStopped()
+            // if radio is in a form, stop propagation from the button so that we only propagate
+            // one click event (from the input). We propagate changes from an input so that native
+            // form validation works and form events reflect radio updates.
+            if (!hasConsumerStoppedPropagationRef.current) event.stopPropagation()
+          }
+        }),
+        ...(isWeb && {
+          onKeyDown: composeEventHandlers(onKeyDown as any, (event: KeyboardEvent) => {
+            // According to WAI ARIA, Checkboxes don't activate on enter keypress
+            if (event.key === 'Enter') event.preventDefault()
+          }),
+          onFocus: composeEventHandlers(onFocus, () => {
+            /**
+             * Our `RovingFocusGroup` will focus the radio when navigating with arrow keys
+             * and we need to "check" it in that case. We click it to "check" it (instead
+             * of updating `context.value`) so that the radio change event fires.
+             */
+            if (isArrowKeyPressedRef.current) {
+              ;(ref.current as HTMLButtonElement)?.click()
+            }
+          }),
+        }),
+      },
+      focusGroupItemProps: {
+        asChild: 'expect-style',
+        focusable: !isDisabled,
+        active: checked,
+      },
+    },
+  }
+}
