@@ -4,7 +4,7 @@ import './wdyr'
 
 import { Checkbox, View, YStack, styled } from 'tamagui'
 
-import { CheckboxDemo, RadioGroupDemo, SelectDemo } from '@tamagui/demos'
+import { SelectDemo } from '@tamagui/demos'
 import { useState } from 'react'
 import { TextInput } from 'react-native'
 
@@ -13,7 +13,7 @@ export const Sandbox = () => {
 
   return (
     <YStack w={500} h={500} als="center" m="auto">
-      <RadioGroupDemo />
+      <Checkbox debug="verbose" unstyled />
     </YStack>
   )
 

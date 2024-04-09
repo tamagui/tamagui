@@ -6,6 +6,8 @@ export function RadioGroupDemo() {
     <RadioGroup aria-labelledby="Select one item" defaultValue="3" name="form">
       <YStack width={300} alignItems="center" space="$2">
         <RadioGroupItemWithLabel size="$3" value="2" label="Second value" />
+        <RadioGroupItemWithLabel size="$4" value="3" label="Third value" />
+        <RadioGroupItemWithLabel size="$5" value="4" label="Fourth value" />
       </YStack>
     </RadioGroup>
   )

@@ -213,7 +213,6 @@ export function createCheckbox<
         ...indicatorProps
       } = props
 
-      console.info('IndicatorComponent', { props })
       const styledContext = React.useContext(CheckboxStyledContext)
       let children = childrenProp
 
