@@ -203,6 +203,7 @@ type ConfProps<A, B, C, D, E, F, G, H, I> = {
     fonts?: F;
     /** @deprecated - moved into settings object */
     onlyAllowShorthands?: G;
+    /** @deprecated - moved into settings object */
     defaultFont?: H;
     settings?: I;
 };
@@ -666,7 +667,7 @@ export type Token = NonSpecificTokens | (TamaguiSettings extends {
     autocompleteSpecificTokens: false;
 } ? never : SpecificTokens);
 export type ColorStyleProp = ThemeValueFallbackColor | ColorTokens;
-type DefaultFont = TamaguiConfig['settings']['defaultFont'];
+type DefaultFont = TamaguiConfig['settings']['defaultFont'] extends string ? TamaguiConfig['settings']['defaultFont'] : TamaguiConfig['defaultFont'];
 export type Fonts = DefaultFont extends string ? TamaguiConfig['fonts'][DefaultFont] : never;
 export type Font = ParseFont<Fonts>;
 export type GetTokenFontKeysFor<A extends 'size' | 'weight' | 'letterSpacing' | 'family' | 'lineHeight' | 'transform' | 'style' | 'color'> = keyof TamaguiConfig['fonts']['body'][A];

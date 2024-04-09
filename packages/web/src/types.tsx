@@ -319,6 +319,7 @@ type ConfProps<A, B, C, D, E, F, G, H, I> = {
   fonts?: F
   /** @deprecated - moved into settings object */
   onlyAllowShorthands?: G
+  /** @deprecated - moved into settings object */
   defaultFont?: H
   settings?: I
 }
@@ -1101,7 +1102,9 @@ export type Token =
 export type ColorStyleProp = ThemeValueFallbackColor | ColorTokens
 
 // fonts
-type DefaultFont = TamaguiConfig['settings']['defaultFont']
+type DefaultFont = TamaguiConfig['settings']['defaultFont'] extends string
+  ? TamaguiConfig['settings']['defaultFont']
+  : TamaguiConfig['defaultFont']
 
 export type Fonts = DefaultFont extends string
   ? TamaguiConfig['fonts'][DefaultFont]
