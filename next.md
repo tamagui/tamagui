@@ -42,8 +42,6 @@ Needed features/maintenance:
   - need to remove context
 - v2 / headless
 
-  - deprecate some createTamagui settings that should move into settings
-    - disableSSR => settings.disableSSR
   - ListItem/Button simplify APIs
   - Image/Input deprecations for web alignment
 
