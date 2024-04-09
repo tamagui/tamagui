@@ -68,6 +68,17 @@ const filterOutComponents = ([key]: [string]) =>
     'LocationNotification',
   ].includes(key)
 
+const bentoScreenSections = bentoScreenNames.map((screenName) => {
+  return (
+    <Stack.Screen
+      name={screenName}
+      component={BentoPartScreenItem}
+      options={{
+        title: screenName,
+      }}
+    />
+  )
+})
 const bentoScreensPerElement = Object.entries(sections)
   .filter(filterCamelCaseOnly)
   .map(sectionModuleToTuple)
@@ -136,17 +147,7 @@ export function Navigation() {
         }}
       />
       {bentoScreensPerElement}
-      {bentoScreenNames.map((screenName) => {
-        return (
-          <Stack.Screen
-            name={screenName}
-            component={BentoPartScreenItem}
-            options={{
-              title: screenName,
-            }}
-          />
-        )
-      })}
+      {bentoScreenSections}
     </Stack.Navigator>
   )
 }
