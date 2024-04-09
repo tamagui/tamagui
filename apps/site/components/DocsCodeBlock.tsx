@@ -1,8 +1,16 @@
-import { CheckCircle, Code2, Copy, Paintbrush } from '@tamagui/lucide-icons'
+import { CheckCircle, Code2, Copy, FileCode2, Paintbrush } from '@tamagui/lucide-icons'
 import { useStore } from '@tamagui/use-store'
 import { forwardRef, useEffect, useRef, useState } from 'react'
 import { ScrollView } from 'react-native'
-import { Button, Spacer, TooltipSimple, XStack, YStack } from 'tamagui'
+import {
+  Button,
+  Paragraph,
+  Progress,
+  Spacer,
+  TooltipSimple,
+  XStack,
+  YStack,
+} from 'tamagui'
 import { LinearGradient } from 'tamagui/linear-gradient'
 
 import { toggleTinted } from '../hooks/setTinted'
@@ -10,6 +18,7 @@ import { useClipboard } from '../lib/useClipboard'
 import { Code } from './Code'
 import { ErrorBoundary } from './ErrorBoundary'
 import { Pre } from './Pre'
+import { useGradualIncrease } from '../lib/useGradualIncrease'
 
 class CollapseStore {
   isCollapsed: boolean
@@ -29,6 +38,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
     children,
     id,
     showFull = true,
+    fileName,
     isHero = false,
     isHighlightingLines,
     showLineNumbers: showLineNumbersIn,
@@ -44,7 +54,8 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
   const [isCutoff, setIsCutoff] = useState(isLong && showFull)
   const [code, setCode] = useState(undefined)
   const preRef = useRef<any>(null)
-  const { hasCopied, onCopy, value } = useClipboard(code)
+  const { hasCopied, onCopy, value, timeout } = useClipboard(code)
+  const copyTimeoutValue = useGradualIncrease(hasCopied, timeout)
   const showLineNumbers = showLineNumbersIn ?? (lines > 10 ? true : false)
 
   // const frontmatter = useContext(FrontmatterContext)
@@ -152,7 +163,26 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
               mb={0}
               // @ts-ignore
               id={id}
+              jc="center"
+              bw="$1"
+              bc="$black1"
             >
+              {fileName && (
+                <XStack
+                  ai="center"
+                  gap="$2"
+                  pl="$4"
+                  h="$5"
+                  bg="$black1"
+                  bw="$1.5"
+                  bc="$background"
+                  br="$5"
+                >
+                  <FileCode2 size="$1" col="$color8" />
+                  <Paragraph col="$color8">{fileName}</Paragraph>
+                </XStack>
+              )}
+
               <ScrollView
                 style={{ width: '100%' }}
                 contentContainerStyle={{ minWidth: '100%' }}
@@ -179,7 +209,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                   position="absolute"
                   aria-label="Copy code to clipboard"
                   size="$2"
-                  top="$3"
+                  top={fileName ? '$3' : '$3.5'}
                   right="$3"
                   display="inline-flex"
                   icon={hasCopied ? CheckCircle : Copy}
@@ -190,6 +220,20 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                 />
               </TooltipSimple>
             )}
+            <Progress
+              value={copyTimeoutValue}
+              size="$0.75"
+              pos="absolute"
+              zi={1001}
+              w="auto"
+              t="$0"
+              l="$2"
+              r="$2"
+              bg="$black1"
+              rotate="180deg"
+            >
+              <Progress.Indicator bg="$color8" animation="quickest" />
+            </Progress>
           </YStack>
         )}
       </ErrorBoundary>

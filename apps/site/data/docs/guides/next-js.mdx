@@ -40,7 +40,7 @@ yarn add @tamagui/next-plugin
 
 Then add the plugin to your `next.config.js`:
 
-```tsx showFull
+```tsx showFull fileName="next.config.js"
 const { withTamagui } = require('@tamagui/next-plugin')
 
 module.exports = function (name, { defaultConfig }) {
@@ -65,7 +65,7 @@ Use `outputCSS` for better performance by generating CSS styles in build-time.
 
 Add `outputCSS` to your `next.config.js`:
 
-```tsx
+```tsx fileName="next.config.js"
 const tamaguiPlugin = withTamagui({
   config: './tamagui.config.ts',
   components: ['tamagui'],
@@ -83,7 +83,7 @@ const tamaguiPlugin = withTamagui({
 
 #### Adding `TamaguiProvider`
 
-```tsx
+```tsx fileName="tamagui.config.ts"
 // Optional: add the reset to get more consistent styles across browsers
 import '@tamagui/core/reset.css'
 
@@ -165,7 +165,7 @@ You'll want to set up a `_document.tsx` and gather both the `react-native-web` s
 
 #### Configuring `_document.tsx`
 
-```tsx
+```tsx fileName="_document.tsx"
 import NextDocument, {
   DocumentContext,
   Head,
@@ -224,9 +224,9 @@ export default class Document extends NextDocument {
 
 #### Using `outputCSS`
 
-If you are using `outputCSS` option, you should add `exclude` option to `getCSS()` in `_document.tsx`:
+If you are using `outputCSS` option in [next.config.js](/docs/guides/next-js?#nextconfigjs), you should add `exclude` option to `getCSS()` in `_document.tsx`:
 
-```tsx
+```tsx fileName="_document.tsx"
 <head>
   <style
     dangerouslySetInnerHTML={{
@@ -257,7 +257,7 @@ yarn add @tamagui/next-theme
 
 Here's how you'd set up your `_app.tsx`:
 
-```tsx
+```tsx fileName="_app.tsx"
 // Optional: add the reset to get more consistent styles across browsers
 import '@tamagui/core/reset.css'
 
@@ -314,7 +314,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
 If you need to access the current theme, say for a toggle button, you will then use the `useThemeSetting` hook. We'll release an update in the future that makes this automatically work better with Tamagui's built-in `useThemeSetting`.
 
-```tsx
+```tsx fileName="index.tsx"
 import { Button, useIsomorphicLayoutEffect } from 'tamagui'
 import { useThemeSetting } from '@tamagui/next-theme'
 import { useState } from 'react'
@@ -337,7 +337,7 @@ Animations that run through JS drivers and have `enterStyle` set will want to ad
 
 Add this to your [_app.tsx](/docs/guides/next-js?#pages_apptsx) render output:
 
-```tsx
+```tsx fileName="_app.tsx"
 <Head>
     <script
       dangerouslySetInnerHTML={{
