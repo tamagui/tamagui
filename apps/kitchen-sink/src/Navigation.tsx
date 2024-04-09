@@ -61,7 +61,14 @@ const bentoScreensPerElement = Object.entries(sections)
   .map(([, sectionModules]) => Object.entries(sectionModules as any))
   .reduce((acc, curr) => acc.concat(curr), [])
   .filter(
-    ([key]) => !['default', 'SizableText', 'Example', 'VerticalCheckboxes'].includes(key)
+    ([key]) =>
+      ![
+        'default',
+        'SizableText',
+        'Example',
+        'VerticalCheckboxes',
+        'LocationNotification',
+      ].includes(key)
   )
   .map(([name, _Component]: [string, any]) => {
     const Component = _Component as React.ComponentType<any>
