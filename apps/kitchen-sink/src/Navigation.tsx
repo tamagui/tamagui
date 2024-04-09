@@ -55,21 +55,24 @@ const BentoScreenContainer: React.FC<{ children: React.ReactNode; name: string }
     </ScrollView>
   )
 }
+const filterCamelCaseOnly = ([key, _]: [string, unknown]) =>
+  /\b[A-Z][a-z0-9]+(?:[A-Z][a-z0-9]+)*\b/.test(key)
+const sectionModuleToTuple = ([, sectionModules]) => Object.entries(sectionModules as any)
+const flatArray = (acc, curr) => acc.concat(curr)
+const filterOutComponents = ([key]: [string]) =>
+  ![
+    'default',
+    'SizableText',
+    'Example',
+    'VerticalCheckboxes',
+    'LocationNotification',
+  ].includes(key)
 
 const bentoScreensPerElement = Object.entries(sections)
-  .filter(([key]) => /\b[A-Z][a-z0-9]+(?:[A-Z][a-z0-9]+)*\b/.test(key))
-  .map(([, sectionModules]) => Object.entries(sectionModules as any))
-  .reduce((acc, curr) => acc.concat(curr), [])
-  .filter(
-    ([key]) =>
-      ![
-        'default',
-        'SizableText',
-        'Example',
-        'VerticalCheckboxes',
-        'LocationNotification',
-      ].includes(key)
-  )
+  .filter(filterCamelCaseOnly)
+  .map(sectionModuleToTuple)
+  .reduce(flatArray, [])
+  .filter(filterOutComponents)
   .map(([name, _Component]: [string, any]) => {
     const Component = _Component as React.ComponentType<any>
     return (
