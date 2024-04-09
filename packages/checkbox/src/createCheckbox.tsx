@@ -212,7 +212,6 @@ export function createCheckbox<
         unstyled = false,
         ...indicatorProps
       } = props
-
       const styledContext = React.useContext(CheckboxStyledContext)
       let children = childrenProp
 
