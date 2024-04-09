@@ -1,6 +1,7 @@
 Nate:
 
 - Add Rofi to Takeout/Supabase/Stripe/Vercel
+- Rofi - list of up-next todos
 
 ---
 
