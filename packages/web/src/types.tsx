@@ -280,7 +280,7 @@ export type CreateTamaguiConfig<
   media: D
   animations: AnimationDriver<E>
   /** @deprecated - moved inside settings */
-  onlyAllowShorthands: G
+  onlyAllowShorthands?: G
   /** @deprecated - moved inside settings */
   defaultFont?: H
   settings: I
@@ -317,6 +317,7 @@ type ConfProps<A, B, C, D, E, F, G, H, I> = {
   media?: D
   animations?: E extends AnimationConfig ? AnimationDriver<E> : undefined
   fonts?: F
+  /** @deprecated - moved into settings object */
   onlyAllowShorthands?: G
   defaultFont?: H
   settings?: I
@@ -1229,8 +1230,10 @@ export type WithThemeValues<T extends object> = {
 
 export type NarrowShorthands = Narrow<Shorthands>
 export type Longhands = NarrowShorthands[keyof NarrowShorthands]
-
-type OnlyAllowShorthands = TamaguiConfig['settings']['onlyAllowShorthands']
+// check if the settings value is not provided then fallback to reading from TamaguiConfig
+type OnlyAllowShorthands = TamaguiSettings['onlyAllowShorthands'] extends boolean
+  ? TamaguiSettings['onlyAllowShorthands']
+  : TamaguiConfig['onlyAllowShorthands']
 
 // adds shorthand props
 export type WithShorthands<StyleProps> = {

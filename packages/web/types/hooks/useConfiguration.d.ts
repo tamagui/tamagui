@@ -55,7 +55,7 @@ export declare const useConfiguration: () => {
             [key: string]: string | number;
         };
     };
-    onlyAllowShorthands: boolean | undefined;
+    onlyAllowShorthands?: boolean | undefined;
     defaultFont?: string | undefined;
     settings: {
         allowedStyleValues?: ((boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | {

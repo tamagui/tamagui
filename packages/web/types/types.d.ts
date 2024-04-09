@@ -183,7 +183,7 @@ export type CreateTamaguiConfig<A extends GenericTokens, B extends GenericThemes
     media: D;
     animations: AnimationDriver<E>;
     /** @deprecated - moved inside settings */
-    onlyAllowShorthands: G;
+    onlyAllowShorthands?: G;
     /** @deprecated - moved inside settings */
     defaultFont?: H;
     settings: I;
@@ -201,6 +201,7 @@ type ConfProps<A, B, C, D, E, F, G, H, I> = {
     media?: D;
     animations?: E extends AnimationConfig ? AnimationDriver<E> : undefined;
     fonts?: F;
+    /** @deprecated - moved into settings object */
     onlyAllowShorthands?: G;
     defaultFont?: H;
     settings?: I;
@@ -710,7 +711,7 @@ export type WithThemeValues<T extends object> = {
 };
 export type NarrowShorthands = Narrow<Shorthands>;
 export type Longhands = NarrowShorthands[keyof NarrowShorthands];
-type OnlyAllowShorthands = TamaguiConfig['settings']['onlyAllowShorthands'];
+type OnlyAllowShorthands = TamaguiSettings['onlyAllowShorthands'] extends boolean ? TamaguiSettings['onlyAllowShorthands'] : TamaguiConfig['onlyAllowShorthands'];
 export type WithShorthands<StyleProps> = {
     [Key in keyof Shorthands]?: Shorthands[Key] extends keyof StyleProps ? StyleProps[Shorthands[Key]] | null : undefined;
 };

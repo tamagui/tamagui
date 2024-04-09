@@ -250,7 +250,6 @@ ${runtimeStyles}`
 
   const config: TamaguiInternalConfig = {
     fonts: {},
-    onlyAllowShorthands: false,
     fontLanguages: [],
     animations: {} as any,
     media: {},
@@ -264,6 +263,7 @@ ${runtimeStyles}`
       webContainerType: 'inline-size',
       ...configIn.settings,
       defaultFont,
+      onlyAllowShorthands: false,
     },
     tokens: tokens as any,
     // vite made this into a function if it wasn't set
