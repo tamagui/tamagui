@@ -106,9 +106,13 @@ export default apiRoute(async (req, res) => {
     discounts: couponId ? [{ coupon: couponId }] : undefined,
     allow_promotion_codes: couponId ? undefined : true,
 
-    // tax_id_collection: {
-    //   enabled: true,
-    // },
+    customer_update: {
+      name: 'auto',
+    },
+
+    tax_id_collection: {
+      enabled: true,
+    },
 
     // @ts-ignore
     custom_text: {
