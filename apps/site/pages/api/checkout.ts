@@ -108,6 +108,8 @@ export default apiRoute(async (req, res) => {
 
     customer_update: {
       name: 'auto',
+      address: 'auto',
+      shipping: 'auto',
     },
 
     tax_id_collection: {
