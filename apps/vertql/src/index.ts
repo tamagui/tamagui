@@ -24,8 +24,8 @@ const main = defineCommand({
     // },
   },
 
-  run({ args }) {
-    require('./dev').dev()
+  async run({ args }) {
+    (await import('./dev.mjs')).dev({})
   },
 })
 

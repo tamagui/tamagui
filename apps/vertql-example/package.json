@@ -27,6 +27,7 @@
   },
   "devDependencies": {
     "@gqty/cli": "latest",
-    "@tamagui/cli": "1.94.4"
+    "@tamagui/cli": "1.94.4",
+    "metro-react-native-babel-preset": "^0.77.0"
   }
 }
