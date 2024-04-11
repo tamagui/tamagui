@@ -8,7 +8,7 @@ To develop using Stripe:
 
 At this point, you're listening to Stripe changes and syncing them with your local Supabase instance using the webhook. If it's the first time you're doing this or you wiped your Supabase database, you can try updating the Stripe products/prices that you care about and it'll automatically "upsert" them in your local DB.
 
-For example, if you want to get the XY product to be synced, just go to the XY product page on the Stripe dashboard, hit Edit and Update Product, or just re-create them. That'll trigger the `product.update` event on your localhost webhoook, which in turn will upsert the product into your Supabase DB (update if it already exists and insert if there's no record).
+For example, if you want to get the XY product to be synced, just go to the XY product page on the Stripe dashboard, hit Edit and Update Product, or just re-create them. That'll trigger the `product.update` event on your localhost webhook, which in turn will upsert the product into your Supabase DB (update if it already exists and insert if there's no record).
 
 Alternatively, you can call the `populateStripeData` function from `supabaseAdmin.ts` to automatically sync your local Supabase DB.
 
