@@ -1,9 +1,10 @@
+import { apiOssBentoRoute } from '@lib/apiOssBentoRoute'
 import { HandledResponseTermination, apiRoute } from '@lib/apiRoute'
 import { authorizeUserAccess } from '@lib/authorizeUserAccess'
 import { protectApiRoute } from '@lib/protectApiRoute'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
 
-const handler = apiRoute(async (req, res) => {
+const handler = apiOssBentoRoute(async (req, res) => {
   if (process.env.NODE_ENV === 'production') {
     const { supabase } = await protectApiRoute({ req, res })
     await authorizeUserAccess(
