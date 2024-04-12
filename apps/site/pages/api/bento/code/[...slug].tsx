@@ -5,19 +5,19 @@ import { protectApiRoute } from '@lib/protectApiRoute'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
 
 const handler = apiOssBentoRoute(async (req, res) => {
-  // if (process.env.NODE_ENV === 'production') {
-  const { supabase } = await protectApiRoute({ req, res })
-  await authorizeUserAccess(
-    {
-      req,
-      res,
-      supabase,
-    },
-    {
-      checkForBentoAccess: true,
-    }
-  )
-  // }
+  if (process.env.NODE_ENV === 'production') {
+    const { supabase } = await protectApiRoute({ req, res })
+    await authorizeUserAccess(
+      {
+        req,
+        res,
+        supabase,
+      },
+      {
+        checkForBentoAccess: true,
+      }
+    )
+  }
   const slugsArray = Array.isArray(req.query.slug)
     ? req.query.slug
     : typeof req.query.slug === 'string'
