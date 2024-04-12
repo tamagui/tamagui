@@ -1,8 +1,8 @@
 import type { NextApiHandler } from "next";
 
+import { OSS_COMPONENTS } from "./constants";
 import { getBentoCode } from "./supabaseAdmin";
 
-const OSS_COMPONENTS = ["InputWithLabel"];
 export function apiOssBentoRoute(handler: NextApiHandler) {
   return async (req, res) => {
     const slugsArray = Array.isArray(req.query.slug)
@@ -12,7 +12,6 @@ export function apiOssBentoRoute(handler: NextApiHandler) {
       : [];
 
     const codePath = slugsArray.join("/");
-
 
     if (!OSS_COMPONENTS.includes(slugsArray[slugsArray.length - 1]))
       return handler(req, res);
