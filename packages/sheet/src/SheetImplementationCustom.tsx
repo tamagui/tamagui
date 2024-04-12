@@ -439,7 +439,9 @@ export const SheetImplementationCustom = themeable(
             ref={ref}
             {...panResponder?.panHandlers}
             onLayout={handleAnimationViewLayout}
-            pointerEvents={open && !shouldHideParentSheet ? 'auto' : 'none'}
+            {...((shouldHideParentSheet || !open) && {
+              pointerEvents: 'none',
+            })}
             {...(!isDragging && {
               // @ts-ignore for CSS driver this is necessary to attach the transition
               animation,
