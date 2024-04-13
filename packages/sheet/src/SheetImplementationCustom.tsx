@@ -412,6 +412,8 @@ export const SheetImplementationCustom = themeable(
         ? `${maxSnapPoint}${isWeb ? 'dvh' : '%'}`
         : maxSnapPoint
 
+    console.log('open', open)
+
     const contents = (
       <ParentSheetContext.Provider value={nextParentContext}>
         <SheetProvider {...providerProps}>
