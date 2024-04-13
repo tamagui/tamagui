@@ -23,7 +23,7 @@ export function apiOssBentoRoute(handler: NextApiHandler) {
     } catch (err) {
       const message = err instanceof Error ? err.message : `${err}`
       console.error(`Error serving API Route: ${message}`, err.stack)
-      res.status(500).json({
+      res.status(403).json({
         error: message,
       })
     }
