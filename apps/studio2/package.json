@@ -8,19 +8,19 @@
     "postinstall": "patch-package"
   },
   "dependencies": {
-    "@react-navigation/native": "^6.1.7",
-    "@vxrn/expo-router": "0.1.14",
+    "@react-navigation/native": "^6.1.10",
+    "@vxrn/expo-router": "^0.1.15",
     "color2k": "^2.0.2",
     "expo-modules-core": "1.7.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-native": "0.73.2",
-    "react-native-reanimated": "~3.3.0",
+    "react-native": "^0.73.4",
+    "react-native-reanimated": "~3.6.2",
     "tamagui": "^1.94.4"
   },
   "devDependencies": {
     "@tamagui/cli": "^1.94.4",
     "patch-package": "^8.0.0",
-    "vxrn": "0.1.14"
+    "vxrn": "^0.1.15"
   }
 }

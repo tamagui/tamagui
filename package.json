@@ -76,6 +76,7 @@
     "upgrade:starters:remix": "cd starters/remix && yarn && yarn upgrade:tamagui",
     "upgrade:starters:simple-web": "cd starters/simple-web && yarn && yarn upgrade:tamagui",
     "upgrade:starters": "yarn upgrade:starters:free && yarn upgrade:starters:simple-web && yarn upgrade:starters:expo-router && yarn upgrade:starters:remix",
+    "upgrade:vxrn": "yarn up '*vxrn*'@latest '@vxrn/*'@latest",
     "vercel:build": "yarn build:js && cd apps/site && yarn ci:build",
     "vercel:build-studio": "yarn build:js && cd apps/studio && yarn ci:build",
     "watch": "./scripts/watch.sh",
