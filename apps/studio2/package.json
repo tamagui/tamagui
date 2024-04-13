@@ -8,15 +8,15 @@
     "postinstall": "patch-package"
   },
   "dependencies": {
-    "color2k": "^2.0.2",
     "@react-navigation/native": "^6.1.7",
-    "@tamagui/core": "^1.94.4",
     "@vxrn/expo-router": "0.1.14",
+    "color2k": "^2.0.2",
     "expo-modules-core": "1.7.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-native": "0.73.2",
-    "react-native-reanimated": "~3.3.0"
+    "react-native-reanimated": "~3.3.0",
+    "tamagui": "^1.94.4"
   },
   "devDependencies": {
     "@tamagui/cli": "^1.94.4",

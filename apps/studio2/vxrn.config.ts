@@ -5,7 +5,7 @@ export default {
   webConfig: {
     plugins: [
       tamaguiPlugin({
-        components: ['@tamagui/core'],
+        components: ['tamagui'],
         config: 'src/tamagui.config.ts',
       }),
     ],
