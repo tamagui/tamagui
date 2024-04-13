@@ -2,4 +2,9 @@ takeout/*/src/** filter=git-crypt diff=git-crypt merge=git-crypt
 apps/**/(protected)/** filter=git-crypt diff=git-crypt merge=git-crypt
 apps/*/pages/studio/** filter=git-crypt diff=git-crypt merge=git-crypt
 apps/studio/src/** filter=git-crypt diff=git-crypt merge=git-crypt
+apps/studio2/app/** filter=git-crypt diff=git-crypt merge=git-crypt
+apps/studio2/api/** filter=git-crypt diff=git-crypt merge=git-crypt
+apps/studio2/features/** filter=git-crypt diff=git-crypt merge=git-crypt
+apps/studio2/helpers/** filter=git-crypt diff=git-crypt merge=git-crypt
+apps/studio2/src/** filter=git-crypt diff=git-crypt merge=git-crypt
 apps/bento/src/** filter=git-crypt diff=git-crypt merge=git-crypt
