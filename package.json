@@ -86,6 +86,7 @@
     "website": "yarn workspace @tamagui/website dev"
   },
   "resolutions": {
+    "expo-modules-core": "1.7.0",
     "@types/node": "16.11.9",
     "react-native": "0.73.4",
     "react": "18.2.0",
