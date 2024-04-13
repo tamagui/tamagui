@@ -723,11 +723,9 @@ export default function TakeoutPage({
 
                     <ThemeTintAlt>
                       <Paragraph size="$7" $sm={{ size: '$6' }} fow="400">
-                        It's like having an extra developer dedicated to updating
-                        dependencies, improving fundamental developer tooling, and
-                        ensuring everything works before upgrading major versions in more
-                        thoughful pull requests than a typical bot. Here's our rough
-                        working roadmap:
+                        We focus on staying up to date with recent versions and features
+                        that are universally useful. Here's some of the features we'd like
+                        to land:
                       </Paragraph>
                     </ThemeTintAlt>
 
