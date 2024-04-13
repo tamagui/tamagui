@@ -1,0 +1,26 @@
+{
+  "name": "studio2",
+  "version": "0.0.7",
+  "private": true,
+  "main": "index.jsx",
+  "scripts": {
+    "dev": "vxrn dev",
+    "postinstall": "patch-package"
+  },
+  "dependencies": {
+    "color2k": "^2.0.2",
+    "@react-navigation/native": "^6.1.7",
+    "@tamagui/core": "^1.94.4",
+    "@vxrn/expo-router": "0.1.14",
+    "expo-modules-core": "1.7.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-native": "0.73.2",
+    "react-native-reanimated": "~3.3.0"
+  },
+  "devDependencies": {
+    "@tamagui/cli": "^1.94.4",
+    "patch-package": "^8.0.0",
+    "vxrn": "0.1.14"
+  }
+}
