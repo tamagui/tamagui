@@ -11,7 +11,7 @@ interface HrefObject {
   params?: Record<string, any>
 }
 
-type LinkProps = ViewProps & {
+export type LinkProps = ViewProps & {
   /** Path to route to. */
   href: Href
 
