@@ -31287,6 +31287,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "studio2@workspace:apps/studio2"
   dependencies:
+    "@leeoniya/ufuzzy": "npm:^1.0.14"
     "@react-navigation/native": "npm:^6.1.10"
     "@tamagui/cli": "npm:^1.94.4"
     "@vxrn/expo-router": "npm:^0.1.19"

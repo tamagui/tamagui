@@ -11,6 +11,7 @@
     "postinstall": "patch-package"
   },
   "dependencies": {
+    "@leeoniya/ufuzzy": "^1.0.14",
     "@react-navigation/native": "^6.1.10",
     "@vxrn/expo-router": "^0.1.19",
     "color2k": "^2.0.2",
