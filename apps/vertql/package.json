@@ -39,7 +39,7 @@
     "http-proxy-middleware": "^2.0.6",
     "vite": "^5.2.6",
     "vite-plugin-inspect": "^0.7.38",
-    "vxrn": "^0.1.16"
+    "vxrn": "^0.1.17"
   },
   "devDependencies": {
     "@tamagui/build": "1.94.4"
