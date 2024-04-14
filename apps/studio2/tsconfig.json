@@ -2,6 +2,9 @@
   "compilerOptions": {
     "baseUrl": ".",
     "rootDir": ".",
+    "paths": {
+      "~/*": ["./*"]
+    },
     "outDir": "dist",
     "importHelpers": true,
     "allowJs": false,

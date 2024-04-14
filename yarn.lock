@@ -31297,6 +31297,7 @@ __metadata:
     react-native: "npm:^0.73.4"
     react-native-reanimated: "npm:~3.6.2"
     tamagui: "npm:^1.94.4"
+    vite-tsconfig-paths: "npm:^4.3.2"
     vxrn: "npm:^0.1.16"
   languageName: unknown
   linkType: soft
