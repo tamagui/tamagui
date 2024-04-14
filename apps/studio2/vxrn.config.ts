@@ -1,4 +1,4 @@
-import { tamaguiPlugin } from '@tamagui/vite-plugin'
+import { tamaguiPlugin, tamaguiExtractPlugin } from '@tamagui/vite-plugin'
 import entryShakingPlugin from 'vite-plugin-entry-shaking'
 import tsconfigPaths from 'vite-tsconfig-paths'
 import type { VXRNConfig } from 'vxrn'
@@ -20,6 +20,9 @@ export default {
         components: ['tamagui'],
         config: 'src/tamagui.config.ts',
       }) as any,
+      tamaguiExtractPlugin({
+        logTimings: true,
+      }),
     ],
   },
 } satisfies VXRNConfig
