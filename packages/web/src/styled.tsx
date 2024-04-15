@@ -41,11 +41,14 @@ export function styled<
   ComponentIn: ParentComponent,
   // this should be Partial<GetProps<ParentComponent>> but causes excessively deep type issues
   options?: Partial<InferStyledProps<ParentComponent, StyledStaticConfig>> & {
-    name?: string
     variants?: Variants | undefined
     defaultVariants?: GetVariantAcceptedValues<Variants>
     context?: StyledContext
     acceptsClassName?: boolean
+    /**
+     * @deprecated - use name in third argument instead
+     */
+    name?: string
   },
   staticExtractionOptions?: StyledStaticConfig
 ) {
@@ -137,9 +140,9 @@ export function styled<
 
   const staticConfigProps = (() => {
     if (options) {
+      const name = staticExtractionOptions?.name || options.name
       let {
         variants,
-        name,
         defaultVariants,
         acceptsClassName: acceptsClassNameProp,
         context,

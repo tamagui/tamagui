@@ -913,6 +913,7 @@ export type GenericVariantDefinitions = {
     };
 };
 export type StaticConfigPublic = {
+    name?: string;
     defaultProps?: Record<string, any>;
     /**
      * (compiler) If you need to pass context or something, prevents from ever

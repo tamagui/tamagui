@@ -9,9 +9,6 @@ Nate:
 - 2.0 = redo/remove ThemeableStack
 - v3 themes: all of the focus styles in the default v3 config are kind of wack
 - activeTheme props for all components
-- in dev mode if no checkbox indicator, warn
-  - checkbox should have a default indicator probably with a simple svg check we inline
-- Select should return focus to trigger on close
 - Popover native flicker 1 frame in wrong position
   some findings: this happens because on initial render `floating` ref is null and that make it to only calculate position only using reference dim, and then when it becomes available calculate based on both
 - move from useMedia match.addListener to addEventListener
