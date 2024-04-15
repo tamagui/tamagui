@@ -1,4 +1,11 @@
-import { CheckCircle, Code2, Copy, FileCode2, Paintbrush } from '@tamagui/lucide-icons'
+import {
+  CheckCircle,
+  Code2,
+  Copy,
+  FileCode2,
+  Paintbrush,
+  TerminalSquare,
+} from '@tamagui/lucide-icons'
 import { useStore } from '@tamagui/use-store'
 import { forwardRef, useEffect, useRef, useState } from 'react'
 import { ScrollView } from 'react-native'
@@ -15,10 +22,12 @@ import { LinearGradient } from 'tamagui/linear-gradient'
 
 import { toggleTinted } from '../hooks/setTinted'
 import { useClipboard } from '../lib/useClipboard'
+import { useGradualIncrease } from '../lib/useGradualIncrease'
 import { Code } from './Code'
 import { ErrorBoundary } from './ErrorBoundary'
 import { Pre } from './Pre'
-import { useGradualIncrease } from '../lib/useGradualIncrease'
+import { RowingTabs } from './RowingTabs'
+import { getBashText } from './getBashText'
 
 class CollapseStore {
   isCollapsed: boolean
@@ -52,11 +61,40 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
   const { isCollapsed, setIsCollapsed } = store
   const isLong = lines > 22
   const [isCutoff, setIsCutoff] = useState(isLong && showFull)
-  const [code, setCode] = useState(undefined)
+  const [code, setCode] = useState<string | undefined>(undefined)
   const preRef = useRef<any>(null)
   const { hasCopied, onCopy, value, timeout } = useClipboard(code)
   const copyTimeoutValue = useGradualIncrease(hasCopied, timeout)
   const showLineNumbers = showLineNumbersIn ?? (lines > 10 ? true : false)
+
+  const bashText = getBashText(children)[0]
+  const [command, setCommand] = useState('')
+  const isBash = className === 'language-bash'
+  const isPackage = bashText.startsWith('yarn')
+  const isPackageRunner = bashText.startsWith('npx')
+  const isStarter = bashText.startsWith('npm create')
+  const isTerminal = isBash && !isPackage && !isPackageRunner && !isStarter
+  const packageToInstall = bashText.split(' ').splice(2).join(' ')
+  const packageToRun = bashText.split(' ').splice(1).join(' ')
+
+  const commands = {
+    bun: 'bun add',
+    npm: 'npm install',
+    pnpm: 'pnpm install',
+    npx: 'npx',
+    bunx: 'bunx',
+    default: 'yarn add',
+  }
+
+  const handleTabChange = (tab: string) => {
+    setCommand(commands[tab] || commands.default)
+  }
+
+  const getCommand = (command: string, code: string, isPackage: boolean) => {
+    const codeParts = code.split(' ')
+    const spliceIndex = isPackage ? 2 : 1
+    return `${command} ${codeParts.splice(spliceIndex).join(' ')}`
+  }
 
   // const frontmatter = useContext(FrontmatterContext)
 
@@ -69,7 +107,15 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
         if (codeElement) {
           // remove double line breaks
           const code = codeElement.innerText.replace(/\n{3,}/g, '\n')
-          setCode(code)
+          if (isBash) {
+            if (isTerminal || isStarter) {
+              setCode(code)
+            } else {
+              setCode(getCommand(command, code, isPackage))
+            }
+          } else {
+            setCode(code)
+          }
         } else {
           // not collapsible
         }
@@ -77,7 +123,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
     } catch {
       // ok
     }
-  }, [preRef, isPreVisible])
+  }, [preRef, isPreVisible, command])
 
   return (
     <YStack
@@ -167,49 +213,63 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
               bw="$1"
               bc="$black1"
             >
-              {fileName && (
+              {(fileName || isTerminal) && (
                 <XStack
                   ai="center"
                   gap="$2"
                   pl="$4"
                   h="$5"
+                  py="$4"
                   bg="$black1"
                   bw="$1.5"
                   bc="$background"
                   br="$5"
                 >
-                  <FileCode2 size="$1" col="$color8" />
-                  <Paragraph col="$color8">{fileName}</Paragraph>
+                  {isTerminal ? (
+                    <TerminalSquare size="$1" col="$white8" />
+                  ) : (
+                    <FileCode2 size="$1" col="$white8" />
+                  )}
+                  <Paragraph col="$white8">
+                    {isTerminal ? 'Terminal' : fileName}
+                  </Paragraph>
                 </XStack>
               )}
 
-              <ScrollView
-                style={{ width: '100%' }}
-                contentContainerStyle={{ minWidth: '100%' }}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-              >
-                {/* @ts-ignore */}
-                <Code
-                  p="$4"
-                  backgroundColor="transparent"
-                  f={1}
-                  className={className}
-                  size={size ?? '$5'}
-                  lineHeight={size ?? '$5'}
-                  {...rest}
+              <RowingTabs enabled={isBash && !isTerminal} onTabChange={handleTabChange}>
+                <ScrollView
+                  style={{ width: '100%' }}
+                  contentContainerStyle={{ minWidth: '100%' }}
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
                 >
-                  {children}
-                </Code>
-              </ScrollView>
+                  {/* @ts-ignore */}
+                  <Code
+                    p="$4"
+                    backgroundColor="transparent"
+                    f={1}
+                    className={className}
+                    size={size ?? '$5'}
+                    lineHeight={size ?? '$5'}
+                    {...rest}
+                  >
+                    {isPackage
+                      ? `${command} ${packageToInstall}`
+                      : // : isPackageRunner
+                        //   ? `${command} ${packageToRun}`
+                        children}
+                  </Code>
+                </ScrollView>
+              </RowingTabs>
             </Pre>
+
             {!disableCopy && (
               <TooltipSimple label={hasCopied ? 'Copied' : 'Copy to clipboard'}>
                 <Button
                   position="absolute"
                   aria-label="Copy code to clipboard"
                   size="$2"
-                  top={fileName ? '$3' : '$3.5'}
+                  top={fileName || isTerminal ? '$3' : '$3.5'}
                   right="$3"
                   display="inline-flex"
                   icon={hasCopied ? CheckCircle : Copy}
@@ -220,17 +280,20 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                 />
               </TooltipSimple>
             )}
+
             <Progress
               value={copyTimeoutValue}
               size="$0.75"
               pos="absolute"
               zi={1001}
               w="auto"
-              t="$0"
+              b={!isLong && '$0'}
+              t={isLong && '$0'}
               l="$2"
               r="$2"
               bg="$black1"
               rotate="180deg"
+              animation="quickest"
             >
               <Progress.Indicator bg="$color8" animation="quickest" />
             </Progress>

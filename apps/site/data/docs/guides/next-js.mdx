@@ -8,7 +8,7 @@ Check out the [source for this site](https://github.com/tamagui/tamagui/tree/mas
 ## Install
 
 <Notice>
-        Running `npm create tamagui` let's you choose the `starter-free` starter which is a very nicely configured Next.js app where you can take or leave whatever you want.
+  Running `npm create tamagui` let's you choose the `starter-free` starter which is a very nicely configured Next.js app where you can take or leave whatever you want.
 </Notice>
 
 Create a new [Next.js](https://nextjs.org/docs/getting-started/installation) project
@@ -23,8 +23,8 @@ Choose Next.js routing option:
 
 <InlineTabs id="router" defaultValue="pages">
 <InlineTabs.List>
-    <InlineTabs.Tab value="pages">Pages router</InlineTabs.Tab>
-    <InlineTabs.Tab value="app">App router</InlineTabs.Tab>
+  <InlineTabs.Tab value="pages">Pages router</InlineTabs.Tab>
+  {  /* <InlineTabs.Tab value="app">App router</InlineTabs.Tab> */}
 </InlineTabs.List>
 
 <InlineTabs.Content value="pages">
@@ -71,7 +71,7 @@ const tamaguiPlugin = withTamagui({
   components: ['tamagui'],
   outputCSS: process.env.NODE_ENV === 'production' ? './public/tamagui.css' : null,
   // optional advanced settings:
-  // set to false if you never call addTheme or updateTheme
+  // set to false if you never call addTheme or updateTheme TODO!!!
 })
 ```
 
@@ -137,7 +137,7 @@ And then add this if you are using the `outputCSS` option to include the CSS fil
 
 ```tsx
 if (process.env.NODE_ENV === 'production') {
-    require('../public/tamagui.css')
+  require('../public/tamagui.css')
 }
 ```
 
@@ -147,7 +147,7 @@ There is an optional CSS reset to get more consistent styles across browsers, th
 
 You can import it into your app like so:
 
-```tsx
+```tsx fileName="_app.tsx"
 import '@tamagui/core/reset.css'
 ```
 
@@ -291,7 +291,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <Head>
         <script
           dangerouslySetInnerHTML={{
-            // avoid flash of animated things on enter:
+           // avoid flash of animated things on enter:
             __html: `document.documentElement.classList.add('t_unmounted')`,
           }}
         />
@@ -339,12 +339,12 @@ Add this to your [_app.tsx](/docs/guides/next-js?#pages_apptsx) render output:
 
 ```tsx fileName="_app.tsx"
 <Head>
-    <script
-      dangerouslySetInnerHTML={{
-          // avoid flash of entered elements before enter animations run:
-          __html: `document.documentElement.classList.add('t_unmounted')`,
-      }}
-    />
+  <script
+    dangerouslySetInnerHTML={{
+      // avoid flash of entered elements before enter animations run:
+      __html: `document.documentElement.classList.add('t_unmounted')`,
+    }}
+  />
 </Head>
 ```
 
@@ -366,15 +366,16 @@ const tamaguiConfig = createTamagui(config)
 // import tamaguiConfig from '../tamagui.config'
 
 export function NextTamaguiProvider({ children }) {
-    useServerInsertedHTML(() => {
-      // the first time this runs you'll get the full CSS including all themes
-      // after that, it will only return CSS generated since the last call
-      return <style dangerouslySetInnerHTML={{ __html: tamaguiConfig.getNewCSS() }} />
-    })
+  useServerInsertedHTML(() => {
+    // the first time this runs you'll get the full CSS including all themes
+    // after that, it will only return CSS generated since the last call
+    return <style dangerouslySetInnerHTML={{ __html: tamaguiConfig.getNewCSS() }} />
+  })
 
-    // see Tamagui provider setup in the example above
-    return <TamaguiProvider>{children}</TamaguiProvider>
+  // see Tamagui provider setup in the example above
+  return <TamaguiProvider>{children}</TamaguiProvider>
 }
+
 ```
 
 The new `getNewCSS` helper in Tamagui will keep track of the last call and only return new styles generated since the last usage.
@@ -385,7 +386,7 @@ And then use it in your `app/layout.tsx` like this:
 import { NextTamaguiProvider } from './NextTamaguiProvider'
 
 export default function Layout({ children }) {
-    return <NextTamaguiProvider>{children}</NextTamaguiProvider>
+  return <NextTamaguiProvider>{children}</NextTamaguiProvider>
 }
 ```
 
@@ -395,6 +396,6 @@ And you'll need to pass the `appDir` boolean to `@tamagui/next-plugin`:
 
 ```tsx
 withTamagui({
-    appDir: true,
+  appDir: true,
 })
 ```
