@@ -13,13 +13,17 @@ export function apiOssBentoRoute(handler: NextApiHandler) {
 
     const codePath = slugsArray.join('/')
 
-    if (!OSS_COMPONENTS.includes(slugsArray[slugsArray.length - 1]))
-      return handler(req, res)
-
     try {
-      const fileResult = await getBentoCode(codePath)
-      res.setHeader('Content-Type', 'text/plain')
-      res.send(fileResult)
+      if (!OSS_COMPONENTS.includes(slugsArray[slugsArray.length - 1])) {
+        console.log('not a OSS component')
+        return handler(req, res)
+      } else {
+        console.log('it IS a OSS component')
+        const fileResult = await getBentoCode(codePath)
+        res.setHeader('Content-Type', 'text/plain')
+        res.send(fileResult)
+        return
+      }
     } catch (err) {
       const message = err instanceof Error ? err.message : `${err}`
       console.error(`Error serving API Route: ${message}`, err.stack)
