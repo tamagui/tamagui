@@ -60,8 +60,6 @@ export const SheetImplementationCustom = themeable(
     const state = useSheetOpenState(props)
     const [overlayComponent, setOverlayComponent] = useState<any>(null)
 
-    console.log('overlayComponent', overlayComponent?.props.pointerEvents)
-
     const providerProps = useSheetProviderProps(props, state, {
       onOverlayComponent: setOverlayComponent,
     })
