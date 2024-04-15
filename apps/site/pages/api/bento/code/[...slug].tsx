@@ -6,9 +6,17 @@ import { supabaseAdmin } from '@lib/supabaseAdmin'
 
 const handler = apiOssBentoRoute(async (req, res) => {
   try {
-    console.log('before authorize access pass', req.query.slug)
-
-    const { supabase } = await protectApiRoute({ req, res })
+    const { supabase, session, user } = await protectApiRoute({ req, res })
+    if (!session || !user) {
+      const errorMessage = `Not authed: ${!session ? 'no session' : ''} ${
+        !user ? 'no user' : ''
+      }`
+      res.status(401).json({
+        error: 'The user is not authenticated',
+        details: new HandledResponseTermination(errorMessage),
+      })
+      return res.end()
+    }
     await authorizeUserAccess(
       {
         req,
@@ -19,7 +27,6 @@ const handler = apiOssBentoRoute(async (req, res) => {
         checkForBentoAccess: true,
       }
     )
-    console.log('after authorize access pass')
 
     const slugsArray = Array.isArray(req.query.slug)
       ? req.query.slug

@@ -74,7 +74,6 @@ export async function authorizeUserAccess(
     res.status(403).json({
       message: "You don't have access to this part of the studio.",
     })
-    throw new HandledResponseTermination("User doesn't have access to studio.")
   }
 
   // check for bento access
@@ -82,7 +81,6 @@ export async function authorizeUserAccess(
     res.status(403).json({
       message: "You don't have access to Bento.",
     })
-    throw new HandledResponseTermination("User doesn't have access to Bento.")
   }
 
   const newJwt = jwt.sign(payload, JWT_SECRET)
