@@ -1,6 +1,5 @@
 import { ReactElement, SyntheticEvent } from 'react';
 interface UseRadioGroupParams {
-    groupContext: any;
     value?: string;
     defaultValue?: string;
     onValueChange?: (value: string) => void;
@@ -13,30 +12,27 @@ interface UseRadioGroupParams {
     ref?: React.Ref<ReactElement>;
 }
 export declare function useRadioGroup(params: UseRadioGroupParams): {
-    groupContextParams: {
-        Context: any;
-        providerProps: {
-            value: string;
-            onChange: import("react").Dispatch<import("react").SetStateAction<string>>;
-            required: boolean | undefined;
-            disabled: boolean | undefined;
-            name: string | undefined;
-            native: boolean | undefined;
-            accentColor: string | undefined;
-        };
+    radioGroupProviderProps: {
+        value: string;
+        onChange: import("react").Dispatch<import("react").SetStateAction<string>>;
+        required: boolean | undefined;
+        disabled: boolean | undefined;
+        name: string | undefined;
+        native: boolean | undefined;
+        accentColor: string | undefined;
     };
-    groupFrameProps: {
+    frameProps: {
         role: string;
         'aria-orientation': "horizontal" | "vertical";
         'data-disabled': string | undefined;
     };
-    focusGroupProps: {
+    rovingProps: {
         orientation: "horizontal" | "vertical";
+        loop: boolean;
     };
 };
 interface UseRadioItemParams {
-    groupContext: any;
-    itemContext: any;
+    radioGroupContext: any;
     value: string;
     id?: string;
     labelledBy?: string;
@@ -46,34 +42,40 @@ interface UseRadioItemParams {
     onKeyDown?: (event: any) => void;
     onFocus?: (event: any) => void;
 }
-export declare const useRadioItem: (params: UseRadioItemParams) => {
-    itemContextParams: {
-        Context: any;
-        providerProps: {
-            checked: boolean;
-        };
-        bubbleInput: import("react/jsx-runtime").JSX.Element | null;
-        itemFrameProps: {
-            onKeyDown?: import("@tamagui/helpers/types").EventHandler<KeyboardEvent> | undefined;
-            onFocus?: import("@tamagui/helpers/types").EventHandler<any> | undefined;
-            onPress: import("@tamagui/helpers/types").EventHandler<SyntheticEvent<Element, Event>> | undefined;
-            type?: string | undefined;
-            value?: string | undefined;
-            'data-state': string;
-            'data-disabled': string | undefined;
-            role: string;
-            'aria-labelledby': string | undefined;
-            'aria-checked': boolean;
-            'aria-required': boolean | undefined;
-            disabled: boolean | undefined;
-            ref: (node: HTMLButtonElement) => void;
-        };
-        focusGroupItemProps: {
-            asChild: string;
-            focusable: boolean;
-            active: boolean;
-        };
+export declare const useRadioGroupItem: (params: UseRadioItemParams) => {
+    radioItemProviderProps: {
+        checked: boolean;
     };
+    isFormControl: boolean;
+    bubbleInput: import("react/jsx-runtime").JSX.Element;
+    itemFrameProps: {
+        onKeyDown?: import("@tamagui/helpers").EventHandler<KeyboardEvent> | undefined;
+        onFocus?: import("@tamagui/helpers").EventHandler<any> | undefined;
+        onPress: import("@tamagui/helpers").EventHandler<SyntheticEvent<Element, Event>> | undefined;
+        type?: string | undefined;
+        value?: string | undefined;
+        'data-state': string;
+        'data-disabled': string | undefined;
+        role: any;
+        'aria-labelledby': string | undefined;
+        'aria-checked': boolean;
+        'aria-required': boolean | undefined;
+        disabled: boolean | undefined;
+        ref: (node: HTMLButtonElement) => void;
+    };
+    rovingItemProps: {
+        asChild: string;
+        focusable: boolean;
+        active: boolean;
+    };
+};
+export declare function useRadioGroupItemIndicator(params: {
+    groupItemContext: any;
+    disabled?: boolean;
+}): {
+    checked: boolean;
+    'data-state': string;
+    'data-disabled': string | undefined;
 };
 export {};
 //# sourceMappingURL=useRadioGroup.d.ts.map

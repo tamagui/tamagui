@@ -13,13 +13,12 @@ import {
 } from 'react'
 import { BubbleInput } from './BubbleInput'
 import { getState } from './utils'
-import { composeEventHandlers } from '@tamagui/helpers/types'
+import { composeEventHandlers } from '@tamagui/helpers'
 
 // TODO: returned names are not good, use better names
 // TODO: use function props getters as well
 
 interface UseRadioGroupParams {
-  groupContext: any
   value?: string
   defaultValue?: string
   onValueChange?: (value: string) => void
@@ -33,7 +32,6 @@ interface UseRadioGroupParams {
 }
 export function useRadioGroup(params: UseRadioGroupParams) {
   const {
-    groupContext,
     value: valueProp,
     onValueChange,
     defaultValue,
@@ -52,32 +50,29 @@ export function useRadioGroup(params: UseRadioGroupParams) {
   })
 
   return {
-    groupContextParams: {
-      Context: groupContext,
-      providerProps: {
-        value,
-        onChange: setValue,
-        required,
-        disabled,
-        name,
-        native,
-        accentColor,
-      },
+    radioGroupProviderProps: {
+      value,
+      onChange: setValue,
+      required,
+      disabled,
+      name,
+      native,
+      accentColor,
     },
-    groupFrameProps: {
+    frameProps: {
       role: 'radiogroup',
       'aria-orientation': orientation,
       'data-disabled': disabled ? '' : undefined,
     },
-    focusGroupProps: {
+    rovingProps: {
       orientation,
+      loop: true,
     },
   }
 }
 
 interface UseRadioItemParams {
-  groupContext: any
-  itemContext: any
+  radioGroupContext: any
   value: string
   // TODO: what is this for
   id?: string
@@ -103,10 +98,9 @@ type RadioGroupContextValue = {
 
 const ARROW_KEYS = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight']
 
-export const useRadioItem = (params: UseRadioItemParams) => {
+export const useRadioGroupItem = (params: UseRadioItemParams) => {
   const {
-    groupContext,
-    itemContext,
+    radioGroupContext,
     value,
     labelledBy: ariaLabelledby,
     disabled: itemDisabled,
@@ -122,9 +116,10 @@ export const useRadioItem = (params: UseRadioItemParams) => {
     required,
     onChange,
     name,
+    // TODO: how to handle native, or do we need it
     native,
     accentColor,
-  } = useContext<RadioGroupContextValue>(groupContext)
+  } = useContext<RadioGroupContextValue>(radioGroupContext)
 
   const [button, setButton] = useState<HTMLButtonElement | null>(null)
   const hasConsumerStoppedPropagationRef = useRef(false)
@@ -175,72 +170,90 @@ export const useRadioItem = (params: UseRadioItemParams) => {
   const isDisabled = disabled || itemDisabled
 
   return {
-    itemContextParams: {
-      Context: itemContext,
-      providerProps: {
-        checked,
-      },
-      bubbleInput:
-        isWeb && isFormControl ? (
-          <BubbleInput
-            isHidden
-            control={button}
-            bubbles={!hasConsumerStoppedPropagationRef.current}
-            name={name}
-            value={value}
-            checked={checked}
-            required={required}
-            disabled={isDisabled}
-          />
-        ) : null,
-      itemFrameProps: {
-        'data-state': getState(checked),
-        'data-disabled': isDisabled ? '' : undefined,
-        role: 'radio',
-        'aria-labelledby': labelledBy,
-        'aria-checked': checked,
-        'aria-required': required,
-        disabled: isDisabled,
-        ref: composedRefs,
-        ...(isWeb && {
-          type: 'button',
-          value: value,
-        }),
-        onPress: composeEventHandlers(onPress as any, (event: SyntheticEvent) => {
-          if (!checked) {
-            onChange?.(value)
-          }
-
-          if (isFormControl) {
-            hasConsumerStoppedPropagationRef.current = event.isPropagationStopped()
-            // if radio is in a form, stop propagation from the button so that we only propagate
-            // one click event (from the input). We propagate changes from an input so that native
-            // form validation works and form events reflect radio updates.
-            if (!hasConsumerStoppedPropagationRef.current) event.stopPropagation()
-          }
-        }),
-        ...(isWeb && {
-          onKeyDown: composeEventHandlers(onKeyDown as any, (event: KeyboardEvent) => {
-            // According to WAI ARIA, Checkboxes don't activate on enter keypress
-            if (event.key === 'Enter') event.preventDefault()
-          }),
-          onFocus: composeEventHandlers(onFocus, () => {
-            /**
-             * Our `RovingFocusGroup` will focus the radio when navigating with arrow keys
-             * and we need to "check" it in that case. We click it to "check" it (instead
-             * of updating `context.value`) so that the radio change event fires.
-             */
-            if (isArrowKeyPressedRef.current) {
-              ;(ref.current as HTMLButtonElement)?.click()
-            }
-          }),
-        }),
-      },
-      focusGroupItemProps: {
-        asChild: 'expect-style',
-        focusable: !isDisabled,
-        active: checked,
-      },
+    radioItemProviderProps: {
+      checked,
     },
+    isFormControl,
+    bubbleInput: (
+      <BubbleInput
+        isHidden={!native && !isWeb}
+        control={button}
+        bubbles={!hasConsumerStoppedPropagationRef.current}
+        name={name}
+        value={value}
+        checked={checked}
+        required={required}
+        disabled={isDisabled}
+        accentColor={accentColor}
+        id={id}
+      />
+    ),
+    itemFrameProps: {
+      'data-state': getState(checked),
+      'data-disabled': isDisabled ? '' : undefined,
+      role: 'radio' as any,
+      'aria-labelledby': labelledBy,
+      'aria-checked': checked,
+      'aria-required': required,
+      disabled: isDisabled,
+      ref: composedRefs,
+      ...(isWeb && {
+        type: 'button',
+        value: value,
+      }),
+      onPress: composeEventHandlers(onPress as any, (event: SyntheticEvent) => {
+        if (!checked) {
+          onChange?.(value)
+        }
+
+        if (isFormControl) {
+          hasConsumerStoppedPropagationRef.current = event.isPropagationStopped()
+          // if radio is in a form, stop propagation from the button so that we only propagate
+          // one click event (from the input). We propagate changes from an input so that native
+          // form validation works and form events reflect radio updates.
+          if (!hasConsumerStoppedPropagationRef.current) event.stopPropagation()
+        }
+      }),
+      ...(isWeb && {
+        onKeyDown: composeEventHandlers(onKeyDown as any, (event: KeyboardEvent) => {
+          // According to WAI ARIA, Checkboxes don't activate on enter keypress
+          if (event.key === 'Enter') event.preventDefault()
+        }),
+        onFocus: composeEventHandlers(onFocus, () => {
+          /**
+           * Our `RovingFocusGroup` will focus the radio when navigating with arrow keys
+           * and we need to "check" it in that case. We click it to "check" it (instead
+           * of updating `context.value`) so that the radio change event fires.
+           */
+          if (isArrowKeyPressedRef.current) {
+            ;(ref.current as HTMLButtonElement)?.click()
+          }
+        }),
+      }),
+    },
+    rovingItemProps: {
+      asChild: 'expect-style',
+      focusable: !isDisabled,
+      active: checked,
+    },
+  }
+}
+
+type RadioGroupItemContextValue = {
+  checked: boolean
+  disabled?: boolean
+}
+export function useRadioGroupItemIndicator(params: {
+  groupItemContext: any
+  disabled?: boolean
+}) {
+  const { groupItemContext, disabled, ...rest } = params
+  const { checked } = useContext<RadioGroupItemContextValue>(groupItemContext)
+
+  return {
+    checked,
+    'data-state': getState(checked),
+    'data-disabled': disabled ? '' : undefined,
+    ...rest,
   }
 }
