@@ -145,7 +145,7 @@ export function createSheet<
         forwardedRef
       ) => {
         const context = useSheetContext(SHEET_NAME, __scopeSheet)
-        const { hasFit, removeScrollEnabled, frameSize, contentRef } = context
+        const { hasFit, removeScrollEnabled, frameSize, contentRef, open } = context
         const composedContentRef = useComposedRefs(forwardedRef, contentRef)
         const offscreenSize = useSheetOffscreenSize(context)
 
@@ -156,6 +156,7 @@ export function createSheet<
               ref={composedContentRef}
               flex={hasFit ? 0 : 1}
               height={hasFit ? undefined : frameSize}
+              pointerEvents={open ? 'auto' : 'none'}
               {...props}
             >
               {children}
