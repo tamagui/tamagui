@@ -3,20 +3,11 @@ import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
 import { registerFocusable } from '@tamagui/focusable'
 import { useLabelContext } from '@tamagui/label'
-import {
-  ReactElement,
-  SyntheticEvent,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from 'react'
+import type { GestureResponderEvent } from 'react-native'
+import { ReactElement, useContext, useEffect, useRef, useState } from 'react'
 import { BubbleInput } from './BubbleInput'
 import { getState } from './utils'
 import { composeEventHandlers } from '@tamagui/helpers'
-
-// TODO: returned names are not good, use better names
-// TODO: use function props getters as well
 
 interface UseRadioGroupParams {
   value?: string
@@ -60,7 +51,7 @@ export function useRadioGroup(params: UseRadioGroupParams) {
       accentColor,
     },
     frameProps: {
-      role: 'radiogroup',
+      role: 'radiogroup' as any,
       'aria-orientation': orientation,
       'data-disabled': disabled ? '' : undefined,
     },
@@ -72,21 +63,18 @@ export function useRadioGroup(params: UseRadioGroupParams) {
 }
 
 interface UseRadioItemParams {
-  radioGroupContext: any
+  radioGroupContext: React.Context<RadioGroupContextValue>
   value: string
-  // TODO: what is this for
   id?: string
   labelledBy?: string
   disabled?: boolean
-  // TODO: what is this ref for
   ref?: any
   onPress?: (event: any) => void
   onKeyDown?: (event: any) => void
   onFocus?: (event: any) => void
 }
 
-// TODO make this flexible
-type RadioGroupContextValue = {
+export type RadioGroupContextValue = {
   value?: string
   disabled?: boolean
   required?: boolean
@@ -116,14 +104,13 @@ export const useRadioGroupItem = (params: UseRadioItemParams) => {
     required,
     onChange,
     name,
-    // TODO: how to handle native, or do we need it
     native,
     accentColor,
-  } = useContext<RadioGroupContextValue>(radioGroupContext)
+  } = useContext(radioGroupContext)
 
   const [button, setButton] = useState<HTMLButtonElement | null>(null)
   const hasConsumerStoppedPropagationRef = useRef(false)
-  const ref = useRef<HTMLButtonElement>(null)
+  const ref = useRef<any>(null)
   const composedRefs = useComposedRefs(refProp, (node) => setButton(node), ref)
   const isArrowKeyPressedRef = useRef(false)
 
@@ -201,7 +188,7 @@ export const useRadioGroupItem = (params: UseRadioItemParams) => {
         type: 'button',
         value: value,
       }),
-      onPress: composeEventHandlers(onPress as any, (event: SyntheticEvent) => {
+      onPress: composeEventHandlers(onPress as any, (event: GestureResponderEvent) => {
         if (!checked) {
           onChange?.(value)
         }
@@ -232,23 +219,25 @@ export const useRadioGroupItem = (params: UseRadioItemParams) => {
       }),
     },
     rovingItemProps: {
-      asChild: 'expect-style',
+      asChild: 'expect-style' as boolean | 'web' | 'except-style' | 'except-style-web',
       focusable: !isDisabled,
       active: checked,
     },
   }
 }
 
-type RadioGroupItemContextValue = {
+export type RadioGroupItemContextValue = {
   checked: boolean
   disabled?: boolean
 }
-export function useRadioGroupItemIndicator(params: {
-  groupItemContext: any
+
+type UseRadioGroupItemIndicatorParams = {
+  radioGroupItemContext: React.Context<RadioGroupItemContextValue>
   disabled?: boolean
-}) {
-  const { groupItemContext, disabled, ...rest } = params
-  const { checked } = useContext<RadioGroupItemContextValue>(groupItemContext)
+}
+export function useRadioGroupItemIndicator(params: UseRadioGroupItemIndicatorParams) {
+  const { radioGroupItemContext, disabled, ...rest } = params
+  const { checked } = useContext(radioGroupItemContext)
 
   return {
     checked,

@@ -1,4 +1,5 @@
-import { ReactElement, SyntheticEvent } from 'react';
+import type { GestureResponderEvent } from 'react-native';
+import { ReactElement } from 'react';
 interface UseRadioGroupParams {
     value?: string;
     defaultValue?: string;
@@ -22,7 +23,7 @@ export declare function useRadioGroup(params: UseRadioGroupParams): {
         accentColor: string | undefined;
     };
     frameProps: {
-        role: string;
+        role: any;
         'aria-orientation': "horizontal" | "vertical";
         'data-disabled': string | undefined;
     };
@@ -32,7 +33,7 @@ export declare function useRadioGroup(params: UseRadioGroupParams): {
     };
 };
 interface UseRadioItemParams {
-    radioGroupContext: any;
+    radioGroupContext: React.Context<RadioGroupContextValue>;
     value: string;
     id?: string;
     labelledBy?: string;
@@ -42,6 +43,15 @@ interface UseRadioItemParams {
     onKeyDown?: (event: any) => void;
     onFocus?: (event: any) => void;
 }
+export type RadioGroupContextValue = {
+    value?: string;
+    disabled?: boolean;
+    required?: boolean;
+    onChange?: (value: string) => void;
+    name?: string;
+    native?: boolean;
+    accentColor?: string;
+};
 export declare const useRadioGroupItem: (params: UseRadioItemParams) => {
     radioItemProviderProps: {
         checked: boolean;
@@ -51,7 +61,7 @@ export declare const useRadioGroupItem: (params: UseRadioItemParams) => {
     itemFrameProps: {
         onKeyDown?: import("@tamagui/helpers").EventHandler<KeyboardEvent> | undefined;
         onFocus?: import("@tamagui/helpers").EventHandler<any> | undefined;
-        onPress: import("@tamagui/helpers").EventHandler<SyntheticEvent<Element, Event>> | undefined;
+        onPress: import("@tamagui/helpers").EventHandler<GestureResponderEvent> | undefined;
         type?: string | undefined;
         value?: string | undefined;
         'data-state': string;
@@ -61,18 +71,23 @@ export declare const useRadioGroupItem: (params: UseRadioItemParams) => {
         'aria-checked': boolean;
         'aria-required': boolean | undefined;
         disabled: boolean | undefined;
-        ref: (node: HTMLButtonElement) => void;
+        ref: (node: any) => void;
     };
     rovingItemProps: {
-        asChild: string;
+        asChild: boolean | "web" | "except-style" | "except-style-web";
         focusable: boolean;
         active: boolean;
     };
 };
-export declare function useRadioGroupItemIndicator(params: {
-    groupItemContext: any;
+export type RadioGroupItemContextValue = {
+    checked: boolean;
     disabled?: boolean;
-}): {
+};
+type UseRadioGroupItemIndicatorParams = {
+    radioGroupItemContext: React.Context<RadioGroupItemContextValue>;
+    disabled?: boolean;
+};
+export declare function useRadioGroupItemIndicator(params: UseRadioGroupItemIndicatorParams): {
     checked: boolean;
     'data-state': string;
     'data-disabled': string | undefined;
