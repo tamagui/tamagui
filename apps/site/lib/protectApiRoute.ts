@@ -40,9 +40,9 @@ export async function protectApiRoute({
       throw new HandledResponseTermination(`Redirecting to login`)
     }
 
-    // throw new HandledResponseTermination(
-    //   `Not authed: ${!session ? 'no session' : ''} ${!user ? 'no user' : ''}`
-    // )
+    throw new HandledResponseTermination(
+      `Not authed: ${!session ? 'no session' : ''} ${!user ? 'no user' : ''}`
+    )
   }
 
   return { supabase, session, user }
