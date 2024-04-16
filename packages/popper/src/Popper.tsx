@@ -273,6 +273,21 @@ export const PopperContent = React.forwardRef<
   } = usePopperContext(__scopePopper)
   const contentRefs = useComposedRefs<any>(refs.setFloating, forwardedRef)
 
+  let finalHasFloatingValue = false
+  if (isAndroid) {
+    const initialRender = React.useRef(true)
+    const finalHasFloating = React.useRef(false)
+
+    if (hasFloating === false) {
+      initialRender.current = false
+    }
+
+    if (!initialRender.current) {
+      finalHasFloating.current = hasFloating
+    }
+    finalHasFloatingValue = finalHasFloating.current
+  }
+
   const contents = React.useMemo(() => {
     return (
       <PopperContentFrame
@@ -311,10 +326,10 @@ export const PopperContent = React.forwardRef<
     ;[show, setShow] = React.useState(false)
 
     React.useEffect(() => {
-      if (hasFloating) {
+      if (finalHasFloatingValue) {
         setShow(true)
       }
-    }, [hasFloating, x, y])
+    }, [finalHasFloatingValue, x, y])
   }
 
   const frameProps = {
