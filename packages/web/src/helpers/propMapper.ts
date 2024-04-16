@@ -19,6 +19,7 @@ import { getFontsForLanguage, getVariantExtras } from './getVariantExtras'
 import { isObj } from './isObj'
 import { pseudoDescriptors } from './pseudoDescriptors'
 import { skipProps } from './skipProps'
+import { resolveRem } from './resolveRem'
 
 export const propMapper: PropMapper = (key, value, styleStateIn, subPropsIn) => {
   lastFontFamilyToken = null
@@ -90,6 +91,8 @@ export const propMapper: PropMapper = (key, value, styleStateIn, subPropsIn) => 
       value = getTokenForKey(key, value, styleProps.resolveValues, styleState)
     } else if (isVariable(value)) {
       value = resolveVariableValue(key, value, styleProps.resolveValues)
+    } else if (typeof value === 'string' && value.includes('rem')) {
+      value = resolveRem(value)
     }
   }
 
