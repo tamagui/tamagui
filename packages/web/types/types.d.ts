@@ -614,6 +614,9 @@ export type GetThemeValueForKey<K extends string | symbol | number> = ThemeValue
 export type WithThemeValues<T extends object> = {
     [K in keyof T]: ThemeValueGet<K> extends never ? T[K] | 'unset' : GetThemeValueForKey<K> | Exclude<T[K], string> | 'unset';
 };
+export type WithRem<T extends object> = {
+    [K in keyof T]: Extract<T[K], number> extends never ? T[K] : `${number}rem` | T[K];
+};
 export type NarrowShorthands = Narrow<Shorthands>;
 export type Longhands = NarrowShorthands[keyof NarrowShorthands];
 type OnlyAllowShorthands = TamaguiConfig['onlyAllowShorthands'];
@@ -818,7 +821,7 @@ type A11yDeprecated = {
 export interface StackNonStyleProps extends A11yDeprecated, Omit<ViewProps, 'hitSlop' | 'pointerEvents' | 'display' | 'children' | RNOnlyProps | keyof ExtendBaseStackProps | 'style'>, ExtendBaseStackProps, TamaguiComponentPropsBase {
     style?: StyleProp<LooseCombinedObjects<React.CSSProperties, ViewStyle>>;
 }
-export type StackStyle = WithThemeShorthandsPseudosMedia<StackStyleBase>;
+export type StackStyle = WithRem<WithThemeShorthandsPseudosMedia<StackStyleBase>>;
 export type StackProps = StackNonStyleProps & StackStyle;
 export interface TextNonStyleProps extends A11yDeprecated, Omit<ReactTextProps, 'children' | keyof WebOnlyPressEvents | RNOnlyProps | keyof ExtendBaseTextProps | 'style'>, ExtendBaseTextProps, TamaguiComponentPropsBase {
     style?: StyleProp<LooseCombinedObjects<React.CSSProperties, TextStyle>>;

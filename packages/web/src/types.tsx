@@ -1139,6 +1139,10 @@ export type WithThemeValues<T extends object> = {
     : GetThemeValueForKey<K> | Exclude<T[K], string> | 'unset'
 }
 
+export type WithRem<T extends object> = {
+  [K in keyof T]: Extract<T[K], number> extends never ? T[K] : `${number}rem` | T[K]
+}
+
 export type NarrowShorthands = Narrow<Shorthands>
 export type Longhands = NarrowShorthands[keyof NarrowShorthands]
 
@@ -1439,7 +1443,7 @@ export interface StackNonStyleProps
   style?: StyleProp<LooseCombinedObjects<React.CSSProperties, ViewStyle>>
 }
 
-export type StackStyle = WithThemeShorthandsPseudosMedia<StackStyleBase>
+export type StackStyle = WithRem<WithThemeShorthandsPseudosMedia<StackStyleBase>>
 
 export type StackProps = StackNonStyleProps & StackStyle
 
