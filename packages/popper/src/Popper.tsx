@@ -310,11 +310,9 @@ export const PopperContent = React.forwardRef<
   if (isAndroid) {
     ;[show, setShow] = React.useState(false)
 
-    const debounceSetShow = debounce(setShow, 200)
-
     React.useEffect(() => {
       if (hasFloating) {
-        debounceSetShow(true)
+        setShow(true)
       }
     }, [hasFloating, x, y])
   }
