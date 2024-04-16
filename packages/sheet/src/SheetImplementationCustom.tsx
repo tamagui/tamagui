@@ -59,6 +59,7 @@ export const SheetImplementationCustom = themeable(
     const keyboardIsVisible = useKeyboardVisible()
     const state = useSheetOpenState(props)
     const [overlayComponent, setOverlayComponent] = useState<any>(null)
+
     const providerProps = useSheetProviderProps(props, state, {
       onOverlayComponent: setOverlayComponent,
     })
@@ -412,12 +413,10 @@ export const SheetImplementationCustom = themeable(
         ? `${maxSnapPoint}${isWeb ? 'dvh' : '%'}`
         : maxSnapPoint
 
-    console.log('open', open)
-
     const contents = (
       <ParentSheetContext.Provider value={nextParentContext}>
         <SheetProvider {...providerProps}>
-          <AnimatePresence enterExitVariant="open">
+          <AnimatePresence custom={{ open }}>
             {shouldHideParentSheet || !open ? null : overlayComponent}
           </AnimatePresence>
 
@@ -432,7 +431,6 @@ export const SheetImplementationCustom = themeable(
                 bottom: 0,
                 pointerEvents: 'none',
               }}
-              pointerEvents="none"
               onLayout={handleMaxContentViewLayout}
             />
           )}
@@ -441,9 +439,6 @@ export const SheetImplementationCustom = themeable(
             ref={ref}
             {...panResponder?.panHandlers}
             onLayout={handleAnimationViewLayout}
-            {...((shouldHideParentSheet || !open) && {
-              pointerEvents: 'none',
-            })}
             {...(!isDragging && {
               // @ts-ignore for CSS driver this is necessary to attach the transition
               animation,
@@ -458,6 +453,9 @@ export const SheetImplementationCustom = themeable(
                 height: forcedContentHeight,
                 minHeight: forcedContentHeight,
                 opacity,
+                ...((shouldHideParentSheet || !open) && {
+                  pointerEvents: 'none',
+                }),
               },
               animatedStyle,
             ]}
