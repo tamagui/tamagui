@@ -8,52 +8,53 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     await apiOssBentoRoute({ req, res })
-
-    console.log('before check of writeableEnd')
-    if (res.writableEnded) return
-
-    console.log('after apiOssBentoRoute')
-    const { supabase, session, user } = await protectApiRoute({ req, res })
-    if (!session || !user) {
-      const errorMessage = `Not authed: ${!session ? 'no session' : ''} ${
-        !user ? 'no user' : ''
-      }`
-      res.status(401).json({
-        error: 'The user is not authenticated',
-        details: new HandledResponseTermination(errorMessage),
-      })
-      return res.end()
-    }
-    await authorizeUserAccess(
-      {
-        req,
-        res,
-        supabase,
-      },
-      {
-        checkForBentoAccess: true,
+    console.log('res.writableEnded', res.writableEnded)
+    if (res.writableEnded) {
+      console.log('on if')
+    } else {
+      console.log('on else')
+      const { supabase, session, user } = await protectApiRoute({ req, res })
+      if (!session || !user) {
+        const errorMessage = `Not authed: ${!session ? 'no session' : ''} ${
+          !user ? 'no user' : ''
+        }`
+        res.status(401).json({
+          error: 'The user is not authenticated',
+          details: new HandledResponseTermination(errorMessage),
+        })
+        return res.end()
       }
-    )
+      await authorizeUserAccess(
+        {
+          req,
+          res,
+          supabase,
+        },
+        {
+          checkForBentoAccess: true,
+        }
+      )
 
-    const slugsArray = Array.isArray(req.query.slug)
-      ? req.query.slug
-      : typeof req.query.slug === 'string'
-        ? [req.query.slug]
-        : []
+      const slugsArray = Array.isArray(req.query.slug)
+        ? req.query.slug
+        : typeof req.query.slug === 'string'
+          ? [req.query.slug]
+          : []
 
-    const codePath = slugsArray.join('/')
+      const codePath = slugsArray.join('/')
 
-    const fileResult = await supabaseAdmin.storage
-      .from('bento')
-      .download(`merged/${codePath}.tsx`)
-    if (fileResult.error) {
-      console.error(fileResult.error)
-      res.status(404).json({ message: 'Not found' })
-      throw new HandledResponseTermination(`File ${codePath} not found`)
+      const fileResult = await supabaseAdmin.storage
+        .from('bento')
+        .download(`merged/${codePath}.tsx`)
+      if (fileResult.error) {
+        console.error(fileResult.error)
+        res.status(404).json({ message: 'Not found' })
+        throw new HandledResponseTermination(`File ${codePath} not found`)
+      }
+
+      res.setHeader('Content-Type', 'text/plain')
+      return res.send(await fileResult.data.text())
     }
-
-    res.setHeader('Content-Type', 'text/plain')
-    return res.send(await fileResult.data.text())
   } catch (err) {
     console.error(err)
     res.status(401).json({ error: err.message })
