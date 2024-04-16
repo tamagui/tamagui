@@ -340,13 +340,12 @@ export const PopperContent = React.forwardRef<
     left: 0,
     position: strategy,
     opacity: show ? 1 : 0,
-    ...(enableAnimationForPositionChange &&
-      process.env.TAMAGUI_TARGET !== 'native' && {
-        // apply animation but disable it on initial render to avoid animating from 0 to the first position
-        animation: rest.animation,
-        animateOnly: needsMeasure ? ['none'] : rest.animateOnly,
-        animatePresence: false,
-      }),
+    ...(enableAnimationForPositionChange && {
+      // apply animation but disable it on initial render to avoid animating from 0 to the first position
+      animation: rest.animation,
+      animateOnly: needsMeasure ? ['none'] : rest.animateOnly,
+      animatePresence: false,
+    }),
   }
 
   // outer frame because we explicitly don't want animation to apply to this
