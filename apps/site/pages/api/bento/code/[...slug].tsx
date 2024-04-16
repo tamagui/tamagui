@@ -3,9 +3,16 @@ import { HandledResponseTermination, apiRoute } from '@lib/apiRoute'
 import { authorizeUserAccess } from '@lib/authorizeUserAccess'
 import { protectApiRoute } from '@lib/protectApiRoute'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
+import type { NextApiRequest, NextApiResponse } from 'next'
 
-const handler = apiOssBentoRoute(async (req, res) => {
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
+    await apiOssBentoRoute({ req, res })
+
+    console.log('before check of writeableEnd')
+    if (res.writableEnded) return
+
+    console.log('after apiOssBentoRoute')
     const { supabase, session, user } = await protectApiRoute({ req, res })
     if (!session || !user) {
       const errorMessage = `Not authed: ${!session ? 'no session' : ''} ${
@@ -51,6 +58,6 @@ const handler = apiOssBentoRoute(async (req, res) => {
     console.error(err)
     res.status(401).json({ error: err.message })
   }
-})
+}
 
 export default handler
