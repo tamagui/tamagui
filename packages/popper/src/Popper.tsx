@@ -1,8 +1,9 @@
 // adapted from radix-ui popper
 
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { isAndroid, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import type { ScopedProps, SizeTokens, StackProps } from '@tamagui/core'
+import { debounce } from '@tamagui/use-debounce'
 import {
   Stack,
   View as TamaguiView,
@@ -47,6 +48,7 @@ export type PopperContextValue = UseFloatingReturn & {
   placement?: Placement
   arrowRef: any
   onArrowSize?: (val: number) => void
+  hasFloating: boolean
   arrowStyle?: Partial<Coords> & {
     centerOffset: number
   }
@@ -68,6 +70,20 @@ export type PopperProps = {
 }
 
 type ScopedPopperProps<P> = ScopedProps<P, 'Popper'>
+
+const checkFloating =
+  process.env.TAMAGUI_TARGET === 'native'
+    ? {
+        name: 'checkFloating',
+        fn(data: any) {
+          return {
+            data: {
+              hasFloating: !!data.rects.floating.width,
+            },
+          }
+        },
+      }
+    : undefined
 
 export function Popper(props: ScopedPopperProps<PopperProps>) {
   const {
@@ -97,6 +113,7 @@ export function Popper(props: ScopedPopperProps<PopperProps>) {
       allowFlip ? flip(typeof allowFlip === 'boolean' ? {} : allowFlip) : (null as any),
       arrowEl ? arrow({ element: arrowEl }) : (null as any),
       typeof offsetOptions !== 'undefined' ? offsetFn(offsetOptions) : (null as any),
+      checkFloating,
     ].filter(Boolean),
   })
 
@@ -151,6 +168,7 @@ export function Popper(props: ScopedPopperProps<PopperProps>) {
     onArrowSize: setArrowSize,
     isMounted,
     scope: __scopePopper,
+    hasFloating: middlewareData.checkFloating?.hasFloating,
     ...floating,
   }
 
@@ -251,8 +269,24 @@ export const PopperContent = React.forwardRef<
     isMounted,
     update,
     floatingStyles,
+    hasFloating,
   } = usePopperContext(__scopePopper)
   const contentRefs = useComposedRefs<any>(refs.setFloating, forwardedRef)
+
+  let finalHasFloatingValue = false
+  if (isAndroid) {
+    const initialRender = React.useRef(true)
+    const finalHasFloating = React.useRef(false)
+
+    if (hasFloating === false) {
+      initialRender.current = false
+    }
+
+    if (!initialRender.current) {
+      finalHasFloating.current = hasFloating
+    }
+    finalHasFloatingValue = finalHasFloating.current
+  }
 
   const contents = React.useMemo(() => {
     return (
@@ -285,6 +319,19 @@ export const PopperContent = React.forwardRef<
     return null
   }
 
+  let show = true
+  let setShow = undefined as any
+
+  if (isAndroid) {
+    ;[show, setShow] = React.useState(false)
+
+    React.useEffect(() => {
+      if (finalHasFloatingValue) {
+        setShow(true)
+      }
+    }, [finalHasFloatingValue, x, y])
+  }
+
   const frameProps = {
     ref: contentRefs,
     x: x || 0,
@@ -292,6 +339,7 @@ export const PopperContent = React.forwardRef<
     top: 0,
     left: 0,
     position: strategy,
+    opacity: show ? 1 : 0,
     ...(enableAnimationForPositionChange && {
       // apply animation but disable it on initial render to avoid animating from 0 to the first position
       animation: rest.animation,
