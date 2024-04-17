@@ -59,7 +59,11 @@ function getLinearGradientBackgroundImage(
   width = 1,
   height = 1
 ) {
-  const gradientColors = calculateGradientColors(colors, locations)
+  const gradientColors = calculateGradientColors(
+    // @ts-expect-error TODO fix numbers
+    colors,
+    locations
+  )
   const angle = calculatePseudoAngle(width, height, startPoint, endPoint)
   return `linear-gradient(${angle}deg, ${gradientColors.join(', ')})`
 }

@@ -125,14 +125,33 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
             'worklet'
             return sharedValue.value
           },
-          setValue(next, config = { type: 'spring' }) {
+          setValue(next, config = { type: 'spring' }, onFinish) {
             'worklet'
             if (config.type === 'direct') {
               sharedValue.value = next
+              onFinish?.()
             } else if (config.type === 'spring') {
-              sharedValue.value = withSpring(next, config)
+              sharedValue.value = withSpring(
+                next,
+                config,
+                onFinish
+                  ? () => {
+                      'worklet'
+                      runOnJS(onFinish)()
+                    }
+                  : undefined
+              )
             } else {
-              sharedValue.value = withTiming(next, config)
+              sharedValue.value = withTiming(
+                next,
+                config,
+                onFinish
+                  ? () => {
+                      'worklet'
+                      runOnJS(onFinish)()
+                    }
+                  : undefined
+              )
             }
           },
           stop() {

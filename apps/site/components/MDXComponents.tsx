@@ -333,7 +333,7 @@ export const components = {
 
   a: ({ href = '', children, ...props }) => {
     return (
-      <NextLink className="link" href={href}>
+      <NextLink className="link" href={href} passHref>
         {/* @ts-ignore */}
         <Paragraph
           tag="a"

@@ -1,10 +1,10 @@
 Nate:
 
-- Popover click outside prop + check if uncontrolled works
-- Add Rofi to Takeout/Supabase/Stripe/Vercel
-- Rofi - list of up-next todos
+- Popover click outside prop
 
 ---
+
+- data-disable-theme is being passed down on web snapshots
 
 - 2.0 = redo/remove ThemeableStack
 - v3 themes: all of the focus styles in the default v3 config are kind of wack
