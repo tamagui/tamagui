@@ -13,12 +13,9 @@ export function apiOssBentoRoute(handler: NextApiHandler) {
 
     const codePath = slugsArray.join('/')
 
-    console.log('codePath', codePath)
     if (!OSS_COMPONENTS.includes(slugsArray[slugsArray.length - 1])) {
-      console.log('before handler(req,res)', handler)
       return handler(req, res)
     }
-      console.log('after handler(req,res)', handler)
 
     try {
       const fileResult = await getBentoCode(codePath)
