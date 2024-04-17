@@ -7,7 +7,7 @@ Check out the [source for this site](https://github.com/tamagui/tamagui/tree/mas
 
 ## Install
 
-<Notice>
+<Notice theme="green">
   Running `npm create tamagui` let's you choose the `starter-free` starter which is a very nicely configured Next.js app where you can take or leave whatever you want.
 </Notice>
 
@@ -21,13 +21,8 @@ Choose Next.js routing option:
 
 <Spacer size="$4" />
 
-<InlineTabs id="router" defaultValue="pages">
-<InlineTabs.List>
-  <InlineTabs.Tab value="pages">Pages router</InlineTabs.Tab>
-  {  /* <InlineTabs.Tab value="app">App router</InlineTabs.Tab> */}
-</InlineTabs.List>
+## Pages router
 
-<InlineTabs.Content value="pages">
 ### next.config.js
 
 To configure Tamagui for Next.js, you'll want to add the `@tamagui/next-plugin` and set it up in your next config. See the [compiler install docs](/docs/intro/compiler-install) for more options.
@@ -61,7 +56,9 @@ module.exports = function (name, { defaultConfig }) {
 
 #### Performance
 
-Use `outputCSS` for better performance by generating CSS styles in build-time.
+<Notice theme="green">
+  Use `outputCSS` for better performance by generating CSS styles in build-time.
+</Notice>
 
 Add `outputCSS` to your `next.config.js`:
 
@@ -236,15 +233,6 @@ If you are using `outputCSS` option in [next.config.js](/docs/guides/next-js?#ne
 </head>
 ```
 
-</InlineTabs.Content>
-
-<InlineTabs.Content value="app">
-Test
-</InlineTabs.Content>
-</InlineTabs>
-
-
-
 ## Themes
 
 We've created a package that works with Tamagui to properly support SSR light/dark themes that also respect user system preference, called `@tamagui/next-theme`. It assumes your `light`/`dark` themes are named as such, but you can override it. This is pre-configured in the create-tamagui starter.
@@ -348,7 +336,7 @@ Add this to your [_app.tsx](/docs/guides/next-js?#pages_apptsx) render output:
 
 ## Server components
 
-Tamagui includes Server Components support for the Next.js app directory with `use client` support. We're working on a mode with limitations that enables full server support.
+Tamagui includes Server Components support for the Next.js app directory with `use client` support. We're also actively working on a new mode that enables full server-side support with some limitations.
 
 Create a new component:
 
@@ -376,7 +364,9 @@ export function NextTamaguiProvider({ children }) {
 
 ```
 
-The new `getNewCSS` helper in Tamagui will keep track of the last call and only return new styles generated since the last usage.
+### Advanced optimization
+
+The `getNewCSS` helper in Tamagui will keep track of the last call and only return new styles generated since the last usage.
 
 And then use it in your `app/layout.tsx` like this:
 

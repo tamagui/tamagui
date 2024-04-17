@@ -27,7 +27,7 @@ import { Code } from './Code'
 import { ErrorBoundary } from './ErrorBoundary'
 import { Pre } from './Pre'
 import { RowingTabs } from './RowingTabs'
-import { getBashText } from './getBashText'
+import { getBashCommand } from '@lib/getBashCommand'
 
 class CollapseStore {
   isCollapsed: boolean
@@ -67,55 +67,25 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
   const copyTimeoutValue = useGradualIncrease(hasCopied, timeout)
   const showLineNumbers = showLineNumbersIn ?? (lines > 10 ? true : false)
 
-  const bashText = getBashText(children)[0]
-  const [command, setCommand] = useState('')
-  const isBash = className === 'language-bash'
-  const isPackage = bashText.startsWith('yarn')
-  const isPackageRunner = bashText.startsWith('npx')
-  const isStarter = bashText.startsWith('npm create')
-  const isTerminal = isBash && !isPackage && !isPackageRunner && !isStarter
-  const packageToInstall = bashText.split(' ').splice(2).join(' ')
-  const packageToRun = bashText.split(' ').splice(1).join(' ')
-
-  const commands = {
-    bun: 'bun add',
-    npm: 'npm install',
-    pnpm: 'pnpm install',
-    npx: 'npx',
-    bunx: 'bunx',
-    default: 'yarn add',
-  }
-
-  const handleTabChange = (tab: string) => {
-    setCommand(commands[tab] || commands.default)
-  }
-
-  const getCommand = (command: string, code: string, isPackage: boolean) => {
-    const codeParts = code.split(' ')
-    const spliceIndex = isPackage ? 2 : 1
-    return `${command} ${codeParts.splice(spliceIndex).join(' ')}`
-  }
+  const { isTerminal, showFileName, command, getCode, handleTabChange } = getBashCommand(
+    children,
+    className,
+    fileName
+  )
 
   // const frontmatter = useContext(FrontmatterContext)
 
   const isPreVisible = !isCollapsed || !isCollapsible
 
   useEffect(() => {
+    // console.log(storedTab)
     try {
       if (preRef.current && isPreVisible) {
         const codeElement = preRef.current.querySelector('code')
         if (codeElement) {
           // remove double line breaks
-          const code = codeElement.innerText.replace(/\n{3,}/g, '\n')
-          if (isBash) {
-            if (isTerminal || isStarter) {
-              setCode(code)
-            } else {
-              setCode(getCommand(command, code, isPackage))
-            }
-          } else {
-            setCode(code)
-          }
+          const codeExtract = codeElement.innerText.replace(/\n{3,}/g, '\n')
+          setCode(getCode(codeExtract))
         } else {
           // not collapsible
         }
@@ -210,10 +180,8 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
               // @ts-ignore
               id={id}
               jc="center"
-              bw="$1"
-              bc="$black1"
             >
-              {(fileName || isTerminal) && (
+              {showFileName && (
                 <XStack
                   ai="center"
                   gap="$2"
@@ -236,7 +204,12 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                 </XStack>
               )}
 
-              <RowingTabs enabled={isBash && !isTerminal} onTabChange={handleTabChange}>
+              <RowingTabs
+                onTabChange={handleTabChange}
+                className={className}
+                size={size}
+                {...rest}
+              >
                 <ScrollView
                   style={{ width: '100%' }}
                   contentContainerStyle={{ minWidth: '100%' }}
@@ -253,11 +226,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                     lineHeight={size ?? '$5'}
                     {...rest}
                   >
-                    {isPackage
-                      ? `${command} ${packageToInstall}`
-                      : // : isPackageRunner
-                        //   ? `${command} ${packageToRun}`
-                        children}
+                    {children}
                   </Code>
                 </ScrollView>
               </RowingTabs>
@@ -269,7 +238,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                   position="absolute"
                   aria-label="Copy code to clipboard"
                   size="$2"
-                  top={fileName || isTerminal ? '$3' : '$3.5'}
+                  top={showFileName ? '$3' : '$3.5'}
                   right="$3"
                   display="inline-flex"
                   icon={hasCopied ? CheckCircle : Copy}
@@ -291,7 +260,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
               t={isLong && '$0'}
               l="$2"
               r="$2"
-              bg="$black1"
+              bg="transparent"
               rotate="180deg"
               animation="quickest"
             >

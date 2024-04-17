@@ -1,26 +1,78 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { ViewProps, TabLayout, TabsTabProps } from 'tamagui'
-import { Avatar } from 'tamagui'
+import { Avatar, styled } from 'tamagui'
 import { AnimatePresence, Paragraph, Tabs, YStack } from 'tamagui'
-import { getBashText } from './getBashText'
+import { getBashCommand } from '@lib/getBashCommand'
+import { Code } from './Code'
 
-export function RowingTabs({ enabled = false, onTabChange, children }) {
+export function RowingTabs({ className, onTabChange, children, size, ...rest }) {
+  const { isStarter, isPackageRunner, showTabs, command, handleTabChange } =
+    getBashCommand(children, className, false)
+
   const [tabState, setTabState] = useState<{
     currentTab: string
     // Layout of the Tab user might intend to select (hovering / focusing)
     intentAt: TabLayout | null
     // Layout of the Tab user selected
     activeAt: TabLayout | null
+    // Used to get the direction of activation for animating the active indicator
+    prevActiveAt: TabLayout | null
   }>({
-    activeAt: null,
-    currentTab: getBashText(children)[0].startsWith('npx') ? 'npx' : 'yarn',
+    currentTab: isStarter ? 'npm' : isPackageRunner ? 'npx' : 'yarn',
     intentAt: null,
+    activeAt: null,
+    prevActiveAt: null,
   })
 
-  const setCurrentTab = (currentTab: string) => setTabState({ ...tabState, currentTab })
+  // Update the currentTab localStorage after the component has mounted
+  useEffect(() => {
+    const storedTab = isPackageRunner
+      ? localStorage.getItem('bashPkgRunTab')
+      : localStorage.getItem('bashPkgInstallTab')
+
+    if (storedTab) {
+      setTabState((prevState) => ({
+        ...prevState,
+        currentTab: storedTab,
+      }))
+
+      onTabChange(storedTab)
+      handleTabChange(storedTab)
+    }
+  }, [])
+
+  const setCurrentTab = (currentTab: string) => {
+    setTabState({ ...tabState, currentTab })
+    onTabChange(currentTab)
+    handleTabChange(currentTab)
+
+    // Update the currentTab localStorage if tab changes
+    isPackageRunner
+      ? localStorage.setItem('bashPkgRunTab', currentTab)
+      : localStorage.setItem('bashPkgInstallTab', currentTab)
+  }
+
   const setIntentIndicator = (intentAt) => setTabState({ ...tabState, intentAt })
-  const setActiveIndicator = (activeAt) => setTabState({ ...tabState, activeAt })
-  const { activeAt, intentAt, currentTab } = tabState
+  const setActiveIndicator = (activeAt) =>
+    setTabState({ ...tabState, prevActiveAt: tabState.activeAt, activeAt })
+  const { activeAt, intentAt, prevActiveAt, currentTab } = tabState
+
+  /**
+   * -1: from left
+   *  0: n/a
+   *  1: from right
+   */
+  const direction = (() => {
+    if (!activeAt || !prevActiveAt || activeAt.x === prevActiveAt.x) {
+      return 0
+    }
+    return activeAt.x > prevActiveAt.x ? -1 : 1
+  })()
+
+  const enterVariant =
+    direction === 1 ? 'isLeft' : direction === -1 ? 'isRight' : 'defaultFade'
+  const exitVariant =
+    direction === 1 ? 'isRight' : direction === -1 ? 'isLeft' : 'defaultFade'
 
   const handleOnInteraction: TabsTabProps['onInteraction'] = (type, layout) => {
     if (type === 'select') {
@@ -30,13 +82,9 @@ export function RowingTabs({ enabled = false, onTabChange, children }) {
     }
   }
 
-  useEffect(() => {
-    onTabChange(currentTab)
-  }, [currentTab])
-
   return (
     <>
-      {enabled ? (
+      {showTabs ? (
         <Tabs
           activationMode="manual"
           orientation="horizontal"
@@ -81,137 +129,87 @@ export function RowingTabs({ enabled = false, onTabChange, children }) {
                 br="$4"
                 animation="100ms"
               >
-                {getBashText(children)[0].startsWith('npm create') ? (
+                {isStarter ? (
+                  <Tab pkgManager="npm" onInteraction={handleOnInteraction} />
+                ) : isPackageRunner ? (
                   <>
-                    <Tabs.Tab
-                      unstyled
-                      pl="$2"
-                      pr="$2.5"
-                      py="$1.5"
-                      gap="$1.5"
-                      value="npm"
+                    <Tab
+                      pkgManager="npx"
+                      logo="npm"
                       onInteraction={handleOnInteraction}
-                    >
-                      <Avatar size="$1" br="$2">
-                        <Avatar.Image scale={0.8} src="/logos/npm.svg" />
-                        <Avatar.Fallback bg="$color6" bc="$color8" />
-                      </Avatar>
-                      <Paragraph col="$white1">npm</Paragraph>
-                    </Tabs.Tab>
-                  </>
-                ) : getBashText(children)[0].startsWith('npx') ? (
-                  <>
-                    <Tabs.Tab
-                      unstyled
-                      pl="$2"
-                      pr="$2.5"
-                      py="$1.5"
-                      gap="$1.5"
-                      value="npx"
+                    />
+                    <Tab
+                      pkgManager="bunx"
+                      logo="bun"
                       onInteraction={handleOnInteraction}
-                    >
-                      <Avatar size="$1" br="$2">
-                        <Avatar.Image scale={0.8} src="/logos/npm.svg" />
-                        <Avatar.Fallback bg="$color6" bc="$color8" />
-                      </Avatar>
-                      <Paragraph col="$white1">npx</Paragraph>
-                    </Tabs.Tab>
-
-                    {/* <Tabs.Tab
-                      unstyled
-                      pl="$2"
-                      pr="$2.5"
-                      py="$1.5"
-                      gap="$1.5"
-                      value="bunx"
-                      onInteraction={handleOnInteraction}
-                    >
-                      <Avatar size="$1" br="$2">
-                        <Avatar.Image scale={0.8} src="/logos/bun.svg" />
-                        <Avatar.Fallback bg="$color6" bc="$color8" />
-                      </Avatar>
-                      <Paragraph col="$white1">bunx</Paragraph>
-                    </Tabs.Tab> */}
+                    />
                   </>
                 ) : (
                   <>
-                    <Tabs.Tab
-                      unstyled
-                      pl="$2"
-                      pr="$2.5"
-                      py="$1.5"
-                      gap="$1.5"
-                      value="yarn"
-                      onInteraction={handleOnInteraction}
-                    >
-                      <Avatar size="$1" br="$2">
-                        <Avatar.Image scale={0.8} src="/logos/yarn.svg" />
-                        <Avatar.Fallback bg="$color6" bc="$color8" />
-                      </Avatar>
-                      <Paragraph col="$white1">yarn</Paragraph>
-                    </Tabs.Tab>
-
-                    <Tabs.Tab
-                      unstyled
-                      pl="$2"
-                      pr="$2.5"
-                      py="$1.5"
-                      gap="$1.5"
-                      value="bun"
-                      onInteraction={handleOnInteraction}
-                    >
-                      <Avatar size="$1" br="$2">
-                        <Avatar.Image scale={0.8} src="/logos/bun.svg" />
-                        <Avatar.Fallback bg="$color6" bc="$color8" />
-                      </Avatar>
-                      <Paragraph col="$white1">bun</Paragraph>
-                    </Tabs.Tab>
-
-                    <Tabs.Tab
-                      unstyled
-                      pl="$2"
-                      pr="$2.5"
-                      py="$1.5"
-                      gap="$1.5"
-                      value="npm"
-                      onInteraction={handleOnInteraction}
-                    >
-                      <Avatar size="$1" br="$2">
-                        <Avatar.Image scale={0.8} src="/logos/npm.svg" />
-                        <Avatar.Fallback bg="$color6" bc="$color8" />
-                      </Avatar>
-                      <Paragraph col="$white1">npm</Paragraph>
-                    </Tabs.Tab>
-
-                    <Tabs.Tab
-                      unstyled
-                      pl="$2"
-                      pr="$2.5"
-                      py="$1.5"
-                      gap="$1.5"
-                      value="pnpm"
-                      onInteraction={handleOnInteraction}
-                    >
-                      <Avatar size="$1" br="$2">
-                        <Avatar.Image scale={0.8} src="/logos/pnpm.svg" />
-                        <Avatar.Fallback bg="$color6" bc="$color8" />
-                      </Avatar>
-                      <Paragraph col="$white1">pnpm</Paragraph>
-                    </Tabs.Tab>
+                    <Tab pkgManager="yarn" onInteraction={handleOnInteraction} />
+                    <Tab pkgManager="bun" onInteraction={handleOnInteraction} />
+                    <Tab pkgManager="npm" onInteraction={handleOnInteraction} />
+                    <Tab pkgManager="pnpm" onInteraction={handleOnInteraction} />
                   </>
                 )}
               </Tabs.List>
             </YStack>
 
-            <Tabs.Content value={currentTab} forceMount>
-              {children}
-            </Tabs.Content>
+            <AnimatePresence
+              exitBeforeEnter
+              enterVariant={enterVariant}
+              exitVariant={exitVariant}
+            >
+              <AnimatedYStack key={currentTab} f={1} x={0} o={1} animation="100ms">
+                <Tabs.Content value={currentTab} forceMount>
+                  <Code
+                    p="$4"
+                    backgroundColor="transparent"
+                    f={1}
+                    className={className}
+                    size={size ?? '$5'}
+                    lineHeight={size ?? '$5'}
+                    {...rest}
+                  >
+                    {command}
+                  </Code>
+                </Tabs.Content>
+              </AnimatedYStack>
+            </AnimatePresence>
           </YStack>
         </Tabs>
       ) : (
         children
       )}
     </>
+  )
+}
+
+function Tab({
+  pkgManager,
+  logo,
+  onInteraction,
+}: {
+  pkgManager: string
+  logo?: string
+  onInteraction: TabsTabProps['onInteraction']
+}) {
+  return (
+    <Tabs.Tab
+      unstyled
+      pl="$2"
+      pr="$2.5"
+      py="$1.5"
+      gap="$1.5"
+      value={pkgManager}
+      onInteraction={onInteraction}
+    >
+      <Avatar size="$1" br="$2">
+        <Avatar.Image scale={0.8} src={`/logos/${logo ?? pkgManager}.svg`} />
+        <Avatar.Fallback bg="$color6" bc="$color8" />
+      </Avatar>
+      <Paragraph col="$white1">{pkgManager}</Paragraph>
+    </Tabs.Tab>
   )
 }
 
@@ -237,3 +235,11 @@ function TabIndicator({ active, ...props }: { active?: boolean } & ViewProps) {
     />
   )
 }
+
+const AnimatedYStack = styled(YStack, {
+  variants: {
+    isLeft: { true: { x: -25, o: 0 } },
+    isRight: { true: { x: -25, o: 0 } },
+    defaultFade: { true: { o: 0 } },
+  } as const,
+})
