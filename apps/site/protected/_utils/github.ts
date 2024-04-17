@@ -162,6 +162,11 @@ export const whitelistBentoUsernames = new Set([
 
   // stephen_S
   'Stephen-Song',
+
+  // closedloop:
+  'wongk',
+  'dakotaodell',
+  'dougzor',
 ])
 
 export const whitelistGithubUsernames = [
