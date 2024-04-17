@@ -1,8 +1,6 @@
 Nate:
 
-- Popover click outside prop + check if uncontrolled works
-- Add Rofi to Takeout/Supabase/Stripe/Vercel
-- Rofi - list of up-next todos
+- Popover click outside prop
 
 ---
 
