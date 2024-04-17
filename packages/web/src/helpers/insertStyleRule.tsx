@@ -352,7 +352,7 @@ export function insertStyleRules(rulesToInsert: RulesToInsert) {
     updateRules(identifier, rules)
 
     for (const rule of rules) {
-      if (process.env.NODE_ENV === 'production') {
+      if (process.env.NODE_ENV !== 'production') {
         sheet.insertRule(rule, sheet.cssRules.length)
       } else {
         try {
