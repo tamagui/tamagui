@@ -1310,7 +1310,7 @@ interface ExtraStyleProps {
    * set this to `false` and it will pass through to the next animated child.
    */
   animatePresence?: boolean
-
+  scrollbarWidth?: Properties['scrollbarWidth']
   /**
    * The point at which transforms originate from.
    */
