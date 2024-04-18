@@ -1,10 +1,10 @@
 import { useState } from 'react'
-import { ChevronRight } from '@tamagui/lucide-icons'
-import { Avatar, Card, H5, Paragraph, XStack, YStack } from 'tamagui'
+import { Box, ChevronRight } from '@tamagui/lucide-icons'
+import { Avatar, Card, H5, Paragraph, View, XStack, YStack } from 'tamagui'
 import { NextLink } from 'components/NextLink'
 import { ThemeTintAlt } from '@tamagui/logo'
 
-export function AvatarCard({ title, subtitle, img, link, colorOffset, ...props }) {
+export function LogoCard({ title, subtitle, img, icon, link, colorOffset, ...props }) {
   const [isHovered, setHovered] = useState(false)
 
   return (
@@ -34,10 +34,24 @@ export function AvatarCard({ title, subtitle, img, link, colorOffset, ...props }
                 </Paragraph>
               </YStack>
 
-              <Avatar br="$true" size="$3" p="$3" bg="$color6">
-                <Avatar.Image scale={0.6} src={img} />
-                <Avatar.Fallback bg="$color6" bc="$color8" />
-              </Avatar>
+              {icon ? (
+                <View
+                  ai="center"
+                  jc="center"
+                  h="$3"
+                  w="$3"
+                  theme="alt1"
+                  bg="$color6"
+                  br="$true"
+                >
+                  {icon}
+                </View>
+              ) : (
+                <Avatar br="$true" size="$3" p="$3" bg="$color6">
+                  <Avatar.Image scale={0.6} src={img} />
+                  <Avatar.Fallback bg="$color6" bc="$color8" />
+                </Avatar>
+              )}
             </XStack>
           </Card.Header>
 

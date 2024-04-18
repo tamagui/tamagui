@@ -1,5 +1,12 @@
 import { TamaguiLogo, ThemeTint, ThemeTintAlt } from '@tamagui/logo'
-import { CheckCircle, ChevronRight, Copy, Link as LinkIcon } from '@tamagui/lucide-icons'
+import {
+  Box,
+  CheckCircle,
+  ChevronRight,
+  Copy,
+  File,
+  Link as LinkIcon,
+} from '@tamagui/lucide-icons'
 import { NextLink } from 'components/NextLink'
 import { useRouter } from 'next/router'
 import React, { forwardRef, useState } from 'react'
@@ -32,7 +39,7 @@ import {
 import { LinearGradient } from 'tamagui/linear-gradient'
 
 import { useClipboard } from '../lib/useClipboard'
-import { AvatarCard } from './AvatarCard'
+import { LogoCard } from './LogoCard'
 import { BenchmarkChart } from './BenchmarkChart'
 import { BenchmarkChartNative } from './BenchmarkChartNative'
 import { BenchmarkChartWeb } from './BenchmarkChartWeb'
@@ -271,7 +278,15 @@ export const components = {
   Grid: (props) => <XStack flexWrap="wrap" jc="space-between" {...props} />,
   Card: TamaguiCard,
 
-  AvatarCard: AvatarCard,
+  LogoCard: LogoCard,
+  NextJSRouterCard: (props) => {
+    return (
+      <LogoCard
+        icon={props.title.startsWith('Pages') ? <File size="$1" /> : <Box size="$1" />}
+        {...props}
+      />
+    )
+  },
 
   Note: (props) => (
     <YStack
