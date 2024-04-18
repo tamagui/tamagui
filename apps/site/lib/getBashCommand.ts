@@ -18,17 +18,17 @@ export function getBashCommand(children, className) {
 
   const isBash = className === 'language-bash'
   const isPackage = Object.values(pkgCommands).some((command) =>
-    bashText.startsWith(command)
+    bashText?.startsWith(command)
   )
   const isPackageRunner = Object.values(pkgRunCommands).some((command) =>
-    bashText.startsWith(command)
+    bashText?.startsWith(command)
   )
 
-  const isStarter = bashText.startsWith('npm create')
+  const isStarter = bashText?.startsWith('npm create')
   const isTerminal = isBash && !isPackage && !isPackageRunner && !isStarter
 
-  const packageToInstall = bashText.split(' ').splice(2).join(' ')
-  const packageToRun = bashText.split(' ').splice(1).join(' ')
+  const packageToInstall = bashText?.split(' ').splice(2).join(' ')
+  const packageToRun = bashText?.split(' ').splice(1).join(' ')
 
   const [command, setCommand] = useState(
     isStarter ? bashText : isPackage ? `yarn ${packageToInstall}` : `npx ${packageToRun}`

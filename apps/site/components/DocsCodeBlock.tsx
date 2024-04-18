@@ -250,7 +250,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                   animation="quicker"
                   enterStyle={{ x: 5, o: 0 }}
                   exitStyle={{ x: 5, o: 0 }}
-                  onPress={() => setIsCutoff(!isCutoff)}
+                  onPress={() => setIsCutoff(true)}
                   $xs={{
                     display: 'none',
                   }}
@@ -284,8 +284,8 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
               pos="absolute"
               zi={1001}
               w="auto"
-              b={!isLong && '$0'}
-              t={isLong && '$0'}
+              b={(!isLong || isCutoff) && '$0'}
+              t={isLong && !isCutoff && '$0'}
               l="$2"
               r="$2"
               bg="transparent"
