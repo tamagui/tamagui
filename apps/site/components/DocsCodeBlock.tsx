@@ -293,7 +293,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
               rotate="180deg"
               animation="quickest"
             >
-              <Progress.Indicator bg="$color8" animation="quickest" />
+              <Progress.Indicator bg="$color8" />
             </Progress>
           </YStack>
         )}
