@@ -9,33 +9,86 @@ demoName: RadioGroup
 
 # RadioGroup
 
-<Description>Use in a form to allow selecting one option from multiple</Description>
+<Description>
+In a form, allow selecting one option from multiple
+</Description>
 
-<HeroContainer>
-  <RadioGroupDemo />
+
+<Tabs id="type" defaultValue="styled">
+<Tabs.List>
+  <TooltipSimple label="With Tamagui's default styles">
+    <Tabs.Tab value="styled">Styled</Tabs.Tab>
+  </TooltipSimple>
+  <TooltipSimple label="No dependency on Tamagui's core">
+    <Tabs.Tab value="headless" label="No styles and no dependency on Tamagui's styling">Headless</Tabs.Tab>
+  </TooltipSimple>
+</Tabs.List>
+
+<HeroContainer showAnimationDriverControl>
+  <Tabs.Content
+    value="styled"
+    justifyContent="center"
+    alignItems="center"
+    width="100%"
+  >
+    <RadioGroupDemo />
+  </Tabs.Content>
+  <Tabs.Content
+    value="headless"
+    justifyContent="center"
+    alignItems="center"
+    width="100%"
+  >
+    <RadioGroupHeadlessDemo />
+  </Tabs.Content>
 </HeroContainer>
 
-```tsx hero template=RadioGroup
+<Tabs.Content value="styled">
+  ```tsx hero template=RadioGroup
 
-```
+````
+</Tabs.Content>
+<Tabs.Content value="headless">
+  ```tsx hero template=RadioGroupHeadless
+
+````
+</Tabs.Content>
 
 <Highlights
-  features={[
-    `Accessible, easy to compose and customize.`,
-    `Sizable & works controlled or uncontrolled.`,
-    `Ability to opt-out to native radio button on web.`,
-  ]}
+features={[
+  `Accessible, easy to compose and customize.`,
+  `Sizable & works controlled or uncontrolled.`,
+  `Ability to opt-out to native radio button on web.`,
+]}
 />
 
 ## Installation
 
+<Tabs.Content value="styled">
 RadioGroup is already installed in `tamagui`, or you can install it independently:
 
 ```bash
 npm install @tamagui/radio-group
+````
+
+</Tabs.Content>
+
+<Tabs.Content value="headless">
+
+To use the headless radio group, you want to import it from the
+`@tamagui/radio-headless` package. This package has no dependency on
+`@tamagui/core`, but still works off the react-native APIs.
+This means can bring your own style library.
+
+```bash
+npm install @tamagui/radio-headless
 ```
 
+</Tabs.Content>
+
 ## Usage
+
+<Tabs.Content value="styled">
 
 ```tsx
 import { RadioGroup } from 'tamagui'
@@ -51,6 +104,20 @@ export default () => (
   </RadioGroup>
 )
 ```
+
+</Tabs.Content>
+
+<Tabs.Content value="headless">
+
+Using the `useRadioGroup` and `useRadioGroupItem` API, you can make your own RadioGroup from scratch.
+
+```tsx template=RadioGroupHeadless
+
+```
+
+</Tabs.Content>
+
+<Tabs.Content value="styled">
 
 ## API Reference
 
@@ -151,3 +218,7 @@ RadioGroup.Indicator appears only when the parent Item is checked. it extends [T
     },
   ]}
 />
+
+</Tabs.Content>
+
+</Tabs>
