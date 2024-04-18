@@ -1,7 +1,7 @@
 import { getBashText } from '@components/getBashText'
 import { useState } from 'react'
 
-export function getBashCommand(children, className, fileName) {
+export function getBashCommand(children, className) {
   const bashText = getBashText(children)[0]
 
   const pkgCommands = {
@@ -34,7 +34,6 @@ export function getBashCommand(children, className, fileName) {
     isStarter ? bashText : isPackage ? `yarn ${packageToInstall}` : `npx ${packageToRun}`
   )
 
-  const showFileName = fileName || isTerminal
   const showTabs = isBash && !isTerminal
 
   const commands = {
@@ -68,7 +67,6 @@ export function getBashCommand(children, className, fileName) {
     isTerminal,
     isStarter,
     isPackageRunner,
-    showFileName,
     showTabs,
     command,
     getCode,

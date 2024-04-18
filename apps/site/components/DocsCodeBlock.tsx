@@ -17,7 +17,6 @@ import {
   Progress,
   Spacer,
   TooltipSimple,
-  View,
   XStack,
   YStack,
 } from 'tamagui'
@@ -49,9 +48,9 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
     className,
     children,
     id,
-    showFull = true,
-    fileName,
     isHero = false,
+    showMore = false,
+    fileName = undefined,
     isHighlightingLines,
     showLineNumbers: showLineNumbersIn,
     disableCopy,
@@ -60,21 +59,21 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
   } = props
   const lines = Array.isArray(children) ? children.length : 0
   const isCollapsible = isHero || props.isCollapsible
-  const store = useStore(CollapseStore, { isCollapsed: showFull })
+  const store = useStore(CollapseStore, { isCollapsed: showMore })
   const { isCollapsed, setIsCollapsed } = store
   const isLong = lines > 22
-  const [isCutoff, setIsCutoff] = useState(isLong && showFull)
+  const [isCutoff, setIsCutoff] = useState(isLong && !showMore)
   const [code, setCode] = useState<string | undefined>(undefined)
   const preRef = useRef<any>(null)
   const { hasCopied, onCopy, value, timeout } = useClipboard(code)
   const copyTimeoutValue = useGradualIncrease(hasCopied, timeout)
   const showLineNumbers = showLineNumbersIn ?? (lines > 10 ? true : false)
 
-  const { isTerminal, showFileName, command, getCode, handleTabChange } = getBashCommand(
+  const { isTerminal, command, getCode, handleTabChange } = getBashCommand(
     children,
-    className,
-    fileName
+    className
   )
+  const showFileName = fileName || isTerminal
 
   // const frontmatter = useContext(FrontmatterContext)
 
@@ -236,7 +235,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
             </Pre>
 
             <AnimatePresence>
-              {isLong && !isCutoff && (
+              {isLong && !isCutoff && fileName && (
                 <Button
                   position="absolute"
                   aria-label="Collapse code block"

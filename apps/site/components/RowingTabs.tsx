@@ -7,7 +7,7 @@ import { Code } from './Code'
 
 export function RowingTabs({ className, onTabChange, children, size, ...rest }) {
   const { isStarter, isPackageRunner, showTabs, command, handleTabChange } =
-    getBashCommand(children, className, false)
+    getBashCommand(children, className)
 
   const [tabState, setTabState] = useState<{
     currentTab: string

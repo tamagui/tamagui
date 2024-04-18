@@ -112,6 +112,7 @@ const Table = ({ heading, children, ...props }) => {
 
 const code = (props) => {
   const {
+    showMore,
     hero,
     line,
     scrollable,
@@ -131,6 +132,7 @@ const code = (props) => {
         isHighlightingLines={line !== undefined}
         className={className}
         isHero={hero !== undefined}
+        showMore={showMore !== undefined}
         showLineNumbers={showLineNumbers !== undefined}
         {...rest}
       >
