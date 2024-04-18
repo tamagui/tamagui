@@ -57,22 +57,13 @@ export function RowingTabs({ className, onTabChange, children, size, ...rest }) 
     setTabState({ ...tabState, prevActiveAt: tabState.activeAt, activeAt })
   const { activeAt, intentAt, prevActiveAt, currentTab } = tabState
 
-  /**
-   * -1: from left
-   *  0: n/a
-   *  1: from right
-   */
+  // 1 = right, 0 = nowhere, -1 = left
   const direction = (() => {
     if (!activeAt || !prevActiveAt || activeAt.x === prevActiveAt.x) {
       return 0
     }
     return activeAt.x > prevActiveAt.x ? -1 : 1
   })()
-
-  const enterVariant =
-    direction === 1 ? 'isLeft' : direction === -1 ? 'isRight' : 'defaultFade'
-  const exitVariant =
-    direction === 1 ? 'isRight' : direction === -1 ? 'isLeft' : 'defaultFade'
 
   const handleOnInteraction: TabsTabProps['onInteraction'] = (type, layout) => {
     if (type === 'select') {
@@ -155,12 +146,8 @@ export function RowingTabs({ className, onTabChange, children, size, ...rest }) 
               </Tabs.List>
             </YStack>
 
-            <AnimatePresence
-              exitBeforeEnter
-              enterVariant={enterVariant}
-              exitVariant={exitVariant}
-            >
-              <AnimatedYStack key={currentTab} f={1} x={0} o={1} animation="100ms">
+            <AnimatePresence exitBeforeEnter custom={{ direction }} initial={false}>
+              <AnimatedYStack key={currentTab}>
                 <Tabs.Content value={currentTab} forceMount>
                   <Code
                     p="$4"
@@ -237,9 +224,25 @@ function TabIndicator({ active, ...props }: { active?: boolean } & ViewProps) {
 }
 
 const AnimatedYStack = styled(YStack, {
+  f: 1,
+  x: 0,
+  o: 1,
+
+  animation: '100ms',
   variants: {
-    isLeft: { true: { x: -25, o: 0 } },
-    isRight: { true: { x: -25, o: 0 } },
-    defaultFade: { true: { o: 0 } },
+    // 1 = right, 0 = nowhere, -1 = left
+    direction: {
+      ':number': (direction) => ({
+        enterStyle: {
+          x: direction > 0 ? -25 : -25,
+          opacity: 0,
+        },
+        exitStyle: {
+          zIndex: 0,
+          x: direction < 0 ? -25 : -25,
+          opacity: 0,
+        },
+      }),
+    },
   } as const,
 })
