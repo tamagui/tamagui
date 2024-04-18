@@ -61,102 +61,6 @@ module.exports = function (name, { defaultConfig }) {
 }
 ```
 
-#### Performance
-
-<Notice theme="green">
-  Use `outputCSS` for better performance by generating CSS styles in build-time.
-</Notice>
-
-Add `outputCSS` to your `next.config.js`:
-
-```tsx fileName="next.config.js"
-const tamaguiPlugin = withTamagui({
-  config: './tamagui.config.ts',
-  components: ['tamagui'],
-  outputCSS: process.env.NODE_ENV === 'production' ? './public/tamagui.css' : null,
-})
-```
-
-<Notice>
-  We recommend only using this for production so you get reloading during dev mode.
-</Notice>
-
-### pages/\_app.tsx
-
-#### Adding `TamaguiProvider`
-
-```tsx fileName="tamagui.config.ts"
-// Optional: add the reset to get more consistent styles across browsers
-import '@tamagui/core/reset.css'
-
-import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme'
-import { AppProps } from 'next/app'
-import Head from 'next/head'
-import React, { useMemo } from 'react'
-import { TamaguiProvider, createTamagui } from 'tamagui'
-
-import { config } from '@tamagui/config/v3'
-const tamaguiConfig = createTamagui(config)
-// you usually export this from a tamagui.config.ts file:
-// import tamaguiConfig from '../tamagui.config'
-
-// make TypeScript type everything based on your config
-type Conf = typeof tamaguiConfig
-declare module '@tamagui/core' {
-  interface TamaguiCustomConfig extends Conf {}
-}
-
-export default function App({ Component, pageProps }: AppProps) {
-  // memo to avoid re-render on dark/light change
-  const contents = useMemo(() => {
-    return <Component {...pageProps} />
-  }, [pageProps])
-
-  return (
-    <NextThemeProvider>
-      <Head>
-        <script
-          dangerouslySetInnerHTML={{
-            // avoid flash of animated things on enter:
-            __html: `document.documentElement.classList.add('t_unmounted')`,
-          }}
-        />
-      </Head>
-      <TamaguiProvider config={tamaguiConfig} disableInjectCSS disableRootThemeClass>
-        {contents}
-      </TamaguiProvider>
-    </NextThemeProvider>
-  )
-}
-
-```
-
-<Notice>
-  Because custom `getCSS()` is used in [_document.tsx](/docs/guides/next-js?#pages_documenttsx), `disableInjectCSS` is added to `TamaguiProvider`
-</Notice>
-
-And then add this if you are using the `outputCSS` option to include the CSS file generated at build-time:
-
-```tsx
-if (process.env.NODE_ENV === 'production') {
-  require('../public/tamagui.css')
-}
-```
-
-#### Reseting css
-
-There is an optional CSS reset to get more consistent styles across browsers, that helps normalize styling.
-
-You can import it into your app like so:
-
-```tsx fileName="_app.tsx"
-import '@tamagui/core/reset.css'
-```
-
-<Notice>
-  You will have to enable `isCSSEnabled` if you're using Metro as your web bundler. See [Metro guide](/docs/guides/metro#web-support).
-</Notice>
-
 ### pages/\_document.tsx
 
 You'll want to set up a `_document.tsx` and gather both the `react-native-web` style object using AppRegistry, as well as Tamagui styles using `tamaguiConfig.getCSS()` into the head element.
@@ -165,7 +69,7 @@ You'll want to set up a `_document.tsx` and gather both the `react-native-web` s
   We are only importing `react-native` here because if you use `tamagui` views like Input or Image they rely on React Native Image/Input (and therefore on the web, `react-native-web`). If you are just using core, or aren't using Image or Input in `tamagui`, you can forego the entire `AppRegistry` import and setup here. We're working on making even `tamagui` completely de-coupled from RN/RNW by building their own image and input components eventually.
 </Notice>
 
-#### Configuring `_document.tsx`
+Configure `_document.tsx`:
 
 ```tsx fileName="_document.tsx"
 import NextDocument, {
@@ -224,9 +128,102 @@ export default class Document extends NextDocument {
 }
 ```
 
-#### Using `outputCSS`
+### pages/\_app.tsx
 
-If you are using `outputCSS` option in [next.config.js](/docs/guides/next-js?#nextconfigjs), you should add `exclude` option to `getCSS()` in `_document.tsx`:
+Add `TamaguiProvider`:
+
+```tsx fileName="tamagui.config.ts"
+// Optional: add the reset to get more consistent styles across browsers
+import '@tamagui/core/reset.css'
+
+import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme'
+import { AppProps } from 'next/app'
+import Head from 'next/head'
+import React, { useMemo } from 'react'
+import { TamaguiProvider, createTamagui } from 'tamagui'
+
+import { config } from '@tamagui/config/v3'
+const tamaguiConfig = createTamagui(config)
+// you usually export this from a tamagui.config.ts file:
+// import tamaguiConfig from '../tamagui.config'
+
+// make TypeScript type everything based on your config
+type Conf = typeof tamaguiConfig
+declare module '@tamagui/core' {
+  interface TamaguiCustomConfig extends Conf {}
+}
+
+export default function App({ Component, pageProps }: AppProps) {
+  // memo to avoid re-render on dark/light change
+  const contents = useMemo(() => {
+    return <Component {...pageProps} />
+  }, [pageProps])
+
+  return (
+    <NextThemeProvider>
+      <Head>
+        <script
+          dangerouslySetInnerHTML={{
+            // avoid flash of animated things on enter:
+            __html: `document.documentElement.classList.add('t_unmounted')`,
+          }}
+        />
+      </Head>
+      <TamaguiProvider config={tamaguiConfig} disableInjectCSS disableRootThemeClass>
+        {contents}
+      </TamaguiProvider>
+    </NextThemeProvider>
+  )
+}
+```
+
+<Notice>
+  Because custom `getCSS()` is used in [_document.tsx](/docs/guides/next-js?#pages_documenttsx), `disableInjectCSS` is added to `TamaguiProvider`
+</Notice>
+
+#### Reseting css
+
+There is an optional CSS reset to get more consistent styles across browsers, that helps normalize styling.
+
+You can import it into your app like so:
+
+```tsx fileName="_app.tsx"
+import '@tamagui/core/reset.css'
+```
+
+<Notice>
+  You will have to enable `isCSSEnabled` if you're using Metro as your web bundler. See [Metro guide](/docs/guides/metro#web-support).
+</Notice>
+
+### Performance
+
+<Notice theme="green">
+  Use `outputCSS` for better performance by shaking out all the js and generating only CSS styles at build-time.
+</Notice>
+
+Add `outputCSS` to your `next.config.js`:
+
+```tsx fileName="next.config.js"
+const tamaguiPlugin = withTamagui({
+  config: './tamagui.config.ts',
+  components: ['tamagui'],
+  outputCSS: process.env.NODE_ENV === 'production' ? './public/tamagui.css' : null,
+})
+```
+
+<Notice>
+  We recommend using this only for production so you get hot reloading and easier console logging during dev mode.
+</Notice>
+
+And then add this to include the CSS file generated at build-time:
+
+```tsx fileName="_app.tsx"
+if (process.env.NODE_ENV === 'production') {
+  require('../public/tamagui.css')
+}
+```
+
+Add `exclude` option to `getCSS()` in `_document.tsx`:
 
 ```tsx fileName="_document.tsx"
 <head>
@@ -301,6 +298,7 @@ export default function App({ Component, pageProps }: AppProps) {
   )
 }
 ```
+
 <Notice>
   We recommend memo-ing children so they don't re-render.
 </Notice>

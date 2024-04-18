@@ -1,5 +1,6 @@
 import {
   CheckCircle,
+  ChevronsDownUp,
   Code2,
   Copy,
   FileCode2,
@@ -10,11 +11,13 @@ import { useStore } from '@tamagui/use-store'
 import { forwardRef, useEffect, useRef, useState } from 'react'
 import { ScrollView } from 'react-native'
 import {
+  AnimatePresence,
   Button,
   Paragraph,
   Progress,
   Spacer,
   TooltipSimple,
+  View,
   XStack,
   YStack,
 } from 'tamagui'
@@ -231,6 +234,32 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                 </ScrollView>
               </RowingTabs>
             </Pre>
+
+            <AnimatePresence>
+              {isLong && !isCutoff && (
+                <Button
+                  position="absolute"
+                  aria-label="Collapse code block"
+                  size="$2"
+                  top={showFileName ? '$3' : '$3.5'}
+                  right="$8"
+                  display="inline-flex"
+                  iconAfter={ChevronsDownUp}
+                  scaleIcon={1.25}
+                  bg="$color1"
+                  o={1}
+                  animation="quicker"
+                  enterStyle={{ x: 5, o: 0 }}
+                  exitStyle={{ x: 5, o: 0 }}
+                  onPress={() => setIsCutoff(!isCutoff)}
+                  $xs={{
+                    display: 'none',
+                  }}
+                >
+                  Show less
+                </Button>
+              )}
+            </AnimatePresence>
 
             {!disableCopy && (
               <TooltipSimple label={hasCopied ? 'Copied' : 'Copy to clipboard'}>
