@@ -13,20 +13,20 @@
   "dependencies": {
     "@leeoniya/ufuzzy": "^1.0.14",
     "@react-navigation/native": "^6.1.10",
-    "@vxrn/expo-router": "^0.1.19",
+    "@vxrn/expo-router": "^0.1.20",
     "color2k": "^2.0.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-native": "^0.73.4",
     "react-native-reanimated": "~3.6.2",
-    "tamagui": "^1.94.4",
+    "tamagui": "1.95.0-1713326412393",
     "vite-tsconfig-paths": "^4.3.2"
   },
   "devDependencies": {
-    "@tamagui/cli": "^1.94.4",
+    "@tamagui/cli": "1.95.0-1713326412393",
     "h3": "^1.11.1",
     "patch-package": "^8.0.0",
     "sirv": "^2.0.4",
-    "vxrn": "^0.1.19"
+    "vxrn": "^0.1.20"
   }
 }
