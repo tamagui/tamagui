@@ -41,7 +41,7 @@ export function useRadioGroup(params: UseRadioGroupParams) {
   })
 
   return {
-    radioGroupProviderProps: {
+    providerValue: {
       value,
       onChange: setValue,
       required,
@@ -50,12 +50,12 @@ export function useRadioGroup(params: UseRadioGroupParams) {
       native,
       accentColor,
     },
-    frameProps: {
+    frameAttrs: {
       role: 'radiogroup' as any,
       'aria-orientation': orientation,
       'data-disabled': disabled ? '' : undefined,
     },
-    rovingProps: {
+    rovingFocusGroupAttrs: {
       orientation,
       loop: true,
     },
@@ -157,7 +157,7 @@ export const useRadioGroupItem = (params: UseRadioItemParams) => {
   const isDisabled = disabled || itemDisabled
 
   return {
-    radioItemProviderProps: {
+    providerValue: {
       checked,
     },
     isFormControl,
@@ -175,7 +175,7 @@ export const useRadioGroupItem = (params: UseRadioItemParams) => {
         id={id}
       />
     ),
-    itemFrameProps: {
+    frameAttrs: {
       'data-state': getState(checked),
       'data-disabled': isDisabled ? '' : undefined,
       role: 'radio' as any,
@@ -218,7 +218,7 @@ export const useRadioGroupItem = (params: UseRadioItemParams) => {
         }),
       }),
     },
-    rovingItemProps: {
+    rovingFocusGroupAttrs: {
       asChild: 'expect-style' as boolean | 'web' | 'except-style' | 'except-style-web',
       focusable: !isDisabled,
       active: checked,

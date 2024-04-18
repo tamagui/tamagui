@@ -16,15 +16,15 @@ const RadioGroupItemContext = createContext<RadioGroupItemContextValue>({
 })
 
 export function RadioGroupHeadlessDemo() {
-  const { radioGroupProviderProps, frameProps, rovingProps } = useRadioGroup({
+  const { providerValue, frameAttrs, rovingFocusGroupAttrs } = useRadioGroup({
     orientation: 'horizontal',
     name: 'form',
     defaultValue: '3',
   })
   return (
-    <RadioGroupContext.Provider value={{ ...radioGroupProviderProps }}>
-      <RovingFocusGroup {...rovingProps}>
-        <View style={styles.radioGroup} {...frameProps}>
+    <RadioGroupContext.Provider value={providerValue}>
+      <RovingFocusGroup {...rovingFocusGroupAttrs}>
+        <View style={styles.radioGroup} {...frameAttrs}>
           <RadioGroupItem value="2" id="2" />
           <RadioGroupItem value="3" id="3" />
           <RadioGroupItem value="4" id="4" />
@@ -40,28 +40,23 @@ function RadioGroupItem(props: {
 }) {
   const theme = useTheme()
   const { value, id } = props
-  const {
-    radioItemProviderProps,
-    bubbleInput,
-    rovingItemProps,
-    itemFrameProps,
-    isFormControl,
-  } = useRadioGroupItem({
-    radioGroupContext: RadioGroupContext,
-    value,
-    id,
-  })
+  const { providerValue, bubbleInput, rovingFocusGroupAttrs, frameAttrs, isFormControl } =
+    useRadioGroupItem({
+      radioGroupContext: RadioGroupContext,
+      value,
+      id,
+    })
 
   return (
-    <RadioGroupItemContext.Provider value={{ ...radioItemProviderProps }}>
+    <RadioGroupItemContext.Provider value={providerValue}>
       {isFormControl && bubbleInput}
-      <RovingFocusGroup.Item {...rovingItemProps}>
+      <RovingFocusGroup.Item {...rovingFocusGroupAttrs}>
         <Pressable
           style={{
             ...styles.radioGroupItem,
             ...{ borderColor: theme.borderColor.get() },
           }}
-          {...itemFrameProps}
+          {...frameAttrs}
         >
           <RadioGroupItemIndicator />
         </Pressable>

@@ -13,7 +13,7 @@ interface UseRadioGroupParams {
     ref?: React.Ref<ReactElement>;
 }
 export declare function useRadioGroup(params: UseRadioGroupParams): {
-    radioGroupProviderProps: {
+    providerValue: {
         value: string;
         onChange: import("react").Dispatch<import("react").SetStateAction<string>>;
         required: boolean | undefined;
@@ -22,12 +22,12 @@ export declare function useRadioGroup(params: UseRadioGroupParams): {
         native: boolean | undefined;
         accentColor: string | undefined;
     };
-    frameProps: {
+    frameAttrs: {
         role: any;
         'aria-orientation': "horizontal" | "vertical";
         'data-disabled': string | undefined;
     };
-    rovingProps: {
+    rovingFocusGroupAttrs: {
         orientation: "horizontal" | "vertical";
         loop: boolean;
     };
@@ -53,12 +53,12 @@ export type RadioGroupContextValue = {
     accentColor?: string;
 };
 export declare const useRadioGroupItem: (params: UseRadioItemParams) => {
-    radioItemProviderProps: {
+    providerValue: {
         checked: boolean;
     };
     isFormControl: boolean;
     bubbleInput: import("react/jsx-runtime").JSX.Element;
-    itemFrameProps: {
+    frameAttrs: {
         onKeyDown?: import("@tamagui/helpers").EventHandler<KeyboardEvent> | undefined;
         onFocus?: import("@tamagui/helpers").EventHandler<any> | undefined;
         onPress: import("@tamagui/helpers").EventHandler<GestureResponderEvent> | undefined;
@@ -73,7 +73,7 @@ export declare const useRadioGroupItem: (params: UseRadioItemParams) => {
         disabled: boolean | undefined;
         ref: (node: any) => void;
     };
-    rovingItemProps: {
+    rovingFocusGroupAttrs: {
         asChild: boolean | "web" | "except-style" | "except-style-web";
         focusable: boolean;
         active: boolean;
