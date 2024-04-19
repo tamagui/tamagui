@@ -1310,6 +1310,9 @@ interface ExtraStyleProps {
    * set this to `false` and it will pass through to the next animated child.
    */
   animatePresence?: boolean
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
   scrollbarWidth?: Properties['scrollbarWidth']
   /**
    * The point at which transforms originate from.
