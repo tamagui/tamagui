@@ -22,10 +22,24 @@ export declare const config: {
         quickest: string;
         tooltip: string;
     }>;
-    defaultFont: string;
-    shouldAddPrefersColorThemes: true;
-    themeClassNameOnRoot: true;
     themes: import("@tamagui/themes/v3-themes").ThemesOut;
+    settings: {
+        shouldAddPrefersColorThemes: true;
+        themeClassNameOnRoot: true;
+        mediaQueryDefaultActive: {
+            xl: boolean;
+            lg: boolean;
+            md: boolean;
+            sm: boolean;
+            xs: boolean;
+            xxs: boolean;
+        };
+        selectionStyles: (theme: any) => {
+            backgroundColor: any;
+            color: any;
+        } | null;
+        defaultFont: string;
+    };
     media: {
         xl: {
             maxWidth: number;
@@ -888,17 +902,5 @@ export declare const config: {
         };
         silkscreen: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 1 | 10 | 5 | 14 | 11 | 12 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13>;
     };
-    mediaQueryDefaultActive: {
-        xl: boolean;
-        lg: boolean;
-        md: boolean;
-        sm: boolean;
-        xs: boolean;
-        xxs: boolean;
-    };
-    selectionStyles: (theme: any) => {
-        backgroundColor: any;
-        color: any;
-    } | null;
 };
 //# sourceMappingURL=v3.d.ts.map

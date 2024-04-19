@@ -7,9 +7,6 @@ type FlattenUnion<T> = {
 export type Theme = FlattenUnion<(typeof themes)['light']>;
 export type Themes = Record<keyof typeof themes, Theme>;
 export declare const config: {
-    defaultFont: string;
-    shouldAddPrefersColorThemes: true;
-    themeClassNameOnRoot: true;
     animations: import("@tamagui/web").AnimationDriver<{
         '75ms': {
             type: "timing";
@@ -891,21 +888,24 @@ export declare const config: {
             20: import("@tamagui/web").Variable<number>;
         };
     }, "zIndex" | "color" | "size" | "space" | "radius">;
-    mediaQueryDefaultActive: {
-        xl: boolean;
-        lg: boolean;
-        md: boolean;
-        sm: boolean;
-        xs: boolean;
-        xxs: boolean;
-    };
-    selectionStyles: (theme: Record<string, string>) => {
-        backgroundColor: string;
-        color: string;
-    };
     settings: {
         allowedStyleValues: "somewhat-strict-web";
         autocompleteSpecificTokens: "except-special";
+        mediaQueryDefaultActive: {
+            xl: boolean;
+            lg: boolean;
+            md: boolean;
+            sm: boolean;
+            xs: boolean;
+            xxs: boolean;
+        };
+        shouldAddPrefersColorThemes: true;
+        themeClassNameOnRoot: true;
+        selectionStyles: (theme: Record<string, string>) => {
+            backgroundColor: string;
+            color: string;
+        };
+        defaultFont: string;
     };
     fonts: {
         heading: import("@tamagui/web").FillInFont<{

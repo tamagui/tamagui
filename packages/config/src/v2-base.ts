@@ -7,20 +7,22 @@ import { fonts } from './fonts'
 import { media, mediaQueryDefaultActive } from './media'
 
 export const config = {
-  defaultFont: 'body',
-  shouldAddPrefersColorThemes: true,
-  themeClassNameOnRoot: true,
   themes,
   media,
+  settings: {
+    themeClassNameOnRoot: true,
+    mediaQueryDefaultActive: mediaQueryDefaultActive,
+    shouldAddPrefersColorThemes: true,
+    selectionStyles: (theme) =>
+      theme.color5
+        ? {
+            backgroundColor: theme.color5,
+            color: theme.color11,
+          }
+        : null,
+    defaultFont: 'body',
+  },
   shorthands,
   tokens,
   fonts,
-  mediaQueryDefaultActive: mediaQueryDefaultActive,
-  selectionStyles: (theme) =>
-    theme.color5
-      ? {
-          backgroundColor: theme.color5,
-          color: theme.color11,
-        }
-      : null,
 } satisfies CreateTamaguiProps

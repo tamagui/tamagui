@@ -164,7 +164,8 @@ export const useComponentState = (
   }
 
   // HOOK
-  const isHydrated = config?.disableSSR ? true : useDidFinishSSR()
+  const isHydrated =
+    config.settings.disableSSR || config?.disableSSR ? true : useDidFinishSSR()
 
   // HOOK
   const presence =

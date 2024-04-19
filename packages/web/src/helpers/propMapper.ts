@@ -431,7 +431,7 @@ export const getTokenForKey = (
         case 'lineHeight':
         case 'letterSpacing':
         case 'fontWeight': {
-          const defaultFont = conf.defaultFont || '$body'
+          const defaultFont = conf.settings.defaultFont || conf.defaultFont || '$body'
           const fam = fontFamily || defaultFont
           if (fam) {
             const fontsParsed = context?.language

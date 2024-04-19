@@ -30,7 +30,9 @@ export function addFont(props: {
   config.fonts[fontFamilyNameIn] = fontFamilyIn
 
   const sep =
-    process.env.NODE_ENV === 'development' ? config.cssStyleSeparator || ' ' : ''
+    process.env.NODE_ENV === 'development'
+      ? config.settings.cssStyleSeparator || config.cssStyleSeparator || ' '
+      : ''
   function declarationsToRuleSet(decs: string[], selector = '') {
     return `:root${selector} {${sep}${[...decs].join(`;${sep}`)}${sep}}`
   }

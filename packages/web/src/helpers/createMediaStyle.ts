@@ -56,7 +56,10 @@ export const createMediaStyle = (
       const selectorStart = styleInner.indexOf(':root')
       const selectorEnd = styleInner.lastIndexOf('{')
       const selector = styleInner.slice(selectorStart, selectorEnd)
-      const precedenceSpace = conf.themeClassNameOnRoot && isTheme ? '' : ' '
+      const precedenceSpace =
+        (conf.settings.themeClassNameOnRoot || conf.themeClassNameOnRoot) && isTheme
+          ? ''
+          : ' '
       const pseudoSelectorName = groupInfo.pseudo
         ? groupPseudoToPseudoCSSMap[groupInfo.pseudo] || groupInfo.pseudo
         : undefined

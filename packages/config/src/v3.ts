@@ -29,14 +29,16 @@ const themes =
 
 export const config = {
   animations,
-  defaultFont: 'body',
-  shouldAddPrefersColorThemes: true,
-  themeClassNameOnRoot: true,
   themes,
+  settings: {
+    shouldAddPrefersColorThemes: true,
+    themeClassNameOnRoot: true,
+    mediaQueryDefaultActive: mediaQueryDefaultActive,
+    selectionStyles,
+    defaultFont: 'body',
+  },
   media,
   shorthands,
   tokens,
   fonts,
-  mediaQueryDefaultActive: mediaQueryDefaultActive,
-  selectionStyles,
 } satisfies CreateTamaguiProps
