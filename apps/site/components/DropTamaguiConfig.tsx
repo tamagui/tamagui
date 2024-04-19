@@ -8,7 +8,7 @@ import useLocalStorage from 'use-local-storage'
 
 export const DropTamaguiConfig = () => {
   const [show, setShow] = useState(false)
-  const [config, setConfig] = useLocalStorage<string | null>('userTamaguiConfig', null)
+  const [config, setConfig] = useLocalStorage<string | null>('userTamaguiConfig', '')
   const [dragging, setDragging] = useState(false)
 
   useEffect(() => {
@@ -136,7 +136,7 @@ export const DropTamaguiConfig = () => {
                       als="flex-end"
                       icon={X}
                       theme="red_active"
-                      onPress={() => setConfig(null)}
+                      onPress={() => setConfig('')}
                     >
                       Clear config
                     </Button>
