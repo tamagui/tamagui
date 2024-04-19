@@ -7007,6 +7007,7 @@ __metadata:
     swr: "npm:^2.2.0"
     tamagui: "npm:1.95.0-1713326412393"
     tilg: "npm:0.1.1"
+    use-local-storage: "npm:^3.0.0"
     webpack: "npm:^5.88.2"
     webpack-bundle-analyzer: "npm:^4.9.0"
     webpack-cli: "npm:^4.9.2"
@@ -8499,6 +8500,7 @@ __metadata:
     typescript: "npm:^5.3.3"
     unified: "npm:^10.1.2"
     unist-util-visit: "npm:^2.0.3"
+    use-local-storage: "npm:^3.0.0"
     wait-port: "npm:^0.3.0"
     webpack-stats-plugin: "npm:^1.1.3"
     zx: "npm:^7.2.3"
@@ -31312,6 +31314,15 @@ __metadata:
   peerDependencies:
     react: ">=16.8"
   checksum: 10/620969d85763b65aca5f9b601c31eb476a8f7602cfccfb3c0f9dc60ff3b863e04dd64360ada255e15606771513de33b25e4631607d702605b26630f61381b3d4
+  languageName: node
+  linkType: hard
+
+"use-local-storage@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "use-local-storage@npm:3.0.0"
+  peerDependencies:
+    react: ">=16.8.1"
+  checksum: 10/96865f524ee572b27dc1496dab7e652aa9c76736bd1ebfcbb192fe2ed9f075dcb6ad7691295e76d6c97355136d73e4fd84bf19227cb5402e7a225c3fcf261e69
   languageName: node
   linkType: hard
 

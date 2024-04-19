@@ -1,51 +1,51 @@
 import { Paintbrush, X } from '@tamagui/lucide-icons'
-import { useStore } from '@tamagui/use-store'
 import { useContext, useEffect, useState } from 'react'
-import type { TamaguiConfig } from 'tamagui'
 import { Button, Dialog, H2, Paragraph, ScrollView, TooltipSimple, YStack } from 'tamagui'
 import { Code, CodeInline } from './Code'
 import { Features } from './Features'
 import { Notice } from './Notice'
-import { TamaguiConfigContext } from 'providers/GlobalProvider'
-import { U } from '@discordjs/core/dist/files-74da8658'
-import user from 'pages/api/user'
+import useLocalStorage from 'use-local-storage'
 
 export const DropTamaguiConfig = () => {
   const [show, setShow] = useState(false)
-  const { userTamaguiConfig, setUserTamaguiConfig } =
-    useContext(TamaguiConfigContext)
+  const [config, setConfig] = useLocalStorage<string | null>('userTamaguiConfig', null)
+  const [dragging, setDragging] = useState(false)
 
   useEffect(() => {
-    document.addEventListener('dragover', (e) => {
-      setUserTamaguiConfig((prev) => ({ ...prev, dragging: true }))
+    const handleDrop = (e) => {
       e.preventDefault()
-    })
-
-    document.addEventListener('dragleave dragend', (e) => {
-      setUserTamaguiConfig((prev) => ({ ...prev, dragging: false }))
-    })
-
-    document.addEventListener('drop', (e) => {
-      setUserTamaguiConfig((prev) => ({ ...prev, dragging: false }))
-      e.preventDefault()
+      setDragging(false)
       if (e.dataTransfer?.items) {
-        ;[...e.dataTransfer.items].forEach((item, i) => {
+        ;[...e.dataTransfer.items].forEach((item) => {
           if (item.kind === 'file') {
             const file = item.getAsFile()
             if (file) {
               const reader = new FileReader()
               reader.onload = () => {
-                setUserTamaguiConfig((prev) => ({
-                  ...prev,
-                  config: JSON.parse(`${reader.result}`),
-                }))
+                setConfig(JSON.stringify(JSON.parse(`${reader.result}`)))
               }
               reader.readAsText(file)
             }
           }
         })
       }
+    }
+
+    document.addEventListener('dragover', (e) => {
+      e.preventDefault()
+      setDragging(true)
     })
+
+    document.addEventListener('dragleave', () => setDragging(false))
+    document.addEventListener('dragend', () => setDragging(false))
+    document.addEventListener('drop', handleDrop)
+
+    return () => {
+      document.removeEventListener('dragover', (e) => setDragging(true))
+      document.removeEventListener('dragleave', () => setDragging(false))
+      document.removeEventListener('dragend', () => setDragging(false))
+      document.removeEventListener('drop', handleDrop)
+    }
   }, [])
 
   return (
@@ -91,7 +91,6 @@ export const DropTamaguiConfig = () => {
                 },
               },
             ]}
-            // animateOnly={['transform']}
             enterStyle={{ y: -10, opacity: 0, scale: 0.975 }}
             exitStyle={{ y: 10, opacity: 0, scale: 0.975 }}
             w="95%"
@@ -113,7 +112,7 @@ export const DropTamaguiConfig = () => {
             <YStack
               fullscreen
               pe="none"
-              o={userTamaguiConfig.dragging ? 1 : 0}
+              o={dragging ? 1 : 0}
               bg="$background075"
               ai="center"
               jc="center"
@@ -126,7 +125,7 @@ export const DropTamaguiConfig = () => {
               <YStack gap="$4">
                 <Dialog.Title>Your Design System</Dialog.Title>
 
-                {uuiConfig.config && (
+                {config && (
                   <>
                     <Paragraph size="$6">Nice, we've got your config.</Paragraph>
                     <Paragraph size="$6">
@@ -137,14 +136,14 @@ export const DropTamaguiConfig = () => {
                       als="flex-end"
                       icon={X}
                       theme="red_active"
-                      onPress={userTamaguiConfig.config = null)}
+                      onPress={() => setConfig(null)}
                     >
                       Clear config
                     </Button>
                   </>
                 )}
 
-                {!userTamaguiConfig.config && (
+                {!config && (
                   <>
                     <Paragraph size="$6">
                       Drag and drop your{' '}
@@ -152,7 +151,7 @@ export const DropTamaguiConfig = () => {
                       customize the code we generate to your design system!
                     </Paragraph>
                     <Paragraph size="$6">
-                      If you have a compiler plugin installed, this is done for your
+                      If you have a compiler plugin installed, this is done for you
                       automatically. If not, use the CLI.
                     </Paragraph>
                     <Paragraph size="$6">

@@ -23,104 +23,102 @@ import { TamaguiConfigProvider } from '../providers/GlobalProvider'
 export default function Home({ animationCode, compilationExamples }) {
   return (
     <>
-      <TamaguiConfigProvider>
-        <ThemeNameEffect colorKey="$color2" />
-        <ThemeTint>
-          <HomeGlow />
+      <ThemeNameEffect colorKey="$color2" />
+      <ThemeTint>
+        <HomeGlow />
+        <YStack
+          fullscreen
+          className="grain"
+          o={0.2}
+          style={{
+            mixBlendMode: 'hard-light',
+            maskImage: `linear-gradient(transparent, rgba(0, 0, 0, 1) 100px)`,
+          }}
+          // o={0}
+        />
+        <NextSeo
+          title="Tamagui — React Native + Web UI kit"
+          description="Write less, run faster. Styles, optimizing compiler & UI kit that unify React Native + Web."
+        />
+        <TintSection index={0} p={0}>
+          <Hero />
+        </TintSection>
+        <HeroBelow />
+        <TintSection index={2} contain="paint layout" zi={1000}>
+          <YStack
+            pe="none"
+            zi={0}
+            fullscreen
+            className="bg-dot-grid"
+            style={{
+              maskImage: `linear-gradient(transparent, #000, transparent)`,
+            }}
+          />
+          <HeroExampleCode examples={compilationExamples} />
+        </TintSection>
+        <TintSection my={-50} index={3} contain="paint layout" pos="relative" zi={100}>
+          <YStack
+            pe="none"
+            zi={0}
+            fullscreen
+            className="bg-dot-grid"
+            style={{
+              maskImage: `linear-gradient(transparent, #000, transparent)`,
+            }}
+          />
+          <HeroExampleThemes />
+        </TintSection>
+        <TintSection index={4} mb={-120} zIndex={10000}>
+          <HeroResponsive />
+        </TintSection>
+        <TintSection index={5} p={0} zIndex={0}>
+          <SectionTinted gradient bubble>
+            <HeroPerformance />
+          </SectionTinted>
+        </TintSection>
+        <TintSection index={6} zi={100}>
           <YStack
             fullscreen
-            className="grain"
-            o={0.2}
+            className="bg-grid"
             style={{
-              mixBlendMode: 'hard-light',
-              maskImage: `linear-gradient(transparent, rgba(0, 0, 0, 1) 100px)`,
+              maskImage: `linear-gradient(transparent, #000, transparent)`,
             }}
-            // o={0}
           />
-          <NextSeo
-            title="Tamagui — React Native + Web UI kit"
-            description="Write less, run faster. Styles, optimizing compiler & UI kit that unify React Native + Web."
+          <HeroExampleAnimations animationCode={animationCode} />
+        </TintSection>
+        <TintSection index={7} zi={1}>
+          <FeaturesGrid />
+          <YStack
+            pe="none"
+            zi={2}
+            fullscreen
+            className="bg-dot-grid"
+            style={{
+              maskImage: `linear-gradient(transparent, #000, transparent)`,
+            }}
           />
-          <TintSection index={0} p={0}>
-            <Hero />
-          </TintSection>
-          <HeroBelow />
-          <TintSection index={2} contain="paint layout" zi={1000}>
-            <YStack
-              pe="none"
-              zi={0}
-              fullscreen
-              className="bg-dot-grid"
-              style={{
-                maskImage: `linear-gradient(transparent, #000, transparent)`,
-              }}
-            />
-            <HeroExampleCode examples={compilationExamples} />
-          </TintSection>
-          <TintSection my={-50} index={3} contain="paint layout" pos="relative" zi={100}>
-            <YStack
-              pe="none"
-              zi={0}
-              fullscreen
-              className="bg-dot-grid"
-              style={{
-                maskImage: `linear-gradient(transparent, #000, transparent)`,
-              }}
-            />
-            <HeroExampleThemes />
-          </TintSection>
-          <TintSection index={4} mb={-120} zIndex={10000}>
-            <HeroResponsive />
-          </TintSection>
-          <TintSection index={5} p={0} zIndex={0}>
-            <SectionTinted gradient bubble>
-              <HeroPerformance />
-            </SectionTinted>
-          </TintSection>
-          <TintSection index={6} zi={100}>
-            <YStack
-              fullscreen
-              className="bg-grid"
-              style={{
-                maskImage: `linear-gradient(transparent, #000, transparent)`,
-              }}
-            />
-            <HeroExampleAnimations animationCode={animationCode} />
-          </TintSection>
-          <TintSection index={7} zi={1}>
-            <FeaturesGrid />
-            <YStack
-              pe="none"
-              zi={2}
-              fullscreen
-              className="bg-dot-grid"
-              style={{
-                maskImage: `linear-gradient(transparent, #000, transparent)`,
-              }}
-            />
-          </TintSection>
-          <TintSection index={8} my="$-4" p={0} zIndex={100}>
-            <SectionTinted zi={1000} bubble gradient>
-              <HeroTypography />
-            </SectionTinted>
-          </TintSection>
-          <HomeSection zi={10}>
-            <YStack
-              pe="none"
-              zi={0}
-              fullscreen
-              className="bg-dot-grid"
-              style={{
-                maskImage: `linear-gradient(transparent, #000, transparent)`,
-              }}
-            />
-            <HeroExampleProps />
-          </HomeSection>
-          <HomeSection zi={0}>
-            <Community />
-          </HomeSection>
-        </ThemeTint>
-      </TamaguiConfigProvider>
+        </TintSection>
+        <TintSection index={8} my="$-4" p={0} zIndex={100}>
+          <SectionTinted zi={1000} bubble gradient>
+            <HeroTypography />
+          </SectionTinted>
+        </TintSection>
+        <HomeSection zi={10}>
+          <YStack
+            pe="none"
+            zi={0}
+            fullscreen
+            className="bg-dot-grid"
+            style={{
+              maskImage: `linear-gradient(transparent, #000, transparent)`,
+            }}
+          />
+          <HeroExampleProps />
+        </HomeSection>
+        <HomeSection zi={0}>
+          <Community />
+        </HomeSection>
+      </ThemeTint>
     </>
   )
 }

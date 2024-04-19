@@ -63,6 +63,7 @@
     "react-native-web": "^0.19.10",
     "swr": "^2.2.0",
     "tamagui": "1.95.0-1713326412393",
+    "use-local-storage": "^3.0.0",
     "zod": "^3.22.4"
   },
   "devDependencies": {

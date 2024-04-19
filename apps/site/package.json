@@ -120,7 +120,8 @@
     "ts-morph": "^15.1.0",
     "typescript": "^5.3.3",
     "unified": "^10.1.2",
-    "unist-util-visit": "^2.0.3"
+    "unist-util-visit": "^2.0.3",
+    "use-local-storage": "^3.0.0"
   },
   "devDependencies": {
     "@babel/preset-react": "^7.23.3",
