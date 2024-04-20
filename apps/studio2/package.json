@@ -7,13 +7,13 @@
   "scripts": {
     "dev": "vxrn dev",
     "build": "vxrn build",
-    "serve": "NODE_ENV=production node server",
+    "serve": "vxrn serve",
     "postinstall": "patch-package"
   },
   "dependencies": {
     "@leeoniya/ufuzzy": "^1.0.14",
     "@react-navigation/native": "^6.1.10",
-    "@vxrn/expo-router": "^0.1.20",
+    "@vxrn/expo-router": "^0.1.23",
     "color2k": "^2.0.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -27,6 +27,6 @@
     "h3": "^1.11.1",
     "patch-package": "^8.0.0",
     "sirv": "^2.0.4",
-    "vxrn": "^0.1.20"
+    "vxrn": "^0.1.23"
   }
 }
