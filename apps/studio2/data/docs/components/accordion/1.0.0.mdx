@@ -1,0 +1,328 @@
+---
+title: Accordion
+description: A simple Accordion component
+name: accordion
+component: Accordion
+package: accordion
+---
+
+# Accordion <Beta />
+
+<Description>
+  A vertically stacked set of interactive headings that each reveal an associated section
+  of content
+</Description>
+
+<HeroContainer>
+  <AccordionDemo />
+</HeroContainer>
+
+```tsx hero template=Accordion
+
+```
+
+<Highlights
+  features={[
+    'Full keyboard navigation.',
+    'Can expand one or multiple items.',
+    'Can be controlled or uncontrolled.',
+  ]}
+/>
+
+## Installation
+
+Accordion is already installed in `tamagui`, or you can install it independently:
+
+```bash
+npm install @tamagui/accordion
+```
+
+## Anatomy
+
+Import all parts and piece them together.
+
+```jsx
+import { Accordion } from 'tamagui';
+
+export default () => (
+  <Accordion>
+    <Accordion.Item>
+      <Accordion.Header>
+        <Accordion.Trigger />
+      </Accordion.Header>
+      <Accordion.Content />
+    </Accordion.Item>
+  </Accordion>
+)
+```
+
+## API Reference
+
+### Accordion
+
+Contains all the parts of an accordion.
+
+<PropsTable
+  data={[
+    {
+      name: 'asChild',
+      required: false,
+      type: 'boolean',
+      default: 'false',
+      description:
+        'Change the component to the HTML tag or custom component of the only child. This will merge the original component props with the props of the supplied element/component and change the underlying DOM node.',
+    },
+    {
+      name: 'type',
+      required: true,
+      type: '"single" | "multiple"',
+      typeSimple: 'enum',
+      description: (
+        <span>
+          Determines whether one or multiple items can be opened at the same time.
+        </span>
+      ),
+    },
+    {
+      name: 'value',
+      required: false,
+      type: 'string',
+      description: (
+        <span>
+          The controlled value of the item to expand when <Code>type</Code> is{' '}
+          <Code>"single"</Code>. Must be used in conjunction with{' '}
+          <Code>onValueChange</Code>.
+        </span>
+      ),
+    },
+    {
+      name: 'defaultValue',
+      required: false,
+      type: 'string',
+      description: (
+        <span>
+          The value of the item to expand when initially rendered and <Code>type</Code> is{' '}
+          <Code>"single"</Code>. Use when you do not need to control the state of the
+          items.
+        </span>
+      ),
+    },
+    {
+      name: 'onValueChange',
+      required: false,
+      type: '(value: string) => void',
+      typeSimple: 'function',
+      description: (
+        <span>
+          Event handler called when the expanded state of an item changes and{' '}
+          <Code>type</Code> is <Code>"single"</Code>.
+        </span>
+      ),
+    },
+    {
+      name: 'value',
+      required: false,
+      default: '[]',
+      type: 'string[]',
+      description: (
+        <span>
+          The controlled value of the item to expand when <Code>type</Code> is{' '}
+          <Code>"multiple"</Code>. Must be used in conjunction with{' '}
+          <Code>onValueChange</Code>.
+        </span>
+      ),
+    },
+    {
+      name: 'defaultValue',
+      required: false,
+      default: '[]',
+      type: 'string[]',
+      description: (
+        <span>
+          The value of the item to expand when initially rendered when <Code>type</Code>{' '}
+          is <Code>"multiple"</Code>. Use when you do not need to control the state of the
+          items.
+        </span>
+      ),
+    },
+    {
+      name: 'onValueChange',
+      required: false,
+      type: '(value: string[]) => void',
+      typeSimple: 'function',
+      description: (
+        <span>
+          Event handler called when the expanded state of an item changes and{' '}
+          <Code>type</Code> is <Code>"multiple"</Code>.
+        </span>
+      ),
+    },
+    {
+      name: 'collapsible',
+      required: false,
+      default: 'false',
+      type: 'boolean',
+      description: (
+        <span>
+          When <Code>type</Code> is <Code>"single"</Code>, allows closing content when
+          clicking trigger for an open item.
+        </span>
+      ),
+    },
+    {
+      name: 'disabled',
+      required: false,
+      type: 'boolean',
+      default: 'false',
+      description: (
+        <span>
+          When <Code>true</Code>, prevents the user from interacting with the accordion
+          and all its items.
+        </span>
+      ),
+    },
+    {
+      name: 'dir',
+      required: false,
+      type: '"ltr" | "rtl"',
+      typeSimple: 'enum',
+      default: '"ltr"',
+      description:
+        'The reading direction of the accordion when applicable. If omitted, assumes LTR (left-to-right) reading mode.',
+    },
+  ]}
+/>
+
+### Item
+
+Contains all the parts of a collapsible section.
+
+<PropsTable
+  data={[
+    {
+      name: 'asChild',
+      required: false,
+      type: 'boolean',
+      default: 'false',
+      description:
+        'Change the component to the HTML tag or custom component of the only child. This will merge the original component props with the props of the supplied element/component and change the underlying DOM node.',
+    },
+    {
+      name: 'disabled',
+      required: false,
+      type: 'boolean',
+      default: 'false',
+      description: (
+        <span>
+          When <Code>true</Code>, prevents the user from interacting with the item.
+        </span>
+      ),
+    },
+    {
+      name: 'value',
+      required: true,
+      type: 'string',
+      description: 'A unique value for the item.',
+    },
+  ]}
+/>
+
+### Header
+
+Wraps an `Accordion.Trigger`. Use the `asChild` prop to update it to the appropriate heading level for your page.
+
+<PropsTable
+  data={[
+    {
+      name: 'asChild',
+      required: false,
+      type: 'boolean',
+      default: 'false',
+      description:
+        'Change the component to the HTML tag or custom component of the only child. This will merge the original component props with the props of the supplied element/component and change the underlying DOM node.',
+    },
+  ]}
+/>
+
+### Trigger
+
+Toggles the collapsed state of its associated item. It should be nested inside of an `Accordion.Header`.
+
+<PropsTable
+  data={[
+    {
+      name: 'asChild',
+      required: false,
+      type: 'boolean',
+      default: 'false',
+      description:
+        'Change the component to the HTML tag or custom component of the only child. This will merge the original component props with the props of the supplied element/component and change the underlying DOM node.',
+    },
+  ]}
+/>
+
+### Content
+
+Contains the collapsible content for an item.
+
+<PropsTable
+  data={[
+    {
+      name: 'asChild',
+      required: false,
+      type: 'boolean',
+      default: 'false',
+      description:
+        'Change the component to the HTML tag or custom component of the only child. This will merge the original component props with the props of the supplied element/component and change the underlying DOM node.',
+    },
+    {
+      name: 'forceMount',
+      type: 'boolean',
+      description: (
+        <span>
+          Used to force mounting when more control is needed. Useful when controlling
+          animation with React animation libraries.
+        </span>
+      ),
+    },
+  ]}
+/>
+
+## Examples
+
+### Expanded by default
+
+Use the `defaultValue` prop to define the open item by default.
+
+```jsx line=1
+<Accordion type="single" __defaultValue__="item-2">
+  <Accordion.Item value="item-1">…</Accordion.Item>
+  <Accordion.Item value="item-2">…</Accordion.Item>
+</Accordion>
+```
+
+### Allow collapsing all items
+
+Use the `collapsible` prop to allow all items to close.
+
+```jsx line=1
+<Accordion type="single" __collapsible__>
+  <Accordion.Item value="item-1">…</Accordion.Item>
+  <Accordion.Item value="item-2">…</Accordion.Item>
+</Accordion>
+```
+
+### Multiple items open at the same time
+
+Set the `type` prop to `multiple` to enable opening multiple items at once.
+
+```jsx line=1
+<Accordion type="__multiple__">
+  <Accordion.Item value="item-1">…</Accordion.Item>
+  <Accordion.Item value="item-2">…</Accordion.Item>
+</Accordion>
+```
+
+## Accessibility
+
+Adheres to the [Accordion WAI-ARIA design pattern](https://www.w3.org/TR/wai-aria-practices-1.1/#accordion).

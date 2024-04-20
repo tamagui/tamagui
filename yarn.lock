@@ -8827,8 +8827,6 @@ __metadata:
     octokit: "npm:^3.1.2"
     parse-numeric-range: "npm:^1.3.0"
     postmark: "npm:^3.0.18"
-    preact: "npm:^10.11.0"
-    preact-render-to-string: "npm:^5.2.4"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
     react-draggable: "npm:^4.4.5"
@@ -26363,24 +26361,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"preact-render-to-string@npm:^5.2.4":
-  version: 5.2.6
-  resolution: "preact-render-to-string@npm:5.2.6"
-  dependencies:
-    pretty-format: "npm:^3.8.0"
-  peerDependencies:
-    preact: ">=10"
-  checksum: 10/356519f7640d1c49e11b4837b41a83b307f3f237f93de153b9dde833a701e3ce5cf1d45cb18e37a3ec9c568555e2f5373c128d8b5f6ef79de7658f3c400d3e70
-  languageName: node
-  linkType: hard
-
-"preact@npm:^10.11.0":
-  version: 10.13.2
-  resolution: "preact@npm:10.13.2"
-  checksum: 10/b3d76b7cb4ebb7ca8a091efb5b5a11f5f50f4bff4708b0c8896d895526d3c39d8b372eded61068b0932b465519e86e7f46f4ec9a53007fd099323e85a9a82b9b
-  languageName: node
-  linkType: hard
-
 "prebuild-install@npm:^7.1.1":
   version: 7.1.1
   resolution: "prebuild-install@npm:7.1.1"
@@ -26507,13 +26487,6 @@ __metadata:
     ansi-styles: "npm:^5.0.0"
     react-is: "npm:^18.0.0"
   checksum: 10/dea96bc83c83cd91b2bfc55757b6b2747edcaac45b568e46de29deee80742f17bc76fe8898135a70d904f4928eafd8bb693cd1da4896e8bdd3c5e82cadf1d2bb
-  languageName: node
-  linkType: hard
-
-"pretty-format@npm:^3.8.0":
-  version: 3.8.0
-  resolution: "pretty-format@npm:3.8.0"
-  checksum: 10/c80009217dea7fc8f6006f644cbefc3ec57833c1f1f325158d83a5bcbc3ccc15d1e2cc658cd7d87b9c196a43f15d6d9125a2415c5ec4357882643534e25e9829
   languageName: node
   linkType: hard
 
@@ -29847,16 +29820,25 @@ __metadata:
     "@tamagui/cli": "npm:1.95.0-1713326412393"
     "@vxrn/expo-router": "npm:^0.1.30"
     color2k: "npm:^2.0.2"
+    gray-matter: "npm:^4.0.2"
     h3: "npm:^1.11.1"
+    hast-util-to-html: "npm:^8.0.3"
+    hast-util-to-string: "npm:^2.0.0"
     patch-package: "npm:^8.0.0"
     postmark: "npm:^3.0.18"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
     react-native: "npm:^0.73.4"
     react-native-reanimated: "npm:~3.6.2"
+    rehype: "npm:^12.0.1"
+    rehype-autolink-headings: "npm:^6.1.1"
+    rehype-parse: "npm:^8.0.4"
+    rehype-slug: "npm:^5.0.1"
     sirv: "npm:^2.0.4"
     stripe: "npm:^9.1.0"
     tamagui: "npm:1.95.0-1713326412393"
+    unified: "npm:^10.1.2"
+    unist-util-visit: "npm:^2.0.3"
     vite-tsconfig-paths: "npm:^4.3.2"
     vxrn: "npm:^0.1.30"
   languageName: unknown

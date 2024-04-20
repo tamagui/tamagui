@@ -1,0 +1,87 @@
+---
+title: Text
+description: Text, Sized Text and Paragraph show one way to build a design system.
+name: text
+component: Paragraph
+demoName: Text
+---
+
+# Text
+
+<Description>
+  Text, Sized Text and Paragraph show one way to build a design system.
+</Description>
+
+<HeroContainer>
+  <TextDemo />
+</HeroContainer>
+
+```tsx hero template=Text
+
+```
+
+<Highlights
+  features={[
+    'Supports all react-native-web props and Tamagui styling props.',
+    'Media query styles, hoverStyle, pressStyle.',
+    'Paragraph uses themes and spread variants for a nicer default.',
+  ]}
+/>
+
+### Usage
+
+Text in Tamagui matches to Text in react-native-web, just with the added [Tamagui Props](/docs/intro/props).
+
+It explicitly doesn't inherit your theme color or other font properties, as it's meant to be plain and used for extension. Below, we'll show `SizableText` which extends Text, and `Paragraph` which extends SizableText. Generally, Paragraph is the useful view as it will use theme values, while you can extend Text if you'd like to derive your own design system.
+
+```tsx
+import { Text, XStack, YStack } from 'tamagui'
+
+export default () => (
+  <>
+    <Text
+      // can add theme values
+      color="$white"
+      fontFamily="$body"
+      // or just use direct values
+      fontSize={20}
+      hoverStyle={{
+        color: '$color2',
+      }}
+    >
+      Lorem ipsum
+    </Text>
+  </>
+)
+```
+
+<Notice>
+  SizableText and Paragraph default to the "body" fontFamily defined in your config.
+  Headings all default to "heading".
+</Notice>
+
+## SizableText
+
+[Seeing how SizableText is defined](https://github.com/tamagui/tamagui/blob/master/packages/tamagui/src/views/SizableText.tsx) is helpful for understanding Tamagui. They serve as a good example of how you can extend and compose components.
+
+SizableText simply adds a single `size` property to maniplulate all of:
+
+- fontSize
+- lineHeight
+- fontWeight
+- letterSpacing
+
+Based on the values set in your tokens. It uses [spread variants](/docs/core/styled#spread-variants) feature. Then Paragraph extends that and ensures it defaults to values from your theme - fontSize, lineHeight, color and fontFamily.
+
+## Paragraph
+
+Finally Paragraph extends `SizableText` and simply sets some default values from your theme:
+
+```tsx
+export const Paragraph = styled(SizableText, {
+  fontFamily: '$body',
+  color: '$color',
+  // note tamagui uses a generic "true" token that your sizes should set to be the same as the default on your scale
+  size: '$true',
+})
+```

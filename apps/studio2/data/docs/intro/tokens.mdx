@@ -1,0 +1,31 @@
+---
+title: Tokens
+---
+
+<Notice>
+  This is the only documenting the default `@tamagui/config` tokens that power this site, you are free to create your own token system with more refined logical underpinning.
+</Notice>
+
+### Understanding the size scale
+
+Most design systems use exponential scaling (2, 4, 8, 16, etc.). A lot of people ask why Tamagui doesn't.
+
+Tamagui adopts a hybrid of more gradual increases below 10, before going exponential after 10. This hybrid approach is motivated by allowing designs to have a much more usable range of components.
+
+#### Aligning all the keys
+
+We align every token group and font group to use the same 1-16 keys so that a size 2 Button will look good with a size 2 spacing, a 2 Icon, and size 2 Text inside of it.
+
+#### Quantum scale ($0.25, $0.5, $0.75)
+
+The natural scale starts at 1, but Tamagui has three exponentially decreasing tokens below 1 for all token groups, with 0.25 often rounding to 1.
+
+#### Natural scale ($1-$10)
+
+For sizes 1 to 10, Tamagui increases more gradually. This yields a nice variety of sizes, with $2 being a great tiny UI, $4 is "average", $5 and $6 being give you two very usable emphasized sizes, and 7 and above are great for more occasional CTA/hero type things.
+
+#### Super-natural scale
+
+Tamagui switches to an exponential scale from sizes 11 to 16 so you still get some nice chunky sizes.
+
+<TokensDemo />

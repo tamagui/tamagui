@@ -1,0 +1,171 @@
+---
+title: Switch
+description: A simple switch component
+name: switch
+component: Switch
+package: switch
+demoName: Switch
+---
+
+# Switch
+
+<Description>Use in forms to toggle between two states.</Description>
+
+<HeroContainer showAnimationDriverControl>
+  <SwitchDemo />
+</HeroContainer>
+
+```tsx hero template=Switch
+
+```
+
+<Highlights
+  features={[
+    `Accessible, easy to compose and customize.`,
+    `Style and animate both frame and thumb.`,
+    `Sizable & works controlled or uncontrolled.`,
+    `Native prop that renders native Switch on mobile`,
+  ]}
+/>
+
+## Installation
+
+Switch is already installed in `tamagui`, or you can install it independently:
+
+```bash
+npm install @tamagui/switch
+```
+
+## Usage
+
+```tsx
+import { Switch } from 'tamagui' // or '@tamagui/switch'
+
+export default () => (
+  <Switch size="$4">
+    <Switch.Thumb animation="bouncy" />
+  </Switch>
+)
+```
+
+## Headless with `createSwitch`
+
+Using the `createSwitch` export, you can create a fully custom switch without using any of the default styles. This is similar to `unstyled`, but it doesn't assume the props `size` or `unstyled` exist, and it won't automatically apply the `active` theme.
+
+You must pass `SwitchContext` as the `context` option to your Frame and Thumb styled components.
+
+If you define a `checked` variant, it will apply those styles.
+
+Here's an example:
+
+```tsx
+import { Stack, styled } from '@tamagui/core'
+import { createSwitch } from '@tamagui/switch'
+
+const Frame = styled(Stack, {
+  variants: {
+    checked: {
+      true: {
+        backgroundColor: 'yellow'
+      },
+      false: {
+        backgroundColor: 'green',
+      },
+    },
+  } as const,
+})
+
+const Thumb = styled(Stack, {
+  variants: {
+    checked: {
+      true: {
+        opacity: 1,
+      },
+      false: {
+        opacity: 0.5,
+      },
+    },
+  } as const,
+})
+
+export const Switch = createSwitch({
+  Frame,
+  Thumb,
+})
+```
+
+## API Reference
+
+### Switch
+
+`Switch` extends Stack views inheriting all the [Tamagui standard props](/docs/intro/props), plus:
+
+<PropsTable
+  data={[
+    {
+      name: 'labeledBy',
+      type: 'string',
+      description: `Set aria-labeled-by.`,
+    },
+    {
+      name: 'name',
+      type: 'string',
+      description: `Equivalent to input name.`,
+    },
+    {
+      name: 'value',
+      type: 'string',
+      description: `Give it a value (for use in HTML forms).`,
+    },
+    {
+      name: 'checked',
+      type: 'boolean',
+      description: `Control the input.`,
+    },
+    {
+      name: 'defaultChecked',
+      type: 'boolean',
+      description: `Uncontrolled default value.`,
+    },
+    {
+      name: 'required',
+      type: 'boolean',
+      description: `Sets aria-required.`,
+    },
+    {
+      name: 'onCheckedChange',
+      type: '(checked: boolean) => void',
+    },
+    {
+      name: 'unstyled',
+      type: 'boolean',
+      default: 'false',
+      description: `When true, remove all default tamagui styling.`,
+    },
+    {
+      name: 'native',
+      type: 'NativeValue<"mobile" | "ios" | "android">',
+      description: `Render to a native switch. (Not supported on web)`,
+    },
+    {
+      name: 'nativeProps',
+      type: 'SwitchProps (from `react-native`)',
+      description: `Props to pass to the native Switch;`,
+    },
+  ]}
+/>
+
+### Switch.Thumb
+
+`Switch.Thumb` extends Stack views inheriting all the [Tamagui standard props](/docs/intro/props), plus:
+
+<PropsTable
+  data={[
+    {
+      name: 'unstyled',
+      type: 'boolean',
+      default: 'false',
+      description: `When true, remove all default tamagui styling.`,
+    },
+  ]}
+/>
