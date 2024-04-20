@@ -13,12 +13,18 @@
   "dependencies": {
     "@leeoniya/ufuzzy": "^1.0.14",
     "@react-navigation/native": "^6.1.10",
-    "@vxrn/expo-router": "^0.1.29",
+    "@supabase/auth-helpers-react": "^0.4.2",
+    "@supabase/auth-helpers-shared": "^0.5.0",
+    "@supabase/supabase-auth-helpers": "^1.4.2",
+    "@supabase/supabase-js": "^2.38.2",
+    "@vxrn/expo-router": "^0.1.30",
     "color2k": "^2.0.2",
+    "postmark": "^3.0.18",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-native": "^0.73.4",
     "react-native-reanimated": "~3.6.2",
+    "stripe": "^9.1.0",
     "tamagui": "1.95.0-1713326412393",
     "vite-tsconfig-paths": "^4.3.2"
   },
@@ -27,6 +33,6 @@
     "h3": "^1.11.1",
     "patch-package": "^8.0.0",
     "sirv": "^2.0.4",
-    "vxrn": "^0.1.29"
+    "vxrn": "^0.1.30"
   }
 }
