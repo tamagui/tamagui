@@ -3,6 +3,7 @@
   "version": "1.95.0-1713326412393",
   "types": "./types/index.d.ts",
   "main": "./dist/cjs/index.js",
+  "type": "module",
   "module": "./dist/esm/index.js",
   "license": "MIT",
   "tamagui": {

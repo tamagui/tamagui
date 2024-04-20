@@ -13,7 +13,7 @@
   "dependencies": {
     "@leeoniya/ufuzzy": "^1.0.14",
     "@react-navigation/native": "^6.1.10",
-    "@vxrn/expo-router": "^0.1.23",
+    "@vxrn/expo-router": "^0.1.29",
     "color2k": "^2.0.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -27,6 +27,6 @@
     "h3": "^1.11.1",
     "patch-package": "^8.0.0",
     "sirv": "^2.0.4",
-    "vxrn": "^0.1.23"
+    "vxrn": "^0.1.29"
   }
 }
