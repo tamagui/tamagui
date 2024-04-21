@@ -205,7 +205,7 @@ The `createTamagui` function receives a configuration object:
   the shorthand and values being the expanded style prop.
 - `defaultProps`: For more advanced uses, you can override all named `styled()`
   components initial values. These merge downwards, so
-  `styled(Text, { name: 'Paragraph' })` will get any defaultProps set for
+  `styled(Text, {}, { name: 'Paragraph' })` will get any defaultProps set for
   `Text`.
 - `onlyAllowShorthands` when set to true will ensure that if you define
   shorthands, they override existing long-form style props.

@@ -70,7 +70,6 @@ export const ButtonContext = createStyledContext({
 })
 
 export const ButtonFrame = styled(View, {
-  name: 'Button',
   context: ButtonContext,
   backgroundColor: '$background',
   alignItems: 'center',
@@ -105,12 +104,13 @@ export const ButtonFrame = styled(View, {
   defaultVariants: {
     size: '$md',
   },
+}, {
+  name: 'Button',
 })
 
 type ButtonProps = GetProps<typeof ButtonFrame>
 
 export const ButtonText = styled(Text, {
-  name: 'ButtonText',
   context: ButtonContext,
   color: '$color',
   userSelect: 'none',
@@ -122,6 +122,8 @@ export const ButtonText = styled(Text, {
       }),
     },
   } as const,
+}, {
+  name: 'ButtonText',
 })
 
 const ButtonIcon = (props: { children: any }) => {
@@ -233,10 +235,6 @@ like so:
 import { View, styled } from '@tamagui/core'
 
 const ButtonFrame = styled(View, {
-  // the name indicates to use the sub-theme `Button`
-  // since we defined light_Button, if our theme is light, this component
-  // will always use the values from our `light_Button` theme
-  name: 'Button',
 
   alignItems: 'center',
   flexDirection: 'row',
@@ -260,6 +258,11 @@ const ButtonFrame = styled(View, {
 
   // and space tokens are used for all others
   paddingHorizontal: '$sm', // 25
+}, {
+  // the name indicates to use the sub-theme `Button`
+  // since we defined light_Button, if our theme is light, this component
+  // will always use the values from our `light_Button` theme
+  name: 'Button',
 })
 
 ```
@@ -282,12 +285,13 @@ Next we'll want a Text component to go inside:
 import { Text, styled } from '@tamagui/core'
 
 export const ButtonText = styled(Text, {
-  name: 'ButtonText',
   color: '$color',
   fontFamily: '$body',
   fontSize: '$md',
   lineHeight: '$md',
   userSelect: 'none',
+}, {
+  name: 'ButtonText',
 })
 ```
 
@@ -315,7 +319,6 @@ We can add some variants:
 
 ```tsx
 const ButtonFrame = styled(View, {
-  name: 'Button',
   backgroundColor: '$background',
   alignItems: 'center',
   flexDirection: 'row',
@@ -339,6 +342,8 @@ const ButtonFrame = styled(View, {
       },
     },
   } as const,
+}, {
+  name: 'Button',
 })
 
 ```
@@ -352,7 +357,6 @@ design system in the future, we can use the handy Tamagui
 import { View, styled } from '@tamagui/core'
 
 const ButtonFrame = styled(View, {
-  name: 'Button',
   backgroundColor: '$background',
   alignItems: 'center',
   flexDirection: 'row',
@@ -368,10 +372,11 @@ const ButtonFrame = styled(View, {
       },
     },
   } as const,
+}, {
+  name: 'Button',
 })
 
 export const ButtonText = styled(Text, {
-  name: 'ButtonText',
   color: '$color',
   userSelect: 'none',
 
@@ -382,6 +387,8 @@ export const ButtonText = styled(Text, {
       }),
     },
   } as const,
+}, {
+  name: 'ButtonText',
 })
 ```
 
@@ -584,7 +591,6 @@ export const ButtonContext = createStyledContext({
 })
 
 const ButtonFrame = styled(View, {
-  name: 'Button',
   context: ButtonContext,
   backgroundColor: '$background',
   alignItems: 'center',
@@ -601,10 +607,11 @@ const ButtonFrame = styled(View, {
       },
     },
   } as const,
+}, {
+  name: 'Button',
 })
 
 const ButtonText = styled(Text, {
-  name: 'ButtonText',
   context: ButtonContext,
   color: '$color',
   userSelect: 'none',
@@ -616,6 +623,8 @@ const ButtonText = styled(Text, {
       }),
     },
   } as const,
+}, {
+  name: 'ButtonText',
 })
 
 export const Button = withStaticProperties(ButtonFrame, {

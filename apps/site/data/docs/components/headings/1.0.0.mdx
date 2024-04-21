@@ -53,11 +53,12 @@ The `Heading` component is defined as follows:
 ```tsx
 export const Heading = styled(Paragraph, {
   tag: 'span',
-  name: 'Heading',
   accessibilityRole: 'header',
   fontFamily: '$heading',
   size: '$8',
   margin: 0,
+}, {
+  name: 'Heading',
 })
 ```
 
@@ -69,7 +70,6 @@ Because [Paragraph](/docs/components/text#paragraph) extends [SizableText](/docs
 import { Text } from 'tamagui' // or '@tamagui/core'
 
 const SizableText = styled(Text, {
-  name: 'SizableText',
   fontFamily: '$body',
   color: '$color',
 
@@ -98,6 +98,8 @@ const SizableText = styled(Text, {
     // note tamagui uses a generic "true" token that your sizes should set to be the same as the default on your scale
     size: '$true',
   },
+}, {
+  name: 'SizableText',
 })
 ```
 
