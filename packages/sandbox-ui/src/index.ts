@@ -23,22 +23,26 @@ export const SimpleTest = styled(Stack, {
   },
 })
 
-export const Test14Component = styled(YStack, {
-  name: 'MyComponent',
-
-  variants: {
-    fullbleed: {
-      true: {},
-      false: {
-        padding: '$4',
+export const Test14Component = styled(
+  YStack,
+  {
+    variants: {
+      fullbleed: {
+        true: {},
+        false: {
+          padding: '$4',
+        },
       },
-    },
-  } as const,
+    } as const,
 
-  defaultVariants: {
-    fullbleed: false,
+    defaultVariants: {
+      fullbleed: false,
+    },
   },
-})
+  {
+    name: 'MyComponent',
+  }
+)
 
 export const TestBorderExtraction = styled(ThemeableStack, {
   theme: 'contentContainer',

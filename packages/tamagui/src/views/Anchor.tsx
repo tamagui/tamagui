@@ -12,11 +12,16 @@ export interface AnchorExtraProps {
 
 export type AnchorProps = SizableTextProps & AnchorExtraProps
 
-const AnchorFrame = styled(SizableText, {
-  name: 'Anchor',
-  tag: 'a',
-  accessibilityRole: 'link',
-})
+const AnchorFrame = styled(
+  SizableText,
+  {
+    tag: 'a',
+    accessibilityRole: 'link',
+  },
+  {
+    name: 'Anchor',
+  }
+)
 
 export const Anchor = AnchorFrame.styleable<AnchorExtraProps>(
   ({ href, target, ...props }, ref) => {

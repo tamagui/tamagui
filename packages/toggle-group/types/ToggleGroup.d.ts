@@ -239,7 +239,9 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-}, import("@tamagui/web").StaticConfigPublic>;
+}, import("@tamagui/web").StaticConfigPublic & {
+    name: string;
+}>;
 type ToggleGroupImplProps = GetProps<typeof ToggleGroupImplElementFrame> & GroupProps & {
     rovingFocus?: boolean;
     dir?: RovingFocusGroupProps['dir'];

@@ -15,58 +15,68 @@ export const ButtonContext = createStyledContext({
   size: '$md' as SizeTokens,
 })
 
-export const ButtonFrame = styled(Stack, {
-  name: 'Button',
-  context: ButtonContext,
-  backgroundColor: '$background',
-  alignItems: 'center',
-  flexDirection: 'row',
+export const ButtonFrame = styled(
+  Stack,
+  {
+    context: ButtonContext,
+    backgroundColor: '$background',
+    alignItems: 'center',
+    flexDirection: 'row',
 
-  hoverStyle: {
-    backgroundColor: '$backgroundHover',
-  },
+    hoverStyle: {
+      backgroundColor: '$backgroundHover',
+    },
 
-  pressStyle: {
-    backgroundColor: '$backgroundPress',
-  },
+    pressStyle: {
+      backgroundColor: '$backgroundPress',
+    },
 
-  variants: {
-    size: {
-      '...size': (name, { tokens }) => {
-        return {
-          height: tokens.size[name],
-          borderRadius: tokens.radius[name],
-          // note the getSpace and getSize helpers will let you shift down/up token sizes
-          // whereas with gap we just multiply by 0.2
-          // this is a stylistic choice, and depends on your design system values
-          gap: tokens.space[name].val * 0.2,
-          paddingHorizontal: getSpace(name, {
-            shift: -1,
-          }),
-        }
+    variants: {
+      size: {
+        '...size': (name, { tokens }) => {
+          return {
+            height: tokens.size[name],
+            borderRadius: tokens.radius[name],
+            // note the getSpace and getSize helpers will let you shift down/up token sizes
+            // whereas with gap we just multiply by 0.2
+            // this is a stylistic choice, and depends on your design system values
+            gap: tokens.space[name].val * 0.2,
+            paddingHorizontal: getSpace(name, {
+              shift: -1,
+            }),
+          }
+        },
       },
-    },
-  } as const,
+    } as const,
 
-  defaultVariants: {
-    size: '$true',
+    defaultVariants: {
+      size: '$true',
+    },
   },
-})
+  {
+    name: 'Button',
+  }
+)
 
-export const ButtonText = styled(Text, {
-  name: 'ButtonText',
-  context: ButtonContext,
-  color: '$color',
-  userSelect: 'none',
+export const ButtonText = styled(
+  Text,
+  {
+    context: ButtonContext,
+    color: '$color',
+    userSelect: 'none',
 
-  variants: {
-    size: {
-      '...fontSize': (name, { font }) => ({
-        fontSize: font?.size[name],
-      }),
-    },
-  } as const,
-})
+    variants: {
+      size: {
+        '...fontSize': (name, { font }) => ({
+          fontSize: font?.size[name],
+        }),
+      },
+    } as const,
+  },
+  {
+    name: 'ButtonText',
+  }
+)
 
 const ButtonIcon = (props: { children: any }) => {
   const { size } = useContext(ButtonContext.context)

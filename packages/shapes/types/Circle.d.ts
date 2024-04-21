@@ -20,6 +20,10 @@ export declare const Circle: import("@tamagui/web").TamaguiComponent<import("@ta
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-}, import("@tamagui/web").StaticConfigPublic>;
+}, import("@tamagui/web").StaticConfigPublic & {
+    name: string;
+} & {
+    name: string;
+}>;
 export type CircleProps = GetProps<typeof Circle>;
 //# sourceMappingURL=Circle.d.ts.map

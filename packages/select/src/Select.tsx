@@ -44,10 +44,15 @@ import {
 
 const VALUE_NAME = 'SelectValue'
 
-const SelectValueFrame = styled(SizableText, {
-  name: VALUE_NAME,
-  userSelect: 'none',
-})
+const SelectValueFrame = styled(
+  SizableText,
+  {
+    userSelect: 'none',
+  },
+  {
+    name: VALUE_NAME,
+  }
+)
 
 export interface SelectValueExtraProps {
   placeholder?: React.ReactNode
@@ -109,12 +114,17 @@ function unwrapSelectItem(selectValueChildren: any) {
  * SelectIcon
  * -----------------------------------------------------------------------------------------------*/
 
-export const SelectIcon = styled(XStack, {
-  name: 'SelectIcon',
-  // @ts-ignore
-  'aria-hidden': true,
-  children: <Paragraph>▼</Paragraph>,
-})
+export const SelectIcon = styled(
+  XStack,
+  {
+    // @ts-ignore
+    'aria-hidden': true,
+    children: <Paragraph>▼</Paragraph>,
+  },
+  {
+    name: 'SelectIcon',
+  }
+)
 
 /* -------------------------------------------------------------------------------------------------
  * SelectItemIndicator
@@ -122,9 +132,13 @@ export const SelectIcon = styled(XStack, {
 
 const ITEM_INDICATOR_NAME = 'SelectItemIndicator'
 
-const SelectItemIndicatorFrame = styled(XStack, {
-  name: ITEM_TEXT_NAME,
-})
+const SelectItemIndicatorFrame = styled(
+  XStack,
+  {},
+  {
+    name: ITEM_TEXT_NAME,
+  }
+)
 
 type SelectItemIndicatorProps = GetProps<typeof SelectItemIndicatorFrame>
 
@@ -157,10 +171,15 @@ type SelectGroupContextValue = { id: string }
 const [SelectGroupContextProvider, useSelectGroupContext] =
   createSelectContext<SelectGroupContextValue>(GROUP_NAME)
 
-export const SelectGroupFrame = styled(YStack, {
-  name: GROUP_NAME,
-  width: '100%',
-})
+export const SelectGroupFrame = styled(
+  YStack,
+  {
+    width: '100%',
+  },
+  {
+    name: GROUP_NAME,
+  }
+)
 
 const NativeSelectTextFrame = styled(SizableText, {
   tag: 'select',
@@ -171,37 +190,41 @@ const NativeSelectTextFrame = styled(SizableText, {
   },
 })
 
-const NativeSelectFrame = styled(ThemeableStack, {
-  name: 'NativeSelect',
+const NativeSelectFrame = styled(
+  ThemeableStack,
+  {
+    bordered: true,
+    userSelect: 'none',
+    outlineWidth: 0,
+    paddingRight: 10,
 
-  bordered: true,
-  userSelect: 'none',
-  outlineWidth: 0,
-  paddingRight: 10,
+    variants: {
+      size: {
+        '...size': (val, extras) => {
+          const { tokens } = extras
+          const paddingHorizontal = getVariableValue(tokens.space[val])
 
-  variants: {
-    size: {
-      '...size': (val, extras) => {
-        const { tokens } = extras
-        const paddingHorizontal = getVariableValue(tokens.space[val])
-
-        return {
-          borderRadius: tokens.radius[val] ?? val,
-          minHeight: tokens.size[val],
-          paddingRight: paddingHorizontal + 20,
-          paddingLeft: paddingHorizontal,
-          paddingVertical: getSpace(val, {
-            shift: -3,
-          }),
-        }
+          return {
+            borderRadius: tokens.radius[val] ?? val,
+            minHeight: tokens.size[val],
+            paddingRight: paddingHorizontal + 20,
+            paddingLeft: paddingHorizontal,
+            paddingVertical: getSpace(val, {
+              shift: -3,
+            }),
+          }
+        },
       },
-    },
-  } as const,
+    } as const,
 
-  defaultVariants: {
-    size: '$2',
+    defaultVariants: {
+      size: '$2',
+    },
   },
-})
+  {
+    name: 'NativeSelect',
+  }
+)
 
 type SelectGroupProps = GetProps<typeof SelectGroupFrame>
 
@@ -302,9 +325,13 @@ SelectLabel.displayName = LABEL_NAME
  * SelectSeparator
  * -----------------------------------------------------------------------------------------------*/
 
-export const SelectSeparator = styled(Separator, {
-  name: 'SelectSeparator',
-})
+export const SelectSeparator = styled(
+  Separator,
+  {},
+  {
+    name: 'SelectSeparator',
+  }
+)
 
 const SelectSheetController = (
   props: ScopedProps<{}> & {

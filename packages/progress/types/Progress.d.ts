@@ -22,7 +22,9 @@ export declare const ProgressIndicatorFrame: import("@tamagui/core").TamaguiComp
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-}, import("@tamagui/core").StaticConfigPublic>;
+}, import("@tamagui/core").StaticConfigPublic & {
+    name: string;
+}>;
 type ProgressIndicatorProps = GetProps<typeof ProgressIndicatorFrame>;
 declare const ProgressIndicator: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     unstyled?: boolean | undefined;
@@ -66,7 +68,9 @@ declare const ProgressIndicator: import("@tamagui/core").TamaguiComponent<import
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-}, import("@tamagui/core").StaticConfigPublic>;
+}, import("@tamagui/core").StaticConfigPublic & {
+    name: string;
+}>;
 export declare const ProgressFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     unstyled?: boolean | undefined;
     backgrounded?: boolean | undefined;
@@ -89,7 +93,9 @@ export declare const ProgressFrame: import("@tamagui/core").TamaguiComponent<imp
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-}, import("@tamagui/core").StaticConfigPublic>;
+}, import("@tamagui/core").StaticConfigPublic & {
+    name: string;
+}>;
 interface ProgressExtraProps {
     value?: number | null | undefined;
     max?: number;
@@ -162,7 +168,11 @@ declare const Progress: React.ForwardRefExoticComponent<Omit<import("@tamagui/co
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig" | "extractable" | "styleable"> & {
+}, import("@tamagui/core").StaticConfigPublic & {
+    name: string;
+}> & Omit<import("@tamagui/core").StaticConfigPublic & {
+    name: string;
+}, "staticConfig" | "extractable" | "styleable"> & {
     __tama: [Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
         unstyled?: boolean | undefined;
         backgrounded?: boolean | undefined;
@@ -207,7 +217,9 @@ declare const Progress: React.ForwardRefExoticComponent<Omit<import("@tamagui/co
         radiused?: boolean | undefined;
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
-    }, import("@tamagui/core").StaticConfigPublic];
+    }, import("@tamagui/core").StaticConfigPublic & {
+        name: string;
+    }];
 } & {
     Indicator: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
         unstyled?: boolean | undefined;
@@ -251,7 +263,9 @@ declare const Progress: React.ForwardRefExoticComponent<Omit<import("@tamagui/co
         radiused?: boolean | undefined;
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
-    }, import("@tamagui/core").StaticConfigPublic>;
+    }, import("@tamagui/core").StaticConfigPublic & {
+        name: string;
+    }>;
 };
 export { createProgressScope, Progress, ProgressIndicator };
 export type { ProgressProps, ProgressIndicatorProps };

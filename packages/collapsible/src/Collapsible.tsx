@@ -81,10 +81,15 @@ const TRIGGER_NAME = 'CollapsibleTrigger'
 
 type CollapsibleTriggerProps = GetProps<typeof Stack>
 
-const CollapsibleTriggerFrame = styled(Stack, {
-  name: TRIGGER_NAME,
-  tag: 'button',
-})
+const CollapsibleTriggerFrame = styled(
+  Stack,
+  {
+    tag: 'button',
+  },
+  {
+    name: TRIGGER_NAME,
+  }
+)
 
 const CollapsibleTrigger = CollapsibleTriggerFrame.styleable(
   (props: ScopedProps<CollapsibleTriggerProps>, forwardedRef) => {
@@ -128,9 +133,13 @@ interface CollapsibleContentProps
 
 const CONTENT_NAME = 'CollapsibleContent'
 
-const CollapsibleContentFrame = styled(Stack, {
-  name: CONTENT_NAME,
-})
+const CollapsibleContentFrame = styled(
+  Stack,
+  {},
+  {
+    name: CONTENT_NAME,
+  }
+)
 
 const CollapsibleContent =
   CollapsibleContentFrame.styleable<CollapsibleContentExtraProps>(

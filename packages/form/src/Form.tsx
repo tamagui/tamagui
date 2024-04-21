@@ -6,10 +6,15 @@ import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 
 const FORM_NAME = 'Form'
 
-export const FormFrame = styled(Stack, {
-  name: FORM_NAME,
-  tag: 'form',
-})
+export const FormFrame = styled(
+  Stack,
+  {
+    tag: 'form',
+  },
+  {
+    name: FORM_NAME,
+  }
+)
 
 /* -------------------------------------------------------------------------------------------------
  * Context
@@ -35,9 +40,13 @@ export type FormProps = StackProps & {
 
 const TRIGGER_NAME = 'FormTrigger'
 
-const FormTriggerFrame = styled(View, {
-  name: TRIGGER_NAME,
-})
+const FormTriggerFrame = styled(
+  View,
+  {},
+  {
+    name: TRIGGER_NAME,
+  }
+)
 
 export interface FormTriggerProps extends StackProps {}
 

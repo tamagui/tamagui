@@ -63,113 +63,130 @@ export type ListItemProps = GetProps<typeof ListItemFrame> & ListItemExtraProps
 
 const NAME = 'ListItem'
 
-export const ListItemFrame = styled(ThemeableStack, {
-  name: NAME,
-  tag: 'li',
+export const ListItemFrame = styled(
+  ThemeableStack,
+  {
+    tag: 'li',
 
-  variants: {
-    unstyled: {
-      false: {
-        size: '$true',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        flexWrap: 'nowrap',
-        width: '100%',
-        borderColor: '$borderColor',
-        maxWidth: '100%',
-        overflow: 'hidden',
-        flexDirection: 'row',
-        backgroundColor: '$background',
-      },
-    },
-
-    size: {
-      '...size': (val: SizeTokens, { tokens }) => {
-        return {
-          minHeight: tokens.size[val],
-          paddingHorizontal: tokens.space[val],
-          paddingVertical: getSpace(tokens.space[val], {
-            shift: -4,
-          }),
-        }
-      },
-    },
-
-    active: {
-      true: {
-        hoverStyle: {
+    variants: {
+      unstyled: {
+        false: {
+          size: '$true',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          flexWrap: 'nowrap',
+          width: '100%',
+          borderColor: '$borderColor',
+          maxWidth: '100%',
+          overflow: 'hidden',
+          flexDirection: 'row',
           backgroundColor: '$background',
         },
       },
-    },
 
-    disabled: {
-      true: {
-        opacity: 0.5,
-        // TODO breaking types
-        pointerEvents: 'none' as any,
+      size: {
+        '...size': (val: SizeTokens, { tokens }) => {
+          return {
+            minHeight: tokens.size[val],
+            paddingHorizontal: tokens.space[val],
+            paddingVertical: getSpace(tokens.space[val], {
+              shift: -4,
+            }),
+          }
+        },
       },
-    },
-  } as const,
 
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+      active: {
+        true: {
+          hoverStyle: {
+            backgroundColor: '$background',
+          },
+        },
+      },
+
+      disabled: {
+        true: {
+          opacity: 0.5,
+          // TODO breaking types
+          pointerEvents: 'none' as any,
+        },
+      },
+    } as const,
+
+    defaultVariants: {
+      unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+    },
   },
-})
+  {
+    name: NAME,
+  }
+)
 
-export const ListItemText = styled(SizableText, {
-  name: 'ListItemText',
-
-  variants: {
-    unstyled: {
-      false: {
-        color: '$color',
-        size: '$true',
-        flexGrow: 1,
-        flexShrink: 1,
-        ellipse: true,
-        cursor: 'default',
+export const ListItemText = styled(
+  SizableText,
+  {
+    variants: {
+      unstyled: {
+        false: {
+          color: '$color',
+          size: '$true',
+          flexGrow: 1,
+          flexShrink: 1,
+          ellipse: true,
+          cursor: 'default',
+        },
       },
-    },
-  } as const,
+    } as const,
 
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+    defaultVariants: {
+      unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+    },
   },
-})
+  {
+    name: 'ListItemText',
+  }
+)
 
-export const ListItemSubtitle = styled(ListItemText, {
-  name: 'ListItemSubtitle',
-
-  variants: {
-    unstyled: {
-      false: {
-        opacity: 0.6,
-        maxWidth: '100%',
-        color: '$color',
+export const ListItemSubtitle = styled(
+  ListItemText,
+  {
+    variants: {
+      unstyled: {
+        false: {
+          opacity: 0.6,
+          maxWidth: '100%',
+          color: '$color',
+        },
       },
-    },
 
-    size: {
-      '...size': (val, extras) => {
-        const oneSmaller = getSize(val, {
-          shift: -1,
-          excludeHalfSteps: true,
-        })
-        const fontStyle = getFontSized(oneSmaller.key as FontSizeTokens, extras)
-        return fontStyle
+      size: {
+        '...size': (val, extras) => {
+          const oneSmaller = getSize(val, {
+            shift: -1,
+            excludeHalfSteps: true,
+          })
+          const fontStyle = getFontSized(oneSmaller.key as FontSizeTokens, extras)
+          return fontStyle
+        },
       },
-    },
-  } as const,
+    } as const,
 
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+    defaultVariants: {
+      unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+    },
   },
-})
+  {
+    name: 'ListItemSubtitle',
+  }
+)
 
-export const ListItemTitle = styled(ListItemText, {
-  name: 'ListItemTitle',
-})
+export const ListItemTitle = styled(
+  ListItemText,
+  {},
+  {
+    name: 'ListItemTitle',
+  }
+)
 
 export const useListItem = (
   propsIn: ListItemProps,

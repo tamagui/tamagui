@@ -15,69 +15,74 @@ type TamaguiButtonElement = HTMLButtonElement
 
 export type ToggleElement = TamaguiButtonElement
 
-export const ToggleFrame = styled(ThemeableStack, {
-  name: NAME,
-  tag: 'button',
+export const ToggleFrame = styled(
+  ThemeableStack,
+  {
+    tag: 'button',
 
-  variants: {
-    unstyled: {
-      false: {
-        pressTheme: true,
-        backgroundColor: '$background',
-        alignItems: 'center',
-        justifyContent: 'center',
-        display: 'flex',
-        borderColor: '$borderColor',
-        borderWidth: 1,
-        margin: -1,
-        hoverStyle: {
-          backgroundColor: '$backgroundHover',
-        },
-        pressStyle: {
-          backgroundColor: '$backgroundPress',
-        },
-        focusStyle: {
-          borderColor: '$borderColorFocus',
-        },
-        focusVisibleStyle: {
-          outlineColor: '$outlineColor',
-          outlineWidth: 2,
-          outlineStyle: 'solid',
-        },
-      },
-    },
-
-    active: {
-      true: {
-        zIndex: 1,
-
-        hoverStyle: {
+    variants: {
+      unstyled: {
+        false: {
+          pressTheme: true,
           backgroundColor: '$background',
-        },
-
-        focusStyle: {
+          alignItems: 'center',
+          justifyContent: 'center',
+          display: 'flex',
           borderColor: '$borderColor',
-          backgroundColor: '$background',
+          borderWidth: 1,
+          margin: -1,
+          hoverStyle: {
+            backgroundColor: '$backgroundHover',
+          },
+          pressStyle: {
+            backgroundColor: '$backgroundPress',
+          },
+          focusStyle: {
+            borderColor: '$borderColorFocus',
+          },
+          focusVisibleStyle: {
+            outlineColor: '$outlineColor',
+            outlineWidth: 2,
+            outlineStyle: 'solid',
+          },
         },
       },
-    },
 
-    orientation: {
-      horizontal: {
-        flexDirection: 'row',
-        spaceDirection: 'horizontal',
-      },
-      vertical: {
-        flexDirection: 'column',
-        spaceDirection: 'vertical',
-      },
-    },
-  } as const,
+      active: {
+        true: {
+          zIndex: 1,
 
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+          hoverStyle: {
+            backgroundColor: '$background',
+          },
+
+          focusStyle: {
+            borderColor: '$borderColor',
+            backgroundColor: '$background',
+          },
+        },
+      },
+
+      orientation: {
+        horizontal: {
+          flexDirection: 'row',
+          spaceDirection: 'horizontal',
+        },
+        vertical: {
+          flexDirection: 'column',
+          spaceDirection: 'vertical',
+        },
+      },
+    } as const,
+
+    defaultVariants: {
+      unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+    },
   },
-})
+  {
+    name: NAME,
+  }
+)
 
 type ToggleFrameProps = GetProps<typeof ToggleFrame>
 

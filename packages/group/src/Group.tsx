@@ -35,28 +35,32 @@ type ScopedProps<P> = P & { __scopeGroup?: Scope }
 const [createGroupContext, createGroupScope] = createContextScope(GROUP_NAME)
 const [GroupProvider, useGroupContext] = createGroupContext<GroupContextValue>(GROUP_NAME)
 
-export const GroupFrame = styled(ThemeableStack, {
-  name: 'GroupFrame',
-
-  variants: {
-    unstyled: {
-      false: {
-        size: '$true',
+export const GroupFrame = styled(
+  ThemeableStack,
+  {
+    variants: {
+      unstyled: {
+        false: {
+          size: '$true',
+        },
       },
-    },
 
-    size: (val, { tokens }) => {
-      const borderRadius = tokens.radius[val] ?? val ?? tokens.radius['$true']
-      return {
-        borderRadius,
-      }
-    },
-  } as const,
+      size: (val, { tokens }) => {
+        const borderRadius = tokens.radius[val] ?? val ?? tokens.radius['$true']
+        return {
+          borderRadius,
+        }
+      },
+    } as const,
 
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+    defaultVariants: {
+      unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+    },
   },
-})
+  {
+    name: 'GroupFrame',
+  }
+)
 
 export type GroupProps = GetProps<typeof GroupFrame> & {
   /**

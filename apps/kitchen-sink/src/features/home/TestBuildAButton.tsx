@@ -1,8 +1,6 @@
 import { getSize, getSpace } from '@tamagui/get-token'
 import { Moon } from '@tamagui/lucide-icons'
-import type {
-  GetProps,
-  SizeTokens} from '@tamagui/web';
+import type { GetProps, SizeTokens } from '@tamagui/web'
 import {
   Stack,
   Text,
@@ -32,57 +30,67 @@ export const ButtonContext = createStyledContext({
   size: '$4' as SizeTokens,
 })
 
-export const ButtonFrame = styled(Stack, {
-  name: 'Button',
-  context: ButtonContext,
-  backgroundColor: '$background',
-  alignItems: 'center',
-  flexDirection: 'row',
+export const ButtonFrame = styled(
+  Stack,
+  {
+    context: ButtonContext,
+    backgroundColor: '$background',
+    alignItems: 'center',
+    flexDirection: 'row',
 
-  hoverStyle: {
-    backgroundColor: '$backgroundHover',
-  },
-
-  pressStyle: {
-    backgroundColor: '$backgroundPress',
-  },
-
-  variants: {
-    size: {
-      '...size': (name, { tokens }) => {
-        return {
-          height: tokens.size[name],
-          borderRadius: tokens.radius[name],
-          gap: tokens.space[name].val * 0.2,
-          paddingHorizontal: getSpace(name, {
-            shift: -1,
-          }),
-        }
-      },
+    hoverStyle: {
+      backgroundColor: '$backgroundHover',
     },
-  } as const,
 
-  defaultVariants: {
-    size: '$4',
+    pressStyle: {
+      backgroundColor: '$backgroundPress',
+    },
+
+    variants: {
+      size: {
+        '...size': (name, { tokens }) => {
+          return {
+            height: tokens.size[name],
+            borderRadius: tokens.radius[name],
+            gap: tokens.space[name].val * 0.2,
+            paddingHorizontal: getSpace(name, {
+              shift: -1,
+            }),
+          }
+        },
+      },
+    } as const,
+
+    defaultVariants: {
+      size: '$4',
+    },
   },
-})
+  {
+    name: 'Button',
+  }
+)
 
 type ButtonProps = GetProps<typeof ButtonFrame>
 
-export const ButtonText = styled(Text, {
-  name: 'ButtonText',
-  context: ButtonContext,
-  color: '$color',
-  userSelect: 'none',
+export const ButtonText = styled(
+  Text,
+  {
+    context: ButtonContext,
+    color: '$color',
+    userSelect: 'none',
 
-  variants: {
-    size: {
-      '...fontSize': (name, { font }) => ({
-        fontSize: font?.size[name],
-      }),
-    },
-  } as const,
-})
+    variants: {
+      size: {
+        '...fontSize': (name, { font }) => ({
+          fontSize: font?.size[name],
+        }),
+      },
+    } as const,
+  },
+  {
+    name: 'ButtonText',
+  }
+)
 
 const ButtonIcon = (props: { children: any }) => {
   // @ts-ignore

@@ -23,22 +23,26 @@ import { ToastViewport } from './ToastViewport'
 
 const TITLE_NAME = 'ToastTitle'
 
-const ToastTitle = styled(SizableText, {
-  name: TITLE_NAME,
-
-  variants: {
-    unstyled: {
-      false: {
-        color: '$color',
-        size: '$4',
+const ToastTitle = styled(
+  SizableText,
+  {
+    variants: {
+      unstyled: {
+        false: {
+          color: '$color',
+          size: '$4',
+        },
       },
-    },
-  } as const,
+    } as const,
 
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+    defaultVariants: {
+      unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+    },
   },
-})
+  {
+    name: TITLE_NAME,
+  }
+)
 
 type ToastTitleProps = GetProps<typeof ToastTitle>
 
@@ -50,22 +54,26 @@ ToastTitle.displayName = TITLE_NAME
 
 const DESCRIPTION_NAME = 'ToastDescription'
 
-const ToastDescription = styled(SizableText, {
-  name: DESCRIPTION_NAME,
-
-  variants: {
-    unstyled: {
-      false: {
-        color: '$color11',
-        size: '$1',
+const ToastDescription = styled(
+  SizableText,
+  {
+    variants: {
+      unstyled: {
+        false: {
+          color: '$color11',
+          size: '$1',
+        },
       },
-    },
-  } as const,
+    } as const,
 
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+    defaultVariants: {
+      unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+    },
   },
-})
+  {
+    name: DESCRIPTION_NAME,
+  }
+)
 
 type ToastDescriptionProps = GetProps<typeof ToastDescription>
 
@@ -116,10 +124,15 @@ ToastAction.displayName = ACTION_NAME
 
 const CLOSE_NAME = 'ToastClose'
 
-const ToastCloseFrame = styled(ThemeableStack, {
-  name: CLOSE_NAME,
-  tag: 'button',
-})
+const ToastCloseFrame = styled(
+  ThemeableStack,
+  {
+    tag: 'button',
+  },
+  {
+    name: CLOSE_NAME,
+  }
+)
 
 type ToastCloseFrameProps = GetProps<typeof ToastCloseFrame>
 type ToastCloseProps = ToastCloseFrameProps & {}

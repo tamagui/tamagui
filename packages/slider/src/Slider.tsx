@@ -237,26 +237,30 @@ const TRACK_NAME = 'SliderTrack'
 
 type SliderTrackElement = HTMLElement | View
 
-export const SliderTrackFrame = styled(SliderFrame, {
-  name: 'SliderTrack',
-
-  variants: {
-    unstyled: {
-      false: {
-        height: '100%',
-        width: '100%',
-        backgroundColor: '$background',
-        position: 'relative',
-        borderRadius: 100_000,
-        overflow: 'hidden',
+export const SliderTrackFrame = styled(
+  SliderFrame,
+  {
+    variants: {
+      unstyled: {
+        false: {
+          height: '100%',
+          width: '100%',
+          backgroundColor: '$background',
+          position: 'relative',
+          borderRadius: 100_000,
+          overflow: 'hidden',
+        },
       },
-    },
-  } as const,
+    } as const,
 
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+    defaultVariants: {
+      unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+    },
   },
-})
+  {
+    name: 'SliderTrack',
+  }
+)
 
 const SliderTrack = React.forwardRef<SliderTrackElement, SliderTrackProps>(
   (props: ScopedProps<SliderTrackProps>, forwardedRef) => {
@@ -283,11 +287,16 @@ SliderTrack.displayName = TRACK_NAME
 
 const RANGE_NAME = 'SliderTrackActive'
 
-export const SliderTrackActiveFrame = styled(SliderFrame, {
-  name: 'SliderTrackActive',
-  backgroundColor: '$background',
-  position: 'absolute',
-})
+export const SliderTrackActiveFrame = styled(
+  SliderFrame,
+  {
+    backgroundColor: '$background',
+    position: 'absolute',
+  },
+  {
+    name: 'SliderTrackActive',
+  }
+)
 
 type SliderTrackActiveProps = GetProps<typeof SliderTrackActiveFrame>
 
@@ -357,31 +366,35 @@ const getThumbSize = (val?: SizeTokens | number) => {
   }
 }
 
-export const SliderThumbFrame = styled(ThemeableStack, {
-  name: 'SliderThumb',
-
-  variants: {
-    size: {
-      '...size': getThumbSize,
-    },
-
-    unstyled: {
-      false: {
-        position: 'absolute',
-        bordered: 2,
-        borderWidth: 2,
-        backgrounded: true,
-        pressTheme: isWeb,
-        focusTheme: isWeb,
-        hoverTheme: isWeb,
+export const SliderThumbFrame = styled(
+  ThemeableStack,
+  {
+    variants: {
+      size: {
+        '...size': getThumbSize,
       },
-    },
-  } as const,
 
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+      unstyled: {
+        false: {
+          position: 'absolute',
+          bordered: 2,
+          borderWidth: 2,
+          backgrounded: true,
+          pressTheme: isWeb,
+          focusTheme: isWeb,
+          hoverTheme: isWeb,
+        },
+      },
+    } as const,
+
+    defaultVariants: {
+      unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+    },
   },
-})
+  {
+    name: 'SliderThumb',
+  }
+)
 
 export interface SliderThumbExtraProps {
   index: number

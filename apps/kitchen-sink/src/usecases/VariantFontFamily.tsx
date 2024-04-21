@@ -1,20 +1,25 @@
 import { Text, styled } from 'tamagui'
 
-export const Heading = styled(Text, {
-  name: 'Heading',
-  color: '$color',
+export const Heading = styled(
+  Text,
+  {
+    color: '$color',
 
-  variants: {
-    type: {
-      myVariant: {
-        fontFamily: '$body',
-        fontSize: 20,
-        lh: '$10',
-        fow: '$2',
+    variants: {
+      type: {
+        myVariant: {
+          fontFamily: '$body',
+          fontSize: 20,
+          lh: '$10',
+          fow: '$2',
+        },
       },
-    },
-  } as const,
-})
+    } as const,
+  },
+  {
+    name: 'Heading',
+  }
+)
 
 export function VariantFontFamily() {
   return (

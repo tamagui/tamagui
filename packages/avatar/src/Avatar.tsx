@@ -96,12 +96,17 @@ AvatarImage.displayName = IMAGE_NAME
 
 const FALLBACK_NAME = 'AvatarFallback'
 
-export const AvatarFallbackFrame = styled(YStack, {
-  name: FALLBACK_NAME,
-  position: 'absolute',
-  fullscreen: true,
-  zIndex: 0,
-})
+export const AvatarFallbackFrame = styled(
+  YStack,
+  {
+    position: 'absolute',
+    fullscreen: true,
+    zIndex: 0,
+  },
+  {
+    name: FALLBACK_NAME,
+  }
+)
 
 type AvatarFallbackProps = GetProps<typeof AvatarFallbackFrame> & {
   delayMs?: number
@@ -134,11 +139,16 @@ AvatarFallback.displayName = FALLBACK_NAME
  * Avatar
  * -----------------------------------------------------------------------------------------------*/
 
-export const AvatarFrame = styled(Square, {
-  name: AVATAR_NAME,
-  position: 'relative',
-  overflow: 'hidden',
-})
+export const AvatarFrame = styled(
+  Square,
+  {
+    position: 'relative',
+    overflow: 'hidden',
+  },
+  {
+    name: AVATAR_NAME,
+  }
+)
 
 type AvatarProps = GetProps<typeof AvatarFrame>
 

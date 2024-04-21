@@ -18,47 +18,55 @@ const VIEWPORT_DEFAULT_HOTKEY = ['F8']
 const VIEWPORT_PAUSE = 'toast.viewportPause'
 const VIEWPORT_RESUME = 'toast.viewportResume'
 
-const ToastViewportWrapperFrame = styled(YStack, {
-  name: 'ViewportWrapper',
-
-  variants: {
-    unstyled: {
-      false: {
-        pointerEvents: 'box-none',
-        top: 0,
-        bottom: 0,
-        left: 0,
-        right: 0,
-        position: isWeb ? ('fixed' as any) : 'absolute',
-        maxWidth: '100%',
-        tabIndex: 0,
-        zIndex: 100000,
+const ToastViewportWrapperFrame = styled(
+  YStack,
+  {
+    variants: {
+      unstyled: {
+        false: {
+          pointerEvents: 'box-none',
+          top: 0,
+          bottom: 0,
+          left: 0,
+          right: 0,
+          position: isWeb ? ('fixed' as any) : 'absolute',
+          maxWidth: '100%',
+          tabIndex: 0,
+          zIndex: 100000,
+        },
       },
+    } as const,
+
+    defaultVariants: {
+      unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
     },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
   },
-})
+  {
+    name: 'ViewportWrapper',
+  }
+)
 
-const ToastViewportFrame = styled(YStack, {
-  name: VIEWPORT_NAME,
-
-  variants: {
-    unstyled: {
-      false: {
-        pointerEvents: 'box-none',
-        position: isWeb ? ('fixed' as any) : 'absolute',
-        maxWidth: '100%',
+const ToastViewportFrame = styled(
+  YStack,
+  {
+    variants: {
+      unstyled: {
+        false: {
+          pointerEvents: 'box-none',
+          position: isWeb ? ('fixed' as any) : 'absolute',
+          maxWidth: '100%',
+        },
       },
-    },
-  } as const,
+    } as const,
 
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+    defaultVariants: {
+      unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+    },
   },
-})
+  {
+    name: VIEWPORT_NAME,
+  }
+)
 
 type ToastViewportFrameProps = GetProps<typeof ToastViewportFrame>
 type ToastViewportProps = ToastViewportFrameProps & {

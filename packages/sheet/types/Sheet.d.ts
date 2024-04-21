@@ -12,7 +12,9 @@ export declare const Handle: import("@tamagui/core").TamaguiComponent<import("@t
     } | undefined;
     open?: boolean | undefined;
     unstyled?: boolean | undefined;
-}, import("@tamagui/core").StaticConfigPublic>;
+}, import("@tamagui/core").StaticConfigPublic & {
+    name: string;
+}>;
 export declare const Overlay: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
@@ -35,7 +37,9 @@ export declare const Overlay: import("@tamagui/core").TamaguiComponent<import("@
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-}, import("@tamagui/core").StaticConfigPublic>;
+}, import("@tamagui/core").StaticConfigPublic & {
+    name: string;
+}>;
 export declare const Frame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
@@ -46,7 +50,9 @@ export declare const Frame: import("@tamagui/core").TamaguiComponent<import("@ta
         right?: number | undefined;
     } | undefined;
     unstyled?: boolean | undefined;
-}, import("@tamagui/core").StaticConfigPublic>;
+}, import("@tamagui/core").StaticConfigPublic & {
+    name: string;
+}>;
 export declare const Sheet: import("react").ForwardRefExoticComponent<{
     open?: boolean | undefined;
     defaultOpen?: boolean | undefined;
@@ -244,7 +250,9 @@ export declare const SheetOverlayFrame: import("@tamagui/core").TamaguiComponent
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-}, import("@tamagui/core").StaticConfigPublic>;
+}, import("@tamagui/core").StaticConfigPublic & {
+    name: string;
+}>;
 /** @deprecated use Overlay instead  */
 export declare const SheetHandleFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
@@ -257,5 +265,7 @@ export declare const SheetHandleFrame: import("@tamagui/core").TamaguiComponent<
     } | undefined;
     open?: boolean | undefined;
     unstyled?: boolean | undefined;
-}, import("@tamagui/core").StaticConfigPublic>;
+}, import("@tamagui/core").StaticConfigPublic & {
+    name: string;
+}>;
 //# sourceMappingURL=Sheet.d.ts.map

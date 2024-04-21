@@ -14,11 +14,16 @@ export type LinearGradientExtraProps = {
   end?: LinearGradientPoint | null
 }
 
-const LinearGradientFrame = styled(YStack, {
-  name: 'LinearGradient',
-  overflow: 'hidden',
-  position: 'relative',
-})
+const LinearGradientFrame = styled(
+  YStack,
+  {
+    overflow: 'hidden',
+    position: 'relative',
+  },
+  {
+    name: 'LinearGradient',
+  }
+)
 
 export const LinearGradient = LinearGradientFrame.styleable<LinearGradientExtraProps>(
   (propsIn, ref) => {

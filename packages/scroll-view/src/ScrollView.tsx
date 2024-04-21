@@ -6,9 +6,7 @@ import { ScrollView as ScrollViewNative } from 'react-native'
 export const ScrollView = styled(
   ScrollViewNative,
   {
-    name: 'ScrollView',
     scrollEnabled: true,
-
     variants: {
       fullscreen: {
         true: fullscreenStyle,
@@ -16,6 +14,7 @@ export const ScrollView = styled(
     } as const,
   },
   {
+    name: 'ScrollView',
     accept: {
       contentContainerStyle: 'style',
     } as const,

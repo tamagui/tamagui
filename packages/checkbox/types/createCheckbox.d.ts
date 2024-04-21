@@ -121,7 +121,11 @@ export declare function createCheckbox<F extends CheckboxComponent, T extends Ch
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig" | "extractable" | "styleable"> & {
+}, import("@tamagui/core").StaticConfigPublic & {
+    name: string;
+}> & Omit<import("@tamagui/core").StaticConfigPublic & {
+    name: string;
+}, "staticConfig" | "extractable" | "styleable"> & {
     __tama: [Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
         size?: SizeTokens | undefined;
         unstyled?: boolean | undefined;
@@ -178,7 +182,9 @@ export declare function createCheckbox<F extends CheckboxComponent, T extends Ch
         radiused?: boolean | undefined;
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
-    }, import("@tamagui/core").StaticConfigPublic];
+    }, import("@tamagui/core").StaticConfigPublic & {
+        name: string;
+    }];
 } & {
     Indicator: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
         unstyled?: boolean | undefined;
@@ -222,7 +228,9 @@ export declare function createCheckbox<F extends CheckboxComponent, T extends Ch
         radiused?: boolean | undefined;
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
-    }, import("@tamagui/core").StaticConfigPublic>;
+    }, import("@tamagui/core").StaticConfigPublic & {
+        name: string;
+    }>;
 };
 export {};
 //# sourceMappingURL=createCheckbox.d.ts.map

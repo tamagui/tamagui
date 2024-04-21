@@ -56,15 +56,25 @@ export const TakeoutPolicy = () => {
   )
 }
 
-const Ul = styled(YStack, {
-  name: 'ul',
-  tag: 'ul',
-  paddingLeft: 20,
-})
+const Ul = styled(
+  YStack,
+  {
+    tag: 'ul',
+    paddingLeft: 20,
+  },
+  {
+    name: 'ul',
+  }
+)
 
-const Li = styled(YStack, {
-  name: 'li',
-  tag: 'li',
-  // @ts-ignore˝
-  display: 'list-item',
-})
+const Li = styled(
+  YStack,
+  {
+    tag: 'li',
+    // @ts-ignore˝
+    display: 'list-item',
+  },
+  {
+    name: 'li',
+  }
+)

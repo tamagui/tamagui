@@ -14,7 +14,9 @@ export declare const SelectIcon: import("@tamagui/core").TamaguiComponent<import
         left?: number | undefined;
         right?: number | undefined;
     } | undefined;
-}, import("@tamagui/core").StaticConfigPublic>;
+}, import("@tamagui/core").StaticConfigPublic & {
+    name: string;
+}>;
 export declare const SelectGroupFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
@@ -24,11 +26,15 @@ export declare const SelectGroupFrame: import("@tamagui/core").TamaguiComponent<
         left?: number | undefined;
         right?: number | undefined;
     } | undefined;
-}, import("@tamagui/core").StaticConfigPublic>;
+}, import("@tamagui/core").StaticConfigPublic & {
+    name: string;
+}>;
 export type SelectLabelProps = ListItemProps;
 export declare const SelectSeparator: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     vertical?: boolean | undefined;
-}, import("@tamagui/core").StaticConfigPublic>;
+}, import("@tamagui/core").StaticConfigPublic & {
+    name: string;
+}>;
 export declare const Select: ((props: ScopedProps<SelectProps>) => import("react/jsx-runtime").JSX.Element) & {
     Adapt: (({ platform, when, children }: import("@tamagui/adapt").AdaptProps) => any) & {
         Contents: {
@@ -79,7 +85,9 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => import("react
             left?: number | undefined;
             right?: number | undefined;
         } | undefined;
-    }, import("@tamagui/core").StaticConfigPublic>;
+    }, import("@tamagui/core").StaticConfigPublic & {
+        name: string;
+    }>;
     Item: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
         unstyled?: boolean | undefined;
         size?: import("@tamagui/core").SizeTokens | undefined;
@@ -128,7 +136,9 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => import("react
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
         active?: boolean | undefined;
-    }, import("@tamagui/core").StaticConfigPublic>;
+    }, import("@tamagui/core").StaticConfigPublic & {
+        name: string;
+    }>;
     ItemIndicator: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "fullscreen" | "inset"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         fullscreen?: boolean | undefined;
@@ -163,7 +173,9 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => import("react
     }>, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps & void, import("@tamagui/core").TextStylePropsBase, {
         size?: FontSizeTokens | undefined;
         unstyled?: boolean | undefined;
-    }, import("@tamagui/core").StaticConfigPublic>;
+    }, import("@tamagui/core").StaticConfigPublic & {
+        name: string;
+    }>;
     Label: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "disabled" | "size" | "elevation" | keyof import("@tamagui/core").StackStyleBase | "transparent" | "fullscreen" | "circular" | "inset" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless" | "active" | "unstyled"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
         unstyled?: boolean | undefined;
         size?: import("@tamagui/core").SizeTokens | undefined;
@@ -348,7 +360,9 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => import("react
     }>, "placeholder"> & SelectValueExtraProps, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps & SelectValueExtraProps, import("@tamagui/core").TextStylePropsBase, {
         size?: FontSizeTokens | undefined;
         unstyled?: boolean | undefined;
-    }, import("@tamagui/core").StaticConfigPublic>;
+    }, import("@tamagui/core").StaticConfigPublic & {
+        name: string;
+    }>;
     Viewport: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
         size?: import("@tamagui/core").SizeTokens | undefined;
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
@@ -393,7 +407,9 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => import("react
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
         unstyled?: boolean | undefined;
-    }, import("@tamagui/core").StaticConfigPublic>;
+    }, import("@tamagui/core").StaticConfigPublic & {
+        name: string;
+    }>;
     Sheet: React.FunctionComponent<Omit<import("@tamagui/sheet").SheetProps, "open" | "onOpenChange"> & React.RefAttributes<import("react-native").View>> & {
         Frame: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
             elevation?: number | import("@tamagui/core").SizeTokens | undefined;

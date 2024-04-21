@@ -46,8 +46,6 @@ export const defaultStyles = {
 export const InputFrame = styled(
   TextInput,
   {
-    name: 'Input',
-
     variants: {
       unstyled: {
         false: defaultStyles,
@@ -67,6 +65,7 @@ export const InputFrame = styled(
     },
   },
   {
+    name: 'Input',
     isInput: true,
 
     accept: {

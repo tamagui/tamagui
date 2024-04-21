@@ -1,48 +1,83 @@
 import { View, styled } from '@tamagui/core'
 
-export const Section = styled(View, {
-  name: 'Section',
-  tag: 'section',
-  flexDirection: 'column',
-  accessibilityRole: 'summary',
-})
+export const Section = styled(
+  View,
+  {
+    tag: 'section',
+    flexDirection: 'column',
+    accessibilityRole: 'summary',
+  },
+  {
+    name: 'Section',
+  }
+)
 
-export const Article = styled(View, {
-  name: 'Article',
-  tag: 'article',
-  flexDirection: 'column',
-})
+export const Article = styled(
+  View,
+  {
+    tag: 'article',
+    flexDirection: 'column',
+  },
+  {
+    name: 'Article',
+  }
+)
 
-export const Main = styled(View, {
-  name: 'Main',
-  tag: 'main',
-  flexDirection: 'column',
-})
+export const Main = styled(
+  View,
+  {
+    tag: 'main',
+    flexDirection: 'column',
+  },
+  {
+    name: 'Main',
+  }
+)
 
-export const Header = styled(View, {
-  name: 'Header',
-  tag: 'header',
-  accessibilityRole: 'header',
-  flexDirection: 'column',
-})
+export const Header = styled(
+  View,
+  {
+    tag: 'header',
+    accessibilityRole: 'header',
+    flexDirection: 'column',
+  },
+  {
+    name: 'Header',
+  }
+)
 
-export const Aside = styled(View, {
-  name: 'Aside',
-  tag: 'aside',
-  flexDirection: 'column',
-  // accessibilityRole: 'complementary',
-})
+export const Aside = styled(
+  View,
+  {
+    tag: 'aside',
+    flexDirection: 'column',
+    // accessibilityRole: 'complementary',
+  },
+  {
+    name: 'Aside',
+  }
+)
 
-export const Footer = styled(View, {
-  name: 'Footer',
-  tag: 'footer',
-  flexDirection: 'column',
-  // accessibilityRole: 'contentinfo',
-})
+export const Footer = styled(
+  View,
+  {
+    tag: 'footer',
+    flexDirection: 'column',
+    // accessibilityRole: 'contentinfo',
+  },
+  {
+    name: 'Footer',
+  }
+)
 
-export const Nav = styled(View, {
-  name: 'Nav',
-  tag: 'nav',
-  flexDirection: 'column',
-  // accessibilityRole: 'navigation',
-})
+export const Nav = styled(
+  View,
+  {
+    tag: 'nav',
+    flexDirection: 'column',
+    // accessibilityRole: 'navigation',
+  },
+  {
+    name: 'Nav',
+  }
+)

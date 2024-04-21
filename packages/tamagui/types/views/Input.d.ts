@@ -52,6 +52,7 @@ export declare const InputFrame: import("@tamagui/core").TamaguiComponent<import
     disabled?: boolean | undefined;
     unstyled?: boolean | undefined;
 }, {
+    name: string;
     isInput: true;
     accept: {
         readonly placeholderTextColor: "color";
@@ -79,6 +80,7 @@ export declare const Input: import("@tamagui/core").TamaguiComponent<Omit<import
     disabled?: boolean | undefined;
     unstyled?: boolean | undefined;
 }, {
+    name: string;
     isInput: true;
     accept: {
         readonly placeholderTextColor: "color";

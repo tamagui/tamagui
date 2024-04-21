@@ -60,9 +60,13 @@ const TRIGGER_NAME = 'AlertDialogTrigger'
 
 interface AlertDialogTriggerProps extends DialogTriggerProps {}
 
-const NativeAlertDialogTriggerFrame = styled(View, {
-  name: TRIGGER_NAME,
-})
+const NativeAlertDialogTriggerFrame = styled(
+  View,
+  {},
+  {
+    name: TRIGGER_NAME,
+  }
+)
 
 const AlertDialogTrigger = React.forwardRef<TamaguiElement, AlertDialogTriggerProps>(
   (props: ScopedProps<AlertDialogTriggerProps>, forwardedRef) => {
@@ -108,9 +112,13 @@ AlertDialogPortal.displayName = PORTAL_NAME
 
 const OVERLAY_NAME = 'AlertDialogOverlay'
 
-const AlertDialogOverlayFrame = styled(DialogOverlayFrame, {
-  name: OVERLAY_NAME,
-})
+const AlertDialogOverlayFrame = styled(
+  DialogOverlayFrame,
+  {},
+  {
+    name: OVERLAY_NAME,
+  }
+)
 
 interface AlertDialogOverlayProps extends DialogOverlayProps {}
 

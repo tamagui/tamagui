@@ -67,62 +67,67 @@ TabsList.displayName = TAB_LIST_NAME
 
 const TRIGGER_NAME = 'TabsTrigger'
 
-const TabsTriggerFrame = styled(ThemeableStack, {
-  name: TRIGGER_NAME,
-  tag: 'button',
-  justifyContent: 'center',
-  alignItems: 'center',
-  flexWrap: 'nowrap',
-  flexDirection: 'row',
-  cursor: 'pointer',
-  userSelect: 'none',
+const TabsTriggerFrame = styled(
+  ThemeableStack,
+  {
+    tag: 'button',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexWrap: 'nowrap',
+    flexDirection: 'row',
+    cursor: 'pointer',
+    userSelect: 'none',
 
-  variants: {
-    size: {
-      '...size': getButtonSized,
-    },
-
-    disabled: {
-      true: {
-        pointerEvents: 'none',
+    variants: {
+      size: {
+        '...size': getButtonSized,
       },
-    },
 
-    active: {
-      true: {
-        hoverStyle: {
+      disabled: {
+        true: {
+          pointerEvents: 'none',
+        },
+      },
+
+      active: {
+        true: {
+          hoverStyle: {
+            backgroundColor: '$background',
+          },
+
+          focusStyle: {
+            backgroundColor: '$background',
+          },
+        },
+      },
+
+      unstyled: {
+        false: {
           backgroundColor: '$background',
-        },
 
-        focusStyle: {
-          backgroundColor: '$background',
-        },
-      },
-    },
+          pressStyle: {
+            backgroundColor: '$backgroundPress',
+          },
 
-    unstyled: {
-      false: {
-        backgroundColor: '$background',
+          hoverStyle: {
+            backgroundColor: '$backgroundHover',
+          },
 
-        pressStyle: {
-          backgroundColor: '$backgroundPress',
-        },
-
-        hoverStyle: {
-          backgroundColor: '$backgroundHover',
-        },
-
-        focusStyle: {
-          backgroundColor: '$backgroundFocus',
+          focusStyle: {
+            backgroundColor: '$backgroundFocus',
+          },
         },
       },
-    },
-  } as const,
+    } as const,
 
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+    defaultVariants: {
+      unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+    },
   },
-})
+  {
+    name: TRIGGER_NAME,
+  }
+)
 
 /**
  * @deprecated Use `TabLayout` instead
@@ -292,9 +297,13 @@ TabsTrigger.displayName = TRIGGER_NAME
 
 const CONTENT_NAME = 'TabsContent'
 
-const TabsContentFrame = styled(ThemeableStack, {
-  name: CONTENT_NAME,
-})
+const TabsContentFrame = styled(
+  ThemeableStack,
+  {},
+  {
+    name: CONTENT_NAME,
+  }
+)
 type TabsContentFrameProps = GetProps<typeof TabsContentFrame>
 
 type TabsContentExtraProps = {
@@ -372,9 +381,13 @@ type TabsContextValue = {
 const { Provider: TabsProvider, useStyledContext: useTabsContext } =
   createStyledContext<TabsContextValue>()
 
-const TabsFrame = styled(SizableStack, {
-  name: TABS_NAME,
-})
+const TabsFrame = styled(
+  SizableStack,
+  {},
+  {
+    name: TABS_NAME,
+  }
+)
 
 type RovingFocusGroupProps = React.ComponentPropsWithoutRef<typeof RovingFocusGroup>
 

@@ -5,6 +5,7 @@ export declare const ScrollView: import("@tamagui/web").TamaguiComponent<import(
 }, {
     fullscreen?: boolean | undefined;
 }, {
+    name: string;
     accept: {
         readonly contentContainerStyle: "style";
     };

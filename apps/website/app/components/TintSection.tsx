@@ -91,20 +91,25 @@ export const useTintSectionIndex = (cb: (index: number, str: number) => void) =>
   }, [])
 }
 
-export const HomeSection = styled(YStack, {
-  name: 'Section',
-  pos: 'relative',
-  py: '$14',
-  zi: 2,
+export const HomeSection = styled(
+  YStack,
+  {
+    pos: 'relative',
+    py: '$14',
+    zi: 2,
 
-  variants: {
-    below: {
-      true: {
-        zi: 1,
+    variants: {
+      below: {
+        true: {
+          zi: 1,
+        },
       },
-    },
-  } as const,
-})
+    } as const,
+  },
+  {
+    name: 'Section',
+  }
+)
 
 type SectionProps = GetProps<typeof HomeSection>
 

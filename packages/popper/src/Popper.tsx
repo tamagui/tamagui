@@ -207,33 +207,37 @@ export type PopperContentProps = SizableStackProps & {
   enableAnimationForPositionChange?: boolean
 }
 
-export const PopperContentFrame = styled(ThemeableStack, {
-  name: 'PopperContent',
-
-  variants: {
-    unstyled: {
-      false: {
-        size: '$true',
-        backgroundColor: '$background',
-        alignItems: 'center',
-        radiused: true,
+export const PopperContentFrame = styled(
+  ThemeableStack,
+  {
+    variants: {
+      unstyled: {
+        false: {
+          size: '$true',
+          backgroundColor: '$background',
+          alignItems: 'center',
+          radiused: true,
+        },
       },
-    },
 
-    size: {
-      '...size': (val, { tokens }) => {
-        return {
-          padding: tokens.space[val],
-          borderRadius: tokens.radius[val],
-        }
+      size: {
+        '...size': (val, { tokens }) => {
+          return {
+            padding: tokens.space[val],
+            borderRadius: tokens.radius[val],
+          }
+        },
       },
-    },
-  } as const,
+    } as const,
 
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+    defaultVariants: {
+      unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+    },
   },
-})
+  {
+    name: 'PopperContent',
+  }
+)
 
 export const PopperContent = React.forwardRef<
   PopperContentElement,
@@ -320,44 +324,52 @@ export type PopperArrowExtraProps = {
 
 export type PopperArrowProps = YStackProps & PopperArrowExtraProps
 
-const PopperArrowFrame = styled(YStack, {
-  name: 'PopperArrow',
-
-  variants: {
-    unstyled: {
-      false: {
-        borderColor: '$borderColor',
-        backgroundColor: '$background',
-        position: 'relative',
+const PopperArrowFrame = styled(
+  YStack,
+  {
+    variants: {
+      unstyled: {
+        false: {
+          borderColor: '$borderColor',
+          backgroundColor: '$background',
+          position: 'relative',
+        },
       },
+    } as const,
+
+    defaultVariants: {
+      unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
     },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
   },
-})
+  {
+    name: 'PopperArrow',
+  }
+)
 
-const PopperArrowOuterFrame = styled(YStack, {
-  name: 'PopperArrowOuter',
-
-  variants: {
-    unstyled: {
-      false: {
-        position: 'absolute',
-        zIndex: 1_000_000,
-        pointerEvents: 'none',
-        overflow: 'hidden',
-        alignItems: 'center',
-        justifyContent: 'center',
+const PopperArrowOuterFrame = styled(
+  YStack,
+  {
+    variants: {
+      unstyled: {
+        false: {
+          position: 'absolute',
+          zIndex: 1_000_000,
+          pointerEvents: 'none',
+          overflow: 'hidden',
+          alignItems: 'center',
+          justifyContent: 'center',
+        },
       },
-    },
-  } as const,
+    } as const,
 
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+    defaultVariants: {
+      unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+    },
   },
-})
+  {
+    name: 'PopperArrowOuter',
+  }
+)
 
 const opposites = {
   top: 'bottom',

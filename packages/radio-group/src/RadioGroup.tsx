@@ -46,25 +46,29 @@ const getState = (checked: boolean) => {
 
 const RADIO_GROUP_INDICATOR_NAME = 'RadioGroupIndicator'
 
-const RadioIndicatorFrame = styled(ThemeableStack, {
-  name: RADIO_GROUP_INDICATOR_NAME,
-
-  variants: {
-    unstyled: {
-      false: {
-        width: '33%',
-        height: '33%',
-        borderRadius: 1000,
-        backgroundColor: '$color',
-        pressTheme: true,
+const RadioIndicatorFrame = styled(
+  ThemeableStack,
+  {
+    variants: {
+      unstyled: {
+        false: {
+          width: '33%',
+          height: '33%',
+          borderRadius: 1000,
+          backgroundColor: '$color',
+          pressTheme: true,
+        },
       },
-    },
-  } as const,
+    } as const,
 
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+    defaultVariants: {
+      unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+    },
   },
-})
+  {
+    name: RADIO_GROUP_INDICATOR_NAME,
+  }
+)
 
 type RadioIndicatorProps = GetProps<typeof RadioIndicatorFrame> & {
   forceMount?: boolean
@@ -114,84 +118,89 @@ type RadioGroupItemContextValue = {
 const [RadioGroupItemProvider, useRadioGroupItemContext] =
   createRadioGroupContext<RadioGroupItemContextValue>(RADIO_GROUP_NAME)
 
-const RadioGroupItemFrame = styled(ThemeableStack, {
-  name: RADIO_GROUP_ITEM_NAME,
-  tag: 'button',
+const RadioGroupItemFrame = styled(
+  ThemeableStack,
+  {
+    tag: 'button',
 
-  variants: {
-    unstyled: {
-      false: {
-        size: '$true',
-        borderRadius: 1000,
-        backgroundColor: '$background',
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderWidth: 1,
-        borderColor: '$borderColor',
-        padding: 0,
-
-        hoverStyle: {
-          borderColor: '$borderColorHover',
-          backgroundColor: '$backgroundHover',
-        },
-
-        focusStyle: {
-          borderColor: '$borderColorHover',
-          backgroundColor: '$backgroundHover',
-        },
-
-        focusVisibleStyle: {
-          outlineStyle: 'solid',
-          outlineWidth: 2,
-          outlineColor: '$outlineColor',
-        },
-
-        pressStyle: {
-          borderColor: '$borderColorFocus',
-          backgroundColor: '$backgroundFocus',
-        },
-      },
-    },
-
-    disabled: {
-      true: {
-        pointerEvents: 'none',
-        userSelect: 'none',
-        cursor: 'not-allowed',
-
-        hoverStyle: {
-          borderColor: '$borderColor',
+    variants: {
+      unstyled: {
+        false: {
+          size: '$true',
+          borderRadius: 1000,
           backgroundColor: '$background',
-        },
-
-        pressStyle: {
+          alignItems: 'center',
+          justifyContent: 'center',
+          borderWidth: 1,
           borderColor: '$borderColor',
-          backgroundColor: '$backgroundColor',
-        },
+          padding: 0,
 
-        focusVisibleStyle: {
-          outlineWidth: 0,
+          hoverStyle: {
+            borderColor: '$borderColorHover',
+            backgroundColor: '$backgroundHover',
+          },
+
+          focusStyle: {
+            borderColor: '$borderColorHover',
+            backgroundColor: '$backgroundHover',
+          },
+
+          focusVisibleStyle: {
+            outlineStyle: 'solid',
+            outlineWidth: 2,
+            outlineColor: '$outlineColor',
+          },
+
+          pressStyle: {
+            borderColor: '$borderColorFocus',
+            backgroundColor: '$backgroundFocus',
+          },
         },
       },
-    },
 
-    size: {
-      '...size': (value, { props }) => {
-        const size = Math.floor(
-          getVariableValue(getSize(value)) * (props['scaleSize'] ?? 0.5)
-        )
-        return {
-          width: size,
-          height: size,
-        }
+      disabled: {
+        true: {
+          pointerEvents: 'none',
+          userSelect: 'none',
+          cursor: 'not-allowed',
+
+          hoverStyle: {
+            borderColor: '$borderColor',
+            backgroundColor: '$background',
+          },
+
+          pressStyle: {
+            borderColor: '$borderColor',
+            backgroundColor: '$backgroundColor',
+          },
+
+          focusVisibleStyle: {
+            outlineWidth: 0,
+          },
+        },
       },
-    },
-  } as const,
 
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+      size: {
+        '...size': (value, { props }) => {
+          const size = Math.floor(
+            getVariableValue(getSize(value)) * (props['scaleSize'] ?? 0.5)
+          )
+          return {
+            width: size,
+            height: size,
+          }
+        },
+      },
+    } as const,
+
+    defaultVariants: {
+      unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+    },
   },
-})
+  {
+    name: RADIO_GROUP_ITEM_NAME,
+  }
+)
 
 type RadioGroupItemProps = GetProps<typeof RadioGroupItemFrame> & {
   value: string
@@ -442,22 +451,26 @@ type TamaguiElement = HTMLElement | View
 
 type RadioGroupElement = TamaguiElement
 
-const RadioGroupFrame = styled(ThemeableStack, {
-  name: RADIO_GROUP_NAME,
-
-  variants: {
-    orientation: {
-      horizontal: {
-        flexDirection: 'row',
-        spaceDirection: 'horizontal',
+const RadioGroupFrame = styled(
+  ThemeableStack,
+  {
+    variants: {
+      orientation: {
+        horizontal: {
+          flexDirection: 'row',
+          spaceDirection: 'horizontal',
+        },
+        vertical: {
+          flexDirection: 'column',
+          spaceDirection: 'vertical',
+        },
       },
-      vertical: {
-        flexDirection: 'column',
-        spaceDirection: 'vertical',
-      },
-    },
-  } as const,
-})
+    } as const,
+  },
+  {
+    name: RADIO_GROUP_NAME,
+  }
+)
 
 type RadioGroupProps = GetProps<typeof RadioGroupFrame> & {
   value?: string

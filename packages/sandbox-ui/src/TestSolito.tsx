@@ -5,9 +5,13 @@ import { LinkCore } from 'solito/link'
 import type { AnchorProps } from 'tamagui'
 import { Anchor, styled } from 'tamagui'
 
-const StyledTextLink = styled(Anchor, {
-  name: 'TextLink',
-})
+const StyledTextLink = styled(
+  Anchor,
+  {},
+  {
+    name: 'TextLink',
+  }
+)
 
 export type TextLinkProps = Pick<LinkCoreProps, 'href' | 'target'> & AnchorProps
 

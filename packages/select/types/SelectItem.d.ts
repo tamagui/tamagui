@@ -71,6 +71,8 @@ export declare const SelectItem: import("@tamagui/web").TamaguiComponent<Omit<im
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
     active?: boolean | undefined;
-}, import("@tamagui/web").StaticConfigPublic>;
+}, import("@tamagui/web").StaticConfigPublic & {
+    name: string;
+}>;
 export {};
 //# sourceMappingURL=SelectItem.d.ts.map
