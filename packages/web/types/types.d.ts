@@ -272,7 +272,7 @@ export type SpacerUniqueProps = {
 };
 export interface SpacerStyleProps extends Omit<StackStyleBase, keyof SpacerUniqueProps>, SpacerUniqueProps {
 }
-export type SpacerProps = WithThemeShorthandsPseudosMedia<SpacerStyleProps>;
+export type SpacerProps = WithThemeShorthandsPseudosMediaRem<SpacerStyleProps>;
 type AllowedValueSettingBase = boolean | 'strict' | 'somewhat-strict' | 'strict-web' | 'somewhat-strict-web';
 type AllowedStyleValuesSettingSize = AllowedValueSettingBase | 'number' | 'percent';
 type AllowedStyleValuesSettingZIndex = AllowedValueSettingBase | 'number';
@@ -646,6 +646,7 @@ export type AllPlatforms = 'web' | 'native' | 'android' | 'ios';
 export type WithThemeAndShorthands<A extends Object, Variants = {}> = OnlyAllowShorthands extends true ? WithThemeValues<Omit<A, Longhands>> & Variants & WithShorthands<WithThemeValues<A>> : WithThemeValues<A> & Variants & WithShorthands<WithThemeValues<A>>;
 export type WithThemeShorthandsAndPseudos<A extends Object, Variants = {}> = WithThemeAndShorthands<A, Variants> & WithPseudoProps<WithThemeAndShorthands<A, Variants>>;
 export type WithThemeShorthandsPseudosMedia<A extends Object, Variants = {}> = WithThemeShorthandsAndPseudos<A, Variants> & WithMediaProps<WithThemeShorthandsAndPseudos<A, Variants>>;
+export type WithThemeShorthandsPseudosMediaRem<A extends Object, Variants = {}> = WithRem<WithThemeShorthandsAndPseudos<A, Variants>> & WithRem<WithMediaProps<WithThemeShorthandsAndPseudos<A, Variants>>>;
 /**
  * Base style-only props (no media, pseudo):
  */
@@ -821,12 +822,12 @@ type A11yDeprecated = {
 export interface StackNonStyleProps extends A11yDeprecated, Omit<ViewProps, 'hitSlop' | 'pointerEvents' | 'display' | 'children' | RNOnlyProps | keyof ExtendBaseStackProps | 'style'>, ExtendBaseStackProps, TamaguiComponentPropsBase {
     style?: StyleProp<LooseCombinedObjects<React.CSSProperties, ViewStyle>>;
 }
-export type StackStyle = WithRem<WithThemeShorthandsPseudosMedia<StackStyleBase>>;
+export type StackStyle = WithThemeShorthandsPseudosMediaRem<StackStyleBase>;
 export type StackProps = StackNonStyleProps & StackStyle;
 export interface TextNonStyleProps extends A11yDeprecated, Omit<ReactTextProps, 'children' | keyof WebOnlyPressEvents | RNOnlyProps | keyof ExtendBaseTextProps | 'style'>, ExtendBaseTextProps, TamaguiComponentPropsBase {
     style?: StyleProp<LooseCombinedObjects<React.CSSProperties, TextStyle>>;
 }
-export type TextStyleProps = WithThemeShorthandsPseudosMedia<TextStylePropsBase>;
+export type TextStyleProps = WithThemeShorthandsPseudosMediaRem<TextStylePropsBase>;
 export type TextProps = TextNonStyleProps & TextStyleProps;
 export interface ThemeableProps {
     theme?: ThemeName | null;
@@ -840,7 +841,7 @@ export type StyleableOptions = {
     staticConfig?: Partial<StaticConfig>;
 };
 export type Styleable<Props, Ref, NonStyledProps, BaseStyles extends Object, VariantProps, ParentStaticProperties> = <CustomProps extends Object | void = void, MergedProps = CustomProps extends void ? Props : Omit<Props, keyof CustomProps> & CustomProps, FunctionDef extends FunctionComponent<MergedProps> = FunctionComponent<MergedProps>>(a: FunctionDef, options?: StyleableOptions) => TamaguiComponent<MergedProps, Ref, NonStyledProps & CustomProps, BaseStyles, VariantProps, ParentStaticProperties>;
-export type GetFinalProps<NonStyleProps, StylePropsBase, Variants> = Omit<NonStyleProps, keyof StylePropsBase | keyof Variants> & (StylePropsBase extends Object ? WithThemeShorthandsPseudosMedia<StylePropsBase, Variants> : {});
+export type GetFinalProps<NonStyleProps, StylePropsBase, Variants> = Omit<NonStyleProps, keyof StylePropsBase | keyof Variants> & (StylePropsBase extends Object ? WithThemeShorthandsPseudosMediaRem<StylePropsBase, Variants> : {});
 export type TamaguiComponent<Props = any, Ref = any, NonStyledProps = {}, BaseStyles extends Object = {}, Variants = {}, ParentStaticProperties = {}> = ForwardRefExoticComponent<(Props extends TamaDefer ? GetFinalProps<NonStyledProps, BaseStyles, Variants> : Props) & RefAttributes<Ref>> & StaticComponentObject<Props, Ref, NonStyledProps, BaseStyles, Variants, ParentStaticProperties> & Omit<ParentStaticProperties, 'staticConfig' | 'extractable' | 'styleable'> & {
     __tama: [Props, Ref, NonStyledProps, BaseStyles, Variants, ParentStaticProperties];
 };
@@ -1022,7 +1023,7 @@ export type GetVariantProps<A extends StylableComponent, IsText extends boolean 
         infer VariantProps,
         any
     ];
-} ? Props extends TamaDefer ? GetFinalProps<NonStyledProps, BaseStyles, VariantProps> : Props : WithThemeShorthandsPseudosMedia<IsText extends true ? TextStylePropsBase : StackStyleBase>;
+} ? Props extends TamaDefer ? GetFinalProps<NonStyledProps, BaseStyles, VariantProps> : Props : WithThemeShorthandsPseudosMediaRem<IsText extends true ? TextStylePropsBase : StackStyleBase>;
 export type VariantDefinitionFromProps<MyProps, Val> = MyProps extends Object ? {
     [propName: string]: VariantSpreadFunction<MyProps, Val> | ({
         [Key in SpreadKeys]?: Key extends '...fontSize' ? FontSizeVariantSpreadFunction<MyProps> : Key extends '...size' ? SizeVariantSpreadFunction<MyProps> : Key extends '...space' ? SpaceVariantSpreadFunction<MyProps> : Key extends '...color' ? ColorVariantSpreadFunction<MyProps> : Key extends '...lineHeight' ? FontLineHeightVariantSpreadFunction<MyProps> : Key extends '...fontTransform' ? FontTransformVariantSpreadFunction<MyProps> : Key extends '...fontStyle' ? FontStyleVariantSpreadFunction<MyProps> : Key extends '...letterSpacing' ? FontLetterSpacingVariantSpreadFunction<MyProps> : Key extends '...zIndex' ? ZIndexVariantSpreadFunction<MyProps> : Key extends '...radius' ? RadiusVariantSpreadFunction<MyProps> : Key extends '...theme' ? ThemeVariantSpreadFunction<MyProps> : never;

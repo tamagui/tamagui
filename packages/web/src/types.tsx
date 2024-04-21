@@ -460,7 +460,7 @@ export interface SpacerStyleProps
   extends Omit<StackStyleBase, keyof SpacerUniqueProps>,
     SpacerUniqueProps {}
 
-export type SpacerProps = WithThemeShorthandsPseudosMedia<SpacerStyleProps>
+export type SpacerProps = WithThemeShorthandsPseudosMediaRem<SpacerStyleProps>
 
 type AllowedValueSettingBase =
   | boolean
@@ -1210,6 +1210,11 @@ export type WithThemeShorthandsPseudosMedia<
 > = WithThemeShorthandsAndPseudos<A, Variants> &
   WithMediaProps<WithThemeShorthandsAndPseudos<A, Variants>>
 
+export type WithThemeShorthandsPseudosMediaRem<A extends Object, Variants = {}> = WithRem<
+  WithThemeShorthandsAndPseudos<A, Variants>
+> &
+  WithRem<WithMediaProps<WithThemeShorthandsAndPseudos<A, Variants>>>
+
 /**
  * Base style-only props (no media, pseudo):
  */
@@ -1443,7 +1448,7 @@ export interface StackNonStyleProps
   style?: StyleProp<LooseCombinedObjects<React.CSSProperties, ViewStyle>>
 }
 
-export type StackStyle = WithRem<WithThemeShorthandsPseudosMedia<StackStyleBase>>
+export type StackStyle = WithThemeShorthandsPseudosMediaRem<StackStyleBase>
 
 export type StackProps = StackNonStyleProps & StackStyle
 
@@ -1468,7 +1473,7 @@ export interface TextNonStyleProps
   style?: StyleProp<LooseCombinedObjects<React.CSSProperties, TextStyle>>
 }
 
-export type TextStyleProps = WithThemeShorthandsPseudosMedia<TextStylePropsBase>
+export type TextStyleProps = WithThemeShorthandsPseudosMediaRem<TextStylePropsBase>
 
 export type TextProps = TextNonStyleProps & TextStyleProps
 
@@ -1515,7 +1520,7 @@ export type GetFinalProps<NonStyleProps, StylePropsBase, Variants> = Omit<
   keyof StylePropsBase | keyof Variants
 > &
   (StylePropsBase extends Object
-    ? WithThemeShorthandsPseudosMedia<StylePropsBase, Variants>
+    ? WithThemeShorthandsPseudosMediaRem<StylePropsBase, Variants>
     : {})
 
 export type TamaguiComponent<
@@ -1864,7 +1869,7 @@ export type GetVariantProps<
   ? Props extends TamaDefer
     ? GetFinalProps<NonStyledProps, BaseStyles, VariantProps>
     : Props
-  : WithThemeShorthandsPseudosMedia<
+  : WithThemeShorthandsPseudosMediaRem<
       IsText extends true ? TextStylePropsBase : StackStyleBase
     >
 
