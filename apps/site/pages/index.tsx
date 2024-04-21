@@ -18,7 +18,6 @@ import { ThemeNameEffect } from '../components/ThemeNameEffect'
 import { HomeSection, SectionTinted, TintSection } from '../components/TintSection'
 import { getCompilationExamples } from '../lib/getCompilationExamples'
 import { ThemeTint } from '@tamagui/logo'
-import { TamaguiConfigProvider } from '../providers/GlobalProvider'
 
 export default function Home({ animationCode, compilationExamples }) {
   return (

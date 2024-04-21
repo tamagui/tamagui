@@ -6993,6 +6993,7 @@ __metadata:
     awesome-phonenumber: "npm:^6.4.0"
     expo-document-picker: "npm:^11.10.1"
     expo-image-picker: "npm:^14.7.1"
+    foxact: "npm:^0.2.33"
     html-webpack-plugin: "npm:^5.5.0"
     metro-runtime: "npm:*"
     mini-css-extract-plugin: "npm:^2.7.6"
@@ -7008,6 +7009,7 @@ __metadata:
     tamagui: "npm:1.95.0-1713326412393"
     tilg: "npm:0.1.1"
     use-local-storage: "npm:^3.0.0"
+    usehooks-ts: "npm:^3.1.0"
     webpack: "npm:^5.88.2"
     webpack-bundle-analyzer: "npm:^4.9.0"
     webpack-cli: "npm:^4.9.2"
@@ -8451,6 +8453,7 @@ __metadata:
     eslint: "npm:^8.56.0"
     eslint-config-next: "npm:13.2.4"
     file-system-access: "npm:^1.0.4"
+    foxact: "npm:^0.2.33"
     framer-motion: "npm:^10.18.0"
     fs-extra: "npm:^11.2.0"
     glob: "npm:^7.1.6"
@@ -8501,6 +8504,7 @@ __metadata:
     unified: "npm:^10.1.2"
     unist-util-visit: "npm:^2.0.3"
     use-local-storage: "npm:^3.0.0"
+    usehooks-ts: "npm:^3.1.0"
     wait-port: "npm:^0.3.0"
     webpack-stats-plugin: "npm:^1.1.3"
     zx: "npm:^7.2.3"
@@ -13282,7 +13286,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"client-only@npm:0.0.1":
+"client-only@npm:0.0.1, client-only@npm:^0.0.1":
   version: 0.0.1
   resolution: "client-only@npm:0.0.1"
   checksum: 10/0c16bf660dadb90610553c1d8946a7fdfb81d624adea073b8440b7d795d5b5b08beb3c950c6a2cf16279365a3265158a236876d92bce16423c485c322d7dfaf8
@@ -17703,6 +17707,21 @@ __metadata:
   version: 0.2.0
   resolution: "forwarded@npm:0.2.0"
   checksum: 10/29ba9fd347117144e97cbb8852baae5e8b2acb7d1b591ef85695ed96f5b933b1804a7fac4a15dd09ca7ac7d0cdc104410e8102aae2dd3faa570a797ba07adb81
+  languageName: node
+  linkType: hard
+
+"foxact@npm:^0.2.33":
+  version: 0.2.33
+  resolution: "foxact@npm:0.2.33"
+  dependencies:
+    client-only: "npm:^0.0.1"
+    server-only: "npm:^0.0.1"
+  peerDependencies:
+    react: "*"
+  peerDependenciesMeta:
+    react:
+      optional: true
+  checksum: 10/1117f3442cff2aceb1787db7e94efdd674fdd9927a12ac1a73e8f75df71a9dc6e16021797b5cea9e9854265acadc67aa1337cf389b349546bef7b4af1e5f5ab6
   languageName: node
   linkType: hard
 
@@ -28280,6 +28299,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"server-only@npm:^0.0.1":
+  version: 0.0.1
+  resolution: "server-only@npm:0.0.1"
+  checksum: 10/c432348956641ea3f460af8dc3765f3a1bdbcf7a1e0205b0756d868e6e6fe8934cdee6bff68401a1dd49ba4a831c75916517a877446d54b334f7de36fa273e53
+  languageName: node
+  linkType: hard
+
 "set-blocking@npm:^2.0.0":
   version: 2.0.0
   resolution: "set-blocking@npm:2.0.0"
@@ -31355,6 +31381,17 @@ __metadata:
   version: 3.1.1
   resolution: "use@npm:3.1.1"
   checksum: 10/08a130289f5238fcbf8f59a18951286a6e660d17acccc9d58d9b69dfa0ee19aa038e8f95721b00b432c36d1629a9e32a464bf2e7e0ae6a244c42ddb30bdd8b33
+  languageName: node
+  linkType: hard
+
+"usehooks-ts@npm:^3.1.0":
+  version: 3.1.0
+  resolution: "usehooks-ts@npm:3.1.0"
+  dependencies:
+    lodash.debounce: "npm:^4.0.8"
+  peerDependencies:
+    react: ^16.8.0  || ^17 || ^18
+  checksum: 10/6aef8affd3c053a3040b7421816dab85eb21601c5203496a705bafc32eb973fb519a2b0ddda527962e361d248f3a1c49df130620efe871c8f89e897451ed1cc7
   languageName: node
   linkType: hard
 

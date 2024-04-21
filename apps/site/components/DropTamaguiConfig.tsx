@@ -4,7 +4,8 @@ import { Button, Dialog, H2, Paragraph, ScrollView, TooltipSimple, YStack } from
 import { Code, CodeInline } from './Code'
 import { Features } from './Features'
 import { Notice } from './Notice'
-import useLocalStorage from 'use-local-storage'
+// import { useLocalStorage } from 'usehooks-ts'
+import { useLocalStorage } from 'foxact/use-local-storage'
 
 export const DropTamaguiConfig = () => {
   const [show, setShow] = useState(false)
