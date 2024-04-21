@@ -5,8 +5,8 @@ export declare const useSheet: () => {
     removeScrollEnabled: boolean | undefined;
     scrollBridge: import("./types").ScrollBridge;
     modal: boolean;
-    open: boolean;
-    setOpen: import("react").Dispatch<import("react").SetStateAction<boolean>>;
+    open: boolean | undefined;
+    setOpen: import("react").Dispatch<import("react").SetStateAction<boolean | undefined>>;
     hidden: boolean;
     contentRef: import("react").RefObject<import("@tamagui/web").TamaguiElement>;
     handleRef: import("react").RefObject<import("@tamagui/web").TamaguiElement>;

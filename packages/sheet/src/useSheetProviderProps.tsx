@@ -39,26 +39,31 @@ export function useSheetProviderProps(
   // lets set -1 to be always the "open = false" position
   const [position_, setPositionImmediate] = useControllableState({
     prop: props.position,
-    defaultProp: props.defaultPosition || (state.open ? 0 : -1),
+    defaultProp: props.defaultPosition || (state.initialOpen ? 0 : -1),
     onChange: props.onPositionChange,
     strategy: 'most-recent-wins',
     transition: true,
   })
 
-  const position = state.open === false ? -1 : position_
+  const position = state.initialOpen === false ? -1 : position_
 
-  const { open } = state
+  const { initialOpen } = state
 
   const setPosition = useCallback(
     (next: number) => {
       // close on dismissOnSnapToBottom (and set position so it animates)
       if (props.dismissOnSnapToBottom && next === snapPoints.length - 1) {
-        state.setOpen(false)
+        state.setInitialOpen(false)
       } else {
         setPositionImmediate(next)
       }
     },
-    [props.dismissOnSnapToBottom, snapPoints.length, setPositionImmediate, state.setOpen]
+    [
+      props.dismissOnSnapToBottom,
+      snapPoints.length,
+      setPositionImmediate,
+      state.initialOpen,
+    ]
   )
 
   if (process.env.NODE_ENV === 'development') {
@@ -115,12 +120,12 @@ export function useSheetProviderProps(
   }
 
   // reset position to fully open on re-open after dismissOnSnapToBottom
-  if (open && props.dismissOnSnapToBottom && position === snapPoints.length - 1) {
+  if (initialOpen && props.dismissOnSnapToBottom && position === snapPoints.length - 1) {
     setPositionImmediate(0)
   }
 
   // open must set position
-  const shouldSetPositionOpen = open && position < 0
+  const shouldSetPositionOpen = initialOpen && position < 0
   useEffect(() => {
     if (shouldSetPositionOpen) {
       setPosition(0)
@@ -143,7 +148,8 @@ export function useSheetProviderProps(
     scrollLock: false,
   }))
 
-  const removeScrollEnabled = props.forceRemoveScrollEnabled ?? (open && props.modal)
+  const removeScrollEnabled =
+    props.forceRemoveScrollEnabled ?? (initialOpen && props.modal)
 
   const maxSnapPoint = snapPoints[0]
   const screenSize =
@@ -157,8 +163,8 @@ export function useSheetProviderProps(
     removeScrollEnabled,
     scrollBridge,
     modal: !!props.modal,
-    open: state.open,
-    setOpen: state.setOpen,
+    open: state.initialOpen,
+    setOpen: state.setInitialOpen,
     hidden: !!state.isHidden,
     contentRef,
     handleRef,

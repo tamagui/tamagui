@@ -76,7 +76,7 @@ export const SheetImplementationCustom = themeable(
       setMaxContentSize,
       maxSnapPoint,
     } = providerProps
-    const { open, controller, isHidden } = state
+    const { initialOpen: open, controller, isHidden } = state
 
     const sheetRef = useRef<View>(null)
     const ref = useComposedRefs(forwardedRef, sheetRef)
@@ -199,10 +199,18 @@ export const SheetImplementationCustom = themeable(
         return
       }
 
-      animatedNumber.setValue(toValue, {
-        type: 'spring',
-        ...animationConfig,
-      })
+      animatedNumber.setValue(
+        toValue,
+        {
+          type: 'spring',
+          ...animationConfig,
+        },
+        position === -1
+          ? () => {
+              state.setOpen(false)
+            }
+          : undefined
+      )
     })
 
     useIsomorphicLayoutEffect(() => {

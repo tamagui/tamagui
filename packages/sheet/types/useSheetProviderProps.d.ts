@@ -11,8 +11,8 @@ export declare function useSheetProviderProps(props: SheetProps, state: SheetOpe
     removeScrollEnabled: boolean | undefined;
     scrollBridge: ScrollBridge;
     modal: boolean;
-    open: boolean;
-    setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    open: boolean | undefined;
+    setOpen: React.Dispatch<React.SetStateAction<boolean | undefined>>;
     hidden: boolean;
     contentRef: React.RefObject<TamaguiElement>;
     handleRef: React.RefObject<TamaguiElement>;

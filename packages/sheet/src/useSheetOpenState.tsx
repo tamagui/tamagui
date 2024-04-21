@@ -2,6 +2,7 @@ import { useControllableState } from '@tamagui/use-controllable-state'
 
 import type { SheetProps } from './types'
 import { useSheetController } from './useSheetController'
+import { useEffect, useState } from 'react'
 
 export const useSheetOpenState = (props: SheetProps) => {
   const { isHidden, controller } = useSheetController()
@@ -11,6 +12,8 @@ export const useSheetOpenState = (props: SheetProps) => {
     props.onOpenChange?.(val)
   }
 
+  const [initialOpen, setInitialOpen] = useState(controller?.open ?? props.open)
+
   const [open, setOpen] = useControllableState({
     prop: controller?.open ?? props.open,
     defaultProp: props.defaultOpen ?? false,
@@ -19,11 +22,17 @@ export const useSheetOpenState = (props: SheetProps) => {
     transition: true,
   })
 
+  useEffect(() => {
+    setInitialOpen(open)
+  }, [open])
+
   return {
     open,
     setOpen,
     isHidden,
     controller,
+    initialOpen,
+    setInitialOpen,
   }
 }
 
