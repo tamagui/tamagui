@@ -85,9 +85,13 @@ const [DialogProvider, useDialogContext] =
 
 const TRIGGER_NAME = 'DialogTrigger'
 
-const DialogTriggerFrame = styled(View, {
-  name: TRIGGER_NAME,
-})
+const DialogTriggerFrame = styled(
+  View,
+  {},
+  {
+    name: TRIGGER_NAME,
+  }
+)
 
 interface DialogTriggerProps extends StackProps {}
 
@@ -289,9 +293,13 @@ const OVERLAY_NAME = 'DialogOverlay'
 /**
  * exported for internal use with extractable()
  */
-export const DialogOverlayFrame = styled(Overlay, {
-  name: OVERLAY_NAME,
-})
+export const DialogOverlayFrame = styled(
+  Overlay,
+  {},
+  {
+    name: OVERLAY_NAME,
+  }
+)
 
 interface DialogOverlayProps extends YStackProps {
   /**
@@ -349,34 +357,39 @@ const DialogOverlayImpl = React.forwardRef<TamaguiElement, DialogOverlayImplProp
 
 const CONTENT_NAME = 'DialogContent'
 
-const DialogContentFrame = styled(ThemeableStack, {
-  name: CONTENT_NAME,
-  tag: 'dialog',
+const DialogContentFrame = styled(
+  ThemeableStack,
+  {
+    tag: 'dialog',
 
-  variants: {
-    size: {
-      '...size': (val, extras) => {
-        return {}
+    variants: {
+      size: {
+        '...size': (val, extras) => {
+          return {}
+        },
       },
-    },
 
-    unstyled: {
-      false: {
-        position: 'relative',
-        backgrounded: true,
-        padded: true,
-        radiused: true,
-        elevate: true,
-        zIndex: 100_000,
+      unstyled: {
+        false: {
+          position: 'relative',
+          backgrounded: true,
+          padded: true,
+          radiused: true,
+          elevate: true,
+          zIndex: 100_000,
+        },
       },
-    },
-  } as const,
+    } as const,
 
-  defaultVariants: {
-    size: '$true',
-    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+    defaultVariants: {
+      size: '$true',
+      unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+    },
   },
-})
+  {
+    name: CONTENT_NAME,
+  }
+)
 
 type DialogContentFrameProps = GetProps<typeof DialogContentFrame>
 
@@ -649,9 +662,13 @@ const DialogContentImpl = React.forwardRef<TamaguiElement, DialogContentImplProp
  * -----------------------------------------------------------------------------------------------*/
 
 const TITLE_NAME = 'DialogTitle'
-const DialogTitleFrame = styled(H2, {
-  name: TITLE_NAME,
-})
+const DialogTitleFrame = styled(
+  H2,
+  {},
+  {
+    name: TITLE_NAME,
+  }
+)
 
 type DialogTitleProps = GetProps<typeof DialogTitleFrame>
 
@@ -669,9 +686,13 @@ DialogTitle.displayName = TITLE_NAME
  * DialogDescription
  * -----------------------------------------------------------------------------------------------*/
 
-const DialogDescriptionFrame = styled(Paragraph, {
-  name: 'DialogDescription',
-})
+const DialogDescriptionFrame = styled(
+  Paragraph,
+  {},
+  {
+    name: 'DialogDescription',
+  }
+)
 
 type DialogDescriptionProps = GetProps<typeof DialogDescriptionFrame>
 
@@ -699,10 +720,15 @@ DialogDescription.displayName = DESCRIPTION_NAME
 
 const CLOSE_NAME = 'DialogClose'
 
-const DialogCloseFrame = styled(View, {
-  name: CLOSE_NAME,
-  tag: 'button',
-})
+const DialogCloseFrame = styled(
+  View,
+  {
+    tag: 'button',
+  },
+  {
+    name: CLOSE_NAME,
+  }
+)
 
 export interface DialogCloseExtraProps {
   displayWhenAdapted?: boolean

@@ -2,7 +2,9 @@ import type { GetProps, TamaguiElement } from '@tamagui/core';
 import { VisuallyHidden } from '@tamagui/visually-hidden';
 import * as React from 'react';
 import type { ScopedProps } from './ToastProvider';
-declare const ToastAnnounceExcludeFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic>;
+declare const ToastAnnounceExcludeFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}, {
+    name: string;
+}>;
 type ToastAnnounceExcludeFrameProps = GetProps<typeof ToastAnnounceExcludeFrame>;
 type ToastAnnounceExcludeProps = ToastAnnounceExcludeFrameProps & {
     altText?: string;

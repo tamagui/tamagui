@@ -14,8 +14,9 @@ Create a new component by extending an existing one:
 import { GetProps, View, styled } from '@tamagui/core'
 
 export const Circle = styled(View, {
-  name: 'Circle', // useful for debugging, and Component themes
   borderRadius: 100_000_000,
+}, {
+  name: 'Circle', // useful for debugging, and Component themes
 })
 
 // helper to get props for any TamaguiComponent
@@ -146,7 +147,6 @@ export const ButtonContext = createStyledContext<{
 })
 
 export const ButtonFrame = styled(View, {
-  name: 'Button',
   context: ButtonContext,
 
   variants: {
@@ -164,10 +164,11 @@ export const ButtonFrame = styled(View, {
   defaultVariants: {
     size: '$medium',
   },
+}, {
+  name: 'Button',
 })
 
 export const ButtonText = styled(Text, {
-  name: 'ButtonText',
   context: ButtonContext,
 
   variants: {
@@ -177,6 +178,8 @@ export const ButtonText = styled(Text, {
       }),
     },
   } as const,
+}, {
+  name: 'ButtonText',
 })
 
 export const Button = withStaticProperties(ButtonFrame, {

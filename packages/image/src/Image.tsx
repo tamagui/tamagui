@@ -10,9 +10,13 @@ import { styled, usePropsAndStyle } from '@tamagui/core'
 import React, { forwardRef } from 'react'
 import { Image as RNImage } from 'react-native'
 
-const StyledImage = styled(RNImage, {
-  name: 'Image',
-})
+const StyledImage = styled(
+  RNImage,
+  {},
+  {
+    name: 'Image',
+  }
+)
 
 type StyledImageProps = Omit<GetProps<typeof StyledImage>, 'borderRadius'> & {
   borderRadius?: RadiusTokens

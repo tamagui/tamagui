@@ -96,7 +96,11 @@ export declare const Checkbox: import("react").ForwardRefExoticComponent<Omit<im
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-}, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig" | "extractable" | "styleable"> & {
+}, import("@tamagui/web").StaticConfigPublic & {
+    name: string;
+}> & Omit<import("@tamagui/web").StaticConfigPublic & {
+    name: string;
+}, "staticConfig" | "extractable" | "styleable"> & {
     __tama: [Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
         size?: import("@tamagui/web").SizeTokens | undefined;
         unstyled?: boolean | undefined;
@@ -159,7 +163,9 @@ export declare const Checkbox: import("react").ForwardRefExoticComponent<Omit<im
         radiused?: boolean | undefined;
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
-    }, import("@tamagui/web").StaticConfigPublic];
+    }, import("@tamagui/web").StaticConfigPublic & {
+        name: string;
+    }];
 } & {
     Indicator: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
         unstyled?: boolean | undefined;
@@ -212,6 +218,8 @@ export declare const Checkbox: import("react").ForwardRefExoticComponent<Omit<im
         radiused?: boolean | undefined;
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
-    }, import("@tamagui/web").StaticConfigPublic>;
+    }, import("@tamagui/web").StaticConfigPublic & {
+        name: string;
+    }>;
 };
 //# sourceMappingURL=index.d.ts.map

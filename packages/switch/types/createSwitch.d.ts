@@ -70,7 +70,11 @@ export declare function createSwitch<F extends SwitchComponent, T extends Switch
         left?: number | undefined;
         right?: number | undefined;
     } | undefined;
-}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig" | "extractable" | "styleable"> & {
+}, import("@tamagui/core").StaticConfigPublic & {
+    name: string;
+}> & Omit<import("@tamagui/core").StaticConfigPublic & {
+    name: string;
+}, "staticConfig" | "extractable" | "styleable"> & {
     __tama: [Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
         size?: SizeTokens | undefined;
         unstyled?: boolean | undefined;
@@ -101,7 +105,9 @@ export declare function createSwitch<F extends SwitchComponent, T extends Switch
             left?: number | undefined;
             right?: number | undefined;
         } | undefined;
-    }, import("@tamagui/core").StaticConfigPublic];
+    }, import("@tamagui/core").StaticConfigPublic & {
+        name: string;
+    }];
 } & {
     Thumb: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
         size?: SizeTokens | undefined;
@@ -149,7 +155,9 @@ export declare function createSwitch<F extends SwitchComponent, T extends Switch
         radiused?: boolean | undefined;
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
-    }, import("@tamagui/core").StaticConfigPublic>;
+    }, import("@tamagui/core").StaticConfigPublic & {
+        name: string;
+    }>;
 };
 export {};
 //# sourceMappingURL=createSwitch.d.ts.map

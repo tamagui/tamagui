@@ -25,7 +25,9 @@ export declare const ToggleFrame: import("@tamagui/web").TamaguiComponent<import
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-}, import("@tamagui/web").StaticConfigPublic>;
+}, import("@tamagui/web").StaticConfigPublic & {
+    name: string;
+}>;
 type ToggleFrameProps = GetProps<typeof ToggleFrame>;
 type ToggleItemExtraProps = {
     defaultValue?: string;

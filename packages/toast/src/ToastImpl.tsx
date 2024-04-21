@@ -30,32 +30,37 @@ import type { ScopedProps, SwipeDirection } from './ToastProvider'
 import { Collection, useToastProviderContext } from './ToastProvider'
 import { VIEWPORT_PAUSE, VIEWPORT_RESUME } from './ToastViewport'
 
-const ToastImplFrame = styled(ThemeableStack, {
-  name: 'ToastImpl',
-  focusable: true,
+const ToastImplFrame = styled(
+  ThemeableStack,
+  {
+    focusable: true,
 
-  variants: {
-    unstyled: {
-      false: {
-        focusStyle: {
-          outlineStyle: 'solid',
-          outlineWidth: 2,
-          outlineColor: '$outlineColor',
+    variants: {
+      unstyled: {
+        false: {
+          focusStyle: {
+            outlineStyle: 'solid',
+            outlineWidth: 2,
+            outlineColor: '$outlineColor',
+          },
+          backgroundColor: '$color6',
+          borderRadius: '$10',
+          paddingHorizontal: '$5',
+          paddingVertical: '$2',
+          marginHorizontal: 'auto',
+          marginVertical: '$1',
         },
-        backgroundColor: '$color6',
-        borderRadius: '$10',
-        paddingHorizontal: '$5',
-        paddingVertical: '$2',
-        marginHorizontal: 'auto',
-        marginVertical: '$1',
       },
-    },
-  } as const,
+    } as const,
 
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+    defaultVariants: {
+      unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+    },
   },
-})
+  {
+    name: 'ToastImpl',
+  }
+)
 
 type ToastProps = Omit<ToastImplProps, keyof ToastImplPrivateProps>
 

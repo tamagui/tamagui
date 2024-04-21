@@ -9,6 +9,8 @@ export declare const Fieldset: import("@tamagui/core").TamaguiComponent<import("
     } | undefined;
     horizontal?: boolean | undefined;
     fullscreen?: boolean | undefined;
-}, import("@tamagui/core").StaticConfigPublic>;
+}, import("@tamagui/core").StaticConfigPublic & {
+    name: string;
+}>;
 export type FieldsetProps = GetProps<typeof Fieldset>;
 //# sourceMappingURL=Fieldset.d.ts.map

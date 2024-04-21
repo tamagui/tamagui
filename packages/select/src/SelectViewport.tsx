@@ -19,34 +19,38 @@ import { useSelectBreakpointActive } from './useSelectBreakpointActive'
  * SelectViewport
  * -----------------------------------------------------------------------------------------------*/
 
-export const SelectViewportFrame = styled(ThemeableStack, {
-  name: VIEWPORT_NAME,
-
-  variants: {
-    unstyled: {
-      false: {
-        size: '$2',
-        backgroundColor: '$background',
-        elevate: true,
-        bordered: true,
-        userSelect: 'none',
-        outlineWidth: 0,
+export const SelectViewportFrame = styled(
+  ThemeableStack,
+  {
+    variants: {
+      unstyled: {
+        false: {
+          size: '$2',
+          backgroundColor: '$background',
+          elevate: true,
+          bordered: true,
+          userSelect: 'none',
+          outlineWidth: 0,
+        },
       },
-    },
 
-    size: {
-      '...size': (val, { tokens }) => {
-        return {
-          borderRadius: tokens.radius[val] ?? val,
-        }
+      size: {
+        '...size': (val, { tokens }) => {
+          return {
+            borderRadius: tokens.radius[val] ?? val,
+          }
+        },
       },
-    },
-  } as const,
+    } as const,
 
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+    defaultVariants: {
+      unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+    },
   },
-})
+  {
+    name: VIEWPORT_NAME,
+  }
+)
 
 export const SelectViewport = SelectViewportFrame.styleable<SelectViewportExtraProps>(
   function SelectViewport(props: ScopedProps<SelectViewportProps>, forwardedRef) {

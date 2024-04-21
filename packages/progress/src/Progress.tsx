@@ -24,23 +24,27 @@ const [ProgressProvider, useProgressContext] =
 
 const INDICATOR_NAME = 'ProgressIndicator'
 
-export const ProgressIndicatorFrame = styled(ThemeableStack, {
-  name: INDICATOR_NAME,
-
-  variants: {
-    unstyled: {
-      false: {
-        height: '100%',
-        width: '100%',
-        backgrounded: true,
+export const ProgressIndicatorFrame = styled(
+  ThemeableStack,
+  {
+    variants: {
+      unstyled: {
+        false: {
+          height: '100%',
+          width: '100%',
+          backgrounded: true,
+        },
       },
-    },
-  } as const,
+    } as const,
 
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+    defaultVariants: {
+      unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+    },
   },
-})
+  {
+    name: INDICATOR_NAME,
+  }
+)
 
 type ProgressIndicatorProps = GetProps<typeof ProgressIndicatorFrame>
 
@@ -119,34 +123,38 @@ type ScopedProps<P> = P & { __scopeProgress?: Scope }
 
 type ProgressState = 'indeterminate' | 'complete' | 'loading'
 
-export const ProgressFrame = styled(ThemeableStack, {
-  name: 'Progress',
-
-  variants: {
-    unstyled: {
-      false: {
-        borderRadius: 100_000,
-        overflow: 'hidden',
-        backgrounded: true,
+export const ProgressFrame = styled(
+  ThemeableStack,
+  {
+    variants: {
+      unstyled: {
+        false: {
+          borderRadius: 100_000,
+          overflow: 'hidden',
+          backgrounded: true,
+        },
       },
-    },
 
-    size: {
-      '...size': (val) => {
-        const size = Math.round(getVariableValue(getSize(val)) * 0.25)
-        return {
-          height: size,
-          minWidth: getVariableValue(size) * 20,
-          width: '100%',
-        }
+      size: {
+        '...size': (val) => {
+          const size = Math.round(getVariableValue(getSize(val)) * 0.25)
+          return {
+            height: size,
+            minWidth: getVariableValue(size) * 20,
+            width: '100%',
+          }
+        },
       },
-    },
-  } as const,
+    } as const,
 
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+    defaultVariants: {
+      unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+    },
   },
-})
+  {
+    name: 'Progress',
+  }
+)
 
 interface ProgressExtraProps {
   value?: number | null | undefined

@@ -1,12 +1,5 @@
-import type {
-  GetProps,
-  ButtonProps as TamaguiButtonProps} from 'tamagui';
-import {
-  ButtonFrame,
-  ButtonText,
-  styled,
-  useButton,
-} from 'tamagui'
+import type { GetProps, ButtonProps as TamaguiButtonProps } from 'tamagui'
+import { ButtonFrame, ButtonText, styled, useButton } from 'tamagui'
 
 const CustomButtonFrame = styled(ButtonFrame, {})
 
@@ -28,10 +21,15 @@ export const CustomButton = CustomButtonFrame.styleable<CustomButtonProps>(
   }
 )
 
-const CustomButtonFrame2 = styled(ButtonFrame, {
-  name: 'Test123',
-  backgroundColor: 'black',
-})
+const CustomButtonFrame2 = styled(
+  ButtonFrame,
+  {
+    backgroundColor: 'black',
+  },
+  {
+    name: 'Test123',
+  }
+)
 
 const CustomButtonText2 = styled(ButtonText, {
   // ...

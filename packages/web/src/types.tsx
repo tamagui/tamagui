@@ -1689,6 +1689,8 @@ export type GenericVariantDefinitions = {
 }
 
 export type StaticConfigPublic = {
+  name?: string
+
   defaultProps?: Record<string, any>
 
   /**

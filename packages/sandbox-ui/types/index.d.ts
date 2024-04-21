@@ -15,7 +15,9 @@ export declare const Test14Component: import("tamagui").TamaguiComponent<import(
         left?: number | undefined;
         right?: number | undefined;
     } | undefined;
-}, import("@tamagui/web").StaticConfigPublic>;
+}, import("@tamagui/web").StaticConfigPublic & {
+    name: string;
+}>;
 export declare const TestBorderExtraction: import("tamagui").TamaguiComponent<import("@tamagui/web").TamaDefer, import("tamagui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
     elevation?: number | import("tamagui").SizeTokens | undefined;
     transparent?: boolean | undefined;

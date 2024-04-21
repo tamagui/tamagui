@@ -63,11 +63,15 @@ declare const ButtonFrame: import("@tamagui/web").TamaguiComponent<import("@tama
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-}, import("@tamagui/web").StaticConfigPublic>;
+}, import("@tamagui/web").StaticConfigPublic & {
+    name: string;
+}>;
 declare const ButtonText: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
     size?: FontSizeTokens | undefined;
     unstyled?: boolean | undefined;
-}, import("@tamagui/web").StaticConfigPublic>;
+}, import("@tamagui/web").StaticConfigPublic & {
+    name: string;
+}>;
 declare const ButtonIcon: (props: {
     children: React.ReactNode;
     scaleIcon?: number;
@@ -249,7 +253,11 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-}, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig" | "extractable" | "styleable"> & {
+}, import("@tamagui/web").StaticConfigPublic & {
+    name: string;
+}> & Omit<import("@tamagui/web").StaticConfigPublic & {
+    name: string;
+}, "staticConfig" | "extractable" | "styleable"> & {
     __tama: [Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
         size?: number | SizeTokens | undefined;
         variant?: "outlined" | undefined;
@@ -364,12 +372,16 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
         radiused?: boolean | undefined;
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
-    }, import("@tamagui/web").StaticConfigPublic];
+    }, import("@tamagui/web").StaticConfigPublic & {
+        name: string;
+    }];
 } & {
     Text: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
         size?: FontSizeTokens | undefined;
         unstyled?: boolean | undefined;
-    }, import("@tamagui/web").StaticConfigPublic>;
+    }, import("@tamagui/web").StaticConfigPublic & {
+        name: string;
+    }>;
     Icon: (props: {
         children: React.ReactNode;
         scaleIcon?: number;

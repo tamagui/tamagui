@@ -11,29 +11,34 @@ import { useEffect, useRef } from 'react'
  * Is basically Input but with rows = 4 to start
  */
 
-export const TextAreaFrame = styled(InputFrame, {
-  name: 'TextArea',
-  multiline: true,
-  // this attribute fixes firefox newline issue
-  whiteSpace: 'pre-wrap',
+export const TextAreaFrame = styled(
+  InputFrame,
+  {
+    multiline: true,
+    // this attribute fixes firefox newline issue
+    whiteSpace: 'pre-wrap',
 
-  variants: {
-    unstyled: {
-      false: {
-        height: 'auto',
-        ...defaultStyles,
+    variants: {
+      unstyled: {
+        false: {
+          height: 'auto',
+          ...defaultStyles,
+        },
       },
-    },
 
-    size: {
-      '...size': textAreaSizeVariant,
-    },
-  } as const,
+      size: {
+        '...size': textAreaSizeVariant,
+      },
+    } as const,
 
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+    defaultVariants: {
+      unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+    },
   },
-})
+  {
+    name: 'TextArea',
+  }
+)
 
 export type TextAreaProps = InputProps
 

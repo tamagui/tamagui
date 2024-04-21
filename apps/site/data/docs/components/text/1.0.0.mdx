@@ -95,12 +95,13 @@ Paragraph extends SizableText and is defined as:
 
 ```tsx
 export const Paragraph = styled(SizableText, {
-  name: 'Paragraph',
   tag: 'p',
   userSelect: 'auto',
   color: '$color',
   size: '$true',
   whiteSpace: 'normal',
+}, {
+  name: 'Paragraph',
 })
 ```
 

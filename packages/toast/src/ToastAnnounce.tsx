@@ -8,9 +8,13 @@ import * as React from 'react'
 import type { ScopedProps } from './ToastProvider'
 import { useToastProviderContext } from './ToastProvider'
 
-const ToastAnnounceExcludeFrame = styled(Stack, {
-  name: 'ToastAnnounceExclude',
-})
+const ToastAnnounceExcludeFrame = styled(
+  Stack,
+  {},
+  {
+    name: 'ToastAnnounceExclude',
+  }
+)
 type ToastAnnounceExcludeFrameProps = GetProps<typeof ToastAnnounceExcludeFrame>
 type ToastAnnounceExcludeProps = ToastAnnounceExcludeFrameProps & {
   altText?: string

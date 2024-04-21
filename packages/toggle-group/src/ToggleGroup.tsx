@@ -357,32 +357,36 @@ type RovingFocusGroupProps = React.ComponentPropsWithoutRef<typeof RovingFocusGr
 type TamaguiElement = HTMLElement
 type ToggleGroupImplElement = TamaguiElement
 
-const ToggleGroupImplElementFrame = styled(Group, {
-  name: TOGGLE_GROUP_NAME,
-
-  variants: {
-    unstyled: {
-      false: {
-        backgroundColor: '$background',
+const ToggleGroupImplElementFrame = styled(
+  Group,
+  {
+    variants: {
+      unstyled: {
+        false: {
+          backgroundColor: '$background',
+        },
       },
+
+      orientation: {
+        vertical: {
+          flexDirection: 'column',
+          spaceDirection: 'vertical',
+        },
+        horizontal: {
+          flexDirection: 'row',
+          spaceDirection: 'horizontal',
+        },
+      },
+    } as const,
+
+    defaultVariants: {
+      unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
     },
-
-    orientation: {
-      vertical: {
-        flexDirection: 'column',
-        spaceDirection: 'vertical',
-      },
-      horizontal: {
-        flexDirection: 'row',
-        spaceDirection: 'horizontal',
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
   },
-})
+  {
+    name: TOGGLE_GROUP_NAME,
+  }
+)
 
 type ToggleGroupImplProps = GetProps<typeof ToggleGroupImplElementFrame> &
   GroupProps & {

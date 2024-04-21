@@ -14,23 +14,27 @@ import type { ScopedProps } from './types'
 
 export const ITEM_TEXT_NAME = 'SelectItemText'
 
-export const SelectItemTextFrame = styled(SizableText, {
-  name: ITEM_TEXT_NAME,
-
-  variants: {
-    unstyled: {
-      false: {
-        userSelect: 'none',
-        color: '$color',
-        ellipse: true,
+export const SelectItemTextFrame = styled(
+  SizableText,
+  {
+    variants: {
+      unstyled: {
+        false: {
+          userSelect: 'none',
+          color: '$color',
+          ellipse: true,
+        },
       },
-    },
-  } as const,
+    } as const,
 
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+    defaultVariants: {
+      unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+    },
   },
-})
+  {
+    name: ITEM_TEXT_NAME,
+  }
+)
 
 export type SelectItemTextProps = GetProps<typeof SelectItemTextFrame>
 

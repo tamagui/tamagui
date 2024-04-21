@@ -80,16 +80,21 @@ function AnimationChangeTest() {
   )
 }
 
-export const StyledSizableText = styled(SizableText, {
-  name: 'TextSizableText',
-  variants: {
-    muted: {
-      true: {
-        color: 'red',
+export const StyledSizableText = styled(
+  SizableText,
+  {
+    variants: {
+      muted: {
+        true: {
+          color: 'red',
+        },
       },
-    },
-  } as const,
-})
+    } as const,
+  },
+  {
+    name: 'TextSizableText',
+  }
+)
 
 export const Sandbox = () => {
   // const scheme = useColorScheme()

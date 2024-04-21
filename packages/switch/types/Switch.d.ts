@@ -22,7 +22,9 @@ export declare const SwitchThumb: import("@tamagui/core").TamaguiComponent<impor
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-}, import("@tamagui/core").StaticConfigPublic>;
+}, import("@tamagui/core").StaticConfigPublic & {
+    name: string;
+}>;
 export declare const SwitchFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     size?: SizeTokens | undefined;
     unstyled?: boolean | undefined;
@@ -35,5 +37,7 @@ export declare const SwitchFrame: import("@tamagui/core").TamaguiComponent<impor
         left?: number | undefined;
         right?: number | undefined;
     } | undefined;
-}, import("@tamagui/core").StaticConfigPublic>;
+}, import("@tamagui/core").StaticConfigPublic & {
+    name: string;
+}>;
 //# sourceMappingURL=Switch.d.ts.map

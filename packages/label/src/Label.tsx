@@ -22,43 +22,48 @@ const [LabelProvider, useLabelContextImpl] = createContext<LabelContextValue>(NA
   controlRef: { current: null },
 })
 
-export const LabelFrame = styled(SizableText, {
-  name: 'Label',
-  tag: 'label',
+export const LabelFrame = styled(
+  SizableText,
+  {
+    tag: 'label',
 
-  variants: {
-    unstyled: {
-      false: {
-        size: '$true',
-        color: '$color',
-        backgroundColor: 'transparent',
-        display: 'flex',
-        alignItems: 'center',
-        userSelect: 'none',
-        cursor: 'default',
-        pressStyle: {
-          color: '$colorPress',
+    variants: {
+      unstyled: {
+        false: {
+          size: '$true',
+          color: '$color',
+          backgroundColor: 'transparent',
+          display: 'flex',
+          alignItems: 'center',
+          userSelect: 'none',
+          cursor: 'default',
+          pressStyle: {
+            color: '$colorPress',
+          },
         },
       },
-    },
 
-    size: {
-      '...size': (val, extras) => {
-        const buttonStyle = getButtonSized(val, extras)
-        const buttonHeight = buttonStyle?.height
-        const fontStyle = getFontSized(val as FontSizeTokens, extras)
-        return {
-          ...fontStyle,
-          lineHeight: buttonHeight ? extras.tokens.size[buttonHeight] : undefined,
-        }
+      size: {
+        '...size': (val, extras) => {
+          const buttonStyle = getButtonSized(val, extras)
+          const buttonHeight = buttonStyle?.height
+          const fontStyle = getFontSized(val as FontSizeTokens, extras)
+          return {
+            ...fontStyle,
+            lineHeight: buttonHeight ? extras.tokens.size[buttonHeight] : undefined,
+          }
+        },
       },
-    },
-  } as const,
+    } as const,
 
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+    defaultVariants: {
+      unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+    },
   },
-})
+  {
+    name: 'Label',
+  }
+)
 
 export type LabelProps = GetProps<typeof LabelFrame> & {
   htmlFor?: string

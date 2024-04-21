@@ -81,98 +81,108 @@ type ButtonProps = ButtonExtraProps & GetProps<typeof ButtonFrame>
 
 const BUTTON_NAME = 'Button'
 
-const ButtonFrame = styled(ThemeableStack, {
-  name: BUTTON_NAME,
-  tag: 'button',
-  context: ButtonContext,
-  role: 'button',
-  focusable: true,
+const ButtonFrame = styled(
+  ThemeableStack,
+  {
+    tag: 'button',
+    context: ButtonContext,
+    role: 'button',
+    focusable: true,
 
-  variants: {
-    unstyled: {
-      false: {
-        size: '$true',
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexWrap: 'nowrap',
-        flexDirection: 'row',
-        cursor: 'pointer',
-        hoverTheme: true,
-        pressTheme: true,
-        backgrounded: true,
-        borderWidth: 1,
-        borderColor: 'transparent',
+    variants: {
+      unstyled: {
+        false: {
+          size: '$true',
+          justifyContent: 'center',
+          alignItems: 'center',
+          flexWrap: 'nowrap',
+          flexDirection: 'row',
+          cursor: 'pointer',
+          hoverTheme: true,
+          pressTheme: true,
+          backgrounded: true,
+          borderWidth: 1,
+          borderColor: 'transparent',
 
-        focusVisibleStyle: {
-          outlineColor: '$outlineColor',
-          outlineStyle: 'solid',
-          outlineWidth: 2,
+          focusVisibleStyle: {
+            outlineColor: '$outlineColor',
+            outlineStyle: 'solid',
+            outlineWidth: 2,
+          },
         },
       },
-    },
 
-    variant: {
-      outlined: {
-        backgroundColor: 'transparent',
-        borderWidth: 2,
-        borderColor: '$borderColor',
-
-        hoverStyle: {
+      variant: {
+        outlined: {
           backgroundColor: 'transparent',
-          borderColor: '$borderColorHover',
-        },
+          borderWidth: 2,
+          borderColor: '$borderColor',
 
-        pressStyle: {
-          backgroundColor: 'transparent',
-          borderColor: '$borderColorPress',
-        },
+          hoverStyle: {
+            backgroundColor: 'transparent',
+            borderColor: '$borderColorHover',
+          },
 
-        focusVisibleStyle: {
-          backgroundColor: 'transparent',
-          borderColor: '$borderColorFocus',
+          pressStyle: {
+            backgroundColor: 'transparent',
+            borderColor: '$borderColorPress',
+          },
+
+          focusVisibleStyle: {
+            backgroundColor: 'transparent',
+            borderColor: '$borderColorFocus',
+          },
         },
       },
-    },
 
-    size: {
-      '...size': getButtonSized,
-      ':number': getButtonSized,
-    },
-
-    disabled: {
-      true: {
-        pointerEvents: 'none',
+      size: {
+        '...size': getButtonSized,
+        ':number': getButtonSized,
       },
-    },
-  } as const,
 
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+      disabled: {
+        true: {
+          pointerEvents: 'none',
+        },
+      },
+    } as const,
+
+    defaultVariants: {
+      unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+    },
   },
-})
+  {
+    name: BUTTON_NAME,
+  }
+)
 
-const ButtonText = styled(SizableText, {
-  name: 'Button',
-  context: ButtonContext,
+const ButtonText = styled(
+  SizableText,
+  {
+    context: ButtonContext,
 
-  variants: {
-    unstyled: {
-      false: {
-        userSelect: 'none',
-        cursor: 'pointer',
-        // flexGrow 1 leads to inconsistent native style where text pushes to start of view
-        flexGrow: 0,
-        flexShrink: 1,
-        ellipse: true,
-        color: '$color',
+    variants: {
+      unstyled: {
+        false: {
+          userSelect: 'none',
+          cursor: 'pointer',
+          // flexGrow 1 leads to inconsistent native style where text pushes to start of view
+          flexGrow: 0,
+          flexShrink: 1,
+          ellipse: true,
+          color: '$color',
+        },
       },
-    },
-  } as const,
+    } as const,
 
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+    defaultVariants: {
+      unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+    },
   },
-})
+  {
+    name: 'Button',
+  }
+)
 
 const ButtonIcon = (props: { children: React.ReactNode; scaleIcon?: number }) => {
   const { children, scaleIcon = 1 } = props

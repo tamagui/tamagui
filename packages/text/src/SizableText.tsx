@@ -2,25 +2,30 @@ import { getFontSized } from '@tamagui/get-font-sized'
 import type { GetProps } from '@tamagui/web'
 import { Text, styled } from '@tamagui/web'
 
-export const SizableText = styled(Text, {
-  name: 'SizableText',
-  fontFamily: '$body',
+export const SizableText = styled(
+  Text,
+  {
+    fontFamily: '$body',
 
-  variants: {
-    unstyled: {
-      false: {
-        size: '$true',
-        color: '$color',
+    variants: {
+      unstyled: {
+        false: {
+          size: '$true',
+          color: '$color',
+        },
       },
+
+      size: getFontSized,
     },
 
-    size: getFontSized,
+    defaultVariants: {
+      unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+    },
   },
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
-  },
-})
+  {
+    name: 'SizableText',
+  }
+)
 
 // we are doing weird stuff to avoid bad types
 // TODO make this just work

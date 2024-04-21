@@ -10,12 +10,15 @@ export declare const TextAreaFrame: import("@tamagui/core").TamaguiComponent<imp
     disabled?: boolean | undefined;
     unstyled?: boolean | undefined;
 }, {
+    name: string;
     isInput: true;
     accept: {
         readonly placeholderTextColor: "color";
         readonly selectionColor: "color";
     };
-} & import("@tamagui/core").StaticConfigPublic>;
+} & {
+    name: string;
+}>;
 export type TextAreaProps = InputProps;
 export declare const TextArea: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").TamaguiComponentPropsBaseBase & import("react-native").TextInputProps, import("@tamagui/core").TextStylePropsBase & {
     readonly placeholderTextColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
@@ -32,6 +35,7 @@ export declare const TextArea: import("@tamagui/core").TamaguiComponent<Omit<imp
     disabled?: boolean | undefined;
     unstyled?: boolean | undefined;
 }, {
+    name: string;
     isInput: true;
     accept: {
         readonly placeholderTextColor: "color";

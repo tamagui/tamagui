@@ -25,7 +25,9 @@ declare const RadioGroupItemFrame: import("@tamagui/core").TamaguiComponent<impo
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-}, import("@tamagui/core").StaticConfigPublic>;
+}, import("@tamagui/core").StaticConfigPublic & {
+    name: string;
+}>;
 type RadioGroupItemProps = GetProps<typeof RadioGroupItemFrame> & {
     value: string;
     id?: string;
@@ -54,7 +56,9 @@ declare const RadioGroupFrame: import("@tamagui/core").TamaguiComponent<import("
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
     orientation?: "horizontal" | "vertical" | undefined;
-}, import("@tamagui/core").StaticConfigPublic>;
+}, import("@tamagui/core").StaticConfigPublic & {
+    name: string;
+}>;
 type RadioGroupProps = GetProps<typeof RadioGroupFrame> & {
     value?: string;
     defaultValue?: string;

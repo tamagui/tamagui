@@ -4,17 +4,22 @@ import { styled } from '@tamagui/web'
 
 import { getShapeSize } from './getShapeSize'
 
-export const Square = styled(ThemeableStack, {
-  name: 'Square',
-  alignItems: 'center',
-  justifyContent: 'center',
+export const Square = styled(
+  ThemeableStack,
+  {
+    alignItems: 'center',
+    justifyContent: 'center',
 
-  variants: {
-    size: {
-      '...size': getShapeSize,
-      ':number': getShapeSize,
-    },
-  } as const,
-})
+    variants: {
+      size: {
+        '...size': getShapeSize,
+        ':number': getShapeSize,
+      },
+    } as const,
+  },
+  {
+    name: 'Square',
+  }
+)
 
 export type SquareProps = GetProps<typeof Square>
