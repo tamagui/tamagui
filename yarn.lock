@@ -7008,8 +7008,6 @@ __metadata:
     swr: "npm:^2.2.0"
     tamagui: "npm:1.95.0-1713326412393"
     tilg: "npm:0.1.1"
-    use-local-storage: "npm:^3.0.0"
-    usehooks-ts: "npm:^3.1.0"
     webpack: "npm:^5.88.2"
     webpack-bundle-analyzer: "npm:^4.9.0"
     webpack-cli: "npm:^4.9.2"
@@ -8503,8 +8501,6 @@ __metadata:
     typescript: "npm:^5.3.3"
     unified: "npm:^10.1.2"
     unist-util-visit: "npm:^2.0.3"
-    use-local-storage: "npm:^3.0.0"
-    usehooks-ts: "npm:^3.1.0"
     wait-port: "npm:^0.3.0"
     webpack-stats-plugin: "npm:^1.1.3"
     zx: "npm:^7.2.3"
@@ -31343,15 +31339,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"use-local-storage@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "use-local-storage@npm:3.0.0"
-  peerDependencies:
-    react: ">=16.8.1"
-  checksum: 10/96865f524ee572b27dc1496dab7e652aa9c76736bd1ebfcbb192fe2ed9f075dcb6ad7691295e76d6c97355136d73e4fd84bf19227cb5402e7a225c3fcf261e69
-  languageName: node
-  linkType: hard
-
 "use-sidecar@npm:^1.1.2":
   version: 1.1.2
   resolution: "use-sidecar@npm:1.1.2"
@@ -31381,17 +31368,6 @@ __metadata:
   version: 3.1.1
   resolution: "use@npm:3.1.1"
   checksum: 10/08a130289f5238fcbf8f59a18951286a6e660d17acccc9d58d9b69dfa0ee19aa038e8f95721b00b432c36d1629a9e32a464bf2e7e0ae6a244c42ddb30bdd8b33
-  languageName: node
-  linkType: hard
-
-"usehooks-ts@npm:^3.1.0":
-  version: 3.1.0
-  resolution: "usehooks-ts@npm:3.1.0"
-  dependencies:
-    lodash.debounce: "npm:^4.0.8"
-  peerDependencies:
-    react: ^16.8.0  || ^17 || ^18
-  checksum: 10/6aef8affd3c053a3040b7421816dab85eb21601c5203496a705bafc32eb973fb519a2b0ddda527962e361d248f3a1c49df130620efe871c8f89e897451ed1cc7
   languageName: node
   linkType: hard
 
