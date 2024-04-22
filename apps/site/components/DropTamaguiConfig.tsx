@@ -66,11 +66,12 @@ export const DropTamaguiConfig = () => {
             br="$10"
             onPress={() => setShow(true)}
             size="$3"
-            chromeless={!config}
+            chromeless
             $sm={{
               dsp: 'none',
             }}
             icon={Paintbrush}
+            color={config ? '$green10' : '$black'}
           >
             {config ? 'Customization enabled' : 'Customize'}
           </Button>
