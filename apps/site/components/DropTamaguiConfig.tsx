@@ -71,7 +71,7 @@ export const DropTamaguiConfig = () => {
               dsp: 'none',
             }}
             icon={Paintbrush}
-            color={config ? '$green10' : '$black'}
+            color={config ? '$green10' : '$black0'}
           >
             {config ? 'Customization enabled' : 'Customize'}
           </Button>
@@ -107,7 +107,7 @@ export const DropTamaguiConfig = () => {
             exitStyle={{ y: 10, opacity: 0, scale: 0.975 }}
             w="95%"
             maw={600}
-            p="$6"
+            p="$4"
           >
             <Dialog.Close asChild>
               <Button
@@ -139,9 +139,9 @@ export const DropTamaguiConfig = () => {
 
                 {config && (
                   <>
-                    <Paragraph size="$6">Nice, we've got your config.</Paragraph>
-                    <Paragraph size="$6">
-                      You can now go copy code from an example and we will adapt the
+                    <Paragraph size="$4">Nice, we've got your config.</Paragraph>
+                    <Paragraph size="$4">
+                      You can now go copy code from any component and we will adapt the
                       copy-paste code to use your tokens.
                     </Paragraph>
                     <Button
@@ -157,16 +157,16 @@ export const DropTamaguiConfig = () => {
 
                 {!config && (
                   <>
-                    <Paragraph size="$6">
+                    <Paragraph size="$4">
                       Drag and drop your{' '}
                       <CodeInline>.tamagui/tamagui.config.json</CodeInline> here to
                       customize the code we generate to your design system!
                     </Paragraph>
-                    <Paragraph size="$6">
+                    <Paragraph size="$4">
                       If you have a compiler plugin installed, this is done for you
                       automatically. If not, use the CLI.
                     </Paragraph>
-                    <Paragraph size="$6">
+                    <Paragraph size="$4">
                       But first, set up a <CodeInline>tamagui.build.ts</CodeInline>:
                     </Paragraph>
 
@@ -197,9 +197,6 @@ export const DropTamaguiConfig = () => {
                       ]}
                     />
 
-                    <Notice>
-                      WIP - we're adding the final piece to replace tokens next.
-                    </Notice>
                   </>
                 )}
               </YStack>
