@@ -1,7 +1,16 @@
 import { Paintbrush, X } from '@tamagui/lucide-icons'
 import { useEffect, useState } from 'react'
 import { useLocalStorage } from 'foxact/use-local-storage'
-import { Button, Dialog, H2, Paragraph, ScrollView, TooltipSimple, YStack } from 'tamagui'
+import {
+  Button,
+  Dialog,
+  H2,
+  Paragraph,
+  ScrollView,
+  Theme,
+  TooltipSimple,
+  YStack,
+} from 'tamagui'
 import { Code, CodeInline } from './Code'
 import { Features } from './Features'
 import { Notice } from './Notice'
@@ -51,19 +60,21 @@ export const DropTamaguiConfig = () => {
   return (
     <>
       <TooltipSimple label="Upload your Tamagui Config">
-        <Button
-          als="flex-end"
-          br="$10"
-          onPress={() => setShow(true)}
-          size="$3"
-          chromeless
-          $sm={{
-            dsp: 'none',
-          }}
-          icon={Paintbrush}
-        >
-          Customize
-        </Button>
+        <Theme name={config ? 'green' : 'active'}>
+          <Button
+            als="flex-end"
+            br="$10"
+            onPress={() => setShow(true)}
+            size="$3"
+            chromeless={!config}
+            $sm={{
+              dsp: 'none',
+            }}
+            icon={Paintbrush}
+          >
+            {config ? 'Customization enabled' : 'Customize'}
+          </Button>
+        </Theme>
       </TooltipSimple>
 
       <Dialog open={show} onOpenChange={setShow}>
