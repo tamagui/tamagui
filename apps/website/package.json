@@ -15,15 +15,15 @@
     "@remix-run/node": "^2.8.1",
     "@remix-run/react": "^2.8.1",
     "@remix-run/serve": "^2.8.1",
-    "@tamagui/site-config": "1.95.0-1713326412393",
+    "@tamagui/site-config": "1.95.0",
     "isbot": "^4.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "tamagui": "1.95.0-1713326412393"
+    "tamagui": "1.95.0"
   },
   "devDependencies": {
     "@remix-run/dev": "^2.8.1",
-    "@tamagui/vite-plugin": "1.95.0-1713326412393",
+    "@tamagui/vite-plugin": "1.95.0",
     "@types/react": "^18.2.55",
     "@types/react-dom": "^18.2.19",
     "typescript": "^5.3.3",
@@ -35,5 +35,5 @@
   "engines": {
     "node": ">=18.0.0"
   },
-  "version": "1.95.0-1713326412393"
+  "version": "1.95.0"
 }
