@@ -11,9 +11,6 @@ Nate:
 - activeTheme props for all components
 - in dev mode if no checkbox indicator, warn
   - checkbox should have a default indicator probably with a simple svg check we inline
-- Select should return focus to trigger on close
-- Popover native flicker 1 frame in wrong position
-  some findings: this happens because on initial render `floating` ref is null and that make it to only calculate position only using reference dim, and then when it becomes available calculate based on both
 - move from useMedia match.addListener to addEventListener
 - 2.0 = deprecate `name` in styled first arg, move to second arg
 - 2.0 = TS 5 recent version support raise - no more `as const` needed
@@ -35,19 +32,19 @@ Tentpole projects:
 Needed features/maintenance:
 
 - RSD / web alignment
-  - follow what RSD is doing + dont go beyond native support eg aspect-ratio
-  - deprecate accessibility props, "focusable" => tabIndex
+  - (pending PR ) follow what RSD is doing + dont go beyond native support eg aspect-ratio
+  - ( Pending PR ) deprecate accessibility props, "focusable" => tabIndex
   - simple version is good
-  - lower priority - em/rem, other nice web styles that rsd/tailwind has
+  - ( Pending PR for rem ) lower priority - em/rem, other nice web styles that rsd/tailwind has
 - RSC support
   - just simple views like View/Text/etc + no need for nesting themes
   - need to remove context
 - v2 / headless
 
-  - deprecate some createTamagui settings that should move into settings
+  - ( Pending PR ) deprecate some createTamagui settings that should move into settings 
     - disableSSR => settings.disableSSR
   - ListItem/Button simplify APIs
-  - Image/Input deprecations for web alignment
+  - ( Pending PRs ) Image/Input deprecations for web alignment
 
 - native tests (detox?)
 - 0-runtime mode
