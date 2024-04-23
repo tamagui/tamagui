@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
 import type { ViewProps, TabLayout, TabsTabProps } from 'tamagui'
 import { Avatar, SizableText, XStack, styled } from 'tamagui'
-import { AnimatePresence, Paragraph, Tabs, YStack } from 'tamagui'
+import { AnimatePresence, Tabs, YStack } from 'tamagui'
 import { getBashCommand } from '@lib/getBashCommand'
 import { Code } from './Code'
+import { useLocalStorageWatcher } from '@lib/useLocalStorageWatcher'
 
 export function RowingTabs({ className, onTabChange, children, size, ...rest }) {
   const { isStarter, isPackageRunner, showTabs, command, handleTabChange } =
@@ -24,21 +25,18 @@ export function RowingTabs({ className, onTabChange, children, size, ...rest }) 
     prevActiveAt: null,
   })
 
-  // Update the currentTab localStorage after the component has mounted
+  const { storageItem, setItem } = useLocalStorageWatcher(
+    isPackageRunner ? 'bashPkgRunTab' : 'bashPkgInstallTab',
+    tabState.currentTab
+  )
+
   useEffect(() => {
     const storedTab = isPackageRunner
       ? localStorage.getItem('bashPkgRunTab')
       : localStorage.getItem('bashPkgInstallTab')
 
-    if (storedTab) {
-      setTabState((prevState) => ({
-        ...prevState,
-        currentTab: storedTab,
-      }))
-
-      onTabChange(storedTab)
-      handleTabChange(storedTab)
-    }
+    handleTabChange(storedTab ?? tabState.currentTab)
+    onTabChange(storedTab)
   }, [])
 
   const setCurrentTab = (currentTab: string) => {
@@ -46,15 +44,13 @@ export function RowingTabs({ className, onTabChange, children, size, ...rest }) 
     onTabChange(currentTab)
     handleTabChange(currentTab)
 
-    // Update the currentTab localStorage if tab changes
-    isPackageRunner
-      ? localStorage.setItem('bashPkgRunTab', currentTab)
-      : localStorage.setItem('bashPkgInstallTab', currentTab)
+    setItem(currentTab)
   }
 
   const setIntentIndicator = (intentAt) => setTabState({ ...tabState, intentAt })
   const setActiveIndicator = (activeAt) =>
     setTabState({ ...tabState, prevActiveAt: tabState.activeAt, activeAt })
+
   const { activeAt, intentAt, prevActiveAt, currentTab } = tabState
 
   // 1 = right, 0 = nowhere, -1 = left
@@ -83,7 +79,7 @@ export function RowingTabs({ className, onTabChange, children, size, ...rest }) 
           br="$4"
           animation="100ms"
           enterStyle={{ o: 0, y: -10 }}
-          value={currentTab}
+          value={storageItem}
           onPress={(e) => e.stopPropagation()}
           onValueChange={setCurrentTab}
           group
@@ -126,11 +122,13 @@ export function RowingTabs({ className, onTabChange, children, size, ...rest }) 
                 ) : isPackageRunner ? (
                   <>
                     <Tab
+                      active={storageItem === 'npx'}
                       pkgManager="npx"
                       logo="npm"
                       onInteraction={handleOnInteraction}
                     />
                     <Tab
+                      active={storageItem === 'bunx'}
                       pkgManager="bunx"
                       logo="bun"
                       onInteraction={handleOnInteraction}
@@ -139,22 +137,22 @@ export function RowingTabs({ className, onTabChange, children, size, ...rest }) 
                 ) : (
                   <>
                     <Tab
-                      active={currentTab === 'yarn'}
+                      active={storageItem === 'yarn'}
                       pkgManager="yarn"
                       onInteraction={handleOnInteraction}
                     />
                     <Tab
-                      active={currentTab === 'bun'}
+                      active={storageItem === 'bun'}
                       pkgManager="bun"
                       onInteraction={handleOnInteraction}
                     />
                     <Tab
-                      active={currentTab === 'npm'}
+                      active={storageItem === 'npm'}
                       pkgManager="npm"
                       onInteraction={handleOnInteraction}
                     />
                     <Tab
-                      active={currentTab === 'pnpm'}
+                      active={storageItem === 'pnpm'}
                       pkgManager="pnpm"
                       onInteraction={handleOnInteraction}
                     />
