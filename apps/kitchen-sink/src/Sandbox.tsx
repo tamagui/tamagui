@@ -2,7 +2,7 @@
 //! debug-verbose
 import './wdyr'
 
-import { Checkbox, View, YStack, styled } from 'tamagui'
+import { Checkbox, Square, View, YStack, styled } from 'tamagui'
 
 import { SelectDemo, SheetDemo } from '@tamagui/demos'
 import { useState } from 'react'
@@ -13,7 +13,14 @@ export const Sandbox = () => {
 
   return (
     <RNView style={{ width: '100%', height: '100%', padding: 50 }}>
-      <SheetDemo />
+      <Square
+        size={200}
+        bg="$red10"
+        pressStyle={{
+          bg: 'green',
+        }}
+      />
+      {/* <SheetDemo /> */}
     </RNView>
   )
 
