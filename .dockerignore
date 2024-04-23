@@ -1,0 +1,8 @@
+**/.next/
+**/dist/
+**/.tamagui/
+**/.turbo/
+**/.vscode/
+**/node_modules/
+**/android/
+**/ios/
