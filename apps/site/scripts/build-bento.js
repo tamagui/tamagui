@@ -27,6 +27,7 @@ function shake(content) {
   return content
     .replaceAll(/\$group-window-(\w+)/g, (match, group) => `$${group}`)
     .replaceAll(/([a-zA-Z0-9_]+\.fileName\s*=\s*)'([^']*)'/g, '')
+    .replaceAll('../../general/Adapt', 'tamagui')
 }
 
 async function copyMergedComponents(directoryPath, outputDirectory) {

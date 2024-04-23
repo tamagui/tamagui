@@ -11,6 +11,7 @@ export type AdaptProps = {
   when?: MediaQueryKeyString
   platform?: 'native' | 'web' | 'touch' | 'ios' | 'android'
   children?: any
+  forceEnable?: boolean
 }
 
 type When = MediaQueryKeyString | boolean | null
@@ -69,25 +70,27 @@ export const useAdaptParent = ({
 }
 
 export const Adapt = withStaticProperties(
-  function Adapt({ platform, when, children }: AdaptProps) {
+  function Adapt({ platform, when, forceEnable, children }: AdaptProps) {
     const context = useContext(AdaptParentContext)
     const media = useMedia()
 
-    let enabled = !platform
-    if (platform === 'touch') enabled = isTouchable
-    if (platform === 'native') enabled = !isWeb
-    if (platform === 'web') enabled = isWeb
-    if (platform === 'ios') enabled = isIos
-    if (platform === 'android') enabled = isAndroid
-
-    if (when && !media[when]) {
-      enabled = false
+    let enabled = forceEnable
+    if (!forceEnable) {
+      enabled = !platform
+      if (platform === 'touch') enabled = isTouchable
+      if (platform === 'native') enabled = !isWeb
+      if (platform === 'web') enabled = isWeb
+      if (platform === 'ios') enabled = isIos
+      if (platform === 'android') enabled = isAndroid
+      if (when && !media[when]) {
+        enabled = false
+      }
     }
 
     useIsomorphicLayoutEffect(() => {
       if (!enabled) return
-      context?.setWhen((when || enabled) as When)
-    }, [when, context, enabled])
+      context?.setWhen((forceEnable || when || enabled) as When)
+    }, [when, context, enabled, forceEnable])
 
     if (!enabled) {
       return null
