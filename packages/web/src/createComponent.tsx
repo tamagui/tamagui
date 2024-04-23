@@ -79,11 +79,26 @@ let time: any
 let debugKeyListeners: Set<Function> | undefined
 let startVisualizer: Function | undefined
 
-export const mouseUps = new Set<Function>()
+type ComponentSetState = React.Dispatch<React.SetStateAction<TamaguiComponentState>>
+
+export const componentSetStates = new Set<ComponentSetState>()
+
 if (typeof document !== 'undefined') {
   const cancelTouches = () => {
-    mouseUps.forEach((x) => x())
-    mouseUps.clear()
+    // clear all press downs
+    componentSetStates.forEach((setState) =>
+      setState((prev) => {
+        if (prev.press || prev.pressIn) {
+          return {
+            ...prev,
+            press: false,
+            pressIn: false,
+          }
+        }
+        return prev
+      })
+    )
+    componentSetStates.clear()
   }
   addEventListener('mouseup', cancelTouches)
   addEventListener('touchend', cancelTouches)
@@ -887,12 +902,7 @@ export function createComponent<
     // if its a layout effect it will just skip that first <render >output
     const { pseudoGroups, mediaGroups } = splitStyles
 
-    // TODO if you add a group prop setStateShallow changes identity...
-    if (!curStateRef.unPress) {
-      curStateRef.unPress = () => setStateShallow({ press: false, pressIn: false })
-    }
-
-    const unPress = curStateRef.unPress!
+    const unPress = () => setStateShallow({ press: false, pressIn: false })
 
     useEffect(() => {
       if (disabled) {
@@ -915,7 +925,7 @@ export function createComponent<
 
       return () => {
         dispose?.()
-        mouseUps.delete(unPress)
+        componentSetStates.delete(setState)
       }
     }, [
       disabled,
@@ -999,7 +1009,6 @@ export function createComponent<
             },
             onMouseLeave: (e) => {
               const next: Partial<typeof state> = {}
-              mouseUps.add(unPress)
               if (needsHoverState) {
                 next.hover = false
               }
@@ -1025,7 +1034,7 @@ export function createComponent<
                 onPressIn?.(e)
                 onMouseDown?.(e)
                 if (isWeb) {
-                  mouseUps.add(unPress)
+                  componentSetStates.add(setState)
                 }
               }
             : undefined,
