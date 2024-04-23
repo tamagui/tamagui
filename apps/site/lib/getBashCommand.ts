@@ -1,20 +1,29 @@
 import { getBashText } from '@components/getBashText'
 import { useState } from 'react'
 
+const pkgCommands = {
+  yarn: 'yarn',
+  bun: 'bun',
+  npm: 'npm',
+  pnpm: 'pnpm',
+}
+
+const pkgRunCommands = {
+  npx: 'npx',
+  bunx: 'bunx',
+}
+
+const commands = {
+  yarn: 'yarn add',
+  bun: 'bun add',
+  npm: 'npm install',
+  pnpm: 'pnpm install',
+  npx: 'npx',
+  bunx: 'bunx',
+}
+
 export function getBashCommand(children, className) {
   const bashText = getBashText(children)[0]
-
-  const pkgCommands = {
-    yarn: 'yarn',
-    bun: 'bun',
-    npm: 'npm',
-    pnpm: 'pnpm',
-  }
-
-  const pkgRunCommands = {
-    npx: 'npx',
-    bunx: 'bunx',
-  }
 
   const isBash = className === 'language-bash'
   const isPackage = Object.values(pkgCommands).some((command) =>
@@ -35,15 +44,6 @@ export function getBashCommand(children, className) {
   )
 
   const showTabs = isBash && !isTerminal
-
-  const commands = {
-    yarn: 'yarn add',
-    bun: 'bun add',
-    npm: 'npm install',
-    pnpm: 'pnpm install',
-    npx: 'npx',
-    bunx: 'bunx',
-  }
 
   const handleTabChange = (tab: string) => {
     setCommand(

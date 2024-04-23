@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import type { ViewProps, TabLayout, TabsTabProps } from 'tamagui'
-import { Avatar, styled } from 'tamagui'
+import { Avatar, SizableText, XStack, styled } from 'tamagui'
 import { AnimatePresence, Paragraph, Tabs, YStack } from 'tamagui'
 import { getBashCommand } from '@lib/getBashCommand'
 import { Code } from './Code'
@@ -86,9 +86,10 @@ export function RowingTabs({ className, onTabChange, children, size, ...rest }) 
           value={currentTab}
           onPress={(e) => e.stopPropagation()}
           onValueChange={setCurrentTab}
+          group
         >
           <YStack w="100%">
-            <YStack p="$2" bg="$black1" bw="$1.5" bc="$background" br="$5">
+            <YStack p="$2" bg="$color3" m="$1.5" bc="$background" br="$5">
               <AnimatePresence>
                 {intentAt && (
                   <TabIndicator
@@ -137,10 +138,26 @@ export function RowingTabs({ className, onTabChange, children, size, ...rest }) 
                   </>
                 ) : (
                   <>
-                    <Tab pkgManager="yarn" onInteraction={handleOnInteraction} />
-                    <Tab pkgManager="bun" onInteraction={handleOnInteraction} />
-                    <Tab pkgManager="npm" onInteraction={handleOnInteraction} />
-                    <Tab pkgManager="pnpm" onInteraction={handleOnInteraction} />
+                    <Tab
+                      active={currentTab === 'yarn'}
+                      pkgManager="yarn"
+                      onInteraction={handleOnInteraction}
+                    />
+                    <Tab
+                      active={currentTab === 'bun'}
+                      pkgManager="bun"
+                      onInteraction={handleOnInteraction}
+                    />
+                    <Tab
+                      active={currentTab === 'npm'}
+                      pkgManager="npm"
+                      onInteraction={handleOnInteraction}
+                    />
+                    <Tab
+                      active={currentTab === 'pnpm'}
+                      pkgManager="pnpm"
+                      onInteraction={handleOnInteraction}
+                    />
                   </>
                 )}
               </Tabs.List>
@@ -173,14 +190,17 @@ export function RowingTabs({ className, onTabChange, children, size, ...rest }) 
 }
 
 function Tab({
+  active,
   pkgManager,
   logo,
   onInteraction,
 }: {
+  active?: boolean
   pkgManager: string
   logo?: string
   onInteraction: TabsTabProps['onInteraction']
 }) {
+  const imageName = logo ?? pkgManager
   return (
     <Tabs.Tab
       unstyled
@@ -191,11 +211,31 @@ function Tab({
       value={pkgManager}
       onInteraction={onInteraction}
     >
-      <Avatar size="$1" br="$2">
-        <Avatar.Image scale={0.8} src={`/logos/${logo ?? pkgManager}.svg`} />
-        <Avatar.Fallback bg="$color6" bc="$color8" />
-      </Avatar>
-      <Paragraph col="$white1">{pkgManager}</Paragraph>
+      <XStack gap="$1.5" ai="center" jc="center">
+        <Avatar
+          style={{
+            filter: active ? '' : 'grayscale(100%)',
+          }}
+          size="$1"
+          br="$2"
+        >
+          <Avatar.Image
+            scale={imageName === 'pnpm' ? 0.7 : 0.8}
+            y={imageName === 'pnpm' ? 0 : 0}
+            src={`/logos/${imageName}.svg`}
+          />
+          <Avatar.Fallback bg="$color6" bc="$color8" />
+        </Avatar>
+        <SizableText
+          size="$3"
+          col="$color8"
+          $group-hover={{
+            col: '$color10',
+          }}
+        >
+          {pkgManager}
+        </SizableText>
+      </XStack>
     </Tabs.Tab>
   )
 }
