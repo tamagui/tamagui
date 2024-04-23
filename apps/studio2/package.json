@@ -25,11 +25,11 @@
     "react-native": "^0.73.4",
     "react-native-reanimated": "~3.6.2",
     "stripe": "^9.1.0",
-    "tamagui": "1.95.0-1713326412393",
+    "tamagui": "1.95.1",
     "vite-tsconfig-paths": "^4.3.2"
   },
   "devDependencies": {
-    "@tamagui/cli": "1.95.0-1713326412393",
+    "@tamagui/cli": "1.95.1",
     "gray-matter": "^4.0.2",
     "h3": "^1.11.1",
     "hast-util-to-html": "^8.0.3",
