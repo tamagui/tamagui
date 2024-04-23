@@ -59,6 +59,7 @@ export const SheetImplementationCustom = themeable(
     const keyboardIsVisible = useKeyboardVisible()
     const state = useSheetOpenState(props)
     const [overlayComponent, setOverlayComponent] = useState<any>(null)
+
     const providerProps = useSheetProviderProps(props, state, {
       onOverlayComponent: setOverlayComponent,
     })
@@ -175,17 +176,27 @@ export const SheetImplementationCustom = themeable(
 
       if (hasntMeasured || isHidden) {
         // first run, we need to set to screen size before running
-        animatedNumber.setValue(screenSize, {
-          type: 'timing',
-          duration: 0,
-        })
+        animatedNumber.setValue(
+          screenSize,
+          {
+            type: 'timing',
+            duration: 0,
+          },
+          () => {
+            if (isHidden) {
+              return
+            }
 
-        if (isHidden) {
-          return
-        }
+            toValue = positions[position]
+            at.current = toValue
 
-        toValue = positions[position]
-        at.current = toValue
+            animatedNumber.setValue(toValue, {
+              type: 'spring',
+              ...animationConfig,
+            })
+          }
+        )
+        return
       }
 
       animatedNumber.setValue(toValue, {
@@ -415,7 +426,7 @@ export const SheetImplementationCustom = themeable(
     const contents = (
       <ParentSheetContext.Provider value={nextParentContext}>
         <SheetProvider {...providerProps}>
-          <AnimatePresence enterExitVariant="open">
+          <AnimatePresence custom={{ open }}>
             {shouldHideParentSheet || !open ? null : overlayComponent}
           </AnimatePresence>
 
@@ -430,7 +441,6 @@ export const SheetImplementationCustom = themeable(
                 bottom: 0,
                 pointerEvents: 'none',
               }}
-              pointerEvents="none"
               onLayout={handleMaxContentViewLayout}
             />
           )}
@@ -439,7 +449,6 @@ export const SheetImplementationCustom = themeable(
             ref={ref}
             {...panResponder?.panHandlers}
             onLayout={handleAnimationViewLayout}
-            pointerEvents={open && !shouldHideParentSheet ? 'auto' : 'none'}
             {...(!isDragging && {
               // @ts-ignore for CSS driver this is necessary to attach the transition
               animation,
@@ -454,6 +463,9 @@ export const SheetImplementationCustom = themeable(
                 height: forcedContentHeight,
                 minHeight: forcedContentHeight,
                 opacity,
+                ...((shouldHideParentSheet || !open) && {
+                  pointerEvents: 'none',
+                }),
               },
               animatedStyle,
             ]}

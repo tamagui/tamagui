@@ -24,8 +24,9 @@ const main = defineCommand({
     // },
   },
 
-  run({ args }) {
-    require('./dev').dev()
+  async run({ args }) {
+    // @ts-expect-error its ok
+    ;(await import('./dev.mjs')).dev({})
   },
 })
 

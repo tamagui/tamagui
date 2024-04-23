@@ -406,17 +406,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['bento'] }) => 
                     Beta 🤙
                   </H3>
                   <Paragraph color="$color4" size="$3" lh="$2">
-                    More polish ongoing, some don't work on native.
-                    <br />
-                    There's&nbsp;
-                    <a
-                      href="https://github.com/tamagui/tamagui/pull/2444"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      a&nbsp;PR you can follow
-                    </a>
-                    .
+                    More polish ongoing. Next up is allowing customizing to your tokens.
                   </Paragraph>
                 </YStack>
                 <AlertCircle

@@ -474,8 +474,7 @@ export const PurchaseModal = ({
                         ) : (
                           <>
                             <Paragraph size="$1" theme="green_alt2">
-                              You will get a discount for purchasing both Takeout and
-                              Bento.
+                              A $50 discount applies if you add both Bento and Takeout.
                             </Paragraph>
                             <SizableText
                               cursor="pointer"
