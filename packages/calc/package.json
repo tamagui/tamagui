@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/calc",
-  "version": "1.95.0",
+  "version": "1.95.0-1713852157160",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -27,10 +27,10 @@
     }
   },
   "dependencies": {
-    "@tamagui/core": "1.95.0"
+    "@tamagui/core": "1.95.0-1713852157160"
   },
   "devDependencies": {
-    "@tamagui/build": "1.95.0"
+    "@tamagui/build": "1.95.0-1713852157160"
   },
   "publishConfig": {
     "access": "public"
