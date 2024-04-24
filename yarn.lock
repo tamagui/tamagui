@@ -7527,7 +7527,7 @@ __metadata:
     ts-morph: "npm:^15.1.0"
     typescript: "npm:^5.3.3"
     url: "npm:^0.11.0"
-    vite: "npm:^5.2.6"
+    vite: "npm:^5.2.10"
     vite-plugin-entry-shaking: "npm:^0.3.2"
     vite-tsconfig-paths: "npm:^4.3.2"
   bin:
@@ -9003,7 +9003,7 @@ __metadata:
     tamagui: "npm:1.95.1"
     ts-deepmerge: "npm:^6.2.0"
     victory: "npm:^36.6.11"
-    vite: "npm:^5.2.6"
+    vite: "npm:^5.2.10"
   languageName: unknown
   linkType: soft
 
@@ -9449,7 +9449,7 @@ __metadata:
     react-dom: "npm:^18.2.0"
     tamagui: "npm:1.95.1"
     typescript: "npm:^5.3.3"
-    vite: "npm:^5.2.6"
+    vite: "npm:^5.2.10"
   languageName: unknown
   linkType: soft
 
@@ -9524,7 +9524,7 @@ __metadata:
     react-dom: "npm:^18.2.0"
     tamagui: "npm:1.95.1"
     typescript: "npm:^5.3.3"
-    vite: "npm:^5.2.6"
+    vite: "npm:^5.2.10"
     vite-bundle-analyzer: "npm:^0.9.2"
     vite-plugin-commonjs: "npm:^0.10.1"
     vite-tsconfig-paths: "npm:^4.3.2"
@@ -10077,7 +10077,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/estree@npm:*, @types/estree@npm:1.0.5, @types/estree@npm:^1.0.0":
+"@types/estree@npm:*, @types/estree@npm:1.0.5, @types/estree@npm:^1.0.0, @types/estree@npm:^1.0.5":
   version: 1.0.5
   resolution: "@types/estree@npm:1.0.5"
   checksum: 10/7de6d928dd4010b0e20c6919e1a6c27b61f8d4567befa89252055fad503d587ecb9a1e3eab1b1901f923964d7019796db810b7fd6430acb26c32866d126fd408
@@ -11161,9 +11161,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vxrn/expo-router@npm:0.1.30, @vxrn/expo-router@npm:^0.1.30":
-  version: 0.1.30
-  resolution: "@vxrn/expo-router@npm:0.1.30"
+"@vxrn/expo-router@npm:0.1.34, @vxrn/expo-router@npm:^0.1.34":
+  version: 0.1.34
+  resolution: "@vxrn/expo-router@npm:0.1.34"
   dependencies:
     "@radix-ui/react-slot": "npm:^1.0.2"
     "@react-navigation/bottom-tabs": "npm:^6.5.8"
@@ -11172,12 +11172,15 @@ __metadata:
     "@react-navigation/native": "npm:^6.1.7"
     "@react-navigation/native-stack": "npm:^6.9.13"
     "@react-navigation/routers": "npm:^6.1.9"
+    "@types/estree": "npm:^1.0.5"
     escape-string-regexp: "npm:^5.0.0"
+    estree-walker: "npm:^3.0.3"
     expo-constants: "npm:^14.4.2"
     expo-linking: "npm:^5.0.2"
     expo-splash-screen: "npm:~0.20.4"
     expo-status-bar: "npm:^1.6.0"
     fast-deep-equal: "npm:^3.1.3"
+    magic-string: "npm:^0.30.10"
     query-string: "npm:7.1.3"
     react-helmet-async: "npm:^2.0.4"
     react-native-safe-area-context: "npm:4.6.3"
@@ -11188,62 +11191,69 @@ __metadata:
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 10/9630870c7061d1f573730504d6f104fa1d66b579f34baa8c22e9093d8a785b82997a7cf00016f23addd52c8e77c11052d86b48bc744c584282349183dd2f389b
+  checksum: 10/2a6555414df1d171d23adc996e8bfbdc0efd790cb4b0a3490a3abbd23f95ee7391c11c37e9d80a5ecc37911c989303e1998b0265d32e66c6e3b92dce6cca0cf2
   languageName: node
   linkType: hard
 
-"@vxrn/react-native-prebuilt@npm:0.1.30":
-  version: 0.1.30
-  resolution: "@vxrn/react-native-prebuilt@npm:0.1.30"
+"@vxrn/react-native-prebuilt@npm:0.1.34":
+  version: 0.1.34
+  resolution: "@vxrn/react-native-prebuilt@npm:0.1.34"
   dependencies:
-    "@vxrn/vite-flow": "npm:0.1.30"
+    "@vxrn/vite-flow": "npm:0.1.34"
     esbuild: "npm:~0.19.3"
     fs-extra: "npm:^11.2.0"
     import-meta-resolve: "npm:^4.0.0"
   peerDependencies:
     react-native: "*"
-  checksum: 10/7eec5d6750b2f433f3e47b7346b4d1e2c36002486d933ce35ed75ff2f3cfdeb1a2c115d145b4d7c1c05127b725ca1ae04a6c6f017109506f059edfd26b95a246
+  checksum: 10/5bb5c65a7fc5ebcf35a9021949e17e16d816519ec842f6a410438df346358a3b1719d39e55785596f8921473bdc319a9b88a1b3ad0374159391b78db2c79d4b9
   languageName: node
   linkType: hard
 
-"@vxrn/vite-flow@npm:0.1.30":
-  version: 0.1.30
-  resolution: "@vxrn/vite-flow@npm:0.1.30"
+"@vxrn/safe-area@npm:0.1.34":
+  version: 0.1.34
+  resolution: "@vxrn/safe-area@npm:0.1.34"
+  checksum: 10/5f86313388c0b0f7fcd3b89605611e6845b2d2bb60893b541a354221a5b90d588eb1ee0129a4bf8fb3a74f0fd0341ab1b74665a21947837cf32a3410a0c7a2cd
+  languageName: node
+  linkType: hard
+
+"@vxrn/vite-flow@npm:0.1.34":
+  version: 0.1.34
+  resolution: "@vxrn/vite-flow@npm:0.1.34"
   dependencies:
     "@babel/core": "npm:^7.21.8"
     metro-react-native-babel-preset: "npm:^0.77.0"
-  checksum: 10/9653dd78b9b56c21b76fcc9afb1443a00d44461f26a74df8e8842a3a773771102b23f9ae97e64de9e7ed80c392774bd84c8b6e9929bc73a3855207cdbe88fd85
+  checksum: 10/b064170b654187bc5dc67a652324fa4e5184eacf853ef0e6e85b1efd0251f735f045903aabeddd6fca1ec2549a6242fed22113daf1812011e23a13a185ca71c5
   languageName: node
   linkType: hard
 
-"@vxrn/vite-native-client@npm:0.1.30":
-  version: 0.1.30
-  resolution: "@vxrn/vite-native-client@npm:0.1.30"
+"@vxrn/vite-native-client@npm:0.1.34":
+  version: 0.1.34
+  resolution: "@vxrn/vite-native-client@npm:0.1.34"
   peerDependencies:
     react-native: "*"
-  checksum: 10/1f20529d9d73553a4766f373300302f5a94647181bed20922aa97d0897b8fb552fb66995faf87280b37bf427361517d993916ae75695076a0e00d5710df7ee68
+  checksum: 10/f45aa1c96311d6b50629c1f798718f7acef8f6c0076ee4c3693624c3055e565149ba52b94e903d171afb726cfa9b997ac94146c368d7165a52a23456a0b96ea2
   languageName: node
   linkType: hard
 
-"@vxrn/vite-native-hmr@npm:0.1.30":
-  version: 0.1.30
-  resolution: "@vxrn/vite-native-hmr@npm:0.1.30"
+"@vxrn/vite-native-hmr@npm:0.1.34":
+  version: 0.1.34
+  resolution: "@vxrn/vite-native-hmr@npm:0.1.34"
   dependencies:
     pretty-format: "npm:^28.1.0"
   peerDependencies:
     react-native: "*"
-  checksum: 10/154f6552d4bf6c633a3d5a4675709921ade677073c8c6415990f7d3022dc1d70545da73af49d4f573712b0126582a6452e8247f91076a6f81136143581f36aba
+  checksum: 10/564ded9d0659dc15e27a740919b018998f490c797bbf8c6b05bfb0071fcf3e52cd31643a3a92775e1d7b5356a98be28200d79b0135ad1075091be322afb95ca5
   languageName: node
   linkType: hard
 
-"@vxrn/vite-native-swc@npm:0.1.30":
-  version: 0.1.30
-  resolution: "@vxrn/vite-native-swc@npm:0.1.30"
+"@vxrn/vite-native-swc@npm:0.1.34":
+  version: 0.1.34
+  resolution: "@vxrn/vite-native-swc@npm:0.1.34"
   dependencies:
     "@swc/core": "npm:^1.4.13"
   peerDependencies:
     react-native: "*"
-  checksum: 10/c17ff675bf3b02f166fdfe66a44b241f8c1547ecf85204b6e75919edd607f9d523fc6011f8040264658fed33cc4a5f726f9930d12003504cb3aa3ed686f456b2
+  checksum: 10/70e35f12682685d688a7187de346a2bce404bcd48ae51010816349c6827474990ab2382328fe0facd08cedd701e4d0cb38a25e29838eabdcd4be58f276c08b60
   languageName: node
   linkType: hard
 
@@ -16881,7 +16891,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"estree-walker@npm:^3.0.0":
+"estree-walker@npm:^3.0.0, estree-walker@npm:^3.0.3":
   version: 3.0.3
   resolution: "estree-walker@npm:3.0.3"
   dependencies:
@@ -20143,7 +20153,7 @@ __metadata:
     react-dom: "npm:^18.2.0"
     react-native-web: "npm:^0.19.10"
     tamagui: "npm:1.95.1"
-    vite: "npm:^5.2.6"
+    vite: "npm:^5.2.10"
     wait-port: "npm:^0.3.0"
     zx: "npm:^7.2.3"
   languageName: unknown
@@ -22328,6 +22338,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"magic-string@npm:^0.30.10, magic-string@npm:^0.30.8":
+  version: 0.30.10
+  resolution: "magic-string@npm:0.30.10"
+  dependencies:
+    "@jridgewell/sourcemap-codec": "npm:^1.4.15"
+  checksum: 10/9f8bf6363a14c98a9d9f32ef833b194702a5c98fb931b05ac511b76f0b06fd30ed92beda6ca3261d2d52d21e39e891ef1136fbd032023f6cbb02d0b7d5767201
+  languageName: node
+  linkType: hard
+
 "make-dir@npm:^2.0.0, make-dir@npm:^2.1.0":
   version: 2.1.0
   resolution: "make-dir@npm:2.1.0"
@@ -24099,6 +24118,15 @@ __metadata:
   dependencies:
     brace-expansion: "npm:^2.0.1"
   checksum: 10/126b36485b821daf96d33b5c821dac600cc1ab36c87e7a532594f9b1652b1fa89a1eebcaad4dff17c764dce1a7ac1531327f190fed5f97d8f6e5f889c116c429
+  languageName: node
+  linkType: hard
+
+"minimatch@npm:^9.0.3":
+  version: 9.0.4
+  resolution: "minimatch@npm:9.0.4"
+  dependencies:
+    brace-expansion: "npm:^2.0.1"
+  checksum: 10/4cdc18d112b164084513e890d6323370db14c22249d536ad1854539577a895e690a27513dc346392f61a4a50afbbd8abc88f3f25558bfbbbb862cd56508b20f5
   languageName: node
   linkType: hard
 
@@ -29818,7 +29846,7 @@ __metadata:
     "@supabase/supabase-auth-helpers": "npm:^1.4.2"
     "@supabase/supabase-js": "npm:^2.38.2"
     "@tamagui/cli": "npm:1.95.1"
-    "@vxrn/expo-router": "npm:^0.1.30"
+    "@vxrn/expo-router": "npm:^0.1.34"
     color2k: "npm:^2.0.2"
     gray-matter: "npm:^4.0.2"
     h3: "npm:^1.11.1"
@@ -29840,7 +29868,7 @@ __metadata:
     unified: "npm:^10.1.2"
     unist-util-visit: "npm:^2.0.3"
     vite-tsconfig-paths: "npm:^4.3.2"
-    vxrn: "npm:^0.1.30"
+    vxrn: "npm:^0.1.34"
   languageName: unknown
   linkType: soft
 
@@ -31996,9 +32024,9 @@ __metadata:
     graphology: "npm:^0.24.1"
     graphql: "npm:^16.8.0"
     http-proxy-middleware: "npm:^2.0.6"
-    vite: "npm:^5.2.6"
+    vite: "npm:^5.2.10"
     vite-plugin-inspect: "npm:^0.7.38"
-    vxrn: "npm:^0.1.30"
+    vxrn: "npm:^0.1.34"
   bin:
     vert: ./dist/index.mjs
     vertql: ./dist/index.mjs
@@ -32540,6 +32568,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"vite-plugin-cjs-interop@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "vite-plugin-cjs-interop@npm:2.1.0"
+  dependencies:
+    acorn: "npm:^8.11.3"
+    acorn-import-assertions: "npm:^1.9.0"
+    estree-walker: "npm:^3.0.3"
+    magic-string: "npm:^0.30.8"
+    minimatch: "npm:^9.0.3"
+  checksum: 10/78d90dc8903bbb2c48dd609d449cefb9b72f7aa3e6cea2b14845fc070e6650a3bc4d6c3f285dcadfd5127f57042f83af26eab9d79befa67862b76ce3b56e55d4
+  languageName: node
+  linkType: hard
+
 "vite-plugin-commonjs@npm:^0.10.1":
   version: 0.10.1
   resolution: "vite-plugin-commonjs@npm:0.10.1"
@@ -32675,7 +32716,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^5.0.0, vite@npm:^5.0.11, vite@npm:^5.2.6":
+"vite@npm:^5.0.0, vite@npm:^5.0.11":
   version: 5.2.6
   resolution: "vite@npm:5.2.6"
   dependencies:
@@ -32715,9 +32756,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^5.2.8":
-  version: 5.2.8
-  resolution: "vite@npm:5.2.8"
+"vite@npm:^5.2.10":
+  version: 5.2.10
+  resolution: "vite@npm:5.2.10"
   dependencies:
     esbuild: "npm:^0.20.1"
     fsevents: "npm:~2.3.3"
@@ -32751,7 +32792,7 @@ __metadata:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: 10/caa40343c2c4e6d8e257fccb4c3029f62909c319a86063ce727ed550925c0a834460b0d1ca20c4d6c915f35302aa1052f6ec5193099a47ce21d74b9b817e69e1
+  checksum: 10/a0c4ac7b95e9a2a59f4e73e5b42a63f33569f5ec505af9dd019f19ff419fd20d66ad9aad6708987d4da173d485358f0024f410af78ac97cf5c92a38f8c96c451
   languageName: node
   linkType: hard
 
@@ -32874,19 +32915,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vxrn@npm:^0.1.30":
-  version: 0.1.30
-  resolution: "vxrn@npm:0.1.30"
+"vxrn@npm:^0.1.34":
+  version: 0.1.34
+  resolution: "vxrn@npm:0.1.34"
   dependencies:
     "@babel/code-frame": "npm:^7.21.4"
     "@vitejs/plugin-react": "npm:^4.2.1"
     "@vitejs/plugin-react-swc": "npm:^3.6.0"
-    "@vxrn/expo-router": "npm:0.1.30"
-    "@vxrn/react-native-prebuilt": "npm:0.1.30"
-    "@vxrn/vite-flow": "npm:0.1.30"
-    "@vxrn/vite-native-client": "npm:0.1.30"
-    "@vxrn/vite-native-hmr": "npm:0.1.30"
-    "@vxrn/vite-native-swc": "npm:0.1.30"
+    "@vxrn/expo-router": "npm:0.1.34"
+    "@vxrn/react-native-prebuilt": "npm:0.1.34"
+    "@vxrn/safe-area": "npm:0.1.34"
+    "@vxrn/vite-flow": "npm:0.1.34"
+    "@vxrn/vite-native-client": "npm:0.1.34"
+    "@vxrn/vite-native-hmr": "npm:0.1.34"
+    "@vxrn/vite-native-swc": "npm:0.1.34"
     chalk: "npm:^5.3.0"
     citty: "npm:^0.1.6"
     crossws: "npm:^0.2.4"
@@ -32914,12 +32956,13 @@ __metadata:
     sirv: "npm:^2.0.4"
     source-map: "npm:^0.7.3"
     url: "npm:^0.11.0"
-    vite: "npm:^5.2.8"
+    vite: "npm:^5.2.10"
+    vite-plugin-cjs-interop: "npm:^2.1.0"
     vite-plugin-inspect: "npm:^0.8.3"
     ws: "npm:^8.7.0"
   bin:
     vxrn: run.mjs
-  checksum: 10/54ec9b5c3e4629f24a42bb30231bb2966d3096ba9fb8aa772696069323a6348b0734fb5ff7c1cd1eb8e110bc940078a40b1585d4ee3b68710c08ae9026e46b21
+  checksum: 10/fd6f0a92d9788154d0316814898d9016e077d7ee90f7613d46d8c2aba675bcae0fe195d117db2e171f9096e01aed03ac656082e9b49154406456489fb06b0297
   languageName: node
   linkType: hard
 
