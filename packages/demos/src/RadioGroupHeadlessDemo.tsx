@@ -1,6 +1,8 @@
-import {
+import type {
   RadioGroupContextValue,
   RadioGroupItemContextValue,
+} from '@tamagui/radio-headless'
+import {
   useRadioGroup,
   useRadioGroupItem,
   useRadioGroupItemIndicator,
