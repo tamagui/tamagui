@@ -9,33 +9,23 @@ import type { VXRNConfig } from 'vxrn'
 //   require.resolve('@tamagui/demos').replace('/dist/cjs/index.js', ''),
 // ]
 
-const extraOptimize = [
-  '@tamagui/sheet',
-  '@tamagui/dialog',
-  '@tamagui/alert-dialog',
-  '@tamagui/image',
-  '@tamagui/avatar',
-  '@tamagui/group',
-  '@tamagui/popper',
-  '@tamagui/popover',
-  '@tamagui/scroll-view',
-  '@tamagui/select',
-  '@tamagui/switch',
-  '@tamagui/tabs',
-  '@tamagui/toggle-group',
-  '@tamagui/tooltip',
-  '@tamagui/use-window-dimensions',
-  'reforest',
-]
+const extraOptimize = []
 
 export default {
   webConfig: {
-    ssr: {
-      optimizeDeps: {
-        include: extraOptimize,
-        needsInterop: extraOptimize,
-      },
-    },
+    // resolve: {
+    //   alias: {
+    //     'react-native': 'react-native-web-lite',
+    //     'react-native-web': 'react-native-web-lite',
+    //   },
+    // },
+
+    // ssr: {
+    //   optimizeDeps: {
+    //     include: extraOptimize,
+    //     needsInterop: extraOptimize,
+    //   },
+    // },
 
     plugins: [
       clientTreeShakePlugin(),
