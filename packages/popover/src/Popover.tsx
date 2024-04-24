@@ -12,7 +12,6 @@ import type {
   ScopedProps,
   SizeTokens,
   StackProps,
-  TamaguiComponent,
   TamaguiElement,
 } from '@tamagui/core'
 import {
@@ -21,7 +20,6 @@ import {
   View,
   createShallowSetState,
   createStyledContext,
-  styled,
   useEvent,
   useGet,
   useMedia,

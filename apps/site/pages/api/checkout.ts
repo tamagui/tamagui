@@ -105,6 +105,17 @@ export default apiRoute(async (req, res) => {
     cancel_url: `${getURL()}/takeout`,
     discounts: couponId ? [{ coupon: couponId }] : undefined,
     allow_promotion_codes: couponId ? undefined : true,
+
+    customer_update: {
+      name: 'auto',
+      address: 'auto',
+      shipping: 'auto',
+    },
+
+    tax_id_collection: {
+      enabled: true,
+    },
+
     // @ts-ignore
     custom_text: {
       submit: {

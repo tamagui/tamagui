@@ -2,26 +2,27 @@
 //! debug-verbose
 import './wdyr'
 
-import { Checkbox, View, YStack, styled } from 'tamagui'
+import { Checkbox, Square, View, YStack, styled } from 'tamagui'
 
-import { SelectDemo } from '@tamagui/demos'
+import { SelectDemo, SheetDemo } from '@tamagui/demos'
 import { useState } from 'react'
-import { TextInput } from 'react-native'
+import { TextInput, View as RNView } from 'react-native'
 
 export const Sandbox = () => {
   const [open, setOpen] = useState(false)
 
   return (
-    <YStack w={500} h={500} als="center" m="auto">
-      <Checkbox debug="verbose" unstyled />
-    </YStack>
+    <RNView style={{ width: '100%', height: '100%', padding: 50 }}>
+      <Square
+        size={200}
+        bg="$red10"
+        pressStyle={{
+          bg: 'green',
+        }}
+      />
+      {/* <SheetDemo /> */}
+    </RNView>
   )
-
-  // return (
-  //   <RNView style={{ width: '100%', height: '100%', padding: 50 }}>
-  //     <View w={100} h={100} shadowRadius={10} shadowColor="#000" shadowOpacity={0.25} />
-  //   </RNView>
-  // )
 
   // // return (
   // //   <RNView style={{ width: '100%', height: '100%', padding: 50 }}>

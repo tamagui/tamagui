@@ -7,15 +7,13 @@ We recommend using npm create to set up one or more of the example apps via `npm
 
 ## Install
 
-You can use the 0-dependency (outside of react itself) `@tamagui/core`, or move higher level with `tamagui`, which is a superset of core adding many components and hooks. We recommend yarn in general because it works well with both monorepos and React Native. Still, pnpm and npm work well too.
-
-For just the core style library:
+The base Tamagui style library `@tamagui/core` has only one dependency - `react`.
 
 ```bash
 yarn add @tamagui/core
 ```
 
-If you want `tamagui`, you can avoid core and just:
+If you want `tamagui`, you can avoid installing core and instead use `tamagui` everywhere as it's a superset of core:
 
 ```bash
 yarn add tamagui
@@ -35,11 +33,7 @@ export default () => (
 )
 ```
 
-Tamagui doesn't require any bundler setup for either web or native.
-
-Typically you'll want to set up a few things with `createTamagui` though - for example media queries, or custom fonts.
-
-The [configuration documentation](/docs/core/configuration) covers this in detail, but if you'd like to get started quick with some decent defaults we have `@tamagui/config`:
+Tamagui doesn't require any bundler setup for either web or native, but you'll typically want to configure a few things using `createTamagui` like media queries, fonts, or tokens. The [configuration documentation](/docs/core/configuration) covers this in detail, but if you'd like to get started with decent defaults, you'll want `@tamagui/config`:
 
 ```tsx
 import { TamaguiProvider, createTamagui } from '@tamagui/core'
