@@ -49,6 +49,5 @@
   ],
   "typeAcquisition": {
     "enable": true
-  },
-  "extends": "expo/tsconfig.base"
+  }
 }
