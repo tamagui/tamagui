@@ -36,7 +36,7 @@
   },
   "dependencies": {
     "@tamagui/animations-react-native": "1.95.1",
-    "@tamagui/animations-reanimated": "1.95.1",
+    "@tamagui/animations-moti": "1.95.1",
     "@tamagui/colors": "1.95.1",
     "@tamagui/font-cherry-bomb": "1.95.1",
     "@tamagui/font-dm-sans": "1.95.1",

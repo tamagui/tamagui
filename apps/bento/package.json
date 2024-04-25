@@ -37,7 +37,6 @@
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
     "@rehookify/datepicker": "^6.5.0",
-    "@tamagui/animations-reanimated": "1.95.1",
     "@tamagui/cli": "1.95.1",
     "@tamagui/colors": "1.95.1",
     "@tamagui/config": "1.95.1",

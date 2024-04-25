@@ -44,7 +44,6 @@
     "@supabase/supabase-auth-helpers": "^1.4.2",
     "@supabase/supabase-js": "^2.38.2",
     "@tamagui/animate-presence": "1.95.1",
-    "@tamagui/animations-reanimated": "1.95.1",
     "@tamagui/colors": "1.95.1",
     "@tamagui/core": "1.95.1",
     "@tamagui/demos": "1.95.1",

@@ -10,12 +10,15 @@ import type { VXRNConfig } from 'vxrn'
 //   require.resolve('@tamagui/demos').replace('/dist/cjs/index.js', ''),
 // ]
 
-const optimizeInterop = [
-  //
-]
+const optimizeInterop = []
 
 const optimizeDeps = {
-  include: [...optimizeInterop, '@tamagui/site-config'],
+  include: [
+    ...optimizeInterop,
+    // '@tamagui/site-config',
+    '@tamagui/animations-moti',
+    '@tamagui/animations-react-native',
+  ],
   needsInterop: optimizeInterop,
 }
 
@@ -26,7 +29,14 @@ export default {
 
   webConfig: {
     resolve: {
-      dedupe: ['react', 'react-dom', '@tamagui/core', '@tamagui/web', 'tamagui'],
+      dedupe: [
+        'react',
+        'react-dom',
+        '@tamagui/core',
+        '@tamagui/web',
+        'tamagui',
+        '@tamagui/site-config',
+      ],
     },
 
     optimizeDeps,
