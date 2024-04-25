@@ -17,70 +17,16 @@ const extraOptimize = [
   'use-latest-callback',
   'react-is',
   'fast-deep-equal',
-  // '@vxrn/router',
+  // '@vxrn/router/server-render',
   '@react-navigation/native',
   'tamagui/linear-gradient',
   'react-native-svg',
+  '@supabase/auth-helpers-react',
+  'parse-numeric-range',
+  'use-sync-external-store',
+  'use-sync-external-store/shim',
+  'swr',
 ]
-
-export const depsToOptimize = [
-  '@react-native/normalize-color',
-  // '@react-navigation/core',
-  // '@react-navigation/native',
-  '@vxrn/router',
-  'expo-modules-core',
-  'expo-status-bar',
-  // 'react',
-  // 'react/jsx-dev-runtime',
-  // 'react/jsx-runtime',
-  // 'react-dom',
-  // 'react-dom/server',
-  // 'react-dom/client',
-  // 'react-dom/server',
-  // 'react-native-safe-area-context',
-  'react-native-web',
-  'react-native-web-lite',
-  'react-native',
-  'tamagui',
-  '@tamagui/sheet',
-  '@tamagui/dialog',
-  '@tamagui/alert-dialog',
-  '@tamagui/image',
-  '@tamagui/avatar',
-  '@tamagui/group',
-  '@tamagui/popper',
-  '@tamagui/popover',
-  '@tamagui/scroll-view',
-  '@tamagui/select',
-  '@tamagui/switch',
-  '@tamagui/tabs',
-  '@tamagui/toggle-group',
-  '@tamagui/tooltip',
-  '@tamagui/use-window-dimensions',
-  '@tamagui/lucide-icons',
-  'react-native-web',
-  'react-native-web-lite',
-  'reforest',
-]
-
-export const needsInterop = [
-  'react',
-  'react/jsx-runtime',
-  'react/jsx-dev-runtime',
-  'react-native-web-internals',
-  'react-dom',
-  'react-native-web',
-  // '@vxrn/router',
-  // '@vxrn/router/render',
-  // 'react-dom/server',
-  'react-dom/client',
-]
-
-export const ssrDepsToOptimize = [
-  ...new Set([...depsToOptimize, ...needsInterop, 'react-native', 'react-native-svg']),
-]
-
-console.log('wtf bro', ssrDepsToOptimize)
 
 export default {
   // flow: {
@@ -96,10 +42,17 @@ export default {
     // },
 
     ssr: {
-      noExternal: ssrDepsToOptimize,
+      // noExternal: ssrDepsToOptimize,
       optimizeDeps: {
-        include: extraOptimize,
+        include: [
+          ...extraOptimize,
+          '@tamagui/web',
+          '@tamagui/core',
+          '@tamagui/toast',
+          '@tamagui/lucide-icons',
+        ],
         needsInterop: extraOptimize,
+        exclude: ['util'],
       },
     },
 
@@ -115,13 +68,13 @@ export default {
       // }),
       tsconfigPaths(),
 
-      {
-        name: 'fix-soemthing',
-        enforce: 'pre',
-        resolveId(id) {
-          console.log('resolve', id)
-        },
-      },
+      // {
+      //   name: 'fix-soemthing',
+      //   enforce: 'pre',
+      //   resolveId(id) {
+      //     console.log('resolve', id)
+      //   },
+      // },
 
       // TODO type is mad
       // tamaguiPlugin({
