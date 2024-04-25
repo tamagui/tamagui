@@ -2183,6 +2183,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@cyco130/vite-plugin-mdx@npm:1.0.4":
+  version: 1.0.4
+  resolution: "@cyco130/vite-plugin-mdx@npm:1.0.4"
+  dependencies:
+    "@mdx-js/mdx": "npm:^3.0.0"
+    source-map: "npm:^0.7.4"
+    vfile: "npm:^6.0.1"
+  peerDependencies:
+    vite: 3 || 4 || 5
+  checksum: 10/89e186e95fd96e1e3fb9c1f6b1cf30a10d5c60101ead0919dd0ab3766ad9cc949cdcd709b3dd00353d57d085f4482d27514e7c4dc28c7eb97ab8d0317dbf24b3
+  languageName: node
+  linkType: hard
+
 "@discordjs/collection@npm:^1.5.1":
   version: 1.5.1
   resolution: "@discordjs/collection@npm:1.5.1"
@@ -26235,7 +26248,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"source-map@npm:^0.7.0, source-map@npm:^0.7.3":
+"source-map@npm:^0.7.0, source-map@npm:^0.7.3, source-map@npm:^0.7.4":
   version: 0.7.4
   resolution: "source-map@npm:0.7.4"
   checksum: 10/a0f7c9b797eda93139842fd28648e868a9a03ea0ad0d9fa6602a0c1f17b7fb6a7dcca00c144476cccaeaae5042e99a285723b1a201e844ad67221bf5d428f1dc
@@ -26769,6 +26782,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "studio2@workspace:apps/studio2"
   dependencies:
+    "@cyco130/vite-plugin-mdx": "npm:1.0.4"
     "@leeoniya/ufuzzy": "npm:^1.0.14"
     "@react-navigation/native": "npm:6.1.17"
     "@supabase/auth-helpers-react": "npm:^0.4.2"

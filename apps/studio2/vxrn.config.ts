@@ -2,6 +2,7 @@ import { createFileSystemRouter, clientTreeShakePlugin } from '@vxrn/router/vite
 // import { tamaguiPlugin, tamaguiExtractPlugin } from '@tamagui/vite-plugin'
 // import entryShakingPlugin from 'vite-plugin-entry-shaking'
 import tsconfigPaths from 'vite-tsconfig-paths'
+import { mdx } from '@cyco130/vite-plugin-mdx'
 import type { VXRNConfig } from 'vxrn'
 // import inpsectPlugin from 'vite-plugin-inspect'
 
@@ -55,6 +56,7 @@ export default {
     },
 
     plugins: [
+      mdx({}),
       // inpsectPlugin(),
       clientTreeShakePlugin(),
       createFileSystemRouter({
