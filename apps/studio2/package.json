@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@leeoniya/ufuzzy": "^1.0.14",
-    "@react-navigation/native": "^6.1.10",
+    "@react-navigation/native": "6.1.17",
     "@supabase/auth-helpers-react": "^0.4.2",
     "@supabase/auth-helpers-shared": "^0.5.0",
     "@supabase/supabase-auth-helpers": "^1.4.2",

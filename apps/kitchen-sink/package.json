@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "1.21.0",
-    "@react-navigation/native": "^6.1.10",
+    "@react-navigation/native": "6.1.17",
     "@react-navigation/native-stack": "^6.9.18",
     "@tamagui/animations-reanimated": "1.95.1",
     "@tamagui/cli": "1.95.1",
