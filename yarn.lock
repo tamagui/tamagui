@@ -6323,7 +6323,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/animations-reanimated@npm:1.95.1, @tamagui/animations-reanimated@workspace:packages/animations-reanimated":
+"@tamagui/animations-reanimated@workspace:packages/animations-reanimated":
   version: 0.0.0-use.local
   resolution: "@tamagui/animations-reanimated@workspace:packages/animations-reanimated"
   dependencies:
@@ -6384,7 +6384,6 @@ __metadata:
     "@playwright/test": "npm:^1.40.1"
     "@pmmmwh/react-refresh-webpack-plugin": "npm:^0.5.10"
     "@rehookify/datepicker": "npm:^6.5.0"
-    "@tamagui/animations-reanimated": "npm:1.95.1"
     "@tamagui/babel-plugin": "npm:1.95.1"
     "@tamagui/build": "npm:1.95.1"
     "@tamagui/cli": "npm:1.95.1"
@@ -7215,7 +7214,6 @@ __metadata:
     "@react-native-async-storage/async-storage": "npm:1.21.0"
     "@react-navigation/native": "npm:6.1.17"
     "@react-navigation/native-stack": "npm:^6.9.18"
-    "@tamagui/animations-reanimated": "npm:1.95.1"
     "@tamagui/babel-plugin": "npm:1.95.1"
     "@tamagui/cli": "npm:1.95.1"
     "@tamagui/colors": "npm:1.95.1"
@@ -7780,10 +7778,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/site-config@workspace:packages/site-config"
   dependencies:
-    "@tamagui/animations-react-native": "npm:1.95.1"
-    "@tamagui/animations-reanimated": "npm:1.95.1"
+    "@tamagui/animations-moti": "npm:1.95.1"
     "@tamagui/build": "npm:1.95.1"
     "@tamagui/colors": "npm:1.95.1"
+    "@tamagui/core": "npm:1.95.1"
     "@tamagui/font-cherry-bomb": "npm:1.95.1"
     "@tamagui/font-dm-sans": "npm:1.95.1"
     "@tamagui/font-dm-serif-display": "npm:1.95.1"
@@ -7793,7 +7791,6 @@ __metadata:
     "@tamagui/react-native-media-driver": "npm:1.95.1"
     "@tamagui/shorthands": "npm:1.95.1"
     "@tamagui/themes": "npm:1.95.1"
-    "@tamagui/web": "npm:1.95.1"
   languageName: unknown
   linkType: soft
 
@@ -7819,7 +7816,6 @@ __metadata:
     "@supabase/supabase-auth-helpers": "npm:^1.4.2"
     "@supabase/supabase-js": "npm:^2.38.2"
     "@tamagui/animate-presence": "npm:1.95.1"
-    "@tamagui/animations-reanimated": "npm:1.95.1"
     "@tamagui/build": "npm:1.95.1"
     "@tamagui/colors": "npm:1.95.1"
     "@tamagui/core": "npm:1.95.1"
@@ -10072,17 +10068,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vxrn/react-native-prebuilt@npm:0.1.44":
-  version: 0.1.44
-  resolution: "@vxrn/react-native-prebuilt@npm:0.1.44"
+"@vxrn/react-native-prebuilt@npm:0.1.45":
+  version: 0.1.45
+  resolution: "@vxrn/react-native-prebuilt@npm:0.1.45"
   dependencies:
-    "@vxrn/vite-flow": "npm:0.1.44"
+    "@vxrn/vite-flow": "npm:0.1.45"
     esbuild: "npm:~0.19.3"
     fs-extra: "npm:^11.2.0"
     import-meta-resolve: "npm:^4.0.0"
   peerDependencies:
     react-native: "*"
-  checksum: 10/0e79e6bb2f75bfd1be500951344fc4722d68142c7f96adbb8ef8dd8d9b9c70b008e130fee14f69e00e7c8c4becd3d780a0f966a3a716c74c1ff7d4be91ddf092
+  checksum: 10/c7cefe0980400a7f1fff5df5b47ccc6698369c37e85cceb656224e18a147068c02ae51304082e0ed70ec2ec9c9cca2c860972056ad0b263975637d74c67eb78f
   languageName: node
   linkType: hard
 
@@ -10119,51 +10115,51 @@ __metadata:
   languageName: node
   linkType: soft
 
-"@vxrn/safe-area@npm:0.1.44":
-  version: 0.1.44
-  resolution: "@vxrn/safe-area@npm:0.1.44"
-  checksum: 10/a42f551e0bf8c99bd30b4b128e24f2e143f1ce0168ed342d5a0d3741c9385f446659a586c7acba8b4080715d2124ad43f8e0ab6336e1204cea0bce6fc75e435e
+"@vxrn/safe-area@npm:0.1.45":
+  version: 0.1.45
+  resolution: "@vxrn/safe-area@npm:0.1.45"
+  checksum: 10/2fff38609bdc7846521f57de404a20ffbf1653cd4616abcfed7b66f6bf66ce3617613cd2216e57f4696353595536274ee92fe09e2aaac0fd61ffc08453859099
   languageName: node
   linkType: hard
 
-"@vxrn/vite-flow@npm:0.1.44":
-  version: 0.1.44
-  resolution: "@vxrn/vite-flow@npm:0.1.44"
+"@vxrn/vite-flow@npm:0.1.45":
+  version: 0.1.45
+  resolution: "@vxrn/vite-flow@npm:0.1.45"
   dependencies:
     "@babel/core": "npm:^7.21.8"
     metro-react-native-babel-preset: "npm:^0.77.0"
-  checksum: 10/9ef38fa47307df588e4e1a25f8f92cac457696de70f5c4d53dc8ac49d1ce833d642ad86d3c999c5e95d605515878147ebd2c1ecf79d03975f9f2537a425ce459
+  checksum: 10/0f489a3e8d9918e579d1036bd5cfe61d143ba366fd91515655476331d94038e8a1cf2293fb3fb1e4c953aba3e37c3a3f715440c5ef910361b01e294ffaba5382
   languageName: node
   linkType: hard
 
-"@vxrn/vite-native-client@npm:0.1.44":
-  version: 0.1.44
-  resolution: "@vxrn/vite-native-client@npm:0.1.44"
+"@vxrn/vite-native-client@npm:0.1.45":
+  version: 0.1.45
+  resolution: "@vxrn/vite-native-client@npm:0.1.45"
   peerDependencies:
     react-native: "*"
-  checksum: 10/d6336f5166586d9b004330fdff311c4d68c6f66204884d7dccd76248f54a11bca1365aff86f17f1a840084aca98fa91876afc66e47cd4d772cd6eb8f953e5bd9
+  checksum: 10/3f5fe54c34e941857263c812d072401682437c3cacc450ec1555c82b29696ff3a723ba6d16fc00e1b3a5aaeeb77ab6596f0d27653a5997889f10da62a6712442
   languageName: node
   linkType: hard
 
-"@vxrn/vite-native-hmr@npm:0.1.44":
-  version: 0.1.44
-  resolution: "@vxrn/vite-native-hmr@npm:0.1.44"
+"@vxrn/vite-native-hmr@npm:0.1.45":
+  version: 0.1.45
+  resolution: "@vxrn/vite-native-hmr@npm:0.1.45"
   dependencies:
     pretty-format: "npm:^28.1.0"
   peerDependencies:
     react-native: "*"
-  checksum: 10/399baa74d60c327bae5f6b041c54c4f69d529f5ebdd8494da2b228b99d33d565658e352fa5200964b4b26e149115bb6f762138af67b6ba2f698a88230d445c10
+  checksum: 10/e7343f50eca0fafa1df2e86c167cf0c38d1db23f8b4507d9be6964b742d2f317807a1b27abce4f07ac8be37b2e5f4f81cbb4ebc0583de5b24124311d3de3111c
   languageName: node
   linkType: hard
 
-"@vxrn/vite-native-swc@npm:0.1.44":
-  version: 0.1.44
-  resolution: "@vxrn/vite-native-swc@npm:0.1.44"
+"@vxrn/vite-native-swc@npm:0.1.45":
+  version: 0.1.45
+  resolution: "@vxrn/vite-native-swc@npm:0.1.45"
   dependencies:
     "@swc/core": "npm:^1.4.13"
   peerDependencies:
     react-native: "*"
-  checksum: 10/8a7beb84e1540224d21c39ca8b3c06186878c316b2a68e24e47e1bb0938a5f4ee2ad297e8ee34880ddcd9dc6a757a227dac5bd8226f4a9d982a756389ce581af
+  checksum: 10/8cec556aee73bf82442a6dcdbb8fa3cff10b8fda2a12bc49f9ab88578ffb677e0afbffdf903da01fb54200538777aafa2e9bede65351d9f2120b00949c8c9a1f
   languageName: node
   linkType: hard
 
@@ -26747,7 +26743,7 @@ __metadata:
     "@supabase/supabase-js": "npm:^2.38.2"
     "@tamagui/cli": "npm:1.95.1"
     "@tamagui/site-config": "npm:1.95.1"
-    "@vxrn/router": "npm:^0.1.44"
+    "@vxrn/router": "npm:^0.1.45"
     color2k: "npm:^2.0.2"
     gray-matter: "npm:^4.0.2"
     h3: "npm:^1.11.1"
@@ -26770,7 +26766,7 @@ __metadata:
     unist-util-visit: "npm:^2.0.3"
     vite-plugin-inspect: "npm:^0.8.4"
     vite-tsconfig-paths: "npm:^4.3.2"
-    vxrn: "npm:^0.1.44"
+    vxrn: "npm:^0.1.45"
   languageName: unknown
   linkType: soft
 
@@ -29509,13 +29505,13 @@ __metadata:
     "@babel/code-frame": "npm:^7.21.4"
     "@vitejs/plugin-react": "npm:^4.2.1"
     "@vitejs/plugin-react-swc": "npm:^3.6.0"
-    "@vxrn/react-native-prebuilt": "npm:0.1.44"
-    "@vxrn/router": "npm:0.1.44"
-    "@vxrn/safe-area": "npm:0.1.44"
-    "@vxrn/vite-flow": "npm:0.1.44"
-    "@vxrn/vite-native-client": "npm:0.1.44"
-    "@vxrn/vite-native-hmr": "npm:0.1.44"
-    "@vxrn/vite-native-swc": "npm:0.1.44"
+    "@vxrn/react-native-prebuilt": "npm:0.1.45"
+    "@vxrn/router": "npm:0.1.45"
+    "@vxrn/safe-area": "npm:0.1.45"
+    "@vxrn/vite-flow": "npm:0.1.45"
+    "@vxrn/vite-native-client": "npm:0.1.45"
+    "@vxrn/vite-native-hmr": "npm:0.1.45"
+    "@vxrn/vite-native-swc": "npm:0.1.45"
     citty: "npm:^0.1.6"
     crossws: "npm:^0.2.4"
     es-module-lexer: "npm:^1.3.0"

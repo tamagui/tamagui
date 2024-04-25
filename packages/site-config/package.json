@@ -37,6 +37,7 @@
   "dependencies": {
     "@tamagui/animations-moti": "1.95.1",
     "@tamagui/colors": "1.95.1",
+    "@tamagui/core": "1.95.1",
     "@tamagui/font-cherry-bomb": "1.95.1",
     "@tamagui/font-dm-sans": "1.95.1",
     "@tamagui/font-dm-serif-display": "1.95.1",
@@ -45,8 +46,7 @@
     "@tamagui/font-silkscreen": "1.95.1",
     "@tamagui/react-native-media-driver": "1.95.1",
     "@tamagui/shorthands": "1.95.1",
-    "@tamagui/themes": "1.95.1",
-    "@tamagui/core": "1.95.1"
+    "@tamagui/themes": "1.95.1"
   },
   "devDependencies": {
     "@tamagui/build": "1.95.1"

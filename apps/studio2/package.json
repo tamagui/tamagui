@@ -18,7 +18,7 @@
     "@supabase/supabase-auth-helpers": "^1.4.2",
     "@supabase/supabase-js": "^2.38.2",
     "@tamagui/site-config": "1.95.1",
-    "@vxrn/router": "^0.1.44",
+    "@vxrn/router": "^0.1.45",
     "color2k": "^2.0.2",
     "postmark": "^3.0.18",
     "react": "^18.2.0",
@@ -44,6 +44,6 @@
     "sirv": "^2.0.4",
     "unified": "^10.1.2",
     "unist-util-visit": "^2.0.3",
-    "vxrn": "^0.1.44"
+    "vxrn": "^0.1.45"
   }
 }
