@@ -164,7 +164,7 @@ export const useRadioGroupItem = (params: UseRadioItemParams) => {
     isFormControl,
     bubbleInput: (
       <BubbleInput
-        isHidden={!native && !isWeb}
+        isHidden
         control={button}
         bubbles={!hasConsumerStoppedPropagationRef.current}
         name={name}
