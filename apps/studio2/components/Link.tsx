@@ -1,4 +1,4 @@
-import { Link as RouterLink } from '@vxrn/expo-router'
+import { Link as RouterLink } from '@vxrn/router'
 import type { GestureResponderEvent, ViewProps } from 'react-native'
 
 // TODO export from package
