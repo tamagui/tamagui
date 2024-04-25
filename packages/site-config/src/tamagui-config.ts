@@ -66,8 +66,6 @@ const maybeThemes =
     ? (themes as Themes)
     : ({} as Themes)
 
-console.log('heyo', maybeThemes)
-
 export const config = {
   defaultFont: 'body',
   shouldAddPrefersColorThemes: true,
