@@ -34,6 +34,9 @@ export default {
   // },
 
   webConfig: {
+    resolve: {
+      dedupe: ['react', 'react-dom'],
+    },
     // resolve: {
     //   alias: {
     //     'react-native': 'react-native-web-lite',

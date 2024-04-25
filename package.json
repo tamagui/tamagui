@@ -90,7 +90,9 @@
     "@types/node": "16.11.9",
     "react-native": "0.73.4",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "vxrn": "portal:/Users/n8/vxrn/packages/vxrn",
+    "@vxrn/router": "portal:/Users/n8/vxrn/packages/router"
   },
   "importSort": {
     ".js, .jsx, .ts, .tsx": {
