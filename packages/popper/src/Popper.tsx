@@ -3,7 +3,6 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isAndroid, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import type { ScopedProps, SizeTokens, StackProps } from '@tamagui/core'
-import { debounce } from '@tamagui/use-debounce'
 import {
   Stack,
   View as TamaguiView,
