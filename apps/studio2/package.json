@@ -17,6 +17,7 @@
     "@supabase/auth-helpers-shared": "^0.5.0",
     "@supabase/supabase-auth-helpers": "^1.4.2",
     "@supabase/supabase-js": "^2.38.2",
+    "@tamagui/site-config": "1.95.1",
     "@vxrn/router": "^0.1.44",
     "color2k": "^2.0.2",
     "postmark": "^3.0.18",

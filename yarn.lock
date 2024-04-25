@@ -26746,6 +26746,7 @@ __metadata:
     "@supabase/supabase-auth-helpers": "npm:^1.4.2"
     "@supabase/supabase-js": "npm:^2.38.2"
     "@tamagui/cli": "npm:1.95.1"
+    "@tamagui/site-config": "npm:1.95.1"
     "@vxrn/router": "npm:^0.1.44"
     color2k: "npm:^2.0.2"
     gray-matter: "npm:^4.0.2"

@@ -10,6 +10,15 @@ import type { VXRNConfig } from 'vxrn'
 //   require.resolve('@tamagui/demos').replace('/dist/cjs/index.js', ''),
 // ]
 
+const optimizeInterop = [
+  //
+]
+
+const optimizeDeps = {
+  include: [...optimizeInterop, '@tamagui/site-config'],
+  needsInterop: optimizeInterop,
+}
+
 export default {
   // flow: {
   //   include: ['react-native-web'],
@@ -19,6 +28,18 @@ export default {
     resolve: {
       dedupe: ['react', 'react-dom', '@tamagui/core', '@tamagui/web', 'tamagui'],
     },
+    // resolve: {
+    //   alias: {
+    //     'react-native': 'react-native-web-lite',
+    //     'react-native-web': 'react-native-web-lite',
+    //   },
+    // },
+    // optimizeDeps,
+
+    // ssr: {
+    //   // noExternal: ssrDepsToOptimize,
+    //   optimizeDeps,
+    // },
 
     plugins: [
       // inpsectPlugin(),
