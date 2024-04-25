@@ -35,7 +35,7 @@ export default {
 
   webConfig: {
     resolve: {
-      dedupe: ['react', 'react-dom'],
+      dedupe: ['react', 'react-dom', '@tamagui/core', '@tamagui/web', 'tamagui'],
     },
     // resolve: {
     //   alias: {
