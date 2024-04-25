@@ -5,7 +5,7 @@
   "type": "module",
   "main": "index.jsx",
   "scripts": {
-    "dev": "vxrn dev",
+    "dev": "NODE_OPTIONS=--experimental-require-module vxrn dev",
     "build:prod": "vxrn build",
     "serve": "vxrn serve",
     "postinstall": "patch-package"
@@ -17,9 +17,11 @@
     "@supabase/auth-helpers-shared": "^0.5.0",
     "@supabase/supabase-auth-helpers": "^1.4.2",
     "@supabase/supabase-js": "^2.38.2",
+    "@tamagui/mdx": "1.95.1",
     "@tamagui/site-config": "1.95.1",
     "@vxrn/router": "^0.1.45",
     "color2k": "^2.0.2",
+    "multithreading": "0.2.1",
     "postmark": "^3.0.18",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -32,6 +34,8 @@
   },
   "devDependencies": {
     "@tamagui/cli": "1.95.1",
+    "esbuild-register": "^3.5.0",
+    "execa": "^5.0.0",
     "gray-matter": "^4.0.2",
     "h3": "^1.11.1",
     "hast-util-to-html": "^8.0.3",

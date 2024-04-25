@@ -1,5 +1,5 @@
 import { createFileSystemRouter, clientTreeShakePlugin } from '@vxrn/router/vite'
-import { tamaguiPlugin, tamaguiExtractPlugin } from '@tamagui/vite-plugin'
+// import { tamaguiPlugin, tamaguiExtractPlugin } from '@tamagui/vite-plugin'
 // import entryShakingPlugin from 'vite-plugin-entry-shaking'
 import tsconfigPaths from 'vite-tsconfig-paths'
 import type { VXRNConfig } from 'vxrn'
@@ -18,6 +18,15 @@ const optimizeDeps = {
     // '@tamagui/site-config',
     '@tamagui/animations-moti',
     '@tamagui/animations-react-native',
+    'rehype-parse',
+    'is-buffer',
+    'extend',
+    'minimatch',
+    'gray-matter',
+    'mdx-bundler',
+    'execa',
+    'jiti',
+    '@tamagui/mdx',
   ],
   needsInterop: optimizeInterop,
 }
@@ -50,7 +59,7 @@ export default {
       clientTreeShakePlugin(),
       createFileSystemRouter({
         // disableSSR: true,
-        root: __dirname,
+        root: import.meta.dirname,
         routesDir: 'app',
       }),
       // entryShakingPlugin({

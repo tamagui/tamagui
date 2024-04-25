@@ -2,7 +2,6 @@
   "name": "@tamagui/studio",
   "version": "1.95.1",
   "private": true,
-  "type": "module",
   "module": "dist",
   "types": "./src/index.ts",
   "exports": {
