@@ -28,18 +28,12 @@ export default {
     resolve: {
       dedupe: ['react', 'react-dom', '@tamagui/core', '@tamagui/web', 'tamagui'],
     },
-    // resolve: {
-    //   alias: {
-    //     'react-native': 'react-native-web-lite',
-    //     'react-native-web': 'react-native-web-lite',
-    //   },
-    // },
-    // optimizeDeps,
 
-    // ssr: {
-    //   // noExternal: ssrDepsToOptimize,
-    //   optimizeDeps,
-    // },
+    optimizeDeps,
+
+    ssr: {
+      optimizeDeps,
+    },
 
     plugins: [
       // inpsectPlugin(),

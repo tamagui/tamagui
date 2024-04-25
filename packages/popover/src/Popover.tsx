@@ -240,6 +240,8 @@ export const PopoverContent = PopperContentFrame.extractable(
       if (content) return hideOthers(content)
     }, [context.open])
 
+    console.log('go?')
+
     if (!context.keepChildrenMounted) {
       if (isFullyHidden) {
         return null
