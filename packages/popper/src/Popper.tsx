@@ -313,12 +313,12 @@ export const PopperContent = React.forwardRef<
     }
   }, [isMounted])
 
+  // android fix position before show:
   let show = true
-  let setShow = undefined as any
 
   if (isAndroid) {
-    ;[show, setShow] = React.useState(false)
-
+    const [show_, setShow] = React.useState(false)
+    show = show_
     React.useEffect(() => {
       if (finalHasFloatingValue) {
         setShow(true)
