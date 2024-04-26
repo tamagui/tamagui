@@ -6,38 +6,35 @@ import { bundleMDX } from 'mdx-bundler'
 import readingTime from 'reading-time'
 
 import type { Frontmatter } from './types'
+import { rehypeHighlightCode } from './rehypeHighlightCode'
+import rehypeMetaAttribute from './rehypeMetaAttribute'
+import rehypeHeroTemplate from './rehypeHeroTemplate'
+import rehypeAutolinkHeadings from 'rehype-autolink-headings'
+import rehypeSlug from 'rehype-slug'
 
-const ROOT_PATH = process.cwd()
-const DATA_PATH = path.join(ROOT_PATH, 'data')
-
-export const getMDXBySlug = async (basePath, slug) => {
-  // const rehypeAutolinkHeadings = await import('rehype-autolink-headings')
-  // const rehypeSlug = await import('rehype-slug')
-
+export const getMDXBySlug = async (basePath: string, slug: string) => {
   let mdxPath = slug
   if (!mdxPath.includes('/') && basePath.includes('components')) {
     const versions = getAllVersionsFromPath(`docs/components/${slug}`)
     mdxPath += `/${versions[0]}`
   }
-  const filePath = path.join(DATA_PATH, basePath, `${mdxPath}.mdx`)
+  const filePath = path.join(basePath, `${mdxPath}.mdx`)
   const source = fs.readFileSync(filePath, 'utf8')
 
-  console.log('run', source)
   const { frontmatter, code } = await bundleMDX({
     source,
-    // mdxOptions(options) {
-    //   options.rehypePlugins = [
-    //     ...(options.rehypePlugins ?? []),
-    //     // rehypeMetaAttribute,
-    //     // rehypeHeroTemplate,
-    //     // rehypeHighlightCode,
-    //     // rehypeAutolinkHeadings,
-    //     // rehypeSlug,
-    //   ]
-    //   return options
-    // },
+    mdxOptions(options) {
+      options.rehypePlugins = [
+        ...(options.rehypePlugins ?? []),
+        rehypeMetaAttribute,
+        rehypeHeroTemplate,
+        rehypeHighlightCode,
+        rehypeAutolinkHeadings,
+        rehypeSlug,
+      ]
+      return options
+    },
   })
-  console.log('run2')
 
   return {
     frontmatter: {
@@ -50,10 +47,9 @@ export const getMDXBySlug = async (basePath, slug) => {
 }
 
 export function getAllVersionsFromPath(fromPath: string) {
-  const PATH = path.join(DATA_PATH, fromPath)
-  if (!fs.existsSync(PATH)) return []
+  if (!fs.existsSync(fromPath)) return []
   return fs
-    .readdirSync(PATH)
+    .readdirSync(fromPath)
     .map((fileName) => fileName.replace('.mdx', ''))
     .sort(compareVersions)
     .reverse()

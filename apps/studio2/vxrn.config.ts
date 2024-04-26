@@ -27,6 +27,7 @@ const optimizeDeps = {
     'execa',
     'jiti',
     'hsluv',
+    'refractor',
     'glob',
     'reading-time',
   ],
@@ -34,9 +35,6 @@ const optimizeDeps = {
 }
 
 export default async () => {
-  const found = await import('@tamagui/mdx')
-  const rehypeHighlightCode = found.rehypeHighlightCode
-
   return {
     // flow: {
     //   include: ['react-native-web'],

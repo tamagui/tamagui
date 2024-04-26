@@ -10,7 +10,7 @@ import visit from 'unist-util-visit'
 import { rehypeHighlightLine } from './rehypeLine'
 import { rehypeHighlightWord } from './rehypeWord'
 
-refractor.register(tsx['default'])
+refractor.register(tsx)
 
 export const rehypeHighlightCode = (options = {}) => {
   return (tree) => {

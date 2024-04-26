@@ -1,10 +1,12 @@
+import { createRequire } from 'node:module'
 import fs from 'fs'
 import path from 'path'
 
 import visit from 'unist-util-visit'
 
-// eval here because webpack compiles this poorly
-const demosPath = path.resolve(eval(`require.resolve('@tamagui/demos')`))
+// @ts-ignore
+const require = createRequire(import.meta.url)
+const demosPath = require.resolve('@tamagui/demos')
 const demosRoot = path.join(demosPath, '..', '..', '..')
 
 export default (options = {}) => {
