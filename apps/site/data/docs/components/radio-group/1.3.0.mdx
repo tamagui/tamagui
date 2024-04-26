@@ -10,7 +10,7 @@ demoName: RadioGroup
 # RadioGroup
 
 <Description>
-In a form, allow selecting one option from multiple
+Choose one option from a list in a form.
 </Description>
 
 
@@ -18,6 +18,9 @@ In a form, allow selecting one option from multiple
 <Tabs.List>
   <TooltipSimple label="With Tamagui's default styles">
     <Tabs.Tab value="styled">Styled</Tabs.Tab>
+  </TooltipSimple>
+  <TooltipSimple label="No default styles, easy to customize">
+    <Tabs.Tab value="unstyled">Unstyled</Tabs.Tab>
   </TooltipSimple>
   <TooltipSimple label="No dependency on Tamagui's core">
     <Tabs.Tab value="headless" label="No styles and no dependency on Tamagui's styling">Headless</Tabs.Tab>
@@ -41,6 +44,14 @@ In a form, allow selecting one option from multiple
   >
     <RadioGroupHeadlessDemo />
   </Tabs.Content>
+  <Tabs.Content
+    value="unstyled"
+    justifyContent="center"
+    alignItems="center"
+    width="100%"
+  >
+    <RadioGroupUnstyledDemo />
+  </Tabs.Content>
 </HeroContainer>
 
 <Tabs.Content value="styled">
@@ -50,6 +61,11 @@ In a form, allow selecting one option from multiple
 </Tabs.Content>
 <Tabs.Content value="headless">
   ```tsx hero template=RadioGroupHeadless
+
+````
+</Tabs.Content>
+<Tabs.Content value="headless">
+  ```tsx hero template=RadioGroupUnstyled
 
 ````
 </Tabs.Content>
@@ -65,6 +81,15 @@ features={[
 ## Installation
 
 <Tabs.Content value="styled">
+RadioGroup is already installed in `tamagui`, or you can install it independently:
+
+```bash
+npm install @tamagui/radio-group
+````
+
+</Tabs.Content>
+
+<Tabs.Content value="unstyled">
 RadioGroup is already installed in `tamagui`, or you can install it independently:
 
 ```bash
@@ -107,6 +132,20 @@ export default () => (
 
 </Tabs.Content>
 
+<Tabs.Content value="unstyled">
+
+Use the `createRadioGroup` export to create a fully custom RadioGroup that still
+uses the Tamagui styling system. This is similar to setting `unstyled`, but goes
+a bit further. It doesn't add any types for `size` or `unstyled`, and it won't
+automatically apply the `active` theme. If does pass the `checked` prop down as
+indicated in the types of `createRadioGroup`.
+
+```tsx template=RadioGroupUnstyled
+
+```
+
+</Tabs.Content>
+
 <Tabs.Content value="headless">
 
 Using the `useRadioGroup` and `useRadioGroupItem` API, you can make your own RadioGroup from scratch.
@@ -116,8 +155,6 @@ Using the `useRadioGroup` and `useRadioGroupItem` API, you can make your own Rad
 ```
 
 </Tabs.Content>
-
-<Tabs.Content value="styled">
 
 ## API Reference
 
@@ -218,7 +255,5 @@ RadioGroup.Indicator appears only when the parent Item is checked. it extends [T
     },
   ]}
 />
-
-</Tabs.Content>
 
 </Tabs>
