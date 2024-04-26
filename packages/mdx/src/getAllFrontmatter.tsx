@@ -7,13 +7,9 @@ import readingTime from 'reading-time'
 
 import type { Frontmatter } from './types'
 
-const ROOT_PATH = process.cwd()
-const DATA_PATH = path.join(ROOT_PATH, 'data')
-
 // the front matter and content of all mdx files based on `docsPaths`
 export const getAllFrontmatter = (fromPath: string) => {
-  const PATH = path.join(DATA_PATH, fromPath)
-  const paths = glob.sync(`${PATH}/**/*.mdx`)
+  const paths = glob.sync(`${fromPath}/**/*.mdx`)
   return paths
     .map((filePath) => {
       const source = fs.readFileSync(path.join(filePath), 'utf8')
@@ -21,7 +17,7 @@ export const getAllFrontmatter = (fromPath: string) => {
       return {
         ...data,
         slug: filePath
-          .replace(`${DATA_PATH.replaceAll('\\', '/')}/`, '')
+          .replace(`${fromPath.replaceAll('\\', '/')}/`, '')
           .replace('.mdx', ''),
         readingTime: readingTime(content),
       } as Frontmatter
