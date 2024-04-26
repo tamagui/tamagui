@@ -8,7 +8,7 @@ import readingTime from 'reading-time'
 import type { Frontmatter } from './types'
 
 // the front matter and content of all mdx files based on `docsPaths`
-export const getAllFrontmatter = (fromPath: string) => {
+export const getAllFrontmatter = (fromPath: string): Frontmatter[] => {
   const paths = glob.sync(`${fromPath}/**/*.mdx`)
   return paths
     .map((filePath) => {

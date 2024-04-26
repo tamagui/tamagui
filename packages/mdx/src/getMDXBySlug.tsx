@@ -12,7 +12,10 @@ import rehypeHeroTemplate from './rehypeHeroTemplate'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import rehypeSlug from 'rehype-slug'
 
-export const getMDXBySlug = async (basePath: string, slug: string) => {
+export const getMDXBySlug = async (
+  basePath: string,
+  slug: string
+): Promise<{ frontmatter: Frontmatter; code: string }> => {
   let mdxPath = slug
   if (!mdxPath.includes('/') && basePath.includes('components')) {
     const versions = getAllVersionsFromPath(`docs/components/${slug}`)
@@ -46,7 +49,7 @@ export const getMDXBySlug = async (basePath: string, slug: string) => {
   }
 }
 
-export function getAllVersionsFromPath(fromPath: string) {
+export function getAllVersionsFromPath(fromPath: string): string[] {
   if (!fs.existsSync(fromPath)) return []
   return fs
     .readdirSync(fromPath)
