@@ -28,6 +28,7 @@ const optimizeDeps = {
     'execa',
     'jiti',
     '@tamagui/mdx',
+    'hsluv',
   ],
   needsInterop: optimizeInterop,
 }
