@@ -56,7 +56,11 @@ export default {
     },
 
     plugins: [
-      mdx({}),
+      mdx({
+        rehypePlugins: [
+          // todo
+        ],
+      }),
       // inpsectPlugin(),
       clientTreeShakePlugin(),
       createFileSystemRouter({

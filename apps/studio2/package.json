@@ -5,7 +5,7 @@
   "type": "module",
   "main": "index.jsx",
   "scripts": {
-    "dev": "NODE_OPTIONS=--experimental-require-module vxrn dev",
+    "dev": "NODE_OPTIONS=\"--experimental-require-module --trace-warnings\" vxrn dev",
     "build:prod": "vxrn build",
     "serve": "vxrn serve",
     "postinstall": "patch-package"
