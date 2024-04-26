@@ -4,7 +4,7 @@ import {
   RadioGroupItemContextValue,
 } from '@tamagui/radio-headless'
 import type { GetProps, NativeValue, SizeTokens, StackProps } from '@tamagui/core'
-import { withStaticProperties } from '@tamagui/core'
+import { isWeb, withStaticProperties } from '@tamagui/core'
 
 import {
   RadioGroupFrame,
@@ -37,7 +37,7 @@ import {
   useRadioGroupItemIndicator,
 } from '@tamagui/radio-headless'
 import { RovingFocusGroup } from '@tamagui/roving-focus'
-import { createContext } from 'react'
+import { createContext, useContext } from 'react'
 const RadioGroupContext = createContext<RadioGroupContextValue>({})
 const RadioGroupItemContext = createContext<RadioGroupItemContextValue>({
   checked: false,
@@ -105,8 +105,8 @@ export function createRadioGroup<
       value,
       defaultValue,
       onValueChange,
-      required,
-      disabled,
+      required = false,
+      disabled = false,
       name,
       native,
       accentColor,
@@ -122,6 +122,8 @@ export function createRadioGroup<
       onValueChange,
       required,
       disabled,
+      native,
+      accentColor,
     })
 
     return (
@@ -134,7 +136,18 @@ export function createRadioGroup<
   })
 
   const RadioGroupItemImp = Item.styleable<RadioGroupItemProps>((props, ref) => {
-    const { value, ...rest } = props
+    const {
+      value,
+      labelledBy,
+      onPress,
+      //@ts-expect-error
+      onKeyDown,
+      disabled,
+      id,
+      ...rest
+    } = props
+
+    const { native } = useContext(RadioGroupContext)
 
     const {
       providerValue,
@@ -145,15 +158,25 @@ export function createRadioGroup<
     } = useRadioGroupItem({
       radioGroupContext: RadioGroupContext,
       value,
-      id: value,
+      id,
+      labelledBy,
+      disabled,
+      onPress: onPress!,
+      onKeyDown,
     })
 
     return (
       <RadioGroupItemContext.Provider value={providerValue}>
-        {isFormControl && bubbleInput}
-        <RovingFocusGroup.Item {...rovingFocusGroupAttrs}>
-          <RadioGroupItemFrame {...frameAttrs} ref={ref} {...rest} />
-        </RovingFocusGroup.Item>
+        {isWeb && native ? (
+          bubbleInput
+        ) : (
+          <>
+            <RovingFocusGroup.Item {...rovingFocusGroupAttrs}>
+              <RadioGroupItemFrame {...frameAttrs} ref={ref} {...rest} />
+            </RovingFocusGroup.Item>
+            {isFormControl && bubbleInput}
+          </>
+        )}
       </RadioGroupItemContext.Provider>
     )
   })

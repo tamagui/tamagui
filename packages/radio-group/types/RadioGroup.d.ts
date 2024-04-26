@@ -1,6 +1,5 @@
 export declare const RadioGroupItemFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     unstyled?: boolean | undefined;
-    pressTheme?: boolean | undefined;
     size?: import("@tamagui/core").SizeTokens | undefined;
     disabled?: boolean | undefined;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
@@ -14,6 +13,7 @@ export declare const RadioGroupItemFrame: import("@tamagui/core").TamaguiCompone
         right?: number | undefined;
     } | undefined;
     hoverTheme?: boolean | undefined;
+    pressTheme?: boolean | undefined;
     focusTheme?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
@@ -24,7 +24,6 @@ export declare const RadioGroupItemFrame: import("@tamagui/core").TamaguiCompone
 }, import("@tamagui/core").StaticConfigPublic>;
 export declare const RadioGroupIndicatorFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     unstyled?: boolean | undefined;
-    pressTheme?: boolean | undefined;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
@@ -36,6 +35,7 @@ export declare const RadioGroupIndicatorFrame: import("@tamagui/core").TamaguiCo
         right?: number | undefined;
     } | undefined;
     hoverTheme?: boolean | undefined;
+    pressTheme?: boolean | undefined;
     focusTheme?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
@@ -45,7 +45,6 @@ export declare const RadioGroupIndicatorFrame: import("@tamagui/core").TamaguiCo
     chromeless?: boolean | "all" | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
 export declare const RadioGroupFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-    pressTheme?: boolean | undefined;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
@@ -57,6 +56,7 @@ export declare const RadioGroupFrame: import("@tamagui/core").TamaguiComponent<i
         right?: number | undefined;
     } | undefined;
     hoverTheme?: boolean | undefined;
+    pressTheme?: boolean | undefined;
     focusTheme?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;

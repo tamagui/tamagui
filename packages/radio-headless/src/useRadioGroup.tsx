@@ -9,6 +9,7 @@ import type { ReactElement } from 'react'
 import { BubbleInput } from './BubbleInput'
 import { getState } from './utils'
 import { composeEventHandlers } from '@tamagui/helpers'
+import type { StackProps } from '@tamagui/web/types'
 
 interface UseRadioGroupParams {
   value?: string
@@ -70,9 +71,9 @@ interface UseRadioItemParams {
   labelledBy?: string
   disabled?: boolean
   ref?: any
-  onPress?: (event: any) => void
-  onKeyDown?: (event: any) => void
-  onFocus?: (event: any) => void
+  onPress?: StackProps['onPress']
+  onKeyDown?: React.HTMLProps<React.ReactElement>['onKeyDown']
+  onFocus?: StackProps['onFocus']
 }
 
 export type RadioGroupContextValue = {
@@ -164,7 +165,7 @@ export const useRadioGroupItem = (params: UseRadioItemParams) => {
     isFormControl,
     bubbleInput: (
       <BubbleInput
-        isHidden
+        isHidden={!native}
         control={button}
         bubbles={!hasConsumerStoppedPropagationRef.current}
         name={name}
@@ -172,8 +173,11 @@ export const useRadioGroupItem = (params: UseRadioItemParams) => {
         checked={checked}
         required={required}
         disabled={isDisabled}
-        accentColor={accentColor}
-        id={id}
+        {...(isWeb &&
+          native && {
+            accentColor,
+            id,
+          })}
       />
     ),
     frameAttrs: {
@@ -189,6 +193,7 @@ export const useRadioGroupItem = (params: UseRadioItemParams) => {
         type: 'button',
         value: value,
       }),
+      id,
       onPress: composeEventHandlers(onPress as any, (event: GestureResponderEvent) => {
         if (!checked) {
           onChange?.(value)
