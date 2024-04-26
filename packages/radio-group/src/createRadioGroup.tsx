@@ -1,9 +1,8 @@
-import type { CheckboxExtraProps as HeadlessCheckboxExtraProps } from '@tamagui/checkbox-headless'
-import {
+import type {
   RadioGroupContextValue,
   RadioGroupItemContextValue,
 } from '@tamagui/radio-headless'
-import type { GetProps, NativeValue, SizeTokens, StackProps } from '@tamagui/core'
+import type { GetProps } from '@tamagui/core'
 import { isWeb, withStaticProperties } from '@tamagui/core'
 
 import {
@@ -11,14 +10,6 @@ import {
   RadioGroupIndicatorFrame,
   RadioGroupItemFrame,
 } from './RadioGroup'
-
-type RadioGroupExtraProps = HeadlessCheckboxExtraProps & {
-  scaleIcon?: number
-  scaleSize?: number
-  sizeAdjust?: number
-  native?: NativeValue<'web'>
-}
-type RadioGroupBaseProps = StackProps
 
 const ensureContext = (x: any) => {
   if (!x.context) {
@@ -37,21 +28,21 @@ import {
   useRadioGroupItemIndicator,
 } from '@tamagui/radio-headless'
 import { RovingFocusGroup } from '@tamagui/roving-focus'
-import { createContext, useContext } from 'react'
+import { createContext } from 'react'
 const RadioGroupContext = createContext<RadioGroupContextValue>({})
 const RadioGroupItemContext = createContext<RadioGroupItemContextValue>({
   checked: false,
   disabled: false,
 })
 
-type RadioGroupItemProps = GetProps<typeof RadioGroupItemFrame> & {
+export type RadioGroupItemProps = GetProps<typeof RadioGroupItemFrame> & {
   value: string
   id?: string
   labelledBy?: string
   disabled?: boolean
 }
 
-type RadioGroupProps = GetProps<typeof RadioGroupFrame> & {
+export type RadioGroupProps = GetProps<typeof RadioGroupFrame> & {
   value?: string
   defaultValue?: string
   onValueChange?: (value: string) => void
