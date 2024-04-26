@@ -147,14 +147,13 @@ export function createRadioGroup<
       ...rest
     } = props
 
-    const { native } = useContext(RadioGroupContext)
-
     const {
       providerValue,
       bubbleInput,
       rovingFocusGroupAttrs,
       frameAttrs,
       isFormControl,
+      native,
     } = useRadioGroupItem({
       radioGroupContext: RadioGroupContext,
       value,

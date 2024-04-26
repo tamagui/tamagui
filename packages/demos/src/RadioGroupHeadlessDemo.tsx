@@ -78,9 +78,7 @@ function RadioGroupItem(props: {
               <RadioGroupItemIndicator />
             </Pressable>
           </RovingFocusGroup.Item>
-          <Text style={{ color: theme.color.get() }} id={id}>
-            {label}
-          </Text>
+          <Text style={{ color: theme.color.get() }}>{label}</Text>
           {isFormControl && bubbleInput}
         </View>
       )}
