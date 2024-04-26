@@ -24,11 +24,11 @@ const optimizeDeps = {
     'extend',
     'minimatch',
     'gray-matter',
-    'mdx-bundler',
     'execa',
     'jiti',
-    '@tamagui/mdx',
     'hsluv',
+    'glob',
+    'reading-time',
   ],
   needsInterop: optimizeInterop,
 }

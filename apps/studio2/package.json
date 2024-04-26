@@ -1,10 +1,11 @@
 {
   "name": "studio2",
   "version": "0.0.7",
+  "type": "module",
   "private": true,
   "main": "index.jsx",
   "scripts": {
-    "dev": "VXRN_CJS=1 NODE_OPTIONS=\"--experimental-require-module --trace-warnings\" vxrn dev",
+    "dev": "NODE_OPTIONS=\"--experimental-require-module --trace-warnings\" vxrn dev",
     "build:prod": "vxrn build",
     "serve": "vxrn serve",
     "postinstall": "patch-package"
