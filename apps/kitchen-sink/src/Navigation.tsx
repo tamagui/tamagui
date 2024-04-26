@@ -11,7 +11,10 @@ import { SectionScreen } from './features/bento/section-screen'
 import { BentoPartScreenItem } from './features/bento/part-screen-items'
 import React from 'react'
 import { ScrollView, View } from 'tamagui'
+import { KeyboardAvoidingView, LogBox } from 'react-native'
+import { Key } from '@tamagui/lucide-icons/types'
 
+LogBox.ignoreLogs(['Warning'])
 const bentoScreenNames = sections.listingData.sections.map(
   ({ sectionName }) => sectionName
 )
@@ -50,15 +53,11 @@ const BentoScreenContainer: React.FC<{ children: React.ReactNode; name: string }
     )
   }
   return (
-    <ScrollView
-      flex={1}
-      minWidth="100%"
-      p="$2"
-      bg="$background"
-      keyboardShouldPersistTaps="always"
-    >
-      {children}
-    </ScrollView>
+    <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={100}>
+      <ScrollView minWidth="100%" p="$2" bg="$red10" keyboardShouldPersistTaps="always">
+        {children}
+      </ScrollView>
+    </KeyboardAvoidingView>
   )
 }
 const filterCamelCaseOnly = ([key, _]: [string, unknown]) =>
@@ -96,13 +95,21 @@ const bentoScreensPerElement = Object.entries(sections)
       <Stack.Screen
         name={name}
         options={{
-          title: name,
+          headerShown: false,
         }}
       >
         {() => (
-          <BentoScreenContainer name={name}>
-            <Component />
-          </BentoScreenContainer>
+          <KeyboardAvoidingView behavior="padding" flex={1}>
+            <View
+              backgroundColor={'$color1'}
+              flex={1}
+              justifyContent="center"
+              alignItems="center"
+              paddingHorizontal="$2"
+            >
+              <Component />
+            </View>
+          </KeyboardAvoidingView>
         )}
       </Stack.Screen>
     )
