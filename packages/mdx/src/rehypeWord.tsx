@@ -5,7 +5,7 @@ import { unified } from 'unified'
 
 const CALLOUT = /__(.*?)__/g
 
-export default (code) => {
+export const rehypeHighlightWord = (code) => {
   const html = toHtml(code)
   const result = html.replace(
     CALLOUT,

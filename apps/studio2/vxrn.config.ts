@@ -34,7 +34,8 @@ const optimizeDeps = {
 }
 
 export default async () => {
-  const { rehypeHighlightCode } = await import('@tamagui/mdx')
+  const found = await import('@tamagui/mdx')
+  const rehypeHighlightCode = found.rehypeHighlightCode
 
   return {
     // flow: {

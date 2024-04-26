@@ -103,7 +103,9 @@ const applyMultilineFix = (ast) => {
   )
 
   // HTML to AST
-  const hast = unified().use(parse, { emitParseErrors: true, fragment: true }).parse(html)
+  const hast = unified()
+    .use(parse['default'] || parse, { emitParseErrors: true, fragment: true })
+    .parse(html)
 
   return hast['children']
 }

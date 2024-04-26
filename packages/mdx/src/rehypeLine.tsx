@@ -1,8 +1,10 @@
 // Inspired by https://github.com/j0lv3r4/mdx-prism
 
 import { toHtml } from 'hast-util-to-html'
-import parse from 'rehype-parse'
+import Parse from 'rehype-parse'
 import { unified } from 'unified'
+
+const parse = Parse['default']
 
 const lineNumberify = function lineNumberify(ast, lineNum = 1) {
   let lineNumber = lineNum
@@ -106,7 +108,7 @@ const applyMultilineFix = (ast) => {
   return hast['children']
 }
 
-export default function (ast, lines) {
+export function rehypeHighlightLine(ast, lines) {
   const formattedAst = applyMultilineFix(ast)
   const numbered = lineNumberify(formattedAst).nodes
   return wrapLines(numbered, lines)

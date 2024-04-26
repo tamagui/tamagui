@@ -7,12 +7,12 @@ import { refractor } from 'refractor'
 import tsx from 'refractor/lang/tsx'
 import visit from 'unist-util-visit'
 
-import highlightLine from './rehypeLine'
-import highlightWord from './rehypeWord'
+import { rehypeHighlightLine } from './rehypeLine'
+import { rehypeHighlightWord } from './rehypeWord'
 
-refractor.register(tsx)
+refractor.register(tsx['default'])
 
-export default (options = {}) => {
+export const rehypeHighlightCode = (options = {}) => {
   return (tree) => {
     visit(tree, 'element', visitor)
   }
@@ -32,9 +32,9 @@ export default (options = {}) => {
     let result = refractor.highlight(codeString, lang)
 
     const linesToHighlight = rangeParser(node.properties.line || '0')
-    // @ts-ignore
-    result = highlightLine(result, linesToHighlight)
 
-    node.children = highlightWord(result)
+    result = rehypeHighlightLine(result, linesToHighlight)
+
+    node.children = rehypeHighlightWord(result)
   }
 }

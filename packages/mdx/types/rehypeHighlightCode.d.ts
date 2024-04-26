@@ -1,3 +1,2 @@
-declare const _default: (options?: {}) => (tree: any) => void;
-export default _default;
+export declare const rehypeHighlightCode: (options?: {}) => (tree: any) => void;
 //# sourceMappingURL=rehypeHighlightCode.d.ts.map

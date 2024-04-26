@@ -1,3 +1,2 @@
-declare const _default: (code: any) => any;
-export default _default;
+export declare const rehypeHighlightWord: (code: any) => any;
 //# sourceMappingURL=rehypeWord.d.ts.map

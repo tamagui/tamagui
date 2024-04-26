@@ -1,3 +1,4 @@
-export { default as rehypeHighlightCode } from './rehypeHighlightCode';
+export { rehypeHighlightCode } from './rehypeHighlightCode';
 export { getAllFrontmatter } from './getAllFrontmatter';
+export { getMDXBySlug } from './getMDXBySlug';
 //# sourceMappingURL=index.d.ts.map
