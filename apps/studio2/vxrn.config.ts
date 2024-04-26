@@ -32,54 +32,57 @@ const optimizeDeps = {
   needsInterop: optimizeInterop,
 }
 
-export default {
-  // flow: {
-  //   include: ['react-native-web'],
-  // },
+export default async () => {
+  const { rehypeHighlightCode } = await import('@tamagui/mdx')
 
-  webConfig: {
-    resolve: {
-      dedupe: [
-        'react',
-        'react-dom',
-        '@tamagui/core',
-        '@tamagui/web',
-        'tamagui',
-        '@tamagui/site-config',
+  return {
+    // flow: {
+    //   include: ['react-native-web'],
+    // },
+
+    webConfig: {
+      resolve: {
+        dedupe: [
+          'react',
+          'react-dom',
+          '@tamagui/core',
+          '@tamagui/web',
+          'tamagui',
+          '@tamagui/site-config',
+        ],
+      },
+
+      optimizeDeps,
+
+      ssr: {
+        optimizeDeps,
+      },
+
+      plugins: [
+        mdx({
+          rehypePlugins: [
+            // todo
+            rehypeHighlightCode,
+          ],
+        }),
+        // inpsectPlugin(),
+        clientTreeShakePlugin(),
+        createFileSystemRouter({
+          root: 'app',
+        }),
+        // entryShakingPlugin({
+        //   targets,
+        // }),
+        tsconfigPaths(),
+        // TODO type is mad
+        // tamaguiPlugin({
+        //   components: ['tamagui'],
+        //   config: 'src/tamagui.config.ts',
+        // }) as any,
+        // tamaguiExtractPlugin({
+        //   logTimings: true,
+        // }),
       ],
     },
-
-    optimizeDeps,
-
-    ssr: {
-      optimizeDeps,
-    },
-
-    plugins: [
-      mdx({
-        rehypePlugins: [
-          // todo
-        ],
-      }),
-      // inpsectPlugin(),
-      clientTreeShakePlugin(),
-      createFileSystemRouter({
-        // disableSSR: true,
-        root: import.meta.dirname,
-        routesDir: 'app',
-      }),
-      // entryShakingPlugin({
-      //   targets,
-      // }),
-      tsconfigPaths(),
-      // TODO type is mad
-      // tamaguiPlugin({
-      //   components: ['tamagui'],
-      //   config: 'src/tamagui.config.ts',
-      // }) as any,
-      // tamaguiExtractPlugin({
-      //   logTimings: true,
-      // }),
-    ],
-  },
-} satisfies VXRNConfig
+  } satisfies VXRNConfig
+}

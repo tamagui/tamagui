@@ -11489,6 +11489,12 @@ __metadata:
   languageName: node
   linkType: hard
 
+"bento@workspace:apps/test":
+  version: 0.0.0-use.local
+  resolution: "bento@workspace:apps/test"
+  languageName: unknown
+  linkType: soft
+
 "better-opn@npm:~3.0.2":
   version: 3.0.2
   resolution: "better-opn@npm:3.0.2"

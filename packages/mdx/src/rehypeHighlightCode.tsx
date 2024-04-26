@@ -7,7 +7,7 @@ import { refractor } from 'refractor'
 import tsx from 'refractor/lang/tsx'
 import visit from 'unist-util-visit'
 
-import highlightLine from './rehypeHighlightCode'
+import highlightLine from './rehypeLine'
 import highlightWord from './rehypeWord'
 
 refractor.register(tsx)

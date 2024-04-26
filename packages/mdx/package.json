@@ -2,7 +2,9 @@
   "name": "@tamagui/mdx",
   "version": "1.95.1",
   "types": "./types/index.d.ts",
-  "main": "dist",
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "type": "module",
   "files": [
     "src",
     "types",
@@ -18,7 +20,11 @@
   },
   "exports": {
     "./package.json": "./package.json",
-    ".": "./dist/index.js"
+    ".": {
+      "types": "./types/index.d.ts",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.js"
+    }
   },
   "dependencies": {
     "gray-matter": "^4.0.2",
