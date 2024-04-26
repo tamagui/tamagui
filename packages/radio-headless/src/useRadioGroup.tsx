@@ -3,7 +3,11 @@ import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
 import { registerFocusable } from '@tamagui/focusable'
 import { useLabelContext } from '@tamagui/label'
-import type { GestureResponderEvent } from 'react-native'
+import type {
+  GestureResponderEvent,
+  NativeSyntheticEvent,
+  TargetedEvent,
+} from 'react-native'
 import { useContext, useEffect, useRef, useState } from 'react'
 import type { ReactElement } from 'react'
 import { BubbleInput } from './BubbleInput'
@@ -162,6 +166,7 @@ export const useRadioGroupItem = (params: UseRadioItemParams) => {
     providerValue: {
       checked,
     },
+    checked,
     isFormControl,
     bubbleInput: (
       <BubbleInput
@@ -180,6 +185,7 @@ export const useRadioGroupItem = (params: UseRadioItemParams) => {
           })}
       />
     ),
+    native,
     frameAttrs: {
       'data-state': getState(checked),
       'data-disabled': isDisabled ? '' : undefined,
@@ -211,7 +217,7 @@ export const useRadioGroupItem = (params: UseRadioItemParams) => {
         onKeyDown: composeEventHandlers(onKeyDown as any, (event: KeyboardEvent) => {
           // According to WAI ARIA, Checkboxes don't activate on enter keypress
           if (event.key === 'Enter') event.preventDefault()
-        }),
+        }) as (event: KeyboardEvent) => void,
         onFocus: composeEventHandlers(onFocus, () => {
           /**
            * Our `RovingFocusGroup` will focus the radio when navigating with arrow keys

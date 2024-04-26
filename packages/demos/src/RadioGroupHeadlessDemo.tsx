@@ -9,8 +9,8 @@ import {
 } from '@tamagui/radio-headless'
 import { RovingFocusGroup } from '@tamagui/roving-focus'
 import { createContext } from 'react'
-import { StyleSheet, View, Pressable } from 'react-native'
-import { useTheme } from 'tamagui'
+import { StyleSheet, View, Pressable, Text } from 'react-native'
+import { isWeb, useTheme } from 'tamagui'
 const RadioGroupContext = createContext<RadioGroupContextValue>({})
 const RadioGroupItemContext = createContext<RadioGroupItemContextValue>({
   checked: false,
@@ -19,7 +19,7 @@ const RadioGroupItemContext = createContext<RadioGroupItemContextValue>({
 
 export function RadioGroupHeadlessDemo() {
   const { providerValue, frameAttrs, rovingFocusGroupAttrs } = useRadioGroup({
-    orientation: 'horizontal',
+    orientation: 'vertical',
     name: 'form',
     defaultValue: '3',
   })
@@ -27,9 +27,9 @@ export function RadioGroupHeadlessDemo() {
     <RadioGroupContext.Provider value={providerValue}>
       <RovingFocusGroup {...rovingFocusGroupAttrs}>
         <View style={styles.radioGroup} {...frameAttrs}>
-          <RadioGroupItem value="2" id="2" />
-          <RadioGroupItem value="3" id="3" />
-          <RadioGroupItem value="4" id="4" />
+          <RadioGroupItem value="2" id="2" label="First Value" />
+          <RadioGroupItem value="3" id="3" label="Second Value" />
+          <RadioGroupItem value="4" id="4" label="Third Value" />
         </View>
       </RovingFocusGroup>
     </RadioGroupContext.Provider>
@@ -39,30 +39,51 @@ export function RadioGroupHeadlessDemo() {
 function RadioGroupItem(props: {
   value: string
   id: string
+  label: string
 }) {
   const theme = useTheme()
-  const { value, id } = props
-  const { providerValue, bubbleInput, rovingFocusGroupAttrs, frameAttrs, isFormControl } =
-    useRadioGroupItem({
-      radioGroupContext: RadioGroupContext,
-      value,
-      id,
-    })
+  const { value, id, label } = props
+  const {
+    providerValue,
+    native,
+    bubbleInput,
+    rovingFocusGroupAttrs,
+    frameAttrs,
+    isFormControl,
+    checked,
+  } = useRadioGroupItem({
+    radioGroupContext: RadioGroupContext,
+    value,
+    id,
+  })
 
   return (
     <RadioGroupItemContext.Provider value={providerValue}>
-      {isFormControl && bubbleInput}
-      <RovingFocusGroup.Item {...rovingFocusGroupAttrs}>
-        <Pressable
-          style={{
-            ...styles.radioGroupItem,
-            ...{ borderColor: theme.borderColor.get() },
-          }}
-          {...frameAttrs}
-        >
-          <RadioGroupItemIndicator />
-        </Pressable>
-      </RovingFocusGroup.Item>
+      {isWeb && native ? (
+        bubbleInput
+      ) : (
+        <View style={styles.radioGroupItemContainer}>
+          <RovingFocusGroup.Item {...rovingFocusGroupAttrs}>
+            <Pressable
+              style={{
+                ...styles.radioGroupItem,
+                ...{ borderColor: theme.borderColor.get() },
+                ...(checked
+                  ? { borderWidth: 4 }
+                  : { backgroundColor: theme.background.get() }),
+              }}
+              {...frameAttrs}
+              onFocus={frameAttrs.onFocus as any}
+            >
+              <RadioGroupItemIndicator />
+            </Pressable>
+          </RovingFocusGroup.Item>
+          <Text style={{ color: theme.color.get() }} id={id}>
+            {label}
+          </Text>
+          {isFormControl && bubbleInput}
+        </View>
+      )}
     </RadioGroupItemContext.Provider>
   )
 }
@@ -89,14 +110,16 @@ function RadioGroupItemIndicator() {
 
 const styles = StyleSheet.create({
   radioGroup: {
-    flexDirection: 'row',
-    gap: 12,
+    flexDirection: 'column',
+    gap: 20,
+    alignItems: 'flex-start',
   },
   radioGroupItem: {
-    borderRadius: 1000_000_000,
+    borderTopLeftRadius: 1000,
+    borderBottomRightRadius: 1000,
     borderWidth: 2,
-    width: 24,
-    height: 24,
+    width: 30,
+    height: 30,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -104,5 +127,12 @@ const styles = StyleSheet.create({
     width: '33%',
     height: '33%',
     borderRadius: 1000,
+    transform: [{ rotate: '45deg' }],
+  },
+  radioGroupItemContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: 12,
   },
 })

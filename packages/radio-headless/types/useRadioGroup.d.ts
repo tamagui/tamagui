@@ -57,10 +57,12 @@ export declare const useRadioGroupItem: (params: UseRadioItemParams) => {
     providerValue: {
         checked: boolean;
     };
+    checked: boolean;
     isFormControl: boolean;
     bubbleInput: import("react/jsx-runtime").JSX.Element;
+    native: boolean | undefined;
     frameAttrs: {
-        onKeyDown?: import("@tamagui/helpers").EventHandler<KeyboardEvent> | undefined;
+        onKeyDown?: ((event: KeyboardEvent) => void) | undefined;
         onFocus?: import("@tamagui/helpers").EventHandler<import("react").FocusEvent<HTMLDivElement, Element>> | undefined;
         id: string | undefined;
         onPress: import("@tamagui/helpers").EventHandler<GestureResponderEvent> | undefined;
