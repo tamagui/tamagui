@@ -2,7 +2,6 @@ import { clientTreeShakePlugin, createFileSystemRouter } from '@vxrn/router/vite
 // import { tamaguiPlugin, tamaguiExtractPlugin } from '@tamagui/vite-plugin'
 // import entryShakingPlugin from 'vite-plugin-entry-shaking'
 import { mdx } from '@cyco130/vite-plugin-mdx'
-import tsconfigPaths from 'vite-tsconfig-paths'
 import type { VXRNConfig } from 'vxrn'
 // import inpsectPlugin from 'vite-plugin-inspect'
 
@@ -16,7 +15,7 @@ const optimizeInterop = []
 const optimizeDeps = {
   include: [
     ...optimizeInterop,
-    // '@tamagui/site-config',
+    'solito',
     '@tamagui/animations-moti',
     '@tamagui/animations-react-native',
     'is-buffer',
