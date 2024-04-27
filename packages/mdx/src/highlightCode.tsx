@@ -16,8 +16,8 @@ let highlighter: (
 export function createCodeHighlighter() {
   if (highlighter) return highlighter
 
-  refractor.register(tsx['default'])
-  refractor.register(css['default'])
+  refractor.register(tsx)
+  refractor.register(css)
 
   highlighter = function codeToHtml(source, language, line = '0') {
     let result: any = refractor.highlight(source, language)

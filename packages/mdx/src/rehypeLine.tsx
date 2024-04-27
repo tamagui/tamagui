@@ -1,10 +1,8 @@
 // Inspired by https://github.com/j0lv3r4/mdx-prism
 
 import { toHtml } from 'hast-util-to-html'
-import Parse from 'rehype-parse'
+import parse from 'rehype-parse'
 import { unified } from 'unified'
-
-const parse = Parse['default']
 
 const lineNumberify = function lineNumberify(ast, lineNum = 1) {
   let lineNumber = lineNum

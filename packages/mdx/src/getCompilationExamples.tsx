@@ -3,7 +3,7 @@ import { createCodeHighlighter } from './highlightCode'
 
 const highlightCode = createCodeHighlighter()
 
-export function getCompilationExamples() {
+export async function getCompilationExamples() {
   const compilationExamples = compilationCode.map((item) => {
     return {
       ...item,

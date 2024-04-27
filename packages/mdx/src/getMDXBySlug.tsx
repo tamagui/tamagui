@@ -23,8 +23,19 @@ export const getMDXBySlug = async (
   }
   const filePath = path.join(basePath, `${mdxPath}.mdx`)
   const source = fs.readFileSync(filePath, 'utf8')
+  const { frontmatter, code } = await getMDX(source)
+  return {
+    frontmatter: {
+      ...frontmatter,
+      slug,
+      readingTime: readingTime(code),
+    } as Frontmatter,
+    code,
+  }
+}
 
-  const { frontmatter, code } = await bundleMDX({
+export async function getMDX(source: string) {
+  return await bundleMDX({
     source,
     mdxOptions(options) {
       options.rehypePlugins = [
@@ -38,15 +49,6 @@ export const getMDXBySlug = async (
       return options
     },
   })
-
-  return {
-    frontmatter: {
-      ...frontmatter,
-      slug,
-      readingTime: readingTime(code),
-    } as Frontmatter,
-    code,
-  }
 }
 
 export function getAllVersionsFromPath(fromPath: string): string[] {
