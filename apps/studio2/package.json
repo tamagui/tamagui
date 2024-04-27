@@ -15,6 +15,7 @@
     "@react-navigation/native": "6.1.17",
     "@supabase/auth-helpers-react": "^0.4.2",
     "@supabase/auth-helpers-shared": "^0.5.0",
+    "@supabase/ssr": "^0.3.0",
     "@supabase/supabase-auth-helpers": "^1.4.2",
     "@supabase/supabase-js": "^2.38.2",
     "@tamagui/mdx": "1.95.1",
