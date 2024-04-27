@@ -14,11 +14,12 @@ export const getAllFrontmatter = (fromPath: string): Frontmatter[] => {
     .map((filePath) => {
       const source = fs.readFileSync(path.join(filePath), 'utf8')
       const { data, content } = matter(source)
+      const slug = filePath
+        .replace(`${fromPath.replaceAll('\\', '/')}/`, '')
+        .replace('.mdx', '')
       return {
         ...data,
-        slug: filePath
-          .replace(`${fromPath.replaceAll('\\', '/')}/`, '')
-          .replace('.mdx', ''),
+        slug,
         readingTime: readingTime(content),
       } as Frontmatter
     })

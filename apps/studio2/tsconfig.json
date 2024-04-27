@@ -3,7 +3,13 @@
     "baseUrl": ".",
     "rootDir": ".",
     "paths": {
-      "~/*": ["./*"]
+      "~/*": ["./*"],
+      "tamagui": [
+        "../tamagui"
+      ],
+      "@tamagui/*": [
+        "../../packages/*"
+      ]
     },
     "outDir": "dist",
     "importHelpers": true,

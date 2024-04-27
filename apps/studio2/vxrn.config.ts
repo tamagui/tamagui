@@ -43,6 +43,10 @@ export default async () => {
 
     webConfig: {
       resolve: {
+        alias: {
+          '~': import.meta.dirname,
+        },
+
         dedupe: [
           'react',
           'react-dom',
@@ -74,7 +78,6 @@ export default async () => {
         // entryShakingPlugin({
         //   targets,
         // }),
-        tsconfigPaths(),
         // TODO type is mad
         // tamaguiPlugin({
         //   components: ['tamagui'],
