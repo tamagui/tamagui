@@ -14,11 +14,6 @@ import type { Frontmatter } from '../../frontmatter'
 import { listeners } from '../../hooks/setTinted'
 import { CustomTabs } from '../../components/CustomTabs'
 
-const getPathFragment = (path: string) => {
-  const [_, fragment] = path.split('#')
-  return fragment
-}
-
 type Doc = {
   frontmatter: Frontmatter
   code: any
