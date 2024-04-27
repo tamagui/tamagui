@@ -5,6 +5,7 @@ export type AdaptProps = {
     when?: MediaQueryKeyString;
     platform?: 'native' | 'web' | 'touch' | 'ios' | 'android';
     children?: any;
+    forceEnable?: boolean;
 };
 type When = MediaQueryKeyString | boolean | null;
 type Component = (props: any) => any;
@@ -25,7 +26,7 @@ export declare const useAdaptParent: ({ Contents, }: {
     }) => import("react/jsx-runtime").JSX.Element;
     when: When;
 };
-export declare const Adapt: (({ platform, when, children }: AdaptProps) => any) & {
+export declare const Adapt: (({ platform, when, forceEnable, children }: AdaptProps) => any) & {
     Contents: {
         (props: any): import("react").FunctionComponentElement<any>;
         shouldForwardSpace: boolean;
