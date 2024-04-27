@@ -776,13 +776,13 @@ textarea {
 }
 
 .clip-slice {
-  mask-image: url(./public/heart.svg);
+  mask-image: url(./heart.svg);
   mask-size: 25% 25%;
   animation: clip-fade2 90s infinite alternate;
 }
 
 .clip-wave {
-  mask-image: url(./public/takeout/geometric.svg);
+  mask-image: url(./takeout/geometric.svg);
   mask-size: 150% 150%;
   animation: clip-fade 80s infinite alternate;
 }
