@@ -42,6 +42,8 @@ export default async () => {
     // },
 
     webConfig: {
+      envPrefix: 'NEXT_PUBLIC_',
+
       resolve: {
         alias: {
           '~': import.meta.dirname,
