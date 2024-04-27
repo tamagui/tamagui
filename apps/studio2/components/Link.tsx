@@ -1,5 +1,6 @@
 import { Link as RouterLink } from '@vxrn/router'
 import type { GestureResponderEvent, ViewProps } from 'react-native'
+import { Paragraph } from 'tamagui'
 
 // TODO export from package
 type Href = string | HrefObject
@@ -29,4 +30,26 @@ export type LinkProps = ViewProps & {
 
 export const Link = (props: LinkProps) => {
   return <RouterLink {...props} />
+}
+
+export const ParagraphLink = ({
+  href = '',
+  replace,
+  onPress,
+  children,
+  ...props
+}: LinkProps) => {
+  return (
+    <Link {...{ href, replace, onPress }} asChild>
+      <Paragraph
+        cursor="pointer"
+        tag="a"
+        color="$color"
+        hoverStyle={{ color: '$color', outlineColor: 'red' }}
+        {...props}
+      >
+        {children}
+      </Paragraph>
+    </Link>
+  )
 }
