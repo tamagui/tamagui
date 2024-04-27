@@ -15,7 +15,7 @@ const optimizeInterop = []
 const optimizeDeps = {
   include: [
     ...optimizeInterop,
-    'solito',
+    '@supabase/auth-helpers-react',
     '@tamagui/animations-moti',
     '@tamagui/animations-react-native',
     'is-buffer',

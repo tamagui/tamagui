@@ -60,7 +60,7 @@
     "react-native": "^0.73.4",
     "react-native-svg": "14.1.0",
     "react-native-web": "^0.19.10",
-    "swr": "^2.2.0",
+    "swr": "^2.2.5",
     "tamagui": "1.95.1",
     "zod": "^3.22.4"
   },
