@@ -7,7 +7,7 @@ import { setupCors } from './cors'
 /**
  * makes a supabase instance for the current user and returns a 401 if there's no user
  */
-export const ensureAuthenticated = async ({
+export const ensureAuth = async ({
   req,
   shouldRedirect = false,
 }: {

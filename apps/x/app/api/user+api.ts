@@ -1,6 +1,6 @@
 import type { Session, User } from '@supabase/supabase-js'
 import { apiRoute } from '~/features/api/apiRoute'
-import { ensureAuthenticated } from '~/features/api/protectApiRoute'
+import { ensureAuth } from '~/features/api/ensureAuth'
 import type { Database } from '~/features/supabase/types'
 import {
   getMainTeam,
@@ -34,7 +34,7 @@ export type UserContextType = {
 }
 
 export default apiRoute(async (req) => {
-  const { supabase, user, session } = await ensureAuthenticated(req)
+  const { supabase, user, session } = await ensureAuth(req)
 
   const [
     userTeams,
