@@ -12,6 +12,7 @@
     "module": "ESNext",
     "moduleResolution": "node",
     "forceConsistentCasingInFileNames": true,
+    "declaration": true,
     "noEmitOnError": false,
     "noImplicitAny": false,
     "noImplicitReturns": false,

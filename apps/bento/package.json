@@ -9,15 +9,35 @@
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
-  "module:jsx": "dist/jsx",
   "files": [
     "src",
     "types",
     "dist"
   ],
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./types/index.d.ts",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.js",
+      "react-native": "./dist/cjs/index.native.js"
+    },
+    "./data": {
+      "types": "./types/data.d.ts",
+      "import": "./dist/esm/data.mjs",
+      "require": "./dist/cjs/data.js",
+      "react-native": "./dist/cjs/data.native.js"
+    },
+    "./component/*": {
+      "types": "./types/components/*.d.ts",
+      "import": "./dist/esm/components/*.mjs",
+      "require": "./dist/cjs/components/*.js",
+      "react-native": "./dist/cjs/components/*.native.js"
+    }
+  },
   "scripts": {
-    "build": "tamagui-build --skip-types",
-    "watch": "tamagui-build --watch --skip-types",
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch",
     "clean": "tamagui-build clean",
     "dev:web": "DISABLE_EXTRACTION=true NODE_ENV=development webpack serve",
     "dev:web:prod": "NODE_ENV=production webpack serve",
