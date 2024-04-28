@@ -1,11 +1,11 @@
 import type { Endpoint } from '@vxrn/router'
-import { authorizeUserAccess } from '~/features/api/authorizeUserAccess'
+import { ensureAccess } from '~/features/api/ensureAccess'
 import { ensureAuth } from '~/features/api/ensureAuth'
 import { getBentoCode, supabaseAdmin } from '~/features/auth/supabaseAdmin'
 
 export const GET: Endpoint = async (req) => {
   const { supabase } = await ensureAuth(req)
-  await authorizeUserAccess(
+  await ensureAccess(
     {
       req,
       supabase,

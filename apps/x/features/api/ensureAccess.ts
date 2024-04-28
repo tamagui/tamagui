@@ -17,7 +17,7 @@ type PayloadShape = {
 /**
  * checks is the user has sponsor access and sets a jwt cookie for subsequent requests to be faster
  */
-export async function authorizeUserAccess(
+export async function ensureAccess(
   {
     req,
     supabase,

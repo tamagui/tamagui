@@ -1,13 +1,12 @@
-import { apiRoute } from '@lib/apiRoute'
-import { authorizeUserAccess } from '@lib/authorizeUserAccess'
-import { protectApiRoute } from '@lib/protectApiRoute'
+import { apiRoute } from '~/features/api/apiRoute'
+import { ensureAccess } from '~/features/api/ensureAccess'
+import { ensureAuth } from '~/features/api/ensureAuth'
 
-const handler = apiRoute(async (req, res) => {
-  const { supabase, user } = await protectApiRoute({ req, res })
-  const { teamId } = await authorizeUserAccess(
+const handler = apiRoute(async (req) => {
+  const { supabase, user } = await ensureAuth({ req })
+  const { teamId } = await ensureAccess(
     {
       req,
-      res,
       supabase,
     },
     {

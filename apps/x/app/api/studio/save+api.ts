@@ -1,12 +1,12 @@
 import { apiRoute } from '~/features/api/apiRoute'
-import { authorizeUserAccess } from '~/features/api/authorizeUserAccess'
+import { ensureAccess } from '~/features/api/ensureAccess'
 import { ensureAuth } from '~/features/api/ensureAuth'
 
 export type StoreData = { themeSuites: Record<string, any> }
 
 export default apiRoute(async (req) => {
   const { supabase, user } = await ensureAuth({ req })
-  const { teamId } = await authorizeUserAccess(
+  const { teamId } = await ensureAccess(
     {
       req,
       supabase,

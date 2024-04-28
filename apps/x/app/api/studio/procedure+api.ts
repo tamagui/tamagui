@@ -1,25 +1,13 @@
 import { apiRoute } from '~/features/api/apiRoute'
-import { authorizeUserAccess } from '~/features/api/authorizeUserAccess'
+import { ensureAccess } from '~/features/api/ensureAccess'
 import { ensureAuth } from '~/features/api/ensureAuth'
 
-let apis
-
 export default apiRoute(async (req) => {
-  try {
-    apis = await require('@tamagui/studio/api')
-  } catch (error) {
-    console.error('git-crypt is not unlocked. returning.', error)
-    return Response.json(
-      {},
-      {
-        status: 500,
-      }
-    )
-  }
+  const apis = await import('@tamagui/studio/api')
 
   const { supabase } = await ensureAuth({ req })
 
-  await authorizeUserAccess(
+  await ensureAccess(
     {
       req,
       supabase,
