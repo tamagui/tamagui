@@ -31,6 +31,7 @@
     "@tamagui/constants": "1.95.1",
     "@tamagui/core": "1.95.1",
     "@tamagui/stacks": "1.95.1",
+    "@tamagui/use-did-finish-ssr": "1.95.1",
     "@tamagui/use-event": "1.95.1"
   },
   "peerDependencies": {

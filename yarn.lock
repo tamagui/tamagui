@@ -8091,6 +8091,7 @@ __metadata:
     "@tamagui/constants": "npm:1.95.1"
     "@tamagui/core": "npm:1.95.1"
     "@tamagui/stacks": "npm:1.95.1"
+    "@tamagui/use-did-finish-ssr": "npm:1.95.1"
     "@tamagui/use-event": "npm:1.95.1"
     react: "npm:^18.2.0"
     react-native: "npm:^0.73.4"
