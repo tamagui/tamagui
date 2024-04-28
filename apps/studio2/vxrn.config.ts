@@ -1,14 +1,17 @@
+import { createRequire } from 'node:module'
 import { createFileSystemRouter } from '@vxrn/router/vite'
 // import { tamaguiPlugin, tamaguiExtractPlugin } from '@tamagui/vite-plugin'
-// import entryShakingPlugin from 'vite-plugin-entry-shaking'
+import entryShakingPlugin from 'vite-plugin-entry-shaking'
 import { mdx } from '@cyco130/vite-plugin-mdx'
 import type { VXRNConfig } from 'vxrn'
 // import inpsectPlugin from 'vite-plugin-inspect'
 
-// const targets = [
-//   require.resolve('@tamagui/lucide-icons').replace('/dist/cjs/index.js', ''),
-//   require.resolve('@tamagui/demos').replace('/dist/cjs/index.js', ''),
-// ]
+const require = createRequire(import.meta.url)
+
+const targets = [
+  require.resolve('@tamagui/lucide-icons').replace('/dist/cjs/index.js', ''),
+  require.resolve('@tamagui/demos').replace('/dist/cjs/index.js', ''),
+]
 
 const optimizeInterop = []
 
@@ -77,9 +80,13 @@ export default async () => {
         createFileSystemRouter({
           root: 'app',
         }),
+
+        // hmmm breaking ssr for some reason on lucide:
+        // @ts-ignore
         // entryShakingPlugin({
         //   targets,
         // }),
+
         // TODO type is mad
         // tamaguiPlugin({
         //   components: ['tamagui'],
