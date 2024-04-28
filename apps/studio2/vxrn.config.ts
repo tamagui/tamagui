@@ -15,6 +15,8 @@ const optimizeInterop = []
 const optimizeDeps = {
   include: [
     ...optimizeInterop,
+    'swr',
+    '@supabase/ssr',
     '@supabase/auth-helpers-react',
     '@tamagui/animations-moti',
     '@tamagui/animations-react-native',
@@ -62,6 +64,7 @@ export default async () => {
 
       ssr: {
         optimizeDeps,
+        noExternal: ['swr', 'react', 'react-dom', 'react-dom/server'],
       },
 
       plugins: [
