@@ -1,15 +1,13 @@
 {
-  "name": "@tamagui/remix-starter",
+  "name": "@tamagui/website",
   "private": true,
   "sideEffects": false,
   "type": "module",
   "scripts": {
-    "upgrade:tamagui": "yarn up '*tamagui*'@latest '@tamagui/*'@latest",
-    "upgrade:tamagui:canary": "yarn up '*tamagui*'@canary '@tamagui/*'@canary",
     "build:production": "remix vite:build",
     "dev": "remix vite:dev",
-    "lint": "biome check app",
-    "lint:fix": "biome check --apply-unsafe app",
+    "lint": "../../node_modules/.bin/biome check app",
+    "lint:fix": "../../node_modules/.bin/biome check --apply-unsafe app",
     "start": "remix-serve ./build/server/index.js",
     "typecheck": "tsc"
   },
@@ -17,16 +15,15 @@
     "@remix-run/node": "^2.8.1",
     "@remix-run/react": "^2.8.1",
     "@remix-run/serve": "^2.8.1",
-    "@tamagui/config": "^1.95.2",
+    "@tamagui/site-config": "1.95.2",
     "isbot": "^4.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "tamagui": "^1.95.2"
+    "tamagui": "1.95.2"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.5.3",
     "@remix-run/dev": "^2.8.1",
-    "@tamagui/vite-plugin": "^1.95.2",
+    "@tamagui/vite-plugin": "1.95.2",
     "@types/react": "^18.2.55",
     "@types/react-dom": "^18.2.19",
     "typescript": "^5.3.3",
@@ -37,5 +34,6 @@
   },
   "engines": {
     "node": ">=18.0.0"
-  }
+  },
+  "version": "1.95.2"
 }

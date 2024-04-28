@@ -313,7 +313,6 @@ export const PopperContent = React.forwardRef<
     }
   }, [isMounted])
 
-  // android fix position before show:
   let show = true
 
   if (isAndroid) {

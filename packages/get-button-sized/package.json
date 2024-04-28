@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/get-button-sized",
-  "version": "1.95.1",
+  "version": "1.95.2",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -27,14 +27,14 @@
     }
   },
   "dependencies": {
-    "@tamagui/get-token": "1.95.1",
-    "@tamagui/web": "1.95.1"
+    "@tamagui/get-token": "1.95.2",
+    "@tamagui/web": "1.95.2"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.95.1",
+    "@tamagui/build": "1.95.2",
     "react": "^18.2.0"
   },
   "publishConfig": {
