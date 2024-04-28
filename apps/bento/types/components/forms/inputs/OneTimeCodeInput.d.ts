@@ -5,7 +5,4 @@ export declare function OneTimeCodeInputExample({ size, codeSize, secureText, }:
     codeSize?: number;
     secureText?: boolean;
 }): import("react/jsx-runtime").JSX.Element;
-export declare namespace OneTimeCodeInputExample {
-    var fileName: string;
-}
 //# sourceMappingURL=OneTimeCodeInput.d.ts.map

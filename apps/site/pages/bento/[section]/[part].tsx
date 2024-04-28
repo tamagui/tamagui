@@ -1,4 +1,5 @@
 import * as sections from '@tamagui/bento'
+import { Data } from '@tamagui/bento'
 
 import { Anchor, H1, SizableText, Theme, View, XStack, YStack } from 'tamagui'
 import { BentoPageFrame } from '../../../components/BentoPageFrame'
@@ -47,7 +48,7 @@ page.getLayout = getDefaultLayout
 
 export const getStaticPaths = (async () => {
   return {
-    paths: sections.paths,
+    paths: Data.paths,
     fallback: false,
   }
 }) satisfies GetStaticPaths

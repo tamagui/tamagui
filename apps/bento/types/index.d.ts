@@ -1,4 +1,5 @@
 export * from './sections';
+export * as Data from './data';
 export * as Inputs from './components/forms/inputs';
 export * as Preferences from './components/user/preferences';
 export * as Layouts from './components/forms/layouts';

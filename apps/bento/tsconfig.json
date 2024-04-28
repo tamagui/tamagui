@@ -33,7 +33,7 @@
     "lib": ["dom", "dom.iterable", "esnext"],
     "resolveJsonModule": true,
   },
-  "exclude": ["node_modules"], 
+  "exclude": ["node_modules", "types", "dist"], 
   "typeAcquisition": {
     "enable": true
   }
