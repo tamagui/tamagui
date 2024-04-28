@@ -1,4 +1,4 @@
-import { clientTreeShakePlugin, createFileSystemRouter } from '@vxrn/router/vite'
+import { createFileSystemRouter } from '@vxrn/router/vite'
 // import { tamaguiPlugin, tamaguiExtractPlugin } from '@tamagui/vite-plugin'
 // import entryShakingPlugin from 'vite-plugin-entry-shaking'
 import { mdx } from '@cyco130/vite-plugin-mdx'
@@ -74,8 +74,6 @@ export default async () => {
             // rehypeHighlightCode,
           ],
         }),
-        // inpsectPlugin(),
-        clientTreeShakePlugin(),
         createFileSystemRouter({
           root: 'app',
         }),
