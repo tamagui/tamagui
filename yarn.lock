@@ -26806,9 +26806,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"studio2@workspace:apps/studio2":
+"studio2@workspace:apps/x":
   version: 0.0.0-use.local
-  resolution: "studio2@workspace:apps/studio2"
+  resolution: "studio2@workspace:apps/x"
   dependencies:
     "@cyco130/vite-plugin-mdx": "npm:1.0.4"
     "@leeoniya/ufuzzy": "npm:^1.0.14"
