@@ -1,4 +1,5 @@
 export * from './AccordionDemo'
+export * from './AccordionHeadlessDemo'
 export * from './AddThemeDemo'
 export * from './AlertDialogDemo'
 export * from './AnimationsDemo'

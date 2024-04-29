@@ -13,13 +13,46 @@ package: accordion
   of content
 </Description>
 
+<Tabs id="type" defaultValue="styled">
+<Tabs.List>
+  <TooltipSimple label="With Tamagui's default styles">
+    <Tabs.Tab value="styled">Styled</Tabs.Tab>
+  </TooltipSimple>
+  <TooltipSimple label="No dependency on Tamagui's core">
+    <Tabs.Tab value="headless" label="No styles and no dependency on Tamagui's styling">Headless</Tabs.Tab>
+  </TooltipSimple>
+</Tabs.List>
+
+
 <HeroContainer>
-  <AccordionDemo />
+  <Tabs.Content
+    value="styled"
+    justifyContent="center"
+    alignItems="center"
+    width="100%"
+  >
+    <AccordionDemo />
+  </Tabs.Content>
+  <Tabs.Content
+    value="headless"
+    justifyContent="center"
+    alignItems="center"
+    width="100%"
+  >
+    <AccordionHeadlessDemo />
+  </Tabs.Content>
 </HeroContainer>
 
-```tsx hero template=Accordion
+<Tabs.Content value="styled">
+  ```tsx hero template=Accordion
 
-```
+````
+</Tabs.Content>
+<Tabs.Content value="headless">
+```tsx hero template=AccordionHeadless
+
+````
+</Tabs.Content>
 
 <Highlights
   features={[
@@ -31,14 +64,30 @@ package: accordion
 
 ## Installation
 
+<Tabs.Content value="styled">
 Accordion is already installed in `tamagui`, or you can install it independently:
 
 ```bash
 npm install @tamagui/accordion
 ```
+</Tabs.Content>
 
-## Anatomy
+<Tabs.Content value="headless">
 
+To use the headless Accordion, you want to import it from the
+`@tamagui/accordion-headless` package. This package has no dependency on
+`@tamagui/core`, but still works off the react-native APIs.
+This means can bring your own style library.
+
+```bash
+npm install @tamagui/accordion-headless
+```
+
+</Tabs.Content>
+
+## Usage
+
+<Tabs.Content value="styled">
 Import all parts and piece them together.
 
 ```jsx
@@ -55,6 +104,16 @@ export default () => (
   </Accordion>
 )
 ```
+</Tabs.Content>
+<Tabs.Content value="headless">
+
+Using the `useAccordion` and `useAccordionItem` API, you can make your own Accordion from scratch.
+
+```tsx template=AccordionHeadless
+
+```
+
+</Tabs.Content>
 
 ## API Reference
 
@@ -326,3 +385,5 @@ Set the `type` prop to `multiple` to enable opening multiple items at once.
 ## Accessibility
 
 Adheres to the [Accordion WAI-ARIA design pattern](https://www.w3.org/TR/wai-aria-practices-1.1/#accordion).
+
+</Tabs>

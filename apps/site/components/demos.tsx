@@ -45,6 +45,11 @@ export const AccordionDemo = lazyDemo(
   import('@tamagui/demos/demo/AccordionDemo').then((x) => x.AccordionDemo)
 )
 
+export const AccordionHeadlessDemo = lazyDemo(
+  // @ts-ignore
+  import('@tamagui/demos/demo/AccordionHeadlessDemo').then((x) => x.AccordionHeadlessDemo)
+)
+
 export const ThemeBuilderDemo = lazyDemo(
   // @ts-ignore
   import('@tamagui/demos/demo/ThemeBuilderDemo').then((x) => x.ThemeBuilderDemo)
