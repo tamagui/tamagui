@@ -1,46 +1,67 @@
-import { ChevronDown } from '@tamagui/lucide-icons'
-import { Accordion, Paragraph, Square } from 'tamagui'
+import { Stack, Text } from 'tamagui'
+import { useAccordion, useAccordionItem } from '@tamagui/accordion-headless'
+
+const values = ['a1', 'a2', 'a3']
 
 export function AccordionHeadlessDemo() {
-  return (
-    <Accordion overflow="hidden" width="$20" type="multiple">
-      <Accordion.Item value="a1">
-        <Accordion.Trigger flexDirection="row" justifyContent="space-between">
-          {({ open }) => (
-            <>
-              <Paragraph>1. Take a cold shower</Paragraph>
-              <Square animation="quick" rotate={open ? '180deg' : '0deg'}>
-                <ChevronDown size="$1" />
-              </Square>
-            </>
-          )}
-        </Accordion.Trigger>
-        <Accordion.Content>
-          <Paragraph>
-            Cold showers can help reduce inflammation, relieve pain, improve circulation,
-            lower stress levels, and reduce muscle soreness and fatigue.
-          </Paragraph>
-        </Accordion.Content>
-      </Accordion.Item>
+  const {
+    CollapsibleProvider,
+    collapsibleProviderValue,
+    ValueProvider,
+    valueProviderValue,
+    Collection,
+    collectionProviderProps,
+    AccordionImplProvider,
+    accordionImplProviderValue,
+    frameProps,
+    collectionSlotProps,
+  } = useAccordion('single', {
+    defaultValue: 'a1',
+  })
 
-      <Accordion.Item value="a2">
-        <Accordion.Trigger flexDirection="row" justifyContent="space-between">
-          {({ open }) => (
-            <>
-              <Paragraph>2. Eat 4 eggs</Paragraph>
-              <Square animation="quick" rotate={open ? '180deg' : '0deg'}>
-                <ChevronDown size="$1" />
-              </Square>
-            </>
-          )}
-        </Accordion.Trigger>
-        <Accordion.Content>
-          <Paragraph>
-            Eggs have been a dietary staple since time immemorial and there’s good reason
-            for their continued presence in our menus and meals.
-          </Paragraph>
-        </Accordion.Content>
-      </Accordion.Item>
-    </Accordion>
+  return (
+    <Collection.Provider {...collectionProviderProps}>
+      <ValueProvider value={valueProviderValue}>
+        <CollapsibleProvider value={collapsibleProviderValue}>
+          <AccordionImplProvider value={accordionImplProviderValue}>
+            <Collection.Slot {...collectionSlotProps}>
+              <Stack overflow="hidden" width="$20" {...(frameProps as any)}>
+                {values.map((value) => (
+                  <AccordionItem key={value} value={value} />
+                ))}
+              </Stack>
+            </Collection.Slot>
+          </AccordionImplProvider>
+        </CollapsibleProvider>
+      </ValueProvider>
+    </Collection.Provider>
+  )
+}
+
+const AccordionItem = ({ value }) => {
+  const {
+    Collapsible,
+    collapsibleProps,
+    ItemProvider,
+    itemProviderValue,
+    trigger: { ItemSlot, frame },
+    content,
+  } = useAccordionItem(value)
+
+  return (
+    <ItemProvider value={itemProviderValue}>
+      <Collapsible {...collapsibleProps}>
+        <ItemSlot>
+          <Stack {...frame}>
+            <Text>value</Text>
+          </Stack>
+        </ItemSlot>
+        <Collapsible.Content {...frame}>
+          <Stack {...(content as any)}>
+            <Text>This is some content in here</Text>
+          </Stack>
+        </Collapsible.Content>
+      </Collapsible>
+    </ItemProvider>
   )
 }

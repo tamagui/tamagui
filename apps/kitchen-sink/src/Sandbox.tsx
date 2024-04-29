@@ -4,7 +4,7 @@ import './wdyr'
 
 import { Checkbox, Square, View, YStack, styled } from 'tamagui'
 
-import { SelectDemo, SheetDemo } from '@tamagui/demos'
+import { AccordionHeadlessDemo, SelectDemo, SheetDemo } from '@tamagui/demos'
 import { useState } from 'react'
 import { TextInput, View as RNView } from 'react-native'
 
@@ -20,7 +20,7 @@ export const Sandbox = () => {
           bg: 'green',
         }}
       />
-      {/* <SheetDemo /> */}
+      <AccordionHeadlessDemo />
     </RNView>
   )
 

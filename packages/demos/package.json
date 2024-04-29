@@ -40,6 +40,7 @@
     }
   },
   "dependencies": {
+    "@tamagui/accordion-headless": "1.95.1",
     "@tamagui/avatar": "1.95.1",
     "@tamagui/button": "1.95.1",
     "@tamagui/core": "1.95.1",

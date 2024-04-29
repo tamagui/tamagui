@@ -6,7 +6,7 @@ import { useDirection } from '@tamagui/use-direction'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { composeEventHandlers } from '@tamagui/helpers'
 import { createContext } from 'react'
-import React = require('react')
+import React from 'react'
 import type { View } from 'react-native'
 
 // TODO: make DX better by mentioning the order of using things
@@ -17,12 +17,19 @@ const [Collection, useCollection] = createCollection<TamaguiElement>(ACCORDION_N
 
 export function useAccordion<T extends 'single' | 'multiple'>(
   type: T,
-  params: T extends 'single' ? AccordionImplSingleProps : AccordionImplMultipleProps
+  params: T extends 'single' ? AccordionImplSingleProps : AccordionImplMultipleProps,
+  contextScope = ACCORDION_CONTEXT
 ) {
   if (type === 'single') {
-    return useAccordionImpl(useSingleAccordion(params as AccordionImplSingleProps))
+    return useAccordionImpl(
+      useSingleAccordion(params as AccordionImplSingleProps),
+      contextScope
+    )
   }
-  return useAccordionImpl(useMultipleAccordion(params as AccordionImplMultipleProps))
+  return useAccordionImpl(
+    useMultipleAccordion(params as AccordionImplMultipleProps),
+    contextScope
+  )
 }
 
 type AccordionValueContextValue = {
@@ -70,11 +77,11 @@ function useSingleAccordion(params: AccordionImplSingleProps) {
     ValueProvider: AccordionValueContext.Provider,
     valueProviderValue: {
       value: value ? [value] : [],
-      onItemOpen: setValue,
+      onItemOpen: setValue as (value: string) => void,
       onItemClose: React.useCallback(
         (_: string) => collapsible && setValue(''),
         [setValue, collapsible]
-      ),
+      ) as (value: string) => void,
     },
     CollapsibleProvider: AccordionCollapsibleContext.Provider,
     collapsibleProviderValue: {
@@ -142,11 +149,13 @@ function useAccordionContext() {
   return context
 }
 
-type ReturnTypeOfUseSingleMultipleAccordion = ReturnType<typeof useSingleAccordion> &
-  ReturnType<typeof useMultipleAccordion>
+type ReturnTypeOfUseSingleMultipleAccordion =
+  | ReturnType<typeof useSingleAccordion>
+  | ReturnType<typeof useMultipleAccordion>
 
 function useAccordionImpl(
-  params: AccordionImplProps & ReturnTypeOfUseSingleMultipleAccordion
+  params: AccordionImplProps & ReturnTypeOfUseSingleMultipleAccordion,
+  contextScope: string
 ) {
   const {
     disabled,
@@ -163,7 +172,7 @@ function useAccordionImpl(
   // TODO: handle forwardedRef, here the second argument was a forwardedRef
   const composedRef = useComposedRefs(accordionRef, () => {})
   // TODO: ACCORDION_CONTEXT make sure is used when using Providers, and how to handle _scope here
-  const getItems = useCollection(ACCORDION_CONTEXT)
+  const getItems = useCollection(contextScope)
   const direction = useDirection(dir)
   const isDirectionLTR = direction === 'ltr'
   const handleKeyDown = composeEventHandlers(
@@ -252,7 +261,14 @@ function useAccordionImpl(
       direction,
       orientation,
     },
-    CollectionSlot: Collection.Slot,
+    Collection,
+    collectionProviderProps: {
+      __scopeCollection: contextScope,
+    },
+    collectionSlotProps: {
+      __scopeCollection: contextScope,
+    },
+    CollapsibleProvider,
     frameProps: {
       'data-orientation': orientation,
       ref: composedRef,
@@ -264,6 +280,7 @@ function useAccordionImpl(
     ValueProvider,
     valueProviderValue,
     collapsibleProviderValue,
+    contextScope,
   }
 }
 
@@ -337,7 +354,7 @@ interface UseAccordionItemParams {
 }
 
 type AccordionItemContextValue = { open?: boolean; disabled?: boolean; triggerId: string }
-const AccordionItemContext = createContext<AccordionItemContextValue>(null)
+const AccordionItemContext = createContext<AccordionItemContextValue>(null as any)
 function useAccordionItemContext() {
   const context = React.useContext(AccordionItemContext)
   if (context === null) {
@@ -350,7 +367,10 @@ function getState(open?: boolean) {
   return open ? 'open' : 'closed'
 }
 
-export function useAccordionItem(params: UseAccordionItemParams) {
+export function useAccordionItem(
+  params: UseAccordionItemParams,
+  contextScope = ACCORDION_CONTEXT
+) {
   const { value } = params
   const accordionContext = useAccordionContext()
   const itemContext = useAccordionItemContext()
@@ -362,11 +382,15 @@ export function useAccordionItem(params: UseAccordionItemParams) {
   return {
     trigger: {
       ItemSlot: Collection.ItemSlot,
+      itemSlotProps: {
+        __scopeCollection: contextScope,
+      },
       frame: {
         'aria-disabled':
           (itemContext.open && !collapsibleContext.collapsible) || undefined,
         'data-orientation': accordionContext.orientation,
         id: itemContext.triggerId,
+        __scopCollapsible: contextScope,
       },
     },
     content: {
@@ -386,11 +410,13 @@ export function useAccordionItem(params: UseAccordionItemParams) {
       triggerId: params.value,
     },
     Collapsible,
+    contextScope,
     collapsibleProps: {
       'data-orientation': accordionContext.orientation,
       'data-state': open ? 'open' : 'closed',
       disabled,
       open,
+      __scopCollapsible: contextScope,
       onOpenChange: (open) => {
         if (open) {
           valueContext.onItemOpen(value)
