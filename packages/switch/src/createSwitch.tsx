@@ -118,6 +118,7 @@ export function createSwitch<
           onLayout={composeEventHandlers((props as ViewProps).onLayout, (e) =>
             setThumbWidth(e.nativeEvent.layout.width)
           )}
+          animateOnly={['transform', 'opacity']}
           // expected variants
           checked={checked}
           disabled={disabled}
