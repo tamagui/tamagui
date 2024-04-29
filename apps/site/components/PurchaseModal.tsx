@@ -438,7 +438,11 @@ export const PurchaseModal = ({
                         items.push(`Takeout ${starterPrice?.description}`)
                       }
                       if (bentoPrice) {
-                        items.push(`Bento ${bentoPrice?.description}`)
+                        if (bentoPrice.description?.includes('Unlimited')) {
+                          items.push(`Bento Pro (20 Users)`)
+                        } else {
+                          items.push(`Bento ${bentoPrice?.description}`)
+                        }
                       }
 
                       return items.join(' + ')
