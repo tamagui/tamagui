@@ -17,10 +17,13 @@
   "dependencies": {
     "@tamagui/use-presence": "1.95.3",
     "@tamagui/web": "1.95.3",
-    "moti": "^0.27.4",
-    "react": "^18.2.0"
+    "moti": "^0.27.4"
+  },
+  "peerDependencies": {
+    "react": "*"
   },
   "devDependencies": {
+    "react": "^18.2.0",
     "@tamagui/build": "1.95.3",
     "react-native-reanimated": "~3.6.2"
   },

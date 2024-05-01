@@ -35,11 +35,14 @@
     "@tamagui/types": "1.95.3",
     "@tamagui/use-did-finish-ssr": "1.95.3",
     "@tamagui/use-event": "1.95.3",
-    "@tamagui/use-force-update": "1.95.3",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "@tamagui/use-force-update": "1.95.3"
+  },
+  "peerDependencies": {
+    "react": "*"
   },
   "devDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "@tamagui/build": "1.95.3",
     "@testing-library/react": "^14.0.0",
     "csstype": "^3.0.10",
