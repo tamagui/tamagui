@@ -207,7 +207,7 @@ async function run() {
         await spawnify(`yarn fix:deps`)
         await spawnify(`yarn lint`)
         await spawnify(`yarn check`)
-        await spawnify(`yarn test`)
+        await spawnify(`yarn test:ci`)
       }
     }
 
