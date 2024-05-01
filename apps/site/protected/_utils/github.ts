@@ -169,6 +169,9 @@ export const whitelistBentoUsernames = new Set([
   'dougzor',
 
   'Aljishi89@gmail.com',
+
+  // JBR
+  'mattleesounds',
 ])
 
 export const whitelistGithubUsernames = [
@@ -196,6 +199,9 @@ export const whitelistGithubUsernames = [
 
   // Triba
   'Awelani-Triba',
+
+  // JBR
+  'mattleesounds',
 ]
 
 export const checkForSponsorship = async (
