@@ -579,7 +579,7 @@ const AccordionContent = AccordionContentFrame.styleable(function AccordionConte
   )
 })
 
-const HeightAnimator = View.styleable((props) => {
+const HeightAnimator = View.styleable((props, ref) => {
   const itemContext = useAccordionItemContext()
   const { children, ...rest } = props
   const [height, setHeight] = React.useState(0)
@@ -597,7 +597,7 @@ const HeightAnimator = View.styleable((props) => {
   })
 
   return (
-    <View height={height} {...rest}>
+    <View ref={ref} height={height} {...rest}>
       <View
         position="absolute"
         //@ts-ignore
