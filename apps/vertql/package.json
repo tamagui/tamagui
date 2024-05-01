@@ -1,7 +1,7 @@
 {
   "name": "vertql",
   "type": "module",
-  "version": "1.95.0-1713326412393",
+  "version": "1.96.0",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "module": "dist",
@@ -27,7 +27,7 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/vite-plugin": "1.95.0-1713326412393",
+    "@tamagui/vite-plugin": "1.96.0",
     "chalk": "^4.1.2",
     "citty": "^0.1.4",
     "esbuild": "^0.20.2",
@@ -42,6 +42,6 @@
     "vxrn": "^0.1.3"
   },
   "devDependencies": {
-    "@tamagui/build": "1.95.0-1713326412393"
+    "@tamagui/build": "1.96.0"
   }
 }

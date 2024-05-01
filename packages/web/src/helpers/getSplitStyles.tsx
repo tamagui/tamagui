@@ -16,13 +16,7 @@ import {
 import { useInsertionEffect } from 'react'
 
 import { getConfig, getFont } from '../config'
-import {
-  accessibilityDirectMap,
-  accessibilityWebRoleToNativeRole,
-  nativeAccessibilityState,
-  nativeAccessibilityValue,
-  webToNativeAccessibilityDirectMap,
-} from '../constants/accessibilityDirectMap'
+import { accessibilityDirectMap } from '../constants/accessibilityDirectMap'
 import { webViewFlexCompatStyles } from '../constants/constants'
 import { isDevTools } from '../constants/isDevTools'
 import {
@@ -64,7 +58,6 @@ import {
   shouldInsertStyleRules,
   updateRules,
 } from './insertStyleRule'
-import { isObj } from './isObj'
 import { log } from './log'
 import {
   normalizeValueWithProperty,

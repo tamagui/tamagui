@@ -50,7 +50,13 @@ const BentoScreenContainer: React.FC<{ children: React.ReactNode; name: string }
     )
   }
   return (
-    <ScrollView flex={1} minWidth="100%" p="$2" bg="$background">
+    <ScrollView
+      flex={1}
+      minWidth="100%"
+      p="$2"
+      bg="$background"
+      keyboardShouldPersistTaps="always"
+    >
       {children}
     </ScrollView>
   )

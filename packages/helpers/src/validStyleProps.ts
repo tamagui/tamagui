@@ -190,6 +190,7 @@ export const stylePropsView = {
     borderTopStyle: true,
     borderLeftStyle: true,
     borderRightStyle: true,
+    scrollbarWidth: true,
 
     overflowX: true,
     overflowY: true,

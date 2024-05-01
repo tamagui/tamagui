@@ -9,6 +9,7 @@ import { H1 } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDirection } from '@tamagui/use-direction'
 import type { GetProps, GetRef, Stack, TamaguiElement } from '@tamagui/web'
+import { View, useEvent } from '@tamagui/web'
 import { createStyledContext, styled } from '@tamagui/web'
 import * as React from 'react'
 
@@ -578,6 +579,36 @@ const AccordionContent = AccordionContentFrame.styleable(function AccordionConte
   )
 })
 
+const HeightAnimator = View.styleable((props, ref) => {
+  const itemContext = useAccordionItemContext()
+  const { children, ...rest } = props
+  const [height, setHeight] = React.useState(0)
+
+  React.useEffect(() => {
+    if (!itemContext.open) {
+      setHeight(0)
+    }
+  }, [itemContext.open])
+
+  const onLayout = useEvent(({ nativeEvent }) => {
+    if (nativeEvent.layout.height) {
+      setHeight(nativeEvent.layout.height)
+    }
+  })
+
+  return (
+    <View ref={ref} height={height} {...rest}>
+      <View
+        position="absolute"
+        //@ts-ignore
+        onLayout={onLayout}
+      >
+        {children}
+      </View>
+    </View>
+  )
+})
+
 /* -----------------------------------------------------------------------------------------------*/
 
 function getState(open?: boolean) {
@@ -588,6 +619,7 @@ const Accordion = withStaticProperties(AccordionComponent, {
   Header: AccordionHeader,
   Content: AccordionContent,
   Item: AccordionItem,
+  HeightAnimator: HeightAnimator,
 })
 
 export { Accordion }

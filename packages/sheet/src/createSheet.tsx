@@ -85,7 +85,6 @@ export function createSheet<
           // @ts-ignore
           <Overlay
             {...props}
-            debug="verbose"
             onPress={composeEventHandlers(
               props.onPress,
               context.dismissOnOverlayPress
