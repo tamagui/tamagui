@@ -49,7 +49,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
               <XStack
                 aria-label="Pagination navigation"
                 my="$9"
-                jc="space-between"
+                jc={previous ? 'space-between' : 'flex-end'}
                 gap="$4"
               >
                 {previous && (
@@ -61,6 +61,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                       }}
                       flex={1}
                       width="50%"
+                      maw="50%"
                       p="$5"
                       borderRadius="$2"
                       borderWidth={1}
@@ -108,6 +109,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                       }}
                       flex={1}
                       width="50%"
+                      maw="50%"
                       p="$5"
                       borderRadius="$2"
                       borderWidth={1}
@@ -115,7 +117,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                       pressStyle={{
                         backgroundColor: '$backgroundPress',
                       }}
-                      aria-label={`Previous page: ${next.title}`}
+                      aria-label={`Next page: ${next.title}`}
                       ai="center"
                       jc="flex-end"
                       gap="$4"
