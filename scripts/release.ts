@@ -44,6 +44,10 @@ const isCI = finish || process.argv.includes('--ci')
 const curVersion = fs.readJSONSync('./packages/tamagui/package.json').version
 
 const nextVersion = (() => {
+  if (canary) {
+    return `${curVersion}-${Date.now()}`
+  }
+
   if (rePublish) {
     return curVersion
   }
@@ -59,10 +63,6 @@ const nextVersion = (() => {
   const curMinor = +curVersion.split('.')[1] || 0
   const minorVersion = curMinor + (shouldPatch ? 0 : plusVersion)
   const next = `1.${minorVersion}.${patchVersion}`
-
-  if (canary) {
-    return `${next}-${Date.now()}`
-  }
 
   return next
 })()
@@ -197,7 +197,6 @@ async function run() {
 
     if (!skipBuild && !finish) {
       // lets do a full clean and build:force, to ensure we dont have weird cached or leftover files
-      await spawnify(`yarn clean:build`)
       await spawnify(`yarn build:force`)
       await checkDistDirs()
     }

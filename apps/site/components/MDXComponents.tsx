@@ -1,5 +1,12 @@
 import { TamaguiLogo, ThemeTint, ThemeTintAlt } from '@tamagui/logo'
-import { CheckCircle, ChevronRight, Copy, Link as LinkIcon } from '@tamagui/lucide-icons'
+import {
+  Box,
+  CheckCircle,
+  ChevronRight,
+  Copy,
+  File,
+  Link as LinkIcon,
+} from '@tamagui/lucide-icons'
 import { NextLink } from 'components/NextLink'
 import { useRouter } from 'next/router'
 import React, { forwardRef, useState } from 'react'
@@ -32,6 +39,7 @@ import {
 import { LinearGradient } from 'tamagui/linear-gradient'
 
 import { useClipboard } from '../lib/useClipboard'
+import { LogoCard } from './LogoCard'
 import { BenchmarkChart } from './BenchmarkChart'
 import { BenchmarkChartNative } from './BenchmarkChartNative'
 import { BenchmarkChartWeb } from './BenchmarkChartWeb'
@@ -53,6 +61,7 @@ import { Link } from './Link'
 import { MediaPlayer } from './MediaPlayer'
 import { Notice, NoticeFrame } from './Notice'
 import { OffsetBox } from './OffsetBox'
+import { ProductCard } from './ProductCard'
 import { PropsTable } from './PropsTable'
 import { SocialLinksRow } from './SocialLinksRow'
 import { SponsorButton } from './SponsorButton'
@@ -61,8 +70,6 @@ import { TamaguiCard } from './TamaguiCard'
 import { TamaguiExamplesCode } from './TamaguiExamplesCode'
 import { UL } from './UL'
 import { unwrapText } from './unwrapText'
-import { AvatarCard } from './AvatarCard'
-import { BentoCard } from './BentoCard'
 
 const IntroParagraph = ({ children, large, disableUnwrapText, ...props }: any) => {
   return (
@@ -105,6 +112,7 @@ const Table = ({ heading, children, ...props }) => {
 
 const code = (props) => {
   const {
+    showMore,
     hero,
     line,
     scrollable,
@@ -124,6 +132,7 @@ const code = (props) => {
         isHighlightingLines={line !== undefined}
         className={className}
         isHero={hero !== undefined}
+        showMore={showMore !== undefined}
         showLineNumbers={showLineNumbers !== undefined}
         {...rest}
       >
@@ -271,7 +280,15 @@ export const components = {
   Grid: (props) => <XStack flexWrap="wrap" jc="space-between" {...props} />,
   Card: TamaguiCard,
 
-  AvatarCard: AvatarCard,
+  LogoCard: LogoCard,
+  NextJSRouterCard: (props) => {
+    return (
+      <LogoCard
+        icon={props.title.startsWith('Pages') ? <File size="$1" /> : <Box size="$1" />}
+        {...props}
+      />
+    )
+  },
 
   Note: (props) => (
     <YStack
@@ -333,7 +350,7 @@ export const components = {
 
   a: ({ href = '', children, ...props }) => {
     return (
-      <NextLink className="link" href={href}>
+      <NextLink className="link" href={href} passHref>
         {/* @ts-ignore */}
         <Paragraph
           tag="a"
@@ -524,7 +541,7 @@ export const components = {
 
   DemoButton: () => <Button>Hello world</Button>,
 
-  BentoCard: BentoCard,
+  ProductCard: ProductCard,
 
   SponsorButton,
 

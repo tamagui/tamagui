@@ -17,6 +17,17 @@ export const supabaseAdmin = process.env.NEXT_PUBLIC_SUPABASE_URL
     )
   : ((() => {}) as any as SupabaseClient<Database>)
 
+export const getBentoCode = async (codePath: string) => {
+  const { data, error } = await supabaseAdmin.storage
+    .from('bento')
+    .download(`merged/${codePath}.tsx`)
+  if (error) {
+    console.error(error)
+    throw new Error(`Error getting bento code for ${codePath}`)
+  }
+  return data.text()
+}
+
 export const upsertProductRecord = async (product: Stripe.Product) => {
   const productData: Product = {
     id: product.id,
