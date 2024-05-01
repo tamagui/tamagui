@@ -314,11 +314,6 @@ export const PopperContent = React.forwardRef<
     }
   }, [isMounted])
 
-  // all poppers hidden on ssr by default
-  if (!isMounted) {
-    return null
-  }
-
   let show = true
   let setShow = undefined as any
 
@@ -330,6 +325,11 @@ export const PopperContent = React.forwardRef<
         setShow(true)
       }
     }, [finalHasFloatingValue, x, y])
+  }
+
+  // all poppers hidden on ssr by default
+  if (!isMounted) {
+    return null
   }
 
   const frameProps = {
