@@ -704,6 +704,10 @@ interface ExtraStyleProps {
      * Web-only style property. Will be omitted on native.
      */
     userSelect?: Properties['userSelect'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    scrollbarWidth?: Properties['scrollbarWidth'];
     pointerEvents?: ViewProps['pointerEvents'];
     /**
      * @deprecated Use `gap`
