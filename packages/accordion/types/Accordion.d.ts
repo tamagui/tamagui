@@ -1,6 +1,6 @@
 import { Collapsible } from '@tamagui/collapsible';
 import type { H3 } from '@tamagui/text';
-import { GetProps, Stack, TamaguiElement } from '@tamagui/web';
+import type { GetProps, Stack, TamaguiElement } from '@tamagui/web';
 import * as React from 'react';
 type Direction = 'ltr' | 'rtl';
 type ScopedProps<P> = P & {

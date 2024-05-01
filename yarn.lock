@@ -6880,6 +6880,8 @@ __metadata:
     "@tamagui/use-presence": "npm:1.95.3"
     "@tamagui/web": "npm:1.95.3"
     react: "npm:^18.2.0"
+  peerDependencies:
+    react: "*"
   languageName: unknown
   linkType: soft
 
@@ -6893,6 +6895,8 @@ __metadata:
     moti: "npm:^0.27.4"
     react: "npm:^18.2.0"
     react-native-reanimated: "npm:~3.6.2"
+  peerDependencies:
+    react: "*"
   languageName: unknown
   linkType: soft
 
@@ -9150,6 +9154,8 @@ __metadata:
     react-dom: "npm:^18.2.0"
     typescript: "npm:^5.3.3"
     vitest: "npm:^0.34.3"
+  peerDependencies:
+    react: "*"
   languageName: unknown
   linkType: soft
 

@@ -23,8 +23,8 @@
     "react": "*"
   },
   "devDependencies": {
-    "react": "^18.2.0",
     "@tamagui/build": "1.95.3",
+    "react": "^18.2.0",
     "react-native-reanimated": "~3.6.2"
   },
   "scripts": {
