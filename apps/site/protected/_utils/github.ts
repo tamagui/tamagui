@@ -167,6 +167,8 @@ export const whitelistBentoUsernames = new Set([
   'wongk',
   'dakotaodell',
   'dougzor',
+
+  'Aljishi89@gmail.com',
 ])
 
 export const whitelistGithubUsernames = [
