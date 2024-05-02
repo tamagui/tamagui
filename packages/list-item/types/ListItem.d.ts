@@ -8,13 +8,7 @@ type ListItemIconProps = {
 };
 type IconProp = JSX.Element | FunctionComponent<ListItemIconProps> | null;
 export type ListItemExtraProps = Omit<TextParentStyles, 'TextComponent' | 'noTextWrap'> & ThemeableProps & {
-    /**
-     * @deprecated use ListItem.Icon instead
-     */
     icon?: IconProp;
-    /**
-     * @deprecated use ListItem.Icon instead
-     */
     iconAfter?: IconProp;
     /**
      * adjust icon relative to size
@@ -31,15 +25,7 @@ export type ListItemExtraProps = Omit<TextParentStyles, 'TextComponent' | 'noTex
      * adjust internal space relative to icon size
      */
     scaleSpace?: number;
-    /**
-     * title
-     * @deprecated use ListItem.Title instead
-     */
     title?: React.ReactNode;
-    /**
-     * subtitle
-     * @deprecated use ListItem.Subtitle instead
-     */
     subTitle?: React.ReactNode;
     /**
      * will not wrap text around `children` only, "all" will not wrap title or subTitle
@@ -116,13 +102,7 @@ export declare const ListItem: React.ForwardRefExoticComponent<Omit<import("@tam
     chromeless?: boolean | "all" | undefined;
     active?: boolean | undefined;
 }>, "noTextWrap" | keyof import("@tamagui/text").TextContextStyles | "textProps" | keyof ThemeableProps | "icon" | "iconAfter" | "scaleIcon" | "spaceFlex" | "scaleSpace" | "title" | "subTitle"> & Omit<TextParentStyles, "TextComponent" | "noTextWrap"> & ThemeableProps & {
-    /**
-     * @deprecated use ListItem.Icon instead
-     */
     icon?: IconProp | undefined;
-    /**
-     * @deprecated use ListItem.Icon instead
-     */
     iconAfter?: IconProp | undefined;
     /**
      * adjust icon relative to size
@@ -139,15 +119,7 @@ export declare const ListItem: React.ForwardRefExoticComponent<Omit<import("@tam
      * adjust internal space relative to icon size
      */
     scaleSpace?: number | undefined;
-    /**
-     * title
-     * @deprecated use ListItem.Title instead
-     */
     title?: React.ReactNode;
-    /**
-     * subtitle
-     * @deprecated use ListItem.Subtitle instead
-     */
     subTitle?: React.ReactNode;
     /**
      * will not wrap text around `children` only, "all" will not wrap title or subTitle
@@ -178,13 +150,7 @@ export declare const ListItem: React.ForwardRefExoticComponent<Omit<import("@tam
     chromeless?: boolean | "all" | undefined;
     active?: boolean | undefined;
 }>, "noTextWrap" | keyof import("@tamagui/text").TextContextStyles | "textProps" | keyof ThemeableProps | "icon" | "iconAfter" | "scaleIcon" | "spaceFlex" | "scaleSpace" | "title" | "subTitle"> & Omit<TextParentStyles, "TextComponent" | "noTextWrap"> & ThemeableProps & {
-    /**
-     * @deprecated use ListItem.Icon instead
-     */
     icon?: IconProp | undefined;
-    /**
-     * @deprecated use ListItem.Icon instead
-     */
     iconAfter?: IconProp | undefined;
     /**
      * adjust icon relative to size
@@ -201,28 +167,14 @@ export declare const ListItem: React.ForwardRefExoticComponent<Omit<import("@tam
      * adjust internal space relative to icon size
      */
     scaleSpace?: number | undefined;
-    /**
-     * title
-     * @deprecated use ListItem.Title instead
-     */
     title?: React.ReactNode;
-    /**
-     * subtitle
-     * @deprecated use ListItem.Subtitle instead
-     */
     subTitle?: React.ReactNode;
     /**
      * will not wrap text around `children` only, "all" will not wrap title or subTitle
      */
     noTextWrap?: boolean | "all" | undefined;
 }, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<TextParentStyles, "TextComponent" | "noTextWrap"> & ThemeableProps & {
-    /**
-     * @deprecated use ListItem.Icon instead
-     */
     icon?: IconProp | undefined;
-    /**
-     * @deprecated use ListItem.Icon instead
-     */
     iconAfter?: IconProp | undefined;
     /**
      * adjust icon relative to size
@@ -239,15 +191,7 @@ export declare const ListItem: React.ForwardRefExoticComponent<Omit<import("@tam
      * adjust internal space relative to icon size
      */
     scaleSpace?: number | undefined;
-    /**
-     * title
-     * @deprecated use ListItem.Title instead
-     */
     title?: React.ReactNode;
-    /**
-     * subtitle
-     * @deprecated use ListItem.Subtitle instead
-     */
     subTitle?: React.ReactNode;
     /**
      * will not wrap text around `children` only, "all" will not wrap title or subTitle
@@ -303,13 +247,7 @@ export declare const ListItem: React.ForwardRefExoticComponent<Omit<import("@tam
         chromeless?: boolean | "all" | undefined;
         active?: boolean | undefined;
     }>, "noTextWrap" | keyof import("@tamagui/text").TextContextStyles | "textProps" | keyof ThemeableProps | "icon" | "iconAfter" | "scaleIcon" | "spaceFlex" | "scaleSpace" | "title" | "subTitle"> & Omit<TextParentStyles, "TextComponent" | "noTextWrap"> & ThemeableProps & {
-        /**
-         * @deprecated use ListItem.Icon instead
-         */
         icon?: IconProp | undefined;
-        /**
-         * @deprecated use ListItem.Icon instead
-         */
         iconAfter?: IconProp | undefined;
         /**
          * adjust icon relative to size
@@ -326,28 +264,14 @@ export declare const ListItem: React.ForwardRefExoticComponent<Omit<import("@tam
          * adjust internal space relative to icon size
          */
         scaleSpace?: number | undefined;
-        /**
-         * title
-         * @deprecated use ListItem.Title instead
-         */
         title?: React.ReactNode;
-        /**
-         * subtitle
-         * @deprecated use ListItem.Subtitle instead
-         */
         subTitle?: React.ReactNode;
         /**
          * will not wrap text around `children` only, "all" will not wrap title or subTitle
          */
         noTextWrap?: boolean | "all" | undefined;
     }, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<TextParentStyles, "TextComponent" | "noTextWrap"> & ThemeableProps & {
-        /**
-         * @deprecated use ListItem.Icon instead
-         */
         icon?: IconProp | undefined;
-        /**
-         * @deprecated use ListItem.Icon instead
-         */
         iconAfter?: IconProp | undefined;
         /**
          * adjust icon relative to size
@@ -364,15 +288,7 @@ export declare const ListItem: React.ForwardRefExoticComponent<Omit<import("@tam
          * adjust internal space relative to icon size
          */
         scaleSpace?: number | undefined;
-        /**
-         * title
-         * @deprecated use ListItem.Title instead
-         */
         title?: React.ReactNode;
-        /**
-         * subtitle
-         * @deprecated use ListItem.Subtitle instead
-         */
         subTitle?: React.ReactNode;
         /**
          * will not wrap text around `children` only, "all" will not wrap title or subTitle

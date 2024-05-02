@@ -37,15 +37,16 @@ const ListItemContext = createStyledContext<{
   size: '$true',
 })
 
+// TODO: uncomment commented comments
 export type ListItemExtraProps = Omit<TextParentStyles, 'TextComponent' | 'noTextWrap'> &
   ThemeableProps & {
-    /**
-     * @deprecated use ListItem.Icon instead
-     */
+    // /**
+    //  * @deprecated use ListItem.Icon instead
+    //  */
     icon?: IconProp
-    /**
-     * @deprecated use ListItem.Icon instead
-     */
+    // /**
+    //  * @deprecated use ListItem.Icon instead
+    //  */
     iconAfter?: IconProp
     /**
      * adjust icon relative to size
@@ -62,15 +63,15 @@ export type ListItemExtraProps = Omit<TextParentStyles, 'TextComponent' | 'noTex
      * adjust internal space relative to icon size
      */
     scaleSpace?: number
-    /**
-     * title
-     * @deprecated use ListItem.Title instead
-     */
+    // /**
+    //  * title
+    //  * @deprecated use ListItem.Title instead
+    //  */
     title?: React.ReactNode
-    /**
-     * subtitle
-     * @deprecated use ListItem.Subtitle instead
-     */
+    // /**
+    //  * subtitle
+    //  * @deprecated use ListItem.Subtitle instead
+    //  */
     subTitle?: React.ReactNode
     /**
      * will not wrap text around `children` only, "all" will not wrap title or subTitle
