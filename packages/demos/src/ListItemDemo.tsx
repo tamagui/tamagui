@@ -19,7 +19,8 @@ function ListItemDemo1() {
             <Star />
           </ListItem.Icon>
           <ListItem.TextContent>
-            <ListItem.Title>Twinkles</ListItem.Title>
+            <ListItem.Title>Stars</ListItem.Title>
+            <ListItem.Subtitle>Twinkles</ListItem.Subtitle>
           </ListItem.TextContent>
         </ListItem>
       </YGroup.Item>
