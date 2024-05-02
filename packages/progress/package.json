@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/progress",
-  "version": "1.91.4",
+  "version": "1.96.0",
   "sideEffects": [
     "*.css"
   ],
@@ -26,25 +26,25 @@
     "./package.json": "./package.json",
     ".": {
       "types": "./types/index.d.ts",
-      "import": "./dist/esm/index.js",
+      "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.js",
       "react-native": "./dist/cjs/index.native.js"
     }
   },
   "dependencies": {
-    "@tamagui/compose-refs": "1.91.4",
-    "@tamagui/core": "1.91.4",
-    "@tamagui/create-context": "1.91.4",
-    "@tamagui/get-token": "1.91.4",
-    "@tamagui/helpers": "1.91.4",
-    "@tamagui/stacks": "1.91.4"
+    "@tamagui/compose-refs": "1.96.0",
+    "@tamagui/core": "1.96.0",
+    "@tamagui/create-context": "1.96.0",
+    "@tamagui/get-token": "1.96.0",
+    "@tamagui/helpers": "1.96.0",
+    "@tamagui/stacks": "1.96.0"
   },
   "peerDependencies": {
     "react": "*",
     "react-native": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.91.4",
+    "@tamagui/build": "1.96.0",
     "react": "^18.2.0",
     "react-native": "^0.73.4"
   },

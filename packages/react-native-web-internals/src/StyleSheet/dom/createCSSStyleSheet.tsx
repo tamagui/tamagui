@@ -29,7 +29,8 @@ export default function createCSSStyleSheet(
       } else {
         const head = root.head
         if (head) {
-          head.insertBefore(element, head.firstChild)
+          // append fixes remix SSR hydration because react goes in-order and prepend messes up order
+          head.appendChild(element)
         }
       }
     }

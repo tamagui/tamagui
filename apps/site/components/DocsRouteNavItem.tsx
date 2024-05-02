@@ -7,6 +7,7 @@ import type { NavItemProps } from './DocsPage'
 import { ExternalIcon } from './ExternalIcon'
 
 export class DocsItemsStore {
+  hovered = false
   index = 0
 }
 
@@ -24,7 +25,7 @@ export const DocsRouteNavItem = function DocsRouteNavItem({
   inMenu?: boolean
   index: number
 }) {
-  const isActive = useStoreSelector(DocsItemsStore, (x) => x.index === index)
+  const isActive = useStoreSelector(DocsItemsStore, (x) => x.hovered && x.index === index)
   const isExternal = external || href.startsWith('http')
   const ref = useRef<any>()
 

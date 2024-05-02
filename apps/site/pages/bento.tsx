@@ -2,6 +2,7 @@ import { NextLink } from '@components/NextLink'
 import * as Sections from '@tamagui/bento'
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import {
+  AlertCircle,
   BadgeAlert,
   Banana,
   BellDot,
@@ -11,17 +12,23 @@ import {
   ChevronDown,
   CircleUserRound,
   Cog,
+  Dot,
+  Drumstick,
+  FileWarning,
   FormInput,
   Globe,
+  Hand,
   Image,
   Layout,
   Leaf,
   List,
   MessageSquareShare,
+  MessageSquareWarning,
   MousePointerClick,
   NotebookTabs,
   PanelLeft,
   PanelTop,
+  Pin,
   Puzzle,
   RectangleHorizontal,
   Search,
@@ -30,16 +37,13 @@ import {
   Table,
   TextCursorInput,
   ToggleRight,
-  X,
 } from '@tamagui/lucide-icons'
-import { useBentoStore } from 'hooks/useBentoStore'
-import type Stripe from 'stripe'
 
 import {
   Button,
   Circle,
-  Dialog,
   EnsureFlexed,
+  H2,
   H3,
   H4,
   H5,
@@ -47,11 +51,9 @@ import {
   Paragraph,
   ScrollView,
   Separator,
-  Sheet,
   Spacer,
   Stack,
   Theme,
-  Unspaced,
   XStack,
   YStack,
 } from 'tamagui'
@@ -59,21 +61,18 @@ import {
 import { BentoIcon } from '@components/BentoIcon'
 import { BentoLogo } from '@components/BentoLogo'
 import { BentoPageFrame } from '@components/BentoPageFrame'
-import { BentoPurchaseModal } from '@components/BentoPurchaseModal'
 import { ContainerLarge } from '@components/Container'
 import { ThemeNameEffect } from '@components/ThemeNameEffect'
 import type { ProComponentsProps } from '@interfaces/ProComponentsProps'
 import { getDefaultLayout } from '@lib/getDefaultLayout'
-import { stripe } from '@lib/stripe'
-import { getArray } from '@lib/supabase-utils'
-import { supabaseAdmin } from '@lib/supabaseAdmin'
+import { getProductsForServerSideRendering } from '@lib/product-pages-server'
 import { useStore } from '@tamagui/use-store'
+import { useTakeoutStore } from 'hooks/useTakeoutStore'
 import { useUser } from 'hooks/useUser'
 import type { GetStaticProps } from 'next'
-import Link from 'next/link'
 import { useMemo, useRef, useState } from 'react'
-import { BentoLicense } from '../components/BentoLicense'
-import { BentoPoliciesModal } from '../components/BentoPoliciesModal'
+import { PurchaseModal } from '../components/PurchaseModal'
+import { BentoFrond } from '../components/BentoFrond'
 
 class BentoStore {
   heroVisible = true
@@ -83,62 +82,47 @@ class BentoStore {
 export default function BentoPage(props: ProComponentsProps) {
   const store = useStore(BentoStore)
 
-  const user = useUser()
-  const coupon = user.data?.accessInfo.hasTakeoutAccess
-    ? props.takeoutPlusBentoCoupon
-    : props.defaultCoupon
-
   return (
-    <Theme name="tan">
-      <ThemeNameEffect colorKey="$color6" />
+    <>
+      <PurchaseModal
+        bento={props.bento}
+        defaultValue="bento"
+        fontsPack={props.fontsPack}
+        iconsPack={props.iconsPack}
+        starter={props.starter}
+      />
+      <Theme name="tan">
+        <ThemeNameEffect colorKey="$color6" />
 
-      <XStack
-        zi={1000}
-        // @ts-ignore
-        pos="fixed"
-        b={0}
-        l={0}
-        r={0}
-        theme="yellow"
-        bg="rgba(0,0,0,0.5)"
-      >
-        <ContainerLarge>
-          <YStack ai="center" py="$2">
-            <Paragraph size="$2" color="#fff">
-              <b>Early Access!</b> Mobile support is being improved, but you may find it
-              valuable already.
-            </Paragraph>
-          </YStack>
-        </ContainerLarge>
-      </XStack>
+        <BentoFrond />
 
-      <BentoPageFrame>
-        <ContainerLarge
-          zi={10}
-          h={0}
-          // offset for the banner
-          mt={30}
-        >
-          <Button
-            pos="absolute"
-            t="$-10"
-            r="$8"
-            size="$2"
-            circular
-            icon={store.heroVisible ? Search : ChevronDown}
-            onPress={() => {
-              store.heroVisible = !store.heroVisible
+        <BentoPageFrame>
+          <ContainerLarge
+            zi={10}
+            h={0}
+            // offset for the banner
+            mt={30}
+          >
+            <Button
+              pos="absolute"
+              t="$-10"
+              r="$8"
+              size="$2"
+              circular
+              icon={store.heroVisible ? Search : ChevronDown}
+              onPress={() => {
+                store.heroVisible = !store.heroVisible
+              }}
+              bg="$background025"
+            ></Button>
+          </ContainerLarge>
+          <YStack
+            onLayout={(e) => {
+              store.heroHeight = e.nativeEvent.layout.height
             }}
-            bg="$background025"
-          ></Button>
-        </ContainerLarge>
-        <YStack
-          onLayout={(e) => {
-            store.heroHeight = e.nativeEvent.layout.height
-          }}
-        >
-          <Hero mainProduct={props.proComponents} />
-          {/* <YStack pos="relative" zi={10000}>
+          >
+            <Hero mainProduct={props.bento} />
+            {/* <YStack pos="relative" zi={10000}>
             <ContainerLarge>
               <YStack pos="absolute" t={-50} r={80} rotate="-10deg">
                 <BentoIcon scale={3} />
@@ -146,14 +130,12 @@ export default function BentoPage(props: ProComponentsProps) {
             </ContainerLarge>
           </YStack> */}
 
-          <Intermediate />
-        </YStack>
-        <Body />
-        <BentoPurchaseModal defaultCoupon={coupon} proComponents={props.proComponents} />
-        <BentoPoliciesModal />
-        <AgreementModal />
-      </BentoPageFrame>
-    </Theme>
+            <Intermediate />
+          </YStack>
+          <Body />
+        </BentoPageFrame>
+      </Theme>
+    </>
   )
 }
 
@@ -228,8 +210,8 @@ const IntermediateCard = ({
   )
 }
 
-const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'] }) => {
-  const store = useBentoStore()
+const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['bento'] }) => {
+  const store = useTakeoutStore()
 
   return (
     <YStack pos="relative" zi={0}>
@@ -413,6 +395,30 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['proComponents'
                 </Paragraph>
               </XStack>
             </YStack>
+          </YStack>
+
+          <YStack pos="absolute" b="6%" r="$2" zi={100}>
+            <Theme name="green">
+              <XStack maw={400} als="center" br="$6" elevation="$1" className="blur-4">
+                <YStack o={0.62} bg="$color10" fullscreen br="$6" />
+                <YStack py="$3.5" px="$4" f={1}>
+                  <H3 fos={17} lh="$6" color="$color2">
+                    Beta 🤙
+                  </H3>
+                  <Paragraph color="$color4" size="$3" lh="$2">
+                    More polish ongoing. Next up is allowing customizing to your tokens.
+                  </Paragraph>
+                </YStack>
+                <AlertCircle
+                  pos="absolute"
+                  t="$3"
+                  r="$3"
+                  zi={100}
+                  color="$color7"
+                  size={22}
+                />
+              </XStack>
+            </Theme>
           </YStack>
 
           <YStack
@@ -767,7 +773,7 @@ BentoPage.getLayout = getDefaultLayout
 
 export const getStaticProps: GetStaticProps<ProComponentsProps | any> = async () => {
   try {
-    const props = await getTakeoutProducts()
+    const props = await getProductsForServerSideRendering()
     return {
       props,
     }
@@ -777,152 +783,4 @@ export const getStaticProps: GetStaticProps<ProComponentsProps | any> = async ()
       props: {},
     }
   }
-}
-
-const getTakeoutProducts = async (): Promise<ProComponentsProps> => {
-  const defaultPromoListPromise = stripe.promotionCodes.list({
-    code: 'SITE-PRO-COMPONENTS', // ones with code SITE-PRO-COMPONENTS are considered public and will be shown here
-    active: true,
-    expand: ['data.coupon'],
-  })
-  const takeoutPlusBentoPromotionCodePromise = stripe.promotionCodes.list({
-    code: 'TAKEOUTPLUSBENTO', // ones with code TAKEOUTPLUSBENTO are considered public and will be shown here
-    active: true,
-    expand: ['data.coupon'],
-  })
-  const productPromises = [
-    supabaseAdmin
-      .from('products')
-      .select('*, prices(*)')
-      .eq('metadata->>slug', 'bento')
-      .single(),
-  ]
-  const promises = [
-    defaultPromoListPromise,
-    takeoutPlusBentoPromotionCodePromise,
-    ...productPromises,
-  ]
-  const queries = await Promise.all(promises)
-
-  // slice(2) because the first two are coupon info
-  const products = queries.slice(2) as Awaited<(typeof productPromises)[number]>[]
-  const defaultCouponList = queries[0] as Awaited<typeof defaultPromoListPromise>
-  const takeoutPlusBentoCouponList = queries[1] as Awaited<
-    typeof takeoutPlusBentoPromotionCodePromise
-  >
-  let defaultCoupon: Stripe.Coupon | null = null
-
-  if (defaultCouponList.data.length > 0) {
-    defaultCoupon = defaultCouponList.data[0].coupon
-  }
-
-  let takeoutPlusBentoCoupon: Stripe.Coupon | null = null
-
-  if (takeoutPlusBentoCouponList.data.length > 0) {
-    takeoutPlusBentoCoupon = takeoutPlusBentoCouponList.data[0].coupon
-  }
-
-  if (!products.length) {
-    throw new Error(`No products found`)
-  }
-
-  for (const product of products) {
-    if (product.error) throw product.error
-    if (
-      !product.data.prices ||
-      !Array.isArray(product.data.prices) ||
-      product.data.prices.length === 0
-    ) {
-      throw new Error('No prices are attached to the product.')
-    }
-  }
-
-  return {
-    proComponents: {
-      ...products[0].data!,
-      prices: getArray(products[0].data!.prices!).filter(
-        (p) => p.active && !(p.metadata as Record<string, any>).hide_from_lists
-      ),
-    },
-    defaultCoupon,
-    takeoutPlusBentoCoupon,
-  }
-}
-
-const AgreementModal = () => {
-  const store = useBentoStore()
-  return (
-    <Dialog
-      modal
-      open={store.showAgreement}
-      onOpenChange={(val) => {
-        store.showAgreement = val
-      }}
-    >
-      <Dialog.Adapt when="sm">
-        <Sheet zIndex={200000} modal dismissOnSnapToBottom>
-          <Sheet.Frame padding="$4" space>
-            <Sheet.ScrollView>
-              <Dialog.Adapt.Contents />
-            </Sheet.ScrollView>
-          </Sheet.Frame>
-          <Sheet.Overlay
-            animation="lazy"
-            enterStyle={{ opacity: 0 }}
-            exitStyle={{ opacity: 0 }}
-          />
-        </Sheet>
-      </Dialog.Adapt>
-
-      <Dialog.Portal>
-        <Dialog.Overlay
-          key="overlay"
-          animation="medium"
-          className="blur-medium"
-          enterStyle={{ opacity: 0 }}
-          exitStyle={{ opacity: 0 }}
-        />
-
-        <Dialog.Content
-          bordered
-          elevate
-          key="content"
-          animation={[
-            'quick',
-            {
-              opacity: {
-                overshootClamping: true,
-              },
-            },
-          ]}
-          enterStyle={{ y: -10, opacity: 0, scale: 0.975 }}
-          exitStyle={{ y: 10, opacity: 0, scale: 0.975 }}
-          w="90%"
-          maw={900}
-        >
-          <ScrollView>
-            <YStack $gtSm={{ maxHeight: '90vh' }} space>
-              <Paragraph>
-                <Link href="/bento-license">Permalink to the license</Link>.
-              </Paragraph>
-
-              <BentoLicense />
-            </YStack>
-          </ScrollView>
-          <Unspaced>
-            <Dialog.Close asChild>
-              <Button
-                position="absolute"
-                top="$2"
-                right="$2"
-                size="$2"
-                circular
-                icon={X}
-              />
-            </Dialog.Close>
-          </Unspaced>
-        </Dialog.Content>
-      </Dialog.Portal>
-    </Dialog>
-  )
 }

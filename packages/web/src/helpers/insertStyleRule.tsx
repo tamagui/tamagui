@@ -230,7 +230,10 @@ function addThemesFromCSS(cssStyleRule: CSSStyleRule, tokens?: TokensParsed) {
     const sepI = rule.indexOf(':')
     if (sepI === -1) continue
     const varIndex = rule.indexOf('--')
-    const key = rule.slice(varIndex === -1 ? 0 : varIndex + 2, sepI)
+    let key = rule.slice(varIndex === -1 ? 0 : varIndex + 2, sepI)
+    if (process.env.TAMAGUI_CSS_VARIABLE_PREFIX) {
+      key = key.replace(process.env.TAMAGUI_CSS_VARIABLE_PREFIX, '')
+    }
     const val = rule.slice(sepI + 2)
     let value: string
     if (val.startsWith('var(')) {
@@ -350,18 +353,13 @@ export function insertStyleRules(rulesToInsert: RulesToInsert) {
 
     for (const rule of rules) {
       if (process.env.NODE_ENV === 'production') {
-        sheet.insertRule(rule, sheet.cssRules.length)
-      } else {
         try {
           sheet.insertRule(rule, sheet.cssRules.length)
         } catch (err) {
-          console.groupCollapsed(
-            `Error inserting rule into CSSStyleSheet: ${String(err)}`
-          )
-          console.info({ rule, rulesToInsert })
-          console.trace()
-          console.groupEnd()
+          console.error(`Error inserting CSS`, err)
         }
+      } else {
+        sheet.insertRule(rule, sheet.cssRules.length)
       }
     }
   }

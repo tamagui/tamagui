@@ -1,4 +1,4 @@
-import * as Config from '@tamagui/site-config'
+import { config } from '@tamagui/site-config'
 import { addTheme, updateTheme } from '@tamagui/theme'
 import { useState } from 'react'
 import {
@@ -12,7 +12,7 @@ import {
   useIsomorphicLayoutEffect,
 } from 'tamagui'
 
-const colors = Config.config.tokens.color
+const colors = config.tokens.color
 const colorKeys = Object.keys(colors)
 
 export function UpdateThemeDemo() {

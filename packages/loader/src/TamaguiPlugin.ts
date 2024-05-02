@@ -6,7 +6,6 @@ import { loadTamagui, watchTamaguiConfig } from '@tamagui/static'
 import buildResolver from 'esm-resolve'
 import type { Compiler, RuleSetRule } from 'webpack'
 import webpack from 'webpack'
-import { shouldExclude } from './shouldExclude'
 
 export type PluginOptions = TamaguiOptions & {
   isServer?: boolean
@@ -17,10 +16,7 @@ export type PluginOptions = TamaguiOptions & {
   disableModuleJSXEntry?: boolean
   disableWatchConfig?: boolean
   disableAliases?: boolean
-  /**
-   * @deprecated Deprecated
-   */
-  useReactNativeWebLite?: boolean
+  useTamaguiSVG?: boolean
 }
 
 const dir = process.cwd()
@@ -72,9 +68,9 @@ export class TamaguiPlugin {
 
   get componentsFullPaths() {
     return this.safeResolves(
-      this.options.components.map(
+      this.options.components?.map(
         (moduleName) => [moduleName, moduleName] as [string, string]
-      ),
+      ) || [],
       true
     )
   }
@@ -113,7 +109,10 @@ export class TamaguiPlugin {
         ['react/jsx-dev-runtime.js', 'react/jsx-dev-runtime'],
         ['react/jsx-dev-runtime', 'react/jsx-dev-runtime'],
 
-        // @ts-expect-error deprecated
+        ...(this.options.useTamaguiSVG
+          ? [['react-native-svg', '@tamagui/react-native-svg'] as [string, string]]
+          : ([] as any)),
+
         ...(this.options.useReactNativeWebLite
           ? [
               ['react-native$', 'react-native-web-lite'],

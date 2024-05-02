@@ -1,0 +1,50 @@
+---
+title: Tamagui UI
+description: An optional suite of fully open source components - in styled and unstyled forms.
+---
+
+# Tamagui UI
+
+<Description>
+  A suite of OSS components for all&nbsp;React&nbsp;platforms.
+</Description>
+
+Tamagui UI is a suite of fully open source components that are designed to work well on both web and native platforms. Some are fully headless, but all come in both styled and unstyled forms today.
+
+## Installation
+
+Each individual component includes installation instructions and can be installed independently, but you can also use all of the components via:
+
+```bash
+yarn add tamagui
+```
+
+## Setup
+
+One thing to understand is that `tamagui` is a superset of `@tamagui/core`, so if you've already set up core, you'll want to actually replace every reference of "@tamagui/core" with "tamagui", including removing the core dependency altogether from your package.json.
+
+When you replace everything with tamagui, you'll get a slightly more helpful TamaguiProvider that sets up a root portal for your various toasts, dialogs, and modals which you'll need to add to the highest point in your app, replacing the core provider if you use it already:
+
+```tsx
+import { TamaguiProvider, View } from 'tamagui'
+
+export default () => (
+  <TamaguiProvider config={yourConfig}>
+    <View />
+  </TamaguiProvider>
+)
+```
+
+Other than that, there's a large amount of optional configuration through `createTamagui` that is [documented in the Core Installation docs](/docs/intro/installation).
+
+You are all set!
+
+## Pro components
+
+We have suite of extra components and screens for common patterns and more specialized use cases available for purchase.
+
+<Spacer size="$6"  />
+
+<ProductCard product="bento">
+  A suite of nicely designed copy-paste components and screens.
+</ProductCard>

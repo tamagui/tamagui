@@ -13,7 +13,7 @@
     "moduleResolution": "node",
     "forceConsistentCasingInFileNames": true,
     "noEmitOnError": false,
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "noImplicitReturns": false,
     "noUnusedLocals": false,
     "noUnusedParameters": false,

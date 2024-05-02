@@ -68,27 +68,39 @@ export default () => (
 
 ## SizableText
 
-One unique feature to Tamagui that doesn't exist in many UI kits is that your themes define font sizing, spacing, line height, and letter spacing - all - custom for each font. This gives you the necessary control to have beautiful fonts with the right styles without having to resort to ugly hacks.
+Tamagui lets you define font sizing, spacing, line height, letter spacing and other properties with `createFont`, of which you can have many different configurations. We've found a nice pattern is to "align" all your keys across these sub-objects.
 
-SizableText does this with the `size` property, which looks into your theme and sets the following, so long as the keys for each value match:
+SizableText adds a `size` property thats defined using a [spread variant](/docs/core/styled#spread-variants) which looks for a matching key on each of these properties (using `@tamagui/get-font-sized`):
 
-- fontSize
-- lineHeight
+- color
+- fontStyle
+- textTransform
+- fontFamily
 - fontWeight
 - letterSpacing
+- fontSize
+- lineHeight
 
-It uses [spread variants](/docs/core/styled#spread-variants) to achieve this.
+So, if you've defined `small`, `medium` and `large` keys on each createFont category, you can use it like so:
 
-[Seeing how SizableText is defined](https://github.com/tamagui/tamagui/blob/master/packages/text/src/SizableText.tsx) is helpful for understanding Tamagui. They serve as a good example of how you can extend and compose components.
+```tsx
+<SizableText size="$small" />
+```
+
+[Source code for SizableText](https://github.com/tamagui/tamagui/blob/master/packages/text/src/SizableText.tsx).
 
 ## Paragraph
 
-Finally Paragraph extends `SizableText` and simply makes the text selectable, which is a property from the Text props that sets `userSelect` to `true` and `cursor` to `text`:
+Paragraph extends SizableText and is defined as:
 
 ```tsx
 export const Paragraph = styled(SizableText, {
   name: 'Paragraph',
+  tag: 'p',
   userSelect: 'auto',
+  color: '$color',
+  size: '$true',
+  whiteSpace: 'normal',
 })
 ```
 

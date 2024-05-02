@@ -1,10 +1,11 @@
 import { isWeb } from '@tamagui/constants'
 import type { GetProps } from '@tamagui/core'
-import { styled, useTheme } from '@tamagui/core'
+import { styled, useComposedRefs, useTheme } from '@tamagui/core'
 import { useFocusable } from '@tamagui/focusable'
 import { TextInput } from 'react-native'
 
 import { inputSizeVariant } from '../helpers/inputHelpers'
+import { useRef } from 'react'
 
 export const defaultStyles = {
   size: '$true',
@@ -87,8 +88,11 @@ export type InputExtraProps = {
 
 export type InputProps = InputFrameProps & InputExtraProps
 
-export const Input = InputFrame.styleable<InputExtraProps>((propsIn, ref) => {
-  const props = useInputProps(propsIn, ref)
+export const Input = InputFrame.styleable<InputExtraProps>((propsIn, forwardedRef) => {
+  const ref = useRef<Input>(null)
+  const composedRefs = useComposedRefs(forwardedRef, ref)
+  const props = useInputProps(propsIn, composedRefs)
+
   return <InputFrame {...props} />
 })
 

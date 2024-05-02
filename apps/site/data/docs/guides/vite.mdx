@@ -5,27 +5,86 @@ description: How to set up Tamagui with Vite
 
 Tamagui now has two plugins for Vite: one that sets up everything you need to get going, and a second that adds CSS compilation. Both are included in the `@tamagui/vite-plugin` package.
 
+## Install
+
+<Notice>
 For a full-featured example, you can create a new app using `npm create tamagui@latest` and select the 'Simple Web' option which includes a Vite setup.
+</Notice>
 
-### Installation
+Create a new [Vite](https://vitejs.dev/guide/#scaffolding-your-first-vite-project) project:
 
-1. Remove `"type": "module"` from your `package.json` if you have it. (The type module support was removed because it was breaking metro, webpack or something).
-2. Add `@tamagui/vite-plugin`
-3. And update your `vite.config.ts`:
+```bash
+npm create vite@latest
+```
 
-```tsx
+Add `@tamagui/vite-plugin`:
+
+```bash
+yarn add @tamagui/vite-plugin
+```
+
+### Configuration
+
+Update your `vite.config.ts`:
+
+{/* ```tsx
 import { tamaguiExtractPlugin, tamaguiPlugin } from '@tamagui/vite-plugin'
 
 export default defineConfig({
-  plugins: [
+plugins: [
     tamaguiPlugin({
-      config: './src/tamagui.config.ts',
-      components: ['tamagui'],
+    config: './src/tamagui.config.ts',
+    components: ['tamagui'],
     }),
     // optional, adds the optimizing compiler:
     tamaguiExtractPlugin(tamaguiConfig),
-  ],
+],
 })
+``` */}
+
+```tsx
+import { tamaguiExtractPlugin, tamaguiPlugin } from '@tamagui/vite-plugin'
+import react from '@vitejs/plugin-react-swc' // or @vitejs/plugin-react
+import tamaguiConfig from './src/tamagui.config.ts'
+
+export default {
+    plugins: [
+        react(),
+        tamaguiPlugin(tamaguiConfig),
+        // optional, adds the optimizing compiler:
+        process.env.NODE_ENV === 'production' ? tamaguiExtractPlugin(tamaguiConfig) : null,
+    ].filter(Boolean),
+}
 ```
 
-See the [Installation](/docs/intro/installation) and [Configuration](/docs/core/configuration) docs for more on generally setting up Tamagui.
+Or a minimal manual setup:
+
+```tsx showMore
+config.define = {
+    __DEV__: `${process.env.NODE_ENV === 'development' ? true : false}`,
+    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+}
+
+config.resolve.alias['react-native'] = 'react-native-web'
+
+// set up web extensions
+config.optimizeDeps.esbuildOptions = {
+    ...config.optimizeDeps.esbuildOptions,
+    resolveExtensions: [
+        '.web.js',
+        '.web.jsx',
+        '.web.ts',
+        '.web.tsx',
+        '.mjs',
+        '.js',
+        '.mts',
+        '.ts',
+        '.jsx',
+        '.tsx',
+        '.json'
+    ],
+    loader: {
+        '.js': 'jsx',
+    },
+}
+```

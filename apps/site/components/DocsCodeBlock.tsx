@@ -1,18 +1,43 @@
-import { CheckCircle, Code2, Copy, Paintbrush } from '@tamagui/lucide-icons'
+import {
+  CheckCircle,
+  ChevronsDownUp,
+  Code2,
+  Copy,
+  FileCode2,
+  Paintbrush,
+  TerminalSquare,
+} from '@tamagui/lucide-icons'
 import { useStore } from '@tamagui/use-store'
 import { forwardRef, useEffect, useRef, useState } from 'react'
 import { ScrollView } from 'react-native'
-import { Button, Spacer, TooltipSimple, XStack, YStack } from 'tamagui'
+import {
+  AnimatePresence,
+  Button,
+  Paragraph,
+  Progress,
+  Spacer,
+  TooltipSimple,
+  XStack,
+  YStack,
+} from 'tamagui'
 import { LinearGradient } from 'tamagui/linear-gradient'
 
 import { toggleTinted } from '../hooks/setTinted'
 import { useClipboard } from '../lib/useClipboard'
+import { useGradualIncrease } from '../lib/useGradualIncrease'
 import { Code } from './Code'
 import { ErrorBoundary } from './ErrorBoundary'
 import { Pre } from './Pre'
+import { RowingTabs } from './RowingTabs'
+import { getBashCommand } from '@lib/getBashCommand'
 
 class CollapseStore {
-  isCollapsed = true
+  isCollapsed: boolean
+
+  constructor(initialState: { isCollapsed: boolean } = { isCollapsed: true }) {
+    this.isCollapsed = initialState.isCollapsed
+  }
+
   setIsCollapsed(val: boolean) {
     this.isCollapsed = val
   }
@@ -24,6 +49,8 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
     children,
     id,
     isHero = false,
+    showMore = false,
+    fileName = undefined,
     isHighlightingLines,
     showLineNumbers: showLineNumbersIn,
     disableCopy,
@@ -32,27 +59,35 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
   } = props
   const lines = Array.isArray(children) ? children.length : 0
   const isCollapsible = isHero || props.isCollapsible
-  const store = useStore(CollapseStore)
+  const store = useStore(CollapseStore, { isCollapsed: showMore })
   const { isCollapsed, setIsCollapsed } = store
   const isLong = lines > 22
-  const [isCutoff, setIsCutoff] = useState(isLong && !isCollapsible)
-  const [code, setCode] = useState(undefined)
+  const [isCutoff, setIsCutoff] = useState(isLong && !showMore)
+  const [code, setCode] = useState<string | undefined>(undefined)
   const preRef = useRef<any>(null)
-  const { hasCopied, onCopy, value } = useClipboard(code)
+  const { hasCopied, onCopy, value, timeout } = useClipboard(code)
+  const copyTimeoutValue = useGradualIncrease(hasCopied, timeout)
   const showLineNumbers = showLineNumbersIn ?? (lines > 10 ? true : false)
+
+  const { isTerminal, command, getCode, handleTabChange } = getBashCommand(
+    children,
+    className
+  )
+  const showFileName = fileName || isTerminal
 
   // const frontmatter = useContext(FrontmatterContext)
 
   const isPreVisible = !isCollapsed || !isCollapsible
 
   useEffect(() => {
+    // console.log(storedTab)
     try {
       if (preRef.current && isPreVisible) {
         const codeElement = preRef.current.querySelector('code')
         if (codeElement) {
           // remove double line breaks
-          const code = codeElement.innerText.replace(/\n{3,}/g, '\n')
-          setCode(code)
+          const codeExtract = codeElement.innerText.replace(/\n{3,}/g, '\n')
+          setCode(getCode(codeExtract))
         } else {
           // not collapsible
         }
@@ -60,7 +95,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
     } catch {
       // ok
     }
-  }, [preRef, isPreVisible])
+  }, [preRef, isPreVisible, command])
 
   return (
     <YStack
@@ -146,34 +181,92 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
               mb={0}
               // @ts-ignore
               id={id}
+              jc="center"
             >
-              <ScrollView
-                style={{ width: '100%' }}
-                contentContainerStyle={{ minWidth: '100%' }}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-              >
-                {/* @ts-ignore */}
-                <Code
-                  p="$4"
-                  backgroundColor="transparent"
-                  f={1}
-                  className={className}
-                  size={size ?? '$5'}
-                  lineHeight={size ?? '$5'}
-                  {...rest}
+              {showFileName && (
+                <XStack
+                  ai="center"
+                  gap="$2"
+                  pl="$4"
+                  h="$5"
+                  py="$4"
+                  bg="$black1"
+                  bw="$1.5"
+                  bc="$background"
+                  br="$5"
                 >
-                  {children}
-                </Code>
-              </ScrollView>
+                  {isTerminal ? (
+                    <TerminalSquare size="$1" col="$white8" />
+                  ) : (
+                    <FileCode2 size="$1" col="$white8" />
+                  )}
+                  <Paragraph col="$white8">
+                    {isTerminal ? 'Terminal' : fileName}
+                  </Paragraph>
+                </XStack>
+              )}
+
+              <RowingTabs
+                onTabChange={handleTabChange}
+                className={className}
+                size={size}
+                {...rest}
+              >
+                <ScrollView
+                  style={{ width: '100%' }}
+                  contentContainerStyle={{ minWidth: '100%' }}
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                >
+                  {/* @ts-ignore */}
+                  <Code
+                    p="$4"
+                    backgroundColor="transparent"
+                    f={1}
+                    className={className}
+                    size={size ?? '$5'}
+                    lineHeight={size ?? '$5'}
+                    {...rest}
+                  >
+                    {children}
+                  </Code>
+                </ScrollView>
+              </RowingTabs>
             </Pre>
+
+            <AnimatePresence>
+              {isLong && !isCutoff && fileName && (
+                <Button
+                  position="absolute"
+                  aria-label="Collapse code block"
+                  size="$2"
+                  top={showFileName ? '$3' : '$3.5'}
+                  right="$8"
+                  display="inline-flex"
+                  iconAfter={ChevronsDownUp}
+                  scaleIcon={1.25}
+                  bg="$color1"
+                  o={1}
+                  animation="quicker"
+                  enterStyle={{ x: 5, o: 0 }}
+                  exitStyle={{ x: 5, o: 0 }}
+                  onPress={() => setIsCutoff(true)}
+                  $xs={{
+                    display: 'none',
+                  }}
+                >
+                  Show less
+                </Button>
+              )}
+            </AnimatePresence>
+
             {!disableCopy && (
               <TooltipSimple label={hasCopied ? 'Copied' : 'Copy to clipboard'}>
                 <Button
                   position="absolute"
                   aria-label="Copy code to clipboard"
                   size="$2"
-                  top="$3"
+                  top={showFileName ? '$3' : '$3.5'}
                   right="$3"
                   display="inline-flex"
                   icon={hasCopied ? CheckCircle : Copy}
@@ -184,6 +277,23 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                 />
               </TooltipSimple>
             )}
+
+            <Progress
+              value={copyTimeoutValue}
+              size="$0.75"
+              pos="absolute"
+              zi={1001}
+              w="auto"
+              b={(!isLong || isCutoff) && '$0'}
+              t={isLong && !isCutoff && '$0'}
+              l="$2"
+              r="$2"
+              bg="transparent"
+              rotate="180deg"
+              animation="quickest"
+            >
+              <Progress.Indicator bg="$color8" />
+            </Progress>
           </YStack>
         )}
       </ErrorBoundary>

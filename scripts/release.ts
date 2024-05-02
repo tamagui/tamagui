@@ -44,6 +44,10 @@ const isCI = finish || process.argv.includes('--ci')
 const curVersion = fs.readJSONSync('./packages/tamagui/package.json').version
 
 const nextVersion = (() => {
+  if (canary) {
+    return `${curVersion}-${Date.now()}`
+  }
+
   if (rePublish) {
     return curVersion
   }
@@ -59,10 +63,6 @@ const nextVersion = (() => {
   const curMinor = +curVersion.split('.')[1] || 0
   const minorVersion = curMinor + (shouldPatch ? 0 : plusVersion)
   const next = `1.${minorVersion}.${patchVersion}`
-
-  if (canary) {
-    return `${next}-${Date.now()}`
-  }
 
   return next
 })()
@@ -105,19 +105,37 @@ async function run() {
       await Promise.all(
         packagePaths
           .filter((i) => i.location !== '.' && !i.name.startsWith('@takeout'))
-          .map(async ({ name, location }) => {
+          .flatMap(async ({ name, location }) => {
             const cwd = path.join(process.cwd(), location)
             const json = await fs.readJSON(path.join(cwd, 'package.json'))
-            return {
+            const item = {
               name,
               cwd,
               json,
               path: path.join(cwd, 'package.json'),
               directory: location,
             }
+
+            if (json.alsoPublishAs) {
+              console.info(
+                ` ${name}: Also publishing as ${json.alsoPublishAs.join(', ')}`
+              )
+              return [
+                item,
+                ...json.alsoPublishAs.map((name) => ({
+                  ...item,
+                  json: { ...json, name },
+                  name,
+                })),
+              ]
+            }
+
+            return [item]
           })
       )
-    ).filter((x) => !x.json['tamagui-publish-skip'])
+    )
+      .flat()
+      .filter((x) => !x.json['skipPublish'])
 
     const packageJsons = allPackageJsons
       .filter((x) => {
@@ -178,7 +196,8 @@ async function run() {
     }
 
     if (!skipBuild && !finish) {
-      await spawnify(`yarn build`)
+      // lets do a full clean and build:force, to ensure we dont have weird cached or leftover files
+      await spawnify(`yarn build:force`)
       await checkDistDirs()
     }
 
@@ -188,7 +207,7 @@ async function run() {
         await spawnify(`yarn fix:deps`)
         await spawnify(`yarn lint`)
         await spawnify(`yarn check`)
-        await spawnify(`yarn test`)
+        await spawnify(`yarn test:ci`)
       }
     }
 

@@ -1,84 +1,91 @@
 //! tamagui-ignore
 //! debug-verbose
-// import './wdyr'
+import './wdyr'
 
-import { View as RNView } from 'react-native'
-import { View, styled, Square, Image, Tokens, YStack, XStack, Button } from 'tamagui'
+import { Checkbox, Square, View, YStack, styled } from 'tamagui'
 
+import { SelectDemo, SheetDemo } from '@tamagui/demos'
 import { useState } from 'react'
-import { TextInput } from 'react-native'
-import { ButtonDemo } from '@tamagui/demos'
-import { ChevronDown } from '@tamagui/lucide-icons'
-
-const StyledAnimatedWithStyleProp = styled(View, {
-  backgroundColor: 'red',
-
-  variants: {
-    something: {
-      '...size': (val, { tokens }) => {
-        tokens.size[val]
-        return {}
-      },
-    },
-  },
-})
+import { TextInput, View as RNView } from 'react-native'
 
 export const Sandbox = () => {
   const [open, setOpen] = useState(false)
 
   return (
     <RNView style={{ width: '100%', height: '100%', padding: 50 }}>
-      <XStack onPress={() => setOpen(!open)}>
-        <Button
-          animation="bouncy"
-          debug="verbose"
-          transform={[
-            {
-              rotate: open ? '180deg' : '0deg',
-            },
-          ]}
-        >
-          <ChevronDown />
-        </Button>
-      </XStack>
-    </RNView>
-  )
-
-  return (
-    <RNView style={{ width: '100%', height: '100%', padding: 50 }}>
-      <Image
-        height="100%"
-        position="absolute"
-        resizeMode="cover"
-        src="https://fastly.picsum.photos/id/526/500/300.jpg?hmac=GilOsrBNJ-eQBCy1R6YtGsHAki8i1VJ7T5N0R-SIFrk"
-        width="100%"
-      />
-    </RNView>
-  )
-
-  return (
-    <RNView style={{ width: '100%', height: '100%', padding: 50 }}>
-      <StyledAnimatedWithStyleProp
-        animation="bouncy"
-        debug="verbose"
-        style={[{ height: 200, width: 200 }]}
-      />
-    </RNView>
-  )
-
-  return (
-    <RNView style={{ width: '100%', height: '100%', padding: 50 }}>
       <Square
-        size={300}
-        // disabled
-        bg="red"
-        debug="verbose"
-        disabledStyle={{
-          bg: 'black',
+        size={200}
+        bg="$red10"
+        pressStyle={{
+          bg: 'green',
         }}
       />
+      {/* <SheetDemo /> */}
     </RNView>
   )
+
+  // // return (
+  // //   <RNView style={{ width: '100%', height: '100%', padding: 50 }}>
+  // //     <XStack onPress={() => setOpen(!open)}>
+  // //       <StyledButton
+  // //         animation="bouncy"
+  // //         debug="verbose"
+  // //         disabled={open}
+  // //         onPress={() => {
+  // //           console.log('hi')
+  // //           setOpen(!open)
+  // //         }}
+  // //       >
+  // //         hello
+  // //       </StyledButton>
+
+  // //       <Button
+  // //         onPress={() => {
+  // //           console.log('hi')
+  // //           setOpen(!open)
+  // //         }}
+  // //       >
+  // //         hello123
+  // //       </Button>
+  // //     </XStack>
+  // //   </RNView>
+  // // )
+
+  // return (
+  //   <RNView style={{ width: '100%', height: '100%', padding: 50 }}>
+  //     <Image
+  //       height="100%"
+  //       position="absolute"
+  //       resizeMode="cover"
+  //       src="https://fastly.picsum.photos/id/526/500/300.jpg?hmac=GilOsrBNJ-eQBCy1R6YtGsHAki8i1VJ7T5N0R-SIFrk"
+  //       width="100%"
+  //     />
+  //   </RNView>
+  // )
+
+  // return (
+  //   <RNView style={{ width: '100%', height: '100%', padding: 50 }}>
+  //     <StyledAnimatedWithStyleProp
+  //       animation="bouncy"
+  //       debug="verbose"
+  //       style={[{ height: 200, width: 200 }]}
+  //     />
+  //   </RNView>
+  // )
+
+  // return (
+  //   <RNView style={{ width: '100%', height: '100%', padding: 50 }}>
+  //     <Square
+  //       size={300}
+  //       // disabled
+  //       bg="red"
+  //       debug="verbose"
+  //       disabledStyle={{
+  //         bg: 'black',
+  //       }}
+  //     />
+  //   </RNView>
+  // )
 
   // return (
   //   <>
@@ -222,3 +229,27 @@ const defaultHitslopInset = {
   left: defaultHitslop,
   right: defaultHitslop,
 }
+
+// const StyledAnimatedWithStyleProp = styled(View, {
+//   backgroundColor: 'red',
+
+//   variants: {
+//     something: {
+//       '...size': (val, { tokens }) => {
+//         tokens.size[val]
+//         return {}
+//       },
+//     },
+//   },
+// })
+
+// const StyledButton = styled(Button, {
+//   variants: {
+//     disabled: {
+//       true: {
+//         backgroundColor: 'red',
+//       },
+//       false: {},
+//     },
+//   } as const,
+// })

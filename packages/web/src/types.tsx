@@ -1,6 +1,7 @@
 import type { StyleObject } from '@tamagui/helpers'
 import type { Properties } from 'csstype'
 import type {
+  CSSProperties,
   ComponentType,
   ForwardRefExoticComponent,
   FunctionComponent,
@@ -752,6 +753,9 @@ export type GroupMediaKeys =
   | `$group-${GroupNames}-${ParentMediaStates}`
   | `$group-${GroupNames}-${MediaQueryKey}`
   | `$group-${GroupNames}-${MediaQueryKey}-${ParentMediaStates}`
+  | `$group-${ParentMediaStates}`
+  | `$group-${MediaQueryKey}`
+  | `$group-${MediaQueryKey}-${ParentMediaStates}`
 
 export type WithMediaProps<A> = {
   [Key in
@@ -760,11 +764,13 @@ export type WithMediaProps<A> = {
     | ThemeMediaKeys
     | PlatformMediaKeys]?: Key extends `$platform-web`
     ? {
-        [SubKey in keyof A]?:
-          | A[SubKey]
-          | (SubKey extends keyof WebOnlyValidStyleValues
+        [SubKey in keyof A | keyof CSSProperties]?: SubKey extends keyof CSSProperties
+          ? CSSProperties[SubKey]
+          : SubKey extends keyof A
+            ? A[SubKey]
+            : SubKey extends keyof WebOnlyValidStyleValues
               ? WebOnlyValidStyleValues[SubKey]
-              : never)
+              : never
       }
     : A
 }
@@ -1230,10 +1236,10 @@ export interface TransformStyleProps {
   skewX?: string
   skewY?: string
   matrix?: number[]
-  rotate?: string
-  rotateY?: string
-  rotateX?: string
-  rotateZ?: string
+  rotate?: `${number}deg` | UnionableString
+  rotateY?: `${number}deg` | UnionableString
+  rotateX?: `${number}deg` | UnionableString
+  rotateZ?: `${number}deg` | UnionableString
 }
 
 interface ExtraStyleProps {
@@ -1269,7 +1275,10 @@ interface ExtraStyleProps {
    * Web-only style property. Will be omitted on native.
    */
   userSelect?: Properties['userSelect']
-
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  scrollbarWidth?: Properties['scrollbarWidth']
   pointerEvents?: ViewProps['pointerEvents']
 
   /**
@@ -1354,8 +1363,69 @@ export interface TextStylePropsBase
 
 type LooseCombinedObjects<A extends Object, B extends Object> = A | B | (A & B)
 
+type A11yDeprecated = {
+  /**
+   * @deprecated
+   * use aria-hidden instead
+   * https://reactnative.dev/docs/accessibility#aria-hidden
+   */
+  accessibilityElementsHidden?: ViewProps['accessibilityElementsHidden']
+  /**
+   * @deprecated
+   * native doesn't support this, so fallback to accessibilityHint on native
+   * use aria-describedby instead
+   */
+  accessibilityHint?: ViewProps['accessibilityHint']
+  /**
+   * @deprecated
+   * use aria-label instead
+   * https://reactnative.dev/docs/accessibility#aria-label
+   */
+  accessibilityLabel?: ViewProps['accessibilityLabel']
+  /**
+   * @deprecated
+   * use aria-labelledby instead
+   * https://reactnative.dev/docs/accessibility#aria-label
+   */
+  accessibilityLabelledBy?: ViewProps['accessibilityLabelledBy']
+  /**
+   * @deprecated
+   * use aria-live instead
+   */
+  accessibilityLiveRegion?: ViewProps['accessibilityLiveRegion']
+  /**
+   * @deprecated
+   * use role instead
+   */
+  accessibilityRole?: ViewProps['accessibilityRole']
+  /**
+   * @deprecated
+   * use aria-disabled, aria-selected, aria-checked, aria-busy, and aria-expanded instead
+   * https://reactnative.dev/docs/accessibility#aria-busy
+   */
+  accessibilityState?: ViewProps['accessibilityState']
+  /**
+   * @deprecated
+   * use aria-valuemax, aria-valuemin, aria-valuenow, and aria-valuetext instead
+   * https://reactnative.dev/docs/accessibility#aria-valuemax
+   */
+  accessibilityValue?: ViewProps['accessibilityValue']
+  /**
+   * @deprecated
+   * use aria-modal instead
+   */
+  accessibilityViewIsModal?: ViewProps['accessibilityViewIsModal']
+  /**
+   * @deprecated
+   * use tabIndex={0} instead
+   * make sure to fallback to accessible on native
+   */
+  accessible?: ViewProps['accessible']
+}
+
 export interface StackNonStyleProps
-  extends Omit<
+  extends A11yDeprecated,
+    Omit<
       ViewProps,
       | 'hitSlop' //  we bring our own via Pressable in TamaguiComponentPropsBase
       | 'pointerEvents'
@@ -1381,7 +1451,8 @@ export type StackProps = StackNonStyleProps & StackStyle
 //
 
 export interface TextNonStyleProps
-  extends Omit<
+  extends A11yDeprecated,
+    Omit<
       ReactTextProps,
       | 'children'
       | keyof WebOnlyPressEvents
@@ -1592,6 +1663,7 @@ export type GetStyleState = {
   fontFamily?: string
   debug?: DebugProp
   flatTransforms?: Record<string, any>
+  skipThemeTokenResolution?: boolean
 }
 
 export type StyleResolver<Response = PropMappedValue> = (

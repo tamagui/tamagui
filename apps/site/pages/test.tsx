@@ -4,10 +4,9 @@ import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import { Header } from '@tamagui/site/components/Header'
 import { SearchProvider } from '@tamagui/site/components/Search'
 import { useState } from 'react'
-import { AnimatePresence, Button, View, Text, YStack, styled, Square } from 'tamagui'
-import * as ReactNative from 'react-native'
+import { AnimatePresence, Button, Text, View, YStack, styled } from 'tamagui'
 
-// debugger
+console.warn('setting debug moti true')
 global.shouldDebugMoti = true
 
 const TabsList = styled(View, {
@@ -29,23 +28,7 @@ function TestPage() {
         flex: 1,
       }}
     >
-      {/* <Button debug="verbose" mr="$-10">
-        ok
-      </Button> */}
-
-      <Square
-        size={100}
-        // disabled
-        backgroundColor="green"
-        debug="verbose"
-        disableClassName
-        disabledStyle={{
-          backgroundColor: 'gray',
-        }}
-        pressStyle={{
-          bg: 'yellow',
-        }}
-      />
+      <PopoverDemo />
 
       {/* <Text debug="verbose" maxWidth={300} numberOfLines={3} ellipsizeMode="middle">
         Esse laborum veniam magna sunt nulla nisi proident nisi culpa. Aliquip sit duis
@@ -285,7 +268,7 @@ TestPage.getLayout = (page) => {
 
 import { memo, useEffect } from 'react'
 import { Circle, XStack } from 'tamagui'
-import { DialogDemo } from '@tamagui/demos'
+import { PopoverDemo } from '@tamagui/demos'
 
 const TestCircle = memo(() => {
   const [mounted, setMounted] = useState<'start' | 'animate' | 'done'>('start')

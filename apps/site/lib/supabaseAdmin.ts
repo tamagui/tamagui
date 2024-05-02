@@ -3,7 +3,7 @@ import { createClient } from '@supabase/supabase-js'
 import type { Price, Product } from 'site-types'
 import type Stripe from 'stripe'
 
-import { sendTakeoutWelcomeEmail } from './email'
+import { sendProductPurchaseEmail } from './email'
 import { toDateTime } from './helpers'
 import { stripe } from './stripe'
 import type { Database } from './supabase-types'
@@ -16,6 +16,17 @@ export const supabaseAdmin = process.env.NEXT_PUBLIC_SUPABASE_URL
       process.env.SUPABASE_SERVICE_ROLE_KEY || ''
     )
   : ((() => {}) as any as SupabaseClient<Database>)
+
+export const getBentoCode = async (codePath: string) => {
+  const { data, error } = await supabaseAdmin.storage
+    .from('bento')
+    .download(`merged/${codePath}.tsx`)
+  if (error) {
+    console.error(error)
+    throw new Error(`Error getting bento code for ${codePath}`)
+  }
+  return data.text()
+}
 
 export const upsertProductRecord = async (product: Stripe.Product) => {
   const productData: Product = {
@@ -236,16 +247,27 @@ export const manageSubscriptionStatusChange = async (
         stripe.products.retrieve(item.price.product as string)
       )
     )
+    const userName = userModel.data.full_name ?? email.split('@').shift()!
     const includesTakeoutStarter = subscribedProducts.some(
       (product) => product.metadata.slug === 'universal-starter'
     )
     if (includesTakeoutStarter) {
-      await sendTakeoutWelcomeEmail(email, {
-        name: userModel.data.full_name ?? email.split('@').shift()!,
+      await sendProductPurchaseEmail(email, {
+        name: userName,
+        product_name: 'Takeout',
       })
-      console.info(`Welcome email request sent to Postmark for ${email}`)
+      console.info(`Takeout purchase email request sent to Postmark for ${email}`)
     }
-    // TODO: add a welcome email for bento (just like the one above) here:
+    const includesBento = subscribedProducts.some(
+      (product) => product.metadata.slug === 'bento'
+    )
+    if (includesBento) {
+      await sendProductPurchaseEmail(email, {
+        name: userName,
+        product_name: 'Bento',
+      })
+      console.info(`Bento purchase email request sent to Postmark for ${email}`)
+    }
   }
 }
 
