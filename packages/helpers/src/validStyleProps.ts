@@ -191,6 +191,7 @@ export const stylePropsView = {
     borderLeftStyle: true,
     borderRightStyle: true,
     caretColor: true,
+    scrollbarWidth: true,
 
     overflowX: true,
     overflowY: true,

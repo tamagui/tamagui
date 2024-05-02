@@ -16,9 +16,9 @@ Create a new [Vite](https://vitejs.dev/guide/#scaffolding-your-first-vite-projec
 ```bash
 npm create vite@latest
 ```
--  Remove `"type": "module"` from your `package.json` if you have it. (The type module support was removed because it was breaking metro, webpack or something).
 
-Add `@tamagui/vite-plugin`
+Add `@tamagui/vite-plugin`:
+
 ```bash
 yarn add @tamagui/vite-plugin
 ```
@@ -59,7 +59,7 @@ export default {
 
 Or a minimal manual setup:
 
-```tsx showFull
+```tsx showMore
 config.define = {
     __DEV__: `${process.env.NODE_ENV === 'development' ? true : false}`,
     'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),

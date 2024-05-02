@@ -10,22 +10,22 @@ export function apiRoute(handler: NextApiHandler) {
       return result instanceof Promise ? await result : result
     } catch (err) {
       if (err instanceof HandledResponseTermination) {
-        console.info(`Handled termination ${err.message}`)
+        console.debug(`Handled termination ${err.message}`)
         return
         // ok we handled it
-      } else {
-        const message = err instanceof Error ? err.message : `${err}`
-
-        if (err instanceof Error) {
-          console.error(`Error serving API Route: ${err.message} ${err.stack}`)
-        }
-
-        res.status(500).json({
-          error: message,
-        })
-
-        throw err
       }
+
+      const message = err instanceof Error ? err.message : `${err}`
+
+      if (err instanceof Error) {
+        console.error(`Error serving API Route: ${err.message} ${err.stack}`)
+      }
+
+      res.status(500).json({
+        error: message,
+      })
+
+      throw err
     }
   }) satisfies NextApiHandler
 }

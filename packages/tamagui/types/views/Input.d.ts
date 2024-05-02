@@ -593,6 +593,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
     outlineStyle?: import("csstype").Property.OutlineStyle | undefined;
     outlineWidth?: "unset" | import("@tamagui/core").SpaceValue | undefined;
     userSelect?: import("csstype").Property.UserSelect | undefined;
+    scrollbarWidth?: import("csstype").Property.ScrollbarWidth | undefined;
     pointerEvents?: "unset" | "auto" | "box-none" | "none" | "box-only" | undefined;
     space?: number | "unset" | import("@tamagui/core").GetThemeValueForKey<"space"> | undefined;
     spaceDirection?: "unset" | import("@tamagui/core").SpaceDirection | undefined;
