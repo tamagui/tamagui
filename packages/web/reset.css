@@ -36,11 +36,3 @@ p, input, textarea, button, ul, ol, li, pre, dialog {
 a.is_Button, .is_Anchor:has(.is_Button) {
   text-decoration: none;
 }
-
-input::selection, textarea::selection {
-  background-color: var(--selectionBackground) !important;
-}
-
-input::placeholder, textarea::placeholder {
-  color: var(--placeholderColor) !important;
-}

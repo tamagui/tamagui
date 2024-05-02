@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { registerFocusable } from '@tamagui/focusable'
-import { View, styled, useComposedRefs, useEvent, useTheme } from '@tamagui/core'
+import { View, isWeb, styled, useComposedRefs, useEvent, useTheme } from '@tamagui/core'
 import { InputProps } from './types'
 import { styledBody } from './shared'
 const StyledInput = styled(View, styledBody[0], styledBody[1])
@@ -120,5 +120,23 @@ export const Input = StyledInput.styleable<InputProps>((inProps, forwardedRef) =
       focus: () => {},
     })
   }, [id, disabled])
-  return <StyledInput ref={composedRefs} {...finalProps} />
+
+  return (
+    <>
+      {process.env.TAMAGUI_TARGET === 'web' && (
+        <style>
+          {`
+      input::selection, textarea::selection {
+        background-color: var(--selectionBackground) !important;
+      }
+      
+      input::placeholder, textarea::placeholder {
+        color: var(--placeholderColor) !important;
+      }
+      `}
+        </style>
+      )}
+      <StyledInput ref={composedRefs} {...finalProps} />
+    </>
+  )
 })

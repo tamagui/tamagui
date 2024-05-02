@@ -143,7 +143,6 @@ export declare const styledBody: ({
         borderTopStyle?: boolean | undefined;
         borderLeftStyle?: boolean | undefined;
         borderRightStyle?: boolean | undefined;
-        caretColor?: boolean | undefined;
         overflowX?: boolean | undefined;
         overflowY?: boolean | undefined;
         contain?: boolean | undefined;
