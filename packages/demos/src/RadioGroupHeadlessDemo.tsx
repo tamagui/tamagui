@@ -11,6 +11,7 @@ import { RovingFocusGroup } from '@tamagui/roving-focus'
 import { createContext } from 'react'
 import { StyleSheet, View, Pressable, Text } from 'react-native'
 import { isWeb, useTheme } from 'tamagui'
+
 const RadioGroupContext = createContext<RadioGroupContextValue>({})
 const RadioGroupItemContext = createContext<RadioGroupItemContextValue>({
   checked: false,
@@ -113,8 +114,6 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   radioGroupItem: {
-    borderTopLeftRadius: 1000,
-    borderBottomRightRadius: 1000,
     borderWidth: 2,
     width: 30,
     height: 30,
@@ -122,10 +121,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   radioGroupItemIndicator: {
-    width: '33%',
-    height: '33%',
-    borderRadius: 1000,
-    transform: [{ rotate: '45deg' }],
+    width: '35%',
+    height: '35%',
   },
   radioGroupItemContainer: {
     justifyContent: 'center',
