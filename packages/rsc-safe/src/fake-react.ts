@@ -27,7 +27,7 @@ export const useMemo = <T, D>(callback: () => T, deps: React.DependencyList): T 
 
 // for useContext try to read default value from context when on server
 export const useContext = <T>(context: React.Context<T>): T => {
-  return (context as any)._currentValue as T
+  return (context as any)._value.value as T
 }
 
 export const createContext = _createContext

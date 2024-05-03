@@ -1,4 +1,10 @@
-/// <reference types="react" />
-export declare const REACT_CONSUMER_TYPE: symbol;
-export declare function createContext<T>(defaultValue: T): React.Context<T>;
+export declare function createContext(defaultValue: any): {
+    Provider: ({ value, children }: {
+        value: any;
+        children: any;
+    }) => any;
+    _value: {
+        value: any;
+    };
+};
 //# sourceMappingURL=createContext.d.ts.map
