@@ -19,7 +19,9 @@ export async function generateStaticParams() {
   })
 
   const latestVersionPaths = paths.map((path) => {
-    const withoutVersion = path.subpath.slice(0, path.subpath.length - 1)
+    const parts = path.subpath.split('/')
+    parts.pop()
+    const withoutVersion = parts.join('/')
     return {
       subpath: withoutVersion,
     }
@@ -31,6 +33,8 @@ export async function generateStaticParams() {
 }
 
 export async function loader(props: LoaderProps) {
+  console.log('load me', props)
+
   const { frontmatter, code } = await getMDXBySlug(
     'data/docs/components',
     props.params.subpath
@@ -65,14 +69,15 @@ export default function DocComponentsPage() {
     }
   }, [])
 
-  useEffect(() => {
-    const url = new URL(location.href)
-    url.pathname = `${pathname}/${frontmatter.version}`
-    if (Array.isArray(params.subpath)) {
-      url.pathname = url.pathname.replace('[...subpath]', params.subpath[0])
-    }
-    router.replace(url)
-  }, [])
+  // useEffect(() => {
+  //   const url = new URL(location.href)
+  //   url.pathname = `${pathname}/${frontmatter.version}`
+  //   if (Array.isArray(params.subpath)) {
+  //     url.pathname = url.pathname.replace('[...subpath]', params.subpath[0])
+  //   }
+  //   console.log('huhh', url, frontmatter)
+  //   // router.replace(url)
+  // }, [])
 
   return (
     <>

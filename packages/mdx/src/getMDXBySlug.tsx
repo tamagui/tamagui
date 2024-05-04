@@ -18,7 +18,7 @@ export const getMDXBySlug = async (
 ): Promise<{ frontmatter: Frontmatter; code: string }> => {
   let mdxPath = slug
   if (!mdxPath.includes('/') && basePath.includes('components')) {
-    const versions = getAllVersionsFromPath(`docs/components/${slug}`)
+    const versions = getAllVersionsFromPath(`data/docs/components/${slug}`)
     mdxPath += `/${versions[0]}`
   }
   const filePath = path.join(basePath, `${mdxPath}.mdx`)
