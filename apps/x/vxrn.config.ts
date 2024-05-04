@@ -1,7 +1,6 @@
 import { createRequire } from 'node:module'
-import { createFileSystemRouter, vitePluginSsrCss } from '@vxrn/router/vite'
+import { getVitePlugins } from '@vxrn/router/vite'
 // import { tamaguiPlugin, tamaguiExtractPlugin } from '@tamagui/vite-plugin'
-import entryShakingPlugin from 'vite-plugin-entry-shaking'
 import { mdx } from '@cyco130/vite-plugin-mdx'
 import type { VXRNConfig } from 'vxrn'
 // import inpsectPlugin from 'vite-plugin-inspect'
@@ -78,11 +77,7 @@ export default async () => {
           ],
         }),
 
-        vitePluginSsrCss({
-          entries: ['/src/entry-web'],
-        }),
-
-        createFileSystemRouter({
+        ...getVitePlugins({
           root: 'app',
         }),
 
