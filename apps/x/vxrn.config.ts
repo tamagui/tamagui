@@ -50,6 +50,7 @@ export default async () => {
       resolve: {
         alias: {
           '~': import.meta.dirname,
+          'react-native-svg': '@tamagui/react-native-svg',
         },
 
         dedupe: [
@@ -66,16 +67,25 @@ export default async () => {
 
       ssr: {
         optimizeDeps,
-        noExternal: ['swr', 'react', 'react-dom', 'react-dom/server'],
+        external: ['@tamagui/mdx'],
+        noExternal: [
+          'swr',
+          'react',
+          'react-dom',
+          'react-dom/server',
+          'react-native',
+          'expo-modules-core',
+          'react-native-gesture-handler',
+        ],
       },
 
       plugins: [
-        mdx({
-          rehypePlugins: [
-            // todo
-            // rehypeHighlightCode,
-          ],
-        }),
+        // mdx({
+        //   rehypePlugins: [
+        //     // todo
+        //     // rehypeHighlightCode,
+        //   ],
+        // }),
 
         ...getVitePlugins({
           root: 'app',

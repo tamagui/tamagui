@@ -4,6 +4,7 @@ import { createCodeHighlighter } from './highlightCode'
 const highlightCode = createCodeHighlighter()
 
 export async function getCompilationExamples() {
+  console.log('getting comp example')
   const compilationExamples = compilationCode.map((item) => {
     return {
       ...item,

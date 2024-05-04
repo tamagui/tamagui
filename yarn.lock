@@ -10836,9 +10836,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vxrn/react-native-prebuilt@npm:0.1.46":
-  version: 0.1.46
-  resolution: "@vxrn/react-native-prebuilt@npm:0.1.46"
+"@vxrn/react-native-prebuilt@portal:/Users/n8/vxrn/packages/react-native-prebuilt::locator=tamagui-monorepo%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@vxrn/react-native-prebuilt@portal:/Users/n8/vxrn/packages/react-native-prebuilt::locator=tamagui-monorepo%40workspace%3A."
   dependencies:
     "@vxrn/vite-flow": "npm:0.1.46"
     esbuild: "npm:~0.19.3"
@@ -10846,9 +10846,8 @@ __metadata:
     import-meta-resolve: "npm:^4.0.0"
   peerDependencies:
     react-native: "*"
-  checksum: 10/52c4b5fdff37f0729e9309d50ee341eb172f3c7098c040be42372b5c2d6f5784e72d84cdfc22a3593edaae87987365217600db604321dc41d35d6d04ce654138
   languageName: node
-  linkType: hard
+  linkType: soft
 
 "@vxrn/router@portal:/Users/n8/vxrn/packages/router::locator=tamagui-monorepo%40workspace%3A.":
   version: 0.0.0-use.local
@@ -10884,53 +10883,48 @@ __metadata:
   languageName: node
   linkType: soft
 
-"@vxrn/safe-area@npm:0.1.46":
-  version: 0.1.46
-  resolution: "@vxrn/safe-area@npm:0.1.46"
-  checksum: 10/973294a3e942a536c1b6f572c223747945c45e297b57059a2073708c1e1ba65babc1a597d6bc4bb84cb197ad1de908521d46651c7e43646ca8dc47ea09d7424b
+"@vxrn/safe-area@portal:/Users/n8/vxrn/packages/safe-area::locator=tamagui-monorepo%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@vxrn/safe-area@portal:/Users/n8/vxrn/packages/safe-area::locator=tamagui-monorepo%40workspace%3A."
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@vxrn/vite-flow@npm:0.1.46":
-  version: 0.1.46
-  resolution: "@vxrn/vite-flow@npm:0.1.46"
+"@vxrn/vite-flow@portal:/Users/n8/vxrn/packages/vite-flow::locator=tamagui-monorepo%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@vxrn/vite-flow@portal:/Users/n8/vxrn/packages/vite-flow::locator=tamagui-monorepo%40workspace%3A."
   dependencies:
     "@babel/core": "npm:^7.21.8"
     metro-react-native-babel-preset: "npm:^0.77.0"
-  checksum: 10/da79827a6be25e4b135e09838b147fce68cd56c3c266062be4463f51fe84942d15a4a714e094fc9a456bb30693fe1406790fbaa9f5675d081143cebb4954cd61
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@vxrn/vite-native-client@npm:0.1.46":
-  version: 0.1.46
-  resolution: "@vxrn/vite-native-client@npm:0.1.46"
+"@vxrn/vite-native-client@portal:/Users/n8/vxrn/packages/vite-native-client::locator=tamagui-monorepo%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@vxrn/vite-native-client@portal:/Users/n8/vxrn/packages/vite-native-client::locator=tamagui-monorepo%40workspace%3A."
   peerDependencies:
     react-native: "*"
-  checksum: 10/02396c81ca6587d45f5704656f50fa25e0cf05ea6ba28305a859e8dad4d8e65a079d49830b39fbe2b7ac386f48cc4e5a8ca9ee987f8ab4cb5e82456409fb5511
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@vxrn/vite-native-hmr@npm:0.1.46":
-  version: 0.1.46
-  resolution: "@vxrn/vite-native-hmr@npm:0.1.46"
+"@vxrn/vite-native-hmr@portal:/Users/n8/vxrn/packages/vite-native-hmr::locator=tamagui-monorepo%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@vxrn/vite-native-hmr@portal:/Users/n8/vxrn/packages/vite-native-hmr::locator=tamagui-monorepo%40workspace%3A."
   dependencies:
     pretty-format: "npm:^28.1.0"
   peerDependencies:
     react-native: "*"
-  checksum: 10/16aacb809e7614abaafd3d6bf70c045b30fdaafc301758db00d7961f0cf6fe44d34141a46815060f7b66655062b9d1cf521c199ef248be727e2a961e81c3f2f8
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@vxrn/vite-native-swc@npm:0.1.46":
-  version: 0.1.46
-  resolution: "@vxrn/vite-native-swc@npm:0.1.46"
+"@vxrn/vite-native-swc@portal:/Users/n8/vxrn/packages/vite-native-swc::locator=tamagui-monorepo%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@vxrn/vite-native-swc@portal:/Users/n8/vxrn/packages/vite-native-swc::locator=tamagui-monorepo%40workspace%3A."
   dependencies:
     "@swc/core": "npm:^1.4.13"
   peerDependencies:
     react-native: "*"
-  checksum: 10/ff4cdacc07b1d431aaabef5e25d8fbdf85c6eea962d5bd487c4f83a71a9cf614a5f04a51e39a9abe6b5b1bf835c324baa74411e6d2beb9468b56a7c03c46e1aa
   languageName: node
-  linkType: hard
+  linkType: soft
 
 "@web3-storage/multipart-parser@npm:^1.0.0":
   version: 1.0.0

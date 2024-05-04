@@ -91,7 +91,14 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "vxrn": "portal:/Users/n8/vxrn/packages/vxrn",
-    "@vxrn/router": "portal:/Users/n8/vxrn/packages/router"
+    "@vxrn/router": "portal:/Users/n8/vxrn/packages/router",
+    "create-vxrn": "portal:/Users/n8/vxrn/packages/create-vxrn",
+    "@vxrn/react-native-prebuilt": "portal:/Users/n8/vxrn/packages/react-native-prebuilt",
+    "@vxrn/safe-area": "portal:/Users/n8/vxrn/packages/safe-area",
+    "@vxrn/vite-flow": "portal:/Users/n8/vxrn/packages/vite-flow",
+    "@vxrn/vite-native-client": "portal:/Users/n8/vxrn/packages/vite-native-client",
+    "@vxrn/vite-native-hmr": "portal:/Users/n8/vxrn/packages/vite-native-hmr",
+    "@vxrn/vite-native-swc": "portal:/Users/n8/vxrn/packages/vite-native-swc"
   },
   "importSort": {
     ".js, .jsx, .ts, .tsx": {
