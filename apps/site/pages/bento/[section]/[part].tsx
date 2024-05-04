@@ -13,6 +13,7 @@ import { ContainerBento } from '../../../components/Container'
 import { ThemeNameEffect } from '../../../components/ThemeNameEffect'
 import { getDefaultLayout } from '../../../lib/getDefaultLayout'
 import { Toast, useToastState } from '@tamagui/toast'
+import { DropTamaguiConfig } from '@components/DropTamaguiConfig'
 
 export default function page() {
   const router = useRouter()
@@ -22,7 +23,6 @@ export default function page() {
   return (
     <>
       <ThemeNameEffect />
-      {/* <DropTamaguiConfig /> */}
 
       <BentoPageFrame>
         <ContainerBento>
@@ -85,7 +85,6 @@ export const DetailHeader = (props: { children: string }) => {
             <View $gtLg={{ right: '$-6' }}>
               <BentoLogo scale={0.3} />
             </View>
-            {/* <DropTamaguiConfig /> */}
           </YStack>
         </XStack>
 
@@ -115,6 +114,10 @@ export const DetailHeader = (props: { children: string }) => {
               {subCategory.replace('_', ' ').replace('#', '')}
             </Anchor>
           </Link>
+
+          <View marginLeft={'auto'}>
+            <DropTamaguiConfig />
+          </View>
         </XStack>
       </YStack>
     </YStack>
