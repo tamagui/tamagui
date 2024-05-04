@@ -76,6 +76,7 @@
     "eslint": "^8.56.0",
     "eslint-config-next": "13.2.4",
     "file-system-access": "^1.0.4",
+    "foxact": "^0.2.33",
     "framer-motion": "^10.18.0",
     "glob": "^7.1.6",
     "graphql-tag": "^2.12.6",

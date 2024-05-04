@@ -54,6 +54,7 @@
     "awesome-phonenumber": "^6.4.0",
     "expo-document-picker": "^11.10.1",
     "expo-image-picker": "^14.7.1",
+    "foxact": "^0.2.33",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",
