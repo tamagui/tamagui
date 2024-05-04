@@ -7,28 +7,46 @@ import { ThemeableStack, YStack } from '@tamagui/stacks'
 import type { TextParentStyles } from '@tamagui/text'
 import { SizableText, wrapChildrenInText } from '@tamagui/text'
 import type {
+  ColorTokens,
   FontSizeTokens,
   GetProps,
   PropsWithoutMediaStyles,
   SizeTokens,
   ThemeableProps,
 } from '@tamagui/web'
-import { Spacer, getTokens, getVariableValue, styled, useProps } from '@tamagui/web'
+import {
+  Spacer,
+  View,
+  createStyledContext,
+  getTokens,
+  getVariableValue,
+  styled,
+  useProps,
+} from '@tamagui/web'
 import type { FunctionComponent } from 'react'
 import React from 'react'
 
 type ListItemIconProps = { color?: any; size?: any }
 type IconProp = JSX.Element | FunctionComponent<ListItemIconProps> | null
 
+const ListItemContext = createStyledContext<{
+  size?: SizeTokens
+  color?: ColorTokens
+}>({
+  color: '$color',
+  size: '$true',
+})
+
+// TODO: uncomment commented comments
 export type ListItemExtraProps = Omit<TextParentStyles, 'TextComponent' | 'noTextWrap'> &
   ThemeableProps & {
-    /**
-     * add icon before, passes color and size automatically if Component
-     */
+    // /**
+    //  * @deprecated use ListItem.Icon instead
+    //  */
     icon?: IconProp
-    /**
-     * add icon after, passes color and size automatically if Component
-     */
+    // /**
+    //  * @deprecated use ListItem.Icon instead
+    //  */
     iconAfter?: IconProp
     /**
      * adjust icon relative to size
@@ -45,13 +63,15 @@ export type ListItemExtraProps = Omit<TextParentStyles, 'TextComponent' | 'noTex
      * adjust internal space relative to icon size
      */
     scaleSpace?: number
-    /**
-     * title
-     */
+    // /**
+    //  * title
+    //  * @deprecated use ListItem.Title instead
+    //  */
     title?: React.ReactNode
-    /**
-     * subtitle
-     */
+    // /**
+    //  * subtitle
+    //  * @deprecated use ListItem.Subtitle instead
+    //  */
     subTitle?: React.ReactNode
     /**
      * will not wrap text around `children` only, "all" will not wrap title or subTitle
@@ -66,6 +86,7 @@ const NAME = 'ListItem'
 export const ListItemFrame = styled(ThemeableStack, {
   name: NAME,
   tag: 'li',
+  context: ListItemContext,
 
   variants: {
     unstyled: {
@@ -91,6 +112,7 @@ export const ListItemFrame = styled(ThemeableStack, {
           paddingVertical: getSpace(tokens.space[val], {
             shift: -4,
           }),
+          gap: tokens.space[val],
         }
       },
     },
@@ -119,6 +141,7 @@ export const ListItemFrame = styled(ThemeableStack, {
 
 export const ListItemText = styled(SizableText, {
   name: 'ListItemText',
+  context: ListItemContext,
 
   variants: {
     unstyled: {
@@ -140,6 +163,7 @@ export const ListItemText = styled(SizableText, {
 
 export const ListItemSubtitle = styled(ListItemText, {
   name: 'ListItemSubtitle',
+  context: ListItemContext,
 
   variants: {
     unstyled: {
@@ -169,6 +193,7 @@ export const ListItemSubtitle = styled(ListItemText, {
 
 export const ListItemTitle = styled(ListItemText, {
   name: 'ListItemTitle',
+  context: ListItemContext,
 })
 
 export const useListItem = (
@@ -234,15 +259,11 @@ export const useListItem = (
 
   return {
     props: {
+      color,
       ...rest,
       children: (
         <>
-          {themedIcon ? (
-            <>
-              {themedIcon}
-              <Spacer size={spaceSize} />
-            </>
-          ) : null}
+          {themedIcon ? <>{themedIcon}</> : null}
           {/* helper for common title/subtitle pttern */}
           {/* biome-ignore lint/complexity/noExtraBooleanCast: <explanation> */}
           {Boolean(title || subTitle) ? (
@@ -278,6 +299,30 @@ export const useListItem = (
   }
 }
 
+const IconFrame = styled(View, {
+  context: ListItemContext,
+
+  variants: {
+    after: {
+      true: {
+        marginLeft: 'auto',
+      },
+    },
+  } as const,
+})
+
+const ListItemIcon = IconFrame.styleable<{ scaleIcon?: number }>((props) => {
+  const { children, scaleIcon = 1 } = props
+  const { size, color } = ListItemContext.useStyledContext()
+
+  const iconSize =
+    (typeof size === 'number' ? size * 0.5 : getFontSize(size as FontSizeTokens)) *
+    scaleIcon
+
+  const getThemedIcon = useGetThemedIcon({ size: iconSize, color: color as any })
+  return <IconFrame>{getThemedIcon(children)}</IconFrame>
+})
+
 const ListItemComponent = ListItemFrame.styleable<ListItemExtraProps>(
   function ListItem(props, ref) {
     const { props: listItemProps } = useListItem(props)
@@ -285,7 +330,15 @@ const ListItemComponent = ListItemFrame.styleable<ListItemExtraProps>(
   }
 )
 
+const TextContent = styled(View, {
+  marginRight: 'auto',
+  flex: 1,
+})
+
 export const ListItem = withStaticProperties(ListItemComponent, {
   Text: ListItemText,
+  Title: ListItemTitle,
   Subtitle: ListItemSubtitle,
+  Icon: ListItemIcon,
+  TextContent,
 })
