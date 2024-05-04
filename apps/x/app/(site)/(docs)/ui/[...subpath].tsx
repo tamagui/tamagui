@@ -27,14 +27,10 @@ export async function generateStaticParams() {
     }
   })
 
-  console.log('wtf', [...paths, ...latestVersionPaths])
-
   return [...paths, ...latestVersionPaths]
 }
 
 export async function loader(props: LoaderProps) {
-  console.log('load me', props)
-
   const { frontmatter, code } = await getMDXBySlug(
     'data/docs/components',
     props.params.subpath

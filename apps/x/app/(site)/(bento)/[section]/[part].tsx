@@ -1,3 +1,4 @@
+import { paths } from '@tamagui/bento/data'
 import * as sections from '@tamagui/bento'
 import { Toast, useToastState } from '@tamagui/toast'
 import { Link, useLocalSearchParams, useRouter } from '@vxrn/router'
@@ -8,7 +9,7 @@ import { BentoPageFrame } from '~/features/bento/BentoPageFrame'
 import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
 
 export const generateStaticParams = async () => {
-  return sections.paths.map((x) => x.params)
+  return paths.map((x) => x.params)
 }
 
 // export const loader = (ctx) => {
