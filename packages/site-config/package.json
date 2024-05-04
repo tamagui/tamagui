@@ -35,6 +35,7 @@
     }
   },
   "dependencies": {
+    "@tamagui/animations-moti": "1.96.0",
     "@tamagui/animations-react-native": "1.96.0",
     "@tamagui/animations-reanimated": "1.96.0",
     "@tamagui/colors": "1.96.0",

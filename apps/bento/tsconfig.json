@@ -12,6 +12,7 @@
     "module": "ESNext",
     "moduleResolution": "node",
     "forceConsistentCasingInFileNames": true,
+    "declaration": true,
     "noEmitOnError": false,
     "noImplicitAny": false,
     "noImplicitReturns": false,
@@ -32,7 +33,7 @@
     "lib": ["dom", "dom.iterable", "esnext"],
     "resolveJsonModule": true,
   },
-  "exclude": ["node_modules"], 
+  "exclude": ["node_modules", "types", "dist"], 
   "typeAcquisition": {
     "enable": true
   }

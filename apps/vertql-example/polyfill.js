@@ -1,3 +1,0 @@
-window['global'] = window
-
-
