@@ -2,7 +2,7 @@
 
 import { toHtml } from 'hast-util-to-html'
 import { refractor } from 'refractor'
-import tsx from 'refractor/lang/tsx'
+import tsx from 'refractor/lang/tsx.js'
 import parse from 'rehype-parse'
 import { unified } from 'unified'
 
