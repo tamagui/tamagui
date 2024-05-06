@@ -1,0 +1,436 @@
+---
+title: Variants
+description: Simple typed prop styles through styled()
+---
+
+Variants allow for a nice balance between simplicity and power, with affordances
+for both the compiler and the type system.
+
+In a style library you want to be able to succinctly add on conditional values
+that expand into groups of styles. Variants do just that. Before explaining more
+on why and how they work, an example:
+
+```tsx
+import { View, styled } from 'tamagui' // or '@tamagui/core'
+
+export const Circle = styled(View, {
+  borderRadius: 100_000_000,
+
+  variants: {
+    pin: {
+      top: {
+        position: 'absolute',
+        top: 0,
+      },
+    },
+
+    centered: {
+      true: {
+        alignItems: 'center',
+        justifyContent: 'center',
+      },
+    },
+
+    size: {
+      '...size': (size, { tokens }) => {
+        return {
+          width: tokens.size[size] ?? size,
+          height: tokens.size[size] ?? size,
+        }
+      },
+    },
+  } as const,
+})
+```
+
+<Notice>
+  Notice the `as const` on the variant definition object. This is necessary to
+  please TypeScript until it gains the ability to infer constant objects. If
+  left out, your types may break.
+</Notice>
+
+We can use this styled component like so:
+
+```tsx
+<Circle pin="top" centered size="$lg" />
+```
+
+This component uses a few different types of variants. Below we'll expand on
+each.
+
+But first, why variants?
+
+## Why Variants?
+
+You have two basic options for sharing styles across components: share style
+objects and then combine them directly into your render function, or allow
+abstraction in some form.
+
+You can think of `StyleSheet.create` as "a lot of style objects". While this is
+nice in that it's simple, it doesn't enforce any rules, which can get you in
+trouble with both a compiler and a type system.
+
+You end up basically typing props by hand and then doing somewhat arbitrary
+logic to glue it all together inside a functional component. The types may not
+map to the actual output, and a compiler will almost certainly get confused or
+be unable to optimize with any easily unforeseen abstraction.
+
+Variants force you out of the React render function, which means no hooks and a
+much clearer contract of limitations: at most you take in a value, your design
+system, and props, and you output a group of styles.
+
+It's nice having this special area just for styling. It keeps your types correct
+by definition. And it ensures the optimizing compiler can understand your styled
+components and people on your team won't "de-opt" it on accident.
+
+And because Variants work with the styled function, they nest without adding an
+extra depth to your render tree. Doing `styled(styled())` results in a single
+React component, and can be optimized and flattened by the compiler as well.
+Whereas it's quite easy for developers to take an existing functional component
+and throw in a new one around it, further de-optimizing a compiler and leading
+to a less clear separation of styled components and regular ones.
+
+## Variants
+
+### Typed Variants
+
+#### `true` or `false`
+
+The special keys `true` and `false` will map to a boolean. So the `centered`
+prop will be typed to accept true or false, and when true it will apply it's
+styles.
+
+```tsx
+import { View, styled } from 'tamagui' // or '@tamagui/core'
+
+export const MyView = styled(View, {
+  variants: {
+    selectable: {
+      true: {
+        userSelect: 'auto',
+      },
+      false: {
+        userSelect: 'none',
+      },
+    },
+  } as const,
+})
+```
+
+#### String, Boolean, Number Variants
+
+You can use a pseudo Typescript syntax for other variants:
+
+- `:string` - Accepts a `string`
+- `:boolean` - Accepts a `boolean` (less precedence than `true` or `false`)
+- `:number` - Accepts a `number`
+
+```tsx
+import { View, styled } from 'tamagui' // or '@tamagui/core'
+
+export const ColorfulView = styled(View, {
+  variants: {
+    color: {
+      ':string': (color) => {
+        // color is of type "string"
+        return {
+          color,
+          borderColor: color,
+        }
+      },
+    },
+  } as const,
+})
+```
+
+### Spread Variants
+
+When you write variants, you have to be explicit so TypeScript and the runtime
+know exactly which props you accept. This can be especially cumbersome when you
+want to "gather" all the values of a specific token. For example, without spread
+variants, if you wanted to have a `pad` property that accepted all the keys from
+`tokens.size`, you'd have to write this:
+
+```tsx
+// in your tamagui.config.ts:
+const tokens = createTokens({
+  size: {
+    sm: 10,
+    md: 15,
+    lg: 25,
+    // ...
+  }
+  // ... see configuration docs for required tokens
+})
+
+export default createTamagui({
+  tokens
+})
+
+// somewhere in your app:
+const MyButton = styled(View, {
+  variants: {
+    pad: {
+      sm: {
+        padding: tokens.size.sm,
+      },
+      md: {
+        padding: tokens.size.md,
+      },
+      lg: {
+        padding: tokens.size.lg,
+      },
+      // ...
+    }
+  } as const
+})
+
+// now you can
+<MyButton pad="$lg" />
+```
+
+This is verbose, and only gets more verbose if you add more sizes. It would
+require always updating every component every time you change the tokens.
+
+Spread variants solve this problem. Instead, we can write:
+
+```tsx
+// in your tamagui.config.ts:
+const tokens = createTokens({
+  size: {
+    sm: 10,
+    md: 15,
+    lg: 25,
+    // ...
+  }
+  // ... see configuration docs for required tokens
+})
+
+export default createTamagui({
+  tokens
+})
+
+// somewhere in your app:
+const MyButton = styled(View, {
+  variants: {
+    pad: {
+      '...size': (val, { tokens }) => ({
+        padding: tokens.size[val]
+      }),
+    }
+  } as const
+})
+
+// now you can
+<MyButton pad="$lg" />
+```
+
+Spread variants save you from having to define hardcoded styles for every key
+(`sm`, `md`, `lg`) in your token object. They collect values from any of your
+top level token categories. So you can only use `...color`, `...size`,
+`...space`, `...font`, `...fontSize`, `...lineHeight`, `...radius`,
+`...letterSpace`, or `...zIndex`. They must be prefixed with `...` as that is
+how they are typed properly and assembled for runtime.
+
+#### Extra properties passed to functional variants
+
+There's a second argument passed to all variant functions that is a
+bag-o-goodies that help you use the current tokens, theme, props, and fonts
+easily.
+
+```tsx
+const SizableText = styled(Text, {
+  variants: {
+    size: {
+      '...size': (size, { tokens, font }) => {
+        return {
+          fontSize: font?.size,
+          lineHeight: font?.lineHeight,
+          height: tokens.size[size] ?? size,
+        }
+      },
+    },
+  } as const,
+})
+```
+
+Which you can use:
+
+```tsx
+<SizableText size="$md">Hello world</SizableText>
+```
+
+The Spread variant function will receive two arguments: the first is the value
+given to the property (`"$lg"`), and the second is an object with
+`{ theme, tokens, props, font }`.
+
+<PropsTable
+  data={[
+    {
+      name: 'theme',
+      type: 'ThemeParsed',
+      description: `A proxy to your theme that lets you access all theme values using normal keys, or with a "$" prefix.`,
+    },
+    {
+      name: 'tokens',
+      type: 'TokensParsed',
+      description: `All your tokens given to createTamagui, ensuring the keys all start with "$".`,
+    },
+    {
+      name: 'props',
+      type: 'Props',
+      description: `All props passed to the styled component.`,
+    },
+    {
+      name: 'font',
+      type: 'Font',
+      description: `Maybe undefined. A single resolved Font that you passed to you fonts config.`,
+    },
+    {
+      name: 'fontFamily',
+      type: 'string',
+      description: `Maybe undefined. The name of the current fontFamily.`,
+    },
+    {
+      name: 'fonts',
+      type: 'string',
+      description: `All your fonts passed to createTamagui.`,
+    },
+  ]}
+/>
+
+#### Catch-all variants
+
+Much like a dynamic variant, except it lets you use it alongside the other typed
+variants you need. Use '...' and it will grab all variants that don't match:
+
+```tsx
+import { View, styled } from 'tamagui' // or '@tamagui/core'
+
+export const ColorfulView = styled(View, {
+  variants: {
+    colorful: {
+      true: {
+        color: 'red',
+      },
+      '...': (val: string) => {
+        // this will catch any other values that don't match
+        return {
+          color: val,
+        }
+      },
+    },
+  } as const,
+})
+```
+
+#### Dynamic variants
+
+If you need more complex types, or simply prefer a shorter syntax, you can use a
+single function instead of using the object syntax for variants:
+
+```tsx
+import { View, styled } from 'tamagui' // or '@tamagui/core'
+
+export const MyView = styled(View, {
+  variants: {
+    doubleMargin: (val: number) => ({
+      margin: val * 2,
+    }),
+  } as const,
+})
+```
+
+Tamagui also provides a few types of other variant definition patterns that work
+with tokens or types.
+
+### defaultVariants
+
+Sometimes you'd like to set a default value for a variant you've just set on
+your styled() component. Due to the way Typescript types parse from left to
+right, we can't properly type variants directly on the object you define them
+on.
+
+The `defaultVariants` option allows you to set these, properly typed:
+
+```tsx
+const Square = styled(View, {
+  variants: {
+    size: {
+      '...size': (size, { tokens }) => {
+        // size === '$lg'
+        // tokens.size.$lg === 25
+        return {
+          width: tokens.size[size] ?? size,
+          height: tokens.size[size] ?? size,
+        }
+      },
+    },
+  } as const,
+
+  // <Square /> will get size '$10' from size tokens automatically
+  defaultVariants: {
+    size: '$10',
+  },
+})
+```
+
+### Variants and Pseudos, Media Queries
+
+Variants have the full power of the Tamagui styling system, including pseudo and
+media styles:
+
+```tsx
+const SizedText = styled(Text, {
+  variants: {
+    size: {
+      md: {
+        fontSize: '$sm',
+
+        $gtMd: {
+          fontSize: '$md',
+        },
+
+        $gt2xl: {
+          fontSize: '$lg',
+        },
+      },
+    },
+  } as const,
+})
+```
+
+### Variants and Parent Variants
+
+Styled components can access their parent components variants, even in their
+variants:
+
+```tsx
+const ColorfulText = styled(Text, {
+  variants: {
+    colored: {
+      true: {
+        color: '$color',
+      },
+    },
+
+    large: {
+      true: {
+        fontSize: '$8',
+      },
+    },
+  } as const,
+})
+
+const MyParagraph = styled(ColorfulText, {
+  colored: true,
+
+  variants: {
+    hero: {
+      true: {
+        large: true,
+      },
+    },
+  } as const,
+})
+```

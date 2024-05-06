@@ -3,6 +3,7 @@ import { DarkTheme, DefaultTheme, NavigationContainer } from '@react-navigation/
 // causes metro bundle issue it seems:
 // import * as Linking from 'expo-linking'
 import * as sections from '@tamagui/bento'
+import { Data } from '@tamagui/bento'
 import React, { useContext, useMemo } from 'react'
 import { Linking, Platform } from 'react-native'
 import { ThemeContext } from '../../useKitchenSinkTheme'
@@ -39,7 +40,7 @@ export function NavigationProvider({ children }: { children: React.ReactNode }) 
     }
   }, [isReady])
 
-  const bentoScreens = sections.listingData.sections.reduce((acc, { sectionName }) => {
+  const bentoScreens = Data.listingData.sections.reduce((acc, { sectionName }) => {
     acc[sectionName] = `${sectionName}/:id`
     return acc
   }, {})

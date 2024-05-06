@@ -1,0 +1,93 @@
+---
+title: Tamagui v1 Release Candidate
+publishedAt: '2022-12-04'
+description: Tamagui v1 RC is out for faster React Native + Web styling
+by: nate
+poster: banner-rc0.jpg
+---
+
+<Image
+  title="Tamagui v1 Release Candidate"
+  src="/banner-rc0.jpg"
+  size="hero"
+  overlap
+  height={275}
+  width={761}
+  resizeMode="contain"
+  mb="$4"
+/>
+
+<IntroParagraph>
+  Tamagui is an optimizing compiler meets universal style system for React that enables
+  highly performant styles for React Native and web.
+</IntroParagraph>
+
+It supports the full APIs of React Native alongside helpful inline style props, variants, and a typed design system while optimizing everything by hoisting logic, flattening trees, and generating atomic CSS and other CSS features. This lets you [ship faster, share more code across platforms, and net better performance](/docs/intro/why-a-compiler) all at once.
+
+Enjoy modern design system library features like typed tokens and inline CSS-in-JS styling while optimal VDOM and CSS is output, besting hand-tuned code. The compiler uses logical and VM-based analysis of your code for [surprising results](/docs/intro/benchmarks).
+
+> On the Tamagui homepage, the compiler flattens 200+ unique components for a 18% Lighthouse score increase.
+
+This Release Candidate marks API stability and the v1 release will follow shortly as we get feedback on any last outstanding bugs. **The V1 blog post will cover these changes in far more thorough detail**. Over a thousand bugfixes landed during the Beta, alongside major changes all around, including 14 new components in `tamagui`.
+
+Here's a very brief overview of changes since Beta:
+
+### Major `@tamagui/core` Updates
+
+- Easier install - no need to configure bundler at all to start, compiler optional too
+- React 0.69, React 18, React Native Web 18, and Expo 47 support
+- No `react-native` dependency in `@tamagui/core` - 🔥 huge for web-only use cases
+- Bundle size reduction of ~12Kb
+- Performance - Nearly halved render time, even bigger gains in themes and media queries.
+- More useful `styled` - The factory now supports wrapping any component you give it, so long as that component accepts a `style` prop.
+- `<FontLanguage />` - Support for unique fonts per-language.
+- `font.face` configuration - React Native makes loading fonts a bit trickier than the web, this option makes it easy to load different fonts by weight or style.
+- The `themeShallow` prop - The `theme` prop in Tamagui by default will re-theme all sub-components. Using `themeShallow` _only_ themes that component, not children.
+- `loadTheme()` - The `loadTheme` utility function means you can only load the default themes you want to serve, saving on bundle size, and then add in alternative themes later on.
+- `updateTheme()` - Using `updateTheme` gives you the ability to dynamically modify themes on the fly.
+- `useMediaPropsActive()` - Useful for authoring your own custom components built on Tamagui, easily access the "currently active" set of styles.
+
+### Major `@tamagui/static` Updates
+
+- Install - The Webpack plugin and Vite plugin are easier to configure and generally handle many more edge cases, with an addition of 20+ dev-time console warnings.
+- Performance - During the beta we landed many performance improvements to the optimizing compiler. By default now Tamagui avoids even parsing many more files, and it pre-bundles your `components` and `config`.
+- Better analysis - Previously, `@tamagui/static` only knew how to optimize components found in your separated design system package. The compiler now analyzes components anywhere in your app, by dynamically loading and reading their configuration. This experimental feature is enabled with the environment variable `TAMAGUI_ENABLE_DYNAMIC_LOAD=1`.
+- Vite support - Tamagui supports Vite 3, both with the compiler and without.
+- Correctness - Most of the work during beta focused on correctness. We've increased testing to cover many more areas, and landed a number of important correctness fixes alongside the ones in `core`.
+
+### Major `tamagui` updates
+
+Tamagui welcomed a flood of new components to the party. These are incredibly rich components that follow the Radix model of composable component APIs. They have the ability to adapt their appearance completely using `<Adapt />` to target media queries and platforms.
+
+The V1 blog post will cover these in more detail. You can see the accompanying docs for each for now:
+
+[Sheet](/docs/components/sheet), [Select](/docs/components/select), [Dialog](/docs/components/dialog), [AlertDialog](/docs/components/alert-dialog), [Slider](/docs/components/slider), [Label](/docs/components/label), [Card](/docs/components/card), [ListItem](/docs/components/list-item), [Avatar](/docs/components/avatar), [Progress](/docs/components/progress), [Spinner](/docs/components/spinner), [Unspaced](/docs/components/unspaced), [ScrollView](/docs/components/scroll-view), [XGroup and YGroup](/docs/components/group)
+
+### CI, Testing and Release
+
+A complete CI/CD pipeline in Github Actions lints, tests, and type checks everything before release. Our release script has added many checks and features for making sure things go out smoothly.
+
+Testing now covers far more of `core` and `static`, as well as a complete integration test that verifies the entire flow of starting a Tamagui app with `npm create tamagui` all the way to Playwright ensuring the final output is correct and functional.
+
+### Community & Contributors
+
+The best part of this post is how active the community has become.
+
+The Discord has many posts every day. We've had 33 new contributors to the repo, with many of the most significant contributions coming over the last three months.
+
+And I've personally met my goal of 10 Github Sponsors for the year, something especially cool given it wasn't promoted beyond [a Twitter thread](https://twitter.com/natebirdman/status/1563229065104203776).
+
+Be sure to check [the Community page](/community) for more goodies like a Figma design system file, example repos, sponsors, and other helpful links.
+
+### Outstanding issues for next RCs
+
+- Windows support for `npm create tamagui` can break, requires WSL
+- Sheets on native can have interaction issues with inner scrollable content
+- Android has some bugs with some types of content inside Sheets.
+- Some versions of Next.js don't properly load CSS on subsequent pages
+
+---
+
+### Join the community
+
+<SocialLinksRow />

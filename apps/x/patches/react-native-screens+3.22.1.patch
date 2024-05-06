@@ -1,0 +1,52 @@
+diff --git a/node_modules/react-native-screens/lib/module/index.native.js b/node_modules/react-native-screens/lib/module/index.native.js
+index 4462af6..2dc32ff 100644
+--- a/node_modules/react-native-screens/lib/module/index.native.js
++++ b/node_modules/react-native-screens/lib/module/index.native.js
+@@ -363,7 +363,15 @@ class Screen extends React.Component {
+   }
+ }
+ _defineProperty(Screen, "contextType", ScreenContext);
+-module.exports = {
++
++const NativeScreen =  ScreensNativeModules.NativeScreen;
++const NativeScreenContainer =  ScreensNativeModules.NativeScreenContainer;
++const NativeScreenNavigationContainer =  ScreensNativeModules.NativeScreenNavigationContainer;
++const ScreenStackHeaderConfig =  ScreensNativeModules.NativeScreenStackHeaderConfig;
++const ScreenStackHeaderSubview =  ScreensNativeModules.NativeScreenStackHeaderSubview;
++const SearchBarCommands =  ScreensNativeModules.NativeSearchBarCommands;
++
++export {
+   // these are classes so they are not evaluated until used
+   // so no need to use getters for them
+   Screen,
+@@ -373,24 +381,12 @@ module.exports = {
+   InnerScreen,
+   SearchBar,
+   FullWindowOverlay,
+-  get NativeScreen() {
+-    return ScreensNativeModules.NativeScreen;
+-  },
+-  get NativeScreenContainer() {
+-    return ScreensNativeModules.NativeScreenContainer;
+-  },
+-  get NativeScreenNavigationContainer() {
+-    return ScreensNativeModules.NativeScreenNavigationContainer;
+-  },
+-  get ScreenStackHeaderConfig() {
+-    return ScreensNativeModules.NativeScreenStackHeaderConfig;
+-  },
+-  get ScreenStackHeaderSubview() {
+-    return ScreensNativeModules.NativeScreenStackHeaderSubview;
+-  },
+-  get SearchBarCommands() {
+-    return ScreensNativeModules.NativeSearchBarCommands;
+-  },
++  NativeScreen,
++  NativeScreenContainer,
++  NativeScreenNavigationContainer,
++  ScreenStackHeaderConfig,
++  ScreenStackHeaderSubview,
++  SearchBarCommands,
+   // these are functions and will not be evaluated until used
+   // so no need to use getters for them
+   ScreenStackHeaderBackButtonImage,

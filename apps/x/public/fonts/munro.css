@@ -1,0 +1,16 @@
+@font-face {
+  font-family: 'Munro';
+  src: url('munro.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+  font-display: block;
+}
+
+@font-face {
+  font-family: Munro-fallback;
+  src: local(Arial);
+  advance-override: 2048;
+  ascent-override: 90.53%;
+  descent-override: 21.19%;
+  line-gap-override: 3.27%;
+}

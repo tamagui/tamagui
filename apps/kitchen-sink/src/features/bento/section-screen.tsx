@@ -1,15 +1,5 @@
-import {
-  H1,
-  ListItem,
-  Paragraph,
-  ScrollView,
-  Separator,
-  Stack,
-  Text,
-  YGroup,
-  YStack,
-} from 'tamagui'
-import * as sections from '@tamagui/bento'
+import { Data } from '@tamagui/bento'
+import { ListItem, ScrollView, Separator, YGroup, YStack } from 'tamagui'
 import { LinkListItem } from '../home/screen'
 
 export function SectionScreen() {
@@ -17,9 +7,7 @@ export function SectionScreen() {
     <ScrollView>
       <YStack bg="$color2" p="$3" pt="$6" pb="$8" f={1} space>
         <YGroup size="$4" separator={<Separator />}>
-          {sections.listingData.sections.map(({ parts, sectionName }) => {
-            console.log('parts', parts)
-
+          {Data.listingData.sections.map(({ parts, sectionName }) => {
             return (
               <>
                 <YGroup.Item key={sectionName}>

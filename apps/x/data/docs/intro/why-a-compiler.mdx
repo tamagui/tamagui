@@ -1,0 +1,170 @@
+---
+title: The Frontend Trilemma
+---
+
+<IntroParagraph>
+  If you're developing a cross-platform app, you've committed to the **frontend
+  development trilemma**, a choose-two-of-three best shown as a diagram:
+</IntroParagraph>
+
+<YStack w="100%" mih={500} als="center" $gtMd={{ my: '$4' }}>
+  <Image
+    title="The Frontend Trilemma: Choose two of: A native-feeling app, Deploying to native and web, and share code between the two apps."
+    src="/trilemma.svg"
+    size="hero"
+    height={270 * 2}
+    width={320 * 2}
+    resizeMode="contain"
+  />
+</YStack>
+
+React Native recommends writing things twice generally for the best UX as is made clear in the `<title>` of the homepage: "[learn once, write anywhere](https://reactnative.dev/)". This is opposed to the sort of holy grail mantra of "write once, runs everywhere". Doing this results in native-feeling and performing apps, while still saving quite a bit of development time thanks to sharing everything besides your views: utils, state and data management, hooks, etc.
+
+The center of this above Venn diagram would be a sort of platonic ideal: <strong>"write once, runs _well_ everywhere"</strong>. We're pretty far from it as of now, but it's not _technically_ impossible. We can imagine a few ways to get closer:
+
+- A sort of Rails-for-React - unified routing, patterns, code gen, "all the batteries".
+- A UI kit that adapts to each platform's primitives confidently with flexible APIs.
+- A way to author styles that output to platform primitives without overhead: eg, CSS with media queries, pseudos, and variables on the web.
+
+This document goes over how we can achieve the last one. The first one is doable (and Expo is [working on as much](https://expo.github.io/router/docs/)), and the second one [Tamagui UI](/docs/components/stacks) is working towards slowly.
+
+**The idea is to make another "bump" towards properly native-experience apps with shared code, much like how React Native Web made one:**
+
+<YStack w="100%" mih={220} my="$4" als="center" $gtMd={{ scale: 1.5, my: 100 }}>
+  <Image
+    title="How possible it is to share more code: a lot more with React Native, and again with React Native Web"
+    src="/code-sharing2.svg"
+    size="hero"
+    height={220}
+    width={380}
+    resizeMode="contain"
+  />
+</YStack>
+
+This can be done especially on the web by reducing JS bundle size by a large % and greatly increasing render performance with reduced tree depth, logic, objects, and hooks. The Tamagui Compiler does this using partial evaluation, static extraction and hoisting, code elimination, and tree-flattening.
+
+You can [skip to the technical details without the backstory](#how-tamagui-helps) from here if you'd like.
+
+<Table heading="Choose your journey">
+  <TableCol>
+    <TableCell head></TableCell>
+    <TableCell>1</TableCell>
+    <TableCell>2</TableCell>
+    <TableCell>3</TableCell>
+  </TableCol>
+  <TableCol>
+    <TableCell head>Strategy</TableCell>
+    <TableCell>Universal</TableCell>
+    <TableCell>Lean</TableCell>
+    <TableCell>Big-Budget</TableCell>
+  </TableCol>
+  <TableCol>
+    <TableCell head>Native + Web</TableCell>
+    <TableCell>✅</TableCell>
+    <TableCell>❌</TableCell>
+    <TableCell>✅</TableCell>
+  </TableCol>
+  <TableCol>
+    <TableCell head>Code Sharing</TableCell>
+    <TableCell>\> 70%</TableCell>
+    <TableCell>-</TableCell>
+    <TableCell>\< 30%</TableCell>
+  </TableCol>
+  <TableCol>
+    <TableCell head>Feels native</TableCell>
+    <TableCell>❌</TableCell>
+    <TableCell>✅</TableCell>
+    <TableCell>✅</TableCell>
+  </TableCol>
+    <TableCol>
+    <TableCell head>Ship Fast</TableCell>
+    <TableCell>✅</TableCell>
+    <TableCell>✅</TableCell>
+    <TableCell>❌</TableCell>
+  </TableCol>
+</Table>
+
+Universal apps (those you "write once" that "run everywhere") make sense today for many cases: side-projecting, SEO-insensitive or enterprise-only apps, people who want to ship fast, experiment more, are pre-product-market fit, or generally have apps with simpler UI. Twitter and Tinder are two larger examples of this.
+
+But today, at best, we use hooks for media queries and themes, which basically touch every component. This causes whole-tree re-renders and more expensive main-thread time in critical areas on the web. Combine that with the CSS-in-JS approach of React Native Web greatly increasing bundle size, and even medium-complexity pages will drop from 100% Lighthouse to half or worse (our homepage, a good complex example due to showing off many features that are well-optimized, goes from 95 or so down to 80ish with the compiler off).
+
+With all your media queries, interactive styles, themes, animations, and dynamic styles in JS, it's hard to make ambitious apps that don't feel janky.
+
+### How Tamagui Helps
+
+`@tamagui/static` is an optimizing compiler for React Native with four main features:
+
+<YStack py="$4">
+  <Features
+    size="$5"
+    items={[
+      `Extracts all types of styling syntax into atomic CSS.`,
+      `Removes a high % of inline styles with partial evaluation and hoisting.`,
+      `Reduces tree depth, flattening expensive styled components into div or View.`,
+      `Evaluates useMedia and useTheme hooks, turning logical expressions into media queries and CSS variables.`,
+    ]}
+  />
+</YStack>
+
+The output is smaller bundles, better runtime performance, and many more native primitives used on the web.
+
+Here's what it does, in code:
+
+<TamaguiExamplesCode />
+
+See [more examples on the homepage](/).
+
+Notice that the compiler turned the `Text` into a `p`, and the `YStack` into a `div` (on native, this would be `Text` and `View`). This is known as tree-flattening, and for both web and native it yields very nice improvements to render performance.
+
+This is a typical performance improvement, where much of the gains come from flattening:
+
+<YStack my="$2">
+  <BenchmarkChartWeb />
+</YStack>
+
+Across a few apps, we've seen 30-50% of components typically flatten, with a higher percent achievable just by being aware of how the flattening optimizes (adding the `// debug` comment to the top of the file will show a fuller output).
+
+Meanwhile, on Native, because we can't optimize to anything beyond vanilla React Native code, the gains are less. Still, the results are impressive given you now have performance within 5% of hand-optimizing React Native code, except you get a whole suite of features for free.
+
+<YStack my="$2">
+  <BenchmarkChartNative />
+</YStack>
+
+You can see [more Benchmarks with explanations here](/docs/intro/benchmarks).
+
+The compiler itself deserves more detail, which we'll expand on in the blog. For now, this serves as a decent introduction.
+
+Compilers can dramatically improve code sharing without the typical sacrifice of performance. They don't solve every problem of universal apps, but by making responsive styling, themes and interactive styles all perform at native levels, they unlock sharing a much larger percentage of the components located in the middle to bottom of the render tree in apps.
+
+It gives us a new choice, "Universal + Compiler" that lets us ship fast while still feeling native:
+
+<Table my="$6">
+  <TableCol>
+    <TableCell head></TableCell>
+    <TableCell>4</TableCell>
+  </TableCol>
+  <TableCol>
+    <TableCell head>Strategy</TableCell>
+    <TableCell>Universal + Compiler</TableCell>
+  </TableCol>
+  <TableCol>
+    <TableCell head>Native + Web</TableCell>
+    <TableCell>✅</TableCell>
+  </TableCol>
+  <TableCol>
+    <TableCell head>Code Sharing</TableCell>
+    <TableCell>~60-90%</TableCell>
+  </TableCol>
+  <TableCol>
+    <TableCell head>Feels native</TableCell>
+    <TableCell>✅</TableCell>
+  </TableCol>
+  <TableCol>
+    <TableCell head>Ship Fast</TableCell>
+    <TableCell>✅</TableCell>
+  </TableCol>
+</Table>
+
+Tamagui makes React faster, but mostly makes _making_ React faster.
+
+Give Tamagui a try with `npm create tamagui@latest`.

@@ -1,0 +1,88 @@
+---
+title: FontLanguage
+description: Using custom fonts for each language
+---
+
+The `FontLanguage` component works with the Tamagui design system, allowing you to define custom fonts per-language.
+
+### Rationale
+
+Before `FontLanguage`, you could get custom fonts with some effort. Simply create a `body` font, and a `body_french` font, and switch it out like so on relevant text components: `<Text fontFamily={isFrench ? '$body_french' : '$body'} />`.
+
+This would work, but having to update every Text component on page with a conditional would be terribly verbose and slow.
+
+With `FontLanguage`, you can do:
+
+```tsx
+<FontLanguage body={isFrench ? 'french' : 'default'}>
+  <Text fontfamily="$body">Hello world</Text>
+</FontLanguage>
+```
+
+Even better, with `styled`:
+
+```tsx
+const P = styled(Text, { fontFamily: '$body' })
+
+<FontLanguage body={isFrench ? 'french' : 'default'}>
+  <P>Hello world</P>
+</FontLanguage>
+```
+
+On the web, FontLanguage uses CSS Variables to avoid re-renders even when changing languages.
+
+### Usage
+
+In your `tamagui.config.ts`, you can add a language variant for any font by adding a suffix with a custom name for that language. Here's a stripped down config showing how you can add the custom `_cn` suffix for a Chinese language font:
+
+```tsx
+import { createFont, createTamagui, createTokens } from 'tamagui'
+
+export default createTamagui({
+  fonts: {
+    body: createFont({
+      family: 'Inter, Helvetica, Arial, sans-serif',
+      // ...
+    }),
+    body_cn: createFont({
+      family: 'Inter-CN',
+      // ...
+    }),
+  },
+})
+```
+
+You'll then need to load the `Inter` and `Inter-CN` fonts for the platforms you support. Once you do, you'll get fully typed support for changing any `body` font to `cn` in a component:
+
+```tsx
+import { FontLanguage, Text } from 'tamagui' // or '@tamagui/core'
+
+export default (
+  <FontLanguage body="cn">
+    <Text fontFamily="$body">
+      你好
+    </Text>
+  </FontLanguage>
+)
+```
+
+The name you choose for the suffix is up to you, and Tamagui will treat any font with a `_` separator as a language variant.
+
+To reset your font back to your base `body` font, you can use the reserved key `default`:
+
+```tsx
+import { FontLanguage, Text } from 'tamagui' // or '@tamagui/core'
+
+export default (
+  <FontLanguage body="cn">
+    <Text fontFamily="$body">
+      你好
+    </Text>
+    <FontLanguage body="default">
+      <Text fontFamily="$body">
+        Hello
+      </Text>
+    </FontLanguage>
+  </FontLanguage>
+)
+```

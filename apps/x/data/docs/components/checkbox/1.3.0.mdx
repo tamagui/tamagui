@@ -1,0 +1,147 @@
+---
+title: Checkbox
+description: A simple checkbox component
+name: checkbox
+component: Checkbox
+package: checkbox
+demoName: Checkbox
+---
+
+# Checkbox
+
+<Description>Use in forms to toggle between two states.</Description>
+
+<HeroContainer>
+  <CheckboxDemo />
+</HeroContainer>
+
+```tsx hero template=Checkbox
+
+```
+
+<Highlights
+  features={[
+    `Supports indeterminate state.`,
+    `Accessible, easy to compose and customize.`,
+    `Sizable & works controlled or uncontrolled.`,
+    `Ability to opt-out to native checkbox on web.`,
+  ]}
+/>
+
+## Installation
+
+Checkbox is already installed in `tamagui`, or you can install it independently:
+
+```bash
+npm install @tamagui/checkbox
+```
+
+## Usage
+
+```tsx
+import { Check } from '@tamagui/lucide-icons'
+import { Checkbox } from 'tamagui'
+
+export default () => (
+  <Checkbox size="$4">
+    <Checkbox.Indicator>
+      <Check />
+    </Checkbox.Indicator>
+  </Checkbox>
+)
+```
+
+## API Reference
+
+### Checkbox
+
+`Checkbox` extend ThemeableStack inheriting all the [props](/docs/components/stacks#themeablestack), plus:
+
+<PropsTable
+  data={[
+    {
+      name: 'labeledBy',
+      type: 'string',
+      description: `Set aria-labeled-by.`,
+    },
+    {
+      name: 'name',
+      type: 'string',
+      description: `Equivalent to input name.`,
+    },
+    {
+      name: 'value',
+      type: 'string',
+      description: `Give it a value (for use in HTML forms).`,
+    },
+    {
+      name: 'checked',
+      type: 'boolean',
+      description: `Control the input.`,
+    },
+    {
+      name: 'defaultChecked',
+      type: 'boolean',
+      description: `Uncontrolled default value.`,
+    },
+    {
+      name: 'required',
+      type: 'boolean',
+      description: `Sets aria-required.`,
+    },
+    {
+      name: 'native',
+      type: 'boolean',
+      description: `Renders native checkbox input on web.`,
+      default: false,
+    },
+    {
+      name: 'onCheckedChange',
+      type: '(checked: boolean | "indeterminate") => void',
+      description: 'Callback that fires when the checkbox state is changed.',
+    },
+    {
+      name: 'sizeAdjust',
+      type: 'number',
+      description: `Adjust the checkbox size scaling by this number.`,
+    },
+    {
+      name: 'scaleIcon',
+      type: 'number',
+      description: `Scale the indicator icon more than usual by this number.`,
+    },
+    {
+      name: 'scaleSize',
+      type: 'number',
+      default: '0.5',
+      description: `The Tamagui size tokens should map to the height of a button at any given step. This means you want somewhat smaller checkboxes typically.`,
+    },
+    {
+      name: 'unstyled',
+      required: false,
+      type: `boolean`,
+      description: `Removes all default Tamagui styles.`,
+    },
+  ]}
+/>
+
+### Checkbox.Indicator
+
+`Checkbox.Indicator` extend ThemeableStack inheriting all the [props](/docs/components/stacks#themeablestack), plus:
+
+<PropsTable
+  data={[
+    {
+      name: 'forceMount',
+      required: false,
+      type: `boolean`,
+      description: `Used to force mounting when more control is needed.`,
+    },
+    {
+      name: 'disablePassStyles',
+      required: false,
+      type: 'boolean',
+      description: `Used to disable passing styles down to children.`,
+    },
+  ]}
+/>

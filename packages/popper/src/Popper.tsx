@@ -3,7 +3,6 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isAndroid, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import type { ScopedProps, SizeTokens, StackProps } from '@tamagui/core'
-import { debounce } from '@tamagui/use-debounce'
 import {
   Stack,
   View as TamaguiView,
@@ -315,11 +314,10 @@ export const PopperContent = React.forwardRef<
   }, [isMounted])
 
   let show = true
-  let setShow = undefined as any
 
   if (isAndroid) {
-    ;[show, setShow] = React.useState(false)
-
+    const [show_, setShow] = React.useState(false)
+    show = show_
     React.useEffect(() => {
       if (finalHasFloatingValue) {
         setShow(true)

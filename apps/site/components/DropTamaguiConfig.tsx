@@ -71,7 +71,7 @@ export const DropTamaguiConfig = () => {
               dsp: 'none',
             }}
             icon={Paintbrush}
-            color={config ? '$green10' : '$black0'}
+            color={config ? '$green10' : '$active'}
           >
             {config ? 'Customization enabled' : 'Customize'}
           </Button>
@@ -196,7 +196,6 @@ export const DropTamaguiConfig = () => {
                         </>,
                       ]}
                     />
-
                   </>
                 )}
               </YStack>

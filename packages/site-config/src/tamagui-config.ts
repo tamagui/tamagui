@@ -2,8 +2,8 @@ import { shorthands } from '@tamagui/shorthands/v2'
 import { tokens } from '@tamagui/themes/v3'
 import { themes } from './themes'
 
-import type { CreateTamaguiProps } from '@tamagui/web'
-import { setupDev } from '@tamagui/web'
+import type { CreateTamaguiProps } from '@tamagui/core'
+import { setupDev } from '@tamagui/core'
 
 import { animations } from './animations'
 import { media, mediaQueryDefaultActive } from './media'

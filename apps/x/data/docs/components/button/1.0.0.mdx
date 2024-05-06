@@ -1,0 +1,193 @@
+---
+title: Button
+description: A simple button component
+name: button
+component: Button
+package: button
+demoName: Button
+---
+
+# Button
+
+<Description>A simple, sizable button.</Description>
+
+<HeroContainer demoMultiple>
+  <ButtonDemo />
+</HeroContainer>
+
+```tsx hero template=Button
+
+```
+
+<Highlights
+  features={[
+    'Accepts size prop that works on all styles.',
+    'Can inverse theme with themeInverse.',
+    'Place an icon before or after.',
+  ]}
+/>
+
+### Usage
+
+```tsx
+import { Button } from 'tamagui'
+
+export default () => <Button>Lorem ipsum</Button>
+```
+
+### Sizing
+
+Sizing buttons provides a unique challenge especially for a compiler, because you need to adjust many different properties - not just on the outer frame, but on the text wrapped inside. Tamagui supports adjusting the padding, border radius, font size and icons sizes all in one with the `size` prop.
+
+```tsx
+import { Button } from 'tamagui'
+
+export default () => <Button size="$6">Lorem ipsum</Button>
+```
+
+Given your theme defines a size `6`, the button will adjust all of the properties appropriately. You can also pass a plain number to get an arbitrary size.
+
+### Icon Theming
+
+You can pass icons as either elements or components. If passing components, Tamagui will automatically pass the `size` and `color` prop to them based on your theme.
+
+You can [use the source of Button itself](https://github.com/tamagui/tamagui/blob/master/packages/button/src/Button.tsx) to see in more detail what variants you can override, and how we use this pattern internally to create our Button component.
+
+### Customization (Advanced)
+
+Button only supports a limited subset of text props directly, and doesn't accept `hoverStyle` text props. If you need more control, you can do a simple customization using some exported helpers.
+
+Please note that this pattern is a bit antithetical to the multiple-components APIs that Tamagui generally prefers. In a future release we hope to fix this, but that change should be easy to migrate to.
+
+```tsx
+import { forwardRef } from 'react'
+import {
+  ButtonFrame,
+  ButtonText,
+  GetProps,
+  ButtonProps as TamaguiButtonProps,
+  styled,
+  themeable,
+  useButton,
+} from 'tamagui'
+
+const CustomButtonFrame = styled(ButtonFrame, {
+  // ...
+})
+
+const CustomButtonText = styled(ButtonText, {
+  // ...
+})
+
+// to capture the custom variant types you define
+type CustomButtonFrameProps = GetProps<typeof CustomButtonFrame>
+type CustomButtonTextProps = GetProps<typeof CustomButtonText>
+
+export type CustomButtonProps = TamaguiButtonProps &
+  CustomButtonFrameProps &
+  CustomButtonTextProps
+
+export const Button = CustomButtonFrame.styleable<CustomButtonProps>((propsIn, ref) => {
+  const { props } = useButton(propsIn, { Text: CustomButtonText })
+  return <CustomButtonFrame {...props} ref={ref} />
+})
+```
+
+### Button props
+
+Buttons extend Stack views inheriting all the [Tamagui standard props](/docs/intro/props), plus:
+
+<PropsTable
+  data={[
+    {
+      name: 'size',
+      required: false,
+      type: 'string | tokens.size',
+      description: `Set a size, number or one of the size token values.`,
+    },
+    {
+      name: 'theme',
+      required: false,
+      type: 'string',
+      description: `Apply a theme just to the button and it's children`,
+    },
+    {
+      name: 'themeInverse',
+      required: false,
+      type: 'boolean',
+      description: `Helpful for "flipping" any theme between dark and light (including flipping a sub themes defined as [subtheme]-[dark/light]`,
+    },
+    {
+      name: 'noTextWrap',
+      required: false,
+      type: 'boolean',
+      description: `If true, Button won't wrap content with a Text element.`,
+    },
+    {
+      name: 'icon',
+      required: false,
+      type: 'JSX.Element',
+      description: `Pass any React element, appears before the text.`,
+    },
+    {
+      name: 'iconAfter',
+      required: false,
+      type: 'JSX.Element',
+      description: `Pass any React element, appears after the text.`,
+    },
+    {
+      name: 'scaleIcon',
+      required: false,
+      type: 'number',
+      description: `Scale the icon more than usual by this number.`,
+    },
+    {
+      name: 'scaleSpace',
+      required: false,
+      type: 'number',
+      description: `Scale the spacing more than usual by this number.`,
+    },
+    {
+      name: 'spaceFlex',
+      required: false,
+      type: `boolean`,
+      description: `Makes all space elements have a flex.`,
+    },
+    {
+      name: 'color',
+      required: false,
+      type: `SizableTextProps['color']`,
+      description: `Passes "color" down to the inner text component`,
+    },
+    {
+      name: 'fontWeight',
+      required: false,
+      type: `SizableTextProps['fontWeight']`,
+      description: `Passes "fontWeight" down to the inner text component`,
+    },
+    {
+      name: 'letterSpacing',
+      required: false,
+      type: `SizableTextProps['letterSpacing']`,
+      description: `Passes "letterSpacing" down to the inner text component`,
+    },
+    {
+      name: 'textAlign',
+      required: false,
+      type: `SizableTextProps['textAlign']`,
+      description: `Passes "textAlign" down to the inner text component`,
+    },
+    {
+      name: 'circular',
+      required: false,
+      type: `boolean`,
+      description: `Forces a circular button.`,
+    },
+    {
+      name: 'unstyled',
+      required: false,
+      type: `boolean`,
+      description: `Removes all default Tamagui styles.`,
+    },
+  ]}
+/>
