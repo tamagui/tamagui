@@ -6931,6 +6931,7 @@ __metadata:
     react: "npm:^18.2.0"
     react-native-reanimated: "npm:~3.6.2"
   peerDependencies:
+    moti: ^0.27.4
     react: "*"
   languageName: unknown
   linkType: soft
