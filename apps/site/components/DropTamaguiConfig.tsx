@@ -71,7 +71,7 @@ export const DropTamaguiConfig = () => {
               dsp: 'none',
             }}
             icon={Paintbrush}
-            color={config ? '$green10' : '$active'}
+            color={config ? '$green10' : '$color12'}
           >
             {config ? 'Customization enabled' : 'Customize'}
           </Button>
