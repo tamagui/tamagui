@@ -1,19 +1,15 @@
-import { useControllableState } from '@tamagui/use-controllable-state'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
 import { registerFocusable } from '@tamagui/focusable'
+import { composeEventHandlers } from '@tamagui/helpers'
 import { useLabelContext } from '@tamagui/label'
-import type {
-  GestureResponderEvent,
-  NativeSyntheticEvent,
-  TargetedEvent,
-} from 'react-native'
-import { useContext, useEffect, useRef, useState } from 'react'
+import { useControllableState } from '@tamagui/use-controllable-state'
+import type { StackProps } from '@tamagui/web'
 import type { ReactElement } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
+import type { GestureResponderEvent } from 'react-native'
 import { BubbleInput } from './BubbleInput'
 import { getState } from './utils'
-import { composeEventHandlers } from '@tamagui/helpers'
-import type { StackProps } from '@tamagui/web/types'
 
 interface UseRadioGroupParams {
   value?: string
