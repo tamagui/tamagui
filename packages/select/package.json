@@ -53,17 +53,18 @@
     "@tamagui/use-controllable-state": "1.96.0",
     "@tamagui/use-debounce": "1.96.0",
     "@tamagui/use-event": "1.96.0",
-    "@tamagui/use-previous": "1.96.0",
-    "react-dom": "^18.2.0"
+    "@tamagui/use-previous": "1.96.0"
   },
   "peerDependencies": {
     "react": "*",
+    "react-dom": "*",
     "react-native": "*"
   },
   "devDependencies": {
     "@tamagui/build": "1.96.0",
     "react": "^18.2.0",
-    "react-native": "^0.73.4"
+    "react-native": "^0.73.4",
+    "react-dom": "^18.2.0"
   },
   "publishConfig": {
     "access": "public"
