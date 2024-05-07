@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { basename, relative } from 'path'
+import { basename, relative } from 'node:path'
 
 import type { NodePath, TraverseOptions } from '@babel/traverse'
 import traverse from '@babel/traverse'
@@ -1712,12 +1712,13 @@ export function createExtractor(
               }
 
               // remove theme attribute from flattened node
-              attrs = attrs.filter((x) =>
-                x.type === 'attr' &&
-                t.isJSXAttribute(x.value) &&
-                x.value.name.name === 'theme'
-                  ? false
-                  : true
+              attrs = attrs.filter(
+                (x) =>
+                  !(
+                    x.type === 'attr' &&
+                    t.isJSXAttribute(x.value) &&
+                    x.value.name.name === 'theme'
+                  )
               )
 
               // add import

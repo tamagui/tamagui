@@ -1,5 +1,5 @@
 import { useEvent } from '@tamagui/core'
-import React, { useMemo } from 'react'
+import { useMemo, type ReactNode } from 'react'
 
 import type { SheetControllerContextValue } from './useSheetController'
 import { SheetControllerContext } from './useSheetController'
@@ -8,7 +8,7 @@ export const SheetController = ({
   children,
   onOpenChange: onOpenChangeProp,
   ...value
-}: Partial<SheetControllerContextValue> & { children?: React.ReactNode }) => {
+}: Partial<SheetControllerContextValue> & { children?: ReactNode }) => {
   const onOpenChange = useEvent(onOpenChangeProp)
 
   const memoValue = useMemo(

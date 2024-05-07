@@ -1,7 +1,7 @@
-import React, { memo } from 'react'
+import { memo, type ComponentProps } from 'react'
 import { RemoveScroll as RS } from 'react-remove-scroll'
 
-export type RemoveScrollProps = React.ComponentProps<typeof RS>
+export type RemoveScrollProps = ComponentProps<typeof RS>
 
 export const RemoveScroll = memo((props: RemoveScrollProps) => {
   if (!props.children) return null

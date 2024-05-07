@@ -1,6 +1,6 @@
-import type { ChildProcess } from 'child_process'
-import { fork } from 'child_process'
-import { dirname, extname, join, resolve } from 'path'
+import type { ChildProcess } from 'node:child_process'
+import { fork } from 'node:child_process'
+import { dirname, extname, join, resolve } from 'node:path'
 
 import type { Binding, NodePath } from '@babel/traverse'
 import * as t from '@babel/types'

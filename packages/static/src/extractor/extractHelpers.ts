@@ -1,4 +1,4 @@
-import { basename } from 'path'
+import { basename } from 'node:path'
 
 import generate from '@babel/generator'
 import type { NodePath } from '@babel/traverse'

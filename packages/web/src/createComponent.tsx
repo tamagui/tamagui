@@ -263,7 +263,7 @@ export const useComponentState = (
       if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
         console.warn(`Animating presence EXIT "${exv}"`)
       }
-      props[exv] = exitVariant === enterExitVariant ? false : true
+      props[exv] = exitVariant !== enterExitVariant
     }
   }
 
