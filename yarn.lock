@@ -7636,6 +7636,7 @@ __metadata:
     "@tamagui/get-token": "npm:1.97.0"
     "@tamagui/helpers": "npm:1.97.0"
     "@tamagui/label": "npm:1.97.0"
+    "@tamagui/radio-headless": "npm:1.97.0"
     "@tamagui/roving-focus": "npm:1.97.0"
     "@tamagui/stacks": "npm:1.97.0"
     "@tamagui/use-controllable-state": "npm:1.97.0"
@@ -7646,7 +7647,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/radio-headless@workspace:packages/radio-headless":
+"@tamagui/radio-headless@npm:1.97.0, @tamagui/radio-headless@workspace:packages/radio-headless":
   version: 0.0.0-use.local
   resolution: "@tamagui/radio-headless@workspace:packages/radio-headless"
   dependencies:
