@@ -156,6 +156,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
     accessibilityIgnoresInvertColors?: boolean | undefined;
     accessibilityLanguage?: string | undefined;
     target?: string | undefined;
+    htmlFor?: string | undefined;
     asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
     dangerouslySetInnerHTML?: {
         __html: string;
@@ -593,6 +594,11 @@ export declare function useInputProps(props: InputProps, ref: any): {
     outlineOffset?: "unset" | import("@tamagui/core").SpaceValue | undefined;
     outlineStyle?: import("csstype").Property.OutlineStyle | undefined;
     outlineWidth?: "unset" | import("@tamagui/core").SpaceValue | undefined;
+<<<<<<< HEAD
+=======
+    userSelect?: import("csstype").Property.UserSelect | undefined;
+    scrollbarWidth?: import("csstype").Property.ScrollbarWidth | undefined;
+>>>>>>> master
     pointerEvents?: "unset" | "auto" | "box-none" | "none" | "box-only" | undefined;
     space?: number | "unset" | import("@tamagui/core").GetThemeValueForKey<"space"> | undefined;
     spaceDirection?: "unset" | import("@tamagui/core").SpaceDirection | undefined;

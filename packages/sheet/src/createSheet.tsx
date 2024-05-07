@@ -80,8 +80,8 @@ export function createSheet<
       // this ones a bit weird for legacy reasons, we need to hoist it above <Sheet /> AnimatedView
       // so we just pass it up to context
 
-      const element = useMemo(
-        () => (
+      const element = useMemo(() => {
+        return (
           // @ts-ignore
           <Overlay
             {...props}
@@ -94,9 +94,8 @@ export function createSheet<
                 : undefined
             )}
           />
-        ),
-        [props.onPress, context.dismissOnOverlayPress]
-      )
+        )
+      }, [props.onPress, context.dismissOnOverlayPress])
 
       useIsomorphicLayoutEffect(() => {
         context.onOverlayComponent?.(element)
@@ -145,7 +144,7 @@ export function createSheet<
         forwardedRef
       ) => {
         const context = useSheetContext(SHEET_NAME, __scopeSheet)
-        const { hasFit, removeScrollEnabled, frameSize, contentRef } = context
+        const { hasFit, removeScrollEnabled, frameSize, contentRef, open } = context
         const composedContentRef = useComposedRefs(forwardedRef, contentRef)
         const offscreenSize = useSheetOffscreenSize(context)
 
@@ -156,6 +155,7 @@ export function createSheet<
               ref={composedContentRef}
               flex={hasFit ? 0 : 1}
               height={hasFit ? undefined : frameSize}
+              pointerEvents={open ? 'auto' : 'none'}
               {...props}
             >
               {children}
@@ -165,7 +165,14 @@ export function createSheet<
               )}
             </Frame>
           )
-        }, [props, frameSize, offscreenSize, adjustPaddingForOffscreenContent, hasFit])
+        }, [
+          open,
+          props,
+          frameSize,
+          offscreenSize,
+          adjustPaddingForOffscreenContent,
+          hasFit,
+        ])
 
         return (
           <>

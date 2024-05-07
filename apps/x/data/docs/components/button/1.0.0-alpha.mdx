@@ -1,0 +1,110 @@
+---
+title: Button
+description: A simple button component
+name: button
+component: Button
+demoName: Button
+---
+
+# Button
+
+<Description>A simple, sizable button.</Description>
+
+<HeroContainer>
+  <ButtonDemo />
+</HeroContainer>
+
+```tsx hero template=Button
+
+```
+
+<Highlights
+  features={[
+    'Accepts size prop that works on all styles.',
+    'Can inverse theme with themeInverse.',
+    'Place an icon before or after.',
+  ]}
+/>
+
+### Usage
+
+```tsx
+import { Button } from 'tamagui'
+
+export default () => <Button>Lorem ipsum</Button>
+```
+
+### Sizing
+
+Sizing buttons provides a unique challenge especially for a compiler, because
+you need to adjust many different properties - not just on the outer frame, but
+on the text wrapped inside. Tamagui supports adjusting the padding, border
+radius, font size and icons sizes all in one with the `size` prop.
+
+```tsx
+import { Button } from 'tamagui'
+
+export default () => <Button size="$6">Lorem ipsum</Button>
+```
+
+Given your theme defines a size `6`, the button will adjust all of the
+properties appropriately. You can also pass a plain number to get an arbitrary
+size.
+
+### Icon Theming
+
+You can pass icons as either elements or components. If passing components,
+Tamagui will automatically pass the `size` and `color` prop to them based on
+your theme.
+
+### Button props
+
+Button extends View, inheriting all the
+[Tamagui standard props](/docs/intro/props), adding:
+
+<PropsTable
+  data={[
+    {
+      name: 'size',
+      required: false,
+      type: 'string | tokens.size',
+      description: `Set a size, number or one of the size token values.`,
+    },
+    {
+      name: 'theme',
+      required: false,
+      type: 'string',
+      description: `Apply a theme just to the button and it's children`,
+    },
+    {
+      name: 'themeInverse',
+      required: false,
+      type: 'boolean',
+      description: `Helpful for "flipping" any theme between dark and light (including flipping a sub themes defined as [subtheme]-[dark/light]`,
+    },
+    {
+      name: 'textProps',
+      required: false,
+      type: 'TextProps',
+      description: `By default a button wraps contents in Text and will pass textProps if set.`,
+    },
+    {
+      name: 'noTextWrap',
+      required: false,
+      type: 'boolean',
+      description: `If true, Button won't wrap content with a Text element.`,
+    },
+    {
+      name: 'icon',
+      required: false,
+      type: 'JSX.Element',
+      description: `Pass any React element, appears before the text.`,
+    },
+    {
+      name: 'iconAfter',
+      required: false,
+      type: 'JSX.Element',
+      description: `Pass any React element, appears after the text.`,
+    },
+  ]}
+/>

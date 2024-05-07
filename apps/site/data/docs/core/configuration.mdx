@@ -281,7 +281,7 @@ TamaguiProvider takes a few optional properties:
       name: 'disableInjectCSS',
       required: false,
       type: 'boolean',
-      description: `By default Tamagui inserts CSS with a useLayoutEffect on load. But if you're setting up SSR you'll want to use getCSS() on the server instead and then turn on this setting.`,
+      description: `By default Tamagui inserts CSS with a useInsertionEffect on load. But if you're setting up SSR you'll want to use getCSS() on the server instead and then turn on this setting.`,
     },
   ]}
 />
@@ -298,6 +298,10 @@ If you use `disableInjectCSS`, you'll need to do something like this from the se
 </head>
 ```
 
+<Notice>
+  If you are using Next.js, see the [Next.js guide](/docs/guides/next-js?#pages_documenttsx) for more information.
+</Notice>
+
 ### Including the reset css
 
 There is an optional CSS reset that helps normalize styling, you can import it
@@ -308,7 +312,7 @@ import '@tamagui/core/reset.css'
 ```
 
 <Notice>
-  You will have to turn `isCSSEnabled` on if you're using Metro as your web bundler. See [Expo's docs](https://docs.expo.dev/versions/latest/config/metro/#css).
+  You will have to turn `isCSSEnabled` on if you're using Metro as your web bundler. See [Metro guide](/docs/guides/metro#web-support).
 </Notice>
 
 ### Setup media query driver

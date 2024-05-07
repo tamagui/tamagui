@@ -700,6 +700,17 @@ interface ExtraStyleProps {
      * Web-only style property. Will be omitted on native.
      */
     outlineWidth?: SpaceValue;
+<<<<<<< HEAD
+=======
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    userSelect?: Properties['userSelect'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    scrollbarWidth?: Properties['scrollbarWidth'];
+>>>>>>> master
     pointerEvents?: ViewProps['pointerEvents'];
     /**
      * @deprecated Use `gap`
@@ -1345,6 +1356,7 @@ export type TamaguiComponentStateRef = {
     hasMeasured?: boolean;
     hasAnimated?: boolean;
     themeShallow?: boolean;
+    hasEverThemed?: boolean;
     isListeningToTheme?: boolean;
     unPress?: Function;
     group?: {

@@ -5,7 +5,6 @@ import {
   Button,
   H5,
   SizableText,
-  Stack,
   Tabs,
   XStack,
   YStack,
@@ -69,22 +68,13 @@ const TabsAdvancedBackground = () => {
     setTabState({ ...tabState, prevActiveAt: tabState.activeAt, activeAt })
   const { activeAt, intentAt, prevActiveAt, currentTab } = tabState
 
-  /**
-   * -1: from left
-   *  0: n/a
-   *  1: from right
-   */
+  // 1 = right, 0 = nowhere, -1 = left
   const direction = (() => {
     if (!activeAt || !prevActiveAt || activeAt.x === prevActiveAt.x) {
       return 0
     }
     return activeAt.x > prevActiveAt.x ? -1 : 1
   })()
-
-  const enterVariant =
-    direction === 1 ? 'isLeft' : direction === -1 ? 'isRight' : 'defaultFade'
-  const exitVariant =
-    direction === 1 ? 'isRight' : direction === -1 ? 'isLeft' : 'defaultFade'
 
   const handleOnInteraction: TabsTabProps['onInteraction'] = (type, layout) => {
     if (type === 'select') {
@@ -170,12 +160,8 @@ const TabsAdvancedBackground = () => {
         </Tabs.List>
       </YStack>
 
-      <AnimatePresence
-        exitBeforeEnter
-        enterVariant={enterVariant}
-        exitVariant={exitVariant}
-      >
-        <AnimatedYStack key={currentTab} animation="100ms" x={0} opacity={1} flex={1}>
+      <AnimatePresence exitBeforeEnter custom={{ direction }} initial={false}>
+        <AnimatedYStack key={currentTab}>
           <Tabs.Content value={currentTab} forceMount flex={1} justifyContent="center">
             <H5 textAlign="center">{currentTab}</H5>
           </Tabs.Content>
@@ -213,22 +199,13 @@ const TabsAdvancedUnderline = () => {
     setTabState({ ...tabState, prevActiveAt: tabState.activeAt, activeAt })
   const { activeAt, intentAt, prevActiveAt, currentTab } = tabState
 
-  /**
-   * -1: from left
-   *  0: n/a
-   *  1: from right
-   */
+  // 1 = right, 0 = nowhere, -1 = left
   const direction = (() => {
     if (!activeAt || !prevActiveAt || activeAt.x === prevActiveAt.x) {
       return 0
     }
     return activeAt.x > prevActiveAt.x ? -1 : 1
   })()
-
-  const enterVariant =
-    direction === 1 ? 'isLeft' : direction === -1 ? 'isRight' : 'defaultFade'
-  const exitVariant =
-    direction === 1 ? 'isRight' : direction === -1 ? 'isLeft' : 'defaultFade'
 
   const handleOnInteraction: TabsTabProps['onInteraction'] = (type, layout) => {
     if (type === 'select') {
@@ -314,12 +291,8 @@ const TabsAdvancedUnderline = () => {
         </Tabs.List>
       </YStack>
 
-      <AnimatePresence
-        exitBeforeEnter
-        enterVariant={enterVariant}
-        exitVariant={exitVariant}
-      >
-        <AnimatedYStack key={currentTab} animation="100ms" x={0} opacity={1} flex={1}>
+      <AnimatePresence exitBeforeEnter custom={{ direction }} initial={false}>
+        <AnimatedYStack key={currentTab}>
           <Tabs.Content value={currentTab} forceMount flex={1} justifyContent="center">
             <H5 textAlign="center">{currentTab}</H5>
           </Tabs.Content>
@@ -352,9 +325,25 @@ const TabsRovingIndicator = ({ active, ...props }: { active?: boolean } & StackP
 }
 
 const AnimatedYStack = styled(YStack, {
+  f: 1,
+  x: 0,
+  o: 1,
+
+  animation: '100ms',
   variants: {
-    isLeft: { true: { x: -25, opacity: 0 } },
-    isRight: { true: { x: 25, opacity: 0 } },
-    defaultFade: { true: { opacity: 0 } },
+    // 1 = right, 0 = nowhere, -1 = left
+    direction: {
+      ':number': (direction) => ({
+        enterStyle: {
+          x: direction > 0 ? -25 : 25,
+          opacity: 0,
+        },
+        exitStyle: {
+          zIndex: 0,
+          x: direction < 0 ? -25 : 25,
+          opacity: 0,
+        },
+      }),
+    },
   } as const,
 })

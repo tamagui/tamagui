@@ -1,7 +1,7 @@
 import chalk from 'chalk'
 import { execSync } from 'child_process'
 
-export function updateTemplate(templateUrl: string, ignoredPatterns: string[]) {
+export function updateTemplate(templateUrl: string, ignoredPatterns: string[] = []) {
   const templateName = templateUrl.split('/').pop()?.split('.')[0] || 'template'
   const remoteName = `${templateName}-template`
   const addRemoteCommand = `git remote add ${remoteName} ${templateUrl}`

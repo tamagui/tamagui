@@ -1,23 +1,32 @@
 module.exports = (api) => {
-  api.cache(true)
+  api.cache(true);
   return {
     ignore: [
       // speeds up compile
-      '**/@tamagui/**/dist/**',
+      "**/@tamagui/**/dist/**",
     ],
-    presets: [['babel-preset-expo', { jsxRuntime: 'automatic' }]],
+    presets: [["babel-preset-expo", { jsxRuntime: "automatic" }]],
     plugins: [
       [
-        '@tamagui/babel-plugin',
+        "@tamagui/babel-plugin",
         {
-          components: ['tamagui', '@tamagui/sandbox-ui'],
-          config: './src/tamagui.config.ts',
+          components: ["tamagui", "@tamagui/sandbox-ui"],
+          config: "./src/tamagui.config.ts",
           // experimentalFlattenThemesOnNative: true,
           // disable: true,
           // disableExtraction: true,
         },
       ],
-      'react-native-reanimated/plugin',
+      "react-native-reanimated/plugin",
+      [
+        "module-resolver",
+        {
+          root: ["./"],
+          alias: {
+            "next/router": "./next-router-shim",
+          },
+        },
+      ],
     ],
-  }
-}
+  };
+};

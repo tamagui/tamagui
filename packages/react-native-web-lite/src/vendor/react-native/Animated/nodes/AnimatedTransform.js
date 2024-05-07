@@ -16,7 +16,7 @@ import AnimatedWithChildren from './AnimatedWithChildren'
 class AnimatedTransform extends AnimatedWithChildren {
   constructor(transforms) {
     super()
-    this._transforms = transforms
+    this._transforms = transforms || []
   }
 
   __makeNative() {

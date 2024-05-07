@@ -1,0 +1,257 @@
+---
+title: Select
+description: A simple select component
+name: select
+component: Select
+package: select
+demoName: Select
+---
+
+# Select
+
+<Description>Show a menu of items users can select from one of</Description>
+
+<HeroContainer>
+  <SelectDemo />
+</HeroContainer>
+
+```tsx hero template=Select
+
+```
+
+<Highlights
+  features={[
+    `Comes with styling, yet completely customizable and themeable.`,
+    `Accepts animations, themes, size props and more.`,
+    `Accessible, keyboard navigable, full-featured.`,
+  ]}
+/>
+
+## Anatomy
+
+```tsx
+import { Select } from 'tamagui' // or '@tamagui/select'
+
+export default () => (
+  <Select defaultValue="">
+    <Select.Trigger>
+      <Select.Value placeholder="Search..." />
+    </Select.Trigger>
+    <Select.Content>
+      <Select.ScrollUpButton />
+      <Select.Viewport>
+        <Select.Group>
+          <Select.Label />
+          <Select.Item>
+            <Select.ItemText />
+          </Select.Item>
+        </Select.Group>
+      </Select.Viewport>
+      <Select.ScrollDownButton />
+    </Select.Content>
+  </Select>
+)
+```
+
+<Notice>
+  Note that Select only works on Native using the Adapt component to adapt it to a Sheet.
+  See below for docs.
+</Notice>
+
+## API Reference
+
+### Select
+
+Contains every component for the select:
+
+<PropsTable
+  data={[
+    {
+      name: 'id',
+      type: 'string',
+      description: `Optional for usage with Label`,
+    },
+    {
+      name: 'size',
+      type: 'SizeTokens',
+      description: `Set the size of itself and pass to all inner elements`,
+    },
+    {
+      name: 'children',
+      type: 'React.ReactNode',
+      description: `Select children API components`,
+    },
+    {
+      name: 'value',
+      type: 'string',
+      description: `Controlled value`,
+    },
+    {
+      name: 'defaultValue',
+      type: 'string',
+      description: `Default value`,
+    },
+    {
+      name: 'onValueChange',
+      type: '(value: string) => void',
+      description: `Callback on value change`,
+    },
+    {
+      name: 'open',
+      type: 'boolean',
+      description: `Controlled open value`,
+    },
+    {
+      name: 'defaultOpen',
+      type: 'boolean',
+      description: `Default open value`,
+    },
+    {
+      name: 'onOpenChange',
+      type: '(open: boolean) => void',
+      description: `Callback on open change`,
+    },
+    {
+      name: 'dir',
+      type: 'Direction',
+      description: `Direction of text display`,
+    },
+    {
+      name: 'name',
+      type: 'string',
+      description: `For use in forms`,
+    },
+    {
+      name: 'native',
+      type: 'NativeValue',
+      description: `If passed, will render a native component instead of the custom one. Currently only \`web\` is supported.`,
+    },
+  ]}
+/>
+
+### Select.Trigger
+
+Extends [ListItem](/docs/components/list-item) to give sizing, icons, and more.
+
+#### Select.Value
+
+Extends [Paragraph](/docs/components/text), adding:
+
+<PropsTable
+  data={[
+    {
+      name: 'placeholder',
+      type: 'string',
+      description: `Optional placeholder to show when no value selected`,
+    },
+  ]}
+/>
+
+#### SelectContent
+
+Main container for Select content, used to contain the up/down arrows, no API beyond children.
+
+#### Select.ScrollUpButton
+
+Inside Content first, displays when you can scroll up, stuck to the top.
+
+Extends [YStack](/docs/components/stacks).
+
+### Select.ScrollDownButton
+
+Inside Content last, displays when you can scroll down, stuck to the bottom.
+
+Extends [YStack](/docs/components/stacks).
+
+### Select.Viewport
+
+Extends [ThemeableStack](/docs/components/stacks#themeablestack). Contains scrollable content items as children.
+
+<PropsTable
+  data={[
+    {
+      name: 'disableScroll',
+      type: 'boolean',
+      description: `Removes ability to scroll and all style and functionality related to scrolling`,
+    },
+  ]}
+/>
+
+### Select.Group
+
+Extends [YStack](/docs/components/stacks). Use only when grouping together items, alongside a Label as the first child.
+
+### Select.Label
+
+Extends [ListItem](/docs/components/list-item). Used to label Groups.
+
+### Select.Item
+
+Extends [ListItem](/docs/components/list-item). Used to add selectable values ot the list. Must provide an index as React Native doesn't give any escape hatch for us to configure that automatically.
+
+<PropsTable
+  data={[
+    {
+      name: 'index',
+      type: 'number',
+      required: true,
+      description: `Incrementally starting from 0, matching its appearance in the list.`,
+    },
+
+    {
+      name: 'value',
+      type: 'string',
+      description: `Provide a value that will be passed on selection.`,
+    },
+
+]}
+/>
+
+### Select.ItemText
+
+Extends [Paragraph](/docs/components/text). Used inside Item to provide unselectable text that will show above once selected in the parent Select.
+
+### Select.Sheet
+
+When used alongside `<Adapt />`, Select will render as a sheet when that breakpoint is active.
+
+This is the only way to render a Select on Native for now, as mobile apps tend to show Select very differently from web and Tamagui wants to present the right abstractions for each platform.
+
+See [Sheet](/docs/components/sheet) for more props.
+
+Must use `Select.SheetContents` inside the `Select.Sheet.Frame` to insert the contents given to `Select.Content`
+
+```tsx
+import { Select } from 'tamagui' // or '@tamagui/select'
+
+export default () => (
+  <Select defaultValue="">
+    <Select.Trigger>
+      <Select.Value placeholder="Search..." />
+    </Select.Trigger>
+
+    <Adapt when="sm" platform="touch">
+      {/* or <Select.Sheet> */}
+      <Sheet>
+        <Sheet.Frame>
+          <SheetContents />
+        </Sheet.Frame>
+        <Sheet.Overlay />
+      </Sheet>
+    </Adapt>
+
+    <Select.Content>
+      <Select.ScrollUpButton />
+      <Select.Viewport>
+        <Select.Group>
+          <Select.Label />
+          <Select.Item>
+            <Select.ItemText />
+          </Select.Item>
+        </Select.Group>
+      </Select.Viewport>
+      <Select.ScrollDownButton />
+    </Select.Content>
+  </Select>
+)
+```

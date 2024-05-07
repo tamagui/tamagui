@@ -3,10 +3,8 @@ import { getCookie, setCookie } from 'cookies-next'
 import jwt from 'jsonwebtoken'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-import { whitelistGithubUsernames } from '../protected/_utils/github'
 import { HandledResponseTermination } from './apiRoute'
 import type { Database } from './supabase-types'
-import { getArray } from './supabase-utils'
 import { getUserAccessInfo } from './user-helpers'
 
 const JWT_NAME = 'tamagui_authorization'
@@ -60,8 +58,10 @@ export async function authorizeUserAccess(
   if (teamsResult.error) {
     throw teamsResult.error
   }
+
+  const user = (await supabase.auth.getUser()).data.user
   const { hasBentoAccess, hasStudioAccess, hasTakeoutAccess, teamsWithAccess } =
-    await getUserAccessInfo(supabase)
+    await getUserAccessInfo(supabase, user)
 
   const payload: PayloadShape = {
     hasStudioAccess,

@@ -1,0 +1,245 @@
+---
+title: Tamagui Props
+description: All the base props
+---
+
+Tamagui supports a superset of the React Native props. Start with:
+
+- [View](https://reactnative.dev/docs/view-style-props), or
+- [Text](https://reactnative.dev/docs/text-style-props)
+
+From there, we add [style props](/docs/intro/styles) directly onto the same object.
+
+Finally, there are a few non-style props Tamagui adds:
+
+<PropsTable
+  data={[
+    {
+      name: 'animation',
+      required: false,
+      type: 'string',
+      description: (
+        <span>
+          Apply an animation as defined in your createTamagui configuration.
+        </span>
+      ),
+    },
+
+    {
+      name: 'animateOnly',
+      required: false,
+      type: 'string[]',
+      description: (
+        <span>
+          A list of properties to animate. Note that flat transforms can only be controlled via `transform`.
+        </span>
+      ),
+    },
+
+    {
+      name: 'theme',
+      required: false,
+      type: 'string',
+      description: (
+        <span>
+          Apply a theme or sub-theme to this component and the components below it.
+        </span>
+      ),
+    },
+
+    {
+      name: 'themeInverse',
+      required: false,
+      type: 'boolean',
+      description: (
+        <span>
+          Invert light or dark theme for the sub-tree.
+        </span>
+      ),
+    },
+
+    {
+      name: 'themeShallow',
+      required: false,
+      type: 'boolean',
+      description: (
+        <span>
+          Used in combination with the theme prop, it prevents the theme from passing to children.
+        </span>
+      ),
+    },
+
+    {
+      name: 'forceStyle',
+      required: false,
+      type: `'hover' | 'press' | 'focus' | 'focusVisible'`,
+      description: (
+        <span>
+          Forces the pseudo style state to be on.
+        </span>
+      ),
+    },
+
+    {
+      name: 'hitSlop',
+      required: false,
+      type: `number | Insets['top'| 'bottom'| 'left'| 'right']`,
+      description: (
+        <span>
+          Adds some area outside the typical bounds of the component for touch actions to register. Tamagui uses Pressable internally so it supports number | Insets rather than just Insets.
+        </span>
+      ),
+    },
+
+    {
+      name: 'group',
+      required: false,
+      type: `boolean | string`,
+      description: (
+        <span>
+          Marks this component as a group for use in styling children based on parents named group.
+        </span>
+      ),
+    },
+
+    {
+      name: 'componentName',
+      required: false,
+      type: 'string',
+      description: (
+        <span>
+          Equivalent to "name" property on styled() for automatically applying a theme.
+        </span>
+      ),
+    },
+
+    {
+      name: 'className',
+      required: false,
+      type: 'string',
+      description: (
+        <span>
+          <strong>Web Only</strong>: An escape hatch to set className. This works fully with the compiler, which will concat your defined className with its generated ones.
+        </span>
+      ),
+    },
+
+    {
+      name: 'disableClassName',
+      required: false,
+      type: 'boolean ',
+      description: (
+        <span>
+          <strong>Web Only</strong>: Disables className output of styles, instead using only inline styles.
+        </span>
+      ),
+    },
+
+    {
+      name: 'tag',
+      required: false,
+      type: 'string',
+      description: (
+        <span>
+          <strong>Web Only</strong>: Renders the final element as the given tag. Note: React Native Web doesn't support tag and as such if using any animation driver except CSS the tag prop will stop working. We'd recommend using "role" for most cases.
+        </span>
+      ),
+    },
+
+    {
+      name: 'space',
+      required: false,
+      deprecated: true,
+      type: "boolean | string | TamaguiConfig['space']",
+      description: (
+        <span>
+          Use gap instead -
+          Spacing is built into Tamagui and can accept a number or Token.space value. This will
+          filter out any nullish child elements and insert a spacer components between the remaining
+          elements.
+        </span>
+      ),
+    },
+
+    {
+      name: 'spaceDirection',
+      required: false,
+      deprecated: true,
+      default: 'both',
+      type: `'horizontal' | 'vertical' | 'both'`,
+      description: (
+        <span>
+          By default the space inserted is a square, but if you set it to horizontal it will be 0px tall, vertical will be 0px wide.
+        </span>
+      ),
+    },
+
+    {
+      name: 'debug',
+      required: false,
+      type: `boolean | 'verbose' | 'break'`,
+      description: (
+        <span>
+          When set Tamagui will output a variety of helpful information on how it parsed and
+          applied styling. Verbose will output more information, and break will hit a debugger at
+          the start of render in development mode.
+        </span>
+      ),
+    },
+
+    {
+      name: 'untilMeasured',
+      required: false,
+      type: `'hide' | 'show'`,
+      description: (
+        <span>
+          Works only alongside group, when children of the group are using container based sizing on native you can hide them until parent is measured.
+        </span>
+      ),
+    },
+    {
+
+      name: 'disableOptimization',
+      required: false,
+      type: `boolean `,
+      description: (
+        <span>
+          Disable all compiler optimization.
+        </span>
+      ),
+    },
+
+    {
+      name: 'tabIndex',
+      required: false,
+      type: `string | number`,
+      description: (
+        <span>
+          Used for controlling the order of focus with keyboard or assistive device enavigation.
+        </span>
+      ),
+    },
+
+    {
+      name: 'role',
+      required: false,
+      type: 'Role',
+      description: (
+        <span>
+          Indicates to accessibility services to treat UI component like a specific role.
+        </span>
+      ),
+    },
+
+    {
+      name: 'asChild',
+      required: false,
+      type: `boolean | 'except-style' | 'except-style-web' | 'web'`,
+      description: (
+        <span>
+          When true, Tamagui expects a single child element. Instead of rendering its own element, it will pass all props to that child, merging together any event handling props. When "except-style", the same behavior except Tamagui won't pass styles down from the parent, only non-style props.
+        </span>
+      ),
+    },
+
+]} />

@@ -1,6 +1,6 @@
 import '@tamagui/polyfill-dev';
 import type { UseHoverProps } from '@floating-ui/react';
-import type { SizeTokens, StackProps, TamaguiComponent, TamaguiElement } from '@tamagui/core';
+import type { SizeTokens, StackProps, TamaguiElement } from '@tamagui/core';
 import type { DismissableProps } from '@tamagui/dismissable';
 import type { FocusScopeProps } from '@tamagui/focus-scope';
 import type { PopperArrowExtraProps, PopperArrowProps, PopperContentProps, PopperProps } from '@tamagui/popper';
@@ -144,7 +144,7 @@ export declare const PopoverClose: React.ForwardRefExoticComponent<Omit<import("
     __scopePopover?: string | undefined;
 } & React.RefAttributes<TamaguiElement>>;
 export type PopoverArrowProps = PopperArrowProps;
-export declare const PopoverArrow: TamaguiComponent<Omit<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+export declare const PopoverArrow: import("@tamagui/core").TamaguiComponent<Omit<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | SizeTokens | undefined;
     fullscreen?: boolean | undefined;
     inset?: number | SizeTokens | {
@@ -224,7 +224,7 @@ export declare const Popover: React.ForwardRefExoticComponent<PopperProps & {
     }>> & {
         __scopePopover?: string | undefined;
     } & React.RefAttributes<TamaguiElement>>;
-    Arrow: TamaguiComponent<Omit<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+    Arrow: import("@tamagui/core").TamaguiComponent<Omit<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
         elevation?: number | SizeTokens | undefined;
         fullscreen?: boolean | undefined;
         inset?: number | SizeTokens | {
@@ -316,6 +316,9 @@ export declare const Popover: React.ForwardRefExoticComponent<PopperProps & {
             } | undefined;
             open?: boolean | undefined;
             transparent?: boolean | undefined;
+            /**
+             * @see https://github.com/theKashey/react-remove-scroll#usage
+             */
             circular?: boolean | undefined;
             unstyled?: boolean | undefined;
             backgrounded?: boolean | undefined;

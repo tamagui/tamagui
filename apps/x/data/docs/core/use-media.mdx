@@ -1,0 +1,99 @@
+---
+title: useMedia
+description: Respond to different screen sizes
+---
+
+Define your media rules in the media object of your `tamagui.config.ts`:
+
+```tsx line=2-6
+export default createTamagui({
+  media: {
+    xs: { maxWidth: 660 },
+    gtXs: { minWidth: 660 + 1 },
+    sm: { maxWidth: 860 },
+    gtSm: { minWidth: 860 + 1 },
+    md: { maxWidth: 980 },
+    gtMd: { minWidth: 980 + 1 },
+    lg: { maxWidth: 1120 },
+    gtLg: { minWidth: 1120 + 1 },
+    short: { maxHeight: 820 },
+    tall: { minHeight: 820 },
+    hoverNone: { hover: 'none' },
+    pointerCoarse: { pointer: 'coarse' },
+  },
+})
+```
+
+<Notice>
+  Choose the naming convention you prefer. We use `sm`, `md`, `lg` and `gtSm` etc. Where "gt" means "greater than".
+</Notice>
+
+The order here important: items defined further down will override items before. In this example, `xs` is the weakest, `gtXs` will override it, and so on.
+
+Behind the scenes, we convert this object syntax into media query syntax with a simple loop over your object, turning camelCase into hyphen-case, and adding `@media()` around it.
+
+### Usage
+
+Now in any component you may import and use `useMedia` or `$` prefixed media prop styles.
+
+### Inline props
+
+```tsx
+import { Button, XStack, useMedia } from 'tamagui' // note: design system can use @tamagui/core
+
+export default () => {
+  const [x, setX] = useState(0)
+  return (
+    <XStack
+      backgroundColor="red"
+      $gtSm={{
+        backgroundColor: 'blue',
+      }}
+      $gtMd={{
+        backgroundColor: x > 0.5 ? 'green' : 'yellow',
+      }}
+    >
+      <Button onPress={() => setX(Math.random())}>Hello</Button>
+    </XStack>
+  )
+}
+```
+
+In this example we are doing mobile-first design, where the base props will be overridden as the viewport gets wider. Notice the ternary logic in `$gtMd`: this is extractable with Tamagui, and will still output simple CSS with no leftover style props in your component's render function.
+
+### Hooks
+
+```tsx
+import { Button, XStack, useMedia } from 'tamagui' // note: design system can use @tamagui/core
+
+export default () => {
+  const media = useMedia()
+
+  return (
+    <XStack
+      // can be used as a ternary
+      backgroundColor={media.sm ? 'red' : 'blue'}
+      // can be used as a spread
+      {...(media.lg && {
+        x: 10,
+        y: 10,
+      })}
+    >
+      <Button>Hello</Button>
+    </XStack>
+  )
+}
+```
+
+As long as **all** of your usages of useMedia are extractable, Tamagui will actually generate your CSS and then fully remove the hook from the output code. You can check this by adding `// debug` to the top of your component.
+
+Of course, you may sometimes use `useMedia` for other purposes than styling. In fact, that's the nice part about Tamagui - if it can't extract, it always falls back to runtime gracefully.
+
+Tamagui runtime `useMedia` usage will track which keys are accessed, and only update if the media query matching that key updates. This granular updating is nice for performance.
+
+#### Limitations
+
+The `useMedia` hook uses proxies so it can track which keys you are accessing and only re-render components that need re-rendering based on those keys. The Tamagui compiler also understands straightforward uses of the hook during compile-time and can remove it entirely when targeting the web, in favor of CSS.
+
+- In order to keep things lightweight and simple, the proxied object returned by `useMedia` is not iterable, and you can't check keys on it using `in` or get them using `Object.keys`.
+- It's encouraged to write `const media = useMedia()` and then access your keys like `media.sm` to work best with the compiler. The compiler supports de-structuring, but not re-naming.

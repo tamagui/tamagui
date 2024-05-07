@@ -17,7 +17,7 @@ export function TamaguiProvider({
   if (isClient) {
     // inject CSS if asked to (not SSR compliant)
 
-    React.useLayoutEffect(() => {
+    React.useInsertionEffect(() => {
       if (!config) return
       if (!config.disableSSR) {
         // for easier support of hidden-until-js mount animations

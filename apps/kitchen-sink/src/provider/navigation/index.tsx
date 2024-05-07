@@ -2,9 +2,10 @@ import { useAsyncStorage } from '@react-native-async-storage/async-storage'
 import { DarkTheme, DefaultTheme, NavigationContainer } from '@react-navigation/native'
 // causes metro bundle issue it seems:
 // import * as Linking from 'expo-linking'
+import * as sections from '@tamagui/bento'
+import { Data } from '@tamagui/bento'
 import React, { useContext, useMemo } from 'react'
 import { Linking, Platform } from 'react-native'
-
 import { ThemeContext } from '../../useKitchenSinkTheme'
 
 const PERSISTENCE_KEY = 'NAVIGATION_STATE_V4_5'
@@ -39,6 +40,26 @@ export function NavigationProvider({ children }: { children: React.ReactNode }) 
     }
   }, [isReady])
 
+  const bentoScreens = Data.listingData.sections.reduce((acc, { sectionName }) => {
+    acc[sectionName] = `${sectionName}/:id`
+    return acc
+  }, {})
+
+  const bentoElementScreens = Object.entries(sections['Inputs']).reduce(
+    (acc, component) => {
+      acc[component[0]] = `${component[0]}`
+      return acc
+    },
+    {}
+  )
+
+  let bentoScreensPerElementRoutes = Object.entries(sections)
+    .filter(([key]) => /\b[A-Z][a-z0-9]+(?:[A-Z][a-z0-9]+)*\b/.test(key))
+    .map(([, sectionModules]) => Object.entries(sectionModules as any))
+    .slice(0, -1)
+    .reduce((acc, curr) => acc.concat(curr), [])
+    .reduce((acc, [key, value]) => ({ ...acc, [key]: key }), {})
+
   const linking = useMemo(
     () => ({
       // Linking.createURL('/')
@@ -51,6 +72,10 @@ export function NavigationProvider({ children }: { children: React.ReactNode }) 
           tests: 'tests',
           test: 'test/:id',
           sandbox: 'sandbox',
+          bento: 'bento',
+          ...bentoScreens,
+          ...bentoElementScreens,
+          ...bentoScreensPerElementRoutes,
         },
       } as const,
     }),

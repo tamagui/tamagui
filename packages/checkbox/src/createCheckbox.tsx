@@ -183,6 +183,7 @@ export function createCheckbox<
               })}
               tag="button"
               ref={checkboxRef}
+              unstyled={unstyled}
               {...(unstyled === false && {
                 size,
                 theme: checked ? 'active' : null,

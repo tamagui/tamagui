@@ -12,6 +12,7 @@
     "module": "ESNext",
     "moduleResolution": "node",
     "forceConsistentCasingInFileNames": true,
+    "declaration": true,
     "noEmitOnError": false,
     "noImplicitAny": false,
     "noImplicitReturns": false,
@@ -24,7 +25,6 @@
     "removeComments": false,
     "strict": true,
     "skipLibCheck": true,
-    "typeRoots": ["node_modules/@types", "environment.d.ts"],
     "sourceMap": false,
     "target": "ESNext",
     "types": ["node", "react"],
@@ -32,7 +32,7 @@
     "lib": ["dom", "dom.iterable", "esnext"],
     "resolveJsonModule": true,
   },
-  "exclude": ["node_modules"], 
+  "exclude": ["node_modules", "types", "dist"], 
   "typeAcquisition": {
     "enable": true
   }

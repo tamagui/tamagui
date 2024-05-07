@@ -438,7 +438,11 @@ export const PurchaseModal = ({
                         items.push(`Takeout ${starterPrice?.description}`)
                       }
                       if (bentoPrice) {
-                        items.push(`Bento ${bentoPrice?.description}`)
+                        if (bentoPrice.description?.includes('Unlimited')) {
+                          items.push(`Bento Pro (20 Users)`)
+                        } else {
+                          items.push(`Bento ${bentoPrice?.description}`)
+                        }
                       }
 
                       return items.join(' + ')
@@ -474,8 +478,7 @@ export const PurchaseModal = ({
                         ) : (
                           <>
                             <Paragraph size="$1" theme="green_alt2">
-                              You will get a discount for purchasing both Takeout and
-                              Bento.
+                              A $50 discount applies if you add both Bento and Takeout.
                             </Paragraph>
                             <SizableText
                               cursor="pointer"
