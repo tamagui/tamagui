@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react'
+import { View, styled, useComposedRefs, useEvent, useTheme } from '@tamagui/core'
 import { registerFocusable } from '@tamagui/focusable'
-import { View, isWeb, styled, useComposedRefs, useEvent, useTheme } from '@tamagui/core'
-import { InputProps } from './types'
+import React, { useEffect } from 'react'
 import { styledBody } from './shared'
+import type { InputProps } from './types'
 const StyledInput = styled(View, styledBody[0], styledBody[1])
 
 export const Input = StyledInput.styleable<InputProps>((inProps, forwardedRef) => {
