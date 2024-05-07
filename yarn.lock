@@ -7534,6 +7534,7 @@ __metadata:
     react-native: "npm:^0.73.4"
   peerDependencies:
     react: "*"
+    react-dom: "*"
   languageName: unknown
   linkType: soft
 
@@ -8393,6 +8394,7 @@ __metadata:
     react-native: "npm:^0.73.4"
   peerDependencies:
     react: "*"
+    react-dom: "*"
     react-native: "*"
   languageName: unknown
   linkType: soft
