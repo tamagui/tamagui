@@ -167,6 +167,30 @@ export const whitelistBentoUsernames = new Set([
   'wongk',
   'dakotaodell',
   'dougzor',
+
+  'Aljishi89@gmail.com',
+
+  // JBR
+  'mattleesounds',
+
+  // livepeer
+  '0xcadams',
+
+  // ibot
+  'rbondoc96',
+  'MOFFROUGH',
+  'Jasonej',
+  'erik-perri',
+  'NilsDelaguardia',
+  'andresvega-sourcetoad',
+  'chrisr-st',
+  'justinvoelkel',
+  'jdmonm',
+  'michalm-st',
+  'charlesreffett',
+  'bradtoad',
+  'michal-sourcetoad',
+  'jpaz91',
 ])
 
 export const whitelistGithubUsernames = [
@@ -194,6 +218,9 @@ export const whitelistGithubUsernames = [
 
   // Triba
   'Awelani-Triba',
+
+  // JBR
+  'mattleesounds',
 ]
 
 export const checkForSponsorship = async (
