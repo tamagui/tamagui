@@ -1,6 +1,6 @@
 import { createRequire } from 'node:module'
-import fs from 'fs'
-import path from 'path'
+import fs from 'node:fs'
+import path from 'node:path'
 
 import visit from 'unist-util-visit'
 

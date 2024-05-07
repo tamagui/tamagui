@@ -332,7 +332,7 @@ export const getSplitStyles: StyleSplitter = (
         // map userSelect to native prop
         if (keyInit === 'userSelect') {
           keyInit = 'selectable'
-          valInit = valInit === 'none' ? false : true
+          valInit = valInit !== 'none'
         } else if (keyInit.startsWith('data-')) {
           continue
         }

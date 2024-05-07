@@ -1,4 +1,4 @@
-import vm from 'vm'
+import vm from 'node:vm'
 
 import generate from '@babel/generator'
 import type { NodePath } from '@babel/traverse'

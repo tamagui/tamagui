@@ -14,8 +14,7 @@ import type {
   ThemeableProps,
 } from '@tamagui/web'
 import { Spacer, getTokens, getVariableValue, styled, useProps } from '@tamagui/web'
-import type { FunctionComponent } from 'react'
-import React from 'react'
+import type { FunctionComponent, ReactNode } from 'react'
 
 type ListItemIconProps = { color?: any; size?: any }
 type IconProp = JSX.Element | FunctionComponent<ListItemIconProps> | null
@@ -48,11 +47,11 @@ export type ListItemExtraProps = Omit<TextParentStyles, 'TextComponent' | 'noTex
     /**
      * title
      */
-    title?: React.ReactNode
+    title?: ReactNode
     /**
      * subtitle
      */
-    subTitle?: React.ReactNode
+    subTitle?: ReactNode
     /**
      * will not wrap text around `children` only, "all" will not wrap title or subTitle
      */
@@ -113,7 +112,7 @@ export const ListItemFrame = styled(ThemeableStack, {
   } as const,
 
   defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+    unstyled: process.env.TAMAGUI_HEADLESS === '1',
   },
 })
 
@@ -134,7 +133,7 @@ export const ListItemText = styled(SizableText, {
   } as const,
 
   defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+    unstyled: process.env.TAMAGUI_HEADLESS === '1',
   },
 })
 
@@ -163,7 +162,7 @@ export const ListItemSubtitle = styled(ListItemText, {
   } as const,
 
   defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+    unstyled: process.env.TAMAGUI_HEADLESS === '1',
   },
 })
 

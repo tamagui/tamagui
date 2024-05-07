@@ -57,11 +57,13 @@ export function TokensDemo() {
 function SizeSection({ section }: { section: Section }) {
   const allTokens = getConfig().tokens
   const tokens = allTokens[section.startsWith('space') ? 'space' : section]
-  const st = Object.keys(tokens).sort((a, b) => (parseFloat(a) > parseFloat(b) ? 1 : -1))
-  const spaceTokens = st.filter((t) => parseFloat(t) >= 0)
+  const st = Object.keys(tokens).sort((a, b) =>
+    Number.parseFloat(a) > Number.parseFloat(b) ? 1 : -1
+  )
+  const spaceTokens = st.filter((t) => Number.parseFloat(t) >= 0)
   const spaceTokensNegative = st
-    .filter((t) => parseFloat(t) < 0)
-    .sort((a, b) => (parseFloat(a) > parseFloat(b) ? -1 : 1))
+    .filter((t) => Number.parseFloat(t) < 0)
+    .sort((a, b) => (Number.parseFloat(a) > Number.parseFloat(b) ? -1 : 1))
 
   return (
     <YStack flex={1} space>
@@ -85,7 +87,7 @@ function SizeSection({ section }: { section: Section }) {
                     size:
                       -tokens[
                         spaceTokensNegative.find(
-                          (t) => parseFloat(t) === -parseFloat(token)
+                          (t) => Number.parseFloat(t) === -Number.parseFloat(token)
                         ) ?? token
                       ]?.val,
                   })}

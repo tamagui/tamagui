@@ -22,7 +22,7 @@ export const CheckboxIndicatorFrame = styled(ThemeableStack, {
     },
   } as const,
   defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+    unstyled: process.env.TAMAGUI_HEADLESS === '1',
   },
 })
 
@@ -98,6 +98,6 @@ export const CheckboxFrame = styled(ThemeableStack, {
   } as const,
 
   defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+    unstyled: process.env.TAMAGUI_HEADLESS === '1',
   },
 })

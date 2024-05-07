@@ -1,5 +1,5 @@
 import { PresenceContext, ResetPresence, usePresence } from '@tamagui/use-presence'
-import { type AnimationDriver, type UniversalAnimatedNumber } from '@tamagui/web'
+import type { AnimationDriver, UniversalAnimatedNumber } from '@tamagui/web'
 import type { MotiTransition } from 'moti'
 import { useMotify } from 'moti/author'
 import { type CSSProperties, useContext, useMemo } from 'react'

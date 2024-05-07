@@ -8,7 +8,7 @@ const nameToPaths = {}
 
 export const getNameToPaths = () => nameToPaths
 
-const Module = require('module')
+const Module = require('node:module')
 const packageJson = require('react-native-web/package.json')
 const proxyWorm = require('@tamagui/proxy-worm')
 const rnw = require('react-native-web')

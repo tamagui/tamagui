@@ -10,7 +10,7 @@ import { Stage } from '../components/Stage'
 const modelUrl = `${
   process.env.NEXT_PUBLIC_VERCEL_URL
     ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
-    : `http://localhost:${process.env.NODE_ENV === 'production' ? '3333' : '8081'}`
+    : `http://localhost:${process.env.NODE_ENV === 'production' ? '3333' : '5005'}`
 }/takeout-compressed-2.glb`
 
 let frameCount = 0

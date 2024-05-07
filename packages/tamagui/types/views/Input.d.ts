@@ -156,6 +156,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
     accessibilityIgnoresInvertColors?: boolean | undefined;
     accessibilityLanguage?: string | undefined;
     target?: string | undefined;
+    htmlFor?: string | undefined;
     asChild?: boolean | "web" | "except-style" | "except-style-web" | undefined;
     dangerouslySetInnerHTML?: {
         __html: string;

@@ -1,4 +1,4 @@
-import { basename, dirname, join } from 'path'
+import { basename, dirname, join } from 'node:path'
 
 import esbuild from 'esbuild'
 import * as FS from 'fs-extra'
@@ -154,7 +154,7 @@ async function asyncLock(props: Props) {
     /* ok */
   })
   const lockedMsAgo = !lockStat
-    ? Infinity
+    ? Number.POSITIVE_INFINITY
     : new Date().getTime() - new Date(lockStat.mtime).getTime()
   if (lockedMsAgo < 500) {
     if (process.env.DEBUG?.startsWith('tamagui')) {

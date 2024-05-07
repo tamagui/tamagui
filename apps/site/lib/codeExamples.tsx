@@ -1,4 +1,70 @@
-export const animationCode = `
+export const animationCode = `import { Button, Square } from 'tamagui'
+
+export default () => {
+  const [positionI, setPositionI] = React.useState(0)
+  return (
+    <>
+      <Square
+        animation="bouncy"
+        size={110}
+        bg="$pink10"
+        br="$9"
+        hoverStyle={{
+          scale: 1.1,
+        }}
+        pressStyle={{
+          scale: 0.9,
+        }}
+        {...positions[positionI]}
+      >
+        <LogoIcon />
+      </Square>
+
+      <Button
+        pos="absolute"
+        b={20}
+        l={20}
+        icon={require('@tamagui/lucide-icons').Play}
+        size="$6"
+        circular
+        onPress={() => setPositionI(i => (i + 1) % positions.length)}
+      />
+    </>
+  )
+}
+
+export const positions = [
+  {
+    x: 0,
+    y: 0,
+    scale: 1,
+    rotate: '0deg',
+  },
+  {
+    x: -50,
+    y: -50,
+    scale: 0.5,
+    rotate: '-45deg',
+    hoverStyle: {
+      scale: 0.6,
+    },
+    pressStyle: {
+      scale: 0.4,
+    },
+  },
+  {
+    x: 50,
+    y: 50,
+    scale: 1,
+    rotate: '180deg',
+    hoverStyle: {
+      scale: 1.1,
+    },
+    pressStyle: {
+      scale: 0.9,
+    },
+  },
+]
 `
 
 export const compilationCode = [
@@ -10,13 +76,13 @@ export const compilationCode = [
         {
           name: 'app.tsx',
           language: 'tsx',
-          code: `import { View } from '@tamagui/core'
+          code: `import { Stack } from '@tamagui/core'
 import { Heading } from './Heading'
 
 const App = (props) => (
-  <View px="$2" w={550} $gtSm={{ px: '$6' }}>
+  <Stack px="$2" w={550} $gtSm={{ px: '$6' }}>
     <Heading size={props.big ? 'large' : 'small'}>Lorem ipsum.</Heading>
-  </View>
+  </Stack>
 )`,
         },
 
@@ -76,7 +142,7 @@ const _cn5 = " _fos-16px"
 const _cn4 = " _fos-22px"
 const _cn3 = " _bg-180kg62 _col-b5vn3b _mt-0px _mr-0px _mb-0px _ml-0px _ww-break-word _bxs-border-box _ff-System _dsp-inline  "
 const _cn2 = "  font_System"
-const _cn = "  is_View _fd-column _miw-0px _mih-0px _pos-relative _bxs-border-box _fb-auto _dsp-flex _fs-0 _ai-stretch  _w-550px _pr-1aj14ca _pl-1aj14ca  _pr-_gtSm_lrpixp _pl-_gtSm_lrpixp"`,
+const _cn = "  is_Stack _fd-column _miw-0px _mih-0px _pos-relative _bxs-border-box _fb-auto _dsp-flex _fs-0 _ai-stretch  _w-550px _pr-1aj14ca _pl-1aj14ca  _pr-_gtSm_lrpixp _pl-_gtSm_lrpixp"`,
           language: 'tsx',
         },
         {
@@ -124,10 +190,10 @@ const _cn = "  is_View _fd-column _miw-0px _mih-0px _pos-relative _bxs-border-bo
         {
           name: 'app.tsx',
           language: 'tsx',
-          code: `import { Paragraph, View } from 'tamagui'
+          code: `import { Paragraph, YStack } from 'tamagui'
 
 const App = (props) => (
-  <View
+  <YStack
     padding={props.big ? '$5' : '$3'}
     {...(props.colorful && {
       backgroundColor: 'green',
@@ -136,7 +202,7 @@ const App = (props) => (
     <Paragraph size="$2">
       Lorem ipsum.
     </Paragraph>
-  </View>
+  </YStack>
 )
 `,
         },
@@ -153,7 +219,7 @@ const _cn4 = "  _bc-1542mo4"
 const _cn3 = " _pb-12bic3x _pl-7ztw5e _pr-g6vdx7 _pt-1vq430g"
 const _cn2 = " _pb-z3qxl0 _pl-14km6ah _pr-1qpq1qc _pt-1medp4i"
 const _cn = " _d-6koalj _fd-eqz5dr _fs-1q142lx "
-import { Paragraph, View } from 'tamagui'
+import { Paragraph, YStack } from 'tamagui'
 
 const App = props => <div className={_cn + (props.big ? _cn2 : _cn3 + (" " + (props.colorful ? _cn4 : " ")))}>
     <span className={_cn5}>
@@ -195,12 +261,12 @@ const App = props => <div className={_cn + (props.big ? _cn2 : _cn3 + (" " + (pr
         {
           name: 'app.tsx',
           language: 'tsx',
-          code: `import { View } from 'tamagui'
+          code: `import { YStack } from 'tamagui'
 
 const App = (props) => {
   const media = useMedia()
   return (
-    <View
+    <YStack
       backgroundColor="red"
       hoverStyle={{
         backgroundColor: 'blue',
@@ -228,7 +294,7 @@ const App = (props) => {
         {
           name: 'app.js',
           code: `const _cn = " _bc-1g6456j _d-6koalj _fd-eqz5dr _fs-1q142lx _bc--hover-57dg7b _bc-_gtSm_1542mo4 _bc-_gtSm_-active-98uye2 _bc-_gtSm_abc1234"
-import { View } from 'tamagui'
+import { YStack } from 'tamagui'
 
 const App = (props) => <div className={_cn + (props.shrinks ? ' _transform-_sm_scale0d0t539907' : '')} />`,
           language: 'tsx',
@@ -259,14 +325,14 @@ const App = (props) => <div className={_cn + (props.shrinks ? ' _transform-_sm_s
         {
           name: 'app.tsx',
           language: 'tsx',
-          code: `import { useMedia, useTheme, View } from 'tamagui'
+          code: `import { useMedia, useTheme, YStack } from 'tamagui'
 
 const App = () => {
   const theme = useTheme()
   const media = useMedia()
 
   return (
-    <View
+    <YStack
       y={media.sm ? 10 : 0}
       backgroundColor={media.lg ? theme.red : theme.blue}
       {...media.xl && {
@@ -285,7 +351,7 @@ const App = () => {
         {
           name: 'app.js',
           code: `const _cn = " _d-6koalj _fd-eqz5dr _fs-1q142lx _t-_sm_1exagq _t-_sm0_1wpzndr _bc-_lg_no4z4g _bc-_lg0_1qoifqd _t-_xl_gqa6p0"
-import { View, useMedia, useTheme } from 'tamagui'
+import { YStack, useMedia, useTheme } from 'tamagui'
 
 const App = () => {
   return <div className={_cn} />

@@ -1,5 +1,5 @@
-import { readFileSync } from 'fs'
-import { basename, dirname, extname, join, relative, sep } from 'path'
+import { readFileSync } from 'node:fs'
+import { basename, dirname, extname, join, relative, sep } from 'node:path'
 
 import generate from '@babel/generator'
 import traverse from '@babel/traverse'

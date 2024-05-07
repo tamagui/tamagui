@@ -1046,7 +1046,7 @@ declare module 'tamagui' {
     interface TamaguiCustomConfig extends AppConfig {
     }
     interface TypeOverride {
-        groupNames(): 'window';
+        groupNames(): 'window' | 'listitem' | 'item';
     }
 }
 export default appConfig;

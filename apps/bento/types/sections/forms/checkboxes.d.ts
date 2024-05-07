@@ -5,7 +5,6 @@ export declare function checkboxes(props: {
         GroupedCheckbox: string;
         HorizontalCheckboxes: string;
         HorizontalWithDescriptionCheckboxes: string;
-        VerticalCheckboxes: string;
         VerticalWithDescriptionCheckboxes: string;
     };
 }): import("react/jsx-runtime").JSX.Element;

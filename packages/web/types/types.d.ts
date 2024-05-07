@@ -1151,6 +1151,7 @@ export type TamaguiComponentStateRef = {
     hasMeasured?: boolean;
     hasAnimated?: boolean;
     themeShallow?: boolean;
+    hasEverThemed?: boolean;
     isListeningToTheme?: boolean;
     unPress?: Function;
     group?: {

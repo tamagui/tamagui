@@ -25,22 +25,22 @@ type UseFilePickerProps<MT extends MediaTypeOptions> = {
     typeOfPicker: 'file' | 'image';
 };
 export declare function useFilePicker<MT extends MediaTypeOptions>(props?: UseFilePickerProps<MT>): {
-    open: any;
-    getInputProps: any;
-    getRootProps: any;
+    open: () => void;
+    getInputProps: <T extends DropzoneInputProps>(props?: T | undefined) => T;
+    getRootProps: <T_1 extends DropzoneRootProps>(props?: T_1 | undefined) => T_1;
     dragStatus: {
-        isDragAccept: any;
-        isDragActive: any;
-        isDragReject: any;
+        isDragAccept: boolean;
+        isDragActive: boolean;
+        isDragReject: boolean;
     };
     control: {
-        open: any;
-        getInputProps: any;
-        getRootProps: any;
+        open: () => void;
+        getInputProps: <T extends DropzoneInputProps>(props?: T | undefined) => T;
+        getRootProps: <T_1 extends DropzoneRootProps>(props?: T_1 | undefined) => T_1;
         dragStatus: {
-            isDragAccept: any;
-            isDragActive: any;
-            isDragReject: any;
+            isDragAccept: boolean;
+            isDragActive: boolean;
+            isDragReject: boolean;
         };
     };
 };

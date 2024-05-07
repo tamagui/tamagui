@@ -172,6 +172,25 @@ export const whitelistBentoUsernames = new Set([
 
   // JBR
   'mattleesounds',
+
+  // livepeer
+  '0xcadams',
+
+  // ibot
+  'rbondoc96',
+  'MOFFROUGH',
+  'Jasonej',
+  'erik-perri',
+  'NilsDelaguardia',
+  'andresvega-sourcetoad',
+  'chrisr-st',
+  'justinvoelkel',
+  'jdmonm',
+  'michalm-st',
+  'charlesreffett',
+  'bradtoad',
+  'michal-sourcetoad',
+  'jpaz91',
 ])
 
 export const whitelistGithubUsernames = [
