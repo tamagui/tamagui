@@ -193,3 +193,10 @@ export const CheckboxUnstyledDemo = lazyDemo(
 export const RadioGroupDemo = lazyDemo(
   import('@tamagui/demos/demo/RadioGroupDemo').then((x) => x.RadioGroupDemo)
 )
+
+export const RadioGroupHeadlessDemo = lazyDemo(
+  // @ts-ignore
+  import('@tamagui/demos/demo/RadioGroupHeadlessDemo').then(
+    (x) => x.RadioGroupHeadlessDemo
+  )
+)
