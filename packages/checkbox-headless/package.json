@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/checkbox-headless",
-  "version": "1.96.0",
+  "version": "1.97.0",
   "sideEffects": [
     "*.css"
   ],
@@ -23,14 +23,14 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/compose-refs": "1.96.0",
-    "@tamagui/constants": "1.96.0",
-    "@tamagui/create-context": "1.96.0",
-    "@tamagui/focusable": "1.96.0",
-    "@tamagui/helpers": "1.96.0",
-    "@tamagui/label": "1.96.0",
-    "@tamagui/use-controllable-state": "1.96.0",
-    "@tamagui/use-previous": "1.96.0"
+    "@tamagui/compose-refs": "1.97.0",
+    "@tamagui/constants": "1.97.0",
+    "@tamagui/create-context": "1.97.0",
+    "@tamagui/focusable": "1.97.0",
+    "@tamagui/helpers": "1.97.0",
+    "@tamagui/label": "1.97.0",
+    "@tamagui/use-controllable-state": "1.97.0",
+    "@tamagui/use-previous": "1.97.0"
   },
   "exports": {
     "./package.json": "./package.json",
@@ -45,7 +45,7 @@
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.96.0",
+    "@tamagui/build": "1.97.0",
     "react": "^18.2.0"
   },
   "publishConfig": {
