@@ -17455,16 +17455,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"h3-proxy@npm:^1.12.0":
-  version: 1.12.0
-  resolution: "h3-proxy@npm:1.12.0"
+"h3-proxy@npm:^1.13.0":
+  version: 1.13.0
+  resolution: "h3-proxy@npm:1.13.0"
   dependencies:
     consola: "npm:^3.2.3"
     is-glob: "npm:^4.0.3"
     micromatch: "npm:^4.0.5"
   peerDependencies:
     h3: ^1.6.0
-  checksum: 10/27200bdabab4e73d2e11b2fd21bcc7222daaf50b146f809fcc739a0eff36daf88407ef4c3ee70ba0c48e4b0e7fd1730d298caa247e6a7826a801ef06c7abaa7f
+  checksum: 10/7525295ca03138b5f43ec420348ff838079198da1c68e870cc03218f19505f730cafddb7ba8ce7f9ca298fbb2a3d4419e2851c201dab8a45d2a1ddaf729ed68c
   languageName: node
   linkType: hard
 
@@ -29532,6 +29532,46 @@ __metadata:
   languageName: node
   linkType: hard
 
+"vite@npm:^5.2.11":
+  version: 5.2.11
+  resolution: "vite@npm:5.2.11"
+  dependencies:
+    esbuild: "npm:^0.20.1"
+    fsevents: "npm:~2.3.3"
+    postcss: "npm:^8.4.38"
+    rollup: "npm:^4.13.0"
+  peerDependencies:
+    "@types/node": ^18.0.0 || >=20.0.0
+    less: "*"
+    lightningcss: ^1.21.0
+    sass: "*"
+    stylus: "*"
+    sugarss: "*"
+    terser: ^5.4.0
+  dependenciesMeta:
+    fsevents:
+      optional: true
+  peerDependenciesMeta:
+    "@types/node":
+      optional: true
+    less:
+      optional: true
+    lightningcss:
+      optional: true
+    sass:
+      optional: true
+    stylus:
+      optional: true
+    sugarss:
+      optional: true
+    terser:
+      optional: true
+  bin:
+    vite: bin/vite.js
+  checksum: 10/ee0ad038f0831c9514796522deb1e2dcb84bc311abbccb77e4b12216d37fc9559137f4f1b8e75187d51007b954e845c6518e36ee3acac2e2a2789c1181ebb16c
+  languageName: node
+  linkType: hard
+
 "vitest-axe@npm:^0.1.0":
   version: 0.1.0
   resolution: "vitest-axe@npm:0.1.0"
@@ -29676,7 +29716,7 @@ __metadata:
     get-port-please: "npm:^3.1.2"
     glob: "npm:^10.3.12"
     h3: "npm:^1.11.1"
-    h3-proxy: "npm:^1.12.0"
+    h3-proxy: "npm:^1.13.0"
     import-meta-resolve: "npm:^4.0.0"
     jiti: "npm:^1.21.0"
     metro-inspector-proxy: "npm:^0.71.0"
@@ -29689,7 +29729,7 @@ __metadata:
     sirv: "npm:^2.0.4"
     source-map: "npm:^0.7.3"
     url: "npm:^0.11.0"
-    vite: "npm:^5.2.10"
+    vite: "npm:^5.2.11"
     ws: "npm:^8.7.0"
   bin:
     vxrn: run.mjs
