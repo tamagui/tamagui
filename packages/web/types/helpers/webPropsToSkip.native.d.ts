@@ -16,6 +16,7 @@ export declare const webPropsToSkip: {
     backdropFilter: number;
     backgroundImage: number;
     mixBlendMode: number;
+    scrollbarWidth: number;
     backgroundOrigin: number;
     backgroundPosition: number;
     backgroundRepeat: number;

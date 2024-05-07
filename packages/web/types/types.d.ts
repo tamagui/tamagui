@@ -700,8 +700,6 @@ interface ExtraStyleProps {
      * Web-only style property. Will be omitted on native.
      */
     outlineWidth?: SpaceValue;
-<<<<<<< HEAD
-=======
     /**
      * Web-only style property. Will be omitted on native.
      */
@@ -710,7 +708,6 @@ interface ExtraStyleProps {
      * Web-only style property. Will be omitted on native.
      */
     scrollbarWidth?: Properties['scrollbarWidth'];
->>>>>>> master
     pointerEvents?: ViewProps['pointerEvents'];
     /**
      * @deprecated Use `gap`
