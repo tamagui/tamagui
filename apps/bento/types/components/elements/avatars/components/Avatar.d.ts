@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import type { FontSizeTokens, SizeTokens } from 'tamagui';
 export declare const AvatarIcon: import("tamagui").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
     size?: SizeTokens | undefined;

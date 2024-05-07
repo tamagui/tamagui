@@ -63,7 +63,7 @@ export declare const Drawer: (({ open, onOpenChange, children, portalToRoot, ...
         children: any;
         dismissAfter?: number | undefined;
     } & React.RefAttributes<TamaguiElement>, "onDismiss">, "ref"> & React.RefAttributes<TamaguiElement>>;
-    Portal: (props: PortalProps) => import("react/jsx-runtime").JSX.Element;
+    Portal: (props: PortalProps) => import("react/jsx-runtime").JSX.Element | undefined;
 };
 export {};
 //# sourceMappingURL=Drawer.d.ts.map

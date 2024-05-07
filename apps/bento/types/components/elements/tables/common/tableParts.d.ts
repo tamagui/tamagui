@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import type { SizeTokens } from 'tamagui';
 type AlignCells = {
     y: 'center' | 'start' | 'end';
