@@ -172,7 +172,7 @@ export const docsRoutes = [
     pages: [
       { title: 'Avatar', route: '/ui/avatar' },
       { title: 'Card', route: '/ui/card' },
-      { title: 'Image ( new )', route: '/ui/tamagui-image' },
+      { title: 'Image (new)', route: '/ui/tamagui-image' },
       { title: 'Image', route: '/ui/image' },
       { title: 'ListItem', route: '/ui/list-item' },
     ],

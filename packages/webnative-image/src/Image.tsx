@@ -1,6 +1,6 @@
 import { View, styled } from '@tamagui/core'
 
-import { ImageProps, ImageType } from './types'
+import type { ImageProps, ImageType } from './types'
 
 const StyledImage = styled(View, {
   name: 'Image',
