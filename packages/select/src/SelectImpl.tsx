@@ -60,6 +60,7 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
   const selectTimeoutRef = React.useRef<any>()
   const state = React.useRef({
     isMouseOutside: false,
+    isTyping: false
   })
 
   const [controlledScrolling, setControlledScrolling] = React.useState(false)
@@ -201,6 +202,9 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
       onMatch,
       selectedIndex,
       activeIndex,
+      onTypingChange: (e) => {
+        state.current.isTyping = e
+      }
     }),
   ]
 
@@ -222,7 +226,7 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
             if (
               event.key === 'Enter' ||
               event.code === 'Space' ||
-              (event.key === ' ' && !context.dataRef.current.typing)
+              (event.key === ' ' && !state.current.isTyping)
             ) {
               event.preventDefault()
               setOpen(true)
