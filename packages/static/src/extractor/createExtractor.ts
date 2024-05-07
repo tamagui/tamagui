@@ -2296,7 +2296,10 @@ export function createExtractor(
 
           // delete empty styles:
           attrs = attrs.filter((x) => {
-            if (x.type === 'style' && Object.keys(x.value).length === 0) {
+            if (
+              (x.type === 'style' || x.type === 'dynamic-style') &&
+              Object.keys(x.value).length === 0
+            ) {
               return false
             }
             return true

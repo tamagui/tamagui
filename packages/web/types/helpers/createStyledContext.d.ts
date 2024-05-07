@@ -1,9 +1,9 @@
-import React from 'react';
-export type StyledContext<Props extends Object = any> = Omit<React.Context<Props>, 'Provider'> & {
-    context: React.Context<Props>;
+import { type Context, type ProviderExoticComponent, type ReactNode } from 'react';
+export type StyledContext<Props extends Object = any> = Omit<Context<Props>, 'Provider'> & {
+    context: Context<Props>;
     props: Object | undefined;
-    Provider: React.ProviderExoticComponent<Partial<Props | undefined> & {
-        children?: React.ReactNode;
+    Provider: ProviderExoticComponent<Partial<Props | undefined> & {
+        children?: ReactNode;
         scope?: string;
     }>;
     useStyledContext: (scope?: string) => Props;

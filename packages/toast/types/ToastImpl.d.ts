@@ -169,6 +169,6 @@ declare const ToastImpl: React.ForwardRefExoticComponent<ToastImplPrivateProps &
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
 }>> & ToastExtraProps & React.RefAttributes<TamaguiElement>>;
-export { ToastImpl, ToastImplFrame, ToastImplProps, useToastInteractiveContext };
+export { ToastImpl, ToastImplFrame, type ToastImplProps, useToastInteractiveContext };
 export type { ToastProps };
 //# sourceMappingURL=ToastImpl.d.ts.map

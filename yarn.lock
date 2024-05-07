@@ -8589,6 +8589,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/vite-plugin-cjs@workspace:packages/vite-plugin-cjs":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/vite-plugin-cjs@workspace:packages/vite-plugin-cjs"
+  dependencies:
+    "@tamagui/vite-plugin": "npm:1.96.0"
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/vite-plugin-internal@workspace:packages/vite-plugin-internal":
   version: 0.0.0-use.local
   resolution: "@tamagui/vite-plugin-internal@workspace:packages/vite-plugin-internal"

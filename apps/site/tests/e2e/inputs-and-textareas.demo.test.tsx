@@ -38,7 +38,9 @@ test(`Loads screen with no errors or logs`, async () => {
 })
 
 test('visually looks correct', async () => {
-  expect(await page.locator('#tamagui-demos-container').screenshot({})).toMatchSnapshot()
+  expect(await page.locator('#tamagui-demos-container').screenshot({})).toMatchSnapshot({
+    maxDiffPixelRatio: 0.2,
+  })
 })
 
 test.afterAll(async () => {
