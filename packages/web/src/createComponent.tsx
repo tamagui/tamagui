@@ -1225,7 +1225,7 @@ export function createComponent<
     // disable theme prop is deterministic so conditional hook ok here
     content = disableTheme
       ? content
-      : getThemedChildren(themeState, content, themeStateProps, false)
+      : getThemedChildren(themeState, content, themeStateProps, false, stateRef)
 
     if (process.env.NODE_ENV === 'development' && time) time`themed-children`
 
