@@ -60,7 +60,7 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
   const selectTimeoutRef = React.useRef<any>()
   const state = React.useRef({
     isMouseOutside: false,
-    isTyping: false
+    isTyping: false,
   })
 
   const [controlledScrolling, setControlledScrolling] = React.useState(false)
@@ -205,7 +205,7 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
       activeIndex,
       onTypingChange: (e) => {
         state.current.isTyping = e
-      }
+      },
     }),
   ]
 
