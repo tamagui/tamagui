@@ -1,5 +1,5 @@
-import * as path from 'path'
-import * as util from 'util'
+import * as path from 'node:path'
+import * as util from 'node:util'
 
 import generate from '@babel/generator'
 import * as t from '@babel/types'

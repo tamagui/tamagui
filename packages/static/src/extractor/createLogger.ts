@@ -1,4 +1,4 @@
-import { basename } from 'path'
+import { basename } from 'node:path'
 
 import type { TamaguiOptions } from '../types'
 import { getPrefixLogs } from './getPrefixLogs'

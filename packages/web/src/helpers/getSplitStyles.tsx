@@ -16,13 +16,7 @@ import {
 import { useInsertionEffect } from 'react'
 
 import { getConfig, getFont } from '../config'
-import {
-  accessibilityDirectMap,
-  accessibilityWebRoleToNativeRole,
-  nativeAccessibilityState,
-  nativeAccessibilityValue,
-  webToNativeAccessibilityDirectMap,
-} from '../constants/accessibilityDirectMap'
+import { accessibilityDirectMap } from '../constants/accessibilityDirectMap'
 import { webViewFlexCompatStyles } from '../constants/constants'
 import { isDevTools } from '../constants/isDevTools'
 import {
@@ -64,7 +58,6 @@ import {
   shouldInsertStyleRules,
   updateRules,
 } from './insertStyleRule'
-import { isObj } from './isObj'
 import { log } from './log'
 import {
   normalizeValueWithProperty,
@@ -339,7 +332,7 @@ export const getSplitStyles: StyleSplitter = (
         // map userSelect to native prop
         if (keyInit === 'userSelect') {
           keyInit = 'selectable'
-          valInit = valInit === 'none' ? false : true
+          valInit = valInit !== 'none'
         } else if (keyInit.startsWith('data-')) {
           continue
         }

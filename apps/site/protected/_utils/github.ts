@@ -152,12 +152,38 @@ const codinscapeusers = ['NathanBeesley']
 
 const callstackusers = ['troZee']
 
+export const whitelistBentoUsernames = new Set([
+  'Bankilo',
+  'meal',
+  'Bar-Cet',
+  'kamilzielinski97',
+  'WeronikaKosniowska',
+  'patrycjalobodzinska26',
+
+  // stephen_S
+  'Stephen-Song',
+
+  // closedloop:
+  'wongk',
+  'dakotaodell',
+  'dougzor',
+
+  'Aljishi89@gmail.com',
+
+  // JBR
+  'mattleesounds',
+
+  // livepeer
+  '0xcadams',
+])
+
 export const whitelistGithubUsernames = [
   'natew',
   // 'alitnk', // commented out to test `takeout -> studio` access
   'benschac',
   'mohamadchehab',
   'bidah',
+  'szymonrybczak',
 
   // gather team member - https://discord.com/channels/909986013848412191/1125830682661363794/1156983395566497834
   'pkretzschmar',
@@ -176,6 +202,9 @@ export const whitelistGithubUsernames = [
 
   // Triba
   'Awelani-Triba',
+
+  // JBR
+  'mattleesounds',
 ]
 
 export const checkForSponsorship = async (

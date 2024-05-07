@@ -5,7 +5,7 @@ import type {
   TransformResponse,
 } from 'metro-transform-worker'
 import worker from 'metro-transform-worker'
-import { join } from 'path'
+import { join, posix, sep } from 'node:path'
 
 import type { TamaguiOptions } from '@tamagui/static'
 import { createExtractor, extractToClassNames } from '@tamagui/static'
@@ -42,7 +42,7 @@ export async function transform(
     filename.endsWith('.tsx') ||
     filename.endsWith('.jsx')
   ) {
-    const sourcePath = join(projectRoot, filename)
+    const sourcePath = toPosixPath(join(projectRoot, filename))
 
     // extract css
     const source = `${data}`
@@ -63,9 +63,8 @@ export async function transform(
     // just write it out to our tmp dir and require it for metro to do the rest of the css work
     if (out?.styles) {
       const tmpDir = join(projectRoot, '.tamagui', 'css')
-      const outStylePath = join(
-        tmpDir,
-        `${filename}`.replace(/[^a-zA-Z0-9]/gi, '') + '.css'
+      const outStylePath = toPosixPath(
+        join(tmpDir, `${filename}`.replace(/[^a-zA-Z0-9]/gi, '') + '.css')
       )
       if (process.env.DEBUG?.includes('tamagui')) {
         console.info(' Outputting CSS file:', outStylePath)
@@ -91,4 +90,8 @@ export async function transform(
   }
 
   return transformer(config, projectRoot, filename, data, options)
+}
+
+function toPosixPath(path: string) {
+  return path.split(sep).join(posix.sep)
 }

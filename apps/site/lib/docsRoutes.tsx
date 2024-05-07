@@ -132,6 +132,7 @@ export const docsRoutes = [
       { title: 'Checkbox', route: '/ui/checkbox' },
       { title: 'Form', route: '/ui/form' },
       { title: 'Input & TextArea', route: '/ui/inputs' },
+      // { title: 'Input & TextArea ( New )', route: '/ui/new-inputs' },
       { title: 'Label', route: '/ui/label' },
       { title: 'Progress', route: '/ui/progress' },
       { title: 'RadioGroup', route: '/ui/radio-group' },

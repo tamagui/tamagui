@@ -1,6 +1,6 @@
 import { isWeb } from '@tamagui/constants'
+import type { MutableRefObject } from 'react'
 import React, { Children, cloneElement, forwardRef, isValidElement, useRef } from 'react'
-
 import { variableToString } from '../createVariable'
 import { ThemeManagerIDContext } from '../helpers/ThemeManagerContext'
 import type { ChangedThemeResponse } from '../hooks/useTheme'
@@ -43,7 +43,11 @@ export const Theme = forwardRef(function Theme({ children, ...props }: ThemeProp
     }
   }
 
-  return getThemedChildren(themeState, finalChildren, props, isRoot)
+  const stateRef = useRef({
+    hasEverThemed: false,
+  })
+
+  return getThemedChildren(themeState, finalChildren, props, isRoot, stateRef)
 })
 Theme['displayName'] = 'Theme'
 Theme['avoidForwardRef'] = true
@@ -52,7 +56,8 @@ export function getThemedChildren(
   themeState: ChangedThemeResponse,
   children: any,
   props: ThemeProps,
-  isRoot = false
+  isRoot = false,
+  stateRef: MutableRefObject<{ hasEverThemed?: boolean }>
 ) {
   const { themeManager, isNewTheme } = themeState
 
@@ -67,13 +72,17 @@ export function getThemedChildren(
 
   const { shallow, forceClassName } = props
 
-  // TODO remove hook and join with the parent stateRef in createComponent
-  const hasEverThemed = useRef(false)
-
+  // always be true if ever themed so we avoid re-parenting
   const shouldRenderChildrenWithTheme =
-    isNewTheme || props.inverse || hasEverThemed.current || forceClassName || isRoot
+    isNewTheme ||
+    'inverse' in props ||
+    'theme' in props ||
+    stateRef.current.hasEverThemed ||
+    forceClassName ||
+    isRoot
+
   if (shouldRenderChildrenWithTheme) {
-    hasEverThemed.current = true
+    stateRef.current.hasEverThemed = true
   }
 
   if (!shouldRenderChildrenWithTheme) {

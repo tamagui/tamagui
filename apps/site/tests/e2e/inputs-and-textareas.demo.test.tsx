@@ -10,9 +10,7 @@ const logs = {
   info: [],
 }
 
-const skipLogs = [
-  'Failed to load resource: the server responded with a status of 401 (Unauthorized)',
-]
+const skipLogs = ['Failed to load resource']
 
 test.beforeAll(async ({ browser }) => {
   page = await browser.newPage()

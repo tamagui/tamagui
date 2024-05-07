@@ -1,0 +1,130 @@
+---
+title: Theme
+description: Change themes contextually
+---
+
+<Notice>
+  The package `tamagui` is a superset of `@tamagui/core`. If you are using `tamagui`, be sure to
+  import Theme from there - there's no need to add core to your package.json.
+</Notice>
+
+Changing themes in Tamagui is as easy as passing their name to the Theme component.
+
+### Usage
+
+Change themes anywhere in your app like so:
+
+```tsx
+import { Button, Theme } from 'tamagui' // or '@tamagui/core'
+
+export default () => (
+  <Theme name="dark">
+    <Button>I'm a dark button</Button>
+  </Theme>
+)
+```
+
+### Sub-themes
+
+There is one special property of themes that's very helpful for what is essentially sub-themes, or tints.
+
+Basically, if you have a base `dark` theme and a `light` theme, you may want to have "tinted" versions of those themes. For example `light_pink` and `dark_pink`. Instead of having hard-coded color values like `$pink3`, you create as many pink themes as you want: `light_pink_alt1`, `light_pink_alt2`, etc.
+
+Each of those themes is recommended to be small: just having values that map to ViewStyle or TextStyle, like `$color` (and that can postfix pseudo states, like `$colorHover`).
+
+Then, you just give your component a `theme="pink"` prop, or wrap it in `<Theme name="pink" />`. Note you can leave out the `light_` or even `light_pink` prefix, Tamagui will nest properly so long as the parent is set.
+
+It's easier to understand with an example. First, define your tokens and themes:
+
+```tsx
+import { createTamagui, createTokens } from 'tamagui'
+
+const tokens = createTokens({
+  color: {
+    pinkDark: '#610c62',
+    pinkLight: '#f17efc',
+  },
+  // ... see configuration docs for required tokens
+})
+
+export default createTamagui({
+  tokens,
+  themes: {
+    dark: {
+      background: '#000',
+      color: '#fff',
+    },
+    light: {
+      color: '#000',
+      background: '#fff',
+    },
+    dark_pink: {
+      background: tokens.color.pinkDark,
+      color: tokens.color.pinkLight,
+    },
+    light_pink: {
+      background: tokens.color.pinkLight,
+      color: tokens.color.pinkDark,
+    },
+  },
+})
+```
+
+Using the `_pink` suffix, the `Theme` component will now let us automatically do sub-theming:
+
+```tsx
+import { Button, Theme } from 'tamagui'
+
+export default () => {
+  return (
+    <Theme name="dark">
+      <Button>I have the theme dark</Button>
+      <Theme name="pink">
+        <Button>I have the theme pink-dark</Button>
+      </Theme>
+    </Theme>
+  )
+}
+```
+
+Notice we just use the name `pink`. Because theres no `pink` theme, the Theme component will automatically check if theres a theme that matches the pattern `[currentThemeName]_[givenName]`, in this case `dark_pink`. This is really useful for things like having an `active` or `error` theme that match your parent theme styles.
+
+---
+
+## Inverse
+
+The `inverse` prop will change any dark theme to light, and vice-versa. If it's a sub-theme, it'll check for matching parents, so `dark_red` will inverse to `light_red` if possible:
+
+<HeroContainer>
+  <ThemeInverseDemo />
+</HeroContainer>
+
+```tsx hero template=ThemeInverse
+
+```
+
+## Reset
+
+The `reset` prop will change the theme to the grandparent's value:
+
+```tsx
+<Theme name="dark">
+  <Theme name="pink">
+    <Theme reset>
+      {/* This square and all children will have theme "dark" */}
+      <Square bg="$background" size={10} />
+    </Theme>
+  </Theme>
+</Theme>
+```
+
+---
+
+## themeable()
+
+The `themeable` helper function is a "higher order component" that wraps any React component definition and adds two props:
+
+- `theme` for changing the theme on that component and its children
+- `themeInverse` which wraps the component with `<Theme inverse>`
+
+It's used for example on [Button](/docs/components/button).

@@ -98,6 +98,8 @@ export declare const stylePropsView: {
     borderTopStyle?: boolean | undefined;
     borderLeftStyle?: boolean | undefined;
     borderRightStyle?: boolean | undefined;
+    caretColor?: boolean | undefined;
+    scrollbarWidth?: boolean | undefined;
     overflowX?: boolean | undefined;
     overflowY?: boolean | undefined;
     userSelect?: boolean | undefined;
@@ -319,6 +321,8 @@ export declare const stylePropsText: {
     borderTopStyle?: boolean | undefined;
     borderLeftStyle?: boolean | undefined;
     borderRightStyle?: boolean | undefined;
+    caretColor?: boolean | undefined;
+    scrollbarWidth?: boolean | undefined;
     overflowX?: boolean | undefined;
     overflowY?: boolean | undefined;
     contain?: boolean | undefined;
@@ -498,6 +502,8 @@ export declare const stylePropsAll: {
     borderTopStyle?: boolean | undefined;
     borderLeftStyle?: boolean | undefined;
     borderRightStyle?: boolean | undefined;
+    caretColor?: boolean | undefined;
+    scrollbarWidth?: boolean | undefined;
     overflowX?: boolean | undefined;
     overflowY?: boolean | undefined;
     contain?: boolean | undefined;
@@ -662,6 +668,8 @@ export declare const validStyles: {
     borderTopStyle?: boolean | undefined;
     borderLeftStyle?: boolean | undefined;
     borderRightStyle?: boolean | undefined;
+    caretColor?: boolean | undefined;
+    scrollbarWidth?: boolean | undefined;
     overflowX?: boolean | undefined;
     overflowY?: boolean | undefined;
     userSelect?: boolean | undefined;

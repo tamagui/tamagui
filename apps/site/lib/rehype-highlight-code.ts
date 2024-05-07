@@ -1,5 +1,6 @@
 // Inspired by https://github.com/j0lv3r4/mdx-prism
 
+// biome-ignore lint/suspicious/noShadowRestrictedNames: <explanation>
 import { toString } from 'hast-util-to-string'
 import rangeParser from 'parse-numeric-range'
 import { refractor } from 'refractor'

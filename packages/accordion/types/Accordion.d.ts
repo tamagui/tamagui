@@ -119,6 +119,7 @@ declare const Accordion: React.ForwardRefExoticComponent<ScopedProps<AccordionSi
         unstyled?: boolean | undefined;
     }, import("@tamagui/web").StaticConfigPublic>;
     Item: React.ForwardRefExoticComponent<AccordionItemProps & React.RefAttributes<TamaguiElement>>;
+    HeightAnimator: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").StackProps, TamaguiElement, import("@tamagui/web").StackNonStyleProps & void, import("@tamagui/web").StackStyleBase, {}, {}>;
 };
 export { Accordion };
 export type { AccordionContentProps, AccordionHeaderProps, AccordionItemProps, AccordionMultipleProps, AccordionSingleProps, AccordionTriggerProps, };

@@ -91,7 +91,8 @@ export const createShiftMask = (
         strength = 1,
       } = { ...defaultOptions, ...opts }
       const values = Object.entries(template)
-      const max = maxIn ?? (palette ? Object.values(palette).length - 1 : Infinity)
+      const max =
+        maxIn ?? (palette ? Object.values(palette).length - 1 : Number.POSITIVE_INFINITY)
       const out = {}
       for (const [key, value] of values) {
         if (typeof value === 'string') continue

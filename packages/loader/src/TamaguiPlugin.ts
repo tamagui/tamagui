@@ -1,5 +1,5 @@
-import { existsSync } from 'fs'
-import path, { dirname, join } from 'path'
+import { existsSync } from 'node:fs'
+import path, { dirname, join } from 'node:path'
 
 import type { TamaguiOptions } from '@tamagui/static'
 import { loadTamagui, watchTamaguiConfig } from '@tamagui/static'

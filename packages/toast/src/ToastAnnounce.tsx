@@ -87,7 +87,7 @@ function useNextFrame(callback = () => {}) {
 
 export {
   ToastAnnounce,
-  ToastAnnounceProps,
+  type ToastAnnounceProps,
   ToastAnnounceExclude,
-  ToastAnnounceExcludeProps,
+  type ToastAnnounceExcludeProps,
 }

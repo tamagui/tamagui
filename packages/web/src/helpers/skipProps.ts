@@ -36,6 +36,7 @@ if (process.env.TAMAGUI_TARGET === 'native') {
     outlineOffset: 1,
     outlineWidth: 1,
     outlineColor: 1,
+    scrollbarWidth: 1,
   })
 } else {
   if (process.env.NODE_ENV !== 'production') {
