@@ -27,18 +27,18 @@ type UseFilePickerProps<MT extends MediaTypeOptions> = {
 };
 export declare function useFilePicker<MT extends MediaTypeOptions>(props?: UseFilePickerProps<MT>): {
     dragStatus: {
-        isDragAccept: any;
-        isDragActive: any;
-        isDragReject: any;
+        isDragAccept: boolean;
+        isDragActive: boolean;
+        isDragReject: boolean;
     };
     getInputProps: () => null;
     getRootProps: () => null;
     open: () => Promise<void>;
     control: {
         dragStatus: {
-            isDragAccept: any;
-            isDragActive: any;
-            isDragReject: any;
+            isDragAccept: boolean;
+            isDragActive: boolean;
+            isDragReject: boolean;
         };
         getInputProps: () => null;
         getRootProps: () => null;
