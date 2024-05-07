@@ -7835,6 +7835,25 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/input@workspace:packages/input":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/input@workspace:packages/input"
+  dependencies:
+    "@tamagui/build": "npm:1.96.0"
+    "@tamagui/font-size": "npm:1.96.0"
+    "@tamagui/get-button-sized": "npm:1.96.0"
+    "@tamagui/helpers": "npm:1.96.0"
+    "@tamagui/helpers-tamagui": "npm:1.96.0"
+    "@tamagui/stacks": "npm:1.96.0"
+    "@tamagui/text": "npm:1.96.0"
+    "@tamagui/web": "npm:1.96.0"
+    react: "npm:^18.2.0"
+    vitest: "npm:^0.34.3"
+  peerDependencies:
+    react: "*"
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/kitchen-sink@workspace:apps/kitchen-sink":
   version: 0.0.0-use.local
   resolution: "@tamagui/kitchen-sink@workspace:apps/kitchen-sink"
