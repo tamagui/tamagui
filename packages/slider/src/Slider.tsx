@@ -490,7 +490,7 @@ const SliderThumb = React.memo(
  * Slider
  * -----------------------------------------------------------------------------------------------*/
 
-const SliderComponent = React.forwardRef<TamaguiElement, SliderProps>(
+const SliderComponent = React.forwardRef(
   (props: ScopedProps<SliderProps>, forwardedRef) => {
     const {
       name,
@@ -522,7 +522,7 @@ const SliderComponent = React.forwardRef<TamaguiElement, SliderProps>(
       prop: value,
       defaultProp: defaultValue,
       transition: true,
-      onChange: (value) => {
+      onChange: (value: number[]) => {
         updateThumbFocus(valueIndexToChangeRef.current)
         onValueChange(value)
       },

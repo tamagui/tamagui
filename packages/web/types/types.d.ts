@@ -956,8 +956,6 @@ export interface TextStylePropsBase extends Omit<TextStyle, keyof OverrideNonSty
     textOverflow?: Properties['textOverflow'];
     whiteSpace?: Properties['whiteSpace'];
     wordWrap?: Properties['wordWrap'];
-    /** @deprecated use userSelect instead */
-    selectable?: boolean;
     /** @deprecated use verticalAlign instead */
     textAlignVertical?: TextStyle['textAlignVertical'];
 }
@@ -1028,6 +1026,8 @@ export type StackStyle = WithThemeShorthandsPseudosMedia<StackStyleBase>;
 export type StackProps = StackNonStyleProps & StackStyle;
 export interface TextNonStyleProps extends A11yDeprecated, Omit<ReactTextProps, 'children' | keyof WebOnlyPressEvents | RNOnlyProps | keyof ExtendBaseTextProps | 'style'>, ExtendBaseTextProps, TamaguiComponentPropsBase {
     style?: StyleProp<LooseCombinedObjects<React.CSSProperties, TextStyle>>;
+    /** @deprecated use userSelect instead */
+    selectable?: boolean;
 }
 export type TextStyleProps = WithThemeShorthandsPseudosMedia<TextStylePropsBase>;
 export type TextProps = TextNonStyleProps & TextStyleProps;

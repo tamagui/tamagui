@@ -1554,8 +1554,6 @@ export interface TextStylePropsBase
   textOverflow?: Properties['textOverflow']
   whiteSpace?: Properties['whiteSpace']
   wordWrap?: Properties['wordWrap']
-  /** @deprecated use userSelect instead */
-  selectable?: boolean
   /** @deprecated use verticalAlign instead */
   textAlignVertical?: TextStyle['textAlignVertical']
 }
@@ -1668,6 +1666,8 @@ export interface TextNonStyleProps
     TamaguiComponentPropsBase {
   // we allow either RN or web style props, of course only web css props only works on web
   style?: StyleProp<LooseCombinedObjects<React.CSSProperties, TextStyle>>
+  /** @deprecated use userSelect instead */
+  selectable?: boolean
 }
 
 export type TextStyleProps = WithThemeShorthandsPseudosMedia<TextStylePropsBase>
