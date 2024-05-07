@@ -33,6 +33,8 @@
     "./dist/*": "./dist/cjs/*/index.js"
   },
   "dependencies": {
+    "@tamagui/react-native-use-responder-events": "1.97.0",
+    "@tamagui/react-native-use-pressable": "1.97.0",
     "@tamagui/normalize-css-color": "1.97.0",
     "invariant": "^2.2.4",
     "react-native-web-internals": "1.97.0",
