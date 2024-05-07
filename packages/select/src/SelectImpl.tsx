@@ -196,6 +196,7 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
       activeIndex: activeIndex || 0,
       selectedIndex,
       onNavigate: setActiveIndex,
+      scrollItemIntoView: false,
     }),
     useTypeahead(context, {
       listRef: listContentRef,
