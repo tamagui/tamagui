@@ -1,20 +1,17 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import * as sections from '@tamagui/bento'
+import { Data } from '@tamagui/bento'
+import React from 'react'
+import { ScrollView, View } from 'tamagui'
 import { Sandbox } from './Sandbox'
-import { BentoPartScreen } from './features/bento/part-screen'
+import { BentoPartScreenItem } from './features/bento/part-screen-items'
 import { BentoScreen } from './features/bento/screen'
 import { DemoScreen } from './features/demos/demo-screen'
 import { HomeScreen } from './features/home/screen'
 import { TestCasesScreen } from './features/testcases/screen'
 import { TestScreen } from './features/testcases/test-screen'
-import { SectionScreen } from './features/bento/section-screen'
-import { BentoPartScreenItem } from './features/bento/part-screen-items'
-import React from 'react'
-import { ScrollView, View } from 'tamagui'
 
-const bentoScreenNames = sections.listingData.sections.map(
-  ({ sectionName }) => sectionName
-)
+const bentoScreenNames = Data.listingData.sections.map(({ sectionName }) => sectionName)
 
 type BentoScreens = {
   [K in (typeof bentoScreenNames)[number]]: {
@@ -50,7 +47,13 @@ const BentoScreenContainer: React.FC<{ children: React.ReactNode; name: string }
     )
   }
   return (
-    <ScrollView flex={1} minWidth="100%" p="$2" bg="$background">
+    <ScrollView
+      flex={1}
+      minWidth="100%"
+      p="$2"
+      bg="$background"
+      keyboardShouldPersistTaps="always"
+    >
       {children}
     </ScrollView>
   )

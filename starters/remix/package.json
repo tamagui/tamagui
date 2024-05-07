@@ -17,20 +17,20 @@
     "@remix-run/node": "^2.8.1",
     "@remix-run/react": "^2.8.1",
     "@remix-run/serve": "^2.8.1",
-    "@tamagui/config": "^1.95.1",
+    "@tamagui/config": "^1.96.0",
     "isbot": "^4.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "tamagui": "^1.95.1"
+    "tamagui": "^1.96.0"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.5.3",
     "@remix-run/dev": "^2.8.1",
-    "@tamagui/vite-plugin": "^1.95.1",
+    "@tamagui/vite-plugin": "^1.96.0",
     "@types/react": "^18.2.55",
     "@types/react-dom": "^18.2.19",
     "typescript": "^5.3.3",
-    "vite": "^5.2.6",
+    "vite": "^5.2.10",
     "vite-bundle-analyzer": "^0.9.2",
     "vite-plugin-commonjs": "^0.10.1",
     "vite-tsconfig-paths": "^4.3.2"

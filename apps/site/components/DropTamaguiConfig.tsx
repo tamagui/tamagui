@@ -1,71 +1,80 @@
 import { Paintbrush, X } from '@tamagui/lucide-icons'
-import { useStore } from '@tamagui/use-store'
 import { useEffect, useState } from 'react'
-import type { TamaguiConfig } from 'tamagui'
-import { Button, Dialog, H2, Paragraph, ScrollView, TooltipSimple, YStack } from 'tamagui'
+import { useLocalStorage } from 'foxact/use-local-storage'
+import {
+  Button,
+  Dialog,
+  H2,
+  Paragraph,
+  ScrollView,
+  Theme,
+  TooltipSimple,
+  YStack,
+} from 'tamagui'
 import { Code, CodeInline } from './Code'
 import { Features } from './Features'
 import { Notice } from './Notice'
 
-type TamaguiConfigBuilt = {
-  tamaguiConfig: TamaguiConfig
-}
-
-class DropTamaguiConfigStore {
-  config: TamaguiConfigBuilt | null = null
-  dragging = false
-}
-
 export const DropTamaguiConfig = () => {
   const [show, setShow] = useState(false)
-  const store = useStore(DropTamaguiConfigStore)
+  const [config, setConfig] = useLocalStorage<string | null>('userTamaguiConfig', '')
+  const [dragging, setDragging] = useState(false)
 
   useEffect(() => {
-    document.addEventListener('dragover', (e) => {
-      store.dragging = true
+    const handleDrop = (e) => {
       e.preventDefault()
-    })
-
-    document.addEventListener('dragleave dragend', (e) => {
-      store.dragging = false
-    })
-
-    document.addEventListener('drop', (e) => {
-      store.dragging = false
-      e.preventDefault()
+      setDragging(false)
       if (e.dataTransfer?.items) {
-        ;[...e.dataTransfer.items].forEach((item, i) => {
+        ;[...e.dataTransfer.items].forEach((item) => {
           if (item.kind === 'file') {
             const file = item.getAsFile()
             if (file) {
               const reader = new FileReader()
               reader.onload = () => {
-                store.config = JSON.parse(`${reader.result}`)
+                setConfig(JSON.stringify(JSON.parse(`${reader.result}`)))
               }
               reader.readAsText(file)
             }
           }
         })
       }
+    }
+
+    document.addEventListener('dragover', (e) => {
+      e.preventDefault()
+      setDragging(true)
     })
+
+    document.addEventListener('dragleave', () => setDragging(false))
+    document.addEventListener('dragend', () => setDragging(false))
+    document.addEventListener('drop', handleDrop)
+
+    return () => {
+      document.removeEventListener('dragover', (e) => setDragging(true))
+      document.removeEventListener('dragleave', () => setDragging(false))
+      document.removeEventListener('dragend', () => setDragging(false))
+      document.removeEventListener('drop', handleDrop)
+    }
   }, [])
 
   return (
     <>
       <TooltipSimple label="Upload your Tamagui Config">
-        <Button
-          als="flex-end"
-          br="$10"
-          onPress={() => setShow(true)}
-          size="$3"
-          chromeless
-          $sm={{
-            dsp: 'none',
-          }}
-          icon={Paintbrush}
-        >
-          Customize
-        </Button>
+        <Theme name={config ? 'green' : 'active'}>
+          <Button
+            als="flex-end"
+            br="$10"
+            onPress={() => setShow(true)}
+            size="$3"
+            chromeless
+            $sm={{
+              dsp: 'none',
+            }}
+            icon={Paintbrush}
+          >
+            {config ? 'Customization enabled' : 'Customize'}
+          </Button>
+        </Theme>
       </TooltipSimple>
 
       <Dialog open={show} onOpenChange={setShow}>
@@ -93,12 +102,11 @@ export const DropTamaguiConfig = () => {
                 },
               },
             ]}
-            // animateOnly={['transform']}
             enterStyle={{ y: -10, opacity: 0, scale: 0.975 }}
             exitStyle={{ y: 10, opacity: 0, scale: 0.975 }}
             w="95%"
             maw={600}
-            p="$6"
+            p="$4"
           >
             <Dialog.Close asChild>
               <Button
@@ -115,7 +123,7 @@ export const DropTamaguiConfig = () => {
             <YStack
               fullscreen
               pe="none"
-              o={store.dragging ? 1 : 0}
+              o={dragging ? 1 : 0}
               bg="$background075"
               ai="center"
               jc="center"
@@ -128,36 +136,36 @@ export const DropTamaguiConfig = () => {
               <YStack gap="$4">
                 <Dialog.Title>Your Design System</Dialog.Title>
 
-                {store.config && (
+                {config && (
                   <>
-                    <Paragraph size="$6">Nice, we've got your config.</Paragraph>
-                    <Paragraph size="$6">
-                      You can now go copy code from an example and we will adapt the
+                    <Paragraph size="$4">Nice, we've got your config.</Paragraph>
+                    <Paragraph size="$4">
+                      You can now go copy code from any component and we will adapt the
                       copy-paste code to use your tokens.
                     </Paragraph>
                     <Button
                       als="flex-end"
                       icon={X}
                       theme="red_active"
-                      onPress={() => (store.config = null)}
+                      onPress={() => setConfig('')}
                     >
                       Clear config
                     </Button>
                   </>
                 )}
 
-                {!store.config && (
+                {!config && (
                   <>
-                    <Paragraph size="$6">
+                    <Paragraph size="$4">
                       Drag and drop your{' '}
                       <CodeInline>.tamagui/tamagui.config.json</CodeInline> here to
                       customize the code we generate to your design system!
                     </Paragraph>
-                    <Paragraph size="$6">
-                      If you have a compiler plugin installed, this is done for your
+                    <Paragraph size="$4">
+                      If you have a compiler plugin installed, this is done for you
                       automatically. If not, use the CLI.
                     </Paragraph>
-                    <Paragraph size="$6">
+                    <Paragraph size="$4">
                       But first, set up a <CodeInline>tamagui.build.ts</CodeInline>:
                     </Paragraph>
 
@@ -187,10 +195,6 @@ export const DropTamaguiConfig = () => {
                         </>,
                       ]}
                     />
-
-                    <Notice>
-                      WIP - we're adding the final piece to replace tokens next.
-                    </Notice>
                   </>
                 )}
               </YStack>

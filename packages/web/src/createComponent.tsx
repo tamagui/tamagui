@@ -40,7 +40,6 @@ import { hooks } from './setupHooks'
 import type {
   ComponentContextI,
   DebugProp,
-  DisposeFn,
   GroupState,
   GroupStateListener,
   LayoutEvent,
@@ -69,6 +68,7 @@ import { Slot } from './views/Slot'
 import { getThemedChildren } from './views/Theme'
 import { ThemeDebug } from './views/ThemeDebug'
 import { isDevTools } from './constants/isDevTools'
+import { setElementProps } from './helpers/setElementProps'
 
 /**
  * All things that need one-time setup after createTamagui is called
@@ -875,7 +875,8 @@ export function createComponent<
     if (!curStateRef.composedRef) {
       curStateRef.composedRef = composeRefs<TamaguiElement>(
         (x) => (stateRef.current.host = x as TamaguiElement),
-        forwardedRef
+        forwardedRef,
+        setElementProps
       )
     }
 
@@ -1224,7 +1225,7 @@ export function createComponent<
     // disable theme prop is deterministic so conditional hook ok here
     content = disableTheme
       ? content
-      : getThemedChildren(themeState, content, themeStateProps, false)
+      : getThemedChildren(themeState, content, themeStateProps, false, stateRef)
 
     if (process.env.NODE_ENV === 'development' && time) time`themed-children`
 

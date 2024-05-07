@@ -21,5 +21,5 @@ export function useClipboard(text = '', timeout = 1500) {
     return () => clearTimeout(id)
   }, [timeout, hasCopied])
 
-  return { value: text, onCopy, hasCopied }
+  return { value: text, onCopy, hasCopied, timeout }
 }

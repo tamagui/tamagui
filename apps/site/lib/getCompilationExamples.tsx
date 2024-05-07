@@ -1,9 +1,8 @@
 import { animationCode, compilationCode } from './codeExamples'
 import { createCodeHighlighter } from './highlightCode'
 
-const highlightCode = createCodeHighlighter()
-
 export function getCompilationExamples() {
+  const highlightCode = createCodeHighlighter()
   const compilationExamples = compilationCode.map((item) => {
     return {
       ...item,
