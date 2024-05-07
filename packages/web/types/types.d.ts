@@ -927,7 +927,6 @@ interface ExtraStyleProps {
     paddingInlineEnd?: SpaceTokens | number;
     objectFit?: Properties['objectFit'];
     verticalAlign?: Properties['verticalAlign'];
-    inset?: SpaceTokens | number;
     insetBlock?: SpaceTokens | number;
     insetBlockStart?: SpaceTokens | number;
     insetBlockEnd?: SpaceTokens | number;

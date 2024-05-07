@@ -49,16 +49,16 @@ export declare const ListItemFrame: import("@tamagui/web").TamaguiComponent<impo
     unstyled?: boolean | undefined;
     size?: SizeTokens | undefined;
     disabled?: boolean | undefined;
+    elevation?: number | SizeTokens | undefined;
+    transparent?: boolean | undefined;
+    fullscreen?: boolean | undefined;
+    circular?: boolean | undefined;
     inset?: number | SizeTokens | {
         top?: number | undefined;
         bottom?: number | undefined;
         left?: number | undefined;
         right?: number | undefined;
     } | undefined;
-    elevation?: number | SizeTokens | undefined;
-    transparent?: boolean | undefined;
-    fullscreen?: boolean | undefined;
-    circular?: boolean | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
     focusTheme?: boolean | undefined;
@@ -76,7 +76,7 @@ export declare const ListItemText: import("@tamagui/web").TamaguiComponent<impor
 }, import("@tamagui/web").StaticConfigPublic>;
 export declare const ListItemSubtitle: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
     unstyled?: boolean | undefined;
-    size?: number | `$${string}` | `$${number}` | `$${string}.${string}` | `$${string}.${number}` | import("@tamagui/web").UnionableString | import("@tamagui/web").UnionableNumber | undefined;
+    size?: number | `$${string}` | `$${number}` | `$${string}.${string}` | `$${string}.${number}` | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | undefined;
 }, import("@tamagui/web").StaticConfigPublic>;
 export declare const ListItemTitle: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
     unstyled?: boolean | undefined;
@@ -93,16 +93,16 @@ export declare const ListItem: React.ForwardRefExoticComponent<Omit<import("@tam
     unstyled?: boolean | undefined;
     size?: SizeTokens | undefined;
     disabled?: boolean | undefined;
+    elevation?: number | SizeTokens | undefined;
+    transparent?: boolean | undefined;
+    fullscreen?: boolean | undefined;
+    circular?: boolean | undefined;
     inset?: number | SizeTokens | {
         top?: number | undefined;
         bottom?: number | undefined;
         left?: number | undefined;
         right?: number | undefined;
     } | undefined;
-    elevation?: number | SizeTokens | undefined;
-    transparent?: boolean | undefined;
-    fullscreen?: boolean | undefined;
-    circular?: boolean | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
     focusTheme?: boolean | undefined;
@@ -153,16 +153,16 @@ export declare const ListItem: React.ForwardRefExoticComponent<Omit<import("@tam
     unstyled?: boolean | undefined;
     size?: SizeTokens | undefined;
     disabled?: boolean | undefined;
+    elevation?: number | SizeTokens | undefined;
+    transparent?: boolean | undefined;
+    fullscreen?: boolean | undefined;
+    circular?: boolean | undefined;
     inset?: number | SizeTokens | {
         top?: number | undefined;
         bottom?: number | undefined;
         left?: number | undefined;
         right?: number | undefined;
     } | undefined;
-    elevation?: number | SizeTokens | undefined;
-    transparent?: boolean | undefined;
-    fullscreen?: boolean | undefined;
-    circular?: boolean | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
     focusTheme?: boolean | undefined;
@@ -249,16 +249,16 @@ export declare const ListItem: React.ForwardRefExoticComponent<Omit<import("@tam
     unstyled?: boolean | undefined;
     size?: SizeTokens | undefined;
     disabled?: boolean | undefined;
+    elevation?: number | SizeTokens | undefined;
+    transparent?: boolean | undefined;
+    fullscreen?: boolean | undefined;
+    circular?: boolean | undefined;
     inset?: number | SizeTokens | {
         top?: number | undefined;
         bottom?: number | undefined;
         left?: number | undefined;
         right?: number | undefined;
     } | undefined;
-    elevation?: number | SizeTokens | undefined;
-    transparent?: boolean | undefined;
-    fullscreen?: boolean | undefined;
-    circular?: boolean | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
     focusTheme?: boolean | undefined;
@@ -274,16 +274,16 @@ export declare const ListItem: React.ForwardRefExoticComponent<Omit<import("@tam
         unstyled?: boolean | undefined;
         size?: SizeTokens | undefined;
         disabled?: boolean | undefined;
+        elevation?: number | SizeTokens | undefined;
+        transparent?: boolean | undefined;
+        fullscreen?: boolean | undefined;
+        circular?: boolean | undefined;
         inset?: number | SizeTokens | {
             top?: number | undefined;
             bottom?: number | undefined;
             left?: number | undefined;
             right?: number | undefined;
         } | undefined;
-        elevation?: number | SizeTokens | undefined;
-        transparent?: boolean | undefined;
-        fullscreen?: boolean | undefined;
-        circular?: boolean | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
         focusTheme?: boolean | undefined;
@@ -370,16 +370,16 @@ export declare const ListItem: React.ForwardRefExoticComponent<Omit<import("@tam
         unstyled?: boolean | undefined;
         size?: SizeTokens | undefined;
         disabled?: boolean | undefined;
+        elevation?: number | SizeTokens | undefined;
+        transparent?: boolean | undefined;
+        fullscreen?: boolean | undefined;
+        circular?: boolean | undefined;
         inset?: number | SizeTokens | {
             top?: number | undefined;
             bottom?: number | undefined;
             left?: number | undefined;
             right?: number | undefined;
         } | undefined;
-        elevation?: number | SizeTokens | undefined;
-        transparent?: boolean | undefined;
-        fullscreen?: boolean | undefined;
-        circular?: boolean | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
         focusTheme?: boolean | undefined;
@@ -398,7 +398,7 @@ export declare const ListItem: React.ForwardRefExoticComponent<Omit<import("@tam
     }, import("@tamagui/web").StaticConfigPublic>;
     Subtitle: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
         unstyled?: boolean | undefined;
-        size?: number | `$${string}` | `$${number}` | `$${string}.${string}` | `$${string}.${number}` | import("@tamagui/web").UnionableString | import("@tamagui/web").UnionableNumber | undefined;
+        size?: number | `$${string}` | `$${number}` | `$${string}.${string}` | `$${string}.${number}` | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | undefined;
     }, import("@tamagui/web").StaticConfigPublic>;
 };
 export {};

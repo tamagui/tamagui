@@ -45,7 +45,7 @@ export interface SliderHorizontalProps extends SliderOrientationProps {
 export interface SliderVerticalProps extends SliderOrientationProps {
     dir?: Direction;
 }
-export interface SliderProps extends Omit<SliderHorizontalProps | SliderVerticalProps, keyof SliderOrientationPrivateProps | 'defaultValue'>, SliderEventProps {
+export interface SliderProps extends Omit<SliderHorizontalProps, keyof SliderOrientationPrivateProps | 'defaultValue'>, SliderEventProps {
     size?: SizeTokens;
     name?: string;
     disabled?: boolean;

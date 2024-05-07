@@ -3,16 +3,16 @@ export declare const SwitchThumb: import("@tamagui/core").TamaguiComponent<impor
     size?: SizeTokens | undefined;
     unstyled?: boolean | undefined;
     checked?: boolean | undefined;
+    elevation?: number | SizeTokens | undefined;
+    transparent?: boolean | undefined;
+    fullscreen?: boolean | undefined;
+    circular?: boolean | undefined;
     inset?: number | SizeTokens | {
         top?: number | undefined;
         bottom?: number | undefined;
         left?: number | undefined;
         right?: number | undefined;
     } | undefined;
-    elevation?: number | SizeTokens | undefined;
-    transparent?: boolean | undefined;
-    fullscreen?: boolean | undefined;
-    circular?: boolean | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
     focusTheme?: boolean | undefined;
@@ -27,13 +27,13 @@ export declare const SwitchFrame: import("@tamagui/core").TamaguiComponent<impor
     size?: SizeTokens | undefined;
     unstyled?: boolean | undefined;
     checked?: boolean | undefined;
+    elevation?: number | SizeTokens | undefined;
+    fullscreen?: boolean | undefined;
     inset?: number | SizeTokens | {
         top?: number | undefined;
         bottom?: number | undefined;
         left?: number | undefined;
         right?: number | undefined;
     } | undefined;
-    elevation?: number | SizeTokens | undefined;
-    fullscreen?: boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
 //# sourceMappingURL=Switch.d.ts.map
