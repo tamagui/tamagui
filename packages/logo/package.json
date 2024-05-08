@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/logo",
-  "version": "1.97.0",
+  "version": "1.97.1",
   "sideEffects": false,
   "source": "src/index.tsx",
   "types": "./types/index.d.ts",
@@ -24,10 +24,10 @@
     "react": "*"
   },
   "dependencies": {
-    "tamagui": "1.97.0"
+    "tamagui": "1.97.1"
   },
   "devDependencies": {
-    "@tamagui/build": "1.97.0",
+    "@tamagui/build": "1.97.1",
     "react": "^18.2.0"
   },
   "publishConfig": {

@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/elements",
-  "version": "1.97.0",
+  "version": "1.97.1",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -30,14 +30,14 @@
     }
   },
   "dependencies": {
-    "@tamagui/core": "1.97.0"
+    "@tamagui/core": "1.97.1"
   },
   "peerDependencies": {
     "react": "*",
     "react-dom": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.97.0",
+    "@tamagui/build": "1.97.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
