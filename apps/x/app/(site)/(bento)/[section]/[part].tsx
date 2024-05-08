@@ -1,4 +1,4 @@
-import { Data, Components } from '@tamagui/bento'
+import { Data, Sections } from '@tamagui/bento'
 import { Toast, useToastState } from '@tamagui/toast'
 import { Link, useLocalSearchParams, useRouter } from '@vxrn/router'
 import { Anchor, H1, SizableText, Theme, View, XStack, YStack } from 'tamagui'
@@ -23,7 +23,7 @@ export const generateStaticParams = async () => {
 
 export default function page() {
   const params = useLocalSearchParams() as { section: string; part: string }
-  const Comp = Components[params.section][params.part]
+  const Comp = Sections[params.section][params.part]
 
   return (
     <>
