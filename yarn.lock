@@ -6427,7 +6427,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/bento@workspace:apps/bento":
+"@tamagui/bento@npm:1.97.1, @tamagui/bento@workspace:apps/bento":
   version: 0.0.0-use.local
   resolution: "@tamagui/bento@workspace:apps/bento"
   dependencies:
@@ -7937,6 +7937,7 @@ __metadata:
     "@supabase/supabase-js": "npm:^2.38.2"
     "@tamagui/animate-presence": "npm:1.97.1"
     "@tamagui/animations-reanimated": "npm:1.97.1"
+    "@tamagui/bento": "npm:1.97.1"
     "@tamagui/build": "npm:1.97.1"
     "@tamagui/colors": "npm:1.97.1"
     "@tamagui/core": "npm:1.97.1"

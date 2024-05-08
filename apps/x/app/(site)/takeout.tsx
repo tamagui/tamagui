@@ -2,7 +2,7 @@ import { getSize } from '@tamagui/get-token'
 import { ThemeTint, ThemeTintAlt, useTint } from '@tamagui/logo'
 import { Check, Dot, Hammer, PlayCircle, X } from '@tamagui/lucide-icons'
 import { useClientValue, useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
-import { Head, useLoader } from '@vxrn/router'
+import { useLoader } from '@vxrn/router'
 import React, { Suspense, lazy, memo, useEffect, useState } from 'react'
 import type {
   FontSizeTokens,
@@ -42,14 +42,13 @@ import { ErrorBoundary } from '~/components/ErrorBoundary'
 import { useHoverGlow } from '~/components/HoverGlow'
 import { Link } from '~/components/Link'
 import { Footer } from '~/features/site/Footer'
-import { LoadCherryBomb, LoadMunro } from '~/features/site/fonts/LoadFonts'
 import { PurchaseModal } from '~/features/site/purchase/PurchaseModal'
 import { MunroP, PurchaseButton, isSafariMobile } from '~/features/site/purchase/helpers'
 import { getProductsForServerSideRendering } from '~/features/site/purchase/server-helpers'
 import { useTakeoutStore } from '~/features/site/purchase/useTakeoutStore'
 import { seasons } from '~/features/site/seasons/SeasonToggleButton'
-import { TakeoutLogo } from '~/features/takeout/TakeoutLogo'
 import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
+import { TakeoutLogo } from '~/features/takeout/TakeoutLogo'
 
 export const loader = async () => {
   try {

@@ -107,6 +107,8 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(context) {
+  console.log('loading', context)
+
   const { frontmatter, code } = await getMdxBySlug(
     'docs/components',
     context.params.slug.join('/')

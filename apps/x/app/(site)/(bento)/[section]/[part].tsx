@@ -1,4 +1,4 @@
-import * as sections from '@tamagui/bento'
+import { Data, Components } from '@tamagui/bento'
 import { Toast, useToastState } from '@tamagui/toast'
 import { Link, useLocalSearchParams, useRouter } from '@vxrn/router'
 import { Anchor, H1, SizableText, Theme, View, XStack, YStack } from 'tamagui'
@@ -8,12 +8,12 @@ import { BentoPageFrame } from '~/features/bento/BentoPageFrame'
 import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
 
 export const generateStaticParams = async () => {
-  return sections.paths.map((x) => x.params)
+  return Data.paths.map((x) => x.params)
 }
 
 // export const loader = (ctx) => {
 //   // const { section, part } = ctx.params as { section: string; part: string }
-//   // const getCodes = sections[section][`${part}GetComponentCodes`]
+//   // const getCodes = Sections[section][`${part}GetComponentCodes`]
 
 //   return {
 //     // props: getCodes(),
@@ -23,7 +23,7 @@ export const generateStaticParams = async () => {
 
 export default function page() {
   const params = useLocalSearchParams() as { section: string; part: string }
-  const Comp = sections[params.section][params.part]
+  const Comp = Components[params.section][params.part]
 
   return (
     <>

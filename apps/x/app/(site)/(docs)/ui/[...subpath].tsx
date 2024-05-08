@@ -19,13 +19,18 @@ export async function generateStaticParams() {
   })
 
   const latestVersionPaths = paths.map((path) => {
-    const withoutVersion = path.subpath.slice(0, path.subpath.length - 1)
+    const parts = path.subpath.split('/')
+    const withoutVersion = parts.slice(0, parts.length - 1)
     return {
-      subpath: withoutVersion,
+      subpath: withoutVersion.join('/'),
     }
   })
 
-  return [...paths, ...latestVersionPaths]
+  const allPaths = [...paths, ...latestVersionPaths]
+
+  console.info(`[docs:ui] generating paths ${JSON.stringify(allPaths, null, 2)}`)
+
+  return allPaths
 }
 
 export async function loader(props: LoaderProps) {
@@ -35,6 +40,13 @@ export async function loader(props: LoaderProps) {
   )
   const [componentName, componentVersion] = props.params.subpath.split('/')
   const versions = getAllVersionsFromPath(`data/docs/components/${componentName}`)
+  console.info(
+    `[docs:ui] load component ${JSON.stringify(
+      { componentName, componentVersion, versions },
+      null,
+      2
+    )}`
+  )
   return {
     frontmatter: {
       ...frontmatter,

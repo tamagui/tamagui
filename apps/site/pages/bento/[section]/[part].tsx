@@ -1,5 +1,4 @@
-import * as sections from '@tamagui/bento'
-import { Data } from '@tamagui/bento'
+import { Data, Components } from '@tamagui/bento'
 
 import { Anchor, H1, SizableText, Theme, View, XStack, YStack } from 'tamagui'
 import { BentoPageFrame } from '../../../components/BentoPageFrame'
@@ -18,7 +17,7 @@ import { DropTamaguiConfig } from '@components/DropTamaguiConfig'
 export default function page() {
   const router = useRouter()
   const params = router.query as { section: string; part: string }
-  const Comp = sections[params.section][params.part]
+  const Comp = Components[params.section][params.part]
 
   return (
     <>
