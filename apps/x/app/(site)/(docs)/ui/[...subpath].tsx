@@ -25,8 +25,6 @@ export async function generateStaticParams() {
     }
   })
 
-  console.log('wtf', [...paths, ...latestVersionPaths])
-
   return [...paths, ...latestVersionPaths]
 }
 
@@ -65,14 +63,14 @@ export default function DocComponentsPage() {
     }
   }, [])
 
-  useEffect(() => {
-    const url = new URL(location.href)
-    url.pathname = `${pathname}/${frontmatter.version}`
-    if (Array.isArray(params.subpath)) {
-      url.pathname = url.pathname.replace('[...subpath]', params.subpath[0])
-    }
-    router.replace(url)
-  }, [])
+  // useEffect(() => {
+  //   const url = new URL(location.href)
+  //   url.pathname = `${pathname}/${frontmatter.version}`
+  //   if (Array.isArray(params.subpath)) {
+  //     url.pathname = url.pathname.replace('[...subpath]', params.subpath[0])
+  //   }
+  //   router.replace(url)
+  // }, [])
 
   return (
     <>

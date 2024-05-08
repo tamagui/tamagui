@@ -117,8 +117,6 @@ export const PurchaseModal = ({
 
   const noProductSelected = !bentoPriceId && !starterPriceId
 
-  console.log('user', user)
-
   const isUserEligibleForBentoTakeoutDiscount = user
     ? checkDiscountEligibility({
         accessInfo: user?.accessInfo,

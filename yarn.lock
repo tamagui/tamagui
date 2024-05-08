@@ -6387,6 +6387,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/assert@npm:1.97.1, @tamagui/assert@workspace:packages/assert":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/assert@workspace:packages/assert"
+  dependencies:
+    "@tamagui/build": "npm:1.97.1"
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/avatar@npm:1.97.1, @tamagui/avatar@workspace:packages/avatar":
   version: 0.0.0-use.local
   resolution: "@tamagui/avatar@workspace:packages/avatar"
@@ -26890,6 +26898,7 @@ __metadata:
     "@supabase/ssr": "npm:^0.3.0"
     "@supabase/supabase-auth-helpers": "npm:^1.4.2"
     "@supabase/supabase-js": "npm:^2.38.2"
+    "@tamagui/assert": "npm:1.97.1"
     "@tamagui/cli": "npm:1.97.1"
     "@tamagui/mdx": "npm:1.97.1"
     "@tamagui/site-config": "npm:1.97.1"
