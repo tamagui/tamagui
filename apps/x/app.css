@@ -774,7 +774,7 @@ textarea {
     -moz-osx-font-smoothing: grayscale;
   }
 }
-
+/* 
 .clip-slice {
   mask-image: url(./heart.svg);
   mask-size: 25% 25%;
@@ -785,7 +785,7 @@ textarea {
   mask-image: url(./takeout/geometric.svg);
   mask-size: 150% 150%;
   animation: clip-fade 80s infinite alternate;
-}
+} */
 
 .slice-alt {
   mask-size: 50% 50%;
