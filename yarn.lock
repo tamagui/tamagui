@@ -6626,7 +6626,7 @@ __metadata:
     ts-morph: "npm:^15.1.0"
     typescript: "npm:^5.3.3"
     url: "npm:^0.11.0"
-    vite: "npm:^5.2.10"
+    vite: "npm:^5.2.11"
     vite-plugin-entry-shaking: "npm:^0.3.2"
     vite-tsconfig-paths: "npm:^4.3.2"
   bin:
@@ -8165,7 +8165,7 @@ __metadata:
     tamagui: "npm:1.97.0"
     ts-deepmerge: "npm:^6.2.0"
     victory: "npm:^36.6.11"
-    vite: "npm:^5.2.10"
+    vite: "npm:^5.2.11"
   languageName: unknown
   linkType: soft
 
@@ -8585,7 +8585,7 @@ __metadata:
     react-dom: "npm:^18.2.0"
     tamagui: "npm:1.97.0"
     typescript: "npm:^5.3.3"
-    vite: "npm:^5.2.10"
+    vite: "npm:^5.2.11"
   languageName: unknown
   linkType: soft
 
@@ -18461,7 +18461,7 @@ __metadata:
     react-dom: "npm:^18.2.0"
     react-native-web: "npm:^0.19.10"
     tamagui: "npm:1.97.0"
-    vite: "npm:^5.2.10"
+    vite: "npm:^5.2.11"
     wait-port: "npm:^0.3.0"
     zx: "npm:^7.2.3"
   languageName: unknown
@@ -29491,46 +29491,6 @@ __metadata:
   bin:
     vite: bin/vite.js
   checksum: 10/325e2955fe939bc5706aab2aa46498d98adace1df4d11f42cf4539754b886798b6bf7c247c94d23fb6cf3a569e56bad4a11561bf25e8e6dcc8c0e2f73ecc5e5b
-  languageName: node
-  linkType: hard
-
-"vite@npm:^5.2.10":
-  version: 5.2.10
-  resolution: "vite@npm:5.2.10"
-  dependencies:
-    esbuild: "npm:^0.20.1"
-    fsevents: "npm:~2.3.3"
-    postcss: "npm:^8.4.38"
-    rollup: "npm:^4.13.0"
-  peerDependencies:
-    "@types/node": ^18.0.0 || >=20.0.0
-    less: "*"
-    lightningcss: ^1.21.0
-    sass: "*"
-    stylus: "*"
-    sugarss: "*"
-    terser: ^5.4.0
-  dependenciesMeta:
-    fsevents:
-      optional: true
-  peerDependenciesMeta:
-    "@types/node":
-      optional: true
-    less:
-      optional: true
-    lightningcss:
-      optional: true
-    sass:
-      optional: true
-    stylus:
-      optional: true
-    sugarss:
-      optional: true
-    terser:
-      optional: true
-  bin:
-    vite: bin/vite.js
-  checksum: 10/a0c4ac7b95e9a2a59f4e73e5b42a63f33569f5ec505af9dd019f19ff419fd20d66ad9aad6708987d4da173d485358f0024f410af78ac97cf5c92a38f8c96c451
   languageName: node
   linkType: hard
 

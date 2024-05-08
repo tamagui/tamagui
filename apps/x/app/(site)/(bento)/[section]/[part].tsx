@@ -55,6 +55,7 @@ export const DetailHeader = (props: { children: string }) => {
   const params = useLocalSearchParams() as { section: string; part: string }
   const category =
     (typeof params.section === 'string' ? params.section : params.section?.[0]) || ''
+
   const subCategory =
     (typeof params.part === 'string' ? params.part : params.part?.[0]) || ''
 
@@ -88,21 +89,23 @@ export const DetailHeader = (props: { children: string }) => {
             &raquo;
           </SizableText>
 
-          <Link href={`/bento#${category}`}>
+          {/* TODO for some reason these break [vite:build-import-analysis */}
+          {/* <Link href={`/bento#${category}`}>
             <Anchor tag="span" textTransform="capitalize">
               {category}
             </Anchor>
-          </Link>
+          </Link> */}
 
           <SizableText theme="alt1" tag="span" selectable={false} size="$2">
             &raquo;
           </SizableText>
 
-          <Link href={`/bento/${subCategory}`}>
+          {/* TODO for some reason these break [vite:build-import-analysis */}
+          {/* <Link href={`/bento/${subCategory}`}>
             <Anchor tag="span" textTransform="capitalize">
               {subCategory.replace('_', ' ').replace('#', '')}
             </Anchor>
-          </Link>
+          </Link> */}
         </XStack>
       </YStack>
     </YStack>
@@ -112,7 +115,10 @@ export const DetailHeader = (props: { children: string }) => {
 const CurrentToast = () => {
   const currentToast = useToastState()
 
-  if (!currentToast || currentToast.isHandledNatively) return null
+  if (!currentToast || currentToast.isHandledNatively) {
+    return null
+  }
+
   return (
     <Toast
       key={currentToast.id}
