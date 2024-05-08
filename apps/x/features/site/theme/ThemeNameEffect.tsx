@@ -8,9 +8,6 @@ export const ThemeNameEffect = memo(
     const theme = useTheme()
     const [isActive, setIsActive] = useState(false)
 
-    console.info(`theme:`, theme)
-    console.info(`colorKey:`, colorKey)
-
     const color = theme[colorKey]?.val
 
     if (isClient) {
