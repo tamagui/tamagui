@@ -12,8 +12,7 @@
   "packageManager": "yarn@4.1.0",
   "scripts": {
     "build:force": "yarn clean:build && yarn build --force",
-    "build:js": "ultra -r --no-pretty build -- --skip-types",
-    "build:js:turbo": "turbo run build -- --skip-types",
+    "build:js": "SKIP_TYPES=1 ultra -r --no-pretty build",
     "build:types": "SKIP_JS=1 yarn build",
     "build": "turbo run build --filter=!next-app",
     "build:verbose": "yarn build -vvv",

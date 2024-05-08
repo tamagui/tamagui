@@ -19,13 +19,13 @@ export async function generateStaticParams() {
   })
 
   const latestVersionPaths = paths.map((path) => {
-    const withoutVersion = path.subpath.slice(0, path.subpath.length - 1)
+    const parts = path.subpath.split('/')
+    parts.pop()
+    const withoutVersion = parts.join('/')
     return {
       subpath: withoutVersion,
     }
   })
-
-  console.log('wtf', [...paths, ...latestVersionPaths])
 
   return [...paths, ...latestVersionPaths]
 }
@@ -65,14 +65,15 @@ export default function DocComponentsPage() {
     }
   }, [])
 
-  useEffect(() => {
-    const url = new URL(location.href)
-    url.pathname = `${pathname}/${frontmatter.version}`
-    if (Array.isArray(params.subpath)) {
-      url.pathname = url.pathname.replace('[...subpath]', params.subpath[0])
-    }
-    router.replace(url)
-  }, [])
+  // useEffect(() => {
+  //   const url = new URL(location.href)
+  //   url.pathname = `${pathname}/${frontmatter.version}`
+  //   if (Array.isArray(params.subpath)) {
+  //     url.pathname = url.pathname.replace('[...subpath]', params.subpath[0])
+  //   }
+  //   console.log('huhh', url, frontmatter)
+  //   // router.replace(url)
+  // }, [])
 
   return (
     <>

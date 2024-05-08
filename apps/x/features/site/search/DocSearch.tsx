@@ -1,17 +1,17 @@
-import '@docsearch/css'
+// import '@docsearch/css'
 
-import type { DocSearchModalProps } from '@docsearch/react'
-import { DocSearchModal } from '@docsearch/react'
+// import type { DocSearchModalProps } from '@docsearch/react'
+// import { DocSearchModal } from '@docsearch/react'
 // TODO
 // import { Head } from '@vxrn/router'
 
-export default function DocSearch(props: DocSearchModalProps) {
+export default function DocSearch(props: any /*DocSearchModalProps*/) {
   return (
     <>
       {/* <Head> */}
       <style>{docSearchCSS}</style>
       {/* </Head> */}
-      <DocSearchModal {...props} />
+      {/* <DocSearchModal {...props} /> */}
     </>
   )
 }
