@@ -4,7 +4,7 @@ import { ensureAuth } from '~/features/api/ensureAuth'
 import { getBentoCode, supabaseAdmin } from '~/features/auth/supabaseAdmin'
 
 export const GET: Endpoint = async (req) => {
-  const { supabase } = await ensureAuth(req)
+  const { supabase } = await ensureAuth({ req })
   await ensureAccess(
     {
       req,
