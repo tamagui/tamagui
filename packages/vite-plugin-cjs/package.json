@@ -5,7 +5,7 @@
   "main": "./index.js",
   "license": "MIT",
   "scripts": {
-    "build": "cp -r ../vite-plugin/dist ."
+    "build": "cp -r ../vite-plugin/dist . || true"
   },
   "dependencies": {
     "@tamagui/vite-plugin": "1.97.0"

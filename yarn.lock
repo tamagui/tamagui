@@ -24425,6 +24425,8 @@ __metadata:
   dependencies:
     "@tamagui/build": "npm:1.97.0"
     "@tamagui/normalize-css-color": "npm:1.97.0"
+    "@tamagui/react-native-use-pressable": "npm:1.97.0"
+    "@tamagui/react-native-use-responder-events": "npm:1.97.0"
     invariant: "npm:^2.2.4"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
