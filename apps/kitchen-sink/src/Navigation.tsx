@@ -1,7 +1,6 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import * as sections from '@tamagui/bento'
-import { Data } from '@tamagui/bento'
-import React from 'react'
+import { Data, Components } from '@tamagui/bento'
+import type { FC } from 'react'
 import { ScrollView, View } from 'tamagui'
 import { Sandbox } from './Sandbox'
 import { BentoPartScreenItem } from './features/bento/part-screen-items'
@@ -34,7 +33,7 @@ const Stack = createNativeStackNavigator<
   } & BentoScreens
 >()
 
-const BentoScreenContainer: React.FC<{ children: React.ReactNode; name: string }> = ({
+const BentoScreenContainer: FC<{ children: React.ReactNode; name: string }> = ({
   children,
   name,
 }) => {
@@ -74,6 +73,7 @@ const filterOutComponents = ([key]: [string]) =>
 const bentoScreenSections = bentoScreenNames.map((screenName) => {
   return (
     <Stack.Screen
+      key={screenName}
       name={screenName}
       component={BentoPartScreenItem}
       options={{
@@ -82,7 +82,8 @@ const bentoScreenSections = bentoScreenNames.map((screenName) => {
     />
   )
 })
-const bentoScreensPerElement = Object.entries(sections)
+
+const bentoScreensPerElement = Object.entries(Components)
   .filter(filterCamelCaseOnly)
   .map(sectionModuleToTuple)
   .reduce(flatArray, [])
@@ -91,6 +92,7 @@ const bentoScreensPerElement = Object.entries(sections)
     const Component = _Component as React.ComponentType<any>
     return (
       <Stack.Screen
+        key={name}
         name={name}
         options={{
           title: name,

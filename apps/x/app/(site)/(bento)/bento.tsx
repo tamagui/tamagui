@@ -52,6 +52,7 @@ import {
   XStack,
   YStack,
 } from 'tamagui'
+import { assertIsError } from '@tamagui/assert'
 import { ContainerLarge } from '~/components/Containers'
 import { Link } from '~/components/Link'
 import { BentoIcon } from '~/features/icons/BentoIcon'
@@ -68,7 +69,8 @@ export const loader = async () => {
   try {
     return await getProductsForServerSideRendering()
   } catch (err) {
-    console.error(`Error getting props`, err)
+    assertIsError(err)
+    console.error(`Error getting props`, err.message)
     return { bento: null, fontsPack: null, iconsPack: null, starter: null }
   }
 }

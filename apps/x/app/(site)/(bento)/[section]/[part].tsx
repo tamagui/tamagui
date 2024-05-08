@@ -1,5 +1,4 @@
-import { paths } from '@tamagui/bento/data'
-import * as sections from '@tamagui/bento'
+import { Data, Sections } from '@tamagui/bento'
 import { Toast, useToastState } from '@tamagui/toast'
 import { Link, useLocalSearchParams, useRouter } from '@vxrn/router'
 import { Anchor, H1, SizableText, Theme, View, XStack, YStack } from 'tamagui'
@@ -9,12 +8,12 @@ import { BentoPageFrame } from '~/features/bento/BentoPageFrame'
 import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
 
 export const generateStaticParams = async () => {
-  return paths.map((x) => x.params)
+  return Data.paths.map((x) => x.params)
 }
 
 // export const loader = (ctx) => {
 //   // const { section, part } = ctx.params as { section: string; part: string }
-//   // const getCodes = sections[section][`${part}GetComponentCodes`]
+//   // const getCodes = Sections[section][`${part}GetComponentCodes`]
 
 //   return {
 //     // props: getCodes(),
@@ -24,7 +23,7 @@ export const generateStaticParams = async () => {
 
 export default function page() {
   const params = useLocalSearchParams() as { section: string; part: string }
-  const Comp = sections[params.section][params.part]
+  const Comp = Sections[params.section][params.part]
 
   return (
     <>
@@ -53,11 +52,9 @@ export default function page() {
 
 export const DetailHeader = (props: { children: string }) => {
   const params = useLocalSearchParams() as { section: string; part: string }
-  const category =
-    (typeof params.section === 'string' ? params.section : params.section?.[0]) || ''
+  const category = (typeof params.section === 'string' ? params.section : params.section?.[0]) || ''
 
-  const subCategory =
-    (typeof params.part === 'string' ? params.part : params.part?.[0]) || ''
+  const subCategory = (typeof params.part === 'string' ? params.part : params.part?.[0]) || ''
 
   return (
     <YStack gap="$4" $sm={{ px: '$4' }} pb="$11">
@@ -133,9 +130,7 @@ const CurrentToast = () => {
     >
       <YStack>
         <Toast.Title>{currentToast.title}</Toast.Title>
-        {!!currentToast.message && (
-          <Toast.Description>{currentToast.message}</Toast.Description>
-        )}
+        {!!currentToast.message && <Toast.Description>{currentToast.message}</Toast.Description>}
       </YStack>
     </Toast>
   )

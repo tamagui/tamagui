@@ -45,6 +45,7 @@
     "@supabase/supabase-js": "^2.38.2",
     "@tamagui/animate-presence": "1.97.1",
     "@tamagui/animations-reanimated": "1.97.1",
+    "@tamagui/bento": "1.97.1",
     "@tamagui/colors": "1.97.1",
     "@tamagui/core": "1.97.1",
     "@tamagui/demos": "1.97.1",

@@ -6,8 +6,10 @@
   "main": "index.jsx",
   "scripts": {
     "dev": "vxrn dev",
-    "build:prod": "vxrn build",
-    "serve": "vxrn serve"
+    "dev:clean": "vxrn dev",
+    "build:prod": "yarn clean && vxrn build",
+    "serve": "vxrn serve",
+    "clean": "rm -r node_modules/.vite || true && rm -r dist || true"
   },
   "dependencies": {
     "@leeoniya/ufuzzy": "^1.0.14",
@@ -17,9 +19,10 @@
     "@supabase/ssr": "^0.3.0",
     "@supabase/supabase-auth-helpers": "^1.4.2",
     "@supabase/supabase-js": "^2.38.2",
+    "@tamagui/assert": "1.97.1",
     "@tamagui/mdx": "1.97.1",
     "@tamagui/site-config": "1.97.1",
-    "@vxrn/router": "^0.1.48",
+    "@vxrn/router": "^0.1.49",
     "color2k": "^2.0.2",
     "multithreading": "0.2.1",
     "postmark": "^3.0.18",
@@ -50,6 +53,6 @@
     "sirv": "^2.0.4",
     "unified": "^10.1.2",
     "unist-util-visit": "^2.0.3",
-    "vxrn": "^0.1.48"
+    "vxrn": "^0.1.49"
   }
 }

@@ -8,6 +8,9 @@ export function apiRoute(handler: Endpoint) {
       return result instanceof Promise ? await result : result
     } catch (err) {
       if (err instanceof Response) {
+        console.error(
+          `Error in apiRoute (caught response): ${err.status} ${err.statusText}`
+        )
         return err
       }
 

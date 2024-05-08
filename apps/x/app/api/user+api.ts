@@ -34,7 +34,7 @@ export type UserContextType = {
 }
 
 export default apiRoute(async (req) => {
-  const { supabase, user, session } = await ensureAuth(req)
+  const { supabase, user, session } = await ensureAuth({ req })
 
   const [
     userTeams,

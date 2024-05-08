@@ -5,7 +5,9 @@
 // TODO
 // import { Head } from '@vxrn/router'
 
-export default function DocSearch(props: any /*DocSearchModalProps*/) {
+type DocSearchModalProps = any
+
+export default function DocSearch(props: DocSearchModalProps) {
   return (
     <>
       {/* <Head> */}

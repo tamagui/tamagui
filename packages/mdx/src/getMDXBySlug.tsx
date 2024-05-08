@@ -1,10 +1,8 @@
 import fs from 'node:fs'
 import path from 'node:path'
-
 import compareVersions from 'compare-versions'
 import { bundleMDX } from 'mdx-bundler'
 import readingTime from 'reading-time'
-
 import type { Frontmatter } from './types'
 import { rehypeHighlightCode } from './rehypeHighlightCode'
 import rehypeMetaAttribute from './rehypeMetaAttribute'
@@ -17,10 +15,13 @@ export const getMDXBySlug = async (
   slug: string
 ): Promise<{ frontmatter: Frontmatter; code: string }> => {
   let mdxPath = slug
-  if (!mdxPath.includes('/') && basePath.includes('components')) {
-    const versions = getAllVersionsFromPath(`data/docs/components/${slug}`)
+
+  // if no version given, find it
+  if (!slug.includes('.') && basePath.includes('components')) {
+    const versions = getAllVersionsFromPath(path.join(basePath, slug))
     mdxPath += `/${versions[0]}`
   }
+
   const filePath = path.join(basePath, `${mdxPath}.mdx`)
   const source = fs.readFileSync(filePath, 'utf8')
   const { frontmatter, code } = await getMDX(source)
