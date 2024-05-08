@@ -22,7 +22,7 @@
     "@tamagui/assert": "1.97.1",
     "@tamagui/mdx": "1.97.1",
     "@tamagui/site-config": "1.97.1",
-    "@vxrn/router": "^0.1.47",
+    "@vxrn/router": "^0.1.49",
     "color2k": "^2.0.2",
     "multithreading": "0.2.1",
     "postmark": "^3.0.18",
@@ -53,6 +53,6 @@
     "sirv": "^2.0.4",
     "unified": "^10.1.2",
     "unist-util-visit": "^2.0.3",
-    "vxrn": "^0.1.47"
+    "vxrn": "^0.1.49"
   }
 }
