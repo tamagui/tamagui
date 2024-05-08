@@ -5,6 +5,8 @@ import { mdx } from '@cyco130/vite-plugin-mdx'
 import type { VXRNConfig } from 'vxrn'
 // import inpsectPlugin from 'vite-plugin-inspect'
 
+Error.stackTraceLimit = Infinity
+
 const require = createRequire(import.meta.url)
 
 const targets = [
@@ -12,7 +14,7 @@ const targets = [
   require.resolve('@tamagui/demos').replace('/dist/cjs/index.js', ''),
 ]
 
-const optimizeInterop = []
+const optimizeInterop = ['expo-splash-screen']
 
 const optimizeDeps = {
   include: [
@@ -76,6 +78,9 @@ export default async () => {
           'react-native',
           'expo-modules-core',
           'react-native-gesture-handler',
+          '@react-navigation/native',
+          'expo-splash-screen',
+          'expo-constants',
         ],
       },
 

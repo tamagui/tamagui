@@ -27,7 +27,9 @@ export const getAllFrontmatter = (fromPath: string) => {
       const { data, content } = matter(source)
       return {
         ...data,
-        slug: filePath.replace(`${DATA_PATH.replaceAll('\\', '/')}/`, '').replace('.mdx', ''),
+        slug: filePath
+          .replace(`${DATA_PATH.replaceAll('\\', '/')}/`, '')
+          .replace('.mdx', ''),
         readingTime: readingTime(content),
       } as Frontmatter
     })

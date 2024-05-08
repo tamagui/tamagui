@@ -13,16 +13,17 @@ import {
   XStack,
   YStack,
   styled,
+  useIsomorphicLayoutEffect,
 } from 'tamagui'
 
-import { StudioStepTip } from '../../../studio/StudioStepTip'
-import { ThemeBuilderModalFrame } from '../../../features/studio-theme/ThemeBuilderModalFrame'
-import { useThemeBuilderStore } from '../../../features/studio-theme/store/ThemeBuilderStore'
-import { weakKey } from '../../../helpers/weakKey'
+import { StudioStepTip } from '~/studio/StudioStepTip'
+import { ThemeBuilderModalFrame } from '~/features/studio-theme/ThemeBuilderModalFrame'
+import { useThemeBuilderStore } from '~/features/studio-theme/store/ThemeBuilderStore'
+import { weakKey } from '~/helpers/weakKey'
 // import { StudioPreviewComponents } from './StudioPreviewComponents'
 // import { StudioThemeBuilderActionBar } from './StudioThemeBuilderActionBar'
 // import { ThemeBuilderModalFrame } from './ThemeBuilderModalFrame'
-import { themeBuilderStore } from '../../../features/studio-theme/store/ThemeBuilderStore'
+import { themeBuilderStore } from '~/features/studio-theme/store/ThemeBuilderStore'
 // import { StudioPreviewFrame } from './views/StudioPreviewFrame'
 
 let lastLoadThemeId = ''
@@ -56,7 +57,7 @@ export default memo(function StudioTheme({
   }, [])
 
   // yucky two way sync here
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const numStep = Number(step)
     if (numStep !== store.step) {
       store.setStep(numStep)

@@ -34,10 +34,7 @@ export async function generateStaticParams() {
 }
 
 export async function loader(props: LoaderProps) {
-  const { frontmatter, code } = await getMDXBySlug(
-    'data/docs/components',
-    props.params.subpath
-  )
+  const { frontmatter, code } = await getMDXBySlug('data/docs/components', props.params.subpath)
   const [componentName, componentVersion] = props.params.subpath.split('/')
   const versions = getAllVersionsFromPath(`data/docs/components/${componentName}`)
   console.info(
