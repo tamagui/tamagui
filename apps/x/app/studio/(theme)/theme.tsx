@@ -34,8 +34,6 @@ export async function loadTheme(params) {
   themeBuilderStore.setThemeSuiteId(params.themeId)
 }
 
-console.log('/??')
-
 export default memo(function StudioTheme({
   themeId,
   step,
@@ -51,8 +49,6 @@ export default memo(function StudioTheme({
   //     navigate('/', { replace: true })
   //   }
   // }, [notFound])
-
-  console.log('loading me')
 
   const store = useThemeBuilderStore()
 
