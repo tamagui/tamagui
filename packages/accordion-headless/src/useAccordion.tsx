@@ -5,7 +5,7 @@ import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDirection } from '@tamagui/use-direction'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { composeEventHandlers } from '@tamagui/helpers'
-import { createContext } from 'react'
+import { createContext, useMemo } from 'react'
 import React from 'react'
 import type { View } from 'react-native'
 
@@ -13,7 +13,8 @@ import type { View } from 'react-native'
 
 type TamaguiElement = HTMLElement | View
 const ACCORDION_NAME = 'Accordion'
-const [Collection, useCollection] = createCollection<TamaguiElement>(ACCORDION_NAME)
+export const [Collection, useCollection] =
+  createCollection<TamaguiElement>(ACCORDION_NAME)
 
 export function useAccordion<T extends 'single' | 'multiple'>(
   type: T,
@@ -284,7 +285,7 @@ function useAccordionImpl(
   }
 }
 
-const ACCORDION_CONTEXT = 'Accordion'
+export const ACCORDION_CONTEXT = 'Accordion'
 
 type Direction = 'ltr' | 'rtl'
 type PrimitiveDivProps = React.ComponentPropsWithoutRef<typeof Stack>
@@ -365,6 +366,33 @@ function useAccordionItemContext() {
 
 function getState(open?: boolean) {
   return open ? 'open' : 'closed'
+}
+
+export function AccordionItemContextProvider(props: {
+  children: React.ReactNode
+  value: string
+  disabled?: boolean
+}) {
+  const { value } = props
+  const accordionContext = useAccordionContext()
+  const valueContext = useAccordionValueContext()
+  const triggerId = React.useId()
+  const open = (value && valueContext.value.includes(value)) || false
+  const disabled = accordionContext.disabled || props.disabled
+
+  const providerValue = useMemo(
+    () => ({
+      open,
+      disabled,
+      triggerId,
+    }),
+    [open, disabled, triggerId]
+  )
+  return (
+    <AccordionItemContext.Provider value={providerValue}>
+      {props.children}
+    </AccordionItemContext.Provider>
+  )
 }
 
 export function useAccordionItem(

@@ -2,6 +2,22 @@ import { type Stack } from '@tamagui/core';
 import React from 'react';
 import type { View } from 'react-native';
 type TamaguiElement = HTMLElement | View;
+export declare const Collection: {
+    readonly Provider: React.FC<{
+        children?: React.ReactNode;
+        __scopeCollection: string;
+    }>;
+    readonly Slot: React.ForwardRefExoticComponent<import("@tamagui/collection/types/Collection").CollectionProps & {
+        __scopeCollection?: string | undefined;
+    } & React.RefAttributes<import("@tamagui/core").TamaguiElement>>;
+    readonly ItemSlot: React.ForwardRefExoticComponent<{
+        children: React.ReactNode;
+    } & {
+        __scopeCollection?: string | undefined;
+    } & React.RefAttributes<TamaguiElement>>;
+}, useCollection: (__scopeCollection: any) => () => {
+    ref: React.RefObject<TamaguiElement>;
+}[];
 export declare function useAccordion<T extends 'single' | 'multiple'>(type: T, params: T extends 'single' ? AccordionImplSingleProps : AccordionImplMultipleProps, contextScope?: string): {
     AccordionImplProvider: React.Provider<AccordionImplContextValue | null>;
     accordionImplProviderValue: {
@@ -994,6 +1010,7 @@ type AccordionImplContextValue = {
     direction: AccordionImplProps['dir'];
     orientation: AccordionImplProps['orientation'];
 };
+export declare const ACCORDION_CONTEXT = "Accordion";
 type Direction = 'ltr' | 'rtl';
 type PrimitiveDivProps = React.ComponentPropsWithoutRef<typeof Stack>;
 interface AccordionImplProps extends PrimitiveDivProps {
@@ -1062,6 +1079,11 @@ type AccordionItemContextValue = {
     disabled?: boolean;
     triggerId: string;
 };
+export declare function AccordionItemContextProvider(props: {
+    children: React.ReactNode;
+    value: string;
+    disabled?: boolean;
+}): import("react/jsx-runtime").JSX.Element;
 export declare function useAccordionItem(params: UseAccordionItemParams, contextScope?: string): {
     trigger: {
         ItemSlot: React.ForwardRefExoticComponent<{
