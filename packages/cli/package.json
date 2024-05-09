@@ -52,7 +52,7 @@
     "typescript": "^5.3.3",
     "url": "^0.11.0",
     "vite": "^5.2.11",
-    "vite-plugin-entry-shaking": "^0.3.2",
+    "vite-plugin-entry-shaking": "^0.4.3",
     "vite-tsconfig-paths": "^4.3.2"
   },
   "devDependencies": {

@@ -32,7 +32,7 @@ export function useUserTheme() {
 }
 
 export function UserThemeProvider(props: { children: any }) {
-  const [userTheme, setUserTheme] = useState<DarkModePreference>('light')
+  const [userTheme, setUserTheme] = useState<DarkModePreference>('system')
 
   useEffect(() => {
     setUserTheme(getValue())

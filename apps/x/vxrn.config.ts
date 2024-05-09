@@ -1,3 +1,4 @@
+import entryShakingPlugin from 'vite-plugin-entry-shaking'
 import { createRequire } from 'node:module'
 import { getVitePlugins } from '@vxrn/router/vite'
 // import { tamaguiPlugin, tamaguiExtractPlugin } from '@tamagui/vite-plugin'
@@ -12,6 +13,7 @@ const require = createRequire(import.meta.url)
 const targets = [
   require.resolve('@tamagui/lucide-icons').replace('/dist/cjs/index.js', ''),
   require.resolve('@tamagui/demos').replace('/dist/cjs/index.js', ''),
+  require.resolve('@tamagui/colors').replace('/dist/cjs/index.js', ''),
 ]
 
 const optimizeInterop = ['expo-splash-screen']
@@ -92,15 +94,16 @@ export default async () => {
         //   ],
         // }),
 
+        // @ts-ignore
         ...getVitePlugins({
           root: 'app',
         }),
 
         // hmmm breaking ssr for some reason on lucide:
         // @ts-ignore
-        // entryShakingPlugin({
-        //   targets,
-        // }),
+        entryShakingPlugin({
+          targets,
+        }),
 
         // TODO type is mad
         // tamaguiPlugin({
