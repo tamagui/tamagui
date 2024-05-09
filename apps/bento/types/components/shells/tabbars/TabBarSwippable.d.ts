@@ -1,6 +1,2 @@
-/** ------ EXAMPLE ------ */
-export declare const TabbarSwippable: {
-    (): import("react/jsx-runtime").JSX.Element;
-    fileName: string;
-};
+export {};
 //# sourceMappingURL=TabBarSwippable.d.ts.map

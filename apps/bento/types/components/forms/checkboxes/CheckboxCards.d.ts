@@ -1,6 +1,2 @@
-/** ------ EXAMPLE ------ */
-export declare function CheckboxCards(): import("react/jsx-runtime").JSX.Element;
-export declare namespace CheckboxCards {
-    var fileName: string;
-}
+export {};
 //# sourceMappingURL=CheckboxCards.d.ts.map

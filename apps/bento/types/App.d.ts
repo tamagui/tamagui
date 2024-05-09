@@ -1,3 +1,2 @@
-import '@tamagui/core/reset.css';
-export default function App(): import("react/jsx-runtime").JSX.Element;
+export {};
 //# sourceMappingURL=App.d.ts.map

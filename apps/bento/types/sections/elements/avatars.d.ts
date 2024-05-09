@@ -1,2 +1,2 @@
-export declare function avatars(): import("react/jsx-runtime").JSX.Element;
+export {};
 //# sourceMappingURL=avatars.d.ts.map

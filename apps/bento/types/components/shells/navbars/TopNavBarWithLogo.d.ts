@@ -1,6 +1,2 @@
-/** ------ EXAMPLE ------ */
-export declare function TopNavBarWithLogo(): import("react/jsx-runtime").JSX.Element;
-export declare namespace TopNavBarWithLogo {
-    var fileName: string;
-}
+export {};
 //# sourceMappingURL=TopNavBarWithLogo.d.ts.map

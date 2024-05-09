@@ -1,5 +1,2 @@
-export declare function ChatList(): import("react/jsx-runtime").JSX.Element;
-export declare namespace ChatList {
-    var fileName: string;
-}
+export {};
 //# sourceMappingURL=ChatList.d.ts.map

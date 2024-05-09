@@ -1,6 +1,2 @@
-export type Dim = {
-    width: number;
-    height: number;
-};
-export declare const useContainerDim: (name: string) => Dim;
+export {};
 //# sourceMappingURL=useContainerDim.d.ts.map

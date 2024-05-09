@@ -5953,20 +5953,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tamagui/accordion-headless@npm:1.95.1, @tamagui/accordion-headless@workspace:packages/accordion-headless":
+"@tamagui/accordion-headless@npm:1.97.1, @tamagui/accordion-headless@workspace:packages/accordion-headless":
   version: 0.0.0-use.local
   resolution: "@tamagui/accordion-headless@workspace:packages/accordion-headless"
   dependencies:
-    "@tamagui/build": "npm:1.95.1"
-    "@tamagui/collapsible": "npm:1.95.1"
-    "@tamagui/collection": "npm:1.95.1"
-    "@tamagui/compose-refs": "npm:1.95.1"
-    "@tamagui/constants": "npm:1.95.1"
-    "@tamagui/core": "npm:1.95.1"
-    "@tamagui/create-context": "npm:1.95.1"
-    "@tamagui/polyfill-dev": "npm:1.95.1"
-    "@tamagui/stacks": "npm:1.95.1"
-    "@tamagui/use-controllable-state": "npm:1.95.1"
+    "@tamagui/build": "npm:1.97.1"
+    "@tamagui/collapsible": "npm:1.97.1"
+    "@tamagui/collection": "npm:1.97.1"
+    "@tamagui/compose-refs": "npm:1.97.1"
+    "@tamagui/constants": "npm:1.97.1"
+    "@tamagui/core": "npm:1.97.1"
+    "@tamagui/create-context": "npm:1.97.1"
+    "@tamagui/polyfill-dev": "npm:1.97.1"
+    "@tamagui/stacks": "npm:1.97.1"
+    "@tamagui/use-controllable-state": "npm:1.97.1"
     react: "npm:^18.2.0"
   peerDependencies:
     react: "*"
@@ -6589,7 +6589,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/demos@workspace:packages/demos"
   dependencies:
-    "@tamagui/accordion-headless": "npm:1.95.1"
+    "@tamagui/accordion-headless": "npm:1.97.1"
     "@tamagui/avatar": "npm:1.97.1"
     "@tamagui/build": "npm:1.97.1"
     "@tamagui/button": "npm:1.97.1"

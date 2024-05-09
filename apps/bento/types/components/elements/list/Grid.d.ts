@@ -1,7 +1,2 @@
-/**
- *
- *  THIS COMPONENT IS REMOVED FROM BENTO
- *
- *
- */
+export {};
 //# sourceMappingURL=Grid.d.ts.map

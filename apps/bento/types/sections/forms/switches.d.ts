@@ -1,2 +1,2 @@
-export declare function switches(): import("react/jsx-runtime").JSX.Element;
+export {};
 //# sourceMappingURL=switches.d.ts.map

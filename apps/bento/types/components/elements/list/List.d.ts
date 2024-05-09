@@ -1,5 +1,2 @@
-export declare function List(): import("react/jsx-runtime").JSX.Element;
-export declare namespace List {
-    var fileName: string;
-}
+export {};
 //# sourceMappingURL=List.d.ts.map

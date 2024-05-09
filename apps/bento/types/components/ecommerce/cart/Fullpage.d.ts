@@ -1,6 +1,2 @@
-/** ------ EXAMPLE ------ */
-export declare function Fullpage(): import("react/jsx-runtime").JSX.Element;
-export declare namespace Fullpage {
-    var fileName: string;
-}
+export {};
 //# sourceMappingURL=Fullpage.d.ts.map

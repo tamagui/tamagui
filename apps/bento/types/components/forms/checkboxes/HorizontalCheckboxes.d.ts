@@ -1,6 +1,2 @@
-/** ------ EXAMPLE ------ */
-export declare function HorizontalCheckboxes(): import("react/jsx-runtime").JSX.Element;
-export declare namespace HorizontalCheckboxes {
-    var fileName: string;
-}
+export {};
 //# sourceMappingURL=HorizontalCheckboxes.d.ts.map

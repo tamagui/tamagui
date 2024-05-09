@@ -1,5 +1,2 @@
-export declare function GroupedCheckbox(): import("react/jsx-runtime").JSX.Element;
-export declare namespace GroupedCheckbox {
-    var fileName: string;
-}
+export {};
 //# sourceMappingURL=GroupedCheckbox.d.ts.map

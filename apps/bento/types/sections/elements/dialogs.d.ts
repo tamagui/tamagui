@@ -1,2 +1,2 @@
-export declare function dialogs(): import("react/jsx-runtime").JSX.Element;
+export {};
 //# sourceMappingURL=dialogs.d.ts.map

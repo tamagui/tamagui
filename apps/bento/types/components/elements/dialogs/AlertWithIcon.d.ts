@@ -1,6 +1,2 @@
-/** ---------- EXAMPLE --------- */
-export declare const AlertWithIcon: {
-    (): import("react/jsx-runtime").JSX.Element;
-    fileName: string;
-};
+export {};
 //# sourceMappingURL=AlertWithIcon.d.ts.map

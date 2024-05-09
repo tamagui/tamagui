@@ -1,6 +1,2 @@
-/** ------ EXAMPLE ------ */
-export declare function ButtonsWithLoaders(): import("react/jsx-runtime").JSX.Element;
-export declare namespace ButtonsWithLoaders {
-    var fileName: string;
-}
+export {};
 //# sourceMappingURL=ButtonsWithLoaders.d.ts.map

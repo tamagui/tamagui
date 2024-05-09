@@ -1,4 +1,2 @@
-export declare const useReplaceTokens: (code: any, mappedTokens: any) => {
-    codeWithReplacedTokens: any;
-};
+export {};
 //# sourceMappingURL=useReplaceTokens.d.ts.map

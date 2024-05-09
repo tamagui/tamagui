@@ -1,8 +1,2 @@
-export declare const getProducts: () => {
-    id: number;
-    name: string;
-    price: string;
-    discount: number;
-    image: string;
-}[];
+export {};
 //# sourceMappingURL=products.d.ts.map
