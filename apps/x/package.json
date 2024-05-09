@@ -6,7 +6,7 @@
   "main": "index.jsx",
   "scripts": {
     "dev": "vxrn dev",
-    "dev:clean": "vxrn dev",
+    "dev:clean": "yarn clean && vxrn dev",
     "build:prod": "yarn clean && vxrn build",
     "serve": "vxrn serve",
     "clean": "rm -r node_modules/.vite || true && rm -r dist || true"

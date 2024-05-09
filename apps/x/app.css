@@ -783,7 +783,7 @@ textarea {
 
 .clip-wave {
   /* TODO */
-  /* mask-image: url(./public/takeout/geometric.svg); */
+  /* mask-image: url(./public/takeout/geometric.svg);
   mask-size: 150% 150%;
   animation: clip-fade 80s infinite alternate;
 } */
