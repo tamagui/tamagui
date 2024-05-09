@@ -7322,6 +7322,25 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/progress-headless@workspace:packages/progress-headless":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/progress-headless@workspace:packages/progress-headless"
+  dependencies:
+    "@tamagui/build": "npm:1.97.1"
+    "@tamagui/compose-refs": "npm:1.97.1"
+    "@tamagui/core": "npm:1.97.1"
+    "@tamagui/create-context": "npm:1.97.1"
+    "@tamagui/get-token": "npm:1.97.1"
+    "@tamagui/helpers": "npm:1.97.1"
+    "@tamagui/stacks": "npm:1.97.1"
+    react: "npm:^18.2.0"
+    react-native: "npm:^0.73.4"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/progress@npm:1.97.1, @tamagui/progress@workspace:packages/progress":
   version: 0.0.0-use.local
   resolution: "@tamagui/progress@workspace:packages/progress"
