@@ -4,7 +4,6 @@ import { dirname, join } from 'path'
 
 import { watchTamaguiConfig } from '@tamagui/static'
 import type { CLIResolvedOptions } from '@tamagui/types'
-import { tamaguiExtractPlugin, tamaguiPlugin } from '@tamagui/vite-plugin'
 import viteReactPlugin from '@vitejs/plugin-react-swc'
 import chalk from 'chalk'
 import express from 'express'
@@ -24,6 +23,7 @@ export const studio = async (
   isRemote = false,
   isBuild = false
 ) => {
+  const { tamaguiExtractPlugin, tamaguiPlugin } = await import('@tamagui/vite-plugin')
   await ensureDir(options.paths.dotDir)
   const configWatchPromise = watchTamaguiConfig(options.tamaguiOptions)
 
