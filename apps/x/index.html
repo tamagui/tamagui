@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1"
+    />
+
+    <link href="/fonts/inter-700.css" rel="stylesheet" />
+    <link
+      rel="preload"
+      href="/fonts/Inter-ExtraBold.woff2"
+      as="font"
+      type="font/woff2"
+    />
+
+    <link href="/fonts/inter-400.css" rel="stylesheet" />
+    <link
+      rel="preload"
+      href="/fonts/Inter-Regular.woff2"
+      as="font"
+      type="font/woff2"
+    />
+
+    <link href="/fonts/silkscreen.css" rel="stylesheet" />
+    <link rel="preload" href="/fonts/slkscr.woff2" as="font" type="font/woff2" />
+
+    <link href="/fonts/cherry-bomb.css" rel="stylesheet" />
+    <link
+      rel="preload"
+      href="/fonts/cherry-bomb.woff2"
+      as="font"
+      type="font/woff2"
+    />
+
+    <style>
+      #root {
+        min-height: 100vh;
+        width: 100%;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      }
+
+      #root > div {
+        min-height: 100vh;
+      }
+    </style>
+
+    <!--head-outlet-->
+  </head>
+  <body>
+    <div id="root">
+      <!--ssr-outlet-->
+    </div>
+    <script type="module" src="/src/entry-web.tsx"></script>
+  </body>
+</html>

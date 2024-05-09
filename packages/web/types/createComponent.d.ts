@@ -1,5 +1,5 @@
 import React from 'react';
-import type { ComponentContextI, DebugProp, DisposeFn, SpaceDirection, SpaceValue, SpacerProps, SpacerStyleProps, StackNonStyleProps, StackProps, StaticConfig, TamaguiComponent, TamaguiComponentStateRef, TamaguiElement, TamaguiInternalConfig, TextProps } from './types';
+import type { ComponentContextI, DebugProp, SpaceDirection, SpaceValue, SpacerProps, SpacerStyleProps, StackNonStyleProps, StackProps, StaticConfig, TamaguiComponent, TamaguiComponentStateRef, TamaguiElement, TamaguiInternalConfig, TextProps } from './types';
 import type { TamaguiComponentState } from './interfaces/TamaguiComponentState';
 type ComponentSetState = React.Dispatch<React.SetStateAction<TamaguiComponentState>>;
 export declare const componentSetStates: Set<ComponentSetState>;
@@ -49,6 +49,6 @@ export declare const subscribeToContextGroup: ({ disabled, setStateShallow, pseu
     mediaGroups?: Set<string> | undefined;
     componentContext: ComponentContextI;
     state: TamaguiComponentState;
-}) => DisposeFn | undefined;
+}) => import("./types").DisposeFn | undefined;
 export {};
 //# sourceMappingURL=createComponent.d.ts.map

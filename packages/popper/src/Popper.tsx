@@ -3,7 +3,6 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isAndroid, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import type { ScopedProps, SizeTokens, StackProps } from '@tamagui/core'
-import { debounce } from '@tamagui/use-debounce'
 import {
   Stack,
   View as TamaguiView,
@@ -249,7 +248,7 @@ export const PopperContentFrame = styled(ThemeableStack, {
   } as const,
 
   defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+    unstyled: process.env.TAMAGUI_HEADLESS === '1',
   },
 })
 
@@ -314,22 +313,21 @@ export const PopperContent = React.forwardRef<
     }
   }, [isMounted])
 
-  // all poppers hidden on ssr by default
-  if (!isMounted) {
-    return null
-  }
-
   let show = true
-  let setShow = undefined as any
 
   if (isAndroid) {
-    ;[show, setShow] = React.useState(false)
-
+    const [show_, setShow] = React.useState(false)
+    show = show_
     React.useEffect(() => {
       if (finalHasFloatingValue) {
         setShow(true)
       }
     }, [finalHasFloatingValue, x, y])
+  }
+
+  // all poppers hidden on ssr by default
+  if (!isMounted) {
+    return null
   }
 
   const frameProps = {
@@ -382,7 +380,7 @@ const PopperArrowFrame = styled(YStack, {
   } as const,
 
   defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+    unstyled: process.env.TAMAGUI_HEADLESS === '1',
   },
 })
 
@@ -403,7 +401,7 @@ const PopperArrowOuterFrame = styled(YStack, {
   } as const,
 
   defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+    unstyled: process.env.TAMAGUI_HEADLESS === '1',
   },
 })
 

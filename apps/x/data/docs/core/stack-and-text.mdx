@@ -1,0 +1,80 @@
+---
+title: View & Text
+description: Your base components
+---
+
+View and Text are functionally equivalent to React Native `View` and `Text`, they just accept the superset of props that Tamagui supports.
+
+### Props
+
+See [the Props docs](/docs/intro/props) for the full list of properties View and Text accept.
+
+### Usage
+
+You can use them directly:
+
+```tsx
+import { View, Text } from 'tamagui' // or '@tamagui/core'
+
+export default () => (
+  <View margin={10}>
+    <Text color="$color">Hello</Text>
+  </View>
+)
+```
+
+We encourage you to use inline styles. Combined with [shorthands](/docs/core/configuration#shorthands) they can lead to really easy styling, and the Tamagui optimizing compiler will take care of optimizing everything for you so that there is little to no extra cost in performance:
+
+```tsx
+import { View, Text } from 'tamagui' // or '@tamagui/core'
+
+export default () => (
+  <View mx="$sm" scale={1.2}>
+    <Text c="$color">Hello</Text>
+  </View>
+)
+```
+
+<Notice>
+  One really important and useful thing to note about Tamagui style properties: the order
+  is important! [Read more here](/docs/core/styled#order-is-important)
+</Notice>
+
+### With styled()
+
+You can also use them [with styled](/docs/core/styled) to create your own lower level views that are meant to be re-usable:
+
+```tsx
+import { View, styled } from 'tamagui' // or '@tamagui/core'
+
+export const Circle = styled(View, {
+  borderRadius: 100_000_000,
+
+  variants: {
+    pin: {
+      top: {
+        position: 'absolute',
+        top: 0,
+      },
+    },
+
+    centered: {
+      true: {
+        alignItems: 'center',
+        justifyContent: 'center',
+      },
+    },
+
+    size: {
+      '...size': (size, { tokens }) => {
+        return {
+          width: tokens.size[size] ?? size,
+          height: tokens.size[size] ?? size,
+        }
+      },
+    },
+  } as const,
+})
+```
+
+Inline styles and `styled()` both are optimized by the compiler, so you can author styles using both depending on the use case.

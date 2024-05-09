@@ -54,6 +54,7 @@ export { default as TouchableHighlight } from './UnimplementedView'
 export { default as TouchableNativeFeedback } from './UnimplementedView'
 export { default as SectionList } from './UnimplementedView'
 
+export { default as Touchable } from './TouchableOpacity'
 export { default as TouchableOpacity } from './TouchableOpacity'
 export { default as TouchableWithoutFeedback } from './TouchableWithoutFeedback'
 

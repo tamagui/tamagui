@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/bento",
-  "version": "1.95.1",
+  "version": "1.97.1",
   "private": true,
   "sideEffects": [
     "*.css"
@@ -9,15 +9,35 @@
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
-  "module:jsx": "dist/jsx",
   "files": [
     "src",
     "types",
     "dist"
   ],
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./types/index.d.ts",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.js",
+      "react-native": "./dist/cjs/index.native.js"
+    },
+    "./data": {
+      "types": "./types/data.d.ts",
+      "import": "./dist/esm/data.mjs",
+      "require": "./dist/cjs/data.js",
+      "react-native": "./dist/cjs/data.native.js"
+    },
+    "./component/*": {
+      "types": "./types/components/*.d.ts",
+      "import": "./dist/esm/components/*.mjs",
+      "require": "./dist/cjs/components/*.js",
+      "react-native": "./dist/cjs/components/*.native.js"
+    }
+  },
   "scripts": {
-    "build": "tamagui-build --skip-types",
-    "watch": "tamagui-build --watch --skip-types",
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch",
     "clean": "tamagui-build clean",
     "dev:web": "DISABLE_EXTRACTION=true NODE_ENV=development webpack serve",
     "dev:web:prod": "NODE_ENV=production webpack serve",
@@ -37,23 +57,24 @@
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
     "@rehookify/datepicker": "^6.5.0",
-    "@tamagui/animations-reanimated": "1.95.1",
-    "@tamagui/cli": "1.95.1",
-    "@tamagui/colors": "1.95.1",
-    "@tamagui/config": "1.95.1",
-    "@tamagui/core": "1.95.1",
-    "@tamagui/demos": "1.95.1",
-    "@tamagui/font-inter": "1.95.1",
-    "@tamagui/lucide-icons": "1.95.1",
-    "@tamagui/shorthands": "1.95.1",
-    "@tamagui/themes": "1.95.1",
-    "@tamagui/use-store": "1.95.1",
-    "@tamagui/web": "1.95.1",
+    "@tamagui/animations-reanimated": "1.97.1",
+    "@tamagui/cli": "1.97.1",
+    "@tamagui/colors": "1.97.1",
+    "@tamagui/config": "1.97.1",
+    "@tamagui/core": "1.97.1",
+    "@tamagui/demos": "1.97.1",
+    "@tamagui/font-inter": "1.97.1",
+    "@tamagui/lucide-icons": "1.97.1",
+    "@tamagui/shorthands": "1.97.1",
+    "@tamagui/themes": "1.97.1",
+    "@tamagui/use-store": "1.97.1",
+    "@tamagui/web": "1.97.1",
     "@tanstack/react-table": "^8.11.2",
     "@ts-react/form": "^1.8.3",
     "awesome-phonenumber": "^6.4.0",
     "expo-document-picker": "^11.10.1",
     "expo-image-picker": "^14.7.1",
+    "foxact": "^0.2.33",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",
@@ -61,16 +82,16 @@
     "react-native": "^0.73.4",
     "react-native-svg": "14.1.0",
     "react-native-web": "^0.19.10",
-    "swr": "^2.2.0",
-    "tamagui": "1.95.1",
+    "swr": "^2.2.5",
+    "tamagui": "1.97.1",
     "zod": "^3.22.4"
   },
   "devDependencies": {
     "@babel/core": "^7.23.3",
     "@playwright/test": "^1.40.1",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.10",
-    "@tamagui/babel-plugin": "1.95.1",
-    "@tamagui/build": "1.95.1",
+    "@tamagui/babel-plugin": "1.97.1",
+    "@tamagui/build": "1.97.1",
     "@welldone-software/why-did-you-render": "^7.0.1",
     "html-webpack-plugin": "^5.5.0",
     "metro-runtime": "*",

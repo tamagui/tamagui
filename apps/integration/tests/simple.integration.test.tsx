@@ -29,6 +29,15 @@ test(`loads dev mode no error or warning logs`, async ({ page }) => {
     await page.goto(domain, {
       waitUntil: 'domcontentloaded',
     })
+
+    if (logs.error.length) {
+      console.info(`Error logs: `, logs.error.join('\n'))
+    }
+
+    if (logs.warn.length) {
+      console.info(`Warn logs: `, logs.warn.join('\n'))
+    }
+
     expect(logs.error.length).toBe(0)
     expect(logs.warn.length).toBe(0)
     await expect(page.getByText('Hello world').first()).toBeVisible()
@@ -65,6 +74,15 @@ test(`builds to prod same thing`, async ({ page }) => {
     await page.goto(domain, {
       waitUntil: 'domcontentloaded',
     })
+
+    if (logs.error.length) {
+      console.info(`Error logs: `, logs.error.join('\n'))
+    }
+
+    if (logs.warn.length) {
+      console.info(`Warn logs: `, logs.warn.join('\n'))
+    }
+
     expect(logs.error.length).toBe(0)
     expect(logs.warn.length).toBe(0)
     await expect(page.getByText('Hello world').first()).toBeVisible()

@@ -1,5 +1,5 @@
 import type { TamaguiComponent } from '@tamagui/web';
-import React from 'react';
+import { type MutableRefObject } from 'react';
 type FocusableProps = {
     id?: string;
     onChangeText?: (val: string) => void;
@@ -9,7 +9,7 @@ type FocusableProps = {
 export declare function useFocusable({ isInput, props, ref, }: {
     isInput?: boolean;
     props: FocusableProps;
-    ref?: React.MutableRefObject<any>;
+    ref?: MutableRefObject<any>;
 }): {
     ref: (node: any) => void;
     onChangeText: (value: any) => void;

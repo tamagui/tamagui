@@ -53,7 +53,7 @@ const ToastImplFrame = styled(ThemeableStack, {
   } as const,
 
   defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+    unstyled: process.env.TAMAGUI_HEADLESS === '1',
   },
 })
 
@@ -198,7 +198,7 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
 
     const startTimer = React.useCallback(
       (duration: number) => {
-        if (!duration || duration === Infinity) return
+        if (!duration || duration === Number.POSITIVE_INFINITY) return
         clearTimeout(closeTimerRef.current)
         closeTimerStartTimeRef.current = new Date().getTime()
         closeTimerRef.current = setTimeout(handleClose, duration) as unknown as number
@@ -496,5 +496,5 @@ const getGestureDistance = (
   }
 }
 
-export { ToastImpl, ToastImplFrame, ToastImplProps, useToastInteractiveContext }
+export { ToastImpl, ToastImplFrame, type ToastImplProps, useToastInteractiveContext }
 export type { ToastProps }

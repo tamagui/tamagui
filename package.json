@@ -12,12 +12,10 @@
   "packageManager": "yarn@4.1.0",
   "scripts": {
     "build:force": "yarn clean:build && yarn build --force",
-    "build:js": "ultra -r --no-pretty build -- --skip-types",
-    "build:js:turbo": "turbo run build -- --skip-types",
+    "build:js": "SKIP_TYPES=1 ultra -r --no-pretty build",
     "build:types": "SKIP_JS=1 yarn build",
     "build": "turbo run build --filter=!next-app",
     "build:verbose": "yarn build -vvv",
-    "check-deps": "check-dependency-version-consistency .",
     "check": "manypkg check",
     "ci": "yarn && yarn check && yarn lint && yarn typecheck && yarn build && yarn test",
     "clean:build": "turbo run clean:build",
@@ -76,6 +74,7 @@
     "upgrade:starters:remix": "cd starters/remix && yarn && yarn upgrade:tamagui",
     "upgrade:starters:simple-web": "cd starters/simple-web && yarn && yarn upgrade:tamagui",
     "upgrade:starters": "yarn upgrade:starters:free && yarn upgrade:starters:simple-web && yarn upgrade:starters:expo-router && yarn upgrade:starters:remix",
+    "upgrade:vxrn": "yarn up '*vxrn*'@latest '@vxrn/*'@latest",
     "vercel:build": "yarn build:js && cd apps/site && yarn ci:build",
     "vercel:build-studio": "yarn build:js && cd apps/studio && yarn ci:build",
     "watch": "./scripts/watch.sh",
@@ -85,6 +84,7 @@
     "website": "yarn workspace @tamagui/website dev"
   },
   "resolutions": {
+    "expo-modules-core": "1.7.0",
     "@types/node": "16.11.9",
     "react-native": "0.73.4",
     "react": "18.2.0",
@@ -97,7 +97,7 @@
     }
   },
   "dependencies": {
-    "@biomejs/biome": "^1.5.3",
+    "@biomejs/biome": "^1.7.3",
     "@faker-js/faker": "^8.3.1",
     "@manypkg/cli": "^0.19.1",
     "@nderscore/tamagui-typescript-plugin": "^0.6.0",
@@ -106,7 +106,6 @@
     "@typescript-eslint/eslint-plugin": "^6.19.1",
     "@typescript-eslint/parser": "^6.19.1",
     "@vercel/og": "^0.5.8",
-    "check-dependency-version-consistency": "^4.1.0",
     "eslint": "^8.56.0",
     "eslint-parallel": "^1.2.1",
     "fs-extra": "^11.2.0",

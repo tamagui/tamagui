@@ -31,7 +31,7 @@ const getChunksFromString = (st: string, chunkSize = 0) =>
   st.match(new RegExp(`.{${chunkSize}}`, 'g'))
 
 const convertHexUnitTo256 = (hexStr: string) =>
-  parseInt(hexStr.repeat(2 / hexStr.length), 16)
+  Number.parseInt(hexStr.repeat(2 / hexStr.length), 16)
 
 const getAlphaFloat = (a: any, alpha = 1) => {
   if (a !== undefined) {

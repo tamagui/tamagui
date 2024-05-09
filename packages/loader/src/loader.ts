@@ -2,12 +2,12 @@ import type { TamaguiOptions } from '@tamagui/static'
 import { createExtractor, extractToClassNames, getPragmaOptions } from '@tamagui/static'
 import type { LoaderContext } from 'webpack'
 
-Error.stackTraceLimit = Infinity
+Error.stackTraceLimit = Number.POSITIVE_INFINITY
 
 // pass loader as path
 const CSS_LOADER_PATH = require.resolve('./css')
 
-Error.stackTraceLimit = Infinity
+Error.stackTraceLimit = Number.POSITIVE_INFINITY
 const extractor = createExtractor()
 
 let index = 0

@@ -1,16 +1,23 @@
-import React, { createContext, useContext, useMemo } from 'react'
+import {
+  createContext,
+  useContext,
+  useMemo,
+  type Context,
+  type ProviderExoticComponent,
+  type ReactNode,
+} from 'react'
 
 import { objectIdentityKey } from './objectIdentityKey'
 
 export type StyledContext<Props extends Object = any> = Omit<
-  React.Context<Props>,
+  Context<Props>,
   'Provider'
 > & {
-  context: React.Context<Props>
+  context: Context<Props>
   props: Object | undefined
-  Provider: React.ProviderExoticComponent<
+  Provider: ProviderExoticComponent<
     Partial<Props | undefined> & {
-      children?: React.ReactNode
+      children?: ReactNode
       scope?: string
     }
   >
@@ -23,13 +30,13 @@ export function createStyledContext<VariantProps extends Record<string, any>>(
   const OGContext = createContext<VariantProps | undefined>(defaultValues)
   const OGProvider = OGContext.Provider
   const Context = OGContext as any as StyledContext<VariantProps>
-  const scopedContexts = new Map<string, React.Context<VariantProps | undefined>>()
+  const scopedContexts = new Map<string, Context<VariantProps | undefined>>()
 
   const Provider = ({
     children,
     scope,
     ...values
-  }: VariantProps & { children?: React.ReactNode; scope: string }) => {
+  }: VariantProps & { children?: ReactNode; scope: string }) => {
     const next = useMemo(() => {
       return {
         // this ! is a workaround for ts error
@@ -58,7 +65,7 @@ export function createStyledContext<VariantProps extends Record<string, any>>(
   // @ts-ignore
   Context.Provider = Provider
   Context.props = defaultValues
-  Context.context = OGContext as React.Context<VariantProps>
+  Context.context = OGContext as Context<VariantProps>
   Context.useStyledContext = useStyledContext
 
   return Context

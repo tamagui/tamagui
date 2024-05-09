@@ -5,7 +5,7 @@ import type {
   TransformResponse,
 } from 'metro-transform-worker'
 import worker from 'metro-transform-worker'
-import { join, posix, sep } from 'path'
+import { join, posix, sep } from 'node:path'
 
 import type { TamaguiOptions } from '@tamagui/static'
 import { createExtractor, extractToClassNames } from '@tamagui/static'

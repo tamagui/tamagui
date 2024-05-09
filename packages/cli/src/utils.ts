@@ -17,12 +17,6 @@ export async function getOptions({
   debug,
   loadTamaguiOptions,
 }: Partial<CLIUserOptions> = {}): Promise<CLIResolvedOptions> {
-  //
-  if (root.includes('tamagui/apps/studio')) {
-    console.info(`Running in studio mode, loading the site config`)
-    root = root.replace('apps/studio', 'apps/site')
-  }
-
   const tsConfigFilePath = join(root, tsconfigPath)
   ensure(await fs.pathExists(tsConfigFilePath), `No tsconfig found: ${tsConfigFilePath}`)
   const dotDir = join(root, '.tamagui')

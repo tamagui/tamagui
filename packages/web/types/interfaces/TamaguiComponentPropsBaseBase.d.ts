@@ -2,6 +2,7 @@ import type { Role } from './Role';
 import type { DebugProp, ThemeName, GroupNames } from '../types';
 export type TamaguiComponentPropsBaseBase = {
     target?: string;
+    htmlFor?: string;
     /**
      * When truthy passes through all props to a single child element, and avoids rendering its own element.
      * Must pass just one child React element that will receive all the props.

@@ -1,0 +1,239 @@
+---
+title: useTheme
+description: Creating and using theme values
+---
+
+Access the current theme in context with `useTheme`. Tamagui themes operate much
+the same as
+[CSS variables](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties)
+do, and so
+[they can nest and override each other contextually](/docs/intro/themes).
+
+Note that the object that useTheme returns is the current theme, proxied upwards
+to every parent theme, finally proxying back to your tokens. This means it
+behaves just like CSS variables at well, at runtime.
+
+A short example:
+
+```tsx
+import { YStack, useTheme } from 'tamagui'
+
+const App = () => {
+  const theme = useTheme()
+
+  return <YStack backgroundColor={theme.color1.val} />
+}
+```
+
+The `useTheme` hook returns your Theme turned into a `ThemeParsed`, which means
+it turns all values into a `Variable`:
+
+```tsx
+{
+  background: {
+    val: '#000',
+    variable: 'var(--background)',
+    name: 'background',
+    isVar: true,
+  },
+  color: {
+    val: '#fff',
+    variable: 'var(--color)',
+    name: 'color',
+    isVar: true,
+  },
+}
+```
+
+The `useTheme` hook further adds a `.get()` helper function on each Variable for
+extra performance. On the web, this will return the `.variable` property and
+avoid re-rendering if values change, as it assumes you are using the CSS
+variables it generates to update styles. Meanwhile on native it will return
+`.val` and re-render always. But - if you enable the
+[`fastSchemeChange` setting on createTamagui](/docs/core/configuration#settings)
+then `get()` will return a
+[DynamicColorIOS](https://reactnative.dev/docs/dynamiccolorios) on iOS and avoid
+re-rendering there too - unless you do `get('web')` in which case it will only
+optimize for web.
+
+```tsx
+import { Stack, useTheme } from '@tamagui/core'
+import { SomeExternalComponent } from 'some-external-component'
+
+const App = () => {
+  const theme = useTheme()
+
+  // on the web this is something like var(--background) and will avoid re-renders
+  // on native it will be something like #fff and will re-render
+  const background = theme.background.get()
+
+  // if you needed to access it in a way that always returns the raw value
+  const backgroundValue = theme.background.val
+
+  return (
+    <SomeExternalComponent
+      style={{
+        backgroundColor: background,
+      }}
+    />
+  )
+}
+```
+
+You can mix and match `useMedia` and `useTheme`, and the compiler understands
+most basic usages, even with nested logic or constants within the file or
+imports [white-listed in your build setup](/docs/compiler/install):
+
+```tsx
+import { YStack, useMedia, useTheme } from 'tamagui'
+
+const App = () => {
+  const theme = useTheme()
+  const media = useMedia()
+
+  return (
+    <YStack
+      y={media.sm ? 10 : 0}
+      backgroundColor={media.lg ? theme.red : theme.blue}
+      {...(media.xl && {
+        y: theme.space2,
+      })}
+    />
+  )
+}
+```
+
+This will compile on the web to:
+
+```tsx
+const _cn =
+  ' _alignItems-1oszu61 _boxSizing-deolkf _display-6koalj _flexBasis-1mlwlqe _flexDirection-eqz5dr _flexShrink-1q142lx _transform-_sm_1exagq _transform-_sm0_1wpzndr _backgroundColor-_lg_no4z4g _backgroundColor-_lg0_1qoifqd _transform-_xl_gqa6p0'
+
+import { YStack, useMedia, useTheme } from 'tamagui'
+
+const App = () => {
+  return <div className={_cn} />
+}
+```
+
+And the following CSS:
+
+```css
+._alignItems-1oszu61 {
+  -ms-flex-align: stretch;
+  -webkit-align-items: stretch;
+  -webkit-box-align: stretch;
+  align-items: stretch;
+}
+._boxSizing-deolkf {
+  box-sizing: border-box;
+}
+._display-6koalj {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+}
+._flexBasis-1mlwlqe {
+  -ms-flex-preferred-size: auto;
+  -webkit-flex-basis: auto;
+  flex-basis: auto;
+}
+._flexDirection-eqz5dr {
+  -ms-flex-direction: column;
+  -webkit-box-direction: normal;
+  -webkit-box-orient: vertical;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+}
+._flexShrink-1q142lx {
+  -ms-flex-negative: 0;
+  -webkit-flex-shrink: 0;
+  flex-shrink: 0;
+}
+@media (max-width: 860px) {
+  :root:root ._transform-_sm_1exagq {
+    -webkit-transform: translateY(10px);
+    transform: translateY(10px);
+  }
+}
+@media not all and (max-width: 860px) {
+  :root:root ._transform-_sm0_1wpzndr {
+    -webkit-transform: translateY(0px);
+    transform: translateY(0px);
+  }
+}
+@media (min-width: 1120px) {
+  :root:root:root ._backgroundColor-_lg_no4z4g {
+    background-color: var(--red);
+  }
+}
+@media not all and (min-width: 1120px) {
+  :root:root:root ._backgroundColor-_lg0_1qoifqd {
+    background-color: var(--blue);
+  }
+}
+@media (min-width: 1280px) {
+  :root:root:root:root ._transform-_xl_gqa6p0 {
+    -webkit-transform: translateY(var(--space2));
+    transform: translateY(var(--space2));
+  }
+}
+```
+
+## Using outside of styling
+
+You can `useTheme()` (and `useMedia()`) at runtime. Like useMedia, useTheme will
+only re-render when it has to, and often you can skip re-renders altogether by
+either passing the values to a Tamagui styled component, or by using the helper
+`getVariable`:
+
+### getVariable
+
+If you access `theme.bg.val` in your render function, the component will only
+re-render when theme.bg changes.
+
+```tsx
+import { theme, View } from '@tamagui/core'
+
+export default () => {
+  const theme = useTheme()
+
+  // access the value
+  console.log(theme.bg.val)
+
+  return (
+    <View backgroundColor={theme.color1} />
+  )
+}
+```
+
+## Changing the theme at the hook level
+
+This is a more advanced use for building custom hooks or components, but you can
+pass in a theme name and a component theme name (as
+[discussed here](/docs/intro/themes#component-subset-themes)) to grab the right
+subset theme:
+
+```tsx
+function MyComponent(props) {
+  const theme = useTheme(props.theme, 'MyComponent')
+}
+```
+
+For example, if you have the following themes:
+
+- `dark`
+- `dark_green`
+- `dark_green_MyComponent`
+
+And this code:
+
+```tsx
+<Theme name="dark">
+  <MyComponent theme="green" />
+</Theme>
+```
+
+The above `useTheme` hook would return the `dark_green_MyComponent` theme.

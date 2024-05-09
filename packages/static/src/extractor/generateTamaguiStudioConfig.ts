@@ -1,4 +1,4 @@
-import { dirname, join } from 'path'
+import { dirname, join } from 'node:path'
 
 import { generateThemes, writeGeneratedThemes } from '@tamagui/generate-themes'
 import type { TamaguiOptions } from '@tamagui/types'

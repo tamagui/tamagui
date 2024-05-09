@@ -193,6 +193,7 @@ export function createSheet<
               <Frame
                 {...props}
                 componentName="SheetCover"
+                // biome-ignore lint/correctness/noChildrenProp: <explanation>
                 children={null}
                 position="absolute"
                 bottom="-100%"

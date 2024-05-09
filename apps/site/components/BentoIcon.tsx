@@ -1,5 +1,5 @@
-import { YStack } from 'tamagui'
 import { forwardRef } from 'react'
+import { YStack } from 'tamagui'
 
 export const BentoIcon = forwardRef(
   ({ bright, scale = 1 }: { bright?: boolean; scale?: number }, ref) => (

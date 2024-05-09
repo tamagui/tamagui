@@ -1,7 +1,7 @@
 import { composeRefs } from '@tamagui/compose-refs'
 import type { TamaguiComponent } from '@tamagui/web'
 import { useEvent } from '@tamagui/web'
-import React, { useCallback, useEffect, useRef } from 'react'
+import { type MutableRefObject, useCallback, useEffect, useRef } from 'react'
 
 import { registerFocusable } from './registerFocusable'
 
@@ -19,7 +19,7 @@ export function useFocusable({
 }: {
   isInput?: boolean
   props: FocusableProps
-  ref?: React.MutableRefObject<any>
+  ref?: MutableRefObject<any>
 }) {
   const { id, onChangeText, value, defaultValue } = props
   const inputValue = useRef(value || defaultValue || '')

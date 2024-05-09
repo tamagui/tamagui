@@ -168,14 +168,19 @@ exports[`webpack-tests > 7. ternary + data-is 1`] = `
       }
     }
   >
-    <div
-      className="_dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _fs-0 _pr-11px _pl-11px _pb-10px _w-6637 _miw-500px _maw-3037"
+    <span
+      className=" _dsp_contents is_Theme"
       style={{}}
     >
       <div
-        className="_dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _w-10px _h-10px "
-      />
-    </div>
+        className="_dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _fs-0 _pr-11px _pl-11px _pb-10px _w-6637 _miw-500px _maw-3037"
+        style={{}}
+      >
+        <div
+          className="_dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _w-10px _h-10px "
+        />
+      </div>
+    </span>
   </span>
 </span>
 `;
@@ -195,15 +200,25 @@ exports[`webpack-tests > 8. styleExpansions 1`] = `
     <div
       className="  _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _pos-relative _t-0px _l-0px _r-0px _b-0px "
     >
-      <div
-        className="_dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _bg-red"
+      <span
+        className=" _dsp_contents is_Theme"
         style={{}}
       >
         <div
-          className="_dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _pos-relative _t-0px _l-0px _r-0px _b-0px _bg-white _col-blue"
+          className="_dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _bg-red"
           style={{}}
-        />
-      </div>
+        >
+          <span
+            className=" _dsp_contents is_Theme"
+            style={{}}
+          >
+            <div
+              className="_dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _pos-relative _t-0px _l-0px _r-0px _b-0px _bg-white _col-blue"
+              style={{}}
+            />
+          </span>
+        </div>
+      </span>
     </div>
   </span>
 </span>
@@ -247,10 +262,15 @@ exports[`webpack-tests > 10. extracts Text 1`] = `
         className="  _ff-299667014 _dsp-inline _bxs-border-box _ww-break-word _whiteSpace-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-675002279 _ussel-auto font_body "
       >
         <span
-          className="font_body _ff-299667014 _dsp-inline _bxs-border-box _ww-break-word _whiteSpace-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-00035 _fos-15px _fow-600"
+          className=" _dsp_contents is_Theme"
           style={{}}
         >
-          hello
+          <span
+            className="font_body _ff-299667014 _dsp-inline _bxs-border-box _ww-break-word _whiteSpace-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-00035 _fos-15px _fow-600"
+            style={{}}
+          >
+            hello
+          </span>
         </span>
       </span>
     </span>
@@ -289,10 +309,15 @@ exports[`webpack-tests > 14. extracts pseudo styles and evaluates constants 1`] 
       }
     }
   >
-    <div
-      className="_bg-0hover-red _bg-0active-blue _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0"
+    <span
+      className=" _dsp_contents is_Theme"
       style={{}}
-    />
+    >
+      <div
+        className="_bg-0hover-red _bg-0active-blue _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0"
+        style={{}}
+      />
+    </span>
   </span>
 </span>
 `;
@@ -331,11 +356,16 @@ exports[`webpack-tests > 16. deopt when spreading multiple 1`] = `
       }
     }
   >
-    <div
-      className="_dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-1 _fg-1 _bg-red"
-      conditional={true}
+    <span
+      className=" _dsp_contents is_Theme"
       style={{}}
-    />
+    >
+      <div
+        className="_dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-1 _fg-1 _bg-red"
+        conditional={true}
+        style={{}}
+      />
+    </span>
   </span>
 </span>
 `;

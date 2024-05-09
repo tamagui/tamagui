@@ -1,9 +1,5 @@
 import { PresenceContext, ResetPresence, usePresence } from '@tamagui/use-presence'
-import {
-  stylePropsAll,
-  type AnimationDriver,
-  type UniversalAnimatedNumber,
-} from '@tamagui/web'
+import type { AnimationDriver, UniversalAnimatedNumber } from '@tamagui/web'
 import type { MotiTransition } from 'moti'
 import { useMotify } from 'moti/author'
 import { type CSSProperties, useContext, useMemo } from 'react'
@@ -48,55 +44,26 @@ type ReanimatedAnimatedNumber = SharedValue<number>
 // const AnimatedView = createTamaguiAnimatedComponent('div')
 // const AnimatedText = createTamaguiAnimatedComponent('span')
 
-const neverAnimate: { [key in keyof TextStyle | keyof CSSProperties]?: boolean } = {
-  flexWrap: true,
-  flexFlow: true,
-  alignContent: true,
-  backfaceVisibility: true,
-  gap: true,
-  rowGap: true,
-  columnGap: true,
-  alignItems: true,
-  backdropFilter: true,
-  borderBottomStyle: true,
-  borderLeftStyle: true,
-  borderRightStyle: true,
-  borderStyle: true,
-  borderTopStyle: true,
-  boxSizing: true,
-  contain: true,
-  margin: true,
-  marginTop: true,
-  marginLeft: true,
-  marginRight: true,
-  marginBottom: true,
-  cursor: true,
-  display: true,
-  flexBasis: true,
-  flexDirection: true,
-  flexShrink: true,
-  justifyContent: true,
-  maxHeight: true,
-  maxWidth: true,
-  minHeight: true,
-  minWidth: true,
-  outlineStyle: true,
-  overflow: true,
-  overflowX: true,
-  overflowY: true,
-  pointerEvents: true,
-  position: true,
-  shadowColor: true,
-  zIndex: true,
-
-  // text
-  userSelect: true,
-  fontFamily: true,
-  lineHeight: true,
-  textAlign: true,
-  textOverflow: true,
-  whiteSpace: true,
-  wordWrap: true,
+const onlyAnimateKeys: { [key in keyof TextStyle | keyof CSSProperties]?: boolean } = {
+  transform: true,
+  opacity: true,
+  height: true,
+  width: true,
+  backgroundColor: true,
+  borderColor: true,
+  borderLeftColor: true,
+  borderRightColor: true,
+  borderTopColor: true,
+  borderBottomColor: true,
+  borderRadius: true,
+  borderTopLeftRadius: true,
+  borderTopRightRadius: true,
+  borderBottomLeftRadius: true,
+  borderBottomRightRadius: true,
+  borderLeftWidth: true,
+  borderRightWidth: true,
+  borderTopWidth: true,
+  borderBottomWidth: true,
 }
 
 export function createAnimations<A extends Record<string, MotiTransition>>(
@@ -216,8 +183,7 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
         for (const key in style) {
           const value = style[key]
           if (
-            !stylePropsAll[key] ||
-            neverAnimate[key] ||
+            !onlyAnimateKeys[key] ||
             value === 'auto' ||
             (animateOnly && !animateOnly.includes(key))
           ) {

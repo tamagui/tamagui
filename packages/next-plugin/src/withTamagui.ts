@@ -1,7 +1,7 @@
 import browserslist from 'browserslist'
 import { lazyPostCSS } from 'next/dist/build/webpack/config/blocks/css'
 import { getGlobalCssLoader } from 'next/dist/build/webpack/config/blocks/css/loaders'
-import path from 'path'
+import path from 'node:path'
 
 import { loadTamaguiBuildConfigSync } from '@tamagui/static'
 import type { PluginOptions as LoaderPluginOptions } from 'tamagui-loader'
