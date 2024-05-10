@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Button, View, XStack, YStack } from 'tamagui'
+import { Button, Text, View, XStack, YStack } from 'tamagui'
 import { useProgress } from '@tamagui/progress-headless'
 
 export function ProgressHeadlessDemo() {
@@ -18,20 +18,43 @@ export function ProgressHeadlessDemo() {
     <>
       <YStack alignItems="center" gap="$4">
         <View
-          borderColor="$gray5"
           width="$20"
           height="$4"
           borderRadius={20}
+          borderWidth={2}
+          justifyContent="center"
+          overflow="hidden"
           {...frame}
           onLayout={(e) => setWidth(e.nativeEvent.layout.width)}
         >
+          <View
+            width={35}
+            height={35}
+            borderRadius={10}
+            borderWidth={2}
+            backgroundColor="$color"
+            animation="bouncy"
+            position="absolute"
+            right={0}
+            x={indicator.x}
+            rotate={`${indicator.x}deg`}
+          />
           <View
             width="100%"
             height="100%"
             backgroundColor="$color"
             animation="bouncy"
-            {...indicator}
+            x={indicator.x - 35}
           />
+          <Text
+            themeInverse
+            animation="bouncy"
+            position="absolute"
+            right={0}
+            x={indicator.x - 8}
+          >
+            {progress}
+          </Text>
         </View>
       </YStack>
       <XStack

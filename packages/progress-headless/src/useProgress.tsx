@@ -56,7 +56,6 @@ export function useProgress(params: UseProgressParams) {
       'data-state': getProgressState(value, max),
       'data-value': value ?? undefined,
       'data-max': max,
-      overflow: 'hidden',
     } as const,
     indicator: {
       x,

@@ -15,7 +15,6 @@ export declare function useProgress(params: UseProgressParams): {
         readonly 'data-state': ProgressState;
         readonly 'data-value': number | undefined;
         readonly 'data-max': number;
-        readonly overflow: "hidden";
     };
     indicator: {
         x: number;
