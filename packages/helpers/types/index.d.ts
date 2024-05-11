@@ -6,5 +6,4 @@ export * from './types';
 export * from './shouldRenderNativePlatform';
 export * from './validStyleProps';
 export * from './withStaticProperties';
-export * from './assertions';
 //# sourceMappingURL=index.d.ts.map

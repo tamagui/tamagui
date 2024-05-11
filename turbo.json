@@ -3,8 +3,15 @@
   "extends": ["//"],
   "pipeline": {
     "build:js": {
+      "dependsOn": ["^build"],
       "cache": false,
-      "inputs": ["package.json", "src/**", "tamagui-build.js"],
+      "inputs": [
+        "tsconfig.json",
+        "package.json",
+        "src/**",
+        "tamagui-build.js",
+        "externalNodePlugin.js"
+      ],
       "outputs": ["dist/**"]
     },
     "build": {
