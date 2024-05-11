@@ -245,7 +245,7 @@ async function buildJs() {
             '.js',
             '.jsx',
           ],
-          minify: process.env.MINIFY ? true : false,
+          minify: !!process.env.MINIFY,
           define: {
             'process.env.TAMAGUI_IS_CORE_NODE': '"1"',
           },
@@ -261,7 +261,7 @@ async function buildJs() {
     bundle: shouldBundle,
     external,
     plugins: shouldBundleNodeModules ? [] : [externalPlugin],
-    minify: process.env.MINIFY ? true : false,
+    minify: !!process.env.MINIFY,
     platform: 'node',
   }
 
@@ -272,7 +272,7 @@ async function buildJs() {
     bundle: shouldBundle,
     external,
     allowOverwrite: true,
-    minify: process.env.MINIFY ? true : false,
+    minify: !!process.env.MINIFY,
   }
 
   if (pkgSource) {
@@ -379,7 +379,7 @@ async function buildJs() {
             allowOverwrite: true,
             target: 'node16',
             format: 'esm',
-            minify: process.env.MINIFY ? true : false,
+            minify: !!process.env.MINIFY,
             platform: 'neutral',
           },
           {
