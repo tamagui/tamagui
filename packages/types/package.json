@@ -10,10 +10,6 @@
       "types": "./types.ts"
     }
   },
-  "scripts": {
-    "build": "true",
-    "clean": "true"
-  },
   "publishConfig": {
     "access": "public"
   }

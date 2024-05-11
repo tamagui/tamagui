@@ -9,7 +9,6 @@
     "name": "Nate Wienert"
   },
   "scripts": {
-    "build": "true",
     "test:run": "vitest --run --config ../vite-plugin-internal/src/vite.config.ts",
     "test:web": "TAMAGUI_TARGET=web yarn test:run **/*.web.test.tsx",
     "test:native": "TAMAGUI_TARGET=native yarn test:run **/*.native.test.tsx",

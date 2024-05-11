@@ -5,10 +5,6 @@
     "tamagui-build": "tamagui-build.js",
     "teesx": "./teesx.sh"
   },
-  "scripts": {
-    "build": "true",
-    "watch": "true"
-  },
   "publishConfig": {
     "access": "public"
   },
