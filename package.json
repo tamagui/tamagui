@@ -41,7 +41,7 @@
     "lint": "yarn lint:eslint && ultra -r --no-pretty lint",
     "lint:eslint": "echo eslint && eslint '**/*.{ts,tsx}'",
     "lint:eslint:fix": "yarn lint:eslint --fix",
-    "postinstall": "npm-run-all --parallel check git-crypt-unlock build:js",
+    "postinstall": "npm-run-all --parallel check build:js",
     "release:canary": "yarn release --canary --ci",
     "release": "node -r esbuild-register ./scripts/release.ts",
     "sandbox:extract": "yarn workspace @tamagui/kitchen-sink dev:web:extract",
