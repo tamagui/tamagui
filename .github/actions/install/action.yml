@@ -1,5 +1,9 @@
 name: 'Install'
 description: 'Install and pre-build'
+inputs:
+  git_crypt_key:
+    description: 'Git crypt key for unlocking secrets'
+    required: true
 
 runs:
   using: composite
@@ -12,8 +16,8 @@ runs:
 
     - name: Unlock secrets
       uses: sliteteam/github-action-git-crypt-unlock@1.2.0
-      with:
-        GIT_CRYPT_KEY: ${{ secrets.GIT_CRYPT_KEY }}
+      env:
+        GIT_CRYPT_KEY: ${{ inputs.git_crypt_key }}
 
     - name: install yarn
       shell: bash
