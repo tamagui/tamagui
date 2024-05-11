@@ -1,8 +1,8 @@
 import entryShakingPlugin from 'vite-plugin-entry-shaking'
 import { createRequire } from 'node:module'
-import { getVitePlugins } from '@vxrn/router/vite'
+import { getVitePlugins, build, serve } from '@vxrn/router/vite'
 // import { tamaguiPlugin, tamaguiExtractPlugin } from '@tamagui/vite-plugin'
-import { mdx } from '@cyco130/vite-plugin-mdx'
+// import { mdx } from '@cyco130/vite-plugin-mdx'
 import type { VXRNConfig } from 'vxrn'
 // import inpsectPlugin from 'vite-plugin-inspect'
 
@@ -44,9 +44,13 @@ const optimizeDeps = {
 
 export default async () => {
   return {
-    // flow: {
-    //   include: ['react-native-web'],
-    // },
+    async afterBuild(options, output) {
+      await build(options, output)
+    },
+
+    serve(options, app) {
+      serve(options, app)
+    },
 
     webConfig: {
       envPrefix: 'NEXT_PUBLIC_',
