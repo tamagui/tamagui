@@ -159,7 +159,7 @@ This flow ensures it works with Vite, Webpack, Metro, Next.js with SSR, and with
 
 ## Documentation Contributions
 
-Contributions to the documentation can come in many formats such as issues, pull requests, discord discussions or blog posts. However, the primary ways of contributing being issues and pull requests. If you would like to contribute directly to the Tamagui documentation please make sure to read the [writing guide](https://github.com/tamagui/tamagui/apps/site/WRITING-GUIDE.md) before doing anything.
+Contributions to the documentation can come in many formats such as issues, pull requests, discord discussions or blog posts. However, the primary ways of contributing being issues and pull requests. If you would like to contribute directly to the Tamagui documentation please make sure to read the [writing guide](https://github.com/tamagui/tamagui/blob/master/apps/site/WRITING-GUIDE.md) before doing anything.
 
 ## Other ways to Contribute
 
