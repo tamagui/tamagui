@@ -5,9 +5,5 @@
   "publishConfig": {
     "access": "public"
   },
-  "scripts": {
-    "build": "true",
-    "watch": "true"
-  },
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14"
 }

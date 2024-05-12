@@ -1,8 +1,8 @@
 import entryShakingPlugin from 'vite-plugin-entry-shaking'
 import { createRequire } from 'node:module'
-import { getVitePlugins } from '@vxrn/router/vite'
+import { getVitePlugins, build, serve } from '@vxrn/router/vite'
 // import { tamaguiPlugin, tamaguiExtractPlugin } from '@tamagui/vite-plugin'
-import { mdx } from '@cyco130/vite-plugin-mdx'
+// import { mdx } from '@cyco130/vite-plugin-mdx'
 import type { VXRNConfig } from 'vxrn'
 // import inpsectPlugin from 'vite-plugin-inspect'
 
@@ -22,6 +22,7 @@ const optimizeDeps = {
   include: [
     ...optimizeInterop,
     'swr',
+    '@tamagui/demos',
     '@supabase/ssr',
     '@supabase/auth-helpers-react',
     '@tamagui/animations-moti',
@@ -44,9 +45,13 @@ const optimizeDeps = {
 
 export default async () => {
   return {
-    // flow: {
-    //   include: ['react-native-web'],
-    // },
+    async afterBuild(options, output) {
+      await build(options, output)
+    },
+
+    serve(options, app) {
+      serve(options, app)
+    },
 
     webConfig: {
       envPrefix: 'NEXT_PUBLIC_',
@@ -57,6 +62,7 @@ export default async () => {
           'react-native-svg': '@tamagui/react-native-svg',
         },
 
+        // todo automate, probably can just dedupe all package.json deps?
         dedupe: [
           'react',
           'react-dom',
@@ -72,18 +78,6 @@ export default async () => {
       ssr: {
         optimizeDeps,
         external: ['@tamagui/mdx'],
-        noExternal: [
-          'swr',
-          'react',
-          'react-dom',
-          'react-dom/server',
-          'react-native',
-          'expo-modules-core',
-          'react-native-gesture-handler',
-          '@react-navigation/native',
-          'expo-splash-screen',
-          'expo-constants',
-        ],
       },
 
       plugins: [
@@ -101,9 +95,9 @@ export default async () => {
 
         // hmmm breaking ssr for some reason on lucide:
         // @ts-ignore
-        entryShakingPlugin({
-          targets,
-        }),
+        // entryShakingPlugin({
+        //   targets,
+        // }),
 
         // TODO type is mad
         // tamaguiPlugin({

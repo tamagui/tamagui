@@ -13,7 +13,7 @@ import type {
 import type {
   Text as RNText,
   TextProps as ReactTextProps,
-  TextStyle,
+  TextStyle as RNTextStyle,
   View,
   ViewProps,
   ViewStyle,
@@ -578,7 +578,7 @@ type GenericTamaguiSettings = {
 export type TamaguiSettings = TamaguiConfig['settings']
 
 export type BaseStyleProps = {
-  [Key in keyof TextStylePropsBase]?: TextStyleProps[Key] | GetThemeValueForKey<Key>
+  [Key in keyof TextStylePropsBase]?: TextStyle[Key] | GetThemeValueForKey<Key>
 } & {
   [Key in keyof StackStyleBase]?: StackStyle[Key] | GetThemeValueForKey<Key>
 }
@@ -718,8 +718,8 @@ export type GenericFont<Key extends GenericFontKey = GenericFontKey> = {
   letterSpacing?: Partial<{ [key in Key]: number | Variable }>
   weight?: Partial<{ [key in Key]: number | string | Variable }>
   family?: string | Variable
-  style?: Partial<{ [key in Key]: TextStyle['fontStyle'] | Variable }>
-  transform?: Partial<{ [key in Key]: TextStyle['textTransform'] | Variable }>
+  style?: Partial<{ [key in Key]: RNTextStyle['fontStyle'] | Variable }>
+  transform?: Partial<{ [key in Key]: RNTextStyle['textTransform'] | Variable }>
   color?: Partial<{ [key in Key]: string | Variable }>
   // for native use only, lets you map to alternative fonts
   face?: Partial<{
@@ -1043,10 +1043,12 @@ export type FontWeightValues =
 export type FontWeightTokens = `$${GetTokenFontKeysFor<'weight'>}` | FontWeightValues
 export type FontColorTokens = `$${GetTokenFontKeysFor<'color'>}` | number
 export type FontLetterSpacingTokens = `$${GetTokenFontKeysFor<'letterSpacing'>}` | number
-export type FontStyleTokens = `$${GetTokenFontKeysFor<'style'>}` | TextStyle['fontStyle']
+export type FontStyleTokens =
+  | `$${GetTokenFontKeysFor<'style'>}`
+  | RNTextStyle['fontStyle']
 export type FontTransformTokens =
   | `$${GetTokenFontKeysFor<'transform'>}`
-  | TextStyle['textTransform']
+  | RNTextStyle['textTransform']
 
 export type ParseFont<A extends GenericFont> = {
   size: TokenPrefixed<A['size']>
@@ -1346,7 +1348,7 @@ export interface StackStyleBase
     OverrideNonStyledProps {}
 
 export interface TextStylePropsBase
-  extends Omit<TextStyle, keyof OverrideNonStyledProps>,
+  extends Omit<RNTextStyle, keyof OverrideNonStyledProps>,
     TransformStyleProps,
     ExtraStyleProps,
     OverrideNonStyledProps {
@@ -1464,12 +1466,12 @@ export interface TextNonStyleProps
     ExtendBaseTextProps,
     TamaguiComponentPropsBase {
   // we allow either RN or web style props, of course only web css props only works on web
-  style?: StyleProp<LooseCombinedObjects<React.CSSProperties, TextStyle>>
+  style?: StyleProp<LooseCombinedObjects<React.CSSProperties, RNTextStyle>>
 }
 
-export type TextStyleProps = WithThemeShorthandsPseudosMedia<TextStylePropsBase>
+export type TextStyle = WithThemeShorthandsPseudosMedia<TextStylePropsBase>
 
-export type TextProps = TextNonStyleProps & TextStyleProps
+export type TextProps = TextNonStyleProps & TextStyle
 
 export interface ThemeableProps {
   theme?: ThemeName | null
@@ -1647,7 +1649,7 @@ export type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, 'children'>>
 export type PropMappedValue = [string, any][] | undefined
 
 export type GetStyleState = {
-  style: TextStyleProps | null
+  style: TextStyle | null
   usedKeys: Record<string, number>
   classNames: ClassNamesObject
   staticConfig: StaticConfig
@@ -1788,13 +1790,13 @@ export type StaticConfig = StaticConfigBase & {
 }
 
 export type ViewStyleWithPseudos =
-  | TextStyleProps
-  | (TextStyleProps & {
-      hoverStyle?: TextStyleProps
-      pressStyle?: TextStyleProps
-      focusStyle?: TextStyleProps
-      focusVisibleStyle?: TextStyleProps
-      disabledStyle?: TextStyleProps
+  | TextStyle
+  | (TextStyle & {
+      hoverStyle?: TextStyle
+      pressStyle?: TextStyle
+      focusStyle?: TextStyle
+      focusVisibleStyle?: TextStyle
+      disabledStyle?: TextStyle
     })
 
 /**

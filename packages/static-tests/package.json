@@ -3,7 +3,6 @@
   "version": "1.97.1",
   "module": "dist/esm/index.js",
   "scripts": {
-    "build": "true",
     "pretest": "RUN_PRETEST=1 node -r esbuild-register ./tests/lib/preTest.js",
     "test-output": "node -r esbuild-register ./test-output.tsx",
     "test": "yarn test:native && yarn test:web && yarn test:webpack",

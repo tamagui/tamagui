@@ -1,6 +1,6 @@
 import { Data, Sections } from '@tamagui/bento'
 import { Toast, useToastState } from '@tamagui/toast'
-import { Link, useLocalSearchParams, useRouter } from '@vxrn/router'
+import { Link, useLocalSearchParams } from '@vxrn/router'
 import { Anchor, H1, SizableText, Theme, View, XStack, YStack } from 'tamagui'
 import { ContainerBento } from '~/components/Containers'
 import { BentoLogo } from '~/features/bento/BentoLogo'
@@ -23,7 +23,12 @@ export const generateStaticParams = async () => {
 
 export default function page() {
   const params = useLocalSearchParams() as { section: string; part: string }
-  const Comp = Sections[params.section][params.part]
+  console.log('got', params)
+  const Comp = Sections?.[params.section]?.[params.part]
+
+  if (!Comp) {
+    return null
+  }
 
   return (
     <>
@@ -52,9 +57,11 @@ export default function page() {
 
 export const DetailHeader = (props: { children: string }) => {
   const params = useLocalSearchParams() as { section: string; part: string }
-  const category = (typeof params.section === 'string' ? params.section : params.section?.[0]) || ''
+  const category =
+    (typeof params.section === 'string' ? params.section : params.section?.[0]) || ''
 
-  const subCategory = (typeof params.part === 'string' ? params.part : params.part?.[0]) || ''
+  const subCategory =
+    (typeof params.part === 'string' ? params.part : params.part?.[0]) || ''
 
   return (
     <YStack gap="$4" $sm={{ px: '$4' }} pb="$11">
@@ -130,7 +137,9 @@ const CurrentToast = () => {
     >
       <YStack>
         <Toast.Title>{currentToast.title}</Toast.Title>
-        {!!currentToast.message && <Toast.Description>{currentToast.message}</Toast.Description>}
+        {!!currentToast.message && (
+          <Toast.Description>{currentToast.message}</Toast.Description>
+        )}
       </YStack>
     </Toast>
   )

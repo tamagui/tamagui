@@ -6,7 +6,6 @@
   "private": true,
   "module": "dist/esm",
   "scripts": {
-    "build": "true",
     "test": "TAMAGUI_TARGET=web vitest --config ../vite-plugin-internal/src/vite.config.ts --run"
   },
   "devDependencies": {

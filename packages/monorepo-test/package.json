@@ -9,7 +9,6 @@
     "name": "Nate Wienert"
   },
   "scripts": {
-    "build": "true",
     "test": "vitest --run --config ../vite-plugin-internal/src/vite.config.ts"
   },
   "devDependencies": {
