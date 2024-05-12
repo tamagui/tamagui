@@ -3,6 +3,7 @@
   "version": "1.97.1",
   "main": "dist/cjs",
   "module": "dist/esm",
+  "types": "./types/index.d.ts",
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",

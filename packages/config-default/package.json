@@ -15,6 +15,7 @@
     "dist"
   ],
   "dependencies": {
+    "@tamagui/animations-css": "1.97.1",
     "@tamagui/core": "1.97.1",
     "@tamagui/shorthands": "1.97.1"
   },

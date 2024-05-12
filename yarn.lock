@@ -6460,6 +6460,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/config-default@workspace:packages/config-default"
   dependencies:
+    "@tamagui/animations-css": "npm:1.97.1"
     "@tamagui/build": "npm:1.97.1"
     "@tamagui/core": "npm:1.97.1"
     "@tamagui/shorthands": "npm:1.97.1"
@@ -6840,6 +6841,7 @@ __metadata:
   dependencies:
     "@tamagui/build": "npm:1.97.1"
     "@tamagui/create-theme": "npm:1.97.1"
+    "@tamagui/theme-builder": "npm:1.97.1"
     "@tamagui/types": "npm:1.97.1"
     esbuild-register: "npm:^3.5.0"
     fs-extra: "npm:^11.2.0"

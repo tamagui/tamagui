@@ -30,6 +30,7 @@
   },
   "dependencies": {
     "@tamagui/create-theme": "1.97.1",
+    "@tamagui/theme-builder": "1.97.1",
     "@tamagui/types": "1.97.1",
     "esbuild-register": "^3.5.0",
     "fs-extra": "^11.2.0"
