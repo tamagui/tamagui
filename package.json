@@ -13,7 +13,7 @@
   "scripts": {
     "postinstall": "./scripts/git-crypt-unlock.sh",
     "build:force": "yarn clean:build && yarn build --force",
-    "build:js": "turbo run build:js -- --skip-types",
+    "build:js": "turbo run build --no-cache --force -- --skip-types",
     "build:types": "SKIP_JS=1 yarn build",
     "build": "turbo run build --filter=!next-app",
     "build:verbose": "yarn build -vvv",
