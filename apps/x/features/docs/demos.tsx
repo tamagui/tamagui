@@ -252,13 +252,15 @@ export const RadioGroupDemo = lazyDemo(
 )
 export const RadioGroupHeadlessDemo = lazyDemo(
   // @ts-ignore
-  import('@tamagui/demos/demo/RadioGroupHeadlessDemo').then(
-    (x) => x.RadioGroupHeadlessDemo
-  )
+  () =>
+    import('@tamagui/demos/demo/RadioGroupHeadlessDemo').then(
+      (x) => x.RadioGroupHeadlessDemo
+    )
 )
 export const RadioGroupUnstyledDemo = lazyDemo(
   // @ts-ignore
-  import('@tamagui/demos/demo/RadioGroupUnstyledDemo').then(
-    (x) => x.RadioGroupUnstyledDemo
-  )
+  () =>
+    import('@tamagui/demos/demo/RadioGroupUnstyledDemo').then(
+      (x) => x.RadioGroupUnstyledDemo
+    )
 )

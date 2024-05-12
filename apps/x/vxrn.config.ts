@@ -22,6 +22,7 @@ const optimizeDeps = {
   include: [
     ...optimizeInterop,
     'swr',
+    '@tamagui/demos',
     '@supabase/ssr',
     '@supabase/auth-helpers-react',
     '@tamagui/animations-moti',
