@@ -357,7 +357,7 @@ async function buildJs() {
             allowOverwrite: true,
             target: 'esnext',
             format: 'esm',
-            minify: process.env.MINIFY ? true : false,
+            minify: !!process.env.MINIFY,
             platform: 'neutral',
           },
           {
@@ -610,7 +610,7 @@ async function esbuildWriteIfChanged(
                 configFile: false,
                 plugins: [
                   [
-                    require.resolve('babel-plugin-fully-specified'),
+                    require.resolve('@tamagui/babel-plugin-fully-specified'),
                     {
                       ensureFileExists: true,
                       esExtensionDefault: '.mjs',

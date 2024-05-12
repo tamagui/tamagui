@@ -6129,6 +6129,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/babel-plugin-fully-specified@npm:1.97.1, @tamagui/babel-plugin-fully-specified@workspace:packages/babel-plugin-fully-specified":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/babel-plugin-fully-specified@workspace:packages/babel-plugin-fully-specified"
+  dependencies:
+    "@babel/core": "npm:^7.23.3"
+    "@babel/types": "npm:^7.23.3"
+    "@tamagui/build": "npm:1.97.1"
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/babel-plugin@npm:1.97.1, @tamagui/babel-plugin@workspace:packages/babel-plugin":
   version: 0.0.0-use.local
   resolution: "@tamagui/babel-plugin@workspace:packages/babel-plugin"
@@ -6200,6 +6210,7 @@ __metadata:
   resolution: "@tamagui/build@workspace:packages/build"
   dependencies:
     "@babel/core": "npm:^7.23.3"
+    "@tamagui/babel-plugin-fully-specified": "npm:1.97.1"
     "@types/fs-extra": "npm:^9.0.13"
     babel-plugin-fully-specified: "npm:*"
     chokidar: "npm:^3.5.2"
