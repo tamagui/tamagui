@@ -612,7 +612,7 @@ async function esbuildWriteIfChanged(
                       require.resolve('babel-plugin-fully-specified'),
                       {
                         // this doesnt work because the files dont exist as you build in random orders
-                        // ensureFileExists: true,
+                        ensureFileExists: false,
                         esExtensionDefault: '.mjs',
                         tryExtensions: ['.mjs', '.js'],
                         esExtensions: ['.mjs', '.js'],
