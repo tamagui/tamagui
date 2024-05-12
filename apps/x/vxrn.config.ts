@@ -61,6 +61,7 @@ export default async () => {
           'react-native-svg': '@tamagui/react-native-svg',
         },
 
+        // todo automate, probably can just dedupe all package.json deps?
         dedupe: [
           'react',
           'react-dom',
@@ -76,18 +77,6 @@ export default async () => {
       ssr: {
         optimizeDeps,
         external: ['@tamagui/mdx'],
-        noExternal: [
-          'swr',
-          'react',
-          'react-dom',
-          'react-dom/server',
-          'react-native',
-          'expo-modules-core',
-          'react-native-gesture-handler',
-          '@react-navigation/native',
-          'expo-splash-screen',
-          'expo-constants',
-        ],
       },
 
       plugins: [
