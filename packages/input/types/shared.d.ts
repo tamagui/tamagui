@@ -155,6 +155,8 @@ export declare const styledBody: ({
         outlineOffset?: boolean | undefined;
         outlineWidth?: boolean | undefined;
         touchAction?: boolean | undefined;
+        objectFit?: boolean | undefined;
+        objectPosition?: boolean | undefined;
         animationIterationCount: boolean;
         aspectRatio: boolean;
         borderImageOutset: boolean;
