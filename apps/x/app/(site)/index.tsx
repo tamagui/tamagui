@@ -24,6 +24,11 @@ export async function loader() {
 export default function TamaguiHomePage() {
   const { compilationExamples } = useLoader(loader)
 
+  if (!compilationExamples) {
+    console.warn('??')
+    return null
+  }
+
   return (
     <>
       <ThemeNameEffect colorKey="$color2" />
