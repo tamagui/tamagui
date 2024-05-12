@@ -95,9 +95,9 @@ export default async () => {
 
         // hmmm breaking ssr for some reason on lucide:
         // @ts-ignore
-        entryShakingPlugin({
-          targets,
-        }),
+        // entryShakingPlugin({
+        //   targets,
+        // }),
 
         // TODO type is mad
         // tamaguiPlugin({
