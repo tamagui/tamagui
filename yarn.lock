@@ -8383,9 +8383,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/webnative-image@workspace:packages/webnative-image"
   dependencies:
-    "@tamagui/build": "npm:1.96.0"
-    "@tamagui/constants": "npm:1.96.0"
-    "@tamagui/core": "npm:1.96.0"
+    "@tamagui/build": "npm:1.97.1"
+    "@tamagui/constants": "npm:1.97.1"
+    "@tamagui/core": "npm:1.97.1"
     react: "npm:^18.2.0"
     react-native: "npm:^0.73.4"
   peerDependencies:
