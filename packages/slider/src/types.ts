@@ -61,7 +61,7 @@ export interface SliderVerticalProps extends SliderOrientationProps {
 
 export interface SliderProps
   extends Omit<
-      SliderHorizontalProps | SliderVerticalProps,
+      SliderHorizontalProps,
       keyof SliderOrientationPrivateProps | 'defaultValue'
     >,
     SliderEventProps {

@@ -1,3 +1,5 @@
+import { webPropsToSkip } from './webPropsToSkip'
+
 /**
  * These are props that dont pass down below Tamagui styled components
  */
@@ -23,21 +25,7 @@ if (process.env.NODE_ENV === 'test') {
 
 // native only skips
 if (process.env.TAMAGUI_TARGET === 'native') {
-  Object.assign(skipProps, {
-    whiteSpace: 1,
-    wordWrap: 1,
-    textOverflow: 1,
-    textDecorationDistance: 1,
-    cursor: 1,
-    contain: 1,
-    boxSizing: 1,
-    boxShadow: 1,
-    outlineStyle: 1,
-    outlineOffset: 1,
-    outlineWidth: 1,
-    outlineColor: 1,
-    scrollbarWidth: 1,
-  })
+  Object.assign(skipProps, webPropsToSkip)
 } else {
   if (process.env.NODE_ENV !== 'production') {
     // native only, not web props

@@ -189,7 +189,9 @@ declare const SliderThumb: React.MemoExoticComponent<import("@tamagui/core").Tam
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
 }, import("@tamagui/core").StaticConfigPublic>>;
-declare const Slider: React.ForwardRefExoticComponent<SliderProps & React.RefAttributes<TamaguiElement>> & {
+declare const Slider: React.ForwardRefExoticComponent<SliderProps & {
+    __scopeSlider?: import("@tamagui/create-context").Scope;
+} & React.RefAttributes<unknown>> & {
     Track: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "size" | "fullscreen" | "circular" | "inset" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "unstyled"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
         size?: SizeTokens | undefined;
         elevation?: number | SizeTokens | undefined;

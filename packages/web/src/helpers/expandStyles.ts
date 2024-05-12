@@ -38,4 +38,5 @@ const borderDefaults = {
   borderTopWidth: nativeStyle || 'borderTopStyle',
   borderLeftWidth: nativeStyle || 'borderLeftStyle',
   borderRightWidth: nativeStyle || 'borderRightStyle',
+  // TODO: need to add borderBlock and borderInline here, but they are alot and might impact performance
 }

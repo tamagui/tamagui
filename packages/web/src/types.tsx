@@ -1273,6 +1273,7 @@ interface ExtraStyleProps {
    * Web-only style property. Will be omitted on native.
    */
   outlineWidth?: SpaceValue
+
   /**
    * Web-only style property. Will be omitted on native.
    */
@@ -1328,6 +1329,203 @@ interface ExtraStyleProps {
     | 'bottom'
     | TwoValueTransformOrigin
     | `${TwoValueTransformOrigin} ${Px}`
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  filter?: Properties['filter']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  backdropFilter?: Properties['backdropFilter']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  mixBlendMode?: Properties['mixBlendMode']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  backgroundImage?: Properties['backgroundImage']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  backgroundOrigin?: Properties['backgroundOrigin']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  backgroundPosition?: Properties['backgroundPosition']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  backgroundRepeat?: Properties['backgroundRepeat']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  backgroundSize?: Properties['backgroundSize']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  backgroundColor?: Properties['backgroundColor']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  backgroundClip?: Properties['backgroundClip']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  backgroundBlendMode?: Properties['backgroundBlendMode']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  backgroundAttachment?: Properties['backgroundAttachment']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  background?: Properties['background']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  clipPath?: Properties['clipPath']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  caretColor?: Properties['caretColor']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  transformStyle?: Properties['transformStyle']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  mask?: Properties['mask']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  maskImage?: Properties['maskImage']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  textEmphasis?: Properties['textEmphasis']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  borderImage?: Properties['borderImage']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  float?: Properties['float']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  content?: Properties['content']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  overflowBlock?: Properties['overflowBlock']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  overflowInline?: Properties['overflowInline']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  maskBorder?: Properties['maskBorder']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  maskBorderMode?: Properties['maskBorderMode']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  maskBorderOutset?: Properties['maskBorderOutset']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  maskBorderRepeat?: Properties['maskBorderRepeat']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  maskBorderSlice?: Properties['maskBorderSlice']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  maskBorderSource?: Properties['maskBorderSource']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  maskBorderWidth?: Properties['maskBorderWidth']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  maskClip?: Properties['maskClip']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  maskComposite?: Properties['maskComposite']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  maskMode?: Properties['maskMode']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  maskOrigin?: Properties['maskOrigin']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  maskPosition?: Properties['maskPosition']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  maskRepeat?: Properties['maskRepeat']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  maskSize?: Properties['maskSize']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  maskType?: Properties['maskType']
+  borderInlineColor?: ColorTokens
+  borderInlineStartColor?: ColorTokens
+  borderInlineEndColor?: ColorTokens
+  borderBlockWidth?: SpaceTokens | number
+  borderBlockStartWidth?: SpaceTokens | number
+  borderBlockEndWidth?: SpaceTokens | number
+  borderInlineWidth?: SpaceTokens | number
+  borderInlineStartWidth?: SpaceTokens | number
+  borderInlineEndWidth?: SpaceTokens | number
+  borderBlockStyle?: ViewStyle['borderStyle']
+  borderBlockStartStyle?: ViewStyle['borderStyle']
+  borderBlockEndStyle?: ViewStyle['borderStyle']
+  borderInlineStyle?: ViewStyle['borderStyle']
+  borderInlineStartStyle?: ViewStyle['borderStyle']
+  borderInlineEndStyle?: ViewStyle['borderStyle']
+  marginBlock?: SpaceTokens | number
+  marginBlockStart?: SpaceTokens | number
+  marginBlockEnd?: SpaceTokens | number
+  marginInline?: SpaceTokens | number
+  marginInlineStart?: SpaceTokens | number
+  marginInlineEnd?: SpaceTokens | number
+  paddingBlock?: SpaceTokens | number
+  paddingBlockStart?: SpaceTokens | number
+  paddingBlockEnd?: SpaceTokens | number
+  paddingInline?: SpaceTokens | number
+  paddingInlineStart?: SpaceTokens | number
+  paddingInlineEnd?: SpaceTokens | number
+  objectFit?: Properties['objectFit']
+  verticalAlign?: Properties['verticalAlign']
+  insetBlock?: SpaceTokens | number
+  insetBlockStart?: SpaceTokens | number
+  insetBlockEnd?: SpaceTokens | number
+  insetInline?: SpaceTokens | number
+  insetInlineStart?: SpaceTokens | number
+  insetInlineEnd?: SpaceTokens | number
+  blockSize?: SizeTokens | number
+  minBlockSize?: SizeTokens | number
+  maxBlockSize?: SizeTokens | number
+  inlineSize?: SizeTokens | number
+  minInlineSize?: SizeTokens | number
+  maxInlineSize?: SizeTokens | number
 }
 
 export interface ExtendBaseStackProps {}
@@ -1357,6 +1555,8 @@ export interface TextStylePropsBase
   textOverflow?: Properties['textOverflow']
   whiteSpace?: Properties['whiteSpace']
   wordWrap?: Properties['wordWrap']
+  /** @deprecated use verticalAlign instead */
+  textAlignVertical?: RNTextStyle['textAlignVertical']
 }
 
 //
@@ -1467,6 +1667,8 @@ export interface TextNonStyleProps
     TamaguiComponentPropsBase {
   // we allow either RN or web style props, of course only web css props only works on web
   style?: StyleProp<LooseCombinedObjects<React.CSSProperties, RNTextStyle>>
+  /** @deprecated use userSelect instead */
+  selectable?: boolean
 }
 
 export type TextStyle = WithThemeShorthandsPseudosMedia<TextStylePropsBase>
