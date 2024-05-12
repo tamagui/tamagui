@@ -11,6 +11,7 @@
   ],
   "packageManager": "yarn@4.1.0",
   "scripts": {
+    "postinstall": "./scripts/git-crypt-unlock.sh",
     "build:force": "yarn clean:build && yarn build --force",
     "build:js": "turbo run build:js -- --skip-types",
     "build:types": "SKIP_JS=1 yarn build",
