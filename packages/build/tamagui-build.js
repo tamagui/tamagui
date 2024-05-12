@@ -594,41 +594,40 @@ async function esbuildWriteIfChanged(
         }
       }
 
-      await Promise.all([
-        flush(outString, outPath),
-        (async () => {
-          const shouldDoMJS = !shouldSkipMJS && isESM && mjs && outPath.endsWith('.js')
-          if (shouldDoMJS) {
-            const mjsOutPath = outPath.replace('.js', '.mjs')
-            // if bundling no need to specify as its all internal
-            // and babel is bad on huge bundled files
-            const output = shouldBundle
-              ? outString
-              : transform(outString, {
-                  filename: mjsOutPath,
-                  configFile: false,
-                  plugins: [
-                    [
-                      require.resolve('babel-plugin-fully-specified'),
-                      {
-                        // this doesnt work because the files dont exist as you build in random orders
-                        ensureFileExists: false,
-                        esExtensionDefault: '.mjs',
-                        tryExtensions: ['.mjs', '.js'],
-                        esExtensions: ['.mjs', '.js'],
-                      },
-                    ],
-                    // pkg.tamagui?.build?.skipEnvToMeta
-                    //   ? null
-                    //   : require.resolve('./babel-plugin-process-env-to-meta'),
-                  ].filter(Boolean),
-                }).code
+      // flush before fully specified so it finds the file
+      await flush(outString, outPath)
 
-            // output to mjs fully specified
-            await flush(output, mjsOutPath)
-          }
-        })(),
-      ])
+      await (async () => {
+        const shouldDoMJS = !shouldSkipMJS && isESM && mjs && outPath.endsWith('.js')
+        if (shouldDoMJS) {
+          const mjsOutPath = outPath.replace('.js', '.mjs')
+          // if bundling no need to specify as its all internal
+          // and babel is bad on huge bundled files
+          const output = shouldBundle
+            ? outString
+            : transform(outString, {
+                filename: mjsOutPath,
+                configFile: false,
+                plugins: [
+                  [
+                    require.resolve('babel-plugin-fully-specified'),
+                    {
+                      ensureFileExists: true,
+                      esExtensionDefault: '.mjs',
+                      tryExtensions: ['.mjs', '.js'],
+                      esExtensions: ['.mjs', '.js'],
+                    },
+                  ],
+                  // pkg.tamagui?.build?.skipEnvToMeta
+                  //   ? null
+                  //   : require.resolve('./babel-plugin-process-env-to-meta'),
+                ].filter(Boolean),
+              }).code
+
+          // output to mjs fully specified
+          await flush(output, mjsOutPath)
+        }
+      })()
     })
   )
 }
