@@ -7327,12 +7327,6 @@ __metadata:
   resolution: "@tamagui/progress-headless@workspace:packages/progress-headless"
   dependencies:
     "@tamagui/build": "npm:1.97.1"
-    "@tamagui/compose-refs": "npm:1.97.1"
-    "@tamagui/core": "npm:1.97.1"
-    "@tamagui/create-context": "npm:1.97.1"
-    "@tamagui/get-token": "npm:1.97.1"
-    "@tamagui/helpers": "npm:1.97.1"
-    "@tamagui/stacks": "npm:1.97.1"
     react: "npm:^18.2.0"
     react-native: "npm:^0.73.4"
   peerDependencies:
