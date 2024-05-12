@@ -3,7 +3,7 @@
 // import type { DocSearchModalProps } from '@docsearch/react'
 // import { DocSearchModal } from '@docsearch/react'
 // TODO
-// import { Head } from '@vxrn/router'
+// import { Head } from 'vxs'
 
 type DocSearchModalProps = any
 

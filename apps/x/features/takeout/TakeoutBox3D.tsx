@@ -1,7 +1,7 @@
 import { useGLTF } from '@react-three/drei'
 import type { Object3DNode } from '@react-three/fiber'
 import { Canvas, useFrame } from '@react-three/fiber'
-import { useRouter } from '@vxrn/router'
+import { useRouter } from 'vxs'
 import { Suspense, useEffect, useRef } from 'react'
 import { useMedia } from 'tamagui'
 import { Stage } from './Stage'

@@ -1,5 +1,5 @@
 import { ToastViewport } from '@tamagui/toast'
-import { Head, Slot, usePathname } from '@vxrn/router'
+import { Head, Slot, usePathname } from 'vxs'
 import { Header } from '~/features/site/header/Header'
 import { Footer } from '~/features/site/Footer'
 

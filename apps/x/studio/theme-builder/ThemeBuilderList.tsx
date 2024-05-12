@@ -26,7 +26,7 @@ import {
 
 // TODO make layout
 
-import { Slot, useRouter } from '@vxrn/router'
+import { Slot, useRouter } from 'vxs'
 import { defaultThemeSuiteItem } from './constants/defaultThemeSuiteItem'
 import { ModalTitle, ThemeBuilderModalFrame } from './ThemeBuilderModalFrame'
 import { themeBuilderStore, useThemeBuilderStore } from './ThemeBuilderStore'

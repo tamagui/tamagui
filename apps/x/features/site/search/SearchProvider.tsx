@@ -1,5 +1,5 @@
 import { Link } from '~/components/Link'
-import { router } from '@vxrn/router'
+import { router } from 'vxs'
 import { memo, useCallback, useEffect, useMemo, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { lazy } from 'react'

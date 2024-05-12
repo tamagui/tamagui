@@ -16,7 +16,7 @@ import {
   isTouchable,
 } from 'tamagui'
 
-import { usePathname } from '@vxrn/router'
+import { usePathname } from 'vxs'
 import { useUser } from '~/features/user/useUser'
 import { DocsMenuContents } from '~/features/docs/DocsMenuContents'
 import { HeaderLinks } from './HeaderLinks'

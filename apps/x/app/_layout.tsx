@@ -1,4 +1,4 @@
-import { Slot, Stack } from '@vxrn/router'
+import { Slot, Stack } from 'vxs'
 import { isWeb } from 'tamagui'
 import { Providers } from '../src/Providers'
 

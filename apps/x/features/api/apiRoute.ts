@@ -1,4 +1,4 @@
-import type { Endpoint } from '@vxrn/router'
+import type { Endpoint } from 'vxs'
 import type { PostgrestError } from '@supabase/supabase-js'
 
 export function apiRoute(handler: Endpoint) {

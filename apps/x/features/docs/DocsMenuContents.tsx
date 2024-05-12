@@ -4,7 +4,7 @@ import * as React from 'react'
 import { Input, Paragraph, Separator, Spacer, Theme, XStack, YStack } from 'tamagui'
 import { docsRoutes } from './docsRoutes'
 
-import { usePathname, router } from '@vxrn/router'
+import { usePathname, router } from 'vxs'
 import { DocsNavHeading } from './DocsNavHeading'
 import { DocsItemsStore, DocsRouteNavItem } from './DocsRouteNavItem'
 import { useDocsMenu } from './useDocsMenu'

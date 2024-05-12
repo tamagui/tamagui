@@ -21,7 +21,7 @@ import { StudioThemeBuilderActionBar } from './StudioThemeBuilderActionBar'
 import { ThemeBuilderModalFrame } from './ThemeBuilderModalFrame'
 import { themeBuilderStore, useThemeBuilderStore } from './ThemeBuilderStore'
 import { StudioPreviewFrame } from './views/StudioPreviewFrame'
-import { useRouter } from '@vxrn/router'
+import { useRouter } from 'vxs'
 
 export const StudioThemeBuilderWithParams = () => (
   <StudioThemeBuilder {...(useParams() as any)} />

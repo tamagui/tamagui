@@ -1,4 +1,4 @@
-import { Link as RouterLink } from '@vxrn/router'
+import { Link as RouterLink } from 'vxs'
 import type { GestureResponderEvent, ViewProps } from 'react-native'
 import { Paragraph } from 'tamagui'
 

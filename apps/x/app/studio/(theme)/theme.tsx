@@ -1,5 +1,5 @@
 import { ChevronLeft, ChevronRight } from '@tamagui/lucide-icons'
-import { router } from '@vxrn/router'
+import { router } from 'vxs'
 import { memo, useEffect, useLayoutEffect, useMemo } from 'react'
 import { useHotkeys } from 'react-hotkeys-hook'
 import {

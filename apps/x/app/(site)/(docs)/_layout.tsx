@@ -9,7 +9,7 @@ import { Container } from '~/components/Containers'
 import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
 import { DocsMenuContents } from '~/features/docs/DocsMenuContents'
 import { useDocsMenu } from '~/features/docs/useDocsMenu'
-import { Slot } from '@vxrn/router'
+import { Slot } from 'vxs'
 import type { ReactNode } from 'react'
 import { useMemo } from 'react'
 

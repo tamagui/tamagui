@@ -1,5 +1,5 @@
 import { getAllFrontmatter } from '@tamagui/mdx'
-import { useLoader } from '@vxrn/router'
+import { useLoader } from 'vxs'
 import { H2, Paragraph, Spacer, XStack } from 'tamagui'
 
 import { ContainerLarge } from '~/components/Containers'

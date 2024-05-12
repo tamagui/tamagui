@@ -33,7 +33,7 @@ import {
   ToggleRight,
 } from '@tamagui/lucide-icons'
 import { useStore } from '@tamagui/use-store'
-import { useLoader } from '@vxrn/router'
+import { useLoader } from 'vxs'
 import { useMemo, useRef, useState } from 'react'
 import {
   Button,

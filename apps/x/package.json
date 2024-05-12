@@ -22,7 +22,6 @@
     "@tamagui/assert": "1.97.1",
     "@tamagui/mdx": "1.97.1",
     "@tamagui/site-config": "1.97.1",
-    "@vxrn/router": "^0.1.53",
     "color2k": "^2.0.2",
     "multithreading": "0.2.1",
     "postmark": "^3.0.18",
@@ -33,7 +32,8 @@
     "stripe": "^9.1.0",
     "tamagui": "1.97.1",
     "vite-plugin-inspect": "^0.8.4",
-    "vite-tsconfig-paths": "^4.3.2"
+    "vite-tsconfig-paths": "^4.3.2",
+    "vxs": "^0.1.53"
   },
   "devDependencies": {
     "@cyco130/vite-plugin-mdx": "1.0.4",

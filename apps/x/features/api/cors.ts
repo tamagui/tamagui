@@ -1,4 +1,4 @@
-import { setCurrentRequestHeaders } from '@vxrn/router/headers'
+import { setCurrentRequestHeaders } from 'vxs/headers'
 
 export const setupCors = (req: Request) => {
   const origin = req.headers.get('origin')

@@ -1,6 +1,6 @@
 import { type CookieOptions, createServerClient } from '@supabase/ssr'
 import { createPagesServerClient } from '@supabase/auth-helpers-nextjs'
-import type { Endpoint } from '@vxrn/router'
+import type { Endpoint } from 'vxs'
 import { getCookie, setCookie } from '~/features/api/cookies'
 
 export const GET: Endpoint = async (req) => {

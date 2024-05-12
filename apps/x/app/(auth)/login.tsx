@@ -10,7 +10,7 @@ import { SupabaseProvider } from '~/features/supabase/SupabaseProvider'
 import { Notice } from '~/components/Notice'
 import { GithubIcon } from '~/features/icons/GithubIcon'
 import { useForwardToDashboard } from '~/features/user/useForwardToDashboard'
-import { usePathname, useRouter } from '@vxrn/router'
+import { usePathname, useRouter } from 'vxs'
 
 const isProd = process.env.NODE_ENV === 'production'
 const emailAuthDisabledFlag = isProd

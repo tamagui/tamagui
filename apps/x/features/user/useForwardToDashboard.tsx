@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 
 import { useUser } from '../user/useUser'
-import { useGlobalSearchParams, useRouter } from '@vxrn/router'
+import { useGlobalSearchParams, useRouter } from 'vxs'
 
 const ALLOWED_REDIRECT_DOMAINS = ['tamagui.dev']
 

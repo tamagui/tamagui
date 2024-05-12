@@ -1,6 +1,6 @@
 import entryShakingPlugin from 'vite-plugin-entry-shaking'
 import { createRequire } from 'node:module'
-import { getVitePlugins, build, serve } from '@vxrn/router/vite'
+import { getVitePlugins, build, serve } from 'vxs/vite'
 // import { tamaguiPlugin, tamaguiExtractPlugin } from '@tamagui/vite-plugin'
 // import { mdx } from '@cyco130/vite-plugin-mdx'
 import type { VXRNConfig } from 'vxrn'

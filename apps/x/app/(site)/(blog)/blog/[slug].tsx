@@ -1,6 +1,6 @@
 import { getAllFrontmatter, getCompilationExamples, getMDXBySlug } from '@tamagui/mdx'
-import type { LoaderProps } from '@vxrn/router'
-import { useLoader } from '@vxrn/router'
+import type { LoaderProps } from 'vxs'
+import { useLoader } from 'vxs'
 import { getMDXComponent } from 'mdx-bundler/client'
 import React from 'react'
 import { components } from '~/features/mdx/MDXComponents'

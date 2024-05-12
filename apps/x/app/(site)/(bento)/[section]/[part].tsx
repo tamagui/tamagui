@@ -1,6 +1,6 @@
 import { Data, Sections } from '@tamagui/bento'
 import { Toast, useToastState } from '@tamagui/toast'
-import { Link, useLocalSearchParams } from '@vxrn/router'
+import { Link, useLocalSearchParams } from 'vxs'
 import { Anchor, H1, SizableText, Theme, View, XStack, YStack } from 'tamagui'
 import { ContainerBento } from '~/components/Containers'
 import { BentoLogo } from '~/features/bento/BentoLogo'

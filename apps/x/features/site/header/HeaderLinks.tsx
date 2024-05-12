@@ -15,7 +15,7 @@ import {
   styled,
 } from 'tamagui'
 import { useUser } from '~/features/user/useUser'
-import { usePathname } from '@vxrn/router'
+import { usePathname } from 'vxs'
 
 import { createShallowSetState, useComposedRefs } from '@tamagui/core'
 import { ThemeTintAlt } from '@tamagui/logo'

@@ -1,4 +1,4 @@
-import { useRouter } from '@vxrn/router'
+import { useRouter } from 'vxs'
 import { useEffect } from 'react'
 import useSWR from 'swr'
 import { Spinner, YStack } from 'tamagui'

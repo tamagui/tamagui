@@ -1,5 +1,5 @@
 import { createServerClient } from '@supabase/ssr'
-import { setCurrentRequestHeaders } from '@vxrn/router/headers'
+import { setCurrentRequestHeaders } from 'vxs/headers'
 import type { Database } from '../supabase/types'
 import { getCookie, setCookie } from './cookies'
 import { setupCors } from './cors'

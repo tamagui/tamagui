@@ -1,6 +1,6 @@
 import { ThemeTint } from '@tamagui/logo'
 import { getCompilationExamples } from '@tamagui/mdx'
-import { useLoader } from '@vxrn/router'
+import { useLoader } from 'vxs'
 import { YStack } from 'tamagui'
 import { HomeAnimations } from '~/features/site/home/HomeAnimations'
 import { HomeCommunity } from '~/features/site/home/HomeCommunity'

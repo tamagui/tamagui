@@ -1,4 +1,4 @@
-import { Slot } from '@vxrn/router'
+import { Slot } from 'vxs'
 
 export default function Layout() {
   return <Slot />

@@ -1,5 +1,5 @@
 import { useStore, useStoreSelector } from '@tamagui/use-store'
-import { useLocalSearchParams, useRouter } from '@vxrn/router'
+import { useLocalSearchParams, useRouter } from 'vxs'
 import { forwardRef } from 'react'
 import type { TabsProps, TabsTabProps } from 'tamagui'
 import { Paragraph, Tabs, XStack, styled, withStaticProperties } from 'tamagui'

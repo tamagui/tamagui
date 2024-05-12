@@ -1,7 +1,7 @@
 import { useTint } from '@tamagui/logo'
 import { ArrowLeft } from '@tamagui/lucide-icons'
 import type { Frontmatter } from '@tamagui/mdx'
-import { usePathname } from '@vxrn/router'
+import { usePathname } from 'vxs'
 import {
   Button,
   H1,

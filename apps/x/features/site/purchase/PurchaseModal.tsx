@@ -1,7 +1,7 @@
 import { ThemeTintAlt } from '@tamagui/logo'
 import { Check, X } from '@tamagui/lucide-icons'
 import { Link } from '~/components/Link'
-import { usePathname, useRouter } from '@vxrn/router'
+import { usePathname, useRouter } from 'vxs'
 import { useMemo, useState } from 'react'
 import type { TabsProps } from 'tamagui'
 import {

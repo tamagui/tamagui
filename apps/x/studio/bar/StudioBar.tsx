@@ -16,7 +16,7 @@ import { topBarHeight } from '~/src/constants'
 import { useRootStore } from '../state/useGlobalState'
 import { BarTabs } from './Tabs'
 import { useThemeBuilderStore } from '../theme-builder/ThemeBuilderStore'
-import { usePathname, useRouter } from '@vxrn/router'
+import { usePathname, useRouter } from 'vxs'
 
 export const StudioBar = memo(function Header() {
   const themeBuilderStore = useThemeBuilderStore()

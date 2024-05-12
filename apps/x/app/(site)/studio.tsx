@@ -1,7 +1,7 @@
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 // TODO
 // import { useThemeSetting } from '@tamagui/next-theme'
-import { Link } from '@vxrn/router'
+import { Link } from 'vxs'
 import { memo } from 'react'
 import type { HeadingProps } from 'tamagui'
 import {

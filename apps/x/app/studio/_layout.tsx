@@ -1,4 +1,4 @@
-import { Slot, usePathname } from '@vxrn/router'
+import { Slot, usePathname } from 'vxs'
 import { memo } from 'react'
 import {
   Dialog,
