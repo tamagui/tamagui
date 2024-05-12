@@ -6135,7 +6135,6 @@ __metadata:
   dependencies:
     "@babel/core": "npm:^7.23.3"
     "@babel/types": "npm:^7.23.3"
-    "@tamagui/build": "npm:1.97.1"
   languageName: unknown
   linkType: soft
 
