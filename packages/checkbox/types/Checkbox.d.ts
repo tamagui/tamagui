@@ -1,9 +1,9 @@
 export declare const CheckboxIndicatorFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-    unstyled?: boolean | undefined;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+    circular?: boolean | undefined;
+    unstyled?: boolean | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
-    circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
         top?: number | undefined;
         bottom?: number | undefined;
@@ -22,12 +22,12 @@ export declare const CheckboxIndicatorFrame: import("@tamagui/core").TamaguiComp
 }, import("@tamagui/core").StaticConfigPublic>;
 export declare const CheckboxFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     size?: import("@tamagui/core").SizeTokens | undefined;
+    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+    circular?: boolean | undefined;
     unstyled?: boolean | undefined;
     disabled?: boolean | undefined;
-    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
-    circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
         top?: number | undefined;
         bottom?: number | undefined;
