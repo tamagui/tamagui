@@ -956,7 +956,7 @@ export interface TextStylePropsBase extends Omit<RNTextStyle, keyof OverrideNonS
     whiteSpace?: Properties['whiteSpace'];
     wordWrap?: Properties['wordWrap'];
     /** @deprecated use verticalAlign instead */
-    textAlignVertical?: TextStyle['textAlignVertical'];
+    textAlignVertical?: RNTextStyle['textAlignVertical'];
 }
 type LooseCombinedObjects<A extends Object, B extends Object> = A | B | (A & B);
 type A11yDeprecated = {

@@ -1514,8 +1514,6 @@ interface ExtraStyleProps {
   paddingInlineEnd?: SpaceTokens | number
   objectFit?: Properties['objectFit']
   verticalAlign?: Properties['verticalAlign']
-  // TODO: uncomment this
-  // inset?: SpaceTokens
   insetBlock?: SpaceTokens | number
   insetBlockStart?: SpaceTokens | number
   insetBlockEnd?: SpaceTokens | number
@@ -1558,7 +1556,7 @@ export interface TextStylePropsBase
   whiteSpace?: Properties['whiteSpace']
   wordWrap?: Properties['wordWrap']
   /** @deprecated use verticalAlign instead */
-  textAlignVertical?: TextStyle['textAlignVertical']
+  textAlignVertical?: RNTextStyle['textAlignVertical']
 }
 
 //
