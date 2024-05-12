@@ -118,7 +118,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
             display="inline-flex"
             alignItems="center"
             justifyContent="flex-end"
-            top={-84}
+            top={-82}
             r="$6"
             $gtMd={{
               r: '$7',
@@ -266,7 +266,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                   position="absolute"
                   aria-label="Copy code to clipboard"
                   size="$2"
-                  top={showFileName ? '$3' : '$3.5'}
+                  top={showFileName ? '$3' : '$3'}
                   right="$3"
                   display="inline-flex"
                   icon={hasCopied ? CheckCircle : Copy}
@@ -278,7 +278,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
               </TooltipSimple>
             )}
 
-            <Progress
+            {/* <Progress
               value={copyTimeoutValue}
               size="$0.75"
               pos="absolute"
@@ -293,7 +293,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
               animation="quickest"
             >
               <Progress.Indicator bg="$color8" />
-            </Progress>
+            </Progress> */}
           </YStack>
         )}
       </ErrorBoundary>

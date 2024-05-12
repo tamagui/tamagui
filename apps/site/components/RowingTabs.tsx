@@ -77,16 +77,15 @@ export function RowingTabs({ className, onTabChange, children, size, ...rest }) 
           orientation="horizontal"
           size="$4"
           br="$4"
-          animation="100ms"
-          enterStyle={{ o: 0, y: -10 }}
           value={storageItem}
           onPress={(e) => e.stopPropagation()}
           onValueChange={setCurrentTab}
           group
+          mt={1}
         >
           <YStack w="100%">
-            <YStack p="$2" bg="$color3" m="$1.5" bc="$background" br="$5">
-              <AnimatePresence>
+            <YStack p="$1.5" m="$2" mb={0} br="$5">
+              <AnimatePresence initial={false}>
                 {intentAt && (
                   <TabIndicator
                     w={intentAt.width}
@@ -97,7 +96,7 @@ export function RowingTabs({ className, onTabChange, children, size, ...rest }) 
                 )}
               </AnimatePresence>
 
-              <AnimatePresence>
+              <AnimatePresence initial={false}>
                 {activeAt && (
                   <TabIndicator
                     theme="active"
@@ -114,8 +113,6 @@ export function RowingTabs({ className, onTabChange, children, size, ...rest }) 
                 loop={false}
                 aria-label="package manager"
                 gap="$2"
-                br="$4"
-                animation="100ms"
               >
                 {isStarter ? (
                   <Tab pkgManager="npm" onInteraction={handleOnInteraction} />
@@ -161,23 +158,23 @@ export function RowingTabs({ className, onTabChange, children, size, ...rest }) 
               </Tabs.List>
             </YStack>
 
-            <AnimatePresence exitBeforeEnter custom={{ direction }} initial={false}>
-              <AnimatedYStack key={currentTab}>
-                <Tabs.Content value={currentTab} forceMount>
-                  <Code
-                    p="$4"
-                    backgroundColor="transparent"
-                    f={1}
-                    className={className}
-                    size={size ?? '$5'}
-                    lineHeight={size ?? '$5'}
-                    {...rest}
-                  >
-                    {command}
-                  </Code>
-                </Tabs.Content>
-              </AnimatedYStack>
-            </AnimatePresence>
+            {/* <AnimatePresence exitBeforeEnter custom={{ direction }} initial={false}> */}
+            {/* <AnimatedYStack key={currentTab}> */}
+            <Tabs.Content value={currentTab} forceMount>
+              <Code
+                p="$4"
+                backgroundColor="transparent"
+                f={1}
+                className={className}
+                size={size ?? '$5'}
+                lineHeight={size ?? '$5'}
+                {...rest}
+              >
+                {command}
+              </Code>
+            </Tabs.Content>
+            {/* </AnimatedYStack> */}
+            {/* </AnimatePresence> */}
           </YStack>
         </Tabs>
       ) : (
@@ -225,11 +222,10 @@ function Tab({
           <Avatar.Fallback bg="$color6" bc="$color8" />
         </Avatar>
         <SizableText
-          size="$3"
-          col="$color8"
-          $group-hover={{
-            col: '$color10',
-          }}
+          y={-0.5}
+          size="$2"
+          col={active ? '$color11' : '$color9'}
+          o={active ? 1 : 0.5}
         >
           {pkgManager}
         </SizableText>
@@ -245,7 +241,7 @@ function TabIndicator({ active, ...props }: { active?: boolean } & ViewProps) {
       bg="$color5"
       o={0.7}
       br="$4"
-      animation="100ms"
+      animation="quickest"
       enterStyle={{
         o: 0,
       }}
@@ -272,12 +268,12 @@ const AnimatedYStack = styled(YStack, {
     direction: {
       ':number': (direction) => ({
         enterStyle: {
-          x: direction > 0 ? -25 : -25,
+          x: direction > 0 ? -10 : -10,
           opacity: 0,
         },
         exitStyle: {
           zIndex: 0,
-          x: direction < 0 ? -25 : -25,
+          x: direction < 0 ? -10 : -10,
           opacity: 0,
         },
       }),
