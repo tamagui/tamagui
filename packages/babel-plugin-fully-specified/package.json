@@ -15,12 +15,12 @@
     "access": "public"
   },
   "scripts": {
-    "build": "tamagui-build",
-    "watch": "tamagui-build --watch",
+    "build": "node ../build/tamagui-build.js",
+    "watch": "node ../build/tamagui-build.js --watch",
     "lint": "../../node_modules/.bin/biome check src",
     "lint:fix": "../../node_modules/.bin/biome check --apply-unsafe src",
-    "clean": "tamagui-build clean",
-    "clean:build": "tamagui-build clean:build"
+    "clean": "node ../build/tamagui-build.js clean",
+    "clean:build": "node ../build/tamagui-build.js clean:build"
   },
   "dependencies": {
     "@babel/core": "^7.23.3"
