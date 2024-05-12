@@ -1,6 +1,6 @@
 import { TamaguiProvider } from 'tamagui'
-import { SearchProvider } from '../features/site/search/SearchProvider'
-import { UserThemeProvider, useUserTheme } from '../features/site/theme/useUserTheme'
+import { SearchProvider } from '~/features/site/search/SearchProvider'
+import { UserThemeProvider, useUserTheme } from '~/features/site/theme/useUserTheme'
 import tamaConf from './tamagui.config'
 import { ToastProvider } from '@tamagui/toast'
 
@@ -16,6 +16,7 @@ export const Providers = (props: { children: any }) => {
 
 function WebsiteTamaguiProvider(props: { children: any }) {
   const [{ resolvedTheme }] = useUserTheme()
+  console.log('resolvedTheme', resolvedTheme)
 
   return (
     <TamaguiProvider disableInjectCSS defaultTheme={resolvedTheme} config={tamaConf}>

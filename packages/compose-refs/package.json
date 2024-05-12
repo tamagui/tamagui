@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/compose-refs",
-  "version": "1.96.0",
+  "version": "1.97.1",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -23,7 +23,7 @@
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.96.0",
+    "@tamagui/build": "1.97.1",
     "react": "^18.2.0"
   },
   "publishConfig": {

@@ -7,7 +7,8 @@ export const ThemeNameEffect = memo(
     const isHydrated = useDidFinishSSR()
     const theme = useTheme()
     const [isActive, setIsActive] = useState(false)
-    const color = theme[colorKey]!.val
+
+    const color = theme[colorKey]?.val
 
     if (isClient) {
       useLayoutEffect(() => {

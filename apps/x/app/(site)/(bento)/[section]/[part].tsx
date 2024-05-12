@@ -1,6 +1,6 @@
-import * as sections from '@tamagui/bento'
+import { Data, Sections } from '@tamagui/bento'
 import { Toast, useToastState } from '@tamagui/toast'
-import { Link, useLocalSearchParams, useRouter } from '@vxrn/router'
+import { Link, useLocalSearchParams } from '@vxrn/router'
 import { Anchor, H1, SizableText, Theme, View, XStack, YStack } from 'tamagui'
 import { ContainerBento } from '~/components/Containers'
 import { BentoLogo } from '~/features/bento/BentoLogo'
@@ -8,12 +8,12 @@ import { BentoPageFrame } from '~/features/bento/BentoPageFrame'
 import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
 
 export const generateStaticParams = async () => {
-  return sections.paths.map((x) => x.params)
+  return Data.paths.map((x) => x.params)
 }
 
 // export const loader = (ctx) => {
 //   // const { section, part } = ctx.params as { section: string; part: string }
-//   // const getCodes = sections[section][`${part}GetComponentCodes`]
+//   // const getCodes = Sections[section][`${part}GetComponentCodes`]
 
 //   return {
 //     // props: getCodes(),
@@ -23,7 +23,12 @@ export const generateStaticParams = async () => {
 
 export default function page() {
   const params = useLocalSearchParams() as { section: string; part: string }
-  const Comp = sections[params.section][params.part]
+  console.log('got', params)
+  const Comp = Sections?.[params.section]?.[params.part]
+
+  if (!Comp) {
+    return null
+  }
 
   return (
     <>
@@ -54,6 +59,7 @@ export const DetailHeader = (props: { children: string }) => {
   const params = useLocalSearchParams() as { section: string; part: string }
   const category =
     (typeof params.section === 'string' ? params.section : params.section?.[0]) || ''
+
   const subCategory =
     (typeof params.part === 'string' ? params.part : params.part?.[0]) || ''
 
@@ -84,24 +90,26 @@ export const DetailHeader = (props: { children: string }) => {
           </Link>
 
           <SizableText theme="alt1" tag="span" selectable={false} size="$2">
-            {'>'}
+            &raquo;
           </SizableText>
 
-          <Link href={`/bento#${category}`}>
+          {/* TODO for some reason these break [vite:build-import-analysis */}
+          {/* <Link href={`/bento#${category}`}>
             <Anchor tag="span" textTransform="capitalize">
               {category}
             </Anchor>
-          </Link>
+          </Link> */}
 
           <SizableText theme="alt1" tag="span" selectable={false} size="$2">
-            {'>'}
+            &raquo;
           </SizableText>
 
-          <Link href={`/bento/${subCategory}`}>
+          {/* TODO for some reason these break [vite:build-import-analysis */}
+          {/* <Link href={`/bento/${subCategory}`}>
             <Anchor tag="span" textTransform="capitalize">
               {subCategory.replace('_', ' ').replace('#', '')}
             </Anchor>
-          </Link>
+          </Link> */}
         </XStack>
       </YStack>
     </YStack>
@@ -111,7 +119,10 @@ export const DetailHeader = (props: { children: string }) => {
 const CurrentToast = () => {
   const currentToast = useToastState()
 
-  if (!currentToast || currentToast.isHandledNatively) return null
+  if (!currentToast || currentToast.isHandledNatively) {
+    return null
+  }
+
   return (
     <Toast
       key={currentToast.id}

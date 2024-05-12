@@ -21,8 +21,13 @@ export async function loader() {
   return await getCompilationExamples()
 }
 
-export default function Index() {
+export default function TamaguiHomePage() {
   const { compilationExamples } = useLoader(loader)
+
+  if (!compilationExamples) {
+    console.warn('??')
+    return null
+  }
 
   return (
     <>

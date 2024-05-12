@@ -1,5 +1,6 @@
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
-import { useThemeSetting } from '@tamagui/next-theme'
+// TODO
+// import { useThemeSetting } from '@tamagui/next-theme'
 import { Link } from '@vxrn/router'
 import { memo } from 'react'
 import type { HeadingProps } from 'tamagui'
@@ -19,7 +20,6 @@ import { Container, ContainerXL } from '~/components/Containers'
 import { Features } from '~/components/Features'
 import type { DivProps, HoverGlowProps } from '~/components/HoverGlow'
 import { IS_SAFARI, useHoverGlow } from '~/components/HoverGlow'
-import { LoadInter900 } from '~/features/site/fonts/LoadFonts'
 import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
 
 export default function StudioSplashPage() {
@@ -149,7 +149,8 @@ export default function StudioSplashPage() {
 }
 
 const StudioScreen1 = memo(() => {
-  const { resolvedTheme: themeName } = useThemeSetting()!
+  // const { resolvedTheme: themeName } = useThemeSetting()!
+  const themeName = 'light'
   const isLight = themeName === 'light'
 
   const glow = useHoverGlow({

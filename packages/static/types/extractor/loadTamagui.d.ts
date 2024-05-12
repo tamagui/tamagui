@@ -9,6 +9,6 @@ export declare function loadTamaguiSync({ forceExports, cacheKey, ...propsIn }: 
 }): TamaguiProjectInfo;
 export declare function getOptions({ root, tsconfigPath, tamaguiOptions, host, debug, }?: Partial<CLIUserOptions>): Promise<CLIResolvedOptions>;
 export declare function resolveWebOrNativeSpecificEntry(entry: string): string;
-export { TamaguiProjectInfo };
+export type { TamaguiProjectInfo };
 export declare function esbuildWatchFiles(entry: string, onChanged: () => void): Promise<() => void>;
 //# sourceMappingURL=loadTamagui.d.ts.map

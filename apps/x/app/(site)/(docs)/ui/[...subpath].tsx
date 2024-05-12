@@ -19,24 +19,31 @@ export async function generateStaticParams() {
   })
 
   const latestVersionPaths = paths.map((path) => {
-    const withoutVersion = path.subpath.slice(0, path.subpath.length - 1)
+    const parts = path.subpath.split('/')
+    const withoutVersion = parts.slice(0, parts.length - 1)
     return {
-      subpath: withoutVersion,
+      subpath: withoutVersion.join('/'),
     }
   })
 
-  console.log('wtf', [...paths, ...latestVersionPaths])
+  const allPaths = [...paths, ...latestVersionPaths]
 
-  return [...paths, ...latestVersionPaths]
+  console.info(`[docs:ui] generating paths ${JSON.stringify(allPaths, null, 2)}`)
+
+  return allPaths
 }
 
 export async function loader(props: LoaderProps) {
-  const { frontmatter, code } = await getMDXBySlug(
-    'data/docs/components',
-    props.params.subpath
-  )
+  const { frontmatter, code } = await getMDXBySlug('data/docs/components', props.params.subpath)
   const [componentName, componentVersion] = props.params.subpath.split('/')
   const versions = getAllVersionsFromPath(`data/docs/components/${componentName}`)
+  console.info(
+    `[docs:ui] load component ${JSON.stringify(
+      { componentName, componentVersion, versions },
+      null,
+      2
+    )}`
+  )
   return {
     frontmatter: {
       ...frontmatter,
@@ -65,14 +72,14 @@ export default function DocComponentsPage() {
     }
   }, [])
 
-  useEffect(() => {
-    const url = new URL(location.href)
-    url.pathname = `${pathname}/${frontmatter.version}`
-    if (Array.isArray(params.subpath)) {
-      url.pathname = url.pathname.replace('[...subpath]', params.subpath[0])
-    }
-    router.replace(url)
-  }, [])
+  // useEffect(() => {
+  //   const url = new URL(location.href)
+  //   url.pathname = `${pathname}/${frontmatter.version}`
+  //   if (Array.isArray(params.subpath)) {
+  //     url.pathname = url.pathname.replace('[...subpath]', params.subpath[0])
+  //   }
+  //   router.replace(url)
+  // }, [])
 
   return (
     <>

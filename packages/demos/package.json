@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/demos",
-  "version": "1.96.0",
+  "version": "1.97.1",
   "sideEffects": [
     "*.css"
   ],
@@ -39,29 +39,29 @@
     }
   },
   "dependencies": {
-    "@tamagui/avatar": "1.96.0",
-    "@tamagui/button": "1.96.0",
-    "@tamagui/core": "1.96.0",
-    "@tamagui/list-item": "1.96.0",
-    "@tamagui/logo": "1.96.0",
-    "@tamagui/menu": "1.96.0",
-    "@tamagui/popover": "1.96.0",
-    "@tamagui/progress": "1.96.0",
-    "@tamagui/radio-group": "1.96.0",
-    "@tamagui/select": "1.96.0",
-    "@tamagui/sheet": "1.96.0",
-    "@tamagui/site-config": "1.96.0",
-    "@tamagui/slider": "1.96.0",
-    "@tamagui/stacks": "1.96.0",
-    "@tamagui/toast": "1.96.0",
-    "tamagui": "1.96.0"
+    "@tamagui/avatar": "1.97.1",
+    "@tamagui/button": "1.97.1",
+    "@tamagui/core": "1.97.1",
+    "@tamagui/list-item": "1.97.1",
+    "@tamagui/logo": "1.97.1",
+    "@tamagui/menu": "1.97.1",
+    "@tamagui/popover": "1.97.1",
+    "@tamagui/progress": "1.97.1",
+    "@tamagui/radio-group": "1.97.1",
+    "@tamagui/select": "1.97.1",
+    "@tamagui/sheet": "1.97.1",
+    "@tamagui/site-config": "1.97.1",
+    "@tamagui/slider": "1.97.1",
+    "@tamagui/stacks": "1.97.1",
+    "@tamagui/toast": "1.97.1",
+    "tamagui": "1.97.1"
   },
   "peerDependencies": {
     "react": "*",
     "react-dom": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.96.0",
+    "@tamagui/build": "1.97.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

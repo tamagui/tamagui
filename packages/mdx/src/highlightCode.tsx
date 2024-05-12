@@ -1,8 +1,8 @@
 import { toHtml } from 'hast-util-to-html'
 import rangeParser from 'parse-numeric-range'
 import { refractor } from 'refractor'
-import css from 'refractor/lang/css'
-import tsx from 'refractor/lang/tsx'
+import css from 'refractor/lang/css.js'
+import tsx from 'refractor/lang/tsx.js'
 
 import { rehypeHighlightLine } from './rehypeLine'
 import { rehypeHighlightWord } from './rehypeWord'
