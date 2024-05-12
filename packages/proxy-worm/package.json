@@ -1,13 +1,9 @@
 {
   "name": "@tamagui/proxy-worm",
-  "version": "1.94.5",
+  "version": "1.97.1",
   "main": "index.js",
   "publishConfig": {
     "access": "public"
-  },
-  "scripts": {
-    "build": "true",
-    "watch": "true"
   },
   "exports": {
     "./empty-react-native-view": {

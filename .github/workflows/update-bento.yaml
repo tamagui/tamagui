@@ -17,13 +17,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Unlock Secrets
-        uses: sliteteam/github-action-git-crypt-unlock@1.2.0
-        env:
-          GIT_CRYPT_KEY: ${{ secrets.GIT_CRYPT_KEY }}
-
       - name: Install
         uses: ./.github/actions/install
+        with:
+          git_crypt_key: ${{ secrets.GIT_CRYPT_KEY }}
 
       - name: Install Vercel CLI
         run: npm install --global vercel@latest

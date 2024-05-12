@@ -2,7 +2,7 @@ import { useAsyncStorage } from '@react-native-async-storage/async-storage'
 import { DarkTheme, DefaultTheme, NavigationContainer } from '@react-navigation/native'
 // causes metro bundle issue it seems:
 // import * as Linking from 'expo-linking'
-import * as sections from '@tamagui/bento'
+import { Data, Components } from '@tamagui/bento'
 import React, { useContext, useMemo } from 'react'
 import { Linking, Platform } from 'react-native'
 import { ThemeContext } from '../../useKitchenSinkTheme'
@@ -39,12 +39,12 @@ export function NavigationProvider({ children }: { children: React.ReactNode }) 
     }
   }, [isReady])
 
-  const bentoScreens = sections.listingData.sections.reduce((acc, { sectionName }) => {
+  const bentoScreens = Data.listingData.sections.reduce((acc, { sectionName }) => {
     acc[sectionName] = `${sectionName}/:id`
     return acc
   }, {})
 
-  const bentoElementScreens = Object.entries(sections['Inputs']).reduce(
+  const bentoElementScreens = Object.entries(Components['Inputs']).reduce(
     (acc, component) => {
       acc[component[0]] = `${component[0]}`
       return acc
@@ -52,7 +52,7 @@ export function NavigationProvider({ children }: { children: React.ReactNode }) 
     {}
   )
 
-  let bentoScreensPerElementRoutes = Object.entries(sections)
+  let bentoScreensPerElementRoutes = Object.entries(Components)
     .filter(([key]) => /\b[A-Z][a-z0-9]+(?:[A-Z][a-z0-9]+)*\b/.test(key))
     .map(([, sectionModules]) => Object.entries(sectionModules as any))
     .slice(0, -1)

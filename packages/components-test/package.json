@@ -1,12 +1,11 @@
 {
   "name": "@tamagui/components-test",
-  "version": "1.94.5",
+  "version": "1.97.1",
   "module": "dist/esm",
   "type": "module",
   "private": true,
   "license": "MIT",
   "scripts": {
-    "build": "true",
     "test:web": "DISABLE_REACT_NATIVE=1 TEST_ENVIRONMENT=jsdom TAMAGUI_TARGET=web vitest --run --config ../vite-plugin-internal/src/vite.config.ts **/*.web.test.tsx",
     "test:native": "TAMAGUI_TARGET=native vitest --run --config ../vite-plugin-internal/src/vite.config.ts **/*.native.test.tsx",
     "test": "yarn test:native"

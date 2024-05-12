@@ -14,11 +14,6 @@ import type { Frontmatter } from '../../frontmatter'
 import { listeners } from '../../hooks/setTinted'
 import { CustomTabs } from '../../components/CustomTabs'
 
-const getPathFragment = (path: string) => {
-  const [_, fragment] = path.split('#')
-  return fragment
-}
-
 type Doc = {
   frontmatter: Frontmatter
   code: any
@@ -79,7 +74,7 @@ export default function DocComponentsPage({ frontmatter, code }: Doc) {
       <MDXProvider frontmatter={frontmatter}>
         <ThemeTint disable={!isTinted}>
           <CustomTabs id="type" defaultValue="styled">
-            <Component components={components as any} />
+            <Component components={components as any} key={String(isTinted)} />
           </CustomTabs>
         </ThemeTint>
       </MDXProvider>

@@ -1,7 +1,7 @@
-import { H1, ScrollView, Separator, Spacer, YGroup, YStack } from 'tamagui'
-import { createParam } from 'solito'
-import * as sections from '@tamagui/bento'
+import { Components } from '@tamagui/bento'
 import { useLayoutEffect } from 'react'
+import { createParam } from 'solito'
+import { ScrollView, Separator, YGroup, YStack } from 'tamagui'
 import { LinkListItem } from '../home/screen'
 
 const { useParam } = createParam<{ id: string }>()
@@ -32,7 +32,7 @@ export function BentoPartScreenItem({ navigation }) {
     <ScrollView>
       <YStack bg="$color2" p="$3" pt="$6" pb="$8" f={1} space>
         <YGroup size="$4" separator={<Separator />}>
-          {Object.values(sections[name] ?? [])
+          {Object.values(Components[name] ?? [])
             .filter(removeComponentsThatAreNotPublic)
             .map((Component: any, index) => {
               return (

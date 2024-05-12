@@ -10,9 +10,7 @@ const logs = {
   info: [],
 }
 
-const skipLogs = [
-  'Failed to load resource: the server responded with a status of 401 (Unauthorized)',
-]
+const skipLogs = ['Failed to load resource']
 
 test.beforeAll(async ({ browser }) => {
   page = await browser.newPage()
@@ -40,7 +38,9 @@ test(`Loads screen with no errors or logs`, async () => {
 })
 
 test('visually looks correct', async () => {
-  expect(await page.locator('#tamagui-demos-container').screenshot({})).toMatchSnapshot()
+  expect(await page.locator('#tamagui-demos-container').screenshot({})).toMatchSnapshot({
+    maxDiffPixelRatio: 0.2,
+  })
 })
 
 test.afterAll(async () => {

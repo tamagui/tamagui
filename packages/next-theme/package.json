@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/next-theme",
-  "version": "1.94.5",
+  "version": "1.97.1",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -20,14 +20,14 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/constants": "1.94.5",
-    "@tamagui/use-event": "1.94.5"
+    "@tamagui/constants": "1.97.1",
+    "@tamagui/use-event": "1.97.1"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.94.5",
+    "@tamagui/build": "1.97.1",
     "react": "^18.2.0"
   },
   "publishConfig": {

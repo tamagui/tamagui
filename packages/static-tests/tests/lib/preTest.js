@@ -1,4 +1,4 @@
-import path from 'path'
+import path from 'node:path'
 
 import webpack from 'webpack'
 
@@ -56,7 +56,7 @@ async function extractStaticWebpackApp() {
           test: /\.[jt]sx?$/,
           use: [
             {
-              loader: require.resolve('esbuild-loader'),
+              loader: 'esbuild-loader',
               options: {
                 loader: 'tsx',
                 target: 'es2021',
@@ -64,7 +64,7 @@ async function extractStaticWebpackApp() {
               },
             },
             {
-              loader: require.resolve('tamagui-loader'),
+              loader: 'tamagui-loader',
               options: {
                 config: './tests/lib/tamagui.config.cjs',
                 components: ['@tamagui/sandbox-ui'],

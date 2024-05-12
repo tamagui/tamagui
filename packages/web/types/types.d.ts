@@ -1,7 +1,7 @@
 import type { StyleObject } from '@tamagui/helpers';
 import type { Properties } from 'csstype';
 import type { CSSProperties, ComponentType, ForwardRefExoticComponent, FunctionComponent, HTMLAttributes, ReactNode, RefAttributes, RefObject } from 'react';
-import type { Text as RNText, TextProps as ReactTextProps, TextStyle, View, ViewProps, ViewStyle } from 'react-native';
+import type { Text as RNText, TextProps as ReactTextProps, TextStyle as RNTextStyle, View, ViewProps, ViewStyle } from 'react-native';
 import type { Variable } from './createVariable';
 import type { StyledContext } from './helpers/createStyledContext';
 import type { CSSColorNames } from './interfaces/CSSColorNames';
@@ -361,7 +361,7 @@ type GenericTamaguiSettings = {
 };
 export type TamaguiSettings = TamaguiConfig['settings'];
 export type BaseStyleProps = {
-    [Key in keyof TextStylePropsBase]?: TextStyleProps[Key] | GetThemeValueForKey<Key>;
+    [Key in keyof TextStylePropsBase]?: TextStyle[Key] | GetThemeValueForKey<Key>;
 } & {
     [Key in keyof StackStyleBase]?: StackStyle[Key] | GetThemeValueForKey<Key>;
 };
@@ -463,10 +463,10 @@ export type GenericFont<Key extends GenericFontKey = GenericFontKey> = {
     }>;
     family?: string | Variable;
     style?: Partial<{
-        [key in Key]: TextStyle['fontStyle'] | Variable;
+        [key in Key]: RNTextStyle['fontStyle'] | Variable;
     }>;
     transform?: Partial<{
-        [key in Key]: TextStyle['textTransform'] | Variable;
+        [key in Key]: RNTextStyle['textTransform'] | Variable;
     }>;
     color?: Partial<{
         [key in Key]: string | Variable;
@@ -583,8 +583,8 @@ export type FontWeightValues = `${1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9}00` | 'bold'
 export type FontWeightTokens = `$${GetTokenFontKeysFor<'weight'>}` | FontWeightValues;
 export type FontColorTokens = `$${GetTokenFontKeysFor<'color'>}` | number;
 export type FontLetterSpacingTokens = `$${GetTokenFontKeysFor<'letterSpacing'>}` | number;
-export type FontStyleTokens = `$${GetTokenFontKeysFor<'style'>}` | TextStyle['fontStyle'];
-export type FontTransformTokens = `$${GetTokenFontKeysFor<'transform'>}` | TextStyle['textTransform'];
+export type FontStyleTokens = `$${GetTokenFontKeysFor<'style'>}` | RNTextStyle['fontStyle'];
+export type FontTransformTokens = `$${GetTokenFontKeysFor<'transform'>}` | RNTextStyle['textTransform'];
 export type ParseFont<A extends GenericFont> = {
     size: TokenPrefixed<A['size']>;
     lineHeight: TokenPrefixedIfExists<A['lineHeight']>;
@@ -708,6 +708,10 @@ interface ExtraStyleProps {
      * Web-only style property. Will be omitted on native.
      */
     userSelect?: Properties['userSelect'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    scrollbarWidth?: Properties['scrollbarWidth'];
     pointerEvents?: ViewProps['pointerEvents'];
     /**
      * @deprecated Use `gap`
@@ -752,7 +756,7 @@ interface OverrideNonStyledProps extends TransformStyleProps, ExtendBaseTextProp
 }
 export interface StackStyleBase extends Omit<ViewStyle, keyof OverrideNonStyledProps | 'elevation'>, TransformStyleProps, ExtraStyleProps, OverrideNonStyledProps {
 }
-export interface TextStylePropsBase extends Omit<TextStyle, keyof OverrideNonStyledProps>, TransformStyleProps, ExtraStyleProps, OverrideNonStyledProps {
+export interface TextStylePropsBase extends Omit<RNTextStyle, keyof OverrideNonStyledProps>, TransformStyleProps, ExtraStyleProps, OverrideNonStyledProps {
     ellipse?: boolean;
     textDecorationDistance?: number;
     textOverflow?: Properties['textOverflow'];
@@ -825,10 +829,10 @@ export interface StackNonStyleProps extends A11yDeprecated, Omit<ViewProps, 'hit
 export type StackStyle = WithThemeShorthandsPseudosMediaRem<StackStyleBase>;
 export type StackProps = StackNonStyleProps & StackStyle;
 export interface TextNonStyleProps extends A11yDeprecated, Omit<ReactTextProps, 'children' | keyof WebOnlyPressEvents | RNOnlyProps | keyof ExtendBaseTextProps | 'style'>, ExtendBaseTextProps, TamaguiComponentPropsBase {
-    style?: StyleProp<LooseCombinedObjects<React.CSSProperties, TextStyle>>;
+    style?: StyleProp<LooseCombinedObjects<React.CSSProperties, RNTextStyle>>;
 }
-export type TextStyleProps = WithThemeShorthandsPseudosMediaRem<TextStylePropsBase>;
-export type TextProps = TextNonStyleProps & TextStyleProps;
+export type TextStyle = WithThemeShorthandsPseudosMediaRem<TextStylePropsBase>;
+export type TextProps = TextNonStyleProps & TextStyle;
 export interface ThemeableProps {
     theme?: ThemeName | null;
     themeInverse?: boolean;
@@ -889,7 +893,7 @@ export type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, 'children'>>
 };
 export type PropMappedValue = [string, any][] | undefined;
 export type GetStyleState = {
-    style: TextStyleProps | null;
+    style: TextStyle | null;
     usedKeys: Record<string, number>;
     classNames: ClassNamesObject;
     staticConfig: StaticConfig;
@@ -995,12 +999,12 @@ type StaticConfigBase = StaticConfigPublic & {
 export type StaticConfig = StaticConfigBase & {
     parentStaticConfig?: StaticConfigBase;
 };
-export type ViewStyleWithPseudos = TextStyleProps | (TextStyleProps & {
-    hoverStyle?: TextStyleProps;
-    pressStyle?: TextStyleProps;
-    focusStyle?: TextStyleProps;
-    focusVisibleStyle?: TextStyleProps;
-    disabledStyle?: TextStyleProps;
+export type ViewStyleWithPseudos = TextStyle | (TextStyle & {
+    hoverStyle?: TextStyle;
+    pressStyle?: TextStyle;
+    focusStyle?: TextStyle;
+    focusVisibleStyle?: TextStyle;
+    disabledStyle?: TextStyle;
 });
 /**
  * --------------------------------------------
@@ -1151,6 +1155,7 @@ export type TamaguiComponentStateRef = {
     hasMeasured?: boolean;
     hasAnimated?: boolean;
     themeShallow?: boolean;
+    hasEverThemed?: boolean;
     isListeningToTheme?: boolean;
     unPress?: Function;
     group?: {

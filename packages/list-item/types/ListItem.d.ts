@@ -1,7 +1,6 @@
 import type { TextParentStyles } from '@tamagui/text';
 import type { FontSizeTokens, GetProps, PropsWithoutMediaStyles, SizeTokens, ThemeableProps } from '@tamagui/web';
-import type { FunctionComponent } from 'react';
-import React from 'react';
+import type { FunctionComponent, ReactNode } from 'react';
 type ListItemIconProps = {
     color?: any;
     size?: any;
@@ -34,11 +33,11 @@ export type ListItemExtraProps = Omit<TextParentStyles, 'TextComponent' | 'noTex
     /**
      * title
      */
-    title?: React.ReactNode;
+    title?: ReactNode;
     /**
      * subtitle
      */
-    subTitle?: React.ReactNode;
+    subTitle?: ReactNode;
     /**
      * will not wrap text around `children` only, "all" will not wrap title or subTitle
      */
@@ -89,7 +88,7 @@ export declare const useListItem: (propsIn: ListItemProps, { Text, Subtitle, Tit
 }) => {
     props: PropsWithoutMediaStyles<ListItemProps>;
 };
-export declare const ListItem: React.ForwardRefExoticComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
+export declare const ListItem: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
     unstyled?: boolean | undefined;
     size?: SizeTokens | undefined;
     disabled?: boolean | undefined;
@@ -140,16 +139,16 @@ export declare const ListItem: React.ForwardRefExoticComponent<Omit<import("@tam
     /**
      * title
      */
-    title?: React.ReactNode;
+    title?: ReactNode;
     /**
      * subtitle
      */
-    subTitle?: React.ReactNode;
+    subTitle?: ReactNode;
     /**
      * will not wrap text around `children` only, "all" will not wrap title or subTitle
      */
     noTextWrap?: boolean | "all" | undefined;
-} & React.RefAttributes<import("@tamagui/web").TamaguiElement>> & import("@tamagui/web").StaticComponentObject<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
+} & import("react").RefAttributes<import("@tamagui/web").TamaguiElement>> & import("@tamagui/web").StaticComponentObject<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
     unstyled?: boolean | undefined;
     size?: SizeTokens | undefined;
     disabled?: boolean | undefined;
@@ -200,11 +199,11 @@ export declare const ListItem: React.ForwardRefExoticComponent<Omit<import("@tam
     /**
      * title
      */
-    title?: React.ReactNode;
+    title?: ReactNode;
     /**
      * subtitle
      */
-    subTitle?: React.ReactNode;
+    subTitle?: ReactNode;
     /**
      * will not wrap text around `children` only, "all" will not wrap title or subTitle
      */
@@ -236,11 +235,11 @@ export declare const ListItem: React.ForwardRefExoticComponent<Omit<import("@tam
     /**
      * title
      */
-    title?: React.ReactNode;
+    title?: ReactNode;
     /**
      * subtitle
      */
-    subTitle?: React.ReactNode;
+    subTitle?: ReactNode;
     /**
      * will not wrap text around `children` only, "all" will not wrap title or subTitle
      */
@@ -321,11 +320,11 @@ export declare const ListItem: React.ForwardRefExoticComponent<Omit<import("@tam
         /**
          * title
          */
-        title?: React.ReactNode;
+        title?: ReactNode;
         /**
          * subtitle
          */
-        subTitle?: React.ReactNode;
+        subTitle?: ReactNode;
         /**
          * will not wrap text around `children` only, "all" will not wrap title or subTitle
          */
@@ -357,11 +356,11 @@ export declare const ListItem: React.ForwardRefExoticComponent<Omit<import("@tam
         /**
          * title
          */
-        title?: React.ReactNode;
+        title?: ReactNode;
         /**
          * subtitle
          */
-        subTitle?: React.ReactNode;
+        subTitle?: ReactNode;
         /**
          * will not wrap text around `children` only, "all" will not wrap title or subTitle
          */

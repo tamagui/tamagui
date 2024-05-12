@@ -44,7 +44,7 @@ export const SelectViewportFrame = styled(ThemeableStack, {
   } as const,
 
   defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+    unstyled: process.env.TAMAGUI_HEADLESS === '1',
   },
 })
 
@@ -91,7 +91,6 @@ export const SelectViewport = SelectViewportFrame.styleable<SelectViewportExtraP
       style,
       // remove this, it was set to "Select" always
       className,
-      onScroll,
       ...floatingProps
     } = itemContext.interactions.getFloatingProps()
 

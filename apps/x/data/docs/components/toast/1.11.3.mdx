@@ -1,0 +1,469 @@
+---
+title: Toast
+description: A toast component with native features
+name: toast
+component: Toast
+package: toast
+demoName: Toast
+---
+
+# Toast <Beta />
+
+<Description>Use to show feedback to user interactions</Description>
+
+<HeroContainer showAnimationDriverControl>
+  <ToastDemo />
+</HeroContainer>
+
+```tsx hero template=Toast
+
+```
+
+<Highlights
+  features={[
+    `Automatically closes`,
+    `Pause closing on hover, focus, window blur and mobile touch`,
+    `Supports closing via swipe gesture`,
+    `Easily animatable with Tamagui's animation drivers`,
+    `Native toasts included for Android, iOS and web (notification API)`,
+  ]}
+/>
+
+## Installation
+
+Run the following command:
+
+```
+yarn add @tamagui/toast burnt
+```
+
+then, rebuild your React Native app. React Native requires sub-dependencies with native dependencies always be hoisted to your apps package.json and Toast relies on the amazing [Burnt](https://github.com/nandorojo/burnt) library by Fernando Rojo to provide its native functionality.
+
+## Usage
+
+To display the toast natively, you should either pass an array of native platforms (`native: ["ios", "web"]`), a single platform or `true` for all platforms.
+
+```tsx
+import { Button } from 'tamagui' // or '@tamagui/button'
+import { Toast, ToastProvider, useToast } from '@tamagui/toast'
+
+export default () => (
+  <ToastProvider native={['mobile']}>
+    <CurrentToast />
+    <MyPage />
+    <ToastViewport />
+  </ToastProvider>
+)
+
+const CurrentToast = () => {
+  const { currentToast } = useToast()
+
+  // only show the component if it's present and not handled by native toast
+  if (!currentToast || currentToast.isHandledNatively) return null
+  return (
+    <Toast key={currentToast.id}>
+      <Toast.Title>{currentToast.title}</Toast.Title>
+      <Toast.Description>{currentToast.message}</Toast.Description>
+    </Toast>
+  )
+}
+
+const MyPage = () => {
+  const { show } = useToast()
+
+  return (
+    <Button onPress={() => show('Done!', { message: 'Form submitted successfully.' })}>
+      Show Toast
+    </Button>
+  )
+}
+```
+
+## API
+
+### ToastProvider
+
+Your toasts should be wrapped within a `ToastProvider`. This is usually done at the root of your application.
+
+<PropsTable
+  data={[
+    {
+      name: 'label',
+      required: false,
+      type: 'string',
+      description: `An author-localized label for each toast. Used to help screen reader users associate the interruption with a toast.`,
+      default: 'Notification',
+    },
+    {
+      name: 'duration',
+      required: false,
+      type: 'number',
+      description: `Time in milliseconds that each toast should remain visible for. This could be overwritten at the toast level as well.`,
+      default: 5000,
+    },
+    {
+      name: 'swipeDirection',
+      required: false,
+      type: 'SwipeDirection',
+      description: `Direction of pointer swipe that should close the toast.`,
+      default: 'right',
+    },
+    {
+      name: 'swipeThreshold',
+      required: false,
+      type: 'number',
+      description: `Distance in pixels that the swipe must pass before a close is triggered.`,
+      default: 50,
+    },
+    {
+      name: 'id',
+      required: false,
+      type: 'string',
+      default: 'A unique generated ID',
+    },
+    {
+      name: 'native',
+      required: false,
+      type: 'boolean | ToastNativePlatform | ToastNativePlatform[]',
+      description: `Will show a native toast if is true or is set to the current platform. On iOS, it wraps \`SPIndicator\` and \`SPAlert\`. On Android, it wraps \`ToastAndroid\`. On web, it wraps Notification API. Mobile's native features are handled by \`burnt\`.`,
+    },
+    {
+      name: `burntOptions`,
+      required: false,
+      type: `Omit<BurntToastOptions, 'title' | 'message' | 'duration'>`,
+      description: `Options for the burnt package if you're using native toasts on mobile`,
+    },
+    {
+      name: `notificationOptions`,
+      required: false,
+      type: `NotificationOptions`,
+      description: `Options for the notification API if you're using native toasts on web`,
+    },
+  ]}
+/>
+
+### ToastViewport
+
+The portal for toasts to be directed to. Should be used inside [ToastProvider](#toastprovider). Beyond [Stack Props](/docs/components/stacks/1.0.0), adds:
+
+<PropsTable
+  data={[
+    {
+      name: 'hotkey',
+      type: 'string[]',
+      default: "['F8']",
+      required: false,
+      description: `The keys to use as the keyboard shortcut that will move focus to the toast viewport.`,
+    },
+    {
+      name: 'label',
+      type: 'string',
+      default: 'Notifications ({hotkey})',
+      required: false,
+      description: `An author-localized label for the toast viewport to provide context for screen reader users when navigating page landmarks. The available \`{hotkey}\` placeholder will be replaced for you.`,
+    },
+    {
+      name: 'name',
+      type: 'string',
+      required: false,
+      description: `Used to reference the viewport if you want to have multiple viewports in the same provider.`,
+    },
+    {
+      name: 'multipleToasts',
+      type: 'boolean',
+      required: false,
+      description: `Pass this when you want to have multiple/duplicated toasts.`,
+    },
+  ]}
+/>
+
+### Toast
+
+Contains the Title, Description, Action and Close component. Should be used inside [ToastProvider](#toastprovider). Extends [Stack](/docs/components/stack#api) and adds:
+
+<PropsTable
+  data={[
+    {
+      name: 'forceMount',
+      type: 'boolean',
+      required: false,
+      description: `Used to force mounting when more control is needed. Useful when controlling animation with React animation libraries.`,
+    },
+    {
+      name: 'type',
+      type: "'foreground' | 'background'",
+      required: false,
+      description: `Control the sensitivity of the toast for accessibility purposes. For toasts that are the result of a user action, choose foreground. Toasts generated from background tasks should use background.`,
+    },
+    {
+      name: 'duration',
+      type: 'number',
+      required: false,
+      description: `Time in milliseconds that toast should remain visible for. Overrides value given to \`ToastProvider\`.`,
+    },
+    {
+      name: 'defaultOpen',
+      type: 'boolean',
+      required: false,
+      description: `The open state of the dialog when it is initially rendered. Use when you do not need to control its open state.`,
+    },
+    {
+      name: 'open',
+      type: 'boolean',
+      required: false,
+      description: `The controlled open state of the dialog. Must be used in conjunction with \`onOpenChange\`.`,
+    },
+    {
+      name: 'onOpenChange',
+      type: '(open: boolean): void',
+      required: false,
+      description: `Event handler called when the open state of the dialog changes.`,
+    },
+    {
+      name: 'onEscapeKeyDown',
+      type: "(): DismissableProps['onEscapeKeyDown']",
+      required: false,
+      description: `Event handler called when the escape key is down. It can be prevented by calling \`event.preventDefault\`.`,
+    },
+    {
+      name: 'onPause',
+      type: '(): void',
+      required: false,
+      description: `Event handler called when the dismiss timer is paused. On web, this occurs when the pointer is moved over the viewport, the viewport is focused or when the window is blurred. On mobile, this occurs when the toast is touched.`,
+    },
+    {
+      name: 'onResume',
+      type: '(): void',
+      required: false,
+      description: `Event handler called when the dismiss timer is resumed. On web, this occurs when the pointer is moved away from the viewport, the viewport is blurred or when the window is focused. On mobile, this occurs when the toast is released.`,
+    },
+    {
+      name: 'onSwipeStart',
+      type: '(event: SwipeEvent): void',
+      required: false,
+      description: `Event handler called when starting a swipe interaction. It can be prevented by calling \`event.preventDefault\`.`,
+    },
+    {
+      name: 'onSwipeMove',
+      type: '(event: SwipeEvent): void',
+      required: false,
+      description: `Event handler called during a swipe interaction. It can be prevented by calling \`event.preventDefault\`.`,
+    },
+    {
+      name: 'onSwipeCancel',
+      type: '(event: SwipeEvent): void',
+      required: false,
+      description: `Event handler called at the cancellation of a swipe interaction. It can be prevented by calling \`event.preventDefault\`.`,
+    },
+    {
+      name: 'onSwipeEnd',
+      type: '(event: SwipeEvent): void',
+      required: false,
+      description: `Event handler called at the end of a swipe interaction. It can be prevented by calling \`event.preventDefault\`.`,
+    },
+    {
+      name: 'viewportName',
+      type: 'string',
+      required: false,
+      description: `The viewport's name to send the toast to. Used when using multiple viewports and want to forward toasts to different ones.`,
+      default: 'default',
+    },
+  ]}
+/>
+
+#### Toast.Title
+
+Should be used inside [Toast](#toast). Extends [SizableText](/docs/components/text/1.0.0#sizabletext).
+
+#### Toast.Description
+
+Should be used inside [Toast](#toast). Extends [SizableText](/docs/components/text/1.0.0#sizabletext).
+
+#### Toast.Close
+
+Should be used inside [Toast](#toast). Extends [Stack](/docs/components/stacks/1.0.0). You can pass `asChild` to this component and use a custom `<Button>` inside.
+
+#### Toast.Action
+
+Should be used inside [Toast](#toast). Extends [Stack](/docs/components/stacks/1.0.0). You can pass `asChild` to this component and use a custom `<Button>` inside.
+
+### useToast
+
+Should be used inside [ToastProvider](#toastprovider).
+
+<PropsTable
+  title="Returns"
+  data={[
+    {
+      name: 'currentToast',
+      type: 'ToastData | null',
+      description: `The information about the current toast to show such as title, message, duration, etc.`,
+    },
+    {
+      name: `show`,
+      type: '(title: string, showOptions?: ShowToastOptions): void',
+      description: `Call it to show a new toast. If you're using native toasts, you can pass native options using \`burntOptions\` or \`notificationOptions\` depending on the native platform (mobile/web).`,
+    },
+    {
+      name: `hide`,
+      type: '(): void',
+      description: `Call it to hide the currently displayed toast.`,
+    },
+  ]}
+/>
+
+## FAQ
+
+#### How to change the placement of toasts?
+
+Native toasts:
+
+- iOS (burnt): Supports top or bottom placements. Adjustable by passing `from` to `burntOptions`:
+
+```tsx
+<ToastProvider burntOptions={{ from: 'bottom' }}>
+```
+
+- Android (burnt): Not supported.
+- Web (Notification API): Not supported.
+
+Non-native toasts:
+
+You should change the positioning of your [`<ToastViewport>`](#toastviewport). For instance, if you want them to appear from top right:
+
+```tsx
+<ToastViewport flexDirection="column-reverse" top={0} right={0} />
+```
+
+Or for bottom center:
+
+```tsx
+<ToastViewport flexDirection="column" bottom={0} left={0} right={0} />
+```
+
+<Notice theme="blue">
+  When using multiple toasts, you can change the order of toasts by setting
+  `flexDirection` to `column` or `column-reverse`. Or even have them stack horizontally
+  using `row` or `row-reverse`.
+</Notice>
+
+#### How to show non-native toasts within safe area on mobile?
+
+Install `react-native-safe-area-context` if you haven't, wrap your app inside `<SafeAreaProvider>`, and use the safe area insets to position the viewport inside the safe area.
+
+```tsx
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+
+const SafeToastViewport = () => {
+  const { left, top, right } = useSafeAreaInsets()
+  return (
+    <ToastViewport flexDirection="column-reverse" top={top} left={left} right={right} />
+  )
+}
+```
+
+#### Can I send toasts to different toast viewports?
+
+Yes, but you will have to name them and then reference the viewport name on the `<Toast>` component. for instance:
+
+```tsx
+const App = () => {
+  return (
+    <ToastProvider>
+      <ToastViewport /> {/* name will be "default" */}
+      <ToastViewport name="viewport-custom" />
+    </ToastProvider>
+  )
+}
+
+const MyComponent = () => {
+  return <Toast>{/* goes to default viewport */}</Toast>
+}
+
+const MyComponent2 = () => {
+  return <Toast viewportName="viewport-custom" />
+}
+```
+
+#### How can I have more control over toasts?
+
+You will have to opt-out of the native toasts and only use custom ones. Here are some examples:
+
+##### Single Toast
+
+```tsx
+export default () => {
+  const [open, setOpen] = React.useState(false)
+  const timerRef = React.useRef(0)
+
+  React.useEffect(() => {
+    return () => clearTimeout(timerRef.current)
+  }, [])
+
+  return (
+    <YStack ai="center">
+      <Button
+        onPress={() => {
+          setOpen(false)
+          window.clearTimeout(timerRef.current)
+          timerRef.current = window.setTimeout(() => {
+            setOpen(true)
+          }, 150)
+        }}
+      >
+        Single Toast
+      </Button>
+      <Toast
+        onOpenChange={setOpen}
+        open={open}
+        animation="100ms"
+        enterStyle={{ x: -20, opacity: 0 }}
+        exitStyle={{ x: -20, opacity: 0 }}
+        opacity={1}
+        x={0}
+      >
+        <Toast.Title>Subscribed!</Toast.Title>
+        <Toast.Description>We'll be in touch.</Toast.Description>
+      </Toast>
+    </YStack>
+  )
+}
+```
+
+##### Multiple Toasts
+
+<Notice>
+  To use multiple toasts, you should pass `multipleToasts` to your `ToastViewport`.
+  Otherwise there'll be issues when swipe-dismissing or animating toasts.
+</Notice>
+
+```tsx
+export default () => {
+  const [savedCount, setSavedCount] = React.useState(0)
+
+  return (
+    <YStack ai="center">
+      <Button
+        onPress={() => {
+          setSavedCount((old) => old + 1)
+        }}
+      >
+        Show toast
+      </Button>
+      {[...Array(savedCount)].map((_, index) => (
+        <Toast
+          key={index}
+          animation="100ms"
+          enterStyle={{ x: -20, opacity: 0 }}
+          exitStyle={{ x: -20, opacity: 0 }}
+          opacity={1}
+          x={0}
+        >
+          <Toast.Title>Subscribed!</Toast.Title>
+          <Toast.Description>We'll be in touch.</Toast.Description>
+        </Toast>
+      ))}
+    </YStack>
+  )
+}
+```

@@ -34,7 +34,7 @@ export default function Community({ frontmatters }) {
         title="Community — Tamagui"
         description="Tamagui's latest news and discussions."
         openGraph={{
-          url: 'https://tamagiu.dev/community',
+          url: 'https://tamagui.dev/community',
         }}
       />
 

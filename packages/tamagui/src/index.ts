@@ -123,6 +123,8 @@ export type {
   VariantSpreadExtras,
   VariantSpreadFunction,
   ZIndexTokens,
+  ViewStyle,
+  TextStyle,
 } from '@tamagui/core'
 
 export {

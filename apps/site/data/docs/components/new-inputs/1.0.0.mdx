@@ -1,0 +1,54 @@
+---
+title: Input & Textarea
+name: inputs
+component: Input
+demoName: Inputs
+---
+
+# light Input & Textarea
+
+<Description>Web compatible Form fields for text</Description>
+
+<HeroContainer demoMultiple>
+  <NewInputsDemo />
+</HeroContainer>
+
+```tsx hero template=Inputs
+
+```
+
+Using Web APIs and relying on bare Tamagui with no `react-native-web` depedency on web compared to old Input component, support scaling all the styles up or down using the `size` property, and full `theme` support.
+
+## Installation
+
+LinearGradient is already installed in `tamagui`, or you can install it independently:
+
+```bash
+npm install @tamagui/input
+```
+
+## Input
+
+A one-line input field:
+
+```tsx
+import { Input } from 'tamagui'
+
+export const App = () => (
+  // Accepts size and style properties directly
+  <Input size="$4" borderWidth={2} />
+)
+```
+
+## TextArea
+
+For multi-line inputs:
+
+```tsx
+import { TextArea } from 'tamagui'
+
+export const App = () => (
+  // Accepts size and style properties directly
+  <TextArea size="$4" borderWidth={2} />
+)
+```

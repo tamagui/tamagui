@@ -97,5 +97,5 @@ declare const ToastViewport: React.MemoExoticComponent<React.ForwardRefExoticCom
 } & {
     __scopeToast?: string | undefined;
 } & React.RefAttributes<HTMLDivElement>>>;
-export { ToastViewport, ToastViewportProps, VIEWPORT_DEFAULT_HOTKEY, VIEWPORT_PAUSE, VIEWPORT_RESUME, };
+export { ToastViewport, type ToastViewportProps, VIEWPORT_DEFAULT_HOTKEY, VIEWPORT_PAUSE, VIEWPORT_RESUME, };
 //# sourceMappingURL=ToastViewport.d.ts.map

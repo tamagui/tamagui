@@ -38,22 +38,17 @@ async function copyMergedComponents(directoryPath, outputDirectory) {
   if (foundIndex) {
     const exportedModules = analyzeIndexFile(foundIndex)
 
+    console.info('exporting from', foundIndex, 'modules', exportedModules)
+
     exportedModules.forEach((exportedModule) => {
       const modulePath = path.join(directoryPath, exportedModule)
-      const outputPath = path.join(
-        outputDirectory,
-        directoryPath.replace(rootDirectory, ''),
-        exportedModule
-      )
-      // console.info(outputPath)
-
       const outputFilePath = path.join(
         outputDirectory,
         directoryPath.replace(rootDirectory, ''),
         exportedModule
       )
       fs.mkdirSync(path.dirname(outputFilePath), { recursive: true })
-      const outputContent = shake(processFile(`${modulePath}.tsx`))
+      const outputContent = shake(processFile(`${modulePath}/index.tsx`))
       fs.writeFileSync(`${outputFilePath}.tsx`, outputContent)
     })
   } else {
@@ -87,7 +82,7 @@ function copyUnmergedComponents(directoryPath, outputDirectory) {
   })
 }
 
-const mathImportsRegex =
+const matchImportsRegex =
   /import\s+(?:\w+\s*)?\{\s*(?:\w+\s*,\s*)*\w+\s*\}\s+from\s+'(\.\/|\.\.\/)[^']+'/g
 
 function processFile(filePath, visitedFiles = new Set()) {
@@ -100,7 +95,10 @@ function processFile(filePath, visitedFiles = new Set()) {
   let fileContent = fs.readFileSync(filePath, 'utf8')
   fileContent = replaceInternals(fileContent)
 
-  const importStatements = Array.from(fileContent.matchAll(mathImportsRegex), (m) => m[0])
+  const importStatements = Array.from(
+    fileContent.matchAll(matchImportsRegex),
+    (m) => m[0]
+  )
 
   let appendedContent = fileContent
   appendedContent = `/** START of the file ${filePath

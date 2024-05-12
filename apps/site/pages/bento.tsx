@@ -1,5 +1,5 @@
 import { NextLink } from '@components/NextLink'
-import * as Sections from '@tamagui/bento'
+import { Data, Components } from '@tamagui/bento'
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import {
   AlertCircle,
@@ -12,23 +12,17 @@ import {
   ChevronDown,
   CircleUserRound,
   Cog,
-  Dot,
-  Drumstick,
-  FileWarning,
   FormInput,
   Globe,
-  Hand,
   Image,
   Layout,
   Leaf,
   List,
   MessageSquareShare,
-  MessageSquareWarning,
   MousePointerClick,
   NotebookTabs,
   PanelLeft,
   PanelTop,
-  Pin,
   Puzzle,
   RectangleHorizontal,
   Search,
@@ -43,7 +37,6 @@ import {
   Button,
   Circle,
   EnsureFlexed,
-  H2,
   H3,
   H4,
   H5,
@@ -68,11 +61,10 @@ import { getDefaultLayout } from '@lib/getDefaultLayout'
 import { getProductsForServerSideRendering } from '@lib/product-pages-server'
 import { useStore } from '@tamagui/use-store'
 import { useTakeoutStore } from 'hooks/useTakeoutStore'
-import { useUser } from 'hooks/useUser'
 import type { GetStaticProps } from 'next'
 import { useMemo, useRef, useState } from 'react'
-import { PurchaseModal } from '../components/PurchaseModal'
 import { BentoFrond } from '../components/BentoFrond'
+import { PurchaseModal } from '../components/PurchaseModal'
 
 class BentoStore {
   heroVisible = true
@@ -456,7 +448,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['bento'] }) => 
                 <YStack br="$4" shac="rgba(0,0,0,0.2)" shar="$8">
                   <ThemeTintAlt>
                     <Theme name="surface4">
-                      <Sections.Preferences.LocationNotification />
+                      <Components.Preferences.LocationNotification />
                     </Theme>
                   </ThemeTintAlt>
                 </YStack>
@@ -471,7 +463,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['bento'] }) => 
                 >
                   <ThemeTintAlt>
                     <Theme name="surface3">
-                      <Sections.Preferences.LocationNotification />
+                      <Components.Preferences.LocationNotification />
                     </Theme>
                   </ThemeTintAlt>
                 </YStack>
@@ -486,7 +478,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['bento'] }) => 
                 >
                   <ThemeTintAlt>
                     <Theme name="surface2">
-                      <Sections.Preferences.LocationNotification />
+                      <Components.Preferences.LocationNotification />
                     </Theme>
                   </ThemeTintAlt>
                 </YStack>
@@ -499,7 +491,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['bento'] }) => 
                     clipPath: `polygon(0% 0%, 45% 0%, 0% 100%, 0% 100%)`,
                   }}
                 >
-                  <Sections.Preferences.LocationNotification />
+                  <Components.Preferences.LocationNotification />
                 </YStack>
 
                 <YStack
@@ -514,7 +506,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['bento'] }) => 
                 >
                   <ThemeTint>
                     <Theme name="surface3">
-                      <Sections.Preferences.LocationNotification />
+                      <Components.Preferences.LocationNotification />
                     </Theme>
                   </ThemeTint>
                 </YStack>
@@ -533,8 +525,8 @@ const Body = () => {
   const store = useStore(BentoStore)
 
   const filteredSections = useMemo(() => {
-    if (!filter) return Sections.listingData.sections
-    return Sections.listingData.sections
+    if (!filter) return Data.listingData.sections
+    return Data.listingData.sections
       .map(({ sectionName, parts }) => {
         const filteredParts = parts.filter((part) => {
           return part.name.toLowerCase().includes(filter.toLowerCase())
@@ -544,7 +536,7 @@ const Body = () => {
               sectionName,
               parts: filteredParts,
             }
-          : undefined
+          : (undefined as never)
       })
       .filter(Boolean)
   }, [filter])
@@ -633,7 +625,7 @@ const Body = () => {
                 <ContainerLarge>
                   <Theme name="tan">
                     <XStack
-                      gap={parts.length === parts[parts.length - 1] ? '$0' : '$5'}
+                      gap="$5"
                       f={4}
                       fs={1}
                       $gtMd={{
@@ -643,7 +635,13 @@ const Body = () => {
                       }}
                     >
                       {parts.map(
-                        ({ name: partsName, numberOfComponents, route, preview }) => (
+                        ({
+                          name: partsName,
+                          numberOfComponents,
+                          route,
+                          // @ts-expect-error
+                          preview,
+                        }) => (
                           <SectionCard
                             key={route + partsName + numberOfComponents.toString()}
                             path={route}

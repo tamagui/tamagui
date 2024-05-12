@@ -85,7 +85,6 @@ export function createSheet<
           // @ts-ignore
           <Overlay
             {...props}
-            debug="verbose"
             onPress={composeEventHandlers(
               props.onPress,
               context.dismissOnOverlayPress
@@ -194,6 +193,7 @@ export function createSheet<
               <Frame
                 {...props}
                 componentName="SheetCover"
+                // biome-ignore lint/correctness/noChildrenProp: <explanation>
                 children={null}
                 position="absolute"
                 bottom="-100%"

@@ -1,4 +1,4 @@
-import { tamaguiExtractPlugin, tamaguiPlugin } from '@tamagui/vite-plugin'
+import { tamaguiExtractPlugin, tamaguiPlugin } from '@tamagui/vite-plugin-cjs'
 import react from '@vitejs/plugin-react-swc'
 import { defineConfig } from 'vite'
 

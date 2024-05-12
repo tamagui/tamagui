@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/monorepo-test",
-  "version": "1.94.5",
+  "version": "1.97.1",
   "module": "dist/esm",
   "type": "module",
   "private": true,
@@ -9,7 +9,6 @@
     "name": "Nate Wienert"
   },
   "scripts": {
-    "build": "true",
     "test": "vitest --run --config ../vite-plugin-internal/src/vite.config.ts"
   },
   "devDependencies": {

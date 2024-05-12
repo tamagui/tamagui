@@ -1,4 +1,4 @@
-import path from 'path'
+import path from 'node:path'
 
 // helper for webpack exclude specific to tamagui
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import type { FunctionComponent, PropsWithChildren } from 'react';
 import type { AnimatePresenceProps } from './types';
 /**
  * `AnimatePresence` enables the animation of components that have been removed from the tree.
@@ -33,5 +33,5 @@ import type { AnimatePresenceProps } from './types';
  *
  * @public
  */
-export declare const AnimatePresence: React.FunctionComponent<React.PropsWithChildren<AnimatePresenceProps>>;
+export declare const AnimatePresence: FunctionComponent<PropsWithChildren<AnimatePresenceProps>>;
 //# sourceMappingURL=AnimatePresence.d.ts.map
