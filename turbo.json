@@ -2,6 +2,11 @@
   "$schema": "https://turbo.build/schema.json",
   "extends": ["//"],
   "pipeline": {
+    "build:js": {
+      "cache": false,
+      "inputs": ["package.json", "src/**", "tamagui-build.js"],
+      "outputs": ["dist/**"]
+    },
     "build": {
       "dependsOn": ["^build"],
       "inputs": [
