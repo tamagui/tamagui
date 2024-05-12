@@ -1,4 +1,5 @@
-import React, { MutableRefObject } from 'react';
+import type { MutableRefObject } from 'react';
+import React from 'react';
 import type { ChangedThemeResponse } from '../hooks/useTheme';
 import type { ThemeProps } from '../types';
 export declare const Theme: React.ForwardRefExoticComponent<ThemeProps & React.RefAttributes<unknown>>;

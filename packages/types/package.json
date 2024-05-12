@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/types",
-  "version": "1.96.0",
+  "version": "1.97.1",
   "types": "./types.ts",
   "files": [
     "types.ts"
@@ -9,10 +9,6 @@
     ".": {
       "types": "./types.ts"
     }
-  },
-  "scripts": {
-    "build": "true",
-    "clean": "true"
   },
   "publishConfig": {
     "access": "public"

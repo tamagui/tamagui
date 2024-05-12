@@ -3,7 +3,7 @@ import { Copy, Download } from '@tamagui/lucide-icons'
 import { useStore } from '@tamagui/use-store'
 import { useEffect } from 'react'
 import { refractor } from 'refractor'
-import tsx from 'refractor/lang/tsx'
+import tsx from 'refractor/lang/tsx.js'
 import {
   Button,
   Circle,

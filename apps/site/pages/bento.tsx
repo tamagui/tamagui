@@ -1,6 +1,5 @@
 import { NextLink } from '@components/NextLink'
-import * as Sections from '@tamagui/bento'
-import { Data } from '@tamagui/bento'
+import { Data, Components } from '@tamagui/bento'
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import {
   AlertCircle,
@@ -449,7 +448,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['bento'] }) => 
                 <YStack br="$4" shac="rgba(0,0,0,0.2)" shar="$8">
                   <ThemeTintAlt>
                     <Theme name="surface4">
-                      <Sections.Preferences.LocationNotification />
+                      <Components.Preferences.LocationNotification />
                     </Theme>
                   </ThemeTintAlt>
                 </YStack>
@@ -464,7 +463,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['bento'] }) => 
                 >
                   <ThemeTintAlt>
                     <Theme name="surface3">
-                      <Sections.Preferences.LocationNotification />
+                      <Components.Preferences.LocationNotification />
                     </Theme>
                   </ThemeTintAlt>
                 </YStack>
@@ -479,7 +478,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['bento'] }) => 
                 >
                   <ThemeTintAlt>
                     <Theme name="surface2">
-                      <Sections.Preferences.LocationNotification />
+                      <Components.Preferences.LocationNotification />
                     </Theme>
                   </ThemeTintAlt>
                 </YStack>
@@ -492,7 +491,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['bento'] }) => 
                     clipPath: `polygon(0% 0%, 45% 0%, 0% 100%, 0% 100%)`,
                   }}
                 >
-                  <Sections.Preferences.LocationNotification />
+                  <Components.Preferences.LocationNotification />
                 </YStack>
 
                 <YStack
@@ -507,7 +506,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['bento'] }) => 
                 >
                   <ThemeTint>
                     <Theme name="surface3">
-                      <Sections.Preferences.LocationNotification />
+                      <Components.Preferences.LocationNotification />
                     </Theme>
                   </ThemeTint>
                 </YStack>

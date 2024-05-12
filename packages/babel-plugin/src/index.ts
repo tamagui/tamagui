@@ -1,4 +1,4 @@
-import { basename } from 'path'
+import { basename } from 'node:path'
 
 import generator from '@babel/generator'
 import { declare } from '@babel/helper-plugin-utils'

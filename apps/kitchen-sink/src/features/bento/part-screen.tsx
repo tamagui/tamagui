@@ -1,7 +1,7 @@
-import { H1, ScrollView, Spacer, YStack } from 'tamagui'
-import { createParam } from 'solito'
-import * as sections from '@tamagui/bento'
+import { Components } from '@tamagui/bento'
 import { useLayoutEffect } from 'react'
+import { createParam } from 'solito'
+import { ScrollView, YStack } from 'tamagui'
 
 const { useParam } = createParam<{ id: string }>()
 export function BentoPartScreen({ navigation }) {
@@ -22,7 +22,7 @@ export function BentoPartScreen({ navigation }) {
   return (
     <ScrollView>
       <YStack jc="center" ai="center" bg="$background" minWidth="100%" px="$2">
-        {Object.values(sections[name] ?? []).map((Component, index) => {
+        {Object.values(Components[name] ?? []).map((Component, index) => {
           const ComponentElement = Component as React.ElementType
           // add navigation prop here just for components that use it. eg: TabBar
           return <ComponentElement key={index} navigation={navigation} />

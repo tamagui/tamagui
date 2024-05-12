@@ -2,8 +2,6 @@
   "extends": "../../tsconfig",
   "compilerOptions": {
     "composite": true,
-    "module": "Node16",
-    "moduleResolution": "Node16",
     "rootDir": "../.."
   },
   "include": [

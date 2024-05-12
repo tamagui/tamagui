@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react'
-import { registerFocusable } from '@tamagui/focusable'
 import { styled, useComposedRefs } from '@tamagui/core'
-import { TextInput, NativeSyntheticEvent, TextInputChangeEventData } from 'react-native'
-import { InputProps } from './types'
+import { registerFocusable } from '@tamagui/focusable'
+import React, { useEffect } from 'react'
+import type { NativeSyntheticEvent, TextInputChangeEventData } from 'react-native'
+import { TextInput } from 'react-native'
 import { styledBody } from './shared'
+import type { InputProps } from './types'
 const StyledInput = styled(TextInput, styledBody[0], styledBody[1])
 
 export const Input = StyledInput.styleable<InputProps>((inProps, forwardedRef) => {

@@ -1,24 +1,20 @@
-import * as sections from '@tamagui/bento'
-import { Data } from '@tamagui/bento'
-
+import { Data, Sections } from '@tamagui/bento'
 import { Anchor, H1, SizableText, Theme, View, XStack, YStack } from 'tamagui'
 import { BentoPageFrame } from '../../../components/BentoPageFrame'
-
 import type { GetStaticPaths } from 'next'
 import { useRouter } from 'next/router'
-
+import { DropTamaguiConfig } from '@components/DropTamaguiConfig'
+import { Toast, useToastState } from '@tamagui/toast'
 import Link from 'next/link'
 import { BentoLogo } from '../../../components/BentoLogo'
 import { ContainerBento } from '../../../components/Container'
 import { ThemeNameEffect } from '../../../components/ThemeNameEffect'
 import { getDefaultLayout } from '../../../lib/getDefaultLayout'
-import { Toast, useToastState } from '@tamagui/toast'
-import { DropTamaguiConfig } from '@components/DropTamaguiConfig'
 
 export default function page() {
   const router = useRouter()
   const params = router.query as { section: string; part: string }
-  const Comp = sections[params.section][params.part]
+  const Comp = Sections[params.section][params.part]
 
   return (
     <>

@@ -7,7 +7,7 @@ import type {
   ThemeValueFallback,
 } from '@tamagui/core'
 import { styled, usePropsAndStyle } from '@tamagui/core'
-import React, { forwardRef } from 'react'
+import { type FC, forwardRef } from 'react'
 import { Image as RNImage } from 'react-native'
 
 const StyledImage = styled(RNImage, {
@@ -38,7 +38,7 @@ export type ImageProps = BaseProps & Omit<StackProps, keyof BaseProps>
 
 type RNImageType = typeof RNImage
 
-type ImageType = React.FC<ImageProps> & {
+type ImageType = FC<ImageProps> & {
   getSize: RNImageType['getSize']
   getSizeWithHeaders: RNImageType['getSizeWithHeaders']
   prefetch: RNImageType['prefetch']

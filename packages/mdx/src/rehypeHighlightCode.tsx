@@ -4,7 +4,7 @@
 import { toString } from 'hast-util-to-string'
 import rangeParser from 'parse-numeric-range'
 import { refractor } from 'refractor'
-import tsx from 'refractor/lang/tsx'
+import tsx from 'refractor/lang/tsx.js'
 import visit from 'unist-util-visit'
 
 import { rehypeHighlightLine } from './rehypeLine'

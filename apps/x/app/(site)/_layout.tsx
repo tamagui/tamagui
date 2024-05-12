@@ -18,8 +18,6 @@ export default function SiteLayout() {
   const showAuth = isAuthPage || isProductLandingPage || isAccountPage
   const hideFooter = isDocs || isTakeout || isBento
 
-  console.log('setting head')
-
   return (
     <>
       <Head>{/* TODO */}</Head>

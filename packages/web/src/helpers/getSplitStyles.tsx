@@ -43,7 +43,7 @@ import type {
   StaticConfig,
   StyleObject,
   TamaguiInternalConfig,
-  TextStyleProps,
+  TextStyle,
   ThemeParsed,
   ViewStyleWithPseudos,
 } from '../types'
@@ -332,7 +332,7 @@ export const getSplitStyles: StyleSplitter = (
         // map userSelect to native prop
         if (keyInit === 'userSelect') {
           keyInit = 'selectable'
-          valInit = valInit === 'none' ? false : true
+          valInit = valInit !== 'none'
         } else if (keyInit.startsWith('data-')) {
           continue
         }
@@ -1431,9 +1431,9 @@ export const getSubStyle = (
   subKey: string,
   styleIn: Object,
   avoidMergeTransform?: boolean
-): TextStyleProps => {
+): TextStyle => {
   const { staticConfig, props, conf, styleProps } = styleState
-  const styleOut: TextStyleProps = {}
+  const styleOut: TextStyle = {}
 
   for (let key in styleIn) {
     const val = styleIn[key]
@@ -1510,12 +1510,7 @@ const animatableDefaults = {
 const lowercaseHyphenate = (match: string) => `-${match.toLowerCase()}`
 const hyphenate = (str: string) => str.replace(/[A-Z]/g, lowercaseHyphenate)
 
-const mergeTransform = (
-  obj: TextStyleProps,
-  key: string,
-  val: any,
-  backwards = false
-) => {
+const mergeTransform = (obj: TextStyle, key: string, val: any, backwards = false) => {
   if (typeof obj.transform === 'string') {
     return
   }

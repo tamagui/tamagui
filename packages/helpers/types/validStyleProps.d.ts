@@ -250,6 +250,7 @@ export declare const stylePropsView: {
     borderBottomWidth: boolean;
     borderLeftWidth: boolean;
     borderRightWidth: boolean;
+<<<<<<< HEAD
     borderBlockWidth: boolean;
     borderBlockEndWidth: boolean;
     borderBlockStartWidth: boolean;
@@ -263,6 +264,9 @@ export declare const stylePropsView: {
     borderInlineStyle: boolean;
     borderInlineEndStyle: boolean;
     borderInlineStartStyle: boolean;
+=======
+    borderStyle: boolean;
+>>>>>>> master
     borderTopEndRadius: boolean;
     borderTopStartRadius: boolean;
     borderTopWidth: boolean;
@@ -286,12 +290,20 @@ export declare const stylePropsView: {
     justifyContent: boolean;
     left: boolean;
     margin: boolean;
+<<<<<<< HEAD
     marginBlock: boolean;
     marginBlockEnd: boolean;
     marginBlockStart: boolean;
     marginInline: boolean;
     marginInlineStart: boolean;
     marginInlineEnd: boolean;
+=======
+    marginBlockEnd: boolean;
+    marginBlockStart: boolean;
+    marginInlineEnd: boolean;
+    marginInline: boolean;
+    marginInlineStart: boolean;
+>>>>>>> master
     marginBottom: boolean;
     marginEnd: boolean;
     marginHorizontal: boolean;
@@ -319,6 +331,7 @@ export declare const stylePropsView: {
     right: boolean;
     start: boolean;
     top: boolean;
+<<<<<<< HEAD
     inset: boolean;
     insetBlock: boolean;
     insetBlockEnd: boolean;
@@ -326,6 +339,8 @@ export declare const stylePropsView: {
     insetInline: boolean;
     insetInlineEnd: boolean;
     insetInlineStart: boolean;
+=======
+>>>>>>> master
     direction: boolean;
     shadowOffset: boolean;
     shadowRadius: boolean;
@@ -344,14 +359,22 @@ export declare const stylePropsTextOnly: {
     wordWrap?: boolean | undefined;
     textOverflow?: boolean | undefined;
     textDecorationDistance?: boolean | undefined;
+<<<<<<< HEAD
+=======
+    userSelect?: boolean | undefined;
+    selectable?: boolean | undefined;
+>>>>>>> master
     cursor?: boolean | undefined;
     WebkitLineClamp?: boolean | undefined;
     WebkitBoxOrient?: boolean | undefined;
     textShadowOffset: boolean;
     textShadowRadius: boolean;
+<<<<<<< HEAD
     userSelect: boolean;
     selectable: boolean;
     verticalAlign: boolean;
+=======
+>>>>>>> master
     color: boolean;
     textDecorationColor: boolean;
     textShadowColor: boolean;
@@ -371,14 +394,22 @@ export declare const stylePropsText: {
     wordWrap?: boolean | undefined;
     textOverflow?: boolean | undefined;
     textDecorationDistance?: boolean | undefined;
+<<<<<<< HEAD
+=======
+    userSelect?: boolean | undefined;
+    selectable?: boolean | undefined;
+>>>>>>> master
     cursor?: boolean | undefined;
     WebkitLineClamp: boolean;
     WebkitBoxOrient?: boolean | undefined;
     textShadowOffset: boolean;
     textShadowRadius: boolean;
+<<<<<<< HEAD
     userSelect: boolean;
     selectable: boolean;
     verticalAlign: boolean;
+=======
+>>>>>>> master
     color: boolean;
     textDecorationColor: boolean;
     textShadowColor: boolean;
@@ -409,6 +440,7 @@ export declare const stylePropsText: {
     outlineOffset?: boolean | undefined;
     outlineWidth?: boolean | undefined;
     touchAction?: boolean | undefined;
+<<<<<<< HEAD
     filter?: boolean | undefined;
     backdropFilter?: boolean | undefined;
     mixBlendMode?: boolean | undefined;
@@ -447,6 +479,8 @@ export declare const stylePropsText: {
     maskRepeat?: boolean | undefined;
     maskSize?: boolean | undefined;
     maskType?: boolean | undefined;
+=======
+>>>>>>> master
     animationIterationCount: boolean;
     aspectRatio: boolean;
     borderImageOutset: boolean;
@@ -505,6 +539,7 @@ export declare const stylePropsText: {
     minHeight: boolean;
     maxWidth: boolean;
     maxHeight: boolean;
+<<<<<<< HEAD
     blockSize: boolean;
     minBlockSize: boolean;
     maxBlockSize: boolean;
@@ -512,14 +547,21 @@ export declare const stylePropsText: {
     minInlineSize: boolean;
     maxInlineSize: boolean;
     outlineColor?: boolean | undefined;
+=======
+    outlineColor?: boolean | undefined;
+    backgroundColor: boolean;
+>>>>>>> master
     borderColor: boolean;
     borderBlockStartColor: boolean;
     borderBlockEndColor: boolean;
     borderBlockColor: boolean;
     borderBottomColor: boolean;
+<<<<<<< HEAD
     borderInlineColor: boolean;
     borderInlineStartColor: boolean;
     borderInlineEndColor: boolean;
+=======
+>>>>>>> master
     borderTopColor: boolean;
     borderLeftColor: boolean;
     borderRightColor: boolean;
@@ -532,6 +574,7 @@ export declare const stylePropsText: {
     borderBottomWidth: boolean;
     borderLeftWidth: boolean;
     borderRightWidth: boolean;
+<<<<<<< HEAD
     borderBlockWidth: boolean;
     borderBlockEndWidth: boolean;
     borderBlockStartWidth: boolean;
@@ -545,6 +588,9 @@ export declare const stylePropsText: {
     borderInlineStyle: boolean;
     borderInlineEndStyle: boolean;
     borderInlineStartStyle: boolean;
+=======
+    borderStyle: boolean;
+>>>>>>> master
     borderTopEndRadius: boolean;
     borderTopStartRadius: boolean;
     borderTopWidth: boolean;
@@ -568,12 +614,20 @@ export declare const stylePropsText: {
     justifyContent: boolean;
     left: boolean;
     margin: boolean;
+<<<<<<< HEAD
     marginBlock: boolean;
     marginBlockEnd: boolean;
     marginBlockStart: boolean;
     marginInline: boolean;
     marginInlineStart: boolean;
     marginInlineEnd: boolean;
+=======
+    marginBlockEnd: boolean;
+    marginBlockStart: boolean;
+    marginInlineEnd: boolean;
+    marginInline: boolean;
+    marginInlineStart: boolean;
+>>>>>>> master
     marginBottom: boolean;
     marginEnd: boolean;
     marginHorizontal: boolean;
@@ -601,6 +655,7 @@ export declare const stylePropsText: {
     right: boolean;
     start: boolean;
     top: boolean;
+<<<<<<< HEAD
     inset: boolean;
     insetBlock: boolean;
     insetBlockEnd: boolean;
@@ -608,6 +663,8 @@ export declare const stylePropsText: {
     insetInline: boolean;
     insetInlineEnd: boolean;
     insetInlineStart: boolean;
+=======
+>>>>>>> master
     direction: boolean;
     shadowOffset: boolean;
     shadowRadius: boolean;
@@ -617,14 +674,22 @@ export declare const stylePropsAll: {
     wordWrap?: boolean | undefined;
     textOverflow?: boolean | undefined;
     textDecorationDistance?: boolean | undefined;
+<<<<<<< HEAD
+=======
+    userSelect?: boolean | undefined;
+    selectable?: boolean | undefined;
+>>>>>>> master
     cursor?: boolean | undefined;
     WebkitLineClamp: boolean;
     WebkitBoxOrient?: boolean | undefined;
     textShadowOffset: boolean;
     textShadowRadius: boolean;
+<<<<<<< HEAD
     userSelect: boolean;
     selectable: boolean;
     verticalAlign: boolean;
+=======
+>>>>>>> master
     color: boolean;
     textDecorationColor: boolean;
     textShadowColor: boolean;
@@ -655,6 +720,7 @@ export declare const stylePropsAll: {
     outlineOffset?: boolean | undefined;
     outlineWidth?: boolean | undefined;
     touchAction?: boolean | undefined;
+<<<<<<< HEAD
     filter?: boolean | undefined;
     backdropFilter?: boolean | undefined;
     mixBlendMode?: boolean | undefined;
@@ -693,6 +759,8 @@ export declare const stylePropsAll: {
     maskRepeat?: boolean | undefined;
     maskSize?: boolean | undefined;
     maskType?: boolean | undefined;
+=======
+>>>>>>> master
     animationIterationCount: boolean;
     aspectRatio: boolean;
     borderImageOutset: boolean;
@@ -751,6 +819,7 @@ export declare const stylePropsAll: {
     minHeight: boolean;
     maxWidth: boolean;
     maxHeight: boolean;
+<<<<<<< HEAD
     blockSize: boolean;
     minBlockSize: boolean;
     maxBlockSize: boolean;
@@ -758,14 +827,21 @@ export declare const stylePropsAll: {
     minInlineSize: boolean;
     maxInlineSize: boolean;
     outlineColor?: boolean | undefined;
+=======
+    outlineColor?: boolean | undefined;
+    backgroundColor: boolean;
+>>>>>>> master
     borderColor: boolean;
     borderBlockStartColor: boolean;
     borderBlockEndColor: boolean;
     borderBlockColor: boolean;
     borderBottomColor: boolean;
+<<<<<<< HEAD
     borderInlineColor: boolean;
     borderInlineStartColor: boolean;
     borderInlineEndColor: boolean;
+=======
+>>>>>>> master
     borderTopColor: boolean;
     borderLeftColor: boolean;
     borderRightColor: boolean;
@@ -778,6 +854,7 @@ export declare const stylePropsAll: {
     borderBottomWidth: boolean;
     borderLeftWidth: boolean;
     borderRightWidth: boolean;
+<<<<<<< HEAD
     borderBlockWidth: boolean;
     borderBlockEndWidth: boolean;
     borderBlockStartWidth: boolean;
@@ -791,6 +868,9 @@ export declare const stylePropsAll: {
     borderInlineStyle: boolean;
     borderInlineEndStyle: boolean;
     borderInlineStartStyle: boolean;
+=======
+    borderStyle: boolean;
+>>>>>>> master
     borderTopEndRadius: boolean;
     borderTopStartRadius: boolean;
     borderTopWidth: boolean;
@@ -814,12 +894,20 @@ export declare const stylePropsAll: {
     justifyContent: boolean;
     left: boolean;
     margin: boolean;
+<<<<<<< HEAD
     marginBlock: boolean;
     marginBlockEnd: boolean;
     marginBlockStart: boolean;
     marginInline: boolean;
     marginInlineStart: boolean;
     marginInlineEnd: boolean;
+=======
+    marginBlockEnd: boolean;
+    marginBlockStart: boolean;
+    marginInlineEnd: boolean;
+    marginInline: boolean;
+    marginInlineStart: boolean;
+>>>>>>> master
     marginBottom: boolean;
     marginEnd: boolean;
     marginHorizontal: boolean;
@@ -847,6 +935,7 @@ export declare const stylePropsAll: {
     right: boolean;
     start: boolean;
     top: boolean;
+<<<<<<< HEAD
     inset: boolean;
     insetBlock: boolean;
     insetBlockEnd: boolean;
@@ -854,6 +943,8 @@ export declare const stylePropsAll: {
     insetInline: boolean;
     insetInlineEnd: boolean;
     insetInlineStart: boolean;
+=======
+>>>>>>> master
     direction: boolean;
     shadowOffset: boolean;
     shadowRadius: boolean;
@@ -887,6 +978,7 @@ export declare const validStyles: {
     outlineOffset?: boolean | undefined;
     outlineWidth?: boolean | undefined;
     touchAction?: boolean | undefined;
+<<<<<<< HEAD
     filter?: boolean | undefined;
     backdropFilter?: boolean | undefined;
     mixBlendMode?: boolean | undefined;
@@ -925,6 +1017,8 @@ export declare const validStyles: {
     maskRepeat?: boolean | undefined;
     maskSize?: boolean | undefined;
     maskType?: boolean | undefined;
+=======
+>>>>>>> master
     WebkitLineClamp: boolean;
     animationIterationCount: boolean;
     aspectRatio: boolean;
@@ -985,24 +1079,34 @@ export declare const validStyles: {
     minHeight: boolean;
     maxWidth: boolean;
     maxHeight: boolean;
+<<<<<<< HEAD
     blockSize: boolean;
     minBlockSize: boolean;
     maxBlockSize: boolean;
     inlineSize: boolean;
     minInlineSize: boolean;
     maxInlineSize: boolean;
+=======
+>>>>>>> master
     outlineColor?: boolean | undefined;
     color: boolean;
     textDecorationColor: boolean;
     textShadowColor: boolean;
+<<<<<<< HEAD
+=======
+    backgroundColor: boolean;
+>>>>>>> master
     borderColor: boolean;
     borderBlockStartColor: boolean;
     borderBlockEndColor: boolean;
     borderBlockColor: boolean;
     borderBottomColor: boolean;
+<<<<<<< HEAD
     borderInlineColor: boolean;
     borderInlineStartColor: boolean;
     borderInlineEndColor: boolean;
+=======
+>>>>>>> master
     borderTopColor: boolean;
     borderLeftColor: boolean;
     borderRightColor: boolean;
@@ -1015,6 +1119,7 @@ export declare const validStyles: {
     borderBottomWidth: boolean;
     borderLeftWidth: boolean;
     borderRightWidth: boolean;
+<<<<<<< HEAD
     borderBlockWidth: boolean;
     borderBlockEndWidth: boolean;
     borderBlockStartWidth: boolean;
@@ -1028,6 +1133,9 @@ export declare const validStyles: {
     borderInlineStyle: boolean;
     borderInlineEndStyle: boolean;
     borderInlineStartStyle: boolean;
+=======
+    borderStyle: boolean;
+>>>>>>> master
     borderTopEndRadius: boolean;
     borderTopStartRadius: boolean;
     borderTopWidth: boolean;
@@ -1051,12 +1159,20 @@ export declare const validStyles: {
     justifyContent: boolean;
     left: boolean;
     margin: boolean;
+<<<<<<< HEAD
     marginBlock: boolean;
     marginBlockEnd: boolean;
     marginBlockStart: boolean;
     marginInline: boolean;
     marginInlineStart: boolean;
     marginInlineEnd: boolean;
+=======
+    marginBlockEnd: boolean;
+    marginBlockStart: boolean;
+    marginInlineEnd: boolean;
+    marginInline: boolean;
+    marginInlineStart: boolean;
+>>>>>>> master
     marginBottom: boolean;
     marginEnd: boolean;
     marginHorizontal: boolean;
@@ -1084,6 +1200,7 @@ export declare const validStyles: {
     right: boolean;
     start: boolean;
     top: boolean;
+<<<<<<< HEAD
     inset: boolean;
     insetBlock: boolean;
     insetBlockEnd: boolean;
@@ -1091,6 +1208,8 @@ export declare const validStyles: {
     insetInline: boolean;
     insetInlineEnd: boolean;
     insetInlineStart: boolean;
+=======
+>>>>>>> master
     direction: boolean;
     shadowOffset: boolean;
     shadowRadius: boolean;

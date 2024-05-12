@@ -1,5 +1,5 @@
-import { readFileSync, writeFileSync } from 'fs'
-import { basename, dirname, extname, join, relative, resolve } from 'path'
+import { readFileSync, writeFileSync } from 'node:fs'
+import { basename, dirname, extname, join, relative, resolve } from 'node:path'
 
 import { Color, colorLog } from '@tamagui/cli-color'
 import type { CLIResolvedOptions, CLIUserOptions, TamaguiOptions } from '@tamagui/types'
@@ -7,7 +7,7 @@ import type { TamaguiInternalConfig } from '@tamagui/web'
 import esbuild from 'esbuild'
 import * as fsExtra from 'fs-extra'
 
-import { readFile } from 'fs/promises'
+import { readFile } from 'node:fs/promises'
 import { SHOULD_DEBUG } from '../constants'
 import { requireTamaguiCore } from '../helpers/requireTamaguiCore'
 import { minifyCSS } from '../minifyCSS'
@@ -364,7 +364,7 @@ async function getDefaultTamaguiConfigPath(root: string, configPath?: string) {
   }
 }
 
-export { TamaguiProjectInfo }
+export type { TamaguiProjectInfo }
 
 export async function esbuildWatchFiles(entry: string, onChanged: () => void) {
   let hasRunOnce = false

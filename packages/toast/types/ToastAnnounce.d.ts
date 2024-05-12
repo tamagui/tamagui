@@ -17,5 +17,5 @@ interface ToastAnnounceProps extends Omit<GetProps<typeof VisuallyHidden>, 'chil
 }> {
 }
 declare const ToastAnnounce: React.FC<ScopedProps<ToastAnnounceProps>>;
-export { ToastAnnounce, ToastAnnounceProps, ToastAnnounceExclude, ToastAnnounceExcludeProps, };
+export { ToastAnnounce, type ToastAnnounceProps, ToastAnnounceExclude, type ToastAnnounceExcludeProps, };
 //# sourceMappingURL=ToastAnnounce.d.ts.map

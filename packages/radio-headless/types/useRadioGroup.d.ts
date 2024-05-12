@@ -1,6 +1,6 @@
-import type { GestureResponderEvent } from 'react-native';
+import type { StackProps } from '@tamagui/web';
 import type { ReactElement } from 'react';
-import type { StackProps } from '@tamagui/web/types';
+import type { GestureResponderEvent } from 'react-native';
 interface UseRadioGroupParams {
     value?: string;
     defaultValue?: string;

@@ -18,7 +18,6 @@
     "noImplicitReturns": false,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
-    "experimentalDecorators": true,
     "useUnknownInCatchVariables": false,
     "preserveConstEnums": true,
     // DONT DO THIS so jsdoc will remain

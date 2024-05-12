@@ -256,7 +256,7 @@ export const SheetImplementationCustom = themeable(
         // lets base our multiplier on the total layout height
         const end = at + frameSize * vy * 0.2
         let closestPoint = 0
-        let dist = Infinity
+        let dist = Number.POSITIVE_INFINITY
         for (let i = 0; i < positions.length; i++) {
           const position = positions[i]
           const curDist = end > position ? end - position : position - end

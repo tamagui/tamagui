@@ -52,6 +52,7 @@ import {
   XStack,
   YStack,
 } from 'tamagui'
+import { assertIsError } from '@tamagui/assert'
 import { ContainerLarge } from '~/components/Containers'
 import { Link } from '~/components/Link'
 import { BentoIcon } from '~/features/icons/BentoIcon'
@@ -68,7 +69,8 @@ export const loader = async () => {
   try {
     return await getProductsForServerSideRendering()
   } catch (err) {
-    console.error(`Error getting props`, err)
+    assertIsError(err)
+    console.error(`Error getting props`, err.message)
     return { bento: null, fontsPack: null, iconsPack: null, starter: null }
   }
 }
@@ -262,14 +264,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['bento'] }) => 
               $sm={{ px: '$4', maw: 400, ml: 0 }}
             >
               <XStack gap="$6">
-                <Stack
-                  pos="relative"
-                  bg="$color9"
-                  w={6}
-                  br="$2"
-                  my={18}
-                  $sm={{ dsp: 'none' }}
-                />
+                <Stack pos="relative" bg="$color9" w={6} br="$2" my={18} $sm={{ dsp: 'none' }} />
                 <Paragraph
                   className="pixelate"
                   ff="$munro"
@@ -288,13 +283,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['bento'] }) => 
                 >
                   Boost your React development with a suite
                   of&nbsp;copy-paste&nbsp;primitives.&nbsp;
-                  <YStack
-                    my={-20}
-                    tag="span"
-                    dsp="inline-flex"
-                    y={3}
-                    $sm={{ scale: 0.8, y: 7 }}
-                  >
+                  <YStack my={-20} tag="span" dsp="inline-flex" y={3} $sm={{ scale: 0.8, y: 7 }}>
                     <BentoIcon bright scale={1.2} />
                   </YStack>
                 </Paragraph>
@@ -356,13 +345,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['bento'] }) => 
                         store.showPurchase = true
                       }}
                     >
-                      <Button.Text
-                        fontFamily="$silkscreen"
-                        size="$6"
-                        ls={-2}
-                        y={-0.5}
-                        x={-1}
-                      >
+                      <Button.Text fontFamily="$silkscreen" size="$6" ls={-2} y={-0.5} x={-1}>
                         <sup
                           style={{
                             fontSize: '60%',
@@ -375,8 +358,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['bento'] }) => 
                           $
                         </sup>
                         {(mainProduct?.prices.sort(
-                          (a, b) =>
-                            (a.unit_amount || Infinity) - (b.unit_amount || Infinity)
+                          (a, b) => (a.unit_amount || Infinity) - (b.unit_amount || Infinity)
                         )[0].unit_amount || 0) / 100}
                       </Button.Text>
                     </Button>
@@ -404,14 +386,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['bento'] }) => 
                     More polish ongoing. Next up is allowing customizing to your tokens.
                   </Paragraph>
                 </YStack>
-                <AlertCircle
-                  pos="absolute"
-                  t="$3"
-                  r="$3"
-                  zi={100}
-                  color="$color7"
-                  size={22}
-                />
+                <AlertCircle pos="absolute" t="$3" r="$3" zi={100} color="$color7" size={22} />
               </XStack>
             </Theme>
           </YStack>
@@ -629,9 +604,7 @@ const Body = () => {
                   <Theme name="tan">
                     <XStack
                       gap={
-                        parts.length === parts[parts.length - 1].numberOfComponents
-                          ? '$0'
-                          : '$5'
+                        parts.length === parts[parts.length - 1].numberOfComponents ? '$0' : '$5'
                       }
                       f={4}
                       fs={1}
@@ -641,17 +614,15 @@ const Body = () => {
                         gap: 0,
                       }}
                     >
-                      {parts.map(
-                        ({ name: partsName, numberOfComponents, route, preview }) => (
-                          <SectionCard
-                            key={route + partsName + numberOfComponents.toString()}
-                            path={route}
-                            name={partsName}
-                            numberOfComponents={numberOfComponents}
-                            preview={preview}
-                          />
-                        )
-                      )}
+                      {parts.map(({ name: partsName, numberOfComponents, route, preview }) => (
+                        <SectionCard
+                          key={route + partsName + numberOfComponents.toString()}
+                          path={route}
+                          name={partsName}
+                          numberOfComponents={numberOfComponents}
+                          preview={preview}
+                        />
+                      ))}
 
                       {/* @ts-ignore */}
                       <Spacer width="calc(50vw - 300px)" $gtMd={{ dsp: 'none' }} />

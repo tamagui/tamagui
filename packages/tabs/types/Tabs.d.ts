@@ -73,7 +73,7 @@ declare const TabsContentFrame: import("@tamagui/web").TamaguiComponent<import("
     bordered?: number | boolean | undefined;
     backgrounded?: boolean | undefined;
     radiused?: boolean | undefined;
-    padded?: boolean | undefined;
+    padded?: boolean | undefined; /** Disables setting the active theme when tab is active */
     chromeless?: boolean | "all" | undefined;
 }, import("@tamagui/web").StaticConfigPublic>;
 type TabsContentFrameProps = GetProps<typeof TabsContentFrame>;
@@ -804,7 +804,7 @@ export declare const Tabs: React.ForwardRefExoticComponent<Omit<import("@tamagui
         bordered?: number | boolean | undefined;
         backgrounded?: boolean | undefined;
         radiused?: boolean | undefined;
-        padded?: boolean | undefined;
+        padded?: boolean | undefined; /** Disables setting the active theme when tab is active */
         chromeless?: boolean | "all" | undefined;
     }>, keyof TabsContentExtraProps> & TabsContentExtraProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & TabsContentExtraProps, import("@tamagui/web").StackStyleBase, {
         elevation?: number | SizeTokens | undefined;
@@ -824,7 +824,7 @@ export declare const Tabs: React.ForwardRefExoticComponent<Omit<import("@tamagui
         bordered?: number | boolean | undefined;
         backgrounded?: boolean | undefined;
         radiused?: boolean | undefined;
-        padded?: boolean | undefined;
+        padded?: boolean | undefined; /** Disables setting the active theme when tab is active */
         chromeless?: boolean | "all" | undefined;
     }, import("@tamagui/web").StaticConfigPublic>;
 };

@@ -6,5 +6,5 @@ export const SwitchStyledContext = createStyledContext<{
   unstyled?: boolean
 }>({
   size: undefined,
-  unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
+  unstyled: process.env.TAMAGUI_HEADLESS === '1',
 })
