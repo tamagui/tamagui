@@ -45,13 +45,13 @@ export type ListItemExtraProps = Omit<TextParentStyles, 'TextComponent' | 'noTex
 };
 export type ListItemProps = GetProps<typeof ListItemFrame> & ListItemExtraProps;
 export declare const ListItemFrame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
+    elevation?: number | SizeTokens | undefined;
+    circular?: boolean | undefined;
     unstyled?: boolean | undefined;
     size?: SizeTokens | undefined;
     disabled?: boolean | undefined;
-    elevation?: number | SizeTokens | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
-    circular?: boolean | undefined;
     inset?: number | SizeTokens | {
         top?: number | undefined;
         bottom?: number | undefined;
@@ -89,13 +89,13 @@ export declare const useListItem: (propsIn: ListItemProps, { Text, Subtitle, Tit
     props: PropsWithoutMediaStyles<ListItemProps>;
 };
 export declare const ListItem: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
+    elevation?: number | SizeTokens | undefined;
+    circular?: boolean | undefined;
     unstyled?: boolean | undefined;
     size?: SizeTokens | undefined;
     disabled?: boolean | undefined;
-    elevation?: number | SizeTokens | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
-    circular?: boolean | undefined;
     inset?: number | SizeTokens | {
         top?: number | undefined;
         bottom?: number | undefined;
@@ -149,13 +149,13 @@ export declare const ListItem: import("react").ForwardRefExoticComponent<Omit<im
      */
     noTextWrap?: boolean | "all" | undefined;
 } & import("react").RefAttributes<import("@tamagui/web").TamaguiElement>> & import("@tamagui/web").StaticComponentObject<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
+    elevation?: number | SizeTokens | undefined;
+    circular?: boolean | undefined;
     unstyled?: boolean | undefined;
     size?: SizeTokens | undefined;
     disabled?: boolean | undefined;
-    elevation?: number | SizeTokens | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
-    circular?: boolean | undefined;
     inset?: number | SizeTokens | {
         top?: number | undefined;
         bottom?: number | undefined;
@@ -245,13 +245,13 @@ export declare const ListItem: import("react").ForwardRefExoticComponent<Omit<im
      */
     noTextWrap?: boolean | "all" | undefined;
 }, import("@tamagui/web").StackStyleBase, {
+    elevation?: number | SizeTokens | undefined;
+    circular?: boolean | undefined;
     unstyled?: boolean | undefined;
     size?: SizeTokens | undefined;
     disabled?: boolean | undefined;
-    elevation?: number | SizeTokens | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
-    circular?: boolean | undefined;
     inset?: number | SizeTokens | {
         top?: number | undefined;
         bottom?: number | undefined;
@@ -270,13 +270,13 @@ export declare const ListItem: import("react").ForwardRefExoticComponent<Omit<im
     active?: boolean | undefined;
 }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig" | "extractable" | "styleable"> & {
     __tama: [Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
+        elevation?: number | SizeTokens | undefined;
+        circular?: boolean | undefined;
         unstyled?: boolean | undefined;
         size?: SizeTokens | undefined;
         disabled?: boolean | undefined;
-        elevation?: number | SizeTokens | undefined;
         transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
-        circular?: boolean | undefined;
         inset?: number | SizeTokens | {
             top?: number | undefined;
             bottom?: number | undefined;
@@ -366,13 +366,13 @@ export declare const ListItem: import("react").ForwardRefExoticComponent<Omit<im
          */
         noTextWrap?: boolean | "all" | undefined;
     }, import("@tamagui/web").StackStyleBase, {
+        elevation?: number | SizeTokens | undefined;
+        circular?: boolean | undefined;
         unstyled?: boolean | undefined;
         size?: SizeTokens | undefined;
         disabled?: boolean | undefined;
-        elevation?: number | SizeTokens | undefined;
         transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
-        circular?: boolean | undefined;
         inset?: number | SizeTokens | {
             top?: number | undefined;
             bottom?: number | undefined;

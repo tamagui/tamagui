@@ -40,7 +40,7 @@ type ToastViewportProps = ToastViewportFrameProps & {
      */
     portalToRoot?: boolean;
 };
-declare const ToastViewport: React.MemoExoticComponent<React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "inset" | "fullscreen" | "unstyled"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+declare const ToastViewport: React.MemoExoticComponent<React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "inset" | "fullscreen" | "unstyled"> & import("@tamagui/core").WithRem<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
         top?: number | undefined;
@@ -50,7 +50,7 @@ declare const ToastViewport: React.MemoExoticComponent<React.ForwardRefExoticCom
     } | undefined;
     fullscreen?: boolean | undefined;
     unstyled?: boolean | undefined;
-} & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+}>> & import("@tamagui/core").WithRem<import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
         top?: number | undefined;
@@ -60,17 +60,7 @@ declare const ToastViewport: React.MemoExoticComponent<React.ForwardRefExoticCom
     } | undefined;
     fullscreen?: boolean | undefined;
     unstyled?: boolean | undefined;
-} & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {
-    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
-    } | undefined;
-    fullscreen?: boolean | undefined;
-    unstyled?: boolean | undefined;
-}>> & {
+}>>> & {
     /**
      * The keys to use as the keyboard shortcut that will move focus to the toast viewport.
      * @defaultValue ['F8']

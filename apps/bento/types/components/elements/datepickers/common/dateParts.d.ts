@@ -18,18 +18,16 @@ export declare const HeaderTypeProvider: import("react").ProviderExoticComponent
     setHeader: (_: 'day' | 'month' | 'year') => void;
 };
 export declare const DatePicker: ((props: DatePickerProps) => import("react/jsx-runtime").JSX.Element) & {
-    Trigger: import("react").ForwardRefExoticComponent<import("tamagui").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {}>> & {
+    Trigger: import("react").ForwardRefExoticComponent<import("tamagui").StackNonStyleProps & import("@tamagui/web").WithRem<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {}>> & import("@tamagui/web").WithRem<import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {}>>> & {
         __scopePopover?: string | undefined;
     } & import("react").RefAttributes<import("tamagui").TamaguiElement>>;
     Content: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/web").TamaguiComponentPropsBaseBase & import("tamagui").PopoverContentTypeProps & {
         __scopePopover?: string | undefined;
-    } & import("react").RefAttributes<HTMLElement | import("react-native").View>, keyof import("@tamagui/web").StackStyleBase | "unstyled"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+    } & import("react").RefAttributes<HTMLElement | import("react-native").View>, keyof import("@tamagui/web").StackStyleBase | "unstyled"> & import("@tamagui/web").WithRem<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {
         unstyled?: boolean | undefined;
-    } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+    }>> & import("@tamagui/web").WithRem<import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {
         unstyled?: boolean | undefined;
-    } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {
-        unstyled?: boolean | undefined;
-    }>> & import("react").RefAttributes<HTMLElement | import("react-native").View>> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, HTMLElement | import("react-native").View, import("@tamagui/web").TamaguiComponentPropsBaseBase & import("tamagui").PopoverContentTypeProps & {
+    }>>> & import("react").RefAttributes<HTMLElement | import("react-native").View>> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, HTMLElement | import("react-native").View, import("@tamagui/web").TamaguiComponentPropsBaseBase & import("tamagui").PopoverContentTypeProps & {
         __scopePopover?: string | undefined;
     } & import("react").RefAttributes<HTMLElement | import("react-native").View>, import("@tamagui/web").StackStyleBase, {
         unstyled?: boolean | undefined;

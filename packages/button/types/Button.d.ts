@@ -46,11 +46,11 @@ declare const ButtonFrame: import("@tamagui/web").TamaguiComponent<import("@tama
     elevation?: number | SizeTokens | undefined;
     unstyled?: boolean | undefined;
     transparent?: boolean | undefined;
+    circular?: boolean | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
     backgrounded?: boolean | undefined;
     fullscreen?: boolean | undefined;
-    circular?: boolean | undefined;
     inset?: number | SizeTokens | {
         top?: number | undefined;
         bottom?: number | undefined;
@@ -85,11 +85,11 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
     elevation?: number | SizeTokens | undefined;
     unstyled?: boolean | undefined;
     transparent?: boolean | undefined;
+    circular?: boolean | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
     backgrounded?: boolean | undefined;
     fullscreen?: boolean | undefined;
-    circular?: boolean | undefined;
     inset?: number | SizeTokens | {
         top?: number | undefined;
         bottom?: number | undefined;
@@ -142,11 +142,11 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
     elevation?: number | SizeTokens | undefined;
     unstyled?: boolean | undefined;
     transparent?: boolean | undefined;
+    circular?: boolean | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
     backgrounded?: boolean | undefined;
     fullscreen?: boolean | undefined;
-    circular?: boolean | undefined;
     inset?: number | SizeTokens | {
         top?: number | undefined;
         bottom?: number | undefined;
@@ -232,11 +232,11 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
     elevation?: number | SizeTokens | undefined;
     unstyled?: boolean | undefined;
     transparent?: boolean | undefined;
+    circular?: boolean | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
     backgrounded?: boolean | undefined;
     fullscreen?: boolean | undefined;
-    circular?: boolean | undefined;
     inset?: number | SizeTokens | {
         top?: number | undefined;
         bottom?: number | undefined;
@@ -257,11 +257,11 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
         elevation?: number | SizeTokens | undefined;
         unstyled?: boolean | undefined;
         transparent?: boolean | undefined;
+        circular?: boolean | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
         backgrounded?: boolean | undefined;
         fullscreen?: boolean | undefined;
-        circular?: boolean | undefined;
         inset?: number | SizeTokens | {
             top?: number | undefined;
             bottom?: number | undefined;
@@ -347,11 +347,11 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
         elevation?: number | SizeTokens | undefined;
         unstyled?: boolean | undefined;
         transparent?: boolean | undefined;
+        circular?: boolean | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
         backgrounded?: boolean | undefined;
         fullscreen?: boolean | undefined;
-        circular?: boolean | undefined;
         inset?: number | SizeTokens | {
             top?: number | undefined;
             bottom?: number | undefined;
