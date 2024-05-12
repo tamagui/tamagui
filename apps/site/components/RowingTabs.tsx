@@ -1,24 +1,21 @@
-import { getBashCommand } from '@lib/getBashCommand'
-import { useLocalStorageWatcher } from '@lib/useLocalStorageWatcher'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import type { TabLayout, TabsTabProps, ViewProps } from 'tamagui'
 import { Avatar, SizableText, XStack, styled } from 'tamagui'
 import { AnimatePresence, Tabs, YStack } from 'tamagui'
 import { Code } from './Code'
+import { useBashCommand } from '@lib/useBashCommand'
 
-export function RowingTabs({ className, onTabChange, children, size, ...rest }) {
+export function RowingTabs({ className, children, size, ...rest }) {
   const {
     isStarter,
     isPackageRunner,
     showTabs,
-    defaultTab,
-    getTabKey,
     command,
-    handleTabChange,
-  } = getBashCommand(children, className)
+    setCurrentSelectedTab,
+    currentSelectedTab,
+  } = useBashCommand(children, className)
 
   const [tabState, setTabState] = useState<{
-    currentTab: string
     // Layout of the Tab user might intend to select (hovering / focusing)
     intentAt: TabLayout | null
     // Layout of the Tab user selected
@@ -26,35 +23,16 @@ export function RowingTabs({ className, onTabChange, children, size, ...rest }) 
     // Used to get the direction of activation for animating the active indicator
     prevActiveAt: TabLayout | null
   }>({
-    currentTab: defaultTab,
     intentAt: null,
     activeAt: null,
     prevActiveAt: null,
   })
 
-  const { storageItem, setItem } = useLocalStorageWatcher(
-    getTabKey(),
-    tabState.currentTab
-  )
-
-  useEffect(() => {
-    const storedTab = localStorage.getItem(getTabKey())
-    handleTabChange(storedTab ?? tabState.currentTab)
-    onTabChange(storedTab)
-  }, [])
-
-  const setCurrentTab = (currentTab: string) => {
-    setTabState({ ...tabState, currentTab })
-    onTabChange(currentTab)
-    handleTabChange(currentTab)
-    setItem(currentTab)
-  }
-
-  const setIntentIndicator = (intentAt) => setTabState({ ...tabState, intentAt })
-  const setActiveIndicator = (activeAt) =>
+  const setIntentIndicator = (intentAt: TabLayout | null) => setTabState({ ...tabState, intentAt })
+  const setActiveIndicator = (activeAt: TabLayout | null) =>
     setTabState({ ...tabState, prevActiveAt: tabState.activeAt, activeAt })
 
-  const { activeAt, intentAt, prevActiveAt, currentTab } = tabState
+  const { activeAt, intentAt, prevActiveAt } = tabState
 
   // 1 = right, 0 = nowhere, -1 = left
   const direction = (() => {
@@ -80,9 +58,9 @@ export function RowingTabs({ className, onTabChange, children, size, ...rest }) 
           orientation="horizontal"
           size="$4"
           br="$4"
-          value={storageItem}
+          value={currentSelectedTab}
           onPress={(e) => e.stopPropagation()}
-          onValueChange={setCurrentTab}
+          onValueChange={setCurrentSelectedTab}
           group
           mt={1}
         >
@@ -119,20 +97,20 @@ export function RowingTabs({ className, onTabChange, children, size, ...rest }) 
               >
                 {isStarter ? (
                   <Tab
-                    active={storageItem === 'npm'}
+                    active={currentSelectedTab === 'npm'}
                     pkgManager="npm"
                     onInteraction={handleOnInteraction}
                   />
                 ) : isPackageRunner ? (
                   <>
                     <Tab
-                      active={storageItem === 'npx'}
+                      active={currentSelectedTab === 'npx'}
                       pkgManager="npx"
                       logo="npm"
                       onInteraction={handleOnInteraction}
                     />
                     <Tab
-                      active={storageItem === 'bunx'}
+                      active={currentSelectedTab === 'bunx'}
                       pkgManager="bunx"
                       logo="bun"
                       onInteraction={handleOnInteraction}
@@ -141,22 +119,22 @@ export function RowingTabs({ className, onTabChange, children, size, ...rest }) 
                 ) : (
                   <>
                     <Tab
-                      active={storageItem === 'yarn'}
+                      active={currentSelectedTab === 'yarn'}
                       pkgManager="yarn"
                       onInteraction={handleOnInteraction}
                     />
                     <Tab
-                      active={storageItem === 'bun'}
+                      active={currentSelectedTab === 'bun'}
                       pkgManager="bun"
                       onInteraction={handleOnInteraction}
                     />
                     <Tab
-                      active={storageItem === 'npm'}
+                      active={currentSelectedTab === 'npm'}
                       pkgManager="npm"
                       onInteraction={handleOnInteraction}
                     />
                     <Tab
-                      active={storageItem === 'pnpm'}
+                      active={currentSelectedTab === 'pnpm'}
                       pkgManager="pnpm"
                       onInteraction={handleOnInteraction}
                     />
@@ -166,8 +144,8 @@ export function RowingTabs({ className, onTabChange, children, size, ...rest }) 
             </YStack>
 
             {/* <AnimatePresence exitBeforeEnter custom={{ direction }} initial={false}> */}
-            {/* <AnimatedYStack key={currentTab}> */}
-            <Tabs.Content value={currentTab} forceMount>
+            {/* <AnimatedYStack key={currentSelectedTab}> */}
+            <Tabs.Content value={currentSelectedTab} forceMount>
               <Code
                 p="$4"
                 backgroundColor="transparent"
@@ -287,3 +265,4 @@ const AnimatedYStack = styled(YStack, {
     },
   } as const,
 })
+
