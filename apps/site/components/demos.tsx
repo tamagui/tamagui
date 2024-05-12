@@ -106,7 +106,7 @@ export const ImageDemo = lazyDemo(
 
 export const WebNativeImageDemo = lazyDemo(
   // @ts-ignore
-  import('@tamagui/demos/demo/WebNativeImageDemo').then((x) => x.WebNativeImageDemo)
+  () => import('@tamagui/demos/demo/WebNativeImageDemo').then((x) => x.WebNativeImageDemo)
 )
 
 export const LabelDemo = lazyDemo(
