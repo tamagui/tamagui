@@ -205,7 +205,6 @@ function evaluateTargetModule({
   esExtensionDefault,
   ensureFileExists,
 }) {
-  console.log('>?')
   if (packageData) {
     if (packageData.packagePath.endsWith('index.js') && !module.endsWith('index.js')) {
       module = `${module}/index`
@@ -235,7 +234,6 @@ function evaluateTargetModule({
 
   const targetFile = resolve(filenameDirectory, module)
 
-  console.log('??')
   if (ensureFileExists) {
     // 1. try first with same extension
     if (
@@ -250,7 +248,6 @@ function evaluateTargetModule({
 
     // 2. then try with all others
     for (const extension of tryExtensions) {
-      console.log('test', targetFile + extension)
       if (existsSync(targetFile + extension)) {
         return { module: module + extension, extension }
       }
