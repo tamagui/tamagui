@@ -395,10 +395,10 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['bento'] }) => 
                 <YStack o={0.62} bg="$color10" fullscreen br="$6" />
                 <YStack py="$3.5" px="$4" f={1}>
                   <H3 fos={17} lh="$6" color="$color2">
-                    Beta 🤙
+                    Latest Update
                   </H3>
                   <Paragraph color="$color4" size="$3" lh="$2">
-                    More polish ongoing. Next up is allowing customizing to your tokens.
+                    More polish ongoing. Next up is CLI to install components.
                   </Paragraph>
                 </YStack>
                 <AlertCircle
