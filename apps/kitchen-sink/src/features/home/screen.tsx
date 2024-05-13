@@ -31,8 +31,17 @@ export function HomeScreen() {
             <ColorSchemeListItem />
           </YGroup.Item>
         </YGroup>
-        <YStack theme="yellow" bg="$background" p="$3" br="$4" bw={1} bc="$borderColor">
-          <Paragraph>Welcome to the Tamagui Kitchen Sink!</Paragraph>
+        <YStack
+          theme="yellow"
+          backgroundColor="$background"
+          p="$3"
+          br="$4"
+          bw={1}
+          bc="$borderColor"
+        >
+          <Paragraph debug="verbose" bg="red">
+            Welcome to the Tamagui Kitchen Sink!
+          </Paragraph>
         </YStack>
 
         <YStack gap="$4" maw={600}>

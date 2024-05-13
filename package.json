@@ -85,7 +85,10 @@
   },
   "resolutions": {
     "@types/node": "16.11.9",
-    "react-native": "0.73.4",
+    "metro": "0.80.8",
+    "metro-core": "0.80.8",
+    "metro-resolver": "0.80.8",
+    "metro-config": "0.80.8",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },

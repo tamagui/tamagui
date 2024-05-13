@@ -79,7 +79,7 @@
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",
     "react-hook-form": "^7.51.0",
-    "react-native": "^0.73.4",
+    "react-native": "0.74.1",
     "react-native-svg": "14.1.0",
     "react-native-web": "^0.19.10",
     "swr": "^2.2.5",

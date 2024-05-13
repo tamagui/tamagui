@@ -16,7 +16,7 @@ export declare const defaultStyles: {
         readonly outlineWidth: 2;
         readonly outlineStyle: "solid";
     };
-    readonly tabIndex: number;
+    readonly tabIndex: 0;
     readonly size: "$true";
     readonly fontFamily: "$body";
     readonly borderWidth: 1;
@@ -92,6 +92,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
     debug?: import("@tamagui/core").DebugProp | undefined;
     children?: any;
     className?: string | undefined;
+    onPress?: ((e: import("react-native").NativeSyntheticEvent<import("react-native").NativeTouchEvent>) => void) | undefined;
     onPressIn?: ((e: import("react-native").NativeSyntheticEvent<import("react-native").NativeTouchEvent>) => void) | undefined;
     onPressOut?: ((e: import("react-native").NativeSyntheticEvent<import("react-native").NativeTouchEvent>) => void) | undefined;
     onFocus?: ((e: import("react-native").NativeSyntheticEvent<import("react-native").TextInputFocusEventData>) => void) | undefined;
@@ -133,7 +134,6 @@ export declare function useInputProps(props: InputProps, ref: any): {
     'aria-disabled'?: boolean | undefined;
     'aria-expanded'?: boolean | undefined;
     'aria-selected'?: boolean | undefined;
-    'aria-labelledby'?: string | undefined;
     accessibilityHint?: string | undefined;
     accessibilityValue?: import("react-native").AccessibilityValue | undefined;
     'aria-valuemax'?: number | undefined;
@@ -143,11 +143,12 @@ export declare function useInputProps(props: InputProps, ref: any): {
     onAccessibilityAction?: ((event: import("react-native").AccessibilityActionEvent) => void) | undefined;
     importantForAccessibility?: "auto" | "yes" | "no" | "no-hide-descendants" | undefined;
     'aria-hidden'?: boolean | undefined;
-    'aria-live'?: "polite" | "assertive" | "off" | undefined;
     'aria-modal'?: boolean | undefined;
     role?: "row" | "none" | "link" | "group" | "separator" | "article" | "main" | "figure" | "img" | "table" | "button" | "form" | "meter" | "option" | "dialog" | "menu" | "summary" | "alert" | "checkbox" | "combobox" | "menubar" | "menuitem" | "progressbar" | "radio" | "radiogroup" | "scrollbar" | "spinbutton" | "switch" | "tab" | "tablist" | "timer" | "list" | "toolbar" | "alertdialog" | "application" | "banner" | "cell" | "columnheader" | "complementary" | "contentinfo" | "definition" | "directory" | "document" | "feed" | "grid" | "heading" | "listitem" | "log" | "marquee" | "math" | "navigation" | "note" | "presentation" | "region" | "rowgroup" | "rowheader" | "searchbox" | "slider" | "status" | "tabpanel" | "term" | "tooltip" | "tree" | "treegrid" | "treeitem" | undefined;
-    accessibilityLiveRegion?: "none" | "polite" | "assertive" | undefined;
     accessibilityLabelledBy?: string | string[] | undefined;
+    'aria-labelledby'?: string | undefined;
+    accessibilityLiveRegion?: "none" | "polite" | "assertive" | undefined;
+    'aria-live'?: "polite" | "assertive" | "off" | undefined;
     accessibilityElementsHidden?: boolean | undefined;
     accessibilityViewIsModal?: boolean | undefined;
     onAccessibilityEscape?: (() => void) | undefined;
@@ -167,14 +168,14 @@ export declare function useInputProps(props: InputProps, ref: any): {
     group?: boolean | undefined;
     untilMeasured?: "hide" | "show" | undefined;
     componentName?: string | undefined;
-    tabIndex?: string | number | undefined;
+    tabIndex?: 0 | -1 | undefined;
     disableOptimization?: boolean | undefined;
     forceStyle?: "hover" | "press" | "focus" | "focusVisible" | undefined;
     disableClassName?: boolean | undefined;
-    hitSlop?: ((number | import("@tamagui/core").Insets) & import("react-native").Insets) | undefined;
+    hitSlop?: ((number | import("@tamagui/core").Insets) & (number | import("react-native").Insets | null)) | undefined;
+    needsOffscreenAlphaCompositing?: boolean | undefined;
     removeClippedSubviews?: boolean | undefined;
     collapsable?: boolean | undefined;
-    needsOffscreenAlphaCompositing?: boolean | undefined;
     renderToHardwareTextureAndroid?: boolean | undefined;
     shouldRasterizeIOS?: boolean | undefined;
     isTVSelectable?: boolean | undefined;
@@ -238,7 +239,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
     clearTextOnFocus?: boolean | undefined;
     dataDetectorTypes?: import("react-native").DataDetectorTypes | import("react-native").DataDetectorTypes[] | undefined;
     enablesReturnKeyAutomatically?: boolean | undefined;
-    keyboardAppearance?: "default" | "light" | "dark" | undefined;
+    keyboardAppearance?: "light" | "default" | "dark" | undefined;
     passwordRules?: string | null | undefined;
     rejectResponderTermination?: boolean | null | undefined;
     selectionState?: import("react-native").DocumentSelectionState | undefined;
@@ -247,6 +248,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
     scrollEnabled?: boolean | undefined;
     smartInsertDelete?: boolean | undefined;
     cursorColor?: import("react-native").ColorValue | null | undefined;
+    selectionHandleColor?: import("react-native").ColorValue | null | undefined;
     importantForAutofill?: "auto" | "yes" | "no" | "noExcludeDescendants" | "yesExcludeDescendants" | undefined;
     disableFullscreenUI?: boolean | undefined;
     inlineImageLeft?: string | undefined;
@@ -287,7 +289,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
     flexShrink?: number | "unset" | undefined;
     flexBasis?: "unset" | import("react-native").DimensionValue | undefined;
     alignItems?: "unset" | import("react-native").FlexAlignType | undefined;
-    alignContent?: "unset" | "flex-start" | "flex-end" | "center" | "stretch" | "space-between" | "space-around" | undefined;
+    alignContent?: "unset" | "flex-start" | "flex-end" | "center" | "stretch" | "space-between" | "space-around" | "space-evenly" | undefined;
     justifyContent?: "unset" | "flex-start" | "flex-end" | "center" | "space-between" | "space-around" | "space-evenly" | undefined;
     alignSelf?: "unset" | "auto" | import("react-native").FlexAlignType | undefined;
     borderRadius?: number | "unset" | import("react-native").Animated.AnimatedNode | `$${string}` | `$${number}` | `$${string}.${string}` | `$${string}.${number}` | import("@tamagui/core").UnionableString | import("@tamagui/core").Variable<any> | import("@tamagui/core").UnionableNumber | undefined;
@@ -302,7 +304,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
     lineHeight?: "unset" | import("@tamagui/core").GetThemeValueForKey<"lineHeight"> | undefined;
     fontFamily?: "unset" | import("@tamagui/core").GetThemeValueForKey<"fontFamily"> | undefined;
     fontStyle?: "unset" | "normal" | "italic" | undefined;
-    fontWeight?: "unset" | import("@tamagui/core").GetThemeValueForKey<"fontWeight"> | undefined;
+    fontWeight?: "unset" | import("@tamagui/core").GetThemeValueForKey<"fontWeight"> | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | undefined;
     letterSpacing?: "unset" | import("@tamagui/core").GetThemeValueForKey<"letterSpacing"> | undefined;
     textDecorationLine?: "unset" | "none" | "underline" | "line-through" | "underline line-through" | undefined;
     textDecorationStyle?: "unset" | "solid" | "double" | "dotted" | "dashed" | undefined;
@@ -360,7 +362,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
     overflow?: "unset" | "visible" | "hidden" | "scroll" | undefined;
     paddingEnd?: number | "unset" | import("react-native").Animated.AnimatedNode | import("@tamagui/core").GetThemeValueForKey<"paddingEnd"> | null | undefined;
     paddingStart?: number | "unset" | import("react-native").Animated.AnimatedNode | import("@tamagui/core").GetThemeValueForKey<"paddingStart"> | null | undefined;
-    position?: "unset" | "absolute" | "relative" | undefined;
+    position?: "unset" | "absolute" | "relative" | "static" | undefined;
     start?: "unset" | import("react-native").DimensionValue | undefined;
     top?: number | "unset" | import("react-native").Animated.AnimatedNode | import("@tamagui/core").GetThemeValueForKey<"top"> | null | undefined;
     direction?: "unset" | "inherit" | "ltr" | "rtl" | undefined;
@@ -536,7 +538,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
         translateX?: undefined;
         translateY?: undefined;
     }) | ({
-        translateX: import("react-native").AnimatableNumericValue;
+        translateX: `${number}%` | import("react-native").AnimatableNumericValue;
     } & {
         perspective?: undefined;
         scale?: undefined;
@@ -551,7 +553,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
         rotateZ?: undefined;
         translateY?: undefined;
     }) | ({
-        translateY: import("react-native").AnimatableNumericValue;
+        translateY: `${number}%` | import("react-native").AnimatableNumericValue;
     } & {
         perspective?: undefined;
         scale?: undefined;

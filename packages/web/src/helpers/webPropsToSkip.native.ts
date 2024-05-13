@@ -20,7 +20,6 @@ export const webPropsToSkip = {
   backgroundOrigin: 1,
   backgroundPosition: 1,
   backgroundRepeat: 1,
-  backgroundColor: 1,
   backgroundSize: 1,
   backgroundClip: 1,
   backgroundBlendMode: 1,
@@ -37,7 +36,6 @@ export const webPropsToSkip = {
   content: 1,
   overflowBlock: 1,
   overflowInline: 1,
-
   maskBorder: 1,
   maskBorderMode: 1,
   maskBorderOutset: 1,

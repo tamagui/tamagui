@@ -26,7 +26,7 @@
     "@tamagui/lucide-icons": "1.97.1",
     "@tamagui/toast": "1.97.1",
     "expo-image": "^1.5.1",
-    "solito": "^4.0.0-alpha.4",
+    "solito": "^4.2.2",
     "tamagui": "1.97.1"
   },
   "devDependencies": {
