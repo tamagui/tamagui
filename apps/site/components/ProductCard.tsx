@@ -1,8 +1,6 @@
 import { ThemeTintAlt } from '@tamagui/logo'
 import { ChevronRight } from '@tamagui/lucide-icons'
-import React from 'react'
 import { Card, H3, Paragraph, Stack, View, YStack } from 'tamagui'
-
 import { BentoIcon } from './BentoIcon'
 import { NextLink } from './NextLink'
 import { TakeoutIcon } from './TakeoutIcon'
@@ -65,12 +63,12 @@ export function ProductCard({ product, children, ...props }) {
             pos="absolute"
             als="flex-end"
             animation="quicker"
-            t="$-10"
-            $lg={{ t: '$-6' }}
-            r="$-0.25"
+            y="$-10"
+            $lg={{ y: '$-6' }}
+            x="$-0.25"
             rotateZ="-5deg"
             scale={1}
-            $group-card-hover={{ t: '$-4.5', r: '$3.5', rotateZ: '0deg', scale: 1.15 }}
+            $group-card-hover={{ y: '$-4.5', x: '$-3.5', rotateZ: '0deg', scale: 1.15 }}
           >
             {Icon}
           </View>

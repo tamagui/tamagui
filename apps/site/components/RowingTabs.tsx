@@ -31,10 +31,6 @@ export function RowingTabs({ className, onTabChange, children, size, ...rest }) 
   )
 
   useEffect(() => {
-    setCurrentTab(storageItem)
-  }, [storageItem])
-
-  useEffect(() => {
     const storedTab = isPackageRunner
       ? localStorage.getItem('bashPkgRunTab')
       : localStorage.getItem('bashPkgInstallTab')

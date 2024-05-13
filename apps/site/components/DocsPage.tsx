@@ -76,18 +76,18 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                     >
                       <View
                         o={0}
-                        l="$-4"
-                        // $group-card-hover={{ o: 1, l: '$0' }}
-                        // $group-card-press={{ o: 0, l: '$-4' }}
+                        x="$-4"
+                        $group-card-hover={{ o: 1, x: '$0' }}
+                        $group-card-press={{ o: 0, x: '$-4' }}
                         animation="quickest"
                       >
                         <ChevronLeft col="$color11" />
                       </View>
 
                       <YStack
-                        l="$-8"
-                        // $group-card-hover={{ l: '$0' }}
-                        // $group-card-press={{ l: '$-8' }}
+                        x="$-8"
+                        $group-card-hover={{ x: '$0' }}
+                        $group-card-press={{ x: '$-8' }}
                         animation="quicker"
                       >
                         <Paragraph userSelect="none" theme="alt1" size="$5">
@@ -124,9 +124,9 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                       animation="100ms"
                     >
                       <YStack
-                        r="$-8"
-                        // $group-card-hover={{ r: '$0' }}
-                        // $group-card-press={{ r: '$-8' }}
+                        x="$8"
+                        $group-card-hover={{ x: '$0' }}
+                        $group-card-press={{ x: '$8' }}
                         animation="quicker"
                       >
                         <Paragraph userSelect="none" theme="alt1" size="$5">
@@ -139,9 +139,9 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
 
                       <View
                         o={0}
-                        r="$-4"
-                        // $group-card-hover={{ o: 1, r: '$0' }}
-                        // $group-card-press={{ o: 0, r: '$-4' }}
+                        x="$4"
+                        $group-card-hover={{ o: 1, x: '$0' }}
+                        $group-card-press={{ o: 0, x: '$4' }}
                         animation="quickest"
                       >
                         <ChevronRight col="$color11" />
