@@ -18,15 +18,15 @@ export interface CreateScope {
     scopeName: string;
     (): ScopeHook;
 }
-export declare function createContextScope(scopeName: string, createContextScopeDeps?: CreateScope[]): readonly [<ContextValueType extends object | null>(rootComponentName: string, defaultContext?: ContextValueType | undefined) => readonly [{
+export declare function createContextScope(scopeName: string, createContextScopeDeps?: CreateScope[]): readonly [<ContextValueType extends object | null>(rootComponentName: string, defaultContext?: ContextValueType) => readonly [{
     (props: ContextValueType & {
         scope: Scope<ContextValueType>;
         children: React.ReactNode;
     }): import("react/jsx-runtime").JSX.Element;
     displayName: string;
 }, (consumerName: string, scope: Scope<ContextValueType | undefined>, options?: {
-    warn?: boolean | undefined;
-    fallback?: Partial<ContextValueType> | undefined;
-} | undefined) => ContextValueType], CreateScope];
+    warn?: boolean;
+    fallback?: Partial<ContextValueType>;
+}) => ContextValueType], CreateScope];
 export {};
 //# sourceMappingURL=create-context.d.ts.map

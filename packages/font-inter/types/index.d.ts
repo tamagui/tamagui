@@ -1,9 +1,9 @@
 import type { FillInFont, GenericFont } from '@tamagui/core';
 export type { GenericFont, FillInFont } from '@tamagui/core';
 export declare const createInterFont: <A extends GenericFont>(font?: Partial<A>, { sizeLineHeight, sizeSize, }?: {
-    sizeLineHeight?: ((fontSize: number) => number) | undefined;
-    sizeSize?: ((size: number) => number) | undefined;
-}) => FillInFont<A, 10 | 1 | 11 | 12 | 13 | 14 | 16 | 2 | 3 | 4 | "true" | 5 | 6 | 7 | 8 | 9 | 15>;
+    sizeLineHeight?: (fontSize: number) => number;
+    sizeSize?: (size: number) => number;
+}) => FillInFont<A, keyof typeof defaultSizes>;
 declare const defaultSizes: {
     readonly 1: 11;
     readonly 2: 12;

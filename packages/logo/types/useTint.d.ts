@@ -22,10 +22,10 @@ export declare const useTint: (altOffset?: number) => {
     };
 };
 export declare const ThemeTint: ({ disable, children, ...rest }: ThemeProps & {
-    disable?: boolean | undefined;
+    disable?: boolean;
 }) => import("react/jsx-runtime").JSX.Element;
 export declare const ThemeTintAlt: ({ children, disable, offset, ...rest }: ThemeProps & {
-    disable?: boolean | undefined;
-    offset?: number | undefined;
+    disable?: boolean;
+    offset?: number;
 }) => import("react/jsx-runtime").JSX.Element;
 //# sourceMappingURL=useTint.d.ts.map

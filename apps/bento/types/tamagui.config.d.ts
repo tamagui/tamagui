@@ -917,7 +917,7 @@ declare const appConfig: import("tamagui").TamaguiInternalConfig<{
                 normal: string;
             };
         };
-    }, 3 | 5 | 9 | 15 | 1 | 10 | 16 | 2 | 14 | 11 | 12 | 4 | 6 | 7 | 8 | 13 | "true">;
+    }, 3 | 2 | 5 | 9 | 15 | 1 | 10 | 16 | 14 | 11 | 12 | 4 | 6 | 7 | 8 | 13 | "true">;
     headingDmSans: import("@tamagui/web").FillInFont<{
         size: {
             5: number;
@@ -946,7 +946,7 @@ declare const appConfig: import("tamagui").TamaguiInternalConfig<{
             11: number;
         };
         face: {};
-    }, 3 | 5 | 9 | 15 | 1 | 10 | 16 | 2 | 14 | 11 | 12 | 4 | 6 | 7 | 8 | 13 | "true">;
+    }, 3 | 2 | 5 | 9 | 15 | 1 | 10 | 16 | 14 | 11 | 12 | 4 | 6 | 7 | 8 | 13 | "true">;
     headingDmSerifDisplay: import("@tamagui/web").FillInFont<{
         size: {
             5: number;
@@ -981,7 +981,7 @@ declare const appConfig: import("tamagui").TamaguiInternalConfig<{
             15: number;
         };
         face: {};
-    }, 3 | 5 | 9 | 15 | 1 | 10 | 16 | 2 | 14 | 11 | 12 | 4 | 6 | 7 | 8 | 13 | "true">;
+    }, 3 | 2 | 5 | 9 | 15 | 1 | 10 | 16 | 14 | 11 | 12 | 4 | 6 | 7 | 8 | 13 | "true">;
     headingNohemi: import("@tamagui/web").FillInFont<{
         size: {
             5: number;
@@ -1009,8 +1009,8 @@ declare const appConfig: import("tamagui").TamaguiInternalConfig<{
             12: number;
         };
         face: {};
-    }, 3 | 5 | 9 | 15 | 1 | 10 | 16 | 2 | 14 | 11 | 12 | 4 | 6 | 7 | 8 | 13 | "true">;
-    body: import("@tamagui/web").FillInFont<import("tamagui").GenericFont<string | number | symbol>, 3 | 5 | 9 | 15 | 1 | 10 | 16 | 2 | 14 | 11 | 12 | 4 | 6 | 7 | 8 | 13 | "true">;
+    }, 3 | 2 | 5 | 9 | 15 | 1 | 10 | 16 | 14 | 11 | 12 | 4 | 6 | 7 | 8 | 13 | "true">;
+    body: import("@tamagui/web").FillInFont<import("tamagui").GenericFont<string | number | symbol>, 3 | 2 | 5 | 9 | 15 | 1 | 10 | 16 | 14 | 11 | 12 | 4 | 6 | 7 | 8 | 13 | "true">;
     mono: {
         weight: {
             1: string;
@@ -1034,9 +1034,9 @@ declare const appConfig: import("tamagui").TamaguiInternalConfig<{
             16: number;
         };
     };
-    silkscreen: import("@tamagui/web").FillInFont<import("tamagui").GenericFont<string | number | symbol>, 3 | 5 | 9 | 15 | 1 | 10 | 16 | 2 | 14 | 11 | 12 | 4 | 6 | 7 | 8 | 13>;
+    silkscreen: import("@tamagui/web").FillInFont<import("tamagui").GenericFont<string | number | symbol>, 3 | 2 | 5 | 9 | 15 | 1 | 10 | 16 | 14 | 11 | 12 | 4 | 6 | 7 | 8 | 13>;
     munro: import("tamagui").GenericFont<string | number | symbol>;
-    cherryBomb: import("@tamagui/web").FillInFont<import("tamagui").GenericFont<string | number | symbol>, 3 | 5 | 9 | 15 | 1 | 10 | 16 | 2 | 14 | 11 | 12 | 4 | 6 | 7 | 8 | 13 | "true">;
+    cherryBomb: import("@tamagui/web").FillInFont<import("tamagui").GenericFont<string | number | symbol>, 3 | 2 | 5 | 9 | 15 | 1 | 10 | 16 | 14 | 11 | 12 | 4 | 6 | 7 | 8 | 13 | "true">;
 }, boolean | undefined, string, {
     allowedStyleValues: "somewhat-strict-web";
     autocompleteSpecificTokens: "except-special";

@@ -20,7 +20,6 @@ export declare const webPropsToSkip: {
     backgroundOrigin: number;
     backgroundPosition: number;
     backgroundRepeat: number;
-    backgroundColor: number;
     backgroundSize: number;
     backgroundClip: number;
     backgroundBlendMode: number;

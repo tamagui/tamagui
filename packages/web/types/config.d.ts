@@ -7,7 +7,7 @@ export declare const getTokens: ({ prefixed, }?: {
     /**
      * Force either with $ or without $ prefix
      */
-    prefixed?: boolean | undefined;
+    prefixed?: boolean;
 }) => TokensMerged;
 export declare const getTokenObject: (value: Token, group?: keyof Tokens) => import("./createVariable").Variable<any>;
 export declare const getToken: (value: Token, group?: keyof Tokens, useVariable?: boolean) => any;
@@ -19,7 +19,7 @@ export declare const useTokens: ({ prefixed, }?: {
     /**
      * Force either with $ or without $ prefix
      */
-    prefixed?: boolean | undefined;
+    prefixed?: boolean;
 }) => TokensMerged;
 export declare const getThemes: () => {
     [x: string]: {

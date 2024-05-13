@@ -117,7 +117,7 @@
     "tamagui": "1.97.1",
     "three": "^0.152.2",
     "ts-morph": "^15.1.0",
-    "typescript": "^5.3.3",
+    "typescript": "^5.4.5",
     "unified": "^10.1.2",
     "unist-util-visit": "^2.0.3"
   },

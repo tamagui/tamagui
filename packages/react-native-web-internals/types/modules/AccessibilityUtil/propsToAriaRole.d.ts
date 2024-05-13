@@ -7,7 +7,7 @@
  * @flow
  */
 declare const propsToAriaRole: ({ accessibilityRole, }: {
-    accessibilityRole?: string | undefined;
+    accessibilityRole?: string;
 }) => string | void;
 export default propsToAriaRole;
 //# sourceMappingURL=propsToAriaRole.d.ts.map

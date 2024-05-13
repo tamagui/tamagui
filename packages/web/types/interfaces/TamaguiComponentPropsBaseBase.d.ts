@@ -82,7 +82,7 @@ export type TamaguiComponentPropsBaseBase = {
      * Adds some area outside the typical bounds of the component for touch actions to register.
      * Tamagui uses Pressable internally so it supports `number | Insets` rather than just `Insets`
      */
-    hitSlop?: number | Insets;
+    hitSlop?: number | Insets | null;
 };
 export interface Insets {
     top?: number;

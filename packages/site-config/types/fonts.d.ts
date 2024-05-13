@@ -1,6 +1,6 @@
-export declare const cherryBombFont: import("@tamagui/font-inter").FillInFont<import("@tamagui/font-inter").GenericFont, 5 | 9 | 15 | 1 | 10 | 16 | 2 | 14 | 11 | 12 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
+export declare const cherryBombFont: import("@tamagui/font-inter").FillInFont<import("@tamagui/font-inter").GenericFont, 2 | 5 | 9 | 15 | 1 | 10 | 16 | 14 | 11 | 12 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
 export declare const munroFont: import("@tamagui/font-inter").GenericFont;
-export declare const silkscreenFont: import("@tamagui/font-inter").FillInFont<import("@tamagui/font-inter").GenericFont, 5 | 9 | 15 | 1 | 10 | 16 | 2 | 14 | 11 | 12 | 3 | 4 | 6 | 7 | 8 | 13>;
+export declare const silkscreenFont: import("@tamagui/font-inter").FillInFont<import("@tamagui/font-inter").GenericFont, 2 | 5 | 9 | 15 | 1 | 10 | 16 | 14 | 11 | 12 | 3 | 4 | 6 | 7 | 8 | 13>;
 export declare const headingFont: import("@tamagui/font-inter").FillInFont<{
     size: {
         5: number;
@@ -43,7 +43,7 @@ export declare const headingFont: import("@tamagui/font-inter").FillInFont<{
             normal: string;
         };
     };
-}, 5 | 9 | 15 | 1 | 10 | 16 | 2 | 14 | 11 | 12 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
+}, 2 | 5 | 9 | 15 | 1 | 10 | 16 | 14 | 11 | 12 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
 export declare const dmSansHeadingFont: import("@tamagui/font-inter").FillInFont<{
     size: {
         5: number;
@@ -72,7 +72,7 @@ export declare const dmSansHeadingFont: import("@tamagui/font-inter").FillInFont
         11: number;
     };
     face: {};
-}, 5 | 9 | 15 | 1 | 10 | 16 | 2 | 14 | 11 | 12 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
+}, 2 | 5 | 9 | 15 | 1 | 10 | 16 | 14 | 11 | 12 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
 export declare const nohemiFont: import("@tamagui/font-inter").FillInFont<{
     size: {
         5: number;
@@ -100,7 +100,7 @@ export declare const nohemiFont: import("@tamagui/font-inter").FillInFont<{
         12: number;
     };
     face: {};
-}, 5 | 9 | 15 | 1 | 10 | 16 | 2 | 14 | 11 | 12 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
+}, 2 | 5 | 9 | 15 | 1 | 10 | 16 | 14 | 11 | 12 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
 export declare const dmSerifDisplayHeadingFont: import("@tamagui/font-inter").FillInFont<{
     size: {
         5: number;
@@ -135,8 +135,8 @@ export declare const dmSerifDisplayHeadingFont: import("@tamagui/font-inter").Fi
         15: number;
     };
     face: {};
-}, 5 | 9 | 15 | 1 | 10 | 16 | 2 | 14 | 11 | 12 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
-export declare const bodyFont: import("@tamagui/font-inter").FillInFont<import("@tamagui/font-inter").GenericFont, 5 | 9 | 15 | 1 | 10 | 16 | 2 | 14 | 11 | 12 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
+}, 2 | 5 | 9 | 15 | 1 | 10 | 16 | 14 | 11 | 12 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
+export declare const bodyFont: import("@tamagui/font-inter").FillInFont<import("@tamagui/font-inter").GenericFont, 2 | 5 | 9 | 15 | 1 | 10 | 16 | 14 | 11 | 12 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
 export declare const monoFont: {
     weight: {
         1: string;

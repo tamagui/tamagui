@@ -890,7 +890,7 @@ export declare const config: {
             19: import("@tamagui/core").Variable<number>;
             20: import("@tamagui/core").Variable<number>;
         };
-    }, "zIndex" | "color" | "size" | "space" | "radius">;
+    }, "size" | "color" | "space" | "radius" | "zIndex">;
     mediaQueryDefaultActive: {
         xl: boolean;
         lg: boolean;
@@ -950,7 +950,7 @@ export declare const config: {
                     normal: string;
                 };
             };
-        }, 5 | 9 | 15 | 1 | 10 | 16 | 2 | 14 | 11 | 12 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
+        }, 2 | 5 | 9 | 15 | 1 | 10 | 16 | 14 | 11 | 12 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
         headingDmSans: import("@tamagui/core").FillInFont<{
             size: {
                 5: number;
@@ -979,7 +979,7 @@ export declare const config: {
                 11: number;
             };
             face: {};
-        }, 5 | 9 | 15 | 1 | 10 | 16 | 2 | 14 | 11 | 12 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
+        }, 2 | 5 | 9 | 15 | 1 | 10 | 16 | 14 | 11 | 12 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
         headingDmSerifDisplay: import("@tamagui/core").FillInFont<{
             size: {
                 5: number;
@@ -1014,7 +1014,7 @@ export declare const config: {
                 15: number;
             };
             face: {};
-        }, 5 | 9 | 15 | 1 | 10 | 16 | 2 | 14 | 11 | 12 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
+        }, 2 | 5 | 9 | 15 | 1 | 10 | 16 | 14 | 11 | 12 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
         headingNohemi: import("@tamagui/core").FillInFont<{
             size: {
                 5: number;
@@ -1042,8 +1042,8 @@ export declare const config: {
                 12: number;
             };
             face: {};
-        }, 5 | 9 | 15 | 1 | 10 | 16 | 2 | 14 | 11 | 12 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
-        body: import("@tamagui/core").FillInFont<import("@tamagui/core").GenericFont, 5 | 9 | 15 | 1 | 10 | 16 | 2 | 14 | 11 | 12 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
+        }, 2 | 5 | 9 | 15 | 1 | 10 | 16 | 14 | 11 | 12 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
+        body: import("@tamagui/core").FillInFont<import("@tamagui/core").GenericFont, 2 | 5 | 9 | 15 | 1 | 10 | 16 | 14 | 11 | 12 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
         mono: {
             weight: {
                 1: string;
@@ -1067,9 +1067,9 @@ export declare const config: {
                 16: number;
             };
         };
-        silkscreen: import("@tamagui/core").FillInFont<import("@tamagui/core").GenericFont, 5 | 9 | 15 | 1 | 10 | 16 | 2 | 14 | 11 | 12 | 3 | 4 | 6 | 7 | 8 | 13>;
+        silkscreen: import("@tamagui/core").FillInFont<import("@tamagui/core").GenericFont, 2 | 5 | 9 | 15 | 1 | 10 | 16 | 14 | 11 | 12 | 3 | 4 | 6 | 7 | 8 | 13>;
         munro: import("@tamagui/core").GenericFont;
-        cherryBomb: import("@tamagui/core").FillInFont<import("@tamagui/core").GenericFont, 5 | 9 | 15 | 1 | 10 | 16 | 2 | 14 | 11 | 12 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
+        cherryBomb: import("@tamagui/core").FillInFont<import("@tamagui/core").GenericFont, 2 | 5 | 9 | 15 | 1 | 10 | 16 | 14 | 11 | 12 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
     };
 };
 //# sourceMappingURL=tamagui-config.d.ts.map

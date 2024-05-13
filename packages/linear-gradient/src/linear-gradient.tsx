@@ -20,7 +20,15 @@ export function LinearGradient({
   })
 
   const linearGradientBackgroundImage = React.useMemo(() => {
-    return getLinearGradientBackgroundImage(colors, locations, start, end, width, height)
+    return getLinearGradientBackgroundImage(
+      // @ts-expect-error ok
+      colors,
+      locations,
+      start,
+      end,
+      width,
+      height
+    )
   }, [colors, locations, start, end, width, height])
 
   return (

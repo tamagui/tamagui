@@ -7,7 +7,7 @@ declare const Collection: {
         children?: React.ReactNode;
         __scopeCollection: string;
     }>;
-    readonly Slot: React.ForwardRefExoticComponent<import("@tamagui/collection/types/Collection").CollectionProps & {
+    readonly Slot: React.ForwardRefExoticComponent<import("@tamagui/collection").CollectionProps & {
         __scopeCollection?: string | undefined;
     } & React.RefAttributes<TamaguiElement>>;
     readonly ItemSlot: React.ForwardRefExoticComponent<{

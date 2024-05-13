@@ -43,10 +43,10 @@ export type SpacedChildrenProps = {
 export declare function spacedChildren(props: SpacedChildrenProps): React.ReactNode;
 export declare const isDisabled: (props: any) => any;
 export declare const subscribeToContextGroup: ({ disabled, setStateShallow, pseudoGroups, mediaGroups, componentContext, state, }: {
-    disabled?: boolean | undefined;
+    disabled?: boolean;
     setStateShallow: (next?: Partial<TamaguiComponentState> | undefined) => void;
-    pseudoGroups?: Set<string> | undefined;
-    mediaGroups?: Set<string> | undefined;
+    pseudoGroups?: Set<string>;
+    mediaGroups?: Set<string>;
     componentContext: ComponentContextI;
     state: TamaguiComponentState;
 }) => import("./types").DisposeFn | undefined;

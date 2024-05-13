@@ -14,7 +14,7 @@ export const defaultStyles = {
 
   ...(isWeb
     ? {
-        tabIndex: 0,
+        tabIndex: 0 as const,
       }
     : {
         focusable: true,

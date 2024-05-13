@@ -39,9 +39,7 @@ export function HomeScreen() {
           bw={1}
           bc="$borderColor"
         >
-          <Paragraph debug="verbose" bg="red">
-            Welcome to the Tamagui Kitchen Sink!
-          </Paragraph>
+          <Paragraph>Welcome to the Tamagui Kitchen Sink!</Paragraph>
         </YStack>
 
         <YStack gap="$4" maw={600}>

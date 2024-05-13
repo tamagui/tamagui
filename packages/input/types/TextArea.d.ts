@@ -35,7 +35,7 @@ export declare const TextArea: import("@tamagui/web").TamaguiComponent<import("@
                     readonly outlineWidth: 2;
                     readonly outlineStyle: "solid";
                 };
-                readonly tabIndex: number;
+                readonly tabIndex: 0;
                 readonly size: "$true";
                 readonly fontFamily: "$body";
                 readonly borderWidth: 1;

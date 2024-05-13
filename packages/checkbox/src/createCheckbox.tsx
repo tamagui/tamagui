@@ -188,7 +188,7 @@ export function createCheckbox<
                 size,
                 theme: checked ? 'active' : null,
               })}
-              // expected variants
+              // potential variant
               checked={checked}
               disabled={checkboxProps.disabled}
               {...checkboxProps}

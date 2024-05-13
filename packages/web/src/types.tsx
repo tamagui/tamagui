@@ -1629,6 +1629,7 @@ export interface StackNonStyleProps
       | 'pointerEvents'
       | 'display'
       | 'children'
+      | keyof TamaguiComponentPropsBaseBase
       // these are added back in by core
       | RNOnlyProps
       | keyof ExtendBaseStackProps
