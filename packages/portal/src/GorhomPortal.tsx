@@ -235,9 +235,7 @@ const PortalProviderComponent = ({
   const [state, dispatch] = useReducer(reducer, INITIAL_STATE)
   const transitionDispatch = useMemo(() => {
     const next = (value: any) => {
-      startTransition(() => {
-        dispatch(value)
-      })
+      dispatch(value)
     }
     return next as typeof dispatch
   }, [dispatch])
