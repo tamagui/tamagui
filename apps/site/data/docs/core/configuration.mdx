@@ -16,7 +16,7 @@ cycles exist in your imports.
 You can use `@tamagui/config` which provides a complete config out of the box,
 the same one this site uses.
 
-```tsx
+```tsx fileName="tamagui.config.ts"
 import { config } from '@tamagui/config/v3'
 import { Text, View } from 'react-native'
 import { createTamagui } from 'tamagui' // or '@tamagui/core'
@@ -34,6 +34,37 @@ declare module 'tamagui' {
 
 export default appConfig
 ```
+
+Then add Inter font to your `index.html` head for web:
+
+```html fileName="index.html"
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+```
+
+or `App.tsx` if using Expo:
+
+```tsx fileName="App.tsx"
+import { useFonts } from 'expo-font'
+
+export default function App() {
+  const [loaded] = useFonts({
+    Inter: require('@tamagui/font-inter/otf/Inter-Medium.otf'),
+    InterBold: require('@tamagui/font-inter/otf/Inter-Bold.otf'),
+  })
+
+  if (!loaded) {
+    return null
+  }
+
+  return <>...</>
+}
+```
+
+<Notice theme="green">
+  See `Custom Font Family on Native` under [Font tokens](/docs/core/configuration#font-tokens) for more info on Expo font loading.
+</Notice>
 
 You can also import parts of `@tamagui/config/v3` separately, swapping out any
 piece for your own. The v3 config defaults to the CSS animation driver on the
@@ -59,7 +90,7 @@ your [shorthands](#shorthands) to give you a syntax like this:
 <XStack bg="$red" w="$2" h="$1" />
 ```
 
-```tsx
+```tsx  fileName="tamagui.config.ts"
 // @tamagui/core doesn't include `createMedia` so that it can avoid
 // a dependency on react-native. If you are using tamagui, you can
 // import createMedia from there directly and avoid this line:
@@ -244,7 +275,7 @@ export const tokens = createTokens({
 Import and use the Tamagui `Provider` component at the top component in your
 app.
 
-```tsx line=3-5
+```tsx line=3-5 fileName="App.tsx"
 import { TamaguiProvider } from 'tamagui'
 
 import config from './tamagui.config'
@@ -454,7 +485,7 @@ You need to load your fonts for React Native to recognize them. Typically this
 looks something like if using Expo, (or you can
 [follow a React Native guide here](https://stackoverflow.com/questions/35255645/how-to-set-default-font-family-in-react-native)):
 
-```tsx
+```tsx fileName="App.tsx"
 import { useFonts } from 'expo-font'
 
 function App() {
