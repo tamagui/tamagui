@@ -5896,8 +5896,8 @@ __metadata:
     "@ts-react/form": "npm:^1.8.3"
     "@welldone-software/why-did-you-render": "npm:^7.0.1"
     awesome-phonenumber: "npm:^6.4.0"
-    expo-document-picker: "npm:^11.10.1"
-    expo-image-picker: "npm:^14.7.1"
+    expo-document-picker: "npm:~12.0.1"
+    expo-image-picker: "npm:~15.0.4"
     foxact: "npm:^0.2.33"
     html-webpack-plugin: "npm:^5.5.0"
     metro-runtime: "npm:*"
@@ -5908,7 +5908,7 @@ __metadata:
     react-dropzone: "npm:^14.2.3"
     react-hook-form: "npm:^7.51.0"
     react-native: "npm:0.74.1"
-    react-native-svg: "npm:14.1.0"
+    react-native-svg: "npm:15.2.0"
     react-native-web: "npm:^0.19.10"
     swr: "npm:^2.2.5"
     tamagui: "npm:1.97.1"
@@ -6646,7 +6646,7 @@ __metadata:
     "@tamagui/build": "npm:1.97.1"
     "@tamagui/core": "npm:1.97.1"
     react: "npm:^18.2.0"
-    react-native-svg: "npm:14.1.0"
+    react-native-svg: "npm:15.2.0"
   peerDependencies:
     react: "*"
     react-native-svg: ">=12"
@@ -6808,7 +6808,7 @@ __metadata:
     "@tamagui/build": "npm:1.97.1"
     "@tamagui/core": "npm:1.97.1"
     "@tamagui/stacks": "npm:1.97.1"
-    expo-linear-gradient: "npm:^12.7.1"
+    expo-linear-gradient: "npm:~13.0.2"
     react: "npm:^18.2.0"
   peerDependencies:
     react: "*"
@@ -6862,7 +6862,7 @@ __metadata:
     prettier-plugin-import-sort: "npm:^0.0.7"
     prop-types: "npm:^15.7.2"
     react: "npm:^18.2.0"
-    react-native-svg: "npm:14.1.0"
+    react-native-svg: "npm:15.2.0"
     uppercamelcase: "npm:^3.0.0"
   peerDependencies:
     react: "*"
@@ -15159,15 +15159,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expo-document-picker@npm:^11.10.1":
-  version: 11.10.1
-  resolution: "expo-document-picker@npm:11.10.1"
-  peerDependencies:
-    expo: "*"
-  checksum: 10/0ecb48424df27838ecdb42e9ffea5ded8c65983ff6ff7a4b6d4a962278bffc8ea617f0257be0e5041a597242d14c00ef38557997d83adada4c55b5dc03362c69
-  languageName: node
-  linkType: hard
-
 "expo-document-picker@npm:~12.0.1":
   version: 12.0.1
   resolution: "expo-document-picker@npm:12.0.1"
@@ -15197,32 +15188,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expo-image-loader@npm:~4.6.0":
-  version: 4.6.0
-  resolution: "expo-image-loader@npm:4.6.0"
-  peerDependencies:
-    expo: "*"
-  checksum: 10/02981667f03dc429cd9db37e0acc302e4a0c4bb5875dc087b1c26388ef64563481e52dddc1d42dd32794eb7051d1acf5bc0c078413469c29025a02d4d4af1154
-  languageName: node
-  linkType: hard
-
 "expo-image-loader@npm:~4.7.0":
   version: 4.7.0
   resolution: "expo-image-loader@npm:4.7.0"
   peerDependencies:
     expo: "*"
   checksum: 10/dbd87fdbf3e50b8c459e5ea985bfd20d77462229e46edefbd62b68e1676416f8608c16cf09103c2fef1bd84ecf55a1fd48f38e1954a2dd535e6f9beef04785bb
-  languageName: node
-  linkType: hard
-
-"expo-image-picker@npm:^14.7.1":
-  version: 14.7.1
-  resolution: "expo-image-picker@npm:14.7.1"
-  dependencies:
-    expo-image-loader: "npm:~4.6.0"
-  peerDependencies:
-    expo: "*"
-  checksum: 10/43a139c2f52bc71ca9e5c520fe70ef3a2af229118d1cf4485947841f6e464440f974c9c07fc250fe7dd085fc63a812829c2f29e4ee98569af9be8dcecbd46162
   languageName: node
   linkType: hard
 
@@ -15259,15 +15230,6 @@ __metadata:
   peerDependencies:
     expo: "*"
   checksum: 10/0f419a39909fc0a20ca895e8440f89b1fb473cd938094a3f279f57485168e9d8427926349a0b16ec3be33e500993d3344445b0b37f39cf9392ef60870ea99de6
-  languageName: node
-  linkType: hard
-
-"expo-linear-gradient@npm:^12.7.1":
-  version: 12.7.1
-  resolution: "expo-linear-gradient@npm:12.7.1"
-  peerDependencies:
-    expo: "*"
-  checksum: 10/7836acb751adea60de84982e394c3ca41c54110311dc5ed7ad656053a7bb5e1c5e97865cd90f0256dfbd5c700d4a80030f215adfa7d12b9dbb9c13662eacc3cd
   languageName: node
   linkType: hard
 
@@ -24041,19 +24003,6 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: 10/54a44fc5a34848195a8e004b9ee2269e8a3560c5fa7922d80eaa1fc6283990d6ef77b3d3ec6004d7df2ad95279d486faf25bb68a82a0e958493891adb7dbac9c
-  languageName: node
-  linkType: hard
-
-"react-native-svg@npm:14.1.0":
-  version: 14.1.0
-  resolution: "react-native-svg@npm:14.1.0"
-  dependencies:
-    css-select: "npm:^5.1.0"
-    css-tree: "npm:^1.1.3"
-  peerDependencies:
-    react: "*"
-    react-native: "*"
-  checksum: 10/2322cba59542ae552c25d222b6311024ea17daf2431c5ed9029d3682e61d2f8bc5428f496b237e81a6d1c6bdf29abeab0ed005cfbb48420f34e1cdffdc40823b
   languageName: node
   linkType: hard
 

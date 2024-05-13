@@ -40,7 +40,7 @@
   },
   "devDependencies": {
     "@tamagui/build": "1.97.1",
-    "expo-linear-gradient": "^12.7.1",
+    "expo-linear-gradient": "~13.0.2",
     "react": "^18.2.0"
   },
   "publishConfig": {
