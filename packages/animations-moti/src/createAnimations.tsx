@@ -1,6 +1,6 @@
 import { PresenceContext, ResetPresence, usePresence } from '@tamagui/use-presence'
 import type { AnimationDriver, UniversalAnimatedNumber } from '@tamagui/web'
-import type { MotiTransition } from 'moti'
+import type { TransitionConfig } from 'moti'
 import { useMotify } from 'moti/author'
 import { type CSSProperties, useContext, useMemo } from 'react'
 import type { SharedValue } from 'react-native-reanimated'
@@ -66,7 +66,7 @@ const onlyAnimateKeys: { [key in keyof TextStyle | keyof CSSProperties]?: boolea
   borderBottomWidth: true,
 }
 
-export function createAnimations<A extends Record<string, MotiTransition>>(
+export function createAnimations<A extends Record<string, TransitionConfig>>(
   animations: A
 ): AnimationDriver<A> {
   return {
@@ -207,7 +207,9 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
 
       const motiProps = {
         animate: isExiting || isHydrating ? {} : styles,
-        transition: animations[animationKey as keyof typeof animations],
+        transition:
+          // TODO moti is giving us type troubles, but this should work
+          animations[animationKey as keyof typeof animations] as any,
         usePresenceValue,
         presenceContext,
         exit: isExiting ? styles : undefined,
