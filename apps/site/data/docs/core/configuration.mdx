@@ -238,7 +238,7 @@ The `createTamagui` function receives a configuration object:
   components initial values. These merge downwards, so
   `styled(Text, { name: 'Paragraph' })` will get any defaultProps set for
   `Text`.
-- `onlyAllowShorthands` when set to true will ensure that if you define
+- `onlyAllowShorthands`: When set to true will ensure that if you define
   shorthands, they override existing long-form style props.
 
 <Notice>
@@ -676,8 +676,11 @@ Which will enable usage like:
 <View br="$myToken" />
 ```
 
-Where `br` expands into `borderRadius`. For a full shorthands setup, see
-[the @tamagui/shorthands source](https://github.com/tamagui/tamagui/blob/master/packages/shorthands/src/index.tsx).
+where `br` expands into `borderRadius`. 
+
+<Notice theme="green">
+  For a full shorthands setup, see [the @tamagui/shorthands source](https://github.com/tamagui/tamagui/blob/master/packages/shorthands/src/index.tsx).
+</Notice>
 
 ### Others
 
@@ -691,7 +694,8 @@ Where `br` expands into `borderRadius`. For a full shorthands setup, see
     {
       name: `defaultFont`,
       required: false,
-      type: `Map it to the regular key of the font given to createTamgui, so "body" or "heading" make sense as valiues here. This will ensure this font is the fallback for any views that don't define it.`,
+      type: `string`,
+      description: `Map it to the regular key of the font given to createTamgui, so "body" or "heading" make sense as valiues here. This will ensure this font is the fallback for any views that don't define it.`,
     },
     {
       name: 'mediaQueryDefaultActive',
@@ -716,7 +720,7 @@ Where `br` expands into `borderRadius`. For a full shorthands setup, see
       name: 'shouldAddPrefersColorThemes',
       required: false,
       type: 'boolean',
-      default: true,
+      default: `true`,
       description: `Generates @media queries based on prefers-color-scheme for you if you have light/dark themes.`,
     },
     {
@@ -784,21 +788,19 @@ Where `br` expands into `borderRadius`. For a full shorthands setup, see
 
 #### Type strictness
 
-_AllowedStyleValuesSetting_:
+#### `allowedStyleValues`
 
-Defaults to false:
-
-- "strict" - only allows tokens for any token-enabled properties
-- "strict-web" - same as strict but allows for web-specific tokens like
+- `false (default)`: allows any string (or number for styles that accept numbers)
+- `strict`: only allows tokens for any token-enabled properties
+- `strict-web`: same as strict but allows for web-specific tokens like
   auto/inherit
-- "somewhat-strict" - allow tokens or:
-  - for space/size: string% or numbers
-  - for radius: number
-  - for zIndex: number
-  - for color: named colors or rgba/hsla strings
-- "somewhat-strict-web" - same as somewhat-strict but allows for web-specific
+- `somewhat-strict`: allow tokens or:
+  - for `space/size`: string% or numbers
+  - for `radius`: number
+  - for `zIndex`: number
+  - for `color`: named colors or rgba/hsla strings
+- `somewhat-strict-web`: same as somewhat-strict but allows for web-specific
   tokens
-- false (default) - allows any string (or number for styles that accept numbers)
 
 ```tsx
 type AllowedValueSetting =
@@ -819,12 +821,12 @@ type AllowedStyleValuesSetting =
     }
 ```
 
-_autocompleteSpecificTokens_:
+#### `autocompleteSpecificTokens`
 
 The VSCode autocomplete puts specific tokens above the regular ones, which leads
 to worse DX. If true this setting removes the specific token from types for the
 defined categories.
 
-If set to "except-special", specific tokens will autocomplete only if they don't
+If set to `except-special`, specific tokens will autocomplete only if they don't
 normally use one of the special token groups: space, size, radius, zIndex,
 color.
