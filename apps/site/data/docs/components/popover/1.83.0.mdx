@@ -37,6 +37,42 @@ Popover is already installed in `tamagui`, or you can install it independently:
 npm install @tamagui/popover
 ```
 
+### PortalProvider
+
+When rendering into root of app instead of inline, you'll first need to install the `@tamagui/portal` package: 
+
+```bash
+npm install @tamagui/portal
+```
+
+Then add `PortalProvider` to the root of your app:
+
+```tsx fileName="App.tsx"
+import { PortalProvider } from '@tamagui/portal'
+import YourApp from './components/YourApp'
+
+function App() {
+  return (
+    <PortalProvider shouldAddRootHost>
+      <YourApp />
+    </PortalProvider>
+  )
+}
+
+export default App
+```
+
+<PropsTable
+  data={[
+    {
+      name: 'shouldAddRootHost',
+      type: 'boolean',
+      required: false,
+      description: `Defines whether to add a default root host or not.`,
+    },
+  ]}
+/>
+
 ## Anatomy
 
 ```tsx
@@ -152,7 +188,7 @@ Contains every component for the popover.
 />
 
 <Notice>
-If your are using `modal={true}` which is `true` by default, then you need put `<PortalProvider shouldAddRootHost>` from `@tamagui/portal` at the root of your App
+  If using `modal={true}` (which is `true` by default), refer to the [PortalProvider installation](/ui/popover/1.83.0#portalprovider) for more information.
 </Notice>
 
 ### Popover.Trigger
