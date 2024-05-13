@@ -1364,10 +1364,6 @@ interface ExtraStyleProps {
   /**
    * Web-only style property. Will be omitted on native.
    */
-  backgroundColor?: Properties['backgroundColor']
-  /**
-   * Web-only style property. Will be omitted on native.
-   */
   backgroundClip?: Properties['backgroundClip']
   /**
    * Web-only style property. Will be omitted on native.
