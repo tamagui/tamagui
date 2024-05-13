@@ -614,8 +614,8 @@ async function esbuildWriteIfChanged(
                     {
                       ensureFileExists: true,
                       esExtensionDefault: '.mjs',
-                      tryExtensions: ['.mjs', '.js'],
-                      esExtensions: ['.mjs', '.js'],
+                      tryExtensions: ['.js'],
+                      esExtensions: ['.mjs'],
                     },
                   ],
                   // pkg.tamagui?.build?.skipEnvToMeta

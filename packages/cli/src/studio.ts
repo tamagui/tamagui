@@ -1,6 +1,6 @@
-import { createRequire } from 'module'
-import type { AddressInfo } from 'net'
-import { dirname, join } from 'path'
+import { createRequire } from 'node:module'
+import type { AddressInfo } from 'node:net'
+import { dirname, join } from 'node:path'
 
 import { watchTamaguiConfig } from '@tamagui/static'
 import type { CLIResolvedOptions } from '@tamagui/types'
@@ -11,7 +11,7 @@ import fs, { ensureDir } from 'fs-extra'
 import { createProxyMiddleware } from 'http-proxy-middleware'
 import type { InlineConfig } from 'vite'
 import { build, createServer } from 'vite'
-import entryShakingPlugin from 'vite-plugin-entry-shaking'
+// import entryShakingPlugin from 'vite-plugin-entry-shaking'
 import viteInspect from 'vite-plugin-inspect'
 import viteTsConfigPaths from 'vite-tsconfig-paths'
 
@@ -79,9 +79,9 @@ export const studio = async (
           components: ['tamagui'],
         }),
         viteTsConfigPaths(),
-        await entryShakingPlugin({
-          targets,
-        }),
+        // await entryShakingPlugin({
+        //   targets,
+        // }),
         viteInspect(),
       ],
       define: {

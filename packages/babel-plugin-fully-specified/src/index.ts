@@ -249,7 +249,7 @@ function evaluateTargetModule({
     // 2. then try with all others
     for (const extension of tryExtensions) {
       if (existsSync(targetFile + extension)) {
-        return { module: module + extension, extension }
+        return { module: module + '.mjs', extension }
       }
     }
   } else if (esExtensions.includes(filenameExtension)) {
