@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/use-direction",
-  "version": "1.97.1",
+  "version": "1.98.0",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -27,7 +27,7 @@
     }
   },
   "devDependencies": {
-    "@tamagui/build": "1.97.1",
+    "@tamagui/build": "1.98.0",
     "react": "^18.2.0"
   },
   "peerDependencies": {

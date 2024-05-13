@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/static-tests",
-  "version": "1.97.1",
+  "version": "1.98.0",
   "module": "dist/esm/index.js",
   "scripts": {
     "pretest": "RUN_PRETEST=1 node -r esbuild-register ./tests/lib/preTest.js",
@@ -27,8 +27,8 @@
   "devDependencies": {
     "@babel/plugin-syntax-typescript": "^7.23.3",
     "@babel/types": "^7.23.3",
-    "@tamagui/sandbox-ui": "1.97.1",
-    "@tamagui/test-design-system": "1.97.1",
+    "@tamagui/sandbox-ui": "1.98.0",
+    "@tamagui/test-design-system": "1.98.0",
     "@testing-library/react": "^14.0.0",
     "@types/babel__generator": "^7.6.4",
     "@types/babel__traverse": "^7.18.2",

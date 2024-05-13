@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/animate",
-  "version": "1.97.1",
+  "version": "1.98.0",
   "source": "src/index.ts",
   "sideEffects": false,
   "license": "MIT",
@@ -13,10 +13,10 @@
     "dist"
   ],
   "dependencies": {
-    "@tamagui/animate-presence": "1.97.1"
+    "@tamagui/animate-presence": "1.98.0"
   },
   "devDependencies": {
-    "@tamagui/build": "1.97.1"
+    "@tamagui/build": "1.98.0"
   },
   "scripts": {
     "build": "tamagui-build",
