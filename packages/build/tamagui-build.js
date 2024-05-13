@@ -587,10 +587,10 @@ async function esbuildWriteIfChanged(
             !(await fs.pathExists(path)) ||
             (await fs.readFile(path, 'utf8')) !== contents
           ) {
-            await fs.writeFile(path, contents)
+            await fs.writeFile(path, contents, 'utf8')
           }
         } else {
-          await fs.writeFile(path, contents)
+          await fs.writeFile(path, contents, 'utf8')
         }
       }
 
@@ -625,7 +625,7 @@ async function esbuildWriteIfChanged(
               }).code
 
           // output to mjs fully specified
-          await flush(output, mjsOutPath)
+          await fs.writeFile(mjsOutPath, output, 'utf8')
         }
       })()
     })

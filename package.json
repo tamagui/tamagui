@@ -77,7 +77,7 @@
     "upgrade:vxrn": "yarn up '*vxrn*'@latest '@vxrn/*'@latest",
     "vercel:build": "yarn build:js && cd apps/site && yarn ci:build",
     "vercel:build-studio": "yarn build:js && cd apps/studio && yarn ci:build",
-    "watch": "./scripts/watch.sh",
+    "watch": "npm-run-all --parallel watch:ts watch:packages",
     "watch:packages": "SKIP_TYPES_INITIAL=1 ultra -r --no-pretty --concurrency 400 watch",
     "watch:js": "SKIP_TYPES=1 yarn watch:packages",
     "watch:ts": "node -r esbuild-register ./scripts/watch-ts.ts",
