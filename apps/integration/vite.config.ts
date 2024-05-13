@@ -13,7 +13,7 @@ export default defineConfig({
   server: {
     port: 5008,
   },
-  clearScreen: true,
+  clearScreen: false,
   plugins: [
     react(),
     tamaguiPlugin(tamaguiConfig),
