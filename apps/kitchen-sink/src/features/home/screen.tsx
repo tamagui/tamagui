@@ -35,7 +35,7 @@ export function HomeScreen() {
           <Paragraph>Welcome to the Tamagui Kitchen Sink!</Paragraph>
         </YStack>
 
-        <YStack space="$4" maw={600}>
+        <YStack gap="$4" maw={600}>
           {demos.map((group, i) => {
             return (
               <YGroup size="$4" key={i} separator={<Separator />}>

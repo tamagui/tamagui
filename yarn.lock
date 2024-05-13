@@ -12620,13 +12620,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"compare-versions@npm:^3.4.0":
-  version: 3.6.0
-  resolution: "compare-versions@npm:3.6.0"
-  checksum: 10/7492a50cdaa2c27f5254eee7c4b38856e1c164991bab3d98d7fd067fe4b570d47123ecb92523b78338be86aa221668fd3868bfe8caa5587dc3ebbe1a03d52b5d
-  languageName: node
-  linkType: hard
-
 "compare-versions@npm:^4.1.3":
   version: 4.1.4
   resolution: "compare-versions@npm:4.1.4"
@@ -15656,13 +15649,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expo-modules-core@npm:1.7.0":
-  version: 1.7.0
-  resolution: "expo-modules-core@npm:1.7.0"
+"expo-modules-core@npm:1.11.8":
+  version: 1.11.8
+  resolution: "expo-modules-core@npm:1.11.8"
   dependencies:
-    compare-versions: "npm:^3.4.0"
     invariant: "npm:^2.2.4"
-  checksum: 10/02b3f8d34c0f8a304d2981e74e6317c98622e312125a3d3a53f29488c11507c5542cfeb2d0d4a136ccf31309209b0e0c6979b9d000e8ae92371afe1b333abdaf
+  checksum: 10/5d1619fab75536534bd0008ac8f1870c13fdd5991707f4533dd459265034850c27ec47dd96a7fce2940e3d63d218ebb346078f3d87cd70cdc1b0263370c5bb39
   languageName: node
   linkType: hard
 
