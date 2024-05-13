@@ -68,12 +68,6 @@ export const docsRoutes = [
   },
 
   {
-    title: 'Extras',
-    isUI: false,
-    pages: [{ title: 'Lucide Icons', route: '/ui/lucide-icons' }],
-  },
-
-  {
     isUI: false,
     title: 'Tamagui Config',
     pages: [
@@ -184,6 +178,12 @@ export const docsRoutes = [
       { title: 'Separator', route: '/ui/separator' },
       { title: 'Square & Circle', route: '/ui/shapes' },
     ],
+  },
+
+  {
+    title: 'Extras',
+    isUI: false,
+    pages: [{ title: 'Lucide Icons', route: '/ui/lucide-icons' }],
   },
 
   {
