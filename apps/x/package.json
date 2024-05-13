@@ -1,5 +1,5 @@
 {
-  "name": "studio2",
+  "name": "@tamagui/x",
   "version": "1.98.0",
   "type": "module",
   "private": true,
@@ -33,7 +33,7 @@
     "tamagui": "1.98.0",
     "vite-plugin-inspect": "^0.8.4",
     "vite-tsconfig-paths": "^4.3.2",
-    "vxs": "^0.1.53"
+    "vxs": "^0.1.54"
   },
   "devDependencies": {
     "@cyco130/vite-plugin-mdx": "1.0.4",
@@ -53,6 +53,6 @@
     "sirv": "^2.0.4",
     "unified": "^10.1.2",
     "unist-util-visit": "^2.0.3",
-    "vxrn": "^0.1.53"
+    "vxrn": "^0.1.54"
   }
 }

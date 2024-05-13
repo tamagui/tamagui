@@ -16,7 +16,6 @@ export const Providers = (props: { children: any }) => {
 
 function WebsiteTamaguiProvider(props: { children: any }) {
   const [{ resolvedTheme }] = useUserTheme()
-  console.log('resolvedTheme', resolvedTheme)
 
   return (
     <TamaguiProvider disableInjectCSS defaultTheme={resolvedTheme} config={tamaConf}>
