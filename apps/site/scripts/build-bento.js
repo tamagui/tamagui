@@ -35,7 +35,7 @@ async function copyMergedComponents(directoryPath, outputDirectory) {
   const indexPaths = indexFiles.map((indexFile) => path.join(directoryPath, indexFile))
   const foundIndex = indexPaths.find(fs.existsSync)
 
-  if (foundIndex) {
+  if (foundIndex && !foundIndex.includes('components/index')) {
     const exportedModules = analyzeIndexFile(foundIndex)
 
     console.info('exporting from', foundIndex, 'modules', exportedModules)
@@ -48,7 +48,7 @@ async function copyMergedComponents(directoryPath, outputDirectory) {
         exportedModule
       )
       fs.mkdirSync(path.dirname(outputFilePath), { recursive: true })
-      const outputContent = shake(processFile(`${modulePath}/index.tsx`))
+      const outputContent = shake(processFile(`${modulePath}.tsx`))
       fs.writeFileSync(`${outputFilePath}.tsx`, outputContent)
     })
   } else {
