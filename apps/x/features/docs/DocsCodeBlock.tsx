@@ -28,7 +28,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
     className,
     children,
     id,
-    showFull = true,
+    showMore = true,
     isHero = false,
     isHighlightingLines,
     showLineNumbers: showLineNumbersIn,
@@ -38,10 +38,10 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
   } = props
   const lines = Array.isArray(children) ? children.length : 0
   const isCollapsible = isHero || props.isCollapsible
-  const store = useStore(CollapseStore, { isCollapsed: showFull })
+  const store = useStore(CollapseStore, { isCollapsed: showMore })
   const { isCollapsed, setIsCollapsed } = store
   const isLong = lines > 22
-  const [isCutoff, setIsCutoff] = useState(isLong && showFull)
+  const [isCutoff, setIsCutoff] = useState(isLong && showMore)
   const [code, setCode] = useState(undefined)
   const preRef = useRef<any>(null)
   const { hasCopied, onCopy, value } = useClipboard(code)

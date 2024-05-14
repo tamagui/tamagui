@@ -21,7 +21,7 @@ yarn add -D tamagui-loader
 
 You can then use the plugin in `webpack.config.js`:
 
-```tsx
+```tsx fileName="webpack.config.js"
 const { TamaguiPlugin } = require('tamagui-loader')
 
 config.plugins.push(
@@ -34,7 +34,7 @@ config.plugins.push(
 
 Or use a minimal manual setup:
 
-```tsx showMore
+```tsx showMore fileName="webpack.config.js"
 // some stuff for react-native
 config.plugins.push(
   new webpack.DefinePlugin({
