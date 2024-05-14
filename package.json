@@ -50,6 +50,7 @@
     "sandbox": "yarn workspace @tamagui/kitchen-sink dev:web:extract",
     "scripts:setup": "node -r esbuild-register ./scripts/setup.ts",
     "scripts:format": "node -r esbuild-register ./scripts/format.ts",
+    "playwright:dockerbuild": "docker build -t playwright-docker .",
     "repair": "node -r esbuild-register ./scripts/repair.ts",
     "x": "yarn workspace @tamagui/x dev:clean",
     "x:build": "yarn workspace @tamagui/x build:prod",
