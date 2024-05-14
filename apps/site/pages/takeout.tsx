@@ -696,8 +696,8 @@ export default function TakeoutPage({
                     <Paragraph size="$6" $sm={{ size: '$5' }} fow="400">
                       As you diverge we can't be perfect at sending updates, but we have
                       an ignorefile you can configure, and if you diverge enough it's
-                      still a nice reference for pulling in changes as we set up and test
-                      any major upgrades work across all the included features.
+                      still a nice reference for pulling in changes as we ensure
+                      dependency updates upgrades work across all listed features.
                     </Paragraph>
 
                     <ThemeTintAlt>
