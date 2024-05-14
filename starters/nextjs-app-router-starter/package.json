@@ -1,0 +1,30 @@
+{
+  "name": "nextjs-app-router-starter",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@tamagui/config": "^1.98.0",
+    "@tamagui/lucide-icons": "^1.98.0",
+    "@tamagui/next-plugin": "^1.98.0",
+    "@tamagui/next-theme": "^1.98.0",
+    "next": "14.2.3",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-native-svg": "^15.2.0",
+    "tamagui": "^1.98.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.3",
+    "typescript": "^5"
+  }
+}
