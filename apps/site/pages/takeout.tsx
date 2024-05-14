@@ -258,8 +258,8 @@ export default function TakeoutPage({
                     fow="400"
                   >
                     Takeout is a bootstrap for making universal apps with React and React
-                    Native extracted from our experience creating and consulting on apps
-                    with Tamagui. It builds off the free and open source starter{' '}
+                    Native, extracted from our experience creating apps with Tamagui. It
+                    builds off the free and open source starter{' '}
                     <CodeInline>(npm&nbsp;create&nbsp;tamagui)</CodeInline>, adding{' '}
                     <a target="_blank" href="https://supabase.com" rel="noreferrer">
                       Supabase
