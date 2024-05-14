@@ -749,7 +749,7 @@ textarea {
 }
 
 .font-outlined {
-  -webkit-text-stroke-width: 8px;
+  -webkit-text-stroke-width: 3px;
   -webkit-text-stroke-color: var(--color);
 }
 
@@ -776,7 +776,7 @@ textarea {
 }
 
 .clip-slice {
-  mask-image: url(./public/heart.svg);
+  mask-image: url(./public/takeouticon.svg);
   mask-size: 25% 25%;
   animation: clip-fade2 90s infinite alternate;
 }

@@ -391,14 +391,14 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['bento'] }) => 
 
           <YStack pos="absolute" b="6%" r="$2" zi={100}>
             <Theme name="green">
-              <XStack maw={400} als="center" br="$6" elevation="$1" className="blur-4">
-                <YStack o={0.62} bg="$color10" fullscreen br="$6" />
+              <XStack maw={400} als="center" br="$2" className="blur-4">
+                <YStack o={0.5} bg="$color10" fullscreen br="$2" />
                 <YStack py="$3.5" px="$4" f={1}>
-                  <H3 fos={17} lh="$6" color="$color2">
+                  <H3 ff="$silkscreen" size="$2" color="$color10">
                     Latest Update
                   </H3>
                   <Paragraph color="$color4" size="$3" lh="$2">
-                    More polish ongoing. Next up is CLI to install components.
+                    Ongoing polish. Next up is CLI to install components.
                   </Paragraph>
                 </YStack>
                 <AlertCircle
@@ -407,7 +407,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['bento'] }) => 
                   r="$3"
                   zi={100}
                   color="$color7"
-                  size={22}
+                  size={16}
                 />
               </XStack>
             </Theme>

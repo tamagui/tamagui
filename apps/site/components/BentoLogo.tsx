@@ -39,7 +39,6 @@ export const BentoLogo = ({
           ussel="none"
           pe="none"
           className="bento-shadow"
-          // o={0}
         >
           {children}&nbsp;
         </H1>
@@ -117,6 +116,7 @@ export const BentoLogo = ({
             maw="100%"
             f={1}
             ls={-21}
+            o={0.5}
             lh={280}
             my={-45}
             fos={198}
