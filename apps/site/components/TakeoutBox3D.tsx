@@ -1,5 +1,5 @@
 import { useGLTF } from '@react-three/drei'
-import type { Object3DNode } from '@react-three/fiber'
+// import type { Object3DNode } from '@react-three/fiber'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { useRouter } from 'next/router'
 import { Suspense, useEffect, useRef } from 'react'
@@ -32,7 +32,8 @@ export default (props) => (
 )
 
 function TakeoutBox3D(props) {
-  const ref = useRef<Object3DNode<any, any>>()
+  // const ref = useRef<Object3DNode<any, any>>()
+  const ref = useRef<any>()
   const router = useRouter()
   const media = useMedia()
 

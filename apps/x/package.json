@@ -14,6 +14,7 @@
   "dependencies": {
     "@leeoniya/ufuzzy": "^1.0.14",
     "@react-navigation/native": "6.1.17",
+    "@react-three/fiber": "9.0.0-alpha.6",
     "@supabase/auth-helpers-react": "^0.4.2",
     "@supabase/auth-helpers-shared": "^0.5.0",
     "@supabase/ssr": "^0.3.0",
@@ -25,15 +26,15 @@
     "color2k": "^2.0.2",
     "multithreading": "0.2.1",
     "postmark": "^3.0.18",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "react": "19.0.0-beta-9d76c954cf-20240510",
+    "react-dom": "19.0.0-beta-9d76c954cf-20240510",
     "react-native": "0.74.1",
     "react-native-reanimated": "3.11.0",
     "stripe": "^9.1.0",
     "tamagui": "1.98.0",
     "vite-plugin-inspect": "^0.8.4",
     "vite-tsconfig-paths": "^4.3.2",
-    "vxs": "^0.1.54"
+    "vxs": "0.1.56"
   },
   "devDependencies": {
     "@cyco130/vite-plugin-mdx": "1.0.4",
@@ -53,6 +54,6 @@
     "sirv": "^2.0.4",
     "unified": "^10.1.2",
     "unist-util-visit": "^2.0.3",
-    "vxrn": "^0.1.54"
+    "vxrn": "0.1.56"
   }
 }

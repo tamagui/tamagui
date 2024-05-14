@@ -36,7 +36,7 @@
     "@leeoniya/ufuzzy": "^1.0.14",
     "@monaco-editor/react": "^4.2.2",
     "@react-three/drei": "^9.68.3",
-    "@react-three/fiber": "^8.13.0",
+    "@react-three/fiber": "9.0.0-alpha.6",
     "@stripe/react-stripe-js": "^2.1.0",
     "@stripe/stripe-js": "^1.53.0",
     "@supabase/auth-helpers-nextjs": "^0.8.1",

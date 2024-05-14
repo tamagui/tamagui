@@ -2,14 +2,15 @@ import React, { useLayoutEffect } from 'react'
 
 import type { StoreInfo } from './interfaces'
 
-const { ReactCurrentOwner } = (React as any)
-  .__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED
+// const { ReactCurrentOwner } = (React as any)
+//   .__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED
 export const useCurrentComponent = () => {
-  return ReactCurrentOwner &&
-    ReactCurrentOwner.current &&
-    ReactCurrentOwner.current.elementType
-    ? ReactCurrentOwner.current.elementType
-    : {}
+  return {}
+  // return ReactCurrentOwner &&
+  //   ReactCurrentOwner.current &&
+  //   ReactCurrentOwner.current.elementType
+  //   ? ReactCurrentOwner.current.elementType
+  //   : {}
 }
 
 export function useDebugStoreComponent(StoreCons: any) {
