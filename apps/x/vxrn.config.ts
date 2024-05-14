@@ -1,4 +1,4 @@
-import entryShakingPlugin from 'vite-plugin-entry-shaking'
+// import entryShakingPlugin from 'vite-plugin-entry-shaking'
 import { createRequire } from 'node:module'
 import { getVitePlugins, build, serve } from 'vxs/vite'
 // import { tamaguiPlugin, tamaguiExtractPlugin } from '@tamagui/vite-plugin'
