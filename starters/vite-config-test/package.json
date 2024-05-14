@@ -1,42 +1,33 @@
 {
-  "name": "vite-project",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
-  },
-  "dependencies": {
-    "@tamagui/config": "^1.94.5",
-    "@tamagui/lucide-icons": "^1.94.5",
-    "@tamagui/vite-plugin": "^1.94.5",
-    "prettier": "^3.2.5",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "tamagui": "^1.94.5"
-  },
-  "devDependencies": {
-    "@types/react": "^18.2.79",
-    "@types/react-dom": "^18.2.25",
-    "@typescript-eslint/eslint-plugin": "^7.7.0",
-    "@typescript-eslint/parser": "^7.7.0",
-    "@vitejs/plugin-react": "^4.2.1",
-    "eslint": "^9.0.0",
-    "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-react-refresh": "^0.4.6",
-    "typescript": "^5.4.5",
-    "vite": "^5.2.9"
-  },
-  "prettier": {
-    "useTabs": true,
-    "tabWidth": 4,
-    "printWidth": 100,
-    "endOfLine": "auto",
-    "bracketSameLine": true,
-    "semi": true,
-    "singleQuote": false
-  }
+	"name": "@tamagui/vite-app",
+	"private": true,
+	"version": "1.98.0",
+	"type": "module",
+	"scripts": {
+		"dev": "vite",
+		"build": "tsc && vite build",
+		"lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+		"preview": "vite preview"
+	},
+	"dependencies": {
+		"@tamagui/config": "^1.98.0",
+		"@tamagui/lucide-icons": "^1.98.0",
+		"@tamagui/vite-plugin": "^1.98.0",
+		"react": "^18.2.0",
+		"react-dom": "^18.2.0",
+		"react-native-svg": "^15.2.0",
+		"tamagui": "^1.98.0"
+	},
+	"devDependencies": {
+		"@types/react": "^18.2.66",
+		"@types/react-dom": "^18.2.22",
+		"@typescript-eslint/eslint-plugin": "^7.2.0",
+		"@typescript-eslint/parser": "^7.2.0",
+		"@vitejs/plugin-react": "^4.2.1",
+		"eslint": "^8.57.0",
+		"eslint-plugin-react-hooks": "^4.6.0",
+		"eslint-plugin-react-refresh": "^0.4.6",
+		"typescript": "^5.2.2",
+		"vite": "^5.2.0"
+	}
 }

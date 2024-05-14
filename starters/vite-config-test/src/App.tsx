@@ -1,6 +1,3 @@
-import { config } from '@tamagui/config/v3'
-import { ExternalLink } from '@tamagui/lucide-icons'
-import { useState } from 'react'
 import {
   Anchor,
   Button,
@@ -11,26 +8,26 @@ import {
   YStack,
   createTamagui,
 } from 'tamagui'
+import { config } from '@tamagui/config/v3'
+import { ExternalLink } from '@tamagui/lucide-icons'
+import { useState } from 'react'
 
 // you usually export this from a tamagui.config.ts file
 const tamaguiConfig = createTamagui(config)
 
 // make TypeScript type everything based on your config
 type Conf = typeof tamaguiConfig
-declare module '@tamagui/core' {
+declare module 'tamagui' {
   interface TamaguiCustomConfig extends Conf {}
 }
 
-// or
-// import tamaguiConfig from "../tamagui.config.ts";
-
-function App() {
+export default function App() {
   const [count, setCount] = useState(0)
 
   return (
     <TamaguiProvider config={tamaguiConfig} defaultTheme="light">
       <YStack fullscreen ai="center" jc="center" gap="$8" mx="$10" bg="$alt1">
-        <H1>Vite + React + Tamagui</H1>
+        <H1>Tamagui + Vite + React</H1>
         <Button onClick={() => setCount((count) => count + 1)}>
           <Paragraph>count is {count}</Paragraph>
         </Button>
@@ -49,9 +46,9 @@ function App() {
             gap="$1.5"
             px="$2"
             py="$1"
+            br="$3"
             col="$purple10Light"
             bg="$purple5Light"
-            br="$3"
             hoverStyle={{ bg: '$purple6Light' }}
           >
             <Anchor
@@ -71,5 +68,3 @@ function App() {
     </TamaguiProvider>
   )
 }
-
-export default App
