@@ -11,7 +11,8 @@ COPY . .
 
 RUN yarn install
 RUN yarn build:js
+RUN yarn x:build
 
 EXPOSE 3000
 
-CMD ["yarn", "x:prod"]
+CMD ["yarn", "x:serve"]

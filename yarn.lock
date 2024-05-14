@@ -7992,6 +7992,7 @@ __metadata:
     tamagui: "npm:1.98.0"
     unified: "npm:^10.1.2"
     unist-util-visit: "npm:^2.0.3"
+    vite: "npm:vite@6.0.0-alpha.11"
     vite-plugin-inspect: "npm:^0.8.4"
     vite-tsconfig-paths: "npm:^4.3.2"
     vxrn: "npm:^0.1.58"
@@ -29026,7 +29027,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:alpha":
+"vite@npm:alpha, vite@npm:vite@6.0.0-alpha.11":
   version: 6.0.0-alpha.11
   resolution: "vite@npm:6.0.0-alpha.11"
   dependencies:
