@@ -689,8 +689,8 @@ export default function TakeoutPage({
 
                     <Paragraph size="$7" $sm={{ size: '$6' }} fow="400">
                       TakeoutBot is a Github bot that sends PRs as we improve the starter.
-                      This is done with a a few git commands and an architecture that
-                      tries to avoid the worst of merge conflicts.
+                      This is done with a few git commands, scripts and an architecture
+                      that tries to avoid the worst of merge conflicts.
                     </Paragraph>
 
                     <Paragraph size="$6" $sm={{ size: '$5' }} fow="400">
