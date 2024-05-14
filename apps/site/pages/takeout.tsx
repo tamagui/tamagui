@@ -264,8 +264,8 @@ export default function TakeoutPage({
                     <a target="_blank" href="https://supabase.com" rel="noreferrer">
                       Supabase
                     </a>{' '}
-                    for data and auth, all the flows for a user-based app with editable
-                    profiles, settings, common screens, assets, and more.
+                    for data and auth, screens and flows for a user system, profiles,
+                    settings, common screens, assets, and more.
                   </Paragraph>
 
                   <Paragraph
