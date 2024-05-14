@@ -264,8 +264,8 @@ export default function TakeoutPage({
                     <a target="_blank" href="https://supabase.com" rel="noreferrer">
                       Supabase
                     </a>{' '}
-                    for data and auth, all the flows for a user-based app, and a bunch of
-                    other goodies that take time to&nbsp;set&nbsp;up&nbsp;well.
+                    for data and auth, all the flows for a user-based app with editable
+                    profiles, settings, common screens, assets, and more.
                   </Paragraph>
 
                   <Paragraph
@@ -275,9 +275,8 @@ export default function TakeoutPage({
                     $xs={{ size: '$5' }}
                     fow="400"
                   >
-                    With <CodeInline>npx&nbsp;tamagui&nbsp;add&nbsp;font</CodeInline> and{' '}
-                    <CodeInline>npx&nbsp;tamagui&nbsp;add&nbsp;icon</CodeInline>, add on
-                    the ~1,500{' '}
+                    With <CodeInline>tamagui&nbsp;add&nbsp;font</CodeInline> and{' '}
+                    <CodeInline>tamagui&nbsp;add&nbsp;icon</CodeInline> clone ~1,500{' '}
                     <NextLink href="https://fonts.google.com" target="_blank">
                       Google Fonts
                     </NextLink>{' '}
