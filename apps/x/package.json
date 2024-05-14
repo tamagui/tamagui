@@ -9,7 +9,8 @@
     "dev:clean": "yarn clean && vxrn dev",
     "build:prod": "yarn clean && vxrn build",
     "serve": "vxrn serve",
-    "clean": "rm -r node_modules/.vite || true && rm -r dist || true"
+    "clean": "rm -r node_modules/.vite || true && rm -r dist || true",
+    "start": "node vercel-server.js"
   },
   "dependencies": {
     "@leeoniya/ufuzzy": "^1.0.14",
@@ -34,7 +35,7 @@
     "tamagui": "1.98.0",
     "vite-plugin-inspect": "^0.8.4",
     "vite-tsconfig-paths": "^4.3.2",
-    "vxs": "0.1.56"
+    "vxs": "^0.1.58"
   },
   "devDependencies": {
     "@cyco130/vite-plugin-mdx": "1.0.4",
@@ -54,6 +55,6 @@
     "sirv": "^2.0.4",
     "unified": "^10.1.2",
     "unist-util-visit": "^2.0.3",
-    "vxrn": "0.1.56"
+    "vxrn": "^0.1.58"
   }
 }

@@ -55,6 +55,7 @@
     "x:build": "yarn workspace @tamagui/x build:prod",
     "x:serve": "yarn workspace @tamagui/x serve",
     "x:prod": "yarn x:build && yarn x:serve",
+    "x:vercel": "yarn build:js && cd apps/site && yarn build:prod",
     "site:extract": "yarn workspace @tamagui/site dev:extract",
     "site:prod:analyze": "ANALYZE=true yarn site:prod",
     "site:prod:no-extract": "yarn workspace @tamagui/site ci:build:no-extract && yarn workspace @tamagui/site next:start",
