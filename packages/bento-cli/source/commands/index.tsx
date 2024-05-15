@@ -16,6 +16,7 @@ import { copy } from 'copy-paste'
 import Conf from 'conf'
 import { mkdirSync, existsSync, promises as fs } from 'node:fs'
 import path from 'node:path'
+import { useInstallComponent } from '../hooks/useInstallComponent.js'
 
 const tokenStore = new Conf({ projectName: 'bento-cli' })
 
@@ -112,6 +113,7 @@ const SearchBar = () => {
 }
 
 const ResultsContainer = () => {
+  useInstallComponent()
   const appContext = useContext(AppContext)
   return (
     <Box flexDirection="column" display={appContext.results.length ? 'flex' : 'none'}>
@@ -227,6 +229,11 @@ const ResultsCounter = () => {
 
 const InstallComponent = () => {
   const appContext = useContext(AppContext)
+  console.log(
+    'appContext.install.installingComponent',
+    appContext?.install?.installingComponent
+  )
+
   return (
     <Box>
       {appContext.install.installingComponent ? (

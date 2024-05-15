@@ -47,16 +47,18 @@ const getComponentsFromTextFile = (components) => {
   return allComponents
 }
 
-const installComponent = async ({ component, setInstall }) => {
+export const installComponent = async ({ component, setInstall, install }) => {
   console.log('on installComponent fn')
 
-  const components = getComponentsFromTextFile()
+  const components = getComponentsFromTextFile(component)
   if (hasPackagesAndUIDir()) {
     // we need more checks but for now this is enough to test install of components.
     // check if the components/ui folder exists else create it
     // missing is to check if the component is present
     // think of adding later on the --overwrite flag in this piece of the process
     // install component here
+    console.log('components from getComponentsFromTextFile', components)
+
     await Promise.all(
       components.map((component) =>
         fs.writeFile(
@@ -83,16 +85,15 @@ const installComponent = async ({ component, setInstall }) => {
 
 export const useInstallComponent = () => {
   const { install, setInstall } = useContext(AppContext)
-  const {
-    data: component,
-    isLoading: isLoadingComponent,
-    error: errorComponent,
-  } = useGetComponent()
+  const { data, isLoading, error } = useGetComponent()
 
+  console.log('component in useinstall', data)
+  console.log('on useInstallComponent')
   useEffect(() => {
-    // if (install.installingComponent && component) {
-    if (component) {
-      installComponent({ component, setInstall })
+    console.log('component', data)
+    console.log('install', install)
+    if (data && install?.installingComponent) {
+      installComponent({ component: data, setInstall })
     }
-  }, [install?.installingComponent])
+  }, [data])
 }

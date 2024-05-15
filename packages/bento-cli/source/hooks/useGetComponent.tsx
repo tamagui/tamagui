@@ -4,14 +4,17 @@ import fetch from 'node-fetch'
 import useSWR from 'swr'
 import { AppContext } from '../commands/index.js'
 import { Octokit } from 'octokit'
+import { installComponent } from './useInstallComponent.js'
 
 export const useGetComponent = async () => {
-  const { install, tokenStore } = useContext(AppContext)
+  const { install, tokenStore, setInstall } = useContext(AppContext)
   const { access_token } = tokenStore.get?.('token') ?? {}
   const [githubData, setGithubData] = useState(null)
 
   useEffect(() => {
-    if (!access_token) return
+    if (!access_token) {
+      return
+    }
     const octokit = new Octokit({
       auth: access_token,
     })
@@ -20,8 +23,9 @@ export const useGetComponent = async () => {
       const { data } = await octokit.rest.users.getAuthenticated()
       setGithubData(data)
     }
+
     fetchGithubData()
-  }, [access_token])
+  }, [access_token, install.installingComponent])
 
   const fetcher = async (url: string) => {
     const res = await fetch(url, {
@@ -49,9 +53,17 @@ export const useGetComponent = async () => {
   }, [install, githubData])
 
   const { data, error, isLoading } = useSWR<string>(
-    githubData?.id ? codePath : null,
+    githubData?.id && install.installingComponent ? codePath : null,
     fetcher
   )
 
-  return { data, error, isLoading }
+  if (error) console.log('error:', error)
+  if (data) console.log('data is this', Boolean(data.length))
+
+  if (data) {
+    console.log('on if data')
+
+    installComponent({ component: data, setInstall, install })
+  }
+  //   return { data, error, isLoading }
 }
