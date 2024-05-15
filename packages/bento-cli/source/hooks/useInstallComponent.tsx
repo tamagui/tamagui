@@ -48,8 +48,6 @@ const getComponentsFromTextFile = (components) => {
 }
 
 export const installComponent = async ({ component, setInstall, install }) => {
-  console.log('on installComponent fn')
-
   const components = getComponentsFromTextFile(component)
   if (hasPackagesAndUIDir()) {
     // we need more checks but for now this is enough to test install of components.
@@ -57,7 +55,6 @@ export const installComponent = async ({ component, setInstall, install }) => {
     // missing is to check if the component is present
     // think of adding later on the --overwrite flag in this piece of the process
     // install component here
-    console.log('components from getComponentsFromTextFile', components)
 
     await Promise.all(
       components.map((component) =>
@@ -87,11 +84,7 @@ export const useInstallComponent = () => {
   const { install, setInstall } = useContext(AppContext)
   const { data, isLoading, error } = useGetComponent()
 
-  console.log('component in useinstall', data)
-  console.log('on useInstallComponent')
   useEffect(() => {
-    console.log('component', data)
-    console.log('install', install)
     if (data && install?.installingComponent) {
       installComponent({ component: data, setInstall })
     }

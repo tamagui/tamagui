@@ -58,12 +58,9 @@ export const useGetComponent = async () => {
   )
 
   if (error) console.log('error:', error)
-  if (data) console.log('data is this', Boolean(data.length))
 
   if (data) {
-    console.log('on if data')
-
     installComponent({ component: data, setInstall, install })
   }
-  //   return { data, error, isLoading }
+  return { data, error, isLoading }
 }

@@ -113,7 +113,6 @@ const SearchBar = () => {
 }
 
 const ResultsContainer = () => {
-  useInstallComponent()
   const appContext = useContext(AppContext)
   return (
     <Box flexDirection="column" display={appContext.results.length ? 'flex' : 'none'}>
@@ -229,11 +228,6 @@ const ResultsCounter = () => {
 
 const InstallComponent = () => {
   const appContext = useContext(AppContext)
-  console.log(
-    'appContext.install.installingComponent',
-    appContext?.install?.installingComponent
-  )
-
   return (
     <Box>
       {appContext.install.installingComponent ? (
@@ -402,19 +396,26 @@ export default function Search() {
         setInstall,
       }}
     >
-      <Box flexDirection="column">
-        {(install.installingComponent?.isOSS ?? true) || access_token ? (
-          <Box flexDirection="column">
-            <UsageBanner />
-            <SearchBar />
-            <ResultsContainer />
-          </Box>
-        ) : (
-          <Box flexDirection="column">
-            <CodeAuthScreen />
-          </Box>
-        )}
-      </Box>
+      <Provider>
+        <Box flexDirection="column">
+          {(install.installingComponent?.isOSS ?? true) || access_token ? (
+            <Box flexDirection="column">
+              <UsageBanner />
+              <SearchBar />
+              <ResultsContainer />
+            </Box>
+          ) : (
+            <Box flexDirection="column">
+              <CodeAuthScreen />
+            </Box>
+          )}
+        </Box>
+      </Provider>
     </AppContext.Provider>
   )
+}
+
+const Provider = ({ children }: { children: React.ReactNode }) => {
+  useInstallComponent()
+  return <>{children}</>
 }
