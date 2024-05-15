@@ -8,7 +8,7 @@
 		"node": ">=16"
 	},
 	"scripts": {
-		"build": "tsc",
+		"build": "tsc --outDir dist --rootDir source",
 		"dev": "tsc --watch",
 		"test": "prettier --check . && xo && ava"
 	},
