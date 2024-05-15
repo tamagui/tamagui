@@ -10,6 +10,7 @@ WORKDIR /app
 COPY . .
 
 RUN yarn install
+RUN yarn postinstall
 RUN yarn build:js
 RUN yarn x:build
 
