@@ -342,7 +342,7 @@ export default function Search() {
   })
   const [copyToClipboard, setCopyToClipboard] = useState(false)
   const { exit } = useApp()
-  const { access_token } = tokenStore.get('token') ?? {}
+  const { access_token } = tokenStore?.get('token') ?? {}
   // tokenStore.delete("token");
 
   useInput((_, key) =>
