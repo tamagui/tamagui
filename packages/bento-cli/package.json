@@ -10,7 +10,8 @@
 	"scripts": {
 		"build": "tsc --outDir dist --rootDir source",
 		"dev": "tsc --watch",
-		"test": "prettier --check . && xo && ava"
+		"test": "prettier --check . && xo && ava",
+		"link": "npm link --local --force"
 	},
 	"files": [
 		"dist"
