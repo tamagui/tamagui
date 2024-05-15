@@ -4,6 +4,7 @@ import { GithubIcon } from '../components/GithubIcon'
 export const docsRoutes = [
   {
     isUI: false,
+    title: 'DOCS',
     pages: [
       { title: 'Introduction', route: '/docs/intro/introduction' },
       { title: 'Installation', route: '/docs/intro/installation' },
@@ -110,6 +111,7 @@ export const docsRoutes = [
   {
     isUI: true,
     // title: '@tamagui/ui',
+    title: 'UI',
     pages: [
       { title: 'Introduction', route: '/ui/intro' },
       { title: 'Stacks', route: '/ui/stacks' },
@@ -182,7 +184,7 @@ export const docsRoutes = [
   },
 
   {
-    title: 'Extras',
+    label: 'Extras',
     isUI: true,
     pages: [{ title: 'Lucide Icons', route: '/ui/lucide-icons' }],
   },

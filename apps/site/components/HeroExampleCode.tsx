@@ -28,7 +28,7 @@ export const HeroExampleCode = memo(
               <HomeH3 ai="center" jc="center">
                 A multi-faceted optimizing compiler enables
                 <br />
-                <strong>{subtitles[activeIndex]}</strong>.
+                <strong>{subtitles[activeIndex]}</strong>
               </HomeH3>
             </YStack>
           )}

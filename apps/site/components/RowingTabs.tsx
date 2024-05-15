@@ -102,7 +102,7 @@ export function RowingTabs({ className, onTabChange, children, size, ...rest }) 
               <AnimatePresence initial={false}>
                 {activeAt && (
                   <TabIndicator
-                    theme="active"
+                    theme="alt1"
                     w={activeAt.width}
                     h={activeAt.height}
                     x={activeAt.x}
