@@ -6,7 +6,12 @@ import { mkdirSync, existsSync, promises as fs } from 'node:fs'
 import path from 'node:path'
 import { set } from 'zod'
 
+// for expo router setups
 const hasAppDir = () => existsSync(path.join(process.cwd(), 'app'))
+const hasAppDirAndSrcDir = () => existsSync(path.join(process.cwd(), 'app', 'src'))
+
+// for remix setups
+const hasAppDirAndRoutesDir = () => existsSync(path.join(process.cwd(), 'app', 'routes'))
 
 const hasSrcDir = () => existsSync(path.join(process.cwd(), 'src'))
 
@@ -15,6 +20,7 @@ const createUIDir = () =>
     recursive: true,
   })
 
+// for monorepo setups
 const hasPackagesAndUIDir = () => {
   const packagesDir = path.join(process.cwd(), 'packages')
   const uiDir = path.join(packagesDir, 'ui')
@@ -50,11 +56,7 @@ const getComponentsFromTextFile = (components) => {
 export const installComponent = async ({ component, setInstall, install }) => {
   const components = getComponentsFromTextFile(component)
   if (hasPackagesAndUIDir()) {
-    // we need more checks but for now this is enough to test install of components.
-    // check if the components/ui folder exists else create it
-    // missing is to check if the component is present
-    // think of adding later on the --overwrite flag in this piece of the process
-    // install component here
+    //TODO: think of adding later on the --overwrite flag in this piece of the process
 
     await Promise.all(
       components.map((component) =>
@@ -64,20 +66,42 @@ export const installComponent = async ({ component, setInstall, install }) => {
         )
       )
     )
+  } else if (hasAppDirAndRoutesDir()) {
+    const uiDir = path.join(process.cwd(), 'components', 'ui')
 
-    setInstall((prev) => ({
-      installingComponent: null,
-      installedComponents: [...prev.installedComponents, install.installingComponent],
-    }))
+    if (!existsSync(uiDir)) {
+      mkdirSync(uiDir, { recursive: true })
+    }
+
+    await Promise.all(
+      components.map((component) =>
+        fs.writeFile(
+          path.join(process.cwd(), 'components', 'ui', component.name),
+          component.content
+        )
+      )
+    )
+  } else if (hasAppDir()) {
+    const uiDir = path.join(process.cwd(), 'components', 'ui')
+
+    if (!existsSync(uiDir)) {
+      mkdirSync(uiDir, { recursive: true })
+    }
+
+    await Promise.all(
+      components.map((component) =>
+        fs.writeFile(
+          path.join(process.cwd(), 'components', 'ui', component.name),
+          component.content
+        )
+      )
+    )
   } else {
-    //TODO: add support for non monorepo projects
-    console.log('no monorepo no install')
-
-    setInstall((prev) => ({
-      installingComponent: null,
-      installedComponents: [...prev.installedComponents, install.installingComponent],
-    }))
   }
+  setInstall((prev) => ({
+    installingComponent: null,
+    installedComponents: [...prev.installedComponents, install.installingComponent],
+  }))
 }
 
 export const useInstallComponent = () => {
