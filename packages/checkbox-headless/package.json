@@ -41,9 +41,6 @@
       "react-native": "./dist/cjs/index.native.js"
     }
   },
-  "peerDependencies": {
-    "react": "*"
-  },
   "devDependencies": {
     "@tamagui/build": "1.98.0",
     "react": "^18.2.0"

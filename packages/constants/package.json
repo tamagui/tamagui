@@ -30,9 +30,6 @@
       "react-native": "./dist/cjs/index.native.js"
     }
   },
-  "peerDependencies": {
-    "react": "*"
-  },
   "publishConfig": {
     "access": "public"
   },

@@ -40,9 +40,6 @@
     "@tamagui/text": "1.98.0",
     "@tamagui/web": "1.98.0"
   },
-  "peerDependencies": {
-    "react": "*"
-  },
   "devDependencies": {
     "@tamagui/build": "1.98.0",
     "react": "^18.2.0",

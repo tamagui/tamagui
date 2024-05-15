@@ -18,10 +18,6 @@
     "@tamagui/use-presence": "1.98.0",
     "@tamagui/web": "1.98.0"
   },
-  "peerDependencies": {
-    "moti": "^0.28.1",
-    "react": "*"
-  },
   "devDependencies": {
     "@tamagui/build": "1.98.0",
     "moti": "^0.28.1",

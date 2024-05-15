@@ -23,9 +23,6 @@
     "get-tsconfig": "^4.5.0",
     "lodash.debounce": "^4.0.8"
   },
-  "peerDependencies": {
-    "typescript": "*"
-  },
   "devDependencies": {
     "typescript": "^5.4.5"
   },

@@ -33,10 +33,6 @@
     "react": "^18.2.0",
     "react-native": "0.74.1"
   },
-  "peerDependencies": {
-    "react": "*",
-    "react-native": "*"
-  },
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",

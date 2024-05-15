@@ -36,9 +36,6 @@
     "react": "^18.2.0",
     "vitest": "^0.34.3"
   },
-  "peerDependencies": {
-    "react": "*"
-  },
   "publishConfig": {
     "access": "public"
   }

@@ -34,9 +34,6 @@
   "dependencies": {
     "@tamagui/core": "1.98.0"
   },
-  "peerDependencies": {
-    "react": "*"
-  },
   "devDependencies": {
     "@tamagui/build": "1.98.0",
     "@tamagui/get-button-sized": "1.98.0",

@@ -40,9 +40,6 @@
     "@tamagui/use-event": "1.98.0",
     "@tamagui/web": "1.98.0"
   },
-  "peerDependencies": {
-    "react": "*"
-  },
   "devDependencies": {
     "@tamagui/build": "1.98.0",
     "@testing-library/react": "^14.0.0",

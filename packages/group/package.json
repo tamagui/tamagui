@@ -39,9 +39,6 @@
     "@tamagui/use-controllable-state": "1.98.0",
     "reforest": "^0.13.0"
   },
-  "peerDependencies": {
-    "react": "*"
-  },
   "devDependencies": {
     "@tamagui/build": "1.98.0",
     "react": "^18.2.0"

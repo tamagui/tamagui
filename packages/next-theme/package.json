@@ -23,9 +23,6 @@
     "@tamagui/constants": "1.98.0",
     "@tamagui/use-event": "1.98.0"
   },
-  "peerDependencies": {
-    "react": "*"
-  },
   "devDependencies": {
     "@tamagui/build": "1.98.0",
     "react": "^18.2.0"

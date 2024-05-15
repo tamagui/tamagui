@@ -24,9 +24,6 @@
   "dependencies": {
     "@tamagui/constants": "1.98.0"
   },
-  "peerDependencies": {
-    "react": "*"
-  },
   "exports": {
     "./package.json": "./package.json",
     ".": {

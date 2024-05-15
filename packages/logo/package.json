@@ -20,9 +20,6 @@
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
-  "peerDependencies": {
-    "react": "*"
-  },
   "dependencies": {
     "tamagui": "1.98.0"
   },
