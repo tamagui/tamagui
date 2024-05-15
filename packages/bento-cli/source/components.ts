@@ -41,7 +41,7 @@ export const componentsList: ComponentSchema[] = [
         category: "elements",
         categorySection: "list",
         url: "https://tamagui.dev/bento/elements/list#HList",
-        fileName: "UsersTable4",
+        fileName: "HList",
         isOSS: true,
     },
 ];
