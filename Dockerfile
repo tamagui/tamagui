@@ -11,8 +11,7 @@ COPY . .
 RUN git config --global user.email "you@example.com" && git init . && git add -A && git commit -m 'add' && \
   echo "$GIT_CRYPT_KEY" | base64  -d > ./git-crypt-key && \
   git-crypt unlock ./git-crypt-key && \
-  rm ./git-crypt-key && \
-  rm -r .git
+  rm ./git-crypt-key
 
 RUN corepack enable
 RUN corepack prepare yarn@4.1.0 --activate
