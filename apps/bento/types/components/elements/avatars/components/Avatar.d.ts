@@ -26,7 +26,7 @@ export declare const Avatar: import("react").ForwardRefExoticComponent<Omit<impo
         size?: SizeTokens | undefined;
     }, import("@tamagui/web").StaticConfigPublic];
 } & {
-    Content: import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | "elevation" | keyof import("@tamagui/web").StackStyleBase | "inset" | "fullscreen" | "transparent" | "hoverTheme" | "pressTheme" | "backgrounded" | "circular" | "focusTheme" | "elevate" | "bordered" | "radiused" | "padded" | "chromeless"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+    Content: import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | "elevation" | keyof import("@tamagui/web").StackStyleBase | "inset" | "fullscreen" | "transparent" | "circular" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
         elevation?: number | SizeTokens | undefined;
         size?: number | SizeTokens | undefined;
         fullscreen?: boolean | undefined;
@@ -91,7 +91,7 @@ export declare const Avatar: import("react").ForwardRefExoticComponent<Omit<impo
         chromeless?: boolean | "all" | undefined;
     }>> & import("react").RefAttributes<import("tamagui").TamaguiElement>>>;
     Image: import("react").ForwardRefExoticComponent<Partial<import("tamagui").ImageProps> & {
-        onLoadingStatusChange?: ((status: "loaded" | "loading" | "error" | "idle") => void) | undefined;
+        onLoadingStatusChange?: ((status: "loaded" | "error" | "loading" | "idle") => void) | undefined;
     } & import("react").RefAttributes<import("tamagui").TamaguiElement>>;
     Fallback: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/web").StackStyleBase | "inset" | "fullscreen"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
         elevation?: number | SizeTokens | undefined;
