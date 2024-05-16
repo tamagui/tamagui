@@ -1,7 +1,6 @@
 FROM node:22
 
-RUN corepack enable
-RUN corepack prepare yarn@4.1.0 --activate
+ARG GIT_CRYPT_KEY
 
 # unlock
 RUN apt-get update && apt-get install -y git git-crypt
@@ -15,6 +14,9 @@ RUN rm ./git-crypt-key
 WORKDIR /app
 
 COPY . .
+
+RUN corepack enable
+RUN corepack prepare yarn@4.1.0 --activate
 
 RUN yarn install
 RUN yarn postinstall
