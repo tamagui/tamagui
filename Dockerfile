@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install -y git git-crypt
 WORKDIR /app
 COPY . .
 
-RUN git init . && \
+RUN git config --global user.email "you@example.com" && git init . && git add -A && git commit -m 'add' && \
   echo "$GIT_CRYPT_KEY" | base64  -d > ./git-crypt-key && \
   git-crypt unlock ./git-crypt-key && \
   rm ./git-crypt-key && \
