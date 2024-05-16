@@ -680,7 +680,7 @@ declare const appConfig: import("tamagui").TamaguiInternalConfig<{
         19: import("tamagui").Variable<number>;
         20: import("tamagui").Variable<number>;
     };
-}, "color" | "zIndex" | "size" | "space" | "radius">, import("@tamagui/site-config").Themes, {
+}, "color" | "zIndex" | "size" | "space" | "radius">, import("@tamagui/themes/v3-themes").ThemesOut, {
     readonly ussel: "userSelect";
     readonly cur: "cursor";
     readonly pe: "pointerEvents";
@@ -758,9 +758,6 @@ declare const appConfig: import("tamagui").TamaguiInternalConfig<{
     xl: {
         maxWidth: number;
     };
-    lg_xl: {
-        maxWidth: number;
-    };
     lg: {
         maxWidth: number;
     };
@@ -791,89 +788,19 @@ declare const appConfig: import("tamagui").TamaguiInternalConfig<{
     gtXl: {
         minWidth: number;
     };
-    pointerFine: {
-        pointer: string;
-    };
 }, {
-    '75ms': {
-        type: "timing";
-        duration: number;
-    };
-    '100ms': {
-        type: "timing";
-        duration: number;
-    };
-    '200ms': {
-        type: "timing";
-        duration: number;
-    };
-    superBouncy: {
-        type: "spring";
-        damping: number;
-        mass: number;
-        stiffness: number;
-    };
-    bouncy: {
-        type: "spring";
-        damping: number;
-        mass: number;
-        stiffness: number;
-    };
-    kindaBouncy: {
-        type: "spring";
-        damping: number;
-        mass: number;
-        stiffness: number;
-    };
-    superLazy: {
-        type: "spring";
-        damping: number;
-        mass: number;
-        stiffness: number;
-    };
-    lazy: {
-        type: "spring";
-        damping: number;
-        stiffness: number;
-    };
-    medium: {
-        damping: number;
-        stiffness: number;
-        mass: number;
-    };
-    slowest: {
-        type: "spring";
-        damping: number;
-        stiffness: number;
-    };
-    slow: {
-        type: "spring";
-        damping: number;
-        stiffness: number;
-    };
-    quick: {
-        type: "spring";
-        damping: number;
-        mass: number;
-        stiffness: number;
-    };
-    tooltip: {
-        type: "spring";
-        damping: number;
-        mass: number;
-        stiffness: number;
-    };
-    quicker: {
-        type: "spring";
-        damping: number;
-        mass: number;
-        stiffness: number;
-    };
-    quickest: {
-        damping: number;
-        mass: number;
-        stiffness: number;
-    };
+    '75ms': string;
+    '100ms': string;
+    '200ms': string;
+    bouncy: string;
+    superBouncy: string;
+    lazy: string;
+    medium: string;
+    slow: string;
+    quick: string;
+    quicker: string;
+    quickest: string;
+    tooltip: string;
 }, {
     heading: import("@tamagui/web").FillInFont<{
         size: {
@@ -901,7 +828,6 @@ declare const appConfig: import("tamagui").TamaguiInternalConfig<{
             8: number;
             9: number;
             10: number;
-            11: number;
             12: number;
             14: number;
             15: number;
@@ -917,100 +843,8 @@ declare const appConfig: import("tamagui").TamaguiInternalConfig<{
                 normal: string;
             };
         };
-    }, 3 | 2 | 5 | 9 | 15 | 1 | 10 | 16 | 14 | 11 | 12 | 4 | 6 | 7 | 8 | 13 | "true">;
-    headingDmSans: import("@tamagui/web").FillInFont<{
-        size: {
-            5: number;
-            6: number;
-            9: number;
-            10: number;
-        };
-        transform: {
-            6: "uppercase";
-            7: "none";
-        };
-        weight: {
-            6: string;
-            7: string;
-        };
-        color: {
-            6: string;
-            7: string;
-        };
-        letterSpacing: {
-            5: number;
-            6: number;
-            7: number;
-            8: number;
-            9: number;
-            11: number;
-        };
-        face: {};
-    }, 3 | 2 | 5 | 9 | 15 | 1 | 10 | 16 | 14 | 11 | 12 | 4 | 6 | 7 | 8 | 13 | "true">;
-    headingDmSerifDisplay: import("@tamagui/web").FillInFont<{
-        size: {
-            5: number;
-            6: number;
-            7: number;
-            8: number;
-            9: number;
-            10: number;
-        };
-        transform: {
-            6: "uppercase";
-            7: "none";
-        };
-        weight: {
-            6: string;
-            7: string;
-        };
-        color: {
-            6: string;
-            7: string;
-        };
-        letterSpacing: {
-            5: number;
-            6: number;
-            7: number;
-            8: number;
-            9: number;
-            10: number;
-            11: number;
-            12: number;
-            14: number;
-            15: number;
-        };
-        face: {};
-    }, 3 | 2 | 5 | 9 | 15 | 1 | 10 | 16 | 14 | 11 | 12 | 4 | 6 | 7 | 8 | 13 | "true">;
-    headingNohemi: import("@tamagui/web").FillInFont<{
-        size: {
-            5: number;
-            6: number;
-            9: number;
-            10: number;
-        };
-        transform: {
-            6: "uppercase";
-            7: "none";
-        };
-        weight: {
-            6: string;
-            7: string;
-        };
-        color: {
-            6: string;
-            7: string;
-        };
-        letterSpacing: {
-            5: number;
-            6: number;
-            7: number;
-            9: number;
-            12: number;
-        };
-        face: {};
-    }, 3 | 2 | 5 | 9 | 15 | 1 | 10 | 16 | 14 | 11 | 12 | 4 | 6 | 7 | 8 | 13 | "true">;
-    body: import("@tamagui/web").FillInFont<import("tamagui").GenericFont<string | number | symbol>, 3 | 2 | 5 | 9 | 15 | 1 | 10 | 16 | 14 | 11 | 12 | 4 | 6 | 7 | 8 | 13 | "true">;
+    }, 3 | 2 | 9 | 15 | 1 | 10 | 5 | 14 | 11 | 12 | 16 | 4 | 6 | 7 | 8 | 13 | "true">;
+    body: import("@tamagui/web").FillInFont<import("tamagui").GenericFont<string | number | symbol>, 3 | 2 | 9 | 15 | 1 | 10 | 5 | 14 | 11 | 12 | 16 | 4 | 6 | 7 | 8 | 13 | "true">;
     mono: {
         weight: {
             1: string;
@@ -1034,11 +868,9 @@ declare const appConfig: import("tamagui").TamaguiInternalConfig<{
             16: number;
         };
     };
-    silkscreen: import("@tamagui/web").FillInFont<import("tamagui").GenericFont<string | number | symbol>, 3 | 2 | 5 | 9 | 15 | 1 | 10 | 16 | 14 | 11 | 12 | 4 | 6 | 7 | 8 | 13>;
-    munro: import("tamagui").GenericFont<string | number | symbol>;
-    cherryBomb: import("@tamagui/web").FillInFont<import("tamagui").GenericFont<string | number | symbol>, 3 | 2 | 5 | 9 | 15 | 1 | 10 | 16 | 14 | 11 | 12 | 4 | 6 | 7 | 8 | 13 | "true">;
+    silkscreen: import("@tamagui/web").FillInFont<import("tamagui").GenericFont<string | number | symbol>, 3 | 2 | 9 | 15 | 1 | 10 | 5 | 14 | 11 | 12 | 16 | 4 | 6 | 7 | 8 | 13>;
 }, boolean | undefined, string, {
-    allowedStyleValues: "somewhat-strict-web";
+    allowedStyleValues: false;
     autocompleteSpecificTokens: "except-special";
 }>;
 export type AppConfig = typeof appConfig;
