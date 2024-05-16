@@ -5,15 +5,14 @@ ARG GIT_CRYPT_KEY
 # unlock
 RUN apt-get update && apt-get install -y git git-crypt
 
+WORKDIR /app
+COPY . .
+
 RUN git init . && \
   echo "$GIT_CRYPT_KEY" | base64  -d > ./git-crypt-key && \
   git-crypt unlock ./git-crypt-key && \
   rm ./git-crypt-key && \
   rm -r .git
-
-WORKDIR /app
-
-COPY . .
 
 RUN corepack enable
 RUN corepack prepare yarn@4.1.0 --activate
