@@ -22,10 +22,10 @@ async function parseShowcaseComponents(filePath) {
 
 async function parseComponentFilename(filePath) {
   const content = await fs.readFile(filePath, 'utf8');
-  // Match <Showcase ... title="..." ... >
-  const fileNameMatch = content.matchAll(/\.fileName\s*=\s*'([^']+)'/g);
+  const fileNameMatch = content.match(/fileName = '([^']+)'[^}]*/);
+  const fileName = fileNameMatch[0].split("'")[1]
 
-  return fileNameMatch[0];
+  return fileName;
 }
 
 async function parseExportsFromFiles(files, elementsDir, subSection) {
@@ -75,7 +75,8 @@ async function main() {
       const filename = await parseComponentFilename(componentPath)
       return {...item, fileNameIs: filename, componentPath}
   }))
-  console.log(result.filter(item => item.status === 'fulfilled').map(item => item.value))
+  // console.log(result.filter(item => item.status === 'fulfilled').map(item => item.value))
+  console.log(result)
 }
 
 main().catch(console.error);
