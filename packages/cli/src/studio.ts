@@ -77,7 +77,7 @@ export const studio = async (
           config: './src/tamagui.config.ts',
           disableExtraction: true,
           components: ['tamagui'],
-        }),
+        }) as any,
         viteTsConfigPaths(),
         // await entryShakingPlugin({
         //   targets,
