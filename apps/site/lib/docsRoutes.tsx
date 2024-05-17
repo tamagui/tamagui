@@ -4,7 +4,7 @@ import { GithubIcon } from '../components/GithubIcon'
 export const docsRoutes = [
   {
     isUI: false,
-    title: 'DOCS',
+    title: '',
     pages: [
       { title: 'Introduction', route: '/docs/intro/introduction' },
       { title: 'Installation', route: '/docs/intro/installation' },
