@@ -22,17 +22,20 @@ async function parseShowcaseComponents(filePath) {
 }
 
 async function parseExportsFromFiles(files) {
-  const componentsArray = [];
+  let componentsArray = [];
 
   for (const file of files) {
     const filePath = path.join(elementsDir, file);
-    const showcases = await parseShowcaseComponents(filePath);
+    let showcases = await parseShowcaseComponents(filePath);
 
-    componentsArray.push({
-      category: 'elements',
-      categorySection: file.replace('.tsx', ''),
-      showcases
-    });
+    showcases =showcases.map(name => {
+      return {
+        name,
+        category: 'elements',
+        categorySection: file.replace('.tsx', ''),
+      }
+    })
+    componentsArray = [...componentsArray, ...showcases];
   }
 
   return componentsArray;
