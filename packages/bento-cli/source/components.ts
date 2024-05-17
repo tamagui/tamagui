@@ -13,6 +13,29 @@ export type ComponentSchema = {
 }
 
 
+const OSS_COMPONENTS = [
+  'InputWithLabel',
+  'CheckboxCards',
+  'SignInScreen',
+  'GroupedRadio',
+  'SwitchCustomIcons',
+  'WritePreviewAction',
+  'ImagePicker',
+  'HList',
+  'AvatarsGrouped',
+  'ButtonsWithLeftIcons',
+  'DatePicker',
+  'UsersTable',
+  'Chips',
+  'SlidingPopover',
+  'TabBar',
+  'ButtonLoading',
+  'NumberSlider',
+  'SlideIn',
+  'AvatarsTooltip',
+  'Meeting',
+]
+
 // NOTE: hardcoded list but using getAllComponentsForBentoCli.js
 // TODO: use getAllComponentsForBentoCli.js on github action and request schema file as json from url
 export const componentsList: ComponentSchema[] = [
@@ -584,4 +607,6 @@ export const componentsList: ComponentSchema[] = [
     categorySection: 'events',
     componentPath: '/Users/rofi/Programing/tamagui/apps/bento/src/components/user/events/StatusTracker.tsx'
   }
-]
+].map(item => {
+  return {...item, isOSS: OSS_COMPONENTS.includes(item.fileName) }
+})
