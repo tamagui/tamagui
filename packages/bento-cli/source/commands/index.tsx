@@ -266,13 +266,6 @@ const CodeAuthScreen = () => {
     }
   }, [])
 
-  // const [tokenIsInstalled, setTokenIsInstalled] = useState(false);
-
-  // useEffect(() => {
-  // 	if (appContext.install.tokenIsInstalled) {
-  // 	}
-  // }, [tokenIsInstalled]);
-
   appContext.tokenStore.onDidChange('token', (newvalue, oldvalue) => {
     appContext.setInstall((prev) => ({
       ...prev,
@@ -363,23 +356,6 @@ export default function Search() {
       install,
     })
   )
-
-  // useEffect(() => {
-  // if (appContext.install.tokenIsInstalled) {
-  // 	appContext.setInstall((prev) => ({
-  // 		...prev,
-  // 		enterToOpenBrowser: true,
-  // 	}));
-  // }
-  // setTimeout(() => {
-  // 	setInstall((prev) => ({
-  // 		installingComponent: null,
-  // 		installedComponents: [
-  // 			...prev.installedComponents,
-  // 			install.installingComponent,
-  // 		],
-  // 	}));
-  // }, 3000);
 
   return (
     <AppContext.Provider
