@@ -1,5 +1,6 @@
 // @ts-nocheck
-import React, { useState, useContext, createContext, useEffect } from 'react'
+import type React from 'react'
+import { useState, useContext, createContext, useEffect } from 'react'
 import { Text, Box, useInput, Spacer, useApp } from 'ink'
 import { Alert, Spinner, Badge } from '@inkjs/ui'
 import TextInput from 'ink-text-input'
@@ -117,7 +118,7 @@ const ResultsContainer = () => {
   return (
     <Box flexDirection="column" display={appContext.results.length ? 'flex' : 'none'}>
       <Box flexDirection="column" borderStyle="round" paddingX={1} gap={1}>
-        {appContext.results.map((result, i) => (
+        {appContext.results.slice(0, 5).map((result, i) => (
           <ResultCard
             result={result}
             key={result.item.fileName}

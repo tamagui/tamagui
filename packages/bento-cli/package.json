@@ -13,7 +13,9 @@
     "test": "prettier --check . && xo && ava",
     "link": "npm link --local --force"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "dependencies": {
     "@inkjs/ui": "^1.0.0",
     "@supabase/supabase-js": "^2.43.1",
@@ -53,7 +55,9 @@
       "ts": "module",
       "tsx": "module"
     },
-    "nodeArguments": ["--loader=ts-node/esm"]
+    "nodeArguments": [
+      "--loader=ts-node/esm"
+    ]
   },
   "xo": {
     "extends": "xo-react",
