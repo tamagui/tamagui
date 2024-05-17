@@ -38,6 +38,7 @@ async function parseExportsFromFiles(files, elementsDir, subSection) {
     showcases =showcases.map(([fileName, name]) => {
       return {
         name,
+        fileNamePath: fileName,
         fileName,
         category: subSection,
         categorySection: file.replace('.tsx', ''),
@@ -73,10 +74,10 @@ async function main() {
   const result = await Promise.allSettled(accumulatedComponentsArray.map( async (item) => {
       const componentPath = path.join(__dirname, `../apps/bento/src/components/${item.category}/${item.categorySection}/${item.fileName.split('.')[1]}.tsx`);
       const filename = await parseComponentFilename(componentPath)
-      return {...item, fileNameIs: filename, componentPath}
+      return {...item, fileName: filename, componentPath}
   }))
-  // console.log(result.filter(item => item.status === 'fulfilled').map(item => item.value))
-  console.log(result)
+  console.log(result.filter(item => item.status === 'fulfilled').map(item => item.value))
+  return result.filter(item => item.status === 'fulfilled').map(item => item.value)
 }
 
 main().catch(console.error);
