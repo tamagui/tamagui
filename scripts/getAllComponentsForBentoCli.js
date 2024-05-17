@@ -1,8 +1,7 @@
 const fs = require('node:fs').promises;
 const path = require('node:path');
 
-const elementsIndexPath = path.join(__dirname, '../apps/bento/src/sections/elements/index.tsx');
-const elementsDir = path.dirname(elementsIndexPath);
+const sections = ["animation", "ecommerce", "elements", "forms", "panels", "shells", "user"]
 
 async function parseIndexFile(filePath) {
   const content = await fs.readFile(filePath, 'utf8');
@@ -21,7 +20,7 @@ async function parseShowcaseComponents(filePath) {
   return showcases;
 }
 
-async function parseExportsFromFiles(files) {
+async function parseExportsFromFiles(files, elementsDir) {
   let componentsArray = [];
 
   for (const file of files) {
@@ -42,8 +41,11 @@ async function parseExportsFromFiles(files) {
 }
 
 async function main() {
+  const elementsIndexPath = path.join(__dirname, '../apps/bento/src/sections/elements/index.tsx');
+  const elementsDir = path.dirname(elementsIndexPath);
+
   const files = await parseIndexFile(elementsIndexPath);
-  const componentsArray = await parseExportsFromFiles(files);
+  const componentsArray = await parseExportsFromFiles(files, elementsDir);
   console.log(JSON.stringify(componentsArray, null, 2));
 }
 
