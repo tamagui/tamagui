@@ -8,8 +8,8 @@
     "node": ">=16"
   },
   "scripts": {
-    "build": "tsc --outDir dist --rootDir source",
-    "dev": "tsc --watch --outDir dist --rootDir source",
+    "build": "NODE_ENV=production tsc --outDir dist --rootDir source",
+    "dev": "NODE_ENV=development tsc --watch --outDir dist --rootDir source",
     "test": "prettier --check . && xo && ava",
     "link": "npm link --local --force"
   },
