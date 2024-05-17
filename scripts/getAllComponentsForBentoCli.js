@@ -13,8 +13,8 @@ async function parseIndexFile(filePath) {
 async function parseShowcaseComponents(filePath) {
   const content = await fs.readFile(filePath, 'utf8');
   // Match <Showcase ... title="..." ... >
-  const showcaseMatches = content.matchAll(/<Showcase[^>]+title="([^"]+)"[^>]*>/g);
-  const showcases = [...showcaseMatches].map(match => match[1]);
+  const showcaseMatches = content.matchAll(/<Showcase[^>]+fileName=\{([^}]+)\}[^>]*title="([^"]+)"[^>]*>/g);
+  const showcases = [...showcaseMatches].map(match => [match[1], match[2]]);
 
   return showcases;
 }
@@ -26,9 +26,10 @@ async function parseExportsFromFiles(files, elementsDir) {
     const filePath = path.join(elementsDir, file);
     let showcases = await parseShowcaseComponents(filePath);
 
-    showcases =showcases.map(name => {
+    showcases =showcases.map(([fileName, name]) => {
       return {
         name,
+        fileName,
         category: 'elements',
         categorySection: file.replace('.tsx', ''),
       }
@@ -51,7 +52,8 @@ async function main() {
     accumulatedComponentsArray = [...accumulatedComponentsArray, ...componentsArray];
   }
 
-  console.log(JSON.stringify(accumulatedComponentsArray, null, 2));
+  // console.log(JSON.stringify(accumulatedComponentsArray, null, 2));
+  console.log(accumulatedComponentsArray)
 }
 
 main().catch(console.error);
