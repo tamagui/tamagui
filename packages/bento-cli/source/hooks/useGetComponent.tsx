@@ -45,11 +45,7 @@ export const useGetComponent = async () => {
   }
 
   const codePath = useMemo(() => {
-    // if (!installComponent) return "";
-    // return `https://tamagui.dev/api/bento/code/${installComponent.category}/${installComponent.categorySection}/${installComponent.fileName}`;
-    // return "https://tamagui.dev/api/bento/code/elements/tables/UsersTable"; //free
-    // return "https://tamagui.dev/api/bento/code/elements/tables/Basic"; //paid
-    return `http://localhost:5005/api/bento/code/${install.installingComponent?.category}/${install.installingComponent?.categorySection}/${install.installingComponent?.fileName}?userGithubId=${githubData?.node_id}` //paid
+    return `http://tamagui.dev/api/bento/code/${install.installingComponent?.category}/${install.installingComponent?.categorySection}/${install.installingComponent?.fileName}?userGithubId=${githubData?.node_id}` //paid
   }, [install, githubData])
 
   const { data, error, isLoading } = useSWR<string>(
