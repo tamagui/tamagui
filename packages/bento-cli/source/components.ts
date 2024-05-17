@@ -10,7 +10,46 @@ export type ComponentSchema = {
   isOSS: boolean
 }
 
-export const componentsList: ComponentSchema[] = [
+const checkboxes = [
+  {
+    "name": "CheckBox Cards",
+    "category": "forms",
+    "categorySection": "checkboxes",
+    "fileName": "CheckboxCards"
+  },
+  {
+    "name": "Checkbox List",
+    "category": "forms",
+    "categorySection": "checkboxes",
+    "fileName": "CheckboxList"
+  },
+  {
+    "name": "Grouped Checkbox",
+    "category": "forms",
+    "categorySection": "checkboxes",
+    "fileName": "GroupedCheckbox"
+  },
+  {
+    "name": "Horizontal Checkboxes",
+    "category": "forms",
+    "categorySection": "checkboxes",
+    "fileName": "HorizontalCheckboxes"
+  },
+  {
+    "name": "Horizontal with Description Checkboxes",
+    "category": "forms",
+    "categorySection": "checkboxes",
+    "fileName": "HorizontalWithDescriptionCheckboxes"
+  },
+  {
+    "name": "Vertical with Description Checkboxes",
+    "category": "forms",
+    "categorySection": "checkboxes",
+    "fileName": "VerticalWithDescriptionCheckboxes"
+  }
+]
+
+export const componentsList: ComponentSchema[] = [...checkboxes, ...[
   {
     name: 'Hoverable Avatars',
     category: 'animation',
@@ -291,4 +330,4 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'ChipsWithIcon',
     isOSS: false,
   },
-]
+]]
