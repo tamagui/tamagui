@@ -19,7 +19,7 @@ async function parseShowcaseComponents(filePath) {
   return showcases;
 }
 
-async function parseExportsFromFiles(files, elementsDir) {
+async function parseExportsFromFiles(files, elementsDir, subSection) {
   let componentsArray = [];
 
   for (const file of files) {
@@ -30,7 +30,7 @@ async function parseExportsFromFiles(files, elementsDir) {
       return {
         name,
         fileName,
-        category: 'elements',
+        category: subSection,
         categorySection: file.replace('.tsx', ''),
       }
     })
@@ -48,12 +48,14 @@ async function main() {
     const elementsIndexPath = path.join(__dirname, `../apps/bento/src/sections/${subSection}/index.tsx`);
     const elementsDir = path.dirname(elementsIndexPath);
     const files = await parseIndexFile(elementsIndexPath);
-    const componentsArray = await parseExportsFromFiles(files, elementsDir);
+    const componentsArray = await parseExportsFromFiles(files, elementsDir,subSection);
     accumulatedComponentsArray = [...accumulatedComponentsArray, ...componentsArray];
   }
 
   // console.log(JSON.stringify(accumulatedComponentsArray, null, 2));
   console.log(accumulatedComponentsArray)
+
+
 }
 
 main().catch(console.error);
