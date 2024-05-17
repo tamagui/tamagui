@@ -1,47 +1,46 @@
 const fs = require('node:fs').promises;
 const path = require('node:path');
-const ts = require('typescript');
 
-const elementsDir = path.join(__dirname, '../apps/bento/src/sections/elements');
+const elementsIndexPath = path.join(__dirname, '../apps/bento/src/sections/elements/index.tsx');
+const elementsDir = path.dirname(elementsIndexPath);
 
-async function readAndParseFiles(dir) {
-  const files = await fs.readdir(dir);
+async function parseIndexFile(filePath) {
+  const content = await fs.readFile(filePath, 'utf8');
+  // Simple regex to match './filename'
+  const matches = content.matchAll(/export \* from '\.\/(.+)'/g);
+  const files = [...matches].map(match => `${match[1]}.tsx`);
+  return files;
+}
+
+async function parseShowcaseComponents(filePath) {
+  const content = await fs.readFile(filePath, 'utf8');
+  // Match <Showcase ... title="..." ... >
+  const showcaseMatches = content.matchAll(/<Showcase[^>]+title="([^"]+)"[^>]*>/g);
+  const showcases = [...showcaseMatches].map(match => match[1]);
+
+  return showcases;
+}
+
+async function parseExportsFromFiles(files) {
   const componentsArray = [];
 
   for (const file of files) {
-    if (file.endsWith('.tsx') && !file.startsWith('index')) {
-      const filePath = path.join(dir, file);
-      const content = await fs.readFile(filePath, 'utf8');
-      const exports = parseExports(content);
-      const categorySection = file.replace('.tsx', '');
+    const filePath = path.join(elementsDir, file);
+    const showcases = await parseShowcaseComponents(filePath);
 
-      componentsArray.push({
-        category: 'elements',
-        categorySection,
-        exports
-      });
-    }
+    componentsArray.push({
+      category: 'elements',
+      categorySection: file.replace('.tsx', ''),
+      showcases
+    });
   }
 
   return componentsArray;
 }
 
-function parseExports(fileContent) {
-  // This is a very basic and naive implementation.
-  // You might want to use a proper AST parser for TypeScript files.
-  const exportRegex = /export (const|function) (\w+)/g;
-  let match;
-  const exports = [];
-
-  while ((match = exportRegex.exec(fileContent)) !== null) {
-    exports.push(match[2]);
-  }
-
-  return exports;
-}
-
 async function main() {
-  const componentsArray = await readAndParseFiles(elementsDir);
+  const files = await parseIndexFile(elementsIndexPath);
+  const componentsArray = await parseExportsFromFiles(files);
   console.log(JSON.stringify(componentsArray, null, 2));
 }
 
