@@ -5612,7 +5612,7 @@ __metadata:
     "@tamagui/build": "npm:1.98.0"
     "@tamagui/use-presence": "npm:1.98.0"
     "@tamagui/web": "npm:1.98.0"
-    moti: "npm:^0.28.1"
+    moti: "npm:^0.29.0"
     react: "npm:^18.2.0"
     react-native-reanimated: "npm:3.11.0"
   languageName: unknown
@@ -7191,7 +7191,7 @@ __metadata:
     lodash-es: "npm:^4.17.21"
     mdx-bundler: "npm:10.0.1"
     micro: "npm:^10.0.1"
-    moti: "npm:^0.28.1"
+    moti: "npm:^0.29.0"
     next: "npm:^14.2.0"
     next-remote-watch: "npm:^2.0.0"
     next-seo: "npm:^6.0.0"
@@ -21144,14 +21144,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"moti@npm:^0.28.1":
-  version: 0.28.1
-  resolution: "moti@npm:0.28.1"
+"moti@npm:^0.29.0":
+  version: 0.29.0
+  resolution: "moti@npm:0.29.0"
   dependencies:
     framer-motion: "npm:^6.5.1"
   peerDependencies:
     react-native-reanimated: "*"
-  checksum: 10/46464deacbf78bae349037b435ba5eebef556b89f5743074e9c77f5f1af5fd480a7ace81760e2fcca73856fa04eae8791411ddd419ea97be5e475ab9b4cbf910
+  checksum: 10/38a7a173739a1ed7c05e3ddb32ef9bb54857dd9a059290c701ffbc97fc36db14902348116f6f0841b1b63bb92355cc469cbbd952a65d6f9ee64b77bda4987456
   languageName: node
   linkType: hard
 
