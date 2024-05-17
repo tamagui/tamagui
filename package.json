@@ -92,8 +92,6 @@
     "@types/node": "16.11.9",
     "metro": "0.80.8",
     "metro-core": "0.80.8",
-    "react": "19.0.0-beta-9d76c954cf-20240510",
-    "react-dom": "19.0.0-beta-9d76c954cf-20240510",
     "metro-resolver": "0.80.8",
     "metro-config": "0.80.8"
   },
