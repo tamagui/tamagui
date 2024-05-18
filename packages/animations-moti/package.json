@@ -32,6 +32,9 @@
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
+  "peerDependencies": {
+    "moti": "*"
+  },
   "publishConfig": {
     "access": "public"
   },
