@@ -1,14 +1,14 @@
 import { useGLTF } from '@react-three/drei'
-import type { Object3DNode } from '@react-three/fiber'
+// import type { Object3DNode } from '@react-three/fiber'
 import { Canvas, useFrame } from '@react-three/fiber'
-import { useRouter } from 'vxs'
 import { Suspense, useEffect, useRef } from 'react'
 import { useMedia } from 'tamagui'
+
 import { Stage } from './Stage'
 
 const modelUrl = `${
-  import.meta.env.NEXT_PUBLIC_VERCEL_URL
-    ? `https://${import.meta.env.NEXT_PUBLIC_VERCEL_URL}`
+  process.env.NEXT_PUBLIC_VERCEL_URL
+    ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
     : `http://localhost:${process.env.NODE_ENV === 'production' ? '3333' : '5005'}`
 }/takeout-compressed-2.glb`
 
@@ -31,17 +31,19 @@ export default (props) => (
 )
 
 function TakeoutBox3D(props) {
-  const ref = useRef<Object3DNode<any, any>>()
-  const router = useRouter()
+  // const ref = useRef<Object3DNode<any, any>>()
+  const ref = useRef<any>()
+  // const router = useRouter()
   const media = useMedia()
 
-  useEffect(() => {
-    function resetFrameCount() {
-      frameCount = 0
-    }
-    router.events.on('routeChangeComplete', resetFrameCount)
-    return () => router.events.off('routeChangeComplete', resetFrameCount)
-  }, [])
+  // TODO:
+  // useEffect(() => {
+  //   function resetFrameCount() {
+  //     frameCount = 0
+  //   }
+  //   router.events.on('routeChangeComplete', resetFrameCount)
+  //   return () => router.events.off('routeChangeComplete', resetFrameCount)
+  // }, [])
 
   const { nodes, materials } = useGLTF(modelUrl) as any
 

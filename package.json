@@ -53,7 +53,10 @@
     "scripts:format": "node -r esbuild-register ./scripts/format.ts",
     "repair": "node -r esbuild-register ./scripts/repair.ts",
     "x": "yarn workspace @tamagui/x dev:clean",
-    "x:build": "yarn workspace @tamagui/x build:clean",
+    "x:build": "yarn workspace @tamagui/x build:prod",
+    "x:serve": "yarn workspace @tamagui/x serve",
+    "x:prod": "yarn x:build && yarn x:serve",
+    "x:vercel": "yarn build:js && cd apps/site && yarn build:prod",
     "site:extract": "yarn workspace @tamagui/site dev:extract",
     "site:prod:analyze": "ANALYZE=true yarn site:prod",
     "site:prod:no-extract": "yarn workspace @tamagui/site ci:build:no-extract && yarn workspace @tamagui/site next:start",
@@ -91,9 +94,7 @@
     "metro": "0.80.8",
     "metro-core": "0.80.8",
     "metro-resolver": "0.80.8",
-    "metro-config": "0.80.8",
-    "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "metro-config": "0.80.8"
   },
   "importSort": {
     ".js, .jsx, .ts, .tsx": {

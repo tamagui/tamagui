@@ -331,9 +331,9 @@ Tamagui includes Server Components support for the Next.js app directory with [`
 
 ### next.config.js
 
-Rename `next.config.mjs` into `next.config.js` and add the plugin to it:
+The Tamagui plugin is optional but helps with compatibility with the rest of the React Native ecosystem. It requires CommonJS for now as the optimizing compiler makes use of a variety of resolving features that haven't been ported to ESM yet. Be sure to rename your `next.config.mjs` to `next.config.js` before adding it:
 
-```tsx fileName="NextTamaguiProvider.tsx"
+```tsx fileName="next.config.js"
 const { withTamagui } = require('@tamagui/next-plugin')
 
 module.exports = function (name, { defaultConfig }) {

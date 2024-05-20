@@ -67,7 +67,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
   const preRef = useRef<any>(null)
   const { hasCopied, onCopy, value, timeout } = useClipboard(code)
   const copyTimeoutValue = useGradualIncrease(hasCopied, timeout)
-  const showLineNumbers = showLineNumbersIn ?? (lines > 10 ? true : false)
+  const showLineNumbers = showLineNumbersIn ?? lines > 10
 
   const { isTerminal, command, getCode, handleTabChange } = getBashCommand(
     children,
@@ -80,7 +80,6 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
   const isPreVisible = !isCollapsed || !isCollapsible
 
   useEffect(() => {
-    // console.log(storedTab)
     try {
       if (preRef.current && isPreVisible) {
         const codeElement = preRef.current.querySelector('code')

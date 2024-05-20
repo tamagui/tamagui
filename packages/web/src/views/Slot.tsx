@@ -4,7 +4,7 @@ import { composeRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
 import { composeEventHandlers } from '@tamagui/helpers'
 import type { ReactNode } from 'react'
-import { Children, cloneElement, forwardRef, isValidElement } from 'react'
+import { Children, cloneElement, forwardRef, isValidElement, version } from 'react'
 
 /* -------------------------------------------------------------------------------------------------
  * Slot
@@ -13,6 +13,8 @@ import { Children, cloneElement, forwardRef, isValidElement } from 'react'
 interface SlotProps {
   children: ReactNode
 }
+
+const is19 = version.startsWith('19.')
 
 export const Slot = forwardRef<any, SlotProps>(function Slot(props, forwardedRef) {
   const { children, ...slotProps } = props
@@ -25,7 +27,10 @@ export const Slot = forwardRef<any, SlotProps>(function Slot(props, forwardedRef
         ? mergedProps
         : {
             ...mergedProps,
-            ref: composeRefs(forwardedRef, (children as any).ref),
+            ref: composeRefs(
+              forwardedRef,
+              is19 ? (children as any).props.ref : (children as any).ref
+            ),
           }
     )
   }

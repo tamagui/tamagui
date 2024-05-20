@@ -91,7 +91,7 @@ export default function ResponsiveDemo() {
           </XStack>
         </XStack>
 
-        <YStack f={1} p="$4" $gtLarge={{ p: 0, pr: '$6' }}>
+        <YStack f={1} p="$4" $gtLarge={{ p: 0, pr: '$6', maw: '50%' }}>
           <YStack display="none" $gtSmall={{ display: 'flex' }}>
             {header}
           </YStack>

@@ -28,6 +28,7 @@ export async function loader({ params }) {
 
 export default function DocIntroPage() {
   const { code, frontmatter } = useLoader(loader)
+  console.log('??', code, frontmatter)
   const Component = useMemo(() => getMDXComponent(code), [code])
 
   return (

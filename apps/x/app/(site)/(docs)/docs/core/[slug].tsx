@@ -11,7 +11,6 @@ import { components } from '~/features/mdx/MDXComponents'
 
 export async function generateStaticParams() {
   const frontmatters = getAllFrontmatter('data/docs/core')
-  console.info('frontmatters', frontmatters)
   const paths = frontmatters.map(({ slug }) => ({
     slug: slug.replace(/.*docs\/core\//, ''),
   }))
@@ -23,7 +22,6 @@ export async function loader({ params }) {
   return {
     frontmatter,
     code,
-    // examples: getCompilationExamples(),
   }
 }
 

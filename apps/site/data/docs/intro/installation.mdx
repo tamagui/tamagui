@@ -23,12 +23,12 @@ For now recommended `yarn` if you are using Tamagui in a monorepo, as it's been 
 
 Add `TamaguiProvider` at the root of your app and you are fully set up:
 
-```tsx
+```tsx fileName="App.tsx"
 // optional but recommended CSS reset:
 import '@tamagui/core/reset.css'
-import { TamaguiProvider, View } from '@tamagui/core'
+import { TamaguiProvider, View } from '@tamagui/core' // or 'tamagui'
 
-export default () => (
+export default function App () => (
   <TamaguiProvider>
     <View width={200} height={200} backgroundColor="red" />
   </TamaguiProvider>
@@ -43,8 +43,8 @@ yarn add @tamagui/config
 
 Here's a basic setup with `@tamagui/config`:
 
-```tsx
-import { TamaguiProvider, createTamagui } from '@tamagui/core'
+```tsx fileName="App.tsx"
+import { TamaguiProvider, createTamagui } from '@tamagui/core' // or 'tamagui'
 import { config } from '@tamagui/config/v3'
 
 // you usually export this from a tamagui.config.ts file
@@ -52,7 +52,7 @@ const tamaguiConfig = createTamagui(config)
 
 // make TypeScript type everything based on your config
 type Conf = typeof tamaguiConfig
-declare module '@tamagui/core' {
+declare module '@tamagui/core' { // or 'tamagui'
   interface TamaguiCustomConfig extends Conf {}
 }
 
@@ -75,7 +75,7 @@ You should be ready to use any component:
 import { Button } from 'tamagui'
 
 export default function Demo() {
-  return <Button>Hello world</Button>
+  return <Button theme="blue">Hello world</Button>
 }
 ```
 

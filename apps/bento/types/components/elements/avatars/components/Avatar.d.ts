@@ -91,7 +91,7 @@ export declare const Avatar: import("react").ForwardRefExoticComponent<Omit<impo
         chromeless?: boolean | "all" | undefined;
     }>> & import("react").RefAttributes<import("tamagui").TamaguiElement>>>;
     Image: import("react").ForwardRefExoticComponent<Partial<import("tamagui").ImageProps> & {
-        onLoadingStatusChange?: ((status: "loaded" | "error" | "loading" | "idle") => void) | undefined;
+        onLoadingStatusChange?: ((status: "loaded" | "loading" | "error" | "idle") => void) | undefined;
     } & import("react").RefAttributes<import("tamagui").TamaguiElement>>;
     Fallback: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/web").StackStyleBase | "inset" | "fullscreen"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
         elevation?: number | SizeTokens | undefined;

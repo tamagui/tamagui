@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/compose-refs",
-  "version": "1.98.0",
+  "version": "1.98.1",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -19,11 +19,8 @@
     "lint": "../../node_modules/.bin/biome check src",
     "lint:fix": "../../node_modules/.bin/biome check --apply-unsafe src"
   },
-  "peerDependencies": {
-    "react": "*"
-  },
   "devDependencies": {
-    "@tamagui/build": "1.98.0",
+    "@tamagui/build": "1.98.1",
     "react": "^18.2.0"
   },
   "publishConfig": {

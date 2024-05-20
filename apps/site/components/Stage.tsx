@@ -95,7 +95,7 @@ export function Stage({
   shadows = 'contact',
   preset = 'rembrandt',
   ...props
-}: JSX.IntrinsicElements['group'] & StageProps) {
+}: StageProps & { children?: any; scale?: number }) {
   const [show, setShow] = React.useState(false)
   React.useEffect(() => {
     setShow(true)

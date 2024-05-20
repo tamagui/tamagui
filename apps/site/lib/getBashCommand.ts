@@ -1,5 +1,5 @@
 import { getBashText } from '@components/getBashText'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const pkgCommands = {
   yarn: 'yarn',
@@ -65,11 +65,34 @@ export function getBashCommand(children, className) {
     return code
   }
 
+  const getTabKey = () => {
+    if (isStarter) return 'bashPkgStartTab'
+    if (isPackageRunner) return 'bashPkgRunTab'
+    return 'bashPkgInstallTab'
+  }
+
+  const storedTab =
+    typeof window !== 'undefined' ? localStorage.getItem(getTabKey()) : null
+
+  const defaultTab = isStarter ? 'npm' : isPackageRunner ? 'npx' : 'yarn'
+
+  useEffect(() => {
+    setCommand(
+      isStarter
+        ? bashText
+        : `${commands[storedTab ?? defaultTab]} ${
+            isPackage ? packageToInstall : packageToRun
+          }`
+    )
+  }, [storedTab])
+
   return {
     isTerminal,
     isStarter,
     isPackageRunner,
     showTabs,
+    defaultTab,
+    getTabKey,
     command,
     getCode,
     handleTabChange,

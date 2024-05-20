@@ -441,12 +441,12 @@ export const Select = withStaticProperties(
       (index: number | null) => {
         setActiveIndex((prev) => {
           if (prev !== index) {
-            if (typeof index === 'number') {
+            if (typeof index === 'number' && activeIndexRef.current !== index) {
               emitActiveIndex(index)
+              return index
             }
-            return index
           }
-          return prev
+          return null
         })
       },
       1,

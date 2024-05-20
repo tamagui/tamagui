@@ -81,8 +81,8 @@ export const HeroBelowContent = memo(() => {
           </IconStack>
           <TitleLink href="/docs/core/configuration">Core</TitleLink>
           <Paragraph o={0.7} size="$5">
-            Style React with no outside deps and 100% feature support across web and React
-            Native. Adds many missing features to the RN Style API in ~24Kb.
+            A style library for React and/or React Native with a large typed superset of
+            the React Native style API, with no outside dependencies in about 24Kb.
           </Paragraph>
         </Section>
 
@@ -92,8 +92,9 @@ export const HeroBelowContent = memo(() => {
           </IconStack>
           <TitleLink href="/docs/intro/why-a-compiler">Static</TitleLink>
           <Paragraph o={0.7} size="$5">
-            A smart optimizer that does partial analysis, extracts CSS, flattens your
-            tree, and removes code. Supports Next, Webpack, Vite, Babel and Metro.
+            A smart optimizer that makes your app fast with partial analysis, extracts
+            CSS, flattens your tree, and removes code. Next, Webpack, Vite, Babel and
+            Metro.
           </Paragraph>
         </Section>
 

@@ -4,7 +4,6 @@ import {
   AnimationDriverTogglerContextProvider,
   useAnimationDriverToggler,
 } from 'hooks/useAnimationDriverToggler'
-import React from 'react'
 import {
   Configuration,
   Switch,
@@ -16,6 +15,8 @@ import {
 } from 'tamagui'
 
 import { ErrorBoundary } from './ErrorBoundary'
+import { isTinted } from 'hooks/setTinted'
+import { useThemeSetting } from '@tamagui/next-theme'
 
 export function HeroContainer({
   children,
@@ -42,6 +43,8 @@ export function HeroContainer({
     <HeroContainerInner demoMultiple={demoMultiple}>{children}</HeroContainerInner>
   )
 
+  const themeSetting = useThemeSetting()
+
   const contents = (
     <YStack
       className={(minimal ? '' : 'hero-gradient') + (noScroll ? '' : ' hero-scroll')}
@@ -65,6 +68,7 @@ export function HeroContainer({
         mx: smaller ? 0 : '$-4',
       }}
       id="tamagui-demos-container"
+      theme={!isTinted ? (themeSetting.current === 'dark' ? 'dark' : 'light') : undefined}
     >
       <AnimationDriverTogglerContextProvider>
         {demoMultiple ? (
@@ -101,7 +105,7 @@ export function HeroContainer({
     </YStack>
   )
 
-  if (tinted) {
+  if (tinted || isTinted) {
     return <ThemeTint>{contents}</ThemeTint>
   }
 

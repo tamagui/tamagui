@@ -42,7 +42,7 @@ yarn add @tamagui/babel-plugin
 
 Update your `babel.config.js` to include the optional `@tamagui/babel-plugin`:
 
-```js
+```js fileName="babel.config.js"
 module.exports = function (api) {
   api.cache(true)
   return {
@@ -76,7 +76,7 @@ module.exports = function (api) {
 
 Add your `tamagui.config.ts`:
 
-```tsx
+```tsx fileName="tamagui.config.ts"
 import { config } from '@tamagui/config/v3'
 import { createTamagui } from 'tamagui'
 
@@ -93,7 +93,7 @@ declare module 'tamagui' {
 
 Then update `app/_layout.tsx`:
 
-```tsx showMore
+```tsx showMore fileName="app/_layout.tsx"
 import '../tamagui-web.css'
 
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native'
@@ -147,7 +147,7 @@ Using the `@tamagui/font-inter` package which is a pre-configured version of the
 
 Import the `useFonts` hook and load the fonts:
 
-```tsx
+```tsx fileName="App.tsx"
 import { useFonts } from 'expo-font'
 
 function App() {
@@ -174,8 +174,8 @@ function App() {
 <InlineTabs.Content value="expo">
 Using the `@expo-google-fonts` package which is a collection of Google Fonts that work with Expo:
 
-<Notice>
-    You can find the [full list of fonts](https://github.com/expo/google-fonts/tree/master/font-packages) and usage instructions in the [Expo documentation](https://github.com/expo/google-fonts).
+<Notice theme="green">
+  You can find the [full list of fonts](https://github.com/expo/google-fonts/tree/master/font-packages) and usage instructions in the [Expo documentation](https://github.com/expo/google-fonts).
 </Notice>
 
 Install the font package:
@@ -186,7 +186,7 @@ npx expo install @expo-google-fonts/inter
 
 Import the `useFonts` hook and load the fonts:
 
-```tsx
+```tsx fileName="App.tsx"
 import { useFonts, Inter_400Regular, Inter_900Black } from '@expo-google-fonts/inter'
 
 function App() {
@@ -225,14 +225,14 @@ expo start -c
 
 Your `package.json` scripts should look something like this:
 
-```json
+```json fileName="package.json"
 {
-    "scripts": {
-        "start-native": "expo start -c",
-        "start-web": "expo start -c",
-        "android": "yarn expo run:android",
-        "ios": "yarn expo run:ios",
-        "web": "expo start --web"
-    }
+  "scripts": {
+    "start-native": "expo start -c",
+    "start-web": "expo start -c",
+    "android": "yarn expo run:android",
+    "ios": "yarn expo run:ios",
+    "web": "expo start --web"
+  }
 }
 ```

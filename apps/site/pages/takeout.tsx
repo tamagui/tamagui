@@ -4,7 +4,6 @@ import { getSize } from '@tamagui/get-token'
 import { ThemeTint, ThemeTintAlt, useTint } from '@tamagui/logo'
 import { Check, Dot, Hammer, PlayCircle, X } from '@tamagui/lucide-icons'
 import { useClientValue, useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
-import { useUser } from 'hooks/useUser'
 import type { GetStaticProps } from 'next'
 import { NextSeo } from 'next-seo'
 import dynamic from 'next/dynamic'
@@ -25,7 +24,6 @@ import {
   AnimatePresence,
   Button,
   Circle,
-  H1,
   H2,
   Input,
   Paragraph,
@@ -43,20 +41,19 @@ import {
   useMedia,
   useThemeName,
 } from 'tamagui'
-import { LinearGradient } from 'tamagui/linear-gradient'
 
+import { PurchaseModal } from '@components/PurchaseModal'
 import { getProductsForServerSideRendering } from '@lib/product-pages-server'
-import { MunroP, PurchaseButton, formatPrice, isSafariMobile } from '@lib/products-utils'
+import { MunroP, PurchaseButton, isSafariMobile } from '@lib/products-utils'
 import { ContainerXL } from '../components/Container'
 import { Footer } from '../components/Footer'
 import { useHoverGlow } from '../components/HoverGlow'
 import { LoadCherryBomb, LoadMunro } from '../components/LoadFont'
 import { NextLink } from '../components/NextLink'
 import { seasons } from '../components/SeasonToggleButton'
+import { TakeoutLogo } from '../components/TakeoutLogo'
 import { ThemeNameEffect } from '../components/ThemeNameEffect'
 import { useTakeoutStore } from '../hooks/useTakeoutStore'
-import { PurchaseModal } from '@components/PurchaseModal'
-import { TakeoutLogo } from '../components/TakeoutLogo'
 
 export default function TakeoutPage({
   starter,
@@ -65,7 +62,6 @@ export default function TakeoutPage({
   bento,
 }: TakeoutPageProps) {
   const store = useTakeoutStore()
-
   return (
     <YStack maw="100%">
       <YStack
@@ -75,7 +71,7 @@ export default function TakeoutPage({
         t={-100}
         b={0}
         style={{
-          background: 'linear-gradient(var(--color6), var(--color4))',
+          background: 'linear-gradient(var(--color6), var(--color2))',
         }}
         zi={-3}
       />
@@ -88,7 +84,7 @@ export default function TakeoutPage({
           t={-100}
           b={0}
           style={{
-            background: 'linear-gradient(10deg, var(--color10), var(--color4))',
+            background: 'linear-gradient(10deg, var(--color2), var(--color1))',
           }}
           zi={-3}
         />
@@ -102,11 +98,12 @@ export default function TakeoutPage({
           t={-100}
           b={0}
           style={{
-            background: 'linear-gradient(to bottom, var(--color3) 2%, transparent 20%)',
+            background: 'linear-gradient(to bottom, var(--color1) 2%, transparent 20%)',
           }}
           zi={-1}
         />
-        <ThemeNameEffect colorKey="$color3" />
+        {/* linearGradient / background of */}
+        <ThemeNameEffect colorKey="$color1" />
       </ThemeTintAlt>
 
       <ThemeTintAlt offset={1}>
@@ -116,6 +113,7 @@ export default function TakeoutPage({
           r={0}
           t={-100}
           b={0}
+          o={0.3}
           style={{
             background: 'linear-gradient(to right, transparent, var(--color7))',
           }}
@@ -151,7 +149,8 @@ export default function TakeoutPage({
         pos="absolute"
         t={-950}
         l="50%"
-        x={-300}
+        x={-500}
+        scale={0.75}
         rotate="120deg"
         o={0.01}
         $theme-light={{
@@ -178,7 +177,7 @@ export default function TakeoutPage({
           zi={-1}
           fullscreen
           style={{
-            background: `linear-gradient(to bottom, transparent, transparent, var(--color3))`,
+            background: `linear-gradient(to bottom, transparent, transparent, var(--color2))`,
           }}
         />
       </ThemeTint>
@@ -233,14 +232,13 @@ export default function TakeoutPage({
                 <ThemeTint>
                   <H2
                     className="text-wrap-balance pixelate"
-                    ff="$munro"
+                    // ff="$munro"
                     my="$2"
                     pr={200}
-                    maw={600}
                     size="$10"
                     color="$color10"
                     $group-takeoutBody-xs={{
-                      size: '$9',
+                      size: '$7',
                       pr: '8%',
                     }}
                     $group-takeoutBody-xxs={{
@@ -248,26 +246,26 @@ export default function TakeoutPage({
                       pr: '$1',
                     }}
                   >
-                    From idea to shipped in less time&nbsp;than&nbsp;ever.
+                    A nice way to start
                   </H2>
                 </ThemeTint>
 
                 <ThemeTintAlt>
                   <Paragraph
                     className="text-wrap-balance"
-                    size="$8"
+                    size="$7"
                     $sm={{ size: '$7' }}
                     fow="400"
                   >
-                    Takeout is a bootstrap extracted from our experience creating and
-                    consulting on apps with Tamagui. It builds off the free and open
-                    source starter <CodeInline>(npm&nbsp;create&nbsp;tamagui)</CodeInline>
-                    , adding{' '}
+                    Takeout is a bootstrap for making universal apps with React and React
+                    Native, extracted from our experience creating apps with Tamagui. It
+                    builds off the free and open source starter{' '}
+                    <CodeInline>(npm&nbsp;create&nbsp;tamagui)</CodeInline>, adding{' '}
                     <a target="_blank" href="https://supabase.com" rel="noreferrer">
                       Supabase
                     </a>{' '}
-                    for data and auth, all the flows for a user-based app, and a bunch of
-                    other goodies that take time to&nbsp;set&nbsp;up&nbsp;well.
+                    for data and auth, screens and flows for a user system, profiles,
+                    settings, common screens, assets, and more.
                   </Paragraph>
 
                   <Paragraph
@@ -277,9 +275,8 @@ export default function TakeoutPage({
                     $xs={{ size: '$5' }}
                     fow="400"
                   >
-                    With <CodeInline>npx&nbsp;tamagui&nbsp;add&nbsp;font</CodeInline> and{' '}
-                    <CodeInline>npx&nbsp;tamagui&nbsp;add&nbsp;icon</CodeInline>, add on
-                    the ~1,500{' '}
+                    With <CodeInline>tamagui&nbsp;add&nbsp;font</CodeInline> and{' '}
+                    <CodeInline>tamagui&nbsp;add&nbsp;icon</CodeInline> clone ~1,500{' '}
                     <NextLink href="https://fonts.google.com" target="_blank">
                       Google Fonts
                     </NextLink>{' '}
@@ -689,43 +686,22 @@ export default function TakeoutPage({
                       }}
                     />
 
-                    <ThemeTint>
-                      <Paragraph
-                        fontFamily="$silkscreen"
-                        size="$9"
-                        color="$color1"
-                        ls={-2}
-                        fow="400"
-                        bg="$color12"
-                        als="center"
-                        px="$2"
-                        mt={-55}
-                        mb={10}
-                      >
-                        it's not all about shipping&nbsp;fast.
-                      </Paragraph>
-                    </ThemeTint>
-
                     <Paragraph size="$7" $sm={{ size: '$6' }} fow="400">
-                      Takeout is a template repo that comes with a Github bot that sends
-                      PRs as we improve the starter. This is done with some git magic,
-                      scripting, and an architecture designed for easy merges. When we
-                      make significant updates, we trigger TakeoutBot to
-                      send&nbsp;a&nbsp;PR.
+                      TakeoutBot is a Github bot that sends PRs as we improve the starter.
+                      This is done with a few git commands, scripts and an architecture
+                      that tries to avoid the worst of merge conflicts.
                     </Paragraph>
 
-                    <Paragraph size="$7" $sm={{ size: '$6' }} fow="400">
-                      As you diverge we can't be perfect at sending updates, but we also
-                      have an ignorefile you can configure that gives you a lot of
-                      control. Ultimately, if you diverge enough, you can easily unplug
-                      and use it as a source of ideas and tips.
+                    <Paragraph size="$6" $sm={{ size: '$5' }} fow="400">
+                      As you diverge we can't be perfect at sending updates, but we have
+                      an ignorefile you can configure, and if you diverge enough it's
+                      still a nice reference, as we ensure dependency upgrades work across
+                      all listed features.
                     </Paragraph>
 
                     <ThemeTintAlt>
-                      <Paragraph size="$7" $sm={{ size: '$6' }} fow="400">
-                        We focus on staying up to date with recent versions and features
-                        that are universally useful. Here's some of the features we'd like
-                        to land:
+                      <Paragraph size="$6" $sm={{ size: '$5' }} fow="400">
+                        Here's some things we've been working or are planning:
                       </Paragraph>
                     </ThemeTintAlt>
 
@@ -848,14 +824,13 @@ export type TakeoutPageProps = Awaited<
 >
 
 const TakeoutCard2Frame = styled(YStack, {
-  className: 'blur-8',
   minWidth: 282,
   maxWidth: 282,
   minHeight: 312,
   maxHeight: 312,
   elevation: '$0.5',
   overflow: 'hidden',
-  borderRadius: '$10',
+  borderRadius: '$4',
 
   '$group-takeoutBody-gtXs': {
     scale: 0.915,
@@ -890,7 +865,7 @@ const TakeoutCard = ({ children, title, icon, ...props }: TakeoutCardFrameProps)
     strategy: 'blur',
     blurPct: 60,
     // inverse: true,
-    color: isDark ? 'var(--color9)' : 'var(--color4)',
+    color: isDark ? 'var(--color1)' : 'var(--color4)',
     opacity: isDark ? 0.18 : 0.35,
     background: 'transparent',
     style: {
@@ -940,7 +915,8 @@ const TakeoutCard = ({ children, title, icon, ...props }: TakeoutCardFrameProps)
         <YStack f={1} space zi={100}>
           <H2
             fontFamily="$munro"
-            size="$10"
+            size="$8"
+            ls={3}
             als="center"
             my={-8}
             color="$color10"
@@ -1067,15 +1043,9 @@ const TakeoutHero = () => {
         />
 
         <FeatureIcon
-          themeIndex={1}
-          title="Design"
-          icon="retro-icons/design-color-painting-palette-25.svg"
-        />
-
-        <FeatureIcon
           themeIndex={2}
-          title="Deploy"
-          icon="retro-icons/computers-devices-electronics-vintage-mac-54.svg"
+          title="Screens"
+          icon="retro-icons/coding-app-website-ui-62.svg"
         />
 
         <FeatureIcon
@@ -1086,8 +1056,8 @@ const TakeoutHero = () => {
 
         <FeatureIcon
           themeIndex={4}
-          title="Screens"
-          icon="retro-icons/coding-app-website-ui-62.svg"
+          title="Stack"
+          icon="retro-icons/computers-devices-electronics-vintage-mac-54.svg"
         />
 
         <FeatureIcon
@@ -1098,7 +1068,7 @@ const TakeoutHero = () => {
 
         <FeatureIcon
           themeIndex={6}
-          title="& More"
+          title="Profiles"
           icon="retro-icons/coding-apps-websites-programming-hold-code-9.svg"
         />
       </XStack>
@@ -1118,8 +1088,8 @@ const Point = ({
 }) => {
   return (
     <XStack tag="li" ai="flex-start" space f={1} ov="hidden" {...props}>
-      <YStack py="$1.5">
-        <Check size={16} color="$color10" />
+      <YStack mr={-12} py="$1.5">
+        <Dot size={16} color="$color10" />
       </YStack>
       <YStack f={1}>
         <Paragraph color="$color" wordWrap="break-word" size={size}>
@@ -1221,7 +1191,7 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
           }}
         >
           <YStack zi={-1} fullscreen bg="$color5" o={0.5} />
-
+          {/* 
           <ThemeTintAlt>
             <LinearGradient
               pos="absolute"
@@ -1232,7 +1202,7 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
               colors={['$background0', '$color5']}
               zi={100}
             />
-          </ThemeTintAlt>
+          </ThemeTintAlt> */}
 
           <YStack pos="absolute" b="$4" l="$4" r="$4" zi={100}>
             {/* cant use buttonlink it breaks scroll on press if not enabled, conditionally use a link */}
@@ -1248,12 +1218,8 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
 
           <ScrollView p="$6" disabled={media.md} showsVerticalScrollIndicator={false}>
             <YStack space="$2">
-              <MunroP size="$3" o={0.1} mt={-15} mb={-5}>
-                Drop 0001
-              </MunroP>
-
               <ThemeTintAlt>
-                <MunroP color="$color11" size="$11" ls={2}>
+                <MunroP color="$color11" size="$9" ls={2}>
                   The Stack
                 </MunroP>
               </ThemeTintAlt>

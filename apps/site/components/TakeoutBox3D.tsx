@@ -1,5 +1,5 @@
 import { useGLTF } from '@react-three/drei'
-import type { Object3DNode } from '@react-three/fiber'
+// import type { Object3DNode } from '@react-three/fiber'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { useRouter } from 'next/router'
 import { Suspense, useEffect, useRef } from 'react'
@@ -32,7 +32,8 @@ export default (props) => (
 )
 
 function TakeoutBox3D(props) {
-  const ref = useRef<Object3DNode<any, any>>()
+  // const ref = useRef<Object3DNode<any, any>>()
+  const ref = useRef<any>()
   const router = useRouter()
   const media = useMedia()
 
@@ -49,7 +50,7 @@ function TakeoutBox3D(props) {
   useFrame((state, delta) => {
     if (!ref.current) return
 
-    const entryEffectFrames = 80
+    const entryEffectFrames = 120
     const justStarting = frameCount < entryEffectFrames
     const entryEffectPercentComplete = frameCount / entryEffectFrames
     const rotateSpeed = justStarting ? 6 * (1 - entryEffectPercentComplete) + 0.02 : 0.02

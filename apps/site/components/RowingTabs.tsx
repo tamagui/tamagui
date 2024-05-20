@@ -1,14 +1,21 @@
+import { getBashCommand } from '@lib/getBashCommand'
+import { useLocalStorageWatcher } from '@lib/useLocalStorageWatcher'
 import { useEffect, useState } from 'react'
-import type { ViewProps, TabLayout, TabsTabProps } from 'tamagui'
+import type { TabLayout, TabsTabProps, ViewProps } from 'tamagui'
 import { Avatar, SizableText, XStack, styled } from 'tamagui'
 import { AnimatePresence, Tabs, YStack } from 'tamagui'
-import { getBashCommand } from '@lib/getBashCommand'
 import { Code } from './Code'
-import { useLocalStorageWatcher } from '@lib/useLocalStorageWatcher'
 
 export function RowingTabs({ className, onTabChange, children, size, ...rest }) {
-  const { isStarter, isPackageRunner, showTabs, command, handleTabChange } =
-    getBashCommand(children, className)
+  const {
+    isStarter,
+    isPackageRunner,
+    showTabs,
+    defaultTab,
+    getTabKey,
+    command,
+    handleTabChange,
+  } = getBashCommand(children, className)
 
   const [tabState, setTabState] = useState<{
     currentTab: string
@@ -19,22 +26,19 @@ export function RowingTabs({ className, onTabChange, children, size, ...rest }) 
     // Used to get the direction of activation for animating the active indicator
     prevActiveAt: TabLayout | null
   }>({
-    currentTab: isStarter ? 'npm' : isPackageRunner ? 'npx' : 'yarn',
+    currentTab: defaultTab,
     intentAt: null,
     activeAt: null,
     prevActiveAt: null,
   })
 
   const { storageItem, setItem } = useLocalStorageWatcher(
-    isPackageRunner ? 'bashPkgRunTab' : 'bashPkgInstallTab',
+    getTabKey(),
     tabState.currentTab
   )
 
   useEffect(() => {
-    const storedTab = isPackageRunner
-      ? localStorage.getItem('bashPkgRunTab')
-      : localStorage.getItem('bashPkgInstallTab')
-
+    const storedTab = localStorage.getItem(getTabKey())
     handleTabChange(storedTab ?? tabState.currentTab)
     onTabChange(storedTab)
   }, [])
@@ -98,7 +102,7 @@ export function RowingTabs({ className, onTabChange, children, size, ...rest }) 
               <AnimatePresence initial={false}>
                 {activeAt && (
                   <TabIndicator
-                    theme="active"
+                    theme="alt1"
                     w={activeAt.width}
                     h={activeAt.height}
                     x={activeAt.x}
@@ -114,7 +118,11 @@ export function RowingTabs({ className, onTabChange, children, size, ...rest }) 
                 gap="$2"
               >
                 {isStarter ? (
-                  <Tab pkgManager="npm" onInteraction={handleOnInteraction} />
+                  <Tab
+                    active={storageItem === 'npm'}
+                    pkgManager="npm"
+                    onInteraction={handleOnInteraction}
+                  />
                 ) : isPackageRunner ? (
                   <>
                     <Tab

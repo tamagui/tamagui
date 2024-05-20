@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/x",
-  "version": "1.98.0",
+  "version": "1.98.1",
   "type": "module",
   "private": true,
   "main": "index.jsx",
@@ -9,19 +9,21 @@
     "dev:clean": "yarn clean && vxrn dev",
     "build:prod": "yarn clean && vxrn build",
     "serve": "vxrn serve",
-    "clean": "rm -r node_modules/.vite || true && rm -r dist || true"
+    "clean": "rm -r node_modules/.vite || true && rm -r dist || true",
+    "start": "node vercel-server.js"
   },
   "dependencies": {
     "@leeoniya/ufuzzy": "^1.0.14",
     "@react-navigation/native": "6.1.17",
+    "@react-three/fiber": "npm:@react-three/fiber@9.0.0-alpha.6",
     "@supabase/auth-helpers-react": "^0.4.2",
     "@supabase/auth-helpers-shared": "^0.5.0",
     "@supabase/ssr": "^0.3.0",
     "@supabase/supabase-auth-helpers": "^1.4.2",
     "@supabase/supabase-js": "^2.38.2",
-    "@tamagui/assert": "1.98.0",
-    "@tamagui/mdx": "1.98.0",
-    "@tamagui/site-config": "1.98.0",
+    "@tamagui/assert": "1.98.1",
+    "@tamagui/mdx": "1.98.1",
+    "@tamagui/site-config": "1.98.1",
     "color2k": "^2.0.2",
     "multithreading": "0.2.1",
     "postmark": "^3.0.18",
@@ -30,14 +32,15 @@
     "react-native": "0.74.1",
     "react-native-reanimated": "3.11.0",
     "stripe": "^9.1.0",
-    "tamagui": "1.98.0",
+    "tamagui": "1.98.1",
+    "vite": "npm:vite@6.0.0-alpha.11",
     "vite-plugin-inspect": "^0.8.4",
     "vite-tsconfig-paths": "^4.3.2",
-    "vxs": "^0.1.54"
+    "vxs": "^0.1.59"
   },
   "devDependencies": {
     "@cyco130/vite-plugin-mdx": "1.0.4",
-    "@tamagui/cli": "1.98.0",
+    "@tamagui/cli": "1.98.1",
     "esbuild-register": "^3.5.0",
     "execa": "^5.0.0",
     "gray-matter": "^4.0.2",
@@ -53,6 +56,6 @@
     "sirv": "^2.0.4",
     "unified": "^10.1.2",
     "unist-util-visit": "^2.0.3",
-    "vxrn": "^0.1.54"
+    "vxrn": "^0.1.59"
   }
 }

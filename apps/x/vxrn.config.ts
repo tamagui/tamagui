@@ -1,4 +1,4 @@
-import entryShakingPlugin from 'vite-plugin-entry-shaking'
+// import entryShakingPlugin from 'vite-plugin-entry-shaking'
 import { createRequire } from 'node:module'
 import { getVitePlugins, build, serve } from 'vxs/vite'
 // import { tamaguiPlugin, tamaguiExtractPlugin } from '@tamagui/vite-plugin'
@@ -6,7 +6,7 @@ import { getVitePlugins, build, serve } from 'vxs/vite'
 import type { VXRNConfig } from 'vxrn'
 // import inpsectPlugin from 'vite-plugin-inspect'
 
-Error.stackTraceLimit = Infinity
+Error.stackTraceLimit = Number.POSITIVE_INFINITY
 
 const require = createRequire(import.meta.url)
 
@@ -45,8 +45,8 @@ const optimizeDeps = {
 
 export default async () => {
   return {
-    async afterBuild(options, output) {
-      await build(options, output)
+    async afterBuild(...args) {
+      await build(...args)
     },
 
     serve(options, app) {
@@ -88,10 +88,9 @@ export default async () => {
         //   ],
         // }),
 
-        // @ts-ignore
-        ...getVitePlugins({
+        ...(getVitePlugins({
           root: 'app',
-        }),
+        }) as any),
 
         // hmmm breaking ssr for some reason on lucide:
         // @ts-ignore

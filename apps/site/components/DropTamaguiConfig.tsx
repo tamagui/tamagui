@@ -107,7 +107,7 @@ export const DropTamaguiConfig = () => {
             exitStyle={{ y: 10, opacity: 0, scale: 0.975 }}
             w="95%"
             maw={600}
-            p="$4"
+            p="$8"
           >
             <Dialog.Close asChild>
               <Button

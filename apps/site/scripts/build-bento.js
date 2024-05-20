@@ -27,6 +27,7 @@ function shake(content) {
   return content
     .replaceAll(/\$group-window-(\w+)/g, (match, group) => `$${group}`)
     .replaceAll(/([a-zA-Z0-9_]+\.fileName\s*=\s*)'([^']*)'/g, '')
+    .replace('Portal: ({ children }) => children', 'Portal: DrawerPortal')
 }
 
 async function copyMergedComponents(directoryPath, outputDirectory) {
