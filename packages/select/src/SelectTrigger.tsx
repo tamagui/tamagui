@@ -39,6 +39,7 @@ export const SelectTrigger = React.forwardRef<TamaguiElement, SelectTriggerProps
         componentName={TRIGGER_NAME}
         unstyled={unstyled}
         tag="button"
+        type="button"
         id={itemParentContext.id}
         {...(!unstyled && {
           backgrounded: true,
