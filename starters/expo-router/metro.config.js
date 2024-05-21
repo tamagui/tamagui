@@ -2,9 +2,9 @@
 const { getDefaultConfig } = require('expo/metro-config')
 
 /** @type {import('expo/metro-config').MetroConfig} */
-let config = getDefaultConfig(__dirname, {
+const config = getDefaultConfig(__dirname, {
   // [Web-only]: Enables CSS support in Metro.
-  isCSSEnabled: false,
+  isCSSEnabled: true,
 })
 
 // 2. Enable Tamagui
@@ -14,6 +14,10 @@ module.exports = withTamagui(config, {
   config: './tamagui.config.ts',
   outputCSS: './tamagui-web.css',
 })
+
+config.resolver.sourceExts.push('mjs')
+
+module.exports = config
 
 // REMOVE THIS (just for tamagui internal devs to work in monorepo):
 // if (process.env.IS_TAMAGUI_DEV && __dirname.includes('tamagui')) {
