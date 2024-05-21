@@ -9,15 +9,17 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@tamagui/config": "^1.98.0",
-    "@tamagui/lucide-icons": "^1.98.0",
-    "@tamagui/next-plugin": "^1.98.0",
-    "@tamagui/next-theme": "^1.98.0",
+    "@tamagui/config": "^1.98.1",
+    "@tamagui/lucide-icons": "^1.98.1",
+    "@tamagui/next-plugin": "^1.98.1",
+    "@tamagui/next-theme": "^1.98.1",
+    "@tamagui/toast": "^1.98.1",
+    "burnt": "^0.12.2",
     "next": "14.2.3",
     "react": "^18",
     "react-dom": "^18",
     "react-native-svg": "^15.2.0",
-    "tamagui": "^1.98.0"
+    "tamagui": "^1.98.1"
   },
   "devDependencies": {
     "@types/node": "^20",
