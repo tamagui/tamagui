@@ -19,24 +19,20 @@
     "@inkjs/ui": "^1.0.0",
     "@supabase/supabase-js": "^2.38.2",
     "conf": "^12.0.0",
-    "configstore": "^6.0.0",
     "copy-paste": "^1.5.3",
     "fuse.js": "^7.0.0",
-    "got": "^14.2.1",
     "ink": "^4.1.0",
     "ink-link": "^3.0.0",
     "ink-text-input": "^5.0.1",
     "node-fetch": "^3.3.2",
-    "node-localstorage": "^3.0.5",
     "octokit": "^4.0.2",
     "pastel": "^2.0.0",
     "react": "^18.2.0",
     "swr": "^2.2.5",
-    "zod": "^3.21.4"
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@types/copy-paste": "^1.1.33",
-    "@types/react": "^18.0.32",
-    "chalk": "^5.2.0"
+    "@types/react": "^18.0.32"
   }
 }

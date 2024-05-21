@@ -1,5 +1,5 @@
 // @ts-nocheck
-import type React from 'react'
+import React from 'react'
 import { useState, useContext, createContext, useEffect } from 'react'
 import { Text, Box, useInput, Spacer, useApp } from 'ink'
 import { Alert, Spinner, Badge } from '@inkjs/ui'
