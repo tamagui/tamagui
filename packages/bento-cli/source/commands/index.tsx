@@ -1,22 +1,14 @@
 // @ts-nocheck
-import React from 'react'
-import { useState, useContext, createContext, useEffect } from 'react'
-import { Text, Box, useInput, Spacer, useApp } from 'ink'
-import { Alert, Spinner, Badge } from '@inkjs/ui'
-import TextInput from 'ink-text-input'
+import { Alert, Badge, Spinner } from '@inkjs/ui'
+import Conf from 'conf'
+import { copy } from 'copy-paste'
 import Fuse from 'fuse.js'
-import Link from 'ink-link'
-import { useGetComponent } from '../hooks/useGetComponent.js'
+import { Box, Spacer, Text, useApp, useInput } from 'ink'
+import TextInput from 'ink-text-input'
+import open from 'open'
+import { createContext, useContext, useEffect, useState } from 'react'
 import { componentsList } from '../components.js'
 import { useGithubAuth } from '../hooks/useGithubAuth.js'
-import { internalMutate } from 'swr/_internal'
-import open from 'open'
-import fetch from 'node-fetch'
-import { useGithubAuthPooling } from '../hooks/useGithubAuthPooling.js'
-import { copy } from 'copy-paste'
-import Conf from 'conf'
-import { mkdirSync, existsSync, promises as fs } from 'node:fs'
-import path from 'node:path'
 import { useInstallComponent } from '../hooks/useInstallComponent.js'
 
 const tokenStore = new Conf({ projectName: 'bento-cli' })
@@ -92,7 +84,7 @@ const SearchBar = () => {
     return fuse.search(query)
   }
   const handleChange = (value) => {
-    if (appContext.install.installingComponent?.isOSS) return
+    if ((appContext.install as any).installingComponent?.isOSS) return
     appContext.setInput(value)
     const results = search(value)
     appContext.setResults(results)
