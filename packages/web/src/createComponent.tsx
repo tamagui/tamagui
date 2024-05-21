@@ -615,12 +615,19 @@ export function createComponent<
     }
 
     const themeStateProps: UseThemeWithStateProps = {
-      name: props.theme,
       componentName,
       disable: disableTheme,
       shallow: curStateRef.themeShallow,
-      inverse: props.themeInverse,
       debug: debugProp,
+    }
+
+    // these two are set conditionally if existing in props because we wrap children with
+    // a span if they ever set one of these, so avoid wrapping all children with span
+    if ('themeInverse' in props) {
+      themeStateProps.inverse = props.themeInverse
+    }
+    if ('name' in props) {
+      themeStateProps.name = props.theme
     }
 
     if (typeof curStateRef.isListeningToTheme === 'boolean') {

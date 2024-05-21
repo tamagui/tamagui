@@ -73,12 +73,11 @@ export function getThemedChildren(
   const { shallow, forceClassName } = props
 
   // always be true if ever themed so we avoid re-parenting
-  const shouldRenderChildrenWithTheme =
+  let shouldRenderChildrenWithTheme =
     isNewTheme ||
     'inverse' in props ||
-    'theme' in props ||
+    'name' in props ||
     stateRef.current.hasEverThemed ||
-    forceClassName ||
     isRoot
 
   if (shouldRenderChildrenWithTheme) {
