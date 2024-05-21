@@ -3,7 +3,7 @@ import Pastel from 'pastel'
 
 const app = new Pastel({
   importMeta: import.meta,
-  name: 'bento-cli',
+  name: 'bento-get',
 })
 
 await app.run()
