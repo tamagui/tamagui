@@ -35,6 +35,7 @@ export function apiCliBentoRoute(handler: NextApiHandler) {
       const fileResult = await getBentoCode(codePath)
       res.setHeader('Content-Type', 'text/plain')
       res.send(fileResult)
+      return 
     } catch (err) {
       const message = err instanceof Error ? err.message : `${err}`
       console.error(`Error serving API Route: ${message}`, err.stack)
