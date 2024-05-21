@@ -45,11 +45,13 @@ export const useGetComponent = async () => {
   }
 
   const codePath = useMemo(() => {
-    const BASE_URL =
-      process.env.NODE_ENV === 'production'
-        ? 'http://tamagui.dev'
-        : 'http://localhost:5005'
+    // const BASE_URL =
+    //   process.env.NODE_ENV === 'production'
+    //     ? 'http://tamagui.dev'
+    //     : 'http://localhost:5005'
 
+
+    const BASE_URL = 'https://tamagui.dev'
     return `${BASE_URL}/api/bento/code/${install.installingComponent?.category}/${install.installingComponent?.categorySection}/${install.installingComponent?.fileName}?userGithubId=${githubData?.node_id}` //paid
   }, [install, githubData])
 
