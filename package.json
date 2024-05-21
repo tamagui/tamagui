@@ -11,6 +11,7 @@
   ],
   "packageManager": "yarn@4.1.0",
   "scripts": {
+    "bento-cli:dev": "yarn workspace @tamagui/bento-cli dev",
     "postinstall": "./scripts/git-crypt-unlock.sh",
     "build:force": "yarn clean:build && yarn build --force",
     "build:js": "turbo run build --no-cache --force -- --skip-types",

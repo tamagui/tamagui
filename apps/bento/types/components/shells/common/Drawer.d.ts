@@ -1,6 +1,6 @@
 import type { Dispatch, SetStateAction } from 'react';
 import React from 'react';
-import type { PortalProps, TamaguiElement } from 'tamagui';
+import type { TamaguiElement } from 'tamagui';
 export declare const DrawerContext: import("@tamagui/web").StyledContext<{
     open: boolean;
     setOpen: Dispatch<SetStateAction<boolean>>;
@@ -63,7 +63,9 @@ export declare const Drawer: (({ open, onOpenChange, children, portalToRoot, ...
         children: any;
         dismissAfter?: number | undefined;
     } & React.RefAttributes<TamaguiElement>, "onDismiss">, "ref"> & React.RefAttributes<TamaguiElement>>;
-    Portal: (props: PortalProps) => import("react/jsx-runtime").JSX.Element | undefined;
+    Portal: ({ children }: {
+        children: any;
+    }) => any;
 };
 export {};
 //# sourceMappingURL=Drawer.d.ts.map
