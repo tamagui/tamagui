@@ -1,6 +1,6 @@
 import { Link, Tabs } from 'expo-router'
-import { Pressable } from 'react-native'
-import { Text } from 'tamagui'
+import { Button } from 'tamagui'
+import { Atom, AudioWaveform } from '@tamagui/lucide-icons'
 
 export default function TabLayout() {
   return (
@@ -13,12 +13,12 @@ export default function TabLayout() {
         name="index"
         options={{
           title: 'Tab One',
-          tabBarIcon: ({ color }) => <Text>Hello!</Text>,
+          tabBarIcon: ({ color }) => <Atom color={color} />,
           headerRight: () => (
             <Link href="/modal" asChild>
-              <Pressable>
-                <Text>Hello!</Text>
-              </Pressable>
+              <Button mr="$4" bg="$purple10" color="$white">
+                Hello!
+              </Button>
             </Link>
           ),
         }}
@@ -27,7 +27,7 @@ export default function TabLayout() {
         name="two"
         options={{
           title: 'Tab Two',
-          tabBarIcon: ({ color }) => <Text>Hello!</Text>,
+          tabBarIcon: ({ color }) => <AudioWaveform color={color} />,
         }}
       />
     </Tabs>
