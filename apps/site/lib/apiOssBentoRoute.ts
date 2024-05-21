@@ -3,8 +3,7 @@ import type { NextApiHandler } from 'next'
 import { OSS_COMPONENTS } from './constants'
 import { getBentoCode } from './supabaseAdmin'
 
-export function apiOssBentoRoute(handler: NextApiHandler) {
-  return async (req, res) => {
+export async function apiOssBentoRoute(req, res) {
     const slugsArray = Array.isArray(req.query.slug)
       ? req.query.slug
       : typeof req.query.slug === 'string'
@@ -13,9 +12,6 @@ export function apiOssBentoRoute(handler: NextApiHandler) {
 
     const codePath = slugsArray.join('/')
 
-    if (!OSS_COMPONENTS.includes(slugsArray[slugsArray.length - 1])) {
-      return handler(req, res)
-    }
 
     try {
       const fileResult = await getBentoCode(codePath)
@@ -28,5 +24,4 @@ export function apiOssBentoRoute(handler: NextApiHandler) {
         error: message,
       })
     }
-  }
 }

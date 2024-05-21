@@ -13,9 +13,7 @@ const hasBentoAccess = async (githubId: string) => {
   return Boolean(got?.length)
 }
 
-export function apiCliBentoRoute(handler: NextApiHandler) {
-  return async (req, res) => {
-    if (!req.query.userGithubId) return handler(req, res)
+export async function apiCliBentoRoute (req, res) {
 
     const resultHasBentoAccess = await hasBentoAccess(req.query.userGithubId)
 
@@ -31,17 +29,7 @@ export function apiCliBentoRoute(handler: NextApiHandler) {
 
     const codePath = slugsArray.join('/')
 
-    try {
-      const fileResult = await getBentoCode(codePath)
-      res.setHeader('Content-Type', 'text/plain')
-      res.send(fileResult)
-      return 
-    } catch (err) {
-      const message = err instanceof Error ? err.message : `${err}`
-      console.error(`Error serving API Route: ${message}`, err.stack)
-      res.status(401).json({
-        error: message,
-      })
-    }
-  }
+    const fileResult = await getBentoCode(codePath)
+    res.setHeader('Content-Type', 'text/plain')
+    res.send(fileResult)
 }
