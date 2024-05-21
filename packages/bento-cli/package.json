@@ -1,5 +1,5 @@
 {
-  "name": "@tamagui/bento-cli",
+  "name": "bento-get",
   "version": "1.98.0",
   "license": "MIT",
   "bin": "dist/cli.js",
