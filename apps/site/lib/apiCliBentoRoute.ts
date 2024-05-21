@@ -1,10 +1,16 @@
-// @ts-nocheck
 import type { NextApiHandler } from 'next'
 import { getBentoCode, supabaseAdmin } from './supabaseAdmin'
 
 const hasBentoAccess = async (githubId: string) => {
-  const result = await supabaseAdmin.rpc('has_bento_access', {github_id_input: githubId})
-  return Boolean(result?.data?.length)
+  const result = await supabaseAdmin.rpc(
+    // @ts-expect-error TODO
+    'has_bento_access',
+    {
+      github_id_input: githubId,
+    }
+  )
+  const got = result?.data as unknown as any[]
+  return Boolean(got?.length)
 }
 
 export function apiCliBentoRoute(handler: NextApiHandler) {
@@ -13,7 +19,7 @@ export function apiCliBentoRoute(handler: NextApiHandler) {
 
     const resultHasBentoAccess = await hasBentoAccess(req.query.userGithubId)
 
-    if(!resultHasBentoAccess) {
+    if (!resultHasBentoAccess) {
       throw new Error('No bento access from CLI')
     }
 
