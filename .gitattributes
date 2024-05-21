@@ -1,4 +1,3 @@
 takeout/*/src/** filter=git-crypt diff=git-crypt merge=git-crypt
 apps/studio/src/** filter=git-crypt diff=git-crypt merge=git-crypt
 apps/bento/src/** filter=git-crypt diff=git-crypt merge=git-crypt
-apps/site/protected/** filter=git-crypt diff=git-crypt merge=git-crypt
