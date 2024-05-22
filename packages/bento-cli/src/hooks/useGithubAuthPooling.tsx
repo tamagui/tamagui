@@ -1,9 +1,8 @@
-// @ts-nocheck
-import { useContext, useEffect } from 'react'
-import { AppContext } from '../commands/index.js'
+import { useContext } from 'react'
 import useSWR from 'swr'
-import type { GithubCode } from './useGithubAuth.js'
+import { AppContext } from '../commands/index.js'
 import { GITHUB_CLIENT_ID } from '../constants.js'
+import type { GithubCode } from './useGithubAuth.js'
 
 export const useGithubAuthPooling = ({
   deviceCodeData,

@@ -1,13 +1,10 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "moduleResolution": "node16",
-    "module": "Node16",
-    "outDir": "dist",
-    "noImplicitAny": false,
-    "strict": true
+    "composite": true
   },
-  "include": ["source"],
-  "references": [],
-  "exclude": ["types", "dist", "**/__tests__"]
+  "exclude": [
+    "types",
+    "dist"
+  ]
 }

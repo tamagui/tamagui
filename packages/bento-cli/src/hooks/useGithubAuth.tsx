@@ -1,11 +1,10 @@
 // @ts-nocheck
-import { useCallback, useContext, useMemo } from 'react'
 import fetch from 'node-fetch'
-import useSWR from 'swr'
-import { AppContext } from '../commands/index.js'
-import { GITHUB_CLIENT_ID } from '../constants.js'
 import querystring from 'node:querystring'
 import open from 'open'
+import { useCallback } from 'react'
+import useSWR from 'swr'
+import { GITHUB_CLIENT_ID } from '../constants.js'
 import { useGithubAuthPooling } from './useGithubAuthPooling.js'
 
 const fetcher = async (url: string) => {
@@ -40,8 +39,9 @@ export const useGithubAuth = () => {
     'https://github.com/login/device/code',
     fetcher
   )
-  data = querystring.parse(data)
-  useGithubAuthPooling({ deviceCodeData: data })
+  // @ts-ignore
+  data = querystring.parse(data || '')
+  useGithubAuthPooling({ deviceCodeData: data as any as GithubCode })
 
   const openLoginUrl = useCallback(() => {
     if (isLoading) return

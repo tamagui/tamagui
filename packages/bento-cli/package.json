@@ -5,19 +5,36 @@
   "bin": "dist/cli.js",
   "type": "module",
   "engines": {
-    "node": ">=16"
+    "node": ">=20"
   },
   "publishConfig": {
     "access": "public"
   },
-  "scripts": {
-    "build": "NODE_ENV=production tsc --outDir dist --rootDir source",
-    "dev": "NODE_ENV=development tsc --watch --outDir dist --rootDir source",
-    "link": "npm link --local --force"
-  },
+  "source": "src/index.ts",
+  "types": "./types/index.d.ts",
+  "module": "dist",
   "files": [
+    "src",
+    "types",
     "dist"
   ],
+  "scripts": {
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch",
+    "lint": "../../node_modules/.bin/biome check src",
+    "lint:fix": "../../node_modules/.bin/biome check --apply-unsafe src",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./types/index.d.ts",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.js",
+      "react-native": "./dist/cjs/index.native.js"
+    }
+  },
   "dependencies": {
     "@inkjs/ui": "^1.0.0",
     "@supabase/supabase-js": "^2.38.2",
@@ -36,6 +53,7 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@tamagui/build": "1.98.2",
     "@types/copy-paste": "^1.1.33",
     "@types/react": "^18.2.55"
   }

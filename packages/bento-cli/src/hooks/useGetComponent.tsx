@@ -21,6 +21,7 @@ export const useGetComponent = async () => {
 
     const fetchGithubData = async () => {
       const { data } = await octokit.rest.users.getAuthenticated()
+      // @ts-ignore
       setGithubData(data)
     }
 
@@ -36,7 +37,9 @@ export const useGetComponent = async () => {
     })
     if (!res.ok) {
       const error = new Error('An error occurred while fetching the data.')
+      // @ts-ignore
       error.info = await res.json()
+      // @ts-ignore
       error.status = res.status
       throw error
     }
@@ -49,7 +52,6 @@ export const useGetComponent = async () => {
     //   process.env.NODE_ENV === 'production'
     //     ? 'http://tamagui.dev'
     //     : 'http://localhost:5005'
-
 
     const BASE_URL = 'https://tamagui.dev'
     return `${BASE_URL}/api/bento/code/${install.installingComponent?.category}/${install.installingComponent?.categorySection}/${install.installingComponent?.fileName}?userGithubId=${githubData?.node_id}` //paid

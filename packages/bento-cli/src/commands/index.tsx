@@ -61,8 +61,9 @@ const handleKeypress = (_, key, appContext) => {
   }
 }
 
-export const AppContext = createContext({
-  tokenStore: {},
+// TODO type this properly!
+export const AppContext = createContext<any>({
+  tokenStore: {} as typeof tokenStore,
   copyToClipboard: false,
   setCopyToClipboard: () => {},
   results: [],
@@ -71,6 +72,7 @@ export const AppContext = createContext({
   setSelectedId: () => {},
   input: '',
   setInput: () => {},
+  setInstall: () => {},
   setInstallcomponent: () => {},
   install: null,
 })
@@ -97,6 +99,7 @@ const SearchBar = () => {
         <TextInput
           value={appContext.input}
           onChange={handleChange}
+          // @ts-ignore
           marginRight={'auto'}
         />
       </Box>
