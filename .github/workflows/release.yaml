@@ -20,7 +20,7 @@ jobs:
       - name: Install
         uses: ./.github/actions/install
         with:
-          git_crypt_key: ${{ secrets.GIT_CRYPT_KEY }}
+          transcrypt_password: ${{ secrets.transcrypt_password }}
 
       - name: Install playwright
         run: npx playwright install

@@ -1,8 +1,8 @@
 name: 'Install'
 description: 'Install and pre-build'
 inputs:
-  git_crypt_key:
-    description: 'Git crypt key for unlocking secrets'
+  transcrypt_password:
+    description: 'Key to unlock repo'
     required: true
 
 runs:
@@ -14,11 +14,6 @@ runs:
         node-version: 20.x
         registry-url: 'https://registry.npmjs.org'
 
-    - name: Unlock secrets
-      uses: sliteteam/github-action-git-crypt-unlock@1.2.0
-      env:
-        GIT_CRYPT_KEY: ${{ inputs.git_crypt_key }}
-
     - name: install yarn
       shell: bash
       run: npm i yarn -g
@@ -26,6 +21,9 @@ runs:
     - name: Install Dependencies
       shell: bash
       run: yarn install
+      env:
+        # postinstall uses this
+        TRANSCRYPT_PASSWORD: ${{ inputs.transcrypt_password }}
 
     - name: Build JS
       shell: bash
