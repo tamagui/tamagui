@@ -1,6 +1,9 @@
 import { Slot, Stack } from 'vxs'
 import { isWeb } from 'tamagui'
 import { Providers } from '../src/Providers'
+import React from 'react'
+
+globalThis['React'] = React
 
 export default function Layout() {
   return (

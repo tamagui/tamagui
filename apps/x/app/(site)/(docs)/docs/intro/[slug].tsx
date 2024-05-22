@@ -18,7 +18,7 @@ export async function generateStaticParams() {
 }
 
 export async function loader({ params }) {
-  const { frontmatter, code } = await getMDXBySlug('data/docs/intro', params.slug)
+  const { frontmatter, code } = await getMDXBySlug(`data/docs/intro`, params.slug)
   return {
     frontmatter,
     code,
@@ -28,7 +28,6 @@ export async function loader({ params }) {
 
 export default function DocIntroPage() {
   const { code, frontmatter } = useLoader(loader)
-  console.log('??', code, frontmatter)
   const Component = useMemo(() => getMDXComponent(code), [code])
 
   return (
