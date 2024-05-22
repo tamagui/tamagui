@@ -232,13 +232,14 @@ export default function TakeoutPage({
                 <ThemeTint>
                   <H2
                     className="text-wrap-balance pixelate"
-                    // ff="$munro"
+                    ff="$munro"
+                    ls={2}
                     my="$2"
-                    pr={200}
+                    pr={150}
                     size="$10"
                     color="$color10"
                     $group-takeoutBody-xs={{
-                      size: '$7',
+                      size: '$9',
                       pr: '8%',
                     }}
                     $group-takeoutBody-xxs={{
@@ -246,26 +247,14 @@ export default function TakeoutPage({
                       pr: '$1',
                     }}
                   >
-                    A nice way to start
+                    A better way to get started
                   </H2>
                 </ThemeTint>
 
                 <ThemeTintAlt>
-                  <Paragraph
-                    className="text-wrap-balance"
-                    size="$7"
-                    $sm={{ size: '$7' }}
-                    fow="400"
-                  >
-                    Takeout is a bootstrap for making universal apps with React and React
-                    Native, extracted from our experience creating apps with Tamagui. It
-                    builds off the free and open source starter{' '}
-                    <CodeInline>(npm&nbsp;create&nbsp;tamagui)</CodeInline>, adding{' '}
-                    <a target="_blank" href="https://supabase.com" rel="noreferrer">
-                      Supabase
-                    </a>{' '}
-                    for data and auth, screens and flows for a user system, profiles,
-                    settings, common screens, assets, and more.
+                  <Paragraph className="text-wrap-balance" size="$7" $sm={{ size: '$7' }}>
+                    Takeout is a bootstrap designed to ship faster with React and React
+                    Native, extracted from our experience consulting on apps with Tamagui.
                   </Paragraph>
 
                   <Paragraph
@@ -273,10 +262,24 @@ export default function TakeoutPage({
                     size="$7"
                     $sm={{ size: '$6' }}
                     $xs={{ size: '$5' }}
-                    fow="400"
+                  >
+                    It builds off the free and open source starter{' '}
+                    <CodeInline>npm&nbsp;create&nbsp;tamagui</CodeInline>, adding{' '}
+                    <a target="_blank" href="https://supabase.com" rel="noreferrer">
+                      Supabase
+                    </a>{' '}
+                    for data and auth, screens and flows for a user system,
+                    profiles,&nbsp;settings,&nbsp;assets,&nbsp;and&nbsp;more.
+                  </Paragraph>
+
+                  <Paragraph
+                    className="text-wrap-balance"
+                    size="$7"
+                    $sm={{ size: '$6' }}
+                    $xs={{ size: '$5' }}
                   >
                     With <CodeInline>tamagui&nbsp;add&nbsp;font</CodeInline> and{' '}
-                    <CodeInline>tamagui&nbsp;add&nbsp;icon</CodeInline> clone ~1,500{' '}
+                    <CodeInline>tamagui&nbsp;add&nbsp;icon</CodeInline>, clone ~1,500{' '}
                     <NextLink href="https://fonts.google.com" target="_blank">
                       Google Fonts
                     </NextLink>{' '}
@@ -284,7 +287,8 @@ export default function TakeoutPage({
                     <NextLink href="https://icones.js.org" target="_blank">
                       icones.js.org
                     </NextLink>{' '}
-                    icon packs to your app as typed, Tamagui-styled components.
+                    icon packs to your app as typed, Tamagui
+                    &nbsp;components&nbsp;in&nbsp;seconds.
                   </Paragraph>
                 </ThemeTintAlt>
 
