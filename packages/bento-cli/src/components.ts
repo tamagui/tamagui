@@ -42,8 +42,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'ButtonLoading',
     category: 'animation',
     categorySection: 'buttons',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/animation/buttons/ButtonLoading.tsx',
   },
   {
     name: 'Press Animation',
@@ -51,8 +49,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'ButtonPulse',
     category: 'animation',
     categorySection: 'buttons',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/animation/buttons/ButtonPulse.tsx',
   },
   {
     name: 'Icon Animation',
@@ -60,8 +56,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'IconCenterButton',
     category: 'animation',
     categorySection: 'buttons',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/animation/buttons/IconCenterButton.tsx',
   },
   {
     name: 'Hoverable Avatars',
@@ -69,8 +63,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'AvatarsTooltip',
     category: 'animation',
     categorySection: 'avatars',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/animation/avatars/AvatarsTooltip.tsx',
   },
   {
     name: 'Fancy Hoverable Avatars',
@@ -78,8 +70,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'AvatarsTooltipFancy',
     category: 'animation',
     categorySection: 'avatars',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/animation/avatars/AvatarsTooltipFancy.tsx',
   },
   {
     name: 'Shopping Cart',
@@ -87,8 +77,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'Fullpage',
     category: 'ecommerce',
     categorySection: 'cart',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/ecommerce/cart/Fullpage.tsx',
   },
   {
     name: 'Product with Review',
@@ -96,8 +84,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'ProductWithReview',
     category: 'ecommerce',
     categorySection: 'product_page',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/ecommerce/product_page/ProductWithReview.tsx',
   },
   {
     name: 'Product List',
@@ -105,8 +91,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'ProductList',
     category: 'ecommerce',
     categorySection: 'product_list',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/ecommerce/product_list/ProductList.tsx',
   },
   {
     name: 'Product List Best Items',
@@ -114,8 +98,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'ProductListBestItems',
     category: 'ecommerce',
     categorySection: 'product_list',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/ecommerce/product_list/ProductListBestItems.tsx',
   },
   {
     name: 'Prodcut List Grid Thumbs',
@@ -123,8 +105,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'ProductListGridThumbs',
     category: 'ecommerce',
     categorySection: 'product_list',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/ecommerce/product_list/ProductListGridThumbs.tsx',
   },
   {
     name: 'Product List with Features',
@@ -132,8 +112,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'ProductListWithFeatures',
     category: 'ecommerce',
     categorySection: 'product_list',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/ecommerce/product_list/ProductListWithFeatures.tsx',
   },
   {
     name: 'Prodcut List with Label',
@@ -141,8 +119,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'ProductListWithLabel',
     category: 'ecommerce',
     categorySection: 'product_list',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/ecommerce/product_list/ProductListWithLabel.tsx',
   },
   {
     name: 'Image Picker',
@@ -150,8 +126,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'ImagePicker',
     category: 'elements',
     categorySection: 'pickers',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/elements/pickers/ImagePicker.tsx',
   },
   {
     name: 'Upload File',
@@ -159,8 +133,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'UploadFile',
     category: 'elements',
     categorySection: 'pickers',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/elements/pickers/UploadFile.tsx',
   },
   {
     name: 'Grouped Avatars',
@@ -168,8 +140,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'AvatarsGrouped',
     category: 'elements',
     categorySection: 'avatars',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/elements/avatars/AvatarsGrouped.tsx',
   },
   {
     name: 'Circular Avatars with custom icons',
@@ -177,8 +147,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'CircularAvatarsWithCustomIcons',
     category: 'elements',
     categorySection: 'avatars',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/elements/avatars/CircularAvatarsWithCustomIcons.tsx',
   },
   {
     name: 'Rounded Avatars',
@@ -186,8 +154,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'RoundedAvatars',
     category: 'elements',
     categorySection: 'avatars',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/elements/avatars/RoundedAvatars.tsx',
   },
   {
     name: 'Rounded Avatars with Custom Icons',
@@ -195,8 +161,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'RoundedAvatarsWithCustomIcons',
     category: 'elements',
     categorySection: 'avatars',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/elements/avatars/RoundedAvatarsWithCustomIcons.tsx',
   },
   {
     name: 'Buttons with Left Icons',
@@ -204,8 +168,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'ButtonsWithLeftIcons',
     category: 'elements',
     categorySection: 'buttons',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/elements/buttons/ButtonsWithLeftIcons.tsx',
   },
   {
     name: 'Buttons with Loaders',
@@ -213,8 +175,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'ButtonsWithLoaders',
     category: 'elements',
     categorySection: 'buttons',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/elements/buttons/ButtonsWithLoaders.tsx',
   },
   {
     name: 'Rounded Buttons',
@@ -222,8 +182,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'RoundedButtons',
     category: 'elements',
     categorySection: 'buttons',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/elements/buttons/RoundedButtons.tsx',
   },
   {
     name: 'Users Table with Avatar',
@@ -231,8 +189,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'UsersTable',
     category: 'elements',
     categorySection: 'tables',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/elements/tables/UsersTable.tsx',
   },
   {
     name: 'Table with Pagination and Sorting Ability',
@@ -240,8 +196,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'SortableTable',
     category: 'elements',
     categorySection: 'tables',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/elements/tables/SortableTable.tsx',
   },
   {
     name: 'MultiSelectPicker',
@@ -249,8 +203,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'MultiSelectPicker',
     category: 'elements',
     categorySection: 'datepickers',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/elements/datepickers/MultiSelectPicker.tsx',
   },
   {
     name: 'RangePicker',
@@ -258,8 +210,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'RangePicker',
     category: 'elements',
     categorySection: 'datepickers',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/elements/datepickers/RangePicker.tsx',
   },
   {
     name: 'Simple Chips',
@@ -267,8 +217,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'Chips',
     category: 'elements',
     categorySection: 'chips',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/elements/chips/Chips.tsx',
   },
   {
     name: 'Chips White Text and Pressable',
@@ -276,8 +224,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'ChipsNoTextColor',
     category: 'elements',
     categorySection: 'chips',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/elements/chips/ChipsNoTextColor.tsx',
   },
   {
     name: 'Rounded Chips',
@@ -285,8 +231,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'ChipsRounded',
     category: 'elements',
     categorySection: 'chips',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/elements/chips/ChipsRounded.tsx',
   },
   {
     name: 'Chips with Close Icon',
@@ -294,8 +238,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'ChipsWithCloseIcon',
     category: 'elements',
     categorySection: 'chips',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/elements/chips/ChipsWithCloseIcon.tsx',
   },
   {
     name: 'Chips with Icon',
@@ -303,8 +245,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'ChipsWithIcon',
     category: 'elements',
     categorySection: 'chips',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/elements/chips/ChipsWithIcon.tsx',
   },
   {
     name: 'IOS style Alert',
@@ -312,8 +252,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'IosStyleAlert',
     category: 'elements',
     categorySection: 'dialogs',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/elements/dialogs/IosStyleAlert.tsx',
   },
   {
     name: 'Alert with icon and tint color',
@@ -321,8 +259,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'AlertWithIcon',
     category: 'elements',
     categorySection: 'dialogs',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/elements/dialogs/AlertWithIcon.tsx',
   },
   {
     name: 'Horizontal Covers',
@@ -330,8 +266,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'HList',
     category: 'elements',
     categorySection: 'list',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/elements/list/HList.tsx',
   },
   {
     name: 'Chat List',
@@ -339,8 +273,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'ChatList',
     category: 'elements',
     categorySection: 'list',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/elements/list/ChatList.tsx',
   },
   {
     name: 'Item Value List',
@@ -348,8 +280,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'ItemValueList',
     category: 'elements',
     categorySection: 'list',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/elements/list/ItemValueList.tsx',
   },
   {
     name: 'Performant Grid with FlatList',
@@ -357,8 +287,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'FlatGrid',
     category: 'elements',
     categorySection: 'list',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/elements/list/FlatGrid.tsx',
   },
   {
     name: 'Phonebook List',
@@ -366,8 +294,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'List',
     category: 'elements',
     categorySection: 'list',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/elements/list/List.tsx',
   },
   {
     name: 'Masonry List',
@@ -375,8 +301,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'MasonryListExample',
     category: 'elements',
     categorySection: 'list',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/elements/list/MasonryListExample.tsx',
   },
   {
     name: 'CheckBox Cards',
@@ -384,8 +308,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'CheckboxCards',
     category: 'forms',
     categorySection: 'checkboxes',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/forms/checkboxes/CheckboxCards.tsx',
   },
   {
     name: 'Checkbox List',
@@ -393,8 +315,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'CheckboxList',
     category: 'forms',
     categorySection: 'checkboxes',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/forms/checkboxes/CheckboxList.tsx',
   },
   {
     name: 'Grouped Checkbox',
@@ -402,8 +322,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'GroupedCheckbox',
     category: 'forms',
     categorySection: 'checkboxes',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/forms/checkboxes/GroupedCheckbox.tsx',
   },
   {
     name: 'Horizontal Checkboxes',
@@ -411,8 +329,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'HorizontalCheckboxes',
     category: 'forms',
     categorySection: 'checkboxes',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/forms/checkboxes/HorizontalCheckboxes.tsx',
   },
   {
     name: 'Horizontal with Description Checkboxes',
@@ -420,8 +336,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'HorizontalWithDescriptionCheckboxes',
     category: 'forms',
     categorySection: 'checkboxes',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/forms/checkboxes/HorizontalWithDescriptionCheckboxes.tsx',
   },
   {
     name: 'Vertical with Description Checkboxes',
@@ -429,8 +343,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'VerticalWithDescriptionCheckboxes',
     category: 'forms',
     categorySection: 'checkboxes',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/forms/checkboxes/VerticalWithDescriptionCheckboxes.tsx',
   },
   {
     name: 'Sign-in Form',
@@ -438,8 +350,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'SignInScreen',
     category: 'forms',
     categorySection: 'layouts',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/forms/layouts/SignInScreen.tsx',
   },
   {
     name: 'Sign-in Right Image',
@@ -447,8 +357,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'SignInRightImage',
     category: 'forms',
     categorySection: 'layouts',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/forms/layouts/SignInRightImage.tsx',
   },
   {
     name: 'Sign-up Form',
@@ -456,8 +364,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'SignUpScreen',
     category: 'forms',
     categorySection: 'layouts',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/forms/layouts/SignUpScreen.tsx',
   },
   {
     name: 'Short Email Password Layout',
@@ -465,8 +371,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'ShortEmailPassword',
     category: 'forms',
     categorySection: 'layouts',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/forms/layouts/ShortEmailPassword.tsx',
   },
   {
     name: 'Integrated with react-hook-form and Zod',
@@ -474,8 +378,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'SignupValidatedHookForm',
     category: 'forms',
     categorySection: 'layouts',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/forms/layouts/SignupValidatedHookForm.tsx',
   },
   {
     name: 'Integrated with react-ts-form and Zod',
@@ -483,8 +385,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'SignupValidatedTsForm',
     category: 'forms',
     categorySection: 'layouts',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/forms/layouts/SignupValidatedTsForm.tsx',
   },
   {
     name: 'RadioGroup List',
@@ -492,8 +392,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'GroupedRadio',
     category: 'forms',
     categorySection: 'radiogroups',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/forms/radiogroups/GroupedRadio.tsx',
   },
   {
     name: 'Horizontal RadioGroups',
@@ -501,8 +399,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'Horizontal',
     category: 'forms',
     categorySection: 'radiogroups',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/forms/radiogroups/Horizontal.tsx',
   },
   {
     name: 'Horizontal RadioGroups with description',
@@ -510,8 +406,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'HorizontalWithDescription',
     category: 'forms',
     categorySection: 'radiogroups',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/forms/radiogroups/HorizontalWithDescription.tsx',
   },
   {
     name: 'Cards RadioGroups',
@@ -519,8 +413,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'RadioCards',
     category: 'forms',
     categorySection: 'radiogroups',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/forms/radiogroups/RadioCards.tsx',
   },
   {
     name: 'List RadioGroups',
@@ -528,8 +420,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'RadioList',
     category: 'forms',
     categorySection: 'radiogroups',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/forms/radiogroups/RadioList.tsx',
   },
   {
     name: 'Vertical RadioGroups',
@@ -537,8 +427,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'Vertical',
     category: 'forms',
     categorySection: 'radiogroups',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/forms/radiogroups/Vertical.tsx',
   },
   {
     name: 'Vertical with Description RadioGroups',
@@ -546,8 +434,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'VerticalWithDescription',
     category: 'forms',
     categorySection: 'radiogroups',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/forms/radiogroups/VerticalWithDescription.tsx',
   },
   {
     name: 'Switch with Custom Icons',
@@ -555,8 +441,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'SwitchCustomIcons',
     category: 'forms',
     categorySection: 'switches',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/forms/switches/SwitchCustomIcons.tsx',
   },
   {
     name: 'Switch with Icon and Title',
@@ -564,8 +448,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'IconTitleSwitch',
     category: 'forms',
     categorySection: 'switches',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/forms/switches/IconTitleSwitch.tsx',
   },
   {
     name: 'Comment Box with Preview',
@@ -573,8 +455,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'WritePreviewAction',
     category: 'forms',
     categorySection: 'textareas',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/forms/textareas/WritePreviewAction.tsx',
   },
   {
     name: 'Comment Box',
@@ -582,8 +462,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'AvatarNameContentAction',
     category: 'forms',
     categorySection: 'textareas',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/forms/textareas/AvatarNameContentAction.tsx',
   },
   {
     name: 'Comment Box Floating',
@@ -591,8 +469,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'AvatarOutContentAction',
     category: 'forms',
     categorySection: 'textareas',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/forms/textareas/AvatarOutContentAction.tsx',
   },
   {
     name: 'Comment Box Minimal',
@@ -600,8 +476,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'TitleContentMessage',
     category: 'forms',
     categorySection: 'textareas',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/forms/textareas/TitleContentMessage.tsx',
   },
   {
     name: 'Top Navbar with Swippable Drawer on Smaller Screens',
@@ -609,8 +483,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'TopNavBarWithLogo',
     category: 'shells',
     categorySection: 'navbars',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/shells/navbars/TopNavBarWithLogo.tsx',
   },
   {
     name: 'Top Navbar with Underline Tabs',
@@ -618,8 +490,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'TopNavBarWithUnderLineTabs',
     category: 'shells',
     categorySection: 'navbars',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/shells/navbars/TopNavBarWithUnderLineTabs.tsx',
   },
   {
     name: 'Responsive Sidebar',
@@ -627,8 +497,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'FullSideBar',
     category: 'shells',
     categorySection: 'sidebars',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/shells/sidebars/FullSideBar.tsx',
   },
   {
     name: 'React Navigation compatible Tabbar with Underline',
@@ -636,8 +504,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'TabBar',
     category: 'shells',
     categorySection: 'tabbars',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/shells/tabbars/Tabbar.tsx',
   },
   {
     name: 'Progressive Tabbar with Underline Indicator',
@@ -645,8 +511,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'TabBarSecondExample',
     category: 'shells',
     categorySection: 'tabbars',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/shells/tabbars/TabBarSecondExample.tsx',
   },
   {
     name: 'Swippable Tabbar Support Gesture Drag',
@@ -654,8 +518,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'TabBarSwippable',
     category: 'shells',
     categorySection: 'tabbars',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/shells/tabbars/TabbarSwippable.tsx',
   },
   {
     name: 'Email Preferences',
@@ -663,8 +525,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'LocationNotification',
     category: 'user',
     categorySection: 'preferences',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/user/preferences/LocationNotification.tsx',
   },
   {
     name: 'Employees Status Tracker',
@@ -672,8 +532,6 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'StatusTracker',
     category: 'user',
     categorySection: 'events',
-    componentPath:
-      '/Users/rofi/Programing/tamagui/apps/bento/src/components/user/events/StatusTracker.tsx',
   },
 ].map((item) => {
   return { ...item, isOSS: OSS_COMPONENTS.includes(item.fileName) }
