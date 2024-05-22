@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/tabs",
-  "version": "1.98.1",
+  "version": "1.98.2",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -30,24 +30,24 @@
     }
   },
   "dependencies": {
-    "@tamagui/compose-refs": "1.98.1",
-    "@tamagui/constants": "1.98.1",
-    "@tamagui/create-context": "1.98.1",
-    "@tamagui/get-button-sized": "1.98.1",
-    "@tamagui/group": "1.98.1",
-    "@tamagui/helpers": "1.98.1",
-    "@tamagui/roving-focus": "1.98.1",
-    "@tamagui/stacks": "1.98.1",
-    "@tamagui/use-controllable-state": "1.98.1",
-    "@tamagui/use-direction": "1.98.1",
-    "@tamagui/web": "1.98.1"
+    "@tamagui/compose-refs": "1.98.2",
+    "@tamagui/constants": "1.98.2",
+    "@tamagui/create-context": "1.98.2",
+    "@tamagui/get-button-sized": "1.98.2",
+    "@tamagui/group": "1.98.2",
+    "@tamagui/helpers": "1.98.2",
+    "@tamagui/roving-focus": "1.98.2",
+    "@tamagui/stacks": "1.98.2",
+    "@tamagui/use-controllable-state": "1.98.2",
+    "@tamagui/use-direction": "1.98.2",
+    "@tamagui/web": "1.98.2"
   },
   "peerDependencies": {
     "react": "*",
     "react-dom": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.98.1",
+    "@tamagui/build": "1.98.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
