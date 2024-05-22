@@ -1,6 +1,6 @@
 {
   "name": "bento-get",
-  "version": "1.98.2",
+  "version": "1.98.3",
   "license": "MIT",
   "bin": "dist/cli.js",
   "type": "module",
@@ -53,7 +53,7 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@tamagui/build": "1.98.2",
+    "@tamagui/build": "1.98.3",
     "@types/copy-paste": "^1.1.33",
     "@types/react": "^18.2.55"
   }
