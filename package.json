@@ -71,7 +71,7 @@
     "vertql": "cd apps/vertql-example && yarn dev",
     "test:ci": "turbo test --concurrency=1",
     "test:demos": "yarn workspace @tamagui/demos test",
-    "test": "CLEANUP=1 turbo run --parallel test",
+    "test": "CLEANUP=1 turbo run --concurrency=1 test",
     "typecheck": "tsc -b --preserveWatchOutput tsconfig.build.json",
     "typecheck:locked": "tsc -b --preserveWatchOutput tsconfig.locked.json",
     "typecheck:perf": "yarn workspace @tamagui/monorepo-test test",
