@@ -18,17 +18,14 @@ export const useGetComponent = async () => {
     const octokit = new Octokit({
       auth: access_token,
     })
-
     const fetchGithubData = async () => {
       const { data } = await octokit.rest.users.getAuthenticated()
-      // @ts-ignore
       setGithubData(data)
     }
-
     fetchGithubData()
   }, [access_token, install.installingComponent])
 
-  const fetcher = async (url: string) => {
+  const fetcher = async (url) => {
     const res = await fetch(url, {
       headers: {
         'Content-Type': 'application/json',
@@ -37,9 +34,7 @@ export const useGetComponent = async () => {
     })
     if (!res.ok) {
       const error = new Error('An error occurred while fetching the data.')
-      // @ts-ignore
       error.info = await res.json()
-      // @ts-ignore
       error.status = res.status
       throw error
     }
@@ -52,20 +47,20 @@ export const useGetComponent = async () => {
     //   process.env.NODE_ENV === 'production'
     //     ? 'http://tamagui.dev'
     //     : 'http://localhost:5005'
-
-    const BASE_URL = 'https://tamagui.dev'
+    const BASE_URL = 'http://tamagui.dev'
     return `${BASE_URL}/api/bento/code/${install.installingComponent?.category}/${install.installingComponent?.categorySection}/${install.installingComponent?.fileName}?userGithubId=${githubData?.node_id}` //paid
   }, [install, githubData])
 
-  const { data, error, isLoading } = useSWR<string>(
+  const { data, error, isLoading } = useSWR(
     githubData?.id && install.installingComponent ? codePath : null,
     fetcher
   )
 
-  if (error) console.log('error:', error)
+  if (error && error.info?.error?.includes('not authenticated')) {
+  }
 
   if (data) {
-    installComponent({ component: data, setInstall, install })
+    await installComponent({ component: data, setInstall, install })
   }
   return { data, error, isLoading }
 }
