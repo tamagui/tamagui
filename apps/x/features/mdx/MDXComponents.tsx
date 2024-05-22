@@ -60,6 +60,7 @@ import { unwrapText } from '~/helpers/unwrapText'
 
 import type { YStackProps } from 'tamagui'
 import { HomeAnimations } from '../site/home/HomeAnimations'
+import { LogoCard } from '~/components/LogoCard'
 
 const Preview = (props: YStackProps) => (
   <YStack
@@ -246,6 +247,7 @@ export const components = {
   ),
 
   Adapt,
+  LogoCard,
 
   Table,
   TableCell,

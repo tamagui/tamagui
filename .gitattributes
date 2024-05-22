@@ -1,3 +1,2 @@
-takeout/*/src/** filter=git-crypt diff=git-crypt merge=git-crypt
-apps/studio/src/** filter=git-crypt diff=git-crypt merge=git-crypt
-apps/bento/src/** filter=git-crypt diff=git-crypt merge=git-crypt
+apps/studio/src/** filter=crypt diff=crypt merge=crypt
+apps/bento/src/** filter=crypt diff=crypt merge=crypt

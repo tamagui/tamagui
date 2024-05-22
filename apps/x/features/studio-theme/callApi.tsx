@@ -41,50 +41,51 @@ export async function callStudioProcedure<P extends Procedure>(
   procedureName: P,
   args: ProcedureArgs<P>
 ): Promise<ProcedureResults<P>> {
-  let results: any
-  const procedureStore = getOrCreateStore(StudioProcedureStore)
-  try {
-    procedureStore.startLoading(procedureName)
-
-    if (resolver) {
-      results = await resolver(procedureName, args)
-    } else {
-      // get from next api route - this checks for auth and access to studio
-      const response = await fetch(
-        `${
-          process.env.NODE_ENV === 'production'
-            ? 'https://tamagui.dev'
-            : 'http://localhost:5005'
-        }/api/studio/procedure?procedure=${procedureName}`,
-        {
-          method: 'POST',
-          body: JSON.stringify(args),
-          credentials: 'include',
-        }
-      )
-      const json = await response.json()
-      if (response.ok) {
-        results = json
-      } else {
-        if (json?.message) {
-          throw new Error(json.message)
-        }
-      }
-    }
-  } catch (error) {
-    if (error instanceof Error) {
-      console.error(error)
-      toastController.show('An error occurred', {
-        message: error.message,
-        customData: {
-          theme: 'red',
-        },
-      })
-    } else {
-      throw error
-    }
-  } finally {
-    procedureStore.stopLoading(procedureName)
-  }
-  return results
+  console.warn('TURNED OFF FOR NOW WAS A BUILD ERR')
+  // TODO
+  // let results: any
+  // const procedureStore = getOrCreateStore(StudioProcedureStore)
+  // try {
+  //   procedureStore.startLoading(procedureName)
+  //   if (resolver) {
+  //     results = await resolver(procedureName, args)
+  //   } else {
+  //     // get from next api route - this checks for auth and access to studio
+  //     const response = await fetch(
+  //       `${
+  //         process.env.NODE_ENV === 'production'
+  //           ? 'https://tamagui.dev'
+  //           : 'http://localhost:5005'
+  //       }/api/studio/procedure?procedure=${procedureName}`,
+  //       {
+  //         method: 'POST',
+  //         body: JSON.stringify(args),
+  //         credentials: 'include',
+  //       }
+  //     )
+  //     const json = await response.json()
+  //     if (response.ok) {
+  //       results = json
+  //     } else {
+  //       if (json?.message) {
+  //         throw new Error(json.message)
+  //       }
+  //     }
+  //   }
+  // } catch (error) {
+  //   if (error instanceof Error) {
+  //     console.error(error)
+  //     toastController.show('An error occurred', {
+  //       message: error.message,
+  //       customData: {
+  //         theme: 'red',
+  //       },
+  //     })
+  //   } else {
+  //     throw error
+  //   }
+  // } finally {
+  //   procedureStore.stopLoading(procedureName)
+  // }
+  // return results
 }

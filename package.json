@@ -12,9 +12,9 @@
   "packageManager": "yarn@4.1.0",
   "scripts": {
     "bento-cli:dev": "yarn workspace @tamagui/bento-cli dev",
-    "postinstall": "./scripts/git-crypt-unlock.sh",
+    "postinstall": "./scripts/unlock-repo.sh",
     "build:force": "yarn clean:build && yarn build --force",
-    "build:js": "turbo run build --no-cache --force -- --skip-types",
+    "build:js": "./scripts/ensure-unlocked.sh && turbo run build --no-cache --force -- --skip-types",
     "build:types": "SKIP_JS=1 yarn build",
     "build": "turbo run build --filter=!next-app",
     "build:verbose": "yarn build -vvv",
@@ -26,7 +26,6 @@
     "docs-bump-version": "node -r esbuild-register ./scripts/docs-bump-version.ts",
     "fix": "yarn lint:fix",
     "fix:deps": "yarn manypkg fix",
-    "git-crypt-unlock": "./scripts/git-crypt-unlock.sh",
     "kitchen-sink:build:android": "yarn workspace @tamagui/kitchen-sink android",
     "kitchen-sink:build:ios": "yarn workspace @tamagui/kitchen-sink ios",
     "kitchen-sink:android": "yarn workspace @tamagui/kitchen-sink start:android",
@@ -95,6 +94,15 @@
     "metro-core": "0.80.8",
     "metro-resolver": "0.80.8",
     "metro-config": "0.80.8"
+  },
+  "profile": {
+    "//": "not part of a script just easier to copy/paste",
+    "dev-vxrn": {
+      "resolutions": {
+        "react": "19.0.0-beta-26f2496093-20240514",
+        "react-dom": "19.0.0-beta-26f2496093-20240514"
+      }
+    }
   },
   "importSort": {
     ".js, .jsx, .ts, .tsx": {
