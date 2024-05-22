@@ -626,7 +626,7 @@ export function createComponent<
     if ('themeInverse' in props) {
       themeStateProps.inverse = props.themeInverse
     }
-    if ('name' in props) {
+    if ('theme' in props) {
       themeStateProps.name = props.theme
     }
 
