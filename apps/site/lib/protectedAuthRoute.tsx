@@ -31,7 +31,7 @@ export const protectedAuthRoute = async (req, res) => {
     res.status(404).json({ message: 'Not found' })
     throw new HandledResponseTermination(`File ${codePath} not found`)
   }
-
+  const result = await fileResult.data.text()
   res.setHeader('Content-Type', 'text/plain')
-  return res.send(await fileResult.data.text())
+  return res.send(result)
 }

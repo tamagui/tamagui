@@ -55,11 +55,13 @@ export async function authorizeUserAccess(
   }
 
   const teamsResult = await supabase.from('teams').select('id, name, is_active')
+
   if (teamsResult.error) {
     throw teamsResult.error
   }
 
   const user = (await supabase.auth.getUser()).data.user
+
   const { hasBentoAccess, hasStudioAccess, hasTakeoutAccess, teamsWithAccess } =
     await getUserAccessInfo(supabase, user)
 
@@ -70,7 +72,7 @@ export async function authorizeUserAccess(
     hasTakeoutAccess,
   }
 
-  if (checkForStudioAccess && !hasStudioAccess && process.env.NODE_ENV === 'production') {
+  if (checkForStudioAccess && !hasStudioAccess) {
     res.status(403).json({
       message: "You don't have access to this part of the studio.",
     })
@@ -78,14 +80,18 @@ export async function authorizeUserAccess(
   }
 
   // check for bento access
-  if (checkForBentoAccess && !hasBentoAccess && process.env.NODE_ENV === 'production') {
+  if (checkForBentoAccess && !hasBentoAccess) {
     res.status(403).json({
       message: "You don't have access to Bento.",
     })
     throw new HandledResponseTermination("User doesn't have access to Bento.")
   }
-
-  const newJwt = jwt.sign(payload, JWT_SECRET)
+let newJwt
+  try {
+  let  newJwt = jwt.sign(payload, JWT_SECRET)
+  } catch (error) {
+    throw new Error('error setting cookie')
+  }
   setCookie(JWT_NAME, newJwt, {
     req,
     res,
