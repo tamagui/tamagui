@@ -56,9 +56,6 @@ export const useGetComponent = async () => {
     fetcher
   )
 
-  if (error && error.info?.error?.includes('not authenticated')) {
-  }
-
   if (data) {
     await installComponent({ component: data, setInstall, install })
   }
