@@ -180,7 +180,14 @@ const HeaderMenuContent = React.memo(function HeaderMenuContent() {
       }}
     >
       <Popover.Arrow bg="$color5" size="$4" borderWidth={0} o={0.84} />
-      <YStack fullscreen bg="$color5" zi={0} br="$6" o={0.84} $sm={{ dsp: 'none' }} />
+      <YStack
+        fullscreen
+        bg="$color5"
+        zi={0}
+        br="$6"
+        o={0.84}
+        // $sm={{ dsp: 'none' }}
+      />
 
       <Popover.ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
         <YStack aria-label="Home menu contents" miw={230} p="$3" ai="flex-end">
