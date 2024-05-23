@@ -47,7 +47,11 @@ const ToastAnnounce: React.FC<ScopedProps<ToastAnnounceProps>> = (
   const [isAnnounced, setIsAnnounced] = React.useState(false)
 
   // render text content in the next frame to ensure toast is announced in NVDA
-  useNextFrame(() => setRenderAnnounceText(true))
+  useNextFrame(() => {
+    React.startTransition(() => {
+      setRenderAnnounceText(true)
+    })
+  })
 
   // cleanup after announcing
   React.useEffect(() => {
