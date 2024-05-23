@@ -1,5 +1,5 @@
 import { Toast, useToastController, useToastState } from '@tamagui/toast'
-import { Button, H4, XStack, YStack } from 'tamagui'
+import { Button, H4, XStack, YStack, isWeb } from 'tamagui'
 
 export function CurrentToast() {
   const currentToast = useToastState()
@@ -10,7 +10,7 @@ export function CurrentToast() {
     <Toast
       key={currentToast.id}
       duration={currentToast.duration}
-      y={0}
+      y={isWeb ? '$12' : 0}
       t={-25}
       enterStyle={{ opacity: 0, scale: 0.5, y: -25 }}
       exitStyle={{ opacity: 0, scale: 1, y: -20 }}
