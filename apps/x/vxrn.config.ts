@@ -5,6 +5,7 @@ import { getVitePlugins, build, serve } from 'vxs/vite'
 // import { mdx } from '@cyco130/vite-plugin-mdx'
 import type { VXRNConfig } from 'vxrn'
 // import inpsectPlugin from 'vite-plugin-inspect'
+import { analyzer } from 'vite-bundle-analyzer'
 
 Error.stackTraceLimit = Number.POSITIVE_INFINITY
 
@@ -81,6 +82,11 @@ export default async () => {
       },
 
       plugins: [
+        analyzer({
+          analyzerMode: 'static',
+          fileName: 'report',
+        }),
+
         // mdx({
         //   rehypePlugins: [
         //     // todo

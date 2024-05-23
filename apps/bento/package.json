@@ -56,6 +56,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
+    "@ngneat/falso": "^7.2.0",
     "@rehookify/datepicker": "^6.5.0",
     "@tamagui/animations-reanimated": "1.98.3",
     "@tamagui/cli": "1.98.3",

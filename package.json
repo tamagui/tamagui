@@ -93,7 +93,16 @@
     "metro": "0.80.8",
     "metro-core": "0.80.8",
     "metro-resolver": "0.80.8",
-    "metro-config": "0.80.8"
+    "metro-config": "0.80.8",
+    "create-vxrn": "portal:/Users/n8/vxrn/packages/create-vxrn",
+    "@vxrn/react-native-prebuilt": "portal:/Users/n8/vxrn/packages/react-native-prebuilt",
+    "@vxrn/safe-area": "portal:/Users/n8/vxrn/packages/safe-area",
+    "@vxrn/vite-flow": "portal:/Users/n8/vxrn/packages/vite-flow",
+    "@vxrn/vite-native-client": "portal:/Users/n8/vxrn/packages/vite-native-client",
+    "@vxrn/vite-native-hmr": "portal:/Users/n8/vxrn/packages/vite-native-hmr",
+    "@vxrn/vite-native-swc": "portal:/Users/n8/vxrn/packages/vite-native-swc",
+    "vxrn": "portal:/Users/n8/vxrn/packages/vxrn",
+    "vxs": "portal:/Users/n8/vxrn/packages/vxs"
   },
   "profile": {
     "//": "not part of a script just easier to copy/paste",
@@ -112,7 +121,6 @@
   },
   "dependencies": {
     "@biomejs/biome": "^1.7.3",
-    "@faker-js/faker": "^8.3.1",
     "@manypkg/cli": "^0.19.1",
     "@nderscore/tamagui-typescript-plugin": "^0.6.0",
     "@playwright/test": "^1.40.1",

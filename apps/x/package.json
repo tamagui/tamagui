@@ -9,6 +9,7 @@
     "dev:clean": "yarn clean && vxrn dev",
     "dev-build-prod": "VXRN_DISABLE_PROD_OPTIMIZATION=1 yarn build:prod && yarn serve",
     "build:prod": "yarn clean && vxrn build",
+    "prod": "yarn build:prod && yarn serve",
     "serve": "vxrn serve",
     "clean": "rm -r node_modules/.vite || true && rm -r dist || true",
     "start": "node vercel-server.js"
@@ -57,6 +58,7 @@
     "sirv": "^2.0.4",
     "unified": "^10.1.2",
     "unist-util-visit": "^2.0.3",
+    "vite-bundle-analyzer": "^0.9.4",
     "vxrn": "^0.1.63"
   }
 }
