@@ -541,13 +541,15 @@ export const useChangeThemeEffect = (
     const wasInversed = prev?.inversed
     const isInherentlyInversed =
       isNewTheme && state.scheme !== parentManager?.state.scheme
-    const inversed = isInherentlyInversed
-      ? true
-      : isWebSSR
-        ? wasInversed != null
-          ? false
-          : null
-        : props.inverse
+    const inversed = isRoot
+      ? false
+      : isInherentlyInversed
+        ? true
+        : isWebSSR
+          ? wasInversed != null
+            ? false
+            : null
+          : props.inverse
 
     const response: ChangedThemeResponse = {
       themeManager,
