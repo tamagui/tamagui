@@ -1,6 +1,7 @@
 import { promises as fs } from 'node:fs'
 import * as path from 'node:path'
 import { exec } from 'node:child_process'
+import os from 'node:os'
 
 interface PackageJson {
   profile?: { [key: string]: any }
@@ -29,7 +30,8 @@ const main = async (name: string) => {
   } else {
     // Profile is not applied, merge it
     if (!packageJson.resolutions) packageJson.resolutions = {}
-    packageJson.resolutions = mergeDeep(packageJson.resolutions, profile.resolutions)
+    const processedResolutions = processResolutions(profile.resolutions)
+    packageJson.resolutions = mergeDeep(packageJson.resolutions, processedResolutions)
     profile.applied = true
   }
 
@@ -76,4 +78,17 @@ const mergeDeep = (target: any, source: any) => {
   })
 
   return target
+}
+
+const replaceTildeWithHomePath = (value: string) => {
+  const homePath = os.homedir()
+  return value.replace(/^portal:~\//, `portal:${homePath}/`)
+}
+
+const processResolutions = (resolutions: { [key: string]: string }) => {
+  const processedResolutions: { [key: string]: string } = {}
+  Object.keys(resolutions).forEach((key) => {
+    processedResolutions[key] = replaceTildeWithHomePath(resolutions[key])
+  })
+  return processedResolutions
 }

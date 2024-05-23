@@ -103,15 +103,15 @@
       "resolutions": {
         "react": "19.0.0-beta-26f2496093-20240514",
         "react-dom": "19.0.0-beta-26f2496093-20240514",
-        "create-vxrn": "portal:/Users/n8/vxrn/packages/create-vxrn",
-        "@vxrn/react-native-prebuilt": "portal:/Users/n8/vxrn/packages/react-native-prebuilt",
-        "@vxrn/safe-area": "portal:/Users/n8/vxrn/packages/safe-area",
-        "@vxrn/vite-flow": "portal:/Users/n8/vxrn/packages/vite-flow",
-        "@vxrn/vite-native-client": "portal:/Users/n8/vxrn/packages/vite-native-client",
-        "@vxrn/vite-native-hmr": "portal:/Users/n8/vxrn/packages/vite-native-hmr",
-        "@vxrn/vite-native-swc": "portal:/Users/n8/vxrn/packages/vite-native-swc",
-        "vxrn": "portal:/Users/n8/vxrn/packages/vxrn",
-        "vxs": "portal:/Users/n8/vxrn/packages/vxs"
+        "create-vxrn": "portal:~/vxrn/packages/create-vxrn",
+        "@vxrn/react-native-prebuilt": "portal:~/vxrn/packages/react-native-prebuilt",
+        "@vxrn/safe-area": "portal:~/vxrn/packages/safe-area",
+        "@vxrn/vite-flow": "portal:~/vxrn/packages/vite-flow",
+        "@vxrn/vite-native-client": "portal:~/vxrn/packages/vite-native-client",
+        "@vxrn/vite-native-hmr": "portal:~/vxrn/packages/vite-native-hmr",
+        "@vxrn/vite-native-swc": "portal:~/vxrn/packages/vite-native-swc",
+        "vxrn": "portal:~/vxrn/packages/vxrn",
+        "vxs": "portal:~/vxrn/packages/vxs"
       }
     }
   },
