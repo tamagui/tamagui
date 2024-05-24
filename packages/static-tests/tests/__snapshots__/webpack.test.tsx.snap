@@ -2,7 +2,7 @@
 
 exports[`webpack-tests > 1. extracts to a div for simple views, flat transforms 1`] = `
 <span
-  className="t_dark is_inversed _dsp_contents"
+  className=" _dsp_contents"
 >
   <span
     className=" t_dark _dsp_contents is_Theme"

@@ -1,4 +1,5 @@
 export type Person = {
+    avatar: string;
     firstName: string;
     lastName: string;
     age: number;
