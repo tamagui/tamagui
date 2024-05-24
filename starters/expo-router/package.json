@@ -17,10 +17,10 @@
   "dependencies": {
     "@expo/metro-runtime": "~3.2.1",
     "@react-navigation/native": "6.1.17",
-    "@tamagui/config": "^1.99.0",
-    "@tamagui/lucide-icons": "^1.99.0",
-    "@tamagui/metro-plugin": "^1.99.0",
-    "@tamagui/toast": "^1.99.0",
+    "@tamagui/config": "^1.99.1",
+    "@tamagui/lucide-icons": "^1.99.1",
+    "@tamagui/metro-plugin": "^1.99.1",
+    "@tamagui/toast": "^1.99.1",
     "babel-preset-expo": "^11.0.6",
     "burnt": "^0.12.2",
     "expo": "~51.0.8",
@@ -39,7 +39,7 @@
     "react-native-screens": "~3.31.1",
     "react-native-svg": "^15.2.0",
     "react-native-web": "^0.19.12",
-    "tamagui": "^1.99.0",
+    "tamagui": "^1.99.1",
     "typescript": "^5.3.3"
   },
   "devDependencies": {

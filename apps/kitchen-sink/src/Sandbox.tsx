@@ -10,7 +10,7 @@ import { View as RNView } from 'react-native'
 export const Sandbox = () => {
   return (
     <RNView style={{ width: '100%', height: '100%', padding: 50 }}>
-      <Square size={200} bg="$red10" />
+      <Demo3 />
     </RNView>
   )
 }
