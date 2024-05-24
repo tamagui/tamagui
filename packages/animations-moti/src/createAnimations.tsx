@@ -210,11 +210,27 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
 
       type UseMotiProps = Parameters<typeof useMotify>[0]
 
+      // TODO moti is giving us type troubles, but this should work
+      const transition = animations[animationKey as keyof typeof animations] as any
+
+      if (Array.isArray(props.animation)) {
+        const config = props.animation[1]
+        if (config && typeof config === 'object') {
+          for (const key in config) {
+            const val = config[key]
+            // referencing a pre-defined config
+            if (typeof val === 'string') {
+              transition[key] = animations[val]
+            } else {
+              transition[key] = val
+            }
+          }
+        }
+      }
+
       const motiProps = {
         animate: isExiting || isHydrating ? {} : styles,
-        transition:
-          // TODO moti is giving us type troubles, but this should work
-          animations[animationKey as keyof typeof animations] as any,
+        transition,
         usePresenceValue,
         presenceContext,
         exit: isExiting ? styles : undefined,
