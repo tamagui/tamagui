@@ -373,7 +373,7 @@ const wrap = (min: number, max: number, v: number) => {
 export function Demo() {
   const [[page, going], setPage] = useState([0, 0])
 
-  const imageIndex = wrap(0, images.length, page)
+  const imageIndex = wrap(0, photos.length, page)
   const paginate = (going: number) => {
     setPage([page + going, going])
   }
