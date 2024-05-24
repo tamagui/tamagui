@@ -211,7 +211,9 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
       type UseMotiProps = Parameters<typeof useMotify>[0]
 
       // TODO moti is giving us type troubles, but this should work
-      const transition = animations[animationKey as keyof typeof animations] as any
+      const transition = {
+        ...(animations[animationKey as keyof typeof animations] as any),
+      }
 
       if (Array.isArray(props.animation)) {
         const config = props.animation[1]
