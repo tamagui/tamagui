@@ -520,6 +520,8 @@ async function esbuildWriteIfChanged(
     built.outputFiles.map(async (file) => {
       let outPath = file.path
 
+      let shouldTransformWeb = true
+
       if (outPath.endsWith('.js') || outPath.endsWith('.js.map')) {
         const [_, extPlatform] =
           outPath.match(/(web|native|ios|android)\.js(\.map)?$/) ?? []
@@ -544,7 +546,7 @@ async function esbuildWriteIfChanged(
             extPlatform === 'android' ||
             extPlatform === 'ios'
           ) {
-            return
+            shouldTransformWeb = false
           }
         }
       }
@@ -554,7 +556,7 @@ async function esbuildWriteIfChanged(
       await fs.ensureDir(outDir)
       let outString = new TextDecoder().decode(file.contents)
 
-      if (platform === 'web') {
+      if (shouldTransformWeb && platform === 'web') {
         const rnWebReplacer = replaceRNWeb[opts.format]
         if (rnWebReplacer) {
           outString = outString.replaceAll(rnWebReplacer.from, rnWebReplacer.to)
