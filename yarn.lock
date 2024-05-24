@@ -7243,6 +7243,7 @@ __metadata:
     lodash: "npm:^4.17.21"
     null-loader: "npm:^4.0.1"
     react: "npm:^18.2.0"
+    react-dom: "npm:^18.3.1"
     react-native-web: "npm:^0.19.12"
     react-native-web-internals: "npm:1.99.0"
     react-native-web-lite: "npm:1.99.0"
@@ -23704,7 +23705,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-dom@npm:^18.2.0":
+"react-dom@npm:^18.2.0, react-dom@npm:^18.3.1":
   version: 18.3.1
   resolution: "react-dom@npm:18.3.1"
   dependencies:
