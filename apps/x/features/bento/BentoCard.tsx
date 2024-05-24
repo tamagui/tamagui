@@ -37,7 +37,7 @@ export function BentoCard({ link, ...props }) {
           />
         </ThemeTintAlt>
 
-        <Card tag="a" bg="transparent" {...props}>
+        <Card bg="transparent" {...props}>
           <View
             pos="absolute"
             als="flex-end"

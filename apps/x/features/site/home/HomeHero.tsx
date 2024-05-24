@@ -30,11 +30,11 @@ export function Hero() {
   const { name } = useTint()
 
   return (
-    <ThemeTint>
+    <>
       <div className={`${name}-season _dsp-contents`}>
         <HeroContents />
       </div>
-    </ThemeTint>
+    </>
   )
 }
 
@@ -285,7 +285,7 @@ const HeroContents = memo(function HeroContents() {
             </TooltipSimple>
           </Link>
 
-          <ThemeTintAlt>
+          <ThemeTint>
             <Link href="/docs/intro/introduction">
               <Button
                 accessibilityLabel="Get started (docs)"
@@ -313,7 +313,7 @@ const HeroContents = memo(function HeroContents() {
                 Get started
               </Button>
             </Link>
-          </ThemeTintAlt>
+          </ThemeTint>
 
           <Link
             target="_blank"

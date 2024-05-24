@@ -5,6 +5,12 @@ import React from 'react'
 
 globalThis['React'] = React
 
+if (import.meta.env.DEV) {
+  if (React.version.startsWith('18.')) {
+    console.error(`\n\n\n❌ not on react 19\n\n\n`)
+  }
+}
+
 export default function Layout() {
   return (
     <Providers>
