@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/compose-refs",
-  "version": "1.98.4",
+  "version": "1.99.0",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -20,7 +20,7 @@
     "lint:fix": "../../node_modules/.bin/biome check --apply-unsafe src"
   },
   "devDependencies": {
-    "@tamagui/build": "1.98.4",
+    "@tamagui/build": "1.99.0",
     "react": "^18.2.0"
   },
   "publishConfig": {
