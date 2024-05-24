@@ -50,10 +50,10 @@ export const HomeGlow = memo(() => {
         <YStack
           key={`${i}${tint}${tintAlt}`}
           animation="superLazy"
-          opacity={!isHydrated ? 0.5 : 1}
-          enterStyle={{
-            opacity: isOnHeroBelow ? 0.5 : 0,
-          }}
+          // opacity={!isHydrated ? 0.5 : 1}
+          // enterStyle={{
+          //   opacity: isOnHeroBelow ? 0.5 : 0,
+          // }}
           exitStyle={{
             opacity: 0,
           }}

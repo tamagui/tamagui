@@ -82,7 +82,7 @@
     "react-hook-form": "^7.51.0",
     "react-native": "0.74.1",
     "react-native-svg": "15.2.0",
-    "react-native-web": "^0.19.10",
+    "react-native-web": "^0.19.12",
     "swr": "^2.2.5",
     "tamagui": "1.98.3",
     "zod": "^3.22.4"

@@ -1,7 +1,7 @@
 // import entryShakingPlugin from 'vite-plugin-entry-shaking'
 import { createRequire } from 'node:module'
 import { getVitePlugins, build, serve } from 'vxs/vite'
-// import { tamaguiPlugin, tamaguiExtractPlugin } from '@tamagui/vite-plugin'
+import { tamaguiPlugin, tamaguiExtractPlugin } from '@tamagui/vite-plugin'
 // import { mdx } from '@cyco130/vite-plugin-mdx'
 import type { VXRNConfig } from 'vxrn'
 // import inpsectPlugin from 'vite-plugin-inspect'
@@ -82,16 +82,10 @@ export default async () => {
       },
 
       plugins: [
-        analyzer({
-          analyzerMode: 'static',
-          fileName: 'report',
-        }),
-
-        // mdx({
-        //   rehypePlugins: [
-        //     // todo
-        //     // rehypeHighlightCode,
-        //   ],
+        // slows down build a lot, should only be for client, move into vxs
+        // analyzer({
+        //   analyzerMode: 'static',
+        //   fileName: 'report',
         // }),
 
         ...(getVitePlugins({
@@ -104,11 +98,6 @@ export default async () => {
         //   targets,
         // }),
 
-        // TODO type is mad
-        // tamaguiPlugin({
-        //   components: ['tamagui'],
-        //   config: 'src/tamagui.config.ts',
-        // }) as any,
         // tamaguiExtractPlugin({
         //   logTimings: true,
         // }),

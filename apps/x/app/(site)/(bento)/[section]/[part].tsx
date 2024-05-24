@@ -23,7 +23,6 @@ export const generateStaticParams = async () => {
 
 export default function page() {
   const params = useLocalSearchParams() as { section: string; part: string }
-  console.log('got', params)
   const Comp = Sections?.[params.section]?.[params.part]
 
   if (!Comp) {

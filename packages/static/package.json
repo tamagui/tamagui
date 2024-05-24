@@ -64,7 +64,7 @@
     "fs-extra": "^11.2.0",
     "invariant": "^2.2.4",
     "lodash": "^4.17.21",
-    "react-native-web": "^0.19.10",
+    "react-native-web": "^0.19.12",
     "react-native-web-internals": "1.98.3",
     "react-native-web-lite": "1.98.3"
   },

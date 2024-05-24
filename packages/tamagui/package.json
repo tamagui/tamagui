@@ -124,7 +124,7 @@
     "@tamagui/build": "1.98.3",
     "react": "^18.2.0",
     "react-native": "0.74.1",
-    "react-native-web": "^0.19.10"
+    "react-native-web": "^0.19.12"
   },
   "repository": {
     "type": "git",
