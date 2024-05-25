@@ -6,6 +6,8 @@ if [ "$SHOULD_UNLOCK_GIT_CRYPT" = "1" ]; then
   else
     echo "Unlocking..."
     ./scripts/transcrypt.sh -y -p "$TRANSCRYPT_PASSWORD"
+    echo "Unlocked!"
+    cat ./apps/bento/src/test-encrypted-file
   fi
 else
   echo "Not unlocking"
