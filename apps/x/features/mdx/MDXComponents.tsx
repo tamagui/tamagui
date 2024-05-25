@@ -286,7 +286,7 @@ export const components = {
   UL,
   LI,
 
-  // TamaguiExamplesCode: CodeCompilationExamples,
+  TamaguiExamplesCode: () => null,
 
   TLDR: (props) => {
     return (

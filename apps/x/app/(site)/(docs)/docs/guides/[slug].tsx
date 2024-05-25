@@ -11,7 +11,6 @@ import { components } from '~/features/mdx/MDXComponents'
 
 export async function generateStaticParams() {
   const frontmatters = getAllFrontmatter('data/docs/guides')
-  console.info('frontmatters', frontmatters)
   const paths = frontmatters.map(({ slug }) => ({
     slug: slug.replace(/.*docs\/guides\//, ''),
   }))

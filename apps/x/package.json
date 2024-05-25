@@ -11,6 +11,7 @@
     "build:prod": "yarn clean && vxrn build",
     "prod": "yarn build:prod && yarn serve",
     "serve": "vxrn serve",
+    "serve:railway": "vxrn serve --host 0.0.0.0",
     "clean": "rm -r node_modules/.vite || true && rm -r dist || true",
     "start": "node vercel-server.js"
   },
@@ -38,7 +39,7 @@
     "vite": "npm:vite@6.0.0-alpha.11",
     "vite-plugin-inspect": "^0.8.4",
     "vite-tsconfig-paths": "^4.3.2",
-    "vxs": "^0.1.65"
+    "vxs": "^0.1.73"
   },
   "devDependencies": {
     "@cyco130/vite-plugin-mdx": "1.0.4",
@@ -59,6 +60,6 @@
     "unified": "^10.1.2",
     "unist-util-visit": "^2.0.3",
     "vite-bundle-analyzer": "^0.9.4",
-    "vxrn": "^0.1.65"
+    "vxrn": "^0.1.73"
   }
 }

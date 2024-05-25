@@ -28,22 +28,16 @@ export async function generateStaticParams() {
 
   const allPaths = [...paths, ...latestVersionPaths]
 
-  console.info(`[docs:ui] generating paths ${JSON.stringify(allPaths, null, 2)}`)
-
   return allPaths
 }
 
 export async function loader(props: LoaderProps) {
-  const { frontmatter, code } = await getMDXBySlug('data/docs/components', props.params.subpath)
+  const { frontmatter, code } = await getMDXBySlug(
+    'data/docs/components',
+    props.params.subpath
+  )
   const [componentName, componentVersion] = props.params.subpath.split('/')
   const versions = getAllVersionsFromPath(`data/docs/components/${componentName}`)
-  console.info(
-    `[docs:ui] load component ${JSON.stringify(
-      { componentName, componentVersion, versions },
-      null,
-      2
-    )}`
-  )
   return {
     frontmatter: {
       ...frontmatter,

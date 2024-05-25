@@ -22,7 +22,8 @@ type Doc = {
 }
 
 export default function DocIntroPage({ frontmatter, code, examples }: Doc) {
-  if (!frontmatter) {
+  if (!frontmatter || !code) {
+    console.warn(`No frontmatter/code?`, { frontmatter, code })
     return null
   }
   const Component = React.useMemo(() => getMDXComponent(code), [code])
