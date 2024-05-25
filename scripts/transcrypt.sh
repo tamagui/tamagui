@@ -218,12 +218,14 @@ git_clean() {
 			(
 				echo -n "Salted__" && echo -n "$salt" | xxd -r -p &&
 					# Encrypt file to binary ciphertext
-					ENC_PASS=$password "$openssl_path" enc -e "-${cipher}" -md MD5 -pass env:ENC_PASS -S "$salt" -in "$tempfile"
+					ENC_PASS=$password "$openssl_path" enc -e "-${cipher}" -md MD5 -pass env:ENC_PASS -S "$salt" -in "$tempfile" \
+						2> >(sed -E '/(deprecated key derivation used|-pbkdf2 would be better)/d' 1>&2)
 			) |
 				openssl base64
 		else
 			# Encrypt file to base64 ciphertext
-			ENC_PASS=$password "$openssl_path" enc -e -a "-${cipher}" -md MD5 -pass env:ENC_PASS -S "$salt" -in "$tempfile"
+			ENC_PASS=$password "$openssl_path" enc -e -a "-${cipher}" -md MD5 -pass env:ENC_PASS -S "$salt" -in "$tempfile" \
+				2> >(sed -E '/(deprecated key derivation used|-pbkdf2 would be better)/d' 1>&2)
 		fi
 	fi
 }
