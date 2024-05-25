@@ -33,8 +33,7 @@ WORKDIR /app
 COPY . .
 
 # init git
-RUN git config --global user.email "you@example.com" && git init .
-#  && git add -A && git commit -m 'add'
+RUN git config --global user.email "you@example.com" && git init . && git add -A && git commit -m 'add'
 
 # unlock
 RUN ./scripts/unlock-repo.sh
