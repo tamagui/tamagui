@@ -55,6 +55,7 @@
     "x": "yarn workspace @tamagui/x dev:clean",
     "x:build": "yarn workspace @tamagui/x build:prod",
     "x:serve": "yarn workspace @tamagui/x serve",
+    "x:serve:railway": "yarn workspace @tamagui/x serve:railway",
     "x:prod": "yarn x:build && yarn x:serve",
     "x:vercel": "yarn build:js && cd apps/site && yarn build:prod",
     "site:extract": "yarn workspace @tamagui/site dev:extract",
@@ -98,6 +99,13 @@
   },
   "profile": {
     "//": "run 'yarn profile x' to toggle it on/off",
+    "react-19": {
+      "applied": true,
+      "resolutions": {
+        "react": "19.0.0-beta-26f2496093-20240514",
+        "react-dom": "19.0.0-beta-26f2496093-20240514"
+      }
+    },
     "x": {
       "applied": false,
       "resolutions": {

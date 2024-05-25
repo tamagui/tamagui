@@ -1,15 +1,16 @@
 import { useStore, useStoreSelector } from '@tamagui/use-store'
-import { router, useGlobalSearchParams } from 'vxs'
 import { forwardRef } from 'react'
 import type { TabsProps, TabsTabProps } from 'tamagui'
 import { Paragraph, Tabs, XStack, styled, withStaticProperties } from 'tamagui'
+import { useLocalSearchParams, useRouter } from 'vxs'
 
 class TabsStore {
   active = 'styled'
 }
 
 function TabsComponent(props: TabsProps) {
-  const params = useGlobalSearchParams()
+  const router = useRouter()
+  const search = useLocalSearchParams()
   const store = useStore(TabsStore)
 
   const id = props.id || 'value'
@@ -20,16 +21,14 @@ function TabsComponent(props: TabsProps) {
     url.searchParams.set(id, newValue)
     url.hash = '' // having this set messes with the scroll
     router.replace(url)
-    // , undefined, {
+    //   , undefined, {
     //   scroll: false,
     //   shallow: true,
     // })
   }
 
   const value =
-    typeof router.query[id] === 'string'
-      ? (router.query[id] as string)
-      : props.defaultValue
+    typeof search[id] === 'string' ? (search[id] as string) : props.defaultValue
 
   return (
     <Tabs
