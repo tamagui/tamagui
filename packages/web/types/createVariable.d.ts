@@ -2,9 +2,8 @@
  * Should rename this to Token
  * Moving to objects for React Server Components support
  */
-declare const IS_VAR = "isVar";
 export interface Variable<A = any> {
-    [IS_VAR]?: true;
+    isVar: true;
     variable?: string;
     val: A;
     name: string;
