@@ -2,26 +2,33 @@ import { getVariableValue } from '../createVariable'
 import type { GenericFonts, GetStyleState } from '../types'
 import type { LanguageContextType } from '../views/FontLanguage.types'
 
-export function getVariantExtras(styleState: GetStyleState) {
+const cache = new WeakMap()
+
+export const getVariantExtras = (styleState: GetStyleState) => {
+  if (cache.has(styleState)) {
+    return cache.get(styleState)
+  }
+
   const { curProps, props, conf, context, theme } = styleState
   let fonts = conf.fontsParsed
   if (context?.language) {
     fonts = getFontsForLanguage(conf.fontsParsed, context.language)
   }
 
-  // should be able to just use styleState.fontFamily but no time to test for now
-  const fontFamily = getVariableValue(
-    styleState.fontFamily || styleState.curProps.fontFamily || styleState.conf.defaultFont
-  )
-
-  const font = fonts[fontFamily] || fonts[styleState.conf.defaultFont!]
-
   const next = {
     fonts,
     tokens: conf.tokensParsed,
     theme,
-    fontFamily,
-    font,
+    get fontFamily() {
+      return getVariableValue(
+        styleState.fontFamily ||
+          styleState.curProps.fontFamily ||
+          styleState.conf.defaultFont
+      )
+    },
+    get font() {
+      return fonts[this.fontFamily] || fonts[styleState.conf.defaultFont!]
+    },
     // TODO do this in splitstlye
     // we avoid passing in default props for media queries because that would confuse things like SizableText.size:
     props: new Proxy(props, {
@@ -35,6 +42,8 @@ export function getVariantExtras(styleState: GetStyleState) {
       },
     }),
   }
+
+  cache.set(styleState, next)
 
   return next as any
 }

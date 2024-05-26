@@ -1,5 +1,13 @@
 import { isClient, isIos, isServer, isWeb } from '@tamagui/constants'
-import { useContext, useEffect, useMemo, useRef, useState } from 'react'
+import {
+  startTransition,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 
 import { getConfig } from '../config'
 import type { Variable } from '../createVariable'
@@ -331,7 +339,17 @@ export const useChangeThemeEffect = (
   //   }
   // }
 
-  const [themeState, setThemeState] = useState<ChangedThemeResponse>(createState)
+  const [themeState, setThemeState_] = useState<ChangedThemeResponse>(createState)
+
+  const setThemeState = useCallback(
+    (...args) => {
+      startTransition(() => {
+        // @ts-expect-error
+        setThemeState_(...args)
+      })
+    },
+    [setThemeState_]
+  )
 
   const { state, mounted, isNewTheme, themeManager, inversed } = themeState
   const isInversingOnMount = Boolean(!themeState.mounted && props.inverse)
