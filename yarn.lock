@@ -6540,7 +6540,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+<<<<<<< HEAD
 "@tamagui/image-next@npm:1.99.1, @tamagui/image-next@workspace:packages/image-next":
+=======
+"@tamagui/image-next@workspace:packages/image-next":
+>>>>>>> 9852314f9d (feat(image-next): adds @tamagui/image-next a beta and lighter weight Image that has no dependency on react-native)
   version: 0.0.0-use.local
   resolution: "@tamagui/image-next@workspace:packages/image-next"
   dependencies:

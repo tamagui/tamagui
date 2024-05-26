@@ -20,7 +20,6 @@ import {
   H3,
   H4,
   H5,
-  Image,
   Paragraph,
   Spacer,
   Theme,
@@ -37,6 +36,7 @@ import {
 
 import { Container, ContainerLarge } from '~/components/Containers'
 import { HomeH2, HomeH3 } from './HomeHeaders'
+import { Image } from '@tamagui/image-next'
 
 const demoMedia = [500, 620, 780, 900]
 
@@ -515,11 +515,7 @@ const Tab = memo(({ active, children, bc, ...props }: any) => {
         {...props}
       >
         <Circle size={16} bg={bc}>
-          <Image
-            width={12}
-            height={12}
-            source={{ uri: '/favicon.svg', width: 12, height: 12 }}
-          />
+          <Image src="/favicon.svg" width={12} height={12} />
         </Circle>
         <Spacer size="$2" />
         <Paragraph o={active ? 1 : 0.5} cursor="default" size="$1" ellipse>
