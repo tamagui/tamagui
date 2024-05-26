@@ -109,9 +109,29 @@ export function Popper(props: ScopedPopperProps<PopperProps>) {
     __scopePopper,
   } = props
 
+  return null
+
   const isMounted = useDidFinishSSR()
-  const [arrowEl, setArrow] = React.useState<any>(null)
-  const [arrowSize, setArrowSize] = React.useState(0)
+  const [arrowEl, setArrow_] = React.useState<any>(null)
+  const [arrowSize, setArrowSize_] = React.useState(0)
+  const setArrow = React.useCallback(
+    (...args) => {
+      React.startTransition(() => {
+        // @ts-ignore
+        setArrow_(...args)
+      })
+    },
+    [setArrow_]
+  )
+  const setArrowSize = React.useCallback(
+    (...args) => {
+      React.startTransition(() => {
+        // @ts-ignore
+        setArrowSize_(...args)
+      })
+    },
+    [setArrowSize_]
+  )
   const offsetOptions = offset ?? arrowSize
 
   const floating = useFloating({
@@ -143,7 +163,6 @@ export function Popper(props: ScopedPopperProps<PopperProps>) {
     middlewareData,
     // @ts-expect-error this comes from Tooltip for example
     open,
-    floatingStyles,
   } = floating
 
   if (isWeb) {
@@ -165,10 +184,14 @@ export function Popper(props: ScopedPopperProps<PopperProps>) {
     const [keyboardOpen, setKeyboardOpen] = React.useState(false)
     React.useEffect(() => {
       const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
-        setKeyboardOpen(true)
+        React.startTransition(() => {
+          setKeyboardOpen(true)
+        })
       })
       const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
-        setKeyboardOpen(false)
+        React.startTransition(() => {
+          setKeyboardOpen(false)
+        })
       })
 
       return () => {
@@ -216,7 +239,9 @@ export const PopperAnchor = YStack.extractable(
 
       React.useEffect(() => {
         if (virtualRef) {
-          refs.setReference(virtualRef.current)
+          React.startTransition(() => {
+            refs.setReference(virtualRef.current)
+          })
         }
       }, [virtualRef])
 
@@ -325,13 +350,17 @@ export const PopperContent = React.forwardRef<
   const [needsMeasure, setNeedsMeasure] = React.useState(true)
   React.useEffect(() => {
     if (x || y) {
-      setNeedsMeasure(false)
+      React.startTransition(() => {
+        setNeedsMeasure(false)
+      })
     }
   }, [x, y])
 
   useIsomorphicLayoutEffect(() => {
     if (isMounted) {
-      update()
+      React.startTransition(() => {
+        update()
+      })
     }
   }, [isMounted])
 
