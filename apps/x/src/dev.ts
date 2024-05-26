@@ -5,14 +5,16 @@ const og = React.useState
 React.useState = (...args) => {
   // @ts-ignore
   const [useit, setit] = og(...args)
-  const wrapped = useCallback(() => {
-    return (...args) => {
+  const wrapped = useCallback(
+    (...args) => {
+      if (globalThis['didonl']) console.warn('set state', args)
       startTransition(() => {
         // @ts-ignore
         setit(...args)
       })
-    }
-  }, [setit])
+    },
+    [setit]
+  )
   return [useit, wrapped]
 }
 
@@ -23,6 +25,7 @@ React.useReducer = (...args) => {
   const [useit, setit] = og2(...args)
   const wrapped = useCallback(() => {
     return (...args) => {
+      if (globalThis['didonl']) console.warn('reducer', args)
       startTransition(() => {
         // @ts-ignore
         setit(...args)

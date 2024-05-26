@@ -20,7 +20,6 @@ export default function SiteLayout() {
 
   return (
     <>
-      <Head>{/* TODO */}</Head>
       <Header showAuth={showAuth} disableNew={disableNew} />
       <Slot />
       {!hideFooter && <Footer />}
