@@ -477,12 +477,16 @@ const SlidingPopoverTrigger = YStack.styleable<{ id: string }>(
           }, 400)
         }}
         onLayout={(e) => {
-          setLayout({
-            ...e.nativeEvent.layout,
-            // @ts-ignore
-            x: e.nativeEvent.layout.left,
-            // @ts-ignore
-            y: e.nativeEvent.layout.top,
+          globalThis['didonl']
+          console.warn('ON LAYOUT HERE')
+          React.startTransition(() => {
+            setLayout({
+              ...e.nativeEvent.layout,
+              // @ts-ignore
+              x: e.nativeEvent.layout.left,
+              // @ts-ignore
+              y: e.nativeEvent.layout.top,
+            })
           })
         }}
         ref={combinedRef}

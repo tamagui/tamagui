@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { startTransition, useEffect, useState } from 'react'
 import type { ThemeName } from 'tamagui'
 
 type ChangeHandler = (next: TintFamily) => void
@@ -63,7 +63,9 @@ export function useTints() {
 
   useEffect(() => {
     return onTintFamilyChange(() => {
-      setVal(getTints())
+      startTransition(() => {
+        setVal(getTints())
+      })
     })
   }, [])
 
@@ -73,7 +75,9 @@ export function useTints() {
 export function setTintFamily(next: TintFamily) {
   if (!families[next]) throw `impossible`
   fam = next
-  listeners.forEach((l) => l(next))
+  startTransition(() => {
+    listeners.forEach((l) => l(next))
+  })
 }
 
 export const setNextTintFamily = () => {

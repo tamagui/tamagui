@@ -1,4 +1,11 @@
-import { createContext, useCallback, useContext, useEffect, useState } from 'react'
+import {
+  createContext,
+  startTransition,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from 'react'
 import { useSystemTheme } from './useSystemTheme'
 
 type DarkModePreference = 'system' | 'light' | 'dark'
@@ -35,12 +42,16 @@ export function UserThemeProvider(props: { children: any }) {
   const [userTheme, setUserTheme] = useState<DarkModePreference>('system')
 
   useEffect(() => {
-    setUserTheme(getValue())
+    startTransition(() => {
+      setUserTheme(getValue())
+    })
   }, [])
 
   useEffect(() => {
     const listener = (val: DarkModePreference) => {
-      setUserTheme(val)
+      startTransition(() => {
+        setUserTheme(val)
+      })
     }
     listeners.add(listener)
     return () => {
