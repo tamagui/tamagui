@@ -1,13 +1,21 @@
 import type React from 'react'
 import type { DebugProp } from '../types'
+import { startTransition } from 'react'
+
+const callImmediate = (cb) => cb()
 
 export function createShallowSetState<State extends Object>(
   setter: React.Dispatch<React.SetStateAction<State>>,
   isDisabled?: boolean,
+  transition?: boolean,
   debug?: DebugProp
 ) {
-  return (next?: Partial<State>) =>
-    setter((prev) => mergeIfNotShallowEqual(prev, next, isDisabled, debug))
+  return (next?: Partial<State>) => {
+    const wrap = transition ? startTransition : callImmediate
+    wrap(() => {
+      setter((prev) => mergeIfNotShallowEqual(prev, next, isDisabled, debug))
+    })
+  }
 }
 
 export function mergeIfNotShallowEqual(

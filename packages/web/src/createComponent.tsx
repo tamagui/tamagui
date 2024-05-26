@@ -237,7 +237,7 @@ export const useComponentState = (
     setState({ ...state })
   }
 
-  let setStateShallow = createShallowSetState(setState, disabled, props.debug)
+  let setStateShallow = createShallowSetState(setState, disabled, true, props.debug)
 
   if (isHydrated && state.unmounted === 'should-enter') {
     state.unmounted = true
