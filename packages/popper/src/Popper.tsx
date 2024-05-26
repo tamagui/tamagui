@@ -25,6 +25,7 @@ import {
   flip,
   offset as offsetFn,
   shift,
+  platform,
   useFloating,
 } from '@tamagui/floating'
 import { getSpace } from '@tamagui/get-token'
@@ -66,6 +67,7 @@ export type PopperProps = {
   allowFlip?: FlipProps | boolean
   strategy?: Strategy
   offset?: OffsetOptions
+  disableRTL?: boolean
 }
 
 type ScopedPopperProps<P> = ScopedProps<P, 'Popper'>
@@ -84,6 +86,16 @@ const checkFloating =
       }
     : undefined
 
+export type PopperSetupOptions = {
+  disableRTL?: boolean
+}
+
+const setupOptions: PopperSetupOptions = {}
+
+export function setupPopper(options?: PopperSetupOptions) {
+  Object.assign(setupOptions, options)
+}
+
 export function Popper(props: ScopedPopperProps<PopperProps>) {
   const {
     children,
@@ -93,6 +105,7 @@ export function Popper(props: ScopedPopperProps<PopperProps>) {
     stayInFrame,
     allowFlip,
     offset,
+    disableRTL,
     __scopePopper,
   } = props
 
@@ -105,6 +118,15 @@ export function Popper(props: ScopedPopperProps<PopperProps>) {
     strategy,
     placement,
     sameScrollView: false, // this only takes effect on native
+    platform:
+      disableRTL ?? setupOptions.disableRTL
+        ? {
+            ...platform,
+            isRTL(element) {
+              return false
+            },
+          }
+        : platform,
     middleware: [
       stayInFrame
         ? shift(typeof stayInFrame === 'boolean' ? {} : stayInFrame)

@@ -1,5 +1,5 @@
 import { Slot, Stack } from 'vxs'
-import { isWeb } from 'tamagui'
+import { isWeb, setupPopper } from 'tamagui'
 import { Providers } from '../src/Providers'
 import React from 'react'
 
@@ -10,6 +10,11 @@ if (import.meta.env.DEV) {
     console.error(`\n\n\n❌ not on react 19\n\n\n`)
   }
 }
+
+setupPopper({
+  // prevents a reflow on mount
+  disableRTL: true,
+})
 
 export default function Layout() {
   return (
