@@ -111,7 +111,9 @@ const ToastProvider: React.FC<ToastProviderProps> = (
 
   const handleViewportChange = React.useCallback(
     (name: string, viewport: TamaguiElement | null) => {
-      setViewports((prev) => ({ ...prev, [name]: viewport }))
+      React.startTransition(() => {
+        setViewports((prev) => ({ ...prev, [name]: viewport }))
+      })
     },
     []
   )
@@ -140,10 +142,14 @@ const ToastProvider: React.FC<ToastProviderProps> = (
         viewports={viewports}
         onViewportChange={handleViewportChange}
         onToastAdd={React.useCallback(() => {
-          setToastCount((prevCount) => prevCount + 1)
+          React.startTransition(() => {
+            setToastCount((prevCount) => prevCount + 1)
+          })
         }, [])}
         onToastRemove={React.useCallback(() => {
-          setToastCount((prevCount) => prevCount - 1)
+          React.startTransition(() => {
+            setToastCount((prevCount) => prevCount - 1)
+          })
         }, [])}
         isFocusedToastEscapeKeyDownRef={isFocusedToastEscapeKeyDownRef}
         isClosePausedRef={isClosePausedRef}
