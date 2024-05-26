@@ -30,8 +30,13 @@ export type PopperProps = {
     allowFlip?: FlipProps | boolean;
     strategy?: Strategy;
     offset?: OffsetOptions;
+    disableRTL?: boolean;
 };
 type ScopedPopperProps<P> = ScopedProps<P, 'Popper'>;
+export type PopperSetupOptions = {
+    disableRTL?: boolean;
+};
+export declare function setupPopper(options?: PopperSetupOptions): void;
 export declare function Popper(props: ScopedPopperProps<PopperProps>): import("react/jsx-runtime").JSX.Element;
 type PopperAnchorRef = HTMLElement | View;
 export type PopperAnchorProps = YStackProps & {
