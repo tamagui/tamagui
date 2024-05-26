@@ -103,6 +103,12 @@ export const ImageDemo = lazyDemo(
   // @ts-ignore
   () => import('@tamagui/demos/demo/ImageDemo').then((x) => x.ImageDemo)
 )
+
+export const WebNativeImageDemo = lazyDemo(
+  // @ts-ignore
+  import('@tamagui/demos/demo/WebNativeImageDemo').then((x) => x.WebNativeImageDemo)
+)
+
 export const LabelDemo = lazyDemo(
   // @ts-ignore
   () => import('@tamagui/demos/demo/LabelDemo').then((x) => x.LabelDemo)

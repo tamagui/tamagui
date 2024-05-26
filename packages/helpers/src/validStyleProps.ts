@@ -235,6 +235,10 @@ export const stylePropsView = {
     outlineOffset: true,
     outlineWidth: true,
     touchAction: true,
+<<<<<<< HEAD
+    objectFit: true,
+    objectPosition: true,
+=======
     filter: true,
     backdropFilter: true,
     mixBlendMode: true,
@@ -274,6 +278,7 @@ export const stylePropsView = {
     maskRepeat: true,
     maskSize: true,
     maskType: true,
+>>>>>>> master
   }),
   ...(isAndroid ? { elevationAndroid: true } : {}),
 }
