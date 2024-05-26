@@ -8,10 +8,8 @@ import { getConfig } from './config'
  * Moving to objects for React Server Components support
  */
 
-const IS_VAR = 'isVar'
-
 export interface Variable<A = any> {
-  [IS_VAR]?: true
+  isVar: true
   variable?: string
   val: A
   name: string
@@ -25,18 +23,18 @@ function constructCSSVariableName(name: string) {
 }
 
 type VariableIn<A = any> = Pick<Variable<A>, 'key' | 'name' | 'val'>
+
 export const createVariable = <A extends string | number | Variable = any>(
   props: VariableIn<A>,
   skipHash = false
 ): Variable<A> => {
   if (!skipHash && isVariable(props)) return props
-
   const { key, name, val } = props
   return {
-    [IS_VAR]: true,
-    key: key!,
-    name: skipHash ? '' : simpleHash(name, 40),
-    val: val as any,
+    isVar: true,
+    key,
+    name: skipHash ? name : simpleHash(name, 40),
+    val,
     variable: isWeb
       ? skipHash
         ? constructCSSVariableName(name)
@@ -57,7 +55,7 @@ export function variableToString(vrble?: any, getValue = false) {
 }
 
 export function isVariable(v: Variable | any): v is Variable {
-  return v && typeof v === 'object' && IS_VAR in v
+  return v && typeof v === 'object' && 'isVar' in v
 }
 
 export function getVariable(nameOrVariable: Variable | string | any) {

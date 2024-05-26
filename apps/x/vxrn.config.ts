@@ -82,12 +82,6 @@ export default async () => {
       },
 
       plugins: [
-        // slows down build a lot, should only be for client, move into vxs
-        // analyzer({
-        //   analyzerMode: 'static',
-        //   fileName: 'report',
-        // }),
-
         ...(getVitePlugins({
           root: 'app',
         }) as any),

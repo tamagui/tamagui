@@ -206,7 +206,6 @@ let rootComputedStyle: CSSStyleDeclaration | null = null
 
 function addThemesFromCSS(cssStyleRule: CSSStyleRule, tokens?: TokensParsed) {
   const selectors = cssStyleRule.selectorText.split(',')
-
   if (!selectors.length) return
 
   if (tokens && !colorVarToVal) {
@@ -218,9 +217,11 @@ function addThemesFromCSS(cssStyleRule: CSSStyleRule, tokens?: TokensParsed) {
     }
   }
 
-  const rulesWithBraces = (cssStyleRule.cssText || '')
-    .slice(cssStyleRule.selectorText.length + 2, -1)
-    .trim()
+  const rulesWithBraces = (cssStyleRule.cssText || '').slice(
+    cssStyleRule.selectorText.length + 2,
+    -1
+  )
+
   const rules = rulesWithBraces.split(';')
 
   // get theme object parsed
@@ -236,7 +237,7 @@ function addThemesFromCSS(cssStyleRule: CSSStyleRule, tokens?: TokensParsed) {
     }
     const val = rule.slice(sepI + 2)
     let value: string
-    if (val.startsWith('var(')) {
+    if (val[0] === 'v' && val.startsWith('var(')) {
       // var()
       const varName = val.slice(6, -1)
       const tokenVal = colorVarToVal[varName]
@@ -260,31 +261,25 @@ function addThemesFromCSS(cssStyleRule: CSSStyleRule, tokens?: TokensParsed) {
     ) as any
   }
 
-  const dedupedEntry: DedupedTheme = {
-    names: [],
-    theme: values,
-  }
+  const names = new Set<string>()
 
   // loop selectors and build deduped
   for (const selector of selectors) {
-    const matches =
-      selector.match(/(.t_(light|dark))?[\s]?(.t_([a-z0-9_]+))[\s]*$/i) ||
-      ([] as string[])
-    const [_0, _1, scheme, _2, name] = matches
-    const themeName =
-      name && scheme && scheme !== name ? `${scheme}_${name}` : name || scheme
-    if (
-      !themeName ||
-      dedupedEntry.names.includes(themeName) ||
-      themeName === 'light_dark' ||
-      themeName === 'dark_light'
-    ) {
+    const lastThemeSelectorIndex = selector.lastIndexOf('.t_')
+    const name = selector.slice(lastThemeSelectorIndex).slice(3)
+    const [schemeChar] = selector[lastThemeSelectorIndex - 5]
+    const scheme = schemeChar === 'd' ? 'dark' : schemeChar === 'i' ? 'light' : ''
+    const themeName = scheme && scheme !== name ? `${scheme}_${name}` : name
+    if (!themeName || themeName === 'light_dark' || themeName === 'dark_light') {
       continue
     }
-    dedupedEntry.names.push(themeName)
+    names.add(themeName)
   }
 
-  return dedupedEntry
+  return {
+    names: [...names],
+    theme: values,
+  } satisfies DedupedTheme
 }
 
 function getTamaguiSelector(
@@ -315,11 +310,11 @@ function getTamaguiSelector(
 }
 
 const getIdentifierFromTamaguiSelector = (selector: string) => {
-  let res = selector.slice(7)
-  if (selector.includes(':')) {
-    return res.replace(/:[a-z]+$/, '')
+  const dotIndex = selector.indexOf(':')
+  if (dotIndex > -1) {
+    return selector.slice(7, dotIndex)
   }
-  return res
+  return selector.slice(7)
 }
 
 const sheet = isClient
