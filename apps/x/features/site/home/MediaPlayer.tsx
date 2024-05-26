@@ -1,16 +1,8 @@
 import { FastForward, Pause, Rewind } from '@tamagui/lucide-icons'
 import { memo } from 'react'
 import type { ThemeName, YStackProps } from 'tamagui'
-import {
-  Button,
-  Image,
-  Paragraph,
-  Separator,
-  Square,
-  Theme,
-  XStack,
-  YStack,
-} from 'tamagui'
+import { Image } from '@tamagui/image-next'
+import { Button, Paragraph, Separator, Square, Theme, XStack, YStack } from 'tamagui'
 
 import image from './mj.jpg'
 
@@ -55,7 +47,7 @@ export const MediaPlayer = memo(
           >
             <XStack ai="center" p="$4" space="$5">
               <Square pos="relative" ov="hidden" br="$6" size="$8">
-                <Image source={{ uri: image, width: 90, height: 90 }} />
+                <Image src={image} width={90} height={90} />
               </Square>
 
               <YStack als="center" y={-3} miw={165} jc="center">
