@@ -1,12 +1,8 @@
-import '@tamagui/core/reset.css'
-import '~/app.css'
-import '~/tamagui.css'
-
 import { ToastViewport } from '@tamagui/toast'
-import { Head, Slot, usePathname } from 'vxs'
-import { Header } from '~/features/site/header/Header'
+import { Slot, usePathname } from 'vxs'
 import { Footer } from '~/features/site/Footer'
-import { LoadCherryBomb, LoadInter900, LoadMunro } from '~/features/site/fonts/LoadFonts'
+import { LoadCherryBomb, LoadMunro } from '~/features/site/fonts/LoadFonts'
+import { Header } from '~/features/site/header/Header'
 
 export default function SiteLayout() {
   const path = usePathname()
