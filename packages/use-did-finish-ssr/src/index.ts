@@ -11,7 +11,7 @@ export function useDidFinishSSR<A = boolean>(value?: A): A | false {
 
   const [hydrated, setHydrated] = useState(false)
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     setHydrated(true)
   }, [])
 
