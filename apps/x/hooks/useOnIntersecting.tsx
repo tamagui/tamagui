@@ -1,5 +1,5 @@
 import type { MutableRefObject } from 'react'
-import { useEffect, useState } from 'react'
+import { startTransition, useEffect, useState } from 'react'
 import { isWeb, useEvent } from 'tamagui'
 
 type DisposeFn = () => void
@@ -23,12 +23,14 @@ export function useIsIntersecting<Ref extends HTMLRef | HTMLRef[]>(
       (entries) => {
         const intersecting = entries.some((x) => x?.isIntersecting)
         if (once && !intersecting) return
-        setValues((prev) => {
-          const next = entries.map((e) => e?.isIntersecting ?? false)
-          if (prev.length === next.length && prev.every((e, i) => e === next[i])) {
-            return prev
-          }
-          return next
+        startTransition(() => {
+          setValues((prev) => {
+            const next = entries.map((e) => e?.isIntersecting ?? false)
+            if (prev.length === next.length && prev.every((e, i) => e === next[i])) {
+              return prev
+            }
+            return next
+          })
         })
       },
       opts

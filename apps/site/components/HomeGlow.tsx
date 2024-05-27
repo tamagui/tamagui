@@ -1,5 +1,5 @@
 import { useTint } from '@tamagui/logo'
-import { memo, useMemo, useState } from 'react'
+import { memo, startTransition, useMemo, useState } from 'react'
 import { AnimatePresence, YStack, isClient, useDidFinishSSR } from 'tamagui'
 
 import { useTintSectionIndex } from './TintSection'
@@ -33,16 +33,18 @@ export const HomeGlow = memo(() => {
 
   if (isClient) {
     useTintSectionIndex((index) => {
-      setSectionIndex(index)
-      // const dims = tintSectionDimensions[index]
-      // console.log('index', index, dims)
-      const sy = document.documentElement?.scrollTop ?? 0
-      setScrollTop(sy + 100)
+      startTransition(() => {
+        setSectionIndex(index)
+        // const dims = tintSectionDimensions[index]
+        // console.log('index', index, dims)
+        const sy = document.documentElement?.scrollTop ?? 0
+        setScrollTop(sy + 100)
+      })
     })
   }
 
   const glows = useMemo(() => {
-    return [tint, tintAlt].map((cur, i) => {
+    return [tint, tintAlt].slice(1).map((cur, i) => {
       const isOpposing = tintIndex % 2 === 0
       const isAlt = i === 1
       const xRand = isOnHeroBelow ? 1 : positions[isOpposing ? 1 - i : i][0]
@@ -109,7 +111,7 @@ export const HomeGlow = memo(() => {
       })}
       // display={isResizing ? 'none' : 'flex'}
     >
-      <AnimatePresence initial={isHydrated}>{glows}</AnimatePresence>
+      <AnimatePresence initial={false}>{glows}</AnimatePresence>
     </YStack>
   )
 })

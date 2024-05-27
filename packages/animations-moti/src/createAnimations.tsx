@@ -177,7 +177,8 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         ? props.animation[0]
         : props.animation
 
-      const isHydrating = componentState.unmounted === 'should-enter'
+      const isHydrating = componentState.unmounted === true
+      console.warn('isHydrating', isHydrating, componentState.unmounted, style)
       let animate = {}
       let dontAnimate = {}
 

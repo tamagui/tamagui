@@ -179,9 +179,6 @@ export const useComponentState = (
   }
 
   // HOOK
-  const isHydrated = config?.disableSSR ? true : useDidFinishSSR()
-
-  // HOOK
   const presence =
     (willBeAnimated &&
       props['animatePresence'] !== false &&
@@ -196,22 +193,12 @@ export const useComponentState = (
   const hasRNAnimation = hasAnimationProp && animationDriver?.isReactNative
   const isReactNative = staticConfig.isReactNative
 
-  // only web server + initial client render run this when not hydrated:
-  let isAnimated = willBeAnimated
-  if (!isReactNative && hasRNAnimation && !staticConfig.isHOC && !isHydrated) {
-    isAnimated = false
-    curStateRef.willHydrate = true
-  }
-
   if (process.env.NODE_ENV === 'development' && time) time`pre-use-state`
 
   const hasEnterState = hasEnterStyle || isEntering
-  const needsToMount = !isHydrated || !curStateRef.host
 
   const initialState = hasEnterState
-    ? needsToMount
-      ? defaultComponentStateShouldEnter
-      : defaultComponentState
+    ? defaultComponentState
     : defaultComponentStateMounted
 
   // will be nice to deprecate half of these:
@@ -227,6 +214,20 @@ export const useComponentState = (
   const state = props.forceStyle ? { ...states[0], [props.forceStyle]: true } : states[0]
   const setState = states[1]
 
+  const isHydrated = !state.unmounted
+
+  // only web server + initial client render run this when not hydrated:
+  let isAnimated = willBeAnimated
+  if (
+    !isReactNative &&
+    hasRNAnimation &&
+    !staticConfig.isHOC &&
+    state.unmounted === true
+  ) {
+    isAnimated = false
+    curStateRef.willHydrate = true
+  }
+
   // immediately update disabled state and reset component state
   if (disabled !== state.disabled) {
     state.disabled = disabled
@@ -237,11 +238,11 @@ export const useComponentState = (
     setState({ ...state })
   }
 
-  let setStateShallow = createShallowSetState(setState, disabled, true, props.debug)
+  let setStateShallow = createShallowSetState(setState, disabled, false, props.debug)
 
-  if (isHydrated && state.unmounted === 'should-enter') {
-    state.unmounted = true
-  }
+  // if (isHydrated && state.unmounted === 'should-enter') {
+  //   state.unmounted = true
+  // }
 
   // set enter/exit variants onto our new props object
   if (presenceState && isAnimated && isHydrated && staticConfig.variants) {
@@ -277,6 +278,7 @@ export const useComponentState = (
       // the react-native driver errors because it tries to animate var(--color) to rbga(..)
       (props.disableClassName && isHydrated)
   )
+  console.log('shouldAvoidClasses', shouldAvoidClasses, { isAnimated, supportsCSSVars })
 
   const groupName = props.group as any as string
 
@@ -917,6 +919,11 @@ export function createComponent<
         return
       }
 
+      if (state.unmounted === true) {
+        setStateShallow({ unmounted: 'should-enter' })
+        return
+      }
+
       if (state.unmounted) {
         setStateShallow({ unmounted: false })
         return
@@ -936,6 +943,7 @@ export function createComponent<
         componentSetStates.delete(setState)
       }
     }, [
+      state.unmounted,
       disabled,
       pseudoGroups ? Object.keys([...pseudoGroups]).join('') : 0,
       mediaGroups ? Object.keys([...mediaGroups]).join('') : 0,

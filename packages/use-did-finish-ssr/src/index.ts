@@ -23,7 +23,7 @@ export function useDidFinishSSR<A = boolean>(
   }
 
   const [cur, setCur] = useState<any>(value)
-  useIsomorphicLayoutEffect(() => {
+  useEffect(() => {
     setCur(value ?? true)
   }, [])
   return cur ?? false
