@@ -11,7 +11,6 @@ import React, {
   useContext,
   useEffect,
   useId,
-  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -913,7 +912,7 @@ export function createComponent<
 
     const unPress = () => setStateShallow({ press: false, pressIn: false })
 
-    useLayoutEffect(() => {
+    useEffect(() => {
       if (disabled) {
         return
       }

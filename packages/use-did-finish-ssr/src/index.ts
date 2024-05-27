@@ -1,7 +1,7 @@
-import { useEffect, useLayoutEffect, useState } from 'react'
+import { useSyncExternalStore } from 'react'
 
-const useIsomorphicLayoutEffect =
-  typeof window === 'undefined' ? useEffect : useLayoutEffect
+const emptyFn = () => {}
+const emptyFnFn = () => emptyFn
 
 export function useDidFinishSSR<A = boolean>(value?: A): A | false {
   if (process.env.TAMAGUI_TARGET === 'native') {
@@ -9,14 +9,11 @@ export function useDidFinishSSR<A = boolean>(value?: A): A | false {
     return value ?? true
   }
 
-  const [hydrated, setHydrated] = useState(false)
-
-  useIsomorphicLayoutEffect(() => {
-    setHydrated(true)
-  }, [])
-
-  // @ts-expect-error
-  return value === undefined ? hydrated : hydrated ? value : undefined
+  return useSyncExternalStore(
+    emptyFnFn,
+    () => (value == undefined ? true : value),
+    () => false as any
+  )
 }
 
 type FunctionOrValue<Value> = Value extends () => infer X ? X : Value
