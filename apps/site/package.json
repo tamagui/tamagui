@@ -35,7 +35,7 @@
     "@github/mini-throttle": "^2.1.0",
     "@leeoniya/ufuzzy": "^1.0.14",
     "@monaco-editor/react": "^4.2.2",
-    "@react-three/drei": "^9.68.3",
+    "@react-three/drei": "^9.105.6",
     "@react-three/fiber": "^8.16.6",
     "@stripe/react-stripe-js": "^2.1.0",
     "@stripe/stripe-js": "^1.53.0",

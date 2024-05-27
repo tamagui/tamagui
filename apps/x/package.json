@@ -18,6 +18,7 @@
   "dependencies": {
     "@leeoniya/ufuzzy": "^1.0.14",
     "@react-navigation/native": "6.1.17",
+    "@react-three/drei": "^9.105.6",
     "@react-three/fiber": "npm:@react-three/fiber@9.0.0-alpha.6",
     "@supabase/auth-helpers-react": "^0.4.2",
     "@supabase/auth-helpers-shared": "^0.5.0",

@@ -111,6 +111,7 @@
       "resolutions": {
         "react": "19.0.0-beta-26f2496093-20240514",
         "react-dom": "19.0.0-beta-26f2496093-20240514",
+        "@react-three/fiber": "9.0.0-alpha.6",
         "create-vxrn": "portal:~/vxrn/packages/create-vxrn",
         "@vxrn/react-native-prebuilt": "portal:~/vxrn/packages/react-native-prebuilt",
         "@vxrn/safe-area": "portal:~/vxrn/packages/safe-area",

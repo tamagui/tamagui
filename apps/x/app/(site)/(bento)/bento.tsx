@@ -1,5 +1,6 @@
-import { LocationNotification } from '@tamagui/bento/component/user/preferences/LocationNotification'
 import { listingData } from '@tamagui/bento/data'
+import { assertIsError } from '@tamagui/assert'
+import { LocationNotification } from '@tamagui/bento/component/user/preferences/LocationNotification'
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import {
   AlertCircle,
@@ -33,7 +34,6 @@ import {
   ToggleRight,
 } from '@tamagui/lucide-icons'
 import { useStore } from '@tamagui/use-store'
-import { useLoader } from 'vxs'
 import { useMemo, useRef, useState } from 'react'
 import {
   Button,
@@ -52,14 +52,14 @@ import {
   XStack,
   YStack,
 } from 'tamagui'
-import { assertIsError } from '@tamagui/assert'
+import { useLoader } from 'vxs'
 import { ContainerLarge } from '~/components/Containers'
 import { Link } from '~/components/Link'
-import { BentoIcon } from '~/features/icons/BentoIcon'
 import { BentoFrond } from '~/features/bento/BentoFrond'
 import { BentoLogo } from '~/features/bento/BentoLogo'
 import { BentoPageFrame } from '~/features/bento/BentoPageFrame'
 import type { ProComponentsProps } from '~/features/bento/types'
+import { BentoIcon } from '~/features/icons/BentoIcon'
 import { PurchaseModal } from '~/features/site/purchase/PurchaseModal'
 import { getProductsForServerSideRendering } from '~/features/site/purchase/server-helpers'
 import { useTakeoutStore } from '~/features/site/purchase/useTakeoutStore'
@@ -80,22 +80,18 @@ class BentoStore {
   heroHeight = 800
 }
 
-export default function BentoPage() {
+export default function BentoPage(props: ProComponentsProps) {
   const data = useLoader(loader)
   const store = useStore(BentoStore)
 
   return (
     <>
       <PurchaseModal
-        // @ts-expect-error
-        bento={data.bento}
+        bento={props.bento}
         defaultValue="bento"
-        // @ts-expect-error
-        fontsPack={data.fontsPack}
-        // @ts-expect-error
-        iconsPack={data.iconsPack}
-        // @ts-expect-error
-        starter={data.starter}
+        fontsPack={props.fontsPack}
+        iconsPack={props.iconsPack}
+        starter={props.starter}
       />
       <Theme name="tan">
         <ThemeNameEffect colorKey="$color6" />
@@ -127,8 +123,15 @@ export default function BentoPage() {
               store.heroHeight = e.nativeEvent.layout.height
             }}
           >
-            {/* @ts-expect-error */}
-            <Hero mainProduct={data.bento} />
+            <Hero mainProduct={props.bento} />
+            {/* <YStack pos="relative" zi={10000}>
+            <ContainerLarge>
+              <YStack pos="absolute" t={-50} r={80} rotate="-10deg">
+                <BentoIcon scale={3} />
+              </YStack>
+            </ContainerLarge>
+          </YStack> */}
+
             <Intermediate />
           </YStack>
           <Body />
@@ -264,7 +267,14 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['bento'] }) => 
               $sm={{ px: '$4', maw: 400, ml: 0 }}
             >
               <XStack gap="$6">
-                <Stack pos="relative" bg="$color9" w={6} br="$2" my={18} $sm={{ dsp: 'none' }} />
+                <Stack
+                  pos="relative"
+                  bg="$color9"
+                  w={6}
+                  br="$2"
+                  my={18}
+                  $sm={{ dsp: 'none' }}
+                />
                 <Paragraph
                   className="pixelate"
                   ff="$munro"
@@ -283,7 +293,13 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['bento'] }) => 
                 >
                   Boost your React development with a suite
                   of&nbsp;copy-paste&nbsp;primitives.&nbsp;
-                  <YStack my={-20} tag="span" dsp="inline-flex" y={3} $sm={{ scale: 0.8, y: 7 }}>
+                  <YStack
+                    my={-20}
+                    tag="span"
+                    dsp="inline-flex"
+                    y={3}
+                    $sm={{ scale: 0.8, y: 7 }}
+                  >
                     <BentoIcon bright scale={1.2} />
                   </YStack>
                 </Paragraph>
@@ -345,7 +361,13 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['bento'] }) => 
                         store.showPurchase = true
                       }}
                     >
-                      <Button.Text fontFamily="$silkscreen" size="$6" ls={-2} y={-0.5} x={-1}>
+                      <Button.Text
+                        fontFamily="$silkscreen"
+                        size="$6"
+                        ls={-2}
+                        y={-0.5}
+                        x={-1}
+                      >
                         <sup
                           style={{
                             fontSize: '60%',
@@ -358,7 +380,8 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['bento'] }) => 
                           $
                         </sup>
                         {(mainProduct?.prices.sort(
-                          (a, b) => (a.unit_amount || Infinity) - (b.unit_amount || Infinity)
+                          (a, b) =>
+                            (a.unit_amount || Infinity) - (b.unit_amount || Infinity)
                         )[0].unit_amount || 0) / 100}
                       </Button.Text>
                     </Button>
@@ -376,17 +399,24 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['bento'] }) => 
 
           <YStack pos="absolute" b="6%" r="$2" zi={100}>
             <Theme name="green">
-              <XStack maw={400} als="center" br="$6" elevation="$1" className="blur-4">
-                <YStack o={0.62} bg="$color10" fullscreen br="$6" />
+              <XStack maw={400} als="center" br="$2" className="blur-4">
+                <YStack o={0.5} bg="$color10" fullscreen br="$2" />
                 <YStack py="$3.5" px="$4" f={1}>
-                  <H3 fos={17} lh="$6" color="$color2">
-                    Beta 🤙
+                  <H3 ff="$silkscreen" size="$2" color="$color10">
+                    Latest Update
                   </H3>
                   <Paragraph color="$color4" size="$3" lh="$2">
-                    More polish ongoing. Next up is allowing customizing to your tokens.
+                    Ongoing polish. Next up is CLI to install components.
                   </Paragraph>
                 </YStack>
-                <AlertCircle pos="absolute" t="$3" r="$3" zi={100} color="$color7" size={22} />
+                <AlertCircle
+                  pos="absolute"
+                  t="$3"
+                  r="$3"
+                  zi={100}
+                  color="$color7"
+                  size={16}
+                />
               </XStack>
             </Theme>
           </YStack>
@@ -603,9 +633,7 @@ const Body = () => {
                 <ContainerLarge>
                   <Theme name="tan">
                     <XStack
-                      gap={
-                        parts.length === parts[parts.length - 1].numberOfComponents ? '$0' : '$5'
-                      }
+                      gap="$5"
                       f={4}
                       fs={1}
                       $gtMd={{
@@ -614,15 +642,17 @@ const Body = () => {
                         gap: 0,
                       }}
                     >
-                      {parts.map(({ name: partsName, numberOfComponents, route, preview }) => (
-                        <SectionCard
-                          key={route + partsName + numberOfComponents.toString()}
-                          path={route}
-                          name={partsName}
-                          numberOfComponents={numberOfComponents}
-                          preview={preview}
-                        />
-                      ))}
+                      {parts.map(
+                        ({ name: partsName, numberOfComponents, route, preview }) => (
+                          <SectionCard
+                            key={route + partsName + numberOfComponents.toString()}
+                            path={route}
+                            name={partsName}
+                            numberOfComponents={numberOfComponents}
+                            preview={preview}
+                          />
+                        )
+                      )}
 
                       {/* @ts-ignore */}
                       <Spacer width="calc(50vw - 300px)" $gtMd={{ dsp: 'none' }} />

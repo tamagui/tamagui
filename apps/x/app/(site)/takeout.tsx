@@ -49,6 +49,7 @@ import { useTakeoutStore } from '~/features/site/purchase/useTakeoutStore'
 import { seasons } from '~/features/site/seasons/SeasonToggleButton'
 import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
 import { TakeoutLogo } from '~/features/takeout/TakeoutLogo'
+import { LoadCherryBomb, LoadMunro } from '~/features/site/fonts/LoadFonts'
 
 export const loader = async () => {
   try {
@@ -68,11 +69,10 @@ export default function TakeoutPage() {
   return (
     <YStack maw="100%">
       {/* TODO */}
-      {/* <Head>
-        <LoadCherryBomb />
-        <LoadMunro />
-        <script src="https://cdn.paritydeals.com/banner.js" />
-      </Head> */}
+
+      <LoadCherryBomb />
+      <LoadMunro />
+      <script src="https://cdn.paritydeals.com/banner.js" />
 
       {/* TODO */}
       {/* <NextSeo
@@ -1907,5 +1907,5 @@ const Bullet = ({
 
 const Lazy = (props: { children: any }) => {
   const loaded = useLazilyMounted(100)
-  return loaded ? props.children : null
+  return <Suspense fallback={null}>{loaded ? props.children : null}</Suspense>
 }
