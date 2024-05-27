@@ -29,7 +29,6 @@ export const HomeGlow = memo(() => {
   const [scrollTop, setScrollTop] = useState(0)
   const xs = 400
   const scale = isOnHeroBelow ? 2 : 3
-  const isHydrated = useDidFinishSSR()
 
   if (isClient) {
     useTintSectionIndex((index) => {
@@ -44,7 +43,7 @@ export const HomeGlow = memo(() => {
   }
 
   const glows = useMemo(() => {
-    return [tint, tintAlt].slice(1).map((cur, i) => {
+    return [tint, tintAlt].map((cur, i) => {
       const isOpposing = tintIndex % 2 === 0
       const isAlt = i === 1
       const xRand = isOnHeroBelow ? 1 : positions[isOpposing ? 1 - i : i][0]
@@ -58,7 +57,6 @@ export const HomeGlow = memo(() => {
         <YStack
           key={`${i}${tint}${tintAlt}`}
           animation="superLazy"
-          opacity={!isHydrated ? 0.5 : 1}
           enterStyle={{
             opacity: isOnHeroBelow ? 0.5 : 0,
           }}
@@ -89,7 +87,7 @@ export const HomeGlow = memo(() => {
         </YStack>
       )
     })
-  }, [isHydrated, scale, tint, tints])
+  }, [scale, tint, tints])
 
   return (
     <YStack

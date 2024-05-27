@@ -1,7 +1,7 @@
 import { ThemeTint } from '@tamagui/logo'
 import { getCompilationExamples } from '@tamagui/mdx'
 import { useLoader } from 'vxs'
-import { View, YStack } from 'tamagui'
+import { YStack } from 'tamagui'
 import { HomeAnimations } from '~/features/site/home/HomeAnimations'
 import { HomeCommunity } from '~/features/site/home/HomeCommunity'
 import { HomeExampleProps } from '~/features/site/home/HomeExampleProps'
@@ -21,12 +21,6 @@ export async function loader() {
   return await getCompilationExamples()
 }
 
-const TestPerformance = () => {
-  return new Array(2000).fill(0).map((_, i) => {
-    return <View key={i} bg="green" w={10} h={10} />
-  })
-}
-
 export default function TamaguiHomePage() {
   // return null
   const { compilationExamples } = useLoader(loader)
@@ -34,8 +28,6 @@ export default function TamaguiHomePage() {
   if (!compilationExamples) {
     return null
   }
-
-  return <TestPerformance />
 
   return (
     <>
