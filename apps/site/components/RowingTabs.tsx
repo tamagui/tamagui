@@ -28,9 +28,9 @@ export function RowingTabs({ className, children, size, ...rest }) {
     prevActiveAt: null,
   })
 
-  const setIntentIndicator = (intentAt: TabLayout | null) => setTabState({ ...tabState, intentAt })
+  const setIntentIndicator = (intentAt: TabLayout | null) => setTabState(prevTabState => ({ ...prevTabState, intentAt }))
   const setActiveIndicator = (activeAt: TabLayout | null) =>
-    setTabState({ ...tabState, prevActiveAt: tabState.activeAt, activeAt })
+    setTabState(prevTabState => ({ ...prevTabState, prevActiveAt: tabState.activeAt, activeAt }))
 
   const { activeAt, intentAt, prevActiveAt } = tabState
 
