@@ -1,7 +1,3 @@
-import '@tamagui/core/reset.css'
-import '../app.css'
-import '../tamagui.css'
-
 import { Root, render } from 'vxs'
 
 const routes = import.meta.glob('../app/**/*.tsx')

@@ -1,3 +1,7 @@
+import '@tamagui/core/reset.css'
+import '~/app.css'
+import '~/tamagui.css'
+
 import { ToastViewport } from '@tamagui/toast'
 import { Head, Slot, usePathname } from 'vxs'
 import { Header } from '~/features/site/header/Header'

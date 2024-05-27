@@ -11,20 +11,22 @@ const getValue = (): DarkModePreference =>
     (localStorage.getItem(key) as DarkModePreference)) ||
   'system'
 
-const UserThemeSetting = createContext(getValue())
+const UserThemeSetting = createContext('system')
 
 const listeners = new Set<Function>()
 
 export function useUserTheme() {
   const systemTheme = useSystemTheme()
   const userTheme = useContext(UserThemeSetting)
+  const resolvedTheme = userTheme === 'system' ? systemTheme : userTheme
 
+  const values = {
+    systemTheme,
+    userTheme,
+    resolvedTheme,
+  }
   return [
-    {
-      systemTheme,
-      userTheme,
-      resolvedTheme: userTheme === 'system' ? systemTheme : userTheme,
-    },
+    values,
     useCallback((next: DarkModePreference) => {
       localStorage.setItem(key, next)
       listeners.forEach((l) => l(next))

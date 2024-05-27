@@ -67,7 +67,7 @@ body .preview {
 
 a,
 .text-decoration-none {
-  text-decoration: none;
+  text-decoration: none !important;
 }
 
 a {
@@ -749,7 +749,7 @@ textarea {
 }
 
 .font-outlined {
-  -webkit-text-stroke-width: 8px;
+  -webkit-text-stroke-width: 3px;
   -webkit-text-stroke-color: var(--color);
 }
 
@@ -774,19 +774,18 @@ textarea {
     -moz-osx-font-smoothing: grayscale;
   }
 }
-/* 
+
 .clip-slice {
-  mask-image: url(./public/heart.svg);
+  mask-image: url(./public/takeouticon.svg);
   mask-size: 25% 25%;
   animation: clip-fade2 90s infinite alternate;
 }
 
 .clip-wave {
-  /* TODO */
-  /* mask-image: url(./public/takeout/geometric.svg);
+  mask-image: url(./public/takeout/geometric.svg);
   mask-size: 150% 150%;
   animation: clip-fade 80s infinite alternate;
-} */
+}
 
 .slice-alt {
   mask-size: 50% 50%;
