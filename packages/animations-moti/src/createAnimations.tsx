@@ -178,7 +178,6 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         : props.animation
 
       const isHydrating = componentState.unmounted === true
-      console.warn('isHydrating', isHydrating, componentState.unmounted, style)
       let animate = {}
       let dontAnimate = {}
 
@@ -191,6 +190,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
           if (
             !onlyAnimateKeys[key] ||
             value === 'auto' ||
+            (typeof value === 'string' && value.startsWith('calc')) ||
             (animateOnly && !animateOnly.includes(key))
           ) {
             dontAnimate[key] = value
@@ -232,7 +232,8 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
       }
 
       const motiProps = {
-        animate: isExiting || isHydrating ? {} : styles,
+        animate: isExiting || componentState.unmounted ? {} : styles,
+        from: componentState.unmounted ? styles : {},
         transition,
         usePresenceValue,
         presenceContext,
