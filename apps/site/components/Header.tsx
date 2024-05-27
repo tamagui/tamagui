@@ -1,6 +1,5 @@
 import { ThemeToggle } from '@components/ThemeToggle'
 import { LogoWords, TamaguiLogo, ThemeTint, useTint } from '@tamagui/logo'
-// import { useUser } from 'hooks/useUser'
 import { useRouter } from 'next/router'
 import * as React from 'react'
 import {
@@ -13,7 +12,6 @@ import {
   YStack,
   isClient,
 } from 'tamagui'
-
 import { ContainerLarge } from './Container'
 import { GithubIcon } from './GithubIcon'
 import { HeaderLinks } from './HeaderLinks'
