@@ -312,6 +312,7 @@ async function buildJs() {
           },
           {
             platform: 'native',
+            bundle: true,
           }
         )
       : null,
@@ -325,6 +326,7 @@ async function buildJs() {
           },
           {
             platform: 'native',
+            bundle: true,
             env: 'test',
           }
         )
@@ -400,9 +402,10 @@ async function buildJs() {
 async function esbuildWriteIfChanged(
   /** @type { import('esbuild').BuildOptions } */
   opts,
-  { platform, env, mjs } = {
+  { platform, env, mjs, bundle } = {
     mjs: false,
     platform: '',
+    bundle: false,
     env: '',
   }
 ) {
@@ -484,7 +487,7 @@ async function esbuildWriteIfChanged(
     color: true,
     allowOverwrite: true,
     keepNames: false,
-    sourcemap: true,
+    sourcemap: !bundle,
     sourcesContent: false,
     logLevel: 'error',
     ...(platform === 'native' && nativeEsbuildSettings),
@@ -609,26 +612,27 @@ async function esbuildWriteIfChanged(
           const mjsOutPath = outPath.replace('.js', '.mjs')
           // if bundling no need to specify as its all internal
           // and babel is bad on huge bundled files
-          const output = shouldBundle
-            ? outString
-            : transform(outString, {
-                filename: mjsOutPath,
-                configFile: false,
-                plugins: [
-                  [
-                    require.resolve('@tamagui/babel-plugin-fully-specified'),
-                    {
-                      ensureFileExists: true,
-                      esExtensionDefault: '.mjs',
-                      tryExtensions: ['.js'],
-                      esExtensions: ['.mjs'],
-                    },
-                  ],
-                  // pkg.tamagui?.build?.skipEnvToMeta
-                  //   ? null
-                  //   : require.resolve('./babel-plugin-process-env-to-meta'),
-                ].filter(Boolean),
-              }).code
+          const output =
+            bundle || shouldBundle
+              ? outString
+              : transform(outString, {
+                  filename: mjsOutPath,
+                  configFile: false,
+                  plugins: [
+                    [
+                      require.resolve('@tamagui/babel-plugin-fully-specified'),
+                      {
+                        ensureFileExists: true,
+                        esExtensionDefault: '.mjs',
+                        tryExtensions: ['.js'],
+                        esExtensions: ['.mjs'],
+                      },
+                    ],
+                    // pkg.tamagui?.build?.skipEnvToMeta
+                    //   ? null
+                    //   : require.resolve('./babel-plugin-process-env-to-meta'),
+                  ].filter(Boolean),
+                }).code
 
           // output to mjs fully specified
           await fs.writeFile(mjsOutPath, output, 'utf8')

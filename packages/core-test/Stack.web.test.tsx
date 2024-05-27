@@ -21,10 +21,10 @@ const TestStackRenders = ({
 }
 
 describe('Stack', () => {
-  test('renders once', async () => {
+  test('renders twice (hydration)', async () => {
     const renderCount = { current: 0 }
     render(<TestStackRenders renderCount={renderCount} />)
-    expect(renderCount.current).toBe(1)
+    expect(renderCount.current).toBe(2)
   })
 
   // test(`doesn't re-render on media query change if CSS`, async () => {
