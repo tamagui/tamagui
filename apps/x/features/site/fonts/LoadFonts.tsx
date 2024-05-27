@@ -3,31 +3,14 @@ import { useMemo, useState } from 'react'
 export function LoadFont(props: { cssFile?: string; woff2File?: string }) {
   const [loads, setLoads] = useState(0)
 
-  const [finish, promise] = (() => {
-    let finish
-    return [
-      finish,
-      new Promise((_) => {
-        finish = _
-      }),
-    ]
-  })()
-
   const handleLoad = () => {
-    console.log('loading', loads)
-    if (loads === 1) {
-      finish()
-    } else {
-      setLoads(loads + 1)
-    }
-  }
-
-  if (loads < 2) {
-    throw promise
+    console.warn('load')
+    setLoads(loads + 1)
   }
 
   return (
     <>
+      <Suspend when={loads < 2} />
       {props.cssFile && (
         <link
           onLoad={handleLoad}
@@ -48,6 +31,14 @@ export function LoadFont(props: { cssFile?: string; woff2File?: string }) {
       )}
     </>
   )
+}
+
+const Suspend = ({ when }: { when: boolean }) => {
+  const [{ promise, reject, resolve }] = useState(Promise.withResolvers())
+  if (when) {
+    throw promise
+  }
+  return null
 }
 
 export const LoadSilkscreen = () => (
