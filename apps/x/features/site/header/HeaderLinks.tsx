@@ -477,8 +477,6 @@ const SlidingPopoverTrigger = YStack.styleable<{ id: string }>(
           }, 400)
         }}
         onLayout={(e) => {
-          globalThis['didonl']
-          console.warn('ON LAYOUT HERE')
           React.startTransition(() => {
             setLayout({
               ...e.nativeEvent.layout,

@@ -1,4 +1,4 @@
-import { startTransition, useMemo, useSyncExternalStore } from 'react'
+import { startTransition, useSyncExternalStore } from 'react'
 import type { ThemeName, ThemeProps } from 'tamagui'
 import { Theme } from 'tamagui'
 
@@ -53,7 +53,9 @@ export const useTint = (altOffset = -1) => {
     setTintIndex,
     setNextTintFamily,
     setNextTint: () => {
-      setTintIndex(index + 1)
+      startTransition(() => {
+        setTintIndex(index + 1)
+      })
     },
   } as const
 }

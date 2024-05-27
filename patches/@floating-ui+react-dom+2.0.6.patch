@@ -634,7 +634,7 @@ index f699f76..5acc03d 100644
 -export { arrow, autoPlacement, flip, hide, inline, limitShift, offset, shift, size, useFloating };
 +export { arrow, useFloating };
 diff --git a/node_modules/@floating-ui/react-dom/dist/floating-ui.react-dom.mjs b/node_modules/@floating-ui/react-dom/dist/floating-ui.react-dom.mjs
-index f699f76..4b336ba 100644
+index f699f76..1e42f10 100644
 --- a/node_modules/@floating-ui/react-dom/dist/floating-ui.react-dom.mjs
 +++ b/node_modules/@floating-ui/react-dom/dist/floating-ui.react-dom.mjs
 @@ -1,9 +1,62 @@
@@ -647,11 +647,11 @@ index f699f76..4b336ba 100644
  import * as ReactDOM from 'react-dom';
  
 +export const useTransitionState = ((val) => {
-+  const [a, b] = useState(val)
++  const [a, b] = React.useState(val)
 +  // @ts-ignore
-+  const wrapped = useCallback(
++  const wrapped = React.useCallback(
 +    (...args) => {
-+      startTransition(() => {
++      React.startTransition(() => {
 +        // @ts-ignore
 +        b(...args)
 +      })

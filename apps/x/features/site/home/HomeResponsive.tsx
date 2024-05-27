@@ -4,15 +4,7 @@ import { ChevronLeft, ChevronRight, Lock, MapPin, Star } from '@tamagui/lucide-i
 import { useOnIntersecting } from '~/hooks/useOnIntersecting'
 // TODO:
 // import { demoMedia } from '@tamagui/site-config'
-import {
-  memo,
-  startTransition,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react'
+import { memo, useCallback, useEffect, useMemo, useRef } from 'react'
 import type { YStackProps } from 'tamagui'
 import {
   Button,
@@ -33,10 +25,10 @@ import {
   useMedia,
 } from 'tamagui'
 // import { LinearGradient } from 'tamagui/linear-gradient'
-
-import { Container, ContainerLarge } from '~/components/Containers'
-import { HomeH2, HomeH3 } from './HomeHeaders'
 import { Image } from '@tamagui/image-next'
+import { Container, ContainerLarge } from '~/components/Containers'
+import { useTransitionState } from '~/hooks/useTransitionState'
+import { HomeH2, HomeH3 } from './HomeHeaders'
 
 const demoMedia = [500, 620, 780, 900]
 
@@ -58,22 +50,20 @@ const useIsSafari = () => {
 }
 
 export const HomeResponsive = memo(() => {
-  const [bounding, setBounding] = useState<DOMRect | null>(null)
+  const [bounding, setBounding] = useTransitionState<DOMRect | null>(null)
   const prevMove = useRef(0)
   const initialWidth = 420
-  const [isDragging, setIsDragging] = useState(false)
-  const [move, setMove] = useState(0)
+  const [isDragging, setIsDragging] = useTransitionState(false)
+  const [move, setMove] = useTransitionState(0)
   const ref = useRef<HTMLDivElement | null>(null)
   const safariRef = useRef<HTMLElement | null>(null)
   const getState = useGet({ move, isDragging, bounding })
-  const [sizeI, setSizeI] = useState(0)
+  const [sizeI, setSizeI] = useTransitionState(0)
   // safari drags slower so lets pre-load iframe
-  const [hasInteracted, setHasInteracted] = useState(false)
+  const [hasInteracted, setHasInteracted] = useTransitionState(false)
   const updateBoundings = useDebounce(() => {
     const rect = safariRef.current?.getBoundingClientRect() ?? null
-    startTransition(() => {
-      setBounding(rect)
-    })
+    setBounding(rect)
   }, 350)
 
   const isSafari = useIsSafari()
@@ -162,8 +152,8 @@ export const HomeResponsive = memo(() => {
   }, [])
 
   const media = useMedia()
-  const [smIndex, setSmIndex] = useState(0)
-  const [width, setWidth] = useState(initialWidth)
+  const [smIndex, setSmIndex] = useTransitionState(0)
+  const [width, setWidth] = useTransitionState(initialWidth)
   const isSmall = initialWidth + Math.max(0, move) < 680
 
   const nextWidth = media.sm ? breakpoints[smIndex].at : initialWidth + Math.max(0, move)
@@ -353,7 +343,7 @@ const SafariFrame = ({ children, ...props }: YStackProps) => {
 
 export const Safari = memo(
   ({ isSmall, shouldLoad }: { isSmall?: boolean; shouldLoad?: boolean }) => {
-    const [isLoaded, setIsLoaded] = useState(false)
+    const [isLoaded, setIsLoaded] = useTransitionState(false)
 
     return (
       <SafariFrame>

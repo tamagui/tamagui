@@ -1,4 +1,3 @@
-import './dev'
 import '@tamagui/core/reset.css'
 import '../app.css'
 import '../tamagui.css'

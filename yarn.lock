@@ -6540,11 +6540,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-<<<<<<< HEAD
 "@tamagui/image-next@npm:1.99.1, @tamagui/image-next@workspace:packages/image-next":
-=======
-"@tamagui/image-next@workspace:packages/image-next":
->>>>>>> 9852314f9d (feat(image-next): adds @tamagui/image-next a beta and lighter weight Image that has no dependency on react-native)
   version: 0.0.0-use.local
   resolution: "@tamagui/image-next@workspace:packages/image-next"
   dependencies:
@@ -7961,8 +7957,8 @@ __metadata:
     vite-bundle-analyzer: "npm:^0.9.4"
     vite-plugin-inspect: "npm:^0.8.4"
     vite-tsconfig-paths: "npm:^4.3.2"
-    vxrn: "npm:^0.1.73"
-    vxs: "npm:^0.1.73"
+    vxrn: "npm:^0.1.75"
+    vxs: "npm:^0.1.75"
   languageName: unknown
   linkType: soft
 
@@ -9554,61 +9550,67 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vxrn/react-native-prebuilt@portal:/Users/n8/vxrn/packages/react-native-prebuilt::locator=tamagui-monorepo%40workspace%3A.":
-  version: 0.0.0-use.local
-  resolution: "@vxrn/react-native-prebuilt@portal:/Users/n8/vxrn/packages/react-native-prebuilt::locator=tamagui-monorepo%40workspace%3A."
+"@vxrn/react-native-prebuilt@npm:0.1.75":
+  version: 0.1.75
+  resolution: "@vxrn/react-native-prebuilt@npm:0.1.75"
   dependencies:
-    "@vxrn/vite-flow": "npm:0.1.74"
+    "@vxrn/vite-flow": "npm:0.1.75"
     esbuild: "npm:~0.19.3"
     fs-extra: "npm:^11.2.0"
     import-meta-resolve: "npm:^4.0.0"
   peerDependencies:
     react-native: "*"
+  checksum: 10/76d56b339cf315ff00ac93954b5e0149f76bfb4329c7141c08843e9ea12edd191deed9cd76265526fbcce015876667c6d6643d86c9d6d98156891a143536f72b
   languageName: node
-  linkType: soft
+  linkType: hard
 
-"@vxrn/safe-area@portal:/Users/n8/vxrn/packages/safe-area::locator=tamagui-monorepo%40workspace%3A.":
-  version: 0.0.0-use.local
-  resolution: "@vxrn/safe-area@portal:/Users/n8/vxrn/packages/safe-area::locator=tamagui-monorepo%40workspace%3A."
+"@vxrn/safe-area@npm:0.1.75":
+  version: 0.1.75
+  resolution: "@vxrn/safe-area@npm:0.1.75"
+  checksum: 10/4eff0983833c260733ceafcb10dfb43246deab996620e17527c7fa921dd71a7d48d871b40427444413c54c1b555a8591d4df509d94ff00eed1bfe65c8faa329f
   languageName: node
-  linkType: soft
+  linkType: hard
 
-"@vxrn/vite-flow@portal:/Users/n8/vxrn/packages/vite-flow::locator=tamagui-monorepo%40workspace%3A.":
-  version: 0.0.0-use.local
-  resolution: "@vxrn/vite-flow@portal:/Users/n8/vxrn/packages/vite-flow::locator=tamagui-monorepo%40workspace%3A."
+"@vxrn/vite-flow@npm:0.1.75":
+  version: 0.1.75
+  resolution: "@vxrn/vite-flow@npm:0.1.75"
   dependencies:
     "@babel/core": "npm:^7.21.8"
     metro-react-native-babel-preset: "npm:^0.77.0"
+  checksum: 10/d1c46562449743a5cabb97db31f8198b90a46850abc1e5313c17423f105dba6dbdc42a845d8593eadbd9d9e9a5aba50b9b8828c1050f1391192d2cd1670358a0
   languageName: node
-  linkType: soft
+  linkType: hard
 
-"@vxrn/vite-native-client@portal:/Users/n8/vxrn/packages/vite-native-client::locator=tamagui-monorepo%40workspace%3A.":
-  version: 0.0.0-use.local
-  resolution: "@vxrn/vite-native-client@portal:/Users/n8/vxrn/packages/vite-native-client::locator=tamagui-monorepo%40workspace%3A."
+"@vxrn/vite-native-client@npm:0.1.75":
+  version: 0.1.75
+  resolution: "@vxrn/vite-native-client@npm:0.1.75"
   peerDependencies:
     react-native: "*"
+  checksum: 10/f1da450251dc92f9b4bdd4338fb2bbf8e72492f7455df0c2442bbe4ad49cfe097eb9ae81d46496524c7ac8bd053e687801e2952ed318066469eb1855e2b2cb49
   languageName: node
-  linkType: soft
+  linkType: hard
 
-"@vxrn/vite-native-hmr@portal:/Users/n8/vxrn/packages/vite-native-hmr::locator=tamagui-monorepo%40workspace%3A.":
-  version: 0.0.0-use.local
-  resolution: "@vxrn/vite-native-hmr@portal:/Users/n8/vxrn/packages/vite-native-hmr::locator=tamagui-monorepo%40workspace%3A."
+"@vxrn/vite-native-hmr@npm:0.1.75":
+  version: 0.1.75
+  resolution: "@vxrn/vite-native-hmr@npm:0.1.75"
   dependencies:
     pretty-format: "npm:^28.1.0"
   peerDependencies:
     react-native: "*"
+  checksum: 10/e51a1995eaae30185b2995871a5519cd14757e23fafabc86dff4df1da5685c633a87f29c353f6ebb36e3495e18a9c8a801193c96d55c76ef08f0a3ab21a9ed1d
   languageName: node
-  linkType: soft
+  linkType: hard
 
-"@vxrn/vite-native-swc@portal:/Users/n8/vxrn/packages/vite-native-swc::locator=tamagui-monorepo%40workspace%3A.":
-  version: 0.0.0-use.local
-  resolution: "@vxrn/vite-native-swc@portal:/Users/n8/vxrn/packages/vite-native-swc::locator=tamagui-monorepo%40workspace%3A."
+"@vxrn/vite-native-swc@npm:0.1.75":
+  version: 0.1.75
+  resolution: "@vxrn/vite-native-swc@npm:0.1.75"
   dependencies:
     "@swc/core": "npm:^1.4.13"
   peerDependencies:
     react-native: "*"
+  checksum: 10/5a35ce68dfceb1b401f416b2850603348d45cb7d8d0f506160efd4588345f6c8616b759ab90d90394be3aa306c96eec36bb7a6e68fa1eaae0671568edfbde55b
   languageName: node
-  linkType: soft
+  linkType: hard
 
 "@webassemblyjs/ast@npm:1.11.6, @webassemblyjs/ast@npm:^1.11.5":
   version: 1.11.6
@@ -23957,14 +23959,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-dom@npm:19.0.0-beta-26f2496093-20240514":
-  version: 19.0.0-beta-26f2496093-20240514
-  resolution: "react-dom@npm:19.0.0-beta-26f2496093-20240514"
+"react-dom@npm:^18.2.0":
+  version: 18.3.1
+  resolution: "react-dom@npm:18.3.1"
   dependencies:
-    scheduler: "npm:0.25.0-beta-26f2496093-20240514"
+    loose-envify: "npm:^1.1.0"
+    scheduler: "npm:^0.23.2"
   peerDependencies:
-    react: 19.0.0-beta-26f2496093-20240514
-  checksum: 10/cf590c3eb7229cc34d0117af6d00fc039ddd4d03a9ca8b393e2ac3fb399307b50c23b1d670353e98a0e28eb6a8ed964071ee3be3ed4bc9acd911f57e0b0ef8da
+    react: ^18.3.1
+  checksum: 10/3f4b73a3aa083091173b29812b10394dd06f4ac06aff410b74702cfb3aa29d7b0ced208aab92d5272919b612e5cda21aeb1d54191848cf6e46e9e354f3541f81
   languageName: node
   linkType: hard
 
@@ -24475,10 +24478,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react@npm:19.0.0-beta-26f2496093-20240514":
-  version: 19.0.0-beta-26f2496093-20240514
-  resolution: "react@npm:19.0.0-beta-26f2496093-20240514"
-  checksum: 10/79633825c21cbe9a0c5192b100b58c7ba2430ebd206a4b471f323d9501e8b31fdedd73efc6011e6ca04718ec7a94c67fbda3264b7727dd67457a1b00ed31bc43
+"react@npm:^18.2.0":
+  version: 18.3.1
+  resolution: "react@npm:18.3.1"
+  dependencies:
+    loose-envify: "npm:^1.1.0"
+  checksum: 10/261137d3f3993eaa2368a83110466fc0e558bc2c7f7ae7ca52d94f03aac945f45146bd85e5f481044db1758a1dbb57879e2fcdd33924e2dde1bdc550ce73f7bf
   languageName: node
   linkType: hard
 
@@ -25494,13 +25499,6 @@ __metadata:
   dependencies:
     loose-envify: "npm:^1.1.0"
   checksum: 10/862881c8d3ece854331516cc048e26a86af461e896ab412506a5b1ffcc82990a08445e0127545ab524df15f88c2a691d8505fc2226a9bddf99bf8a8425bdcc0e
-  languageName: node
-  linkType: hard
-
-"scheduler@npm:0.25.0-beta-26f2496093-20240514":
-  version: 0.25.0-beta-26f2496093-20240514
-  resolution: "scheduler@npm:0.25.0-beta-26f2496093-20240514"
-  checksum: 10/ee3d6ce332819a200e564346751de96c0899d3c0e7a52fcf5b6beb596f50359b9e199b9e804396b5b0a0bc6552038eb16ae287845c4128218bf65ccf83cbdf52
   languageName: node
   linkType: hard
 
@@ -29710,20 +29708,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vxrn@portal:/Users/n8/vxrn/packages/vxrn::locator=tamagui-monorepo%40workspace%3A.":
-  version: 0.0.0-use.local
-  resolution: "vxrn@portal:/Users/n8/vxrn/packages/vxrn::locator=tamagui-monorepo%40workspace%3A."
+"vxrn@npm:^0.1.75":
+  version: 0.1.75
+  resolution: "vxrn@npm:0.1.75"
   dependencies:
     "@babel/code-frame": "npm:^7.21.4"
     "@hono/node-server": "npm:^1.11.1"
     "@vitejs/plugin-react": "npm:^4.2.1"
     "@vitejs/plugin-react-swc": "npm:^3.6.0"
-    "@vxrn/react-native-prebuilt": "npm:0.1.74"
-    "@vxrn/safe-area": "npm:0.1.74"
-    "@vxrn/vite-flow": "npm:0.1.74"
-    "@vxrn/vite-native-client": "npm:0.1.74"
-    "@vxrn/vite-native-hmr": "npm:0.1.74"
-    "@vxrn/vite-native-swc": "npm:0.1.74"
+    "@vxrn/react-native-prebuilt": "npm:0.1.75"
+    "@vxrn/safe-area": "npm:0.1.75"
+    "@vxrn/vite-flow": "npm:0.1.75"
+    "@vxrn/vite-native-client": "npm:0.1.75"
+    "@vxrn/vite-native-hmr": "npm:0.1.75"
+    "@vxrn/vite-native-swc": "npm:0.1.75"
     citty: "npm:^0.1.6"
     crossws: "npm:^0.2.4"
     es-module-lexer: "npm:^1.3.0"
@@ -29753,16 +29751,17 @@ __metadata:
     url: "npm:^0.11.0"
     vite: "npm:6.0.0-alpha.11"
     vite-bundle-analyzer: "npm:^0.9.4"
-    vxs: "npm:0.1.74"
+    vxs: "npm:0.1.75"
     ws: "npm:^8.7.0"
   bin:
     vxrn: run.mjs
+  checksum: 10/73c226ed0d645c33599139187e365ff0790b83cd5aa52ab817c3aba24383584eaedb3a20c967416185cfc1923a6bd46bf1cb3fa186ed852863c54a66a5975668
   languageName: node
-  linkType: soft
+  linkType: hard
 
-"vxs@portal:/Users/n8/vxrn/packages/vxs::locator=tamagui-monorepo%40workspace%3A.":
-  version: 0.0.0-use.local
-  resolution: "vxs@portal:/Users/n8/vxrn/packages/vxs::locator=tamagui-monorepo%40workspace%3A."
+"vxs@npm:0.1.75, vxs@npm:^0.1.75":
+  version: 0.1.75
+  resolution: "vxs@npm:0.1.75"
   dependencies:
     "@radix-ui/react-slot": "npm:^1.0.2"
     "@react-navigation/bottom-tabs": "npm:^6.5.8"
@@ -29789,8 +29788,9 @@ __metadata:
   peerDependencies:
     react: "*"
     react-native: "*"
+  checksum: 10/d7be2e7b8e6b243416e29ab7e798783f0b1a6947508cefb9eea75db82bbd7567b82b2bb17da369386275744db0a907f51aa9efd14f8b01de5a0e9e25d5d15452
   languageName: node
-  linkType: soft
+  linkType: hard
 
 "w-json@npm:^1.3.10":
   version: 1.3.10

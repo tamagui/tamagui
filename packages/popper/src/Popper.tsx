@@ -109,8 +109,6 @@ export function Popper(props: ScopedPopperProps<PopperProps>) {
     __scopePopper,
   } = props
 
-  return null
-
   const isMounted = useDidFinishSSR()
   const [arrowEl, setArrow_] = React.useState<any>(null)
   const [arrowSize, setArrowSize_] = React.useState(0)
