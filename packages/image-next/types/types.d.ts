@@ -1,6 +1,6 @@
 /// <reference types="react" />
 import type { StackProps } from '@tamagui/core';
-import { Image as RNImage } from 'react-native';
+import type { Image as RNImage } from 'react-native';
 import type { ImageResizeMode, ImageSourcePropType, ImageProps as RNImageProps } from 'react-native';
 type RNImageType = typeof RNImage;
 type KeyofStackProps = keyof StackProps;

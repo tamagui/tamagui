@@ -6548,7 +6548,7 @@ __metadata:
     "@tamagui/constants": "npm:1.99.1"
     "@tamagui/web": "npm:1.99.1"
     react: "npm:^18.2.0"
-    react-native: "npm:^0.74.1"
+    react-native: "npm:0.74.1"
   languageName: unknown
   linkType: soft
 
@@ -24263,7 +24263,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native@npm:0.74.1, react-native@npm:^0.74.1":
+"react-native@npm:0.74.1":
   version: 0.74.1
   resolution: "react-native@npm:0.74.1"
   dependencies:

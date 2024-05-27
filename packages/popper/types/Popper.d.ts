@@ -37,7 +37,7 @@ export type PopperSetupOptions = {
     disableRTL?: boolean;
 };
 export declare function setupPopper(options?: PopperSetupOptions): void;
-export declare function Popper(props: ScopedPopperProps<PopperProps>): import("react/jsx-runtime").JSX.Element | null;
+export declare function Popper(props: ScopedPopperProps<PopperProps>): import("react/jsx-runtime").JSX.Element;
 type PopperAnchorRef = HTMLElement | View;
 export type PopperAnchorProps = YStackProps & {
     virtualRef?: React.RefObject<any>;
