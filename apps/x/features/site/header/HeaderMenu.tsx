@@ -131,7 +131,7 @@ export const HeaderMenu = React.memo(function HeaderMenu() {
           </Sheet>
         </Adapt>
 
-        <HeaderMenuContent />
+        <HeaderMenuContent open={open} />
       </Popover>
     </HeaderMenuTheme>
   )
@@ -143,7 +143,9 @@ const HeaderMenuTheme = (props: { children: any }) => {
   return <Theme name={isBento ? 'tan' : (curTint as ThemeName)}>{props.children}</Theme>
 }
 
-const HeaderMenuContent = React.memo(function HeaderMenuContent() {
+const HeaderMenuContent = React.memo(function HeaderMenuContent({
+  open,
+}: { open: boolean }) {
   return (
     <Popover.Content
       mt={-5}
@@ -180,17 +182,17 @@ const HeaderMenuContent = React.memo(function HeaderMenuContent() {
       }}
     >
       <Popover.Arrow bg="$color5" size="$4" borderWidth={0} o={0.84} />
-      <YStack
-        fullscreen
-        bg="$color5"
-        zi={0}
-        br="$6"
-        o={0.84}
-        // $sm={{ dsp: 'none' }}
-      />
+      <YStack fullscreen bg="$color5" zi={0} br="$6" o={0.84} />
 
       <Popover.ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
-        <YStack aria-label="Home menu contents" miw={230} p="$3" ai="flex-end">
+        <YStack
+          // @ts-ignore
+          inert={!open}
+          aria-label="Home menu contents"
+          miw={230}
+          p="$3"
+          ai="flex-end"
+        >
           <XStack fw="wrap" f={1} gap="$2">
             <HeaderLinks forceShowAllLinks />
           </XStack>

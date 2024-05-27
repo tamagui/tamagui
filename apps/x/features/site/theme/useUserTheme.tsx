@@ -1,11 +1,5 @@
-import {
-  createContext,
-  startTransition,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from 'react'
+import { createContext, useCallback, useContext, useState } from 'react'
+import { useIsomorphicLayoutEffect } from 'tamagui'
 import { useSystemTheme } from './useSystemTheme'
 
 type DarkModePreference = 'system' | 'light' | 'dark'
@@ -41,17 +35,13 @@ export function useUserTheme() {
 export function UserThemeProvider(props: { children: any }) {
   const [userTheme, setUserTheme] = useState<DarkModePreference>('system')
 
-  useEffect(() => {
-    startTransition(() => {
-      setUserTheme(getValue())
-    })
+  useIsomorphicLayoutEffect(() => {
+    setUserTheme(getValue())
   }, [])
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const listener = (val: DarkModePreference) => {
-      startTransition(() => {
-        setUserTheme(val)
-      })
+      setUserTheme(val)
     }
     listeners.add(listener)
     return () => {
