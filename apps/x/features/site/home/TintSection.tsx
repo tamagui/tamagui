@@ -73,7 +73,7 @@ export const TintSection = ({ children, index, themed, zIndex, ...props }: Props
         )
       }, [top, mid, bottom])}
       <HomeSection theme={(themed ? tint : null) as any} {...props}>
-        {useMemo(() => children, [children])}
+        {children}
       </HomeSection>
     </YStack>
   )
