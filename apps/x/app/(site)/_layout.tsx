@@ -2,6 +2,7 @@ import { ToastViewport } from '@tamagui/toast'
 import { Head, Slot, usePathname } from 'vxs'
 import { Header } from '~/features/site/header/Header'
 import { Footer } from '~/features/site/Footer'
+import { LoadCherryBomb, LoadInter900, LoadMunro } from '~/features/site/fonts/LoadFonts'
 
 export default function SiteLayout() {
   const path = usePathname()
@@ -21,6 +22,8 @@ export default function SiteLayout() {
   return (
     <>
       <Header showAuth={showAuth} disableNew={disableNew} />
+      <LoadCherryBomb prefetch />
+      <LoadMunro prefetch />
       <Slot />
       {!hideFooter && <Footer />}
       <ToastViewport flexDirection="column-reverse" top="$2" left={0} right={0} />

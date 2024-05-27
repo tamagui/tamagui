@@ -68,8 +68,6 @@ export default function TakeoutPage() {
 
   return (
     <YStack maw="100%">
-      {/* TODO */}
-
       <LoadCherryBomb />
       <LoadMunro />
       <script src="https://cdn.paritydeals.com/banner.js" />
