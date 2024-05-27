@@ -509,7 +509,7 @@ async function esbuildWriteIfChanged(
 
   const nativeFilesMap = Object.fromEntries(
     built.outputFiles.flatMap((p) => {
-      if (p.path.includes('.native.js')) {
+      if (p.path.endsWith('.native.js')) {
         return [[p.path, true]]
       }
       return []
@@ -522,9 +522,11 @@ async function esbuildWriteIfChanged(
 
       let shouldTransformWeb = true
 
-      if (outPath.endsWith('.js') || outPath.endsWith('.js.map')) {
+      const isJSFile = outPath.endsWith('.js')
+
+      if (isJSFile || outPath.endsWith('.js.map')) {
         const [_, extPlatform] =
-          outPath.match(/(web|native|ios|android)\.js(\.map)?$/) ?? []
+          outPath.match(/\.(web|native|ios|android)\.js(\.map)?$/) ?? []
 
         if (platform === 'native') {
           if (!extPlatform && nativeFilesMap[outPath.replace('.js', '.native.js')]) {
@@ -556,31 +558,33 @@ async function esbuildWriteIfChanged(
       await fs.ensureDir(outDir)
       let outString = new TextDecoder().decode(file.contents)
 
-      if (shouldTransformWeb && platform === 'web') {
-        const rnWebReplacer = replaceRNWeb[opts.format]
-        if (rnWebReplacer) {
-          outString = outString.replaceAll(rnWebReplacer.from, rnWebReplacer.to)
-        }
-      }
-
-      if (pkgRemoveSideEffects && isESM) {
-        const allowedSideEffects = pkg.sideEffects || []
-
-        const result = []
-        const lines = outString.split('\n')
-        for (const line of lines) {
-          if (
-            !line.startsWith('import ') ||
-            allowedSideEffects.some((allowed) => line.includes(allowed))
-          ) {
-            result.push(line)
-            continue
+      if (isJSFile) {
+        if (shouldTransformWeb && platform === 'web') {
+          const rnWebReplacer = replaceRNWeb[opts.format]
+          if (rnWebReplacer) {
+            outString = outString.replaceAll(rnWebReplacer.from, rnWebReplacer.to)
           }
-          result.push(line.replace(/import "[^"]+";/g, ''))
         }
 
-        // match whitespace to preserve sourcemaps
-        outString = result.join('\n')
+        if (pkgRemoveSideEffects && isESM) {
+          const allowedSideEffects = pkg.sideEffects || []
+
+          const result = []
+          const lines = outString.split('\n')
+          for (const line of lines) {
+            if (
+              !line.startsWith('import ') ||
+              allowedSideEffects.some((allowed) => line.includes(allowed))
+            ) {
+              result.push(line)
+              continue
+            }
+            result.push(line.replace(/import "[^"]+";/g, ''))
+          }
+
+          // match whitespace to preserve sourcemaps
+          outString = result.join('\n')
+        }
       }
 
       async function flush(contents, path) {

@@ -51,12 +51,10 @@
     },
     "./native": {
       "types": "./types/index.d.ts",
-      "import": "./dist/native.mjs",
-      "require": "./dist/native.js"
+      "require": "./dist/native.native.js"
     },
     "./native-test": {
       "types": "./types/index.d.ts",
-      "import": "./dist/test.native.mjs",
       "require": "./dist/test.native.js"
     },
     "./linear-gradient": {
