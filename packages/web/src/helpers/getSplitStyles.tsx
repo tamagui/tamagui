@@ -739,8 +739,8 @@ export const getSplitStyles: StyleSplitter = (
           if (isExit) {
             isDisabled = !styleProps.isExiting
           }
-          if (isEnter) {
-            isDisabled = !!componentState.unmounted
+          if (isEnter && componentState.unmounted === false) {
+            isDisabled = true
           }
 
           if (process.env.NODE_ENV === 'development' && debug === 'verbose') {

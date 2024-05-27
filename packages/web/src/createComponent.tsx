@@ -191,15 +191,13 @@ export const useComponentState = (
   const hasEnterStyle = !!props.enterStyle
   // finish animated logic, avoid isAnimated when unmounted
   const hasRNAnimation = hasAnimationProp && animationDriver?.isReactNative
-  const isReactNative = staticConfig.isReactNative
 
   if (process.env.NODE_ENV === 'development' && time) time`pre-use-state`
 
   const hasEnterState = hasEnterStyle || isEntering
 
-  const initialState = hasEnterState
-    ? defaultComponentState
-    : defaultComponentStateMounted
+  const initialState =
+    hasEnterState || hasRNAnimation ? defaultComponentState : defaultComponentStateMounted
 
   // will be nice to deprecate half of these:
   const disabled = isDisabled(props)
@@ -214,16 +212,11 @@ export const useComponentState = (
   const state = props.forceStyle ? { ...states[0], [props.forceStyle]: true } : states[0]
   const setState = states[1]
 
-  const isHydrated = !state.unmounted
+  const isHydrated = state.unmounted === false || state.unmounted === 'should-enter'
 
   // only web server + initial client render run this when not hydrated:
   let isAnimated = willBeAnimated
-  if (
-    !isReactNative &&
-    hasRNAnimation &&
-    !staticConfig.isHOC &&
-    state.unmounted === true
-  ) {
+  if (hasRNAnimation && !staticConfig.isHOC && state.unmounted === true) {
     isAnimated = false
     curStateRef.willHydrate = true
   }
@@ -278,7 +271,6 @@ export const useComponentState = (
       // the react-native driver errors because it tries to animate var(--color) to rbga(..)
       (props.disableClassName && isHydrated)
   )
-  console.log('shouldAvoidClasses', shouldAvoidClasses, { isAnimated, supportsCSSVars })
 
   const groupName = props.group as any as string
 
