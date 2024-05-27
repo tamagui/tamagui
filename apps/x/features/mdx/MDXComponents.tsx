@@ -699,11 +699,13 @@ export const components = {
         <Link asChild href="/docs/intro/installation">
           <Card
             tag="a"
-            animation="quickest"
+            // animation="quickest"
+            bw={0.5}
+            bc="$borderColor"
             f={1}
             y={0}
-            hoverStyle={{ y: -2, bg: '$backgroundHover' }}
-            pressStyle={{ y: 2, bg: '$color2' }}
+            hoverStyle={{ y: -2, bg: '$backgroundHover', bc: '$color9' }}
+            pressStyle={{ y: 2, bg: '$color2', bc: '$color7' }}
           >
             <Card.Header gap="$2">
               <H4 size="$4" color="$color8">

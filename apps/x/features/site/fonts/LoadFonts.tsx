@@ -1,11 +1,44 @@
+import { useMemo, useState } from 'react'
+
 export function LoadFont(props: { cssFile?: string; woff2File?: string }) {
+  const [loads, setLoads] = useState(0)
+
+  const [finish, promise] = (() => {
+    let finish
+    return [
+      finish,
+      new Promise((_) => {
+        finish = _
+      }),
+    ]
+  })()
+
+  const handleLoad = () => {
+    console.log('loading', loads)
+    if (loads === 1) {
+      finish()
+    } else {
+      setLoads(loads + 1)
+    }
+  }
+
+  if (loads < 2) {
+    throw promise
+  }
+
   return (
     <>
       {props.cssFile && (
-        <link crossOrigin="anonymous" href={props.cssFile} rel="stylesheet" />
+        <link
+          onLoad={handleLoad}
+          crossOrigin="anonymous"
+          href={props.cssFile}
+          rel="stylesheet"
+        />
       )}
       {props.woff2File && (
         <link
+          onLoad={handleLoad}
           crossOrigin="anonymous"
           rel="preload"
           href={props.woff2File}

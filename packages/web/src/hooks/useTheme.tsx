@@ -326,8 +326,7 @@ export const useChangeThemeEffect = (
     }
   }
 
-  // for testing performance can bail it out early with this fake response:
-  // i found most of the cost was just having a useState at all, at least 30%
+  // to test performance: uncomment
   // if (!disable && parentManager) {
   //   return {
   //     isNewTheme: false,
@@ -339,17 +338,7 @@ export const useChangeThemeEffect = (
   //   }
   // }
 
-  const [themeState, setThemeState_] = useState<ChangedThemeResponse>(createState)
-
-  const setThemeState = useCallback(
-    (...args) => {
-      startTransition(() => {
-        // @ts-expect-error
-        setThemeState_(...args)
-      })
-    },
-    [setThemeState_]
-  )
+  const [themeState, setThemeState] = useState<ChangedThemeResponse>(createState)
 
   const { state, mounted, isNewTheme, themeManager, inversed } = themeState
   const isInversingOnMount = Boolean(!themeState.mounted && props.inverse)
