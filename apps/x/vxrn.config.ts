@@ -1,6 +1,6 @@
 // import entryShakingPlugin from 'vite-plugin-entry-shaking'
 import { createRequire } from 'node:module'
-import { getVitePlugins, build, serve } from 'vxs/vite'
+import { vxs, build, serve } from 'vxs/vite'
 import { tamaguiPlugin, tamaguiExtractPlugin } from '@tamagui/vite-plugin'
 // import { mdx } from '@cyco130/vite-plugin-mdx'
 import type { VXRNConfig } from 'vxrn'
@@ -82,9 +82,9 @@ export default async () => {
       },
 
       plugins: [
-        ...(getVitePlugins({
+        vxs({
           root: 'app',
-        }) as any),
+        }),
 
         // hmmm breaking ssr for some reason on lucide:
         // @ts-ignore
