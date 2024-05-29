@@ -8,7 +8,8 @@ Check out the [source for this site](https://github.com/tamagui/tamagui/tree/mas
 ## Install
 
 <Notice theme="green">
-  Running `npm create tamagui@latest` let's you choose the `starter-free` starter which is a very nicely configured Next.js app where you can take or leave whatever you want.
+	Running `npm create tamagui@latest` let's you choose the `starter-free` starter which is a very nicely configured Next.js
+	app where you can take or leave whatever you want.
 </Notice>
 
 Create a new [Next.js](https://nextjs.org/docs/getting-started/installation) project
@@ -30,8 +31,18 @@ Choose Next.js routing option:
 <Spacer size="$4" />
 
 <Grid gap="$4">
-  <NextJSRouterCard title="Pages router" link="/docs/guides/next-js#pages-router" subtitle="Automatically generate routes based on the filenames." colorOffset={1} />
-  <NextJSRouterCard title="App router" link="/docs/guides/next-js#app-router" subtitle="Allows more complex patterns and setups." colorOffset={0} />
+	<NextJSRouterCard
+		title="Pages router"
+		link="/docs/guides/next-js#pages-router"
+		subtitle="Automatically generate routes based on the filenames."
+		colorOffset={1}
+	/>
+	<NextJSRouterCard
+		title="App router"
+		link="/docs/guides/next-js#app-router"
+		subtitle="Allows more complex patterns and setups."
+		colorOffset={0}
+	/>
 </Grid>
 
 <Spacer size="$4" />
@@ -66,7 +77,10 @@ module.exports = function (name, { defaultConfig }) {
 You'll want to set up a `_document.tsx` and gather both the `react-native-web` style object using AppRegistry, as well as Tamagui styles using `tamaguiConfig.getCSS()` into the head element.
 
 <Notice>
-  We are only importing `react-native` here because if you use `tamagui` views like Input or Image they rely on React Native Image/Input (and therefore on the web, `react-native-web`). If you are just using core, or aren't using Image or Input in `tamagui`, you can forego the entire `AppRegistry` import and setup here. We're working on making even `tamagui` completely de-coupled from RN/RNW by building their own image and input components eventually.
+	We are only importing `react-native` here because if you use `tamagui` views like Input or Image they rely on React Native
+	Image/Input (and therefore on the web, `react-native-web`). If you are just using core, or aren't using Image or Input in
+	`tamagui`, you can forego the entire `AppRegistry` import and setup here. We're working on making even `tamagui` completely
+	de-coupled from RN/RNW by building their own image and input components eventually.
 </Notice>
 
 Configure `_document.tsx`:
@@ -160,25 +174,25 @@ export default function App({ Component, pageProps }: AppProps) {
   }, [pageProps])
 
   return (
-    <NextThemeProvider>
+    <>
       <Head>
-        <script
-          dangerouslySetInnerHTML={{
-            // avoid flash of animated things on enter:
-            __html: `document.documentElement.classList.add('t_unmounted')`,
-          }}
-        />
+        <title>Your page title</title>
+        <meta name="description" content="Your page description" />
+        <link rel="icon" href="/favicon.ico" />
       </Head>
-      <TamaguiProvider config={tamaguiConfig} disableInjectCSS disableRootThemeClass>
-        {contents}
-      </TamaguiProvider>
-    </NextThemeProvider>
+      <NextThemeProvider>
+        <TamaguiProvider config={tamaguiConfig} disableInjectCSS disableRootThemeClass>
+          {contents}
+        </TamaguiProvider>
+      </NextThemeProvider>
+      </>
   )
 }
 ```
 
 <Notice>
-  Because custom `getCSS()` is used in [_document.tsx](/docs/guides/next-js?#pages_documenttsx), `disableInjectCSS` is added to `TamaguiProvider`
+	Because custom `getCSS()` is used in [_document.tsx](/docs/guides/next-js?#pages_documenttsx), `disableInjectCSS` is added
+	to `TamaguiProvider`
 </Notice>
 
 ### Themes
@@ -221,72 +235,52 @@ export default function App({ Component, pageProps }: AppProps) {
   }, [pageProps])
 
   return (
-    <NextThemeProvider onChangeTheme={setTheme as any}>
+    <>
       <Head>
-        <script
-          dangerouslySetInnerHTML={{
-           // avoid flash of animated things on enter:
-            __html: `document.documentElement.classList.add('t_unmounted')`,
-          }}
-        />
+        <title>Your page title</title>
+        <meta name="description" content="Your page description" />
+        <link rel="icon" href="/favicon.ico" />
       </Head>
-      <TamaguiProvider
-        config={tamaguiConfig}
-        disableInjectCSS
-        disableRootThemeClass
-        defaultTheme={theme}
+      <NextThemeProvider
+        // change default theme (system) here:
+        // defaultTheme="light"
+        onChangeTheme={setTheme as any}
       >
-        {contents}
-      </TamaguiProvider>
-    </NextThemeProvider>
+        <TamaguiProvider
+          config={tamaguiConfig}
+          disableInjectCSS
+          disableRootThemeClass
+          defaultTheme={theme}
+        >
+          {contents}
+        </TamaguiProvider>
+      </NextThemeProvider>
+    </>
   )
 }
 ```
 
-<Notice>
-  We recommend memo-ing children so they don't re-render.
-</Notice>
-
-If you need to access the current theme, say for a toggle button, you will then use the `useThemeSetting` hook. We'll release an update in the future that makes this automatically work better with Tamagui's built-in `useThemeSetting`.
-
-```tsx fileName="index.tsx"
-import { useState } from 'react'
-import { Button, useIsomorphicLayoutEffect } from 'tamagui'
-import { useThemeSetting } from '@tamagui/next-theme'
-
-export default function Home() {
-  const themeSetting = useThemeSetting()
-  const [clientTheme, setClientTheme] = useState<string>('dark')
-
-  useIsomorphicLayoutEffect(() => {
-    setClientTheme(themeSetting.current || 'dark')
-  }, [themeSetting.current, themeSetting.resolvedTheme])
-
-  return <Button onPress={themeSetting.toggle}>Change theme: {clientTheme}</Button>
-}
-```
+<Notice>We recommend memo-ing children so they don't re-render.</Notice>
 
 ### Mount animations
 
 Animations that run through JS drivers and have `enterStyle` set will want to add the following script that allows for hiding those animations before the JS runs. This is the "right way" to handle things, as it allows for disabling JS entirely and not accidentally hiding all unmounted things. Meanwhile, it still properly avoids a flash of mounted style for SSR pages.
 
-Add this to your [_app.tsx](/docs/guides/next-js?#pages_apptsx) render output:
+Add this to `<Head>` in your [\_app.tsx](/docs/guides/next-js?#pages_apptsx):
 
 ```tsx fileName="_app.tsx"
-<Head>
-  <script
-    dangerouslySetInnerHTML={{
-      // avoid flash of entered elements before enter animations run:
-      __html: `document.documentElement.classList.add('t_unmounted')`,
-    }}
-  />
-</Head>
+<script
+  dangerouslySetInnerHTML={{
+    // avoid flash of entered elements before enter animations run:
+    __html: `document.documentElement.classList.add('t_unmounted')`,
+  }}
+/>
 ```
 
 ### Performance
 
 <Notice theme="green">
-  Use `outputCSS` for better performance by shaking out all the js and generating only CSS styles at build-time.
+	Use `outputCSS` for better performance by shaking out all the js and generating only CSS styles at build-time.
 </Notice>
 
 Add `outputCSS` to your `next.config.js`:
@@ -300,7 +294,7 @@ const tamaguiPlugin = withTamagui({
 ```
 
 <Notice>
-  We recommend using this only for production so you get hot reloading and easier console logging during dev mode.
+	We recommend using this only for production so you get hot reloading and easier console logging during dev mode.
 </Notice>
 
 And then add this to include the CSS file generated at build-time:
@@ -354,10 +348,8 @@ module.exports = function (name, { defaultConfig }) {
   }
 }
 ```
-<Notice>
-  You need to pass the `appDir` boolean to `@tamagui/next-plugin`.
-</Notice>
 
+<Notice>You need to pass the `appDir` boolean to `@tamagui/next-plugin`.</Notice>
 
 ### app/layout.tsx
 
@@ -404,7 +396,7 @@ export const NextTamaguiProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <NextThemeProvider skipNextHead>
-      <TamaguiProvider config={tamaguiConfig} themeClassNameOnRoot>
+      <TamaguiProvider config={tamaguiConfig} disableRootThemeClass>
         {children}
       </TamaguiProvider>
     </NextThemeProvider>
@@ -413,7 +405,8 @@ export const NextTamaguiProvider = ({ children }: { children: ReactNode }) => {
 ```
 
 <Notice theme="green">
-  The `getNewCSS` helper in Tamagui will keep track of the last call and only return new styles generated since the last usage.
+	The `getNewCSS` helper in Tamagui will keep track of the last call and only return new styles generated since the last
+	usage.
 </Notice>
 
 Then add it to your `app/layout.tsx`:
@@ -425,7 +418,12 @@ import { NextTamaguiProvider } from './NextTamaguiProvider'
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <title>Your page title</title>
+        <meta name="description" content="Your page description" />
+        <link rel="icon" href="/favicon.ico" />
+      </head>
       <body>
         <NextTamaguiProvider>{children}</NextTamaguiProvider>
       </body>
@@ -433,9 +431,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   )
 }
 ```
+
+<Notice theme="green">
+	You can use `suppressHydrationWarning` to avoid the warning about mismatched content during hydration.
+</Notice>
+
 ### app/page.tsx
 
-Now you're ready to start using adding components to `app/page.tsx`:
+Now you're ready to start adding components to `app/page.tsx`:
 
 ```tsx fileName="page.tsx"
 'use client'
@@ -500,37 +503,16 @@ export const NextTamaguiProvider = ({ children }: { children: ReactNode }) => {
   return (
     <NextThemeProvider
       skipNextHead
+      // change default theme (system) here:
+      // defaultTheme="light"
       onChangeTheme={(next) => {
         setTheme(next as any)
       }}
     >
-      <TamaguiProvider config={tamaguiConfig} themeClassNameOnRoot defaultTheme={theme}>
+      <TamaguiProvider config={tamaguiConfig} disableRootThemeClass defaultTheme={theme}>
         {children}
       </TamaguiProvider>
     </NextThemeProvider>
-  )
-}
-```
-
-If you need to access the current theme, say for a toggle button, you will then use the `useThemeSetting` hook. We'll release an update in the future that makes this automatically work better with Tamagui's built-in `useThemeSetting`.
-
-```tsx fileName="SwitchThemeButton.tsx"
-import { useState } from 'react'
-import { Button, YStack, useIsomorphicLayoutEffect } from 'tamagui'
-import { useThemeSetting } from '@tamagui/next-theme'
-
-export default function SwitchThemeButton() {
-  const themeSetting = useThemeSetting()
-  const [clientTheme, setClientTheme] = useState<string>('dark')
-
-  useIsomorphicLayoutEffect(() => {
-    setClientTheme(themeSetting.current || 'dark')
-  }, [themeSetting.current, themeSetting.resolvedTheme])
-
-  return (
-    <YStack ai="center" jc="center">
-      <Button onPress={themeSetting.toggle}>Change theme: {clientTheme}</Button>
-    </YStack>
   )
 }
 ```
@@ -553,7 +535,7 @@ Add this to `useServerInsertedHTML` in your [NextTamaguiProvider.tsx](/docs/guid
 ### Performance
 
 <Notice theme="green">
-  Use `outputCSS` for better performance by shaking out all the js and generating only CSS styles at build-time.
+	Use `outputCSS` for better performance by shaking out all the js and generating only CSS styles at build-time.
 </Notice>
 
 Add `outputCSS` to your `next.config.js`:
@@ -567,7 +549,7 @@ const tamaguiPlugin = withTamagui({
 ```
 
 <Notice>
-  We recommend using this only for production so you get hot reloading and easier console logging during dev mode.
+	We recommend using this only for production so you get hot reloading and easier console logging during dev mode.
 </Notice>
 
 And then add this to include the CSS file generated at build-time:
@@ -594,14 +576,112 @@ Add `exclude` option to `useServerInsertedHTML` in `NextTamaguiProvider`:
 
 #### Font loading
 
-To ensure font loads globally, add a global style:
-  
+To ensure font loads globally, add a global style to `useServerInsertedHTML` in `NextTamaguiProvider.tsx`:
+
 ```tsx fileName="NextTamaguiProvider.tsx"
 <style jsx global>{`
   html {
     font-family: 'Inter';
   }
 `}</style>
+```
+
+## NextThemeProvider
+
+The `NextThemeProvider` is a provider that allows you to set the theme for your app. It also provides a hook to access the current theme and a function to change the theme.
+
+<PropsTable
+  data={[
+    {
+      name: 'skipNextHead',
+      required: false,
+      type: 'boolean',
+      description: `Required in app router. The internal usage of next/head is not supported in the app directory, so you need to add it.`,
+    },
+    {
+      name: 'enableSystem',
+      required: false,
+      type: 'boolean',
+      description: `Whether to switch between dark and light themes based on prefers-color-scheme.`,
+    },
+    {
+      name: 'defaultTheme',
+      required: false,
+      type: 'string',
+      description: 'If enableSystem is `false`, the default theme is light. Default theme name (for v0.0.12 and lower the default was light).',
+    },
+    {
+      name: 'forcedTheme',
+      required: false,
+      type: 'string',
+      description: 'Forced theme name for the current page.',
+    },
+    {
+      name: 'onChangeTheme',
+      required: false,
+      type: '(name: string) => void',
+      description: 'Used to change the current theme. The function receives the theme name as a parameter.',
+    },
+    {
+      name: 'systemTheme',
+      required: false,
+      type: 'string',
+      description: 'System theme name for the current page.',
+    },
+    {
+      name: 'enableColorScheme',
+      required: false,
+      type: 'boolean',
+      description: `Whether to indicate to browsers which color scheme is used (dark or light) for built-in UI like inputs and buttons.`,
+    },
+    {
+      name: 'disableTransitionOnChange',
+      required: false,
+      type: 'boolean',
+      description: `Disable all CSS transitions when switching themes.`,
+    },
+    {
+      name: 'storageKey',
+      required: false,
+      type: 'string',
+      description: `Key used to store theme setting in localStorage.`,
+    },
+    {
+      name: 'themes',
+      required: false,
+      type: 'string[]',
+      description: `List of all available theme names.`,
+    },
+    {
+      name: 'value',
+      required: false,
+      type: 'ValueObject',
+      description: `Mapping of theme name to HTML attribute value. Object where key is the theme name and value is the attribute value.`,
+    },
+  ]}
+/>
+
+### Theme toggle
+
+If you need to access the current theme, say for a toggle button, you will then use the `useThemeSetting` hook. We'll release an update in the future that makes this automatically work better with Tamagui's built-in `useThemeSetting`.
+
+```tsx fileName="SwitchThemeButton.tsx"
+import { useState } from 'react'
+import { Button, useIsomorphicLayoutEffect } from 'tamagui'
+import { useThemeSetting, useRootTheme } from '@tamagui/next-theme'
+
+export const SwitchThemeButton = () => {
+  const themeSetting = useThemeSetting()
+  const [theme] = useRootTheme()
+
+  const [clientTheme, setClientTheme] = useState<string | undefined>('light')
+
+  useIsomorphicLayoutEffect(() => {
+    setClientTheme(themeSetting.forcedTheme || themeSetting.current || theme)
+  }, [themeSetting.current, themeSetting.resolvedTheme])
+
+  return <Button onPress={themeSetting.toggle}>Change theme: {clientTheme}</Button>
+}
 ```
 
 ## Reseting CSS
@@ -615,6 +695,6 @@ import '@tamagui/core/reset.css'
 ```
 
 <Notice>
-  You will have to enable `isCSSEnabled` if you're using Metro as your web bundler. See [Metro guide](/docs/guides/metro#web-support).
+	You will have to enable `isCSSEnabled` if you're using Metro as your web bundler. See [Metro
+	guide](/docs/guides/metro#web-support).
 </Notice>
-
