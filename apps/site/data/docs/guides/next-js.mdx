@@ -590,6 +590,18 @@ Add `exclude` option to `useServerInsertedHTML` in `NextTamaguiProvider`:
 />
 ```
 
+#### Font loading
+
+To ensure font loads globally, add a global style:
+  
+```tsx fileName="NextTamaguiProvider.tsx"
+<style jsx global>{`
+  html {
+    font-family: 'Inter';
+  }
+`}</style>
+```
+
 ## Reseting CSS
 
 There is an optional CSS reset to get more consistent styles across browsers, that helps normalize styling.
