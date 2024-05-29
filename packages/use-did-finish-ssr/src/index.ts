@@ -1,22 +1,41 @@
-import { useEffect, useLayoutEffect, useState } from 'react'
+import { useEffect, useLayoutEffect, useState, useSyncExternalStore } from 'react'
 
-const useIsomorphicLayoutEffect =
-  typeof window === 'undefined' ? useEffect : useLayoutEffect
+const emptyFn = () => {}
+const emptyFnFn = () => emptyFn
 
-export function useDidFinishSSR<A = boolean>(value?: A): A | false {
+export function useDidFinishSSR<A = boolean>(
+  value?: A,
+  options?: {
+    sync?: boolean
+  }
+): A | false {
   if (process.env.TAMAGUI_TARGET === 'native') {
     // @ts-expect-error
     return value ?? true
   }
 
-  const [hydrated, setHydrated] = useState(false)
+  if (options?.sync) {
+    return useSyncExternalStore(
+      emptyFnFn,
+      () => (value == undefined ? true : value),
+      () => false as any
+    )
+  }
 
-  useIsomorphicLayoutEffect(() => {
-    setHydrated(true)
+  const [cur, setCur] = useState<any>(value)
+  useEffect(() => {
+    setCur(value ?? true)
   }, [])
+  return cur ?? false
+}
 
-  // @ts-expect-error
-  return value === undefined ? hydrated : hydrated ? value : undefined
+const useIsomorphicLayoutEffect =
+  typeof window === 'undefined' ? useEffect : useLayoutEffect
+
+export function useDidFinishSSRSync<A = boolean>(value?: A): A | false {
+  return useDidFinishSSR(value, {
+    sync: true,
+  })
 }
 
 type FunctionOrValue<Value> = Value extends () => infer X ? X : Value

@@ -1,4 +1,3 @@
-import { ThemeToggle } from '~/features/site/theme/ThemeToggle'
 import { LogoWords, TamaguiLogo, ThemeTint, useTint } from '@tamagui/logo'
 import * as React from 'react'
 import {
@@ -11,20 +10,16 @@ import {
   YStack,
   isClient,
 } from 'tamagui'
-
-import { ContainerLarge } from '~/components/Containers'
-import { GithubIcon } from '~/features/icons/GithubIcon'
-
-// import { HeaderLinks } from './HeaderLinks'
-// import { HeaderMenu } from './HeaderMenu'
-import type { HeaderProps } from './types'
-import { Link } from '~/components/Link'
-// import { SearchButton } from './SearchButton'
-import { SeasonToggleButton } from '~/features/site/seasons/SeasonToggleButton'
 import { usePathname } from 'vxs'
-import { SearchButton } from './SearchButton'
+import { ContainerLarge } from '~/components/Containers'
+import { Link } from '~/components/Link'
+import { GithubIcon } from '~/features/icons/GithubIcon'
+import { SeasonToggleButton } from '~/features/site/seasons/SeasonToggleButton'
+import { ThemeToggle } from '~/features/site/theme/ThemeToggle'
 import { HeaderLinks } from './HeaderLinks'
 import { HeaderMenu } from './HeaderMenu'
+import { SearchButton } from './SearchButton'
+import type { HeaderProps } from './types'
 
 export function Header(props: HeaderProps) {
   const [isScrolled, setIsScrolled] = React.useState(false)

@@ -1,6 +1,10 @@
+import { createShallowSetState, useComposedRefs } from '@tamagui/core'
+import { ThemeTintAlt } from '@tamagui/logo'
+import { ExternalLink, Figma, Paintbrush } from '@tamagui/lucide-icons'
 import { useUser } from 'hooks/useUser'
 import { useRouter } from 'next/router'
 import * as React from 'react'
+import type { LayoutRectangle } from 'react-native'
 import type { PopoverProps } from 'tamagui'
 import {
   AnimatePresence,
@@ -10,24 +14,17 @@ import {
   Separator,
   SizableText,
   Text,
-  Theme,
   XStack,
   YStack,
   debounce,
   getMedia,
   styled,
 } from 'tamagui'
-
-import { ExternalLink, Figma, Paintbrush } from '@tamagui/lucide-icons'
-import type { LayoutRectangle } from 'react-native'
 import { BentoIcon } from './BentoIcon'
 import { GithubIcon } from './GithubIcon'
 import type { HeaderProps } from './HeaderProps'
 import { NextLink } from './NextLink'
 import { TakeoutIcon } from './TakeoutIcon'
-import { LinearGradient } from 'tamagui/linear-gradient'
-import { ThemeTintAlt } from '@tamagui/logo'
-import { createShallowSetState, useComposedRefs } from '@tamagui/core'
 
 const HeadAnchor = styled(Paragraph, {
   tag: 'a',

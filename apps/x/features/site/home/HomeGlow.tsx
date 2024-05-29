@@ -4,17 +4,23 @@ import { AnimatePresence, YStack, isClient, useDidFinishSSR } from 'tamagui'
 
 import { useTintSectionIndex } from './TintSection'
 
-const positions = new Array(15).fill(0).map((_, i) => {
-  const isOdd = i % 2 === 1
-  return [
-    // x
-    Math.random() * 400 * (Math.random() > 0.5 ? 1 : -1) +
-      // ensure they jump back and forth a bit
-      (isOdd ? -200 : 200),
-    // y
-    Math.random() * 150,
-  ]
-})
+const positions = [
+  [-10, 120],
+  [-230, 64],
+  [212, 127],
+  [-135, 11],
+  [268, 61],
+  [-20, 145],
+  [336, 104],
+  [-141, 30],
+  [369, 98],
+  [-403, 1],
+  [339, 138],
+  [-42, 106],
+  [404, 86],
+  [-490, 60],
+  [155, 9],
+]
 
 export const HomeGlow = memo(() => {
   const { tints, tint, tintAlt, tintIndex } = useTint()
@@ -23,7 +29,6 @@ export const HomeGlow = memo(() => {
   const [scrollTop, setScrollTop] = useState(0)
   const xs = 400
   const scale = isOnHeroBelow ? 2 : 3
-  const isHydrated = useDidFinishSSR()
 
   if (isClient) {
     useTintSectionIndex((index) => {
@@ -50,10 +55,9 @@ export const HomeGlow = memo(() => {
         <YStack
           key={`${i}${tint}${tintAlt}`}
           animation="superLazy"
-          // opacity={!isHydrated ? 0.5 : 1}
-          // enterStyle={{
-          //   opacity: isOnHeroBelow ? 0.5 : 0,
-          // }}
+          enterStyle={{
+            opacity: isOnHeroBelow ? 0.5 : 0,
+          }}
           exitStyle={{
             opacity: 0,
           }}
@@ -81,7 +85,7 @@ export const HomeGlow = memo(() => {
         </YStack>
       )
     })
-  }, [isHydrated, scale, tint, tints])
+  }, [scale, tint, tints])
 
   return (
     <YStack
@@ -103,7 +107,7 @@ export const HomeGlow = memo(() => {
       })}
       // display={isResizing ? 'none' : 'flex'}
     >
-      <AnimatePresence initial={isHydrated}>{glows}</AnimatePresence>
+      <AnimatePresence>{glows}</AnimatePresence>
     </YStack>
   )
 })

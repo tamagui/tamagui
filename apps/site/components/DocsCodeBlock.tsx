@@ -14,9 +14,9 @@ import {
   AnimatePresence,
   Button,
   Paragraph,
-  Progress,
   Spacer,
   TooltipSimple,
+  useEvent,
   XStack,
   YStack,
 } from 'tamagui'
@@ -29,7 +29,7 @@ import { Code } from './Code'
 import { ErrorBoundary } from './ErrorBoundary'
 import { Pre } from './Pre'
 import { RowingTabs } from './RowingTabs'
-import { getBashCommand } from '@lib/getBashCommand'
+import { useBashCommand } from '@lib/useBashCommand'
 
 class CollapseStore {
   isCollapsed: boolean
@@ -65,21 +65,19 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
   const [isCutoff, setIsCutoff] = useState(isLong && !showMore)
   const [code, setCode] = useState<string | undefined>(undefined)
   const preRef = useRef<any>(null)
-  const { hasCopied, onCopy, value, timeout } = useClipboard(code)
+  const { hasCopied, onCopy, timeout } = useClipboard(code)
   const copyTimeoutValue = useGradualIncrease(hasCopied, timeout)
   const showLineNumbers = showLineNumbersIn ?? lines > 10
 
-  const { isTerminal, command, getCode, handleTabChange } = getBashCommand(
+  const { command, getCode, isTerminal } = useBashCommand(
     children,
-    className
-  )
+    className,
+  );
   const showFileName = fileName || isTerminal
-
-  // const frontmatter = useContext(FrontmatterContext)
 
   const isPreVisible = !isCollapsed || !isCollapsible
 
-  useEffect(() => {
+  const onCommandChange = useEvent(() => {
     try {
       if (preRef.current && isPreVisible) {
         const codeElement = preRef.current.querySelector('code')
@@ -94,7 +92,11 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
     } catch {
       // ok
     }
-  }, [preRef, isPreVisible, command])
+  })
+
+  useEffect(() => {
+    onCommandChange()
+  }, [command, onCommandChange])
 
   return (
     <YStack
@@ -206,7 +208,6 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
               )}
 
               <RowingTabs
-                onTabChange={handleTabChange}
                 className={className}
                 size={size}
                 {...rest}
@@ -299,3 +300,4 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
     </YStack>
   )
 })
+

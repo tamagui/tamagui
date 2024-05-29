@@ -4,7 +4,15 @@ import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import { Header } from '@tamagui/site/components/Header'
 import { SearchProvider } from '@tamagui/site/components/Search'
 import { useState } from 'react'
-import { AnimatePresence, Button, Text, View, YStack, styled } from 'tamagui'
+import {
+  AnimatePresence,
+  Button,
+  Text,
+  View,
+  YStack,
+  styled,
+  useDidFinishSSR,
+} from 'tamagui'
 
 console.warn('setting debug moti true')
 global.shouldDebugMoti = true
@@ -28,7 +36,32 @@ function TestPage() {
         flex: 1,
       }}
     >
-      <PopoverDemo />
+      {/* <PopoverDemo /> */}
+
+      <AnimatePresence>
+        <YStack
+          animation="superLazy"
+          debug="verbose"
+          enterStyle={{
+            opacity: 0.5,
+          }}
+          exitStyle={{
+            opacity: 0,
+          }}
+          overflow="hidden"
+          h="100vh"
+          mah={1000}
+          w={1000}
+          pos="absolute"
+          t={0}
+          l={0}
+          left={`calc(50vw - 500px)`}
+          y={350}
+          scale={1}
+        >
+          <YStack fullscreen bg="red" />
+        </YStack>
+      </AnimatePresence>
 
       {/* <Text debug="verbose" maxWidth={300} numberOfLines={3} ellipsizeMode="middle">
         Esse laborum veniam magna sunt nulla nisi proident nisi culpa. Aliquip sit duis
@@ -248,16 +281,16 @@ const DebugNestedThemeChange = () => {
   )
 }
 
-TestPage.getLayout = (page) => {
-  return (
-    <>
-      <SearchProvider>
-        <Header />
-        {page}
-      </SearchProvider>
-    </>
-  )
-}
+// TestPage.getLayout = (page) => {
+//   return (
+//     <>
+//       <SearchProvider>
+//         <Header />
+//         {page}
+//       </SearchProvider>
+//     </>
+//   )
+// }
 
 // export async function getStaticProps() {
 //   return {

@@ -57,6 +57,7 @@
     "x:serve": "yarn workspace @tamagui/x serve",
     "x:serve:railway": "yarn workspace @tamagui/x serve:railway",
     "x:prod": "yarn x:build && yarn x:serve",
+    "x:prod-only-homepage": "yarn x:build --only index && yarn x:serve",
     "x:vercel": "yarn build:js && cd apps/site && yarn build:prod",
     "site:extract": "yarn workspace @tamagui/site dev:extract",
     "site:prod:analyze": "ANALYZE=true yarn site:prod",

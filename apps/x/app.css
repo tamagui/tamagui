@@ -380,18 +380,18 @@ iframe {
 /* code highlighting */
 
 .token.parameter {
-  color: var(--pink10);
+  color: var(--pink9);
 }
 
 .token.class-name {
-  color: var(--green10);
+  color: var(--green9);
 }
 
 .token.tag,
 .token.selector,
 .token.selector .class,
 .token.function {
-  color: var(--green10);
+  color: var(--green9);
 }
 
 .highlight-line:hover {
@@ -404,7 +404,7 @@ iframe {
 
 .token.attr-value,
 .token.script {
-  color: var(--red10);
+  color: var(--red9);
 }
 
 .token.class,
@@ -412,7 +412,7 @@ iframe {
 .token.number,
 .token.unit,
 .token.color {
-  color: var(--purple10);
+  color: var(--purple9);
 }
 
 .token.operator {
@@ -424,11 +424,11 @@ iframe {
 .token.rule,
 .token.pseudo-class,
 .token.important {
-  color: var(--pink10);
+  color: var(--pink9);
 }
 
 .token.punctuation {
-  color: var(--green10);
+  color: var(--green9);
 }
 
 .token.module,
