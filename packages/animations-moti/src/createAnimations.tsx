@@ -200,6 +200,11 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         }
       }
 
+      // if we don't do this moti seems to flicker a frame before applying animation
+      if (componentState.unmounted === 'should-enter') {
+        dontAnimate = style
+      }
+
       // without this, the driver breaks on native
       // stringifying -> parsing fixes that
       const animateStr = JSON.stringify(animate)
@@ -212,9 +217,11 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
       type UseMotiProps = Parameters<typeof useMotify>[0]
 
       // TODO moti is giving us type troubles, but this should work
-      const transition = {
-        ...(animations[animationKey as keyof typeof animations] as any),
-      }
+      const transition = isHydrating
+        ? { type: 'transition', duration: 0 }
+        : {
+            ...(animations[animationKey as keyof typeof animations] as any),
+          }
 
       if (Array.isArray(props.animation)) {
         const config = props.animation[1]
