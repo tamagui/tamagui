@@ -312,7 +312,6 @@ async function buildJs() {
           },
           {
             platform: 'native',
-            bundle: true,
           }
         )
       : null,
@@ -326,7 +325,6 @@ async function buildJs() {
           },
           {
             platform: 'native',
-            bundle: true,
             env: 'test',
           }
         )
@@ -402,10 +400,9 @@ async function buildJs() {
 async function esbuildWriteIfChanged(
   /** @type { import('esbuild').BuildOptions } */
   opts,
-  { platform, env, mjs, bundle } = {
+  { platform, env, mjs } = {
     mjs: false,
     platform: '',
-    bundle: false,
     env: '',
   }
 ) {
@@ -487,7 +484,7 @@ async function esbuildWriteIfChanged(
     color: true,
     allowOverwrite: true,
     keepNames: false,
-    sourcemap: !bundle,
+    sourcemap: true,
     sourcesContent: false,
     logLevel: 'error',
     ...(platform === 'native' && nativeEsbuildSettings),
@@ -512,7 +509,7 @@ async function esbuildWriteIfChanged(
 
   const nativeFilesMap = Object.fromEntries(
     built.outputFiles.flatMap((p) => {
-      if (p.path.endsWith('.native.js')) {
+      if (p.path.includes('.native.js')) {
         return [[p.path, true]]
       }
       return []
@@ -523,13 +520,9 @@ async function esbuildWriteIfChanged(
     built.outputFiles.map(async (file) => {
       let outPath = file.path
 
-      let shouldTransformWeb = true
-
-      const isJSFile = outPath.endsWith('.js')
-
-      if (isJSFile || outPath.endsWith('.js.map')) {
+      if (outPath.endsWith('.js') || outPath.endsWith('.js.map')) {
         const [_, extPlatform] =
-          outPath.match(/\.(web|native|ios|android)\.js(\.map)?$/) ?? []
+          outPath.match(/(web|native|ios|android)\.js(\.map)?$/) ?? []
 
         if (platform === 'native') {
           if (!extPlatform && nativeFilesMap[outPath.replace('.js', '.native.js')]) {
@@ -551,7 +544,7 @@ async function esbuildWriteIfChanged(
             extPlatform === 'android' ||
             extPlatform === 'ios'
           ) {
-            shouldTransformWeb = false
+            return
           }
         }
       }
@@ -561,33 +554,31 @@ async function esbuildWriteIfChanged(
       await fs.ensureDir(outDir)
       let outString = new TextDecoder().decode(file.contents)
 
-      if (isJSFile) {
-        if (shouldTransformWeb && platform === 'web') {
-          const rnWebReplacer = replaceRNWeb[opts.format]
-          if (rnWebReplacer) {
-            outString = outString.replaceAll(rnWebReplacer.from, rnWebReplacer.to)
+      if (platform === 'web') {
+        const rnWebReplacer = replaceRNWeb[opts.format]
+        if (rnWebReplacer) {
+          outString = outString.replaceAll(rnWebReplacer.from, rnWebReplacer.to)
+        }
+      }
+
+      if (pkgRemoveSideEffects && isESM) {
+        const allowedSideEffects = pkg.sideEffects || []
+
+        const result = []
+        const lines = outString.split('\n')
+        for (const line of lines) {
+          if (
+            !line.startsWith('import ') ||
+            allowedSideEffects.some((allowed) => line.includes(allowed))
+          ) {
+            result.push(line)
+            continue
           }
+          result.push(line.replace(/import "[^"]+";/g, ''))
         }
 
-        if (pkgRemoveSideEffects && isESM) {
-          const allowedSideEffects = pkg.sideEffects || []
-
-          const result = []
-          const lines = outString.split('\n')
-          for (const line of lines) {
-            if (
-              !line.startsWith('import ') ||
-              allowedSideEffects.some((allowed) => line.includes(allowed))
-            ) {
-              result.push(line)
-              continue
-            }
-            result.push(line.replace(/import "[^"]+";/g, ''))
-          }
-
-          // match whitespace to preserve sourcemaps
-          outString = result.join('\n')
-        }
+        // match whitespace to preserve sourcemaps
+        outString = result.join('\n')
       }
 
       async function flush(contents, path) {
@@ -612,27 +603,26 @@ async function esbuildWriteIfChanged(
           const mjsOutPath = outPath.replace('.js', '.mjs')
           // if bundling no need to specify as its all internal
           // and babel is bad on huge bundled files
-          const output =
-            bundle || shouldBundle
-              ? outString
-              : transform(outString, {
-                  filename: mjsOutPath,
-                  configFile: false,
-                  plugins: [
-                    [
-                      require.resolve('@tamagui/babel-plugin-fully-specified'),
-                      {
-                        ensureFileExists: true,
-                        esExtensionDefault: '.mjs',
-                        tryExtensions: ['.js'],
-                        esExtensions: ['.mjs'],
-                      },
-                    ],
-                    // pkg.tamagui?.build?.skipEnvToMeta
-                    //   ? null
-                    //   : require.resolve('./babel-plugin-process-env-to-meta'),
-                  ].filter(Boolean),
-                }).code
+          const output = shouldBundle
+            ? outString
+            : transform(outString, {
+                filename: mjsOutPath,
+                configFile: false,
+                plugins: [
+                  [
+                    require.resolve('@tamagui/babel-plugin-fully-specified'),
+                    {
+                      ensureFileExists: true,
+                      esExtensionDefault: '.mjs',
+                      tryExtensions: ['.js'],
+                      esExtensions: ['.mjs'],
+                    },
+                  ],
+                  // pkg.tamagui?.build?.skipEnvToMeta
+                  //   ? null
+                  //   : require.resolve('./babel-plugin-process-env-to-meta'),
+                ].filter(Boolean),
+              }).code
 
           // output to mjs fully specified
           await fs.writeFile(mjsOutPath, output, 'utf8')

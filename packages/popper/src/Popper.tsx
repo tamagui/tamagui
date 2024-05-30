@@ -110,26 +110,8 @@ export function Popper(props: ScopedPopperProps<PopperProps>) {
   } = props
 
   const isMounted = useDidFinishSSR()
-  const [arrowEl, setArrow_] = React.useState<any>(null)
-  const [arrowSize, setArrowSize_] = React.useState(0)
-  const setArrow = React.useCallback(
-    (...args) => {
-      React.startTransition(() => {
-        // @ts-ignore
-        setArrow_(...args)
-      })
-    },
-    [setArrow_]
-  )
-  const setArrowSize = React.useCallback(
-    (...args) => {
-      React.startTransition(() => {
-        // @ts-ignore
-        setArrowSize_(...args)
-      })
-    },
-    [setArrowSize_]
-  )
+  const [arrowEl, setArrow] = React.useState<any>(null)
+  const [arrowSize, setArrowSize] = React.useState(0)
   const offsetOptions = offset ?? arrowSize
 
   const floating = useFloating({
@@ -237,9 +219,7 @@ export const PopperAnchor = YStack.extractable(
 
       React.useEffect(() => {
         if (virtualRef) {
-          React.startTransition(() => {
-            refs.setReference(virtualRef.current)
-          })
+          refs.setReference(virtualRef.current)
         }
       }, [virtualRef])
 
@@ -348,17 +328,13 @@ export const PopperContent = React.forwardRef<
   const [needsMeasure, setNeedsMeasure] = React.useState(true)
   React.useEffect(() => {
     if (x || y) {
-      React.startTransition(() => {
-        setNeedsMeasure(false)
-      })
+      setNeedsMeasure(false)
     }
   }, [x, y])
 
   useIsomorphicLayoutEffect(() => {
     if (isMounted) {
-      React.startTransition(() => {
-        update()
-      })
+      update()
     }
   }, [isMounted])
 
