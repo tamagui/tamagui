@@ -26,9 +26,7 @@ export const Portal = React.memo(
     const [hostElement, setHostElement] = React.useState<any>(null)
 
     useIsomorphicLayoutEffect(() => {
-      React.startTransition(() => {
-        setHostElement(host)
-      })
+      setHostElement(host)
     }, [host])
 
     if (hostElement && props.children) {

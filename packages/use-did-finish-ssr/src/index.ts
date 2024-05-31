@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useState, useSyncExternalStore } from 'react'
+import { useEffect, useState, useSyncExternalStore } from 'react'
 
 const emptyFn = () => {}
 const emptyFnFn = () => emptyFn
@@ -29,8 +29,8 @@ export function useDidFinishSSR<A = boolean>(
   return cur ?? false
 }
 
-const useIsomorphicLayoutEffect =
-  typeof window === 'undefined' ? useEffect : useLayoutEffect
+// const useIsomorphicLayoutEffect =
+//   typeof window === 'undefined' ? useEffect : useLayoutEffect
 
 export function useDidFinishSSRSync<A = boolean>(value?: A): A | false {
   return useDidFinishSSR(value, {

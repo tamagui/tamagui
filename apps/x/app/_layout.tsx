@@ -1,3 +1,7 @@
+import '@tamagui/core/reset.css'
+import '~/app.css'
+import '~/tamagui.css'
+
 import { Slot, Stack } from 'vxs'
 import { isWeb, setupPopper } from 'tamagui'
 import { Providers } from '../src/Providers'
@@ -18,27 +22,98 @@ setupPopper({
 
 export default function Layout() {
   return (
-    <Providers>
-      {isWeb ? (
-        <Slot />
-      ) : (
-        <Stack
-          screenOptions={
-            isWeb
-              ? {
-                  header() {
-                    return null
-                  },
+    <>
+      <meta charSet="utf-8" />
+      <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=5"
+      />
 
-                  contentStyle: {
-                    position: 'relative',
-                    backgroundColor: 'red',
-                  },
-                }
-              : {}
-          }
-        />
-      )}
-    </Providers>
+      <link rel="icon" href="/favicon.png" />
+      <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+      <meta name="docsearch:language" content="en" />
+      <meta name="docsearch:version" content="1.0.0,latest" />
+      <meta id="theme-color" name="theme-color" />
+      <meta name="color-scheme" content="light dark" />
+
+      <link crossOrigin="anonymous" href="/fonts/inter-700.css" rel="stylesheet" />
+      <link
+        rel="stylesheet preload prefetch"
+        href="/fonts/Inter-ExtraBold.woff2"
+        as="font"
+        crossOrigin="anonymous"
+        type="font/woff2"
+        // @ts-ignore
+        precedence="default"
+      />
+
+      <link
+        crossOrigin="anonymous"
+        href="/fonts/inter-400.css"
+        rel="stylesheet" // @ts-ignore
+        precedence="default"
+      />
+      <link
+        crossOrigin="anonymous"
+        rel="stylesheet preload prefetch"
+        href="/fonts/Inter-Regular.woff2"
+        as="font"
+        type="font/woff2"
+        // @ts-ignore
+        precedence="default"
+      />
+
+      <link
+        crossOrigin="anonymous"
+        href="/fonts/silkscreen.css"
+        rel="stylesheet" // @ts-ignore
+        precedence="default"
+      />
+      <link
+        crossOrigin="anonymous"
+        rel="stylesheet preload prefetch"
+        href="/fonts/slkscr.woff2"
+        as="font"
+        type="font/woff2"
+        // @ts-ignore
+        precedence="default"
+      />
+
+      <script>
+        {`let d = document.documentElement.classList
+      d.remove('t_light')
+      d.remove('t_dark')
+      let e = localStorage.getItem('user-theme')
+      let t =
+        'system' === e || !e
+          ? window.matchMedia('(prefers-color-scheme: dark)').matches
+          : e === 'dark'
+      t ? d.add('t_dark') : d.add('t_light')`}
+      </script>
+
+      <Providers>
+        {isWeb ? (
+          <Slot />
+        ) : (
+          <Stack
+            screenOptions={
+              isWeb
+                ? {
+                    header() {
+                      return null
+                    },
+
+                    contentStyle: {
+                      position: 'relative',
+                      backgroundColor: 'red',
+                    },
+                  }
+                : {}
+            }
+          />
+        )}
+      </Providers>
+    </>
   )
 }

@@ -1,13 +1,15 @@
 // import entryShakingPlugin from 'vite-plugin-entry-shaking'
 import { createRequire } from 'node:module'
-import { vxs, build, serve } from 'vxs/vite'
-import { tamaguiPlugin, tamaguiExtractPlugin } from '@tamagui/vite-plugin'
+import { build, serve, vxs } from 'vxs/vite'
 // import { mdx } from '@cyco130/vite-plugin-mdx'
 import type { VXRNConfig } from 'vxrn'
 // import inpsectPlugin from 'vite-plugin-inspect'
-import { analyzer } from 'vite-bundle-analyzer'
 
 Error.stackTraceLimit = Number.POSITIVE_INFINITY
+
+if (!import.meta.dirname) {
+  throw new Error(`Not on Node 22`)
+}
 
 const require = createRequire(import.meta.url)
 
@@ -56,6 +58,10 @@ export default async () => {
 
     webConfig: {
       envPrefix: 'NEXT_PUBLIC_',
+
+      define: {
+        'process.env.TAMAGUI_REACT_19': '"1"',
+      },
 
       resolve: {
         alias: {

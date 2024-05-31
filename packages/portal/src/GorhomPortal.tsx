@@ -8,7 +8,6 @@ import type { ReactNode } from 'react'
 import React, {
   createContext,
   memo,
-  startTransition,
   useCallback,
   useContext,
   useEffect,

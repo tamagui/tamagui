@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useDidFinishSSR } from 'tamagui'
 
+type Scheme = 'light' | 'dark'
+
 const media =
   typeof window !== 'undefined' ? window.matchMedia('(prefers-color-scheme: dark)') : null
 
@@ -9,7 +11,7 @@ export function getSystemTheme() {
 }
 
 export function useSystemTheme() {
-  const [systemTheme, setSystemTheme] = useState(() => getSystemTheme())
+  const [systemTheme, setSystemTheme] = useState<Scheme>(() => getSystemTheme())
   const didHydrate = useDidFinishSSR()
 
   useEffect(() => {

@@ -1,59 +1,67 @@
-import { createContext, useCallback, useContext, useState } from 'react'
+import { createContext, useCallback, useContext, useMemo, useState } from 'react'
 import { useIsomorphicLayoutEffect } from 'tamagui'
 import { useSystemTheme } from './useSystemTheme'
 
-type DarkModePreference = 'system' | 'light' | 'dark'
+type SchemeSetting = 'system' | 'light' | 'dark'
 
 const key = 'user-theme'
 
-const getValue = (): DarkModePreference =>
-  (typeof localStorage !== 'undefined' &&
-    (localStorage.getItem(key) as DarkModePreference)) ||
+const getSetting = (): SchemeSetting =>
+  (typeof localStorage !== 'undefined' && (localStorage.getItem(key) as SchemeSetting)) ||
   'system'
 
-const UserThemeSetting = createContext('system')
+const CurrentThemeContext = createContext<{
+  systemTheme: SchemeSetting
+  userTheme: SchemeSetting
+  resolvedTheme: 'light' | 'dark'
+}>({
+  systemTheme: 'system',
+  userTheme: 'light',
+  resolvedTheme: 'light',
+})
 
-const listeners = new Set<Function>()
+let listener: Function | null = null
 
 export function useUserTheme() {
-  const systemTheme = useSystemTheme()
-  const userTheme = useContext(UserThemeSetting)
-  const resolvedTheme = userTheme === 'system' ? systemTheme : userTheme
+  const values = useContext(CurrentThemeContext)
 
-  const values = {
-    systemTheme,
-    userTheme,
-    resolvedTheme,
-  }
   return [
     values,
-    useCallback((next: DarkModePreference) => {
+    useCallback((next: SchemeSetting) => {
       localStorage.setItem(key, next)
-      listeners.forEach((l) => l(next))
+      listener?.(next)
     }, []),
   ] as const
 }
 
 export function UserThemeProvider(props: { children: any }) {
-  const [userTheme, setUserTheme] = useState<DarkModePreference>('system')
+  const systemTheme = useSystemTheme()
+  const [userTheme, setUserTheme] = useState<SchemeSetting>('system')
+  const resolvedTheme = userTheme === 'system' ? systemTheme : userTheme
 
   useIsomorphicLayoutEffect(() => {
-    setUserTheme(getValue())
+    setUserTheme(getSetting())
+    listener = setUserTheme
   }, [])
 
   useIsomorphicLayoutEffect(() => {
-    const listener = (val: DarkModePreference) => {
-      setUserTheme(val)
-    }
-    listeners.add(listener)
-    return () => {
-      listeners.delete(listener)
-    }
-  }, [])
+    const toRemove = resolvedTheme === 'light' ? 'dark' : 'light'
+    document.documentElement.classList.remove(`t_${toRemove}`)
+    document.documentElement.classList.add(`t_${resolvedTheme}`)
+  }, [resolvedTheme])
 
   return (
-    <UserThemeSetting.Provider value={userTheme}>
+    <CurrentThemeContext.Provider
+      value={useMemo(
+        () => ({
+          userTheme,
+          systemTheme,
+          resolvedTheme,
+        }),
+        [userTheme, systemTheme, resolvedTheme]
+      )}
+    >
       {props.children}
-    </UserThemeSetting.Provider>
+    </CurrentThemeContext.Provider>
   )
 }

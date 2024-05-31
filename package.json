@@ -104,15 +104,15 @@
       "applied": false,
       "resolutions": {
         "@react-three/fiber": "9.0.0-alpha.6",
-        "react": "19.0.0-beta-26f2496093-20240514",
-        "react-dom": "19.0.0-beta-26f2496093-20240514"
+        "react": "19.0.0-rc-f994737d14-20240522",
+        "react-dom": "19.0.0-rc-f994737d14-20240522"
       }
     },
     "x": {
       "applied": false,
       "resolutions": {
-        "react": "19.0.0-beta-26f2496093-20240514",
-        "react-dom": "19.0.0-beta-26f2496093-20240514",
+        "react": "19.0.0-rc-f994737d14-20240522",
+        "react-dom": "19.0.0-rc-f994737d14-20240522",
         "@react-three/fiber": "9.0.0-alpha.6",
         "create-vxrn": "portal:~/vxrn/packages/create-vxrn",
         "@vxrn/react-native-prebuilt": "portal:~/vxrn/packages/react-native-prebuilt",
