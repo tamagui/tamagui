@@ -178,20 +178,22 @@ function updateSheetStyles(
       continue
     }
 
-    // track references
-    const total = track(identifier, remove)
+    if (!process.env.TAMAGUI_REACT_19) {
+      // track references
+      const total = track(identifier, remove)
 
-    if (remove) {
-      if (total === 0) {
-        delete allSelectors[identifier]
-      }
-    } else if (!(identifier in allSelectors)) {
-      const isTransform = identifier.startsWith('_transform-')
-      const shouldInsert = isTransform
-        ? addTransform(identifier, cssRule.cssText, cssRule)
-        : true
-      if (shouldInsert) {
-        allSelectors[identifier] = cssRule.cssText
+      if (remove) {
+        if (total === 0) {
+          delete allSelectors[identifier]
+        }
+      } else if (!(identifier in allSelectors)) {
+        const isTransform = identifier.startsWith('_transform-')
+        const shouldInsert = isTransform
+          ? addTransform(identifier, cssRule.cssText, cssRule)
+          : true
+        if (shouldInsert) {
+          allSelectors[identifier] = cssRule.cssText
+        }
       }
     }
   }
@@ -322,39 +324,43 @@ const sheet = isClient
   : null
 
 export function updateRules(identifier: string, rules: string[]) {
-  if (identifier in allRules) {
-    return false
+  if (!process.env.TAMAGUI_REACT_19) {
+    if (identifier in allRules) {
+      return false
+    }
+    allRules[identifier] = rules.join(' ')
+    if (identifier.startsWith('_transform-')) {
+      return addTransform(identifier, rules[0])
+    }
+    return true
   }
-  allRules[identifier] = rules.join(' ')
-  if (identifier.startsWith('_transform-')) {
-    return addTransform(identifier, rules[0])
-  }
-  return true
 }
 
 export function insertStyleRules(rulesToInsert: RulesToInsert) {
-  if (!rulesToInsert.length || !sheet) {
-    return
-  }
-
-  for (const { identifier, rules } of rulesToInsert) {
-    if (!shouldInsertStyleRules(identifier)) {
-      continue
+  if (!process.env.TAMAGUI_REACT_19) {
+    if (!rulesToInsert.length || !sheet) {
+      return
     }
 
-    allSelectors[identifier] = rules.join('\n')
-    track(identifier)
-    updateRules(identifier, rules)
+    for (const { identifier, rules } of rulesToInsert) {
+      if (!shouldInsertStyleRules(identifier)) {
+        continue
+      }
 
-    for (const rule of rules) {
-      if (process.env.NODE_ENV === 'production') {
-        try {
+      allSelectors[identifier] = rules.join('\n')
+      track(identifier)
+      updateRules(identifier, rules)
+
+      for (const rule of rules) {
+        if (process.env.NODE_ENV === 'production') {
+          try {
+            sheet.insertRule(rule, sheet.cssRules.length)
+          } catch (err) {
+            console.error(`Error inserting CSS`, err)
+          }
+        } else {
           sheet.insertRule(rule, sheet.cssRules.length)
-        } catch (err) {
-          console.error(`Error inserting CSS`, err)
         }
-      } else {
-        sheet.insertRule(rule, sheet.cssRules.length)
       }
     }
   }
@@ -369,22 +375,26 @@ const minInsertAmt = process.env.TAMAGUI_INSERT_SELECTOR_TRIES
   : 2
 
 export function shouldInsertStyleRules(identifier: string) {
-  if (process.env.IS_STATIC === 'is_static') {
+  if (process.env.TAMAGUI_REACT_19) {
     return true
-  }
-  const total = totalSelectorsInserted.get(identifier)
-
-  if (process.env.NODE_ENV === 'development') {
-    if (
-      totalSelectorsInserted.size >
-      +(process.env.TAMAGUI_STYLE_INSERTION_WARNING_LIMIT || 10000)
-    ) {
-      console.warn(
-        `Warning: inserting many CSS rules, you may be animating something and generating many CSS insertions, which can degrade performance. Instead, try using the "disableClassName" property on elements that change styles often. To disable this warning set TAMAGUI_STYLE_INSERTION_WARNING_LIMIT from 50000 to something higher`
-      )
+    // biome-ignore lint/style/noUselessElse: <explanation>
+  } else {
+    if (process.env.IS_STATIC === 'is_static') {
+      return true
     }
-  }
+    const total = totalSelectorsInserted.get(identifier)
 
-  // note we are being conservative allowing duplicates
-  return total === undefined || total < minInsertAmt
+    if (process.env.NODE_ENV === 'development') {
+      if (
+        totalSelectorsInserted.size >
+        +(process.env.TAMAGUI_STYLE_INSERTION_WARNING_LIMIT || 10000)
+      ) {
+        console.warn(
+          `Warning: inserting many CSS rules, you may be animating something and generating many CSS insertions, which can degrade performance. Instead, try using the "disableClassName" property on elements that change styles often. To disable this warning set TAMAGUI_STYLE_INSERTION_WARNING_LIMIT from 50000 to something higher`
+        )
+      }
+    }
+    // note we are being conservative allowing duplicates
+    return total === undefined || total < minInsertAmt
+  }
 }

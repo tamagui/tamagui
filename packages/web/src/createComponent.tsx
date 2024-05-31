@@ -1277,6 +1277,31 @@ export function createComponent<
       )
     }
 
+    // add in <style> tags inline
+    if (process.env.TAMAGUI_REACT_19) {
+      if (splitStyles.rulesToInsert.length) {
+        content = (
+          <>
+            {content}
+            {/* lets see if we can put a single style tag per rule for optimal de-duping */}
+            {splitStyles.rulesToInsert.map(({ rules, identifier }) => {
+              return (
+                <style
+                  key={identifier}
+                  // @ts-ignore
+                  href={`t_${identifier}`}
+                  // @ts-ignore
+                  precedence="default"
+                >
+                  {rules.join('\n')}
+                </style>
+              )
+            })}
+          </>
+        )
+      }
+    }
+
     if (process.env.NODE_ENV === 'development') {
       if (debugProp && debugProp !== 'profile') {
         const element = typeof elementType === 'string' ? elementType : 'Component'
