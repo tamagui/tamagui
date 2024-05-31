@@ -427,18 +427,18 @@ export const NextTamaguiProvider = ({ children }: { children: ReactNode }) => {
 Then add it to your `app/layout.tsx`:
 
 ```tsx fileName="layout.tsx"
-'use client'
-
+import { Metadata } from 'next'
 import { NextTamaguiProvider } from './NextTamaguiProvider'
+
+export const metadata: Metadata = {
+  title: 'Your page title',
+  description: 'Your page description',
+  icons: '/favicon.ico',
+}
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <head>
-        <title>Your page title</title>
-        <meta name="description" content="Your page description" />
-        <link rel="icon" href="/favicon.ico" />
-      </head>
+    <html lang="en">
       <body>
         <NextTamaguiProvider>{children}</NextTamaguiProvider>
       </body>
@@ -448,7 +448,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 ```
 
 <Notice theme="green">
-	You can use `suppressHydrationWarning` to avoid the warning about mismatched content during hydration.
+	You can use `suppressHydrationWarning` to avoid the warning about mismatched content during hydration in dev mode.
 </Notice>
 
 ### app/page.tsx
