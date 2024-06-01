@@ -160,11 +160,13 @@ export type CreateTokens<Val extends VariableVal = VariableVal> = Record<
   zIndex: { [key: GenericKey]: Val }
 }
 
+export type TokenCategories = 'color' | 'space' | 'size' | 'radius' | 'zIndex'
+
 type Tokenify<A extends GenericTokens> = Omit<
   {
     [Key in keyof A]: TokenifyRecord<A[Key]>
   },
-  'color' | 'space' | 'size' | 'radius' | 'zIndex'
+  TokenCategories
 > & {
   color: TokenifyRecord<A['color']>
   space: TokenifyRecord<A['space']>
