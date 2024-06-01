@@ -1,28 +1,11 @@
-import '../lib/wdyr'
+// import '../lib/wdyr'
 
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
-import { Header } from '@tamagui/site/components/Header'
-import { SearchProvider } from '@tamagui/site/components/Search'
 import { useState } from 'react'
-import {
-  AnimatePresence,
-  Button,
-  Text,
-  View,
-  YStack,
-  styled,
-  useDidFinishSSR,
-} from 'tamagui'
+import { AnimatePresence, Button, Text, YStack, styled } from 'tamagui'
 
 console.warn('setting debug moti true')
 global.shouldDebugMoti = true
-
-const TabsList = styled(View, {
-  marginTop: -50,
-  $sm: {
-    marginTop: 20,
-  },
-})
 
 function TestPage() {
   return (
@@ -301,9 +284,9 @@ const DebugNestedThemeChange = () => {
 //   }
 // }
 
+import { TooltipDemo } from '@tamagui/demos'
 import { memo, useEffect } from 'react'
 import { Circle, XStack } from 'tamagui'
-import { PopoverDemo, TooltipDemo } from '@tamagui/demos'
 
 const TestCircle = memo(() => {
   const [mounted, setMounted] = useState<'start' | 'animate' | 'done'>('start')
