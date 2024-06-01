@@ -1,7 +1,6 @@
 import { composeRefs } from '@tamagui/compose-refs'
 import { isClient, isServer, isWeb } from '@tamagui/constants'
 import { composeEventHandlers, validStyles } from '@tamagui/helpers'
-import { useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
 import React, {
   Children,
   Fragment,
@@ -18,12 +17,12 @@ import React, {
 
 import { devConfig, getConfig, onConfiguredOnce } from './config'
 import { stackDefaultStyles } from './constants/constants'
+import { isDevTools } from './constants/isDevTools'
 import { ComponentContext } from './contexts/ComponentContext'
 import { didGetVariableValue, setDidGetVariableValue } from './createVariable'
 import {
   defaultComponentState,
   defaultComponentStateMounted,
-  defaultComponentStateShouldEnter,
 } from './defaultComponentState'
 import {
   createShallowSetState,
@@ -33,9 +32,13 @@ import { useSplitStyles } from './helpers/getSplitStyles'
 import { isObj } from './helpers/isObj'
 import { log } from './helpers/log'
 import { mergeProps } from './helpers/mergeProps'
+import { setElementProps } from './helpers/setElementProps'
 import { themeable } from './helpers/themeable'
 import { mediaKeyMatch, setMediaShouldUpdate, useMedia } from './hooks/useMedia'
 import { useThemeWithState } from './hooks/useTheme'
+import type { TamaguiComponentEvents } from './interfaces/TamaguiComponentEvents'
+import type { TamaguiComponentState } from './interfaces/TamaguiComponentState'
+import type { WebOnlyPressEvents } from './interfaces/WebOnlyPressEvents'
 import { hooks } from './setupHooks'
 import type {
   ComponentContextI,
@@ -61,14 +64,9 @@ import type {
   UseAnimationProps,
   UseThemeWithStateProps,
 } from './types'
-import type { WebOnlyPressEvents } from './interfaces/WebOnlyPressEvents'
-import type { TamaguiComponentState } from './interfaces/TamaguiComponentState'
-import type { TamaguiComponentEvents } from './interfaces/TamaguiComponentEvents'
 import { Slot } from './views/Slot'
 import { getThemedChildren } from './views/Theme'
 import { ThemeDebug } from './views/ThemeDebug'
-import { isDevTools } from './constants/isDevTools'
-import { setElementProps } from './helpers/setElementProps'
 
 /**
  * All things that need one-time setup after createTamagui is called

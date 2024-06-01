@@ -38,7 +38,7 @@
     "react-native-reanimated": "3.11.0",
     "stripe": "^9.1.0",
     "tamagui": "1.99.1",
-    "vite": "npm:vite@6.0.0-alpha.11",
+    "vite": "^5.2.11",
     "vite-plugin-inspect": "^0.8.4",
     "vite-tsconfig-paths": "^4.3.2",
     "vxs": "^0.1.78"

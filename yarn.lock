@@ -4842,8 +4842,8 @@ __metadata:
   linkType: hard
 
 "@react-three/fiber@npm:^8.16.6":
-  version: 8.16.6
-  resolution: "@react-three/fiber@npm:8.16.6"
+  version: 8.16.7
+  resolution: "@react-three/fiber@npm:8.16.7"
   dependencies:
     "@babel/runtime": "npm:^7.17.8"
     "@types/react-reconciler": "npm:^0.26.7"
@@ -4878,7 +4878,7 @@ __metadata:
       optional: true
     react-native:
       optional: true
-  checksum: 10/b09f347fbd4f814bb30f01d0cad5c578f9a7e21bc0a2be76bb699c0b6fbaddbc9d10a85c06c1d9b23213f6ba24338763312626ead8eee0e8ec23fad0438ee5e1
+  checksum: 10/be065eab55a16a87c2c6b5126cac7ff7fed4eb8ca9878a082f9b2823f0dee0bac579a1ce39574ff69ebf94c508b8a6642bd99256a764bc1a8400228e56cc3654
   languageName: node
   linkType: hard
 
@@ -7900,7 +7900,7 @@ __metadata:
     tamagui: "npm:1.99.1"
     unified: "npm:^10.1.2"
     unist-util-visit: "npm:^2.0.3"
-    vite: "npm:vite@6.0.0-alpha.11"
+    vite: "npm:^5.2.11"
     vite-bundle-analyzer: "npm:^0.9.4"
     vite-plugin-inspect: "npm:^0.8.4"
     vite-tsconfig-paths: "npm:^4.3.2"
@@ -29404,7 +29404,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:6.0.0-alpha.11, vite@npm:vite@6.0.0-alpha.11":
+"vite@npm:6.0.0-alpha.11":
   version: 6.0.0-alpha.11
   resolution: "vite@npm:6.0.0-alpha.11"
   dependencies:

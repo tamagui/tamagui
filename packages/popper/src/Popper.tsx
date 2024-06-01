@@ -24,8 +24,8 @@ import {
   autoUpdate,
   flip,
   offset as offsetFn,
-  shift,
   platform,
+  shift,
   useFloating,
 } from '@tamagui/floating'
 import { getSpace } from '@tamagui/get-token'
