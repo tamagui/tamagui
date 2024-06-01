@@ -7,6 +7,7 @@ import type { ReactNode } from 'react'
 import React, {
   createContext,
   memo,
+  startTransition,
   useCallback,
   useContext,
   useEffect,
@@ -233,7 +234,9 @@ const PortalProviderComponent = ({
   const [state, dispatch] = useReducer(reducer, INITIAL_STATE)
   const transitionDispatch = useMemo(() => {
     const next = (value: any) => {
-      dispatch(value)
+      startTransition(() => {
+        dispatch(value)
+      })
     }
     return next as typeof dispatch
   }, [dispatch])
