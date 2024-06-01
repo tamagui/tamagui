@@ -3,7 +3,6 @@ import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 // MIT License Copyright (c) 2020 Mo Gorhom
 import { useEvent } from '@tamagui/core'
 // fixing SSR issue
-import { useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
 import type { ReactNode } from 'react'
 import React, {
   createContext,
@@ -272,18 +271,17 @@ const defaultRenderer: PortalHostProps['render'] = (children) => <>{children}</>
 
 const PortalHostComponent = (props: PortalHostProps) => {
   const { name, forwardProps, render = defaultRenderer } = props
-  const isServer = !useDidFinishSSR()
   const state = usePortalState(name)
   const { registerHost, deregisterHost } = usePortal(props.name)
 
   //#region effects
   useEffect(() => {
-    if (isServer) return
+    if (typeof window === 'undefined') return
     registerHost()
     return () => {
       deregisterHost()
     }
-  }, [isServer])
+  }, [])
   //#endregion
 
   if (forwardProps) {
