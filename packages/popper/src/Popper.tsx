@@ -447,11 +447,10 @@ export const PopperArrow = PopperArrowFrame.styleable<PopperArrowExtraProps>(
 
     const context = usePopperContext(__scopePopper)
     const sizeVal = getVariableValue(
-      sizeProp ??
-        getSpace(context.size, {
-          shift: -2,
-          bounds: [2],
-        })
+      getSpace(sizeProp ?? context.size, {
+        shift: -2,
+        bounds: [2],
+      })
     )
     const size = Math.max(0, +sizeVal)
 
