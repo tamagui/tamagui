@@ -1,4 +1,4 @@
-// import '../lib/wdyr'
+import '../lib/wdyr'
 
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import { Header } from '@tamagui/site/components/Header'
@@ -38,7 +38,9 @@ function TestPage() {
     >
       {/* <PopoverDemo /> */}
 
-      <AnimatePresence>
+      <TooltipDemo />
+
+      {/* <AnimatePresence>
         <YStack
           animation="superLazy"
           debug="verbose"
@@ -61,7 +63,7 @@ function TestPage() {
         >
           <YStack fullscreen bg="red" />
         </YStack>
-      </AnimatePresence>
+      </AnimatePresence> */}
 
       {/* <Text debug="verbose" maxWidth={300} numberOfLines={3} ellipsizeMode="middle">
         Esse laborum veniam magna sunt nulla nisi proident nisi culpa. Aliquip sit duis
@@ -301,7 +303,7 @@ const DebugNestedThemeChange = () => {
 
 import { memo, useEffect } from 'react'
 import { Circle, XStack } from 'tamagui'
-import { PopoverDemo } from '@tamagui/demos'
+import { PopoverDemo, TooltipDemo } from '@tamagui/demos'
 
 const TestCircle = memo(() => {
   const [mounted, setMounted] = useState<'start' | 'animate' | 'done'>('start')

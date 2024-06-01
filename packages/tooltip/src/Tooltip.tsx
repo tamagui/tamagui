@@ -110,11 +110,9 @@ type Delay =
 
 export const TooltipGroup = ({ children, delay }: { children?: any; delay: Delay }) => {
   return (
-    <React.Suspense fallback={null}>
-      <FloatingDelayGroup delay={React.useMemo(() => delay, [JSON.stringify(delay)])}>
-        {children}
-      </FloatingDelayGroup>
-    </React.Suspense>
+    <FloatingDelayGroup delay={React.useMemo(() => delay, [JSON.stringify(delay)])}>
+      {children}
+    </FloatingDelayGroup>
   )
 }
 
