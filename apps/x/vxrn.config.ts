@@ -24,6 +24,8 @@ const optimizeInterop = ['expo-splash-screen']
 const optimizeDeps = {
   include: [
     ...optimizeInterop,
+    '@leeoniya/ufuzzy',
+    '@github/mini-throttle',
     'swr',
     '@tamagui/demos',
     '@supabase/ssr',

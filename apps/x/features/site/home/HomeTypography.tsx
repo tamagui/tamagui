@@ -235,9 +235,10 @@ const Delay = ({ children, by, passThrough }) => {
   const [done, setDone] = useState(false)
 
   useEffect(() => {
+    if (passThrough) return
     const showTimer = setTimeout(() => setDone(true), by)
     return () => clearTimeout(showTimer)
-  })
+  }, [passThrough])
 
   if (passThrough) {
     return children

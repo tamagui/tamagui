@@ -2898,7 +2898,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@floating-ui/react-dom@npm:^2.0.6":
+"@floating-ui/react-dom@npm:2.0.6":
   version: 2.0.6
   resolution: "@floating-ui/react-dom@npm:2.0.6"
   dependencies:
@@ -2907,6 +2907,18 @@ __metadata:
     react: ">=16.8.0"
     react-dom: ">=16.8.0"
   checksum: 10/4a3f828370c1b14af0e4d24df18de7b2cfd6695c189532d5949daaa43cba13ce7f231c71783b47e8c54baefcc2542650d82a4a6cebcf3d9091673f2a53d3a2cb
+  languageName: node
+  linkType: hard
+
+"@floating-ui/react-dom@patch:@floating-ui/react-dom@npm%3A2.0.6#~/.yarn/patches/@floating-ui-react-dom-npm-2.0.6-4c37c2a933.patch":
+  version: 2.0.6
+  resolution: "@floating-ui/react-dom@patch:@floating-ui/react-dom@npm%3A2.0.6#~/.yarn/patches/@floating-ui-react-dom-npm-2.0.6-4c37c2a933.patch::version=2.0.6&hash=f6058c"
+  dependencies:
+    "@floating-ui/dom": "npm:^1.5.4"
+  peerDependencies:
+    react: ">=16.8.0"
+    react-dom: ">=16.8.0"
+  checksum: 10/1cc5c7c0d654b97006a3ce69b97a278d0be5220eca127f6e6e7e26145b3fe72a2aac8da9c92fbfc8f882ebdad55b924a37e9bb8da3d9fed27683bb08f1918b0e
   languageName: node
   linkType: hard
 
@@ -2922,7 +2934,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@floating-ui/react@npm:^0.26.6":
+"@floating-ui/react@npm:0.26.6":
   version: 0.26.6
   resolution: "@floating-ui/react@npm:0.26.6"
   dependencies:
@@ -2933,6 +2945,20 @@ __metadata:
     react: ">=16.8.0"
     react-dom: ">=16.8.0"
   checksum: 10/15085b58e527f9acf617c434f9d3591ee69f039b0ebfb92374a2efdfb67fe5d21c36e4ce70eba13b41cdcfd355618e5bb1465706045f3774e1ce4884bb0c37e1
+  languageName: node
+  linkType: hard
+
+"@floating-ui/react@patch:@floating-ui/react@npm%3A0.26.6#~/.yarn/patches/@floating-ui-react-npm-0.26.6-805606ca52.patch":
+  version: 0.26.6
+  resolution: "@floating-ui/react@patch:@floating-ui/react@npm%3A0.26.6#~/.yarn/patches/@floating-ui-react-npm-0.26.6-805606ca52.patch::version=0.26.6&hash=5447a9"
+  dependencies:
+    "@floating-ui/react-dom": "npm:^2.0.6"
+    "@floating-ui/utils": "npm:^0.2.1"
+    tabbable: "npm:^6.0.1"
+  peerDependencies:
+    react: ">=16.8.0"
+    react-dom: ">=16.8.0"
+  checksum: 10/57d7dc589fe1c5ef6aa379b677564e8376d2cde661ebfe0292c58f4808e626428348aafee89c92604c1c91d18074731517efe444da78253cad96b8bd5be276b6
   languageName: node
   linkType: hard
 
@@ -6214,7 +6240,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/floating@workspace:packages/floating"
   dependencies:
-    "@floating-ui/react-dom": "npm:^2.0.6"
+    "@floating-ui/react-dom": "patch:@floating-ui/react-dom@npm%3A2.0.6#~/.yarn/patches/@floating-ui-react-dom-npm-2.0.6-4c37c2a933.patch"
     "@floating-ui/react-native": "npm:^0.10.3"
     "@tamagui/build": "npm:1.99.1"
     react: "npm:^18.2.0"
@@ -6780,7 +6806,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/popover@workspace:packages/popover"
   dependencies:
-    "@floating-ui/react": "npm:^0.26.6"
+    "@floating-ui/react": "patch:@floating-ui/react@npm%3A0.26.6#~/.yarn/patches/@floating-ui-react-npm-0.26.6-805606ca52.patch"
     "@tamagui/adapt": "npm:1.99.1"
     "@tamagui/animate": "npm:1.99.1"
     "@tamagui/aria-hidden": "npm:1.99.1"
@@ -7015,8 +7041,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/select@workspace:packages/select"
   dependencies:
-    "@floating-ui/react": "npm:^0.26.6"
-    "@floating-ui/react-dom": "npm:^2.0.6"
+    "@floating-ui/react": "patch:@floating-ui/react@npm%3A0.26.6#~/.yarn/patches/@floating-ui-react-npm-0.26.6-805606ca52.patch"
+    "@floating-ui/react-dom": "patch:@floating-ui/react-dom@npm%3A2.0.6#~/.yarn/patches/@floating-ui-react-dom-npm-2.0.6-4c37c2a933.patch"
     "@floating-ui/react-native": "npm:^0.10.3"
     "@tamagui/adapt": "npm:1.99.1"
     "@tamagui/animate-presence": "npm:1.99.1"
@@ -7601,7 +7627,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/tooltip@workspace:packages/tooltip"
   dependencies:
-    "@floating-ui/react": "npm:^0.26.6"
+    "@floating-ui/react": "patch:@floating-ui/react@npm%3A0.26.6#~/.yarn/patches/@floating-ui-react-npm-0.26.6-805606ca52.patch"
     "@tamagui/build": "npm:1.99.1"
     "@tamagui/compose-refs": "npm:1.99.1"
     "@tamagui/core": "npm:1.99.1"
@@ -27005,6 +27031,7 @@ __metadata:
     json5: "npm:^2.2.3"
     npm-run-all: "npm:^4.1.5"
     p-map: "npm:^5.5.0"
+    patch-package: "npm:^8.0.0"
     prompts: "npm:2.1.0"
     turbo: "npm:^1.13.3"
     typescript: "npm:^5.4.5"

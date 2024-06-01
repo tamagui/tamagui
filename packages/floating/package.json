@@ -37,7 +37,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@floating-ui/react-dom": "^2.0.6",
+    "@floating-ui/react-dom": "patch:@floating-ui/react-dom@npm%3A2.0.6#~/.yarn/patches/@floating-ui-react-dom-npm-2.0.6-4c37c2a933.patch",
     "@floating-ui/react-native": "^0.10.3"
   },
   "devDependencies": {

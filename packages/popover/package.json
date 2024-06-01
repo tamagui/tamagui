@@ -32,7 +32,7 @@
     }
   },
   "dependencies": {
-    "@floating-ui/react": "^0.26.6",
+    "@floating-ui/react": "patch:@floating-ui/react@npm%3A0.26.6#~/.yarn/patches/@floating-ui-react-npm-0.26.6-805606ca52.patch",
     "@tamagui/adapt": "1.99.1",
     "@tamagui/animate": "1.99.1",
     "@tamagui/aria-hidden": "1.99.1",
