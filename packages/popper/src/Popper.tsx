@@ -7,6 +7,8 @@ import {
   Stack,
   View as TamaguiView,
   createStyledContext,
+  getConfig,
+  getVariable,
   getVariableValue,
   styled,
   useDidFinishSSR,
@@ -441,17 +443,21 @@ type Sides = keyof typeof opposites
 
 export const PopperArrow = PopperArrowFrame.styleable<PopperArrowExtraProps>(
   function PopperArrow(propsIn: ScopedPopperProps<PopperArrowProps>, forwardedRef) {
-    const { __scopePopper, ...rest } = propsIn
+    const { __scopePopper, unstyled, ...rest } = propsIn
     const props = useProps(rest)
     const { offset, size: sizeProp, borderWidth = 0, ...arrowProps } = props
 
     const context = usePopperContext(__scopePopper)
-    const sizeVal = getVariableValue(
-      getSpace(sizeProp ?? context.size, {
-        shift: -2,
-        bounds: [2],
-      })
-    )
+    const sizeVal =
+      typeof sizeProp === 'number'
+        ? sizeProp
+        : getVariableValue(
+            getSpace(sizeProp ?? context.size, {
+              shift: -2,
+              bounds: [2],
+            })
+          )
+
     const size = Math.max(0, +sizeVal)
 
     const { placement } = context

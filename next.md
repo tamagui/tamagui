@@ -58,6 +58,11 @@ Ongoing work:
 
 ---
 
+- Popper arrow logic is bad, needs unstyled support and not to do weird shifting of sizes
+
+---
+
+
 - No need for View + Text (just Element and we can extend it later)
 
   - We'd need to mimic text inhertance on native (or remove it on web)
