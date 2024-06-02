@@ -7904,6 +7904,7 @@ __metadata:
     "@supabase/supabase-js": "npm:^2.38.2"
     "@tamagui/assert": "npm:1.99.1"
     "@tamagui/cli": "npm:1.99.1"
+    "@tamagui/demos": "npm:1.99.1"
     "@tamagui/image-next": "npm:1.99.1"
     "@tamagui/mdx": "npm:1.99.1"
     "@tamagui/site-config": "npm:1.99.1"

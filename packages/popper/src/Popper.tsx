@@ -1,5 +1,4 @@
 // adapted from radix-ui popper
-
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isAndroid, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import type { ScopedProps, SizeTokens, StackProps } from '@tamagui/core'
@@ -443,7 +442,7 @@ type Sides = keyof typeof opposites
 
 export const PopperArrow = PopperArrowFrame.styleable<PopperArrowExtraProps>(
   function PopperArrow(propsIn: ScopedPopperProps<PopperArrowProps>, forwardedRef) {
-    const { __scopePopper, unstyled, ...rest } = propsIn
+    const { __scopePopper, ...rest } = propsIn
     const props = useProps(rest)
     const { offset, size: sizeProp, borderWidth = 0, ...arrowProps } = props
 

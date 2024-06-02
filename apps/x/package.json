@@ -26,6 +26,7 @@
     "@supabase/supabase-auth-helpers": "^1.4.2",
     "@supabase/supabase-js": "^2.38.2",
     "@tamagui/assert": "1.99.1",
+    "@tamagui/demos": "1.99.1",
     "@tamagui/image-next": "1.99.1",
     "@tamagui/mdx": "1.99.1",
     "@tamagui/site-config": "1.99.1",
