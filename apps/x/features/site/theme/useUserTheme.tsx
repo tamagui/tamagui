@@ -45,9 +45,13 @@ export function UserThemeProvider(props: { children: any }) {
   }, [])
 
   useIsomorphicLayoutEffect(() => {
-    const toRemove = resolvedTheme === 'light' ? 'dark' : 'light'
-    document.documentElement.classList.remove(`t_${toRemove}`)
-    document.documentElement.classList.add(`t_${resolvedTheme}`)
+    const toAdd = `t_${resolvedTheme}`
+    const { classList } = document.documentElement
+    if (!classList.contains(toAdd)) {
+      const toRemove = resolvedTheme === 'light' ? 'dark' : 'light'
+      classList.remove(`t_${toRemove}`)
+      classList.add(toAdd)
+    }
   }, [resolvedTheme])
 
   return (

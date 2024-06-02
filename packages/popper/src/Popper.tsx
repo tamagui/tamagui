@@ -6,8 +6,6 @@ import {
   Stack,
   View as TamaguiView,
   createStyledContext,
-  getConfig,
-  getVariable,
   getVariableValue,
   styled,
   useDidFinishSSR,

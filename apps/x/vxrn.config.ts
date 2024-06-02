@@ -1,6 +1,6 @@
 // import entryShakingPlugin from 'vite-plugin-entry-shaking'
 import { createRequire } from 'node:module'
-import { build, serve, vxs } from 'vxs/vite'
+import { build, serve, vxs, removeReactNativeWebAnimatedPlugin } from 'vxs/vite'
 // import { mdx } from '@cyco130/vite-plugin-mdx'
 import type { VXRNConfig } from 'vxrn'
 // import inpsectPlugin from 'vite-plugin-inspect'
@@ -11,13 +11,12 @@ if (!import.meta.dirname) {
   throw new Error(`Not on Node 22`)
 }
 
-const require = createRequire(import.meta.url)
-
-const targets = [
-  require.resolve('@tamagui/lucide-icons').replace('/dist/cjs/index.js', ''),
-  require.resolve('@tamagui/demos').replace('/dist/cjs/index.js', ''),
-  require.resolve('@tamagui/colors').replace('/dist/cjs/index.js', ''),
-]
+// const require = createRequire(import.meta.url)
+// const targets = [
+//   require.resolve('@tamagui/lucide-icons').replace('/dist/cjs/index.js', ''),
+//   require.resolve('@tamagui/demos').replace('/dist/cjs/index.js', ''),
+//   require.resolve('@tamagui/colors').replace('/dist/cjs/index.js', ''),
+// ]
 
 const optimizeInterop = ['expo-splash-screen']
 
@@ -93,6 +92,8 @@ export default async () => {
         vxs({
           root: 'app',
         }),
+
+        removeReactNativeWebAnimatedPlugin(),
 
         // hmmm breaking ssr for some reason on lucide:
         // @ts-ignore
