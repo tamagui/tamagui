@@ -2,7 +2,7 @@ import { isWeb } from '@tamagui/constants'
 import { simpleHash } from '@tamagui/helpers'
 
 import { getConfig } from './config'
-import { TokenCategories } from './types'
+import type { TokenCategories } from './types'
 
 /**
  * Should rename this to Token
