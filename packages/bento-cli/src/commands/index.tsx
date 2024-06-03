@@ -23,6 +23,10 @@ const handleKeypress = (_, key, appContext) => {
     setCopyToClipboard,
   } = appContext
 
+  console.log(key)
+
+  if(appContext.install.installingComponent && (key.upArrow || key.downArrow)) return
+
   if (_ === 'c' && appContext.install.installingComponent) {
     setCopyToClipboard(true)
   }
