@@ -10,11 +10,11 @@
   "publishConfig": {
     "access": "public"
   },
-  "source": "src/index.ts",
-  "types": "./types/index.d.ts",
+  "source": "src/cli.tsx",
+  "types": "./types/cli.d.ts",
   "module": "dist",
   "files": [
-    "src",
+    "source",
     "types",
     "dist"
   ],
