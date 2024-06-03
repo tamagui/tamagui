@@ -23,6 +23,17 @@ const handleKeypress = (_, key, appContext) => {
     setCopyToClipboard,
   } = appContext
 
+  if (!key) return
+
+  // after token addition on pressing esc go back to previous screen
+  if(key.escape && appContext.install.tokenIsInstalled) {
+    appContext.setInstall((prev) => ({
+      ...prev,
+      installingComponent: null,
+      tokenIsInstalled: false,
+    }))
+  }
+
   if (key.escape && appContext.install.installingComponent !== null && !appContext.install.installingComponent?.isOSS) {
     appContext.setInstall((prev) => ({
       ...prev,
@@ -37,7 +48,6 @@ const handleKeypress = (_, key, appContext) => {
     return
   }
 
-  if (!key) return
   if(appContext.install.installingComponent && (key.upArrow || key.downArrow)) return
 
   if (_ === 'c' && appContext.install.installingComponent) {
@@ -298,7 +308,7 @@ const CodeAuthScreen = () => {
       <Box flexDirection="row" borderStyle="round" paddingY={1} justifyContent="center">
         {appContext.install.tokenIsInstalled ? (
           <Box paddingY={1}>
-            <Text color="green">Github Authentication Successful ✔︎</Text>
+            <Text color="green">Github Authentication Successful. Press <Text underline>ESC</Text> to go back ✔︎</Text>
           </Box>
         ) : isLoading ? (
           <Box paddingY={1}>
@@ -338,7 +348,7 @@ export default function Search() {
   const [copyToClipboard, setCopyToClipboard] = useState(false)
   const { exit } = useApp()
   const { access_token } = tokenStore?.get('token') ?? {}
-  tokenStore.delete("token");
+  // tokenStore.delete("token");
 
   useInput((_, key) =>
     handleKeypress(_, key, {
