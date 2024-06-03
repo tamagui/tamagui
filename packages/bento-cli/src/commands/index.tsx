@@ -23,15 +23,7 @@ const handleKeypress = (_, key, appContext) => {
     setCopyToClipboard,
   } = appContext
 
-  console.log(key)
-
-  if(appContext.install.installingComponent && (key.upArrow || key.downArrow)) return
-
-  if (_ === 'c' && appContext.install.installingComponent) {
-    setCopyToClipboard(true)
-  }
-
-  if (key.escape && !appContext.install.installingComponent?.isOSS) {
+  if (key.escape && appContext.install.installingComponent !== null && !appContext.install.installingComponent?.isOSS) {
     appContext.setInstall((prev) => ({
       ...prev,
       installingComponent: null,
@@ -39,6 +31,19 @@ const handleKeypress = (_, key, appContext) => {
     }))
     return
   }
+
+  if (key.escape) {
+    appContext.exit()
+    return
+  }
+
+  if (!key) return
+  if(appContext.install.installingComponent && (key.upArrow || key.downArrow)) return
+
+  if (_ === 'c' && appContext.install.installingComponent) {
+    setCopyToClipboard(true)
+  }
+
   if (
     key.return &&
     !appContext.install.installingComponent?.isOSS &&
@@ -47,10 +52,6 @@ const handleKeypress = (_, key, appContext) => {
     open('https://github.com/login/device')
   }
   if (appContext.install.installingComponent?.isOSS) return
-  if (!key) return
-  if (key.escape) {
-    appContext.exit()
-  }
   if (key.upArrow) {
     selectedId > -1 && setSelectedId(selectedId - 1)
   }
@@ -337,7 +338,7 @@ export default function Search() {
   const [copyToClipboard, setCopyToClipboard] = useState(false)
   const { exit } = useApp()
   const { access_token } = tokenStore?.get('token') ?? {}
-  // tokenStore.delete("token");
+  tokenStore.delete("token");
 
   useInput((_, key) =>
     handleKeypress(_, key, {
