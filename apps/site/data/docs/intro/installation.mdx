@@ -21,15 +21,16 @@ yarn add tamagui
 
 For now recommended `yarn` if you are using Tamagui in a monorepo, as it's been proven on large projects where we've found issues with others.
 
-Add `TamaguiProvider` at the root of your app and you are fully set up:
+Add `TamaguiProvider` and pass `config` to it at the root of your app and you are fully set up:
 
 ```tsx fileName="App.tsx"
 // optional but recommended CSS reset:
 import '@tamagui/core/reset.css'
 import { TamaguiProvider, View } from '@tamagui/core' // or 'tamagui'
+import config from './tamagui.config'
 
 export default function App () => (
-  <TamaguiProvider>
+  <TamaguiProvider config={config}>
     <View width={200} height={200} backgroundColor="red" />
   </TamaguiProvider>
 )
