@@ -4,8 +4,8 @@ export type ComponentSchema = {
     categorySection: string;
     fileName: string;
     isOSS: boolean;
-    componentPath: string;
-    fileNamePath: string;
+    componentPath?: string;
+    fileNamePath?: string;
 };
 export declare const componentsList: ComponentSchema[];
 //# sourceMappingURL=components.d.ts.map

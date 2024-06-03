@@ -6,8 +6,8 @@ export type ComponentSchema = {
   fileName: string
   // dependencies?: string[]
   isOSS: boolean
-  componentPath: string
-  fileNamePath: string
+  componentPath?: string
+  fileNamePath?: string
 }
 
 const OSS_COMPONENTS = [
