@@ -1,9 +1,9 @@
-import type { ScopedProps, SizeTokens } from "@tamagui/core";
-import type { Coords, OffsetOptions, Placement, Strategy, UseFloatingReturn } from "@tamagui/floating";
-import { flip, shift } from "@tamagui/floating";
-import type { SizableStackProps, YStackProps } from "@tamagui/stacks";
-import * as React from "react";
-import type { View } from "react-native";
+import type { ScopedProps, SizeTokens } from '@tamagui/core';
+import type { Coords, OffsetOptions, Placement, Strategy, UseFloatingReturn } from '@tamagui/floating';
+import { flip, shift } from '@tamagui/floating';
+import type { SizableStackProps, YStackProps } from '@tamagui/stacks';
+import * as React from 'react';
+import type { View } from 'react-native';
 type ShiftProps = typeof shift extends (options: infer Opts) => void ? Opts : never;
 type FlipProps = typeof flip extends (options: infer Opts) => void ? Opts : never;
 export type PopperContextValue = UseFloatingReturn & {
@@ -32,7 +32,7 @@ export type PopperProps = {
     offset?: OffsetOptions;
     disableRTL?: boolean;
 };
-type ScopedPopperProps<P> = ScopedProps<P, "Popper">;
+type ScopedPopperProps<P> = ScopedProps<P, 'Popper'>;
 export type PopperSetupOptions = {
     disableRTL?: boolean;
 };

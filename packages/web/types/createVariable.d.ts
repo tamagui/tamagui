@@ -1,4 +1,4 @@
-import { TokenCategories } from './types';
+import type { TokenCategories } from './types';
 /**
  * Should rename this to Token
  * Moving to objects for React Server Components support
