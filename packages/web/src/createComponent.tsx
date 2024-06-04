@@ -23,6 +23,7 @@ import { didGetVariableValue, setDidGetVariableValue } from './createVariable'
 import {
   defaultComponentState,
   defaultComponentStateMounted,
+  defaultComponentStateShouldEnter,
 } from './defaultComponentState'
 import {
   createShallowSetState,
@@ -195,7 +196,11 @@ export const useComponentState = (
   const hasEnterState = hasEnterStyle || isEntering
 
   const initialState =
-    hasEnterState || hasRNAnimation ? defaultComponentState : defaultComponentStateMounted
+    hasEnterState || hasRNAnimation
+      ? isWeb
+        ? defaultComponentState
+        : defaultComponentStateShouldEnter
+      : defaultComponentStateMounted
 
   // will be nice to deprecate half of these:
   const disabled = isDisabled(props)
@@ -214,7 +219,7 @@ export const useComponentState = (
 
   // only web server + initial client render run this when not hydrated:
   let isAnimated = willBeAnimated
-  if (hasRNAnimation && !staticConfig.isHOC && state.unmounted === true) {
+  if (isWeb && hasRNAnimation && !staticConfig.isHOC && state.unmounted === true) {
     isAnimated = false
     curStateRef.willHydrate = true
   }
@@ -807,12 +812,10 @@ export function createComponent<
     // once you set animation prop don't remove it, you can set to undefined/false
     // reason is animations are heavy - no way around it, and must be run inline here (🙅 loading as a sub-component)
     let animationStyles: any
-    if (
-      // if it supports css vars we run it on server too to get matching initial style
-      (supportsCSSVars ? willBeAnimatedClient : willBeAnimated) &&
-      useAnimations &&
-      !isHOC
-    ) {
+    const shouldUseAnimation = // if it supports css vars we run it on server too to get matching initial style
+      (supportsCSSVars ? willBeAnimatedClient : willBeAnimated) && useAnimations && !isHOC
+
+    if (shouldUseAnimation) {
       // HOOK 16... (depends on driver) (-1 if no animation, -1 if disableSSR, -1 if no context, -1 if production)
       const animations = useAnimations({
         props: propsWithAnimation,

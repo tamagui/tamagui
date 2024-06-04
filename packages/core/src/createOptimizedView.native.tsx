@@ -135,45 +135,45 @@ export function getAccessibilityRoleFromRole(role) {
     case 'alert':
       return 'alert'
     case 'alertdialog':
-      return undefined
+      return
     case 'application':
-      return undefined
+      return
     case 'article':
-      return undefined
+      return
     case 'banner':
-      return undefined
+      return
     case 'button':
       return 'button'
     case 'cell':
-      return undefined
+      return
     case 'checkbox':
       return 'checkbox'
     case 'columnheader':
-      return undefined
+      return
     case 'combobox':
       return 'combobox'
     case 'complementary':
-      return undefined
+      return
     case 'contentinfo':
-      return undefined
+      return
     case 'definition':
-      return undefined
+      return
     case 'dialog':
-      return undefined
+      return
     case 'directory':
-      return undefined
+      return
     case 'document':
-      return undefined
+      return
     case 'feed':
-      return undefined
+      return
     case 'figure':
-      return undefined
+      return
     case 'form':
-      return undefined
+      return
     case 'grid':
       return 'grid'
     case 'group':
-      return undefined
+      return
     case 'heading':
       return 'header'
     case 'img':
@@ -183,15 +183,15 @@ export function getAccessibilityRoleFromRole(role) {
     case 'list':
       return 'list'
     case 'listitem':
-      return undefined
+      return
     case 'log':
-      return undefined
+      return
     case 'main':
-      return undefined
+      return
     case 'marquee':
-      return undefined
+      return
     case 'math':
-      return undefined
+      return
     case 'menu':
       return 'menu'
     case 'menubar':
@@ -199,15 +199,15 @@ export function getAccessibilityRoleFromRole(role) {
     case 'menuitem':
       return 'menuitem'
     case 'meter':
-      return undefined
+      return
     case 'navigation':
-      return undefined
+      return
     case 'none':
       return 'none'
     case 'note':
-      return undefined
+      return
     case 'option':
-      return undefined
+      return
     case 'presentation':
       return 'none'
     case 'progressbar':
@@ -217,25 +217,25 @@ export function getAccessibilityRoleFromRole(role) {
     case 'radiogroup':
       return 'radiogroup'
     case 'region':
-      return undefined
+      return
     case 'row':
-      return undefined
+      return
     case 'rowgroup':
-      return undefined
+      return
     case 'rowheader':
-      return undefined
+      return
     case 'scrollbar':
       return 'scrollbar'
     case 'searchbox':
       return 'search'
     case 'separator':
-      return undefined
+      return
     case 'slider':
       return 'adjustable'
     case 'spinbutton':
       return 'spinbutton'
     case 'status':
-      return undefined
+      return
     case 'summary':
       return 'summary'
     case 'switch':
@@ -243,26 +243,26 @@ export function getAccessibilityRoleFromRole(role) {
     case 'tab':
       return 'tab'
     case 'table':
-      return undefined
+      return
     case 'tablist':
       return 'tablist'
     case 'tabpanel':
-      return undefined
+      return
     case 'term':
-      return undefined
+      return
     case 'timer':
       return 'timer'
     case 'toolbar':
       return 'toolbar'
     case 'tooltip':
-      return undefined
+      return
     case 'tree':
-      return undefined
+      return
     case 'treegrid':
-      return undefined
+      return
     case 'treeitem':
-      return undefined
+      return
   }
 
-  return undefined
+  return
 }

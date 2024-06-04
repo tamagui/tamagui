@@ -18,11 +18,17 @@ const NativeDemos = {
         <></>
       </Demos.AnimationsDemo>
       <Spacer />
+    </>
+  ),
+
+  AnimatePresenceDemo: (props) => {
+    return (
       <Demos.AnimationsEnterDemo>
         <></>
       </Demos.AnimationsEnterDemo>
-    </>
-  ),
+    )
+  },
+
   ThemesDemo: () => {
     return (
       <YStack space>

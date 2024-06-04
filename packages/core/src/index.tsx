@@ -17,7 +17,7 @@ import {
   composeEventHandlers,
   setupHooks,
 } from '@tamagui/web'
-import { createElement, useMemo } from 'react'
+import { createElement, useMemo, useSyncExternalStore } from 'react'
 
 import { createOptimizedView } from './createOptimizedView'
 import { getBaseViews } from './getBaseViews'

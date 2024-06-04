@@ -138,6 +138,7 @@ const demos = [
       { title: 'Headings', route: '/demo/headings' },
       { title: 'Paragraph', route: '/demo/text' },
       { title: 'Animations', route: '/demo/animations' },
+      { title: 'Animate Presence', route: '/demo/animate-presence' },
       { title: 'Themes', route: '/demo/themes' },
     ],
   },
