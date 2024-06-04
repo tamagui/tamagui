@@ -1,0 +1,24 @@
+{
+  "name": "one",
+  "version": "0.0.7",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vxrn dev",
+    "dev:clean": "yarn clean && yarn dev",
+    "clean": "rm -r dist || true && rm -r node_modules/.vite || true",
+    "build": "vxrn build",
+    "serve": "vxrn serve",
+    "postinstall": "patch-package || true"
+  },
+  "dependencies": {
+    "@tamagui/config": "^1.99.1",
+    "@tamagui/core": "^1.99.1",
+    "react-native": "0.74.1",
+    "vxs": "0.1.83"
+  },
+  "devDependencies": {
+    "patch-package": "^8.0.0",
+    "vxrn": "0.1.83"
+  }
+}
