@@ -46,6 +46,7 @@
       "complexity": {
         "noForEach": "off",
         "noBannedTypes": "off",
+        "noUselessFragments": "off",
         "useLiteralKeys": "off",
         "useSimplifiedLogicExpression": "off",
         "useOptionalChain": "off"
