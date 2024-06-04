@@ -6,8 +6,6 @@ export type ComponentSchema = {
   fileName: string
   // dependencies?: string[]
   isOSS: boolean
-  componentPath?: string
-  fileNamePath?: string
 }
 
 const OSS_COMPONENTS = [
@@ -33,506 +31,583 @@ const OSS_COMPONENTS = [
   'Meeting',
 ]
 
+// TODO: this are components that the script fails to parse filenames correctly.
+const MISSING_COMPONENTS = [
+  {
+    name: 'Number Slider',
+    fileName: 'InteractiveCard',
+    category: 'animation',
+    categorySection: 'microinteractions'
+  },
+  {
+    name: 'Mouse Interactive 3D Cards',
+    fileName: 'InteractiveCard',
+    category: 'animation',
+    categorySection: 'microinteractions'
+  },
+  {
+    name: 'Slide In',
+    fileName: 'SlideIn',
+    category: 'animation',
+    categorySection: 'slide'
+  },
+  {
+    name: 'Slide Out',
+    fileName: 'SlideOutDemo',
+    category: 'animation',
+    categorySection: 'slide'
+  },
+  {
+    name: 'Basic Table',
+    fileName: 'Basic',
+    category: 'elements',
+    categorySection: 'tables'
+  },
+  {
+    name: 'DatePicker',
+    fileName: 'DatePicker',
+    category: 'elements',
+    categorySection: 'datepickers'
+  },
+  {
+    name: 'MonthPicker',
+    fileName: 'MonthPicker',
+    category: 'elements',
+    categorySection: 'datepickers'
+  },
+  {
+    name: 'YearPicker',
+    fileName: 'YearPicker',
+    category: 'elements',
+    categorySection: 'datepickers'
+  },
+  {
+    name: 'Sliding Popover',
+    fileName: 'SlidingPopover',
+    category: 'elements',
+    categorySection: 'dialogs'
+  },
+  {
+    name: 'React Native API Compatible Alert',
+    fileName: 'Alert',
+    category: 'elements',
+    categorySection: 'dialogs'
+  },
+  {
+    name: 'Input with Label',
+    fileName: 'InputWithLabel',
+    category: 'forms',
+    categorySection: 'inputs'
+  },
+  {
+    name: 'One-Time Code Input',
+    fileName: 'OneTimeCodeInput',
+    category: 'forms',
+    categorySection: 'inputs'
+  },
+  {
+    name: 'Input with Label and Message',
+    fileName: 'InputWithLabelAndMessage',
+    category: 'forms',
+    categorySection: 'inputs'
+  },
+  {
+    name: 'Input with Error',
+    fileName: 'InputWithError',
+    category: 'forms',
+    categorySection: 'inputs'
+  },
+  {
+    name: 'Input Left Adornment',
+    fileName: 'InputWithLeftIcon',
+    category: 'forms',
+    categorySection: 'inputs'
+  },
+  {
+    name: 'Input Right Adornment',
+    fileName: 'InputWithRightIcon',
+    category: 'forms',
+    categorySection: 'inputs'
+  },
+  {
+    name: 'Input Left/Right Adornment',
+    fileName: 'InputBothSideIcons',
+    category: 'forms',
+    categorySection: 'inputs'
+  },
+  {
+    name: 'Grouped Input with Buttons',
+    fileName: 'InputGroupedIcons',
+    category: 'forms',
+    categorySection: 'inputs'
+  },
+  {
+    name: 'Grouped Input with Buttons (Alt)',
+    fileName: 'InputWithRightAddOn',
+    category: 'forms',
+    categorySection: 'inputs'
+  },
+  {
+    name: 'Phone',
+    fileName: 'PhoneInput',
+    category: 'forms',
+    categorySection: 'inputs'
+  },
+  {
+    name: 'Sign-up Form - Two Column',
+    fileName: 'SignUpTwoSide',
+    category: 'forms',
+    categorySection: 'layouts'
+  },
+  {
+    name: 'Jumping Walkthrough',
+    fileName: 'walkThrough', // missing filename
+    category: 'panels',
+    categorySection: 'walkthrough'
+  },
+  {
+    name: 'Fluid Walkthrough',
+    fileName: 'WalkThroughFluid',
+    category: 'panels',
+    categorySection: 'walkthrough'
+  },
+  {
+    name: 'Meeting Time',
+    fileName: 'Meeting',
+    category: 'user',
+    categorySection: 'events'
+  }
+]
 // NOTE: hardcoded list but using getAllComponentsForBentoCli.js
 // TODO: use getAllComponentsForBentoCli.js on github action and request schema file as json from url
 export const componentsList: ComponentSchema[] = [
   {
     name: 'Loading Animation',
-    fileNamePath: 'Buttons.ButtonLoading.fileName',
     fileName: 'ButtonLoading',
     category: 'animation',
     categorySection: 'buttons',
   },
   {
     name: 'Press Animation',
-    fileNamePath: 'Buttons.ButtonPulse.fileName',
     fileName: 'ButtonPulse',
     category: 'animation',
     categorySection: 'buttons',
   },
   {
     name: 'Icon Animation',
-    fileNamePath: 'Buttons.IconCenterButton.fileName',
     fileName: 'IconCenterButton',
     category: 'animation',
     categorySection: 'buttons',
   },
   {
     name: 'Hoverable Avatars',
-    fileNamePath: 'AnAvatars.AvatarsTooltip.fileName',
     fileName: 'AvatarsTooltip',
     category: 'animation',
     categorySection: 'avatars',
   },
   {
     name: 'Fancy Hoverable Avatars',
-    fileNamePath: 'AnAvatars.AvatarsTooltipFancy.fileName',
     fileName: 'AvatarsTooltipFancy',
     category: 'animation',
     categorySection: 'avatars',
   },
   {
     name: 'Shopping Cart',
-    fileNamePath: 'Cart.Fullpage.fileName',
     fileName: 'Fullpage',
     category: 'ecommerce',
     categorySection: 'cart',
   },
   {
     name: 'Product with Review',
-    fileNamePath: 'ProductPage.ProductWithReview.fileName',
     fileName: 'ProductWithReview',
     category: 'ecommerce',
     categorySection: 'product_page',
   },
   {
     name: 'Product List',
-    fileNamePath: 'ProductList.ProductList.fileName',
     fileName: 'ProductList',
     category: 'ecommerce',
     categorySection: 'product_list',
   },
   {
     name: 'Product List Best Items',
-    fileNamePath: 'ProductList.ProductListBestItems.fileName',
     fileName: 'ProductListBestItems',
     category: 'ecommerce',
     categorySection: 'product_list',
   },
   {
     name: 'Prodcut List Grid Thumbs',
-    fileNamePath: 'ProductList.ProductListGridThumbs.fileName',
     fileName: 'ProductListGridThumbs',
     category: 'ecommerce',
     categorySection: 'product_list',
   },
   {
     name: 'Product List with Features',
-    fileNamePath: 'ProductList.ProductListWithFeatures.fileName',
     fileName: 'ProductListWithFeatures',
     category: 'ecommerce',
     categorySection: 'product_list',
   },
   {
     name: 'Prodcut List with Label',
-    fileNamePath: 'ProductList.ProductListWithLabel.fileName',
     fileName: 'ProductListWithLabel',
     category: 'ecommerce',
     categorySection: 'product_list',
   },
   {
     name: 'Image Picker',
-    fileNamePath: 'Pickers.ImagePicker.fileName',
     fileName: 'ImagePicker',
     category: 'elements',
     categorySection: 'pickers',
   },
   {
     name: 'Upload File',
-    fileNamePath: 'Pickers.UploadFile.fileName',
     fileName: 'UploadFile',
     category: 'elements',
     categorySection: 'pickers',
   },
   {
     name: 'Grouped Avatars',
-    fileNamePath: 'Avatars.AvatarsGrouped.fileName',
     fileName: 'AvatarsGrouped',
     category: 'elements',
     categorySection: 'avatars',
   },
   {
     name: 'Circular Avatars with custom icons',
-    fileNamePath: 'Avatars.CircularAvatarsWithCustomIcons.fileName',
     fileName: 'CircularAvatarsWithCustomIcons',
     category: 'elements',
     categorySection: 'avatars',
   },
   {
     name: 'Rounded Avatars',
-    fileNamePath: 'Avatars.RoundedAvatars.fileName',
     fileName: 'RoundedAvatars',
     category: 'elements',
     categorySection: 'avatars',
   },
   {
     name: 'Rounded Avatars with Custom Icons',
-    fileNamePath: 'Avatars.RoundedAvatarsWithCustomIcons.fileName',
     fileName: 'RoundedAvatarsWithCustomIcons',
     category: 'elements',
     categorySection: 'avatars',
   },
   {
     name: 'Buttons with Left Icons',
-    fileNamePath: 'Buttons.ButtonsWithLeftIcons.fileName',
     fileName: 'ButtonsWithLeftIcons',
     category: 'elements',
     categorySection: 'buttons',
   },
   {
     name: 'Buttons with Loaders',
-    fileNamePath: 'Buttons.ButtonsWithLoaders.fileName',
     fileName: 'ButtonsWithLoaders',
     category: 'elements',
     categorySection: 'buttons',
   },
   {
     name: 'Rounded Buttons',
-    fileNamePath: 'Buttons.RoundedButtons.fileName',
     fileName: 'RoundedButtons',
     category: 'elements',
     categorySection: 'buttons',
   },
   {
     name: 'Users Table with Avatar',
-    fileNamePath: 'Tables.UsersTable.fileName',
     fileName: 'UsersTable',
     category: 'elements',
     categorySection: 'tables',
   },
   {
     name: 'Table with Pagination and Sorting Ability',
-    fileNamePath: 'Tables.SortableTable.fileName',
     fileName: 'SortableTable',
     category: 'elements',
     categorySection: 'tables',
   },
   {
     name: 'MultiSelectPicker',
-    fileNamePath: 'DatePickers.MultiSelectPicker.fileName',
     fileName: 'MultiSelectPicker',
     category: 'elements',
     categorySection: 'datepickers',
   },
   {
     name: 'RangePicker',
-    fileNamePath: 'DatePickers.RangePicker.fileName',
     fileName: 'RangePicker',
     category: 'elements',
     categorySection: 'datepickers',
   },
   {
     name: 'Simple Chips',
-    fileNamePath: 'Chips.Chips.fileName',
     fileName: 'Chips',
     category: 'elements',
     categorySection: 'chips',
   },
   {
     name: 'Chips White Text and Pressable',
-    fileNamePath: 'Chips.ChipsNoTextColor.fileName',
     fileName: 'ChipsNoTextColor',
     category: 'elements',
     categorySection: 'chips',
   },
   {
     name: 'Rounded Chips',
-    fileNamePath: 'Chips.ChipsRounded.fileName',
     fileName: 'ChipsRounded',
     category: 'elements',
     categorySection: 'chips',
   },
   {
     name: 'Chips with Close Icon',
-    fileNamePath: 'Chips.ChipsWithCloseIcon.fileName',
     fileName: 'ChipsWithCloseIcon',
     category: 'elements',
     categorySection: 'chips',
   },
   {
     name: 'Chips with Icon',
-    fileNamePath: 'Chips.ChipsWithIcon.fileName',
     fileName: 'ChipsWithIcon',
     category: 'elements',
     categorySection: 'chips',
   },
   {
     name: 'IOS style Alert',
-    fileNamePath: 'Dialogs.IosStyleAlert.fileName',
     fileName: 'IosStyleAlert',
     category: 'elements',
     categorySection: 'dialogs',
   },
   {
     name: 'Alert with icon and tint color',
-    fileNamePath: 'Dialogs.AlertWithIcon.fileName',
     fileName: 'AlertWithIcon',
     category: 'elements',
     categorySection: 'dialogs',
   },
   {
     name: 'Horizontal Covers',
-    fileNamePath: 'Lists.HList.fileName',
     fileName: 'HList',
     category: 'elements',
     categorySection: 'list',
   },
   {
     name: 'Chat List',
-    fileNamePath: 'Lists.ChatList.fileName',
     fileName: 'ChatList',
     category: 'elements',
     categorySection: 'list',
   },
   {
     name: 'Item Value List',
-    fileNamePath: 'Lists.ItemValueList.fileName',
     fileName: 'ItemValueList',
     category: 'elements',
     categorySection: 'list',
   },
   {
     name: 'Performant Grid with FlatList',
-    fileNamePath: 'Lists.FlatGrid.fileName',
     fileName: 'FlatGrid',
     category: 'elements',
     categorySection: 'list',
   },
   {
     name: 'Phonebook List',
-    fileNamePath: 'Lists.List.fileName',
     fileName: 'List',
     category: 'elements',
     categorySection: 'list',
   },
   {
     name: 'Masonry List',
-    fileNamePath: 'Lists.MasonryListExample.fileName',
     fileName: 'MasonryListExample',
     category: 'elements',
     categorySection: 'list',
   },
   {
     name: 'CheckBox Cards',
-    fileNamePath: 'Checkboxes.CheckboxCards.fileName',
     fileName: 'CheckboxCards',
     category: 'forms',
     categorySection: 'checkboxes',
   },
   {
     name: 'Checkbox List',
-    fileNamePath: 'Checkboxes.CheckboxList.fileName',
     fileName: 'CheckboxList',
     category: 'forms',
     categorySection: 'checkboxes',
   },
   {
     name: 'Grouped Checkbox',
-    fileNamePath: 'Checkboxes.GroupedCheckbox.fileName',
     fileName: 'GroupedCheckbox',
     category: 'forms',
     categorySection: 'checkboxes',
   },
   {
     name: 'Horizontal Checkboxes',
-    fileNamePath: 'Checkboxes.HorizontalCheckboxes.fileName',
     fileName: 'HorizontalCheckboxes',
     category: 'forms',
     categorySection: 'checkboxes',
   },
   {
     name: 'Horizontal with Description Checkboxes',
-    fileNamePath: 'Checkboxes.HorizontalWithDescriptionCheckboxes.fileName',
     fileName: 'HorizontalWithDescriptionCheckboxes',
     category: 'forms',
     categorySection: 'checkboxes',
   },
   {
     name: 'Vertical with Description Checkboxes',
-    fileNamePath: 'Checkboxes.VerticalWithDescriptionCheckboxes.fileName',
     fileName: 'VerticalWithDescriptionCheckboxes',
     category: 'forms',
     categorySection: 'checkboxes',
   },
   {
     name: 'Sign-in Form',
-    fileNamePath: 'Layouts.SignInScreen.fileName',
     fileName: 'SignInScreen',
     category: 'forms',
     categorySection: 'layouts',
   },
   {
     name: 'Sign-in Right Image',
-    fileNamePath: 'Layouts.SignInRightImage.fileName',
     fileName: 'SignInRightImage',
     category: 'forms',
     categorySection: 'layouts',
   },
   {
     name: 'Sign-up Form',
-    fileNamePath: 'Layouts.SignUpScreen.fileName',
     fileName: 'SignUpScreen',
     category: 'forms',
     categorySection: 'layouts',
   },
   {
     name: 'Short Email Password Layout',
-    fileNamePath: 'Layouts.ShortEmailPassword.fileName',
     fileName: 'ShortEmailPassword',
     category: 'forms',
     categorySection: 'layouts',
   },
   {
     name: 'Integrated with react-hook-form and Zod',
-    fileNamePath: 'Layouts.SignupValidatedHookForm.fileName',
     fileName: 'SignupValidatedHookForm',
     category: 'forms',
     categorySection: 'layouts',
   },
   {
     name: 'Integrated with react-ts-form and Zod',
-    fileNamePath: 'Layouts.SignupValidatedTsForm.fileName',
     fileName: 'SignupValidatedTsForm',
     category: 'forms',
     categorySection: 'layouts',
   },
   {
     name: 'RadioGroup List',
-    fileNamePath: 'RadioGroups.GroupedRadio.fileName',
     fileName: 'GroupedRadio',
     category: 'forms',
     categorySection: 'radiogroups',
   },
   {
     name: 'Horizontal RadioGroups',
-    fileNamePath: 'RadioGroups.Horizontal.fileName',
     fileName: 'Horizontal',
     category: 'forms',
     categorySection: 'radiogroups',
   },
   {
     name: 'Horizontal RadioGroups with description',
-    fileNamePath: 'RadioGroups.HorizontalWithDescription.fileName',
     fileName: 'HorizontalWithDescription',
     category: 'forms',
     categorySection: 'radiogroups',
   },
   {
     name: 'Cards RadioGroups',
-    fileNamePath: 'RadioGroups.RadioCards.fileName',
     fileName: 'RadioCards',
     category: 'forms',
     categorySection: 'radiogroups',
   },
   {
     name: 'List RadioGroups',
-    fileNamePath: 'RadioGroups.RadioList.fileName',
     fileName: 'RadioList',
     category: 'forms',
     categorySection: 'radiogroups',
   },
   {
     name: 'Vertical RadioGroups',
-    fileNamePath: 'RadioGroups.Vertical.fileName',
     fileName: 'Vertical',
     category: 'forms',
     categorySection: 'radiogroups',
   },
   {
     name: 'Vertical with Description RadioGroups',
-    fileNamePath: 'RadioGroups.VerticalWithDescription.fileName',
     fileName: 'VerticalWithDescription',
     category: 'forms',
     categorySection: 'radiogroups',
   },
   {
     name: 'Switch with Custom Icons',
-    fileNamePath: 'Switches.SwitchCustomIcons.fileName',
     fileName: 'SwitchCustomIcons',
     category: 'forms',
     categorySection: 'switches',
   },
   {
     name: 'Switch with Icon and Title',
-    fileNamePath: 'Switches.IconTitleSwitch.fileName',
     fileName: 'IconTitleSwitch',
     category: 'forms',
     categorySection: 'switches',
   },
   {
     name: 'Comment Box with Preview',
-    fileNamePath: 'TextAreas.WritePreviewAction.fileName',
     fileName: 'WritePreviewAction',
     category: 'forms',
     categorySection: 'textareas',
   },
   {
     name: 'Comment Box',
-    fileNamePath: 'TextAreas.AvatarNameContentAction.fileName',
     fileName: 'AvatarNameContentAction',
     category: 'forms',
     categorySection: 'textareas',
   },
   {
     name: 'Comment Box Floating',
-    fileNamePath: 'TextAreas.AvatarOutContentAction.fileName',
     fileName: 'AvatarOutContentAction',
     category: 'forms',
     categorySection: 'textareas',
   },
   {
     name: 'Comment Box Minimal',
-    fileNamePath: 'TextAreas.TitleContentMessage.fileName',
     fileName: 'TitleContentMessage',
     category: 'forms',
     categorySection: 'textareas',
   },
   {
     name: 'Top Navbar with Swippable Drawer on Smaller Screens',
-    fileNamePath: 'Navbars.TopNavBarWithLogo.fileName',
     fileName: 'TopNavBarWithLogo',
     category: 'shells',
     categorySection: 'navbars',
   },
   {
     name: 'Top Navbar with Underline Tabs',
-    fileNamePath: 'Navbars.TopNavBarWithUnderLineTabs.fileName',
     fileName: 'TopNavBarWithUnderLineTabs',
     category: 'shells',
     categorySection: 'navbars',
   },
   {
     name: 'Responsive Sidebar',
-    fileNamePath: 'SideBars.FullSideBar.fileName',
     fileName: 'FullSideBar',
     category: 'shells',
     categorySection: 'sidebars',
   },
   {
     name: 'React Navigation compatible Tabbar with Underline',
-    fileNamePath: 'TabBars.Tabbar.fileName',
     fileName: 'TabBar',
     category: 'shells',
     categorySection: 'tabbars',
   },
   {
     name: 'Progressive Tabbar with Underline Indicator',
-    fileNamePath: 'TabBars.TabBarSecondExample.fileName',
     fileName: 'TabBarSecondExample',
     category: 'shells',
     categorySection: 'tabbars',
   },
   {
     name: 'Swippable Tabbar Support Gesture Drag',
-    fileNamePath: 'TabBars.TabbarSwippable.fileName',
     fileName: 'TabBarSwippable',
     category: 'shells',
     categorySection: 'tabbars',
   },
   {
     name: 'Email Preferences',
-    fileNamePath: 'Preferences.LocationNotification.fileName',
     fileName: 'LocationNotification',
     category: 'user',
     categorySection: 'preferences',
   },
   {
     name: 'Employees Status Tracker',
-    fileNamePath: 'Events.StatusTracker.fileName',
     fileName: 'StatusTracker',
     category: 'user',
     categorySection: 'events',
   },
+  ...MISSING_COMPONENTS
 ].map((item) => {
   return { ...item, isOSS: OSS_COMPONENTS.includes(item.fileName) }
 })
