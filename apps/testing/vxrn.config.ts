@@ -1,15 +1,34 @@
-U2FsdGVkX18UDOlRm7li8kn+0fyudqCOEOLeJrYW0obmxz1wBmg8GpTxRoobysto
-dMhd+o3A64fuRaEv7ba4aA3ypwVDOf4n1aPE49pxgawDGRW+GCVPtX31qa/gQ5XL
-nsXh/NYgzwo5F0DopdH2uYOGk8JL5BByOcy6gmVAG4lBvkNb1klMNCiEVkK+QtAe
-Ln1v+YZzeLn9zBuoP/q2pIWam089Bpo0KZbMa0Xz7LHQoLLqdX+pb5M0DX0TDjGK
-4APpzRLIYqn4U1/34Y7tu++MMJp5xsFcwQJF42YukUNWh1UKmMK6bxAyRIN3dRyQ
-asjAoZn2JQ15DXmeefGVDOAh6F07pW+woM3Doz+2h1yNykmWW8Oc+Vh4AN2TLwLo
-wyxvSIaI6nBJ1JVbFRm5qYc7Slp+JkmALJe5W+HPrsEG/wqUfy83G8aFOonzAQMB
-YIs7nUT1n7g8OAbfBTMla5GvSPEnjfTWZqKXPfNWh1+Gm2T4x2HtxEHk7GAFS2a4
-M5cpwue5DTt7+ewTOiX6tE4/vMs/mJ6TJkH7pEIkI+xECAzZ+qseoNf5i9IjW3RA
-KU5nnIt+C7VfTbA4ANwn0/s/qZpTh5n49qFM//EJ+Odv+ddZG9BlOkOTQjBXQEa2
-cMARQXZf2HvQttv8KQrbt8mYxkYj+GGfq3JmDGLoIQouajn35/5Im/HU0gju0jHa
-WDW0a9YtYQgB6/XdROBh602T8qxxKF1QXG0B/SFKh8TMQQS77Hy34zZZol+jbgVv
-uLtHYh300fcnn6Jn+yFjRPoYX23PIXFjr8mbyEzBbNYYb0HHfBh0bhoeAZrSCPNP
-79ynGjh2o59+gSYuKPByP0ReRzJzZo0rWN7wXqi9ftGBi3nqaEE0y6/l5mDzjrPq
-5ZIfVnBNQ5EMK/Csjocp5Q==
+// import { tamaguiExtractPlugin, tamaguiPlugin } from '@tamagui/vite-plugin'
+import { vxs, build, serve } from 'vxs/vite'
+import type { VXRNConfig } from 'vxrn'
+
+export default {
+  webConfig: {
+    define: {
+      'process.env.TAMAGUI_REACT_19': '"1"',
+    },
+
+    resolve: {
+      alias: {
+        '~': import.meta.dirname,
+        'react-native-svg': '@tamagui/react-native-svg',
+      },
+    },
+
+    plugins: [
+      vxs({
+        root: 'app',
+      }),
+      // tamaguiPlugin(),
+      // tamaguiExtractPlugin(),
+    ],
+  },
+
+  async afterBuild(...args) {
+    await build(...args)
+  },
+
+  serve(options, app) {
+    serve(options, app)
+  },
+} satisfies VXRNConfig
