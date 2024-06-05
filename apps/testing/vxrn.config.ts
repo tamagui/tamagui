@@ -13,7 +13,13 @@ export default {
         '~': import.meta.dirname,
         'react-native-svg': '@tamagui/react-native-svg',
       },
+
+      // dedupe: ['react-wrap-balancer'],
     },
+
+    // optimizeDeps: {
+    //   include: ['react-wrap-balancer'],
+    // },
 
     plugins: [
       vxs({

@@ -1,7 +1,7 @@
 {
-  "name": "one",
-  "version": "1.100.0",
-  "private": true,
+  "name": "create-one",
+  "version": "0.0.0",
+  "files": [],
   "type": "module",
   "scripts": {
     "dev": "vxrn dev",
@@ -12,13 +12,18 @@
     "postinstall": "patch-package || true"
   },
   "dependencies": {
+    "@tamagui/button": "1.100.0",
     "@tamagui/config": "1.100.0",
     "@tamagui/core": "1.100.0",
+    "@tamagui/input": "1.100.0",
     "react-native": "0.74.1",
     "vxs": "^0.1.83"
   },
   "devDependencies": {
     "patch-package": "^8.0.0",
     "vxrn": "^0.1.83"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
