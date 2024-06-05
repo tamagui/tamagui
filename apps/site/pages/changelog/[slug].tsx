@@ -5,12 +5,12 @@ import { getMDXComponent } from 'mdx-bundler/client'
 import { NextSeo } from 'next-seo'
 import React from 'react'
 
-import type { BlogPost } from '../../components/BlogSlugPage'
-import { BlogSlugPage } from '../../components/BlogSlugPage'
+import type { ChangelogPost } from '../../components/ChangelogSlugPage'
+import { ChangelogSlugPage } from '../../components/ChangelogSlugPage'
 import { TamaguiExamples } from '../../components/TamaguiExamplesCode'
 import { getCompilationExamples } from '../../lib/getCompilationExamples'
 
-export default function BlogSlug(props: BlogPost) {
+export default function ChangelogSlug(props: ChangelogPost) {
   const Component = React.useMemo(() => getMDXComponent(props.code), [props.code])
 
   return (
@@ -27,7 +27,7 @@ export default function BlogSlug(props: BlogPost) {
                 getOgUrl('default', {
                   title: props.frontmatter.title,
                   description: props.frontmatter.description ?? '',
-                  category: 'Blog',
+                  category: 'Changelog',
                 }),
               width: 1200,
               height: 630,
@@ -35,29 +35,29 @@ export default function BlogSlug(props: BlogPost) {
           ],
         }}
       />
-      <BlogSlugPage Component={Component} {...props} />
+      <ChangelogSlugPage Component={Component} {...props} />
     </TamaguiExamples.Provider>
   )
 }
 
-BlogSlug.getLayout = getDefaultLayout
+ChangelogSlug.getLayout = getDefaultLayout
 
 export async function getStaticPaths() {
-  const frontmatters = getAllFrontmatter('blog')
+  const frontmatters = getAllFrontmatter('changelog')
   return {
     paths: frontmatters.map(({ slug }) => ({
-      params: { slug: slug.replace('blog/', '') },
+      params: { slug: slug.replace('changelog/', '') },
     })),
     fallback: false,
   }
 }
 
 export async function getStaticProps(context) {
-  const { frontmatter, code } = await getMdxBySlug('blog', context.params.slug)
+  const { frontmatter, code } = await getMdxBySlug('changelog', context.params.slug)
   const relatedPosts = frontmatter.relatedIds
     ? await Promise.all(
         frontmatter.relatedIds.map(async (id) => {
-          const { frontmatter } = await getMdxBySlug('blog', id)
+          const { frontmatter } = await getMdxBySlug('changelog', id)
           return frontmatter
         })
       )

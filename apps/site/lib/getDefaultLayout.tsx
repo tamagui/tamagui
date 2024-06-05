@@ -2,7 +2,8 @@ import { Footer } from '@components/Footer'
 import { Header } from '@components/Header'
 import { ToastProvider, ToastViewport } from '@tamagui/toast'
 import { NextSeo } from 'next-seo'
-import React, { Suspense } from 'react'
+import type { ReactNode, ReactElement } from 'react'
+import { Suspense } from 'react'
 
 import { SearchProvider } from '../components/Search'
 
@@ -11,10 +12,10 @@ import { XStack, Paragraph } from 'tamagui'
 import { ContainerLarge } from '../components/Container'
 
 export type GetLayout<Props = any> = (
-  page: React.ReactNode,
+  page: ReactNode,
   pageProps: Props,
   path: string
-) => React.ReactElement
+) => ReactElement
 
 export const getDefaultLayout: GetLayout = (page, pageProps, path) => {
   const isAuthPage = path.startsWith('/login')
@@ -24,10 +25,12 @@ export const getDefaultLayout: GetLayout = (page, pageProps, path) => {
   // const isBento = path.startsWith('/bento')
   const isProductLandingPage = isTakeout || isStudio
   const isBlog = path.startsWith('/blog')
+  const isChangelog = path.startsWith('/changelog')
   const isDocs = path.startsWith('/docs') || path.startsWith('/ui')
   const isBento = path.startsWith('/bento')
 
-  const disableNew = isBlog || isAuthPage || isProductLandingPage || isAccountPage
+  const disableNew =
+    isBlog || isChangelog || isAuthPage || isProductLandingPage || isAccountPage
   const showAuth = isAuthPage || isProductLandingPage || isAccountPage
   const hideFooter = isDocs || isTakeout || isBento
 

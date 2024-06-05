@@ -249,6 +249,12 @@ export const HeaderLinks = (props: HeaderProps) => {
               </HeadAnchor>
             </NextLink>
 
+            <NextLink passHref prefetch={false} href="/changelog">
+              <HeadAnchor half grid={forceShowAllLinks}>
+                Changelog
+              </HeadAnchor>
+            </NextLink>
+
             {userSwr.data?.userDetails && (
               <NextLink passHref prefetch={false} href="/account">
                 <HeadAnchor half grid={forceShowAllLinks}>

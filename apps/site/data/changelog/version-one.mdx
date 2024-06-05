@@ -1,0 +1,44 @@
+---
+title: Tamagui 1.0 🎉
+publishedAt: '2022-12-29'
+description: Milestone
+by: nate
+poster: banner-one.jpg
+---
+
+<IntroParagraph large>
+  React Native is amazing for building mobile apps, but sharing components between web and
+  native [sacrifices performance, productivity and UX](/docs/intro/why-a-compiler).
+</IntroParagraph>
+
+<IntroParagraph>
+  Tamagui introduces a novel optimizing compiler for React that evaluates your code at
+  build-time, turning heavy JS into flatter trees and much faster CSS. The result is more
+  code share %, less dev time, and lighter, faster apps.
+</IntroParagraph>
+
+Tamagui's optimizing compiler makes advanced optimizations using partial evaluation, CSS extraction, and ultimately tree-flattening. Where it optimizes, things get a lot faster:
+
+Tamagui comes in three parts:
+
+[**Tamagui Core**](#overview-of-tamaguicore) (`@tamagui/core`) is a style library for React Native and web that supports 100% of the React Native API surface in a library that only depends on React. It adds all the [goodies of modern style libraries](#overview) into a cohesive package.
+
+[**Tamagui Static**](#overview-of-tamaguistatic) (`@tamagui/static`) is an optimizing compiler on top of Core, turning even inline styles sprinkled with logic into atomic CSS and minimal JS, flattening your view tree for maximum performance.
+
+[**Tamagui UI**](#overview-of-tamagui) (`tamagui`) is a component kit built on top of the incredibly powerful theme primitives of `core`. That, alongside composable-component APIs and complete size control enables a new level of control not seen before in a UI kit.
+
+---
+
+## Overview
+
+Lets get familiar with both `@tamagui/core` (the styling library) and `@tamagui/static` (the compiler), and how the latter optimizes the former.
+
+<Spacer />
+
+The key to Tamagui's performance gains lie in **view flattening** or tree-flattening: the compiler analyzes code (even across module boundaries) and evaluates styled components away using both the AST and Node VM code evaluation. It will fully flatten custom styled components (like `<Circle />`) into plain old `<div />` (or `<View />` on native).
+
+---
+
+<Spacer />
+<SponsorNotice />
+<Spacer />

@@ -89,6 +89,7 @@ export const docsRoutes = [
     pages: [
       { title: `Community`, route: '/community' },
       { title: `Blog`, route: '/blog' },
+      { title: `Changelog`, route: '/changelog' },
       {
         title: 'Figma',
         icon: Figma,

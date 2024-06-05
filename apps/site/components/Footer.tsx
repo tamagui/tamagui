@@ -93,6 +93,9 @@ export const Footer = memo(() => {
               <ParagraphLink href="/blog">Blog</ParagraphLink>
             </XStack>
             <XStack gap="$1" ai="center">
+              <ParagraphLink href="/changelog">Changelog</ParagraphLink>
+            </XStack>
+            <XStack gap="$1" ai="center">
               <ParagraphLink href="https://github.com/tamagui/tamagui" target="_blank">
                 GitHub
               </ParagraphLink>
