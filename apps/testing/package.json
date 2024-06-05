@@ -1,6 +1,6 @@
 {
   "name": "one",
-  "version": "0.0.7",
+  "version": "1.100.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -12,8 +12,8 @@
     "postinstall": "patch-package || true"
   },
   "dependencies": {
-    "@tamagui/config": "^1.99.1",
-    "@tamagui/core": "^1.99.1",
+    "@tamagui/config": "1.100.0",
+    "@tamagui/core": "1.100.0",
     "react-native": "0.74.1",
     "vxs": "^0.1.83"
   },
