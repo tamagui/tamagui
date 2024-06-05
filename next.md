@@ -1,3 +1,5 @@
+- Setting default props for any style in a parent (variables dynamic / themes dynamic down the tree)
+
 Nate:
 
 - Popover click outside prop
