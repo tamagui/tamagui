@@ -229,7 +229,6 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
         <XStack h={40} jc="flex-end" pointerEvents="auto" tag="nav">
           <XStack ai="center" gap="$2">
             <HeaderLinks isHeader {...props} />
-
             <HeaderMenu />
           </XStack>
         </XStack>

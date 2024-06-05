@@ -56,8 +56,8 @@ export const HeroBelowContent = memo(() => {
           </IconStack>
           <TitleLink href="/docs/core/configuration">Core</TitleLink>
           <Paragraph o={0.7} size="$5">
-            Style React and React Native with 100% parity, no outside dependencies, many
-            advanced selectors, and typed styled() and design system helpers in ~25Kb.
+            A style library for React and/or React Native with a large typed superset of
+            the React Native style API, with no outside dependencies in about 24Kb.
           </Paragraph>
         </Section>
 
@@ -67,8 +67,8 @@ export const HeroBelowContent = memo(() => {
           </IconStack>
           <TitleLink href="/docs/intro/why-a-compiler">Static</TitleLink>
           <Paragraph o={0.7} size="$5">
-            A smart optimizing compiler that makes apps fast using partial evaluation, CSS
-            extraction, and tree flattening. Supports Next, Webpack, Vite, Babel and
+            A smart optimizer that makes your app fast with partial analysis, extracts
+            CSS, flattens your tree, and removes code. Next, Webpack, Vite, Babel and
             Metro.
           </Paragraph>
         </Section>
@@ -79,8 +79,8 @@ export const HeroBelowContent = memo(() => {
           </IconStack>
           <TitleLink href="/docs/components/stacks">Tamagui</TitleLink>
           <Paragraph o={0.7} size="$5">
-            Unviersal components in styled or unstyled forms with composable component
-            APIs, controllable adaptation by platform or capability, and more.
+            All the components you'd want, cross platform and adaptable to each other.
+            Composable Component APIs, styled or unstyled, sizable, themeable, and more.
           </Paragraph>
         </Section>
       </XStack>
@@ -90,7 +90,7 @@ export const HeroBelowContent = memo(() => {
 
 const TitleLink = ({ href, children, ...props }: any) => {
   return (
-    <Link prefetch={false} href={href}>
+    <Link asChild href={href}>
       <H3 cursor="pointer" color="$color" my="$2">
         <CodeInline
           cursor="pointer"

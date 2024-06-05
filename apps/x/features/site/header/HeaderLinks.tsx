@@ -133,9 +133,9 @@ export const HeaderLinks = (props: HeaderProps) => {
           <SlidingPopoverContent />
 
           <XStack
-            gap="$4"
+            gap="$2"
             br="$10"
-            px="$4"
+            px="$2"
             height={44}
             ai="center"
             bw={1}
@@ -327,7 +327,7 @@ const CTAHeaderLink = ({
   }, [])
 
   return (
-    <Link href={href}>
+    <Link asChild href={href}>
       <Popover
         open={open}
         onOpenChange={(open) => {
