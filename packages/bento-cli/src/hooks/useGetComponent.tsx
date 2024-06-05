@@ -29,7 +29,7 @@ export const useGetComponent = async () => {
     const res = await fetch(url, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${access_token || ""}`,
+        Authorization: `Bearer ${access_token || ''}`,
       },
     })
     if (!res.ok) {
@@ -48,7 +48,9 @@ export const useGetComponent = async () => {
     //     ? 'http://tamagui.dev'
     //     : 'http://localhost:5005'
     const BASE_URL = 'http://tamagui.dev'
-    return `${BASE_URL}/api/bento/code/${install.installingComponent?.category}/${install.installingComponent?.categorySection}/${install.installingComponent?.fileName}?userGithubId=${githubData?.node_id || ""}`
+    return `${BASE_URL}/api/bento/code/${install.installingComponent?.category}/${
+      install.installingComponent?.categorySection
+    }/${install.installingComponent?.fileName}?userGithubId=${githubData?.node_id || ''}`
   }, [install, githubData])
 
   const { data, error, isLoading } = useSWR(

@@ -26,7 +26,7 @@ const handleKeypress = (_, key, appContext) => {
   if (!key) return
 
   // after token addition on pressing esc go back to previous screen
-  if(key.escape && appContext.install.tokenIsInstalled) {
+  if (key.escape && appContext.install.tokenIsInstalled) {
     appContext.setInstall((prev) => ({
       ...prev,
       installingComponent: null,
@@ -34,7 +34,11 @@ const handleKeypress = (_, key, appContext) => {
     }))
   }
 
-  if (key.escape && appContext.install.installingComponent !== null && !appContext.install.installingComponent?.isOSS) {
+  if (
+    key.escape &&
+    appContext.install.installingComponent !== null &&
+    !appContext.install.installingComponent?.isOSS
+  ) {
     appContext.setInstall((prev) => ({
       ...prev,
       installingComponent: null,
@@ -48,7 +52,7 @@ const handleKeypress = (_, key, appContext) => {
     return
   }
 
-  if(appContext.install.installingComponent && (key.upArrow || key.downArrow)) return
+  if (appContext.install.installingComponent && (key.upArrow || key.downArrow)) return
 
   if (_ === 'c' && appContext.install.installingComponent) {
     setCopyToClipboard(true)
@@ -308,7 +312,10 @@ const CodeAuthScreen = () => {
       <Box flexDirection="row" borderStyle="round" paddingY={1} justifyContent="center">
         {appContext.install.tokenIsInstalled ? (
           <Box paddingY={1}>
-            <Text color="green">Github Authentication Successful. Press <Text underline>ESC</Text> to go back ✔︎</Text>
+            <Text color="green">
+              Github Authentication Successful. Press <Text underline>ESC</Text> to go
+              back ✔︎
+            </Text>
           </Box>
         ) : isLoading ? (
           <Box paddingY={1}>

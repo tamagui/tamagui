@@ -4,11 +4,11 @@ import type { Scope } from '@tamagui/create-context'
 import type { ThemeableStackProps, YStackProps } from '@tamagui/stacks'
 import type { DispatchWithoutAction, HTMLProps, MutableRefObject, ReactNode } from 'react'
 
-export type Direction = 'ltr' | 'rtl'
+export type SelectDirection = 'ltr' | 'rtl'
 
-export type ScopedProps<P> = P & { __scopeSelect?: Scope }
+export type SelectScopedProps<P> = P & { __scopeSelect?: Scope }
 
-export type SelectImplProps = ScopedProps<SelectProps> & {
+export type SelectImplProps = SelectScopedProps<SelectProps> & {
   activeIndexRef: any
   selectedIndexRef: any
   listContentRef: any
@@ -23,7 +23,7 @@ export interface SelectProps {
   open?: boolean
   defaultOpen?: boolean
   onOpenChange?(open: boolean): void
-  dir?: Direction
+  dir?: SelectDirection
   name?: string
   autoComplete?: string
   size?: SizeTokens
@@ -71,7 +71,7 @@ export interface SelectItemParentContextValue {
 }
 
 export interface SelectContextValue {
-  dir?: Direction
+  dir?: SelectDirection
   scopeKey: string
   sheetBreakpoint: string | boolean | null
   value: any
@@ -111,7 +111,7 @@ export interface SelectViewportExtraProps {
 
 export type SelectViewportProps = ThemeableStackProps & SelectViewportExtraProps
 
-export type SelectContentProps = ScopedProps<{
+export type SelectContentProps = SelectScopedProps<{
   children?: React.ReactNode
   zIndex?: number
 }>

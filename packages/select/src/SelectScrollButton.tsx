@@ -7,7 +7,7 @@ import { flushSync } from 'react-dom'
 
 import { useSelectContext } from './context'
 import type {
-  ScopedProps,
+  SelectScopedProps,
   SelectScrollButtonImplProps,
   SelectScrollButtonProps,
 } from './types'
@@ -21,7 +21,7 @@ const SCROLL_UP_BUTTON_NAME = 'SelectScrollUpButton'
 export const SelectScrollUpButton = React.forwardRef<
   TamaguiElement,
   SelectScrollButtonProps
->((props: ScopedProps<SelectScrollButtonProps>, forwardedRef) => {
+>((props: SelectScopedProps<SelectScrollButtonProps>, forwardedRef) => {
   return (
     <SelectScrollButtonImpl
       componentName={SCROLL_UP_BUTTON_NAME}
@@ -43,7 +43,7 @@ const SCROLL_DOWN_BUTTON_NAME = 'SelectScrollDownButton'
 export const SelectScrollDownButton = React.forwardRef<
   TamaguiElement,
   SelectScrollButtonProps
->((props: ScopedProps<SelectScrollButtonProps>, forwardedRef) => {
+>((props: SelectScopedProps<SelectScrollButtonProps>, forwardedRef) => {
   return (
     <SelectScrollButtonImpl
       componentName={SCROLL_DOWN_BUTTON_NAME}
@@ -60,7 +60,7 @@ type SelectScrollButtonImplElement = TamaguiElement
 
 const SelectScrollButtonImpl = React.memo(
   React.forwardRef<SelectScrollButtonImplElement, SelectScrollButtonImplProps>(
-    (props: ScopedProps<SelectScrollButtonImplProps>, forwardedRef) => {
+    (props: SelectScopedProps<SelectScrollButtonImplProps>, forwardedRef) => {
       const { __scopeSelect, dir, componentName, ...scrollIndicatorProps } = props
       const { forceUpdate, open, fallback, setScrollTop, setInnerOffset, ...context } =
         useSelectContext(componentName, __scopeSelect)

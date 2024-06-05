@@ -23,7 +23,7 @@ export declare const ProgressIndicatorFrame: import("@tamagui/core").TamaguiComp
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
-type ProgressIndicatorProps = GetProps<typeof ProgressIndicatorFrame>;
+export type ProgressIndicatorProps = GetProps<typeof ProgressIndicatorFrame>;
 declare const ProgressIndicator: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     unstyled?: boolean | undefined;
     backgrounded?: boolean | undefined;
@@ -90,12 +90,12 @@ export declare const ProgressFrame: import("@tamagui/core").TamaguiComponent<imp
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
-interface ProgressExtraProps {
+export interface ProgressExtraProps {
     value?: number | null | undefined;
     max?: number;
     getValueLabel?(value: number, max: number): string;
 }
-type ProgressProps = GetProps<typeof ProgressFrame> & ProgressExtraProps;
+export type ProgressProps = GetProps<typeof ProgressFrame> & ProgressExtraProps;
 declare const Progress: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     unstyled?: boolean | undefined;
     backgrounded?: boolean | undefined;
@@ -253,6 +253,5 @@ declare const Progress: React.ForwardRefExoticComponent<Omit<import("@tamagui/co
         chromeless?: boolean | "all" | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
 };
-export { createProgressScope, Progress, ProgressIndicator };
-export type { ProgressProps, ProgressIndicatorProps };
+export { Progress, ProgressIndicator, createProgressScope };
 //# sourceMappingURL=Progress.d.ts.map

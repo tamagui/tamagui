@@ -41,7 +41,7 @@ export const ProgressIndicatorFrame = styled(ThemeableStack, {
   },
 })
 
-type ProgressIndicatorProps = GetProps<typeof ProgressIndicatorFrame>
+export type ProgressIndicatorProps = GetProps<typeof ProgressIndicatorFrame>
 
 const ProgressIndicator = ProgressIndicatorFrame.styleable(function ProgressIndicator(
   props: ScopedProps<ProgressIndicatorProps>,
@@ -203,4 +203,3 @@ const Progress = withStaticProperties(
 )
 
 export { Progress, ProgressIndicator, createProgressScope }
-export type { ProgressIndicatorProps, ProgressProps }

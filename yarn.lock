@@ -22478,8 +22478,8 @@ __metadata:
     "@tamagui/core": "npm:^1.99.1"
     patch-package: "npm:^8.0.0"
     react-native: "npm:0.74.1"
-    vxrn: "npm:0.1.83"
-    vxs: "npm:0.1.83"
+    vxrn: "npm:^0.1.83"
+    vxs: "npm:^0.1.83"
   languageName: unknown
   linkType: soft
 
@@ -29705,7 +29705,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vxrn@npm:0.1.83, vxrn@npm:^0.1.83":
+"vxrn@npm:^0.1.83":
   version: 0.1.83
   resolution: "vxrn@npm:0.1.83"
   dependencies:

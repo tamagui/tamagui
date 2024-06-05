@@ -37,146 +37,146 @@ const MISSING_COMPONENTS = [
     name: 'Number Slider',
     fileName: 'InteractiveCard',
     category: 'animation',
-    categorySection: 'microinteractions'
+    categorySection: 'microinteractions',
   },
   {
     name: 'Mouse Interactive 3D Cards',
     fileName: 'InteractiveCard',
     category: 'animation',
-    categorySection: 'microinteractions'
+    categorySection: 'microinteractions',
   },
   {
     name: 'Slide In',
     fileName: 'SlideIn',
     category: 'animation',
-    categorySection: 'slide'
+    categorySection: 'slide',
   },
   {
     name: 'Slide Out',
     fileName: 'SlideOutDemo',
     category: 'animation',
-    categorySection: 'slide'
+    categorySection: 'slide',
   },
   {
     name: 'Basic Table',
     fileName: 'Basic',
     category: 'elements',
-    categorySection: 'tables'
+    categorySection: 'tables',
   },
   {
     name: 'DatePicker',
     fileName: 'DatePicker',
     category: 'elements',
-    categorySection: 'datepickers'
+    categorySection: 'datepickers',
   },
   {
     name: 'MonthPicker',
     fileName: 'MonthPicker',
     category: 'elements',
-    categorySection: 'datepickers'
+    categorySection: 'datepickers',
   },
   {
     name: 'YearPicker',
     fileName: 'YearPicker',
     category: 'elements',
-    categorySection: 'datepickers'
+    categorySection: 'datepickers',
   },
   {
     name: 'Sliding Popover',
     fileName: 'SlidingPopover',
     category: 'elements',
-    categorySection: 'dialogs'
+    categorySection: 'dialogs',
   },
   {
     name: 'React Native API Compatible Alert',
     fileName: 'Alert',
     category: 'elements',
-    categorySection: 'dialogs'
+    categorySection: 'dialogs',
   },
   {
     name: 'Input with Label',
     fileName: 'InputWithLabel',
     category: 'forms',
-    categorySection: 'inputs'
+    categorySection: 'inputs',
   },
   {
     name: 'One-Time Code Input',
     fileName: 'OneTimeCodeInput',
     category: 'forms',
-    categorySection: 'inputs'
+    categorySection: 'inputs',
   },
   {
     name: 'Input with Label and Message',
     fileName: 'InputWithLabelAndMessage',
     category: 'forms',
-    categorySection: 'inputs'
+    categorySection: 'inputs',
   },
   {
     name: 'Input with Error',
     fileName: 'InputWithError',
     category: 'forms',
-    categorySection: 'inputs'
+    categorySection: 'inputs',
   },
   {
     name: 'Input Left Adornment',
     fileName: 'InputWithLeftIcon',
     category: 'forms',
-    categorySection: 'inputs'
+    categorySection: 'inputs',
   },
   {
     name: 'Input Right Adornment',
     fileName: 'InputWithRightIcon',
     category: 'forms',
-    categorySection: 'inputs'
+    categorySection: 'inputs',
   },
   {
     name: 'Input Left/Right Adornment',
     fileName: 'InputBothSideIcons',
     category: 'forms',
-    categorySection: 'inputs'
+    categorySection: 'inputs',
   },
   {
     name: 'Grouped Input with Buttons',
     fileName: 'InputGroupedIcons',
     category: 'forms',
-    categorySection: 'inputs'
+    categorySection: 'inputs',
   },
   {
     name: 'Grouped Input with Buttons (Alt)',
     fileName: 'InputWithRightAddOn',
     category: 'forms',
-    categorySection: 'inputs'
+    categorySection: 'inputs',
   },
   {
     name: 'Phone',
     fileName: 'PhoneInput',
     category: 'forms',
-    categorySection: 'inputs'
+    categorySection: 'inputs',
   },
   {
     name: 'Sign-up Form - Two Column',
     fileName: 'SignUpTwoSide',
     category: 'forms',
-    categorySection: 'layouts'
+    categorySection: 'layouts',
   },
   {
     name: 'Jumping Walkthrough',
     fileName: 'walkThrough', // missing filename
     category: 'panels',
-    categorySection: 'walkthrough'
+    categorySection: 'walkthrough',
   },
   {
     name: 'Fluid Walkthrough',
     fileName: 'WalkThroughFluid',
     category: 'panels',
-    categorySection: 'walkthrough'
+    categorySection: 'walkthrough',
   },
   {
     name: 'Meeting Time',
     fileName: 'Meeting',
     category: 'user',
-    categorySection: 'events'
-  }
+    categorySection: 'events',
+  },
 ]
 // NOTE: hardcoded list but using getAllComponentsForBentoCli.js
 // TODO: use getAllComponentsForBentoCli.js on github action and request schema file as json from url
@@ -607,7 +607,7 @@ export const componentsList: ComponentSchema[] = [
     category: 'user',
     categorySection: 'events',
   },
-  ...MISSING_COMPONENTS
+  ...MISSING_COMPONENTS,
 ].map((item) => {
   return { ...item, isOSS: OSS_COMPONENTS.includes(item.fileName) }
 })

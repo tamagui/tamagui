@@ -1,5 +1,5 @@
 /// <reference types="react" />
-import type { ScopedProps, SelectContextValue, SelectItemParentContextValue } from './types';
+import type { SelectScopedProps, SelectContextValue, SelectItemParentContextValue } from './types';
 export declare const createSelectContext: <ContextValueType extends object | null>(rootComponentName: string, defaultContext?: ContextValueType | undefined) => readonly [{
     (props: ContextValueType & {
         scope: import("@tamagui/create-context").Scope<ContextValueType>;
@@ -40,7 +40,7 @@ export declare const SelectItemParentProvider: {
     warn?: boolean | undefined;
     fallback?: Partial<SelectItemParentContextValue> | undefined;
 } | undefined) => SelectItemParentContextValue;
-export declare const ForwardSelectContext: ({ __scopeSelect, context, itemContext, children, }: ScopedProps<{
+export declare const ForwardSelectContext: ({ __scopeSelect, context, itemContext, children, }: SelectScopedProps<{
     children?: any;
     context: SelectContextValue;
     itemContext: SelectItemParentContextValue;
