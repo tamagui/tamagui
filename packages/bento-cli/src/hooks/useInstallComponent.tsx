@@ -96,6 +96,19 @@ export const installComponent = async ({ component, setInstall, install }) => {
         )
       )
     )
+  } else if (hasSrcDir()) {
+    const uiDir = path.join(process.cwd(), 'src', 'components', 'ui')
+
+    if (!existsSync(uiDir)) {
+      mkdirSync(uiDir, { recursive: true })
+    }
+
+    components.map((component) =>
+      fs.writeFile(
+        path.join(process.cwd(),'src', 'components', 'ui', component.name),
+        component.content
+      )
+    )
   } else {
   }
   setInstall((prev) => ({
@@ -106,11 +119,11 @@ export const installComponent = async ({ component, setInstall, install }) => {
 
 export const useInstallComponent = () => {
   const { install, setInstall } = useContext(AppContext)
-  const { data, isLoading, error } = useGetComponent()
+  const { data } = useGetComponent()
 
   useEffect(() => {
     if (data && install?.installingComponent) {
       installComponent({ component: data, setInstall })
     }
-  }, [data])
+  }, [data, install, setInstall])
 }
