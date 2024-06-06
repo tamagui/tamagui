@@ -17,11 +17,11 @@
     "@tamagui/core": "1.100.0",
     "@tamagui/input": "1.100.0",
     "react-native": "0.74.1",
-    "vxs": "^0.1.83"
+    "vxs": "^0.1.84"
   },
   "devDependencies": {
     "patch-package": "^8.0.0",
-    "vxrn": "^0.1.83"
+    "vxrn": "^0.1.84"
   },
   "publishConfig": {
     "access": "public"
