@@ -12498,21 +12498,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"create-one@workspace:apps/testing":
-  version: 0.0.0-use.local
-  resolution: "create-one@workspace:apps/testing"
-  dependencies:
-    "@tamagui/button": "npm:1.100.0"
-    "@tamagui/config": "npm:1.100.0"
-    "@tamagui/core": "npm:1.100.0"
-    "@tamagui/input": "npm:1.100.0"
-    patch-package: "npm:^8.0.0"
-    react-native: "npm:0.74.1"
-    vxrn: "npm:^0.1.84"
-    vxs: "npm:^0.1.84"
-  languageName: unknown
-  linkType: soft
-
 "create-tamagui@workspace:packages/create-tamagui":
   version: 0.0.0-use.local
   resolution: "create-tamagui@workspace:packages/create-tamagui"
@@ -27257,6 +27242,21 @@ __metadata:
   checksum: 10/ab02715f658dcfa6657e6c96def1574f80277335bdc14a97b15f395e48e61f6d5b570f9db4c74a03e7e53c5b09db4b3f9c06f03953e4c1872a31b7f95d559073
   languageName: node
   linkType: hard
+
+"testing@workspace:apps/testing":
+  version: 0.0.0-use.local
+  resolution: "testing@workspace:apps/testing"
+  dependencies:
+    "@tamagui/button": "npm:1.100.0"
+    "@tamagui/config": "npm:1.100.0"
+    "@tamagui/core": "npm:1.100.0"
+    "@tamagui/input": "npm:1.100.0"
+    patch-package: "npm:^8.0.0"
+    react-native: "npm:0.74.1"
+    vxrn: "npm:^0.1.84"
+    vxs: "npm:^0.1.84"
+  languageName: unknown
+  linkType: soft
 
 "text-table@npm:^0.2.0":
   version: 0.2.0

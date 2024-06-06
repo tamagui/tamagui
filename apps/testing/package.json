@@ -1,5 +1,5 @@
 {
-  "name": "create-one",
+  "name": "testing",
   "version": "0.0.0",
   "files": [],
   "type": "module",
@@ -7,7 +7,7 @@
     "dev": "vxrn dev",
     "dev:clean": "yarn clean && yarn dev",
     "clean": "rm -r dist || true && rm -r node_modules/.vite || true",
-    "build": "vxrn build",
+    "build:prod": "vxrn build",
     "serve": "vxrn serve",
     "postinstall": "patch-package || true"
   },
