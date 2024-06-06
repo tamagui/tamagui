@@ -23,7 +23,7 @@ export const Spinner: React.ForwardRefExoticComponent<
       }
       return (
         <YStack ref={ref} {...stackProps}>
-          <ActivityIndicator size={size} color={color} />
+          <ActivityIndicator {...stackProps} size={size} color={color} />
         </YStack>
       )
     }),
