@@ -16,6 +16,7 @@ import { HomeThemes } from '~/features/site/home/HomeThemes'
 import { HomeTypography } from '~/features/site/home/HomeTypography'
 import { HomeSection, SectionTinted, TintSection } from '~/features/site/home/TintSection'
 import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
+import { animationCode } from '~/lib/codeExamples'
 
 export async function loader() {
   return await getCompilationExamples()
@@ -87,7 +88,7 @@ export default function TamaguiHomePage() {
               maskImage: `linear-gradient(transparent, #000, transparent)`,
             }}
           />
-          <HomeAnimations animationCode={``} />
+          <HomeAnimations animationCode={animationCode} />
         </TintSection>
         <TintSection index={7} zi={1}>
           <HomeFeaturesGrid />
