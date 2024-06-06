@@ -30,8 +30,6 @@ export default function TamaguiHomePage() {
 
   return (
     <>
-      <ThemeNameEffect colorKey="$color2" />
-      <ThemeTint>
         <HomeGlow />
         <YStack
           fullscreen
@@ -121,7 +119,6 @@ export default function TamaguiHomePage() {
         <HomeSection zi={0}>
           <HomeCommunity />
         </HomeSection>
-      </ThemeTint>
     </>
   )
 }
