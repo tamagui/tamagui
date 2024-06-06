@@ -19,6 +19,7 @@ import { ContainerLarge } from '~/components/Containers'
 import { Link } from '~/components/Link'
 import { CodeDemoPreParsed } from './CodeDemoPreParsed'
 import { HomeH2, HomeH3 } from './HomeHeaders'
+import { getCompilationExamples } from '~/lib/getCompilationExamples'
 
 export const AnimationsDemo = (props) => {
   const { tint } = useTint()
@@ -48,7 +49,9 @@ const animationDescriptions = [
 
 let hasScrolledOnce = false
 
-export function HomeAnimations({ animationCode }) {
+
+export function HomeAnimations() {
+  const {animationCode} = getCompilationExamples()
   const { tint } = useTint()
   const [disableScrollPane, setDisableScrollPane] = useState(true)
 
