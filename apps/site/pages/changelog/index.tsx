@@ -1,19 +1,16 @@
-import { authors } from '@data/authors'
+import { useMemo, useState } from 'react'
 import { getDefaultLayout } from '@lib/getDefaultLayout'
 import { getAllFrontmatter, getMdxBySlug } from '@lib/mdx'
 import { NextSeo } from 'next-seo'
 import { H2, Spacer, YStack } from 'tamagui'
-import { useEffect, useMemo, useRef, useState } from 'react'
-
 import { ContainerLarge } from '../../components/Container'
-import { NextLink } from '../../components/NextLink'
-import { TamaguiCard } from '../../components/TamaguiCard'
 
 import { getMDXComponent } from 'mdx-bundler/client'
 import { getCompilationExamples } from '@lib/getCompilationExamples'
 import { ChangelogSlugPage } from '@components/ChangelogSlugPage'
 import { TamaguiExamples } from '@components/TamaguiExamplesCode'
 import { PublishedDateSidebar } from '@components/PublishedDateSidebar'
+import { SocialLinksRow } from '@components/SocialLinksRow'
 
 export default function Changelog(props) {
   const Components = useMemo(
@@ -22,18 +19,9 @@ export default function Changelog(props) {
   )
 
   const [section, setSection] = useState('')
-
   const onIntersect = (intersectedSection) => {
     setSection(intersectedSection)
   }
-
-  // useEffect(() => {
-  //   window.scrollBy({
-  //     left: 0,
-  //     top: -195,
-  //     behavior: 'smooth',
-  //   })
-  // }, [section])
 
   return (
     <>
@@ -49,7 +37,6 @@ export default function Changelog(props) {
         display="none"
         $gtLg={{
           display: 'flex',
-          // width: 280,
           flexShrink: 0,
           zIndex: 1,
           position: 'fixed' as any,
@@ -73,7 +60,6 @@ export default function Changelog(props) {
         $gtMd={{
           pb: '$9',
           pl: 250,
-          // pr: 100,
         }}
       >
         {props.mdxData.map((data, index) => (
@@ -85,35 +71,12 @@ export default function Changelog(props) {
               onIntersect={onIntersect}
             />
           </TamaguiExamples.Provider>
-
-          // <NextLink
-          //   legacyBehavior={false}
-          //   key={data.frontmatter.title}
-          //   href={data.frontmatter.slug}
-          //   passHref
-          // >
-          //   <TamaguiCard
-          //     $gtSm={{
-          //       width: '50%',
-          //       maxWidth: 'calc(50% - var(--space-8))',
-          //     }}
-          //     title={data.frontmatter.title}
-          //     subTitle={
-          //       <Paragraph o={0.5} cursor="inherit" theme="alt1" size="$3">
-          //         {Intl.DateTimeFormat('en-US', {
-          //           month: 'short',
-          //           year: 'numeric',
-          //           day: 'numeric',
-          //         }).format(new Date(data.frontmatter.publishedAt || ''))}{' '}
-          //         by &nbsp;
-          //         {authors[data.frontmatter.by].name}
-          //       </Paragraph>
-          //     }
-          //   >
-          //     {data.frontmatter.description}
-          //   </TamaguiCard>
-          // </NextLink>
         ))}
+
+        <YStack gap="$6">
+          <H2>Join the community</H2>
+          <SocialLinksRow />
+        </YStack>
       </ContainerLarge>
     </>
   )
@@ -146,14 +109,3 @@ export async function getStaticProps() {
     },
   }
 }
-
-// export function getStaticProps() {
-//   const frontmatters = getAllFrontmatter('changelog')
-//   const sortedFrontmatters = frontmatters
-//     .filter((x) => !x.draft)
-//     .sort(
-//       (a, b) =>
-//         Number(new Date(b.publishedAt || '')) - Number(new Date(a.publishedAt || ''))
-//     )
-//   return { props: { frontmatters: sortedFrontmatters } }
-// }

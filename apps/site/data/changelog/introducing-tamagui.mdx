@@ -1,11 +1,14 @@
 ---
 title: Introducing Tamagui
 publishedAt: '2021-09-22'
-description: A better base layer for building cross-platform apps
+description: Release
 by: nate
+poster: /blog/introducing-tamagui/hero.png
 # relatedIds:
 #   - 'tamagui-alpha'
 ---
+
+**A better base layer for building cross-platform apps**
 
 <Notice>Tamagui is in alpha - we'd love it if you tried it out and gave us feedback</Notice>
 
@@ -13,17 +16,12 @@ Tamagui takes the next steps towards truly universal styling for React apps.
 
 It was born to allow **sharing more code between native and web components** — with all the [modern styling features we've grown love](/docs/intro/introduction).
 
-<Image
-  title="Layout tools image"
-  src="/blog/introducing-tamagui/hero.png"
-  size="hero"
-  height={200}
-/>
-
 Until today, sharing code between native and web has had some big downsides — especially inline styling, responsive styling and themes. All of the above require time and memory-hungry operations in JavaScript. On the web, especially, this runs a lot of JS on the same thread as your layout, causing issues with jank and limitations rendering deeper trees.
 
-**Tamagui introduces an optimizing compiler, enabling:**
+Tamagui introduces an optimizing compiler, enabling:
 
-### Inline styles without overhead
+**Inline styles without overhead**
 
 An optimizing compiler extracts most styles you write, for [**2-8x speed improvements**](/docs/intro/benchmarks) vs other cross-platform UI kits. Even if they're inside conditional ternaries or spread objects, it extracts styles out of your JS bundle and into atomic CSS.
+
+---

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 
-export const useScrollObserver = ({ section, onIntersect }) => {
+export const useScrollObserver = ({ index, onIntersect }) => {
   const sectionRef = useRef(null)
 
   const [rootMargin, setRootMargin] = useState('0px 0px 0px 0px') // top, right, bottom, left
@@ -23,7 +23,8 @@ export const useScrollObserver = ({ section, onIntersect }) => {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            onIntersect(section)
+            onIntersect(`${index}-${entry.target.id}`)
+            window.history.pushState({}, '', `#${entry.target.id}`)
           }
         })
       },

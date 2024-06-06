@@ -1,6 +1,6 @@
-import { YStack, AnimatePresence, SizableText, Tabs, Anchor } from 'tamagui'
 import { useEffect, useState } from 'react'
-import type { StackProps, TabLayout, TabsTabProps } from 'tamagui'
+import type { TabLayout, TabsTabProps } from 'tamagui'
+import { YStack, SizableText, Tabs, Anchor } from 'tamagui'
 
 export function PublishedDateSidebar({ mdxData, section }) {
   const [tabState, setTabState] = useState<{
@@ -44,42 +44,19 @@ export function PublishedDateSidebar({ mdxData, section }) {
       onValueChange={setCurrentTab}
     >
       <YStack>
-        <AnimatePresence>
-          {intentAt && (
-            <TabsRovingIndicator
-              intentAt={!!intentAt}
-              w={intentAt.width}
-              h={intentAt.height}
-              x={intentAt.x}
-              y={intentAt.y}
-            />
-          )}
-        </AnimatePresence>
-
-        <AnimatePresence>
-          {activeAt && (
-            <TabsRovingIndicator
-              activeAt={!!activeAt}
-              w={activeAt.width}
-              h={activeAt.height}
-              x={activeAt.x}
-              y={activeAt.y}
-            />
-          )}
-        </AnimatePresence>
-
         <Tabs.List
           disablePassBorderRadius
           loop={false}
           aria-label="changelog-dates"
-          gap="$0"
+          gap={0}
+          ai="flex-end"
         >
           {mdxData.map((data, id) => (
             <Tabs.Tab
               key={`${id}-${data.frontmatter.publishedAt}`}
               unstyled
-              px="$3"
               py="$2"
+              transformOrigin="right"
               value={`${id}-${data.frontmatter.publishedAt}`}
               onInteraction={handleOnInteraction}
               hoverStyle={{ scale: 1.025 }}
@@ -95,7 +72,7 @@ export function PublishedDateSidebar({ mdxData, section }) {
               {...(intentAt && {
                 scale: 1,
               })}
-              animation="quickest"
+              animation="quicker"
             >
               <Anchor href={`#${data.frontmatter.publishedAt}`}>
                 <TabText
@@ -110,40 +87,6 @@ export function PublishedDateSidebar({ mdxData, section }) {
         </Tabs.List>
       </YStack>
     </Tabs>
-  )
-}
-
-const TabsRovingIndicator = ({
-  activeAt,
-  intentAt,
-  ...props
-}: { activeAt?: boolean; intentAt?: boolean } & StackProps) => {
-  return (
-    <YStack
-      pos="absolute"
-      bc="$color10"
-      bw="$1"
-      br="$4"
-      o={0.7}
-      animation="100ms"
-      enterStyle={{
-        o: 0,
-      }}
-      exitStyle={{
-        o: 0,
-      }}
-      {...(activeAt && {
-        // bc: '$color12',
-        // o: 0.5,
-        o: 0,
-      })}
-      {...(intentAt && {
-        // bc: '$color12',
-        // o: 0.6,
-        o: 0,
-      })}
-      {...props}
-    />
   )
 }
 
@@ -175,7 +118,7 @@ const TabText = ({
           col: '$color11',
         })}
       hoverStyle={{ col: '$color12' }}
-      animation="100ms"
+      className="all ease-in-out ms100"
     >
       {Intl.DateTimeFormat('en-US', {
         month: 'short',

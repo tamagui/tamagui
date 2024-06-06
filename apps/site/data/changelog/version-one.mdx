@@ -1,44 +1,140 @@
 ---
-title: Tamagui 1.0 🎉
-publishedAt: '2022-12-29'
+title: Tamagui 1.100.0 🎉
+publishedAt: '2024-5-6'
 description: Milestone
 by: nate
-poster: banner-one.jpg
+# poster: banner-one.jpg
 ---
 
-<IntroParagraph large>
-  React Native is amazing for building mobile apps, but sharing components between web and
-  native [sacrifices performance, productivity and UX](/docs/intro/why-a-compiler).
-</IntroParagraph>
+**Breaking Changes**
+- `portal`: make portal host mount in a transition ([natew](https://github.com/tamagui/tamagui/commit/e652b86f34e1b8dda935f20129536f0bfb0e2608))
 
-<IntroParagraph>
-  Tamagui introduces a novel optimizing compiler for React that evaluates your code at
-  build-time, turning heavy JS into flatter trees and much faster CSS. The result is more
-  code share %, less dev time, and lighter, faster apps.
-</IntroParagraph>
+**Features**
+- `popper`: adds disableRTL option to prevent the RTL measurement on poppers which causes reflows [#2677](https://github.com/tamagui/tamagui/pull/2677) ([natew](https://github.com/tamagui/tamagui/commit/32be9d7506cd768815a6dd61927048506fa88323))
+- `image-next`: adds @tamagui/image-next a beta and lighter weight Image that has no dependency on react-native [#2677](https://github.com/tamagui/tamagui/pull/2677) ([natew](https://github.com/tamagui/tamagui/commit/cd63b0ab3988ce19089c3b26fb7df028c1836b84))
+- `use-did-finish-ssr`: default to async rather than sync ([natew](https://github.com/tamagui/tamagui/commit/ec031fb407b6e79f4c9de6d12721678a06c5ce89))
+- `web`: add TAMAGUI_REACT_19 env variable to switch to inline style tags rather than useInsertionEffect ([natew](https://github.com/tamagui/tamagui/commit/fc2583d13f98b5acdd6c023accc4f8ade6e911bb))
+- `web`: allow getVariable and getVariableValue to take a group argument as the second arg to lookup in a specific group ([natew](https://github.com/tamagui/tamagui/commit/40eec3e274da2c598fc5dbc491c457ad0dd73703))
+- `popper`: Popper Arrow when given a number size will directly use that size ([natew](https://github.com/tamagui/tamagui/commit/167a574b4e4172ea722185347a14ab6f04725e73))
 
-Tamagui's optimizing compiler makes advanced optimizations using partial evaluation, CSS extraction, and ultimately tree-flattening. Where it optimizes, things get a lot faster:
+**Bug Fixes**
+- `tamagui-build`: fix bundle source map issue and test ([natew](https://github.com/tamagui/tamagui/commit/c9d0fecf3b3309a464b515d2a7be0af33c60a14c))
+- `core`: redo enter animation logic to be concurrent safe ([natew](https://github.com/tamagui/tamagui/commit/ed1fb39541b0b79d5b774e60a8e56f4f874c7702))
+- `animations-moti`: ignore animating calc style values ([natew](https://github.com/tamagui/tamagui/commit/e2ba1134b48390568a6ad5c2f48bbf22eb62ca31))
+- `moti`: fix should-enter animations transitioning more smoothly to spring driver ([natew](https://github.com/tamagui/tamagui/commit/7d8ec4b56f8d483dbb564772b93e600dcd882042))
+- remove some transitions from popper ([natew](https://github.com/tamagui/tamagui/commit/1556c1c2117f7c408870b2aeced35d7f5fa74536))
+- `progress`: export ProgressExtraProps for type compat ([natew](https://github.com/tamagui/tamagui/commit/dedb663277db0f1abe56c95a778a23343358e5dc))
+- `select`: export SelectItemExtraProps and SelectViewportExtraProps for type compat ([natew](https://github.com/tamagui/tamagui/commit/23be35fbb71c1f30b29845bb0df72a39600f6dd7))
 
-Tamagui comes in three parts:
+**Documentation**
+- Refactor command tab code [#2666](https://github.com/tamagui/tamagui/pull/2666) ([Romain Trotard](https://github.com/tamagui/tamagui/commit/07c1cd1e6b00b3b02a61b24466f85c1ff09bbaba))
+- Fix animation when going fast on click or slow CPU [#2666](https://github.com/tamagui/tamagui/pull/2666) ([Romain Trotard](https://github.com/tamagui/tamagui/commit/6a30a11a27d367eefae6cc4a837ced84667a70f4))
+- Popover.Arrow docs ([natew](https://github.com/tamagui/tamagui/commit/dc751ac2ddf951434d1abbe5d2ebbb5f0dbaf679))
 
-[**Tamagui Core**](#overview-of-tamaguicore) (`@tamagui/core`) is a style library for React Native and web that supports 100% of the React Native API surface in a library that only depends on React. It adds all the [goodies of modern style libraries](#overview) into a cohesive package.
+**Performance Improvements**
+- `web`: much faster scanning of themes css on mount [#2677](https://github.com/tamagui/tamagui/pull/2677) ([natew](https://github.com/tamagui/tamagui/commit/faaf50f7d5adeafca173587eabb0abdb530e4edf))
+- `web`: use transitions for internal component state [#2677](https://github.com/tamagui/tamagui/pull/2677) ([natew](https://github.com/tamagui/tamagui/commit/a41d3a64c9eaf754329b93f5be136b274a659c5d))
+- `web`: avoid some work resolving variants [#2677](https://github.com/tamagui/tamagui/pull/2677) ([natew](https://github.com/tamagui/tamagui/commit/f1293d698d76a9399ac863317bd96130ead3aee7))
+- `toast`: use transitions for performance [#2677](https://github.com/tamagui/tamagui/pull/2677) ([natew](https://github.com/tamagui/tamagui/commit/591ac2c5ff0779691318ba6d0b400888da9c9b3a))
+- `portal`: use transitions for performance [#2677](https://github.com/tamagui/tamagui/pull/2677) ([natew](https://github.com/tamagui/tamagui/commit/a268257d402017add164db5bdadbb8cea0c034f3))
+- `portal`: avoid extra render on mount using typeof window ([natew](https://github.com/tamagui/tamagui/commit/8a6d0f42dd23462c0f381f2c456a4d51868aee82))
+- `portal`: make transitionDispatch transition ([natew](https://github.com/tamagui/tamagui/commit/5982300ba3ea77eeb10d9f2c3ccf57878c613940))
+- `portal`: make portal host mount in a transition ([natew](https://github.com/tamagui/tamagui/commit/e652b86f34e1b8dda935f20129536f0bfb0e2608))
+- `focus-scope`: avoid sync transitions ([natew](https://github.com/tamagui/tamagui/commit/5ccab767a22a5913304a25aa9a6a81ff12c21c71))
+- `core`: avoid extra render on native for enter animations ([natew](https://github.com/tamagui/tamagui/commit/3c0e218cf0c3f482fb4b07b2eb9192ce2b63c588))
 
-[**Tamagui Static**](#overview-of-tamaguistatic) (`@tamagui/static`) is an optimizing compiler on top of Core, turning even inline styles sprinkled with logic into atomic CSS and minimal JS, flattening your view tree for maximum performance.
+**Chores**
+- `popper`: cleanup arrow size calc to always defer to size prop more clearly in code ([natew](https://github.com/tamagui/tamagui/commit/f91044ffe66d0e9c83d67c3fcf7f4d4c669c6d90))
 
-[**Tamagui UI**](#overview-of-tamagui) (`tamagui`) is a component kit built on top of the incredibly powerful theme primitives of `core`. That, alongside composable-component APIs and complete size control enables a new level of control not seen before in a UI kit.
+**Commits**
+- inputs,radiogroups, chips [#2676](https://github.com/tamagui/tamagui/pull/2676) ([Šimun Kordiš](https://github.com/tamagui/tamagui/commit/23fc3d95511d45b7d3c9a0a966966069c4929b08))
+- ccbdf73: fixed phonebook status colors (Šimun Kordiš) [#2676](https://github.com/tamagui/tamagui/pull/2676)
+- polish 4 ([Šimun Kordiš](https://github.com/tamagui/tamagui/commit/2b0a5e2baba4f734ebeecdbc8afe838882c3f245))
+- (Phonebook list) fixed non random avatar ([Šimun Kordiš](https://github.com/tamagui/tamagui/commit/c811e6a808bfc60bd397e9e96d8b017d659b59eb))
+- d20fe49: upgrade vxs (natew)
+- f7ee471: Update clipboard script in InstallInput.tsx (#2679) (Vaibhav Vinayak) [#2679](https://github.com/tamagui/tamagui/pull/2679)
+- 6942536: fix railway build (natew) [#2677](https://github.com/tamagui/tamagui/pull/2677)
+- temp fix to suppress annoying warning logs [#2677](https://github.com/tamagui/tamagui/pull/2677) ([natew](https://github.com/tamagui/tamagui/commit/67b06d521c0152ccae0a5506b1d28912fd36abf9))
+- 3ebd862: upgrade (natew) [#2677](https://github.com/tamagui/tamagui/pull/2677)
+- 0e4c89f: more transitions in site (natew) [#2677](https://github.com/tamagui/tamagui/pull/2677)
+- 4a6423a: patch floating ui to use transitions (natew) [#2677](https://github.com/tamagui/tamagui/pull/2677)
+- 3e4b01c: various performance (natew) [#2677](https://github.com/tamagui/tamagui/pull/2677)
+- 7ede4d5: fix types and packages (natew)
+- 22b292a: various x fixes (natew)
+- 80ac7ce: fix tests (natew)
+- 61942cb: upgrade vxrn and fixe (natew)
+- comment out unused image ([natew](https://github.com/tamagui/tamagui/commit/b3451d146756302ba7a8d102b1c9171270130233))
+- bda2ff9: suspense load font (natew)
+- c767744: upgrade deps (natew)
+- 9a22ec7: prefetch fonts on hover (natew)
+- 54d4f0d: disable profile (natew)
+- a83b501: small cleanup (natew)
+- a2048fc: fix styles in prod (natew)
+- e50dfc3: whitelist (natew)
+- ce7066f: use layout effects for mounts to avoid fuoc and flickers (natew)
+- 21c114a: site various cleanup, fixed position glows (natew)
+- 2dc055b: disable image docs (natew)
+- a446ef8: wip - various animation fixes (natew)
+- 6fb97bb: cleanup glows (natew)
+- e1531cf: remove profile (natew)
+- f5a3a2e: fix test (natew)
+- 62e55cd: upgrade vxrn (natew)
+- e4ffc90: Corrected Shorthand setup github link in configuration.mdx (Shola Japheth) [#2682](https://github.com/tamagui/tamagui/pull/2682)
+- 49fa169: (docs): added next js app router global font (Šimun Kordiš)
+- 1140d31: Merge branch 'master' of https://github.com/tamagui/tamagui (Šimun Kordiš)
+- 299fb95: (docs): added font import to nextjs themes guide (Šimun Kordiš)
+- 8d4debb: upgrade vxs (natew)
+- 482cd1f: (docs): updated nextjs guide (Šimun Kordiš)
+- e449b81: Merge branch 'master' of https://github.com/tamagui/tamagui (Šimun Kordiš)
+- 8f577b8: just use deps from profile (natew)
+- 5723fbe: fix react-19 profile (natew)
+- ba49007: restore working build script (natew)
+- 868bf42: (docs): nextjs guide update (Šimun Kordiš)
+- 4a6723b: Merge branch 'master' of https://github.com/tamagui/tamagui (Šimun Kordiš)
+- 67c6b9f: (bento): fixed otp phone preview (Šimun Kordiš)
+- 1735cdf: fix tamagui test entry points (natew)
+- ade8086: whitelist (natew)
+- f6d5ccf: (docs): updated nextjs guide (Šimun Kordiš)
+- 44618d9: remove floating patches (natew)
+- d56b0ca: vxs next version updates (natew)
+- 45fdb91: simplify profile vite (natew)
+- 2fd7381: upgrade vxrn (natew)
+- c0b7c01: checkout v4 (natew)
+- 5661a52: setup node v4 22 (natew)
+- b1bb8cc: upgrade vxrn (natew)
+- 07ee47f: upgrade (natew)
+- 5dcd182: patch floating ui for concurrent (natew)
+- da85844: site cleanups (natew)
+- 3bed086: undo floating patches (natew)
+- f472d4b: remove profile (natew)
+- 5d9ad78: fix last commit (natew)
+- a98b00b: perf and upgrade (natew)
+- 28676fd: left profile on (natew)
+- 43b9e69: lint (natew)
+- bc3b167: Update installation.mdx (Andrew McCallum) [#2694](https://github.com/tamagui/tamagui/pull/2694)
+- 0abdcc6: (starter): expo-router fixes (Šimun Kordiš)
+- 0169b9d: (docs): made it more clear that config is required (Šimun Kordiš)
+- 4221f32: (bento): redesigned masonry grid (Šimun Kordiš)
+- 122d46f: add test app (natew)
+- 0c7c3d5: words (natew)
+- dc68184: change to only encrypt src (natew)
+- a79b519: add back in package.json (natew)
+- remove if statement for dev testing of error [#2695](https://github.com/tamagui/tamagui/pull/2695) ([ROFI](https://github.com/tamagui/tamagui/commit/1cd4ab35ee44740d76d0e57902f6b0896f492cf6))
+- remove componentPath from components.ts [#2695](https://github.com/tamagui/tamagui/pull/2695) ([ROFI](https://github.com/tamagui/tamagui/commit/0bba788d34fb82e86df5b6d6d951103fb9665689))
+- fix build type issue [#2695](https://github.com/tamagui/tamagui/pull/2695) ([ROFI](https://github.com/tamagui/tamagui/commit/0be4b39cf4208706dfa576eb3606ed0ffbb20e77))
+- fixes to tsconfig out dir and package source values [#2695](https://github.com/tamagui/tamagui/pull/2695) ([ROFI](https://github.com/tamagui/tamagui/commit/57a4a2d7dcf552cf05ea0dd6cfa06b0fe5e6f9b8))
+- add script to link bento-cli package namespace locally [#2695](https://github.com/tamagui/tamagui/pull/2695) ([ROFI](https://github.com/tamagui/tamagui/commit/a38375257a8000a7927d1444161cdc9349abccd4))
+- fix: disable up/down keys when installing component [#2695](https://github.com/tamagui/tamagui/pull/2695) ([ROFI](https://github.com/tamagui/tamagui/commit/70abf8c64f135d643c7a6d68b63719da42f53d0a))
+- fix: esc key working on search screen [#2695](https://github.com/tamagui/tamagui/pull/2695) ([ROFI](https://github.com/tamagui/tamagui/commit/5ff960d7e478ab88d60b2fa1c0970f81ba660c0c))
+- fix: OSS components working as well as non OSS [#2695](https://github.com/tamagui/tamagui/pull/2695) ([ROFI](https://github.com/tamagui/tamagui/commit/5a8f68af63fba83635f2df1e057f41e724288366))
+- bento-cli add missing components that parser from getAllComponentsForBentoCli.js missed [#2695](https://github.com/tamagui/tamagui/pull/2695) ([ROFI](https://github.com/tamagui/tamagui/commit/286c42d948af0a0ffc135f0ae22aa20f6087bea0))
+- b6947b1: updated types (natew)
+- 7f12f15: add git attributes (natew)
+- 592d8d6: unencrypt base files (natew)
+- 004f961: (bento): masonry minor fix (Šimun Kordiš)
+- 7b2d373: remove profile (natew)
+- 82d9c83: yarn.lock fixes (Šimun Kordiš) [#2697](https://github.com/tamagui/tamagui/pull/2697)
+- d7417a7: fix deps (natew)
+- c68d2b6: v1.100.0 (natew)
 
 ---
-
-## Overview
-
-Lets get familiar with both `@tamagui/core` (the styling library) and `@tamagui/static` (the compiler), and how the latter optimizes the former.
-
-<Spacer />
-
-The key to Tamagui's performance gains lie in **view flattening** or tree-flattening: the compiler analyzes code (even across module boundaries) and evaluates styled components away using both the AST and Node VM code evaluation. It will fully flatten custom styled components (like `<Circle />`) into plain old `<div />` (or `<View />` on native).
-
----
-
-<Spacer />
-<SponsorNotice />
-<Spacer />
