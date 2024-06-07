@@ -1,5 +1,5 @@
 import { useTint } from '@tamagui/logo'
-import { memo, useMemo, useState } from 'react'
+import { memo, startTransition, useMemo, useState } from 'react'
 import { AnimatePresence, YStack, isClient, useDidFinishSSR } from 'tamagui'
 
 import { useTintSectionIndex } from './TintSection'
@@ -32,11 +32,13 @@ export const HomeGlow = memo(() => {
 
   if (isClient) {
     useTintSectionIndex((index) => {
-      setSectionIndex(index)
-      // const dims = tintSectionDimensions[index]
-      // console.log('index', index, dims)
-      const sy = document.documentElement?.scrollTop ?? 0
-      setScrollTop(sy + 100)
+      startTransition(() => {
+        setSectionIndex(index)
+        // const dims = tintSectionDimensions[index]
+        // console.log('index', index, dims)
+        const sy = document.documentElement?.scrollTop ?? 0
+        setScrollTop(sy + 100)
+      })
     })
   }
 
@@ -70,7 +72,7 @@ export const HomeGlow = memo(() => {
           l={0}
           left={`calc(50vw - 500px)`}
           x={x}
-          y={isOnHeroBelow ? 350 : yRand + 250}
+          y={isOnHeroBelow ? 350 : yRand + 250 + scrollTop}
           scale={scale * (isAlt ? 0.5 : 1)}
           scaleX={isOpposing ? 1 : 1.3}
         >
@@ -93,14 +95,12 @@ export const HomeGlow = memo(() => {
       t={0}
       l={0}
       pe="none"
-      animation="kindaBouncy"
+      className="all ease-in ms300"
       key={0}
       zi={0}
       x={0}
-      y={scrollTop}
       o={0.4}
       {...(isOnHeroBelow && {
-        animation: 'superLazy',
         x: sectionIndex === 2 ? -xs : sectionIndex === 4 ? xs : 0,
         y: -100,
         o: 0.4,
