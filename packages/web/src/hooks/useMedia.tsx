@@ -183,24 +183,45 @@ type UseMediaInternalState = {
   touched?: Set<string>
 }
 
-function subscribe(subscriber: any) {
-  listeners.add(subscriber)
-  return () => listeners.delete(subscriber)
+function getSnapshot(uid: any, { touched, prev }: UseMediaInternalState) {
+  const componentState = uid ? shouldUpdate.get(uid) : undefined
+
+  if (componentState?.enabled === false) {
+    return prev
+  }
+
+  const testKeys =
+    componentState?.keys ??
+    ((!componentState || componentState.enabled) && touched ? [...touched] : null)
+
+  const hasntUpdated =
+    !testKeys || testKeys?.every((key) => mediaState[key] === prev[key])
+
+  if (hasntUpdated) {
+    return prev
+  }
+
+  return mediaState
 }
 
-function useLayoutExternalStore<State>(
-  subscriber,
-  getSnapshot,
-  getServerSnapshot
-): State {
+export function useMedia(uid?: any, componentContext?: ComponentContextI): UseMediaState {
+  const internal = useRef<UseMediaInternalState>()
+  // performance boost to avoid using context twice
+  const disableSSR = getDisableSSR(componentContext)
   const hasHydrated = useDidHydrateOnce()
-  const [state, setState] = useState(hasHydrated ? mediaState : getServerSnapshot)
+  const initialState =
+    (disableSSR || !isWeb || hasHydrated ? mediaState : initState) || {}
+  if (!internal.current) {
+    internal.current = { prev: initialState }
+  }
+  const [state, setState] = useState(initialState)
 
   useIsomorphicLayoutEffect(() => {
     function update() {
       setState((prev) => {
-        const next = getSnapshot()
+        const next = getSnapshot(uid, internal.current!)
         if (next !== prev) {
+          internal.current!.prev = next
           return next
         }
         return prev
@@ -209,56 +230,17 @@ function useLayoutExternalStore<State>(
 
     update()
 
-    return subscriber(update)
+    listeners.add(update)
+    return () => {
+      listeners.delete(update)
+    }
   }, [])
-
-  return state
-}
-
-export function useMedia(uid?: any, componentContext?: ComponentContextI): UseMediaState {
-  const internal = useRef<UseMediaInternalState | undefined>()
-  // performance boost to avoid using context twice
-  const disableSSR = getDisableSSR(componentContext)
-  const initialState = (disableSSR || !isWeb ? mediaState : initState) || {}
-
-  const state = useLayoutExternalStore<MediaQueryState>(
-    subscribe,
-    () => {
-      if (!internal.current) {
-        return mediaState
-      }
-
-      const { touched, prev } = internal.current
-      const componentState = uid ? shouldUpdate.get(uid) : undefined
-
-      if (componentState && componentState.enabled === false) {
-        return prev
-      }
-
-      const testKeys =
-        componentState?.keys ??
-        ((!componentState || componentState.enabled) && touched ? [...touched] : null)
-
-      const hasntUpdated =
-        !testKeys || testKeys?.every((key) => mediaState[key] === prev[key])
-
-      if (hasntUpdated) {
-        return prev
-      }
-
-      internal.current.prev = mediaState
-
-      return mediaState
-    },
-    () => initialState
-  )
 
   return new Proxy(state, {
     get(_, key) {
       if (typeof key === 'string') {
-        internal.current ||= { prev: initialState }
-        internal.current.touched ||= new Set()
-        internal.current.touched.add(key)
+        internal.current!.touched ||= new Set()
+        internal.current!.touched.add(key)
       }
       return Reflect.get(state, key)
     },
