@@ -108,7 +108,7 @@ export default function RootLayout() {
 
   return (
     // add this
-    <TamaguiProvider config={tamaguiConfig} defaultTheme={colorScheme}>
+    <TamaguiProvider config={tamaguiConfig} defaultTheme={colorScheme!}>
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
         <Stack>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
