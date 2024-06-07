@@ -16,6 +16,7 @@
     "start": "node vercel-server.js"
   },
   "dependencies": {
+    "@docsearch/react": "^3.5.2",
     "@leeoniya/ufuzzy": "^1.0.14",
     "@react-navigation/native": "6.1.17",
     "@react-three/drei": "^9.105.6",

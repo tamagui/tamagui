@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 import { memo, useCallback, useEffect, useMemo, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { Paragraph } from 'tamagui'
+import { Paragraph, View } from 'tamagui'
 
 import { SearchContext } from './SearchContext'
 
@@ -50,49 +50,50 @@ export const SearchProvider = memo(({ children }: any) => {
   return (
     <>
       <SearchContext.Provider value={contextValue}>{children}</SearchContext.Provider>
-      {isOpen &&
+      {true &&
         createPortal(
-          <DocSearchModal
-            placeholder="Search docs..."
-            hitComponent={ResultItem}
-            searchParameters={{
-              // facetFilters: ['version:1.0.0'],
-              facetFilters: [],
-              distinct: 1,
-            }}
-            initialQuery={initialQuery || ''}
-            initialScrollY={window.scrollY}
-            onClose={onClose}
-            appId={APP_ID}
-            apiKey={API_KEY}
-            indexName={INDEX}
-            navigator={{
-              navigate({ itemUrl }) {
-                setIsOpen(false)
-                router.push(itemUrl)
-              },
-            }}
-            transformItems={(items) => {
-              return items.map((item, index) => {
-                const aEl = document.createElement('a')
-                aEl.href = item.url
-                const hash = aEl.hash
-                return {
-                  ...item,
-                  url: `${aEl.pathname}${hash}`,
-                  isResult: () => true,
-                  isParent: () => item.type === 'lvl1' && items.length > 1 && index === 0,
-                  isChild: () =>
-                    items.length > 1 &&
-                    items[0].type === 'lvl1' &&
-                    item.type !== 'lvl1' &&
-                    index !== 0,
-                  isFirst: () => index === 1,
-                  isLast: () => index === items.length - 1 && index !== 0,
-                }
-              })
-            }}
-          />,
+          // <DocSearchModal
+          //   placeholder="Search docs..."
+          //   hitComponent={ResultItem}
+          //   searchParameters={{
+          //     // facetFilters: ['version:1.0.0'],
+          //     facetFilters: [],
+          //     distinct: 1,
+          //   }}
+          //   initialQuery={initialQuery || ''}
+          //   initialScrollY={window.scrollY}
+          //   onClose={onClose}
+          //   appId={APP_ID}
+          //   apiKey={API_KEY}
+          //   indexName={INDEX}
+          //   navigator={{
+          //     navigate({ itemUrl }) {
+          //       setIsOpen(false)
+          //       router.push(itemUrl)
+          //     },
+          //   }}
+          //   transformItems={(items) => {
+          //     return items.map((item, index) => {
+          //       const aEl = document.createElement('a')
+          //       aEl.href = item.url
+          //       const hash = aEl.hash
+          //       return {
+          //         ...item,
+          //         url: `${aEl.pathname}${hash}`,
+          //         isResult: () => true,
+          //         isParent: () => item.type === 'lvl1' && items.length > 1 && index === 0,
+          //         isChild: () =>
+          //           items.length > 1 &&
+          //           items[0].type === 'lvl1' &&
+          //           item.type !== 'lvl1' &&
+          //           index !== 0,
+          //         isFirst: () => index === 1,
+          //         isLast: () => index === items.length - 1 && index !== 0,
+          //       }
+          //     })
+          //   }}
+          // />,
+          <View width={200} height={200} bg={"$red10"} zIndex={500000} pos={"absolute"} top={0} left={0}/>,
           document.body
         )}
     </>

@@ -1,7 +1,7 @@
 import { useRouter } from 'vxs'
 import { memo, useCallback, useEffect, useMemo, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { Paragraph } from 'tamagui'
+import { Paragraph, View } from 'tamagui'
 import  DocSearchModal from './DocSearch'
 
 import { SearchContext } from './SearchContext'
@@ -92,6 +92,7 @@ export const SearchProvider = memo(({ children }: any) => {
               })
             }}
           />,
+          // <View width={200} height={200} bg={"$red10"} zIndex={500000} pos={"absolute"} top={0} left={0}/>,
           document.body
         )}
     </>
