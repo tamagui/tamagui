@@ -6,8 +6,6 @@ import { LinearGradient } from '@tamagui/linear-gradient'
 import { MapPin, Star } from '@tamagui/lucide-icons'
 import { H3, H4, H5, Image, Paragraph, Spacer, Theme, XStack, YStack } from 'tamagui'
 
-console.log('img1', img1)
-
 export default function ResponsiveDemo() {
   const header = (
     <XStack f={1}>
