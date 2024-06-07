@@ -1,13 +1,12 @@
-import { Link } from '~/components/Link'
-import { router } from 'vxs'
+import { useRouter } from 'vxs'
 import { memo, useCallback, useEffect, useMemo, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { lazy } from 'react'
 import { Paragraph } from 'tamagui'
+import  DocSearchModal from './DocSearch'
 
 import { SearchContext } from './SearchContext'
+import { Link } from '~/components/Link'
 
-const DocSearchModal = lazy(() => import('./DocSearch'))
 
 // const ACTION_KEY_DEFAULT = ['Ctrl ', 'Control']
 // const ACTION_KEY_APPLE = ['⌘', 'Command']
@@ -16,6 +15,7 @@ const APP_ID = 'AIE0I4P8ZS'
 const INDEX = 'tamagui'
 
 export const SearchProvider = memo(({ children }: any) => {
+  const router = useRouter()
   const [isOpen, setIsOpen] = useState(false)
   const [initialQuery, setInitialQuery] = useState(null)
 
