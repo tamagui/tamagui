@@ -23584,7 +23584,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prompts@npm:2.4.2, prompts@npm:^2.3.2, prompts@npm:^2.4.2":
+"prompts@npm:^2.3.2, prompts@npm:^2.4.2":
   version: 2.4.2
   resolution: "prompts@npm:2.4.2"
   dependencies:
@@ -26932,7 +26932,7 @@ __metadata:
     npm-run-all: "npm:^4.1.5"
     p-map: "npm:^5.5.0"
     patch-package: "npm:^8.0.0"
-    prompts: "npm:2.4.2"
+    prompts: "npm:2.1.0"
     turbo: "npm:^1.13.3"
     typescript: "npm:^5.4.5"
     ultra-runner: "npm:^3.10.5"
