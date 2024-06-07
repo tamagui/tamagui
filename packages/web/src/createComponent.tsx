@@ -200,7 +200,7 @@ export const useComponentState = (
   const didHydrateOnce = useDidHydrateOnce()
 
   const initialState =
-    hasEnterState || hasRNAnimation
+    hasEnterState || (!didHydrateOnce && hasRNAnimation)
       ? // on the very first render we switch all spring animation drivers to css rendering
         // this is because we need to use css variables, which they don't support to do proper SSR
         // without flickers of the wrong colors.
@@ -921,7 +921,7 @@ export function createComponent<
         return
       }
 
-      if (state.unmounted === true) {
+      if (state.unmounted === true && hasEnterStyle) {
         setStateShallow({ unmounted: 'should-enter' })
         return
       }
