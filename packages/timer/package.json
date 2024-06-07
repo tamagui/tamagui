@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/timer",
-  "version": "1.100.1",
+  "version": "1.100.2",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -18,7 +18,7 @@
     "clean:build": "tamagui-build clean:build"
   },
   "devDependencies": {
-    "@tamagui/build": "1.100.1"
+    "@tamagui/build": "1.100.2"
   },
   "exports": {
     "./package.json": "./package.json",
