@@ -1154,14 +1154,6 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
 
   const store = useTakeoutStore()
 
-    // import('../../helpers/sticksy').then(({ Sticksy }) => {
-    //   new Sticksy(ref as any)
-
-    //   dispose = () => {
-    //     Sticksy.disableAll()
-    //   }
-    // })
-
   useEffect(() => {
     if (!ref) return
     if (!isClient) return
@@ -1170,8 +1162,6 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
       // disable on medium
       return
     }
-
-    let dispose = () => {}
 
     new Sticksy(ref as any)
     // TODO build is eagerly loading this despite this not logging
