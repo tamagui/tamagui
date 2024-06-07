@@ -1,7 +1,8 @@
-// import '@docsearch/css'
+import '@docsearch/css'
 
 // import type { DocSearchModalProps } from '@docsearch/react'
-// import { DocSearchModal } from '@docsearch/react'
+import { DocSearchModal } from '@docsearch/react'
+import { Head } from 'vxs'
 // TODO
 // import { Head } from 'vxs'
 
@@ -10,10 +11,10 @@ type DocSearchModalProps = any
 export default function DocSearch(props: DocSearchModalProps) {
   return (
     <>
-      {/* <Head> */}
+      <Head>
       <style>{docSearchCSS}</style>
-      {/* </Head> */}
-      {/* <DocSearchModal {...props} /> */}
+      </Head>
+      <DocSearchModal {...props} />
     </>
   )
 }
