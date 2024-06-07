@@ -10,10 +10,11 @@ export function useDidHydrateOnceRoot() {
     const tm = setInterval(() => {
       if (Date.now() - last > 32) {
         didHydrateOnce = true
+        clearInterval(tm)
       }
     }, 16)
     return () => {
-      clearTimeout(tm)
+      clearInterval(tm)
     }
   }, [])
 }
