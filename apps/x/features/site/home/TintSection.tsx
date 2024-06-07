@@ -17,36 +17,36 @@ export const TintSection = ({ children, index, themed, zIndex, ...props }: Props
   const mid = useRef<HTMLElement>(null)
   const { tint, tints, setTintIndex } = useTint()
 
-  // useOnIntersecting(
-  //   useMemo(() => [top, mid, bottom], []),
-  //   (entries) => {
-  //     const count = entries.reduce((a, b) => a + (b?.isIntersecting ? 1 : 0), 0)
-  //     numIntersectingAtSection[index] = count
+  useOnIntersecting(
+    useMemo(() => [top, mid, bottom], []),
+    (entries) => {
+      const count = entries.reduce((a, b) => a + (b?.isIntersecting ? 1 : 0), 0)
+      numIntersectingAtSection[index] = count
 
-  //     if (count < 1) {
-  //       return
-  //     }
+      if (count < 1) {
+        return
+      }
 
-  //     let topIndex = -1
-  //     let topStr = -1
-  //     numIntersectingAtSection.forEach((str, index) => {
-  //       if (str >= topStr) {
-  //         topIndex = index
-  //         topStr = str
-  //       }
-  //     })
+      let topIndex = -1
+      let topStr = -1
+      numIntersectingAtSection.forEach((str, index) => {
+        if (str >= topStr) {
+          topIndex = index
+          topStr = str
+        }
+      })
 
-  //     if (topIndex === index && topIndex !== current) {
-  //       const tintIndex = topIndex <= 1 ? 3 : topIndex % tints.length
-  //       setTintIndex(tintIndex)
-  //       current = index
-  //       listeners.forEach((cb) => cb(topIndex, count))
-  //     }
-  //   },
-  //   {
-  //     threshold: 0.2,
-  //   }
-  // )
+      if (topIndex === index && topIndex !== current) {
+        const tintIndex = topIndex <= 1 ? 3 : topIndex % tints.length
+        setTintIndex(tintIndex)
+        current = index
+        listeners.forEach((cb) => cb(topIndex, count))
+      }
+    },
+    {
+      threshold: 0.2,
+    }
+  )
 
   return (
     <YStack
