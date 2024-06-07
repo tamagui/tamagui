@@ -30,9 +30,9 @@
     }
   },
   "dependencies": {
-    "@floating-ui/react": "0.26.6",
-    "@floating-ui/react-dom": "2.0.6",
-    "@floating-ui/react-native": "^0.10.3",
+    "@floating-ui/react": "^0.26.16",
+    "@floating-ui/react-dom": "^2.1.0",
+    "@floating-ui/react-native": "^0.10.6",
     "@tamagui/adapt": "1.100.1",
     "@tamagui/animate-presence": "1.100.1",
     "@tamagui/compose-refs": "1.100.1",
