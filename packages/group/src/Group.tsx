@@ -199,7 +199,7 @@ export type GroupItemProps = {
   forcePlacement?: 'first' | 'center' | 'last'
 }
 
-const GroupItem = (props: ScopedProps<GroupItemProps>) => {
+const GroupItem = React.forwardRef((props: ScopedProps<GroupItemProps>, ref) => {
   const { __scopeGroup, children, forcePlacement } = props
   const groupItemProps = useGroupItem(
     { disabled: isValidElement(children) ? children.props.disabled : undefined },
@@ -212,7 +212,7 @@ const GroupItem = (props: ScopedProps<GroupItemProps>) => {
   }
 
   if (isTamaguiElement(children)) {
-    return React.cloneElement(children, groupItemProps)
+    return React.cloneElement(children, { ...groupItemProps, ref })
   }
 
   return React.cloneElement(children, {
@@ -221,8 +221,9 @@ const GroupItem = (props: ScopedProps<GroupItemProps>) => {
       ...children.props?.['style'],
       ...groupItemProps,
     },
+    ref,
   } as any)
-}
+})
 
 export const useGroupItem = (
   childrenProps: { disabled: boolean },
