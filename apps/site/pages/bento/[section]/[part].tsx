@@ -1,4 +1,4 @@
-import { Data, Sections } from '@tamagui/bento'
+import { Data, Sections, CurrentRouteProvider } from '@tamagui/bento'
 import { Anchor, H1, SizableText, Theme, View, XStack, YStack } from 'tamagui'
 import { BentoPageFrame } from '../../../components/BentoPageFrame'
 import type { GetStaticPaths } from 'next'
@@ -17,7 +17,7 @@ export default function page() {
   const Comp = Sections[params.section][params.part]
 
   return (
-    <>
+    <CurrentRouteProvider part={params.part} section={params.section}>
       <ThemeNameEffect />
 
       <BentoPageFrame>
@@ -36,7 +36,7 @@ export default function page() {
 
         <YStack h={200} />
       </BentoPageFrame>
-    </>
+    </CurrentRouteProvider>
   )
 }
 

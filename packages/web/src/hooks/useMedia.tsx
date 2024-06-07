@@ -1,5 +1,5 @@
-import { isServer, isWeb } from '@tamagui/constants'
-import { useRef, useSyncExternalStore } from 'react'
+import { isServer, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { useRef, useState, useSyncExternalStore } from 'react'
 
 import { getConfig } from '../config'
 import { matchMedia } from '../helpers/matchMedia'
@@ -187,13 +187,35 @@ function subscribe(subscriber: any) {
   return () => listeners.delete(subscriber)
 }
 
+function useLayoutExternalStore<State>(
+  subscriber,
+  getSnapshot,
+  getServerSnapshot
+): State {
+  const [state, setState] = useState(getServerSnapshot)
+
+  useIsomorphicLayoutEffect(() => {
+    return subscriber(() => {
+      setState((prev) => {
+        const next = getSnapshot()
+        if (next !== prev) {
+          return next
+        }
+        return prev
+      })
+    })
+  }, [])
+
+  return state
+}
+
 export function useMedia(uid?: any, componentContext?: ComponentContextI): UseMediaState {
   const internal = useRef<UseMediaInternalState | undefined>()
   // performance boost to avoid using context twice
   const disableSSR = getDisableSSR(componentContext)
   const initialState = (disableSSR || !isWeb ? mediaState : initState) || {}
 
-  const state = useSyncExternalStore<MediaQueryState>(
+  const state = useLayoutExternalStore<MediaQueryState>(
     subscribe,
     () => {
       if (!internal.current) {

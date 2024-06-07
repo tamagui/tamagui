@@ -10,6 +10,7 @@ import React, {
   useContext,
   useEffect,
   useId,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -68,6 +69,7 @@ import type {
 import { Slot } from './views/Slot'
 import { getThemedChildren } from './views/Theme'
 import { ThemeDebug } from './views/ThemeDebug'
+import { useDidHydrateOnce } from './hooks/useDidHydrateOnce'
 
 /**
  * All things that need one-time setup after createTamagui is called
@@ -195,9 +197,16 @@ export const useComponentState = (
 
   const hasEnterState = hasEnterStyle || isEntering
 
+  const didHydrateOnce = useDidHydrateOnce()
+
   const initialState =
-    hasEnterState || hasRNAnimation
-      ? isWeb
+    hasEnterState || (!didHydrateOnce && hasRNAnimation)
+      ? // on the very first render we switch all spring animation drivers to css rendering
+        // this is because we need to use css variables, which they don't support to do proper SSR
+        // without flickers of the wrong colors.
+        // but once we do that initial hydration and we are in client side rendering mode,
+        // we can avoid the extra re-render on mount
+        isWeb && !didHydrateOnce
         ? defaultComponentState
         : defaultComponentStateShouldEnter
       : defaultComponentStateMounted
@@ -912,7 +921,7 @@ export function createComponent<
         return
       }
 
-      if (state.unmounted === true) {
+      if (state.unmounted === true && hasEnterStyle) {
         setStateShallow({ unmounted: 'should-enter' })
         return
       }

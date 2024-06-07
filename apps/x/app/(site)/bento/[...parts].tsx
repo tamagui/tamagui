@@ -1,4 +1,4 @@
-import { Data, Sections } from '@tamagui/bento'
+import { Data, Sections, CurrentRouteProvider } from '@tamagui/bento'
 import { Toast, useToastState } from '@tamagui/toast'
 import { Link, useLocalSearchParams } from 'vxs'
 import { Anchor, H1, SizableText, Theme, View, XStack, YStack } from 'tamagui'
@@ -8,37 +8,33 @@ import { BentoPageFrame } from '~/features/bento/BentoPageFrame'
 import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
 
 export const generateStaticParams = async () => {
-  return Data.paths.map((x) => x.params)
+  return Data.paths.map((x) => ({
+    params: `${x.params.section}/${x.params.part}`,
+  }))
 }
 
-// export const loader = (ctx) => {
-//   // const { section, part } = ctx.params as { section: string; part: string }
-//   // const getCodes = Sections[section][`${part}GetComponentCodes`]
+function useParts() {
+  const { parts } = useLocalSearchParams() as { parts: string[] }
+  const [section, part] = parts
+  return { section, part }
+}
 
-//   return {
-//     // props: getCodes(),
-//     props: {},
-//   }
-// }
-
-export default function page() {
-  const params = useLocalSearchParams() as { section: string; part: string }
-  const Comp = Sections?.[params.section]?.[params.part]
+export default function BentoPage() {
+  const { section, part } = useParts()
+  const Comp = Sections?.[section]?.[part]
 
   if (!Comp) {
     return null
   }
 
   return (
-    <>
+    <CurrentRouteProvider section={section} part={part}>
       <ThemeNameEffect />
       {/* <DropTamaguiConfig /> */}
 
       <BentoPageFrame>
         <ContainerBento>
-          <DetailHeader>
-            {`${params.section[0].toUpperCase()}${params.section.slice(1)}`}
-          </DetailHeader>
+          <DetailHeader>{`${section[0].toUpperCase()}${section.slice(1)}`}</DetailHeader>
         </ContainerBento>
         <YStack>
           <YStack pe="none" fullscreen className="bg-grid" o={0.033} />
@@ -50,17 +46,14 @@ export default function page() {
 
         <YStack h={200} />
       </BentoPageFrame>
-    </>
+    </CurrentRouteProvider>
   )
 }
 
 export const DetailHeader = (props: { children: string }) => {
-  const params = useLocalSearchParams() as { section: string; part: string }
-  const category =
-    (typeof params.section === 'string' ? params.section : params.section?.[0]) || ''
-
-  const subCategory =
-    (typeof params.part === 'string' ? params.part : params.part?.[0]) || ''
+  const { section, part } = useParts()
+  const category = (typeof section === 'string' ? section : section?.[0]) || ''
+  const subCategory = (typeof part === 'string' ? part : part?.[0]) || ''
 
   return (
     <YStack gap="$4" $sm={{ px: '$4' }} pb="$11">
