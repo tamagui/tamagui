@@ -15,6 +15,7 @@ import type {
   UseMediaState,
 } from '../types'
 import { getDisableSSR } from './useDisableSSR'
+import { useDidHydrateOnce } from './useDidHydrateOnce'
 
 export let mediaState: MediaQueryState =
   // development only safeguard
@@ -192,7 +193,8 @@ function useLayoutExternalStore<State>(
   getSnapshot,
   getServerSnapshot
 ): State {
-  const [state, setState] = useState(getServerSnapshot)
+  const hasHydrated = useDidHydrateOnce()
+  const [state, setState] = useState(hasHydrated ? mediaState : getServerSnapshot)
 
   useIsomorphicLayoutEffect(() => {
     function update() {
