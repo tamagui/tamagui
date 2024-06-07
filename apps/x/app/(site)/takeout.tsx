@@ -1173,11 +1173,11 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
 
     let dispose = () => {}
 
-    // new Sticksy(ref as any)
+    new Sticksy(ref as any)
     // TODO build is eagerly loading this despite this not logging
     console.log('loading ', isClient)
 
-    // return Sticksy.disableAll()
+    return Sticksy.disableAll()
   }, [ref, media.md])
 
   const { name } = useTint()
