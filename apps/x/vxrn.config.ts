@@ -27,6 +27,7 @@ const optimizeDeps = {
     '@github/mini-throttle',
     'swr',
     '@tamagui/demos',
+    '@tamagui/bento',
     '@supabase/ssr',
     '@supabase/auth-helpers-react',
     '@tamagui/animations-moti',

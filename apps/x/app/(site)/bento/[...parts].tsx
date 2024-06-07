@@ -8,18 +8,10 @@ import { BentoPageFrame } from '~/features/bento/BentoPageFrame'
 import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
 
 export const generateStaticParams = async () => {
-  return Data.paths.map((x) => x.params)
+  return Data.paths.map((x) => ({
+    params: `${x.params.section}/${x.params.part}`,
+  }))
 }
-
-// export const loader = (ctx) => {
-//   // const { section, part } = ctx.params as { section: string; part: string }
-//   // const getCodes = Sections[section][`${part}GetComponentCodes`]
-
-//   return {
-//     // props: getCodes(),
-//     props: {},
-//   }
-// }
 
 export default function page() {
   const params = useLocalSearchParams() as { section: string; part: string }
