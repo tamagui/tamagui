@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 import { memo, useCallback, useEffect, useMemo, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { Paragraph, View } from 'tamagui'
+import { Paragraph } from 'tamagui'
 
 import { SearchContext } from './SearchContext'
 
