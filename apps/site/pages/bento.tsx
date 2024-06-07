@@ -1,6 +1,6 @@
-// @ts-ignore
 import { NextLink } from '@components/NextLink'
 import { Data } from '@tamagui/bento'
+// @ts-ignore
 import { LocationNotification } from '@tamagui/bento/component/user/preferences/LocationNotification'
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import {

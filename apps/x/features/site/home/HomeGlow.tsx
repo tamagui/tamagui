@@ -93,19 +93,17 @@ export const HomeGlow = memo(() => {
       t={0}
       l={0}
       pe="none"
-      animation="kindaBouncy"
+      className="all ease-in-out s1"
       key={0}
       zi={0}
       x={0}
       y={scrollTop}
       o={0.4}
       {...(isOnHeroBelow && {
-        animation: 'superLazy',
         x: sectionIndex === 2 ? -xs : sectionIndex === 4 ? xs : 0,
         y: -100,
         o: 0.4,
       })}
-      // display={isResizing ? 'none' : 'flex'}
     >
       <AnimatePresence>{glows}</AnimatePresence>
     </YStack>
