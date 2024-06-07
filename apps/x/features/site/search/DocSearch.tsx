@@ -1,7 +1,7 @@
 import '@docsearch/css'
 
 // import type { DocSearchModalProps } from '@docsearch/react'
-import { DocSearchModal } from '@docsearch/react'
+// import { DocSearchModal } from '@docsearch/react'
 import { Head } from 'vxs'
 
 type DocSearchModalProps = any
@@ -10,9 +10,9 @@ export default function DocSearch(props: DocSearchModalProps) {
   return (
     <>
       <Head>
-      <style>{docSearchCSS}</style>
+        <style>{docSearchCSS}</style>
       </Head>
-      <DocSearchModal {...props} />
+      {/* <DocSearchModal {...props} /> */}
     </>
   )
 }
