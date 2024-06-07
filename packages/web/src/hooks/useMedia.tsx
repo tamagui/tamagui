@@ -195,7 +195,7 @@ function useLayoutExternalStore<State>(
   const [state, setState] = useState(getServerSnapshot)
 
   useIsomorphicLayoutEffect(() => {
-    return subscriber(() => {
+    function update() {
       setState((prev) => {
         const next = getSnapshot()
         if (next !== prev) {
@@ -203,7 +203,11 @@ function useLayoutExternalStore<State>(
         }
         return prev
       })
-    })
+    }
+
+    update()
+
+    return subscriber(update)
   }, [])
 
   return state
@@ -219,7 +223,7 @@ export function useMedia(uid?: any, componentContext?: ComponentContextI): UseMe
     subscribe,
     () => {
       if (!internal.current) {
-        return initialState
+        return mediaState
       }
 
       const { touched, prev } = internal.current
