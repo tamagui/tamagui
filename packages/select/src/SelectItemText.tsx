@@ -6,7 +6,7 @@ import * as React from 'react'
 
 import { useSelectContext, useSelectItemParentContext } from './context'
 import { useSelectItemContext } from './SelectItem'
-import type { ScopedProps } from './types'
+import type { SelectScopedProps } from './types'
 
 /* -------------------------------------------------------------------------------------------------
  * SelectItemText
@@ -35,7 +35,7 @@ export const SelectItemTextFrame = styled(SizableText, {
 export type SelectItemTextProps = GetProps<typeof SelectItemTextFrame>
 
 export const SelectItemText = SelectItemTextFrame.styleable(function SelectItemText(
-  props: ScopedProps<SelectItemTextProps>,
+  props: SelectScopedProps<SelectItemTextProps>,
   forwardedRef
 ) {
   const { __scopeSelect, className, ...itemTextProps } = props

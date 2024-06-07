@@ -17,7 +17,7 @@
     "*.tsx": "$(capture).test.ts, $(capture).test.tsx, $(capture).test.node.ts, $(capture).test.node.tsx, $(capture).test.native.ts, $(capture).test.native.tsx, $(capture).test.ios.ts, $(capture).test.ios.tsx, $(capture).test.web.ts, $(capture).test.web.tsx, $(capture).test.android.ts, $(capture).test.android.tsx, ${capture}.native.tsx, ${capture}.ios.tsx, ${capture}.android.tsx, ${capture}.web.tsx, ${capture}.native.ts, ${capture}.ios.ts, ${capture}.android.ts, ${capture}.web.ts, ${capture}.native.js, ${capture}.ios.js, ${capture}.android.js, ${capture}.web.js, ${capture}.native.jsx, ${capture}.ios.jsx, ${capture}.android.jsx, ${capture}.web.jsx"
   },
   "[json]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "biomejs.biome"
   },
   "cSpell.words": [
     "Bento",

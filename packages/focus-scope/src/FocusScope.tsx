@@ -50,7 +50,11 @@ export function useFocusScope(
   const onMountAutoFocus = useEvent(onMountAutoFocusProp)
   const onUnmountAutoFocus = useEvent(onUnmountAutoFocusProp)
   const lastFocusedElementRef = React.useRef<HTMLElement | null>(null)
-  const composedRefs = useComposedRefs(forwardedRef, (node) => setContainer(node))
+  const composedRefs = useComposedRefs(forwardedRef, (node) => {
+    React.startTransition(() => {
+      setContainer(node)
+    })
+  })
 
   const focusScope = React.useRef({
     paused: false,

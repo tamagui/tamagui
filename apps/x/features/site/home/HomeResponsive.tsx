@@ -60,19 +60,12 @@ export const HomeResponsive = memo(() => {
   const getState = useGet({ move, isDragging, bounding })
   const [sizeI, setSizeI] = useTransitionState(0)
   // safari drags slower so lets pre-load iframe
-  const [hasInteracted, setHasInteracted] = useTransitionState(false)
   const updateBoundings = useDebounce(() => {
     const rect = safariRef.current?.getBoundingClientRect() ?? null
     setBounding(rect)
   }, 350)
 
   const isSafari = useIsSafari()
-
-  useEffect(() => {
-    if (isSafari) {
-      setHasInteracted(true)
-    }
-  }, [isSafari])
 
   useIsomorphicLayoutEffect(() => {
     if (!bounding) {
@@ -103,7 +96,6 @@ export const HomeResponsive = memo(() => {
       return
     }
     if (!state.bounding) return
-    setHasInteracted(true)
     const right = state.bounding.width + state.bounding.x
     const x = e.pageX - right
     const maxMove = breakpoints[breakpoints.length - 1].at - initialWidth + 120
@@ -165,13 +157,10 @@ export const HomeResponsive = memo(() => {
   }, [nextWidth])
 
   const handleMarkerPress = useCallback((name) => {
-    setHasInteracted(true)
     const next = (breakpoints.find((x) => x.name === name)?.at ?? 0) - initialWidth + 20
     setMove(next)
     prevMove.current = 0
   }, [])
-
-  const scale = 0.7 - smIndex * 0.05
 
   return (
     <YStack ref={ref} y={0} mt={-80} pos="relative">
@@ -186,11 +175,10 @@ export const HomeResponsive = memo(() => {
           f={1}
           space="$1"
           // mostly keeping this to make sure we get a good ACID test of useMedia().sm
-          {...(media.sm && {
-            scale,
-            x: 150 - width / 2 - (smIndex ? (0.68 - scale) * 920 : 0),
-            y: -40,
-          })}
+          $sm={{
+            scale: 0.7,
+            x: -100,
+          }}
         >
           <YStack
             zi={2}
@@ -201,12 +189,11 @@ export const HomeResponsive = memo(() => {
             ref={safariRef}
             onPress={() => {
               if (isTouchable) {
-                setHasInteracted(true)
                 setSmIndex((i) => (i + 1) % breakpoints.length)
               }
             }}
           >
-            <Safari shouldLoad={hasInteracted} isSmall={isSmall} />
+            <Safari shouldLoad isSmall={isSmall} />
           </YStack>
 
           <Container zi={1} pos="absolute">
@@ -343,8 +330,6 @@ const SafariFrame = ({ children, ...props }: YStackProps) => {
 
 export const Safari = memo(
   ({ isSmall, shouldLoad }: { isSmall?: boolean; shouldLoad?: boolean }) => {
-    const [isLoaded, setIsLoaded] = useTransitionState(false)
-
     return (
       <SafariFrame>
         <YStack bg="$background" px="$4" jc="center" borderBottomWidth={0} h={50}>
@@ -400,30 +385,23 @@ export const Safari = memo(
 
         <YStack pos="relative" bg="$color1" h={browserHeight}>
           <YStack h="100%" pe="none">
-            {shouldLoad && (
-              <YStack
-                fullscreen
-                contain="paint"
-                opacity={isLoaded ? 1 : 0}
-                backgroundColor="$background"
-                zIndex={10}
-              >
-                <iframe
-                  title="Responsive demo"
-                  style={{
-                    backgroundColor: 'transparent',
-                  }}
-                  onLoad={() => {
-                    setTimeout(() => {
-                      setIsLoaded(true)
-                    }, 100)
-                  }}
-                  width="100%"
-                  height={browserHeight}
-                  src="/responsive-demo"
-                />
-              </YStack>
-            )}
+            <YStack
+              fullscreen
+              contain="paint"
+              opacity={1}
+              backgroundColor="$background"
+              zIndex={10}
+            >
+              <iframe
+                title="Responsive demo"
+                style={{
+                  backgroundColor: 'transparent',
+                }}
+                width="100%"
+                height={browserHeight}
+                src="/responsive-demo"
+              />
+            </YStack>
 
             <YStack zi={0} fullscreen p="$4">
               <XStack ai="center" jc="center" pos="relative" br="$6" ov="hidden">

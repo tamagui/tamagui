@@ -2,6 +2,7 @@ import { isWeb } from '@tamagui/constants'
 import { simpleHash } from '@tamagui/helpers'
 
 import { getConfig } from './config'
+import type { TokenCategories } from './types'
 
 /**
  * Should rename this to Token
@@ -58,23 +59,34 @@ export function isVariable(v: Variable | any): v is Variable {
   return v && typeof v === 'object' && 'isVar' in v
 }
 
-export function getVariable(nameOrVariable: Variable | string | any) {
+export function getVariable(
+  nameOrVariable: Variable | string | any,
+  group: TokenCategories = 'size'
+) {
   setDidGetVariableValue(true)
   if (isVariable(nameOrVariable)) {
     return variableToString(nameOrVariable)
   }
   const tokens = getConfig().tokensParsed
-  return variableToString(tokens[nameOrVariable] ?? nameOrVariable)
+  return variableToString(tokens[group]?.[nameOrVariable] ?? nameOrVariable)
 }
 
 let accessed = false
 export const setDidGetVariableValue = (val: boolean) => (accessed = val)
 export const didGetVariableValue = () => accessed
 
-export function getVariableValue(v: Variable | any) {
+export function getVariableValue(v: Variable | any, group?: TokenCategories) {
   if (isVariable(v)) {
     setDidGetVariableValue(true)
     return v.val
+  }
+  if (group) {
+    const tokens = getConfig().tokensParsed
+    const token = tokens[group]?.[v]
+    if (token) {
+      setDidGetVariableValue(true)
+      return token.val
+    }
   }
   return v
 }

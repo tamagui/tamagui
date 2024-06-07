@@ -1,14 +1,13 @@
-import { Anchor, Paragraph, View } from 'tamagui'
+import { Anchor, Paragraph, View, XStack } from 'tamagui'
 
 export default function ModalScreen() {
   return (
     <View flex={1} alignItems="center" justifyContent="center">
-      <Paragraph ta="center" color="$color12" themeInverse>
-        Made by{' '}
-        <Anchor color="$blue10" href="https://twitter.com/natebirdman" target="_blank">
-          @natebirdman
+      <XStack gap="$2">
+        <Paragraph ta="center">Made by</Paragraph>
+        <Anchor col="$blue10" href="https://twitter.com/natebirdman" target="_blank">
+          @natebirdman,
         </Anchor>
-        ,{' '}
         <Anchor
           color="$purple10"
           href="https://github.com/tamagui/tamagui"
@@ -17,7 +16,7 @@ export default function ModalScreen() {
         >
           give it a ⭐️
         </Anchor>
-      </Paragraph>
+      </XStack>
     </View>
   )
 }

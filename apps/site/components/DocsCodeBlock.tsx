@@ -69,10 +69,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
   const copyTimeoutValue = useGradualIncrease(hasCopied, timeout)
   const showLineNumbers = showLineNumbersIn ?? lines > 10
 
-  const { command, getCode, isTerminal } = useBashCommand(
-    children,
-    className,
-  );
+  const { command, getCode, isTerminal } = useBashCommand(children, className)
   const showFileName = fileName || isTerminal
 
   const isPreVisible = !isCollapsed || !isCollapsible
@@ -207,11 +204,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                 </XStack>
               )}
 
-              <RowingTabs
-                className={className}
-                size={size}
-                {...rest}
-              >
+              <RowingTabs className={className} size={size} {...rest}>
                 <ScrollView
                   style={{ width: '100%' }}
                   contentContainerStyle={{ minWidth: '100%' }}
@@ -235,7 +228,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
             </Pre>
 
             <AnimatePresence>
-              {isLong && !isCutoff && fileName && (
+              {isLong && !isCutoff && (
                 <Button
                   position="absolute"
                   aria-label="Collapse code block"
@@ -300,4 +293,3 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
     </YStack>
   )
 })
-

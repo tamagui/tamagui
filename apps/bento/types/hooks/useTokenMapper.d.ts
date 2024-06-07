@@ -340,7 +340,7 @@ declare const useTokenMapper: () => {
             4: import("@tamagui/core").Variable<number>;
             5: import("@tamagui/core").Variable<number>;
         };
-    }, "color" | "zIndex" | "size" | "space" | "radius"> & {
+    }, import("@tamagui/core").TokenCategories> & {
         color: {
             yellow1Light: import("@tamagui/core").Variable<string>;
             yellow2Light: import("@tamagui/core").Variable<string>;

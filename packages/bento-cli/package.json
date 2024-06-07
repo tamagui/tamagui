@@ -1,6 +1,6 @@
 {
   "name": "bento-get",
-  "version": "1.99.1",
+  "version": "1.100.0",
   "license": "MIT",
   "bin": "dist/cli.js",
   "type": "module",
@@ -10,11 +10,11 @@
   "publishConfig": {
     "access": "public"
   },
-  "source": "src/index.ts",
-  "types": "./types/index.d.ts",
+  "source": "src/cli.tsx",
+  "types": "./types/cli.d.ts",
   "module": "dist",
   "files": [
-    "src",
+    "source",
     "types",
     "dist"
   ],
@@ -24,7 +24,8 @@
     "lint": "../../node_modules/.bin/biome check src",
     "lint:fix": "../../node_modules/.bin/biome check --apply-unsafe src",
     "clean": "tamagui-build clean",
-    "clean:build": "tamagui-build clean:build"
+    "clean:build": "tamagui-build clean:build",
+    "local-npm-link": "npm link --local --force"
   },
   "exports": {
     "./package.json": "./package.json",
@@ -53,7 +54,7 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@tamagui/build": "1.99.1",
+    "@tamagui/build": "1.100.0",
     "@types/copy-paste": "^1.1.33",
     "@types/react": "^18.2.55"
   }

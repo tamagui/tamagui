@@ -5,7 +5,7 @@ import { ListItem } from '@tamagui/list-item'
 import * as React from 'react'
 
 import { useSelectContext, useSelectItemParentContext } from './context'
-import type { ScopedProps } from './types'
+import type { SelectScopedProps } from './types'
 
 /* -------------------------------------------------------------------------------------------------
  * SelectTrigger
@@ -18,7 +18,7 @@ const isPointerCoarse =
   isWeb && isClient ? window.matchMedia('(pointer:coarse)').matches : true
 
 export const SelectTrigger = React.forwardRef<TamaguiElement, SelectTriggerProps>(
-  function SelectTrigger(props: ScopedProps<SelectTriggerProps>, forwardedRef) {
+  function SelectTrigger(props: SelectScopedProps<SelectTriggerProps>, forwardedRef) {
     const { __scopeSelect, disabled = false, unstyled = false, ...triggerProps } = props
 
     const context = useSelectContext(TRIGGER_NAME, __scopeSelect)

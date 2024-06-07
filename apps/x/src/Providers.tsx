@@ -18,8 +18,16 @@ function WebsiteTamaguiProvider(props: { children: any }) {
   const [{ resolvedTheme }] = useUserTheme()
 
   return (
-    <TamaguiProvider disableInjectCSS defaultTheme={resolvedTheme} config={tamaConf}>
-      <ToastProvider swipeDirection="horizontal">{props.children}</ToastProvider>
-    </TamaguiProvider>
+    // react 19 hydration breaks if theres not a single root node, which disableRootThemeClass causes
+    <span style={{ display: 'contents' }}>
+      <TamaguiProvider
+        disableRootThemeClass
+        disableInjectCSS
+        defaultTheme={resolvedTheme}
+        config={tamaConf}
+      >
+        <ToastProvider swipeDirection="horizontal">{props.children}</ToastProvider>
+      </TamaguiProvider>
+    </span>
   )
 }

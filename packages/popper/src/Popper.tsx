@@ -1,5 +1,4 @@
 // adapted from radix-ui popper
-
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isAndroid, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import type { ScopedProps, SizeTokens, StackProps } from '@tamagui/core'
@@ -24,8 +23,8 @@ import {
   autoUpdate,
   flip,
   offset as offsetFn,
-  shift,
   platform,
+  shift,
   useFloating,
 } from '@tamagui/floating'
 import { getSpace } from '@tamagui/get-token'
@@ -110,26 +109,8 @@ export function Popper(props: ScopedPopperProps<PopperProps>) {
   } = props
 
   const isMounted = useDidFinishSSR()
-  const [arrowEl, setArrow_] = React.useState<any>(null)
-  const [arrowSize, setArrowSize_] = React.useState(0)
-  const setArrow = React.useCallback(
-    (...args) => {
-      React.startTransition(() => {
-        // @ts-ignore
-        setArrow_(...args)
-      })
-    },
-    [setArrow_]
-  )
-  const setArrowSize = React.useCallback(
-    (...args) => {
-      React.startTransition(() => {
-        // @ts-ignore
-        setArrowSize_(...args)
-      })
-    },
-    [setArrowSize_]
-  )
+  const [arrowEl, setArrow] = React.useState<any>(null)
+  const [arrowSize, setArrowSize] = React.useState(0)
   const offsetOptions = offset ?? arrowSize
 
   const floating = useFloating({
@@ -237,9 +218,7 @@ export const PopperAnchor = YStack.extractable(
 
       React.useEffect(() => {
         if (virtualRef) {
-          React.startTransition(() => {
-            refs.setReference(virtualRef.current)
-          })
+          refs.setReference(virtualRef.current)
         }
       }, [virtualRef])
 
@@ -348,17 +327,13 @@ export const PopperContent = React.forwardRef<
   const [needsMeasure, setNeedsMeasure] = React.useState(true)
   React.useEffect(() => {
     if (x || y) {
-      React.startTransition(() => {
-        setNeedsMeasure(false)
-      })
+      setNeedsMeasure(false)
     }
   }, [x, y])
 
   useIsomorphicLayoutEffect(() => {
     if (isMounted) {
-      React.startTransition(() => {
-        update()
-      })
+      update()
     }
   }, [isMounted])
 
@@ -470,14 +445,17 @@ export const PopperArrow = PopperArrowFrame.styleable<PopperArrowExtraProps>(
     const { offset, size: sizeProp, borderWidth = 0, ...arrowProps } = props
 
     const context = usePopperContext(__scopePopper)
-    const sizeVal = sizeProp ?? context.size
-    const sizeValResolved = getVariableValue(
-      getSpace(sizeVal, {
-        shift: -2,
-        bounds: [2],
-      })
-    )
-    const size = Math.max(0, +sizeValResolved)
+    const sizeVal =
+      typeof sizeProp === 'number'
+        ? sizeProp
+        : getVariableValue(
+            getSpace(sizeProp ?? context.size, {
+              shift: -2,
+              bounds: [2],
+            })
+          )
+
+    const size = Math.max(0, +sizeVal)
 
     const { placement } = context
     const refs = useComposedRefs(context.arrowRef, forwardedRef)

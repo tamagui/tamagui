@@ -32,7 +32,7 @@ import { ITEM_TEXT_NAME, SelectItemText } from './SelectItemText'
 import { SelectScrollDownButton, SelectScrollUpButton } from './SelectScrollButton'
 import { SelectTrigger } from './SelectTrigger'
 import { SelectViewport } from './SelectViewport'
-import type { ScopedProps, SelectImplProps, SelectProps } from './types'
+import type { SelectScopedProps, SelectImplProps, SelectProps } from './types'
 import {
   useSelectBreakpointActive,
   useShowSelectSheet,
@@ -62,7 +62,7 @@ const SelectValue = SelectValueFrame.styleable<SelectValueExtraProps>(
       children: childrenProp,
       placeholder,
       ...props
-    }: ScopedProps<SelectValueProps>,
+    }: SelectScopedProps<SelectValueProps>,
     forwardedRef
   ) {
     // We ignore `className` and `style` as this part shouldn't be styled.
@@ -129,7 +129,7 @@ const SelectItemIndicatorFrame = styled(XStack, {
 type SelectItemIndicatorProps = GetProps<typeof SelectItemIndicatorFrame>
 
 const SelectItemIndicator = React.forwardRef<TamaguiElement, SelectItemIndicatorProps>(
-  (props: ScopedProps<SelectItemIndicatorProps>, forwardedRef) => {
+  (props: SelectScopedProps<SelectItemIndicatorProps>, forwardedRef) => {
     const { __scopeSelect, ...itemIndicatorProps } = props
     const context = useSelectItemParentContext(ITEM_INDICATOR_NAME, __scopeSelect)
     const itemContext = useSelectItemContext(ITEM_INDICATOR_NAME, __scopeSelect)
@@ -206,7 +206,7 @@ const NativeSelectFrame = styled(ThemeableStack, {
 type SelectGroupProps = GetProps<typeof SelectGroupFrame>
 
 const SelectGroup = React.forwardRef<TamaguiElement, SelectGroupProps>(
-  (props: ScopedProps<SelectGroupProps>, forwardedRef) => {
+  (props: SelectScopedProps<SelectGroupProps>, forwardedRef) => {
     const { __scopeSelect, ...groupProps } = props
     const groupId = React.useId()
 
@@ -273,7 +273,7 @@ const LABEL_NAME = 'SelectLabel'
 export type SelectLabelProps = ListItemProps
 
 const SelectLabel = React.forwardRef<TamaguiElement, SelectLabelProps>(
-  (props: ScopedProps<SelectLabelProps>, forwardedRef) => {
+  (props: SelectScopedProps<SelectLabelProps>, forwardedRef) => {
     const { __scopeSelect, ...labelProps } = props
     const context = useSelectItemParentContext(LABEL_NAME, __scopeSelect)
     const groupContext = useSelectGroupContext(LABEL_NAME, __scopeSelect)
@@ -307,7 +307,7 @@ export const SelectSeparator = styled(Separator, {
 })
 
 const SelectSheetController = (
-  props: ScopedProps<{}> & {
+  props: SelectScopedProps<{}> & {
     children: React.ReactNode
     onOpenChange: React.Dispatch<React.SetStateAction<boolean>>
   }
@@ -341,7 +341,7 @@ const SelectSheetImpl = (props: SelectImplProps) => {
  * -----------------------------------------------------------------------------------------------*/
 
 export const Select = withStaticProperties(
-  (props: ScopedProps<SelectProps>) => {
+  (props: SelectScopedProps<SelectProps>) => {
     const {
       __scopeSelect,
       native,

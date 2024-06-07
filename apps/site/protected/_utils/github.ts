@@ -236,6 +236,9 @@ export const whitelistGithubUsernames = [
 
   // JBR
   'mattleesounds',
+
+  // michak
+  'KristoT',
 ]
 
 export const checkForSponsorship = async (

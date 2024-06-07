@@ -1,7 +1,6 @@
 import '@tamagui/polyfill-dev'
 
 import { isWeb } from '@tamagui/constants'
-import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { YStack } from '@tamagui/stacks'
 import * as React from 'react'
 import { createPortal } from 'react-dom'
@@ -25,7 +24,7 @@ export const Portal = React.memo(
 
     const [hostElement, setHostElement] = React.useState<any>(null)
 
-    useIsomorphicLayoutEffect(() => {
+    React.useEffect(() => {
       React.startTransition(() => {
         setHostElement(host)
       })

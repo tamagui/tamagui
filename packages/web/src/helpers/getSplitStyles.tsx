@@ -1464,12 +1464,15 @@ const useInsertEffectCompat = isWeb
 
 // perf: ...args a bit expensive on native
 export const useSplitStyles: StyleSplitter = (a, b, c, d, e, f, g, h, i, j) => {
+  conf = conf || getConfig()
   const res = getSplitStyles(a, b, c, d, e, f, g, h, i, j)
 
   if (process.env.TAMAGUI_TARGET !== 'native') {
-    useInsertEffectCompat(() => {
-      insertStyleRules(res.rulesToInsert)
-    }, [res.rulesToInsert])
+    if (!process.env.TAMAGUI_REACT_19) {
+      useInsertEffectCompat(() => {
+        insertStyleRules(res.rulesToInsert)
+      }, [res.rulesToInsert])
+    }
   }
 
   return res
@@ -1480,7 +1483,9 @@ function addStyleToInsertRules(rulesToInsert: RulesToInsert, styleObject: StyleO
     if (!shouldInsertStyleRules(styleObject.identifier)) {
       return
     }
-    updateRules(styleObject.identifier, styleObject.rules)
+    if (!process.env.TAMAGUI_REACT_19) {
+      updateRules(styleObject.identifier, styleObject.rules)
+    }
     rulesToInsert.push(styleObject)
   }
 }

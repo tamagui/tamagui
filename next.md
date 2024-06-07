@@ -1,3 +1,5 @@
+- Setting default props for any style in a parent (variables dynamic / themes dynamic down the tree)
+
 Nate:
 
 - Popover click outside prop
@@ -57,6 +59,11 @@ Ongoing work:
 - Core
 
 ---
+
+- Popper arrow logic is bad, needs unstyled support and not to do weird shifting of sizes
+
+---
+
 
 - No need for View + Text (just Element and we can extend it later)
 

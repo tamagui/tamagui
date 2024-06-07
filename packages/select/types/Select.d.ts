@@ -1,7 +1,7 @@
 import type { FontSizeTokens, TamaguiElement } from '@tamagui/core';
 import type { ListItemProps } from '@tamagui/list-item';
 import * as React from 'react';
-import type { ScopedProps, SelectProps } from './types';
+import type { SelectScopedProps, SelectProps } from './types';
 export interface SelectValueExtraProps {
     placeholder?: React.ReactNode;
 }
@@ -29,7 +29,7 @@ export type SelectLabelProps = ListItemProps;
 export declare const SelectSeparator: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     vertical?: boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
-export declare const Select: ((props: ScopedProps<SelectProps>) => import("react/jsx-runtime").JSX.Element) & {
+export declare const Select: ((props: SelectScopedProps<SelectProps>) => import("react/jsx-runtime").JSX.Element) & {
     Adapt: (({ platform, when, children }: import("@tamagui/adapt").AdaptProps) => any) & {
         Contents: {
             (props: any): React.FunctionComponentElement<any>;

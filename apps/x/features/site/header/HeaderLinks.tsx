@@ -133,9 +133,9 @@ export const HeaderLinks = (props: HeaderProps) => {
           <SlidingPopoverContent />
 
           <XStack
-            gap="$4"
+            gap="$2"
             br="$10"
-            px="$4"
+            px="$2"
             height={44}
             ai="center"
             bw={1}
@@ -327,22 +327,21 @@ const CTAHeaderLink = ({
   }, [])
 
   return (
-    <Link href={href}>
-      <Popover
-        open={open}
-        onOpenChange={(open) => {
-          if (open) {
-            openIt()
-          } else {
-            setOpen(false)
-          }
-        }}
-        offset={12}
-      >
-        <Popover.Trigger asChild>
+    <Popover
+      open={open}
+      onOpenChange={(open) => {
+        if (open) {
+          openIt()
+        } else {
+          setOpen(false)
+        }
+      }}
+      offset={12}
+    >
+      <Popover.Trigger asChild>
+        <Link asChild href={href}>
           <HeadAnchor
             grid={forceShowAllLinks}
-            tag="span"
             fontSize={24}
             $sm={{
               display: 'none',
@@ -350,44 +349,44 @@ const CTAHeaderLink = ({
           >
             {icon}
           </HeadAnchor>
-        </Popover.Trigger>
+        </Link>
+      </Popover.Trigger>
 
-        <Popover.Content
-          unstyled
-          animation={[
-            'bouncy',
-            {
-              opacity: {
-                overshootClamping: true,
-              },
+      <Popover.Content
+        unstyled
+        animation={[
+          'bouncy',
+          {
+            opacity: {
+              overshootClamping: true,
             },
-          ]}
-          enterStyle={{ y: -10, opacity: 0 }}
-          exitStyle={{ y: -10, opacity: 0 }}
+          },
+        ]}
+        enterStyle={{ y: -10, opacity: 0 }}
+        exitStyle={{ y: -10, opacity: 0 }}
+      >
+        <Popover.Arrow size="$3" />
+        <XStack
+          tag="a"
+          cur="pointer"
+          bg="$background"
+          jc="center"
+          ai="center"
+          py="$2"
+          px="$3"
+          br="$8"
+          hoverStyle={{
+            bg: '$backgroundHover',
+          }}
+          elevation="$0.25"
         >
-          <Popover.Arrow size="$3" />
-          <XStack
-            tag="a"
-            cur="pointer"
-            bg="$background"
-            jc="center"
-            ai="center"
-            py="$2"
-            px="$3"
-            br="$8"
-            hoverStyle={{
-              bg: '$backgroundHover',
-            }}
-            elevation="$0.25"
-          >
-            <SizableText ff="$silkscreen">{name} </SizableText>
-            <Text ff="$body" fontSize="$3" color="$color10" $sm={{ dsp: 'none' }} ml={6}>
-              {description}
-            </Text>
-          </XStack>
-        </Popover.Content>
-      </Popover>
-    </Link>
+          <SizableText ff="$silkscreen">{name} </SizableText>
+          <Text ff="$body" fontSize="$3" color="$color10" $sm={{ dsp: 'none' }} ml={6}>
+            {description}
+          </Text>
+        </XStack>
+      </Popover.Content>
+    </Popover>
   )
 }
 

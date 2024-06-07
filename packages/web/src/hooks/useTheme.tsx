@@ -1,13 +1,5 @@
 import { isClient, isIos, isServer, isWeb } from '@tamagui/constants'
-import {
-  startTransition,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react'
+import { useContext, useEffect, useMemo, useRef, useState } from 'react'
 
 import { getConfig } from '../config'
 import type { Variable } from '../createVariable'

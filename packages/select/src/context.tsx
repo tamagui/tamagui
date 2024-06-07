@@ -2,7 +2,7 @@ import { createContextScope } from '@tamagui/create-context'
 
 import { SELECT_NAME } from './constants'
 import type {
-  ScopedProps,
+  SelectScopedProps,
   SelectContextValue,
   SelectItemParentContextValue,
 } from './types'
@@ -25,7 +25,7 @@ export const ForwardSelectContext = ({
   context,
   itemContext,
   children,
-}: ScopedProps<{
+}: SelectScopedProps<{
   children?: any
   context: SelectContextValue
   itemContext: SelectItemParentContextValue

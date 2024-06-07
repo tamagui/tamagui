@@ -172,7 +172,7 @@ const OverlayCard = () => {
           line-height, letter-spacing, color and more.
         </Paragraph>
 
-        <Link prefetch={false} href="/docs/core/configuration">
+        <Link asChild href="/docs/core/configuration">
           <Button
             accessibilityLabel="Fonts docs"
             fontFamily="$silkscreen"
@@ -235,9 +235,10 @@ const Delay = ({ children, by, passThrough }) => {
   const [done, setDone] = useState(false)
 
   useEffect(() => {
+    if (passThrough) return
     const showTimer = setTimeout(() => setDone(true), by)
     return () => clearTimeout(showTimer)
-  })
+  }, [passThrough])
 
   if (passThrough) {
     return children

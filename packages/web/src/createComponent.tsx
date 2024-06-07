@@ -1,7 +1,6 @@
 import { composeRefs } from '@tamagui/compose-refs'
 import { isClient, isServer, isWeb } from '@tamagui/constants'
 import { composeEventHandlers, validStyles } from '@tamagui/helpers'
-import { useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
 import React, {
   Children,
   Fragment,
@@ -18,6 +17,7 @@ import React, {
 
 import { devConfig, getConfig, onConfiguredOnce } from './config'
 import { stackDefaultStyles } from './constants/constants'
+import { isDevTools } from './constants/isDevTools'
 import { ComponentContext } from './contexts/ComponentContext'
 import { didGetVariableValue, setDidGetVariableValue } from './createVariable'
 import {
@@ -33,9 +33,13 @@ import { useSplitStyles } from './helpers/getSplitStyles'
 import { isObj } from './helpers/isObj'
 import { log } from './helpers/log'
 import { mergeProps } from './helpers/mergeProps'
+import { setElementProps } from './helpers/setElementProps'
 import { themeable } from './helpers/themeable'
 import { mediaKeyMatch, setMediaShouldUpdate, useMedia } from './hooks/useMedia'
 import { useThemeWithState } from './hooks/useTheme'
+import type { TamaguiComponentEvents } from './interfaces/TamaguiComponentEvents'
+import type { TamaguiComponentState } from './interfaces/TamaguiComponentState'
+import type { WebOnlyPressEvents } from './interfaces/WebOnlyPressEvents'
 import { hooks } from './setupHooks'
 import type {
   ComponentContextI,
@@ -61,14 +65,9 @@ import type {
   UseAnimationProps,
   UseThemeWithStateProps,
 } from './types'
-import type { WebOnlyPressEvents } from './interfaces/WebOnlyPressEvents'
-import type { TamaguiComponentState } from './interfaces/TamaguiComponentState'
-import type { TamaguiComponentEvents } from './interfaces/TamaguiComponentEvents'
 import { Slot } from './views/Slot'
 import { getThemedChildren } from './views/Theme'
 import { ThemeDebug } from './views/ThemeDebug'
-import { isDevTools } from './constants/isDevTools'
-import { setElementProps } from './helpers/setElementProps'
 
 /**
  * All things that need one-time setup after createTamagui is called
@@ -197,7 +196,11 @@ export const useComponentState = (
   const hasEnterState = hasEnterStyle || isEntering
 
   const initialState =
-    hasEnterState || hasRNAnimation ? defaultComponentState : defaultComponentStateMounted
+    hasEnterState || hasRNAnimation
+      ? isWeb
+        ? defaultComponentState
+        : defaultComponentStateShouldEnter
+      : defaultComponentStateMounted
 
   // will be nice to deprecate half of these:
   const disabled = isDisabled(props)
@@ -216,7 +219,7 @@ export const useComponentState = (
 
   // only web server + initial client render run this when not hydrated:
   let isAnimated = willBeAnimated
-  if (hasRNAnimation && !staticConfig.isHOC && state.unmounted === true) {
+  if (isWeb && hasRNAnimation && !staticConfig.isHOC && state.unmounted === true) {
     isAnimated = false
     curStateRef.willHydrate = true
   }
@@ -809,12 +812,10 @@ export function createComponent<
     // once you set animation prop don't remove it, you can set to undefined/false
     // reason is animations are heavy - no way around it, and must be run inline here (🙅 loading as a sub-component)
     let animationStyles: any
-    if (
-      // if it supports css vars we run it on server too to get matching initial style
-      (supportsCSSVars ? willBeAnimatedClient : willBeAnimated) &&
-      useAnimations &&
-      !isHOC
-    ) {
+    const shouldUseAnimation = // if it supports css vars we run it on server too to get matching initial style
+      (supportsCSSVars ? willBeAnimatedClient : willBeAnimated) && useAnimations && !isHOC
+
+    if (shouldUseAnimation) {
       // HOOK 16... (depends on driver) (-1 if no animation, -1 if disableSSR, -1 if no context, -1 if production)
       const animations = useAnimations({
         props: propsWithAnimation,
@@ -1275,6 +1276,31 @@ export function createComponent<
           {content}
         </Provider>
       )
+    }
+
+    // add in <style> tags inline
+    if (process.env.TAMAGUI_REACT_19) {
+      if (splitStyles.rulesToInsert.length) {
+        content = (
+          <>
+            {content}
+            {/* lets see if we can put a single style tag per rule for optimal de-duping */}
+            {splitStyles.rulesToInsert.map(({ rules, identifier }) => {
+              return (
+                <style
+                  key={identifier}
+                  // @ts-ignore
+                  href={`t_${identifier}`}
+                  // @ts-ignore
+                  precedence="default"
+                >
+                  {rules.join('\n')}
+                </style>
+              )
+            })}
+          </>
+        )
+      }
     }
 
     if (process.env.NODE_ENV === 'development') {

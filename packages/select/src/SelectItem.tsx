@@ -5,7 +5,7 @@ import { ListItemFrame, useListItem } from '@tamagui/list-item'
 import * as React from 'react'
 
 import { createSelectContext, useSelectItemParentContext } from './context'
-import type { ScopedProps } from './types'
+import type { SelectScopedProps } from './types'
 
 /* -------------------------------------------------------------------------------------------------
  * SelectItem
@@ -34,7 +34,7 @@ export interface SelectItemProps
     SelectItemExtraProps {}
 
 export const SelectItem = ListItemFrame.styleable<SelectItemExtraProps>(
-  function SelectItem(props: ScopedProps<SelectItemProps>, forwardedRef) {
+  function SelectItem(props: SelectScopedProps<SelectItemProps>, forwardedRef) {
     const {
       __scopeSelect,
       value,

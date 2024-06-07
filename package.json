@@ -103,16 +103,21 @@
     "react-19": {
       "applied": false,
       "resolutions": {
-        "react": "19.0.0-beta-26f2496093-20240514",
-        "react-dom": "19.0.0-beta-26f2496093-20240514"
+        "vite": "6.0.0-alpha.17",
+        "@react-three/fiber": "9.0.0-alpha.6",
+        "react": "19.0.0-rc-f994737d14-20240522",
+        "react-dom": "19.0.0-rc-f994737d14-20240522",
+        "react-native-reanimated": "3.12.0"
       }
     },
     "x": {
       "applied": false,
       "resolutions": {
-        "react": "19.0.0-beta-26f2496093-20240514",
-        "react-dom": "19.0.0-beta-26f2496093-20240514",
+        "vite": "6.0.0-alpha.17",
         "@react-three/fiber": "9.0.0-alpha.6",
+        "react": "19.0.0-rc-f994737d14-20240522",
+        "react-dom": "19.0.0-rc-f994737d14-20240522",
+        "react-native-reanimated": "3.12.0",
         "create-vxrn": "portal:~/vxrn/packages/create-vxrn",
         "@vxrn/react-native-prebuilt": "portal:~/vxrn/packages/react-native-prebuilt",
         "@vxrn/safe-area": "portal:~/vxrn/packages/safe-area",
@@ -147,6 +152,7 @@
     "json5": "^2.2.3",
     "npm-run-all": "^4.1.5",
     "p-map": "^5.5.0",
+    "patch-package": "^8.0.0",
     "prompts": "2.4.2",
     "turbo": "^1.13.3",
     "typescript": "^5.4.5",

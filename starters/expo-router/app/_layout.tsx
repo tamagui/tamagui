@@ -1,12 +1,11 @@
 import '../tamagui-web.css'
+
 import { useEffect } from 'react'
-import { useFonts } from 'expo-font'
 import { useColorScheme } from 'react-native'
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native'
+import { useFonts } from 'expo-font'
 import { SplashScreen, Stack } from 'expo-router'
-import { TamaguiProvider } from 'tamagui'
-import { config } from '../tamagui.config'
-import { ToastProvider } from '@tamagui/toast'
+import { Provider } from './Provider'
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -45,18 +44,28 @@ function RootLayoutNav() {
   const colorScheme = useColorScheme()
 
   return (
-    <TamaguiProvider config={config} defaultTheme={colorScheme as any}>
+    <Provider>
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <ToastProvider swipeDirection="horizontal" duration={3000}>
-          <Stack>
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            <Stack.Screen
-              name="modal"
-              options={{ presentation: 'modal', title: 'Tamagui + Expo' }}
-            />
-          </Stack>
-        </ToastProvider>
+        <Stack>
+          <Stack.Screen
+            name="(tabs)"
+            options={{
+              headerShown: false,
+            }}
+          />
+
+          <Stack.Screen
+            name="modal"
+            options={{
+              title: 'Tamagui + Expo',
+              presentation: 'modal',
+              animation: 'slide_from_right',
+              gestureEnabled: true,
+              gestureDirection: 'horizontal',
+            }}
+          />
+        </Stack>
       </ThemeProvider>
-    </TamaguiProvider>
+    </Provider>
   )
 }

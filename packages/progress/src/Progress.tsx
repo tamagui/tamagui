@@ -7,9 +7,8 @@ import type { Scope } from '@tamagui/create-context'
 import { createContextScope } from '@tamagui/create-context'
 import { getSize } from '@tamagui/get-token'
 import { withStaticProperties } from '@tamagui/helpers'
-import { ThemeableStack, YStackProps } from '@tamagui/stacks'
+import { ThemeableStack } from '@tamagui/stacks'
 import * as React from 'react'
-import { View } from 'react-native'
 
 const PROGRESS_NAME = 'Progress'
 
@@ -42,7 +41,7 @@ export const ProgressIndicatorFrame = styled(ThemeableStack, {
   },
 })
 
-type ProgressIndicatorProps = GetProps<typeof ProgressIndicatorFrame>
+export type ProgressIndicatorProps = GetProps<typeof ProgressIndicatorFrame>
 
 const ProgressIndicator = ProgressIndicatorFrame.styleable(function ProgressIndicator(
   props: ScopedProps<ProgressIndicatorProps>,
@@ -148,13 +147,13 @@ export const ProgressFrame = styled(ThemeableStack, {
   },
 })
 
-interface ProgressExtraProps {
+export interface ProgressExtraProps {
   value?: number | null | undefined
   max?: number
   getValueLabel?(value: number, max: number): string
 }
 
-type ProgressProps = GetProps<typeof ProgressFrame> & ProgressExtraProps
+export type ProgressProps = GetProps<typeof ProgressFrame> & ProgressExtraProps
 
 const Progress = withStaticProperties(
   ProgressFrame.styleable<ProgressExtraProps>(function Progress(props, forwardedRef) {
@@ -203,5 +202,4 @@ const Progress = withStaticProperties(
   }
 )
 
-export { createProgressScope, Progress, ProgressIndicator }
-export type { ProgressProps, ProgressIndicatorProps }
+export { Progress, ProgressIndicator, createProgressScope }

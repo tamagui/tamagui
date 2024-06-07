@@ -1,12 +1,28 @@
-import { config as configOptions } from '@tamagui/site-config'
+import { config } from '@tamagui/site-config'
 import { createTamagui } from 'tamagui'
 
-export const tamaguiConfig = createTamagui(configOptions)
+// for site responsive demo
+Object.assign(config.media, {
+  tiny: { maxWidth: 500 },
+  gtTiny: { minWidth: 500 + 1 },
+  small: { maxWidth: 620 },
+  gtSmall: { minWidth: 620 + 1 },
+  medium: { maxWidth: 780 },
+  gtMedium: { minWidth: 780 + 1 },
+  large: { maxWidth: 900 },
+  gtLarge: { minWidth: 900 + 1 },
+})
 
-export type Conf = typeof tamaguiConfig
+const tamaConf = createTamagui(config)
+
+export type Conf = typeof tamaConf
 
 declare module 'tamagui' {
   interface TamaguiCustomConfig extends Conf {}
+
+  interface TypeOverride {
+    groupNames(): 'card' | 'takeoutBody'
+  }
 }
 
-export default tamaguiConfig
+export default tamaConf

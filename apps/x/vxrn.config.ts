@@ -1,27 +1,30 @@
 // import entryShakingPlugin from 'vite-plugin-entry-shaking'
 import { createRequire } from 'node:module'
-import { getVitePlugins, build, serve } from 'vxs/vite'
-import { tamaguiPlugin, tamaguiExtractPlugin } from '@tamagui/vite-plugin'
+import { build, serve, vxs, removeReactNativeWebAnimatedPlugin } from 'vxs/vite'
 // import { mdx } from '@cyco130/vite-plugin-mdx'
 import type { VXRNConfig } from 'vxrn'
 // import inpsectPlugin from 'vite-plugin-inspect'
-import { analyzer } from 'vite-bundle-analyzer'
 
 Error.stackTraceLimit = Number.POSITIVE_INFINITY
 
-const require = createRequire(import.meta.url)
+if (!import.meta.dirname) {
+  throw new Error(`Not on Node 22`)
+}
 
-const targets = [
-  require.resolve('@tamagui/lucide-icons').replace('/dist/cjs/index.js', ''),
-  require.resolve('@tamagui/demos').replace('/dist/cjs/index.js', ''),
-  require.resolve('@tamagui/colors').replace('/dist/cjs/index.js', ''),
-]
+// const require = createRequire(import.meta.url)
+// const targets = [
+//   require.resolve('@tamagui/lucide-icons').replace('/dist/cjs/index.js', ''),
+//   require.resolve('@tamagui/demos').replace('/dist/cjs/index.js', ''),
+//   require.resolve('@tamagui/colors').replace('/dist/cjs/index.js', ''),
+// ]
 
 const optimizeInterop = ['expo-splash-screen']
 
 const optimizeDeps = {
   include: [
     ...optimizeInterop,
+    '@leeoniya/ufuzzy',
+    '@github/mini-throttle',
     'swr',
     '@tamagui/demos',
     '@supabase/ssr',
@@ -57,6 +60,10 @@ export default async () => {
     webConfig: {
       envPrefix: 'NEXT_PUBLIC_',
 
+      define: {
+        'process.env.TAMAGUI_REACT_19': '"1"',
+      },
+
       resolve: {
         alias: {
           '~': import.meta.dirname,
@@ -82,9 +89,11 @@ export default async () => {
       },
 
       plugins: [
-        ...(getVitePlugins({
+        vxs({
           root: 'app',
-        }) as any),
+        }),
+
+        removeReactNativeWebAnimatedPlugin(),
 
         // hmmm breaking ssr for some reason on lucide:
         // @ts-ignore

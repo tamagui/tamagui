@@ -1,10 +1,5 @@
 export * from './Select'
-export type {
-  SelectContentProps,
-  SelectProps,
-  SelectScrollButtonProps,
-  SelectViewportProps,
-} from './types'
+export type * from './types'
 export * from './context'
-export type { SelectItemProps } from './SelectItem'
+export type { SelectItemProps, SelectItemExtraProps } from './SelectItem'
 export type { SelectTriggerProps } from './SelectTrigger'

@@ -68,7 +68,7 @@ export declare const useConfiguration: () => {
         autocompleteSpecificTokens?: (boolean | "except-special") | undefined;
         mediaPropOrder?: boolean | undefined;
         fastSchemeChange?: boolean | undefined;
-        webContainerType?: "unset" | "size" | "inherit" | "initial" | "revert" | "revert-layer" | "normal" | "inline-size" | undefined;
+        webContainerType?: "size" | "unset" | "inherit" | "initial" | "revert" | "revert-layer" | "normal" | "inline-size" | undefined;
     } & Omit<{
         allowedStyleValues?: ((boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | {
             space?: ("number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | "percent") | undefined;
@@ -80,7 +80,7 @@ export declare const useConfiguration: () => {
         autocompleteSpecificTokens?: (boolean | "except-special") | undefined;
         mediaPropOrder?: boolean | undefined;
         fastSchemeChange?: boolean | undefined;
-        webContainerType?: "unset" | "size" | "inherit" | "initial" | "revert" | "revert-layer" | "normal" | "inline-size" | undefined;
+        webContainerType?: "size" | "unset" | "inherit" | "initial" | "revert" | "revert-layer" | "normal" | "inline-size" | undefined;
     }, keyof {
         allowedStyleValues?: ((boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | {
             space?: ("number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | "percent") | undefined;
@@ -92,7 +92,7 @@ export declare const useConfiguration: () => {
         autocompleteSpecificTokens?: (boolean | "except-special") | undefined;
         mediaPropOrder?: boolean | undefined;
         fastSchemeChange?: boolean | undefined;
-        webContainerType?: "unset" | "size" | "inherit" | "initial" | "revert" | "revert-layer" | "normal" | "inline-size" | undefined;
+        webContainerType?: "size" | "unset" | "inherit" | "initial" | "revert" | "revert-layer" | "normal" | "inline-size" | undefined;
     }>;
     tokens: Omit<{
         [x: string]: {
@@ -113,7 +113,7 @@ export declare const useConfiguration: () => {
         zIndex: {
             [x: string]: import("..").Variable<any> | import("..").Variable<string> | import("..").Variable<number> | import("..").Variable<import("..").VariableValGeneric>;
         };
-    }, "color" | "space" | "size" | "radius" | "zIndex"> & {
+    }, import("..").TokenCategories> & {
         color: {
             [x: string]: import("..").Variable<any> | import("..").Variable<string> | import("..").Variable<number> | import("..").Variable<import("..").VariableValGeneric>;
         };
@@ -149,7 +149,7 @@ export declare const useConfiguration: () => {
         zIndex: {
             [x: string]: import("..").Variable<any> | import("..").Variable<string> | import("..").Variable<number> | import("..").Variable<import("..").VariableValGeneric>;
         };
-    }, "color" | "space" | "size" | "radius" | "zIndex"> & {
+    }, import("..").TokenCategories> & {
         color: {
             [x: string]: import("..").Variable<any> | import("..").Variable<string> | import("..").Variable<number> | import("..").Variable<import("..").VariableValGeneric>;
         };
