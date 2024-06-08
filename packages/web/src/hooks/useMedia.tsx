@@ -1,5 +1,5 @@
 import { isServer, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
-import { useRef, useState, useSyncExternalStore } from 'react'
+import { useId, useRef, useState, useSyncExternalStore } from 'react'
 
 import { getConfig } from '../config'
 import { matchMedia } from '../helpers/matchMedia'
@@ -120,7 +120,9 @@ export function setupMediaListeners() {
   setupVersion = mediaVersion
 
   // hmr, undo existing before re-binding
-  unlisten()
+  if (process.env.NODE_ENV === 'development') {
+    unlisten()
+  }
 
   for (const key in mediaQueryConfig) {
     const str = mediaObjectToString(mediaQueryConfig[key], key)
@@ -168,79 +170,92 @@ type MediaKeysState = {
 }
 
 type UpdateState = {
-  enabled: boolean
-  keys: MediaQueryKey[]
-}
-
-const shouldUpdate = new WeakMap<any, UpdateState>()
-
-export function setMediaShouldUpdate(ref: any, props: UpdateState) {
-  return shouldUpdate.set(ref, props)
-}
-
-type UseMediaInternalState = {
+  enabled?: boolean
+  keys?: string[]
   prev: MediaKeysState
   touched?: Set<string>
 }
 
-function getSnapshot(uid: any, { touched, prev }: UseMediaInternalState) {
-  const componentState = uid ? shouldUpdate.get(uid) : undefined
+const States = new WeakMap<any, UpdateState>()
 
-  if (componentState?.enabled === false) {
+export function setMediaShouldUpdate(ref: any, props: UpdateState) {
+  return States.set(ref, {
+    ...States.get(ref),
+    ...props,
+  })
+}
+
+function getSnapshot({ touched, prev, enabled, keys }: UpdateState, forceUpdate = false) {
+  const isEnabled = forceUpdate || enabled !== false
+  if (!isEnabled) {
     return prev
   }
 
-  const testKeys =
-    componentState?.keys ??
-    ((!componentState || componentState.enabled) && touched ? [...touched] : null)
-
-  const hasntUpdated =
-    !testKeys || testKeys?.every((key) => mediaState[key] === prev[key])
-
-  if (hasntUpdated) {
-    return prev
+  if (!forceUpdate) {
+    const testKeys = keys || touched ? [...(keys || []), ...(touched || [])] : null
+    const hasntUpdated =
+      !testKeys || testKeys?.every((key) => mediaState[key] === prev[key])
+    if (hasntUpdated) {
+      return prev
+    }
   }
 
   return mediaState
 }
 
-export function useMedia(uid?: any, componentContext?: ComponentContextI): UseMediaState {
-  const internal = useRef<UseMediaInternalState>()
-  // performance boost to avoid using context twice
-  const disableSSR = getDisableSSR(componentContext)
+const StateId = new WeakMap()
+
+export function useMedia(
+  uidIn?: any,
+  componentContext?: ComponentContextI
+): UseMediaState {
+  const uid = uidIn ?? useRef()
+
+  StateId.get(uid) ?? StateId.set(uid, Math.random())
+
   const hasHydrated = useDidHydrateOnce()
-  const initialState =
-    (disableSSR || !isWeb || hasHydrated ? mediaState : initState) || {}
-  if (!internal.current) {
-    internal.current = { prev: initialState }
+  const isHydrated = !isWeb || getDisableSSR(componentContext) || hasHydrated
+  const initialState = isHydrated ? mediaState : initState
+
+  let componentState = States.get(uid)
+  if (!componentState) {
+    componentState = { prev: initialState }
+    States.set(uid, componentState)
   }
+
+  // reset on each render
+  componentState.touched = undefined
+
   const [state, setState] = useState(initialState)
 
   useIsomorphicLayoutEffect(() => {
     function update() {
       setState((prev) => {
-        const next = getSnapshot(uid, internal.current!)
+        const componentState = States.get(uid)!
+        const next = getSnapshot(componentState, !isHydrated)
         if (next !== prev) {
-          internal.current!.prev = next
+          componentState.prev = next
           return next
         }
         return prev
       })
     }
 
-    update()
+    if (!hasHydrated) {
+      update()
+    }
 
     listeners.add(update)
     return () => {
       listeners.delete(update)
     }
-  }, [])
+  }, [uid])
 
   return new Proxy(state, {
     get(_, key) {
       if (typeof key === 'string') {
-        internal.current!.touched ||= new Set()
-        internal.current!.touched.add(key)
+        componentState.touched ||= new Set()
+        componentState.touched.add(key)
       }
       return Reflect.get(state, key)
     },
