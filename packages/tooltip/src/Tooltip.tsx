@@ -175,9 +175,9 @@ const TooltipComponent = React.forwardRef(function Tooltip(
       open,
       onOpenChange,
     })
-    const delayGroupContext = useDelayGroup(floating.context, { id })
+    const { delay: delayContext } = useDelayGroup(floating.context, { id })
     const { getReferenceProps, getFloatingProps } = useInteractions([
-      useHover(floating.context, { delay: delay ?? delayGroupContext, restMs }),
+      useHover(floating.context, { delay: delay ?? delayContext, restMs }),
       useFocus(floating.context, focus),
       useRole(floating.context, { role: 'tooltip' }),
       useDismiss(floating.context),
