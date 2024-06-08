@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/adapt",
-  "version": "1.100.2",
+  "version": "1.100.3",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -27,12 +27,12 @@
     }
   },
   "dependencies": {
-    "@tamagui/constants": "1.100.2",
-    "@tamagui/core": "1.100.2",
-    "@tamagui/helpers": "1.100.2"
+    "@tamagui/constants": "1.100.3",
+    "@tamagui/core": "1.100.3",
+    "@tamagui/helpers": "1.100.3"
   },
   "devDependencies": {
-    "@tamagui/build": "1.100.2"
+    "@tamagui/build": "1.100.3"
   },
   "publishConfig": {
     "access": "public"
