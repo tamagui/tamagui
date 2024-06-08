@@ -5,8 +5,8 @@ export const getURL = () => {
     process?.env?.URL && process.env.URL !== ''
       ? process.env.URL
       : process?.env?.NEXT_PUBLIC_VERCEL_URL && process.env.NEXT_PUBLIC_VERCEL_URL !== ''
-      ? process.env.NEXT_PUBLIC_VERCEL_URL
-      : 'http://localhost:5005'
+        ? process.env.NEXT_PUBLIC_VERCEL_URL
+        : 'http://localhost:5005'
   return url.includes('http') ? url : `https://${url}`
 }
 
@@ -17,8 +17,6 @@ export const postData = async ({
   url: string
   data?: { price: Price }
 }) => {
-  console.log('posting,', url, data)
-
   const res: Response = await fetch(url, {
     method: 'POST',
     headers: new Headers({ 'Content-Type': 'application/json' }),
