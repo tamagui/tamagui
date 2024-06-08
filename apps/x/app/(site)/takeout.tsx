@@ -50,6 +50,8 @@ import { seasons } from '~/features/site/seasons/SeasonToggleButton'
 import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
 import { TakeoutLogo } from '~/features/takeout/TakeoutLogo'
 import { LoadCherryBomb, LoadMunro } from '~/features/site/fonts/LoadFonts'
+import { Sticksy } from '~/helpers/sticksy'
+
 
 export const loader = async () => {
   try {
@@ -1161,19 +1163,11 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
       return
     }
 
-    let dispose = () => {}
-
+    new Sticksy(ref as any)
     // TODO build is eagerly loading this despite this not logging
     console.log('loading ', isClient)
-    // import('../../helpers/sticksy').then(({ Sticksy }) => {
-    //   new Sticksy(ref as any)
 
-    //   dispose = () => {
-    //     Sticksy.disableAll()
-    //   }
-    // })
-
-    return dispose
+    return Sticksy.disableAll()
   }, [ref, media.md])
 
   const { name } = useTint()

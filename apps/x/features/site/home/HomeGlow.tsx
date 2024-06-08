@@ -100,10 +100,12 @@ export const HomeGlow = memo(() => {
       y={scrollTop}
       o={0.4}
       {...(isOnHeroBelow && {
+        animation: 'superLazy',
         x: sectionIndex === 2 ? -xs : sectionIndex === 4 ? xs : 0,
         y: -100,
         o: 0.4,
       })}
+      // display={isResizing ? 'none' : 'flex'}
     >
       <AnimatePresence>{glows}</AnimatePresence>
     </YStack>

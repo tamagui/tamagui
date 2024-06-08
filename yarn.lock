@@ -7862,6 +7862,7 @@ __metadata:
   resolution: "@tamagui/x@workspace:apps/x"
   dependencies:
     "@cyco130/vite-plugin-mdx": "npm:1.0.4"
+    "@docsearch/react": "npm:^3.5.2"
     "@leeoniya/ufuzzy": "npm:^1.0.14"
     "@react-navigation/native": "npm:6.1.17"
     "@react-three/drei": "npm:^9.105.6"

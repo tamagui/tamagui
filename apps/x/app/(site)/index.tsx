@@ -30,8 +30,6 @@ export default function TamaguiHomePage() {
 
   return (
     <>
-      <ThemeNameEffect colorKey="$color2" />
-      <ThemeTint>
         <HomeGlow />
         <YStack
           fullscreen
@@ -87,7 +85,7 @@ export default function TamaguiHomePage() {
               maskImage: `linear-gradient(transparent, #000, transparent)`,
             }}
           />
-          <HomeAnimations animationCode={``} />
+          <HomeAnimations />
         </TintSection>
         <TintSection index={7} zi={1}>
           <HomeFeaturesGrid />
@@ -121,7 +119,6 @@ export default function TamaguiHomePage() {
         <HomeSection zi={0}>
           <HomeCommunity />
         </HomeSection>
-      </ThemeTint>
     </>
   )
 }
