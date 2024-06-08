@@ -1,4 +1,3 @@
-import type { NextApiHandler } from 'next'
 import { getBentoCode, supabaseAdmin } from './supabaseAdmin'
 
 const hasBentoAccess = async (githubId: string) => {
@@ -13,23 +12,22 @@ const hasBentoAccess = async (githubId: string) => {
   return Boolean(got?.length)
 }
 
-export async function apiCliBentoRoute (req, res) {
+export async function apiCliBentoRoute(req, res) {
+  const resultHasBentoAccess = await hasBentoAccess(req.query.userGithubId)
 
-    const resultHasBentoAccess = await hasBentoAccess(req.query.userGithubId)
+  if (!resultHasBentoAccess) {
+    throw new Error('No bento access from CLI')
+  }
 
-    if (!resultHasBentoAccess) {
-      throw new Error('No bento access from CLI')
-    }
+  const slugsArray = Array.isArray(req.query.slug)
+    ? req.query.slug
+    : typeof req.query.slug === 'string'
+      ? [req.query.slug]
+      : []
 
-    const slugsArray = Array.isArray(req.query.slug)
-      ? req.query.slug
-      : typeof req.query.slug === 'string'
-        ? [req.query.slug]
-        : []
+  const codePath = slugsArray.join('/')
 
-    const codePath = slugsArray.join('/')
-
-    const fileResult = await getBentoCode(codePath)
-    res.setHeader('Content-Type', 'text/plain')
-    res.send(fileResult)
+  const fileResult = await getBentoCode(codePath)
+  res.setHeader('Content-Type', 'text/plain')
+  res.send(fileResult)
 }
