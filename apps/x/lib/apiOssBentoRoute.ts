@@ -1,4 +1,4 @@
-import { getBentoCode } from './supabaseAdmin'
+import { getBentoCode } from '~/features/auth/supabaseAdmin'
 
 export async function apiOssBentoRoute(req, res) {
   const slugsArray = Array.isArray(req.query.slug)
