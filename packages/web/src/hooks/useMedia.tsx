@@ -178,40 +178,34 @@ type UpdateState = {
 
 const States = new WeakMap<any, UpdateState>()
 
-export function setMediaShouldUpdate(ref: any, props: UpdateState) {
+export function setMediaShouldUpdate(ref: any, props: Partial<UpdateState>) {
   return States.set(ref, {
-    ...States.get(ref),
+    ...(States.get(ref) as any),
     ...props,
   })
 }
 
-function getSnapshot({ touched, prev, enabled, keys }: UpdateState, forceUpdate = false) {
-  const isEnabled = forceUpdate || enabled !== false
-  if (!isEnabled) {
+function getSnapshot({ touched, prev, enabled, keys }: UpdateState) {
+  const isDisabled = enabled === false
+  if (isDisabled) {
     return prev
   }
 
-  if (!forceUpdate) {
-    const testKeys = keys || touched ? [...(keys || []), ...(touched || [])] : null
-    const hasntUpdated =
-      !testKeys || testKeys?.every((key) => mediaState[key] === prev[key])
-    if (hasntUpdated) {
-      return prev
-    }
+  const testKeys = keys || touched ? [...(keys || []), ...(touched || [])] : null
+  const hasntUpdated =
+    !testKeys || testKeys?.every((key) => mediaState[key] === prev[key])
+  if (hasntUpdated) {
+    return prev
   }
 
   return mediaState
 }
-
-const StateId = new WeakMap()
 
 export function useMedia(
   uidIn?: any,
   componentContext?: ComponentContextI
 ): UseMediaState {
   const uid = uidIn ?? useRef()
-
-  StateId.get(uid) ?? StateId.set(uid, Math.random())
 
   const hasHydrated = useDidHydrateOnce()
   const isHydrated = !isWeb || getDisableSSR(componentContext) || hasHydrated
@@ -232,7 +226,7 @@ export function useMedia(
     function update() {
       setState((prev) => {
         const componentState = States.get(uid)!
-        const next = getSnapshot(componentState, !isHydrated)
+        const next = getSnapshot(componentState)
         if (next !== prev) {
           componentState.prev = next
           return next
@@ -241,9 +235,8 @@ export function useMedia(
       })
     }
 
-    if (!hasHydrated) {
-      update()
-    }
+    // layout effects evidently run before the rest of render?
+    Promise.resolve().then(update)
 
     listeners.add(update)
     return () => {
