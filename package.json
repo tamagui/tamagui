@@ -52,6 +52,7 @@
     "scripts:format": "node -r esbuild-register ./scripts/format.ts",
     "repair": "node -r esbuild-register ./scripts/repair.ts",
     "profile": "node -r esbuild-register ./scripts/yarn-profile.ts",
+    "testing": "yarn workspace testing dev:clean",
     "x": "yarn workspace @tamagui/x dev:clean",
     "x:build": "yarn workspace @tamagui/x build:prod",
     "x:serve": "yarn workspace @tamagui/x serve",
