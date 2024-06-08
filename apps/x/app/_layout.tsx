@@ -80,17 +80,19 @@ export default function Layout() {
         precedence="default"
       />
 
-      <script>
-        {`let d = document.documentElement.classList
-      d.remove('t_light')
-      d.remove('t_dark')
-      let e = localStorage.getItem('user-theme')
-      let t =
-        'system' === e || !e
-          ? window.matchMedia('(prefers-color-scheme: dark)').matches
-          : e === 'dark'
-      t ? d.add('t_dark') : d.add('t_light')`}
-      </script>
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `let d = document.documentElement.classList
+          d.remove('t_light')
+          d.remove('t_dark')
+          let e = localStorage.getItem('user-theme')
+          let t =
+            'system' === e || !e
+              ? window.matchMedia('(prefers-color-scheme: dark)').matches
+              : e === 'dark'
+          t ? d.add('t_dark') : d.add('t_light')`,
+        }}
+      />
 
       <Providers>
         {isWeb ? (
