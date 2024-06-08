@@ -21,12 +21,12 @@ export async function generateStaticParams() {
   const latestVersionPaths = paths.map((path) => {
     const parts = path.subpath.split('/')
     const withoutVersion = parts.slice(0, parts.length - 1)
-    return {
-      subpath: withoutVersion.join('/'),
-    }
+    return withoutVersion.join('/')
   })
 
-  const allPaths = [...paths, ...latestVersionPaths]
+  const deduped = [...new Set(latestVersionPaths)].map((subpath) => ({ subpath }))
+
+  const allPaths = [...paths, ...deduped]
 
   return allPaths
 }

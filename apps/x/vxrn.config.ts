@@ -20,31 +20,34 @@ if (!import.meta.dirname) {
 
 const optimizeInterop = ['expo-splash-screen']
 
+const include = [
+  ...optimizeInterop,
+  '@leeoniya/ufuzzy',
+  'react-hook-form',
+  '@github/mini-throttle',
+  'swr',
+  '@tamagui/demos',
+  '@tamagui/bento',
+  '@supabase/ssr',
+  '@supabase/auth-helpers-react',
+  '@tamagui/animations-moti',
+  '@tamagui/animations-react-native',
+  'is-buffer',
+  'extend',
+  'minimatch',
+  'gray-matter',
+  'execa',
+  'jiti',
+  'hsluv',
+  'rehype-parse',
+  'refractor',
+  'glob',
+  'reading-time',
+  'unified',
+]
+
 const optimizeDeps = {
-  include: [
-    ...optimizeInterop,
-    '@leeoniya/ufuzzy',
-    '@github/mini-throttle',
-    'swr',
-    '@tamagui/demos',
-    '@tamagui/bento',
-    '@supabase/ssr',
-    '@supabase/auth-helpers-react',
-    '@tamagui/animations-moti',
-    '@tamagui/animations-react-native',
-    'is-buffer',
-    'extend',
-    'minimatch',
-    'gray-matter',
-    'execa',
-    'jiti',
-    'hsluv',
-    'rehype-parse',
-    'refractor',
-    'glob',
-    'reading-time',
-    'unified',
-  ],
+  include,
   needsInterop: optimizeInterop,
 }
 

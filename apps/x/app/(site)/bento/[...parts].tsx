@@ -8,9 +8,11 @@ import { BentoPageFrame } from '~/features/bento/BentoPageFrame'
 import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
 
 export const generateStaticParams = async () => {
-  return Data.paths.map((x) => ({
-    params: `${x.params.section}/${x.params.part}`,
-  }))
+  // bento react-hook-form is breaking for now lets leave this off
+  return []
+  // return Data.paths.map((x) => ({
+  //   parts: `${x.params.section}/${x.params.part}`,
+  // }))
 }
 
 function useParts() {
