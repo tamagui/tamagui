@@ -2,17 +2,14 @@ import { useEffect } from 'react'
 
 let didHydrateOnce = false
 
-// if set on the root tamagui provider, we now can know when things are fully hydrated
-// we cheat a bit why just resetting as we render components below
-
 export function useDidHydrateOnceRoot() {
   if (process.env.TAMAGUI_TARGET !== 'web') {
-    return
+    return true
   }
 
   useEffect(() => {
     const tm = setInterval(() => {
-      if (Date.now() - last > 32) {
+      if (Date.now() - last > 500) {
         didHydrateOnce = true
         clearInterval(tm)
       }
