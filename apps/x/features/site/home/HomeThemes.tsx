@@ -1,7 +1,5 @@
 import { onTintChange, setTintIndex, useTints } from '@tamagui/logo'
 import { useIsIntersecting } from '~/hooks/useOnIntersecting'
-// TODO:
-import { useThemeSetting } from '@tamagui/next-theme'
 import type { SetStateAction } from 'react'
 import { memo, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import type { ThemeName } from 'tamagui'
@@ -46,8 +44,6 @@ export const HomeThemes = memo(function HomeThemes() {
   const splitToFlat = ([a, b]: number[]) => {
     return a * 4 + b
   }
-
-  const themeSetting = useThemeSetting()!
 
   const [activeI, setActiveI_] = useState([0, 0])
   const activeIndex = splitToFlat(activeI)
@@ -153,14 +149,15 @@ export const HomeThemes = memo(function HomeThemes() {
     }
   }, [isIntersecting])
 
-  useEffect(() => {
-    if (typeof themeSetting.current === 'boolean') return
-    setSelTheme(
-      themeSetting.current === 'system'
-        ? themeSetting.systemTheme || 'light'
-        : themeSetting.current || 'light'
-    )
-  }, [themeSetting])
+  // TODO
+  // useEffect(() => {
+  //   if (typeof themeSetting.current === 'boolean') return
+  //   setSelTheme(
+  //     themeSetting.current === 'system'
+  //       ? themeSetting.systemTheme || 'light'
+  //       : themeSetting.current || 'light'
+  //   )
+  // }, [themeSetting])
 
   return (
     <YStack pos="relative">
