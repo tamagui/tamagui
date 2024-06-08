@@ -1,6 +1,6 @@
 import type { SupabaseClient } from '@supabase/auth-helpers-nextjs'
 import jwt from 'jsonwebtoken'
-import { getUserAccessInfo } from '../auth/helpers'
+import { getUserAccessInfo } from '~/features/user/helpers'
 import type { Database } from '../supabase/types'
 import { getCookie, setCookie } from './cookies'
 

@@ -10,6 +10,16 @@ import {
 import { useEffect, useState } from 'react'
 import { useSWRConfig } from 'swr'
 
+// this is a weird pattern we should just make it use SupabaseProvider
+// import { SupabaseProvider } from '@components/SupabaseProvider'
+// export function withSupabase(page, pageProps, isStudio = false) {
+//   return (
+//     <SupabaseProvider isStudio={isStudio} initialSession={pageProps.initialSession}>
+//       {page}
+//     </SupabaseProvider>
+//   )
+// }
+
 export const SupabaseProvider = ({
   initialSession,
   children,

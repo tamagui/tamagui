@@ -1,7 +1,6 @@
-import { type ReactNode } from 'react';
-import { useLocalStorageWatcher } from '@lib/useLocalStorageWatcher'
-
-import { getBashText } from '@components/getBashText'
+import type { ReactNode } from 'react'
+import { Children } from 'react'
+import { useLocalStorageWatcher } from './useLocalStorageWatcher'
 
 const pkgCommands = {
   yarn: 'yarn',
@@ -30,6 +29,13 @@ const startsWithCommand = (text: string, commandList: Record<string, string>) =>
 const getPackageToInstall = (text: string) => text?.split(' ').splice(2).join(' ')
 const getPackageToRun = (text: string) => text?.split(' ').splice(1).join(' ')
 
+function getBashText(children: any): any {
+  return Children.toArray(children).flatMap((x) => {
+    // @ts-ignore
+    return x?.props?.children ? getBashText(x.props.children).join('') : x
+  })
+}
+
 export function useBashCommand(children: ReactNode, className: string) {
   const bashText = getBashText(children)[0]
 
@@ -45,13 +51,11 @@ export function useBashCommand(children: ReactNode, className: string) {
 
   const showTabs = isBash && !isTerminal
 
-  const {
-    storageItem: currentSelectedTab,
-    setItem: setCurrentSelectedTab
-  } = useLocalStorageWatcher(
-    isPackageRunner ? 'bashPkgRunTab' : 'bashPkgInstallTab',
-    isStarter ? 'npm' : isPackageRunner ? 'npx' : 'yarn'
-  )
+  const { storageItem: currentSelectedTab, setItem: setCurrentSelectedTab } =
+    useLocalStorageWatcher(
+      isPackageRunner ? 'bashPkgRunTab' : 'bashPkgInstallTab',
+      isStarter ? 'npm' : isPackageRunner ? 'npx' : 'yarn'
+    )
 
   const command = isStarter
     ? bashText
@@ -78,4 +82,3 @@ export function useBashCommand(children: ReactNode, className: string) {
     setCurrentSelectedTab,
   }
 }
-
