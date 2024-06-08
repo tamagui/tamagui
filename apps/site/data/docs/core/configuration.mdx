@@ -481,6 +481,21 @@ Things to note:
     next one if no previous exists. So weight `1` === `300`, weight `5` ===
     `300`, and weight `7` === `600`.
 
+### Troubleshooting
+---
+My custom fonts aren't appearing in Tamagui components?
+
+- `Font family` definition is important based on device i.e. Web vs Native
+  - Native requires a single string with the font family defined, whereas web can include fallback font families.
+
+Try adding this to your custom font inside the `createFont` function:
+```tsx
+family: isWeb ? 'Custom-Font, Arial, Helvetica, ...' : 'Custom-Font',
+size: {
+  //...size,
+}
+```
+
 #### Custom Font Family on Native
 
 You need to load your fonts for React Native to recognize them. Typically this
