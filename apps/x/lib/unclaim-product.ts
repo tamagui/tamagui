@@ -1,5 +1,5 @@
 import type { User } from '@supabase/supabase-js'
-import { removeCollaboratorFromRepo } from 'protected/_utils/github'
+import { removeCollaboratorFromRepo } from '~/features/github/helpers'
 import type Stripe from 'stripe'
 
 import type { Database, Json } from './supabase-types'
