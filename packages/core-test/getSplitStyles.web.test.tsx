@@ -104,6 +104,35 @@ describe('getSplitStyles', () => {
     expect(styles.rulesToInsert[0].property).toEqual(`boxShadow`)
   })
 
+  test(`backgroundColor in defaultVariant for div`, () => {
+    const CustomDiv = styled('div', {
+      backgroundColor: 'white',
+      variants: {
+        variant: {
+          red: {
+            backgroundColor: 'red',
+          },
+          green: {
+            backgroundColor: 'green',
+          },
+          gray: {
+            backgroundColor: 'gray',
+          }
+        }
+      },
+      defaultVariants: {
+        variant: 'gray'
+      }
+    } as const)
+    const styles = simplifiedGetSplitStyles(CustomDiv, {
+      backgroundColor: 'gray',
+      variant: 'gray',
+    })
+    expect(styles.rulesToInsert.length).toEqual(1)
+    expect(styles.rulesToInsert[0].value).toEqual(`gray`)
+    expect(styles.rulesToInsert[0].property).toEqual(`backgroundColor`) 
+  })
+
   test(`group container queries generate @supports and @container`, () => {
     const styles = simplifiedGetSplitStyles(Text, {
       '$group-testy-sm': {

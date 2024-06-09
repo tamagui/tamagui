@@ -2000,6 +2000,8 @@ export type ViewStyleWithPseudos =
       disabledStyle?: TextStyle
     })
 
+type ReactDOMComponents = string;
+
 /**
  * --------------------------------------------
  *   variants
@@ -2011,6 +2013,7 @@ export type StylableComponent =
   | ComponentType<any>
   | ForwardRefExoticComponent<any>
   | ReactComponentWithRef<any, any>
+  | ReactDOMComponents
   | (new (
       props: any
     ) => any)
