@@ -57,8 +57,8 @@ export default async () => {
       await build(...args)
     },
 
-    serve(options, app) {
-      serve(options, app)
+    async serve(options, app) {
+      await serve(options, app)
     },
 
     webConfig: {

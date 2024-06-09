@@ -10,7 +10,7 @@ import { BlogSlugPage } from '~/features/site/blog/BlogSlugPage'
 import { getOgUrl } from '~/features/site/getOgUrl'
 
 export async function generateStaticParams() {
-  const frontmatters = getAllFrontmatter('blog')
+  const frontmatters = getAllFrontmatter('data/blog')
   return frontmatters.map(({ slug }) => ({
     slug: slug.replace('blog/', ''),
   }))
