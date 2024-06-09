@@ -21,6 +21,12 @@ const defaultExample = {
 export const HomeExamples = memo(
   ({ examples, onlyDemo }: { examples: any; onlyDemo?: boolean }) => {
     const [activeIndex, setActiveIndex] = useState(0)
+
+    if (!examples) {
+      console.error(`Missing examples!`)
+      return null
+    }
+
     const activeExample = examples[activeIndex] ?? defaultExample
     const subtitles = [
       'SSR-first atomic CSS',
@@ -97,7 +103,14 @@ export const HomeExamples = memo(
               px="$2"
               space
             >
-              <Paragraph maw={480} als="center" size="$5" minHeight={50} ta="center" px="$6">
+              <Paragraph
+                maw={480}
+                als="center"
+                size="$5"
+                minHeight={50}
+                ta="center"
+                px="$6"
+              >
                 <span style={{ opacity: 0.65 }}>{activeExample.input.description}</span>
               </Paragraph>
               <CodeExamples title="Input" {...activeExample.input} />
@@ -129,7 +142,14 @@ export const HomeExamples = memo(
               px="$2"
               space
             >
-              <Paragraph maw={480} als="center" size="$5" minHeight={50} ta="center" px="$6">
+              <Paragraph
+                maw={480}
+                als="center"
+                size="$5"
+                minHeight={50}
+                ta="center"
+                px="$6"
+              >
                 <span style={{ opacity: 0.65 }}>{activeExample.output.description}</span>
               </Paragraph>
               <CodeExamples title="Output" {...activeExample.output} />

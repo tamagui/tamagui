@@ -6,7 +6,7 @@ import { SubTitle, nbspLastWord } from '~/components/SubTitle'
 import { DocsQuickNav } from '~/features/docs/DocsQuickNav'
 import { HomeH1 } from '~/features/site/home/HomeHeaders'
 
-import { getAllFrontmatter, getMDXBySlug } from '@tamagui/mdx'
+import { getAllFrontmatter, getCompilationExamples, getMDXBySlug } from '@tamagui/mdx'
 import { components } from '~/features/mdx/MDXComponents'
 import { HeadInfo } from '~/components/HeadInfo'
 import { getOgUrl } from '~/features/site/getOgUrl'
@@ -24,7 +24,7 @@ export async function loader({ params }) {
   return {
     frontmatter,
     code,
-    // examples: getCompilationExamples(),
+    examples: getCompilationExamples(),
   }
 }
 

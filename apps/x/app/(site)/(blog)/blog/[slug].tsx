@@ -32,7 +32,7 @@ export async function loader(props: LoaderProps) {
     frontmatter,
     code,
     relatedPosts,
-    examples: await getCompilationExamples(),
+    examples: getCompilationExamples(),
   }
 }
 
