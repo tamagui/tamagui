@@ -1,11 +1,13 @@
 import { getAllFrontmatter, getCompilationExamples, getMDXBySlug } from '@tamagui/mdx'
-import type { LoaderProps } from 'vxs'
-import { useLoader } from 'vxs'
 import { getMDXComponent } from 'mdx-bundler/client'
 import React from 'react'
-import { components } from '~/features/mdx/MDXComponents'
+import type { LoaderProps } from 'vxs'
+import { useLoader } from 'vxs'
 
+import { HeadInfo } from '~/components/HeadInfo'
+import { TamaguiExamples } from '~/components/TamaguiExamples'
 import { BlogSlugPage } from '~/features/site/blog/BlogSlugPage'
+import { getOgUrl } from '~/features/site/getOgUrl'
 
 export async function generateStaticParams() {
   const frontmatters = getAllFrontmatter('blog')
@@ -38,33 +40,32 @@ export default function BlogSlug() {
   const data = useLoader(loader)
   const Component = React.useMemo(() => getMDXComponent(data.code), [data.code])
 
-  // TODO
-  // <TamaguiExamples.Provider value={props['examples']}>
-  // <NextSeo
-  //   {...props.frontmatter}
-  //   title={`${props.frontmatter.title} — Tamagui`}
-  //   description={props.frontmatter.description}
-  //   openGraph={{
-  //     images: [
-  //       {
-  //         url:
-  //           props.frontmatter.image ??
-  //           getOgUrl('default', {
-  //             title: props.frontmatter.title,
-  //             description: props.frontmatter.description ?? '',
-  //             category: 'Blog',
-  //           }),
-  //         width: 1200,
-  //         height: 630,
-  //       },
-  //     ],
-  //   }}
-  // />
-  // </TamaguiExamples.Provider>
-
   return (
     <>
-      <BlogSlugPage Component={Component} {...data} />
+      <HeadInfo
+        {...data.frontmatter}
+        title={`${data.frontmatter.title} — Tamagui`}
+        description={data.frontmatter.description}
+        openGraph={{
+          images: [
+            {
+              url:
+                data.frontmatter.image ??
+                getOgUrl('default', {
+                  title: data.frontmatter.title,
+                  description: data.frontmatter.description ?? '',
+                  category: 'Blog',
+                }),
+              width: 1200,
+              height: 630,
+            },
+          ],
+        }}
+      />
+
+      <TamaguiExamples.Provider value={data.examples}>
+        <BlogSlugPage Component={Component} {...data} />
+      </TamaguiExamples.Provider>
     </>
   )
 }

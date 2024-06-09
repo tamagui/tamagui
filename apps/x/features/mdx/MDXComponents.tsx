@@ -61,6 +61,7 @@ import { unwrapText } from '~/helpers/unwrapText'
 import type { YStackProps } from 'tamagui'
 import { HomeAnimations } from '../site/home/HomeAnimations'
 import { LogoCard } from '~/components/LogoCard'
+import { TamaguiExamplesCode } from '~/components/TamaguiExamples'
 
 const Preview = (props: YStackProps) => (
   <YStack
@@ -286,7 +287,7 @@ export const components = {
   UL,
   LI,
 
-  TamaguiExamplesCode: () => null,
+  TamaguiExamplesCode,
 
   TLDR: (props) => {
     return (

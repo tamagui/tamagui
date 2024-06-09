@@ -1,4 +1,4 @@
-export declare function getCompilationExamples(): Promise<{
+export declare function getCompilationExamples(): {
     compilationExamples: {
         input: {
             examples: {
@@ -19,5 +19,5 @@ export declare function getCompilationExamples(): Promise<{
         name: string;
     }[];
     animationCode: string;
-}>;
+};
 //# sourceMappingURL=getCompilationExamples.d.ts.map

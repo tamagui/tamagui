@@ -8,6 +8,8 @@ import { HomeH1 } from '~/features/site/home/HomeHeaders'
 
 import { getAllFrontmatter, getMDXBySlug } from '@tamagui/mdx'
 import { components } from '~/features/mdx/MDXComponents'
+import { HeadInfo } from '~/components/HeadInfo'
+import { getOgUrl } from '~/features/site/getOgUrl'
 
 export async function generateStaticParams() {
   const frontmatters = getAllFrontmatter('data/docs/guides')
@@ -32,9 +34,8 @@ export default function DocGuidesPage() {
 
   return (
     <>
-      {/* TODO */}
-      {/* <NextSeo
-        title={`${frontmatter.title} — Tamagui`}
+      <HeadInfo
+        title={`${frontmatter.title}`}
         description={frontmatter.description}
         openGraph={{
           images: [
@@ -47,7 +48,7 @@ export default function DocGuidesPage() {
             },
           ],
         }}
-      /> */}
+      />
       <HomeH1>{nbspLastWord(frontmatter.title)}</HomeH1>
       <SubTitle>{nbspLastWord(frontmatter.description || '')}</SubTitle>
       <ThemeTint>

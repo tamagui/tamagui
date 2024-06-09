@@ -64,6 +64,8 @@ import { PurchaseModal } from '~/features/site/purchase/PurchaseModal'
 import { getProductsForServerSideRendering } from '~/features/site/purchase/server-helpers'
 import { useTakeoutStore } from '~/features/site/purchase/useTakeoutStore'
 import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
+import { HeadInfo } from '~/components/HeadInfo'
+import { LoadCherryBomb, LoadMunro } from '~/features/site/fonts/LoadFonts'
 
 export const loader = async () => {
   try {
@@ -86,6 +88,22 @@ export default function BentoPage(props: ProComponentsProps) {
 
   return (
     <>
+      <LoadCherryBomb />
+      <LoadMunro />
+      <script src="https://cdn.paritydeals.com/banner.js" />
+      <HeadInfo
+        title="🍱 Tamagui Bento"
+        description="Tamagui Bento - Copy-paste components and screens for React and React Native"
+        openGraph={{
+          url: 'https://tamagui.dev/bento',
+          images: [
+            {
+              url: 'https://tamagui.dev/bento/social.png',
+            },
+          ],
+        }}
+      />
+
       <PurchaseModal
         bento={props.bento}
         defaultValue="bento"

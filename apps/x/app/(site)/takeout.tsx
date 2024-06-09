@@ -51,6 +51,7 @@ import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
 import { TakeoutLogo } from '~/features/takeout/TakeoutLogo'
 import { LoadCherryBomb, LoadMunro } from '~/features/site/fonts/LoadFonts'
 import { Sticksy } from '~/helpers/sticksy'
+import { HeadInfo } from '~/components/HeadInfo'
 
 export const loader = async () => {
   try {
@@ -72,24 +73,18 @@ export default function TakeoutPage() {
       <LoadCherryBomb />
       <LoadMunro />
       <script src="https://cdn.paritydeals.com/banner.js" />
-
-      {/* TODO */}
-      {/* <NextSeo
-          title="🥡 Tamagui Takeout"
-          description="Tamagui Takeout React Native Bootstrap Starter Kit"
-          openGraph={{
-            type: 'website',
-            locale: 'en_US',
-            url: 'https://tamagui.dev/takeout',
-            siteName: 'Tamagui',
-            images: [
-              {
-                url: 'https://tamagui.dev/takeout/social.png',
-              },
-            ],
-          }}
-        />
-         */}
+      <HeadInfo
+        title="🥡 Tamagui Takeout"
+        description="Tamagui Takeout React Native Bootstrap Starter Kit"
+        openGraph={{
+          url: 'https://tamagui.dev/takeout',
+          images: [
+            {
+              url: 'https://tamagui.dev/takeout/social.png',
+            },
+          ],
+        }}
+      />
 
       <YStack
         pos="absolute"

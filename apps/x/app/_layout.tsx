@@ -6,6 +6,7 @@ import { Slot, Stack } from 'vxs'
 import { isWeb, setupPopper } from 'tamagui'
 import { Providers } from '../src/Providers'
 import React from 'react'
+import { HeadInfo } from '~/components/HeadInfo'
 
 globalThis['React'] = React
 
@@ -36,6 +37,26 @@ export default function Layout() {
       <meta name="docsearch:version" content="1.0.0,latest" />
       <meta id="theme-color" name="theme-color" />
       <meta name="color-scheme" content="light dark" />
+
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:site" content="@tamagui_js" />
+      <meta name="twitter:creator" content="@natebirdman" />
+
+      <HeadInfo
+        openGraph={{
+          type: 'website',
+          locale: 'en_US',
+          url: 'https://tamagui.dev',
+          siteName: 'Tamagui',
+          images: [
+            {
+              url: 'https://tamagui.dev/social.png',
+            },
+          ],
+        }}
+      />
+
+      <meta name="robots" content="index,follow" />
 
       <link crossOrigin="anonymous" href="/fonts/inter-700.css" rel="stylesheet" />
       <link

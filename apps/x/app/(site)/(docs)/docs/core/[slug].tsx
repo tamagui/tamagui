@@ -8,6 +8,8 @@ import { HomeH1 } from '~/features/site/home/HomeHeaders'
 
 import { getAllFrontmatter, getMDXBySlug } from '@tamagui/mdx'
 import { components } from '~/features/mdx/MDXComponents'
+import { HeadInfo } from '~/components/HeadInfo'
+import { getOgUrl } from '~/features/site/getOgUrl'
 
 export async function generateStaticParams() {
   const frontmatters = getAllFrontmatter('data/docs/core')
@@ -31,9 +33,8 @@ export default function DocCorePage() {
 
   return (
     <>
-      {/* TODO */}
-      {/* <NextSeo
-        title={`${frontmatter.title} — Tamagui`}
+      <HeadInfo
+        title={`${frontmatter.title}`}
         description={frontmatter.description}
         openGraph={{
           images: [
@@ -46,14 +47,13 @@ export default function DocCorePage() {
             },
           ],
         }}
-      /> */}
+      />
       <HomeH1>{nbspLastWord(frontmatter.title)}</HomeH1>
       <SubTitle>{nbspLastWord(frontmatter.description || '')}</SubTitle>
       <ThemeTint>
         <Component components={components as any} />
       </ThemeTint>
-      {/* frontmatter.slug */}
-      <DocsQuickNav key={'ok'} />
+      <DocsQuickNav />
     </>
   )
 }

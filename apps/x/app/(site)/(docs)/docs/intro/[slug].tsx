@@ -7,6 +7,8 @@ import { SubTitle, nbspLastWord } from '~/components/SubTitle'
 import { DocsQuickNav } from '~/features/docs/DocsQuickNav'
 import { components } from '~/features/mdx/MDXComponents'
 import { HomeH1 } from '~/features/site/home/HomeHeaders'
+import { HeadInfo } from '~/components/HeadInfo'
+import { getOgUrl } from '~/features/site/getOgUrl'
 
 export async function generateStaticParams() {
   const frontmatters = getAllFrontmatter('data/docs/intro')
@@ -37,8 +39,7 @@ export default function DocIntroPage() {
 
   return (
     <>
-      {/* TODO */}
-      {/* <NextSeo
+      <HeadInfo
         title={`${frontmatter.title} — Tamagui`}
         description={frontmatter.description}
         openGraph={{
@@ -52,7 +53,7 @@ export default function DocIntroPage() {
             },
           ],
         }}
-      /> */}
+      />
       <HomeH1>{nbspLastWord(frontmatter.title)}</HomeH1>
       <SubTitle>{nbspLastWord(frontmatter.description || '')}</SubTitle>
       <ThemeTint>

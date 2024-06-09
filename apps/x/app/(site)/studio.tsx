@@ -21,14 +21,15 @@ import { Features } from '~/components/Features'
 import type { DivProps, HoverGlowProps } from '~/components/HoverGlow'
 import { IS_SAFARI, useHoverGlow } from '~/components/HoverGlow'
 import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
+import { LoadInter900 } from '~/features/site/fonts/LoadFonts'
+import { HeadInfo } from '~/components/HeadInfo'
 
 export default function StudioSplashPage() {
   return (
     <>
-      {/* <NextSeo title="Tamagui Studio" description="Tamagui Studio" />
-      <Head>
-        <LoadInter900 />
-      </Head> */}
+      <HeadInfo title="Tamagui Studio" description="Tamagui Studio" />
+
+      <LoadInter900 />
 
       <ThemeNameEffect />
 
