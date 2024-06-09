@@ -1,4 +1,4 @@
-import { useTint } from '@tamagui/logo'
+import { ThemeTint, useTint } from '@tamagui/logo'
 import { ArrowLeft } from '@tamagui/lucide-icons'
 import type { Frontmatter } from '@tamagui/mdx'
 import { usePathname } from 'vxs'
@@ -31,73 +31,77 @@ export type BlogPost = {
 export function BlogArticleHeader({ frontmatter }: BlogPost) {
   const pathname = usePathname()
   const isDraft = pathname.startsWith('/draft')
-  const { tint } = useTint()
   return (
-    <Theme name={tint as any}>
-      <YStack mt="$-10" pt="$10" mb="$4" pos="relative">
+    <YStack mt="$-10" pt="$12" mb="$4" pos="relative">
+      <ThemeTint>
         <LinearGradient fullscreen colors={['$background', 'transparent']} />
-        <Container>
-          <YStack mt="$2" ai="flex-start">
+      </ThemeTint>
+
+      <Container>
+        <YStack mt="$2" ai="flex-start">
+          <ThemeTint>
             <Link href={isDraft ? '/draft' : '/blog'}>
-              <Button size="$3" chromeless icon={ArrowLeft} ml="$-2" theme="alt1">
+              <Button size="$3" chromeless icon={ArrowLeft} ml="$-2">
                 {isDraft ? 'Drafts' : 'Blog'}
               </Button>
             </Link>
+          </ThemeTint>
+        </YStack>
+
+        <H1 letterSpacing={-1} mt="$5" mb="$2">
+          {frontmatter.title}
+        </H1>
+
+        <H2 o={0.5} theme="alt1" size="$7" fontWeight="500" fontFamily="$body" mb="$1">
+          {frontmatter.description}
+        </H2>
+
+        <XStack ai="center" my="$3">
+          {/* <Avatar src={authors[data.by].avatar} mr={2} /> */}
+
+          <Link
+            href={`https://twitter.com/${authors?.[frontmatter.by || '']?.twitter}`}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <Paragraph size="$3" theme="alt1" whiteSpace="nowrap">
+              {authors?.[frontmatter.by || '']?.name}
+            </Paragraph>
+          </Link>
+
+          <Separator vertical mx="$2" />
+
+          <Paragraph o={0.4} tag="time" size="$3" theme="alt1" whiteSpace="nowrap">
+            {Intl.DateTimeFormat('en-US', {
+              month: 'short',
+              year: 'numeric',
+              day: 'numeric',
+            }).format(new Date(frontmatter.publishedAt || ''))}
+          </Paragraph>
+
+          <Separator vertical mx="$2" />
+
+          <YStack ai="center" display="none" $gtSm={{ display: 'flex' }}>
+            <Paragraph o={0.4} size="$3" theme="alt1">
+              {frontmatter.readingTime?.text}
+            </Paragraph>
+
+            {frontmatter.type === 'changelog' && (
+              <>
+                <Separator vertical mx="$2" />
+                <Button>Changelog</Button>
+              </>
+            )}
           </YStack>
+        </XStack>
+      </Container>
 
-          <H1 letterSpacing={-1} mt="$5" mb="$2">
-            {frontmatter.title}
-          </H1>
+      <Spacer />
 
-          <H2 o={0.5} theme="alt2" size="$7" fontWeight="500" fontFamily="$body" mb="$1">
-            {frontmatter.description}
-          </H2>
+      <Separator />
 
-          <XStack ai="center" my="$3">
-            {/* <Avatar src={authors[data.by].avatar} mr={2} /> */}
-
-            <Paragraph size="$3" theme="alt2" whiteSpace="nowrap">
-              <Link
-                href={`https://twitter.com/${authors?.[frontmatter.by || '']?.twitter}`}
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                {authors?.[frontmatter.by || '']?.name}
-              </Link>
-            </Paragraph>
-
-            <Separator vertical mx="$2" />
-
-            <Paragraph o={0.4} tag="time" size="$3" theme="alt2" whiteSpace="nowrap">
-              {Intl.DateTimeFormat('en-US', {
-                month: 'short',
-                year: 'numeric',
-                day: 'numeric',
-              }).format(new Date(frontmatter.publishedAt || ''))}
-            </Paragraph>
-
-            <Separator vertical mx="$2" />
-
-            <YStack ai="center" display="none" $gtSm={{ display: 'flex' }}>
-              <Paragraph o={0.4} size="$3" theme="alt2">
-                {frontmatter.readingTime?.text}
-              </Paragraph>
-
-              {frontmatter.type === 'changelog' && (
-                <>
-                  <Separator vertical mx="$2" />
-                  <Button>Changelog</Button>
-                </>
-              )}
-            </YStack>
-          </XStack>
-        </Container>
-
-        <Spacer />
-
-        <Separator />
-      </YStack>
-    </Theme>
+      <Spacer />
+    </YStack>
   )
 }
 
