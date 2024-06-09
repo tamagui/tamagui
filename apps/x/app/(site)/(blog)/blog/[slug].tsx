@@ -38,6 +38,12 @@ export async function loader(props: LoaderProps) {
 
 export default function BlogSlug() {
   const data = useLoader(loader)
+
+  if (!data) {
+    console.warn(`No data?`)
+    return null
+  }
+
   const Component = React.useMemo(() => getMDXComponent(data.code), [data.code])
 
   return (

@@ -12,6 +12,10 @@ export const TamaguiExamples = createContext<ReturnType<
 export function TamaguiExamplesCode() {
   try {
     const examples = useContext(TamaguiExamples)
+    if (!examples?.compilationExamples) {
+      console.warn(`No examples found`)
+      return null
+    }
     return (
       <HeroContainer noScroll noPad>
         <Spacer />
