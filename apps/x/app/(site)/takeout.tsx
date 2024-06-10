@@ -1044,15 +1044,9 @@ const TakeoutHero = () => {
         />
 
         <FeatureIcon
-          themeIndex={1}
-          title="Design"
-          icon="retro-icons/design-color-painting-palette-25.svg"
-        />
-
-        <FeatureIcon
           themeIndex={2}
-          title="Deploy"
-          icon="retro-icons/computers-devices-electronics-vintage-mac-54.svg"
+          title="Screens"
+          icon="retro-icons/coding-app-website-ui-62.svg"
         />
 
         <FeatureIcon
@@ -1063,8 +1057,8 @@ const TakeoutHero = () => {
 
         <FeatureIcon
           themeIndex={4}
-          title="Screens"
-          icon="retro-icons/coding-app-website-ui-62.svg"
+          title="Stack"
+          icon="retro-icons/computers-devices-electronics-vintage-mac-54.svg"
         />
 
         <FeatureIcon
@@ -1075,7 +1069,7 @@ const TakeoutHero = () => {
 
         <FeatureIcon
           themeIndex={6}
-          title="& More"
+          title="Profiles"
           icon="retro-icons/coding-apps-websites-programming-hold-code-9.svg"
         />
       </XStack>
