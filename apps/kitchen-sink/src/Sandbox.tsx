@@ -15,7 +15,7 @@ export const Sandbox = () => {
         debug="verbose"
         size={100}
         bg="red"
-        animation="superLazy"
+        animation="bouncy"
         enterStyle={{
           // opacity: 0,
           y: -100,
