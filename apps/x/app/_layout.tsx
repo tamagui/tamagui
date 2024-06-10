@@ -2,19 +2,10 @@ import '@tamagui/core/reset.css'
 import '~/app.css'
 import '~/tamagui.css'
 
-import { Slot, Stack, ScrollRestoration } from 'vxs'
 import { isWeb, setupPopper } from 'tamagui'
-import { Providers } from '../src/Providers'
-import React from 'react'
+import { ScrollRestoration, Slot, Stack } from 'vxs'
 import { HeadInfo } from '~/components/HeadInfo'
-
-globalThis['React'] = React
-
-if (import.meta.env.DEV) {
-  if (React.version.startsWith('18.')) {
-    console.error(`\n\n\n❌ not on react 19\n\n\n`)
-  }
-}
+import { Providers } from '../src/Providers'
 
 setupPopper({
   // prevents a reflow on mount
