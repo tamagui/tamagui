@@ -21,10 +21,7 @@ const handler = apiRoute(async (req) => {
     .eq('user_id', user.id)
 
   if (results.error) {
-    res.status(400).json({
-      message: 'an error occurred.',
-    })
-    return
+    throw results.error
   }
 
   console.info(`Loaded ${results.data.length} results for team ${teamId} user ${user.id}`)
@@ -43,7 +40,7 @@ const handler = apiRoute(async (req) => {
 
   console.info(`Sending themeSuites for ids: ${results.data.map((x) => x.id).join(', ')}`)
 
-  res.json(response)
+  return Response.json(response)
 })
 
 export default handler

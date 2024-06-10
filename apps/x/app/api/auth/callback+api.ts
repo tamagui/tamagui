@@ -1,5 +1,4 @@
-import { type CookieOptions, createServerClient } from '@supabase/ssr'
-import { createPagesServerClient } from '@supabase/auth-helpers-nextjs'
+import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import type { Endpoint } from 'vxs'
 import { getCookie, setCookie } from '~/features/api/cookies'
 
