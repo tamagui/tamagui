@@ -1186,7 +1186,7 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
           }}
         >
           <YStack zi={-1} fullscreen bg="$color5" o={0.5} />
-
+          {/* 
           <ThemeTintAlt>
             <LinearGradient
               pos="absolute"
@@ -1197,7 +1197,7 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
               colors={['$background0', '$color5']}
               zi={100}
             />
-          </ThemeTintAlt>
+          </ThemeTintAlt> */}
 
           <YStack pos="absolute" b="$4" l="$4" r="$4" zi={100}>
             {/* cant use buttonlink it breaks scroll on press if not enabled, conditionally use a link */}
@@ -1213,12 +1213,8 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
 
           <ScrollView p="$6" disabled={media.md} showsVerticalScrollIndicator={false}>
             <YStack space="$2">
-              <MunroP size="$3" o={0.1} mt={-15} mb={-5}>
-                Drop 0001
-              </MunroP>
-
               <ThemeTintAlt>
-                <MunroP color="$color11" size="$11" ls={2}>
+                <MunroP color="$color11" size="$9" ls={2}>
                   The Stack
                 </MunroP>
               </ThemeTintAlt>
