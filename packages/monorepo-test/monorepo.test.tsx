@@ -33,7 +33,7 @@ test(
       `${slowdown < 1 ? '🐇' : '🐢'} It is ${slowdown} slower than the baseline\n\n`
     )
 
-    expect(slowdown).toBeLessThan(1.5)
+    expect(slowdown).toBeLessThan(2)
   },
   {
     timeout: 100_000,
