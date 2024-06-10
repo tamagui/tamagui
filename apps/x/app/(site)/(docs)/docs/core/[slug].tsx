@@ -39,7 +39,7 @@ export default function DocCorePage() {
         openGraph={{
           images: [
             {
-              url: getOgUrl('default', {
+              url: getOgUrl({
                 title: frontmatter.title,
                 description: frontmatter.description ?? '',
                 category: 'intro',

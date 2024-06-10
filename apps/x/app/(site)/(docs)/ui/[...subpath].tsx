@@ -87,7 +87,8 @@ export default function DocComponentsPage() {
             {
               url:
                 frontmatter.image ??
-                getOgUrl('component', {
+                getOgUrl({
+                  type: 'component',
                   title: frontmatter.title,
                   demoName: frontmatter.demoName ?? undefined,
                   description: frontmatter.description ?? '',

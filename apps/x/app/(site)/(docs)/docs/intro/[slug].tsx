@@ -46,7 +46,7 @@ export default function DocIntroPage() {
         openGraph={{
           images: [
             {
-              url: getOgUrl('default', {
+              url: getOgUrl({
                 title: frontmatter.title,
                 description: frontmatter.description ?? '',
                 category: 'intro',

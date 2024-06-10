@@ -1,32 +1,20 @@
-import { getURL } from '@lib/helpers'
+import { getURL } from '~/helpers/getURL'
 import * as colors from '@tamagui/colors'
 import { ImageResponse } from '@vercel/og'
-import type { NextRequest } from 'next/server'
 import type { ReactElement } from 'react'
+import { apiRoute } from '~/features/api/apiRoute'
 
-export const config = {
-  runtime: 'edge',
-}
+// export const config = {
+//   runtime: 'edge',
+// }
 
-const fetchAsset = (url: URL) => fetch(url).then((res) => res.arrayBuffer())
-
-const interRegularFontP = fetchAsset(
-  new URL('../../public/fonts/otf/Inter-Regular.otf', import.meta.url)
-)
-
-const interBoldFontP = fetchAsset(
-  new URL('../../public/fonts/otf/Inter-Black.otf', import.meta.url)
-)
-
-const logo = fetchAsset(new URL('../../public/tamagui-words-logo.png', import.meta.url))
-
-export default async function handler(request: NextRequest) {
+export default apiRoute(async (req) => {
   const [interRegularFont, interBoldFont] = await Promise.all([
     interRegularFontP,
     interBoldFontP,
   ])
 
-  const { searchParams } = new URL(request.url)
+  const { searchParams } = new URL(req.url)
 
   const type = searchParams.has('type')
     ? searchParams.get('type')?.slice(0, 100)
@@ -57,7 +45,19 @@ export default async function handler(request: NextRequest) {
   }
 
   return getImageResponse(<BackgroundedOg searchParams={searchParams} logo={logoData} />)
-}
+})
+
+const fetchAsset = (url: URL) => fetch(url).then((res) => res.arrayBuffer())
+
+const interRegularFontP = fetchAsset(
+  new URL('../../public/fonts/otf/Inter-Regular.otf', import.meta.url)
+)
+
+const interBoldFontP = fetchAsset(
+  new URL('../../public/fonts/otf/Inter-Black.otf', import.meta.url)
+)
+
+const logo = fetchAsset(new URL('../../public/tamagui-words-logo.png', import.meta.url))
 
 const ComponentOg = ({
   searchParams,
@@ -98,7 +98,7 @@ const ComponentOg = ({
           display: 'flex',
           flexDirection: 'column',
           marginLeft: 44,
-          ...(hasDemo ? { flex: 1 } : {}),
+          ...(!!hasDemo ? { flex: 1 } : {}),
         }}
       >
         <h1

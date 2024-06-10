@@ -57,7 +57,7 @@ export default function BlogSlug() {
             {
               url:
                 data.frontmatter.image ??
-                getOgUrl('default', {
+                getOgUrl({
                   title: data.frontmatter.title,
                   description: data.frontmatter.description ?? '',
                   category: 'Blog',

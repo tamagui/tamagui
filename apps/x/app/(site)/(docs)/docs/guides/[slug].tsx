@@ -1,14 +1,14 @@
 import { ThemeTint } from '@tamagui/logo'
-import { useLoader } from 'vxs'
 import { getMDXComponent } from 'mdx-bundler/client'
 import { useMemo } from 'react'
+import { useLoader } from 'vxs'
 import { SubTitle, nbspLastWord } from '~/components/SubTitle'
 import { DocsQuickNav } from '~/features/docs/DocsQuickNav'
 import { HomeH1 } from '~/features/site/home/HomeHeaders'
 
-import { getAllFrontmatter, getCompilationExamples, getMDXBySlug } from '@tamagui/mdx'
-import { components } from '~/features/mdx/MDXComponents'
+import { getAllFrontmatter, getMDXBySlug } from '@tamagui/mdx'
 import { HeadInfo } from '~/components/HeadInfo'
+import { components } from '~/features/mdx/MDXComponents'
 import { getOgUrl } from '~/features/site/getOgUrl'
 
 export async function generateStaticParams() {
@@ -24,7 +24,6 @@ export async function loader({ params }) {
   return {
     frontmatter,
     code,
-    examples: getCompilationExamples(),
   }
 }
 
@@ -40,7 +39,7 @@ export default function DocGuidesPage() {
         openGraph={{
           images: [
             {
-              url: getOgUrl('default', {
+              url: getOgUrl({
                 title: frontmatter.title,
                 description: frontmatter.description ?? '',
                 category: 'intro',
