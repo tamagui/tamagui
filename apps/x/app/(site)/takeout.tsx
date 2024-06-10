@@ -1089,8 +1089,8 @@ const Point = ({
 }) => {
   return (
     <XStack tag="li" ai="flex-start" space f={1} ov="hidden" {...props}>
-      <YStack py="$1.5">
-        <Check size={16} color="$color10" />
+      <YStack mr={-12} py="$1.5">
+        <Dot size={16} color="$color10" />
       </YStack>
       <YStack f={1}>
         <Paragraph color="$color" wordWrap="break-word" size={size}>
