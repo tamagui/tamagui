@@ -188,11 +188,6 @@ const HeroContents = memo(function HeroContents() {
               maxWidth: 1200,
               h: 310,
             }}
-            animation="superLazy"
-            enterStyle={{
-              opacity: 0,
-              y: -10,
-            }}
           >
             <Text
               className="clip-text"
