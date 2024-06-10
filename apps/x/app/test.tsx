@@ -1,10 +1,59 @@
 import { useEffect } from 'react'
-import { AnimatePresence, YStack } from 'tamagui'
+import { AnimatePresence, Circle, H1, YStack } from 'tamagui'
 
 export default function TestPage() {
   useEffect(() => {
     console.warn('hi mom')
   }, [])
+
+  return (
+    <>
+      {/* <H1
+        ta="left"
+        size="$14"
+        maw={500}
+        pos="relative"
+        debug="verbose"
+        // FOR CLS IMPORTANT TO SET EXACT HEIGHT IDK WHY LINE HEIGHT SHOULD BE STABLE
+        // $gtSm={{
+        //   mx: 0,
+        //   maxWidth: 800,
+        //   size: '$14',
+        //   h: 250,
+        //   ta: 'center',
+        //   als: 'center',
+        // }}
+        // $gtMd={{
+        //   maxWidth: 900,
+        //   size: '$15',
+        //   h: 310,
+        // }}
+        // $gtLg={{
+        //   size: '$16',
+        //   lh: 146,
+        //   maxWidth: 1200,
+        //   h: 310,
+        // }}
+        animation="superLazy"
+        enterStyle={{
+          // opacity: 0,
+          y: -100,
+        }}
+      >
+        write less
+      </H1> */}
+      <Circle
+        debug="verbose"
+        size={100}
+        bg="red"
+        animation="superLazy"
+        enterStyle={{
+          // opacity: 0,
+          y: -100,
+        }}
+      />
+    </>
+  )
 
   return (
     <>

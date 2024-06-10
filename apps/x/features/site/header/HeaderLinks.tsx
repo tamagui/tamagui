@@ -76,10 +76,12 @@ export const HeaderLinks = (props: HeaderProps) => {
   const { showExtra, forceShowAllLinks, isHeader } = props
   const userSwr = useUser()
   // there is user context and supabase setup in the current page
-  return (
+
+  const primaryLinks = (
     <>
       <Link asChild href="/docs/intro/introduction">
         <HeadAnchor
+          half={forceShowAllLinks}
           grid={forceShowAllLinks}
           $sm={{
             display: forceShowAllLinks ? 'flex' : 'none',
@@ -91,6 +93,7 @@ export const HeaderLinks = (props: HeaderProps) => {
 
       <Link asChild href="/ui/intro/1.0.0">
         <HeadAnchor
+          half={forceShowAllLinks}
           grid={forceShowAllLinks}
           $sm={{
             display: forceShowAllLinks ? 'flex' : 'none',
@@ -99,6 +102,21 @@ export const HeaderLinks = (props: HeaderProps) => {
           UI
         </HeadAnchor>
       </Link>
+    </>
+  )
+
+  return (
+    <>
+      {forceShowAllLinks ? (
+        <>
+          <XStack fw="wrap" f={1} gap="$2" w="100%">
+            {primaryLinks}
+          </XStack>
+          <Separator bc="$color025" o={0.25} my="$2" />
+        </>
+      ) : (
+        primaryLinks
+      )}
 
       {forceShowAllLinks && (
         <Link asChild href="/community">
@@ -205,15 +223,13 @@ export const HeaderLinks = (props: HeaderProps) => {
         </Link>
       )}
 
-      {forceShowAllLinks && (
-        <Link asChild href="https://github.com/sponsors/natew">
-          <HeadAnchor target="_blank" grid={forceShowAllLinks}>
-            Sponsor
-            <YStack dsp={'inline-block' as any} y={0} my={-20} ml={12} o={0.8}>
-              <ExternalLink size={10} o={0.5} />
-            </YStack>
-          </HeadAnchor>
-        </Link>
+      {forceShowAllLinks && !userSwr.data?.userDetails && (
+        <>
+          <Separator bc="$color025" o={0.25} my="$2" />
+          <Link asChild href="/login">
+            <HeadAnchor grid={forceShowAllLinks}>Login</HeadAnchor>
+          </Link>
+        </>
       )}
 
       {forceShowAllLinks && (
@@ -252,18 +268,13 @@ export const HeaderLinks = (props: HeaderProps) => {
               </HeadAnchor>
             </Link>
 
-            {userSwr.data?.userDetails && (
-              <Link asChild href="/account">
-                <HeadAnchor half grid={forceShowAllLinks}>
-                  Account
-                </HeadAnchor>
-              </Link>
-            )}
-
-            {!userSwr.data?.userDetails && (
-              <Link asChild href="/login">
-                <HeadAnchor half grid={forceShowAllLinks}>
-                  Login
+            {forceShowAllLinks && (
+              <Link asChild href="https://github.com/sponsors/natew">
+                <HeadAnchor half target="_blank" grid={forceShowAllLinks}>
+                  Sponsor
+                  <YStack dsp={'inline-block' as any} y={0} my={-20} ml={12} o={0.8}>
+                    <ExternalLink size={10} o={0.5} />
+                  </YStack>
                 </HeadAnchor>
               </Link>
             )}
@@ -550,7 +561,11 @@ const SlidingPopoverContent = () => {
           {context.id === 'bento' && (
             <Frame key="bento">
               <TooltipLabelLarge
-                icon={<BentoIcon />}
+                icon={
+                  <YStack y={-2}>
+                    <BentoIcon />
+                  </YStack>
+                }
                 title="Bento"
                 subtitle="A suite of nicely designed copy-paste components and screens."
               />
