@@ -825,14 +825,13 @@ export type TakeoutPageProps = Awaited<
 >
 
 const TakeoutCard2Frame = styled(YStack, {
-  className: 'blur-8',
   minWidth: 282,
   maxWidth: 282,
   minHeight: 312,
   maxHeight: 312,
   elevation: '$0.5',
   overflow: 'hidden',
-  borderRadius: '$10',
+  borderRadius: '$4',
 
   '$group-takeoutBody-gtXs': {
     scale: 0.915,
