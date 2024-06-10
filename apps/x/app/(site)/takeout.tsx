@@ -866,7 +866,7 @@ const TakeoutCard = ({ children, title, icon, ...props }: TakeoutCardFrameProps)
     strategy: 'blur',
     blurPct: 60,
     // inverse: true,
-    color: isDark ? 'var(--color9)' : 'var(--color4)',
+    color: isDark ? 'var(--color1)' : 'var(--color4)',
     opacity: isDark ? 0.18 : 0.35,
     background: 'transparent',
     style: {
@@ -916,7 +916,8 @@ const TakeoutCard = ({ children, title, icon, ...props }: TakeoutCardFrameProps)
         <YStack f={1} space zi={100}>
           <H2
             fontFamily="$munro"
-            size="$10"
+            size="$8"
+            ls={3}
             als="center"
             my={-8}
             color="$color10"
