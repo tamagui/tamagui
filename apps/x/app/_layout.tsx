@@ -2,7 +2,7 @@ import '@tamagui/core/reset.css'
 import '~/app.css'
 import '~/tamagui.css'
 
-import { Slot, Stack } from 'vxs'
+import { Slot, Stack, ScrollRestoration } from 'vxs'
 import { isWeb, setupPopper } from 'tamagui'
 import { Providers } from '../src/Providers'
 import React from 'react'
@@ -55,6 +55,8 @@ export default function Layout() {
           ],
         }}
       />
+
+      <ScrollRestoration />
 
       <meta name="robots" content="index,follow" />
 
