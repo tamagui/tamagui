@@ -482,18 +482,16 @@ Things to note:
     `300`, and weight `7` === `600`.
 
 ### Troubleshooting
----
-My custom fonts aren't appearing in Tamagui components?
 
-- `Font family` definition is important based on device i.e. Web vs Native
-  - Native requires a single string with the font family defined, whereas web can include fallback font families.
+Custom fonts not appearing in Tamagui components? Note the `family` definition, on Native it requires a single font name, whereas on web it can include a comma-separated list of fallbacks.
 
-Try adding this to your custom font inside the `createFont` function:
+You can use the `isWeb` boolean to do this conditionally on `createFont`:
+
 ```tsx
-family: isWeb ? 'Custom-Font, Arial, Helvetica, ...' : 'Custom-Font',
-size: {
-  //...size,
-}
+createFont({
+  family: isWeb ? 'Custom-Font, Arial, Helvetica, ...' : 'Custom-Font',
+  ...rest
+})
 ```
 
 #### Custom Font Family on Native
