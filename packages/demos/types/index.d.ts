@@ -29,6 +29,7 @@ export * from './ListItemDemo';
 export * from './LucideIconsDemo';
 export * from './PopoverDemo';
 export * from './ProgressDemo';
+export * from './ProgressHeadlessDemo';
 export * from './RadioGroupDemo';
 export * from './RadioGroupHeadlessDemo';
 export * from './RadioGroupUnstyledDemo';
