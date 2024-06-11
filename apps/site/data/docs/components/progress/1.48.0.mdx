@@ -11,13 +11,40 @@ demoName: Progress
 
 <Description>Show percent completion with a progress bar</Description>
 
-<HeroContainer showAnimationDriverControl>
-  <ProgressDemo />
-</HeroContainer>
+<YStack className="is-sticky" />
 
+<Tabs id="type" defaultValue="styled">
+<Tabs.List>
+  <TooltipSimple label="With Tamagui's default styles">
+    <Tabs.Tab value="styled">Styled</Tabs.Tab>
+  </TooltipSimple>
+  <TooltipSimple label="No dependency on Tamagui's core">
+    <Tabs.Tab value="headless" label="No styles and no dependency on Tamagui's styling">Headless</Tabs.Tab>
+  </TooltipSimple>
+</Tabs.List>
+
+<Tabs.Content value="styled">
+  <HeroContainer showAnimationDriverControl>
+      <ProgressDemo />
+  </HeroContainer>
+</Tabs.Content>
+<Tabs.Content value="headless">
+  <HeroContainer showAnimationDriverControl>
+    <ProgressHeadlessDemo />
+  </HeroContainer>
+</Tabs.Content>
+
+<Tabs.Content value="styled">
 ```tsx hero template=Progress
 
 ```
+</Tabs.Content>
+
+<Tabs.Content value="headless">
+```tsx hero template=ProgressHeadless
+
+```
+</Tabs.Content>
 
 <Highlights
   features={[
@@ -34,15 +61,35 @@ demoName: Progress
 
 ## Installation
 
+<Tabs.Content value="styled">
+
 Progress is already installed in `tamagui`, or you can install it independently:
 
 ```bash
 npm install @tamagui/progress
 ```
 
+</Tabs.Content>
+
+<Tabs.Content value="headless">
+
+To use the headless progress, you want to import it from the
+`@tamagui/progress-headless` package. This package has no dependency on
+`@tamagui/core`, but still works off the react-native APIs.
+This means can bring your own style library.
+
+```bash
+npm install @tamagui/progress-headless
+```
+
+</Tabs.Content>
+
+
 ## Usage
 
 The `value` property controls the percent, but you can override it by adjusting the `x` property.
+
+<Tabs.Content value="styled">
 
 ```tsx
 import { Button, Progress } from 'tamagui'
@@ -53,6 +100,19 @@ export default () => (
   </Progress>
 )
 ```
+
+</Tabs.Content>
+
+<Tabs.Content value="headless">
+
+Using the `useProgress` API, you can make your own Progress from scratch.
+
+```tsx template=ProgressHeadless
+
+```
+
+</Tabs.Content>
+
 
 ## API Reference
 
@@ -101,3 +161,5 @@ Progress extends [ThemeableStack](/docs/components/stacks#themeablestack), getti
     },
   ]}
 />
+
+</Tabs>

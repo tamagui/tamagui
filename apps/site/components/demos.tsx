@@ -133,6 +133,10 @@ export const ProgressDemo = lazyDemo(
   // @ts-ignore
   () => import('@tamagui/demos/demo/ProgressDemo').then((x) => x.ProgressDemo)
 )
+export const ProgressHeadlessDemo = lazyDemo(() =>
+  // @ts-ignore
+  import('@tamagui/demos/demo/ProgressHeadlessDemo').then((x) => x.ProgressHeadlessDemo)
+)
 export const ListItemDemo = lazyDemo(
   // @ts-ignore
   () => import('@tamagui/demos/demo/ListItemDemo').then((x) => x.ListItemDemo)
