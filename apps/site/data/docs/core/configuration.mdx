@@ -75,12 +75,12 @@ web and the built-in Animated driver on React Native.
 Throughout this guide keep in mind that you should import from just one "ui"
 package - whether it's `@tamagui/core` or `tamagui` or it's your custom one.
 
-#### Diverging from @tamagui/themes
+#### A gist for custom theme suites
 
-You may fork from the built in themes (which in fairness are specific to the
-Tamagui website) by
-[copying and pasting this gist](https://gist.github.com/natew/3be503cc5990a1142d17ffadf86a134f)
-into a `themes.ts` file next to your `tamagui.config.ts`.
+The themes in the config above are specific to the Tamagui site.
+We've set up [a themes example gist](https://gist.github.com/natew/3be503cc5990a1142d17ffadf86a134f)
+which has a full built-up theme suite which you can pass to `createTamagui({ themes })`. It's large,
+so you may want to put it in a `themes.ts` file next to your `tamagui.config.ts` and import it.
 
 ## From scratch
 
