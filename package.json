@@ -102,7 +102,7 @@
   "profile": {
     "//": "run 'yarn profile x' to toggle it on/off",
     "react-19": {
-      "applied": false,
+      "applied": true,
       "resolutions": {
         "vite": "6.0.0-alpha.17",
         "@react-three/fiber": "9.0.0-alpha.6",
