@@ -319,9 +319,10 @@ const getIdentifierFromTamaguiSelector = (selector: string) => {
   return selector.slice(7)
 }
 
-const sheet = isClient
-  ? document.head.appendChild(document.createElement('style')).sheet
-  : null
+const sheet =
+  isClient && document.head
+    ? document.head.appendChild(document.createElement('style')).sheet
+    : null
 
 export function updateRules(identifier: string, rules: string[]) {
   if (!process.env.TAMAGUI_REACT_19) {
