@@ -105,7 +105,7 @@ export const installComponent = async ({ component, setInstall, install }) => {
 
     components.map((component) =>
       fs.writeFile(
-        path.join(process.cwd(),'src', 'components', 'ui', component.name),
+        path.join(process.cwd(), 'src', 'components', 'ui', component.name),
         component.content
       )
     )

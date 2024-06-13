@@ -1,6 +1,7 @@
 {
   "name": "testing",
   "version": "1.100.3",
+  "private": true,
   "files": [],
   "type": "module",
   "scripts": {
