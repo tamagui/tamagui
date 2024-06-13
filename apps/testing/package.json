@@ -1,24 +1,29 @@
 {
-  "name": "one",
-  "version": "1.100.0",
-  "private": true,
+  "name": "testing",
+  "version": "1.100.3",
+  "files": [],
   "type": "module",
   "scripts": {
     "dev": "vxrn dev",
     "dev:clean": "yarn clean && yarn dev",
     "clean": "rm -r dist || true && rm -r node_modules/.vite || true",
-    "build": "vxrn build",
+    "build:prod": "vxrn build",
     "serve": "vxrn serve",
     "postinstall": "patch-package || true"
   },
   "dependencies": {
-    "@tamagui/config": "1.100.0",
-    "@tamagui/core": "1.100.0",
+    "@tamagui/button": "1.100.3",
+    "@tamagui/config": "1.100.3",
+    "@tamagui/core": "1.100.3",
+    "@tamagui/input": "1.100.3",
     "react-native": "0.74.1",
-    "vxs": "^0.1.83"
+    "vxs": "^0.1.97"
   },
   "devDependencies": {
     "patch-package": "^8.0.0",
-    "vxrn": "^0.1.83"
+    "vxrn": "^0.1.97"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

@@ -29,11 +29,13 @@ import '@tamagui/core/reset.css'
 import { TamaguiProvider, View } from '@tamagui/core' // or 'tamagui'
 import config from './tamagui.config'
 
-export default function App () => (
+export default function App() {
+  return (
   <TamaguiProvider config={config}>
-    <View width={200} height={200} backgroundColor="red" />
+    <View width={200} height={200} backgroundColor="$background" />
   </TamaguiProvider>
-)
+  )
+}
 ```
 
 Tamagui doesn't require any bundler setup for either web or native, but you'll typically want to configure a few things using `createTamagui` like media queries, fonts, or tokens. The [configuration documentation](/docs/core/configuration) covers this in detail, but if you'd like to get started with decent defaults, you'll want `@tamagui/config`:

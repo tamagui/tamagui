@@ -350,9 +350,9 @@ export declare const Checkboxes: (<K extends string>(props: PropsWithChildren<Ch
             chromeless?: boolean | "all" | undefined;
         }, import("@tamagui/web").StaticConfigPublic];
     } & {
-        Item: (props: import("tamagui").GroupItemProps & {
+        Item: import("react").ForwardRefExoticComponent<import("tamagui").GroupItemProps & {
             __scopeGroup?: import("tamagui").Scope;
-        }) => any;
+        } & import("react").RefAttributes<unknown>>;
     };
     /** FocusGroup is necessary for keyboard arrow navigation */
     FocusGroup: import("react").ForwardRefExoticComponent<RovingFocusGroupProps & import("react").RefAttributes<import("tamagui").TamaguiElement>> & {

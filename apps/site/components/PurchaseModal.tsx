@@ -9,12 +9,13 @@ import {
   TakeoutTable,
   formatPrice,
 } from '@lib/products-utils'
-import { ThemeTintAlt, useTint } from '@tamagui/logo'
+import { ThemeTintAlt } from '@tamagui/logo'
 import { Check, X } from '@tamagui/lucide-icons'
 import { useUser } from 'hooks/useUser'
 import Link from 'next/link'
-import React, { useMemo, useState } from 'react'
-import type { TabsProps, ThemeName } from 'tamagui'
+import { useRouter } from 'next/router'
+import { useMemo, useState } from 'react'
+import type { TabsProps } from 'tamagui'
 import {
   AnimatePresence,
   Button,
@@ -41,7 +42,6 @@ import { BentoLogo } from './BentoLogo'
 import { NextLink } from './NextLink'
 import { BentoPoliciesModal, TakeoutPoliciesModal } from './PoliciesModal'
 import { TakeoutLogo } from './TakeoutLogo'
-import { useRouter } from 'next/router'
 
 function getPriceDescription(price: TakeoutPageProps['starter']['prices'][number]) {
   return (

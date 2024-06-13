@@ -2,18 +2,10 @@ import '@tamagui/core/reset.css'
 import '~/app.css'
 import '~/tamagui.css'
 
-import { Slot, Stack } from 'vxs'
 import { isWeb, setupPopper } from 'tamagui'
+import { ScrollRestoration, Slot, Stack } from 'vxs'
+import { HeadInfo } from '~/components/HeadInfo'
 import { Providers } from '../src/Providers'
-import React from 'react'
-
-globalThis['React'] = React
-
-if (import.meta.env.DEV) {
-  if (React.version.startsWith('18.')) {
-    console.error(`\n\n\n❌ not on react 19\n\n\n`)
-  }
-}
 
 setupPopper({
   // prevents a reflow on mount
@@ -36,6 +28,28 @@ export default function Layout() {
       <meta name="docsearch:version" content="1.0.0,latest" />
       <meta id="theme-color" name="theme-color" />
       <meta name="color-scheme" content="light dark" />
+
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:site" content="@tamagui_js" />
+      <meta name="twitter:creator" content="@natebirdman" />
+
+      <HeadInfo
+        openGraph={{
+          type: 'website',
+          locale: 'en_US',
+          url: 'https://tamagui.dev',
+          siteName: 'Tamagui',
+          images: [
+            {
+              url: 'https://tamagui.dev/social.png',
+            },
+          ],
+        }}
+      />
+
+      <ScrollRestoration />
+
+      <meta name="robots" content="index,follow" />
 
       <link crossOrigin="anonymous" href="/fonts/inter-700.css" rel="stylesheet" />
       <link
@@ -80,17 +94,19 @@ export default function Layout() {
         precedence="default"
       />
 
-      <script>
-        {`let d = document.documentElement.classList
-      d.remove('t_light')
-      d.remove('t_dark')
-      let e = localStorage.getItem('user-theme')
-      let t =
-        'system' === e || !e
-          ? window.matchMedia('(prefers-color-scheme: dark)').matches
-          : e === 'dark'
-      t ? d.add('t_dark') : d.add('t_light')`}
-      </script>
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `let d = document.documentElement.classList
+          d.remove('t_light')
+          d.remove('t_dark')
+          let e = localStorage.getItem('user-theme')
+          let t =
+            'system' === e || !e
+              ? window.matchMedia('(prefers-color-scheme: dark)').matches
+              : e === 'dark'
+          t ? d.add('t_dark') : d.add('t_light')`,
+        }}
+      />
 
       <Providers>
         {isWeb ? (

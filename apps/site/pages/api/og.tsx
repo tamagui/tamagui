@@ -98,7 +98,7 @@ const ComponentOg = ({
           display: 'flex',
           flexDirection: 'column',
           marginLeft: 44,
-          ...(!!hasDemo ? { flex: 1 } : {}),
+          ...(hasDemo ? { flex: 1 } : {}),
         }}
       >
         <h1

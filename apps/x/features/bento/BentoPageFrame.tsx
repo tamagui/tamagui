@@ -10,27 +10,6 @@ export const BentoPageFrame = ({
 }: { children: any; simpler?: boolean }) => {
   return (
     <>
-      <LoadCherryBomb />
-      <LoadMunro />
-      <script src="https://cdn.paritydeals.com/banner.js" />
-
-      {/* TODO */}
-      {/* <NextSeo
-        title="🍱 Tamagui Bento"
-        description="Tamagui Bento - Copy-paste components and screens for React and React Native"
-        openGraph={{
-          type: 'website',
-          locale: 'en_US',
-          url: 'https://tamagui.dev/bento',
-          siteName: 'Tamagui',
-          images: [
-            {
-              url: 'https://tamagui.dev/bento/social.png',
-            },
-          ],
-        }}
-      /> */}
-
       <YStack pt={'$8'}>
         <Theme name="tan">
           <YStack

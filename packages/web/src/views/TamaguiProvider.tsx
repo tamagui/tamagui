@@ -5,6 +5,7 @@ import { ComponentContext } from '../contexts/ComponentContext'
 import { setupMediaListeners } from '../hooks/useMedia'
 import type { TamaguiProviderProps } from '../types'
 import { ThemeProvider } from './ThemeProvider'
+import { useDidHydrateOnceRoot } from '../hooks/useDidHydrateOnce'
 
 export function TamaguiProvider({
   children,
@@ -16,6 +17,8 @@ export function TamaguiProvider({
 
   if (isClient) {
     // inject CSS if asked to (not SSR compliant)
+
+    useDidHydrateOnceRoot()
 
     React.useInsertionEffect(() => {
       if (!config) return

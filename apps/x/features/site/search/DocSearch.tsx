@@ -1,18 +1,20 @@
-// import '@docsearch/css'
+import '@docsearch/css'
 
 // import type { DocSearchModalProps } from '@docsearch/react'
 // import { DocSearchModal } from '@docsearch/react'
-// TODO
-// import { Head } from 'vxs'
 
 type DocSearchModalProps = any
 
 export default function DocSearch(props: DocSearchModalProps) {
   return (
     <>
-      {/* <Head> */}
-      <style>{docSearchCSS}</style>
-      {/* </Head> */}
+      <style
+        // @ts-ignore
+        href="docsearch"
+        precedence="default"
+      >
+        {docSearchCSS}
+      </style>
       {/* <DocSearchModal {...props} /> */}
     </>
   )

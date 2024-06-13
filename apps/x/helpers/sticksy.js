@@ -232,6 +232,8 @@ Sticksy.prototype.hardRefresh = function () {
   }
 }
 
+let attached = false
+
 /**
  * Enable 'sticky' effect
  * @public
@@ -240,6 +242,11 @@ Sticksy.prototype.enable = function () {
   this._props.enabled = true
   Sticksy.enabledInstances.push(this)
   this.hardRefresh()
+
+  if (!attached && typeof window !== 'undefined') {
+    window.addEventListener('scroll', Sticksy.refreshAll)
+    window.addEventListener('resize', Sticksy.hardRefreshAll)
+  }
 }
 
 /**
@@ -252,6 +259,11 @@ Sticksy.prototype.disable = function () {
   this._applyState(this.state)
 
   Sticksy.enabledInstances.splice(Sticksy.enabledInstances.indexOf(this), 1)
+
+  if (attached) {
+    window.removeEventListener('scroll', Sticksy.refreshAll)
+    window.removeEventListener('resize', Sticksy.hardRefreshAll)
+  }
 }
 
 /* --------------------------
@@ -398,9 +410,6 @@ Sticksy.initializeAll = function (target, options, ignoreNothingFound) {
 /* ------------------------
  *  Refresh events
  * ------------------------ */
-
-window.addEventListener('scroll', Sticksy.refreshAll)
-window.addEventListener('resize', Sticksy.hardRefreshAll)
 
 /* ------------------------
  *  Helpers

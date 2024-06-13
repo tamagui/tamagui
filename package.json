@@ -52,6 +52,7 @@
     "scripts:format": "node -r esbuild-register ./scripts/format.ts",
     "repair": "node -r esbuild-register ./scripts/repair.ts",
     "profile": "node -r esbuild-register ./scripts/yarn-profile.ts",
+    "testing": "yarn workspace testing dev:clean",
     "x": "yarn workspace @tamagui/x dev:clean",
     "x:build": "yarn workspace @tamagui/x build:prod",
     "x:serve": "yarn workspace @tamagui/x serve",
@@ -101,21 +102,23 @@
   "profile": {
     "//": "run 'yarn profile x' to toggle it on/off",
     "react-19": {
-      "applied": false,
+      "applied": true,
       "resolutions": {
         "vite": "6.0.0-alpha.17",
         "@react-three/fiber": "9.0.0-alpha.6",
         "react": "19.0.0-rc-f994737d14-20240522",
-        "react-dom": "19.0.0-rc-f994737d14-20240522"
+        "react-dom": "19.0.0-rc-f994737d14-20240522",
+        "react-native-reanimated": "3.13.0-rc.0"
       }
     },
     "x": {
       "applied": false,
       "resolutions": {
         "vite": "6.0.0-alpha.17",
+        "@react-three/fiber": "9.0.0-alpha.6",
         "react": "19.0.0-rc-f994737d14-20240522",
         "react-dom": "19.0.0-rc-f994737d14-20240522",
-        "@react-three/fiber": "9.0.0-alpha.6",
+        "react-native-reanimated": "3.13.0-rc.0",
         "create-vxrn": "portal:~/vxrn/packages/create-vxrn",
         "@vxrn/react-native-prebuilt": "portal:~/vxrn/packages/react-native-prebuilt",
         "@vxrn/safe-area": "portal:~/vxrn/packages/safe-area",

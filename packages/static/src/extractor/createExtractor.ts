@@ -279,7 +279,16 @@ export function createExtractor(
     if (!isFullyDisabled(options)) {
       if (!tamaguiConfig?.themes) {
         console.error(
-          `⛔️ Error: Missing "themes" in your tamagui.config file, this may be due to duplicated dependency versions. Try out https://github.com/bmish/check-dependency-version-consistency to see if there are mis-matches, or search your lockfile.`
+          `⛔️ Error: Missing "themes" in your tamagui.config file:
+
+            You may not need the compiler! Remember you can run Tamagui with no configuration at all.
+
+            You may have not "export default" your config (you can also "export const config").
+            
+            Or this may be due to duplicated dependency versions:
+              - try out https://github.com/bmish/check-dependency-version-consistency to see if there are mis-matches.
+              - or search your lockfile for mis-matches.
+          `
         )
         console.info(`  Got config:`, tamaguiConfig)
         process.exit(0)

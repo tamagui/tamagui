@@ -176,25 +176,25 @@ Here's an example animating `hoverStyle`:
 
 ```
 
-### A note on usage
+### The animation props rules
 
-As of beta 150, we're adding a rule for an edge case: any animated component
-that is _removing or adding_ an animation at any time, keep the `animation` prop
-defined.
+If you add an `animation` prop, you must always keep the prop. If you need the animation to be disabled,
+pass false, null or even undefined if it suits you.
+
+The spring-based animation drivers have expensive hooks that would degrate runtime
+performance if present on every component. As a workaround, the animation hooks
+are called conditionally on whether the animation key is present in the props object.
 
 So, `<Square animation={isActive ? 'bouncy' : null} />` rather than
-`<Square {...isActive && { animation: 'bouncy' }} />`. If you do absolutely need
-the latter, you must change the `key` at the same time.
+`<Square {...isActive && { animation: 'bouncy' }} />`.
 
-Why? The animation hooks are heavy and would otherwise have to run on every
-component. Plus enter/exit animations further add renders. Tamagui is designed
-for performance in the happy path. If every component you render had to run all
-the animation logic, a lot of the performance of Tamagui would be nullified.
+If you'd like to remove or add an animation prop after a component has already rendered, you'd have
+to change the key.
 
 ### enterStyle
 
 Setting `enterStyle` styles on any component tell it to start with those styles,
-and immediately transition into their regular styles:
+and after mount animate to their flat styles:
 
 <HeroContainer>
   <AnimationsEnterDemo />
@@ -373,7 +373,7 @@ const wrap = (min: number, max: number, v: number) => {
 export function Demo() {
   const [[page, going], setPage] = useState([0, 0])
 
-  const imageIndex = wrap(0, images.length, page)
+  const imageIndex = wrap(0, photos.length, page)
   const paginate = (going: number) => {
     setPage([page + going, going])
   }

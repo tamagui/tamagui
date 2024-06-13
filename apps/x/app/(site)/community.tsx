@@ -24,10 +24,15 @@ import { FlatBubbleCard } from '~/components/FlatBubbleCard'
 import { Link } from '~/components/Link'
 import { SocialLinksRow } from '~/features/site/home/SocialLinksRow'
 import { GithubIcon } from '~/features/icons/GithubIcon'
+import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
+import { HeadInfo } from '~/components/HeadInfo'
 
 export default function Community({ frontmatters }) {
   return (
     <CommunityLayout>
+      <ThemeNameEffect />
+      <HeadInfo title="Community" />
+
       <Spacer size="$4" />
 
       <ContainerLarge space="$4">

@@ -25,9 +25,9 @@ export const Portal = React.memo(
     const [hostElement, setHostElement] = React.useState<any>(null)
 
     React.useEffect(() => {
-      React.startTransition(() => {
-        setHostElement(host)
-      })
+      // React.startTransition(() => {
+      setHostElement(host)
+      // })
     }, [host])
 
     if (hostElement && props.children) {

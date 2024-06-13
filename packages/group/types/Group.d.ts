@@ -2,9 +2,6 @@ import type { GetProps, TamaguiElement } from '@tamagui/core';
 import type { Scope } from '@tamagui/create-context';
 import React from 'react';
 type DisablePassBorderRadius = boolean | 'bottom' | 'top' | 'start' | 'end';
-type ScopedProps<P> = P & {
-    __scopeGroup?: Scope;
-};
 export declare const GroupFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     unstyled?: boolean | undefined;
     size?: any;
@@ -660,7 +657,9 @@ export declare const Group: React.ForwardRefExoticComponent<Omit<import("@tamagu
         chromeless?: boolean | "all" | undefined;
     }, import("@tamagui/core").StaticConfigPublic];
 } & {
-    Item: (props: ScopedProps<GroupItemProps>) => any;
+    Item: React.ForwardRefExoticComponent<GroupItemProps & {
+        __scopeGroup?: Scope;
+    } & React.RefAttributes<unknown>>;
 };
 export declare const YGroup: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     unstyled?: boolean | undefined;
@@ -1266,7 +1265,9 @@ export declare const YGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
         chromeless?: boolean | "all" | undefined;
     }, import("@tamagui/core").StaticConfigPublic];
 } & {
-    Item: (props: ScopedProps<GroupItemProps>) => any;
+    Item: React.ForwardRefExoticComponent<GroupItemProps & {
+        __scopeGroup?: Scope;
+    } & React.RefAttributes<unknown>>;
 };
 export declare const XGroup: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     unstyled?: boolean | undefined;
@@ -1872,7 +1873,9 @@ export declare const XGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
         chromeless?: boolean | "all" | undefined;
     }, import("@tamagui/core").StaticConfigPublic];
 } & {
-    Item: (props: ScopedProps<GroupItemProps>) => any;
+    Item: React.ForwardRefExoticComponent<GroupItemProps & {
+        __scopeGroup?: Scope;
+    } & React.RefAttributes<unknown>>;
 };
 export {};
 //# sourceMappingURL=Group.d.ts.map

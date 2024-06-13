@@ -61,6 +61,7 @@ import { unwrapText } from '~/helpers/unwrapText'
 import type { YStackProps } from 'tamagui'
 import { HomeAnimations } from '../site/home/HomeAnimations'
 import { LogoCard } from '~/components/LogoCard'
+import { TamaguiExamplesCode } from '~/components/TamaguiExamples'
 
 const Preview = (props: YStackProps) => (
   <YStack
@@ -286,7 +287,7 @@ export const components = {
   UL,
   LI,
 
-  TamaguiExamplesCode: () => null,
+  TamaguiExamplesCode,
 
   TLDR: (props) => {
     return (
@@ -726,33 +727,40 @@ export const components = {
   },
 
   Aside: ({ children, ...props }) => {
-    const [cutoff, setCutoff] = useState(true)
+    const areChildrenString = typeof children === 'string'
+    const shouldCutoff = !areChildrenString
+    const [cutoff, setCutoff] = useState(shouldCutoff)
 
     return (
       <YStack
         tag="aside"
         space="$2"
-        bg="$color1"
         br="$4"
         p="$5"
-        px="$5"
-        pb="$10"
         mx="$-2"
-        bc="$borderColor"
-        bw={1}
-        my="$4"
+        mt="$2"
         pos="relative"
         {...(cutoff && {
+          my: '$4',
+          px: '$5',
+          bw: 1,
+          pb: '$10',
+          bg: '$color1',
+          bc: '$borderColor',
           maxHeight: 300,
           overflow: 'hidden',
         })}
         {...props}
       >
-        <YStack tag="span" my="$-5">
-          {children}
-        </YStack>
+        {areChildrenString ? (
+          <Paragraph theme="alt1" fs="$3" my="$-5">
+            {children}
+          </Paragraph>
+        ) : (
+          children
+        )}
 
-        {cutoff && (
+        {shouldCutoff && cutoff && (
           <LinearGradient
             pos="absolute"
             b={0}

@@ -78,10 +78,10 @@ When opening a Pull Request:
 **Note**: While developing, you'll want to watch the build watching in a dedicated terminal.
 
 ```bash
-yarn watch:build
+yarn watch
 ```
 
-**Note**: you may see some errors around "studio" as you run build - this is fine, we encrypt some of the non-open-source projects in the repo. The errors block anything.
+**Note**: you may see some errors around "studio" as you run build - this is fine, we encrypt some of the non-open-source projects in the repo. The errors do not block anything.
 
 ### Bugs and Fixing them
 
@@ -136,7 +136,7 @@ Before submitting a PR, please check everything works across every combination o
 To do so, run the site first in development to test if it works entirely at runtime:
 
 ```bash
-# Make sure you have run `yarn watch:build` before you execute this command.
+# Make sure you have run `yarn watch` before you execute this command.
 
 yarn site
 ```

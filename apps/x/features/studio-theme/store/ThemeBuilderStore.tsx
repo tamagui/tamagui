@@ -724,7 +724,7 @@ const getPersistedState = async () => {
     const fallback = JSON.parse(
       localStorage.getItem(localKey) || 'null'
     ) as ThemeBuilderState
-    console.warn(`Error loading, fallback to localStorage`)
+    console.warn(`Error loading, fallback to localStorage`, loadUrl)
     console.info(`[load]`, fallback)
     return fallback
   }

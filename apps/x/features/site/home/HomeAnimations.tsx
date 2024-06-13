@@ -1,6 +1,6 @@
+import { animations } from '@tamagui/config/v3'
 import { LogoIcon, useTint } from '@tamagui/logo'
 import { ArrowDown, Play } from '@tamagui/lucide-icons'
-import { animations } from '@tamagui/config/v3'
 import React, { memo, useEffect, useRef, useState } from 'react'
 import {
   Button,
@@ -48,7 +48,8 @@ const animationDescriptions = [
 
 let hasScrolledOnce = false
 
-export function HomeAnimations({ animationCode }) {
+export function HomeAnimations() {
+  const animationCode = ``
   const { tint } = useTint()
   const [disableScrollPane, setDisableScrollPane] = useState(true)
 

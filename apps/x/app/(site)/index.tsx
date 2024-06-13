@@ -1,7 +1,6 @@
-import { ThemeTint } from '@tamagui/logo'
 import { getCompilationExamples } from '@tamagui/mdx'
-import { useLoader } from 'vxs'
 import { YStack } from 'tamagui'
+import { useLoader } from 'vxs'
 import { HomeAnimations } from '~/features/site/home/HomeAnimations'
 import { HomeCommunity } from '~/features/site/home/HomeCommunity'
 import { HomeExampleProps } from '~/features/site/home/HomeExampleProps'
@@ -31,97 +30,95 @@ export default function TamaguiHomePage() {
   return (
     <>
       <ThemeNameEffect colorKey="$color2" />
-      <ThemeTint>
-        <HomeGlow />
+      <HomeGlow />
+      <YStack
+        fullscreen
+        className="grain"
+        o={0.2}
+        style={{
+          mixBlendMode: 'hard-light',
+          maskImage: `linear-gradient(transparent, rgba(0, 0, 0, 1) 100px)`,
+        }}
+        // o={0}
+      />
+      <TintSection index={0} p={0}>
+        <Hero />
+      </TintSection>
+      <HomeHeroBelow />
+      <TintSection index={2} contain="paint layout" zi={1000}>
+        <YStack
+          pe="none"
+          zi={0}
+          fullscreen
+          className="bg-dot-grid"
+          style={{
+            maskImage: `linear-gradient(transparent, #000, transparent)`,
+          }}
+        />
+        <HomeExamples examples={compilationExamples} />
+      </TintSection>
+      <TintSection my={-50} index={3} contain="paint layout" pos="relative" zi={100}>
+        <YStack
+          pe="none"
+          zi={0}
+          fullscreen
+          className="bg-dot-grid"
+          style={{
+            maskImage: `linear-gradient(transparent, #000, transparent)`,
+          }}
+        />
+        <HomeThemes />
+      </TintSection>
+      <TintSection index={4} mb={-120} zIndex={10000}>
+        <HomeResponsive />
+      </TintSection>
+      <TintSection index={5} p={0} zIndex={0}>
+        <SectionTinted gradient bubble>
+          <HomePerformance />
+        </SectionTinted>
+      </TintSection>
+      <TintSection index={6} zi={100}>
         <YStack
           fullscreen
-          className="grain"
-          o={0.2}
+          className="bg-grid"
           style={{
-            mixBlendMode: 'hard-light',
-            maskImage: `linear-gradient(transparent, rgba(0, 0, 0, 1) 100px)`,
+            maskImage: `linear-gradient(transparent, #000, transparent)`,
           }}
-          // o={0}
         />
-        <TintSection index={0} p={0}>
-          <Hero />
-        </TintSection>
-        <HomeHeroBelow />
-        <TintSection index={2} contain="paint layout" zi={1000}>
-          <YStack
-            pe="none"
-            zi={0}
-            fullscreen
-            className="bg-dot-grid"
-            style={{
-              maskImage: `linear-gradient(transparent, #000, transparent)`,
-            }}
-          />
-          <HomeExamples examples={compilationExamples} />
-        </TintSection>
-        <TintSection my={-50} index={3} contain="paint layout" pos="relative" zi={100}>
-          <YStack
-            pe="none"
-            zi={0}
-            fullscreen
-            className="bg-dot-grid"
-            style={{
-              maskImage: `linear-gradient(transparent, #000, transparent)`,
-            }}
-          />
-          <HomeThemes />
-        </TintSection>
-        <TintSection index={4} mb={-120} zIndex={10000}>
-          <HomeResponsive />
-        </TintSection>
-        <TintSection index={5} p={0} zIndex={0}>
-          <SectionTinted gradient bubble>
-            <HomePerformance />
-          </SectionTinted>
-        </TintSection>
-        <TintSection index={6} zi={100}>
-          <YStack
-            fullscreen
-            className="bg-grid"
-            style={{
-              maskImage: `linear-gradient(transparent, #000, transparent)`,
-            }}
-          />
-          <HomeAnimations animationCode={``} />
-        </TintSection>
-        <TintSection index={7} zi={1}>
-          <HomeFeaturesGrid />
-          <YStack
-            pe="none"
-            zi={2}
-            fullscreen
-            className="bg-dot-grid"
-            style={{
-              maskImage: `linear-gradient(transparent, #000, transparent)`,
-            }}
-          />
-        </TintSection>
-        <TintSection index={8} my="$-4" p={0} zIndex={100}>
-          <SectionTinted zi={1000} bubble gradient>
-            <HomeTypography />
-          </SectionTinted>
-        </TintSection>
-        <HomeSection zi={10}>
-          <YStack
-            pe="none"
-            zi={0}
-            fullscreen
-            className="bg-dot-grid"
-            style={{
-              maskImage: `linear-gradient(transparent, #000, transparent)`,
-            }}
-          />
-          <HomeExampleProps />
-        </HomeSection>
-        <HomeSection zi={0}>
-          <HomeCommunity />
-        </HomeSection>
-      </ThemeTint>
+        <HomeAnimations />
+      </TintSection>
+      <TintSection index={7} zi={1}>
+        <HomeFeaturesGrid />
+        <YStack
+          pe="none"
+          zi={2}
+          fullscreen
+          className="bg-dot-grid"
+          style={{
+            maskImage: `linear-gradient(transparent, #000, transparent)`,
+          }}
+        />
+      </TintSection>
+      <TintSection index={8} my="$-4" p={0} zIndex={100}>
+        <SectionTinted zi={1000} bubble gradient>
+          <HomeTypography />
+        </SectionTinted>
+      </TintSection>
+      <HomeSection zi={10}>
+        <YStack
+          pe="none"
+          zi={0}
+          fullscreen
+          className="bg-dot-grid"
+          style={{
+            maskImage: `linear-gradient(transparent, #000, transparent)`,
+          }}
+        />
+        <HomeExampleProps />
+      </HomeSection>
+      <HomeSection zi={0}>
+        <HomeCommunity />
+      </HomeSection>
     </>
   )
 }

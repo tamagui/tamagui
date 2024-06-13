@@ -186,7 +186,7 @@ export declare const Popover: React.ForwardRefExoticComponent<PopperProps & {
     /**
      * Enable staying open while mouseover
      */
-    hoverable?: boolean | UseHoverProps<import("@floating-ui/react").ReferenceType> | undefined;
+    hoverable?: boolean | UseHoverProps | undefined;
     /**
      * Disable focusing behavior on open
      */

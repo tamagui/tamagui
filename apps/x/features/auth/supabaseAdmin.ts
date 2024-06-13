@@ -5,7 +5,6 @@ import type { Price, Product } from '~/features/stripe/types'
 import { sendProductPurchaseEmail } from '~/features/email/helpers'
 import { stripe } from '~/features/stripe/stripe'
 import type { Database } from '../supabase/types'
-import { toDateTime } from './helpers'
 
 const SUPA_URL = import.meta.env.NEXT_PUBLIC_SUPABASE_URL || 'http://localhost:54321'
 const SUPA_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || ''
@@ -15,6 +14,12 @@ console.info(`Connecting to supabase: ${SUPA_URL} with key? ${!!SUPA_KEY}`)
 // Note: supabaseAdmin uses the SERVICE_ROLE_KEY which you must only use in a secure server-side context
 // as it has admin priviliges and overwrites RLS policies!
 export const supabaseAdmin = createClient<Database>(SUPA_URL, SUPA_KEY)
+
+const toDateTime = (secs: number) => {
+  const t = new Date('1970-01-01T00:30:00Z') // Unix epoch start.
+  t.setSeconds(secs)
+  return t
+}
 
 export const getBentoCode = async (codePath: string) => {
   const { data, error } = await supabaseAdmin.storage

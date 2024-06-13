@@ -1,5 +1,5 @@
 import { ThemeTint } from '@tamagui/logo'
-import { getAllFrontmatter, getMDXBySlug } from '@tamagui/mdx'
+import { getAllFrontmatter, getCompilationExamples, getMDXBySlug } from '@tamagui/mdx'
 import { useLoader } from 'vxs'
 import { getMDXComponent } from 'mdx-bundler/client'
 import { useMemo } from 'react'
@@ -7,6 +7,9 @@ import { SubTitle, nbspLastWord } from '~/components/SubTitle'
 import { DocsQuickNav } from '~/features/docs/DocsQuickNav'
 import { components } from '~/features/mdx/MDXComponents'
 import { HomeH1 } from '~/features/site/home/HomeHeaders'
+import { HeadInfo } from '~/components/HeadInfo'
+import { getOgUrl } from '~/features/site/getOgUrl'
+import { TamaguiExamples } from '~/components/TamaguiExamples'
 
 export async function generateStaticParams() {
   const frontmatters = getAllFrontmatter('data/docs/intro')
@@ -21,12 +24,12 @@ export async function loader({ params }) {
   return {
     frontmatter,
     code,
-    // examples: getCompilationExamples(),
+    examples: getCompilationExamples(),
   }
 }
 
 export default function DocIntroPage() {
-  const { code, frontmatter } = useLoader(loader)
+  const { code, frontmatter, examples } = useLoader(loader)
 
   if (!frontmatter || !code) {
     console.warn(`No frontmatter/code?`, { frontmatter, code })
@@ -37,14 +40,13 @@ export default function DocIntroPage() {
 
   return (
     <>
-      {/* TODO */}
-      {/* <NextSeo
+      <HeadInfo
         title={`${frontmatter.title} — Tamagui`}
         description={frontmatter.description}
         openGraph={{
           images: [
             {
-              url: getOgUrl('default', {
+              url: getOgUrl({
                 title: frontmatter.title,
                 description: frontmatter.description ?? '',
                 category: 'intro',
@@ -52,13 +54,14 @@ export default function DocIntroPage() {
             },
           ],
         }}
-      /> */}
+      />
       <HomeH1>{nbspLastWord(frontmatter.title)}</HomeH1>
       <SubTitle>{nbspLastWord(frontmatter.description || '')}</SubTitle>
       <ThemeTint>
-        <Component components={components as any} />
+        <TamaguiExamples.Provider value={examples}>
+          <Component components={components as any} />
+        </TamaguiExamples.Provider>
       </ThemeTint>
-      {/* frontmatter.slug */}
       <DocsQuickNav key={'ok'} />
     </>
   )

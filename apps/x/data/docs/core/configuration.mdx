@@ -16,7 +16,7 @@ cycles exist in your imports.
 You can use `@tamagui/config` which provides a complete config out of the box,
 the same one this site uses.
 
-```tsx
+```tsx fileName="tamagui.config.ts"
 import { config } from '@tamagui/config/v3'
 import { Text, View } from 'react-native'
 import { createTamagui } from 'tamagui' // or '@tamagui/core'
@@ -35,6 +35,39 @@ declare module 'tamagui' {
 export default appConfig
 ```
 
+Then add Inter font to your `index.html` head for web:
+
+```html fileName="index.html"
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+```
+
+or `App.tsx` if using Expo:
+
+```tsx fileName="App.tsx"
+import { useFonts } from 'expo-font'
+
+export default function App() {
+  const [loaded] = useFonts({
+    Inter: require('@tamagui/font-inter/otf/Inter-Medium.otf'),
+    InterBold: require('@tamagui/font-inter/otf/Inter-Bold.otf'),
+  })
+
+  if (!loaded) {
+    return null
+  }
+
+  return <>...</>
+}
+```
+
+<Notice theme="green">
+  See `Custom Font Family on Native` under [Font tokens](/docs/core/configuration#font-tokens) for more info on Expo font loading.
+</Notice>
+
+Inter fonts for the `body`, `heading`, and `mono` are defined in `@tamagui/config/v3`, so you'll want to load them, but you can also easily change those definitions by defining your own fonts.
+
 You can also import parts of `@tamagui/config/v3` separately, swapping out any
 piece for your own. The v3 config defaults to the CSS animation driver on the
 web and the built-in Animated driver on React Native.
@@ -42,12 +75,12 @@ web and the built-in Animated driver on React Native.
 Throughout this guide keep in mind that you should import from just one "ui"
 package - whether it's `@tamagui/core` or `tamagui` or it's your custom one.
 
-#### Diverging from @tamagui/themes
+#### A gist for custom theme suites
 
-You may fork from the built in themes (which in fairness are specific to the
-Tamagui website) by
-[copying and pasting this gist](https://gist.github.com/natew/3be503cc5990a1142d17ffadf86a134f)
-into a `themes.ts` file next to your `tamagui.config.ts`.
+The themes in the config above are specific to the Tamagui site.
+We've set up [a themes example gist](https://gist.github.com/natew/3be503cc5990a1142d17ffadf86a134f)
+which has a full built-up theme suite which you can pass to `createTamagui({ themes })`. It's large,
+so you may want to put it in a `themes.ts` file next to your `tamagui.config.ts` and import it.
 
 ## From scratch
 
@@ -59,7 +92,7 @@ your [shorthands](#shorthands) to give you a syntax like this:
 <XStack bg="$red" w="$2" h="$1" />
 ```
 
-```tsx
+```tsx  fileName="tamagui.config.ts"
 // @tamagui/core doesn't include `createMedia` so that it can avoid
 // a dependency on react-native. If you are using tamagui, you can
 // import createMedia from there directly and avoid this line:
@@ -207,7 +240,7 @@ The `createTamagui` function receives a configuration object:
   components initial values. These merge downwards, so
   `styled(Text, { name: 'Paragraph' })` will get any defaultProps set for
   `Text`.
-- `onlyAllowShorthands` when set to true will ensure that if you define
+- `onlyAllowShorthands`: When set to true will ensure that if you define
   shorthands, they override existing long-form style props.
 
 <Notice>
@@ -244,7 +277,7 @@ export const tokens = createTokens({
 Import and use the Tamagui `Provider` component at the top component in your
 app.
 
-```tsx line=3-5
+```tsx line=3-5 fileName="App.tsx"
 import { TamaguiProvider } from 'tamagui'
 
 import config from './tamagui.config'
@@ -281,7 +314,7 @@ TamaguiProvider takes a few optional properties:
       name: 'disableInjectCSS',
       required: false,
       type: 'boolean',
-      description: `By default Tamagui inserts CSS with a useLayoutEffect on load. But if you're setting up SSR you'll want to use getCSS() on the server instead and then turn on this setting.`,
+      description: `By default Tamagui inserts CSS with a useInsertionEffect on load. But if you're setting up SSR you'll want to use getCSS() on the server instead and then turn on this setting.`,
     },
   ]}
 />
@@ -298,6 +331,10 @@ If you use `disableInjectCSS`, you'll need to do something like this from the se
 </head>
 ```
 
+<Notice>
+  If you are using Next.js, see the [Next.js guide](/docs/guides/next-js?#pages_documenttsx) for more information.
+</Notice>
+
 ### Including the reset css
 
 There is an optional CSS reset that helps normalize styling, you can import it
@@ -308,7 +345,7 @@ import '@tamagui/core/reset.css'
 ```
 
 <Notice>
-  You will have to turn `isCSSEnabled` on if you're using Metro as your web bundler. See [Expo's docs](https://docs.expo.dev/versions/latest/config/metro/#css).
+  You will have to turn `isCSSEnabled` on if you're using Metro as your web bundler. See [Metro guide](/docs/guides/metro#web-support).
 </Notice>
 
 ### Setup media query driver
@@ -450,7 +487,7 @@ You need to load your fonts for React Native to recognize them. Typically this
 looks something like if using Expo, (or you can
 [follow a React Native guide here](https://stackoverflow.com/questions/35255645/how-to-set-default-font-family-in-react-native)):
 
-```tsx
+```tsx fileName="App.tsx"
 import { useFonts } from 'expo-font'
 
 function App() {
@@ -641,8 +678,11 @@ Which will enable usage like:
 <View br="$myToken" />
 ```
 
-Where `br` expands into `borderRadius`. For a full shorthands setup, see
-[the @tamagui/shorthands source](https://github.com/tamagui/tamagui/blob/master/packages/shorthands/src/index.tsx).
+where `br` expands into `borderRadius`. 
+
+<Notice theme="green">
+  For a full shorthands setup, see [the @tamagui/shorthands source](https://github.com/tamagui/tamagui/blob/master/packages/shorthands/src/index.ts).
+</Notice>
 
 ### Others
 
@@ -656,7 +696,8 @@ Where `br` expands into `borderRadius`. For a full shorthands setup, see
     {
       name: `defaultFont`,
       required: false,
-      type: `Map it to the regular key of the font given to createTamgui, so "body" or "heading" make sense as valiues here. This will ensure this font is the fallback for any views that don't define it.`,
+      type: `string`,
+      description: `Map it to the regular key of the font given to createTamgui, so "body" or "heading" make sense as valiues here. This will ensure this font is the fallback for any views that don't define it.`,
     },
     {
       name: 'mediaQueryDefaultActive',
@@ -681,7 +722,7 @@ Where `br` expands into `borderRadius`. For a full shorthands setup, see
       name: 'shouldAddPrefersColorThemes',
       required: false,
       type: 'boolean',
-      default: true,
+      default: `true`,
       description: `Generates @media queries based on prefers-color-scheme for you if you have light/dark themes.`,
     },
     {
@@ -749,21 +790,19 @@ Where `br` expands into `borderRadius`. For a full shorthands setup, see
 
 #### Type strictness
 
-_AllowedStyleValuesSetting_:
+#### `allowedStyleValues`
 
-Defaults to false:
-
-- "strict" - only allows tokens for any token-enabled properties
-- "strict-web" - same as strict but allows for web-specific tokens like
+- `false (default)`: allows any string (or number for styles that accept numbers)
+- `strict`: only allows tokens for any token-enabled properties
+- `strict-web`: same as strict but allows for web-specific tokens like
   auto/inherit
-- "somewhat-strict" - allow tokens or:
-  - for space/size: string% or numbers
-  - for radius: number
-  - for zIndex: number
-  - for color: named colors or rgba/hsla strings
-- "somewhat-strict-web" - same as somewhat-strict but allows for web-specific
+- `somewhat-strict`: allow tokens or:
+  - for `space/size`: string% or numbers
+  - for `radius`: number
+  - for `zIndex`: number
+  - for `color`: named colors or rgba/hsla strings
+- `somewhat-strict-web`: same as somewhat-strict but allows for web-specific
   tokens
-- false (default) - allows any string (or number for styles that accept numbers)
 
 ```tsx
 type AllowedValueSetting =
@@ -784,12 +823,12 @@ type AllowedStyleValuesSetting =
     }
 ```
 
-_autocompleteSpecificTokens_:
+#### `autocompleteSpecificTokens`
 
 The VSCode autocomplete puts specific tokens above the regular ones, which leads
 to worse DX. If true this setting removes the specific token from types for the
 defined categories.
 
-If set to "except-special", specific tokens will autocomplete only if they don't
+If set to `except-special`, specific tokens will autocomplete only if they don't
 normally use one of the special token groups: space, size, radius, zIndex,
 color.

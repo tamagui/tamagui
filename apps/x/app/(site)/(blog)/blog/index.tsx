@@ -6,6 +6,7 @@ import { ContainerLarge } from '~/components/Containers'
 import { Link } from '~/components/Link'
 import { TamaguiCard } from '~/components/TamaguiCard'
 import { authors } from '~/data/authors'
+import { HeadInfo } from '~/components/HeadInfo'
 
 export function loader() {
   const frontmatters = getAllFrontmatter('data/blog')
@@ -23,7 +24,7 @@ export default function Blog() {
 
   return (
     <>
-      {/* <NextSeo title="Blog — Tamagui" description="What's up with Tamagui." /> */}
+      <HeadInfo title="Blog — Tamagui" description="What's up with Tamagui." />
       <Spacer size="$7" />
       <H2 als="center" size="$8" theme="alt2" fontFamily="$silkscreen">
         Blog
@@ -43,7 +44,7 @@ export default function Blog() {
                       day: 'numeric',
                     }).format(new Date(frontmatter.publishedAt || ''))}{' '}
                     by &nbsp;
-                    {authors[frontmatter.by].name}
+                    {authors[frontmatter.by || '']?.name}
                   </Paragraph>
                 }
               >

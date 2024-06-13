@@ -1,5 +1,5 @@
-import { isServer, isWeb } from '@tamagui/constants'
-import { useRef, useSyncExternalStore } from 'react'
+import { isServer, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { useId, useRef, useState, useSyncExternalStore } from 'react'
 
 import { getConfig } from '../config'
 import { matchMedia } from '../helpers/matchMedia'
@@ -15,6 +15,7 @@ import type {
   UseMediaState,
 } from '../types'
 import { getDisableSSR } from './useDisableSSR'
+import { useDidHydrateOnce } from './useDidHydrateOnce'
 
 export let mediaState: MediaQueryState =
   // development only safeguard
@@ -119,7 +120,9 @@ export function setupMediaListeners() {
   setupVersion = mediaVersion
 
   // hmr, undo existing before re-binding
-  unlisten()
+  if (process.env.NODE_ENV === 'development') {
+    unlisten()
+  }
 
   for (const key in mediaQueryConfig) {
     const str = mediaObjectToString(mediaQueryConfig[key], key)
@@ -167,70 +170,85 @@ type MediaKeysState = {
 }
 
 type UpdateState = {
-  enabled: boolean
-  keys: MediaQueryKey[]
-}
-
-const shouldUpdate = new WeakMap<any, UpdateState>()
-
-export function setMediaShouldUpdate(ref: any, props: UpdateState) {
-  return shouldUpdate.set(ref, props)
-}
-
-type UseMediaInternalState = {
+  enabled?: boolean
+  keys?: string[]
   prev: MediaKeysState
   touched?: Set<string>
 }
 
-function subscribe(subscriber: any) {
-  listeners.add(subscriber)
-  return () => listeners.delete(subscriber)
+const States = new WeakMap<any, UpdateState>()
+
+export function setMediaShouldUpdate(ref: any, props: Partial<UpdateState>) {
+  return States.set(ref, {
+    ...(States.get(ref) as any),
+    ...props,
+  })
 }
 
-export function useMedia(uid?: any, componentContext?: ComponentContextI): UseMediaState {
-  const internal = useRef<UseMediaInternalState | undefined>()
-  // performance boost to avoid using context twice
-  const disableSSR = getDisableSSR(componentContext)
-  const initialState = (disableSSR || !isWeb ? mediaState : initState) || {}
+function getSnapshot({ touched, prev, enabled, keys }: UpdateState) {
+  const isDisabled = enabled === false
+  if (isDisabled) {
+    return prev
+  }
 
-  const state = useSyncExternalStore<MediaQueryState>(
-    subscribe,
-    () => {
-      if (!internal.current) {
-        return initialState
-      }
+  const testKeys = keys || touched ? [...(keys || []), ...(touched || [])] : null
+  const hasntUpdated =
+    !testKeys || testKeys?.every((key) => mediaState[key] === prev[key])
+  if (hasntUpdated) {
+    return prev
+  }
 
-      const { touched, prev } = internal.current
-      const componentState = uid ? shouldUpdate.get(uid) : undefined
+  return mediaState
+}
 
-      if (componentState && componentState.enabled === false) {
+export function useMedia(
+  uidIn?: any,
+  componentContext?: ComponentContextI
+): UseMediaState {
+  const uid = uidIn ?? useRef()
+
+  const hasHydrated = useDidHydrateOnce()
+  const isHydrated = !isWeb || getDisableSSR(componentContext) || hasHydrated
+  const initialState = isHydrated ? mediaState : initState
+
+  let componentState = States.get(uid)
+  if (!componentState) {
+    componentState = { prev: initialState }
+    States.set(uid, componentState)
+  }
+
+  // reset on each render
+  componentState.touched = undefined
+
+  const [state, setState] = useState(initialState)
+
+  useIsomorphicLayoutEffect(() => {
+    function update() {
+      setState((prev) => {
+        const componentState = States.get(uid)!
+        const next = getSnapshot(componentState)
+        if (next !== prev) {
+          componentState.prev = next
+          return next
+        }
         return prev
-      }
+      })
+    }
 
-      const testKeys =
-        componentState?.keys ??
-        ((!componentState || componentState.enabled) && touched ? [...touched] : null)
+    // layout effects evidently run before the rest of render?
+    Promise.resolve().then(update)
 
-      const hasntUpdated =
-        !testKeys || testKeys?.every((key) => mediaState[key] === prev[key])
-
-      if (hasntUpdated) {
-        return prev
-      }
-
-      internal.current.prev = mediaState
-
-      return mediaState
-    },
-    () => initialState
-  )
+    listeners.add(update)
+    return () => {
+      listeners.delete(update)
+    }
+  }, [uid])
 
   return new Proxy(state, {
     get(_, key) {
       if (typeof key === 'string') {
-        internal.current ||= { prev: initialState }
-        internal.current.touched ||= new Set()
-        internal.current.touched.add(key)
+        componentState.touched ||= new Set()
+        componentState.touched.add(key)
       }
       return Reflect.get(state, key)
     },

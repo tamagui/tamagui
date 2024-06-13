@@ -11,6 +11,7 @@ import { Notice } from '~/components/Notice'
 import { GithubIcon } from '~/features/icons/GithubIcon'
 import { useForwardToDashboard } from '~/features/user/useForwardToDashboard'
 import { usePathname, useRouter } from 'vxs'
+import { HeadInfo } from '~/components/HeadInfo'
 
 const isProd = process.env.NODE_ENV === 'production'
 const emailAuthDisabledFlag = isProd
@@ -18,7 +19,7 @@ const emailAuthDisabledFlag = isProd
 export default function SignInPage(props) {
   return (
     <SupabaseProvider initialSession={props.initialSession}>
-      {/* <NextSeo title="Login — Tamagui" /> */}
+      <HeadInfo title="Login — Tamagui" />
       <SignIn />
     </SupabaseProvider>
   )

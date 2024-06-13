@@ -319,7 +319,7 @@ export declare const Input: import("react").ForwardRefExoticComponent<Omit<impor
     } & import("@tamagui/web").StaticConfigPublic>;
     Section: import("tamagui").TamaguiComponent<import("@tamagui/web").TamaDefer, unknown, import("@tamagui/web").TamaguiComponentPropsBaseBase & import("tamagui").GroupItemProps & {
         __scopeGroup?: import("tamagui").Scope;
-    }, import("@tamagui/web").StackStyleBase, {}, import("@tamagui/web").StaticConfigPublic>;
+    } & import("react").RefAttributes<unknown>, import("@tamagui/web").StackStyleBase, {}, import("@tamagui/web").StaticConfigPublic>;
     Button: import("tamagui").TamaguiComponent<import("@tamagui/web").TamaDefer, import("tamagui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & import("tamagui").TextContextStyles & {
         textProps?: Partial<import("@tamagui/web").GetFinalProps<import("tamagui").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
             size?: FontSizeTokens | undefined;
@@ -740,9 +740,9 @@ export declare const Input: import("react").ForwardRefExoticComponent<Omit<impor
             chromeless?: boolean | "all" | undefined;
         }, import("@tamagui/web").StaticConfigPublic];
     } & {
-        Item: (props: import("tamagui").GroupItemProps & {
+        Item: import("react").ForwardRefExoticComponent<import("tamagui").GroupItemProps & {
             __scopeGroup?: import("tamagui").Scope;
-        }) => any;
+        } & import("react").RefAttributes<unknown>>;
     };
 };
 export declare const InputNew: () => import("react/jsx-runtime").JSX.Element;

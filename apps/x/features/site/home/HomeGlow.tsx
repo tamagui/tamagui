@@ -93,7 +93,7 @@ export const HomeGlow = memo(() => {
       t={0}
       l={0}
       pe="none"
-      animation="kindaBouncy"
+      className="all ease-in-out s1"
       key={0}
       zi={0}
       x={0}

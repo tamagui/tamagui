@@ -1,10 +1,8 @@
 import { throttle } from '@github/mini-throttle'
 import { useTint } from '@tamagui/logo'
 import { ChevronLeft, ChevronRight, Lock, MapPin, Star } from '@tamagui/lucide-icons'
-import { useOnIntersecting } from '~/hooks/useOnIntersecting'
-// TODO:
-// import { demoMedia } from '@tamagui/site-config'
-import { memo, useCallback, useEffect, useMemo, useRef } from 'react'
+import { demoMedia } from '@tamagui/site-config'
+import { memo, startTransition, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { YStackProps } from 'tamagui'
 import {
   Button,
@@ -24,13 +22,14 @@ import {
   useIsomorphicLayoutEffect,
   useMedia,
 } from 'tamagui'
-// import { LinearGradient } from 'tamagui/linear-gradient'
 import { Image } from '@tamagui/image-next'
+import { LinearGradient } from 'tamagui/linear-gradient'
+
+import { useOnIntersecting } from '~/hooks/useOnIntersecting'
 import { Container, ContainerLarge } from '~/components/Containers'
 import { useTransitionState } from '~/hooks/useTransitionState'
 import { HomeH2, HomeH3 } from './HomeHeaders'
-
-const demoMedia = [500, 620, 780, 900]
+import favicon from '~/public/favicon.svg'
 
 const breakpoints = [
   { name: 'xs', at: demoMedia[0] },
@@ -53,17 +52,19 @@ export const HomeResponsive = memo(() => {
   const [bounding, setBounding] = useTransitionState<DOMRect | null>(null)
   const prevMove = useRef(0)
   const initialWidth = 420
-  const [isDragging, setIsDragging] = useTransitionState(false)
-  const [move, setMove] = useTransitionState(0)
+  const [isDragging, setIsDragging] = useState(false)
+  const [move, setMove] = useState(0)
   const ref = useRef<HTMLDivElement | null>(null)
   const safariRef = useRef<HTMLElement | null>(null)
   const getState = useGet({ move, isDragging, bounding })
-  const [sizeI, setSizeI] = useTransitionState(0)
+  const [sizeI, setSizeI] = useState(0)
   // safari drags slower so lets pre-load iframe
-  const [hasInteracted, setHasInteracted] = useTransitionState(false)
+  const [hasInteracted, setHasInteracted] = useState(false)
   const updateBoundings = useDebounce(() => {
     const rect = safariRef.current?.getBoundingClientRect() ?? null
-    setBounding(rect)
+    startTransition(() => {
+      setBounding(rect)
+    })
   }, 350)
 
   const isSafari = useIsSafari()
@@ -152,8 +153,8 @@ export const HomeResponsive = memo(() => {
   }, [])
 
   const media = useMedia()
-  const [smIndex, setSmIndex] = useTransitionState(0)
-  const [width, setWidth] = useTransitionState(initialWidth)
+  const [smIndex, setSmIndex] = useState(0)
+  const [width, setWidth] = useState(initialWidth)
   const isSmall = initialWidth + Math.max(0, move) < 680
 
   const nextWidth = media.sm ? breakpoints[smIndex].at : initialWidth + Math.max(0, move)
@@ -343,7 +344,7 @@ const SafariFrame = ({ children, ...props }: YStackProps) => {
 
 export const Safari = memo(
   ({ isSmall, shouldLoad }: { isSmall?: boolean; shouldLoad?: boolean }) => {
-    const [isLoaded, setIsLoaded] = useTransitionState(false)
+    const [isLoaded, setIsLoaded] = useState(false)
 
     return (
       <SafariFrame>
@@ -428,8 +429,7 @@ export const Safari = memo(
             <YStack zi={0} fullscreen p="$4">
               <XStack ai="center" jc="center" pos="relative" br="$6" ov="hidden">
                 <YStack width={800} height={200}>
-                  {/* TODO */}
-                  {/* <LinearGradient o={0.1} fullscreen colors={['$yellow10', '$green10']} /> */}
+                  <LinearGradient o={0.1} fullscreen colors={['$yellow10', '$green10']} />
                 </YStack>
                 <YStack p="$4" pos="absolute" fullscreen f={1}>
                   <YStack f={1} />
@@ -505,7 +505,11 @@ const Tab = memo(({ active, children, bc, ...props }: any) => {
         {...props}
       >
         <Circle size={16} bg={bc}>
-          <Image src="/favicon.svg" width={12} height={12} />
+          <Image
+            width={10}
+            height={10}
+            src={favicon}
+          />
         </Circle>
         <Spacer size="$2" />
         <Paragraph o={active ? 1 : 0.5} cursor="default" size="$1" ellipse>
