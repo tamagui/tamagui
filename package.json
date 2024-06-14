@@ -97,21 +97,22 @@
     "metro": "0.80.8",
     "metro-core": "0.80.8",
     "metro-resolver": "0.80.8",
-    "metro-config": "0.80.8",
-    "create-vxrn": "portal:/Users/n8/vxrn/packages/create-vxrn",
-    "@vxrn/react-native-prebuilt": "portal:/Users/n8/vxrn/packages/react-native-prebuilt",
-    "@vxrn/safe-area": "portal:/Users/n8/vxrn/packages/safe-area",
-    "@vxrn/vite-flow": "portal:/Users/n8/vxrn/packages/vite-flow",
-    "@vxrn/vite-native-client": "portal:/Users/n8/vxrn/packages/vite-native-client",
-    "@vxrn/vite-native-hmr": "portal:/Users/n8/vxrn/packages/vite-native-hmr",
-    "@vxrn/vite-native-swc": "portal:/Users/n8/vxrn/packages/vite-native-swc",
-    "vxrn": "portal:/Users/n8/vxrn/packages/vxrn",
-    "vxs": "portal:/Users/n8/vxrn/packages/vxs"
+    "metro-config": "0.80.8"
   },
   "profile": {
     "//": "run 'yarn profile x' to toggle it on/off",
+    "react-19": {
+      "applied": false,
+      "resolutions": {
+        "vite": "6.0.0-alpha.17",
+        "@react-three/fiber": "9.0.0-alpha.6",
+        "react": "19.0.0-rc-f994737d14-20240522",
+        "react-dom": "19.0.0-rc-f994737d14-20240522",
+        "react-native-reanimated": "3.13.0-rc.0"
+      }
+    },
     "x": {
-      "applied": true,
+      "applied": false,
       "resolutions": {
         "create-vxrn": "portal:~/vxrn/packages/create-vxrn",
         "@vxrn/react-native-prebuilt": "portal:~/vxrn/packages/react-native-prebuilt",

@@ -1,8 +1,8 @@
-import { execSync } from 'child_process'
-import { existsSync, rmSync } from 'fs'
-import { readFile } from 'fs/promises'
-import { homedir } from 'os'
-import path from 'path'
+import { execSync } from 'node:child_process'
+import { existsSync, rmSync } from 'node:fs'
+import { readFile } from 'node:fs/promises'
+import { homedir } from 'node:os'
+import path from 'node:path'
 
 import chalk from 'chalk'
 import { pascalCase } from 'change-case'

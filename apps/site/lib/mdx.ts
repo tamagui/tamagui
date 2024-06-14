@@ -51,6 +51,7 @@ export const getMdxBySlug = async (basePath, slug) => {
     source,
     mdxOptions(options) {
       options.rehypePlugins = [
+        // @ts-ignore
         ...(options.rehypePlugins ?? []),
         rehypeMetaAttribute,
         rehypeHeroTemplate,

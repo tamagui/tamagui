@@ -29,6 +29,7 @@ export async function loader({ params }) {
 
 export default function DocGuidesPage() {
   const { code, frontmatter } = useLoader(loader)
+
   const Component = useMemo(() => getMDXComponent(code), [code])
 
   return (
