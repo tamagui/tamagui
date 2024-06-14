@@ -7,17 +7,19 @@ export function useDidHydrateOnceRoot() {
     return true
   }
 
-  useEffect(() => {
-    const tm = setInterval(() => {
-      if (Date.now() - last > 500) {
-        didHydrateOnce = true
+  if (!process.env.TAMAGUI_DISABLE_HYDRATION_OPTIMIZATION) {
+    useEffect(() => {
+      const tm = setInterval(() => {
+        if (Date.now() - last > 500) {
+          didHydrateOnce = true
+          clearInterval(tm)
+        }
+      }, 16)
+      return () => {
         clearInterval(tm)
       }
-    }, 16)
-    return () => {
-      clearInterval(tm)
-    }
-  }, [])
+    }, [])
+  }
 }
 
 let last = Date.now()
@@ -26,8 +28,11 @@ export function useDidHydrateOnce() {
   if (process.env.TAMAGUI_TARGET !== 'web') {
     return true
   }
-  if (!didHydrateOnce) {
-    last = Date.now()
+  if (!process.env.TAMAGUI_DISABLE_HYDRATION_OPTIMIZATION) {
+    if (!didHydrateOnce) {
+      last = Date.now()
+    }
+    return didHydrateOnce
   }
-  return didHydrateOnce
+  return false
 }
