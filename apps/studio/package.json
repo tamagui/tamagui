@@ -44,6 +44,6 @@
     "@tamagui/cli": "1.100.4",
     "@tauri-apps/cli": "^1.5.6",
     "@types/react-color": "^3.0.6",
-    "vite": "^5.2.11"
+    "vite": "6.0.0-alpha.17"
   }
 }
