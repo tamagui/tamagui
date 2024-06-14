@@ -6720,7 +6720,7 @@ __metadata:
     gray-matter: "npm:^4.0.2"
     hast-util-to-html: "npm:^8.0.3"
     hast-util-to-string: "npm:^2.0.0"
-    mdx-bundler: "npm:10.0.1"
+    mdx-bundler: "npm:^10.0.2"
     refractor: "npm:^4.7.0"
     rehype: "npm:^12.0.1"
     rehype-autolink-headings: "npm:^6.1.1"
@@ -7253,7 +7253,7 @@ __metadata:
     hsluv: "npm:^0.1.0"
     jsonwebtoken: "npm:^9.0.2"
     lodash-es: "npm:^4.17.21"
-    mdx-bundler: "npm:10.0.1"
+    mdx-bundler: "npm:^10.0.2"
     micro: "npm:^10.0.1"
     moti: "npm:^0.29.0"
     next: "npm:^14.2.3"
@@ -7925,7 +7925,7 @@ __metadata:
     h3: "npm:^1.11.1"
     hast-util-to-html: "npm:^8.0.3"
     hast-util-to-string: "npm:^2.0.0"
-    mdx-bundler: "npm:10.0.1"
+    mdx-bundler: "npm:^10.0.2"
     multithreading: "npm:0.2.1"
     patch-package: "npm:^8.0.0"
     postmark: "npm:^3.0.18"
@@ -20447,9 +20447,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mdx-bundler@npm:10.0.1":
-  version: 10.0.1
-  resolution: "mdx-bundler@npm:10.0.1"
+"mdx-bundler@npm:^10.0.2":
+  version: 10.0.2
+  resolution: "mdx-bundler@npm:10.0.2"
   dependencies:
     "@babel/runtime": "npm:^7.23.2"
     "@esbuild-plugins/node-resolve": "npm:^0.2.2"
@@ -20462,7 +20462,7 @@ __metadata:
     vfile: "npm:^6.0.1"
   peerDependencies:
     esbuild: 0.*
-  checksum: 10/574971af38a59ceaa5ff1d17746f87ca166857b33a0ac002ab1f5ae07e4592521cd09b03eda9158fa90906207e24868830779458d92623b1e8fe67470694e0ac
+  checksum: 10/44e4f64980be5d1cfb9ebe1fc65fd252090e465dabadeefab593feb9606055047b901cb679039951497809b79656a68ccabdc24e741a8d65df03a7309cf79e6b
   languageName: node
   linkType: hard
 
