@@ -13,9 +13,7 @@
   "author": {
     "name": "Nate Wienert"
   },
-  "sideEffects": [
-    "*.css"
-  ],
+  "sideEffects": ["*.css"],
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
@@ -64,7 +62,7 @@
     },
     "./native-test": {
       "types": "./types/index.d.ts",
-      "import": "./dist/test.native.mjs",
+      "import": "./dist/test.native.js",
       "require": "./dist/test.native.js"
     },
     "./inject-styles": {
