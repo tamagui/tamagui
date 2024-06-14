@@ -64,7 +64,7 @@
     },
     "./native-test": {
       "types": "./types/index.d.ts",
-      "import": "./dist/test.native.js",
+      "import": "./dist/test.native.mjs",
       "require": "./dist/test.native.js"
     },
     "./inject-styles": {

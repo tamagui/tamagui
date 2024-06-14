@@ -19,6 +19,58 @@ const exec = promisify(proc.exec)
 
 format()
 
+const fixExports = async ({ location }, pkgJson: any) => {
+  if (pkgJson.exports) {
+    for (const key in pkgJson.exports) {
+      const val = pkgJson.exports[key]
+
+      if (typeof val !== 'object') continue
+      if (!val.require) continue
+      if (!val.require.endsWith('.js')) continue
+      if (!val.require.includes('dist/cjs')) continue
+
+      // adds react-native entry
+      val['react-native'] = val.require.replace('.js', '.native.js')
+
+      const ordered = Object.keys(val)
+      if (ordered[0] !== 'react-native') {
+        const sorted = {}
+        // put react-native on the object first so its ordered first
+        sorted['react-native'] = val['react-native']
+        for (const key in val['react-native']) {
+          sorted[key] = val[key]
+        }
+        console.log('sorted', sorted)
+        pkgJson.exports = sorted
+      }
+    }
+  }
+}
+
+const fixScripts = async ({ location }, pkgJson: any) => {
+  if (pkgJson.devDependencies?.['@tamagui/build']) {
+    if (!pkgJson.scripts['clean']) {
+      pkgJson.scripts['clean'] = 'tamagui-build clean'
+      pkgJson.scripts['clean:build'] = 'tamagui-build clean:build'
+    }
+  }
+}
+
+const fixExportsPathSpecific = async ({ name, location }, pkgJson: any) => {
+  if (name === '@tamagui/static') {
+    return
+  }
+  if (pkgJson.exports) {
+    Object.keys(pkgJson.exports).forEach((key) => {
+      const obj = pkgJson.exports?.[key]
+      const importField = obj?.import
+      if (importField?.endsWith('.js')) {
+        obj.import = importField.replace('.js', '.mjs')
+      }
+    })
+  }
+}
+
 async function format() {
   const workspaces = (await exec(`yarn workspaces list --json`)).stdout.trim().split('\n')
   const packagePaths = workspaces.map((p) => JSON.parse(p)) as {
@@ -28,156 +80,24 @@ async function format() {
 
   console.info(` packages: ${packagePaths.length}`)
 
-  console.info(` repair exports..`)
+  console.info(` repair package.json..`)
 
   await pMap(
     packagePaths,
-    async ({ location }) => {
-      const cwd = join(process.cwd(), location)
+    async (pkg) => {
+      const cwd = join(process.cwd(), pkg.location)
       const jsonPath = join(cwd, 'package.json')
       const pkgJson = JSON.parse(
         readFileSync(jsonPath, {
           encoding: 'utf-8',
         })
       )
-
-      let changed = false
-
-      if (pkgJson.exports) {
-        for (const key in pkgJson.exports) {
-          const val = pkgJson.exports[key]
-
-          if (typeof val !== 'object') continue
-          if (!val.require) continue
-          if (!val.require.endsWith('.js')) continue
-          if (!val.require.includes('dist/cjs')) continue
-
-          // adds react-native entry
-          val['react-native'] = val.require.replace('.js', '.native.js')
-          changed = true
-        }
-      }
-
-      if (changed) {
-        writeFileSync(jsonPath, JSON.stringify(pkgJson, null, 2) + '\n', {
-          encoding: 'utf-8',
-        })
-      }
-    },
-    {
-      concurrency: 10,
-    }
-  )
-
-  console.info(` repair scripts..`)
-
-  await pMap(
-    packagePaths,
-    async ({ location }) => {
-      const cwd = join(process.cwd(), location)
-      const jsonPath = join(cwd, 'package.json')
-      const pkgJson = JSON.parse(
-        readFileSync(jsonPath, {
-          encoding: 'utf-8',
-        })
-      )
-
-      if (pkgJson.devDependencies?.['@tamagui/build']) {
-        if (!pkgJson.scripts['clean']) {
-          pkgJson.scripts['clean'] = 'tamagui-build clean'
-          pkgJson.scripts['clean:build'] = 'tamagui-build clean:build'
-          writeFileSync(jsonPath, JSON.stringify(pkgJson, null, 2) + '\n', {
-            encoding: 'utf-8',
-          })
-        }
-      }
-    },
-    {
-      concurrency: 10,
-    }
-  )
-
-  console.info(` repair esm mjs exports..`)
-
-  await pMap(
-    packagePaths,
-    async ({ name, location }) => {
-      if (name === '@tamagui/static') {
-        return
-      }
-
-      const cwd = join(process.cwd(), location)
-      const jsonPath = join(cwd, 'package.json')
-      const pkgJson = JSON.parse(
-        readFileSync(jsonPath, {
-          encoding: 'utf-8',
-        })
-      )
-
-      if (pkgJson.exports) {
-        Object.keys(pkgJson.exports).forEach((key) => {
-          const obj = pkgJson.exports?.[key]
-          const importField = obj?.import
-          if (importField?.endsWith('.js')) {
-            obj.import = importField.replace('.js', '.mjs')
-            writeFileSync(jsonPath, JSON.stringify(pkgJson, null, 2) + '\n', {
-              encoding: 'utf-8',
-            })
-          }
-        })
-      }
-    },
-    {
-      concurrency: 10,
-    }
-  )
-
-  console.info(` repair package.json source paths..`)
-
-  await pMap(
-    packagePaths,
-    async ({ name, location }) => {
-      if (
-        name === 'tamagui-monorepo' ||
-        location.startsWith('apps/') ||
-        name === '@tamagui/demos'
-      ) {
-        return
-      }
-
-      const cwd = join(process.cwd(), location)
-      const jsonPath = join(cwd, 'package.json')
-      const pkgJson = JSON.parse(
-        readFileSync(jsonPath, {
-          encoding: 'utf-8',
-        })
-      )
-
-      if (!pkgJson.source) {
-        console.warn(`No source`, name, location)
-        return
-      }
-
-      try {
-        accessSync(join(cwd, pkgJson.source))
-      } catch {
-        console.info(`Source not found`, { name, location })
-
-        let [filepath, ext] = pkgJson.source.split('.')
-
-        try {
-          const potentialName = `${filepath}.${ext === 'ts' ? 'tsx' : 'ts'}`
-          const potential = join(cwd, potentialName)
-          accessSync(potential)
-          pkgJson.source = potentialName
-          await writeJSON(jsonPath, pkgJson, {
-            spaces: 2,
-          })
-        } catch {
-          console.error(`No entry file?`, name, location)
-          process.exit(1)
-        }
-      }
+      await fixExports(pkg, pkgJson)
+      await fixExportsPathSpecific(pkg, pkgJson)
+      await fixScripts(pkg, pkgJson)
+      await writeFile(jsonPath, JSON.stringify(pkgJson, null, 2) + '\n', {
+        encoding: 'utf-8',
+      })
     },
     {
       concurrency: 10,
@@ -196,7 +116,6 @@ async function format() {
       try {
         const cwd = join(process.cwd(), location)
         const file = join(cwd, 'tsconfig.json')
-        console.info('go', file)
         const contents = await readFile(file, {
           encoding: 'utf-8',
         })

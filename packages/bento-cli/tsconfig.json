@@ -6,9 +6,12 @@
     "moduleResolution": "NodeNext",
     "outDir": "dist"
   },
-  "include": ["src/**/*"],
+  "include": [
+    "src/**/*"
+  ],
   "exclude": [
     "types",
-    "dist"
+    "dist",
+    "**/__tests__"
   ]
 }
