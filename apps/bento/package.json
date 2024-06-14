@@ -17,22 +17,22 @@
   "exports": {
     "./package.json": "./package.json",
     ".": {
+      "react-native": "./dist/cjs/index.native.js",
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
-      "require": "./dist/cjs/index.js",
-      "react-native": "./dist/cjs/index.native.js"
+      "require": "./dist/cjs/index.js"
     },
     "./data": {
+      "react-native": "./dist/cjs/data.native.js",
       "types": "./types/data.d.ts",
       "import": "./dist/esm/data.mjs",
-      "require": "./dist/cjs/data.js",
-      "react-native": "./dist/cjs/data.native.js"
+      "require": "./dist/cjs/data.js"
     },
     "./component/*": {
+      "react-native": "./dist/cjs/components/*.native.js",
       "types": "./types/components/*.d.ts",
       "import": "./dist/esm/components/*.mjs",
-      "require": "./dist/cjs/components/*.js",
-      "react-native": "./dist/cjs/components/*.native.js"
+      "require": "./dist/cjs/components/*.js"
     }
   },
   "scripts": {

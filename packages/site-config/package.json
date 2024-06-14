@@ -22,16 +22,16 @@
   "exports": {
     "./package.json": "./package.json",
     ".": {
+      "react-native": "./dist/cjs/index.native.js",
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
-      "require": "./dist/cjs/index.js",
-      "react-native": "./dist/cjs/index.native.js"
+      "require": "./dist/cjs/index.js"
     },
     "./animations.css": {
+      "react-native": "./dist/cjs/animations.native.js",
       "types": "./types/animations.css.d.ts",
       "import": "./dist/esm/animations.mjs",
-      "require": "./dist/cjs/animations.js",
-      "react-native": "./dist/cjs/animations.native.js"
+      "require": "./dist/cjs/animations.js"
     }
   },
   "dependencies": {

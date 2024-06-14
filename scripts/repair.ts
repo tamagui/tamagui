@@ -29,7 +29,7 @@ const fixExports = async ({ location }, pkgJson: any) => {
       if (!val.require.endsWith('.js')) continue
       if (!val.require.includes('dist/cjs')) continue
 
-      // adds react-native entry
+      // ensure react-native entry
       val['react-native'] = val.require.replace('.js', '.native.js')
 
       const ordered = Object.keys(val)
@@ -37,11 +37,10 @@ const fixExports = async ({ location }, pkgJson: any) => {
         const sorted = {}
         // put react-native on the object first so its ordered first
         sorted['react-native'] = val['react-native']
-        for (const key in val['react-native']) {
+        for (const key in val) {
           sorted[key] = val[key]
         }
-        console.log('sorted', sorted)
-        pkgJson.exports = sorted
+        pkgJson.exports[key] = sorted
       }
     }
   }

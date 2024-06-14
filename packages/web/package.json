@@ -50,21 +50,21 @@
     "./package.json": "./package.json",
     "./reset.css": "./reset.css",
     ".": {
+      "react-native": "./dist/cjs/index.native.js",
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
-      "require": "./dist/cjs/index.js",
-      "react-native": "./dist/cjs/index.native.js"
+      "require": "./dist/cjs/index.js"
     },
     "./native": {
+      "react-native": "./dist/cjs/index.native.native.js",
       "import": "./dist/esm/index.native.mjs",
-      "require": "./dist/cjs/index.native.js",
-      "react-native": "./dist/cjs/index.native.native.js"
+      "require": "./dist/cjs/index.native.js"
     },
     "./inject-styles": {
+      "react-native": "./dist/cjs/inject-styles.native.js",
       "types": "./types/inject-styles.d.ts",
       "import": "./dist/esm/inject-styles.mjs",
-      "require": "./dist/cjs/inject-styles.js",
-      "react-native": "./dist/cjs/inject-styles.native.js"
+      "require": "./dist/cjs/inject-styles.js"
     }
   },
   "repository": {

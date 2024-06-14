@@ -26,16 +26,16 @@
     "./package.json": "./package.json",
     "./photo/*": "./public/*.jpg",
     ".": {
+      "react-native": "./dist/cjs/index.native.js",
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
-      "require": "./dist/cjs/index.js",
-      "react-native": "./dist/cjs/index.native.js"
+      "require": "./dist/cjs/index.js"
     },
     "./demo/*": {
+      "react-native": "./dist/cjs/*.native.js",
       "types": "./types/*.d.ts",
       "import": "./dist/esm/*.mjs",
-      "require": "./dist/cjs/*.js",
-      "react-native": "./dist/cjs/*.native.js"
+      "require": "./dist/cjs/*.js"
     }
   },
   "dependencies": {

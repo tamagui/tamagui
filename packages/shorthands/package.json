@@ -24,16 +24,16 @@
   "exports": {
     "./package.json": "./package.json",
     ".": {
+      "react-native": "./dist/cjs/index.native.js",
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
-      "require": "./dist/cjs/index.js",
-      "react-native": "./dist/cjs/index.native.js"
+      "require": "./dist/cjs/index.js"
     },
     "./v2": {
+      "react-native": "./dist/cjs/v2.native.js",
       "types": "./types/v2.d.ts",
       "import": "./dist/esm/v2.mjs",
-      "require": "./dist/cjs/v2.js",
-      "react-native": "./dist/cjs/v2.native.js"
+      "require": "./dist/cjs/v2.js"
     }
   },
   "devDependencies": {

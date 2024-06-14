@@ -19,14 +19,14 @@
   "exports": {
     "./package.json": "./package.json",
     ".": {
+      "react-native": "./dist/cjs/index.native.js",
       "import": "./dist/esm/index.mjs",
-      "require": "./dist/cjs/index.js",
-      "react-native": "./dist/cjs/index.native.js"
+      "require": "./dist/cjs/index.js"
     },
     "./without-animated": {
+      "react-native": "./dist/cjs/without-animated.native.js",
       "import": "./dist/esm/without-animated.mjs",
-      "require": "./dist/cjs/without-animated.js",
-      "react-native": "./dist/cjs/without-animated.native.js"
+      "require": "./dist/cjs/without-animated.js"
     },
     "./dist/modules/*": "./dist/esm/modules/*/index.js",
     "./dist/exports/*": "./dist/esm/exports/*/index.js",

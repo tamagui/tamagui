@@ -8,9 +8,9 @@
   "exports": {
     "./package.json": "./package.json",
     ".": {
+      "react-native": "./dist/cjs/vite.config.native.js",
       "import": "./dist/esm/vite.config.mjs",
-      "require": "./dist/cjs/vite.config.js",
-      "react-native": "./dist/cjs/vite.config.native.js"
+      "require": "./dist/cjs/vite.config.js"
     }
   },
   "scripts": {
