@@ -5,6 +5,7 @@ if [ "$SHOULD_UNLOCK_GIT_CRYPT" = "1" ]; then
     echo "Unlocked!"
   else
     echo "Unlocking..."
+    echo $TRANSCRYPT_PASSWORD
     ./scripts/transcrypt.sh -y -p "$TRANSCRYPT_PASSWORD"
     ./scripts/ensure-unlocked.sh
   fi
