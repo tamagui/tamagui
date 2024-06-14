@@ -50,8 +50,7 @@ export const getMdxBySlug = async (basePath, slug) => {
   const { frontmatter, code } = await bundleMDX({
     source,
     mdxOptions(options) {
-      options.rehypePlugins = [
-        // @ts-ignore
+      const redoPlugins = [
         ...(options.rehypePlugins ?? []),
         rehypeMetaAttribute,
         rehypeHeroTemplate,
@@ -59,6 +58,7 @@ export const getMdxBySlug = async (basePath, slug) => {
         rehypeAutolinkHeadings,
         rehypeSlug,
       ]
+      options.rehypePlugins = redoPlugins as any
       return options
     },
   })
