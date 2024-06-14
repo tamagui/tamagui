@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/mdx",
-  "version": "1.100.4",
+  "version": "1.100.5",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -28,7 +28,7 @@
     }
   },
   "dependencies": {
-    "@tamagui/demos": "1.100.4",
+    "@tamagui/demos": "1.100.5",
     "gray-matter": "^4.0.2",
     "hast-util-to-html": "^8.0.3",
     "hast-util-to-string": "^2.0.0",
@@ -43,7 +43,7 @@
     "unist-util-visit": "^2.0.3"
   },
   "devDependencies": {
-    "@tamagui/build": "1.100.4"
+    "@tamagui/build": "1.100.5"
   },
   "publishConfig": {
     "access": "public"
