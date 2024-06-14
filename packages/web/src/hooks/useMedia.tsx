@@ -236,7 +236,7 @@ export function useMedia(
     }
 
     // layout effects evidently run before the rest of render?
-    Promise.resolve().then(update)
+    update()
 
     listeners.add(update)
     return () => {
