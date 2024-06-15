@@ -37,7 +37,7 @@
     "react": "npm:react@19.0.0-rc-f994737d14-20240522",
     "react-dom": "npm:react-dom@19.0.0-rc-f994737d14-20240522",
     "react-native": "0.74.1",
-    "react-native-reanimated": "npm:react-native-reanimated@3.11.0",
+    "react-native-reanimated": "npm:react-native-reanimated@3.13.0-rc.1",
     "stripe": "^9.1.0",
     "tamagui": "1.100.5",
     "vite": "6.0.0-alpha.17",
