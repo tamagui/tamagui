@@ -7,6 +7,8 @@ export const GET: Endpoint = async (req) => {
   const code = url.searchParams.get('code')
   const next = url.searchParams.get('next') ?? '/'
 
+  console.warn(`auth callback`)
+
   const response = new Response()
 
   if (code) {
@@ -30,9 +32,12 @@ export const GET: Endpoint = async (req) => {
     )
 
     const { error } = await supabase.auth.exchangeCodeForSession(code)
-    if (!error) {
-      return Response.redirect(`${origin}${next}`)
+
+    if (error) {
+      console.error(`Error authenticating`, error)
     }
+
+    return Response.redirect(`${origin}${next}`)
   }
 
   // return the user to an error page with instructions

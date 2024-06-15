@@ -1,6 +1,6 @@
 import { createShallowSetState, useComposedRefs } from '@tamagui/core'
 import { ThemeTintAlt } from '@tamagui/logo'
-import { ExternalLink, Figma, Paintbrush } from '@tamagui/lucide-icons'
+import { ExternalLink, Figma, LogIn, Paintbrush } from '@tamagui/lucide-icons'
 import * as React from 'react'
 import type { LayoutRectangle } from 'react-native'
 import type { PopoverProps } from 'tamagui'
@@ -81,7 +81,7 @@ export const HeaderLinks = (props: HeaderProps) => {
     <>
       <Link asChild href="/docs/intro/introduction">
         <HeadAnchor
-          half={forceShowAllLinks}
+          // half={forceShowAllLinks}
           grid={forceShowAllLinks}
           $sm={{
             display: forceShowAllLinks ? 'flex' : 'none',
@@ -93,7 +93,7 @@ export const HeaderLinks = (props: HeaderProps) => {
 
       <Link asChild href="/ui/intro/1.0.0">
         <HeadAnchor
-          half={forceShowAllLinks}
+          // half={forceShowAllLinks}
           grid={forceShowAllLinks}
           $sm={{
             display: forceShowAllLinks ? 'flex' : 'none',
@@ -109,6 +109,14 @@ export const HeaderLinks = (props: HeaderProps) => {
     <>
       {forceShowAllLinks ? (
         <>
+          {primaryLinks}
+          <Separator bc="$color025" o={0.25} my="$2" />
+        </>
+      ) : (
+        primaryLinks
+      )}
+      {/* {forceShowAllLinks ? (
+        <>
           <XStack fw="wrap" f={1} gap="$2" w="100%">
             {primaryLinks}
           </XStack>
@@ -116,34 +124,56 @@ export const HeaderLinks = (props: HeaderProps) => {
         </>
       ) : (
         primaryLinks
+      )} */}
+
+      {forceShowAllLinks && (
+        <>
+          <XStack fw="wrap" f={1} gap="$2" w="100%">
+            <Link asChild href="/takeout">
+              <HeadAnchor grid half tag="a">
+                Takeout{' '}
+                <YStack dsp={'inline-block' as any} y={7} my={-20} o={0.8}>
+                  <TakeoutIcon scale={0.65} />
+                </YStack>
+              </HeadAnchor>
+            </Link>
+
+            <Link asChild href="/bento">
+              <HeadAnchor grid half tag="a">
+                Bento{' '}
+                <YStack ml={3} dsp={'inline-block' as any} y={3} my={-10} o={0.8}>
+                  <BentoIcon scale={0.65} />
+                </YStack>
+              </HeadAnchor>
+            </Link>
+          </XStack>
+          <Separator bc="$color025" o={0.25} my="$2" />
+        </>
       )}
 
       {forceShowAllLinks && (
-        <Link asChild href="/community">
-          <HeadAnchor grid>Community</HeadAnchor>
-        </Link>
-      )}
-
-      {forceShowAllLinks && (
-        <Link asChild href="/takeout">
-          <HeadAnchor grid tag="span">
-            Takeout{' '}
-            <YStack dsp={'inline-block' as any} y={7} my={-20} o={0.8}>
-              <TakeoutIcon scale={0.75} />
-            </YStack>
-          </HeadAnchor>
-        </Link>
-      )}
-
-      {forceShowAllLinks && (
-        <Link asChild href="/bento">
-          <HeadAnchor grid tag="span">
-            Bento{' '}
-            <YStack ml={3} dsp={'inline-block' as any} y={3} my={-10} o={0.8}>
-              <BentoIcon scale={0.75} />
-            </YStack>
-          </HeadAnchor>
-        </Link>
+        <>
+          <XStack fw="wrap" f={1} gap="$2" w="100%">
+            <Link asChild href="/community">
+              <HeadAnchor grid half tag="a">
+                Community
+              </HeadAnchor>
+            </Link>
+            <Link asChild href="/studio">
+              <HeadAnchor
+                grid
+                half
+                tag="a"
+                $md={{
+                  display: forceShowAllLinks ? 'flex' : 'none',
+                }}
+              >
+                Studio
+              </HeadAnchor>
+            </Link>
+          </XStack>
+          <Separator bc="$color025" o={0.25} my="$2" />
+        </>
       )}
 
       {!forceShowAllLinks && (
@@ -204,19 +234,6 @@ export const HeaderLinks = (props: HeaderProps) => {
         </SlidingPopover>
       )}
 
-      {forceShowAllLinks && (
-        <Link asChild href="/studio">
-          <HeadAnchor
-            grid
-            $md={{
-              display: forceShowAllLinks ? 'flex' : 'none',
-            }}
-          >
-            Studio
-          </HeadAnchor>
-        </Link>
-      )}
-
       {showExtra && (
         <Link asChild href="/studio">
           <HeadAnchor grid={forceShowAllLinks}>Studio</HeadAnchor>
@@ -227,7 +244,12 @@ export const HeaderLinks = (props: HeaderProps) => {
         <>
           <Separator bc="$color025" o={0.25} my="$2" />
           <Link asChild href="/login">
-            <HeadAnchor grid={forceShowAllLinks}>Login</HeadAnchor>
+            <HeadAnchor grid={forceShowAllLinks}>
+              Login
+              <YStack dsp={'inline-block' as any} y={2} x={10} als="flex-end">
+                <LogIn color="$color10" size={14} />
+              </YStack>
+            </HeadAnchor>
           </Link>
         </>
       )}

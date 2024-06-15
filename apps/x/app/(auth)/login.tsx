@@ -4,19 +4,22 @@ import { LogoIcon } from '@tamagui/logo'
 import type { FormEvent } from 'react'
 import { useEffect, useRef, useState } from 'react'
 import { Button, Input, Paragraph, Separator, Spinner, XStack, YStack } from 'tamagui'
-import { useUser } from '~/features/user/useUser'
 import { SupabaseProvider } from '~/features/supabase/SupabaseProvider'
-
+import { useUser } from '~/features/user/useUser'
+import { useLocalSearchParams, usePathname } from 'vxs'
+import { HeadInfo } from '~/components/HeadInfo'
 import { Notice } from '~/components/Notice'
 import { GithubIcon } from '~/features/icons/GithubIcon'
 import { useForwardToDashboard } from '~/features/user/useForwardToDashboard'
-import { usePathname, useRouter } from 'vxs'
-import { HeadInfo } from '~/components/HeadInfo'
 
 const isProd = process.env.NODE_ENV === 'production'
 const emailAuthDisabledFlag = isProd
 
 export default function SignInPage(props) {
+  const search = useLocalSearchParams()
+
+  console.info('got', search)
+
   return (
     <SupabaseProvider initialSession={props.initialSession}>
       <HeadInfo title="Login — Tamagui" />
@@ -102,7 +105,7 @@ function SignIn() {
   if (supabaseSession.isLoading) {
     return (
       <YStack ai="center" flex={1} jc="center">
-        <Spinner size="large" />
+        <Spinner size="small" />
       </YStack>
     )
   }
@@ -162,7 +165,7 @@ function SignIn() {
                       <Button
                         // @ts-expect-error
                         type="submit"
-                        icon={loading ? <Spinner /> : null}
+                        icon={loading ? <Spinner size="small" /> : null}
                         disabled={!email.length || emailAuthDisabledFlag}
                       >
                         Send magic link
@@ -264,7 +267,7 @@ function SignIn() {
       fullscreen
       alignItems="center"
     >
-      <Spinner size="large" />
+      <Spinner size="small" />
     </YStack>
   )
 }
