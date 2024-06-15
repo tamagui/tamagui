@@ -5,10 +5,7 @@
   "repository": {
     "url": "https://github.com/tamagui/tamagui"
   },
-  "workspaces": [
-    "./apps/*",
-    "./packages/*"
-  ],
+  "workspaces": ["./apps/*", "./packages/*"],
   "packageManager": "yarn@4.1.0",
   "scripts": {
     "bento-cli:dev": "yarn workspace @tamagui/bento-cli dev",
