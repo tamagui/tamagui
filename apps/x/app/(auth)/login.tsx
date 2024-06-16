@@ -1,33 +1,29 @@
-import { useSessionContext, useSupabaseClient } from '@supabase/auth-helpers-react'
 import type { Provider } from '@supabase/supabase-js'
 import { LogoIcon } from '@tamagui/logo'
 import type { FormEvent } from 'react'
 import { useEffect, useRef, useState } from 'react'
 import { Button, Input, Paragraph, Separator, Spinner, XStack, YStack } from 'tamagui'
-import { SupabaseProvider } from '~/features/supabase/SupabaseProvider'
-import { useUser } from '~/features/user/useUser'
-import { Redirect, useLocalSearchParams, usePathname } from 'vxs'
 import { HeadInfo } from '~/components/HeadInfo'
 import { Notice } from '~/components/Notice'
+import { useSupabase } from '~/features/auth/useSupabaseClient'
 import { GithubIcon } from '~/features/icons/GithubIcon'
 import { useForwardToDashboard } from '~/features/user/useForwardToDashboard'
+import { useUser } from '~/features/user/useUser'
 
 const isProd = process.env.NODE_ENV === 'production'
 const emailAuthDisabledFlag = isProd
 
-export default function SignInPage(props) {
+export default function SignInPage() {
   return (
-    <SupabaseProvider initialSession={props.initialSession}>
-      <HeadInfo title="Login — Tamagui" />
+    <>
+      <HeadInfo title="Login" />
       <SignIn />
-    </SupabaseProvider>
+    </>
   )
 }
 
 function SignIn() {
-  const pathname = usePathname()
-  const supabaseClient = useSupabaseClient()
-  const supabaseSession = useSessionContext()
+  const { supabase } = useSupabase()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPasswordInput, setShowPasswordInput] = useState(false)
@@ -47,6 +43,14 @@ function SignIn() {
 
   useForwardToDashboard()
 
+  if (!supabase) {
+    return (
+      <YStack ai="center" flex={1} jc="center">
+        <Spinner size="small" />
+      </YStack>
+    )
+  }
+
   const handleSignin = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
@@ -55,14 +59,14 @@ function SignIn() {
 
     try {
       if (showPasswordInput) {
-        const { error } = await supabaseClient.auth.signInWithPassword({
+        const { error } = await supabase.auth.signInWithPassword({
           email,
           password,
         })
 
         if (error) throw error
       } else {
-        const { error } = await supabaseClient.auth.signInWithOtp({
+        const { error } = await supabase.auth.signInWithOtp({
           email,
           options: {
             emailRedirectTo: `${window.location.origin}/login`,
@@ -75,7 +79,7 @@ function SignIn() {
         })
       }
     } catch (error) {
-      setMessage({ type: 'error', content: error.message })
+      setMessage({ type: 'error', content: `${error}` })
     } finally {
       setLoading(false)
     }
@@ -85,7 +89,7 @@ function SignIn() {
     const redirectTo = `${window.location.origin}/api/auth/callback`
     setLoading(true)
 
-    const { error } = await supabaseClient.auth.signInWithOAuth({
+    const { error } = await supabase.auth.signInWithOAuth({
       provider,
       options: {
         redirectTo,
@@ -96,14 +100,6 @@ function SignIn() {
       setMessage({ type: 'error', content: error.message })
     }
     setLoading(false)
-  }
-
-  if (supabaseSession.isLoading) {
-    return (
-      <YStack ai="center" flex={1} jc="center">
-        <Spinner size="small" />
-      </YStack>
-    )
   }
 
   if (!user)

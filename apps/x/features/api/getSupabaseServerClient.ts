@@ -17,7 +17,7 @@ export function getSupabaseServerClient(request: Request) {
     import.meta.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       auth: {
-        flowType: 'pkce',
+        // flowType: 'pkce',
         debug(message, ...args) {
           console.info(` [supabase-auth] ${message}`, ...args)
         },
