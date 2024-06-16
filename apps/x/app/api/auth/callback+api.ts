@@ -1,5 +1,4 @@
 import type { Endpoint } from 'vxs'
-import { requestAsyncLocalStore } from 'vxs/headers'
 import { getSupabaseServerClient } from '~/features/api/getSupabaseServerClient'
 
 export const GET: Endpoint = async (req) => {
@@ -7,7 +6,7 @@ export const GET: Endpoint = async (req) => {
   const code = url.searchParams.get('code')
   const next = url.searchParams.get('next') ?? '/'
 
-  console.info(` - code ${code}`, requestAsyncLocalStore.getStore())
+  console.info(` - code ${code}`)
 
   if (!code) {
     return Response.error()
