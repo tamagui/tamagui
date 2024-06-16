@@ -11,33 +11,26 @@ type CookieOptions = {
 
 export function createCookie(options: CookieOptions) {
   let cookie = `${options.key}=${encodeURIComponent(options.value)}`
-
   if (options.expiration) {
     const date = new Date()
     date.setTime(date.getTime() + options.expiration * 1000)
     cookie += `; Expires=${date.toUTCString()}`
   }
-
   if (options.path) {
     cookie += `; Path=${options.path}`
   }
-
   if (options.domain) {
     cookie += `; Domain=${options.domain}`
   }
-
   if (options.secure) {
     cookie += '; Secure'
   }
-
   if (options.httpOnly) {
     cookie += '; HttpOnly'
   }
-
   if (options.sameSite) {
     cookie += `; SameSite=${options.sameSite === true ? 'strict' : options.sameSite}`
   }
-
   return cookie
 }
 
@@ -45,17 +38,18 @@ export function setCookie(headers: Headers, options: CookieOptions) {
   headers.append('Set-Cookie', createCookie(options))
 }
 
-export function getCookie(headers: Headers, key: string): string | null {
-  const cookieHeader = headers.get('Cookie')
-  if (!cookieHeader) return null
+export function removeCookie(headers: Headers, key: string) {
+  headers.delete(key)
+}
 
-  const cookies = cookieHeader.split(';')
-  for (let cookie of cookies) {
+export function getCookie(headers: Headers, key: string): string | null {
+  const cookies = headers.getSetCookie()
+  if (!cookies) return null
+  for (const cookie of cookies) {
     const [cookieKey, cookieValue] = cookie.split('=')
-    if (cookieKey.trim() === key) {
+    if (cookieKey === key) {
       return decodeURIComponent(cookieValue)
     }
   }
-
   return null
 }

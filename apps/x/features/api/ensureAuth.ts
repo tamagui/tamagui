@@ -1,8 +1,5 @@
-import { createServerClient } from '@supabase/ssr'
-import { setCurrentRequestHeaders } from 'vxs/headers'
-import type { Database } from '../supabase/types'
-import { getCookie, setCookie } from './cookies'
 import { setupCors } from './cors'
+import { getSupabaseServerClient } from './getSupabaseServerClient'
 
 /**
  * makes a supabase instance for the current user and returns a 401 if there's no user
@@ -16,37 +13,12 @@ export const ensureAuth = async ({
 }) => {
   setupCors(req)
 
-  const supabase = createServerClient<Database>(
-    import.meta.env.NEXT_PUBLIC_SUPABASE_URL!,
-    import.meta.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get: (key) => {
-          return decodeURIComponent(getCookie(req.headers, key) ?? '')
-        },
-        set: (key, value, options) => {
-          setCurrentRequestHeaders((headers) => {
-            setCookie(headers, {
-              key,
-              value,
-              httpOnly: true,
-              sameSite: 'Lax',
-              ...options,
-            })
-          })
-        },
-        remove: (key, options) => {
-          setCurrentRequestHeaders((headers) => {
-            setCookie(headers, { key, value: '', ...options, httpOnly: true })
-          })
-        },
-      },
-    }
-  )
+  const supabase = getSupabaseServerClient(req)
 
   const {
     data: { session },
   } = await supabase.auth.getSession()
+
   const user = session?.user
 
   if (!session || !user) {

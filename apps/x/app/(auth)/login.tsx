@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Button, Input, Paragraph, Separator, Spinner, XStack, YStack } from 'tamagui'
 import { SupabaseProvider } from '~/features/supabase/SupabaseProvider'
 import { useUser } from '~/features/user/useUser'
-import { useLocalSearchParams, usePathname } from 'vxs'
+import { Redirect, useLocalSearchParams, usePathname } from 'vxs'
 import { HeadInfo } from '~/components/HeadInfo'
 import { Notice } from '~/components/Notice'
 import { GithubIcon } from '~/features/icons/GithubIcon'
@@ -16,10 +16,6 @@ const isProd = process.env.NODE_ENV === 'production'
 const emailAuthDisabledFlag = isProd
 
 export default function SignInPage(props) {
-  const search = useLocalSearchParams()
-
-  console.info('got', search)
-
   return (
     <SupabaseProvider initialSession={props.initialSession}>
       <HeadInfo title="Login — Tamagui" />
@@ -86,7 +82,7 @@ function SignIn() {
   }
 
   const handleOAuthSignIn = async (provider: Provider) => {
-    const redirectTo = `${window.location.origin}${pathname}`
+    const redirectTo = `${window.location.origin}/api/auth/callback`
     setLoading(true)
 
     const { error } = await supabaseClient.auth.signInWithOAuth({

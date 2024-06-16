@@ -340,7 +340,8 @@ export const PopperContent = React.forwardRef<
     }
   }, [isMounted])
 
-  let show = true
+  // default to not showing if positioned at 0, 0
+  let show = x !== 0 || y !== 0
 
   if (isAndroid) {
     const [show_, setShow] = React.useState(false)

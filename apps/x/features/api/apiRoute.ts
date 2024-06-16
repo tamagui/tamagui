@@ -1,15 +1,19 @@
 import type { Endpoint } from 'vxs'
 import type { PostgrestError } from '@supabase/supabase-js'
+import { requestAsyncLocalStore } from 'vxs/headers'
 
 export function apiRoute(handler: Endpoint) {
   return (async (req) => {
     try {
       const result = handler(req)
-      return result instanceof Promise ? await result : result
+      const out = result instanceof Promise ? await result : result
+
+      return out
     } catch (err) {
       if (err instanceof Response) {
         console.error(
-          `Error in apiRoute (caught response): ${err.status} ${err.statusText}`
+          ` Error in apiRoute (caught response) ${req.url}:
+            ${err.status} ${err.statusText}\n`
         )
         return err
       }
