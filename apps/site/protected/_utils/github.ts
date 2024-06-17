@@ -204,6 +204,10 @@ export const whitelistBentoUsernames = new Set([
   'gsasouza',
   'thiagokpelo',
   'verhagenkava',
+
+  // RichardTunstall
+  'ads102003',
+  'FateFirst',
 ])
 
 export const whitelistGithubUsernames = [
