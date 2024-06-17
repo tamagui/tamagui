@@ -7,6 +7,7 @@ import {
   mergeProps,
   spacedChildren,
   styled,
+  useComposedRefs,
   useProps,
 } from '@tamagui/core'
 import type { Scope } from '@tamagui/create-context'
@@ -211,6 +212,8 @@ const GroupItem = React.forwardRef((props: ScopedProps<GroupItemProps>, ref) => 
     return children as any
   }
 
+  const composedRef = useComposedRefs(children['ref'], ref)
+
   if (isTamaguiElement(children)) {
     return React.cloneElement(children, { ...groupItemProps, ref })
   }
@@ -221,7 +224,7 @@ const GroupItem = React.forwardRef((props: ScopedProps<GroupItemProps>, ref) => 
       ...children.props?.['style'],
       ...groupItemProps,
     },
-    ref,
+    ref: composedRef,
   } as any)
 })
 
