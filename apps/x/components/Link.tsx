@@ -1,18 +1,20 @@
 import type { ViewProps } from 'react-native'
-import { Button, ButtonProps, Paragraph, Text } from 'tamagui'
+import { Button, Paragraph, Text, type ButtonProps } from 'tamagui'
 import { useLinkTo, type LinkProps as VXSLinkProps } from 'vxs'
 
 export type LinkProps = ViewProps & VXSLinkProps
 
 export const Link = ({ href, replace, ...props }: LinkProps) => {
-  const linkProps = useLinkTo({ href, replace })
+  const linkProps = useLinkTo({ href: href as string, replace })
 
   return (
     <Text
       tag="a"
       cursor="pointer"
       color="inherit"
+      // @ts-expect-error
       fontSize="inherit"
+      // @ts-expect-error
       lineHeight="inherit"
       {...props}
       {...linkProps}
@@ -27,7 +29,7 @@ export const ParagraphLink = ({
   children,
   ...props
 }: LinkProps) => {
-  const linkProps = useLinkTo({ href, replace })
+  const linkProps = useLinkTo({ href: href as string, replace })
 
   return (
     <Paragraph
