@@ -8,6 +8,8 @@
     "dev:web:prod": "NODE_ENV=production webpack serve",
     "dev:web:extract": "DISABLE_EXTRACTION=false NODE_ENV=development webpack serve",
     "start": "EXPO_NO_TELEMETRY=true expo start --dev-client --offline",
+    "start:dev-client": "yarn expo:prebuild && yarn expo start --dev-client",
+    "expo:prebuild": "yarn expo prebuild --skip-dependency-update react-native,react",
     "start:extract": "TAMAGUI_OPTIMIZE_NATIVE_VIEWS=1 TAMAGUI_ENABLE_DYNAMIC_LOAD=1 yarn start",
     "start:prod": "DISABLE_EXTRACTION=false TAMAGUI_ENABLE_DYNAMIC_LOAD=1 expo start --dev-client --offline --no-dev --minify",
     "start:tamagui": "tama dev",
@@ -28,6 +30,7 @@
     "test": "yarn test:web"
   },
   "dependencies": {
+    "@faker-js/faker": "^8.4.1",
     "@react-native-async-storage/async-storage": "1.23.1",
     "@react-navigation/native": "6.1.17",
     "@react-navigation/native-stack": "^6.9.18",
