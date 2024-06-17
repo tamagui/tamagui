@@ -10,7 +10,7 @@ export function useDidHydrateOnceRoot() {
   if (!process.env.TAMAGUI_DISABLE_HYDRATION_OPTIMIZATION) {
     useEffect(() => {
       const tm = setInterval(() => {
-        if (Date.now() - last > 500) {
+        if (Date.now() - last > 150) {
           didHydrateOnce = true
           clearInterval(tm)
         }
