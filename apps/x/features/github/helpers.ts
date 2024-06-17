@@ -191,6 +191,20 @@ export const whitelistBentoUsernames = new Set([
   'bradtoad',
   'michal-sourcetoad',
   'jpaz91',
+
+  // aldoMC
+  'gusribeiro',
+  'guilhermebruzzi',
+  'Brunier',
+  'jlbovenzo',
+  'gtkatakura',
+  'gsasouza',
+  'thiagokpelo',
+  'verhagenkava',
+
+  // RichardTunstall
+  'ads102003',
+  'FateFirst',
 ])
 
 export const whitelistGithubUsernames = [

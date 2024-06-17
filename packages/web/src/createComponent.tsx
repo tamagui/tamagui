@@ -372,12 +372,14 @@ export function createComponent<
   const { componentName } = staticConfig
 
   let config: TamaguiInternalConfig | null = null
+
   let defaultProps = staticConfig.defaultProps
 
   onConfiguredOnce((conf) => {
     config = conf
 
     if (componentName) {
+      // TODO this should be deprecated and removed likely or at least done differently
       const defaultForComponent = conf.defaultProps?.[componentName]
       if (defaultForComponent) {
         defaultProps = { ...defaultForComponent, ...defaultProps }

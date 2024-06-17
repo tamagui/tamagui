@@ -36,10 +36,8 @@ export default function TamaguiHomePage() {
         className="grain"
         o={0.2}
         style={{
-          mixBlendMode: 'hard-light',
           maskImage: `linear-gradient(transparent, rgba(0, 0, 0, 1) 100px)`,
         }}
-        // o={0}
       />
       <TintSection index={0} p={0}>
         <Hero />

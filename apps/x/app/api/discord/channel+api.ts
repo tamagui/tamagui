@@ -1,5 +1,6 @@
 import { apiRoute } from '~/features/api/apiRoute'
 import { ensureAuth } from '~/features/api/ensureAuth'
+import { readBodyJSON } from '~/features/api/readBodyJSON'
 import { supabaseAdmin } from '~/features/auth/supabaseAdmin'
 import {
   DEFAULT_ROLE_ID,
@@ -8,6 +9,8 @@ import {
   TAMAGUI_DISCORD_GUILD_ID,
   discordClient,
 } from '~/features/discord/helpers'
+import { getTakeoutPriceInfo } from '~/features/site/purchase/getProductInfo'
+import { getArray } from '~/helpers/getArray'
 import { getSingle } from '~/helpers/getSingle'
 
 const roleBitField = '1024' // VIEW_CHANNEL
@@ -18,6 +21,7 @@ export type DiscordChannelStatus = {
 }
 export default apiRoute(async (req) => {
   const { supabase, session } = await ensureAuth({ req })
+  const body = await readBodyJSON(req)
 
   const userPrivate = await supabaseAdmin
     .from('users_private')
@@ -36,7 +40,10 @@ export default apiRoute(async (req) => {
     )
   }
 
-  const subscriptionId = req[req.method === 'GET' ? 'query' : 'body'].subscription_id
+  const url = new URL(req.url)
+  const subscriptionId =
+    req.method === 'GET' ? url.searchParams.get('subscription_id') : body.subscription_id
+
   const subscription = await supabase
     .from('subscriptions')
     .select(
@@ -150,7 +157,7 @@ export default apiRoute(async (req) => {
     return Response.json({ message: 'discord invites reset' })
   }
 
-  const userDiscordId = req.body.discord_id
+  const userDiscordId = body.discord_id
   if (!userDiscordId) {
     return Response.json(
       { message: 'no discord_id is provided' },

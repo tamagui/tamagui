@@ -2,7 +2,15 @@ import { throttle } from '@github/mini-throttle'
 import { useTint } from '@tamagui/logo'
 import { ChevronLeft, ChevronRight, Lock, MapPin, Star } from '@tamagui/lucide-icons'
 import { demoMedia } from '@tamagui/site-config'
-import { memo, startTransition, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import {
+  memo,
+  startTransition,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 import type { YStackProps } from 'tamagui'
 import {
   Button,
@@ -159,7 +167,7 @@ export const HomeResponsive = memo(() => {
 
   const nextWidth = media.sm ? breakpoints[smIndex].at : initialWidth + Math.max(0, move)
   // ssr compat stay in effect
-  useIsomorphicLayoutEffect(() => {
+  useEffect(() => {
     if (width !== nextWidth) {
       setWidth(nextWidth)
     }
@@ -505,11 +513,7 @@ const Tab = memo(({ active, children, bc, ...props }: any) => {
         {...props}
       >
         <Circle size={16} bg={bc}>
-          <Image
-            width={10}
-            height={10}
-            src={favicon}
-          />
+          <Image width={10} height={10} src={favicon} />
         </Circle>
         <Spacer size="$2" />
         <Paragraph o={active ? 1 : 0.5} cursor="default" size="$1" ellipse>

@@ -39,7 +39,7 @@ export async function getMDX(source: string) {
   return await bundleMDX({
     source,
     mdxOptions(options) {
-      options.rehypePlugins = [
+      const plugins = [
         ...(options.rehypePlugins ?? []),
         rehypeMetaAttribute,
         rehypeHeroTemplate,
@@ -47,6 +47,7 @@ export async function getMDX(source: string) {
         rehypeAutolinkHeadings,
         rehypeSlug,
       ]
+      options.rehypePlugins = plugins as any
       return options
     },
   })

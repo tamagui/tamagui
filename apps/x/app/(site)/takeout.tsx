@@ -228,28 +228,6 @@ export default function TakeoutPage() {
               </YStack>
 
               <YStack mt={-440} group="takeoutBody" f={1} gap="$5">
-                <ThemeTint>
-                  <H2
-                    className="text-wrap-balance pixelate"
-                    ff="$munro"
-                    ls={2}
-                    my="$2"
-                    pr={150}
-                    size="$10"
-                    color="$color10"
-                    $group-takeoutBody-xs={{
-                      size: '$9',
-                      pr: '8%',
-                    }}
-                    $group-takeoutBody-xxs={{
-                      size: '$8',
-                      pr: '$1',
-                    }}
-                  >
-                    A better way to get started
-                  </H2>
-                </ThemeTint>
-
                 <ThemeTintAlt>
                   <Paragraph className="text-wrap-balance" size="$7" $sm={{ size: '$7' }}>
                     Takeout is a bootstrap designed to ship faster with React and React

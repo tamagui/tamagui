@@ -276,11 +276,7 @@ const HeroContents = memo(function HeroContents() {
           gap="$2"
           $xxs={{ ai: 'center', fw: 'wrap', gap: 0 }}
         >
-          <Link
-            target="_blank"
-            legacyBehavior={false}
-            href="https://twitter.com/tamagui_js"
-          >
+          <Link target="_blank" href="https://twitter.com/tamagui_js">
             <TooltipSimple placement="top" delay={0} restMs={25} label="Twitter">
               <YStack p="$5" $sm={{ p: '$3' }} opacity={0.65} hoverStyle={{ opacity: 1 }}>
                 <VisuallyHidden>
@@ -292,9 +288,9 @@ const HeroContents = memo(function HeroContents() {
           </Link>
 
           <ThemeTint>
-            <Link href="/docs/intro/introduction">
+            <Link asChild href="/docs/intro/introduction">
               <Button
-                accessibilityLabel="Get started (docs)"
+                aria-label="Get started (docs)"
                 fontFamily="$silkscreen"
                 size="$5"
                 fontSize="$6"
@@ -321,11 +317,7 @@ const HeroContents = memo(function HeroContents() {
             </Link>
           </ThemeTint>
 
-          <Link
-            target="_blank"
-            legacyBehavior={false}
-            href="https://discord.gg/4qh6tdcVDa"
-          >
+          <Link asChild target="_blank" href="https://discord.gg/4qh6tdcVDa">
             <TooltipSimple placement="top" delay={0} restMs={25} label="Discord">
               <YStack p="$5" $sm={{ p: '$3' }} opacity={0.65} hoverStyle={{ opacity: 1 }}>
                 <VisuallyHidden>

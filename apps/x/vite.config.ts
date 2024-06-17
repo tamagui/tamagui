@@ -28,7 +28,6 @@ const include = [
   '@tamagui/demos',
   '@tamagui/bento',
   '@supabase/ssr',
-  '@supabase/auth-helpers-react',
   '@tamagui/animations-moti',
   '@tamagui/animations-react-native',
   'is-buffer',

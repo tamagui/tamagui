@@ -1,4 +1,5 @@
 apps/studio/src/** filter=crypt diff=crypt merge=crypt
+apps/x/features/studio/** filter=crypt diff=crypt merge=crypt
 apps/bento/src/** filter=crypt diff=crypt merge=crypt
 apps/testing/src/** filter=crypt diff=crypt merge=crypt
 apps/testing/app/** filter=crypt diff=crypt merge=crypt

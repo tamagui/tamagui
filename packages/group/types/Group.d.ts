@@ -1,8 +1,8 @@
-import type { GetProps, TamaguiElement } from '@tamagui/core';
+import type { GetProps } from '@tamagui/core';
 import type { Scope } from '@tamagui/create-context';
 import React from 'react';
 type DisablePassBorderRadius = boolean | 'bottom' | 'top' | 'start' | 'end';
-export declare const GroupFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+export declare const GroupFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     unstyled?: boolean | undefined;
     size?: any;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
@@ -52,6 +52,7 @@ export type GroupItemProps = {
 };
 export declare const useGroupItem: (childrenProps: {
     disabled: boolean;
+    ref?: any;
 }, forcePlacement?: GroupItemProps['forcePlacement'], __scopeGroup?: Scope) => Record<string, any>;
 export declare const Group: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     unstyled?: boolean | undefined;
@@ -182,7 +183,7 @@ export declare const Group: React.ForwardRefExoticComponent<Omit<import("@tamagu
     forceUseItem?: boolean | undefined;
 } & {
     __scopeGroup?: Scope;
-} & React.RefAttributes<TamaguiElement>> & import("@tamagui/core").StaticComponentObject<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+} & React.RefAttributes<import("@tamagui/core").TamaguiElement>> & import("@tamagui/core").StaticComponentObject<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     unstyled?: boolean | undefined;
     size?: any;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
@@ -311,7 +312,7 @@ export declare const Group: React.ForwardRefExoticComponent<Omit<import("@tamagu
     forceUseItem?: boolean | undefined;
 } & {
     __scopeGroup?: Scope;
-}, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "unstyled" | "size" | "elevation" | keyof import("@tamagui/core").StackStyleBase | "transparent" | "fullscreen" | "circular" | "inset" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+}, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "unstyled" | "size" | "elevation" | keyof import("@tamagui/core").StackStyleBase | "transparent" | "fullscreen" | "circular" | "inset" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
     unstyled?: boolean | undefined;
     size?: any;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
@@ -548,7 +549,7 @@ export declare const Group: React.ForwardRefExoticComponent<Omit<import("@tamagu
         forceUseItem?: boolean | undefined;
     } & {
         __scopeGroup?: Scope;
-    }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "unstyled" | "size" | "elevation" | keyof import("@tamagui/core").StackStyleBase | "transparent" | "fullscreen" | "circular" | "inset" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+    }, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "unstyled" | "size" | "elevation" | keyof import("@tamagui/core").StackStyleBase | "transparent" | "fullscreen" | "circular" | "inset" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
         unstyled?: boolean | undefined;
         size?: any;
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
@@ -790,7 +791,7 @@ export declare const YGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
     forceUseItem?: boolean | undefined;
 } & {
     __scopeGroup?: Scope;
-} & React.RefAttributes<TamaguiElement>> & import("@tamagui/core").StaticComponentObject<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+} & React.RefAttributes<import("@tamagui/core").TamaguiElement>> & import("@tamagui/core").StaticComponentObject<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     unstyled?: boolean | undefined;
     size?: any;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
@@ -919,7 +920,7 @@ export declare const YGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
     forceUseItem?: boolean | undefined;
 } & {
     __scopeGroup?: Scope;
-}, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "unstyled" | "size" | "elevation" | keyof import("@tamagui/core").StackStyleBase | "transparent" | "fullscreen" | "circular" | "inset" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+}, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "unstyled" | "size" | "elevation" | keyof import("@tamagui/core").StackStyleBase | "transparent" | "fullscreen" | "circular" | "inset" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
     unstyled?: boolean | undefined;
     size?: any;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
@@ -1156,7 +1157,7 @@ export declare const YGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
         forceUseItem?: boolean | undefined;
     } & {
         __scopeGroup?: Scope;
-    }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "unstyled" | "size" | "elevation" | keyof import("@tamagui/core").StackStyleBase | "transparent" | "fullscreen" | "circular" | "inset" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+    }, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "unstyled" | "size" | "elevation" | keyof import("@tamagui/core").StackStyleBase | "transparent" | "fullscreen" | "circular" | "inset" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
         unstyled?: boolean | undefined;
         size?: any;
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
@@ -1398,7 +1399,7 @@ export declare const XGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
     forceUseItem?: boolean | undefined;
 } & {
     __scopeGroup?: Scope;
-} & React.RefAttributes<TamaguiElement>> & import("@tamagui/core").StaticComponentObject<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+} & React.RefAttributes<import("@tamagui/core").TamaguiElement>> & import("@tamagui/core").StaticComponentObject<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     unstyled?: boolean | undefined;
     size?: any;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
@@ -1527,7 +1528,7 @@ export declare const XGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
     forceUseItem?: boolean | undefined;
 } & {
     __scopeGroup?: Scope;
-}, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "unstyled" | "size" | "elevation" | keyof import("@tamagui/core").StackStyleBase | "transparent" | "fullscreen" | "circular" | "inset" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+}, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "unstyled" | "size" | "elevation" | keyof import("@tamagui/core").StackStyleBase | "transparent" | "fullscreen" | "circular" | "inset" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
     unstyled?: boolean | undefined;
     size?: any;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
@@ -1764,7 +1765,7 @@ export declare const XGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
         forceUseItem?: boolean | undefined;
     } & {
         __scopeGroup?: Scope;
-    }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "unstyled" | "size" | "elevation" | keyof import("@tamagui/core").StackStyleBase | "transparent" | "fullscreen" | "circular" | "inset" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+    }, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "unstyled" | "size" | "elevation" | keyof import("@tamagui/core").StackStyleBase | "transparent" | "fullscreen" | "circular" | "inset" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
         unstyled?: boolean | undefined;
         size?: any;
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;

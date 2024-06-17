@@ -1,6 +1,5 @@
 import { ChevronLeft, ChevronRight } from '@tamagui/lucide-icons'
-import { router } from 'vxs'
-import { memo, useEffect, useLayoutEffect, useMemo } from 'react'
+import { memo, useEffect, useMemo } from 'react'
 import { useHotkeys } from 'react-hotkeys-hook'
 import {
   AnimatePresence,
@@ -15,15 +14,18 @@ import {
   styled,
   useIsomorphicLayoutEffect,
 } from 'tamagui'
+import { router } from 'vxs'
 
-import { StudioStepTip } from '~/studio/StudioStepTip'
-import { ThemeBuilderModalFrame } from '~/features/studio-theme/ThemeBuilderModalFrame'
-import { useThemeBuilderStore } from '~/features/studio-theme/store/ThemeBuilderStore'
+import { ThemeBuilderModalFrame } from '~/features/studio/theme/ThemeBuilderModalFrame'
+import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
 import { weakKey } from '~/helpers/weakKey'
+import { StudioStepTip } from '~/features/studio/StudioStepTip'
 // import { StudioPreviewComponents } from './StudioPreviewComponents'
 // import { StudioThemeBuilderActionBar } from './StudioThemeBuilderActionBar'
 // import { ThemeBuilderModalFrame } from './ThemeBuilderModalFrame'
-import { themeBuilderStore } from '~/features/studio-theme/store/ThemeBuilderStore'
+import { themeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
+import { StudioThemeBuilderActionBar } from '~/features/studio/theme/StudioThemeBuilderActionBar'
+import { steps } from '~/features/studio/theme/steps/steps'
 // import { StudioPreviewFrame } from './views/StudioPreviewFrame'
 
 let lastLoadThemeId = ''
@@ -50,6 +52,11 @@ export default memo(function StudioTheme({
   //   }
   // }, [notFound])
 
+  useEffect(() => {
+    // ensure no circular imports by having this set onto the store from the root of ThemeBuilder
+    themeBuilderStore.setSteps(steps)
+  }, [])
+
   const store = useThemeBuilderStore()
 
   useEffect(() => {
@@ -64,8 +71,6 @@ export default memo(function StudioTheme({
     }
   }, [step])
 
-  console.log('store.loaded', store.loaded)
-
   // yucky two way sync here
   useEffect(() => {
     if (!store.hasSetStepOnce) return
@@ -79,8 +84,7 @@ export default memo(function StudioTheme({
       {store.loaded && <ThemeBuilderModal />}
 
       <PortalItem hostName="studio-header">
-        {/* TODO */}
-        {/* <StudioThemeBuilderActionBar /> */}
+        <StudioThemeBuilderActionBar />
       </PortalItem>
 
       <Preview />
@@ -120,6 +124,8 @@ const ThemeBuilderModal = memo(() => {
 
   const StepComponent = currentSection?.children ?? Empty
   const StepSidebar = currentSection?.sidebar ?? Empty
+
+  console.log('StepComponent', store)
 
   const contents = useMemo(() => {
     return (

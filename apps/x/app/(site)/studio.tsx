@@ -23,6 +23,7 @@ import { IS_SAFARI, useHoverGlow } from '~/components/HoverGlow'
 import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
 import { LoadInter900 } from '~/features/site/fonts/LoadFonts'
 import { HeadInfo } from '~/components/HeadInfo'
+import { useUserTheme } from '~/features/site/theme/useUserTheme'
 
 export default function StudioSplashPage() {
   return (
@@ -150,9 +151,8 @@ export default function StudioSplashPage() {
 }
 
 const StudioScreen1 = memo(() => {
-  // const { resolvedTheme: themeName } = useThemeSetting()!
-  const themeName = 'light'
-  const isLight = themeName === 'light'
+  const [{ resolvedTheme }] = useUserTheme()
+  const isLight = resolvedTheme === 'light'
 
   const glow = useHoverGlow({
     resist: 65,

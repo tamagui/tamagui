@@ -104,13 +104,16 @@ export default function BentoPage(props: ProComponentsProps) {
         }}
       />
 
-      <PurchaseModal
-        bento={props.bento}
-        defaultValue="bento"
-        fontsPack={props.fontsPack}
-        iconsPack={props.iconsPack}
-        starter={props.starter}
-      />
+      {data.bento && (
+        <PurchaseModal
+          bento={data.bento}
+          defaultValue="bento"
+          fontsPack={data.fontsPack}
+          iconsPack={data.iconsPack}
+          starter={data.starter}
+        />
+      )}
+
       <Theme name="tan">
         <ThemeNameEffect colorKey="$color6" />
 

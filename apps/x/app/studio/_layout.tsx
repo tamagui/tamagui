@@ -9,13 +9,13 @@ import {
 } from 'tamagui'
 
 // TODO
-import { Dialogs } from '~/studio/providers/Dialogs'
-import { SidePaneHost } from '~/studio/SidePane'
+import { Dialogs } from '~/features/studio/providers/Dialogs'
+import { SidePaneHost } from '~/features/studio/SidePane'
 import { useConfigReady } from '~/studio/hooks/useConfigReady'
 // import { colorsStore } from './state/ColorsStore'
 // import { rootStore } from './state/RootStore'
 // import { themesStore } from './state/ThemesStore'
-import { StudioBar } from '~/studio/bar/StudioBar'
+import { StudioBar } from '~/features/studio/bar/StudioBar'
 // import { RequireAuth } from './SupabaseProvider'
 
 function useStudioInitialize() {

@@ -1,4 +1,4 @@
-import type { GetProps, TamaguiElement, UnionableString, Variable } from '@tamagui/core'
+import type { GetProps, UnionableString, Variable } from '@tamagui/core'
 import {
   getConfig,
   getTokens,
@@ -199,34 +199,39 @@ export type GroupItemProps = {
   forcePlacement?: 'first' | 'center' | 'last'
 }
 
-const GroupItem = React.forwardRef((props: ScopedProps<GroupItemProps>, ref) => {
-  const { __scopeGroup, children, forcePlacement } = props
-  const groupItemProps = useGroupItem(
-    { disabled: isValidElement(children) ? children.props.disabled : undefined },
-    forcePlacement,
-    __scopeGroup
-  )
+const GroupItem = forwardRef(
+  (
+    props: ScopedProps<GroupItemProps>,
+    // Note unused, breaks popper targets even if i try and compose it
+    _ref
+  ) => {
+    const { __scopeGroup, children, forcePlacement } = props
+    const groupItemProps = useGroupItem(
+      { disabled: isValidElement(children) ? children.props.disabled : undefined },
+      forcePlacement,
+      __scopeGroup
+    )
 
-  if (!isValidElement(children)) {
-    return children as any
+    if (!isValidElement(children)) {
+      return children as any
+    }
+
+    if (isTamaguiElement(children)) {
+      return React.cloneElement(children, groupItemProps)
+    }
+
+    return React.cloneElement(children, {
+      style: {
+        // @ts-ignore
+        ...children.props?.['style'],
+        ...groupItemProps,
+      },
+    } as any)
   }
-
-  if (isTamaguiElement(children)) {
-    return React.cloneElement(children, { ...groupItemProps, ref })
-  }
-
-  return React.cloneElement(children, {
-    style: {
-      // @ts-ignore
-      ...children.props?.['style'],
-      ...groupItemProps,
-    },
-    ref,
-  } as any)
-})
+)
 
 export const useGroupItem = (
-  childrenProps: { disabled: boolean },
+  childrenProps: { disabled: boolean; ref?: any },
   forcePlacement?: GroupItemProps['forcePlacement'],
   __scopeGroup?: Scope
 ) => {

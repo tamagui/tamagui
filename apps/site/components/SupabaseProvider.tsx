@@ -1,8 +1,7 @@
 import type { Database } from '@lib/supabase-types'
 import { supabaseCookieOptions } from '@lib/supabase-utils'
 import { createPagesBrowserClient } from '@supabase/auth-helpers-nextjs'
-import type {
-  SessionContextProviderProps} from '@supabase/auth-helpers-react';
+import type { SessionContextProviderProps } from '@supabase/auth-helpers-react'
 import {
   SessionContextProvider,
   useSession,

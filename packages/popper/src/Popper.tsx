@@ -150,6 +150,9 @@ export function Popper(props: ScopedPopperProps<PopperProps>) {
       if (!(refs.reference.current && refs.floating.current)) {
         return
       }
+
+      floating.update()
+
       // Only call this when the floating element is rendered
       return autoUpdate(refs.reference.current, refs.floating.current, floating.update)
     }, [open, floating.update, refs.floating, refs.reference])
@@ -337,6 +340,7 @@ export const PopperContent = React.forwardRef<
     }
   }, [isMounted])
 
+  // default to not showing if positioned at 0, 0
   let show = true
 
   if (isAndroid) {

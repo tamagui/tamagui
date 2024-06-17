@@ -21,6 +21,7 @@ import { useUser } from '~/features/user/useUser'
 import { DocsMenuContents } from '~/features/docs/DocsMenuContents'
 import { HeaderLinks } from './HeaderLinks'
 import { useDocsMenu } from '~/features/docs/useDocsMenu'
+import { getDefaultAvatarImage } from '~/features/user/getDefaultAvatarImage'
 
 export const HeaderMenu = React.memo(function HeaderMenu() {
   const { open, setOpen } = useDocsMenu()
@@ -34,7 +35,8 @@ export const HeaderMenu = React.memo(function HeaderMenu() {
   return (
     <HeaderMenuTheme>
       <Popover
-        keepChildrenMounted
+        // Note: turning this on seems to break the HomeGlow (shockingly, maybe a React bug)
+        // keepChildrenMounted
         hoverable={{
           delay: 50,
           restMs: 40,
@@ -205,9 +207,3 @@ const HeaderMenuContent = React.memo(function HeaderMenuContent({
     </Popover.Content>
   )
 })
-
-const getDefaultAvatarImage = (name: string) => {
-  const params = new URLSearchParams()
-  params.append('name', name)
-  return `https://ui-avatars.com/api/?${params.toString()}`
-}

@@ -3,7 +3,7 @@ import * as postmark from 'postmark'
 const serverToken = process.env.POSTMARK_SERVER_TOKEN
 
 if (!serverToken) {
-  throw new Error(`No POSTMARK_SERVER_TOKEN env var is set.`)
+  throw new Error(`No POSTMARK_SERVER_TOKEN env var is set.2`)
 }
 
 const client = new postmark.ServerClient(serverToken)

@@ -1,4 +1,4 @@
-import type { SupabaseClient } from '@supabase/auth-helpers-nextjs'
+import type { SupabaseClient } from '@supabase/supabase-js'
 import jwt from 'jsonwebtoken'
 import { getUserAccessInfo } from '~/features/user/helpers'
 import type { Database } from '../supabase/types'

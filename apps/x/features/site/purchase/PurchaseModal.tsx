@@ -337,7 +337,6 @@ export const PurchaseModal = ({
                       <YStack
                         f={1}
                         maw="50%"
-                        w="50%"
                         $group-takeoutBody-sm={{
                           maw: '100%',
                         }}
@@ -516,6 +515,8 @@ export const PurchaseModal = ({
 
                 <YStack gap="$2" width="100%" $gtXs={{ width: '40%' }}>
                   <Link
+                    asChild
+                    target="_blank"
                     href={`api/checkout?${(() => {
                       const params = new URLSearchParams()
                       if (starterPriceId) {
@@ -681,6 +682,8 @@ function Tab({
 }
 
 const PageTheme = (props: { children: any }) => {
-  const isBento = usePathname().startsWith('/bento')
-  return <ThemeTintAlt offset={isBento ? -1 : 1}>{props.children}</ThemeTintAlt>
+  return props.children
+  // disabling theme for now looks not great
+  // const isBento = usePathname().startsWith('/bento')
+  // return <ThemeTintAlt offset={isBento ? -1 : 1}>{props.children}</ThemeTintAlt>
 }

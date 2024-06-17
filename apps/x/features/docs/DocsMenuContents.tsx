@@ -1,10 +1,20 @@
 import uFuzzy from '@leeoniya/ufuzzy'
 import { getStore, useStore } from '@tamagui/use-store'
 import * as React from 'react'
-import { Input, Paragraph, Separator, Spacer, Theme, XStack, YStack } from 'tamagui'
+import {
+  Input,
+  Paragraph,
+  Separator,
+  SizableStack,
+  SizableText,
+  Spacer,
+  Theme,
+  XStack,
+  YStack,
+} from 'tamagui'
 import { docsRoutes } from './docsRoutes'
 
-import { usePathname, router } from 'vxs'
+import { usePathname, router, Link } from 'vxs'
 import { DocsNavHeading } from './DocsNavHeading'
 import { DocsItemsStore, DocsRouteNavItem } from './DocsRouteNavItem'
 import { useDocsMenu } from './useDocsMenu'
@@ -119,6 +129,15 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
       />
 
       <Spacer />
+
+      {/* 
+      {!inMenu && activeSection === 'docs' && (
+        <Link href="/docs/intro/1.0.01" index={-1}>
+          <XStack p="$4">
+            <SizableText>Tamagui UI</SizableText>
+          </XStack>
+        </Link>
+      )} */}
 
       <div
         style={{ width: '100%' }}

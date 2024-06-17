@@ -334,10 +334,6 @@ iframe {
   opacity: 0.05;
 }
 
-.t_dark .bg-grid {
-  opacity: 0.125;
-}
-
 .tamagui-icon {
   pointer-events: none;
 }
