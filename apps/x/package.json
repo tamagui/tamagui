@@ -16,6 +16,7 @@
     "start": "node vercel-server.js"
   },
   "dependencies": {
+    "@discordjs/core": "^0.6.0",
     "@docsearch/react": "^3.5.2",
     "@leeoniya/ufuzzy": "^1.0.14",
     "@react-navigation/native": "6.1.17",
@@ -40,7 +41,7 @@
     "vite": "6.0.0-alpha.17",
     "vite-plugin-inspect": "^0.8.4",
     "vite-tsconfig-paths": "^4.3.2",
-    "vxs": "^0.1.103"
+    "vxs": "^0.1.104"
   },
   "devDependencies": {
     "@cyco130/vite-plugin-mdx": "1.0.4",
@@ -61,6 +62,6 @@
     "unified": "^10.1.2",
     "unist-util-visit": "^2.0.3",
     "vite-bundle-analyzer": "^0.9.4",
-    "vxrn": "^0.1.103"
+    "vxrn": "^0.1.104"
   }
 }

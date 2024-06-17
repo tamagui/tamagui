@@ -1,5 +1,5 @@
 import type { ViewProps } from 'react-native'
-import { Paragraph, Text } from 'tamagui'
+import { Button, ButtonProps, Paragraph, Text } from 'tamagui'
 import { useLinkTo, type LinkProps as VXSLinkProps } from 'vxs'
 
 export type LinkProps = ViewProps & VXSLinkProps
@@ -40,5 +40,33 @@ export const ParagraphLink = ({
     >
       {children}
     </Paragraph>
+  )
+}
+
+export type ButtonLinkProps = Pick<LinkProps, 'href' | 'replace' | 'target' | 'rel'> &
+  ButtonProps
+
+export const ButtonLink = ({
+  href = '',
+  rel,
+  target,
+  replace,
+  children,
+  ...props
+}: ButtonLinkProps) => {
+  return (
+    <Link
+      asChild
+      {...{
+        href,
+        rel,
+        target,
+        replace,
+      }}
+    >
+      <Button tag="a" {...props}>
+        {children}
+      </Button>
+    </Link>
   )
 }
