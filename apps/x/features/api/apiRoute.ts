@@ -1,6 +1,5 @@
-import type { Endpoint } from 'vxs'
 import type { PostgrestError } from '@supabase/supabase-js'
-import { requestAsyncLocalStore } from 'vxs/headers'
+import type { Endpoint } from 'vxs'
 
 export function apiRoute(handler: Endpoint) {
   return (async (req) => {
