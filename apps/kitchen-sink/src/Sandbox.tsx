@@ -3,7 +3,7 @@
 import './wdyr'
 
 import { AnimatePresence, Button, Circle, Square, YStack, styled } from 'tamagui'
-import { DatePickerExample } from '../../bento/src/components/elements/datepickers/DatePicker'
+// import { DatePickerExample } from '../../bento/src/components/elements/datepickers/DatePicker'
 
 import { useState } from 'react'
 import { View as RNView } from 'react-native'
@@ -23,7 +23,7 @@ export const Sandbox = () => {
         }}
       /> */}
 
-      <DatePickerExample />
+      {/* <DatePickerExample /> */}
     </RNView>
   )
 }
