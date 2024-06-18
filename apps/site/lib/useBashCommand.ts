@@ -1,5 +1,5 @@
-import { type ReactNode } from 'react';
 import { useLocalStorageWatcher } from '@lib/useLocalStorageWatcher'
+import type { ReactNode } from 'react'
 
 import { getBashText } from '@components/getBashText'
 
@@ -45,13 +45,11 @@ export function useBashCommand(children: ReactNode, className: string) {
 
   const showTabs = isBash && !isTerminal
 
-  const {
-    storageItem: currentSelectedTab,
-    setItem: setCurrentSelectedTab
-  } = useLocalStorageWatcher(
-    isPackageRunner ? 'bashPkgRunTab' : 'bashPkgInstallTab',
-    isStarter ? 'npm' : isPackageRunner ? 'npx' : 'yarn'
-  )
+  const { storageItem: currentSelectedTab, setItem: setCurrentSelectedTab } =
+    useLocalStorageWatcher(
+      isPackageRunner ? 'bashPkgRunTab' : 'bashPkgInstallTab',
+      isStarter ? 'npm' : isPackageRunner ? 'npx' : 'yarn'
+    )
 
   const command = isStarter
     ? bashText
@@ -78,4 +76,3 @@ export function useBashCommand(children: ReactNode, className: string) {
     setCurrentSelectedTab,
   }
 }
-

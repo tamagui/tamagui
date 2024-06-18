@@ -58,6 +58,7 @@ export declare const useConfiguration: () => {
     onlyAllowShorthands: boolean | undefined;
     defaultFont: string | undefined;
     settings: {
+        serverComponents?: boolean | undefined;
         allowedStyleValues?: ((boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | {
             space?: ("number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | "percent") | undefined;
             size?: ("number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | "percent") | undefined;
@@ -70,6 +71,7 @@ export declare const useConfiguration: () => {
         fastSchemeChange?: boolean | undefined;
         webContainerType?: "size" | "unset" | "inherit" | "initial" | "revert" | "revert-layer" | "normal" | "inline-size" | undefined;
     } & Omit<{
+        serverComponents?: boolean | undefined;
         allowedStyleValues?: ((boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | {
             space?: ("number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | "percent") | undefined;
             size?: ("number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | "percent") | undefined;
@@ -82,6 +84,7 @@ export declare const useConfiguration: () => {
         fastSchemeChange?: boolean | undefined;
         webContainerType?: "size" | "unset" | "inherit" | "initial" | "revert" | "revert-layer" | "normal" | "inline-size" | undefined;
     }, keyof {
+        serverComponents?: boolean | undefined;
         allowedStyleValues?: ((boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | {
             space?: ("number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | "percent") | undefined;
             size?: ("number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | "percent") | undefined;

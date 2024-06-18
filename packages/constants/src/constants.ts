@@ -1,11 +1,13 @@
-import { useEffect, useLayoutEffect } from 'react'
+import * as React from 'react'
 
 export const isWeb: boolean = true
 export const isWindowDefined = typeof window !== 'undefined'
 export const isServer = isWeb && !isWindowDefined
 export const isClient = isWeb && isWindowDefined
 
-export const useIsomorphicLayoutEffect = isServer ? useEffect : useLayoutEffect
+export const useIsomorphicLayoutEffect = isServer
+  ? React.useEffect
+  : React.useLayoutEffect
 export const isChrome =
   typeof navigator !== 'undefined' && /Chrome/.test(navigator.userAgent || '')
 

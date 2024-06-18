@@ -1,6 +1,6 @@
 import { isWeb } from '@tamagui/constants'
 import type { MutableRefObject } from 'react'
-import React, { Children, cloneElement, forwardRef, isValidElement, useRef } from 'react'
+import * as React from 'react'
 import { variableToString } from '../createVariable'
 import { ThemeManagerIDContext } from '../helpers/ThemeManagerContext'
 import type { ChangedThemeResponse } from '../hooks/useTheme'
@@ -8,7 +8,10 @@ import { useChangeThemeEffect } from '../hooks/useTheme'
 import type { ThemeProps } from '../types'
 import { ThemeDebug } from './ThemeDebug'
 
-export const Theme = forwardRef(function Theme({ children, ...props }: ThemeProps, ref) {
+export const Theme = React.forwardRef(function Theme(
+  { children, ...props }: ThemeProps,
+  ref
+) {
   // @ts-expect-error only for internal views
   if (props.disable) {
     return children
@@ -19,15 +22,15 @@ export const Theme = forwardRef(function Theme({ children, ...props }: ThemeProp
   const disableDirectChildTheme = props['disable-child-theme']
 
   let finalChildren = disableDirectChildTheme
-    ? Children.map(children, (child) =>
-        cloneElement(child, { ['data-disable-theme']: true })
+    ? React.Children.map(children, (child) =>
+        React.cloneElement(child, { ['data-disable-theme']: true })
       )
     : children
 
   if (ref) {
     try {
       React.Children.only(finalChildren)
-      finalChildren = cloneElement(finalChildren, { ref })
+      finalChildren = React.cloneElement(finalChildren, { ref })
     } catch {
       //ok
     }
@@ -43,7 +46,7 @@ export const Theme = forwardRef(function Theme({ children, ...props }: ThemeProp
     }
   }
 
-  const stateRef = useRef({
+  const stateRef = React.useRef({
     hasEverThemed: false,
   })
 
@@ -92,9 +95,9 @@ export function getThemedChildren(
 
   // each children of these children wont get the theme
   if (shallow) {
-    next = Children.toArray(children).map((child) => {
-      return isValidElement(child)
-        ? cloneElement(
+    next = React.Children.toArray(children).map((child) => {
+      return React.isValidElement(child)
+        ? React.cloneElement(
             child,
             undefined,
             <Theme name={themeManager.state.parentName}>

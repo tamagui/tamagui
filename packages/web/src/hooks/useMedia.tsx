@@ -1,5 +1,5 @@
 import { isServer, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
-import { useId, useRef, useState, useSyncExternalStore } from 'react'
+import * as React from 'react'
 
 import { getConfig } from '../config'
 import { matchMedia } from '../helpers/matchMedia'
@@ -8,14 +8,13 @@ import type {
   ComponentContextI,
   IsMediaType,
   MediaQueries,
-  MediaQueryKey,
   MediaQueryObject,
   MediaQueryState,
   TamaguiInternalConfig,
   UseMediaState,
 } from '../types'
-import { getDisableSSR } from './useDisableSSR'
 import { useDidHydrateOnce } from './useDidHydrateOnce'
+import { getDisableSSR } from './useDisableSSR'
 
 export let mediaState: MediaQueryState =
   // development only safeguard
@@ -205,7 +204,7 @@ export function useMedia(
   uidIn?: any,
   componentContext?: ComponentContextI
 ): UseMediaState {
-  const uid = uidIn ?? useRef()
+  const uid = uidIn ?? React.useRef()
 
   const hasHydrated = useDidHydrateOnce()
   const isHydrated = !isWeb || getDisableSSR(componentContext) || hasHydrated
@@ -220,7 +219,7 @@ export function useMedia(
   // reset on each render
   componentState.touched = undefined
 
-  const [state, setState] = useState(initialState)
+  const [state, setState] = React.useState(initialState)
 
   useIsomorphicLayoutEffect(() => {
     function update() {

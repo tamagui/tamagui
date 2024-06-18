@@ -29,13 +29,6 @@ const startsWithCommand = (text: string, commandList: Record<string, string>) =>
 const getPackageToInstall = (text: string) => text?.split(' ').splice(2).join(' ')
 const getPackageToRun = (text: string) => text?.split(' ').splice(1).join(' ')
 
-function getBashText(children: any): any {
-  return Children.toArray(children).flatMap((x) => {
-    // @ts-ignore
-    return x?.props?.children ? getBashText(x.props.children).join('') : x
-  })
-}
-
 export function useBashCommand(children: ReactNode, className: string) {
   const bashText = getBashText(children)[0]
 
@@ -81,4 +74,11 @@ export function useBashCommand(children: ReactNode, className: string) {
     currentSelectedTab,
     setCurrentSelectedTab,
   }
+}
+
+export function getBashText(children: any): any {
+  return Children.toArray(children).flatMap((x) => {
+    // @ts-ignore
+    return x?.props?.children ? getBashText(x.props.children).join('') : x
+  })
 }

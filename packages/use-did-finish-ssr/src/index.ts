@@ -1,4 +1,4 @@
-import { useEffect, useState, useSyncExternalStore } from 'react'
+import * as React from 'react'
 
 const emptyFn = () => {}
 const emptyFnFn = () => emptyFn
@@ -15,15 +15,15 @@ export function useDidFinishSSR<A = boolean>(
   }
 
   if (options?.sync) {
-    return useSyncExternalStore(
+    return React.useSyncExternalStore(
       emptyFnFn,
       () => (value == undefined ? true : value),
       () => false as any
     )
   }
 
-  const [cur, setCur] = useState<any>(value)
-  useEffect(() => {
+  const [cur, setCur] = React.useState<any>(value)
+  React.useEffect(() => {
     setCur(value ?? true)
   }, [])
   return cur ?? false

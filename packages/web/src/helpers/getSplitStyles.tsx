@@ -13,7 +13,7 @@ import {
   validPseudoKeys,
   validStyles,
 } from '@tamagui/helpers'
-import { useInsertionEffect } from 'react'
+import * as React from 'react'
 
 import { getConfig, getFont } from '../config'
 import { accessibilityDirectMap } from '../constants/accessibilityDirectMap'
@@ -1459,7 +1459,7 @@ export const getSubStyle = (
 
 // on native no need to insert any css
 const useInsertEffectCompat = isWeb
-  ? useInsertionEffect || useIsomorphicLayoutEffect
+  ? React.useInsertionEffect || useIsomorphicLayoutEffect
   : () => {}
 
 // perf: ...args a bit expensive on native

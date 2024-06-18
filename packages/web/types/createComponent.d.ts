@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import type { TamaguiComponentState } from './interfaces/TamaguiComponentState';
 import type { ComponentContextI, DebugProp, SpaceDirection, SpaceValue, SpacerProps, SpacerStyleProps, StackNonStyleProps, StackProps, StaticConfig, TamaguiComponent, TamaguiComponentStateRef, TamaguiElement, TamaguiInternalConfig, TextProps } from './types';
 type ComponentSetState = React.Dispatch<React.SetStateAction<TamaguiComponentState>>;

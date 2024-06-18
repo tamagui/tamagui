@@ -1,3 +1,3 @@
-import { createContext } from 'react'
+import * as React from 'react'
 
-export const ThemeManagerIDContext = createContext<number>(1)
+export const ThemeManagerIDContext = React.createContext<number>(1)

@@ -1,20 +1,7 @@
 import { composeRefs } from '@tamagui/compose-refs'
 import { isClient, isServer, isWeb } from '@tamagui/constants'
 import { composeEventHandlers, validStyles } from '@tamagui/helpers'
-import React, {
-  Children,
-  Fragment,
-  createElement,
-  forwardRef,
-  memo,
-  useContext,
-  useEffect,
-  useId,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react'
+import * as React from 'react'
 
 import { devConfig, getConfig, onConfiguredOnce } from './config'
 import { stackDefaultStyles } from './constants/constants'
@@ -36,6 +23,7 @@ import { log } from './helpers/log'
 import { mergeProps } from './helpers/mergeProps'
 import { setElementProps } from './helpers/setElementProps'
 import { themeable } from './helpers/themeable'
+import { useDidHydrateOnce } from './hooks/useDidHydrateOnce'
 import { mediaKeyMatch, setMediaShouldUpdate, useMedia } from './hooks/useMedia'
 import { useThemeWithState } from './hooks/useTheme'
 import type { TamaguiComponentEvents } from './interfaces/TamaguiComponentEvents'
@@ -69,7 +57,6 @@ import type {
 import { Slot } from './views/Slot'
 import { getThemedChildren } from './views/Theme'
 import { ThemeDebug } from './views/ThemeDebug'
-import { useDidHydrateOnce } from './hooks/useDidHydrateOnce'
 
 /**
  * All things that need one-time setup after createTamagui is called
@@ -156,7 +143,7 @@ export const useComponentState = (
 ) => {
   const useAnimations = animationDriver?.useAnimations as UseAnimationHook | undefined
 
-  const stateRef = useRef<TamaguiComponentStateRef>({})
+  const stateRef = React.useRef<TamaguiComponentStateRef>({})
 
   // after we get states mount we need to turn off isAnimated for server side
   const hasAnimationProp = Boolean(
@@ -219,7 +206,7 @@ export const useComponentState = (
   }
 
   // HOOK
-  const states = useState<TamaguiComponentState>(initialState)
+  const states = React.useState<TamaguiComponentState>(initialState)
 
   const state = props.forceStyle ? { ...states[0], [props.forceStyle]: true } : states[0]
   const setState = states[1]
@@ -406,9 +393,9 @@ export function createComponent<
     }
   }
 
-  const component = forwardRef<Ref, ComponentPropTypes>((propsIn, forwardedRef) => {
+  const component = React.forwardRef<Ref, ComponentPropTypes>((propsIn, forwardedRef) => {
     // HOOK
-    const internalID = process.env.NODE_ENV === 'development' ? useId() : ''
+    const internalID = process.env.NODE_ENV === 'development' ? React.useId() : ''
 
     if (process.env.NODE_ENV === 'development') {
       if (startVisualizer) {
@@ -438,7 +425,7 @@ export function createComponent<
     }
 
     // HOOK
-    const componentContext = useContext(ComponentContext)
+    const componentContext = React.useContext(ComponentContext)
 
     // set variants through context
     // order is after default props but before props
@@ -449,7 +436,7 @@ export function createComponent<
 
     if (context) {
       // HOOK 3 (-1 if production)
-      contextValue = useContext(context)
+      contextValue = React.useContext(context)
       const { inverseShorthands } = getConfig()
       for (const key in context.props) {
         const propVal =
@@ -493,7 +480,7 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && isClient) {
       // HOOK
-      useEffect(() => {
+      React.useEffect(() => {
         let overlay: HTMLSpanElement | null = null
 
         const debugVisualizerHandler = (show = false) => {
@@ -897,7 +884,7 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development') {
       if (!isReactNative && !isText && isWeb && !isHOC) {
-        Children.toArray(props.children).forEach((item) => {
+        React.Children.toArray(props.children).forEach((item) => {
           // allow newlines because why not its annoying with mdx
           if (typeof item === 'string' && item !== '\n') {
             console.error(
@@ -918,7 +905,7 @@ export function createComponent<
 
     const unPress = () => setStateShallow({ press: false, pressIn: false })
 
-    useEffect(() => {
+    React.useEffect(() => {
       if (disabled) {
         return
       }
@@ -1188,7 +1175,7 @@ export function createComponent<
     if (useChildrenResult) {
       content = useChildrenResult
     } else {
-      content = createElement(elementType, viewProps, content)
+      content = React.createElement(elementType, viewProps, content)
     }
 
     // needs to reset the presence state for nested children
@@ -1207,7 +1194,7 @@ export function createComponent<
 
     // must override context so siblings don't clobber initial state
     const groupState = curStateRef.group
-    const subGroupContext = useMemo(() => {
+    const subGroupContext = React.useMemo(() => {
       if (!groupState || !groupName) return
       groupState.listeners.clear()
       // change reference so context value updates
@@ -1408,7 +1395,7 @@ export function createComponent<
   let res: ComponentType = component as any
 
   if (process.env.TAMAGUI_FORCE_MEMO || staticConfig.memo) {
-    res = memo(res) as any
+    res = React.memo(res) as any
   }
 
   res.staticConfig = staticConfig
@@ -1432,14 +1419,16 @@ export function createComponent<
   function styleable(Component: any, options?: StyleableOptions) {
     const isForwardedRefAlready = Component.render?.length === 2
 
-    let out = isForwardedRefAlready ? (Component as any) : forwardRef(Component as any)
+    let out = isForwardedRefAlready
+      ? (Component as any)
+      : React.forwardRef(Component as any)
 
     const extendedConfig = extendStyledConfig(options?.staticConfig)
 
     out = options?.disableTheme ? out : (themeable(out, extendedConfig) as any)
 
     if (process.env.TAMAGUI_MEMOIZE_STYLEABLE) {
-      out = memo(out)
+      out = React.memo(out)
     }
 
     out.staticConfig = extendedConfig
@@ -1553,7 +1542,7 @@ export function spacedChildren(props: SpacedChildrenProps) {
     return children
   }
 
-  const childrenList = Children.toArray(children)
+  const childrenList = React.Children.toArray(children)
 
   const len = childrenList.length
   if (len <= 1 && !isZStack && !childrenList[0]?.['type']?.['shouldForwardSpace']) {
@@ -1582,9 +1571,9 @@ export function spacedChildren(props: SpacedChildrenProps) {
       final.push(child)
     } else {
       final.push(
-        <Fragment key={index}>
+        <React.Fragment key={index}>
           {isZStack ? <AbsoluteFill>{child}</AbsoluteFill> : child}
-        </Fragment>
+        </React.Fragment>
       )
     }
 

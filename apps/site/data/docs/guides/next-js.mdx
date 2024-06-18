@@ -18,7 +18,7 @@ Create a new [Next.js](https://nextjs.org/docs/getting-started/installation) pro
 npx create-next-app@latest
 ```
 
-To configure Tamagui for Next.js, add the `@tamagui/next-plugin` and set it up in your next config. We'll show how to configure it for both `pages` and `app` router in this guide. See the [compiler install docs](/docs/intro/compiler-install) for more options.
+For better compatibility with the React Native ecosystem, and better performance with the Tamagui compiler, add the optional `@tamagui/next-plugin` and set it up in your next config. We'll show how to configure it for both `pages` and `app` router in this guide. See the [compiler install docs](/docs/intro/compiler-install) for more options.
 
 Add `@tamagui/next-plugin` to your project:
 
@@ -26,7 +26,28 @@ Add `@tamagui/next-plugin` to your project:
 yarn add @tamagui/next-plugin
 ```
 
-Choose Next.js routing option:
+While you don't have to setup a config, we recommend starting with our default config which gives you media queries and other nice things:
+
+```tsx fileName="tamagui.config.ts"
+import { config } from '@tamagui/config/v3'
+import { Text, View } from 'react-native'
+import { createTamagui } from 'tamagui' // or '@tamagui/core'
+
+const appConfig = createTamagui(config)
+
+export type AppConfig = typeof appConfig
+
+declare module 'tamagui' {
+  // or '@tamagui/core'
+  // overrides TamaguiCustomConfig so your custom types
+  // work everywhere you import `tamagui`
+  interface TamaguiCustomConfig extends AppConfig {}
+}
+
+export default appConfig
+```
+
+From here, choose your Next.js routing option to continue:
 
 <Spacer size="$4" />
 
@@ -51,7 +72,7 @@ Choose Next.js routing option:
 
 ### next.config.js
 
-Add the plugin to your `next.config.js`:
+Set up the optional Tamagui plugin to `next.config.js`:
 
 ```tsx showMore fileName="next.config.js"
 const { withTamagui } = require('@tamagui/next-plugin')
@@ -74,13 +95,7 @@ module.exports = function (name, { defaultConfig }) {
 
 ### pages/\_document.tsx
 
-You'll want to set up a `_document.tsx` and gather both the `react-native-web` style object using AppRegistry, as well as Tamagui styles using `tamaguiConfig.getCSS()` into the head element.
-
-<Notice>
-	The Tamagui next-plugin streamlines react-native to react-native web integration.
-</Notice>
-
-Configure `_document.tsx`:
+You'll want modify _document to add the global Tamagui styles using `tamaguiConfig.getCSS()` into the head element. If you are also using React Native, we can gather the `react-native-web` style with AppRegistry here as well.
 
 ```tsx fileName="_document.tsx"
 import NextDocument, {
@@ -91,12 +106,9 @@ import NextDocument, {
   NextScript,
 } from 'next/document'
 import { StyleSheet } from 'react-native'
-import { config } from '@tamagui/config/v3'
 
-import { createTamagui } from 'tamagui'
-const tamaguiConfig = createTamagui(config)
-// you usually export this from a tamagui.config.ts file:
-// import tamaguiConfig from '../tamagui.config'
+// import the config you just exported from the tamagui.config.ts file
+import { config } from './tamagui.config'
 
 export default class Document extends NextDocument {
   static async getInitialProps({ renderPage }: DocumentContext) {
@@ -153,16 +165,8 @@ import Head from 'next/head'
 import React, { useMemo } from 'react'
 import { TamaguiProvider, createTamagui } from 'tamagui'
 
-import { config } from '@tamagui/config/v3'
-const tamaguiConfig = createTamagui(config)
-// you usually export this from a tamagui.config.ts file:
-// import tamaguiConfig from '../tamagui.config'
-
-// make TypeScript type everything based on your config
-type Conf = typeof tamaguiConfig
-declare module '@tamagui/core' {
-  interface TamaguiCustomConfig extends Conf {}
-}
+// import the config you just exported from the tamagui.config.ts file
+import { config } from './tamagui.config'
 
 export default function App({ Component, pageProps }: AppProps) {
   // memo to avoid re-render on dark/light change
@@ -182,7 +186,7 @@ export default function App({ Component, pageProps }: AppProps) {
           {contents}
         </TamaguiProvider>
       </NextThemeProvider>
-      </>
+    </>
   )
 }
 ```

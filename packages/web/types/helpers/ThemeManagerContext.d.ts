@@ -1,3 +1,3 @@
-/// <reference types="react" />
-export declare const ThemeManagerIDContext: import("react").Context<number>;
+import * as React from 'react';
+export declare const ThemeManagerIDContext: React.Context<number>;
 //# sourceMappingURL=ThemeManagerContext.d.ts.map

@@ -1,4 +1,4 @@
-import { type Context, type ProviderExoticComponent, type ReactNode } from 'react';
+import type { Context, ProviderExoticComponent, ReactNode } from 'react';
 export type StyledContext<Props extends Object = any> = Omit<Context<Props>, 'Provider'> & {
     context: Context<Props>;
     props: Object | undefined;

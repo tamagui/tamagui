@@ -188,17 +188,17 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                   pl="$4"
                   h="$5"
                   py="$4"
-                  bg="$black1"
+                  bg="$color3"
                   bw="$1.5"
                   bc="$background"
                   br="$5"
                 >
                   {isTerminal ? (
-                    <TerminalSquare size="$1" col="$white8" />
+                    <TerminalSquare size="$1" col="$color11" />
                   ) : (
-                    <FileCode2 size="$1" col="$white8" />
+                    <FileCode2 size="$1" col="$color11" />
                   )}
-                  <Paragraph col="$white8">
+                  <Paragraph col="$color11">
                     {isTerminal ? 'Terminal' : fileName}
                   </Paragraph>
                 </XStack>

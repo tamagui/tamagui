@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import * as React from 'react'
 
 let didHydrateOnce = false
 
@@ -8,7 +8,7 @@ export function useDidHydrateOnceRoot() {
   }
 
   if (!process.env.TAMAGUI_DISABLE_HYDRATION_OPTIMIZATION) {
-    useEffect(() => {
+    React.useEffect(() => {
       const tm = setInterval(() => {
         if (Date.now() - last > 150) {
           didHydrateOnce = true

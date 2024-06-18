@@ -290,6 +290,14 @@ type AllowedStyleValuesSetting = AllowedValueSettingBase | AllowedStyleValuesSet
 type AutocompleteSpecificTokensSetting = boolean | 'except-special';
 type GenericTamaguiSettings = {
     /**
+     * React Server Component server-compatibility mode. When true, limits themes
+     * (runtime and types) to disallow non-specified sub-themes beyond
+     * light_[name]. So for example if you have light_orange_dim, then you can no
+     * longer do <Theme name="dim" />, instead you must specify <Theme
+     * name="orange_dim" /> manually. This is due to a lack of context.
+     */
+    serverComponents?: boolean;
+    /**
      * Set up allowed values on style props, this is only a type-level validation.
      *
      * "strict" - only allows tokens for any token-enabled properties
