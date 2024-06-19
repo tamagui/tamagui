@@ -34,10 +34,10 @@ const extractor = createExtractor({ platform: 'native' })
 let tamaguiBuildOptionsLoaded: TamaguiOptions | null
 
 export function extractToNative(
+  sourceFileName: string,
   sourceCode: string,
   options: TamaguiOptions
 ): BabelFileResult {
-  // Parse the source code into an AST
   const ast = parse(sourceCode, {
     sourceType: 'module',
     plugins: ['jsx', 'typescript'],
@@ -47,7 +47,9 @@ export function extractToNative(
 
   const out = transformFromAstSync(ast, sourceCode, {
     plugins: [[babelPlugin, options]],
-    configFile: false, // Disable Babel configuration file lookup
+    configFile: false,
+    sourceFileName,
+    filename: sourceFileName,
   })
 
   if (!out) {
@@ -72,6 +74,7 @@ export function getBabelParseDefinition(options: TamaguiOptions) {
       Program: {
         enter(this: any, root) {
           let sourcePath = this.file.opts.filename
+          console.log('sourcePath', sourcePath)
           if (sourcePath?.includes('node_modules')) {
             return
           }

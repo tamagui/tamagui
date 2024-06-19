@@ -2,16 +2,18 @@ import { dirname, basename, resolve, join, extname } from 'node:path'
 import {
   createExtractor,
   extractToClassNames,
+  extractToNative,
   loadTamagui,
   loadTamaguiBuildConfigSync,
 } from '@tamagui/static'
-import type { CLIResolvedOptions } from '@tamagui/types'
+import type { CLIResolvedOptions, TamaguiOptions } from '@tamagui/types'
 import chokidar from 'chokidar'
 import { readFile, writeFile } from 'fs-extra'
 import MicroMatch from 'micromatch'
 
 export const build = async (
   options: CLIResolvedOptions & {
+    target?: 'web' | 'native'
     dir?: string
     include?: string
     exclude?: string
@@ -21,14 +23,16 @@ export const build = async (
   const promises: Promise<void>[] = []
 
   const buildOptions = loadTamaguiBuildConfigSync(options.tamaguiOptions)
-  const platform = 'web'
+  const platform = options.target ?? 'web'
   process.env.TAMAGUI_TARGET = platform
 
-  // load once first
-  await loadTamagui({
+  const tamaguiOptions = {
     ...buildOptions,
     platform,
-  })
+  } satisfies TamaguiOptions
+
+  // load once first
+  await loadTamagui(tamaguiOptions)
 
   await new Promise<void>((res) => {
     chokidar
@@ -49,6 +53,7 @@ export const build = async (
         }
 
         const sourcePath = resolve(process.cwd(), relativePath)
+        console.info(` [tamagui] optimizing ${sourcePath}`)
 
         promises.push(
           (async () => {
@@ -57,37 +62,42 @@ export const build = async (
             }
             const source = await readFile(sourcePath, 'utf-8')
 
-            const extractor = createExtractor({
-              platform,
-            })
+            if (platform === 'web') {
+              const extractor = createExtractor({
+                platform,
+              })
 
-            const out = await extractToClassNames({
-              extractor,
-              source,
-              sourcePath,
-              options: buildOptions,
-              shouldPrintDebug: options.debug || false,
-            })
+              const out = await extractToClassNames({
+                extractor,
+                source,
+                sourcePath,
+                options: buildOptions,
+                shouldPrintDebug: options.debug || false,
+              })
 
-            if (!out) {
-              return
+              if (!out) {
+                return
+              }
+
+              const cssName = '_' + basename(sourcePath, extname(sourcePath))
+              const stylePath = join(dirname(sourcePath), cssName + '.css')
+              const code = `import "./${cssName}.css"\n${out.js}`
+
+              await Promise.all([
+                writeFile(sourcePath, code, 'utf-8'),
+                writeFile(stylePath, out.styles, 'utf-8'),
+              ])
             }
 
-            const cssName = '_' + basename(sourcePath, extname(sourcePath))
-            const stylePath = join(dirname(sourcePath), cssName + '.css')
-            const code = `import "./${cssName}.css"\n${out.js}`
-
-            await Promise.all([
-              writeFile(sourcePath, code, 'utf-8'),
-              writeFile(stylePath, out.styles, 'utf-8'),
-            ])
+            // native
+            const out = extractToNative(sourcePath, source, tamaguiOptions)
+            await writeFile(sourcePath, out.code, 'utf-8')
           })()
         )
       })
-    // .on('ready', () => {
-    //   console.log('ready')
-    //   res()
-    // })
+      .on('ready', () => {
+        res()
+      })
   })
 
   await Promise.all(promises)

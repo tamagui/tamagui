@@ -144,12 +144,13 @@ const COMMAND_MAP = {
       '--help': Boolean,
       '--debug': Boolean,
       '--verbose': Boolean,
+      '--target': String,
       '--include': String,
       '--exclude': String,
     },
     async run() {
       const { _, ...flags } = arg(this.flags)
-      const [command, dir] = _
+      const [_command, dir] = _
       const imported = await import('./build.js')
       const options = await getOptions({
         debug: flags['--debug'] ? (flags['--verbose'] ? 'verbose' : true) : false,
@@ -158,6 +159,7 @@ const COMMAND_MAP = {
         ...options,
         dir,
         include: flags['--include'],
+        target: flags['--target'] || 'web',
         exclude: flags['--exclude'],
       })
     },

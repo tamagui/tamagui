@@ -1,6 +1,6 @@
 import { type BabelFileResult } from '@babel/core';
 import type { TamaguiOptions } from '@tamagui/static';
-export declare function extractToNative(sourceCode: string, options: TamaguiOptions): BabelFileResult;
+export declare function extractToNative(sourceFileName: string, sourceCode: string, options: TamaguiOptions): BabelFileResult;
 export declare function getBabelPlugin(): any;
 export declare function getBabelParseDefinition(options: TamaguiOptions): {
     name: string;

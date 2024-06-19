@@ -1,16 +1,34 @@
-import { CheckCircle, Code2, Copy, Paintbrush } from '@tamagui/lucide-icons'
+import {
+  CheckCircle,
+  ChevronsDownUp,
+  Code2,
+  Copy,
+  FileCode2,
+  Paintbrush,
+  TerminalSquare,
+} from '@tamagui/lucide-icons'
 import { useStore } from '@tamagui/use-store'
 import { forwardRef, useEffect, useRef, useState } from 'react'
 import { ScrollView } from 'react-native'
-import { Button, Spacer, TooltipSimple, XStack, YStack } from 'tamagui'
+import {
+  AnimatePresence,
+  Button,
+  Paragraph,
+  Spacer,
+  TooltipSimple,
+  XStack,
+  YStack,
+  useEvent,
+} from 'tamagui'
 import { LinearGradient } from 'tamagui/linear-gradient'
-
 import { Code } from '~/components/Code'
 import { ErrorBoundary } from '~/components/ErrorBoundary'
 import { Pre } from '~/components/Pre'
+import { RowingTabs } from '~/components/RowingTabs'
 import { useBashCommand } from '~/hooks/useBashCommand'
 import { useClipboard } from '~/hooks/useClipboard'
 import { useGradualIncrease } from '~/hooks/useGradualIncrease'
+import { toggleDocsTinted } from './docsTint'
 
 class CollapseStore {
   isCollapsed: boolean
@@ -116,7 +134,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
               <Button
                 accessibilityLabel="Toggle tint on/off"
                 size="$3"
-                onPress={toggleTinted}
+                onPress={toggleDocsTinted}
                 zi={10}
                 icon={Paintbrush}
               />
@@ -251,23 +269,6 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                 />
               </TooltipSimple>
             )}
-
-            {/* <Progress
-              value={copyTimeoutValue}
-              size="$0.75"
-              pos="absolute"
-              zi={1001}
-              w="auto"
-              b={(!isLong || isCutoff) && '$0'}
-              t={isLong && !isCutoff && '$0'}
-              l="$2"
-              r="$2"
-              bg="transparent"
-              rotate="180deg"
-              animation="quickest"
-            >
-              <Progress.Indicator bg="$color8" />
-            </Progress> */}
           </YStack>
         )}
       </ErrorBoundary>
