@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/radio-headless",
-  "version": "1.100.6",
+  "version": "1.101.0",
   "removeSideEffects": "true",
   "sideEffects": [
     "*.css"
@@ -24,14 +24,14 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/compose-refs": "1.100.6",
-    "@tamagui/constants": "1.100.6",
-    "@tamagui/create-context": "1.100.6",
-    "@tamagui/focusable": "1.100.6",
-    "@tamagui/helpers": "1.100.6",
-    "@tamagui/label": "1.100.6",
-    "@tamagui/use-controllable-state": "1.100.6",
-    "@tamagui/use-previous": "1.100.6"
+    "@tamagui/compose-refs": "1.101.0",
+    "@tamagui/constants": "1.101.0",
+    "@tamagui/create-context": "1.101.0",
+    "@tamagui/focusable": "1.101.0",
+    "@tamagui/helpers": "1.101.0",
+    "@tamagui/label": "1.101.0",
+    "@tamagui/use-controllable-state": "1.101.0",
+    "@tamagui/use-previous": "1.101.0"
   },
   "exports": {
     "./package.json": "./package.json",
@@ -43,7 +43,7 @@
     }
   },
   "devDependencies": {
-    "@tamagui/build": "1.100.6",
+    "@tamagui/build": "1.101.0",
     "react": "^18.2.0"
   },
   "publishConfig": {
