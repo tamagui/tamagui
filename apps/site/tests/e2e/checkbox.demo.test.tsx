@@ -1,6 +1,8 @@
 import type { Page } from '@playwright/test'
 import { test, expect } from '@playwright/test'
 
+const runTestIfNotCi = process.env.IS_CI ? test.skip : test
+
 let page: Page
 
 const logs = {
@@ -38,13 +40,11 @@ test(`Loads screen with no errors or logs`, async () => {
 })
 
 // not working in ci yet
-if (!process.env.IS_CI) {
-  test('visually looks correct', async () => {
-    expect(await page.locator('#tamagui-demos-container').screenshot()).toMatchSnapshot({
-      maxDiffPixelRatio: 0.02,
-    })
+runTestIfNotCi('visually looks correct', async () => {
+  expect(await page.locator('#tamagui-demos-container').screenshot()).toMatchSnapshot({
+    maxDiffPixelRatio: 0.02,
   })
-}
+})
 
 // click on the checkbox itself
 test('test checkboxs', async () => {
