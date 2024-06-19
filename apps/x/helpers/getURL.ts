@@ -5,6 +5,6 @@ export const getURL = () => {
       : process?.env?.NEXT_PUBLIC_VERCEL_URL &&
           import.meta.env.NEXT_PUBLIC_VERCEL_URL !== ''
         ? import.meta.env.NEXT_PUBLIC_VERCEL_URL
-        : 'http://localhost:5005'
+        : 'http://localhost:8081'
   return url.includes('http') ? url : `https://${url}`
 }

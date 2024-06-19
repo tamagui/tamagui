@@ -46,7 +46,7 @@ export const useGetComponent = async () => {
     // const BASE_URL =
     //   process.env.NODE_ENV === 'production'
     //     ? 'http://tamagui.dev'
-    //     : 'http://localhost:5005'
+    //     : 'http://localhost:8081'
     const BASE_URL = 'http://tamagui.dev'
     return `${BASE_URL}/api/bento/code/${install.installingComponent?.category}/${
       install.installingComponent?.categorySection

@@ -128,27 +128,28 @@ export const HeroResponsive = memo(() => {
     setIsDragging(false)
   }
 
-  useOnIntersecting(
-    ref,
-    ([entry], didResize) => {
-      if (!entry?.isIntersecting) return
-      const node = safariRef.current
-      if (!node) return
-      if (didResize) {
-        updateBoundings()
-      }
-      prevMove.current = getState().move - 10
-      window.addEventListener('pointermove', onMove)
-      return () => {
-        onMove.cancel()
-        window.removeEventListener('pointermove', onMove)
-        stop()
-      }
-    },
-    {
-      threshold: 0.01,
-    }
-  )
+  // disabling the dragger for now it feels slow due to iframe
+  // useOnIntersecting(
+  //   ref,
+  //   ([entry], didResize) => {
+  //     if (!entry?.isIntersecting) return
+  //     const node = safariRef.current
+  //     if (!node) return
+  //     if (didResize) {
+  //       updateBoundings()
+  //     }
+  //     prevMove.current = getState().move - 10
+  //     window.addEventListener('pointermove', onMove)
+  //     return () => {
+  //       onMove.cancel()
+  //       window.removeEventListener('pointermove', onMove)
+  //       stop()
+  //     }
+  //   },
+  //   {
+  //     threshold: 0.01,
+  //   }
+  // )
 
   useEffect(() => {
     window.addEventListener('mouseup', stop)
@@ -233,7 +234,7 @@ export const HeroResponsive = memo(() => {
             </XStack>
           </Container>
 
-          {!isSafari && (
+          {/* {!isSafari && (
             <YStack
               jc="center"
               cursor="ew-resize"
@@ -255,7 +256,7 @@ export const HeroResponsive = memo(() => {
                 height={134}
               />
             </YStack>
-          )}
+          )} */}
         </XStack>
 
         <YStack
