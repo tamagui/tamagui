@@ -3,7 +3,7 @@ import { ThemeTint, ThemeTintAlt, useTint } from '@tamagui/logo'
 import { Check, Dot, Hammer, PlayCircle, X } from '@tamagui/lucide-icons'
 import { useClientValue, useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
 import { useLoader } from 'vxs'
-import React, { Suspense, lazy, memo, useEffect, useState } from 'react'
+import React, { Suspense, lazy, memo, useEffect, useId, useState } from 'react'
 import type {
   FontSizeTokens,
   GetProps,
@@ -986,9 +986,9 @@ const TakeoutHero = () => {
         pe="none"
         top={300}
         r="-5%"
-        $lg={{ r: '-15%' }}
-        $md={{ r: '-50%' }}
-        $sm={{ r: '-90%' }}
+        $lg={{ r: '-5%' }}
+        $md={{ r: '-30%' }}
+        $sm={{ r: '-70%' }}
         zIndex={-1}
       >
         {enable3d && (
@@ -1107,11 +1107,7 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
   useEffect(() => {
     if (!ref) return
     if (!isClient) return
-
-    if (media.md) {
-      // disable on medium
-      return
-    }
+    if (media.md) return
 
     new Sticksy(ref as any)
     // TODO build is eagerly loading this despite this not logging
@@ -1119,7 +1115,7 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
     return () => {
       Sticksy.disableAll()
     }
-  }, [ref, media.md])
+  }, [ref, media.gtMd])
 
   const { name } = useTint()
 

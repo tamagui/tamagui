@@ -6,19 +6,23 @@ import { useMedia } from 'tamagui'
 
 import { Stage } from './Stage'
 
-const modelUrl = `${
-  process.env.NEXT_PUBLIC_VERCEL_URL
-    ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
-    : `http://localhost:${process.env.NODE_ENV === 'production' ? '3333' : '8081'}`
-}/takeout-compressed-2.glb`
+// this isnt server rendered so can use window.location.origin
+const origin =
+  typeof window === 'undefined'
+    ? process.env.NODE_ENV === 'production'
+      ? 'https://tamagui.dev'
+      : 'https://localhost:5005'
+    : window.location.origin
+
+const modelUrl = `${origin}/takeout-compressed-2.glb`
 
 let frameCount = 0
 
 export default (props) => (
   <Canvas
     style={{
-      width: 600,
-      height: 600,
+      width: 500,
+      height: 500,
       ...props.style,
     }}
     gl={{ preserveDrawingBuffer: true }}
@@ -33,27 +37,17 @@ export default (props) => (
 function TakeoutBox3D(props) {
   // const ref = useRef<Object3DNode<any, any>>()
   const ref = useRef<any>()
-  // const router = useRouter()
   const media = useMedia()
-
-  // TODO:
-  // useEffect(() => {
-  //   function resetFrameCount() {
-  //     frameCount = 0
-  //   }
-  //   router.events.on('routeChangeComplete', resetFrameCount)
-  //   return () => router.events.off('routeChangeComplete', resetFrameCount)
-  // }, [])
 
   const { nodes, materials } = useGLTF(modelUrl) as any
 
   useFrame((state, delta) => {
     if (!ref.current) return
 
-    const entryEffectFrames = 80
+    const entryEffectFrames = 120
     const justStarting = frameCount < entryEffectFrames
     const entryEffectPercentComplete = frameCount / entryEffectFrames
-    const rotateSpeed = justStarting ? 6 * (1 - entryEffectPercentComplete) + 0.02 : 0.02
+    const rotateSpeed = justStarting ? 6 * (1 - entryEffectPercentComplete) + 0.02 : 0.2
 
     ref.current.rotation.y += delta * rotateSpeed
 
