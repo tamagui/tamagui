@@ -137,23 +137,31 @@ const COMMAND_MAP = {
     },
   },
 
-  // build: {
-  //   shorthands: ['b'],
-  //   description: `Use to pre-build a Tamagui component directory`,
-  //   flags: {
-  //     '--help': Boolean,
-  //     '--debug': Boolean,
-  //     '--verbose': Boolean,
-  //   },
-  //   async run() {
-  //     const { _, ...flags } = arg(this.flags)
-  //     const { build } = await import('./build')
-  //     const options = await getOptions({
-  //       debug: flags['--debug'] ? (flags['--verbose'] ? 'verbose' : true) : false,
-  //     })
-  //     await build(options)
-  //   },
-  // },
+  build: {
+    shorthands: ['b'],
+    description: `Use to pre-build a Tamagui component directory`,
+    flags: {
+      '--help': Boolean,
+      '--debug': Boolean,
+      '--verbose': Boolean,
+      '--include': String,
+      '--exclude': String,
+    },
+    async run() {
+      const { _, ...flags } = arg(this.flags)
+      const [command, dir] = _
+      const imported = await import('./build.js')
+      const options = await getOptions({
+        debug: flags['--debug'] ? (flags['--verbose'] ? 'verbose' : true) : false,
+      })
+      await imported['default'].build({
+        ...options,
+        dir,
+        include: flags['--include'],
+        exclude: flags['--exclude'],
+      })
+    },
+  },
 
   // update: {
   //   shorthands: [],
@@ -238,12 +246,12 @@ const {
 )
 
 if (flags['--version']) {
-  console.log(require('../package.json').version)
+  console.info(require('../package.json').version)
   process.exit(0)
 }
 
 if (!command && flags['--help']) {
-  console.log(`$ tamagui
+  console.info(`$ tamagui
 
 commands:
 
@@ -267,8 +275,8 @@ main()
 
 async function main() {
   if (flags['--help']) {
-    console.log(`\n$ tamagui ${command}: ${definition.description}\n`)
-    console.log(
+    console.info(`\n$ tamagui ${command}: ${definition.description}\n`)
+    console.info(
       `Flags: ${Object.entries(definition.flags).map(([k, v]) => `${k} (${v.name})`)}`
     )
     process.exit(0)
@@ -278,7 +286,7 @@ async function main() {
 
   // help for any command
   if (cmdFlags['--help']) {
-    console.log(`$ tamagui ${_}
+    console.info(`$ tamagui ${_}
 
     Flags: ${JSON.stringify(cmdFlags, null, 2)}
 
@@ -297,7 +305,7 @@ async function main() {
 
 function showHelp(definition: CommandDefinition, flags: { '--help'?: boolean }) {
   if (flags['--help']) {
-    console.log(`$ ${definition}`)
+    console.info(`$ ${definition}`)
   }
 }
 

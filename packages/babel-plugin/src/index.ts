@@ -12,6 +12,7 @@ import {
   isSimpleSpread,
   literalToAst,
   createLogger,
+  loadTamaguiBuildConfigSync,
 } from '@tamagui/static'
 
 const importNativeView = template(`
@@ -29,6 +30,8 @@ const __withStableStyle = require('@tamagui/core')._withStableStyle;
 
 const extractor = createExtractor({ platform: 'native' })
 
+let tamaguiBuildOptionsLoaded: TamaguiOptions | null
+
 export default declare(function tamaguiBabelPlugin(
   api,
   options: TamaguiOptions
@@ -45,7 +48,6 @@ export default declare(function tamaguiBabelPlugin(
       Program: {
         enter(this: any, root) {
           let sourcePath = this.file.opts.filename
-
           if (sourcePath?.includes('node_modules')) {
             return
           }
@@ -81,9 +83,15 @@ export default declare(function tamaguiBabelPlugin(
             return
           }
 
+          if (!options.config && !options.components) {
+            // if no config/components given try and load from the tamagui.build.ts file
+            tamaguiBuildOptionsLoaded ||= loadTamaguiBuildConfigSync({})
+          }
+
           const finalOptions = {
             // @ts-ignore just in case they leave it out
             platform: 'native',
+            ...tamaguiBuildOptionsLoaded,
             ...options,
           } satisfies TamaguiOptions
 

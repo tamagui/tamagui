@@ -6,11 +6,13 @@ import path from 'node:path'
 
 import chalk from 'chalk'
 import { pascalCase } from 'change-case'
-import { copy, ensureDir, readFileSync } from 'fs-extra'
+import FSExtra from 'fs-extra'
 import { marked } from 'marked'
 import TerminalRenderer from 'marked-terminal'
 import open from 'opener'
 import prompts from 'prompts'
+
+const { copy, ensureDir, readFileSync } = FSExtra
 
 marked.setOptions({
   headerIds: false,
