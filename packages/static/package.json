@@ -72,6 +72,7 @@
   "devDependencies": {
     "@babel/plugin-syntax-typescript": "^7.23.3",
     "@expo/match-media": "^0.4.0",
+    "@types/babel__core": "^7.20.5",
     "@types/find-root": "^1.1.2",
     "@types/node": "^16.11.9",
     "@types/webpack": "^4.41.26",
