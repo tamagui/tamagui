@@ -74,7 +74,6 @@ export function getBabelParseDefinition(options: TamaguiOptions) {
       Program: {
         enter(this: any, root) {
           let sourcePath = this.file.opts.filename
-          console.log('sourcePath', sourcePath)
           if (sourcePath?.includes('node_modules')) {
             return
           }

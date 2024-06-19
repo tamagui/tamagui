@@ -13,8 +13,10 @@ import {
 } from '@tamagui/core'
 import type {
   Coords,
+  Middleware,
   OffsetOptions,
   Placement,
+  Side,
   Strategy,
   UseFloatingReturn,
 } from '@tamagui/floating'
@@ -25,6 +27,7 @@ import {
   offset as offsetFn,
   platform,
   shift,
+  size as sizeFn,
   useFloating,
 } from '@tamagui/floating'
 import { getSpace } from '@tamagui/get-token'
@@ -95,6 +98,54 @@ export function setupPopper(options?: PopperSetupOptions) {
   Object.assign(setupOptions, options)
 }
 
+// forked from radix-ui 👇
+// https://github.com/radix-ui/primitives/blob/1910a8c91c5927e58b8fca3aeaa31411f32fee7c/packages/react/popper/src/Popper.tsx#L359-L399
+function getSideAndAlignFromPlacement(placement: Placement) {
+  const [side, align = 'center'] = placement.split('-')
+  return [side as Side, align as 'center' | 'start' | 'end'] as const
+}
+
+const transformOrigin = (options: {
+  arrowWidth: number
+  arrowHeight: number
+}): Middleware => ({
+  name: 'transformOrigin',
+  options,
+  fn(data) {
+    const { placement, rects, middlewareData } = data
+
+    const cannotCenterArrow = middlewareData.arrow?.centerOffset !== 0
+    const isArrowHidden = cannotCenterArrow
+    const arrowWidth = isArrowHidden ? 0 : options.arrowWidth
+    const arrowHeight = isArrowHidden ? 0 : options.arrowHeight
+
+    const [placedSide, placedAlign] = getSideAndAlignFromPlacement(placement)
+    const noArrowAlign = { start: '0%', center: '50%', end: '100%' }[placedAlign]
+
+    const arrowXCenter = (middlewareData.arrow?.x ?? 0) + arrowWidth / 2
+    const arrowYCenter = (middlewareData.arrow?.y ?? 0) + arrowHeight / 2
+
+    let x = ''
+    let y = ''
+
+    if (placedSide === 'bottom') {
+      x = isArrowHidden ? noArrowAlign : `${arrowXCenter}px`
+      y = `${-arrowHeight}px`
+    } else if (placedSide === 'top') {
+      x = isArrowHidden ? noArrowAlign : `${arrowXCenter}px`
+      y = `${rects.floating.height + arrowHeight}px`
+    } else if (placedSide === 'right') {
+      x = `${-arrowHeight}px`
+      y = isArrowHidden ? noArrowAlign : `${arrowYCenter}px`
+    } else if (placedSide === 'left') {
+      x = `${rects.floating.width + arrowHeight}px`
+      y = isArrowHidden ? noArrowAlign : `${arrowYCenter}px`
+    }
+
+    return { data: { x, y } }
+  },
+})
+
 export function Popper(props: ScopedPopperProps<PopperProps>) {
   const {
     children,
@@ -134,6 +185,32 @@ export function Popper(props: ScopedPopperProps<PopperProps>) {
       arrowEl ? arrow({ element: arrowEl }) : (null as any),
       typeof offsetOptions !== 'undefined' ? offsetFn(offsetOptions) : (null as any),
       checkFloating,
+      sizeFn({
+        apply: ({ elements, rects, availableWidth, availableHeight }) => {
+          if (!isWeb) {
+            // TODO: pass this via context for native to use this
+            return
+          }
+          const { width: anchorWidth, height: anchorHeight } = rects.reference
+          const contentStyle = elements.floating.style
+          contentStyle.setProperty(
+            '--tamagui-popper-available-width',
+            `${availableWidth}px`
+          )
+          contentStyle.setProperty(
+            '--tamagui-popper-available-height',
+            `${availableHeight}px`
+          )
+          contentStyle.setProperty('--tamagui-popper-anchor-width', `${anchorWidth}px`)
+          contentStyle.setProperty('--tamagui-popper-anchor-height', `${anchorHeight}px`)
+        },
+      }),
+      isWeb
+        ? transformOrigin({
+            arrowHeight: arrowSize,
+            arrowWidth: arrowSize,
+          })
+        : null,
     ].filter(Boolean),
   })
 
@@ -150,9 +227,6 @@ export function Popper(props: ScopedPopperProps<PopperProps>) {
       if (!(refs.reference.current && refs.floating.current)) {
         return
       }
-
-      floating.update()
-
       // Only call this when the floating element is rendered
       return autoUpdate(refs.reference.current, refs.floating.current, floating.update)
     }, [open, floating.update, refs.floating, refs.reference])
@@ -340,7 +414,6 @@ export const PopperContent = React.forwardRef<
     }
   }, [isMounted])
 
-  // default to not showing if positioned at 0, 0
   let show = true
 
   if (isAndroid) {
