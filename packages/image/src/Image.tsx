@@ -96,10 +96,7 @@ export const Image = StyledImage.styleable<ImageProps>((inProps, ref) => {
       }
     }
 
-    if (
-      process.env.NODE_ENV === 'development' &&
-      !process.env.TAMAGUI_DISABLE_IMAGE_CHECK
-    ) {
+    if (process.env.NODE_ENV === 'development' && process.env.TAMAGUI_IMAGE_CHECK_ERROR) {
       // lets add an onload timeout and warning if it fails to load in console
       useEffect(() => {
         async function run() {

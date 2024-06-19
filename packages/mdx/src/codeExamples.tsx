@@ -1,5 +1,70 @@
-export const animationCode = `
-`
+export const animationCode = `import { Button, Square } from 'tamagui'
+
+export default () => {
+  const [positionI, setPositionI] = React.useState(0)
+  return (
+    <>
+      <Square
+        animation="bouncy"
+        size={110}
+        bg="$pink10"
+        br="$9"
+        hoverStyle={{
+          scale: 1.1,
+        }}
+        pressStyle={{
+          scale: 0.9,
+        }}
+        {...positions[positionI]}
+      >
+        <LogoIcon />
+      </Square>
+
+      <Button
+        pos="absolute"
+        b={20}
+        l={20}
+        icon={require('@tamagui/lucide-icons').Play}
+        size="$6"
+        circular
+        onPress={() => setPositionI(i => (i + 1) % positions.length)}
+      />
+    </>
+  )
+}
+
+export const positions = [
+  {
+    x: 0,
+    y: 0,
+    scale: 1,
+    rotate: '0deg',
+  },
+  {
+    x: -50,
+    y: -50,
+    scale: 0.5,
+    rotate: '-45deg',
+    hoverStyle: {
+      scale: 0.6,
+    },
+    pressStyle: {
+      scale: 0.4,
+    },
+  },
+  {
+    x: 50,
+    y: 50,
+    scale: 1,
+    rotate: '180deg',
+    hoverStyle: {
+      scale: 1.1,
+    },
+    pressStyle: {
+      scale: 0.9,
+    },
+  },
+]`
 
 export const compilationCode = [
   {

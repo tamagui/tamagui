@@ -17,11 +17,11 @@ import { HomeSection, SectionTinted, TintSection } from '~/features/site/home/Ti
 import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
 
 export async function loader() {
-  return await getCompilationExamples()
+  return getCompilationExamples()
 }
 
 export default function TamaguiHomePage() {
-  const { compilationExamples } = useLoader(loader)
+  const { compilationExamples, animationCode } = useLoader(loader)
 
   if (!compilationExamples) {
     return null
@@ -83,7 +83,7 @@ export default function TamaguiHomePage() {
             maskImage: `linear-gradient(transparent, #000, transparent)`,
           }}
         />
-        <HomeAnimations />
+        <HomeAnimations animationCode={animationCode} />
       </TintSection>
       <TintSection index={7} zi={1}>
         <HomeFeaturesGrid />
