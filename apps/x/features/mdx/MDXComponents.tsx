@@ -1,8 +1,15 @@
 import { TamaguiLogo, ThemeTint, ThemeTintAlt } from '@tamagui/logo'
-import { CheckCircle, ChevronRight, Copy, Link as LinkIcon } from '@tamagui/lucide-icons'
+import {
+  Box,
+  CheckCircle,
+  ChevronRight,
+  Copy,
+  File,
+  Link as LinkIcon,
+} from '@tamagui/lucide-icons'
 import React, { useState } from 'react'
 import { ScrollView } from 'react-native'
-import type { ImageProps, ParagraphProps, XStackProps } from 'tamagui'
+import type { ImageProps, XStackProps } from 'tamagui'
 import {
   Adapt,
   Button,
@@ -26,10 +33,8 @@ import {
   styled,
 } from 'tamagui'
 import { LinearGradient } from 'tamagui/linear-gradient'
-import type { LinkProps } from '~/components/Link'
 import { Link } from '~/components/Link'
 
-import { AvatarCard } from '~/components/AvatarCard'
 import { Code, CodeInline } from '~/components/Code'
 import { DataTable } from '~/components/DataTable'
 import { Features } from '~/components/Features'
@@ -39,47 +44,29 @@ import { Notice, NoticeFrame } from '~/components/Notice'
 import { OffsetBox } from '~/components/OffsetBox'
 import { SubTitle } from '~/components/SubTitle'
 import { TamaguiCard } from '~/components/TamaguiCard'
+import { UL } from '~/components/UL'
+import { SponsorButton } from '~/features/docs/SponsorButton'
+import { ExternalIcon } from '~/features/icons/ExternalIcon'
 import { BenchmarkChart } from '~/features/site/benchmarks/BenchmarkChart'
 import { BenchmarkChartNative } from '~/features/site/benchmarks/BenchmarkChartNative'
 import { BenchmarkChartWeb } from '~/features/site/benchmarks/BenchmarkChartWeb'
-import { BentoCard } from '~/features/bento/BentoCard'
 import { MediaPlayer } from '~/features/site/home/MediaPlayer'
 import { SocialLinksRow } from '~/features/site/home/SocialLinksRow'
-import { ExternalIcon } from '~/features/icons/ExternalIcon'
+import { unwrapText } from '~/helpers/unwrapText'
 import { useClipboard } from '~/hooks/useClipboard'
 import { DocCodeBlock } from '../docs/DocsCodeBlock'
-import { DocsTabs } from '../docs/DocsTabs'
 import { HeroContainer } from '../docs/HeroContainer'
 import { Highlights } from '../docs/Highlights'
 import { InlineTabs } from '../docs/InlineTabs'
 import { PropsTable } from '../docs/PropsTable'
-import { SponsorButton } from '~/features/docs/SponsorButton'
-import { UL } from '~/components/UL'
 import * as Demos from '../docs/demos'
-import { unwrapText } from '~/helpers/unwrapText'
 
-import type { YStackProps } from 'tamagui'
-import { HomeAnimations } from '../site/home/HomeAnimations'
+import { CustomTabs } from '~/components/CustomTabs'
 import { LogoCard } from '~/components/LogoCard'
 import { TamaguiExamplesCode } from '~/components/TamaguiExamples'
-
-const Preview = (props: YStackProps) => (
-  <YStack
-    data-preview
-    margin={0}
-    overflow="visible"
-    borderWidth={1}
-    borderColor="$borderColor"
-    borderTopLeftRadius="$3"
-    borderTopRightRadius="$3"
-    mb="$-3"
-    padding="$3"
-    pb="$4"
-    position="relative"
-    ai="flex-start"
-    {...props}
-  />
-)
+import { ExampleAnimations } from '../site/home/HomeAnimations'
+import { Preview } from '~/components/Preview'
+import { ProductCard } from '~/components/ProductCard'
 
 const IntroParagraph = ({ children, large, disableUnwrapText, ...props }: any) => {
   return (
@@ -122,6 +109,7 @@ const Table = ({ heading, children, ...props }) => {
 
 const code = (props) => {
   const {
+    showMore,
     hero,
     line,
     scrollable,
@@ -141,51 +129,13 @@ const code = (props) => {
         isHighlightingLines={line !== undefined}
         className={className}
         isHero={hero !== undefined}
+        showMore={showMore !== undefined}
         showLineNumbers={showLineNumbers !== undefined}
         {...rest}
       >
         {children}
       </DocCodeBlock>
     </YStack>
-  )
-}
-
-const Anchor = ({
-  href = '',
-  replace,
-  children,
-  ...props
-}: LinkProps & ParagraphProps) => {
-  return (
-    <Link asChild href={href} replace={replace}>
-      {/* @ts-ignore */}
-      <Paragraph
-        className="link"
-        tag="a"
-        // @ts-ignore
-        fontSize="inherit"
-        display="inline"
-        cursor="pointer"
-        {...props}
-      >
-        {children}
-        {/* @ts-ignore */}
-        {href.startsWith?.('http') ? (
-          <>
-            &nbsp;
-            <Text
-              // @ts-ignore
-              fontSize="inherit"
-              display="inline-flex"
-              y={2}
-              ml={-1}
-            >
-              <ExternalIcon />
-            </Text>
-          </>
-        ) : null}
-      </Paragraph>
-    </Link>
   )
 }
 
@@ -232,7 +182,7 @@ const TableHighlight = styled(YStack, {
 })
 
 export const components = {
-  Tabs: DocsTabs,
+  Tabs: CustomTabs,
   InlineTabs: InlineTabs,
 
   SocialLinksRow: () => (
@@ -248,7 +198,6 @@ export const components = {
   ),
 
   Adapt,
-  LogoCard,
 
   Table,
   TableCell,
@@ -256,7 +205,7 @@ export const components = {
   TableCol,
 
   Spacer,
-  ExampleAnimations: HomeAnimations,
+  ExampleAnimations,
   ScrollView,
   Features,
   Text,
@@ -328,7 +277,15 @@ export const components = {
   Grid: (props) => <XStack flexWrap="wrap" jc="space-between" {...props} />,
   Card: TamaguiCard,
 
-  AvatarCard: AvatarCard,
+  LogoCard: LogoCard,
+  NextJSRouterCard: (props) => {
+    return (
+      <LogoCard
+        icon={props.title.startsWith('Pages') ? <File size="$1" /> : <Box size="$1" />}
+        {...props}
+      />
+    )
+  },
 
   Note: (props) => (
     <YStack
@@ -388,7 +345,37 @@ export const components = {
     />
   ),
 
-  a: Anchor,
+  a: ({ href = '', children, ...props }) => {
+    return (
+      <Link className="link" href={href} asChild>
+        {/* @ts-ignore */}
+        <Paragraph
+          tag="a"
+          // @ts-ignore
+          fontSize="inherit"
+          display="inline"
+          cursor="pointer"
+          {...props}
+        >
+          {children}
+          {href.startsWith('http') ? (
+            <>
+              &nbsp;
+              <Text
+                // @ts-ignore
+                fontSize="inherit"
+                display="inline-flex"
+                y={2}
+                ml={-1}
+              >
+                <ExternalIcon />
+              </Text>
+            </>
+          ) : null}
+        </Paragraph>
+      </Link>
+    )
+  },
 
   hr: HR,
 
@@ -551,7 +538,7 @@ export const components = {
 
   DemoButton: () => <Button>Hello world</Button>,
 
-  BentoCard: BentoCard,
+  ProductCard: ProductCard,
 
   SponsorButton,
 
@@ -611,11 +598,12 @@ export const components = {
           <UL mt="$4" gap="$2">
             <ThemeTintAlt>
               <LI size="$6" color="$color11">
-                <Anchor href="/docs/core/introduction">
+                {/* @ts-ignore */}
+                <Link fontSize="inherit" href="/docs/core/introduction">
                   <CodeInline>
                     <span style={{ color: 'var(--color12)' }}>@tamagui/core</span>
                   </CodeInline>
-                </Anchor>
+                </Link>
                 &nbsp;is a style library that expands on the React Native style API with
                 many features from CSS - all without any external dependency except for
                 React.
@@ -625,15 +613,19 @@ export const components = {
             <ThemeTintAlt offset={2}>
               <LI size="$6" color="$color11">
                 {/* @ts-ignore */}
-                <Anchor href="/docs/intro/compiler-install">
+                <Link fontSize="inherit" href="/docs/intro/compiler-install">
                   <CodeInline>
                     <span style={{ color: 'var(--color12)' }}>@tamagui/static</span>
                   </CodeInline>
-                </Anchor>{' '}
+                </Link>{' '}
                 is an optimizing compiler that{' '}
-                <Anchor href="/docs/intro/benchmarks">
+                <Link
+                  // @ts-ignore
+                  fontSize="inherit"
+                  href="/docs/intro/benchmarks"
+                >
                   significantly improves performance
-                </Anchor>{' '}
+                </Link>{' '}
                 by hoisting objects and CSS at build-time, leaving behind flatter React
                 trees.
               </LI>
@@ -641,11 +633,12 @@ export const components = {
 
             <ThemeTintAlt offset={3}>
               <LI size="$6" color="$color11">
-                <Anchor href="/docs/components/stacks">
+                {/* @ts-ignore */}
+                <Link fontSize="inherit" href="/docs/components/stacks">
                   <CodeInline>
                     <span style={{ color: 'var(--color12)' }}>tamagui</span>
                   </CodeInline>
-                </Anchor>{' '}
+                </Link>{' '}
                 is a large universal component kit in styled and unstyled forms.
               </LI>
             </ThemeTintAlt>
@@ -700,13 +693,11 @@ export const components = {
         <Link asChild href="/docs/intro/installation">
           <Card
             tag="a"
-            // animation="quickest"
-            bw={0.5}
-            bc="$borderColor"
+            animation="quickest"
             f={1}
             y={0}
-            hoverStyle={{ y: -2, bg: '$backgroundHover', bc: '$color9' }}
-            pressStyle={{ y: 2, bg: '$color2', bc: '$color7' }}
+            hoverStyle={{ y: -2, bg: '$backgroundHover' }}
+            pressStyle={{ y: 2, bg: '$color2' }}
           >
             <Card.Header gap="$2">
               <H4 size="$4" color="$color8">
@@ -734,7 +725,7 @@ export const components = {
     return (
       <YStack
         tag="aside"
-        space="$2"
+        gap="$2"
         br="$4"
         p="$5"
         mx="$-2"

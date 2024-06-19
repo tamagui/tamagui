@@ -7291,7 +7291,6 @@ __metadata:
     "@tamagui/animations-reanimated": "npm:1.100.6"
     "@tamagui/bento": "npm:1.100.6"
     "@tamagui/build": "npm:1.100.6"
-    "@tamagui/cli": "npm:1.100.6"
     "@tamagui/colors": "npm:1.100.6"
     "@tamagui/core": "npm:1.100.6"
     "@tamagui/demos": "npm:1.100.6"
