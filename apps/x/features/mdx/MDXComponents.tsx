@@ -67,6 +67,7 @@ import { TamaguiExamplesCode } from '~/components/TamaguiExamples'
 import { ExampleAnimations } from '../site/home/HomeAnimations'
 import { Preview } from '~/components/Preview'
 import { ProductCard } from '~/components/ProductCard'
+import { BentoCard } from '../bento/BentoCard'
 
 const IntroParagraph = ({ children, large, disableUnwrapText, ...props }: any) => {
   return (
@@ -196,6 +197,8 @@ export const components = {
       {props.children}
     </YStack>
   ),
+
+  BentoCard,
 
   Adapt,
 
