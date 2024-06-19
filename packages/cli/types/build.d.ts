@@ -1,3 +1,7 @@
 import type { CLIResolvedOptions } from '@tamagui/types';
-export declare const build: (options: CLIResolvedOptions) => Promise<void>;
+export declare const build: (options: CLIResolvedOptions & {
+    dir?: string;
+    include?: string;
+    exclude?: string;
+}) => Promise<void>;
 //# sourceMappingURL=build.d.ts.map
