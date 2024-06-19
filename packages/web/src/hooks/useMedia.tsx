@@ -1,5 +1,5 @@
 import { isServer, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
-import { useId, useRef, useState, useSyncExternalStore } from 'react'
+import React, { useId, useRef, useState, useSyncExternalStore } from 'react'
 
 import { getConfig } from '../config'
 import { matchMedia } from '../helpers/matchMedia'
@@ -194,12 +194,17 @@ function getSnapshot({ touched, prev, enabled, keys }: UpdateState) {
   const testKeys = keys || touched ? [...(keys || []), ...(touched || [])] : null
   const hasntUpdated =
     !testKeys || testKeys?.every((key) => mediaState[key] === prev[key])
+
   if (hasntUpdated) {
     return prev
   }
 
   return mediaState
 }
+
+// TODO once you touch a media key it never untouches, to avoid an extra useEffect on every component
+// ideally we don't do that, but useMedia usage is lower and generally its not super expensive
+// i think in the future we implement this by sharing a single useEffect in createComponent somehow
 
 export function useMedia(
   uidIn?: any,
@@ -217,9 +222,6 @@ export function useMedia(
     States.set(uid, componentState)
   }
 
-  // reset on each render
-  componentState.touched = undefined
-
   const [state, setState] = useState(initialState)
 
   useIsomorphicLayoutEffect(() => {
@@ -235,7 +237,6 @@ export function useMedia(
       })
     }
 
-    // layout effects evidently run before the rest of render?
     update()
 
     listeners.add(update)
