@@ -4,7 +4,6 @@ import * as React from 'react'
 import type { ThemeName } from 'tamagui'
 import {
   Adapt,
-  Avatar,
   Button,
   Circle,
   Popover,
@@ -21,7 +20,7 @@ import { useUser } from '~/features/user/useUser'
 import { DocsMenuContents } from '~/features/docs/DocsMenuContents'
 import { HeaderLinks } from './HeaderLinks'
 import { useDocsMenu } from '~/features/docs/useDocsMenu'
-import { getDefaultAvatarImage } from '~/features/user/getDefaultAvatarImage'
+import { UserAvatar } from './UserAvatar'
 
 export const HeaderMenu = React.memo(function HeaderMenu() {
   const { open, setOpen } = useDocsMenu()
@@ -85,25 +84,7 @@ export const HeaderMenu = React.memo(function HeaderMenu() {
             }}
           >
             <Circle size={28} ai="center" jc="center">
-              {userSwr.data?.userDetails ? (
-                <Avatar circular size="$2">
-                  <Avatar.Image
-                    source={{
-                      width: 28,
-                      height: 28,
-                      uri:
-                        userSwr.data.userDetails?.avatar_url ||
-                        getDefaultAvatarImage(
-                          userSwr.data?.userDetails?.full_name ||
-                            userSwr.data?.session?.user?.email ||
-                            'User'
-                        ),
-                    }}
-                  />
-                </Avatar>
-              ) : (
-                <Menu size={14} />
-              )}
+              {userSwr.data?.userDetails ? <UserAvatar /> : <Menu size={14} />}
             </Circle>
           </Button>
         </Popover.Anchor>

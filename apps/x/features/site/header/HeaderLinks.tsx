@@ -25,6 +25,7 @@ import { GithubIcon } from '~/features/icons/GithubIcon'
 import { TakeoutIcon } from '~/features/icons/TakeoutIcon'
 import { useUser } from '~/features/user/useUser'
 import type { HeaderProps } from './types'
+import { UserAvatar } from './UserAvatar'
 
 const HeadAnchor = styled(Paragraph, {
   tag: 'a',
@@ -240,17 +241,32 @@ export const HeaderLinks = (props: HeaderProps) => {
         </Link>
       )}
 
-      {forceShowAllLinks && !userSwr.data?.userDetails && (
+      {forceShowAllLinks && (
         <>
           <Separator bc="$color025" o={0.25} my="$2" />
-          <Link asChild href="/login">
-            <HeadAnchor grid={forceShowAllLinks}>
-              Login
-              <YStack dsp={'inline-block' as any} y={2} x={10} als="flex-end">
-                <LogIn color="$color10" size={14} />
-              </YStack>
-            </HeadAnchor>
-          </Link>
+          {!userSwr.data?.userDetails && (
+            <Link asChild href="/login">
+              <HeadAnchor grid>
+                Login
+                <YStack dsp={'inline-block' as any} y={2} x={10} als="flex-end">
+                  <LogIn color="$color10" size={14} />
+                </YStack>
+              </HeadAnchor>
+            </Link>
+          )}
+          {userSwr.data?.userDetails && (
+            <Link asChild href="/login">
+              <HeadAnchor grid>
+                <XStack ai="center" jc="center">
+                  Account
+                  <YStack flex={10} />
+                  <YStack dsp={'inline-block' as any} y={-2} my={-3} als="flex-end">
+                    <UserAvatar size={22} />
+                  </YStack>
+                </XStack>
+              </HeadAnchor>
+            </Link>
+          )}
         </>
       )}
 
