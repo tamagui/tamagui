@@ -103,6 +103,12 @@ export const ImageDemo = lazyDemo(
   // @ts-ignore
   () => import('@tamagui/demos/demo/ImageDemo').then((x) => x.ImageDemo)
 )
+
+export const WebNativeImageDemo = lazyDemo(
+  // @ts-ignore
+  import('@tamagui/demos/demo/WebNativeImageDemo').then((x) => x.WebNativeImageDemo)
+)
+
 export const LabelDemo = lazyDemo(
   // @ts-ignore
   () => import('@tamagui/demos/demo/LabelDemo').then((x) => x.LabelDemo)
@@ -252,15 +258,13 @@ export const RadioGroupDemo = lazyDemo(
 )
 export const RadioGroupHeadlessDemo = lazyDemo(
   // @ts-ignore
-  () =>
-    import('@tamagui/demos/demo/RadioGroupHeadlessDemo').then(
-      (x) => x.RadioGroupHeadlessDemo
-    )
+  import('@tamagui/demos/demo/RadioGroupHeadlessDemo').then(
+    (x) => x.RadioGroupHeadlessDemo
+  )
 )
 export const RadioGroupUnstyledDemo = lazyDemo(
   // @ts-ignore
-  () =>
-    import('@tamagui/demos/demo/RadioGroupUnstyledDemo').then(
-      (x) => x.RadioGroupUnstyledDemo
-    )
+  import('@tamagui/demos/demo/RadioGroupUnstyledDemo').then(
+    (x) => x.RadioGroupUnstyledDemo
+  )
 )
