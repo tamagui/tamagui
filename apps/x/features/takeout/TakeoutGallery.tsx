@@ -1,13 +1,13 @@
+import { Image, type ImageProps } from '@tamagui/image-next'
 import { ArrowLeft, ArrowRight, X } from '@tamagui/lucide-icons'
 import { createUseStore } from '@tamagui/use-store'
 import { useEffect } from 'react'
-import type { ImageProps, StackProps } from 'tamagui'
+import type { StackProps } from 'tamagui'
 import {
   AnimatePresence,
   Button,
   Dialog,
   H6,
-  Image,
   Paragraph,
   Spacer,
   Unspaced,

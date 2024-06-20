@@ -4,6 +4,7 @@ import { Check, Dot, Hammer, PlayCircle, X } from '@tamagui/lucide-icons'
 import { useClientValue, useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
 import { useLoader } from 'vxs'
 import React, { Suspense, lazy, memo, useEffect, useId, useState } from 'react'
+import { Image } from '@tamagui/image-next'
 import type {
   FontSizeTokens,
   GetProps,
@@ -19,7 +20,6 @@ import {
   Button,
   Circle,
   H2,
-  Image,
   Input,
   Paragraph,
   ScrollView,
@@ -1109,12 +1109,17 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
     if (!isClient) return
     if (media.md) return
 
-    new Sticksy(ref as any)
-    // TODO build is eagerly loading this despite this not logging
+    let dispose: (() => void) | undefined = undefined
 
-    return () => {
-      Sticksy.disableAll()
-    }
+    import('../../helpers/sticksy').then(({ Sticksy }) => {
+      new Sticksy(ref as any)
+
+      dispose = () => {
+        Sticksy.disableAll()
+      }
+    })
+
+    return dispose
   }, [ref, media.gtMd])
 
   const { name } = useTint()

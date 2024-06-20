@@ -120,7 +120,6 @@ export const Image = StyledImage.styleable<ImageProps>((inProps, ref) => {
   }
 
   // must set defaultSource to allow SSR, default it to the same as src
-  console.log('rendering', finalSource, style, rest)
   return <RNImage ref={ref} source={finalSource} style={style} {...(rest as any)} />
 }) as any as ImageType
 

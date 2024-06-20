@@ -20,7 +20,9 @@ function TabsComponent(props: TabsProps) {
     const url = new URL(location.href)
     url.searchParams.set(id, newValue)
     url.hash = '' // having this set messes with the scroll
-    router.replace(url)
+    router.replace(url, {
+      scroll: false,
+    })
   }
 
   const value = typeof query[id] === 'string' ? (query[id] as string) : props.defaultValue
