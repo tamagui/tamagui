@@ -1,10 +1,9 @@
 import { getSize } from '@tamagui/get-token'
+import { Image } from '@tamagui/image-next'
 import { ThemeTint, ThemeTintAlt, useTint } from '@tamagui/logo'
 import { Check, Dot, Hammer, PlayCircle, X } from '@tamagui/lucide-icons'
 import { useClientValue, useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
-import { useLoader } from 'vxs'
-import React, { Suspense, lazy, memo, useEffect, useId, useState } from 'react'
-import { Image } from '@tamagui/image-next'
+import React, { Suspense, lazy, memo, useEffect, useState } from 'react'
 import type {
   FontSizeTokens,
   GetProps,
@@ -36,12 +35,14 @@ import {
   useMedia,
   useThemeName,
 } from 'tamagui'
-import { LinearGradient } from 'tamagui/linear-gradient'
+import { useLoader } from 'vxs'
 import { ContainerXL } from '~/components/Containers'
 import { ErrorBoundary } from '~/components/ErrorBoundary'
+import { HeadInfo } from '~/components/HeadInfo'
 import { useHoverGlow } from '~/components/HoverGlow'
 import { Link } from '~/components/Link'
 import { Footer } from '~/features/site/Footer'
+import { LoadCherryBomb, LoadMunro } from '~/features/site/fonts/LoadFonts'
 import { PurchaseModal } from '~/features/site/purchase/PurchaseModal'
 import { MunroP, PurchaseButton, isSafariMobile } from '~/features/site/purchase/helpers'
 import { getProductsForServerSideRendering } from '~/features/site/purchase/server-helpers'
@@ -49,9 +50,6 @@ import { useTakeoutStore } from '~/features/site/purchase/useTakeoutStore'
 import { seasons } from '~/features/site/seasons/SeasonToggleButton'
 import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
 import { TakeoutLogo } from '~/features/takeout/TakeoutLogo'
-import { LoadCherryBomb, LoadMunro } from '~/features/site/fonts/LoadFonts'
-import { Sticksy } from '~/helpers/sticksy'
-import { HeadInfo } from '~/components/HeadInfo'
 
 export const loader = async () => {
   try {

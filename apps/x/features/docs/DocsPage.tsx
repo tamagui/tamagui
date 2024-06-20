@@ -18,19 +18,6 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
   const REPO_NAME = 'tamagui/tamagui'
   const editUrl = `${GITHUB_URL}/${REPO_NAME}/edit/master/apps/site/data${currentPath}${documentVersionPath}.mdx`
 
-  // React.useEffect(() => {
-  //   // @ts-ignore
-  //   import('../lib/sticksy').then(({ Sticksy }) => {
-  //     const el = document.querySelector('.sticky')
-  //     if (el) {
-  //       const instance = new Sticksy(el)
-  //       return () => {
-  //         instance.disable()
-  //       }
-  //     }
-  //   })
-  // }, [currentPath])
-
   const pageContents = React.useMemo(() => {
     return (
       <>
