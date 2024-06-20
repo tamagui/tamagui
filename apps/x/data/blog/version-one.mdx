@@ -40,6 +40,11 @@ Tamagui comes in three parts:
 
 Lets get familiar with both `@tamagui/core` (the styling library) and `@tamagui/static` (the compiler), and how the latter optimizes the former.
 
+<Spacer />
+<Wide>
+  <TamaguiExamplesCode />
+</Wide>
+
 The key to Tamagui's performance gains lie in **view flattening** or tree-flattening: the compiler analyzes code (even across module boundaries) and evaluates styled components away using both the AST and Node VM code evaluation. It will fully flatten custom styled components (like `<Circle />`) into plain old `<div />` (or `<View />` on native).
 
 ---

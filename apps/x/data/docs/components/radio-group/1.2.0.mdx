@@ -1,0 +1,367 @@
+---
+title: RadioGroup
+description: A group of radio buttons
+name: radio-group
+component: RadioGroup
+package: radio-group
+demoName: RadioGroup
+---
+
+# RadioGroup
+
+<Description>
+Choose one option from a list in a form.
+</Description>
+
+<YStack className="is-sticky" />
+
+<Tabs id="type" defaultValue="styled">
+<Tabs.List>
+  <TooltipSimple label="With Tamagui's default styles">
+    <Tabs.Tab value="styled">Styled</Tabs.Tab>
+  </TooltipSimple>
+  <TooltipSimple label="No default styles, easy to customize">
+    <Tabs.Tab value="unstyled">Unstyled</Tabs.Tab>
+  </TooltipSimple>
+  <TooltipSimple label="No dependency on Tamagui's core">
+    <Tabs.Tab value="headless" label="No styles and no dependency on Tamagui's styling">Headless</Tabs.Tab>
+  </TooltipSimple>
+</Tabs.List>
+
+<HeroContainer showAnimationDriverControl>
+  <Tabs.Content
+    value="styled"
+    justifyContent="center"
+    alignItems="center"
+    width="100%"
+  >
+    <RadioGroupDemo />
+  </Tabs.Content>
+  <Tabs.Content
+    value="unstyled"
+    justifyContent="center"
+    alignItems="center"
+    width="100%"
+  >
+    <RadioGroupUnstyledDemo />
+  </Tabs.Content>
+  <Tabs.Content
+    value="headless"
+    justifyContent="center"
+    alignItems="center"
+    width="100%"
+  >
+    <RadioGroupHeadlessDemo />
+  </Tabs.Content>
+</HeroContainer>
+
+<Tabs.Content value="styled">
+  ```tsx hero template=RadioGroup
+
+````
+</Tabs.Content>
+<Tabs.Content value="unstyled">
+  ```tsx hero template=RadioGroupUnstyled
+
+````
+</Tabs.Content>
+<Tabs.Content value="headless">
+  ```tsx hero template=RadioGroupHeadless
+
+````
+</Tabs.Content>
+
+<Highlights
+features={[
+  `Accessible, easy to compose and customize.`,
+  `Sizable & works controlled or uncontrolled.`,
+  `Ability to opt-out to native radio button on web.`,
+]}
+/>
+
+## Installation
+
+<Tabs.Content value="styled">
+RadioGroup is already installed in `tamagui`, or you can install it independently:
+
+```bash
+npm install @tamagui/radio-group
+````
+
+</Tabs.Content>
+
+<Tabs.Content value="unstyled">
+RadioGroup is already installed in `tamagui`, or you can install it independently:
+
+```bash
+npm install @tamagui/radio-group
+````
+
+</Tabs.Content>
+
+<Tabs.Content value="headless">
+
+To use the headless radio group, you want to import it from the
+`@tamagui/radio-headless` package. This package has no dependency on
+`@tamagui/core`, but still works off the react-native APIs.
+This means can bring your own style library.
+
+```bash
+npm install @tamagui/radio-headless
+```
+
+</Tabs.Content>
+
+## Usage
+
+<Tabs.Content value="styled">
+
+```tsx
+import { RadioGroup } from 'tamagui'
+
+export default () => (
+  <RadioGroup value="foo" gap="$2">
+    <RadioGroup.Item value="foo" id="foo-radio-item">
+      <RadioGroup.Indicator />
+    </RadioGroup.Item>
+    <RadioGroup.Item value="bar" id="bar-radio-item">
+      <RadioGroup.Indicator />
+    </RadioGroup.Item>
+  </RadioGroup>
+)
+```
+
+</Tabs.Content>
+
+<Tabs.Content value="unstyled">
+
+Use the `createRadioGroup` export to create a fully custom RadioGroup that still
+uses the Tamagui styling system. This is similar to setting `unstyled`, but goes
+a bit further. It doesn't add any types for `size` or `unstyled`, and it won't
+automatically apply the `active` theme. If does pass the `checked` prop down as
+indicated in the types of `createRadioGroup`.
+
+```tsx template=RadioGroupUnstyled
+
+```
+
+</Tabs.Content>
+
+<Tabs.Content value="headless">
+
+Using the `useRadioGroup` and `useRadioGroupItem` API, you can make your own RadioGroup from scratch.
+
+```tsx template=RadioGroupHeadless
+
+```
+
+</Tabs.Content>
+
+<Tabs.Content value="styled">
+
+## API Reference
+
+### RadioGroup
+
+RadioGroup extend Stack views inheriting all the [Tamagui standard props](/docs/intro/props), plus:
+
+<PropsTable
+  data={[
+    {
+      name: 'name',
+      type: 'string',
+      description: `Equivalent to input name.`,
+    },
+    {
+      name: 'value',
+      type: 'string',
+      description: `Give it a value (for use in HTML forms).`,
+    },
+    {
+      name: 'required',
+      type: 'boolean',
+      description: `Sets aria-required.`,
+    },
+    {
+      name: 'disabled',
+      type: 'boolean',
+      description: `Set aria-disabled on web, and disable touch on native for all children items`,
+    },
+    {
+      name: 'native',
+      type: 'boolean',
+      description: `Renders native radio button on web.`,
+      default: false,
+    },
+    {
+      name: 'onValueChange',
+      type: '(value: string) => void',
+    },
+    {
+      name: 'accentColor',
+      type: 'string',
+      description: 'Sets `accent-color` style when `native` prop is enabled',
+    },
+  ]}
+/>
+
+### RadioGroup.Item
+
+<PropsTable
+  data={[
+    {
+      name: 'labeledBy',
+      type: 'string',
+      description: `Set aria-labeled-by on web`,
+    },
+    {
+      name: 'value',
+      type: 'string',
+      description: `Input value for the radio button.`,
+    },
+    {
+      name: 'disabled',
+      type: 'boolean',
+      description: `Set aria-disabled on web, and disable touch on native`,
+    },
+    {
+      name: 'id',
+      type: 'string',
+      description: `Id used on the web`,
+    },
+    {
+      name: 'scaleSize',
+      type: 'number',
+      default: '0.5',
+      description: `The Tamagui size tokens should map to the height of a button at any given step. This means you want somewhat smaller checkboxes typically.`,
+    },
+    {
+      name: 'unstyled',
+      type: 'boolean',
+      default: 'false',
+      description: `When true, remove all default tamagui styling.`,
+    },
+  ]}
+/>
+
+### RadioGroup.Indicator
+
+RadioGroup.Indicator appears only when the parent Item is checked. it extends [ThemeableStack](/docs/components/stacks#themeablestack), getting [Tamagui standard props](/docs/intro/props) adding:
+
+<PropsTable
+  data={[
+    {
+      name: 'unstyled',
+      required: false,
+      type: `boolean`,
+      description: `Removes all default Tamagui styles.`,
+    },
+  ]}
+/>
+
+</Tabs.Content>
+<Tabs.Content value="unstyled">
+
+## API Reference
+
+### RadioGroup
+
+RadioGroup extend Stack views inheriting all the [Tamagui standard props](/docs/intro/props), plus:
+
+<PropsTable
+  data={[
+    {
+      name: 'name',
+      type: 'string',
+      description: `Equivalent to input name.`,
+    },
+    {
+      name: 'value',
+      type: 'string',
+      description: `Give it a value (for use in HTML forms).`,
+    },
+    {
+      name: 'required',
+      type: 'boolean',
+      description: `Sets aria-required.`,
+    },
+    {
+      name: 'disabled',
+      type: 'boolean',
+      description: `Set aria-disabled on web, and disable touch on native for all children items`,
+    },
+    {
+      name: 'native',
+      type: 'boolean',
+      description: `Renders native radio button on web.`,
+      default: false,
+    },
+    {
+      name: 'onValueChange',
+      type: '(value: string) => void',
+    },
+    {
+      name: 'accentColor',
+      type: 'string',
+      description: 'Sets `accent-color` style when `native` prop is enabled',
+    },
+  ]}
+/>
+
+### RadioGroup.Item
+
+<PropsTable
+  data={[
+    {
+      name: 'labeledBy',
+      type: 'string',
+      description: `Set aria-labeled-by on web`,
+    },
+    {
+      name: 'value',
+      type: 'string',
+      description: `Input value for the radio button.`,
+    },
+    {
+      name: 'disabled',
+      type: 'boolean',
+      description: `Set aria-disabled on web, and disable touch on native`,
+    },
+    {
+      name: 'id',
+      type: 'string',
+      description: `Id used on the web`,
+    },
+    {
+      name: 'scaleSize',
+      type: 'number',
+      default: '0.5',
+      description: `The Tamagui size tokens should map to the height of a button at any given step. This means you want somewhat smaller checkboxes typically.`,
+    },
+    {
+      name: 'unstyled',
+      type: 'boolean',
+      default: 'false',
+      description: `When true, remove all default tamagui styling.`,
+    },
+  ]}
+/>
+
+### RadioGroup.Indicator
+
+RadioGroup.Indicator appears only when the parent Item is checked. it extends [ThemeableStack](/docs/components/stacks#themeablestack), getting [Tamagui standard props](/docs/intro/props) adding:
+
+<PropsTable
+  data={[
+    {
+      name: 'unstyled',
+      required: false,
+      type: `boolean`,
+      description: `Removes all default Tamagui styles.`,
+    },
+  ]}
+/>
+
+</Tabs.Content>
+
+</Tabs>

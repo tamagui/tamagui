@@ -5,7 +5,7 @@ import { H2, Paragraph, Spacer, XStack } from 'tamagui'
 import { ContainerLarge } from '~/components/Containers'
 import { Link } from '~/components/Link'
 import { TamaguiCard } from '~/components/TamaguiCard'
-import { authors } from '~/data/authors'
+import { authors } from '~/data2/authors'
 import { HeadInfo } from '~/components/HeadInfo'
 
 export function loader() {
