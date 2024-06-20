@@ -1,4 +1,4 @@
-import { authors } from '~/data2/authors'
+import { authors } from '~/data/authors'
 // import { getAllFrontmatter } from '@lib/mdx'
 import { useTint } from '@tamagui/logo'
 import { ChevronRight } from '@tamagui/lucide-icons'

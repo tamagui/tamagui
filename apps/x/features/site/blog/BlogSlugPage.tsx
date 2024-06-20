@@ -18,7 +18,7 @@ import {
 import { LinearGradient } from 'tamagui/linear-gradient'
 import { Container } from '~/components/Containers'
 import { Link } from '~/components/Link'
-import { authors } from '~/data2/authors'
+import { authors } from '~/data/authors'
 import { components } from '~/features/mdx/MDXComponents'
 
 export type BlogPost = {
