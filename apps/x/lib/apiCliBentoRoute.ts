@@ -1,8 +1,8 @@
-import { getBentoCode, supabaseAdmin } from './supabaseAdmin'
+import { getBentoCode, supabaseAdmin } from '~/features/auth/supabaseAdmin'
 
 const hasBentoAccess = async (githubId: string) => {
   const result = await supabaseAdmin.rpc(
-    // @ts-expect-error TODO
+    // @ts-expect-error
     'has_bento_access',
     {
       github_id_input: githubId,
