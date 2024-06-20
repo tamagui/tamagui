@@ -399,8 +399,10 @@ Sticksy.initializeAll = function (target, options, ignoreNothingFound) {
  *  Refresh events
  * ------------------------ */
 
-window.addEventListener("scroll", Sticksy.refreshAll);
-window.addEventListener("resize", Sticksy.hardRefreshAll);
+if (typeof window !== 'undefined') {
+  window.addEventListener("scroll", Sticksy.refreshAll);
+  window.addEventListener("resize", Sticksy.hardRefreshAll);
+}
 
 /* ------------------------
  *  Helpers
