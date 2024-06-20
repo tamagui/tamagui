@@ -63,11 +63,15 @@ import * as Demos from '../docs/demos'
 
 import { CustomTabs } from '~/components/CustomTabs'
 import { LogoCard } from '~/components/LogoCard'
-import { TamaguiExamplesCode } from '~/components/TamaguiExamples'
-import { ExampleAnimations } from '../site/home/HomeAnimations'
 import { Preview } from '~/components/Preview'
 import { ProductCard } from '~/components/ProductCard'
+import { TamaguiExamplesCode } from '~/components/TamaguiExamples'
 import { BentoCard } from '../bento/BentoCard'
+import { ExampleAnimations } from '../site/home/HomeAnimations'
+
+if (!React.version.startsWith('19')) {
+  console.error(`\n\n\n\Not on React 19 ❌\n\n\n\n`)
+}
 
 const IntroParagraph = ({ children, large, disableUnwrapText, ...props }: any) => {
   return (
@@ -182,7 +186,7 @@ const TableHighlight = styled(YStack, {
   bg: '$yellow1',
 })
 
-export const components = {
+const componentsIn = {
   Tabs: CustomTabs,
   InlineTabs: InlineTabs,
 
@@ -775,6 +779,53 @@ export const components = {
     )
   },
 }
+
+export class ErrorBoundary extends React.Component<{ children: any; name: string }> {
+  state = { hasError: false }
+
+  static getDerivedStateFromError(error) {
+    console.error('MDXComponent.error', error)
+    // Update state so the next render will show the fallback UI.
+    return { hasError: true }
+  }
+
+  componentDidCatch(error, info) {
+    // Example "componentStack":
+    //   in ComponentThatThrows (created by App)
+    //   in ErrorBoundary (created by App)
+    //   in div (created by App)
+    //   in App
+    console.error('MDXComponent.error', this.props.name, error, info)
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return null
+    }
+    return this.props.children
+  }
+}
+
+export const components = Object.fromEntries(
+  Object.entries(componentsIn).map(([key, Component]) => {
+    const out = (props) => {
+      // adds error boundary here as these errors are stupid to debug
+      return (
+        <ErrorBoundary name={key}>
+          {/* @ts-expect-error */}
+          <Component {...props} />
+        </ErrorBoundary>
+      )
+    }
+
+    // inherit static props
+    for (const cKey in Component) {
+      out[cKey] = Component[cKey]
+    }
+
+    return [key, out]
+  })
+)
 
 const LinkHeading = ({ id, children, ...props }: { id: string } & XStackProps) => (
   <XStack

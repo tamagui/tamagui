@@ -10,7 +10,7 @@ class TabsStore {
 
 function TabsComponent(props: TabsProps) {
   const router = useRouter()
-  const search = useLocalSearchParams()
+  const query = useLocalSearchParams()
   const store = useStore(TabsStore)
 
   const id = props.id || 'value'
@@ -20,15 +20,12 @@ function TabsComponent(props: TabsProps) {
     const url = new URL(location.href)
     url.searchParams.set(id, newValue)
     url.hash = '' // having this set messes with the scroll
-    router.replace(url)
-    //   , undefined, {
-    //   scroll: false,
-    //   shallow: true,
-    // })
+    router.replace(url, {
+      scroll: false,
+    })
   }
 
-  const value =
-    typeof search[id] === 'string' ? (search[id] as string) : props.defaultValue
+  const value = typeof query[id] === 'string' ? (query[id] as string) : props.defaultValue
 
   return (
     <Tabs
