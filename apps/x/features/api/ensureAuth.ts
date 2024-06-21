@@ -1,5 +1,6 @@
 import { setupCors } from './cors'
 import { getSupabaseServerClient } from './getSupabaseServerClient'
+import { redirect } from './redirect'
 
 /**
  * makes a supabase instance for the current user and returns a 401 if there's no user
@@ -23,7 +24,7 @@ export const ensureAuth = async ({
 
   if (!session || !user) {
     if (shouldRedirect) {
-      throw Response.redirect(
+      throw redirect(
         `/login?${new URLSearchParams({
           redirect_to: req.url ?? '',
         }).toString()}`,

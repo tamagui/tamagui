@@ -1,6 +1,7 @@
 import type { Endpoint } from 'vxs'
 import { ensureAccess } from '~/features/api/ensureAccess'
 import { ensureAuth } from '~/features/api/ensureAuth'
+import { getQuery } from '~/features/api/getQuery'
 import { getBentoCode, supabaseAdmin } from '~/features/auth/supabaseAdmin'
 
 export const GET: Endpoint = async (req) => {
@@ -15,16 +16,13 @@ export const GET: Endpoint = async (req) => {
     }
   )
 
-  const url = new URL(req.url)
+  const query = getQuery(req)
 
-  console.warn('TODODOODO')
-
-  const slugsArray = [url.searchParams.get('slug')]
-  // const slugsArray = Array.isArray(req.query.slug)
-  //   ? req.query.slug
-  //   : typeof req.query.slug === 'string'
-  //     ? [req.query.slug]
-  //     : []
+  const slugsArray = Array.isArray(query.slug)
+    ? query.slug
+    : typeof query.slug === 'string'
+      ? [query.slug]
+      : []
 
   const codePath = slugsArray.join('/')
 

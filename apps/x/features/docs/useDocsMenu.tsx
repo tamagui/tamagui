@@ -1,11 +1,12 @@
-import React, { useEffect } from 'react'
+import React, { startTransition, useEffect } from 'react'
 
 import { allNotPending } from './docsRoutes'
-import { usePathname } from 'vxs'
+import { usePathname, useRouter } from 'vxs'
 
 export const useDocsMenu = () => {
   const [open, setOpen] = React.useState(false)
   const pathname = usePathname()
+  const router = useRouter()
   let currentPath = pathname
   let documentVersion = ''
 
@@ -25,15 +26,14 @@ export const useDocsMenu = () => {
     next = allNotPending[++nextIndex]
   }
 
-  // useEffect(() => {
-  //   const handleRouteChange = () => {
-  //     setOpen(false)
-  //   }
-  //   router.events.on('routeChangeStart', handleRouteChange)
-  //   return () => {
-  //     router.events.off('routeChangeStart', handleRouteChange)
-  //   }
-  // }, [router.events])
+  // on route change close menu
+  useEffect(() => {
+    return router.subscribe(() => {
+      startTransition(() => {
+        setOpen(false)
+      })
+    })
+  }, [])
 
   return {
     open,

@@ -37,7 +37,7 @@ export async function ensureAccess(
      * throws and returns 403 if no bento access
      */
     checkForBentoAccess?: boolean
-  }
+  } = {}
 ): Promise<PayloadShape> {
   const oldJwt = getCookie(req.headers, JWT_NAME)
   if (oldJwt) {

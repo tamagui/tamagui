@@ -181,7 +181,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
 
           <SearchButton size="$2" br="$10" elevation="$0.5" />
 
-          <YStack $md={{ display: 'none' }}>
+          <YStack>
             <Link target="_blank" href="https://github.com/tamagui/tamagui">
               <TooltipSimple delay={0} restMs={25} label="Github">
                 <YStack p="$2" opacity={0.9} hoverStyle={{ opacity: 1 }}>

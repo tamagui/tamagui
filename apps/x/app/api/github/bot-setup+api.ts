@@ -1,29 +1,32 @@
 import { apiRoute } from '~/features/api/apiRoute'
 import { ensureAuth } from '~/features/api/ensureAuth'
+import { getQuery } from '~/features/api/getQuery'
+import { redirect } from '~/features/api/redirect'
 import { supabaseAdmin } from '~/features/auth/supabaseAdmin'
 
 // is called after bot is installed
 export default apiRoute(async (req) => {
   const { supabase } = await ensureAuth({ req })
+  const query = getQuery(req)
 
   let state: number
   let installationId: number
 
   // example: installation_id=00000000&setup_action=install&state=foobar
-  if (typeof req.query.installation_id !== 'string') {
+  if (typeof query.installation_id !== 'string') {
     return Response.json({ message: `installation_id is not provided` }, { status: 400 })
   }
 
-  installationId = Number(req.query.installation_id)
+  installationId = Number(query.installation_id)
   if (Number.isNaN(installationId)) {
     return Response.json({ message: `installation_id is not a number` }, { status: 400 })
   }
 
-  if (typeof req.query.state !== 'string') {
+  if (typeof query.state !== 'string') {
     return Response.json({ message: `state is not provided` }, { status: 400 })
   }
 
-  state = Number(req.query.state)
+  state = Number(query.state)
   if (Number.isNaN(state)) {
     return Response.json({ message: `state is not a number` }, { status: 400 })
   }
@@ -63,7 +66,7 @@ export default apiRoute(async (req) => {
     throw error
   }
 
-  return Response.redirect(
+  return redirect(
     `/account/items?${new URLSearchParams({
       github_app_installed: '1',
     })}`
