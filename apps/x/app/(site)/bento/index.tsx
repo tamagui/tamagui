@@ -82,7 +82,7 @@ class BentoStore {
   heroHeight = 800
 }
 
-export default function BentoPage(props: ProComponentsProps) {
+export default function BentoPage() {
   const data = useLoader(loader)
   const store = useStore(BentoStore)
 
@@ -144,7 +144,7 @@ export default function BentoPage(props: ProComponentsProps) {
               store.heroHeight = e.nativeEvent.layout.height
             }}
           >
-            <Hero mainProduct={props.bento} />
+            <Hero mainProduct={data.bento} />
             {/* <YStack pos="relative" zi={10000}>
             <ContainerLarge>
               <YStack pos="absolute" t={-50} r={80} rotate="-10deg">

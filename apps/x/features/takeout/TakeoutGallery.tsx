@@ -142,10 +142,12 @@ export default function TakeoutGallery() {
 
         <TakeoutImage
           index={takeoutWebImageIdx}
-          fill
           src={takeoutImages[takeoutWebImageIdx].src}
           alt={takeoutImages[takeoutWebImageIdx].alt}
           style={{ objectFit: 'cover', objectPosition: 'center top' }}
+          pos="absolute"
+          w="100%"
+          h="100%"
           wrapperProps={{
             flex: 2,
             position: 'relative',
@@ -161,10 +163,12 @@ export default function TakeoutGallery() {
 
         <TakeoutImage
           index={takeoutAndroidImageIdx}
-          fill
           src={takeoutImages[takeoutAndroidImageIdx].src}
           alt={takeoutImages[takeoutAndroidImageIdx].alt}
           style={{ objectFit: 'cover', objectPosition: 'center top' }}
+          pos="absolute"
+          w="100%"
+          h="100%"
           wrapperProps={{
             flex: 1,
             position: 'relative',
@@ -285,7 +289,7 @@ const ImageGallery = () => {
             <Dialog.Close asChild>
               <Button
                 position="absolute"
-                top="$5"
+                top="$6"
                 right="$6"
                 size="$3"
                 circular
@@ -334,17 +338,19 @@ const ImagesCarousel = () => {
       <AnimatePresence enterVariant={enterVariant} exitVariant={exitVariant}>
         <YStackEnterable
           key={store.galleryImageIdx}
-          animation="100ms"
+          animation="medium"
           x={0}
           opacity={1}
           width="100vw"
           height="100vh"
+          pos="absolute"
         >
           <Image
             key={store.galleryImageIdx}
             src={currentImage.src}
             alt={currentImage.alt}
-            fill
+            width="100%"
+            height="100%"
             style={{
               objectFit: 'contain',
             }}

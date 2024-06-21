@@ -638,7 +638,7 @@ export default function TakeoutPage() {
                   <YStack
                     p="$6"
                     px="$8"
-                    className="blur-8"
+                    // className="blur-8"
                     elevation="$10"
                     py="$8"
                     gap="$5"
@@ -666,50 +666,13 @@ export default function TakeoutPage() {
                     />
 
                     <Paragraph size="$7" $sm={{ size: '$6' }} fow="400">
-                      TakeoutBot is a Github bot that sends PRs as we improve the starter.
-                      This is done with a few git commands, scripts and an architecture
-                      that tries to avoid the worst of merge conflicts.
+                      Install our Github bot to get PRs as we improve the starter. This is
+                      done with a few-step script that uses git and an architecture with a
+                      few strategies in place to avoid merge conflicts. As you diverge, we
+                      can't be perfect at sending updates, but we have an ignorefile you
+                      can configure and the PRs can be a nice notification that we've
+                      upgraded versions in a way that works.
                     </Paragraph>
-
-                    <Paragraph size="$6" $sm={{ size: '$5' }} fow="400">
-                      As you diverge we can't be perfect at sending updates, but we have
-                      an ignorefile you can configure, and if you diverge enough it's
-                      still a nice reference, as we ensure dependency upgrades work across
-                      all listed features.
-                    </Paragraph>
-
-                    <ThemeTintAlt>
-                      <Paragraph size="$6" $sm={{ size: '$5' }} fow="400">
-                        Here's some things we've been working or are planning:
-                      </Paragraph>
-                    </ThemeTintAlt>
-
-                    <ThemeTintAlt>
-                      <XStack tag="ul" fw="wrap" gap="$5" my="$4">
-                        <Bullet status="done">Storybook</Bullet>
-                        <Bullet status="done">tRPC</Bullet>
-                        <Bullet status="done">Apple & Google OAuth</Bullet>
-                        <Bullet status="done">Screens + Components generators</Bullet>
-                        <Bullet status="done">Reanimated</Bullet>
-                        <Bullet status="building">Notifications</Bullet>
-                        <Bullet status="building">Maestro integration tests</Bullet>
-                        <Bullet status="building">Layout animations</Bullet>
-                        <Bullet status="building">Tamagui CLI: Doctor</Bullet>
-                        <Bullet status="building">Tamagui CLI: Upgrade</Bullet>
-                        <Bullet>Playwright integration tests</Bullet>
-                        <Bullet>Unified RN and web testing tools</Bullet>
-                        <Bullet>Improved CI/CD and caching</Bullet>
-                        <Bullet>Generator for MDX support</Bullet>
-                        <Bullet>Generator for Replicache support</Bullet>
-                        <Bullet>Generators for Expo Deep links</Bullet>
-                        <Bullet>Generator for native modules</Bullet>
-                        <Bullet>Million.js opt-in and configuration</Bullet>
-                        <Bullet>Virtual lists, swipeable + sorting</Bullet>
-                        <Bullet>Suggest more in the #takeout channel</Bullet>
-                      </XStack>
-                    </ThemeTintAlt>
-
-                    <Spacer />
                   </YStack>
                 </ThemeTint>
 

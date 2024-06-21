@@ -2,8 +2,6 @@ import { View, styled } from '@tamagui/web'
 
 import type { ImageProps, ImageType } from './types'
 
-export type { ImageProps } from './types'
-
 const StyledImage = styled(View, {
   name: 'Image',
   tag: 'img',

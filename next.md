@@ -1,3 +1,5 @@
+- AnimatePresence should just work if you change the enterStyle exitStyle dynamically in the render, no need for custom we can capture the props
+
 - popover transform origin
   - https://codesandbox.io/p/sandbox/floating-ui-react-scale-transform-origin-qv0t1c?file=%2Fsrc%2FApp.tsx%3A43%2C25
 - v2 - boxShadow
