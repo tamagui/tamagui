@@ -239,8 +239,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
       }
 
       const motiProps = {
-        animate: isExiting || componentState.unmounted ? {} : styles,
-        from: componentState.unmounted ? styles : {},
+        animate: isExiting || componentState.unmounted === true ? {} : styles,
         transition,
         usePresenceValue,
         presenceContext,

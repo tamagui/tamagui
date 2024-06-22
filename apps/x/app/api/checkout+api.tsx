@@ -1,5 +1,6 @@
 import { apiRoute } from '~/features/api/apiRoute'
 import { ensureAuth } from '~/features/api/ensureAuth'
+import { getQuery } from '~/features/api/getQuery'
 import { createOrRetrieveCustomer } from '~/features/auth/supabaseAdmin'
 import { checkDiscountEligibility } from '~/features/site/purchase/checkDiscountEligibility'
 import { stripe } from '~/features/stripe/stripe'
@@ -8,9 +9,9 @@ import { getURL } from '~/helpers/getURL'
 
 export const GET = apiRoute(async (req) => {
   const { supabase, user } = await ensureAuth({ req, shouldRedirect: true })
-  const url = new URL(req.url)
-  const product_id = url.searchParams.getAll('product_id')
-  const disable_automatic_discount = url.searchParams.get('disable_automatic_discount')
+  const query = getQuery(req)
+  const product_id = query.product_id
+  const disable_automatic_discount = query.disable_automatic_discount
 
   if (typeof product_id === 'undefined') {
     return Response.json({ error: 'no `product_id` provided' }, { status: 400 })
@@ -61,7 +62,7 @@ export const GET = apiRoute(async (req) => {
   const stripeSession = await stripe.checkout.sessions.create({
     line_items: products.data.map((product) => {
       // can use ! cause we've checked before
-      const queryPriceId = req.query[`price-${product.id}`]
+      const queryPriceId = query[`price-${product.id}`]
       let priceId =
         typeof product.default_price! === 'string'
           ? product.default_price

@@ -10,7 +10,6 @@ import React, {
   useContext,
   useEffect,
   useId,
-  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -36,6 +35,7 @@ import { log } from './helpers/log'
 import { mergeProps } from './helpers/mergeProps'
 import { setElementProps } from './helpers/setElementProps'
 import { themeable } from './helpers/themeable'
+import { useDidHydrateOnce } from './hooks/useDidHydrateOnce'
 import { mediaKeyMatch, setMediaShouldUpdate, useMedia } from './hooks/useMedia'
 import { useThemeWithState } from './hooks/useTheme'
 import type { TamaguiComponentEvents } from './interfaces/TamaguiComponentEvents'
@@ -69,7 +69,6 @@ import type {
 import { Slot } from './views/Slot'
 import { getThemedChildren } from './views/Theme'
 import { ThemeDebug } from './views/ThemeDebug'
-import { useDidHydrateOnce } from './hooks/useDidHydrateOnce'
 
 /**
  * All things that need one-time setup after createTamagui is called
@@ -924,7 +923,9 @@ export function createComponent<
       }
 
       if (state.unmounted === true && hasEnterStyle) {
-        setStateShallow({ unmounted: 'should-enter' })
+        setTimeout(() => {
+          setStateShallow({ unmounted: 'should-enter' })
+        }, 2000)
         return
       }
 

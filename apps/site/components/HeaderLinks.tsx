@@ -2,7 +2,6 @@ import { createShallowSetState, useComposedRefs } from '@tamagui/core'
 import { ThemeTintAlt } from '@tamagui/logo'
 import { ExternalLink, Figma, Paintbrush } from '@tamagui/lucide-icons'
 import { useUser } from 'hooks/useUser'
-import { useRouter } from 'next/router'
 import * as React from 'react'
 import type { LayoutRectangle } from 'react-native'
 import type { PopoverProps } from 'tamagui'
@@ -12,12 +11,9 @@ import {
   Paragraph,
   Popover,
   Separator,
-  SizableText,
-  Text,
   XStack,
   YStack,
   debounce,
-  getMedia,
   styled,
 } from 'tamagui'
 import { BentoIcon } from './BentoIcon'
@@ -285,107 +281,121 @@ const CTAHeaderLink = ({
   description: string
   excludeRoutes?: string[]
 }) => {
-  const router = useRouter()
-  const isDisabledRoute =
-    excludeRoutes?.includes('*') || excludeRoutes?.includes(router.asPath)
-  const [disabled, setDisabled] = React.useState(isDisabledRoute)
-  const [open, setOpen] = React.useState(false)
-  const [hasOpenedOnce, setHasOpenedOnce] = React.useState(false)
-
-  if (disabled && open) {
-    setOpen(false)
-  }
-
-  const openIt = () => {
-    if (getMedia().xs) return
-    setOpen(true)
-    setHasOpenedOnce(true)
-  }
-
-  // open just a touch delayed to show the animation
-  React.useEffect(() => {
-    if (open || disabled || hasOpenedOnce) return
-
-    const tm = setTimeout(openIt, 0)
-
-    return () => {
-      clearTimeout(tm)
-    }
-  }, [open, disabled])
-
-  // remember if you closed it
-  React.useEffect(() => {
-    const key = 'tkt-cta-times-close2'
-    const timesClosed = +(localStorage.getItem(key) || 0)
-    if (timesClosed > 3) {
-      setDisabled(true)
-    }
-    localStorage.setItem(key, `${timesClosed + 1}`)
-  }, [])
-
+  // disabling for now it clutters things
   return (
-    <NextLink legacyBehavior={false} prefetch={false} href={href}>
-      <Popover
-        open={open}
-        onOpenChange={(open) => {
-          if (open) {
-            openIt()
-          } else {
-            setOpen(false)
-          }
-        }}
-        offset={12}
-      >
-        <Popover.Trigger asChild>
-          <HeadAnchor
-            grid={forceShowAllLinks}
-            tag="span"
-            fontSize={24}
-            $sm={{
-              display: 'none',
-            }}
-          >
-            {icon}
-          </HeadAnchor>
-        </Popover.Trigger>
-
-        <Popover.Content
-          unstyled
-          animation={[
-            'bouncy',
-            {
-              opacity: {
-                overshootClamping: true,
-              },
-            },
-          ]}
-          enterStyle={{ y: -10, opacity: 0 }}
-          exitStyle={{ y: -10, opacity: 0 }}
-        >
-          <Popover.Arrow size="$3" />
-          <XStack
-            tag="a"
-            cur="pointer"
-            bg="$background"
-            jc="center"
-            ai="center"
-            py="$2"
-            px="$3"
-            br="$8"
-            hoverStyle={{
-              bg: '$backgroundHover',
-            }}
-            elevation="$0.25"
-          >
-            <SizableText ff="$silkscreen">{name} </SizableText>
-            <Text ff="$body" fontSize="$3" color="$color10" $sm={{ dsp: 'none' }} ml={6}>
-              {description}
-            </Text>
-          </XStack>
-        </Popover.Content>
-      </Popover>
-    </NextLink>
+    <HeadAnchor
+      grid={forceShowAllLinks}
+      tag="span"
+      fontSize={24}
+      $sm={{
+        display: 'none',
+      }}
+    >
+      {icon}
+    </HeadAnchor>
   )
+
+  // const router = useRouter()
+  // const isDisabledRoute =
+  //   excludeRoutes?.includes('*') || excludeRoutes?.includes(router.asPath)
+  // const [disabled, setDisabled] = React.useState(isDisabledRoute)
+  // const [open, setOpen] = React.useState(false)
+  // const [hasOpenedOnce, setHasOpenedOnce] = React.useState(false)
+
+  // if (disabled && open) {
+  //   setOpen(false)
+  // }
+
+  // const openIt = () => {
+  //   if (getMedia().xs) return
+  //   setOpen(true)
+  //   setHasOpenedOnce(true)
+  // }
+
+  // // open just a touch delayed to show the animation
+  // React.useEffect(() => {
+  //   if (open || disabled || hasOpenedOnce) return
+
+  //   const tm = setTimeout(openIt, 0)
+
+  //   return () => {
+  //     clearTimeout(tm)
+  //   }
+  // }, [open, disabled])
+
+  // // remember if you closed it
+  // React.useEffect(() => {
+  //   const key = 'tkt-cta-times-close2'
+  //   const timesClosed = +(localStorage.getItem(key) || 0)
+  //   if (timesClosed > 3) {
+  //     setDisabled(true)
+  //   }
+  //   localStorage.setItem(key, `${timesClosed + 1}`)
+  // }, [])
+
+  // return (
+  //   <NextLink legacyBehavior={false} prefetch={false} href={href}>
+  //     <Popover
+  //       open={open}
+  //       onOpenChange={(open) => {
+  //         if (open) {
+  //           openIt()
+  //         } else {
+  //           setOpen(false)
+  //         }
+  //       }}
+  //       offset={12}
+  //     >
+  //       <Popover.Trigger asChild>
+  //         <HeadAnchor
+  //           grid={forceShowAllLinks}
+  //           tag="span"
+  //           fontSize={24}
+  //           $sm={{
+  //             display: 'none',
+  //           }}
+  //         >
+  //           {icon}
+  //         </HeadAnchor>
+  //       </Popover.Trigger>
+
+  //       <Popover.Content
+  //         unstyled
+  //         animation={[
+  //           'bouncy',
+  //           {
+  //             opacity: {
+  //               overshootClamping: true,
+  //             },
+  //           },
+  //         ]}
+  //         enterStyle={{ y: -10, opacity: 0 }}
+  //         exitStyle={{ y: -10, opacity: 0 }}
+  //       >
+  //         <Popover.Arrow size="$3" />
+  //         <XStack
+  //           tag="a"
+  //           cur="pointer"
+  //           bg="$background"
+  //           jc="center"
+  //           ai="center"
+  //           py="$2"
+  //           px="$3"
+  //           br="$8"
+  //           hoverStyle={{
+  //             bg: '$backgroundHover',
+  //           }}
+  //           elevation="$0.25"
+  //         >
+  //           <SizableText ff="$silkscreen">{name} </SizableText>
+  //           <Text ff="$body" fontSize="$3" color="$color10" $sm={{ dsp: 'none' }} ml={6}>
+  //             {description}
+  //           </Text>
+  //         </XStack>
+  //       </Popover.Content>
+  //     </Popover>
+  //   </NextLink>
+  // )
 }
 
 const StudioIcon = () => (
