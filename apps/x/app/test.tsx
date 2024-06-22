@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { AnimatePresence, Button, Circle, H1, YStack } from 'tamagui'
+import { Button, Circle } from 'tamagui'
 
 global.shouldDebugMoti = true
 
@@ -13,7 +13,7 @@ function TestEnter() {
         debug="verbose"
         size={100}
         bg="red"
-        animation="superLazy"
+        animation="bouncy"
         hoverStyle={{
           scale: 2,
         }}

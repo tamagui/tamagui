@@ -923,9 +923,7 @@ export function createComponent<
       }
 
       if (state.unmounted === true && hasEnterStyle) {
-        setTimeout(() => {
-          setStateShallow({ unmounted: 'should-enter' })
-        }, 2000)
+        setStateShallow({ unmounted: 'should-enter' })
         return
       }
 
