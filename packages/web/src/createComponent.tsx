@@ -1544,7 +1544,7 @@ export function spacedChildren(props: SpacedChildrenProps) {
 
   const len = childrenList.length
   if (len <= 1 && !isZStack && !childrenList[0]?.['type']?.['shouldForwardSpace']) {
-    return childrenList
+    return children
   }
 
   const final: React.ReactNode[] = []
@@ -1560,7 +1560,7 @@ export function spacedChildren(props: SpacedChildrenProps) {
         space,
         spaceFlex,
         separator,
-        key: child.key,
+        key: child.key || index,
       } as any)
     }
 
