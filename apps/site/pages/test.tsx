@@ -51,6 +51,7 @@ function TestPage() {
         flex: 1,
       }}
     >
+      {/* <HomeGlow /> */}
       <TestEnter />
 
       {/* <PopoverDemo /> */}
@@ -321,6 +322,7 @@ const DebugNestedThemeChange = () => {
 import { TooltipDemo } from '@tamagui/demos'
 import { memo, useEffect } from 'react'
 import { Circle, XStack } from 'tamagui'
+import { HomeGlow } from '@components/HomeGlow'
 
 const TestCircle = memo(() => {
   const [mounted, setMounted] = useState<'start' | 'animate' | 'done'>('start')
