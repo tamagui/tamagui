@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "@discordjs/core": "^0.6.0",
-    "@docsearch/react": "^3.5.2",
+    "@docsearch/react": "^3.6.0",
     "@github/mini-throttle": "^2.1.0",
     "@leeoniya/ufuzzy": "^1.0.14",
     "@monaco-editor/react": "^4.2.2",

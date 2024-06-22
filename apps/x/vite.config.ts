@@ -21,6 +21,7 @@ const optimizeInterop = ['expo-splash-screen']
 
 const include = [
   ...optimizeInterop,
+  '@docsearch/react',
   '@leeoniya/ufuzzy',
   'react-hook-form',
   '@github/mini-throttle',
@@ -60,6 +61,11 @@ export default {
     alias: {
       '~': import.meta.dirname,
       'react-native-svg': '@tamagui/react-native-svg',
+      // bugfix docsearch/react, weird af everything here
+      '@docsearch/react': (import.meta.resolve?.('@docsearch/react') || '').replace(
+        'file:/',
+        ''
+      ),
     },
 
     // todo automate, probably can just dedupe all package.json deps?

@@ -1558,20 +1558,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@docsearch/css@npm:3.5.2":
-  version: 3.5.2
-  resolution: "@docsearch/css@npm:3.5.2"
-  checksum: 10/a4d3cdeb75d2811eae6edc45f69a8e8490d3a639c74d235c6c952ea7e7f75591f541924f854a69bbf5fba9ab956ac3b3a1114a6badd3a2d461faca3166cfc457
+"@docsearch/css@npm:3.6.0":
+  version: 3.6.0
+  resolution: "@docsearch/css@npm:3.6.0"
+  checksum: 10/ab340fbb0001259607346dfd11c7736ee7935df0485e43f48ff9c55d1a420e2a632deca46adfdf1ba4816bdca712ac71c2c46afb5ae87ba6f4fd667f28f34764
   languageName: node
   linkType: hard
 
-"@docsearch/react@npm:^3.5.2":
-  version: 3.5.2
-  resolution: "@docsearch/react@npm:3.5.2"
+"@docsearch/react@npm:^3.6.0":
+  version: 3.6.0
+  resolution: "@docsearch/react@npm:3.6.0"
   dependencies:
     "@algolia/autocomplete-core": "npm:1.9.3"
     "@algolia/autocomplete-preset-algolia": "npm:1.9.3"
-    "@docsearch/css": "npm:3.5.2"
+    "@docsearch/css": "npm:3.6.0"
     algoliasearch: "npm:^4.19.1"
   peerDependencies:
     "@types/react": ">= 16.8.0 < 19.0.0"
@@ -1587,7 +1587,7 @@ __metadata:
       optional: true
     search-insights:
       optional: true
-  checksum: 10/3191dbb443625ea993480e7f4ff8189ff3ca4e8ab0c69248d61363dd32853dc7c338af9ae0e8014cc30f61ec6b94a21d7cd66f3d9128ff9def1971b6c21a6f36
+  checksum: 10/9345b37b46563cca30b0d769bb49ec70d7ffdce1cffd1850df92733083783fef55b090bfb02861a11885e82cb4505d31c6be2063b3af32184a705b1e001b9f71
   languageName: node
   linkType: hard
 
@@ -7273,7 +7273,7 @@ __metadata:
     "@babel/preset-react": "npm:^7.23.3"
     "@babel/preset-typescript": "npm:^7.23.3"
     "@discordjs/core": "npm:^0.6.0"
-    "@docsearch/react": "npm:^3.5.2"
+    "@docsearch/react": "npm:^3.6.0"
     "@github/mini-throttle": "npm:^2.1.0"
     "@leeoniya/ufuzzy": "npm:^1.0.14"
     "@monaco-editor/react": "npm:^4.2.2"
@@ -7993,7 +7993,7 @@ __metadata:
   dependencies:
     "@cyco130/vite-plugin-mdx": "npm:1.0.4"
     "@discordjs/core": "npm:^0.6.0"
-    "@docsearch/react": "npm:^3.5.2"
+    "@docsearch/react": "npm:^3.6.0"
     "@leeoniya/ufuzzy": "npm:^1.0.14"
     "@react-navigation/native": "npm:6.1.17"
     "@react-three/drei": "npm:^9.105.6"

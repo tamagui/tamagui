@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@discordjs/core": "^0.6.0",
-    "@docsearch/react": "^3.5.2",
+    "@docsearch/react": "^3.6.0",
     "@leeoniya/ufuzzy": "^1.0.14",
     "@react-navigation/native": "6.1.17",
     "@react-three/drei": "^9.105.6",

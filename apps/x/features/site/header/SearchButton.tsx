@@ -29,7 +29,7 @@ export const SearchButton = memo((props: ButtonProps) => {
   return (
     <TooltipSimple groupId="header-actions-search" label="Search">
       <Button
-        accessibilityLabel="Search docs"
+        aria-label="Search docs"
         ref={ref as any}
         onPress={onOpen}
         icon={SearchIcon}
