@@ -1,38 +1,22 @@
-import { useEffect } from 'react'
+import { useEffect, useState, useSyncExternalStore } from 'react'
 
-let didHydrateOnce = false
-
-export function useDidHydrateOnceRoot() {
-  if (process.env.TAMAGUI_TARGET !== 'web') {
-    return true
-  }
-
-  if (!process.env.TAMAGUI_DISABLE_HYDRATION_OPTIMIZATION) {
-    useEffect(() => {
-      const tm = setInterval(() => {
-        if (Date.now() - last > 150) {
-          didHydrateOnce = true
-          clearInterval(tm)
-        }
-      }, 16)
-      return () => {
-        clearInterval(tm)
-      }
-    }, [])
-  }
+const emptySubscribe = () => {
+  return () => {}
 }
-
-let last = Date.now()
+const getClientSnapshot = () => true
+const getServerSnapshot = () => false
 
 export function useDidHydrateOnce() {
   if (process.env.TAMAGUI_TARGET !== 'web') {
     return true
   }
-  if (!process.env.TAMAGUI_DISABLE_HYDRATION_OPTIMIZATION) {
-    if (!didHydrateOnce) {
-      last = Date.now()
-    }
-    return didHydrateOnce
+  // opt into async hydration, can have better initial mount perf but worse ongoing (a bit unintuitively)
+  if (process.env.TAMAGUI_ASYNC_IS_HYDRATED) {
+    const [state, setState] = useState(false)
+    useEffect(() => {
+      setState(true)
+    }, [])
+    return state
   }
-  return false
+  return useSyncExternalStore(emptySubscribe, getClientSnapshot, getServerSnapshot)
 }
