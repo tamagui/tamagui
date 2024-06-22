@@ -196,19 +196,21 @@ export const useComponentState = (
 
   const hasEnterState = hasEnterStyle || isEntering
 
-  const didHydrateOnce = useDidHydrateOnce()
+  // this can be conditional because its only ever needed with animations
+  const didHydrateOnce = willBeAnimated ? useDidHydrateOnce() : true
+  const shouldEnter = hasEnterState || (!didHydrateOnce && hasRNAnimation)
+  const shouldEnterFromUnhydrated = isWeb && !didHydrateOnce
 
-  const initialState =
-    hasEnterState || (!didHydrateOnce && hasRNAnimation)
-      ? // on the very first render we switch all spring animation drivers to css rendering
-        // this is because we need to use css variables, which they don't support to do proper SSR
-        // without flickers of the wrong colors.
-        // but once we do that initial hydration and we are in client side rendering mode,
-        // we can avoid the extra re-render on mount
-        isWeb && !didHydrateOnce
-        ? defaultComponentState
-        : defaultComponentStateShouldEnter
-      : defaultComponentStateMounted
+  const initialState = shouldEnter
+    ? // on the very first render we switch all spring animation drivers to css rendering
+      // this is because we need to use css variables, which they don't support to do proper SSR
+      // without flickers of the wrong colors.
+      // but once we do that initial hydration and we are in client side rendering mode,
+      // we can avoid the extra re-render on mount
+      shouldEnterFromUnhydrated
+      ? defaultComponentState
+      : defaultComponentStateShouldEnter
+    : defaultComponentStateMounted
 
   // will be nice to deprecate half of these:
   const disabled = isDisabled(props)
