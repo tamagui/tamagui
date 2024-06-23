@@ -22,7 +22,7 @@ export const createMediaStyle = (
   negate?: boolean,
   priority?: number
 ): MediaStyleObject => {
-  const { property, identifier, rules } = styleObject
+  const [property, _value, identifier, _pseudo, rules] = styleObject
   const conf = getConfig()
   const enableMediaPropOrder = conf.settings.mediaPropOrder
   const isTheme = type === 'theme'
@@ -129,9 +129,5 @@ export const createMediaStyle = (
     }
   }
 
-  return {
-    property,
-    rules: [styleRule],
-    identifier: nextIdentifier,
-  }
+  return [property, undefined, nextIdentifier, undefined, [styleRule]]
 }

@@ -7,6 +7,10 @@ import {
   useIsomorphicLayoutEffect,
 } from '@tamagui/constants'
 import {
+  StyleObjectIdentifier,
+  StyleObjectProperty,
+  StyleObjectPseudo,
+  StyleObjectRules,
   stylePropsText,
   stylePropsTransform,
   tokenCategories,
@@ -67,9 +71,6 @@ import { getPropMappedFontFamily, propMapper } from './propMapper'
 import { pseudoDescriptors, pseudoPriorities } from './pseudoDescriptors'
 import { skipProps } from './skipProps'
 import { transformsToString } from './transformsToString'
-
-// bugfix for some reason it gets reset
-const IS_STATIC = process.env.IS_STATIC === 'is_static'
 
 export type SplitStyles = ReturnType<typeof getSplitStyles>
 
@@ -185,8 +186,17 @@ export const getSplitStyles: StyleSplitter = (
   /**
    * Not the biggest fan of creating an object but it is a nice API
    */
+  let curPropsState
   const styleState: GetStyleState = {
-    curProps: {},
+    // this should go away, right now we're doing really crazy cumulative props,
+    // as variants are resolved basically we go back and merge the results onto
+    // the curProps, so that each following variant function recieves the current
+    // "styles" with variants expanded. powerful, but i think too fancy
+    // there's some part of the ui kit that depends on it we'd have to find and fix
+    get curProps() {
+      curPropsState ||= {}
+      return curPropsState
+    },
     classNames,
     conf,
     props,
@@ -221,24 +231,32 @@ export const getSplitStyles: StyleSplitter = (
     console.groupEnd()
   }
 
+  const { asChild } = props
+  const { accept } = staticConfig
+  const { noSkip, disableExpandShorthands, noExpand } = styleProps
+  const { webContainerType } = conf.settings
+  const parentVariants = parentStaticConfig?.variants
+
   for (const keyOg in props) {
     let keyInit = keyOg
-    let valInit = props[keyOg]
+    let valInit = props[keyInit]
 
-    if (
-      staticConfig.accept &&
-      (staticConfig.accept[keyInit] === 'style' ||
-        staticConfig.accept[keyInit] === 'textStyle') &&
-      typeof valInit === 'object'
-    ) {
-      const styleObject = getSubStyle(
-        styleState,
-        keyInit,
-        valInit,
-        styleProps.noClassNames
-      )
-      viewProps[keyInit] = styleObject
-      continue
+    // for custom accept sub-styles
+    if (accept) {
+      const accepted = accept[keyInit]
+      if (
+        (accepted === 'style' || accepted === 'textStyle') &&
+        valInit &&
+        typeof valInit === 'object'
+      ) {
+        viewProps[keyInit] = getSubStyle(
+          styleState,
+          keyInit,
+          valInit,
+          styleProps.noClassNames
+        )
+        continue
+      }
     }
 
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
@@ -248,7 +266,7 @@ export const getSplitStyles: StyleSplitter = (
     }
 
     // normalize shorthands up front
-    if (!styleProps.disableExpandShorthands) {
+    if (!disableExpandShorthands) {
       if (keyInit in shorthands) {
         keyInit = shorthands[keyInit]
       }
@@ -259,25 +277,27 @@ export const getSplitStyles: StyleSplitter = (
 
     if (process.env.TAMAGUI_TARGET === 'web') {
       // skip the webViewFlexCompatStyles when asChild on web
-      if (props.asChild && webViewFlexCompatStyles[keyInit] === valInit) {
+      if (asChild && webViewFlexCompatStyles[keyInit] === valInit) {
         continue
       }
     }
 
     // keyInit === 'style' is handled in skipProps
-    if (keyInit in skipProps && !styleProps.noSkip && !isHOC) {
+    if (keyInit in skipProps && !noSkip && !isHOC) {
       if (keyInit === 'group') {
         if (process.env.TAMAGUI_TARGET === 'web') {
           // add container style
           const identifier = `t_group_${valInit}`
-          const containerType = conf.settings.webContainerType || 'inline-size'
-          const containerCSS = {
+          const containerType = webContainerType || 'inline-size'
+          const containerCSS = [
+            'continer',
+            undefined,
             identifier,
-            property: 'container',
-            rules: [
+            undefined,
+            [
               `.${identifier} { container-name: ${valInit}; container-type: ${containerType}; }`,
             ],
-          }
+          ] satisfies StyleObject
           addStyleToInsertRules(rulesToInsert, containerCSS)
         }
       }
@@ -287,6 +307,7 @@ export const getSplitStyles: StyleSplitter = (
     const valInitType = typeof valInit
     const isValidStyleKeyInit = isValidStyleKey(keyInit, staticConfig)
 
+    // this is all for partially optimized (not flattened)... maybe worth removing?
     if (process.env.TAMAGUI_TARGET === 'web') {
       if (isValidStyleKeyInit && valInitType === 'string') {
         if (valInit[0] === '_') {
@@ -315,12 +336,12 @@ export const getSplitStyles: StyleSplitter = (
       }
     }
 
-    if (valInit !== props[keyInit]) {
-      // we collect updated props as we go, for functional variants later
-      // functional variants receive a prop object that represents the current
-      // props at that point in the loop
-      styleState.curProps[keyInit] = valInit
-    }
+    // if (valInit !== props[keyInit]) {
+    //   // we collect updated props as we go, for functional variants later
+    //   // functional variants receive a prop object that represents the current
+    //   // props at that point in the loop
+    //   styleState.curProps[keyInit] = valInit
+    // }
 
     if (process.env.TAMAGUI_TARGET === 'native') {
       if (!isValidStyleKeyInit) {
@@ -339,6 +360,7 @@ export const getSplitStyles: StyleSplitter = (
       }
     }
 
+    // TODO deprecate dataSet be sure we map on native from data-
     if (keyInit === 'dataSet') {
       for (const keyInit in valInit) {
         viewProps[`data-${hyphenate(keyInit)}`] = valInit[keyInit]
@@ -347,7 +369,7 @@ export const getSplitStyles: StyleSplitter = (
     }
 
     if (process.env.TAMAGUI_TARGET === 'web') {
-      if (!styleProps.noExpand) {
+      if (!noExpand) {
         /**
          * Copying in the accessibility/prop handling from react-native-web here
          * Keeps it in a single loop, avoids dup de-structuring to avoid bundle size
@@ -486,25 +508,19 @@ export const getSplitStyles: StyleSplitter = (
     }
 
     const isStyleProp =
-      isValidStyleKeyInit ||
-      isMediaOrPseudo ||
-      (isVariant && !styleProps.noExpand) ||
-      isShorthand
+      isValidStyleKeyInit || isMediaOrPseudo || (isVariant && !noExpand) || isShorthand
 
-    if (
-      isStyleProp &&
-      (props.asChild === 'except-style' || props.asChild === 'except-style-web')
-    ) {
+    if (isStyleProp && (asChild === 'except-style' || asChild === 'except-style-web')) {
       continue
     }
 
     const shouldPassProp =
       !isStyleProp ||
       // is in parent variants
-      (isHOC && parentStaticConfig?.variants && keyInit in parentStaticConfig.variants) ||
+      (isHOC && parentVariants && keyInit in parentVariants) ||
       inlineProps?.has(keyInit)
 
-    const parentVariant = parentStaticConfig?.variants?.[keyInit]
+    const parentVariant = parentVariants?.[keyInit]
     const isHOCShouldPassThrough = Boolean(
       isHOC &&
         (isShorthand ||
@@ -571,7 +587,7 @@ export const getSplitStyles: StyleSplitter = (
     }
 
     // after shouldPassThrough
-    if (!styleProps.noSkip) {
+    if (!noSkip) {
       if (keyInit in skipProps) {
         if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
           console.groupEnd()
@@ -649,7 +665,10 @@ export const getSplitStyles: StyleSplitter = (
       isMediaOrPseudo = Boolean(isMedia || isPseudo)
       isVariant = variants && key in variants
 
-      if (inlineProps?.has(key) || (IS_STATIC && inlineWhenUnflattened?.has(key))) {
+      if (
+        inlineProps?.has(key) ||
+        (process.env.IS_STATIC === 'is_static' && inlineWhenUnflattened?.has(key))
+      ) {
         viewProps[key] = props[key] ?? val
       }
 
@@ -690,10 +709,10 @@ export const getSplitStyles: StyleSplitter = (
           continue
         }
 
-        if (!shouldDoClasses || IS_STATIC) {
+        if (!shouldDoClasses || process.env.IS_STATIC === 'is_static') {
           pseudos ||= {}
           pseudos[key] ||= {}
-          if (IS_STATIC) {
+          if (process.env.IS_STATIC === 'is_static') {
             Object.assign(pseudos[key], pseudoStyleObject)
             continue
           }
@@ -712,7 +731,7 @@ export const getSplitStyles: StyleSplitter = (
           }
 
           for (const psuedoStyle of pseudoStyles) {
-            const fullKey = `${psuedoStyle.property}${PROP_SPLIT}${descriptor.name}`
+            const fullKey = `${psuedoStyle[StyleObjectProperty]}${PROP_SPLIT}${descriptor.name}`
             if (fullKey in usedKeys) continue
 
             addStyleToInsertRules(rulesToInsert, psuedoStyle)
@@ -720,7 +739,7 @@ export const getSplitStyles: StyleSplitter = (
               transforms,
               classNames,
               fullKey,
-              psuedoStyle.identifier,
+              psuedoStyle[StyleObjectIdentifier],
               isMediaOrPseudo,
               true
             )
@@ -881,12 +900,19 @@ export const getSplitStyles: StyleSplitter = (
             if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
               log(`📺 media style:`, out)
             }
-            const fullKey = `${style.property}${PROP_SPLIT}${mediaKeyShort}${
-              style.pseudo || ''
+            const fullKey = `${style[StyleObjectProperty]}${PROP_SPLIT}${mediaKeyShort}${
+              style[StyleObjectPseudo] || ''
             }`
             if (fullKey in usedKeys) continue
             addStyleToInsertRules(rulesToInsert, out as any)
-            mergeClassName(transforms, classNames, fullKey, out.identifier, true, true)
+            mergeClassName(
+              transforms,
+              classNames,
+              fullKey,
+              out[StyleObjectIdentifier],
+              true,
+              true
+            )
           }
         } else {
           const mediaStyle = getSubStyle(styleState, key, val, true)
@@ -1023,8 +1049,7 @@ export const getSplitStyles: StyleSplitter = (
       fixStyles(styleState.style)
 
       // shouldn't this be better? but breaks some tests weirdly, need to check
-      // if (isWeb && !staticConfig.isReactNative) {
-      if (isWeb && !staticConfig.isReactNative) {
+      if (isWeb && !isReactNative) {
         styleToCSS(styleState.style)
       }
     }
@@ -1095,7 +1120,7 @@ export const getSplitStyles: StyleSplitter = (
         const atomic = getStylesAtomic(styleState.style)
 
         for (const atomicStyle of atomic) {
-          const key = atomicStyle.property
+          const [key, value, identifier] = atomicStyle
           const isAnimatedAndAnimateOnly =
             styleProps.isAnimated &&
             styleProps.noClassNames &&
@@ -1113,18 +1138,11 @@ export const getSplitStyles: StyleSplitter = (
             retainedStyles[key] = styleState.style[key]
           } else if (nonAnimatedAnimateOnly) {
             retainedStyles ||= {}
-            retainedStyles[key] = atomicStyle.value
+            retainedStyles[key] = value
             shouldRetain = true
           } else {
             addStyleToInsertRules(rulesToInsert, atomicStyle)
-            mergeClassName(
-              transforms,
-              classNames,
-              key,
-              atomicStyle.identifier,
-              false,
-              true
-            )
+            mergeClassName(transforms, classNames, key, identifier, false, true)
           }
         }
 
@@ -1135,7 +1153,7 @@ export const getSplitStyles: StyleSplitter = (
           console.groupEnd()
         }
 
-        if (shouldRetain || !IS_STATIC) {
+        if (shouldRetain || !(process.env.IS_STATIC === 'is_static')) {
           styleState.style = retainedStyles || {}
         }
       }
@@ -1152,11 +1170,13 @@ export const getSplitStyles: StyleSplitter = (
           const identifier = `_transform${hash}`
           if (isClient && !insertedTransforms[identifier]) {
             const rule = `.${identifier} { transform: ${val}; }`
-            addStyleToInsertRules(rulesToInsert, {
+            addStyleToInsertRules(rulesToInsert, [
+              namespace,
+              val,
               identifier,
-              rules: [rule],
-              property: namespace,
-            } as StyleObject)
+              undefined,
+              [rule],
+            ] satisfies StyleObject)
           }
           classNames[namespace] = identifier
         }
@@ -1268,7 +1288,6 @@ export const getSplitStyles: StyleSplitter = (
     mediaGroups,
   }
 
-  const asChild = props.asChild
   const asChildExceptStyleLike =
     asChild === 'except-style' || asChild === 'except-style-web'
 
@@ -1480,11 +1499,11 @@ export const useSplitStyles: StyleSplitter = (a, b, c, d, e, f, g, h, i, j) => {
 
 function addStyleToInsertRules(rulesToInsert: RulesToInsert, styleObject: StyleObject) {
   if (process.env.TAMAGUI_TARGET === 'web') {
-    if (!shouldInsertStyleRules(styleObject.identifier)) {
+    if (!shouldInsertStyleRules(styleObject[StyleObjectIdentifier])) {
       return
     }
     if (!process.env.TAMAGUI_REACT_19) {
-      updateRules(styleObject.identifier, styleObject.rules)
+      updateRules(styleObject[StyleObjectIdentifier], styleObject[StyleObjectRules])
     }
     rulesToInsert.push(styleObject)
   }

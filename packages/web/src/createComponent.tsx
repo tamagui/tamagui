@@ -1,6 +1,11 @@
 import { composeRefs } from '@tamagui/compose-refs'
 import { isClient, isServer, isWeb } from '@tamagui/constants'
-import { composeEventHandlers, validStyles } from '@tamagui/helpers'
+import {
+  StyleObjectIdentifier,
+  StyleObjectRules,
+  composeEventHandlers,
+  validStyles,
+} from '@tamagui/helpers'
 import React, {
   Children,
   Fragment,
@@ -23,6 +28,7 @@ import { didGetVariableValue, setDidGetVariableValue } from './createVariable'
 import {
   defaultComponentState,
   defaultComponentStateMounted,
+  defaultComponentStateShouldEnter,
 } from './defaultComponentState'
 import {
   createShallowSetState,
@@ -34,6 +40,7 @@ import { log } from './helpers/log'
 import { mergeProps } from './helpers/mergeProps'
 import { setElementProps } from './helpers/setElementProps'
 import { themeable } from './helpers/themeable'
+import { useDidHydrateOnce } from './hooks/useDidHydrateOnce'
 import { mediaKeyMatch, setMediaShouldUpdate, useMedia } from './hooks/useMedia'
 import { useThemeWithState } from './hooks/useTheme'
 import type { TamaguiComponentEvents } from './interfaces/TamaguiComponentEvents'
@@ -194,8 +201,21 @@ export const useComponentState = (
 
   const hasEnterState = hasEnterStyle || isEntering
 
-  const initialState =
-    hasEnterState || hasRNAnimation ? defaultComponentState : defaultComponentStateMounted
+  // this can be conditional because its only ever needed with animations
+  const didHydrateOnce = willBeAnimated ? useDidHydrateOnce() : true
+  const shouldEnter = hasEnterState || (!didHydrateOnce && hasRNAnimation)
+  const shouldEnterFromUnhydrated = isWeb && !didHydrateOnce
+
+  const initialState = shouldEnter
+    ? // on the very first render we switch all spring animation drivers to css rendering
+      // this is because we need to use css variables, which they don't support to do proper SSR
+      // without flickers of the wrong colors.
+      // but once we do that initial hydration and we are in client side rendering mode,
+      // we can avoid the extra re-render on mount
+      shouldEnterFromUnhydrated
+      ? defaultComponentState
+      : defaultComponentStateShouldEnter
+    : defaultComponentStateMounted
 
   // will be nice to deprecate half of these:
   const disabled = isDisabled(props)
@@ -358,6 +378,7 @@ export function createComponent<
   const { componentName } = staticConfig
 
   let config: TamaguiInternalConfig | null = null
+
   let defaultProps = staticConfig.defaultProps
 
   onConfiguredOnce((conf) => {
@@ -808,12 +829,10 @@ export function createComponent<
     // once you set animation prop don't remove it, you can set to undefined/false
     // reason is animations are heavy - no way around it, and must be run inline here (🙅 loading as a sub-component)
     let animationStyles: any
-    if (
-      // if it supports css vars we run it on server too to get matching initial style
-      (supportsCSSVars ? willBeAnimatedClient : willBeAnimated) &&
-      useAnimations &&
-      !isHOC
-    ) {
+    const shouldUseAnimation = // if it supports css vars we run it on server too to get matching initial style
+      (supportsCSSVars ? willBeAnimatedClient : willBeAnimated) && useAnimations && !isHOC
+
+    if (shouldUseAnimation) {
       // HOOK 16... (depends on driver) (-1 if no animation, -1 if disableSSR, -1 if no context, -1 if production)
       const animations = useAnimations({
         props: propsWithAnimation,
@@ -1283,7 +1302,8 @@ export function createComponent<
           <>
             {content}
             {/* lets see if we can put a single style tag per rule for optimal de-duping */}
-            {splitStyles.rulesToInsert.map(({ rules, identifier }) => {
+            {splitStyles.rulesToInsert.map((styleObject) => {
+              const identifier = styleObject[StyleObjectIdentifier]
               return (
                 <style
                   key={identifier}
@@ -1292,7 +1312,7 @@ export function createComponent<
                   // @ts-ignore
                   precedence="default"
                 >
-                  {rules.join('\n')}
+                  {styleObject[StyleObjectRules].join('\n')}
                 </style>
               )
             })}
@@ -1544,7 +1564,7 @@ export function spacedChildren(props: SpacedChildrenProps) {
 
   const len = childrenList.length
   if (len <= 1 && !isZStack && !childrenList[0]?.['type']?.['shouldForwardSpace']) {
-    return children
+    return childrenList
   }
 
   const final: React.ReactNode[] = []
@@ -1560,7 +1580,7 @@ export function spacedChildren(props: SpacedChildrenProps) {
         space,
         spaceFlex,
         separator,
-        key: child.key || index,
+        key: child.key,
       } as any)
     }
 

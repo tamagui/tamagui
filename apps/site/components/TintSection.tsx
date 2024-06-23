@@ -1,6 +1,6 @@
 import { useOnIntersecting } from '@tamagui/demos'
 import { getTints, useTint } from '@tamagui/logo'
-import { useEffect, useMemo, useRef } from 'react'
+import { startTransition, useEffect, useMemo, useRef } from 'react'
 import type { LayoutRectangle } from 'react-native'
 import type { GetProps } from 'tamagui'
 import { XStack, YStack, styled } from 'tamagui'
@@ -40,7 +40,9 @@ export const TintSection = ({ children, index, themed, zIndex, ...props }: Props
         const tintIndex = topIndex <= 1 ? 3 : topIndex % tints.length
         setTintIndex(tintIndex)
         current = index
-        listeners.forEach((cb) => cb(topIndex, count))
+        startTransition(() => {
+          listeners.forEach((cb) => cb(topIndex, count))
+        })
       }
     },
     {
