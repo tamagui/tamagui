@@ -76,6 +76,25 @@ function AppContents(
     setTheme: React.Dispatch<React.SetStateAction<ColorScheme>>
   }
 ) {
+  const didHydrate = useDidFinishSSR()
+  const didHydrateDelayed = useDebounceValue(didHydrate, 500)
+  const [didInteract, setDidInteract] = useState(false)
+  const didInteractDelayed = useDebounceValue(didInteract, 100)
+
+  useEffect(() => {
+    const onDown = () => {
+      setDidInteract(true)
+      unlisten()
+    }
+    const unlisten = () => {
+      document.removeEventListener('mousedown', onDown, { capture: true })
+      document.removeEventListener('keydown', onDown, { capture: true })
+    }
+    document.addEventListener('mousedown', onDown, { capture: true })
+    document.addEventListener('keydown', onDown, { capture: true })
+    return unlisten
+  }, [])
+
   return (
     <>
       <Head>
@@ -86,6 +105,23 @@ function AppContents(
           }}
         />
       </Head>
+
+      {didHydrateDelayed && (
+        <>
+          <LoadCherryBomb />
+        </>
+      )}
+
+      {/* this will lazy load the font for /studio and /takeout pages */}
+      {/* load it after first interaction to avoid clogging the first click even */}
+      {didInteractDelayed && (
+        <>
+          <LoadInter900 />
+          <LoadMunro />
+          <LoadCherryBomb />
+        </>
+      )}
+
       <TamaguiProvider
         config={config}
         disableInjectCSS
