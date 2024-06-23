@@ -167,11 +167,11 @@ const HeroContents = memo(function HeroContents() {
           <H1
             ta="left"
             size="$10"
-            animation="lazy"
-            enterStyle={{
-              y: -10,
-              o: 0,
-            }}
+            // animation="lazy"
+            // enterStyle={{
+            //   y: -10,
+            //   o: 0,
+            // }}
             maw={500}
             pos="relative"
             // FOR CLS IMPORTANT TO SET EXACT HEIGHT IDK WHY LINE HEIGHT SHOULD BE STABLE
@@ -429,29 +429,30 @@ const HeroText = styled(Text, {
 })
 
 const RunsFasterTextEffects = () => {
-  const [show, setShow] = useState(false)
+  // for a fade in delay effect
+  // const [show, setShow] = useState(false)
 
-  useEffect(() => {
-    const tm = setTimeout(() => {
-      setShow(true)
-    }, 500)
-    return () => {
-      clearTimeout(tm)
-    }
-  }, [])
+  // useEffect(() => {
+  //   const tm = setTimeout(() => {
+  //     setShow(true)
+  //   }, 500)
+  //   return () => {
+  //     clearTimeout(tm)
+  //   }
+  // }, [])
 
   return (
     <YStack
       animation="lazy"
       fullscreen
-      {...(!show && {
-        y: -10,
-        o: 0,
-      })}
-      {...(show && {
-        y: 0,
-        o: 1,
-      })}
+      // {...(!show && {
+      //   y: -10,
+      //   o: 0,
+      // })}
+      // {...(show && {
+      //   y: 0,
+      //   o: 1,
+      // })}
     >
       <HeroText className="clip-text rainbow" l={-4} $sm={{ l: 0 }}>
         runs&nbsp;faster
