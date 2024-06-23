@@ -1,4 +1,3 @@
-/// <reference types="react" />
 export declare const ParentSheetContext: import("react").Context<{
     zIndex: number;
 }>;

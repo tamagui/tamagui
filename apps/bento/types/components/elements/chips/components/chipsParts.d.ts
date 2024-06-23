@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import type { ColorTokens, FontSizeTokens, SizeTokens } from 'tamagui';
 type ChipIconProps = {
     color?: ColorTokens | string;

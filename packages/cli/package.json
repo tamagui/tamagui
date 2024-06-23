@@ -49,7 +49,7 @@
     "opener": "^1.5.2",
     "prompts": "2.1.0",
     "ts-morph": "^15.1.0",
-    "typescript": "^5.4.5",
+    "typescript": "^5.5.2",
     "url": "^0.11.0",
     "vite": "6.0.0-alpha.17",
     "vite-plugin-entry-shaking": "^0.4.3",

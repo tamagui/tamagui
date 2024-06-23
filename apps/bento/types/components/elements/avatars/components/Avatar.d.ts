@@ -1,13 +1,12 @@
-/// <reference types="react" />
 import type { FontSizeTokens, SizeTokens } from 'tamagui';
 export declare const AvatarIcon: import("tamagui").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
     size?: SizeTokens | undefined;
     offset?: number | undefined;
     placement?: "top-right" | "top-left" | "bottom-right" | "bottom-left" | undefined;
 }>, "scaleIcon"> & {
-    scaleIcon?: number | undefined;
+    scaleIcon?: number;
 }, import("tamagui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & {
-    scaleIcon?: number | undefined;
+    scaleIcon?: number;
 }, import("@tamagui/web").StackStyleBase, {
     size?: SizeTokens | undefined;
     offset?: number | undefined;
@@ -27,15 +26,15 @@ export declare const Avatar: import("react").ForwardRefExoticComponent<Omit<impo
     }, import("@tamagui/web").StaticConfigPublic];
 } & {
     Content: import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | "elevation" | keyof import("@tamagui/web").StackStyleBase | "inset" | "fullscreen" | "transparent" | "hoverTheme" | "pressTheme" | "backgrounded" | "circular" | "focusTheme" | "elevate" | "bordered" | "radiused" | "padded" | "chromeless"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
-        elevation?: number | SizeTokens | undefined;
-        size?: number | SizeTokens | undefined;
+        elevation?: number | import("@tamagui/web").SizeTokens | undefined;
+        size?: number | import("@tamagui/web").SizeTokens | undefined;
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
-        inset?: number | SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+        inset?: number | import("@tamagui/web").SizeTokens | {
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -48,15 +47,15 @@ export declare const Avatar: import("react").ForwardRefExoticComponent<Omit<impo
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
     } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
-        elevation?: number | SizeTokens | undefined;
-        size?: number | SizeTokens | undefined;
+        elevation?: number | import("@tamagui/web").SizeTokens | undefined;
+        size?: number | import("@tamagui/web").SizeTokens | undefined;
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
-        inset?: number | SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+        inset?: number | import("@tamagui/web").SizeTokens | {
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -69,15 +68,15 @@ export declare const Avatar: import("react").ForwardRefExoticComponent<Omit<impo
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
     } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {
-        elevation?: number | SizeTokens | undefined;
-        size?: number | SizeTokens | undefined;
+        elevation?: number | import("@tamagui/web").SizeTokens | undefined;
+        size?: number | import("@tamagui/web").SizeTokens | undefined;
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
-        inset?: number | SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+        inset?: number | import("@tamagui/web").SizeTokens | {
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -91,46 +90,46 @@ export declare const Avatar: import("react").ForwardRefExoticComponent<Omit<impo
         chromeless?: boolean | "all" | undefined;
     }>> & import("react").RefAttributes<import("tamagui").TamaguiElement>>>;
     Image: import("react").ForwardRefExoticComponent<Partial<import("tamagui").ImageProps> & {
-        onLoadingStatusChange?: ((status: "loaded" | "loading" | "error" | "idle") => void) | undefined;
+        onLoadingStatusChange?: (status: "loaded" | "loading" | "error" | "idle") => void;
     } & import("react").RefAttributes<import("tamagui").TamaguiElement>>;
     Fallback: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/web").StackStyleBase | "inset" | "fullscreen"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
         elevation?: number | SizeTokens | undefined;
         fullscreen?: boolean | undefined;
         inset?: number | SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
     } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
         elevation?: number | SizeTokens | undefined;
         fullscreen?: boolean | undefined;
         inset?: number | SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
     } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {
         elevation?: number | SizeTokens | undefined;
         fullscreen?: boolean | undefined;
         inset?: number | SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
     }>> & {
-        delayMs?: number | undefined;
+        delayMs?: number;
     } & import("react").RefAttributes<import("tamagui").TamaguiElement>>;
     Icon: import("tamagui").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
         size?: SizeTokens | undefined;
         offset?: number | undefined;
         placement?: "top-right" | "top-left" | "bottom-right" | "bottom-left" | undefined;
     }>, "scaleIcon"> & {
-        scaleIcon?: number | undefined;
+        scaleIcon?: number;
     }, import("tamagui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & {
-        scaleIcon?: number | undefined;
+        scaleIcon?: number;
     }, import("@tamagui/web").StackStyleBase, {
         size?: SizeTokens | undefined;
         offset?: number | undefined;

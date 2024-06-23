@@ -475,7 +475,7 @@ const themeBuilder = createThemeBuilder()
       },
     },
   })
-  .addChildThemes(
+  .addComponentThemes(
     {
       ListItem: [
         {

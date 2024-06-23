@@ -1,4 +1,3 @@
-/// <reference types="react" />
 export declare const useSheet: () => {
     screenSize: number;
     maxSnapPoint: string | number;

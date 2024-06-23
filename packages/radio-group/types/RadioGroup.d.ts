@@ -7,10 +7,10 @@ export declare const RadioGroupItemFrame: import("@tamagui/core").TamaguiCompone
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -29,10 +29,10 @@ export declare const RadioGroupIndicatorFrame: import("@tamagui/core").TamaguiCo
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -50,10 +50,10 @@ export declare const RadioGroupFrame: import("@tamagui/core").TamaguiComponent<i
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;

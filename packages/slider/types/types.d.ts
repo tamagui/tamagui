@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import type { GestureReponderEvent, SizeTokens, TamaguiElement } from '@tamagui/core';
 import type { Scope } from '@tamagui/create-context';
 import type { SizableStackProps } from '@tamagui/stacks';

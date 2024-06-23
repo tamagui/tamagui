@@ -1,13 +1,13 @@
-import type { ThemeProps } from 'tamagui';
+import type { ThemeName, ThemeProps } from 'tamagui';
 export declare const initialTint = 3;
 export declare const onTintChange: (listener: (cur: number) => void) => () => void;
 export declare const setTintIndex: (next: number) => void;
 export declare const useTint: (altOffset?: number) => {
-    readonly tints: string[];
+    readonly tints: ThemeName[];
     readonly tintIndex: number;
     readonly tintAltIndex: number;
-    readonly tint: string;
-    readonly tintAlt: string;
+    readonly tint: ThemeName;
+    readonly tintAlt: ThemeName;
     readonly setTintIndex: (next: number) => void;
     readonly setNextTintFamily: () => void;
     readonly setNextTint: () => void;

@@ -7,7 +7,7 @@ export declare function createContext<ContextValueType extends object | null>(ro
         children: React.ReactNode;
     }): import("react/jsx-runtime").JSX.Element;
     displayName: string;
-}, (consumerName: string) => Exclude<ContextValueType, undefined>];
+}, (consumerName: string) => Exclude<ContextValueType | undefined, undefined>];
 type ScopeHook = (scope: Scope) => {
     [__scopeProp: string]: Scope;
 };

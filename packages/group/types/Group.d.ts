@@ -10,10 +10,10 @@ export declare const GroupFrame: import("@tamagui/core").TamaguiComponent<import
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -53,7 +53,7 @@ export type GroupItemProps = {
 export declare const useGroupItem: (childrenProps: {
     disabled: boolean;
     ref?: any;
-}, forcePlacement?: GroupItemProps['forcePlacement'], __scopeGroup?: Scope) => Record<string, any>;
+}, forcePlacement?: GroupItemProps["forcePlacement"], __scopeGroup?: Scope) => Record<string, any>;
 export declare const Group: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     unstyled?: boolean | undefined;
     size?: any;
@@ -62,10 +62,10 @@ export declare const Group: React.ForwardRefExoticComponent<Omit<import("@tamagu
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -84,10 +84,10 @@ export declare const Group: React.ForwardRefExoticComponent<Omit<import("@tamagu
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -106,10 +106,10 @@ export declare const Group: React.ForwardRefExoticComponent<Omit<import("@tamagu
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -128,10 +128,10 @@ export declare const Group: React.ForwardRefExoticComponent<Omit<import("@tamagu
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -150,10 +150,10 @@ export declare const Group: React.ForwardRefExoticComponent<Omit<import("@tamagu
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -168,19 +168,19 @@ export declare const Group: React.ForwardRefExoticComponent<Omit<import("@tamagu
     /**
      * @deprecated use `orientation` instead
      */
-    axis?: "horizontal" | "vertical" | undefined;
-    orientation?: "horizontal" | "vertical" | undefined;
-    scrollable?: boolean | undefined;
+    axis?: "horizontal" | "vertical";
+    orientation?: "horizontal" | "vertical";
+    scrollable?: boolean;
     /**
      * @default false
      */
-    showScrollIndicator?: boolean | undefined;
-    disabled?: boolean | undefined;
-    disablePassBorderRadius?: DisablePassBorderRadius | undefined;
+    showScrollIndicator?: boolean;
+    disabled?: boolean;
+    disablePassBorderRadius?: DisablePassBorderRadius;
     /**
      * forces the group to use the Group.Item API
      */
-    forceUseItem?: boolean | undefined;
+    forceUseItem?: boolean;
 } & {
     __scopeGroup?: Scope;
 } & React.RefAttributes<import("@tamagui/core").TamaguiElement>> & import("@tamagui/core").StaticComponentObject<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
@@ -191,10 +191,10 @@ export declare const Group: React.ForwardRefExoticComponent<Omit<import("@tamagu
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -213,10 +213,10 @@ export declare const Group: React.ForwardRefExoticComponent<Omit<import("@tamagu
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -235,10 +235,10 @@ export declare const Group: React.ForwardRefExoticComponent<Omit<import("@tamagu
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -257,10 +257,10 @@ export declare const Group: React.ForwardRefExoticComponent<Omit<import("@tamagu
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -279,10 +279,10 @@ export declare const Group: React.ForwardRefExoticComponent<Omit<import("@tamagu
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -297,19 +297,19 @@ export declare const Group: React.ForwardRefExoticComponent<Omit<import("@tamagu
     /**
      * @deprecated use `orientation` instead
      */
-    axis?: "horizontal" | "vertical" | undefined;
-    orientation?: "horizontal" | "vertical" | undefined;
-    scrollable?: boolean | undefined;
+    axis?: "horizontal" | "vertical";
+    orientation?: "horizontal" | "vertical";
+    scrollable?: boolean;
     /**
      * @default false
      */
-    showScrollIndicator?: boolean | undefined;
-    disabled?: boolean | undefined;
-    disablePassBorderRadius?: DisablePassBorderRadius | undefined;
+    showScrollIndicator?: boolean;
+    disabled?: boolean;
+    disablePassBorderRadius?: DisablePassBorderRadius;
     /**
      * forces the group to use the Group.Item API
      */
-    forceUseItem?: boolean | undefined;
+    forceUseItem?: boolean;
 } & {
     __scopeGroup?: Scope;
 }, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "unstyled" | "size" | "elevation" | keyof import("@tamagui/core").StackStyleBase | "transparent" | "fullscreen" | "circular" | "inset" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
@@ -320,10 +320,10 @@ export declare const Group: React.ForwardRefExoticComponent<Omit<import("@tamagu
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -342,10 +342,10 @@ export declare const Group: React.ForwardRefExoticComponent<Omit<import("@tamagu
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -364,10 +364,10 @@ export declare const Group: React.ForwardRefExoticComponent<Omit<import("@tamagu
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -382,19 +382,19 @@ export declare const Group: React.ForwardRefExoticComponent<Omit<import("@tamagu
     /**
      * @deprecated use `orientation` instead
      */
-    axis?: "horizontal" | "vertical" | undefined;
-    orientation?: "horizontal" | "vertical" | undefined;
-    scrollable?: boolean | undefined;
+    axis?: "horizontal" | "vertical";
+    orientation?: "horizontal" | "vertical";
+    scrollable?: boolean;
     /**
      * @default false
      */
-    showScrollIndicator?: boolean | undefined;
-    disabled?: boolean | undefined;
-    disablePassBorderRadius?: DisablePassBorderRadius | undefined;
+    showScrollIndicator?: boolean;
+    disabled?: boolean;
+    disablePassBorderRadius?: DisablePassBorderRadius;
     /**
      * forces the group to use the Group.Item API
      */
-    forceUseItem?: boolean | undefined;
+    forceUseItem?: boolean;
 } & {
     __scopeGroup?: Scope;
 }, import("@tamagui/core").StackStyleBase, {
@@ -405,10 +405,10 @@ export declare const Group: React.ForwardRefExoticComponent<Omit<import("@tamagu
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -428,10 +428,10 @@ export declare const Group: React.ForwardRefExoticComponent<Omit<import("@tamagu
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -450,10 +450,10 @@ export declare const Group: React.ForwardRefExoticComponent<Omit<import("@tamagu
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -472,10 +472,10 @@ export declare const Group: React.ForwardRefExoticComponent<Omit<import("@tamagu
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -494,10 +494,10 @@ export declare const Group: React.ForwardRefExoticComponent<Omit<import("@tamagu
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -516,10 +516,10 @@ export declare const Group: React.ForwardRefExoticComponent<Omit<import("@tamagu
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -534,19 +534,19 @@ export declare const Group: React.ForwardRefExoticComponent<Omit<import("@tamagu
         /**
          * @deprecated use `orientation` instead
          */
-        axis?: "horizontal" | "vertical" | undefined;
-        orientation?: "horizontal" | "vertical" | undefined;
-        scrollable?: boolean | undefined;
+        axis?: "horizontal" | "vertical";
+        orientation?: "horizontal" | "vertical";
+        scrollable?: boolean;
         /**
          * @default false
          */
-        showScrollIndicator?: boolean | undefined;
-        disabled?: boolean | undefined;
-        disablePassBorderRadius?: DisablePassBorderRadius | undefined;
+        showScrollIndicator?: boolean;
+        disabled?: boolean;
+        disablePassBorderRadius?: DisablePassBorderRadius;
         /**
          * forces the group to use the Group.Item API
          */
-        forceUseItem?: boolean | undefined;
+        forceUseItem?: boolean;
     } & {
         __scopeGroup?: Scope;
     }, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "unstyled" | "size" | "elevation" | keyof import("@tamagui/core").StackStyleBase | "transparent" | "fullscreen" | "circular" | "inset" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
@@ -557,10 +557,10 @@ export declare const Group: React.ForwardRefExoticComponent<Omit<import("@tamagu
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -579,10 +579,10 @@ export declare const Group: React.ForwardRefExoticComponent<Omit<import("@tamagu
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -601,10 +601,10 @@ export declare const Group: React.ForwardRefExoticComponent<Omit<import("@tamagu
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -619,19 +619,19 @@ export declare const Group: React.ForwardRefExoticComponent<Omit<import("@tamagu
         /**
          * @deprecated use `orientation` instead
          */
-        axis?: "horizontal" | "vertical" | undefined;
-        orientation?: "horizontal" | "vertical" | undefined;
-        scrollable?: boolean | undefined;
+        axis?: "horizontal" | "vertical";
+        orientation?: "horizontal" | "vertical";
+        scrollable?: boolean;
         /**
          * @default false
          */
-        showScrollIndicator?: boolean | undefined;
-        disabled?: boolean | undefined;
-        disablePassBorderRadius?: DisablePassBorderRadius | undefined;
+        showScrollIndicator?: boolean;
+        disabled?: boolean;
+        disablePassBorderRadius?: DisablePassBorderRadius;
         /**
          * forces the group to use the Group.Item API
          */
-        forceUseItem?: boolean | undefined;
+        forceUseItem?: boolean;
     } & {
         __scopeGroup?: Scope;
     }, import("@tamagui/core").StackStyleBase, {
@@ -642,10 +642,10 @@ export declare const Group: React.ForwardRefExoticComponent<Omit<import("@tamagu
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -670,10 +670,10 @@ export declare const YGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -692,10 +692,10 @@ export declare const YGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -714,10 +714,10 @@ export declare const YGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -736,10 +736,10 @@ export declare const YGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -758,10 +758,10 @@ export declare const YGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -776,19 +776,19 @@ export declare const YGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
     /**
      * @deprecated use `orientation` instead
      */
-    axis?: "horizontal" | "vertical" | undefined;
-    orientation?: "horizontal" | "vertical" | undefined;
-    scrollable?: boolean | undefined;
+    axis?: "horizontal" | "vertical";
+    orientation?: "horizontal" | "vertical";
+    scrollable?: boolean;
     /**
      * @default false
      */
-    showScrollIndicator?: boolean | undefined;
-    disabled?: boolean | undefined;
-    disablePassBorderRadius?: DisablePassBorderRadius | undefined;
+    showScrollIndicator?: boolean;
+    disabled?: boolean;
+    disablePassBorderRadius?: DisablePassBorderRadius;
     /**
      * forces the group to use the Group.Item API
      */
-    forceUseItem?: boolean | undefined;
+    forceUseItem?: boolean;
 } & {
     __scopeGroup?: Scope;
 } & React.RefAttributes<import("@tamagui/core").TamaguiElement>> & import("@tamagui/core").StaticComponentObject<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
@@ -799,10 +799,10 @@ export declare const YGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -821,10 +821,10 @@ export declare const YGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -843,10 +843,10 @@ export declare const YGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -865,10 +865,10 @@ export declare const YGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -887,10 +887,10 @@ export declare const YGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -905,19 +905,19 @@ export declare const YGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
     /**
      * @deprecated use `orientation` instead
      */
-    axis?: "horizontal" | "vertical" | undefined;
-    orientation?: "horizontal" | "vertical" | undefined;
-    scrollable?: boolean | undefined;
+    axis?: "horizontal" | "vertical";
+    orientation?: "horizontal" | "vertical";
+    scrollable?: boolean;
     /**
      * @default false
      */
-    showScrollIndicator?: boolean | undefined;
-    disabled?: boolean | undefined;
-    disablePassBorderRadius?: DisablePassBorderRadius | undefined;
+    showScrollIndicator?: boolean;
+    disabled?: boolean;
+    disablePassBorderRadius?: DisablePassBorderRadius;
     /**
      * forces the group to use the Group.Item API
      */
-    forceUseItem?: boolean | undefined;
+    forceUseItem?: boolean;
 } & {
     __scopeGroup?: Scope;
 }, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "unstyled" | "size" | "elevation" | keyof import("@tamagui/core").StackStyleBase | "transparent" | "fullscreen" | "circular" | "inset" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
@@ -928,10 +928,10 @@ export declare const YGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -950,10 +950,10 @@ export declare const YGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -972,10 +972,10 @@ export declare const YGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -990,19 +990,19 @@ export declare const YGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
     /**
      * @deprecated use `orientation` instead
      */
-    axis?: "horizontal" | "vertical" | undefined;
-    orientation?: "horizontal" | "vertical" | undefined;
-    scrollable?: boolean | undefined;
+    axis?: "horizontal" | "vertical";
+    orientation?: "horizontal" | "vertical";
+    scrollable?: boolean;
     /**
      * @default false
      */
-    showScrollIndicator?: boolean | undefined;
-    disabled?: boolean | undefined;
-    disablePassBorderRadius?: DisablePassBorderRadius | undefined;
+    showScrollIndicator?: boolean;
+    disabled?: boolean;
+    disablePassBorderRadius?: DisablePassBorderRadius;
     /**
      * forces the group to use the Group.Item API
      */
-    forceUseItem?: boolean | undefined;
+    forceUseItem?: boolean;
 } & {
     __scopeGroup?: Scope;
 }, import("@tamagui/core").StackStyleBase, {
@@ -1013,10 +1013,10 @@ export declare const YGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -1036,10 +1036,10 @@ export declare const YGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -1058,10 +1058,10 @@ export declare const YGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -1080,10 +1080,10 @@ export declare const YGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -1102,10 +1102,10 @@ export declare const YGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -1124,10 +1124,10 @@ export declare const YGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -1142,19 +1142,19 @@ export declare const YGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
         /**
          * @deprecated use `orientation` instead
          */
-        axis?: "horizontal" | "vertical" | undefined;
-        orientation?: "horizontal" | "vertical" | undefined;
-        scrollable?: boolean | undefined;
+        axis?: "horizontal" | "vertical";
+        orientation?: "horizontal" | "vertical";
+        scrollable?: boolean;
         /**
          * @default false
          */
-        showScrollIndicator?: boolean | undefined;
-        disabled?: boolean | undefined;
-        disablePassBorderRadius?: DisablePassBorderRadius | undefined;
+        showScrollIndicator?: boolean;
+        disabled?: boolean;
+        disablePassBorderRadius?: DisablePassBorderRadius;
         /**
          * forces the group to use the Group.Item API
          */
-        forceUseItem?: boolean | undefined;
+        forceUseItem?: boolean;
     } & {
         __scopeGroup?: Scope;
     }, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "unstyled" | "size" | "elevation" | keyof import("@tamagui/core").StackStyleBase | "transparent" | "fullscreen" | "circular" | "inset" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
@@ -1165,10 +1165,10 @@ export declare const YGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -1187,10 +1187,10 @@ export declare const YGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -1209,10 +1209,10 @@ export declare const YGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -1227,19 +1227,19 @@ export declare const YGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
         /**
          * @deprecated use `orientation` instead
          */
-        axis?: "horizontal" | "vertical" | undefined;
-        orientation?: "horizontal" | "vertical" | undefined;
-        scrollable?: boolean | undefined;
+        axis?: "horizontal" | "vertical";
+        orientation?: "horizontal" | "vertical";
+        scrollable?: boolean;
         /**
          * @default false
          */
-        showScrollIndicator?: boolean | undefined;
-        disabled?: boolean | undefined;
-        disablePassBorderRadius?: DisablePassBorderRadius | undefined;
+        showScrollIndicator?: boolean;
+        disabled?: boolean;
+        disablePassBorderRadius?: DisablePassBorderRadius;
         /**
          * forces the group to use the Group.Item API
          */
-        forceUseItem?: boolean | undefined;
+        forceUseItem?: boolean;
     } & {
         __scopeGroup?: Scope;
     }, import("@tamagui/core").StackStyleBase, {
@@ -1250,10 +1250,10 @@ export declare const YGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -1278,10 +1278,10 @@ export declare const XGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -1300,10 +1300,10 @@ export declare const XGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -1322,10 +1322,10 @@ export declare const XGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -1344,10 +1344,10 @@ export declare const XGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -1366,10 +1366,10 @@ export declare const XGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -1384,19 +1384,19 @@ export declare const XGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
     /**
      * @deprecated use `orientation` instead
      */
-    axis?: "horizontal" | "vertical" | undefined;
-    orientation?: "horizontal" | "vertical" | undefined;
-    scrollable?: boolean | undefined;
+    axis?: "horizontal" | "vertical";
+    orientation?: "horizontal" | "vertical";
+    scrollable?: boolean;
     /**
      * @default false
      */
-    showScrollIndicator?: boolean | undefined;
-    disabled?: boolean | undefined;
-    disablePassBorderRadius?: DisablePassBorderRadius | undefined;
+    showScrollIndicator?: boolean;
+    disabled?: boolean;
+    disablePassBorderRadius?: DisablePassBorderRadius;
     /**
      * forces the group to use the Group.Item API
      */
-    forceUseItem?: boolean | undefined;
+    forceUseItem?: boolean;
 } & {
     __scopeGroup?: Scope;
 } & React.RefAttributes<import("@tamagui/core").TamaguiElement>> & import("@tamagui/core").StaticComponentObject<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
@@ -1407,10 +1407,10 @@ export declare const XGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -1429,10 +1429,10 @@ export declare const XGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -1451,10 +1451,10 @@ export declare const XGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -1473,10 +1473,10 @@ export declare const XGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -1495,10 +1495,10 @@ export declare const XGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -1513,19 +1513,19 @@ export declare const XGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
     /**
      * @deprecated use `orientation` instead
      */
-    axis?: "horizontal" | "vertical" | undefined;
-    orientation?: "horizontal" | "vertical" | undefined;
-    scrollable?: boolean | undefined;
+    axis?: "horizontal" | "vertical";
+    orientation?: "horizontal" | "vertical";
+    scrollable?: boolean;
     /**
      * @default false
      */
-    showScrollIndicator?: boolean | undefined;
-    disabled?: boolean | undefined;
-    disablePassBorderRadius?: DisablePassBorderRadius | undefined;
+    showScrollIndicator?: boolean;
+    disabled?: boolean;
+    disablePassBorderRadius?: DisablePassBorderRadius;
     /**
      * forces the group to use the Group.Item API
      */
-    forceUseItem?: boolean | undefined;
+    forceUseItem?: boolean;
 } & {
     __scopeGroup?: Scope;
 }, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "unstyled" | "size" | "elevation" | keyof import("@tamagui/core").StackStyleBase | "transparent" | "fullscreen" | "circular" | "inset" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
@@ -1536,10 +1536,10 @@ export declare const XGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -1558,10 +1558,10 @@ export declare const XGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -1580,10 +1580,10 @@ export declare const XGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -1598,19 +1598,19 @@ export declare const XGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
     /**
      * @deprecated use `orientation` instead
      */
-    axis?: "horizontal" | "vertical" | undefined;
-    orientation?: "horizontal" | "vertical" | undefined;
-    scrollable?: boolean | undefined;
+    axis?: "horizontal" | "vertical";
+    orientation?: "horizontal" | "vertical";
+    scrollable?: boolean;
     /**
      * @default false
      */
-    showScrollIndicator?: boolean | undefined;
-    disabled?: boolean | undefined;
-    disablePassBorderRadius?: DisablePassBorderRadius | undefined;
+    showScrollIndicator?: boolean;
+    disabled?: boolean;
+    disablePassBorderRadius?: DisablePassBorderRadius;
     /**
      * forces the group to use the Group.Item API
      */
-    forceUseItem?: boolean | undefined;
+    forceUseItem?: boolean;
 } & {
     __scopeGroup?: Scope;
 }, import("@tamagui/core").StackStyleBase, {
@@ -1621,10 +1621,10 @@ export declare const XGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -1644,10 +1644,10 @@ export declare const XGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -1666,10 +1666,10 @@ export declare const XGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -1688,10 +1688,10 @@ export declare const XGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -1710,10 +1710,10 @@ export declare const XGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -1732,10 +1732,10 @@ export declare const XGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -1750,19 +1750,19 @@ export declare const XGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
         /**
          * @deprecated use `orientation` instead
          */
-        axis?: "horizontal" | "vertical" | undefined;
-        orientation?: "horizontal" | "vertical" | undefined;
-        scrollable?: boolean | undefined;
+        axis?: "horizontal" | "vertical";
+        orientation?: "horizontal" | "vertical";
+        scrollable?: boolean;
         /**
          * @default false
          */
-        showScrollIndicator?: boolean | undefined;
-        disabled?: boolean | undefined;
-        disablePassBorderRadius?: DisablePassBorderRadius | undefined;
+        showScrollIndicator?: boolean;
+        disabled?: boolean;
+        disablePassBorderRadius?: DisablePassBorderRadius;
         /**
          * forces the group to use the Group.Item API
          */
-        forceUseItem?: boolean | undefined;
+        forceUseItem?: boolean;
     } & {
         __scopeGroup?: Scope;
     }, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "unstyled" | "size" | "elevation" | keyof import("@tamagui/core").StackStyleBase | "transparent" | "fullscreen" | "circular" | "inset" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
@@ -1773,10 +1773,10 @@ export declare const XGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -1795,10 +1795,10 @@ export declare const XGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -1817,10 +1817,10 @@ export declare const XGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -1835,19 +1835,19 @@ export declare const XGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
         /**
          * @deprecated use `orientation` instead
          */
-        axis?: "horizontal" | "vertical" | undefined;
-        orientation?: "horizontal" | "vertical" | undefined;
-        scrollable?: boolean | undefined;
+        axis?: "horizontal" | "vertical";
+        orientation?: "horizontal" | "vertical";
+        scrollable?: boolean;
         /**
          * @default false
          */
-        showScrollIndicator?: boolean | undefined;
-        disabled?: boolean | undefined;
-        disablePassBorderRadius?: DisablePassBorderRadius | undefined;
+        showScrollIndicator?: boolean;
+        disabled?: boolean;
+        disablePassBorderRadius?: DisablePassBorderRadius;
         /**
          * forces the group to use the Group.Item API
          */
-        forceUseItem?: boolean | undefined;
+        forceUseItem?: boolean;
     } & {
         __scopeGroup?: Scope;
     }, import("@tamagui/core").StackStyleBase, {
@@ -1858,10 +1858,10 @@ export declare const XGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;

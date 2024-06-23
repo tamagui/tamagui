@@ -90,26 +90,26 @@ export declare const maskOptions: {
             shadowColorPress: number;
             shadowColorFocus: number;
         };
-        palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
-        overrideStrategy?: "shift" | "swap" | undefined;
-        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask> | undefined;
-        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask> | undefined;
-        strength?: number | undefined;
-        max?: number | undefined;
-        min?: number | undefined;
-        parentName?: string | undefined;
+        palette?: import("@tamagui/create-theme").CreateThemePalette;
+        overrideStrategy?: "shift" | "swap";
+        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask>;
+        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask>;
+        strength?: number;
+        max?: number;
+        min?: number;
+        parentName?: string;
     };
     alt: {
-        palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
-        override?: Partial<import("@tamagui/create-theme").ThemeMask> | undefined;
-        overrideStrategy?: "shift" | "swap" | undefined;
-        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask> | undefined;
-        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask> | undefined;
-        skip?: Partial<import("@tamagui/create-theme").ThemeMask> | undefined;
-        strength?: number | undefined;
-        max?: number | undefined;
-        min?: number | undefined;
-        parentName?: string | undefined;
+        palette?: import("@tamagui/create-theme").CreateThemePalette;
+        override?: Partial<import("@tamagui/create-theme").ThemeMask>;
+        overrideStrategy?: "shift" | "swap";
+        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask>;
+        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask>;
+        skip?: Partial<import("@tamagui/create-theme").ThemeMask>;
+        strength?: number;
+        max?: number;
+        min?: number;
+        parentName?: string;
     };
     button: {
         override: {
@@ -142,14 +142,14 @@ export declare const maskOptions: {
             shadowColorPress: number;
             shadowColorFocus: number;
         };
-        palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
-        overrideStrategy?: "shift" | "swap" | undefined;
-        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask> | undefined;
-        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask> | undefined;
-        strength?: number | undefined;
-        max?: number | undefined;
-        min?: number | undefined;
-        parentName?: string | undefined;
+        palette?: import("@tamagui/create-theme").CreateThemePalette;
+        overrideStrategy?: "shift" | "swap";
+        overrideSwap?: Partial<import("@tamagui/create-theme").ThemeMask>;
+        overrideShift?: Partial<import("@tamagui/create-theme").ThemeMask>;
+        strength?: number;
+        max?: number;
+        min?: number;
+        parentName?: string;
     };
 };
 //# sourceMappingURL=templates.d.ts.map

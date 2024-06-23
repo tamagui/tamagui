@@ -5,10 +5,10 @@ export declare const Circle: import("@tamagui/web").TamaguiComponent<import("@ta
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/web").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;

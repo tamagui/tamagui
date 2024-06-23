@@ -26,8 +26,8 @@ type UseFilePickerProps<MT extends MediaTypeOptions> = {
 };
 export declare function useFilePicker<MT extends MediaTypeOptions>(props?: UseFilePickerProps<MT>): {
     open: () => void;
-    getInputProps: <T extends DropzoneInputProps>(props?: T | undefined) => T;
-    getRootProps: <T_1 extends DropzoneRootProps>(props?: T_1 | undefined) => T_1;
+    getInputProps: <T extends DropzoneInputProps>(props?: T) => T;
+    getRootProps: <T extends DropzoneRootProps>(props?: T) => T;
     dragStatus: {
         isDragAccept: boolean;
         isDragActive: boolean;
@@ -35,8 +35,8 @@ export declare function useFilePicker<MT extends MediaTypeOptions>(props?: UseFi
     };
     control: {
         open: () => void;
-        getInputProps: <T extends DropzoneInputProps>(props?: T | undefined) => T;
-        getRootProps: <T_1 extends DropzoneRootProps>(props?: T_1 | undefined) => T_1;
+        getInputProps: <T extends DropzoneInputProps>(props?: T) => T;
+        getRootProps: <T extends DropzoneRootProps>(props?: T) => T;
         dragStatus: {
             isDragAccept: boolean;
             isDragActive: boolean;

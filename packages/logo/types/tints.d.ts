@@ -1,5 +1,6 @@
+import type { ThemeName } from 'tamagui';
 type ChangeHandler = (next: TintFamily) => void;
-declare const families: {
+declare const familiesValues: {
     tamagui: string[];
     xmas: string[];
     easter: string[];
@@ -7,6 +8,8 @@ declare const families: {
     valentine: string[];
     lunar: string[];
 };
+type Family = keyof typeof familiesValues;
+declare const families: { [key in Family]: ThemeName[]; };
 type TintFamily = keyof typeof families;
 export declare function getTints(): {
     name: "tamagui" | "xmas" | "easter" | "halloween" | "valentine" | "lunar";

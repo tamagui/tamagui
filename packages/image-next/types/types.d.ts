@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import type { StackProps } from '@tamagui/core';
 import type { Image as RNImage } from 'react-native';
 import type { ImageResizeMode, ImageSourcePropType, ImageProps as RNImageProps } from 'react-native';

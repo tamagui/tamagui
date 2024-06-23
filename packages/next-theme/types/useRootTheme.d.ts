@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import type { ColorScheme } from './types';
 export declare const useRootTheme: ({ fallback }?: {
     fallback?: ColorScheme;

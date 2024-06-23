@@ -1,16 +1,15 @@
-/// <reference types="react" />
 export declare const TextArea: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & import("@tamagui/web").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {}>> & Omit<import("react").ClassAttributes<HTMLInputElement> & import("react").HTMLProps<HTMLInputElement>, "size" | `$${string}` | `$${number}` | import("@tamagui/web").GroupMediaKeys | `$theme-${string}` | `$theme-${number}` | "value" | keyof import("@tamagui/web").StackStyleBase | keyof import("@tamagui/web").StackNonStyleProps | keyof import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>>> & import("react").CSSProperties & Omit<import("react-native").TextInputProps, "numberOfLines" | "selectionColor" | "inputMode" | "secureTextEntry" | "onChangeText" | "editable" | "enterKeyHint" | "keyboardType" | "placeholderTextColor"> & {
-    secureTextEntry?: boolean | undefined;
-    onChangeText?: ((e: import("react-native").NativeSyntheticEvent<import("react-native").TextInputChangeEventData>) => void) | undefined;
-    editable?: boolean | undefined;
-    enterKeyHint?: "search" | "done" | "go" | "next" | "send" | "enter" | "previous" | undefined;
-    keyboardType?: import("react-native").KeyboardTypeOptions | undefined;
-    inputMode?: import("react-native").InputModeOptions | undefined;
-    placeholderTextColor?: import("@tamagui/web").ColorTokens | undefined;
-    selectionColor?: import("@tamagui/web").ColorTokens | undefined;
-    tag?: "object" | "button" | "search" | "header" | "summary" | "menu" | "article" | "dialog" | "figure" | "form" | "img" | "main" | "meter" | "option" | "table" | (string & {}) | "address" | "aside" | "footer" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "nav" | "section" | "blockquote" | "dd" | "div" | "dl" | "dt" | "figcaption" | "hr" | "li" | "ol" | "ul" | "p" | "pre" | "a" | "abbr" | "b" | "bdi" | "bdo" | "br" | "cite" | "code" | "data" | "dfn" | "em" | "i" | "kbd" | "mark" | "q" | "rp" | "rt" | "rtc" | "ruby" | "s" | "samp" | "small" | "span" | "strong" | "sub" | "sup" | "time" | "u" | "var" | "wbr" | "area" | "audio" | "map" | "track" | "video" | "embed" | "param" | "picture" | "source" | "canvas" | "noscript" | "script" | "del" | "ins" | "caption" | "col" | "colgroup" | "thead" | "tbody" | "td" | "th" | "tr" | "datalist" | "fieldset" | "input" | "label" | "legend" | "optgroup" | "output" | "progress" | "select" | "textarea" | "details" | "template" | undefined;
-    multiline?: boolean | undefined;
-    numberOfLines?: number | undefined;
+    secureTextEntry?: import("react-native").TextInputProps["secureTextEntry"];
+    onChangeText?: import("react-native").TextInputProps["onChange"];
+    editable?: import("react-native").TextInputProps["editable"];
+    enterKeyHint?: "done" | "go" | "next" | "search" | "send" | "enter" | "previous";
+    keyboardType?: import("react-native").TextInputProps["keyboardType"];
+    inputMode?: import("react-native").InputModeOptions;
+    placeholderTextColor?: import("@tamagui/web").ColorTokens;
+    selectionColor?: import("@tamagui/web").ColorTokens;
+    tag?: import("@tamagui/web").TamaguiComponentPropsBase["tag"];
+    multiline?: boolean;
+    numberOfLines?: number;
 }, import("@tamagui/web").StackStyleBase, {
     size?: import("@tamagui/web").SizeTokens | undefined;
     disabled?: boolean | undefined;

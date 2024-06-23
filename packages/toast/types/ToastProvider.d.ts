@@ -15,9 +15,9 @@ declare const Collection: {
     } & {
         __scopeCollection?: string | undefined;
     } & React.RefAttributes<TamaguiElement>>;
-}, useCollection: (__scopeCollection: any) => () => {
+}, useCollection: (__scopeCollection: any) => () => ({
     ref: React.RefObject<TamaguiElement>;
-}[];
+} & {})[];
 export type SwipeDirection = 'vertical' | 'up' | 'down' | 'horizontal' | 'left' | 'right';
 type ToastProviderContextValue = {
     id: string;
@@ -37,7 +37,7 @@ type ToastProviderContextValue = {
 type ScopedProps<P> = P & {
     __scopeToast?: string;
 };
-declare const useToastProviderContext: (scope?: string | undefined) => ToastProviderContextValue;
+declare const useToastProviderContext: (scope?: string) => ToastProviderContextValue;
 interface ToastProviderProps {
     children?: React.ReactNode;
     /**

@@ -1,14 +1,13 @@
-/// <reference types="react" />
-export declare const createSheetContext: <ContextValueType extends object | null>(rootComponentName: string, defaultContext?: ContextValueType | undefined) => readonly [{
+export declare const createSheetContext: <ContextValueType extends object | null>(rootComponentName: string, defaultContext?: ContextValueType) => readonly [{
     (props: ContextValueType & {
         scope: import("@tamagui/create-context").Scope<ContextValueType>;
         children: import("react").ReactNode;
     }): import("react/jsx-runtime").JSX.Element;
     displayName: string;
 }, (consumerName: string, scope: import("@tamagui/create-context").Scope<ContextValueType | undefined>, options?: {
-    warn?: boolean | undefined;
-    fallback?: Partial<ContextValueType> | undefined;
-} | undefined) => ContextValueType], createSheetScope: import("@tamagui/create-context").CreateScope;
+    warn?: boolean;
+    fallback?: Partial<ContextValueType>;
+}) => ContextValueType], createSheetScope: import("@tamagui/create-context").CreateScope;
 export declare const SheetProvider: {
     (props: {
         screenSize: number;
@@ -91,7 +90,7 @@ export declare const SheetProvider: {
     setPositionImmediate: import("react").Dispatch<import("react").SetStateAction<number>>;
     onlyShowFrame: boolean;
 } | undefined>, options?: {
-    warn?: boolean | undefined;
+    warn?: boolean;
     fallback?: Partial<{
         screenSize: number;
         maxSnapPoint: string | number;

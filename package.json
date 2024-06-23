@@ -167,7 +167,7 @@
     "patch-package": "^8.0.0",
     "prompts": "2.1.0",
     "turbo": "^1.13.3",
-    "typescript": "^5.4.5",
+    "typescript": "^5.5.2",
     "ultra-runner": "^3.10.5",
     "zx": "^7.2.3"
   },

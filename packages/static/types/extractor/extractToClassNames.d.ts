@@ -1,4 +1,3 @@
-/// <reference types="node" />
 import * as t from '@babel/types';
 import type { TamaguiOptions } from '../types';
 import type { Extractor } from './createExtractor';

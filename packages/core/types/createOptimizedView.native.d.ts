@@ -1,4 +1,3 @@
-/// <reference types="react" />
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *

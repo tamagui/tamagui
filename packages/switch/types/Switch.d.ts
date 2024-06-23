@@ -8,10 +8,10 @@ export declare const SwitchThumb: import("@tamagui/core").TamaguiComponent<impor
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -30,10 +30,10 @@ export declare const SwitchFrame: import("@tamagui/core").TamaguiComponent<impor
     elevation?: number | SizeTokens | undefined;
     fullscreen?: boolean | undefined;
     inset?: number | SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
 //# sourceMappingURL=Switch.d.ts.map

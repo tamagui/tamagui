@@ -12,29 +12,29 @@ export declare function createSheet<H extends SheetStyledComponent | TamaguiComp
     Frame: F;
     Overlay: O;
 }): import("react").ForwardRefExoticComponent<{
-    open?: boolean | undefined;
-    defaultOpen?: boolean | undefined;
-    onOpenChange?: (((open: boolean) => void) | import("react").Dispatch<import("react").SetStateAction<boolean>>) | undefined;
-    position?: number | undefined;
-    defaultPosition?: number | undefined;
-    snapPoints?: (string | number)[] | undefined;
-    snapPointsMode?: import("./types").SnapPointsMode | undefined;
-    onPositionChange?: import("./types").PositionChangeHandler | undefined;
+    open?: boolean;
+    defaultOpen?: boolean;
+    onOpenChange?: ((open: boolean) => void) | import("react").Dispatch<import("react").SetStateAction<boolean>>;
+    position?: number;
+    defaultPosition?: number;
+    snapPoints?: (string | number)[];
+    snapPointsMode?: import("./types").SnapPointsMode;
+    onPositionChange?: import("./types").PositionChangeHandler;
     children?: import("react").ReactNode;
-    dismissOnOverlayPress?: boolean | undefined;
-    dismissOnSnapToBottom?: boolean | undefined;
-    forceRemoveScrollEnabled?: boolean | undefined;
-    animationConfig?: import("@tamagui/core").AnimatedNumberStrategy | undefined;
-    unmountChildrenWhenHidden?: boolean | undefined;
-    native?: boolean | "ios"[] | undefined;
-    animation?: import("@tamagui/core").AnimationProp | undefined;
-    handleDisableScroll?: boolean | undefined;
-    disableDrag?: boolean | undefined;
-    modal?: boolean | undefined;
-    zIndex?: number | undefined;
-    portalProps?: import("@tamagui/portal").PortalProps | undefined;
-    moveOnKeyboardChange?: boolean | undefined;
-    containerComponent?: import("react").ComponentType<any> | undefined;
+    dismissOnOverlayPress?: boolean;
+    dismissOnSnapToBottom?: boolean;
+    forceRemoveScrollEnabled?: boolean;
+    animationConfig?: import("@tamagui/core").AnimatedNumberStrategy;
+    unmountChildrenWhenHidden?: boolean;
+    native?: "ios"[] | boolean;
+    animation?: import("@tamagui/core").AnimationProp;
+    handleDisableScroll?: boolean;
+    disableDrag?: boolean;
+    modal?: boolean;
+    zIndex?: number;
+    portalProps?: import("@tamagui/portal").PortalProps;
+    moveOnKeyboardChange?: boolean;
+    containerComponent?: import("react").ComponentType<any>;
 } & {
     __scopeSheet?: import("@tamagui/create-context").Scope<any>;
 } & RefAttributes<View>> & {
@@ -45,26 +45,26 @@ export declare function createSheet<H extends SheetStyledComponent | TamaguiComp
              * this is useful if your Sheet has a spring animation that bounces "past" the top when
              * opening, preventing it from showing the content underneath.
              */
-            disableHideBottomOverflow?: boolean | undefined;
+            disableHideBottomOverflow?: boolean;
             /**
              * Adds padding accounting for the currently offscreen content, so if you put a flex element inside
              * the sheet, it will always flex to the height of the visible amount of the sheet. If this is not
              * turned on, the inner content is always set to the max height of the sheet.
              */
-            adjustPaddingForOffscreenContent?: boolean | undefined;
+            adjustPaddingForOffscreenContent?: boolean;
         }> & {
             /**
              * By default the sheet adds a view below its bottom that extends down another 50%,
              * this is useful if your Sheet has a spring animation that bounces "past" the top when
              * opening, preventing it from showing the content underneath.
              */
-            disableHideBottomOverflow?: boolean | undefined;
+            disableHideBottomOverflow?: boolean;
             /**
              * Adds padding accounting for the currently offscreen content, so if you put a flex element inside
              * the sheet, it will always flex to the height of the visible amount of the sheet. If this is not
              * turned on, the inner content is always set to the max height of the sheet.
              */
-            adjustPaddingForOffscreenContent?: boolean | undefined;
+            adjustPaddingForOffscreenContent?: boolean;
         }>> & RefAttributes<unknown>>;
         Overlay: import("react").MemoExoticComponent<(propsIn: SheetScopedProps<GetProps<typeof Overlay>>) => null>;
         Handle: SheetStyledComponent;
@@ -92,26 +92,26 @@ export declare function createSheet<H extends SheetStyledComponent | TamaguiComp
          * this is useful if your Sheet has a spring animation that bounces "past" the top when
          * opening, preventing it from showing the content underneath.
          */
-        disableHideBottomOverflow?: boolean | undefined;
+        disableHideBottomOverflow?: boolean;
         /**
          * Adds padding accounting for the currently offscreen content, so if you put a flex element inside
          * the sheet, it will always flex to the height of the visible amount of the sheet. If this is not
          * turned on, the inner content is always set to the max height of the sheet.
          */
-        adjustPaddingForOffscreenContent?: boolean | undefined;
+        adjustPaddingForOffscreenContent?: boolean;
     }> & {
         /**
          * By default the sheet adds a view below its bottom that extends down another 50%,
          * this is useful if your Sheet has a spring animation that bounces "past" the top when
          * opening, preventing it from showing the content underneath.
          */
-        disableHideBottomOverflow?: boolean | undefined;
+        disableHideBottomOverflow?: boolean;
         /**
          * Adds padding accounting for the currently offscreen content, so if you put a flex element inside
          * the sheet, it will always flex to the height of the visible amount of the sheet. If this is not
          * turned on, the inner content is always set to the max height of the sheet.
          */
-        adjustPaddingForOffscreenContent?: boolean | undefined;
+        adjustPaddingForOffscreenContent?: boolean;
     }>> & RefAttributes<unknown>>;
     Overlay: import("react").MemoExoticComponent<(propsIn: SheetScopedProps<GetProps<typeof Overlay>>) => null>;
     Handle: SheetStyledComponent;

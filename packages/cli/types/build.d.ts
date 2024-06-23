@@ -1,6 +1,6 @@
 import type { CLIResolvedOptions } from '@tamagui/types';
 export declare const build: (options: CLIResolvedOptions & {
-    target?: 'web' | 'native';
+    target?: "web" | "native";
     dir?: string;
     include?: string;
     exclude?: string;

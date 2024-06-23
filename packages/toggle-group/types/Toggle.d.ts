@@ -12,10 +12,10 @@ export declare const ToggleFrame: import("@tamagui/web").TamaguiComponent<import
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/web").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     focusTheme?: boolean | undefined;
@@ -45,10 +45,10 @@ export declare const Toggle: React.ForwardRefExoticComponent<Omit<import("@tamag
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/web").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     focusTheme?: boolean | undefined;
@@ -68,10 +68,10 @@ export declare const Toggle: React.ForwardRefExoticComponent<Omit<import("@tamag
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/web").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     focusTheme?: boolean | undefined;
@@ -91,10 +91,10 @@ export declare const Toggle: React.ForwardRefExoticComponent<Omit<import("@tamag
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/web").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     focusTheme?: boolean | undefined;

@@ -64,7 +64,7 @@ export declare const themeableVariants: {
     readonly elevate: {
         true: (_: boolean, extras: any) => any;
     };
-    readonly bordered: (val: number | boolean, { props }: {
+    readonly bordered: (val: boolean | number, { props }: {
         props: any;
     }) => any;
     readonly transparent: {
@@ -118,10 +118,10 @@ export declare const ThemeableStack: import("@tamagui/core").TamaguiComponent<im
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;

@@ -1,6 +1,5 @@
 import type { GetProps, StackProps, TamaguiElement } from '@tamagui/core';
 import { TamaguiTextElement } from '@tamagui/core';
-import type { Scope } from '@tamagui/create-context';
 import type { DismissableProps } from '@tamagui/dismissable';
 import type { FocusScopeProps } from '@tamagui/focus-scope';
 import type { PortalItemProps } from '@tamagui/portal';
@@ -53,10 +52,10 @@ type DialogPortalProps = Omit<PortalItemProps, 'asChild'> & YStackProps & {
 export declare const DialogPortalFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     fullscreen?: boolean | undefined;
     unstyled?: boolean | undefined;
@@ -69,10 +68,10 @@ export declare const DialogOverlayFrame: import("@tamagui/core").TamaguiComponen
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     open?: boolean | undefined;
     transparent?: boolean | undefined;
@@ -86,9 +85,6 @@ export declare const DialogOverlayFrame: import("@tamagui/core").TamaguiComponen
     bordered?: number | boolean | undefined;
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
-    /**
-     * Used to disable the remove scroll functionality when open
-     */
     chromeless?: boolean | "all" | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
 interface DialogOverlayProps extends YStackProps {
@@ -105,10 +101,10 @@ declare const DialogContentFrame: import("@tamagui/core").TamaguiComponent<impor
     transparent?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     fullscreen?: boolean | undefined;
     unstyled?: boolean | undefined;
@@ -219,30 +215,33 @@ declare const Dialog: React.ForwardRefExoticComponent<DialogProps & React.RefAtt
     }, import("@tamagui/core").StaticConfigPublic>;
     Close: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}>, "displayWhenAdapted"> & DialogCloseExtraProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & DialogCloseExtraProps, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic>;
     Sheet: React.FunctionComponent<Omit<import("@tamagui/sheet").SheetProps, "open" | "onOpenChange"> & React.RefAttributes<import("react-native").View>> & {
-        Frame: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+        Frame: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
             elevation?: number | import("@tamagui/core").SizeTokens | undefined;
             fullscreen?: boolean | undefined;
             inset?: number | import("@tamagui/core").SizeTokens | {
-                top?: number | undefined;
-                bottom?: number | undefined;
-                left?: number | undefined;
-                right?: number | undefined;
+                top?: number;
+                bottom?: number;
+                left?: number;
+                right?: number;
             } | undefined;
             unstyled?: boolean | undefined;
-        }>, "disableHideBottomOverflow" | "adjustPaddingForOffscreenContent"> & {
-            disableHideBottomOverflow?: boolean | undefined;
-            adjustPaddingForOffscreenContent?: boolean | undefined;
+        }>, keyof {
+            disableHideBottomOverflow?: boolean;
+            adjustPaddingForOffscreenContent?: boolean;
+        }> & {
+            disableHideBottomOverflow?: boolean;
+            adjustPaddingForOffscreenContent?: boolean;
         } & {
-            __scopeSheet?: Scope<any>;
-        } & React.RefAttributes<unknown>>;
-        Overlay: React.MemoExoticComponent<(propsIn: import("@tamagui/sheet").SheetScopedProps<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+            __scopeSheet?: import("@tamagui/create-context").Scope<any>;
+        } & import("react").RefAttributes<unknown>>;
+        Overlay: import("react").MemoExoticComponent<(propsIn: import("@tamagui/sheet/types/types").SheetScopedProps<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
             elevation?: number | import("@tamagui/core").SizeTokens | undefined;
             fullscreen?: boolean | undefined;
             inset?: number | import("@tamagui/core").SizeTokens | {
-                top?: number | undefined;
-                bottom?: number | undefined;
-                left?: number | undefined;
-                right?: number | undefined;
+                top?: number;
+                bottom?: number;
+                left?: number;
+                right?: number;
             } | undefined;
             open?: boolean | undefined;
             transparent?: boolean | undefined;
@@ -258,20 +257,20 @@ declare const Dialog: React.ForwardRefExoticComponent<DialogProps & React.RefAtt
             padded?: boolean | undefined;
             chromeless?: boolean | "all" | undefined;
         }>>) => null>;
-        Handle: React.ForwardRefExoticComponent<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {}>> & {
-            open?: boolean | undefined;
-        } & React.RefAttributes<any>> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {}>> & {
-            open?: boolean | undefined;
+        Handle: import("react").ForwardRefExoticComponent<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {}>> & {
+            open?: boolean;
+        } & import("react").RefAttributes<any>> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {}>> & {
+            open?: boolean;
         }, any, any, any, {
-            open?: boolean | undefined;
+            open?: boolean;
         }, {}> & Omit<{}, "staticConfig" | "extractable" | "styleable"> & {
             __tama: [import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {}>> & {
-                open?: boolean | undefined;
+                open?: boolean;
             }, any, any, any, {
-                open?: boolean | undefined;
+                open?: boolean;
             }, {}];
         };
-        ScrollView: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & import("react-native").ScrollViewProps, keyof import("@tamagui/core").StackStyleBase | "fullscreen" | "contentContainerStyle"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
+        ScrollView: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & import("react-native").ScrollViewProps, keyof import("@tamagui/core").StackStyleBase | "fullscreen" | "contentContainerStyle"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
             readonly contentContainerStyle?: Partial<import("@tamagui/core").GetFinalProps<import("react-native").ScrollViewProps, import("@tamagui/core").StackStyleBase, {}>> | undefined;
         }> & {
             fullscreen?: boolean | undefined;
@@ -287,11 +286,11 @@ declare const Dialog: React.ForwardRefExoticComponent<DialogProps & React.RefAtt
             readonly contentContainerStyle?: Partial<import("@tamagui/core").GetFinalProps<import("react-native").ScrollViewProps, import("@tamagui/core").StackStyleBase, {}>> | undefined;
         }, {
             fullscreen?: boolean | undefined;
-        }>> & React.RefAttributes<import("react-native").ScrollView>>;
+        }>> & import("react").RefAttributes<import("react-native").ScrollView>>;
     };
     Adapt: (({ platform, when, children }: import("@tamagui/adapt").AdaptProps) => any) & {
         Contents: {
-            (props: any): React.FunctionComponentElement<any>;
+            (props: any): import("react").FunctionComponentElement<any>;
             shouldForwardSpace: boolean;
         };
     };
@@ -299,7 +298,7 @@ declare const Dialog: React.ForwardRefExoticComponent<DialogProps & React.RefAtt
 export declare const DialogSheetContents: {
     ({ name, ...props }: {
         name: string;
-        context: Omit<DialogContextValue, 'sheetBreakpoint'>;
+        context: Omit<DialogContextValue, "sheetBreakpoint">;
     }): import("react/jsx-runtime").JSX.Element;
     displayName: string;
 };

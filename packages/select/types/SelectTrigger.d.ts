@@ -11,10 +11,10 @@ export declare const SelectTrigger: React.ForwardRefExoticComponent<Omit<import(
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -35,10 +35,10 @@ export declare const SelectTrigger: React.ForwardRefExoticComponent<Omit<import(
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -59,10 +59,10 @@ export declare const SelectTrigger: React.ForwardRefExoticComponent<Omit<import(
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -75,19 +75,19 @@ export declare const SelectTrigger: React.ForwardRefExoticComponent<Omit<import(
     chromeless?: boolean | "all" | undefined;
     active?: boolean | undefined;
 }>> & Omit<import("@tamagui/text").TextParentStyles, "TextComponent" | "noTextWrap"> & import("@tamagui/core").ThemeableProps & {
-    icon?: (JSX.Element | React.FunctionComponent<{
+    icon?: JSX.Element | React.FunctionComponent<{
         color?: any;
         size?: any;
-    }> | null) | undefined;
-    iconAfter?: (JSX.Element | React.FunctionComponent<{
+    }> | null;
+    iconAfter?: JSX.Element | React.FunctionComponent<{
         color?: any;
         size?: any;
-    }> | null) | undefined;
-    scaleIcon?: number | undefined;
-    spaceFlex?: number | boolean | undefined;
-    scaleSpace?: number | undefined;
+    }> | null;
+    scaleIcon?: number;
+    spaceFlex?: number | boolean;
+    scaleSpace?: number;
     title?: React.ReactNode;
     subTitle?: React.ReactNode;
-    noTextWrap?: boolean | "all" | undefined;
+    noTextWrap?: boolean | "all";
 } & React.RefAttributes<TamaguiElement>>;
 //# sourceMappingURL=SelectTrigger.d.ts.map

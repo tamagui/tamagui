@@ -12,7 +12,7 @@ export interface Variable<A = any> {
 }
 export type MakeVariable<A = any> = A extends string | number ? Variable<A> : A;
 type VariableIn<A = any> = Pick<Variable<A>, 'key' | 'name' | 'val'>;
-export declare const createVariable: <A extends string | number | Variable<any> = any>(props: VariableIn<A>, skipHash?: boolean) => Variable<A>;
+export declare const createVariable: <A extends string | number | Variable = any>(props: VariableIn<A>, skipHash?: boolean) => Variable<A>;
 export declare function variableToString(vrble?: any, getValue?: boolean): string;
 export declare function isVariable(v: Variable | any): v is Variable;
 export declare function getVariable(nameOrVariable: Variable | string | any, group?: TokenCategories): string;

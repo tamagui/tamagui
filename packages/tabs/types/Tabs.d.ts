@@ -20,10 +20,10 @@ declare const TabsTriggerFrame: import("@tamagui/web").TamaguiComponent<import("
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -56,15 +56,15 @@ type TabsTriggerProps = TabsTriggerFrameProps & {
 };
 type TabsTabProps = TabsTriggerProps;
 declare const TabsContentFrame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
-    elevation?: number | SizeTokens | undefined;
+    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
-    inset?: number | SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+    inset?: number | import("@tamagui/core").SizeTokens | {
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -73,7 +73,7 @@ declare const TabsContentFrame: import("@tamagui/web").TamaguiComponent<import("
     bordered?: number | boolean | undefined;
     backgrounded?: boolean | undefined;
     radiused?: boolean | undefined;
-    padded?: boolean | undefined; /** Disables setting the active theme when tab is active */
+    padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
 }, import("@tamagui/web").StaticConfigPublic>;
 type TabsContentFrameProps = GetProps<typeof TabsContentFrame>;
@@ -99,17 +99,17 @@ type TabsContextValue = {
     unregisterTrigger: () => void;
     triggersCount: number;
 };
-declare const useTabsContext: (scope?: string | undefined) => TabsContextValue;
+declare const useTabsContext: (scope?: string) => TabsContextValue;
 declare const TabsFrame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
-    size?: SizeTokens | undefined;
-    elevation?: number | SizeTokens | undefined;
+    size?: import("@tamagui/core").SizeTokens | undefined;
+    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
-    inset?: number | SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+    inset?: number | import("@tamagui/core").SizeTokens | {
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -145,15 +145,15 @@ type TabsExtraProps = {
 };
 type TabsProps = TabsFrameProps & TabsExtraProps;
 export declare const Tabs: React.ForwardRefExoticComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
-    size?: SizeTokens | undefined;
-    elevation?: number | SizeTokens | undefined;
+    size?: import("@tamagui/core").SizeTokens | undefined;
+    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
-    inset?: number | SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+    inset?: number | import("@tamagui/core").SizeTokens | {
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -162,15 +162,15 @@ export declare const Tabs: React.ForwardRefExoticComponent<Omit<import("@tamagui
     bordered?: number | boolean | undefined;
     unstyled?: boolean | undefined;
 }>, keyof TabsExtraProps> & TabsExtraProps & React.RefAttributes<TamaguiElement>> & import("@tamagui/web").StaticComponentObject<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
-    size?: SizeTokens | undefined;
-    elevation?: number | SizeTokens | undefined;
+    size?: import("@tamagui/core").SizeTokens | undefined;
+    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
-    inset?: number | SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+    inset?: number | import("@tamagui/core").SizeTokens | {
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -179,15 +179,15 @@ export declare const Tabs: React.ForwardRefExoticComponent<Omit<import("@tamagui
     bordered?: number | boolean | undefined;
     unstyled?: boolean | undefined;
 }>, keyof TabsExtraProps> & TabsExtraProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & TabsExtraProps, import("@tamagui/web").StackStyleBase, {
-    size?: SizeTokens | undefined;
-    elevation?: number | SizeTokens | undefined;
+    size?: import("@tamagui/core").SizeTokens | undefined;
+    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
-    inset?: number | SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+    inset?: number | import("@tamagui/core").SizeTokens | {
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -197,15 +197,15 @@ export declare const Tabs: React.ForwardRefExoticComponent<Omit<import("@tamagui
     unstyled?: boolean | undefined;
 }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig" | "extractable" | "styleable"> & {
     __tama: [Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
-        size?: SizeTokens | undefined;
-        elevation?: number | SizeTokens | undefined;
+        size?: import("@tamagui/core").SizeTokens | undefined;
+        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
-        inset?: number | SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+        inset?: number | import("@tamagui/core").SizeTokens | {
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -214,15 +214,15 @@ export declare const Tabs: React.ForwardRefExoticComponent<Omit<import("@tamagui
         bordered?: number | boolean | undefined;
         unstyled?: boolean | undefined;
     }>, keyof TabsExtraProps> & TabsExtraProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & TabsExtraProps, import("@tamagui/web").StackStyleBase, {
-        size?: SizeTokens | undefined;
-        elevation?: number | SizeTokens | undefined;
+        size?: import("@tamagui/core").SizeTokens | undefined;
+        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
-        inset?: number | SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+        inset?: number | import("@tamagui/core").SizeTokens | {
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -235,15 +235,15 @@ export declare const Tabs: React.ForwardRefExoticComponent<Omit<import("@tamagui
     List: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/web").StackStyleBase | "unstyled" | "size" | "transparent" | "fullscreen" | "circular" | "inset" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
         unstyled?: boolean | undefined;
         size?: any;
-        elevation?: number | SizeTokens | undefined;
+        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
-        inset?: number | SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+        inset?: number | import("@tamagui/core").SizeTokens | {
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -257,15 +257,15 @@ export declare const Tabs: React.ForwardRefExoticComponent<Omit<import("@tamagui
     } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
         unstyled?: boolean | undefined;
         size?: any;
-        elevation?: number | SizeTokens | undefined;
+        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
-        inset?: number | SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+        inset?: number | import("@tamagui/core").SizeTokens | {
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -279,15 +279,15 @@ export declare const Tabs: React.ForwardRefExoticComponent<Omit<import("@tamagui
     } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {
         unstyled?: boolean | undefined;
         size?: any;
-        elevation?: number | SizeTokens | undefined;
+        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
-        inset?: number | SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+        inset?: number | import("@tamagui/core").SizeTokens | {
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -299,19 +299,19 @@ export declare const Tabs: React.ForwardRefExoticComponent<Omit<import("@tamagui
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
     }>> & {
-        axis?: "vertical" | "horizontal" | undefined;
-        orientation?: "vertical" | "horizontal" | undefined;
-        scrollable?: boolean | undefined;
-        showScrollIndicator?: boolean | undefined;
-        disabled?: boolean | undefined;
-        disablePassBorderRadius?: (boolean | "bottom" | "end" | "start" | "top") | undefined;
-        forceUseItem?: boolean | undefined;
+        axis?: "horizontal" | "vertical";
+        orientation?: "horizontal" | "vertical";
+        scrollable?: boolean;
+        showScrollIndicator?: boolean;
+        disabled?: boolean;
+        disablePassBorderRadius?: boolean | "bottom" | "end" | "start" | "top";
+        forceUseItem?: boolean;
     } & {
         /**
          * Whether to loop over after reaching the end or start of the items
          * @default true
          */
-        loop?: boolean | undefined;
+        loop?: boolean;
     } & React.RefAttributes<TamaguiElement>>;
     /**
      * @deprecated Use Tabs.Tab instead
@@ -325,10 +325,10 @@ export declare const Tabs: React.ForwardRefExoticComponent<Omit<import("@tamagui
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -349,10 +349,10 @@ export declare const Tabs: React.ForwardRefExoticComponent<Omit<import("@tamagui
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -373,10 +373,10 @@ export declare const Tabs: React.ForwardRefExoticComponent<Omit<import("@tamagui
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -397,10 +397,10 @@ export declare const Tabs: React.ForwardRefExoticComponent<Omit<import("@tamagui
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -421,10 +421,10 @@ export declare const Tabs: React.ForwardRefExoticComponent<Omit<import("@tamagui
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -440,11 +440,11 @@ export declare const Tabs: React.ForwardRefExoticComponent<Omit<import("@tamagui
         /** The value for the tabs state to be changed to after activation of the trigger */
         value: string;
         /** Used for making custom indicators when trigger interacted with */
-        onInteraction?: ((type: InteractionType, layout: TabLayout | null) => void) | undefined;
+        onInteraction?: (type: InteractionType, layout: TabLayout | null) => void;
         /** Disables setting the active theme when tab is active */
-        disableActiveTheme?: boolean | undefined;
+        disableActiveTheme?: boolean;
     } & {
-        __scopeTabs?: string | undefined;
+        __scopeTabs?: string;
     }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "disabled" | "elevation" | keyof import("@tamagui/web").StackStyleBase | "unstyled" | "size" | "transparent" | "fullscreen" | "circular" | "inset" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless" | "active"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
         disabled?: boolean | undefined;
         elevation?: number | SizeTokens | undefined;
@@ -454,10 +454,10 @@ export declare const Tabs: React.ForwardRefExoticComponent<Omit<import("@tamagui
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -478,10 +478,10 @@ export declare const Tabs: React.ForwardRefExoticComponent<Omit<import("@tamagui
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -502,10 +502,10 @@ export declare const Tabs: React.ForwardRefExoticComponent<Omit<import("@tamagui
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -521,11 +521,11 @@ export declare const Tabs: React.ForwardRefExoticComponent<Omit<import("@tamagui
         /** The value for the tabs state to be changed to after activation of the trigger */
         value: string;
         /** Used for making custom indicators when trigger interacted with */
-        onInteraction?: ((type: InteractionType, layout: TabLayout | null) => void) | undefined;
+        onInteraction?: (type: InteractionType, layout: TabLayout | null) => void;
         /** Disables setting the active theme when tab is active */
-        disableActiveTheme?: boolean | undefined;
+        disableActiveTheme?: boolean;
     } & {
-        __scopeTabs?: string | undefined;
+        __scopeTabs?: string;
     }, import("@tamagui/web").StackStyleBase, {
         disabled?: boolean | undefined;
         elevation?: number | SizeTokens | undefined;
@@ -535,10 +535,10 @@ export declare const Tabs: React.ForwardRefExoticComponent<Omit<import("@tamagui
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -560,10 +560,10 @@ export declare const Tabs: React.ForwardRefExoticComponent<Omit<import("@tamagui
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -584,10 +584,10 @@ export declare const Tabs: React.ForwardRefExoticComponent<Omit<import("@tamagui
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -608,10 +608,10 @@ export declare const Tabs: React.ForwardRefExoticComponent<Omit<import("@tamagui
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -632,10 +632,10 @@ export declare const Tabs: React.ForwardRefExoticComponent<Omit<import("@tamagui
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -656,10 +656,10 @@ export declare const Tabs: React.ForwardRefExoticComponent<Omit<import("@tamagui
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -675,11 +675,11 @@ export declare const Tabs: React.ForwardRefExoticComponent<Omit<import("@tamagui
         /** The value for the tabs state to be changed to after activation of the trigger */
         value: string;
         /** Used for making custom indicators when trigger interacted with */
-        onInteraction?: ((type: InteractionType, layout: TabLayout | null) => void) | undefined;
+        onInteraction?: (type: InteractionType, layout: TabLayout | null) => void;
         /** Disables setting the active theme when tab is active */
-        disableActiveTheme?: boolean | undefined;
+        disableActiveTheme?: boolean;
     } & {
-        __scopeTabs?: string | undefined;
+        __scopeTabs?: string;
     }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "disabled" | "elevation" | keyof import("@tamagui/web").StackStyleBase | "unstyled" | "size" | "transparent" | "fullscreen" | "circular" | "inset" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless" | "active"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
         disabled?: boolean | undefined;
         elevation?: number | SizeTokens | undefined;
@@ -689,10 +689,10 @@ export declare const Tabs: React.ForwardRefExoticComponent<Omit<import("@tamagui
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -713,10 +713,10 @@ export declare const Tabs: React.ForwardRefExoticComponent<Omit<import("@tamagui
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -737,10 +737,10 @@ export declare const Tabs: React.ForwardRefExoticComponent<Omit<import("@tamagui
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -756,11 +756,11 @@ export declare const Tabs: React.ForwardRefExoticComponent<Omit<import("@tamagui
         /** The value for the tabs state to be changed to after activation of the trigger */
         value: string;
         /** Used for making custom indicators when trigger interacted with */
-        onInteraction?: ((type: InteractionType, layout: TabLayout | null) => void) | undefined;
+        onInteraction?: (type: InteractionType, layout: TabLayout | null) => void;
         /** Disables setting the active theme when tab is active */
-        disableActiveTheme?: boolean | undefined;
+        disableActiveTheme?: boolean;
     } & {
-        __scopeTabs?: string | undefined;
+        __scopeTabs?: string;
     }, import("@tamagui/web").StackStyleBase, {
         disabled?: boolean | undefined;
         elevation?: number | SizeTokens | undefined;
@@ -770,10 +770,10 @@ export declare const Tabs: React.ForwardRefExoticComponent<Omit<import("@tamagui
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -787,15 +787,15 @@ export declare const Tabs: React.ForwardRefExoticComponent<Omit<import("@tamagui
         active?: boolean | undefined;
     }, import("@tamagui/web").StaticConfigPublic>;
     Content: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
-        elevation?: number | SizeTokens | undefined;
+        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
-        inset?: number | SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+        inset?: number | import("@tamagui/core").SizeTokens | {
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -804,18 +804,18 @@ export declare const Tabs: React.ForwardRefExoticComponent<Omit<import("@tamagui
         bordered?: number | boolean | undefined;
         backgrounded?: boolean | undefined;
         radiused?: boolean | undefined;
-        padded?: boolean | undefined; /** Disables setting the active theme when tab is active */
+        padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
     }>, keyof TabsContentExtraProps> & TabsContentExtraProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & TabsContentExtraProps, import("@tamagui/web").StackStyleBase, {
-        elevation?: number | SizeTokens | undefined;
+        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
-        inset?: number | SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+        inset?: number | import("@tamagui/core").SizeTokens | {
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -824,7 +824,7 @@ export declare const Tabs: React.ForwardRefExoticComponent<Omit<import("@tamagui
         bordered?: number | boolean | undefined;
         backgrounded?: boolean | undefined;
         radiused?: boolean | undefined;
-        padded?: boolean | undefined; /** Disables setting the active theme when tab is active */
+        padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
     }, import("@tamagui/web").StaticConfigPublic>;
 };

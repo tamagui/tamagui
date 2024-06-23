@@ -28,21 +28,21 @@ export declare const TooltipGroup: ({ children, delay }: {
     delay: Delay;
 }) => import("react/jsx-runtime").JSX.Element;
 export declare const Tooltip: React.ForwardRefExoticComponent<PopperProps & {
-    open?: boolean | undefined;
-    unstyled?: boolean | undefined;
+    open?: boolean;
+    unstyled?: boolean;
     children?: React.ReactNode;
-    onOpenChange?: ((open: boolean) => void) | undefined;
+    onOpenChange?: (open: boolean) => void;
     focus?: {
-        enabled?: boolean | undefined;
-        visibleOnly?: boolean | undefined;
-    } | undefined;
-    groupId?: string | undefined;
-    restMs?: number | undefined;
+        enabled?: boolean;
+        visibleOnly?: boolean;
+    };
+    groupId?: string;
+    restMs?: number;
     delay?: number | {
-        open?: number | undefined;
-        close?: number | undefined;
-    } | undefined;
-    disableAutoCloseOnScroll?: boolean | undefined;
+        open?: number;
+        close?: number;
+    };
+    disableAutoCloseOnScroll?: boolean;
 } & {
     __scopeTooltip?: string | undefined;
 } & React.RefAttributes<unknown>> & {
@@ -50,28 +50,28 @@ export declare const Tooltip: React.ForwardRefExoticComponent<PopperProps & {
         elevation?: number | SizeTokens | undefined;
         fullscreen?: boolean | undefined;
         inset?: number | SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
     } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
         elevation?: number | SizeTokens | undefined;
         fullscreen?: boolean | undefined;
         inset?: number | SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
     } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {
         elevation?: number | SizeTokens | undefined;
         fullscreen?: boolean | undefined;
         inset?: number | SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
     }>> & {
         __scopeTooltip?: string | undefined;
@@ -80,28 +80,28 @@ export declare const Tooltip: React.ForwardRefExoticComponent<PopperProps & {
         elevation?: number | SizeTokens | undefined;
         fullscreen?: boolean | undefined;
         inset?: number | SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
     } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
         elevation?: number | SizeTokens | undefined;
         fullscreen?: boolean | undefined;
         inset?: number | SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
     } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {
         elevation?: number | SizeTokens | undefined;
         fullscreen?: boolean | undefined;
         inset?: number | SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
     }>> & import("@tamagui/popper").PopperArrowExtraProps & {
         __scopeTooltip?: string | undefined;

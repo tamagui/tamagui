@@ -32,10 +32,10 @@ declare const ToastCloseFrame: import("@tamagui/core").TamaguiComponent<import("
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -53,10 +53,10 @@ declare const Toast: React.ForwardRefExoticComponent<Omit<import("@tamagui/core"
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     transparent?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     circular?: boolean | undefined;
     fullscreen?: boolean | undefined;
@@ -74,10 +74,10 @@ declare const Toast: React.ForwardRefExoticComponent<Omit<import("@tamagui/core"
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     transparent?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     circular?: boolean | undefined;
     fullscreen?: boolean | undefined;
@@ -95,10 +95,10 @@ declare const Toast: React.ForwardRefExoticComponent<Omit<import("@tamagui/core"
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     transparent?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     circular?: boolean | undefined;
     fullscreen?: boolean | undefined;
@@ -117,10 +117,10 @@ declare const Toast: React.ForwardRefExoticComponent<Omit<import("@tamagui/core"
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         transparent?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         circular?: boolean | undefined;
         fullscreen?: boolean | undefined;
@@ -138,10 +138,10 @@ declare const Toast: React.ForwardRefExoticComponent<Omit<import("@tamagui/core"
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         transparent?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         circular?: boolean | undefined;
         fullscreen?: boolean | undefined;
@@ -171,10 +171,10 @@ declare const Toast: React.ForwardRefExoticComponent<Omit<import("@tamagui/core"
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -191,10 +191,10 @@ declare const Toast: React.ForwardRefExoticComponent<Omit<import("@tamagui/core"
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -211,10 +211,10 @@ declare const Toast: React.ForwardRefExoticComponent<Omit<import("@tamagui/core"
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -234,7 +234,7 @@ declare const Toast: React.ForwardRefExoticComponent<Omit<import("@tamagui/core"
          */
         altText: string;
     } & {
-        __scopeToast?: string | undefined;
+        __scopeToast?: string;
     } & React.RefAttributes<TamaguiElement>>;
     Close: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "transparent" | "inset" | "circular" | "fullscreen" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
@@ -242,10 +242,10 @@ declare const Toast: React.ForwardRefExoticComponent<Omit<import("@tamagui/core"
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -262,10 +262,10 @@ declare const Toast: React.ForwardRefExoticComponent<Omit<import("@tamagui/core"
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -282,10 +282,10 @@ declare const Toast: React.ForwardRefExoticComponent<Omit<import("@tamagui/core"
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;

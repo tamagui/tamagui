@@ -1,4 +1,3 @@
-/// <reference types="react" />
 export declare const useSheetController: () => {
     controller: SheetControllerContextValue | null;
     isHidden: boolean | undefined;

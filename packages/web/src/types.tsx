@@ -952,7 +952,11 @@ export type ThemeValueFallbackZIndex =
       WebStyleValueUniversal
     >
 
-export type GetTokenString<A> = A extends string | number ? `$${A}` : `$${string}`
+export type GetTokenString<A> = A extends `$${string}`
+  ? A
+  : A extends string | number
+    ? `$${A}`
+    : `$${string}`
 
 export type SpecificTokens<
   Record = Tokens,

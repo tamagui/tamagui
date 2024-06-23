@@ -222,9 +222,9 @@ export declare function getDefaultTamaguiConfig(platform?: 'native' | 'web'): {
             19: import("@tamagui/core").Variable<number>;
         };
         radius: {
+            1: import("@tamagui/core").Variable<number>;
             0: import("@tamagui/core").Variable<number>;
             9: import("@tamagui/core").Variable<number>;
-            1: import("@tamagui/core").Variable<number>;
             10: import("@tamagui/core").Variable<number>;
             2: import("@tamagui/core").Variable<number>;
             4: import("@tamagui/core").Variable<number>;
@@ -237,8 +237,8 @@ export declare function getDefaultTamaguiConfig(platform?: 'native' | 'web'): {
             12: import("@tamagui/core").Variable<number>;
         };
         zIndex: {
-            0: import("@tamagui/core").Variable<number>;
             1: import("@tamagui/core").Variable<number>;
+            0: import("@tamagui/core").Variable<number>;
             2: import("@tamagui/core").Variable<number>;
             4: import("@tamagui/core").Variable<number>;
             3: import("@tamagui/core").Variable<number>;
@@ -250,9 +250,9 @@ export declare function getDefaultTamaguiConfig(platform?: 'native' | 'web'): {
             black: import("@tamagui/core").Variable<string>;
         };
         radius: {
+            1: import("@tamagui/core").Variable<number>;
             0: import("@tamagui/core").Variable<number>;
             9: import("@tamagui/core").Variable<number>;
-            1: import("@tamagui/core").Variable<number>;
             10: import("@tamagui/core").Variable<number>;
             2: import("@tamagui/core").Variable<number>;
             4: import("@tamagui/core").Variable<number>;
@@ -265,8 +265,8 @@ export declare function getDefaultTamaguiConfig(platform?: 'native' | 'web'): {
             12: import("@tamagui/core").Variable<number>;
         };
         zIndex: {
-            0: import("@tamagui/core").Variable<number>;
             1: import("@tamagui/core").Variable<number>;
+            0: import("@tamagui/core").Variable<number>;
             2: import("@tamagui/core").Variable<number>;
             4: import("@tamagui/core").Variable<number>;
             3: import("@tamagui/core").Variable<number>;
