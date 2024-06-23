@@ -160,7 +160,12 @@ export const useComponentState = (
 ) => {
   const useAnimations = animationDriver?.useAnimations as UseAnimationHook | undefined
 
-  const stateRef = useRef<TamaguiComponentStateRef>({})
+  const stateRef = useRef<TamaguiComponentStateRef>(
+    undefined as any as TamaguiComponentStateRef
+  )
+  if (!stateRef.current) {
+    stateRef.current = {}
+  }
 
   // after we get states mount we need to turn off isAnimated for server side
   const hasAnimationProp = Boolean(
@@ -712,7 +717,7 @@ export function createComponent<
     if (process.env.NODE_ENV === 'development' && time) time`theme`
 
     // HOOK 14 (-1 if no animation, -1 if disableSSR, -1 if no context, -1 if production)
-    const mediaState = useMedia(stateRef, componentContext)
+    const mediaState = useMedia(stateRef, componentContext, debugProp)
 
     setDidGetVariableValue(false)
 
@@ -731,6 +736,7 @@ export function createComponent<
       resolveValues,
       isExiting,
       isAnimated,
+      willBeAnimated,
     } as const
 
     // HOOK 15 (-1 if no animation, -1 if disableSSR, -1 if no context, -1 if production)
@@ -764,11 +770,15 @@ export function createComponent<
       didGetVariableValue() ||
       isMediaArray ||
       (noClassNames && splitStyles.hasMedia === true)
-    const mediaListeningKeys = isMediaArray ? (splitStyles.hasMedia as any) : null
+
+    const mediaListeningKeys = isMediaArray ? (splitStyles.hasMedia as string[]) : null
+    if (process.env.NODE_ENV === 'development' && debugProp) {
+      console.info(`useMedia() createComponent`, shouldListenForMedia, mediaListeningKeys)
+    }
 
     setMediaShouldUpdate(stateRef, {
       enabled: shouldListenForMedia,
-      keys: mediaListeningKeys,
+      touched: mediaListeningKeys,
     })
 
     const {

@@ -1,11 +1,11 @@
 import { isServer, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { useRef, useState } from 'react'
-
 import { getConfig } from '../config'
 import { matchMedia } from '../helpers/matchMedia'
 import { pseudoDescriptors } from '../helpers/pseudoDescriptors'
 import type {
   ComponentContextI,
+  DebugProp,
   IsMediaType,
   MediaQueries,
   MediaQueryObject,
@@ -171,9 +171,8 @@ type MediaKeysState = {
 
 type UpdateState = {
   enabled?: boolean
-  keys?: string[]
   prev: MediaKeysState
-  touched?: Set<string>
+  touched?: string[] | null
 }
 
 const States = new WeakMap<any, UpdateState>()
@@ -185,20 +184,14 @@ export function setMediaShouldUpdate(ref: any, props: Partial<UpdateState>) {
   })
 }
 
-function getSnapshot({ touched, prev, enabled, keys }: UpdateState) {
-  const isDisabled = enabled === false
-  if (isDisabled) {
+function getSnapshot({ touched, prev, enabled }: UpdateState) {
+  if (enabled === false) {
     return prev
   }
-
-  const testKeys = keys || touched ? [...(keys || []), ...(touched || [])] : null
-  const hasntUpdated =
-    !testKeys || testKeys?.every((key) => mediaState[key] === prev[key])
-
+  const hasntUpdated = !touched || touched.every((key) => mediaState[key] === prev[key])
   if (hasntUpdated) {
     return prev
   }
-
   return mediaState
 }
 
@@ -208,7 +201,8 @@ function getSnapshot({ touched, prev, enabled, keys }: UpdateState) {
 
 export function useMedia(
   uidIn?: any,
-  componentContext?: ComponentContextI
+  componentContext?: ComponentContextI,
+  debug: DebugProp = false
 ): UseMediaState {
   const uid = uidIn ?? useRef()
 
@@ -228,6 +222,15 @@ export function useMedia(
     function update() {
       setState((prev) => {
         const componentState = States.get(uid)!
+        if (process.env.NODE_ENV === 'development' && debug) {
+          console.info('useMedia() update?', getSnapshot(componentState) !== prev, {
+            componentState,
+            touched: [...(componentState.touched || [])],
+            prev: { ...componentState.prev },
+            next: getSnapshot(componentState),
+            mediaState: { ...mediaState },
+          })
+        }
         const next = getSnapshot(componentState)
         if (next !== prev) {
           componentState.prev = next
@@ -248,8 +251,11 @@ export function useMedia(
   return new Proxy(state, {
     get(_, key) {
       if (typeof key === 'string') {
-        componentState.touched ||= new Set()
-        componentState.touched.add(key)
+        componentState.touched ||= []
+        if (!componentState.touched.includes(key)) componentState.touched.push(key)
+        if (process.env.NODE_ENV === 'development' && debug) {
+          console.info(`useMedia() TOUCH`, key)
+        }
       }
       return Reflect.get(state, key)
     },

@@ -1279,6 +1279,7 @@ export type SplitStyleProps = {
     disableExpandShorthands?: boolean;
     fallbackProps?: Record<string, any>;
     hasTextAncestor?: boolean;
+    willBeAnimated?: boolean;
     isAnimated: boolean;
     isExiting?: boolean;
     exitVariant?: string;

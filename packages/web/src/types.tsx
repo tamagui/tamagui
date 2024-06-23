@@ -2220,6 +2220,7 @@ export type SplitStyleProps = {
   fallbackProps?: Record<string, any>
   hasTextAncestor?: boolean
   // for animations
+  willBeAnimated?: boolean // we need to track media queries even before animation
   isAnimated: boolean
   isExiting?: boolean
   exitVariant?: string
