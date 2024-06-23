@@ -1,4 +1,11 @@
-import { createTamagui, normalizeStyle, getStylesAtomic } from '@tamagui/core'
+import {
+  createTamagui,
+  normalizeStyle,
+  getStylesAtomic,
+  StyleObjectRules,
+  StyleObjectProperty,
+  StyleObjectValue,
+} from '@tamagui/core'
 import { beforeAll, describe, expect, test } from 'vitest'
 
 import config from '../../config-default'
@@ -18,15 +25,15 @@ describe('extract-tests', () => {
       borderBottomColor: 'blue',
     }
     const styles = getStylesAtomic(style)
-    const style1 = styles.find((x) => x.property === 'backgroundColor')
-    const style2 = styles.find((x) => x.property === 'transform')
-    const style3 = styles.find((x) => x.property === 'boxShadow')
+    const style1 = styles.find((x) => x[StyleObjectProperty] === 'backgroundColor')
+    const style2 = styles.find((x) => x[StyleObjectProperty] === 'transform')
+    const style3 = styles.find((x) => x[StyleObjectProperty] === 'boxShadow')
     expect(!!style1).toBeTruthy()
     expect(!!style2).toBeTruthy()
     expect(!!style3).toBeTruthy()
-    expect(style1!.rules[0]).toMatchSnapshot()
-    expect(style2!.rules[0]).toMatchSnapshot()
-    expect(style3!.rules[0]).toMatchSnapshot()
+    expect(style1![StyleObjectRules][0]).toMatchSnapshot()
+    expect(style2![StyleObjectRules][0]).toMatchSnapshot()
+    expect(style3![StyleObjectRules][0]).toMatchSnapshot()
   })
 
   test('supports RTL properties', () => {
@@ -46,15 +53,17 @@ describe('extract-tests', () => {
       paddingVertical: 0,
     })
     const [pT, pR, pB, pL] = getStylesAtomic(style)
-    expect(pT.value).toBe('0px')
-    expect(pB.value).toBe('0px')
-    expect(pL.value).toBe('10px')
-    expect(pR.value).toBe('10px')
+    expect(pT[StyleObjectValue]).toBe('0px')
+    expect(pB[StyleObjectValue]).toBe('0px')
+    expect(pL[StyleObjectValue]).toBe('10px')
+    expect(pR[StyleObjectValue]).toBe('10px')
     const style2 = normalizeStyle({
       borderColor: 'yellow',
       borderWidth: 10,
     })
     const styles2 = getStylesAtomic(style2)
-    expect(styles2.some((x) => x.property === 'borderRightStyle')).toBeTruthy()
+    expect(
+      styles2.some((x) => x[StyleObjectProperty] === 'borderRightStyle')
+    ).toBeTruthy()
   })
 })

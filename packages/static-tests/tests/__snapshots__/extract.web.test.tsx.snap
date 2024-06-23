@@ -8,41 +8,41 @@ exports[`extract-tests > converts a style object to class names 3`] = `":root ._
 
 exports[`extract-tests > supports RTL properties 1`] = `
 [
-  {
-    "identifier": "_paddingStart-100px",
-    "property": "paddingStart",
-    "pseudo": undefined,
-    "rules": [
+  [
+    "paddingStart",
+    "100px",
+    "_paddingStart-100px",
+    undefined,
+    [
       ":root ._paddingStart-100px{padding-start:100px;}",
     ],
-    "value": "100px",
-  },
-  {
-    "identifier": "_paddingEnd-10px",
-    "property": "paddingEnd",
-    "pseudo": undefined,
-    "rules": [
+  ],
+  [
+    "paddingEnd",
+    "10px",
+    "_paddingEnd-10px",
+    undefined,
+    [
       ":root ._paddingEnd-10px{padding-end:10px;}",
     ],
-    "value": "10px",
-  },
-  {
-    "identifier": "_marginStart-50px",
-    "property": "marginStart",
-    "pseudo": undefined,
-    "rules": [
+  ],
+  [
+    "marginStart",
+    "50px",
+    "_marginStart-50px",
+    undefined,
+    [
       ":root ._marginStart-50px{margin-start:50px;}",
     ],
-    "value": "50px",
-  },
-  {
-    "identifier": "_marginEnd-2px",
-    "property": "marginEnd",
-    "pseudo": undefined,
-    "rules": [
+  ],
+  [
+    "marginEnd",
+    "2px",
+    "_marginEnd-2px",
+    undefined,
+    [
       ":root ._marginEnd-2px{margin-end:2px;}",
     ],
-    "value": "2px",
-  },
+  ],
 ]
 `;

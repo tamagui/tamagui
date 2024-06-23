@@ -301,10 +301,10 @@ export function createExtractor(
     const firstTheme = tamaguiConfig?.themes[firstThemeName] || {}
 
     if (!firstTheme || typeof firstTheme !== 'object') {
-      console.error(`Missing theme, an error occurred when importing your config`)
-      console.info(`Got config:`, tamaguiConfig)
+      const err = `Missing theme ${firstThemeName}, an error occurred when importing your config`
+      console.info(err, `Got config:`, tamaguiConfig)
       console.info(`Looking for theme:`, firstThemeName)
-      process.exit(0)
+      throw new Error(err)
     }
 
     const proxiedTheme = proxyThemeVariables(firstTheme)

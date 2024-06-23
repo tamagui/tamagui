@@ -1,7 +1,12 @@
 import { beforeAll, expect, test } from 'vitest'
 
 import config from '../config-default'
-import { createTamagui, getStylesAtomic } from '../core/src'
+import {
+  StyleObjectIdentifier,
+  StyleObjectRules,
+  createTamagui,
+  getStylesAtomic,
+} from '../core/src'
 
 beforeAll(() => {
   createTamagui(config.getDefaultTamaguiConfig())
@@ -15,15 +20,15 @@ test(`should expand webkit user-select`, () => {
     })
   ).toMatchInlineSnapshot(`
     [
-      {
-        "identifier": "_ussel-none",
-        "property": "userSelect",
-        "pseudo": undefined,
-        "rules": [
+      [
+        "userSelect",
+        "none",
+        "_ussel-none",
+        undefined,
+        [
           ":root ._ussel-none{user-select:none;-webkit-user-select:none;}",
         ],
-        "value": "none",
-      },
+      ],
     ]
   `)
 })
@@ -34,15 +39,15 @@ test(`should handle decimal placement differently`, () => {
     right: 11.1,
   })
 
-  expect(out[0].identifier).toBe(`_l-1d0t11px46`)
-  expect(out[1].identifier).toBe(`_r-11d0t1px46`)
+  expect(out[0][StyleObjectIdentifier]).toBe(`_l-1d0t11px46`)
+  expect(out[1][StyleObjectIdentifier]).toBe(`_r-11d0t1px46`)
 })
 
 test(`should turn columnGap into gap-column`, () => {
   const out = getStylesAtomic({
     columnGap: 10,
   })
-  expect(out[0].rules.includes(`column-gap:10px`))
+  expect(out[0][StyleObjectRules].includes(`column-gap:10px`))
 })
 
 // test(`should be fast`, () => {
