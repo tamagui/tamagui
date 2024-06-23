@@ -6,7 +6,6 @@ export function apiRoute(handler: Endpoint) {
     try {
       const result = handler(req)
       const out = result instanceof Promise ? await result : result
-
       return out
     } catch (err) {
       if (err instanceof Response) {
