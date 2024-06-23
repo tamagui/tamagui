@@ -1,4 +1,3 @@
-// debug-verbose
 import uFuzzy from '@leeoniya/ufuzzy'
 import { docsRoutes } from '@lib/docsRoutes'
 import { getStore, useStore } from '@tamagui/use-store'

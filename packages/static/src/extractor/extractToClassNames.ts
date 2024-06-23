@@ -279,6 +279,11 @@ export async function extractToClassNames({
               }
             }
             if (!mediaExtraction) {
+              if (shouldPrintDebug) {
+                if (mediaExtraction) {
+                  console.info('add ternary')
+                }
+              }
               addTernaryStyle(
                 attr.value,
                 addStyles(attr.value.consequent),
@@ -309,9 +314,9 @@ export async function extractToClassNames({
         }
       }
 
-      function addTernaryStyle(ternary: Ternary, a: any, b: any) {
-        const cCN = a.map((x) => x.identifier).join(' ')
-        const aCN = b.map((x) => x.identifier).join(' ')
+      function addTernaryStyle(ternary: Ternary, a: StyleObject[], b: StyleObject[]) {
+        const cCN = a.map((x) => x[helpers.StyleObjectIdentifier]).join(' ')
+        const aCN = b.map((x) => x[helpers.StyleObjectIdentifier]).join(' ')
 
         if (a.length && b.length) {
           finalClassNames.push(
@@ -332,11 +337,8 @@ export async function extractToClassNames({
         }
       }
 
-      if (shouldPrintDebug) {
-        console.info(
-          '  finalClassNames\n',
-          logLines(finalClassNames.map((x) => x['value']).join(' '))
-        )
+      if (shouldPrintDebug === 'verbose') {
+        console.info('  finalClassNames AST\n', JSON.stringify(finalClassNames, null, 2))
       }
 
       node.attributes = finalAttrs

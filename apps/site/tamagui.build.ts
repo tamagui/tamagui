@@ -3,7 +3,7 @@ import { join } from 'node:path'
 
 const disableExtraction =
   process.env.NODE_ENV === 'development' &&
-  (process.env.DISABLE_EXTRACTION ? JSON.parse(process.env.DISABLE_EXTRACTION) : false)
+  (process.env.DISABLE_EXTRACTION ? JSON.parse(process.env.DISABLE_EXTRACTION) : true)
 
 export default {
   /**
