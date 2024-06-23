@@ -376,7 +376,7 @@ export function insertStyleRules(rulesToInsert: RulesToInsert) {
 
 const minInsertAmt = process.env.TAMAGUI_INSERT_SELECTOR_TRIES
   ? +process.env.TAMAGUI_INSERT_SELECTOR_TRIES
-  : 2
+  : 1
 
 export function shouldInsertStyleRules(identifier: string) {
   if (process.env.TAMAGUI_REACT_19) {
