@@ -700,10 +700,6 @@ export function createExtractor(
         const componentName = findComponentName(traversePath.scope)
         const closingElement = traversePath.node.closingElement
 
-        if (shouldPrintDebug) {
-          logger.info(` start ${node.name}`)
-        }
-
         // skip non-identifier opening elements (member expressions, etc.)
         if (
           (closingElement && t.isJSXMemberExpression(closingElement?.name)) ||
@@ -726,7 +722,7 @@ export function createExtractor(
             if (!isValidImport(propsWithFileInfo, moduleName, binding.identifier.name)) {
               if (shouldPrintDebug) {
                 logger.info(
-                  ` - Binding for ${componentName} not internal import or from components ${binding.identifier.name} in ${moduleName}`
+                  ` - Binding in component ${componentName} not valid import: "${binding.identifier.name}" isn't in ${moduleName}\n`
                 )
               }
               return
@@ -737,7 +733,7 @@ export function createExtractor(
         const component = getValidComponent(propsWithFileInfo, moduleName, node.name.name)
         if (!component || !component.staticConfig) {
           if (shouldPrintDebug) {
-            logger.info(` - No Tamagui conf on this: ${node.name.name}`)
+            logger.info(`\n - No Tamagui conf for: ${node.name.name}\n`)
           }
           return
         }
@@ -773,10 +769,8 @@ export function createExtractor(
         }
 
         if (shouldPrintDebug) {
-          logger.info('\n')
           logger.info(
-            `\x1b[33m%s\x1b[0m ` +
-              `${componentName} | ${codePosition} -------------------`
+            `\x1b[33m\x1b[0m ` + `${componentName} | ${codePosition} -------------------`
           )
           // prettier-ignore
           logger.info(
@@ -811,7 +805,7 @@ export function createExtractor(
 
         if (shouldDisableExtraction) {
           if (shouldPrintDebug === 'verbose') {
-            console.info(` Extraction disabled`)
+            logger.info(` ❌ Extraction disabled: ${JSON.stringify(disableExtraction)}\n`)
           }
           return
         }

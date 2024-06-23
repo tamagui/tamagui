@@ -307,15 +307,7 @@ export class TamaguiPlugin {
         existing.push({
           test: this.options.test ?? /\.tsx$/,
           exclude: this.options.exclude,
-          use: [
-            {
-              ...tamaguiLoader,
-              options: {
-                ...tamaguiLoader.options,
-                disableExtraction: true,
-              },
-            },
-          ],
+          use: [tamaguiLoader],
         })
       }
     }

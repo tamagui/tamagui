@@ -1,5 +1,9 @@
 import type { TamaguiBuildOptions } from '@tamagui/core'
-import { join } from 'path'
+import { join } from 'node:path'
+
+const disableExtraction =
+  process.env.NODE_ENV === 'development' &&
+  (process.env.DISABLE_EXTRACTION ? JSON.parse(process.env.DISABLE_EXTRACTION) : false)
 
 export default {
   /**
@@ -13,7 +17,7 @@ export default {
    **/
   outputCSS: './public/tamagui.css',
   importsWhitelist: ['constants.js', 'colors.js'],
-  disableExtraction: process.env.NODE_ENV === 'development',
+  disableExtraction,
   themeBuilder: {
     input: '@tamagui/themes/src/themes-new.ts',
     output: join(
