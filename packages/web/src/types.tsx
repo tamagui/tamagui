@@ -962,7 +962,12 @@ export type SpecificTokens<
   Record = Tokens,
   RK extends keyof Record = keyof Record,
 > = RK extends string
-  ? `$${RK}.${keyof Record[RK] extends string | number ? keyof Record[RK] : never}`
+  ? `$${RK}.${keyof Record[RK] extends string | number
+      ? // remove any $ prefix so instead of $size.$sm its $size.sm
+        keyof Record[RK] extends `$${infer X}`
+        ? X
+        : keyof Record[RK]
+      : never}`
   : never
 
 // defaults to except-special
