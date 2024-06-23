@@ -1,5 +1,5 @@
 import { ThemeTint, ThemeTintAlt, useTint } from '@tamagui/logo'
-import { memo } from 'react'
+import { memo, useEffect, useState } from 'react'
 import {
   Button,
   H1,
@@ -167,6 +167,11 @@ const HeroContents = memo(function HeroContents() {
           <H1
             ta="left"
             size="$10"
+            animation="lazy"
+            enterStyle={{
+              y: -10,
+              o: 0,
+            }}
             maw={500}
             pos="relative"
             // FOR CLS IMPORTANT TO SET EXACT HEIGHT IDK WHY LINE HEIGHT SHOULD BE STABLE
@@ -189,12 +194,6 @@ const HeroContents = memo(function HeroContents() {
               maxWidth: 1200,
               h: 310,
             }}
-            // TODO not animating
-            // animation="superLazy"
-            // enterStyle={{
-            //   opacity: 0,
-            //   y: -10,
-            // }}
           >
             <Text
               className="clip-text"
@@ -430,8 +429,30 @@ const HeroText = styled(Text, {
 })
 
 const RunsFasterTextEffects = () => {
+  const [show, setShow] = useState(false)
+
+  useEffect(() => {
+    const tm = setTimeout(() => {
+      setShow(true)
+    }, 500)
+    return () => {
+      clearTimeout(tm)
+    }
+  }, [])
+
   return (
-    <YStack fullscreen $sm={{ x: -2.5 }}>
+    <YStack
+      animation="lazy"
+      fullscreen
+      {...(!show && {
+        y: -10,
+        o: 0,
+      })}
+      {...(show && {
+        y: 0,
+        o: 1,
+      })}
+    >
       <HeroText className="clip-text rainbow" l={-4} $sm={{ l: 0 }}>
         runs&nbsp;faster
       </HeroText>
