@@ -45,7 +45,9 @@ export const GET = apiRoute(async (req) => {
       })
     ) {
       // apply the "takeout + bento" coupon
-      couponId = process.env.NODE_ENV === 'production' ? '1bJD4ngB' : 'SjRwUFIw'
+      couponId =
+        process.env.STRIPE_COMBO_COUPON ??
+        (process.env.NODE_ENV === 'production' ? '1bJD4ngB' : 'SjRwUFIw')
     }
   }
 

@@ -8,18 +8,13 @@ export function apiRoute(handler: Endpoint) {
       const out = result instanceof Promise ? await result : result
       return out
     } catch (err) {
-      if (err instanceof Response) {
-        console.error(
-          ` Error in apiRoute (caught response) ${req.url}:
-            ${err.status} ${err.statusText}\n`
-        )
-        return err
-      }
-
       const message = err instanceof Error ? err.message : `${err}`
 
-      if (err instanceof Error) {
-        console.error(`Error serving API Route: ${err.message} ${err.stack}`)
+      // log errors with traces for debugging in prod
+      console.trace(`Error in apiRoute (caught response) ${req.url}: ${message}`)
+
+      if (err instanceof Response) {
+        return err
       }
 
       return new Response(
