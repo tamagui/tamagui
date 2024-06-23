@@ -103,7 +103,7 @@ export const HeaderLinks = (props: HeaderProps) => {
       )}
 
       {forceShowAllLinks && (
-        <NextLink legacyBehavior={false} prefetch={false} href="/takeout">
+        <NextLink passHref prefetch={false} href="/takeout">
           <HeadAnchor grid tag="span">
             Takeout{' '}
             <YStack dsp={'inline-block' as any} y={7} my={-20} o={0.8}>
@@ -114,7 +114,7 @@ export const HeaderLinks = (props: HeaderProps) => {
       )}
 
       {forceShowAllLinks && (
-        <NextLink legacyBehavior={false} prefetch={false} href="/bento">
+        <NextLink passHref prefetch={false} href="/bento">
           <HeadAnchor grid tag="span">
             Bento{' '}
             <YStack ml={3} dsp={'inline-block' as any} y={3} my={-10} o={0.8}>
@@ -283,16 +283,18 @@ const CTAHeaderLink = ({
 }) => {
   // disabling for now it clutters things
   return (
-    <HeadAnchor
-      grid={forceShowAllLinks}
-      tag="span"
-      fontSize={24}
-      $sm={{
-        display: 'none',
-      }}
-    >
-      {icon}
-    </HeadAnchor>
+    <NextLink legacyBehavior={false} prefetch={false} href={href}>
+      <HeadAnchor
+        grid={forceShowAllLinks}
+        tag="span"
+        fontSize={24}
+        $sm={{
+          display: 'none',
+        }}
+      >
+        {icon}
+      </HeadAnchor>
+    </NextLink>
   )
 
   // const router = useRouter()
@@ -437,7 +439,7 @@ const SlidingPopover = (props: PopoverProps) => {
   }, [active])
 
   return (
-    <Popover open={!!active} ref={popoverRef} {...props}>
+    <Popover disableRTL open={!!active} ref={popoverRef} {...props}>
       <Popover.Trigger />
       <SlidingPopoverContext.Provider value={val}>
         {props.children}
