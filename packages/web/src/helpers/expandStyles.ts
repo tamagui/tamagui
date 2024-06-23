@@ -23,12 +23,10 @@ export function fixStyles(style: Record<string, any>) {
   }
 
   // could be optimized better
-  if (process.env.TAMAGUI_TARGET === 'native') {
-    // ensure border style set by default to solid
-    for (const key in borderDefaults) {
-      if (key in style) {
-        style[borderDefaults[key]] ||= 'solid'
-      }
+  // ensure border style set by default to solid
+  for (const key in borderDefaults) {
+    if (key in style) {
+      style[borderDefaults[key]] ||= 'solid'
     }
   }
 }
