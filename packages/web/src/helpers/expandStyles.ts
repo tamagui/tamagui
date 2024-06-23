@@ -22,6 +22,7 @@ export function fixStyles(style: Record<string, any>) {
     Object.assign(style, normalizeShadow(style))
   }
 
+  // could be optimized better
   if (process.env.TAMAGUI_TARGET === 'native') {
     // ensure border style set by default to solid
     for (const key in borderDefaults) {

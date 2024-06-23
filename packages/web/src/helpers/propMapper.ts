@@ -50,8 +50,7 @@ export const propMapper: PropMapper = (key, value, styleStateIn, subPropsIn) => 
       })
     : styleStateIn
 
-  const { conf, styleProps, fontFamily, staticConfig, skipThemeTokenResolution } =
-    styleState
+  const { conf, styleProps, fontFamily, staticConfig } = styleState
   const { variants } = staticConfig
 
   if (

@@ -190,18 +190,24 @@ export async function extractToClassNames({
 
               for (const style of styles) {
                 //  leave them  as attributes
-                const prop = style.pseudo
-                  ? `${style.property}-${style.pseudo}`
-                  : style.property
+                const prop = style[helpers.StyleObjectPseudo]
+                  ? `${style[helpers.StyleObjectProperty]}-${
+                      style[helpers.StyleObjectPseudo]
+                    }`
+                  : style[helpers.StyleObjectProperty]
                 finalAttrs.push(
-                  t.jsxAttribute(t.jsxIdentifier(prop), t.stringLiteral(style.identifier))
+                  t.jsxAttribute(
+                    t.jsxIdentifier(prop),
+                    t.stringLiteral(style[helpers.StyleObjectIdentifier])
+                  )
                 )
               }
             } else {
               const styles = addStyles(attr.value)
               const newFontFamily = getFontFamilyClassNameFromProps(attr.value) || ''
               const newClassNames = helpers.concatClassName(
-                styles.map((x) => x.identifier).join(' ') + newFontFamily
+                styles.map((x) => x[helpers.StyleObjectIdentifier]).join(' ') +
+                  newFontFamily
               )
               const existing = finalClassNames.find(
                 (x) => x.type == 'StringLiteral'
@@ -266,7 +272,9 @@ export async function extractToClassNames({
                 console.info(
                   'ternary (mediaStyles)',
                   mediaExtraction.ternaryWithoutMedia?.inlineMediaQuery ?? '',
-                  mediaExtraction.mediaStyles.map((x) => x.identifier).join('.')
+                  mediaExtraction.mediaStyles
+                    .map((x) => x[helpers.StyleObjectIdentifier])
+                    .join('.')
                 )
               }
             }
@@ -291,7 +299,9 @@ export async function extractToClassNames({
             } else {
               finalClassNames = [
                 ...finalClassNames,
-                ...mediaExtraction.mediaStyles.map((x) => t.stringLiteral(x.identifier)),
+                ...mediaExtraction.mediaStyles.map((x) =>
+                  t.stringLiteral(x[helpers.StyleObjectIdentifier])
+                ),
               ]
             }
             break
@@ -389,7 +399,9 @@ export async function extractToClassNames({
         originalNodeName
       )
 
-      for (const { identifier, rules } of finalStyles) {
+      for (const styleObject of finalStyles) {
+        const identifier = styleObject[helpers.StyleObjectIdentifier]
+        const rules = styleObject[helpers.StyleObjectRules]
         const className = `.${identifier}`
         if (cssMap.has(className)) {
           if (comment) {

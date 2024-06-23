@@ -5,12 +5,14 @@ import type { NodePath, TraverseOptions } from '@babel/traverse'
 import traverse from '@babel/traverse'
 import * as t from '@babel/types'
 import { Color, colorLog } from '@tamagui/cli-color'
-import type {
-  GetStyleState,
-  PseudoStyles,
-  SplitStyleProps,
-  StaticConfig,
-  TamaguiComponentState,
+import {
+  StyleObjectIdentifier,
+  StyleObjectRules,
+  type GetStyleState,
+  type PseudoStyles,
+  type SplitStyleProps,
+  type StaticConfig,
+  type TamaguiComponentState,
 } from '@tamagui/web'
 import type { ViewStyle } from 'react-native'
 import * as reactNativeWebInternals from 'react-native-web-internals'
@@ -649,7 +651,9 @@ export function createExtractor(
               '\n classNames:',
               JSON.stringify(classNames, null, 2),
               '\n  rulesToInsert:',
-              out.rulesToInsert.flatMap((rule) => rule.rules).join('\n'),
+              out.rulesToInsert
+                .flatMap((styleObject) => styleObject[StyleObjectRules])
+                .join('\n'),
             ].join(' ')
           )
         }
@@ -673,8 +677,11 @@ export function createExtractor(
         })
 
         if (out.rulesToInsert) {
-          for (const { identifier, rules } of out.rulesToInsert) {
-            onStyleRule?.(identifier, rules)
+          for (const styleObject of out.rulesToInsert) {
+            onStyleRule?.(
+              styleObject[StyleObjectIdentifier],
+              styleObject[StyleObjectRules]
+            )
           }
         }
 
