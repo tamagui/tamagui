@@ -38,8 +38,7 @@
     "vitest": "^0.34.3"
   },
   "peerDependencies": {
-    "react": "*",
-    "react-native": "*"
+    "react": "*"
   },
   "publishConfig": {
     "access": "public"

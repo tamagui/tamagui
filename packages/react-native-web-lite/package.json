@@ -46,8 +46,7 @@
     "react-dom": "^18.2.0"
   },
   "peerDependencies": {
-    "react": "*",
-    "react-dom": "*"
+    "react": "*"
   },
   "license": "MIT",
   "tags": [

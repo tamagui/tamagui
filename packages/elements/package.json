@@ -33,8 +33,7 @@
     "@tamagui/core": "1.101.0"
   },
   "peerDependencies": {
-    "react": "*",
-    "react-dom": "*"
+    "react": "*"
   },
   "devDependencies": {
     "@tamagui/build": "1.101.0",

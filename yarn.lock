@@ -6270,7 +6270,6 @@ __metadata:
     tamagui: "npm:1.101.0"
   peerDependencies:
     react: "*"
-    react-dom: "*"
   languageName: unknown
   linkType: soft
 
@@ -6301,7 +6300,6 @@ __metadata:
     react-native: "npm:0.74.1"
   peerDependencies:
     react: "*"
-    react-native: "*"
   languageName: unknown
   linkType: soft
 
@@ -6329,7 +6327,6 @@ __metadata:
     react-dom: "npm:^18.2.0"
   peerDependencies:
     react: "*"
-    react-dom: "*"
   languageName: unknown
   linkType: soft
 
@@ -6351,7 +6348,6 @@ __metadata:
     react-native: "npm:0.74.1"
   peerDependencies:
     react: "*"
-    react-dom: "*"
   languageName: unknown
   linkType: soft
 
@@ -6546,7 +6542,6 @@ __metadata:
     react-native: "npm:0.74.1"
   peerDependencies:
     react: "*"
-    react-native: "*"
   languageName: unknown
   linkType: soft
 
@@ -6601,7 +6596,6 @@ __metadata:
     vitest: "npm:^0.34.3"
   peerDependencies:
     react: "*"
-    react-native: "*"
   languageName: unknown
   linkType: soft
 
@@ -6638,7 +6632,6 @@ __metadata:
     react-native: "npm:0.74.1"
   peerDependencies:
     react: "*"
-    react-native: "*"
   languageName: unknown
   linkType: soft
 
@@ -6934,7 +6927,6 @@ __metadata:
     react-native: "npm:0.74.1"
   peerDependencies:
     react: "*"
-    react-native: "*"
   languageName: unknown
   linkType: soft
 
@@ -6954,7 +6946,6 @@ __metadata:
     react-native: "npm:0.74.1"
   peerDependencies:
     react: "*"
-    react-native: "*"
   languageName: unknown
   linkType: soft
 
@@ -6972,7 +6963,6 @@ __metadata:
     react-native: "npm:0.74.1"
   peerDependencies:
     react: "*"
-    react-native: "*"
   languageName: unknown
   linkType: soft
 
@@ -6991,7 +6981,6 @@ __metadata:
     react-native: "npm:0.74.1"
   peerDependencies:
     react: "*"
-    react-native: "*"
   languageName: unknown
   linkType: soft
 
@@ -7174,8 +7163,6 @@ __metadata:
     react-native: "npm:0.74.1"
   peerDependencies:
     react: "*"
-    react-dom: "*"
-    react-native: "*"
   languageName: unknown
   linkType: soft
 
@@ -7224,7 +7211,6 @@ __metadata:
     react-native: "npm:0.74.1"
   peerDependencies:
     react: "*"
-    react-native: "*"
   languageName: unknown
   linkType: soft
 
@@ -7402,7 +7388,6 @@ __metadata:
     react-native: "npm:0.74.1"
   peerDependencies:
     react: "*"
-    react-native: "*"
   languageName: unknown
   linkType: soft
 
@@ -7545,7 +7530,6 @@ __metadata:
     react-native: "npm:0.74.1"
   peerDependencies:
     react: "*"
-    react-native: "*"
   languageName: unknown
   linkType: soft
 
@@ -7569,7 +7553,6 @@ __metadata:
     react-native: "npm:0.74.1"
   peerDependencies:
     react: "*"
-    react-native: "*"
   languageName: unknown
   linkType: soft
 
@@ -7593,7 +7576,6 @@ __metadata:
     react-dom: "npm:^18.2.0"
   peerDependencies:
     react: "*"
-    react-dom: "*"
   languageName: unknown
   linkType: soft
 
@@ -7701,7 +7683,6 @@ __metadata:
     react-native: "npm:0.74.1"
   peerDependencies:
     react: "*"
-    react-native: "*"
   languageName: unknown
   linkType: soft
 
@@ -7749,7 +7730,6 @@ __metadata:
     react-native: "npm:0.74.1"
   peerDependencies:
     react: "*"
-    react-native: "*"
   languageName: unknown
   linkType: soft
 
@@ -7851,7 +7831,6 @@ __metadata:
     react-native: "npm:0.74.1"
   peerDependencies:
     react: "*"
-    react-native: "*"
   languageName: unknown
   linkType: soft
 
@@ -7895,7 +7874,6 @@ __metadata:
     react-native: "npm:0.74.1"
   peerDependencies:
     react: "*"
-    react-native: "*"
   languageName: unknown
   linkType: soft
 
@@ -24363,7 +24341,6 @@ __metadata:
     styleq: "npm:^0.1.3"
   peerDependencies:
     react: "*"
-    react-dom: "*"
   languageName: unknown
   linkType: soft
 

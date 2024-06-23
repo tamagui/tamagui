@@ -41,8 +41,7 @@
     "@tamagui/use-controllable-state": "1.101.0"
   },
   "peerDependencies": {
-    "react": "*",
-    "react-native": "*"
+    "react": "*"
   },
   "devDependencies": {
     "@tamagui/build": "1.101.0",
