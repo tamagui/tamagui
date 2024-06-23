@@ -822,6 +822,21 @@ export const getSplitStyles: StyleSplitter = (
       if (isMedia) {
         if (!val) continue
 
+        // for some reason 'space' in val upsetting next ssr during prod build
+        // technically i guess this also will not apply if 0 space which makes sense?
+        const hasSpace = val['space']
+        const mediaKeyShort = key.slice(1)
+
+        hasMedia ||= true
+
+        if (hasSpace || !shouldDoClasses || styleProps.willBeAnimated) {
+          if (!Array.isArray(hasMedia)) {
+            hasMedia = []
+          }
+          hasMedia.push(mediaKeyShort)
+        }
+
+        // can bail early
         if (isMedia === 'platform') {
           const platform = key.slice(10)
           if (
@@ -834,10 +849,6 @@ export const getSplitStyles: StyleSplitter = (
           }
         }
 
-        hasMedia ||= true
-
-        const mediaKeyShort = key.slice(1)
-
         if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
           log(`  📺 ${key}`, {
             key,
@@ -846,17 +857,8 @@ export const getSplitStyles: StyleSplitter = (
             shouldDoClasses,
             acceptsClassName,
             componentState,
+            mediaState,
           })
-        }
-
-        // for some reason 'space' in val upsetting next ssr during prod build
-        // technically i guess this also will not apply if 0 space which makes sense?
-        const hasSpace = val['space']
-        if (hasSpace || !shouldDoClasses) {
-          if (!Array.isArray(hasMedia)) {
-            hasMedia = []
-          }
-          hasMedia.push(mediaKeyShort)
         }
 
         if (shouldDoClasses) {
@@ -915,16 +917,23 @@ export const getSplitStyles: StyleSplitter = (
             )
           }
         } else {
-          const mediaStyle = getSubStyle(styleState, key, val, true)
           const isThemeMedia = isMedia === 'theme'
           const isGroupMedia = isMedia === 'group'
           const isPlatformMedia = isMedia === 'platform'
 
           if (!isThemeMedia && !isPlatformMedia && !isGroupMedia) {
             if (!mediaState[mediaKeyShort]) {
+              if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+                log(`  📺 ❌ DISABLED ${mediaKeyShort}`)
+              }
               continue
             }
+            if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+              log(`  📺 ✅ ENABLED ${mediaKeyShort}`)
+            }
           }
+
+          const mediaStyle = getSubStyle(styleState, key, val, true)
 
           let importanceBump = 0
 
