@@ -221,10 +221,10 @@ export default function TakeoutPage() {
               }}
             >
               <YStack mt={-800} $md={{ mt: 0 }} ml={20} mr={0}>
-                <StarterCard product={starter} />
+                {starter && <StarterCard product={starter} />}
               </YStack>
 
-              <YStack mt={-620} group="takeoutBody" f={1} gap="$5">
+              <YStack mt={-620} $md={{ mt: -520 }} group="takeoutBody" f={1} gap="$5">
                 <FeaturesIconRow />
 
                 <ThemeTintAlt>
@@ -736,7 +736,7 @@ const points = {
 const TakeoutBox3D = lazy(() => import('../../features/takeout/TakeoutBox3D'))
 const TakeoutGallery = lazy(() => import('../../features/takeout/TakeoutGallery'))
 
-const heroHeight = 1000
+const heroHeight = 1050
 
 export type TakeoutPageProps = Awaited<
   ReturnType<typeof getProductsForServerSideRendering>
