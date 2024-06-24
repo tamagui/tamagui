@@ -105,6 +105,7 @@ export const installComponent = async ({ component, setInstall, install }) => {
       components.map((component) => {
         const componentName = component.name.split('.')[0]
 
+
         const toFolder = componentSchema.moveFilesToFolder.find(
           (i) => i.file === componentName
         )?.to
@@ -117,6 +118,11 @@ export const installComponent = async ({ component, setInstall, install }) => {
           componentSchema?.categorySection,
           toFolder ?? ''
         )
+
+        console.log('component name', componentName)
+        console.log('toFolder', toFolder)
+        console.log('componentDir', componentDir)
+        console.log('--')
 
         if (!existsSync(componentDir)) {
           mkdirSync(componentDir, { recursive: true })

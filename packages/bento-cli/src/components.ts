@@ -14,7 +14,6 @@ type MoveFileToFolder = {
   to: string
 }
 
-
 const OSS_COMPONENTS = [
   'InputWithLabel',
   'CheckboxCards',
@@ -75,7 +74,11 @@ const MISSING_COMPONENTS = [
     fileName: 'DatePicker',
     category: 'elements',
     categorySection: 'datepickers',
-    moveFilesToFolder: [{file: 'DatePicker', to: '' },{file: 'dateParts', to: 'common'}, {file: 'inputParts', to: '../../../forms/inputs/components/inputsParts'}]
+    moveFilesToFolder: [
+      { file: 'DatePicker', to: '' },
+      { file: 'dateParts', to: 'common' },
+      { file: 'inputsParts', to: '../../forms/inputs/components' },
+    ],
   },
   {
     name: 'MonthPicker',
