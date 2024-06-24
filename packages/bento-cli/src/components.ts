@@ -75,7 +75,7 @@ const MISSING_COMPONENTS = [
     fileName: 'DatePicker',
     category: 'elements',
     categorySection: 'datepickers',
-    moveFilesToFolder: [{file: 'dateParts', to: './common'}, {file: 'InputParts', to: '../../../forms/inputs/components/inputsParts'}]
+    moveFilesToFolder: [{file: 'dateParts', to: './common'}, {file: 'inputParts', to: '../../../forms/inputs/components/inputsParts'}]
   },
   {
     name: 'MonthPicker',
