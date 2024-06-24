@@ -210,7 +210,6 @@ export default function TakeoutPage() {
             <XStack
               f={1}
               p="$10"
-              mt={20}
               $md={{
                 flexDirection: 'column-reverse',
               }}
@@ -221,33 +220,30 @@ export default function TakeoutPage() {
                 px: '$2',
               }}
             >
-              <YStack mt={-600} $md={{ mt: 0 }} ml={20} mr={0}>
+              <YStack mt={-800} $md={{ mt: 0 }} ml={20} mr={0}>
                 <StarterCard product={starter} />
               </YStack>
 
-              <YStack mt={-440} group="takeoutBody" f={1} gap="$5">
+              <YStack mt={-620} group="takeoutBody" f={1} gap="$5">
+                <FeaturesIconRow />
+
                 <ThemeTintAlt>
                   <Paragraph className="text-wrap-balance" size="$7" $sm={{ size: '$7' }}>
                     Takeout is a bootstrap designed to ship faster with React and React
                     Native, extracted from our experience consulting on apps with Tamagui.
                   </Paragraph>
 
-                  <Paragraph
-                    className="text-wrap-balance"
-                    size="$7"
-                    $sm={{ size: '$6' }}
-                    $xs={{ size: '$5' }}
-                  >
+                  <Paragraph className="text-wrap-balance" size="$6" $sm={{ size: '$5' }}>
                     It builds off the free and open source starter{' '}
                     <CodeInline>npm&nbsp;create&nbsp;tamagui</CodeInline>, adding{' '}
                     <a target="_blank" href="https://supabase.com" rel="noreferrer">
                       Supabase
                     </a>{' '}
                     for data and auth, screens and flows for a user system,
-                    profiles,&nbsp;settings,&nbsp;assets,&nbsp;and&nbsp;more. Scripts{' '}
-                    <CodeInline>yarn&nbsp;add:font</CodeInline> and{' '}
-                    <CodeInline>yarn&nbsp;add:icon</CodeInline> generate Tamagui-styled
-                    and typed components from{' '}
+                    profiles,&nbsp;settings,&nbsp;assets,&nbsp;and&nbsp;more. Including
+                    the source for the scripts <CodeInline>yarn&nbsp;add:font</CodeInline>{' '}
+                    and <CodeInline>yarn&nbsp;add:icon</CodeInline> to generate
+                    Tamagui-styled and typed components from{' '}
                     <Link href="https://fonts.google.com" target="_blank">
                       Google Fonts
                     </Link>{' '}
@@ -748,7 +744,7 @@ const points = {
 const TakeoutBox3D = lazy(() => import('../../features/takeout/TakeoutBox3D'))
 const TakeoutGallery = lazy(() => import('../../features/takeout/TakeoutGallery'))
 
-const heroHeight = 1100
+const heroHeight = 1000
 
 export type TakeoutPageProps = Awaited<
   ReturnType<typeof getProductsForServerSideRendering>
@@ -942,59 +938,59 @@ const TakeoutHero = () => {
           </Suspense>
         )}
       </YStack>
-
-      <XStack
-        zi={1000}
-        my={21}
-        bottom={-100}
-        pos="absolute"
-        gap={50}
-        f={1}
-        alignSelf="center"
-        jc="space-between"
-        className="mix-blend"
-        pe="auto"
-        $sm={{
-          dsp: 'none',
-        }}
-      >
-        <FeatureIcon
-          themeIndex={0}
-          title="Monorepo"
-          icon="retro-icons/coding-apps-websites-module-21.svg"
-        />
-
-        <FeatureIcon
-          themeIndex={2}
-          title="Screens"
-          icon="retro-icons/coding-app-website-ui-62.svg"
-        />
-
-        <FeatureIcon
-          themeIndex={3}
-          title="Themes"
-          icon="retro-icons/design-color-bucket-brush-63.svg"
-        />
-
-        <FeatureIcon
-          themeIndex={4}
-          title="Stack"
-          icon="retro-icons/computers-devices-electronics-vintage-mac-54.svg"
-        />
-
-        <FeatureIcon
-          themeIndex={5}
-          title="Assets"
-          icon="retro-icons/coding-apps-websites-plugin-33.svg"
-        />
-
-        <FeatureIcon
-          themeIndex={6}
-          title="Profiles"
-          icon="retro-icons/coding-apps-websites-programming-hold-code-9.svg"
-        />
-      </XStack>
     </YStack>
+  )
+}
+
+function FeaturesIconRow() {
+  return (
+    <XStack
+      zi={1000}
+      my={21}
+      gap={20}
+      f={1}
+      jc="space-between"
+      pe="auto"
+      $gtSm={{
+        maw: '80%',
+      }}
+    >
+      <FeatureIcon
+        themeIndex={0}
+        title="Monorepo"
+        icon="retro-icons/coding-apps-websites-module-21.svg"
+      />
+
+      <FeatureIcon
+        themeIndex={2}
+        title="Screens"
+        icon="retro-icons/coding-app-website-ui-62.svg"
+      />
+
+      <FeatureIcon
+        themeIndex={3}
+        title="Themes"
+        icon="retro-icons/design-color-bucket-brush-63.svg"
+      />
+
+      <FeatureIcon
+        themeIndex={4}
+        title="Stack"
+        icon="retro-icons/computers-devices-electronics-vintage-mac-54.svg"
+      />
+
+      <FeatureIcon
+        themeIndex={5}
+        title="Assets"
+        icon="retro-icons/coding-apps-websites-plugin-33.svg"
+      />
+
+      <FeatureIcon
+        themeIndex={6}
+        title="Profiles"
+        icon="retro-icons/coding-apps-websites-programming-hold-code-9.svg"
+      />
+    </XStack>
   )
 }
 
@@ -1037,7 +1033,7 @@ const Point = ({
 
 const IconFrame = styled(Stack, {
   borderRadius: 1000,
-  p: '$2',
+  p: 9,
   bg: 'rgba(255, 255, 255, 0.035)',
 })
 
@@ -1084,31 +1080,30 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
         </SizableText>
       )}
 
-      <ThemeTintAlt offset={6}>
-        <TakeoutCardFrame
-          className="blur-medium"
-          zi={100_000}
-          maw={310}
-          als="center"
-          shadowRadius={30}
-          shadowOffset={{ height: 20, width: 0 }}
-          shadowColor="$shadowColor"
-          x={-50}
-          y={50}
-          mah="calc(min(85vh, 800px))"
-          br="$8"
-          $md={{
-            x: -20,
-            y: 0,
-            // mb: 280,
-            mah: 'auto',
-            w: '100%',
-            maw: '100%',
-            mt: 100,
-          }}
-        >
-          <YStack zi={-1} fullscreen bg="$color5" o={0.5} />
-          {/* 
+      <TakeoutCardFrame
+        className="blur-medium"
+        zi={100_000}
+        maw={310}
+        als="center"
+        shadowRadius={30}
+        shadowOffset={{ height: 20, width: 0 }}
+        shadowColor="$shadowColor"
+        x={-50}
+        y={50}
+        mah="calc(min(85vh, 800px))"
+        br="$8"
+        $md={{
+          x: -20,
+          y: 0,
+          // mb: 280,
+          mah: 'auto',
+          w: '100%',
+          maw: '100%',
+          mt: 100,
+        }}
+      >
+        <YStack zi={-1} fullscreen bg="$color5" o={0.5} />
+        {/* 
           <ThemeTintAlt>
             <LinearGradient
               pos="absolute"
@@ -1121,105 +1116,104 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
             />
           </ThemeTintAlt> */}
 
-          <YStack pos="absolute" b="$4" l="$4" r="$4" zi={100}>
-            {/* cant use buttonlink it breaks scroll on press if not enabled, conditionally use a link */}
-            {/* subscription ? `/account/items#${subscription.id}` : '' */}
-            <PurchaseButton
-              onPress={() => {
-                store.showPurchase = true
-              }}
-            >
-              Purchase
-            </PurchaseButton>
-          </YStack>
+        <YStack pos="absolute" b="$4" l="$4" r="$4" zi={100}>
+          {/* cant use buttonlink it breaks scroll on press if not enabled, conditionally use a link */}
+          {/* subscription ? `/account/items#${subscription.id}` : '' */}
+          <PurchaseButton
+            onPress={() => {
+              store.showPurchase = true
+            }}
+          >
+            Purchase
+          </PurchaseButton>
+        </YStack>
 
-          <ScrollView p="$6" disabled={media.md} showsVerticalScrollIndicator={false}>
-            <YStack space="$2">
-              <ThemeTintAlt>
-                <MunroP color="$color11" size="$9" ls={2}>
-                  The Stack
-                </MunroP>
-              </ThemeTintAlt>
+        <ScrollView p="$6" disabled={media.md} showsVerticalScrollIndicator={false}>
+          <YStack space="$2">
+            <ThemeTintAlt>
+              <MunroP color="$color11" size="$9" ls={2}>
+                The Stack
+              </MunroP>
+            </ThemeTintAlt>
 
-              <YStack>
-                <Row
-                  title="Template"
-                  description="Complete GitHub Template with a built-in bot to send PRs with updates."
-                  after="01"
-                />
+            <YStack>
+              <Row
+                title="Template"
+                description="Complete GitHub Template with a built-in bot to send PRs with updates."
+                after="01"
+              />
 
-                <Row
-                  title="Monorepo"
-                  description="Complete with Next.js, Vercel deploy, Expo and EAS."
-                  after="01"
-                />
+              <Row
+                title="Monorepo"
+                description="Complete with Next.js, Vercel deploy, Expo and EAS."
+                after="01"
+              />
 
-                <Row
-                  title="Screens"
-                  description="Tab bar, Stack view, Onboarding, Auth, Profile, Edit Profile, Account, Settings, Feed + more, well crafted layouts to adapt to web/native."
-                  after="08"
-                />
+              <Row
+                title="Screens"
+                description="Tab bar, Stack view, Onboarding, Auth, Profile, Edit Profile, Account, Settings, Feed + more, well crafted layouts to adapt to web/native."
+                after="08"
+              />
 
-                <Row
-                  title="Data & Auth"
-                  description="Supabase pre-configured with migrations, email and OAuth (Google + Apple) authentication, utilities, automatic setup and everything to get rolling immediately."
-                  after="01"
-                />
+              <Row
+                title="Data & Auth"
+                description="Supabase pre-configured with migrations, email and OAuth (Google + Apple) authentication, utilities, automatic setup and everything to get rolling immediately."
+                after="01"
+              />
 
-                <Row
-                  title="RPC"
-                  description="We've set up tRPC, which you can optionally use, that works alongside Zod to provide easy, type-safe APIs."
-                  after="01"
-                />
+              <Row
+                title="RPC"
+                description="We've set up tRPC, which you can optionally use, that works alongside Zod to provide easy, type-safe APIs."
+                after="01"
+              />
 
-                <Row
-                  title="Icons"
-                  description="~180k icons in total across +150 different packs, integrated with your theme color and sizes, tree-shakeable, from iconify.design"
-                  after="+150"
-                />
+              <Row
+                title="Icons"
+                description="~180k icons in total across +150 different packs, integrated with your theme color and sizes, tree-shakeable, from iconify.design"
+                after="+150"
+              />
 
-                <Row
-                  title="Fonts"
-                  description="All of Google fonts, more than +1500 font packages."
-                  after="+1500"
-                />
+              <Row
+                title="Fonts"
+                description="All of Google fonts, more than +1500 font packages."
+                after="+1500"
+              />
 
-                <Row
-                  title="Themes"
-                  description="Two all new themes - Pastel and Neon - that bring a muted or more bright feel."
-                  after="03"
-                />
+              <Row
+                title="Themes"
+                description="Two all new themes - Pastel and Neon - that bring a muted or more bright feel."
+                after="03"
+              />
 
-                <Row
-                  title="Deploy"
-                  description="Vercel and Expo EAS configured for you to ship as fast as possible."
-                  after="05"
-                />
+              <Row
+                title="Deploy"
+                description="Vercel and Expo EAS configured for you to ship as fast as possible."
+                after="05"
+              />
 
-                <Row
-                  title="Native"
-                  description="Tamagui native components like Sheet and Toast pre-configured, saving you setup and build."
-                  after="03"
-                />
+              <Row
+                title="Native"
+                description="Tamagui native components like Sheet and Toast pre-configured, saving you setup and build."
+                after="03"
+              />
 
-                <Row
-                  title="Form"
-                  description="Universal forms with react-hook-form, ts-form and zod, adaptable components for the most native look on web and native."
-                  after="01"
-                />
+              <Row
+                title="Form"
+                description="Universal forms with react-hook-form, ts-form and zod, adaptable components for the most native look on web and native."
+                after="01"
+              />
 
-                <Row
-                  title="Image Upload"
-                  description="Component and utilities for uploading images that adapt to the native image picker. Avatar upload with Supabase Storage + RLS included."
-                  after="01"
-                />
-              </YStack>
-
-              <Spacer f={1} minHeight={120} />
+              <Row
+                title="Image Upload"
+                description="Component and utilities for uploading images that adapt to the native image picker. Avatar upload with Supabase Storage + RLS included."
+                after="01"
+              />
             </YStack>
-          </ScrollView>
-        </TakeoutCardFrame>
-      </ThemeTintAlt>
+
+            <Spacer f={1} minHeight={120} />
+          </YStack>
+        </ScrollView>
+      </TakeoutCardFrame>
     </div>
   )
 })
@@ -1587,21 +1581,19 @@ const FeatureIcon = ({
   const active = Tint.tint === theme
 
   return (
-    <YStack>
-      <Theme name={theme}>
-        <PixelTooltip active={active} label={title}>
-          <IconFrame
-            onMouseEnter={() => {
-              keepCycling = false
-              Tint.setTintIndex(themeIndex)
-            }}
-            backgroundColor={active ? '$color9' : '$color10'}
-          >
-            <Image className="pixelate" src={icon} alt="Icon" height={18} width={18} />
-          </IconFrame>
-        </PixelTooltip>
-      </Theme>
-    </YStack>
+    <Theme name={theme}>
+      <PixelTooltip active={active} label={title}>
+        <IconFrame
+          onMouseEnter={() => {
+            keepCycling = false
+            Tint.setTintIndex(themeIndex)
+          }}
+          backgroundColor={active ? '$color9' : '$color10'}
+        >
+          <Image className="pixelate" src={icon} alt="Icon" height={14} width={14} />
+        </IconFrame>
+      </PixelTooltip>
+    </Theme>
   )
 }
 
@@ -1622,7 +1614,7 @@ const PixelTooltip = ({
         scale: 1.1,
       })}
     >
-      <Paragraph color="$color12" fontFamily="$munro" size="$4">
+      <Paragraph color="$color12" fontFamily="$munro" size="$2">
         {label}
       </Paragraph>
       {children}

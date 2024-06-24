@@ -2,7 +2,7 @@ import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import { useDisableMotion } from '~/hooks/useDisableMotion'
 import { H1, YStack } from 'tamagui'
 
-export const TAKEOUT = ({ fontSize = 420, lineHeight = fontSize * 0.64, ...props }) => (
+export const TAKEOUT = ({ fontSize = 320, lineHeight = fontSize * 0.73, ...props }) => (
   <H1
     userSelect="none"
     color="transparent"

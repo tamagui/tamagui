@@ -174,6 +174,7 @@ export const PurchaseModal = ({
           bordered
           elevate
           key="content"
+          debug="verbose"
           animation={[
             'quick',
             {
