@@ -1386,7 +1386,7 @@ export type GetStyleResult = {
     viewProps: StackProps & Record<string, any>;
     fontFamily: string | undefined;
     space?: any;
-    hasMedia: boolean | string[];
+    hasMedia: boolean | Record<string, boolean>;
     dynamicThemeAccess?: boolean;
     pseudoGroups?: Set<string>;
     mediaGroups?: Set<string>;

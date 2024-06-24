@@ -1,7 +1,7 @@
 import { isServer, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { useRef, useState, useSyncExternalStore } from 'react'
 
-import { getConfig, setTokens } from '../config'
+import { getConfig } from '../config'
 import { matchMedia } from '../helpers/matchMedia'
 import { pseudoDescriptors } from '../helpers/pseudoDescriptors'
 import type {
@@ -9,7 +9,6 @@ import type {
   DebugProp,
   IsMediaType,
   MediaQueries,
-  MediaQueryKey,
   MediaQueryObject,
   MediaQueryState,
   TamaguiInternalConfig,
@@ -171,7 +170,7 @@ type MediaKeysState = {
 type MediaState = {
   prev?: MediaKeysState
   enabled?: boolean
-  keys?: MediaQueryKey[] | null
+  keys?: Record<string, boolean> | null
 }
 
 const States = new WeakMap<any, MediaState>()
@@ -216,26 +215,21 @@ export function useMedia(
       return initialState
     }
 
-    const { keys, prev = initialState } = componentState
+    const { enabled, keys, prev = initialState } = componentState
 
-    if (componentState && componentState.enabled === false) {
+    if (enabled === false) {
       return prev
     }
 
-    const testKeys =
-      componentState?.keys ??
-      ((!componentState || componentState.enabled) && keys) ??
-      null
-
+    const testKeys = keys ?? (enabled && keys) ?? null
     const hasntUpdated =
-      !testKeys || testKeys?.every((key) => mediaState[key] === prev[key])
+      !testKeys || Object.keys(testKeys).every((key) => mediaState[key] === prev[key])
 
     if (hasntUpdated) {
       return prev
     }
 
     componentState.prev = mediaState
-
     return mediaState
   }
 
@@ -248,8 +242,8 @@ export function useMedia(
       () => initialState
     )
   } else {
-    const [internalState, setState] = useState(initialState)
-    state = internalState
+    const [_state, setState] = useState(initialState)
+    state = _state
 
     useIsomorphicLayoutEffect(() => {
       function update() {
@@ -259,20 +253,21 @@ export function useMedia(
       update()
 
       // fix media getting stuck on first render causing weird issues in dialogs not positioning
-      if (!disableSSR && state === initialState) {
+      if (!disableSSR) {
         Promise.resolve().then(() => {
           update()
         })
       }
+
       return subscribe(update)
-    }, [componentState])
+    }, [])
   }
 
   return new Proxy(state, {
     get(_, key) {
       if (typeof key === 'string') {
-        componentState.keys ||= []
-        if (!componentState.keys.includes(key)) componentState.keys.push(key)
+        componentState.keys ||= {}
+        componentState.keys[key] = true
         if (process.env.NODE_ENV === 'development' && debug) {
           console.info(`useMedia() TOUCH`, key)
         }

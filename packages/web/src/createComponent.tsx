@@ -765,13 +765,15 @@ export function createComponent<
 
     // only listen for changes if we are using raw theme values or media space, or dynamic media (native)
     // array = space media breakpoints
-    const isMediaArray = splitStyles.hasMedia && Array.isArray(splitStyles.hasMedia)
+    const hasRuntimeMediaKeys = splitStyles.hasMedia && splitStyles.hasMedia !== true
     const shouldListenForMedia =
       didGetVariableValue() ||
-      isMediaArray ||
+      hasRuntimeMediaKeys ||
       (noClassNames && splitStyles.hasMedia === true)
 
-    const mediaListeningKeys = isMediaArray ? (splitStyles.hasMedia as string[]) : null
+    const mediaListeningKeys = hasRuntimeMediaKeys
+      ? (splitStyles.hasMedia as Record<string, boolean>)
+      : null
     if (process.env.NODE_ENV === 'development' && debugProp) {
       console.info(`useMedia() createComponent`, shouldListenForMedia, mediaListeningKeys)
     }
@@ -1360,7 +1362,7 @@ export function createComponent<
                 elementType,
                 events,
                 isAnimated,
-                isMediaArray,
+                hasRuntimeMediaKeys,
                 isStringElement,
                 mediaListeningKeys,
                 pseudos,

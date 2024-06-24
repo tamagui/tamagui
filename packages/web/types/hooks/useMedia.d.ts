@@ -1,4 +1,4 @@
-import type { ComponentContextI, DebugProp, IsMediaType, MediaQueries, MediaQueryKey, MediaQueryObject, MediaQueryState, TamaguiInternalConfig, UseMediaState } from '../types';
+import type { ComponentContextI, DebugProp, IsMediaType, MediaQueries, MediaQueryObject, MediaQueryState, TamaguiInternalConfig, UseMediaState } from '../types';
 export declare let mediaState: MediaQueryState;
 export declare const mediaQueryConfig: MediaQueries;
 export declare const getMedia: () => MediaQueryState;
@@ -13,7 +13,7 @@ type MediaKeysState = {
 type MediaState = {
     prev?: MediaKeysState;
     enabled?: boolean;
-    keys?: MediaQueryKey[] | null;
+    keys?: Record<string, boolean> | null;
 };
 export declare function setMediaShouldUpdate(ref: any, props: MediaState): WeakMap<any, MediaState>;
 export declare function useMedia(uidIn?: any, componentContext?: ComponentContextI, debug?: DebugProp): UseMediaState;

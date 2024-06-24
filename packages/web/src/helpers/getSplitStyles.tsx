@@ -176,7 +176,7 @@ export const getSplitStyles: StyleSplitter = (
 
   let pseudos: PseudoStyles | null = null
   let space: SpaceTokens | null = props.space
-  let hasMedia: boolean | string[] = false
+  let hasMedia: boolean | Record<string, boolean> = false
   let dynamicThemeAccess: boolean | undefined
   let pseudoGroups: Set<string> | undefined
   let mediaGroups: Set<string> | undefined
@@ -830,10 +830,10 @@ export const getSplitStyles: StyleSplitter = (
         hasMedia ||= true
 
         if (hasSpace || !shouldDoClasses || styleProps.willBeAnimated) {
-          if (!Array.isArray(hasMedia)) {
-            hasMedia = []
+          if (typeof hasMedia !== 'object') {
+            hasMedia = {}
           }
-          hasMedia.push(mediaKeyShort)
+          hasMedia[mediaKeyShort] = true
         }
 
         // can bail early

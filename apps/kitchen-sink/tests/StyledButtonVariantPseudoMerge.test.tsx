@@ -8,6 +8,7 @@ test.beforeEach(async ({ page }) => {
 })
 
 test(`pseudo + variant with pseudo should merge`, async ({ page }) => {
+  page.pause()
   const button = page.locator('button#test')
   const pressStyles = await getPressStyle(button, { delay: 3000 })
   expect(pressStyles.backgroundColor).toBe(`rgb(255, 0, 0)`)

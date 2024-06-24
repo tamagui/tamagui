@@ -62,7 +62,7 @@ export const StyledButtonVariantPseudoMerge = () => (
       variant-merge-green-red
     </StyledButton>
 
-    <DoubleStyledButtonNoVariants debug="verbose" reddish id="double-styled">
+    <DoubleStyledButtonNoVariants reddish id="double-styled">
       double-styled
     </DoubleStyledButtonNoVariants>
 
