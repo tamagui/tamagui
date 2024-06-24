@@ -96,7 +96,7 @@ export default function TakeoutPage() {
         zi={-3}
       />
 
-      <ThemeTintAlt offset={0}>
+      {/* <ThemeTintAlt offset={0}>
         <YStack
           pos="absolute"
           l={0}
@@ -108,7 +108,7 @@ export default function TakeoutPage() {
           }}
           zi={-3}
         />
-      </ThemeTintAlt>
+      </ThemeTintAlt> */}
 
       <ThemeTintAlt offset={0}>
         <YStack
@@ -189,7 +189,7 @@ export default function TakeoutPage() {
                 }}
                 size="$4"
               >
-                Checkout
+                Purchase
               </PurchaseButton>
             </YStack>
 
@@ -666,14 +666,6 @@ export default function TakeoutPage() {
                 <Spacer />
 
                 <YStack br="$12" elevation="$4" bg="rgba(0,0,0,0.8)" p="$7" gap="$3">
-                  <ThemeTint>
-                    <Paragraph als="center" col="#fff" fontFamily="$munro" size="$10">
-                      Gallery
-                    </Paragraph>
-                  </ThemeTint>
-
-                  <Spacer />
-
                   <YStack mih={530}>
                     <Lazy>
                       <TakeoutGallery />
