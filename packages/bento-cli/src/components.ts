@@ -433,7 +433,10 @@ export const componentsList: Omit<ComponentSchema, 'isOSS'>[] = [
     fileName: 'RoundedAvatars',
     category: 'elements',
     categorySection: 'avatars',
-    moveFilesToFolder: [{ file: 'RoundedAvatars', to: '' },       { file: 'Avatar', to: 'components' },],
+    moveFilesToFolder: [
+      { file: 'RoundedAvatars', to: '' },
+      { file: 'Avatar', to: 'components' },
+    ],
   },
   {
     name: 'Rounded Avatars with Custom Icons',
@@ -441,7 +444,10 @@ export const componentsList: Omit<ComponentSchema, 'isOSS'>[] = [
     category: 'elements',
     categorySection: 'avatars',
     dependencies: ['@tamagui/lucide-icons'],
-    moveFilesToFolder: [{ file: 'RoundedAvatars', to: '' },       { file: 'Avatar', to: 'components' },],
+    moveFilesToFolder: [
+      { file: 'RoundedAvatars', to: '' },
+      { file: 'Avatar', to: 'components' },
+    ],
   },
   {
     name: 'Buttons with Left Icons',
@@ -472,21 +478,34 @@ export const componentsList: Omit<ComponentSchema, 'isOSS'>[] = [
     category: 'elements',
     categorySection: 'tables',
     dependencies: ['@tanstack/react-table'],
-    moveFilesToFolder: [{ file: 'UsersTable', to: '' }, { file: 'tableParts', to: 'common' }],
+    moveFilesToFolder: [
+      { file: 'UsersTable', to: '' },
+      { file: 'tableParts', to: 'common' },
+    ],
   },
   {
     name: 'Table with Pagination and Sorting Ability',
     fileName: 'SortableTable',
     category: 'elements',
     categorySection: 'tables',
-    moveFilesToFolder: [{ file: '', to: '' }],
+    moveFilesToFolder: [
+      { file: 'SortableTable', to: '' },
+      { file: 'tableParts', to: 'common' },
+      { file: 'makeData', to: 'utils' },
+    ],
   },
   {
     name: 'MultiSelectPicker',
     fileName: 'MultiSelectPicker',
     category: 'elements',
     categorySection: 'datepickers',
-    moveFilesToFolder: [{ file: '', to: '' }],
+    dependencies: ['@rehookify/datepicker', '@tamagui/lucide-icons', '@tamagui/get-font-sized', '@tamagui/web'],
+    moveFilesToFolder: [
+      { file: 'MultiSelectPicker', to: '' },
+      { file: 'DatePicker', to: '' },
+      { file: 'dateParts', to: 'common' },
+      { file: 'inputsParts', to: '../../forms/inputs/components' },
+    ],
   },
   {
     name: 'RangePicker',
