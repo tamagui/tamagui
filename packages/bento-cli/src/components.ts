@@ -6,7 +6,14 @@ export type ComponentSchema = {
   fileName: string
   // dependencies?: string[]
   isOSS: boolean
+  moveFilesToFolder?: MoveFileToFolder[]
 }
+
+type MoveFileToFolder = {
+  file: string
+  to: string
+}
+
 
 const OSS_COMPONENTS = [
   'InputWithLabel',
@@ -68,6 +75,7 @@ const MISSING_COMPONENTS = [
     fileName: 'DatePicker',
     category: 'elements',
     categorySection: 'datepickers',
+    moveFilesToFolder: [{file: 'dateParts', to: './common'}, {file: 'InputParts', to: '../../../forms/inputs/components/inputsParts'}]
   },
   {
     name: 'MonthPicker',

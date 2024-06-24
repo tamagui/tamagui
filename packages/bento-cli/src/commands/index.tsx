@@ -114,7 +114,7 @@ const SearchBar = () => {
   return (
     <Box marginX={1} justifyContent="space-between">
       <Box>
-        <Text bold>Search: </Text>
+        <Text bold>Search me i: </Text>
         <TextInput
           value={appContext.input}
           onChange={handleChange}
