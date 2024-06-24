@@ -97,62 +97,31 @@ export const installComponent = async ({ component, setInstall, install }) => {
       mkdirSync(uiDir, { recursive: true })
     }
 
-    // console.log('component has app dir')
+    const componentSchema = componentsList.find(
+      (i) => i.name === install?.installingComponent?.name
+    )
+
     await Promise.all(
       components.map((component) => {
         const componentName = component.name.split('.')[0]
-        const componentSchema = componentsList.find(
-          (i) => i.name === component.name.split('.')[0]
+
+        const toFolder = componentSchema.moveFilesToFolder.find(
+          (i) => i.file === componentName
+        )?.to
+
+        const componentDir = path.join(
+          process.cwd(),
+          'components',
+          'ui',
+          componentSchema?.category,
+          componentSchema?.categorySection,
+          toFolder ?? ''
         )
 
-        if (componentSchema?.moveFilesToFolder) {
-          const toFolder = componentSchema.moveFilesToFolder.find(
-            (i) => i.file === componentName
-          )?.to
-          if (!toFolder) {
-            const uiSubPathDir = path.join(
-              process.cwd(),
-              'components',
-              'ui',
-              componentSchema?.category,
-              componentSchema?.categorySection
-            )
-            if (!existsSync(uiSubPathDir)) {
-              mkdirSync(uiSubPathDir, { recursive: true })
-            }
-            fs.writeFile(
-              path.join(
-                process.cwd(),
-                'components',
-                'ui',
-                componentSchema?.category,
-                componentSchema?.categorySection,
-                component.name
-              ),
-              component.content
-            )
-          } else {
-            const componentDir = path.join(
-              process.cwd(),
-              'components',
-              'ui',
-              componentSchema?.category,
-              componentSchema?.categorySection,
-              toFolder
-            )
-
-            if (!existsSync(componentDir)) {
-              mkdirSync(componentDir, { recursive: true })
-            }
-            fs.writeFile(path.join(componentDir, component.name), component.content)
-          }
-        } else {
-          fs.writeFile(
-            path.join(process.cwd(), 'components', 'ui', component.name),
-            component.content
-          )
+        if (!existsSync(componentDir)) {
+          mkdirSync(componentDir, { recursive: true })
         }
-        // console.log('component name:', component.name)
+        fs.writeFile(path.join(componentDir, component.name), component.content)
       })
     )
   } else if (hasSrcDir()) {
@@ -185,7 +154,7 @@ export const useInstallComponent = () => {
 
   useEffect(() => {
     if (data && install?.installingComponent) {
-      installComponent({ component: data, setInstall })
+      installComponent({ component: data, setInstall, install })
     }
   }, [data, install, setInstall])
 }
