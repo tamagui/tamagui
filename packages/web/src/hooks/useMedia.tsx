@@ -257,8 +257,15 @@ export function useMedia(
       }
 
       update()
+
+      // fix media getting stuck on first render causing weird issues in dialogs not positioning
+      if (!disableSSR && state === initialState) {
+        Promise.resolve().then(() => {
+          update()
+        })
+      }
       return subscribe(update)
-    }, [])
+    }, [componentState])
   }
 
   return new Proxy(state, {
