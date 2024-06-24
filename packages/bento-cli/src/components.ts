@@ -81,6 +81,7 @@ const MISSING_COMPONENTS: Omit<ComponentSchema, 'isOSS'>[] = [
     fileName: 'DatePicker',
     category: 'elements',
     categorySection: 'datepickers',
+    dependencies: ['@rehookify/datepicker'],
     moveFilesToFolder: [
       { file: 'DatePicker', to: '' },
       { file: 'dateParts', to: 'common' },
@@ -92,14 +93,24 @@ const MISSING_COMPONENTS: Omit<ComponentSchema, 'isOSS'>[] = [
     fileName: 'MonthPicker',
     category: 'elements',
     categorySection: 'datepickers',
-    moveFilesToFolder: [{ file: '', to: '' }],
+    dependencies: ['@rehookify/datepicker'],
+    moveFilesToFolder: [
+      { file: 'MonthPicker', to: '' },
+      { file: 'dateParts', to: 'common' },
+      { file: 'inputsParts', to: '../../forms/inputs/components' },
+    ],
   },
   {
     name: 'YearPicker',
     fileName: 'YearPicker',
     category: 'elements',
     categorySection: 'datepickers',
-    moveFilesToFolder: [{ file: '', to: '' }],
+    dependencies: ['@rehookify/datepicker'],
+    moveFilesToFolder: [
+      { file: 'YearPicker', to: '' },
+      { file: 'dateParts', to: 'common' },
+      { file: 'inputsParts', to: '../../forms/inputs/components' },
+    ],
   },
   {
     name: 'Sliding Popover',
