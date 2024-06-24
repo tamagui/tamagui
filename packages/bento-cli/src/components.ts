@@ -50,9 +50,7 @@ const MISSING_COMPONENTS: Omit<ComponentSchema, 'isOSS'>[] = [
     fileName: 'InteractiveCard',
     category: 'animation',
     categorySection: 'microinteractions',
-    moveFilesToFolder: [
-      { file: 'InteractiveCard', to: '' },
-    ],
+    moveFilesToFolder: [{ file: 'InteractiveCard', to: '' }],
   },
   {
     name: 'Slide In',
@@ -74,7 +72,10 @@ const MISSING_COMPONENTS: Omit<ComponentSchema, 'isOSS'>[] = [
     category: 'elements',
     categorySection: 'tables',
     dependencies: ['@tanstack/react-table'],
-    moveFilesToFolder: [{ file: 'Basic', to: '' }, { file: 'tableParts', to: 'common' }],
+    moveFilesToFolder: [
+      { file: 'Basic', to: '' },
+      { file: 'tableParts', to: 'common' },
+    ],
   },
   {
     name: 'DatePicker',
@@ -117,14 +118,15 @@ const MISSING_COMPONENTS: Omit<ComponentSchema, 'isOSS'>[] = [
     fileName: 'SlidingPopover',
     category: 'elements',
     categorySection: 'dialogs',
-    moveFilesToFolder: [{ file: '', to: '' }],
+    dependencies: ['@tamagui/lucide-icons'],
+    moveFilesToFolder: [{ file: 'SlidingPopover', to: '' }],
   },
   {
     name: 'React Native API Compatible Alert',
     fileName: 'Alert',
     category: 'elements',
     categorySection: 'dialogs',
-    moveFilesToFolder: [{ file: '', to: '' }],
+    moveFilesToFolder: [{ file: 'Alert', to: '' }],
   },
   {
     name: 'Input with Label',
@@ -141,6 +143,12 @@ const MISSING_COMPONENTS: Omit<ComponentSchema, 'isOSS'>[] = [
     fileName: 'OneTimeCodeInput',
     category: 'forms',
     categorySection: 'inputs',
+    dependencies: ['react-hook-form', '@tamagui/lucide-icons'],
+    moveFilesToFolder: [
+      { file: 'OneTimeCodeInput', to: '' },
+      { file: 'InputWithLabel', to: '' },
+      { file: 'inputsParts', to: 'components' },
+    ],
   },
   {
     name: 'Input with Label and Message',
