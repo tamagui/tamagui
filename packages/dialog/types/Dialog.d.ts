@@ -1,5 +1,4 @@
 import type { GetProps, StackProps, TamaguiElement } from '@tamagui/core';
-import { TamaguiTextElement } from '@tamagui/core';
 import type { DismissableProps } from '@tamagui/dismissable';
 import type { FocusScopeProps } from '@tamagui/focus-scope';
 import type { PortalItemProps } from '@tamagui/portal';
@@ -149,7 +148,7 @@ type DialogContentImplProps = DialogContentFrameProps & Omit<DismissableProps, '
     onCloseAutoFocus?: FocusScopeProps['onUnmountAutoFocus'];
     context: DialogContextValue;
 };
-declare const DialogTitleFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
+declare const DialogTitleFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
     size?: import("@tamagui/core").FontSizeTokens | undefined;
     unstyled?: boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
@@ -157,11 +156,11 @@ type DialogTitleProps = GetProps<typeof DialogTitleFrame>;
 declare const DialogTitle: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").GetFinalProps<import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
     size?: import("@tamagui/core").FontSizeTokens | undefined;
     unstyled?: boolean | undefined;
-}>, TamaguiTextElement, import("@tamagui/core").TextNonStyleProps & void, import("@tamagui/core").TextStylePropsBase, {
+}>, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps & void, import("@tamagui/core").TextStylePropsBase, {
     size?: import("@tamagui/core").FontSizeTokens | undefined;
     unstyled?: boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
-declare const DialogDescriptionFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
+declare const DialogDescriptionFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
     size?: import("@tamagui/core").FontSizeTokens | undefined;
     unstyled?: boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
@@ -169,7 +168,7 @@ type DialogDescriptionProps = GetProps<typeof DialogDescriptionFrame>;
 declare const DialogDescription: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").GetFinalProps<import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
     size?: import("@tamagui/core").FontSizeTokens | undefined;
     unstyled?: boolean | undefined;
-}>, TamaguiTextElement, import("@tamagui/core").TextNonStyleProps & void, import("@tamagui/core").TextStylePropsBase, {
+}>, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps & void, import("@tamagui/core").TextStylePropsBase, {
     size?: import("@tamagui/core").FontSizeTokens | undefined;
     unstyled?: boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
@@ -202,14 +201,14 @@ declare const Dialog: React.ForwardRefExoticComponent<DialogProps & React.RefAtt
     Title: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").GetFinalProps<import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
         size?: import("@tamagui/core").FontSizeTokens | undefined;
         unstyled?: boolean | undefined;
-    }>, TamaguiTextElement, import("@tamagui/core").TextNonStyleProps & void, import("@tamagui/core").TextStylePropsBase, {
+    }>, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps & void, import("@tamagui/core").TextStylePropsBase, {
         size?: import("@tamagui/core").FontSizeTokens | undefined;
         unstyled?: boolean | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
     Description: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").GetFinalProps<import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
         size?: import("@tamagui/core").FontSizeTokens | undefined;
         unstyled?: boolean | undefined;
-    }>, TamaguiTextElement, import("@tamagui/core").TextNonStyleProps & void, import("@tamagui/core").TextStylePropsBase, {
+    }>, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps & void, import("@tamagui/core").TextStylePropsBase, {
         size?: import("@tamagui/core").FontSizeTokens | undefined;
         unstyled?: boolean | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
@@ -295,13 +294,10 @@ declare const Dialog: React.ForwardRefExoticComponent<DialogProps & React.RefAtt
         };
     };
 };
-export declare const DialogSheetContents: {
-    ({ name, ...props }: {
-        name: string;
-        context: Omit<DialogContextValue, "sheetBreakpoint">;
-    }): import("react/jsx-runtime").JSX.Element;
-    displayName: string;
-};
-export { createDialogScope, Dialog, DialogTrigger, DialogPortal, DialogOverlay, DialogContent, DialogTitle, DialogDescription, DialogClose, DialogWarningProvider, };
-export type { DialogProps, DialogTriggerProps, DialogPortalProps, DialogOverlayProps, DialogContentProps, DialogTitleProps, DialogDescriptionProps, DialogCloseProps, };
+export declare const DialogSheetContents: ({ name, ...props }: {
+    name: string;
+    context: Omit<DialogContextValue, "sheetBreakpoint">;
+}) => import("react/jsx-runtime").JSX.Element;
+export { Dialog, DialogClose, DialogContent, DialogDescription, DialogOverlay, DialogPortal, DialogTitle, DialogTrigger, DialogWarningProvider, createDialogScope, };
+export type { DialogCloseProps, DialogContentProps, DialogDescriptionProps, DialogOverlayProps, DialogPortalProps, DialogProps, DialogTitleProps, DialogTriggerProps, };
 //# sourceMappingURL=Dialog.d.ts.map

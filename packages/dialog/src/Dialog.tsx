@@ -5,8 +5,6 @@ import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
 import type { GetProps, StackProps, TamaguiElement } from '@tamagui/core'
 import {
-  GetRef,
-  TamaguiTextElement,
   Theme,
   View,
   spacedChildren,
@@ -91,30 +89,29 @@ const DialogTriggerFrame = styled(View, {
 
 interface DialogTriggerProps extends StackProps {}
 
-const DialogTrigger = DialogTriggerFrame.styleable(
-  (props: ScopedProps<DialogTriggerProps>, forwardedRef) => {
-    const { __scopeDialog, ...triggerProps } = props
-    const isInsideButton = React.useContext(ButtonNestingContext)
-    const context = useDialogContext(TRIGGER_NAME, __scopeDialog)
-    const composedTriggerRef = useComposedRefs(forwardedRef, context.triggerRef)
-    return (
-      <ButtonNestingContext.Provider value={true}>
-        <DialogTriggerFrame
-          tag={isInsideButton ? 'span' : 'button'}
-          aria-haspopup="dialog"
-          aria-expanded={context.open}
-          aria-controls={context.contentId}
-          data-state={getState(context.open)}
-          {...triggerProps}
-          ref={composedTriggerRef}
-          onPress={composeEventHandlers(props.onPress as any, context.onOpenToggle)}
-        />
-      </ButtonNestingContext.Provider>
-    )
-  }
-)
-
-DialogTrigger.displayName = TRIGGER_NAME
+const DialogTrigger = DialogTriggerFrame.styleable(function DialogTrigger(
+  props: ScopedProps<DialogTriggerProps>,
+  forwardedRef
+) {
+  const { __scopeDialog, ...triggerProps } = props
+  const isInsideButton = React.useContext(ButtonNestingContext)
+  const context = useDialogContext(TRIGGER_NAME, __scopeDialog)
+  const composedTriggerRef = useComposedRefs(forwardedRef, context.triggerRef)
+  return (
+    <ButtonNestingContext.Provider value={true}>
+      <DialogTriggerFrame
+        tag={isInsideButton ? 'span' : 'button'}
+        aria-haspopup="dialog"
+        aria-expanded={context.open}
+        aria-controls={context.contentId}
+        data-state={getState(context.open)}
+        {...triggerProps}
+        ref={composedTriggerRef}
+        onPress={composeEventHandlers(props.onPress as any, context.onOpenToggle)}
+      />
+    </ButtonNestingContext.Provider>
+  )
+})
 
 /* -------------------------------------------------------------------------------------------------
  * DialogPortal
@@ -268,8 +265,6 @@ const DialogPortal: React.FC<DialogPortalProps> = (
   return contents
 }
 
-DialogPortal.displayName = PORTAL_NAME
-
 const PassthroughTheme = ({ children }) => {
   const themeName = useThemeName()
 
@@ -302,36 +297,24 @@ interface DialogOverlayProps extends YStackProps {
 }
 
 const DialogOverlay = DialogOverlayFrame.extractable(
-  React.forwardRef<TamaguiElement, DialogOverlayProps>(
-    ({ __scopeDialog, ...props }: ScopedProps<DialogOverlayProps>, forwardedRef) => {
-      const portalContext = usePortalContext(OVERLAY_NAME, __scopeDialog)
-      const { forceMount = portalContext.forceMount, ...overlayProps } = props
-      const context = useDialogContext(OVERLAY_NAME, __scopeDialog)
-      const showSheet = useShowDialogSheet(context)
+  React.forwardRef<TamaguiElement, DialogOverlayProps>(function DialogOverlay(
+    { __scopeDialog, ...props }: ScopedProps<DialogOverlayProps>,
+    forwardedRef
+  ) {
+    const portalContext = usePortalContext(OVERLAY_NAME, __scopeDialog)
+    const { forceMount = portalContext.forceMount, ...overlayProps } = props
+    const context = useDialogContext(OVERLAY_NAME, __scopeDialog)
+    const showSheet = useShowDialogSheet(context)
 
-      if (!forceMount) {
-        if (!context.modal || showSheet) {
-          return null
-        }
+    if (!forceMount) {
+      if (!context.modal || showSheet) {
+        return null
       }
-
-      return <DialogOverlayImpl context={context} {...overlayProps} ref={forwardedRef} />
     }
-  )
-)
-DialogOverlay.displayName = OVERLAY_NAME
 
-type DialogOverlayImplProps = GetProps<typeof DialogOverlayFrame> & {
-  context: DialogContextValue
-}
-
-const DialogOverlayImpl = React.forwardRef<TamaguiElement, DialogOverlayImplProps>(
-  (props, forwardedRef) => {
-    const { context, ...overlayProps } = props
-
+    // Make sure `Content` is scrollable even when it doesn't live inside `RemoveScroll`
+    // ie. when `Overlay` and `Content` are siblings
     return (
-      // Make sure `Content` is scrollable even when it doesn't live inside `RemoveScroll`
-      // ie. when `Overlay` and `Content` are siblings
       <DialogOverlayFrame
         data-state={getState(context.open)}
         // We re-enable pointer-events prevented by `Dialog.Content` to allow scrolling the overlay.
@@ -340,7 +323,7 @@ const DialogOverlayImpl = React.forwardRef<TamaguiElement, DialogOverlayImplProp
         ref={forwardedRef}
       />
     )
-  }
+  })
 )
 
 /* -------------------------------------------------------------------------------------------------
@@ -391,41 +374,40 @@ interface DialogContentProps
 }
 
 const DialogContent = DialogContentFrame.extractable(
-  React.forwardRef<TamaguiElement, DialogContentProps>(
-    ({ __scopeDialog, ...props }: ScopedProps<DialogContentProps>, forwardedRef) => {
-      const portalContext = usePortalContext(CONTENT_NAME, __scopeDialog)
-      const { forceMount = portalContext.forceMount, ...contentProps } = props
-      const context = useDialogContext(CONTENT_NAME, __scopeDialog)
+  React.forwardRef<TamaguiElement, DialogContentProps>(function DialogContent(
+    { __scopeDialog, ...props }: ScopedProps<DialogContentProps>,
+    forwardedRef
+  ) {
+    const portalContext = usePortalContext(CONTENT_NAME, __scopeDialog)
+    const { forceMount = portalContext.forceMount, ...contentProps } = props
+    const context = useDialogContext(CONTENT_NAME, __scopeDialog)
 
-      const contents = context.modal ? (
-        <DialogContentModal context={context} {...contentProps} ref={forwardedRef} />
-      ) : (
-        <DialogContentNonModal context={context} {...contentProps} ref={forwardedRef} />
-      )
+    const contents = context.modal ? (
+      <DialogContentModal context={context} {...contentProps} ref={forwardedRef} />
+    ) : (
+      <DialogContentNonModal context={context} {...contentProps} ref={forwardedRef} />
+    )
 
-      if (!isWeb || context.disableRemoveScroll) {
-        return contents
-      }
-
-      return (
-        <RemoveScroll
-          forwardProps
-          enabled={context.open}
-          allowPinchZoom={context.allowPinchZoom}
-          shards={[context.contentRef]}
-          // causes lots of bugs on touch web on site
-          removeScrollBar={false}
-        >
-          <div data-remove-scroll-container className="_dsp_contents">
-            {contents}
-          </div>
-        </RemoveScroll>
-      )
+    if (!isWeb || context.disableRemoveScroll) {
+      return contents
     }
-  )
-)
 
-DialogContent.displayName = CONTENT_NAME
+    return (
+      <RemoveScroll
+        forwardProps
+        enabled={context.open}
+        allowPinchZoom={context.allowPinchZoom}
+        shards={[context.contentRef]}
+        // causes lots of bugs on touch web on site
+        removeScrollBar={false}
+      >
+        <div data-remove-scroll-container className="_dsp_contents">
+          {contents}
+        </div>
+      </RemoveScroll>
+    )
+  })
+)
 
 /* -----------------------------------------------------------------------------------------------*/
 
@@ -648,22 +630,20 @@ const DialogContentImpl = React.forwardRef<TamaguiElement, DialogContentImplProp
  * DialogTitle
  * -----------------------------------------------------------------------------------------------*/
 
-const TITLE_NAME = 'DialogTitle'
 const DialogTitleFrame = styled(H2, {
-  name: TITLE_NAME,
+  name: 'DialogTitle',
 })
 
 type DialogTitleProps = GetProps<typeof DialogTitleFrame>
 
-const DialogTitle = DialogTitleFrame.styleable(
-  (props: ScopedProps<DialogTitleProps>, forwardedRef) => {
-    const { __scopeDialog, ...titleProps } = props
-    const context = useDialogContext(TITLE_NAME, __scopeDialog)
-    return <DialogTitleFrame id={context.titleId} {...titleProps} ref={forwardedRef} />
-  }
-)
-
-DialogTitle.displayName = TITLE_NAME
+const DialogTitle = DialogTitleFrame.styleable(function DialogTitle(
+  props: ScopedProps<DialogTitleProps>,
+  forwardedRef
+) {
+  const { __scopeDialog, ...titleProps } = props
+  const context = useDialogContext('DialogTitle', __scopeDialog)
+  return <DialogTitleFrame id={context.titleId} {...titleProps} ref={forwardedRef} />
+})
 
 /* -------------------------------------------------------------------------------------------------
  * DialogDescription
@@ -677,21 +657,20 @@ type DialogDescriptionProps = GetProps<typeof DialogDescriptionFrame>
 
 const DESCRIPTION_NAME = 'DialogDescription'
 
-const DialogDescription = DialogDescriptionFrame.styleable(
-  (props: ScopedProps<DialogDescriptionProps>, forwardedRef) => {
-    const { __scopeDialog, ...descriptionProps } = props
-    const context = useDialogContext(DESCRIPTION_NAME, __scopeDialog)
-    return (
-      <DialogDescriptionFrame
-        id={context.descriptionId}
-        {...descriptionProps}
-        ref={forwardedRef}
-      />
-    )
-  }
-)
-
-DialogDescription.displayName = DESCRIPTION_NAME
+const DialogDescription = DialogDescriptionFrame.styleable(function DialogDescription(
+  props: ScopedProps<DialogDescriptionProps>,
+  forwardedRef
+) {
+  const { __scopeDialog, ...descriptionProps } = props
+  const context = useDialogContext(DESCRIPTION_NAME, __scopeDialog)
+  return (
+    <DialogDescriptionFrame
+      id={context.descriptionId}
+      {...descriptionProps}
+      ref={forwardedRef}
+    />
+  )
+})
 
 /* -------------------------------------------------------------------------------------------------
  * DialogClose
@@ -748,7 +727,7 @@ const TITLE_WARNING_NAME = 'DialogTitleWarning'
 
 const [DialogWarningProvider, useWarningContext] = createContext(TITLE_WARNING_NAME, {
   contentName: CONTENT_NAME,
-  titleName: TITLE_NAME,
+  titleName: 'DialogTitle',
   docsSlug: 'dialog',
 })
 
@@ -930,8 +909,6 @@ export const DialogSheetContents = ({
   return <PortalHost forwardProps={props} name={name} />
 }
 
-DialogSheetContents.displayName = SHEET_CONTENTS_NAME
-
 const getSheetContentsName = ({
   scopeKey,
   contentId,
@@ -976,26 +953,26 @@ const useShowDialogSheet = (context: DialogContextValue) => {
 }
 
 export {
-  createDialogScope,
   //
   Dialog,
-  DialogTrigger,
-  DialogPortal,
-  DialogOverlay,
-  DialogContent,
-  DialogTitle,
-  DialogDescription,
   DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogOverlay,
+  DialogPortal,
+  DialogTitle,
+  DialogTrigger,
   //
   DialogWarningProvider,
+  createDialogScope,
 }
 export type {
-  DialogProps,
-  DialogTriggerProps,
-  DialogPortalProps,
-  DialogOverlayProps,
-  DialogContentProps,
-  DialogTitleProps,
-  DialogDescriptionProps,
   DialogCloseProps,
+  DialogContentProps,
+  DialogDescriptionProps,
+  DialogOverlayProps,
+  DialogPortalProps,
+  DialogProps,
+  DialogTitleProps,
+  DialogTriggerProps,
 }
