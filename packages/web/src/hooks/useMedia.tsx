@@ -1,7 +1,7 @@
-import { isServer, isWeb } from '@tamagui/constants'
-import { useRef, useSyncExternalStore } from 'react'
+import { isServer, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { useRef, useState, useSyncExternalStore } from 'react'
 
-import { getConfig } from '../config'
+import { getConfig, setTokens } from '../config'
 import { matchMedia } from '../helpers/matchMedia'
 import { pseudoDescriptors } from '../helpers/pseudoDescriptors'
 import type {
@@ -169,9 +169,9 @@ type MediaKeysState = {
 }
 
 type MediaState = {
-  prev: MediaKeysState
+  prev?: MediaKeysState
   enabled?: boolean
-  keys?: MediaQueryKey[]
+  keys?: MediaQueryKey[] | null
 }
 
 const States = new WeakMap<any, MediaState>()
@@ -190,7 +190,9 @@ type UseMediaInternalState = {
 
 function subscribe(subscriber: any) {
   listeners.add(subscriber)
-  return () => listeners.delete(subscriber)
+  return () => {
+    listeners.delete(subscriber)
+  }
 }
 
 export function useMedia(
@@ -209,37 +211,55 @@ export function useMedia(
     States.set(uid, componentState)
   }
 
-  const state = useSyncExternalStore<MediaQueryState>(
-    subscribe,
-    () => {
-      if (!componentState) {
-        return initialState
+  const getSnapshot = () => {
+    if (!componentState) {
+      return initialState
+    }
+
+    const { keys, prev = initialState } = componentState
+
+    if (componentState && componentState.enabled === false) {
+      return prev
+    }
+
+    const testKeys =
+      componentState?.keys ??
+      ((!componentState || componentState.enabled) && keys) ??
+      null
+
+    const hasntUpdated =
+      !testKeys || testKeys?.every((key) => mediaState[key] === prev[key])
+
+    if (hasntUpdated) {
+      return prev
+    }
+
+    componentState.prev = mediaState
+
+    return mediaState
+  }
+
+  let state: MediaQueryState
+
+  if (process.env.TAMAGUI_SYNC_MEDIA_QUERY) {
+    state = useSyncExternalStore<MediaQueryState>(
+      subscribe,
+      getSnapshot,
+      () => initialState
+    )
+  } else {
+    const [internalState, setState] = useState(initialState)
+    state = internalState
+
+    useIsomorphicLayoutEffect(() => {
+      function update() {
+        setState(getSnapshot)
       }
 
-      const { keys, prev } = componentState
-
-      if (componentState && componentState.enabled === false) {
-        return prev
-      }
-
-      const testKeys =
-        componentState?.keys ??
-        ((!componentState || componentState.enabled) && keys) ??
-        null
-
-      const hasntUpdated =
-        !testKeys || testKeys?.every((key) => mediaState[key] === prev[key])
-
-      if (hasntUpdated) {
-        return prev
-      }
-
-      componentState.prev = mediaState
-
-      return mediaState
-    },
-    () => initialState
-  )
+      update()
+      return subscribe(update)
+    })
+  }
 
   return new Proxy(state, {
     get(_, key) {

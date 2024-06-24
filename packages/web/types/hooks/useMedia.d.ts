@@ -11,9 +11,9 @@ type MediaKeysState = {
     [key: string]: any;
 };
 type MediaState = {
-    prev: MediaKeysState;
+    prev?: MediaKeysState;
     enabled?: boolean;
-    keys?: MediaQueryKey[];
+    keys?: MediaQueryKey[] | null;
 };
 export declare function setMediaShouldUpdate(ref: any, props: MediaState): WeakMap<any, MediaState>;
 export declare function useMedia(uidIn?: any, componentContext?: ComponentContextI, debug?: DebugProp): UseMediaState;

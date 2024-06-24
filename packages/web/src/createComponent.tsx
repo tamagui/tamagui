@@ -778,7 +778,7 @@ export function createComponent<
 
     setMediaShouldUpdate(stateRef, {
       enabled: shouldListenForMedia,
-      touched: mediaListeningKeys,
+      keys: mediaListeningKeys,
     })
 
     const {
