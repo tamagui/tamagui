@@ -499,7 +499,12 @@ export const componentsList: Omit<ComponentSchema, 'isOSS'>[] = [
     fileName: 'MultiSelectPicker',
     category: 'elements',
     categorySection: 'datepickers',
-    dependencies: ['@rehookify/datepicker', '@tamagui/lucide-icons', '@tamagui/get-font-sized', '@tamagui/web'],
+    dependencies: [
+      '@rehookify/datepicker',
+      '@tamagui/lucide-icons',
+      '@tamagui/get-font-sized',
+      '@tamagui/web',
+    ],
     moveFilesToFolder: [
       { file: 'MultiSelectPicker', to: '' },
       { file: 'DatePicker', to: '' },
@@ -525,7 +530,10 @@ export const componentsList: Omit<ComponentSchema, 'isOSS'>[] = [
     category: 'elements',
     categorySection: 'chips',
     dependencies: ['@tamagui/get-font-sized'],
-    moveFilesToFolder: [{ file: 'Chips', to: '' }, { file: 'chipsParts', to: 'components' }],
+    moveFilesToFolder: [
+      { file: 'Chips', to: '' },
+      { file: 'chipsParts', to: 'components' },
+    ],
   },
   {
     name: 'Chips White Text and Pressable',
@@ -533,7 +541,10 @@ export const componentsList: Omit<ComponentSchema, 'isOSS'>[] = [
     category: 'elements',
     categorySection: 'chips',
     dependencies: ['@tamagui/get-font-sized'],
-    moveFilesToFolder: [{ file: 'ChipsNoTextColor', to: '' }, { file: 'chipsParts', to: 'components' }],
+    moveFilesToFolder: [
+      { file: 'ChipsNoTextColor', to: '' },
+      { file: 'chipsParts', to: 'components' },
+    ],
   },
   {
     name: 'Rounded Chips',
@@ -541,7 +552,10 @@ export const componentsList: Omit<ComponentSchema, 'isOSS'>[] = [
     category: 'elements',
     categorySection: 'chips',
     dependencies: ['@tamagui/get-font-sized'],
-    moveFilesToFolder: [{ file: 'ChipsRounded', to: '' }, { file: 'chipsParts', to: 'components' }],
+    moveFilesToFolder: [
+      { file: 'ChipsRounded', to: '' },
+      { file: 'chipsParts', to: 'components' },
+    ],
   },
   {
     name: 'Chips with Close Icon',
@@ -549,14 +563,20 @@ export const componentsList: Omit<ComponentSchema, 'isOSS'>[] = [
     category: 'elements',
     categorySection: 'chips',
     dependencies: ['@tamagui/get-font-sized'],
-    moveFilesToFolder: [{ file: 'ChipsWithCloseIcon', to: '' }, { file: 'chipsParts', to: 'components' }],
+    moveFilesToFolder: [
+      { file: 'ChipsWithCloseIcon', to: '' },
+      { file: 'chipsParts', to: 'components' },
+    ],
   },
   {
     name: 'Chips with Icon',
     fileName: 'ChipsWithIcon',
     category: 'elements',
     categorySection: 'chips',
-    moveFilesToFolder: [{ file: 'ChipsWithIcon', to: '' }, { file: 'chipsParts', to: 'components' }],
+    moveFilesToFolder: [
+      { file: 'ChipsWithIcon', to: '' },
+      { file: 'chipsParts', to: 'components' },
+    ],
   },
   {
     name: 'IOS style Alert',
@@ -594,28 +614,34 @@ export const componentsList: Omit<ComponentSchema, 'isOSS'>[] = [
     fileName: 'ItemValueList',
     category: 'elements',
     categorySection: 'list',
-    moveFilesToFolder: [{ file: '', to: '' }],
+    moveFilesToFolder: [{ file: 'ItemValueList', to: '' }],
   },
   {
     name: 'Performant Grid with FlatList',
     fileName: 'FlatGrid',
     category: 'elements',
     categorySection: 'list',
-    moveFilesToFolder: [{ file: '', to: '' }],
+    moveFilesToFolder: [{ file: 'FlatGrid', to: '' }],
   },
   {
     name: 'Phonebook List',
     fileName: 'List',
     category: 'elements',
     categorySection: 'list',
-    moveFilesToFolder: [{ file: '', to: '' }],
+    dependencies: ['@ngneat/falso', '@tamagui/lucide-icons'],
+    moveFilesToFolder: [{ file: 'List', to: '' }],
   },
   {
     name: 'Masonry List',
     fileName: 'MasonryListExample',
     category: 'elements',
     categorySection: 'list',
-    moveFilesToFolder: [{ file: '', to: '' }],
+    moveFilesToFolder: [
+      { file: 'MasonryListExample', to: '' },
+      { file: 'MasonryList', to: 'components' },
+      { file: 'products', to: 'data' },
+      { file: 'chipsParts', to: '../../chips/components' },
+    ],
   },
   {
     name: 'CheckBox Cards',
