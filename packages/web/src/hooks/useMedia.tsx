@@ -6,6 +6,7 @@ import { matchMedia } from '../helpers/matchMedia'
 import { pseudoDescriptors } from '../helpers/pseudoDescriptors'
 import type {
   ComponentContextI,
+  DebugProp,
   IsMediaType,
   MediaQueries,
   MediaQueryKey,
@@ -43,12 +44,13 @@ export const getMedia = () => mediaState
 
 export const mediaKeys = new Set<string>() // with $ prefix
 
+const mediaKeyRegex = /\$(platform|theme|group)-/
+
 export const isMediaKey = (key: string): IsMediaType => {
   if (mediaKeys.has(key)) return true
   if (key[0] === '$') {
-    if (key.startsWith('$platform-')) return 'platform'
-    if (key.startsWith('$theme-')) return 'theme'
-    if (key.startsWith('$group-')) return 'group'
+    const match = key.match(mediaKeyRegex)
+    if (match) return match[1] as 'platform' | 'theme' | 'group'
   }
   return false
 }
@@ -166,20 +168,24 @@ type MediaKeysState = {
   [key: string]: any
 }
 
-type UpdateState = {
-  enabled: boolean
-  keys: MediaQueryKey[]
+type MediaState = {
+  prev: MediaKeysState
+  enabled?: boolean
+  keys?: MediaQueryKey[]
 }
 
-const shouldUpdate = new WeakMap<any, UpdateState>()
+const States = new WeakMap<any, MediaState>()
 
-export function setMediaShouldUpdate(ref: any, props: UpdateState) {
-  return shouldUpdate.set(ref, props)
+export function setMediaShouldUpdate(ref: any, props: MediaState) {
+  return States.set(ref, {
+    ...(States.get(ref) as any),
+    ...props,
+  })
 }
 
 type UseMediaInternalState = {
   prev: MediaKeysState
-  touched?: Set<string>
+  keys?: string[]
 }
 
 function subscribe(subscriber: any) {
@@ -187,21 +193,30 @@ function subscribe(subscriber: any) {
   return () => listeners.delete(subscriber)
 }
 
-export function useMedia(uid?: any, componentContext?: ComponentContextI): UseMediaState {
-  const internal = useRef<UseMediaInternalState | undefined>()
+export function useMedia(
+  uidIn?: any,
+  componentContext?: ComponentContextI,
+  debug?: DebugProp
+): UseMediaState {
+  const uid = uidIn ?? useRef()
   // performance boost to avoid using context twice
   const disableSSR = getDisableSSR(componentContext)
   const initialState = (disableSSR || !isWeb ? mediaState : initState) || {}
 
+  let componentState = States.get(uid)
+  if (!componentState) {
+    componentState = { prev: initialState }
+    States.set(uid, componentState)
+  }
+
   const state = useSyncExternalStore<MediaQueryState>(
     subscribe,
     () => {
-      if (!internal.current) {
+      if (!componentState) {
         return initialState
       }
 
-      const { touched, prev } = internal.current
-      const componentState = uid ? shouldUpdate.get(uid) : undefined
+      const { keys, prev } = componentState
 
       if (componentState && componentState.enabled === false) {
         return prev
@@ -209,7 +224,8 @@ export function useMedia(uid?: any, componentContext?: ComponentContextI): UseMe
 
       const testKeys =
         componentState?.keys ??
-        ((!componentState || componentState.enabled) && touched ? [...touched] : null)
+        ((!componentState || componentState.enabled) && keys) ??
+        null
 
       const hasntUpdated =
         !testKeys || testKeys?.every((key) => mediaState[key] === prev[key])
@@ -218,7 +234,7 @@ export function useMedia(uid?: any, componentContext?: ComponentContextI): UseMe
         return prev
       }
 
-      internal.current.prev = mediaState
+      componentState.prev = mediaState
 
       return mediaState
     },
@@ -228,9 +244,11 @@ export function useMedia(uid?: any, componentContext?: ComponentContextI): UseMe
   return new Proxy(state, {
     get(_, key) {
       if (typeof key === 'string') {
-        internal.current ||= { prev: initialState }
-        internal.current.touched ||= new Set()
-        internal.current.touched.add(key)
+        componentState.keys ||= []
+        if (!componentState.keys.includes(key)) componentState.keys.push(key)
+        if (process.env.NODE_ENV === 'development' && debug) {
+          console.info(`useMedia() TOUCH`, key)
+        }
       }
       return Reflect.get(state, key)
     },
