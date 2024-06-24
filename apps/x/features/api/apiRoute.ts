@@ -1,5 +1,6 @@
 import type { PostgrestError } from '@supabase/supabase-js'
 import type { Endpoint } from 'vxs'
+import { isResponse } from 'vxs'
 
 export function apiRoute(handler: Endpoint) {
   return (async (req) => {
@@ -8,14 +9,15 @@ export function apiRoute(handler: Endpoint) {
       const out = result instanceof Promise ? await result : result
       return out
     } catch (err) {
+      // not an error
+      if (isResponse(err)) {
+        return err
+      }
+
       const message = err instanceof Error ? err.message : `${err}`
 
       // log errors with traces for debugging in prod
-      console.trace(`Error in apiRoute (caught response) ${req.url}: ${message}`)
-
-      if (err instanceof Response) {
-        return err
-      }
+      console.trace(`Error in apiRoute (caught response) ${req.url}: ${message}`, err)
 
       return new Response(
         JSON.stringify({
