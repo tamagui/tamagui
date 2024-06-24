@@ -1,6 +1,6 @@
 {
   "name": "testing",
-  "version": "1.101.1",
+  "version": "1.101.2",
   "private": true,
   "files": [],
   "type": "module",
@@ -13,10 +13,10 @@
     "postinstall": "patch-package || true"
   },
   "dependencies": {
-    "@tamagui/button": "1.101.1",
-    "@tamagui/config": "1.101.1",
-    "@tamagui/core": "1.101.1",
-    "@tamagui/input": "1.101.1",
+    "@tamagui/button": "1.101.2",
+    "@tamagui/config": "1.101.2",
+    "@tamagui/core": "1.101.2",
+    "@tamagui/input": "1.101.2",
     "react": "npm:react@19.0.0-rc-f994737d14-20240522",
     "react-dom": "npm:react-dom@19.0.0-rc-f994737d14-20240522",
     "react-native": "0.74.1",
