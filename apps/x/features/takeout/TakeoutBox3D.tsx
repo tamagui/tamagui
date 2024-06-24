@@ -21,8 +21,8 @@ let frameCount = 0
 export default (props) => (
   <Canvas
     style={{
-      width: 500,
-      height: 500,
+      width: 300,
+      height: 300,
       ...props.style,
     }}
     gl={{ preserveDrawingBuffer: true }}

@@ -67,7 +67,11 @@ body .preview {
 
 a,
 .text-decoration-none {
-  text-decoration: none !important;
+  text-decoration: none;
+}
+
+p a {
+  text-decoration: underline;
 }
 
 a {

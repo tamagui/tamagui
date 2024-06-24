@@ -545,7 +545,7 @@ export const PurchaseModal = ({
                       disabled={noProductSelected}
                       opacity={noProductSelected ? 0.5 : undefined}
                     >
-                      Purchase
+                      Buy
                     </PurchaseButton>
                   </NextLink>
                   <XStack jc="space-between" gap="$4" ai="center" mb="$2">

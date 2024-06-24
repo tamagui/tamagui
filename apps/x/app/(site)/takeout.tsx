@@ -1,7 +1,7 @@
 import { getSize } from '@tamagui/get-token'
 import { Image } from '@tamagui/image-next'
 import { ThemeTint, ThemeTintAlt, useTint } from '@tamagui/logo'
-import { Check, Dot, Hammer, PlayCircle, X } from '@tamagui/lucide-icons'
+import { Check, Dot, Hammer, PlayCircle, ShoppingCart, X } from '@tamagui/lucide-icons'
 import { useClientValue, useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
 import React, { Suspense, lazy, memo, useEffect, useState } from 'react'
 import type {
@@ -189,7 +189,7 @@ export default function TakeoutPage() {
                 }}
                 size="$4"
               >
-                Purchase
+                Checkout
               </PurchaseButton>
             </YStack>
 
@@ -244,26 +244,18 @@ export default function TakeoutPage() {
                       Supabase
                     </a>{' '}
                     for data and auth, screens and flows for a user system,
-                    profiles,&nbsp;settings,&nbsp;assets,&nbsp;and&nbsp;more.
-                  </Paragraph>
-
-                  <Paragraph
-                    className="text-wrap-balance"
-                    size="$7"
-                    $sm={{ size: '$6' }}
-                    $xs={{ size: '$5' }}
-                  >
-                    With <CodeInline>tamagui&nbsp;add&nbsp;font</CodeInline> and{' '}
-                    <CodeInline>tamagui&nbsp;add&nbsp;icon</CodeInline>, clone ~1,500{' '}
+                    profiles,&nbsp;settings,&nbsp;assets,&nbsp;and&nbsp;more. Scripts{' '}
+                    <CodeInline>yarn&nbsp;add:font</CodeInline> and{' '}
+                    <CodeInline>yarn&nbsp;add:icon</CodeInline> generate Tamagui-styled
+                    and typed components from{' '}
                     <Link href="https://fonts.google.com" target="_blank">
                       Google Fonts
                     </Link>{' '}
-                    and 120{' '}
+                    and{' '}
                     <Link href="https://icones.js.org" target="_blank">
                       icones.js.org
-                    </Link>{' '}
-                    icon packs to your app as typed, Tamagui
-                    &nbsp;components&nbsp;in&nbsp;seconds.
+                    </Link>
+                    .
                   </Paragraph>
                 </ThemeTintAlt>
 
@@ -666,12 +658,11 @@ export default function TakeoutPage() {
                     />
 
                     <Paragraph size="$7" $sm={{ size: '$6' }} fow="400">
-                      Install our Github bot to get PRs as we improve the starter. This is
-                      done with a few-step script that uses git and an architecture with a
-                      few strategies in place to avoid merge conflicts. As you diverge, we
-                      can't be perfect at sending updates, but we have an ignorefile you
-                      can configure and the PRs can be a nice notification that we've
-                      upgraded versions in a way that works.
+                      Install the Tamagui Github bot to get PRs as we improve the starter.
+                      This is done with a few-step script that uses git and some file and
+                      code organization. As you diverge, we can't be perfect at sending
+                      updates, but we have an ignorefile, and ultimately the PRs alone are
+                      nice for notifications and version upgrade guides.
                     </Paragraph>
                   </YStack>
                 </ThemeTint>
@@ -942,16 +933,7 @@ const TakeoutHero = () => {
 
       <TakeoutLogo />
 
-      <YStack
-        position="absolute"
-        pe="none"
-        top={300}
-        r="-5%"
-        $lg={{ r: '-5%' }}
-        $md={{ r: '-30%' }}
-        $sm={{ r: '-70%' }}
-        zIndex={-1}
-      >
+      <YStack position="absolute" pe="none" top={300} r={0} $md={{ r: -150 }} zIndex={-1}>
         {enable3d && (
           <Suspense fallback={null}>
             <ErrorBoundary noMessage>
