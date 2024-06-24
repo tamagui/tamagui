@@ -4,7 +4,7 @@ export type ComponentSchema = {
   categorySection: string
   // url: string
   fileName: string
-  // dependencies?: string[]
+  dependencies?: string[]
   isOSS: boolean
   moveFilesToFolder?: MoveFileToFolder[]
 }
@@ -38,13 +38,13 @@ const OSS_COMPONENTS = [
 ]
 
 // TODO: this are components that the script fails to parse filenames correctly.
-const MISSING_COMPONENTS = [
+const MISSING_COMPONENTS: Omit<ComponentSchema, 'isOSS'>[] = [
   {
     name: 'Number Slider',
-    fileName: 'InteractiveCard',
+    fileName: 'NumberSlider',
     category: 'animation',
     categorySection: 'microinteractions',
-    moveFilesToFolder: [{ file: '', to: '' }],
+    moveFilesToFolder: [{ file: 'InteractiveCard', to: '' }, {file: 'useContainerDim', to: '../../../hooks/useContainerDim'}],
   },
   {
     name: 'Mouse Interactive 3D Cards',

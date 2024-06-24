@@ -3,6 +3,7 @@ export type ComponentSchema = {
     category: string;
     categorySection: string;
     fileName: string;
+    dependencies?: string[];
     isOSS: boolean;
     moveFilesToFolder?: MoveFileToFolder[];
 };
