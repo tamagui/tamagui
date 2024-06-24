@@ -155,7 +155,10 @@ const MISSING_COMPONENTS: Omit<ComponentSchema, 'isOSS'>[] = [
     fileName: 'InputWithLabelAndMessage',
     category: 'forms',
     categorySection: 'inputs',
-    moveFilesToFolder: [{ file: '', to: '' }],
+    moveFilesToFolder: [
+      { file: 'InputWithLabelAndMessage', to: '' },
+      { file: 'inputsParts', to: 'components' },
+    ],
   },
   {
     name: 'Input with Error',
@@ -279,26 +282,27 @@ const MISSING_COMPONENTS: Omit<ComponentSchema, 'isOSS'>[] = [
 ]
 // NOTE: hardcoded list but using getAllComponentsForBentoCli.js
 // TODO: use getAllComponentsForBentoCli.js on github action and request schema file as json from url
-export const componentsList: ComponentSchema[] = [
+export const componentsList: Omit<ComponentSchema, 'isOSS'>[] = [
   {
     name: 'Loading Animation',
     fileName: 'ButtonLoading',
     category: 'animation',
     categorySection: 'buttons',
-    moveFilesToFolder: [{ file: '', to: '' }],
+    moveFilesToFolder: [{ file: 'ButtonLoading', to: '' }],
   },
   {
     name: 'Press Animation',
     fileName: 'ButtonPulse',
     category: 'animation',
     categorySection: 'buttons',
-    moveFilesToFolder: [{ file: '', to: '' }],
+    moveFilesToFolder: [{ file: 'ButtonPulse', to: '' }],
   },
   {
     name: 'Icon Animation',
     fileName: 'IconCenterButton',
     category: 'animation',
     categorySection: 'buttons',
+    dependencies: ['@tamagui/lucide-icons'],
     moveFilesToFolder: [{ file: '', to: '' }],
   },
   {
@@ -306,21 +310,26 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'AvatarsTooltip',
     category: 'animation',
     categorySection: 'avatars',
-    moveFilesToFolder: [{ file: '', to: '' }],
+    moveFilesToFolder: [{ file: 'AvatarsTooltip', to: '' }],
   },
   {
     name: 'Fancy Hoverable Avatars',
     fileName: 'AvatarsTooltipFancy',
     category: 'animation',
     categorySection: 'avatars',
-    moveFilesToFolder: [{ file: '', to: '' }],
+    moveFilesToFolder: [{ file: 'AvatarsTooltipFancy', to: '' }],
   },
   {
     name: 'Shopping Cart',
     fileName: 'Fullpage',
     category: 'ecommerce',
     categorySection: 'cart',
-    moveFilesToFolder: [{ file: '', to: '' }],
+    dependencies: ['@ngneat/falso', '@tamagui/lucide-icons'],
+    moveFilesToFolder: [
+      { file: 'Fullpage', to: '' },
+      { file: 'IconCenterButton', to: '../../animation/buttons' },
+      { file: 'inputsParts', to: '../../forms/inputs/components' },
+    ],
   },
   {
     name: 'Product with Review',

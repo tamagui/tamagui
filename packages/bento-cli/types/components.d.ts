@@ -11,6 +11,6 @@ type MoveFileToFolder = {
     file: string;
     to: string;
 };
-export declare const componentsList: ComponentSchema[];
+export declare const componentsList: Omit<ComponentSchema, 'isOSS'>[];
 export {};
 //# sourceMappingURL=components.d.ts.map
