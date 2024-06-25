@@ -714,9 +714,17 @@ export const componentsList: Omit<ComponentSchema, 'isOSS'>[] = [
     fileName: 'SignInScreen',
     category: 'forms',
     categorySection: 'layouts',
-    dependencies: ['@tamagui/lucide-icons'],
+    dependencies: [
+      '@tamagui/lucide-icons',
+      // inputParts dependencies
+      '@tamagui/web',
+      '@tamagui/get-font-sized',
+      '@tamagui/get-token',
+      '@tamagui/lucide-icons',
+    ],
     moveFilesToFolder: [
       { file: 'SignInScreen', to: '' },
+      { file: 'layoutParts', to: 'components' },
       { file: 'inputsParts', to: '../inputs/components' },
     ],
   },
@@ -728,10 +736,11 @@ export const componentsList: Omit<ComponentSchema, 'isOSS'>[] = [
     dependencies: [
       '@tamagui/linear-gradient',
       '@tamagui/lucide-icons',
+      // inputParts dependencies
       '@tamagui/web',
       '@tamagui/get-font-sized',
       '@tamagui/get-token',
-      '@tamagui/lucide-icons'
+      '@tamagui/lucide-icons',
     ],
     moveFilesToFolder: [
       { file: 'SignInRightImage', to: '' },
@@ -744,77 +753,135 @@ export const componentsList: Omit<ComponentSchema, 'isOSS'>[] = [
     fileName: 'SignUpScreen',
     category: 'forms',
     categorySection: 'layouts',
-    moveFilesToFolder: [{ file: '', to: '' }],
+    dependencies: [
+      '@tamagui/lucide-icons',
+      // inputParts dependencies
+      '@tamagui/web',
+      '@tamagui/get-font-sized',
+      '@tamagui/get-token',
+      '@tamagui/lucide-icons',
+    ],
+    moveFilesToFolder: [
+      { file: 'SignUpScreen', to: '' },
+      { file: 'layoutParts', to: 'components' },
+      { file: 'inputsParts', to: '../inputs/components' },
+    ],
   },
   {
     name: 'Short Email Password Layout',
     fileName: 'ShortEmailPassword',
     category: 'forms',
     categorySection: 'layouts',
-    moveFilesToFolder: [{ file: '', to: '' }],
+    moveFilesToFolder: [
+      { file: 'ShortEmailPassword', to: '' },
+      { file: 'layoutParts', to: 'components' },
+      { file: 'inputsParts', to: '../inputs/components' },
+    ],
   },
   {
     name: 'Integrated with react-hook-form and Zod',
     fileName: 'SignupValidatedHookForm',
     category: 'forms',
     categorySection: 'layouts',
-    moveFilesToFolder: [{ file: '', to: '' }],
+    dependencies: [
+      'zod',
+      '@hookform/resolvers/zod',
+      'react-hook-form',
+      '@tamagui/lucide-icons',
+    ],
+    moveFilesToFolder: [
+      { file: 'SignupValidatedHookForm', to: '' },
+      { file: 'layoutParts', to: 'components' },
+      { file: 'inputsParts', to: '../inputs/components' },
+    ],
   },
   {
     name: 'Integrated with react-ts-form and Zod',
     fileName: 'SignupValidatedTsForm',
     category: 'forms',
     categorySection: 'layouts',
-    moveFilesToFolder: [{ file: '', to: '' }],
+    dependencies: [
+      'zod',
+      '@ts-react/form',
+      '@tamagui/lucide-icons',
+      '@tamagui/lucide-icons',
+    ],
+    moveFilesToFolder: [
+      { file: 'SignupValidatedTsForm', to: '' },
+      { file: 'layoutParts', to: 'components' },
+      { file: 'inputsParts', to: '../inputs/components' },
+    ],
   },
   {
     name: 'RadioGroup List',
     fileName: 'GroupedRadio',
     category: 'forms',
     categorySection: 'radiogroups',
-    moveFilesToFolder: [{ file: '', to: '' }],
+    moveFilesToFolder: [
+      { file: 'GroupedRadio', to: '' },
+      { file: 'radioParts', to: 'components' },
+    ],
   },
   {
     name: 'Horizontal RadioGroups',
     fileName: 'Horizontal',
     category: 'forms',
     categorySection: 'radiogroups',
-    moveFilesToFolder: [{ file: '', to: '' }],
+    moveFilesToFolder: [
+      { file: 'Horizontal', to: '' },
+      { file: 'radioParts', to: 'components' },
+    ],
   },
   {
     name: 'Horizontal RadioGroups with description',
     fileName: 'HorizontalWithDescription',
     category: 'forms',
     categorySection: 'radiogroups',
-    moveFilesToFolder: [{ file: '', to: '' }],
+    moveFilesToFolder: [
+      { file: 'HorizontalWithDescription', to: '' },
+      { file: 'radioParts', to: 'components' },
+    ],
   },
   {
     name: 'Cards RadioGroups',
     fileName: 'RadioCards',
     category: 'forms',
     categorySection: 'radiogroups',
-    moveFilesToFolder: [{ file: '', to: '' }],
+    dependencies: ['@tamagui/lucide-icons'],
+    moveFilesToFolder: [
+      { file: 'RadioCards', to: '' },
+      { file: 'radioParts', to: 'components' },
+    ],
   },
   {
     name: 'List RadioGroups',
     fileName: 'RadioList',
     category: 'forms',
     categorySection: 'radiogroups',
-    moveFilesToFolder: [{ file: '', to: '' }],
+    moveFilesToFolder: [
+      { file: 'RadioList', to: '' },
+      { file: 'radioParts', to: 'components' },
+    ],
   },
   {
     name: 'Vertical RadioGroups',
     fileName: 'Vertical',
     category: 'forms',
     categorySection: 'radiogroups',
-    moveFilesToFolder: [{ file: '', to: '' }],
+    moveFilesToFolder: [
+      { file: 'Vertical', to: '' },
+      { file: 'radioParts', to: 'components' },
+    ],
   },
   {
     name: 'Vertical with Description RadioGroups',
     fileName: 'VerticalWithDescription',
     category: 'forms',
     categorySection: 'radiogroups',
-    moveFilesToFolder: [{ file: '', to: '' }],
+    moveFilesToFolder: [
+      { file: 'VerticalWithDescription', to: '' },
+      { file: 'radioParts', to: 'components' },
+    ],
   },
   {
     name: 'Switch with Custom Icons',
