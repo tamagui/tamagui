@@ -6608,7 +6608,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/lucide-icons@npm:1.101.3, @tamagui/lucide-icons@workspace:packages/lucide-icons":
+"@tamagui/lucide-icons@npm:1.101.3, @tamagui/lucide-icons@npm:^1.101.3, @tamagui/lucide-icons@workspace:packages/lucide-icons":
   version: 0.0.0-use.local
   resolution: "@tamagui/lucide-icons@workspace:packages/lucide-icons"
   dependencies:
@@ -7691,7 +7691,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/use-store@npm:1.101.3, @tamagui/use-store@workspace:packages/use-store":
+"@tamagui/use-store@npm:1.101.3, @tamagui/use-store@npm:^1.101.3, @tamagui/use-store@workspace:packages/use-store":
   version: 0.0.0-use.local
   resolution: "@tamagui/use-store@workspace:packages/use-store"
   dependencies:
@@ -7821,8 +7821,10 @@ __metadata:
     "@tamagui/cli": "npm:1.101.3"
     "@tamagui/demos": "npm:1.101.3"
     "@tamagui/image-next": "npm:1.101.3"
+    "@tamagui/lucide-icons": "npm:^1.101.3"
     "@tamagui/mdx": "npm:1.101.3"
     "@tamagui/site-config": "npm:1.101.3"
+    "@tamagui/use-store": "npm:^1.101.3"
     color2k: "npm:^2.0.2"
     esbuild-register: "npm:^3.5.0"
     execa: "npm:^5.0.0"
