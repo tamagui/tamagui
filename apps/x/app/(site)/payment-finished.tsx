@@ -1,7 +1,7 @@
-import { NextSeo } from 'next-seo'
-import { useRouter } from 'vxs'
 import { useEffect } from 'react'
 import { Spinner, YStack } from 'tamagui'
+import { useRouter } from 'vxs'
+import { HeadInfo } from '~/components/HeadInfo'
 import { UserGuard } from '~/features/user/useUser'
 
 export default function PaymentFinishedPage() {
@@ -19,7 +19,7 @@ export default function PaymentFinishedPage() {
 
   return (
     <>
-      <NextSeo title="Account" />
+      <HeadInfo title="Account" />
 
       <UserGuard>
         <YStack ai="center" flex={1} jc="center">
