@@ -1039,8 +1039,13 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
     if (media.md) return
 
     let dispose: (() => void) | undefined = undefined
+    let disposed = false
 
     import('../../helpers/sticksy').then(({ Sticksy }) => {
+      if (disposed) {
+        return
+      }
+
       new Sticksy(ref as any)
 
       dispose = () => {
@@ -1048,7 +1053,10 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
       }
     })
 
-    return dispose
+    return () => {
+      disposed = true
+      dispose?.()
+    }
   }, [ref, media.gtMd])
 
   const { name } = useTint()
