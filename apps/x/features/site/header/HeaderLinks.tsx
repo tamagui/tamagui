@@ -579,6 +579,7 @@ const SlidingPopoverContent = () => {
       bg="$background"
       elevation="$8"
       padding={0}
+      br="$8"
       enterStyle={{
         y: -10,
         o: 0,

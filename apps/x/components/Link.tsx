@@ -4,12 +4,14 @@ import { useLinkTo, type LinkProps as VXSLinkProps } from 'vxs'
 
 export type LinkProps = ViewProps & VXSLinkProps
 
-export const Link = ({ href, replace, ...props }: LinkProps) => {
+export const Link = ({ href, replace, asChild, ...props }: LinkProps) => {
   const linkProps = useLinkTo({ href: href as string, replace })
 
   return (
     <Text
       tag="a"
+      // always except-style
+      asChild={asChild ? 'except-style' : false}
       cursor="pointer"
       color="inherit"
       // @ts-expect-error

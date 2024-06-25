@@ -9,7 +9,6 @@ export function TamaguiCard({ children, title, subTitle, ...props }) {
       mx="$1"
       my="$2"
       mb="$2"
-      space="$2"
       $gtSm={{
         width: '50%',
         maxWidth: 'calc(50% - var(--space-8))',

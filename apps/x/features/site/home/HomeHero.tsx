@@ -1,5 +1,5 @@
 import { ThemeTint, ThemeTintAlt, useTint } from '@tamagui/logo'
-import { memo, useEffect, useState } from 'react'
+import { memo } from 'react'
 import {
   Button,
   H1,
@@ -13,18 +13,16 @@ import {
   YStack,
   styled,
 } from 'tamagui'
+import { ContainerLarge } from '~/components/Containers'
 import { Link } from '~/components/Link'
-
 import { BentoIcon } from '~/features/icons/BentoIcon'
 import { DiscordIcon } from '~/features/icons/DiscordIcon'
-import { ContainerLarge } from '~/components/Containers'
-// import { InstallInput } from '~/features/icons/InstallInput'
 import { TakeoutIcon } from '~/features/icons/TakeoutIcon'
 import { TwitterIcon } from '~/features/icons/TwitterIcon'
 import { seasons } from '~/features/site/seasons/SeasonToggleButton'
 
-import { useHeroHovered } from './useHeroHovered'
 import { InstallInput } from './InstallInput'
+import { useHeroHovered } from './useHeroHovered'
 
 export function Hero() {
   const { name } = useTint()
