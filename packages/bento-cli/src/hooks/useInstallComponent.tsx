@@ -82,7 +82,6 @@ export const installComponent = async ({ component, setInstall, install }) => {
     const uiDir = path.join(process.cwd(), 'components', 'ui')
     await subFoldersInstallStep(uiDir, install, components)
   } else if (hasSrcDir()) {
-    console.log('here', process.cwd())
     const uiDir = path.join(process.cwd(), 'src', 'components', 'ui')
     await subFoldersInstallStep(uiDir, install, components)
   } else {
