@@ -179,6 +179,11 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
         path: validId,
       })
 
+      if (shouldPrintDebug) {
+        console.trace(`Debugging file: ${id} in environment: ${this.environment?.name}`)
+        console.info(`\n\nOriginal source:\n${code}\n\n`)
+      }
+
       if (shouldDisable) {
         return
       }

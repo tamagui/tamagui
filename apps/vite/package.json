@@ -18,6 +18,6 @@
     "@types/react-dom": "^18.2.19",
     "@vitejs/plugin-react-swc": "^3.6.0",
     "typescript": "^5.5.2",
-    "vite": "6.0.0-alpha.17"
+    "vite": "6.0.0-alpha.18"
   }
 }

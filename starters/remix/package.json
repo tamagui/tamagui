@@ -30,7 +30,7 @@
     "@types/react": "^18.2.55",
     "@types/react-dom": "^18.2.19",
     "typescript": "^5.3.3",
-    "vite": "6.0.0-alpha.17",
+    "vite": "6.0.0-alpha.18",
     "vite-bundle-analyzer": "^0.9.2",
     "vite-plugin-commonjs": "^0.10.1",
     "vite-tsconfig-paths": "^4.3.2"
