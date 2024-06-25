@@ -1,5 +1,5 @@
 import { NextSeo } from 'next-seo'
-import { useRouter } from 'next/router'
+import { useRouter } from 'vxs'
 import { useEffect } from 'react'
 import { Spinner, YStack } from 'tamagui'
 import { UserGuard } from '~/features/user/useUser'
