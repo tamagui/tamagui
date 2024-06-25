@@ -465,6 +465,7 @@ const SlidingPopoverContext = React.createContext({
   setActive(id: string, layout: LayoutRectangle) {},
   setInactive(id: string) {},
   close() {},
+  open: false,
 })
 
 const SlidingPopover = (props: PopoverProps) => {
@@ -474,6 +475,7 @@ const SlidingPopover = (props: PopoverProps) => {
   const val = React.useMemo(() => {
     return {
       id: active,
+      open: !!active,
       setActive(id: string, layout: LayoutRectangle) {
         setActive(id)
         popoverRef.current?.anchorTo(layout)
@@ -506,7 +508,7 @@ const SlidingPopoverTrigger = YStack.styleable<{ id: string }>(
   ({ id, ...props }, ref) => {
     const context = React.useContext(SlidingPopoverContext)
     const [layout, setLayout_] = React.useState<LayoutRectangle>()
-    const setLayout = createShallowSetState<LayoutRectangle>(setLayout_)
+    const setLayout = createShallowSetState<LayoutRectangle>(setLayout_ as any)
     const triggerRef = React.useRef<HTMLElement>(null)
     const combinedRef = useComposedRefs(ref)
 
@@ -516,7 +518,7 @@ const SlidingPopoverTrigger = YStack.styleable<{ id: string }>(
         if (layout) {
           setLayout(layout)
         }
-      }, 16)
+      }, 32)
       window.addEventListener('resize', handleMove)
       return () => {
         window.removeEventListener('resize', handleMove)
@@ -527,7 +529,9 @@ const SlidingPopoverTrigger = YStack.styleable<{ id: string }>(
       <YStack
         onMouseEnter={() => {
           if (layout) {
-            context.setActive(id, layout)
+            React.startTransition(() => {
+              context.setActive(id, layout)
+            })
           }
         }}
         onMouseLeave={() => {
@@ -575,7 +579,16 @@ const SlidingPopoverContent = () => {
     <Popover.Content
       theme="surface4"
       enableAnimationForPositionChange
-      animation="quicker"
+      animation={
+        context.open
+          ? 'quicker'
+          : [
+              'quicker',
+              {
+                x: '100ms',
+              },
+            ]
+      }
       bg="$background"
       elevation="$8"
       padding={0}
