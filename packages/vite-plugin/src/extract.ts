@@ -1,18 +1,17 @@
 // fork from https://github.com/seek-oss/vanilla-extract
 
-import path from 'path'
+import path from 'node:path'
 
 import type { TamaguiOptions } from '@tamagui/static'
 import * as StaticIn from '@tamagui/static'
 import outdent from 'outdent'
 import type { Plugin, ResolvedConfig, ViteDevServer } from 'vite'
-import { normalizePath } from 'vite'
+import { normalizePath, type Environment } from 'vite'
 
 // some sort of weird esm compat
 const Static = (StaticIn['default'] || StaticIn) as typeof StaticIn
 
 const styleUpdateEvent = (fileId: string) => `tamagui-style-update:${fileId}`
-const GLOBAL_CSS_VIRTUAL_PATH = '__tamagui_global_css__.css'
 
 export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugin {
   const options = Static.loadTamaguiBuildConfigSync({
@@ -41,6 +40,11 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
       return filePath
     }
     return normalizePath(path.join(config.root, filePath))
+  }
+
+  function isVite6AndNotClient(environment?: Environment) {
+    console.log('wtf', environment?.name)
+    return environment?.name && environment?.name !== 'client'
   }
 
   return {
@@ -86,8 +90,9 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
     },
 
     async resolveId(source) {
-      if (source === 'tamagui.css') {
-        return GLOBAL_CSS_VIRTUAL_PATH
+      if (isVite6AndNotClient(this.environment)) {
+        // only optimize on client - server should produce identical styles anyway!
+        return
       }
 
       const [validId, query] = source.split('?')
@@ -120,11 +125,12 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
      */
 
     load(id, options) {
-      const [validId] = id.split('?')
-
-      if (validId === GLOBAL_CSS_VIRTUAL_PATH) {
-        return extractor!.getTamagui()!.getCSS()
+      if (isVite6AndNotClient(this.environment)) {
+        // only optimize on client - server should produce identical styles anyway!
+        return
       }
+
+      const [validId] = id.split('?')
 
       if (!cssMap.has(validId)) {
         return
@@ -159,6 +165,11 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
     },
 
     async transform(code, id, ssrParam) {
+      if (isVite6AndNotClient(this.environment)) {
+        // only optimize on client - server should produce identical styles anyway!
+        return
+      }
+
       const [validId] = id.split('?')
 
       if (!validId.endsWith('.tsx')) {

@@ -3,6 +3,7 @@ import { removeReactNativeWebAnimatedPlugin, vxs } from 'vxs/vite'
 // import { mdx } from '@cyco130/vite-plugin-mdx'
 import type { UserConfig } from 'vite'
 // import inpsectPlugin from 'vite-plugin-inspect'
+import { tamaguiExtractPlugin } from '@tamagui/vite-plugin'
 
 Error.stackTraceLimit = Number.POSITIVE_INFINITY
 
@@ -96,8 +97,8 @@ export default {
     //   targets,
     // }),
 
-    // tamaguiExtractPlugin({
-    //   logTimings: true,
-    // }),
+    tamaguiExtractPlugin({
+      logTimings: true,
+    }),
   ],
 } satisfies UserConfig
