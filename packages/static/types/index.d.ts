@@ -1,4 +1,3 @@
-import './setup';
 export * from './minifyCSS';
 export * from './checkDeps';
 export * from './types';
