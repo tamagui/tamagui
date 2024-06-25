@@ -86,7 +86,7 @@ export declare const useToast: () => {
      * _NOTE_: hides the last toast on web notification toasts
      */
     hide: () => void;
-    options?: ToastImperativeOptions | undefined;
+    options?: ToastImperativeOptions;
 };
 interface ToastImperativeProviderProps {
     children: React.ReactNode;

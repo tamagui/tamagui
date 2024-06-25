@@ -3,6 +3,7 @@ import { removeReactNativeWebAnimatedPlugin, vxs } from 'vxs/vite'
 // import { mdx } from '@cyco130/vite-plugin-mdx'
 import type { UserConfig } from 'vite'
 // import inpsectPlugin from 'vite-plugin-inspect'
+import { tamaguiExtractPlugin } from '@tamagui/vite-plugin'
 
 Error.stackTraceLimit = Number.POSITIVE_INFINITY
 
@@ -21,6 +22,7 @@ const optimizeInterop = ['expo-splash-screen']
 
 const include = [
   ...optimizeInterop,
+  '@docsearch/react',
   '@leeoniya/ufuzzy',
   'react-hook-form',
   '@github/mini-throttle',
@@ -60,6 +62,11 @@ export default {
     alias: {
       '~': import.meta.dirname,
       'react-native-svg': '@tamagui/react-native-svg',
+      // bugfix docsearch/react, weird af everything here
+      '@docsearch/react': (import.meta.resolve?.('@docsearch/react') || '').replace(
+        'file:/',
+        ''
+      ),
     },
 
     // todo automate, probably can just dedupe all package.json deps?
@@ -85,6 +92,7 @@ export default {
     removeReactNativeWebAnimatedPlugin(),
 
     // hmmm breaking ssr for some reason on lucide:
+    // can use vite env api and only run this on client, make it part of vxs
     // @ts-ignore
     // entryShakingPlugin({
     //   targets,

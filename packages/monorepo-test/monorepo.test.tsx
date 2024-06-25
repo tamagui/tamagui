@@ -36,9 +36,9 @@ test(
     expect(slowdown).toBeLessThan(2)
   },
   {
-    timeout: 100_000,
+    timeout: 5 * 60 * 1000,
     // it runs in parallel so we may be clogged doing other tests
     // ideally its on its own but this helps for now
-    retry: 3,
+    retry: 1,
   }
 )

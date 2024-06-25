@@ -11,7 +11,7 @@ export declare const getTokens: ({ prefixed, }?: {
 }) => TokensMerged;
 export declare const getTokenObject: (value: Token, group?: keyof Tokens) => import("./createVariable").Variable<any>;
 export declare const getToken: (value: Token, group?: keyof Tokens, useVariable?: boolean) => any;
-export declare const getTokenValue: (value: Token | 'unset' | 'auto', group?: keyof Tokens) => any;
+export declare const getTokenValue: (value: Token | "unset" | "auto", group?: keyof Tokens) => any;
 /**
  * Note: this is the same as `getTokens`
  */

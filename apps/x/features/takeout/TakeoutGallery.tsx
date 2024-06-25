@@ -123,7 +123,9 @@ export default function TakeoutGallery() {
       >
         <TakeoutImage
           index={takeoutIosImageIdx}
-          fill
+          pos="absolute"
+          w="100%"
+          h="100%"
           src={takeoutImages[takeoutIosImageIdx].src}
           alt={takeoutImages[takeoutIosImageIdx].alt}
           style={{ objectFit: 'cover', objectPosition: 'center top' }}
@@ -406,6 +408,8 @@ const TakeoutImage = ({
         store.galleryImageIdx = props.index
       }}
       br="$5"
+      bw={1}
+      bc="$color5"
       ov="hidden"
       elevation="$3"
       cursor="pointer"

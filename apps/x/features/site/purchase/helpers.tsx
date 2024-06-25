@@ -43,8 +43,10 @@ export function PurchaseButton(props: ButtonProps) {
   const isBento = usePathname().startsWith('/bento')
 
   const contents = (
-    <Button size="$6" borderWidth={2} {...props}>
-      <Button.Text ff="$silkscreen">{props.children}</Button.Text>
+    <Button size="$5" borderWidth={2} {...props}>
+      <Button.Text size="$3" ff="$silkscreen">
+        {props.children}
+      </Button.Text>
     </Button>
   )
 

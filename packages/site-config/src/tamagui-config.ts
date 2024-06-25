@@ -66,6 +66,15 @@ const maybeThemes =
     ? (themes as Themes)
     : ({} as Themes)
 
+// for some reason just re-defining these fixes a bug where negative space tokens were dropped
+const fixTypescript55Bug = {
+  space: tokens.space,
+  size: tokens.size,
+  radius: tokens.radius,
+  zIndex: tokens.zIndex,
+  color: tokens.color,
+}
+
 export const config = {
   defaultFont: 'body',
   shouldAddPrefersColorThemes: true,
@@ -74,7 +83,7 @@ export const config = {
   themes: maybeThemes,
   media,
   shorthands,
-  tokens,
+  tokens: fixTypescript55Bug,
   mediaQueryDefaultActive,
   selectionStyles: (theme) => ({
     backgroundColor: theme.color5,

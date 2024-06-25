@@ -6,10 +6,10 @@ declare const ToastImplFrame: import("@tamagui/core").TamaguiComponent<import("@
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     transparent?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     circular?: boolean | undefined;
     fullscreen?: boolean | undefined;
@@ -26,7 +26,7 @@ declare const ToastImplFrame: import("@tamagui/core").TamaguiComponent<import("@
 }, import("@tamagui/core").StaticConfigPublic>;
 type ToastProps = Omit<ToastImplProps, keyof ToastImplPrivateProps>;
 type SwipeEvent = GestureResponderEvent;
-declare const useToastInteractiveContext: (scope?: string | undefined) => {
+declare const useToastInteractiveContext: (scope?: string) => {
     onClose(): void;
 };
 type ToastImplPrivateProps = {
@@ -109,10 +109,10 @@ declare const ToastImpl: React.ForwardRefExoticComponent<ToastImplPrivateProps &
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     transparent?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     circular?: boolean | undefined;
     fullscreen?: boolean | undefined;
@@ -130,10 +130,10 @@ declare const ToastImpl: React.ForwardRefExoticComponent<ToastImplPrivateProps &
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     transparent?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     circular?: boolean | undefined;
     fullscreen?: boolean | undefined;
@@ -151,10 +151,10 @@ declare const ToastImpl: React.ForwardRefExoticComponent<ToastImplPrivateProps &
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     transparent?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     circular?: boolean | undefined;
     fullscreen?: boolean | undefined;

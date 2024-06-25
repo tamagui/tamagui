@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import type { LinkProps } from 'solito/link';
 import type { AnchorProps } from 'tamagui';
 export type TextLinkProps = Pick<LinkProps, 'href' | 'target'> & AnchorProps;

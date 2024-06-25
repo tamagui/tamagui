@@ -303,6 +303,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['bento'] }) => 
                   lh={46}
                   color="$color11"
                   ls={1}
+                  maxHeight={120}
                   $md={{
                     mt: '$6',
                     fos: 22,

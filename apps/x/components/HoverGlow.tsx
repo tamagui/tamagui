@@ -184,7 +184,7 @@ height: ${parentBounds.height}`
     >
       {props.debug ? crosshair : null}
       {divProps?.children}
-      {strategy === 'plain-underlay' && (
+      {/* {strategy === 'plain-underlay' && (
         <div
           style={{
             position: 'absolute',
@@ -194,7 +194,7 @@ height: ${parentBounds.height}`
             ...underlayStyle,
           }}
         />
-      )}
+      )} */}
     </div>
   )
 

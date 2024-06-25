@@ -1,9 +1,10 @@
 import type { TextContextStyles, TextParentStyles } from '@tamagui/text';
 import type { FontSizeTokens, GetProps, SizeTokens, ThemeableProps } from '@tamagui/web';
 import type { FunctionComponent } from 'react';
+type ButtonVariant = 'outlined';
 export declare const ButtonContext: import("@tamagui/web").StyledContext<Partial<TextContextStyles & {
     size: SizeTokens;
-    variant?: "outlined" | undefined;
+    variant?: ButtonVariant;
 }>>;
 type ButtonIconProps = {
     color?: any;
@@ -52,10 +53,10 @@ declare const ButtonFrame: import("@tamagui/web").TamaguiComponent<import("@tama
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     focusTheme?: boolean | undefined;
     elevate?: boolean | undefined;
@@ -91,10 +92,10 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     focusTheme?: boolean | undefined;
     elevate?: boolean | undefined;
@@ -103,38 +104,35 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
 }>, keyof TextContextStyles | "unstyled" | "textProps" | "noTextWrap" | keyof ThemeableProps | "icon" | "iconAfter" | "scaleIcon" | "spaceFlex" | "scaleSpace"> & TextContextStyles & {
-    textProps?: Partial<import("@tamagui/web").GetFinalProps<import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
-        size?: FontSizeTokens | undefined;
-        unstyled?: boolean | undefined;
-    }>> | undefined;
-    noTextWrap?: boolean | undefined;
+    textProps?: Partial<import("@tamagui/text").SizableTextProps>;
+    noTextWrap?: boolean;
 } & ThemeableProps & {
     /**
      * add icon before, passes color and size automatically if Component
      */
-    icon?: IconProp | undefined;
+    icon?: IconProp;
     /**
      * add icon after, passes color and size automatically if Component
      */
-    iconAfter?: IconProp | undefined;
+    iconAfter?: IconProp;
     /**
      * adjust icon relative to size
      *
      * @default 1
      */
-    scaleIcon?: number | undefined;
+    scaleIcon?: number;
     /**
      * make the spacing elements flex
      */
-    spaceFlex?: number | boolean | undefined;
+    spaceFlex?: number | boolean;
     /**
      * adjust internal space relative to icon size
      */
-    scaleSpace?: number | undefined;
+    scaleSpace?: number;
     /**
      * remove default styles
      */
-    unstyled?: boolean | undefined;
+    unstyled?: boolean;
 } & import("react").RefAttributes<import("@tamagui/web").TamaguiElement>> & import("@tamagui/web").StaticComponentObject<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
     size?: number | SizeTokens | undefined;
     variant?: "outlined" | undefined;
@@ -148,10 +146,10 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     focusTheme?: boolean | undefined;
     elevate?: boolean | undefined;
@@ -160,71 +158,65 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
 }>, keyof TextContextStyles | "unstyled" | "textProps" | "noTextWrap" | keyof ThemeableProps | "icon" | "iconAfter" | "scaleIcon" | "spaceFlex" | "scaleSpace"> & TextContextStyles & {
-    textProps?: Partial<import("@tamagui/web").GetFinalProps<import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
-        size?: FontSizeTokens | undefined;
-        unstyled?: boolean | undefined;
-    }>> | undefined;
-    noTextWrap?: boolean | undefined;
+    textProps?: Partial<import("@tamagui/text").SizableTextProps>;
+    noTextWrap?: boolean;
 } & ThemeableProps & {
     /**
      * add icon before, passes color and size automatically if Component
      */
-    icon?: IconProp | undefined;
+    icon?: IconProp;
     /**
      * add icon after, passes color and size automatically if Component
      */
-    iconAfter?: IconProp | undefined;
+    iconAfter?: IconProp;
     /**
      * adjust icon relative to size
      *
      * @default 1
      */
-    scaleIcon?: number | undefined;
+    scaleIcon?: number;
     /**
      * make the spacing elements flex
      */
-    spaceFlex?: number | boolean | undefined;
+    spaceFlex?: number | boolean;
     /**
      * adjust internal space relative to icon size
      */
-    scaleSpace?: number | undefined;
+    scaleSpace?: number;
     /**
      * remove default styles
      */
-    unstyled?: boolean | undefined;
+    unstyled?: boolean;
 }, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & TextContextStyles & {
-    textProps?: Partial<import("@tamagui/web").GetFinalProps<import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
-        size?: FontSizeTokens | undefined;
-        unstyled?: boolean | undefined;
-    }>> | undefined;
-    noTextWrap?: boolean | undefined;
+    textProps?: Partial<import("@tamagui/text").SizableTextProps>;
+    noTextWrap?: boolean;
 } & ThemeableProps & {
     /**
      * add icon before, passes color and size automatically if Component
      */
-    icon?: IconProp | undefined;
+    icon?: IconProp;
     /**
      * add icon after, passes color and size automatically if Component
      */
-    iconAfter?: IconProp | undefined;
+    iconAfter?: IconProp;
     /**
      * adjust icon relative to size
      *
      * @default 1
      */
-    scaleIcon?: number | undefined;
+    scaleIcon?: number;
     /**
      * make the spacing elements flex
      */
-    spaceFlex?: number | boolean | undefined;
+    spaceFlex?: number | boolean;
     /**
      * adjust internal space relative to icon size
      */
-    scaleSpace?: number | undefined;
+    scaleSpace?: number;
     /**
      * remove default styles
      */
-    unstyled?: boolean | undefined;
+    unstyled?: boolean;
 }, import("@tamagui/web").StackStyleBase, {
     size?: number | SizeTokens | undefined;
     variant?: "outlined" | undefined;
@@ -238,10 +230,10 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     focusTheme?: boolean | undefined;
     elevate?: boolean | undefined;
@@ -263,10 +255,10 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         focusTheme?: boolean | undefined;
         elevate?: boolean | undefined;
@@ -275,71 +267,65 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
     }>, keyof TextContextStyles | "unstyled" | "textProps" | "noTextWrap" | keyof ThemeableProps | "icon" | "iconAfter" | "scaleIcon" | "spaceFlex" | "scaleSpace"> & TextContextStyles & {
-        textProps?: Partial<import("@tamagui/web").GetFinalProps<import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
-            size?: FontSizeTokens | undefined;
-            unstyled?: boolean | undefined;
-        }>> | undefined;
-        noTextWrap?: boolean | undefined;
+        textProps?: Partial<import("@tamagui/text").SizableTextProps>;
+        noTextWrap?: boolean;
     } & ThemeableProps & {
         /**
          * add icon before, passes color and size automatically if Component
          */
-        icon?: IconProp | undefined;
+        icon?: IconProp;
         /**
          * add icon after, passes color and size automatically if Component
          */
-        iconAfter?: IconProp | undefined;
+        iconAfter?: IconProp;
         /**
          * adjust icon relative to size
          *
          * @default 1
          */
-        scaleIcon?: number | undefined;
+        scaleIcon?: number;
         /**
          * make the spacing elements flex
          */
-        spaceFlex?: number | boolean | undefined;
+        spaceFlex?: number | boolean;
         /**
          * adjust internal space relative to icon size
          */
-        scaleSpace?: number | undefined;
+        scaleSpace?: number;
         /**
          * remove default styles
          */
-        unstyled?: boolean | undefined;
+        unstyled?: boolean;
     }, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & TextContextStyles & {
-        textProps?: Partial<import("@tamagui/web").GetFinalProps<import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
-            size?: FontSizeTokens | undefined;
-            unstyled?: boolean | undefined;
-        }>> | undefined;
-        noTextWrap?: boolean | undefined;
+        textProps?: Partial<import("@tamagui/text").SizableTextProps>;
+        noTextWrap?: boolean;
     } & ThemeableProps & {
         /**
          * add icon before, passes color and size automatically if Component
          */
-        icon?: IconProp | undefined;
+        icon?: IconProp;
         /**
          * add icon after, passes color and size automatically if Component
          */
-        iconAfter?: IconProp | undefined;
+        iconAfter?: IconProp;
         /**
          * adjust icon relative to size
          *
          * @default 1
          */
-        scaleIcon?: number | undefined;
+        scaleIcon?: number;
         /**
          * make the spacing elements flex
          */
-        spaceFlex?: number | boolean | undefined;
+        spaceFlex?: number | boolean;
         /**
          * adjust internal space relative to icon size
          */
-        scaleSpace?: number | undefined;
+        scaleSpace?: number;
         /**
          * remove default styles
          */
-        unstyled?: boolean | undefined;
+        unstyled?: boolean;
     }, import("@tamagui/web").StackStyleBase, {
         size?: number | SizeTokens | undefined;
         variant?: "outlined" | undefined;
@@ -353,10 +339,10 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         focusTheme?: boolean | undefined;
         elevate?: boolean | undefined;

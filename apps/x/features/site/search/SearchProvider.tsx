@@ -2,11 +2,10 @@ import { useRouter } from 'vxs'
 import { memo, useCallback, useEffect, useMemo, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { Paragraph, View } from 'tamagui'
-import  DocSearchModal from './DocSearch'
+import DocSearchModal from './DocSearch'
 
 import { SearchContext } from './SearchContext'
 import { Link } from '~/components/Link'
-
 
 // const ACTION_KEY_DEFAULT = ['Ctrl ', 'Control']
 // const ACTION_KEY_APPLE = ['⌘', 'Command']

@@ -12,7 +12,7 @@ export declare const SelectItemContextProvider: {
     }): import("react/jsx-runtime").JSX.Element;
     displayName: string;
 }, useSelectItemContext: (consumerName: string, scope: import("@tamagui/create-context").Scope<SelectItemContextValue | undefined>, options?: {
-    warn?: boolean | undefined;
+    warn?: boolean;
     fallback?: Partial<SelectItemContextValue> | undefined;
 } | undefined) => SelectItemContextValue;
 export interface SelectItemExtraProps {
@@ -32,10 +32,10 @@ export declare const SelectItem: import("@tamagui/web").TamaguiComponent<Omit<im
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/web").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -56,10 +56,10 @@ export declare const SelectItem: import("@tamagui/web").TamaguiComponent<Omit<im
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/web").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;

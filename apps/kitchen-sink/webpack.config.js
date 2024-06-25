@@ -30,15 +30,11 @@ module.exports = {
   },
   resolve: {
     mainFields: ['module:jsx', 'browser', 'module', 'main'],
-    extensions: [
-      '.ts',
-      '.tsx',
-      '.js',
-    ],
+    extensions: ['.ts', '.tsx', '.js'],
     alias: {
       'react-native$': 'react-native-web',
       'react-native-svg': '@tamagui/react-native-svg',
-      '@expo/vector-icons': '@tamagui/proxy-worm'
+      '@expo/vector-icons': '@tamagui/proxy-worm',
     },
   },
   devServer: {
@@ -101,8 +97,12 @@ module.exports = {
       disableExtraction,
       themeBuilder: {
         input: '../../packages/themes/src/themes-new.ts',
-        output: path.join(require.resolve('@tamagui/themes/src/themes-new.ts'), '..', 'generated-new.ts'),
-      }
+        output: path.join(
+          require.resolve('@tamagui/themes/src/themes-new.ts'),
+          '..',
+          'generated-new.ts'
+        ),
+      },
       // disable: true,
     }),
     // new BundleAnalyzerPlugin(),
@@ -117,6 +117,7 @@ module.exports = {
           NODE_ENV: JSON.stringify(NODE_ENV),
           __DEV__: NODE_ENV === 'development' ? 'true' : 'false',
           DEBUG: JSON.stringify(process.env.DEBUG || '0'),
+          TAMAGUI_SYNC_MEDIA_QUERY: JSON.stringify(process.env.TAMAGUI_SYNC_MEDIA_QUERY),
         },
       },
     }),

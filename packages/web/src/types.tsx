@@ -952,13 +952,22 @@ export type ThemeValueFallbackZIndex =
       WebStyleValueUniversal
     >
 
-export type GetTokenString<A> = A extends string | number ? `$${A}` : `$${string}`
+export type GetTokenString<A> = A extends `$${string}`
+  ? A
+  : A extends string | number
+    ? `$${A}`
+    : `$${string}`
 
 export type SpecificTokens<
   Record = Tokens,
   RK extends keyof Record = keyof Record,
 > = RK extends string
-  ? `$${RK}.${keyof Record[RK] extends string | number ? keyof Record[RK] : never}`
+  ? `$${RK}.${keyof Record[RK] extends string | number
+      ? // remove any $ prefix so instead of $size.$sm its $size.sm
+        keyof Record[RK] extends `$${infer X}`
+        ? X
+        : keyof Record[RK]
+      : never}`
   : never
 
 // defaults to except-special
@@ -2211,6 +2220,7 @@ export type SplitStyleProps = {
   fallbackProps?: Record<string, any>
   hasTextAncestor?: boolean
   // for animations
+  willBeAnimated?: boolean // we need to track media queries even before animation
   isAnimated: boolean
   isExiting?: boolean
   exitVariant?: string
@@ -2344,7 +2354,7 @@ export type GetStyleResult = {
   viewProps: StackProps & Record<string, any>
   fontFamily: string | undefined
   space?: any // SpaceTokens?
-  hasMedia: boolean | string[]
+  hasMedia: boolean | Record<string, boolean>
   dynamicThemeAccess?: boolean
   pseudoGroups?: Set<string>
   mediaGroups?: Set<string>

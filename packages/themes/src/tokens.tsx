@@ -89,8 +89,10 @@ type SizeKeysWithNegatives =
   | Exclude<`-${SizeKeys extends `$${infer Key}` ? Key : SizeKeys}`, '-0'>
   | SizeKeys
 
+type SizeKeysWithNegativesString = `$${SizeKeysWithNegatives}`
+
 export const space: {
-  [Key in SizeKeysWithNegatives]: Key extends keyof Sizes ? Sizes[Key] : number
+  [Key in SizeKeysWithNegativesString]: Key extends keyof Sizes ? Sizes[Key] : number
 } = {
   ...Object.fromEntries(spaces),
   ...Object.fromEntries(spacesNegative),
@@ -193,3 +195,5 @@ export const tokens = createTokens({
   space,
   size,
 })
+
+export type hello = 'asdad'

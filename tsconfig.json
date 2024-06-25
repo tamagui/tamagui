@@ -22,6 +22,7 @@
     },
     "outDir": "dist",
     "importHelpers": true,
+    "isolatedModules": true,
     "allowJs": false,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,

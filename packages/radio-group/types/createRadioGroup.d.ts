@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import type { GetProps } from '@tamagui/core';
 import { RadioGroupFrame, RadioGroupIndicatorFrame, RadioGroupItemFrame } from './RadioGroup';
 type RadioIndicatorProps = GetProps<typeof RadioGroupIndicatorFrame> & {
@@ -35,10 +34,10 @@ export declare function createRadioGroup<F extends RadioGroupComponent, D extend
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -56,10 +55,10 @@ export declare function createRadioGroup<F extends RadioGroupComponent, D extend
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -77,10 +76,10 @@ export declare function createRadioGroup<F extends RadioGroupComponent, D extend
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -98,10 +97,10 @@ export declare function createRadioGroup<F extends RadioGroupComponent, D extend
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -119,10 +118,10 @@ export declare function createRadioGroup<F extends RadioGroupComponent, D extend
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -135,24 +134,24 @@ export declare function createRadioGroup<F extends RadioGroupComponent, D extend
     chromeless?: boolean | "all" | undefined;
     orientation?: "horizontal" | "vertical" | undefined;
 }>> & {
-    value?: string | undefined;
-    defaultValue?: string | undefined;
-    onValueChange?: ((value: string) => void) | undefined;
-    required?: boolean | undefined;
-    disabled?: boolean | undefined;
-    name?: string | undefined;
-    native?: boolean | undefined;
-    accentColor?: string | undefined;
+    value?: string;
+    defaultValue?: string;
+    onValueChange?: (value: string) => void;
+    required?: boolean;
+    disabled?: boolean;
+    name?: string;
+    native?: boolean;
+    accentColor?: string;
 } & import("react").RefAttributes<import("@tamagui/core").TamaguiElement>> & import("@tamagui/core").StaticComponentObject<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -170,10 +169,10 @@ export declare function createRadioGroup<F extends RadioGroupComponent, D extend
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -191,10 +190,10 @@ export declare function createRadioGroup<F extends RadioGroupComponent, D extend
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -212,10 +211,10 @@ export declare function createRadioGroup<F extends RadioGroupComponent, D extend
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -233,10 +232,10 @@ export declare function createRadioGroup<F extends RadioGroupComponent, D extend
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -249,24 +248,24 @@ export declare function createRadioGroup<F extends RadioGroupComponent, D extend
     chromeless?: boolean | "all" | undefined;
     orientation?: "horizontal" | "vertical" | undefined;
 }>> & {
-    value?: string | undefined;
-    defaultValue?: string | undefined;
-    onValueChange?: ((value: string) => void) | undefined;
-    required?: boolean | undefined;
-    disabled?: boolean | undefined;
-    name?: string | undefined;
-    native?: boolean | undefined;
-    accentColor?: string | undefined;
+    value?: string;
+    defaultValue?: string;
+    onValueChange?: (value: string) => void;
+    required?: boolean;
+    disabled?: boolean;
+    name?: string;
+    native?: boolean;
+    accentColor?: string;
 }, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "transparent" | "fullscreen" | "circular" | "inset" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless" | "orientation"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -284,10 +283,10 @@ export declare function createRadioGroup<F extends RadioGroupComponent, D extend
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -305,10 +304,10 @@ export declare function createRadioGroup<F extends RadioGroupComponent, D extend
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -321,24 +320,24 @@ export declare function createRadioGroup<F extends RadioGroupComponent, D extend
     chromeless?: boolean | "all" | undefined;
     orientation?: "horizontal" | "vertical" | undefined;
 }>> & {
-    value?: string | undefined;
-    defaultValue?: string | undefined;
-    onValueChange?: ((value: string) => void) | undefined;
-    required?: boolean | undefined;
-    disabled?: boolean | undefined;
-    name?: string | undefined;
-    native?: boolean | undefined;
-    accentColor?: string | undefined;
+    value?: string;
+    defaultValue?: string;
+    onValueChange?: (value: string) => void;
+    required?: boolean;
+    disabled?: boolean;
+    name?: string;
+    native?: boolean;
+    accentColor?: string;
 }, import("@tamagui/core").StackStyleBase, {
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -357,10 +356,10 @@ export declare function createRadioGroup<F extends RadioGroupComponent, D extend
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -378,10 +377,10 @@ export declare function createRadioGroup<F extends RadioGroupComponent, D extend
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -399,10 +398,10 @@ export declare function createRadioGroup<F extends RadioGroupComponent, D extend
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -420,10 +419,10 @@ export declare function createRadioGroup<F extends RadioGroupComponent, D extend
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -441,10 +440,10 @@ export declare function createRadioGroup<F extends RadioGroupComponent, D extend
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -457,24 +456,24 @@ export declare function createRadioGroup<F extends RadioGroupComponent, D extend
         chromeless?: boolean | "all" | undefined;
         orientation?: "horizontal" | "vertical" | undefined;
     }>> & {
-        value?: string | undefined;
-        defaultValue?: string | undefined;
-        onValueChange?: ((value: string) => void) | undefined;
-        required?: boolean | undefined;
-        disabled?: boolean | undefined;
-        name?: string | undefined;
-        native?: boolean | undefined;
-        accentColor?: string | undefined;
+        value?: string;
+        defaultValue?: string;
+        onValueChange?: (value: string) => void;
+        required?: boolean;
+        disabled?: boolean;
+        name?: string;
+        native?: boolean;
+        accentColor?: string;
     }, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "transparent" | "fullscreen" | "circular" | "inset" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless" | "orientation"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -492,10 +491,10 @@ export declare function createRadioGroup<F extends RadioGroupComponent, D extend
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -513,10 +512,10 @@ export declare function createRadioGroup<F extends RadioGroupComponent, D extend
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -529,24 +528,24 @@ export declare function createRadioGroup<F extends RadioGroupComponent, D extend
         chromeless?: boolean | "all" | undefined;
         orientation?: "horizontal" | "vertical" | undefined;
     }>> & {
-        value?: string | undefined;
-        defaultValue?: string | undefined;
-        onValueChange?: ((value: string) => void) | undefined;
-        required?: boolean | undefined;
-        disabled?: boolean | undefined;
-        name?: string | undefined;
-        native?: boolean | undefined;
-        accentColor?: string | undefined;
+        value?: string;
+        defaultValue?: string;
+        onValueChange?: (value: string) => void;
+        required?: boolean;
+        disabled?: boolean;
+        name?: string;
+        native?: boolean;
+        accentColor?: string;
     }, import("@tamagui/core").StackStyleBase, {
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -569,10 +568,10 @@ export declare function createRadioGroup<F extends RadioGroupComponent, D extend
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -592,10 +591,10 @@ export declare function createRadioGroup<F extends RadioGroupComponent, D extend
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -615,10 +614,10 @@ export declare function createRadioGroup<F extends RadioGroupComponent, D extend
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -638,10 +637,10 @@ export declare function createRadioGroup<F extends RadioGroupComponent, D extend
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -661,10 +660,10 @@ export declare function createRadioGroup<F extends RadioGroupComponent, D extend
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -677,9 +676,9 @@ export declare function createRadioGroup<F extends RadioGroupComponent, D extend
         chromeless?: boolean | "all" | undefined;
     }>> & {
         value: string;
-        id?: string | undefined;
-        labelledBy?: string | undefined;
-        disabled?: boolean | undefined;
+        id?: string;
+        labelledBy?: string;
+        disabled?: boolean;
     }, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "unstyled" | "size" | "disabled" | "elevation" | keyof import("@tamagui/core").StackStyleBase | "transparent" | "fullscreen" | "circular" | "inset" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
         unstyled?: boolean | undefined;
         size?: import("@tamagui/core").SizeTokens | undefined;
@@ -689,10 +688,10 @@ export declare function createRadioGroup<F extends RadioGroupComponent, D extend
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -712,10 +711,10 @@ export declare function createRadioGroup<F extends RadioGroupComponent, D extend
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -735,10 +734,10 @@ export declare function createRadioGroup<F extends RadioGroupComponent, D extend
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -751,9 +750,9 @@ export declare function createRadioGroup<F extends RadioGroupComponent, D extend
         chromeless?: boolean | "all" | undefined;
     }>> & {
         value: string;
-        id?: string | undefined;
-        labelledBy?: string | undefined;
-        disabled?: boolean | undefined;
+        id?: string;
+        labelledBy?: string;
+        disabled?: boolean;
     }, import("@tamagui/core").StackStyleBase, {
         unstyled?: boolean | undefined;
         size?: import("@tamagui/core").SizeTokens | undefined;
@@ -763,10 +762,10 @@ export declare function createRadioGroup<F extends RadioGroupComponent, D extend
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -785,10 +784,10 @@ export declare function createRadioGroup<F extends RadioGroupComponent, D extend
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -806,10 +805,10 @@ export declare function createRadioGroup<F extends RadioGroupComponent, D extend
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -827,10 +826,10 @@ export declare function createRadioGroup<F extends RadioGroupComponent, D extend
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -848,10 +847,10 @@ export declare function createRadioGroup<F extends RadioGroupComponent, D extend
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -869,10 +868,10 @@ export declare function createRadioGroup<F extends RadioGroupComponent, D extend
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -884,8 +883,8 @@ export declare function createRadioGroup<F extends RadioGroupComponent, D extend
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
     }>> & {
-        forceMount?: boolean | undefined;
-        unstyled?: boolean | undefined;
+        forceMount?: boolean;
+        unstyled?: boolean;
     }, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "unstyled" | "elevation" | keyof import("@tamagui/core").StackStyleBase | "transparent" | "fullscreen" | "circular" | "inset" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
         unstyled?: boolean | undefined;
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
@@ -893,10 +892,10 @@ export declare function createRadioGroup<F extends RadioGroupComponent, D extend
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -914,10 +913,10 @@ export declare function createRadioGroup<F extends RadioGroupComponent, D extend
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -935,10 +934,10 @@ export declare function createRadioGroup<F extends RadioGroupComponent, D extend
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -950,8 +949,8 @@ export declare function createRadioGroup<F extends RadioGroupComponent, D extend
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
     }>> & {
-        forceMount?: boolean | undefined;
-        unstyled?: boolean | undefined;
+        forceMount?: boolean;
+        unstyled?: boolean;
     }, import("@tamagui/core").StackStyleBase, {
         unstyled?: boolean | undefined;
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
@@ -959,10 +958,10 @@ export declare function createRadioGroup<F extends RadioGroupComponent, D extend
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;

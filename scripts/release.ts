@@ -2,7 +2,7 @@
 import * as proc from 'node:child_process'
 import { join } from 'node:path'
 import { promisify } from 'node:util'
-import path from 'path'
+import path from 'node:path'
 
 import fs, { writeJSON } from 'fs-extra'
 import pMap from 'p-map'

@@ -53,6 +53,7 @@ export const getStyleAtomic = (
 
 let conf: TamaguiInternalConfig
 
+// this could be cached for performance?
 const getStyleObject = (
   style: ViewStyleWithPseudos,
   key: string,
@@ -71,13 +72,14 @@ const getStyleObject = (
   const shortProp = conf.inverseShorthands[key] || key
   const identifier = `_${shortProp}-${pseudoPrefix}${hash}`
   const rules = createAtomicRules(identifier, key, value, pseudo)
-  return {
-    property: key,
-    pseudo: pseudo?.name as any,
-    identifier,
-    rules,
+  return [
+    // array for performance
+    key,
     value,
-  }
+    identifier,
+    pseudo?.name as any,
+    rules,
+  ]
 }
 
 export function styleToCSS(style: Record<string, any>) {

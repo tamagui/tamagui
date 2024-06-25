@@ -1,4 +1,3 @@
-/// <reference types="node" />
 import type { JsTransformerConfig, JsTransformOptions, TransformResponse } from 'metro-transform-worker';
 import type { TamaguiOptions } from '@tamagui/static';
 interface TamaguiJsTransformerConfig extends JsTransformerConfig {

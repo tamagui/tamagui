@@ -53,10 +53,10 @@ export declare const ListItemFrame: import("@tamagui/web").TamaguiComponent<impo
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -97,10 +97,10 @@ export declare const ListItem: import("react").ForwardRefExoticComponent<Omit<im
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -116,26 +116,26 @@ export declare const ListItem: import("react").ForwardRefExoticComponent<Omit<im
     /**
      * add icon before, passes color and size automatically if Component
      */
-    icon?: IconProp | undefined;
+    icon?: IconProp;
     /**
      * add icon after, passes color and size automatically if Component
      */
-    iconAfter?: IconProp | undefined;
+    iconAfter?: IconProp;
     /**
      * adjust icon relative to size
      */
     /**
      * default: -1
      */
-    scaleIcon?: number | undefined;
+    scaleIcon?: number;
     /**
      * make the spacing elements flex
      */
-    spaceFlex?: number | boolean | undefined;
+    spaceFlex?: number | boolean;
     /**
      * adjust internal space relative to icon size
      */
-    scaleSpace?: number | undefined;
+    scaleSpace?: number;
     /**
      * title
      */
@@ -147,7 +147,7 @@ export declare const ListItem: import("react").ForwardRefExoticComponent<Omit<im
     /**
      * will not wrap text around `children` only, "all" will not wrap title or subTitle
      */
-    noTextWrap?: boolean | "all" | undefined;
+    noTextWrap?: boolean | "all";
 } & import("react").RefAttributes<import("@tamagui/web").TamaguiElement>> & import("@tamagui/web").StaticComponentObject<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
     unstyled?: boolean | undefined;
     size?: SizeTokens | undefined;
@@ -157,10 +157,10 @@ export declare const ListItem: import("react").ForwardRefExoticComponent<Omit<im
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -176,26 +176,26 @@ export declare const ListItem: import("react").ForwardRefExoticComponent<Omit<im
     /**
      * add icon before, passes color and size automatically if Component
      */
-    icon?: IconProp | undefined;
+    icon?: IconProp;
     /**
      * add icon after, passes color and size automatically if Component
      */
-    iconAfter?: IconProp | undefined;
+    iconAfter?: IconProp;
     /**
      * adjust icon relative to size
      */
     /**
      * default: -1
      */
-    scaleIcon?: number | undefined;
+    scaleIcon?: number;
     /**
      * make the spacing elements flex
      */
-    spaceFlex?: number | boolean | undefined;
+    spaceFlex?: number | boolean;
     /**
      * adjust internal space relative to icon size
      */
-    scaleSpace?: number | undefined;
+    scaleSpace?: number;
     /**
      * title
      */
@@ -207,31 +207,31 @@ export declare const ListItem: import("react").ForwardRefExoticComponent<Omit<im
     /**
      * will not wrap text around `children` only, "all" will not wrap title or subTitle
      */
-    noTextWrap?: boolean | "all" | undefined;
+    noTextWrap?: boolean | "all";
 }, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<TextParentStyles, "TextComponent" | "noTextWrap"> & ThemeableProps & {
     /**
      * add icon before, passes color and size automatically if Component
      */
-    icon?: IconProp | undefined;
+    icon?: IconProp;
     /**
      * add icon after, passes color and size automatically if Component
      */
-    iconAfter?: IconProp | undefined;
+    iconAfter?: IconProp;
     /**
      * adjust icon relative to size
      */
     /**
      * default: -1
      */
-    scaleIcon?: number | undefined;
+    scaleIcon?: number;
     /**
      * make the spacing elements flex
      */
-    spaceFlex?: number | boolean | undefined;
+    spaceFlex?: number | boolean;
     /**
      * adjust internal space relative to icon size
      */
-    scaleSpace?: number | undefined;
+    scaleSpace?: number;
     /**
      * title
      */
@@ -243,7 +243,7 @@ export declare const ListItem: import("react").ForwardRefExoticComponent<Omit<im
     /**
      * will not wrap text around `children` only, "all" will not wrap title or subTitle
      */
-    noTextWrap?: boolean | "all" | undefined;
+    noTextWrap?: boolean | "all";
 }, import("@tamagui/web").StackStyleBase, {
     unstyled?: boolean | undefined;
     size?: SizeTokens | undefined;
@@ -253,10 +253,10 @@ export declare const ListItem: import("react").ForwardRefExoticComponent<Omit<im
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
@@ -278,10 +278,10 @@ export declare const ListItem: import("react").ForwardRefExoticComponent<Omit<im
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
@@ -297,26 +297,26 @@ export declare const ListItem: import("react").ForwardRefExoticComponent<Omit<im
         /**
          * add icon before, passes color and size automatically if Component
          */
-        icon?: IconProp | undefined;
+        icon?: IconProp;
         /**
          * add icon after, passes color and size automatically if Component
          */
-        iconAfter?: IconProp | undefined;
+        iconAfter?: IconProp;
         /**
          * adjust icon relative to size
          */
         /**
          * default: -1
          */
-        scaleIcon?: number | undefined;
+        scaleIcon?: number;
         /**
          * make the spacing elements flex
          */
-        spaceFlex?: number | boolean | undefined;
+        spaceFlex?: number | boolean;
         /**
          * adjust internal space relative to icon size
          */
-        scaleSpace?: number | undefined;
+        scaleSpace?: number;
         /**
          * title
          */
@@ -328,31 +328,31 @@ export declare const ListItem: import("react").ForwardRefExoticComponent<Omit<im
         /**
          * will not wrap text around `children` only, "all" will not wrap title or subTitle
          */
-        noTextWrap?: boolean | "all" | undefined;
+        noTextWrap?: boolean | "all";
     }, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<TextParentStyles, "TextComponent" | "noTextWrap"> & ThemeableProps & {
         /**
          * add icon before, passes color and size automatically if Component
          */
-        icon?: IconProp | undefined;
+        icon?: IconProp;
         /**
          * add icon after, passes color and size automatically if Component
          */
-        iconAfter?: IconProp | undefined;
+        iconAfter?: IconProp;
         /**
          * adjust icon relative to size
          */
         /**
          * default: -1
          */
-        scaleIcon?: number | undefined;
+        scaleIcon?: number;
         /**
          * make the spacing elements flex
          */
-        spaceFlex?: number | boolean | undefined;
+        spaceFlex?: number | boolean;
         /**
          * adjust internal space relative to icon size
          */
-        scaleSpace?: number | undefined;
+        scaleSpace?: number;
         /**
          * title
          */
@@ -364,7 +364,7 @@ export declare const ListItem: import("react").ForwardRefExoticComponent<Omit<im
         /**
          * will not wrap text around `children` only, "all" will not wrap title or subTitle
          */
-        noTextWrap?: boolean | "all" | undefined;
+        noTextWrap?: boolean | "all";
     }, import("@tamagui/web").StackStyleBase, {
         unstyled?: boolean | undefined;
         size?: SizeTokens | undefined;
@@ -374,10 +374,10 @@ export declare const ListItem: import("react").ForwardRefExoticComponent<Omit<im
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         inset?: number | SizeTokens | {
-            top?: number | undefined;
-            bottom?: number | undefined;
-            left?: number | undefined;
-            right?: number | undefined;
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
         } | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;

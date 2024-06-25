@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import type { SheetProps } from './types';
 export declare const useSheetOpenState: (props: SheetProps) => {
     open: boolean;

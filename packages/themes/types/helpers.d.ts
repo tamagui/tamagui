@@ -5,7 +5,7 @@ type PickByValue<OBJ_T, VALUE_T> = Pick<OBJ_T, {
 type ObjectEntries<OBJ_T> = {
     [K in keyof OBJ_T]: [keyof PickByValue<OBJ_T, OBJ_T[K]>, OBJ_T[K]];
 }[keyof OBJ_T][];
-export declare const objectKeys: <O extends Object>(obj: O) => (keyof O)[];
+export declare const objectKeys: <O extends Object>(obj: O) => Array<keyof O>;
 export declare function objectEntries<OBJ_T extends ObjectType>(obj: OBJ_T): ObjectEntries<OBJ_T>;
 type EntriesType = [PropertyKey, unknown][] | ReadonlyArray<readonly [PropertyKey, unknown]>;
 type DeepWritable<OBJ_T> = {

@@ -12,20 +12,20 @@ export type CodeBlockProps = PreProps & {
 declare const _default: React.ForwardRefExoticComponent<PreProps & {
     language: "tsx";
     value: string;
-    line?: string | undefined;
+    line?: string;
     css?: any;
-    mode?: "static" | undefined;
-    showLineNumbers?: boolean | undefined;
+    mode?: "static";
+    showLineNumbers?: boolean;
 } & React.RefAttributes<HTMLPreElement>>;
 export default _default;
 declare const Pre: import("tamagui").TamaguiComponent<import("@tamagui/web").TamaDefer, import("tamagui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
     elevation?: number | import("tamagui").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
     inset?: number | import("tamagui").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
 }, import("@tamagui/web").StaticConfigPublic>;
 //# sourceMappingURL=CodeBlock.d.ts.map

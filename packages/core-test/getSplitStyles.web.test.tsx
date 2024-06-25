@@ -1,7 +1,15 @@
 import { beforeAll, describe, expect, test } from 'vitest'
 
 import config from '../config-default'
-import { Stack, Text, createTamagui, styled } from '../core/src'
+import {
+  Stack,
+  StyleObjectProperty,
+  StyleObjectRules,
+  StyleObjectValue,
+  Text,
+  createTamagui,
+  styled,
+} from '../core/src'
 import { simplifiedGetSplitStyles } from './utils'
 
 beforeAll(() => {
@@ -35,28 +43,34 @@ describe('getSplitStyles', () => {
         tag: 'input',
       }
     )
-    expect(out.rulesToInsert[0]?.value).toEqual('10px')
+    expect(out.rulesToInsert[0]?.[StyleObjectValue]).toEqual('10px')
   })
 
   test(`font props get the font family, regardless of the order`, () => {
     expect(
       simplifiedGetSplitStyles(Text, {
         fontSize: '$1',
-      }).rulesToInsert.find((rule) => rule.property === 'fontSize')?.value
+      }).rulesToInsert.find((rule) => rule[StyleObjectProperty] === 'fontSize')?.[
+        StyleObjectValue
+      ]
     ).toEqual('var(--f-si-1)') // no family provided - this is expected
 
     expect(
       simplifiedGetSplitStyles(Text, {
         fontSize: '$1',
         fontFamily: '$body',
-      }).rulesToInsert.find((rule) => rule.property === 'fontSize')?.value
+      }).rulesToInsert.find((rule) => rule[StyleObjectProperty] === 'fontSize')?.[
+        StyleObjectValue
+      ]
     ).toEqual('var(--f-si-1)')
 
     expect(
       simplifiedGetSplitStyles(Text, {
         fontFamily: '$body',
         fontSize: '$1',
-      }).rulesToInsert.find((rule) => rule.property === 'fontSize')?.value
+      }).rulesToInsert.find((rule) => rule[StyleObjectProperty] === 'fontSize')?.[
+        StyleObjectValue
+      ]
     ).toEqual('var(--f-si-1)')
   })
 
@@ -75,14 +89,18 @@ describe('getSplitStyles', () => {
       simplifiedGetSplitStyles(CustomText, {
         fontSize: '$1',
         type: 'myValue',
-      }).rulesToInsert.find((rule) => rule.property === 'fontSize')?.value
+      }).rulesToInsert.find((rule) => rule[StyleObjectProperty] === 'fontSize')?.[
+        StyleObjectValue
+      ]
     ).toEqual('var(--f-si-1)')
 
     expect(
       simplifiedGetSplitStyles(CustomText, {
         type: 'myValue',
         fontSize: '$1',
-      }).rulesToInsert.find((rule) => rule.property === 'fontSize')?.value
+      }).rulesToInsert.find((rule) => rule[StyleObjectProperty] === 'fontSize')?.[
+        StyleObjectValue
+      ]
     ).toEqual('var(--f-si-1)')
   })
 
@@ -90,8 +108,8 @@ describe('getSplitStyles', () => {
     const styles = simplifiedGetSplitStyles(Text, {
       zIndex: '$1',
     })
-    expect(styles.rulesToInsert[0].property === 'zIndex').toBeTruthy()
-    expect(styles.rulesToInsert[0].value).toEqual('var(--zIndex-2)')
+    expect(styles.rulesToInsert[0][StyleObjectProperty] === 'zIndex').toBeTruthy()
+    expect(styles.rulesToInsert[0][StyleObjectValue]).toEqual('var(--zIndex-2)')
   })
 
   test(`shadowColor + shadowOpacity`, () => {
@@ -100,8 +118,10 @@ describe('getSplitStyles', () => {
       shadowOpacity: 0.5,
     })
     expect(styles.rulesToInsert.length).toEqual(1)
-    expect(styles.rulesToInsert[0].value).toEqual(`0px 0px 0px rgba(255,0,0,0.5)`)
-    expect(styles.rulesToInsert[0].property).toEqual(`boxShadow`)
+    expect(styles.rulesToInsert[0][StyleObjectValue]).toEqual(
+      `0px 0px 0px rgba(255,0,0,0.5)`
+    )
+    expect(styles.rulesToInsert[0][StyleObjectProperty]).toEqual(`boxShadow`)
   })
 
   test(`group container queries generate @supports and @container`, () => {
@@ -110,7 +130,7 @@ describe('getSplitStyles', () => {
         color: 'red',
       },
     })
-    expect(styles.rulesToInsert[0].rules[0]).toMatchInlineSnapshot(
+    expect(styles.rulesToInsert[0][StyleObjectRules][0]).toMatchInlineSnapshot(
       '"@supports (contain: inline-size) {@container testy (max-width: 800px){:root:root .t_group_testy  ._col-_grouptesty-sm_red{color:red;}}}"'
     )
   })
@@ -226,7 +246,7 @@ describe('getSplitStyles', () => {
   //   )
 
   //   const fontSizeRule = splitStyles.rulesToInsert.find(
-  //     (rule) => rule.property === 'fontSize'
+  //     (rule) => rule[StyleObjectProperty] === 'fontSize'
   //   )
 
   //   expect(fontSizeRule?.rules[0].includes('font-size:var(--f-si-1)')).toBeTruthy()

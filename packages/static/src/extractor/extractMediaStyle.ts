@@ -61,7 +61,7 @@ export function extractMediaStyle(
         true,
         negate
       )
-      const className = `.${mediaStyle.identifier}`
+      const className = `.${mediaStyle[core.StyleObjectIdentifier]}`
       return {
         ...mediaStyle,
         className,
@@ -73,7 +73,7 @@ export function extractMediaStyle(
         '  media styles:',
         importance,
         styleObj,
-        singleMediaStyles.map((x) => x.identifier).join(', ')
+        singleMediaStyles.map((x) => x[core.StyleObjectIdentifier]).join(', ')
       )
     }
     // add to output

@@ -1,3 +1,11 @@
+- AnimateList
+  - like AnimatePresence but for >1 items
+  - AnimatePresence keepMounted={} prop?
+  - can handle direction + let you control mount behavior
+
+- remove scroll not working when Dialog adapted to Sheet on mobile
+  - we may want Sheet to have its own removeScroll in this case
+
 - AnimatePresence should just work if you change the enterStyle exitStyle dynamically in the render, no need for custom we can capture the props
 
 - popover transform origin

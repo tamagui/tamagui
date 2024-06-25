@@ -12,11 +12,6 @@ const icons = {
 export const ThemeToggle = (props: ButtonProps) => {
   const [{ resolvedTheme, userTheme }, setUserTheme] = useUserTheme()
 
-  // useIsomorphicLayoutEffect(() => {
-  //   document.querySelector('#theme-color')?.setAttribute('content', themeColor)
-  //   document.body.style.setProperty('background-color', themeColor, 'important')
-  // }, [themeSetting.current, themeSetting.resolvedTheme])
-
   const Icon = icons[userTheme]
 
   return (

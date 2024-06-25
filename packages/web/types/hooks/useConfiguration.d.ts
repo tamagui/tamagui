@@ -2,28 +2,26 @@ export declare const useConfiguration: () => {
     animationDriver: import("..").AnimationDriver<{
         [key: string]: any;
     }>;
-    disableSSR?: boolean | undefined;
+    disableSSR?: boolean;
     inText: boolean;
-    language: Partial<{
-        [x: string]: import("..").FontLanguages;
-    }> | null;
-    unset?: import("..").BaseStyleProps | undefined;
+    language: import("../views/FontLanguage.types").LanguageContextType | null;
+    unset?: import("..").BaseStyleProps;
     reactNative?: any;
-    selectionStyles?: ((theme: Record<string, string>) => {
+    selectionStyles?: (theme: Record<string, string>) => null | {
         backgroundColor?: any;
         color?: any;
-    } | null) | undefined;
-    disableRootThemeClass?: boolean | undefined;
-    defaultProps?: (Record<string, any> & {
-        Stack?: import("..").StackProps | undefined;
-        Text?: import("..").TextProps | undefined;
-        Spacer?: import("..").SpacerProps | undefined;
-    }) | undefined;
-    mediaQueryDefaultActive?: Record<string, boolean> | undefined;
-    cssStyleSeparator?: string | undefined;
-    maxDarkLightNesting?: number | undefined;
-    shouldAddPrefersColorThemes?: boolean | undefined;
-    themeClassNameOnRoot?: boolean | undefined;
+    };
+    disableRootThemeClass?: boolean;
+    defaultProps?: Record<string, any> & {
+        Stack?: import("..").StackProps;
+        Text?: import("..").TextProps;
+        Spacer?: import("..").SpacerProps;
+    };
+    mediaQueryDefaultActive?: Record<string, boolean>;
+    cssStyleSeparator?: string;
+    maxDarkLightNesting?: number;
+    shouldAddPrefersColorThemes?: boolean;
+    themeClassNameOnRoot?: boolean;
     fonts: {
         [x: string]: import("..").GenericFont<string | number | symbol>;
     };
@@ -58,41 +56,41 @@ export declare const useConfiguration: () => {
     onlyAllowShorthands: boolean | undefined;
     defaultFont: string | undefined;
     settings: {
-        allowedStyleValues?: ((boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | {
-            space?: ("number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | "percent") | undefined;
-            size?: ("number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | "percent") | undefined;
-            radius?: ("number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web")) | undefined;
-            zIndex?: ("number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web")) | undefined;
-            color?: ((boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | "named") | undefined;
-        }) | undefined;
-        autocompleteSpecificTokens?: (boolean | "except-special") | undefined;
-        mediaPropOrder?: boolean | undefined;
-        fastSchemeChange?: boolean | undefined;
-        webContainerType?: "size" | "unset" | "inherit" | "initial" | "revert" | "revert-layer" | "normal" | "inline-size" | undefined;
+        allowedStyleValues?: (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | {
+            space?: "number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | "percent";
+            size?: "number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | "percent";
+            radius?: "number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web");
+            zIndex?: "number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web");
+            color?: (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | "named";
+        };
+        autocompleteSpecificTokens?: boolean | "except-special";
+        mediaPropOrder?: boolean;
+        fastSchemeChange?: boolean;
+        webContainerType?: "normal" | "size" | "inline-size" | "inherit" | "initial" | "revert" | "revert-layer" | "unset";
     } & Omit<{
-        allowedStyleValues?: ((boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | {
-            space?: ("number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | "percent") | undefined;
-            size?: ("number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | "percent") | undefined;
-            radius?: ("number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web")) | undefined;
-            zIndex?: ("number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web")) | undefined;
-            color?: ((boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | "named") | undefined;
-        }) | undefined;
-        autocompleteSpecificTokens?: (boolean | "except-special") | undefined;
-        mediaPropOrder?: boolean | undefined;
-        fastSchemeChange?: boolean | undefined;
-        webContainerType?: "size" | "unset" | "inherit" | "initial" | "revert" | "revert-layer" | "normal" | "inline-size" | undefined;
+        allowedStyleValues?: (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | {
+            space?: "number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | "percent";
+            size?: "number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | "percent";
+            radius?: "number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web");
+            zIndex?: "number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web");
+            color?: (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | "named";
+        };
+        autocompleteSpecificTokens?: boolean | "except-special";
+        mediaPropOrder?: boolean;
+        fastSchemeChange?: boolean;
+        webContainerType?: "normal" | "size" | "inline-size" | "inherit" | "initial" | "revert" | "revert-layer" | "unset";
     }, keyof {
-        allowedStyleValues?: ((boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | {
-            space?: ("number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | "percent") | undefined;
-            size?: ("number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | "percent") | undefined;
-            radius?: ("number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web")) | undefined;
-            zIndex?: ("number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web")) | undefined;
-            color?: ((boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | "named") | undefined;
-        }) | undefined;
-        autocompleteSpecificTokens?: (boolean | "except-special") | undefined;
-        mediaPropOrder?: boolean | undefined;
-        fastSchemeChange?: boolean | undefined;
-        webContainerType?: "size" | "unset" | "inherit" | "initial" | "revert" | "revert-layer" | "normal" | "inline-size" | undefined;
+        allowedStyleValues?: (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | {
+            space?: "number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | "percent";
+            size?: "number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | "percent";
+            radius?: "number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web");
+            zIndex?: "number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web");
+            color?: (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | "named";
+        };
+        autocompleteSpecificTokens?: boolean | "except-special";
+        mediaPropOrder?: boolean;
+        fastSchemeChange?: boolean;
+        webContainerType?: "normal" | "size" | "inline-size" | "inherit" | "initial" | "revert" | "revert-layer" | "unset";
     }>;
     tokens: Omit<{
         [x: string]: {
@@ -173,6 +171,6 @@ export declare const useConfiguration: () => {
     parsed: boolean;
     inverseShorthands: Record<string, string>;
     fontSizeTokens: Set<string>;
-    specificTokens: Record<string, import("..").Variable<any>>;
+    specificTokens: Record<string, import("..").Variable>;
 };
 //# sourceMappingURL=useConfiguration.d.ts.map

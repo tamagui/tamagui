@@ -18,7 +18,7 @@ export declare const palettes: {
     light: string[];
     dark: string[];
 };
-export declare const getTemplates: (scheme: 'dark' | 'light') => {
+export declare const getTemplates: (scheme: "dark" | "light") => {
     base: {
         accentBackground: number;
         accentColor: number;
@@ -16088,35 +16088,35 @@ export declare const tokens: {
         [-20]: import("@tamagui/web").Variable<number>;
     };
     size: {
-        0: import("@tamagui/web").Variable<number>;
-        0.25: import("@tamagui/web").Variable<number>;
-        0.5: import("@tamagui/web").Variable<number>;
-        0.75: import("@tamagui/web").Variable<number>;
-        1: import("@tamagui/web").Variable<number>;
-        1.5: import("@tamagui/web").Variable<number>;
-        2: import("@tamagui/web").Variable<number>;
-        2.5: import("@tamagui/web").Variable<number>;
-        3: import("@tamagui/web").Variable<number>;
-        3.5: import("@tamagui/web").Variable<number>;
-        4: import("@tamagui/web").Variable<number>;
-        true: import("@tamagui/web").Variable<number>;
-        4.5: import("@tamagui/web").Variable<number>;
-        5: import("@tamagui/web").Variable<number>;
-        6: import("@tamagui/web").Variable<number>;
-        7: import("@tamagui/web").Variable<number>;
-        8: import("@tamagui/web").Variable<number>;
-        9: import("@tamagui/web").Variable<number>;
-        10: import("@tamagui/web").Variable<number>;
-        11: import("@tamagui/web").Variable<number>;
-        12: import("@tamagui/web").Variable<number>;
-        13: import("@tamagui/web").Variable<number>;
-        14: import("@tamagui/web").Variable<number>;
-        15: import("@tamagui/web").Variable<number>;
-        16: import("@tamagui/web").Variable<number>;
-        17: import("@tamagui/web").Variable<number>;
-        18: import("@tamagui/web").Variable<number>;
-        19: import("@tamagui/web").Variable<number>;
-        20: import("@tamagui/web").Variable<number>;
+        $0: import("@tamagui/web").Variable<number>;
+        "$0.25": import("@tamagui/web").Variable<number>;
+        "$0.5": import("@tamagui/web").Variable<number>;
+        "$0.75": import("@tamagui/web").Variable<number>;
+        $1: import("@tamagui/web").Variable<number>;
+        "$1.5": import("@tamagui/web").Variable<number>;
+        $2: import("@tamagui/web").Variable<number>;
+        "$2.5": import("@tamagui/web").Variable<number>;
+        $3: import("@tamagui/web").Variable<number>;
+        "$3.5": import("@tamagui/web").Variable<number>;
+        $4: import("@tamagui/web").Variable<number>;
+        $true: import("@tamagui/web").Variable<number>;
+        "$4.5": import("@tamagui/web").Variable<number>;
+        $5: import("@tamagui/web").Variable<number>;
+        $6: import("@tamagui/web").Variable<number>;
+        $7: import("@tamagui/web").Variable<number>;
+        $8: import("@tamagui/web").Variable<number>;
+        $9: import("@tamagui/web").Variable<number>;
+        $10: import("@tamagui/web").Variable<number>;
+        $11: import("@tamagui/web").Variable<number>;
+        $12: import("@tamagui/web").Variable<number>;
+        $13: import("@tamagui/web").Variable<number>;
+        $14: import("@tamagui/web").Variable<number>;
+        $15: import("@tamagui/web").Variable<number>;
+        $16: import("@tamagui/web").Variable<number>;
+        $17: import("@tamagui/web").Variable<number>;
+        $18: import("@tamagui/web").Variable<number>;
+        $19: import("@tamagui/web").Variable<number>;
+        $20: import("@tamagui/web").Variable<number>;
     };
     radius: {
         0: import("@tamagui/web").Variable<number>;
@@ -16136,9 +16136,9 @@ export declare const tokens: {
     };
     zIndex: {
         0: import("@tamagui/web").Variable<number>;
+        1: import("@tamagui/web").Variable<number>;
         2: import("@tamagui/web").Variable<number>;
         3: import("@tamagui/web").Variable<number>;
-        1: import("@tamagui/web").Variable<number>;
         4: import("@tamagui/web").Variable<number>;
         5: import("@tamagui/web").Variable<number>;
     };
@@ -16387,9 +16387,9 @@ export declare const tokens: {
     };
     zIndex: {
         0: import("@tamagui/web").Variable<number>;
+        1: import("@tamagui/web").Variable<number>;
         2: import("@tamagui/web").Variable<number>;
         3: import("@tamagui/web").Variable<number>;
-        1: import("@tamagui/web").Variable<number>;
         4: import("@tamagui/web").Variable<number>;
         5: import("@tamagui/web").Variable<number>;
     };
@@ -16453,35 +16453,35 @@ export declare const tokens: {
         [-20]: import("@tamagui/web").Variable<number>;
     };
     size: {
-        0: import("@tamagui/web").Variable<number>;
-        0.25: import("@tamagui/web").Variable<number>;
-        0.5: import("@tamagui/web").Variable<number>;
-        0.75: import("@tamagui/web").Variable<number>;
-        1: import("@tamagui/web").Variable<number>;
-        1.5: import("@tamagui/web").Variable<number>;
-        2: import("@tamagui/web").Variable<number>;
-        2.5: import("@tamagui/web").Variable<number>;
-        3: import("@tamagui/web").Variable<number>;
-        3.5: import("@tamagui/web").Variable<number>;
-        4: import("@tamagui/web").Variable<number>;
-        true: import("@tamagui/web").Variable<number>;
-        4.5: import("@tamagui/web").Variable<number>;
-        5: import("@tamagui/web").Variable<number>;
-        6: import("@tamagui/web").Variable<number>;
-        7: import("@tamagui/web").Variable<number>;
-        8: import("@tamagui/web").Variable<number>;
-        9: import("@tamagui/web").Variable<number>;
-        10: import("@tamagui/web").Variable<number>;
-        11: import("@tamagui/web").Variable<number>;
-        12: import("@tamagui/web").Variable<number>;
-        13: import("@tamagui/web").Variable<number>;
-        14: import("@tamagui/web").Variable<number>;
-        15: import("@tamagui/web").Variable<number>;
-        16: import("@tamagui/web").Variable<number>;
-        17: import("@tamagui/web").Variable<number>;
-        18: import("@tamagui/web").Variable<number>;
-        19: import("@tamagui/web").Variable<number>;
-        20: import("@tamagui/web").Variable<number>;
+        $0: import("@tamagui/web").Variable<number>;
+        "$0.25": import("@tamagui/web").Variable<number>;
+        "$0.5": import("@tamagui/web").Variable<number>;
+        "$0.75": import("@tamagui/web").Variable<number>;
+        $1: import("@tamagui/web").Variable<number>;
+        "$1.5": import("@tamagui/web").Variable<number>;
+        $2: import("@tamagui/web").Variable<number>;
+        "$2.5": import("@tamagui/web").Variable<number>;
+        $3: import("@tamagui/web").Variable<number>;
+        "$3.5": import("@tamagui/web").Variable<number>;
+        $4: import("@tamagui/web").Variable<number>;
+        $true: import("@tamagui/web").Variable<number>;
+        "$4.5": import("@tamagui/web").Variable<number>;
+        $5: import("@tamagui/web").Variable<number>;
+        $6: import("@tamagui/web").Variable<number>;
+        $7: import("@tamagui/web").Variable<number>;
+        $8: import("@tamagui/web").Variable<number>;
+        $9: import("@tamagui/web").Variable<number>;
+        $10: import("@tamagui/web").Variable<number>;
+        $11: import("@tamagui/web").Variable<number>;
+        $12: import("@tamagui/web").Variable<number>;
+        $13: import("@tamagui/web").Variable<number>;
+        $14: import("@tamagui/web").Variable<number>;
+        $15: import("@tamagui/web").Variable<number>;
+        $16: import("@tamagui/web").Variable<number>;
+        $17: import("@tamagui/web").Variable<number>;
+        $18: import("@tamagui/web").Variable<number>;
+        $19: import("@tamagui/web").Variable<number>;
+        $20: import("@tamagui/web").Variable<number>;
     };
 }, "color" | "space" | "size" | "radius" | "zIndex">;
 export declare function postfixObjKeys<A extends {
@@ -16503,6 +16503,6 @@ export type MergeIntersectingObjects<ObjT> = {
     [key in keyof ObjT]: ObjT[key];
 };
 export type EntriesToObject<ARR_T extends EntriesType> = MergeIntersectingObjects<UnionToIntersection<UnionObjectFromArrayOfPairs<ARR_T>>>;
-export declare function objectKeys<O extends Object>(obj: O): (keyof O)[];
+export declare function objectKeys<O extends Object>(obj: O): Array<keyof O>;
 export {};
 //# sourceMappingURL=v3-themes.d.ts.map

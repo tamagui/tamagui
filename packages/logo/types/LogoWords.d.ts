@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import type { XStackProps } from 'tamagui';
 export declare const LogoWords: import("react").MemoExoticComponent<({ downscale, grayscale, animated, ...props }: XStackProps & {
     downscale?: number;

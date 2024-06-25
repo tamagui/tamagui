@@ -557,8 +557,8 @@ export type ThemeValueFallbackSize = GetThemeValueFallbackFor<AllowedValueSettin
 export type ThemeValueFallbackColor = ThemeValueFallback | GetThemeValueFallbackFor<AllowedValueSettingColor, never, SomewhatSpecificColorValue, UnionableString | UnionableNumber, WebStyleValueUniversal>;
 export type ThemeValueFallbackRadius = ThemeValueFallback | GetThemeValueFallbackFor<AllowedValueSettingRadius, never, UnionableNumber, UnionableNumber, WebStyleValueUniversal>;
 export type ThemeValueFallbackZIndex = ThemeValueFallback | GetThemeValueFallbackFor<AllowedValueSettingZIndex, never, UnionableNumber, UnionableNumber, WebStyleValueUniversal>;
-export type GetTokenString<A> = A extends string | number ? `$${A}` : `$${string}`;
-export type SpecificTokens<Record = Tokens, RK extends keyof Record = keyof Record> = RK extends string ? `$${RK}.${keyof Record[RK] extends string | number ? keyof Record[RK] : never}` : never;
+export type GetTokenString<A> = A extends `$${string}` ? A : A extends string | number ? `$${A}` : `$${string}`;
+export type SpecificTokens<Record = Tokens, RK extends keyof Record = keyof Record> = RK extends string ? `$${RK}.${keyof Record[RK] extends string | number ? keyof Record[RK] extends `$${infer X}` ? X : keyof Record[RK] : never}` : never;
 export type SpecificTokensSpecial = TamaguiSettings extends {
     autocompleteSpecificTokens: infer Val;
 } ? Val extends 'except-special' | undefined ? never : SpecificTokens : SpecificTokens;
@@ -1279,6 +1279,7 @@ export type SplitStyleProps = {
     disableExpandShorthands?: boolean;
     fallbackProps?: Record<string, any>;
     hasTextAncestor?: boolean;
+    willBeAnimated?: boolean;
     isAnimated: boolean;
     isExiting?: boolean;
     exitVariant?: string;
@@ -1385,7 +1386,7 @@ export type GetStyleResult = {
     viewProps: StackProps & Record<string, any>;
     fontFamily: string | undefined;
     space?: any;
-    hasMedia: boolean | string[];
+    hasMedia: boolean | Record<string, boolean>;
     dynamicThemeAccess?: boolean;
     pseudoGroups?: Set<string>;
     mediaGroups?: Set<string>;

@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import type { AnimationDriver } from '../types';
 interface ConfigurationProps {
     animationDriver?: AnimationDriver | null;

@@ -190,18 +190,24 @@ export async function extractToClassNames({
 
               for (const style of styles) {
                 //  leave them  as attributes
-                const prop = style.pseudo
-                  ? `${style.property}-${style.pseudo}`
-                  : style.property
+                const prop = style[helpers.StyleObjectPseudo]
+                  ? `${style[helpers.StyleObjectProperty]}-${
+                      style[helpers.StyleObjectPseudo]
+                    }`
+                  : style[helpers.StyleObjectProperty]
                 finalAttrs.push(
-                  t.jsxAttribute(t.jsxIdentifier(prop), t.stringLiteral(style.identifier))
+                  t.jsxAttribute(
+                    t.jsxIdentifier(prop),
+                    t.stringLiteral(style[helpers.StyleObjectIdentifier])
+                  )
                 )
               }
             } else {
               const styles = addStyles(attr.value)
               const newFontFamily = getFontFamilyClassNameFromProps(attr.value) || ''
               const newClassNames = helpers.concatClassName(
-                styles.map((x) => x.identifier).join(' ') + newFontFamily
+                styles.map((x) => x[helpers.StyleObjectIdentifier]).join(' ') +
+                  newFontFamily
               )
               const existing = finalClassNames.find(
                 (x) => x.type == 'StringLiteral'
@@ -266,11 +272,18 @@ export async function extractToClassNames({
                 console.info(
                   'ternary (mediaStyles)',
                   mediaExtraction.ternaryWithoutMedia?.inlineMediaQuery ?? '',
-                  mediaExtraction.mediaStyles.map((x) => x.identifier).join('.')
+                  mediaExtraction.mediaStyles
+                    .map((x) => x[helpers.StyleObjectIdentifier])
+                    .join('.')
                 )
               }
             }
             if (!mediaExtraction) {
+              if (shouldPrintDebug) {
+                if (mediaExtraction) {
+                  console.info('add ternary')
+                }
+              }
               addTernaryStyle(
                 attr.value,
                 addStyles(attr.value.consequent),
@@ -291,7 +304,9 @@ export async function extractToClassNames({
             } else {
               finalClassNames = [
                 ...finalClassNames,
-                ...mediaExtraction.mediaStyles.map((x) => t.stringLiteral(x.identifier)),
+                ...mediaExtraction.mediaStyles.map((x) =>
+                  t.stringLiteral(x[helpers.StyleObjectIdentifier])
+                ),
               ]
             }
             break
@@ -299,9 +314,9 @@ export async function extractToClassNames({
         }
       }
 
-      function addTernaryStyle(ternary: Ternary, a: any, b: any) {
-        const cCN = a.map((x) => x.identifier).join(' ')
-        const aCN = b.map((x) => x.identifier).join(' ')
+      function addTernaryStyle(ternary: Ternary, a: StyleObject[], b: StyleObject[]) {
+        const cCN = a.map((x) => x[helpers.StyleObjectIdentifier]).join(' ')
+        const aCN = b.map((x) => x[helpers.StyleObjectIdentifier]).join(' ')
 
         if (a.length && b.length) {
           finalClassNames.push(
@@ -322,11 +337,8 @@ export async function extractToClassNames({
         }
       }
 
-      if (shouldPrintDebug) {
-        console.info(
-          '  finalClassNames\n',
-          logLines(finalClassNames.map((x) => x['value']).join(' '))
-        )
+      if (shouldPrintDebug === 'verbose') {
+        console.info('  finalClassNames AST\n', JSON.stringify(finalClassNames, null, 2))
       }
 
       node.attributes = finalAttrs
@@ -389,7 +401,9 @@ export async function extractToClassNames({
         originalNodeName
       )
 
-      for (const { identifier, rules } of finalStyles) {
+      for (const styleObject of finalStyles) {
+        const identifier = styleObject[helpers.StyleObjectIdentifier]
+        const rules = styleObject[helpers.StyleObjectRules]
         const className = `.${identifier}`
         if (cssMap.has(className)) {
           if (comment) {

@@ -5,12 +5,14 @@ import type { NodePath, TraverseOptions } from '@babel/traverse'
 import traverse from '@babel/traverse'
 import * as t from '@babel/types'
 import { Color, colorLog } from '@tamagui/cli-color'
-import type {
-  GetStyleState,
-  PseudoStyles,
-  SplitStyleProps,
-  StaticConfig,
-  TamaguiComponentState,
+import {
+  StyleObjectIdentifier,
+  StyleObjectRules,
+  type GetStyleState,
+  type PseudoStyles,
+  type SplitStyleProps,
+  type StaticConfig,
+  type TamaguiComponentState,
 } from '@tamagui/web'
 import type { ViewStyle } from 'react-native'
 import * as reactNativeWebInternals from 'react-native-web-internals'
@@ -299,10 +301,10 @@ export function createExtractor(
     const firstTheme = tamaguiConfig?.themes[firstThemeName] || {}
 
     if (!firstTheme || typeof firstTheme !== 'object') {
-      console.error(`Missing theme, an error occurred when importing your config`)
-      console.info(`Got config:`, tamaguiConfig)
+      const err = `Missing theme ${firstThemeName}, an error occurred when importing your config`
+      console.info(err, `Got config:`, tamaguiConfig)
       console.info(`Looking for theme:`, firstThemeName)
-      process.exit(0)
+      throw new Error(err)
     }
 
     const proxiedTheme = proxyThemeVariables(firstTheme)
@@ -649,7 +651,9 @@ export function createExtractor(
               '\n classNames:',
               JSON.stringify(classNames, null, 2),
               '\n  rulesToInsert:',
-              out.rulesToInsert.flatMap((rule) => rule.rules).join('\n'),
+              out.rulesToInsert
+                .flatMap((styleObject) => styleObject[StyleObjectRules])
+                .join('\n'),
             ].join(' ')
           )
         }
@@ -673,8 +677,11 @@ export function createExtractor(
         })
 
         if (out.rulesToInsert) {
-          for (const { identifier, rules } of out.rulesToInsert) {
-            onStyleRule?.(identifier, rules)
+          for (const styleObject of out.rulesToInsert) {
+            onStyleRule?.(
+              styleObject[StyleObjectIdentifier],
+              styleObject[StyleObjectRules]
+            )
           }
         }
 
@@ -692,10 +699,6 @@ export function createExtractor(
         const ogAttributes = node.attributes.map((attr) => ({ ...attr }))
         const componentName = findComponentName(traversePath.scope)
         const closingElement = traversePath.node.closingElement
-
-        if (shouldPrintDebug) {
-          logger.info(` start ${node.name}`)
-        }
 
         // skip non-identifier opening elements (member expressions, etc.)
         if (
@@ -719,7 +722,7 @@ export function createExtractor(
             if (!isValidImport(propsWithFileInfo, moduleName, binding.identifier.name)) {
               if (shouldPrintDebug) {
                 logger.info(
-                  ` - Binding for ${componentName} not internal import or from components ${binding.identifier.name} in ${moduleName}`
+                  ` - Binding in component ${componentName} not valid import: "${binding.identifier.name}" isn't in ${moduleName}\n`
                 )
               }
               return
@@ -730,7 +733,7 @@ export function createExtractor(
         const component = getValidComponent(propsWithFileInfo, moduleName, node.name.name)
         if (!component || !component.staticConfig) {
           if (shouldPrintDebug) {
-            logger.info(` - No Tamagui conf on this: ${node.name.name}`)
+            logger.info(`\n - No Tamagui conf for: ${node.name.name}\n`)
           }
           return
         }
@@ -766,10 +769,8 @@ export function createExtractor(
         }
 
         if (shouldPrintDebug) {
-          logger.info('\n')
           logger.info(
-            `\x1b[33m%s\x1b[0m ` +
-              `${componentName} | ${codePosition} -------------------`
+            `\x1b[33m\x1b[0m ` + `${componentName} | ${codePosition} -------------------`
           )
           // prettier-ignore
           logger.info(
@@ -804,7 +805,7 @@ export function createExtractor(
 
         if (shouldDisableExtraction) {
           if (shouldPrintDebug === 'verbose') {
-            console.info(` Extraction disabled`)
+            logger.info(` ❌ Extraction disabled: ${JSON.stringify(disableExtraction)}\n`)
           }
           return
         }

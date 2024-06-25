@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import type { AnimatePresenceProps } from '@tamagui/animate-presence';
 type BaseProps = {
     children: React.ReactNode;

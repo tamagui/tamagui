@@ -1,21 +1,20 @@
 import { isServer, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
-import React, { useId, useRef, useState, useSyncExternalStore } from 'react'
+import { useRef, useState, useSyncExternalStore } from 'react'
 
 import { getConfig } from '../config'
 import { matchMedia } from '../helpers/matchMedia'
 import { pseudoDescriptors } from '../helpers/pseudoDescriptors'
 import type {
   ComponentContextI,
+  DebugProp,
   IsMediaType,
   MediaQueries,
-  MediaQueryKey,
   MediaQueryObject,
   MediaQueryState,
   TamaguiInternalConfig,
   UseMediaState,
 } from '../types'
 import { getDisableSSR } from './useDisableSSR'
-import { useDidHydrateOnce } from './useDidHydrateOnce'
 
 export let mediaState: MediaQueryState =
   // development only safeguard
@@ -44,12 +43,13 @@ export const getMedia = () => mediaState
 
 export const mediaKeys = new Set<string>() // with $ prefix
 
+const mediaKeyRegex = /\$(platform|theme|group)-/
+
 export const isMediaKey = (key: string): IsMediaType => {
   if (mediaKeys.has(key)) return true
   if (key[0] === '$') {
-    if (key.startsWith('$platform-')) return 'platform'
-    if (key.startsWith('$theme-')) return 'theme'
-    if (key.startsWith('$group-')) return 'group'
+    const match = key.match(mediaKeyRegex)
+    if (match) return match[1] as 'platform' | 'theme' | 'group'
   }
   return false
 }
@@ -120,9 +120,7 @@ export function setupMediaListeners() {
   setupVersion = mediaVersion
 
   // hmr, undo existing before re-binding
-  if (process.env.NODE_ENV === 'development') {
-    unlisten()
-  }
+  unlisten()
 
   for (const key in mediaQueryConfig) {
     const str = mediaObjectToString(mediaQueryConfig[key], key)
@@ -169,52 +167,42 @@ type MediaKeysState = {
   [key: string]: any
 }
 
-type UpdateState = {
+type MediaState = {
+  prev?: MediaKeysState
   enabled?: boolean
-  keys?: string[]
-  prev: MediaKeysState
-  touched?: Set<string>
+  keys?: Record<string, boolean> | null
 }
 
-const States = new WeakMap<any, UpdateState>()
+const States = new WeakMap<any, MediaState>()
 
-export function setMediaShouldUpdate(ref: any, props: Partial<UpdateState>) {
+export function setMediaShouldUpdate(ref: any, props: MediaState) {
   return States.set(ref, {
     ...(States.get(ref) as any),
     ...props,
   })
 }
 
-function getSnapshot({ touched, prev, enabled, keys }: UpdateState) {
-  const isDisabled = enabled === false
-  if (isDisabled) {
-    return prev
-  }
-
-  const testKeys = keys || touched ? [...(keys || []), ...(touched || [])] : null
-  const hasntUpdated =
-    !testKeys || testKeys?.every((key) => mediaState[key] === prev[key])
-
-  if (hasntUpdated) {
-    return prev
-  }
-
-  return mediaState
+type UseMediaInternalState = {
+  prev: MediaKeysState
+  keys?: string[]
 }
 
-// TODO once you touch a media key it never untouches, to avoid an extra useEffect on every component
-// ideally we don't do that, but useMedia usage is lower and generally its not super expensive
-// i think in the future we implement this by sharing a single useEffect in createComponent somehow
+function subscribe(subscriber: any) {
+  listeners.add(subscriber)
+  return () => {
+    listeners.delete(subscriber)
+  }
+}
 
 export function useMedia(
   uidIn?: any,
-  componentContext?: ComponentContextI
+  componentContext?: ComponentContextI,
+  debug?: DebugProp
 ): UseMediaState {
   const uid = uidIn ?? useRef()
-
-  const hasHydrated = useDidHydrateOnce()
-  const isHydrated = !isWeb || getDisableSSR(componentContext) || hasHydrated
-  const initialState = isHydrated ? mediaState : initState
+  // performance boost to avoid using context twice
+  const disableSSR = getDisableSSR(componentContext)
+  const initialState = (disableSSR || !isWeb ? mediaState : initState) || {}
 
   let componentState = States.get(uid)
   if (!componentState) {
@@ -222,34 +210,67 @@ export function useMedia(
     States.set(uid, componentState)
   }
 
-  const [state, setState] = useState(initialState)
-
-  useIsomorphicLayoutEffect(() => {
-    function update() {
-      setState((prev) => {
-        const componentState = States.get(uid)!
-        const next = getSnapshot(componentState)
-        if (next !== prev) {
-          componentState.prev = next
-          return next
-        }
-        return prev
-      })
+  const getSnapshot = () => {
+    if (!componentState) {
+      return initialState
     }
 
-    update()
+    const { enabled, keys, prev = initialState } = componentState
 
-    listeners.add(update)
-    return () => {
-      listeners.delete(update)
+    if (enabled === false) {
+      return prev
     }
-  }, [uid])
+
+    const testKeys = keys ?? (enabled && keys) ?? null
+    const hasntUpdated =
+      !testKeys || Object.keys(testKeys).every((key) => mediaState[key] === prev[key])
+
+    if (hasntUpdated) {
+      return prev
+    }
+
+    componentState.prev = mediaState
+    return mediaState
+  }
+
+  let state: MediaQueryState
+
+  if (process.env.TAMAGUI_SYNC_MEDIA_QUERY) {
+    state = useSyncExternalStore<MediaQueryState>(
+      subscribe,
+      getSnapshot,
+      () => initialState
+    )
+  } else {
+    const [_state, setState] = useState(initialState)
+    state = _state
+
+    useIsomorphicLayoutEffect(() => {
+      function update() {
+        setState(getSnapshot)
+      }
+
+      update()
+
+      // fix media getting stuck on first render causing weird issues in dialogs not positioning
+      if (!disableSSR) {
+        Promise.resolve().then(() => {
+          update()
+        })
+      }
+
+      return subscribe(update)
+    }, [])
+  }
 
   return new Proxy(state, {
     get(_, key) {
       if (typeof key === 'string') {
-        componentState.touched ||= new Set()
-        componentState.touched.add(key)
+        componentState.keys ||= {}
+        componentState.keys[key] = true
+        if (process.env.NODE_ENV === 'development' && debug) {
+          console.info(`useMedia() TOUCH`, key)
+        }
       }
       return Reflect.get(state, key)
     },

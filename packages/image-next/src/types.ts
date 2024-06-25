@@ -1,4 +1,4 @@
-import type { StackProps } from '@tamagui/core'
+import type { ViewProps } from '@tamagui/web'
 import type { Image as RNImage } from 'react-native'
 
 import type {
@@ -9,10 +9,10 @@ import type {
 
 type RNImageType = typeof RNImage
 
-type KeyofStackProps = keyof StackProps
+type KeyofViewProps = keyof ViewProps
 
-export type ImageProps = StackProps &
-  Omit<RNImageProps, KeyofStackProps | 'source' | 'resizeMode' | 'style'> & {
+export type ImageProps = ViewProps &
+  Omit<RNImageProps, KeyofViewProps | 'source' | 'resizeMode' | 'style'> & {
     /**
      * @deprecated
      * use src instead
@@ -27,7 +27,7 @@ export type ImageProps = StackProps &
     objectPosition?: React.CSSProperties['objectPosition']
   } & Omit<
     React.ImgHTMLAttributes<HTMLImageElement>,
-    'width' | 'height' | KeyofStackProps
+    'width' | 'height' | KeyofViewProps
   > &
   Omit<React.ImgHTMLAttributes<HTMLImageElement>, 'width' | 'height' | 'style'>
 

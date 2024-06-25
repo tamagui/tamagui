@@ -1,28 +1,20 @@
 // fork from https://github.com/seek-oss/vanilla-extract
 
-import path from 'path'
+import path from 'node:path'
 
 import type { TamaguiOptions } from '@tamagui/static'
 import * as StaticIn from '@tamagui/static'
 import outdent from 'outdent'
 import type { Plugin, ResolvedConfig, ViteDevServer } from 'vite'
-import { normalizePath } from 'vite'
+import { normalizePath, type Environment } from 'vite'
 
 // some sort of weird esm compat
 const Static = (StaticIn['default'] || StaticIn) as typeof StaticIn
 
 const styleUpdateEvent = (fileId: string) => `tamagui-style-update:${fileId}`
-const GLOBAL_CSS_VIRTUAL_PATH = '__tamagui_global_css__.css'
 
 export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugin {
-  const options = Static.loadTamaguiBuildConfigSync({
-    ...optionsIn,
-    platform: 'web',
-  })
-  const disableStatic =
-    options.disable || (options.disableDebugAttr && options.disableExtraction)
-
-  if (disableStatic) {
+  if (optionsIn?.disable) {
     return {
       name: 'tamagui-extract',
     }
@@ -32,15 +24,21 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
   const cssMap = new Map<string, string>()
 
   let config: ResolvedConfig
+  let tamaguiOptions: TamaguiOptions
   let server: ViteDevServer
   let shouldReturnCSS = true //config.command === 'serve'
   let virtualExt: string
+  let disableStatic = false
 
   const getAbsoluteVirtualFileId = (filePath: string) => {
     if (filePath.startsWith(config.root)) {
       return filePath
     }
     return normalizePath(path.join(config.root, filePath))
+  }
+
+  function isVite6AndNotClient(environment?: Environment) {
+    return environment?.name && environment?.name !== 'client'
   }
 
   return {
@@ -52,42 +50,46 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
     },
 
     buildEnd() {
-      extractor!.cleanupBeforeExit()
+      extractor?.cleanupBeforeExit()
     },
 
-    config(_userConfig, env) {
-      const include = env.command === 'serve' ? ['@tamagui/core/inject-styles'] : []
-      return {
-        optimizeDeps: { include },
-      }
+    config(userConf) {
+      userConf.optimizeDeps ||= {}
+      userConf.optimizeDeps.include ||= []
+      userConf.optimizeDeps.include.push('@tamagui/core/inject-styles')
     },
 
     async configResolved(resolvedConfig) {
+      if (extractor) {
+        return
+      }
+
       config = resolvedConfig
-      extractor = Static.createExtractor({
-        logger: resolvedConfig.logger,
-      })
-
-      await extractor!.loadTamagui({
-        // @ts-ignore
-        components: ['tamagui'],
-        // @ts-ignore
-        platform: 'web',
-        ...options,
-      })
-
       shouldReturnCSS = true
-      // TODO postcss work with postcss.config.js
-      // packageName = getPackageInfo(config.root).name;
-      // if (config.command === 'serve') {
-      //   postCssConfig = await resolvePostcssConfig(config);
-      // }
       virtualExt = `.tamagui.${shouldReturnCSS ? 'css' : 'js'}`
     },
 
     async resolveId(source) {
-      if (source === 'tamagui.css') {
-        return GLOBAL_CSS_VIRTUAL_PATH
+      if (isVite6AndNotClient(this.environment)) {
+        // only optimize on client - server should produce identical styles anyway!
+        return
+      }
+
+      // lazy load, vite for some reason runs plugins twice in some esm compat thing
+      if (!extractor) {
+        tamaguiOptions = Static.loadTamaguiBuildConfigSync({
+          ...optionsIn,
+          platform: 'web',
+        })
+        disableStatic = Boolean(tamaguiOptions.disable)
+        extractor = Static.createExtractor({
+          logger: config.logger,
+        })
+        await extractor!.loadTamagui({
+          components: ['tamagui'],
+          platform: 'web',
+          ...tamaguiOptions,
+        } satisfies TamaguiOptions)
       }
 
       const [validId, query] = source.split('?')
@@ -119,12 +121,13 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
      *
      */
 
-    load(id, options) {
-      const [validId] = id.split('?')
-
-      if (validId === GLOBAL_CSS_VIRTUAL_PATH) {
-        return extractor!.getTamagui()!.getCSS()
+    load(id) {
+      if (disableStatic || isVite6AndNotClient(this.environment)) {
+        // only optimize on client - server should produce identical styles anyway!
+        return
       }
+
+      const [validId] = id.split('?')
 
       if (!cssMap.has(validId)) {
         return
@@ -159,6 +162,11 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
     },
 
     async transform(code, id, ssrParam) {
+      if (disableStatic || isVite6AndNotClient(this.environment)) {
+        // only optimize on client - server should produce identical styles anyway!
+        return
+      }
+
       const [validId] = id.split('?')
 
       if (!validId.endsWith('.tsx')) {
@@ -171,6 +179,11 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
         path: validId,
       })
 
+      if (shouldPrintDebug) {
+        console.trace(`Debugging file: ${id} in environment: ${this.environment?.name}`)
+        console.info(`\n\nOriginal source:\n${code}\n\n`)
+      }
+
       if (shouldDisable) {
         return
       }
@@ -179,7 +192,7 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
         extractor: extractor!,
         source: code,
         sourcePath: validId,
-        options,
+        options: tamaguiOptions,
         shouldPrintDebug,
       })
 
@@ -224,29 +237,6 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
         code: source.toString(),
         map: extracted.map,
       }
-
-      // if (ssr && !process.env.VITE_RSC_BUILD) {
-      //   return addFileScope({
-      //     source: code,
-      //     filePath: normalizePath(validId),
-      //     rootPath: config.root,
-      //     packageName,
-      //   })
-      // }
-
-      // const { source, watchFiles } = await compile({
-      //   filePath: validId,
-      //   cwd: config.root,
-      //   esbuildOptions,
-      // })
-
-      // for (const file of watchFiles) {
-      //   // In start mode, we need to prevent the file from rewatching itself.
-      //   // If it's a `build --watch`, it needs to watch everything.
-      //   if (config.command === 'build' || file !== validId) {
-      //     this.addWatchFile(file)
-      //   }
-      // }
     },
   }
 }

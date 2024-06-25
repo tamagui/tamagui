@@ -195,7 +195,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
             zi={100}
             colors={['$background', '$background', '$background0']}
           />
-          <ScrollView>
+          <ScrollView showsVerticalScrollIndicator={false}>
             <ThemeTint>
               <YStack
                 display="none"

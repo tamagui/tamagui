@@ -144,7 +144,7 @@ export function Popper(props: ScopedPopperProps<PopperProps>) {
     open,
   } = floating
 
-  if (isWeb) {
+  if (process.env.TAMAGUI_TARGET === 'web') {
     useIsomorphicLayoutEffect(() => {
       if (!open) return
       if (!(refs.reference.current && refs.floating.current)) {
@@ -156,7 +156,9 @@ export function Popper(props: ScopedPopperProps<PopperProps>) {
       // Only call this when the floating element is rendered
       return autoUpdate(refs.reference.current, refs.floating.current, floating.update)
     }, [open, floating.update, refs.floating, refs.reference])
-  } else {
+  }
+
+  if (process.env.TAMAGUI_TARGET === 'native') {
     // On Native there's no autoupdate so we call update() when necessary
 
     // Subscribe to window dimensions (orientation, scale, etc...)

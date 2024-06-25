@@ -1,6 +1,11 @@
 import { composeRefs } from '@tamagui/compose-refs'
 import { isClient, isServer, isWeb } from '@tamagui/constants'
-import { composeEventHandlers, validStyles } from '@tamagui/helpers'
+import {
+  StyleObjectIdentifier,
+  StyleObjectRules,
+  composeEventHandlers,
+  validStyles,
+} from '@tamagui/helpers'
 import React, {
   Children,
   Fragment,
@@ -10,7 +15,6 @@ import React, {
   useContext,
   useEffect,
   useId,
-  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -36,6 +40,7 @@ import { log } from './helpers/log'
 import { mergeProps } from './helpers/mergeProps'
 import { setElementProps } from './helpers/setElementProps'
 import { themeable } from './helpers/themeable'
+import { useDidHydrateOnce } from './hooks/useDidHydrateOnce'
 import { mediaKeyMatch, setMediaShouldUpdate, useMedia } from './hooks/useMedia'
 import { useThemeWithState } from './hooks/useTheme'
 import type { TamaguiComponentEvents } from './interfaces/TamaguiComponentEvents'
@@ -69,7 +74,6 @@ import type {
 import { Slot } from './views/Slot'
 import { getThemedChildren } from './views/Theme'
 import { ThemeDebug } from './views/ThemeDebug'
-import { useDidHydrateOnce } from './hooks/useDidHydrateOnce'
 
 /**
  * All things that need one-time setup after createTamagui is called
@@ -156,7 +160,12 @@ export const useComponentState = (
 ) => {
   const useAnimations = animationDriver?.useAnimations as UseAnimationHook | undefined
 
-  const stateRef = useRef<TamaguiComponentStateRef>({})
+  const stateRef = useRef<TamaguiComponentStateRef>(
+    undefined as any as TamaguiComponentStateRef
+  )
+  if (!stateRef.current) {
+    stateRef.current = {}
+  }
 
   // after we get states mount we need to turn off isAnimated for server side
   const hasAnimationProp = Boolean(
@@ -197,19 +206,21 @@ export const useComponentState = (
 
   const hasEnterState = hasEnterStyle || isEntering
 
-  const didHydrateOnce = useDidHydrateOnce()
+  // this can be conditional because its only ever needed with animations
+  const didHydrateOnce = willBeAnimated ? useDidHydrateOnce() : true
+  const shouldEnter = hasEnterState || (!didHydrateOnce && hasRNAnimation)
+  const shouldEnterFromUnhydrated = isWeb && !didHydrateOnce
 
-  const initialState =
-    hasEnterState || (!didHydrateOnce && hasRNAnimation)
-      ? // on the very first render we switch all spring animation drivers to css rendering
-        // this is because we need to use css variables, which they don't support to do proper SSR
-        // without flickers of the wrong colors.
-        // but once we do that initial hydration and we are in client side rendering mode,
-        // we can avoid the extra re-render on mount
-        isWeb && !didHydrateOnce
-        ? defaultComponentState
-        : defaultComponentStateShouldEnter
-      : defaultComponentStateMounted
+  const initialState = shouldEnter
+    ? // on the very first render we switch all spring animation drivers to css rendering
+      // this is because we need to use css variables, which they don't support to do proper SSR
+      // without flickers of the wrong colors.
+      // but once we do that initial hydration and we are in client side rendering mode,
+      // we can avoid the extra re-render on mount
+      shouldEnterFromUnhydrated
+      ? defaultComponentState
+      : defaultComponentStateShouldEnter
+    : defaultComponentStateMounted
 
   // will be nice to deprecate half of these:
   const disabled = isDisabled(props)
@@ -706,7 +717,7 @@ export function createComponent<
     if (process.env.NODE_ENV === 'development' && time) time`theme`
 
     // HOOK 14 (-1 if no animation, -1 if disableSSR, -1 if no context, -1 if production)
-    const mediaState = useMedia(stateRef, componentContext)
+    const mediaState = useMedia(stateRef, componentContext, debugProp)
 
     setDidGetVariableValue(false)
 
@@ -725,6 +736,7 @@ export function createComponent<
       resolveValues,
       isExiting,
       isAnimated,
+      willBeAnimated,
     } as const
 
     // HOOK 15 (-1 if no animation, -1 if disableSSR, -1 if no context, -1 if production)
@@ -753,12 +765,18 @@ export function createComponent<
 
     // only listen for changes if we are using raw theme values or media space, or dynamic media (native)
     // array = space media breakpoints
-    const isMediaArray = splitStyles.hasMedia && Array.isArray(splitStyles.hasMedia)
+    const hasRuntimeMediaKeys = splitStyles.hasMedia && splitStyles.hasMedia !== true
     const shouldListenForMedia =
       didGetVariableValue() ||
-      isMediaArray ||
+      hasRuntimeMediaKeys ||
       (noClassNames && splitStyles.hasMedia === true)
-    const mediaListeningKeys = isMediaArray ? (splitStyles.hasMedia as any) : null
+
+    const mediaListeningKeys = hasRuntimeMediaKeys
+      ? (splitStyles.hasMedia as Record<string, boolean>)
+      : null
+    if (process.env.NODE_ENV === 'development' && debugProp) {
+      console.info(`useMedia() createComponent`, shouldListenForMedia, mediaListeningKeys)
+    }
 
     setMediaShouldUpdate(stateRef, {
       enabled: shouldListenForMedia,
@@ -1296,7 +1314,8 @@ export function createComponent<
           <>
             {content}
             {/* lets see if we can put a single style tag per rule for optimal de-duping */}
-            {splitStyles.rulesToInsert.map(({ rules, identifier }) => {
+            {splitStyles.rulesToInsert.map((styleObject) => {
+              const identifier = styleObject[StyleObjectIdentifier]
               return (
                 <style
                   key={identifier}
@@ -1305,7 +1324,7 @@ export function createComponent<
                   // @ts-ignore
                   precedence="default"
                 >
-                  {rules.join('\n')}
+                  {styleObject[StyleObjectRules].join('\n')}
                 </style>
               )
             })}
@@ -1343,7 +1362,7 @@ export function createComponent<
                 elementType,
                 events,
                 isAnimated,
-                isMediaArray,
+                hasRuntimeMediaKeys,
                 isStringElement,
                 mediaListeningKeys,
                 pseudos,

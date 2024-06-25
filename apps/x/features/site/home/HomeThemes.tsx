@@ -18,10 +18,13 @@ import { ActiveCircle } from '~/components/ActiveCircle'
 import { ContainerLarge } from '~/components/Containers'
 import { HomeH2, HomeH3 } from './HomeHeaders'
 import { MediaPlayer } from './MediaPlayer'
+import { useUserTheme } from '../theme/useUserTheme'
 
 type Lock = null | 'shouldAnimate' | 'animate' | 'scroll'
 
 export const HomeThemes = memo(function HomeThemes() {
+  const [{ resolvedTheme }, setUserTheme] = useUserTheme()
+
   const tints = useTints().tints as ThemeName[]
   const themes: (ThemeName | null)[][] = [tints, [null, 'alt1', 'alt2']]
 
@@ -49,7 +52,6 @@ export const HomeThemes = memo(function HomeThemes() {
   const activeIndex = splitToFlat(activeI)
 
   const [curColorI, curShadeI] = activeI
-  const [theme, setSelTheme] = useState('')
   const colorName = themes[0][curColorI]
   const scrollView = useRef<HTMLElement | null>(null)
   const [scrollLock, setScrollLock] = useState<Lock>(null)
@@ -149,16 +151,6 @@ export const HomeThemes = memo(function HomeThemes() {
     }
   }, [isIntersecting])
 
-  // TODO
-  // useEffect(() => {
-  //   if (typeof themeSetting.current === 'boolean') return
-  //   setSelTheme(
-  //     themeSetting.current === 'system'
-  //       ? themeSetting.systemTheme || 'light'
-  //       : themeSetting.current || 'light'
-  //   )
-  // }, [themeSetting])
-
   return (
     <YStack pos="relative">
       {useMemo(() => {
@@ -178,12 +170,12 @@ export const HomeThemes = memo(function HomeThemes() {
           <XStack px="$4" space="$2">
             <XGroup disablePassBorderRadius bordered p="$2" br="$10" als="center">
               {(['light', 'dark'] as const).map((name, i) => {
-                const isActive = theme === name
+                const isActive = resolvedTheme === name
                 return (
                   <XGroup.Item key={name + i}>
                     <ActiveCircle
                       backgroundColor={name === 'dark' ? '#000' : '#fff'}
-                      onPress={() => themeSetting.set(name)}
+                      onPress={() => setUserTheme(name)}
                       isActive={isActive}
                     />
                   </XGroup.Item>

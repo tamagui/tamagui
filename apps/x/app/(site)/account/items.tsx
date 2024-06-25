@@ -303,34 +303,6 @@ const ItemDetails = (
   const installInstructions = (product.metadata as any).install_instructions
   const hasGithubApp = (product.metadata as any).has_github_app
 
-  // async function handleRemoveFormSub() {
-  //   setIsLoading(true)
-  //   try {
-  //     const res = await fetch(`/api/remove-subscription-item`, {
-  //       body: JSON.stringify({
-  //         subscription_item_id: item.id,
-  //       }),
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       method: 'POST',
-  //     })
-
-  //     const data = await res.json()
-
-  //     // delay so stripe calls us first
-  //     await new Promise((res) => setTimeout(() => res(true), 1000))
-
-  //     await mutate('user')
-
-  //     if (data.message) {
-  //       alert(data.message)
-  //     }
-  //   } finally {
-  //     setIsLoading(false)
-  //   }
-  // }
-
   async function handleGrantAccess() {
     setIsLoading(true)
     try {
@@ -348,6 +320,7 @@ const ItemDetails = (
           headers: {
             'Content-Type': 'application/json',
           },
+          credentials: 'include',
           method: 'POST',
         })
 

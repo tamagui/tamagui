@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import type { StackProps } from '@tamagui/core';
 import type { Scope } from '@tamagui/create-context';
 export declare const FormFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic>;
@@ -15,7 +14,7 @@ export declare const FormProvider: {
     }): import("react/jsx-runtime").JSX.Element;
     displayName: string;
 }, useFormContext: (consumerName: string, scope: Scope<FormContextValue | undefined>, options?: {
-    warn?: boolean | undefined;
+    warn?: boolean;
     fallback?: Partial<FormContextValue> | undefined;
 } | undefined) => FormContextValue;
 export type FormProps = StackProps & {

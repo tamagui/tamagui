@@ -23,7 +23,7 @@ export const ThemeNameEffect = memo(
       <>
         <YStack
           id="theme-name-effect"
-          onLayout={() => {
+          ref={() => {
             startTransition(() => {
               setIsActive(true)
             })

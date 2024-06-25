@@ -12,6 +12,7 @@ export function fixStyles(style: Record<string, any>) {
     }
   }
 
+  // TODO deprecate for web-style shadows
   if (
     style.shadowRadius != null ||
     style.shadowColor ||
@@ -21,7 +22,7 @@ export function fixStyles(style: Record<string, any>) {
     Object.assign(style, normalizeShadow(style))
   }
 
-  // TODO could be native-only
+  // could be optimized better
   // ensure border style set by default to solid
   for (const key in borderDefaults) {
     if (key in style) {

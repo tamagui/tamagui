@@ -10,10 +10,10 @@ export declare const Test14Component: import("tamagui").TamaguiComponent<import(
     fullbleed?: boolean | undefined;
     fullscreen?: boolean | undefined;
     inset?: number | import("tamagui").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
 }, import("@tamagui/web").StaticConfigPublic>;
 export declare const TestBorderExtraction: import("tamagui").TamaguiComponent<import("@tamagui/web").TamaDefer, import("tamagui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
@@ -22,10 +22,10 @@ export declare const TestBorderExtraction: import("tamagui").TamaguiComponent<im
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     inset?: number | import("tamagui").SizeTokens | {
-        top?: number | undefined;
-        bottom?: number | undefined;
-        left?: number | undefined;
-        right?: number | undefined;
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
     } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;

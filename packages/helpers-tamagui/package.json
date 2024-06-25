@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/helpers-tamagui",
-  "version": "1.101.0",
+  "version": "1.101.3",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
@@ -28,18 +28,17 @@
     }
   },
   "dependencies": {
-    "@tamagui/helpers": "1.101.0",
-    "@tamagui/web": "1.101.0"
+    "@tamagui/helpers": "1.101.3",
+    "@tamagui/web": "1.101.3"
   },
   "devDependencies": {
-    "@tamagui/build": "1.101.0",
+    "@tamagui/build": "1.101.3",
     "react": "^18.2.0",
     "react-native": "0.74.1",
     "vitest": "^0.34.3"
   },
   "peerDependencies": {
-    "react": "*",
-    "react-native": "*"
+    "react": "*"
   },
   "publishConfig": {
     "access": "public"

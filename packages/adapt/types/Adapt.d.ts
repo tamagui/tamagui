@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import type { MediaQueryKey } from '@tamagui/core';
 type MediaQueryKeyString = MediaQueryKey extends string ? MediaQueryKey : never;
 export type AdaptProps = {
@@ -18,7 +17,7 @@ export declare const AdaptContents: {
     shouldForwardSpace: boolean;
 };
 export declare const useAdaptParent: ({ Contents, }: {
-    Contents: AdaptParentContextI['Contents'];
+    Contents: AdaptParentContextI["Contents"];
 }) => {
     AdaptProvider: (props: {
         children?: any;

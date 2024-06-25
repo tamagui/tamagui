@@ -5,7 +5,7 @@ export declare const getButtonSized: (val: SizeTokens | number, { tokens, props 
     borderRadius: number;
 } | {
     paddingHorizontal: import("@tamagui/web").Variable<number>;
-    height: `$${string}.${string}` | `$${string}.${number}` | import("@tamagui/web").UnionableString | `$${string}` | `$${number}`;
+    height: `$${string}` | `$${string}.${string}` | `$${string}.${number}` | import("@tamagui/web").UnionableString | `$${number}`;
     borderRadius: import("@tamagui/web").VariableVal;
 } | undefined;
 //# sourceMappingURL=index.d.ts.map

@@ -1,5 +1,4 @@
-import { join, relative } from 'path'
-
+import { join, relative } from 'node:path'
 import resolve from 'esm-resolve'
 import * as fsExtra from 'fs-extra'
 

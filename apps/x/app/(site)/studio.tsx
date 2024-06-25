@@ -153,16 +153,16 @@ const StudioScreen1 = memo(() => {
   const isLight = resolvedTheme === 'light'
 
   const glow = useHoverGlow({
-    resist: 65,
-    size: 900,
+    resist: 85,
+    size: 1000,
     offset: {
       x: -50,
       y: -50,
     },
     strategy: 'blur',
-    blurPct: 100,
+    blurPct: 50,
     color: 'var(--color6)',
-    opacity: isLight ? 0.225 : 0.3,
+    opacity: isLight ? 0.225 : 0.15,
     background: 'transparent',
   })
 
@@ -238,7 +238,20 @@ const StudioScreen1 = memo(() => {
       const Component = (
         <YStack key={letter} pos="relative" scale={scale} zIndex={zIndex}>
           <Glow.Component>
-            <YStack pos="relative" w={320} h={320}>
+            <YStack
+              animation={[
+                'kindaBouncy',
+                {
+                  opacity: {
+                    overshootClamping: true,
+                  },
+                },
+              ]}
+              enterStyle={{ o: 0, y: -20 }}
+              pos="relative"
+              w={320}
+              h={320}
+            >
               <H1
                 pos="absolute"
                 t={0}
@@ -292,7 +305,7 @@ const StudioScreen1 = memo(() => {
 
   return (
     <ThemeTint>
-      <YStack pe="none" o={0.035} fullscreen className="bg-grid" />
+      <YStack y={-54} pe="none" o={0.0175} fullscreen className="bg-grid" />
 
       <YStack
         als="center"

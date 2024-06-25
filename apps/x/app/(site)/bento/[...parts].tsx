@@ -1,11 +1,14 @@
 import { Data, Sections, CurrentRouteProvider } from '@tamagui/bento'
 import { Toast, useToastState } from '@tamagui/toast'
 import { Link, useLocalSearchParams } from 'vxs'
-import { Anchor, H1, SizableText, Theme, View, XStack, YStack } from 'tamagui'
+import { Anchor, Button, H1, SizableText, Theme, View, XStack, YStack } from 'tamagui'
 import { ContainerBento } from '~/components/Containers'
 import { BentoLogo } from '~/features/bento/BentoLogo'
 import { BentoPageFrame } from '~/features/bento/BentoPageFrame'
 import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
+import { DropTamaguiConfig } from '~/features/bento/DropTamaguiConfig'
+import { useBentoStore } from '~/features/bento/BentoStore'
+import { CircleDashed, PaintBucket, Paintbrush } from '@tamagui/lucide-icons'
 
 export const generateStaticParams = async () => {
   // bento react-hook-form is breaking for now lets leave this off
@@ -23,6 +26,7 @@ function useParts() {
 
 export default function BentoPage() {
   const { section, part } = useParts()
+  const bentoStore = useBentoStore()
   const Comp = Sections?.[section]?.[part]
 
   if (!Comp) {
@@ -32,8 +36,6 @@ export default function BentoPage() {
   return (
     <CurrentRouteProvider section={section} part={part}>
       <ThemeNameEffect />
-      {/* <DropTamaguiConfig /> */}
-
       <BentoPageFrame>
         <ContainerBento>
           <DetailHeader>{`${section[0].toUpperCase()}${section.slice(1)}`}</DetailHeader>
@@ -41,7 +43,7 @@ export default function BentoPage() {
         <YStack>
           <YStack pe="none" fullscreen className="bg-grid" o={0.033} />
           <ContainerBento>
-            <Comp />
+            <Comp key={bentoStore.disableTint} />
             <CurrentToast />
           </ContainerBento>
         </YStack>
@@ -53,6 +55,7 @@ export default function BentoPage() {
 }
 
 export const DetailHeader = (props: { children: string }) => {
+  const bentoStore = useBentoStore()
   const { section, part } = useParts()
   const category = (typeof section === 'string' ? section : section?.[0]) || ''
   const subCategory = (typeof part === 'string' ? part : part?.[0]) || ''
@@ -68,11 +71,25 @@ export const DetailHeader = (props: { children: string }) => {
           </Theme>
 
           {/* <YStack zi={100} mb={-50} gap="$6" $sm={{ mb: 40 }}> */}
-          <YStack zi={100} gap="$6" $sm={{ mb: 40 }}>
-            <View $gtLg={{ right: '$-6' }}>
-              <BentoLogo scale={0.3} />
+          <YStack ai="flex-end" zi={100} gap="$6" y={40} mt={-20} $sm={{ mb: 40 }}>
+            <View x={30}>
+              <BentoLogo scale={0.25} />
             </View>
-            {/* <DropTamaguiConfig /> */}
+
+            <XStack gap="$4">
+              <DropTamaguiConfig />
+
+              {/* <Button
+                icon={bentoStore.disableTint ? CircleDashed : Paintbrush}
+                size="$3"
+                br="$6"
+                onPress={() => {
+                  bentoStore.disableTint = !bentoStore.disableTint
+                }}
+              >
+                {bentoStore.disableTint ? 'Dark/Light' : 'Tinted'}
+              </Button> */}
+            </XStack>
           </YStack>
         </XStack>
 
@@ -88,22 +105,22 @@ export const DetailHeader = (props: { children: string }) => {
           </SizableText>
 
           {/* TODO for some reason these break [vite:build-import-analysis */}
-          {/* <Link href={`/bento#${category}`}>
+          <Link href={`/bento#${category}`}>
             <Anchor tag="span" textTransform="capitalize">
               {category}
             </Anchor>
-          </Link> */}
+          </Link>
 
           <SizableText theme="alt1" tag="span" selectable={false} size="$2">
             &raquo;
           </SizableText>
 
           {/* TODO for some reason these break [vite:build-import-analysis */}
-          {/* <Link href={`/bento/${subCategory}`}>
+          <Link href={`/bento/${subCategory}`}>
             <Anchor tag="span" textTransform="capitalize">
               {subCategory.replace('_', ' ').replace('#', '')}
             </Anchor>
-          </Link> */}
+          </Link>
         </XStack>
       </YStack>
     </YStack>

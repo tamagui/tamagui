@@ -1,5 +1,5 @@
 import { isClient } from '@tamagui/constants'
-
+import { StyleObjectIdentifier, StyleObjectRules } from '@tamagui/helpers'
 import { createVariable } from '../createVariable'
 import type {
   DedupedTheme,
@@ -343,11 +343,14 @@ export function insertStyleRules(rulesToInsert: RulesToInsert) {
       return
     }
 
-    for (const { identifier, rules } of rulesToInsert) {
+    for (const styleObject of rulesToInsert) {
+      const identifier = styleObject[StyleObjectIdentifier]
+
       if (!shouldInsertStyleRules(identifier)) {
         continue
       }
 
+      const rules = styleObject[StyleObjectRules]
       allSelectors[identifier] = rules.join('\n')
       track(identifier)
       updateRules(identifier, rules)
@@ -373,7 +376,7 @@ export function insertStyleRules(rulesToInsert: RulesToInsert) {
 
 const minInsertAmt = process.env.TAMAGUI_INSERT_SELECTOR_TRIES
   ? +process.env.TAMAGUI_INSERT_SELECTOR_TRIES
-  : 2
+  : 1
 
 export function shouldInsertStyleRules(identifier: string) {
   if (process.env.TAMAGUI_REACT_19) {

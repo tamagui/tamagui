@@ -8,8 +8,6 @@ import { getSingle } from '~/helpers/getSingle'
 export default apiRoute(async (req) => {
   const { supabase, user } = await ensureAuth({ req })
 
-  console.info('Claim: authed')
-
   const body = await readBodyJSON(req)
   const subscriptionId = body['subscription_id']
   const productOwnershipId = Number(body['product_ownership_id'])

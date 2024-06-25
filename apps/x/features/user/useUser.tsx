@@ -1,12 +1,10 @@
-import { useRouter } from 'vxs'
 import { useEffect } from 'react'
 import useSWR from 'swr'
 import { Spinner, YStack } from 'tamagui'
+import { useRouter } from 'vxs'
 
-import type { UserContextType } from '../auth/types'
 import { useOfflineMode } from '~/hooks/useOfflineMode'
-
-const siteRootDir = process.env.NODE_ENV === 'development' ? '' : 'https://tamagui.dev'
+import type { UserContextType } from '../auth/types'
 
 export const useUser = () => {
   return useSWR<UserContextType | null>('user', {
@@ -34,8 +32,8 @@ export const UserGuard = ({ children }: { children: React.ReactNode }) => {
     if (isOffline) {
       return
     }
-    if (!user && !isLoading && router.isReady) {
-      router.push(`${siteRootDir}/login`)
+    if (!user && !isLoading) {
+      router.push(`/login`)
     }
   }, [isOffline, user, isLoading, router])
 

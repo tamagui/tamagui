@@ -1,4 +1,4 @@
-// import '../lib/wdyr'
+import '../lib/wdyr'
 
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import { useState } from 'react'
@@ -6,6 +6,38 @@ import { AnimatePresence, Button, Text, YStack, styled } from 'tamagui'
 
 console.warn('setting debug moti true')
 global.shouldDebugMoti = true
+
+function TestEnter() {
+  const [key, setKey] = useState(0)
+
+  return (
+    <>
+      <Circle
+        key={key}
+        debug="verbose"
+        size={100}
+        bg="red"
+        animation="superLazy"
+        hoverStyle={{
+          scale: 2,
+        }}
+        enterStyle={{
+          // opacity: 0,
+          y: -100,
+        }}
+      />
+
+      <Button
+        onPress={() => {
+          console.warn('press!')
+          setKey(Math.random())
+        }}
+      >
+        remount
+      </Button>
+    </>
+  )
+}
 
 function TestPage() {
   return (
@@ -19,9 +51,12 @@ function TestPage() {
         flex: 1,
       }}
     >
+      {/* <HomeGlow /> */}
+      <TestEnter />
+
       {/* <PopoverDemo /> */}
 
-      <TooltipDemo />
+      {/* <TooltipDemo /> */}
 
       {/* <AnimatePresence>
         <YStack
@@ -287,6 +322,7 @@ const DebugNestedThemeChange = () => {
 import { TooltipDemo } from '@tamagui/demos'
 import { memo, useEffect } from 'react'
 import { Circle, XStack } from 'tamagui'
+import { HomeGlow } from '@components/HomeGlow'
 
 const TestCircle = memo(() => {
   const [mounted, setMounted] = useState<'start' | 'animate' | 'done'>('start')

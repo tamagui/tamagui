@@ -17,7 +17,6 @@ export function TamaguiProvider({
 
   if (isClient) {
     // inject CSS if asked to (not SSR compliant)
-
     useDidHydrateOnceRoot()
 
     React.useInsertionEffect(() => {

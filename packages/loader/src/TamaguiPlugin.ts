@@ -281,7 +281,9 @@ export class TamaguiPlugin {
 
     for (const [index, rule] of rules.entries()) {
       const shouldReplaceNextJSRule =
-        rule?.use && rule.use.loader === 'next-swc-loader' && !rule.issuerLayer
+        (rule?.use?.loader === 'next-swc-loader' ||
+          (Array.isArray(rule?.use) && rule?.use[0].loader === 'next-swc-loader')) &&
+        !rule.issuerLayer
 
       if (shouldReplaceNextJSRule) {
         didReplaceNextJS = true
@@ -305,15 +307,7 @@ export class TamaguiPlugin {
         existing.push({
           test: this.options.test ?? /\.tsx$/,
           exclude: this.options.exclude,
-          use: [
-            {
-              ...tamaguiLoader,
-              options: {
-                ...tamaguiLoader.options,
-                disableExtraction: true,
-              },
-            },
-          ],
+          use: [tamaguiLoader],
         })
       }
     }
