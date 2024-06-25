@@ -181,7 +181,7 @@ export default function TakeoutPage() {
 
       <ContainerLarge px={0}>
         <YStack h={0} mah={0}>
-          <YStack position="absolute" t={30} r={0}>
+          <YStack position="absolute" t={30} r="2%">
             <PurchaseButton
               onPress={() => {
                 store.showPurchase = true
