@@ -393,6 +393,11 @@ const Tag = styled(Text, {
     bg: '$color4',
   },
 
+  pressStyle: {
+    color: '$color',
+    bg: '$color3',
+  },
+
   variants: {
     active: {
       true: {

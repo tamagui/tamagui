@@ -27,6 +27,7 @@
     "@tamagui/assert": "1.101.3",
     "@tamagui/demos": "1.101.3",
     "@tamagui/image-next": "1.101.3",
+    "@tamagui/logo": "1.101.3",
     "@tamagui/lucide-icons": "^1.101.3",
     "@tamagui/mdx": "1.101.3",
     "@tamagui/site-config": "1.101.3",

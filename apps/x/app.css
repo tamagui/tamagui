@@ -65,13 +65,23 @@ body .preview {
   clip: rect(0, 0, 0, 0);
 }
 
-a,
+:root:root a,
 .text-decoration-none {
-  text-decoration: none !important;
+  text-decoration: none;
 }
 
-p a {
+p a, .t_Link {
   text-decoration: underline;
+}
+
+:root:root .is_Paragraph a {
+  text-decoration: underline;
+  text-decoration-color: var(--color025);
+}
+
+:root:root .is_Paragraph a:hover {
+  text-decoration-thickness: 2px;
+  text-decoration-color: var(--color05);
 }
 
 a {
@@ -777,8 +787,18 @@ textarea {
 
 .clip-slice {
   mask-image: url(./public/takeouticon.svg);
-  mask-size: 25% 25%;
+  mask-size: 12% 12%;
+  transform: rotate(2deg);
   animation: clip-fade2 90s infinite alternate;
+  mix-blend-mode: difference !important;
+}
+
+.clip-slice-2 {
+  mask-image: url(./public/takeouticon.svg);
+  mask-size: 20% 20%;
+  transform: rotate(-2deg);
+  animation: clip-fade2 90s infinite alternate;
+  mix-blend-mode: difference !important;
 }
 
 .clip-wave {
@@ -789,7 +809,8 @@ textarea {
 
 .slice-alt {
   mask-size: 50% 50%;
-  animation: clip-fade2 30s infinite alternate;
+  animation: clip-fade2 80s infinite alternate;
+  
 }
 
 @keyframes clip-fade {

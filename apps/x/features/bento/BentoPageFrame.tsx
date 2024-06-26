@@ -4,6 +4,8 @@ import { LoadCherryBomb, LoadMunro } from '../site/fonts/LoadFonts'
 import { ContainerLarge } from '~/components/Containers'
 import { Footer } from 'tamagui'
 
+// move to _layout? or into page?
+
 export const BentoPageFrame = ({
   children,
   simpler,
@@ -127,12 +129,9 @@ export const BentoPageFrame = ({
 
         {children}
 
-        <ContainerLarge>
-          <XStack ai="center" jc="center" width="100%" mt="$5">
-            <Separator bc="$color6" width={'100%'} mb="$5" />
-          </XStack>
-        </ContainerLarge>
-        <Footer />
+        {/* <Theme name="tan">
+          <Footer />
+        </Theme> */}
       </YStack>
     </>
   )

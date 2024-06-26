@@ -9,6 +9,8 @@ import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
 import { DropTamaguiConfig } from '~/features/bento/DropTamaguiConfig'
 import { useBentoStore } from '~/features/bento/BentoStore'
 import { CircleDashed, PaintBucket, Paintbrush } from '@tamagui/lucide-icons'
+import { ThemeTint } from '@tamagui/logo'
+import { startTransition, useEffect } from 'react'
 
 export const generateStaticParams = async () => {
   // bento react-hook-form is breaking for now lets leave this off
@@ -40,15 +42,16 @@ export default function BentoPage() {
         <ContainerBento>
           <DetailHeader>{`${section[0].toUpperCase()}${section.slice(1)}`}</DetailHeader>
         </ContainerBento>
-        <YStack>
-          <YStack pe="none" fullscreen className="bg-grid" o={0.033} />
-          <ContainerBento>
-            <Comp key={bentoStore.disableTint} />
-            <CurrentToast />
-          </ContainerBento>
-        </YStack>
 
-        <YStack h={200} />
+        <ThemeTint key={bentoStore.disableTint as any} disable={bentoStore.disableTint}>
+          <YStack py="$8" bg="$background">
+            <YStack pe="none" fullscreen className="bg-grid" o={0.033} />
+            <ContainerBento>
+              <Comp />
+              <CurrentToast />
+            </ContainerBento>
+          </YStack>
+        </ThemeTint>
       </BentoPageFrame>
     </CurrentRouteProvider>
   )
@@ -61,7 +64,7 @@ export const DetailHeader = (props: { children: string }) => {
   const subCategory = (typeof part === 'string' ? part : part?.[0]) || ''
 
   return (
-    <YStack gap="$4" $sm={{ px: '$4' }} pb="$11">
+    <YStack gap="$4" $sm={{ px: '$4' }} pb="$4">
       <YStack gap="$4">
         <XStack ai="center" jc="space-between" $sm={{ fd: 'column-reverse' }}>
           <Theme name="gray">
@@ -79,16 +82,18 @@ export const DetailHeader = (props: { children: string }) => {
             <XStack gap="$4">
               <DropTamaguiConfig />
 
-              {/* <Button
+              <Button
                 icon={bentoStore.disableTint ? CircleDashed : Paintbrush}
                 size="$3"
                 br="$6"
                 onPress={() => {
-                  bentoStore.disableTint = !bentoStore.disableTint
+                  startTransition(() => {
+                    bentoStore.disableTint = !bentoStore.disableTint
+                  })
                 }}
               >
                 {bentoStore.disableTint ? 'Dark/Light' : 'Tinted'}
-              </Button> */}
+              </Button>
             </XStack>
           </YStack>
         </XStack>

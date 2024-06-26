@@ -37,9 +37,9 @@ export const TakeoutLogo = (props: { scale?: number }) => {
           clipPath: `polygon(0% 0%, 0% 0%, 100% 100%, 100% 0%, 100% 0, 0% 100%)`,
         }}
       >
-        <ThemeTint>
+        <>
           <TAKEOUT className="text-3d" zi={1000} color="$color10" />
-        </ThemeTint>
+        </>
       </YStack>
 
       <YStack
@@ -74,6 +74,16 @@ export const TakeoutLogo = (props: { scale?: number }) => {
                 pos="absolute"
                 o={1}
                 zi={1002}
+              />
+            </ThemeTintAlt>
+            <ThemeTintAlt offset={-2}>
+              {/* main color slices */}
+              <TAKEOUT
+                color="$color7"
+                className="clip-slice-2 mix-blend"
+                pos="absolute"
+                o={1}
+                zi={1001}
               />
             </ThemeTintAlt>
           </>

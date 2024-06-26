@@ -188,7 +188,7 @@ export default function TakeoutPage() {
               }}
               size="$4"
             >
-              Purchase
+              $149
             </PurchaseButton>
           </YStack>
 
@@ -219,38 +219,46 @@ export default function TakeoutPage() {
               px: '$2',
             }}
           >
-            <YStack mt={-800} $md={{ mt: 0 }} ml={20} mr={0}>
+            <YStack mt={-700} $md={{ mt: 0 }} ml={20} mr={0}>
               {starter && <StarterCard product={starter} />}
             </YStack>
 
-            <YStack mt={-620} $md={{ mt: -520 }} group="takeoutBody" f={1} gap="$5">
+            <YStack mt={-580} $md={{ mt: -520 }} group="takeoutBody" f={1} gap="$5">
               <FeaturesIconRow />
 
               <ThemeTintAlt>
                 <Paragraph className="text-wrap-balance" size="$7" $sm={{ size: '$7' }}>
-                  Takeout is a bootstrap designed to ship faster with React and React
-                  Native, extracted from our experience consulting on apps with Tamagui.
+                  Takeout is how we fund development of the OSS Tamagui libraries. It
+                  takes a fork of our free and OSS starter kit and brings it to a nice
+                  starting point for a variety of user-based apps.
                 </Paragraph>
 
-                <Paragraph className="text-wrap-balance" size="$6" $sm={{ size: '$5' }}>
-                  It builds off the free and open source starter{' '}
-                  <CodeInline>npm&nbsp;create&nbsp;tamagui</CodeInline>, adding{' '}
+                <Paragraph className="text-wrap-balance" size="$7" $sm={{ size: '$7' }}>
+                  We recommend you try the free starter first to see if you like the
+                  general setup with <CodeInline>npm&nbsp;create&nbsp;tamagui</CodeInline>
+                  . Takeout combines React, React Native, Next.js, Expo, Supabase, and
+                  more in a monorepo with shared code, so it requires learning quite a few
+                  things if you aren't familiar with them.
+                </Paragraph>
+
+                <Paragraph className="text-wrap-balance" size="$6">
+                  We use{' '}
                   <a target="_blank" href="https://supabase.com" rel="noreferrer">
                     Supabase
                   </a>{' '}
-                  for data and auth, screens and flows for a user system,
-                  profiles,&nbsp;settings,&nbsp;assets,&nbsp;and&nbsp;more. Including the
-                  source for the scripts <CodeInline>yarn&nbsp;add:font</CodeInline> and{' '}
-                  <CodeInline>yarn&nbsp;add:icon</CodeInline> to generate Tamagui-styled
-                  and typed components from{' '}
+                  for data and storage, Zod for validation, tRPC for APIs, have a full
+                  user system with profiles and account customization, settings, and a few
+                  example screens. The repo also comes with scripts for setting up typed
+                  fonts and icons from{' '}
                   <Link href="https://fonts.google.com" target="_blank">
                     Google Fonts
                   </Link>{' '}
                   and{' '}
                   <Link href="https://icones.js.org" target="_blank">
                     icones.js.org
-                  </Link>
-                  .
+                  </Link>{' '}
+                  with <CodeInline>yarn&nbsp;add:icon</CodeInline> or{' '}
+                  <CodeInline>font</CodeInline>.
                 </Paragraph>
               </ThemeTintAlt>
 
@@ -624,9 +632,7 @@ export default function TakeoutPage() {
               <ThemeTint>
                 <YStack
                   p="$6"
-                  px="$8"
                   // className="blur-8"
-                  elevation="$10"
                   py="$8"
                   gap="$5"
                   br="$10"
@@ -635,8 +641,6 @@ export default function TakeoutPage() {
                     mx: '$-4',
                   }}
                 >
-                  <YStack pe="none" br="$10" zi={-1} fullscreen bg="$color6" o={0.2} />
-                  <YStack pe="none" br="$10" zi={-1} fullscreen bg="$color" o={0.1} />
                   <YStack
                     pos="absolute"
                     t={-400}
@@ -646,25 +650,25 @@ export default function TakeoutPage() {
                     w={1000}
                     h={1000}
                     scale={1.5}
-                    style={{
-                      background: 'radial-gradient(var(--color9), transparent 70%)',
-                      mixBlendMode: 'color-dodge',
-                    }}
                   />
-
+                  <Paragraph fontFamily="$munro" tt="uppercase" ls={4} size="$4">
+                    The bot
+                  </Paragraph>
                   <Paragraph size="$7" $sm={{ size: '$6' }} fow="400">
-                    Install the Tamagui Github bot to get PRs as we improve the starter.
-                    This is done with a few-step script that uses git and some file and
-                    code organization. As you diverge, we can't be perfect at sending
-                    updates, but we have an ignorefile, and ultimately the PRs alone are
-                    nice for notifications and version upgrade guides.
+                    Install TamaguiBot and we send updates every so often with a bundle of
+                    upgrades in the form of a PR.
+                  </Paragraph>
+                  <Paragraph size="$7" $sm={{ size: '$6' }} fow="400">
+                    As you diverge, we can't be perfect at sending updates, but ultimately
+                    we think Takeout is valuable even just as a reference - we test
+                    upgrades across every feature in the repo.
                   </Paragraph>
                 </YStack>
               </ThemeTint>
 
               <Spacer />
 
-              <YStack br="$12" elevation="$4" bg="rgba(0,0,0,0.8)" p="$7" gap="$3">
+              <YStack br="$12" p="$7" gap="$3">
                 <YStack mih={530}>
                   <Lazy>
                     <TakeoutGallery />
@@ -1129,7 +1133,7 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
         <ScrollView p="$6" disabled={media.md} showsVerticalScrollIndicator={false}>
           <YStack space="$2">
             <ThemeTintAlt>
-              <MunroP color="$color11" size="$9" ls={2}>
+              <MunroP color="$color11" size="$7" ls={2}>
                 The Stack
               </MunroP>
             </ThemeTintAlt>

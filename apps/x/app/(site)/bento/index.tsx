@@ -66,6 +66,7 @@ import { useTakeoutStore } from '~/features/site/purchase/useTakeoutStore'
 import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
 import { HeadInfo } from '~/components/HeadInfo'
 import { LoadCherryBomb, LoadMunro } from '~/features/site/fonts/LoadFonts'
+import { CodeInline } from '~/components/Code'
 
 export const loader = async () => {
   try {
@@ -116,16 +117,18 @@ export default function BentoPage() {
 
       <Theme name="tan">
         <ThemeNameEffect colorKey="$color6" />
+      </Theme>
 
-        <BentoFrond />
+      {/* <BentoFrond /> */}
 
-        <BentoPageFrame>
-          <ContainerLarge
-            zi={10}
-            h={0}
-            // offset for the banner
-            mt={30}
-          >
+      <BentoPageFrame>
+        <ContainerLarge
+          zi={10}
+          h={0}
+          // offset for the banner
+          mt={30}
+        >
+          <Theme name="tan">
             <Button
               pos="absolute"
               t="$-10"
@@ -138,13 +141,16 @@ export default function BentoPage() {
               }}
               bg="$background025"
             ></Button>
-          </ContainerLarge>
-          <YStack
-            onLayout={(e) => {
-              store.heroHeight = e.nativeEvent.layout.height
-            }}
-          >
+          </Theme>
+        </ContainerLarge>
+        <YStack
+          onLayout={(e) => {
+            store.heroHeight = e.nativeEvent.layout.height
+          }}
+        >
+          <Theme name="tan">
             <Hero mainProduct={data.bento} />
+
             {/* <YStack pos="relative" zi={10000}>
             <ContainerLarge>
               <YStack pos="absolute" t={-50} r={80} rotate="-10deg">
@@ -154,10 +160,10 @@ export default function BentoPage() {
           </YStack> */}
 
             <Intermediate />
-          </YStack>
-          <Body />
-        </BentoPageFrame>
-      </Theme>
+          </Theme>
+        </YStack>
+        <Body />
+      </BentoPageFrame>
     </>
   )
 }
@@ -262,6 +268,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['bento'] }) => 
           >
             <YStack
               className="ms200 ease-in all"
+              h={200}
               $xxs={{
                 scale: 0.4,
               }}
@@ -421,14 +428,30 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['bento'] }) => 
 
           <YStack pos="absolute" b="6%" r="$2" zi={100}>
             <Theme name="green">
-              <XStack maw={400} als="center" br="$2" className="blur-4">
-                <YStack o={0.5} bg="$color10" fullscreen br="$2" />
+              <XStack elevation="$0.5" maw={300} als="center" br="$5" className="blur-4">
+                <YStack o={0.35} bg="$color10" fullscreen br="$5" />
                 <YStack py="$3.5" px="$4" f={1}>
-                  <H3 ff="$silkscreen" size="$2" color="$color10">
-                    Latest Update
+                  <H3
+                    ff="$silkscreen"
+                    size="$2"
+                    color="$color2"
+                    mb="$1"
+                    $theme-dark={{
+                      color: '$color12',
+                    }}
+                  >
+                    The latest
                   </H3>
-                  <Paragraph color="$color4" size="$3" lh="$2">
-                    Ongoing polish. Next up is CLI to install components.
+                  <Paragraph
+                    color="$color3"
+                    size="$3"
+                    lh="$2"
+                    $theme-dark={{
+                      color: '$color10',
+                    }}
+                  >
+                    Use <CodeInline>npx bento-get</CodeInline> to search and copy any
+                    component directly to your repo.
                   </Paragraph>
                 </YStack>
                 <AlertCircle
@@ -436,7 +459,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['bento'] }) => 
                   t="$3"
                   r="$3"
                   zi={100}
-                  color="$color7"
+                  color="$color10"
                   size={16}
                 />
               </XStack>
@@ -573,6 +596,7 @@ const Body = () => {
 
   return (
     <YStack
+      bg="$background"
       pos="relative"
       className="all ease-in-out ms300"
       // @ts-ignore
@@ -604,11 +628,12 @@ const Body = () => {
             w="100%"
             size="$5"
             px="$3"
+            my="$3"
             fow="200"
             value={filter}
             onChangeText={setFilter}
             placeholder="Filter..."
-            placeholderTextColor="rgba(0,0,0,0.3)"
+            placeholderTextColor="rgba(150,150,150,0.5)"
             zi={100}
           />
         </ContainerLarge>
@@ -641,8 +666,6 @@ const Body = () => {
                     </YStack>
                   </ContainerLarge>
                 </YStack>
-
-                <Separator o={0.1} />
               </Theme>
 
               <ScrollView
@@ -719,13 +742,13 @@ function SectionCard({
         cursor="pointer"
         pos="relative"
         hoverStyle={{
-          bg: `rgba(255,255,255,0.05)`,
+          bg: `rgba(255,255,255,0.025)`,
         }}
         pressStyle={{
-          bg: 'rgba(255,255,255,0.075)',
+          bg: 'rgba(255,255,255,0.05)',
           y: 1,
         }}
-        bg="rgba(255,255,255,0.05)"
+        bg="rgba(255,255,255,0.025)"
         mt="$3"
         br="$6"
         $gtMd={{

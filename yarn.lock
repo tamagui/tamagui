@@ -7821,6 +7821,7 @@ __metadata:
     "@tamagui/cli": "npm:1.101.3"
     "@tamagui/demos": "npm:1.101.3"
     "@tamagui/image-next": "npm:1.101.3"
+    "@tamagui/logo": "npm:1.101.3"
     "@tamagui/lucide-icons": "npm:^1.101.3"
     "@tamagui/mdx": "npm:1.101.3"
     "@tamagui/site-config": "npm:1.101.3"

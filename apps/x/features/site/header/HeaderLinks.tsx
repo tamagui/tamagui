@@ -592,7 +592,7 @@ const SlidingPopoverContent = () => {
       bg="$background"
       elevation="$8"
       padding={0}
-      br="$8"
+      br="$6"
       enterStyle={{
         y: -10,
         o: 0,
@@ -606,7 +606,7 @@ const SlidingPopoverContent = () => {
       <ThemeTintAlt offset={offsets[curI]}>
         <YStack
           fullscreen
-          br="$4"
+          br="$6"
           zi={0}
           style={{
             background: `linear-gradient(transparent, var(--color05))`,
@@ -614,7 +614,7 @@ const SlidingPopoverContent = () => {
           }}
         />
       </ThemeTintAlt>
-      <YStack w={280} h={240} br="$4" ov="hidden">
+      <YStack w={280} h={240} ov="hidden">
         <AnimatePresence custom={{ going }} initial={false}>
           {context.id === 'takeout' && (
             <Frame key="takeout">

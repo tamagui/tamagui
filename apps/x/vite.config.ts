@@ -89,9 +89,10 @@ export default {
 
   plugins: [
     vxs({
-      async afterBuild({ routeMap }) {
+      async afterServerStart(options, app, { routeMap }) {
         if (process.env.SHOULD_PURGE_CDN) {
           const pages = Object.values(routeMap).map((path) => `${process.env.URL}${path}`)
+          console.info(` [cache] tell Cloudflare to clear pages:\n`, pages.join('\n'))
           await purgeCloudflareCDN(pages)
         }
       },

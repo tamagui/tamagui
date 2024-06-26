@@ -1,4 +1,5 @@
 import { ThemeTint } from '@tamagui/logo'
+import { Theme } from 'tamagui'
 import { Slot } from 'vxs'
 import { useBentoStore } from '~/features/bento/BentoStore'
 import { Footer } from '~/features/site/Footer'
@@ -8,10 +9,14 @@ export default function Layout() {
   const store = useBentoStore()
 
   return (
-    <ThemeTint disable={store.disableTint}>
-      <ThemeNameEffect colorKey="$color2" />
+    <>
+      <Theme name="tan">
+        <ThemeNameEffect colorKey="$color2" />
+      </Theme>
       <Slot />
-      <Footer />
-    </ThemeTint>
+      <Theme name="tan">
+        <Footer />
+      </Theme>
+    </>
   )
 }

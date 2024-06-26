@@ -12,6 +12,7 @@ export const Link = ({ href, replace, asChild, ...props }: LinkProps) => {
       tag="a"
       // always except-style
       asChild={asChild ? 'except-style' : false}
+      className="t_Link"
       cursor="pointer"
       color="inherit"
       // @ts-expect-error

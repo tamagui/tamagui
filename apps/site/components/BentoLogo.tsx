@@ -1,5 +1,5 @@
-import { ThemeTintAlt, ThemeTint } from '@tamagui/logo'
-import { H1, YStack, useThemeName } from 'tamagui'
+import { ThemeTintAlt } from '@tamagui/logo'
+import { H1, YStack } from 'tamagui'
 
 export const BentoLogo = ({
   children = 'BENTO',

@@ -30,6 +30,7 @@ export const HeaderMenu = React.memo(function HeaderMenu() {
   })
   const userSwr = useUser()
   const isBento = usePathname().startsWith('/bento')
+  const isPressOpened = state.via === 'press' && open
 
   return (
     <HeaderMenuTheme>
@@ -56,10 +57,11 @@ export const HeaderMenu = React.memo(function HeaderMenu() {
           <Button
             size="$3"
             ml="$2"
-            bg="transparent"
+            bg={isPressOpened ? '$color5' : 'rgba(0,0,0,0.02)'}
             noTextWrap
             br="$10"
             bw={2}
+            px="$2"
             onPress={() => {
               if (isTouchable) {
                 setOpen(!open)
@@ -78,7 +80,7 @@ export const HeaderMenu = React.memo(function HeaderMenu() {
             theme={open ? 'alt1' : undefined}
             aria-label="Open the main menu"
             hoverStyle={{
-              bg: 'transparent',
+              bg: isPressOpened ? '$color5' : 'transparent',
               // @ts-ignore
               bc: 'color-mix(in srgb, var(--color10) 30%, transparent 60%)',
             }}
