@@ -48,7 +48,7 @@ export const useGetComponent = async () => {
     //   process.env.NODE_ENV === 'production'
     //     ? 'http://tamagui.dev'
     //     : 'http://localhost:8081'
-  const BASE_URL = 'http://tamagui.dev'
+  const BASE_URL = 'https://tamagui-production.up.railway.app'
 
   const codePath =
     install.installingComponent?.category &&
@@ -61,7 +61,7 @@ export const useGetComponent = async () => {
       githubId: githubData?.node_id || '' 
     });
 
-    return `${BASE_URL}/api/bento/code/${codePath}`
+    return `${BASE_URL}/api/bento/code?${codePath}`
 
 
 
