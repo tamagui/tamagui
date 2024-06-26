@@ -102,7 +102,11 @@ export const useInstallComponent = () => {
     }
   }, [data, install, setInstall])
 }
-async function subFoldersInstallStep(uiDir: string, install: any, components: { name: string; content: string }[]) {
+async function subFoldersInstallStep(
+  uiDir: string,
+  install: any,
+  components: { name: string; content: string }[]
+) {
   if (!existsSync(uiDir)) {
     mkdirSync(uiDir, { recursive: true })
   }
@@ -114,7 +118,6 @@ async function subFoldersInstallStep(uiDir: string, install: any, components: { 
   await Promise.all(
     components.map((component) => {
       const componentName = component.name.split('.')[0]
-
 
       const toFolder = componentSchema.moveFilesToFolder.find(
         (i) => i.file === componentName
@@ -134,4 +137,3 @@ async function subFoldersInstallStep(uiDir: string, install: any, components: { 
     })
   )
 }
-
