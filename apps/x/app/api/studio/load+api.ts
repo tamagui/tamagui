@@ -4,15 +4,11 @@ import { ensureAuth } from '~/features/api/ensureAuth'
 
 const handler = apiRoute(async (req) => {
   const { supabase, user } = await ensureAuth({ req })
-  const { teamId } = await ensureAccess(
-    {
-      req,
-      supabase,
-    },
-    {
-      checkForStudioAccess: true,
-    }
-  )
+  const { teamId } = await ensureAccess({
+    req,
+    supabase,
+    checkForStudioAccess: true,
+  })
 
   const results = await supabase
     .from('studio_themes')

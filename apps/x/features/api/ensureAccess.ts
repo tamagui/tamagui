@@ -17,28 +17,17 @@ type PayloadShape = {
 /**
  * checks is the user has sponsor access and sets a jwt cookie for subsequent requests to be faster
  */
-export async function ensureAccess(
-  {
-    req,
-    supabase,
-  }: {
-    req: Request
-    supabase: SupabaseClient<Database>
-  },
-  {
-    checkForStudioAccess = false,
-    checkForBentoAccess = false,
-  }: {
-    /**
-     * throws and returns 403 if no studio access
-     */
-    checkForStudioAccess?: boolean
-    /**
-     * throws and returns 403 if no bento access
-     */
-    checkForBentoAccess?: boolean
-  } = {}
-): Promise<PayloadShape> {
+export async function ensureAccess({
+  req,
+  supabase,
+  checkForStudioAccess = false,
+  checkForBentoAccess = false,
+}: {
+  req: Request
+  supabase: SupabaseClient<Database>
+  checkForStudioAccess?: boolean
+  checkForBentoAccess?: boolean
+}): Promise<PayloadShape> {
   const oldJwt = getCookie(req.headers, JWT_NAME)
   if (oldJwt) {
     try {

@@ -3,26 +3,27 @@ import { ensureAccess } from '~/features/api/ensureAccess'
 import { ensureAuth } from '~/features/api/ensureAuth'
 import { getQuery } from '~/features/api/getQuery'
 import { getBentoCode, supabaseAdmin } from '~/features/auth/supabaseAdmin'
+import { hasBentoAccess } from '~/features/bento/hasBentoAccess'
 
 export const GET: Endpoint = async (req) => {
-  const { supabase } = await ensureAuth({ req })
-  await ensureAccess(
-    {
-      req,
-      supabase,
-    },
-    {
-      checkForBentoAccess: true,
-    }
-  )
-
   const query = getQuery(req)
-
   const codePath = `${query.section}/${query.part}/${query.fileName}`
   const fileName = `${query.fileName}`
 
-  console.info(`get code`, query)
+  // CLI
+  if (query.userGithubId) {
+    const resultHasBentoAccess = await hasBentoAccess(`${query.userGithubId}`)
+    if (!resultHasBentoAccess) {
+      return Response.json({ error: `no_access` }, { status: 500 })
+    }
+    return new Response(await getBentoCode(codePath), {
+      headers: new Headers({
+        'Content-Type': 'text/plain',
+      }),
+    })
+  }
 
+  // OSS component
   if (OSS_COMPONENTS.includes(fileName)) {
     const fileResult = await getBentoCode(codePath)
     return new Response(fileResult, {
@@ -31,6 +32,14 @@ export const GET: Endpoint = async (req) => {
       },
     })
   }
+
+  // Authorize
+  const { supabase } = await ensureAuth({ req })
+  await ensureAccess({
+    req,
+    supabase,
+    checkForBentoAccess: true,
+  })
 
   const fileResult = await supabaseAdmin.storage
     .from('bento')
