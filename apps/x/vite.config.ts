@@ -88,7 +88,15 @@ export default {
   },
 
   plugins: [
-    vxs(),
+    vxs({
+      async afterBuild({ routeMap }) {
+        if (process.env.SHOULD_PURGE_CDN) {
+          const pages = Object.values(routeMap).map((path) => `${process.env.URL}${path}`)
+          await purgeCloudflareCDN(pages)
+        }
+      },
+    }),
+
     removeReactNativeWebAnimatedPlugin(),
 
     // hmmm breaking ssr for some reason on lucide:
@@ -103,3 +111,35 @@ export default {
     // }),
   ],
 } satisfies UserConfig
+
+const purgeCloudflareCDN = async (files: string[]) => {
+  if (!process.env.CF_ZONE_ID) throw new Error(`Missing process.env.CF_ZONE_ID`)
+  if (!process.env.CF_EMAIL) throw new Error(`Missing process.env.CF_EMAIL`)
+  if (!process.env.CF_API_KEY) throw new Error(`Missing process.env.CF_API_KEY`)
+
+  console.info(`Clearing CDN (${files.length} pages)...`)
+
+  try {
+    const response = await fetch(
+      `https://api.cloudflare.com/client/v4/zones/${process.env.CF_ZONE_ID}/purge_cache`,
+      {
+        method: 'POST',
+        headers: {
+          'X-Auth-Email': process.env.CF_EMAIL,
+          'X-Auth-Key': process.env.CF_API_KEY,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ files }),
+      }
+    )
+
+    if (!response.ok) {
+      throw new Error(`Failed to purge cache: ${response.statusText}`)
+    }
+
+    const result = await response.json()
+    console.info('Cloudflare cache purged successfully:', result)
+  } catch (error) {
+    console.error('Error purging Cloudflare cache:', error)
+  }
+}

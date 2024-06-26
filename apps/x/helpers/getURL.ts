@@ -7,8 +7,6 @@ const url = `${
 
 const urlWithProtocol = url.startsWith('http') ? url : `https://${url}`
 
-console.info(`base url: ${url}`)
-
 export const getURL = () => {
   return urlWithProtocol
 }
