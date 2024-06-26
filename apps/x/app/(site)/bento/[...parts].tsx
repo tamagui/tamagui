@@ -1,23 +1,21 @@
-import { Data, Sections, CurrentRouteProvider } from '@tamagui/bento'
+import { CurrentRouteProvider, Data, Sections } from '@tamagui/bento'
+import { ThemeTint } from '@tamagui/logo'
+import { CircleDashed, Paintbrush } from '@tamagui/lucide-icons'
 import { Toast, useToastState } from '@tamagui/toast'
-import { Link, useLocalSearchParams } from 'vxs'
+import { startTransition } from 'react'
 import { Anchor, Button, H1, SizableText, Theme, View, XStack, YStack } from 'tamagui'
+import { Link, useLocalSearchParams } from 'vxs'
 import { ContainerBento } from '~/components/Containers'
 import { BentoLogo } from '~/features/bento/BentoLogo'
 import { BentoPageFrame } from '~/features/bento/BentoPageFrame'
-import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
-import { DropTamaguiConfig } from '~/features/bento/DropTamaguiConfig'
 import { useBentoStore } from '~/features/bento/BentoStore'
-import { CircleDashed, PaintBucket, Paintbrush } from '@tamagui/lucide-icons'
-import { ThemeTint } from '@tamagui/logo'
-import { startTransition, useEffect } from 'react'
+import { DropTamaguiConfig } from '~/features/bento/DropTamaguiConfig'
+import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
 
 export const generateStaticParams = async () => {
-  // bento react-hook-form is breaking for now lets leave this off
-  return []
-  // return Data.paths.map((x) => ({
-  //   parts: `${x.params.section}/${x.params.part}`,
-  // }))
+  return Data.paths.map((x) => ({
+    parts: `${x.params.section}/${x.params.part}`,
+  }))
 }
 
 function useParts() {
@@ -32,6 +30,11 @@ export default function BentoPage() {
   const Comp = Sections?.[section]?.[part]
 
   if (!Comp) {
+    return null
+  }
+
+  // TODO for now not SSRing just client
+  if (typeof window === 'undefined') {
     return null
   }
 

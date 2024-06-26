@@ -77,6 +77,7 @@ export default {
       '@tamagui/web',
       'tamagui',
       '@tamagui/site-config',
+      'react-hook-form',
     ],
   },
 

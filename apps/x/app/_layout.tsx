@@ -2,6 +2,9 @@ import '@tamagui/core/reset.css'
 import '~/app.css'
 import '~/tamagui.css'
 
+// TODO
+globalThis['tamagui_is_x'] = true
+
 import { isWeb, setupPopper } from 'tamagui'
 import { ScrollRestoration, Slot, Stack } from 'vxs'
 import { HeadInfo } from '~/components/HeadInfo'

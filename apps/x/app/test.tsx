@@ -36,8 +36,6 @@ function TestEnter() {
 }
 
 export default function TestPage() {
-  console.log('render')
-
   useEffect(() => {
     console.warn('hi mom')
   }, [])
