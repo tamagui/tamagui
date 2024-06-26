@@ -5,6 +5,7 @@ import useSWR from 'swr'
 import { AppContext } from '../commands/index.js'
 import { Octokit } from 'octokit'
 import { installComponent } from './useInstallComponent.js'
+import querystring from 'node:querystring'
 
 export const useGetComponent = async () => {
   const { install, tokenStore, setInstall } = useContext(AppContext)
@@ -47,10 +48,23 @@ export const useGetComponent = async () => {
     //   process.env.NODE_ENV === 'production'
     //     ? 'http://tamagui.dev'
     //     : 'http://localhost:8081'
-    const BASE_URL = 'http://tamagui.dev'
-    return `${BASE_URL}/api/bento/code/${install.installingComponent?.category}/${
-      install.installingComponent?.categorySection
-    }/${install.installingComponent?.fileName}?userGithubId=${githubData?.node_id || ''}`
+  const BASE_URL = 'http://tamagui.dev'
+
+  const codePath =
+    install.installingComponent?.category &&
+    install.installingComponent?.categorySection
+ &&
+    querystring.stringify({
+      section: install.installingComponent?.category,
+      part: install.installingComponent?.categorySection,
+      fileName: install.installingComponent?.fileName,
+      githubId: githubData?.node_id || '' 
+    });
+
+    return `${BASE_URL}/api/bento/code/${codePath}`
+
+
+
   }, [install, githubData])
 
   const { data, error, isLoading } = useSWR(
