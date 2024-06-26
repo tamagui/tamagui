@@ -4,9 +4,10 @@ import { useGetComponent } from './useGetComponent.js'
 import { AppContext } from '../commands/index.js'
 import { mkdirSync, existsSync, promises as fs } from 'node:fs'
 import path from 'node:path'
-import { set } from 'zod'
+import { componentsList, type ComponentSchema } from '../components.js'
 
 // for expo router setups
+const appDir = path.join(process.cwd(), 'app')
 const hasAppDir = () => existsSync(path.join(process.cwd(), 'app'))
 const hasAppDirAndSrcDir = () => existsSync(path.join(process.cwd(), 'app', 'src'))
 
@@ -17,6 +18,14 @@ const hasSrcDir = () => existsSync(path.join(process.cwd(), 'src'))
 
 const createUIDir = () =>
   mkdirSync(path.join(process.cwd(), 'packages', 'ui'), {
+    recursive: true,
+  })
+
+const createDir = ({
+  component,
+  uiPath,
+}: { component: ComponentSchema; uiPath: string[] } = {}) =>
+  mkdirSync(path.join(process.cwd()), {
     recursive: true,
   })
 
@@ -68,47 +77,13 @@ export const installComponent = async ({ component, setInstall, install }) => {
     )
   } else if (hasAppDirAndRoutesDir()) {
     const uiDir = path.join(process.cwd(), 'components', 'ui')
-
-    if (!existsSync(uiDir)) {
-      mkdirSync(uiDir, { recursive: true })
-    }
-
-    await Promise.all(
-      components.map((component) =>
-        fs.writeFile(
-          path.join(process.cwd(), 'components', 'ui', component.name),
-          component.content
-        )
-      )
-    )
+    await subFoldersInstallStep(uiDir, install, components)
   } else if (hasAppDir()) {
     const uiDir = path.join(process.cwd(), 'components', 'ui')
-
-    if (!existsSync(uiDir)) {
-      mkdirSync(uiDir, { recursive: true })
-    }
-
-    await Promise.all(
-      components.map((component) =>
-        fs.writeFile(
-          path.join(process.cwd(), 'components', 'ui', component.name),
-          component.content
-        )
-      )
-    )
+    await subFoldersInstallStep(uiDir, install, components)
   } else if (hasSrcDir()) {
     const uiDir = path.join(process.cwd(), 'src', 'components', 'ui')
-
-    if (!existsSync(uiDir)) {
-      mkdirSync(uiDir, { recursive: true })
-    }
-
-    components.map((component) =>
-      fs.writeFile(
-        path.join(process.cwd(), 'src', 'components', 'ui', component.name),
-        component.content
-      )
-    )
+    await subFoldersInstallStep(uiDir, install, components)
   } else {
   }
   setInstall((prev) => ({
@@ -123,7 +98,40 @@ export const useInstallComponent = () => {
 
   useEffect(() => {
     if (data && install?.installingComponent) {
-      installComponent({ component: data, setInstall })
+      installComponent({ component: data, setInstall, install })
     }
   }, [data, install, setInstall])
 }
+async function subFoldersInstallStep(uiDir: string, install: any, components: { name: string; content: string }[]) {
+  if (!existsSync(uiDir)) {
+    mkdirSync(uiDir, { recursive: true })
+  }
+
+  const componentSchema = componentsList.find(
+    (i) => i.name === install?.installingComponent?.name
+  )
+
+  await Promise.all(
+    components.map((component) => {
+      const componentName = component.name.split('.')[0]
+
+
+      const toFolder = componentSchema.moveFilesToFolder.find(
+        (i) => i.file === componentName
+      )?.to
+
+      const componentDir = path.join(
+        uiDir,
+        componentSchema?.category,
+        componentSchema?.categorySection,
+        toFolder ?? ''
+      )
+
+      if (!existsSync(componentDir)) {
+        mkdirSync(componentDir, { recursive: true })
+      }
+      fs.writeFile(path.join(componentDir, component.name), component.content)
+    })
+  )
+}
+

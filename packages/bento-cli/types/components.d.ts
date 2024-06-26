@@ -3,7 +3,14 @@ export type ComponentSchema = {
     category: string;
     categorySection: string;
     fileName: string;
+    dependencies?: string[];
     isOSS: boolean;
+    moveFilesToFolder?: MoveFileToFolder[];
 };
-export declare const componentsList: ComponentSchema[];
+type MoveFileToFolder = {
+    file: string;
+    to: string;
+};
+export declare const componentsList: Omit<ComponentSchema, 'isOSS'>[];
+export {};
 //# sourceMappingURL=components.d.ts.map
