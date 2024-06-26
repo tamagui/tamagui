@@ -110,42 +110,98 @@ export default function Community({ frontmatters }) {
 
           <Spacer size="$4" />
 
-          <FlatBubbleCard ai="center" feature bw={0}>
-            <H2 size="$9" ta="center">
-              Figma Design Kit
-            </H2>
-            <Spacer size="$6" />
-            <YStack ai="center" gap>
-              <NextLink href="https://www.figma.com/community/file/1326593766534421119">
-                <YStack
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  br="$5"
-                  overflow="hidden"
-                  bw={0.5}
-                  bc="$borderColor"
-                >
-                  <Image
-                    animation="quick"
-                    cur="pointer"
-                    shac="$shadowColor"
-                    shar="$4"
-                    hoverStyle={{
-                      scale: 1.2,
-                      borderColor: '$color',
-                    }}
-                    o={0.5}
-                    source={{
-                      uri: '/figma.png',
-                      width: 1466 * 0.25,
-                      height: 776 * 0.25,
-                    }}
-                  />
-                </YStack>
-              </NextLink>
+          <FlatBubbleCard w="50%" $sm={{ w: 'auto' }} ai="center" bw={0}>
+            <NextLink href="/changelog">
+              <Button
+                bg="transparent"
+                bc="$borderColor"
+                bw={1}
+                mt="$-3"
+                size="$6"
+                iconAfter={ChevronRight}
+                br="$10"
+              >
+                <H2 cur="pointer" size="$9" ta="center">
+                  Changelog
+                </H2>
+              </Button>
+            </NextLink>
+            <Spacer />
+            <YStack w="100%" space>
+              {frontmatters.map((frontmatter) => (
+                <NextLink key={frontmatter.title} href={frontmatter.slug}>
+                  <Card bc="transparent" p="$4" f={1}>
+                    <YStack space="$2">
+                      <H3
+                        fontFamily="$silkscreen"
+                        size="$6"
+                        color="$color"
+                        cursor="pointer"
+                      >
+                        {frontmatter.title}
+                      </H3>
+
+                      <XStack ai="center" space="$2">
+                        <Paragraph
+                          cursor="inherit"
+                          tag="time"
+                          size="$5"
+                          theme="alt2"
+                          fow="300"
+                        >
+                          {Intl.DateTimeFormat('en-US', {
+                            month: 'short',
+                            year: 'numeric',
+                            day: 'numeric',
+                          }).format(new Date(frontmatter.publishedAt || ''))}
+                        </Paragraph>
+                        <Paragraph cursor="inherit" theme="alt2" size="$4" fow="300">
+                          &nbsp;by {authors[frontmatter.by].name}
+                        </Paragraph>
+                      </XStack>
+                    </YStack>
+                  </Card>
+                </NextLink>
+              ))}
             </YStack>
           </FlatBubbleCard>
         </XStack>
+
+        <FlatBubbleCard ai="center" feature bw={0}>
+          <H2 size="$9" ta="center">
+            Figma Design Kit
+          </H2>
+          <Spacer size="$6" />
+          <YStack ai="center" gap>
+            <NextLink href="https://www.figma.com/community/file/1326593766534421119">
+              <YStack
+                target="_blank"
+                rel="noopener noreferrer"
+                br="$5"
+                overflow="hidden"
+                bw={0.5}
+                bc="$borderColor"
+              >
+                <Image
+                  animation="quick"
+                  cur="pointer"
+                  shac="$shadowColor"
+                  shar="$4"
+                  hoverStyle={{
+                    scale: 1.2,
+                    borderColor: '$color',
+                  }}
+                  o={0.5}
+                  source={{
+                    uri: '/figma.png',
+                    width: 1466 * 0.25,
+                    height: 776 * 0.25,
+                  }}
+                />
+              </YStack>
+            </NextLink>
+          </YStack>
+        </FlatBubbleCard>
 
         <Spacer />
 
