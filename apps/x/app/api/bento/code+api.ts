@@ -18,15 +18,12 @@ export const GET: Endpoint = async (req) => {
 
   const query = getQuery(req)
 
-  const slugsArray = Array.isArray(query.slug)
-    ? query.slug
-    : typeof query.slug === 'string'
-      ? [query.slug]
-      : []
+  const codePath = `${query.section}/${query.part}/${query.fileName}`
+  const fileName = `${query.fileName}`
 
-  const codePath = slugsArray.join('/')
+  console.info(`get code`, query)
 
-  if (OSS_COMPONENTS.includes(slugsArray[slugsArray.length - 1]!)) {
+  if (OSS_COMPONENTS.includes(fileName)) {
     const fileResult = await getBentoCode(codePath)
     return new Response(fileResult, {
       headers: {

@@ -234,22 +234,20 @@ export default function TakeoutPage() {
                 </Paragraph>
 
                 <Paragraph className="text-wrap-balance" size="$7" $sm={{ size: '$7' }}>
-                  We recommend you try the free starter first to see if you like the
-                  general setup with <CodeInline>npm&nbsp;create&nbsp;tamagui</CodeInline>
-                  . Takeout combines React, React Native, Next.js, Expo, Supabase, and
-                  more in a monorepo with shared code, so it requires learning quite a few
-                  things if you aren't familiar with them.
+                  We recommend you try the free starter first to see if you like the base:{' '}
+                  <CodeInline>npm&nbsp;create&nbsp;tamagui</CodeInline>. Takeout combines
+                  React, React Native, Next.js, Expo, Supabase, and more in a monorepo -
+                  it has a learning curve.
                 </Paragraph>
 
                 <Paragraph className="text-wrap-balance" size="$6">
-                  We use{' '}
+                  We added{' '}
                   <a target="_blank" href="https://supabase.com" rel="noreferrer">
                     Supabase
                   </a>{' '}
-                  for data and storage, Zod for validation, tRPC for APIs, have a full
-                  user system with profiles and account customization, settings, and a few
-                  example screens. The repo also comes with scripts for setting up typed
-                  fonts and icons from{' '}
+                  for auth, data and storage, Zod for validation, tRPC for APIs, a full
+                  user system with profiles, account, settings, and example screens. The
+                  repo also comes with scripts for setting up typed fonts and icons from{' '}
                   <Link href="https://fonts.google.com" target="_blank">
                     Google Fonts
                   </Link>{' '}
@@ -655,8 +653,8 @@ export default function TakeoutPage() {
                     The bot
                   </Paragraph>
                   <Paragraph size="$7" $sm={{ size: '$6' }} fow="400">
-                    Install TamaguiBot and we send updates every so often with a bundle of
-                    upgrades in the form of a PR.
+                    The TamaguiBot sends updates every so often, after we test everything
+                    out, in a tidy PR with a changelog.
                   </Paragraph>
                   <Paragraph size="$7" $sm={{ size: '$6' }} fow="400">
                     As you diverge, we can't be perfect at sending updates, but ultimately

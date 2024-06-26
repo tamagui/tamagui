@@ -7,7 +7,9 @@ import { createNohemi } from '@tamagui/font-nohemi'
 import { createSilkscreenFont } from '@tamagui/font-silkscreen'
 import { createGenericFont } from './createGenericFont'
 
-export const cherryBombFont = createCherryBombFont()
+export const cherryBombFont = createCherryBombFont({
+  family: '"Cherry Bomb", Arial, sans-serif',
+})
 export const munroFont = createMunroFont()
 export const silkscreenFont = createSilkscreenFont()
 export const headingFont = createInterFont(
