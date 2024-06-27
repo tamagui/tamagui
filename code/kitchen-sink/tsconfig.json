@@ -1,0 +1,50 @@
+{
+  "extends": "../../tsconfig",
+  "compilerOptions": {
+    "noEmit": true
+  },
+  "references": [
+    {
+      "path": "../compiler/babel-plugin"
+    },
+    {
+      "path": "../core/animations-reanimated"
+    },
+    {
+      "path": "../core/cli"
+    },
+    {
+      "path": "../core/colors"
+    },
+    {
+      "path": "../core/config"
+    },
+    {
+      "path": "../core/core"
+    },
+    {
+      "path": "../core/font-inter"
+    },
+    {
+      "path": "../core/shorthands"
+    },
+    {
+      "path": "../core/themes"
+    },
+    {
+      "path": "../core/web"
+    },
+    {
+      "path": "../demos"
+    },
+    {
+      "path": "../packages/lucide-icons"
+    },
+    {
+      "path": "../ui/tamagui"
+    },
+    {
+      "path": "../ui/toast"
+    }
+  ]
+}

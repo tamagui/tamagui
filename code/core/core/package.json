@@ -1,0 +1,91 @@
+{
+  "name": "@tamagui/core",
+  "version": "1.101.3",
+  "source": "src/index.tsx",
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "tamagui": {
+    "bundle.native": "./src/index.tsx",
+    "bundle.native.test": "./src/index.tsx"
+  },
+  "types": "./types/index.d.ts",
+  "license": "MIT",
+  "author": {
+    "name": "Nate Wienert"
+  },
+  "sideEffects": [
+    "*.css"
+  ],
+  "scripts": {
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch",
+    "lint": "npx biome check src",
+    "lint:fix": "npx biome check --apply-unsafe src",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build"
+  },
+  "files": [
+    "types",
+    "dist",
+    "src",
+    "reset.css",
+    "native.js",
+    "native.d.ts",
+    "native-test.js",
+    "native-test.d.ts"
+  ],
+  "dependencies": {
+    "@tamagui/react-native-use-pressable": "1.101.3",
+    "@tamagui/react-native-use-responder-events": "1.101.3",
+    "@tamagui/use-event": "1.101.3",
+    "@tamagui/web": "1.101.3"
+  },
+  "devDependencies": {
+    "@tamagui/build": "1.101.3",
+    "@testing-library/react": "^14.0.0",
+    "csstype": "^3.0.10",
+    "typescript": "^5.5.2",
+    "vitest": "^0.34.3"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    "./reset.css": "./reset.css",
+    ".": {
+      "react-native": "./dist/cjs/index.native.js",
+      "types": "./types/index.d.ts",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.js"
+    },
+    "./native": {
+      "types": "./types/index.d.ts",
+      "import": "./dist/native.js",
+      "require": "./dist/native.js"
+    },
+    "./native-test": {
+      "types": "./types/index.d.ts",
+      "import": "./dist/test.native.js",
+      "require": "./dist/test.native.js"
+    },
+    "./inject-styles": {
+      "react-native": "./dist/cjs/inject-styles.native.js",
+      "types": "./types/inject-styles.d.ts",
+      "import": "./dist/esm/inject-styles.mjs",
+      "require": "./dist/cjs/inject-styles.js"
+    },
+    "./reactNativeTypes": {
+      "react-native": "./dist/cjs/reactNativeTypes.native.js",
+      "types": "./types/reactNativeTypes.d.ts",
+      "import": "./dist/esm/reactNativeTypes.mjs",
+      "require": "./dist/cjs/reactNativeTypes.js"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tamagui/tamagui.git",
+    "directory": "packages/core"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14"
+}

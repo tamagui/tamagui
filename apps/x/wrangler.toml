@@ -1,4 +1,0 @@
-name = "tamagui-site"
-main = "cloudflare.mjs"
-compatibility_date = "2023-08-01"
-# node_compat = true

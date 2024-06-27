@@ -21,6 +21,6 @@ jobs:
       - uses: supabase/setup-cli@v1
 
       - run: |
-          cd apps/site
+          cd code/tamagui.dev
           supabase link --project-ref $PRODUCTION_PROJECT_ID
           supabase db push

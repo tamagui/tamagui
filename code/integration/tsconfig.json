@@ -1,0 +1,64 @@
+{
+  "compilerOptions": {
+    "importHelpers": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "declaration": true,
+    "downlevelIteration": true,
+    "strict": true,
+    "esModuleInterop": true,
+    "inlineSourceMap": true,
+    "preserveSymlinks": true,
+    "jsx": "react-jsx",
+    "module": "system",
+    "moduleResolution": "node",
+    "noEmitOnError": false,
+    "noImplicitAny": false,
+    "noImplicitReturns": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "preserveConstEnums": true,
+    "removeComments": false,
+    "skipLibCheck": true,
+    "sourceMap": false,
+    "strictNullChecks": true,
+    "target": "es2020",
+    "types": [
+      "node",
+      "react"
+    ],
+    "lib": [
+      "dom",
+      "esnext"
+    ]
+  },
+  "exclude": [
+    "test",
+    "dist",
+    "types",
+    "**/__tests__"
+  ],
+  "typeAcquisition": {
+    "enable": true
+  },
+  "references": [
+    {
+      "path": "../compiler/vite-plugin"
+    },
+    {
+      "path": "../core/animations-css"
+    },
+    {
+      "path": "../core/core"
+    },
+    {
+      "path": "../core/create-theme"
+    },
+    {
+      "path": "../packages/react-native-svg"
+    },
+    {
+      "path": "../ui/tamagui"
+    }
+  ]
+}

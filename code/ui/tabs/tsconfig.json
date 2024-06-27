@@ -1,0 +1,46 @@
+{
+  "extends": "../../../tsconfig.json",
+  "compilerOptions": {
+    "composite": true
+  },
+  "references": [
+    {
+      "path": "../../core/compose-refs"
+    },
+    {
+      "path": "../../core/constants"
+    },
+    {
+      "path": "../../core/create-context"
+    },
+    {
+      "path": "../../core/get-button-sized"
+    },
+    {
+      "path": "../../core/helpers"
+    },
+    {
+      "path": "../../core/use-controllable-state"
+    },
+    {
+      "path": "../../core/use-direction"
+    },
+    {
+      "path": "../../core/web"
+    },
+    {
+      "path": "../group"
+    },
+    {
+      "path": "../roving-focus"
+    },
+    {
+      "path": "../stacks"
+    }
+  ],
+  "exclude": [
+    "types",
+    "dist",
+    "**/__tests__"
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "name": "@tamagui/static-tests",
+  "version": "1.101.3",
+  "module": "dist/esm/index.js",
+  "private": true,
+  "scripts": {
+    "pretest": "RUN_PRETEST=1 node -r esbuild-register ./tests/lib/preTest.js",
+    "test-output": "node -r esbuild-register ./test-output.tsx",
+    "test": "yarn test:native && yarn test:web && yarn test:webpack",
+    "test:update": "yarn test:extract:web --update && yarn test:babel:native --update && yarn test:babel:web --update && yarn test:styled:web --update && yarn test:flatten:native --update && yarn test:webpack --update",
+    "test:run": "INCLUDE_CSS_COLOR_NAMES=1 vitest --config ../../packages/vite-plugin-internal/src/vite.config.cjs.ts --run",
+    "test:run:web": "DISABLE_NATIVE_TEST=1 yarn test:run",
+    "test:webpack": "yarn pretest && yarn test:run tests/webpack.test.tsx --reporter=verbose --singleThread",
+    "test:flatten:native": "yarn test:run tests/flatten.native.test.tsx",
+    "test:babel:native": "yarn test:run tests/babel.native.test.tsx",
+    "test:babel:web": "yarn test:run tests/babel.web.test.tsx",
+    "test:extract:web": "yarn test:run:web tests/extract.web.test.tsx",
+    "test:styled:web": "yarn test:run tests/styled.web.test.tsx",
+    "test:web": "yarn test:run:web tests/*.web.test.tsx",
+    "test:native": "yarn test:run tests/*.native.test.tsx"
+  },
+  "tests": {
+    "parallel": true
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/plugin-syntax-typescript": "^7.23.3",
+    "@babel/types": "^7.23.3",
+    "@tamagui/sandbox-ui": "1.101.3",
+    "@tamagui/test-design-system": "1.101.3",
+    "@testing-library/react": "^14.0.0",
+    "@types/babel__generator": "^7.6.4",
+    "@types/babel__traverse": "^7.18.2",
+    "@types/find-root": "^1.1.2",
+    "@types/node": "^16.11.9",
+    "@types/webpack": "^4.41.26",
+    "babel-loader": "^9.1.2",
+    "css-loader": "^6.7.4",
+    "dedent": "^0.7.0",
+    "esbuild-loader": "^3.0.1",
+    "null-loader": "^4.0.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-native-web": "^0.19.12",
+    "react-test-renderer": "^18.2.0",
+    "style-loader": "^3.3.3",
+    "typescript": "^5.5.2",
+    "vitest": "^0.34.3",
+    "webpack": "^5.88.2"
+  },
+  "peerDependencies": {
+    "react": "*",
+    "react-native-web": "*"
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "name": "@tamagui/config",
+  "version": "1.101.3",
+  "types": "./types/index.d.ts",
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "sideEffects": false,
+  "scripts": {
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch",
+    "lint": "npx biome check src",
+    "lint:fix": "npx biome check --apply-unsafe src",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "react-native": "./dist/cjs/index.native.js",
+      "types": "./types/index.d.ts",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.js"
+    },
+    "./v2": {
+      "react-native": "./dist/cjs/v2.native.js",
+      "types": "./types/v2.d.ts",
+      "import": "./dist/esm/v2.mjs",
+      "require": "./dist/cjs/v2.js"
+    },
+    "./v2-reanimated": {
+      "react-native": "./dist/cjs/v2-reanimated.native.js",
+      "types": "./types/v2-reanimated.d.ts",
+      "import": "./dist/esm/v2-reanimated.mjs",
+      "require": "./dist/cjs/v2-reanimated.js"
+    },
+    "./v2-native": {
+      "react-native": "./dist/cjs/v2-native.native.js",
+      "types": "./types/v2-native.d.ts",
+      "import": "./dist/esm/v2-native.mjs",
+      "require": "./dist/cjs/v2-native.js"
+    },
+    "./reanimated": {
+      "react-native": "./dist/cjs/index.reanimated.native.js",
+      "types": "./types/index.reanimated.d.ts",
+      "import": "./dist/esm/index.reanimated.mjs",
+      "require": "./dist/cjs/index.reanimated.js"
+    },
+    "./v3": {
+      "react-native": "./dist/cjs/v3.native.js",
+      "types": "./types/v3.d.ts",
+      "import": "./dist/esm/v3.mjs",
+      "require": "./dist/cjs/v3.js"
+    }
+  },
+  "dependencies": {
+    "@tamagui/animations-css": "1.101.3",
+    "@tamagui/animations-moti": "1.101.3",
+    "@tamagui/animations-react-native": "1.101.3",
+    "@tamagui/colors": "1.101.3",
+    "@tamagui/font-inter": "1.101.3",
+    "@tamagui/font-silkscreen": "1.101.3",
+    "@tamagui/react-native-media-driver": "1.101.3",
+    "@tamagui/shorthands": "1.101.3",
+    "@tamagui/themes": "1.101.3",
+    "@tamagui/web": "1.101.3"
+  },
+  "devDependencies": {
+    "@tamagui/build": "1.101.3"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

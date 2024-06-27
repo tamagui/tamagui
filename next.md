@@ -362,7 +362,7 @@ V2:
   - pre release 2.0 version of library
   - https://github.com/dominicstop/react-native-ios-modal/blob/wip/example/src/examples/Test09.tsx
 
-- CI not failing on type errors in apps/site
+- CI not failing on type errors in code/tamagui.dev
   a package.json etc etc + zip file
 
 - @alt Sheet inside Popover breaks css animation:

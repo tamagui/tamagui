@@ -1,6 +1,9 @@
 FROM node:22
 
 ARG APP_PRIVATE_KEY
+ARG CF_API_KEY
+ARG CF_EMAIL
+ARG CF_ZONE_ID
 ARG DISCORD_BOT_TOKEN
 ARG DISCORD_ID
 ARG DISCORD_OAUTH2
@@ -47,8 +50,8 @@ RUN corepack prepare yarn@4.1.0 --activate
 RUN yarn install > /app/yarn-install.log 2>&1 || cat yarn-install.log
 RUN yarn profile react-19
 RUN yarn build:js
-RUN yarn x:build
+RUN yarn dev:build
 
 EXPOSE 3000
 
-CMD ["yarn", "x:serve:railway"]
+CMD ["yarn", "dev:serve:railway"]

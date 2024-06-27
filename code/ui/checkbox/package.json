@@ -1,0 +1,62 @@
+{
+  "name": "@tamagui/checkbox",
+  "version": "1.101.3",
+  "sideEffects": [
+    "*.css"
+  ],
+  "removeSideEffects": true,
+  "source": "src/index.ts",
+  "types": "./types/index.d.ts",
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "module:jsx": "dist/jsx",
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
+  "scripts": {
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch",
+    "lint": "npx biome check src",
+    "lint:fix": "npx biome check --apply-unsafe src",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build"
+  },
+  "dependencies": {
+    "@tamagui/checkbox-headless": "1.101.3",
+    "@tamagui/compose-refs": "1.101.3",
+    "@tamagui/constants": "1.101.3",
+    "@tamagui/core": "1.101.3",
+    "@tamagui/create-context": "1.101.3",
+    "@tamagui/focusable": "1.101.3",
+    "@tamagui/font-size": "1.101.3",
+    "@tamagui/get-token": "1.101.3",
+    "@tamagui/helpers": "1.101.3",
+    "@tamagui/helpers-tamagui": "1.101.3",
+    "@tamagui/label": "1.101.3",
+    "@tamagui/stacks": "1.101.3",
+    "@tamagui/use-controllable-state": "1.101.3",
+    "@tamagui/use-previous": "1.101.3"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "react-native": "./dist/cjs/index.native.js",
+      "types": "./types/index.d.ts",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.js"
+    }
+  },
+  "devDependencies": {
+    "@tamagui/build": "1.101.3",
+    "react": "^18.2.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
+  "peerDependencies": {
+    "react": "*"
+  }
+}

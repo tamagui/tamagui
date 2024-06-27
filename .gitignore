@@ -28,27 +28,22 @@ node_modules
 
 .vercel
 
-apps/site/out
-apps/kitchen-sink/ios
+code/kitchen-sink/ios
 
 .tamagui
 
 .idea
 
 .env
-# local env files
 .env.local
 .env.development.local
 .env.test.localp
 .env.production.local
 
-apps/kitchen-sink/ios
-apps/kitchen-sink/android
+code/kitchen-sink/ios
+code/kitchen-sink/android
 
-# ignore until videos finalized
-apps/site/public/talk/
-
-apps/studio/types/**
+code/studio/types/**
 
 .expo
 .vite-inspect

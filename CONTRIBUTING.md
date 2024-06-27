@@ -1,13 +1,9 @@
 # Contributing to `tamagui`
 
-We are grateful your contributions to Tamagui. Before contributing, please:
+We are grateful your contributions to Tamagui. A couple guidelines:
 
-- Don't flame, troll, or otherwise act in bad faith.
 - Assume good intentions.
-- Keep your criticism constructive.
-- Attack ideas, but not people.
-
-We strive to make Tamagui open and inclusive to all.
+- Stay constructive.
 
 #### Table of content
 
@@ -109,9 +105,9 @@ yarn sandbox
 
 This runs a client-side only Vite build of Tamagui, with a complete configuration already set up.
 
-native test are run in `apps/kitchen-sink`
+native test are run in `code/kitchen-sink`
 
-Create a development build run `yarn ios` from `apps/kitchen-sink`
+Create a development build run `yarn ios` from `code/kitchen-sink`
 
 Expo go is not supported in `kitchen-sink`. `kitchen-sink` uses a custom built version of `react-native-reanimated` so we can test everything including the various native integrations like native Sheet and native toasts. If you run Expo Go on `kitchen-sink` Metro's eager require eval errors due to demos folder being glob imported.
 
@@ -129,7 +125,7 @@ After the build has been completed, run the below command to start the Expo app:
 yarn kitchen-sink
 ```
 
-Once you've made changes, you can add tests. All compiler and CSS generation tests live in `packages/static-tests`, other tests live in `apps/kitchen-sink/tests` or in other `-tests` packages.
+Once you've made changes, you can add tests. All compiler and CSS generation tests live in `packages/static-tests`, other tests live in `code/kitchen-sink/tests` or in other `-tests` packages.
 
 Before submitting a PR, please check everything works across every combination of environments.
 
@@ -157,10 +153,6 @@ yarn site:prod
 
 This flow ensures it works with Vite, Webpack, Metro, Next.js with SSR, and with the compiler both on and off.
 
-## Documentation Contributions
-
-Contributions to the documentation can come in many formats such as issues, pull requests, discord discussions or blog posts. However, the primary ways of contributing being issues and pull requests. If you would like to contribute directly to the Tamagui documentation please make sure to read the [writing guide](https://github.com/tamagui/tamagui/blob/master/apps/site/WRITING-GUIDE.md) before doing anything.
-
 ## Other ways to Contribute
 
-We're grateful for all of the community support, and value contributions outside of code and documentation. To get more involved in the community, join the [discord](https://discord.gg/vhEKmdCZw6)
+To get more involved in the community, join the [discord](https://discord.gg/vhEKmdCZw6)

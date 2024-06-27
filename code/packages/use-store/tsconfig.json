@@ -1,0 +1,17 @@
+{
+  "extends": "../../../tsconfig.json",
+  "compilerOptions": {
+    "composite": true
+  },
+  "references": [
+    {
+      "path": "../../core/simple-hash"
+    }
+  ],
+  "exclude": [
+    "types",
+    "test",
+    "dist",
+    "**/__tests__"
+  ]
+}

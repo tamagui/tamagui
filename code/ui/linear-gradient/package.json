@@ -1,0 +1,49 @@
+{
+  "name": "@tamagui/linear-gradient",
+  "version": "1.101.3",
+  "sideEffects": [
+    "*.css"
+  ],
+  "source": "src/index.ts",
+  "types": "./types/index.d.ts",
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "module:jsx": "dist/jsx",
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
+  "scripts": {
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build",
+    "lint": "npx biome check src",
+    "lint:fix": "npx biome check --apply-unsafe src"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "react-native": "./dist/cjs/index.native.js",
+      "types": "./types/index.d.ts",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.js"
+    }
+  },
+  "dependencies": {
+    "@tamagui/core": "1.101.3",
+    "@tamagui/stacks": "1.101.3"
+  },
+  "devDependencies": {
+    "@tamagui/build": "1.101.3",
+    "expo-linear-gradient": "~13.0.2",
+    "react": "^18.2.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "peerDependencies": {
+    "react": "*"
+  }
+}

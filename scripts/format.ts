@@ -26,7 +26,7 @@ async function format() {
   await pMap(
     packagePaths,
     async ({ location, name }) => {
-      if (location.startsWith(`apps`) || location.startsWith(`starters`)) {
+      if (location.startsWith(`code/apps`) || location.startsWith(`code/starters`)) {
         return
       }
 

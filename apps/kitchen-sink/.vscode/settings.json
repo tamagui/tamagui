@@ -1,5 +1,0 @@
-{
-  "typescript.preferences.autoImportFileExcludePatterns": [
-    "apps/expo/next-router-shim.ts"
-  ]
-}

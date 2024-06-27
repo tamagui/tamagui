@@ -1,0 +1,29 @@
+{
+  "extends": "../../../tsconfig.json",
+  "compilerOptions": {
+    "composite": true,
+    "strict": true
+  },
+  "exclude": [
+    "./native.d.ts",
+    "./native-test.d.ts",
+    "./types",
+    "types",
+    "dist",
+    "**/__tests__"
+  ],
+  "references": [
+    {
+      "path": "../react-native-use-pressable"
+    },
+    {
+      "path": "../react-native-use-responder-events"
+    },
+    {
+      "path": "../use-event"
+    },
+    {
+      "path": "../web"
+    }
+  ]
+}

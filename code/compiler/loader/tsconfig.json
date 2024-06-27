@@ -1,0 +1,25 @@
+{
+  "extends": "../../../tsconfig.json",
+  "compilerOptions": {
+    "composite": true
+  },
+  "references": [
+    {
+      "path": "../../core/core"
+    },
+    {
+      "path": "../../core/web"
+    },
+    {
+      "path": "../../packages/cli-color"
+    },
+    {
+      "path": "../static"
+    }
+  ],
+  "exclude": [
+    "types",
+    "dist",
+    "**/__tests__"
+  ]
+}

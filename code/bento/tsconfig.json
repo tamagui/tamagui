@@ -1,0 +1,59 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "composite": true
+  },
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "types",
+    "node_modules",
+    "dist",
+    "**/__tests__"
+  ],
+  "references": [
+    {
+      "path": "../compiler/babel-plugin"
+    },
+    {
+      "path": "../core/animations-reanimated"
+    },
+    {
+      "path": "../core/cli"
+    },
+    {
+      "path": "../core/colors"
+    },
+    {
+      "path": "../core/config"
+    },
+    {
+      "path": "../core/core"
+    },
+    {
+      "path": "../core/font-inter"
+    },
+    {
+      "path": "../core/shorthands"
+    },
+    {
+      "path": "../core/themes"
+    },
+    {
+      "path": "../core/web"
+    },
+    {
+      "path": "../demos"
+    },
+    {
+      "path": "../packages/lucide-icons"
+    },
+    {
+      "path": "../packages/use-store"
+    },
+    {
+      "path": "../ui/tamagui"
+    }
+  ]
+}

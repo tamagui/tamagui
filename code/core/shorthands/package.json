@@ -1,0 +1,46 @@
+{
+  "name": "@tamagui/shorthands",
+  "version": "1.101.3",
+  "source": "src/index.ts",
+  "types": "./types/index.d.ts",
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "module:jsx": "dist/jsx",
+  "files": [
+    "src",
+    "types",
+    "dist",
+    "v2.js",
+    "v2.d.ts"
+  ],
+  "scripts": {
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch",
+    "lint": "npx biome check src",
+    "lint:fix": "npx biome check --apply-unsafe src",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "react-native": "./dist/cjs/index.native.js",
+      "types": "./types/index.d.ts",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.js"
+    },
+    "./v2": {
+      "react-native": "./dist/cjs/v2.native.js",
+      "types": "./types/v2.d.ts",
+      "import": "./dist/esm/v2.mjs",
+      "require": "./dist/cjs/v2.js"
+    }
+  },
+  "devDependencies": {
+    "@tamagui/build": "1.101.3"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14"
+}

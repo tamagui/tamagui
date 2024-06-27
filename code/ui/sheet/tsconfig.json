@@ -1,0 +1,56 @@
+{
+  "extends": "../../../tsconfig.json",
+  "compilerOptions": {
+    "composite": true,
+    "strict": true
+  },
+  "references": [
+    {
+      "path": "../../core/animations-react-native"
+    },
+    {
+      "path": "../../core/compose-refs"
+    },
+    {
+      "path": "../../core/constants"
+    },
+    {
+      "path": "../../core/core"
+    },
+    {
+      "path": "../../core/create-context"
+    },
+    {
+      "path": "../../core/helpers"
+    },
+    {
+      "path": "../../core/use-constant"
+    },
+    {
+      "path": "../../core/use-controllable-state"
+    },
+    {
+      "path": "../../core/use-keyboard-visible"
+    },
+    {
+      "path": "../animate-presence"
+    },
+    {
+      "path": "../portal"
+    },
+    {
+      "path": "../remove-scroll"
+    },
+    {
+      "path": "../scroll-view"
+    },
+    {
+      "path": "../stacks"
+    }
+  ],
+  "exclude": [
+    "types",
+    "dist",
+    "**/__tests__"
+  ]
+}

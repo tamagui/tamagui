@@ -1,0 +1,28 @@
+{
+  "extends": "../../../tsconfig.json",
+  "compilerOptions": {
+    "composite": true
+  },
+  "references": [
+    {
+      "path": "../../core/core"
+    },
+    {
+      "path": "../../core/helpers"
+    },
+    {
+      "path": "../image"
+    },
+    {
+      "path": "../shapes"
+    },
+    {
+      "path": "../text"
+    }
+  ],
+  "exclude": [
+    "types",
+    "dist",
+    "**/__tests__"
+  ]
+}
