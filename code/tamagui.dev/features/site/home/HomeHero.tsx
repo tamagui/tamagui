@@ -327,16 +327,22 @@ const HeroContents = memo(function HeroContents() {
             </Link>
           </ThemeTint>
 
-          <Link asChild target="_blank" href="https://discord.gg/4qh6tdcVDa">
-            <TooltipSimple placement="top" delay={0} restMs={25} label="Discord">
-              <YStack p="$5" $sm={{ p: '$3' }} opacity={0.65} hoverStyle={{ opacity: 1 }}>
+          <TooltipSimple placement="top" delay={0} restMs={25} label="Discord">
+            <Link asChild target="_blank" href="https://discord.gg/4qh6tdcVDa">
+              <YStack
+                tag="a"
+                p="$5"
+                $sm={{ p: '$3' }}
+                opacity={0.65}
+                hoverStyle={{ opacity: 1 }}
+              >
                 <VisuallyHidden>
                   <Text>Discord</Text>
                 </VisuallyHidden>
                 <DiscordIcon plain width={24} />
               </YStack>
-            </TooltipSimple>
-          </Link>
+            </Link>
+          </TooltipSimple>
         </XStack>
 
         {name !== 'tamagui' && (
