@@ -1,6 +1,7 @@
 import { getCompilationExamples } from '@tamagui/mdx'
 import { YStack } from 'tamagui'
 import { useLoader } from 'vxs'
+import { HeadInfo } from '~/components/HeadInfo'
 import { HomeAnimations } from '~/features/site/home/HomeAnimations'
 import { HomeCommunity } from '~/features/site/home/HomeCommunity'
 import { HomeExampleProps } from '~/features/site/home/HomeExampleProps'
@@ -15,7 +16,6 @@ import { HomeThemes } from '~/features/site/home/HomeThemes'
 import { HomeTypography } from '~/features/site/home/HomeTypography'
 import { HomeSection, SectionTinted, TintSection } from '~/features/site/home/TintSection'
 import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
-import { ThemeToggle } from '~/features/site/theme/ThemeToggle'
 
 export async function loader() {
   return getCompilationExamples()
@@ -30,6 +30,10 @@ export default function TamaguiHomePage() {
 
   return (
     <>
+      <HeadInfo
+        title="Tamagui"
+        description="React style library and UI kit that unifies React Native and React web"
+      />
       <ThemeNameEffect colorKey="$color2" />
       <HomeGlow />
       <YStack
