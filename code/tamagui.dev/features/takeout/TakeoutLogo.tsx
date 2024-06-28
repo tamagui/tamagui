@@ -60,14 +60,14 @@ export const TakeoutLogo = (props: { scale?: number }) => {
               {/* main color slices */}
               <TAKEOUT
                 color="$color7"
-                className="clip-slice mix-blend"
+                className="clip-slice"
                 pos="absolute"
                 o={1}
                 zi={1001}
               />
             </ThemeTint>
             {/* alt color slices */}
-            <ThemeTintAlt>
+            {/* <ThemeTintAlt>
               <TAKEOUT
                 color="$color7"
                 className="clip-slice mix-blend slice-alt"
@@ -75,12 +75,12 @@ export const TakeoutLogo = (props: { scale?: number }) => {
                 o={1}
                 zi={1002}
               />
-            </ThemeTintAlt>
-            <ThemeTintAlt offset={-2}>
+            </ThemeTintAlt> */}
+            <ThemeTintAlt offset={-1}>
               {/* main color slices */}
               <TAKEOUT
                 color="$color7"
-                className="clip-slice-2 mix-blend"
+                className="clip-slice-2"
                 pos="absolute"
                 o={1}
                 zi={1001}

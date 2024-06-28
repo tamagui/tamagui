@@ -91,7 +91,7 @@ export const HeaderLinks = (props: HeaderProps) => {
         </HeadAnchor>
       </Link>
 
-      <Link asChild href="/ui/intro/1.0.0">
+      <Link asChild href="/ui/stacks">
         <HeadAnchor
           // half={forceShowAllLinks}
           grid={forceShowAllLinks}
@@ -596,7 +596,7 @@ const SlidingPopoverContent = () => {
               },
             ]
       }
-      bg="$background"
+      bg={context.id === 'takeout' ? '$color7' : '$background'}
       elevation="$8"
       padding={0}
       br="$6"
@@ -614,12 +614,10 @@ const SlidingPopoverContent = () => {
           <Popover.Arrow bg="$color6" size="$4" />
         </Theme>
       ) : (
-        <ThemeTintAlt offset={-1}>
-          <Popover.Arrow bg="$color3" size="$4" />
-        </ThemeTintAlt>
+        <Popover.Arrow bg="$color4" size="$4" />
       )}
 
-      <YStack w={280} h={240} ov="hidden">
+      <YStack w={280} h={200} ov="hidden">
         <AnimatePresence custom={{ going }} initial={false}>
           {context.id === 'takeout' && (
             <Frame key="takeout">
