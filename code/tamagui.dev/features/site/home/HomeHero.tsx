@@ -211,8 +211,8 @@ const HeroContents = memo(function HeroContents() {
               $theme-light={{
                 backgroundImage: `-webkit-linear-gradient(
                   -90deg,
-                  var(--${tintAlt}9),
-                  var(--${tint}9) 70%
+                  transparent,
+                  var(--${tint}12) 70%
                 )`,
               }}
             >

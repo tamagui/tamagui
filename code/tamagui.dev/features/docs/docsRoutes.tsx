@@ -111,7 +111,7 @@ export const docsRoutes = [
     isUI: true,
     // title: '@tamagui/ui',
     pages: [
-      { title: 'Introduction', route: '/ui/intro' },
+      { title: 'Install', route: '/ui/intro' },
       { title: 'Stacks', route: '/ui/stacks' },
       { title: 'Headings', route: '/ui/headings' },
       { title: 'Text', route: '/ui/text' },

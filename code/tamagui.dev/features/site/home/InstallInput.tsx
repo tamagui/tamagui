@@ -1,6 +1,6 @@
 import { Check, Copy } from '@tamagui/lucide-icons'
 import { memo } from 'react'
-import { Button, Paragraph, Spacer, TooltipSimple, XStack } from 'tamagui'
+import { Button, Paragraph, Spacer, TooltipSimple, XStack, YStack } from 'tamagui'
 
 import { useClipboard } from '~/hooks/useClipboard'
 
@@ -12,20 +12,22 @@ export const InstallInput = memo(() => {
     <XStack
       borderWidth={0.5}
       borderColor="$color6"
+      ov="hidden"
       px="$7"
       pl="$6"
       height={48}
       ai="center"
       als="center"
       elevation="$3"
-      bg="$color2"
       br="$10"
     >
+      <YStack zi={-1} fullscreen bg="$background025" className="blur-8" />
       <Paragraph
         ta="center"
-        size="$5"
+        size="$4"
         fontWeight="500"
-        fontFamily="$mono"
+        fontFamily="$silkscreen"
+        ls={1}
         $sm={{ size: '$3' }}
       >
         {installScript}

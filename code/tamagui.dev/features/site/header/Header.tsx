@@ -1,6 +1,7 @@
 import { LogoWords, TamaguiLogo, ThemeTint, useTint } from '@tamagui/logo'
 import * as React from 'react'
 import {
+  SizableText,
   Text,
   TooltipGroup,
   TooltipSimple,
@@ -183,14 +184,18 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
 
           <YStack>
             <Link target="_blank" href="https://github.com/tamagui/tamagui">
-              <TooltipSimple delay={0} restMs={25} label="Github">
-                <YStack p="$2" opacity={0.9} hoverStyle={{ opacity: 1 }}>
-                  <VisuallyHidden>
-                    <Text>Github</Text>
-                  </VisuallyHidden>
-                  <GithubIcon width={26} />
-                </YStack>
-              </TooltipSimple>
+              <XStack
+                ai="center"
+                gap="$2"
+                p="$2"
+                opacity={0.9}
+                hoverStyle={{ opacity: 1 }}
+              >
+                <GithubIcon width={26} />
+                <SizableText $md={{ display: 'none' }} size="$4" color="$color11">
+                  Github
+                </SizableText>
+              </XStack>
             </Link>
           </YStack>
         </XStack>

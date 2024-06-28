@@ -614,6 +614,14 @@ const Body = () => {
       })}
       zi={10000}
     >
+      <YStack
+        fullscreen
+        zi={0}
+        $theme-light={{
+          bg: '$color5',
+        }}
+        $theme-dark={{ bg: '#000' }}
+      />
       <YStack>
         <ContainerLarge>
           <Input
