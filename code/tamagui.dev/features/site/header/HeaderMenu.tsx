@@ -85,8 +85,8 @@ export const HeaderMenu = React.memo(function HeaderMenu() {
               bc: 'color-mix(in srgb, var(--color10) 30%, transparent 60%)',
             }}
           >
-            <Circle size={28} ai="center" jc="center">
-              {userSwr.data?.userDetails ? <UserAvatar /> : <Menu size={14} />}
+            <Circle size={34} ai="center" jc="center">
+              {userSwr.data?.userDetails ? <UserAvatar /> : <Menu size={16} />}
             </Circle>
           </Button>
         </Popover.Anchor>

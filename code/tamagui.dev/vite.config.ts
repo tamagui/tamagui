@@ -103,6 +103,34 @@ export default {
           await purgeCloudflareCDN(pages)
         }
       },
+
+      redirects: [
+        {
+          source: '/account/subscriptions',
+          destination: '/account/items',
+          permanent: false,
+        },
+        {
+          source: '/docs',
+          destination: '/docs/intro/introduction',
+          permanent: true,
+        },
+        {
+          source: '/vite',
+          destination: 'https://vxrn.dev',
+          permanent: true,
+        },
+        {
+          source: '/docs/components/:slug/:version',
+          destination: '/ui/:slug/:version',
+          permanent: true,
+        },
+        {
+          source: '/docs/components/:slug',
+          destination: '/ui/:slug',
+          permanent: true,
+        },
+      ],
     }),
 
     removeReactNativeWebAnimatedPlugin(),
