@@ -208,13 +208,13 @@ const HeroContents = memo(function HeroContents() {
             <Text
               className="clip-text"
               bg="$color"
-              // style={{
-              //   backgroundImage: `-webkit-linear-gradient(
-              //     -90deg,
-              //     var(--${tintAlt}9),
-              //     var(--${tint}9) 70%
-              //   )`,
-              // }}
+              style={{
+                backgroundImage: `-webkit-linear-gradient(
+                  -90deg,
+                  var(--${tintAlt}9),
+                  var(--${tint}9) 70%
+                )`,
+              }}
             >
               Write less
             </Text>

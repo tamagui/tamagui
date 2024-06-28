@@ -776,17 +776,17 @@ textarea {
 
 .clip-slice {
   mask-image: url(./public/takeouticon.svg);
-  mask-size: 12% 12%;
+  mask-size: 20% 20%;
   transform: rotate(2deg);
-  animation: clip-fade2 90s infinite alternate;
+  animation: clip-fade2 70s infinite alternate;
   mix-blend-mode: difference !important;
 }
 
 .clip-slice-2 {
   mask-image: url(./public/takeouticon.svg);
-  mask-size: 20% 20%;
+  mask-size: 30% 30%;
   transform: rotate(-2deg);
-  animation: clip-fade2 90s infinite alternate;
+  animation: clip-fade 90s infinite alternate;
   mix-blend-mode: difference !important;
 }
 

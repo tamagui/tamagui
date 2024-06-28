@@ -9,7 +9,7 @@ export const BentoPageFrame = ({
 }: { children: any; simpler?: boolean }) => {
   return (
     <>
-      <YStack f={1} pt={simpler ? 0 : '$8'}>
+      <YStack f={1} pt={simpler ? 0 : '$2'}>
         <Theme name="tan">
           <YStack
             // className={simpler ? `mask-gradient-down` : ``}

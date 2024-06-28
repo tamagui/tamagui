@@ -26,6 +26,7 @@ export const TakeoutLogo = (props: { scale?: number }) => {
 
   return (
     <YStack
+      contain="paint"
       {...(typeof props.scale === 'number' && {
         scale: props.scale,
         margin: -(1 - props.scale) * 295,
@@ -50,13 +51,13 @@ export const TakeoutLogo = (props: { scale?: number }) => {
           clipPath: `polygon(0% 0%, 0% 100%, 100% 100%, 0% 0%, 100% 0, 0% 100%)`,
         }}
       >
-        <ThemeTintAlt>
+        <ThemeTintAlt offset={3}>
           <TAKEOUT className="font-outlined" zi={1000} color="var(--color8)" />
         </ThemeTintAlt>
 
         {!disableMotion && (
           <>
-            <ThemeTint>
+            <ThemeTintAlt offset={1}>
               {/* main color slices */}
               <TAKEOUT
                 color="$color7"
@@ -65,7 +66,7 @@ export const TakeoutLogo = (props: { scale?: number }) => {
                 o={1}
                 zi={1001}
               />
-            </ThemeTint>
+            </ThemeTintAlt>
             {/* alt color slices */}
             {/* <ThemeTintAlt>
               <TAKEOUT
@@ -76,7 +77,7 @@ export const TakeoutLogo = (props: { scale?: number }) => {
                 zi={1002}
               />
             </ThemeTintAlt> */}
-            <ThemeTintAlt offset={-1}>
+            <ThemeTintAlt offset={2}>
               {/* main color slices */}
               <TAKEOUT
                 color="$color7"

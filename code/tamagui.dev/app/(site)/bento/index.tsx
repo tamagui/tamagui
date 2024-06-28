@@ -1,6 +1,6 @@
-import { listingData } from '@tamagui/bento/data'
 import { assertIsError } from '@tamagui/assert'
 import { LocationNotification } from '@tamagui/bento/component/user/preferences/LocationNotification'
+import { listingData } from '@tamagui/bento/data'
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import {
   AlertCircle,
@@ -45,7 +45,6 @@ import {
   Input,
   Paragraph,
   ScrollView,
-  Separator,
   Spacer,
   Stack,
   Theme,
@@ -53,20 +52,19 @@ import {
   YStack,
 } from 'tamagui'
 import { useLoader } from 'vxs'
+import { CodeInline } from '~/components/Code'
 import { ContainerLarge } from '~/components/Containers'
+import { HeadInfo } from '~/components/HeadInfo'
 import { Link } from '~/components/Link'
-import { BentoFrond } from '~/features/bento/BentoFrond'
 import { BentoLogo } from '~/features/bento/BentoLogo'
 import { BentoPageFrame } from '~/features/bento/BentoPageFrame'
 import type { ProComponentsProps } from '~/features/bento/types'
 import { BentoIcon } from '~/features/icons/BentoIcon'
+import { LoadCherryBomb, LoadMunro } from '~/features/site/fonts/LoadFonts'
 import { PurchaseModal } from '~/features/site/purchase/PurchaseModal'
 import { getProductsForServerSideRendering } from '~/features/site/purchase/server-helpers'
 import { useTakeoutStore } from '~/features/site/purchase/useTakeoutStore'
 import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
-import { HeadInfo } from '~/components/HeadInfo'
-import { LoadCherryBomb, LoadMunro } from '~/features/site/fonts/LoadFonts'
-import { CodeInline } from '~/components/Code'
 
 export const loader = async () => {
   try {
@@ -131,7 +129,7 @@ export default function BentoPage() {
           <Theme name="tan">
             <Button
               pos="absolute"
-              t="$-10"
+              t="$-4"
               r="$8"
               size="$2"
               circular
@@ -254,7 +252,6 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['bento'] }) => 
           }}
         >
           <YStack
-            mt={-20}
             mb={40}
             maw="55%"
             zi={100}
@@ -596,9 +593,11 @@ const Body = () => {
 
   return (
     <YStack
-      bg="$background"
+      theme="tan"
+      bg="$color1"
       pos="relative"
-      className="all ease-in-out ms300"
+      contain="paint"
+      className="transform ease-in-out ms200"
       // @ts-ignore
       onTransitionEnd={() => {
         if (!store.heroVisible) {
@@ -606,15 +605,10 @@ const Body = () => {
         }
       }}
       pb="$8"
-      // bg="$background"
-      style={{
-        backdropFilter: `blur(${store.heroVisible ? 0 : 200}px)`,
-        WebkitBackdropFilter: `blur(${store.heroVisible ? 0 : 200}px)`,
-      }}
       y={0}
       minHeight={800}
       {...(!store.heroVisible && {
-        y: -store.heroHeight,
+        y: -store.heroHeight + 20,
         shadowColor: '$shadowColor',
         shadowRadius: 20,
       })}

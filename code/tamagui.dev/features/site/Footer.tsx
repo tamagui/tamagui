@@ -34,7 +34,7 @@ export const Footer = memo(() => {
             <Link href="/" aria-label="Homepage">
               <TamaguiLogo showWords downscale={1} />
             </Link>
-            <Paragraph size="$3" theme="alt2">
+            <Paragraph size="$3" o={0.25}>
               built with Tamagui
             </Paragraph>
           </YStack>
