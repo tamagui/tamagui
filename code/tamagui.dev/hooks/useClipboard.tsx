@@ -20,7 +20,6 @@ export function useClipboard(
     if (!hasCopied) return
     const id = setTimeout(() => {
       setHasCopied(false)
-      if (showToast) alert('wait we dont have toasts set up')
     }, timeout)
     return () => clearTimeout(id)
   }, [timeout, hasCopied])
