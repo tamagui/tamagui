@@ -7,6 +7,7 @@ import {
   SizableText,
   Spacer,
   Text,
+  Theme,
   TooltipSimple,
   VisuallyHidden,
   XGroup,
@@ -103,49 +104,51 @@ const HeroContents = memo(function HeroContents() {
       >
         <>
           <XGroup pos="absolute" als="center" y={-80} br="$8">
-            <ThemeTintAlt offset={-1}>
-              <Link href="/takeout">
-                <XGroup.Item>
-                  <Button
-                    // animation="bouncy"
-                    bc="$color6"
-                    size="$3"
-                    br="$10"
-                    elevation="$0.5"
-                    fontFamily="$silkscreen"
-                    fontSize={12}
-                    brw={0.5}
+            <Link href="/takeout">
+              <XGroup.Item>
+                <Button
+                  // animation="bouncy"
+                  bc="$color6"
+                  size="$3"
+                  br="$10"
+                  elevation="$0.5"
+                  fontFamily="$silkscreen"
+                  fontSize={12}
+                  brw={0.5}
+                >
+                  Takeout
+                  <YStack y={-1} dsp="inline-flex">
+                    <TakeoutIcon scale={0.75} />
+                  </YStack>
+                  <Text
+                    y={-0.5}
+                    ff="$body"
+                    fontSize="$4"
+                    color="$color10"
+                    $sm={{ dsp: 'none' }}
                   >
-                    Takeout
-                    <YStack y={-1} dsp="inline-flex">
-                      <TakeoutIcon scale={0.75} />
-                    </YStack>
-                    <Text
-                      y={-0.5}
-                      ff="$body"
-                      fontSize="$4"
-                      color="$color10"
-                      $sm={{ dsp: 'none' }}
-                    >
-                      starter
-                    </Text>
-                  </Button>
-                </XGroup.Item>
-              </Link>
-            </ThemeTintAlt>
+                    starter
+                  </Text>
+                </Button>
+              </XGroup.Item>
+            </Link>
 
-            <ThemeTintAlt offset={1}>
+            <Theme name="tan">
               <Link href="/bento">
                 <XGroup.Item>
                   <Button
                     // animation="bouncy"
                     blw={0.5}
-                    bc="$color6"
+                    bc="$color3"
                     size="$3"
                     br="$10"
                     elevation="$0.5"
                     fontFamily="$silkscreen"
                     fontSize={12}
+                    hoverStyle={{
+                      bc: '$color3',
+                      bg: '$color2',
+                    }}
                   >
                     Bento
                     <YStack dsp="inline-flex">
@@ -163,7 +166,7 @@ const HeroContents = memo(function HeroContents() {
                   </Button>
                 </XGroup.Item>
               </Link>
-            </ThemeTintAlt>
+            </Theme>
 
             {/* <FigmaButton circular /> */}
             {/* <GithubButton /> */}
@@ -204,13 +207,14 @@ const HeroContents = memo(function HeroContents() {
           >
             <Text
               className="clip-text"
-              style={{
-                backgroundImage: `-webkit-linear-gradient(
-                  -90deg,
-                  var(--${tintAlt}9),
-                  var(--${tint}9) 70%
-                )`,
-              }}
+              bg="$color"
+              // style={{
+              //   backgroundImage: `-webkit-linear-gradient(
+              //     -90deg,
+              //     var(--${tintAlt}9),
+              //     var(--${tint}9) 70%
+              //   )`,
+              // }}
             >
               Write less
             </Text>
