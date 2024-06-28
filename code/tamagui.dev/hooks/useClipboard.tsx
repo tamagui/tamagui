@@ -5,7 +5,10 @@ export const copyToClipboard = (text: string) => {
   return navigator.clipboard.writeText(text)
 }
 
-export function useClipboard(text = '', timeout = 1500) {
+export function useClipboard(
+  text = '',
+  { timeout = 1500, showToast = true }: { timeout?: number; showToast?: boolean } = {}
+) {
   const [hasCopied, setHasCopied] = useState(false)
 
   const onCopy = useEvent(async () => {
@@ -17,6 +20,7 @@ export function useClipboard(text = '', timeout = 1500) {
     if (!hasCopied) return
     const id = setTimeout(() => {
       setHasCopied(false)
+      if (showToast) alert('wait we dont have toasts set up')
     }, timeout)
     return () => clearTimeout(id)
   }, [timeout, hasCopied])

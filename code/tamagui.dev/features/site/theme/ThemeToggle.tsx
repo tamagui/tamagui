@@ -15,7 +15,7 @@ export const ThemeToggle = (props: ButtonProps) => {
   const Icon = icons[userTheme]
 
   return (
-    <TooltipSimple groupId="header-actions-theme" label={`Scheme (${resolvedTheme})`}>
+    <TooltipSimple groupId="header-actions-theme" label={`${resolvedTheme} mode`}>
       <Button
         size="$3"
         onPress={() => {

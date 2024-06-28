@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 import { Children } from 'react'
 import { useLocalStorageWatcher } from './useLocalStorageWatcher'
 
-const pkgCommands = {
+export const pkgCommands = {
   yarn: 'yarn',
   bun: 'bun',
   npm: 'npm',

@@ -1,10 +1,13 @@
 import { TamaguiLogo, ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import {
+  Asterisk,
   Box,
+  Check,
   CheckCircle,
   ChevronRight,
   Copy,
   File,
+  Info,
   Link as LinkIcon,
 } from '@tamagui/lucide-icons'
 import React, { useState } from 'react'
@@ -22,6 +25,7 @@ import {
   Image,
   Paragraph,
   Separator,
+  SizableText,
   Spacer,
   Text,
   Theme,
@@ -68,6 +72,7 @@ import { ProductCard } from '~/components/ProductCard'
 import { TamaguiExamplesCode } from '~/components/TamaguiExamples'
 import { BentoCard } from '../bento/BentoCard'
 import { ExampleAnimations } from '../site/home/HomeAnimations'
+import { pkgCommands, useBashCommand } from '~/hooks/useBashCommand'
 
 if (!React.version.startsWith('19')) {
   console.error(`\n\n\n\Not on React 19 ❌\n\n\n\n`)
@@ -244,6 +249,132 @@ const componentsIn = {
   LI,
 
   TamaguiExamplesCode,
+
+  InstallBanner: ({ name = '' }) => {
+    const { command, currentSelectedTab, setCurrentSelectedTab } = useBashCommand(
+      name,
+      ''
+    )
+    const tamaguiCommand = `${command} tamagui`
+    const { onCopy, hasCopied } = useClipboard(command)
+    const tamaguiCmdClip = useClipboard(tamaguiCommand)
+
+    const CopyIcon = hasCopied ? Check : Copy
+    const CopyIcon2 = tamaguiCmdClip.hasCopied ? Check : Copy
+
+    return (
+      <XStack fw="wrap" ai="center" gap="$4">
+        {name && (
+          <ThemeTint>
+            <TooltipSimple
+              restMs={1200}
+              delay={{
+                open: 1200,
+                close: 0,
+              }}
+              label={hasCopied ? 'Copied' : 'Copy to clipboard'}
+            >
+              <XStack
+                ai="center"
+                gap="$2"
+                my="$1"
+                py="$1"
+                px="$2"
+                als="flex-start"
+                bg="$color3"
+                br="$3"
+                cur="pointer"
+                onPress={onCopy}
+              >
+                <SizableText color="$color11">
+                  {command}
+                  {name}
+                </SizableText>
+
+                <CopyIcon
+                  p="$0.5"
+                  size={16}
+                  color="$color10"
+                  hoverStyle={{
+                    color: '$color2',
+                  }}
+                />
+              </XStack>
+            </TooltipSimple>
+          </ThemeTint>
+        )}
+
+        <TooltipSimple label="« Individually or all-in-one »">
+          <XStack ai="center">
+            <SizableText pe="none" size="$3">
+              or
+            </SizableText>
+            <Asterisk size={12} y={-8} />
+          </XStack>
+        </TooltipSimple>
+
+        <ThemeTintAlt>
+          <TooltipSimple
+            restMs={1200}
+            delay={{
+              open: 1200,
+              close: 0,
+            }}
+            label={tamaguiCmdClip.hasCopied ? 'Copied' : 'Copy to clipboard'}
+          >
+            <XStack
+              ai="center"
+              gap="$2"
+              my="$1"
+              py="$1"
+              px="$2"
+              als="flex-start"
+              bg="$color3"
+              br="$3"
+              cur="pointer"
+              onPress={tamaguiCmdClip.onCopy}
+            >
+              <SizableText color="$color11">
+                {command}
+                tamagui
+              </SizableText>
+
+              <CopyIcon2
+                p="$0.5"
+                size={16}
+                color="$color10"
+                hoverStyle={{
+                  color: '$color2',
+                }}
+              />
+            </XStack>
+          </TooltipSimple>
+        </ThemeTintAlt>
+
+        <XStack gap="$2">
+          {Object.keys(pkgCommands).map((c) => {
+            const isActive = currentSelectedTab === c
+            return (
+              <SizableText
+                cur="pointer"
+                onPress={() => {
+                  setCurrentSelectedTab(c)
+                }}
+                color="$color12"
+                o={isActive ? 0.8 : 0.5}
+                hoverStyle={{
+                  o: 0.8,
+                }}
+                key={c}
+              >
+                {c}
+              </SizableText>
+            )
+          })}
+        </XStack>
+      </XStack>
+    )
+  },
 
   TLDR: (props) => {
     return (
