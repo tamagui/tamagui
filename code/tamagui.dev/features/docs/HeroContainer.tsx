@@ -164,9 +164,7 @@ const HeroContainerInner = ({
       <ErrorBoundary>
         {demoMultiple ? (
           <XStack space="$3" px="$8">
-            {/* <Theme reset>
-              <Card>{children}</Card>
-            </Theme> */}
+            <Card bg="$color2">{children}</Card>
             <Theme name="blue">
               <Card>{children}</Card>
             </Theme>

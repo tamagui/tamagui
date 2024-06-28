@@ -1,4 +1,6 @@
-export let isTinted = true
+import { startTransition, useEffect, useState } from 'react'
+
+let isTinted = true
 
 export const setDocsShouldTint = (next: boolean) => {
   isTinted = next
@@ -6,7 +8,25 @@ export const setDocsShouldTint = (next: boolean) => {
 }
 
 export const toggleDocsTinted = () => {
-  setDocsShouldTint(!isTinted)
+  startTransition(() => {
+    setDocsShouldTint(!isTinted)
+  })
 }
 
-export const listeners = new Set<Function>()
+const listeners = new Set<Function>()
+
+export const useIsDocsTinted = () => {
+  const [isTinted, setIsTinted] = useState(true)
+
+  useEffect(() => {
+    const fn = () => {
+      setIsTinted((x) => !x)
+    }
+    listeners.add(fn)
+    return () => {
+      listeners.delete(fn)
+    }
+  }, [])
+
+  return isTinted
+}

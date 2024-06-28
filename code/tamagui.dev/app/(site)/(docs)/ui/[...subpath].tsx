@@ -7,7 +7,7 @@ import React, { useEffect, useState } from 'react'
 import { DocsQuickNav } from '~/features/docs/DocsQuickNav'
 import { MDXProvider } from '~/features/docs/MDXProvider'
 import { MDXTabs } from '~/features/docs/MDXTabs'
-import { listeners } from '~/features/docs/docsTint'
+import { listeners, useIsDocsTinted } from '~/features/docs/docsTint'
 import { components } from '~/features/mdx/MDXComponents'
 import { HeadInfo } from '~/components/HeadInfo'
 import { getOgUrl } from '~/features/site/getOgUrl'
@@ -53,20 +53,7 @@ export async function loader(props: LoaderProps) {
 export default function DocComponentsPage() {
   const { frontmatter, code } = useLoader(loader)
   const Component = React.useMemo(() => getMDXComponent(code), [code])
-  const [isTinted, setIsTinted] = useState(true)
-  const router = useRouter()
-  const pathname = usePathname()
-  const params = useLocalSearchParams()
-
-  useEffect(() => {
-    const fn = () => {
-      setIsTinted((x) => !x)
-    }
-    listeners.add(fn)
-    return () => {
-      listeners.delete(fn)
-    }
-  }, [])
+  const isTinted = useIsDocsTinted()
 
   // useEffect(() => {
   //   const url = new URL(location.href)

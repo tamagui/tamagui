@@ -77,7 +77,7 @@ const Tab = forwardRef(function Tab(props: TabsTabProps, ref) {
 const TabsListFrame = styled(XStack, {
   pe: 'none',
   maxWidth: '50%',
-  marginTop: -30,
+  y: -130,
   justifyContent: 'flex-end',
   alignSelf: 'flex-end',
   top: 70,

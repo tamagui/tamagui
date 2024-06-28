@@ -122,7 +122,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
             }}
           >
             <Button
-              accessibilityLabel="Show or hide code"
+              aria-label="Show or hide code"
               icon={Code2}
               size="$3"
               zi={10}
@@ -131,13 +131,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
               {isCollapsed ? 'Show code' : 'Hide code'}
             </Button>
             <TooltipSimple label="Toggle tint on/off">
-              <Button
-                accessibilityLabel="Toggle tint on/off"
-                size="$3"
-                onPress={toggleDocsTinted}
-                zi={10}
-                icon={Paintbrush}
-              />
+              <Button size="$3" onPress={toggleDocsTinted} zi={10} icon={Paintbrush} />
             </TooltipSimple>
           </XStack>
         )}
@@ -233,13 +227,13 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                   aria-label="Collapse code block"
                   size="$2"
                   top={showFileName ? '$3' : '$3.5'}
-                  right="$8"
+                  right="$10"
                   display="inline-flex"
                   iconAfter={ChevronsDownUp}
                   scaleIcon={1.25}
                   bg="$color1"
                   o={1}
-                  animation="quicker"
+                  animation="quickest"
                   enterStyle={{ x: 5, o: 0 }}
                   exitStyle={{ x: 5, o: 0 }}
                   onPress={() => setIsCutoff(true)}
