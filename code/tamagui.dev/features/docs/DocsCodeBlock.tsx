@@ -27,7 +27,6 @@ import { Pre } from '~/components/Pre'
 import { RowingTabs } from '~/components/RowingTabs'
 import { useBashCommand } from '~/hooks/useBashCommand'
 import { useClipboard } from '~/hooks/useClipboard'
-import { useGradualIncrease } from '~/hooks/useGradualIncrease'
 import { toggleDocsTinted } from './docsTint'
 
 class CollapseStore {
@@ -56,6 +55,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
     size,
     ...rest
   } = props
+
   const lines = Array.isArray(children) ? children.length : 0
   const isCollapsible = isHero || props.isCollapsible
   const store = useStore(CollapseStore, { isCollapsed: showMore })
@@ -64,8 +64,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
   const [isCutoff, setIsCutoff] = useState(isLong && !showMore)
   const [code, setCode] = useState<string | undefined>(undefined)
   const preRef = useRef<any>(null)
-  const { hasCopied, onCopy, timeout } = useClipboard(code)
-  const copyTimeoutValue = useGradualIncrease(hasCopied, timeout)
+  const { hasCopied, onCopy } = useClipboard(code)
   const showLineNumbers = showLineNumbersIn ?? lines > 10
 
   const { command, getCode, isTerminal } = useBashCommand(children, className)
@@ -80,6 +79,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
         if (codeElement) {
           // remove double line breaks
           const codeExtract = codeElement.innerText.replace(/\n{3,}/g, '\n')
+          console.log('got', codeExtract)
           setCode(getCode(codeExtract))
         } else {
           // not collapsible
@@ -164,7 +164,6 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
             )}
 
             <Pre
-              ref={preRef}
               data-invert-line-highlight={isHighlightingLines}
               data-line-numbers={showLineNumbers}
               className={className}
@@ -204,7 +203,6 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                   horizontal
                   showsHorizontalScrollIndicator={false}
                 >
-                  {/* @ts-ignore */}
                   <Code
                     p="$4"
                     backgroundColor="transparent"
@@ -212,6 +210,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                     className={className}
                     size={size ?? '$5'}
                     lineHeight={size ?? '$5'}
+                    ref={preRef}
                     {...rest}
                   >
                     {children}

@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { Children } from 'react'
+import { Children, isValidElement } from 'react'
 import { useLocalStorageWatcher } from './useLocalStorageWatcher'
 
 export const pkgCommands = {
@@ -77,10 +77,13 @@ export function useBashCommand(children: ReactNode, className: string) {
 }
 
 export function getBashText(children: any): any {
-  return `${
-    Children.toArray(children).flatMap((x) => {
-      // @ts-ignore
-      return x?.props?.children ? getBashText(x.props.children) : x
-    })[0]
-  }`
+  return `${Children.toArray(children)
+    .flatMap((x) => {
+      if (typeof x === 'string') return x
+      if (isValidElement(x)) {
+        return x?.props?.children ? getBashText(x.props.children) : x
+      }
+      return ''
+    })
+    .join('')}`
 }

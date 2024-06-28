@@ -211,7 +211,6 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                   horizontal
                   showsHorizontalScrollIndicator={false}
                 >
-                  {/* @ts-ignore */}
                   <Code
                     p="$4"
                     backgroundColor="transparent"

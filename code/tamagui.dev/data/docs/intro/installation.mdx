@@ -3,17 +3,17 @@ title: Installation
 description: Get Tamagui set up, step by step
 ---
 
-We recommend using npm create to set up one or more of the example apps via `npm create tamagui@latest`. It's useful even if integrating into an existing app.
+We recommend using `npm create` to set up one or more of the example apps: `npm create tamagui@latest`. It gives you a variety of end-to-end examples, which is useful even if you plan to start from scratch or integrate into an existing app.
 
 ## Install
 
-The base Tamagui style library `@tamagui/core` has only one dependency - `react`.
+The base Tamagui style library, `@tamagui/core`, has only one dependency: React. It's good for web-only, Native, or both:
 
 ```bash
 yarn add @tamagui/core
 ```
 
-If you want `tamagui`, you can avoid installing core and instead use `tamagui` everywhere as it's a superset of core:
+If you plan to use the full UI kit, you can avoid installing `@tamagui/core` altogether. Instead, use `tamagui` everywhere, as it's a strict superset of core. Anywhere in the docs where `@tamagui/core` is mentioned, you can replace it with `tamagui`:
 
 ```bash
 yarn add tamagui
@@ -21,13 +21,11 @@ yarn add tamagui
 
 For now recommended `yarn` if you are using Tamagui in a monorepo, as it's been proven on large projects where we've found issues with others.
 
-Add `TamaguiProvider` and pass `config` to it at the root of your app and you are fully set up:
+We recommend using `TamaguiProvider`, though it is optional. It lets you set a variety of helpful options, and also is where you can pass your custom Tamagui config. You'll want to add it at the root of your app:
 
 ```tsx fileName="App.tsx"
-// optional but recommended CSS reset:
-import '@tamagui/core/reset.css'
 import { TamaguiProvider, View } from '@tamagui/core' // or 'tamagui'
-import config from './tamagui.config'
+import config from './tamagui.config' // see next section
 
 export default function App() {
   return (
@@ -38,7 +36,7 @@ export default function App() {
 }
 ```
 
-Tamagui doesn't require any bundler setup for either web or native, but you'll typically want to configure a few things using `createTamagui` like media queries, fonts, or tokens. The [configuration documentation](/docs/core/configuration) covers this in detail, but if you'd like to get started with decent defaults, you'll want `@tamagui/config`:
+As for the config, you'll typically want to set a few things there via `createTamagui`, like media queries, fonts, or tokens. The [configuration documentation](/docs/core/configuration) covers this in detail, but if you'd like to get started with decent defaults, you'll want `@tamagui/config`:
 
 ```bash
 yarn add @tamagui/config
@@ -83,6 +81,12 @@ export default function Demo() {
 ```
 
 From here, we'd recommend [spending some time understanding configuration](/docs/core/configuration). Tamagui works 100% the same at runtime as at compile-time, so you can wait until you're needing some extra performance to [set up the compiler](/docs/intro/compiler-install).
+
+There's an optional CSS reset you can import somewhere at the root of your app, for a bit more normalization of styling on web:
+
+```tsx
+import '@tamagui/core/reset.css'
+```
 
 
 ## Guides

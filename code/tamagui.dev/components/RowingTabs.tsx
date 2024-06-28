@@ -5,7 +5,7 @@ import { AnimatePresence, Tabs, YStack } from 'tamagui'
 import { Code } from './Code'
 import { useBashCommand } from '~/hooks/useBashCommand'
 
-export function RowingTabs({ className, children, size, ...rest }) {
+export function RowingTabs({ className, children, code, size, ...rest }) {
   const {
     isStarter,
     isPackageRunner,
@@ -13,7 +13,7 @@ export function RowingTabs({ className, children, size, ...rest }) {
     command,
     setCurrentSelectedTab,
     currentSelectedTab,
-  } = useBashCommand(children, className)
+  } = useBashCommand(code || children, className)
 
   const [tabState, setTabState] = useState<{
     // Layout of the Tab user might intend to select (hovering / focusing)
@@ -40,12 +40,12 @@ export function RowingTabs({ className, children, size, ...rest }) {
   const { activeAt, intentAt, prevActiveAt } = tabState
 
   // 1 = right, 0 = nowhere, -1 = left
-  const direction = (() => {
-    if (!activeAt || !prevActiveAt || activeAt.x === prevActiveAt.x) {
-      return 0
-    }
-    return activeAt.x > prevActiveAt.x ? -1 : 1
-  })()
+  // const direction = (() => {
+  //   if (!activeAt || !prevActiveAt || activeAt.x === prevActiveAt.x) {
+  //     return 0
+  //   }
+  //   return activeAt.x > prevActiveAt.x ? -1 : 1
+  // })()
 
   const handleOnInteraction: TabsTabProps['onInteraction'] = (type, layout) => {
     if (type === 'select') {
