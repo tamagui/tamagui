@@ -26,7 +26,7 @@ export const InstallInput = memo(() => {
         ta="center"
         size="$4"
         fontWeight="500"
-        fontFamily="$silkscreen"
+        // fontFamily="$silkscreen"
         ls={1}
         $sm={{ size: '$3' }}
       >

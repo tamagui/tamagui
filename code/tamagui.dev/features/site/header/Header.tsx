@@ -182,8 +182,8 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
 
           <SearchButton size="$2" br="$10" elevation="$0.5" />
 
-          <YStack>
-            <Link target="_blank" href="https://github.com/tamagui/tamagui">
+          <Link target="_blank" href="https://github.com/tamagui/tamagui">
+            <XStack group>
               <XStack
                 ai="center"
                 gap="$2"
@@ -192,12 +192,20 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
                 hoverStyle={{ opacity: 1 }}
               >
                 <GithubIcon width={26} />
-                <SizableText $md={{ display: 'none' }} size="$4" color="$color11">
+                <SizableText
+                  $md={{ display: 'none' }}
+                  size="$3"
+                  color="$color12"
+                  o={0.5}
+                  $group-hover={{
+                    o: 0.8,
+                  }}
+                >
                   Github
                 </SizableText>
               </XStack>
-            </Link>
-          </YStack>
+            </XStack>
+          </Link>
         </XStack>
       )}
 
