@@ -64,7 +64,13 @@ function TakeoutBox3D(props) {
 
   return (
     <>
-      <Stage scale={1} adjustCamera={1.6} preset="portrait" intensity={1}>
+      <Stage
+        shadows="accumulative"
+        scale={1}
+        adjustCamera={1.6}
+        preset="portrait"
+        intensity={1.5}
+      >
         <group ref={ref} dispose={null} {...props}>
           <mesh
             castShadow

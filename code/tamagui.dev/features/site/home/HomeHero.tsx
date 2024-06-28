@@ -127,7 +127,7 @@ const HeroContents = memo(function HeroContents() {
                       color="$color10"
                       $sm={{ dsp: 'none' }}
                     >
-                      starter kit
+                      starter
                     </Text>
                   </Button>
                 </XGroup.Item>

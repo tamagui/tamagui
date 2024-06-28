@@ -36,7 +36,6 @@
     "color2k": "^2.0.2",
     "hsluv": "^0.1.0",
     "jsonwebtoken": "^9.0.2",
-    "micro": "^10.0.1",
     "multithreading": "0.2.1",
     "postmark": "^3.0.18",
     "react": "^18.2.0",
@@ -49,12 +48,13 @@
     "stripe": "^9.1.0",
     "swr": "^2.2.5",
     "tamagui": "1.101.3",
-    "three": "^0.165.0",
+    "three": "^0.152.2",
+    "valibot": "^0.35.0",
     "victory": "^37.0.2",
     "vite": "6.0.0-alpha.18",
     "vite-plugin-inspect": "^0.8.4",
     "vite-tsconfig-paths": "^4.3.2",
-    "vxs": "^1.1.120"
+    "vxs": "^1.1.121"
   },
   "devDependencies": {
     "@cyco130/vite-plugin-mdx": "1.0.4",
@@ -75,6 +75,6 @@
     "unified": "^10.1.2",
     "unist-util-visit": "^2.0.3",
     "vite-bundle-analyzer": "^0.9.4",
-    "vxrn": "^1.1.120"
+    "vxrn": "^1.1.121"
   }
 }

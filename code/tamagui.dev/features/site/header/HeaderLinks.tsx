@@ -11,6 +11,7 @@ import {
   Popover,
   Separator,
   SizableText,
+  Theme,
   XStack,
   YStack,
   debounce,
@@ -23,6 +24,7 @@ import { TakeoutIcon } from '~/features/icons/TakeoutIcon'
 import { useUser } from '~/features/user/useUser'
 import { UserAvatar } from './UserAvatar'
 import type { HeaderProps } from './types'
+import { BentoPageFrame } from '~/features/bento/BentoPageFrame'
 
 const HeadAnchor = styled(Paragraph, {
   tag: 'a',
@@ -582,7 +584,7 @@ const SlidingPopoverContent = () => {
 
   return (
     <Popover.Content
-      theme="surface4"
+      theme={context.id === 'takeout' ? 'gray' : 'tan'}
       enableAnimationForPositionChange
       animation={
         context.open
@@ -607,42 +609,66 @@ const SlidingPopoverContent = () => {
         o: 0,
       }}
     >
-      <Popover.Arrow size="$4" />
-      <ThemeTintAlt offset={offsets[curI]}>
-        <YStack
-          fullscreen
-          br="$6"
-          zi={0}
-          style={{
-            background: `linear-gradient(transparent, var(--color05))`,
-            mixBlendMode: 'color',
-          }}
-        />
-      </ThemeTintAlt>
+      {context.id === 'bento' ? (
+        <Theme name="tan">
+          <Popover.Arrow bg="$color6" size="$4" />
+        </Theme>
+      ) : (
+        <ThemeTintAlt offset={-1}>
+          <Popover.Arrow bg="$color3" size="$4" />
+        </ThemeTintAlt>
+      )}
+
       <YStack w={280} h={240} ov="hidden">
         <AnimatePresence custom={{ going }} initial={false}>
           {context.id === 'takeout' && (
             <Frame key="takeout">
+              <ThemeTintAlt>
+                <YStack
+                  fullscreen
+                  br="$6"
+                  zi={0}
+                  style={{
+                    background: `linear-gradient(45deg, transparent, var(--color3))`,
+                    mixBlendMode: 'color',
+                  }}
+                />
+              </ThemeTintAlt>
+              <ThemeTintAlt offset={-1}>
+                <YStack
+                  fullscreen
+                  br="$6"
+                  zi={0}
+                  style={{
+                    background: `linear-gradient(-125deg, transparent, var(--color3))`,
+                    mixBlendMode: 'color',
+                  }}
+                />
+              </ThemeTintAlt>
               <TooltipLabelLarge
                 icon={<TakeoutIcon />}
                 title="Takeout"
-                subtitle="A paid starter kit with Supabase, user and auth, icons, fonts, and&nbsp;more."
+                subtitle="Starter kit for making universal apps fast."
               />
             </Frame>
           )}
+
           {context.id === 'bento' && (
             <Frame key="bento">
-              <TooltipLabelLarge
-                icon={
-                  <YStack y={-2}>
-                    <BentoIcon />
-                  </YStack>
-                }
-                title="Bento"
-                subtitle="A suite of nicely designed copy-paste components and screens."
-              />
+              <BentoPageFrame simpler>
+                <TooltipLabelLarge
+                  icon={
+                    <YStack y={-2}>
+                      <BentoIcon />
+                    </YStack>
+                  }
+                  title="Bento"
+                  subtitle="OSS and paid copy-paste components and screens."
+                />
+              </BentoPageFrame>
             </Frame>
           )}
+
           {context.id === 'studio' && (
             <Frame key="takeout">
               <TooltipLabelLarge
@@ -660,6 +686,8 @@ const SlidingPopoverContent = () => {
 
 const Frame = styled(YStack, {
   animation: '200ms',
+  br: '$5',
+  ov: 'hidden',
   fullscreen: true,
   zIndex: 1,
   x: 0,
@@ -690,7 +718,7 @@ const TooltipLabelLarge = ({
 }: { icon: any; title: string; subtitle: string }) => {
   return (
     <YStack f={1} ai="center" p="$7" br="$4" ov="hidden">
-      <H2 f={1} fow="600" size="$8">
+      <H2 ff="$silkscreen" f={1} fow="600" size="$7">
         {title}
       </H2>
 

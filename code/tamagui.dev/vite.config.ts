@@ -22,6 +22,8 @@ const optimizeInterop = ['expo-splash-screen']
 
 const include = [
   ...optimizeInterop,
+  '@tamagui/animate-presence',
+  '@tamagui/presence-child',
   '@docsearch/react',
   '@leeoniya/ufuzzy',
   'react-hook-form',
@@ -77,6 +79,7 @@ export default {
       '@tamagui/web',
       'tamagui',
       'react-hook-form',
+      '@tamagui/use-presence',
     ],
   },
 
@@ -117,33 +120,45 @@ export default {
   ],
 } satisfies UserConfig
 
-const purgeCloudflareCDN = async (files: string[]) => {
+const purgeCloudflareCDN = async (filesIn: string[]) => {
   if (!process.env.CF_ZONE_ID) throw new Error(`Missing process.env.CF_ZONE_ID`)
   if (!process.env.CF_EMAIL) throw new Error(`Missing process.env.CF_EMAIL`)
   if (!process.env.CF_API_KEY) throw new Error(`Missing process.env.CF_API_KEY`)
 
-  console.info(`Clearing CDN (${files.length} pages)...`)
+  console.info(`Clearing CDN (${filesIn.length} pages)...`)
+
+  const url = `https://api.cloudflare.com/client/v4/zones/${process.env.CF_ZONE_ID}/purge_cache`
+  const files = filesIn //.map((file) => encodeURIComponent(file))
 
   try {
-    const response = await fetch(
-      `https://api.cloudflare.com/client/v4/zones/${process.env.CF_ZONE_ID}/purge_cache`,
-      {
+    const filesChunks: string[][] = []
+    for (const [index, file] of files.entries()) {
+      const chunk = index % 10
+      filesChunks[chunk] ||= []
+      filesChunks[chunk].push(file)
+    }
+
+    for (const [index, chunk] of filesChunks.entries()) {
+      const response = await fetch(url, {
         method: 'POST',
         headers: {
           'X-Auth-Email': process.env.CF_EMAIL,
           'X-Auth-Key': process.env.CF_API_KEY,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ files }),
+        body: JSON.stringify({ files: chunk }),
+      })
+
+      if (!response.ok) {
+        throw new Error(`Failed to purge cache: ${response.statusText}`)
       }
-    )
 
-    if (!response.ok) {
-      throw new Error(`Failed to purge cache: ${response.statusText}`)
+      const result = await response.json()
+      console.info(
+        `Cloudflare cache purged (${index + 1}/${filesChunks.length}) success:`,
+        result.success
+      )
     }
-
-    const result = await response.json()
-    console.info('Cloudflare cache purged successfully:', result)
   } catch (error) {
     console.error('Error purging Cloudflare cache:', error)
   }

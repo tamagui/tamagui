@@ -12,8 +12,14 @@ import {
   upsertProductRecord,
 } from '~/features/auth/supabaseAdmin'
 import { stripe } from '~/features/stripe/stripe'
+import * as v from 'valibot'
+import { getQuery } from '~/features/api/getQuery'
 
 const endpointSecret = process.env.STRIPE_SIGNING_SIGNATURE_SECRET
+
+const Schema = v.object({
+  referral: v.optional(v.string()),
+})
 
 export default apiRoute(async (req) => {
   if (!endpointSecret) {
@@ -23,8 +29,7 @@ export default apiRoute(async (req) => {
   let event: Stripe.Event
   const sig = req.headers['stripe-signature']
 
-  const body = await readBodyJSON(req)
-  const toltReferral = body?.referral as string | undefined
+  const toltReferral = v.parse(Schema, getQuery(req))?.referral
   const reqBuffer = await readBodyBuffer(req)
 
   if (!reqBuffer) {

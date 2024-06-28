@@ -30,7 +30,7 @@ const getPackageToInstall = (text: string) => text?.split(' ').splice(2).join(' 
 const getPackageToRun = (text: string) => text?.split(' ').splice(1).join(' ')
 
 export function useBashCommand(children: ReactNode, className: string) {
-  const bashText = getBashText(children)[0]
+  const bashText = getBashText(children)
 
   const isBash = className === 'language-bash'
   const isPackage = startsWithCommand(bashText, pkgCommands)
@@ -77,8 +77,10 @@ export function useBashCommand(children: ReactNode, className: string) {
 }
 
 export function getBashText(children: any): any {
-  return Children.toArray(children).flatMap((x) => {
-    // @ts-ignore
-    return x?.props?.children ? getBashText(x.props.children).join('') : x
-  })
+  return `${
+    Children.toArray(children).flatMap((x) => {
+      // @ts-ignore
+      return x?.props?.children ? getBashText(x.props.children) : x
+    })[0]
+  }`
 }

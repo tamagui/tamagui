@@ -66,7 +66,7 @@ body .preview {
 }
 
 :root:root a,
-.text-decoration-none {
+:root:root:root .text-decoration-none {
   text-decoration: none;
 }
 

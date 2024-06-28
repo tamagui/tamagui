@@ -91,9 +91,9 @@ export function Stage({
   children,
   center,
   adjustCamera = true,
-  intensity = 0.5,
+  intensity = 1,
   shadows = 'contact',
-  preset = 'rembrandt',
+  preset = 'soft',
   ...props
 }: StageProps & { children?: any; scale?: number }) {
   const [show, setShow] = React.useState(false)
@@ -170,7 +170,7 @@ export function Stage({
           <ContactShadows
             scale={radius * 4}
             far={radius}
-            blur={2}
+            blur={5}
             {...(shadowSpread as ContactShadowsProps)}
           />
         )}

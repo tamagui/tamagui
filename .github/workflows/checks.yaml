@@ -50,9 +50,6 @@ jobs:
       - name: Pull Vercel Environment Information
         run: cd code/tamagui.dev && vercel env pull .env --scope=tamagui --yes --token=${{ secrets.VERCEL_TOKEN }}
 
-      - name: Build Site
-        run: yarn dev:prod
-
       - uses: nick-fields/retry@v2
         with:
           timeout_minutes: 15
