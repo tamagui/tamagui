@@ -208,7 +208,7 @@ const HeroContents = memo(function HeroContents() {
             <Text
               className="clip-text"
               bg="$color"
-              style={{
+              $theme-light={{
                 backgroundImage: `-webkit-linear-gradient(
                   -90deg,
                   var(--${tintAlt}9),
