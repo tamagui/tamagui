@@ -1,10 +1,8 @@
 // fork from https://github.com/seek-oss/vanilla-extract
 
-import path from 'node:path'
-
 import type { TamaguiOptions } from '@tamagui/static'
 import * as StaticIn from '@tamagui/static'
-import outdent from 'outdent'
+import path from 'node:path'
 import type { Plugin, ResolvedConfig, ViteDevServer } from 'vite'
 import { normalizePath, type Environment } from 'vite'
 
@@ -26,7 +24,6 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
   let config: ResolvedConfig
   let tamaguiOptions: TamaguiOptions
   let server: ViteDevServer
-  let shouldReturnCSS = true //config.command === 'serve'
   let virtualExt: string
   let disableStatic = false
 
@@ -38,7 +35,7 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
   }
 
   function isVite6AndNotClient(environment?: Environment) {
-    return environment?.name && environment?.name !== 'client'
+    return environment?.name && environment.name !== 'client'
   }
 
   return {
@@ -63,10 +60,8 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
       if (extractor) {
         return
       }
-
       config = resolvedConfig
-      shouldReturnCSS = true
-      virtualExt = `.tamagui.${shouldReturnCSS ? 'css' : 'js'}`
+      virtualExt = `.tamagui.css`
     },
 
     async resolveId(source) {
@@ -126,39 +121,8 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
         // only optimize on client - server should produce identical styles anyway!
         return
       }
-
       const [validId] = id.split('?')
-
-      if (!cssMap.has(validId)) {
-        return
-      }
-
-      const css = cssMap.get(validId)
-
-      if (typeof css !== 'string') {
-        return
-      }
-
-      if (shouldReturnCSS || !server || server.config.isProduction) {
-        return css
-      }
-
-      return outdent`
-        import { injectStyles } from '@tamagui/core/inject-styles';
-
-        const inject = (css) => injectStyles({
-          filePath: "${validId}",
-          css
-        });
-
-        inject(${JSON.stringify(css)});
-
-        if (import.meta.hot) {
-          import.meta.hot.on('${styleUpdateEvent(validId)}', (css) => {
-            inject(css);
-          });
-        }
-      `
+      return cssMap.get(validId)
     },
 
     async transform(code, id, ssrParam) {
@@ -168,7 +132,6 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
       }
 
       const [validId] = id.split('?')
-
       if (!validId.endsWith('.tsx')) {
         return
       }
