@@ -2,9 +2,12 @@
 import { removeReactNativeWebAnimatedPlugin, vxs } from 'vxs/vite'
 // import { mdx } from '@cyco130/vite-plugin-mdx'
 import type { UserConfig } from 'vite'
+import { tamaguiExtractPlugin } from '@tamagui/vite-plugin'
 // import inpsectPlugin from 'vite-plugin-inspect'
 
 Error.stackTraceLimit = Number.POSITIVE_INFINITY
+
+const PROD = process.env.NODE_ENV === 'production'
 
 // @ts-ignore TODO type
 if (!import.meta.dirname) {
@@ -142,9 +145,11 @@ export default {
     //   targets,
     // }),
 
-    // tamaguiExtractPlugin({
-    //   logTimings: true,
-    // }),
+    process.env.TAMAGUI_EXTRACT || PROD
+      ? tamaguiExtractPlugin({
+          logTimings: true,
+        })
+      : null,
   ],
 } satisfies UserConfig
 

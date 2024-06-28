@@ -1,25 +1,22 @@
-import { shorthands } from '@tamagui/shorthands/v2'
-import { tokens } from '@tamagui/themes/v3'
-import { themes } from './themes'
-
 import type { CreateTamaguiProps } from '@tamagui/core'
 import { setupDev } from '@tamagui/core'
-
+import { shorthands } from '@tamagui/shorthands/v2'
+import { tokens } from '@tamagui/themes/v3'
+import { createTamagui } from 'tamagui'
 import { animations } from './animations'
-import { media, mediaQueryDefaultActive } from './media'
 import {
-  headingFont,
+  bodyFont,
+  cherryBombFont,
   dmSansHeadingFont,
   dmSerifDisplayHeadingFont,
-  nohemiFont,
-  bodyFont,
+  headingFont,
   monoFont,
-  silkscreenFont,
   munroFont,
-  cherryBombFont,
+  nohemiFont,
+  silkscreenFont,
 } from './fonts'
-
-export { animations } from './animations'
+import { media, mediaQueryDefaultActive } from './media'
+import { themes } from './themes'
 
 setupDev({
   visualizer: true,
@@ -75,7 +72,7 @@ const fixTypescript55Bug = {
   color: tokens.color,
 }
 
-export const config = {
+const config = {
   defaultFont: 'body',
   shouldAddPrefersColorThemes: true,
   themeClassNameOnRoot: true,
@@ -96,3 +93,29 @@ export const config = {
   },
   fonts,
 } satisfies CreateTamaguiProps
+
+// for site responsive demo, we want no types here
+Object.assign(config.media, {
+  tiny: { maxWidth: 500 },
+  gtTiny: { minWidth: 500 + 1 },
+  small: { maxWidth: 620 },
+  gtSmall: { minWidth: 620 + 1 },
+  medium: { maxWidth: 780 },
+  gtMedium: { minWidth: 780 + 1 },
+  large: { maxWidth: 900 },
+  gtLarge: { minWidth: 900 + 1 },
+})
+
+const tamaConf = createTamagui(config)
+
+export type Conf = typeof tamaConf
+
+declare module 'tamagui' {
+  interface TamaguiCustomConfig extends Conf {}
+
+  interface TypeOverride {
+    groupNames(): 'card' | 'takeoutBody'
+  }
+}
+
+export default tamaConf

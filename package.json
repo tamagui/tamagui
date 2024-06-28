@@ -21,6 +21,7 @@
   "scripts": {
     "new": "yarn workspace testing dev:clean",
     "dev": "yarn workspace @tamagui/dot-dev dev:clean",
+    "dev:extract": "TAMAGUI_EXTRACT=1 yarn workspace @tamagui/dot-dev dev:clean",
     "dev:build": "yarn workspace @tamagui/dot-dev build:prod",
     "dev:serve": "yarn workspace @tamagui/dot-dev serve",
     "dev:serve:railway": "yarn workspace @tamagui/dot-dev serve:railway",

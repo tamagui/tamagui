@@ -1,10 +1,10 @@
 import { TamaguiLogo } from '@tamagui/logo'
 import { memo } from 'react'
-import { H4, Paragraph, Spacer, Text, XStack, YStack } from 'tamagui'
+import { H4, Paragraph, Spacer, VisuallyHidden, XStack, YStack } from 'tamagui'
 
 import { ContainerLarge } from '~/components/Containers'
-import { ExternalIcon } from '../icons/ExternalIcon'
 import { Link, ParagraphLink } from '~/components/Link'
+import { ExternalIcon } from '../icons/ExternalIcon'
 
 export const Footer = memo(() => {
   return (
@@ -20,18 +20,8 @@ export const Footer = memo(() => {
             px="$6"
             gap="$4"
           >
-            <Text
-              className="clip-invisible"
-              position="absolute"
-              width={1}
-              height={1}
-              padding={0}
-              margin={-1}
-              overflow="hidden"
-            >
-              homepage
-            </Text>
             <Link href="/" aria-label="Homepage">
+              <VisuallyHidden>homepage</VisuallyHidden>
               <TamaguiLogo showWords downscale={1} />
             </Link>
             <Paragraph size="$3" o={0.25}>

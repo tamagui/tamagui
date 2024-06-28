@@ -10,25 +10,6 @@ body {
   background: var(--color2) !important;
 }
 
-.bento-fade {
-  background: linear-gradient(
-    var(--background075),
-    var(--background) 20%
-  );
-}
-
-html.t_light body:has(.strong-background)::before {
-  display: flex;
-  content: ' ';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 900px;
-  background: linear-gradient(#fff, transparent);
-  z-index: 1;
-}
-
 body {
   margin: 0;
   position: relative;
@@ -40,13 +21,7 @@ body {
   outline: 0;
 }
 
-#__next {
-  display: flex;
-  flex: 1;
-  max-width: 100vw;
-}
-
-:is(#__next, body, html):not(:has(.is-sticky)) {
+:is(body, html):not(:has(.is-sticky)) {
   max-width: 100vw;
   overflow-x: hidden;
 }

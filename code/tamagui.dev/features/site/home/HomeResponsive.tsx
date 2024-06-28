@@ -1,7 +1,7 @@
 import { throttle } from '@github/mini-throttle'
 import { useTint } from '@tamagui/logo'
 import { ChevronLeft, ChevronRight, Lock, MapPin, Star } from '@tamagui/lucide-icons'
-import { demoMedia } from '~/config'
+import { demoMedia } from '~/config/media'
 import {
   memo,
   startTransition,

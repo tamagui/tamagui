@@ -12,7 +12,7 @@ import { ToastProvider } from '@tamagui/toast'
 import { TamaguiProvider } from 'tamagui'
 import { SearchProvider } from '~/features/site/search/SearchProvider'
 import { UserThemeProvider, useUserTheme } from '~/features/site/theme/useUserTheme'
-import tamaConf from '../tamagui.config'
+import tamaConf from '~/config/tamagui.config'
 
 // for navigation container props
 //           theme: {

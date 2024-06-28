@@ -1,9 +1,7 @@
 import { createAnimations as createAnimationsCss } from '@tamagui/animations-css'
 import type { AnimationDriver } from '@tamagui/web'
-
 import { createContext, useContext, useMemo, useState } from 'react'
-
-import tamaConf from '~/tamagui.config'
+import tamaConf from '~/config/tamagui.config'
 
 const ANIMATION_DRIVERS = ['css', 'react-native'] as const
 
