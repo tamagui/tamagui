@@ -1,9 +1,10 @@
 // @ts-nocheck
-import { useContext, useEffect, useMemo, useState } from 'react'
 import fetch from 'node-fetch'
+import querystring from 'node:querystring'
+import { Octokit } from 'octokit'
+import { useContext, useEffect, useState } from 'react'
 import useSWR from 'swr'
 import { AppContext } from '../commands/index.js'
-import { Octokit } from 'octokit'
 import { installComponent } from './useInstallComponent.js'
 
 export const useGetComponent = async () => {
@@ -42,16 +43,17 @@ export const useGetComponent = async () => {
     return result
   }
 
-  const codePath = useMemo(() => {
-    // const BASE_URL =
-    //   process.env.NODE_ENV === 'production'
-    //     ? 'http://tamagui.dev'
-    //     : 'http://localhost:8081'
-    const BASE_URL = 'http://tamagui.dev'
-    return `${BASE_URL}/api/bento/code/${install.installingComponent?.category}/${
-      install.installingComponent?.categorySection
-    }/${install.installingComponent?.fileName}?userGithubId=${githubData?.node_id || ''}`
-  }, [install, githubData])
+  const query =
+    install.installingComponent?.category &&
+    install.installingComponent?.categorySection &&
+    querystring.stringify({
+      section: install.installingComponent?.category,
+      part: install.installingComponent?.categorySection,
+      fileName: install.installingComponent?.fileName,
+      githubId: githubData?.node_id || '',
+    })
+
+  const codePath = `http://tamagui.dev/api/bento/code?${query}`
 
   const { data, error, isLoading } = useSWR(
     install.installingComponent ? codePath : null,
