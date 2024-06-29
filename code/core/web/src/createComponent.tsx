@@ -1635,7 +1635,7 @@ export function spacedChildren(props: SpacedChildrenProps) {
       final.push(child)
     } else {
       final.push(
-        <Fragment key={index}>
+        <Fragment key={`${index}0t`}>
           {isZStack ? <AbsoluteFill>{child}</AbsoluteFill> : child}
         </Fragment>
       )
