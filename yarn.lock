@@ -4915,6 +4915,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@rollup/rollup-linux-x64-gnu@npm:^4.9.5":
+  version: 4.18.0
+  resolution: "@rollup/rollup-linux-x64-gnu@npm:4.18.0"
+  conditions: os=linux & cpu=x64 & libc=glibc
+  languageName: node
+  linkType: hard
+
 "@rollup/rollup-linux-x64-musl@npm:4.13.0":
   version: 4.13.0
   resolution: "@rollup/rollup-linux-x64-musl@npm:4.13.0"
@@ -5103,15 +5110,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@supabase/ssr@npm:^0.3.0":
-  version: 0.3.0
-  resolution: "@supabase/ssr@npm:0.3.0"
+"@supabase/ssr@npm:^0.4.0":
+  version: 0.4.0
+  resolution: "@supabase/ssr@npm:0.4.0"
   dependencies:
-    cookie: "npm:^0.5.0"
-    ramda: "npm:^0.29.0"
+    "@rollup/rollup-linux-x64-gnu": "npm:^4.9.5"
+    cookie: "npm:^0.6.0"
   peerDependencies:
-    "@supabase/supabase-js": ^2.33.1
-  checksum: 10/b8418535cddecbe0891a1a715f8082c5b5354bc5f6c9a8c6179c3a332e8a1ce09403e356504fbd6680098fbc33a68470cd08549eb4ac0b68fcee8c1481e86f42
+    "@supabase/supabase-js": ^2.43.4
+  dependenciesMeta:
+    "@rollup/rollup-linux-x64-gnu":
+      optional: true
+  checksum: 10/8b0a3b88f60451c527272b8ee8281cc75d4d81eb9b9650d0843701f9fd0099fede5c781b2e472c91bf315d4fc5eb92e04c51615baf0635418e1c4c1528b6e5c1
   languageName: node
   linkType: hard
 
@@ -6014,7 +6024,7 @@ __metadata:
     "@react-navigation/native": "npm:6.1.17"
     "@react-three/drei": "npm:9.105.6"
     "@react-three/fiber": "npm:@react-three/fiber@9.0.0-alpha.6"
-    "@supabase/ssr": "npm:^0.3.0"
+    "@supabase/ssr": "npm:^0.4.0"
     "@supabase/supabase-js": "npm:^2.38.2"
     "@tamagui/assert": "npm:1.101.4"
     "@tamagui/cli": "npm:1.101.4"
@@ -11799,10 +11809,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cookie@npm:0.5.0, cookie@npm:^0.5.0":
+"cookie@npm:0.5.0":
   version: 0.5.0
   resolution: "cookie@npm:0.5.0"
   checksum: 10/aae7911ddc5f444a9025fbd979ad1b5d60191011339bce48e555cb83343d0f98b865ff5c4d71fecdfb8555a5cafdc65632f6fce172f32aaf6936830a883a0380
+  languageName: node
+  linkType: hard
+
+"cookie@npm:^0.6.0":
+  version: 0.6.0
+  resolution: "cookie@npm:0.6.0"
+  checksum: 10/c1f8f2ea7d443b9331680598b0ae4e6af18a618c37606d1bbdc75bec8361cce09fe93e727059a673f2ba24467131a9fb5a4eec76bb1b149c1b3e1ccb268dc583
   languageName: node
   linkType: hard
 
@@ -22595,13 +22612,6 @@ __metadata:
   version: 1.1.2
   resolution: "radix3@npm:1.1.2"
   checksum: 10/5ed01a8e4b753e325c6ecb01d993de77f690e548ef9e149e7dc403ee7b109c2cb41e3d09bc3ce004d872c67c8dca1d556dbf7808b1ac7df9f86994e57d757557
-  languageName: node
-  linkType: hard
-
-"ramda@npm:^0.29.0":
-  version: 0.29.1
-  resolution: "ramda@npm:0.29.1"
-  checksum: 10/5824249efa18f3c013ea0bae6cdcc167ef357fff5441586b7ad98759e902b1397297d92b50bdc317f49fe73fa6b0e17f806f4d0f7a95270f05c25afa733a8fc5
   languageName: node
   linkType: hard
 

@@ -14,14 +14,24 @@ export function useSupabaseClient(given?: SupabaseClient) {
 
   useEffect(() => {
     const run = async () => {
-      if (current) return
+      if (current || client) return
 
       const { createBrowserClient } = await import('@supabase/ssr')
+
+      if (
+        !import.meta.env.NEXT_PUBLIC_SUPABASE_URL ||
+        !import.meta.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+      ) {
+        console.error(`Missing supabase info`)
+      }
 
       client = createBrowserClient(
         import.meta.env.NEXT_PUBLIC_SUPABASE_URL!,
         import.meta.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
       )
+
+      globalThis['supabaseClient'] = client
+      // client!.auth.initialize()
 
       setCurrent(client)
     }
@@ -41,7 +51,13 @@ export function useSupabaseSession(client?: OurClient) {
       const reply = await supabase?.auth.getSession()
 
       if (!reply || reply.error) {
-        throw new Error(`session err ${reply?.error}`)
+        console.error(
+          `Error authenticating`,
+          reply,
+          import.meta.env.NEXT_PUBLIC_SUPABASE_URL,
+          import.meta.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+        )
+        return
       }
 
       if (!reply.data.session) {
