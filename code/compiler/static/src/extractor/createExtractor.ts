@@ -676,7 +676,8 @@ export function createExtractor(
         })
 
         if (out.rulesToInsert) {
-          for (const styleObject of out.rulesToInsert) {
+          for (const key in out.rulesToInsert) {
+            const styleObject = out.rulesToInsert[key]
             onStyleRule?.(
               styleObject[StyleObjectIdentifier],
               styleObject[StyleObjectRules]
