@@ -17,8 +17,9 @@ export const ensureAuth = async ({
   const supabase = getSupabaseServerClient(req)
 
   const {
-    data: { user },
-  } = await supabase.auth.getUser()
+    data: { session },
+  } = await supabase.auth.getSession()
+  const user = session?.user
 
   if (!user) {
     if (shouldRedirect) {
@@ -41,5 +42,5 @@ export const ensureAuth = async ({
     )
   }
 
-  return { supabase, user }
+  return { supabase, user, session }
 }
