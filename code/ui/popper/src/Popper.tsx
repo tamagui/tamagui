@@ -227,9 +227,10 @@ export const PopperAnchor = YStack.extractable(
         }
       }, [virtualRef])
 
-      if (virtualRef) {
-        return null
-      }
+      // if (virtualRef) {
+      //   return null
+      // }
+
       const stackProps = {
         ref: composedRefs,
         ...anchorProps,
