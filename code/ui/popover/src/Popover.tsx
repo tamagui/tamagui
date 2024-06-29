@@ -145,25 +145,6 @@ export const PopoverTrigger = React.forwardRef<
 
   const composedTriggerRef = useComposedRefs(forwardedRef, context.triggerRef)
 
-  if (anchorTo) {
-    let virtualRef = {
-      current: {
-        getBoundingClientRect: () => (isWeb ? DOMRect.fromRect(anchorTo) : anchorTo),
-        ...(!isWeb && {
-          measure: (c) => c(anchorTo?.x, anchorTo?.y, anchorTo?.width, anchorTo?.height),
-          measureInWindow: (c) =>
-            c(anchorTo?.x, anchorTo?.y, anchorTo?.width, anchorTo?.height),
-        }),
-      },
-    }
-    return (
-      <PopperAnchor
-        virtualRef={virtualRef}
-        __scopePopper={__scopePopover || POPOVER_SCOPE}
-      />
-    )
-  }
-
   if (!props.children) return null
 
   const trigger = (
@@ -179,6 +160,27 @@ export const PopoverTrigger = React.forwardRef<
       onPress={composeEventHandlers(props.onPress as any, context.onOpenToggle)}
     />
   )
+
+  if (anchorTo) {
+    const virtualRef = {
+      current: {
+        getBoundingClientRect: () => (isWeb ? DOMRect.fromRect(anchorTo) : anchorTo),
+        ...(!isWeb && {
+          measure: (c) => c(anchorTo?.x, anchorTo?.y, anchorTo?.width, anchorTo?.height),
+          measureInWindow: (c) =>
+            c(anchorTo?.x, anchorTo?.y, anchorTo?.width, anchorTo?.height),
+        }),
+      },
+    }
+    return (
+      <PopperAnchor
+        virtualRef={virtualRef}
+        __scopePopper={__scopePopover || POPOVER_SCOPE}
+      >
+        {trigger}
+      </PopperAnchor>
+    )
+  }
 
   return context.hasCustomAnchor ? (
     trigger
