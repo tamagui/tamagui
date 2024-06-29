@@ -303,6 +303,8 @@ function useButton<Props extends ButtonProps>(
       propsActive.flexDirection === 'column-reverse'
         ? 'vertical'
         : 'horizontal',
+    // for keys to stay the same we keep indices as similar a possible
+    // so even if icons are undefined we still pass them
     children: [themedIcon, ...contents, themedIconAfter],
   })
 

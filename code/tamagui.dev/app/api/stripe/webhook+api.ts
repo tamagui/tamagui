@@ -2,6 +2,7 @@ import type Stripe from 'stripe'
 import * as v from 'valibot'
 import { apiRoute } from '~/features/api/apiRoute'
 import { getQuery } from '~/features/api/getQuery'
+import { readBodyBuffer } from '~/features/api/readBodyBuffer'
 import { unclaimSubscription } from '~/features/api/unclaimProduct'
 import {
   addRenewalSubscription,
@@ -13,7 +14,6 @@ import {
   upsertProductRecord,
 } from '~/features/auth/supabaseAdmin'
 import { stripe } from '~/features/stripe/stripe'
-import { readBodyBuffer } from '~/features/api/readBodyBuffer'
 
 const endpointSecret = process.env.STRIPE_SIGNING_SIGNATURE_SECRET
 
@@ -66,6 +66,15 @@ export default apiRoute(async (req) => {
     case 'price.deleted':
       await deletePriceRecord((event.data.object as Stripe.Price).id)
       break
+
+    // TODO
+    // case 'customer.updated': {
+    //   const data = event.data.object as Stripe.Customer
+    //   await updateCustomer(
+    //     data
+    //   )
+    //   break
+    // }
 
     case 'customer.subscription.created': {
       const createdSub = event.data.object as Stripe.Subscription

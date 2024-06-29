@@ -484,11 +484,13 @@ const SlidingPopover = (props: PopoverProps) => {
       id: active,
       open: !!active,
       setActive(id: string, layout: LayoutRectangle) {
-        setActive(id)
         popoverRef.current?.anchorTo(layout)
+        popoverRef.current?.setOpen(true)
+        setActive(id)
       },
       close: () => {
         setActive('')
+        popoverRef.current?.setOpen(false)
       },
       setInactive(id: string) {
         setActive((cur) => {
@@ -502,7 +504,21 @@ const SlidingPopover = (props: PopoverProps) => {
   }, [active])
 
   return (
-    <Popover disableRTL open={!!active} ref={popoverRef} {...props}>
+    <Popover
+      disableRTL
+      hoverable={{
+        delay: 50,
+        restMs: 40,
+        move: false,
+      }}
+      onOpenChange={(val, event) => {
+        if (!val) {
+          setActive('')
+        }
+      }}
+      ref={popoverRef}
+      {...props}
+    >
       <Popover.Trigger />
       <SlidingPopoverContext.Provider value={val}>
         {props.children}
@@ -536,14 +552,12 @@ const SlidingPopoverTrigger = YStack.styleable<{ id: string }>(
       <YStack
         onMouseEnter={() => {
           if (layout) {
-            React.startTransition(() => {
-              context.setActive(id, layout)
-            })
+            context.setActive(id, layout)
           }
         }}
-        onMouseLeave={() => {
-          context.setInactive(id)
-        }}
+        // onMouseLeave={() => {
+        //   context.setInactive(id)
+        // }}
         onPress={() => {
           setTimeout(() => {
             context.close()
@@ -568,7 +582,6 @@ const SlidingPopoverTrigger = YStack.styleable<{ id: string }>(
 )
 
 const order = ['', 'takeout', 'bento', 'studio']
-const offsets = [0, 3, -1, 2]
 
 const SlidingPopoverContent = () => {
   const context = React.useContext(SlidingPopoverContext)
@@ -617,7 +630,18 @@ const SlidingPopoverContent = () => {
         <Popover.Arrow bg="$color4" size="$4" />
       )}
 
-      <YStack w={280} h={200} ov="hidden">
+      <YStack
+        onPressOut={() => {
+          setTimeout(() => {
+            React.startTransition(() => {
+              context.close()
+            })
+          }, 200)
+        }}
+        w={280}
+        h={200}
+        ov="hidden"
+      >
         <AnimatePresence custom={{ going }} initial={false}>
           {context.id === 'takeout' && (
             <Frame key="takeout">
@@ -645,6 +669,7 @@ const SlidingPopoverContent = () => {
               </ThemeTintAlt>
               <TooltipLabelLarge
                 icon={<TakeoutIcon />}
+                href="/takeout"
                 title="Takeout"
                 subtitle="Starter kit for making universal apps fast."
               />
@@ -655,6 +680,7 @@ const SlidingPopoverContent = () => {
             <Frame key="bento">
               <BentoPageFrame simpler>
                 <TooltipLabelLarge
+                  href="/bento"
                   icon={
                     <YStack y={-2}>
                       <BentoIcon />
@@ -670,6 +696,7 @@ const SlidingPopoverContent = () => {
           {context.id === 'studio' && (
             <Frame key="takeout">
               <TooltipLabelLarge
+                href="/studio"
                 icon={<StudioIcon />}
                 title="Studio"
                 subtitle="Create complete theme suites with a visual step-by-step studio."
@@ -713,20 +740,23 @@ const TooltipLabelLarge = ({
   title,
   subtitle,
   icon,
-}: { icon: any; title: string; subtitle: string }) => {
+  href,
+}: { href: string; icon: any; title: string; subtitle: string }) => {
   return (
-    <YStack f={1} ai="center" p="$7" br="$4" ov="hidden">
-      <H2 ff="$silkscreen" f={1} fow="600" size="$7">
-        {title}
-      </H2>
+    <Link asChild href={href}>
+      <YStack cur="pointer" f={1} ai="center" p="$7" br="$4" ov="hidden">
+        <H2 ff="$silkscreen" f={1} fow="600" size="$7">
+          {title}
+        </H2>
 
-      <Paragraph theme="alt1" f={1} size="$5">
-        {subtitle}
-      </Paragraph>
+        <Paragraph theme="alt1" f={1} size="$5">
+          {subtitle}
+        </Paragraph>
 
-      <YStack pos="absolute" b={15} r={17} scale={2.25} rotate="-10deg">
-        {icon}
+        <YStack pos="absolute" b={15} r={17} scale={2.25} rotate="-10deg">
+          {icon}
+        </YStack>
       </YStack>
-    </YStack>
+    </Link>
   )
 }

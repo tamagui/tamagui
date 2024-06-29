@@ -335,7 +335,7 @@ export async function addRenewalSubscription(
     }
     renewalPriceIds.push(renewalPriceId)
   }
-  console.info('creating the sub...', renewalPriceIds)
+
   if (renewalPriceIds.length > 0) {
     const toltReferral = options?.toltReferral ?? null
 
@@ -373,14 +373,6 @@ export async function addRenewalSubscription(
     console.info(renewalSub)
   }
 }
-
-// commented cause supabase code is outdated
-// export {
-//   upsertProductRecord,
-//   upsertPriceRecord,
-//   createOrRetrieveCustomer,
-//   manageSubscriptionStatusChange,
-// }
 
 export async function getOrCreateRenewalPriceId(price: Stripe.Price) {
   let product =

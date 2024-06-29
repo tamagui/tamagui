@@ -27,6 +27,7 @@ export const TooltipSimple: React.FC<TooltipSimpleProps> = React.forwardRef(
 
     const contents = (
       <Tooltip
+        disableRTL
         offset={15}
         restMs={40}
         delay={40}

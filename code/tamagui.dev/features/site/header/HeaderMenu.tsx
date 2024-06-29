@@ -35,6 +35,7 @@ export const HeaderMenu = React.memo(function HeaderMenu() {
   return (
     <HeaderMenuTheme>
       <Popover
+        disableRTL
         // Note: turning this on seems to break the HomeGlow (shockingly, maybe a React bug)
         // keepChildrenMounted
         hoverable={{
