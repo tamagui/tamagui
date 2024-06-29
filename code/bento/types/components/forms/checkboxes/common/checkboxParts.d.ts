@@ -571,7 +571,7 @@ export declare const Checkboxes: (<K extends string>(props: PropsWithChildren<Ch
             padded?: boolean | undefined;
             chromeless?: boolean | "all" | undefined;
         }, import("@tamagui/web").StaticConfigPublic>;
-        Label: import("@tamagui/web").ReactComponentWithRef<import("tamagui").LabelProps, HTMLButtonElement | import("react-native").View>;
+        Label: import("@tamagui/web").ReactComponentWithRef<import("tamagui").LabelProps, import("react-native").View | HTMLButtonElement>;
     };
     Card: import("tamagui").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
         active?: boolean | undefined;
