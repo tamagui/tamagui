@@ -297,6 +297,7 @@ function useButton<Props extends ButtonProps>(
     // a bit arbitrary but scaling to font size is necessary so long as button does
     space: spaceSize,
     spaceFlex,
+    ensureKeys: true,
     separator,
     direction:
       propsActive.flexDirection === 'column' ||

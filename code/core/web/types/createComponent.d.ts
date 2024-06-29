@@ -38,6 +38,7 @@ export type SpacedChildrenProps = {
     spaceFlex?: boolean | number;
     direction?: SpaceDirection | 'unset';
     separator?: React.ReactNode;
+    ensureKeys?: boolean;
     debug?: DebugProp;
 };
 export declare function spacedChildren(props: SpacedChildrenProps): React.ReactNode;

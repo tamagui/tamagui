@@ -1592,16 +1592,17 @@ export type SpacedChildrenProps = {
   spaceFlex?: boolean | number
   direction?: SpaceDirection | 'unset'
   separator?: React.ReactNode
+  ensureKeys?: boolean
   debug?: DebugProp
 }
 
 export function spacedChildren(props: SpacedChildrenProps) {
-  const { isZStack, children, space, direction, spaceFlex, separator } = props
+  const { isZStack, children, space, direction, spaceFlex, separator, ensureKeys } = props
   const hasSpace = !!(space || spaceFlex)
   const hasSeparator = !(separator === undefined || separator === null)
   const areChildrenArray = Array.isArray(children)
 
-  if (!(hasSpace || hasSeparator || isZStack) && !areChildrenArray) {
+  if (!ensureKeys && !(hasSpace || hasSeparator || isZStack)) {
     return children
   }
 
