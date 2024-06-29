@@ -1,4 +1,4 @@
-async function readBodyBuffer(req: Request) {
+export async function readBodyBuffer(req: Request) {
   if (!req.body) {
     return null
   }

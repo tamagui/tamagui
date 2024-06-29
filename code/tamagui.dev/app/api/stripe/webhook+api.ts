@@ -1,6 +1,7 @@
 import type Stripe from 'stripe'
+import * as v from 'valibot'
 import { apiRoute } from '~/features/api/apiRoute'
-import { readBodyJSON } from '~/features/api/readBodyJSON'
+import { getQuery } from '~/features/api/getQuery'
 import { unclaimSubscription } from '~/features/api/unclaimProduct'
 import {
   addRenewalSubscription,
@@ -12,8 +13,7 @@ import {
   upsertProductRecord,
 } from '~/features/auth/supabaseAdmin'
 import { stripe } from '~/features/stripe/stripe'
-import * as v from 'valibot'
-import { getQuery } from '~/features/api/getQuery'
+import { readBodyBuffer } from '~/features/api/readBodyBuffer'
 
 const endpointSecret = process.env.STRIPE_SIGNING_SIGNATURE_SECRET
 
