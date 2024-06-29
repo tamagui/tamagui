@@ -20,13 +20,13 @@ export type DiscordChannelStatus = {
   currentlyOccupiedSeats: number
 }
 export default apiRoute(async (req) => {
-  const { supabase, session } = await ensureAuth({ req })
+  const { supabase, user } = await ensureAuth({ req })
   const body = await readBodyJSON(req)
 
   const userPrivate = await supabaseAdmin
     .from('users_private')
     .select('github_token')
-    .eq('id', session?.user.id)
+    .eq('id', user.id)
     .single()
 
   if (userPrivate.error) {

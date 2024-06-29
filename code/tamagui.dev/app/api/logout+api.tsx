@@ -3,8 +3,7 @@ import { ensureAuth } from '~/features/api/ensureAuth'
 import { redirect } from '~/features/api/redirect'
 
 export default apiRoute(async (req) => {
-  const { supabase, session } = await ensureAuth({ req })
-  const user = session?.user
+  const { supabase, user } = await ensureAuth({ req })
 
   if (!user) {
     console.warn(`No user found during logout`)

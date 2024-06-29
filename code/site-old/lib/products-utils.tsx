@@ -1,6 +1,6 @@
 import { getTakeoutPriceInfo } from '@lib/getProductInfo'
 import type { Database } from '@lib/supabase-types'
-import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
+import { ThemeTintAlt } from '@tamagui/logo'
 import { Check, CheckCircle, XCircle } from '@tamagui/lucide-icons'
 import type { ButtonProps, CheckboxProps, RadioGroupItemProps } from 'tamagui'
 import {

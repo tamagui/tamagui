@@ -1,4 +1,4 @@
-import type { Session, User } from '@supabase/supabase-js'
+import type { User } from '@supabase/supabase-js'
 import { apiRoute } from '~/features/api/apiRoute'
 import { ensureAuth } from '~/features/api/ensureAuth'
 import type { Database } from '~/features/supabase/types'
@@ -17,7 +17,6 @@ import {
 export type UserContextType = {
   subscriptions?: Awaited<ReturnType<typeof getSubscriptions>> | null
   productOwnerships?: Awaited<ReturnType<typeof getProductOwnerships>> | null
-  session: Session
   user: User
   userDetails?: Awaited<ReturnType<typeof getUserDetails>> | null
   teams: {
@@ -34,7 +33,7 @@ export type UserContextType = {
 }
 
 export default apiRoute(async (req) => {
-  const { supabase, user, session } = await ensureAuth({ req })
+  const { supabase, user } = await ensureAuth({ req })
 
   const [
     userTeams,
@@ -53,7 +52,6 @@ export default apiRoute(async (req) => {
   ])
 
   return Response.json({
-    session,
     user,
     userDetails,
     subscriptions,

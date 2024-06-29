@@ -17,12 +17,10 @@ export const ensureAuth = async ({
   const supabase = getSupabaseServerClient(req)
 
   const {
-    data: { session },
-  } = await supabase.auth.getSession()
+    data: { user },
+  } = await supabase.auth.getUser()
 
-  const user = session?.user
-
-  if (!session || !user) {
+  if (!user) {
     if (shouldRedirect) {
       throw redirect(
         `/login?${new URLSearchParams({
@@ -38,12 +36,10 @@ export const ensureAuth = async ({
       },
       {
         status: 401,
-        statusText: `Not authed: ${!session ? 'no session' : ''} ${
-          !user ? 'no user' : ''
-        }`,
+        statusText: `Not authed ${!user ? 'no user' : ''}`,
       }
     )
   }
 
-  return { supabase, session, user }
+  return { supabase, user }
 }
