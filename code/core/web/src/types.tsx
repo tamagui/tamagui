@@ -2344,7 +2344,7 @@ export type GestureReponderEvent = Exclude<
   ? Event
   : never
 
-export type RulesToInsert = StyleObject[]
+export type RulesToInsert = Record<string, StyleObject>
 
 export type GetStyleResult = {
   pseudos?: PseudoStyles | null

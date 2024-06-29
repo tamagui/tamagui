@@ -1337,12 +1337,15 @@ export function createComponent<
 
     // add in <style> tags inline
     if (process.env.TAMAGUI_REACT_19) {
-      if (splitStyles.rulesToInsert.length) {
+      const { rulesToInsert } = splitStyles
+      const keys = Object.keys(splitStyles.rulesToInsert)
+      if (keys.length) {
         content = (
           <>
             {content}
             {/* lets see if we can put a single style tag per rule for optimal de-duping */}
-            {splitStyles.rulesToInsert.map((styleObject) => {
+            {keys.map((key) => {
+              const styleObject = rulesToInsert[key]
               const identifier = styleObject[StyleObjectIdentifier]
               return (
                 <style
@@ -1604,7 +1607,7 @@ export function spacedChildren(props: SpacedChildrenProps) {
 
   const len = childrenList.length
   if (len <= 1 && !isZStack && !childrenList[0]?.['type']?.['shouldForwardSpace']) {
-    return childrenList
+    return children
   }
 
   const final: React.ReactNode[] = []
@@ -1629,7 +1632,7 @@ export function spacedChildren(props: SpacedChildrenProps) {
       final.push(child)
     } else {
       final.push(
-        <Fragment key={index}>
+        <Fragment key={`${index}0t`}>
           {isZStack ? <AbsoluteFill>{child}</AbsoluteFill> : child}
         </Fragment>
       )
@@ -1647,22 +1650,18 @@ export function spacedChildren(props: SpacedChildrenProps) {
         if (hasSpace) {
           final.push(
             createSpacer({
-              key: `_${index}_00tmgui`,
+              key: `_${index}_00t`,
               direction,
               space,
               spaceFlex,
             })
           )
         }
-        final.push(
-          React.isValidElement(separator)
-            ? React.cloneElement(separator, { key: `sep_${index}` })
-            : separator
-        )
+        final.push(<Fragment key={`${index}03t`}>{separator}</Fragment>)
         if (hasSpace) {
           final.push(
             createSpacer({
-              key: `_${index}01tmgui`,
+              key: `_${index}01t`,
               direction,
               space,
               spaceFlex,
@@ -1672,7 +1671,7 @@ export function spacedChildren(props: SpacedChildrenProps) {
       } else {
         final.push(
           createSpacer({
-            key: `_${index}02tmgui`,
+            key: `_${index}02t`,
             direction,
             space,
             spaceFlex,

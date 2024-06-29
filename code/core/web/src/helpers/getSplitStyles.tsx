@@ -168,7 +168,7 @@ export const getSplitStyles: StyleSplitter = (
   const usedKeys: Record<string, number> = {}
   const shouldDoClasses = acceptsClassName && isWeb && !styleProps.noClassNames
   const rulesToInsert: RulesToInsert =
-    process.env.TAMAGUI_TARGET === 'native' ? (undefined as any) : []
+    process.env.TAMAGUI_TARGET === 'native' ? (undefined as any) : {}
   const classNames: ClassNamesObject = {}
   // we need to gather these specific to each media query / pseudo
   // value is [hash, val], so ["-jnjad-asdnjk", "scaleX(1) rotate(10deg)"]
@@ -1507,14 +1507,19 @@ export const useSplitStyles: StyleSplitter = (a, b, c, d, e, f, g, h, i, j) => {
 }
 
 function addStyleToInsertRules(rulesToInsert: RulesToInsert, styleObject: StyleObject) {
+  // if (process.env.NODE_ENV === 'development') {
+  //   if (rulesToInsert[styleObject[2]!]) {
+  //     console.log('already have this style rule to insert?', styleObject, rulesToInsert)
+  //   }
+  // }
   if (process.env.TAMAGUI_TARGET === 'web') {
-    if (!shouldInsertStyleRules(styleObject[StyleObjectIdentifier])) {
-      return
-    }
     if (!process.env.TAMAGUI_REACT_19) {
+      if (!shouldInsertStyleRules(styleObject[StyleObjectIdentifier])) {
+        return
+      }
       updateRules(styleObject[StyleObjectIdentifier], styleObject[StyleObjectRules])
     }
-    rulesToInsert.push(styleObject)
+    rulesToInsert[styleObject[StyleObjectIdentifier]] = styleObject
   }
 }
 

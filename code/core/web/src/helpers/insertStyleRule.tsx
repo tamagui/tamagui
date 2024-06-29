@@ -343,7 +343,8 @@ export function insertStyleRules(rulesToInsert: RulesToInsert) {
       return
     }
 
-    for (const styleObject of rulesToInsert) {
+    for (const key in rulesToInsert) {
+      const styleObject = rulesToInsert[key]
       const identifier = styleObject[StyleObjectIdentifier]
 
       if (!shouldInsertStyleRules(identifier)) {
