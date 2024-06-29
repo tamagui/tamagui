@@ -1599,11 +1599,13 @@ export function spacedChildren(props: SpacedChildrenProps) {
   const { isZStack, children, space, direction, spaceFlex, separator } = props
   const hasSpace = !!(space || spaceFlex)
   const hasSeparator = !(separator === undefined || separator === null)
-  if (!(hasSpace || hasSeparator || isZStack)) {
+  const areChildrenArray = Array.isArray(children)
+
+  if (!(hasSpace || hasSeparator || isZStack) && !areChildrenArray) {
     return children
   }
 
-  const childrenList = Children.toArray(children)
+  const childrenList = areChildrenArray ? (children as any[]) : Children.toArray(children)
 
   const len = childrenList.length
   if (len <= 1 && !isZStack && !childrenList[0]?.['type']?.['shouldForwardSpace']) {
@@ -1632,7 +1634,7 @@ export function spacedChildren(props: SpacedChildrenProps) {
       final.push(child)
     } else {
       final.push(
-        <Fragment key={`${index}0t`}>
+        <Fragment key={index}>
           {isZStack ? <AbsoluteFill>{child}</AbsoluteFill> : child}
         </Fragment>
       )
