@@ -574,16 +574,28 @@ export interface Database {
         Row: {
           discord_token: string | null
           github_token: string | null
+          github_refresh_token: string | null
+          email: string | null
+          full_name: string | null
+          github_user_name: string | null
           id: string
         }
         Insert: {
           discord_token?: string | null
           github_token?: string | null
+          github_refresh_token?: string | null
+          email?: string | null
+          full_name?: string | null
+          github_user_name?: string | null
           id: string
         }
         Update: {
           discord_token?: string | null
           github_token?: string | null
+          github_refresh_token?: string | null
+          email?: string | null
+          full_name?: string | null
+          github_user_name?: string | null
           id?: string
         }
         Relationships: [

@@ -83,6 +83,7 @@ export default apiRoute(async (req) => {
             console.info(`Claim: claim data: ${JSON.stringify(product)}`)
 
             const claimData = await claimProductAccess({
+              request: req,
               type: 'subscription',
               product,
               user,
@@ -126,6 +127,7 @@ export default apiRoute(async (req) => {
           console.info(`Claim: claim data: ${JSON.stringify(product)}`)
 
           const claimData = await claimProductAccess({
+            request: req,
             type: 'product_ownership',
             product,
             user,

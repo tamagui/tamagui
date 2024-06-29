@@ -2,10 +2,12 @@ import type { User } from '@supabase/supabase-js'
 import { supabaseAdmin } from '~/features/auth/supabaseAdmin'
 import { inviteCollaboratorToRepo } from '~/features/github/helpers'
 import type { Database, Json } from '~/features/supabase/types'
+import { getUserPrivateInfo } from './helpers'
 
 export class ClaimError extends Error {}
 
 type ClaimProductArgs = {
+  request: Request
   product: Database['public']['Tables']['products']['Row']
   user: User
 } & (
@@ -83,31 +85,8 @@ type ClaimFunction = (
   data: { [key: string]: Json | undefined } | null
 }>
 
-const claimRepositoryAccess: ClaimFunction = async ({ user, metadata }) => {
+const claimRepositoryAccess: ClaimFunction = async ({ user, metadata, request }) => {
   console.info(`Claim: checking private users`)
-
-  const userPrivateRes = await supabaseAdmin
-    .from('users_private')
-    .select()
-    .eq('id', user.id)
-    .single()
-
-  if (userPrivateRes.error) {
-    if (userPrivateRes.error.message.includes('rows returned')) {
-      throw new Error(
-        'No GitHub connection found. Try logging out and logging in with GitHub again.'
-      )
-    }
-    throw userPrivateRes.error
-  }
-
-  const githubToken = userPrivateRes.data.github_token
-
-  console.info(`Claim: checking github user`)
-
-  const githubUser = await fetch('https://api.github.com/user', {
-    headers: { Authorization: `Bearer ${githubToken}` },
-  }).then((res) => res.json())
 
   const repoName = metadata.repository_name
   if (typeof repoName !== 'string')
@@ -117,29 +96,31 @@ const claimRepositoryAccess: ClaimFunction = async ({ user, metadata }) => {
 
   const permission = 'pull'
 
-  if (!githubUser.login) {
+  const userPrivate = await getUserPrivateInfo(user.id)
+
+  if (!userPrivate.github_user_name) {
     throw new ClaimError(
       "We weren't able to find your GitHub username. Please logout of your account, login and try again. If this kept occurring, contact support@tamagui.dev or get help on Discord."
     )
   }
+
   try {
-    await inviteCollaboratorToRepo(repoName, githubUser.login, permission)
+    await inviteCollaboratorToRepo(repoName, userPrivate.github_user_name, permission)
 
     return {
       data: {
         user_github: {
-          id: githubUser.id,
-          node_id: githubUser.node_id,
-          login: githubUser.login,
+          id: userPrivate.id,
+          login: userPrivate.github_user_name,
         },
         repository_name: repoName,
         permission,
       },
-      message: `Successfully invited. Check your email or Github notifications (${githubUser.login}) for an invitation to the repository.`,
+      message: `Successfully invited. Check your email or Github notifications (${userPrivate.github_user_name}) for an invitation to the repository.`,
     }
   } catch (error) {
     console.error(
-      `Failed to invite ${githubUser.login} with ${permission} permission, error: ${error}`,
+      `Failed to invite ${userPrivate.github_user_name} with ${permission} permission, error: ${error}`,
       error
     )
     throw new ClaimError(

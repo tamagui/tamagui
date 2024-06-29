@@ -18,11 +18,11 @@ export const getUserDetails = async (supabase: SupabaseClient<Database>) => {
 export const getUserPrivateInfo = async (userId: string) => {
   const result = await supabaseAdmin
     .from('users_private')
-    .upsert({ id: userId })
     .select('*')
+    .eq('id', userId)
     .single()
-
-  if (result.error) throw new Error(result.error.message)
+  if (result.error)
+    throw new Error(`Error getting user private info: ${result.error.message}`)
   return result.data
 }
 
