@@ -5,14 +5,14 @@ export function checkDiscountEligibility({
   purchaseContainsBento,
   purchaseContainsTakeout,
 }: {
-  accessInfo: Awaited<ReturnType<typeof getUserAccessInfo>>
+  accessInfo?: Awaited<ReturnType<typeof getUserAccessInfo>>
   purchaseContainsTakeout: boolean
   purchaseContainsBento: boolean
 }) {
   return (
-    (accessInfo.hasBentoAccess && purchaseContainsTakeout) ||
+    (accessInfo?.hasBentoAccess && purchaseContainsTakeout) ||
     // user already has takeout, wants to buy bento
-    (accessInfo.hasTakeoutAccess && purchaseContainsBento) ||
+    (accessInfo?.hasTakeoutAccess && purchaseContainsBento) ||
     // user is buying both bento and takeout
     (purchaseContainsBento && purchaseContainsTakeout)
   )
