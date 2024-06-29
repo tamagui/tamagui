@@ -1,1 +1,0 @@
-These images are generated from the `kitchen-sink` app by running `yarn screenshot`.
