@@ -186,46 +186,46 @@ export const HeaderLinks = (props: HeaderProps) => {
 
       {!forceShowAllLinks && (
         <SlidingPopover>
-          <SlidingPopoverContent />
+          <Popover.Trigger asChild="except-style">
+            <XStack
+              gap="$2"
+              br="$10"
+              px="$2"
+              height={44}
+              ai="center"
+              bw={1}
+              bc="transparent"
+              hoverStyle={{
+                bc: '$color025',
+              }}
+            >
+              <SlidingPopoverTrigger id="takeout">
+                <CTAHeaderLink
+                  {...props}
+                  excludeRoutes={['/', '/bento', '/takeout']}
+                  href="/takeout"
+                  name="Takeout"
+                  description="starter kit"
+                  icon={<TakeoutIcon scale={0.8} />}
+                />
+              </SlidingPopoverTrigger>
 
-          <XStack
-            gap="$2"
-            br="$10"
-            px="$2"
-            height={44}
-            ai="center"
-            bw={1}
-            bc="transparent"
-            hoverStyle={{
-              bc: '$color025',
-            }}
-          >
-            <SlidingPopoverTrigger id="takeout">
-              <CTAHeaderLink
-                {...props}
-                excludeRoutes={['/', '/bento', '/takeout']}
-                href="/takeout"
-                name="Takeout"
-                description="starter kit"
-                icon={<TakeoutIcon scale={0.8} />}
-              />
-            </SlidingPopoverTrigger>
-
-            <SlidingPopoverTrigger id="bento">
-              <CTAHeaderLink
-                {...props}
-                excludeRoutes={['*']}
-                href="/bento"
-                name="Bento"
-                description="starter kit"
-                icon={
-                  <YStack y={1}>
-                    <BentoIcon scale={0.8} />
-                  </YStack>
-                }
-              />
-            </SlidingPopoverTrigger>
-          </XStack>
+              <SlidingPopoverTrigger id="bento">
+                <CTAHeaderLink
+                  {...props}
+                  excludeRoutes={['*']}
+                  href="/bento"
+                  name="Bento"
+                  description="starter kit"
+                  icon={
+                    <YStack y={1}>
+                      <BentoIcon scale={0.8} />
+                    </YStack>
+                  }
+                />
+              </SlidingPopoverTrigger>
+            </XStack>
+          </Popover.Trigger>
 
           {/* <SlidingPopoverTrigger id="studio">
             <Link  href="/studio">
@@ -468,11 +468,9 @@ const StudioIcon = () => (
 )
 
 const SlidingPopoverContext = React.createContext({
-  id: '',
   setActive(id: string, layout: LayoutRectangle) {},
   setInactive(id: string) {},
   close() {},
-  open: false,
 })
 
 const SlidingPopover = (props: PopoverProps) => {
@@ -481,16 +479,12 @@ const SlidingPopover = (props: PopoverProps) => {
 
   const val = React.useMemo(() => {
     return {
-      id: active,
-      open: !!active,
       setActive(id: string, layout: LayoutRectangle) {
         popoverRef.current?.anchorTo(layout)
-        popoverRef.current?.setOpen(true)
         setActive(id)
       },
       close: () => {
         setActive('')
-        popoverRef.current?.setOpen(false)
       },
       setInactive(id: string) {
         setActive((cur) => {
@@ -519,8 +513,8 @@ const SlidingPopover = (props: PopoverProps) => {
       ref={popoverRef}
       {...props}
     >
-      <Popover.Trigger />
       <SlidingPopoverContext.Provider value={val}>
+        <SlidingPopoverContent active={active} />
         {props.children}
       </SlidingPopoverContext.Provider>
     </Popover>
@@ -583,24 +577,24 @@ const SlidingPopoverTrigger = YStack.styleable<{ id: string }>(
 
 const order = ['', 'takeout', 'bento', 'studio']
 
-const SlidingPopoverContent = () => {
+const SlidingPopoverContent = React.memo(({ active }: { active: string }) => {
   const context = React.useContext(SlidingPopoverContext)
-  const last = React.useRef(context.id)
+  const last = React.useRef(active)
 
-  const curI = order.indexOf(context.id)
+  const curI = order.indexOf(active)
   const lastI = order.indexOf(last.current)
   const going = curI > lastI ? 1 : -1
 
   React.useEffect(() => {
-    last.current = context.id
-  }, [context.id])
+    last.current = active
+  }, [active])
 
   return (
     <Popover.Content
-      theme={context.id === 'takeout' ? 'gray' : 'tan'}
+      theme={active === 'takeout' ? 'gray' : 'tan'}
       enableAnimationForPositionChange
       animation={
-        context.open
+        active
           ? 'quicker'
           : [
               'quicker',
@@ -609,7 +603,7 @@ const SlidingPopoverContent = () => {
               },
             ]
       }
-      bg={context.id === 'takeout' ? '$color7' : '$background'}
+      bg={active === 'takeout' ? '$color7' : '$background'}
       elevation="$8"
       padding={0}
       br="$6"
@@ -622,7 +616,7 @@ const SlidingPopoverContent = () => {
         o: 0,
       }}
     >
-      {context.id === 'bento' ? (
+      {active === 'bento' ? (
         <Theme name="tan">
           <Popover.Arrow bg="$color6" size="$4" />
         </Theme>
@@ -643,7 +637,7 @@ const SlidingPopoverContent = () => {
         ov="hidden"
       >
         <AnimatePresence custom={{ going }} initial={false}>
-          {context.id === 'takeout' && (
+          {active === 'takeout' && (
             <Frame key="takeout">
               <ThemeTintAlt>
                 <YStack
@@ -676,7 +670,7 @@ const SlidingPopoverContent = () => {
             </Frame>
           )}
 
-          {context.id === 'bento' && (
+          {active === 'bento' && (
             <Frame key="bento">
               <BentoPageFrame simpler>
                 <TooltipLabelLarge
@@ -693,7 +687,7 @@ const SlidingPopoverContent = () => {
             </Frame>
           )}
 
-          {context.id === 'studio' && (
+          {active === 'studio' && (
             <Frame key="takeout">
               <TooltipLabelLarge
                 href="/studio"
@@ -707,7 +701,7 @@ const SlidingPopoverContent = () => {
       </YStack>
     </Popover.Content>
   )
-}
+})
 
 const Frame = styled(YStack, {
   animation: '200ms',

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Button, Circle } from 'tamagui'
+import { Header } from '~/features/site/header/Header'
 import { ThemeToggle } from '~/features/site/theme/ThemeToggle'
 
 global.shouldDebugMoti = true
@@ -37,7 +38,7 @@ function TestEnter() {
 }
 
 export default function TestPage() {
-  return <ThemeToggle />
+  return <Header />
 
   useEffect(() => {
     console.warn('hi mom')
