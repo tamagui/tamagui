@@ -50,14 +50,14 @@ export default apiRoute(async (req) => {
 const fetchAsset = (url: URL) => fetch(url).then((res) => res.arrayBuffer())
 
 const interRegularFontP = fetchAsset(
-  new URL('../../public/fonts/otf/Inter-Regular.otf', import.meta.url)
+  new URL(`${getURL()}/fonts/otf/Inter-Regular.otf`, import.meta.url)
 )
 
 const interBoldFontP = fetchAsset(
-  new URL('../../public/fonts/otf/Inter-Black.otf', import.meta.url)
+  new URL(`${getURL()}/fonts/otf/Inter-Black.otf`, import.meta.url)
 )
 
-const logo = fetchAsset(new URL('../../public/tamagui-words-logo.png', import.meta.url))
+const logo = fetchAsset(new URL(`${getURL()}/tamagui-words-logo.png`, import.meta.url))
 
 const ComponentOg = ({
   searchParams,

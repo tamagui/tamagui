@@ -20,11 +20,11 @@
     "react": "npm:react@19.0.0-rc-f994737d14-20240522",
     "react-dom": "npm:react-dom@19.0.0-rc-f994737d14-20240522",
     "react-native": "0.74.1",
-    "vxs": "^1.1.123"
+    "vxs": "^1.1.124"
   },
   "devDependencies": {
     "patch-package": "^8.0.0",
-    "vxrn": "^1.1.123"
+    "vxrn": "^1.1.124"
   },
   "publishConfig": {
     "access": "public"

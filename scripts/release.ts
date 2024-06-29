@@ -41,7 +41,7 @@ const dryRun = process.argv.includes('--dry-run')
 const tamaguiGitUser = process.argv.includes('--tamagui-git-user')
 const isCI = finish || process.argv.includes('--ci')
 
-const curVersion = fs.readJSONSync('./packages/tamagui/package.json').version
+const curVersion = fs.readJSONSync('./code/ui/tamagui/package.json').version
 
 const nextVersion = (() => {
   if (canary) {

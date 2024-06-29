@@ -7,6 +7,7 @@ export default apiRoute(async (req) => {
   const user = session?.user
 
   if (!user) {
+    console.warn(`No user found during logout`)
     return redirect('/login')
   }
 
@@ -15,7 +16,6 @@ export default apiRoute(async (req) => {
     return redirect('/login')
   } catch (error) {
     console.error('Error signing out:', error)
-    // , { error: 'Logout failed, please try again.' }
     return redirect('/login')
   }
 })

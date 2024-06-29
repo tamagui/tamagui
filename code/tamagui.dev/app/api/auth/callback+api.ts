@@ -12,6 +12,7 @@ export const GET: Endpoint = async (req) => {
     return Response.error()
   }
 
+  // this handles setting cookies via setCurrentRequestHeaders
   const supabase = getSupabaseServerClient(req)
   const { error } = await supabase.auth.exchangeCodeForSession(code)
 
@@ -22,6 +23,7 @@ export const GET: Endpoint = async (req) => {
   const headers = new Headers()
   headers.set('content-type', 'text/html')
 
+  // this will get the cookies added in getSupabaseServerClient thanks to vxs
   return new Response(
     `<html>
         <head>
