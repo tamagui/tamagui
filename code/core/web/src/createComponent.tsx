@@ -1648,7 +1648,7 @@ export function spacedChildren(props: SpacedChildrenProps) {
 
     const next = childrenList[index + 1]
 
-    if (next && !isUnspaced(next)) {
+    if (next && !isEmpty && !isUnspaced(next)) {
       if (separator) {
         if (hasSpace) {
           final.push(
