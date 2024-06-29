@@ -652,9 +652,7 @@ export function createExtractor(
               '\n classNames:',
               JSON.stringify(classNames, null, 2),
               '\n  rulesToInsert:',
-              out.rulesToInsert
-                .flatMap((styleObject) => styleObject[StyleObjectRules])
-                .join('\n'),
+              out.rulesToInsert,
             ].join(' ')
           )
         }
