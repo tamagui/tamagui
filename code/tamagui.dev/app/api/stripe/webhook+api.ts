@@ -27,7 +27,11 @@ export default apiRoute(async (req) => {
   }
 
   let event: Stripe.Event
-  const sig = req.headers['stripe-signature']
+  const sig = req.headers.get('stripe-signature')
+
+  if (!sig) {
+    console.warn(`No signature found in headers ${req.headers}`)
+  }
 
   const toltReferral = v.parse(Schema, getQuery(req))?.referral
   const reqBuffer = await readBodyBuffer(req)

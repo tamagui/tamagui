@@ -7,7 +7,9 @@ export default apiRoute(async (req) => {
     throw new Error('GITHUB_SPONSOR_WEBHOOK_SECRET env var is not set')
   }
 
-  if (req.headers['x-hub-signature'] !== import.meta.env.GITHUB_SPONSOR_WEBHOOK_SECRET) {
+  if (
+    req.headers.get('x-hub-signature') !== import.meta.env.GITHUB_SPONSOR_WEBHOOK_SECRET
+  ) {
     return Response.json(
       {
         error: 'Invalid token.',
