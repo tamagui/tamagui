@@ -43,7 +43,7 @@ describe('getSplitStyles', () => {
         tag: 'input',
       }
     )
-    expect(out.rulesToInsert[0]?.[StyleObjectValue]).toEqual('10px')
+    expect(Object.values(out.rulesToInsert)[0]?.[StyleObjectValue]).toEqual('10px')
   })
 
   test(`font props get the font family, regardless of the order`, () => {
