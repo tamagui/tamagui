@@ -1,6 +1,6 @@
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
-import { Link } from 'vxs'
-import { memo } from 'react'
+import { Link, useRouter } from 'vxs'
+import { memo, useEffect } from 'react'
 import type { HeadingProps } from 'tamagui'
 import {
   Button,
@@ -22,8 +22,19 @@ import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
 import { LoadInter900 } from '~/features/site/fonts/LoadFonts'
 import { HeadInfo } from '~/components/HeadInfo'
 import { useUserTheme } from '~/features/site/theme/useUserTheme'
+import { useUser } from '~/features/user/useUser'
 
 export default function StudioSplashPage() {
+  const user = useUser()
+  const router = useRouter()
+  const hasStudioAccess = user.data?.accessInfo.hasStudioAccess
+
+  useEffect(() => {
+    if (hasStudioAccess) {
+      router.replace('/studio/theme')
+    }
+  }, [hasStudioAccess])
+
   return (
     <>
       <HeadInfo title="Tamagui Studio" description="Tamagui Studio" />

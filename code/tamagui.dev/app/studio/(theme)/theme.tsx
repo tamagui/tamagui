@@ -26,6 +26,7 @@ import { StudioStepTip } from '~/features/studio/StudioStepTip'
 import { themeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
 import { StudioThemeBuilderActionBar } from '~/features/studio/theme/StudioThemeBuilderActionBar'
 import { steps } from '~/features/studio/theme/steps/steps'
+import { StudioPreviewComponents } from '~/features/studio/theme/StudioPreviewComponents'
 // import { StudioPreviewFrame } from './views/StudioPreviewFrame'
 
 let lastLoadThemeId = ''
@@ -102,8 +103,6 @@ const Preview = memo(() => {
 
   const hasCustomPreview = !!currentSection?.preview
 
-  // TODO
-  const StudioPreviewComponents = () => null
   const StudioPreviewFrame = ({ children, showSettingsBar }) => <>{children}</>
   const Inner = currentSection?.preview || StudioPreviewComponents
   return (
@@ -124,8 +123,6 @@ const ThemeBuilderModal = memo(() => {
 
   const StepComponent = currentSection?.children ?? Empty
   const StepSidebar = currentSection?.sidebar ?? Empty
-
-  console.log('StepComponent', store)
 
   const contents = useMemo(() => {
     return (
@@ -259,7 +256,7 @@ const StudioThemeBuilderBottomBar = () => {
     <XStack p="$4" py="$3" ai="center" bc="$borderColor" btw={1} zi={100} bg="$color2">
       <CurrentStepActionBar />
       <Spacer flex />
-      {/* <ThemeStudioStepButtonsBar /> */}
+      <ThemeStudioStepButtonsBar />
     </XStack>
   )
 }
@@ -297,7 +294,7 @@ const ThemeStudioStepButtonsBar = () => {
   useHotkeys('right', forward)
 
   return (
-    <XStack space="$2">
+    <XStack gap="$2">
       {canGoBackward && (
         <Button
           chromeless
