@@ -6074,7 +6074,6 @@ __metadata:
     "@tamagui/use-store": "npm:1.101.5"
     color2k: "npm:^2.0.2"
     esbuild-register: "npm:^3.5.0"
-    execa: "npm:^5.0.0"
     gray-matter: "npm:^4.0.2"
     h3: "npm:^1.11.1"
     hast-util-to-html: "npm:^8.0.3"

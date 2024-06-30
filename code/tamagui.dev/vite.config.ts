@@ -23,39 +23,6 @@ if (!import.meta.dirname) {
 
 const optimizeInterop = ['expo-splash-screen']
 
-const include = [
-  ...optimizeInterop,
-  '@tamagui/animate-presence',
-  '@tamagui/presence-child',
-  '@docsearch/react',
-  '@leeoniya/ufuzzy',
-  'react-hook-form',
-  '@github/mini-throttle',
-  'swr',
-  '@tamagui/demos',
-  '@tamagui/bento',
-  '@supabase/ssr',
-  '@tamagui/animations-moti',
-  '@tamagui/animations-react-native',
-  'is-buffer',
-  'extend',
-  'minimatch',
-  'gray-matter',
-  'execa',
-  'jiti',
-  'hsluv',
-  'rehype-parse',
-  'refractor',
-  'glob',
-  'reading-time',
-  'unified',
-]
-
-const optimizeDeps = {
-  include,
-  needsInterop: optimizeInterop,
-}
-
 export default {
   envPrefix: 'NEXT_PUBLIC_',
 
@@ -86,11 +53,43 @@ export default {
     ],
   },
 
-  optimizeDeps,
+  optimizeDeps: {
+    include: [
+      ...optimizeInterop,
+      '@tamagui/animate-presence',
+      '@tamagui/presence-child',
+      '@docsearch/react',
+      '@leeoniya/ufuzzy',
+      'react-hook-form',
+      '@github/mini-throttle',
+      'swr',
+      '@tamagui/demos',
+      '@tamagui/bento',
+      '@supabase/ssr',
+      '@tamagui/animations-moti',
+      '@tamagui/animations-react-native',
+      'is-buffer',
+      'extend',
+      'minimatch',
+      'gray-matter',
+      'execa',
+      'jiti',
+      'hsluv',
+      'rehype-parse',
+      'refractor',
+      'glob',
+      'reading-time',
+      'unified',
+    ],
+    needsInterop: optimizeInterop,
+  },
 
   ssr: {
-    optimizeDeps,
     external: ['@tamagui/mdx'],
+  },
+
+  build: {
+    cssTarget: 'safari15',
   },
 
   plugins: [

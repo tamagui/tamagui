@@ -60,7 +60,6 @@
     "@cyco130/vite-plugin-mdx": "1.0.4",
     "@tamagui/cli": "1.101.5",
     "esbuild-register": "^3.5.0",
-    "execa": "^5.0.0",
     "gray-matter": "^4.0.2",
     "h3": "^1.11.1",
     "hast-util-to-html": "^8.0.3",
