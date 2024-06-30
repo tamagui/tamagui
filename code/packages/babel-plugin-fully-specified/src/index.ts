@@ -5,6 +5,7 @@ import type { ConfigAPI, NodePath, PluginObj, PluginPass } from '@babel/core'
 import type {
   ExportAllDeclaration,
   ExportNamedDeclaration,
+  Import,
   ImportDeclaration,
 } from '@babel/types'
 
@@ -93,12 +94,42 @@ export default function FullySpecified(
     }
   }
 
+  /** For dynamic `import()`s. */
+  const importVisitor = (path: NodePath<Import>, state) => {
+    const filePath = state.file.opts.filename
+    if (!filePath) return // cannot determine file path therefore cannot proceed
+
+    const parent = path.parent
+    if (parent.type !== 'CallExpression') {
+      return // we expect the usage of `import` is a call to it, e.g.: `import('...')`, other usages are not supported
+    }
+
+    const firstArgOfImportCall = parent.arguments[0]
+    if (firstArgOfImportCall.type !== 'StringLiteral') {
+      return // we expect the first argument of `import` to be a string, e.g.: `import('./myModule')`, other types are not supported
+    }
+
+    const originalModuleSpecifier = firstArgOfImportCall.value
+    const fullySpecifiedModuleSpecifier = getFullySpecifiedModuleSpecifier(
+      originalModuleSpecifier,
+      {
+        filePath,
+        options,
+      }
+    )
+
+    if (fullySpecifiedModuleSpecifier) {
+      firstArgOfImportCall.value = fullySpecifiedModuleSpecifier
+    }
+  }
+
   return {
     name: 'babel-plugin-fully-specified',
     visitor: {
       ImportDeclaration: importDeclarationVisitor,
       ExportNamedDeclaration: exportDeclarationVisitor,
       ExportAllDeclaration: exportDeclarationVisitor,
+      Import: importVisitor,
     },
   }
 }

@@ -62,6 +62,13 @@ describe('local imports', () => {
     const example = "import './foo'"
     expect(getTransformResult(example)?.code).toBe('import "./foo.js";')
   })
+
+  test('dynamic import()', () => {
+    const example = "const foo = await import('./foo')"
+    expect(getTransformResult(example)?.code).toBe(
+      'const foo = await import("./foo.js");'
+    )
+  })
 })
 
 describe('local re-exports', () => {
