@@ -919,12 +919,12 @@ textarea {
 }
 
 .glow-shadow {
-  text-shadow: 0 20px 20px var(--background075), 0 30px 30px var(--background025);
+  text-shadow: 0 10px 10px var(--background075), 0 30px 30px var(--background025);
   mix-blend-mode: color-burn;
 }
 
 .t_dark .glow-shadow {
-  text-shadow: 0 20px 20px var(--color075), 0 30px 30px var(--color025);
+  text-shadow: 0 10px 10px var(--color075), 0 30px 30px var(--color025);
   mix-blend-mode: screen;
 }
 

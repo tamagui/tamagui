@@ -174,6 +174,7 @@ export const PurchaseModal = ({
           bordered
           elevate
           key="content"
+          bg="$color2"
           animation={[
             'quick',
             {
@@ -223,19 +224,10 @@ export const PurchaseModal = ({
               <PageTheme>
                 <YStack f={1} group="takeoutBody" px="$4" pb="$4">
                   <Tabs.Content f={1} value="takeout">
-                    <XStack jc="flex-end" my="$2">
-                      <Button
-                        onPress={() => setStarterPriceId(null)}
-                        o={starterPriceId ? 1 : 0}
-                        size="$1"
-                        chromeless
-                      >
-                        Clear
-                      </Button>
-                    </XStack>
                     <XStack
                       f={1}
                       gap="$4"
+                      py="$4"
                       $group-takeoutBody-sm={{ fd: 'column-reverse' }}
                     >
                       <YStack
@@ -255,14 +247,14 @@ export const PurchaseModal = ({
                               mt="$2"
                               theme="green"
                               bg="$color3"
-                              p="$4"
+                              p="$2"
                               bw={1}
                               bc="$color5"
                               br="$4"
                               gap="$3"
                             >
                               <Check size={24} mt={2} color="$color9" />
-                              <MunroP size="$7" color="$color11">
+                              <MunroP size="$5" color="$color11" ls={1.5}>
                                 Every plan includes the starter, icons & fonts
                               </MunroP>
                             </XStack>
@@ -279,41 +271,49 @@ export const PurchaseModal = ({
 
                       <Separator vertical />
 
-                      <YStack f={2} gap="$4">
-                        <YStack gap="$4">
-                          <YStack gap="$2">
-                            <RadioGroup
-                              gap="$2"
-                              value={starterPriceId || ''}
-                              onValueChange={(val) => setStarterPriceId(val)}
-                            >
-                              {sortedStarterPrices.map((price) => {
-                                const active = starterPriceId === price.id
-                                const htmlId = `price-${price.id}`
-                                return (
-                                  <RadioGroupItem
-                                    key={htmlId}
-                                    active={active}
-                                    value={price.id}
-                                    id={htmlId}
-                                  >
-                                    <H4 mt="$-1">
-                                      {price.description === 'Unlimited (+9 seats)'
-                                        ? 'Pro'
-                                        : price.description === 'Hobby (3-8 seats)'
-                                          ? 'Team'
-                                          : 'Personal'}
-                                    </H4>
+                      <YStack f={2} gap="$2">
+                        <RadioGroup
+                          gap="$2"
+                          value={starterPriceId || ''}
+                          onValueChange={(val) => setStarterPriceId(val)}
+                        >
+                          {sortedStarterPrices.map((price) => {
+                            const active = starterPriceId === price.id
+                            const htmlId = `price-${price.id}`
+                            return (
+                              <RadioGroupItem
+                                key={htmlId}
+                                active={active}
+                                value={price.id}
+                                id={htmlId}
+                              >
+                                <H4 mt="$-1">
+                                  {price.description === 'Unlimited (+9 seats)'
+                                    ? 'Pro'
+                                    : price.description === 'Hobby (3-8 seats)'
+                                      ? 'Team'
+                                      : 'Personal'}
+                                </H4>
 
-                                    <Paragraph theme="alt2">
-                                      {getPriceDescription(price)}
-                                    </Paragraph>
-                                  </RadioGroupItem>
-                                )
-                              })}
-                            </RadioGroup>
-                          </YStack>
-                        </YStack>
+                                <Paragraph theme="alt2">
+                                  {getPriceDescription(price)}
+                                </Paragraph>
+                              </RadioGroupItem>
+                            )
+                          })}
+                        </RadioGroup>
+
+                        <XStack jc="flex-end" my="$2">
+                          <Button
+                            onPress={() => setStarterPriceId(null)}
+                            o={starterPriceId ? 1 : 0}
+                            size="$2"
+                            color="$color10"
+                            chromeless
+                          >
+                            Clear
+                          </Button>
+                        </XStack>
                       </YStack>
                     </XStack>
                   </Tabs.Content>
@@ -657,7 +657,7 @@ function Tab({
       bbc="transparent"
       {...(!isActive && {
         bbc: '$color4',
-        bg: '$color4',
+        bg: '$color2',
       })}
       {...props}
     >
@@ -666,7 +666,7 @@ function Tab({
         pe="none"
         zi={-1}
         {...(isActive && {
-          bg: '$background',
+          bg: '$color2',
         })}
         {...(!isActive && {
           bg: '$color1',

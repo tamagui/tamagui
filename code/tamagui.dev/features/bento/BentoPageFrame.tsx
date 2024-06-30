@@ -3,6 +3,52 @@ import { LinearGradient } from 'tamagui/linear-gradient'
 
 // move to _layout? or into page?
 
+const Wave = () => {
+  return (
+    <YStack
+      pe="none"
+      pos="absolute"
+      t={-10}
+      rotate="220deg"
+      l="50%"
+      x={-250}
+      o={0.4}
+      $theme-dark={{
+        o: 0.14,
+      }}
+      zi={1}
+      style={{
+        mixBlendMode: 'color-burn',
+        filter: 'blur(2px)',
+        mask: `linear-gradient(black 80%, transparent)`,
+      }}
+    >
+      <Image alt="ocean" width={2000} height={2000} src="/takeout/wave.svg" />
+    </YStack>
+  )
+}
+
+const Break = () => {
+  return (
+    <YStack
+      pe="none"
+      pos="absolute"
+      rotate="20deg"
+      t={-90}
+      l="100%"
+      scale={0.85}
+      x={-1050}
+      o={0.07}
+      $theme-dark={{
+        o: 0.02,
+      }}
+      zi={-1}
+    >
+      <Image width={2000} height={2000} src="/takeout/geometric.svg" />
+    </YStack>
+  )
+}
+
 export const BentoPageFrame = ({
   children,
   simpler,
@@ -24,13 +70,14 @@ export const BentoPageFrame = ({
             <YStack
               className="grain"
               fullscreen
-              o={0.3}
+              o={0.5}
               zi={100}
               $theme-light={{
-                o: 0.5,
+                o: 0.75,
               }}
               style={{
                 imageRendering: 'pixelated',
+                maskImage: 'linear-gradient(to right, #000, transparent 50%)',
               }}
             />
 
@@ -52,42 +99,13 @@ export const BentoPageFrame = ({
                   o={0.2}
                 />
               </Theme>
-              <YStack
-                pe="none"
-                pos="absolute"
-                rotate="20deg"
-                t={-90}
-                l="50%"
-                scale={0.85}
-                x={-950}
-                o={0.07}
-                $theme-dark={{
-                  o: 0.02,
-                }}
-                zi={-1}
-              >
-                <Image width={3000} height={3000} src="/takeout/geometric.svg" />
-              </YStack>
 
-              <YStack
-                pe="none"
-                pos="absolute"
-                t={-10}
-                rotate="220deg"
-                l="50%"
-                x={-250}
-                o={0.4}
-                $theme-dark={{
-                  o: 0.14,
-                }}
-                zi={1}
-                style={{
-                  mixBlendMode: 'color-burn',
-                  filter: 'blur(2px)',
-                  mask: `linear-gradient(black 80%, transparent)`,
-                }}
-              >
-                <Image alt="ocean" width={2000} height={2000} src="/takeout/wave.svg" />
+              <Break />
+
+              <Wave />
+
+              <YStack x={100} y={100}>
+                <Wave />
               </YStack>
             </YStack>
           </YStack>

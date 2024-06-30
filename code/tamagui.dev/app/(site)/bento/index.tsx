@@ -168,7 +168,7 @@ export default function BentoPage() {
 
 const Intermediate = () => {
   return (
-    <YStack className="blur-8" zi={1} w="100%">
+    <YStack zi={1} w="100%">
       {/* <YStack fullscreen elevation="$4" o={0.15} /> */}
       <YStack pos="absolute" t={0} l={0} r={0} o={0.25} btw={0.5} bc="$color05" />
       <YStack pos="absolute" b={0} l={0} r={0} o={0.25} btw={0.5} bc="$color05" />
@@ -425,7 +425,15 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['bento'] }) => 
 
           <YStack pos="absolute" b="6%" r="$2" zi={100}>
             <Theme name="green">
-              <XStack elevation="$0.5" maw={300} als="center" br="$5" className="blur-4">
+              <XStack
+                bw="$1"
+                bc="$color025"
+                maw={300}
+                als="center"
+                br="$6"
+                ov="hidden"
+                className="blur-4"
+              >
                 <YStack o={0.35} bg="$color10" fullscreen br="$5" />
                 <YStack py="$3.5" px="$4" f={1}>
                   <H3
@@ -734,19 +742,20 @@ function SectionCard({
         // className="all ease-in ms100"
         // elevation="$6"
         // bg="$background025"
+        bg="red"
         w={220}
+        debug="verbose"
         h={130}
         // br="$9"
         cursor="pointer"
         pos="relative"
         hoverStyle={{
-          bg: `rgba(255,255,255,0.025)`,
+          bg: `rgba(0,0,0,0.035)`,
         }}
         pressStyle={{
-          bg: 'rgba(255,255,255,0.05)',
+          bg: 'rgba(0,0,0,0.05)',
           y: 1,
         }}
-        bg="rgba(255,255,255,0.025)"
         mt="$3"
         br="$6"
         $gtMd={{
@@ -754,6 +763,16 @@ function SectionCard({
           w: 'calc(25% - 14px)',
           br: '$6',
           m: '$2',
+        }}
+        $theme-dark={{
+          bg: 'red',
+          hoverStyle: {
+            bg: `rgba(255,255,255,0.05)`,
+          },
+          pressStyle: {
+            bg: 'rgba(255,255,255,0.05)',
+            y: 1,
+          },
         }}
       >
         <YStack f={1} p="$4">
@@ -790,7 +809,7 @@ const icons = {
   Layouts: Layout,
   RadioGroups: CheckCircle,
   Switches: ToggleRight,
-  TextAreas: FormInput,
+  Textareas: FormInput,
   'Image Pickers': Image,
   List: List,
   Avatars: CircleUserRound,
