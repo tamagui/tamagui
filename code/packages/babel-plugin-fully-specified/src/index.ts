@@ -40,7 +40,7 @@ type PackageData = {
   packagePath: string
 }
 
-interface FullySpecifiedOptions {
+export interface FullySpecifiedOptions {
   declaration:
     | ImportDeclarationFunc
     | ExportNamedDeclarationFunc

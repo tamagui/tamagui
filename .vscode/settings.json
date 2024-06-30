@@ -29,4 +29,11 @@
     "unselectable"
   ],
   "cSpell.enabled": false
+  "jest.virtualFolders": [
+    {
+      "name": "babel-plugin-fully-specified",
+      "rootPath": "code/packages/babel-plugin-fully-specified",
+      "jestCommandLine": "yarn test"
+    }
+  ]
 }
