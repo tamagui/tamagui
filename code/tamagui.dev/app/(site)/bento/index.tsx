@@ -742,20 +742,19 @@ function SectionCard({
         // className="all ease-in ms100"
         // elevation="$6"
         // bg="$background025"
-        bg="red"
         w={220}
-        debug="verbose"
         h={130}
         // br="$9"
         cursor="pointer"
         pos="relative"
         hoverStyle={{
-          bg: `rgba(0,0,0,0.035)`,
+          bg: `rgba(150,150,150,0.035)`,
         }}
         pressStyle={{
-          bg: 'rgba(0,0,0,0.05)',
+          bg: 'rgba(150,150,150,0.05)',
           y: 1,
         }}
+        bg="rgba(150,150,150,0.025)"
         mt="$3"
         br="$6"
         $gtMd={{
@@ -763,16 +762,6 @@ function SectionCard({
           w: 'calc(25% - 14px)',
           br: '$6',
           m: '$2',
-        }}
-        $theme-dark={{
-          bg: 'red',
-          hoverStyle: {
-            bg: `rgba(255,255,255,0.05)`,
-          },
-          pressStyle: {
-            bg: 'rgba(255,255,255,0.05)',
-            y: 1,
-          },
         }}
       >
         <YStack f={1} p="$4">
