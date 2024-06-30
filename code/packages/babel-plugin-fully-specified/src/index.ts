@@ -1,39 +1,7 @@
 import { existsSync, readFileSync, lstatSync } from 'node:fs'
 import { resolve, extname, dirname } from 'node:path'
-import {
-  importDeclaration,
-  exportNamedDeclaration,
-  exportAllDeclaration,
-  stringLiteral,
-} from '@babel/types'
 
-import type { ConfigAPI, NodePath, PluginPass } from '@babel/core'
-import type {
-  ImportSpecifier,
-  ImportDeclaration,
-  ExportAllDeclaration,
-  StringLiteral,
-  ExportSpecifier,
-  ExportDeclaration,
-  ExportNamedDeclaration,
-} from '@babel/types'
-
-type ImportDeclarationFunc = (
-  specifiers: Array<ImportSpecifier>,
-  source: StringLiteral
-) => ImportDeclaration
-
-type ExportNamedDeclarationFunc = (
-  declaration?: ExportDeclaration,
-  specifiers?: Array<ExportSpecifier>,
-  source?: StringLiteral
-) => ExportNamedDeclaration
-
-type ExportAllDeclarationFunc = (source: StringLiteral) => ExportAllDeclaration
-
-type PathDeclaration = NodePath & {
-  node: ImportDeclaration & ExportNamedDeclaration & ExportAllDeclaration
-}
+import type { ConfigAPI, PluginObj } from '@babel/core'
 
 type PackageData = {
   hasPath: boolean
@@ -41,125 +9,157 @@ type PackageData = {
 }
 
 export interface FullySpecifiedOptions {
-  declaration:
-    | ImportDeclarationFunc
-    | ExportNamedDeclarationFunc
-    | ExportAllDeclarationFunc
-  makeNodes: (path: PathDeclaration) => Array<PathDeclaration>
   ensureFileExists: boolean
   esExtensionDefault: string
+  /** List of all extensions which we try to find. */
   tryExtensions: Array<string>
+  /** List of extensions that can run in Node.js or in the Browser. */
   esExtensions: Array<string>
+  /** List of packages that also should be transformed with this plugin. */
   includePackages: Array<string>
 }
 
-const makeDeclaration = ({
-  declaration,
-  makeNodes,
-  ensureFileExists = false,
-  esExtensionDefault = '.js',
-
-  // List of all extensions which we try to find
-  tryExtensions = ['.js', '.mjs', '.cjs'],
-
-  // List of extensions that can run in Node.js or in the Browser
-  esExtensions = ['.js', '.mjs', '.cjs'],
-
-  // List of packages that also should be transformed with this plugin
-  includePackages = [],
-}: FullySpecifiedOptions) => {
-  return (
-    path: PathDeclaration,
-    {
-      file: {
-        opts: { filename },
-      },
-    }: PluginPass
-  ) => {
-    const { source } = path.node
-
-    if (!source || !filename) {
-      return // stop here
-    }
-
-    const { exportKind, importKind } = path.node
-    const isTypeOnly = exportKind === 'type' || importKind === 'type'
-    if (isTypeOnly) {
-      return // stop here
-    }
-
-    const { value } = source
-    const module = value as string
-
-    let packageData: PackageData | null = null
-
-    if (!isLocalFile(module)) {
-      if (includePackages.some((name) => module.startsWith(name))) {
-        packageData = getPackageData(module)
-      }
-
-      if (!(packageData && packageData.hasPath)) {
-        return // stop here
-      }
-    }
-
-    const filenameExtension = extname(filename)
-    const filenameDirectory = dirname(filename)
-    const isDirectory = isLocalDirectory(resolve(filenameDirectory, module))
-
-    const currentModuleExtension = extname(module)
-    const targetModule = evaluateTargetModule({
-      module,
-      filenameDirectory,
-      filenameExtension,
-      packageData,
-      currentModuleExtension,
-      isDirectory,
-      tryExtensions,
-      esExtensions,
-      esExtensionDefault,
-      ensureFileExists,
-    })
-
-    if (targetModule === false || currentModuleExtension === targetModule.extension) {
-      return // stop here
-    }
-
-    const nodes = makeNodes(path)
-
-    path.replaceWith(
-      // @ts-ignore
-      declaration.apply(null, [...nodes, stringLiteral(targetModule.module)])
-    )
-  }
+const DEFAULT_OPTIONS = {
+  ensureFileExists: false,
+  esExtensionDefault: '.js',
+  tryExtensions: ['.js', '.mjs', '.cjs'],
+  esExtensions: ['.js', '.mjs', '.cjs'],
+  includePackages: [],
 }
 
-export default function FullySpecified(api: ConfigAPI, options: FullySpecifiedOptions) {
+export default function FullySpecified(
+  api: ConfigAPI,
+  rawOptions: FullySpecifiedOptions
+): PluginObj {
   api.assertVersion(7)
+
+  type PluginVisitor = PluginObj['visitor']
+
+  const options = { ...DEFAULT_OPTIONS, ...rawOptions }
+
+  const importDeclarationVisitor: PluginVisitor['ImportDeclaration'] = (path, state) => {
+    const filePath = state.file.opts.filename
+    if (!filePath) return // cannot determine file path therefore cannot proceed
+
+    const { node } = path
+    if (node.importKind === 'type') return // is a type-only import, skip
+
+    const originalModuleSpecifier = node.source.value
+    const fullySpecifiedModuleSpecifier = getFullySpecifiedModuleSpecifier(
+      originalModuleSpecifier,
+      {
+        filePath,
+        options,
+      }
+    )
+
+    if (fullySpecifiedModuleSpecifier) {
+      node.source.value = fullySpecifiedModuleSpecifier
+    }
+  }
+
+  const exportDeclarationVisitor: PluginVisitor['ExportNamedDeclaration'] &
+    PluginVisitor['ExportAllDeclaration'] = (path, state) => {
+    const filePath = state.file.opts.filename
+    if (!filePath) return // cannot determine file path therefore cannot proceed
+
+    const { node } = path
+    if (node.exportKind === 'type') return // is a type-only export, skip
+
+    const source = node.source
+    if (!source) return // is not a re-export, skip
+
+    const originalModuleSpecifier = source.value
+    const fullySpecifiedModuleSpecifier = getFullySpecifiedModuleSpecifier(
+      originalModuleSpecifier,
+      {
+        filePath,
+        options,
+      }
+    )
+
+    if (fullySpecifiedModuleSpecifier) {
+      source.value = fullySpecifiedModuleSpecifier
+    }
+  }
 
   return {
     name: 'babel-plugin-fully-specified',
     visitor: {
-      ImportDeclaration: makeDeclaration({
-        ...options,
-        declaration: importDeclaration,
-        makeNodes: ({ node: { specifiers } }) => [specifiers],
-      }),
-      ExportNamedDeclaration: makeDeclaration({
-        ...options,
-        declaration: exportNamedDeclaration,
-        makeNodes: ({ node: { declaration, specifiers } }) => [declaration, specifiers],
-      }),
-      ExportAllDeclaration: makeDeclaration({
-        ...options,
-        declaration: exportAllDeclaration,
-        makeNodes: () => [],
-      }),
+      ImportDeclaration: importDeclarationVisitor,
+      ExportNamedDeclaration: exportDeclarationVisitor,
+      ExportAllDeclaration: exportDeclarationVisitor,
     },
   }
 }
 
-function getPackageData<PackageData>(module: string) {
+/**
+ * Returns a fully specified [module specifier](https://tc39.es/ecma262/multipage/ecmascript-language-scripts-and-modules.html#prod-ModuleSpecifier) (or `null` if it can't be determined or shouldn't be transformed).
+ */
+function getFullySpecifiedModuleSpecifier(
+  /**
+   * The original module specifier in the code.
+   *
+   * For example, `'./foo'` for `import { foo } from './foo'`.
+   */
+  originalModuleSpecifier: string,
+  {
+    filePath,
+    options,
+  }: {
+    /**
+     * The absolute file path of the file being transformed.
+     *
+     * Normally this can be obtained from the 2nd parameter in a visitor function (often named as `state`): `state.file.opts.filename`.
+     */
+    filePath: string
+    /** Options that users pass to babel-plugin-fully-specified. */
+    options: FullySpecifiedOptions
+  }
+): string | null {
+  const fileExt = extname(filePath)
+  const fileDir = dirname(filePath)
+
+  const { includePackages } = options
+
+  let packageData: PackageData | null = null
+  if (!isLocalFile(originalModuleSpecifier)) {
+    if (includePackages.some((name) => originalModuleSpecifier.startsWith(name))) {
+      packageData = getPackageData(originalModuleSpecifier)
+    }
+
+    if (!(packageData && packageData.hasPath)) {
+      return null
+    }
+  }
+
+  const isDirectory = isLocalDirectory(resolve(fileDir, originalModuleSpecifier))
+
+  const currentModuleExtension = extname(originalModuleSpecifier)
+
+  const { tryExtensions, esExtensions, esExtensionDefault, ensureFileExists } = options
+
+  const targetModule = evaluateTargetModule({
+    module: originalModuleSpecifier,
+    filenameDirectory: fileDir,
+    filenameExtension: fileExt,
+    packageData,
+    currentModuleExtension,
+    isDirectory,
+    tryExtensions,
+    esExtensions,
+    esExtensionDefault,
+    ensureFileExists,
+  })
+
+  if (targetModule === false || currentModuleExtension === targetModule.extension) {
+    return null
+  }
+
+  return targetModule.module
+}
+
+function getPackageData(module: string) {
   try {
     const packagePath = require.resolve(module)
     const parts = packagePath.split('/')
