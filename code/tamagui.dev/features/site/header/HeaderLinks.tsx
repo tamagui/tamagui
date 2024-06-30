@@ -485,6 +485,7 @@ const SlidingPopover = (props: PopoverProps) => {
       },
       close: () => {
         setActive('')
+        popoverRef.current?.close()
       },
       setInactive(id: string) {
         setActive((cur) => {
@@ -626,11 +627,7 @@ const SlidingPopoverContent = React.memo(({ active }: { active: string }) => {
 
       <YStack
         onPressOut={() => {
-          setTimeout(() => {
-            React.startTransition(() => {
-              context.close()
-            })
-          }, 200)
+          context.close()
         }}
         w={280}
         h={200}
