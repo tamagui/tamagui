@@ -1,7 +1,12 @@
 import { existsSync, readFileSync, lstatSync } from 'node:fs'
 import { resolve, extname, dirname } from 'node:path'
 
-import type { ConfigAPI, PluginObj } from '@babel/core'
+import type { ConfigAPI, NodePath, PluginObj, PluginPass } from '@babel/core'
+import type {
+  ExportAllDeclaration,
+  ExportNamedDeclaration,
+  ImportDeclaration,
+} from '@babel/types'
 
 type PackageData = {
   hasPath: boolean
@@ -33,11 +38,13 @@ export default function FullySpecified(
 ): PluginObj {
   api.assertVersion(7)
 
-  type PluginVisitor = PluginObj['visitor']
-
   const options = { ...DEFAULT_OPTIONS, ...rawOptions }
 
-  const importDeclarationVisitor: PluginVisitor['ImportDeclaration'] = (path, state) => {
+  /** For `import ... from '...'`. */
+  const importDeclarationVisitor = (
+    path: NodePath<ImportDeclaration>,
+    state: PluginPass
+  ) => {
     const filePath = state.file.opts.filename
     if (!filePath) return // cannot determine file path therefore cannot proceed
 
@@ -58,8 +65,11 @@ export default function FullySpecified(
     }
   }
 
-  const exportDeclarationVisitor: PluginVisitor['ExportNamedDeclaration'] &
-    PluginVisitor['ExportAllDeclaration'] = (path, state) => {
+  /** For `export ... from '...'`. */
+  const exportDeclarationVisitor = (
+    path: NodePath<ExportNamedDeclaration> | NodePath<ExportAllDeclaration>,
+    state: PluginPass
+  ) => {
     const filePath = state.file.opts.filename
     if (!filePath) return // cannot determine file path therefore cannot proceed
 
