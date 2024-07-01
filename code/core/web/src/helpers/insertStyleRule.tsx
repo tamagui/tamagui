@@ -339,9 +339,7 @@ export function updateRules(identifier: string, rules: string[]) {
 
 export function insertStyleRules(rulesToInsert: RulesToInsert) {
   if (!process.env.TAMAGUI_REACT_19) {
-    if (!rulesToInsert.length || !sheet) {
-      return
-    }
+    if (!sheet) return
 
     for (const key in rulesToInsert) {
       const styleObject = rulesToInsert[key]

@@ -1513,13 +1513,13 @@ function addStyleToInsertRules(rulesToInsert: RulesToInsert, styleObject: StyleO
   //   }
   // }
   if (process.env.TAMAGUI_TARGET === 'web') {
+    const identifier = styleObject[StyleObjectIdentifier]
     if (!process.env.TAMAGUI_REACT_19) {
-      if (!shouldInsertStyleRules(styleObject[StyleObjectIdentifier])) {
-        return
+      if (shouldInsertStyleRules(identifier)) {
+        updateRules(identifier, styleObject[StyleObjectRules])
       }
-      updateRules(styleObject[StyleObjectIdentifier], styleObject[StyleObjectRules])
     }
-    rulesToInsert[styleObject[StyleObjectIdentifier]] = styleObject
+    rulesToInsert[identifier] = styleObject
   }
 }
 
