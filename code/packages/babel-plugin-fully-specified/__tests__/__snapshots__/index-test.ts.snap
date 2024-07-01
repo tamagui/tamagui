@@ -4,7 +4,7 @@ exports[`transforming actual files test 1`] = `
 "import foo, { bar } from "./modules/module.mjs";
 import { foo as foo2 } from "./modules/module.mjs";
 import * as someModule from "./modules/module.mjs";
-import { foo as cjsFoo } from "./modules/cjs-module.mjs";
+import { foo as cjsFoo } from "./modules/cjs-module.cjs";
 import { transform } from '@babel/core';
 
 // Will be transformed if \`includePackages\` includes \`@babel/core\`.
