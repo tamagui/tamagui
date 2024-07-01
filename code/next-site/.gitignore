@@ -1,0 +1,7 @@
+.env.local
+.next
+.vercel
+.turbo
+out
+.env*.local
+bento-output

@@ -1,0 +1,100 @@
+{
+  "extends": "../../tsconfig",
+  "compilerOptions": {
+    "composite": true,
+    // for jumping to things properly in vscode
+    "baseUrl": ".",
+    "paths": {
+      "tamagui": [
+        "../tamagui"
+      ],
+      "@tamagui/studio": [
+        "../studio"
+      ],
+      "@tamagui/*": [
+        "../../packages/*"
+      ],
+      "@components/*": [
+        "./components/*"
+      ],
+      "@interfaces/*": [
+        "./interfaces/*"
+      ],
+      "@lib/*": [
+        "./lib/*"
+      ],
+      "@protected/*": [
+        "./studio/(protected)/*"
+      ],
+      "@data/*": [
+        "./data/*"
+      ],
+      "react-native": [
+        "react-native-web"
+      ]
+    },
+    "target": "es2021",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "strict": false,
+    "allowJs": true,
+    "noEmit": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "noImplicitThis": true,
+    "resolveJsonModule": true,
+    "incremental": true,
+    "strictNullChecks": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
+    // "plugins": [
+    //   {
+    //     "name": "next"
+    //   },
+    //   {
+    //     "name": "@nderscore/tamagui-typescript-plugin",
+    //     "pathToApp": "apps/site",
+    //     "defaultTheme": "light"
+    //   }
+    // ]
+  },
+  "include": [
+    "next-env.d.ts",
+    "tamagui.config.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "bento-output",
+    ".next",
+    ".turbo",
+    "out"
+  ],
+  "references": [
+    {
+      "path": "../../packages/colors"
+    },
+    {
+      "path": "../../packages/lucide-icons"
+    },
+    {
+      "path": "../../packages/tamagui"
+    },
+    {
+      "path": "../../packages/next-plugin"
+    },
+    {
+      "path": "../../packages/loader"
+    }
+  ]
+}
