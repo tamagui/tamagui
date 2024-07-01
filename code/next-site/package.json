@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/next-site",
-  "version": "1.101.5",
+  "version": "1.101.6",
   "private": true,
   "source": "src",
   "scripts": {
@@ -73,7 +73,7 @@
     "react-hotkeys-hook": "^4.5.0",
     "react-native": "0.74.1",
     "react-native-reanimated": "npm:react-native-reanimated@3.6.1",
-    "react-native-web-lite": "1.101.5",
+    "react-native-web-lite": "1.101.6",
     "reading-time": "1.3.0",
     "refractor": "^4.7.0",
     "rehype": "^12.0.1",
@@ -96,7 +96,7 @@
     "@babel/preset-typescript": "^7.23.3",
     "@next/bundle-analyzer": "^12.2.0",
     "@playwright/test": "^1.40.1",
-    "@tamagui/build": "1.101.5",
+    "@tamagui/build": "1.101.6",
     "@types/archiver": "^6",
     "@types/jsonwebtoken": "^9.0.2",
     "@types/wicg-file-system-access": "^2020.9.6",
@@ -108,7 +108,7 @@
     "fs-extra": "^11.2.0",
     "next-remote-watch": "^2.0.0",
     "react-refresh": "^0.14.0",
-    "tamagui-loader": "1.101.5",
+    "tamagui-loader": "1.101.6",
     "wait-port": "^0.3.0",
     "webpack-stats-plugin": "^1.1.3",
     "zx": "^7.2.3"

@@ -1725,7 +1725,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tamagui/animations-css@npm:1.101.5, @tamagui/animations-css@npm:^1.101.5":
+"@tamagui/animations-css@npm:1.101.5":
   version: 1.101.5
   resolution: "@tamagui/animations-css@npm:1.101.5"
   dependencies:
@@ -1954,7 +1954,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tamagui/core@npm:1.101.5, @tamagui/core@npm:^1.101.5":
+"@tamagui/core@npm:1.101.5":
   version: 1.101.5
   resolution: "@tamagui/core@npm:1.101.5"
   dependencies:
@@ -1975,7 +1975,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tamagui/create-theme@npm:1.101.5, @tamagui/create-theme@npm:^1.101.5":
+"@tamagui/create-theme@npm:1.101.5":
   version: 1.101.5
   resolution: "@tamagui/create-theme@npm:1.101.5"
   dependencies:
@@ -2425,7 +2425,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tamagui/react-native-svg@npm:1.101.5, @tamagui/react-native-svg@npm:^1.101.5":
+"@tamagui/react-native-svg@npm:1.101.5":
   version: 1.101.5
   resolution: "@tamagui/react-native-svg@npm:1.101.5"
   checksum: 10/4cb0003448e88e969d0961fb56e1479c0568fcf51c359f972c1bc594a0865770c9c3c0c8d1d7e8161be269e16c8e9b60131ed456a8e115e5e1099f2e795097db
@@ -2947,7 +2947,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tamagui/vite-plugin@npm:^1.101.5":
+"@tamagui/vite-plugin@npm:1.101.5":
   version: 1.101.5
   resolution: "@tamagui/vite-plugin@npm:1.101.5"
   dependencies:
@@ -8107,11 +8107,11 @@ __metadata:
   resolution: "simple-web-starter@workspace:."
   dependencies:
     "@pmmmwh/react-refresh-webpack-plugin": "npm:^0.5.11"
-    "@tamagui/animations-css": "npm:^1.101.5"
-    "@tamagui/core": "npm:^1.101.5"
-    "@tamagui/create-theme": "npm:^1.101.5"
-    "@tamagui/react-native-svg": "npm:^1.101.5"
-    "@tamagui/vite-plugin": "npm:^1.101.5"
+    "@tamagui/animations-css": "npm:1.101.5"
+    "@tamagui/core": "npm:1.101.5"
+    "@tamagui/create-theme": "npm:1.101.5"
+    "@tamagui/react-native-svg": "npm:1.101.5"
+    "@tamagui/vite-plugin": "npm:1.101.5"
     "@vitejs/plugin-react-swc": "npm:^3.6.0"
     async-retry: "npm:1.3.3"
     babel-polyfill: "npm:^6.26.0"
@@ -8127,8 +8127,8 @@ __metadata:
     react-native-web: "npm:^0.19.10"
     react-refresh: "npm:^0.14.0"
     style-loader: "npm:^3.3.4"
-    tamagui: "npm:^1.101.5"
-    tamagui-loader: "npm:^1.101.5"
+    tamagui: "npm:1.101.5"
+    tamagui-loader: "npm:1.101.5"
     thread-loader: "npm:^4.0.2"
     url-loader: "npm:^4.1.1"
     vite: "npm:6.0.0-alpha.18"
@@ -8428,7 +8428,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tamagui-loader@npm:^1.101.5":
+"tamagui-loader@npm:1.101.5":
   version: 1.101.5
   resolution: "tamagui-loader@npm:1.101.5"
   dependencies:
@@ -8445,7 +8445,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tamagui@npm:^1.101.5":
+"tamagui@npm:1.101.5":
   version: 1.101.5
   resolution: "tamagui@npm:1.101.5"
   dependencies:

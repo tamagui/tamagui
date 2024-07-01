@@ -266,7 +266,7 @@ async function run() {
       }
     }
 
-    if (!finish && !skipPublish && !rePublish) {
+    if (!(finish && !rePublish) && !skipPublish) {
       const erroredPackages: { name: string }[] = []
 
       // publish with tag

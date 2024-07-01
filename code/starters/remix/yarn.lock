@@ -2360,7 +2360,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tamagui/config@npm:^1.101.5":
+"@tamagui/config@npm:1.101.5":
   version: 1.101.5
   resolution: "@tamagui/config@npm:1.101.5"
   dependencies:
@@ -2910,14 +2910,14 @@ __metadata:
     "@remix-run/node": "npm:^2.8.1"
     "@remix-run/react": "npm:^2.8.1"
     "@remix-run/serve": "npm:^2.8.1"
-    "@tamagui/config": "npm:^1.101.5"
-    "@tamagui/vite-plugin": "npm:^1.101.5"
+    "@tamagui/config": "npm:1.101.5"
+    "@tamagui/vite-plugin": "npm:1.101.5"
     "@types/react": "npm:^18.2.55"
     "@types/react-dom": "npm:^18.2.19"
     isbot: "npm:^4.1.0"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
-    tamagui: "npm:^1.101.5"
+    tamagui: "npm:1.101.5"
     typescript: "npm:^5.5.2"
     vite: "npm:6.0.0-alpha.18"
     vite-bundle-analyzer: "npm:^0.9.2"
@@ -3435,7 +3435,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tamagui/vite-plugin@npm:^1.101.5":
+"@tamagui/vite-plugin@npm:1.101.5":
   version: 1.101.5
   resolution: "@tamagui/vite-plugin@npm:1.101.5"
   dependencies:
@@ -8842,7 +8842,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tamagui@npm:^1.101.5":
+"tamagui@npm:1.101.5":
   version: 1.101.5
   resolution: "tamagui@npm:1.101.5"
   dependencies:
