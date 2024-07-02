@@ -1,7 +1,13 @@
 # simulate ci
 .git
 node_modules
-dist
-.turbo
-.tamagui
-.expo
+.yarn/install-state.gz
+
+**/*/node_modules
+**/*/dist
+**/*/.turbo
+**/*/.tamagui
+
+# expo
+**/*/.expo
+**/*/ios
