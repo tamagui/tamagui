@@ -166,7 +166,7 @@ function getFullySpecifiedModuleSpecifier(
   let packageData: PackageData | null = null
   if (!isLocalFile(originalModuleSpecifier)) {
     if (includePackages.some((name) => originalModuleSpecifier.startsWith(name))) {
-      packageData = getPackageData(originalModuleSpecifier)
+      packageData = getPackageData(originalModuleSpecifier, filePath)
     }
 
     if (!(packageData && packageData.hasPath)) {
@@ -200,9 +200,16 @@ function getFullySpecifiedModuleSpecifier(
   return targetModule.module
 }
 
-function getPackageData(module: string) {
+function getPackageData(
+  /** The module specifier, e.g.: `@org/package/lib/someTool`. */
+  moduleSpecifier: string,
+  /** The file path of the source file which imports that module. */
+  filePath?: string
+) {
   try {
-    const packagePath = require.resolve(module)
+    const packagePath = require.resolve(moduleSpecifier, {
+      paths: filePath ? [filePath] : [],
+    })
     const parts = packagePath.split('/')
 
     let packageDir = ''
@@ -219,7 +226,7 @@ function getPackageData(module: string) {
 
     const packageJson = JSON.parse(readFileSync(`${packageDir}/package.json`).toString())
 
-    const hasPath = !module.endsWith(packageJson.name)
+    const hasPath = !moduleSpecifier.endsWith(packageJson.name)
     return { hasPath, packagePath }
   } catch (e) {}
 
