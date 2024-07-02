@@ -172,7 +172,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
     },
 
     useAnimations: (animationProps) => {
-      const { props, presence, style, onDidAnimate, componentState } = animationProps
+      const { props, presence, style, componentState } = animationProps
       const animationKey = Array.isArray(props.animation)
         ? props.animation[0]
         : props.animation
