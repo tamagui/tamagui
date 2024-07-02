@@ -20,10 +20,12 @@ export const getUserPrivateInfo = async (userId: string) => {
     .from('users_private')
     .select('*')
     .eq('id', userId)
-    .single()
-  if (result.error)
+    .limit(1)
+
+  if (result.error) {
     throw new Error(`Error getting user private info: ${result.error.message}`)
-  return result.data
+  }
+  return result.data?.[0] || {}
 }
 
 export const getUserTeams = async (supabase: SupabaseClient<Database>) => {
