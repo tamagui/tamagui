@@ -131,10 +131,12 @@ export const HeaderLinks = (props: HeaderProps) => {
           <XStack fw="wrap" f={1} gap="$2" w="100%">
             <Link asChild href="/takeout">
               <HeadAnchor grid half tag="a">
-                Takeout{' '}
-                <YStack dsp={'inline-block' as any} y={7} my={-20} o={0.8}>
-                  <TakeoutIcon scale={0.65} />
-                </YStack>
+                <XStack ai="center">
+                  Takeout{' '}
+                  <YStack dsp={'inline-block' as any} x={6} my={-20} o={0.8}>
+                    <TakeoutIcon scale={0.65} />
+                  </YStack>
+                </XStack>
                 <SizableText size="$2" theme="alt2">
                   Starter Kit
                 </SizableText>
@@ -145,7 +147,14 @@ export const HeaderLinks = (props: HeaderProps) => {
               <HeadAnchor grid half tag="a">
                 <XStack ai="center">
                   Bento{' '}
-                  <YStack ml={3} dsp={'inline-block' as any} x={10} my={-10} o={0.8}>
+                  <YStack
+                    ml={3}
+                    dsp={'inline-block' as any}
+                    x={6}
+                    y={-1}
+                    my={-10}
+                    o={0.8}
+                  >
                     <BentoIcon scale={0.65} />
                   </YStack>
                 </XStack>
@@ -701,7 +710,7 @@ const SlidingPopoverContent = React.memo(({ active }: { active: string }) => {
 })
 
 const Frame = styled(YStack, {
-  animation: '200ms',
+  animation: 'lazy',
   br: '$5',
   ov: 'hidden',
   fullscreen: true,
