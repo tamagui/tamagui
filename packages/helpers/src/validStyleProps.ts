@@ -237,6 +237,7 @@ export const stylePropsView = {
     caretColor: true,
     clipPath: true,
     contain: true,
+    containerType: true,
     content: true,
     cursor: true,
     filter: true,
