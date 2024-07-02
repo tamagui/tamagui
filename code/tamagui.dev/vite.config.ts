@@ -47,6 +47,7 @@ export default {
       'react-dom',
       '@tamagui/core',
       '@tamagui/web',
+      '@tamagui/animations-moti',
       'tamagui',
       'react-hook-form',
       '@tamagui/use-presence',
