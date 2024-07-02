@@ -17,7 +17,6 @@ function something() {
   time`firstTag`
 
   // do stuff...
-
   time`second`
 }
 ```
