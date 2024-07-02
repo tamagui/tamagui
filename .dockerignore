@@ -1,3 +1,7 @@
 # simulate ci
 .git
 node_modules
+dist
+.turbo
+.tamagui
+.expo

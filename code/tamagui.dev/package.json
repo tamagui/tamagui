@@ -58,6 +58,8 @@
   "devDependencies": {
     "@cyco130/vite-plugin-mdx": "1.0.4",
     "@tamagui/cli": "1.101.7",
+    "acorn": "^8.11.3",
+    "acorn-walk": "^8.3.1",
     "esbuild-register": "^3.5.0",
     "gray-matter": "^4.0.2",
     "h3": "^1.11.1",
