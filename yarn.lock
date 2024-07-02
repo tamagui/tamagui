@@ -6181,6 +6181,7 @@ __metadata:
   dependencies:
     "@babel/core": "npm:^7.23.3"
     "@babel/types": "npm:^7.23.3"
+    vitest: "npm:^0.34.3"
   languageName: unknown
   linkType: soft
 
