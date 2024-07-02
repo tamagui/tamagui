@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/vite-plugin-cjs",
-  "version": "1.101.6",
+  "version": "1.101.7",
   "types": "./types/index.d.ts",
   "main": "./index.js",
   "license": "MIT",
@@ -8,7 +8,7 @@
     "build": "cp -r ../vite-plugin/dist . || true"
   },
   "dependencies": {
-    "@tamagui/vite-plugin": "1.101.6"
+    "@tamagui/vite-plugin": "1.101.7"
   },
   "publishConfig": {
     "access": "public"

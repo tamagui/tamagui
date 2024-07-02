@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/test-design-system",
-  "version": "1.101.6",
+  "version": "1.101.7",
   "sideEffects": [
     "*.css"
   ],
@@ -19,10 +19,10 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/core": "1.101.6"
+    "@tamagui/core": "1.101.7"
   },
   "devDependencies": {
-    "@tamagui/build": "1.101.6"
+    "@tamagui/build": "1.101.7"
   },
   "publishConfig": {
     "access": "public"
