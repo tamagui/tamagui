@@ -1,0 +1,12 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`transforming actual files > test 1`] = `
+"import foo, { bar } from \\"./modules/module.mjs\\";
+import { foo as foo2 } from \\"./modules/module.mjs\\";
+import * as someModule from \\"./modules/module.mjs\\";
+import { foo as cjsFoo } from \\"./modules/cjs-module.cjs\\";
+import { foo as packageFoo } from '@my-org/my-pkg';
+
+// Will be transformed if \`includePackages\` includes \`@my-org/my-pkg\`.
+import { transformFile } from \\"@my-org/my-pkg/lib/index.js\\";"
+`;

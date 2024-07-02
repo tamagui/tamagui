@@ -1,8 +1,8 @@
 import path from 'node:path'
-import { describe, expect, test, it } from '@jest/globals'
+import { describe, expect, test } from 'vitest'
 import { type TransformOptions, transform, transformFileSync } from '@babel/core'
 
-import plugin, { type FullySpecifiedOptions } from '../src'
+import plugin, { type FullySpecifiedOptions } from '../'
 
 /** A helper function to get the default transform options for the plugin to test. */
 const getTransformOptions = ({
@@ -104,9 +104,9 @@ describe('transforming actual files', () => {
   test('test', () => {
     const { code } =
       transformFileSync(
-        path.join(__dirname, '__fixtures__', 'test.mjs'),
+        path.join(__dirname, 'fixtures', 'sample-project-1', 'test.mjs'),
         getTransformOptions({
-          pluginOptions: { ensureFileExists: true, includePackages: ['@babel/core'] },
+          pluginOptions: { ensureFileExists: true, includePackages: ['@my-org/my-pkg'] },
         })
       ) || {}
 
