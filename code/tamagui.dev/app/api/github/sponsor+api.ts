@@ -2,14 +2,14 @@ import { apiRoute } from '~/features/api/apiRoute'
 import { readBodyJSON } from '~/features/api/readBodyJSON'
 import { supabaseAdmin } from '~/features/auth/supabaseAdmin'
 
+console.info(`debug?`, `${process.env.GITHUB_SPONSOR_WEBHOOK_SECRET}`.slice(0, 4))
+
 export default apiRoute(async (req) => {
-  if (!import.meta.env.GITHUB_SPONSOR_WEBHOOK_SECRET) {
+  if (!process.env.GITHUB_SPONSOR_WEBHOOK_SECRET) {
     throw new Error('GITHUB_SPONSOR_WEBHOOK_SECRET env var is not set')
   }
 
-  if (
-    req.headers.get('x-hub-signature') !== import.meta.env.GITHUB_SPONSOR_WEBHOOK_SECRET
-  ) {
+  if (req.headers.get('x-hub-signature') !== process.env.GITHUB_SPONSOR_WEBHOOK_SECRET) {
     return Response.json(
       {
         error: 'Invalid token.',

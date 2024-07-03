@@ -22,104 +22,111 @@ const Schema = v.object({
 })
 
 export default apiRoute(async (req) => {
-  if (!endpointSecret) {
-    throw new Error('Stripe endpoint secret signature is not set')
-  }
-
-  let event: Stripe.Event
-  const sig = req.headers.get('stripe-signature')
-
-  if (!sig) {
-    console.warn(`No signature found in headers ${req.headers}`)
-  }
-
-  const toltReferral = v.parse(Schema, getQuery(req))?.referral
-  const reqBuffer = await readBodyBuffer(req)
-
-  if (!reqBuffer) {
-    throw new Error(`No body`)
-  }
+  let event: Stripe.Event | null = null
 
   try {
-    event = stripe.webhooks.constructEvent(reqBuffer, sig ?? '', endpointSecret)
-  } catch (error) {
-    console.error(error)
-    return new Response(`Webhook error: ${error}`, {
-      status: 400,
-    })
-  }
-
-  switch (event.type) {
-    case 'product.created':
-    case 'product.updated':
-      await upsertProductRecord(event.data.object as Stripe.Product)
-      break
-    case 'product.deleted':
-      await deleteProductRecord((event.data.object as Stripe.Product).id)
-
-      break
-
-    case 'price.created':
-    case 'price.updated':
-      await upsertPriceRecord(event.data.object as Stripe.Price)
-      break
-    case 'price.deleted':
-      await deletePriceRecord((event.data.object as Stripe.Price).id)
-      break
-
-    // TODO
-    // case 'customer.updated': {
-    //   const data = event.data.object as Stripe.Customer
-    //   await updateCustomer(
-    //     data
-    //   )
-    //   break
-    // }
-
-    case 'customer.subscription.created': {
-      const createdSub = event.data.object as Stripe.Subscription
-      await manageSubscriptionStatusChange(
-        createdSub.id,
-        typeof createdSub.customer === 'string'
-          ? createdSub.customer
-          : createdSub.customer.id,
-        true
-      )
-      break
-    }
-    case 'customer.subscription.updated': {
-      const updatedSub = event.data.object as Stripe.Subscription
-      await manageSubscriptionStatusChange(
-        updatedSub.id,
-        typeof updatedSub.customer === 'string'
-          ? updatedSub.customer
-          : updatedSub.customer.id
-      )
-      break
-    }
-    case 'customer.subscription.deleted': {
-      await unclaimSubscription(event.data.object as Stripe.Subscription)
-      await deleteSubscriptionRecord(event.data.object as Stripe.Subscription)
-      break
+    if (!endpointSecret) {
+      throw new Error('Stripe endpoint secret signature is not set')
     }
 
-    case 'checkout.session.completed': {
-      await addRenewalSubscription(event.data.object as Stripe.Checkout.Session, {
-        toltReferral,
+    const sig = req.headers.get('stripe-signature')
+
+    if (!sig) {
+      console.warn(`No signature found in headers ${req.headers}`)
+    }
+
+    const toltReferral = v.parse(Schema, getQuery(req))?.referral
+    const reqBuffer = await readBodyBuffer(req)
+
+    if (!reqBuffer) {
+      throw new Error(`No body`)
+    }
+
+    try {
+      event = stripe.webhooks.constructEvent(reqBuffer, sig ?? '', endpointSecret)
+    } catch (error) {
+      console.error(error)
+      return new Response(`Webhook error: ${error}`, {
+        status: 400,
       })
-      break
     }
 
-    default:
-      console.error(
-        `Unhandled event type ${event.type}`
-        // JSON.stringify(event.data, null, 2)
-      )
-  }
+    switch (event.type) {
+      case 'product.created':
+      case 'product.updated':
+        await upsertProductRecord(event.data.object as Stripe.Product)
+        break
+      case 'product.deleted':
+        await deleteProductRecord((event.data.object as Stripe.Product).id)
 
-  return Response.json({
-    success: true,
-  })
+        break
+
+      case 'price.created':
+      case 'price.updated':
+        await upsertPriceRecord(event.data.object as Stripe.Price)
+        break
+      case 'price.deleted':
+        await deletePriceRecord((event.data.object as Stripe.Price).id)
+        break
+
+      // TODO
+      // case 'customer.updated': {
+      //   const data = event.data.object as Stripe.Customer
+      //   await updateCustomer(
+      //     data
+      //   )
+      //   break
+      // }
+
+      case 'customer.subscription.created': {
+        const createdSub = event.data.object as Stripe.Subscription
+        await manageSubscriptionStatusChange(
+          createdSub.id,
+          typeof createdSub.customer === 'string'
+            ? createdSub.customer
+            : createdSub.customer.id,
+          true
+        )
+        break
+      }
+      case 'customer.subscription.updated': {
+        const updatedSub = event.data.object as Stripe.Subscription
+        await manageSubscriptionStatusChange(
+          updatedSub.id,
+          typeof updatedSub.customer === 'string'
+            ? updatedSub.customer
+            : updatedSub.customer.id
+        )
+        break
+      }
+      case 'customer.subscription.deleted': {
+        await unclaimSubscription(event.data.object as Stripe.Subscription)
+        await deleteSubscriptionRecord(event.data.object as Stripe.Subscription)
+        break
+      }
+
+      case 'checkout.session.completed': {
+        await addRenewalSubscription(event.data.object as Stripe.Checkout.Session, {
+          toltReferral,
+        })
+        break
+      }
+
+      default:
+        console.error(
+          `Unhandled event type ${event.type}`
+          // JSON.stringify(event.data, null, 2)
+        )
+    }
+
+    return Response.json({
+      success: true,
+    })
+  } catch (err) {
+    console.error(`Error occurred in stripe webook endpoint: ${event?.type}`)
+    console.error(`Event object: ${JSON.stringify(event?.data.object || null)}`)
+    throw err
+  }
 })
 
 // async function handleCreateSubscription(
