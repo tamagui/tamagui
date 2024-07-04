@@ -157,6 +157,7 @@ export const manageSubscriptionStatusChange = async (
     expand: ['default_payment_method'],
   })
 
+  console.info(`Insert new subscriptions`)
   const { error } = await supabaseAdmin.from('subscriptions').upsert([
     {
       id: subscription.id,
@@ -191,12 +192,22 @@ export const manageSubscriptionStatusChange = async (
         : null,
     },
   ])
-  if (error) throw error
-  const { error: deletionError } = await supabaseAdmin
+  if (error) {
+    throw error
+  }
+
+  // instead of deleting right away, we collect them to delete after the insert below
+  // because we have a contsraint on app_installations and i dont want to mess that up
+  console.info(`Find old subscription_items`)
+  const { error: findSubsErr, data: oldSubscriptionItems } = await supabaseAdmin
     .from('subscription_items')
-    .delete()
+    .select('*')
     .eq('subscription_id', subscription.id)
-  if (deletionError) throw deletionError
+  if (findSubsErr) {
+    throw findSubsErr
+  }
+
+  console.info(`Insert new subscription_items`)
   const { error: insertionError } = await supabaseAdmin.from('subscription_items').insert(
     subscription.items.data.map((item) => ({
       id: item.id,
@@ -204,7 +215,24 @@ export const manageSubscriptionStatusChange = async (
       price_id: typeof item.price === 'string' ? item.price : item.price.id,
     }))
   )
-  if (insertionError) throw insertionError
+  if (insertionError) {
+    throw insertionError
+  }
+
+  // then delete the old ones since we inserted new ones so shouldn't cause contraint err:
+  if (oldSubscriptionItems?.length) {
+    console.info(`Delete old subscription_items`)
+    const { error: deleteOldErr } = await supabaseAdmin
+      .from('subscription_items')
+      .delete()
+      .in(
+        'id',
+        oldSubscriptionItems.map((x) => x.id)
+      )
+    if (deleteOldErr) {
+      throw deleteOldErr
+    }
+  }
 
   console.info(`Inserted/updated subscription [${subscription.id}] for user [${uuid}]`)
   // For a new subscription copy the billing details to the customer object.
