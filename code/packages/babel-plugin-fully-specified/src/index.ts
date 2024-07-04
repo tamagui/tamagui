@@ -10,7 +10,16 @@ import type {
 } from '@babel/types'
 
 export interface FullySpecifiedOptions {
-  ensureFileExists: boolean
+  ensureFileExists:
+    | boolean
+    | {
+        /**
+         * If you're doing a non-in-place transformation (for example, outputting `.mjs` from `.js`) with `ensureFileExists` enabled, it's possible that the transform will be incorrect due to the imported file is not transformed and written into place yet (for example, we have `foo.js` and `bar.js` and we're transforming them into `foo.mjs` and `bar.mjs` respectively, in `bar.js` we have `import { ... } from './foo.js'` which we expect to be transformed into `import { ... } from './foo.mjs'`, but if `foo.mjs` is not transformed and written yet, it will be transformed into `import { ... } from './foo.js'` because `foo.mjs` can't be found at that time).
+         *
+         * To solve this, you can set this option to `'.mjs'` to force the extension to be transformed into that specified extension.
+         */
+        forceExtension?: string
+      }
   esExtensionDefault: string
   /** List of all extensions which we try to find. */
   tryExtensions: Array<string>
@@ -271,7 +280,10 @@ function evaluateTargetModule({
   ensureFileExists,
 }) {
   if (packageData) {
-    if (packageData.modulePath.endsWith('index.js') && !moduleSpecifier.endsWith('index.js')) {
+    if (
+      packageData.modulePath.endsWith('index.js') &&
+      !moduleSpecifier.endsWith('index.js')
+    ) {
       moduleSpecifier = `${moduleSpecifier}/index`
     }
 
@@ -306,7 +318,7 @@ function evaluateTargetModule({
       existsSync(targetFile + filenameExtension)
     ) {
       return {
-        module: moduleSpecifier + filenameExtension,
+        module: moduleSpecifier + (ensureFileExists.forceExtension || filenameExtension),
         extension: filenameExtension,
       }
     }
@@ -314,7 +326,10 @@ function evaluateTargetModule({
     // 2. then try with all others
     for (const extension of tryExtensions) {
       if (existsSync(targetFile + extension)) {
-        return { module: moduleSpecifier + extension, extension }
+        return {
+          module: moduleSpecifier + (ensureFileExists.forceExtension || extension),
+          extension,
+        }
       }
     }
   } else if (esExtensions.includes(filenameExtension)) {

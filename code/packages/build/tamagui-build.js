@@ -612,7 +612,9 @@ async function esbuildWriteIfChanged(
                   [
                     require.resolve('@tamagui/babel-plugin-fully-specified'),
                     {
-                      ensureFileExists: true,
+                      ensureFileExists: {
+                        forceExtension: '.mjs',
+                      },
                       esExtensionDefault: '.mjs',
                       tryExtensions: ['.js'],
                       esExtensions: ['.mjs'],
