@@ -1,0 +1,2 @@
+# node_modules in the fixtures directory are part of the mocked project and should not be ignored
+!node_modules
