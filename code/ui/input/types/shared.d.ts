@@ -216,6 +216,8 @@ export declare const styledBody: ({
         gridColumnEnd: boolean;
         gridColumnGap: boolean;
         gridColumnStart: boolean;
+        gridTemplateColumns: boolean;
+        gridTemplateAreas: boolean;
         lineClamp: boolean;
         opacity: boolean;
         order: boolean;

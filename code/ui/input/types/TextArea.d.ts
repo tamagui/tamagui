@@ -185,6 +185,8 @@ export declare const TextArea: import("@tamagui/web").TamaguiComponent<import("@
         gridColumnEnd: boolean;
         gridColumnGap: boolean;
         gridColumnStart: boolean;
+        gridTemplateColumns: boolean;
+        gridTemplateAreas: boolean;
         lineClamp: boolean;
         opacity: boolean;
         order: boolean;

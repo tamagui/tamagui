@@ -73,6 +73,8 @@ export declare const stylePropsUnitless: {
     gridColumnEnd: boolean;
     gridColumnGap: boolean;
     gridColumnStart: boolean;
+    gridTemplateColumns: boolean;
+    gridTemplateAreas: boolean;
     lineClamp: boolean;
     opacity: boolean;
     order: boolean;
@@ -184,6 +186,8 @@ export declare const stylePropsView: {
     gridColumnEnd: boolean;
     gridColumnGap: boolean;
     gridColumnStart: boolean;
+    gridTemplateColumns: boolean;
+    gridTemplateAreas: boolean;
     lineClamp: boolean;
     opacity: boolean;
     order: boolean;
@@ -471,6 +475,8 @@ export declare const stylePropsText: {
     gridColumnEnd: boolean;
     gridColumnGap: boolean;
     gridColumnStart: boolean;
+    gridTemplateColumns: boolean;
+    gridTemplateAreas: boolean;
     lineClamp: boolean;
     opacity: boolean;
     order: boolean;
@@ -719,6 +725,8 @@ export declare const stylePropsAll: {
     gridColumnEnd: boolean;
     gridColumnGap: boolean;
     gridColumnStart: boolean;
+    gridTemplateColumns: boolean;
+    gridTemplateAreas: boolean;
     lineClamp: boolean;
     opacity: boolean;
     order: boolean;
@@ -955,6 +963,8 @@ export declare const validStyles: {
     gridColumnEnd: boolean;
     gridColumnGap: boolean;
     gridColumnStart: boolean;
+    gridTemplateColumns: boolean;
+    gridTemplateAreas: boolean;
     lineClamp: boolean;
     opacity: boolean;
     order: boolean;
