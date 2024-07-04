@@ -208,7 +208,7 @@ export const manageSubscriptionStatusChange = async (
   }
 
   console.info(`Insert new subscription_items`)
-  const { error: insertionError } = await supabaseAdmin.from('subscription_items').insert(
+  const { error: insertionError } = await supabaseAdmin.from('subscription_items').upsert(
     subscription.items.data.map((item) => ({
       id: item.id,
       subscription_id: subscription.id,
@@ -221,13 +221,17 @@ export const manageSubscriptionStatusChange = async (
 
   // then delete the old ones since we inserted new ones so shouldn't cause contraint err:
   if (oldSubscriptionItems?.length) {
-    console.info(`Delete old subscription_items`)
+    const oldRecords = oldSubscriptionItems
+      .map((x) => x.id)
+      .filter((id) => !subscription.items.data.some((x) => x.id === id))
+    console.info(`Delete old subscription_items`, oldRecords)
     const { error: deleteOldErr } = await supabaseAdmin
       .from('subscription_items')
       .delete()
       .in(
         'id',
-        oldSubscriptionItems.map((x) => x.id)
+        // delete ones that aren't leftover
+        oldRecords
       )
     if (deleteOldErr) {
       throw deleteOldErr
