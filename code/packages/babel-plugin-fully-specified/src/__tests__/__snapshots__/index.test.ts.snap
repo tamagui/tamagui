@@ -1,5 +1,10 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`transforming actual files > multiple extensions exists 1`] = `
+"// Expected to be transformed to use the \`.mjs\` extension, which is same as this file.
+import { foo, bar } from \\"./modules/module.mjs\\";"
+`;
+
 exports[`transforming actual files > test 1`] = `
 "import foo, { bar } from \\"./modules/module.mjs\\";
 import { foo as foo2 } from \\"./modules/module.mjs\\";

@@ -112,4 +112,28 @@ describe('transforming actual files', () => {
 
     expect(code).toMatchSnapshot()
   })
+
+  test('multiple extensions exists', () => {
+    const { code } =
+      transformFileSync(
+        path.join(__dirname, 'fixtures', 'multiple-extensions-exists', 'test.mjs'),
+        getTransformOptions({
+          pluginOptions: { ensureFileExists: true },
+        })
+      ) || {}
+
+    expect(code).toMatchSnapshot()
+  })
+
+  test('force extension', () => {
+    const { code } =
+      transformFileSync(
+        path.join(__dirname, 'fixtures', 'force-extension', 'foo.js'),
+        getTransformOptions({
+          pluginOptions: { ensureFileExists: { forceExtension: '.mjs' } },
+        })
+      ) || {}
+
+    expect(code).toBe('import { bar } from "./bar.mjs";')
+  })
 })
