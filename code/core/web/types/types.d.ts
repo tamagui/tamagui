@@ -290,49 +290,74 @@ type AllowedStyleValuesSetting = AllowedValueSettingBase | AllowedStyleValuesSet
 type AutocompleteSpecificTokensSetting = boolean | 'except-special';
 type GenericTamaguiSettings = {
     /**
+     * When true, Tamagui will always prefer a more specific style prop over a
+     * less specific one.
+     *
+     * By default, Tamagui processes all style props in order of definition on the
+     * object. This is a bit strange to most people, but it gets around many
+     * annoying issues with specificity. You can see our docs on this here:
+     * https://tamagui.dev/docs/intro/styles#style-order-is-important
+     *
+     * But this can be confusing in simple cases, like when you do:
+     *
+     *   <View paddingTop={0} padding={10} />
+     *
+     * This would set paddingTop ultimately to be 10, because padding comes after
+     * paddingTop. When this setting is set to true, paddingTop will always beat
+     * padding, because it is more specific.
+     *
+     * For variants, it will still take the prop order as definitive.
+     *
+     *
+     * @default false
+     */
+    /**
      * Set up allowed values on style props, this is only a type-level validation.
      *
-     * "strict" - only allows tokens for any token-enabled properties
-     * "strict-web" - same as strict but allows for web-specific tokens like auto/inherit
-     * "somewhat-strict" - allow tokens or:
-     *     for space/size: string% or numbers
-     *     for radius: number
-     *     for zIndex: number
-     *     for color: named colors or rgba/hsla strings
-     * "somewhat-strict-web" - same as somewhat-strict but allows for web-specific tokens
+     * "strict" - only allows tokens for any token-enabled properties "strict-web"
+     * - same as strict but allows for web-specific tokens like auto/inherit
+     * "somewhat-strict" - allow tokens or: for space/size: string% or numbers for
+     * radius: number for zIndex: number for color: named colors or rgba/hsla
+     * strings "somewhat-strict-web" - same as somewhat-strict but allows for
+     * web-specific tokens
      *
-     * @default false - allows any string (or number for styles that accept numbers)
+     * @default false - allows any string (or number for styles that accept
+     * numbers)
      *
      */
     allowedStyleValues?: AllowedStyleValuesSetting;
     /**
-     * Set up if "specific tokens" ($color.name) are added to the types where tokens are allowed.
-     * The VSCode autocomplete puts specific tokens above the regular ones, which leads to worse DX.
-     * If true this setting removes the specific token from types for the defined categories.
+     * Set up if "specific tokens" ($color.name) are added to the types where
+     * tokens are allowed. The VSCode autocomplete puts specific tokens above the
+     * regular ones, which leads to worse DX. If true this setting removes the
+     * specific token from types for the defined categories.
      *
-     * If set to "except-special", specific tokens will autocomplete only if they don't normally use
-     * one of the special token groups: space, size, radius, zIndex, color.
+     * If set to "except-special", specific tokens will autocomplete only if they
+     * don't normally use one of the special token groups: space, size, radius,
+     * zIndex, color.
      *
      * @default except-special
      */
     autocompleteSpecificTokens?: AutocompleteSpecificTokensSetting;
     /**
-     * Will change the behavior of media styles. By default they have a fixed specificity: they
-     * always override any $theme- or $platform- styles. With this enabled, media styles will have
-     * the same precedence as the theme and platform styles, meaning that the order of the props
-     * determines if they override.
+     * Will change the behavior of media styles. By default they have a fixed
+     * specificity: they always override any $theme- or $platform- styles. With
+     * this enabled, media styles will have the same precedence as the theme and
+     * platform styles, meaning that the order of the props determines if they
+     * override.
      *
      * @default false
      */
     mediaPropOrder?: boolean;
     /**
-     * On iOS, this enables a mode where Tamagui returns color values using `DynamicColorIOS`
-     * This is a React Native built in feature, you can read the docs here:
-     *   https://reactnative.dev/docs/dynamiccolorios
+     * On iOS, this enables a mode where Tamagui returns color values using
+     * `DynamicColorIOS` This is a React Native built in feature, you can read the
+     * docs here: https://reactnative.dev/docs/dynamiccolorios
      *
-     * We're working to make this enabled by default without any setting, but Tamagui themes
-     * support inversing and/or changing to light/dark at any point in the tree. We haven't implemented
-     * support for either of these cases when combined with this feature.
+     * We're working to make this enabled by default without any setting, but
+     * Tamagui themes support inversing and/or changing to light/dark at any point
+     * in the tree. We haven't implemented support for either of these cases when
+     * combined with this feature.
      *
      * So - as long as you:
      *
@@ -340,23 +365,13 @@ type GenericTamaguiSettings = {
      *   2. Don't use <Theme inverse> or themeInverse
      *   3. Always change light/dark alongside the Appearance.colorScheme
      *
-     * Then this feature is safe to turn on and will significantly speed up dark/light re-renders.
+     * Then this feature is safe to turn on and will significantly speed up
+     * dark/light re-renders.
      */
     fastSchemeChange?: boolean;
     /**
-     * By default Tamagui won't accept anything except for style props inside all parent style
-     * selectors or pseudo style selectors (like $sm, $platform-ios, or hoverStyle).
-     *
-     * But it does support taking any property inside of these attributes, historically, and it
-     * can be useful especially on native where props like maxFontSizeMultiplier or minimumFontScale
-     * should be style props but aren't.
-     *
-     * On the web, in the future, we aim to enable a full 0-runtime mode which would enforce the default
-     * "style" setting here. But if you're willing to accept that it maybe slow, set to "all" for more power
-     */
-    /**
-     * On Web, this allows changing the behavior of container groups which by default uses
-     * `container-type: inline-size`.
+     * On Web, this allows changing the behavior of container groups which by
+     * default uses `container-type: inline-size`.
      */
     webContainerType?: 'normal' | 'size' | 'inline-size' | 'inherit' | 'initial' | 'revert' | 'revert-layer' | 'unset';
 };
@@ -711,35 +726,6 @@ interface ExtraStyleProps {
     scrollbarWidth?: Properties['scrollbarWidth'];
     pointerEvents?: ViewProps['pointerEvents'];
     /**
-     * @deprecated Use `gap`
-     */
-    space?: SpaceValue;
-    /**
-     * @deprecated Use `gap`
-     */
-    spaceDirection?: SpaceDirection;
-    /**
-     * @deprecated can implement your own hook or component
-     */
-    separator?: ReactNode;
-    /**
-     * Animations are defined using `createTamagui` typically in a tamagui.config.ts file.
-     * Pass a string animation here and it uses an animation driver to execute it.
-     *
-     * See: https://tamagui.dev/docs/core/animations
-     */
-    animation?: AnimationProp | null;
-    /**
-     * Pass an array of strings containing the long style property names
-     * which will be exclusively animated.
-     */
-    animateOnly?: string[];
-    /**
-     * If you'd like this component to not attach to the nearest parent AnimatePresence,
-     * set this to `false` and it will pass through to the next animated child.
-     */
-    animatePresence?: boolean;
-    /**
      * The point at which transforms originate from.
      */
     transformOrigin?: PxOrPct | 'left' | 'center' | 'right' | 'top' | 'bottom' | TwoValueTransformOrigin | `${TwoValueTransformOrigin} ${Px}`;
@@ -895,6 +881,46 @@ interface ExtraStyleProps {
      * Web-only style property. Will be omitted on native.
      */
     maskType?: Properties['maskType'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    gridRow?: Properties['gridRow'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    gridRowEnd?: Properties['gridRowEnd'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    gridRowGap?: Properties['gridRowGap'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    gridRowStart?: Properties['gridRowStart'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    gridColumn?: Properties['gridColumn'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    gridColumnEnd?: Properties['gridColumnEnd'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    gridColumnGap?: Properties['gridColumnGap'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    gridColumnStart?: Properties['gridColumnStart'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    gridTemplateColumns?: Properties['gridTemplateColumns'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    gridTemplateAreas?: Properties['gridTemplateAreas'];
     borderInlineColor?: ColorTokens;
     borderInlineStartColor?: ColorTokens;
     borderInlineEndColor?: ColorTokens;
@@ -941,12 +967,43 @@ export interface ExtendBaseStackProps {
 }
 export interface ExtendBaseTextProps {
 }
-interface OverrideNonStyledProps extends TransformStyleProps, ExtendBaseTextProps, ExtendBaseStackProps, ExtraStyleProps {
+interface ExtraBaseProps {
+    /**
+     * @deprecated Use `gap`
+     */
+    space?: SpaceValue;
+    /**
+     * @deprecated Use `gap`
+     */
+    spaceDirection?: SpaceDirection;
+    /**
+     * @deprecated can implement your own hook or component
+     */
+    separator?: ReactNode;
+    /**
+     * Animations are defined using `createTamagui` typically in a tamagui.config.ts file.
+     * Pass a string animation here and it uses an animation driver to execute it.
+     *
+     * See: https://tamagui.dev/docs/core/animations
+     */
+    animation?: AnimationProp | null;
+    /**
+     * Pass an array of strings containing the long style property names
+     * which will be exclusively animated.
+     */
+    animateOnly?: string[];
+    /**
+     * If you'd like this component to not attach to the nearest parent AnimatePresence,
+     * set this to `false` and it will pass through to the next animated child.
+     */
+    animatePresence?: boolean;
+}
+interface ExtendedBaseProps extends TransformStyleProps, ExtendBaseTextProps, ExtendBaseStackProps, ExtraStyleProps, ExtraBaseProps {
     display?: 'inherit' | 'none' | 'inline' | 'block' | 'contents' | 'flex' | 'inline-flex';
 }
-export interface StackStyleBase extends Omit<ViewStyle, keyof OverrideNonStyledProps | 'elevation'>, TransformStyleProps, ExtraStyleProps, OverrideNonStyledProps {
+export interface StackStyleBase extends Omit<ViewStyle, keyof ExtendedBaseProps | 'elevation'>, ExtendedBaseProps {
 }
-export interface TextStylePropsBase extends Omit<RNTextStyle, keyof OverrideNonStyledProps>, TransformStyleProps, ExtraStyleProps, OverrideNonStyledProps {
+export interface TextStylePropsBase extends Omit<RNTextStyle, keyof ExtendedBaseProps>, ExtendedBaseProps {
     ellipse?: boolean;
     textDecorationDistance?: number;
     textOverflow?: Properties['textOverflow'];

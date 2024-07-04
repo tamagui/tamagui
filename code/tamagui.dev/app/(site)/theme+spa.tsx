@@ -4,7 +4,6 @@ import { useHotkeys } from 'react-hotkeys-hook'
 import {
   AnimatePresence,
   Button,
-  PortalItem,
   ScrollView,
   Separator,
   SizableText,
@@ -14,16 +13,15 @@ import {
   styled,
   useIsomorphicLayoutEffect,
 } from 'tamagui'
-import { router } from 'vxs'
 
-import { ThemeBuilderModalFrame } from '~/features/studio/theme/ThemeBuilderModalFrame'
-import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
-import { weakKey } from '~/helpers/weakKey'
 import { StudioStepTip } from '~/features/studio/StudioStepTip'
-import { themeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
-import { StudioThemeBuilderActionBar } from '~/features/studio/theme/StudioThemeBuilderActionBar'
-import { steps } from '~/features/studio/theme/steps/steps'
 import { StudioPreviewComponents } from '~/features/studio/theme/StudioPreviewComponents'
+import { steps } from '~/features/studio/theme/steps/steps'
+import {
+  themeBuilderStore,
+  useThemeBuilderStore,
+} from '~/features/studio/theme/store/ThemeBuilderStore'
+import { weakKey } from '~/helpers/weakKey'
 // import { StudioPreviewFrame } from './views/StudioPreviewFrame'
 
 let lastLoadThemeId = ''
@@ -34,6 +32,8 @@ export async function loadTheme(params) {
   themeBuilderStore.setThemeSuiteId(params.themeId)
 }
 
+themeBuilderStore.setSteps(steps)
+
 export function loader() {}
 
 export default memo(function StudioTheme({
@@ -43,7 +43,6 @@ export default memo(function StudioTheme({
   themeId: string
   step: string
 }) {
-  console.log('loading')
   // const missing = !useThemeBuilderStore().themeSuiteId
   // TODO just insert new on missing
   // const notFound = !themeId || missing
@@ -52,11 +51,6 @@ export default memo(function StudioTheme({
   //     navigate('/', { replace: true })
   //   }
   // }, [notFound])
-
-  useEffect(() => {
-    // ensure no circular imports by having this set onto the store from the root of ThemeBuilder
-    themeBuilderStore.setSteps(steps)
-  }, [])
 
   const store = useThemeBuilderStore()
 
@@ -72,57 +66,40 @@ export default memo(function StudioTheme({
     }
   }, [step])
 
-  // yucky two way sync here
-  useEffect(() => {
-    if (!store.hasSetStepOnce) return
-    if (step !== `${store.step}`) {
-      router.replace(`/builder/${themeId}/${store.step}`)
-    }
-  }, [store.step])
+  // // yucky two way sync here
+  // useEffect(() => {
+  //   if (!store.hasSetStepOnce) return
+  //   if (step !== `${store.step}`) {
+  //     router.replace(`/builder/${themeId}/${store.step}`)
+  //   }
+  // }, [store.step])
 
   return (
-    <YStack fullscreen zi={100} pe="auto">
-      {store.loaded && <ThemeBuilderModal />}
-
-      <PortalItem hostName="studio-header">
-        <StudioThemeBuilderActionBar />
-      </PortalItem>
-
+    <>
+      <ThemeBuilderModal />
       <Preview />
-    </YStack>
+    </>
   )
 })
 
 const Preview = memo(() => {
   const store = useThemeBuilderStore()
   const { currentSection } = store
-
   if (!currentSection) {
     return null
   }
-
-  const hasCustomPreview = !!currentSection?.preview
-
-  const StudioPreviewFrame = ({ children, showSettingsBar }) => <>{children}</>
-  const Inner = currentSection?.preview || StudioPreviewComponents
-  return (
-    <StudioPreviewFrame showSettingsBar={!hasCustomPreview}>
-      <Inner />
-    </StudioPreviewFrame>
-  )
+  return <StudioPreviewComponents />
 })
 
 const Empty = () => null
 
 const ThemeBuilderModal = memo(() => {
   const store = useThemeBuilderStore()
-  const { isCentered, sectionTitles, currentSection } = store
+  const { sectionTitles, currentSection } = store
   const enterVariant =
     store.direction === 1 || store.direction === 0 ? 'isRight' : 'isLeft'
   const exitVariant = store.direction === 1 ? 'isLeft' : 'isRight'
-
   const StepComponent = currentSection?.children ?? Empty
-  const StepSidebar = currentSection?.sidebar ?? Empty
 
   const contents = useMemo(() => {
     return (
@@ -136,9 +113,24 @@ const ThemeBuilderModal = memo(() => {
   }, [StepComponent])
 
   return (
-    <ThemeBuilderModalFrame
-      isCentered={isCentered}
-      sidebar={StepSidebar ? <StepSidebar /> : undefined}
+    <YStack
+      pos={'fixed' as any}
+      animation="quicker"
+      x={0}
+      t={90}
+      r={0}
+      b={0}
+      w={550}
+      elevation="$5"
+      btlr="$6"
+      ov="hidden"
+      bw={0.5}
+      bc="$color6"
+      zi={100_000}
+      bg="$color2"
+      $md={{
+        x: 500,
+      }}
     >
       <XStack
         px="$4"
@@ -232,7 +224,7 @@ const ThemeBuilderModal = memo(() => {
 
       {/* bottom */}
       <StudioThemeBuilderBottomBar />
-    </ThemeBuilderModalFrame>
+    </YStack>
   )
 })
 
@@ -284,7 +276,7 @@ const ThemeStudioStepButtonsBar = () => {
   } = store
   const forwardOrFinish = () => {
     if (!canGoForward) {
-      router.push('/builder')
+      console.warn('done')
     } else {
       forward()
     }

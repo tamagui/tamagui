@@ -1312,39 +1312,6 @@ interface ExtraStyleProps {
   pointerEvents?: ViewProps['pointerEvents']
 
   /**
-   * @deprecated Use `gap`
-   */
-  space?: SpaceValue
-  /**
-   * @deprecated Use `gap`
-   */
-  spaceDirection?: SpaceDirection
-  /**
-   * @deprecated can implement your own hook or component
-   */
-  separator?: ReactNode
-
-  /**
-   * Animations are defined using `createTamagui` typically in a tamagui.config.ts file.
-   * Pass a string animation here and it uses an animation driver to execute it.
-   *
-   * See: https://tamagui.dev/docs/core/animations
-   */
-  animation?: AnimationProp | null
-
-  /**
-   * Pass an array of strings containing the long style property names
-   * which will be exclusively animated.
-   */
-  animateOnly?: string[]
-
-  /**
-   * If you'd like this component to not attach to the nearest parent AnimatePresence,
-   * set this to `false` and it will pass through to the next animated child.
-   */
-  animatePresence?: boolean
-
-  /**
    * The point at which transforms originate from.
    */
   transformOrigin?:
@@ -1356,6 +1323,7 @@ interface ExtraStyleProps {
     | 'bottom'
     | TwoValueTransformOrigin
     | `${TwoValueTransformOrigin} ${Px}`
+
   /**
    * Web-only style property. Will be omitted on native.
    */
@@ -1508,6 +1476,47 @@ interface ExtraStyleProps {
    * Web-only style property. Will be omitted on native.
    */
   maskType?: Properties['maskType']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  gridRow?: Properties['gridRow']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  gridRowEnd?: Properties['gridRowEnd']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  gridRowGap?: Properties['gridRowGap']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  gridRowStart?: Properties['gridRowStart']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  gridColumn?: Properties['gridColumn']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  gridColumnEnd?: Properties['gridColumnEnd']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  gridColumnGap?: Properties['gridColumnGap']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  gridColumnStart?: Properties['gridColumnStart']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  gridTemplateColumns?: Properties['gridTemplateColumns']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  gridTemplateAreas?: Properties['gridTemplateAreas']
+
   borderInlineColor?: ColorTokens
   borderInlineStartColor?: ColorTokens
   borderInlineEndColor?: ColorTokens
@@ -1554,25 +1563,57 @@ interface ExtraStyleProps {
 export interface ExtendBaseStackProps {}
 export interface ExtendBaseTextProps {}
 
-interface OverrideNonStyledProps
+interface ExtraBaseProps {
+  /**
+   * @deprecated Use `gap`
+   */
+  space?: SpaceValue
+  /**
+   * @deprecated Use `gap`
+   */
+  spaceDirection?: SpaceDirection
+  /**
+   * @deprecated can implement your own hook or component
+   */
+  separator?: ReactNode
+
+  /**
+   * Animations are defined using `createTamagui` typically in a tamagui.config.ts file.
+   * Pass a string animation here and it uses an animation driver to execute it.
+   *
+   * See: https://tamagui.dev/docs/core/animations
+   */
+  animation?: AnimationProp | null
+
+  /**
+   * Pass an array of strings containing the long style property names
+   * which will be exclusively animated.
+   */
+  animateOnly?: string[]
+
+  /**
+   * If you'd like this component to not attach to the nearest parent AnimatePresence,
+   * set this to `false` and it will pass through to the next animated child.
+   */
+  animatePresence?: boolean
+}
+
+interface ExtendedBaseProps
   extends TransformStyleProps,
     ExtendBaseTextProps,
     ExtendBaseStackProps,
-    ExtraStyleProps {
+    ExtraStyleProps,
+    ExtraBaseProps {
   display?: 'inherit' | 'none' | 'inline' | 'block' | 'contents' | 'flex' | 'inline-flex'
 }
 
 export interface StackStyleBase
-  extends Omit<ViewStyle, keyof OverrideNonStyledProps | 'elevation'>,
-    TransformStyleProps,
-    ExtraStyleProps,
-    OverrideNonStyledProps {}
+  extends Omit<ViewStyle, keyof ExtendedBaseProps | 'elevation'>,
+    ExtendedBaseProps {}
 
 export interface TextStylePropsBase
-  extends Omit<RNTextStyle, keyof OverrideNonStyledProps>,
-    TransformStyleProps,
-    ExtraStyleProps,
-    OverrideNonStyledProps {
+  extends Omit<RNTextStyle, keyof ExtendedBaseProps>,
+    ExtendedBaseProps {
   ellipse?: boolean
   textDecorationDistance?: number
   textOverflow?: Properties['textOverflow']
