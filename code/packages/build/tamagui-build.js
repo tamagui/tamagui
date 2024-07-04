@@ -423,7 +423,7 @@ async function esbuildWriteIfChanged(
 
   /** @type { import('esbuild').BuildOptions } */
   const webEsbuildSettings = {
-    target: 'es2022',
+    target: 'esnext',
     jsx: 'automatic',
     platform: shouldBundle ? 'node' : 'neutral',
     tsconfigRaw: {
