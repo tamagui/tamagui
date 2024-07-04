@@ -102,6 +102,18 @@ export const HeaderLinks = (props: HeaderProps) => {
           UI
         </HeadAnchor>
       </Link>
+
+      <Link asChild href="/theme">
+        <HeadAnchor
+          // half={forceShowAllLinks}
+          grid={forceShowAllLinks}
+          $sm={{
+            display: forceShowAllLinks ? 'flex' : 'none',
+          }}
+        >
+          Theme
+        </HeadAnchor>
+      </Link>
     </>
   )
 
@@ -710,7 +722,7 @@ const SlidingPopoverContent = React.memo(({ active }: { active: string }) => {
 })
 
 const Frame = styled(YStack, {
-  animation: 'lazy',
+  animation: 'quicker',
   br: '$5',
   ov: 'hidden',
   fullscreen: true,

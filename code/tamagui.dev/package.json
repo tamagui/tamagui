@@ -26,6 +26,7 @@
     "@supabase/ssr": "^0.4.0",
     "@supabase/supabase-js": "^2.38.2",
     "@tamagui/assert": "1.101.7",
+    "@tamagui/bento": "1.101.7",
     "@tamagui/demos": "1.101.7",
     "@tamagui/image-next": "1.101.7",
     "@tamagui/logo": "1.101.7",

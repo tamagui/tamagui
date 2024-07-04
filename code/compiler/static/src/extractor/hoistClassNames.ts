@@ -19,6 +19,9 @@ export function hoistClassNames(
     return identifier
   }
   if (t.isBinaryExpression(expr)) {
+    if (t.isPrivateName(expr.left)) {
+      throw new Error(`no private name`)
+    }
     return t.binaryExpression(expr.operator, hoist(expr.left), hoist(expr.right))
   }
   if (t.isLogicalExpression(expr)) {

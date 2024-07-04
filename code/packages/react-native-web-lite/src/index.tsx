@@ -11,6 +11,14 @@ export {
   useEvent,
   useHover,
   ImageLoader,
+  AccessibilityUtil,
+  InteractionManager,
+  LocaleProvider,
+  createDOMProps,
+  normalizeColor,
+  usePlatformMethods,
+  useLayoutEffect,
+  processStyle,
 } from 'react-native-web-internals'
 export { default as render } from './render/index'
 export { unmountComponentAtNode } from 'react-dom'
@@ -78,9 +86,6 @@ export { default as LogBox } from './LogBox/index'
 export { default as useColorScheme } from './useColorScheme/index'
 export { useLocaleContext } from './useLocaleContext/index'
 export { default as useWindowDimensions } from './useWindowDimensions/index'
-
-// // useful internals
-export * from 'react-native-web-internals'
 
 export function requireNativeComponent(name: string) {
   return function FakeComponent() {
