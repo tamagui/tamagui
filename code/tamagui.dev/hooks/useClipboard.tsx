@@ -11,10 +11,10 @@ export function useClipboard(
 ) {
   const [hasCopied, setHasCopied] = useState(false)
 
-  const onCopy = useEvent(async () => {
+  const onCopy = async () => {
     await copyToClipboard(text)
     setHasCopied(true)
-  })
+  }
 
   useEffect(() => {
     if (!hasCopied) return

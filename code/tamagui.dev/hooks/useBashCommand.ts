@@ -57,11 +57,11 @@ export function useBashCommand(children: ReactNode, className: string) {
   const getCode = (code: string) => {
     if (isBash) {
       if (isTerminal || isStarter) {
-        return code
+        return code.trim()
       }
-      return command
+      return command.trim()
     }
-    return code
+    return code.trim()
   }
 
   return {

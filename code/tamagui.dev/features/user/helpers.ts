@@ -11,7 +11,11 @@ import { getArray } from '~/helpers/getArray'
 
 export const getUserDetails = async (supabase: SupabaseClient<Database>) => {
   const result = await supabase.from('users').select('*').single()
-  if (result.error) throw new Error(result.error.message)
+
+  if (result.error) {
+    throw new Error(result.error.message)
+  }
+
   return result.data
 }
 
@@ -25,6 +29,7 @@ export const getUserPrivateInfo = async (userId: string) => {
   if (result.error) {
     throw new Error(`Error getting user private info: ${result.error.message}`)
   }
+
   return result.data?.[0] || {}
 }
 
@@ -38,7 +43,11 @@ export const getSubscriptions = async (supabase: SupabaseClient<Database>) => {
   const result = await supabase
     .from('subscriptions')
     .select('*, subscription_items(*, prices(*, products(*)), app_installations(*))')
-  if (result.error) throw new Error(result.error.message)
+
+  if (result.error) {
+    throw new Error(result.error.message)
+  }
+
   return result.data.map((sub) => ({
     ...sub,
     subscription_items: getArray(sub.subscription_items).map(({ prices, ...item }) => {
@@ -56,7 +65,11 @@ export const getOwnedProducts = async (supabase: SupabaseClient<Database>) => {
   const result = await supabase
     .from('product_ownership')
     .select('*, prices(*, products(*))')
-  if (result.error) throw new Error(result.error.message)
+
+  if (result.error) {
+    throw new Error(result.error.message)
+  }
+
   return result.data.map(({ prices, ...productOwnership }) => {
     const price = getSingle(prices)
     return {
@@ -70,7 +83,9 @@ export const getProductOwnerships = async (supabase: SupabaseClient<Database>) =
   const result = await supabase
     .from('product_ownership')
     .select('*, prices(*, products(*))')
-  if (result.error) throw new Error(result.error.message)
+  if (result.error) {
+    throw new Error(result.error.message)
+  }
   return result.data.map(({ prices, ...sub }) => {
     const price = getSingle(prices)
     return {

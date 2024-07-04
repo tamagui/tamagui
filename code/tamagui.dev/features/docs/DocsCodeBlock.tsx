@@ -41,6 +41,9 @@ class CollapseStore {
   }
 }
 
+// all of the code around useClipboard useBashCommand codeElement.innerText.replace
+// was written by a junior dev and could be way simpler and cleaner
+
 export const DocCodeBlock = forwardRef((props: any, ref) => {
   const {
     className,
@@ -74,18 +77,14 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
 
   const onCommandChange = useEvent(() => {
     try {
-      if (preRef.current && isPreVisible) {
-        const codeElement = preRef.current.querySelector('code')
-        if (codeElement) {
-          // remove double line breaks
-          const codeExtract = codeElement.innerText.replace(/\n{3,}/g, '\n')
-          console.log('got', codeExtract)
-          setCode(getCode(codeExtract))
-        } else {
-          // not collapsible
-        }
+      const codeElement = preRef.current.querySelector('code')
+      if (codeElement) {
+        // remove double line breaks
+        const codeExtract = codeElement.innerText.replace(/\n{3,}/g, '\n')
+        setCode(getCode(codeExtract))
       }
-    } catch {
+    } catch (err) {
+      console.warn('err', err)
       // ok
     }
   })
@@ -164,6 +163,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
             )}
 
             <Pre
+              ref={preRef}
               data-invert-line-highlight={isHighlightingLines}
               data-line-numbers={showLineNumbers}
               className={className}
@@ -210,7 +210,6 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                     className={className}
                     size={size ?? '$5'}
                     lineHeight={size ?? '$5'}
-                    ref={preRef}
                     {...rest}
                   >
                     {children}
