@@ -7,6 +7,7 @@ import { AnimatePresence, Button, Circle, Square, YStack, styled } from 'tamagui
 
 import { useState } from 'react'
 import { View as RNView } from 'react-native'
+import { SliderDemo } from '@tamagui/demos'
 
 export const Sandbox = () => {
   return (
@@ -22,6 +23,8 @@ export const Sandbox = () => {
           y: -100,
         }}
       /> */}
+
+      <SliderDemo />
 
       {/* <DatePickerExample /> */}
     </RNView>
