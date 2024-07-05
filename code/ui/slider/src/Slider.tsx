@@ -90,6 +90,27 @@ const SliderHorizontal = React.forwardRef<View, SliderHorizontalProps>(
 
     if (isClient) {
       useOnDebouncedWindowResize(measure)
+
+      // intersection change
+      React.useEffect(() => {
+        const node = sliderRef.current as any as HTMLDivElement
+        if (!node) return
+
+        let measureTm
+
+        const io = new IntersectionObserver(() => {
+          clearTimeout(measureTm)
+          measureTm = setTimeout(() => {
+            measure()
+          }, 200)
+        })
+
+        io.observe(node)
+
+        return () => {
+          io.disconnect()
+        }
+      }, [])
     }
 
     return (
