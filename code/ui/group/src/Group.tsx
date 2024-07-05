@@ -14,7 +14,7 @@ import { createContextScope } from '@tamagui/create-context'
 import { withStaticProperties } from '@tamagui/helpers'
 import { ThemeableStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
-import React, { Children, forwardRef, isValidElement } from 'react'
+import React, { Children, Fragment, forwardRef, isValidElement } from 'react'
 import { ScrollView } from 'react-native'
 import { useIndex, useIndexedChildren } from 'reforest'
 
@@ -117,7 +117,7 @@ function createGroup(verticalDefault: boolean) {
       const children = isUsingItems
         ? Children.toArray(childrenProp).filter(isValidElement)
         : childrenArray.map((child, i) => {
-            if (!isValidElement(child)) {
+            if (!isValidElement(child) || child.type === Fragment) {
               return child
             }
             const disabled = child.props.disabled ?? disabledProp
@@ -147,7 +147,6 @@ function createGroup(verticalDefault: boolean) {
         spacedChildren({
           direction: spaceDirection,
           separator,
-          // @ts-ignore
           space,
           children,
         })
@@ -212,7 +211,7 @@ const GroupItem = forwardRef(
       __scopeGroup
     )
 
-    if (!isValidElement(children)) {
+    if (!isValidElement(children) || children.type === Fragment) {
       return children as any
     }
 
