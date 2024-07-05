@@ -80,6 +80,7 @@ export type {
   GetAnimationKeys,
   GetProps,
   GetRef,
+  GetThemeValueForKey,
   GroupNames,
   Longhands,
   Media,
