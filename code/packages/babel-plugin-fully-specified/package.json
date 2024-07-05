@@ -15,8 +15,8 @@
     "access": "public"
   },
   "scripts": {
-    "build": "node ../../../node_modules/.bin/tamagui-build --exclude ./**/__tests__",
-    "watch": "node ../../../node_modules/.bin/tamagui-build --exclude ./**/__tests__ --watch",
+    "build": "node ../../../node_modules/.bin/tamagui-build --exclude __tests__",
+    "watch": "node ../../../node_modules/.bin/tamagui-build --exclude __tests__ --watch",
     "lint": "npx biome check src",
     "lint:fix": "npx biome check --apply-unsafe src",
     "test": "vitest",
