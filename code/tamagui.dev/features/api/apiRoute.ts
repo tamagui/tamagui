@@ -7,6 +7,24 @@ export function apiRoute(handler: Endpoint) {
     try {
       const result = handler(req)
       const out = result instanceof Promise ? await result : result
+
+      if (
+        out instanceof Response &&
+        (out.status <= 200 || out.status >= 400) &&
+        out.body
+      ) {
+        try {
+          console.info(`Error Response (${out.status}) from ${req.url}:`)
+          const bodyContents = await streamToString(out.body)
+          if (bodyContents) {
+            const snippet = bodyContents.slice(0, 300)
+            console.info(`  Snippet of response body: ${snippet}`)
+          }
+        } catch {
+          // ignore log errors
+        }
+      }
+
       return out
     } catch (err) {
       // not an error
@@ -43,4 +61,16 @@ ${err.details}
   hint:
 ${err.hint}
 `)
+}
+
+async function streamToString(stream: ReadableStream) {
+  const reader = stream.getReader()
+  const decoder = new TextDecoder()
+  let result = ''
+  while (true) {
+    const { done, value } = await reader.read()
+    if (done) break
+    result += decoder.decode(value, { stream: true })
+  }
+  return result
 }
