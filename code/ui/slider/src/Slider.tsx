@@ -420,9 +420,7 @@ const SliderThumb = React.memo(
     const context = useSliderContext(THUMB_NAME, __scopeSlider)
     const orientation = useSliderOrientationContext(THUMB_NAME, __scopeSlider)
     const [thumb, setThumb] = React.useState<TamaguiElement | null>(null)
-    const composedRefs = useComposedRefs(forwardedRef, (node) =>
-      setThumb(node as TamaguiElement)
-    )
+    const composedRefs = useComposedRefs(forwardedRef, setThumb as any)
 
     // We cast because index could be `-1` which would return undefined
     const value = context.values[index] as number | undefined
