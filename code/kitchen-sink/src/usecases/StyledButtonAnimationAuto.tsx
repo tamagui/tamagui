@@ -93,7 +93,7 @@ const Button = withStaticProperties(ButtonFrame, {
 })
 
 export const StyledButtonAnimationAuto = () => (
-  <Button id="test" debug="verbose">
+  <Button id="test">
     <Button.Text>test</Button.Text>
   </Button>
 )

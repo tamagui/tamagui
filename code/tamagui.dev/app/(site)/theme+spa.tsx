@@ -96,9 +96,6 @@ const Empty = () => null
 const ThemeBuilderModal = memo(() => {
   const store = useThemeBuilderStore()
   const { sectionTitles, currentSection } = store
-  const enterVariant =
-    store.direction === 1 || store.direction === 0 ? 'isRight' : 'isLeft'
-  const exitVariant = store.direction === 1 ? 'isLeft' : 'isRight'
   const StepComponent = currentSection?.children ?? Empty
 
   const contents = useMemo(() => {
@@ -117,7 +114,7 @@ const ThemeBuilderModal = memo(() => {
       pos={'fixed' as any}
       animation="quicker"
       x={0}
-      t={90}
+      t={80}
       r={0}
       b={0}
       w={550}
@@ -180,7 +177,7 @@ const ThemeBuilderModal = memo(() => {
                   borderColor: '$backgroundFocus',
                 }}
               >
-                <SizableText selectable={false} size="$2">
+                <SizableText userSelect="none" size="$2">
                   {idx + 1}
                 </SizableText>
               </YStack>
@@ -191,7 +188,7 @@ const ThemeBuilderModal = memo(() => {
                 tt="uppercase"
                 ls={3}
                 pe="none"
-                selectable={false}
+                userSelect="none"
               >
                 {title}
               </SizableText>
@@ -204,14 +201,11 @@ const ThemeBuilderModal = memo(() => {
 
       {/* content */}
       <YStack gap="$4" separator={<Separator bw={1} />} f={1}>
-        <AnimatePresence
-          enterVariant={enterVariant}
-          exitVariant={exitVariant}
-          exitBeforeEnter
-        >
+        <AnimatePresence exitBeforeEnter custom={{ going: store.direction }}>
           <Section
             f={1}
-            animation="100ms"
+            animation="200ms"
+            // debug="verbose"
             animateOnly={['transform', 'opacity']}
             key={weakKey(StepComponent)}
           >
@@ -300,28 +294,42 @@ const ThemeStudioStepButtonsBar = () => {
         </Button>
       )}
 
-      <Button
-        themeInverse={!disableForward}
-        size="$3"
-        disabled={disableForward}
-        opacity={disableForward ? 0.5 : 1}
-        cursor={disableForward ? 'not-allowed' : undefined}
-        iconAfter={canGoForward ? ChevronRight : null}
-        onPress={forwardOrFinish}
-      >
-        {currentSection.nextTitle || (canGoForward ? 'Next' : 'Back to Menu')}
-      </Button>
+      {canGoForward && (
+        <Button
+          themeInverse={!disableForward}
+          size="$3"
+          disabled={disableForward}
+          opacity={disableForward ? 0.5 : 1}
+          cursor={disableForward ? 'not-allowed' : undefined}
+          iconAfter={canGoForward ? ChevronRight : null}
+          onPress={forwardOrFinish}
+        >
+          {currentSection.nextTitle || 'Next'}
+        </Button>
+      )}
     </XStack>
   )
 }
 
 const Section = styled(YStack, {
-  space: '$2',
-  opacity: 1,
+  gap: '$2',
   x: 0,
+  opacity: 1,
 
   variants: {
-    isLeft: { true: { x: -15, opacity: 0 } },
-    isRight: { true: { x: 15, opacity: 0 } },
+    // 1 = right, 0 = nowhere, -1 = left
+    going: {
+      ':number': (going) => ({
+        enterStyle: {
+          x: going > 0 ? 20 : -20,
+          opacity: 0,
+        },
+        exitStyle: {
+          zIndex: 0,
+          x: going < 0 ? 20 : -20,
+          opacity: 0,
+        },
+      }),
+    },
   } as const,
 })
