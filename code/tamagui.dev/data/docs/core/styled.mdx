@@ -106,6 +106,68 @@ export const TamaguiCustomComponent = styled(SomeCustomComponent, {
 })
 ```
 
+## styleable
+
+Any component created with `styled()` has a new static property on it called `.styleable()`.
+
+If you want a functional component that renders a Tamagui-styled component inside of it to *also* be able to be `styled()`, you need to wrap it with `styleable`. This is a mouthful, let's see an example:
+
+```tsx
+// 1. you create a `styled` component as usual:
+const StyledText = styled(Text)
+
+// 2. you create a wrapper component that adds some logic
+//    but still returns a styled component that receives the props:
+const HigherOrderStyledText = (props) => <StyledText {...props} />
+
+// 3. you want that wrapper component itself to be able to use with `styled`:
+const StyledHigherOrderStyledText = styled(HigherOrderStyledText, {
+  variants: {
+    // oops, variants will merge incorrectly
+  },
+})
+```
+
+The above code will generally cause weird issues, because Tamagui can't know that it needs to just forward some props down. Instead, Tamagui tries to "resolve" all the style props from `StyledHigherOrderStyledText` before passing them down to `HigherOrderStyledText`. But that causes problems, because now `HigherOrderStyledText` will merge things differently than you'd expect.
+
+The way to fix this is to add a `.styleable` around your `HigherOrderStyledText`. You'll also want to forward the ref, which is forwarded for you:
+
+```tsx
+const StyledText = styled(Text)
+
+// note the styleable wrapper here:
+const HigherOrderStyledText = StyledText.styleable((props, ref) => (
+  <StyledText ref={ref} {...props} />
+))
+
+const StyledHigherOrderStyledText = styled(HigherOrderStyledText, {
+  variants: {
+    // variants now merge correctly
+  },
+})
+```
+
+Now your component will handle everything properly, even if a theme is changed on `HigherOrderStyledText`, it will be applied.
+
+A final note is that you also must always pass the props given to `HigherOrderStyledText` down to `StyledText` for things to work properly.
+
+A further note on types: if you want to add some extra props to your componentin TypeScript you should do it using the generic first argument of styleable, and do so by only passing in the _extra_ props for type performance reasons:
+
+```tsx
+import { View, ViewProps } from '@tamagui/core'
+
+type ExtraProps = {
+  someCustomProp: boolean
+}
+
+export type CustomProps = ViewProps & ExtraProps
+
+const Custom = View.styleable<ExtraProps>((props) => {
+  // ...
+  return null
+})
+```
+
 ### createStyledContext
 
 When building a "Composable Component API", you need a way to pass properties down to multiple related components at once.
@@ -264,69 +326,5 @@ const MyScrollView = styled(ScrollView, {}, {
   accept: {
     contentContainerStyle: 'style' // or 'textStyle'
   } as const
-})
-```
-
-### styleable
-
-<Notice>
-  This is an advanced pattern that is only needed if you are building a design
-  system that has complex components.
-</Notice>
-
-Any `styled()` component will have a helper function on it called `.styleable()`.
-
-This advanced usage is necessary if you are doing a pattern like the following:
-
-```tsx
-// 1. you create a `styled` primitive as usual
-const StyledText = styled(Text)
-
-// 2. you create a wrapper component that adds some logic
-//    but still returns a styled component that receives the props
-const HigherOrderStyledText = (props) => <StyledText {...props} />
-
-// 3. you want that wrapper component itself to be able to use with `styled`
-const StyledHigherOrderStyledText = styled(HigherOrderStyledText, {
-  variants: {
-    // oops, variants will merge incorrectly
-  },
-})
-```
-
-So you must add a `.styleable()` around your `HigherOrderStyledText`. You'll also want to forward the ref, which happens automatically with styleable:
-
-```tsx
-const StyledText = styled(Text)
-
-const HigherOrderStyledText = StyledText.styleable((props, ref) => (
-  <StyledText ref={ref} {...props} />
-))
-
-const StyledHigherOrderStyledText = styled(HigherOrderStyledText, {
-  variants: {
-    // variants now merge correctly
-  },
-})
-```
-
-Note that `styleable` automatically wraps your component in [`themeable`](/docs/core/exports#themeable), which means it will handle the theme props for you and change the theme above your wrapped component. This means that in `HigherOrderStyledText` you can use `useTheme` and if you do something like `<HigherOrderStyledText theme="some_different_theme">`, then your `useTheme()` hook will properly get the `some_difference_theme` Theme object.
-
-Also note that you also must always pass the props given to `HigherOrderStyledText` down to `StyledText` for things to work properly.
-
-A further note on types: if you want to add some extra props to your componentin TypeScript you should do it using the generic first argument of styleable, and do so by only passing in the _extra_ props for type performance reasons:
-
-```tsx
-import { View, ViewProps } from '@tamagui/core'
-
-type ExtraProps = {
-  someCustomProp: boolean
-}
-
-export type CustomProps = ViewProps & ExtraProps
-
-const Custom = View.styleable<ExtraProps>((props) => {
-  // ...
-  return null
 })
 ```
