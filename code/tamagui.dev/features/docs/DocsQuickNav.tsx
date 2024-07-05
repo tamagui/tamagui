@@ -6,7 +6,7 @@ import { Link } from '~/components/Link'
 import type { LinkProps } from '~/components/Link'
 
 const QuickNavLink = ({ href, ...rest }: LinkProps) => (
-  <Link href={href}>
+  <a href={href as any}>
     <Paragraph
       tag="span"
       size="$3"
@@ -18,7 +18,7 @@ const QuickNavLink = ({ href, ...rest }: LinkProps) => (
       }}
       {...rest}
     />
-  </Link>
+  </a>
 )
 
 export function DocsQuickNav() {

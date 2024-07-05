@@ -168,34 +168,32 @@ export default function BentoPage() {
 
 const Intermediate = () => {
   return (
-    <YStack zi={1} w="100%">
-      <ContainerLarge>
-        <XStack
-          gap="$4"
-          py="$6"
-          pt={0}
-          $sm={{
-            fd: 'column',
-          }}
-        >
-          <ThemeTintAlt offset={-1}>
-            <IntermediateCard Icon={Globe} title="Universal">
-              Components that adapt well to all screen sizes and platforms.
-            </IntermediateCard>
-          </ThemeTintAlt>
-          <ThemeTintAlt offset={0}>
-            <IntermediateCard Icon={Puzzle} title="Copy & Paste">
-              Customize to your design system, designed to be used independently.
-            </IntermediateCard>
-          </ThemeTintAlt>
-          <ThemeTintAlt offset={1}>
-            <IntermediateCard Icon={Leaf} title="Growing">
-              We continuously improve and add to the collection.
-            </IntermediateCard>
-          </ThemeTintAlt>
-        </XStack>
-      </ContainerLarge>
-    </YStack>
+    <ContainerLarge zi={1000}>
+      <XStack
+        gap="$4"
+        py="$6"
+        pt={0}
+        $sm={{
+          fd: 'column',
+        }}
+      >
+        <ThemeTintAlt offset={-1}>
+          <IntermediateCard Icon={Globe} title="Universal">
+            Components that adapt well to all screen sizes and platforms.
+          </IntermediateCard>
+        </ThemeTintAlt>
+        <ThemeTintAlt offset={0}>
+          <IntermediateCard Icon={Puzzle} title="Copy & Paste">
+            Customize to your design system, designed to be used independently.
+          </IntermediateCard>
+        </ThemeTintAlt>
+        <ThemeTintAlt offset={1}>
+          <IntermediateCard Icon={Leaf} title="Growing">
+            We continuously improve and add to the collection.
+          </IntermediateCard>
+        </ThemeTintAlt>
+      </XStack>
+    </ContainerLarge>
   )
 }
 
@@ -234,7 +232,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['bento'] }) => 
   const store = useTakeoutStore()
 
   return (
-    <YStack pos="relative" zi={1000}>
+    <YStack pos="relative" zi={10}>
       <ContainerLarge>
         <XStack
           gap="$6"
@@ -418,7 +416,17 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['bento'] }) => 
             </YStack>
           </YStack>
 
-          <YStack pos="absolute" b="6%" r="$2" zi={100}>
+          <YStack
+            pos="absolute"
+            b="6%"
+            r="$2"
+            zi={100}
+            $sm={{
+              pos: 'relative',
+              mt: -30,
+              mb: 20,
+            }}
+          >
             <Theme name="green">
               <XStack
                 bw="$1"
@@ -485,6 +493,9 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['bento'] }) => 
               mr: -400,
               mt: -150,
               scale: 0.9,
+            }}
+            $sm={{
+              display: 'none',
             }}
           >
             <Theme name="gray">
