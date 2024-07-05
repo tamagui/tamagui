@@ -6,7 +6,7 @@ type ChangeHandler = (next: TintFamily) => void
 const listeners = new Set<ChangeHandler>()
 
 const familiesValues = {
-  tamagui: ['red', 'yellow', 'green', 'blue', 'purple', 'pink', 'red'],
+  tamagui: ['red', 'pink', 'purple', 'blue', 'green', 'orange', 'red'],
   xmas: ['red', 'green', 'red', 'green', 'red', 'green', 'red'],
   easter: ['yellow', 'pink', 'yellow', 'pink', 'yellow', 'pink', 'yellow'],
   halloween: ['orange', 'gray', 'orange', 'gray', 'orange', 'gray', 'orange'],

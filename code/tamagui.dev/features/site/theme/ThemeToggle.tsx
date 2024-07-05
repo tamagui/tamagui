@@ -15,7 +15,14 @@ export const ThemeToggle = (props: ButtonProps) => {
   const Icon = icons[userTheme]
 
   return (
-    <TooltipSimple groupId="header-actions-theme" label={`${resolvedTheme} mode`}>
+    <TooltipSimple
+      groupId="header-actions-theme"
+      label={
+        userTheme === 'system'
+          ? 'System'
+          : `${userTheme[0].toLocaleUpperCase()}${userTheme.slice(1)}`
+      }
+    >
       <Button
         size="$3"
         onPress={() => {

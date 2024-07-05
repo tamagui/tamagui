@@ -169,16 +169,11 @@ export default function BentoPage() {
 const Intermediate = () => {
   return (
     <YStack zi={1} w="100%">
-      {/* <YStack fullscreen elevation="$4" o={0.15} /> */}
-      <YStack pos="absolute" t={0} l={0} r={0} o={0.25} btw={0.5} bc="$color05" />
-      <YStack pos="absolute" b={0} l={0} r={0} o={0.25} btw={0.5} bc="$color05" />
-      <ThemeTintAlt offset={-1}>
-        <YStack fullscreen bg="$color9" o={0.048} />
-      </ThemeTintAlt>
       <ContainerLarge>
         <XStack
           gap="$4"
           py="$6"
+          pt={0}
           $sm={{
             fd: 'column',
           }}
@@ -190,11 +185,11 @@ const Intermediate = () => {
           </ThemeTintAlt>
           <ThemeTintAlt offset={0}>
             <IntermediateCard Icon={Puzzle} title="Copy & Paste">
-              Designed for easy adoption into your app and easy customization.
+              Customize to your design system, designed to be used independently.
             </IntermediateCard>
           </ThemeTintAlt>
           <ThemeTintAlt offset={1}>
-            <IntermediateCard Icon={Leaf} title="Always Growing">
+            <IntermediateCard Icon={Leaf} title="Growing">
               We continuously improve and add to the collection.
             </IntermediateCard>
           </ThemeTintAlt>
@@ -239,7 +234,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['bento'] }) => 
   const store = useTakeoutStore()
 
   return (
-    <YStack pos="relative" zi={0}>
+    <YStack pos="relative" zi={1000}>
       <ContainerLarge>
         <XStack
           gap="$6"
@@ -432,9 +427,9 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['bento'] }) => 
                 als="center"
                 br="$6"
                 ov="hidden"
-                className="blur-4"
+                className="blur-8"
               >
-                <YStack o={0.35} bg="$color10" fullscreen br="$5" />
+                <YStack o={0.5} bg="$color10" fullscreen br="$5" />
                 <YStack py="$3.5" px="$4" f={1}>
                   <H3
                     ff="$silkscreen"

@@ -10,6 +10,11 @@ const handler = apiRoute(async (req) => {
     checkForStudioAccess: true,
   })
 
+  if (!teamId) {
+    throw new Error(`No teamId found`)
+  }
+  console.info(`Studio load ${teamId}`)
+
   const results = await supabase
     .from('studio_themes')
     .select('*')

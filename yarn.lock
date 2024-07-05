@@ -7490,6 +7490,7 @@ __metadata:
     "@tamagui/helpers": "npm:1.101.7"
     "@tamagui/stacks": "npm:1.101.7"
     "@tamagui/use-controllable-state": "npm:1.101.7"
+    "@tamagui/use-debounce": "npm:1.101.7"
     "@tamagui/use-direction": "npm:1.101.7"
     react: "npm:^18.2.0"
     react-native: "npm:0.74.1"

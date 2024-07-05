@@ -925,7 +925,7 @@ textarea {
 
 .t_dark .glow-shadow {
   text-shadow: 0 10px 10px var(--color075), 0 30px 30px var(--color025);
-  mix-blend-mode: screen;
+  mix-blend-mode: color-dodge;
 }
 
 .bento-text-3 {
@@ -936,7 +936,7 @@ textarea {
 }
 
 .t_dark .bento-text-3 {
-  mix-blend-mode: luminosity;
+  mix-blend-mode: screen;
 }
 
 .mix-blend-color-burn-dodge {

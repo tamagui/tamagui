@@ -1,5 +1,6 @@
 import { ChevronLeft, ChevronRight } from '@tamagui/lucide-icons'
-import { memo, useEffect, useMemo } from 'react'
+import { TamaguiElement, View } from '@tamagui/web'
+import { FC, memo, startTransition, useEffect, useMemo, useRef, useState } from 'react'
 import { useHotkeys } from 'react-hotkeys-hook'
 import {
   AnimatePresence,
@@ -8,14 +9,18 @@ import {
   Separator,
   SizableText,
   Spacer,
+  Theme,
   XStack,
   YStack,
+  isClient,
   styled,
   useIsomorphicLayoutEffect,
+  useMedia,
 } from 'tamagui'
 
 import { StudioStepTip } from '~/features/studio/StudioStepTip'
 import { StudioPreviewComponents } from '~/features/studio/theme/StudioPreviewComponents'
+import { useBaseThemePreview } from '~/features/studio/theme/steps/2-base/useBaseThemePreview'
 import { steps } from '~/features/studio/theme/steps/steps'
 import {
   themeBuilderStore,
@@ -36,13 +41,9 @@ themeBuilderStore.setSteps(steps)
 
 export function loader() {}
 
-export default memo(function StudioTheme({
-  themeId,
-  step,
-}: {
-  themeId: string
-  step: string
-}) {
+const step = 0
+
+export default memo(function StudioTheme() {
   // const missing = !useThemeBuilderStore().themeSuiteId
   // TODO just insert new on missing
   // const notFound = !themeId || missing
@@ -60,6 +61,10 @@ export default memo(function StudioTheme({
 
   // yucky two way sync here
   useIsomorphicLayoutEffect(() => {
+    if (typeof step !== 'number') {
+      console.warn(`NO STEP?????`)
+      return
+    }
     const numStep = Number(step)
     if (numStep !== store.step) {
       store.setStep(numStep)
@@ -75,20 +80,53 @@ export default memo(function StudioTheme({
   // }, [store.step])
 
   return (
-    <>
+    <ScrollView
+      width="100%"
+      contentContainerStyle={{
+        flex: 1,
+      }}
+      horizontal
+      showsHorizontalScrollIndicator={false}
+    >
       <ThemeBuilderModal />
-      <Preview />
-    </>
+      <PreviewTheme>
+        <Preview />
+      </PreviewTheme>
+    </ScrollView>
   )
 })
 
+const PreviewTheme = (props: { children: any }) => {
+  const { name: baseStepThemeName } = useBaseThemePreview()
+  console.info('baseStepThemeName', baseStepThemeName)
+
+  return (
+    <Theme forceClassName name={baseStepThemeName}>
+      {props.children}
+    </Theme>
+  )
+}
+
 const Preview = memo(() => {
   const store = useThemeBuilderStore()
-  const { currentSection } = store
+  const [shown, setShown] = useState(false)
+  const { currentSection, themeSuite } = store
+
+  useEffect(() => {
+    startTransition(() => {
+      setShown(true)
+    })
+  }, [])
+
   if (!currentSection) {
     return null
   }
-  return <StudioPreviewComponents />
+
+  return (
+    <Theme forceClassName name={(themeSuite?.baseTheme.name as any) || null}>
+      <StudioPreviewComponents />
+    </Theme>
+  )
 })
 
 const Empty = () => null
@@ -97,6 +135,7 @@ const ThemeBuilderModal = memo(() => {
   const store = useThemeBuilderStore()
   const { sectionTitles, currentSection } = store
   const StepComponent = currentSection?.children ?? Empty
+  const ref = useRef<TamaguiElement>(null)
 
   const contents = useMemo(() => {
     return (
@@ -109,10 +148,39 @@ const ThemeBuilderModal = memo(() => {
     )
   }, [StepComponent])
 
+  // const media = useMedia()
+  // useEffect(() => {
+  //   if (!ref) return
+  //   if (!isClient) return
+  //   if (media.md) return
+
+  //   let dispose: (() => void) | undefined = undefined
+  //   let disposed = false
+
+  //   import('../../helpers/sticksy').then(({ Sticksy }) => {
+  //     if (disposed) {
+  //       return
+  //     }
+
+  //     new Sticksy(ref.current as any)
+
+  //     dispose = () => {
+  //       Sticksy.disableAll()
+  //     }
+  //   })
+
+  //   return () => {
+  //     disposed = true
+  //     dispose?.()
+  //   }
+  // }, [ref, media.gtMd])
+
   return (
     <YStack
       pos={'fixed' as any}
-      animation="quicker"
+      animation="kindaBouncy"
+      animateOnly={['transform']}
+      ref={ref}
       x={0}
       t={80}
       r={0}
@@ -120,8 +188,10 @@ const ThemeBuilderModal = memo(() => {
       w={550}
       elevation="$5"
       btlr="$6"
+      bblr="$6"
       ov="hidden"
       bw={0.5}
+      mah="90vh"
       bc="$color6"
       zi={100_000}
       bg="$color2"

@@ -21,7 +21,7 @@ import { BentoIcon } from '~/features/icons/BentoIcon'
 import { DiscordIcon } from '~/features/icons/DiscordIcon'
 import { TakeoutIcon } from '~/features/icons/TakeoutIcon'
 import { TwitterIcon } from '~/features/icons/TwitterIcon'
-import { seasons } from '~/features/site/seasons/SeasonToggleButton'
+import { seasons } from '~/features/site/seasons/SeasonTogglePopover'
 
 import { InstallInput } from './InstallInput'
 import { useHeroHovered } from './useHeroHovered'

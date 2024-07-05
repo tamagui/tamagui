@@ -48,7 +48,7 @@ import { PurchaseModal } from '~/features/site/purchase/PurchaseModal'
 import { MunroP, PurchaseButton, isSafariMobile } from '~/features/site/purchase/helpers'
 import { getProductsForServerSideRendering } from '~/features/site/purchase/server-helpers'
 import { useTakeoutStore } from '~/features/site/purchase/useTakeoutStore'
-import { seasons } from '~/features/site/seasons/SeasonToggleButton'
+import { seasons } from '~/features/site/seasons/SeasonTogglePopover'
 import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
 import { TakeoutLogo } from '~/features/takeout/TakeoutLogo'
 
@@ -1032,11 +1032,11 @@ const IconFrame = styled(Stack, {
 })
 
 const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] }) => {
-  const media = useMedia()
   const [ref, setRef] = useState<any>()
 
   const store = useTakeoutStore()
 
+  const media = useMedia()
   useEffect(() => {
     if (!ref) return
     if (!isClient) return

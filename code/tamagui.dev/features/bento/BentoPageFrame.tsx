@@ -19,7 +19,7 @@ const Wave = () => {
       zi={1}
       style={{
         mixBlendMode: 'color-burn',
-        filter: 'blur(2px)',
+        // filter: 'blur(2px)',
         mask: `linear-gradient(black 80%, transparent)`,
       }}
     >
@@ -71,7 +71,7 @@ export const BentoPageFrame = ({
               className="grain"
               fullscreen
               o={0.5}
-              zi={100}
+              zi={0}
               $theme-light={{
                 o: 0.75,
               }}
@@ -83,6 +83,7 @@ export const BentoPageFrame = ({
 
             <YStack
               fullscreen
+              contain="strict"
               mah={1000}
               className="mask-gradient-down"
               style={{

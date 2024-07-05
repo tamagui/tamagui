@@ -1,5 +1,25 @@
-import { ThemeTintAlt, ThemeTint } from '@tamagui/logo'
-import { H1, YStack, useThemeName } from 'tamagui'
+import { useTint } from '@tamagui/logo'
+import { H1, type ThemeProps, YStack, Theme } from 'tamagui'
+
+const offsetAdjust = 1
+
+export const BentoLogoTheme = ({
+  children,
+  disable,
+  offset = 1,
+  ...rest
+}: ThemeProps & {
+  disable?: boolean
+  offset?: number
+}) => {
+  const curTint = useTint(offset).tintAlt
+  const name = disable ? null : curTint
+  return (
+    <Theme name={name === 'purple' ? 'yellow' : name} {...rest}>
+      {children}
+    </Theme>
+  )
+}
 
 export const BentoLogo = ({
   children = 'BENTO',
@@ -11,7 +31,7 @@ export const BentoLogo = ({
     <YStack
       pe="none"
       h={200}
-      w={600}
+      w={650}
       my={-(1 - scale) * 100}
       mx={-(1 - scale) * 270}
       scale={scale}
@@ -19,7 +39,7 @@ export const BentoLogo = ({
         backgroundColor: '$background',
       })}
     >
-      <ThemeTintAlt offset={-1}>
+      <BentoLogoTheme offset={-1 + offsetAdjust}>
         <H1
           componentName="span"
           ff="$cherryBomb"
@@ -28,7 +48,7 @@ export const BentoLogo = ({
           whiteSpace="pre"
           color="$color1"
           $theme-dark={{
-            color: '$color7',
+            color: '$color8',
           }}
           maw="100%"
           f={1}
@@ -43,7 +63,9 @@ export const BentoLogo = ({
         >
           {children}&nbsp;
         </H1>
+      </BentoLogoTheme>
 
+      <BentoLogoTheme offset={-1 + offsetAdjust}>
         <H1
           // o={0}
           pos="absolute"
@@ -60,6 +82,9 @@ export const BentoLogo = ({
           f={1}
           ls={-21}
           lh={280}
+          $theme-dark={{
+            opacity: 0.5,
+          }}
           my={-45}
           fos={198}
           ussel="none"
@@ -74,9 +99,9 @@ export const BentoLogo = ({
         >
           {children}&nbsp;
         </H1>
-      </ThemeTintAlt>
+      </BentoLogoTheme>
 
-      <ThemeTintAlt offset={-2}>
+      <BentoLogoTheme offset={-2 + offsetAdjust}>
         <H1
           pos="absolute"
           t={0}
@@ -99,9 +124,9 @@ export const BentoLogo = ({
         >
           {children}&nbsp;
         </H1>
-      </ThemeTintAlt>
+      </BentoLogoTheme>
 
-      <ThemeTintAlt>
+      <BentoLogoTheme offset={-2 + offsetAdjust}>
         {!noShadow && (
           <H1
             className={`glow-shadow mask-gradient-up`}
@@ -113,6 +138,9 @@ export const BentoLogo = ({
             px="$3"
             mx="$-3"
             whiteSpace="pre"
+            $theme-dark={{
+              opacity: 0,
+            }}
             color="$color8"
             maw="100%"
             f={1}
@@ -123,15 +151,48 @@ export const BentoLogo = ({
             ussel="none"
             pe="none"
             style={{
-              filter: noShadow ? '' : 'blur(7px)',
+              filter: noShadow ? '' : 'blur(2px)',
             }}
           >
             {children}&nbsp;
           </H1>
         )}
-      </ThemeTintAlt>
+      </BentoLogoTheme>
 
-      <ThemeTintAlt offset={-2}>
+      <BentoLogoTheme offset={1 + offsetAdjust}>
+        {!noShadow && (
+          <H1
+            className={`glow-shadow mask-gradient-up`}
+            pos="absolute"
+            t={0}
+            l={0}
+            zi={1100}
+            ff="$cherryBomb"
+            px="$3"
+            mx="$-3"
+            whiteSpace="pre"
+            $theme-light={{
+              opacity: 0,
+            }}
+            color="$color8"
+            maw="100%"
+            f={1}
+            ls={-21}
+            lh={280}
+            my={-45}
+            fos={198}
+            ussel="none"
+            pe="none"
+            style={{
+              filter: noShadow ? '' : 'blur(2px)',
+            }}
+          >
+            {children}&nbsp;
+          </H1>
+        )}
+      </BentoLogoTheme>
+
+      <BentoLogoTheme offset={-2 + offsetAdjust}>
         <H1
           pos="absolute"
           t={0}
@@ -159,7 +220,7 @@ export const BentoLogo = ({
         >
           {children}&nbsp;
         </H1>
-      </ThemeTintAlt>
+      </BentoLogoTheme>
     </YStack>
   )
 }

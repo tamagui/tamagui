@@ -50,6 +50,23 @@ import type {
   SliderVerticalProps,
 } from './types'
 
+const activeSliderMeasureListeners = new Set<Function>()
+
+// run an interval on web as using translate can move things at any moment
+// without triggering layout or intersection observers
+
+if (isWeb && isClient) {
+  if (!process.env.TAMAGUI_DISABLE_SLIDER_INTERVAL) {
+    setInterval?.(
+      () => {
+        activeSliderMeasureListeners.forEach((cb) => cb())
+      },
+      // really doesn't need to be super often
+      1000
+    )
+  }
+}
+
 /* -------------------------------------------------------------------------------------------------
  * SliderHorizontal
  * -----------------------------------------------------------------------------------------------*/
@@ -97,17 +114,33 @@ const SliderHorizontal = React.forwardRef<View, SliderHorizontalProps>(
         if (!node) return
 
         let measureTm
-
-        const io = new IntersectionObserver(() => {
+        const debouncedMeasure = () => {
           clearTimeout(measureTm)
           measureTm = setTimeout(() => {
             measure()
           }, 200)
-        })
+        }
+
+        const io = new IntersectionObserver(
+          (entries) => {
+            debouncedMeasure()
+            if (entries?.[0].isIntersecting) {
+              activeSliderMeasureListeners.add(debouncedMeasure)
+            } else {
+              activeSliderMeasureListeners.delete(debouncedMeasure)
+            }
+          },
+          {
+            root: null, // Use the viewport as the container.
+            rootMargin: '0px',
+            threshold: [0, 0.5, 1.0],
+          }
+        )
 
         io.observe(node)
 
         return () => {
+          activeSliderMeasureListeners.delete(debouncedMeasure)
           io.disconnect()
         }
       }, [])

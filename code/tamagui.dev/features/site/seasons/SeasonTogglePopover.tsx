@@ -1,6 +1,5 @@
 import { TamaguiLogo, setTintFamily, useTint } from '@tamagui/logo'
-import type { ButtonProps } from 'tamagui'
-import { Button, Circle, Popover, SizableText, Square, YStack } from 'tamagui'
+import { Popover, SizableText, Square, View, YStack } from 'tamagui'
 
 export const seasons = {
   tamagui: <TamaguiLogo downscale={2} />,
@@ -11,34 +10,21 @@ export const seasons = {
   halloween: '🎃',
 }
 
-export const SeasonToggleButton = (props: ButtonProps) => {
+export const SeasonTogglePopover = (props: { children: any }) => {
   const { name, tint, setNextTint } = useTint()
 
   return (
-    <Popover hoverable>
+    <Popover hoverable offset={20}>
       <Popover.Trigger>
-        <Button
-          size="$3"
-          w={38}
-          onPress={(e) => {
-            setNextTint()
-            e.stopPropagation()
-          }}
-          {...props}
-          aria-label="Toggle theme"
-          ov="visible"
-          hoverStyle={{
-            bg: 'rgba(0,0,0,0.15)',
-          }}
-        >
-          <Circle borderColor="$color9" borderWidth={1} o={0.85} m={2} size={12} />
+        <View>
+          {props.children}
 
           {name !== 'tamagui' && (
             <SizableText size="$8" pos="absolute" b={-10} r={-10} rotate="-10deg">
               {seasons[name]}
             </SizableText>
           )}
-        </Button>
+        </View>
       </Popover.Trigger>
 
       <Popover.Content

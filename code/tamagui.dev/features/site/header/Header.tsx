@@ -1,26 +1,16 @@
 import { LogoWords, TamaguiLogo, ThemeTint, useTint } from '@tamagui/logo'
 import * as React from 'react'
-import {
-  SizableText,
-  Text,
-  TooltipGroup,
-  TooltipSimple,
-  VisuallyHidden,
-  XGroup,
-  XStack,
-  YStack,
-  isClient,
-} from 'tamagui'
+import { SizableText, TooltipGroup, XGroup, XStack, YStack, isClient } from 'tamagui'
 import { usePathname } from 'vxs'
 import { ContainerLarge } from '~/components/Containers'
 import { Link } from '~/components/Link'
 import { GithubIcon } from '~/features/icons/GithubIcon'
-import { SeasonToggleButton } from '~/features/site/seasons/SeasonToggleButton'
 import { ThemeToggle } from '~/features/site/theme/ThemeToggle'
 import { HeaderLinks } from './HeaderLinks'
 import { HeaderMenu } from './HeaderMenu'
 import { SearchButton } from './SearchButton'
 import type { HeaderProps } from './types'
+import { SeasonTogglePopover } from '~/features/site/seasons/SeasonTogglePopover'
 
 export function Header(props: HeaderProps) {
   const [isScrolled, setIsScrolled] = React.useState(false)
@@ -153,29 +143,28 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
       {!props.minimal && (
         <XStack ai="center" gap="$4">
           <Link href="/">
-            <YStack
-              px="$2"
-              cur="pointer"
-              o={1}
-              {...(isHome && {
-                // o: 0.25,
-                onPress(e) {
-                  e.preventDefault()
-                  tint.setNextTint()
-                },
-              })}
-            >
-              <TamaguiLogo downscale={props.floating ? 2 : 1.5} />
-            </YStack>
+            <SeasonTogglePopover>
+              <YStack
+                px="$2"
+                cur="pointer"
+                o={1}
+                {...(isHome && {
+                  // o: 0.25,
+                  onPress(e) {
+                    e.preventDefault()
+                    tint.setNextTint()
+                  },
+                })}
+              >
+                <TamaguiLogo downscale={props.floating ? 2 : 1.5} />
+              </YStack>
+            </SeasonTogglePopover>
           </Link>
 
           <TooltipGroup delay={tooltipDelay}>
             <XGroup mah={32} bc="transparent" ai="center" size="$4">
               <XGroup.Item>
                 <ThemeToggle borderWidth={0} chromeless />
-              </XGroup.Item>
-              <XGroup.Item>
-                <SeasonToggleButton borderWidth={0} chromeless />
               </XGroup.Item>
             </XGroup>
           </TooltipGroup>
