@@ -10,7 +10,7 @@ export function apiRoute(handler: Endpoint) {
 
       if (
         out instanceof Response &&
-        (out.status <= 200 || out.status >= 400) &&
+        (out.status < 200 || out.status >= 400) &&
         out.body
       ) {
         try {
