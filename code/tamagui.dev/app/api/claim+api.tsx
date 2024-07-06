@@ -94,6 +94,7 @@ export default apiRoute(async (req) => {
             return handleClaimResponse(claimData)
           } catch (error) {
             if (error instanceof ClaimError) {
+              console.error(`Error processing claim`, error.message)
               return Response.json({ message: error.message }, { status: 400 })
             }
             console.error(`Claim: claim failed. error message: ${error}`)

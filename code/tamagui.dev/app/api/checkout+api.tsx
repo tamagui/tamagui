@@ -60,6 +60,8 @@ export const GET = apiRoute(async (req) => {
     throw new Error(`Something went wrong with createOrRetrieveCustomer.`)
   }
 
+  console.info(`Creating stripe session for checkout`)
+
   // if stripe customer doesn't exist, create one and insert it into supabase
   const stripeSession = await stripe.checkout.sessions.create({
     line_items: products.data.map((product) => {
@@ -98,6 +100,10 @@ export const GET = apiRoute(async (req) => {
       },
     },
   })
+
+  console.info(
+    `Stripe checkout, redirect: ${stripeSession.url}\n  internal url ${getURL()}`
+  )
 
   if (stripeSession.url) {
     return Response.redirect(stripeSession.url)

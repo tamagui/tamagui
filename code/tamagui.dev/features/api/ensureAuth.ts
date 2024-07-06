@@ -48,20 +48,26 @@ export const ensureAuth = async ({
     .eq('id', user.id)
     .single()
 
+  console.info(
+    `Authed user: ${userPrivate.data?.github_user_name} / ${user.user_metadata.user_name}`
+  )
+
   if (!userPrivate.data?.email || !userPrivate.data.github_user_name) {
     const updateData = {
+      id: user.id,
       email: user.email,
       full_name: user.user_metadata.full_name,
       github_refresh_token: user.user_metadata.github_refresh_token,
       github_user_name: user.user_metadata.user_name,
     }
 
+    console.info(`Inserting new`, updateData)
+
     // fill in info
     const result = await supabase
       .from('users_private')
-      .update(updateData)
+      .upsert(updateData)
       .eq('id', user.id)
-      .select('*')
 
     if (result.error) {
       console.error(`Error updating user metadata`, result.error)

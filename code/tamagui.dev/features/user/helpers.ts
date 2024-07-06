@@ -26,6 +26,8 @@ export const getUserPrivateInfo = async (userId: string) => {
     .eq('id', userId)
     .limit(1)
 
+  console.info(`Got user private info`, userId, result)
+
   if (result.error) {
     throw new Error(`Error getting user private info: ${result.error.message}`)
   }

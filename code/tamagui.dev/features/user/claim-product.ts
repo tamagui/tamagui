@@ -98,6 +98,8 @@ const claimRepositoryAccess: ClaimFunction = async ({ user, metadata, request })
 
   const userPrivate = await getUserPrivateInfo(user.id)
 
+  console.info(`Claim: got github username`, userPrivate.github_user_name)
+
   if (!userPrivate.github_user_name) {
     throw new ClaimError(
       "We weren't able to find your GitHub username. Please logout of your account, login and try again. If this kept occurring, contact support@tamagui.dev or get help on Discord."
@@ -106,6 +108,8 @@ const claimRepositoryAccess: ClaimFunction = async ({ user, metadata, request })
 
   try {
     await inviteCollaboratorToRepo(repoName, userPrivate.github_user_name, permission)
+
+    console.info(`Invited successfully`)
 
     return {
       data: {
