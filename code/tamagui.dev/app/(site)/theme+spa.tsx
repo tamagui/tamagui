@@ -1,22 +1,22 @@
 import { ChevronLeft, ChevronRight } from '@tamagui/lucide-icons'
 import type { TamaguiElement } from '@tamagui/web'
-import { memo, startTransition, useEffect, useMemo, useRef, useState } from 'react'
+import { memo, useEffect, useMemo, useRef, useState } from 'react'
 import { useHotkeys } from 'react-hotkeys-hook'
 import {
   AnimatePresence,
   Button,
   ScrollView,
   Separator,
-  SizableText,
   Spacer,
   Theme,
   XStack,
   YStack,
   styled,
+  useThemeName,
 } from 'tamagui'
 
-import { StudioStepTip } from '~/features/studio/StudioStepTip'
 import { StudioPreviewComponents } from '~/features/studio/theme/StudioPreviewComponents'
+import { StudioPreviewComponentsBar } from '~/features/studio/theme/StudioPreviewComponentsBar'
 import { useBaseThemePreview } from '~/features/studio/theme/steps/2-base/useBaseThemePreview'
 import { steps } from '~/features/studio/theme/steps/steps'
 import {
@@ -32,8 +32,8 @@ export function loader() {}
 
 export default memo(function StudioTheme() {
   const [loaded, setLoaded] = useState(false)
-
   const store = useThemeBuilderStore()
+  const themeName = useThemeName()
 
   useEffect(() => {
     store.load().then(() => {
@@ -43,6 +43,7 @@ export default memo(function StudioTheme() {
 
   return (
     <ScrollView
+      mt={-60}
       width="100%"
       contentContainerStyle={{
         flex: 1,
@@ -51,9 +52,13 @@ export default memo(function StudioTheme() {
       showsHorizontalScrollIndicator={false}
     >
       {loaded && <ThemeBuilderModal />}
-      <PreviewTheme key={`${loaded}`}>
-        <Preview />
-      </PreviewTheme>
+
+      <YStack f={1}>
+        <PreviewTheme key={`${loaded}${themeName}`}>
+          <StudioPreviewComponentsBar scrollView={document.documentElement} />
+          <StudioPreviewComponents />
+        </PreviewTheme>
+      </YStack>
     </ScrollView>
   )
 })
@@ -62,35 +67,13 @@ const PreviewTheme = (props: { children: any }) => {
   const { name: baseStepThemeName } = useBaseThemePreview()
 
   return (
-    <Theme forceClassName name={baseStepThemeName}>
-      <YStack bg="$background" f={1}>
+    <Theme key={baseStepThemeName} forceClassName name={baseStepThemeName}>
+      <YStack bg="$background" f={1} pt={60}>
         {props.children}
       </YStack>
     </Theme>
   )
 }
-
-const Preview = memo(() => {
-  const store = useThemeBuilderStore()
-  const [shown, setShown] = useState(false)
-  const { currentSection, themeSuite } = store
-
-  useEffect(() => {
-    startTransition(() => {
-      setShown(true)
-    })
-  }, [])
-
-  if (!currentSection) {
-    return null
-  }
-
-  return (
-    <Theme forceClassName name={(themeSuite?.baseTheme.name as any) || null}>
-      <StudioPreviewComponents />
-    </Theme>
-  )
-})
 
 const Empty = () => null
 
@@ -100,52 +83,14 @@ const ThemeBuilderModal = memo(() => {
   const StepComponent = currentSection?.children ?? Empty
   const ref = useRef<TamaguiElement>(null)
 
-  const contents = useMemo(() => {
-    return (
-      <ScrollView flex={1} contentContainerStyle={{ flex: 1 }}>
-        <YStack f={1} px="$5">
-          {/* @ts-ignore */}
-          <StepComponent />
-        </YStack>
-      </ScrollView>
-    )
-  }, [StepComponent])
-
-  // const media = useMedia()
-  // useEffect(() => {
-  //   if (!ref) return
-  //   if (!isClient) return
-  //   if (media.md) return
-
-  //   let dispose: (() => void) | undefined = undefined
-  //   let disposed = false
-
-  //   import('../../helpers/sticksy').then(({ Sticksy }) => {
-  //     if (disposed) {
-  //       return
-  //     }
-
-  //     new Sticksy(ref.current as any)
-
-  //     dispose = () => {
-  //       Sticksy.disableAll()
-  //     }
-  //   })
-
-  //   return () => {
-  //     disposed = true
-  //     dispose?.()
-  //   }
-  // }, [ref, media.gtMd])
-
   return (
     <YStack
       pos={'fixed' as any}
-      animation="kindaBouncy"
+      animation="medium"
       animateOnly={['transform']}
       ref={ref}
       x={0}
-      t={30}
+      t={90}
       r={0}
       b={0}
       w={550}
@@ -162,87 +107,24 @@ const ThemeBuilderModal = memo(() => {
         x: 500,
       }}
     >
-      <XStack
-        px="$4"
-        py="$3"
-        gap="$2"
-        bbw="$0.5"
-        bc="$borderColor"
-        bg="$color2"
-        data-tauri-drag-region
-      >
-        {sectionTitles.map((title, idx) => {
-          const isActive = idx + 1 <= currentSection.sectionIdx
-          const isLastActive = idx === currentSection.sectionIdx
-          const disabled = !isActive && (!store.canGoForward || store.disableForward)
-          return (
-            <XStack
-              overflow="hidden"
-              flex={isLastActive ? 1 : 0}
-              key={idx}
-              width={24}
-              height={24}
-              gap="$4"
-              ai="center"
-              data-tauri-drag-region
-              pr="$2"
-            >
-              <YStack
-                opacity={isLastActive ? 1 : 0.5}
-                h={24}
-                w={24}
-                br={100}
-                ai="center"
-                jc="center"
-                bg="$color2"
-                borderColor="$borderColor"
-                bw="$0.5"
-                cursor={disabled ? 'not-allowed' : 'pointer'}
-                onPress={() => {
-                  store.setStep(
-                    store.sectionsFlat.findIndex((step) => step.sectionIdx === idx)
-                  )
-                }}
-                tag="button"
-                disabled={disabled}
-                focusStyle={{
-                  backgroundColor: '$backgroundFocus',
-                  borderColor: '$backgroundFocus',
-                }}
-              >
-                <SizableText userSelect="none" size="$2">
-                  {idx + 1}
-                </SizableText>
-              </YStack>
-
-              <SizableText
-                ff="$mono"
-                o={0.5}
-                tt="uppercase"
-                ls={3}
-                pe="none"
-                userSelect="none"
-              >
-                {title}
-              </SizableText>
-            </XStack>
-          )
-        })}
-
-        <StudioStepTip />
-      </XStack>
-
-      {/* content */}
       <YStack gap="$4" separator={<Separator bw={1} />} f={1}>
         <AnimatePresence exitBeforeEnter custom={{ going: store.direction }}>
           <Section
             f={1}
-            animation="200ms"
-            // debug="verbose"
+            animation="75ms"
             animateOnly={['transform', 'opacity']}
             key={weakKey(StepComponent)}
           >
-            {contents}
+            {useMemo(() => {
+              return (
+                <ScrollView flex={1} contentContainerStyle={{ flex: 1 }}>
+                  <YStack f={1}>
+                    {/* @ts-ignore */}
+                    <StepComponent />
+                  </YStack>
+                </ScrollView>
+              )
+            }, [StepComponent])}
           </Section>
         </AnimatePresence>
       </YStack>

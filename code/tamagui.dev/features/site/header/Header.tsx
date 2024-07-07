@@ -200,7 +200,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
 
       <XStack
         position="absolute"
-        $sm={{
+        $md={{
           opacity: 0,
           pointerEvents: 'none',
         }}

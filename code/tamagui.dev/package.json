@@ -28,6 +28,7 @@
     "@tamagui/assert": "1.101.7",
     "@tamagui/bento": "1.101.7",
     "@tamagui/demos": "1.101.7",
+    "@tamagui/get-token": "1.101.7",
     "@tamagui/image-next": "1.101.7",
     "@tamagui/logo": "1.101.7",
     "@tamagui/lucide-icons": "1.101.7",

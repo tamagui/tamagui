@@ -103,7 +103,7 @@ export const HeaderLinks = (props: HeaderProps) => {
         </HeadAnchor>
       </Link>
 
-      {/* <Link asChild href="/theme">
+      <Link asChild href="/theme">
         <HeadAnchor
           // half={forceShowAllLinks}
           grid={forceShowAllLinks}
@@ -113,7 +113,7 @@ export const HeaderLinks = (props: HeaderProps) => {
         >
           Theme
         </HeadAnchor>
-      </Link> */}
+      </Link>
     </>
   )
 

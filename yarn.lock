@@ -6398,6 +6398,7 @@ __metadata:
     "@tamagui/bento": "npm:1.101.7"
     "@tamagui/cli": "npm:1.101.7"
     "@tamagui/demos": "npm:1.101.7"
+    "@tamagui/get-token": "npm:1.101.7"
     "@tamagui/image-next": "npm:1.101.7"
     "@tamagui/logo": "npm:1.101.7"
     "@tamagui/lucide-icons": "npm:1.101.7"
