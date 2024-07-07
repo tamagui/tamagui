@@ -41,10 +41,6 @@ export default memo(function StudioTheme() {
     })
   }, [])
 
-  if (!loaded) {
-    return <YStack mih="100vh" w={10} />
-  }
-
   return (
     <ScrollView
       width="100%"
@@ -54,8 +50,8 @@ export default memo(function StudioTheme() {
       horizontal
       showsHorizontalScrollIndicator={false}
     >
-      <ThemeBuilderModal />
-      <PreviewTheme>
+      {loaded && <ThemeBuilderModal />}
+      <PreviewTheme key={`${loaded}`}>
         <Preview />
       </PreviewTheme>
     </ScrollView>
@@ -64,7 +60,6 @@ export default memo(function StudioTheme() {
 
 const PreviewTheme = (props: { children: any }) => {
   const { name: baseStepThemeName } = useBaseThemePreview()
-  console.info('baseStepThemeName', baseStepThemeName)
 
   return (
     <Theme forceClassName name={baseStepThemeName}>
