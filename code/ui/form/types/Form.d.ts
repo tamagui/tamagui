@@ -5,7 +5,7 @@ type ScopedProps<P> = P & {
     __scopeForm?: Scope;
 };
 type FormContextValue = {
-    onSubmit: () => unknown;
+    onSubmit?: () => unknown;
 };
 export declare const FormProvider: {
     (props: FormContextValue & {
@@ -18,7 +18,7 @@ export declare const FormProvider: {
     fallback?: Partial<FormContextValue> | undefined;
 } | undefined) => FormContextValue;
 export type FormProps = StackProps & {
-    onSubmit: () => void;
+    onSubmit?: () => void;
 };
 export interface FormTriggerProps extends StackProps {
 }

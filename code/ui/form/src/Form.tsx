@@ -19,14 +19,14 @@ type ScopedProps<P> = P & { __scopeForm?: Scope }
 const [createFormContext] = createContextScope(FORM_NAME)
 
 type FormContextValue = {
-  onSubmit: () => unknown
+  onSubmit?: () => unknown
 }
 
 export const [FormProvider, useFormContext] =
   createFormContext<FormContextValue>(FORM_NAME)
 
 export type FormProps = StackProps & {
-  onSubmit: () => void
+  onSubmit?: () => void
 }
 
 /* -------------------------------------------------------------------------------------------------
