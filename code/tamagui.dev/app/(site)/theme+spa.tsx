@@ -1,6 +1,6 @@
 import { ChevronLeft, ChevronRight } from '@tamagui/lucide-icons'
-import { TamaguiElement, View } from '@tamagui/web'
-import { FC, memo, startTransition, useEffect, useMemo, useRef, useState } from 'react'
+import type { TamaguiElement } from '@tamagui/web'
+import { memo, startTransition, useEffect, useMemo, useRef, useState } from 'react'
 import { useHotkeys } from 'react-hotkeys-hook'
 import {
   AnimatePresence,
@@ -12,10 +12,7 @@ import {
   Theme,
   XStack,
   YStack,
-  isClient,
   styled,
-  useIsomorphicLayoutEffect,
-  useMedia,
 } from 'tamagui'
 
 import { StudioStepTip } from '~/features/studio/StudioStepTip'
@@ -29,55 +26,24 @@ import {
 import { weakKey } from '~/helpers/weakKey'
 // import { StudioPreviewFrame } from './views/StudioPreviewFrame'
 
-let lastLoadThemeId = ''
-export async function loadTheme(params) {
-  if (!params.themeId) return
-  if (params.themeId === lastLoadThemeId) return
-  lastLoadThemeId = params.themeId
-  themeBuilderStore.setThemeSuiteId(params.themeId)
-}
-
 themeBuilderStore.setSteps(steps)
 
 export function loader() {}
 
-const step = 0
-
 export default memo(function StudioTheme() {
-  // const missing = !useThemeBuilderStore().themeSuiteId
-  // TODO just insert new on missing
-  // const notFound = !themeId || missing
-  // useEffect(() => {
-  //   if (notFound) {
-  //     navigate('/', { replace: true })
-  //   }
-  // }, [notFound])
+  const [loaded, setLoaded] = useState(false)
 
   const store = useThemeBuilderStore()
 
   useEffect(() => {
-    store.load()
+    store.load().then(() => {
+      setLoaded(true)
+    })
   }, [])
 
-  // yucky two way sync here
-  useIsomorphicLayoutEffect(() => {
-    if (typeof step !== 'number') {
-      console.warn(`NO STEP?????`)
-      return
-    }
-    const numStep = Number(step)
-    if (numStep !== store.step) {
-      store.setStep(numStep)
-    }
-  }, [step])
-
-  // // yucky two way sync here
-  // useEffect(() => {
-  //   if (!store.hasSetStepOnce) return
-  //   if (step !== `${store.step}`) {
-  //     router.replace(`/builder/${themeId}/${store.step}`)
-  //   }
-  // }, [store.step])
+  if (!loaded) {
+    return <YStack mih="100vh" w={10} />
+  }
 
   return (
     <ScrollView
@@ -102,7 +68,9 @@ const PreviewTheme = (props: { children: any }) => {
 
   return (
     <Theme forceClassName name={baseStepThemeName}>
-      {props.children}
+      <YStack bg="$background" f={1}>
+        {props.children}
+      </YStack>
     </Theme>
   )
 }
@@ -182,7 +150,7 @@ const ThemeBuilderModal = memo(() => {
       animateOnly={['transform']}
       ref={ref}
       x={0}
-      t={80}
+      t={30}
       r={0}
       b={0}
       w={550}

@@ -48,10 +48,6 @@ export const ensureAuth = async ({
     .eq('id', user.id)
     .single()
 
-  console.info(
-    `Authed user: ${userPrivate.data?.github_user_name} / ${user.user_metadata.user_name}`
-  )
-
   if (!userPrivate.data?.email || !userPrivate.data.github_user_name) {
     const updateData = {
       id: user.id,
