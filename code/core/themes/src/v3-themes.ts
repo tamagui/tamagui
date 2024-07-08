@@ -106,7 +106,7 @@ const color = {
   ...postfixObjKeys(darkColors, 'Dark'),
 }
 
-export const palettes = (() => {
+export const defaultPalettes = (() => {
   const transparent = (hsl: string, opacity = 0) =>
     hsl.replace(`%)`, `%, ${opacity})`).replace(`hsl(`, `hsla(`)
 
@@ -233,180 +233,185 @@ export const palettes = (() => {
   }
 })()
 
-export const getTemplates = (scheme: 'dark' | 'light') => {
-  const isLight = scheme === 'light'
+const getTemplates = () => {
+  const getBaseTemplates = (scheme: 'dark' | 'light') => {
+    const isLight = scheme === 'light'
 
-  // our palettes have 4 things padding each end until you get to bg/color:
-  // [accentBg, transparent1, transparent2, transparent3, transparent4, background, ...]
-  const bgIndex = 5
-  const lighten = isLight ? -1 : 1
-  const darken = -lighten
-  const borderColor = bgIndex + 3
+    // our palettes have 4 things padding each end until you get to bg/color:
+    // [accentBg, transparent1, transparent2, transparent3, transparent4, background, ...]
+    const bgIndex = 5
+    const lighten = isLight ? -1 : 1
+    const darken = -lighten
+    const borderColor = bgIndex + 3
 
-  // templates use the palette and specify index
-  // negative goes backwards from end so -1 is the last item
-  const base = {
-    accentBackground: 0,
-    accentColor: -0,
+    // templates use the palette and specify index
+    // negative goes backwards from end so -1 is the last item
+    const base = {
+      accentBackground: 0,
+      accentColor: -0,
 
-    background0: 1,
-    background025: 2,
-    background05: 3,
-    background075: 4,
-    color1: bgIndex,
-    color2: bgIndex + 1,
-    color3: bgIndex + 2,
-    color4: bgIndex + 3,
-    color5: bgIndex + 4,
-    color6: bgIndex + 5,
-    color7: bgIndex + 6,
-    color8: bgIndex + 7,
-    color9: bgIndex + 8,
-    color10: bgIndex + 9,
-    color11: bgIndex + 10,
-    color12: bgIndex + 11,
-    color0: -1,
-    color025: -2,
-    color05: -3,
-    color075: -4,
-    // the background, color, etc keys here work like generics - they make it so you
-    // can publish components for others to use without mandating a specific color scale
-    // the @tamagui/button Button component looks for `$background`, so you set the
-    // dark_red_Button theme to have a stronger background than the dark_red theme.
-    background: bgIndex,
-    backgroundHover: bgIndex + lighten, // always lighten on hover no matter the scheme
-    backgroundPress: bgIndex + darken, // always darken on press no matter the theme
-    backgroundFocus: bgIndex + darken,
-    borderColor,
-    borderColorHover: borderColor + lighten,
-    borderColorPress: borderColor + darken,
-    borderColorFocus: borderColor,
-    color: -bgIndex,
-    colorHover: -bgIndex - 1,
-    colorPress: -bgIndex,
-    colorFocus: -bgIndex - 1,
-    colorTransparent: -1,
-    placeholderColor: -bgIndex - 3,
-    outlineColor: -2,
+      background0: 1,
+      background025: 2,
+      background05: 3,
+      background075: 4,
+      color1: bgIndex,
+      color2: bgIndex + 1,
+      color3: bgIndex + 2,
+      color4: bgIndex + 3,
+      color5: bgIndex + 4,
+      color6: bgIndex + 5,
+      color7: bgIndex + 6,
+      color8: bgIndex + 7,
+      color9: bgIndex + 8,
+      color10: bgIndex + 9,
+      color11: bgIndex + 10,
+      color12: bgIndex + 11,
+      color0: -1,
+      color025: -2,
+      color05: -3,
+      color075: -4,
+      // the background, color, etc keys here work like generics - they make it so you
+      // can publish components for others to use without mandating a specific color scale
+      // the @tamagui/button Button component looks for `$background`, so you set the
+      // dark_red_Button theme to have a stronger background than the dark_red theme.
+      background: bgIndex,
+      backgroundHover: bgIndex + lighten, // always lighten on hover no matter the scheme
+      backgroundPress: bgIndex + darken, // always darken on press no matter the theme
+      backgroundFocus: bgIndex + darken,
+      borderColor,
+      borderColorHover: borderColor + lighten,
+      borderColorPress: borderColor + darken,
+      borderColorFocus: borderColor,
+      color: -bgIndex,
+      colorHover: -bgIndex - 1,
+      colorPress: -bgIndex,
+      colorFocus: -bgIndex - 1,
+      colorTransparent: -1,
+      placeholderColor: -bgIndex - 3,
+      outlineColor: -2,
+    }
+
+    const surface1 = {
+      background: base.background + 1,
+      backgroundHover: base.backgroundHover + 1,
+      backgroundPress: base.backgroundPress + 1,
+      backgroundFocus: base.backgroundFocus + 1,
+      borderColor: base.borderColor + 1,
+      borderColorHover: base.borderColorHover + 1,
+      borderColorFocus: base.borderColorFocus + 1,
+      borderColorPress: base.borderColorPress + 1,
+    }
+
+    const surface2 = {
+      background: base.background + 2,
+      backgroundHover: base.backgroundHover + 2,
+      backgroundPress: base.backgroundPress + 2,
+      backgroundFocus: base.backgroundFocus + 2,
+      borderColor: base.borderColor + 2,
+      borderColorHover: base.borderColorHover + 2,
+      borderColorFocus: base.borderColorFocus + 2,
+      borderColorPress: base.borderColorPress + 2,
+    }
+
+    const surface3 = {
+      background: base.background + 3,
+      backgroundHover: base.backgroundHover + 3,
+      backgroundPress: base.backgroundPress + 3,
+      backgroundFocus: base.backgroundFocus + 3,
+      borderColor: base.borderColor + 3,
+      borderColorHover: base.borderColorHover + 3,
+      borderColorFocus: base.borderColorFocus + 3,
+      borderColorPress: base.borderColorPress + 3,
+    }
+
+    const surfaceActiveBg = {
+      background: base.background + 5,
+      backgroundHover: base.background + 5,
+      backgroundPress: base.backgroundPress + 5,
+      backgroundFocus: base.backgroundFocus + 5,
+    }
+
+    const surfaceActive = {
+      ...surfaceActiveBg,
+      // match border to background when active
+      borderColor: surfaceActiveBg.background,
+      borderColorHover: surfaceActiveBg.backgroundHover,
+      borderColorFocus: surfaceActiveBg.backgroundFocus,
+      borderColorPress: surfaceActiveBg.backgroundPress,
+    }
+
+    const inverseSurface1 = {
+      color: surface1.background,
+      colorHover: surface1.backgroundHover,
+      colorPress: surface1.backgroundPress,
+      colorFocus: surface1.backgroundFocus,
+      background: base.color,
+      backgroundHover: base.colorHover,
+      backgroundPress: base.colorPress,
+      backgroundFocus: base.colorFocus,
+      borderColor: base.color - 2,
+      borderColorHover: base.color - 3,
+      borderColorFocus: base.color - 4,
+      borderColorPress: base.color - 5,
+    }
+
+    const inverseActive = {
+      ...inverseSurface1,
+      background: base.color - 2,
+      backgroundHover: base.colorHover - 2,
+      backgroundPress: base.colorPress - 2,
+      backgroundFocus: base.colorFocus - 2,
+      borderColor: base.color - 2 - 2,
+      borderColorHover: base.color - 3 - 2,
+      borderColorFocus: base.color - 4 - 2,
+      borderColorPress: base.color - 5 - 2,
+    }
+
+    const alt1 = {
+      color: base.color - 1,
+      colorHover: base.colorHover - 1,
+      colorPress: base.colorPress - 1,
+      colorFocus: base.colorFocus - 1,
+    }
+
+    const alt2 = {
+      color: base.color - 2,
+      colorHover: base.colorHover - 2,
+      colorPress: base.colorPress - 2,
+      colorFocus: base.colorFocus - 2,
+    }
+
+    return {
+      base,
+      alt1,
+      alt2,
+      surface1,
+      surface2,
+      surface3,
+      inverseSurface1,
+      inverseActive,
+      surfaceActive,
+    }
   }
 
-  const surface1 = {
-    background: base.background + 1,
-    backgroundHover: base.backgroundHover + 1,
-    backgroundPress: base.backgroundPress + 1,
-    backgroundFocus: base.backgroundFocus + 1,
-    borderColor: base.borderColor + 1,
-    borderColorHover: base.borderColorHover + 1,
-    borderColorFocus: base.borderColorFocus + 1,
-    borderColorPress: base.borderColorPress + 1,
+  const lightTemplates = getBaseTemplates('light')
+  const darkTemplates = getBaseTemplates('dark')
+  const templates = {
+    ...objectFromEntries(
+      objectKeys(lightTemplates).map(
+        (name) => [`light_${name}`, lightTemplates[name]] as const
+      )
+    ),
+    ...objectFromEntries(
+      objectKeys(darkTemplates).map(
+        (name) => [`dark_${name}`, darkTemplates[name]] as const
+      )
+    ),
   }
-
-  const surface2 = {
-    background: base.background + 2,
-    backgroundHover: base.backgroundHover + 2,
-    backgroundPress: base.backgroundPress + 2,
-    backgroundFocus: base.backgroundFocus + 2,
-    borderColor: base.borderColor + 2,
-    borderColorHover: base.borderColorHover + 2,
-    borderColorFocus: base.borderColorFocus + 2,
-    borderColorPress: base.borderColorPress + 2,
-  }
-
-  const surface3 = {
-    background: base.background + 3,
-    backgroundHover: base.backgroundHover + 3,
-    backgroundPress: base.backgroundPress + 3,
-    backgroundFocus: base.backgroundFocus + 3,
-    borderColor: base.borderColor + 3,
-    borderColorHover: base.borderColorHover + 3,
-    borderColorFocus: base.borderColorFocus + 3,
-    borderColorPress: base.borderColorPress + 3,
-  }
-
-  const surfaceActiveBg = {
-    background: base.background + 5,
-    backgroundHover: base.background + 5,
-    backgroundPress: base.backgroundPress + 5,
-    backgroundFocus: base.backgroundFocus + 5,
-  }
-
-  const surfaceActive = {
-    ...surfaceActiveBg,
-    // match border to background when active
-    borderColor: surfaceActiveBg.background,
-    borderColorHover: surfaceActiveBg.backgroundHover,
-    borderColorFocus: surfaceActiveBg.backgroundFocus,
-    borderColorPress: surfaceActiveBg.backgroundPress,
-  }
-
-  const inverseSurface1 = {
-    color: surface1.background,
-    colorHover: surface1.backgroundHover,
-    colorPress: surface1.backgroundPress,
-    colorFocus: surface1.backgroundFocus,
-    background: base.color,
-    backgroundHover: base.colorHover,
-    backgroundPress: base.colorPress,
-    backgroundFocus: base.colorFocus,
-    borderColor: base.color - 2,
-    borderColorHover: base.color - 3,
-    borderColorFocus: base.color - 4,
-    borderColorPress: base.color - 5,
-  }
-
-  const inverseActive = {
-    ...inverseSurface1,
-    background: base.color - 2,
-    backgroundHover: base.colorHover - 2,
-    backgroundPress: base.colorPress - 2,
-    backgroundFocus: base.colorFocus - 2,
-    borderColor: base.color - 2 - 2,
-    borderColorHover: base.color - 3 - 2,
-    borderColorFocus: base.color - 4 - 2,
-    borderColorPress: base.color - 5 - 2,
-  }
-
-  const alt1 = {
-    color: base.color - 1,
-    colorHover: base.colorHover - 1,
-    colorPress: base.colorPress - 1,
-    colorFocus: base.colorFocus - 1,
-  }
-
-  const alt2 = {
-    color: base.color - 2,
-    colorHover: base.colorHover - 2,
-    colorPress: base.colorPress - 2,
-    colorFocus: base.colorFocus - 2,
-  }
-
-  return {
-    base,
-    alt1,
-    alt2,
-    surface1,
-    surface2,
-    surface3,
-    inverseSurface1,
-    inverseActive,
-    surfaceActive,
-  }
+  return templates as Record<keyof typeof templates, typeof lightTemplates.base>
 }
 
-const lightTemplates = getTemplates('light')
-const darkTemplates = getTemplates('dark')
-const templates = {
-  ...objectFromEntries(
-    objectKeys(lightTemplates).map(
-      (name) => [`light_${name}`, lightTemplates[name]] as const
-    )
-  ),
-  ...objectFromEntries(
-    objectKeys(darkTemplates).map(
-      (name) => [`dark_${name}`, darkTemplates[name]] as const
-    )
-  ),
-}
+export const defaultTemplates = getTemplates()
 
 const shadows = {
   light: {
@@ -493,11 +498,69 @@ const surface3 = [
   },
 ] as any
 
+export const componentThemes = {
+  ListItem: {
+    template: 'surface1',
+  },
+  SelectTrigger: surface1,
+  Card: surface1,
+  Button: surface3,
+  Checkbox: surface2,
+  Switch: surface2,
+  SwitchThumb: inverseSurface1,
+  TooltipContent: surface2,
+  Progress: {
+    template: 'surface1',
+  },
+  RadioGroupItem: surface2,
+  TooltipArrow: {
+    template: 'surface1',
+  },
+  SliderTrackActive: {
+    template: 'surface3',
+  },
+  SliderTrack: {
+    template: 'surface1',
+  },
+  SliderThumb: inverseSurface1,
+  Tooltip: inverseSurface1,
+  ProgressIndicator: inverseSurface1,
+  SheetOverlay: overlayThemeDefinitions,
+  DialogOverlay: overlayThemeDefinitions,
+  ModalOverlay: overlayThemeDefinitions,
+  Input: surface1,
+  TextArea: surface1,
+} as const
+
+export const defaultSubThemes = {
+  alt1: {
+    template: 'alt1',
+  },
+  alt2: {
+    template: 'alt2',
+  },
+  active: {
+    template: 'surface3',
+  },
+  surface1: {
+    template: 'surface1',
+  },
+  surface2: {
+    template: 'surface2',
+  },
+  surface3: {
+    template: 'surface3',
+  },
+  surface4: {
+    template: 'surfaceActive',
+  },
+} as const
+
 // --- themeBuilder ---
 
 const themeBuilder = createThemeBuilder()
-  .addPalettes(palettes)
-  .addTemplates(templates)
+  .addPalettes(defaultPalettes)
+  .addTemplates(defaultTemplates)
   .addThemes({
     light: {
       template: 'base',
@@ -544,81 +607,20 @@ const themeBuilder = createThemeBuilder()
       template: 'base',
     },
   })
-  .addChildThemes({
-    alt1: {
-      template: 'alt1',
-    },
-    alt2: {
-      template: 'alt2',
-    },
-    active: {
-      template: 'surface3',
-    },
-    surface1: {
-      template: 'surface1',
-    },
-    surface2: {
-      template: 'surface2',
-    },
-    surface3: {
-      template: 'surface3',
-    },
-    surface4: {
-      template: 'surfaceActive',
-    },
+  .addChildThemes(defaultSubThemes)
+  .addComponentThemes(componentThemes, {
+    avoidNestingWithin: ['alt1', 'alt2', 'surface1', 'surface2', 'surface3', 'surface4'],
   })
-  .addComponentThemes(
-    {
-      ListItem: {
-        template: 'surface1',
-      },
-      SelectTrigger: surface1,
-      Card: surface1,
-      Button: surface3,
-      Checkbox: surface2,
-      Switch: surface2,
-      SwitchThumb: inverseSurface1,
-      TooltipContent: surface2,
-      Progress: {
-        template: 'surface1',
-      },
-      RadioGroupItem: surface2,
-      TooltipArrow: {
-        template: 'surface1',
-      },
-      SliderTrackActive: {
-        template: 'surface3',
-      },
-      SliderTrack: {
-        template: 'surface1',
-      },
-      SliderThumb: inverseSurface1,
-      Tooltip: inverseSurface1,
-      ProgressIndicator: inverseSurface1,
-      SheetOverlay: overlayThemeDefinitions,
-      DialogOverlay: overlayThemeDefinitions,
-      ModalOverlay: overlayThemeDefinitions,
-      Input: surface1,
-      TextArea: surface1,
-    },
-    {
-      avoidNestingWithin: [
-        'alt1',
-        'alt2',
-        'surface1',
-        'surface2',
-        'surface3',
-        'surface4',
-      ],
-    }
-  )
 
 // --- themes ---
 
 const themesIn = themeBuilder.build()
 
-export type Theme = Record<keyof typeof lightTemplates.base, string> &
-  typeof nonInherited.light
+type ThemeKeys =
+  | keyof typeof defaultTemplates.light_base
+  | keyof typeof nonInherited.light
+
+export type Theme = Record<ThemeKeys, string>
 
 export type ThemesOut = Record<keyof typeof themesIn, Theme>
 

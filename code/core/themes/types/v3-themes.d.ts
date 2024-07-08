@@ -1,4 +1,4 @@
-export declare const palettes: {
+export declare const defaultPalettes: {
     dark_blue: string[];
     dark_gray: string[];
     dark_green: string[];
@@ -18,248 +18,45 @@ export declare const palettes: {
     light: string[];
     dark: string[];
 };
-export declare const getTemplates: (scheme: "dark" | "light") => {
-    base: {
-        accentBackground: number;
-        accentColor: number;
-        background0: number;
-        background025: number;
-        background05: number;
-        background075: number;
-        color1: number;
-        color2: number;
-        color3: number;
-        color4: number;
-        color5: number;
-        color6: number;
-        color7: number;
-        color8: number;
-        color9: number;
-        color10: number;
-        color11: number;
-        color12: number;
-        color0: number;
-        color025: number;
-        color05: number;
-        color075: number;
-        background: number;
-        backgroundHover: number;
-        backgroundPress: number;
-        backgroundFocus: number;
-        borderColor: number;
-        borderColorHover: number;
-        borderColorPress: number;
-        borderColorFocus: number;
-        color: number;
-        colorHover: number;
-        colorPress: number;
-        colorFocus: number;
-        colorTransparent: number;
-        placeholderColor: number;
-        outlineColor: number;
-    };
-    alt1: {
-        color: number;
-        colorHover: number;
-        colorPress: number;
-        colorFocus: number;
-    };
-    alt2: {
-        color: number;
-        colorHover: number;
-        colorPress: number;
-        colorFocus: number;
-    };
-    surface1: {
-        background: number;
-        backgroundHover: number;
-        backgroundPress: number;
-        backgroundFocus: number;
-        borderColor: number;
-        borderColorHover: number;
-        borderColorFocus: number;
-        borderColorPress: number;
-    };
-    surface2: {
-        background: number;
-        backgroundHover: number;
-        backgroundPress: number;
-        backgroundFocus: number;
-        borderColor: number;
-        borderColorHover: number;
-        borderColorFocus: number;
-        borderColorPress: number;
-    };
-    surface3: {
-        background: number;
-        backgroundHover: number;
-        backgroundPress: number;
-        backgroundFocus: number;
-        borderColor: number;
-        borderColorHover: number;
-        borderColorFocus: number;
-        borderColorPress: number;
-    };
-    inverseSurface1: {
-        color: number;
-        colorHover: number;
-        colorPress: number;
-        colorFocus: number;
-        background: number;
-        backgroundHover: number;
-        backgroundPress: number;
-        backgroundFocus: number;
-        borderColor: number;
-        borderColorHover: number;
-        borderColorFocus: number;
-        borderColorPress: number;
-    };
-    inverseActive: {
-        background: number;
-        backgroundHover: number;
-        backgroundPress: number;
-        backgroundFocus: number;
-        borderColor: number;
-        borderColorHover: number;
-        borderColorFocus: number;
-        borderColorPress: number;
-        color: number;
-        colorHover: number;
-        colorPress: number;
-        colorFocus: number;
-    };
-    surfaceActive: {
-        borderColor: number;
-        borderColorHover: number;
-        borderColorFocus: number;
-        borderColorPress: number;
-        background: number;
-        backgroundHover: number;
-        backgroundPress: number;
-        backgroundFocus: number;
-    };
-};
-declare const lightTemplates: {
-    base: {
-        accentBackground: number;
-        accentColor: number;
-        background0: number;
-        background025: number;
-        background05: number;
-        background075: number;
-        color1: number;
-        color2: number;
-        color3: number;
-        color4: number;
-        color5: number;
-        color6: number;
-        color7: number;
-        color8: number;
-        color9: number;
-        color10: number;
-        color11: number;
-        color12: number;
-        color0: number;
-        color025: number;
-        color05: number;
-        color075: number;
-        background: number;
-        backgroundHover: number;
-        backgroundPress: number;
-        backgroundFocus: number;
-        borderColor: number;
-        borderColorHover: number;
-        borderColorPress: number;
-        borderColorFocus: number;
-        color: number;
-        colorHover: number;
-        colorPress: number;
-        colorFocus: number;
-        colorTransparent: number;
-        placeholderColor: number;
-        outlineColor: number;
-    };
-    alt1: {
-        color: number;
-        colorHover: number;
-        colorPress: number;
-        colorFocus: number;
-    };
-    alt2: {
-        color: number;
-        colorHover: number;
-        colorPress: number;
-        colorFocus: number;
-    };
-    surface1: {
-        background: number;
-        backgroundHover: number;
-        backgroundPress: number;
-        backgroundFocus: number;
-        borderColor: number;
-        borderColorHover: number;
-        borderColorFocus: number;
-        borderColorPress: number;
-    };
-    surface2: {
-        background: number;
-        backgroundHover: number;
-        backgroundPress: number;
-        backgroundFocus: number;
-        borderColor: number;
-        borderColorHover: number;
-        borderColorFocus: number;
-        borderColorPress: number;
-    };
-    surface3: {
-        background: number;
-        backgroundHover: number;
-        backgroundPress: number;
-        backgroundFocus: number;
-        borderColor: number;
-        borderColorHover: number;
-        borderColorFocus: number;
-        borderColorPress: number;
-    };
-    inverseSurface1: {
-        color: number;
-        colorHover: number;
-        colorPress: number;
-        colorFocus: number;
-        background: number;
-        backgroundHover: number;
-        backgroundPress: number;
-        backgroundFocus: number;
-        borderColor: number;
-        borderColorHover: number;
-        borderColorFocus: number;
-        borderColorPress: number;
-    };
-    inverseActive: {
-        background: number;
-        backgroundHover: number;
-        backgroundPress: number;
-        backgroundFocus: number;
-        borderColor: number;
-        borderColorHover: number;
-        borderColorFocus: number;
-        borderColorPress: number;
-        color: number;
-        colorHover: number;
-        colorPress: number;
-        colorFocus: number;
-    };
-    surfaceActive: {
-        borderColor: number;
-        borderColorHover: number;
-        borderColorFocus: number;
-        borderColorPress: number;
-        background: number;
-        backgroundHover: number;
-        backgroundPress: number;
-        backgroundFocus: number;
-    };
-};
+export declare const defaultTemplates: Record<"light_alt1" | "light_alt2" | "dark_alt1" | "dark_alt2" | "light_base" | "light_surface1" | "light_surface2" | "light_surface3" | "light_inverseSurface1" | "light_inverseActive" | "light_surfaceActive" | "dark_base" | "dark_surface1" | "dark_surface2" | "dark_surface3" | "dark_inverseSurface1" | "dark_inverseActive" | "dark_surfaceActive", {
+    accentBackground: number;
+    accentColor: number;
+    background0: number;
+    background025: number;
+    background05: number;
+    background075: number;
+    color1: number;
+    color2: number;
+    color3: number;
+    color4: number;
+    color5: number;
+    color6: number;
+    color7: number;
+    color8: number;
+    color9: number;
+    color10: number;
+    color11: number;
+    color12: number;
+    color0: number;
+    color025: number;
+    color05: number;
+    color075: number;
+    background: number;
+    backgroundHover: number;
+    backgroundPress: number;
+    backgroundFocus: number;
+    borderColor: number;
+    borderColorHover: number;
+    borderColorPress: number;
+    borderColorFocus: number;
+    color: number;
+    colorHover: number;
+    colorPress: number;
+    colorFocus: number;
+    colorTransparent: number;
+    placeholderColor: number;
+    outlineColor: number;
+}>;
 declare const nonInherited: {
     light: {
         shadowColor: string;
@@ -464,6 +261,77 @@ declare const nonInherited: {
         blue10: string;
         blue11: string;
         blue12: string;
+    };
+};
+export declare const componentThemes: {
+    readonly ListItem: {
+        readonly template: "surface1";
+    };
+    readonly SelectTrigger: any;
+    readonly Card: any;
+    readonly Button: any;
+    readonly Checkbox: any;
+    readonly Switch: any;
+    readonly SwitchThumb: any;
+    readonly TooltipContent: any;
+    readonly Progress: {
+        readonly template: "surface1";
+    };
+    readonly RadioGroupItem: any;
+    readonly TooltipArrow: {
+        readonly template: "surface1";
+    };
+    readonly SliderTrackActive: {
+        readonly template: "surface3";
+    };
+    readonly SliderTrack: {
+        readonly template: "surface1";
+    };
+    readonly SliderThumb: any;
+    readonly Tooltip: any;
+    readonly ProgressIndicator: any;
+    readonly SheetOverlay: {
+        parent: string;
+        theme: {
+            background: string;
+        };
+    }[];
+    readonly DialogOverlay: {
+        parent: string;
+        theme: {
+            background: string;
+        };
+    }[];
+    readonly ModalOverlay: {
+        parent: string;
+        theme: {
+            background: string;
+        };
+    }[];
+    readonly Input: any;
+    readonly TextArea: any;
+};
+export declare const defaultSubThemes: {
+    readonly alt1: {
+        readonly template: "alt1";
+    };
+    readonly alt2: {
+        readonly template: "alt2";
+    };
+    readonly active: {
+        readonly template: "surface3";
+    };
+    readonly surface1: {
+        readonly template: "surface1";
+    };
+    readonly surface2: {
+        readonly template: "surface2";
+    };
+    readonly surface3: {
+        readonly template: "surface3";
+    };
+    readonly surface4: {
+        readonly template: "surfaceActive";
     };
 };
 declare const themesIn: {
@@ -15732,7 +15600,8 @@ declare const themesIn: {
         };
     };
 };
-export type Theme = Record<keyof typeof lightTemplates.base, string> & typeof nonInherited.light;
+type ThemeKeys = keyof typeof defaultTemplates.light_base | keyof typeof nonInherited.light;
+export type Theme = Record<ThemeKeys, string>;
 export type ThemesOut = Record<keyof typeof themesIn, Theme>;
 export declare const themes: ThemesOut;
 export declare const size: {
