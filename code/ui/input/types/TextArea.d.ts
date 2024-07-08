@@ -130,6 +130,7 @@ export declare const TextArea: import("@tamagui/web").TamaguiComponent<import("@
         caretColor?: boolean | undefined;
         clipPath?: boolean | undefined;
         contain?: boolean | undefined;
+        containerType?: boolean | undefined;
         content?: boolean | undefined;
         filter?: boolean | undefined;
         float?: boolean | undefined;

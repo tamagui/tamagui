@@ -784,6 +784,10 @@ interface ExtraStyleProps {
     /**
      * Web-only style property. Will be omitted on native.
      */
+    containerType?: Properties['containerType'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
     caretColor?: Properties['caretColor'];
     /**
      * Web-only style property. Will be omitted on native.

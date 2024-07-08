@@ -127,6 +127,7 @@ export declare const stylePropsView: {
     caretColor?: boolean | undefined;
     clipPath?: boolean | undefined;
     contain?: boolean | undefined;
+    containerType?: boolean | undefined;
     content?: boolean | undefined;
     cursor?: boolean | undefined;
     filter?: boolean | undefined;
@@ -420,6 +421,7 @@ export declare const stylePropsText: {
     caretColor?: boolean | undefined;
     clipPath?: boolean | undefined;
     contain?: boolean | undefined;
+    containerType?: boolean | undefined;
     content?: boolean | undefined;
     filter?: boolean | undefined;
     float?: boolean | undefined;
@@ -670,6 +672,7 @@ export declare const stylePropsAll: {
     caretColor?: boolean | undefined;
     clipPath?: boolean | undefined;
     contain?: boolean | undefined;
+    containerType?: boolean | undefined;
     content?: boolean | undefined;
     filter?: boolean | undefined;
     float?: boolean | undefined;
@@ -904,6 +907,7 @@ export declare const validStyles: {
     caretColor?: boolean | undefined;
     clipPath?: boolean | undefined;
     contain?: boolean | undefined;
+    containerType?: boolean | undefined;
     content?: boolean | undefined;
     cursor?: boolean | undefined;
     filter?: boolean | undefined;

@@ -19,7 +19,7 @@
     "watch": "node ../../../node_modules/.bin/tamagui-build --exclude __tests__ --watch",
     "lint": "npx biome check src",
     "lint:fix": "npx biome check --apply-unsafe src",
-    "test": "vitest",
+    "test": "vitest --run",
     "clean": "node ../../../node_modules/.bin/tamagui-build clean",
     "clean:build": "node ../../../node_modules/.bin/tamagui-build clean:build"
   },

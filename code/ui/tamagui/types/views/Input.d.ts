@@ -413,6 +413,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
     backgroundAttachment?: import("csstype").Properties["backgroundAttachment"];
     background?: import("csstype").Properties["background"];
     clipPath?: import("csstype").Properties["clipPath"];
+    containerType?: import("csstype").Properties["containerType"];
     caretColor?: import("csstype").Properties["caretColor"];
     transformStyle?: import("csstype").Properties["transformStyle"];
     mask?: import("csstype").Properties["mask"];
