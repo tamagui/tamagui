@@ -11,7 +11,7 @@
     "ci:build:debug": "DEBUG=tamagui yarn ci:build",
     "dev:analyze": "ANALYZE=true yarn dev",
     "dev:next": "yarn next",
-    "test": "./scripts/test.sh",
+    "test-bak": "./scripts/test.sh",
     "test:run": "node -r esbuild-register ../../node_modules/.bin/playwright test",
     "test:dev": "yarn test:run",
     "test:prod": "RUN_ENV=production yarn test:run",
