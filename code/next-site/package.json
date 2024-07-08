@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/next-site",
-  "version": "1.101.7",
+  "version": "1.102.0",
   "private": true,
   "source": "src",
   "scripts": {
@@ -68,7 +68,7 @@
     "react-hotkeys-hook": "^4.5.0",
     "react-native": "0.74.1",
     "react-native-reanimated": "3.11.0",
-    "react-native-web-lite": "1.101.7",
+    "react-native-web-lite": "1.102.0",
     "stripe": "^9.1.0",
     "supabase": "1.127.4",
     "swr": "^2.2.5",
@@ -81,7 +81,7 @@
     "@babel/preset-react": "^7.23.3",
     "@babel/preset-typescript": "^7.23.3",
     "@playwright/test": "^1.40.1",
-    "@tamagui/build": "1.101.7",
+    "@tamagui/build": "1.102.0",
     "@types/archiver": "^6",
     "@types/jsonwebtoken": "^9.0.2",
     "@welldone-software/why-did-you-render": "^7.0.1",
@@ -90,7 +90,7 @@
     "archiver": "^6.0.1",
     "esbuild-loader": "^3.0.1",
     "fs-extra": "^11.2.0",
-    "tamagui-loader": "1.101.7",
+    "tamagui-loader": "1.102.0",
     "wait-port": "^0.3.0"
   }
 }
