@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/use-event",
-  "version": "1.102.0",
+  "version": "1.102.1",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -18,11 +18,11 @@
     "clean:build": "tamagui-build clean:build"
   },
   "devDependencies": {
-    "@tamagui/build": "1.102.0",
+    "@tamagui/build": "1.102.1",
     "react": "^18.2.0"
   },
   "dependencies": {
-    "@tamagui/constants": "1.102.0"
+    "@tamagui/constants": "1.102.1"
   },
   "exports": {
     "./package.json": "./package.json",

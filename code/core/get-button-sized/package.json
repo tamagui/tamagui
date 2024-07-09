@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/get-button-sized",
-  "version": "1.102.0",
+  "version": "1.102.1",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -27,11 +27,11 @@
     }
   },
   "dependencies": {
-    "@tamagui/get-token": "1.102.0",
-    "@tamagui/web": "1.102.0"
+    "@tamagui/get-token": "1.102.1",
+    "@tamagui/web": "1.102.1"
   },
   "devDependencies": {
-    "@tamagui/build": "1.102.0",
+    "@tamagui/build": "1.102.1",
     "react": "^18.2.0"
   },
   "publishConfig": {
