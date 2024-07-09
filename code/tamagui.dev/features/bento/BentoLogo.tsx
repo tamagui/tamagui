@@ -159,7 +159,7 @@ export const BentoLogo = ({
         )}
       </BentoLogoTheme>
 
-      <BentoLogoTheme offset={1 + offsetAdjust}>
+      <BentoLogoTheme offset={-3 + offsetAdjust}>
         {!noShadow && (
           <H1
             className={`glow-shadow mask-gradient-up`}

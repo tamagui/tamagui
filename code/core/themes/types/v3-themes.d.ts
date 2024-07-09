@@ -263,7 +263,15 @@ declare const nonInherited: {
         blue12: string;
     };
 };
-export declare const componentThemes: {
+/**
+ * These are optional themes that serve as defaults for components. They don't
+ * change color1 through color12 just "generic" properties like color,
+ * background, borderColor.
+ *
+ * They can be overridden with the theme prop, or left out entirely for
+ * "un-themed" components.
+ */
+export declare const defaultComponentThemes: {
     readonly ListItem: {
         readonly template: "surface1";
     };
@@ -311,6 +319,10 @@ export declare const componentThemes: {
     readonly Input: any;
     readonly TextArea: any;
 };
+/**
+ * These are useful for states (alt gets more subtle as it goes up) or emphasis
+ * (surface gets more contrasted from the background as it goes up)
+ */
 export declare const defaultSubThemes: {
     readonly alt1: {
         readonly template: "alt1";

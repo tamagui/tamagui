@@ -39,7 +39,9 @@ export const TakeoutLogo = (props: { scale?: number }) => {
         }}
       >
         <>
-          <TAKEOUT className="text-3d" zi={1000} color="$color10" />
+          <ThemeTint>
+            <TAKEOUT className="text-3d" zi={1000} color="$color10" />
+          </ThemeTint>
         </>
       </YStack>
 

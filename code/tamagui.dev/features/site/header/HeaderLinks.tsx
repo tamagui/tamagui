@@ -103,7 +103,7 @@ export const HeaderLinks = (props: HeaderProps) => {
         </HeadAnchor>
       </Link>
 
-      {/* <Link asChild href="/theme">
+      <Link asChild href="/theme">
         <HeadAnchor
           // half={forceShowAllLinks}
           grid={forceShowAllLinks}
@@ -113,7 +113,7 @@ export const HeaderLinks = (props: HeaderProps) => {
         >
           Theme
         </HeadAnchor>
-      </Link> */}
+      </Link>
     </>
   )
 
@@ -188,7 +188,7 @@ export const HeaderLinks = (props: HeaderProps) => {
                 Community
               </HeadAnchor>
             </Link>
-            <Link asChild href="/studio">
+            {/* <Link asChild href="/studio">
               <HeadAnchor
                 grid
                 half
@@ -199,7 +199,7 @@ export const HeaderLinks = (props: HeaderProps) => {
               >
                 Studio
               </HeadAnchor>
-            </Link>
+            </Link> */}
           </XStack>
           <Separator bc="$color025" o={0.25} my="$2" />
         </>
@@ -653,6 +653,7 @@ const SlidingPopoverContent = React.memo(({ active }: { active: string }) => {
         w={280}
         h={200}
         ov="hidden"
+        br="$6"
       >
         <AnimatePresence custom={{ going }} initial={false}>
           {active === 'takeout' && (
@@ -722,7 +723,7 @@ const SlidingPopoverContent = React.memo(({ active }: { active: string }) => {
 })
 
 const Frame = styled(YStack, {
-  animation: 'quicker',
+  animation: 'medium',
   br: '$5',
   ov: 'hidden',
   fullscreen: true,
@@ -735,12 +736,12 @@ const Frame = styled(YStack, {
     going: {
       ':number': (going) => ({
         enterStyle: {
-          x: going > 0 ? 60 : -60,
+          x: going > 0 ? 20 : -20,
           opacity: 0,
         },
         exitStyle: {
           zIndex: 0,
-          x: going < 0 ? 60 : -60,
+          x: going < 0 ? 20 : -20,
           opacity: 0,
         },
       }),

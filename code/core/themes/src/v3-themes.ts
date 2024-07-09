@@ -498,7 +498,15 @@ const surface3 = [
   },
 ] as any
 
-export const componentThemes = {
+/**
+ * These are optional themes that serve as defaults for components. They don't
+ * change color1 through color12 just "generic" properties like color,
+ * background, borderColor.
+ *
+ * They can be overridden with the theme prop, or left out entirely for
+ * "un-themed" components.
+ */
+export const defaultComponentThemes = {
   ListItem: {
     template: 'surface1',
   },
@@ -531,6 +539,11 @@ export const componentThemes = {
   Input: surface1,
   TextArea: surface1,
 } as const
+
+/**
+ * These are useful for states (alt gets more subtle as it goes up) or emphasis
+ * (surface gets more contrasted from the background as it goes up)
+ */
 
 export const defaultSubThemes = {
   alt1: {
@@ -608,7 +621,7 @@ const themeBuilder = createThemeBuilder()
     },
   })
   .addChildThemes(defaultSubThemes)
-  .addComponentThemes(componentThemes, {
+  .addComponentThemes(defaultComponentThemes, {
     avoidNestingWithin: ['alt1', 'alt2', 'surface1', 'surface2', 'surface3', 'surface4'],
   })
 

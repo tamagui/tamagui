@@ -238,8 +238,8 @@ export default function TakeoutPage() {
                 <Paragraph className="text-wrap-balance" size="$7" $sm={{ size: '$7' }}>
                   We recommend you try the free starter first to see if you like the base:{' '}
                   <CodeInline>npm&nbsp;create&nbsp;tamagui</CodeInline>. Takeout combines
-                  React, React Native, Next.js, Expo, Supabase, and more in a monorepo -
-                  it has a learning curve.
+                  React, React Native, Next.js, Expo, Supabase, and more in a monorepo and
+                  requires some knowledge of each.
                 </Paragraph>
 
                 <Paragraph className="text-wrap-balance" size="$6">
