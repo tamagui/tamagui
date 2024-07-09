@@ -191,8 +191,8 @@ const ThemeStudioStepButtonsBar = () => {
     }
   }
 
-  useHotkeys('left', backward)
-  useHotkeys('right', forward)
+  // useHotkeys('left', backward)
+  // useHotkeys('right', forward)
 
   return (
     <XStack gap="$2">

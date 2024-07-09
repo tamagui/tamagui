@@ -47,7 +47,7 @@ export function Header(props: HeaderProps) {
           px: '$1',
         }}
       >
-        <XStack pe="auto" width="100%" maw={1120} pos="relative">
+        <XStack pe="auto" width="100%" maw={1200} pos="relative">
           <XStack
             className={`ease-out all ms300`}
             py="$1.5"
@@ -94,11 +94,11 @@ export function Header(props: HeaderProps) {
                 bg: '$color7',
               }}
             />
-            <ContainerLarge>
+            <YStack mx="auto" px="$4" w="100%">
               <ThemeTint>
                 <HeaderContents floating {...props} />
               </ThemeTint>
-            </ContainerLarge>
+            </YStack>
           </XStack>
           {/* do shadow separate so we can contain paint because its causing perf issues */}
           <XStack

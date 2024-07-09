@@ -184,7 +184,7 @@ export const HeaderLinks = (props: HeaderProps) => {
         <>
           <XStack fw="wrap" f={1} gap="$2" w="100%">
             <Link asChild href="/community">
-              <HeadAnchor grid half tag="a">
+              <HeadAnchor grid tag="a">
                 Community
               </HeadAnchor>
             </Link>
