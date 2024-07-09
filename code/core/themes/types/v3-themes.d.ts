@@ -270,6 +270,7 @@ declare const nonInherited: {
  *
  * They can be overridden with the theme prop, or left out entirely for
  * "un-themed" components.
+
  */
 export declare const defaultComponentThemes: {
     readonly ListItem: {
