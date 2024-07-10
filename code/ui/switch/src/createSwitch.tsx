@@ -167,7 +167,21 @@ export function createSwitch<
         [checked, setChecked],
         forwardedRef
       )
+      
+      if (process.env.TAMAGUI_TARGET === 'native') {
+        React.useEffect(() => {
+          if (!props.id) return
+          if (props.disabled) return
 
+          return registerFocusable(props.id, {
+            focusAndSelect: () => {
+              setChecked?.((value) => !value)
+            },
+            focus: () => {},
+          })
+        }, [props.id, props.disabled])
+      }
+      
       const renderNative = shouldRenderNativePlatform(native)
       if (renderNative === 'android' || renderNative === 'ios') {
         return (
