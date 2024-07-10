@@ -11,6 +11,7 @@ import type {
   SwitchExtraProps as HeadlessSwitchExtraProps,
   SwitchState,
 } from '@tamagui/switch-headless'
+import { registerFocusable } from '@tamagui/focusable'
 import { useSwitch } from '@tamagui/switch-headless'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
@@ -167,7 +168,7 @@ export function createSwitch<
         [checked, setChecked],
         forwardedRef
       )
-      
+
       if (process.env.TAMAGUI_TARGET === 'native') {
         React.useEffect(() => {
           if (!props.id) return
@@ -181,7 +182,7 @@ export function createSwitch<
           })
         }, [props.id, props.disabled])
       }
-      
+
       const renderNative = shouldRenderNativePlatform(native)
       if (renderNative === 'android' || renderNative === 'ios') {
         return (
