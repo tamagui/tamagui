@@ -51,8 +51,7 @@ export const TooltipSimple: React.FC<TooltipSimpleProps> = React.forwardRef(
           x={0}
           scale={1}
           y={0}
-          // @ts-ignore
-          elevation="$1"
+          elevation="$0.5"
           opacity={1}
           paddingVertical={getSpace(tooltipProps.size || '$true', {
             shift: -4,
