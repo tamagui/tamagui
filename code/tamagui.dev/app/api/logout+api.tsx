@@ -10,6 +10,8 @@ export default apiRoute(async (req) => {
     return redirect('/login')
   }
 
+  console.warn(`Logging out`)
+
   try {
     await supabase.auth.signOut()
     return redirect('/login')

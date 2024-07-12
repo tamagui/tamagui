@@ -8,11 +8,7 @@ export function apiRoute(handler: Endpoint) {
       const result = handler(req)
       const out = result instanceof Promise ? await result : result
 
-      if (
-        out instanceof Response &&
-        (out.status < 200 || out.status >= 400) &&
-        out.body
-      ) {
+      if (isResponse(out) && (out.status < 200 || out.status >= 400) && out.body) {
         try {
           console.info(`Error Response (${out.status}) from ${req.url}:`)
           const bodyContents = await streamToString(out.body)

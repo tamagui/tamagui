@@ -1,3 +1,4 @@
+- RN transform type accepts string style props now but tamagui doesn't
 - opacity `/50`
 - AnimateList
   - like AnimatePresence but for >1 items

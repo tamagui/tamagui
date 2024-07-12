@@ -1,6 +1,9 @@
-import { createServerClient, parse, serialize } from '@supabase/ssr'
+import {
+  createServerClient,
+  parseCookieHeader,
+  serializeCookieHeader,
+} from '@supabase/ssr'
 import { setCurrentRequestHeaders } from 'vxs/headers'
-import type { Database } from '../supabase/types'
 
 export function getSupabaseServerClient(request: Request) {
   if (!import.meta.env.NEXT_PUBLIC_SUPABASE_URL) {
@@ -10,9 +13,9 @@ export function getSupabaseServerClient(request: Request) {
     throw new Error(`Missing NEXT_PUBLIC_SUPABASE_ANON_KEY`)
   }
 
-  const cookies = parse(request.headers.get('Cookie') ?? '')
+  const cookies = parseCookieHeader(request.headers.get('Cookie') ?? '')
 
-  return createServerClient<Database>(
+  return createServerClient(
     import.meta.env.NEXT_PUBLIC_SUPABASE_URL!,
     import.meta.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
@@ -24,18 +27,15 @@ export function getSupabaseServerClient(request: Request) {
         },
       },
       cookies: {
-        get: (key) => {
-          return cookies[key]
+        getAll() {
+          return cookies
         },
-        set: (key, value, options) => {
+
+        setAll(cookiesToSet) {
           setCurrentRequestHeaders((headers) => {
-            const serialized = serialize(key, value, options)
-            headers.append('Set-Cookie', serialized)
-          })
-        },
-        remove: (key, options) => {
-          setCurrentRequestHeaders((headers) => {
-            headers.append('Set-Cookie', serialize(key, '', options))
+            cookiesToSet.forEach(({ name, value, options }) =>
+              headers.append('Set-Cookie', serializeCookieHeader(name, value, options))
+            )
           })
         },
       },
