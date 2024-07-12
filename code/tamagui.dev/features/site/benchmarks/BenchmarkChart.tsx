@@ -41,7 +41,7 @@ export function BenchmarkChart({
       {data.map((result, i) => {
         const width = `${Math.round((result.value / maxValue) * 100)}%`
         return (
-          <XStack space="$3" key={i}>
+          <XStack gap="$3" key={i}>
             <YStack w={large ? 120 : 70}>
               <Paragraph
                 key={result.name}

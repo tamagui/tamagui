@@ -48,7 +48,7 @@ export const Switch = createSwitch({
 export function SwitchUnstyledDemo() {
   return (
     <YStack width={200} alignItems="center" space="$3">
-      <XStack space="$3" alignItems="center">
+      <XStack gap="$3" alignItems="center">
         <Label htmlFor="unstyled-switch">Unstyled</Label>
         <Switch defaultChecked id="unstyled-switch">
           <Switch.Thumb animation="quick" />

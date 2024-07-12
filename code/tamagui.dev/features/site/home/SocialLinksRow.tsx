@@ -7,7 +7,7 @@ import { TwitterIcon } from '~/features/icons/TwitterIcon'
 
 export const SocialLinksRow = () => {
   return (
-    <XStack space="$4" $sm={{ flexDirection: 'column' }}>
+    <XStack gap="$4" $sm={{ flexDirection: 'column' }}>
       <Card
         width="33.33%"
         jc="center"

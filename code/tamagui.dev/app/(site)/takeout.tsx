@@ -1485,7 +1485,7 @@ const Points = () => (
 )
 
 const HeartsRow = () => (
-  <XStack space="$12" my="$4" als="center" spaceDirection="horizontal">
+  <XStack gap="$12" my="$4" als="center" spaceDirection="horizontal">
     <img src="/heart.svg" style={{ width: 16, height: 16 }} />
     <img src="/heart.svg" style={{ width: 16, height: 16 }} />
     <img src="/heart.svg" style={{ width: 16, height: 16 }} />

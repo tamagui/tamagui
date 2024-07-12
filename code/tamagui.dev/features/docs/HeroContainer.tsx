@@ -133,7 +133,7 @@ const AnimationControl = () => {
       placement="top"
       label={`Animations: ${niceNames[animationDriverToggler.driverName]}`}
     >
-      <XStack space="$2" ai="center">
+      <XStack gap="$2" ai="center">
         <Timer size={14} opacity={0.6} />
         <Switch
           size="$1"
@@ -163,7 +163,7 @@ const HeroContainerInner = ({
     <Configuration animationDriver={driver} key={driverName}>
       <ErrorBoundary>
         {demoMultiple ? (
-          <XStack space="$3" px="$8">
+          <XStack gap="$3" px="$8">
             <Card bg="$color2">{children}</Card>
             <Theme name="blue">
               <Card>{children}</Card>

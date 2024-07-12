@@ -4,7 +4,7 @@ import { Adapt, Button, Input, Label, Popover, XStack, YStack } from 'tamagui'
 
 export function PopoverDemo() {
   return (
-    <XStack space="$2" flex={1} justifyContent="center" alignItems="center">
+    <XStack gap="$2" flex={1} justifyContent="center" alignItems="center">
       <Demo placement="left" Icon={ChevronLeft} Name="left-popover" />
       <Demo placement="bottom" Icon={ChevronDown} Name="bottom-popover" />
       <Demo placement="top" Icon={ChevronUp} Name="top-popover" />
@@ -55,7 +55,7 @@ export function Demo({
         <Popover.Arrow borderWidth={1} borderColor="$borderColor" />
 
         <YStack space="$3">
-          <XStack space="$3">
+          <XStack gap="$3">
             <Label size="$3" htmlFor={Name}>
               Name
             </Label>

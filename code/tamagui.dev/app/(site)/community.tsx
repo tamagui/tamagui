@@ -424,7 +424,7 @@ function IndividualSponsor(props: { name: string; link: string }) {
   return (
     <FlatBubbleCard flat mb="$4">
       <YStack maxWidth="100%" fs={0} als="center">
-        <XStack space="$4" $sm={{ flexDirection: 'column' }}>
+        <XStack gap="$4" $sm={{ flexDirection: 'column' }}>
           <Link href={props.link} target="_blank">
             <YStack
               cursor="pointer"

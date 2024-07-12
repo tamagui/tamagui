@@ -359,14 +359,14 @@ export const Safari = memo(
       <SafariFrame>
         <YStack bg="$background" px="$4" jc="center" borderBottomWidth={0} h={50}>
           <XStack pos="relative" ai="center" space="$4">
-            <XStack space="$2">
+            <XStack gap="$2">
               <Circle bg="$red10" size={10} />
               <Circle bg="$yellow10" size={10} />
               <Circle bg="$green10" size={10} />
             </XStack>
 
             {!isSmall && (
-              <XStack space="$1">
+              <XStack gap="$1">
                 <ChevronLeft size={20} color="var(--color)" opacity={0.25} />
                 <ChevronRight size={20} color="var(--color)" opacity={0.25} />
               </XStack>

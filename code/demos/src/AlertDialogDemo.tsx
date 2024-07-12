@@ -40,7 +40,7 @@ export function AlertDialogDemo() {
               By pressing yes, you accept our terms and conditions.
             </AlertDialog.Description>
 
-            <XStack space="$3" justifyContent="flex-end">
+            <XStack gap="$3" justifyContent="flex-end">
               <AlertDialog.Cancel asChild>
                 <Button>Cancel</Button>
               </AlertDialog.Cancel>
