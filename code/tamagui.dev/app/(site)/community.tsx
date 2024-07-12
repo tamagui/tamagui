@@ -69,7 +69,7 @@ export default function Community({ frontmatters }) {
               {[].map((frontmatter) => (
                 <Link key={frontmatter.title} href={frontmatter.slug}>
                   <Card bc="transparent" p="$4" f={1}>
-                    <YStack space="$2">
+                    <YStack gap="$2">
                       <H3
                         fontFamily="$silkscreen"
                         size="$6"
@@ -369,7 +369,7 @@ const StarterRepoCard = ({
       p="$5"
       jc="space-between"
     >
-      <YStack space="$2">
+      <YStack gap="$2">
         <GithubIcon />
         <H4 cursor="pointer" fontFamily="$silkscreen" ls={0}>
           {name}

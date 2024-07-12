@@ -83,7 +83,7 @@ function ColorsRow({ title, colors }: { title: string; colors: Variable[][] }) {
           </XStack>
         </YStack>
 
-        <YStack space="$4" marginTop="$2">
+        <YStack gap="$4" marginTop="$2">
           {colorGroups.map((name) => (
             <Paragraph
               theme={name as any}

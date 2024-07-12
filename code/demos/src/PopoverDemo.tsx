@@ -54,7 +54,7 @@ export function Demo({
       >
         <Popover.Arrow borderWidth={1} borderColor="$borderColor" />
 
-        <YStack space="$3">
+        <YStack gap="$3">
           <XStack gap="$3">
             <Label size="$3" htmlFor={Name}>
               Name

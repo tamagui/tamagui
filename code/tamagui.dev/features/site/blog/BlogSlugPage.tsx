@@ -157,7 +157,7 @@ export function BlogSlugPage(props: BlogPost) {
                     // @ts-ignore
                     href={`/blog/${frontmatter.slug}`}
                   >
-                    <YStack space="$2">
+                    <YStack gap="$2">
                       <H6>{frontmatter.title}</H6>
                       <Paragraph>{frontmatter.description}</Paragraph>
                     </YStack>

@@ -2,7 +2,7 @@ import { H1, H3, Paragraph, YStack, styled } from 'tamagui'
 
 export const TakeoutLicense = () => {
   return (
-    <YStack space="$4" p="$4">
+    <YStack gap="$4" p="$4">
       <H1 $sm={{ size: '$8' }}>License Agreement</H1>
 
       <Paragraph>

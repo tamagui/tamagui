@@ -11,7 +11,7 @@ import { Button, Paragraph, Tooltip, TooltipGroup, XStack, YStack } from 'tamagu
 export function TooltipDemo() {
   return (
     <TooltipGroup delay={{ open: 3000, close: 100 }}>
-      <YStack space="$2" alignSelf="center">
+      <YStack gap="$2" alignSelf="center">
         <XStack gap="$2">
           <Demo groupId="0" placement="top-end" Icon={Circle} />
           <Demo groupId="1" placement="top" Icon={ChevronUp} />

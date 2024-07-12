@@ -268,7 +268,7 @@ export default function TakeoutPage() {
                   title="Monorepo"
                   icon="retro-icons/coding-apps-websites-module-21.svg"
                 >
-                  <YStack space="$2">
+                  <YStack gap="$2">
                     {points.monorepo.map((point, idx, arr) => (
                       <Point
                         key={point}
@@ -285,7 +285,7 @@ export default function TakeoutPage() {
                   title="Design"
                   icon="retro-icons/design-color-painting-palette-25.svg"
                 >
-                  <YStack space="$2">
+                  <YStack gap="$2">
                     {points.design.map((point, idx, arr) => (
                       <Point
                         key={point}
@@ -302,7 +302,7 @@ export default function TakeoutPage() {
                   title="Deploy"
                   icon="retro-icons/computers-devices-electronics-vintage-mac-54.svg"
                 >
-                  <YStack space="$2">
+                  <YStack gap="$2">
                     {points.deploy.map((point, idx, arr) => (
                       <Point
                         key={point}
@@ -319,7 +319,7 @@ export default function TakeoutPage() {
                   title="Screens"
                   icon="retro-icons/coding-app-website-ui-62.svg"
                 >
-                  <YStack space="$2">
+                  <YStack gap="$2">
                     {points.screens.map((point, idx, arr) => (
                       <Point
                         key={point}
@@ -336,7 +336,7 @@ export default function TakeoutPage() {
                   title="Assets"
                   icon="retro-icons/coding-apps-websites-plugin-33.svg"
                 >
-                  <YStack space="$2">
+                  <YStack gap="$2">
                     {points.assets.map((point, idx, arr) => (
                       <Point
                         key={point}
@@ -353,7 +353,7 @@ export default function TakeoutPage() {
                   title="& More"
                   icon="retro-icons/coding-apps-websites-programming-hold-code-9.svg"
                 >
-                  <YStack space="$2">
+                  <YStack gap="$2">
                     {points.more.map((point, idx, arr) => (
                       <Point
                         key={point}

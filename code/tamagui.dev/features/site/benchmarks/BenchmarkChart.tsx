@@ -37,7 +37,7 @@ export function BenchmarkChart({
   const maxValue = Math.max(...data.map((r) => r.value))
 
   return (
-    <YStack space="$2" my="$4">
+    <YStack gap="$2" my="$4">
       {data.map((result, i) => {
         const width = `${Math.round((result.value / maxValue) * 100)}%`
         return (

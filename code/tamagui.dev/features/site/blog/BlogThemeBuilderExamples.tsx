@@ -9,7 +9,7 @@ const PaletteExample = ({
   showNegativeIndices?: boolean
   theme?: string
 }) => (
-  <YStack space="$2">
+  <YStack gap="$2">
     {theme && (
       <XStack ai="center" theme={theme as any} gap="$4">
         <Separator />

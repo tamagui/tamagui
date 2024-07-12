@@ -9,7 +9,7 @@ export function HomeFeaturesGrid() {
       <ContainerLarge space="$8">
         <YStack maw={950} als="center">
           <Grid gap={25} itemMinWidth={280}>
-            <YStack space="$2" p="$4">
+            <YStack gap="$2" p="$4">
               <H4 ls={0} fontFamily="$silkscreen" ta="center">
                 Fully typed
               </H4>
@@ -20,7 +20,7 @@ export function HomeFeaturesGrid() {
               </Paragraph>
             </YStack>
 
-            <YStack space="$2" p="$4">
+            <YStack gap="$2" p="$4">
               <H4 ls={0} fontFamily="$silkscreen" ta="center">
                 SSR
               </H4>
@@ -30,7 +30,7 @@ export function HomeFeaturesGrid() {
               </Paragraph>
             </YStack>
 
-            <YStack space="$2" p="$4">
+            <YStack gap="$2" p="$4">
               <H4 ls={0} fontFamily="$silkscreen" ta="center">
                 Server Components
               </H4>
@@ -39,7 +39,7 @@ export function HomeFeaturesGrid() {
               </Paragraph>
             </YStack>
 
-            <YStack space="$2" p="$4">
+            <YStack gap="$2" p="$4">
               <H4 ls={0} fontFamily="$silkscreen" ta="center">
                 Introspection
               </H4>
@@ -50,7 +50,7 @@ export function HomeFeaturesGrid() {
               </Paragraph>
             </YStack>
 
-            <YStack space="$2" p="$4">
+            <YStack gap="$2" p="$4">
               <H4 ls={0} fontFamily="$silkscreen" ta="center">
                 Compatibility
               </H4>
@@ -60,7 +60,7 @@ export function HomeFeaturesGrid() {
               </Paragraph>
             </YStack>
 
-            <YStack space="$2" p="$4">
+            <YStack gap="$2" p="$4">
               <H4 ls={0} fontFamily="$silkscreen" ta="center">
                 Full Featured
               </H4>

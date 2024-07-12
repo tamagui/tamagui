@@ -22,7 +22,7 @@ export function TestCasesScreen() {
   return (
     <ScrollView>
       <YStack bg="$background" p="$3" pt="$6" pb="$8" f={1} space>
-        <YStack space="$4" maw={600}>
+        <YStack gap="$4" maw={600}>
           <YGroup size="$4" separator={<Separator />}>
             {Object.keys(TestCases).map((page) => {
               return (
