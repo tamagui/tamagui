@@ -32,7 +32,7 @@ export default function DocIntroPage() {
   const { code, frontmatter, examples } = useLoader(loader)
 
   if (!frontmatter || !code) {
-    console.warn(`No frontmatter/code?`, { frontmatter, code })
+    // console.warn(`No frontmatter/code?`, { frontmatter, code })
     return null
   }
 
