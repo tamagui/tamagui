@@ -55,7 +55,7 @@
     "vite": "6.0.0-alpha.18",
     "vite-plugin-inspect": "^0.8.4",
     "vite-tsconfig-paths": "^4.3.2",
-    "vxs": "^1.1.135"
+    "vxs": "^1.1.136"
   },
   "devDependencies": {
     "@cyco130/vite-plugin-mdx": "1.0.4",
@@ -78,6 +78,6 @@
     "unified": "^10.1.2",
     "unist-util-visit": "^2.0.3",
     "vite-bundle-analyzer": "^0.9.4",
-    "vxrn": "^1.1.135"
+    "vxrn": "^1.1.136"
   }
 }

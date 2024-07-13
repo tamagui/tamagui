@@ -106,7 +106,7 @@
         "@react-three/fiber": "9.0.0-alpha.6",
         "react": "19.0.0-rc-3563387fe3-20240621",
         "react-dom": "19.0.0-rc-3563387fe3-20240621",
-        "react-native-reanimated": "3.14.0"
+        "react-native-reanimated": "3.13.0-rc.1"
       }
     },
     "x": {
@@ -115,7 +115,7 @@
         "@react-three/fiber": "9.0.0-alpha.6",
         "react": "19.0.0-rc-3563387fe3-20240621",
         "react-dom": "19.0.0-rc-3563387fe3-20240621",
-        "react-native-reanimated": "3.14.0",
+        "react-native-reanimated": "3.13.0-rc.1",
         "create-vxrn": "portal:~/vxrn/packages/create-vxrn",
         "@vxrn/react-native-prebuilt": "portal:~/vxrn/packages/react-native-prebuilt",
         "@vxrn/safe-area": "portal:~/vxrn/packages/safe-area",
