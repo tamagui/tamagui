@@ -49,7 +49,7 @@ const browserHeight = 485
 
 const IS_SAFARI =
   typeof navigator !== 'undefined' &&
-  /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
+  /^((?!chrome|android).)*safari/i.test(navigator.userAgent || '')
 
 const useIsSafari = () => {
   const ssrDone = useDidFinishSSR()
