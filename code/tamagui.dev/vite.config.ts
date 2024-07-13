@@ -51,6 +51,7 @@ export default {
       'tamagui',
       'react-hook-form',
       '@tamagui/use-presence',
+      'react-native-reanimated',
     ],
   },
 
