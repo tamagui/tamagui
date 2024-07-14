@@ -46,10 +46,11 @@ const docSearchCSS = `
 
 .DocSearch-Hit a {
   background: var(--background);
+  box-shadow: none !important;
 }
 
 .DocSearch-Hit[aria-selected=true] a {
-  background: var(--backgroundPress);
+  background: var(--color10);
 }
 
 .DocSearch-Modal {
@@ -112,4 +113,5 @@ const docSearchCSS = `
   --docsearch-hit-background: #333;
   --docsearch-key-gradient: linear-gradient(-26.5deg, #161618, #4a4a4a);
 }
+
 `
