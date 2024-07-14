@@ -96,16 +96,12 @@
     "metro": "0.80.8",
     "metro-core": "0.80.8",
     "metro-resolver": "0.80.8",
-    "metro-config": "0.80.8",
-    "@react-three/fiber": "9.0.0-alpha.6",
-    "react": "19.0.0-rc-fb9a90fa48-20240614",
-    "react-dom": "19.0.0-rc-fb9a90fa48-20240614",
-    "react-native-reanimated": "3.13.0-rc.1"
+    "metro-config": "0.80.8"
   },
   "profile": {
     "//": "run 'yarn profile x' to toggle it on/off",
     "react-19": {
-      "applied": true,
+      "applied": false,
       "resolutions": {
         "@react-three/fiber": "9.0.0-alpha.6",
         "react": "19.0.0-rc-fb9a90fa48-20240614",
