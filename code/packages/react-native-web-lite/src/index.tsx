@@ -19,6 +19,10 @@ export {
   usePlatformMethods,
   useLayoutEffect,
   processStyle,
+  StyleSheet,
+  clickProps,
+  TextAncestorContext,
+  flattenStyle,
 } from 'react-native-web-internals'
 export { default as render } from './render/index'
 export { unmountComponentAtNode } from 'react-dom'
