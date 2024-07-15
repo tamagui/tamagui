@@ -71,13 +71,20 @@ export const DetailHeader = (props: { children: string }) => {
       <YStack gap="$4">
         <XStack ai="center" jc="space-between" $sm={{ fd: 'column-reverse' }}>
           <Theme name="gray">
-            <H1 mb={-50} ff="$silkscreen" size="$10" $sm={{ size: '$6' }}>
+            <H1 mb={-50} ff="$silkscreen" size="$10" $sm={{ size: '$6', mb: '$4' }}>
               {props.children}
             </H1>
           </Theme>
 
           {/* <YStack zi={100} mb={-50} gap="$6" $sm={{ mb: 40 }}> */}
-          <YStack ai="flex-end" zi={100} gap="$6" y={40} mt={-10} $sm={{ mb: 40 }}>
+          <YStack
+            ai="flex-end"
+            zi={100}
+            gap="$6"
+            y={40}
+            mt={-10}
+            $sm={{ y: 0, mt: 0, mb: 40, ai: 'center' }}
+          >
             <View x={30}>
               <BentoLogo scale={0.25} />
             </View>

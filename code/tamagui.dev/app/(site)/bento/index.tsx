@@ -1,6 +1,5 @@
 import { assertIsError } from '@tamagui/assert'
-import { LocationNotification } from '@tamagui/bento/component/user/preferences/LocationNotification'
-import { listingData } from '@tamagui/bento/data'
+import { LocationNotification, listingData } from '@tamagui/bento/data'
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import {
   AlertCircle,
