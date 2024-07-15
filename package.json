@@ -6,17 +6,18 @@
     "url": "https://github.com/tamagui/tamagui"
   },
   "workspaces": [
+    "./code/bento",
     "./code/compiler/**/*",
     "./code/core/**/*",
-    "./code/packages/**/*",
-    "./code/ui/**/*",
-    "./code/bento",
     "./code/demos",
     "./code/integration",
     "./code/kitchen-sink",
     "./code/next-site",
     "./code/ooo",
-    "./code/tamagui.dev"
+    "./code/packages/**/*",
+    "./code/takeout",
+    "./code/tamagui.dev",
+    "./code/ui/**/*"
   ],
   "packageManager": "yarn@4.1.0",
   "scripts": {

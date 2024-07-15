@@ -5094,7 +5094,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rollup/rollup-linux-x64-gnu@npm:^4.9.1, @rollup/rollup-linux-x64-gnu@npm:^4.9.5":
+"@rollup/rollup-linux-x64-gnu@npm:^4.9.5":
   version: 4.18.0
   resolution: "@rollup/rollup-linux-x64-gnu@npm:4.18.0"
   conditions: os=linux & cpu=x64 & libc=glibc
@@ -6207,12 +6207,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/dot-dev@workspace:code/tamagui.dev"
   dependencies:
-    "@cyco130/vite-plugin-mdx": "npm:1.0.4"
     "@discordjs/core": "npm:^0.6.0"
     "@docsearch/react": "npm:^3.6.0"
     "@github/mini-throttle": "npm:^2.1.0"
     "@leeoniya/ufuzzy": "npm:^1.0.14"
-    "@react-navigation/native": "npm:6.1.17"
     "@react-three/drei": "npm:^9.105.6"
     "@react-three/fiber": "npm:@react-three/fiber@9.0.0-alpha.6"
     "@supabase/ssr": "npm:0.4.0"
@@ -6231,14 +6229,10 @@ __metadata:
     acorn-walk: "npm:^8.3.1"
     color2k: "npm:^2.0.2"
     esbuild-register: "npm:^3.5.0"
-    gray-matter: "npm:^4.0.2"
     h3: "npm:^1.11.1"
-    hast-util-to-html: "npm:^8.0.3"
-    hast-util-to-string: "npm:^2.0.0"
     hsluv: "npm:^0.1.0"
     jsonwebtoken: "npm:^9.0.2"
     mdx-bundler: "npm:^10.0.2"
-    multithreading: "npm:0.2.1"
     patch-package: "npm:^8.0.0"
     postmark: "npm:^3.0.18"
     react: "npm:^18.2.0"
@@ -6248,25 +6242,17 @@ __metadata:
     react-native: "npm:0.74.1"
     react-native-reanimated: "npm:react-native-reanimated@3.13.0-rc.1"
     react-native-svg: "npm:15.2.0"
-    rehype: "npm:^12.0.1"
-    rehype-autolink-headings: "npm:^6.1.1"
-    rehype-parse: "npm:^8.0.4"
-    rehype-slug: "npm:^5.0.1"
-    sirv: "npm:^2.0.4"
     stripe: "npm:^9.1.0"
     supabase: "npm:1.127.4"
     swr: "npm:^2.2.5"
     tamagui: "npm:1.102.1"
     three: "npm:^0.152.2"
-    unified: "npm:^10.1.2"
-    unist-util-visit: "npm:^2.0.3"
     valibot: "npm:^0.35.0"
     victory: "npm:^37.0.2"
     vite: "npm:6.0.0-alpha.18"
     vite-bundle-analyzer: "npm:^0.9.4"
     vite-plugin-inspect: "npm:^0.8.4"
     vite-tsconfig-paths: "npm:^4.3.2"
-    vxrn: "npm:^1.1.142"
     vxs: "npm:^1.1.142"
   languageName: unknown
   linkType: soft
@@ -7433,6 +7419,59 @@ __metadata:
     react-dom: "npm:^18.2.0"
   peerDependencies:
     react: "*"
+  languageName: unknown
+  linkType: soft
+
+"@tamagui/takeout@workspace:code/takeout":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/takeout@workspace:code/takeout"
+  dependencies:
+    "@cyco130/vite-plugin-mdx": "npm:1.0.4"
+    "@react-three/drei": "npm:^9.105.6"
+    "@react-three/fiber": "npm:@react-three/fiber@9.0.0-alpha.6"
+    "@supabase/ssr": "npm:0.4.0"
+    "@supabase/supabase-js": "npm:^2.44.3"
+    "@tamagui/assert": "npm:1.102.1"
+    "@tamagui/bento": "npm:1.102.1"
+    "@tamagui/cli": "npm:1.102.1"
+    "@tamagui/demos": "npm:1.102.1"
+    "@tamagui/get-token": "npm:1.102.1"
+    "@tamagui/image-next": "npm:1.102.1"
+    "@tamagui/logo": "npm:1.102.1"
+    "@tamagui/lucide-icons": "npm:1.102.1"
+    acorn: "npm:^8.11.3"
+    acorn-walk: "npm:^8.3.1"
+    esbuild-register: "npm:^3.5.0"
+    gray-matter: "npm:^4.0.2"
+    h3: "npm:^1.11.1"
+    hast-util-to-html: "npm:^8.0.3"
+    hast-util-to-string: "npm:^2.0.0"
+    jsonwebtoken: "npm:^9.0.2"
+    mdx-bundler: "npm:^10.0.2"
+    patch-package: "npm:^8.0.0"
+    postmark: "npm:^3.0.18"
+    react: "npm:^18.2.0"
+    react-dom: "npm:^18.2.0"
+    react-draggable: "npm:^4.4.6"
+    react-hotkeys-hook: "npm:^4.5.0"
+    react-native: "npm:0.74.1"
+    react-native-reanimated: "npm:react-native-reanimated@3.13.0-rc.1"
+    react-native-svg: "npm:15.2.0"
+    rehype: "npm:^12.0.1"
+    rehype-autolink-headings: "npm:^6.1.1"
+    rehype-parse: "npm:^8.0.4"
+    rehype-slug: "npm:^5.0.1"
+    sirv: "npm:^2.0.4"
+    supabase: "npm:1.127.4"
+    tamagui: "npm:1.102.1"
+    unified: "npm:^10.1.2"
+    unist-util-visit: "npm:^2.0.3"
+    vite: "npm:6.0.0-alpha.18"
+    vite-bundle-analyzer: "npm:^0.9.4"
+    vite-plugin-inspect: "npm:^0.8.4"
+    vite-tsconfig-paths: "npm:^4.3.2"
+    vxrn: "npm:^1.1.142"
+    vxs: "npm:^1.1.142"
   languageName: unknown
   linkType: soft
 
@@ -20737,18 +20776,6 @@ __metadata:
   bin:
     multicast-dns: cli.js
   checksum: 10/e9add8035fb7049ccbc87b1b069f05bb3b31e04fe057bf7d0116739d81295165afc2568291a4a962bee01a5074e475996816eed0f50c8110d652af5abb74f95a
-  languageName: node
-  linkType: hard
-
-"multithreading@npm:0.2.1":
-  version: 0.2.1
-  resolution: "multithreading@npm:0.2.1"
-  dependencies:
-    "@rollup/rollup-linux-x64-gnu": "npm:^4.9.1"
-  dependenciesMeta:
-    "@rollup/rollup-linux-x64-gnu":
-      optional: true
-  checksum: 10/769ecf2db3dc8f93a9fc85948bc6d2f770ee9a6ffb0e10f5369b6ec2e646c5c3f936a6cabc76d4e13849ab8eceb7c3629b3c24c57490bda563f8a4ba6c0dfe59
   languageName: node
   linkType: hard
 

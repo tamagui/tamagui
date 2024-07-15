@@ -1,88 +1,168 @@
-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
+import { Check, LogOut, Menu } from '@tamagui/lucide-icons'
+import {
+  Button,
+  Checkbox,
+  H6,
+  Label,
+  ListItem,
+  Paragraph,
+  Popover,
+  YGroup,
+  YStack,
+} from 'tamagui'
+import type { ThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
+import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
+import { weakKey } from '~/helpers/weakKey'
+import type { WritableKeysOf } from './types'
+
+export const StudioThemeBuilderSettingsDropdown = () => {
+  return (
+    <Popover
+      size="$5"
+      allowFlip
+      placement="bottom"
+      stayInFrame={{
+        padding: 10,
+      }}
+    >
+      <Popover.Trigger asChild>
+        <Button size="$2" scaleIcon={1.5} chromeless circular icon={Menu}></Button>
+      </Popover.Trigger>
+
+      <Popover.Content
+        borderWidth="$0.5"
+        borderColor="$borderColor"
+        p={0}
+        trapFocus={false}
+        enterStyle={{ y: -10, opacity: 0 }}
+        exitStyle={{ y: -10, opacity: 0 }}
+        elevate
+        maw={400}
+        animation={[
+          'quickest',
+          {
+            opacity: {
+              overshootClamping: true,
+            },
+          },
+        ]}
+      >
+        <Popover.ScrollView>
+          <YGroup alignSelf="center" width={320} size="$4">
+            <H6 size="$1" lh={10} pt="$3" pb="$2" px="$3">
+              Quick Settings
+            </H6>
+
+            {menuItems.settings.map((item) => {
+              return <MenuItem key={weakKey(item)} item={item} />
+            })}
+
+            <H6 size="$1" lh={10} pt="$3" pb="$2" px="$3">
+              Menu
+            </H6>
+
+            {menuItems.items.map((item) => {
+              return <MenuItem key={weakKey(item)} item={item} />
+            })}
+          </YGroup>
+        </Popover.ScrollView>
+        <Popover.Arrow
+          borderWidth={1}
+          style={{ zIndex: 1 }}
+          borderColor="$borderColor"
+          // bottom={-17}
+          // style={{ bottom: '-17px' }}
+        />
+      </Popover.Content>
+    </Popover>
+  )
+}
+const MenuItem = ({ item }: { item: MenuItem }) => {
+  const store = useThemeBuilderStore()
+  return (
+    <YGroup.Item>
+      <ListItem
+        icon={item.icon}
+        jc="flex-start"
+        size="$4"
+        title={item.title}
+        hoverTheme
+        onPress={item.onPress as any}
+        {...(!item.title && {
+          p: 0,
+        })}
+      >
+        {Boolean(item.label || item.description) && (
+          <Label f={1} p="$3" gap="$4" htmlFor={weakKey(item)}>
+            {item.type === 'toggle' && (
+              <Checkbox
+                checked={!!store[item.toggleProperty]}
+                onCheckedChange={(val) => {
+                  store[item.toggleProperty as any] = !!val
+                }}
+                id={weakKey(item)}
+              >
+                <Checkbox.Indicator>
+                  <Check />
+                </Checkbox.Indicator>
+              </Checkbox>
+            )}
+            <YStack f={1}>
+              <Paragraph>{item.label}</Paragraph>
+              {!!item.description && (
+                <Paragraph theme="alt1" size="$2">
+                  {item.description}
+                </Paragraph>
+              )}
+            </YStack>
+          </Label>
+        )}
+      </ListItem>
+    </YGroup.Item>
+  )
+}
+
+type MenuItemBase = {
+  title?: string
+  label?: string
+  description?: string
+  icon?: any
+  onPress?: Function
+}
+
+type MenuItemToggle = MenuItemBase & {
+  type: 'toggle'
+  toggleProperty: WritableKeysOf<ThemeBuilderStore>
+}
+
+type MenuItemItem = MenuItemBase & {
+  type: 'item'
+}
+
+type MenuItem = MenuItemItem | MenuItemToggle
+
+const menuItems = {
+  settings: [
+    {
+      type: 'toggle',
+      label: 'Explanations',
+      toggleProperty: 'showExplanationSteps',
+      description: 'Show steps explaining themes in depth',
+    },
+  ],
+
+  items: [
+    {
+      type: 'item',
+      title: 'Logout',
+      icon: LogOut,
+      async onPress() {
+        // TODO
+        alert('todo')
+        debugger
+        // await getAuth()?.signOut()
+        window.location.reload()
+      },
+    },
+  ],
+} satisfies Record<'settings' | 'items', MenuItem[]>

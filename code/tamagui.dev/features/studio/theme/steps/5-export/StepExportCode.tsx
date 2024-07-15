@@ -1,361 +1,638 @@
-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
+import { LinearGradient } from '@tamagui/linear-gradient'
+import { Copy, Download } from '@tamagui/lucide-icons'
+import { useStore } from '@tamagui/use-store'
+import { useEffect } from 'react'
+import {
+  Button,
+  Circle,
+  Fieldset,
+  Label,
+  Paragraph,
+  RadioGroup,
+  ScrollView,
+  SizableText,
+  Switch,
+  Tabs,
+  Text,
+  Theme,
+  XStack,
+  YStack,
+} from 'tamagui'
+
+import { themeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
+import { toastController } from '../../../ToastProvider'
+import { FieldsetWithLabel } from '../../views/FieldsetWithLabel'
+
+const platforms = ['vanilla', 'nextjs', 'expo', 'webpack', 'vite'] as const
+
+type Platform = (typeof platforms)[number]
+
+type FileType = {
+  filename: string
+  content: string
+  maxHeight?: number
+  downloadable?: boolean
+}
+
+type SubStep =
+  | { type: 'text'; content: string }
+  | { type: 'command'; content: string }
+  | {
+      type: 'files'
+      files: Array<FileType>
+    }
+
+type Step = {
+  steps: Array<SubStep>
+  name: string
+}
+
+export class StepExportStore {
+  selectedPlatform: Platform = 'vanilla'
+
+  platformData: Record<
+    Platform,
+    {
+      name: string
+      description?: string
+      steps: Array<Step>
+    }
+  > | null = null
+  selectedPlatformData: { name: string; steps: Array<Step> } | null = null
+
+  includeComponentThemes = true
+
+  setIncludeComponentThemes(newVal: boolean) {
+    this.includeComponentThemes = newVal
+    this.updateSteps()
+  }
+
+  includeSizeTokens = true
+
+  setIncludeSizeTokens(newVal: boolean) {
+    this.includeSizeTokens = newVal
+    this.updateSteps()
+  }
+
+  getThemeBuilderConfig() {
+    return themeBuilderStore.getCode({
+      includeComponentThemes: this.includeComponentThemes,
+      includeSizeTokens: this.includeSizeTokens,
+    })
+  }
+
+  setSelectedPlatform(value: Platform) {
+    this.selectedPlatform = value
+    this.updateSelectedPlatformData()
+  }
+
+  updateSelectedPlatformData() {
+    this.selectedPlatformData = this.selectedPlatform
+      ? this.platformData?.[this.selectedPlatform] ?? null
+      : null
+  }
+
+  async updateSteps() {
+    const config = await this.getThemeBuilderConfig()
+    if (!config) return
+
+    const addThemeStep = {
+      name: 'Add theme',
+      steps: [
+        {
+          type: 'text',
+          content: 'Copy into a theme-builder.ts file:',
+        },
+        {
+          type: 'files',
+          files: [
+            {
+              filename: 'theme-builder.ts',
+              content: config,
+              maxHeight: 150,
+              downloadable: true,
+            },
+          ],
+        },
+      ],
+    } satisfies Step
+
+    const updateConfigStep = {
+      name: 'Update your Tamagui config',
+      steps: [
+        {
+          type: 'text',
+          content:
+            'Finally update your tamagui.config.ts file to use the theme builder output file.',
+        },
+        {
+          type: 'files',
+          files: [
+            {
+              filename: 'tamagui.config.ts',
+              content: `import * as themes from './src/themes'
+import { tokens } from './src/theme-builder'
+
+const config = createTamagui({
+  tokens,
+  themes,
+  // ...the rest of your config
+})
+`,
+            },
+          ],
+        },
+      ],
+    } satisfies Step
+
+    this.platformData = {
+      expo: {
+        name: 'React Native',
+        description: 'react-native or Expo project.',
+        steps: [
+          addThemeStep,
+          {
+            name: 'Add the generate script',
+            steps: [
+              {
+                type: 'text',
+                content: 'Make sure the Tamagui CLI is installed in your project',
+              },
+              {
+                type: 'command',
+                content: 'yarn add @tamagui/cli',
+              },
+              {
+                type: 'text',
+                content: 'then, add the following script to your package.json:',
+              },
+              {
+                type: 'files',
+                files: [
+                  {
+                    filename: 'package.json',
+                    content: `{
+  "scripts": {
+    "generate-themes": "tamagui generate-themes ./path/to/theme-builder.ts ./theme-output.ts"
+  }
+}`,
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            name: 'Generate the theme',
+            steps: [
+              {
+                type: 'text',
+                content: 'Run:',
+              },
+              {
+                type: 'command',
+                content: 'yarn generate-themes',
+              },
+              {
+                type: 'text',
+                content:
+                  'And remember, you will need to re-run this script every time you change your theme builder code.',
+              },
+            ],
+          },
+          updateConfigStep,
+        ],
+      },
+
+      vanilla: {
+        name: 'Vanilla',
+        description: 'Basic steps for any project',
+        steps: [
+          addThemeStep,
+          {
+            name: `Generate`,
+            steps: [
+              {
+                content: `npx tamagui generate-themes theme-builder.ts themes.ts`,
+                type: 'command',
+              },
+            ],
+          },
+          updateConfigStep,
+        ],
+      },
+
+      nextjs: {
+        name: 'Next.js',
+        description: 'Used in monorepo or standalone.',
+        steps: [
+          addThemeStep,
+          {
+            name: 'Configure Next.js',
+            steps: [
+              {
+                type: 'text',
+                content: 'Open your Next.js config file and add the following:',
+              },
+              {
+                type: 'files',
+                files: [
+                  {
+                    filename: 'next.config.ts',
+                    content: `withTamagui({
+  themeBuilder: {
+    input: 'src/theme-builder.ts',
+    output: 'src/themes.ts',
+  },
+  outputCSS: process\.env\.NODE_ENV === 'production' ? './public/tamagui.css' : null,
+  // ...
+}),`,
+                  },
+                ],
+              },
+              {
+                type: 'text',
+                content:
+                  'Now, the Next.js server will watch your theme builder file and update the output whenever it changes.',
+              },
+            ],
+          },
+
+          {
+            name: 'Update your Tamagui config',
+            steps: [
+              {
+                type: 'text',
+                content:
+                  'Finally, update your tamagui.config.ts file to use the theme builder output file.',
+              },
+              {
+                type: 'files',
+                files: [
+                  {
+                    filename: 'tamagui.config.ts',
+                    content: `import * as themesIn from './src/themes'
+import { tokens } from './src/theme-builder'
+
+// TAMAGUI_IS_SERVER is set by @tamagui/next-plugin
+const themes =
+  process.env.TAMAGUI_IS_SERVER || process.env.NODE_ENV !== 'production'
+    ? themesIn
+    : ({} as typeof themesIn)
+
+
+const config = createTamagui({
+  tokens,
+  themes,
+  // ...the rest of your config
+})
+`,
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      vite: {
+        name: 'Vite',
+        description: 'Project using Vite and the `@tamagui/vite-plugin` plugin.',
+        steps: [
+          addThemeStep,
+          {
+            name: 'Configure Vite',
+            steps: [
+              {
+                type: 'text',
+                content: 'Open your Vite config file and add the following:',
+              },
+              {
+                type: 'files',
+                files: [
+                  {
+                    filename: 'vite.config.ts',
+                    content: `export default defineConfig({
+  plugins: [
+    tamaguiPlugin({
+      themeBuilder: {
+        input: 'src/theme-builder.ts',
+        output: 'src/themes.ts',,
+      },
+      outputCSS: process\.env\.NODE_ENV === 'production' ? './public/tamagui.css' : null,
+      // ...
+    }),
+    // ...
+  ],
+})
+`,
+                  },
+                ],
+              },
+              {
+                type: 'text',
+                content:
+                  'Now, Vite will watch your theme builder file and update the output whenever it changes.',
+              },
+            ],
+          },
+          updateConfigStep,
+        ],
+      },
+      webpack: {
+        name: 'Webpack',
+        description: 'Project using Webpack and the `tamagui-loader` plugin.',
+        steps: [
+          addThemeStep,
+          {
+            name: 'Configure Webpack',
+            steps: [
+              {
+                type: 'text',
+                content: 'Open your Webpack config file and add the following:',
+              },
+              {
+                type: 'files',
+                files: [
+                  {
+                    filename: 'webpack.config.js',
+                    content: `module.exports = {
+  plugins: [
+    new TamaguiPlugin({
+      themeBuilder: {
+        input: 'src/theme-builder.ts',
+        output: 'src/themes.ts',,
+      },
+      outputCSS: process\.env\.NODE_ENV === 'production' ? './public/tamagui.css' : null,
+      // ...
+    }),
+    // ...
+  ],
+}
+`,
+                  },
+                ],
+              },
+              {
+                type: 'text',
+                content:
+                  'Now, Webpack will watch your theme builder file and update the output whenever it changes.',
+              },
+            ],
+          },
+          updateConfigStep,
+        ],
+      },
+    } satisfies typeof this.platformData
+    this.updateSelectedPlatformData()
+  }
+}
+
+export const StepExportCode = () => {
+  const store = useStore(StepExportStore)
+
+  useEffect(() => {
+    store.updateSteps()
+  }, [])
+
+  return (
+    <YStack py="$4" gap="$3" px="$4">
+      <FieldsetWithLabel label="Options">
+        <YStack gap="$1" p="$4">
+          <Fieldset flexDirection="row" ai="center" gap="$3">
+            <YStack>
+              <Switch
+                id="include-component-themes-switch"
+                checked={store.includeComponentThemes}
+                onCheckedChange={(newChecked) =>
+                  store.setIncludeComponentThemes(!!newChecked)
+                }
+                size="$2"
+              >
+                <Switch.Thumb animation="quickest" />
+              </Switch>
+            </YStack>
+            <Label size="$3" htmlFor="include-component-themes-switch">
+              Include Component Themes
+            </Label>
+          </Fieldset>
+        </YStack>
+      </FieldsetWithLabel>
+
+      <YStack f={1}>
+        {!!store.platformData && (
+          <RadioGroup
+            mt="$4"
+            gap="$2"
+            value={store.selectedPlatform ?? undefined}
+            onValueChange={(val) => {
+              store.setSelectedPlatform(val as any)
+            }}
+          >
+            {platforms.map((platform) => {
+              const active = store.selectedPlatform === platform
+              const htmlId = `demo-item-${platform}`
+              const data = store.platformData?.[platform]
+              return (
+                <Label
+                  key={platform}
+                  f={1}
+                  htmlFor={htmlId}
+                  p="$4"
+                  height="unset"
+                  display="flex"
+                  borderWidth="$0.5"
+                  borderColor={active ? '$color8' : '$color5'}
+                  borderRadius="$4"
+                  gap="$4"
+                  ai="center"
+                  hoverStyle={{
+                    borderColor: active ? '$color10' : '$color7',
+                  }}
+                >
+                  <RadioGroup.Item id={htmlId} size="$3" value={platform}>
+                    <RadioGroup.Indicator />
+                  </RadioGroup.Item>
+                  <YStack f={1}>
+                    <Paragraph size="$6">{data?.name}</Paragraph>
+                    <Paragraph size="$4" theme="alt1">
+                      {data?.description}
+                    </Paragraph>
+                  </YStack>
+                </Label>
+              )
+            })}
+          </RadioGroup>
+        )}
+      </YStack>
+    </YStack>
+  )
+}
+
+export const StepExportCodeSidebar = () => {
+  const store = useStore(StepExportStore)
+
+  const platform = store.selectedPlatformData
+  if (!platform) {
+    return null
+  }
+
+  return (
+    <ScrollView py="$2" pt="$4">
+      <YStack gap="$8" pt="$1" pb="$6" key={store.selectedPlatform}>
+        {platform.steps.map((step, idx) => (
+          <YStack key={idx} gap="$3">
+            <XStack gap="$3" ai="center" ml="$3">
+              <Circle bg="$background" size={20} jc="center" ai="center">
+                <SizableText ta="center" fontFamily="$heading" size="$1" x={1}>
+                  {idx + 1}
+                </SizableText>
+              </Circle>
+              <SizableText fontFamily="$heading" size="$3" color="$color11" ls={1}>
+                {step.name}
+              </SizableText>
+            </XStack>
+
+            <YStack gap="$4">
+              {step.steps.map((subStep, _idx) => {
+                return (
+                  <XStack key={_idx} ml="$4" mr="$3">
+                    {subStep.type === 'text' && (
+                      <Paragraph theme="alt1" size="$4">
+                        {subStep.content}
+                      </Paragraph>
+                    )}
+                    {subStep.type === 'command' && (
+                      <Code filename="" content={subStep.content} />
+                    )}
+                    {subStep.type === 'files' && (
+                      <Tabs
+                        defaultValue={subStep.files[0].filename}
+                        orientation="horizontal"
+                        flexDirection="column"
+                        gap="$2"
+                        flex={1}
+                      >
+                        <Tabs.List
+                          bg="$color4"
+                          als="flex-start"
+                          btrr="$3"
+                          btlr="$3"
+                          mx="$3"
+                        >
+                          {subStep.files.map((file, i) => (
+                            <Tabs.Tab
+                              key={i}
+                              unstyled
+                              px="$3"
+                              pt="$2"
+                              mb={-22}
+                              pb="$4.5"
+                              bg="$color2"
+                              value={file.filename}
+                            >
+                              <SizableText color="$color8" size="$2">
+                                {file.filename}
+                              </SizableText>
+                            </Tabs.Tab>
+                          ))}
+                        </Tabs.List>
+
+                        {subStep.files.map((file, i) => (
+                          <Tabs.Content key={i} value={file.filename}>
+                            <Code {...file} />
+                          </Tabs.Content>
+                        ))}
+                      </Tabs>
+                    )}
+                  </XStack>
+                )
+              })}
+            </YStack>
+          </YStack>
+        ))}
+      </YStack>
+    </ScrollView>
+  )
+}
+
+const Code = ({ content, downloadable, maxHeight, filename }: FileType) => {
+  return (
+    <YStack f={1}>
+      <ScrollView
+        f={1}
+        horizontal
+        maxHeight={maxHeight}
+        bg="$background"
+        py="$3"
+        px="$4"
+        br="$4"
+      >
+        <Text
+          fontFamily="$mono"
+          fontSize="$2"
+          dangerouslySetInnerHTML={{
+            __html: content,
+          }}
+        />
+      </ScrollView>
+      {maxHeight && (
+        <LinearGradient
+          pos="absolute"
+          left={0}
+          right={0}
+          bottom={0}
+          height={50}
+          colors={['$background', 'transparent']}
+          start={[0, 1]}
+          end={[0, 0]}
+        />
+      )}
+      <XStack pos="absolute" right="$2.5" top={10} gap="$2" flexDirection="row-reverse">
+        <Button
+          onPress={() => {
+            copyText(content)
+          }}
+          size="$2"
+          icon={Copy}
+        >
+          Copy
+        </Button>
+        {downloadable && (
+          <Theme name="green">
+            <Button
+              als="center"
+              size="$2"
+              icon={Download}
+              onPress={() => {
+                downloadFile(filename, content)
+              }}
+            >
+              Download File
+            </Button>
+          </Theme>
+        )}
+      </XStack>
+    </YStack>
+  )
+}
+
+function downloadFile(filename, text) {
+  const element = document.createElement('a')
+  element.setAttribute(
+    'href',
+    'data:text/plain;charset=utf-8,' + encodeURIComponent(text)
+  )
+  element.setAttribute('download', filename)
+
+  element.style.display = 'none'
+  document.body.appendChild(element)
+
+  element.click()
+
+  document.body.removeChild(element)
+}
+
+function copyText(text: string) {
+  navigator.clipboard.writeText(text).then(() => {
+    toastController.show('Copied!')
+  })
+}
