@@ -45,7 +45,7 @@ import { Link } from '~/components/Link'
 import { Footer } from '~/features/site/Footer'
 import { LoadCherryBomb, LoadMunro } from '~/features/site/fonts/LoadFonts'
 import { PurchaseModal } from '~/features/site/purchase/PurchaseModal'
-import { MunroP, PurchaseButton, isSafariMobile } from '~/features/site/purchase/helpers'
+import { DemoButton, MunroP, PurchaseButton, isSafariMobile } from '~/features/site/purchase/helpers'
 import { getProductsForServerSideRendering } from '~/features/site/purchase/server-helpers'
 import { useTakeoutStore } from '~/features/site/purchase/useTakeoutStore'
 import { seasons } from '~/features/site/seasons/SeasonTogglePopover'
@@ -1117,17 +1117,20 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
           />
         </ThemeTintAlt>
 
-        <YStack pos="absolute" b="$4" l="$4" r="$4" zi={100}>
+        <XStack pos="absolute" b="$4" l="$4" r="$4" zi={100} gap="$2" ml="$-2">
           {/* cant use buttonlink it breaks scroll on press if not enabled, conditionally use a link */}
           {/* subscription ? `/account/items#${subscription.id}` : '' */}
           <PurchaseButton
             onPress={() => {
               store.showPurchase = true
             }}
+            width="50%"
           >
             Purchase
           </PurchaseButton>
-        </YStack>
+          <DemoButton width="50%">Demo</DemoButton>
+
+        </XStack>
 
         <ScrollView p="$6" disabled={media.md} showsVerticalScrollIndicator={false}>
           <YStack gap="$2">

@@ -1,5 +1,5 @@
 import { ThemeTintAlt } from '@tamagui/logo'
-import { Check, CheckCircle, XCircle } from '@tamagui/lucide-icons'
+import { Check, CheckCircle, XCircle, ExternalLink } from '@tamagui/lucide-icons'
 import type { ButtonProps, CheckboxProps, RadioGroupItemProps } from 'tamagui'
 import {
   Button,
@@ -16,7 +16,7 @@ import {
 import type { Database } from '~/features/supabase/types'
 import { getTakeoutPriceInfo } from './getProductInfo'
 
-import { usePathname } from 'vxs'
+import { Link, usePathname } from 'vxs'
 
 const ua = (() => {
   if (typeof window === 'undefined') return
@@ -61,6 +61,24 @@ export const MunroP = styled(Paragraph, {
   // className: 'pixelate',
   fontFamily: '$munro',
 })
+
+export function DemoButton(props: ButtonProps) {
+  return (
+    <ThemeTintAlt offset={1}>
+      <Link href="https://unistack-next-delta.vercel.app/" target="_blank" asChild>
+      <Button size="$5" borderWidth={2} {...props}>
+        <Button.Text size="$3" ff="$silkscreen">
+          {props.children}
+        </Button.Text>
+
+        <Button.Icon>
+          <ExternalLink />
+        </Button.Icon>
+      </Button>
+      </Link>
+    </ThemeTintAlt>
+  )
+}
 
 export const CheckboxGroupItem = ({ children, ...props }: CheckboxProps) => {
   return (
