@@ -14,6 +14,14 @@ if (!import.meta.dirname) {
   throw new Error(`Not on Node 22`)
 }
 
+const resolve = async (path) => {
+  const resolved = await import.meta.resolve?.(path)
+  if (!resolved) {
+    throw new Error(`Not found: ${path}`)
+  }
+  return resolved.replace('file:/', '')
+}
+
 // const require = createRequire(import.meta.url)
 // const targets = [
 //   require.resolve('@tamagui/lucide-icons').replace('/dist/cjs/index.js', ''),
@@ -34,11 +42,10 @@ export default {
     alias: {
       // @ts-ignore TODO fix type
       '~': import.meta.dirname,
-      'react-native-svg': '@tamagui/react-native-svg',
-      // bugfix docsearch/react, weird af everything here
-      '@docsearch/react':
-        // @ts-ignore
-        (import.meta.resolve?.('@docsearch/react') || '').replace('file:/', ''),
+      'react-native-svg': await resolve('@tamagui/react-native-svg'),
+      // 'react-native-web': await resolve('react-native-web-lite'),
+      // bugfix docsearch/react, weird
+      '@docsearch/react': await resolve('@docsearch/react'),
     },
 
     // todo automate, probably can just dedupe all package.json deps?
@@ -67,6 +74,7 @@ export default {
       'swr',
       '@tamagui/demos',
       '@tamagui/bento',
+      '@tamagui/bento/data',
       '@supabase/ssr',
       '@tamagui/animations-moti',
       '@tamagui/animations-react-native',
