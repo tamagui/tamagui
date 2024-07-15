@@ -1815,6 +1815,8 @@ export type TamaguiComponent<
     __tama: [Props, Ref, NonStyledProps, BaseStyles, Variants, ParentStaticProperties]
   }
 
+type JSXIntrinsicElements = keyof JSX.IntrinsicElements
+
 export type InferGenericComponentProps<A> = A extends ComponentType<infer Props>
   ? Props
   : A extends ForwardRefExoticComponent<infer P>
@@ -1825,7 +1827,7 @@ export type InferGenericComponentProps<A> = A extends ComponentType<infer Props>
             props: infer Props
           ) => any
         ? Props
-        : {}
+        : A extends keyof JSX.IntrinsicElements ? JSX.IntrinsicElements[A] : {}
 
 export type InferStyledProps<
   A extends StylableComponent,
@@ -2084,6 +2086,7 @@ export type StylableComponent =
   | (new (
       props: any
     ) => any)
+  | JSXIntrinsicElements
 
 export type SpreadKeys =
   | '...fontSize'
