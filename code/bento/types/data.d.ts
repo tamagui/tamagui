@@ -14,4 +14,5 @@ export declare const listingData: {
         }[];
     }[];
 };
+export { LocationNotification } from './components/user/preferences';
 //# sourceMappingURL=data.d.ts.map
