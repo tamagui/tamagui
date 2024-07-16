@@ -53,15 +53,19 @@ export const useGetComponent = async () => {
       githubId: githubData?.node_id || '',
     })
 
-  const codePath = `http://tamagui.dev/api/bento/code?${query}`
+  const codePath = `https://tamagui.dev/api/bento/code?${query}`
 
   const { data, error, isLoading } = useSWR(
     install.installingComponent ? codePath : null,
-    fetcher
+    fetcher,
+    {
+      loadingTimeout: 3000,
+    }
   )
 
   if (data) {
     await installComponent({ component: data, setInstall, install })
   }
+
   return { data, error, isLoading }
 }

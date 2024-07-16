@@ -410,6 +410,16 @@ export default function Search() {
 }
 
 const Provider = ({ children }: { children: React.ReactNode }) => {
-  useInstallComponent()
+  const { error } = useInstallComponent()
+
+  if (error) {
+    return (
+      <Box flexDirection="column">
+        <Alert variant="error">Error installing component: {JSON.stringify(error)}</Alert>
+        {children}
+      </Box>
+    )
+  }
+
   return <>{children}</>
 }

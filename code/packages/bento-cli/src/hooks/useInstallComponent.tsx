@@ -94,14 +94,17 @@ export const installComponent = async ({ component, setInstall, install }) => {
 
 export const useInstallComponent = () => {
   const { install, setInstall } = useContext(AppContext)
-  const { data } = useGetComponent()
+  const { data, error } = useGetComponent()
 
   useEffect(() => {
     if (data && install?.installingComponent) {
       installComponent({ component: data, setInstall, install })
     }
   }, [data, install, setInstall])
+
+  return { data, error }
 }
+
 async function subFoldersInstallStep(
   uiDir: string,
   install: any,
