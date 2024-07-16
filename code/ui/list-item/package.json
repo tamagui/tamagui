@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/list-item",
-  "version": "1.102.1",
+  "version": "1.102.2",
   "sideEffects": [
     "*.css"
   ],
@@ -32,17 +32,17 @@
     }
   },
   "dependencies": {
-    "@tamagui/font-size": "1.102.1",
-    "@tamagui/get-font-sized": "1.102.1",
-    "@tamagui/get-token": "1.102.1",
-    "@tamagui/helpers": "1.102.1",
-    "@tamagui/helpers-tamagui": "1.102.1",
-    "@tamagui/stacks": "1.102.1",
-    "@tamagui/text": "1.102.1",
-    "@tamagui/web": "1.102.1"
+    "@tamagui/font-size": "1.102.2",
+    "@tamagui/get-font-sized": "1.102.2",
+    "@tamagui/get-token": "1.102.2",
+    "@tamagui/helpers": "1.102.2",
+    "@tamagui/helpers-tamagui": "1.102.2",
+    "@tamagui/stacks": "1.102.2",
+    "@tamagui/text": "1.102.2",
+    "@tamagui/web": "1.102.2"
   },
   "devDependencies": {
-    "@tamagui/build": "1.102.1",
+    "@tamagui/build": "1.102.2",
     "react": "^18.2.0"
   },
   "publishConfig": {
