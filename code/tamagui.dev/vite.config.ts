@@ -42,7 +42,7 @@ export default {
     alias: {
       // @ts-ignore TODO fix type
       '~': import.meta.dirname,
-      'react-native-svg': await resolve('@tamagui/react-native-svg'),
+      'react-native-svg': '@tamagui/react-native-svg',
       // 'react-native-web': await resolve('react-native-web-lite'),
       // bugfix docsearch/react, weird
       '@docsearch/react': await resolve('@docsearch/react'),
