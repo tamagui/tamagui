@@ -4,7 +4,7 @@ export declare const installComponent: ({ component, setInstall, install }: {
     install: any;
 }) => Promise<void>;
 export declare const useInstallComponent: () => {
-    data: any;
+    data: string | undefined;
     error: any;
 };
 //# sourceMappingURL=useInstallComponent.d.ts.map

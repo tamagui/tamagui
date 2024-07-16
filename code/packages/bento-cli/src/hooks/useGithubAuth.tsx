@@ -39,6 +39,7 @@ export const useGithubAuth = () => {
     'https://github.com/login/device/code',
     fetcher
   )
+
   // @ts-ignore
   data = querystring.parse(data || '')
   useGithubAuthPooling({ deviceCodeData: data as any as GithubCode })

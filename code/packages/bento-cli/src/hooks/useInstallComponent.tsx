@@ -8,18 +8,29 @@ import { componentsList, type ComponentSchema } from '../components.js'
 
 // for expo router setups
 const appDir = path.join(process.cwd(), 'app')
-const hasAppDir = () => existsSync(path.join(process.cwd(), 'app'))
-const hasAppDirAndSrcDir = () => existsSync(path.join(process.cwd(), 'app', 'src'))
+
+const hasAppDir = () => {
+  existsSync(path.join(process.cwd(), 'app'))
+}
+
+const hasAppDirAndSrcDir = () => {
+  existsSync(path.join(process.cwd(), 'app', 'src'))
+}
 
 // for remix setups
-const hasAppDirAndRoutesDir = () => existsSync(path.join(process.cwd(), 'app', 'routes'))
+const hasAppDirAndRoutesDir = () => {
+  existsSync(path.join(process.cwd(), 'app', 'routes'))
+}
 
-const hasSrcDir = () => existsSync(path.join(process.cwd(), 'src'))
+const hasSrcDir = () => {
+  existsSync(path.join(process.cwd(), 'src'))
+}
 
-const createUIDir = () =>
+const createUIDir = () => {
   mkdirSync(path.join(process.cwd(), 'packages', 'ui'), {
     recursive: true,
   })
+}
 
 const createDir = ({
   component,
@@ -64,6 +75,7 @@ const getComponentsFromTextFile = (components) => {
 
 export const installComponent = async ({ component, setInstall, install }) => {
   const components = getComponentsFromTextFile(component)
+
   if (hasPackagesAndUIDir()) {
     //TODO: think of adding later on the --overwrite flag in this piece of the process
 
@@ -84,8 +96,8 @@ export const installComponent = async ({ component, setInstall, install }) => {
   } else if (hasSrcDir()) {
     const uiDir = path.join(process.cwd(), 'src', 'components', 'ui')
     await subFoldersInstallStep(uiDir, install, components)
-  } else {
   }
+
   setInstall((prev) => ({
     installingComponent: null,
     installedComponents: [...prev.installedComponents, install.installingComponent],
@@ -94,7 +106,7 @@ export const installComponent = async ({ component, setInstall, install }) => {
 
 export const useInstallComponent = () => {
   const { install, setInstall } = useContext(AppContext)
-  const { data, error } = useGetComponent()
+  const { data, error, isLoading } = useGetComponent()
 
   useEffect(() => {
     if (data && install?.installingComponent) {

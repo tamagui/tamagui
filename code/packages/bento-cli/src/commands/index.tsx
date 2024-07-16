@@ -13,7 +13,7 @@ import { useInstallComponent } from '../hooks/useInstallComponent.js'
 
 const tokenStore = new Conf({ projectName: 'bento-cli' })
 
-const handleKeypress = (_, key, appContext) => {
+const handleKeypress = (key: string, modifier, appContext) => {
   const {
     selectedId,
     setSelectedId,
@@ -23,19 +23,23 @@ const handleKeypress = (_, key, appContext) => {
     setCopyToClipboard,
   } = appContext
 
-  if (!key) return
+  if (key === 'c' && appContext.install.enterToOpenBrowser) {
+    setCopyToClipboard(true)
+    return
+  }
 
   // after token addition on pressing esc go back to previous screen
-  if (key.escape && appContext.install.tokenIsInstalled) {
+  if (modifier.escape && appContext.install.tokenIsInstalled) {
     appContext.setInstall((prev) => ({
       ...prev,
       installingComponent: null,
       tokenIsInstalled: false,
     }))
+    return
   }
 
   if (
-    key.escape &&
+    modifier.escape &&
     appContext.install.installingComponent !== null &&
     !appContext.install.installingComponent?.isOSS
   ) {
@@ -47,36 +51,43 @@ const handleKeypress = (_, key, appContext) => {
     return
   }
 
-  if (key.escape) {
+  if (modifier.escape) {
     appContext.exit()
     return
   }
 
-  if (appContext.install.installingComponent && (key.upArrow || key.downArrow)) return
-
-  if (_ === 'c' && appContext.install.installingComponent) {
-    setCopyToClipboard(true)
-  }
+  if (appContext.install.installingComponent && (modifier.upArrow || modifier.downArrow))
+    return
 
   if (
-    key.return &&
+    modifier.return &&
     !appContext.install.installingComponent?.isOSS &&
     appContext.install.enterToOpenBrowser
   ) {
     open('https://github.com/login/device')
+    return
   }
-  if (appContext.install.installingComponent?.isOSS) return
-  if (key.upArrow) {
+
+  if (appContext.install.installingComponent?.isOSS) {
+    return
+  }
+
+  if (modifier.upArrow) {
     selectedId > -1 && setSelectedId(selectedId - 1)
+    return
   }
-  if (key.downArrow) {
+
+  if (modifier.downArrow) {
     selectedId < appContext.results.length - 1 && setSelectedId(selectedId + 1)
+    return
   }
-  if (key.return) {
+
+  if (modifier.return) {
     setInstall((prev) => ({
       ...prev,
       installingComponent: results[selectedId]?.item,
     }))
+    return
   }
 }
 
@@ -287,7 +298,12 @@ const CodeAuthScreen = () => {
     }))
   })
 
-  if (appContext.copyToClipboard) copy(data?.user_code)
+  useEffect(() => {
+    if (appContext.copyToClipboard) {
+      copy(data?.user_code)
+      console.warn(`Copied to clipboard`)
+    }
+  }, [appContext.copyToClipboard])
 
   return (
     <Box flexDirection="column" display="flex">
@@ -342,6 +358,7 @@ const CodeAuthScreen = () => {
     </Box>
   )
 }
+
 export default function Search() {
   const [results, setResults] = useState([])
   const [selectedId, setSelectedId] = useState(-1)
@@ -357,8 +374,8 @@ export default function Search() {
   const { access_token } = tokenStore?.get('token') ?? {}
   // tokenStore.delete("token");
 
-  useInput((_, key) =>
-    handleKeypress(_, key, {
+  useInput((input, key) =>
+    handleKeypress(input, key, {
       tokenStore,
       copyToClipboard,
       setCopyToClipboard,
@@ -392,17 +409,11 @@ export default function Search() {
     >
       <Provider>
         <Box flexDirection="column">
-          {(install.installingComponent?.isOSS ?? true) || access_token ? (
-            <Box flexDirection="column">
-              <UsageBanner />
-              <SearchBar />
-              <ResultsContainer />
-            </Box>
-          ) : (
-            <Box flexDirection="column">
-              <CodeAuthScreen />
-            </Box>
-          )}
+          <Box flexDirection="column">
+            <UsageBanner />
+            <SearchBar />
+            <ResultsContainer />
+          </Box>
         </Box>
       </Provider>
     </AppContext.Provider>
@@ -410,9 +421,17 @@ export default function Search() {
 }
 
 const Provider = ({ children }: { children: React.ReactNode }) => {
-  const { error } = useInstallComponent()
+  const { error, data } = useInstallComponent()
 
   if (error) {
+    if (error.status === 401) {
+      return (
+        <Box flexDirection="column">
+          <CodeAuthScreen />
+        </Box>
+      )
+    }
+
     return (
       <Box flexDirection="column">
         <Alert variant="error">Error installing component: {JSON.stringify(error)}</Alert>

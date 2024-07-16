@@ -6,8 +6,10 @@ import { useContext, useEffect, useState } from 'react'
 import useSWR from 'swr'
 import { AppContext } from '../commands/index.js'
 import { installComponent } from './useInstallComponent.js'
+import { useForceUpdate } from '@tamagui/use-force-update'
 
-export const useGetComponent = async () => {
+export const useGetComponent = () => {
+  const forceUpdate = useForceUpdate()
   const { install, tokenStore, setInstall } = useContext(AppContext)
   const { access_token } = tokenStore.get?.('token') ?? {}
   const [githubData, setGithubData] = useState(null)
@@ -33,13 +35,16 @@ export const useGetComponent = async () => {
         Authorization: `Bearer ${access_token || ''}`,
       },
     })
+
     if (!res.ok) {
       const error = new Error('An error occurred while fetching the data.')
       error.info = await res.json()
       error.status = res.status
       throw error
     }
+
     const result = await res.text()
+
     return result
   }
 
@@ -50,10 +55,10 @@ export const useGetComponent = async () => {
       section: install.installingComponent?.category,
       part: install.installingComponent?.categorySection,
       fileName: install.installingComponent?.fileName,
-      githubId: githubData?.node_id || '',
+      userGithubId: githubData?.node_id || '',
     })
 
-  const codePath = `https://tamagui.dev/api/bento/code?${query}`
+  const codePath = query ? `https://tamagui.dev/api/bento/code?${query}` : ''
 
   const { data, error, isLoading } = useSWR(
     install.installingComponent ? codePath : null,
@@ -63,9 +68,18 @@ export const useGetComponent = async () => {
     }
   )
 
-  if (data) {
-    await installComponent({ component: data, setInstall, install })
-  }
+  // useEffect(() => {
+  //   if (error?.info?.error.includes('user is not authenticated')) {
+  //     tokenStore.delete('token')
+  //     forceUpdate()
+  //   }
+  // }, [error])
+
+  useEffect(() => {
+    if (data) {
+      installComponent({ component: data, setInstall, install })
+    }
+  }, [data])
 
   return { data, error, isLoading }
 }
