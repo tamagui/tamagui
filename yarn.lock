@@ -6945,7 +6945,7 @@ __metadata:
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
     react-native: "npm:0.74.1"
-    react-native-reanimated: "npm:3.11.0"
+    react-native-reanimated: "npm:3.14.0"
     tamagui-loader: "npm:1.102.1"
   languageName: unknown
   linkType: soft
@@ -23148,26 +23148,6 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: 10/c0d86350f7edf9dccd1e2c0a6d129af18edfe8e7258075768667fad2d259afb08dfc4e273b3beffb6bc55d7d8d1ae042dcd5e096858626fe6daca4f540cde16b
-  languageName: node
-  linkType: hard
-
-"react-native-reanimated@npm:3.11.0":
-  version: 3.11.0
-  resolution: "react-native-reanimated@npm:3.11.0"
-  dependencies:
-    "@babel/plugin-transform-arrow-functions": "npm:^7.0.0-0"
-    "@babel/plugin-transform-nullish-coalescing-operator": "npm:^7.0.0-0"
-    "@babel/plugin-transform-optional-chaining": "npm:^7.0.0-0"
-    "@babel/plugin-transform-shorthand-properties": "npm:^7.0.0-0"
-    "@babel/plugin-transform-template-literals": "npm:^7.0.0-0"
-    "@babel/preset-typescript": "npm:^7.16.7"
-    convert-source-map: "npm:^2.0.0"
-    invariant: "npm:^2.2.4"
-  peerDependencies:
-    "@babel/core": ^7.0.0-0
-    react: "*"
-    react-native: "*"
-  checksum: 10/5ea68fa2c20bf98772a79e312adefb27aa8a97792849d6587d9e07eb5290c17745ad0bef5bc3343c0f0d8954ee81521deeb06399dc59f52723f0574df9c427b7
   languageName: node
   linkType: hard
 
