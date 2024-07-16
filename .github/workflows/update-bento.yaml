@@ -35,4 +35,4 @@ jobs:
         run: cd code/tamagui.dev && yarn build:bento
 
       - name: Upload To Supabase
-        run: cd code/tamagui.dev && yarn upload-bento
+        run: cd code/tamagui.dev && yarn upload:bento
