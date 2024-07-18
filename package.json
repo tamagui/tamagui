@@ -29,7 +29,6 @@
     "dev:serve:railway": "yarn workspace @tamagui/dot-dev serve:railway",
     "dev:prod": "yarn dev:build && yarn dev:serve",
     "dev:prod-only-homepage": "yarn dev:build --only index && yarn dev:serve",
-    "bento-cli:dev": "yarn workspace @tamagui/bento-cli dev",
     "postinstall": "./scripts/unlock-repo.sh",
     "build:force": "yarn clean:build && yarn build --force",
     "build:js": "./scripts/ensure-unlocked.sh && turbo run build --no-cache --force -- --skip-types",

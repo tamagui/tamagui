@@ -10728,9 +10728,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bento-get@workspace:code/packages/bento-cli":
+"bento-get@workspace:code/packages/bento-get":
   version: 0.0.0-use.local
-  resolution: "bento-get@workspace:code/packages/bento-cli"
+  resolution: "bento-get@workspace:code/packages/bento-get"
   dependencies:
     "@inkjs/ui": "npm:^1.0.0"
     "@supabase/supabase-js": "npm:^2.44.3"

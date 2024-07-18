@@ -296,7 +296,7 @@
       "path": "code/packages/babel-plugin-fully-specified"
     },
     {
-      "path": "code/packages/bento-cli"
+      "path": "code/packages/bento-get"
     },
     {
       "path": "code/packages/cli-color"

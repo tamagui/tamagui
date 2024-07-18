@@ -78,7 +78,6 @@ export const installComponent = async ({ component, setInstall, install }) => {
 
   if (hasPackagesAndUIDir()) {
     //TODO: think of adding later on the --overwrite flag in this piece of the process
-
     await Promise.all(
       components.map((component) =>
         fs.writeFile(
@@ -96,6 +95,9 @@ export const installComponent = async ({ component, setInstall, install }) => {
   } else if (hasSrcDir()) {
     const uiDir = path.join(process.cwd(), 'src', 'components', 'ui')
     await subFoldersInstallStep(uiDir, install, components)
+  } else {
+    console.warn(`No relevant directory found, installing directly in this directory`)
+    await subFoldersInstallStep('.', install, components)
   }
 
   setInstall((prev) => ({
@@ -112,7 +114,7 @@ export const useInstallComponent = () => {
     if (data && install?.installingComponent) {
       installComponent({ component: data, setInstall, install })
     }
-  }, [data, install, setInstall])
+  }, [data, install?.installingComponent, setInstall])
 
   return { data, error }
 }
