@@ -38,6 +38,7 @@
     "build:verbose": "yarn build -vvv",
     "docker:build": "dotenv -e .env -- sh -c 'docker build --progress=plain --build-arg GIT_CRYPT_KEY=$GIT_CRYPT_KEY --build-arg SHOULD_UNLOCK_GIT_CRYPT=$SHOULD_UNLOCK_GIT_CRYPT --build-arg TRANSCRYPT_PASSWORD=$TRANSCRYPT_PASSWORD -t my-app .'",
     "docker:run": "dotenv -e .env -- sh -c 'docker run -it -p 3000:3000 my-app'",
+    "docker:build-and-run": "yarn docker:build && yarn docker:run",
     "check": "manypkg check",
     "ci": "yarn && yarn check && yarn lint && yarn typecheck && yarn build && yarn test",
     "clean:build": "turbo run clean:build",
