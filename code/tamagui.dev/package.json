@@ -39,8 +39,6 @@
     "hsluv": "^0.1.0",
     "jsonwebtoken": "^9.0.2",
     "postmark": "^3.0.18",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
     "react-draggable": "^4.4.6",
     "react-hotkeys-hook": "^4.5.0",
     "react-native": "0.74.1",
@@ -55,7 +53,7 @@
     "vite": "6.0.0-alpha.18",
     "vite-plugin-inspect": "^0.8.4",
     "vite-tsconfig-paths": "^4.3.2",
-    "vxs": "^1.1.144"
+    "vxs": "^1.1.145"
   },
   "devDependencies": {
     "@tamagui/cli": "1.102.3",

@@ -92,13 +92,6 @@
     "watch:ts": "node -r esbuild-register ./scripts/watch-ts.ts",
     "next-site": "yarn workspace @tamagui/next-site dev"
   },
-  "resolutions": {
-    "@types/node": "16.11.9",
-    "metro": "0.80.8",
-    "metro-core": "0.80.8",
-    "metro-resolver": "0.80.8",
-    "metro-config": "0.80.8"
-  },
   "profile": {
     "//": "run 'yarn profile x' to toggle it on/off",
     "react-19": {
@@ -171,6 +164,5 @@
     "ultra-runner": "^3.10.5",
     "update-ts-references": "^3.3.0",
     "zx": "^7.2.3"
-  },
-  "stableVersion": "0.0.0"
+  }
 }

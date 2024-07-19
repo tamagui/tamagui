@@ -10,6 +10,9 @@ import { TamaguiProvider } from 'tamagui'
 import { SearchProvider } from '~/features/site/search/SearchProvider'
 import { UserThemeProvider, useUserTheme } from '~/features/site/theme/useUserTheme'
 import tamaConf from '~/config/tamagui.config'
+import { version } from 'react'
+
+console.info('React version', version)
 
 // for navigation container props
 //           theme: {

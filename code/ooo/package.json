@@ -17,14 +17,12 @@
     "@tamagui/config": "1.102.3",
     "@tamagui/core": "1.102.3",
     "@tamagui/input": "1.102.3",
-    "react": "npm:react@19.0.0-rc-f994737d14-20240522",
-    "react-dom": "npm:react-dom@19.0.0-rc-f994737d14-20240522",
     "react-native": "0.74.1",
-    "vxs": "^1.1.144"
+    "vxs": "^1.1.145"
   },
   "devDependencies": {
     "patch-package": "^8.0.0",
-    "vxrn": "^1.1.144"
+    "vxrn": "^1.1.145"
   },
   "publishConfig": {
     "access": "public"
