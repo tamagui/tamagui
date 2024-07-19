@@ -9,6 +9,6 @@ export declare const ScrollView: import("@tamagui/web").TamaguiComponent<import(
         readonly contentContainerStyle: "style";
     };
 }>;
-export type ScrollView = Pick<ScrollViewNative, 'scrollTo'>;
+export type ScrollView = ScrollViewNative;
 export type ScrollViewProps = GetProps<typeof ScrollView>;
 //# sourceMappingURL=ScrollView.d.ts.map
