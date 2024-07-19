@@ -39,15 +39,18 @@ WORKDIR /app
 COPY . .
 
 # init git
-RUN git config --global user.email "you@example.com" && git init . && git add -A && git commit -m 'add'
+RUN git config --global user.email "you@example.com" && git init . && git add -A && git commit -m 'add' > /dev/null
 
 # unlock
 RUN ./scripts/unlock-repo.sh
 
 RUN corepack enable
-RUN corepack prepare yarn@4.1.0 --activate
-RUN yarn set version 4.1.0
-RUN yarn install
+RUN corepack prepare yarn@4.3.1 --activate
+RUN yarn install --immutable
+RUN ls -la
+RUN ls -la node_modules
+RUN ls -la code/tamagui.dev
+RUN yarn --version
 RUN yarn profile react-19
 RUN yarn patch-package
 RUN yarn build:js

@@ -22,7 +22,7 @@
   },
   "devDependencies": {
     "@expo/package-manager": "^1.1.2",
-    "@playwright/test": "^1.40.1",
+    "@playwright/test": "^1.45.2",
     "@tamagui/build": "1.102.3",
     "@types/async-retry": "1.4.2",
     "@types/cross-spawn": "^6.0.2",

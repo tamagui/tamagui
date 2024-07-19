@@ -39,10 +39,8 @@
   "devDependencies": {
     "@babel/preset-react": "^7.23.3",
     "@babel/preset-typescript": "^7.23.3",
-    "@playwright/test": "^1.40.1",
+    "@playwright/test": "^1.45.2",
     "@tamagui/build": "1.102.3",
-    "@types/archiver": "^6",
-    "@types/jsonwebtoken": "^9.0.2",
     "tamagui-loader": "1.102.3"
   }
 }

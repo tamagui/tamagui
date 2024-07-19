@@ -1472,19 +1472,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cyco130/vite-plugin-mdx@npm:1.0.4":
-  version: 1.0.4
-  resolution: "@cyco130/vite-plugin-mdx@npm:1.0.4"
-  dependencies:
-    "@mdx-js/mdx": "npm:^3.0.0"
-    source-map: "npm:^0.7.4"
-    vfile: "npm:^6.0.1"
-  peerDependencies:
-    vite: 3 || 4 || 5
-  checksum: 10/89e186e95fd96e1e3fb9c1f6b1cf30a10d5c60101ead0919dd0ab3766ad9cc949cdcd709b3dd00353d57d085f4482d27514e7c4dc28c7eb97ab8d0317dbf24b3
-  languageName: node
-  linkType: hard
-
 "@discordjs/collection@npm:^1.5.1":
   version: 1.5.1
   resolution: "@discordjs/collection@npm:1.5.1"
@@ -3531,19 +3518,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nderscore/tamagui-typescript-plugin@npm:^0.6.0":
-  version: 0.6.0
-  resolution: "@nderscore/tamagui-typescript-plugin@npm:0.6.0"
-  dependencies:
-    color: "npm:4.2.3"
-  peerDependencies:
-    "@tamagui/core": "*"
-    "@tamagui/helpers": "*"
-    typescript: ">=4.8"
-  checksum: 10/a1662109336f37576aaf9bdcfba25cdae33d8c465e3c3f031c3e801062526097013a4e881b5e40fc6825571fd8298921eea2c2155fcf69516073925ac68858aa
-  languageName: node
-  linkType: hard
-
 "@next/env@npm:14.2.4":
   version: 14.2.4
   resolution: "@next/env@npm:14.2.4"
@@ -4213,14 +4187,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@playwright/test@npm:^1.40.1":
-  version: 1.40.1
-  resolution: "@playwright/test@npm:1.40.1"
+"@playwright/test@npm:^1.45.2":
+  version: 1.45.2
+  resolution: "@playwright/test@npm:1.45.2"
   dependencies:
-    playwright: "npm:1.40.1"
+    playwright: "npm:1.45.2"
   bin:
     playwright: cli.js
-  checksum: 10/77bfc3d4a101fd996309de3a67256117f671952764404727e520a4d512ba2e528d8f9e0b28ef9b2851664a651a5d002a0b05993e313077a2fa640bb430f38b25
+  checksum: 10/858ab8c44b430977bf21aa9b089aa5b844899bdb80ededc59dcb5f8a284d483a8b4f56f724fbedf24fa424a6727a23d89f3614af82d82c4813a69f0aa58d945b
   languageName: node
   linkType: hard
 
@@ -5775,7 +5749,7 @@ __metadata:
     "@babel/core": "npm:^7.23.3"
     "@hookform/resolvers": "npm:^3.3.4"
     "@ngneat/falso": "npm:^7.2.0"
-    "@playwright/test": "npm:^1.40.1"
+    "@playwright/test": "npm:^1.45.2"
     "@pmmmwh/react-refresh-webpack-plugin": "npm:^0.5.10"
     "@rehookify/datepicker": "npm:^6.5.0"
     "@tamagui/animations-reanimated": "npm:1.102.3"
@@ -6292,6 +6266,7 @@ __metadata:
     "@tamagui/lucide-icons": "npm:1.102.3"
     "@tamagui/mdx": "npm:1.102.3"
     "@tamagui/use-store": "npm:1.102.3"
+    "@vercel/og": "npm:^0.5.8"
     acorn: "npm:^8.11.3"
     acorn-walk: "npm:^8.3.1"
     archiver: "npm:^7.0.1"
@@ -6303,10 +6278,9 @@ __metadata:
     mdx-bundler: "npm:^10.0.2"
     patch-package: "npm:^8.0.0"
     postmark: "npm:^3.0.18"
-    react-draggable: "npm:^4.4.6"
     react-hotkeys-hook: "npm:^4.5.0"
     react-native: "npm:0.74.1"
-    react-native-reanimated: "npm:react-native-reanimated@3.13.0-rc.1"
+    react-native-reanimated: "npm:react-native-reanimated@3.14.0"
     react-native-svg: "npm:15.2.0"
     stripe: "npm:^9.1.0"
     supabase: "npm:1.127.4"
@@ -6681,7 +6655,7 @@ __metadata:
   resolution: "@tamagui/kitchen-sink@workspace:code/kitchen-sink"
   dependencies:
     "@babel/core": "npm:^7.23.3"
-    "@playwright/test": "npm:^1.40.1"
+    "@playwright/test": "npm:^1.45.2"
     "@pmmmwh/react-refresh-webpack-plugin": "npm:^0.5.10"
     "@react-native-async-storage/async-storage": "npm:1.23.1"
     "@react-navigation/native": "npm:6.1.17"
@@ -6912,11 +6886,9 @@ __metadata:
   dependencies:
     "@babel/preset-react": "npm:^7.23.3"
     "@babel/preset-typescript": "npm:^7.23.3"
-    "@playwright/test": "npm:^1.40.1"
+    "@playwright/test": "npm:^1.45.2"
     "@tamagui/build": "npm:1.102.3"
-    "@types/archiver": "npm:^6"
     "@types/d3-scale": "npm:^4.0.2"
-    "@types/jsonwebtoken": "npm:^9.0.2"
     "@types/lodash-es": "npm:^4.17.6"
     "@types/uuid": "npm:^8.3.4"
     next: "npm:^14.2.4"
@@ -7492,7 +7464,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/takeout@workspace:code/takeout"
   dependencies:
-    "@cyco130/vite-plugin-mdx": "npm:1.0.4"
     "@react-three/drei": "npm:^9.105.6"
     "@react-three/fiber": "npm:@react-three/fiber@9.0.0-alpha.6"
     "@supabase/ssr": "npm:0.4.0"
@@ -7505,33 +7476,17 @@ __metadata:
     "@tamagui/image-next": "npm:1.102.3"
     "@tamagui/logo": "npm:1.102.3"
     "@tamagui/lucide-icons": "npm:1.102.3"
-    acorn: "npm:^8.11.3"
-    acorn-walk: "npm:^8.3.1"
     esbuild-register: "npm:^3.5.0"
-    gray-matter: "npm:^4.0.2"
     h3: "npm:^1.11.1"
-    hast-util-to-html: "npm:^8.0.3"
-    hast-util-to-string: "npm:^2.0.0"
     jsonwebtoken: "npm:^9.0.2"
-    mdx-bundler: "npm:^10.0.2"
     patch-package: "npm:^8.0.0"
     postmark: "npm:^3.0.18"
-    react-draggable: "npm:^4.4.6"
-    react-hotkeys-hook: "npm:^4.5.0"
     react-native: "npm:0.74.1"
-    react-native-reanimated: "npm:react-native-reanimated@3.13.0-rc.1"
+    react-native-reanimated: "npm:react-native-reanimated@3.14.0"
     react-native-svg: "npm:15.2.0"
-    rehype: "npm:^12.0.1"
-    rehype-autolink-headings: "npm:^6.1.1"
-    rehype-parse: "npm:^8.0.4"
-    rehype-slug: "npm:^5.0.1"
-    sirv: "npm:^2.0.4"
     supabase: "npm:1.127.4"
     tamagui: "npm:1.102.3"
-    unified: "npm:^10.1.2"
-    unist-util-visit: "npm:^2.0.3"
     vite: "npm:6.0.0-alpha.18"
-    vite-bundle-analyzer: "npm:^0.9.4"
     vite-plugin-inspect: "npm:^0.8.4"
     vite-tsconfig-paths: "npm:^4.3.2"
     vxrn: "npm:^1.1.145"
@@ -8085,15 +8040,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/archiver@npm:^6":
-  version: 6.0.2
-  resolution: "@types/archiver@npm:6.0.2"
-  dependencies:
-    "@types/readdir-glob": "npm:*"
-  checksum: 10/bbeeacbb4c294adc9722a121e07653523cea7baf20f35d9c07a0910bf46c43d27e364f25030cec142e3c0c185dfdb45dd6d1980f31af196f809f907ad0184ccf
-  languageName: node
-  linkType: hard
-
 "@types/aria-query@npm:^5.0.1":
   version: 5.0.1
   resolution: "@types/aria-query@npm:5.0.1"
@@ -8542,15 +8488,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/jsonwebtoken@npm:^9.0.2":
-  version: 9.0.6
-  resolution: "@types/jsonwebtoken@npm:9.0.6"
-  dependencies:
-    "@types/node": "npm:*"
-  checksum: 10/1f2145222f62da1b3dbfc586160c4f9685782a671f4a4f4a72151c773945fe25807fd88ed1c270536b76f49053ed932c5dbf714ea0ed77f785665abb75beef05
-  languageName: node
-  linkType: hard
-
 "@types/keyv@npm:^3.1.1, @types/keyv@npm:^3.1.4":
   version: 3.1.4
   resolution: "@types/keyv@npm:3.1.4"
@@ -8798,15 +8735,6 @@ __metadata:
     "@types/scheduler": "npm:*"
     csstype: "npm:^3.0.2"
   checksum: 10/de0df184f2b80e8724d79eead47f23e43e91a68c0712a5d989db3f1242f2c24179cf8e26520b5a141396b55f4928ce9a6c3a3a121a98eca8e82973920209f06c
-  languageName: node
-  linkType: hard
-
-"@types/readdir-glob@npm:*":
-  version: 1.1.5
-  resolution: "@types/readdir-glob@npm:1.1.5"
-  dependencies:
-    "@types/node": "npm:*"
-  checksum: 10/58625586589a2cbcf19d7bff5a9b61e961b42e438e5a4f537633785efdcacfad15d3b32df3d27926696b36b43eb86eeb790fce9373fa357ab87720c64f86618b
   languageName: node
   linkType: hard
 
@@ -11775,13 +11703,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"clsx@npm:^1.1.1":
-  version: 1.2.1
-  resolution: "clsx@npm:1.2.1"
-  checksum: 10/5ded6f61f15f1fa0350e691ccec43a28b12fb8e64c8e94715f2a937bc3722d4c3ed41d6e945c971fc4dcc2a7213a43323beaf2e1c28654af63ba70c9968a8643
-  languageName: node
-  linkType: hard
-
 "cmd-shim@npm:^6.0.0":
   version: 6.0.3
   resolution: "cmd-shim@npm:6.0.3"
@@ -11880,7 +11801,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"color@npm:4.2.3, color@npm:^4.2.3":
+"color@npm:^4.2.3":
   version: 4.2.3
   resolution: "color@npm:4.2.3"
   dependencies:
@@ -12308,7 +12229,7 @@ __metadata:
   resolution: "create-tamagui@workspace:code/core/create-tamagui"
   dependencies:
     "@expo/package-manager": "npm:^1.1.2"
-    "@playwright/test": "npm:^1.40.1"
+    "@playwright/test": "npm:^1.45.2"
     "@tamagui/build": "npm:1.102.3"
     "@types/async-retry": "npm:1.4.2"
     "@types/cross-spawn": "npm:^6.0.2"
@@ -13389,6 +13310,27 @@ __metadata:
   languageName: node
   linkType: hard
 
+"dotenv-cli@npm:^7.4.2":
+  version: 7.4.2
+  resolution: "dotenv-cli@npm:7.4.2"
+  dependencies:
+    cross-spawn: "npm:^7.0.3"
+    dotenv: "npm:^16.3.0"
+    dotenv-expand: "npm:^10.0.0"
+    minimist: "npm:^1.2.6"
+  bin:
+    dotenv: cli.js
+  checksum: 10/48d887ea9be08f7453dc87d6c938311989e951d0b43028eadcbaff3be1ca56180f8c38b8f932fc2e59f0210e59f4b5c59cf8a34da3e6c92f63fe6d7ce4f09f65
+  languageName: node
+  linkType: hard
+
+"dotenv-expand@npm:^10.0.0":
+  version: 10.0.0
+  resolution: "dotenv-expand@npm:10.0.0"
+  checksum: 10/b41eb278bc96b92cbf3037ca5f3d21e8845bf165dc06b6f9a0a03d278c2bd5a01c0cfbb3528ae3a60301ba1a8a9cace30e748c54b460753bc00d4c014b675597
+  languageName: node
+  linkType: hard
+
 "dotenv-expand@npm:~11.0.6":
   version: 11.0.6
   resolution: "dotenv-expand@npm:11.0.6"
@@ -13398,7 +13340,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dotenv@npm:^16.4.4, dotenv@npm:^16.4.5, dotenv@npm:~16.4.5":
+"dotenv@npm:^16.3.0, dotenv@npm:^16.4.4, dotenv@npm:^16.4.5, dotenv@npm:~16.4.5":
   version: 16.4.5
   resolution: "dotenv@npm:16.4.5"
   checksum: 10/55a3134601115194ae0f924e54473459ed0d9fc340ae610b676e248cca45aa7c680d86365318ea964e6da4e2ea80c4514c1adab5adb43d6867fb57ff068f95c8
@@ -17497,7 +17439,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "integration@workspace:code/integration"
   dependencies:
-    "@playwright/test": "npm:^1.40.1"
+    "@playwright/test": "npm:^1.45.2"
     "@tamagui/animations-css": "npm:1.102.3"
     "@tamagui/core": "npm:1.102.3"
     "@tamagui/create-theme": "npm:1.102.3"
@@ -22456,27 +22398,27 @@ __metadata:
   languageName: node
   linkType: hard
 
-"playwright-core@npm:1.40.1":
-  version: 1.40.1
-  resolution: "playwright-core@npm:1.40.1"
+"playwright-core@npm:1.45.2":
+  version: 1.45.2
+  resolution: "playwright-core@npm:1.45.2"
   bin:
     playwright-core: cli.js
-  checksum: 10/b8945a5eec68a2772be537219c81f74b8fbd1545650c908c41fdcb2b9eb40f488968d1fb59c61ca58afb923af1e390dd621bba3099521fcd3d9a63ef3645a203
+  checksum: 10/ce35af648efca3f0c34630e76e2137cda183491ddfe04aadcff2217f44fcdb15e73e0334754b01ff60de799d745b2e5478c61e2693d7b9bdd9ccf73fe07df426
   languageName: node
   linkType: hard
 
-"playwright@npm:1.40.1":
-  version: 1.40.1
-  resolution: "playwright@npm:1.40.1"
+"playwright@npm:1.45.2":
+  version: 1.45.2
+  resolution: "playwright@npm:1.45.2"
   dependencies:
     fsevents: "npm:2.3.2"
-    playwright-core: "npm:1.40.1"
+    playwright-core: "npm:1.45.2"
   dependenciesMeta:
     fsevents:
       optional: true
   bin:
     playwright: cli.js
-  checksum: 10/95cf79f1574accbff18fac4b876aa3811640314ee74cf4cd1c249398cd49824e55dc664039342a18d2d2fa4f5ad460ce91a97cb15942ab5d71c8ab04f442dc32
+  checksum: 10/3e21c453cfc33b41c545eac2c6386ff2a39265088409200bf045cba38f1661f1aba10e80902354cdce86e964084b6c9dbfb5d3af94326aa2a7cb8800ae1a1e3f
   languageName: node
   linkType: hard
 
@@ -23126,19 +23068,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-draggable@npm:^4.4.6":
-  version: 4.4.6
-  resolution: "react-draggable@npm:4.4.6"
-  dependencies:
-    clsx: "npm:^1.1.1"
-    prop-types: "npm:^15.8.1"
-  peerDependencies:
-    react: ">= 16.3.0"
-    react-dom: ">= 16.3.0"
-  checksum: 10/51b9ac7f913797fc1cebc30ae383f346883033c45eb91e9b0b92e9ebd224bb1545b4ae2391825b649b798cc711a38351a5f41be24d949c64c6703ebc24eba661
-  languageName: node
-  linkType: hard
-
 "react-dropzone@npm:^14.2.3":
   version: 14.2.3
   resolution: "react-dropzone@npm:14.2.3"
@@ -23259,7 +23188,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-reanimated@npm:3.14.0":
+"react-native-reanimated@npm:3.14.0, react-native-reanimated@npm:react-native-reanimated@3.14.0":
   version: 3.14.0
   resolution: "react-native-reanimated@npm:3.14.0"
   dependencies:
@@ -23276,26 +23205,6 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: 10/b780949f52bb0d66521c973173d01776febbedffa4ee86309f31b2cf6b1cae2d0a0b7e6a177c2dbc5f6d92ba3912b6b8bde9b3b42dd39fc0ef792acbd909096b
-  languageName: node
-  linkType: hard
-
-"react-native-reanimated@npm:react-native-reanimated@3.13.0-rc.1":
-  version: 3.13.0-rc.1
-  resolution: "react-native-reanimated@npm:3.13.0-rc.1"
-  dependencies:
-    "@babel/plugin-transform-arrow-functions": "npm:^7.0.0-0"
-    "@babel/plugin-transform-nullish-coalescing-operator": "npm:^7.0.0-0"
-    "@babel/plugin-transform-optional-chaining": "npm:^7.0.0-0"
-    "@babel/plugin-transform-shorthand-properties": "npm:^7.0.0-0"
-    "@babel/plugin-transform-template-literals": "npm:^7.0.0-0"
-    "@babel/preset-typescript": "npm:^7.16.7"
-    convert-source-map: "npm:^2.0.0"
-    invariant: "npm:^2.2.4"
-  peerDependencies:
-    "@babel/core": ^7.0.0-0
-    react: "*"
-    react-native: "*"
-  checksum: 10/36528470d15cadd7ddc12de4a32012235698e4aa43c859fc0781a9c7114a521b758bf89a92d4044804457e106b4c1280b3de69853450b5dec5e7d0714939bf83
   languageName: node
   linkType: hard
 
@@ -26052,12 +25961,13 @@ __metadata:
   dependencies:
     "@biomejs/biome": "npm:^1.7.3"
     "@manypkg/cli": "npm:^0.19.1"
-    "@nderscore/tamagui-typescript-plugin": "npm:^0.6.0"
-    "@playwright/test": "npm:^1.40.1"
+    "@playwright/test": "npm:^1.45.2"
     "@types/eslint": "npm:^8"
     "@typescript-eslint/eslint-plugin": "npm:^6.19.1"
     "@typescript-eslint/parser": "npm:^6.19.1"
-    "@vercel/og": "npm:^0.5.8"
+    dotenv-cli: "npm:^7.4.2"
+    esbuild: "npm:^0.23.0"
+    esbuild-register: "npm:^3.5.0"
     eslint: "npm:^8.56.0"
     eslint-parallel: "npm:^1.2.1"
     fs-extra: "npm:^11.2.0"
@@ -27003,11 +26913,11 @@ __metadata:
 
 "typescript@patch:typescript@npm%3A^5.0.4#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A^5.5.2#optional!builtin<compat/typescript>":
   version: 5.5.2
-  resolution: "typescript@patch:typescript@npm%3A5.5.2#optional!builtin<compat/typescript>::version=5.5.2&hash=d69c25"
+  resolution: "typescript@patch:typescript@npm%3A5.5.2#optional!builtin<compat/typescript>::version=5.5.2&hash=379a07"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 10/28b3de2ddaf63a7620e7ddbe5d377af71ce93ecc558c41bf0e3d88661d8e6e7aa6c7739164fef98055f69819e41faca49252938ef3633a3dff2734cca6a9042e
+  checksum: 10/ac3145f65cf9e72ab29f2196e05d5816b355dc1a9195b9f010d285182a12457cfacd068be2dd22c877f88ebc966ac6e0e83f51c8586412b16499a27e3670ff4b
   languageName: node
   linkType: hard
 

@@ -26,10 +26,8 @@
     "@tamagui/lucide-icons": "1.102.3",
     "jsonwebtoken": "^9.0.2",
     "postmark": "^3.0.18",
-    "react-draggable": "^4.4.6",
-    "react-hotkeys-hook": "^4.5.0",
     "react-native": "0.74.1",
-    "react-native-reanimated": "npm:react-native-reanimated@3.13.0-rc.1",
+    "react-native-reanimated": "npm:react-native-reanimated@3.14.0",
     "react-native-svg": "15.2.0",
     "tamagui": "1.102.3",
     "vite": "6.0.0-alpha.18",
@@ -38,26 +36,11 @@
     "vxs": "^1.1.145"
   },
   "devDependencies": {
-    "@cyco130/vite-plugin-mdx": "1.0.4",
     "@tamagui/cli": "1.102.3",
-    "acorn": "^8.11.3",
-    "acorn-walk": "^8.3.1",
     "esbuild-register": "^3.5.0",
-    "gray-matter": "^4.0.2",
     "h3": "^1.11.1",
-    "hast-util-to-html": "^8.0.3",
-    "hast-util-to-string": "^2.0.0",
-    "mdx-bundler": "^10.0.2",
     "patch-package": "^8.0.0",
-    "rehype": "^12.0.1",
-    "rehype-autolink-headings": "^6.1.1",
-    "rehype-parse": "^8.0.4",
-    "rehype-slug": "^5.0.1",
-    "sirv": "^2.0.4",
     "supabase": "1.127.4",
-    "unified": "^10.1.2",
-    "unist-util-visit": "^2.0.3",
-    "vite-bundle-analyzer": "^0.9.4",
     "vxrn": "^1.1.145"
   }
 }

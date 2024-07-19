@@ -67,7 +67,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.23.3",
-    "@playwright/test": "^1.40.1",
+    "@playwright/test": "^1.45.2",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.10",
     "@tamagui/babel-plugin": "1.102.3",
     "@welldone-software/why-did-you-render": "^7.0.1",

@@ -22,7 +22,7 @@
     "tamagui": "1.102.3"
   },
   "devDependencies": {
-    "@playwright/test": "^1.40.1",
+    "@playwright/test": "^1.45.2",
     "@tamagui/vite-plugin": "1.102.3",
     "@vitejs/plugin-react-swc": "^3.6.0",
     "async-retry": "1.3.1",
