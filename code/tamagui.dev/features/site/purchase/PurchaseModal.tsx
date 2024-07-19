@@ -1,7 +1,4 @@
-import { ThemeTintAlt } from '@tamagui/logo'
 import { Check, X } from '@tamagui/lucide-icons'
-import { Link } from '~/components/Link'
-import { usePathname, useRouter } from 'vxs'
 import { useMemo, useState } from 'react'
 import type { TabsProps } from 'tamagui'
 import {
@@ -23,16 +20,14 @@ import {
   XStack,
   YStack,
 } from 'tamagui'
-import { useUser } from '~/features/user/useUser'
-import { useTakeoutStore } from './useTakeoutStore'
 import type { TakeoutPageProps } from '~/app/(site)/takeout'
-import { BentoAgreementModal, TakeoutAgreementModal } from './AgreementModal'
+import { Link } from '~/components/Link'
+import { useUser } from '~/features/user/useUser'
 import { BentoLogo } from '../../bento/BentoLogo'
-import { TakeoutFaqModal } from './FAQModal'
-import { BentoPoliciesModal, TakeoutPoliciesModal } from './PoliciesModal'
-import { PoweredByStripeIcon } from './PoweredByStripeIcon'
 import { TakeoutLogo } from '../../takeout/TakeoutLogo'
+import { BentoAgreementModal, TakeoutAgreementModal } from './AgreementModal'
 import { checkDiscountEligibility } from './checkDiscountEligibility'
+import { TakeoutFaqModal } from './FAQModal'
 import {
   BentoTable,
   MunroP,
@@ -41,6 +36,9 @@ import {
   TakeoutTable,
   formatPrice,
 } from './helpers'
+import { BentoPoliciesModal, TakeoutPoliciesModal } from './PoliciesModal'
+import { PoweredByStripeIcon } from './PoweredByStripeIcon'
+import { useTakeoutStore } from './useTakeoutStore'
 
 function getPriceDescription(price: TakeoutPageProps['starter']['prices'][number]) {
   return (

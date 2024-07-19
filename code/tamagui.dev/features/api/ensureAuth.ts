@@ -56,7 +56,7 @@ export const ensureAuth = async ({
       github_user_name: user.user_metadata.user_name,
     }
 
-    console.info(`Inserting new`, updateData)
+    console.info(`Update user info`, updateData.email)
 
     // fill in info
     const result = await supabase
