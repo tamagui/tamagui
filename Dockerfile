@@ -47,6 +47,7 @@ RUN ./scripts/unlock-repo.sh
 RUN corepack enable
 RUN corepack prepare yarn@4.1.0 --activate
 RUN yarn set version 4.1.0
+RUN yarn install
 RUN yarn profile react-19
 RUN yarn patch-package
 RUN yarn build:js
