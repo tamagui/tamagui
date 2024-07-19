@@ -1,4 +1,4 @@
-FROM node:22
+FROM node:22.4
 
 ARG APP_PRIVATE_KEY
 ARG CF_API_KEY
@@ -47,10 +47,6 @@ RUN ./scripts/unlock-repo.sh
 RUN corepack enable
 RUN corepack prepare yarn@4.3.1 --activate
 RUN yarn install --immutable
-RUN ls -la
-RUN ls -la node_modules
-RUN ls -la code/tamagui.dev
-RUN yarn --version
 RUN yarn profile react-19
 RUN yarn patch-package
 RUN yarn build:js
