@@ -26,7 +26,7 @@ export const UserGuard = ({ children }: { children: React.ReactNode }) => {
   const { data, isLoading } = useUser()
   const router = useRouter()
   const isOffline = useOfflineMode()
-  const user = data?.session?.user
+  const user = data?.user
 
   useEffect(() => {
     if (isOffline) {

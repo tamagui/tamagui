@@ -33,7 +33,7 @@ function SignIn() {
     content: '',
   })
   const { data } = useUser()
-  const user = data?.session?.user
+  const user = data?.user
   const emailRef = useRef(null)
 
   useEffect(() => {

@@ -41,11 +41,7 @@ const Account = () => {
     return <Spinner my="$10" />
   }
 
-  const {
-    userDetails,
-    session: { user },
-    teams,
-  } = data
+  const { userDetails, user, teams } = data
 
   return (
     <Container gap="$4" f={1}>
@@ -324,9 +320,6 @@ const GithubConnection = () => {
   const { data } = useUser()
   if (!data) return null
   const connectedGithub = data.connections.github
-  const {
-    session: { user },
-  } = data
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState<{ type?: string; content?: string }>({
