@@ -123,21 +123,7 @@ export function HomeAnimations({ animationCode }: { animationCode: string }) {
           </YStack>
         </XStack>
 
-        <XStack als="center" space="$3">
-          <Link href="/docs/core/animations#css">
-            <Button
-              accessibilityLabel="CSS docs"
-              fontFamily="$silkscreen"
-              theme={tint as any}
-            >
-              CSS &raquo;
-            </Button>
-          </Link>
-          <Link href="/docs/core/animations#reanimated">
-            <Button accessibilityLabel="Reanimated docs" fontFamily="$silkscreen">
-              Reanimated &raquo;
-            </Button>
-          </Link>
+        <XStack als="center" gap="$3">
           <Link href="/docs/core/animations">
             <Button accessibilityLabel="Animation docs" fontFamily="$silkscreen">
               Docs &raquo;
