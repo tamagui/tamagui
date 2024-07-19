@@ -19,7 +19,7 @@ import { Canvas } from '../components/Canvas'
 import { colorsStore } from '../state/ColorsStore'
 import type { Curve } from '../state/types'
 import { useGlobalState } from '../state/useGlobalState'
-import { CurveEditor } from './CurveEditor'
+// import { CurveEditor } from './CurveEditor'
 import { getColor, colorToHex, getAccentScore, getRange } from './helpers'
 
 const ColorCanvasFrame = ({ children }) => {
@@ -184,53 +184,55 @@ export const ColorCanvas = memo(function ColorCanvas() {
           .map(([type, curveId]) => {
             if (!curveId) return null
 
-            return (
-              <CurveEditor
-                labelColor={readableLabelColor}
-                key={curveId}
-                values={palette.curves[curveId].values}
-                {...getRange(type)}
-                disabled
-                label={`${type[0].toUpperCase()}`}
-              />
-            )
+            return null
+            // return (
+            //   <CurveEditor
+            //     labelColor={readableLabelColor}
+            //     key={curveId}
+            //     values={palette.curves[curveId].values}
+            //     {...getRange(type)}
+            //     disabled
+            //     label={`${type[0].toUpperCase()}`}
+            //   />
+            // )
           })}
         {(['hue', 'saturation', 'lightness'] as const)
           .filter((type) => visibleCurves[type])
           .map((type) => {
-            return (
-              <CurveEditor
-                labelColor={readableLabelColor}
-                key={`${type}-${scale.name}-${scale.colors.length}-${Object.keys(
-                  scale.curves
-                ).join(',')}`}
-                values={scale.colors.map(
-                  (color, index) => getColor(palette.curves, scale, index)[type]
-                )}
-                {...getRange(type)}
-                label={`${type[0].toUpperCase()}`}
-                onFocus={(index) => state.colors.setColorIndex(String(index))}
-                onChange={(values, shiftKey, index) => {
-                  if (shiftKey && scale.curves[type]) {
-                    state.colors.changeCurveValues({
-                      curveId: scale.curves[type] ?? '',
-                      values: values.map(
-                        (value, index) => value - scale.colors[index][type]
-                      ),
-                    })
-                  } else {
-                    state.colors.changeScaleColors(
-                      scale.colors.map((color, index) => ({
-                        ...color,
-                        [type]:
-                          values[index] -
-                          (palette.curves[scale.curves[type] ?? '']?.values[index] ?? 0),
-                      }))
-                    )
-                  }
-                }}
-              />
-            )
+            return null
+            // return (
+            //   <CurveEditor
+            //     labelColor={readableLabelColor}
+            //     key={`${type}-${scale.name}-${scale.colors.length}-${Object.keys(
+            //       scale.curves
+            //     ).join(',')}`}
+            //     values={scale.colors.map(
+            //       (color, index) => getColor(palette.curves, scale, index)[type]
+            //     )}
+            //     {...getRange(type)}
+            //     label={`${type[0].toUpperCase()}`}
+            //     onFocus={(index) => state.colors.setColorIndex(String(index))}
+            //     onChange={(values, shiftKey, index) => {
+            //       if (shiftKey && scale.curves[type]) {
+            //         state.colors.changeCurveValues({
+            //           curveId: scale.curves[type] ?? '',
+            //           values: values.map(
+            //             (value, index) => value - scale.colors[index][type]
+            //           ),
+            //         })
+            //       } else {
+            //         state.colors.changeScaleColors(
+            //           scale.colors.map((color, index) => ({
+            //             ...color,
+            //             [type]:
+            //               values[index] -
+            //               (palette.curves[scale.curves[type] ?? '']?.values[index] ?? 0),
+            //           }))
+            //         )
+            //       }
+            //     }}
+            //   />
+            // )
           })}
       </ZStack>
 
