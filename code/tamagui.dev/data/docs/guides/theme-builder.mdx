@@ -13,20 +13,17 @@ demoName: ThemeBuilder
   easier, with some performance benefits to boot.
 </IntroParagraph>
 
-With version 1.37 Tamagui has released two new things to help make authoring themes much easier:
+Before reading this guide, note that themes can be incredibly simple, and we highly recommend you avoid diving
+into complex themes unless you are on a large team that is willing to invest more effort. You can always
+just create a single `light` or `dark` theme at the root, and be on your way.
 
-- `createThemeBuilder` - a chainable theme creation API exported from `@tamagui/theme-builder`.
-- `themeBuilder` - option for the Tamagui compiler to watches and generate themes.
-
-The new ThemeBuilder makes it much easier to generate a suite of themes. Meanwhile the `themeBuilder` option automates pre-generating themes, which means you can avoid some runtime cost and bundle size.
+The Tamagui package `@tamagui/theme-builder` makes building complex theme suites easier. It gives you a chainable theme creation API. Because you may not want to bundle the extra overhead of themes, we've also added a `themeBuilder` option to the bundler plugins that lets you pre-generate your themes before runtime.
 
 This guide goes into `createThemeBuilder`. If you want to [skip to the API, check here](#createthemebuilder), or you can just copy-paste [a complete example here](#complete-example).
 
 <Notice>
-  You don't need to create your own theme suite. You can use our built-in themes
-  or roll your own by hand. Or you can just avoid themes altogether! This guide
-  is for more advanced use cases where you want to generate a very custom look
-  and feel for your app.
+  You don't need to create your own theme suite from the jump. Try using the built-in themes in @tamagui/config.
+  This guide is for more advanced use cases.
 </Notice>
 
 Before we dive in, here's a minimal createThemeBuilder example to understand what we're building towards. It generates `light`, `dark`, `light_subtle`, and `dark_subtle` themes using all the concepts we'll cover in this guide: palettes, templates, masks, and themes:
@@ -37,7 +34,7 @@ Before we dive in, here's a minimal createThemeBuilder example to understand wha
 </Notice>
 
 ```tsx
-import { createSoftenMask, createThemeBuilder } from '@tamagui/theme-builder'
+import { createThemeBuilder } from '@tamagui/theme-builder'
 
 const themesBuilder = createThemeBuilder()
   .addPalettes({
@@ -49,9 +46,10 @@ const themesBuilder = createThemeBuilder()
       background: 0,
       color: -0,
     },
-  })
-  .addMasks({
-    soften: createSoftenMask(),
+    subtle: {
+      background: 1,
+      color: -1,
+    }
   })
   .addThemes({
     light: {
@@ -65,14 +63,14 @@ const themesBuilder = createThemeBuilder()
   })
   .addChildThemes({
     subtle: {
-      mask: 'soften',
+      template: 'subtle',
     },
   })
 
 export const themes = themesBuilder.build()
 ```
 
-And to set up your compiler to automatically watch and build your themes, add the following to your compiler config (for example with Next.js):
+To optionally set up your compiler to automatically watch and build your themes at build-time (to save some bundle size), add the following to your compiler config (for example with Next.js):
 
 ```tsx
 withTamagui({
@@ -151,7 +149,7 @@ We can refer to a single color in the pallete by 0-index:
 
 In this case 0 is the background, and 11 is the foreground.
 
-Within Tamagui you can define your palettes to have as many or few colors as you like. You also technically don't _have_ to go from background to foreground, but we recommend it if only for being consistent (and for being able to use our built-in masks, which we'll get into shortly).
+Within Tamagui you can define your palettes to have as many or few colors as you like. You also technically don't _have_ to go from background to foreground, but we recommend it if only for being consistent.
 
 The offical `@tamagui/themes` theme suite that this websites uses adds one more layer to this equation - the 0-index color is actually a "background transparent", leaving the 1st index as the actual background, and correspondingly, the 12th index is the strongest foreground, while the 13th is "foreground transparent".
 
@@ -337,177 +335,14 @@ This is how Tamagui "solves" themes. It gives you incredible power to re-skin th
 
 Think of it as a super-power. If you don't use it, there's no downside. But if you do, you gain a pretty powerful new ability.
 
-#### Masks
-
-Ok, with the knowledge of sub-themes in hand, we're ready to see how masks fill in the final piece of the puzzle for letting us generate an entire suite of themes that give us base themes, sub-themes, and component themes.
-
-Masks do one thing: they take an existing template, apply transformation, and return a new one. We could create a simple mask called "shift-right" that takes this template:
-
-```tsx
-{
-  background: 0,
-  color: 6,
-}
-```
-
-And does this:
-
-```tsx
-shiftRightMask({
-  background: 0,
-  color: 5,
-})
-/**
- * => {
- *   background: 1,
- *   color: 6
- * }
- */
-```
-
-Is it useful? Not really, but it explains what they do.
-
-To understand their utility we can revisit component themes. Let's build it up again. We start with our base theme, `dark_blue`. It uses a template with background `0` and color `11`, which gives us a nice dark background and bright color.
-
-Now we want to theme a `dark_blue_Button`. We want our Button to stand out from the `dark_blue` theme, so we want to shift our background from `0` to be something above it: maybe 1, or 2. We can create a new mask function called `strengthenBackground` that is defined somewhat like this.
-
-Keep in mind this is just a hard-coded example of a mask for simplicity:
-
-```tsx
-const strengthenBackground = (template) => ({
-  background: template.background + 1,
-})
-```
-
-So now we can do:
-
-```tsx
-const darkPalette = ['black', '#222', '#444', '#666', '#888', '#aaa', 'white']
-
-const baseTemplate = {
-  background: 0,
-  color: 6,
-}
-
-const dark = createTheme(baseTemplate, darkPalette)
-
-// dark = { background: 'black', color: 'white' }
-
-const buttonTemplate = strengthenBackground(baseTemplate)
-
-const dark_Button = createTheme(buttonTemplate, darkPalette)
-
-// dark_Button = { background: '#222', color: 'white' }
-```
-
-The ThemeBuilder basically gives you generic versions of masks much like this.
-
-There's one last wrinkle though: what if we want to make the backgrounds lighter, but the foregrounds softer? How can masks do this in a generic way, without having to assume things about how you name your keys?
-
-Let's revisit our palette.
-
-<Blog.ThemeBuilder.ExamplePalette showIndices />
-
-We want a mask called `subtlerMask` that takes a template and makes backgrounds increment while foregrounds decrement - if we have a template with background 0 and color 11, then our `subtlerMask` should return background 1 and color 10.
-
-The issue here is that the only way we could "know" to move the background +1 and the color -1 is if we had some logic that basically checked "if index < 50%, +1, else -1". Except what if we have a foreground that's at 50%? We'd end up shifting it the wrong way!
-
-So this is where we introduce one final concept with templates, negative indices:
-
-<Blog.ThemeBuilder.ExamplePalette showIndices showNegativeIndices />
-
-By adding the idea of a negative index that represents a foreground (while positive indices represent backgrounds), we can change our template as follows:
-
-```tsx
-{
-  background: 0,
-  color: -0,
-}
-```
-
-It's pretty easy from here to modify our example `createTheme` function to handle negative indices:
-
-```tsx
-const createTheme = (palette: string[], template: Record<string, number>) => {
-  const res = {}
-  for (const key in template) {
-    const index = template[key]
-    res[key] = index < 0 ? palette[palette.length - 1 + index] : palette[index]
-  }
-  return res
-}
-```
-
-Now we have everything we need. We'll just make the mask `subtlerMask` "know" when a value is meant to be a foreground or a background by checking if negative, and making it shift appropriately:
-
-```tsx
-subtlerMask({
-  background: 0,
-  color: -0,
-})
-/**
- * => {
- *   background: 1,
- *   color: -1
- * }
- */
-```
-
-And that's all masks really are - functions that take a template and return a template.
-
-They help us especially with sub-themes and component themes, where often you want to take an existing theme, like `dark`, and then return a `dark_Button` theme where the background is a bit stronger, and maybe the color a bit softer. So long as we define our templates using positive values for backgrounds and negative values for foregrounds, masks have all the info they need to make transformations.
-
-In `@tamagui/theme-builder` we've included a variety of masks we found useful:
-
-- `createInverseMask` - Flips background and foreground.
-- `createSoftenMask` - Makes background and foreground move closer to center.
-- `createStrengthenMask` - Makes background and foreground move further from center.
-
-We also export two helper functions for creating your own masks:
-
-- `createMask` - Passes some standardized options and a template to the mask function you give it.
-- `combineMasks` - Combine two masks.
-
----
-
-<Aside>
-
-### A bit of history
-
-Or "why we landed on all of these concepts".
-
-Tamagui has gone through many stages of "theme builders", ie functional APIs that let you generate a suite of themes. It means the current version is the result of a lot of iteration, and we think its led to a better outcome than if we had pushed out something quickly.
-
-#### The first attempt
-
-In the beginning there was simply a big imperative ball of goop that we recommended copy/pasting into your own app. We eventually put that behind a very ad-hoc and rigid single function that let you customize the base palettes, but nothing below that.
-
-#### The second attempt
-
-Our first attempt at formalizing the theme system came around version 1.2, with `@tamagui/create-theme`, which added a variety of concepts and helper functions. These basically let you generate your own full suite of themes from base palettes, as well as two new ideas, "templates" and "masks". Templates would simply pick values off a palette, where a mask could take a previous template and generate a new one based off of it.
-
-These concepts were key in allowing for the new API to work. But still, it was a lot of work to put together a theme suite, and the resulting code was fairly verbose. We also never fully got around to documenting the system, as it was clear there were a variety of improvements to be made. So we still recommended just copy/pasting the themes config we built, and left users on their own.
-
-#### The current attempt
-
-With version 1.37 we're officially documenting and making a new ThemeBuilder first-class. It further builds off the work in `@tamagui/create-theme`, adding a layer above all the helper functions we previously created. Instead of having to import 6-7 different functions and compose them together yourself, you can import a single function, `createThemeBuilder`, which has a chained API that makes the resulting code far more elegant and readable.
-
-It also has a variety of improvements - it makes it far easier to change your themes at any "level," while still sharing code at any other level. Further, it makes the idea of a palette and mask first class and named, which is key for us going forward with the [Studio](/studio). This means we can now have two-way sync with the Tamagui Studio - we can understand not just your themes, but the palettes, templates and masks you used the generate theme, but also, we can write back out to them if you change them within the visual affordances the Studio begets.
-
-All in all this means that generating a complete suite of themes is now not only easy, but within reach of anyone, even designers! This is especially true as it's super easy to actually keep all the masks and templates the same, but just swap out the root level palettes. We expect an explosion of theme suites will bloom due to the big wins in ease of use enabled by the new `@tamagui/theme-builder`.
-
-</Aside>
-
----
-
 ### createThemeBuilder
 
-Now that we have all the required context to understand palettes, templates, and masks, we can get familiar with the `createThemeBuilder` API.
+Now that we have all the required context to understand palettes and templates, we can get familiar with the `createThemeBuilder` API.
 
 Let's get back to our minimal example:
 
 ```tsx
-import { createSoftenMask, createThemeBuilder } from '@tamagui/theme-builder'
+import { createThemeBuilder } from '@tamagui/theme-builder'
 
 const themesBuilder = createThemeBuilder()
   .addPalettes({
@@ -519,9 +354,10 @@ const themesBuilder = createThemeBuilder()
       background: 0,
       color: -0,
     },
-  })
-  .addMasks({
-    soften: createSoftenMask(),
+    subtle: {
+      background: 1,
+      color: -1,
+    }
   })
   .addThemes({
     light: {
@@ -535,7 +371,7 @@ const themesBuilder = createThemeBuilder()
   })
   .addChildThemes({
     subtle: {
-      mask: 'soften',
+      template: 'subtle',
     },
   })
 
