@@ -1,5 +1,5 @@
 import { config } from '@tamagui/config/v3'
-import { createTamagui } from 'tamagui'
+import { createTamagui } from '@tamagui/core'
 
 // for site responsive demo
 Object.assign(config.media, {
