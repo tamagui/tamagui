@@ -140,7 +140,8 @@ async function setupTamaguiDotDir(template: (typeof templates)[number], isRetry 
     console.info()
   }
   try {
-    const cmd2 = `git pull --rebase --allow-unrelated-histories --depth 1 origin ${branch}`
+    const remoteName = getDefaultRemoteName()
+    const cmd2 = `git pull --rebase --allow-unrelated-histories --depth 1 ${remoteName} ${branch}`
     exec(cmd2, {
       cwd: targetGitDir,
     })
@@ -159,5 +160,16 @@ async function setupTamaguiDotDir(template: (typeof templates)[number], isRetry 
     }
     await remove(targetGitDir)
     await setupTamaguiDotDir(template, true)
+  }
+}
+
+// Get the default remote name
+const getDefaultRemoteName = () => {
+  try {
+    const remotes = execSync('git remote').toString().trim().split('\n')
+    return remotes[0] || 'origin'
+  } catch (error) {
+    console.error('Error getting default remote name:', error)
+    return 'origin'
   }
 }
