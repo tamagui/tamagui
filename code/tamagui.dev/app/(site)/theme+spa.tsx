@@ -39,11 +39,14 @@ export default memo(function StudioTheme() {
   const params = useLocalSearchParams()
 
   useEffect(() => {
-    store.load(params.state as string | undefined).then(() => {
-      startTransition(() => {
-        setLoaded(true)
+    // give it a bit to load many dynamic charts that animate etc
+    const tm = setTimeout(() => {
+      store.load(params.state as string | undefined).then(() => {
+        startTransition(() => {
+          setLoaded(true)
+        })
       })
-    })
+    }, 250)
 
     const onSave = () => {
       router.setParams({
@@ -55,6 +58,7 @@ export default memo(function StudioTheme() {
 
     return () => {
       store.listeners.delete(onSave)
+      clearTimeout(tm)
     }
   }, [])
 
@@ -93,7 +97,7 @@ const ThemeBuilderModal = memo(() => {
 
   return (
     <YStack
-      className="transform ease-in-out ms300"
+      animation="slow"
       pos={'fixed' as any}
       t={90}
       r={0}
@@ -103,6 +107,10 @@ const ThemeBuilderModal = memo(() => {
       zi={100_000}
       $md={{
         x: expanded ? 0 : 500,
+      }}
+      $sm={{
+        x: expanded ? '90%' : 0,
+        maxWidth: '100%',
       }}
     >
       <YStack

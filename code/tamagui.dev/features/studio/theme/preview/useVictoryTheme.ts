@@ -1,11 +1,13 @@
 import { assign } from 'lodash'
-import { getVariableValue, useTheme } from 'tamagui'
+import { getVariableValue, useTheme, useThemeName } from 'tamagui'
 import type { VictoryThemeDefinition } from 'victory'
 import { useDemoProps } from '../hooks/useDemoProps'
 
 export const useVictoryTheme = (): VictoryThemeDefinition => {
   const demoProps = useDemoProps()
   const theme = useTheme()
+  const themeName = useThemeName()
+  const isAccent = themeName.includes('accent')
 
   // *
   // * Typography
@@ -22,7 +24,9 @@ export const useVictoryTheme = (): VictoryThemeDefinition => {
     padding: 50,
   }
 
-  const accentColor = getVariableValue(theme[demoProps.accentBackground])
+  const accentColor = getVariableValue(
+    isAccent ? theme.color : theme[demoProps.accentBackground]
+  )
 
   // *
   // * Labels
