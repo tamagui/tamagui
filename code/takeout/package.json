@@ -33,7 +33,7 @@
     "vite": "6.0.0-alpha.18",
     "vite-plugin-inspect": "^0.8.4",
     "vite-tsconfig-paths": "^4.3.2",
-    "vxs": "^1.1.145"
+    "vxs": "^1.1.146"
   },
   "devDependencies": {
     "@tamagui/cli": "1.102.3",
@@ -41,6 +41,6 @@
     "h3": "^1.11.1",
     "patch-package": "^8.0.0",
     "supabase": "1.127.4",
-    "vxrn": "^1.1.145"
+    "vxrn": "^1.1.146"
   }
 }

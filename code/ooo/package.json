@@ -18,11 +18,11 @@
     "@tamagui/core": "1.102.3",
     "@tamagui/input": "1.102.3",
     "react-native": "0.74.1",
-    "vxs": "^1.1.145"
+    "vxs": "^1.1.146"
   },
   "devDependencies": {
     "patch-package": "^8.0.0",
-    "vxrn": "^1.1.145"
+    "vxrn": "^1.1.146"
   },
   "publishConfig": {
     "access": "public"

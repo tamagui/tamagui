@@ -49,10 +49,10 @@ export default apiRoute(async (req) => {
 
   try {
     const data = await stripe.subscriptions.update(subId, {
-      cancel_at_period_end: true,
+      cancel_at_period_end: false,
     })
     if (data) {
-      return Response.json({ message: 'The subscription is cancelled.' })
+      return Response.json({ message: 'The subscription is active again.' })
     }
   } catch (error) {
     if (error instanceof Stripe.errors.StripeError) {
