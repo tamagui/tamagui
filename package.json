@@ -21,7 +21,7 @@
   ],
   "packageManager": "yarn@4.3.1",
   "scripts": {
-    "new": "yarn workspace testing dev:clean",
+    "ooo": "yarn workspace testing dev:clean",
     "takeout": "yarn workspace @tamagui/takeout dev",
     "dev": "yarn workspace @tamagui/dot-dev dev:clean",
     "dev:extract": "TAMAGUI_EXTRACT=1 yarn workspace @tamagui/dot-dev dev:clean",
