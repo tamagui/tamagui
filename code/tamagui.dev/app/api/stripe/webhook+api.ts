@@ -13,6 +13,7 @@ import {
   upsertPriceRecord,
   upsertProductRecord,
 } from '~/features/auth/supabaseAdmin'
+import { sendProductRenewalEmail } from '~/features/email/helpers'
 import { stripe } from '~/features/stripe/stripe'
 
 const endpointSecret = process.env.STRIPE_SIGNING_SIGNATURE_SECRET
@@ -68,6 +69,21 @@ export default apiRoute(async (req) => {
       case 'price.deleted':
         await deletePriceRecord((event.data.object as Stripe.Price).id)
         break
+
+      case 'invoice.upcoming': {
+        const info = event.data.object as Stripe.Invoice
+
+        if (!info.customer_email) {
+          console.error(`No email for invoice`)
+          return
+        }
+
+        await sendProductRenewalEmail(info.customer_email, {
+          name: 'friend',
+          product_name: 'Takeout',
+        })
+        break
+      }
 
       // TODO
       // case 'customer.updated': {
