@@ -148,8 +148,8 @@ export function styled<
 
       if (defaultVariants) {
         defaultProps = {
-          ...defaultVariants,
           ...defaultProps,
+          ...defaultVariants,
         }
       }
 
