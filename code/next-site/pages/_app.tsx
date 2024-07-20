@@ -4,14 +4,13 @@ import '../app.css'
 
 import type { GetLayout } from '@lib/getDefaultLayout'
 import type { ColorScheme } from '@tamagui/next-theme'
-import { NextThemeProvider, useRootTheme, useThemeSetting } from '@tamagui/next-theme'
+import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme'
 import type { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
-import { useEffect, useMemo, useState } from 'react'
-import { TamaguiProvider, useDebounceValue, useDidFinishSSR } from 'tamagui'
+import { useMemo } from 'react'
+import { TamaguiProvider } from 'tamagui'
 
 import Head from 'next/head'
-import { LoadCherryBomb, LoadInter900, LoadMunro } from '../components/LoadFont'
 import config from '../tamagui.config'
 
 // import '../lib/wdyr'
@@ -76,25 +75,6 @@ function AppContents(
     setTheme: React.Dispatch<React.SetStateAction<ColorScheme>>
   }
 ) {
-  const didHydrate = useDidFinishSSR()
-  const didHydrateDelayed = useDebounceValue(didHydrate, 500)
-  const [didInteract, setDidInteract] = useState(false)
-  const didInteractDelayed = useDebounceValue(didInteract, 100)
-
-  useEffect(() => {
-    const onDown = () => {
-      setDidInteract(true)
-      unlisten()
-    }
-    const unlisten = () => {
-      document.removeEventListener('mousedown', onDown, { capture: true })
-      document.removeEventListener('keydown', onDown, { capture: true })
-    }
-    document.addEventListener('mousedown', onDown, { capture: true })
-    document.addEventListener('keydown', onDown, { capture: true })
-    return unlisten
-  }, [])
-
   return (
     <>
       <Head>
@@ -105,22 +85,6 @@ function AppContents(
           }}
         />
       </Head>
-
-      {didHydrateDelayed && (
-        <>
-          <LoadCherryBomb />
-        </>
-      )}
-
-      {/* this will lazy load the font for /studio and /takeout pages */}
-      {/* load it after first interaction to avoid clogging the first click even */}
-      {didInteractDelayed && (
-        <>
-          <LoadInter900 />
-          <LoadMunro />
-          <LoadCherryBomb />
-        </>
-      )}
 
       <TamaguiProvider
         config={config}

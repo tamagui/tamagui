@@ -30,7 +30,7 @@
     "@types/d3-scale": "^4.0.2",
     "@types/lodash-es": "^4.17.6",
     "@types/uuid": "^8.3.4",
-    "next": "^14.2.4",
+    "next": "^14.2.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-native": "0.74.1",

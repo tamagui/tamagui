@@ -1,7 +1,6 @@
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { useIsIntersecting } from '@tamagui/demos'
 import { useTint } from '@tamagui/logo'
-import { NextLink } from 'components/NextLink'
 import { memo, useEffect, useRef, useState } from 'react'
 import type { Heading, TextProps } from 'tamagui'
 import {
@@ -18,9 +17,6 @@ import {
   YStack,
   useDidFinishSSR,
 } from 'tamagui'
-
-import { ContainerLarge } from './Container'
-import { HomeH2 } from './HomeH2'
 
 const families = ['silkscreen', 'mono', 'heading']
 
@@ -49,12 +45,12 @@ export const HeroTypography = memo(() => {
     <>
       <YStack fullscreen className="" o={0.1} />
       {/* -5 my to fir grid nicely */}
-      <ContainerLarge my={-5} position="relative" space="$8">
+      <YStack my={-5} position="relative" space="$8">
         <YStack ref={ref} ai="center" space="$3">
-          <HomeH2>
+          <H2>
             Beautifully expressive font systems with{' '}
             <span className="clip-text rainbow">rhythm</span>.
-          </HomeH2>
+          </H2>
         </YStack>
 
         <XStack
@@ -145,7 +141,7 @@ export const HeroTypography = memo(() => {
             </YStack>
           </YStack>
         </XStack>
-      </ContainerLarge>
+      </YStack>
     </>
   )
 })
@@ -172,16 +168,14 @@ const OverlayCard = () => {
           line-height, letter-spacing, color and more.
         </Paragraph>
 
-        <NextLink prefetch={false} href="/docs/core/configuration">
-          <Button
-            accessibilityLabel="Fonts docs"
-            fontFamily="$silkscreen"
-            als="flex-end"
-            theme={tint as any}
-          >
-            Fonts &raquo;
-          </Button>
-        </NextLink>
+        <Button
+          accessibilityLabel="Fonts docs"
+          fontFamily="$silkscreen"
+          als="flex-end"
+          theme={tint as any}
+        >
+          Fonts &raquo;
+        </Button>
       </YStack>
     </Card>
   )

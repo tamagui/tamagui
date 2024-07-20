@@ -1,3 +1,4 @@
+- config v4 = no custom fonts just defaults for each platform
 - RN transform type accepts string style props now but tamagui doesn't
 - opacity `/50`
 - AnimateList

@@ -1,17 +1,11 @@
+import { withTamagui } from '@tamagui/next-plugin'
+
 Error.stackTraceLimit = Infinity
 
 process.env.IGNORE_TS_CONFIG_PATHS = 'true'
 // process.env.TAMAGUI_ENABLE_DYNAMIC_LOAD = '1'
 
-/** @type {import('next').NextConfig} */
-const { withTamagui } = require('@tamagui/next-plugin')
-const withBundleAnalyzer = require('@next/bundle-analyzer')
-
 const plugins = [
-  withBundleAnalyzer({
-    enabled: process.env.NODE_ENV === 'production',
-    openAnalyzer: process.env.ANALYZE === 'true',
-  }),
   withTamagui(
     // see tamagui.build.ts for details
   ),
@@ -59,7 +53,7 @@ const plugins = [
   },
 ]
 
-module.exports = (name, { defaultConfig }) => {
+export default (name, { defaultConfig }) => {
   /** @type {import('next').NextConfig} */
   let config = {
     // output: 'export',
