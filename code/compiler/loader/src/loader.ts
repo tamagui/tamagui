@@ -1,11 +1,14 @@
 import type { TamaguiOptions } from '@tamagui/static'
-import { createExtractor, extractToClassNames, getPragmaOptions } from '@tamagui/static'
+import Static from '@tamagui/static'
 import type { LoaderContext } from 'webpack'
+import { requireResolve } from './requireResolve'
+
+const { createExtractor, extractToClassNames, getPragmaOptions } = Static
 
 Error.stackTraceLimit = Number.POSITIVE_INFINITY
 
 // pass loader as path
-const CSS_LOADER_PATH = require.resolve('./css')
+const CSS_LOADER_PATH = requireResolve('./css')
 
 Error.stackTraceLimit = Number.POSITIVE_INFINITY
 const extractor = createExtractor()

@@ -15,7 +15,6 @@ export declare class TamaguiPlugin {
     options: PluginOptions;
     pluginName: string;
     constructor(options?: PluginOptions);
-    resolveEsm: (relativePath: string, onlyRequire?: boolean) => string;
     safeResolves: (resolves: [string, string][], multiple?: boolean) => string[][];
     get componentsFullPaths(): string[][];
     get componentsBaseDirs(): string[];

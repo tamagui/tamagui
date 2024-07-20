@@ -1,11 +1,13 @@
 import { existsSync } from 'node:fs'
-import path, { dirname, join } from 'node:path'
+import { dirname, join } from 'node:path'
 
 import type { TamaguiOptions } from '@tamagui/static'
-import { loadTamagui, watchTamaguiConfig } from '@tamagui/static'
-import buildResolver from 'esm-resolve'
+import Static from '@tamagui/static'
 import type { Compiler, RuleSetRule } from 'webpack'
 import webpack from 'webpack'
+import { requireResolve } from './requireResolve'
+
+const { loadTamagui, watchTamaguiConfig } = Static
 
 export type PluginOptions = TamaguiOptions & {
   isServer?: boolean
@@ -19,11 +21,6 @@ export type PluginOptions = TamaguiOptions & {
   useTamaguiSVG?: boolean
 }
 
-const dir = process.cwd()
-const resolver = buildResolver(join(dir, 'index.js'), {
-  constraints: 'node',
-})
-
 export class TamaguiPlugin {
   pluginName = 'TamaguiPlugin'
 
@@ -34,14 +31,6 @@ export class TamaguiPlugin {
     }
   ) {}
 
-  resolveEsm = (relativePath: string, onlyRequire = false) => {
-    if (this.options.isServer || onlyRequire) {
-      return require.resolve(relativePath)
-    }
-    const esm = resolver(relativePath)
-    return esm ? path.join(dir, esm) : require.resolve(relativePath)
-  }
-
   safeResolves = (resolves: [string, string][], multiple = false) => {
     const res: string[][] = []
     for (const [out, mod] of resolves) {
@@ -50,9 +39,9 @@ export class TamaguiPlugin {
         continue
       }
       try {
-        res.push([out, this.resolveEsm(mod)])
+        res.push([out, requireResolve(mod)])
         if (multiple) {
-          res.push([out, this.resolveEsm(mod, true)])
+          res.push([out, requireResolve(mod)])
         }
       } catch (err) {
         if (out.includes(`@gorhom/bottom-sheet`)) {
@@ -180,7 +169,7 @@ export class TamaguiPlugin {
             // Here you create a new instance of the plugin you want to add
             const definePlugin = new webpack.NormalModuleReplacementPlugin(
               regex,
-              this.resolveEsm('@tamagui/proxy-worm')
+              requireResolve('@tamagui/proxy-worm')
             )
             // Manually apply the plugin to the compiler
             definePlugin.apply(compiler)
@@ -270,7 +259,7 @@ export class TamaguiPlugin {
         ?.oneOf as any[]) ?? existing
 
     const tamaguiLoader = {
-      loader: require.resolve('tamagui-loader'),
+      loader: requireResolve('tamagui-loader'),
       options: {
         ...this.options,
         _disableLoadTamagui: true,
