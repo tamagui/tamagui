@@ -46,7 +46,7 @@
   },
   "devDependencies": {
     "@tamagui/build": "1.102.3",
-    "next": "^14.2.4"
+    "next": "^14.2.5"
   },
   "peerDependencies": {
     "next": ">=13"
