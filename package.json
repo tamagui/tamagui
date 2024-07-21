@@ -21,7 +21,7 @@
   ],
   "packageManager": "yarn@4.3.1",
   "scripts": {
-    "ooo": "yarn workspace testing dev:clean",
+    "ooo": "yarn workspace @tamagui/ooo dev:clean",
     "ooo:build": "yarn workspace @tamagui/ooo build:prod",
     "ooo:prod": "yarn ooo:build && yarn ooo:serve",
     "ooo:serve": "yarn workspace @tamagui/ooo serve",
