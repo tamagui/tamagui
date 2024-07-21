@@ -66,41 +66,6 @@ export default tamaguiConfig
 
 **Note:** The `v3` config imports the `@tamagui/animations-css` driver on web and `@tamagui/animations-react-native` on native. You can change these as you please, we provide exports for `animationsCSS` and `animationsNative`. If you want to use Reanimated, you can [copy and paste this code](https://github.com/tamagui/tamagui/blob/c9adbbe4a45d2a728f06605b0e5e91382dd5b92d/packages/config/src/animationsReanimated.ts) and pass it as `animations` to `createTamagui`.
 
-### Usage
-
-To use Tamagui in your Expo or Next.js projects, all you need to do is wrap your application in the `TamaguiProvider`:
-
-```tsx
-// this provides some helpful reset styles to ensure a more consistent look
-// only import this from your web app, not native
-import '@tamagui/core/reset.css'
-
-import { TamaguiProvider } from 'tamagui'
-import tamaguiConfig from './tamagui.config'
-
-export default function App() {
-  return (
-    <TamaguiProvider config={tamaguiConfig}>
-      {/* your app here */}
-    </TamaguiProvider>
-  )
-}
-```
-
-Done! Now try out some components:
-
-```tsx
-import { Button, Text } from 'tamagui'
-
-function Example() {
-  return (
-    <Button>
-      <Text>My button</Text>
-    </Button>
-  );
-}
-```
-
 ## Contributing
 
 To contribute to Tamagui reference the [contributing guide](https://github.com/tamagui/tamagui/blob/master/CONTRIBUTING.md).
