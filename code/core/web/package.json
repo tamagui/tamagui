@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/web",
-  "version": "1.102.3",
+  "version": "1.103.0",
   "source": "src/index.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -27,18 +27,18 @@
     "reset.css"
   ],
   "dependencies": {
-    "@tamagui/compose-refs": "1.102.3",
-    "@tamagui/constants": "1.102.3",
-    "@tamagui/helpers": "1.102.3",
-    "@tamagui/normalize-css-color": "1.102.3",
-    "@tamagui/timer": "1.102.3",
-    "@tamagui/types": "1.102.3",
-    "@tamagui/use-did-finish-ssr": "1.102.3",
-    "@tamagui/use-event": "1.102.3",
-    "@tamagui/use-force-update": "1.102.3"
+    "@tamagui/compose-refs": "1.103.0",
+    "@tamagui/constants": "1.103.0",
+    "@tamagui/helpers": "1.103.0",
+    "@tamagui/normalize-css-color": "1.103.0",
+    "@tamagui/timer": "1.103.0",
+    "@tamagui/types": "1.103.0",
+    "@tamagui/use-did-finish-ssr": "1.103.0",
+    "@tamagui/use-event": "1.103.0",
+    "@tamagui/use-force-update": "1.103.0"
   },
   "devDependencies": {
-    "@tamagui/build": "1.102.3",
+    "@tamagui/build": "1.103.0",
     "@testing-library/react": "^14.0.0",
     "csstype": "^3.0.10",
     "typescript": "^5.5.2",
