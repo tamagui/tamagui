@@ -966,3 +966,13 @@ textarea {
     transform: rotate(0.75deg);
   }
 }
+
+.parity-banner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10000000000000000;
+  background-color: rgba(0,0,0,0.5);
+  backdrop-filter: blur(50px);
+}
