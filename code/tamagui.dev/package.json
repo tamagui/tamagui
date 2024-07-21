@@ -25,7 +25,7 @@
     "@react-three/fiber": "npm:@react-three/fiber@9.0.0-alpha.6",
     "@sentry/browser": "^8.17.0",
     "@supabase/ssr": "0.4.0",
-    "@supabase/supabase-js": "^2.44.3",
+    "@supabase/supabase-js": "^2.44.4",
     "@tamagui/assert": "1.102.3",
     "@tamagui/bento": "1.102.3",
     "@tamagui/demos": "1.102.3",

@@ -38,7 +38,7 @@
   },
   "dependencies": {
     "@inkjs/ui": "^1.0.0",
-    "@supabase/supabase-js": "^2.44.3",
+    "@supabase/supabase-js": "^2.44.4",
     "@tamagui/use-force-update": "1.102.3",
     "conf": "^12.0.0",
     "copy-paste": "^1.5.3",

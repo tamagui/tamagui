@@ -50,7 +50,7 @@ RUN yarn install --immutable
 RUN yarn profile react-19
 RUN yarn patch-package
 RUN yarn build:js
-RUN yarn build:app --app $APP_NAME
+RUN yarn build:app
 
 EXPOSE 3000
 

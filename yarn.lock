@@ -5290,12 +5290,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@supabase/auth-js@npm:2.64.2":
-  version: 2.64.2
-  resolution: "@supabase/auth-js@npm:2.64.2"
+"@supabase/auth-js@npm:2.64.4":
+  version: 2.64.4
+  resolution: "@supabase/auth-js@npm:2.64.4"
   dependencies:
     "@supabase/node-fetch": "npm:^2.6.14"
-  checksum: 10/41ca58a34a68a983a3178f5ab38d5f56a3cbf08c271fe6c3a7c1c0d3794869ff93a05822668047b80ef1f49f36e03928f9aa73efe813378bbdc594853aac2cbb
+  checksum: 10/bc273425dd6c54f297d640ce04c21e9ea251ec0175c3da3f53295c2fa4f90fe3d8a9425e892003fbaf97d3a9a16bbfdb7ea226c419d30663926f9afa69d04880
   languageName: node
   linkType: hard
 
@@ -5362,17 +5362,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@supabase/supabase-js@npm:^2.44.3":
-  version: 2.44.3
-  resolution: "@supabase/supabase-js@npm:2.44.3"
+"@supabase/supabase-js@npm:^2.44.4":
+  version: 2.44.4
+  resolution: "@supabase/supabase-js@npm:2.44.4"
   dependencies:
-    "@supabase/auth-js": "npm:2.64.2"
+    "@supabase/auth-js": "npm:2.64.4"
     "@supabase/functions-js": "npm:2.4.1"
     "@supabase/node-fetch": "npm:2.6.15"
     "@supabase/postgrest-js": "npm:1.15.8"
     "@supabase/realtime-js": "npm:2.10.2"
     "@supabase/storage-js": "npm:2.6.0"
-  checksum: 10/dd27cde4f0b415ff2923693014df34653c28d2dccc72d35017b3627f0e6b6657e6dbb750045704ff89f6790707bbf17d05093cc48604b8908963288120cfbed8
+  checksum: 10/1e701f970024cad47c1e63dd1552f0f0a56bf42fd0ac11babb02c0a5a3209e6162c697f7be15fed9103a205fd70abcf7a6bc4ae3045f6a81cb4abfd7ced104d1
   languageName: node
   linkType: hard
 
@@ -6255,7 +6255,7 @@ __metadata:
     "@react-three/fiber": "npm:@react-three/fiber@9.0.0-alpha.6"
     "@sentry/browser": "npm:^8.17.0"
     "@supabase/ssr": "npm:0.4.0"
-    "@supabase/supabase-js": "npm:^2.44.3"
+    "@supabase/supabase-js": "npm:^2.44.4"
     "@tamagui/assert": "npm:1.102.3"
     "@tamagui/bento": "npm:1.102.3"
     "@tamagui/cli": "npm:1.102.3"
@@ -7481,7 +7481,7 @@ __metadata:
     "@react-three/drei": "npm:^9.105.6"
     "@react-three/fiber": "npm:@react-three/fiber@9.0.0-alpha.6"
     "@supabase/ssr": "npm:0.4.0"
-    "@supabase/supabase-js": "npm:^2.44.3"
+    "@supabase/supabase-js": "npm:^2.44.4"
     "@tamagui/assert": "npm:1.102.3"
     "@tamagui/bento": "npm:1.102.3"
     "@tamagui/cli": "npm:1.102.3"
@@ -10673,7 +10673,7 @@ __metadata:
   resolution: "bento-get@workspace:code/packages/bento-get"
   dependencies:
     "@inkjs/ui": "npm:^1.0.0"
-    "@supabase/supabase-js": "npm:^2.44.3"
+    "@supabase/supabase-js": "npm:^2.44.4"
     "@tamagui/build": "npm:1.102.3"
     "@tamagui/use-force-update": "npm:1.102.3"
     "@types/copy-paste": "npm:^1.1.33"

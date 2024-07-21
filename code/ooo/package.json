@@ -10,6 +10,7 @@
     "clean": "rm -r dist || true && rm -r node_modules/.vite || true",
     "build:prod": "vxs build",
     "serve": "vxs serve",
+    "serve:railway": "vxs serve --host 0.0.0.0",
     "postinstall": "patch-package || true"
   },
   "dependencies": {
