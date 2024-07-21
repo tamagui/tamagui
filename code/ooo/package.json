@@ -22,8 +22,7 @@
     "vxs": "^1.1.146"
   },
   "devDependencies": {
-    "patch-package": "^8.0.0",
-    "vxs": "^1.1.146"
+    "patch-package": "^8.0.0"
   },
   "publishConfig": {
     "access": "public"
