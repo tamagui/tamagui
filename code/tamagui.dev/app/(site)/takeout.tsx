@@ -245,8 +245,8 @@ export default function TakeoutPage() {
                   Takeout is a production-ready stack for any user-based app. It shares a
                   large % of code between native and web, while maintaining a high bar for
                   UX and performance. It's based on React, React Native, Next.js, Expo,
-                  and Supabase in a monorepo, with scripts to generate typed, themeable
-                  fonts and icons from{' '}
+                  and Supabase, all in in a monorepo with a variety of scripts. Plus,
+                  typed, themeable fonts and icons from{' '}
                   <Link href="https://fonts.google.com" target="_blank">
                     Google Fonts
                   </Link>{' '}
