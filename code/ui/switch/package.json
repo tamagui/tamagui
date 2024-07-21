@@ -1,19 +1,14 @@
 {
   "name": "@tamagui/switch",
   "version": "1.102.3",
-  "sideEffects": [
-    "*.css"
-  ],
+  "removeSideEffects": true,
+  "sideEffects": ["*.css"],
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
   "module:jsx": "dist/jsx",
-  "files": [
-    "src",
-    "types",
-    "dist"
-  ],
+  "files": ["src", "types", "dist"],
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
