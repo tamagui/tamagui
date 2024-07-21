@@ -219,6 +219,7 @@ const IntermediateCard = ({
         outlineStyle="solid"
         size="$5"
         elevation="$0.5"
+        backdropFilter="blur(5px)"
         // bg="$color025"
       >
         <Icon color="$color11" o={0.85} />
