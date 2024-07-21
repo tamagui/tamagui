@@ -1,8 +1,7 @@
-import { existsSync } from 'node:fs'
-import { dirname, join } from 'node:path'
-
 import type { TamaguiOptions } from '@tamagui/static'
 import Static from '@tamagui/static'
+import { existsSync } from 'node:fs'
+import { dirname, join } from 'node:path'
 import type { Compiler, RuleSetRule } from 'webpack'
 import webpack from 'webpack'
 import { requireResolve } from './requireResolve'

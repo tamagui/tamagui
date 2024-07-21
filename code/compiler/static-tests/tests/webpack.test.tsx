@@ -1,6 +1,4 @@
 import '@expo/match-media'
-
-import { render } from '@testing-library/react'
 import TestRenderer from 'react-test-renderer'
 import { describe, expect, test } from 'vitest'
 
