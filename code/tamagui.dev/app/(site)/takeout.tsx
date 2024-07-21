@@ -243,7 +243,7 @@ export default function TakeoutPage() {
 
                 <Paragraph className="text-wrap-balance" size="$7" $sm={{ size: '$7' }}>
                   Takeout is a production-ready stack for any user-based app. It shares a
-                  large % of code between native and web, while maintining a high bar for
+                  large % of code between native and web, while maintaining a high bar for
                   UX and performance. It's based on React, React Native, Next.js, Expo,
                   and Supabase in a monorepo, with scripts to generate typed, themeable
                   fonts and icons from{' '}
