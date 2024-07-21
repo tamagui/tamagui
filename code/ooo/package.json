@@ -5,11 +5,11 @@
   "files": [],
   "type": "module",
   "scripts": {
-    "dev": "vxrn dev",
+    "dev": "vxs dev",
     "dev:clean": "yarn clean && yarn dev",
     "clean": "rm -r dist || true && rm -r node_modules/.vite || true",
-    "build:prod": "vxrn build",
-    "serve": "vxrn serve",
+    "build:prod": "vxs build",
+    "serve": "vxs serve",
     "postinstall": "patch-package || true"
   },
   "dependencies": {
@@ -22,7 +22,7 @@
   },
   "devDependencies": {
     "patch-package": "^8.0.0",
-    "vxrn": "^1.1.146"
+    "vxs": "^1.1.146"
   },
   "publishConfig": {
     "access": "public"
