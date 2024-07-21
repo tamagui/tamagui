@@ -11,5 +11,8 @@ echo "Deploying app: $app"
 if [ "$app" = "one" ]; then
   yarn ooo:build
 else
+elif [ "$app" = "takeout" ]; then
+  yarn takeout:build
+else
   yarn dev:build
 fi
