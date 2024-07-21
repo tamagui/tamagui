@@ -3,12 +3,18 @@
   "version": "1.102.3",
   "source": "src/index.ts",
   "removeSideEffects": true,
-  "sideEffects": ["polyfill.js"],
+  "sideEffects": [
+    "polyfill.js"
+  ],
   "license": "MIT",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
-  "files": ["src", "types", "dist"],
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
   "exports": {
     "./package.json": "./package.json",
     ".": {

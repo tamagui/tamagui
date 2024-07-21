@@ -844,9 +844,6 @@ export function createComponent<
       // @ts-ignore  for next/link compat etc
       onClick,
       theme: _themeProp,
-      // @ts-ignore
-      defaultVariants,
-
       ...nonTamaguiProps
     } = viewPropsIn
 

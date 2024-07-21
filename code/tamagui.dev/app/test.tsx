@@ -1,44 +1,63 @@
 import { useEffect, useState } from 'react'
-import { Button, Circle } from 'tamagui'
+import { Button, Circle, H2, styled } from 'tamagui'
 import { Header } from '~/features/site/header/Header'
 import { ThemeToggle } from '~/features/site/theme/ThemeToggle'
 
 global.shouldDebugMoti = true
 
-function TestEnter() {
-  const [key, setKey] = useState(0)
+export const HomeH2 = styled(H2, {
+  className: 'word-break-keep-all',
+  name: 'HomeH2',
+  ta: 'center',
+  als: 'center',
+  size: '$10',
+  maw: 720,
+  mt: '$-2',
+  $sm: {
+    size: '$10',
+  },
+  $xs: {
+    size: '$9',
+  },
+})
 
-  return (
-    <>
-      <Circle
-        key={key}
-        debug="verbose"
-        size={100}
-        bg="red"
-        animation="bouncy"
-        hoverStyle={{
-          scale: 2,
-        }}
-        enterStyle={{
-          // opacity: 0,
-          y: -100,
-        }}
-      />
+// function TestEnter() {
+//   const [key, setKey] = useState(0)
 
-      <Button
-        onPress={() => {
-          console.warn('press!')
-          setKey(Math.random())
-        }}
-      >
-        remount
-      </Button>
-    </>
-  )
-}
+//   return (
+//     <>
+
+//       <Circle
+//         key={key}
+//         debug="verbose"
+//         size={100}
+//         bg="red"
+//         animation="bouncy"
+//         hoverStyle={{
+//           scale: 2,
+//         }}
+//         enterStyle={{
+//           // opacity: 0,
+//           y: -100,
+//         }}
+//       />
+
+//       <Button
+//         onPress={() => {
+//           console.warn('press!')
+//           setKey(Math.random())
+//         }}
+//       >
+//         remount
+//       </Button>
+//     </>
+//   )
+// }
 
 export default function TestPage() {
-  return <Header />
+  return <HomeH2>hello world</HomeH2>
+
+  // return <Header />
 
   useEffect(() => {
     console.warn('hi mom')
