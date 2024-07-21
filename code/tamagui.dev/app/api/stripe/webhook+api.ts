@@ -52,6 +52,8 @@ export default apiRoute(async (req) => {
       })
     }
 
+    console.info(`Stripe webhook event: ${event.type}`)
+
     switch (event.type) {
       case 'product.created':
       case 'product.updated':
