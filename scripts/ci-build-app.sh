@@ -9,7 +9,7 @@ app="$2"
 echo "Deploying app: $app"
 
 if [ "$app" = "one" ]; then
-  yarn ooo:prod
+  yarn ooo:build
 else
-  yarn dev:prod
+  yarn dev:build
 fi

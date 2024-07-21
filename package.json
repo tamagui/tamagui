@@ -24,7 +24,7 @@
     "ooo": "yarn workspace testing dev:clean",
     "ooo:build": "yarn workspace @tamagui/ooo build:prod",
     "takeout": "yarn workspace @tamagui/takeout dev",
-    "deploy": "./scripts/deploy.sh",
+    "build:app": "./scripts/ci-build-app.sh",
     "dev": "yarn workspace @tamagui/dot-dev dev:clean",
     "dev:extract": "TAMAGUI_EXTRACT=1 yarn workspace @tamagui/dot-dev dev:clean",
     "dev:build": "yarn workspace @tamagui/dot-dev build:prod",
