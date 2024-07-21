@@ -54,4 +54,4 @@ RUN yarn build:app
 
 EXPOSE 3000
 
-CMD ["yarn", "dev:serve:railway"]
+CMD ["yarn", "docker:serve"]
