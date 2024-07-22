@@ -1,17 +1,20 @@
-import { isClient } from '@tamagui/constants'
-import * as React from 'react'
-
+import { isClient, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { useState, useMemo, useEffect } from 'react'
 import { ComponentContext } from '../contexts/ComponentContext'
+import { useDidHydrateOnceRoot } from '../hooks/useDidHydrateOnce'
 import { setupMediaListeners } from '../hooks/useMedia'
 import type { TamaguiProviderProps } from '../types'
 import { ThemeProvider } from './ThemeProvider'
-import { useDidHydrateOnceRoot } from '../hooks/useDidHydrateOnce'
 
 export function TamaguiProvider({
   children,
   disableInjectCSS,
   config,
-  ...themePropsProvider
+  className,
+  defaultTheme,
+  disableRootThemeClass,
+  reset,
+  themeClassNameOnRoot,
 }: TamaguiProviderProps) {
   setupMediaListeners()
 
@@ -19,16 +22,8 @@ export function TamaguiProvider({
     // inject CSS if asked to (not SSR compliant)
     useDidHydrateOnceRoot()
 
-    React.useInsertionEffect(() => {
+    useIsomorphicLayoutEffect(() => {
       if (!config) return
-      if (!config.disableSSR) {
-        // for easier support of hidden-until-js mount animations
-        // user must set t_unmounted on documentElement from SSR
-        if (document.documentElement.classList.contains('t_unmounted')) {
-          document.documentElement.classList.remove('t_unmounted')
-        }
-      }
-
       if (!disableInjectCSS) {
         const style = document.createElement('style')
         style.appendChild(document.createTextNode(config.getCSS()))
@@ -40,20 +35,38 @@ export function TamaguiProvider({
     }, [config, disableInjectCSS])
   }
 
-  return (
-    <ComponentContext.Provider animationDriver={config?.animations}>
-      <ThemeProvider
-        themeClassNameOnRoot={config?.themeClassNameOnRoot}
-        disableRootThemeClass={config?.disableRootThemeClass}
-        {...themePropsProvider}
-        defaultTheme={
-          themePropsProvider.defaultTheme ?? (config ? Object.keys(config.themes)[0] : '')
-        }
-      >
-        {children}
-      </ThemeProvider>
-    </ComponentContext.Provider>
-  )
+  const contents = useMemo(() => {
+    return (
+      <ComponentContext.Provider animationDriver={config?.animations}>
+        <ThemeProvider
+          themeClassNameOnRoot={themeClassNameOnRoot ?? config?.themeClassNameOnRoot}
+          disableRootThemeClass={disableRootThemeClass ?? config?.disableRootThemeClass}
+          defaultTheme={defaultTheme ?? (config ? Object.keys(config.themes)[0] : '')}
+          reset={reset}
+          className={className}
+        >
+          {children}
+        </ThemeProvider>
+      </ComponentContext.Provider>
+    )
+  }, [])
+
+  return <UnmountedClassName>{contents}</UnmountedClassName>
+}
+
+// for CSS animations
+function UnmountedClassName(props: { children: React.ReactNode }) {
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!isWeb) {
+    return props.children
+  }
+
+  return <span className={mounted ? '' : 't_unmounted'}>{props.children}</span>
 }
 
 TamaguiProvider['displayName'] = 'TamaguiProvider'
