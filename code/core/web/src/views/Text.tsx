@@ -18,7 +18,7 @@ const ellipseStyle = {
 export type Text = TamaguiTextElement
 
 const defaultWebStyle = {
-  display: 'inline',
+  display: 'inline-block', // display: inline breaks css transform styles
   boxSizing: 'border-box',
   wordWrap: 'break-word',
   whiteSpace: 'pre-wrap',
