@@ -182,7 +182,7 @@ export default function TakeoutPage() {
 
       <ContainerLarge px={0}>
         <YStack h={0} mah={0}>
-          <YStack position="absolute" t={30} r="2%">
+          <XStack position="absolute" t={30} r="2%">
             <PurchaseButton
               icon={ShoppingCart}
               onPress={() => {
@@ -192,7 +192,8 @@ export default function TakeoutPage() {
             >
               $149
             </PurchaseButton>
-          </YStack>
+            <DemoButton size="$4" ml="$2">Demo</DemoButton>
+          </XStack>
 
           {/* <DiscountText>Text</DiscountText> */}
 
@@ -1120,15 +1121,14 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
         <XStack pos="absolute" b="$4" l="$4" r="$4" zi={100} gap="$2" ml="$-2">
           {/* cant use buttonlink it breaks scroll on press if not enabled, conditionally use a link */}
           {/* subscription ? `/account/items#${subscription.id}` : '' */}
-          <PurchaseButton
+                    <PurchaseButton
             onPress={() => {
               store.showPurchase = true
             }}
-            width="50%"
+            width="100%"
           >
             Purchase
           </PurchaseButton>
-          <DemoButton width="50%">Demo</DemoButton>
 
         </XStack>
 

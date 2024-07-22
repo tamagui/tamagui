@@ -66,66 +66,16 @@ export function DemoButton(props: ButtonProps) {
   return (
     <ThemeTintAlt offset={1}>
       <Link href="https://unistack-next-delta.vercel.app/" target="_blank" asChild>
-      <Button size="$5" borderWidth={2} {...props}>
-        <Button.Text size="$3" ff="$silkscreen">
-          {props.children}
-        </Button.Text>
-
-        <Button.Icon>
-          <ExternalLink />
-        </Button.Icon>
-      </Button>
+        <Button size="$5" borderWidth={2} {...props}>
+          <Button.Icon>
+            <ExternalLink />
+          </Button.Icon>
+          <Button.Text size="$3" ff="$silkscreen">
+            {props.children}
+          </Button.Text>
+        </Button>
       </Link>
     </ThemeTintAlt>
-  )
-}
-
-export const CheckboxGroupItem = ({ children, ...props }: CheckboxProps) => {
-  return (
-    <Label
-      f={1}
-      htmlFor={props.id}
-      p="$4"
-      className="3d"
-      height="unset"
-      display="flex"
-      borderWidth="$0.25"
-      backgroundColor={props.checked ? '$color2' : '$color1'}
-      borderColor={props.checked ? '$color5' : '$color2'}
-      borderRadius="$4"
-      gap="$4"
-      ai="center"
-      opacity={props.disabled ? 0.75 : 1}
-      cursor={props.disabled ? 'not-allowed' : 'default'}
-      $gtSm={{
-        maw: 'calc(50% - 8px)',
-      }}
-      hoverStyle={{
-        borderColor: props.checked ? '$color7' : '$color7',
-      }}
-    >
-      <Checkbox
-        bg="$color3"
-        bc="$color5"
-        hoverStyle={{
-          bg: '$color4',
-          bc: '$color6',
-        }}
-        checked={props.checked}
-        size="$6"
-        {...props}
-      >
-        <Checkbox.Indicator
-        // backgroundColor={props.checked ? '$color8' : '$color1'}
-        >
-          <Check />
-        </Checkbox.Indicator>
-      </Checkbox>
-
-      <YStack gap="$1" f={1}>
-        {children}
-      </YStack>
-    </Label>
   )
 }
 
