@@ -1,5 +1,5 @@
 import { composeRefs } from '@tamagui/compose-refs'
-import { isClient, isServer, isWeb } from '@tamagui/constants'
+import { isClient, isServer, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import {
   StyleObjectIdentifier,
   StyleObjectRules,
@@ -887,6 +887,9 @@ export function createComponent<
       if ((isAnimated || supportsCSSVars) && animations) {
         animationStyles = animations.style
         viewProps.style = animationStyles
+        if (animations.className) {
+          viewProps.className = `${viewProps.className || ''} ${animations.className}`
+        }
       }
 
       if (process.env.NODE_ENV === 'development' && time) time`animations`
@@ -960,6 +963,16 @@ export function createComponent<
     const { pseudoGroups, mediaGroups } = splitStyles
 
     const unPress = () => setStateShallow({ press: false, pressIn: false })
+
+    if (process.env.NODE_ENV === 'development') {
+      useIsomorphicLayoutEffect(() => {
+        if (debugProp) {
+          console.groupCollapsed(`Rendered style >`)
+          console.warn(getComputedStyle(stateRef.current.host! as any))
+          console.groupEnd()
+        }
+      })
+    }
 
     useEffect(() => {
       if (disabled) {
