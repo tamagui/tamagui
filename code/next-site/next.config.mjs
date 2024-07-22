@@ -62,7 +62,7 @@ export default (name, { defaultConfig }) => {
     productionBrowserSourceMaps: process.env.ANALYZE === 'true',
     swcMinify: true,
     // must set to false if using reanimated
-    // reactStrictMode: false,
+    reactStrictMode: true,
     optimizeFonts: true,
     modularizeImports: {
       '@tamagui/lucide-icons': {

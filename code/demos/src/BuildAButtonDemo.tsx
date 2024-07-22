@@ -39,7 +39,7 @@ function ButtonCol(
 ) {
   const subTheme = props.subTheme ? `_${props.subTheme}` : ''
   return (
-    <YStack padding="$2" space="$3">
+    <YStack padding="$2" gap="$3">
       <Button theme={props.subTheme} {...props}>
         Hello
       </Button>

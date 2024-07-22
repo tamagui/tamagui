@@ -57,7 +57,7 @@ export const HeroTypography = memo(() => {
           ai="center"
           jc="center"
           pos="relative"
-          space="$8"
+          gap="$8"
           flexDirection="row-reverse"
           $sm={{
             flexDirection: 'column-reverse',
@@ -68,17 +68,17 @@ export const HeroTypography = memo(() => {
           <YStack
             h={300}
             w="40%"
-            space="$0.5"
+            gap="$0.5"
             jc="center"
             scale={1.1}
             x={-20}
             y={5}
             $sm={{ y: 0, miw: '110%', ai: 'center', x: 0, scale: 0.9 }}
           >
-            <YStack ai="flex-end" contain="paint layout" h={270}>
+            <YStack ai="flex-end" h={270}>
               <AnimatePresence exitBeforeEnter>
                 <AnimatedHeading
-                  disableAnimation={!isIntersecting}
+                  debug
                   key={`${family}1`}
                   index={0}
                   Component={H1}
@@ -87,8 +87,7 @@ export const HeroTypography = memo(() => {
                 >
                   Swappable
                 </AnimatedHeading>
-                <AnimatedHeading
-                  disableAnimation={!isIntersecting}
+                {/* <AnimatedHeading
                   key={`${family}2`}
                   index={1}
                   Component={H2}
@@ -98,7 +97,6 @@ export const HeroTypography = memo(() => {
                   typed, compiled
                 </AnimatedHeading>
                 <AnimatedHeading
-                  disableAnimation={!isIntersecting}
                   key={`${family}3`}
                   index={2}
                   Component={H3}
@@ -108,7 +106,6 @@ export const HeroTypography = memo(() => {
                   custom per-size
                 </AnimatedHeading>
                 <AnimatedHeading
-                  disableAnimation={!isIntersecting}
                   key={`${family}4`}
                   index={3}
                   Component={H4}
@@ -118,7 +115,6 @@ export const HeroTypography = memo(() => {
                   premade or custom
                 </AnimatedHeading>
                 <AnimatedHeading
-                  disableAnimation={!isIntersecting}
                   key={`${family}5`}
                   index={4}
                   Component={H5}
@@ -128,7 +124,6 @@ export const HeroTypography = memo(() => {
                   easy to author
                 </AnimatedHeading>
                 <AnimatedHeading
-                  disableAnimation={!isIntersecting}
                   key={`${family}6`}
                   index={5}
                   Component={H6}
@@ -136,7 +131,7 @@ export const HeroTypography = memo(() => {
                   color="$red10"
                 >
                   font themes
-                </AnimatedHeading>
+                </AnimatedHeading> */}
               </AnimatePresence>
             </YStack>
           </YStack>
@@ -169,7 +164,7 @@ const OverlayCard = () => {
         </Paragraph>
 
         <Button
-          accessibilityLabel="Fonts docs"
+          aria-label="Fonts docs"
           fontFamily="$silkscreen"
           als="flex-end"
           theme={tint as any}

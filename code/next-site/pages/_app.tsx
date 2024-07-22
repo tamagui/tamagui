@@ -2,7 +2,6 @@ import '@tamagui/core/reset.css'
 
 import '../app.css'
 
-import type { GetLayout } from '@lib/getDefaultLayout'
 import type { ColorScheme } from '@tamagui/next-theme'
 import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme'
 import type { AppProps } from 'next/app'
@@ -77,15 +76,6 @@ function AppContents(
 ) {
   return (
     <>
-      <Head>
-        <script
-          dangerouslySetInnerHTML={{
-            // avoid flash of animated things on enter
-            __html: `document.documentElement.classList.add('t_unmounted')`,
-          }}
-        />
-      </Head>
-
       <TamaguiProvider
         config={config}
         disableInjectCSS

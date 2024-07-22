@@ -224,6 +224,7 @@ export const getSplitStyles: StyleSplitter = (
       staticConfig,
       shouldDoClasses,
       styleProps,
+      rulesToInsert,
       componentState,
       styleState,
       theme: { ...theme },

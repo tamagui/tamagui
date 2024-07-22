@@ -1,5 +1,3 @@
-import { getDefaultLayout } from '@lib/getDefaultLayout'
-
 import { ThemeTint } from '@tamagui/logo'
 import { HeroTypography } from '../components/HeroTypography'
 import { SectionTinted, TintSection } from '../components/TintSection'
@@ -17,5 +15,3 @@ export default function Home() {
     </>
   )
 }
-
-Home.getLayout = getDefaultLayout

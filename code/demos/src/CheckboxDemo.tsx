@@ -4,7 +4,7 @@ import { Checkbox, Label, XStack, YStack } from 'tamagui'
 
 export function CheckboxDemo() {
   return (
-    <YStack width={300} alignItems="center" space="$2">
+    <YStack width={300} alignItems="center" gap="$2">
       <CheckboxWithLabel size="$3" />
       <CheckboxWithLabel size="$4" defaultChecked />
       <CheckboxWithLabel size="$5" disabled label="Accept terms (disabled)" />
@@ -19,7 +19,7 @@ export function CheckboxWithLabel({
 }: CheckboxProps & { label?: string }) {
   const id = `checkbox-${(size || '').toString().slice(1)}`
   return (
-    <XStack width={300} alignItems="center" space="$4">
+    <XStack width={300} alignItems="center" gap="$4">
       <Checkbox id={id} size={size} {...checkboxProps}>
         <Checkbox.Indicator>
           <CheckIcon />

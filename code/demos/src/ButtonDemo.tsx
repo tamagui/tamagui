@@ -3,12 +3,12 @@ import { Button, XGroup, XStack, YStack } from 'tamagui'
 
 export function ButtonDemo(props) {
   return (
-    <YStack padding="$3" space="$3" {...props}>
+    <YStack padding="$3" gap="$3" {...props}>
       <Button>Plain</Button>
       <Button alignSelf="center" icon={Airplay} size="$6">
         Large
       </Button>
-      <XStack space="$2" justifyContent="center">
+      <XStack gap="$2" justifyContent="center">
         <Button size="$3" theme="active">
           Active
         </Button>
@@ -16,7 +16,7 @@ export function ButtonDemo(props) {
           Outlined
         </Button>
       </XStack>
-      <XStack space="$2">
+      <XStack gap="$2">
         <Button themeInverse size="$3">
           Inverse
         </Button>

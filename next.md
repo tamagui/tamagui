@@ -132,7 +132,6 @@ Ongoing work:
 
 - Remove the need for Text
 
-- document the t_unmounted / SSR
 - popovers work with no js
 
 - TODO

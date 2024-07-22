@@ -2396,6 +2396,7 @@ export type UseAnimationHook = (props: {
   delay?: number
 }) => null | {
   style?: StackStyleBase | StackStyleBase[]
+  className?: string
 }
 
 export type GestureReponderEvent = Exclude<
