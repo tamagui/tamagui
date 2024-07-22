@@ -33,8 +33,7 @@
     "next": "^14.2.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-native": "0.74.1",
-    "react-native-reanimated": "3.13.0-rc.1"
+    "react-native": "0.74.1"
   },
   "devDependencies": {
     "@babel/preset-react": "^7.23.3",
