@@ -145,10 +145,10 @@ describe('webpack-tests', () => {
 
   test('17. variant default false flattens properly', () => {
     const out = getTest('TestVariantDefaultFalseOn').renderer.toJSON()
-    const outCn = out.children[0].children[0].props.className
+    const outCn = out.children[0].children[0].children[0].props.className
 
     const out2 = getTest('TestVariantDefaultFalseOff').renderer.toJSON()
-    const out2Cn = out2.children[0].children[0].props.className
+    const out2Cn = out2.children[0].children[0].children[0].props.className
 
     expect(outCn).to.not.contain(`_pt-1316330145`)
     expect(out2Cn).to.contain(`_pt-1316330145`)
