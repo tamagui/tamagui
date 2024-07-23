@@ -1,4 +1,7 @@
 {
+  "workbench.preferredDarkColorTheme": "Monochrome Dark",
+  "workbench.preferredLightColorTheme": "Min Light",
+  
   "typescript.tsdk": "node_modules/typescript/lib",
   "search.exclude": {
     "**/node_modules": true,

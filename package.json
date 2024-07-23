@@ -115,7 +115,7 @@
       }
     },
     "x": {
-      "applied": true,
+      "applied": false,
       "resolutions": {
         "@react-three/fiber": "9.0.0-alpha.6",
         "react": "19.0.0-rc-fb9a90fa48-20240614",
@@ -176,20 +176,5 @@
     "ultra-runner": "^3.10.5",
     "update-ts-references": "^3.3.0",
     "zx": "^7.2.3"
-  },
-  "resolutions": {
-    "@react-three/fiber": "9.0.0-alpha.6",
-    "react": "19.0.0-rc-fb9a90fa48-20240614",
-    "react-dom": "19.0.0-rc-fb9a90fa48-20240614",
-    "react-native-reanimated": "3.13.0-rc.1",
-    "create-vxrn": "portal:/Users/n8/vxrn/packages/create-vxrn",
-    "@vxrn/react-native-prebuilt": "portal:/Users/n8/vxrn/packages/react-native-prebuilt",
-    "@vxrn/safe-area": "portal:/Users/n8/vxrn/packages/safe-area",
-    "@vxrn/vite-flow": "portal:/Users/n8/vxrn/packages/vite-flow",
-    "@vxrn/vite-native-client": "portal:/Users/n8/vxrn/packages/vite-native-client",
-    "@vxrn/vite-native-hmr": "portal:/Users/n8/vxrn/packages/vite-native-hmr",
-    "@vxrn/vite-native-swc": "portal:/Users/n8/vxrn/packages/vite-native-swc",
-    "vxrn": "portal:/Users/n8/vxrn/packages/vxrn",
-    "vxs": "portal:/Users/n8/vxrn/packages/vxs"
   }
 }

@@ -38,7 +38,7 @@
     "vite": "6.0.0-alpha.18",
     "vite-plugin-inspect": "^0.8.4",
     "vite-tsconfig-paths": "^4.3.2",
-    "vxs": "^1.1.147",
+    "vxs": "^1.1.148",
     "zod": "^3.22.4"
   },
   "devDependencies": {
@@ -47,6 +47,6 @@
     "h3": "^1.11.1",
     "patch-package": "^8.0.0",
     "supabase": "1.127.4",
-    "vxrn": "^1.1.147"
+    "vxrn": "^1.1.148"
   }
 }
