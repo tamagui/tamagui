@@ -2,9 +2,9 @@ code/bento/src/** filter=crypt diff=crypt merge=crypt
 code/ooo/src/** filter=crypt diff=crypt merge=crypt
 code/ooo/app/** filter=crypt diff=crypt merge=crypt
 code/ooo/public/** filter=crypt diff=crypt merge=crypt
-code/takeout/app/** filter=crypt diff=crypt merge=crypt
-code/takeout/features/** filter=crypt diff=crypt merge=crypt
-code/takeout/ui/** filter=crypt diff=crypt merge=crypt
-code/takeout/hooks/** filter=crypt diff=crypt merge=crypt
-code/takeout/helpers/** filter=crypt diff=crypt merge=crypt
+code/takeout/app/** filter=crypt-takeout diff=crypt-takeout merge=crypt-takeout
+code/takeout/features/** filter=crypt-takeout diff=crypt-takeout merge=crypt-takeout
+code/takeout/ui/** filter=crypt-takeout diff=crypt-takeout merge=crypt-takeout
+code/takeout/hooks/** filter=crypt-takeout diff=crypt-takeout merge=crypt-takeout
+code/takeout/helpers/** filter=crypt-takeout diff=crypt-takeout merge=crypt-takeout
 
