@@ -4,4 +4,7 @@ code/ooo/app/** filter=crypt diff=crypt merge=crypt
 code/ooo/public/** filter=crypt diff=crypt merge=crypt
 code/takeout/app/** filter=crypt diff=crypt merge=crypt
 code/takeout/features/** filter=crypt diff=crypt merge=crypt
+code/takeout/ui/** filter=crypt diff=crypt merge=crypt
+code/takeout/hooks/** filter=crypt diff=crypt merge=crypt
+code/takeout/helpers/** filter=crypt diff=crypt merge=crypt
 
