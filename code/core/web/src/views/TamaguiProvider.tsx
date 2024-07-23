@@ -1,5 +1,5 @@
 import { isClient, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
-import { useState, useMemo, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { ComponentContext } from '../contexts/ComponentContext'
 import { useDidHydrateOnceRoot } from '../hooks/useDidHydrateOnce'
 import { setupMediaListeners } from '../hooks/useMedia'
@@ -35,8 +35,8 @@ export function TamaguiProvider({
     }, [config, disableInjectCSS])
   }
 
-  const contents = useMemo(() => {
-    return (
+  return (
+    <UnmountedClassName>
       <ComponentContext.Provider animationDriver={config?.animations}>
         <ThemeProvider
           themeClassNameOnRoot={themeClassNameOnRoot ?? config?.themeClassNameOnRoot}
@@ -48,10 +48,8 @@ export function TamaguiProvider({
           {children}
         </ThemeProvider>
       </ComponentContext.Provider>
-    )
-  }, [])
-
-  return <UnmountedClassName>{contents}</UnmountedClassName>
+    </UnmountedClassName>
+  )
 }
 
 // for CSS animations
