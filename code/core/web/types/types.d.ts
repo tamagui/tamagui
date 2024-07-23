@@ -290,6 +290,11 @@ type AllowedStyleValuesSetting = AllowedValueSettingBase | AllowedStyleValuesSet
 type AutocompleteSpecificTokensSetting = boolean | 'except-special';
 type GenericTamaguiSettings = {
     /**
+     * When true, flexBasis will be set to 0 when flex is positive. This will be
+     * the default in v2 of Tamagui alongside an alternative mode for web compat.
+     */
+    styleCompat?: 'react-native';
+    /**
      * When true, Tamagui will always prefer a more specific style prop over a
      * less specific one.
      *
