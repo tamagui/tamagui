@@ -9,7 +9,7 @@ Error.stackTraceLimit = Number.POSITIVE_INFINITY
 
 const PROD = process.env.NODE_ENV === 'production'
 
-// @ts-ignore TODO type
+// @ts-ignore
 if (!import.meta.dirname) {
   throw new Error(`Not on Node 22`)
 }
@@ -40,7 +40,7 @@ export default {
 
   resolve: {
     alias: {
-      // @ts-ignore TODO fix type
+      // @ts-ignore
       '~': import.meta.dirname,
       'react-native-svg': '@tamagui/react-native-svg',
       // 'react-native-web': await resolve('react-native-web-lite'),

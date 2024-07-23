@@ -24,8 +24,13 @@
     "@tamagui/image-next": "1.103.2",
     "@tamagui/logo": "1.103.2",
     "@tamagui/lucide-icons": "1.103.2",
+    "expo-apple-authentication": "~6.4.1",
+    "expo-crypto": "~13.0.2",
     "jsonwebtoken": "^9.0.2",
     "postmark": "^3.0.18",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-hook-form": "^7.46.1",
     "react-native": "0.74.1",
     "react-native-reanimated": "npm:react-native-reanimated@3.13.0-rc.1",
     "react-native-svg": "15.2.0",
@@ -33,7 +38,8 @@
     "vite": "6.0.0-alpha.18",
     "vite-plugin-inspect": "^0.8.4",
     "vite-tsconfig-paths": "^4.3.2",
-    "vxs": "^1.1.147"
+    "vxs": "^1.1.147",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@tamagui/cli": "1.103.2",
