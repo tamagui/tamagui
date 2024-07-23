@@ -1,6 +1,6 @@
 {
   "name": "bento-get",
-  "version": "1.103.2",
+  "version": "1.103.3",
   "license": "MIT",
   "bin": "dist/cli.js",
   "type": "module",
@@ -39,7 +39,7 @@
   "dependencies": {
     "@inkjs/ui": "^1.0.0",
     "@supabase/supabase-js": "^2.44.4",
-    "@tamagui/use-force-update": "1.103.2",
+    "@tamagui/use-force-update": "1.103.3",
     "conf": "^12.0.0",
     "copy-paste": "^1.5.3",
     "fuse.js": "^7.0.0",
@@ -55,7 +55,7 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@tamagui/build": "1.103.2",
+    "@tamagui/build": "1.103.3",
     "@types/copy-paste": "^1.1.33",
     "@types/react": "^18.2.55"
   }

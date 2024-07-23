@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/takeout",
-  "version": "1.103.2",
+  "version": "1.103.3",
   "type": "module",
   "private": true,
   "scripts": {
@@ -17,13 +17,13 @@
     "@react-three/fiber": "npm:@react-three/fiber@9.0.0-alpha.6",
     "@supabase/ssr": "0.4.0",
     "@supabase/supabase-js": "^2.44.4",
-    "@tamagui/assert": "1.103.2",
-    "@tamagui/bento": "1.103.2",
-    "@tamagui/demos": "1.103.2",
-    "@tamagui/get-token": "1.103.2",
-    "@tamagui/image-next": "1.103.2",
-    "@tamagui/logo": "1.103.2",
-    "@tamagui/lucide-icons": "1.103.2",
+    "@tamagui/assert": "1.103.3",
+    "@tamagui/bento": "1.103.3",
+    "@tamagui/demos": "1.103.3",
+    "@tamagui/get-token": "1.103.3",
+    "@tamagui/image-next": "1.103.3",
+    "@tamagui/logo": "1.103.3",
+    "@tamagui/lucide-icons": "1.103.3",
     "expo-apple-authentication": "~6.4.1",
     "expo-crypto": "~13.0.2",
     "jsonwebtoken": "^9.0.2",
@@ -34,19 +34,19 @@
     "react-native": "0.74.1",
     "react-native-reanimated": "npm:react-native-reanimated@3.13.0-rc.1",
     "react-native-svg": "15.2.0",
-    "tamagui": "1.103.2",
+    "tamagui": "1.103.3",
     "vite": "6.0.0-alpha.18",
     "vite-plugin-inspect": "^0.8.4",
     "vite-tsconfig-paths": "^4.3.2",
-    "vxs": "^1.1.147",
+    "vxs": "^1.1.148",
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@tamagui/cli": "1.103.2",
+    "@tamagui/cli": "1.103.3",
     "esbuild-register": "^3.5.0",
     "h3": "^1.11.1",
     "patch-package": "^8.0.0",
     "supabase": "1.127.4",
-    "vxrn": "^1.1.147"
+    "vxrn": "^1.1.148"
   }
 }
