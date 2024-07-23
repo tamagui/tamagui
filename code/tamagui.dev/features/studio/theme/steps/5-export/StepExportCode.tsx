@@ -131,7 +131,7 @@ export class StepExportStore {
             {
               filename: 'tamagui.config.ts',
               content: `import * as themes from './src/themes'
-import { tokens } from './src/theme-builder'
+import { tokens } from '@tamagui/config/v3'
 
 const config = createTamagui({
   tokens,
@@ -271,7 +271,7 @@ const config = createTamagui({
                   {
                     filename: 'tamagui.config.ts',
                     content: `import * as themesIn from './src/themes'
-import { tokens } from './src/theme-builder'
+import { tokens } from '@tamagui/config/v3'
 
 // TAMAGUI_IS_SERVER is set by @tamagui/next-plugin
 const themes =
