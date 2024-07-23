@@ -29,6 +29,7 @@
     "takeout:build": "yarn workspace @tamagui/takeout build:prod",
     "takeout:prod": "yarn takeout:build && yarn takeout:serve",
     "takeout:serve": "yarn workspace @tamagui/takeout serve",
+    "takeout:unlock": "transcrypt -C takeout -c aes-256-cbc -p",
     "build:app": "./scripts/ci-build-app.sh",
     "dev": "yarn workspace @tamagui/dot-dev dev:clean",
     "dev:extract": "TAMAGUI_EXTRACT=1 yarn workspace @tamagui/dot-dev dev:clean",
