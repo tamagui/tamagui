@@ -37,7 +37,6 @@
     "tamagui": "1.104.0",
     "vite": "6.0.0-alpha.18",
     "vite-plugin-inspect": "^0.8.4",
-    "vite-tsconfig-paths": "^4.3.2",
     "vxs": "^1.1.148",
     "zod": "^3.22.4"
   },
