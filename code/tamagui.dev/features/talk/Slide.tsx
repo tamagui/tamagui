@@ -193,7 +193,7 @@ const SlideInner = (props: SlideProps) => {
         {showAllSteps ? null : glows.elements}
       </YStack>
       <YStack ref={glows.ref as any} space="$7" w="90%" h="100%" p="$12">
-        <YStack space="$4">
+        <YStack gap="$4">
           {Boolean(props.title) && (
             <H1
               fontSize={75}

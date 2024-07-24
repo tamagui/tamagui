@@ -18,7 +18,7 @@ const TransparentInput = styled(Input, {
 
 export function StyledOverridePsuedo() {
   return (
-    <YStack space="$4">
+    <YStack gap="$4">
       <TransparentInput placeholder="transparent border 0px" />
       <Input placeholder="default input" />
     </YStack>

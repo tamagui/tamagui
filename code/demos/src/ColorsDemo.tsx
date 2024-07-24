@@ -34,7 +34,7 @@ function ColorsRow({ title, colors }: { title: string; colors: Variable[][] }) {
         <YStack space $sm={{ space: '$2' }} alignSelf="center">
           {colors.map((group, index) => {
             return (
-              <XStack space="$2" key={index}>
+              <XStack gap="$2" key={index}>
                 {group.map((color) => {
                   return (
                     <Square
@@ -58,7 +58,7 @@ function ColorsRow({ title, colors }: { title: string; colors: Variable[][] }) {
             )
           })}
 
-          <XStack space="$2" alignSelf="center">
+          <XStack gap="$2" alignSelf="center">
             {new Array(13)
               .fill(0)
               .slice(1)
@@ -83,7 +83,7 @@ function ColorsRow({ title, colors }: { title: string; colors: Variable[][] }) {
           </XStack>
         </YStack>
 
-        <YStack space="$4" marginTop="$2">
+        <YStack gap="$4" marginTop="$2">
           {colorGroups.map((name) => (
             <Paragraph
               theme={name as any}

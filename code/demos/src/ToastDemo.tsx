@@ -49,7 +49,7 @@ const CurrentToast = () => {
 const ToastControl = ({ native }: { native: boolean }) => {
   const toast = useToastController()
   return (
-    <XStack space="$2" justifyContent="center">
+    <XStack gap="$2" justifyContent="center">
       <Button
         onPress={() => {
           toast.show('Successfully saved!', {
@@ -79,7 +79,7 @@ const NativeOptions = ({
   setNative: (native: boolean) => void
 }) => {
   return (
-    <XStack space="$3">
+    <XStack gap="$3">
       <Label size="$1" onPress={() => setNative(false)}>
         Custom
       </Label>
