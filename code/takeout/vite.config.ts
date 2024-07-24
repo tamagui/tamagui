@@ -27,8 +27,8 @@ export default {
 
     // todo automate, probably can just dedupe all package.json deps?
     dedupe: [
-      // 'react',
-      // 'react-dom',
+      'react',
+      'react-dom',
       '@tamagui/core',
       '@tamagui/web',
       '@tamagui/animations-moti',
@@ -40,8 +40,6 @@ export default {
   },
 
   optimizeDeps: {
-    exclude: ['react', 'react-dom', 'react/jsx-dev-runtime', 'react/jsx-runtime'],
-
     include: [
       ...optimizeInterop,
       'react-hook-form',
@@ -54,12 +52,6 @@ export default {
       '@tamagui/animations-react-native',
     ],
     needsInterop: optimizeInterop,
-  },
-
-  ssr: {
-    optimizeDeps: {
-      exclude: ['react', 'react-dom', 'react/jsx-dev-runtime', 'react/jsx-runtime'],
-    },
   },
 
   build: {
