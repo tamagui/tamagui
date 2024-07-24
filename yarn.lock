@@ -6291,7 +6291,7 @@ __metadata:
     vite: "npm:6.0.0-alpha.18"
     vite-bundle-analyzer: "npm:^0.9.4"
     vite-plugin-inspect: "npm:^0.8.4"
-    vxs: "npm:^1.1.148"
+    vxs: "npm:^1.1.150"
   languageName: unknown
   linkType: soft
 
@@ -6929,7 +6929,7 @@ __metadata:
     "@tamagui/input": "npm:1.104.1"
     patch-package: "npm:^8.0.0"
     react-native: "npm:0.74.1"
-    vxs: "npm:^1.1.148"
+    vxs: "npm:^1.1.150"
   languageName: unknown
   linkType: soft
 
@@ -7504,8 +7504,8 @@ __metadata:
     tamagui: "npm:1.104.1"
     vite: "npm:6.0.0-alpha.18"
     vite-plugin-inspect: "npm:^0.8.4"
-    vxrn: "npm:^1.1.148"
-    vxs: "npm:^1.1.148"
+    vxrn: "npm:^1.1.150"
+    vxs: "npm:^1.1.150"
     zod: "npm:^3.22.4"
   languageName: unknown
   linkType: soft
@@ -9360,12 +9360,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vxrn/react-native-prebuilt@npm:1.1.149":
-  version: 1.1.149
-  resolution: "@vxrn/react-native-prebuilt@npm:1.1.149"
+"@vxrn/react-native-prebuilt@npm:1.1.150":
+  version: 1.1.150
+  resolution: "@vxrn/react-native-prebuilt@npm:1.1.150"
   dependencies:
-    "@vxrn/vite-flow": "npm:1.1.149"
-    "@vxrn/vite-native-hmr": "npm:1.1.149"
+    "@vxrn/vite-flow": "npm:1.1.150"
+    "@vxrn/vite-native-hmr": "npm:1.1.150"
     esbuild: "npm:~0.19.3"
     fs-extra: "npm:^11.2.0"
     import-meta-resolve: "npm:^4.1.0"
@@ -9373,57 +9373,57 @@ __metadata:
     react: "*"
     react-dom: "*"
     react-native: "*"
-  checksum: 10/5d4113795587318aa64d7e3845a3dcbc0e3b8379065d193803b7e0ada801c7535686344490613bf90adf963b7a08ac3147633f06f7e5cf17196de2c0ff5b8651
+  checksum: 10/74ff91299ad3c5446d99193ccd4431a4eb61a28ddcc8333023caa79bfb778108974496ed4c36aad8b720cab7c0337172fb63ceaa7ab3e61b23534db91b524000
   languageName: node
   linkType: hard
 
-"@vxrn/safe-area@npm:1.1.149":
-  version: 1.1.149
-  resolution: "@vxrn/safe-area@npm:1.1.149"
-  checksum: 10/694a85ac7859f334d06a38ac25df2e43e25d4714acc7fa99d86ffb77b78e6543ede2366837cb44224b114bbea09ba17209d234c0f6f5f352a7f09628b7caeadf
+"@vxrn/safe-area@npm:1.1.150":
+  version: 1.1.150
+  resolution: "@vxrn/safe-area@npm:1.1.150"
+  checksum: 10/9879fcdcec6f5d5ec74b9da5851376ad059232df3e1f03d675d6d032dbe3a3042848f408e87407e85e4c60319706a744191c09447da77b2e3f67c50f9b1782a3
   languageName: node
   linkType: hard
 
-"@vxrn/vite-flow@npm:1.1.149":
-  version: 1.1.149
-  resolution: "@vxrn/vite-flow@npm:1.1.149"
+"@vxrn/vite-flow@npm:1.1.150":
+  version: 1.1.150
+  resolution: "@vxrn/vite-flow@npm:1.1.150"
   dependencies:
     "@babel/core": "npm:^7.21.8"
     "@babel/plugin-transform-private-methods": "npm:^7.24.7"
     metro-react-native-babel-preset: "npm:^0.77.0"
-  checksum: 10/882d46c4264b20b9ea20f6302fea285d16935a5f7607fbec0fc1e28bf6fe0bb3a8384e6c1a46c2133e593f71e50fe149ffe272dce64691607156ca6ff2a1e067
+  checksum: 10/91ed8d43241eed7fa3da3c073994f6f72987f4d0d1de425ab6f02cd266a3ec422428e6f44a433ab0e663455e10ec81183923ff5353be69fb35ccbe50d893a77f
   languageName: node
   linkType: hard
 
-"@vxrn/vite-native-client@npm:1.1.149":
-  version: 1.1.149
-  resolution: "@vxrn/vite-native-client@npm:1.1.149"
+"@vxrn/vite-native-client@npm:1.1.150":
+  version: 1.1.150
+  resolution: "@vxrn/vite-native-client@npm:1.1.150"
   peerDependencies:
     react-native: "*"
-  checksum: 10/3c5ade89700e6c361fa738791c1cc81a3f4193542d27f07e63611d386c07ae88f8d06471eb700d53e3f119d49120bb8fd529e8d0d1dffeac38f156f3af6e8213
+  checksum: 10/641425754cfbd866b60713ed4634455c52fa8528113694e6cbc4071d192a536b001641bad1acd29cf817ba1ade6e7f7bd1b533ced5ae5a5295e53e8e6e2740f2
   languageName: node
   linkType: hard
 
-"@vxrn/vite-native-hmr@npm:1.1.149":
-  version: 1.1.149
-  resolution: "@vxrn/vite-native-hmr@npm:1.1.149"
+"@vxrn/vite-native-hmr@npm:1.1.150":
+  version: 1.1.150
+  resolution: "@vxrn/vite-native-hmr@npm:1.1.150"
   dependencies:
     pretty-format: "npm:^28.1.0"
   peerDependencies:
     react-native: "*"
-  checksum: 10/19b9c721bdd1e75fb48cbceeb6f3519ec3433784f9eaffe6f7bf71a25ca40557b3bb66cf276354f341255e687d88aacaea0bd287d1ce9666de13df1884e9a33a
+  checksum: 10/1aff8c209109f2de1773de52d02109539ae39e59606a20745e678e01b945f734afa7492dfa3dd00555dec874e0f0d7c07911ad8d45083b52eada329b38291bc7
   languageName: node
   linkType: hard
 
-"@vxrn/vite-native-swc@npm:1.1.149":
-  version: 1.1.149
-  resolution: "@vxrn/vite-native-swc@npm:1.1.149"
+"@vxrn/vite-native-swc@npm:1.1.150":
+  version: 1.1.150
+  resolution: "@vxrn/vite-native-swc@npm:1.1.150"
   dependencies:
     "@swc/core": "npm:^1.6.6"
-    "@vxrn/vite-native-client": "npm:1.1.149"
+    "@vxrn/vite-native-client": "npm:1.1.150"
   peerDependencies:
     react-native: "*"
-  checksum: 10/68d3c9ecc153eee8dc8b6851abcffa2971f7cb13860944c38be94e188f0e97d22ffe9088a7b630133fafa399218bbacaa27d6d0be079661a2e03efb702d93c85
+  checksum: 10/e41c3987ac04d773cfe45c39e2e0724687de2cfd7205e316a651025eecae0113d33e33bed29e5d81df96fcfdd10cdc32904c40f2490a3519d375528964502e7c
   languageName: node
   linkType: hard
 
@@ -28559,17 +28559,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vxrn@npm:1.1.149, vxrn@npm:^1.1.148":
-  version: 1.1.149
-  resolution: "vxrn@npm:1.1.149"
+"vxrn@npm:1.1.150, vxrn@npm:^1.1.150":
+  version: 1.1.150
+  resolution: "vxrn@npm:1.1.150"
   dependencies:
     "@babel/core": "npm:^7.21.8"
     "@hono/node-server": "npm:^1.11.1"
     "@vitejs/plugin-react-swc": "npm:^3.6.0"
-    "@vxrn/react-native-prebuilt": "npm:1.1.149"
-    "@vxrn/safe-area": "npm:1.1.149"
-    "@vxrn/vite-flow": "npm:1.1.149"
-    "@vxrn/vite-native-swc": "npm:1.1.149"
+    "@vxrn/react-native-prebuilt": "npm:1.1.150"
+    "@vxrn/safe-area": "npm:1.1.150"
+    "@vxrn/vite-flow": "npm:1.1.150"
+    "@vxrn/vite-native-swc": "npm:1.1.150"
     citty: "npm:^0.1.6"
     crossws: "npm:^0.2.4"
     es-module-lexer: "npm:^1.3.0"
@@ -28589,13 +28589,13 @@ __metadata:
     ws: "npm:^8.7.0"
   bin:
     vxrn: run.mjs
-  checksum: 10/9cd2a6b38f085384b9e723e9eeb9a8e12c19c8eaaff0f12a05474e14740ca8a0e04cfe37e606303209798e888a471bf76946de3d37ba8f8ade0daafb6ee2d750
+  checksum: 10/0df811b1d39ff054e42f2f1f1aa8dd392b1d797f6ba6fb47cea006af4ff391832d2c1c594ce51d5619709f37608a44fc51f4e1f91a08fd0c5a6961e49494a980
   languageName: node
   linkType: hard
 
-"vxs@npm:^1.1.148":
-  version: 1.1.149
-  resolution: "vxs@npm:1.1.149"
+"vxs@npm:^1.1.150":
+  version: 1.1.150
+  resolution: "vxs@npm:1.1.150"
   dependencies:
     "@radix-ui/react-slot": "npm:^1.0.2"
     "@react-navigation/bottom-tabs": "npm:^6.5.8"
@@ -28632,12 +28632,12 @@ __metadata:
     rollup-plugin-node-externals: "npm:^7.1.2"
     url-parse: "npm:^1.5.10"
     vite: "npm:6.0.0-alpha.18"
-    vxrn: "npm:1.1.149"
+    vxrn: "npm:1.1.150"
   peerDependencies:
     react-native: "*"
   bin:
     vxs: run.mjs
-  checksum: 10/bccec169867919ef5ae4b17cd848744b738f8de34887e0ad5a063802bc02f8113892bc237839f9283b96cf329a6e050434ac11323e1b9beedae9f06b91076da0
+  checksum: 10/62a502a758a09ff039af2821ef73abf4cef1e7d2ff1ab781983e92f105025fe7dd481d1fcc5585fe7b941b537518d2444a455f2fa1415bbe52c5163ada6ec870
   languageName: node
   linkType: hard
 

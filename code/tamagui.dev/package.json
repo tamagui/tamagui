@@ -52,7 +52,7 @@
     "victory": "^37.0.2",
     "vite": "6.0.0-alpha.18",
     "vite-plugin-inspect": "^0.8.4",
-    "vxs": "^1.1.148"
+    "vxs": "^1.1.150"
   },
   "devDependencies": {
     "@tamagui/cli": "1.104.1",
