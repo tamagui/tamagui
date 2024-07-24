@@ -1,37 +1,77 @@
-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
-3T9BknJ3TT8syUDqb7ICAQ==
+import type { BuildTemplates } from '../types'
+
+export function getDefaultTemplates() {
+  // its offset by some transparent values etc
+  const basePaletteOffset = 5
+  const namedTemplateSlots = {
+    background: basePaletteOffset,
+    subtleBackground: basePaletteOffset + 1,
+    uiBackground: basePaletteOffset + 2,
+    hoverUIBackround: basePaletteOffset + 3,
+    activeUIBackround: basePaletteOffset + 4,
+    subtleBorder: basePaletteOffset + 5,
+    strongBorder: basePaletteOffset + 6,
+    hoverBorder: basePaletteOffset + 7,
+    strongBackground: basePaletteOffset + 8,
+    hoverStrongBackground: basePaletteOffset + 9,
+  }
+
+  const baseTemplate = {
+    accentBackground: 0,
+    accentColor: -0,
+
+    background0: 1,
+    background025: 2,
+    background05: 3,
+    background075: 4,
+
+    color0: -4,
+    color025: -3,
+    color05: -2,
+    color075: -1,
+
+    background: 5,
+    backgroundHover: 6,
+    backgroundPress: 7,
+    backgroundFocus: 8,
+
+    color: -5,
+    colorHover: -6,
+    colorPress: -5,
+    colorFocus: -6,
+
+    placeholderColor: -6,
+
+    borderColor: 7,
+    borderColorHover: 8,
+    borderColorFocus: 9,
+    borderColorPress: 8,
+  }
+
+  const template = {
+    color1: 5,
+    color2: 6,
+    color3: 7,
+    color4: 8,
+    color5: 9,
+    color6: 10,
+    color7: 11,
+    color8: 12,
+    color9: 13,
+    color10: 14,
+    color11: 15,
+    color12: 16,
+    ...baseTemplate,
+  }
+
+  return {
+    base: template,
+    active: {
+      ...template,
+      background: namedTemplateSlots.strongBackground,
+      backgroundHover: namedTemplateSlots.hoverStrongBackground,
+      backgroundPress: namedTemplateSlots.hoverBorder,
+      backgroundFocus: namedTemplateSlots.strongBackground,
+    },
+  } satisfies BuildTemplates
+}

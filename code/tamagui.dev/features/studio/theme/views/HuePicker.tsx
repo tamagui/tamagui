@@ -1,38 +1,59 @@
-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
+import { hsla } from 'color2k'
+import { memo, useState } from 'react'
+import { Slider, Stack, XGroup, XStack, YStack, useDebounce, useEvent } from 'tamagui'
+
+export const HuePicker = memo(
+  ({ value = 0, onChange }: { value: number; onChange: (next: number) => void }) => {
+    const [cur, setCur] = useState(value)
+    const onChangeDelayed = useDebounce(useEvent(onChange), 500)
+
+    return (
+      <XStack gap="$4" ai="center">
+        <XGroup>
+          <Stack width="$2" height="$2" ov="hidden">
+            <YStack
+              userSelect="none"
+              pointerEvents="none"
+              pos="absolute"
+              fullscreen
+              ai="center"
+              jc="center"
+            >
+              <YStack fullscreen backgroundColor={hsla(cur, 0.5, 0.5, 1) as any} />
+            </YStack>
+          </Stack>
+        </XGroup>
+
+        <XStack ai="center" gap="$4" h="$3">
+          <YStack gap="$1">
+            <Slider
+              orientation="horizontal"
+              min={0}
+              max={360}
+              step={0.001}
+              value={[cur]}
+              onValueChange={([val]) => {
+                setCur(val)
+                onChangeDelayed(val)
+              }}
+            >
+              <Slider.Track
+                bw={0.5}
+                bc="$color12"
+                width={145}
+                style={{
+                  background: hueLinearGradient,
+                }}
+              ></Slider.Track>
+              <Slider.Thumb bg="$color1" size="$1" index={0} circular elevate />
+            </Slider>
+          </YStack>
+        </XStack>
+      </XStack>
+    )
+  }
+)
+
+const hueLinearGradient = `linear-gradient(to right, ${Array.from(Array(36))
+  .map((_, idx) => `hsl(${(idx + 1) * 10}, 100%, 50%)`)
+  .join(', ')})`

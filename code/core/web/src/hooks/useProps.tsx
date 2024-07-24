@@ -75,6 +75,8 @@ export function usePropsAndStyle<A extends PropsLikeObject>(
   const staticConfig = opts?.forComponent?.staticConfig ?? Stack.staticConfig
   const [themeState, theme] = useThemeWithState({
     componentName: staticConfig.componentName,
+    name: 'theme' in props ? props.theme : undefined,
+    inverse: 'themeInverse' in props ? props.themeInverse : undefined,
   })
   const componentContext = useContext(ComponentContext as any) as any
   const { state, disabled, setStateShallow } = useComponentState(

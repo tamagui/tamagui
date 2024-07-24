@@ -1,96 +1,169 @@
-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
-7QaSCwqUFW+/QYwabk3LRQ==
+import { useMemo } from 'react'
+import {
+  Bar,
+  VictoryAxis,
+  VictoryBar,
+  VictoryChart,
+  VictoryLine,
+  VictoryPie,
+  VictoryTooltip,
+} from 'victory'
+
+import { useThemeBuilderStore } from '../store/ThemeBuilderStore'
+import { useVictoryTheme } from './useVictoryTheme'
+
+const useIsShowing = () => {
+  return !useThemeBuilderStore().isCentered
+}
+
+const NullComponent = () => null
+const nullElement = <NullComponent />
+
+export const BarChart = () => {
+  const victoryTheme = useVictoryTheme()
+  const showing = useIsShowing()
+
+  const data = useMemo(
+    () => [
+      { x: 1, y: 60 * (showing ? 1 : 0.5) },
+      { x: 2, y: 34 * (showing ? 1 : 0.5) },
+      { x: 3, y: 40 * (showing ? 1 : 0.5) },
+      { x: 4, y: 100 * (showing ? 1 : 0.5) },
+      { x: 5, y: 80 * (showing ? 1 : 0.5) },
+      { x: 6, y: 87 * (showing ? 1 : 0.5) },
+      // { x: 7, y: 50 * (showing ? 1 : 0.5) },
+      // { x: 8, y: 120 * (showing ? 1 : 0.5) },
+    ],
+    [showing]
+  )
+
+  return (
+    <VictoryChart
+      width={400}
+      height={200}
+      animate={{ duration: 2000, easing: 'cubic' }}
+      theme={victoryTheme}
+      domainPadding={{ x: 0, y: 0 }}
+      // width={1}
+    >
+      {/* <VictoryAxis
+        tickLabelComponent={nullElement}
+        axisComponent={nullElement}
+        tickComponent={nullElement}
+        gridComponent={nullElement}
+        tickValues={data.map(({ x }) => x - 1)}
+        tickFormat={shortMonths}
+        padding={0}
+        width={0}
+      /> */}
+      <VictoryAxis
+        animate
+        tickLabelComponent={nullElement}
+        axisComponent={nullElement}
+        tickComponent={nullElement}
+        gridComponent={nullElement}
+        dependentAxis
+        tickFormat={(x) => `${x.toLocaleString()}`}
+        padding={0}
+        width={0}
+        height={0}
+      />
+      <VictoryBar
+        padding={0}
+        animate={{ duration: 2000, easing: 'cubic' }}
+        // cornerRadius={{ togglePreviewThemeItem: 12 }}
+        data={data}
+        labels={({ datum }) => `${datum.y.toLocaleString()} new users`}
+        labelComponent={<VictoryTooltip />}
+        barWidth={40}
+        // dataComponent={<Bar tabIndex={0} ariaLabel={({ datum }) => `x: ${datum.x}`} />}
+      />
+    </VictoryChart>
+  )
+}
+
+export const LineChart = () => {
+  const victoryTheme = useVictoryTheme()
+  const showing = useIsShowing()
+
+  const data = useMemo(
+    () => [
+      { x: 1, y: 60 * (showing ? 1 : 0.5) },
+      { x: 2, y: 34 * (showing ? 1 : 0.5) },
+      { x: 3, y: 40 * (showing ? 1 : 0.5) },
+      { x: 4, y: 100 * (showing ? 1 : 0.5) },
+      { x: 5, y: 80 * (showing ? 1 : 0.5) },
+      { x: 6, y: 87 * (showing ? 1 : 0.5) },
+      // { x: 7, y: 50 * (showing ? 1 : 0.5) },
+      // { x: 8, y: 120 * (showing ? 1 : 0.5) },
+    ],
+    [showing]
+  )
+
+  return (
+    <VictoryChart
+      width={400}
+      height={200}
+      animate={{ duration: 2000, easing: 'cubic' }}
+      theme={victoryTheme}
+      domainPadding={{ x: 0, y: 0 }}
+      // width={1}
+    >
+      {/* <VictoryAxis
+        tickLabelComponent={nullElement}
+        axisComponent={nullElement}
+        tickComponent={nullElement}
+        gridComponent={nullElement}
+        tickValues={data.map(({ x }) => x - 1)}
+        tickFormat={shortMonths}
+        padding={0}
+        width={0}
+      /> */}
+      <VictoryAxis
+        animate
+        tickLabelComponent={nullElement}
+        axisComponent={nullElement}
+        tickComponent={nullElement}
+        gridComponent={nullElement}
+        dependentAxis
+        tickFormat={(x) => `${x.toLocaleString()}`}
+        padding={0}
+        width={0}
+        height={0}
+      />
+      <VictoryLine
+        padding={0}
+        animate={{ duration: 2000, easing: 'cubic' }}
+        // cornerRadius={{ togglePreviewThemeItem: 12 }}
+        data={data}
+        labels={({ datum }) => `${datum.y.toLocaleString()} new users`}
+        labelComponent={<VictoryTooltip />}
+        // barWidth={40}
+        // dataComponent={<Line tabIndex={0} ariaLabel={({ datum }) => `x: ${datum.x}`} />}
+      />
+    </VictoryChart>
+  )
+}
+
+export const NewMembersChart = () => {
+  const victoryTheme = useVictoryTheme()
+  const showing = useIsShowing()
+  return (
+    <VictoryPie
+      key={Math.random()}
+      theme={victoryTheme}
+      animate={{ duration: 2000, easing: 'cubic' }}
+      height={200}
+      width={200}
+      data={useMemo(
+        () => [
+          { x: 'A', y: showing ? 190 : 0 },
+          { x: 'B', y: 65 },
+          { x: 'C', y: 19 },
+          { x: 'D', y: 40 },
+        ],
+        [showing]
+      )}
+    />
+  )
+}

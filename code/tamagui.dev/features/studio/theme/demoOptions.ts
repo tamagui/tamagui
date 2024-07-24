@@ -1,29 +1,32 @@
-U2FsdGVkX1/H/TFq6NKziFdBhR3Up3bdX6Yafgn5+0rWCZtCASBnys+Qs+oVuzsz
-3OyKUiRppDmREZbyBWvQX7vBn/KxUC8LULrl3Mtnk96+EQxi7LsKg1uObprPKJOM
-574fOJ4yEb75BkdhMxYGfA7Ge6EERAZntLfx+RP881gUNNoc7R6zuDwtph3oqDFE
-oKxertJONwRjKiDvLKLiJyqzFDfdRmCiG3G76mjO7MXdRopRXu4HZBzFjqV+8URl
-S8zlE30Q7dmiV8ChdleQhwBE0y19wKNV0JFVgkI5YKAnXflIYPdeH8fSXOk1p/oB
-1ridisamVrVWWu4BTdqJ4u55MtUHnMEGDTiDYTgfBtoVaVz6NB0RPeEqXvBsNgXE
-BQCsRYWZ0c4aun85IWVHfTdnESGHCbl6YJMW+gEfLVx4S3wfhUW8Dmui9V8H+O8N
-4rAv7RW16gW2hnbyXZsMBW1vc4+SjZf/nw88t2wYLI6RzkKnH4SqjFLNUyRE+A3O
-hU9PSd1/l7GbbwNMpet2/ypbUe4PxET4SJI1qHE8oQbxo8kGLwq9eRyLnmpXGJ5w
-2SUA1VRM0geH79OnnGYpYLmexGkb1p8s0sc1++z7Ww/NaqLgMVvQ/OI6zhMbRCcu
-oE1SpFJPCbaymnlZwkxEZubiMBuT+/WVZM3/1m7XTqWsZ/oBr371VXcjPJiVyJSY
-htM5+b7ACsZzqfUXP7og1b4xgQehzOEvHkhLK6UeHd625zTMpZaCzBURXtSsnvq6
-4GQwYf0xbU2i8Ak5SUMin59w3gsnxEsqn5Cgfei0rQ3NJynnaYZKHNu89MEDdx2k
-TrxyD8zrbgxvDi2+Pt5cmu/wBTlWBazfZYAmeQw68zi+JLs+1D9xnABNAf7Y0XG1
-R1DRcQgMV+TJYsWPHZ2sYkcb1L1FwRiH6/xSh85Prq/TDepAHTmlqpWBQzlpz2h4
-EoCmvzKf9Et9UsDTQClrvboaHtuOjxs3OGU1wGsC2HGVMWgaTF5OBrrxUuR7YJJV
-3jYotZREnJQ75xMPE6Ad/kuienhwEQCqJkrMwbUol++c7qJw5/P1oJEljlKvF3AW
-pCCNA0jqYjGJff4iQzapLa/affsPyE2FxC4oNiN+BmvJY5b7nH460iC6S4kjVkOk
-6Ldx6bDqeCKfuOmi34JdZwSczIPs8xFH5QqrydLHNcUWc5x7m/hbeyWSg0jpygLa
-4hGL2e+NR2fTTZlvZtgHrysQsYlEHUCe8OmfhKloNTwuNIP/o2jgddC6tDV2NyJm
-XuNH4CD3r2Z4BW+P/ZivR64/8TVg+Zeh85OA7dS9TeCRci2woBcQxzc6e4bMxWJF
-ftjtDxyaFRU6Q8LynW42ogm8Pp8xHTl++PFGh0pDWCh7RgWe08NQqp8wbZzDyE6w
-VToibY1L18Vgcc64xdnjGAWjfchj5yX9vlmEYeJMD0fcCn4WKUfXOcYytHO4Wj/h
-uqv9aJxI9emTV3w9ZPkXW6CXE6IsFC5xm2+TE3qCVlQcaLArrdDnCmVDzwFflSqn
-InJSiwdeT+SSuFgeIGwLgqTTzyKLKEQ3YvcU3t5+K5IOurWn2/HwHtEb7gi5BNCK
-qyI7+H09rZzn2uHKTrPYLwa+NuIvdKqYDXbvuKYXLtGz4RMDeeBnNKRtJQbnqpv9
-3i6MxfylOtlPkA+qaDjJ31hJ6aPCDhDK45CpuluDlgFNkVNSX5zLMx4oJTxvjNHp
-nkgTwPZffOwtYgpjZXVPslawbKnDA3t9rUauplD1VA1RbqjlhiRcAnKuzk0jlmli
-LJ5ZowIvrg892Jb2grKnXja1EB63tNuTcua8R2D9MBI=
+import type { TextProps, YStackProps } from 'tamagui'
+
+export const optionValues = {
+  inverseAccent: [false, true],
+  borderRadius: ['$0', '$3', '$5', '$8', '$10'] as YStackProps['borderRadius'][],
+  borderWidth: [0 as const, 1 as const, 2 as const],
+  headingFontFamily: [
+    '$heading',
+    '$headingNohemi',
+    '$headingDmSans',
+    '$headingDmSerifDisplay',
+  ] as TextProps['fontFamily'][],
+  fillStyle: ['filled' as const, 'outlined' as const],
+  elevation: [0, '$1', '$2'] as YStackProps['elevation'][],
+  spacing: ['sm' as const, 'md' as const, 'lg' as const],
+  textAccent: ['low' as const, 'high' as const],
+  backgroundAccent: ['low' as const, 'high' as const],
+}
+
+export const demoOptions = {
+  inverseAccent: false,
+  borderRadius: '$5' as (typeof optionValues)['borderRadius'][number],
+  borderWidth: 1 as (typeof optionValues)['borderWidth'][number],
+  headingFontFamily: '$heading' as (typeof optionValues)['headingFontFamily'][number],
+  fillStyle: 'filled' as (typeof optionValues)['fillStyle'][number],
+  elevation: 0 as (typeof optionValues)['elevation'][number],
+  spacing: 'md' as (typeof optionValues)['spacing'][number],
+  textAccent: 'high' as (typeof optionValues)['textAccent'][number],
+  backgroundAccent: 'low' as (typeof optionValues)['backgroundAccent'][number],
+}
+
+export type DemoOptions = typeof demoOptions

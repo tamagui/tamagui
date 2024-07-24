@@ -1,60 +1,116 @@
-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
+import { Check } from '@tamagui/lucide-icons'
+import { Checkbox, H4, Label, Paragraph, Spacer, XStack, YStack } from 'tamagui'
+
+import { useRootStore } from '../../../state/useGlobalState'
+import { StudioNotice } from '~/features/studio/StudioNotice'
+import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
+
+export function StepSchemes() {
+  const rootStore = useRootStore()
+  const store = useThemeBuilderStore()
+
+  return (
+    <YStack f={1} my="$4" gap="$4">
+      <H4>Dark and light schemes</H4>
+
+      <Paragraph size="$5" theme="alt1">
+        At the base of your themes we recommend a light and dark theme, but you can choose
+        just one.
+      </Paragraph>
+
+      <XStack gap="$3">
+        <Option
+          onChange={(val) => {
+            store.setSelectedScheme('light', val)
+            // if turning off light, set root store to dark
+            if (!val) {
+              rootStore.theme = 'dark'
+            }
+          }}
+          label="Light"
+          value="light"
+          id="light"
+          active={store.selectedSchemes.light}
+        />
+        <Option
+          onChange={(val) => {
+            // if turning off dark, set root store to light
+            store.setSelectedScheme('dark', val)
+            if (!val) {
+              rootStore.theme = 'light'
+            }
+          }}
+          label="Dark"
+          value="dark"
+          id="dark"
+          active={store.selectedSchemes.dark}
+        />
+      </XStack>
+
+      <Spacer flex />
+
+      <StudioNotice>
+        Tamagui auto-generates media queries on the web using prefers-color-scheme.
+      </StudioNotice>
+    </YStack>
+  )
+}
+
+const Option = ({
+  id,
+  active,
+  onChange,
+  value,
+  label,
+  description,
+}: {
+  id: string
+  description?: string
+  label: string
+  value?: any
+  active?: boolean
+  onChange: (next: boolean) => void
+}) => {
+  return (
+    <Label
+      f={1}
+      htmlFor={id}
+      p="$3"
+      height="unset"
+      display="flex"
+      borderWidth={1}
+      theme={active ? 'blue' : null}
+      backgroundColor={active ? '$color3' : '$color2'}
+      borderColor={active ? '$color6' : '$color7'}
+      borderRadius="$5"
+      space="$4"
+      ai="center"
+      hoverStyle={{
+        borderColor: active ? '$color6' : '$color8',
+      }}
+    >
+      <Checkbox
+        checked={active}
+        onCheckedChange={onChange}
+        id={id}
+        size="$6"
+        value={value}
+      >
+        <Checkbox.Indicator
+        // backgroundColor={active ? '$color8' : '$color1'}
+        >
+          <Check />
+        </Checkbox.Indicator>
+      </Checkbox>
+
+      <YStack gap="$2" f={1}>
+        <Paragraph size="$5">{label}</Paragraph>
+        {!!description && (
+          <Paragraph size="$3" lh="$1" theme="alt2">
+            {description}
+          </Paragraph>
+        )}
+      </YStack>
+    </Label>
+  )
+}

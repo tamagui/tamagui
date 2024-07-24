@@ -1,49 +1,80 @@
-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
-nufRvxZol5Y1Zu5Z+Yt5jw==
+import { useStore } from '@tamagui/use-store'
+import type { ThemeName } from 'tamagui'
+import {
+  Separator,
+  SizableText,
+  Spinner,
+  Theme,
+  XStack,
+  YStack,
+  useThemeName,
+} from 'tamagui'
+
+import { StudioProcedureStore } from '../../callApi'
+import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
+import { StudioThemesQuickPreviewSection } from '../views/StudioThemesQuickPreviewSection'
+import { getStudioInternalThemeName } from '../../previewTheme'
+
+export function StepSubThemesSidebar() {
+  const procedureStore = useStore(StudioProcedureStore)
+  const store = useThemeBuilderStore()
+  const hasAccent = store.subTheme?.type === 'theme' && !!store.subTheme?.accent
+  const currentThemeName = useThemeName()
+  const themeNameBase = getStudioInternalThemeName(store.baseTheme.id)
+  const subThemeName = store.subTheme?.name
+
+  let topThemeName = themeNameBase
+  let bottomThemeName = subThemeName as ThemeName
+
+  // force re-render on every change
+  store.themeSuiteVersion
+
+  return (
+    <YStack f={1} pl={20}>
+      <YStack p="$4" f={1} gap="$4">
+        <XStack ai="center" gap="$4">
+          <Separator />
+          <SizableText size="$4" selectable={false}>
+            Parent theme: {currentThemeName}
+          </SizableText>
+          <Separator />
+        </XStack>
+
+        <Theme name={topThemeName}>
+          <StudioThemesQuickPreviewSection scheme="light" hasAccent={hasAccent} />
+        </Theme>
+
+        <XStack ai="center" gap="$4">
+          <Separator />
+          <SizableText size="$4" selectable={false}>
+            Sub theme: {subThemeName}
+          </SizableText>
+          <Separator />
+        </XStack>
+
+        <Theme name={topThemeName}>
+          <Theme name={bottomThemeName}>
+            <StudioThemesQuickPreviewSection scheme="dark" hasAccent={hasAccent} />
+          </Theme>
+        </Theme>
+
+        <YStack
+          pointerEvents="none"
+          f={1}
+          pos="absolute"
+          left={0}
+          right={0}
+          top={0}
+          bottom={0}
+          bc="rgba(0, 0, 0, 0.25)"
+          ai="center"
+          jc="center"
+          opacity={procedureStore.loading.buildThemeSuite ? 1 : 0}
+          zi={100}
+        >
+          <Spinner />
+        </YStack>
+      </YStack>
+    </YStack>
+  )
+}

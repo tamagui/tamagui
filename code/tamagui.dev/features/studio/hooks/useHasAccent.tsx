@@ -1,9 +1,15 @@
-U2FsdGVkX19Z9loOPfASWQPIaeDTAznLZeekCGvHVmuNNCL43jfkj+M1JGJUrvLD
-dEXn0udOGHer9Dps4tumH010lrDj0r/WWniaNnlqk9XExPUTyW8whAdHUEUPozdB
-RbF6462s8Dl/BXFYWkqS5Kn79/7g9/oY0pF1ER2Tfl99b1UVSQZNx0jUu/8Dch5V
-Yxk/nwRA6k1NgYdzGZEpQFLtD90Z+nbqnKJwNps5Q3rVj1iHeD4GAjnQx+TQSTn5
-2m3Ss7v6Hfpq/5vMZ4I3oOXdyv1XddWfXDihOto8GdlTen4kldZB0oyiXgUwoISo
-VSWhApVXb2ExZTz8LDdwAmdcYaJzZiC3Xpo+dYeEnHhqhM/hg8UJVcSLMF66NyBU
-s7vSvypyR989eowQDFCGm/dD8cU6y0zQRee0tfmPjkXZkPgVM/khUR17JDw3dA44
-JY+RGQWgIHpRDz/+VCwgA4uAj9sUbGSC53BGzLw1AdDA+uHVR0AaraB73yXKvHYt
-tBbPI8kjFBctMQTvJqnPIunlpj1AggWNtUJ6fBCVf20=
+import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
+
+export function useHasAccent() {
+  const rootStore = useThemeBuilderStore()
+
+  let hasAccent = false
+  if (rootStore.currentSection?.id === 'base') {
+    hasAccent = !!rootStore.baseTheme.accent
+  } else {
+    // no accent now on sub-themes only the root one
+    hasAccent = false
+  }
+
+  return hasAccent
+}

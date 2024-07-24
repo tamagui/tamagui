@@ -146,24 +146,45 @@ export function styled<
         ...defaultProps
       } = options
 
-      if (defaultVariants) {
-        defaultProps = {
-          ...defaultVariants,
-          ...defaultProps,
-        }
-      }
+      let parentDefaultVariants
+      let parentDefaultProps
 
       if (parentStaticConfig) {
         const avoid = parentStaticConfig.isHOC && !parentStaticConfig.isStyledHOC
         if (!avoid) {
-          defaultProps = {
-            ...parentStaticConfig.defaultProps,
-            ...defaultProps,
+          const pdp = parentStaticConfig.defaultProps
+
+          // apply parent props only if not already defined, they are lesser specificity
+          for (const key in pdp) {
+            const val = pdp[key]
+            if (parentStaticConfig.defaultVariants) {
+              if (key in parentStaticConfig.defaultVariants) {
+                // ensure we don't add it if its also in our default variants so we keep the order!
+                if (!defaultVariants || !(key in defaultVariants)) {
+                  parentDefaultVariants ||= {}
+                  parentDefaultVariants[key] = val
+                }
+              }
+            }
+            if (!(key in defaultProps)) {
+              parentDefaultProps ||= {}
+              parentDefaultProps[key] = pdp[key]
+            }
           }
           if (parentStaticConfig.variants) {
             // @ts-expect-error
             variants = mergeVariants(parentStaticConfig.variants, variants)
           }
+        }
+      }
+
+      // applies everything in the right order! order is important
+      if (parentDefaultProps || defaultVariants || parentDefaultVariants) {
+        defaultProps = {
+          ...parentDefaultProps,
+          ...parentDefaultVariants,
+          ...defaultProps,
+          ...defaultVariants,
         }
       }
 

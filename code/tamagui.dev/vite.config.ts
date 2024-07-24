@@ -9,9 +9,17 @@ Error.stackTraceLimit = Number.POSITIVE_INFINITY
 
 const PROD = process.env.NODE_ENV === 'production'
 
-// @ts-ignore TODO type
+// @ts-ignore
 if (!import.meta.dirname) {
   throw new Error(`Not on Node 22`)
+}
+
+const resolve = async (path) => {
+  const resolved = await import.meta.resolve?.(path)
+  if (!resolved) {
+    throw new Error(`Not found: ${path}`)
+  }
+  return resolved.replace('file:/', '')
 }
 
 // const require = createRequire(import.meta.url)
@@ -32,13 +40,12 @@ export default {
 
   resolve: {
     alias: {
-      // @ts-ignore TODO fix type
+      // @ts-ignore
       '~': import.meta.dirname,
       'react-native-svg': '@tamagui/react-native-svg',
-      // bugfix docsearch/react, weird af everything here
-      '@docsearch/react':
-        // @ts-ignore
-        (import.meta.resolve?.('@docsearch/react') || '').replace('file:/', ''),
+      // 'react-native-web': await resolve('react-native-web-lite'),
+      // bugfix docsearch/react, weird
+      '@docsearch/react': await resolve('@docsearch/react'),
     },
 
     // todo automate, probably can just dedupe all package.json deps?
@@ -51,6 +58,7 @@ export default {
       'tamagui',
       'react-hook-form',
       '@tamagui/use-presence',
+      'react-native-reanimated',
     ],
   },
 
@@ -66,6 +74,7 @@ export default {
       'swr',
       '@tamagui/demos',
       '@tamagui/bento',
+      '@tamagui/bento/data',
       '@supabase/ssr',
       '@tamagui/animations-moti',
       '@tamagui/animations-react-native',

@@ -1,16 +1,15 @@
-import type { Session, User } from '@supabase/supabase-js'
+import type { User } from '@supabase/supabase-js'
 import type { Database } from '../supabase/types'
 import type {
-  getSubscriptions,
   getProductOwnerships,
-  getUserDetails,
+  getSubscriptions,
   getUserAccessInfo,
+  getUserDetails,
 } from '../user/helpers'
 
 export type UserContextType = {
   subscriptions?: Awaited<ReturnType<typeof getSubscriptions>> | null
   productOwnerships?: Awaited<ReturnType<typeof getProductOwnerships>> | null
-  session: Session
   user: User
   userDetails?: Awaited<ReturnType<typeof getUserDetails>> | null
   teams: {

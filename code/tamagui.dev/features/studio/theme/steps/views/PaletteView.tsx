@@ -1,372 +1,686 @@
-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
-g9TxuEoLndFQCnwJifJdwQ==
+import {
+  Anchor,
+  ArrowLeft,
+  ArrowLeftRight,
+  ArrowRight,
+  ArrowUpDown,
+} from '@tamagui/lucide-icons'
+import { Store, getStore, useStore } from '@tamagui/use-store'
+import { parseToHsla } from 'color2k'
+import { memo } from 'react'
+import type { XStackProps } from 'tamagui'
+import {
+  Button,
+  Label,
+  Separator,
+  SizableText,
+  TooltipSimple,
+  XStack,
+  YStack,
+  useThemeName,
+} from 'tamagui'
+
+import type { HSLA } from '~/features/studio/colors/ColorPicker'
+import { ColorPickerContents } from '~/features/studio/colors/ColorPicker'
+import { useDoublePress } from '~/features/studio/hooks/useDoublePress'
+import { rootStore } from '../../../state/RootStore'
+import { toastController } from '../../../ToastProvider'
+import { defaultScaleGrouped } from '../../constants/defaultScaleGrouped'
+import {
+  PALETTE_BACKGROUND_OFFSET,
+  getThemeSuitePalettes,
+} from '../../helpers/getThemeSuitePalettes'
+import type { BuildPalette, BuildThemeAnchor } from '../../types'
+import { XLabeledItem } from '../../views/XLabeledItem'
+
+type Props = {
+  palette: BuildPalette
+  onUpdate: (next: Partial<BuildPalette>) => void
+}
+
+class PaletteStore extends Store<{ name: string }> {
+  hoveredColor = 0
+  selectedColor = 0
+
+  get activeColor() {
+    return this.hoveredColor === -1 ? this.selectedColor : this.hoveredColor
+  }
+
+  setHoveredColor(index: number) {
+    this.hoveredColor = index
+  }
+
+  setSelectedColor(index: number) {
+    this.selectedColor = index
+    this.hoveredColor = -1
+  }
+}
+
+const usePaletteStore = (name: string) => {
+  return useStore(PaletteStore, { name })
+}
+
+export const PaletteView = memo((props: Props) => {
+  const { palette, onUpdate } = props
+  const store = usePaletteStore(palette.name)
+  const isDark = useThemeName().startsWith('dark')
+  const palettes = getThemeSuitePalettes(palette)
+  const darkPalette = palettes['dark']!
+  const lightPalette = palettes['light']!
+
+  const colors = {
+    light: sliceToPalette(lightPalette),
+    dark: sliceToPalette(darkPalette),
+  }
+
+  const { activeColor } = store
+
+  const hoveredItem = defaultScaleGrouped[activeColor]
+
+  const { anchors } = palette
+  const anchorIndex = anchors.findIndex(
+    (x) => x.index === +hoveredItem?.value - PALETTE_BACKGROUND_OFFSET
+  )
+  const anchor = anchors[anchorIndex]
+  const nextAnchor = anchors[anchorIndex + 1]
+  const prevAnchor = anchors[anchorIndex - 1]
+
+  const toggleAnchorAt = async (index: number) => {
+    if (anchor) {
+      // DELETE
+      if (index === 0) {
+        toastController.show(`Can't delete anchor at index 0`)
+        return
+      }
+      if (anchors.length === 2) {
+        await rootStore.confirmDialog('alert', {
+          title: `Can't delete anchor`,
+          message: `You must have at least 2 anchors to create a palette.`,
+        })
+        return
+      }
+
+      if (
+        await rootStore.confirmDialog('confirm-delete', {
+          thingName: `anchor at ${index}`,
+        })
+      ) {
+        onUpdate({
+          anchors: anchors.filter((x) => x !== anchor),
+        })
+      }
+    } else {
+      const [lightHSLA, darkHSLA] = [
+        // adjusts for our transparent indices
+        parseToHsla(lightPalette[index + PALETTE_BACKGROUND_OFFSET]),
+        parseToHsla(darkPalette[index + PALETTE_BACKGROUND_OFFSET]),
+      ]
+
+      const anchor: BuildThemeAnchor = {
+        index,
+        hue: {
+          light: lightHSLA[0],
+          dark: darkHSLA[0],
+        },
+        sat: {
+          light: lightHSLA[1],
+          dark: darkHSLA[1],
+        },
+        lum: {
+          light: lightHSLA[2],
+          dark: darkHSLA[2],
+        },
+      }
+
+      const next = [...anchors]
+      const insertIndex = next.findIndex((x) => x.index > index) ?? next.length - 1
+      next.splice(insertIndex, 0, anchor)
+
+      // ADD
+      onUpdate({
+        anchors: next,
+      })
+    }
+  }
+
+  const onChangeAnchorColor = (scheme: 'light' | 'dark') => (_: string, hsla: HSLA) => {
+    const oppScheme = scheme === 'dark' ? 'light' : 'dark'
+
+    const anchors = palette.anchors.map((a, i) => {
+      if (a !== anchor) return a
+
+      const next = {
+        ...a,
+        hue: {
+          ...a.hue,
+          [scheme]: hsla.hue,
+        },
+        sat: {
+          ...a.sat,
+          [scheme]: hsla.sat,
+        },
+        lum: {
+          ...a.lum,
+          [scheme]: hsla.light,
+        },
+      }
+
+      function syncOppositeSchemeHue(_: BuildThemeAnchor) {
+        if (_.hue.sync) {
+          _.hue[oppScheme] = hsla.hue
+        }
+      }
+
+      function syncOppositeSchemeSat(_: BuildThemeAnchor) {
+        if (_.sat.sync) {
+          _.sat[oppScheme] = hsla.sat
+        }
+      }
+
+      syncOppositeSchemeHue(next)
+      syncOppositeSchemeSat(next)
+
+      // sync left does two way sync technically
+      // since its "syncing" the left one, they should both sync
+
+      // sync left
+      const prevAnchor = palette.anchors[i - 1]
+      if (prevAnchor) {
+        if (a.hue.syncLeft) {
+          prevAnchor.hue[scheme] = hsla.hue
+          syncOppositeSchemeHue(prevAnchor)
+        }
+        if (a.sat.syncLeft) {
+          prevAnchor.sat[scheme] = hsla.sat
+          syncOppositeSchemeSat(prevAnchor)
+        }
+      }
+
+      // sync right
+      const nextAnchor = palette.anchors[i + 1]
+      if (nextAnchor) {
+        if (nextAnchor.hue.syncLeft) {
+          nextAnchor.hue[scheme] = hsla.hue
+          syncOppositeSchemeHue(nextAnchor)
+        }
+        if (nextAnchor.sat.syncLeft) {
+          nextAnchor.sat[scheme] = hsla.sat
+          syncOppositeSchemeSat(nextAnchor)
+        }
+      }
+
+      return next
+    })
+
+    onUpdate({
+      anchors,
+    })
+  }
+
+  const lightDarkSynced = anchors.every((a) => a.hue.sync && a.sat.sync)
+
+  return (
+    <YStack contain="paint" p="$4" mx="$-4" mb="$0" f={1} gap="$4">
+      <XLabeledItem label={<SizableText size="$4">Light</SizableText>}>
+        <StepThemeHoverablePalette
+          isActive={!isDark}
+          palette={palette}
+          colors={colors.light}
+          onSelect={(color, index) => toggleAnchorAt(index)}
+        />
+      </XLabeledItem>
+
+      <PaletteIndices />
+
+      <XLabeledItem label={<SizableText size="$4">Dark</SizableText>}>
+        <StepThemeHoverablePalette
+          isActive={isDark}
+          palette={palette}
+          colors={colors.dark}
+          onSelect={(color, index) => toggleAnchorAt(index)}
+        />
+      </XLabeledItem>
+
+      <XLabeledItem label="">
+        <YStack gap="$4">
+          <XStack gap="$4" separator={<Separator vertical />}>
+            <DataItem
+              width={50}
+              labelTop=""
+              labelBottom={
+                <SizableText
+                  userSelect="none"
+                  textAlign="right"
+                  miw={60}
+                  px="$2"
+                  display="block"
+                  size="$9"
+                  fow="bold"
+                >
+                  {activeColor + 1}
+                </SizableText>
+              }
+            />
+
+            <DataItem
+              width={200}
+              labelTop={hoveredItem?.name ?? '-'}
+              labelBottom={hoveredItem?.keys.join(', ') ?? '-'}
+            />
+
+            <DataItem
+              labelTop={anchor ? 'Anchor' : 'Sync'}
+              labelBottom={
+                <XStack w={50} ov="hidden" ai="center" jc="center">
+                  <Button
+                    chromeless
+                    size="$2"
+                    scaleIcon={1.4}
+                    circular
+                    icon={anchor ? <Anchor /> : <ArrowLeftRight />}
+                    onPress={() => {
+                      toggleAnchorAt(activeColor)
+                    }}
+                  />
+                </XStack>
+              }
+            />
+
+            {/* {!anchor && <DataItem top="" bottom={<Button size="$2">Edit</Button>} />} */}
+          </XStack>
+        </YStack>
+      </XLabeledItem>
+
+      <XLabeledItem label="Light">
+        <ColorPickerContents
+          isActive={!isDark}
+          disabled={!anchor}
+          value={lightPalette[hoveredItem?.value ?? 0]}
+          onChange={onChangeAnchorColor('light')}
+          shouldDim={lightDarkSynced && isDark}
+        />
+      </XLabeledItem>
+
+      <YStack my={-12}>
+        <XLabeledItem label="">
+          <XStack w={115}>
+            <Label pe="none" miw={115} jc="flex-end" size="$1" col="$color10" o={0.5}>
+              Sync:
+            </Label>
+          </XStack>
+
+          <XStack gap="$4" ai="center" ml={10}>
+            <XStack jc="space-between" w={100}>
+              <SyncButtons
+                anchorKey="hue"
+                {...props}
+                anchor={anchor}
+                prevAnchor={prevAnchor}
+                nextAnchor={nextAnchor}
+              />
+            </XStack>
+            <XStack jc="space-between" w={80}>
+              <SyncButtons
+                anchorKey="sat"
+                {...props}
+                anchor={anchor}
+                prevAnchor={prevAnchor}
+                nextAnchor={nextAnchor}
+              />
+            </XStack>
+          </XStack>
+        </XLabeledItem>
+      </YStack>
+
+      <XLabeledItem label="Dark">
+        <ColorPickerContents
+          isActive={isDark}
+          disabled={!anchor}
+          value={darkPalette[hoveredItem?.value ?? 0]}
+          onChange={onChangeAnchorColor('dark')}
+          shouldDim={lightDarkSynced && !isDark}
+        />
+      </XLabeledItem>
+    </YStack>
+  )
+})
+
+const SyncButtons = memo(
+  ({
+    anchorKey,
+    onUpdate,
+    anchor,
+    prevAnchor,
+    nextAnchor,
+    palette,
+  }: Props & {
+    anchorKey: 'hue' | 'sat'
+    anchor: BuildThemeAnchor
+    prevAnchor: BuildThemeAnchor
+    nextAnchor: BuildThemeAnchor
+  }) => {
+    return (
+      <>
+        <TooltipSimple label="Sync to last anchor">
+          <Button
+            size={16}
+            scaleIcon={1.4}
+            circular
+            icon={ArrowLeft}
+            themeInverse={anchor?.[anchorKey].syncLeft}
+            onPress={() => {
+              onUpdate({
+                anchors: palette.anchors.map((a) =>
+                  a === anchor
+                    ? {
+                        ...a,
+                        [anchorKey]: {
+                          ...a[anchorKey],
+                          syncLeft: !a[anchorKey].syncLeft,
+                        },
+                      }
+                    : a
+                ),
+              })
+            }}
+            {...(!prevAnchor
+              ? {
+                  o: 0.1,
+                  disabled: true,
+                }
+              : null)}
+          />
+        </TooltipSimple>
+
+        <TooltipSimple label="Sync light and dark">
+          <Button
+            size={16}
+            scaleIcon={1.4}
+            circular
+            icon={ArrowUpDown}
+            themeInverse={anchor?.[anchorKey].sync}
+            onPress={() => {
+              onUpdate({
+                anchors: palette.anchors.map((a) =>
+                  a === anchor
+                    ? {
+                        ...a,
+                        [anchorKey]: {
+                          ...a[anchorKey],
+                          sync: !a[anchorKey].sync,
+                        },
+                      }
+                    : a
+                ),
+              })
+            }}
+          />
+        </TooltipSimple>
+
+        <TooltipSimple label="Sync to next anchor">
+          <Button
+            size={16}
+            scaleIcon={1.4}
+            circular
+            icon={ArrowRight}
+            themeInverse={nextAnchor?.[anchorKey].syncLeft}
+            onPress={() => {
+              onUpdate({
+                anchors: palette.anchors.map((a) =>
+                  a === nextAnchor
+                    ? {
+                        ...a,
+                        [anchorKey]: {
+                          ...a[anchorKey],
+                          syncLeft: !a[anchorKey].syncLeft,
+                        },
+                      }
+                    : a
+                ),
+              })
+            }}
+            {...(!nextAnchor
+              ? {
+                  o: 0.1,
+                  disabled: true,
+                }
+              : null)}
+          />
+        </TooltipSimple>
+      </>
+    )
+  }
+)
+
+const DataItem = ({
+  labelTop,
+  labelBottom,
+  width,
+}: { labelTop: any; labelBottom: any; width?: any }) => {
+  return (
+    <YStack w={width} maw={width}>
+      <SizableText userSelect="none">{labelTop}</SizableText>
+      <SizableText
+        userSelect="none"
+        size="$2"
+        theme={typeof labelBottom === 'string' ? 'alt2' : null}
+      >
+        {labelBottom}
+      </SizableText>
+    </YStack>
+  )
+}
+
+// get the center 12 items:
+const sliceToPalette = (colors: string[]) => {
+  const toRemove = colors.length - 12
+  return colors.slice(toRemove / 2, colors.length - toRemove / 2)
+}
+
+type PaletteProps = {
+  colors: string[]
+  size?: 'small' | 'medium'
+  children?: (color: string, index: number) => JSX.Element
+  palette: BuildPalette
+  onSelect?: (color: string, index: number) => void
+  isActive?: boolean
+}
+
+export const StepThemeHoverablePalette = memo((props: PaletteProps) => {
+  const { colors, size = 'medium' } = props
+  const borderRadius = size === 'medium' ? 10 : 6
+
+  return (
+    <XStack f={1} br={borderRadius} bw={1} bc="$color7">
+      {colors.map((color, i) => {
+        return <PaletteColor {...props} color={color} index={i} key={i} />
+      })}
+    </XStack>
+  )
+})
+
+// add some delay but no delay if moving across
+
+const delay = 360
+let hovered = -1
+let tm
+
+const mouseEnter = (i: number, name: string) => {
+  clearTimeout(tm)
+  const alreadyHovered = hovered !== -1
+  const paletteStore = getStore(PaletteStore, { name })
+  if (alreadyHovered) {
+    // right away
+    hovered = i
+    paletteStore.setHoveredColor(i)
+    return
+  }
+  tm = setTimeout(() => {
+    hovered = i
+    paletteStore.setHoveredColor(i)
+  }, delay)
+}
+
+const mouseLeave = (i: number) => {
+  clearTimeout(tm)
+  if (hovered === i) {
+    tm = setTimeout(() => {
+      hovered = -1
+    }, delay / 2)
+  }
+}
+
+const PaletteColor = memo(
+  (
+    props: PaletteProps & {
+      color: string
+      index: number
+    }
+  ) => {
+    const {
+      color,
+      index,
+      colors,
+      size = 'medium',
+      children,
+      palette,
+      onSelect,
+      isActive,
+    } = props
+    const store = usePaletteStore(palette.name)
+    const { hoveredColor, selectedColor } = store
+    const borderRadius = size === 'medium' ? 10 : 6
+    const { anchors } = palette
+
+    const anchor = anchors.find((x) => x.index === index)
+
+    const doublePressProps = useDoublePress({
+      eagerSingle: true,
+      onSinglePress() {
+        store.setSelectedColor(index)
+        store.setHoveredColor(index)
+      },
+      onDoublePress() {
+        onSelect?.(color, index)
+      },
+    })
+
+    const radiusStyle = {
+      ...(index === 0 && {
+        bblr: borderRadius - 1.333,
+        btlr: borderRadius - 1.333,
+      }),
+      ...(index === colors.length - 1 && {
+        btrr: borderRadius - 1.333,
+        bbrr: borderRadius - 1.333,
+      }),
+    } satisfies XStackProps
+
+    return (
+      <XStack
+        h={isActive ? 42 : 26}
+        // size === 'small' ? 32 : 42}
+        w={`${(1 / colors.length) * 100}%`}
+        ov="hidden"
+        borderWidth={2}
+        // @ts-expect-error
+        borderColor={color}
+        onMouseEnter={() => {
+          mouseEnter(index, palette.name)
+        }}
+        {...(hoveredColor === index && {
+          zi: 10000,
+          outlineColor: '$blue10',
+          outlineStyle: 'solid',
+          outlineWidth: 1.5,
+          shadowColor: '$blue10',
+          shadowRadius: 5,
+          shadowOpacity: 1,
+        })}
+        {...(selectedColor === index && {
+          zi: 10000,
+          outlineColor: 'color-mix(in srgb, currentColor 60%, transparent)',
+          outlineStyle: 'solid',
+          outlineWidth: 2,
+        })}
+        {...(selectedColor === hoveredColor &&
+          hoveredColor === index && {
+            shadowColor: '$blue10',
+            shadowRadius: 10,
+            shadowOpacity: 1,
+          })}
+        {...radiusStyle}
+        {...doublePressProps}
+        onMouseLeave={() => {
+          mouseLeave(index)
+          doublePressProps.onMouseLeave()
+          if (store.hoveredColor === index) {
+            store.hoveredColor = store.selectedColor
+          }
+        }}
+      >
+        {anchor && (
+          <>
+            <XStack
+              pos="absolute"
+              t={1}
+              l={1}
+              r={1}
+              b={1}
+              zi={10}
+              pe="none"
+              {...radiusStyle}
+              bw={1}
+              o={1}
+              bc="$color8"
+            />
+            <XStack
+              fullscreen
+              zi={10}
+              pe="none"
+              {...radiusStyle}
+              bw={1}
+              o={0.5}
+              bc="$background"
+            />
+          </>
+        )}
+        <XStack fullscreen bg={color as any} ai="center" jc="center">
+          <SizableText
+            selectable={false}
+            color={index > 4 ? '$background' : '$color'}
+            size="$1"
+            scale={size === 'small' ? 0.8 : 1}
+          >
+            {children?.(color, index)}
+          </SizableText>
+        </XStack>
+      </XStack>
+    )
+  }
+)
+
+const PaletteIndices = () => (
+  <YStack my="$-3">
+    <XLabeledItem label="">
+      <XStack f={1}>
+        {new Array(12).fill(0).map((_, i) => {
+          return (
+            <SizableText
+              w={`${1 / 12}%`}
+              f={1}
+              key={i}
+              size="$1"
+              theme="alt2"
+              ff="$mono"
+              als="center"
+              ta="center"
+            >
+              {i + 1}
+            </SizableText>
+          )
+        })}
+      </XStack>
+    </XLabeledItem>
+  </YStack>
+)

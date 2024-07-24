@@ -5,6 +5,8 @@ export const autoUpdate = () => {}
 
 export * from '@floating-ui/react-native'
 
+export const platform = null
+
 export declare type UseFloatingReturn = Data & {
   update: () => void
   offsetParent: (node: any) => void

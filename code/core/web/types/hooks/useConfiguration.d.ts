@@ -56,6 +56,7 @@ export declare const useConfiguration: () => {
     onlyAllowShorthands: boolean | undefined;
     defaultFont: string | undefined;
     settings: {
+        styleCompat?: "react-native";
         allowedStyleValues?: (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | {
             space?: "number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | "percent";
             size?: "number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | "percent";
@@ -68,6 +69,7 @@ export declare const useConfiguration: () => {
         fastSchemeChange?: boolean;
         webContainerType?: "normal" | "size" | "inline-size" | "inherit" | "initial" | "revert" | "revert-layer" | "unset";
     } & Omit<{
+        styleCompat?: "react-native";
         allowedStyleValues?: (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | {
             space?: "number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | "percent";
             size?: "number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | "percent";
@@ -80,6 +82,7 @@ export declare const useConfiguration: () => {
         fastSchemeChange?: boolean;
         webContainerType?: "normal" | "size" | "inline-size" | "inherit" | "initial" | "revert" | "revert-layer" | "unset";
     }, keyof {
+        styleCompat?: "react-native";
         allowedStyleValues?: (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | {
             space?: "number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | "percent";
             size?: "number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | "percent";

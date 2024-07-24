@@ -15,7 +15,7 @@ export const BentoLogoTheme = ({
   const curTint = useTint(offset).tintAlt
   const name = disable ? null : curTint
   return (
-    <Theme name={name === 'purple' ? 'yellow' : name} {...rest}>
+    <Theme name={name} {...rest}>
       {children}
     </Theme>
   )
@@ -39,7 +39,7 @@ export const BentoLogo = ({
         backgroundColor: '$background',
       })}
     >
-      <BentoLogoTheme offset={-1 + offsetAdjust}>
+      <BentoLogoTheme offset={0 + offsetAdjust}>
         <H1
           componentName="span"
           ff="$cherryBomb"
@@ -65,7 +65,7 @@ export const BentoLogo = ({
         </H1>
       </BentoLogoTheme>
 
-      <BentoLogoTheme offset={-1 + offsetAdjust}>
+      <BentoLogoTheme offset={0 + offsetAdjust}>
         <H1
           // o={0}
           pos="absolute"

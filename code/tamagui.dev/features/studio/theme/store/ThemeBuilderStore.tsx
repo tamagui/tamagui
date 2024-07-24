@@ -1,380 +1,718 @@
-U2FsdGVkX1/ZjluBr9HZiLvi0rB5uwfHGHz1vDwtX5GLlJ42N9wVCUmSdbXDL1sf
-LKrCngP1IExNEFfKKwLUOJljWI/tKunf3OZSclZS9Ea7d/CmqVQ9CW0IWjR/8eSj
-xTU0o5LvmwlHA+Q8JQzacyYNSa4KgGv26NiI3wG1DEAk0aTLXwUizBqHU1bRe1FK
-rAQPx+E1pm+k6ORm6Rz7LL9uRQ982YvT7RZBnWrqcGBAzy9wZ9TgcRqsaD9mLdIz
-RNfqZkynPSuBWEdoIRFRyVcrwTGNXDKFzFt00Lwfj2ANnjFDMFVntuOY2VCCXfXP
-K/HctiEWpw/LMkXw0u69DKRlqLHQZU2LsUGlCLkYRNBrqCG+X0Z8Cp8Q7h+JCju0
-AeeABGx5o8TA1MibmzOzK3KL8Fo3GUb6aFsDTGWHEhBzGrauvG4U8HsiM4itsScB
-w1iYjj/zwnLRgDm1y0E7I9GZLNNLNA+3bwpwXedIuox/qFEbraOGUIS1UWtsg8ym
-QY2iCllgT3OOblqP2fA4IXQjcJr5CoSJj25Cpw0XpbTcvkVzTeQey2mX6AgRNIlP
-NPfNf0MdP+dkc6q6IOsjqpCYNLoqLu1Of4dFAdhW6kmhaN9kgvIC0oukA2t0DNFw
-a2cdG/0PoIV069lcIdbuNdmFgH0G7xmln0BquL5kdYYsgfRkPZXAIEhTYoaBOl8u
-aV2B8oAPOTgvq3bIp1mrxP6qRZZVZkf9LghBlobJbRAZ7E5NcYyP6UQQ1sV0yEpR
-/nPhboNGM9Cnx4GAaVTWRUWOURSQf5Itr2CJ+VRizt4lcASCe/pq8EkFCh9MSSkk
-XoRNXBGt5cpDUZtD3t11Dy0fILNLpfzr/lM2DtX/7QnAmHGNyKNKZbL+JMlCDg4N
-0qa5f8560YD4Kec3WR+LeRhsrPoTQcn37AsqwIL6ckDEHsbUaS1YkHsi3f7PFSXG
-f/pgxmqoCGqncY98eQCpJjN8oMONDW8vMZiKIgOKJnm9YgufLO38I2z01HROZ92D
-Tnraw55ES9w/gxjVjnarDupS6Z3T3gF1UticFh8GB0dTOrTzD3tTMzzcMWqRQCcT
-pkVkPINC6Vz367/SnksSteBx5Tuoq+zdVSyx23DYUA0U9DDKV5qDhPOg0GkJftLX
-hIQ9mlajWqcvd8tei1IkKlTgo/orj+AxuPaJlzs1f1TzvMvrmmnvNnnhXA0FRRGS
-yBnO7eg2GZ9QkZzMINSx21i6xk82Svd3SdUI8ZLHjBIj8gWduqQgOx3XZS+zQ3nv
-u18gC2q61IJLhVPkd7jx1xhgeO140sts07QWPl3bIqFcfgVS/txRsODTbNbct1LT
-GEqhUEK68Z/E6EXvZZ4j/O0VX+8IbcgFsiGTxDIOIlTCHS8bykDye2UvoqLb3pJy
-/XTX+8vm522yYfmof4WGKsengW8L/8viuQsSrR086ake4r7qnKOodYHm+DcCZwGI
-V9lVJuMy/1G7Vg3rUhfGkgJ1DOKTSnA6VRNzfQy4hM76BCZkiL3gjQ682Cbz7zoI
-hvDjnZTuSkVn8R4cAwHpgUgBUeksQLdspxw3Ka0edZvkF497WfNZgoM1cavdEgA9
-FmNKDksIEOVV/zITT+FlTw/SyA1MP2xjHBaouAilj3935glb8Xw58FExIQ2E5ss3
-+R+ZwWTLpjGjNZWKWacSVxWDD8Wow/kBQcOR6NMzGThBMHz/26pqaohITpdHIheg
-2izIosJk2sJPxxsXvYgTgZXogEB5XcTiYBJcjmWn44GZCc60VlWEoZKiE+ReFpO+
-cBTo9I6ml3zV0U/yH79csCwiXy3tnyTBxTX7NMpssoLDCa10ZS3B0wuP+RLP27Qb
-1bCa8b+BFOFErPahnbuwdPEaMxmrlPxNJ8L7J5QSLfizdj+LkK0SyUFE2Mb5eDeo
-XY3ZGsPqLN+Povtbra7Nh7aKiFZ9iRp23EZhBnq9wmVGVZhwIyF4lmskIv8cJwl6
-q47psb8OOJ6J5Zgg0fGf+BmrZtaiDDbNBlu0Kzs6cBZPQRhR3o3AxdhVOZN0uzGT
-Kliw65nZOyxd76W00NQOaVVHvgoSwbBrqynHEYEm97UAo9Z85xDWAFXAXqtWYHYw
-s7TbqcdrVpvGDCd6zZAVzBtgBAgaiPd26y9cwRHA25R/ky9FoAzgyOkXb3thaa/R
-7GWGa0Oa+emLqSolGQ5rADovmbW/49F8qrhjp+S5K5oof932MoAcSzr2T/EHyl4E
-HmPsht+jDZVL5owbLXtS5un9UpPspEaTdXc1KCve2YUAov9Y3FPwKXaMMdRzvgiB
-lizh2PF94sn8Pp0ZkTqIpJjiKQPKshMaviGtpXrEYEahy+R5JtAfL60jih5Z5GCM
-uX0QYKQqCpyZmG5tT26AdpF0UAktv0IbALlHQP0eA5qAhD3uKfrVIrvOUFi39PxT
-omWfWlmYiAPfmxphRLOkKoVgcslCb3OlGYuluPjLY4NIA/qy7GSojG/oxC644m8w
-0cQrQmBrYmV5URcs2VUN3liKPSraaaiWFY3uaP/8Kx+wG60L0oVHqZd1jfJLOAL2
-NnXyaS/IEYvupV+i9dDDtDLVkMpnXsbQBGRdRB46Nh5jj1duM9sbdKRkQgyVBoWt
-KPy91L3VVeJ99eTh8yS7Kuce96RnYW6yfEvqBsPCr5I2VRyL0uFnJWjsgXZ+BzSB
-RbRYZXXGIywOc24X92lvMRezNB/lzv8E9aKpZX7bitTJ8XTSPnp43mvpZS9wjrOO
-Z6YqpUizFsm0u0HbMhPTHx9qaDisTyiGZ7dhQTx8S9dwYpiAVbZxqD8Mk92G66cz
-6Xf7WqFdXYl+Job2h0xjO7IlYkTcChxs4QV7jA+xjCGJVOvOkkvThDUvHoPoxGsH
-2+w1gbG3TPdM3wQ3/t+ABTBoRDFX0f6h8K/dHOWYen+LiXkkeQDiFinL22vtJPhO
-/vfFpVjPHMQmvKoZSauigwghEhqALGIBygjywGorcfT8apbeXPh1hbd1uilIIyVa
-lxYCxY8CAWM8SA7sl1Dy81wcPyenVmoZqvEa1pK8VokxEw4tboP33LoqTeRbERzw
-aOMisu7VgSjkhxFA3ECC5E3+jIIGIKEYgym5KXmphL+Tma+wcDCRQmfcd5mkl9is
-GvAfTxZ6FIgOTPaOLYo+K2JjnEmyQchpG4jN/e4pKTeBJW98gyjZbQgdhs7EB9GR
-ikubNwt6Z9KKiHb+PVP/9CpZ0YkMvi/3CReaqndZoWprtYwpel3GWQqFeoN8ItGV
-3NXIoZZ5zebH/R0fEhSsOoi+i5ZXaGgmoZ7nfGlfsjOKwbVGLHBQC+E0SF5nRNmF
-ifFMqfyJOeEE6XkhQV4BakbrxJWPe0ZdoN4xY7z3uFlIjhXX9/bKHvif7Cg0tQ5R
-20weMwHU+/ZsLvYod/QlBXfWPhUjGyquAa7eo4DEUJX4NXmf/+w+amH2H0VUy/B3
-sLUlahaYr3AyRWdrvw931lr0Fw8E7w5mckilwE4k3uYCgdPFtVV7dMM5P5Zkrx7v
-U8HMqoepsM3eXMPmqnoIA4mEABXCgdWrW44Uuc6/iW5p9FaSX643XI5j/Q+26s6C
-ZK1hc381m0s+jrbMWVoiXJ65gFy/8uhzAHUp/kWxkIsA6MHYtbeihq9h3qfH91Km
-cLe92Xmjqb7Js3Zideco3ab4H1vkoCfINEBhVoaKOjvniJQoRcE1g1vsCKtwOltK
-yuYR/tHPBKkfcPPUY8cETmXWh7cWnxbPYR6ctyNrGa9VzcfRJ8Ud72guLTxrU8XZ
-LVNcZE7za7evHFXEY/tL02sIgy57mRaEEVRgrd7qP0lBT/pbZ6+ZBdocLCXFwKig
-fR6WIcSVI9Ewtr/WBGkJm9PE9PupsL9QJaIpGMp4OXAdEnvE5uTC56a4VfAM9c5k
-XBEPXhOlsDLGZkCXKjl6RQNycBgL0/0yx9VjNzeoF8RQCAW0U+SY0nc77NO34Q1l
-DukWaq+Up3YvuPXJvUpzpQcfLsY8a7stf0ZKc3DVGZR3nbuJSn6LQu0m39JxlNt2
-w4gM2PunhNEvs3j2aFuqgsUpkuC90kdEy34twDh8nJH9jP3WGruby43AT9tQIHxg
-tf3srCan0R8bOmFjai3A+gLtu6WJs5ugwvRkcSG0YBFIsK4cUdOzC4PFWL6dBqgM
-0gZrpAeSc8aVKRuNnLb43ca0FRpZDidglWg9eoEhQYQ5u++fuz/HE/ZlXvobfWYR
-zSVg+oPBPCJH9Z/MOITH21m4z2pV5D/u2mDWLGivThY1wqC0tZ3GSLiZW4ofqQqI
-UbSt/VbPN6RpFyBHMlfz7DtPFYYacLRilPom1ku69O2XbDkfd9izfoZoQM2ESBpb
-0lril/pmGjhQ5rGAi5yMa++kKyOXwZnbizYYiKmOnKH0zThUHGRGhLTgbJ58Y9zH
-1QMqirObBNVutjXYuyv3z8RMHnwZ7EbVzlPaLhgPWcjq2c7Eq2pPzvqexJr0VQnK
-krwlYpCIXhxpvGxScoLo2hvnv61ewFZ2BOTJQZVABdgRexel46YbHOiewFiW7DOY
-SXEP76K3hOjExx5PVtlX6Vqh58lLtE/4o3MDidQwhYS3YupiSbqY39ekEzNB1Mjg
-BbvMUXye1UXzPg37hLKgzyWdDi2pz/JNdhh0vIfNMAKHdqU5jopeoC68nCZq2HPJ
-wZOgt3bvR3bbLKqN4/BA+48RI/Q6iXWdmRS3Vkzq3dJSzmyv+kvIpDlwaCxQm7Q/
-6KvKhMKxYCK6pp/ioOKpwXbxKqXkNW2XVXj7Op6hnx0r/GbA1YG4aDR1rgfhKzrD
-W37P6AriI8y9cvE0WBGQY/pY2+sJvDecnEYI9qDbbRPFuHmQmEry+qkM73T8utpA
-FIWvDNd9JE/zqNScHWnxlkQAI0lUy8cGMWZlxxZkwUf921Z54LQawsV21yJYDgwl
-IuFdPhoglmaK+7xRuGVHDguRLieP6GaK5MSNndV8qrBr6sD2lxe9VvEIdpUXpLgg
-ESunr4KXm1ujDw8X3pQNgAaBiD9WtLi2BFelp6X/igi5QpOzXHNv/pIMAFEOt/BA
-mN9SWDRKvo/XUACkMd2eWMiHhPBM64FYX23X7n/AGwL32YiLpgUG79ZbB1qHlK64
-oTq1ol92UkhLW2crIZge9M2iBJU1O0AqxYI9pjz9z3zEyB3MaP67oOzBHE3yVB9u
-qfoNI9QvdTNn/z7QIp0gNHFCARUi4cRKhk3mPQJMuSY3mjrNfpojFQ5xMtLPM/oZ
-BdjWjBWp7+tm7k/IDRHhdKVgm8JxeuMozbBPoU2QGttBRq+GTOq5zdsuC756AVZ7
-zNEsoP+D4ZaEJ+mCT+rr3730ivEoOby+h+XkCWhgF8dH1JWOBGgHZKLVKgu1EGsv
-YT4EPN9VV7H1vAFt0QSDrYtVh1q4PJsdpQc0E2DA5HWY34CMI0t1L+R5yc+UlBdu
-n7xylR97CO3eyqDMcTuHqJgI/vkpaUi4vlTwmPEDEgTFzjsCLX1uSw6Q7RlHJsVz
-h3uvxNY721yYdB6rKIvgWNcUY+uDTVCzWSZ3o3d06vCc+56zNLSMd8iHzxY3KjZJ
-IvT7lx9bkxYKQmYBGI8gSkrw9AU6CJkyIFsBdUCYTTtcroDpyu/xhQ3J44x29OTH
-NC8ljKt5ISeIbU9wichKlR+uTdLjuCkh0Qyz0uq0uY2OsN44ZQBxb2+3GE+M5edN
-3xszNFT9yJsGUnyy65eJKvUE3K/J9ynB5lPSbp/mPFIoLRVSGYg65q+S7ntq6L82
-CKK/sNsZ85rkK8dzaklAqogJewyrzLc+bT+MVsTTLC74igdwMyxhj4hDkhOelQnG
-q3wUbkQ3xlO+mNPyrCoRUJlRwYz2CtxsNvl8xbQTWTpduls07q72viNmQgwgkE+x
-axLMYhXzq+/F/shNRC1OPNObz6bKr6QE13Jjph+YsanpDKJAgc53LGdlLIc8NAxa
-+oI2vxd/1/tGbFEpuEu9tXM1DJKVxMtpRIOrdiwNiWkOdco+Dbc95rbDLqpbE+6L
-ciHYwpkntTVuGyftSzlQF8eV7QjTp8/AoxOdN1znu7FYmtIp0d4AvBGYvJKGp4G8
-oT9epeufBwvmxAR2/qRDJU5Gb07gIDt0giGv5i8KCUEav3BI/LqIxdLMnxVFoJ4R
-ftQSF/+C139oH2TaPD05r2j1JB4iXLXIw30As0XPSD+KJeNd+zfeHY1XPeXzMdnC
-t9QrhbW4hjDae/iGSpr2D63QOPUk+8aMQSELDXXfLqkl2I8hp4Y+30Zxx4gKhaOP
-TwCQ4TkhdqsW/7Y+FTWjc90tehfFabMtYpAUM9WfTHqtBWvAy0Fe4QAqX3OoPdXR
-v0eKfLnbRv6owY+pJhitdnZ56jUur4tAx3WUTNiClMANjbZu3NeYyB8f1lwLkQmD
-U4WWKjDQYRHWnsuAGN8NqoG+I2xnnSslDGTJvxT+NHLhPkyj77uRzaW5yWBOgbIw
-pPD3Cb677tyvyQYzlUGNjH9ZwU5ncQEsFFY/sIbc8L3QVfKsloZApoYUO+6p6ne3
-Fvt3wo3mxE/SEEbYlBkiPD0Dg4quQO8F1ARJSK0UFz7xnctwwyXBHtXGiwe6Np6c
-qcJQwwHY9Tv6WZir6LE0vdtm6MtPA6BEmI7lm78Rc0/W4oCkeAiuL1tCMxkuytGA
-AWmqW6ieQH7grFNq/1/3v0oomtuH42Ahf20kppo3Or2rOgytVCClhuDJ00JVB8vA
-N3DUJj6/kWElpQhA748IX0Yj+wzPkpiHT2Z8/QETcGzPmT9+mjXXw0naIeGU/j6Y
-P1slmpj867r1S8uTzl0/rxCGMfTzh5Pld5XBYxJIQ3duamrnQaWLnUmF9LRYuJ1C
-JAYaADHtw15r0yOM5z0bXo6R4pa3OWRgK46lYoUOzaPpIDJqtEfgcvhfDklfDT2I
-c9MUaDE4S6POPQunw0roH2fAq4A5ceIBC5D+QSzbpKXkZ1hB4JfnoApTEXraw85w
-Jvmnoc6V1AwW61pWmNMe81Q7wh7q2qAo/zwgdZATDfpcHKb9cCeJtuM/hBw9DSLN
-bUH0xsB0HzFeEKqDyMYePX+giUpDbnsHyHhVgPI/wkdZl54NqBv5pYsXJQglMNnZ
-ZVCev6WJmtCtqNlKUKj3tV3Rjb+WY7WfydT9VrUeI1T/R49DcfmHGoEYNBpkZ2fI
-4phOvu6C/SIobNjF8w5zBRhkg1K18yAOZO/MpgFgLkp79nBcYxotSroHF3bwGupz
-J0OaSoziyS9N2RLuSeOCwNecyidfm0mfzczeqtRBYJ0ntoYJHSnjv+ok2/wV8CYH
-K8P2z7gYOM3caRBpfuOsJRbrJoZBYFBfYtSMjwutHwpDCv+IohmIOfH9rR2Z6zYH
-xl7r4bqPUUJePOeuUjVUs2AGBOIv6GXueLUcX414Rn9Q38s1OnNKWMVp66reGf59
-yloBXpoIbMjDBlXjfKks87XPGAIvHeknUqegNA6By+N3wchZpxDX9NpAMQPW9Ws8
-kFcYdeAoGKV6a8efIVdgln+vhLhjFOyIyt1E6r/PtySgJUSEDuyRvpHTEBT9f2oT
-lvFZYDJr0a+uQYe9L7yJOPbiBQDZt99UoMYLPZanwcsf72OQlrkYE7IOKh1WV39u
-j3M/fJ0WGJS4dKZaqumyt05ZUDGFN8fyk/WLz7YBFQyyKiw0y4COrDJiKPOwhJVT
-BsPOgbPQMCdhoTFJNPY+ssad+c45QlrtE8n6jhB1TGCnCQLjjV+KX1ZomHxLqrQ/
-9PO6aa0s5lD8Oy93xiKnR/ks1JNhAGizenmDOfnFncaOoEvez0UOOZFMB1iIVgYA
-Fz7OHTrqXUAM2uecLrO7hXCjES86XUc/YwAdgsiYuSF1C263uaF2xxURu/qnRSLx
-fztNdU1pgOLP8NnSU5LDTcKataEwz4JSVICSh2OrOzY89z8JwoTpK+ffhQbftJpx
-vm/sXmWyXsx9bldnqT/nEEfgmgDq86RBgvlJDN51dAiZuYlXq597Wyz2gKL7pXYz
-whZAHLQB5g7PwWfAKm97rmYKyOrXsZyqJgNPmnhas6DLU6N4jMwHLQACopHhnF8H
-vCTfgJjH5l48y6uCDTLgYeLzbomcJs7v+wrSCpvDGkVHcq7mS3e+BarU6TVbj5fS
-xBBHnwqjVZNNv/S+KnxGnsz586x7VvoaBI0ikHh5QlzgVb0kHo4cTF6m0E8spzvh
-bQkoE0OpEYujwqLOrTHaAtC6XoOSSTJzluE0YxdCWBPPcyW7cCLiCHxuimkauvca
-7/l1yhjvGx1HOIN5GeXRwCajcz8sWG0oYKrLpd3MJDqdV0BqC4b36Z+APj3en2d8
-Arr0wTj/C4mKuN4De0xDB6z4uHxpjNcnLcJ9qKULgv7fsT9/B/B/fMmL3eBQjYpF
-nIqideHaqp8d5DiivSI58NQCuMqgpDkrEAxodjRp05YElK60jgVFrKVIBhEn1D/p
-kcGym3dCc+iv92G3xj01gTFUWWsZ74ZFFWTGVYbnwRQJlYO5LomrKJ4U21QcdxMX
-ee1EaMdGIgSzt4XPnilta4poINUouDOdqDimaCt3CH3TPY336vrpr4RDSBeY1Z5H
-zG1bqzEP94b7wyy4CHwyfNwhU0lTnnefeyMboYyraSDGp9hZh7/tPdAvJzuH7Uto
-oBLSm9VyAImlOlti7WAjIgX5xYpsKmBGNDDdOoNo+ep2wF46SATbsl9fbHmkdet5
-C0NZ6YfhC8iC0iFOqEtR1PDyEYZlcTfqFPy1TBYRIWXfg5RhF7FoHx5uF9pW1nMi
-eET1aZnbL8Py4rW0LTtMpu8NQOReUipNA4/jlBNnoh4DSW5wdDY5eQGT7O8RJRSH
-ho/95w20Mr+uiKSJJw/ycL7t2U6qBMYSm65ZfADGipfmDYhxbu8OBAzIx2qOWBSJ
-oLm0MCaD7JA5r5W7jZJdgI7lM8Bzztyp8x+DvGYuOCT/JVrbiVAtzuU7tXtf6qUr
-WnWv9YdtqFawwuJxushQYQSSp9A+o4CJSlijlqG0so3+2B727gxfLQRNXog/dkfS
-d2+PBZObvU1LOSdeKwrccUIEYZcm32+k2882AYSQ18g5lFSGWM7OC98/fVwOlu5L
-g2sj2d3rBMD2TaIU1san+SS/pNIDU/ewRtMWceXtCyVcnFwZbpNviomzAv7pL1cM
-EzTIXcy2nixAmDhBthV3tA7dP6a6ZvQ/eGs/GLEZGpnDqbo26jR4fD+TUqSSB+QL
-P7EkefKwFc7b5UC4xtuWuw27iYCFYtdLQyB/3wIInV5zRDabU5YktkfBFY7n+rDY
-t8YiciiT9Dc5YYTrd87hS1yYdBFGEm8KbwitBMPK5ErqFh+0dpt4TdWN8AkEfd5s
-6ytvQl9f6+FCIlQgoGUcz2RtqIP/atloEANpTc7ITiFMxfD87F6L9LQ3c/qtPViD
-OrgH0rXvDQiooYXKJ1gXNaqjnAzolSSR2YyyutdHkVivqXvQIEMAxxVuEmzG+xxO
-xhV4hz2fl8H5b1Kn1/YB7lucqM6UIVwZJy74V79x+2XmS95UDobzaaB3/Bnsq5cz
-lwAGtcnEoyF4F8OgprITHYgUEwUeLYNlzuRHbsO9KvXYfRTpnmHqDPiHF2SYOB8b
-kzXgUIaKiWEzbAoc2jBZBComjL1p6EaxDptSaeacJYHpy5634+B4+F2k92Tr4GKB
-/UgyCn/NLixyx0mQj2t3LNeOK8LWo2ZK/9DIpDAa3WHb0V0ryZQCyELC/y90zF3b
-VTkYFR+h97m9ybbeVwSLO+KAIPZazlRUAFD9twXifSbpjnbg9niqgkc8mBdUjcIv
-ra6qfp9WNsM7HhdPVQtT0++KP3u0UvW3R4m9yQvyzxUHz6XP8s5d0B+pXFgdR0I0
-dOQWOyUUUxh9GkIpXMl33gVOAIMNUEIE/19ifdINTcfKB6RelOu03ZKlZ4zzrmz1
-0aanZoRovThMLzecqsWf7qr3VSJGdZ17v2hehrU9DRO1pdkFZCTLmx5ETeOGLjcT
-1PfHXZBPCGmINVfvvbxVZddv1TY6S9YZK8ECrpKpqgoTHZmBfcop8my8xsc6Oofo
-LfLPyzZcZwF0Ly3CiAvoj236QJTnfRsZbMfPyoHr/q5GlmIwygwGyHV36VE3SH1f
-XcTolKqvYUhlQ8TDlCWzuFdV9G9jT47VXhZVftlPIqeTovbd3Sk3z5g7AtWZLGbR
-TOx4Q3Q8r/BizsLpznCfP46eoBxQRjP0El+VLnd0xnVmm54YEagaFSrezsqOoXDg
-uU6NV0FZyzDp8cV//MQE+kGRwpDCjStvMAC/Th9caefYCElGM7DnKWgh2aYp2m2v
-x9TzsMFeRFnPk+ePSTR8p7BxweGas+g2lTV4+zTUQsQYw+71JRc0jWFkQtOAXFkx
-2EMNQUUevxXEyL62PuyEoyB9hiIZyDes1gqmJ1qEkQo8c8ly6w3/84eNYzqWWEq9
-F8hx92sHtI2lBCNZb4r46Yq0Wtoi3RhweCbj/s+qLUNohUJXSgDGztZw+1v4Eqcu
-5lEMcaK/QNVCZ6InbGepo9Od21p64M4hlDrzoUEuvjEHYkx2jLzPhs42OoNl2Cv3
-lVYn7jCEtD1rZxQ2Y18Y15RTqQPR3BWhXt3F0+LiP9We5kOcWdrAmG0uRPLc/q30
-nWrsI+hVKCfcyBrGa3PETpXaL/wCuFCGjgnKEqxumFQRPESgcRWwFv4TQAHJ0ef6
-2cNcpDGvPBIVP/Ukb+GNDFV4vM43Mz0LHUrmGTfSgH/Bax9WApoDTRns4fBUlW1o
-N6jYNPvz/g0iftVo4nHwhSoWM8YWw3DD6AzVnERoUl7V2Bm81xeOaqXtMhwPgV6W
-AaLmvr8s1lBHEoceOl6+rJw+7HQkPV+Y1BS1t+pQchqNBiO+chUWoaHdnommB+Ij
-Wnr2xLGy1dm9WVJodup23imVAWpVPdtbolHBQLmeEQSv3vv+BFgs2GR7/XkpXSAC
-0E1Zxut2qidLPUMxUeVp74aZoAzPrBp1x/S9BLbYYsj2zqDrQ6hqQlMzb6uemSop
-XfBdSrVFf3BUK7ZiXLsA3XvnYsI5wffxMI5xS6Stzs5ljDQEr1AjZ1HPCsiTfWPm
-AgLw14jvx380D+mFRXtb58XZwUSy7Vsa83/h38D7ekikof6Lgi+dRxZjbc4mKndn
-UulhuAWu7H5LpG83q3dIbOo+hAHTG2iKBkZ8jvZR0lv3g5ubHSaTRvCC06lPKBxx
-ph8Qcj+F2xqo3MyzxrZLvSBCJ9UhpJ71eGrqMn18qkNYYKmXwSs5hyfwpv2Tx+qx
-KPJdi+wnQCnidzpuVCf7rNKbtK3tl0NlbFRJRcDbqOY/glhax2mY7HgoJbCL6/VI
-kVpJJ0APkbNnc7tNuwStir5MjCpJThBYJM3Ujt8KZaxTBZLWA+dOc70O9Np3NHOI
-cdRWXu+FNdIidjiZed9fHQEuYC7jgLY5UBJbbMyrnJIqVYc/n64rVA0Ns8jeDNp1
-LpmJkMmAq71PQmRwjF40ezcIIwBFrEin9d6hc+78gsU3BzSheIgFuD0aiFb/xrcZ
-CaT728u/j4DXInIGqLGDEBxYLnQD4wJxvzfHGQh4b4KwfyHDcLPrV+gvGQllJrJW
-WWxemWOdk7NksayYuZMiHrYFe3yZQPJrbVymVkh46wWD/PC2pbZomKFS6fY4bk9G
-E8ekAJrzILShS7kgeZ6XQLfWLdpUr3f9J6/X4ExUF/8xptC082OXZjuEY2LAIqwd
-t6grAnzn/JMc20xTgCf6yowzIMTdQcZ+0DFypfqDOmrhD4aDrkaEyqGh5w/fmVtB
-XwLOpAnWaNXTtQJrflQGEWVZA3H2L5OELpf3Yymi3AJO/Lxg0G3QR5210rOczA4w
-RJ+tma+g/r6ZWAJLt3OQfyGYdnti66vzE6coxlxRs0WMl3XYD+5Qc/yh7qnD4Zst
-udK/tY7gp2zPzKuyD0c/G+rHQ2hZrphvgelqMyWzKjaQIOsmC/qrhEyve0FWenVM
-rWdl6PvPV/0LNiadYNiU8FGoJg/X9QD8t4v3IWUTvTRUYC86jfHFpUWGAg0CvrC+
-dn7l4d4ea56N4DCmmg+an+5Eph43EpDwFjiJ3NKWpBcoFUq9KSLf6tn+dZt+EI1q
-S+XjDG4bZfbZsHnZSQcPxu9HoAYkA7krCgrehk0gHDZfz1juD7DEtFQ0RpzITpGV
-H32g67t0amDdxLgbAs7rP6Zq3uDEgphCaiOawpkFpDGz1QzlxFLpKBSwOpAWoS6D
-m3CNYEUtLzy3jvcz2TmJ+u2AExVcbWYQB/ySEDNCOXsTRRORZgFrIFHohgOe1KQO
-54NrA202eeQaIUGntGPex7iXrjqkxRy+87gUkZG6BH6tQm6aGx181EneSFTwU890
-Vu03eLtIznvhb8dYOCr3+GKvJ/19VlWJk9nazkirX+5MgG4bsbQ57rp2qKRa/ELb
-n+gobv2vtgISpy9NzgPHiQ6ph/9YQhcJDYNlthdi2NCtIcLVnoEgr/qen5h6Rya3
-tZHDOkr4hMEiy3E32oe/HIpwajcKpVureDA1BbvNQh/HmXUN1H6Gkav0X0TINv7E
-pHxYLVhx82cqXXS+PEAxc1TaO64ZcJSae/7V/H3O3wynzvAdLl4aRQnNNNy33a/e
-MeMXe9Ai6rHuTAjcDVBUggqf5C7Ermr7Rs3Ypxr/vYqVrLAfcR2DyeqFc5gCH55r
-b7+QL6Eo+C5oskWKftyOW1Vz3CMdHAs1/AAsQUPUhzyhz1fUplXn4moV4/kQMtdI
-Q+149M3ucVRRAakqO19N8cjPd+Eu2chV9rx4TYTr0pZDLlqpwh+Fg0sNn8SElwfT
-4GRJRG8dfAvgHjBBBWYXhnFdRuPBF4b6v4fgfiasZmQA517L1312Y2OFjeuw1QlU
-qfySgFS8gNRVjYzJk94D5EU0vcji4yEcBzmWIQC/XtfBaThbNHzmkJFs/0gCds6N
-rBrV1GLSvuhRntcv7WauXyLIXlwmXsyTEIabTgEWufm9wiUq+ERRt25/v4uLlX0g
-lVNlw/FiuZX1HS+7L7jgHdGND1i9iKSfprnN3UMJxptNyQwmEA38cef26BCt9LX6
-q27J1HY6GFSHRjpoRh/fclWBjV18P2QClPFaPFXSw0UnnSxJCvItLzjSjCWs0DuO
-r6G5UXBBwQehmYVTdVJkfeCy3bRfXTxSvblwWaJ/N5rwWrkDCHO3/w40PjuuKarF
-m+6zEDLNV0WRWzOj532JbtsDibwqc0mKuF/5JW2LoP3ivXd1VHENcnIS3sBq5Emi
-4PEMRtTnDzwsuHe/c+NgaaN/3auxiEyvjhrCOlcTbuwrqsI4KSJ6Vw1Dhl0GV8oy
-XkEhVC0FKYNkV4T2SgEHy2HtkSKjI2btF3i1Bznlib3sfi4wyWObEvAiPpKur6SP
-vtDOOzCRslw5k7XJohny8SbnSvoe31CEmGG1f5Aykm62oLWiO4/1jcdABrr0l6+h
-2r7QldXFm+lnxPeha9orKlt4EvPwkPCfyvMxXjGqBsyIPe9nYf2MYAtWlEApq4X7
-6ZSFYwPja6BZBg/BQt5R7Mz6Twl4+M040/4ZwHjynIY/pBuXIfmlMLRVgBA05UCz
-UF00RHZWbl0o2PPVx2NSABaatK3IgVjA9FOqqPClVqqh81UhVlE6XlUcQxjMt5we
-JjyWs6X0pnkOBd6vFlLnr27A6H15wsJHsUk47WUkNTnKQKMrysjrOrXsY8n/RGk7
-q168yXC/SjS6G4WxBvgUjpzgPTROntpP6lm2+xA6drisuSqTcSFdX20FOiygfKyR
-dFMDiqd+UDP/9u9hMQUXTz3ohirrW0Chd2EB2OSRH7RVTTfltwQN+gInXRraH3x/
-TdPdp1VZSsN6uAOFbR7BIoIf9WyIYsMfEV/eyIQm3XOLYN6Jjeuwoim0l8EMlym5
-nNzuYbjF+Q0v+EAfjwWzFTQuKQ4qXk3osYyKc/xlU7goWBVnUl3lvqgeKSK32xrQ
-Qd0U27D+XqrfDd1w7Uxoj6V54YoFDuNN83aYm23VrxHhG6HS3YE2dZZYsBzuqaHj
-koPMnihpj9r17PxJYQVwSUG0MJrs2rwGZ5K56xbZ8iEQnIM0iozChBce0f59NvPQ
-zFPdkbIUO0pEOe08qzyQcBxnOBbLnBmykl2c3rfWjce1h74jOhAy7uthjuFHKaXu
-1MHgfO6haRoyT31pXrNCZeUM+P3EFOUgTVzTVCAi2+GLqusSfW6NeN5Ocyv/H7t9
-xNC4RSfL5XGqwvEeQ0hc6SzzQwqxJqqGDg1Pfs/Gv1XddKMCWDsn0T2BwiS4jVoB
-8joc+43oemMHc6zjKE2esw/d5jHltn8SJpYhGBqC7Sa9IG3BrIhP2enl2WofK368
-RsDhbprb8FEkMCkwt8F5gBmcw3vnkCLELG7zpcQ4i6pDnAt1VV6NTNVGSRjc8GGE
-nttswK+MJGYsQxnOzR4NLz77Nt+t2xjAxr/CgPI2X3TTRY6DoMgx4f11tBui5da1
-WsX2mPNfQmiqGVCLaCRUsPkYauACEwa3TNHMJIGsbGO2OorTCWKoiBFSgBKA5J3+
-pozf3LBFf9aHTrOOi4izp+3C4UWaexoF2sSp3mfq+SIDBoi3bo9RRw6na7sXRuyv
-bBnLhnCfX3M7j4WLYFptrzo2aw/EUttTSsNLbaGsOsL2T9OUGRvK6L4eiPY/yQDM
-XDkhEJSj4nG4Y7+HIqZIh4DAF//rD6QmcsdzX4quzbIr6O8teBoltlL2ENppRlch
-oYGrFANzOYenmQkXCzhPi78MaoFk6J69J6vz7jMSq8efuXPf6w39Ug/fESLe7lpC
-j5/OYgGhL1oU5oDjlK/KJoZhJlZ/e80aL/EOYMOcw6CIfp+ePgi66T1lXRPienTm
-KneubQ7v/cyuTMLgmsxPXa7Pg0/60fp8dd86eCfk8mLQExeWjLZVAArzyguA8Xny
-x1YYZFrEifgexXwIqJu/yx87iQLgkdRpxxMOP3F0RmwmZ2fbsmnqSclctT+9feSe
-laSvxYjZBrT6hYs+AzrVIbmoicDlqxdvEY4F4FYpSVxVFs1LrPiaLG/acpvXIR0e
-KxcxUCet2Z3GQOI3tdX47n1cpyrjgtPTX2p9qdAMDyINtuWP6x7pLzSdkkPqtfZ3
-0L2HFoaRqdG1ihipjq9RpO6GzvFC9APoPeEwE+zbkr4CbwTx29ApqbfSBBMZenBT
-XMa9XY2udqTMwWOP9NnwQ+wso2T7crOrtQiaLdceRWMwp/Q2XYheaZiqwm7B0145
-mFqBSdtuyAQzxSdsjBDP1wlS4kcd3QEgTqfrlGNnolfxCuHDdNovlzT4np5eee/0
-/DTqxL7a87PjvTF4hF3fkDg7BY3DMlIj5t47Wqp62IrnY/JIcgAdseMobnRfILmd
-gRwIIfOgbV4bZBkjqFOO50P/8xjk/1cQVz8ZjXt8n3xuReOfIqH/GZeM2mOrLK4D
-eYSgjIESHo7d8Gs5VAMNJylKFy+0RGEg2iQpiFkeCOMMLxlDxGcf3RAMqsZhwy70
-tqug73iBkNGafcLUOz63UjidB10xtjJ0fQWHAMls/7OOvvK7gy9wMq8jKj546+Iv
-7bjCE7WYhqwbVPe4m2nplE3S4OWDjJ9OPY+g2roBho/FrPMCv4iuBZsYhkZqMsVu
-YrDq1rw8xE/Aohj28YiuC92IDShL/xtEbXxcGf3DXQ+EIxenudubVUAn/zWW+HpP
-Sfrq4g0cQP/uIJe6xES4bgnm19B6WfsEV4iJ3arQgbUJvi1xD75CBfKJII/TINHI
-60mpLw9vMzBGCKpXxZUqVBcDTZQvuRzjbk2Q3x+HJ+GuS83DwfMg4k+ZyC1Epy7s
-b/i79BGat0spn5/KG/K/MD4n/yjrY5jE3x/2W94HZz4PM2oVU8fLmnJ3kSsPCOle
-tN4w3YMw+wB5YTUMw4KjT5OWODOjrNYEhQyWRtO8jjp1A9p9g+bnvsXW8VPClAP5
-uVoIZBEP5xNifbs4S3SwxEAovNHhWwdlSndmQgtjKxPauhMyBxUq5by4ZGec3EQz
-K6KcabYDizuEaTRQ6ZuqbE5kOzLzealRpzSJYqISr/Ek4jk9977p9/jkrksSo2lL
-l5Q/vsZKGyTImCsCEB5Nqwp2jjvw5coU4fq64DxDhGv7gjztwr5LLHK8N1HghJCq
-CgmWaC30EDxgaEoZbgICVtHWBi0PI0s+z83RpcuT4KvVfeoU/9JYdCcYxyse3Sav
-R/20uVcv56fMDbyzb3VnWrDMa1MjZZFaTzt60OZyqnLDKFD/PNp2gQ19NPO01HPq
-Yi2eNVytR4ea+NGOKJInz4ayYa0mKI6F25oS83HU3pdQTOLfDJnx5VPuQw9yqGFH
-EHsoq1yTSDbHSsSOMUmCVUVKTegvI6G9ywgK6izdI5zuc06/Kl9D2OMbn886vOvS
-FVA9isqXKI0i/UW2c1jJv4e/D0K6+YelkcY3C9AcquI28lDvLjBY2cZx2RHUzn1P
-BqV5/MnEgtzZSWMkJ2CcNsQN6JYlhhb8UjCsw52WYSY9hgMNaLQo0RUH/alWmp9+
-ZITnu5HS/UOvJ0bykAVIoqtv2cTV/FRpR3cYO9ABCxrWwNuYtBBX7ur2p4JQgicd
-1++YtrxgTpad16MCmACIwnM3wQDDDfz3I7z1V0qqEIzVsvCjNpB9tz1cQASpWtIs
-/kOTTR+b9DJY4gXw3IU8jzPcmvPzgqwNidJe3ZC1RjOZ70A57KheB6+0oajEQwu4
-hOWnp8zIezZlGacBSpOmihMWhPkuGiGQBhe+nXBu2pyTfRshyz0YH8h1Yl2Zmlxb
-qiLy5f6du6sxHuShunaBVRqcx+UGEKVwe8yIDhqWA9/fF303Uu4UB65T16e06YBF
-b7VUrN8uaAdwtTP1g+3Rco81zv+lGd2/4bdGlVS6DxNPP2koKzmHu2aT+SaTULOf
-EUA7B8D3RzNdSWzieokMA162usY0i61ZNl9LkELzu9BPzjqAIxcasG+U50+x4FWw
-ugCW/j9uJnJiVlOaAXhJxn0krhpOuFffnvX37keObzcllhITMB0s3jE7T4+jAoIy
-SOf2avMm9fsLP3d802C4EYcTnFus6DCycHrD9gP9GuthlHZxT2dtTU/TOzBvnYez
-9YWDcFOUM8eRVsoRwahDM6nuvaYUT1/GQrubC2zCzZ3gPY62EbtHeBlOhaaPVAA0
-+P5gxSMbggh3wSbRDjBPe6Q4iUSZHJ/rO1iPx24VJFqYmXLi1i1RDDIjFerfvLFs
-ptjkfsui/fHGah1LMIaEgM56qcGFoBW4QPgBOviLPcFBOHHhYN66yKYxWra+fQBA
-oStFVV16BBiKGcfqSJdUUn83vQDpJ2GJSCCbDqM7Y2JnY3E1iMGhaX89lk5EQHaD
-eAHWGHvTIkPheLi70Lr0oWOlUDvHwiYfQuf+l6v5YAPvhWn3yKMxCTSY4J7OTktt
-x9Jx7H6xZl98WiDlPf5jEQb0B/+xNebrE8C687wppilGSg+tSz+wGcZfYpTwzvxM
-uI1OIcYSNb67v31qGlJcbugy/SKF4VgZZvvuXlrgz9pUKCGPRpC6+sJz2mA2BYpK
-Csif3cqsPpJ45a0RitkxpWpdh7mk+bPrWtmSmMWdhIJuzRBUsuXEpps7LLDMiNX+
-skOlxpeC3WyTa2EjG7HjygwpxgFTCSikgCageqXTIRveECvNmeSkzixj5m7lRqN2
-0S340X8i7jpz9FHh5VzeKK4YLn9sYIF8oFSB3C7zHd3RSEz92K57D6uiZtoxoSMe
-eOM4qlSjvzBeu7fhvsqPFd+mlWhufslTUJV6OcOSgDOeuitP6YTMj6X4naKYfkPm
-xBEUU6nPfr90PZ6MHU7JcE2iJmTZ6BkJ2yTrYOno5EhIwQvnF0kXHqL4FjN47Np+
-QT3QBkP288VtKE2LmFlQvXXPZJ3b12C8ETXH4V2KclUarc9NWvcRpuWu7NxBMUHV
-NQR2X7egvMJ2YjksK0yVIaCO2pwiW6iA2zR9LtG7RqGDRNFCh2Y/B3XU/TYVKktK
-RrAdkwtDXlHCjcbmf1LxKLhr25qqQaaO7o28JWnRbn34Msbzw5YmTAxMlKGgW1hq
-wfhPku7RomASD2BDJ+s+pXqJHGVk5IHudfg1NrYojwKz9YXwbMZEGVYUhX6lBOFH
-jDuaovr/0bsdddM2oueWpb0esZorVPDUgqw+Fw2Ldb01c4G6uhzZKh3hmvpHjXR6
-c/uZSRz569oYmqnpHtpzHqJQlq2AN9E45zrqQ+bu8/YUvpPt/5gP0CE5UIsvdibO
-ybM21UDVeMskSrCjXF83qac+9lKLJnVhE0Unu8f1o2RaGmnbbiCvJsgyIUx8vfHG
-EyD0yPwY39DOUC2VazlTAo+2j6A+orJWPzbIp11MSEzFBx0RbmAFJpcrqmcYm+iB
-R1j9JMiFFRQrY6Tlz2OHdPFOLG9Y5lsOYkBiOs4wmmspx/t3XUnCM3aBy3FU47Q6
-8kEEPQj8fGAwJer0DchYfMFlgPOE77DmoeTT93fYmKVvlYXLUYXWeT49/jnbXhrS
-/ZyJl3p8+iZWt4v3W+no07aJ+hGnvWHtlOz/3kziM6bsrs00aJmSg3PW5VZeBnvX
-AFs9HPnUVuxk8bECRKtpeSRjjP58KcdVfpx6GMFsJ2ZBFVQVmckK9cNxEoCq486Q
-h7+WkZVFoK+r3kIeRQlGmvbrIHAYRZBfz2U0rxLn/TXZMoopyt5S9qscHRefk5yE
-a51+P4qICe9n8MVmU870LxzJKzZB6XA5Ipep1Tcgy6FyOW754JtCxItLwIjVzH4u
-RawDjMXGC4EDKnbqZgF9WqW6rGYEWIY6Bx/xI1QGGoKAtS7JN/zzA7EXXzO1OBFp
-xk1NWYKoWVhJebDYU4mfZMX5vk+JLHv4cEAg8ObfY0d6akbQVjcanCSe89A41rLd
-q01kLwi3Tnc2S63nh4MmDbWZkG8A2B2yZ/23kaPatCqYAuHip6QAdHUb+0kB1lnf
-rvHI9cGpa1rqTuY81bEZottIyKYy64Xl97tQ/mrIwv4bB6DapBJFO9ntsmcPH6sl
-HDuQNQAZli4kIHFUvPIGXCzDFSLEHUO5VugVNZQF0+K6Npkom8Kb4rdynp0WvPZW
-hn8e7FqOdCkvO+/IfGsvp0bTF4ZUNaIwS81BzwuonJVjv7Xb+ooysMD7Yx0Lm1f2
-610eDlEyecefavDkClCdkxBdFO0OPSoFhosvdA+POfhdOezehvLCHZWgFI3c/eDk
-opko5JxYmrkfvmCMWW0T9DmzVuHMvQOeIJMwGPf4kzynXY2d8DgqySBMrN1thgsk
-30EFl/QnGF9cbKbrG+OcHv3L3Jh4NV+0Uq60foUHUuOwhGWQdVaAPGAKw70jsfS9
-PO81RSszWD+7MHh1T3NIFjusaMSIDpjABv3pZjU2IU2xGmKhBEtLQ7HnWUH1wpgy
-65sOb6LAIi/Mo6L8n+Ix2mfMhwbNnWLgewIbjx6duTfNzWMqI2uHfFmNpP4ETIGa
-wQL5HBFHfpb7/7DbhgLf1IxeHPynDHYjazIxl7NVQdOSb2NRWDsLTYov2KImMBjg
-WPg5rk5jUnfuurZecumIu+sHI5vQ2hoIi+I0FeAfIdNKU6YYZiqRKqt6t0Nyq3zC
-+45jh55l5C+nxEcYwPNqqf4w4VZ8c4mgIkoj9UwN7tD8DKoL4lzwMJNFhY47qEuA
-IAZIrVH4eF0htq63rraKzPXQiooQNmGiT1TIdvDVIliXcXP9qqqSMTcHielgFnRY
-nM5xEdGIvxoA68lc7hzdNOhQYqsdt9raO6S5W/wfaaeg0IOvZNr6MQ82GyhTgptl
-dquSS5urEjP3DrIbrlwTnT4vG4jc05p4a4wt7WJy7MZgQGJccwAch0wNRLVn3uQt
-tuzfw4hOw/nET2Bj7GqCTCN+n17IXPm2Et+T+H1P8cGoK17UI+W5GbBKmB8My1T1
-8GtY2Z8JMTfX5eWIPC6T6eJ5u0/J6pgnlZ+9xirV+LTVEM06ms6TClCas664KLGR
-rQQ5WT8c8r4yED4Cn8hq9corR8GNfTy64xwNTMZ3Z46Z8pJY9Bz7M0pT5v0Hdz4N
-5Ozlgc7wW9Pxn7/XqoZ4xnltahK9dSGrH2ZaNFEuPczcoeaUYU1xqippELGQwxOm
-kQqbxsnF0IZmw/BS9qxQu+1G84YI6oq53FJIe059T25TODCEWHlg18VFVjN2uqo7
-EyBKfv1cu3XR2vZ5YzEh9kZH4dqAN5qETLdpRKDXPLo/wLf+59fmReKeDDRBTfad
-iHvt+INtUOL3PJF/9xUs3Xlfn37+OmIe4wNZykRsebKBrtW44amxMDUpMWg9aMgZ
-CLfeOC58stMcOTb/0Itqw1XgQq/SLnORVFt37OtuMVSIJiXRp+FiL6F32niTeYXR
-71D5EanvcRljrBnLWlDuJd3wXb/6hFCe+8zcmIRUKyaOYBC3Y+ESHCt7bHsTtbDU
-5kao91byBu89KYXfpDD5SyCTs7/osX/8unsbCAsUdGt4rO3DKjnk/7SwWI0btyvo
-aDkJHG1RcFwfURy/W+fAhxnQA767s/NnX16ZAhTqDVSgpmJC3JyO36uQQWayMCmm
-S7BM9l2YTxWK1/qmgT17pyRkx5xzaUNODmte6wta0HGEnRoKN4QFWO3JxSqayTWH
-KQoyYWzj2ADnOYUS81Kf9HiYnmrFbmwfC0sMDic8e3o50EPgi4WSdUh/s8GWElJT
-71jFiO6auqvo+q6WvA7PFBSl4JCtpFfZZJrWiIv0jC09cIToJuq6Sy5jpAZp537A
-jA2o7rU+orR0zcpy+2X0Y337iUzUfHqYxpHzPOsR6iWAv+oikrzehEvyO6YTnl06
-Om2r++c/UDc9W0N06FdpipDpSgTACaDVi39gliJ0O9+/aPWvo0rqHgqwyBGic8MC
-W3Nc6EPezrY0Sg0ccl+kYKd+5zzitRzDZRpAalWLwclPSnvZJ82sJZxC711TE23s
-+Z0KZ7cHOYE31GM5Vy9nL5xeMQC8U1Zk/ArLUnnxhAGI8zsMKUu18697PcmSLAyA
-2G5U1fLry4XJSOj/uwdm1U3JhU+n7fu0ygOrzkyf94DxsW1HQaOzyYnviHn7oyrd
-9UulbWjkgIl6xmdjfCF6/AxY6C5gaHilUFykVOs1555WAR5W//mN3D6tth5UNkno
-0MdqbglJHx9ffnnp9VZAn+qAbDAWVSfDaDTAOOzWMkdkhFFcIu/y4c89mX+trgBy
-isPmAgU6zzwCGtHrx7C4g7OeMJxRFu18sQOVGu8s0Z+B5wboQ4FyohNY7savbfE/
-DrIggt1mcJRBp0wQo5KO6toqI9AIa4xpfIXRPlZO4y30/0lR3aDLRDr6qd+x4gi0
-rlIheU1s4Lflzm/zdNDlyUqjYm9tWCNV6isPSRtj6Ps3yGxnNWexmbrq1oFRAU68
-B0mz+JN0mkxxFPZIONv8eyCwjP6FcmyUP8NGhKB+R8Ocq1dQVPtK+S8h+5T6yMFP
-85bc+aF0XbZTUZ2hs8GbV7folrYN9PIQiHwhbtCNKpcsNf7x7s9j0H4SSbF6D4u/
-iDLyyKqyMXLqRdLvkciH/v+y7pcXW7Pg49CyzwCuukSV9lJ0jSZ0VJOBf071JmcB
-4ugT+DKxbqG+5xytcd1M71/XyX4XOiLDqv8L5e9B8X31XkTYXal+6QeIh9QXYqO6
-ulrv573qoxFlDmJwAS0UouPDTWOhQHRnjr97cmBiyLJZDK6Nds+9BAXSSe7ND4E/
-Sn4WwQIxRTtIj2EGzKWotK11RbShf+2/7rcV/ZxF0k4e+iZCuKrRFZuyHhalrksd
-Z+g1wXmiV/bhqOXcl5ehIQ3os0bgMdmW4j4KrH6/dzjrffA3FcHdehPNJXOU3Hap
-LO/ruT+hf5m8QnzWYnWlDoSbwzwhN9GVB6lIwrPy6LSXbb4sBtDM8TmwG862+Nv2
-v1U/2sWh7EgS1do1Tjg+rFw2v0u/q2+wEKephAw2gPXV5GFwaVL9SHjlU0KIZrET
-ogN++ILKpVCQCPj9gCh3zyIqNwWNE1UEkZvh6ViId+T8QDDYiykWBoF/DjWH45J7
-SflICSC1Fu38lOoGDQsLdrScNA4KxyBt+CqTVCVBHHzET/8lPr+lDBS5VZOeyD84
-aADoeiKMza2ye/8E3sklRjqabZIDcn4+Z8qKxvitaOXkKl95IDrIEdVJsNanCF1G
-9axYS+sUNa/FiTwTX+fhBYj1m2qLtNF2FVceoTLevW0qd1Isf+RiP5Cpo3ntMWPk
-LbqHzBW8+nwmcOZga8Z8lI8DUgt4V3Zice9KGwL2p1+e9Ih7eVsTWEIFCbGHSOGN
-vvWgtbGpezG9z/15PKW2scNkfn/t7G1QFX56YXUVfLgDHzEWnt25eCzycAcna12u
-kMtPmXFZ0kN/+avv65iB8TLlDGjoWvqC0RtS7K1bg8Y4Sjr7HLtBH/KXa5dGv9Fp
-5YxuKPZRdV5MDjwXoiuZMNPZdcEGJXhCxdD4+JCnJS2wl/3JLV+0KeKRCn3+e35O
-RWIxwmmJL0PRqZfBNyl4AJ/Q5/r3bLSdUEewaoSZfFv7+zoS+nDCWL2ZfQtCxcqG
-GSOPQyjnZWWjsAPXq0rnRU8mqznBTULNdyhuQBX3IzCxzMio0qjePCnOD8MGmzea
-3wKIurn4Kx4KcmOHqK4lW4ckGI+9WnBEXIktIT12jzgoQjESrPpPHAEM1FcR9dD9
-7zp7AT1J1VOFdSBhTRHdTgC3TA+v/GYBpik/6HJBUJrovMcbM6FPj7Gxt/R97gFo
-eHRC0I4FCUGnBCm9R4mvCJrJGwwYc/JCteuU0A4D1XpfZ2QfqmYZMirPzFHv0YkC
-J3Yw1vsFVaQi3ZTIBYrb9sRjtDGxoRd6nP09HImTvPzXvZDKAjv2hbuCq9r4lrAy
-XYJEonI+Q5qKo3WcENReSxNg9wJjA+1kOK9/YHhvRoLOs5sZCkNaazKUwJ6zjK9X
-JkVoxIDRx45b0xayzt6g4INXFMxsDBPdoMs0Q3oaxHVLao4xnzePfPpK5Xg2QX+I
-DZWsoEIboN6+ONPlexdHdEfdeOvDc+mvzo4AMxy6wGMqPu93tWq7k/Zc9ZQ+a9ao
-1OFryBVW4LmIlOC3wRsfLEI5ygBazVHhNCXkMN4TH0iVsEYI8DjrnrJ7qf3sJ7Wm
-AA6gJ9juADEYI4V+l3K2mz1usV8gYpjS8ZE6bJZWpHw4fXgCCkQDSyhSjYF63HCm
-ejRTEzz6HohM3KU0yyFUOPlAqEEJcmPSJNiEbpZFNukq3qN1NT5NX7Clpzuw/LRb
-IPGXl9rrXn575h5SJWpVTc1KBUTkrAP2wn9bkuzx9M4PJ2pTXOCP4N7e6eIm4wyU
-69KyhoVis3olIkLu0wNB8wLacmQFBmBvsE07bGE8/Eo5njcPBz9S7mYZiiUHkShf
-TPq4SrfIOaWM1u44k88tcnq2ROVcfeq9PHKggLbeBdqvuz8i4obALrWBO5pQkfg+
-IGevdJtLPL8VgCKGmchQ50ID5AXgqpgnfULujCuC2zAzTDDj6OSX3OP6ckA0sVz3
-6G8aqg3lagWXcBUqCORwkJVD2Y1vZ7pqgd6Q1hR633MEWS8iuqnowusqMww/A/7O
-2BsYUK0CoP/Chc/k8JPB3b11NZ7Hphr4MTpdTZQlk/t2yw3OIAwaV/Lgn4zLK2WI
-C2fjDVh4Rz7uAjhzl1hdwqrxHEpQZdK4qvn7jfxwN7fbXek2mXX0dzzh4curIxXh
-THMXzRzl42NqKHk01D9FQBJqhRcGgv0nn5Q+U2WufxHCd894MC3VYivruY9uwKsD
-GAmbNwSdvb3B39g/warzReoxHwhJBCvd8Zuf0qmxKebfkaYGWQppsUEr7/qSrCfy
-HVWPXcVVqkCt5WK53w0wIZhjMbZreyYYptZIWr/9wEofp5k6ZIojbs1QeU5HnmwR
-xL0uc+dZ42n9w4KsbtRr3FelJTRRjC7TGNUWFLIIoqvlUPPnNrKOBYQbjZeBxv5m
-IEwW/EtaieAyYoJVa6yhOURhLTPeBGA+eljTtiIxYVO9wIrnWJCvUTISWePRrH1I
-2sdPfTFgNWmuiZa49ADDNmH2QKRFCXGumTwVLWYMtqf74AyKOupsiS8D1L/QvLEm
-Avzsppcz6UhCfaQ3BBDBZ0djFsbyced/Bv34NkKMETAvmAAh9I6roHaZ3FDuiV9S
-KfpR3vdeVKR58Xlw7rUCWOJ9uHR/jBzfaSYSCbhfKUX7Cc8OlIh+xMgiz1VOBkks
-rS613siAI0OoyQ3m25c8iRY2dZH+SILFurw9RcwqkYCSHyQAQAnCYqEo6NIMdBrv
-ZwMPNi6IgHObDwuEW+kASA==
+import type { Template, ThemeDefinitions } from '@tamagui/theme-builder'
+import { createStore, createUseStore } from '@tamagui/use-store'
+
+import { toastController } from '~/features/studio/ToastProvider'
+import { demoOptions, optionValues } from '~/features/studio/theme/demoOptions'
+import { getRandomElement } from '~/features/studio/theme/helpers/getRandomElement'
+import { getUniqueId } from '~/features/studio/theme/helpers/getUniqueId'
+import type { SectionStep, ThemeStudioSection } from '~/features/studio/theme/types'
+import { getURL } from '~/helpers/getURL'
+import { generateThemeBuilderCode } from '../../api'
+import { defaultThemeSuiteItem } from '../defaultThemeSuiteItem'
+import { getThemeSuitePalettes } from '../getThemeSuitePalettes'
+import { updatePreviewTheme } from '../previewTheme'
+import type {
+  BuildPalette,
+  BuildSubTheme,
+  BuildTemplates,
+  BuildTheme,
+  ThemeBuilderState,
+  ThemeSuiteItem,
+  ThemeSuiteItemData,
+} from '../types'
+import { getFinalPalettes } from '../helpers/getFinalPalettes'
+
+export class ThemeBuilderStore {
+  loaded = false
+  state: ThemeBuilderState | null = null
+  themeSuiteVersion = 0
+  themeSuiteId: string | undefined
+  listeners = new Set<Function>()
+
+  // using up to date data from unsaved state
+  get themeSuite(): ThemeSuiteItem | undefined {
+    return this.state && this.themeSuiteId
+      ? {
+          ...this.state.themeSuites[this.themeSuiteId],
+          ...this.getWorkingThemeSuite(),
+        }
+      : undefined
+  }
+
+  // sorted, using up to date data from unsaved state
+  get themeSuites() {
+    if (!this.state) {
+      throw new Error(`No state`)
+    }
+    if (!this.state.themeSuites) {
+      console.warn(`No theme suites?`)
+      return []
+    }
+    return Object.values(this.state.themeSuites)
+      .toSorted((a, b) => {
+        return a.updatedAt > b.updatedAt ? -1 : 1
+      })
+      .map((x) => {
+        if (x.id === this.themeSuiteId && this.themeSuite) {
+          return this.themeSuite
+        }
+        return x
+      })
+  }
+
+  // "working state" => directly derived from this.themeSuite values
+  // never mutate `this.state`, instead mutate these and then `this.save` to persist it
+  // we should improve this to be less verbose/brittle, reasons for it now:
+  //   1. use-store is tracks non-deeply, reduces renders
+  //   2. gives us a basic working data / undo / save functionality
+  name = defaultThemeSuiteItem.name
+  baseTheme: BuildTheme = defaultThemeSuiteItem.baseTheme
+  subThemes: BuildSubTheme[] = defaultThemeSuiteItem.subThemes
+  componentThemes: ThemeDefinitions = defaultThemeSuiteItem.componentThemes
+  palettes: Record<string, BuildPalette> = defaultThemeSuiteItem.palettes
+  templates: BuildTemplates = defaultThemeSuiteItem.templates
+  selectedSchemes = defaultThemeSuiteItem.selectedSchemes
+
+  private async sync(state: ThemeBuilderState) {
+    if (!this.themeSuiteId) {
+      console.warn(`Can't sync without themeSuiteId`)
+      return
+    }
+    this.state = state
+    const themeSuite = state.themeSuites[this.themeSuiteId]
+    if (themeSuite) {
+      await this.updateCurrentThemeSuite(themeSuite)
+    }
+  }
+
+  // state:
+  selectedSubTheme: string | null = null
+  componentParentTheme: 'base' | 'accent' = 'base'
+  selectedComponentTheme: string | null = null
+  step = 0
+  direction = 0
+  steps: ThemeStudioSection[] = []
+  // @persist
+  showExplanationSteps = true
+  hasUnsavedChanges = false
+  showCurrentTheme = false
+  showAddThemeMenu = false
+  showTemplate = false
+  demosOptions = demoOptions
+  themeSwitchOpen = true
+
+  get serializedState() {
+    return btoa(JSON.stringify(this.getWorkingThemeSuite()))
+  }
+
+  deserializeState(serialized: string) {
+    return JSON.parse(atob(serialized))
+  }
+
+  async load(serializedState?: string) {
+    if (serializedState) {
+      const state = this.deserializeState(serializedState)
+      for (const key in state) {
+        this[key] = state[key]
+      }
+    }
+    await this.refreshThemeSuite()
+  }
+
+  // old load:
+  // if (this.loaded) return
+  //   // const data = await getPersistedState()
+  //   // if (data) {
+  //   //   this.state = data
+  //   // } else {
+  //   this.state = {
+  //     themeSuites: {},
+  //   }
+  //   // }
+
+  //   if (!this.state) throw new Error(`impossible`)
+
+  //   // validation / migration can be here
+  //   if (!this.state.themeSuites) {
+  //     // old style, needs to migrate...
+  //     this.state.themeSuites = {}
+  //   }
+
+  //   for (const key in this.state.themeSuites) {
+  //     const themeSuite = this.state.themeSuites[key]
+  //     if (themeSuite.id !== key) {
+  //       // fix id:
+  //       themeSuite.id = key
+  //     }
+  //   }
+
+  //   if (!this.themeSuiteId) {
+  //     await themeBuilderStore.setThemeSuiteId(`${Math.random()}`.slice(3))
+  //   } else {
+  //     await this.sync(this.state)
+  //   }
+
+  //   this.loaded = true
+
+  // most recent first
+  history: ThemeBuilderState[] = []
+  redoHistory: ThemeBuilderState[] = []
+
+  undo() {
+    const [last] = this.history
+    if (last) {
+      this.redoHistory.unshift(structuredClone(this.state!))
+      this.sync(last)
+      this.history = this.history.slice(1)
+    } else {
+      toastController.show(`No more history items`)
+    }
+  }
+
+  redo() {
+    const [last] = this.redoHistory
+    if (last) {
+      this.history.unshift(last)
+      this.sync(last)
+      this.redoHistory = this.redoHistory.slice(1)
+    } else {
+      toastController.show(`No more history items`)
+    }
+  }
+
+  getWorkingThemeSuite(): ThemeSuiteItemData {
+    return {
+      name: this.name,
+      palettes: this.palettes,
+      templates: this.templates,
+      baseTheme: this.baseTheme,
+      subThemes: this.subThemes,
+      componentThemes: this.componentThemes,
+      selectedSchemes: this.selectedSchemes,
+    }
+  }
+
+  async save() {
+    this.listeners.forEach((cb) => {
+      cb()
+    })
+    // if (!this.state) return
+
+    // if (this.themeSuiteId) {
+    //   const themeSuite = this.state.themeSuites[this.themeSuiteId]
+    //   if (themeSuite) {
+    //     Object.assign(themeSuite, this.getWorkingThemeSuite())
+    //   }
+    // }
+
+    // this.history = (() => {
+    //   let _ = [...this.history]
+    //   _.unshift(structuredClone(this.state))
+    //   if (_.length > 110) {
+    //     _ = _.slice(0, 100)
+    //   }
+    //   return _
+    // })()
+
+    // await persistState(this.state)
+  }
+
+  get subTheme() {
+    const val = this.subThemes.find((x) => x.id === this.selectedSubTheme)
+    return val
+  }
+
+  async setThemeSuiteId(themeSuiteId: string) {
+    this.themeSuiteId = themeSuiteId
+    if (!this.state) {
+      console.warn(`no data`)
+      return
+    }
+    let row = this.state.themeSuites[themeSuiteId]
+    const wasMissing = !row
+    if (!row) {
+      row = {
+        ...defaultThemeSuiteItem,
+        createdAt: Date.now(),
+        updatedAt: Date.now(),
+        id: themeSuiteId,
+      }
+      this.state.themeSuites[themeSuiteId] = row
+    }
+    await this.updateCurrentThemeSuite(row)
+    if (wasMissing) {
+      this.save()
+    }
+    this.sync(this.state)
+  }
+
+  private async updateCurrentThemeSuite(next: Partial<ThemeSuiteItem>) {
+    if (!this.themeSuite) {
+      throw new Error(`No data`)
+    }
+    const row = {
+      ...this.themeSuite,
+      ...next,
+    }
+    if (
+      this.themeSuiteVersion > 1 &&
+      JSON.stringify(row) === JSON.stringify(this.themeSuite)
+    ) {
+      // avoid update if it can
+      return
+    }
+    // sync to working data:
+    for (const key in row) {
+      if (key in defaultThemeSuiteItem) {
+        this[key] = row[key] || defaultThemeSuiteItem[key]
+      }
+    }
+    this.updateDisabledState()
+    this.themeSuiteVersion++
+    await this.refreshThemeSuite()
+  }
+
+  async addThemeSuite(next: Omit<ThemeSuiteItem, 'id' | 'createdAt' | 'updatedAt'>) {
+    const themes = this.state?.themeSuites
+    if (!themes) throw new Error(`No themes`)
+    const id = getUniqueId()
+    const themeSuite = {
+      ...next,
+      id,
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
+    }
+    console.info('adding', themeSuite)
+    this.state = {
+      ...this.state,
+      themeSuites: {
+        ...themes,
+        [id]: themeSuite,
+      },
+    }
+    this.save()
+  }
+
+  deleteTheme(id: string) {
+    const toDeleteId = this.themeSuites.find((x) => x.id === id)?.id
+    if (!toDeleteId) {
+      throw new Error(`No theme ${id}`)
+    }
+    const next = {
+      ...this.state!.themeSuites,
+    }
+    delete next[toDeleteId]
+    this.state = {
+      ...this.state,
+      themeSuites: next,
+    }
+  }
+
+  async updateTheme(next: { id: string } & Partial<BuildTheme>) {
+    if (next.id === this.baseTheme.id) {
+      await this.updateBaseTheme(next)
+    } else if (next.id === this.baseTheme.accent?.id) {
+      await this.updateBaseTheme({
+        accent: {
+          ...this.baseTheme.accent,
+          ...next,
+        },
+      })
+    } else {
+      const { subThemes } = this
+      const theme = subThemes.find((x) => x.id === next.id)
+      if (theme) {
+        this.subThemes = subThemes.map((t) => {
+          if (t.id === next.id) {
+            if (t.type === 'theme') {
+              return {
+                ...t,
+                ...next,
+              }
+            }
+          }
+          return t
+        })
+        await this.save()
+      }
+      console.warn(`Not implemented`)
+    }
+  }
+
+  async updateThemeSuite(update: { id: string } & Partial<ThemeSuiteItem>) {
+    const themeSuites = this.state?.themeSuites
+    if (!themeSuites) throw new Error(`No themes`)
+    const next = {
+      ...themeSuites[update.id],
+      ...update,
+      updatedAt: Date.now(),
+    }
+    this.state = {
+      ...this.state,
+      themeSuites: {
+        ...themeSuites,
+        [next.id]: next,
+      },
+    }
+    if (next.id === this.themeSuiteId) {
+      await this.updateCurrentThemeSuite(next)
+    }
+    await this.save()
+  }
+
+  getPalettesForTheme(theme: BuildTheme, palettes = this.palettes) {
+    const palette =
+      palettes[theme.palette || 'base'] ||
+      this.palettes[theme.palette] ||
+      this.palettes.base
+    if (!palette) {
+      console.warn(
+        `No palette found: ${theme.palette} (${Object.keys(this.palettes).join(', ')})`
+      )
+      return {
+        light: [] as string[],
+        dark: [] as string[],
+      }
+    }
+    return getThemeSuitePalettes(palette)
+  }
+
+  async updateSubTheme(next: { id: string } & Partial<BuildSubTheme>) {
+    await this.updateCurrentThemeSuite({
+      subThemes: this.subThemes.map((s) =>
+        s.id === next.id
+          ? {
+              ...s,
+              ...(next as any),
+            }
+          : s
+      ),
+    })
+    await this.save()
+  }
+
+  async updateBaseTheme(next: Partial<BuildTheme>) {
+    await this.updateCurrentThemeSuite({
+      baseTheme: {
+        ...this.baseTheme,
+        ...next,
+      },
+    })
+    await this.save()
+  }
+
+  setSteps(steps: ThemeStudioSection[]) {
+    this.steps = steps
+    this.setStep(this.step)
+  }
+
+  async setSelectedScheme(scheme: 'dark' | 'light', val: boolean) {
+    this.selectedSchemes = {
+      ...this.selectedSchemes,
+      [scheme]: val,
+    }
+    await this.save()
+  }
+
+  async refreshThemeSuite() {
+    if (
+      await updatePreviewTheme({
+        id: this.baseTheme.id,
+        ...this.getWorkingThemeSuite(),
+      })
+    ) {
+      this.themeSuiteVersion++
+      this.save()
+    }
+  }
+
+  randomizeDemoOptions() {
+    this.demosOptions = {
+      inverseAccent: this.demosOptions.inverseAccent,
+      borderRadius: getRandomElement(optionValues.borderRadius),
+      borderWidth: getRandomElement(optionValues.borderWidth),
+      headingFontFamily: getRandomElement(optionValues.headingFontFamily),
+      fillStyle: getRandomElement(optionValues.fillStyle),
+      elevation: getRandomElement(optionValues.elevation),
+      spacing: getRandomElement(optionValues.spacing),
+      textAccent: getRandomElement(optionValues.textAccent),
+      backgroundAccent: getRandomElement(optionValues.backgroundAccent),
+    }
+  }
+
+  async addSubTheme(theme: Omit<BuildTheme, 'id'>) {
+    const id = getUniqueId()
+
+    // logic to prevent adding duplicate theme names
+    // tries to add numbers to avoid duplication
+    // e.g. warning -> warning-1 -> warning-2
+    const duplicateTheme = this.subThemes.find((_theme) => _theme.name === theme.name)
+    if (duplicateTheme) {
+      const duplicateNumberSuffix = Number(duplicateTheme.name.split('-').pop())
+      let newName = `${theme.name}-1`
+      // biome-ignore lint/suspicious/noGlobalIsNan: <explanation>
+      if (!isNaN(duplicateNumberSuffix)) {
+        let intendedName = (() => {
+          const split = duplicateTheme.name.split('-')
+          split.pop()
+          return split.join('-')
+        })()
+        newName = `${intendedName}-${duplicateNumberSuffix + 1}`
+      }
+      this.addSubTheme({ ...theme, name: newName })
+      return
+    }
+
+    const next = [
+      {
+        ...theme,
+        id,
+      },
+      ...this.subThemes,
+    ]
+    this.subThemes = next
+    this.selectedSubTheme = id
+    await this.save()
+    await this.refreshThemeSuite()
+  }
+
+  addTemplate(
+    template: Template,
+    name = `template-${Object.keys(this.templates).length}`
+  ) {
+    this.templates = {
+      ...this.templates,
+      [name]: template,
+    }
+    void this.save()
+    return name
+  }
+
+  async updateTemplate(name: string, template: Partial<Template>) {
+    this.templates = {
+      ...this.templates,
+      [name]: {
+        ...this.templates[name],
+        ...(template as any),
+      },
+    }
+    await this.refreshThemeSuite()
+    await this.save()
+  }
+
+  async setSelectedSubTheme(id: string | null) {
+    this.selectedSubTheme = id
+    await this.refreshThemeSuite()
+  }
+
+  async setSelectedComponentTheme(id: string | null) {
+    this.selectedComponentTheme = id
+    await this.refreshThemeSuite()
+  }
+
+  async deleteSubTheme(theme: BuildSubTheme) {
+    this.subThemes = this.subThemes.filter((x) => x !== theme)
+    this.setSelectedSubTheme(null)
+    await this.save()
+  }
+
+  async addPalette(palette: BuildPalette) {
+    if (Object.values(this.palettes).some((_) => _.name === palette.name)) {
+      palette.name = `${palette.name.replace(/-[0-9]+$/, '')}-1`
+    }
+    this.palettes = {
+      ...this.palettes,
+      [palette.name]: palette,
+    }
+    await this.save()
+  }
+
+  async updatePalette(name: string, palette: Partial<BuildPalette>) {
+    this.palettes = {
+      ...this.palettes,
+      [name]: {
+        ...this.palettes[name],
+        ...palette,
+      },
+    }
+    await this.refreshThemeSuite()
+    await this.save()
+  }
+
+  async deletePalette(name: string) {
+    this.palettes = (() => {
+      let next = structuredClone(this.palettes)
+      delete next[name]
+      return next
+    })()
+    await this.refreshThemeSuite()
+    await this.save()
+  }
+
+  async deleteAccent() {
+    await this.updateBaseTheme({
+      accent: undefined,
+    })
+  }
+
+  get sectionsFlat() {
+    return this.steps.flatMap((section, sectionIdx) => {
+      // @ts-ignore
+      return section.steps
+        .map((step: SectionStep) => {
+          return {
+            sectionIdx,
+            title: section.title,
+            id: section.id,
+            ...step,
+          }
+        })
+        .filter((x) => (!this.showExplanationSteps && x.explanation ? false : true))
+    })
+  }
+
+  get currentSection() {
+    return this.sectionsFlat[this.step]
+  }
+
+  get themeSwitchTip() {
+    return this.currentSection?.themeSwitchTip
+  }
+
+  get sectionIndex() {
+    const sectionId = this.sectionsFlat.find((s) => s?.id === this.currentSection.id)?.id
+    const index = this.steps.findIndex((section) => {
+      return section.id === sectionId
+    })
+    return index
+  }
+
+  get sectionTitles() {
+    return [...new Set(this.sectionsFlat.map((x) => x.title))]
+  }
+
+  get isCentered() {
+    return !this.currentSection || !this.currentSection.showInline
+  }
+
+  get canGoBackward() {
+    return this.step - 1 >= 0
+  }
+
+  get canGoForward() {
+    return this.step + 1 < this.sectionsFlat.length
+  }
+
+  // to disable a step from going forward, add disableForward to its store and set it to true
+  get disableForward() {
+    return this.stepsDisabledState[this.step]
+  }
+
+  updateDisabledState() {
+    this.stepsDisabledState = this.sectionsFlat.map(({ id, saveOnNext }, idx) => {
+      return !!this?.disableForward && !!saveOnNext
+    })
+  }
+
+  stepsDisabledState: boolean[] = []
+
+  forward() {
+    this.setStep(this.step + 1)
+  }
+
+  backward() {
+    this.setStep(this.step - 1)
+  }
+
+  hasSetStepOnce = false
+
+  setStep(next: number) {
+    if (next === this.step) {
+      return
+    }
+    const dir = next > this.step ? 1 : -1
+    if (dir === 1) {
+      if (
+        !this.canGoForward ||
+        this.stepsDisabledState.slice(this.step, next).filter(Boolean).length > 0
+      ) {
+        console.warn(`Can't go forward`)
+        return
+      }
+
+      if (this.sectionsFlat[this.step].saveOnNext) {
+        this.save()
+      }
+    } else if (dir === -1) {
+      if (!this.canGoBackward) {
+        console.warn(`Can't go backward`)
+        return
+      }
+    }
+
+    this.direction = dir
+    this.step = next
+    this.hasSetStepOnce = true
+
+    setTimeout(() => this.updateDisabledState(), 1)
+  }
+
+  get palettesBuilt() {
+    return getFinalPalettes(this.palettes)
+  }
+
+  async getCode(
+    {
+      includeComponentThemes = false,
+      includeSizeTokens = false,
+    }: { includeComponentThemes: boolean; includeSizeTokens: boolean } = {
+      includeComponentThemes: false,
+      includeSizeTokens: false,
+    }
+  ) {
+    return await generateThemeBuilderCode({
+      ...this.getWorkingThemeSuite(),
+      includeComponentThemes,
+      includeSizeTokens,
+    })
+  }
+}
+
+export const themeBuilderStore = createStore(ThemeBuilderStore)
+
+export const useThemeBuilderStore = createUseStore(ThemeBuilderStore)
+
+globalThis['themeBuilderStore'] = themeBuilderStore
+
+// for syncing
+
+const loadUrl = `${getURL()}/api/studio/load`
+const saveUrl = `${getURL()}/api/studio/save`
+
+const version = '2'
+const localKey = `tamagui-theme-suites-${version}`
+
+const getPersistedState = async () => {
+  // try {
+  //   return await fetch(loadUrl, {
+  //     credentials: 'include',
+  //   }).then((res) => res.json() as unknown as ThemeBuilderState)
+  // } catch (err) {
+  //   const fallback = JSON.parse(
+  //     localStorage.getItem(localKey) || 'null'
+  //   ) as ThemeBuilderState
+  //   console.warn(`Error loading, fallback to localStorage`, loadUrl)
+  //   console.info(`[load]`, fallback)
+  //   return fallback
+  // }
+}
+
+const persistState = async (state: ThemeBuilderState) => {
+  // console.info('[persist]', saveUrl, state)
+  // localStorage.setItem(localKey, JSON.stringify(state))
+  // return await fetch(saveUrl, {
+  //   method: 'POST',
+  //   body: JSON.stringify(state),
+  //   credentials: 'include',
+  // }).then(() => {})
+}

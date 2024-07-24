@@ -150,16 +150,26 @@ function createAtomicRules(
   value: any,
   pseudo?: PseudoDescriptor
 ): string[] {
-  const pseudoSelector = pseudo
+  const pseudoIdPostfix = pseudo
     ? pseudo.name === 'disabled'
       ? `[aria-disabled]`
       : `:${pseudo.name}`
     : ''
-  const selector = pseudo
-    ? pseudo?.selector
-      ? `${pseudo?.selector} .${identifier}`
-      : `${selectorPriority[pseudo.name]} .${identifier}${pseudoSelector}`
+  const pseudoSelector = pseudo?.selector
+
+  let selector = pseudo
+    ? pseudoSelector
+      ? `${pseudoSelector} .${identifier}`
+      : `${selectorPriority[pseudo.name]} .${identifier}${pseudoIdPostfix}`
     : `:root .${identifier}`
+
+  // enter style on css driver needs both:
+  //   .t_unmounted .selector
+  //   .selector.t_unmounted
+  if (pseudoSelector === pseudoDescriptors.enterStyle.selector) {
+    selector = `${selector}, .${identifier}${pseudoSelector}`
+  }
+
   const important = !!pseudo
 
   let rules: string[] = []

@@ -1,249 +1,485 @@
-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
-o3G/lwqy2CSeZa/gE+Cc3w==
+import { createStore } from '@tamagui/use-store'
+import { toHex } from 'color2k'
+import { last } from 'lodash-es'
+import type { ThemeParsed } from 'tamagui'
+import { updateTheme } from 'tamagui'
+
+import {
+  colorToHex,
+  hexToColor,
+  isComponentTheme,
+  removeComponentName,
+} from '~/features/studio/colors/helpers'
+import { colorsStore } from './ColorsStore'
+import { rootStore } from './RootStore'
+import type {
+  PseudoKeys,
+  Scale,
+  ThemeCategory,
+  ThemeTemplate,
+  ThemeVal,
+  ThemeWithCategory,
+} from './types'
+
+const pseudoKeys: PseudoKeys[] = ['Hover', 'Press', 'Focus', 'Base']
+
+export class ThemesStore {
+  static defaults = {
+    background: -1,
+    color: 0,
+    borderColor: -2,
+    shadowColor: -1,
+  }
+  initialized = false
+
+  init() {
+    if (this.initialized) return
+    this.loadThemesFromConfig()
+    this.initialized = true
+  }
+
+  showAs: 'code' | 'visual' = 'visual'
+  themeToPalette = new WeakMap<ThemeParsed, Scale>()
+  themeToTemplate = new WeakMap<ThemeParsed, ThemeTemplate>()
+  foundTemplates: ThemeTemplate[] = []
+  themeId = ''
+  column = 0
+  row = 0
+  isPinned = false
+  isFocusingSingle = false
+  focusedKey = ''
+  themes: Record<string, ThemeParsed> = {}
+
+  loadThemesFromConfig() {
+    if (!rootStore.config) {
+      throw new Error('Config not loaded.')
+    }
+    this.themes = rootStore.config.themes as any
+
+    const initialTheme = Object.keys(rootStore.config.themes)[0]
+    this.setTheme(initialTheme)
+    // rootStore.theme = initialTheme as ThemeName
+
+    this.foundTemplates = []
+
+    const nextFoundTemplateKeys = new Set<string>()
+
+    // set up palettes and templates
+    for (const themeName in this.themes) {
+      const theme = this.themes[themeName]
+
+      if (this.themeToPalette.has(theme)) {
+        continue
+      }
+
+      const palette = this.getThemePalette(themeName)
+      if (palette) {
+        this.themeToPalette.set(theme, palette)
+      }
+
+      const template = Object.fromEntries(
+        Object.entries(theme).map(([key, value]) => {
+          return [key, palette?.originalValues.indexOf(`${value}`) || 0]
+        })
+      )
+
+      const templateKey = JSON.stringify(template)
+      if (!nextFoundTemplateKeys.has(templateKey)) {
+        nextFoundTemplateKeys.add(templateKey)
+        this.themeToTemplate.set(theme, template)
+        this.foundTemplates.push(template)
+      }
+    }
+  }
+
+  get theme() {
+    return this.themes[this.themeId]
+  }
+
+  get themeTemplate() {
+    return this.themeToTemplate.get(this.theme)
+  }
+
+  get themeKeys() {
+    if (!this.theme) return []
+    return Object.keys(this.theme)
+  }
+
+  get themeKeysWithoutSpecificColors() {
+    if (!this.theme) {
+      return []
+    }
+
+    // hardcoding for now...
+    const colors = ['red', 'orange', 'blue', 'green', 'yellow', 'purple', 'pink', 'gray']
+    return Object.keys(this.theme)
+      .filter((x) => x !== 'id' && !colors.some((c) => x.startsWith(c)))
+      .sort((a, b) => (/color[0-9]+/.test(a) ? 1 : -1))
+  }
+
+  getThemeVals() {
+    const keys = this.themeKeysWithoutSpecificColors
+
+    const result = Object.fromEntries(
+      keys.map((name) => {
+        const value = this.theme[name]
+
+        // these are imprecise so hacking around for now...
+        const offset = this.themeColorScale?.colors.findIndex((c) => {
+          if (c.originalValue === value) return true
+          const hexColor = toHex(value)
+          const color = hexToColor(hexColor)
+          return (
+            c.hue === color.hue &&
+            c.lightness === color.lightness &&
+            c.saturation === color.saturation
+          )
+        })
+
+        const color = hexToColor(toHex(value))
+
+        const val: ThemeVal = {
+          name,
+          value,
+          pseudo: pseudoKeys.find((x) => name.endsWith(x)) || 'Base',
+          offset: offset ?? null,
+          color,
+        }
+
+        return [name, val] as [string, ThemeVal]
+      })
+    )
+    return result
+  }
+
+  get themeVals() {
+    return this.getThemeVals()
+  }
+
+  getThemePalette(themeId: string) {
+    const name = this.getThemePaletteName(themeId)
+    if (name) {
+      return colorsStore.getScale(name)
+    }
+  }
+
+  get themeColor() {
+    return this.getThemePaletteName(this.themeId)
+  }
+
+  get themeColorScale() {
+    if (!this.themeColor) {
+      return
+    }
+    return colorsStore.getScale(this.themeColor)
+  }
+
+  get themePaletteHex() {
+    return this.themeColorScale?.colors.map((color) => {
+      return colorToHex(color)
+    })
+  }
+
+  get themesWithCategory(): Record<string, ThemeWithCategory> {
+    return Object.fromEntries([
+      ...Object.entries(this.themes).map(([name, theme]) => {
+        const splitName = name.split('_')
+        const [category, categoryID = ''] =
+          name === 'dark' || name === 'light'
+            ? (['scheme', name] as const)
+            : isComponentTheme(name)
+              ? (['component', last(splitName)] as const)
+              : ([`Level ${splitName.length}`, last(splitName)] as const)
+
+        const themeWithCategory: ThemeWithCategory = {
+          theme,
+          id: name,
+          category,
+          categoryID,
+          level: splitName.length,
+        }
+
+        return [name, themeWithCategory]
+      }),
+    ])
+  }
+
+  get themesList() {
+    return Object.entries(this.themesWithCategory).map(([_, v]) => v)
+  }
+
+  get uniqueThemeIDsByCategory() {
+    const categories: Record<ThemeCategory, Set<string>> = {}
+    for (const { category, categoryID } of this.themesList) {
+      categories[category] ??= new Set()
+      categories[category].add(categoryID)
+    }
+    return Object.fromEntries(
+      Object.entries(categories).sort(([a], [b]) =>
+        a == 'scheme' || b === 'component'
+          ? -2
+          : a == 'component'
+            ? 1
+            : b === 'scheme'
+              ? 1
+              : a.localeCompare(b)
+      )
+    )
+  }
+
+  themeCombos({
+    prefix = '',
+    includeComponentThemes,
+  }: {
+    prefix?: string
+    includeComponentThemes?: boolean
+  } = {}) {
+    if (includeComponentThemes) {
+      return this.themesList
+    }
+
+    return this.themesList.filter(
+      (x) => x.category !== 'component' && x.id.startsWith(prefix)
+    )
+    // return getUniqueThemeCombos(this.themesList()).filter((x) => x.startsWith(prefix))
+  }
+
+  get pseudo(): PseudoKeys | 'Base' {
+    return pseudoKeys[this.column - 1] ?? 'Base'
+  }
+
+  get focusedThemeVal() {
+    return this.themeVals[this.focusedKey]
+  }
+
+  get isComponentTheme() {
+    return this.componentName !== 'none'
+  }
+
+  get baseThemeVals() {
+    return Object.fromEntries(
+      Object.entries(this.themeVals).filter(
+        ([k]) => !pseudoKeys.some((key) => k.endsWith(key))
+      )
+    )
+  }
+
+  static getValuesByPsuedo(themeValues: Record<string, ThemeVal>, pseudo: PseudoKeys) {
+    const filtered = Object.entries(themeValues).flatMap(([k, v]) => {
+      if (k.endsWith(pseudo)) {
+        return [[k, v]]
+      }
+      return []
+    }) as any as [string, ThemeVal][]
+
+    return Object.fromEntries(filtered)
+  }
+
+  get themeValuesByPseudo() {
+    return {
+      base: this.baseThemeVals,
+      hover: ThemesStore.getValuesByPsuedo(this.themeVals, 'Hover'),
+      focus: ThemesStore.getValuesByPsuedo(this.themeVals, 'Focus'),
+      press: ThemesStore.getValuesByPsuedo(this.themeVals, 'Press'),
+    }
+  }
+
+  get focusedThemeValues() {
+    return this.themeValuesByPseudo[this.pseudo.toLowerCase()]
+  }
+
+  get componentName() {
+    const n = last(this.themeId.split('_'))
+    if (!n) {
+      return 'none'
+    }
+    return n[0].toUpperCase() === n[0] ? n : ''
+  }
+
+  get componentNames() {
+    return [
+      ...new Set(
+        Object.keys(this.themes)
+          .map((name) => name.split('_'))
+          .map((names) => names[names.length - 1])
+          .filter((lastName) => /^[A-Z]/.test(lastName))
+      ),
+    ]
+  }
+
+  updateCurrent(themeValue: ThemeVal, by: number) {
+    if (typeof themeValue.offset !== 'number') {
+      return
+    }
+
+    const nextIndex = themeValue.offset + by
+    const next = this.themeColorScale?.colors[nextIndex]
+
+    if (next) {
+      const hex = colorToHex(next)
+      const updateFields = {
+        [themeValue.name]: hex,
+      }
+
+      updateTheme({
+        name: this.themeId,
+        theme: updateFields,
+      })
+
+      const nextTheme = {
+        ...this.theme,
+        ...updateFields,
+      }
+
+      this.themes = {
+        ...this.themes,
+        [this.themeId]: nextTheme,
+      }
+    }
+  }
+
+  get parentThemeId() {
+    return this.themeId.split('_').reverse().slice(1).reverse().join('_')
+  }
+
+  // make sure to route all theme updates through here
+  setTheme(themeId: string) {
+    const paletteName = this.getThemePaletteName(themeId)
+    if (paletteName) {
+      colorsStore.setPalette(paletteName)
+    }
+    this.themeId = themeId
+  }
+
+  getThemeInfo(themeId: string) {
+    const loadedThemeInfo = rootStore.themes?.themes?.[themeId]
+    const scheme = colorsStore.scheme
+    return Array.isArray(loadedThemeInfo)
+      ? loadedThemeInfo.find((i) => i.parent === scheme)
+      : loadedThemeInfo
+  }
+
+  getThemePaletteName(themeId: string) {
+    // find the theme palette
+    const themeInfo = this.getThemeInfo(themeId)
+    if (themeInfo) {
+      const scheme = colorsStore.scheme
+      if ('palette' in themeInfo) {
+        let paletteName = `${themeInfo.palette}`
+        if (!paletteName.startsWith(scheme)) {
+          paletteName = `${scheme}_${paletteName}`
+        }
+        return paletteName
+      } else if ('mask' in themeInfo) {
+        // get parent:
+        const parent = themeId.split('_').slice(0, -1).join('_')
+        if (parent in this.themes) {
+          return this.getThemePaletteName(parent)
+        }
+      }
+    }
+  }
+
+  setIsPinned(val: boolean) {
+    this.isPinned = val
+    if (!val) {
+      this.isFocusingSingle = false
+    }
+  }
+
+  setFocusedThemeItem({
+    row,
+    column,
+    name,
+    shouldPin,
+  }: {
+    row: number
+    column: number
+    name: string
+    shouldPin?: boolean
+  }) {
+    if (this.themes.isPinned && !shouldPin) {
+      return
+    }
+    // toggle off
+    if (this.isPinned && this.themeId.endsWith(name)) {
+      if (this.parentThemeId) {
+        this.setTheme(this.parentThemeId)
+      }
+      this.isPinned = false
+      return
+    }
+    this.row = row
+    this.column = column
+    if (name) {
+      const nextName =
+        name in this.themes ? name : removeComponentName(this.themeId) + `_${name}`
+      this.setTheme(nextName)
+    }
+    if (shouldPin) {
+      this.isPinned = !this.isPinned
+    }
+  }
+
+  setHoveredThemeItem({ row, column }: { row: number; column: number }) {
+    if (this.isPinned) {
+      return
+    }
+    this.row = row
+    this.column = column
+  }
+
+  get currentCombosForFirstPart() {
+    return this.themeCombos({
+      prefix: this.themeId,
+    })
+  }
+
+  get currentCombos() {
+    return this.themeCombos({
+      includeComponentThemes: true,
+    })
+  }
+
+  themeIdPreview = ''
+
+  togglePreviewThemeItem({ id }: { id: string }) {
+    this.themeIdPreview = this.themeIdPreview === id ? '' : id
+  }
+
+  toggleFocusedThemeItem({ id }: { id: string }) {
+    if (this.themeId) {
+      if (id === 'dark' || id == 'light') {
+        this.setTheme(this.themeId.replace(id === 'dark' ? 'light' : 'dark', id))
+        return
+      }
+    }
+
+    const { themeId } = this
+    const isActive = this.themeId.includes(id)
+
+    if (themeId.includes('_') && isActive) {
+      this.setTheme(
+        themeId
+          .split('_')
+          .filter((x) => x !== id)
+          .join('_')
+      )
+    } else {
+      const parts = themeId.split('_')
+
+      for (let i = parts.length; i >= 0; i--) {
+        const prefix = parts.slice(0, i).join('_')
+        const joined = `${prefix}_${id}`
+        if (this.currentCombos.some((x) => x.id === joined)) {
+          this.setTheme(joined)
+          return
+        }
+      }
+
+      this.setTheme(id || '')
+    }
+  }
+}
+
+export const themesStore = createStore(ThemesStore)

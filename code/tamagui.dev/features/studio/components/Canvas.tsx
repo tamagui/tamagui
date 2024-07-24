@@ -1,19 +1,46 @@
-U2FsdGVkX19Giba91cSYwAs4qQQxPi/qOAEywSpvSSLEhmvpcdAkiew9LwIAHW0O
-SdYaMJc2JKLmLS1TqDjOtClTWr34D6nJGTigZn5d6gnM3+ZMb1vs1ARmrqUyw6sk
-W4tOUj3FFWuvMuOclGoI7SEqpNxpKl0y1GkYiXsD4v0oQTl/t8uvUnFXq3nGYwpI
-ZLHYSdoTv/ob1RXCj6YFHwBeLzNmgwvw04SmnVEG32OnXGdY6PXWGZXClGbTMxIX
-bl6qi+ZIZpyP5yzjZbZapAZpdyxj/Ph58nwMVE76htksvQOkb5VEwhYEKTpnaLeN
-KgUhIbS2gbp20I0Ekarjlxrwt2ahS2wV4Q+9y4sM+DGKE85B7lT/GywZF8sjDSNT
-POzfV0nQL5/PtxFXOhbTd/RChFo64qsYDvHk8R8cUqcdQ/DUeLnWIjOHk04JXyZz
-BLaUhcUQXlLus27gRmtwaw8wzrhDN958WuwAphTl8aQtoeGclNyy8YPJMTmvbojP
-h101DnOLZXv7fn98nw+6k3SLIhFtTHHMCEGndZbWqw79FZ6vJZT7cAZUa4Is1NOt
-BeA0laImctNd3HIu7V3nUUBAlNJnwvIwEkWKmGrlwPn6pWkIYlhIxwOcSTEOc28R
-qOJ/fdHkP06CpzXPYIhatL052nji9tEens129qGh5DpzrPyu0A9lmU8OM0XPnysp
-1lcNM2I3xBRiw01Kz6uXqToB9wOgciFX8mjBR2ZLeVCJHCcv7+WglcJsxtusrJ8a
-A7EBQ2aC9dAtR4pJWMfHkofdgfs2dTfJQ+ttw7oduDsrfRiis6tqwvhytN9d5EVu
-yvt6jeI3igjIZKqZUhicadldZzmEYxqWs4NXGlcSJKLYpX0IR+jfYkSiD4AuaOha
-6L0BN/qsg5G0AJvneJChhxuAZVUfxtGqd/xxEr470eEXvNIiqDz+K6vfKbHyIZsz
-x9gDRoq42JTgOWLQnshfZ7/WpRGanUAlh5BzevxVtMTYrn6EDJWoVmb5PibU547j
-utLQT28p0R20m+EQeAAj6bp68tO7gzzONTBOgZxpAi/zDB1Vz2blLLClVrvUwwgh
-H/bcAYN6nn/aGzcxHu0/EGgH8A68V5SydEqT591VQaZD4LVsODlYpmSw7AAfGI+G
-sErHQdyCLxH0n/k373Z3nb74p7rXdfG7qiZCTbaFpak=
+'use client'
+
+import type { YStackProps} from 'tamagui';
+import { EnsureFlexed, YStack, styled } from 'tamagui'
+
+import { sidebarWidth } from '../constants'
+
+export const CanvasFrame = styled(YStack, {
+  fullscreen: true,
+  backgroundColor: '$background',
+  ai: 'center',
+  jc: 'center',
+  ov: 'hidden',
+})
+
+export const CanvasInner = styled(YStack, {
+  maw: `calc(100vw - ${sidebarWidth * 2}px)`,
+  mx: 'auto',
+  pt: 0,
+  h: '100%',
+  w: '100%',
+})
+
+export const Canvas = ({ children, ...props }: YStackProps) => {
+  return (
+    <CanvasFrame {...props}>
+      <CanvasInner>
+        <EnsureFlexed />
+        {children}
+      </CanvasInner>
+    </CanvasFrame>
+  )
+}
+
+export const CanvasArtboard = styled(YStack, {
+  borderWidth: 1,
+  borderColor: '$borderColor',
+  w: '100%',
+  h: '100%',
+  ov: 'hidden',
+  maw: 1000,
+  mah: 1000,
+  ai: 'center',
+  jc: 'center',
+  miw: 300,
+})

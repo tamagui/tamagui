@@ -1,189 +1,315 @@
-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
-hMACaKAImjjhF6G5I6OvHn0LH5wpbv0Xslx0ZlWc5aZUTblIoYqO52Ysswn21xgg
-bSnjSu3EvCclKacMma8IpYzKi1i5+WEk9UMP4pUbagFAtrOyJ+jGjcAl4eSWFrsI
-PJ8VmL3XJwDp2ZWpuM5Fxpo6yBKAXNQt0fQ34npIpxFwhOGe33otZdRmUklSiL7K
-4VwZEZbc+/PQFzQ4coVA/M2Kvh8GjXYhZoyL8ddrmGusvtmW33iICRjHFLBomgxD
-q7xwAGr+48JkYs1o012cQCKfF9J5ggWCIpwDjTvUEqTLBd5JIDA4q4UJCEDTDKw6
-zQ52MGvCGRl2x+wQ53ZlDTmEik2rIW3jji6SNrYvEVjN4PD45ZByqHmwOQDiSGu1
-+cLRjP/YHi5NbmOz5pFAvqQs58E1DZ8YAgZxte0lyNEgB09m/4UW/wfXCXzTj2iH
-rACKQXKMRlTtvb0UpJv2qI4XT1kQ26IBDXnAsRuWO/b62IevlExVReNOI5Iusm2F
-37i02rYNBz8L3yzH3kPc+KyvdQtO0djbVIiDPL6Z29p9+pY9GtvlnUzx4r/fYZee
-oIETUpJMlyPS+tTWxd0fag5cu5Rw3c3lgzKSjBXP/L+/TPkd86HLmdoOQqk4p6iN
-CN2iFY7DiwA9qdDZJ4sypQn4e9eymWXf6mB3lqgFPo+7aQZaC6B1j41y7/LMxfDa
-dtnWp1W0mPlF4BARRb+4+ncc7ssGCU5UCr0nwd/S5wxkEvNNXYizKJHUzTFt2FfE
-j+2bWKtdHTk8Qe0ciGqfUaELMG0NzVys59lSQh0ehomGFlAYFVuni1NDQbihXP02
-Or9wipDIK/D0r19Ho1SS4GJ0QNBauhBSFzz7gw/M82nucdu1uZW81pcpQvHTIAuM
-msTXKHfT+8gXweKP4c3kZKBNKv0nD3JusEvzDF9tx7ohCDaFmFFNJs3kYLg3YmSD
-OGda6+MiemnFEIatMhIgHU5mqP5sJxTIWmqvWWHltPySVwNgPWfYMK4LxqsZQ0Mk
-9jl7Tvss/tAYwSi2MO4+zRhqFhA82N9XJ7CKwkMEilnhNSnVS60w8gmeV61jLz4I
-jKy6Gsj7tcLjIR9EoPvszv0gSrd9aH+o0PqBsKV771gXqm7ofwoN9o2uLTqVEAKF
-tfo+YK0jZcioqIWGatKOWCrVWznprlO+d0J4PJiXhB7EYe4qOWbIW6365jR42cg5
-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
+import { memo, useRef } from 'react'
+import { XStack, YStack, useThemeName } from 'tamagui'
+
+import { StudioPaletteBar } from '~/features/studio/StudioPaletteBar'
+import { useDemoProps } from '~/features/studio/theme/hooks/useDemoProps'
+import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
+import { AllTasks } from './preview/AllTasks'
+import { Calendar } from './preview/Calendar'
+import { ChatScreen } from './preview/Chat'
+import { Components } from './preview/Components'
+import { CurrentTask } from './preview/CurrentTask'
+import { Header } from './preview/Header'
+import { LoginScreen } from './preview/Login'
+import { Overview1, Overview2 } from './preview/Overviews'
+import { Panel } from './preview/Panel'
+import { PieScreen } from './preview/Pie'
+import { PricingCards } from './preview/Pricing'
+import { StatisticsBarScreen, StatisticsLineScreen } from './preview/Statistics'
+import { UserDropdown } from './preview/UserDropdown'
+import { extraPad } from './views/StudioPreviewFrame'
+
+// const ToggleGroupItem = styled(ToggleGroup.Item, {
+//   height: 28,
+//   w: 30,
+
+//   focusStyle: {
+//     outlineWidth: 0,
+//   },
+// } as any)
+
+function gridRow(items: Array<[string, number]>) {
+  return items.map((item) => Array(item[1]).fill(item[0]).join(' ')).join(' ')
+}
+
+export const StudioPreviewComponents = memo(() => {
+  const previewRef = useRef<HTMLElement>()
+  const demoProps = useDemoProps()
+
+  return (
+    <XStack w="100%" pr={570} $md={{ pr: 80 }} jc="flex-end">
+      <YStack
+        gap="$4"
+        ref={previewRef as any}
+        mt="$-4"
+        p="$8"
+        f={1}
+        maw={1300}
+        group="content"
+        $md={{
+          maw: 900,
+          p: '$4',
+        }}
+      >
+        <Panel disableSettings m={0} f={0} h="auto" w="calc(100% + 24px)">
+          <YStack
+            {...demoProps.panelProps}
+            {...demoProps.stackOutlineProps}
+            {...demoProps.borderRadiusProps}
+            {...demoProps.panelPaddingProps}
+            backgroundColor="transparent"
+            borderColor="transparent"
+            px={0}
+            gap="$0"
+          >
+            <Header />
+          </YStack>
+        </Panel>
+
+        <PalettePreviewPanels />
+
+        <YStack
+          f={1}
+          display={'grid' as any}
+          $group-content={
+            {
+              gridTemplateColumns: `50% 50%`,
+              gridGap: `${extraPad}px ${extraPad * (12 / 10)}px`,
+              gridTemplateAreas: `
+              'chat chat'
+              'statistics-line statistics-line'
+              'all-tasks all-tasks'
+              'current-task current-task'
+              'user-dropdown user-dropdown'
+              'pie pie'
+              'overview-1 overview-2'
+              'pricing pricing'
+              'statistics-bar statistics-bar'
+              'login login'
+              'calendar calendar'
+              'components components'
+              `,
+            } as any
+          }
+          $group-content-gtXs={
+            {
+              gridTemplateColumns: Array(12)
+                .fill(`calc(${100 / 12}% - ${extraPad}px)`)
+                .join(' '),
+              gridGap: `${extraPad}px ${extraPad * (12 / 10)}px`,
+              gridTemplateAreas: `
+              '${gridRow([
+                ['statistics-line', 7],
+                ['pricing', 5],
+              ])}'
+              '${gridRow([
+                ['chat', 7],
+                ['pricing', 5],
+              ])}'
+              '${gridRow([
+                ['chat', 7],
+                ['pricing', 5],
+              ])}'
+              '${gridRow([
+                ['chat', 7],
+                ['pie', 5],
+              ])}'
+              '${gridRow([
+                ['chat', 7],
+                ['pie', 5],
+              ])}'
+              '${gridRow([
+                ['overview-1', 4],
+                ['statistics-bar', 8],
+              ])}'
+              '${gridRow([
+                ['overview-2', 4],
+                ['statistics-bar', 8],
+              ])}'
+              '${gridRow([
+                ['current-task', 6],
+                ['login', 6],
+              ])}'
+              '${gridRow([
+                ['all-tasks', 6],
+                ['login', 6],
+              ])}'
+              '${gridRow([
+                ['calendar', 6],
+                ['user-dropdown', 6],
+              ])}'
+              '${gridRow([['components', 12]])}'
+          `,
+            } as any
+          }
+          $group-content-gtSm={
+            {
+              gridTemplateColumns: Array(12)
+                .fill(`calc(${100 / 12}% - ${extraPad}px)`)
+                .join(' '),
+              gridGap: `${extraPad}px ${extraPad * (12 / 10)}px`,
+              gridTemplateAreas: `
+              '${gridRow([
+                ['chat', 5],
+                ['overview-1', 3],
+                ['user-dropdown', 4],
+              ])}'
+              '${gridRow([
+                ['chat', 5],
+                ['overview-2', 3],
+                ['user-dropdown', 4],
+              ])}'
+              '${gridRow([
+                ['chat', 5],
+                ['statistics-line', 3],
+                ['statistics-line', 4],
+              ])}'
+
+              '${gridRow([
+                ['statistics-bar', 6],
+                ['pricing', 6],
+              ])}'
+              '${gridRow([
+                ['login', 4],
+                ['pie', 4],
+                ['current-task', 4],
+              ])}'
+              '${gridRow([
+                ['calendar', 4],
+                ['components', 4],
+                ['all-tasks', 4],
+              ])}'
+            `,
+            } as any
+          }
+        >
+          <Contents />
+        </YStack>
+      </YStack>
+    </XStack>
+  )
+})
+
+const Contents = memo(() => {
+  return (
+    <>
+      <div style={{ gridArea: 'login' }}>
+        <Panel fileToCopyName="Login">
+          <LoginScreen />
+        </Panel>
+      </div>
+      <div style={{ gridArea: 'statistics-bar' }}>
+        <Panel fileToCopyName="Statistics">
+          <StatisticsBarScreen />
+        </Panel>
+      </div>
+      <div style={{ gridArea: 'statistics-line' }}>
+        <Panel initialAccent fileToCopyName="Statistics">
+          <StatisticsLineScreen />
+        </Panel>
+      </div>
+      <div style={{ gridArea: 'overview-1' }}>
+        <Panel fileToCopyName="Overviews" initialAccent>
+          <Overview1 />
+        </Panel>
+      </div>
+      <div style={{ gridArea: 'overview-2' }}>
+        <Panel fileToCopyName="Overviews">
+          <Overview2 />
+        </Panel>
+      </div>
+      <div style={{ gridArea: 'chat' }}>
+        <Panel fileToCopyName="Chat">
+          <ChatScreen />
+        </Panel>
+      </div>
+      <div style={{ gridArea: 'user-dropdown' }}>
+        <Panel fileToCopyName="UserDropdown">
+          <UserDropdown />
+        </Panel>
+      </div>
+      <div style={{ gridArea: 'pricing' }}>
+        <Panel fileToCopyName="Pricing">
+          <PricingCards />
+        </Panel>
+      </div>
+      <div style={{ gridArea: 'all-tasks' }}>
+        <Panel fileToCopyName="AllTasks">
+          <AllTasks />
+        </Panel>
+      </div>
+      <div style={{ gridArea: 'pie' }}>
+        <Panel fileToCopyName="Statistics">
+          <PieScreen />
+        </Panel>
+      </div>
+      <div style={{ gridArea: 'current-task' }}>
+        <Panel fileToCopyName="CurrentTask">
+          <CurrentTask />
+        </Panel>
+      </div>
+      <div style={{ gridArea: 'components' }}>
+        <Panel fileToCopyName="Components">
+          <Components />
+        </Panel>
+      </div>
+      <div style={{ gridArea: 'calendar' }}>
+        <Panel fileToCopyName="Calendar" initialAccent>
+          <Calendar />
+        </Panel>
+      </div>
+    </>
+  )
+})
+
+const PalettePreviewPanels = memo(() => {
+  const themeBuilderStore = useThemeBuilderStore()
+  const themeName = useThemeName()
+  const isThemeDark = themeName.startsWith('dark')
+  const demoProps = useDemoProps()
+  const theme = themeBuilderStore.baseTheme
+
+  if (!theme) return null
+
+  const palettes = themeBuilderStore.palettesBuilt
+
+  if (!palettes) return null
+
+  return (
+    <YStack gap="$2">
+      {Object.entries(palettes).map(([name, palette]) => {
+        if (
+          (isThemeDark && !name.startsWith('dark')) ||
+          (!isThemeDark && !name.startsWith('light'))
+        ) {
+          return null
+        }
+
+        return (
+          <Panel
+            key={name}
+            disableSettings
+            m={0}
+            f={0}
+            h="auto"
+            w="calc(100% + 24px)"
+            ml={-1}
+          >
+            <YStack
+              {...demoProps.stackOutlineProps}
+              {...demoProps.borderRadiusProps}
+              {...demoProps.elevationProps}
+              {...demoProps.panelPaddingProps}
+              borderWidth={0}
+              gap="$0"
+              p="$0"
+              ov="hidden"
+            >
+              <StudioPaletteBar showLabelIndices colors={palette} />
+            </YStack>
+          </Panel>
+        )
+      })}
+    </YStack>
+  )
+})

@@ -1,88 +1,142 @@
-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
+import { Bell, Boxes, ChevronRight, Cog, Workflow } from '@tamagui/lucide-icons'
+import { Avatar, Button, H4, ListItem, Paragraph, XStack, YStack } from 'tamagui'
+import { AccentTheme } from '~/features/studio/components/AccentTheme'
+import { useDemoProps } from '~/features/studio/theme/hooks/useDemoProps'
+import { accentTokenName } from '../../accentThemeName'
+
+export const UserDropdown = () => {
+  const demoProps = useDemoProps()
+
+  return (
+    <YStack
+      {...demoProps.panelProps}
+      {...demoProps.stackOutlineProps}
+      {...demoProps.borderRadiusOuterProps}
+      {...demoProps.elevationProps}
+      {...demoProps.panelPaddingProps}
+    >
+      <YStack borderBottomWidth="$0.25" borderBottomColor="$borderColor" pb="$4">
+        <XStack gap="$4" jc="space-between" ai="center" flexWrap="wrap">
+          <Avatar size="$5" {...demoProps.borderRadiusProps}>
+            <Avatar.Image src="https://i.pravatar.cc/300?u=some-user" />
+          </Avatar>
+          <XStack ai="center" f={1} jc="space-between">
+            <YStack>
+              <H4 {...demoProps.headingFontFamilyProps}>John Doe</H4>
+              <Paragraph theme="alt1" size="$3">
+                johndoe@acme.co
+              </Paragraph>
+            </YStack>
+          </XStack>
+          <AccentTheme>
+            <Button
+              size="$2"
+              bg={accentTokenName}
+              {...demoProps.borderRadiusProps}
+              {...demoProps.buttonOutlineProps}
+              br="$10"
+            >
+              Gold Tier
+            </Button>
+          </AccentTheme>
+        </XStack>
+      </YStack>
+
+      {/* <YStack py="$2" gap="$2">
+        <XStack gap="$4" ov="hidden" jc="space-around" ai="center">
+          <YStack f={1}>
+            <Paragraph size="$4">Usage Quota</Paragraph>
+            <Paragraph size="$2" theme="alt1">
+              30% &mdash; You're good for now!
+            </Paragraph>
+          </YStack>
+          <Button size="$2">Manage</Button>
+        </XStack>
+
+        <Progress mt="$2" size="$2" value={25}>
+          <Progress.Indicator animation="quick" />
+        </Progress>
+      </YStack> */}
+
+      <YStack f={1} mx="$-2" gap="$2">
+        <ListItem
+          bg="transparent"
+          hoverStyle={{
+            bg: '$color3',
+          }}
+          {...demoProps.borderRadiusProps}
+          scaleIcon={1.5}
+          icon={<Cog opacity={0.75} />}
+          iconAfter={<ChevronRight opacity={0.2} size={15} />}
+        >
+          Settings
+        </ListItem>
+        {/* <ListItem
+          {...demoProps.borderRadiusProps}
+          bg="transparent"
+          hoverStyle={{
+            bg: '$colo45'
+          }}
+          scaleIcon={1.5}
+          icon={<Receipt  opacity={0.75} />}
+          iconAfter={<ChevronRight opacity={0.2} size={15} />}
+        >
+          Bills
+        </ListItem> */}
+        <ListItem
+          {...demoProps.borderRadiusProps}
+          bw={0}
+          bg="transparent"
+          hoverStyle={{
+            bg: '$color3',
+          }}
+          scaleIcon={1.5}
+          icon={<Bell opacity={0.75} />}
+          iconAfter={<ChevronRight opacity={0.2} size={15} />}
+        >
+          Notifications
+        </ListItem>
+
+        <ListItem
+          {...demoProps.borderRadiusProps}
+          bw={0}
+          bg="transparent"
+          hoverStyle={{
+            bg: '$color3',
+          }}
+          scaleIcon={1.5}
+          icon={<Workflow opacity={0.75} />}
+          iconAfter={<ChevronRight opacity={0.2} size={15} />}
+        >
+          My Workflows
+        </ListItem>
+
+        <ListItem
+          {...demoProps.borderRadiusProps}
+          bw={0}
+          bg="transparent"
+          hoverStyle={{
+            bg: '$color3',
+          }}
+          scaleIcon={1.5}
+          icon={<Boxes opacity={0.75} />}
+          iconAfter={<ChevronRight opacity={0.2} size={15} />}
+        >
+          Projects
+        </ListItem>
+
+        {/* <Spacer f={1} />
+
+        <Button
+          size="$2"
+          theme={accentThemeName}
+          themeInverse={store.inverseAccent}
+          iconAfter={Plus}
+          als="flex-end"
+        >
+          New Project
+        </Button> */}
+      </YStack>
+    </YStack>
+  )
+}

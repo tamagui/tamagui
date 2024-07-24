@@ -1,29 +1,43 @@
-U2FsdGVkX188wYYW0za4eRNvmB5Hm/JoFaBQBaSnLG7HvTH4Ei8kMGfwtk2W6x5A
-fg6lMdMH/ryU6uTXdeBe5i73TsgT3dkLoZhyZ6b/1UOOFpHAe/gFxBM7EjrFChF2
-6MzD30xThCfKDIRNrl5Nt+vGVUDim9P9RvuECaEq24spGaGGUg6AjvJ+eeYZaAcH
-wC/uUg3G0JlgKgl8mlNOkzVDy2MiuPV0PqT56SN3JNEjFgBL89Eap4i6qsVM9Ikl
-J9Btsa9NTdAsZFOnqgY9xGvoVJ+d6xBON28MZcf8JvVDmkxPygPcLH0eR4GoQioI
-GTXRtzCAUlURFK2VHFttKEL+nwNsSJmVSpq/xejYlJi90MNN6yPtK59OOK6Y9FG1
-Ct8KZrgoUsOt/fJP/cmT9bSekTbS7qhqDE92/FfrcwOXeV3T7dAeVazcf32TYRyH
-OGOYlundNMIrvNTyLC55IDC5upDkLw9OPMxNiEVqUvSm+TrTlyg+TD/8CsCyUJeI
-3+iBQ4wNKWeYi58JxhImb9SnW/H61RfWphcK4UBng3Rd9nXL4PHLMtJS5Zw3jvGG
-giCjfKmOHqaI/p/FzKEZ+KOLPmiSbDW774P15rHpkTaTervnCALWopBUzqyy9QV5
-E8+lwL5uHDpBtpmPze8OQfCaulQGZSLhSP140NK4Ao7asmYzLFySgySJyGQgWbfc
-Q1F0ooV8WMObujzaD1RHcrApQUb7Sxxc1oRfzscrb32MeKFfxdhBl5vf09pMpsok
-84qHxijlhiqpzyo6QTqmYb2UMv0e/pgfjW+CpNwhLVg1kndQ1wwGIeizVj/LI766
-cucj5baGbaVHsy6x5M3rZsVRoF3bgJDJXyYPeHlxfCxkX8SrCG8kVvXhsMzkTmBg
-uuHgrwrawW/njLM8VWnFQ8+t3603AydIGPwnaeJ9iZPOIYIfKwNEXGjVZ695is9S
-agtoltc2ur95W4JsHYe+c/+Bdest7WpwBiXjkQwXiKvtx4aMkH6Xyi8Mw7ajFSXf
-aHUvHVViuGh/kt/UnQqa/J4dBk9aAj/q6RQg6+IAJ8e/9vgOWnSdxquq2xr7EIo3
-eHOXIIQXJp4f7oj9wkZlF42pNhOJhITLZuEZCeply5M9FJVHRt1ZbrnL/QJUQzOW
-clHbrD1fqlTsUsYK9c4CVLNH9Nela1Ysrwrc80N6g1Qjm8lUvSKZR8TMZ/YNWzRH
-RZ4OVkM0+HdiiB8GXs8UftITbGxC548pgVC5zjPyqpWjIltkQsWl6zpRUNn5K2qo
-uwY8fwbXIhlPv1hadnfktHBP38hRFB+H+juq7CxbbxrJD+jAr/UgTB11rFhvHSvr
-8C123m6ZiP+JZSKTEEwOI7UiozNAKYdOadxabPbNO7/FoorS5pUOYk87XLtRmCAg
-PAtUiJH5lz8PRLgUWCzlVY7/D9yyhpasRamBeaNG9Mb2ZZfbn8qUGWB8d3lG2boD
-uMbTWupvN92QXUGSWABa2gTqtrWobvrG9nLVdydFOIj5azgBjaB/OwuD0P+bsfwB
-KDawsNGGEttZdMO8vGrJpwgspTLlcmgqpL05sRSEMLzLYhtHnNefoLH7+h4660qH
-pLbPGb2CezNOVXpOjJtzrgNTCLoY35UycdyOWZ1PGqdzN036RCzQN1n7BplyEn5m
-9c4PJcdmpELXBGGX7OfXnjaxebI9+hmMyzyT56OLGnXRVJzkQ6hYR0/J8X1pjnuC
-B2fWMrCSBnY4pzUE6QnAIwS4GNwt3LaVF66fYx2fsmWpCKdTLJT64Mz4zDy+Ozzl
-tPGgVWb54Bhfix9v+WbeJZx9p3UifXg4UkJq9zzI+Rg=
+import type { BuildPalettes } from '../types'
+import { getThemeSuitePalettes } from './getThemeSuitePalettes'
+
+export function getFinalPalettes(palettes: BuildPalettes) {
+  console.info('getFinalPalettes', palettes)
+
+  const accentPalettes = palettes.accent ? getThemeSuitePalettes(palettes.accent) : null
+  const basePalettes = getThemeSuitePalettes(palettes.base)
+
+  const next = Object.fromEntries(
+    Object.entries(palettes).flatMap(([name, palette]) => {
+      const palettes = getThemeSuitePalettes(palette)
+      const isAccent = name.startsWith('accent')
+      const oppositePalettes = isAccent ? basePalettes : accentPalettes
+      const oppositeLight = oppositePalettes!.light
+      const oppositeDark = oppositePalettes!.dark
+
+      const bgOffset = 7
+
+      return [
+        [
+          name === 'base' ? 'light' : `light_${name}`,
+          [
+            oppositeLight[bgOffset],
+            ...palettes.light,
+            oppositeLight[oppositeLight.length - bgOffset - 1],
+          ],
+        ],
+        [
+          name === 'base' ? 'dark' : `dark_${name}`,
+          [
+            oppositeDark[oppositeDark.length - bgOffset - 1],
+            ...palettes.dark,
+            oppositeDark[bgOffset],
+          ],
+        ],
+      ] as const
+    })
+  )
+
+  // console.log('next', next)
+  return next as any as Record<string, string[]>
+}

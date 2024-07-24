@@ -1,62 +1,145 @@
-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
+import type { Template, ThemeDefinitions, ThemeWithParent } from '@tamagui/create-theme'
+
+type Component = (props?: any) => any
+
+export type ThemeSuiteItem = {
+  id: string
+  name: string
+  createdAt: number
+  updatedAt: number
+  selectedSchemes: { light: boolean; dark: boolean }
+  baseTheme: BuildTheme
+  subThemes: BuildSubTheme[]
+  palettes: Record<string, BuildPalette>
+  componentThemes: ThemeDefinitions
+  templates: BuildTemplates
+}
+
+export type SectionStep = {
+  subTitle: string
+  tip?: Component
+  sidebar?: Component
+  children: Component
+  actions?: Component
+  tray?: Component
+  preview?: Component
+  showInline?: boolean
+  nextTitle?: string
+  prevTitle?: string
+  explanation?: boolean
+  /**
+   * should we save the data when they finish the current step and go to next
+   */
+  saveOnNext?: boolean
+  /**
+   * shows a tooltip on theme switch
+   */
+  themeSwitchTip?: string
+}
+
+export type ThemeStudioSection = {
+  title: string
+  id: 'scheme' | 'base' | 'sub' | 'component' | 'export'
+  steps: SectionStep[]
+  loadData?: (data: any) => Promise<void>
+  exportData?: () => any
+}
+
+type IfEquals<X, Y, A, B> = (<T>() => T extends X ? 1 : 2) extends <T>() => T extends Y
+  ? 1
+  : 2
+  ? A
+  : B
+
+export type WritableKeysOf<T> = {
+  [P in keyof T]: IfEquals<{ [Q in P]: T[P] }, { -readonly [Q in P]: T[P] }, P, never>
+}[keyof T]
+
+export type ThemeBuilderState = {
+  themeSuites: {
+    [id: string]: ThemeSuiteItem
+  }
+}
+
+export type BuildComponentTheme = {
+  type: 'parent'
+  items: ThemeWithParent[]
+}
+
+export type ThemeSuiteItemData = Omit<ThemeSuiteItem, 'id' | 'createdAt' | 'updatedAt'>
+
+export type BuildTemplates = Record<string, Template>
+
+export type BuildSubTheme = BuildTheme
+
+export type BuildPalettes = Record<string, BuildPalette>
+
+export type BuildPalette = {
+  name: string
+  scale?: ScaleTypeName
+  anchors: BuildThemeAnchor[]
+}
+
+export type BuildThemeSuiteProps = Omit<ThemeSuiteItemData, 'name'>
+
+export type BuildThemeSuitePalettes = {
+  light: string[]
+  dark: string[]
+  lightAccent?: string[]
+  darkAccent?: string[]
+}
+
+export type ScaleTypeName =
+  | 'custom'
+  | 'radix'
+  | 'radix-b'
+  | 'radius-bold'
+  | 'radius-bright'
+  | 'linear'
+  | 'pastel'
+  | 'pastel-desaturating'
+  | 'neon'
+  | 'neon-bright'
+  | 'neon-c'
+
+export type BuildThemeBase = {
+  id: string
+  name: string
+  errors?: string[]
+}
+
+export type BuildThemeAnchor = {
+  index: number
+  hue: {
+    light: number
+    dark: number
+    sync?: boolean
+    syncLeft?: boolean
+  }
+  sat: {
+    light: number
+    dark: number
+    sync?: boolean
+    syncLeft?: boolean
+  }
+  lum: {
+    light: number
+    dark: number
+  }
+}
+
+export type BuildPaletteAnchors = BuildThemeAnchor[]
+
+export type BuildTheme = BuildThemeBase & {
+  type: 'theme'
+  template: string
+  palette: string
+  accent?: BuildTheme
+}
+
+export type ThemeStepProps = {
+  theme: BuildTheme
+  isAccent?: boolean
+  vertical?: boolean
+  onUpdate: (val: Partial<BuildTheme>) => void
+}

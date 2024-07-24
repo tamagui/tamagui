@@ -1,67 +1,117 @@
-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
+import { Check as CheckIcon } from '@tamagui/lucide-icons'
+import { memo, useState } from 'react'
+import {
+  Button,
+  Checkbox,
+  H3,
+  Label,
+  Paragraph,
+  ScrollView,
+  Separator,
+  Switch,
+  XStack,
+  YStack,
+} from 'tamagui'
+
+import { AccentTheme } from '~/features/studio/components/AccentTheme'
+import { accentThemeName } from '../../../accentThemeName'
+
+export const StudioThemesQuickPreviewSection = memo(
+  ({
+    scheme,
+    hasAccent,
+    onPressButton,
+  }: {
+    scheme: string
+    hasAccent: boolean
+    onPressButton?: any
+  }) => {
+    const [checked, setChecked] = useState(false)
+    const [subtleBg, setSubtleBg] = useState(false)
+
+    const checkId = `accept-check-${scheme}`
+    return (
+      <ScrollView
+        bg={subtleBg ? '$color2' : '$color1'}
+        f={1}
+        br="$6"
+        bw={1}
+        bc="$borderColor"
+        contentContainerStyle={{ flex: 1 }}
+        maxHeight={350}
+        maxWidth={400}
+        als="center"
+      >
+        <YStack gap="$3" height="100%" f={1} pt="$4" px="$4" jc="space-between">
+          <YStack gap="$2">
+            <H3>Preview</H3>
+            <Paragraph color="$color11">
+              This is just an example, your actual components can use any values from the
+              palette.
+            </Paragraph>
+          </YStack>
+          <XStack width={200} alignItems="center" gap="$4">
+            <Label
+              paddingRight="$0"
+              minWidth={90}
+              justifyContent="flex-end"
+              htmlFor="switch"
+            >
+              Label
+            </Label>
+            <Separator minHeight={20} vertical />
+            <>
+              <Switch
+                id="switch"
+                theme={checked ? accentThemeName : null}
+                size="$3"
+                onCheckedChange={setChecked}
+              >
+                <Switch.Thumb
+                  animateOnly={['transform']}
+                  animation={[
+                    'quickest',
+                    {
+                      backgroundColor: {
+                        overshootClamping: true,
+                      },
+                    },
+                  ]}
+                />
+              </Switch>
+            </>
+          </XStack>
+
+          <YStack pb="$4" gap="$4">
+            <XStack my="$-2" jc="center">
+              <XStack width={300} alignItems="center" space="$4">
+                <Checkbox
+                  id={checkId}
+                  onCheckedChange={(val) => {
+                    setSubtleBg(!!val)
+                  }}
+                >
+                  <Checkbox.Indicator>
+                    <CheckIcon />
+                  </Checkbox.Indicator>
+                </Checkbox>
+
+                <Label htmlFor={checkId}>Use subtle background</Label>
+              </XStack>
+            </XStack>
+            <Separator bc="$color2" />
+            <XStack gap="$4">
+              <Button f={1}>Cancel</Button>
+
+              <AccentTheme>
+                <Button f={1} onPress={onPressButton}>
+                  Accept
+                </Button>
+              </AccentTheme>
+            </XStack>
+          </YStack>
+        </YStack>
+      </ScrollView>
+    )
+  }
+)

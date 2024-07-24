@@ -2,7 +2,7 @@ import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import { useDisableMotion } from '~/hooks/useDisableMotion'
 import { H1, YStack } from 'tamagui'
 
-export const TAKEOUT = ({ fontSize = 340, lineHeight = fontSize * 0.73, ...props }) => (
+export const TAKEOUT = ({ fontSize = 340, lineHeight = fontSize * 0.74, ...props }) => (
   <H1
     userSelect="none"
     color="transparent"
@@ -39,9 +39,9 @@ export const TakeoutLogo = (props: { scale?: number }) => {
         }}
       >
         <>
-          <ThemeTint>
+          <ThemeTintAlt>
             <TAKEOUT className="text-3d" zi={1000} color="$color10" />
-          </ThemeTint>
+          </ThemeTintAlt>
         </>
       </YStack>
 
@@ -53,7 +53,7 @@ export const TakeoutLogo = (props: { scale?: number }) => {
           clipPath: `polygon(0% 0%, 0% 100%, 100% 100%, 0% 0%, 100% 0, 0% 100%)`,
         }}
       >
-        <ThemeTintAlt offset={3}>
+        <ThemeTintAlt offset={-1}>
           <TAKEOUT className="font-outlined" zi={1000} color="var(--color8)" />
         </ThemeTintAlt>
 

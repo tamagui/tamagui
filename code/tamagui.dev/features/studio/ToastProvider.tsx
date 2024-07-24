@@ -1,33 +1,59 @@
-U2FsdGVkX1/6YONPhqpZfVZ2SpdHuu5B3WyysX5qaBVz90NURtp2ttbDTfEfHyOQ
-NjOB7FhSc6kgv58WPRI72xp1twv+Pkk69Szy5DFzGvbwjPbZwpUrKcPCCeIztInf
-kl5zdptb9u0nJemx8rxZlO5DmtjeaqykcT+M70uAm1WfKQy6vKCgbb8o57X4IZKP
-r6L5iv858oLYT4iLephsyAkibPlgAn4ae0WOS3tdaxPCXWyu1gK/uTID1zTkSYdO
-1jgH6hJBQdUDRKayAn+U14Cu1HJ1Ae/0MfoAlZUG7LLpEytIj+FkzC108kAlQgrw
-GufyjhqLJEp5x//7uCv/OYo8MirePpOWAhwLRHyeXtsY4DQ7WJDIPzmTUm/iI+LE
-m30lkiOI3y2zEh91ItShg11e/5usP9/NvbIlRf6/BCKwumc2QTG0aGIrMsxgTC3Y
-TQqV3x9gCHWcnTyVcRQRixKWNyFWV+oIlpyVrdaknTSyQn1Bqj33X0D0P7XbbyiN
-qi3mZ+WepurDrZriieYoJKqiI20xEH63Orr0cQwNgjy42YiHhbnaZ5AqjHZZpH0U
-huCRuEM+m/YeAMTBdq/Z/NlC95ua6VWkPyA8ajnqEGhoI0CRzp/2KMmjY2MS9rXR
-v/p3wQtoRTvt1sywcCgcE9cZ4X3qbX/NZWp8UI/Sl/vLyPyMve0lH/z2+hhjWq7H
-VgPilPUNYdUmQLE5CE0cEhzM8dQpF1aEjc9tHINC+I0C+Xnx27UqC2Ztw+RxV7Y9
-6krxbNwQdFADB8g0du1HHHXw8h55pRRrwH0nnGW3Mwb32Zu4/4+PEJvlB0+2jtTs
-ap/RtsKC+WG/Mv8K3kShHrPXtMmdsyTy5KPl1VlPW+jBhFO5wP+b4hgnKBDC0rYK
-LFkItJoNRYyHXhVenvxPPgQlXubeZiKcmxhuIdSNk5KPDwZoj3w4ip3bFePMVTwv
-um/yVoUlY48+qQ8/ldN2vuAgLuH0efPc4aMh1aYZ5A9VQhM795XCSMsoPg9EgwqA
-pQb7OaFgYwzKGEwmGVFAy+UlZJwAKXxPip9ODJxyl13YGoK7slA2uIyCbi6/j4Vp
-o1DB23IDk7tsI7AlM26ydqiPlK+naW8XEALChMzlN/UXCrqrwB4MMjqnP5lg0Lsk
-iNXf0ZimYp2o4CT8GptEtOjOhFR6I2TT9jZX7luD4vLW6fgcM0oUOaL2ZWcGSucV
-tna63cIlYwb7vhCwKq+N2a5+GyCF9ZywYy9h4B/+5Z4lXs+ZR6LElrVuD5bOVCMA
-9DYucuA7/YK1ErZSo8xGwE6lkFHRczt/0qGPvPgVu5qf8qtJfFTECNuU4cp7kkrP
-K8XsRzX4rJr/A/YRvQ3JSY5PgElkj8DFWPmnfYOlqE07d1/Ruy2oPWP2S3esYxFg
-uEdHBf78uBKGdnU5xnLgtcJGyL7eK24rkwqbcoJUBrBYMQjPaF+nOiOxTIOzHJGs
-MfBrtFtAaMhOqj4KhO2ompSkZydlZVQsGefQ2XIqIilaIv/gRVeck8EGQzjgvcuk
-5PiOvCbBioPevFHV5hGi5hgume4+u0k2C0rqwLsjDwMX+8vCNZpzhRy41SlqeJv7
-wV8HQXnnk+wHlbGBB2VcDsIWULiEfsgjbnJu6eYv7RV1P7XB/h0Lec4NdY4xkkTg
-E89fsFbDYzAqNLkfhCEel9dVEMh08ktzYt5wTQHKWOyikEPGk8+U4U3qPapgLVbE
-J0GazxOD5b3+zXCy7hziXhWL9/I14FPKSxr4clTa2rY4VmmMdHhNKgtqtyIsnYPA
-Q54KzSRn6pDBLlYt6ZCOZEcPbacw7wF/1+ZpTrQDWGa+BbUNb28+8tnKUuuzXIxm
-REnO4XU3/FiARDd5YtkrJYq332kV9cm+aklNtImdLUdeXLA/sJYggrM0TsS3vK5r
-W02iyWG60t8mFHAOjiwqyczFKHO8g5ulPjUifI3MIYyrX6KEamZMFr5bo641UeUE
-YrnJx6+vtQaDajcFThZYu05HV1EcQQkV3lQO9FDyI/k4LahIy4kMiK+59P5Ew3Xa
-5nCLiPIgxDWHTHvb6SDwyw==
+import type { ToastProps } from '@tamagui/toast'
+import {
+  Toast,
+  ToastProvider as ToastProviderOG,
+  ToastViewport,
+  useToastController,
+  useToastState,
+} from '@tamagui/toast'
+
+export let toastController: ReturnType<typeof useToastController>
+
+// this feels weird but it works... TODO: might want to add some variation of this to @tamagui/toast cause useToastController can be a bit cumbersome to use outside react
+const ToastImportHandler = () => {
+  toastController = useToastController()
+  return null
+}
+
+export const ToastProvider = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <ToastProviderOG swipeDirection="vertical" swipeThreshold={80}>
+      <ToastHandler />
+      {children}
+      <ToastImportHandler />
+      <ToastViewport m="$0.5" left="50%" x="-50%" top={0} />
+    </ToastProviderOG>
+  )
+}
+
+const ToastHandler = () => {
+  const toast = useToastState()
+  if (!toast) return null
+
+  return (
+    <Toast
+      key={toast.id}
+      duration={toast.duration}
+      animation="100ms"
+      enterStyle={{ opacity: 0, scale: 0.5, y: -45 }}
+      exitStyle={{ opacity: 0, scale: 1, y: -40 }}
+      y={0}
+      x={0}
+      opacity={1}
+      scale={1}
+      elevation="$6"
+      m="$4"
+      br="$10"
+      px="$5"
+      py="$2"
+      {...toast.customData}
+    >
+      <Toast.Title o={0.6}>{toast.title}</Toast.Title>
+      <Toast.Description o={0.6}>{toast.message}</Toast.Description>
+    </Toast>
+  )
+}
+
+declare module '@tamagui/toast' {
+  interface CustomData extends ToastProps {}
+}

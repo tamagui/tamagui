@@ -1,6 +1,7 @@
 {
   "name": "@tamagui/switch",
-  "version": "1.102.1",
+  "version": "1.104.1",
+  "removeSideEffects": true,
   "sideEffects": [
     "*.css"
   ],
@@ -32,23 +33,23 @@
     }
   },
   "dependencies": {
-    "@tamagui/compose-refs": "1.102.1",
-    "@tamagui/constants": "1.102.1",
-    "@tamagui/core": "1.102.1",
-    "@tamagui/focusable": "1.102.1",
-    "@tamagui/get-token": "1.102.1",
-    "@tamagui/helpers": "1.102.1",
-    "@tamagui/label": "1.102.1",
-    "@tamagui/stacks": "1.102.1",
-    "@tamagui/switch-headless": "1.102.1",
-    "@tamagui/use-controllable-state": "1.102.1",
-    "@tamagui/use-previous": "1.102.1"
+    "@tamagui/compose-refs": "1.104.1",
+    "@tamagui/constants": "1.104.1",
+    "@tamagui/core": "1.104.1",
+    "@tamagui/focusable": "1.104.1",
+    "@tamagui/get-token": "1.104.1",
+    "@tamagui/helpers": "1.104.1",
+    "@tamagui/label": "1.104.1",
+    "@tamagui/stacks": "1.104.1",
+    "@tamagui/switch-headless": "1.104.1",
+    "@tamagui/use-controllable-state": "1.104.1",
+    "@tamagui/use-previous": "1.104.1"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.102.1",
+    "@tamagui/build": "1.104.1",
     "react": "^18.2.0"
   },
   "publishConfig": {

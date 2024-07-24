@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import useSWR from 'swr'
+import useSWR, { useSWRConfig } from 'swr'
 import { Spinner, YStack } from 'tamagui'
 import { useRouter } from 'vxs'
 
@@ -7,7 +7,8 @@ import { useOfflineMode } from '~/hooks/useOfflineMode'
 import type { UserContextType } from '../auth/types'
 
 export const useUser = () => {
-  return useSWR<UserContextType | null>('user', {
+  const { mutate } = useSWRConfig()
+  const response = useSWR<UserContextType | null>('user', {
     fetcher: async () => {
       if (typeof window === 'undefined') {
         return null
@@ -20,13 +21,19 @@ export const useUser = () => {
     },
     refreshInterval: 0,
   })
+  return {
+    ...response,
+    refresh() {
+      mutate('user')
+    },
+  }
 }
 
 export const UserGuard = ({ children }: { children: React.ReactNode }) => {
   const { data, isLoading } = useUser()
   const router = useRouter()
   const isOffline = useOfflineMode()
-  const user = data?.session?.user
+  const user = data?.user
 
   useEffect(() => {
     if (isOffline) {

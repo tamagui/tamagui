@@ -1,14 +1,16 @@
-U2FsdGVkX1+v2wGrp1RZN7piBH7BgxEmY1tudcnpUZpF3MSGJOpcFk7a7xLg55Zh
-W98qK5oYPbsmEAL1IsCe6Z4cRK7GWGPxwsDaWnxfmEuvRPQfHwlQ8qNtWjId/BXU
-ln9xkXaGFf+CEK4IhNCLoK3xJWmxAo1Ske9ZE5efKfXy/x5oHa8KqvyT7HVdVwn8
-PSMRSwzEw5xDGPyIfeFCT0crAQIhkg5jUXCdayvYwS0n1+dec0wbx/2v0rXyfDkq
-cpHrIUjd2Q5q9DZqEvvP5d0cXTLY0riGGE6CQRtWKD3xP+bx3tGo9ICVXhWja28l
-ez+a7JZJhprWPfT1taUidIuBBxxfet1a92A+MLP3RkLfbYnztAecgL7L+5kipFp+
-a0OD6sG05uhl5X2oSZi1vvpGr3FwImr/7mqNsWR4yksphltb3Cr+SiL94COPWj8m
-LNVkV2J6Q/3YOC4roWbehm10hSp2rXsGlduugOc9GkBllIscoJocecF8/JEZNjKu
-JWWkh5SiWOKxCXAd77S7aeyTiFOqO2Bb+syvvSwlaWPuCFsOT02LNTUgdMMXzpJj
-Ys1kPjNy16hCgv7ssk96P1d7xXY/YCeKlyEthzVZBrOXFPl68qcTPIh+073px4mA
-XQjZpd7TOCiTZLS4r1c9+NDiY6nnMibymUynG+wdEj+bbFoUnuUszcfl9b5t80so
-DWdG4oDs2Ix7SwF7E+uEKggJVGn4PO3+eNScnKFp+RpqOdJhZFFLcX5zQgiOj02E
-gqCEhnjBO5A5p0tu5kfiVELKilHF6W2cvUrizR3TbQydoEEa/fDujyXh/KFg7BSP
-+yps2CA7KZZXtiesOqj//w==
+import { themed } from '@tamagui/helpers-icon'
+import { memo } from 'react'
+import { Path, Svg } from '@tamagui/react-native-svg'
+const IconBitbucket = (_props) => {
+  const { size, ...props } = _props
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24" {...props}>
+      <Path
+        fill="currentColor"
+        d="M.778 1.213a.768.768 0 0 0-.768.892l3.263 19.81c.084.5.515.868 1.022.873H19.95a.772.772 0 0 0 .77-.646l3.27-20.03a.768.768 0 0 0-.768-.891zM14.52 15.53H9.522L8.17 8.466h7.561z"
+      />
+    </Svg>
+  )
+}
+const Memo = memo(themed(IconBitbucket))
+export { Memo as IconBitbucket }

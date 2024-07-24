@@ -1,20 +1,42 @@
-U2FsdGVkX19qosISYkOBfw0Aca/B9ii51CdtHYCmPGYTQFNVmf+w8ZiA9HlmAfcw
-ZTColIfi1xOFlZrxS8W3MtZNw6sVILVgyH8qTrDNg3rg8S9wuvC27nTQtNqXXfOU
-YSfarAin5RaYm9D/2rWoLybjhOtFcUDYWLL18/5W2OfKRmeM6ZxFWgBv2CnVc/yX
-BF30BFZKaaK/MQDA0k1/yyhTfESme8xptdTYi7O45dKlaQGAcmy1Tkh61EA9ZPpr
-fVeAWyoy/i4p8UWup80Bzfcj4N/tAd2I0cXab/yhNGtZPDlL+kDi8DgkZGZJtlh+
-rx5g6IwqO1eKQfMivGIr2FOBrwEZuGxHhPO4m0OPS40Zd0xuKN0K7kcywx10mlcf
-G/a75DtykZ9x5u6sRqVdml4PD3S7hl9++NDsabgqNrXF3OjrkPDQPGUDK42Q0yEq
-OKmna+zjEj16bYzfirR/kTJqcZhbhwkZNigBQWcgOVlnA3T6Agavpv8PvfUDq2uY
-QB375tSu+bG7Ybp3KXEIYY7MFyN7bcGd82uznrp/o21aaGJHlG8b5FgeleThN/gw
-0J0PGzxDKQsJpdIfkS8WDj8QIsg3yiGUP6uRUUatBJbQi732amRrHw2gYxWV8EhN
-T6OJVEs0geu4IRuPEWfFExAZHS3wZ3qSZFwkAUHzer7qcx18cU2FFT2eLrzYSYok
-1ZI01fzpW1OyqE4xnyNbcI9PScK+5YKBO3anQ1CrRZTwUNCuCxxmDQezYmiP/peG
-m7S2Fl9y4Vv2PWvB4Ty8ZAwrqtj6kcFqyPkVaz9hho5XCdqWxYD0BWK6dDtKawgo
-Du2zlOoc/85k/3Xu9etDLBkDSHiB4/tjinlYxJUL1TKqLS665J6/fNTCn0pP9koP
-TDtl4Xt8v+hT2TC0BXOo9Em2CpmrUqGUosQD7AJrJlB687YUrNQGrPEHKTvIg8R2
-grQF8LLssVlfcXHR8lvUUKEQX4S8aSYkxL6tuzzmn//r1VDGLM79J+HZDv7mKaRg
-8iOvdZdrjewCqP7x4FKGZ7KFcUtPpXX2mYN67s5W6J7SZ9ormADWdIejCec6Kq15
-xDtRyAxCW+G/ir8dD2Z6yguxOOuBVi5uIY2KeWMRUCy0mYijpI6kZBF9PWs1Jal5
-9fX0B1CKh4EUYTii6y3/0wSr0ddwPuZ4RsC0cBpV9kzjqgVNogpGWBFnEaw4uDAG
-djsLuuN/kZ8hxBY+NyowS8lI3jkEI7OZCAu69fhtaKcaTDFHteZmFDt4VQTRAdV2
+import { Circle, YStack, useThemeName } from 'tamagui'
+import {
+  PALETTE_BACKGROUND_OFFSET,
+  getThemeSuitePalettes,
+} from '../helpers/getThemeSuitePalettes'
+import type { BuildPalette } from '../types'
+
+export const ColorThemeIndicator = ({
+  primary,
+  secondary,
+  size = 15,
+}: {
+  primary: BuildPalette
+  secondary?: BuildPalette
+  size?: number
+}) => {
+  const isDark = useThemeName().startsWith('dark')
+  const palettes = [primary, secondary]
+    .filter(Boolean)
+    .map(
+      (x) =>
+        getThemeSuitePalettes(x!)[isDark ? 'dark' : 'light'][
+          PALETTE_BACKGROUND_OFFSET + 8
+        ]
+    )
+
+  return (
+    <YStack>
+      <Circle width={size} height={size} bg={palettes[0] as any} />
+      {!!palettes[1] && (
+        <Circle
+          pos="absolute"
+          bottom={-1}
+          right={-1}
+          width={8}
+          height={8}
+          bg={palettes[1] as any}
+        />
+      )}
+    </YStack>
+  )
+}

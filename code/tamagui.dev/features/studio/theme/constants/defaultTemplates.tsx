@@ -1,44 +1,78 @@
-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
+import { PALETTE_BACKGROUND_OFFSET } from '../helpers/getThemeSuitePalettes'
+
+const colorsTemplate = {
+  color1: PALETTE_BACKGROUND_OFFSET,
+  color2: PALETTE_BACKGROUND_OFFSET + 1,
+  color3: PALETTE_BACKGROUND_OFFSET + 2,
+  color4: PALETTE_BACKGROUND_OFFSET + 3,
+  color5: PALETTE_BACKGROUND_OFFSET + 4,
+  color6: PALETTE_BACKGROUND_OFFSET + 5,
+  color7: PALETTE_BACKGROUND_OFFSET + 6,
+  color8: PALETTE_BACKGROUND_OFFSET + 7,
+  color9: PALETTE_BACKGROUND_OFFSET + 8,
+  color10: PALETTE_BACKGROUND_OFFSET + 9,
+  color11: PALETTE_BACKGROUND_OFFSET + 10,
+  color12: PALETTE_BACKGROUND_OFFSET + 11,
+}
+
+const accentsTemplate = {
+  accentBackground: `$accent.${PALETTE_BACKGROUND_OFFSET}`,
+  accentColor: `$accent.-${PALETTE_BACKGROUND_OFFSET}`,
+}
+
+const transparenciesTemplate = {
+  background0: 1,
+  background025: 2,
+  background05: 3,
+  background075: 4,
+  color0: -4,
+  color025: -3,
+  color05: -2,
+  color075: -1,
+}
+
+export const defaultBaseTemplate = {
+  ...accentsTemplate,
+  ...transparenciesTemplate,
+
+  background: PALETTE_BACKGROUND_OFFSET,
+  backgroundHover: PALETTE_BACKGROUND_OFFSET + 1,
+  backgroundPress: PALETTE_BACKGROUND_OFFSET + 2,
+  backgroundFocus: PALETTE_BACKGROUND_OFFSET + 3,
+
+  color: -5,
+  colorHover: -6,
+  colorPress: -5,
+  colorFocus: -6,
+
+  placeholderColor: -6,
+
+  borderColor: 7,
+  borderColorHover: 8,
+  borderColorFocus: 9,
+  borderColorPress: 8,
+
+  ...colorsTemplate,
+}
+
+const surfaceAdd = 3
+const surfaceOffset = PALETTE_BACKGROUND_OFFSET + surfaceAdd
+
+export const defaultSurfaceTemplate = {
+  ...defaultBaseTemplate,
+
+  background: surfaceOffset,
+  backgroundHover: surfaceOffset + 1,
+  backgroundPress: surfaceOffset + 2,
+  backgroundFocus: surfaceOffset + 3,
+
+  borderColor: defaultBaseTemplate.borderColor + surfaceAdd,
+  borderColorHover: defaultBaseTemplate.borderColorHover + surfaceAdd,
+  borderColorFocus: defaultBaseTemplate.borderColorFocus + surfaceAdd,
+  borderColorPress: defaultBaseTemplate.borderColorPress + surfaceAdd,
+}
+
+export const defaultTemplates = {
+  base: defaultBaseTemplate,
+  surface: defaultSurfaceTemplate,
+}

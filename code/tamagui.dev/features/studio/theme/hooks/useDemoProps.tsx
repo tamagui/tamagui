@@ -1,9 +1,12 @@
-U2FsdGVkX18XuUePxDYxjDeon3Wlxz59G6PBRjY2UVIXTqe1Eu6tyyJvPGIFI4OR
-H0XycDnICPrbTh46vbWqpIiMaUIT62g0idiadvDyeXW7wFPplshjbGMWtKDusMQB
-Pvf+paK4fC/hH0qda0zZQ7oWW7pvu73Crqdr+GqOmlhBiKPADt3Bidk2CBJN9iOq
-I80eJBYY06wSh3ylLvpeJ8xFjYkGJZZOrrarqH73V4ukELT+VGkIddhkcTIDoxij
-65zUCxMk3u+O9TsaLIgGriTdX407Rwto0QhNz8SD5ls9Z4zAgbgzKRJKdbyBOyAI
-kKZLH2pWkPkjs1hFg25Uzfn4rZbJVJqEgDETa9M9DA1uUxCeNDOxrTrJAVNXYwsn
-YsJxaCmGC2CkJ7mmXiLW4Jq2DPAQTIC7dwi/3OAbqEJ/CrxvHvGlFkp/3ZxWdqf2
-g1jRBQzLuj15RVW0dH1v2AEAtCDNdNbGG/86+/fKvRLxrfvwJhinILlI+ouHMBZi
-P9ZJB3RlAUafYEesebldfgm3MiC2wqbIopjNFKPQg/GTCx3RWatfg5mx/97DWeSS
+import { getDemoProps } from '~/features/studio/api/getDemoProps'
+import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
+import { useHasAccent } from '~/features/studio/hooks/useHasAccent'
+
+export function useDemoProps() {
+  const store = useThemeBuilderStore()
+  const hasAccent = useHasAccent()
+  return {
+    hasAccent,
+    ...getDemoProps(store.demosOptions, hasAccent),
+  }
+}

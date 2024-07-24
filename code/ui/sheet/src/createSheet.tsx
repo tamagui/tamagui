@@ -34,9 +34,9 @@ type BaseProps = StackProps & SharedSheetProps
 type SheetStyledComponent = TamaguiComponentExpectingVariants<BaseProps, SharedSheetProps>
 
 export function createSheet<
-  H extends SheetStyledComponent | TamaguiComponent,
-  F extends SheetStyledComponent | TamaguiComponent,
-  O extends SheetStyledComponent | TamaguiComponent,
+  H extends TamaguiComponent | SheetStyledComponent,
+  F extends TamaguiComponent | SheetStyledComponent,
+  O extends TamaguiComponent | SheetStyledComponent,
 >({ Handle, Frame, Overlay }: { Handle: H; Frame: F; Overlay: O }) {
   const SheetHandle = Handle.styleable<any>(
     (
@@ -66,7 +66,7 @@ export function createSheet<
         />
       )
     }
-  ) as SheetStyledComponent
+  )
 
   /* -------------------------------------------------------------------------------------------------
    * SheetOverlay

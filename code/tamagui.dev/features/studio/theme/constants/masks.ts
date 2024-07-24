@@ -1,86 +1,148 @@
-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
+import type {
+  MaskDefinitions,
+  MaskOptions} from '@tamagui/create-theme';
+import {
+  combineMasks,
+  createIdentityMask,
+  createInverseMask,
+  createMask,
+  createSoftenMask,
+  createStrengthenMask,
+  skipMask,
+} from '@tamagui/create-theme'
+
+const shadows = {
+  shadowColor: 0,
+  shadowColorHover: 0,
+  shadowColorPress: 0,
+  shadowColorFocus: 0,
+}
+
+const colors = {
+  ...shadows,
+  color: 0,
+  colorHover: 0,
+  colorFocus: 0,
+  colorPress: 0,
+}
+
+const templateColorsSpecific = {
+  color1: 1,
+  color2: 2,
+  color3: 3,
+  color4: 4,
+  color5: 5,
+  color6: 6,
+  color7: 7,
+  color8: 8,
+  color9: 9,
+  color10: 10,
+  color11: 11,
+  color12: 12,
+}
+
+const skipShadowsAndSpecificColors = {
+  ...shadows,
+  ...templateColorsSpecific,
+}
+
+const PALETTE_LEN = 14
+
+const baseMaskOptions: MaskOptions = {
+  override: shadows,
+  skip: shadows,
+  // avoids the transparent ends
+  max: PALETTE_LEN - 2,
+  min: 1,
+}
+
+export const maskOptions = {
+  component: {
+    ...baseMaskOptions,
+    override: colors,
+    skip: skipShadowsAndSpecificColors,
+  },
+  alt: {
+    ...baseMaskOptions,
+  },
+  button: {
+    ...baseMaskOptions,
+    override: {
+      ...colors,
+      borderColor: 'transparent',
+      borderColorHover: 'transparent',
+    },
+    skip: skipShadowsAndSpecificColors,
+  },
+} satisfies Record<string, MaskOptions>
+
+export const masks = {
+  identity: createIdentityMask(),
+  soften: createSoftenMask(),
+  soften2: createSoftenMask({ strength: 2 }),
+  soften3: createSoftenMask({ strength: 3 }),
+  strengthen: createStrengthenMask(),
+  inverse: createInverseMask(),
+  inverseSoften: combineMasks(createInverseMask(), createSoftenMask({ strength: 2 })),
+  inverseSoften2: combineMasks(createInverseMask(), createSoftenMask({ strength: 3 })),
+  inverseSoften3: combineMasks(createInverseMask(), createSoftenMask({ strength: 4 })),
+  inverseStrengthen2: combineMasks(
+    createInverseMask(),
+    createStrengthenMask({ strength: 2 })
+  ),
+  strengthenButSoftenBorder: createMask((template, options) => {
+    const stronger = createStrengthenMask().mask(template, options)
+    const softer = createSoftenMask().mask(template, options)
+    return {
+      ...stronger,
+      borderColor: softer.borderColor,
+      borderColorHover: softer.borderColorHover,
+      borderColorPress: softer.borderColorPress,
+      borderColorFocus: softer.borderColorFocus,
+    }
+  }),
+  soften2Border1: createMask((template, options) => {
+    const softer2 = createSoftenMask({ strength: 2 }).mask(template, options)
+    const softer1 = createSoftenMask({ strength: 1 }).mask(template, options)
+    return {
+      ...softer2,
+      borderColor: softer1.borderColor,
+      borderColorHover: softer1.borderColorHover,
+      borderColorPress: softer1.borderColorPress,
+      borderColorFocus: softer1.borderColorFocus,
+    }
+  }),
+  soften3FlatBorder: createMask((template, options) => {
+    const borderMask = createSoftenMask({ strength: 2 }).mask(template, options)
+    const softer3 = createSoftenMask({ strength: 3 }).mask(template, options)
+    return {
+      ...softer3,
+      borderColor: borderMask.borderColor,
+      borderColorHover: borderMask.borderColorHover,
+      borderColorPress: borderMask.borderColorPress,
+      borderColorFocus: borderMask.borderColorFocus,
+    }
+  }),
+  softenBorder: createMask((template, options) => {
+    const plain = skipMask.mask(template, options)
+    const softer = createSoftenMask().mask(template, options)
+    return {
+      ...plain,
+      borderColor: softer.borderColor,
+      borderColorHover: softer.borderColorHover,
+      borderColorPress: softer.borderColorPress,
+      borderColorFocus: softer.borderColorFocus,
+    }
+  }),
+  softenBorder2: createMask((template, options) => {
+    const plain = skipMask.mask(template, options)
+    const softer = createSoftenMask({ strength: 2 }).mask(template, options)
+    return {
+      ...plain,
+      borderColor: softer.borderColor,
+      borderColorHover: softer.borderColorHover,
+      borderColorPress: softer.borderColorPress,
+      borderColorFocus: softer.borderColorFocus,
+    }
+  }),
+} satisfies MaskDefinitions

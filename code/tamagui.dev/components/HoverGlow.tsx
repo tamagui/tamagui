@@ -635,4 +635,4 @@ const crosshair =
 
 export const IS_SAFARI =
   typeof navigator !== 'undefined' &&
-  /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
+  /^((?!chrome|android).)*safari/i.test(navigator.userAgent || '')

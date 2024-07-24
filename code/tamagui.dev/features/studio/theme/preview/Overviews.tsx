@@ -1,57 +1,114 @@
-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
+import type { CardProps } from 'tamagui'
+import { Button, Card, H4, Paragraph, XStack, YStack } from 'tamagui'
+import { useDemoProps } from '../hooks/useDemoProps'
+
+export const Overview1 = () => {
+  const demoProps = useDemoProps()
+  return (
+    <YStack
+      {...demoProps.panelProps}
+      {...demoProps.stackOutlineProps}
+      {...demoProps.borderRadiusOuterProps}
+      {...demoProps.elevationProps}
+      {...demoProps.panelPaddingProps}
+      p="$0"
+    >
+      <YStack flex={1}>
+        <OverviewCard
+          title="ARR"
+          value="$204,010"
+          badgeText="+40.5%"
+          badgeState="success"
+        />
+      </YStack>
+    </YStack>
+  )
+}
+export const Overview2 = () => {
+  const demoProps = useDemoProps()
+  return (
+    <YStack
+      {...demoProps.panelProps}
+      {...demoProps.stackOutlineProps}
+      {...demoProps.borderRadiusOuterProps}
+      {...demoProps.elevationProps}
+      {...demoProps.panelPaddingProps}
+      p="$0"
+    >
+      <YStack flex={1}>
+        <OverviewCard
+          title="New Users"
+          value="113"
+          badgeText="+142.2%"
+          badgeState="success"
+        />
+      </YStack>
+    </YStack>
+  )
+}
+export const Overview3 = () => {
+  const demoProps = useDemoProps()
+  return (
+    <YStack
+      {...demoProps.panelProps}
+      {...demoProps.stackOutlineProps}
+      {...demoProps.borderRadiusOuterProps}
+      {...demoProps.elevationProps}
+      {...demoProps.panelPaddingProps}
+      p="$0"
+    >
+      <YStack flex={1}>
+        <OverviewCard
+          title="ARR"
+          value="$204,010"
+          badgeText="+40.5%"
+          badgeState="success"
+        />
+      </YStack>
+    </YStack>
+  )
+}
+
+export type OverviewCardTypes = {
+  title: string
+  value: string
+  badgeText?: string
+  badgeAfter?: string
+  badgeState?: 'success' | 'failure' | 'indifferent'
+} & CardProps
+
+export const OverviewCard = ({
+  title,
+  value,
+  badgeText,
+  badgeState,
+  badgeAfter,
+  ...props
+}: OverviewCardTypes) => {
+  const demoProps = useDemoProps()
+
+  return (
+    <Card backgroundColor="transparent" {...props}>
+      <Card.Header f={1} jc="space-between" {...demoProps.gapPropsLg}>
+        <Paragraph fontWeight="400" size="$4" lh="$1" mb="$-2">
+          {title}
+        </Paragraph>
+        <H4 size="$9">{value}</H4>
+        <XStack>
+          {!!badgeText && (
+            <>
+              <Button
+                size="$2"
+                {...demoProps.borderRadiusProps}
+                {...demoProps.buttonOutlineProps}
+              >
+                {badgeText}
+              </Button>
+            </>
+          )}
+          {badgeAfter && <Paragraph>{badgeAfter}</Paragraph>}
+        </XStack>
+      </Card.Header>
+    </Card>
+  )
+}

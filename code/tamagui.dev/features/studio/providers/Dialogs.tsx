@@ -1,200 +1,355 @@
-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
+import { Copy, X } from '@tamagui/lucide-icons'
+import { memo, useState } from 'react'
+import { useWindowDimensions } from 'react-native'
+import type { DialogCloseProps } from 'tamagui'
+import {
+  Button,
+  Dialog,
+  Fieldset,
+  Input,
+  Label,
+  SizableText,
+  Tabs,
+  TextArea,
+  Unspaced,
+  XStack,
+  YStack,
+} from 'tamagui'
+
+import { generateOutput } from '../state/generateOutput'
+import { rootStore } from '../state/RootStore'
+import type {
+  ConfirmDeleteDialogProps,
+  CreateAnimationDialogProps,
+  CreateThemeDialogProps,
+  DialogTypes,
+  ExportDialogProps,
+  StudioAlertDialogProps,
+} from '../state/types'
+import { useGlobalState } from '../state/useGlobalState'
+// import { toastController } from '../ToastProvider'
+
+const DialogCloseButton = () => (
+  <Unspaced>
+    <Dialog.Close asChild="except-style">
+      <Button size="$3" pos="absolute" t="$3" r="$3" circular icon={X} zi={1000} />
+    </Dialog.Close>
+  </Unspaced>
+)
+
+export const Dialogs = memo(() => {
+  const state = useGlobalState()
+  const DialogContents = dialogs[state.dialog]
+  const dialogProps = state.dialogProps as any
+  const dimensions = useWindowDimensions()
+
+  if (!DialogContents) {
+    return null
+  }
+
+  return (
+    <Dialog
+      modal
+      open={state.dialog !== 'none'}
+      onOpenChange={(val) => {
+        if (val === false) {
+          rootStore.hideDialog()
+        }
+      }}
+    >
+      <Dialog.Portal zIndex={10000000000}>
+        <Dialog.Overlay
+          animation="quick"
+          opacity={0.5}
+          enterStyle={{ opacity: 0 }}
+          exitStyle={{ opacity: 0 }}
+        />
+        <Dialog.Content
+          onPointerDownOutside={() => {
+            rootStore.hideDialog()
+          }}
+          bordered
+          elevate
+          key="content"
+          animation={[
+            'quickest',
+            {
+              opacity: {
+                overshootClamping: true,
+              },
+            },
+          ]}
+          enterStyle={{ x: 0, y: -20, opacity: 0, scale: 0.9 }}
+          exitStyle={{ x: 0, y: 10, opacity: 0, scale: 0.95 }}
+          x={0}
+          scale={1}
+          opacity={1}
+          y={0}
+          maxWidth={dimensions.width * 75}
+          p="$5"
+        >
+          <DialogContents {...dialogProps} />
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog>
+  )
+})
+
+const CreateWorkspaceDialog = () => {
+  return (
+    <>
+      <DialogCloseButton />
+      <YStack space="$4">
+        <YStack space="$2">
+          <Dialog.Title size="$7">Create Workspace</Dialog.Title>
+          <Dialog.Description size="$3" theme="alt2">
+            A workspace contains assets: colors, themes, fonts, and icons. You can import
+            existing assets into the workspace after creation.
+          </Dialog.Description>
+        </YStack>
+
+        <Fieldset space="$4" horizontal>
+          <Label size="$3" w={160} justifyContent="flex-end" htmlFor="workspace-name">
+            Name
+          </Label>
+          <Input size="$3" f={1} id="workspace-name" />
+        </Fieldset>
+
+        <YStack ai="flex-end" mt="$2">
+          <DialogClose>
+            <Button aria-label="Close">Create</Button>
+          </DialogClose>
+        </YStack>
+      </YStack>
+    </>
+  )
+}
+
+const DialogClose = (props: DialogCloseProps) => {
+  return (
+    <Dialog.Close
+      asChild
+      {...props}
+      onPress={() => {
+        rootStore.setConfirmationStatus(true)
+      }}
+    />
+  )
+}
+
+const CreateThemeDialog = (props: CreateThemeDialogProps) => {
+  return (
+    <>
+      <DialogCloseButton />
+      <YStack space="$4">
+        <YStack space="$2">
+          <Dialog.Title size="$7">Create Theme</Dialog.Title>
+          <Dialog.Description size="$3" theme="alt2">
+            Create a new theme in scope {props.category}.
+          </Dialog.Description>
+        </YStack>
+
+        <Fieldset space="$4" horizontal>
+          <Label size="$3" w={160} justifyContent="flex-end" htmlFor="theme-name">
+            Name
+          </Label>
+          <Input size="$3" f={1} id="theme-name" />
+        </Fieldset>
+        <DialogClose>
+          <Button aria-label="Close">Create</Button>
+        </DialogClose>
+      </YStack>
+    </>
+  )
+}
+
+const ConfirmDeleteDialog = (props: ConfirmDeleteDialogProps) => {
+  return (
+    <>
+      <DialogCloseButton />
+      <YStack space="$6" p="$2">
+        <YStack space="$2">
+          <Dialog.Title size="$7">Delete {props.thingName}?</Dialog.Title>
+          <Dialog.Description size="$3" theme="alt2">
+            Are you sure you want to delete {props.thingName}?
+          </Dialog.Description>
+        </YStack>
+
+        <XStack jc="flex-end" space>
+          <Dialog.Close asChild>
+            <Button>Cancel</Button>
+          </Dialog.Close>
+          <DialogClose>
+            <Button theme="red" aria-label="Close">
+              Delete
+            </Button>
+          </DialogClose>
+        </XStack>
+      </YStack>
+    </>
+  )
+}
+
+const AlertDialog = (props: StudioAlertDialogProps) => {
+  return (
+    <>
+      <DialogCloseButton />
+      <YStack space="$6" p="$2">
+        <YStack space="$2">
+          <Dialog.Title size="$7">{props.title}</Dialog.Title>
+          <Dialog.Description size="$3" theme="alt2">
+            {props.message}
+          </Dialog.Description>
+        </YStack>
+
+        <XStack jc="flex-end" space>
+          <DialogClose>
+            <Button themeInverse aria-label="Ok">
+              Ok
+            </Button>
+          </DialogClose>
+        </XStack>
+      </YStack>
+    </>
+  )
+}
+
+const CreateAnimationDialog = (props: CreateAnimationDialogProps) => {
+  const state = useGlobalState()
+  const [name, setName] = useState('')
+
+  return (
+    <>
+      <DialogCloseButton />
+      <YStack space="$4">
+        <YStack space="$2">
+          <Dialog.Title size="$7">Create Theme</Dialog.Title>
+          <Dialog.Description size="$3" theme="alt2">
+            Create a new animation.
+          </Dialog.Description>
+        </YStack>
+
+        <Fieldset space="$4" horizontal>
+          <Label size="$3" w={160} justifyContent="flex-end" htmlFor="animation-name">
+            Name
+          </Label>
+          <Input
+            value={name}
+            onChangeText={setName}
+            size="$3"
+            f={1}
+            id="animation-name"
+          />
+        </Fieldset>
+        {/* <Fieldset space="$4" horizontal>
+          <Label size="$3" w={160} justifyContent="flex-end" htmlFor="animation-name">
+            Type
+          </Label>
+          <RadioGroup defaultValue="react-native">
+            <XStack ai="center" space>
+              <RadioGroup.Item value="react-native" id="radio-react-native">
+                <RadioGroup.Indicator />
+              </RadioGroup.Item>
+              <Label htmlFor="radio-react-native">React Native</Label>
+            </XStack>
+            <XStack ai="center" space>
+              <RadioGroup.Item value="css" id="radio-react-css">
+                <RadioGroup.Indicator />
+              </RadioGroup.Item>
+              <Label htmlFor="radio-react-css">CSS</Label>
+            </XStack>
+          </RadioGroup>
+        </Fieldset> */}
+        <DialogClose>
+          <Button
+            onPress={() => {
+              state.animations.createAnimation(name)
+            }}
+            aria-label="Close"
+          >
+            Create
+          </Button>
+        </DialogClose>
+      </YStack>
+    </>
+  )
+}
+
+const ExportDialog = (props: ExportDialogProps) => {
+  const state = useGlobalState()
+  const [tab, setTab] = useState('current')
+  const snippet = tab === 'current' ? props.snippet : generateOutput(state)
+
+  return (
+    <>
+      <DialogCloseButton />
+      <YStack space="$4">
+        <YStack space="$2">
+          <Dialog.Title size="$7">Export</Dialog.Title>
+          <Dialog.Description size="$3" theme="alt2">
+            Copy and paste (for now)
+          </Dialog.Description>
+        </YStack>
+        <Tabs
+          size="$3"
+          flexDirection="column"
+          orientation="horizontal"
+          value={tab}
+          onValueChange={(newTab) => setTab(newTab)}
+        >
+          <XStack jc="space-between" ai="center" mb="$2">
+            <Tabs.List disablePassBorderRadius>
+              <Tabs.Tab value="current">
+                <SizableText>Current Tab</SizableText>
+              </Tabs.Tab>
+              <Tabs.Tab value="full">
+                <SizableText>Full Config</SizableText>
+              </Tabs.Tab>
+            </Tabs.List>
+
+            <Button
+              size="$3"
+              theme="green"
+              icon={Copy}
+              onPress={async () => {
+                await navigator.clipboard.writeText(snippet)
+                // toastController.show('Copied!')
+              }}
+            >
+              Copy to Clipboard
+            </Button>
+          </XStack>
+
+          <TextArea
+            fontFamily="$mono"
+            multiline
+            width={600}
+            numberOfLines={10}
+            // @ts-ignore
+            rows="10"
+            disabled
+            value={snippet}
+          />
+        </Tabs>
+
+        <XStack jc="flex-end" mt="$2" space>
+          <DialogClose>
+            <Button aria-label="Close">Done</Button>
+          </DialogClose>
+        </XStack>
+      </YStack>
+    </>
+  )
+}
+
+const dialogs: {
+  [Key in keyof DialogTypes]: (props: DialogTypes[Key]) => any
+} = {
+  none: CreateWorkspaceDialog,
+  'create-workspace': CreateWorkspaceDialog,
+  'create-theme': CreateThemeDialog,
+  'create-animation': CreateAnimationDialog,
+  'confirm-delete': ConfirmDeleteDialog,
+  export: ExportDialog,
+  alert: AlertDialog,
+}

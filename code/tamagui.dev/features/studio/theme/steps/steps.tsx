@@ -1,64 +1,103 @@
-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
+import type { ThemeStudioSection } from '../types'
+import { StepBaseThemes } from './2-base/StepBaseThemes'
+import { StepExportCode, StepExportCodeSidebar } from './5-export/StepExportCode'
+
+export const steps: ThemeStudioSection[] = [
+  {
+    title: 'Customize',
+    id: 'base',
+
+    steps: [
+      // {
+      //   subTitle: 'Theme',
+      //   children: StepBaseThemes,
+      //   actions: StepBaseThemesActions,
+      //   sidebar: StepBaseThemesSidebar,
+      //   tray: StepBaseThemesTray,
+      //   tip: StepLightDarkTip,
+      //   nextTitle: 'See in Action',
+      //   saveOnNext: true,
+      // },
+
+      {
+        subTitle: 'Theme',
+        children: StepBaseThemes,
+        showInline: true,
+        saveOnNext: true,
+      },
+    ],
+  },
+
+  // {
+  //   title: 'Sub Themes',
+  //   id: 'sub',
+
+  //   steps: [
+  //     {
+  //       subTitle: '',
+  //       explanation: true,
+  //       children: StepSubThemesIntro,
+  //     },
+
+  //     {
+  //       subTitle: 'Customize',
+  //       actions: StepSubThemesActions,
+  //       tip: () => (
+  //         <NoticeParagraph>
+  //           WIP, some bugs here - next up is a big cleanup of this area.
+  //           <br />
+  //           <br />
+  //           On the right is a <em>rough</em> preview, but know you can change individual
+  //           components later!
+  //         </NoticeParagraph>
+  //       ),
+  //       children: StepSubThemes,
+  //       sidebar: StepSubThemesSidebar,
+  //       saveOnNext: true,
+  //     },
+
+  //     {
+  //       subTitle: 'Preview',
+  //       children: BaseThemesStepPreview2,
+  //       explanation: true,
+  //       nextTitle: 'Component themes',
+  //     },
+  //   ],
+  // },
+
+  // {
+  //   title: 'Component Themes',
+  //   id: 'component',
+
+  //   steps: [
+  //     // todo: add an intro step
+
+  //     {
+  //       subTitle: 'Component Themes',
+  //       actions: StepComponentThemesActions,
+  //       tip: () => <NoticeParagraph>WIP</NoticeParagraph>,
+  //       children: StepComponentThemes,
+  //       preview: StepComponentThemesPreview,
+  //       showInline: true,
+  //       saveOnNext: true,
+  //       nextTitle: 'Go to export',
+  //     },
+  //   ],
+  // },
+
+  {
+    title: 'Export',
+    id: 'export',
+    steps: [
+      {
+        subTitle: 'Export Settings',
+        children: StepExportCode,
+      },
+
+      {
+        subTitle: 'Done!',
+        children: StepExportCodeSidebar,
+      },
+    ],
+  },
+] satisfies ThemeStudioSection[]

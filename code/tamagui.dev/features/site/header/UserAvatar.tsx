@@ -1,7 +1,6 @@
-import * as React from 'react'
 import { Avatar } from 'tamagui'
-import { useUser } from '~/features/user/useUser'
 import { getDefaultAvatarImage } from '~/features/user/getDefaultAvatarImage'
+import { useUser } from '~/features/user/useUser'
 
 export const UserAvatar = ({ size = 28 }: { size?: number }) => {
   const userSwr = useUser()
@@ -17,9 +16,7 @@ export const UserAvatar = ({ size = 28 }: { size?: number }) => {
           uri:
             userSwr.data?.userDetails?.avatar_url ||
             getDefaultAvatarImage(
-              userSwr.data?.userDetails?.full_name ||
-                userSwr.data?.session?.user?.email ||
-                'User'
+              userSwr.data?.userDetails?.full_name || userSwr.data?.user?.email || 'User'
             ),
         }}
       />

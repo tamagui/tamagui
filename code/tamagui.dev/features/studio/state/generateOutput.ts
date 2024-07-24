@@ -1,52 +1,84 @@
-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
+import type { ColorsStore } from './ColorsStore'
+import type { useGlobalState } from './useGlobalState'
+
+const generateColorConfig = (input: ColorsStore) => {
+  const colors: Record<string, string> = {}
+
+  for (const palette of Object.values(input.palettesByScheme)) {
+    for (const scale of Object.values(palette.scales)) {
+      let idx = 0
+      for (const color of scale.colors) {
+        const colorKey = [`${scale.name}${idx + 1}`]
+        const key = `${colorKey}${palette.name}`
+        colors[key] = `hsl(${color.hue}, ${color.saturation}%, ${color.lightness}%)`
+        idx++
+      }
+    }
+  }
+
+  return colors
+}
+
+/**
+ * generates full output snippet
+ */
+export const generateOutput = (globalStore: ReturnType<typeof useGlobalState>) => {
+  const animations = globalStore.animations.draftAnimations
+
+  const settings = globalStore.settings.draft
+  // let configStr = JSON.stringify(settingsStore.draft, null, 2)
+  // const linesArr = configStr.split('\n')
+  // linesArr.splice(1, 0, '  ...baseConfig, // the rest of your config here')
+  // return `const config = createTamagui(${linesArr.join('\n')})`
+
+  return `import { config as baseConfig } from '@tamagui/config/v3'
+import { createTamagui } from 'tamagui'
+import { createAnimations } from '@tamagui/animations-react-native'
+
+const animations = createAnimations({
+${objToStr({ type: 'object', value: animations })}
+})
+
+export const config = createTamagui({    
+${objToStr(
+  { type: 'spread', value: 'baseConfig' },
+  { type: 'value', value: 'animations' },
+  { type: 'object', value: settings },
+  {
+    type: 'value',
+    value: `tokens: {
+${objToStr(
+  { type: 'spread', value: 'baseConfig.tokens' },
+  {
+    type: 'value',
+    value: `color: {
+${objToStr({ type: 'object', value: generateColorConfig(globalStore.colors) })}
+  }`,
+  }
+)}}`,
+  }
+)}
+})
+`
+}
+
+type ObjToStrInput =
+  | { type: 'spread'; value: string }
+  | { type: 'value'; value: string }
+  | { type: 'object'; value: any }
+
+// TODO: this helper could be much better
+const objToStr = (...input: ObjToStrInput[]) => {
+  let output: string[] = []
+  for (const item of input) {
+    if (item.type === 'spread') {
+      output.push(`  ...${item.value},`)
+    } else if (item.type === 'value') {
+      output.push(`  ${item.value},`)
+    } else if (item.type === 'object') {
+      const lines = JSON.stringify(item.value, null, 2).split('\n')
+      output.push(`${lines.slice(1, lines.length - 1).join('\n')}`)
+    }
+  }
+  return output.join('\n')
+}

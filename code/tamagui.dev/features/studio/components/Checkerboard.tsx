@@ -1,11 +1,14 @@
-U2FsdGVkX19+ZrkdP6GNXRKVTjBzswXFTZ9PbGj596PolWjblqGudEqsRQ0EH1ru
-ZL+afLzZ2HG7szZc34E36Nei7DSmCya82QwjWOHreHLlPz5GayE7+5v1lJWnOTQF
-ZpgcD8c9T2W8JFlseggoTYjDUYVJwLRfr288d3F3RYnYHSsY4680KinzTbiLw3HO
-Uegav0Xvy5tPUfq7De8kEiTapBvsnNm9S7jYc2+ebVzwn94QURBoDeb6XhjDWdDd
-aDcUySprkABcSK/bQzmMZWkPwLEM1R4Z3ANWXqM+2h3mWvkYwqLmUVgXznoHJfYL
-ZN4pMT3P9djDdgDnfJmHaxhVyZgZAJwv7a+Zsgs4JLseW/eBE6ufm6jqAe7QO0eN
-VQR0Nw/bAOen2npNIEEj4TiYkhjd8VtSSHtRRTPthYdrArkjgBMOKjlBRdXkSozQ
-lqz1N7VJBT4hrFlf4BY0G+UrViFhyzouH0BuWvReanN4tTeLwWMNsQ4w5vzdKnWX
-D2QI6ZHIZ3UrVpsNHUpNFKhDq1oK6X6jL0/p/1bGOaHQ1GmoN3QAPNp4nkw5QcLQ
-jwbC4HIPNHmJjRn/BTGC7vVPrcOEMsS1PRD0qZeH5PnPfpGsLuwxDfHvYJtxvIAZ
-S88dCWwrDvLil0ErgXh0DA==
+import type { YStackProps } from 'tamagui';
+import { YStack } from 'tamagui'
+
+export const Checkerboard = (props: YStackProps) => (
+  <YStack
+    fullscreen
+    {...props}
+    style={{
+      background: `#eee url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill-opacity=".25" ><rect x="5" width="5" height="5" /><rect y="5" width="5" height="5" /></svg>')`,
+      backgroundSize: '10px 10px',
+      ...(props?.style as any),
+    }}
+  />
+)

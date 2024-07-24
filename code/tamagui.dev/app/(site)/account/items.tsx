@@ -43,7 +43,7 @@ export default function AccountItemsPage() {
 }
 
 const Items = () => {
-  const { data, isLoading } = useUser()
+  const { data, isLoading, refresh } = useUser()
 
   if (isLoading || !data) {
     return <Spinner my="$10" />
@@ -125,12 +125,11 @@ const SubscriptionDetail = ({ subscription }: SubscriptionDetailProps) => {
   const periodEnd = new Date(subscription.current_period_end)
   const canceledAt = subscription.canceled_at ? new Date(subscription.canceled_at) : null
   const items = getArray(subscription.subscription_items)
-  const { mutate } = useSWRConfig()
+  const { refresh } = useUser()
 
   if (!items) return null
 
   async function handleCancelSubscription() {
-    mutate(['user'])
     setIsLoading(true)
     try {
       const res = await fetch(`/api/cancel-subscription`, {
@@ -148,10 +147,9 @@ const SubscriptionDetail = ({ subscription }: SubscriptionDetailProps) => {
       // delay so stripe calls us first
       await new Promise((res) => setTimeout(() => res(true), 1000))
 
-      await mutate('user')
-
       if (data.message) {
         alert(data.message)
+        refresh()
       }
     } finally {
       setIsLoading(false)
@@ -176,15 +174,15 @@ const SubscriptionDetail = ({ subscription }: SubscriptionDetailProps) => {
       // delay so stripe calls us first
       await new Promise((res) => setTimeout(() => res(true), 1000))
 
-      await mutate('user')
-
       if (data.message) {
         alert(data.message)
+        refresh()
       }
     } finally {
       setIsLoading(false)
     }
   }
+
   // override "trialing" cause we use it for handling several things but may get users confused so we just show "active"
   const status = subscription.status === 'trialing' ? 'active' : subscription.status
 

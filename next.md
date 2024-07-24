@@ -1,3 +1,4 @@
+- config v4 = no custom fonts just defaults for each platform
 - RN transform type accepts string style props now but tamagui doesn't
 - opacity `/50`
 - AnimateList
@@ -131,7 +132,6 @@ Ongoing work:
 
 - Remove the need for Text
 
-- document the t_unmounted / SSR
 - popovers work with no js
 
 - TODO

@@ -261,21 +261,6 @@ export default function App({ Component, pageProps }: AppProps) {
 
 <Notice>We recommend memo-ing children so they don't re-render.</Notice>
 
-### Mount animations
-
-Animations that run through JS drivers and have `enterStyle` set will want to add the following script that allows for hiding those animations before the JS runs. This is the "right way" to handle things, as it allows for disabling JS entirely and not accidentally hiding all unmounted things. Meanwhile, it still properly avoids a flash of mounted style for SSR pages.
-
-Add this to `<Head>` in your [\_app.tsx](/docs/guides/next-js?#pages_apptsx):
-
-```tsx fileName="_app.tsx"
-<script
-  dangerouslySetInnerHTML={{
-    // avoid flash of entered elements before enter animations run:
-    __html: `document.documentElement.classList.add('t_unmounted')`,
-  }}
-/>
-```
-
 ### Performance
 
 Add `outputCSS` and `disableExtraction` to your `next.config.js`:
@@ -533,21 +518,6 @@ export const NextTamaguiProvider = ({ children }: { children: ReactNode }) => {
     </NextThemeProvider>
   )
 }
-```
-
-### Mount animations
-
-Animations that run through JS drivers and have `enterStyle` set will want to add the following script that allows for hiding those animations before the JS runs. This is the "right way" to handle things, as it allows for disabling JS entirely and not accidentally hiding all unmounted things. Meanwhile, it still properly avoids a flash of mounted style for SSR pages.
-
-Add this to `useServerInsertedHTML` in your [NextTamaguiProvider.tsx](/docs/guides/next-js?#applayouttsx):
-
-```tsx fileName="NextTamaguiProvider.tsx"
-<script
-  dangerouslySetInnerHTML={{
-    // avoid flash of entered elements before enter animations run:
-    __html: `document.documentElement.classList.add('t_unmounted')`,
-  }}
-/>
 ```
 
 ### Performance

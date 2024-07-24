@@ -1,14 +1,5 @@
 import NextDocument, { Head, Html, Main, NextScript } from 'next/document'
 import { StyleSheet } from 'react-native'
-
-import {
-  LoadCherryBomb,
-  LoadInter400,
-  LoadInter700,
-  LoadInter900,
-  LoadMunro,
-  LoadSilkscreen,
-} from '../components/LoadFont'
 import Tamagui from '../tamagui.config'
 
 export default class Document extends NextDocument {
@@ -47,30 +38,6 @@ export default class Document extends NextDocument {
           <meta name="docsearch:version" content="1.0.0,latest" />
           <meta id="theme-color" name="theme-color" />
           <meta name="color-scheme" content="light dark" />
-
-          <LoadInter700 />
-          <LoadInter400 />
-          <LoadSilkscreen />
-
-          {this.props.dangerousAsPath === '/studio' && (
-            <>
-              <LoadInter900 />
-            </>
-          )}
-
-          {this.props.dangerousAsPath === '/takeout' && (
-            <>
-              <LoadCherryBomb />
-              <LoadMunro />
-            </>
-          )}
-
-          {this.props.dangerousAsPath === '/bento' && (
-            <>
-              <LoadCherryBomb />
-              <LoadMunro />
-            </>
-          )}
         </Head>
         <body>
           <Main />

@@ -1,5 +1,5 @@
 import type { MetaFunction } from '@remix-run/node'
-import { H1 } from 'tamagui'
+import { Text } from '@tamagui/core'
 
 export const meta: MetaFunction = () => {
   return [
@@ -11,7 +11,7 @@ export const meta: MetaFunction = () => {
 export default function Index() {
   return (
     <div style={{ fontFamily: 'system-ui, sans-serif', lineHeight: '1.8' }}>
-      <H1>Tamagui + Remix</H1>
+      <Text>Tamagui + Remix</Text>
       <ul>
         <li>
           <a

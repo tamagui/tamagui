@@ -1,76 +1,167 @@
-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
+import { LogoIcon } from '@tamagui/logo'
+import { useEffect, useState } from 'react'
+import { Paragraph, Spacer, Spinner, XStack, YStack, composeRefs } from 'tamagui'
+import { useHoverGlow } from '~/components/HoverGlow'
+
+export const StudioQueueCard = ({ teamId }: { teamId: number }) => {
+  const [teamData, setTeamData] = useState<any>(null)
+
+  useEffect(() => {
+    const main = async () => {
+      const res = await fetch(`/api/studio-queue?team_id=${teamId}`)
+      const data = await res.json()
+      setTeamData(data)
+    }
+
+    main()
+  }, [])
+
+  if (!teamData) {
+    return <Spinner />
+  }
+
+  return (
+    <QueueCardFrame
+      teamName={teamData.name}
+      place={teamData.place}
+      date={new Date(teamData.date)}
+      estimatedDate={teamData.estimatedDate}
+      tierName={teamData.tierName}
+      tierId={teamData.tierId}
+    />
+  )
+}
+
+const QueueCardFrame = ({
+  place,
+  tierName,
+  estimatedDate,
+  teamName,
+}: {
+  teamName: string
+  place: number
+  date: Date
+  estimatedDate: string
+  tierName: string
+  tierId: string
+}) => {
+  const glow = useHoverGlow({
+    resist: 65,
+    size: 500,
+    strategy: 'blur',
+    blurPct: 100,
+    color: 'var(--color10)',
+    opacity: 0.3,
+    background: 'transparent',
+    offset: {
+      x: -200,
+      y: 200,
+    },
+  })
+
+  const glow2 = useHoverGlow({
+    resist: 80,
+    inverse: true,
+    size: 500,
+    strategy: 'blur',
+    blurPct: 100,
+    color: 'var(--blue10)',
+    opacity: 0.3,
+    background: 'transparent',
+    offset: {
+      x: 200,
+      y: -200,
+    },
+  })
+
+  const glow3 = useHoverGlow({
+    resist: 80,
+    size: 500,
+    strategy: 'blur',
+    blurPct: 100,
+    color: 'var(--pink10)',
+    opacity: 0.3,
+    background: 'transparent',
+    offset: {
+      x: -200,
+      y: -200,
+    },
+  })
+
+  return (
+    <YStack
+      ref={composeRefs(
+        glow.parentRef as any,
+        glow2.parentRef as any,
+        glow3.parentRef as any
+      )}
+      p="$4"
+      br="$4"
+      bw={4}
+      bc="$color2"
+      w={480}
+      h={280}
+      als="center"
+      ov="hidden"
+      elevation="$4"
+    >
+      <YStack fullscreen br={7} bw={1} bc="$borderColor" />
+
+      <YStack className="rotate-slow-right">{glow.Component()}</YStack>
+      <YStack className="rotate-slow-left">{glow2.Component()}</YStack>
+      <YStack className="rotate-slow-right">{glow3.Component()}</YStack>
+
+      {[
+        5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100,
+      ].map((deg) => (
+        <YStack
+          key={deg}
+          pos="absolute"
+          rotate={`${deg}deg`}
+          t="$5"
+          l="$5"
+          r="$5"
+          b="$5"
+          br="$3"
+          bc="$color8"
+          o={0.2}
+          bw={1}
+          scale={1.3}
+        />
+      ))}
+
+      <YStack>
+        <Paragraph size="$8">{teamName}</Paragraph>
+        <Paragraph size="$4">Studio Access</Paragraph>
+
+        <Paragraph theme="alt2" size="$3">
+          In queue for access {estimatedDate}
+        </Paragraph>
+      </YStack>
+
+      <Spacer flex />
+
+      <Paragraph pos="absolute" size="$12" b="$6" l="$15" scale={4} o={0.015} fow="900">
+        {place}
+      </Paragraph>
+
+      <XStack pb="$1" ai="flex-end">
+        <Paragraph als="flex-start" mr="$1" size="$6" o={0.35} ml="$-1">
+          #
+        </Paragraph>
+        <Paragraph my="$-3" size="$12" fow="900">
+          {place}
+        </Paragraph>
+        <Paragraph ml="$3" theme="alt2">
+          in the {tierName ?? 'non-sponsor'} tier
+        </Paragraph>
+
+        <Spacer flex />
+
+        <YStack pb="$2">
+          <LogoIcon />
+        </YStack>
+      </XStack>
+    </YStack>
+  )
+}

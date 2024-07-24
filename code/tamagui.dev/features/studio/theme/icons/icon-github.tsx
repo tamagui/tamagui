@@ -1,25 +1,16 @@
-U2FsdGVkX19ab+41PxJJ7lY08IkSPd4PXqIKeMcj/vOvOXiNdq6npo05//jLmdOm
-gO4un9y5ADt8sbXHKS5WZyzQ/2PrkCLIdKgvdGDbz3eDxanLpYd7ApQOSqyIAwRB
-yjTxiEwp9wUFiOEVC1OsBiOYRYoZq97Lcj3IucZ0q/hkBJV1xKzcFCUD2UpAw7kk
-5mQZ8Dc9Jv+4ODqyJ0en4boB843IK4gkxn69BO2aLmq6sc9PTyjFNMXy+nXOMPMc
-wkSpv5iigHS4vuHVhb3pehcBi0nlIcNfreY4ThSZKXUhppkcFPWG+Hx5b8o0RlSm
-j+IWYloy12f6jn29ZYjOQfpRLKQ8Vk7xNcr+IEOxffmvqL3hh1Kybt81aCgTFO1d
-Ee/oREXS5Xcmx0z8SX15Xs/0oiBWmxHe08BKTrunwr/x5SNIT6X0x4xrWF46+ij5
-RVblO7fO7uP2wLZvyg5sotNLRfdxBihI8Zilks9ac0yUiK07mST7ZpX/dMpAaMrr
-ENDN/PPBtmHQ9iwEUmveyfNr0uAD7NPcNVxMj9JKN50VXD/c7/E7+7wggE49Y17c
-7xufAQCMC2PxRm2BUG6tjZoDPEokg6obWCA1ISoMwKSfyDRI51CLoLZmY50tFvpb
-O8PSu64hDd4yoymwIpKPBd0aQJNbFMcKjQRTtWSIA+TsMGZ0DvI4FO+/UDGY9ywN
-jeEVRySqTFzcNGa7Ek35Jo6zmttrKSMcqRFpstllquB+cVvPRrsQP3W7xaPtIacA
-adxJZBE29haKEiHTFCTKdr2ML8i/AFTLkGsGXzOkEYIpD+wW7ZwATH/PcLAb2Xnr
-qfFBfHOIIVRNCNZ51sGeVaTM6YDZ6Df/BdULxfCi5ITguFuwScEKQRY8N9exqgy4
-5eNKt7np+1pfGtJOvDrCJBpPymfvgOGb8jhcpJsUPw6wMrDuVqHB4OjTWW4qk4C/
-XoqIXKOgO1TpGTbN3CtCNcH3BVf2dgXiisCb/HQGfSQacDGz1hInWK8bED7t6YsZ
-GKO52NrW1+IfIDnCr8lmsBXWKbI3L4B++jViTx6C7nFkqI1VpqeS347CMXVlXdqA
-34SXfn1tvNL/4rCff4/c07gubDGlWvjThLpySH1AbxDUhxqJa9pYJ8pq6+eEP8nG
-8yYkGqQcO49yA9p0EN3QImrnnvY61gPa8SkffJi2fsM/91zN4rdTUSFtoctv0YEq
-DHj7AbVKpxKkrVm8VjpFM6rV9qygBNlqeO+o//YHXFMi+WR5cu4LHhPmuw5yrzhA
-fWa0OYIHoJwMeXRvK8JbP4rddSl+6TjalTlqVvaeB9erU9xMpd4ZfCPg2RqSGAU2
-AupECZA8LE/c5s1L8p40rnyIKauvJb0NnQvu/f7oXNRJ3/jrOlBMa+th6Zg+qfwE
-mJm4MQ7lCaNIzjPZfuqrt4tpNFeJykq7Cl47PmvkMsyu1kNmYjIboStf/1UBrlAW
-M8Wjc7hcoXtArMufSG8VM5nZ202oN2agMYJ97HjHjgNuXeIszBW4lwzm2R/DhMm5
-dHFTvjBwnA93ZCaQye4L6A==
+import { themed } from '@tamagui/helpers-icon'
+import { Path, Svg } from '@tamagui/react-native-svg'
+import { memo } from 'react'
+const IconGithub = (_props) => {
+  const { size, ...props } = _props
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24" {...props}>
+      <Path
+        fill="currentColor"
+        d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"
+      />
+    </Svg>
+  )
+}
+const Memo = memo(themed(IconGithub))
+export { Memo as IconGithub }

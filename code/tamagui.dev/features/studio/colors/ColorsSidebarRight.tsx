@@ -1,183 +1,279 @@
-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
+import { CheckCircle, XCircle } from '@tamagui/lucide-icons'
+import { getContrast } from 'color2k'
+import { memo } from 'react'
+import {
+  Button,
+  Input,
+  Label,
+  Paragraph,
+  Separator,
+  Spacer,
+  Square,
+  XStack,
+  YStack,
+} from 'tamagui'
+
+// import {
+//   changeScaleCurve,
+//   changeScaleName,
+//   createCurveFromScale,
+//   deleteScale,
+// } from '../actions'
+import { SidebarPanel, SidebarRight } from '../components/Sidebar'
+import { colorsStore } from '../state/ColorsStore'
+import { rootStore } from '../state/RootStore'
+import { useGlobalState } from '../state/useGlobalState'
+import { Color } from './Color'
+import { colorToHex, getColor, getAccentScore } from './helpers'
+
+export const ColorsSidebarRight = memo(function ColorsSidebarRight() {
+  const state = useGlobalState()
+  const { scheme: paletteId, scaleId } = state.colors
+  const palette = state.colors.palette
+  const scale = state.colors.scale
+  const focusedHex = state.colors.focusedHex
+  const index = state.colors.selectedIndex
+
+  if (!scale) {
+    return null
+  }
+
+  const selectedColorContents = Boolean(index) && (
+    <>
+      <Separator />
+
+      <Color paletteId={paletteId} scaleId={scaleId} index={index} />
+
+      <Separator />
+
+      <SidebarPanel title={`Accent of ${scale.name}.${index}`}>
+        <YStack tag="ul" space="$1">
+          {[
+            {
+              name: 'bg',
+              hex: palette?.backgroundColor,
+              accent:
+                palette.backgroundColor && palette.backgroundColor !== 'transparent'
+                  ? getContrast(palette?.backgroundColor, focusedHex || '')
+                  : 1,
+            },
+            ...scale.colors
+              .map((_, i) => {
+                try {
+                  const hex = colorToHex(getColor(palette.curves, scale, i))
+                  const accent = getContrast(hex, focusedHex || '')
+                  return {
+                    name: `${scale.name}.${i}`,
+                    hex,
+                    accent,
+                  }
+                } catch (error) {
+                  return {
+                    error,
+                  }
+                }
+              })
+              .filter((_, i) => i !== Number(index)),
+          ].map((result, i) => {
+            if ('error' in result) {
+              return null
+            }
+
+            const { name, hex, accent } = result
+
+            return (
+              <XStack key={`${name}${i}`} ov="hidden" ai="center">
+                <XStack ai="center" f={1000} space="$2">
+                  <Square
+                    aria-hidden
+                    size="$2.5"
+                    br="$2"
+                    bw={1}
+                    bc="$borderColor"
+                    backgroundColor={hex as any}
+                  >
+                    <Paragraph size="$2" color={focusedHex as any}>
+                      Aa
+                    </Paragraph>
+                  </Square>
+                  <Paragraph size="$2" ellipse>
+                    on {name}
+                  </Paragraph>
+                </XStack>
+                <Spacer flex />
+                <XStack ov="hidden" f={1} space="$2" ai="center">
+                  <Paragraph size="$2" mr="$2">
+                    {accent.toFixed(2)}
+                  </Paragraph>
+                  <Paragraph size="$2" ellipse fow="800">
+                    {getAccentScore(getContrast(hex, focusedHex || ''))}{' '}
+                  </Paragraph>
+                  {getAccentScore(getContrast(hex, focusedHex || '')) === 'Fail' ? (
+                    <XCircle size={16} />
+                  ) : (
+                    <CheckCircle size={16} />
+                  )}
+                </XStack>
+              </XStack>
+            )
+          })}
+        </YStack>
+      </SidebarPanel>
+    </>
+  )
+
+  return (
+    <SidebarRight>
+      <SidebarPanel title={`Palette`}>
+        <YStack space="$2">
+          <YStack space="$1">
+            <Label size="$2" htmlFor="scale-name">
+              Name
+            </Label>
+            <Input
+              size="$2"
+              id="scale-name"
+              aria-label="Scale name"
+              value={scale.name}
+              onChangeText={colorsStore.changeScaleName}
+            />
+          </YStack>
+          <Button
+            size="$2"
+            onPress={async () => {
+              const confirmed = await rootStore.confirmDialog('confirm-delete', {
+                thingName: `palette`,
+              })
+              if (confirmed) {
+                state.colors.deleteScale()
+              }
+              // navigate(`${routePrefix}/local/${paletteId}`);
+            }}
+          >
+            Delete palette
+          </Button>
+        </YStack>
+      </SidebarPanel>
+
+      <Separator />
+
+      {/* <SidebarPanel title="Linked curves">
+        <YStack space="$3">
+          <YStack space="$1">
+            <Label size="$2" htmlFor="hue-curve">
+              Hue curve
+            </Label>
+            <XStack space="$2">
+              <Select
+                f={1}
+                size="$2"
+                key={`${scale.name}-hue-curve`}
+                id="hue-curve"
+                value={scale.curves.hue}
+                onValueChange={(value) =>
+                  changeScaleCurve({
+                    curveType: 'hue',
+                    curveId: value,
+                  })
+                }
+              >
+                <Select.Item index={0} value="">
+                  None
+                </Select.Item>
+                {Object.values(palette.curves)
+                  .filter((curve) => curve.type === 'hue')
+                  .map((curve, i) => (
+                    <Select.Item key={curve.id} index={i + 1} value={curve.id}>
+                      {curve.name}
+                    </Select.Item>
+                  ))}
+              </Select>
+              <Button
+                size="$2"
+                aria-label="Create hue curve"
+                icon={Plus}
+                onPress={() => createCurveFromScale('hue')}
+              />
+            </XStack>
+          </YStack>
+          <YStack space="$1">
+            <Label size="$2" htmlFor="saturation-curve">
+              Saturation curve
+            </Label>
+            <XStack space="$2">
+              <Select
+                f={1}
+                size="$2"
+                key={`${scale.name}-saturation-curve`}
+                id="hue-curve"
+                value={scale.curves.saturation}
+                onValueChange={(value) =>
+                  changeScaleCurve({
+                    curveType: 'saturation',
+                    curveId: value,
+                  })
+                }
+              >
+                <Select.Item index={0} value="">
+                  None
+                </Select.Item>
+                {Object.values(palette.curves)
+                  .filter((curve) => curve.type === 'saturation')
+                  .map((curve, i) => (
+                    <Select.Item key={curve.id} index={i + 1} value={curve.id}>
+                      {curve.name}
+                    </Select.Item>
+                  ))}
+              </Select>
+              <Button
+                size="$2"
+                aria-label="Create saturation curve"
+                icon={Plus}
+                onPress={() => createCurveFromScale('saturation')}
+              />
+            </XStack>
+          </YStack>
+          <YStack space="$1">
+            <Label size="$2" htmlFor="lightness-curve">
+              Lightness curve
+            </Label>
+            <XStack space="$2">
+              <Select
+                f={1}
+                size="$2"
+                key={`${scale.name}-lightness-curve`}
+                id="hue-curve"
+                value={scale.curves.lightness}
+                onValueChange={(value) =>
+                  changeScaleCurve({
+                    curveType: 'lightness',
+                    curveId: value,
+                  })
+                }
+              >
+                <Select.Item index={0} value="">
+                  None
+                </Select.Item>
+                {Object.values(palette.curves)
+                  .filter((curve) => curve.type === 'lightness')
+                  .map((curve, i) => (
+                    <Select.Item key={curve.id} index={i + 1} value={curve.id}>
+                      {curve.name}
+                    </Select.Item>
+                  ))}
+              </Select>
+              <Button
+                size="$2"
+                aria-label="Create lightness curve"
+                icon={Plus}
+                onPress={() => createCurveFromScale('lightness')}
+              />
+            </XStack>
+          </YStack>
+        </YStack>
+      </SidebarPanel> */}
+
+      {selectedColorContents}
+    </SidebarRight>
+  )
+})

@@ -7,7 +7,7 @@ const ALLOWED_REDIRECT_DOMAINS = ['tamagui.dev']
 
 export function useForwardToDashboard() {
   const { data, isLoading } = useUser()
-  const user = data?.session?.user
+  const user = data?.user
   const query = useGlobalSearchParams()
   const router = useRouter()
 

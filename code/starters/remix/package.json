@@ -4,8 +4,7 @@
   "sideEffects": false,
   "type": "module",
   "scripts": {
-    "upgrade:tamagui": "yarn up '*tamagui*'@latest '@tamagui/*'@latest",
-    "upgrade:tamagui:canary": "yarn up '*tamagui*'@canary '@tamagui/*'@canary",
+    "upgrade:tamagui": "yarn up '@tamagui/*'@latest",
     "build:production": "remix vite:build",
     "dev": "remix vite:dev",
     "lint": "biome check app",
@@ -14,19 +13,19 @@
     "typecheck": "tsc"
   },
   "dependencies": {
-    "@remix-run/node": "^2.8.1",
-    "@remix-run/react": "^2.8.1",
-    "@remix-run/serve": "^2.8.1",
-    "@tamagui/config": "^1.102.1",
+    "@remix-run/node": "^2.10.3",
+    "@remix-run/react": "^2.10.3",
+    "@remix-run/serve": "^2.10.3",
+    "@tamagui/config": "^1.104.1",
+    "@tamagui/core": "^1.104.1",
     "isbot": "^4.1.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "tamagui": "^1.102.1"
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.5.3",
-    "@remix-run/dev": "^2.8.1",
-    "@tamagui/vite-plugin": "^1.102.1",
+    "@remix-run/dev": "^2.10.3",
+    "@tamagui/vite-plugin": "^1.104.1",
     "@types/react": "^18.2.55",
     "@types/react-dom": "^18.2.19",
     "typescript": "^5.5.2",

@@ -490,6 +490,7 @@ const RunsFasterTextEffects = () => {
         <HeroText
           l={-3}
           className="mask-gradient-up"
+          style={{ mixBlendMode: 'hard-light' }}
           pe="none"
           col="$color8"
           $sm={{ l: 1.5 }}

@@ -1,8 +1,10 @@
-U2FsdGVkX1/5P6CoSRxlcBYEStqa6u4A2q50qfWo+VaP9z0liou4R4sDIfhg0uwK
-dxKNlW48klIS+A1DBRkEdH75xdQjAZexiaI+UO3R7pE6IoCV/1JyV6zI7NQpkkuG
-+w6qpdzfvxAUTkDbyjC/i3tnuKeW7Mzwm29uhCNmYKGratMG9ySE+h1d4Yqsggix
-ijqG0Y5Z3m7fB3OSVct67gvffSIxQ9bl84r4ydD9ASGk2QiCxz/iXQ/WJm+awMiv
-LzH9c8GQeLyLjmNd0L6Sg6Aw9s3bvjP85Td+MGWmKVHH8ws95N8mg8D8udtbP65s
-cfuJlA6rYtWJsC6tt5jZyyh6+3W/WrEmxeqYxW9xuG1Nqrfe5z4TQFufKh85TQ8p
-/DbYLKvY1eIHm5ymk+L/oD9INSgHCxkz7eJndr/nCDp9s3FwrUqz9fWj2KpVuOSl
-0MYFXkt7XqAHDTMuyBgmIQYRlGgsB9s4QphteeSWmWw=
+import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
+import { getStudioInternalThemeName } from '../../previewTheme'
+
+export const useBaseThemePreview = () => {
+  const store = useThemeBuilderStore()
+  return {
+    name: getStudioInternalThemeName(store.baseTheme.id),
+    version: store.themeSuiteVersion,
+  }
+}

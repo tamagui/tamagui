@@ -1,13 +1,17 @@
-U2FsdGVkX1+Ty6QdGou1fLq4Uvbn0sX+Pug4nbBFnVRZ9TZSbMhcpBNnEBlfkw1e
-25U1loG0cdWCkTPdXvO6UsycgHEBIuZ/RTNx4UiBwRxSmkHJYhI23E5i0PKZRO3h
-+5q5i+g3NHl0HO581p6fuw5BdTUffVU8awF+IwnxKF1UV+45pGycLIanhbDuk8fn
-OJvM1tGpO760TB1DQGrmpfXEFi0qpgmtePc5nD8JijcjPPJ8V4ER22F2ovu6MIDA
-1CtrpiOfVZv7IKLzmdNjv5SHbeiGcZPQoB2iHZIWE3oHt6JB36TueR66FpdRc6/h
-S+dCuc2FtoKj3UfuT70woWlClr6QoLNgWL7cnxQtsJyZcUzqfpea46pRajwh0J47
-WEzvkY2GSajcJoPplZLYpu/igDkJ973VuXzRfDaTxNbzZ9rerh7jqRxQ6q5NUmPd
-58g0DNc4Ne+eB95OeUl/9k8MUsVC2j2SSuzVYVWmf3K5SGROTxkxXiu7Kp9CBxVF
-e82iAwAh2bqsviTPGvC7tCcSPOxFBiaXoS97N56GFIFz8z7LgAZooEEzq4rPTvfO
-9K0xZa1iIef/04E7o8dHQP5StnFq6e3JhTu0v3pZUeiENDn8e94H9Nyj5gIYwIPP
-/oa65A7oh/ucZ/Ns00JLEW4Gjip7VS7BNLvdo7MeyC+rIaxTBqNguChwa/DNwc6v
-rcCWugpcAfR2+ThnwcBsDMPt78wynWSHgOPjsRct1eapw92k4W8lUa2TkUgRJd8J
-vTQrA++Hi31kmOdHGBRNbSqINfJrrXGeld4W3lG3rgXYvs9L2+eTWMPwiJWcYM7K
+export const IS_TAURI = globalThis['__TAURI__']
+export const STUDIO_TITLEBAR_HEIGHT = 30
+
+export const MODAL_WIDTH = 600
+export const MODAL_MIN_HEIGHT = 530
+export const MODAL_MAX_HEIGHT = 1100
+export const SIDEBAR_WIDTH = 500
+
+// duplicated from site for now...
+
+export const topBarHeight = 46
+export const sidebarWidth = 290
+export const isLocal = process.env.NODE_ENV === 'development'
+export const studioRootDir =
+  process.env.NODE_ENV === 'development' ? '' : 'https://studio.tamagui.dev'
+export const siteRootDir =
+  process.env.NODE_ENV === 'development' ? '' : 'https://tamagui.dev'

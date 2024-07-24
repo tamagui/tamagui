@@ -10,14 +10,24 @@ import {
   webToNativeDynamicExpansion,
   webToNativeExpansion,
 } from '../constants/webToNativeProps'
+import { getConfig } from '../config'
+
+const neg1Flex = [
+  ['flexGrow', 0],
+  ['flexShrink', 1],
+  ['flexBasis', 'auto'],
+] satisfies PropMappedValue
 
 export function expandStyle(key: string, value: any): PropMappedValue {
   if (process.env.TAMAGUI_TARGET === 'web') {
     if (key === 'flex') {
+      if (value === -1) {
+        return neg1Flex
+      }
       return [
         ['flexGrow', value],
         ['flexShrink', 1],
-        ['flexBasis', 'auto'],
+        ['flexBasis', getConfig().settings.styleCompat === 'react-native' ? 0 : 'auto'],
       ]
     }
 

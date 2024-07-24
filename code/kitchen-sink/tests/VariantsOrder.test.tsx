@@ -19,10 +19,14 @@ test(`variants apply below default props but above parent defaultvariants/props 
   })
 
   expect(await getStyles(page.getByTestId('text2').first())).toMatchObject({
-    fontSize: '20px',
+    fontSize: '15px',
   })
 
   expect(await getStyles(page.getByTestId('text3').first())).toMatchObject({
     fontSize: '30px',
+  })
+
+  expect(await getStyles(page.getByTestId('text4').first())).toMatchObject({
+    fontSize: '40px',
   })
 })

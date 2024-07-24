@@ -17,9 +17,8 @@ export const ensureAuth = async ({
   const supabase = getSupabaseServerClient(req)
 
   const {
-    data: { session },
-  } = await supabase.auth.getSession()
-  const user = session?.user
+    data: { user },
+  } = await supabase.auth.getUser()
 
   if (!user) {
     if (shouldRedirect) {
@@ -57,7 +56,7 @@ export const ensureAuth = async ({
       github_user_name: user.user_metadata.user_name,
     }
 
-    console.info(`Inserting new`, updateData)
+    console.info(`Update user info`, updateData.email)
 
     // fill in info
     const result = await supabase
@@ -70,5 +69,5 @@ export const ensureAuth = async ({
     }
   }
 
-  return { supabase, user, session }
+  return { supabase, user }
 }

@@ -1,48 +1,73 @@
-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
+import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
+import { useState } from 'react'
+import { Button, ScrollView, XStack, YStack } from 'tamagui'
+
+import { Select } from '../../../components/Select'
+import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
+import type { BuildTheme } from '../../types'
+import { FieldsetWithLabel } from '../../views/FieldsetWithLabel'
+import { StepThemeTemplate } from './StepThemeTemplate'
+
+export const ThemeTemplate = ({ theme }: { theme: BuildTheme }) => {
+  const [showMore, setShowMore] = useState(false)
+  const [selected, setSelected] = useState('base')
+  const stepStore = useThemeBuilderStore()
+  const hide = !stepStore.showTemplate
+
+  return (
+    <YStack mah={hide ? 50 : 600} pt="$4" mt="$-4">
+      <FieldsetWithLabel
+        label="Template"
+        tooltip={
+          <>
+            Tamagui takes your palette from the themes you've defined above and then uses
+            a template to generate your final theme.
+          </>
+        }
+        afterLabel={
+          <XStack gap="$2" ai="center">
+            <Select
+              value={selected}
+              onValueChange={setSelected}
+              size="$2"
+              w={100}
+              f={1}
+              defaultValue="base"
+            >
+              <Select.Item index={0} value="base">
+                Base
+              </Select.Item>
+              <Select.Item index={0} value="component">
+                Component
+              </Select.Item>
+            </Select>
+
+            <Button
+              size="$2"
+              themeInverse={showMore}
+              onPress={() => {
+                setShowMore(!showMore)
+                stepStore.showTemplate = false
+              }}
+            >
+              Customize
+            </Button>
+
+            <Button
+              onPress={() => {
+                stepStore.showTemplate = !stepStore.showTemplate
+              }}
+              size="$1"
+              circular
+              icon={hide ? ChevronUp : ChevronDown}
+            />
+          </XStack>
+        }
+      >
+        <ScrollView mah={500} m="$-5" p="$5" mt="$0">
+          {theme && <StepThemeTemplate buildTheme={theme} />}
+        </ScrollView>
+      </FieldsetWithLabel>
+    </YStack>
+  )
+}

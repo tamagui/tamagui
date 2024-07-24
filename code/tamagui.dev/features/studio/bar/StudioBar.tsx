@@ -1,229 +1,384 @@
-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
+import { LogoIcon } from '@tamagui/logo'
+import { Moon, Sun, X } from '@tamagui/lucide-icons'
+import { memo } from 'react'
+import {
+  Button,
+  Paragraph,
+  Popover,
+  PortalHost,
+  SizableText,
+  Switch,
+  XStack,
+  YStack,
+} from 'tamagui'
+
+import { topBarHeight } from '~/features/studio/constants'
+import { useRootStore } from '../state/useGlobalState'
+import { BarTabs } from './Tabs'
+import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
+import { usePathname, useRouter } from 'vxs'
+
+export const StudioBar = memo(function Header() {
+  const themeBuilderStore = useThemeBuilderStore()
+  const showMinimal = !themeBuilderStore.isCentered
+
+  return (
+    <XStack
+      h={topBarHeight}
+      zi={100_000}
+      jc="space-between"
+      data-tauri-drag-region
+      pos={'fixed' as any}
+      als="center"
+      elevation="$2"
+      ai="center"
+      px="$5"
+      br="$10"
+      ov="hidden"
+      gap="$3"
+      {...(themeBuilderStore.isCentered
+        ? {
+            mx: 'auto',
+            left: 0,
+            right: 0,
+            b: '$2.5',
+          }
+        : {
+            right: '$2',
+            top: '$2',
+          })}
+      maxWidth={192}
+      className="all ease-in-out ms300"
+    >
+      <YStack br="$10" fullscreen className="blur-medium" />
+      <YStack br="$10" fullscreen bg="$background" bw={1} bc="$borderColor" />
+
+      {/* <XStack ai="center"> */}
+      {/* <YStack> */}
+      {/* <NextLink href={studioRootDir}> */}
+      <XStack mr="$2">
+        <LogoIcon downscale={2.5} />
+      </XStack>
+      {/* </NextLink> */}
+      {/* </YStack> */}
+
+      {/* {state.projectName ? (
+          <SizableText>Project: {state.projectName}</SizableText>
+        ) : null} */}
+      {/* <DesignSystemSelector /> */}
+      {/* </XStack> */}
+
+      <PortalHost name="studio-header" />
+      {/* <XStack
+        ai="center"
+        className="all ease-in-out ms300"
+        // w={showMinimal ? 0 : 'auto'}
+        o={showMinimal ? 0 : 1}
+        ov="hidden"
+      >
+        <StudioTabs />
+
+        <AccountButton />
+      </XStack> */}
+      {/* <ThemeSwitch /> */}
+    </XStack>
+  )
+})
+
+const AccountButton = () => {
+  // todo
+  return null
+  // const { data } = useUser()
+  // const user = data?.session?.user
+
+  // return (
+  //   <XStack ai="center" jc="center" space="$2">
+  //     <Anchor href={`${siteRootDir}/account`}>
+  //       <TooltipSimple label="Account">
+  //         {data?.userDetails ? (
+  //           <Avatar size="$2" circular>
+  //             <Avatar.Image
+  //               source={{
+  //                 uri:
+  //                   data.userDetails?.avatar_url ??
+  //                   getDefaultAvatarImage(
+  //                     data.userDetails?.full_name ?? user?.email ?? 'User'
+  //                   ),
+  //               }}
+  //             />
+  //           </Avatar>
+  //         ) : (
+  //           <Button fontWeight="900" icon={User} size="$2" />
+  //         )}
+  //       </TooltipSimple>
+  //     </Anchor>
+  //   </XStack>
+  // )
+}
+
+export const ThemeSwitch = memo(() => {
+  const rootStore = useRootStore()
+  const themeBuilderStore = useThemeBuilderStore()
+
+  const tip = themeBuilderStore.themeSwitchTip
+  const tipOpen = themeBuilderStore.themeSwitchOpen && !!themeBuilderStore.themeSwitchTip
+  const isLight = rootStore.theme === 'light'
+
+  return (
+    <Popover open={tipOpen} stayInFrame={{ padding: 10 }} size="$3">
+      <Popover.Trigger>
+        <XStack mx="$2" ai="center">
+          <Switch
+            checked={isLight}
+            size="$2"
+            y={0.5}
+            onCheckedChange={(light) => {
+              if (
+                themeBuilderStore.selectedSchemes.dark &&
+                themeBuilderStore.selectedSchemes.light
+              ) {
+                rootStore.theme = light ? 'light' : 'dark'
+                themeBuilderStore.themeSwitchOpen = false
+              }
+              // const next = light ? 'light' : 'dark'
+              // rootStore.theme = next
+              // themesStore.toggleFocusedThemeItem({
+              //   id: next,
+              // })
+            }}
+
+            // rotate="-45deg"
+          >
+            <XStack fullscreen zi={100} x={2} y={0.5}>
+              {isLight && (
+                <Button
+                  tag="span"
+                  color="$color"
+                  disabled
+                  chromeless
+                  // rotate="45deg"
+
+                  size="$1"
+                  scaleIcon={1}
+                  o={0.44}
+                  x={-1.5}
+                  y={-1.5}
+                  icon={Moon}
+                />
+              )}
+            </XStack>
+
+            <XStack pos="absolute" t={0} r={0} zi={100} x={1} y={0}>
+              {!isLight && (
+                <Button
+                  tag="span"
+                  color="$color"
+                  disabled
+                  chromeless
+                  // rotate="45deg"
+
+                  size="$1"
+                  scaleIcon={1}
+                  o={0.25}
+                  x={-1.5}
+                  y={-1.5}
+                  icon={Sun}
+                />
+              )}
+            </XStack>
+
+            <Switch.Thumb animation="quickest">
+              <YStack
+                ai="center"
+                // rotate="45deg"
+              >
+                {isLight && (
+                  <Button
+                    tag="span"
+                    color="$background"
+                    disabled
+                    chromeless
+                    size="$1"
+                    scaleIcon={1.2}
+                    o={0.8}
+                    y={-0.75}
+                    icon={Sun}
+                  />
+                )}
+                {!isLight && (
+                  <Button
+                    tag="span"
+                    color="$background"
+                    disabled
+                    chromeless
+                    size="$1"
+                    scaleIcon={1.2}
+                    o={0.5}
+                    y={-0.75}
+                    icon={Moon}
+                  />
+                )}
+              </YStack>
+            </Switch.Thumb>
+          </Switch>
+        </XStack>
+      </Popover.Trigger>
+
+      <Popover.Content
+        theme="yellow"
+        trapFocus={false}
+        borderWidth={2}
+        borderColor="$borderColor"
+        enterStyle={{ y: -10, opacity: 0 }}
+        exitStyle={{ y: -10, opacity: 0 }}
+        elevate
+        // maw={400}
+        animation={[
+          'quickest',
+          {
+            opacity: {
+              overshootClamping: true,
+            },
+          },
+        ]}
+      >
+        <Popover.Arrow size="$5" borderWidth={2} borderColor="$borderColor" />
+
+        <Paragraph size="$2">{tip}</Paragraph>
+        <Button
+          size="$1"
+          circular
+          pos="absolute"
+          t="$-2"
+          r="$-2"
+          icon={X}
+          onPress={() => {
+            themeBuilderStore.themeSwitchOpen = false
+          }}
+        ></Button>
+      </Popover.Content>
+    </Popover>
+  )
+})
+
+const StudioTabs = memo(function StudioTabs() {
+  const router = useRouter()
+  const pathname = usePathname()
+
+  return (
+    <BarTabs
+      currentTab={pathname.split('/').pop() as string}
+      onTabChange={(val) => router.push(val)}
+      tabs={[
+        {
+          component: (
+            <SizableText size="$2" fow="500">
+              Theme Studio
+            </SizableText>
+          ),
+          value: 'builder',
+          hasChanges: false,
+        },
+        {
+          component: (
+            <SizableText size="$2" fow="500">
+              Config
+            </SizableText>
+          ),
+          value: 'config',
+          hasChanges: false,
+        },
+        // {
+        //   component: <SizableText size="$2" fow="500">Tokens</SizableText>,
+        //   value: 'tokens',
+        //   hasChanges: false,
+        // },
+        // {
+        //   component: <SizableText size="$2" fow="500">Colors</SizableText>,
+        //   value: 'colors',
+        //   hasChanges: useObserve(() => colorsStore.hasChanges),
+        // },
+        {
+          component: (
+            <SizableText size="$2" fow="500">
+              Themes
+            </SizableText>
+          ),
+          value: 'themes',
+          hasChanges: false,
+        },
+        // {
+        //   component: <SizableText size="$2" fow="500">Animations</SizableText>,
+        //   value: 'animations',
+        //   hasChanges: useObserve(() => animationsStore.hasChanges),
+        // },
+      ]}
+    />
+  )
+})
+
+// function DesignSystemSelector() {
+//   return (
+//     <XStack space="$2">
+//       <Select size="$2" defaultValue="blueberry">
+//         <Select.Trigger w={150} iconAfter={ChevronDown}>
+//           <Select.Value placeholder="Something" />
+//         </Select.Trigger>
+
+//         <Select.Content>
+//           <Select.ScrollUpButton>☝️</Select.ScrollUpButton>
+
+//           <Select.Viewport minWidth={200}>
+//             <Select.Group>
+//               <Select.Label>Fruits</Select.Label>
+//               <Select.Item value="apple" index={0}>
+//                 <Select.ItemText>Apple</Select.ItemText>
+//               </Select.Item>
+//               <Select.Item value="banana" index={1}>
+//                 <Select.ItemText>Banana</Select.ItemText>
+//               </Select.Item>
+//               <Select.Item value="blueberry" index={2}>
+//                 <Select.ItemText>Blueberry</Select.ItemText>
+//               </Select.Item>
+//               <Select.Item value="berry" index={3}>
+//                 <Select.ItemText>Berry</Select.ItemText>
+//               </Select.Item>
+//               <Select.Item value="strawberry" index={4}>
+//                 <Select.ItemText>Strawberry</Select.ItemText>
+//               </Select.Item>
+//               <Select.Item value="kiwi" index={5}>
+//                 <Select.ItemText>Kiwi</Select.ItemText>
+//               </Select.Item>
+//               <Select.Item value="grape" index={6}>
+//                 <Select.ItemText>Grape</Select.ItemText>
+//               </Select.Item>
+//               <Select.Item value="orange" index={7}>
+//                 <Select.ItemText>Orange</Select.ItemText>
+//               </Select.Item>
+//             </Select.Group>
+//           </Select.Viewport>
+
+//           <Select.ScrollDownButton>👇</Select.ScrollDownButton>
+//         </Select.Content>
+//       </Select>
+
+//       <TooltipSimple label="New workspace">
+//         <Dialog.Trigger asChild>
+//           <Button
+//             size="$2"
+//             icon={Plus}
+//             onPress={() => {
+//               rootStore.showDialog('create-workspace', {})
+//             }}
+//           />
+//         </Dialog.Trigger>
+//       </TooltipSimple>
+//     </XStack>
+//   )
+// // }
+
+const getDefaultAvatarImage = (name: string) => {
+  const params = new URLSearchParams()
+  params.append('name', name)
+  return `https://ui-avatars.com/api/?${params.toString()}`
+}

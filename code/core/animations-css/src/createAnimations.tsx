@@ -62,7 +62,9 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
       const isExiting = presence?.[0] === false
       const sendExitComplete = presence?.[1]
       // const initialPositionRef = useRef<any>(null)
-      const [animationKey, animationConfig] = [].concat(props.animation)
+      const [animationKey, animationConfig] = Array.isArray(props.animation)
+        ? props.animation
+        : [props.animation]
       const animation = animations[animationKey]
       const keys = props.animateOnly ?? ['all']
 
@@ -81,69 +83,79 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
         }
       }, [sendExitComplete, isExiting])
 
-      // layout animations
-      // useIsomorphicLayoutEffect(() => {
-      //   if (!host || !props.layout) {
-      //     return
-      //   }
-      //   // @ts-ignore
-      //   const boundingBox = host?.getBoundingClientRect()
-      //   if (isChanged(initialPositionRef.current, boundingBox)) {
-      //     const transform = invert(
-      //       host,
-      //       boundingBox,
-      //       initialPositionRef.current
-      //     )
+      if (animation) {
+        if (Array.isArray(style.transform)) {
+          style.transform = transformsToString(style.transform)
+        }
 
-      //     animate({
-      //       from: transform,
-      //       to: { x: 0, y: 0, scaleX: 1, scaleY: 1 },
-      //       duration: 1000,
-      //       onUpdate: ({ x, y, scaleX, scaleY }) => {
-      //         // @ts-ignore
-      //         host.style.transform = `translate(${x}px, ${y}px) scaleX(${scaleX}) scaleY(${scaleY})`
-      //         // TODO: handle childRef inverse scale
-      //         //   childRef.current.style.transform = `scaleX(${1 / scaleX}) scaleY(${
-      //         //     1 / scaleY
-      //         //   })`
-      //       },
-      //       // TODO: extract ease-in from string and convert/map it to a cubicBezier array
-      //       cubicBezier: [0, 1.38, 1, -0.41],
-      //     })
-      //   }
-      //   initialPositionRef.current = boundingBox
-      // })
+        // add css transition
+        // TODO: we disabled the transform transition, because it will create issue for inverse function and animate function
+        // for non layout transform properties either use animate function or find a workaround to do it with css
+        style.transition = keys
+          .map((key) => {
+            const override = animations[animationConfig?.[key]] ?? animation
+            return `${key} ${override}`
+          })
+          .join(', ')
+      }
+
+      if (process.env.NODE_ENV === 'development' && props['debug']) {
+        console.info('CSS animation', {
+          props,
+          animations,
+          animation,
+          animationKey,
+          style,
+          isEntering,
+          isExiting,
+        })
+      }
 
       if (!animation) {
         return null
       }
 
-      if (Array.isArray(style.transform)) {
-        style.transform = transformsToString(style.transform)
-      }
-
-      // add css transition
-      // TODO: we disabled the transform transition, because it will create issue for inverse function and animate function
-      // for non layout transform properties either use animate function or find a workaround to do it with css
-      style.transition = keys
-        .map((key) => {
-          const override = animations[animationConfig?.[key]] ?? animation
-          return `${key} ${override}`
-        })
-        .join(', ')
-
-      // style.transition = `${keys} ${animation}${
-      //   props.layout ? ',width 0s, height 0s, margin 0s, padding 0s, transform' : ''
-      // }`
-
-      if (process.env.NODE_ENV === 'development' && props['debug']) {
-        console.info('CSS animation', style, style.transition, { isEntering, isExiting })
-      }
-
-      return { style }
+      return { style, className: isEntering ? 't_unmounted' : '' }
     },
   }
 }
+
+// layout animations
+// useIsomorphicLayoutEffect(() => {
+//   if (!host || !props.layout) {
+//     return
+//   }
+//   // @ts-ignore
+//   const boundingBox = host?.getBoundingClientRect()
+//   if (isChanged(initialPositionRef.current, boundingBox)) {
+//     const transform = invert(
+//       host,
+//       boundingBox,
+//       initialPositionRef.current
+//     )
+
+//     animate({
+//       from: transform,
+//       to: { x: 0, y: 0, scaleX: 1, scaleY: 1 },
+//       duration: 1000,
+//       onUpdate: ({ x, y, scaleX, scaleY }) => {
+//         // @ts-ignore
+//         host.style.transform = `translate(${x}px, ${y}px) scaleX(${scaleX}) scaleY(${scaleY})`
+//         // TODO: handle childRef inverse scale
+//         //   childRef.current.style.transform = `scaleX(${1 / scaleX}) scaleY(${
+//         //     1 / scaleY
+//         //   })`
+//       },
+//       // TODO: extract ease-in from string and convert/map it to a cubicBezier array
+//       cubicBezier: [0, 1.38, 1, -0.41],
+//     })
+//   }
+//   initialPositionRef.current = boundingBox
+// })
+
+// style.transition = `${keys} ${animation}${
+//   props.layout ? ',width 0s, height 0s, margin 0s, padding 0s, transform' : ''
+// }`
 
 // const isChanged = (initialBox: any, finalBox: any) => {
 //   // we just mounted, so we don't have complete data yet

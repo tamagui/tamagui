@@ -1,90 +1,168 @@
-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
+import { memo, useState } from 'react'
+import type { TabLayout, TabsTabProps, YStackProps } from 'tamagui'
+import { AnimatePresence, Circle, Tabs, YStack } from 'tamagui'
+
+export const BarTabs = memo(function HeaderTabs({
+  currentTab,
+  onTabChange,
+  tabs,
+}: {
+  currentTab: string
+  onTabChange: (string) => void
+  tabs: { component: React.ReactNode; value: string; hasChanges?: boolean }[]
+}) {
+  const [tabRovingState, setTabRovingState] = useState<{
+    /**
+     * Layout of the Tab user might intend to select (hovering / focusing)
+     */
+    intentAt: TabLayout | null
+    /**
+     * Layout of the Tab user selected
+     */
+    activeAt: TabLayout | null
+    /**
+     * Used to get the direction of activation for animating the active indicator
+     */
+    prevActiveAt: TabLayout | null
+  }>({
+    activeAt: null,
+    intentAt: null,
+    prevActiveAt: null,
+  })
+
+  const setCurrentTab = onTabChange
+  const setIntentIndicator = (intentAt) =>
+    setTabRovingState({ ...tabRovingState, intentAt })
+  const setActiveIndicator = (activeAt) =>
+    setTabRovingState({
+      ...tabRovingState,
+      prevActiveAt: tabRovingState.activeAt,
+      activeAt,
+    })
+  const { activeAt, intentAt, prevActiveAt } = tabRovingState
+
+  /**
+   * -1: from left
+   *  0: n/a
+   *  1: from right
+   */
+  //   const direction = (() => {
+  //     if (!activeAt || !prevActiveAt || activeAt.x === prevActiveAt.x) {
+  //       return 0
+  //     }
+  //     return activeAt.x > prevActiveAt.x ? -1 : 1
+  //   })()
+
+  //   const enterVariant =
+  //     direction === 1 ? 'isLeft' : direction === -1 ? 'isRight' : 'defaultFade'
+  //   const exitVariant =
+  //     direction === 1 ? 'isRight' : direction === -1 ? 'isLeft' : 'defaultFade'
+
+  const handleOnInteraction: TabsTabProps['onInteraction'] = (type, layout) => {
+    if (type === 'select') {
+      setActiveIndicator(layout)
+    } else {
+      setIntentIndicator(layout)
+    }
+  }
+
+  return (
+    <Tabs
+      value={currentTab}
+      onValueChange={setCurrentTab}
+      orientation="horizontal"
+      size="$2"
+      flexDirection="column"
+      activationMode="manual"
+      position="relative"
+    >
+      <AnimatePresence>
+        {intentAt && (
+          <TabsRovingIndicator
+            key="intent-indicator"
+            width={intentAt.width}
+            height={intentAt.height}
+            x={intentAt.x}
+            y={intentAt.y}
+          />
+        )}
+      </AnimatePresence>
+      <AnimatePresence>
+        {activeAt && (
+          <TabsRovingIndicator
+            key="active-indicator"
+            isActive
+            width={activeAt.width}
+            height={activeAt.height}
+            x={activeAt.x}
+            y={activeAt.y}
+          />
+        )}
+      </AnimatePresence>
+
+      <Tabs.List
+        disablePassBorderRadius
+        loop={false}
+        aria-label="Manage your account"
+        space="$2"
+        backgroundColor="transparent"
+      >
+        {tabs.map(({ component, value, hasChanges }) => (
+          <Tabs.Tab
+            key={value}
+            unstyled
+            bc="transparent"
+            px="$3"
+            value={value}
+            onInteraction={handleOnInteraction}
+          >
+            <AnimatePresence>
+              {hasChanges && (
+                <Circle
+                  key={value}
+                  animation="bouncy"
+                  opacity={1}
+                  scale={1}
+                  enterStyle={{ opacity: 0, scale: 0.4 }}
+                  exitStyle={{ opacity: 0, scale: 0.4 }}
+                  pos="absolute"
+                  right={2}
+                  top={2}
+                  backgroundColor={'$green8'}
+                  size={8}
+                />
+              )}
+            </AnimatePresence>
+            {component}
+          </Tabs.Tab>
+        ))}
+      </Tabs.List>
+    </Tabs>
+  )
+})
+
+const TabsRovingIndicator = ({
+  isActive,
+  ...props
+}: { isActive?: boolean } & YStackProps) => {
+  return (
+    <YStack
+      borderRadius="$2"
+      position="absolute"
+      backgroundColor="$color6"
+      animation="quick"
+      enterStyle={{
+        opacity: 0,
+      }}
+      exitStyle={{
+        opacity: 0,
+      }}
+      opacity={0.5}
+      {...(isActive && {
+        backgroundColor: '$color8',
+        opacity: 0.6,
+      })}
+      {...props}
+    />
+  )
+}

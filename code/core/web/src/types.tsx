@@ -491,6 +491,12 @@ type AllowedStyleValuesSetting =
 type AutocompleteSpecificTokensSetting = boolean | 'except-special'
 
 type GenericTamaguiSettings = {
+  /**
+   * When true, flexBasis will be set to 0 when flex is positive. This will be
+   * the default in v2 of Tamagui alongside an alternative mode for web compat.
+   */
+  styleCompat?: 'react-native'
+
   // TODO
   /**
    * When true, Tamagui will always prefer a more specific style prop over a
@@ -2396,6 +2402,7 @@ export type UseAnimationHook = (props: {
   delay?: number
 }) => null | {
   style?: StackStyleBase | StackStyleBase[]
+  className?: string
 }
 
 export type GestureReponderEvent = Exclude<

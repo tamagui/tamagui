@@ -438,24 +438,3 @@ like so:
 
 Note that because of this constraint, you also will see an error if you add the
 `animation` prop to a component in dev mode during an HMR. Often just saving once more will remove the screen, or reloading at worst.
-
-#### Server side rendered enter animations on web
-
-To get easy, safe and ideal server side rendering, Tamagui avoids rendering using the spring animation drivers on the server. Instead, it uses the CSS driver so that it can generate both enter-style and non-enter-style CSS, with the enter-style CSS under the new selector `.t_unmounted`.
-
-On the first load in a browser, to avoid [hydration mis-matches](https://nextjs.org/docs/messages/react-hydration-error)), Tamagui renders once more using the CSS driver. Finally, it renders again (only for components with both animation and enterStyle set), swapping in the spring driver and removing the `t_unmounted` selector so that the enter animations hand off without any visible difference. But you have to add one script tag to the head element, from the server:
-
-```tsx
-<head>
-  <script
-    dangerouslySetInnerHTML={{
-      // avoid flash of entered elements before enter animations run:
-      // https://tamagui.dev/docs/core/animations#server-side-rendered-enter-animations-on-web
-      __html: `document.documentElement.classList.add('t_unmounted')`,
-    }}
-  />
-</head>
-```
-
-This adds the className `t_unmounted` to your body tag only if JavaScript is enabled. If a user doesn't have JavaScript on, they see the normal page, without any hidden elements. If they do have JavaScript on, because this script runs in the head before the browser has any body to show, browsers will add the `t_unmounted` className on first render and your content will be in the "entering" state, or else it would flicker the "entered" content.
-

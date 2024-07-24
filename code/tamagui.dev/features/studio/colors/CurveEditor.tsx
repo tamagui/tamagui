@@ -1,198 +1,315 @@
-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
-Z0QHsX2kcTPj4/0Rwxh/jQ==
+// 'use client'
+
+// import { guard, readableColor } from 'color2k'
+// import { scaleLinear } from 'd3-scale'
+// import React, { useState } from 'react'
+// import { DraggableCore } from 'react-draggable'
+// import { YStack } from 'tamagui'
+
+// function round(num: number, step: number) {
+//   return Math.round(num * (1 / step)) / (1 / step)
+// }
+
+// type CurveEditorProps = {
+//   values: readonly number[]
+//   min: number
+//   max: number
+//   step?: number
+//   onChange?: (values: number[], shiftKey: boolean, index?: number) => void
+//   onFocus?: (index: number) => void
+//   onBlur?: () => void
+//   disabled?: boolean
+//   label?: string
+//   style?: React.SVGAttributes<SVGSVGElement>['style']
+//   labelColor?: string
+// }
+
+// // TODO: arrow key support
+// // TODO: snap to guides
+// // TODO: focus status
+// // TODO: label
+// export function CurveEditor({
+//   values,
+//   min,
+//   max,
+//   onChange,
+//   onFocus,
+//   onBlur,
+//   step = 0.1,
+//   disabled = false,
+//   label = '',
+//   labelColor,
+//   style = {},
+// }: CurveEditorProps) {
+//   // const [{ values }, onChange] = useControllableState<{
+//   //   values: readonly number[]
+//   //   shiftKey?: boolean
+//   //   index?: number
+//   // }>({
+//   //   defaultProp: { values: valuesProp },
+//   //   prop: { values: valuesProp },
+//   //   onChange: (values) => onChangeProp?.(values.values, values.shiftKey, values.index),
+//   // })
+//   const [{ width, height }, setLayout] = useState({ width: 0, height: 0 })
+//   const nodeRadius = 20
+//   const columnWidth = width / values.length
+//   const [dragging, setDragging] = React.useState<number | 'line' | false>(false)
+//   const [focused, setFocused] = React.useState<number | 'line' | false>(false)
+
+//   const xScale = React.useCallback(
+//     scaleLinear()
+//       .domain([0, values.length - 1])
+//       .range([columnWidth / 2, width - columnWidth / 2]),
+//     [values.length, width, columnWidth]
+//   )
+
+//   const yScale = React.useCallback(
+//     scaleLinear()
+//       .domain([min, max])
+//       .range([height - nodeRadius, nodeRadius]),
+//     [min, max, height, nodeRadius]
+//   )
+
+//   const points = React.useMemo(
+//     () => values.map((value, index) => ({ x: xScale(index), y: yScale(value) })),
+//     [values, xScale, yScale]
+//   )
+
+//   return (
+//     <YStack
+//       width="100%"
+//       height="100%"
+//       opacity={disabled ? 0.5 : 1}
+//       pos="relative"
+//       pointerEvents="none"
+//       onLayout={(e) => setLayout(e.nativeEvent.layout)}
+//       zi={100}
+//     >
+//       <svg
+//         width="100%"
+//         height="100%"
+//         fill="none"
+//         onKeyDown={(event) => {
+//           let delta: number | undefined
+//           switch (event.key) {
+//             case 'ArrowUp':
+//               delta = 1
+//               break
+//             case 'ArrowDown':
+//               delta = -1
+//               break
+//           }
+
+//           if (delta) {
+//             if (focused === 'line') {
+//               const clampedDelta = values.reduce((acc, value) => {
+//                 if (value + acc < min) {
+//                   return min - value
+//                 }
+
+//                 if (value + acc > max) {
+//                   return max - value
+//                 }
+
+//                 return acc
+//               }, delta)
+
+//               onChange?.(
+//                 values.map((value) => round(value + clampedDelta, step)),
+//                 event.shiftKey
+//               )
+//             } else if (typeof focused === 'number') {
+//               const next = [...values]
+//               const value = guard(
+//                 min,
+//                 max,
+//                 yScale.invert(points[focused].y) + (delta || 0)
+//               )
+//               next[focused] = round(value, step)
+//               onChange?.(next, event.shiftKey, focused)
+//             }
+//           }
+//         }}
+//       >
+//         <DraggableCore
+//           disabled={disabled}
+//           onStart={() => setDragging('line')}
+//           onStop={() => setDragging(false)}
+//           onDrag={(event, data) => {
+//             const delta =
+//               yScale.invert(points[0].y + data.deltaY) - yScale.invert(points[0].y)
+
+//             const clampedDelta = values.reduce((acc, value) => {
+//               if (value + acc < min) {
+//                 return min - value
+//               }
+
+//               if (value + acc > max) {
+//                 return max - value
+//               }
+
+//               return acc
+//             }, delta)
+
+//             onChange?.(
+//               values.map((value) => round(value + clampedDelta, step)),
+//               event.shiftKey
+//             )
+//           }}
+//         >
+//           <g
+//             pointerEvents={
+//               disabled || (dragging !== false && dragging !== 'line') ? 'none' : 'all'
+//             }
+//             className="c-target-parent"
+//             data-dragging={dragging === 'line' ? 'true' : 'false'}
+//             onFocus={() => {
+//               setFocused('line')
+//             }}
+//             onBlur={() => {
+//               setFocused(false)
+//             }}
+//             tabIndex={disabled ? undefined : 0}
+//           >
+//             <polyline
+//               className="target"
+//               stroke="rgba(0,0,0,0.1)"
+//               strokeWidth={nodeRadius * 2}
+//               points={points.map(({ x, y }) => `${x},${y}`).join(' ')}
+//               strokeLinejoin="round"
+//               strokeLinecap="round"
+//             />
+//             {!disabled ? (
+//               <>
+//                 <polyline
+//                   stroke="var(--background)"
+//                   strokeWidth={focused === 'line' ? 6 : 4}
+//                   points={points.map(({ x, y }) => `${x},${y}`).join(' ')}
+//                   strokeLinejoin="round"
+//                   opacity={focused === 'line' ? 1 : 0.5}
+//                 />
+//                 {focused === 'line' ? (
+//                   <polyline
+//                     className="line-focus-ring"
+//                     points={points.map(({ x, y }) => `${x},${y}`).join(' ')}
+//                     strokeLinejoin="round"
+//                     fill="none"
+//                     style={{
+//                       stroke: `var(--color9)`,
+//                     }}
+//                     strokeWidth="1.5"
+//                   />
+//                 ) : null}
+//               </>
+//             ) : (
+//               <polyline
+//                 stroke="var(--background)"
+//                 strokeWidth={2}
+//                 points={points.map(({ x, y }) => `${x},${y}`).join(' ')}
+//                 strokeLinejoin="round"
+//               />
+//             )}
+//           </g>
+//         </DraggableCore>
+
+//         {points.map(({ x, y }, index) => (
+//           <DraggableCore
+//             key={index}
+//             disabled={disabled}
+//             onStart={() => setDragging(index)}
+//             onStop={() => setDragging(false)}
+//             onDrag={(event, data) => {
+//               const next = [...values]
+//               const value = guard(min, max, yScale.invert(y + data.deltaY))
+//               next[index] = round(value, step)
+//               onChange?.(next, event.shiftKey, index)
+//             }}
+//           >
+//             <g
+//               pointerEvents={disabled ? 'none' : 'all'}
+//               className="c-target-parent"
+//               data-dragging={dragging === 'line' ? 'true' : 'false'}
+//               onFocus={() => {
+//                 setFocused(index)
+//                 onFocus?.(index)
+//               }}
+//               onBlur={() => {
+//                 setFocused(false)
+//                 onBlur?.()
+//               }}
+//               tabIndex={disabled ? undefined : 0}
+//             >
+//               <circle
+//                 className="target"
+//                 cx={x}
+//                 cy={y}
+//                 r={nodeRadius}
+//                 fill="rgba(0,0,0,0.1)"
+//                 style={{ transformOrigin: `${x}px ${y}px` }}
+//               />
+//               {!disabled ? (
+//                 <>
+//                   <circle
+//                     className="border"
+//                     cx={x}
+//                     cy={y}
+//                     r={focused === index || focused === 'line' ? 10.5 : 8.5}
+//                     fill="none"
+//                     stroke="rgba(0,0,0,0.2)"
+//                     strokeWidth="1"
+//                   />
+//                   <circle
+//                     className="handle"
+//                     cx={x}
+//                     cy={y}
+//                     r={focused === index || focused === 'line' ? 10 : 8}
+//                     fill="var(--background)"
+//                   />
+//                   {focused === index || focused === 'line' ? (
+//                     <circle
+//                       className="focus-ring"
+//                       cx={x}
+//                       cy={y}
+//                       r={7}
+//                       fill="none"
+//                       style={{
+//                         stroke: `var(--color9)`,
+//                       }}
+//                       strokeWidth="1.5"
+//                     />
+//                   ) : null}
+//                 </>
+//               ) : (
+//                 <circle
+//                   className="node-handle"
+//                   cx={x}
+//                   cy={y}
+//                   r={4}
+//                   fill="var(--background)"
+//                 />
+//               )}
+
+//               {index === 0 ? (
+//                 <text
+//                   x={x - nodeRadius - 4}
+//                   y={y}
+//                   fill={labelColor ?? 'var(--background)'}
+//                   style={{
+//                     textTransform: 'uppercase',
+//                     fontFamily: 'system-ui, sans-serif',
+//                     fontSize: 14,
+//                     lineHeight: 1,
+//                   }}
+//                   textAnchor="start"
+//                   alignmentBaseline="middle"
+//                 >
+//                   {label}
+//                 </text>
+//               ) : null}
+//             </g>
+//           </DraggableCore>
+//         ))}
+//       </svg>
+//     </YStack>
+//   )
+// }

@@ -6,6 +6,6 @@ export const useDisableMotion = () => {
     isClient &&
       (window.matchMedia(`(prefers-reduced-motion: reduce)`)?.matches ||
         window.location.search?.includes('disable-motion') ||
-        /firefox/i.test(navigator.userAgent))
+        /firefox/i.test(navigator.userAgent || ''))
   )
 }

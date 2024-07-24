@@ -1,18 +1,18 @@
-// TODO
-globalThis['tamagui_is_x'] = true
-
 import '@tamagui/core/reset.css'
 import '~/app.css'
 import '~/tamagui.css'
 
 import { isWeb, setupPopper } from 'tamagui'
-import { ScrollRestoration, Slot, Stack } from 'vxs'
+import { PageLoadProgressBar, ScrollRestoration, Slot, Stack } from 'vxs'
 import { HeadInfo } from '~/components/HeadInfo'
 import { ToastProvider } from '@tamagui/toast'
 import { TamaguiProvider } from 'tamagui'
 import { SearchProvider } from '~/features/site/search/SearchProvider'
 import { UserThemeProvider, useUserTheme } from '~/features/site/theme/useUserTheme'
 import tamaConf from '~/config/tamagui.config'
+import { version } from 'react'
+
+console.info('React version', version)
 
 // for navigation container props
 //           theme: {
@@ -69,6 +69,7 @@ export default function Layout() {
       />
 
       <ScrollRestoration />
+      <PageLoadProgressBar />
 
       <meta name="robots" content="index,follow" />
 

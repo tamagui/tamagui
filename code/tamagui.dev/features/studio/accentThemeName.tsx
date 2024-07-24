@@ -1,4 +1,4 @@
-U2FsdGVkX19NPcvfw0WVJTDEwT9HJdLPlWKUCwDePfWVe4arHTBa9ZE3scmI5LDC
-LzzNJMJRiy6+254xCJAjMISrPQOMazp5fBpbisEgf23VYFydcH5W98ylL01NPzNI
-UK5SHdnHSPiXSJpQalcHVtya5j3LTp5R9FgwVv6HM37eCz0I/VzYokzx5AF4QY0t
-SO/WcY2ZZx4yjeMO3swD3NO6oCBSU412yVa4p00ypGEb5wuuZTF3WKqdqzIT01Uc
+import type { ColorTokens, ThemeName } from 'tamagui'
+
+export const accentThemeName = 'accent' as ThemeName
+export const accentTokenName = '$accentBackground' as ColorTokens

@@ -1,18 +1,16 @@
-U2FsdGVkX184cSnzrfPiyrWfWtgrq6qW1eha7t9V0ctdNI49u8BR4+AWatqKjPUm
-NlX9XJqwHkhzvKQsCaxcXH3N/e8xctnLl1qYhhv2BfPXw2puUmtvdZLYbggfdprL
-D13A+8eBDjh7AbTQPjIyGG0cX1qLghYfj99AYCQKIPXR6MHxFYGS7QyJj2MOKaUv
-PytZVsMTbPHv+cGnGszmNZ2RRzF+5trpLaaSzuFzipPmUwqKH9zA0XY/jaKQHSgS
-YVXIa8ZqpaJkyTNpXu9AwmjpxYD/JTTCKpowyD8RMkgpGQYpi7zm/jlxc5FMgZ1o
-9CpTENxpbOfCnb6iOkcw8bty/Dwq3FWt/yh82HbkArCj3eFkKAhrLv5XRIVk2okV
-Dl9aA8yI0EunOzqMCv5LhbdytBp931968QufoBXgPI+3x+jDwKoNyBcxHrqaUlmH
-aMXlzKsIRTcZf0Fh3YZGFJr+wEXUtXGD2lGukehhLY+k6Pd75CBtYezrk/DRE1oC
-oLUMeujp9E4HYkU27d7VeGtmlWZdJl3unKKDrXHKLvJGjl6HUSCpFF9mRHc1CmyK
-BE2HIE/WiLLEQ2yLKU5Xlxr6OjTphHPYvmD41jJmnikJsryfI+svvipkjP4bNzax
-c8+z5g8mn4WlCkVu4bJhBLWuyyShyn+lNIWmsoVka26H8pkG+KbHwIaPKwDAVq14
-fGTo0WXtDq/7iRP3mKnkuld/hoPLvr+KXwJEJFPpfHY7mnAbDbP2HmjI9xsOHCGY
-ZjJiFze1bPqhKsnFGas2GYx6XIH3svruM3T0xuEy7mr3FrnSBUhBiOII2m3fHd67
-IsJO8BW7cXjY5M8vaCOHJy1nPsSgmv+Y4fCBp6Nb1DwfRKhwop7xxm/h0Cq94SVw
-awnrwnLJrRSKxO/rBlyREmUgnBzuhL8pWBJAMkkhySu5d2tFqx8HV4jlzNZRjxc2
-elCtXCcPuqyoe2ktQB1gG/OSymMhB5YsBQr6LckWGB/FrQYulUUcZvm+o2AsBUxi
-tw5iQtjdAERnMlo+SLvqaB456apONdD/Ax6N8p4XGJ8EMw6dGQE76JLrGIU+HgQE
-jy2yXEO7xRQwVX/95hJdew==
+import { themed } from '@tamagui/helpers-icon'
+import { memo } from 'react'
+import { Path, Svg } from '@tamagui/react-native-svg'
+const IconGitlab = (_props) => {
+  const { size, ...props } = _props
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24" {...props}>
+      <Path
+        fill="currentColor"
+        d="m23.6 9.593-.033-.086L20.3.98a.851.851 0 0 0-.336-.405.875.875 0 0 0-1 .054.875.875 0 0 0-.29.44L16.47 7.818H7.537L5.332 1.07a.857.857 0 0 0-.29-.441.875.875 0 0 0-1-.054.859.859 0 0 0-.336.405L.433 9.502l-.032.086a6.066 6.066 0 0 0 2.012 7.01l.01.009.03.021 4.977 3.727 2.462 1.863 1.5 1.132a1.008 1.008 0 0 0 1.22 0l1.499-1.132 2.461-1.863 5.006-3.75.013-.01a6.068 6.068 0 0 0 2.01-7.002z"
+      />
+    </Svg>
+  )
+}
+const Memo = memo(themed(IconGitlab))
+export { Memo as IconGitlab }

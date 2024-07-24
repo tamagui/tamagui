@@ -1,30 +1,28 @@
 {
-  "name": "testing",
-  "version": "1.102.1",
+  "name": "@tamagui/ooo",
+  "version": "1.104.1",
   "private": true,
   "files": [],
   "type": "module",
   "scripts": {
-    "dev": "vxrn dev",
+    "dev": "vxs dev",
     "dev:clean": "yarn clean && yarn dev",
     "clean": "rm -r dist || true && rm -r node_modules/.vite || true",
-    "build:prod": "vxrn build",
-    "serve": "vxrn serve",
+    "build:prod": "vxs build",
+    "serve": "vxs serve",
+    "serve:railway": "vxs serve --host 0.0.0.0",
     "postinstall": "patch-package || true"
   },
   "dependencies": {
-    "@tamagui/button": "1.102.1",
-    "@tamagui/config": "1.102.1",
-    "@tamagui/core": "1.102.1",
-    "@tamagui/input": "1.102.1",
-    "react": "npm:react@19.0.0-rc-f994737d14-20240522",
-    "react-dom": "npm:react-dom@19.0.0-rc-f994737d14-20240522",
+    "@tamagui/button": "1.104.1",
+    "@tamagui/config": "1.104.1",
+    "@tamagui/core": "1.104.1",
+    "@tamagui/input": "1.104.1",
     "react-native": "0.74.1",
-    "vxs": "^1.1.134"
+    "vxs": "^1.1.148"
   },
   "devDependencies": {
-    "patch-package": "^8.0.0",
-    "vxrn": "^1.1.134"
+    "patch-package": "^8.0.0"
   },
   "publishConfig": {
     "access": "public"

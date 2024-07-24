@@ -1,3 +1,3 @@
-U2FsdGVkX1/R9UYo7np/UICXbwhFF4tgMdezhY7H9to8biCMpNyJhE+xp8FjVk+2
-wpQB8KbjbMyOL+SBdJjwUy1A3N0Kx64Ob2ePzTVlpWDSmKNb4ORv0H/qgPs5wfDI
-e89BZITuLIOATi0XVxLZeK0Oi4UA0mjGq7LnZDLAfR7pQ7K3ClUgrqRK36QlngES
+export function getRandomElement<T>(array: Array<T>) {
+  return array[Math.floor(Math.random() * array.length)]
+}

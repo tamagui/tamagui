@@ -6,35 +6,48 @@
     "url": "https://github.com/tamagui/tamagui"
   },
   "workspaces": [
+    "./code/bento",
     "./code/compiler/**/*",
     "./code/core/**/*",
-    "./code/packages/**/*",
-    "./code/ui/**/*",
-    "./code/bento",
     "./code/demos",
     "./code/integration",
     "./code/kitchen-sink",
     "./code/next-site",
     "./code/ooo",
-    "./code/tamagui.dev"
+    "./code/packages/**/*",
+    "./code/takeout",
+    "./code/tamagui.dev",
+    "./code/ui/**/*"
   ],
-  "packageManager": "yarn@4.1.0",
+  "packageManager": "yarn@4.3.1",
   "scripts": {
-    "new": "yarn workspace testing dev:clean",
+    "ooo": "yarn workspace @tamagui/ooo dev:clean",
+    "ooo:build": "yarn workspace @tamagui/ooo build:prod",
+    "ooo:prod": "yarn ooo:build && yarn ooo:serve",
+    "ooo:serve": "yarn workspace @tamagui/ooo serve",
+    "takeout": "yarn workspace @tamagui/takeout dev",
+    "takeout:build": "yarn workspace @tamagui/takeout build:prod",
+    "takeout:prod": "yarn takeout:build && yarn takeout:serve",
+    "takeout:serve": "yarn workspace @tamagui/takeout serve",
+    "takeout:unlock": "./scripts/transcrypt.sh -C takeout -c aes-256-cbc -p",
+    "build:app": "./scripts/ci-build-app.sh",
     "dev": "yarn workspace @tamagui/dot-dev dev:clean",
     "dev:extract": "TAMAGUI_EXTRACT=1 yarn workspace @tamagui/dot-dev dev:clean",
     "dev:build": "yarn workspace @tamagui/dot-dev build:prod",
     "dev:serve": "yarn workspace @tamagui/dot-dev serve",
-    "dev:serve:railway": "yarn workspace @tamagui/dot-dev serve:railway",
     "dev:prod": "yarn dev:build && yarn dev:serve",
     "dev:prod-only-homepage": "yarn dev:build --only index && yarn dev:serve",
-    "bento-cli:dev": "yarn workspace @tamagui/bento-cli dev",
     "postinstall": "./scripts/unlock-repo.sh",
     "build:force": "yarn clean:build && yarn build --force",
     "build:js": "./scripts/ensure-unlocked.sh && turbo run build --no-cache --force -- --skip-types",
     "build:types": "SKIP_JS=1 yarn build",
     "build": "turbo run build --filter=!next-app",
     "build:verbose": "yarn build -vvv",
+    "docker:build:ooo": "dotenv -e .env -- sh -c 'docker build --progress=plain --build-arg TRANSCRYPT_PASSWORD=$TRANSCRYPT_PASSWORD --build-arg SHOULD_UNLOCK_GIT_CRYPT=$SHOULD_UNLOCK_GIT_CRYPT --build-arg APP_NAME=one -t my-app .'",
+    "docker:build": "dotenv -e .env -- sh -c 'docker build --progress=plain --build-arg TRANSCRYPT_PASSWORD=$TRANSCRYPT_PASSWORD --build-arg SHOULD_UNLOCK_GIT_CRYPT=$SHOULD_UNLOCK_GIT_CRYPT -t my-app .'",
+    "docker:run": "dotenv -e .env -- sh -c 'docker run -it -p 3000:3000 my-app'",
+    "docker:build-and-run": "yarn docker:build && yarn docker:run",
+    "docker:serve": "./scripts/ci-serve.sh",
     "check": "manypkg check",
     "ci": "yarn && yarn check && yarn lint && yarn typecheck && yarn build && yarn test",
     "clean:build": "turbo run clean:build",
@@ -91,21 +104,14 @@
     "watch:ts": "node -r esbuild-register ./scripts/watch-ts.ts",
     "next-site": "yarn workspace @tamagui/next-site dev"
   },
-  "resolutions": {
-    "@types/node": "16.11.9",
-    "metro": "0.80.8",
-    "metro-core": "0.80.8",
-    "metro-resolver": "0.80.8",
-    "metro-config": "0.80.8"
-  },
   "profile": {
     "//": "run 'yarn profile x' to toggle it on/off",
     "react-19": {
       "applied": false,
       "resolutions": {
         "@react-three/fiber": "9.0.0-alpha.6",
-        "react": "19.0.0-rc-3563387fe3-20240621",
-        "react-dom": "19.0.0-rc-3563387fe3-20240621",
+        "react": "19.0.0-rc-fb9a90fa48-20240614",
+        "react-dom": "19.0.0-rc-fb9a90fa48-20240614",
         "react-native-reanimated": "3.13.0-rc.1"
       }
     },
@@ -113,8 +119,8 @@
       "applied": false,
       "resolutions": {
         "@react-three/fiber": "9.0.0-alpha.6",
-        "react": "19.0.0-rc-3563387fe3-20240621",
-        "react-dom": "19.0.0-rc-3563387fe3-20240621",
+        "react": "19.0.0-rc-fb9a90fa48-20240614",
+        "react-dom": "19.0.0-rc-fb9a90fa48-20240614",
         "react-native-reanimated": "3.13.0-rc.1",
         "create-vxrn": "portal:~/vxrn/packages/create-vxrn",
         "@vxrn/react-native-prebuilt": "portal:~/vxrn/packages/react-native-prebuilt",
@@ -150,12 +156,13 @@
   "dependencies": {
     "@biomejs/biome": "^1.7.3",
     "@manypkg/cli": "^0.19.1",
-    "@nderscore/tamagui-typescript-plugin": "^0.6.0",
-    "@playwright/test": "^1.40.1",
+    "@playwright/test": "^1.45.2",
     "@types/eslint": "^8",
     "@typescript-eslint/eslint-plugin": "^6.19.1",
     "@typescript-eslint/parser": "^6.19.1",
-    "@vercel/og": "^0.5.8",
+    "dotenv-cli": "^7.4.2",
+    "esbuild": "^0.23.0",
+    "esbuild-register": "^3.5.0",
     "eslint": "^8.56.0",
     "eslint-parallel": "^1.2.1",
     "fs-extra": "^11.2.0",
@@ -170,6 +177,5 @@
     "ultra-runner": "^3.10.5",
     "update-ts-references": "^3.3.0",
     "zx": "^7.2.3"
-  },
-  "stableVersion": "0.0.0"
+  }
 }

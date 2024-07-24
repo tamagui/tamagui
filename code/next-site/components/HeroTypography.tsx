@@ -1,7 +1,6 @@
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { useIsIntersecting } from '@tamagui/demos'
 import { useTint } from '@tamagui/logo'
-import { NextLink } from 'components/NextLink'
 import { memo, useEffect, useRef, useState } from 'react'
 import type { Heading, TextProps } from 'tamagui'
 import {
@@ -18,9 +17,6 @@ import {
   YStack,
   useDidFinishSSR,
 } from 'tamagui'
-
-import { ContainerLarge } from './Container'
-import { HomeH2 } from './HomeH2'
 
 const families = ['silkscreen', 'mono', 'heading']
 
@@ -49,19 +45,19 @@ export const HeroTypography = memo(() => {
     <>
       <YStack fullscreen className="" o={0.1} />
       {/* -5 my to fir grid nicely */}
-      <ContainerLarge my={-5} position="relative" space="$8">
+      <YStack my={-5} position="relative" space="$8">
         <YStack ref={ref} ai="center" space="$3">
-          <HomeH2>
+          <H2>
             Beautifully expressive font systems with{' '}
             <span className="clip-text rainbow">rhythm</span>.
-          </HomeH2>
+          </H2>
         </YStack>
 
         <XStack
           ai="center"
           jc="center"
           pos="relative"
-          space="$8"
+          gap="$8"
           flexDirection="row-reverse"
           $sm={{
             flexDirection: 'column-reverse',
@@ -72,17 +68,17 @@ export const HeroTypography = memo(() => {
           <YStack
             h={300}
             w="40%"
-            space="$0.5"
+            gap="$0.5"
             jc="center"
             scale={1.1}
             x={-20}
             y={5}
             $sm={{ y: 0, miw: '110%', ai: 'center', x: 0, scale: 0.9 }}
           >
-            <YStack ai="flex-end" contain="paint layout" h={270}>
+            <YStack ai="flex-end" h={270}>
               <AnimatePresence exitBeforeEnter>
                 <AnimatedHeading
-                  disableAnimation={!isIntersecting}
+                  debug
                   key={`${family}1`}
                   index={0}
                   Component={H1}
@@ -91,8 +87,7 @@ export const HeroTypography = memo(() => {
                 >
                   Swappable
                 </AnimatedHeading>
-                <AnimatedHeading
-                  disableAnimation={!isIntersecting}
+                {/* <AnimatedHeading
                   key={`${family}2`}
                   index={1}
                   Component={H2}
@@ -102,7 +97,6 @@ export const HeroTypography = memo(() => {
                   typed, compiled
                 </AnimatedHeading>
                 <AnimatedHeading
-                  disableAnimation={!isIntersecting}
                   key={`${family}3`}
                   index={2}
                   Component={H3}
@@ -112,7 +106,6 @@ export const HeroTypography = memo(() => {
                   custom per-size
                 </AnimatedHeading>
                 <AnimatedHeading
-                  disableAnimation={!isIntersecting}
                   key={`${family}4`}
                   index={3}
                   Component={H4}
@@ -122,7 +115,6 @@ export const HeroTypography = memo(() => {
                   premade or custom
                 </AnimatedHeading>
                 <AnimatedHeading
-                  disableAnimation={!isIntersecting}
                   key={`${family}5`}
                   index={4}
                   Component={H5}
@@ -132,7 +124,6 @@ export const HeroTypography = memo(() => {
                   easy to author
                 </AnimatedHeading>
                 <AnimatedHeading
-                  disableAnimation={!isIntersecting}
                   key={`${family}6`}
                   index={5}
                   Component={H6}
@@ -140,12 +131,12 @@ export const HeroTypography = memo(() => {
                   color="$red10"
                 >
                   font themes
-                </AnimatedHeading>
+                </AnimatedHeading> */}
               </AnimatePresence>
             </YStack>
           </YStack>
         </XStack>
-      </ContainerLarge>
+      </YStack>
     </>
   )
 })
@@ -172,16 +163,14 @@ const OverlayCard = () => {
           line-height, letter-spacing, color and more.
         </Paragraph>
 
-        <NextLink prefetch={false} href="/docs/core/configuration">
-          <Button
-            accessibilityLabel="Fonts docs"
-            fontFamily="$silkscreen"
-            als="flex-end"
-            theme={tint as any}
-          >
-            Fonts &raquo;
-          </Button>
-        </NextLink>
+        <Button
+          aria-label="Fonts docs"
+          fontFamily="$silkscreen"
+          als="flex-end"
+          theme={tint as any}
+        >
+          Fonts &raquo;
+        </Button>
       </YStack>
     </Card>
   )

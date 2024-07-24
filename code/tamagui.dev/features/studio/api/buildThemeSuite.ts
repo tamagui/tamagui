@@ -1,50 +1,102 @@
-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
+import { createThemeBuilder } from '@tamagui/theme-builder'
+import { defaultPalettes, defaultSubThemes } from '@tamagui/themes/v3-themes'
+
+import { getFinalPalettes } from '../theme/helpers/getFinalPalettes'
+import type { BuildThemeSuiteProps } from '../theme/types'
+
+export function buildThemeSuite(props: BuildThemeSuiteProps) {
+  const { templates, componentThemes } = props
+  const palettes = getFinalPalettes(props.palettes)
+
+  if (palettes.light.length !== defaultPalettes.light.length) {
+    console.error({ palettes, defaultPalettes })
+    throw new Error(`Error - generated palette doesn't match length`)
+  }
+
+  // start theme-builder
+
+  const themeBuilder = createThemeBuilder()
+    .addPalettes(palettes)
+    .addTemplates(templates)
+    .addThemes({
+      light: {
+        template: 'base',
+        palette: 'light',
+      },
+      dark: {
+        template: 'base',
+        palette: 'dark',
+      },
+    })
+    .addChildThemes(
+      palettes.light_accent
+        ? {
+            accent: [
+              {
+                parent: 'light',
+                template: 'base',
+                palette: 'light_accent',
+              },
+              {
+                parent: 'dark',
+                template: 'base',
+                palette: 'dark_accent',
+              },
+            ],
+          }
+        : {}
+    )
+    .addChildThemes(defaultSubThemes)
+    .addChildThemes(componentThemes, {
+      avoidNestingWithin: [
+        'alt1',
+        'alt2',
+        'surface1',
+        'surface2',
+        'surface3',
+        'surface4',
+        'active',
+      ],
+    })
+
+  const themes = themeBuilder.build()
+
+  // end theme-builder
+
+  console.info(`buildThemeSuite`, themes, {
+    palettes,
+    templates,
+    defaultSubThemes,
+    componentThemes,
+  })
+
+  return {
+    themes,
+    themeBuilder,
+  }
+}
+
+// for user-customized we had:
+// Object.fromEntries([
+//   ...subThemes.flatMap((theme) => {
+//     return [
+//       [
+//         theme.name,
+//         [
+//           {
+//             parent: 'dark',
+//             template: theme.template,
+//             palette: theme.palette,
+//           },
+//           {
+//             parent: 'light',
+//             template: theme.template,
+//             palette: theme.palette,
+//           },
+//         ],
+//       ],
+//     ]
+//   }),
+// ])
+
+export type BuildBaseThemesResult = ReturnType<typeof buildThemeSuite>

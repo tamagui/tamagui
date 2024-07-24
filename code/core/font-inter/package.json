@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/font-inter",
-  "version": "1.102.1",
+  "version": "1.104.1",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -23,6 +23,24 @@
     "./css/700.css": "./css/700.css",
     "./css/800.css": "./css/800.css",
     "./css/900.css": "./css/900.css",
+    "./otf/Inter-Black.otf": "./otf/Inter-Black.otf",
+    "./otf/Inter-BlackItalic.otf": "./otf/Inter-BlackItalic.otf",
+    "./otf/Inter-Bold.otf": "./otf/Inter-Bold.otf",
+    "./otf/Inter-BoldItalic.otf": "./otf/Inter-BoldItalic.otf",
+    "./otf/Inter-ExtraBold.otf": "./otf/Inter-ExtraBold.otf",
+    "./otf/Inter-ExtraBoldItalic.otf": "./otf/Inter-ExtraBoldItalic.otf",
+    "./otf/Inter-ExtraLight.otf": "./otf/Inter-ExtraLight.otf",
+    "./otf/Inter-ExtraLightItalic.otf": "./otf/Inter-ExtraLightItalic.otf",
+    "./otf/Inter-Italic.otf": "./otf/Inter-Italic.otf",
+    "./otf/Inter-Light.otf": "./otf/Inter-Light.otf",
+    "./otf/Inter-LightItalic.otf": "./otf/Inter-LightItalic.otf",
+    "./otf/Inter-Medium.otf": "./otf/Inter-Medium.otf",
+    "./otf/Inter-MediumItalic.otf": "./otf/Inter-MediumItalic.otf",
+    "./otf/Inter-Regular.otf": "./otf/Inter-Regular.otf",
+    "./otf/Inter-SemiBold.otf": "./otf/Inter-SemiBold.otf",
+    "./otf/Inter-SemiBoldItalic.otf": "./otf/Inter-SemiBoldItalic.otf",
+    "./otf/Inter-Thin.otf": "./otf/Inter-Thin.otf",
+    "./otf/Inter-ThinItalic.otf": "./otf/Inter-ThinItalic.otf",
     ".": {
       "react-native": "./dist/cjs/index.native.js",
       "types": "./types/index.d.ts",
@@ -40,10 +58,10 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/core": "1.102.1"
+    "@tamagui/core": "1.104.1"
   },
   "devDependencies": {
-    "@tamagui/build": "1.102.1",
+    "@tamagui/build": "1.104.1",
     "subset-font": "^2.1.0"
   },
   "publishConfig": {

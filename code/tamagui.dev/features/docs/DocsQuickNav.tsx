@@ -6,7 +6,7 @@ import { Link } from '~/components/Link'
 import type { LinkProps } from '~/components/Link'
 
 const QuickNavLink = ({ href, ...rest }: LinkProps) => (
-  <a href={href as any}>
+  <a onClick={(e) => [e.stopPropagation()]} href={href as any}>
     <Paragraph
       tag="span"
       size="$3"

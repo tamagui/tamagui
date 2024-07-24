@@ -1,4 +1,4 @@
-FROM node:22
+FROM node:22.4
 
 ARG APP_PRIVATE_KEY
 ARG CF_API_KEY
@@ -17,7 +17,6 @@ ARG IS_TAMAGUI_DEV
 ARG NEXT_PUBLIC_GITHUB_APP_ID
 ARG NEXT_PUBLIC_GITHUB_AUTH_CLIENT_ID
 ARG NEXT_PUBLIC_IS_TAMAGUI_DEV
-ARG NEXT_PUBLIC_IS_X
 ARG NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
 ARG NEXT_PUBLIC_SUPABASE_ANON_KEY
 ARG NEXT_PUBLIC_SUPABASE_URL
@@ -31,6 +30,7 @@ ARG SUPABASE_SERVICE_ROLE_KEY
 ARG TAKEOUT_RENEWAL_COUPON_ID
 ARG TRANSCRYPT_PASSWORD
 ARG URL
+ARG APP_NAME
 
 # unlock
 RUN apt-get update && apt-get install -y git bsdmainutils vim-common
@@ -39,19 +39,19 @@ WORKDIR /app
 COPY . .
 
 # init git
-RUN git config --global user.email "you@example.com" && git init . && git add -A && git commit -m 'add'
+RUN git config --global user.email "you@example.com" && git init . && git add -A && git commit -m 'add' > /dev/null
 
 # unlock
 RUN ./scripts/unlock-repo.sh
 
 RUN corepack enable
-RUN corepack prepare yarn@4.1.0 --activate
-
-RUN yarn install > /app/yarn-install.log 2>&1 || cat yarn-install.log
+RUN corepack prepare yarn@4.3.1 --activate
+RUN yarn install --immutable
 RUN yarn profile react-19
+RUN yarn patch-package
 RUN yarn build:js
-RUN yarn dev:build
+RUN yarn build:app
 
 EXPOSE 3000
 
-CMD ["yarn", "dev:serve:railway"]
+CMD ["yarn", "docker:serve"]

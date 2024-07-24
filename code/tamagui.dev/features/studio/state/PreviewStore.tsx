@@ -1,26 +1,47 @@
-U2FsdGVkX19qmPD57oERDGm75BzDOgHdQLsd3qwGiuyMOdsnEn69RX/UDrh3GY4A
-6EWNm6sfZ97PP5BE5y0vaPN1AoboFMeiFkiWzy5VFXNF6zZZNXN9uTlBjLqiJ4pq
-p343zwm5mV6yKmVDTa7/pNV2pahBSHqgEIg1ThrYOL05eHukJfgounx2fFaGgU4z
-mZh1ibBMtSFkL2vaL7ae6Zht07IzCubtDMhyhnMDLSxQwxAtdOGNS8xJuRJoQEX3
-6mtRrdUx1bCXhXX9R7FCjJW5Bzr2OJfZIeu6Vu7Wqxd/FTOBxX++ty3v2jMWcIAN
-WcpIzb3x4eYxtcpcGw9nYMGIU37A7UVzkGB1xMMAg9aVNi+Ssa7jJJ0I3POVAa7z
-WTUBd0v2g4VMKg9zgvbaR613U/zsfwJwmj1Xia4MYmlWHygl5LHfh5cdeF4vC6i1
-mfqobuapzYMzMqHlFXDxWK+c6MdxCiGyl+/e3dXGzm/ARb3rE9/z7M0f72COikVc
-4ROSimtPM57YCKa5TLK36iyL6H73HQ/XDtf6YkcVjefqtvvmgYpociOGRlQyddTM
-Zit7rxJPtTxlbcoEUzLl2VknaJlEv6Y9lOuQxHCEyX21kXTmO48F0Iaml/SQbhwi
-K6fLT0rNDBKEO+OF3xQ4USHLOKM5LHlNUXnXPp1q2nG5KFrIpctghkFqt+lM34K0
-nR0jF+N7RSRWAT9FVmpuXkXCcZ2CGbf7G+cTDlj6xkT+Y+GA0fFDQmZVxps4o7QC
-BSJQkYn86EspoSL8NCsF1mDz7PEXJAugi/3k3ZdSaMkwT1hhM55sIa5YiHXPTvEP
-Jw66OSm2YMlIVWBFWKx4WgAwj+fTfcaOgyVvWyeGT6QkEyD/3OJFRRgFhbo0S2Vu
-HZS5TLqUQ4J6makNTVGn2spFEH/LsF+eeXxo/2YJTFaYu9aI4bMqeCDRxiR0f2ic
-qKDmu0qtx0PspNQjzl/0XqCaC9THmRTpbydvMqXihihY0rpS9JOzBWyp+oxijntR
-c8L/sxqRMF2Mjmqp7o4A6uoReJKq84niSrNzxGnkUr1dz9ZjtNq9ZDZeyOM2XQQD
-ZVECPQ231U5creZGUnlC5qPTiMKBtje4k+GaGT1hHOVSGOlE/EQv1URBsXVY8AVK
-kNAvONIZ9u+66GhU8PPqwja3ANFy2P+HxETgSiFCGlV5mJeg+s7ximx4r5sE3IOJ
-UOfFxsVgtvMQAJ6cUFMKzoeT24/9+J1MgBdU33OtnDODwapkinpoaHFWZ7X55IGj
-m4bMNrvnWc1WlzWmGzT0T5/ZVOBtKX85j4flEWyycRBmY2hXEJ552RsryiU5kAO0
-hzDYLNDZlvv6WErS49NsfydNr2sYa8eit3MYWamAZdRcaOIqwZbGmgB1aenwzfZx
-hd0RylSOnrOP0VgiouPnUlAVbLTxLniwGzMNiFxwALthX2/I2rXluwskG3wYwRCF
-S1X4l4Nt6V0zf4HKp6CIKN/Y8UhMdR/KA8VXaVD9SXiBGVw3411+Lk+tgiaW508U
-T6Dc5yy7AASd860NH0gjk0kE9OSUT3O504CRzJMwWZ015JJLJM5rR8paeYWmQAuo
-1gtazcyHLZXXqPvpbkoceg==
+import { createStore } from '@tamagui/use-store'
+import { themesStore } from './ThemesStore'
+import type { ThemeVal } from './types'
+
+type PreviewMode = 'inspect' | 'pin'
+
+export class PreviewStore {
+  mode: PreviewMode = 'inspect'
+  rect: DOMRect | null = null
+  node: HTMLElement | null = null
+  selectedTheme: ThemeVal | null = null
+
+  get nodeName() {
+    if (!this.node) {
+      return null
+    }
+
+    // @ts-ignore
+    return [...this.node.classList]
+      .find((x) => x.startsWith('is_'))
+      ?.replace('is_', '')
+      .trim()
+  }
+
+  setMode(mode: PreviewMode) {
+    this.mode = mode
+  }
+
+  setNode(node: HTMLElement | null) {
+    this.rect = node?.getBoundingClientRect() ?? null
+    this.node = node
+    if (node === null) {
+      this.mode = 'inspect'
+    } else {
+      // we want to just set a preview theme not change the full theme
+      // or if we do set it here i think we need to prefix with dark_ light_
+      // themesStore.toggleFocusedThemeItem({
+      //   id: this.nodeName as any,
+      // })
+      if (this.nodeName) {
+        this.selectedTheme = themesStore.themeVals[this.nodeName]
+      }
+    }
+  }
+}
+
+export const previewStore = createStore(PreviewStore)

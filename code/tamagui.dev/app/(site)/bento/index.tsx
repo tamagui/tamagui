@@ -1,6 +1,5 @@
 import { assertIsError } from '@tamagui/assert'
-import { LocationNotification } from '@tamagui/bento/component/user/preferences/LocationNotification'
-import { listingData } from '@tamagui/bento/data'
+import { LocationNotification, listingData } from '@tamagui/bento/data'
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import {
   AlertCircle,
@@ -220,6 +219,7 @@ const IntermediateCard = ({
         outlineStyle="solid"
         size="$5"
         elevation="$0.5"
+        backdropFilter="blur(5px)"
         // bg="$color025"
       >
         <Icon color="$color11" o={0.85} />

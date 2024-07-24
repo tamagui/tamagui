@@ -1,39 +1,56 @@
-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
-vRqVq6/5kf1x3tbN2zWn5w==
+import { toHex } from 'color2k'
+import hsluv from 'hsluv'
+
+import type { Color, Curve, DeepReadonly, Scale } from '../state/types'
+
+export const removeComponentName = (str: string) => str.replace(/_[A-Z][a-zA-Z]+$/, '')
+
+export const isComponentTheme = (name: string) => removeComponentName(name) !== name
+
+export const removePseudoPostfix = (str: string) => str.replace(/[A-Z][a-z]+$/, '')
+
+export function hexToColor(hex: string): Color {
+  const [hue, saturation, lightness] = hsluv
+    .hexToHsluv(toHex(hex))
+    .map((value) => Math.round(value * 100) / 100)
+  return { hue, saturation, lightness }
+}
+
+export function colorToHex(color: Color): string {
+  return hsluv.hsluvToHex([color.hue, color.saturation, color.lightness])
+}
+
+export function randomIntegerInRange(min: number, max: number) {
+  return Math.floor(Math.random() * (max - min + 1)) + min
+}
+
+export function getColor(
+  curves: Record<string, DeepReadonly<Curve>>,
+  scale: DeepReadonly<Scale>,
+  index: number
+) {
+  const color = scale.colors[index]
+
+  const hueCurve = curves[scale.curves.hue ?? '']?.values ?? []
+  const saturationCurve = curves[scale.curves.saturation ?? '']?.values ?? []
+  const lightnessCurve = curves[scale.curves.lightness ?? '']?.values ?? []
+
+  const hue = color.hue + (hueCurve[index] ?? 0)
+  const saturation = color.saturation + (saturationCurve[index] ?? 0)
+  const lightness = color.lightness + (lightnessCurve[index] ?? 0)
+
+  return { hue, saturation, lightness }
+}
+
+export function getRange(type: Curve['type']) {
+  const ranges = {
+    hue: { min: 0, max: 360 },
+    saturation: { min: 0, max: 100 },
+    lightness: { min: 0, max: 100 },
+  }
+  return ranges[type]
+}
+
+export function getAccentScore(accent: number) {
+  return accent < 3 ? 'Fail' : accent < 4.5 ? 'AA Large' : accent < 7 ? 'AA' : 'AAA'
+}

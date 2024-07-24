@@ -1,44 +1,95 @@
-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
+import { Lightbulb, X } from '@tamagui/lucide-icons'
+import { useEffect, useState } from 'react'
+import { Button, Popover, Theme } from 'tamagui'
+
+import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
+
+export function StudioCurrentStepTip() {
+  const store = useThemeBuilderStore()
+  const Tip = store.currentSection.tip
+
+  // open after a bit of a delay because animations need to settle
+  const [show, setShow] = useState(false)
+
+  useEffect(() => {
+    if (store.showExplanationSteps === false) {
+      return
+    }
+    if (!Tip) {
+      setShow(false)
+    } else {
+      const tm = setTimeout(() => {
+        setShow(true)
+      }, 1000)
+
+      return () => {
+        clearTimeout(tm)
+      }
+    }
+  }, [Tip])
+
+  const button = (
+    <Button
+      cursor="default"
+      pressTheme={false}
+      hoverTheme={!Tip}
+      size="$2"
+      chromeless
+      scaleIcon={1.2}
+      circular
+      icon={Lightbulb}
+      my="$-1"
+      ml="$2"
+      onPress={() => {
+        setShow(!show)
+      }}
+    />
+  )
+
+  if (!Tip) {
+    return null
+  }
+
+  return (
+    <Popover open={show} size="$5" allowFlip placement="bottom">
+      <Popover.Trigger asChild>{button}</Popover.Trigger>
+
+      <Theme name="yellow">
+        <Popover.Content
+          trapFocus={false}
+          borderWidth={2}
+          borderColor="$borderColor"
+          enterStyle={{ y: -10, opacity: 0 }}
+          exitStyle={{ y: -10, opacity: 0 }}
+          elevate
+          maw={500}
+          theme="surface2"
+          animation={[
+            'quickest',
+            {
+              opacity: {
+                overshootClamping: true,
+              },
+            },
+          ]}
+        >
+          <Popover.Arrow borderWidth={2} borderColor="$borderColor" />
+
+          <Tip />
+
+          <Button
+            size="$2"
+            circular
+            pos="absolute"
+            t="$-3"
+            r="$-3"
+            icon={X}
+            onPress={() => {
+              setShow(false)
+            }}
+          ></Button>
+        </Popover.Content>
+      </Theme>
+    </Popover>
+  )
+}
