@@ -1,0 +1,18 @@
+diff --git a/dist/index.mjs b/dist/index.mjs
+index 03b54b97a520ff093a34428ca2e3976b29cb2fa7..f4fa712a2f59a6e745481f32ffd4fee95f15b09e 100644
+--- a/dist/index.mjs
++++ b/dist/index.mjs
+@@ -1229,6 +1229,13 @@ function getProxyRequestHeaders(event) {
+       headers[name] = reqHeaders[name];
+     }
+   }
++
++  // vxrn's expoManifestRequestHandlerPlugin (Vite plugin) needs the original request host so that it can compose URLs that can be accessed by physical devices. This won't be needed once vxrn retires the h3 proxy and use Vite Dev Server directly.
++  const originalHost = reqHeaders.host;
++  if (originalHost) {
++    headers['X-Forwarded-Host'] = originalHost;
++  }
++
+   return headers;
+ }
+ function fetchWithEvent(event, req, init, options) {
