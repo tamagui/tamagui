@@ -42,6 +42,7 @@ export default {
   optimizeDeps: {
     include: [
       ...optimizeInterop,
+      '@ts-react/form',
       'react-hook-form',
       '@tamagui/animate-presence',
       '@tamagui/presence-child',
