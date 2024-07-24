@@ -64,7 +64,11 @@ function UnmountedClassName(props: { children: React.ReactNode }) {
     return props.children
   }
 
-  return <span className={mounted ? '' : 't_unmounted'}>{props.children}</span>
+  return (
+    <span style={{ display: 'contents' }} className={mounted ? '' : 't_unmounted'}>
+      {props.children}
+    </span>
+  )
 }
 
 TamaguiProvider['displayName'] = 'TamaguiProvider'

@@ -3,6 +3,11 @@
 exports[`webpack-tests > 1. extracts to a div for simple views, flat transforms 1`] = `
 <span
   className="t_unmounted"
+  style={
+    {
+      "display": "contents",
+    }
+  }
 >
   <span
     className=" _dsp_contents"
@@ -32,6 +37,11 @@ exports[`webpack-tests > 1. extracts to a div for simple views, flat transforms 
 exports[`webpack-tests > 2. extracts className for complex views but keeps other props 1`] = `
 <span
   className=""
+  style={
+    {
+      "display": "contents",
+    }
+  }
 >
   <span
     className=" _dsp_contents"
@@ -65,6 +75,11 @@ exports[`webpack-tests > 2. extracts className for complex views but keeps other
 exports[`webpack-tests > 2. extracts className for complex views but keeps other props 2`] = `
 <span
   className="t_unmounted"
+  style={
+    {
+      "display": "contents",
+    }
+  }
 >
   <span
     className=" _dsp_contents"
@@ -98,6 +113,11 @@ exports[`webpack-tests > 2. extracts className for complex views but keeps other
 exports[`webpack-tests > 5. spread conditional 1`] = `
 <span
   className=""
+  style={
+    {
+      "display": "contents",
+    }
+  }
 >
   <span
     className=" _dsp_contents"
@@ -125,6 +145,11 @@ exports[`webpack-tests > 5. spread conditional 1`] = `
 exports[`webpack-tests > 6. spread ternary 1`] = `
 <span
   className="t_unmounted"
+  style={
+    {
+      "display": "contents",
+    }
+  }
 >
   <span
     className=" _dsp_contents"
@@ -154,6 +179,11 @@ exports[`webpack-tests > 6. spread ternary 1`] = `
 exports[`webpack-tests > 6. spread ternary 2`] = `
 <span
   className=""
+  style={
+    {
+      "display": "contents",
+    }
+  }
 >
   <span
     className=" _dsp_contents"
@@ -183,6 +213,11 @@ exports[`webpack-tests > 6. spread ternary 2`] = `
 exports[`webpack-tests > 7. ternary + data-is 1`] = `
 <span
   className="t_unmounted"
+  style={
+    {
+      "display": "contents",
+    }
+  }
 >
   <span
     className=" _dsp_contents"
@@ -211,6 +246,11 @@ exports[`webpack-tests > 7. ternary + data-is 1`] = `
 exports[`webpack-tests > 8. styleExpansions 1`] = `
 <span
   className=""
+  style={
+    {
+      "display": "contents",
+    }
+  }
 >
   <span
     className=" _dsp_contents"
@@ -244,6 +284,11 @@ exports[`webpack-tests > 8. styleExpansions 1`] = `
 exports[`webpack-tests > 9. combines with classname 1`] = `
 <span
   className="t_unmounted"
+  style={
+    {
+      "display": "contents",
+    }
+  }
 >
   <span
     className=" _dsp_contents"
@@ -267,6 +312,11 @@ exports[`webpack-tests > 9. combines with classname 1`] = `
 exports[`webpack-tests > 10. extracts Text 1`] = `
 <span
   className=""
+  style={
+    {
+      "display": "contents",
+    }
+  }
 >
   <span
     className=" _dsp_contents"
@@ -301,6 +351,11 @@ exports[`webpack-tests > 10. extracts Text 1`] = `
 exports[`webpack-tests > 12. te  rnary multiple on same key 1`] = `
 <span
   className="t_unmounted"
+  style={
+    {
+      "display": "contents",
+    }
+  }
 >
   <span
     className=" _dsp_contents"
@@ -324,6 +379,11 @@ exports[`webpack-tests > 12. te  rnary multiple on same key 1`] = `
 exports[`webpack-tests > 14. extracts pseudo styles and evaluates constants 1`] = `
 <span
   className=""
+  style={
+    {
+      "display": "contents",
+    }
+  }
 >
   <span
     className=" _dsp_contents"
@@ -348,6 +408,11 @@ exports[`webpack-tests > 14. extracts pseudo styles and evaluates constants 1`] 
 exports[`webpack-tests > 15. extracts spacer (complex expansion) 1`] = `
 <span
   className="t_unmounted"
+  style={
+    {
+      "display": "contents",
+    }
+  }
 >
   <span
     className=" _dsp_contents"
@@ -374,6 +439,11 @@ exports[`webpack-tests > 15. extracts spacer (complex expansion) 1`] = `
 exports[`webpack-tests > 16. deopt when spreading multiple 1`] = `
 <span
   className=""
+  style={
+    {
+      "display": "contents",
+    }
+  }
 >
   <span
     className=" _dsp_contents"
