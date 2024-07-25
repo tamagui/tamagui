@@ -1,6 +1,7 @@
 v2:
 
   - remove deprecated
+  - document react 19 mode
   - accessibility props, "focusable" => tabIndex
   - make sure we make any changes for RSD / web alignment
   - boxShadow
@@ -14,15 +15,25 @@ v2:
   - remove suppressHighlighting / margin 0 default from Text
   - RN transform type accepts string style props now but tamagui doesn't
   - AnimatePresence remove the old style variants in favor of custom
+  - disableInjectCSS should maybe just be automated better or defaulted on
   - can we remove the need for separate Text/View?
     - seems like we could scan just the direct descendents?
     https://github.com/facebook/react-strict-dom/blob/429e2fe1cb9370c59378d9ba1f4a40676bef7555/packages/react-strict-dom/src/native/modules/createStrictDOMComponent.js#L529
 
 ---
 
+- config v4
+
+  - can pass in colors
+  - remove: shouldAddPrefersColorThemes, themeClassNameOnRoot
+  - no custom fonts just defaults for each platform
+  - focus styles in the default v3 config are kind of wack
+  - automatically handles tree shaking process.env for themes
+
+---
+
 - className merging in variants!
   - `positionSticky: { true: { className: 'position-sticky' } }`
-- config v4 = no custom fonts just defaults for each platform
 - opacity `/50`
 - AnimateList
   - like AnimatePresence but for >1 items
@@ -45,7 +56,6 @@ Nate:
 ---
 
 - data-disable-theme is being passed down on web snapshots
-- v3 themes: all of the focus styles in the default v3 config are kind of wack
 - activeTheme props for all components
 - in dev mode if no checkbox indicator, warn
   - checkbox should have a default indicator probably with a simple svg check we inline
