@@ -19,6 +19,7 @@ v2:
   - can we remove the need for separate Text/View?
     - seems like we could scan just the direct descendents?
     https://github.com/facebook/react-strict-dom/blob/429e2fe1cb9370c59378d9ba1f4a40676bef7555/packages/react-strict-dom/src/native/modules/createStrictDOMComponent.js#L529
+  - run over components and review for removing some assumptions about `size`
 
 ---
 

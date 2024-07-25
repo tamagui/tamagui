@@ -17,7 +17,7 @@ if (!import.meta.dirname) {
 const resolve = (path: string) => {
   const resolved = import.meta.resolve?.(path)
   if (!resolved) {
-    throw new Error(`Not found: ${path}`)
+    throw new Error(`Not found: ${path}, maybe on wrong node version`)
   }
   return resolved.replace('file:/', '')
 }
@@ -65,8 +65,8 @@ export default {
   optimizeDeps: {
     include: [
       ...optimizeInterop,
-      '@tamagui/animate-presence',
-      '@tamagui/presence-child',
+      // '@tamagui/animate-presence',
+      // '@tamagui/presence-child',
       '@docsearch/react',
       '@leeoniya/ufuzzy',
       'react-hook-form',

@@ -1,4 +1,4 @@
-import { isAndroid, isWeb } from '@tamagui/constants'
+import { isAndroid } from '@tamagui/constants'
 
 // generally organizing this so we don't duplicate things so its a bit weird
 
@@ -218,6 +218,7 @@ export const stylePropsView = {
 
   ...(process.env.TAMAGUI_TARGET === 'web' && {
     // RN doesn't support specific border styles per-edge
+    textWrap: true,
     backdropFilter: true,
     background: true,
     backgroundAttachment: true,
