@@ -1,5 +1,28 @@
+v2:
+
+  - remove deprecated
+  - accessibility props, "focusable" => tabIndex
+  - make sure we make any changes for RSD / web alignment
+  - boxShadow
+  - move to react native flex compat
+  - no more `as const` needed (ts5)
+  - move settings into settings
+  - redo/remove ThemeableStack
+  - rename SizableStack to Surface and simplify a bit
+  - v2-3 ListItem simplification esp for performance of Select
+  - Button simplification
+  - remove suppressHighlighting / margin 0 default from Text
+  - RN transform type accepts string style props now but tamagui doesn't
+  - AnimatePresence remove the old style variants in favor of custom
+  - can we remove the need for separate Text/View?
+    - seems like we could scan just the direct descendents?
+    https://github.com/facebook/react-strict-dom/blob/429e2fe1cb9370c59378d9ba1f4a40676bef7555/packages/react-strict-dom/src/native/modules/createStrictDOMComponent.js#L529
+
+---
+
+- className merging in variants!
+  - `positionSticky: { true: { className: 'position-sticky' } }`
 - config v4 = no custom fonts just defaults for each platform
-- RN transform type accepts string style props now but tamagui doesn't
 - opacity `/50`
 - AnimateList
   - like AnimatePresence but for >1 items
@@ -13,7 +36,6 @@
 
 - popover transform origin
   - https://codesandbox.io/p/sandbox/floating-ui-react-scale-transform-origin-qv0t1c?file=%2Fsrc%2FApp.tsx%3A43%2C25
-- v2 - boxShadow
 - Setting default props for any style in a parent (variables dynamic / themes dynamic down the tree)
 
 Nate:
@@ -23,14 +45,11 @@ Nate:
 ---
 
 - data-disable-theme is being passed down on web snapshots
-
-- 2.0 = redo/remove ThemeableStack
 - v3 themes: all of the focus styles in the default v3 config are kind of wack
 - activeTheme props for all components
 - in dev mode if no checkbox indicator, warn
   - checkbox should have a default indicator probably with a simple svg check we inline
 - move from useMedia match.addListener to addEventListener
-- 2.0 = TS 5 recent version support raise - no more `as const` needed
 - media query height taking into account the "safe height" is important
 - https://linear.app/uniswap/issue/EXT-925/tamagui-error-breaking-the-extension
 - document Popover.Anchor
@@ -39,18 +58,8 @@ Nate:
 
 ---
 
-Tentpole projects:
-
-- Marketplace
-- Studio launch
-- Storybook/hosted docs
-- Takeout 2 / vxrn/stack
-
-Needed features/maintenance:
-
 - ( Pending PRs ) RSD / web alignment
   - follow what RSD is doing + dont go beyond native support eg aspect-ratio
-  - deprecate accessibility props, "focusable" => tabIndex
   - simple version is good
   - lower priority - em/rem, other nice web styles that rsd/tailwind has
 - RSC support
@@ -94,8 +103,6 @@ Ongoing work:
 
 - Adapt needs public API to support any adaptation
 
-- v2-3 ListItem simplification esp for performance of Select
-
 - Select Virtualization
 
 - style()
@@ -127,8 +134,6 @@ Ongoing work:
   - https://discord.com/channels/909986013848412191/1178185816426680370/1199854688233857136
 
 - compiler - no need to setup any separate package
-
-- 2.0 rename SizableStack to Surface and simplify a bit
 
 - Remove the need for Text
 
@@ -330,22 +335,6 @@ Maintenance:
 - deprecate rnw-lite when we can after making sure all tests / animation drivers pass on rnw
 - TODO this could definitely be done better by at the very minimum
   - this entire proxy could be removed in favor of the proxy we make on initial theme creation, and just having a way to subscribeThemeGet(theme, (key, val) => any) at the useThemeWithState callsite
-
----
-
-V2:
-
-- breaking:
-  - shorthands
-    - col => c
-    - remove bg/bc confusion
-  - remove suppressHighlighting / margin 0 default from Text
-  - compiler can accumulate them and emit a file?
-- basic plugins system
-- no separate UI package necessary for optimization
-- if dynamic eval flattens every usage, remove the definition
-- headless
-- zero runtime
 
 ---
 
