@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/use-previous",
-  "version": "1.104.2",
+  "version": "1.105.0",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -18,7 +18,7 @@
     "clean:build": "tamagui-build clean:build"
   },
   "devDependencies": {
-    "@tamagui/build": "1.104.2"
+    "@tamagui/build": "1.105.0"
   },
   "exports": {
     "./package.json": "./package.json",

@@ -389,6 +389,8 @@ export declare function useInputProps(props: InputProps, ref: any): {
     rotateY?: "unset" | import("@tamagui/core").UnionableString | `${number}deg` | undefined;
     rotateX?: "unset" | import("@tamagui/core").UnionableString | `${number}deg` | undefined;
     rotateZ?: "unset" | import("@tamagui/core").UnionableString | `${number}deg` | undefined;
+    transition?: import("csstype").Properties["transition"];
+    textWrap?: "unset" | "wrap" | "nowrap" | "balance" | "pretty" | "stable" | undefined;
     contain?: import("csstype").Properties["contain"];
     touchAction?: import("csstype").Properties["touchAction"];
     cursor?: import("csstype").Properties["cursor"];
