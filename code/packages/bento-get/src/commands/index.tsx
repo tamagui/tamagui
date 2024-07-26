@@ -23,6 +23,11 @@ const handleKeypress = (key: string, modifier, appContext) => {
     setCopyToClipboard,
   } = appContext
 
+  if (modifier.shift + key === 'l') {
+    tokenStore.clear()
+    return
+  }
+
   if (key === 'c' && appContext.install.enterToOpenBrowser) {
     setCopyToClipboard(true)
     return

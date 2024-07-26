@@ -37,6 +37,9 @@ v2:
 
 ---
 
+- AnimatePresence refactor:
+  - https://x.com/mattgperry/status/1816842995758498017?s=46&t=5wFlU_OsfjJ0sQPMFbtG0A
+
 - className merging in variants!
   - `positionSticky: { true: { className: 'position-sticky' } }`
 - opacity `/50`
