@@ -696,6 +696,14 @@ interface ExtraStyleProps {
     /**
      * Web-only style property. Will be omitted on native.
      */
+    transition?: Properties['transition'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    textWrap?: 'wrap' | 'nowrap' | 'balance' | 'pretty' | 'stable';
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
     contain?: Properties['contain'];
     /**
      * Web-only style property. Will be omitted on native.

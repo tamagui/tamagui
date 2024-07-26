@@ -218,6 +218,7 @@ export const stylePropsView = {
 
   ...(process.env.TAMAGUI_TARGET === 'web' && {
     // RN doesn't support specific border styles per-edge
+    transition: true,
     textWrap: true,
     backdropFilter: true,
     background: true,
