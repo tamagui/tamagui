@@ -1,5 +1,9 @@
 v2:
 
+  - plugin api + styled.div plugin
+  - experimental_webMode
+    - press => click
+    - pressStyle => activeStyle
   - remove deprecated
   - document react 19 mode
   - accessibility props, "focusable" => tabIndex

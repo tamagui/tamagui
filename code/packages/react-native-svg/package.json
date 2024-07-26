@@ -2,9 +2,18 @@
   "name": "@tamagui/react-native-svg",
   "version": "1.104.2",
   "main": "dist/cjs/index.js",
+  "type": "module",
   "module": "dist/esm/index.js",
   "publishConfig": {
     "access": "public"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "react-native": "./dist/cjs/index.native.js",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.js"
+    }
   },
   "scripts": {
     "build": "tamagui-build",

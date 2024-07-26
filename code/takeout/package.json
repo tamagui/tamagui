@@ -24,6 +24,7 @@
     "@tamagui/image-next": "1.104.2",
     "@tamagui/logo": "1.104.2",
     "@tamagui/lucide-icons": "1.104.2",
+    "@tamagui/react-native-svg": "^1.104.2",
     "expo-apple-authentication": "~6.4.1",
     "expo-crypto": "~13.0.2",
     "jsonwebtoken": "^9.0.2",
