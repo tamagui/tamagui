@@ -9,6 +9,10 @@ const GroupChild = styled(Stack, {
   height: 100,
   backgroundColor: 'pink',
 
+  pressStyle: {
+    backgroundColor: 'black',
+  },
+
   '$group-testy': {
     backgroundColor: 'rgb(255,0,0)',
 

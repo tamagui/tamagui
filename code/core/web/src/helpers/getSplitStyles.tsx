@@ -72,6 +72,8 @@ import { pseudoDescriptors, pseudoPriorities } from './pseudoDescriptors'
 import { skipProps } from './skipProps'
 import { transformsToString } from './transformsToString'
 
+const consoleGroupCollapsed = isWeb ? console.groupCollapsed : console.info
+
 export type SplitStyles = ReturnType<typeof getSplitStyles>
 
 export type SplitStyleResult = ReturnType<typeof getSplitStyles>
@@ -218,7 +220,7 @@ export const getSplitStyles: StyleSplitter = (
     debug !== 'profile' &&
     isClient
   ) {
-    console.groupCollapsed('getSplitStyles (collapsed)')
+    consoleGroupCollapsed('getSplitStyles (collapsed)')
     log({
       props,
       staticConfig,
@@ -536,7 +538,7 @@ export const getSplitStyles: StyleSplitter = (
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
       console.groupEnd() // react native was not nesting right
       console.groupEnd() // react native was not nesting right
-      console.groupCollapsed(
+      consoleGroupCollapsed(
         `  🔑 ${keyOg}${keyInit !== keyOg ? ` (shorthand for ${keyInit})` : ''} ${
           shouldPassThrough ? '(pass)' : ''
         }`
@@ -620,7 +622,7 @@ export const getSplitStyles: StyleSplitter = (
     }
 
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-      console.groupCollapsed('  💠 expanded', keyInit, valInit)
+      consoleGroupCollapsed('  💠 expanded', keyInit, valInit)
       try {
         if (!isServer && isDevTools) {
           log({
@@ -631,7 +633,6 @@ export const getSplitStyles: StyleSplitter = (
             variant: variants?.[keyInit],
             shouldPassProp,
             isHOCShouldPassThrough,
-            theme,
             usedKeys: { ...usedKeys },
             curProps: { ...styleState.curProps },
           })
@@ -682,7 +683,7 @@ export const getSplitStyles: StyleSplitter = (
       if (shouldPassThrough) {
         passDownProp(viewProps, key, val, isMediaOrPseudo)
         if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-          console.groupCollapsed(` - passing down prop ${key}`)
+          consoleGroupCollapsed(` - passing down prop ${key}`)
           log({ val, after: { ...viewProps[key] } })
           console.groupEnd()
         }
@@ -725,7 +726,7 @@ export const getSplitStyles: StyleSplitter = (
 
           if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
             // prettier-ignore
-            console.groupCollapsed('pseudo (classes)', key)
+            consoleGroupCollapsed('pseudo (classes)', key)
 
             log({ pseudoStyleObject, pseudoStyles })
             console.groupEnd()
@@ -764,7 +765,7 @@ export const getSplitStyles: StyleSplitter = (
           }
 
           if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-            console.groupCollapsed('pseudo', key, { isDisabled })
+            consoleGroupCollapsed('pseudo', key, { isDisabled })
             log({ pseudoStyleObject, isDisabled, descriptor, componentState })
             console.groupEnd()
           }
@@ -1158,7 +1159,7 @@ export const getSplitStyles: StyleSplitter = (
 
         if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
           console.groupEnd() // ensure group ended from loop above
-          console.groupCollapsed(`🔹 getSplitStyles final style object`)
+          consoleGroupCollapsed(`🔹 getSplitStyles final style object`)
           console.info(styleState.style)
           console.groupEnd()
         }
@@ -1365,7 +1366,7 @@ export const getSplitStyles: StyleSplitter = (
 
   if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
     if (isDevTools) {
-      console.groupCollapsed('🔹 getSplitStyles ===>')
+      consoleGroupCollapsed('🔹 getSplitStyles ===>')
       try {
         // prettier-ignore
         const logs = {

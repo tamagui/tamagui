@@ -41,7 +41,12 @@ import { mergeProps } from './helpers/mergeProps'
 import { setElementProps } from './helpers/setElementProps'
 import { themeable } from './helpers/themeable'
 import { useDidHydrateOnce } from './hooks/useDidHydrateOnce'
-import { mediaKeyMatch, setMediaShouldUpdate, useMedia } from './hooks/useMedia'
+import {
+  getMediaState,
+  mediaKeyMatch,
+  setMediaShouldUpdate,
+  useMedia,
+} from './hooks/useMedia'
 import { useThemeWithState } from './hooks/useTheme'
 import type { TamaguiComponentEvents } from './interfaces/TamaguiComponentEvents'
 import type { TamaguiComponentState } from './interfaces/TamaguiComponentState'
@@ -683,6 +688,9 @@ export function createComponent<
           (isAnimated ? '(animated)' : ' ') +
           (isReactNative ? '(rnw)' : ' ') +
           (shouldAvoidClasses ? '(shouldAvoidClasses)' : ' ') +
+          (state.press || state.pressIn ? '(PRESSED)' : ' ') +
+          (state.hover ? '(HOVERED)' : ' ') +
+          (state.focus ? '(FOCUSED)' : ' ') +
           (presenceState?.isPresent === false ? '(EXIT)' : '')
 
         const dataIs = propsIn['data-is'] || ''
@@ -698,11 +706,6 @@ export function createComponent<
           // if strict mode or something messes with our nesting this fixes:
           console.groupEnd()
 
-          const pressLog = `${state.press || state.pressIn ? ' PRESS ' : ''}`
-          const stateLog = `${pressLog}${state.hover ? ' HOVER ' : ''}${
-            state.focus ? ' FOCUS' : ' '
-          }`
-
           const ch = propsIn.children
           let childLog =
             typeof ch === 'string' ? (ch.length > 4 ? ch.slice(0, 4) + '...' : ch) : ''
@@ -710,7 +713,7 @@ export function createComponent<
             childLog = `(children: ${childLog})`
           }
 
-          console.groupCollapsed(`${childLog}${stateLog}Props:`)
+          console.groupCollapsed(`${childLog} Props:`)
           log('props in:', propsIn)
           log('final props:', props)
           log({ state, staticConfig, elementType, themeStateProps })
@@ -1728,17 +1731,6 @@ function hasAnimatedStyleValue(style: Object) {
     const val = style[k]
     return val && typeof val === 'object' && '_animation' in val
   })
-}
-
-function getMediaState(
-  mediaGroups: Set<string>,
-  layout: LayoutEvent['nativeEvent']['layout']
-) {
-  return Object.fromEntries(
-    [...mediaGroups].map((mediaKey) => {
-      return [mediaKey, mediaKeyMatch(mediaKey, layout as any)]
-    })
-  )
 }
 
 const fromPx = (val?: number | string) =>
