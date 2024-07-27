@@ -8,6 +8,7 @@ import type {
   ComponentContextI,
   DebugProp,
   IsMediaType,
+  LayoutEvent,
   MediaQueries,
   MediaQueryObject,
   MediaQueryState,
@@ -266,6 +267,7 @@ export function useMedia(
 
   return new Proxy(state, {
     get(_, key) {
+      if (disableMediaTouch) return
       if (typeof key === 'string') {
         componentState.keys ||= {}
         componentState.keys[key] = true
@@ -276,6 +278,22 @@ export function useMedia(
       return Reflect.get(state, key)
     },
   })
+}
+
+let disableMediaTouch = false
+
+export function getMediaState(
+  mediaGroups: Set<string>,
+  layout: LayoutEvent['nativeEvent']['layout']
+) {
+  disableMediaTouch = true
+  let res = Object.fromEntries(
+    [...mediaGroups].map((mediaKey) => {
+      return [mediaKey, mediaKeyMatch(mediaKey, layout as any)]
+    })
+  )
+  disableMediaTouch = false
+  return res
 }
 
 export const getMediaImportanceIfMoreImportant = (
