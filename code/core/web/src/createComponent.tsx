@@ -1346,7 +1346,7 @@ export function createComponent<
     }
 
     // add in <style> tags inline
-    if (process.env.TAMAGUI_REACT_19) {
+    if (process.env.TAMAGUI_REACT_19 && process.env.TAMAGUI_TARGET !== 'native') {
       const { rulesToInsert } = splitStyles
       const keys = Object.keys(splitStyles.rulesToInsert)
       if (keys.length) {
