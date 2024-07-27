@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/ooo",
-  "version": "1.105.0",
+  "version": "1.105.1",
   "private": true,
   "files": [],
   "type": "module",
@@ -14,10 +14,10 @@
     "postinstall": "patch-package || true"
   },
   "dependencies": {
-    "@tamagui/button": "1.105.0",
-    "@tamagui/config": "1.105.0",
-    "@tamagui/core": "1.105.0",
-    "@tamagui/input": "1.105.0",
+    "@tamagui/button": "1.105.1",
+    "@tamagui/config": "1.105.1",
+    "@tamagui/core": "1.105.1",
+    "@tamagui/input": "1.105.1",
     "react-native": "0.74.1",
     "vxs": "^1.1.150"
   },
