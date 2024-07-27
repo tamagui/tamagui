@@ -296,10 +296,13 @@ export const useComponentState = (
     const isAnimatedAndHydrated =
       isAnimated && !supportsCSSVars && didHydrateOnce && !isServer
 
+    const isClassNameDisabled =
+      !staticConfig.acceptsClassName && (config.disableSSR || didHydrateOnce)
+
     const isDisabledManually =
       disableClassName && !isServer && didHydrateOnce && state.unmounted === true
 
-    if (isAnimatedAndHydrated || isDisabledManually || !staticConfig.acceptsClassName) {
+    if (isAnimatedAndHydrated || isDisabledManually || isClassNameDisabled) {
       shouldAvoidClasses = true
 
       // debug
@@ -309,7 +312,7 @@ export const useComponentState = (
           {
             isAnimatedAndHydrated,
             isDisabledManually,
-            acceptsClassName: staticConfig.acceptsClassName
+            acceptsClassName: staticConfig.acceptsClassName,
           },
           {
             isAnimated,
