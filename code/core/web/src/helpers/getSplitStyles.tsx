@@ -954,7 +954,7 @@ export const getSplitStyles: StyleSplitter = (
             const groupContext = context?.groups.state[groupName]
             if (!groupContext) {
               if (process.env.NODE_ENV === 'development' && debug) {
-                console.warn(`No parent with group prop, skipping styles: ${groupName}`)
+                log(`No parent with group prop, skipping styles: ${groupName}`)
               }
               continue
             }
@@ -972,6 +972,9 @@ export const getSplitStyles: StyleSplitter = (
               if (!mediaState && groupContext.layout) {
                 isActive = mediaKeyMatch(groupMediaKey, groupContext.layout)
               }
+              if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+                log(` 🏘️ GROUP media ${groupMediaKey} active? ${isActive}`)
+              }
               if (!isActive) continue
               importanceBump = 2
             }
@@ -985,8 +988,13 @@ export const getSplitStyles: StyleSplitter = (
                 context.groups.state[groupName]
               ).pseudo
               const isActive = componentGroupPseudoState?.[groupPseudoKey]
-              if (!isActive) continue
               const priority = pseudoPriorities[groupPseudoKey]
+              if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+                log(
+                  ` 🏘️ GROUP pseudo ${groupMediaKey} active? ${isActive}, priority ${priority}`
+                )
+              }
+              if (!isActive) continue
               importanceBump = priority
             }
           }
@@ -1004,7 +1012,8 @@ export const getSplitStyles: StyleSplitter = (
               mediaStyle[subKey],
               usedKeys,
               mediaState[mediaKeyShort],
-              importanceBump
+              importanceBump,
+              debug
             )
             if (key === 'fontFamily') {
               styleState.fontFamily = mediaStyle.fontFamily as string
@@ -1173,7 +1182,7 @@ export const getSplitStyles: StyleSplitter = (
         for (const namespace in transforms) {
           if (!transforms[namespace]) {
             if (process.env.NODE_ENV === 'development') {
-              console.warn('Error no transform', transforms, namespace)
+              log('Error no transform', transforms, namespace)
             }
             continue
           }
@@ -1597,7 +1606,8 @@ function mergeMediaByImportance(
   value: any,
   importancesUsed: Record<string, number>,
   isSizeMedia: boolean,
-  importanceBump?: number
+  importanceBump?: number,
+  debugProp?: DebugProp
 ) {
   let importance = getMediaImportanceIfMoreImportant(
     mediaKey,
@@ -1608,11 +1618,30 @@ function mergeMediaByImportance(
   if (importanceBump) {
     importance = (importance || 0) + importanceBump
   }
+  if (process.env.NODE_ENV === 'development' && debugProp === 'verbose') {
+    log(
+      `mergeMediaByImportance ${key} importance existing ${importancesUsed[key]} next ${importance}`
+    )
+  }
   if (importance === null) {
     return false
   }
   importancesUsed[key] = importance
-  mergeStyle(styleState, key, value)
+
+  if (key in pseudoDescriptors) {
+    const descriptor = pseudoDescriptors[key]
+    const descriptorKey = descriptor.stateKey || descriptor.name
+    const isDisabled = styleState.componentState[descriptorKey] === false
+    if (isDisabled) {
+      return false
+    }
+    for (const subKey in value) {
+      mergeStyle(styleState, subKey, value[subKey])
+    }
+  } else {
+    mergeStyle(styleState, key, value)
+  }
+
   return true
 }
 

@@ -17,9 +17,8 @@ type MediaState = {
 };
 export declare function setMediaShouldUpdate(ref: any, props: MediaState): WeakMap<any, MediaState>;
 export declare function useMedia(uidIn?: any, componentContext?: ComponentContextI, debug?: DebugProp): UseMediaState;
-export declare function getMediaState(mediaGroups: Set<string>, layout: LayoutEvent['nativeEvent']['layout']): {
-    [k: string]: boolean;
-};
+export declare function _dmt(val: boolean): void;
+export declare function getMediaState(mediaGroups: Set<string>, layout: LayoutEvent['nativeEvent']['layout']): Record<string, boolean>;
 export declare const getMediaImportanceIfMoreImportant: (mediaKey: string, key: string, importancesUsed: Record<string, number>, isSizeMedia: boolean) => number | null;
 export declare function mediaObjectToString(query: string | MediaQueryObject, key?: string): string;
 export declare function mediaKeyToQuery(key: string): string;

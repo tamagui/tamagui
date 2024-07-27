@@ -282,17 +282,25 @@ export function useMedia(
 
 let disableMediaTouch = false
 
+export function _dmt(val: boolean) {
+  disableMediaTouch = val
+}
+
 export function getMediaState(
   mediaGroups: Set<string>,
   layout: LayoutEvent['nativeEvent']['layout']
 ) {
   disableMediaTouch = true
-  let res = Object.fromEntries(
-    [...mediaGroups].map((mediaKey) => {
-      return [mediaKey, mediaKeyMatch(mediaKey, layout as any)]
-    })
-  )
-  disableMediaTouch = false
+  let res: Record<string, boolean>
+  try {
+    res = Object.fromEntries(
+      [...mediaGroups].map((mediaKey) => {
+        return [mediaKey, mediaKeyMatch(mediaKey, layout as any)]
+      })
+    )
+  } finally {
+    disableMediaTouch = false
+  }
   return res
 }
 
@@ -302,9 +310,8 @@ export const getMediaImportanceIfMoreImportant = (
   importancesUsed: Record<string, number>,
   isSizeMedia: boolean
 ) => {
-  const conf = getConfig()
   const importance =
-    isSizeMedia && !conf.settings.mediaPropOrder
+    isSizeMedia && !getSetting('mediaPropOrder')
       ? getMediaKeyImportance(mediaKey)
       : defaultMediaImportance
   return !importancesUsed[key] || importance > importancesUsed[key] ? importance : null

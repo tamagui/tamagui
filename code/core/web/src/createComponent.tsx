@@ -1049,6 +1049,20 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`events-setup`
 
+    if (process.env.NODE_ENV === 'development' && debugProp === 'verbose') {
+      log(`🪩 events()`, {
+        runtimeFocusStyle,
+        runtimePressStyle,
+        runtimeHoverStyle,
+        runtimeFocusVisibleStyle,
+        attachPress,
+        attachFocus,
+        attachHover,
+        shouldAttach,
+        needsHoverState,
+      })
+    }
+
     const events: TamaguiComponentEvents | null = shouldAttach
       ? {
           onPressOut: attachPress
