@@ -1,0 +1,67 @@
+---
+title: Tamagui 2
+publishedAt: '2024-08-31'
+description: A simpler, more reliable Tamagui
+by: nate
+poster: banner-two.jpg
+---
+
+<IntroParagraph>
+  Version two has taken us quite a while. You can call it stability. We definitely wanted a bit too much for a version two, and so delayed it for a while. Instead, we're cutting version 2 sooner than later just to break a few long-deprecated APIs, and to avoid having to write a blog post that is a mile long.
+</IntroParagraph>
+
+For new readers, Tamagui is a complete cross-platform styling solution. It has a core styling library, an optional UI kit that can be used unstyled or styled, and a novel optimizing compiler that outputs platform-optimized code, even doing advanced analysis and optimization to flatten VDOM.
+
+Version 2 doesn't make many breaking changes. We had deprecated a number of APIs over the last year and are now making those changes official.
+
+The full list of breaking changes is:
+
+- Move from `tamagui` to `@tamagui/ui`
+- Accessibility props - 
+- Flex defaults - 
+- TypeScript 5 -
+- Button - Button moves to a composable component only API (with the old button available still as `OldButton`)
+- ListItem - ListItem moves to a composable component only API
+- Select - Select inherits from ListItem, so it just inherits the same changes.
+
+---
+
+A ton has changed since version 1, we've collected all the major changes below.
+
+---
+
+## @tamagui/core
+
+The core styling library now has no dependency at all outside of React. It's a self-contained 30Kb universal styling library. It implements the React Native View, Text and styling APIs (which are basically a subset of CSS, in Typescript), and expands them to include a lot more of what CSS can do. It feels in practice much like a typed Stitches or Styled Components.
+
+Here are some highlights since version 1:
+
+#### Aligning
+
+#### Container Queries
+
+#### useProps, useStyle, usePropsAndStyle
+
+#### 
+
+---
+
+## @tamagui/ui
+
+One of the biggest changes
+
+## Acknowledgements
+
+We've had 38 new contributors since early this year, exponentially increasing! Thanks to all of them, and also to the many QA testers that join in our Discord chat every day :).
+
+Early sponsors have made a huge difference: I owe a large thank you to [Vercel](https://vercel.com), [Codingscape](https://codingscape.com), [QuestPortal](https://www.questportal.com) and [BeatGig](https://beatgig.com), the first corporate sponsors ❤️.
+
+Tamagui draws inspiration and small areas of code from some incredible other libraries: [Radix](https://www.radix-ui.com/) provided much of the composable component APIs, [Floating UI](https://floating-ui.com/) handles all of the floating elements positioning, [Moti](https://moti.fyi) which served as a start point for the animation drivers, and [Framer Motion](https://github.com/framer/motion) for the nifty AnimatePresence functionality.
+
+---
+
+### Join the community
+
+<Wide>
+  <SocialLinksRow />
+</Wide>

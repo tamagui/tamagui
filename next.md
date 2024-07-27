@@ -1,5 +1,10 @@
+- can't use `$platform-web` inside media query?
+
+---
+
 v2:
 
+  - document input, image
   - plugin api + styled.div plugin
   - experimental_webMode
     - press => click
@@ -10,6 +15,7 @@ v2:
   - make sure we make any changes for RSD / web alignment
   - boxShadow
   - move to react native flex compat
+  - move to web compat apis
   - no more `as const` needed (ts5)
   - move settings into settings
   - redo/remove ThemeableStack
@@ -36,6 +42,7 @@ v2:
   - automatically handles tree shaking process.env for themes
 
 ---
+
 
 - AnimatePresence refactor:
   - https://x.com/mattgperry/status/1816842995758498017?s=46&t=5wFlU_OsfjJ0sQPMFbtG0A
