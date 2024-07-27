@@ -281,8 +281,8 @@ ${runtimeStyles}`
     // .spacer-sm + ._dsp_contents._dsp-sm-hidden { margin-left: -var(--${}) }
   }
 
-  configureMedia(config)
   setConfig(config)
+  configureMedia(config)
 
   createdConfigs.set(config, true)
 
