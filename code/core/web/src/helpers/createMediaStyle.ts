@@ -1,4 +1,4 @@
-import { getConfig } from '../config'
+import { getConfig, getSetting } from '../config'
 import { mediaObjectToString } from '../hooks/useMedia'
 import type { IsMediaType, MediaQueries, MediaStyleObject, StyleObject } from '../types'
 import { getGroupPropParts } from './getGroupPropParts'
@@ -56,7 +56,7 @@ export const createMediaStyle = (
       const selectorStart = styleInner.indexOf(':root')
       const selectorEnd = styleInner.lastIndexOf('{')
       const selector = styleInner.slice(selectorStart, selectorEnd)
-      const precedenceSpace = conf.themeClassNameOnRoot && isTheme ? '' : ' '
+      const precedenceSpace = getSetting('themeClassNameOnRoot') && isTheme ? '' : ' '
       const pseudoSelectorName = groupInfo.pseudo
         ? groupPseudoToPseudoCSSMap[groupInfo.pseudo] || groupInfo.pseudo
         : undefined

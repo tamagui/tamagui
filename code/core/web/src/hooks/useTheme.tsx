@@ -1,7 +1,7 @@
 import { isClient, isIos, isServer, isWeb } from '@tamagui/constants'
 import { useContext, useEffect, useMemo, useRef, useState } from 'react'
 
-import { getConfig } from '../config'
+import { getConfig, getSetting } from '../config'
 import type { Variable } from '../createVariable'
 import { getVariable } from '../createVariable'
 import type { ThemeManagerState } from '../helpers/ThemeManager'
@@ -217,7 +217,7 @@ export function getThemeProxied(
                       platform !== 'web' &&
                       isIos &&
                       !deopt &&
-                      config.settings.fastSchemeChange &&
+                      getSetting('fastSchemeChange') &&
                       !someParentIsInversed(themeManager)
                     ) {
                       if (scheme) {
@@ -525,7 +525,7 @@ export const useChangeThemeEffect = (
       registerThemeManager(themeManager)
     }
 
-    const isWebSSR = isWeb ? !getConfig().disableSSR : false
+    const isWebSSR = isWeb ? !getSetting('disableSSR') : false
     const mounted = isWebSSR ? isRoot || prev?.mounted : true
 
     if (!state) {

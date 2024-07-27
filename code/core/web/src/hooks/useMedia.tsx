@@ -1,7 +1,7 @@
 import { isServer, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { useRef, useState, useSyncExternalStore } from 'react'
 
-import { getConfig } from '../config'
+import { getConfig, getSetting } from '../config'
 import { matchMedia } from '../helpers/matchMedia'
 import { pseudoDescriptors } from '../helpers/pseudoDescriptors'
 import type {
@@ -83,7 +83,8 @@ const dispose = new Set<Function>()
 let mediaVersion = 0
 
 export const configureMedia = (config: TamaguiInternalConfig) => {
-  const { media, mediaQueryDefaultActive } = config
+  const { media } = config
+  const mediaQueryDefaultActive = getSetting('mediaQueryDefaultActive')
   if (!media) return
   mediaVersion++
   for (const key in media) {

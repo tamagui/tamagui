@@ -3,11 +3,13 @@ import { useLayoutEffect } from 'react'
 
 import { THEME_CLASSNAME_PREFIX } from '../constants/constants'
 import { Theme } from './Theme'
+import { getSetting } from '../config'
 
 export type ThemeProviderProps = {
   className?: string
   defaultTheme: string
   disableRootThemeClass?: boolean
+  /** @deprecated moved to createTamagui({ settings: { disableRootThemeClass } }) */
   themeClassNameOnRoot?: boolean
   children?: any
   reset?: boolean
@@ -19,7 +21,10 @@ export const ThemeProvider = (props: ThemeProviderProps) => {
     useLayoutEffect(() => {
       if (props.disableRootThemeClass) return
       const cn = `${THEME_CLASSNAME_PREFIX}${props.defaultTheme}`
-      const target = props.themeClassNameOnRoot ? document.documentElement : document.body
+      const target =
+        props.themeClassNameOnRoot ?? getSetting('themeClassNameOnRoot')
+          ? document.documentElement
+          : document.body
       target.classList.add(cn)
       return () => {
         target.classList.remove(cn)

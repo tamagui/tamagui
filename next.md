@@ -4,8 +4,9 @@
 
 v2:
 
+  - remove disableRootThemeClass from settings, change to disableRootThemeClassName
+  - defaults onlyAllowShorthands to true, themeClassNameOnRoot to true
   - document input, image
-  - plugin api + styled.div plugin
   - experimental_webMode
     - press => click
     - pressStyle => activeStyle
@@ -13,7 +14,6 @@ v2:
   - document react 19 mode
   - accessibility props, "focusable" => tabIndex
   - make sure we make any changes for RSD / web alignment
-  - boxShadow
   - move to react native flex compat
   - move to web compat apis
   - no more `as const` needed (ts5)
@@ -93,7 +93,6 @@ Nate:
 - v2 / headless
 
   - ( Pending PR ) deprecate some createTamagui settings that should move into settings
-    - disableSSR => settings.disableSSR
   - ListItem/Button simplify APIs
   - ( Pending PR ) Image/Input deprecations for web alignment
 
@@ -101,12 +100,6 @@ Nate:
 - 0-runtime mode
 - @tamagui/kit - includes native versions of many things
 - remove RNW - Input, Image
-
-Ongoing work:
-
-- Takeout
-- Bento
-- Core
 
 ---
 
@@ -402,12 +395,10 @@ Maintenance:
 
 - Switch unstyled - make it so it doesn't do any theme stuff
 
-- font-family is being output to DOM on text element
 - font weights in css are generating extra variables with "undefined" value if not filled in
 - add defaultSize and defaultFontFamily to createTamagui
 
   - all instances of $true can become getConfig().defaultSize
-  - all instances of $body can become getConfig().defaultFontFamily
   - remove the validation in createTamagui that enforces the keys
 
 - relative sizing first class (and relative color)

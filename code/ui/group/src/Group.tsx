@@ -1,4 +1,4 @@
-import type { GetProps, UnionableString, Variable } from '@tamagui/core'
+import type { GetProps, TamaguiComponent, UnionableString, Variable } from '@tamagui/core'
 import {
   getConfig,
   getTokens,
@@ -58,7 +58,7 @@ export const GroupFrame = styled(ThemeableStack, {
   },
 })
 
-export type GroupProps = GetProps<typeof GroupFrame> & {
+export type GroupExtraProps = {
   /**
    * @deprecated use `orientation` instead
    */
@@ -77,9 +77,11 @@ export type GroupProps = GetProps<typeof GroupFrame> & {
   forceUseItem?: boolean
 }
 
+export type GroupProps = GetProps<typeof GroupFrame> & GroupExtraProps
+
 function createGroup(verticalDefault: boolean) {
   return withStaticProperties(
-    GroupFrame.styleable<ScopedProps<GroupProps>>((props, ref) => {
+    GroupFrame.styleable<ScopedProps<GroupExtraProps>>((props, ref) => {
       const activeProps = useProps(props)
 
       const {
