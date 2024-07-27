@@ -28,8 +28,10 @@ export const propMapper: PropMapper = (key, value, styleStateIn, subPropsIn) => 
     if (key === 'elevationAndroid') return
   }
 
+  const { conf, styleProps, fontFamily, staticConfig } = styleStateIn
+
   if (value === 'unset') {
-    const unsetVal = styleStateIn.conf.unset?.[key]
+    const unsetVal = conf.unset?.[key]
     if (unsetVal != null) {
       value = unsetVal
     } else {
@@ -41,7 +43,7 @@ export const propMapper: PropMapper = (key, value, styleStateIn, subPropsIn) => 
   // we use this for the sub-props like pseudos so we need to overwrite the "props" in styleState
   // fallbackProps is awkward thanks to static
   // also we need to override the props here because subStyles pass in a sub-style props object
-  const subProps = styleStateIn.styleProps.fallbackProps || subPropsIn
+  const subProps = styleProps.fallbackProps || subPropsIn
   const styleState = subProps
     ? new Proxy(styleStateIn, {
         get(_, k) {
@@ -50,7 +52,6 @@ export const propMapper: PropMapper = (key, value, styleStateIn, subPropsIn) => 
       })
     : styleStateIn
 
-  const { conf, styleProps, fontFamily, staticConfig } = styleState
   const { variants } = staticConfig
 
   if (

@@ -4,6 +4,7 @@
 
 v2:
 
+  - remove the accumulation of styleProps in propMapper
   - remove disableRootThemeClass from settings, change to disableRootThemeClassName
   - defaults onlyAllowShorthands to true, themeClassNameOnRoot to true
   - document input, image
@@ -23,12 +24,8 @@ v2:
   - v2-3 ListItem simplification esp for performance of Select
   - Button simplification
   - remove suppressHighlighting / margin 0 default from Text
-  - RN transform type accepts string style props now but tamagui doesn't
   - AnimatePresence remove the old style variants in favor of custom
   - disableInjectCSS should maybe just be automated better or defaulted on
-  - can we remove the need for separate Text/View?
-    - seems like we could scan just the direct descendents?
-    https://github.com/facebook/react-strict-dom/blob/429e2fe1cb9370c59378d9ba1f4a40676bef7555/packages/react-strict-dom/src/native/modules/createStrictDOMComponent.js#L529
   - run over components and review for removing some assumptions about `size`
 
 ---
@@ -43,6 +40,9 @@ v2:
 
 ---
 
+- can we remove the need for separate Text/View?
+    - seems like we could scan just the direct descendents?
+    https://github.com/facebook/react-strict-dom/blob/429e2fe1cb9370c59378d9ba1f4a40676bef7555/packages/react-strict-dom/src/native/modules/createStrictDOMComponent.js#L529
 
 - AnimatePresence refactor:
   - https://x.com/mattgperry/status/1816842995758498017?s=46&t=5wFlU_OsfjJ0sQPMFbtG0A
