@@ -304,26 +304,6 @@ export const useComponentState = (
 
     if (isAnimatedAndHydrated || isDisabledManually || isClassNameDisabled) {
       shouldAvoidClasses = true
-
-      // debug
-      if (process.env.NODE_ENV === 'development' && props.debug) {
-        console.info(
-          `❌⛹️ no className`,
-          {
-            isAnimatedAndHydrated,
-            isDisabledManually,
-            acceptsClassName: staticConfig.acceptsClassName,
-          },
-          {
-            isAnimated,
-            supportsCSSVars,
-            didHydrateOnce,
-            disableClassName,
-            isServer,
-            willBeAnimated,
-          }
-        )
-      }
     }
   }
 
@@ -699,16 +679,19 @@ export function createComponent<
           '[Unnamed Component]'
         }`
         const type =
-          (hasEnterStyle ? '(hasEnter)' : '') +
-          (isAnimated ? '(animated)' : '') +
-          (isReactNative ? '(rnw)' : '') +
+          (hasEnterStyle ? '(hasEnter)' : ' ') +
+          (isAnimated ? '(animated)' : ' ') +
+          (isReactNative ? '(rnw)' : ' ') +
+          (shouldAvoidClasses ? '(shouldAvoidClasses)' : ' ') +
           (presenceState?.isPresent === false ? '(EXIT)' : '')
+
         const dataIs = propsIn['data-is'] || ''
         const banner = `${internalID} ${name}${dataIs ? ` ${dataIs}` : ''} ${type}`
         console.info(
           `%c ${banner} (hydrated: ${isHydrated}) (unmounted: ${state.unmounted})`,
           'background: green; color: white;'
         )
+
         if (isServer) {
           log({ noClassNames, isAnimated, shouldAvoidClasses, isWeb, supportsCSSVars })
         } else {
