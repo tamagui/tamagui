@@ -1,7 +1,7 @@
 import { AdaptParentContext } from '@tamagui/adapt'
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { currentPlatform, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import {
   getConfig,
   Stack,
@@ -380,24 +380,31 @@ export const SheetImplementationCustom = themeable(
     const sizeBeforeKeyboard = useRef<number | null>(null)
     useEffect(() => {
       if (isWeb || !moveOnKeyboardChange) return
-      const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', (e) => {
+      const keyboardWillShowListener = Keyboard.addListener(currentPlatform === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow', (e) => {
         if (sizeBeforeKeyboard.current !== null) return
-        sizeBeforeKeyboard.current = animatedNumber.getValue()
+        sizeBeforeKeyboard.current = isHidden || position === -1 ? screenSize : positions[position]
         animatedNumber.setValue(
-          Math.max(animatedNumber.getValue() - e.endCoordinates.height, 0)
+          Math.max(sizeBeforeKeyboard.current - e.endCoordinates.height, 0),
+          {
+            type: 'spring',
+            ...animationConfig
+          }
         )
       })
-      const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
+      const keyboardWillHideListener = Keyboard.addListener('keyboardDidHide', () => {
         if (sizeBeforeKeyboard.current === null) return
-        animatedNumber.setValue(sizeBeforeKeyboard.current)
+        animatedNumber.setValue(sizeBeforeKeyboard.current, {
+          type: 'spring',
+          ...animationConfig
+        })
         sizeBeforeKeyboard.current = null
       })
 
       return () => {
-        keyboardDidHideListener.remove()
-        keyboardDidShowListener.remove()
+        keyboardWillHideListener.remove()
+        keyboardWillShowListener.remove()
       }
-    }, [moveOnKeyboardChange])
+    }, [moveOnKeyboardChange, positions, position, isHidden])
 
     // we need to set this *after* fully closed to 0, to avoid it overlapping
     // the page when resizing quickly on web for example
