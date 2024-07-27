@@ -4,6 +4,15 @@
 
 v2:
 
+  - html.div web aligned
+  - Group - works with group, lets you control styles from a component
+    - TextStyle always since its wider
+    - applies the style to the group directly
+    - <Group name="button" color="$color3"></Group>
+  - any tamagui component accepts a function callback to handle passing down styles:
+    - <View>{(props, style, state) => {}}</View>
+    - makes for easy interop, where asChild is more opaque
+    - sets disableClassName true
   - remove the accumulation of styleProps in propMapper
   - remove disableRootThemeClass from settings, change to disableRootThemeClassName
   - defaults onlyAllowShorthands to true, themeClassNameOnRoot to true
@@ -27,6 +36,14 @@ v2:
   - AnimatePresence remove the old style variants in favor of custom
   - disableInjectCSS should maybe just be automated better or defaulted on
   - run over components and review for removing some assumptions about `size`
+
+---
+
+v3
+
+- plugins
+- zero runtime mode
+  - all functional styles pre-generate the styles across the possible tokens (if :number it uses SizeTokens, probably have to disallow string and '...' types but could have a way to define the values at build-time)
 
 ---
 
