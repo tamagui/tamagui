@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { basename, relative } from 'node:path'
 
 import type { NodePath, TraverseOptions } from '@babel/traverse'

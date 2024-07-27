@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.5.1/schema.json",
+  "$schema": "https://biomejs.dev/schemas/1.8.3/schema.json",
   "organizeImports": {
     "enabled": false
   },
@@ -33,7 +33,8 @@
         "useConst": "off",
         "useEnumInitializers": "off",
         "useTemplate": "off",
-        "useSelfClosingElements": "off"
+        "useSelfClosingElements": "off",
+        "useImportType": "error"
       },
       "security": {
         "noDangerouslySetInnerHtml": "off",
@@ -70,7 +71,7 @@
   },
   "javascript": {
     "formatter": {
-      "trailingComma": "es5",
+      "trailingCommas": "es5",
       "jsxQuoteStyle": "double",
       "semicolons": "asNeeded",
       "quoteStyle": "single"

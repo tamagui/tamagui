@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import * as proc from 'node:child_process'
 import { join } from 'node:path'
 import { promisify } from 'node:util'

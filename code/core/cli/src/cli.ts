@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import arg from 'arg'
 import chalk from 'chalk'
 
