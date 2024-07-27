@@ -951,7 +951,7 @@ export function createComponent<
 
     const unPress = () => setStateShallow({ press: false, pressIn: false })
 
-    if (process.env.NODE_ENV === 'development') {
+    if (process.env.NODE_ENV === 'development' && isWeb) {
       useIsomorphicLayoutEffect(() => {
         if (debugProp) {
           console.groupCollapsed(`Rendered style >`)
