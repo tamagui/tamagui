@@ -298,15 +298,7 @@ export declare const Tabs: React.ForwardRefExoticComponent<Omit<import("@tamagui
         radiused?: boolean | undefined;
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
-    }>> & {
-        axis?: "horizontal" | "vertical";
-        orientation?: "horizontal" | "vertical";
-        scrollable?: boolean;
-        showScrollIndicator?: boolean;
-        disabled?: boolean;
-        disablePassBorderRadius?: boolean | "bottom" | "end" | "start" | "top";
-        forceUseItem?: boolean;
-    } & {
+    }>> & import("@tamagui/group").GroupExtraProps & {
         /**
          * Whether to loop over after reaching the end or start of the items
          * @default true

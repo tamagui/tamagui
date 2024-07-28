@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/font-cherry-bomb",
-  "version": "1.105.1",
+  "version": "1.105.2",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -22,11 +22,11 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/constants": "1.105.1",
-    "@tamagui/core": "1.105.1"
+    "@tamagui/constants": "1.105.2",
+    "@tamagui/core": "1.105.2"
   },
   "devDependencies": {
-    "@tamagui/build": "1.105.1",
+    "@tamagui/build": "1.105.2",
     "subset-font": "^2.1.0"
   },
   "publishConfig": {

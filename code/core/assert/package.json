@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/assert",
-  "version": "1.105.1",
+  "version": "1.105.2",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
@@ -19,7 +19,7 @@
     "clean:build": "tamagui-build clean:build"
   },
   "devDependencies": {
-    "@tamagui/build": "1.105.1"
+    "@tamagui/build": "1.105.2"
   },
   "publishConfig": {
     "access": "public"
