@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/sheet",
-  "version": "1.105.3",
+  "version": "1.105.4",
   "sideEffects": [
     "*.css"
   ],
@@ -33,26 +33,26 @@
     }
   },
   "dependencies": {
-    "@tamagui/animate-presence": "1.105.3",
-    "@tamagui/animations-react-native": "1.105.3",
-    "@tamagui/compose-refs": "1.105.3",
-    "@tamagui/constants": "1.105.3",
-    "@tamagui/core": "1.105.3",
-    "@tamagui/create-context": "1.105.3",
-    "@tamagui/helpers": "1.105.3",
-    "@tamagui/portal": "1.105.3",
-    "@tamagui/remove-scroll": "1.105.3",
-    "@tamagui/scroll-view": "1.105.3",
-    "@tamagui/stacks": "1.105.3",
-    "@tamagui/use-constant": "1.105.3",
-    "@tamagui/use-controllable-state": "1.105.3",
-    "@tamagui/use-keyboard-visible": "1.105.3"
+    "@tamagui/animate-presence": "1.105.4",
+    "@tamagui/animations-react-native": "1.105.4",
+    "@tamagui/compose-refs": "1.105.4",
+    "@tamagui/constants": "1.105.4",
+    "@tamagui/core": "1.105.4",
+    "@tamagui/create-context": "1.105.4",
+    "@tamagui/helpers": "1.105.4",
+    "@tamagui/portal": "1.105.4",
+    "@tamagui/remove-scroll": "1.105.4",
+    "@tamagui/scroll-view": "1.105.4",
+    "@tamagui/stacks": "1.105.4",
+    "@tamagui/use-constant": "1.105.4",
+    "@tamagui/use-controllable-state": "1.105.4",
+    "@tamagui/use-keyboard-visible": "1.105.4"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.105.3",
+    "@tamagui/build": "1.105.4",
     "react": "^18.2.0"
   },
   "publishConfig": {
