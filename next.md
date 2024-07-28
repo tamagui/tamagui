@@ -4,6 +4,7 @@
 
 v2:
 
+  - remove spacer / space
   - html.div web aligned
   - group => container
   - any tamagui component accepts a function callback to handle passing down styles:
