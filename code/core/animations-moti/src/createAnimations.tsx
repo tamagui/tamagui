@@ -173,47 +173,47 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
 
     useAnimations: (animationProps) => {
       const { props, presence, style, componentState } = animationProps
-      const presenceContext = useContext(PresenceContext)
       const animationKey = Array.isArray(props.animation)
         ? props.animation[0]
         : props.animation
 
       const isHydrating = componentState.unmounted === true
+      const disableAnimation = isHydrating || !animationKey
+
       let animate = {}
       let dontAnimate = {}
 
-      const preventAnimation =
-        isHydrating ||
-        !animationKey ||
-        // if we don't do this moti seems to flicker a frame before applying animation
-        componentState.unmounted === 'should-enter'
-
-      if (preventAnimation) {
+      if (disableAnimation) {
         dontAnimate = style
-
-        // keep the hook but do nothing
-        useMotify({})
-
-        return [dontAnimate] as any
-      }
-
-      const animateOnly = props.animateOnly as string[]
-      for (const key in style) {
-        const value = style[key]
-        if (
-          !onlyAnimateKeys[key] ||
-          value === 'auto' ||
-          (typeof value === 'string' && value.startsWith('calc')) ||
-          (animateOnly && !animateOnly.includes(key))
-        ) {
-          dontAnimate[key] = value
-        } else {
-          animate[key] = value
+      } else {
+        const animateOnly = props.animateOnly as string[]
+        for (const key in style) {
+          const value = style[key]
+          if (
+            !onlyAnimateKeys[key] ||
+            value === 'auto' ||
+            (typeof value === 'string' && value.startsWith('calc')) ||
+            (animateOnly && !animateOnly.includes(key))
+          ) {
+            dontAnimate[key] = value
+          } else {
+            animate[key] = value
+          }
         }
       }
 
-      const styles = animate
+      // if we don't do this moti seems to flicker a frame before applying animation
+      if (componentState.unmounted === 'should-enter') {
+        dontAnimate = style
+      }
+
+      // without this, the driver breaks on native
+      // stringifying -> parsing fixes that
+      const animateStr = JSON.stringify(animate)
+      const styles = useMemo(() => JSON.parse(animateStr), [animateStr])
+
       const isExiting = Boolean(presence?.[1])
+      const presenceContext = useContext(PresenceContext)
       const usePresenceValue = (presence || undefined) as any
 
       type UseMotiProps = Parameters<typeof useMotify>[0]
@@ -241,10 +241,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
       }
 
       const motiProps = {
-        animate:
-          preventAnimation || isExiting || componentState.unmounted === true
-            ? {}
-            : styles,
+        animate: isExiting || componentState.unmounted === true ? {} : styles,
         transition: componentState.unmounted ? { duration: 0 } : transition,
         usePresenceValue,
         presenceContext,
