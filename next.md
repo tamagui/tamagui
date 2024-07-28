@@ -5,10 +5,7 @@
 v2:
 
   - html.div web aligned
-  - Group - works with group, lets you control styles from a component
-    - TextStyle always since its wider
-    - applies the style to the group directly
-    - <Group name="button" color="$color3"></Group>
+  - group => container
   - any tamagui component accepts a function callback to handle passing down styles:
     - <View>{(props, style, state) => {}}</View>
     - makes for easy interop, where asChild is more opaque
@@ -44,6 +41,38 @@ v3
 - plugins
 - zero runtime mode
   - all functional styles pre-generate the styles across the possible tokens (if :number it uses SizeTokens, probably have to disallow string and '...' types but could have a way to define the values at build-time)
+
+  - createStyledContext upgrade
+
+```tsx
+const context = createStyledContext('button')
+
+const Text = styled(Text, {
+  context: 'button',
+})
+
+const Icon = styled(Text, {
+  context: 'button',
+})
+
+const Button = withStaticProperties(ButtonFrame, {
+  Child: context.Provider,
+  Icon,
+  Text
+})
+
+const example = (
+  <Button>
+    {/* all of these 👇 get the styles from ^ */}
+    <Button.Text /> 
+    <Button.Text />
+    <Button.Text />
+    <Button.Icon $button-hover={{}} />
+  </Button>
+)
+```
+
+
 
 ---
 

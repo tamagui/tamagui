@@ -1,40 +1,14 @@
 import { getButtonSized } from '@tamagui/get-button-sized'
-import { withStaticProperties } from '@tamagui/helpers'
 import { SizableText } from '@tamagui/text'
 import type { GetProps, SizeTokens } from '@tamagui/web'
 import { createStyledContext, styled, View } from '@tamagui/web'
+import { createButton } from './createButton'
 
 type ButtonVariant = 'outlined'
 
-// export const example = (
-//   <Button>
-//     <Button.Group
-//     // can put shared styles here
-//     >
-//       <Button.Icon />
-//       <Button.Text />
-//     </Button.Group>
-//   </Button>
-// )
+export type ButtonProps = GetProps<typeof Frame>
 
-export const ButtonContext = createStyledContext<{
-  size?: SizeTokens
-  variant?: ButtonVariant
-}>({
-  size: undefined,
-  variant: undefined,
-})
-
-export type ButtonProps = GetProps<typeof ButtonFrame>
-
-// keep all under the same name so themed together
-const BUTTON_NAME = 'Button'
-
-export const ButtonFrame = styled(View, {
-  name: BUTTON_NAME,
-  tag: 'button',
-  role: 'button',
-
+const Frame = styled(View, {
   variants: {
     unstyled: {
       false: {
@@ -98,9 +72,7 @@ export const ButtonFrame = styled(View, {
   },
 })
 
-export const ButtonText = styled(SizableText, {
-  name: BUTTON_NAME,
-
+const Text = styled(SizableText, {
   variants: {
     unstyled: {
       false: {
@@ -120,9 +92,7 @@ export const ButtonText = styled(SizableText, {
   },
 })
 
-export const ButtonIcon = styled(SizableText, {
-  name: BUTTON_NAME,
-
+const Icon = styled(SizableText, {
   variants: {
     unstyled: {
       false: {
@@ -142,7 +112,23 @@ export const ButtonIcon = styled(SizableText, {
   },
 })
 
-export const Button = withStaticProperties(ButtonFrame, {
-  Text: ButtonText,
-  Icon: ButtonIcon,
+export const ButtonContext = createStyledContext<{
+  size?: SizeTokens
+  variant?: ButtonVariant
+}>({
+  size: undefined,
+  variant: undefined,
+})
+
+export const Button = createButton<{
+  size?: SizeTokens
+  variant?: ButtonVariant
+}>({
+  Frame,
+  Text,
+  Icon,
+  defaultVariants: {
+    size: undefined,
+    variant: undefined,
+  },
 })
