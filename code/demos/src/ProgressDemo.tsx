@@ -3,8 +3,9 @@ import type { SizeTokens } from 'tamagui'
 import { Button, Paragraph, Progress, Slider, XStack, YStack } from 'tamagui'
 
 export function ProgressDemo() {
+  const [key, setKey] = useState(0)
   const [size, setSize] = useState(4)
-  const [progress, setProgress] = useState(20)
+  const [progress, setProgress] = useState(0)
   const sizeProp = `$${size}` as SizeTokens
 
   useEffect(() => {
@@ -16,18 +17,18 @@ export function ProgressDemo() {
 
   return (
     <>
-      <YStack height={60} alignItems="center" space>
+      <YStack height={60} alignItems="center" gap="$4">
         <Paragraph height={30} opacity={0.5}>
           Size: {size}
         </Paragraph>
-        <Progress size={sizeProp} value={progress}>
+        <Progress key={key} size={sizeProp} value={progress}>
           <Progress.Indicator animation="bouncy" />
         </Progress>
       </YStack>
 
       <XStack
         alignItems="center"
-        space
+        gap="$2"
         position="absolute"
         bottom="$3"
         left="$4"
@@ -52,6 +53,15 @@ export function ProgressDemo() {
 
         <Button size="$2" onPress={() => setProgress((prev) => (prev + 20) % 100)}>
           Load
+        </Button>
+        <Button
+          size="$2"
+          onPress={() => {
+            setKey(Math.random())
+            setProgress(0)
+          }}
+        >
+          Reset
         </Button>
       </XStack>
     </>
