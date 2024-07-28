@@ -1203,7 +1203,11 @@ export const getSplitStyles: StyleSplitter = (
       }
     }
 
-    if (!isReactNative) {
+    if (isReactNative) {
+      if (viewProps.tabIndex === 0) {
+        viewProps.accessible ??= true
+      }
+    } else {
       if (viewProps.tabIndex == null) {
         const isFocusable = viewProps.focusable ?? viewProps.accessible
 
