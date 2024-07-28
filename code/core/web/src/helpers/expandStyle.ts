@@ -5,12 +5,12 @@
 
 import { isAndroid, isWeb } from '@tamagui/constants'
 
-import { getSetting } from '../config'
+import type { PropMappedValue } from '../types'
 import {
   webToNativeDynamicExpansion,
   webToNativeExpansion,
 } from '../constants/webToNativeProps'
-import type { PropMappedValue } from '../types'
+import { getConfig } from '../config'
 
 const neg1Flex = [
   ['flexGrow', 0],
@@ -27,7 +27,7 @@ export function expandStyle(key: string, value: any): PropMappedValue {
       return [
         ['flexGrow', value],
         ['flexShrink', 1],
-        ['flexBasis', getSetting('styleCompat') === 'react-native' ? 0 : 'auto'],
+        ['flexBasis', getConfig().settings.styleCompat === 'react-native' ? 0 : 'auto'],
       ]
     }
 
