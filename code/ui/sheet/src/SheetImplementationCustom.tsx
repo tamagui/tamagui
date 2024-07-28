@@ -380,7 +380,7 @@ export const SheetImplementationCustom = themeable(
     const sizeBeforeKeyboard = useRef<number | null>(null)
     useEffect(() => {
       if (isWeb || !moveOnKeyboardChange) return
-      const keyboardWillShowListener = Keyboard.addListener(currentPlatform === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow', (e) => {
+      const keyboardShowListener = Keyboard.addListener(currentPlatform === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow', (e) => {
         if (sizeBeforeKeyboard.current !== null) return
         sizeBeforeKeyboard.current = isHidden || position === -1 ? screenSize : positions[position]
         animatedNumber.setValue(
@@ -391,7 +391,7 @@ export const SheetImplementationCustom = themeable(
           }
         )
       })
-      const keyboardWillHideListener = Keyboard.addListener('keyboardDidHide', () => {
+      const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
         if (sizeBeforeKeyboard.current === null) return
         animatedNumber.setValue(sizeBeforeKeyboard.current, {
           type: 'spring',
@@ -401,8 +401,8 @@ export const SheetImplementationCustom = themeable(
       })
 
       return () => {
-        keyboardWillHideListener.remove()
-        keyboardWillShowListener.remove()
+        keyboardDidHideListener.remove()
+        keyboardShowListener.remove()
       }
     }, [moveOnKeyboardChange, positions, position, isHidden])
 
