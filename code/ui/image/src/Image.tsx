@@ -51,7 +51,7 @@ let hasWarned = false
 
 export const Image = StyledImage.styleable<ImageProps>((inProps, ref) => {
   const [props, style] = usePropsAndStyle(inProps)
-  const { src, source, ...rest } = props
+  const { src, source, objectFit, ...rest } = props
 
   if (process.env.NODE_ENV === 'development') {
     if (typeof src === 'string') {
@@ -120,7 +120,15 @@ export const Image = StyledImage.styleable<ImageProps>((inProps, ref) => {
   }
 
   // must set defaultSource to allow SSR, default it to the same as src
-  return <RNImage ref={ref} source={finalSource} style={style} {...(rest as any)} />
+  return (
+    <RNImage
+      resizeMode={objectFit}
+      ref={ref}
+      source={finalSource}
+      style={style}
+      {...(rest as any)}
+    />
+  )
 }) as any as ImageType
 
 Image.getSize = RNImage.getSize
