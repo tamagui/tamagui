@@ -42,7 +42,7 @@
     "postmark": "^3.0.18",
     "react-hotkeys-hook": "^4.5.0",
     "react-native": "0.74.1",
-    "react-native-reanimated": "npm:react-native-reanimated@3.13.0-rc.1",
+    "react-native-reanimated": "~3.11.0",
     "react-native-svg": "15.2.0",
     "stripe": "^9.1.0",
     "swr": "^2.2.5",

@@ -1,13 +1,23 @@
-import { Circle } from 'tamagui'
+import { Text, useMedia } from '@tamagui/core'
+import { useEffect, useState } from 'react'
 
 export default function Sandbox() {
-  return (
-    <Circle
-      size={100}
-      bg="red"
-      y={0}
-      transform="scale(2)"
-      // enterStyle={{ o: 0, y: -50 }}
-    />
-  )
+  const [y, setY] = useState(false)
+  const x = useMedia(undefined, undefined, 'verbose')
+
+  console.warn('render')
+
+  useEffect(() => {
+    setTimeout(() => {
+      setY(true)
+    })
+  }, [])
+
+  if (y === false) {
+    return null
+  }
+
+  console.log('is is gtsm', x.sm)
+
+  return <>{/* <Text testID="text">{x.sm ? 'small' : 'large'}</Text> */}</>
 }

@@ -43,8 +43,6 @@ export default {
       // @ts-ignore
       '~': import.meta.dirname,
       'react-native-svg': '@tamagui/react-native-svg',
-      // 'react-native-web': await resolve('react-native-web-lite'),
-      // bugfix docsearch/react, weird
       '@docsearch/react': resolve('@docsearch/react'),
     },
 

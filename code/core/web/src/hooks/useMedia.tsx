@@ -202,7 +202,7 @@ export function useMedia(
   debug?: DebugProp
 ): UseMediaState {
   const uid = uidIn ?? useRef()
-  // performance boost to avoid using context twice
+  // performance - avoid using context twice
   const disableSSR = getDisableSSR(componentContext)
   const initialState = (disableSSR || !isWeb ? mediaState : initState) || {}
 
@@ -223,9 +223,8 @@ export function useMedia(
       return prev
     }
 
-    const testKeys = keys ?? (enabled && keys) ?? null
     const hasntUpdated =
-      !testKeys || Object.keys(testKeys).every((key) => mediaState[key] === prev[key])
+      !keys || Object.keys(keys).every((key) => mediaState[key] === prev[key])
 
     if (hasntUpdated) {
       return prev

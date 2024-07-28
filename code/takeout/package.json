@@ -33,7 +33,7 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.51.0",
     "react-native": "0.74.1",
-    "react-native-reanimated": "npm:react-native-reanimated@3.13.0-rc.1",
+    "react-native-reanimated": "~3.11.0",
     "react-native-svg": "15.2.0",
     "tamagui": "1.105.2",
     "vite": "6.0.0-alpha.18",
