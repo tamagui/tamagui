@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/switch",
-  "version": "1.105.4",
+  "version": "1.105.5",
   "removeSideEffects": true,
   "sideEffects": [
     "*.css"
@@ -33,23 +33,23 @@
     }
   },
   "dependencies": {
-    "@tamagui/compose-refs": "1.105.4",
-    "@tamagui/constants": "1.105.4",
-    "@tamagui/core": "1.105.4",
-    "@tamagui/focusable": "1.105.4",
-    "@tamagui/get-token": "1.105.4",
-    "@tamagui/helpers": "1.105.4",
-    "@tamagui/label": "1.105.4",
-    "@tamagui/stacks": "1.105.4",
-    "@tamagui/switch-headless": "1.105.4",
-    "@tamagui/use-controllable-state": "1.105.4",
-    "@tamagui/use-previous": "1.105.4"
+    "@tamagui/compose-refs": "1.105.5",
+    "@tamagui/constants": "1.105.5",
+    "@tamagui/core": "1.105.5",
+    "@tamagui/focusable": "1.105.5",
+    "@tamagui/get-token": "1.105.5",
+    "@tamagui/helpers": "1.105.5",
+    "@tamagui/label": "1.105.5",
+    "@tamagui/stacks": "1.105.5",
+    "@tamagui/switch-headless": "1.105.5",
+    "@tamagui/use-controllable-state": "1.105.5",
+    "@tamagui/use-previous": "1.105.5"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.105.4",
+    "@tamagui/build": "1.105.5",
     "react": "^18.2.0"
   },
   "publishConfig": {
