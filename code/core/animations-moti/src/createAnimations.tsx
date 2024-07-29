@@ -219,17 +219,25 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
       type UseMotiProps = Parameters<typeof useMotify>[0]
 
       // TODO moti is giving us type troubles, but this should work
-      const transition = isHydrating
+      let transition = isHydrating
         ? { type: 'transition', duration: 0 }
-        : {
-            ...(animations[animationKey as keyof typeof animations] as any),
-          }
+        : (animations[animationKey as keyof typeof animations] as any)
+
+      let hasClonedTransition = false
 
       if (Array.isArray(props.animation)) {
         const config = props.animation[1]
         if (config && typeof config === 'object') {
           for (const key in config) {
             const val = config[key]
+
+            // performance - this seems to have (strangely) huge performance effect in uniswap
+            // so instead of cloning up front, we clone only when we absolutely have to
+            if (!hasClonedTransition) {
+              transition = Object.apply({}, transition)
+              hasClonedTransition = true
+            }
+
             // referencing a pre-defined config
             if (typeof val === 'string') {
               transition[key] = animations[val]
