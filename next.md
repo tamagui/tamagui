@@ -1,11 +1,25 @@
-- can't use `$platform-web` inside media query?
+- bug: type `$platform-web` not working inside media query?
+
+/theme
+
+- "Share" button generates a short link tamagui.dev/theme/abcdefg
+- Randomize button for palettes
+- OG image of theme card (use the tree one we used for the list of themes in studio)
 
 ---
 
 v2:
 
+  - @tamagui/cli => tamagui
+    - `tamagui build` document/announce
+    - `tamagui lint` fix check and document/announce
+  - tamagui => @tamagui/ui
+    - new Button, Input, Image, ScrollView
+    - note many are headless
+    - fullscreen => inset={0}
+    - 
+  - @tamagui/core => @tamagui/style
   - remove spacer / space
-  - html.div web aligned
   - group => container
   - any tamagui component accepts a function callback to handle passing down styles:
     - <View>{(props, style, state) => {}}</View>
@@ -15,9 +29,7 @@ v2:
   - remove disableRootThemeClass from settings, change to disableRootThemeClassName
   - defaults onlyAllowShorthands to true, themeClassNameOnRoot to true
   - document input, image
-  - experimental_webMode
-    - press => click
-    - pressStyle => activeStyle
+  - fix Select hover/type/performance
   - remove deprecated
   - document react 19 mode
   - accessibility props, "focusable" => tabIndex
@@ -39,6 +51,7 @@ v2:
 
 v3
 
+- html.div, styled('div')
 - plugins
 - zero runtime mode
   - all functional styles pre-generate the styles across the possible tokens (if :number it uses SizeTokens, probably have to disallow string and '...' types but could have a way to define the values at build-time)
@@ -46,29 +59,33 @@ v3
   - createStyledContext upgrade
 
 ```tsx
-const context = createStyledContext('button')
+import { apply } from '@tamagui/core'
 
 const Text = styled(Text, {
-  context: 'button',
+  className: 'button',
 })
 
 const Icon = styled(Text, {
-  context: 'button',
+  className: 'button',
 })
 
+const Apply = apply(Text, Icon)
+
 const Button = withStaticProperties(ButtonFrame, {
-  Child: context.Provider,
+  Apply,
   Icon,
   Text
 })
 
 const example = (
   <Button>
-    {/* all of these 👇 get the styles from ^ */}
-    <Button.Text /> 
-    <Button.Text />
-    <Button.Text />
-    <Button.Icon $button-hover={{}} />
+    <Button.Apply color="$color10">
+      {/* all of these 👇 get the styles from ^ */}
+      <Button.Text /> 
+      <Button.Text />
+      <Button.Text />
+      <Button.Icon $button-hover={{}} />
+    </Button.Apply>
   </Button>
 )
 ```
