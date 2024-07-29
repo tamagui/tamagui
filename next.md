@@ -17,7 +17,6 @@ v2:
     - new Button, Input, Image, ScrollView
     - note many are headless
     - fullscreen => inset={0}
-    - 
   - @tamagui/core => @tamagui/style
   - remove spacer / space
   - group => container
