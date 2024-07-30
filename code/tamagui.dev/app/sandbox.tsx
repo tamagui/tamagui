@@ -1,13 +1,22 @@
-import { Circle } from 'tamagui'
+import { Circle, styled } from 'tamagui'
 
 export default function Sandbox() {
-  return (
-    <Circle
-      size={100}
-      bg="red"
-      y={0}
-      transform="scale(2)"
-      // enterStyle={{ o: 0, y: -50 }}
-    />
-  )
+  return <AcceptsClassNameThing />
 }
+
+const Thing = (props) => <div {...props} />
+
+const AcceptsClassNameThing = styled(
+  Thing,
+  {
+    bg: 'red',
+    debug: 'verbose',
+    width: 200,
+    height: 200,
+  },
+  {
+    acceptsClassName: true,
+  }
+)
+
+console.log('wtf', AcceptsClassNameThing.staticConfig)
