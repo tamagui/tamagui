@@ -1,22 +1,20 @@
-import { Circle, styled } from 'tamagui'
+import { Circle, styled, View } from 'tamagui'
 
 export default function Sandbox() {
-  return <AcceptsClassNameThing />
+  return (
+    <View pointerEvents="auto" w="100%" bg="pink" height={100} group="card">
+      <View
+        w={100}
+        h={100}
+        bg="red"
+        debug="verbose"
+        $group-card-press={{
+          bg: 'yellow',
+        }}
+        $group-card-gtXs-hover={{
+          bg: 'green',
+        }}
+      />
+    </View>
+  )
 }
-
-const Thing = (props) => <div {...props} />
-
-const AcceptsClassNameThing = styled(
-  Thing,
-  {
-    bg: 'red',
-    debug: 'verbose',
-    width: 200,
-    height: 200,
-  },
-  {
-    acceptsClassName: true,
-  }
-)
-
-console.log('wtf', AcceptsClassNameThing.staticConfig)

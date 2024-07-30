@@ -14,6 +14,10 @@ const groupPseudoToPseudoCSSMap = {
   press: 'active',
 }
 
+const specifities = new Array(5)
+  .fill(0)
+  .map((_, i) => new Array(i).fill(':root').join(''))
+
 export const createMediaStyle = (
   styleObject: StyleObject,
   mediaKeyIn: string,
@@ -34,36 +38,39 @@ export const createMediaStyle = (
   const id = `${ogPrefix}${MEDIA_SEP}${mediaKeyIn.replace('-', '')}${negKey}${MEDIA_SEP}`
 
   let styleRule = ''
+  let groupPriority = ''
   let groupMediaKey: string | undefined
   let containerName: string | undefined
   let nextIdentifier = identifier.replace(ogPrefix, id)
   let styleInner = rules.map((rule) => rule.replace(identifier, nextIdentifier)).join(';')
+  let isHover = false
 
   if (isNonWindowMedia) {
-    const precedenceImportancePrefix = new Array((priority || 0) + (isGroup ? 1 : 0))
-      .fill(':root')
-      .join('')
+    let specificity = (priority || 0) + (isGroup ? 1 : 0)
 
     if (isTheme || isGroup) {
-      const groupInfo = getGroupPropParts(mediaKeyIn)
-      const mediaName = groupInfo?.name
-      groupMediaKey = groupInfo?.media
+      const { name, media, pseudo } = getGroupPropParts(mediaKeyIn)
+      groupMediaKey = media
       if (isGroup) {
-        containerName = mediaName
+        containerName = name
       }
-      const name = (isGroup ? 'group_' : '') + mediaName
-
+      const groupClassName = (isGroup ? 'group_' : '') + name
       const selectorStart = styleInner.indexOf(':root')
       const selectorEnd = styleInner.lastIndexOf('{')
       const selector = styleInner.slice(selectorStart, selectorEnd)
       const precedenceSpace = getSetting('themeClassNameOnRoot') && isTheme ? '' : ' '
-      const pseudoSelectorName = groupInfo.pseudo
-        ? groupPseudoToPseudoCSSMap[groupInfo.pseudo] || groupInfo.pseudo
+      const pseudoSelectorName = pseudo
+        ? groupPseudoToPseudoCSSMap[pseudo] || pseudo
         : undefined
-
+      if (pseudo === 'press') {
+        specificity += 2
+      }
+      if (pseudo === 'hover') {
+        isHover = true
+      }
       const pseudoSelector = pseudoSelectorName ? `:${pseudoSelectorName}` : ''
-      const presedencePrefix = `:root${precedenceImportancePrefix}${precedenceSpace}`
-      const mediaSelector = `.t_${name}${pseudoSelector}`
+      const presedencePrefix = `:root${specifities[specificity]}${precedenceSpace}`
+      const mediaSelector = `.t_${groupClassName}${pseudoSelector}`
       const nextSelector = `${presedencePrefix}${mediaSelector} ${selector.replace(
         ':root',
         ''
@@ -72,7 +79,7 @@ export const createMediaStyle = (
       // add back in the { we used to split
       styleRule = styleInner.replace(selector, nextSelector)
     } else {
-      styleRule = `${precedenceImportancePrefix}${styleInner}`
+      styleRule = `${specifities[specificity]}${styleInner}`
     }
   }
 
@@ -96,12 +103,10 @@ export const createMediaStyle = (
     const screenStr = negate ? 'not all and ' : ''
     const mediaQuery = `${screenStr}${mediaSelector}`
     const precedenceImportancePrefix = groupMediaKey
-      ? ''
-      : enableMediaPropOrder
+      ? groupPriority
+      : enableMediaPropOrder && priority
         ? // this new array should be cached
-          new Array(priority)
-            .fill(':root')
-            .join('')
+          specifities[priority]
         : // @ts-ignore
           prefixes[mediaKey]
     const prefix = groupMediaKey ? `@container ${containerName}` : '@media'
@@ -127,6 +132,10 @@ export const createMediaStyle = (
         conf.settings.webContainerType || 'inline-size'
       }) {${styleRule}}`
     }
+  }
+
+  if (isHover) {
+    styleRule = `@media (hover:hover){${styleRule}}`
   }
 
   return [property, undefined, nextIdentifier, undefined, [styleRule]]
