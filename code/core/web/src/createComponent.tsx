@@ -41,12 +41,7 @@ import { mergeProps } from './helpers/mergeProps'
 import { setElementProps } from './helpers/setElementProps'
 import { themeable } from './helpers/themeable'
 import { useDidHydrateOnce } from './hooks/useDidHydrateOnce'
-import {
-  getMediaState,
-  mediaKeyMatch,
-  setMediaShouldUpdate,
-  useMedia,
-} from './hooks/useMedia'
+import { getMediaState, setMediaShouldUpdate, useMedia } from './hooks/useMedia'
 import { useThemeWithState } from './hooks/useTheme'
 import type { TamaguiComponentEvents } from './interfaces/TamaguiComponentEvents'
 import type { TamaguiComponentState } from './interfaces/TamaguiComponentState'
