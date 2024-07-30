@@ -8,10 +8,10 @@ test.beforeEach(async ({ page }) => {
 
 test(`styled anchor passes non-styled attributes through`, async ({ page }) => {
   const anchor = page.getByTestId('test-anchor')
-  expect(anchor.getAttribute('target')).toBe('_blank')
-  expect(anchor.getAttribute('href')).toBe('https://tamagui.dev/test-link')
+  expect(await anchor.getAttribute('target')).toBe('_blank')
+  expect(await anchor.getAttribute('href')).toBe('https://tamagui.dev/test-link')
 
   const anchor2 = page.getByTestId('test-anchor2')
-  expect(anchor2.getAttribute('target')).toBe('_blank')
-  expect(anchor2.getAttribute('href')).toBe('https://tamagui.dev/test-link')
+  expect(await anchor2.getAttribute('target')).toBe('_blank')
+  expect(await anchor2.getAttribute('href')).toBe('https://tamagui.dev/test-link')
 })
