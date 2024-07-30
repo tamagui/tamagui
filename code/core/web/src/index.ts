@@ -30,6 +30,8 @@ export {
   getTokenValue,
 } from './config'
 
+export { setNonce } from './helpers/insertStyleRule'
+
 export * from './constants/constants'
 
 export * from './contexts/ComponentContext'
