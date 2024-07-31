@@ -1,10 +1,12 @@
 //! debug-verbose
 import './wdyr'
 
-import { View, useMedia } from 'tamagui'
+import { Anchor, XStack, createStyledContext, styled, useMedia } from 'tamagui'
 // import { DatePickerExample } from '../../bento/src/components/elements/datepickers/DatePicker'
 
 import { View as RNView } from 'react-native'
+
+const StyledAnchor = styled(Anchor)
 
 export const Sandbox = () => {
   const media = useMedia()
@@ -25,14 +27,74 @@ export const Sandbox = () => {
 
       {/* <SliderDemo /> */}
 
-      <View
+      {/* <StyledAnchor target="_blank" href="https://google.com">
+        hello world
+      </StyledAnchor> */}
+
+      <CheckboxComponent size="default" />
+
+      {/* <View
         w={100}
         h={100}
         enterStyle={media.lg ? {} : {}}
         background={media.sm ? 'red' : 'yellow'}
-      />
+      /> */}
 
       {/* <DatePickerExample /> */}
     </RNView>
   )
 }
+
+type CheckboxSize = 'big' | 'default'
+
+type CheckboxContext = {
+  size?: CheckboxSize
+  checked: boolean
+  invalid?: boolean
+  disabled?: boolean
+}
+
+const CheckboxContext = createStyledContext<CheckboxContext>({
+  size: 'big',
+  checked: false,
+  invalid: false,
+  disabled: false,
+})
+
+type CheckboxComponentExtraProps = {
+  children?: string | JSX.Element
+  error?: string
+  onChange?: (checked: boolean) => void
+}
+
+const CheckboxFrame = styled(XStack, {
+  name: 'Checkbox',
+  context: CheckboxContext,
+
+  variants: {
+    size: {},
+
+    checked: {},
+
+    invalid: {},
+
+    disabled: {
+      true: {
+        pointerEvents: 'none',
+      },
+    },
+  } as const,
+})
+
+// When we use .styleable the context is loosing
+export const CheckboxComponent = CheckboxFrame.styleable<CheckboxComponentExtraProps>(
+  (props, ref) => {
+    const { children, error, onChange, ...rest } = props
+
+    const context = CheckboxContext.useStyledContext()
+
+    console.log('context', context)
+
+    return null
+  }
+)
