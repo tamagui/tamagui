@@ -56,11 +56,6 @@ const UNTOUCHED_PROPS = {
   className: true,
 }
 
-const validHooks = {
-  useMedia: true,
-  useTheme: true,
-}
-
 const createTernary = (x: Ternary) => x
 
 export type Extractor = ReturnType<typeof createExtractor>
@@ -176,6 +171,7 @@ export function createExtractor(
       disableExtractVariables,
       disableDebugAttr,
       enableDynamicEvaluation = false,
+      disableOptimizeHooks,
       includeExtensions = ['.ts', '.tsx', '.jsx'],
       extractStyledDefinitions = false,
       prefixLogs,
@@ -183,6 +179,13 @@ export function createExtractor(
       platform,
       ...restProps
     } = options
+
+    const validHooks = disableOptimizeHooks
+      ? {}
+      : {
+          useMedia: true,
+          useTheme: true,
+        }
 
     if (sourcePath.includes('.tamagui-dynamic-eval')) {
       return null
