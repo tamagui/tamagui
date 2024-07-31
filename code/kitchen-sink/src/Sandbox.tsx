@@ -1,15 +1,14 @@
-//! tamagui-ignore
 //! debug-verbose
 import './wdyr'
 
-import { AnimatePresence, Button, Circle, Square, YStack, styled } from 'tamagui'
+import { View, useMedia } from 'tamagui'
 // import { DatePickerExample } from '../../bento/src/components/elements/datepickers/DatePicker'
 
-import { useState } from 'react'
 import { View as RNView } from 'react-native'
-import { SliderDemo } from '@tamagui/demos'
 
 export const Sandbox = () => {
+  const media = useMedia()
+
   return (
     <RNView style={{ width: '100%', height: '100%', padding: 50 }}>
       {/* <Demo3 /> */}
@@ -24,7 +23,14 @@ export const Sandbox = () => {
         }}
       /> */}
 
-      <SliderDemo />
+      {/* <SliderDemo /> */}
+
+      <View
+        w={100}
+        h={100}
+        enterStyle={media.lg ? {} : {}}
+        background={media.sm ? 'red' : 'yellow'}
+      />
 
       {/* <DatePickerExample /> */}
     </RNView>

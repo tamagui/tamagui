@@ -1,9 +1,6 @@
-import { basename, relative } from 'node:path'
-
 import type { NodePath, TraverseOptions } from '@babel/traverse'
 import traverse from '@babel/traverse'
 import * as t from '@babel/types'
-// @ts-ignore why
 import { Color, colorLog } from '@tamagui/cli-color'
 import {
   StyleObjectIdentifier,
@@ -14,6 +11,7 @@ import {
   type StaticConfig,
   type TamaguiComponentState,
 } from '@tamagui/web'
+import { basename, relative } from 'node:path'
 import type { ViewStyle } from 'react-native'
 import * as reactNativeWebInternals from 'react-native-web-internals'
 
@@ -1066,6 +1064,15 @@ export function createExtractor(
             }
 
             if (name.startsWith('data-')) {
+              return attr
+            }
+
+            // de-opt on enterStyle={expression}
+            if (
+              (name === 'enterStyle' || name === 'exitStyle') &&
+              t.isJSXExpressionContainer(attribute?.value)
+            ) {
+              shouldDeopt = true
               return attr
             }
 
