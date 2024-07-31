@@ -31,7 +31,7 @@ export const Sandbox = () => {
         hello world
       </StyledAnchor> */}
 
-      <CheckboxComponent size="default" />
+      {/* <CheckboxComponent size="default" /> */}
 
       {/* <View
         w={100}
