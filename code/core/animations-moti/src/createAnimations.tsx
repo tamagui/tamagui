@@ -69,6 +69,10 @@ const onlyAnimateKeys: { [key in keyof TextStyle | keyof CSSProperties]?: boolea
   right: true,
   top: true,
   bottom: true,
+  fontSize: true,
+  fontWeight: true,
+  lineHeight: true,
+  letterSpacing: true
 }
 
 export function createAnimations<A extends Record<string, TransitionConfig>>(
