@@ -2,9 +2,11 @@
 
 /theme
 
-- "Share" button generates a short link tamagui.dev/theme/abcdefg
-- Randomize button for palettes
+- generate short url on load
+- randomize button for palettes
 - OG image of theme card (use the tree one we used for the list of themes in studio)
+- save
+- use on bento
 
 ---
 

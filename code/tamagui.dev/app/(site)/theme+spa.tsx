@@ -15,6 +15,7 @@ import {
   useThemeName,
 } from 'tamagui'
 import { useLocalSearchParams, useRouter } from 'vxs'
+import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
 
 import { StudioPreviewComponents } from '~/features/studio/theme/StudioPreviewComponents'
 import { StudioPreviewComponentsBar } from '~/features/studio/theme/StudioPreviewComponentsBar'
@@ -79,6 +80,7 @@ const PreviewTheme = (props: { children: any }) => {
 
   return (
     <Theme key={baseStepThemeName} forceClassName name={baseStepThemeName}>
+      <ThemeNameEffect />
       <YStack bg="$background" f={1} pt={20 + 60} my={-60}>
         {props.children}
       </YStack>
