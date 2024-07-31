@@ -38,7 +38,7 @@
   "devDependencies": {
     "@tamagui/build": "1.105.7",
     "expo-linear-gradient": "~13.0.2",
-    "react": "^18.2.0"
+    "react": "^18.2.0 || ^19.0.0"
   },
   "publishConfig": {
     "access": "public"
