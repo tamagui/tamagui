@@ -235,10 +235,7 @@ The `createTamagui` function receives a configuration object:
 - `media`: Define reusable responsive [media queries](/docs/core/use-media).
 - `shorthands`: Define any props you want to expand to style values, keys being
   the shorthand and values being the expanded style prop.
-- `defaultProps`: For more advanced uses, you can override all named `styled()`
-  components initial values. These merge downwards, so
-  `styled(Text, { name: 'Paragraph' })` will get any defaultProps set for
-  `Text`.
+- `defaultProps`: Deprecated, use styled() on any component to change it's styles. ~~For more advanced uses, you can override all named `styled()` components initial values.~~ 
 - `onlyAllowShorthands`: When set to true will ensure that if you define
   shorthands, they override existing long-form style props.
 
