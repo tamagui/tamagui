@@ -53,6 +53,10 @@ v2:
   - AnimatePresence remove the old style variants in favor of custom
   - disableInjectCSS should maybe just be automated better or defaulted on
   - run over components and review for removing some assumptions about `size`
+  - remove nativeID, testID
+  - "Enhance with native semantics" can probably go away right
+  - remove `dataSet`
+  - remove as much of `// TODO: remove this in the future when react native a11y API is removed` as possible
 
 ---
 

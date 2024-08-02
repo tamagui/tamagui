@@ -1012,7 +1012,7 @@ export const getSplitStyles: StyleSplitter = (
               continue
             }
             styleState.style ||= {}
-            mergeMediaByImportance(
+            const didMerge = mergeMediaByImportance(
               styleState,
               mediaKeyShort,
               subKey,
@@ -1022,7 +1022,7 @@ export const getSplitStyles: StyleSplitter = (
               importanceBump,
               debug
             )
-            if (key === 'fontFamily') {
+            if (didMerge && key === 'fontFamily') {
               styleState.fontFamily = mediaStyle.fontFamily as string
             }
           }

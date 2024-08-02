@@ -6,6 +6,23 @@ import { Anchor, XStack, YStack, createStyledContext, styled, useMedia } from 't
 
 import { View as RNView } from 'react-native'
 
+const Grid = styled(YStack, {
+  '$platform-web': {
+    display: 'grid',
+    gridColumn: 'span 2',
+    gridRow: 'span 4',
+    gap: 32,
+  },
+
+  // $lg: {
+  //   // @ts-expect-error TODO
+  //   '$platform-web': {
+  //     gridColumn: 'span 4',
+  //     gridRow: 'span 1',
+  //   },
+  // },
+})
+
 export const Sandbox = () => {
   const media = useMedia()
 
@@ -23,7 +40,10 @@ export const Sandbox = () => {
         }}
       /> */}
 
-      <YStack group="testy" w={400} h={400} bg="red">
+      <Grid debug="verbose" w={200} h={200} bg="red" />
+
+      {/* group animatable defaults */}
+      {/* <YStack group="testy" w={400} h={400} bg="red">
         <YStack
           debug="verbose"
           animation="quick"
@@ -34,7 +54,7 @@ export const Sandbox = () => {
             x: -24,
           }}
         ></YStack>
-      </YStack>
+      </YStack> */}
 
       {/* <SliderDemo /> */}
 
