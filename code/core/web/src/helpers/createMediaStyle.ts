@@ -2,6 +2,7 @@ import { getConfig, getSetting } from '../config'
 import { mediaObjectToString } from '../hooks/useMedia'
 import type { IsMediaType, MediaQueries, MediaStyleObject, StyleObject } from '../types'
 import { getGroupPropParts, type GroupParts } from './getGroupPropParts'
+import { isActivePlatform } from './isActivePlatform'
 
 // TODO have this be used by extractMediaStyle in tamagui static
 // not synced to static/constants for now
@@ -153,10 +154,6 @@ export const createMediaStyle = (
 
   if (isHover) {
     styleRule = `@media (hover:hover){${styleRule}}`
-  }
-
-  if (property === '$platform-web') {
-    debugger
   }
 
   return [property, undefined, nextIdentifier, undefined, [styleRule]]

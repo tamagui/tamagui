@@ -865,7 +865,8 @@ export type WithMediaProps<A> = {
     | ThemeMediaKeys
     | PlatformMediaKeys]?: Key extends MediaPropKeys
     ? A & {
-        [Key in ThemeMediaKeys | PlatformMediaKeys]?: A
+        // TODO we can support $theme- inside media queries here if we change to ThemeMediaKeys | PlatformMediaKeys
+        [Key in PlatformMediaKeys]?: A
       }
     : Key extends `$platform-web`
       ? {

@@ -1,5 +1,4 @@
 import {
-  currentPlatform,
   isAndroid,
   isClient,
   isServer,
@@ -71,6 +70,7 @@ import { getPropMappedFontFamily, propMapper } from './propMapper'
 import { pseudoDescriptors, pseudoPriorities } from './pseudoDescriptors'
 import { skipProps } from './skipProps'
 import { transformsToString } from './transformsToString'
+import { isActivePlatform } from './isActivePlatform'
 
 const consoleGroupCollapsed = isWeb ? console.groupCollapsed : console.info
 
@@ -833,13 +833,7 @@ export const getSplitStyles: StyleSplitter = (
 
         // can bail early
         if (isMedia === 'platform') {
-          const platform = key.slice(10)
-          if (
-            // supports web, ios, android
-            platform !== currentPlatform &&
-            // supports web, native
-            platform !== process.env.TAMAGUI_TARGET
-          ) {
+          if (!isActivePlatform(key)) {
             continue
           }
         }
@@ -882,11 +876,20 @@ export const getSplitStyles: StyleSplitter = (
           }
 
           const mediaStyles = getStylesAtomic(mediaStyle)
-          console.log('111', mediaStyle, mediaStyles)
           const priority = mediaStylesSeen
           mediaStylesSeen += 1
 
           for (const style of mediaStyles) {
+            // handle nested media:
+            // for now we're doing weird stuff, getStylesAtomic will put the
+            // $platform-web into property so we can check it here
+            const property = style[0]
+            if (property[0] === '$') {
+              if (property.startsWith('$platform') && !isActivePlatform(property)) {
+                continue
+              }
+            }
+
             const out = createMediaStyle(
               style,
               mediaKeyShort,

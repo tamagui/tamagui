@@ -30,9 +30,8 @@ export function getStylesAtomic(style: ViewStyleWithPseudos) {
     } else if (isMediaKey(key)) {
       for (const subKey in val) {
         const so = getStyleObject(val, subKey)
-        console.log('wtf', so)
         if (so) {
-          so[0] === key
+          so[0] = key // set the property to be eg $platform-web so we can use it above
           out.push(so)
         }
       }

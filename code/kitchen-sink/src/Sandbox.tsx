@@ -20,7 +20,7 @@ const Test = styled(View, {
 export const Sandbox = () => {
   return (
     <RNView style={{ width: '100%', height: '100%', padding: 50 }}>
-      <Test debug="verbose" />
+      <Test />
 
       {/* <Demo3 /> */}
       {/* <Circle
