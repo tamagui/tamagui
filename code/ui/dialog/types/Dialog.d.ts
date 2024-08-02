@@ -277,7 +277,7 @@ declare const Dialog: React.ForwardRefExoticComponent<DialogProps & React.RefAtt
             fullscreen?: boolean | undefined;
         }>> & import("react").RefAttributes<import("react-native").ScrollView>>;
     };
-    Adapt: (({ platform, when, children }: import("@tamagui/adapt").AdaptProps) => any) & {
+    Adapt: (({ platform, when, children }: import("@tamagui/adapt").AdaptProps) => import("react").ReactNode) & {
         Contents: {
             (props: any): import("react").FunctionComponentElement<any>;
             shouldForwardSpace: boolean;

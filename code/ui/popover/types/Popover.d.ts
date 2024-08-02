@@ -281,7 +281,7 @@ export declare const Popover: React.ForwardRefExoticComponent<PopperProps & {
     }>> & {
         __scopePopover?: string | undefined;
     } & React.RefAttributes<TamaguiElement>>;
-    Adapt: (({ platform, when, children }: import("@tamagui/adapt").AdaptProps) => any) & {
+    Adapt: (({ platform, when, children }: import("@tamagui/adapt").AdaptProps) => import("react").ReactNode) & {
         Contents: {
             (props: any): import("react").FunctionComponentElement<any>;
             shouldForwardSpace: boolean;

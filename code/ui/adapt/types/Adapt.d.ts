@@ -1,9 +1,14 @@
-import type { MediaQueryKey } from '@tamagui/core';
+import type { MediaQueryKey, UseMediaState } from '@tamagui/core';
 type MediaQueryKeyString = MediaQueryKey extends string ? MediaQueryKey : never;
 export type AdaptProps = {
-    when?: MediaQueryKeyString;
+    when?: MediaQueryKeyString | ((state: {
+        media: UseMediaState;
+    }) => boolean);
     platform?: 'native' | 'web' | 'touch' | 'ios' | 'android';
-    children?: any;
+    children?: React.ReactNode | ((state: {
+        enabled: boolean;
+        media: UseMediaState;
+    }) => React.ReactNode);
 };
 type When = MediaQueryKeyString | boolean | null;
 type Component = (props: any) => any;
@@ -24,7 +29,7 @@ export declare const useAdaptParent: ({ Contents, }: {
     }) => import("react/jsx-runtime").JSX.Element;
     when: When;
 };
-export declare const Adapt: (({ platform, when, children }: AdaptProps) => any) & {
+export declare const Adapt: (({ platform, when, children }: AdaptProps) => import("react").ReactNode) & {
     Contents: {
         (props: any): import("react").FunctionComponentElement<any>;
         shouldForwardSpace: boolean;
