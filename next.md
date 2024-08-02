@@ -1,16 +1,37 @@
-- uniswap //@ts-expect-error TODO in homepage
-- bug in useMedia + compiler
-  - https://app.graphite.dev/github/pr/Uniswap/universe/10626/fix-web-toast-alignment
+apply helps us create much simpler component APIs for v2
+likely last feature needed for it:
 
-- bug: type `$platform-web` not working inside media query?
+```tsx
+import { apply } from '@tamagui/core'
 
-/theme
+const Text = styled(Text, {
+  className: 'button',
+})
 
-- generate short url on load
-- randomize button for palettes
-- OG image of theme card (use the tree one we used for the list of themes in studio)
-- save
-- use on bento
+const Icon = styled(Text, {
+  className: 'button',
+})
+
+const Apply = apply(Text, Icon)
+
+const Button = withStaticProperties(ButtonFrame, {
+  Apply,
+  Icon,
+  Text
+})
+
+const example = (
+  <Button>
+    <Button.Apply color="$color10">
+      {/* all of these 👇 get the styles from ^ */}
+      <Button.Text /> 
+      <Button.Text />
+      <Button.Text />
+      <Button.Icon $button-hover={{}} />
+    </Button.Apply>
+  </Button>
+)
+```
 
 ---
 
@@ -48,7 +69,7 @@ v2:
   - redo/remove ThemeableStack
   - rename SizableStack to Surface and simplify a bit
   - v2-3 ListItem simplification esp for performance of Select
-  - Button simplification
+  - button-next finish (using apply)
   - remove suppressHighlighting / margin 0 default from Text
   - AnimatePresence remove the old style variants in favor of custom
   - disableInjectCSS should maybe just be automated better or defaulted on
@@ -62,46 +83,11 @@ v2:
 
 v3
 
+- no react-native deps across the ui kit on web
 - html.div, styled('div')
 - plugins
 - zero runtime mode
   - all functional styles pre-generate the styles across the possible tokens (if :number it uses SizeTokens, probably have to disallow string and '...' types but could have a way to define the values at build-time)
-
-  - createStyledContext upgrade
-
-```tsx
-import { apply } from '@tamagui/core'
-
-const Text = styled(Text, {
-  className: 'button',
-})
-
-const Icon = styled(Text, {
-  className: 'button',
-})
-
-const Apply = apply(Text, Icon)
-
-const Button = withStaticProperties(ButtonFrame, {
-  Apply,
-  Icon,
-  Text
-})
-
-const example = (
-  <Button>
-    <Button.Apply color="$color10">
-      {/* all of these 👇 get the styles from ^ */}
-      <Button.Text /> 
-      <Button.Text />
-      <Button.Text />
-      <Button.Icon $button-hover={{}} />
-    </Button.Apply>
-  </Button>
-)
-```
-
-
 
 ---
 
@@ -114,6 +100,27 @@ const example = (
   - automatically handles tree shaking process.env for themes
 
 ---
+
+- we need to beef up tests:
+  - native in general
+  - native/web performance
+  - nextjs (can add to code/next-site), esp light/dark/animations
+  - $group $platform $theme styling
+
+- uniswap //@ts-expect-error TODO in homepage
+- bug in useMedia + compiler
+  - https://app.graphite.dev/github/pr/Uniswap/universe/10626/fix-web-toast-alignment
+
+- bug: type `$platform-web` not working inside media query?
+
+/theme
+
+- generate short url on load
+- randomize button for palettes
+- OG image of theme card (use the tree one we used for the list of themes in studio)
+- save
+- use on bento
+
 
 - can we remove the need for separate Text/View?
     - seems like we could scan just the direct descendents?

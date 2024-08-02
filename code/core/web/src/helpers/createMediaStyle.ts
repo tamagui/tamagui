@@ -46,7 +46,7 @@ export const createMediaStyle = (
   let isHover = false
 
   if (isNonWindowMedia) {
-    let specificity = (priority || 0) + (isGroup ? 1 : 0)
+    let specificity = (priority || 0) + (isGroup || isPlatform ? 1 : 0)
 
     if (isTheme || isGroup) {
       const { name, media, pseudo } = getGroupPropParts(mediaKeyIn)
