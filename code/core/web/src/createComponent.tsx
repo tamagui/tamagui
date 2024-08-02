@@ -1789,7 +1789,7 @@ export const subscribeToContextGroup = ({
       console.debug(`No context group found`)
     }
 
-    return componentContext.groups?.subscribe((name, { layout, pseudo }) => {
+    return componentContext.groups?.subscribe?.((name, { layout, pseudo }) => {
       if (pseudo && pseudoGroups?.has(String(name))) {
         // we emit a partial so merge it + change reference so mergeIfNotShallowEqual runs
         Object.assign(current.pseudo, pseudo)
