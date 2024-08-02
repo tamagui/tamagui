@@ -863,17 +863,21 @@ export type WithMediaProps<A> = {
     | MediaPropKeys
     | GroupMediaKeys
     | ThemeMediaKeys
-    | PlatformMediaKeys]?: Key extends `$platform-web`
-    ? {
-        [SubKey in keyof A | keyof CSSProperties]?: SubKey extends keyof CSSProperties
-          ? CSSProperties[SubKey]
-          : SubKey extends keyof A
-            ? A[SubKey]
-            : SubKey extends keyof WebOnlyValidStyleValues
-              ? WebOnlyValidStyleValues[SubKey]
-              : never
+    | PlatformMediaKeys]?: Key extends MediaPropKeys
+    ? A & {
+        [Key in ThemeMediaKeys | PlatformMediaKeys]?: A
       }
-    : A
+    : Key extends `$platform-web`
+      ? {
+          [SubKey in keyof A | keyof CSSProperties]?: SubKey extends keyof CSSProperties
+            ? CSSProperties[SubKey]
+            : SubKey extends keyof A
+              ? A[SubKey]
+              : SubKey extends keyof WebOnlyValidStyleValues
+                ? WebOnlyValidStyleValues[SubKey]
+                : never
+        }
+      : A
 }
 
 export type WebOnlyValidStyleValues = {
