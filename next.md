@@ -1,3 +1,4 @@
+- uniswap //@ts-expect-error TODO in homepage
 - bug in useMedia + compiler
   - https://app.graphite.dev/github/pr/Uniswap/universe/10626/fix-web-toast-alignment
 

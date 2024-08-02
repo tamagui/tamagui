@@ -1,12 +1,10 @@
 //! debug-verbose
 import './wdyr'
 
-import { Anchor, XStack, createStyledContext, styled, useMedia } from 'tamagui'
+import { Anchor, XStack, YStack, createStyledContext, styled, useMedia } from 'tamagui'
 // import { DatePickerExample } from '../../bento/src/components/elements/datepickers/DatePicker'
 
 import { View as RNView } from 'react-native'
-
-const StyledAnchor = styled(Anchor)
 
 export const Sandbox = () => {
   const media = useMedia()
@@ -24,6 +22,19 @@ export const Sandbox = () => {
           y: -100,
         }}
       /> */}
+
+      <YStack group="testy" w={400} h={400} bg="red">
+        <YStack
+          debug="verbose"
+          animation="quick"
+          w={100}
+          h={200}
+          bg="yellow"
+          $group-testy-hover={{
+            x: -24,
+          }}
+        ></YStack>
+      </YStack>
 
       {/* <SliderDemo /> */}
 
@@ -45,56 +56,56 @@ export const Sandbox = () => {
   )
 }
 
-type CheckboxSize = 'big' | 'default'
+// type CheckboxSize = 'big' | 'default'
 
-type CheckboxContext = {
-  size?: CheckboxSize
-  checked: boolean
-  invalid?: boolean
-  disabled?: boolean
-}
+// type CheckboxContext = {
+//   size?: CheckboxSize
+//   checked: boolean
+//   invalid?: boolean
+//   disabled?: boolean
+// }
 
-const CheckboxContext = createStyledContext<CheckboxContext>({
-  size: 'big',
-  checked: false,
-  invalid: false,
-  disabled: false,
-})
+// const CheckboxContext = createStyledContext<CheckboxContext>({
+//   size: 'big',
+//   checked: false,
+//   invalid: false,
+//   disabled: false,
+// })
 
-type CheckboxComponentExtraProps = {
-  children?: string | JSX.Element
-  error?: string
-  onChange?: (checked: boolean) => void
-}
+// type CheckboxComponentExtraProps = {
+//   children?: string | JSX.Element
+//   error?: string
+//   onChange?: (checked: boolean) => void
+// }
 
-const CheckboxFrame = styled(XStack, {
-  name: 'Checkbox',
-  context: CheckboxContext,
+// const CheckboxFrame = styled(XStack, {
+//   name: 'Checkbox',
+//   context: CheckboxContext,
 
-  variants: {
-    size: {},
+//   variants: {
+//     size: {},
 
-    checked: {},
+//     checked: {},
 
-    invalid: {},
+//     invalid: {},
 
-    disabled: {
-      true: {
-        pointerEvents: 'none',
-      },
-    },
-  } as const,
-})
+//     disabled: {
+//       true: {
+//         pointerEvents: 'none',
+//       },
+//     },
+//   } as const,
+// })
 
-// When we use .styleable the context is loosing
-export const CheckboxComponent = CheckboxFrame.styleable<CheckboxComponentExtraProps>(
-  (props, ref) => {
-    const { children, error, onChange, ...rest } = props
+// // When we use .styleable the context is loosing
+// export const CheckboxComponent = CheckboxFrame.styleable<CheckboxComponentExtraProps>(
+//   (props, ref) => {
+//     const { children, error, onChange, ...rest } = props
 
-    const context = CheckboxContext.useStyledContext()
+//     const context = CheckboxContext.useStyledContext()
 
-    console.log('context', context)
+//     console.log('context', context)
 
-    return null
-  }
-)
+//     return null
+//   }
+// )

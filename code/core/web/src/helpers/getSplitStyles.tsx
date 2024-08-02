@@ -777,14 +777,7 @@ export const getSplitStyles: StyleSplitter = (
             // when disabled ensure the default value is set for future animations to align
 
             if (isDisabled) {
-              const defaultValues = animatableDefaults[pkey]
-              if (
-                defaultValues != null &&
-                !(pkey in usedKeys) &&
-                (!styleState.style || !(pkey in styleState.style))
-              ) {
-                mergeStyle(styleState, pkey, defaultValues)
-              }
+              applyDefaultStyle(pkey, styleState)
             } else {
               const curImportance = usedKeys[pkey] || 0
               const shouldMerge = importance >= curImportance
@@ -975,7 +968,14 @@ export const getSplitStyles: StyleSplitter = (
               if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
                 log(` 🏘️ GROUP media ${groupMediaKey} active? ${isActive}`)
               }
-              if (!isActive) continue
+              if (!isActive) {
+                // ensure we set the defaults so animations work
+                for (const pkey in mediaStyle) {
+                  applyDefaultStyle(pkey, styleState)
+                }
+
+                continue
+              }
               importanceBump = 2
             }
 
@@ -994,7 +994,14 @@ export const getSplitStyles: StyleSplitter = (
                   ` 🏘️ GROUP pseudo ${groupMediaKey} active? ${isActive}, priority ${priority}`
                 )
               }
-              if (!isActive) continue
+              if (!isActive) {
+                // ensure we set the defaults so animations work
+                for (const pkey in mediaStyle) {
+                  applyDefaultStyle(pkey, styleState)
+                }
+
+                continue
+              }
               importanceBump = priority
             }
           }
@@ -1664,4 +1671,15 @@ function normalizeStyle(style: any) {
   }
   fixStyles(out)
   return out
+}
+
+function applyDefaultStyle(pkey: string, styleState: GetStyleState) {
+  const defaultValues = animatableDefaults[pkey]
+  if (
+    defaultValues != null &&
+    !(pkey in styleState.usedKeys) &&
+    (!styleState.style || !(pkey in styleState.style))
+  ) {
+    mergeStyle(styleState, pkey, defaultValues)
+  }
 }
