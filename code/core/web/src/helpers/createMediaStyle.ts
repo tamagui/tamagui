@@ -22,6 +22,7 @@ const specifities = new Array(5)
 function getThemeOrGroupSelector(
   name: string,
   styleInner: string,
+  isGroup: boolean,
   groupParts: GroupParts,
   isTheme = false,
   precedenceImportancePrefix = ''
@@ -36,7 +37,7 @@ function getThemeOrGroupSelector(
 
   const pseudoSelector = pseudoSelectorName ? `:${pseudoSelectorName}` : ''
   const presedencePrefix = `:root${precedenceImportancePrefix}${precedenceSpace}`
-  const mediaSelector = `.t_${name}${pseudoSelector}`
+  const mediaSelector = `.t_${isGroup ? 'group_' : ''}${name}${pseudoSelector}`
   return [
     selector,
     `${presedencePrefix}${mediaSelector} ${selector.replace(':root', '')}`,
@@ -76,7 +77,6 @@ export const createMediaStyle = (
       const { name, media, pseudo } = getGroupPropParts(mediaKeyIn)
       groupMediaKey = media
       const groupParts = getGroupPropParts(mediaKeyIn)
-      groupMediaKey = groupParts?.media
       if (isGroup) {
         containerName = name
       }
@@ -89,6 +89,7 @@ export const createMediaStyle = (
       const [selector, nextSelector] = getThemeOrGroupSelector(
         name,
         styleInner,
+        isGroup,
         groupParts,
         isTheme,
         specifities[specificity]
