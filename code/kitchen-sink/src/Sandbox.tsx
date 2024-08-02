@@ -9,10 +9,21 @@ const Test = styled(View, {
   width: 100,
   height: 100,
   backgroundColor: 'red',
+  debug: 'verbose',
+
+  '$platform-native': {
+    backgroundColor: 'yellow',
+  },
 
   $gtXs: {
     '$platform-web': {
       backgroundColor: 'green',
+    },
+  },
+
+  $xl: {
+    '$platform-native': {
+      backgroundColor: 'blue',
     },
   },
 })

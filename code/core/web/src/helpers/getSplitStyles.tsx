@@ -1010,17 +1010,13 @@ export const getSplitStyles: StyleSplitter = (
             }
           }
 
-          for (const subKey in mediaStyle) {
-            if (subKey === 'space') {
-              space = valInit.space
-              continue
-            }
+          function mergeMediaStyle(key: string, val: any) {
             styleState.style ||= {}
             const didMerge = mergeMediaByImportance(
               styleState,
               mediaKeyShort,
-              subKey,
-              mediaStyle[subKey],
+              key,
+              val,
               usedKeys,
               mediaState[mediaKeyShort],
               importanceBump,
@@ -1028,6 +1024,23 @@ export const getSplitStyles: StyleSplitter = (
             )
             if (didMerge && key === 'fontFamily') {
               styleState.fontFamily = mediaStyle.fontFamily as string
+            }
+          }
+
+          for (const subKey in mediaStyle) {
+            if (subKey === 'space') {
+              space = valInit.space
+              continue
+            }
+            if (subKey[0] === '$') {
+              if (!isActivePlatform(subKey)) {
+                continue
+              }
+              for (const subSubKey in mediaStyle[subKey]) {
+                mergeMediaStyle(subSubKey, mediaStyle[subKey][subSubKey])
+              }
+            } else {
+              mergeMediaStyle(subKey, mediaStyle[subKey])
             }
           }
         }
