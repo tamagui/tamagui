@@ -1,23 +1,23 @@
-import { isAndroid, isIos, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
-import { isTouchable } from '@tamagui/constants'
-import type { MediaQueryKey } from '@tamagui/core'
+import {
+  isAndroid,
+  isIos,
+  isTouchable,
+  isWeb,
+  useIsomorphicLayoutEffect,
+} from '@tamagui/constants'
+import type { MediaQueryKey, UseMediaState } from '@tamagui/core'
 import { useMedia } from '@tamagui/core'
 import { withStaticProperties } from '@tamagui/helpers'
-import {
-  createContext,
-  createElement,
-  useContext,
-  useMemo,
-  useState,
-  useRef,
-} from 'react'
+import { createContext, createElement, useContext, useMemo, useState } from 'react'
 
 type MediaQueryKeyString = MediaQueryKey extends string ? MediaQueryKey : never
 
 export type AdaptProps = {
-  when?: MediaQueryKeyString
+  when?: MediaQueryKeyString | ((state: { media: UseMediaState }) => boolean)
   platform?: 'native' | 'web' | 'touch' | 'ios' | 'android'
-  children?: any
+  children?:
+    | React.ReactNode
+    | ((state: { enabled: boolean; media: UseMediaState }) => React.ReactNode)
 }
 
 type When = MediaQueryKeyString | boolean | null
@@ -80,15 +80,22 @@ export const Adapt = withStaticProperties(
     const context = useContext(AdaptParentContext)
     const media = useMedia()
 
-    let enabled = !platform
-    if (platform === 'touch') enabled = isTouchable
-    if (platform === 'native') enabled = !isWeb
-    if (platform === 'web') enabled = isWeb
-    if (platform === 'ios') enabled = isIos
-    if (platform === 'android') enabled = isAndroid
+    let enabled = false
 
-    if (when && !media[when]) {
-      enabled = false
+    if (typeof when === 'function') {
+      enabled = when({ media })
+    } else {
+      enabled = !platform
+
+      if (platform === 'touch') enabled = isTouchable
+      if (platform === 'native') enabled = !isWeb
+      if (platform === 'web') enabled = isWeb
+      if (platform === 'ios') enabled = isIos
+      if (platform === 'android') enabled = isAndroid
+
+      if (when && !media[when]) {
+        enabled = false
+      }
     }
 
     useIsomorphicLayoutEffect(() => {
@@ -98,6 +105,10 @@ export const Adapt = withStaticProperties(
 
     if (!enabled) {
       return null
+    }
+
+    if (typeof children === 'function') {
+      return children({ enabled, media })
     }
 
     return children
