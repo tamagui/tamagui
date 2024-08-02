@@ -882,6 +882,7 @@ export const getSplitStyles: StyleSplitter = (
           }
 
           const mediaStyles = getStylesAtomic(mediaStyle)
+          console.log('111', mediaStyle, mediaStyles)
           const priority = mediaStylesSeen
           mediaStylesSeen += 1
 

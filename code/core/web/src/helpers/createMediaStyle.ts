@@ -50,9 +50,8 @@ export const createMediaStyle = (
   negate?: boolean,
   priority?: number
 ): MediaStyleObject => {
-  const [property, _value, identifier, _pseudo, rules] = styleObject
-  const conf = getConfig()
-  const enableMediaPropOrder = conf.settings.mediaPropOrder
+  const [property, , identifier, , rules] = styleObject
+  const enableMediaPropOrder = getSetting('mediaPropOrder')
   const isTheme = type === 'theme'
   const isPlatform = type === 'platform'
   const isGroup = type === 'group'
@@ -91,7 +90,7 @@ export const createMediaStyle = (
         styleInner,
         groupParts,
         isTheme,
-        precedenceImportancePrefix
+        specifities[specificity]
       )
       // const selectors = `${nextSelector}, :root${nextSelector}`
       // add back in the { we used to split
@@ -147,13 +146,17 @@ export const createMediaStyle = (
     // add @supports for legacy browser support to not break container queries
     if (groupMediaKey) {
       styleRule = `@supports (contain: ${
-        conf.settings.webContainerType || 'inline-size'
+        getSetting('webContainerType') || 'inline-size'
       }) {${styleRule}}`
     }
   }
 
   if (isHover) {
     styleRule = `@media (hover:hover){${styleRule}}`
+  }
+
+  if (property === '$platform-web') {
+    debugger
   }
 
   return [property, undefined, nextIdentifier, undefined, [styleRule]]
