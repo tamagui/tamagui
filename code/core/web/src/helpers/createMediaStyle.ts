@@ -1,7 +1,8 @@
 import { getConfig, getSetting } from '../config'
 import { mediaObjectToString } from '../hooks/useMedia'
 import type { IsMediaType, MediaQueries, MediaStyleObject, StyleObject } from '../types'
-import { getGroupPropParts } from './getGroupPropParts'
+import { getGroupPropParts, type GroupParts } from './getGroupPropParts'
+import { isActivePlatform } from './isActivePlatform'
 
 // TODO have this be used by extractMediaStyle in tamagui static
 // not synced to static/constants for now
@@ -18,6 +19,30 @@ const specifities = new Array(5)
   .fill(0)
   .map((_, i) => new Array(i).fill(':root').join(''))
 
+function getThemeOrGroupSelector(
+  name: string,
+  styleInner: string,
+  groupParts: GroupParts,
+  isTheme = false,
+  precedenceImportancePrefix = ''
+) {
+  const selectorStart = styleInner.indexOf(':root')
+  const selectorEnd = styleInner.lastIndexOf('{')
+  const selector = styleInner.slice(selectorStart, selectorEnd)
+  const precedenceSpace = getSetting('themeClassNameOnRoot') && isTheme ? '' : ' '
+  const pseudoSelectorName = groupParts.pseudo
+    ? groupPseudoToPseudoCSSMap[groupParts.pseudo] || groupParts.pseudo
+    : undefined
+
+  const pseudoSelector = pseudoSelectorName ? `:${pseudoSelectorName}` : ''
+  const presedencePrefix = `:root${precedenceImportancePrefix}${precedenceSpace}`
+  const mediaSelector = `.t_${name}${pseudoSelector}`
+  return [
+    selector,
+    `${presedencePrefix}${mediaSelector} ${selector.replace(':root', '')}`,
+  ] as const
+}
+
 export const createMediaStyle = (
   styleObject: StyleObject,
   mediaKeyIn: string,
@@ -26,9 +51,8 @@ export const createMediaStyle = (
   negate?: boolean,
   priority?: number
 ): MediaStyleObject => {
-  const [property, _value, identifier, _pseudo, rules] = styleObject
-  const conf = getConfig()
-  const enableMediaPropOrder = conf.settings.mediaPropOrder
+  const [property, , identifier, , rules] = styleObject
+  const enableMediaPropOrder = getSetting('mediaPropOrder')
   const isTheme = type === 'theme'
   const isPlatform = type === 'platform'
   const isGroup = type === 'group'
@@ -51,30 +75,24 @@ export const createMediaStyle = (
     if (isTheme || isGroup) {
       const { name, media, pseudo } = getGroupPropParts(mediaKeyIn)
       groupMediaKey = media
+      const groupParts = getGroupPropParts(mediaKeyIn)
+      groupMediaKey = groupParts?.media
       if (isGroup) {
         containerName = name
       }
-      const groupClassName = (isGroup ? 'group_' : '') + name
-      const selectorStart = styleInner.indexOf(':root')
-      const selectorEnd = styleInner.lastIndexOf('{')
-      const selector = styleInner.slice(selectorStart, selectorEnd)
-      const precedenceSpace = getSetting('themeClassNameOnRoot') && isTheme ? '' : ' '
-      const pseudoSelectorName = pseudo
-        ? groupPseudoToPseudoCSSMap[pseudo] || pseudo
-        : undefined
       if (pseudo === 'press') {
         specificity += 2
       }
       if (pseudo === 'hover') {
         isHover = true
       }
-      const pseudoSelector = pseudoSelectorName ? `:${pseudoSelectorName}` : ''
-      const presedencePrefix = `:root${specifities[specificity]}${precedenceSpace}`
-      const mediaSelector = `.t_${groupClassName}${pseudoSelector}`
-      const nextSelector = `${presedencePrefix}${mediaSelector} ${selector.replace(
-        ':root',
-        ''
-      )}`
+      const [selector, nextSelector] = getThemeOrGroupSelector(
+        name,
+        styleInner,
+        groupParts,
+        isTheme,
+        specifities[specificity]
+      )
       // const selectors = `${nextSelector}, :root${nextSelector}`
       // add back in the { we used to split
       styleRule = styleInner.replace(selector, nextSelector)
@@ -129,7 +147,7 @@ export const createMediaStyle = (
     // add @supports for legacy browser support to not break container queries
     if (groupMediaKey) {
       styleRule = `@supports (contain: ${
-        conf.settings.webContainerType || 'inline-size'
+        getSetting('webContainerType') || 'inline-size'
       }) {${styleRule}}`
     }
   }

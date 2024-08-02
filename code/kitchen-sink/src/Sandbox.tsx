@@ -1,33 +1,27 @@
 //! debug-verbose
 import './wdyr'
 
-import { Anchor, XStack, YStack, createStyledContext, styled, useMedia } from 'tamagui'
-// import { DatePickerExample } from '../../bento/src/components/elements/datepickers/DatePicker'
-
+import { styled, useMedia } from 'tamagui'
+import { View } from '@tamagui/web'
 import { View as RNView } from 'react-native'
 
-const Grid = styled(YStack, {
-  '$platform-web': {
-    display: 'grid',
-    gridColumn: 'span 2',
-    gridRow: 'span 4',
-    gap: 32,
-  },
+const Test = styled(View, {
+  width: 100,
+  height: 100,
+  backgroundColor: 'red',
 
-  // $lg: {
-  //   // @ts-expect-error TODO
-  //   '$platform-web': {
-  //     gridColumn: 'span 4',
-  //     gridRow: 'span 1',
-  //   },
-  // },
+  $gtXs: {
+    '$platform-web': {
+      backgroundColor: 'green',
+    },
+  },
 })
 
 export const Sandbox = () => {
-  const media = useMedia()
-
   return (
     <RNView style={{ width: '100%', height: '100%', padding: 50 }}>
+      <Test />
+
       {/* <Demo3 /> */}
       {/* <Circle
         debug="verbose"
@@ -40,7 +34,7 @@ export const Sandbox = () => {
         }}
       /> */}
 
-      <Grid debug="verbose" w={200} h={200} bg="red" />
+      {/* <Grid debug="verbose" w={200} h={200} bg="red" /> */}
 
       {/* group animatable defaults */}
       {/* <YStack group="testy" w={400} h={400} bg="red">
@@ -75,6 +69,23 @@ export const Sandbox = () => {
     </RNView>
   )
 }
+
+// const Grid = styled(YStack, {
+//   '$platform-web': {
+//     display: 'grid',
+//     gridColumn: 'span 2',
+//     gridRow: 'span 4',
+//     gap: 32,
+//   },
+
+//   // $lg: {
+//   //   // @ts-expect-error TODO
+//   //   '$platform-web': {
+//   //     gridColumn: 'span 4',
+//   //     gridRow: 'span 1',
+//   //   },
+//   // },
+// })
 
 // type CheckboxSize = 'big' | 'default'
 

@@ -1,6 +1,7 @@
-export declare function getGroupPropParts(groupProp: string): {
+export type GroupParts = {
     name: string;
-    pseudo: "hover" | "press" | "focus" | "disabled" | undefined;
-    media: string | undefined;
+    pseudo?: string;
+    media?: string;
 };
+export declare function getGroupPropParts(groupProp: string): GroupParts;
 //# sourceMappingURL=getGroupPropParts.d.ts.map

@@ -1,6 +1,8 @@
 import { getMedia } from '../hooks/useMedia'
 
-export function getGroupPropParts(groupProp: string) {
+export type GroupParts = { name: string; pseudo?: string; media?: string }
+
+export function getGroupPropParts(groupProp: string): GroupParts {
   const mediaQueries = getMedia()
   const [_, name, part3, part4] = groupProp.split('-')
   let pseudo: 'focus' | 'press' | 'hover' | 'disabled' | undefined
