@@ -1,85 +1,72 @@
-//! debug-verbose
-import './wdyr'
+import { styled, html } from '@tamagui/web'
 
-import { styled, useMedia } from 'tamagui'
-import { View } from '@tamagui/web'
-import { View as RNView } from 'react-native'
-
-const Test = styled(View, {
-  width: 100,
-  height: 100,
-  backgroundColor: 'red',
-  debug: 'verbose',
-
-  '$platform-native': {
-    backgroundColor: 'yellow',
-  },
-
-  $gtXs: {
-    '$platform-web': {
-      backgroundColor: 'green',
-    },
-  },
-
-  $xl: {
-    '$platform-native': {
-      backgroundColor: 'blue',
-    },
-  },
+const Anchor = styled(html.a, {
+  color: 'red',
 })
 
 export const Sandbox = () => {
   return (
-    <RNView style={{ width: '100%', height: '100%', padding: 50 }}>
-      <Test />
-
-      {/* <Demo3 /> */}
-      {/* <Circle
-        debug="verbose"
-        size={100}
-        bg="red"
-        animation="bouncy"
-        enterStyle={{
-          // opacity: 0,
-          y: -100,
-        }}
-      /> */}
-
-      {/* <Grid debug="verbose" w={200} h={200} bg="red" /> */}
-
-      {/* group animatable defaults */}
-      {/* <YStack group="testy" w={400} h={400} bg="red">
-        <YStack
-          debug="verbose"
-          animation="quick"
-          w={100}
-          h={200}
-          bg="yellow"
-          $group-testy-hover={{
-            x: -24,
-          }}
-        ></YStack>
-      </YStack> */}
-
-      {/* <SliderDemo /> */}
-
-      {/* <StyledAnchor target="_blank" href="https://google.com">
-        hello world
-      </StyledAnchor> */}
-
-      {/* <CheckboxComponent size="default" /> */}
-
-      {/* <View
-        w={100}
-        h={100}
-        enterStyle={media.lg ? {} : {}}
-        background={media.sm ? 'red' : 'yellow'}
-      /> */}
-
-      {/* <DatePickerExample /> */}
-    </RNView>
+    <html.div>
+      <Anchor>hello</Anchor>
+    </html.div>
   )
 }
+
+// //! debug-verbose
+// import './wdyr'
+
+// export const Sandbox = () => {
+//   return (
+//     <RNView style={{ width: '100%', height: '100%', padding: 50 }}>
+//       {/* <Test /> */}
+
+//       {/* <Demo3 /> */}
+//       {/* <Circle
+//         debug="verbose"
+//         size={100}
+//         bg="red"
+//         animation="bouncy"
+//         enterStyle={{
+//           // opacity: 0,
+//           y: -100,
+//         }}
+//       /> */}
+
+//       {/* <Grid debug="verbose" w={200} h={200} bg="red" /> */}
+
+//       {/* group animatable defaults */}
+//       {/* <YStack group="testy" w={400} h={400} bg="red">
+//         <YStack
+//           debug="verbose"
+//           animation="quick"
+//           w={100}
+//           h={200}
+//           bg="yellow"
+//           $group-testy-hover={{
+//             x: -24,
+//           }}
+//         ></YStack>
+//       </YStack> */}
+
+//       {/* <SliderDemo /> */}
+
+//       {/* <StyledAnchor target="_blank" href="https://google.com">
+//         hello world
+//       </StyledAnchor> */}
+
+//       {/* <CheckboxComponent size="default" /> */}
+
+//       {/* <View
+//         w={100}
+//         h={100}
+//         enterStyle={media.lg ? {} : {}}
+//         background={media.sm ? 'red' : 'yellow'}
+//       /> */}
+
+//       {/* <DatePickerExample /> */}
+//     </RNView>
+//   )
+// }
 
 // const Grid = styled(YStack, {
 //   '$platform-web': {
@@ -151,3 +138,26 @@ export const Sandbox = () => {
 //     return null
 //   }
 // )
+
+// const Test = styled(View, {
+//   width: 100,
+//   height: 100,
+//   backgroundColor: 'red',
+//   debug: 'verbose',
+
+//   '$platform-native': {
+//     backgroundColor: 'yellow',
+//   },
+
+//   $gtXs: {
+//     '$platform-web': {
+//       backgroundColor: 'green',
+//     },
+//   },
+
+//   $xl: {
+//     '$platform-native': {
+//       backgroundColor: 'blue',
+//     },
+//   },
+// })
