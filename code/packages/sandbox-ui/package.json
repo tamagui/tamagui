@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/sandbox-ui",
-  "version": "1.108.0",
+  "version": "1.108.0-1722728147390",
   "private": true,
   "sideEffects": [
     "*.css"
@@ -23,13 +23,13 @@
   },
   "dependencies": {
     "@expo/vector-icons": "^13.0.0",
-    "@tamagui/lucide-icons": "1.108.0",
-    "@tamagui/toast": "1.108.0",
+    "@tamagui/lucide-icons": "1.108.0-1722728147390",
+    "@tamagui/toast": "1.108.0-1722728147390",
     "expo-image": "^1.5.1",
     "solito": "^4.2.2",
-    "tamagui": "1.108.0"
+    "tamagui": "1.108.0-1722728147390"
   },
   "devDependencies": {
-    "@tamagui/build": "1.108.0"
+    "@tamagui/build": "1.108.0-1722728147390"
   }
 }

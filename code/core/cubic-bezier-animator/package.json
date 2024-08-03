@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/cubic-bezier-animator",
-  "version": "1.108.0",
+  "version": "1.108.0-1722728147390",
   "sideEffects": false,
   "source": "src/index.tsx",
   "types": "./types/index.d.ts",
@@ -21,7 +21,7 @@
     "clean:build": "tamagui-build clean:build"
   },
   "devDependencies": {
-    "@tamagui/build": "1.108.0"
+    "@tamagui/build": "1.108.0-1722728147390"
   },
   "exports": {
     "./package.json": "./package.json",
