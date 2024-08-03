@@ -57,7 +57,7 @@ function createHTML<TAG extends keyof JSX.IntrinsicElements>(TagName: TAG) {
       StyledProps, // Props
       T, // Ref
       P, // NonStyledProps
-      {}, // BaseStyles
+      StyledProps, // BaseStyles
       {}, // Variants
       {}, // ParentStaticProperties
     ]
