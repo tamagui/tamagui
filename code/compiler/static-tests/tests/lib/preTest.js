@@ -13,6 +13,18 @@ const alias = {
   'react-native-gesture-handler$': '@tamagui/proxy-worm',
   'react-native-safe-area-context$': '@tamagui/fake-react-native',
   'react-native-svg': '@tamagui/react-native-svg',
+
+  'react/jsx-dev-runtime': path.resolve(
+    require.resolve('react/jsx-dev-runtime').replace('.web.js', '.js')
+  ),
+  'react/jsx-runtime': path.resolve(
+    require.resolve('react/jsx-runtime').replace('.web.js', '.js')
+  ),
+  react: path.resolve(require.resolve('react').replace('.web.js', '.js')),
+  'react-dom/client': path.resolve(
+    require.resolve('react-dom/client').replace('.web.js', '.js')
+  ),
+  'react-dom': path.resolve(require.resolve('react-dom').replace('.web.js', '.js')),
 }
 
 // @ts-ignore
@@ -48,6 +60,7 @@ async function extractStaticWebpackApp() {
     resolve: {
       extensions: ['.ts', '.tsx', '.js'],
       mainFields: ['module:jsx', 'browser', 'module', 'main'],
+      // exportsFields: ['react-native', 'exports', 'module', 'main'],
       alias,
     },
     module: {

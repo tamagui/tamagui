@@ -8,9 +8,6 @@ import { Provider } from './provider';
 import { Sandbox } from './Sandbox';
 import * as TestCases from './usecases';
 
-// useful for debugging why things render:
-// import './wdyr'
-
 if (typeof require !== 'undefined') {
   globalThis['React'] = require('react'); // webpack
 }
