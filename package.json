@@ -37,7 +37,7 @@
     "dev:serve": "yarn workspace @tamagui/dot-dev serve",
     "dev:prod": "yarn dev:build && yarn dev:serve",
     "dev:prod-only-homepage": "yarn dev:build --only index && yarn dev:serve",
-    "postinstall": "patch-package && ./scripts/unlock-repo.sh",
+    "postinstall": "patch-package || true && ./scripts/unlock-repo.sh",
     "build:force": "yarn clean:build && yarn build --force",
     "build:js": "./scripts/ensure-unlocked.sh && turbo run build --no-cache --force -- --skip-types",
     "build:types": "SKIP_JS=1 yarn build",
