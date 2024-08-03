@@ -1,3 +1,5 @@
+import * as htmlElements from './html';
+export declare const html: typeof htmlElements;
 export * from './Tamagui';
 export * from './createComponent';
 export * from './createShorthands';

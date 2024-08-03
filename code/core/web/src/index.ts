@@ -1,3 +1,7 @@
+import * as htmlElements from './html'
+
+export const html = htmlElements
+
 export * from './Tamagui'
 export * from './createComponent'
 export * from './createShorthands'
