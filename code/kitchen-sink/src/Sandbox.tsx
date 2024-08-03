@@ -1,5 +1,5 @@
 //! debug-verbose
-import './wdyr'
+// import './wdyr'
 
 import { styled, useMedia } from 'tamagui'
 import { View } from '@tamagui/web'
