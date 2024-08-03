@@ -5,7 +5,6 @@ import { join } from 'node:path'
 import react from '@vitejs/plugin-react-swc'
 import { type Plugin, defineConfig } from 'vite'
 import reactNative from 'vitest-react-native'
-import { requireResolve } from './requireResolve'
 
 export function getConfig(tamaguiPlugin: any) {
   const isNative =
@@ -77,21 +76,6 @@ export function getConfig(tamaguiPlugin: any) {
 
     resolve: {
       alias: {
-        'react/jsx-dev-runtime': requireResolve('react/jsx-dev-runtime').replace(
-          '.web.js',
-          '.js'
-        ),
-        'react/jsx-runtime': requireResolve('react/jsx-runtime').replace(
-          '.web.js',
-          '.js'
-        ),
-        react: requireResolve('react').replace('.web.js', '.js'),
-        'react-dom/client': requireResolve('react-dom/client').replace('.web.js', '.js'),
-        'react-dom/test-utils': requireResolve('react-dom/test-utils').replace(
-          '.web.js',
-          '.js'
-        ),
-        'react-dom': requireResolve('react-dom').replace('.web.js', '.js'),
         'react-native': 'react-native-web-lite',
       },
     },
