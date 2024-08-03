@@ -1,5 +1,6 @@
+import React from 'react';
 import type { ScrollView as RNScrollView } from 'react-native';
-export declare const SheetScrollView: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & import("react-native").ScrollViewProps, keyof import("@tamagui/core").StackStyleBase | "fullscreen" | "contentContainerStyle"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
+export declare const SheetScrollView: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & import("react-native").ScrollViewProps, keyof import("@tamagui/core").StackStyleBase | "fullscreen" | "contentContainerStyle"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
     readonly contentContainerStyle?: Partial<import("@tamagui/core").GetFinalProps<import("react-native").ScrollViewProps, import("@tamagui/core").StackStyleBase, {}>> | undefined;
 }> & {
     fullscreen?: boolean | undefined;
@@ -15,5 +16,5 @@ export declare const SheetScrollView: import("react").ForwardRefExoticComponent<
     readonly contentContainerStyle?: Partial<import("@tamagui/core").GetFinalProps<import("react-native").ScrollViewProps, import("@tamagui/core").StackStyleBase, {}>> | undefined;
 }, {
     fullscreen?: boolean | undefined;
-}>> & import("react").RefAttributes<RNScrollView>>;
+}>> & React.RefAttributes<RNScrollView>>;
 //# sourceMappingURL=SheetScrollView.d.ts.map

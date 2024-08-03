@@ -1,6 +1,6 @@
-import React, { memo } from 'react'
-import PropTypes from 'prop-types'
-import type { IconProps } from '@tamagui/helpers-icon'
+import React from "react";
+import PropTypes from 'prop-types';
+import type { IconProps } from '@tamagui/helpers-icon';
 import {
   Svg,
   Circle as _Circle,
@@ -17,12 +17,12 @@ import {
   Text as _Text,
   Use,
   Defs,
-  Stop,
-} from 'react-native-svg'
-import { themed } from '@tamagui/helpers-icon'
+  Stop } from
+'react-native-svg';
+import { themed } from '@tamagui/helpers-icon';
 
 const Icon = (props) => {
-  const { color = 'black', size = 24, ...otherProps } = props
+  const { color = 'black', size = 24, ...otherProps } = props;
   return (
     <Svg
       width={size}
@@ -33,8 +33,8 @@ const Icon = (props) => {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      {...otherProps}
-    >
+      {...otherProps}>
+
       <Path d="m2 2 8 8" stroke={color} />
       <Path d="m22 2-8 8" stroke={color} />
       <Ellipse cx="12" cy="9" rx="10" ry="5" stroke={color} />
@@ -42,10 +42,10 @@ const Icon = (props) => {
       <Path d="M12 14v8" stroke={color} />
       <Path d="M17 13.4v7.9" stroke={color} />
       <Path d="M2 9v8a10 5 0 0 0 20 0V9" stroke={color} />
-    </Svg>
-  )
-}
+    </Svg>);
 
-Icon.displayName = 'Drum'
+};
 
-export const Drum = memo<IconProps>(themed(Icon))
+Icon.displayName = 'Drum';
+
+export const Drum = React.memo<IconProps>(themed(Icon));

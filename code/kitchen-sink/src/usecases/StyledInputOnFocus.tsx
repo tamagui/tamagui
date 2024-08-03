@@ -1,30 +1,30 @@
-import { useState } from 'react'
-import { Input, styled } from 'tamagui'
+import React from "react";
+import { Input, styled } from 'tamagui';
 
 const StyledInput = styled(Input, {
   borderColor: 'red',
   borderWidth: 5,
 
-  variants: {
+  variants: ({
     test: {
       true: {
         focusStyle: {
           borderWidth: 10,
-          borderColor: 'blue',
-        },
-      },
-    },
-  } as const,
-})
+          borderColor: 'blue'
+        }
+      }
+    }
+  } as const)
+});
 
 export function StyledInputOnFocus() {
-  const [onFocus, setOnFocus] = useState(false)
+  const [onFocus, setOnFocus] = React.useState(false);
   return (
     <StyledInput
       test
       data-onfocus={onFocus}
       id="onFocus"
-      onFocus={() => setOnFocus(true)}
-    />
-  )
+      onFocus={() => setOnFocus(true)} />);
+
+
 }

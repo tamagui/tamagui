@@ -1,3 +1,4 @@
+import React from 'react';
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -7,9 +8,9 @@
  * @flow strict-local
  * @format
  */
-export declare function createOptimizedView(children: any, viewProps: Record<string, any>, baseViews: any): import("react").DetailedReactHTMLElement<import("react").InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> | import("react").CElement<{
+export declare function createOptimizedView(children: any, viewProps: Record<string, any>, baseViews: any): React.DetailedReactHTMLElement<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> | React.CElement<{
     value: boolean;
-}, import("react").Component<{
+}, React.Component<{
     value: boolean;
 }, any, any>>;
 export declare function getAccessibilityRoleFromRole(role: any): "none" | "alert" | "button" | "checkbox" | "combobox" | "grid" | "header" | "image" | "link" | "list" | "menu" | "menubar" | "menuitem" | "progressbar" | "radio" | "radiogroup" | "scrollbar" | "search" | "adjustable" | "spinbutton" | "summary" | "switch" | "tab" | "tablist" | "timer" | "toolbar" | undefined;

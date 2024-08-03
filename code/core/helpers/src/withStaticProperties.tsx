@@ -1,4 +1,4 @@
-import { createElement, forwardRef } from 'react'
+import React from 'react'
 
 const Decorated = Symbol()
 
@@ -11,8 +11,8 @@ export const withStaticProperties = <A extends Function, B>(
   // clone component if already wrapped once
   const next = (() => {
     if (component[Decorated]) {
-      const _ = forwardRef((props, ref) =>
-        createElement(component as any, { ...props, ref })
+      const _ = React.forwardRef((props, ref) =>
+        React.createElement(component as any, { ...props, ref })
       )
       // attach existing things again
       for (const key in component) {

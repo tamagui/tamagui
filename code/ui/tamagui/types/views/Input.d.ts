@@ -1,3 +1,4 @@
+import React from 'react';
 import type { GetProps } from '@tamagui/core';
 import { TextInput } from 'react-native';
 export declare const defaultStyles: {
@@ -494,7 +495,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
     maxInlineSize?: number | "unset" | import("@tamagui/core").SizeTokens | undefined;
     space?: number | "unset" | import("@tamagui/core").GetThemeValueForKey<"space"> | undefined;
     spaceDirection?: "unset" | import("@tamagui/core").SpaceDirection | undefined;
-    separator?: import("react").ReactNode;
+    separator?: React.ReactNode;
     animation?: import("@tamagui/core").AnimationProp | null;
     animateOnly?: string[] | "unset" | undefined;
     animatePresence?: boolean | "unset" | undefined;

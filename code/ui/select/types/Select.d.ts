@@ -30,9 +30,9 @@ export declare const SelectSeparator: import("@tamagui/core").TamaguiComponent<i
     vertical?: boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
 export declare const Select: ((props: SelectScopedProps<SelectProps>) => import("react/jsx-runtime").JSX.Element) & {
-    Adapt: (({ platform, when, children }: import("@tamagui/adapt").AdaptProps) => import("react").ReactNode) & {
+    Adapt: (({ platform, when, children }: import("@tamagui/adapt").AdaptProps) => React.ReactNode) & {
         Contents: {
-            (props: any): import("react").FunctionComponentElement<any>;
+            (props: any): React.FunctionComponentElement<any>;
             shouldForwardSpace: boolean;
         };
     };

@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import React from 'react'
 
 import { ComponentContext } from '../contexts/ComponentContext'
 import type { AnimationDriver } from '../types'
@@ -9,7 +9,7 @@ interface ConfigurationProps {
 }
 
 export const Configuration = (props: ConfigurationProps) => {
-  const current = useContext(ComponentContext)
+  const current = React.useContext(ComponentContext)
   return <ComponentContext.Provider {...current} {...props} />
 }
 

@@ -1,5 +1,5 @@
+import React from 'react'
 import { isClient } from '@tamagui/constants'
-import { useState } from 'react'
 
 import type { ColorScheme } from './types'
 
@@ -16,5 +16,5 @@ export const useRootTheme = ({ fallback = 'light' }: { fallback?: ColorScheme } 
         : fallback
   }
 
-  return useState<ColorScheme>(initialVal)
+  return React.useState<ColorScheme>(initialVal)
 }

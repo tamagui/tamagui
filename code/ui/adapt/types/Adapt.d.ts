@@ -1,3 +1,4 @@
+import React from 'react';
 import type { MediaQueryKey, UseMediaState } from '@tamagui/core';
 type MediaQueryKeyString = MediaQueryKey extends string ? MediaQueryKey : never;
 export type AdaptProps = {
@@ -16,9 +17,9 @@ type AdaptParentContextI = {
     Contents: Component;
     setWhen: (when: When) => any;
 };
-export declare const AdaptParentContext: import("react").Context<AdaptParentContextI | null>;
+export declare const AdaptParentContext: React.Context<AdaptParentContextI | null>;
 export declare const AdaptContents: {
-    (props: any): import("react").FunctionComponentElement<any>;
+    (props: any): React.FunctionComponentElement<any>;
     shouldForwardSpace: boolean;
 };
 export declare const useAdaptParent: ({ Contents, }: {
@@ -29,9 +30,9 @@ export declare const useAdaptParent: ({ Contents, }: {
     }) => import("react/jsx-runtime").JSX.Element;
     when: When;
 };
-export declare const Adapt: (({ platform, when, children }: AdaptProps) => import("react").ReactNode) & {
+export declare const Adapt: (({ platform, when, children }: AdaptProps) => React.ReactNode) & {
     Contents: {
-        (props: any): import("react").FunctionComponentElement<any>;
+        (props: any): React.FunctionComponentElement<any>;
         shouldForwardSpace: boolean;
     };
 };

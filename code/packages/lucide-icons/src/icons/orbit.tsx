@@ -1,6 +1,6 @@
-import React, { memo } from 'react'
-import PropTypes from 'prop-types'
-import type { IconProps } from '@tamagui/helpers-icon'
+import React from "react";
+import PropTypes from 'prop-types';
+import type { IconProps } from '@tamagui/helpers-icon';
 import {
   Svg,
   Circle as _Circle,
@@ -17,12 +17,12 @@ import {
   Text as _Text,
   Use,
   Defs,
-  Stop,
-} from 'react-native-svg'
-import { themed } from '@tamagui/helpers-icon'
+  Stop } from
+'react-native-svg';
+import { themed } from '@tamagui/helpers-icon';
 
 const Icon = (props) => {
-  const { color = 'black', size = 24, ...otherProps } = props
+  const { color = 'black', size = 24, ...otherProps } = props;
   return (
     <Svg
       width={size}
@@ -33,17 +33,17 @@ const Icon = (props) => {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      {...otherProps}
-    >
+      {...otherProps}>
+
       <_Circle cx="12" cy="12" r="3" stroke={color} />
       <_Circle cx="19" cy="5" r="2" stroke={color} />
       <_Circle cx="5" cy="19" r="2" stroke={color} />
       <Path d="M10.4 21.9a10 10 0 0 0 9.941-15.416" stroke={color} />
       <Path d="M13.5 2.1a10 10 0 0 0-9.841 15.416" stroke={color} />
-    </Svg>
-  )
-}
+    </Svg>);
 
-Icon.displayName = 'Orbit'
+};
 
-export const Orbit = memo<IconProps>(themed(Icon))
+Icon.displayName = 'Orbit';
+
+export const Orbit = React.memo<IconProps>(themed(Icon));

@@ -1,4 +1,4 @@
-import { createContext, useContext } from 'react'
+import React from 'react'
 
 import * as Floating from './Floating'
 
@@ -18,9 +18,9 @@ export type UseFloatingReturn = Floating.UseFloatingReturn & {
   getReferenceProps?: (props: { ref: any; [key: string]: any }) => any
 }
 
-export const FloatingOverrideContext = createContext<UseFloatingFn | null>(null)
+export const FloatingOverrideContext = React.createContext<UseFloatingFn | null>(null)
 
 export const useFloating = (props: UseFloatingProps): UseFloatingReturn => {
-  const context = useContext(FloatingOverrideContext)
+  const context = React.useContext(FloatingOverrideContext)
   return (context || Floating.useFloating)?.(props)
 }

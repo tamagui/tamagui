@@ -1,3 +1,4 @@
+import React from 'react'
 import {
   isAndroid,
   isIos,
@@ -8,7 +9,6 @@ import {
 import type { MediaQueryKey, UseMediaState } from '@tamagui/core'
 import { useMedia } from '@tamagui/core'
 import { withStaticProperties } from '@tamagui/helpers'
-import { createContext, createElement, useContext, useMemo, useState } from 'react'
 
 type MediaQueryKeyString = MediaQueryKey extends string ? MediaQueryKey : never
 
@@ -28,11 +28,11 @@ type AdaptParentContextI = {
   setWhen: (when: When) => any
 }
 
-export const AdaptParentContext = createContext<AdaptParentContextI | null>(null)
+export const AdaptParentContext = React.createContext<AdaptParentContextI | null>(null)
 
 // forward props
 export const AdaptContents = (props: any) => {
-  const context = useContext(AdaptParentContext)
+  const context = React.useContext(AdaptParentContext)
   if (!context?.Contents) {
     throw new Error(
       process.env.NODE_ENV === 'production'
@@ -40,19 +40,17 @@ export const AdaptContents = (props: any) => {
         : `You're rendering a Tamagui <Adapt /> component without nesting it inside a parent that is able to adapt.`
     )
   }
-  return createElement(context.Contents, props)
+  return React.createElement(context.Contents, props)
 }
 
 AdaptContents.shouldForwardSpace = true
 
 export const useAdaptParent = ({
   Contents,
-}: {
-  Contents: AdaptParentContextI['Contents']
-}) => {
-  const [when, setWhen] = useState<When>(null)
+}: { Contents: AdaptParentContextI['Contents'] }) => {
+  const [when, setWhen] = React.useState<When>(null)
 
-  const AdaptProvider = useMemo(() => {
+  const AdaptProvider = React.useMemo(() => {
     const context: AdaptParentContextI = {
       Contents,
       setWhen,
@@ -77,7 +75,7 @@ export const useAdaptParent = ({
 
 export const Adapt = withStaticProperties(
   function Adapt({ platform, when, children }: AdaptProps) {
-    const context = useContext(AdaptParentContext)
+    const context = React.useContext(AdaptParentContext)
     const media = useMedia()
 
     let enabled = false

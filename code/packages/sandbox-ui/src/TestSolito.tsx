@@ -1,4 +1,4 @@
-import { forwardRef } from 'react'
+import React from 'react'
 // import { SolitoImage } from 'solito/image'
 import type { LinkProps } from 'solito/link'
 import { LinkCore } from 'solito/link'
@@ -11,7 +11,7 @@ const StyledTextLink = styled(Anchor, {
 
 export type TextLinkProps = Pick<LinkProps, 'href' | 'target'> & AnchorProps
 
-export const TextLink = forwardRef<HTMLAnchorElement, TextLinkProps>(
+export const TextLink = React.forwardRef<HTMLAnchorElement, TextLinkProps>(
   ({ children, href, target, ...restProps }, ref) => {
     return (
       <LinkCore

@@ -1,10 +1,11 @@
+import React from 'react';
 export declare const useSheetController: () => {
     controller: SheetControllerContextValue | null;
     isHidden: boolean | undefined;
     isShowingNonSheet: boolean | undefined;
     disableDrag: boolean | undefined;
 };
-export declare const SheetControllerContext: import("react").Context<SheetControllerContextValue | null>;
+export declare const SheetControllerContext: React.Context<SheetControllerContextValue | null>;
 export type SheetControllerContextValue = {
     disableDrag?: boolean;
     open?: boolean;

@@ -1,4 +1,4 @@
-import { useCallback, useRef, useSyncExternalStore } from 'react'
+import React from 'react'
 
 import { isEqualSubsetShallow } from './comparators'
 import { configureOpts } from './configureUseStore'
@@ -74,7 +74,6 @@ export function createUseStore<Props, Store>(
   return <Res, C extends Selector<Store, Res>, Props extends Object>(
     props?: Props,
     options?: UseStoreOptions
-    // super hacky workaround for now, ts is unknown to me tbh
   ): C extends Selector<any, infer B> ? (B extends Object ? B : Store) : Store =>
     useStore(StoreKlass as any, props, options)
 }
@@ -276,7 +275,7 @@ function useStoreFromInfo(
   options?: UseStoreOptions
 ): any {
   const store = info?.store
-  const internal = useRef<StoreTracker>()
+  const internal = React.useRef<StoreTracker>()
   const component = useCurrentComponent()
   if (!internal.current) {
     internal.current = {
@@ -289,7 +288,7 @@ function useStoreFromInfo(
   const curInternal = internal.current!
   const shouldPrintDebug = options?.debug
 
-  const getSnapshot = useCallback(() => {
+  const getSnapshot = React.useCallback(() => {
     if (!info || !store) return
     const curInternal = internal.current!
     const isTracking = curInternal.tracked.size
@@ -348,7 +347,11 @@ function useStoreFromInfo(
   }, [store])
 
   // sync by default
-  const state = useSyncExternalStore(info?.subscribe || idFn, getSnapshot, getSnapshot)
+  const state = React.useSyncExternalStore(
+    info?.subscribe || idFn,
+    getSnapshot,
+    getSnapshot
+  )
 
   if (!info || !store || !state) {
     return state
@@ -464,6 +467,7 @@ function createProxiedStore(storeInfo: StoreInfo) {
                 )}%c.${key}(${simpleArgs.join(', ')})${
                   isTopLevelLogger && logStack.size > 1 ? ` (+${logStack.size - 1})` : ''
                 }`,
+
                 `color: ${color};`,
                 'color: black;',
               ])

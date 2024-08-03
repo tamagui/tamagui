@@ -1,6 +1,6 @@
+import React from 'react';
 import type { CheckedState, CheckboxExtraProps as HeadlessCheckboxExtraProps } from '@tamagui/checkbox-headless';
 import type { NativeValue, SizeTokens, StackProps } from '@tamagui/core';
-import React from 'react';
 type CheckboxExpectingVariantProps = {
     size?: SizeTokens;
     unstyled?: boolean;

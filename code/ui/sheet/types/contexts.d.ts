@@ -1,5 +1,6 @@
-export declare const ParentSheetContext: import("react").Context<{
+import React from 'react';
+export declare const ParentSheetContext: React.Context<{
     zIndex: number;
 }>;
-export declare const SheetInsideSheetContext: import("react").Context<((hasChild: boolean) => void) | null>;
+export declare const SheetInsideSheetContext: React.Context<((hasChild: boolean) => void) | null>;
 //# sourceMappingURL=contexts.d.ts.map

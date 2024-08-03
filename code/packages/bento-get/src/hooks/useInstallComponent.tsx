@@ -1,5 +1,6 @@
 // @ts-nocheck
-import { useContext, useEffect } from 'react'
+import React from 'react'
+
 import { useGetComponent } from './useGetComponent.js'
 import { AppContext } from '../commands/index.js'
 import { mkdirSync, existsSync, promises as fs } from 'node:fs'
@@ -107,10 +108,10 @@ export const installComponent = async ({ component, setInstall, install }) => {
 }
 
 export const useInstallComponent = () => {
-  const { install, setInstall } = useContext(AppContext)
+  const { install, setInstall } = React.useContext(AppContext)
   const { data, error, isLoading } = useGetComponent()
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (data && install?.installingComponent) {
       installComponent({ component: data, setInstall, install })
     }

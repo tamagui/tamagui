@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React from 'react'
 import type { StackProps, TabLayout, TabsTabProps } from 'tamagui'
 import {
   AnimatePresence,
@@ -18,7 +18,7 @@ const demosTitle: Record<(typeof demos)[number], string> = {
 }
 
 export const TabsAdvancedDemo = () => {
-  const [demoIndex, setDemoIndex] = useState(0)
+  const [demoIndex, setDemoIndex] = React.useState(0)
   const demo = demos[demoIndex]
   return (
     <>
@@ -41,7 +41,7 @@ export const TabsAdvancedDemo = () => {
 }
 
 const TabsAdvancedBackground = () => {
-  const [tabState, setTabState] = useState<{
+  const [tabState, setTabState] = React.useState<{
     currentTab: string
     /**
      * Layout of the Tab user might intend to select (hovering / focusing)
@@ -172,7 +172,7 @@ const TabsAdvancedBackground = () => {
 }
 
 const TabsAdvancedUnderline = () => {
-  const [tabState, setTabState] = useState<{
+  const [tabState, setTabState] = React.useState<{
     currentTab: string
     /**
      * Layout of the Tab user might intend to select (hovering / focusing)
