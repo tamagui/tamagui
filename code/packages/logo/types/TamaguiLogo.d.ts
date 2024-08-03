@@ -1,4 +1,5 @@
-export declare const TamaguiLogo: import("react").ForwardRefExoticComponent<{
+import React from 'react';
+export declare const TamaguiLogo: React.ForwardRefExoticComponent<{
     showWords?: boolean;
     downscale?: number;
     animated?: boolean;
@@ -29,5 +30,5 @@ export declare const TamaguiLogo: import("react").ForwardRefExoticComponent<{
         left?: number;
         right?: number;
     } | undefined;
-}>> & import("react").RefAttributes<any>>;
+}>> & React.RefAttributes<any>>;
 //# sourceMappingURL=TamaguiLogo.d.ts.map

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React from 'react'
 import type { TabsContentProps } from 'tamagui'
 import { Button, H5, Separator, SizableText, Tabs, XStack, YStack, isWeb } from 'tamagui'
 
@@ -9,7 +9,7 @@ const demosTitle: Record<(typeof demos)[number], string> = {
 }
 
 export function TabsDemo() {
-  const [demoIndex, setDemoIndex] = useState(0)
+  const [demoIndex, setDemoIndex] = React.useState(0)
   const demo = demos[demoIndex]
 
   return (

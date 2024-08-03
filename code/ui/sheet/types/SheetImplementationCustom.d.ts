@@ -1,15 +1,16 @@
+import React from 'react';
 import { View } from 'react-native';
 import type { SnapPointsMode } from './types';
 export declare const SheetImplementationCustom: (props: Omit<{
     open?: boolean;
     defaultOpen?: boolean;
-    onOpenChange?: ((open: boolean) => void) | import("react").Dispatch<import("react").SetStateAction<boolean>>;
+    onOpenChange?: ((open: boolean) => void) | React.Dispatch<React.SetStateAction<boolean>>;
     position?: number;
     defaultPosition?: number;
     snapPoints?: (string | number)[];
     snapPointsMode?: SnapPointsMode;
     onPositionChange?: import("./types").PositionChangeHandler;
-    children?: import("react").ReactNode;
+    children?: React.ReactNode;
     dismissOnOverlayPress?: boolean;
     dismissOnSnapToBottom?: boolean;
     forceRemoveScrollEnabled?: boolean;
@@ -23,8 +24,8 @@ export declare const SheetImplementationCustom: (props: Omit<{
     zIndex?: number;
     portalProps?: import("@tamagui/portal").PortalProps;
     moveOnKeyboardChange?: boolean;
-    containerComponent?: import("react").ComponentType<any>;
+    containerComponent?: React.ComponentType<any>;
 } & {
     __scopeSheet?: import("@tamagui/create-context").Scope<any>;
-} & import("react").RefAttributes<View>, "theme" | "themeInverse"> & import("@tamagui/core").ThemeableProps) => import("react").ReactNode;
+} & React.RefAttributes<View>, "theme" | "themeInverse"> & import("@tamagui/core").ThemeableProps) => React.ReactNode;
 //# sourceMappingURL=SheetImplementationCustom.d.ts.map

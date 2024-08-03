@@ -1,6 +1,6 @@
-import React, { memo } from 'react'
-import PropTypes from 'prop-types'
-import type { IconProps } from '@tamagui/helpers-icon'
+import React from "react";
+import PropTypes from 'prop-types';
+import type { IconProps } from '@tamagui/helpers-icon';
 import {
   Svg,
   Circle as _Circle,
@@ -17,12 +17,12 @@ import {
   Text as _Text,
   Use,
   Defs,
-  Stop,
-} from 'react-native-svg'
-import { themed } from '@tamagui/helpers-icon'
+  Stop } from
+'react-native-svg';
+import { themed } from '@tamagui/helpers-icon';
 
 const Icon = (props) => {
-  const { color = 'black', size = 24, ...otherProps } = props
+  const { color = 'black', size = 24, ...otherProps } = props;
   return (
     <Svg
       width={size}
@@ -33,8 +33,8 @@ const Icon = (props) => {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      {...otherProps}
-    >
+      {...otherProps}>
+
       <Rect width="20" height="16" x="2" y="4" rx="2" ry="2" stroke={color} />
       <Path d="M6 8h.001" stroke={color} />
       <Path d="M10 8h.001" stroke={color} />
@@ -44,10 +44,10 @@ const Icon = (props) => {
       <Path d="M12 12h.001" stroke={color} />
       <Path d="M16 12h.001" stroke={color} />
       <Path d="M7 16h10" stroke={color} />
-    </Svg>
-  )
-}
+    </Svg>);
 
-Icon.displayName = 'Keyboard'
+};
 
-export const Keyboard = memo<IconProps>(themed(Icon))
+Icon.displayName = 'Keyboard';
+
+export const Keyboard = React.memo<IconProps>(themed(Icon));

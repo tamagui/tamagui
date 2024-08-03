@@ -1,14 +1,14 @@
-import { useEffect, useState } from 'react'
+import React from 'react'
 import type { SizeTokens } from 'tamagui'
 import { Button, Paragraph, Progress, Slider, XStack, YStack } from 'tamagui'
 
 export function ProgressDemo() {
-  const [key, setKey] = useState(0)
-  const [size, setSize] = useState(4)
-  const [progress, setProgress] = useState(0)
+  const [key, setKey] = React.useState(0)
+  const [size, setSize] = React.useState(4)
+  const [progress, setProgress] = React.useState(0)
   const sizeProp = `$${size}` as SizeTokens
 
-  useEffect(() => {
+  React.useEffect(() => {
     const timer = setTimeout(() => setProgress(60), 1000)
     return () => {
       clearTimeout(timer)

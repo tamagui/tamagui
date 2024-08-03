@@ -1,5 +1,6 @@
+import React from 'react'
 import * as LucideIcons from '@tamagui/lucide-icons'
-import { useMemo, useState } from 'react'
+
 import { ScrollView } from 'react-native'
 import { Input, Paragraph, Spacer, YStack, useDebounceValue } from 'tamagui'
 
@@ -15,12 +16,12 @@ const lucideIcons = Object.keys(
 }))
 
 export function LucideIconsDemo() {
-  const [searchRaw, setSearch] = useState('')
+  const [searchRaw, setSearch] = React.useState('')
   const search = useDebounceValue(searchRaw, 400)
 
   const size = 100
 
-  const iconsMemo = useMemo(
+  const iconsMemo = React.useMemo(
     () =>
       lucideIcons
         .filter((x) => x.key.includes(search.toLowerCase()))

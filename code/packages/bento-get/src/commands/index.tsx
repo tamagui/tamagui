@@ -1,4 +1,5 @@
 // @ts-nocheck
+import React from 'react'
 import { Alert, Badge, Spinner } from '@inkjs/ui'
 import Conf from 'conf'
 import { copy } from 'copy-paste'
@@ -6,7 +7,7 @@ import Fuse from 'fuse.js'
 import { Box, Spacer, Text, useApp, useInput } from 'ink'
 import TextInput from 'ink-text-input'
 import open from 'open'
-import { createContext, useContext, useEffect, useState } from 'react'
+
 import { componentsList } from '../components.js'
 import { useGithubAuth } from '../hooks/useGithubAuth.js'
 import { useInstallComponent } from '../hooks/useInstallComponent.js'
@@ -97,7 +98,7 @@ const handleKeypress = (key: string, modifier, appContext) => {
 }
 
 // TODO type this properly!
-export const AppContext = createContext<any>({
+export const AppContext = React.createContext<any>({
   tokenStore: {} as typeof tokenStore,
   copyToClipboard: false,
   setCopyToClipboard: () => {},
@@ -113,7 +114,7 @@ export const AppContext = createContext<any>({
 })
 
 const SearchBar = () => {
-  const appContext = useContext(AppContext)
+  const appContext = React.useContext(AppContext)
   const search = (query) => {
     const fuse = new Fuse(componentsList, {
       keys: ['name', 'category', 'categorySection'],
@@ -144,7 +145,7 @@ const SearchBar = () => {
 }
 
 const ResultsContainer = () => {
-  const appContext = useContext(AppContext)
+  const appContext = React.useContext(AppContext)
   return (
     <Box flexDirection="column" display={appContext.results.length ? 'flex' : 'none'}>
       <Box flexDirection="column" borderStyle="round" paddingX={1} gap={1}>
@@ -172,7 +173,7 @@ const Footer = () => {
 }
 
 const InstalledBadge = ({ item }) => {
-  const appContext = useContext(AppContext)
+  const appContext = React.useContext(AppContext)
   const componentIsInstalled = appContext.install?.installedComponents
     ?.map((component) => component.fileName)
     .includes(item.fileName)
@@ -188,7 +189,7 @@ const InstalledBadge = ({ item }) => {
 }
 
 const ResultCard = ({ result, isSelected }) => {
-  const appContext = useContext(AppContext)
+  const appContext = React.useContext(AppContext)
   return (
     <Box flexDirection="row" minWidth={'100%'}>
       <Box flexDirection="row">
@@ -220,7 +221,7 @@ const ResultCard = ({ result, isSelected }) => {
 }
 
 const CategorySectionBadge = ({ item }) => {
-  const appContext = useContext(AppContext)
+  const appContext = React.useContext(AppContext)
   return (
     <Box marginLeft={1} gap={1}>
       <Text color={'black'} backgroundColor={'white'}>
@@ -233,7 +234,7 @@ const CategorySectionBadge = ({ item }) => {
   )
 }
 const TypeOfComponentAccess = ({ item }) => {
-  const appContext = useContext(AppContext)
+  const appContext = React.useContext(AppContext)
   return (
     <Box marginLeft={1} gap={1} display={item?.isOSS ? 'flex' : 'none'}>
       <Text color={'black'} backgroundColor={'gray'}>
@@ -244,7 +245,7 @@ const TypeOfComponentAccess = ({ item }) => {
 }
 
 const ResultsCounter = () => {
-  const appContext = useContext(AppContext)
+  const appContext = React.useContext(AppContext)
   return (
     <Box>
       {!!appContext.results.length && (
@@ -258,7 +259,7 @@ const ResultsCounter = () => {
 }
 
 const InstallComponent = () => {
-  const appContext = useContext(AppContext)
+  const appContext = React.useContext(AppContext)
   return (
     <Box>
       {appContext.install.installingComponent ? (
@@ -283,10 +284,10 @@ const UsageBanner = () => {
 }
 
 const CodeAuthScreen = () => {
-  const appContext = useContext(AppContext)
+  const appContext = React.useContext(AppContext)
   const { data, isLoading } = useGithubAuth()
 
-  useEffect(() => {
+  React.useEffect(() => {
     appContext.setInstall((prev) => ({
       ...prev,
       enterToOpenBrowser: true,
@@ -303,7 +304,7 @@ const CodeAuthScreen = () => {
     }))
   })
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (appContext.copyToClipboard) {
       copy(data?.user_code)
       console.warn(`Copied to clipboard`)
@@ -365,16 +366,16 @@ const CodeAuthScreen = () => {
 }
 
 export default function Search() {
-  const [results, setResults] = useState([])
-  const [selectedId, setSelectedId] = useState(-1)
-  const [input, setInput] = useState('')
-  const [install, setInstall] = useState({
+  const [results, setResults] = React.useState([])
+  const [selectedId, setSelectedId] = React.useState(-1)
+  const [input, setInput] = React.useState('')
+  const [install, setInstall] = React.useState({
     installingComponent: null,
     installedComponents: [],
     enterToOpenBrowser: false,
     tokenIsInstalled: false,
   })
-  const [copyToClipboard, setCopyToClipboard] = useState(false)
+  const [copyToClipboard, setCopyToClipboard] = React.useState(false)
   const { exit } = useApp()
   const { access_token } = tokenStore?.get('token') ?? {}
   // tokenStore.delete("token");

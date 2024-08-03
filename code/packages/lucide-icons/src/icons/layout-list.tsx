@@ -1,6 +1,6 @@
-import React, { memo } from 'react'
-import PropTypes from 'prop-types'
-import type { IconProps } from '@tamagui/helpers-icon'
+import React from "react";
+import PropTypes from 'prop-types';
+import type { IconProps } from '@tamagui/helpers-icon';
 import {
   Svg,
   Circle as _Circle,
@@ -17,12 +17,12 @@ import {
   Text as _Text,
   Use,
   Defs,
-  Stop,
-} from 'react-native-svg'
-import { themed } from '@tamagui/helpers-icon'
+  Stop } from
+'react-native-svg';
+import { themed } from '@tamagui/helpers-icon';
 
 const Icon = (props) => {
-  const { color = 'black', size = 24, ...otherProps } = props
+  const { color = 'black', size = 24, ...otherProps } = props;
   return (
     <Svg
       width={size}
@@ -33,18 +33,18 @@ const Icon = (props) => {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      {...otherProps}
-    >
+      {...otherProps}>
+
       <Rect width="7" height="7" x="3" y="3" rx="1" stroke={color} />
       <Rect width="7" height="7" x="3" y="14" rx="1" stroke={color} />
       <Path d="M14 4h7" stroke={color} />
       <Path d="M14 9h7" stroke={color} />
       <Path d="M14 15h7" stroke={color} />
       <Path d="M14 20h7" stroke={color} />
-    </Svg>
-  )
-}
+    </Svg>);
 
-Icon.displayName = 'LayoutList'
+};
 
-export const LayoutList = memo<IconProps>(themed(Icon))
+Icon.displayName = 'LayoutList';
+
+export const LayoutList = React.memo<IconProps>(themed(Icon));

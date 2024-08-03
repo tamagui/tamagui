@@ -1,5 +1,6 @@
+import React from 'react'
 import { Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
-import { useMemo, useState } from 'react'
+
 import type { FontSizeTokens, SelectProps } from 'tamagui'
 import { Adapt, Label, Select, Sheet, XStack, YStack, getFontSize } from 'tamagui'
 import { LinearGradient } from 'tamagui/linear-gradient'
@@ -25,7 +26,7 @@ export function SelectDemo() {
 }
 
 export function SelectDemoItem(props: SelectProps) {
-  const [val, setVal] = useState('apple')
+  const [val, setVal] = React.useState('apple')
 
   return (
     <Select value={val} onValueChange={setVal} disablePreventBodyScroll {...props}>
@@ -89,7 +90,7 @@ export function SelectDemoItem(props: SelectProps) {
           <Select.Group>
             <Select.Label>Fruits</Select.Label>
             {/* for longer lists memoizing these is useful */}
-            {useMemo(
+            {React.useMemo(
               () =>
                 items.map((item, i) => {
                   return (

@@ -1,6 +1,6 @@
-import React, { memo } from 'react'
-import PropTypes from 'prop-types'
-import type { IconProps } from '@tamagui/helpers-icon'
+import React from "react";
+import PropTypes from 'prop-types';
+import type { IconProps } from '@tamagui/helpers-icon';
 import {
   Svg,
   Circle as _Circle,
@@ -17,12 +17,12 @@ import {
   Text as _Text,
   Use,
   Defs,
-  Stop,
-} from 'react-native-svg'
-import { themed } from '@tamagui/helpers-icon'
+  Stop } from
+'react-native-svg';
+import { themed } from '@tamagui/helpers-icon';
 
 const Icon = (props) => {
-  const { color = 'black', size = 24, ...otherProps } = props
+  const { color = 'black', size = 24, ...otherProps } = props;
   return (
     <Svg
       width={size}
@@ -33,22 +33,22 @@ const Icon = (props) => {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      {...otherProps}
-    >
+      {...otherProps}>
+
       <Path d="m5 11 4-7" stroke={color} />
       <Path d="m19 11-4-7" stroke={color} />
       <Path d="M2 11h20" stroke={color} />
       <Path
         d="m3.5 11 1.6 7.4a2 2 0 0 0 2 1.6h9.8c.9 0 1.8-.7 2-1.6l1.7-7.4"
-        stroke={color}
-      />
+        stroke={color} />
+
       <Path d="m9 11 1 9" stroke={color} />
       <Path d="M4.5 15.5h15" stroke={color} />
       <Path d="m15 11-1 9" stroke={color} />
-    </Svg>
-  )
-}
+    </Svg>);
 
-Icon.displayName = 'ShoppingBasket'
+};
 
-export const ShoppingBasket = memo<IconProps>(themed(Icon))
+Icon.displayName = 'ShoppingBasket';
+
+export const ShoppingBasket = React.memo<IconProps>(themed(Icon));

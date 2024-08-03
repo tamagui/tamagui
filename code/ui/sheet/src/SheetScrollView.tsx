@@ -1,8 +1,9 @@
+import React from 'react'
 import { composeRefs } from '@tamagui/compose-refs'
 import type { GetRef } from '@tamagui/core'
 import type { ScrollViewProps } from '@tamagui/scroll-view'
 import { ScrollView } from '@tamagui/scroll-view'
-import { forwardRef, useMemo, useRef } from 'react'
+
 import type { ScrollView as RNScrollView } from 'react-native'
 
 import { useSheetContext } from './SheetContext'
@@ -16,7 +17,10 @@ import type { SheetScopedProps } from './types'
 
 const SHEET_SCROLL_VIEW_NAME = 'SheetScrollView'
 
-export const SheetScrollView = forwardRef<GetRef<typeof ScrollView>, ScrollViewProps>(
+export const SheetScrollView = React.forwardRef<
+  GetRef<typeof ScrollView>,
+  ScrollViewProps
+>(
   (
     { __scopeSheet, children, onScroll, ...props }: SheetScopedProps<ScrollViewProps>,
     ref
@@ -24,7 +28,7 @@ export const SheetScrollView = forwardRef<GetRef<typeof ScrollView>, ScrollViewP
     const context = useSheetContext(SHEET_SCROLL_VIEW_NAME, __scopeSheet)
     const { scrollBridge } = context
     // const [scrollEnabled, setScrollEnabled_] = useState(true)
-    const scrollRef = useRef<RNScrollView | null>(null)
+    const scrollRef = React.useRef<RNScrollView | null>(null)
 
     // could make it so it has negative bottom margin and then pads the bottom content
     // to avoid clipping effect when resizing smaller
@@ -38,7 +42,7 @@ export const SheetScrollView = forwardRef<GetRef<typeof ScrollView>, ScrollViewP
     //   setScrollEnabled_(next)
     // }
 
-    const state = useRef({
+    const state = React.useRef({
       lastPageY: 0,
       dragAt: 0,
       dys: [] as number[], // store a few recent dys to get velocity on release
@@ -137,7 +141,7 @@ export const SheetScrollView = forwardRef<GetRef<typeof ScrollView>, ScrollViewP
         className="_ovs-contain"
         {...props}
       >
-        {useMemo(() => children, [children])}
+        {React.useMemo(() => children, [children])}
       </ScrollView>
     )
   }

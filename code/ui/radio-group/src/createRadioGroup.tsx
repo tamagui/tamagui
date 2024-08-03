@@ -1,3 +1,4 @@
+import React from 'react'
 import type {
   RadioGroupContextValue,
   RadioGroupItemContextValue,
@@ -28,9 +29,9 @@ import {
   useRadioGroupItemIndicator,
 } from '@tamagui/radio-headless'
 import { RovingFocusGroup } from '@tamagui/roving-focus'
-import { createContext } from 'react'
-const RadioGroupContext = createContext<RadioGroupContextValue>({})
-const RadioGroupItemContext = createContext<RadioGroupItemContextValue>({
+
+const RadioGroupContext = React.createContext<RadioGroupContextValue>({})
+const RadioGroupItemContext = React.createContext<RadioGroupItemContextValue>({
   checked: false,
   disabled: false,
 })
