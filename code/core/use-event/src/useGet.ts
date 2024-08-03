@@ -1,5 +1,5 @@
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
-import { useCallback, useRef } from 'react'
+import * as React from 'react'
 
 // keeps a reference to the current value easily
 
@@ -8,12 +8,12 @@ export function useGet<A>(
   initialValue?: any,
   forwardToFunction?: boolean
 ): () => A {
-  const curRef = useRef<any>(initialValue ?? currentValue)
+  const curRef = React.useRef<any>(initialValue ?? currentValue)
   useIsomorphicLayoutEffect(() => {
     curRef.current = currentValue
   })
 
-  return useCallback(
+  return React.useCallback(
     forwardToFunction
       ? (...args) => curRef.current?.apply(null, args)
       : () => curRef.current,

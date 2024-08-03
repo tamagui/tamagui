@@ -1,14 +1,14 @@
-import { useMemo, useRef } from 'react'
+import * as React from 'react'
 
 type ResultBox<T> = { v: T }
 
 export function useConstant<T>(fn: () => T): T {
   // RSC compat
   if (typeof document === 'undefined') {
-    return useMemo(() => fn(), [])
+    return React.useMemo(() => fn(), [])
   }
 
-  const ref = useRef<ResultBox<T>>()
+  const ref = React.useRef<ResultBox<T>>()
 
   if (!ref.current) {
     ref.current = { v: fn() }

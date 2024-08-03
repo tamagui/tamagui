@@ -75,6 +75,7 @@ export default {
       '@tamagui/demos',
       '@tamagui/bento',
       '@tamagui/bento/data',
+      '@tamagui/use-debounce',
       '@supabase/ssr',
       '@tamagui/animations-moti',
       '@tamagui/animations-react-native',

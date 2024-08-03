@@ -1,10 +1,10 @@
 import type { PresenceContextProps, UsePresenceResult } from '@tamagui/web'
-import { useContext, useEffect } from 'react'
+import * as React from 'react'
 
 import { PresenceContext } from './PresenceContext'
 
 export function usePresence(): UsePresenceResult {
-  const context = useContext(PresenceContext)
+  const context = React.useContext(PresenceContext)
 
   if (!context) {
     return [true, null, context]
@@ -12,7 +12,7 @@ export function usePresence(): UsePresenceResult {
 
   const { id, isPresent, onExitComplete, register } = context
 
-  useEffect(() => register(id), [])
+  React.useEffect(() => register(id), [])
 
   const safeToRemove = () => onExitComplete?.(id)
 
@@ -26,7 +26,7 @@ export function usePresence(): UsePresenceResult {
  * There is no `safeToRemove` function.
  */
 export function useIsPresent() {
-  return isPresent(useContext(PresenceContext))
+  return isPresent(React.useContext(PresenceContext))
 }
 
 export function isPresent(context: PresenceContextProps | null) {
