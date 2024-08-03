@@ -1,3 +1,4 @@
+import * as React from 'react'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import type {
@@ -11,8 +12,7 @@ import { Stack } from '@tamagui/core'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import { RemoveScroll } from '@tamagui/remove-scroll'
 import { useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
-import type { FunctionComponent, RefAttributes } from 'react'
-import { forwardRef, memo, useMemo } from 'react'
+
 import type { View } from 'react-native'
 import { Platform } from 'react-native'
 
@@ -73,14 +73,14 @@ export function createSheet<
    * -----------------------------------------------------------------------------------------------*/
 
   const SheetOverlay = Overlay.extractable(
-    memo((propsIn: SheetScopedProps<GetProps<typeof Overlay>>) => {
+    React.memo((propsIn: SheetScopedProps<GetProps<typeof Overlay>>) => {
       const { __scopeSheet, ...props } = propsIn
       const context = useSheetContext(SHEET_OVERLAY_NAME, __scopeSheet)
 
       // this ones a bit weird for legacy reasons, we need to hoist it above <Sheet /> AnimatedView
       // so we just pass it up to context
 
-      const element = useMemo(() => {
+      const element = React.useMemo(() => {
         return (
           // @ts-ignore
           <Overlay
@@ -130,7 +130,7 @@ export function createSheet<
   }
 
   const SheetFrame = Frame.extractable(
-    forwardRef(
+    React.forwardRef(
       (
         {
           __scopeSheet,
@@ -148,7 +148,7 @@ export function createSheet<
         const composedContentRef = useComposedRefs(forwardedRef, contentRef)
         const offscreenSize = useSheetOffscreenSize(context)
 
-        const sheetContents = useMemo(() => {
+        const sheetContents = React.useMemo(() => {
           return (
             // @ts-ignore
             <Frame
@@ -212,7 +212,7 @@ export function createSheet<
     )
   )
 
-  const Sheet = forwardRef<View, SheetProps>(function Sheet(props, ref) {
+  const Sheet = React.forwardRef<View, SheetProps>(function Sheet(props, ref) {
     const hydrated = useDidFinishSSR()
     const { isShowingNonSheet } = useSheetController()
 

@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import * as React from 'react'
 import useSWR from 'swr'
 import { AppContext } from '../commands/index.js'
 import { GITHUB_CLIENT_ID } from '../constants.js'
@@ -7,7 +7,7 @@ import type { GithubCode } from './useGithubAuth.js'
 export const useGithubAuthPooling = ({
   deviceCodeData,
 }: { deviceCodeData: GithubCode }) => {
-  const appContext = useContext(AppContext)
+  const appContext = React.useContext(AppContext)
 
   const fetchAccessToken = async (url: string) => {
     const response = await fetch(url, {

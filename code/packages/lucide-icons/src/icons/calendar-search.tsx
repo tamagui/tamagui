@@ -1,6 +1,6 @@
-import React, { memo } from 'react'
-import PropTypes from 'prop-types'
-import type { IconProps } from '@tamagui/helpers-icon'
+import * as React from "react";
+import PropTypes from 'prop-types';
+import type { IconProps } from '@tamagui/helpers-icon';
 import {
   Svg,
   Circle as _Circle,
@@ -17,12 +17,12 @@ import {
   Text as _Text,
   Use,
   Defs,
-  Stop,
-} from 'react-native-svg'
-import { themed } from '@tamagui/helpers-icon'
+  Stop } from
+'react-native-svg';
+import { themed } from '@tamagui/helpers-icon';
 
 const Icon = (props) => {
-  const { color = 'black', size = 24, ...otherProps } = props
+  const { color = 'black', size = 24, ...otherProps } = props;
   return (
     <Svg
       width={size}
@@ -33,21 +33,21 @@ const Icon = (props) => {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      {...otherProps}
-    >
+      {...otherProps}>
+
       <Path
         d="M21 12V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14c0 1.1.9 2 2 2h7.5"
-        stroke={color}
-      />
+        stroke={color} />
+
       <Path d="M16 2v4" stroke={color} />
       <Path d="M8 2v4" stroke={color} />
       <Path d="M3 10h18" stroke={color} />
       <Path d="M18 21a3 3 0 1 0 0-6 3 3 0 0 0 0 6v0Z" stroke={color} />
       <Path d="m22 22-1.5-1.5" stroke={color} />
-    </Svg>
-  )
-}
+    </Svg>);
 
-Icon.displayName = 'CalendarSearch'
+};
 
-export const CalendarSearch = memo<IconProps>(themed(Icon))
+Icon.displayName = 'CalendarSearch';
+
+export const CalendarSearch = React.memo<IconProps>(themed(Icon));

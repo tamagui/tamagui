@@ -1,4 +1,4 @@
-/**
+import * as React from "react"; /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * This source code is licensed under the MIT license found in the
@@ -7,453 +7,453 @@
  * @flow strict-local
  */
 
-import { createEventTarget } from 'dom-event-testing-library'
-import * as React from 'react'
-import * as ReactDOM from 'react-dom'
-import * as ReactDOMServer from 'react-dom/server'
-import { act } from 'react-dom/test-utils'
+import { createEventTarget } from 'dom-event-testing-library';
 
-import createEventHandle from '..'
+import * as ReactDOM from 'react-dom';
+import * as ReactDOMServer from 'react-dom/server';
+import { act } from 'react-dom/test-utils';
+
+import createEventHandle from '..';
 
 function createRoot(rootNode) {
   return {
     render(element) {
-      ReactDOM.render(element, rootNode)
-    },
-  }
+      ReactDOM.render(element, rootNode);
+    }
+  };
 }
 
 describe('create-event-handle', () => {
-  let root
-  let rootNode
+  let root;
+  let rootNode;
 
   beforeEach(() => {
-    rootNode = document.createElement('div')
-    document.body.appendChild(rootNode)
-    root = createRoot(rootNode)
-  })
+    rootNode = document.createElement('div');
+    document.body.appendChild(rootNode);
+    root = createRoot(rootNode);
+  });
 
   afterEach(() => {
-    root.render(null)
-    document.body.removeChild(rootNode)
-    rootNode = null
-    root = null
-  })
+    root.render(null);
+    document.body.removeChild(rootNode);
+    rootNode = null;
+    root = null;
+  });
 
   test('can render correctly using ReactDOMServer', () => {
-    const listener = jest.fn()
-    const targetRef = React.createRef()
-    const addClickListener = createEventHandle('click')
+    const listener = jest.fn();
+    const targetRef = React.createRef();
+    const addClickListener = createEventHandle('click');
 
     function Component() {
       React.useEffect(() => {
-        return addClickListener(targetRef.current, listener)
-      })
-      return <div ref={targetRef} />
+        return addClickListener(targetRef.current, listener);
+      });
+      return <div ref={targetRef} />;
     }
 
-    const output = ReactDOMServer.renderToString(<Component />)
-    expect(output).toBe('<div data-reactroot=""></div>')
-  })
+    const output = ReactDOMServer.renderToString(<Component />);
+    expect(output).toBe('<div data-reactroot=""></div>');
+  });
 
   describe('createEventTarget()', () => {
     test('event dispatched on target', () => {
-      const listener = jest.fn()
-      const targetRef = React.createRef()
-      const addClickListener = createEventHandle('click')
+      const listener = jest.fn();
+      const targetRef = React.createRef();
+      const addClickListener = createEventHandle('click');
 
       function Component() {
         React.useEffect(() => {
-          return addClickListener(targetRef.current, listener)
-        })
-        return <div ref={targetRef} />
+          return addClickListener(targetRef.current, listener);
+        });
+        return <div ref={targetRef} />;
       }
 
       act(() => {
-        root.render(<Component />)
-      })
+        root.render(<Component />);
+      });
 
-      const target = createEventTarget(targetRef.current)
+      const target = createEventTarget(targetRef.current);
 
       act(() => {
-        target.click()
-      })
+        target.click();
+      });
 
-      expect(listener).toBeCalledTimes(1)
-    })
+      expect(listener).toBeCalledTimes(1);
+    });
 
     test('event dispatched on parent', () => {
-      const listener = jest.fn()
-      const listenerCapture = jest.fn()
-      const targetRef = React.createRef()
-      const parentRef = React.createRef()
-      const addClickListener = createEventHandle('click')
+      const listener = jest.fn();
+      const listenerCapture = jest.fn();
+      const targetRef = React.createRef();
+      const parentRef = React.createRef();
+      const addClickListener = createEventHandle('click');
       const addClickCaptureListener = createEventHandle('click', {
-        capture: true,
-      })
+        capture: true
+      });
 
       function Component() {
         React.useEffect(() => {
-          const removeClickListener = addClickListener(targetRef.current, listener)
+          const removeClickListener = addClickListener(targetRef.current, listener);
           const removeClickCaptureListener = addClickCaptureListener(
             targetRef.current,
             listenerCapture
-          )
+          );
           return () => {
-            removeClickListener()
-            removeClickCaptureListener()
-          }
-        })
+            removeClickListener();
+            removeClickCaptureListener();
+          };
+        });
         return (
           <div ref={parentRef}>
             <div ref={targetRef} />
-          </div>
-        )
+          </div>);
+
       }
 
       act(() => {
-        root.render(<Component />)
-      })
+        root.render(<Component />);
+      });
 
-      const parent = createEventTarget(parentRef.current)
+      const parent = createEventTarget(parentRef.current);
 
       act(() => {
-        parent.click()
-      })
+        parent.click();
+      });
 
-      expect(listener).toBeCalledTimes(0)
-      expect(listenerCapture).toBeCalledTimes(0)
-    })
+      expect(listener).toBeCalledTimes(0);
+      expect(listenerCapture).toBeCalledTimes(0);
+    });
 
     test('event dispatched on child', () => {
-      const log = []
+      const log = [];
       const listener = jest.fn(() => {
-        log.push('bubble')
-      })
+        log.push('bubble');
+      });
       const listenerCapture = jest.fn(() => {
-        log.push('capture')
-      })
-      const targetRef = React.createRef()
-      const childRef = React.createRef()
-      const addClickListener = createEventHandle('click')
+        log.push('capture');
+      });
+      const targetRef = React.createRef();
+      const childRef = React.createRef();
+      const addClickListener = createEventHandle('click');
       const addClickCaptureListener = createEventHandle('click', {
-        capture: true,
-      })
+        capture: true
+      });
 
       function Component() {
         React.useEffect(() => {
-          const removeClickListener = addClickListener(targetRef.current, listener)
+          const removeClickListener = addClickListener(targetRef.current, listener);
           const removeClickCaptureListener = addClickCaptureListener(
             targetRef.current,
             listenerCapture
-          )
+          );
           return () => {
-            removeClickListener()
-            removeClickCaptureListener()
-          }
-        })
+            removeClickListener();
+            removeClickCaptureListener();
+          };
+        });
         return (
           <div ref={targetRef}>
             <div ref={childRef} />
-          </div>
-        )
+          </div>);
+
       }
 
       act(() => {
-        root.render(<Component />)
-      })
+        root.render(<Component />);
+      });
 
-      const child = createEventTarget(childRef.current)
+      const child = createEventTarget(childRef.current);
 
       act(() => {
-        child.click()
-      })
+        child.click();
+      });
 
-      expect(listenerCapture).toBeCalledTimes(1)
-      expect(listener).toBeCalledTimes(1)
-      expect(log).toEqual(['capture', 'bubble'])
-    })
+      expect(listenerCapture).toBeCalledTimes(1);
+      expect(listener).toBeCalledTimes(1);
+      expect(log).toEqual(['capture', 'bubble']);
+    });
 
     test('event dispatched on text node', () => {
-      const listener = jest.fn()
-      const targetRef = React.createRef()
-      const childRef = React.createRef()
-      const addClickListener = createEventHandle('click')
+      const listener = jest.fn();
+      const targetRef = React.createRef();
+      const childRef = React.createRef();
+      const addClickListener = createEventHandle('click');
 
       function Component() {
         React.useEffect(() => {
-          return addClickListener(targetRef.current, listener)
-        })
+          return addClickListener(targetRef.current, listener);
+        });
         return (
           <div ref={targetRef}>
             <div ref={childRef}>text</div>
-          </div>
-        )
+          </div>);
+
       }
 
       act(() => {
-        root.render(<Component />)
-      })
+        root.render(<Component />);
+      });
 
-      const text = createEventTarget(childRef.current.firstChild)
+      const text = createEventTarget(childRef.current.firstChild);
 
       act(() => {
-        text.click()
-      })
+        text.click();
+      });
 
-      expect(listener).toBeCalledTimes(1)
-    })
+      expect(listener).toBeCalledTimes(1);
+    });
 
     test('listener can be attached to document', () => {
-      const listener = jest.fn()
-      const targetRef = React.createRef()
-      const addClickListener = createEventHandle('click')
+      const listener = jest.fn();
+      const targetRef = React.createRef();
+      const addClickListener = createEventHandle('click');
 
       function Component({ target }) {
         React.useEffect(() => {
-          return addClickListener(target, listener)
-        })
-        return <div ref={targetRef} />
+          return addClickListener(target, listener);
+        });
+        return <div ref={targetRef} />;
       }
 
       act(() => {
-        root.render(<Component target={document} />)
-      })
-      const target = createEventTarget(targetRef.current)
+        root.render(<Component target={document} />);
+      });
+      const target = createEventTarget(targetRef.current);
       act(() => {
-        target.click()
-      })
+        target.click();
+      });
 
-      expect(listener).toBeCalledTimes(1)
-    })
+      expect(listener).toBeCalledTimes(1);
+    });
 
     test('listener can be attached to window ', () => {
-      const listener = jest.fn()
-      const targetRef = React.createRef()
-      const addClickListener = createEventHandle('click')
+      const listener = jest.fn();
+      const targetRef = React.createRef();
+      const addClickListener = createEventHandle('click');
 
       function Component({ target }) {
         React.useEffect(() => {
-          return addClickListener(target, listener)
-        })
-        return <div ref={targetRef} />
+          return addClickListener(target, listener);
+        });
+        return <div ref={targetRef} />;
       }
 
       act(() => {
-        root.render(<Component target={window} />)
-      })
-      const target = createEventTarget(targetRef.current)
+        root.render(<Component target={window} />);
+      });
+      const target = createEventTarget(targetRef.current);
       act(() => {
-        target.click()
-      })
+        target.click();
+      });
 
-      expect(listener).toBeCalledTimes(1)
-    })
+      expect(listener).toBeCalledTimes(1);
+    });
 
     test('custom event dispatched on target', () => {
-      const listener = jest.fn()
-      const targetRef = React.createRef()
-      const addMagicEventListener = createEventHandle('magic-event')
+      const listener = jest.fn();
+      const targetRef = React.createRef();
+      const addMagicEventListener = createEventHandle('magic-event');
 
       function Component() {
         React.useEffect(() => {
-          return addMagicEventListener(targetRef.current, listener)
-        })
-        return <div ref={targetRef} />
+          return addMagicEventListener(targetRef.current, listener);
+        });
+        return <div ref={targetRef} />;
       }
 
       act(() => {
-        root.render(<Component />)
-      })
+        root.render(<Component />);
+      });
 
       act(() => {
-        const event = new CustomEvent('magic-event', { bubbles: true })
-        targetRef.current.dispatchEvent(event)
-      })
+        const event = new CustomEvent('magic-event', { bubbles: true });
+        targetRef.current.dispatchEvent(event);
+      });
 
-      expect(listener).toBeCalledTimes(1)
-    })
+      expect(listener).toBeCalledTimes(1);
+    });
 
     test('listeners can be set on multiple targets simultaneously', () => {
-      const log = []
-      const targetRef = React.createRef()
-      const parentRef = React.createRef()
-      const childRef = React.createRef()
-      const addClickListener = createEventHandle('click')
+      const log = [];
+      const targetRef = React.createRef();
+      const parentRef = React.createRef();
+      const childRef = React.createRef();
+      const addClickListener = createEventHandle('click');
       const addClickCaptureListener = createEventHandle('click', {
-        capture: true,
-      })
+        capture: true
+      });
       const listener = jest.fn((e) => {
-        log.push(['bubble', e.currentTarget.id])
-      })
+        log.push(['bubble', e.currentTarget.id]);
+      });
       const listenerCapture = jest.fn((e) => {
-        log.push(['capture', e.currentTarget.id])
-      })
+        log.push(['capture', e.currentTarget.id]);
+      });
 
       function Component() {
         React.useEffect(() => {
           // the same event handle is used to set listeners on different targets
-          addClickListener(targetRef.current, listener)
-          addClickListener(parentRef.current, listener)
-          addClickCaptureListener(targetRef.current, listenerCapture)
-          addClickCaptureListener(parentRef.current, listenerCapture)
-        })
+          addClickListener(targetRef.current, listener);
+          addClickListener(parentRef.current, listener);
+          addClickCaptureListener(targetRef.current, listenerCapture);
+          addClickCaptureListener(parentRef.current, listenerCapture);
+        });
         return (
           <div id="parent" ref={parentRef}>
             <div id="target" ref={targetRef}>
               <div ref={childRef} />
             </div>
-          </div>
-        )
+          </div>);
+
       }
 
       act(() => {
-        root.render(<Component />)
-      })
+        root.render(<Component />);
+      });
 
-      const child = createEventTarget(childRef.current)
+      const child = createEventTarget(childRef.current);
 
       act(() => {
-        child.click()
-      })
+        child.click();
+      });
 
-      expect(listenerCapture).toBeCalledTimes(2)
-      expect(listener).toBeCalledTimes(2)
+      expect(listenerCapture).toBeCalledTimes(2);
+      expect(listener).toBeCalledTimes(2);
       expect(log).toEqual([
-        ['capture', 'parent'],
-        ['capture', 'target'],
-        ['bubble', 'target'],
-        ['bubble', 'parent'],
-      ])
-    })
+      ['capture', 'parent'],
+      ['capture', 'target'],
+      ['bubble', 'target'],
+      ['bubble', 'parent']]
+      );
+    });
 
     test('listeners are specific to each event handle', () => {
-      const log = []
-      const targetRef = React.createRef()
-      const childRef = React.createRef()
-      const addClickListener = createEventHandle('click')
-      const addClickAltListener = createEventHandle('click')
+      const log = [];
+      const targetRef = React.createRef();
+      const childRef = React.createRef();
+      const addClickListener = createEventHandle('click');
+      const addClickAltListener = createEventHandle('click');
       const addClickCaptureListener = createEventHandle('click', {
-        capture: true,
-      })
+        capture: true
+      });
       const addClickCaptureAltListener = createEventHandle('click', {
-        capture: true,
-      })
+        capture: true
+      });
       const listener = jest.fn((e) => {
-        log.push(['bubble', 'target'])
-      })
+        log.push(['bubble', 'target']);
+      });
       const listenerAlt = jest.fn((e) => {
-        log.push(['bubble', 'target-alt'])
-      })
+        log.push(['bubble', 'target-alt']);
+      });
       const listenerCapture = jest.fn((e) => {
-        log.push(['capture', 'target'])
-      })
+        log.push(['capture', 'target']);
+      });
       const listenerCaptureAlt = jest.fn((e) => {
-        log.push(['capture', 'target-alt'])
-      })
+        log.push(['capture', 'target-alt']);
+      });
 
       function Component() {
         React.useEffect(() => {
-          addClickListener(targetRef.current, listener)
-          addClickAltListener(targetRef.current, listenerAlt)
-          addClickCaptureListener(targetRef.current, listenerCapture)
-          addClickCaptureAltListener(targetRef.current, listenerCaptureAlt)
-        })
+          addClickListener(targetRef.current, listener);
+          addClickAltListener(targetRef.current, listenerAlt);
+          addClickCaptureListener(targetRef.current, listenerCapture);
+          addClickCaptureAltListener(targetRef.current, listenerCaptureAlt);
+        });
         return (
           <div id="target" ref={targetRef}>
             <div ref={childRef} />
-          </div>
-        )
+          </div>);
+
       }
 
       act(() => {
-        root.render(<Component />)
-      })
+        root.render(<Component />);
+      });
 
-      const child = createEventTarget(childRef.current)
+      const child = createEventTarget(childRef.current);
 
       act(() => {
-        child.click()
-      })
+        child.click();
+      });
 
-      expect(listenerCapture).toBeCalledTimes(1)
-      expect(listenerCaptureAlt).toBeCalledTimes(1)
-      expect(listener).toBeCalledTimes(1)
-      expect(listenerAlt).toBeCalledTimes(1)
+      expect(listenerCapture).toBeCalledTimes(1);
+      expect(listenerCaptureAlt).toBeCalledTimes(1);
+      expect(listener).toBeCalledTimes(1);
+      expect(listenerAlt).toBeCalledTimes(1);
       expect(log).toEqual([
-        ['capture', 'target'],
-        ['capture', 'target-alt'],
-        ['bubble', 'target'],
-        ['bubble', 'target-alt'],
-      ])
-    })
-  })
+      ['capture', 'target'],
+      ['capture', 'target-alt'],
+      ['bubble', 'target'],
+      ['bubble', 'target-alt']]
+      );
+    });
+  });
 
   describe('stopPropagation and stopImmediatePropagation', () => {
     test('stopPropagation works as expected', () => {
       const childListener = jest.fn((e) => {
-        e.stopPropagation()
-      })
-      const targetListener = jest.fn()
-      const targetRef = React.createRef()
-      const childRef = React.createRef()
-      const addClickListener = createEventHandle('click')
+        e.stopPropagation();
+      });
+      const targetListener = jest.fn();
+      const targetRef = React.createRef();
+      const childRef = React.createRef();
+      const addClickListener = createEventHandle('click');
 
       function Component() {
         React.useEffect(() => {
-          addClickListener(childRef.current, childListener)
-          addClickListener(targetRef.current, targetListener)
-        })
+          addClickListener(childRef.current, childListener);
+          addClickListener(targetRef.current, targetListener);
+        });
         return (
           <div ref={targetRef}>
             <div ref={childRef} />
-          </div>
-        )
+          </div>);
+
       }
 
       act(() => {
-        root.render(<Component />)
-      })
+        root.render(<Component />);
+      });
 
-      const child = createEventTarget(childRef.current)
+      const child = createEventTarget(childRef.current);
 
       act(() => {
-        child.click()
-      })
+        child.click();
+      });
 
-      expect(childListener).toBeCalledTimes(1)
-      expect(targetListener).toBeCalledTimes(0)
-    })
+      expect(childListener).toBeCalledTimes(1);
+      expect(targetListener).toBeCalledTimes(0);
+    });
 
     test('stopImmediatePropagation works as expected', () => {
       const firstListener = jest.fn((e) => {
-        e.stopImmediatePropagation()
-      })
-      const secondListener = jest.fn()
-      const targetRef = React.createRef()
-      const addFirstClickListener = createEventHandle('click')
-      const addSecondClickListener = createEventHandle('click')
+        e.stopImmediatePropagation();
+      });
+      const secondListener = jest.fn();
+      const targetRef = React.createRef();
+      const addFirstClickListener = createEventHandle('click');
+      const addSecondClickListener = createEventHandle('click');
 
       function Component() {
         React.useEffect(() => {
-          addFirstClickListener(targetRef.current, firstListener)
-          addSecondClickListener(targetRef.current, secondListener)
-        })
-        return <div ref={targetRef} />
+          addFirstClickListener(targetRef.current, firstListener);
+          addSecondClickListener(targetRef.current, secondListener);
+        });
+        return <div ref={targetRef} />;
       }
 
       act(() => {
-        root.render(<Component />)
-      })
+        root.render(<Component />);
+      });
 
-      const target = createEventTarget(targetRef.current)
+      const target = createEventTarget(targetRef.current);
 
       act(() => {
-        target.click()
-      })
+        target.click();
+      });
 
-      expect(firstListener).toBeCalledTimes(1)
-      expect(secondListener).toBeCalledTimes(0)
-    })
-  })
-})
+      expect(firstListener).toBeCalledTimes(1);
+      expect(secondListener).toBeCalledTimes(0);
+    });
+  });
+});

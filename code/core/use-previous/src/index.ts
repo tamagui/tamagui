@@ -1,6 +1,4 @@
-// via radix-ui
-
-import * as React from 'react'
+import * as React from 'react' // via radix-ui
 
 export function usePrevious<T>(value: T) {
   const ref = React.useRef({ value, previous: value })

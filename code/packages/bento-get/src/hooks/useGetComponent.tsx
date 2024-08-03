@@ -1,8 +1,8 @@
-// @ts-nocheck
+import * as React from 'react' // @ts-nocheck
 import fetch from 'node-fetch'
 import querystring from 'node:querystring'
 import { Octokit } from 'octokit'
-import { useContext, useEffect, useState } from 'react'
+
 import useSWR from 'swr'
 import { AppContext } from '../commands/index.js'
 import { installComponent } from './useInstallComponent.js'
@@ -10,11 +10,11 @@ import { useForceUpdate } from '@tamagui/use-force-update'
 
 export const useGetComponent = () => {
   const forceUpdate = useForceUpdate()
-  const { install, tokenStore, setInstall } = useContext(AppContext)
+  const { install, tokenStore, setInstall } = React.useContext(AppContext)
   const { access_token } = tokenStore.get?.('token') ?? {}
-  const [githubData, setGithubData] = useState(null)
+  const [githubData, setGithubData] = React.useState(null)
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (!access_token) {
       return
     }
@@ -75,7 +75,7 @@ export const useGetComponent = () => {
   //   }
   // }, [error])
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (data) {
       installComponent({ component: data, setInstall, install })
     }

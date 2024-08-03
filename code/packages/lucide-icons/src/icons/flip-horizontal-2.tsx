@@ -1,6 +1,6 @@
-import React, { memo } from 'react'
-import PropTypes from 'prop-types'
-import type { IconProps } from '@tamagui/helpers-icon'
+import * as React from "react";
+import PropTypes from 'prop-types';
+import type { IconProps } from '@tamagui/helpers-icon';
 import {
   Svg,
   Circle as _Circle,
@@ -17,12 +17,12 @@ import {
   Text as _Text,
   Use,
   Defs,
-  Stop,
-} from 'react-native-svg'
-import { themed } from '@tamagui/helpers-icon'
+  Stop } from
+'react-native-svg';
+import { themed } from '@tamagui/helpers-icon';
 
 const Icon = (props) => {
-  const { color = 'black', size = 24, ...otherProps } = props
+  const { color = 'black', size = 24, ...otherProps } = props;
   return (
     <Svg
       width={size}
@@ -33,18 +33,18 @@ const Icon = (props) => {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      {...otherProps}
-    >
+      {...otherProps}>
+
       <Path d="m3 7 5 5-5 5V7" stroke={color} />
       <Path d="m21 7-5 5 5 5V7" stroke={color} />
       <Path d="M12 20v2" stroke={color} />
       <Path d="M12 14v2" stroke={color} />
       <Path d="M12 8v2" stroke={color} />
       <Path d="M12 2v2" stroke={color} />
-    </Svg>
-  )
-}
+    </Svg>);
 
-Icon.displayName = 'FlipHorizontal2'
+};
 
-export const FlipHorizontal2 = memo<IconProps>(themed(Icon))
+Icon.displayName = 'FlipHorizontal2';
+
+export const FlipHorizontal2 = React.memo<IconProps>(themed(Icon));

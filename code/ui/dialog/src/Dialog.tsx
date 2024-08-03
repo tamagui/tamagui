@@ -1,3 +1,4 @@
+import * as React from 'react'
 import { Adapt, useAdaptParent } from '@tamagui/adapt'
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { hideOthers } from '@tamagui/aria-hidden'
@@ -28,7 +29,6 @@ import type { YStackProps } from '@tamagui/stacks'
 import { ButtonNestingContext, ThemeableStack, YStack } from '@tamagui/stacks'
 import { H2, Paragraph } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
-import * as React from 'react'
 
 const DIALOG_NAME = 'Dialog'
 
@@ -229,6 +229,7 @@ const DialogPortal: React.FC<DialogPortalProps> = (
       {isShowing ? children : null}
     </AnimatePresence>
   )
+
   const isSheet = useShowDialogSheet(context)
 
   if (isSheet) {
@@ -902,10 +903,7 @@ const SHEET_CONTENTS_NAME = 'DialogSheetContents'
 export const DialogSheetContents = ({
   name,
   ...props
-}: {
-  name: string
-  context: Omit<DialogContextValue, 'sheetBreakpoint'>
-}) => {
+}: { name: string; context: Omit<DialogContextValue, 'sheetBreakpoint'> }) => {
   return <PortalHost forwardProps={props} name={name} />
 }
 
@@ -966,6 +964,7 @@ export {
   DialogWarningProvider,
   createDialogScope,
 }
+
 export type {
   DialogCloseProps,
   DialogContentProps,

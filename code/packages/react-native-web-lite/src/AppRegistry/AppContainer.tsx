@@ -1,4 +1,4 @@
-/**
+import * as React from "react"; /**
  * Copyright (c) Nicolas Gallagher.
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -8,30 +8,30 @@
  * @flow
  */
 
-import * as React from 'react'
-import { StyleSheet } from 'react-native-web-internals'
 
-import View from '../View/index'
+import { StyleSheet } from 'react-native-web-internals';
+
+import View from '../View/index';
 
 type Props = {
-  WrapperComponent?: React.FunctionComponent<any> | null
-  children?: React.ReactNode
-  rootTag: any
-}
+  WrapperComponent?: React.FunctionComponent<any> | null;
+  children?: React.ReactNode;
+  rootTag: any;
+};
 
-const RootTagContext: React.Context<any> = React.createContext(null)
+const RootTagContext: React.Context<any> = React.createContext(null);
 
 const AppContainer = React.forwardRef((props: Props, forwardedRef?: React.Ref<any>) => {
-  const { children, WrapperComponent } = props
+  const { children, WrapperComponent } = props;
 
-  let innerView = (
-    <View key={1} pointerEvents="box-none" style={styles.appContainer}>
+  let innerView =
+  <View key={1} pointerEvents="box-none" style={styles.appContainer}>
       {children}
-    </View>
-  )
+    </View>;
+
 
   if (WrapperComponent) {
-    innerView = <WrapperComponent>{innerView}</WrapperComponent>
+    innerView = <WrapperComponent>{innerView}</WrapperComponent>;
   }
 
   return (
@@ -39,16 +39,16 @@ const AppContainer = React.forwardRef((props: Props, forwardedRef?: React.Ref<an
       <View pointerEvents="box-none" ref={forwardedRef} style={styles.appContainer}>
         {innerView}
       </View>
-    </RootTagContext.Provider>
-  )
-})
+    </RootTagContext.Provider>);
 
-AppContainer.displayName = 'AppContainer'
+});
 
-export default AppContainer
+AppContainer.displayName = 'AppContainer';
+
+export default AppContainer;
 
 const styles = StyleSheet.create({
   appContainer: {
-    flex: 1,
-  },
-})
+    flex: 1
+  }
+});

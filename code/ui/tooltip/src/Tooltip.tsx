@@ -1,3 +1,4 @@
+import * as React from 'react'
 import '@tamagui/polyfill-dev'
 
 import {
@@ -33,7 +34,6 @@ import {
 import type { PopperProps } from '@tamagui/popper'
 import { Popper, PopperContentFrame, usePopperContext } from '@tamagui/popper'
 import { useControllableState } from '@tamagui/use-controllable-state'
-import * as React from 'react'
 
 const TOOLTIP_SCOPE = 'tooltip'
 type ScopedTooltipProps<P> = ScopedProps<P, 'Tooltip'>

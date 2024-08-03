@@ -1,8 +1,8 @@
+import type * as React from 'react'
 import type { ContextData, FloatingContext, ReferenceType } from '@floating-ui/react'
 import type { NativePlatform, NativeValue, SizeTokens } from '@tamagui/core'
 import type { Scope } from '@tamagui/create-context'
 import type { ThemeableStackProps, YStackProps } from '@tamagui/stacks'
-import type { DispatchWithoutAction, HTMLProps, MutableRefObject, ReactNode } from 'react'
 
 export type SelectDirection = 'ltr' | 'rtl'
 

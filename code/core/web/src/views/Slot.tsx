@@ -1,10 +1,8 @@
-// via radix
+import * as React from 'react' // via radix
 
 import { composeRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
 import { composeEventHandlers } from '@tamagui/helpers'
-import type { ReactNode } from 'react'
-import { Children, cloneElement, forwardRef, isValidElement, version } from 'react'
 
 /* -------------------------------------------------------------------------------------------------
  * Slot
@@ -16,12 +14,12 @@ interface SlotProps {
 
 const is19 = version.startsWith('19.')
 
-export const Slot = forwardRef<any, SlotProps>(function Slot(props, forwardedRef) {
+export const Slot = React.forwardRef<any, SlotProps>(function Slot(props, forwardedRef) {
   const { children, ...slotProps } = props
 
-  if (isValidElement(children)) {
+  if (React.isValidElement(children)) {
     const mergedProps = mergeSlotProps(children, slotProps)
-    return cloneElement(
+    return React.cloneElement(
       children,
       children.type['avoidForwardRef']
         ? mergedProps

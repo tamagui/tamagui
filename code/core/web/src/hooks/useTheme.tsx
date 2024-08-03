@@ -1,5 +1,5 @@
+import * as React from 'react'
 import { isClient, isIos, isServer, isWeb } from '@tamagui/constants'
-import { useContext, useEffect, useMemo, useRef, useState } from 'react'
 
 import { getConfig, getSetting } from '../config'
 import type { Variable } from '../createVariable'
@@ -92,7 +92,7 @@ export const useTheme = (props: ThemeProps = emptyProps) => {
 export const useThemeWithState = (
   props: UseThemeWithStateProps
 ): [ChangedThemeResponse, ThemeParsed] => {
-  const keys = useRef<string[]>([])
+  const keys = React.useRef<string[]>([])
 
   const changedThemeState = useChangeThemeEffect(
     props,
@@ -139,7 +139,7 @@ export const useThemeWithState = (
     }
   }
 
-  const themeProxied = useMemo(() => {
+  const themeProxied = React.useMemo(() => {
     if (!themeManager || !state?.theme) {
       return {}
     }
@@ -320,7 +320,7 @@ export const useChangeThemeEffect = (
   shouldUpdate?: () => boolean | undefined
 ): ChangedThemeResponse => {
   const { disable } = props
-  const parentManagerId = useContext(ThemeManagerIDContext)
+  const parentManagerId = React.useContext(ThemeManagerIDContext)
   const parentManager = getThemeManager(parentManagerId)
 
   if ((!isRoot && !parentManager) || disable) {
@@ -343,7 +343,7 @@ export const useChangeThemeEffect = (
   //   }
   // }
 
-  const [themeState, setThemeState] = useState<ChangedThemeResponse>(createState)
+  const [themeState, setThemeState] = React.useState<ChangedThemeResponse>(createState)
 
   const { state, mounted, isNewTheme, themeManager, inversed } = themeState
   const isInversingOnMount = Boolean(!themeState.mounted && props.inverse)
@@ -368,7 +368,7 @@ export const useChangeThemeEffect = (
 
   if (!isServer) {
     // listen for parent change + notify children change
-    useEffect(() => {
+    React.useEffect(() => {
       if (!themeManager) return
 
       // SSR safe inverse (because server can't know prefers scheme)
@@ -451,7 +451,7 @@ export const useChangeThemeEffect = (
     ])
 
     if (process.env.NODE_ENV === 'development' && props.debug !== 'profile') {
-      useEffect(() => {
+      React.useEffect(() => {
         globalThis['TamaguiThemeManagers'] ??= new Set()
         globalThis['TamaguiThemeManagers'].add(themeManager)
         return () => {

@@ -1,6 +1,6 @@
-import React, { memo } from 'react'
-import PropTypes from 'prop-types'
-import type { IconProps } from '@tamagui/helpers-icon'
+import * as React from "react";
+import PropTypes from 'prop-types';
+import type { IconProps } from '@tamagui/helpers-icon';
 import {
   Svg,
   Circle as _Circle,
@@ -17,12 +17,12 @@ import {
   Text as _Text,
   Use,
   Defs,
-  Stop,
-} from 'react-native-svg'
-import { themed } from '@tamagui/helpers-icon'
+  Stop } from
+'react-native-svg';
+import { themed } from '@tamagui/helpers-icon';
 
 const Icon = (props) => {
-  const { color = 'black', size = 24, ...otherProps } = props
+  const { color = 'black', size = 24, ...otherProps } = props;
   return (
     <Svg
       width={size}
@@ -33,8 +33,8 @@ const Icon = (props) => {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      {...otherProps}
-    >
+      {...otherProps}>
+
       <Path d="M2 21a8 8 0 0 1 10.434-7.62" stroke={color} />
       <_Circle cx="10" cy="8" r="5" stroke={color} />
       <_Circle cx="18" cy="18" r="3" stroke={color} />
@@ -46,10 +46,10 @@ const Icon = (props) => {
       <Path d="m15.2 19.1-.9.4" stroke={color} />
       <Path d="m19.5 21.7-.4-.9" stroke={color} />
       <Path d="m16.9 15.2-.4-.9" stroke={color} />
-    </Svg>
-  )
-}
+    </Svg>);
 
-Icon.displayName = 'UserRoundCog'
+};
 
-export const UserRoundCog = memo<IconProps>(themed(Icon))
+Icon.displayName = 'UserRoundCog';
+
+export const UserRoundCog = React.memo<IconProps>(themed(Icon));

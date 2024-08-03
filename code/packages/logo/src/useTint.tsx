@@ -1,4 +1,4 @@
-import { startTransition, useSyncExternalStore } from 'react'
+import * as React from 'react'
 import type { ThemeName, ThemeProps } from 'tamagui'
 import { Theme } from 'tamagui'
 
@@ -28,13 +28,13 @@ export const setTintIndex = (next: number) => {
   const val = next % numTints
   if (val === current) return
   current = val
-  startTransition(() => {
+  React.startTransition(() => {
     listeners.forEach((x) => x(val))
   })
 }
 
 export const useTint = (altOffset = -1) => {
-  const index = useSyncExternalStore(
+  const index = React.useSyncExternalStore(
     onTintChange,
     () => current,
     () => initialTint
@@ -53,7 +53,7 @@ export const useTint = (altOffset = -1) => {
     setTintIndex,
     setNextTintFamily,
     setNextTint: () => {
-      startTransition(() => {
+      React.startTransition(() => {
         setTintIndex(index + 1)
       })
     },
@@ -78,10 +78,7 @@ export const ThemeTintAlt = ({
   disable,
   offset = 1,
   ...rest
-}: ThemeProps & {
-  disable?: boolean
-  offset?: number
-}) => {
+}: ThemeProps & { disable?: boolean; offset?: number }) => {
   const curTint = useTint(offset).tintAlt
   const name = disable ? null : curTint
   return (

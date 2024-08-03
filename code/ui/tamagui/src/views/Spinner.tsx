@@ -1,8 +1,9 @@
+import * as React from 'react'
 import type { ColorTokens, TamaguiElement, ThemeTokens } from '@tamagui/core'
 import { themeable, useTheme, variableToString } from '@tamagui/core'
 import type { YStackProps } from '@tamagui/stacks'
 import { YStack } from '@tamagui/stacks'
-import * as React from 'react'
+
 import { ActivityIndicator } from 'react-native'
 
 export type SpinnerProps = Omit<YStackProps, 'children'> & {

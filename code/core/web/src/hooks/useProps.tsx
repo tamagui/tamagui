@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react'
+import * as React from 'react'
 
 import { getConfig } from '../config'
 import { ComponentContext } from '../contexts/ComponentContext'
@@ -78,7 +78,7 @@ export function usePropsAndStyle<A extends PropsLikeObject>(
     name: 'theme' in props ? props.theme : undefined,
     inverse: 'themeInverse' in props ? props.themeInverse : undefined,
   })
-  const componentContext = useContext(ComponentContext as any) as any
+  const componentContext = React.useContext(ComponentContext as any) as any
   const { state, disabled, setStateShallow } = useComponentState(
     props,
     componentContext,
@@ -108,7 +108,7 @@ export function usePropsAndStyle<A extends PropsLikeObject>(
 
   const { mediaGroups, pseudoGroups } = splitStyles
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (disabled) {
       return
     }

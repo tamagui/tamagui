@@ -1,4 +1,4 @@
-/**
+import * as React from "react"; /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * This source code is licensed under the MIT license found in the
@@ -7,30 +7,30 @@
  * @flow
  */
 
-import * as React from 'react'
-import { forwardRef } from 'react'
-import { StyleSheet } from 'react-native-web-internals'
 
-import type { ImageProps } from '../Image/index'
-import Image from '../Image/index'
-import type { ViewProps } from '../View/index'
-import View from '../View/index'
+
+import { StyleSheet } from 'react-native-web-internals';
+
+import type { ImageProps } from '../Image/index';
+import Image from '../Image/index';
+import type { ViewProps } from '../View/index';
+import View from '../View/index';
 
 type ImageBackgroundProps = ImageProps & {
-  imageRef?: any
-  imageStyle?: ImageProps['style']
-  style?: ViewProps['style']
-}
+  imageRef?: any;
+  imageStyle?: ImageProps['style'];
+  style?: ViewProps['style'];
+};
 
-const emptyObject = {}
+const emptyObject = {};
 
 /**
  * Very simple drop-in replacement for <Image> which supports nesting views.
  */
-const ImageBackground = forwardRef<React.ElementRef<typeof View>, ImageBackgroundProps>(
+const ImageBackground = React.forwardRef<React.ElementRef<typeof View>, ImageBackgroundProps>(
   (props, forwardedRef) => {
-    const { children, style = emptyObject, imageStyle, imageRef, ...rest } = props
-    const { height, width } = StyleSheet.flatten(style)
+    const { children, style = emptyObject, imageStyle, imageRef, ...rest } = props;
+    const { height, width } = StyleSheet.flatten(style);
 
     return (
       <View ref={forwardedRef} style={style}>
@@ -38,28 +38,28 @@ const ImageBackground = forwardRef<React.ElementRef<typeof View>, ImageBackgroun
           {...rest}
           ref={imageRef}
           style={[
-            {
-              // Temporary Workaround:
-              // Current (imperfect yet) implementation of <Image> overwrites width and height styles
-              // (which is not quite correct), and these styles conflict with explicitly set styles
-              // of <ImageBackground> and with our internal layout model here.
-              // So, we have to proxy/reapply these styles explicitly for actual <Image> component.
-              // This workaround should be removed after implementing proper support of
-              // intrinsic content size of the <Image>.
-              width,
-              height,
-              zIndex: -1,
-            },
-            StyleSheet.absoluteFill,
-            imageStyle,
-          ]}
-        />
+          {
+            // Temporary Workaround:
+            // Current (imperfect yet) implementation of <Image> overwrites width and height styles
+            // (which is not quite correct), and these styles conflict with explicitly set styles
+            // of <ImageBackground> and with our internal layout model here.
+            // So, we have to proxy/reapply these styles explicitly for actual <Image> component.
+            // This workaround should be removed after implementing proper support of
+            // intrinsic content size of the <Image>.
+            width,
+            height,
+            zIndex: -1
+          },
+          StyleSheet.absoluteFill,
+          imageStyle]} />
+
+
         {children}
-      </View>
-    )
+      </View>);
+
   }
-)
+);
 
-ImageBackground.displayName = 'ImageBackground'
+ImageBackground.displayName = 'ImageBackground';
 
-export default ImageBackground
+export default ImageBackground;

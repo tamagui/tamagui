@@ -1,9 +1,10 @@
+import * as React from 'react'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
 import { composeEventHandlers } from '@tamagui/helpers'
 import { useLabelContext } from '@tamagui/label'
 import { usePrevious } from '@tamagui/use-previous'
-import * as React from 'react'
+
 import type { GestureResponderEvent, PressableProps, View, ViewProps } from 'react-native'
 
 type SwitchBaseProps = ViewProps & Pick<PressableProps, 'onPress'>

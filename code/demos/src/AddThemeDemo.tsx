@@ -1,9 +1,10 @@
+import * as React from 'react'
 import { addTheme } from '@tamagui/theme'
-import { useState } from 'react'
+
 import { Button, H3, Square, Theme, YStack } from 'tamagui'
 
 export function AddThemeDemo() {
-  const [theme, setTheme] = useState<any>()
+  const [theme, setTheme] = React.useState<any>()
 
   return (
     <YStack alignItems="center" space>

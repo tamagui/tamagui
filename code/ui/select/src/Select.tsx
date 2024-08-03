@@ -1,3 +1,4 @@
+import * as React from 'react'
 import { Adapt, useAdaptParent } from '@tamagui/adapt'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
@@ -14,7 +15,7 @@ import { Sheet, SheetController } from '@tamagui/sheet'
 import { ThemeableStack, XStack, YStack } from '@tamagui/stacks'
 import { Paragraph, SizableText } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
-import * as React from 'react'
+
 import { useDebounce } from '@tamagui/use-debounce'
 
 import { SELECT_NAME } from './constants'

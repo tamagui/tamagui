@@ -1,10 +1,11 @@
-import { useContext } from 'react'
+import * as React from 'react'
 
 import { getConfig } from '../config'
 import { ComponentContext } from '../contexts/ComponentContext'
 
 export const useConfiguration = () => {
-  const { groups, animationDriver, ...restComponentConfig } = useContext(ComponentContext)
+  const { groups, animationDriver, ...restComponentConfig } =
+    React.useContext(ComponentContext)
   const { animations, ...restConfig } = getConfig()
   return {
     ...restConfig,

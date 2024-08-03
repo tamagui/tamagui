@@ -1,4 +1,4 @@
-import { forwardRef } from 'react'
+import * as React from 'react'
 import type { XStackProps } from 'tamagui'
 import { XStack, YStack } from 'tamagui'
 
@@ -11,7 +11,7 @@ type LogoProps = {
   animated?: boolean
 } & XStackProps
 
-export const TamaguiLogo = forwardRef<any, LogoProps>(
+export const TamaguiLogo = React.forwardRef<any, LogoProps>(
   ({ showWords, downscale, animated, ...props }: LogoProps, ref) => {
     return (
       <XStack

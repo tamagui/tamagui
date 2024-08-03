@@ -1,9 +1,9 @@
+import * as React from 'react'
 import { composeEventHandlers } from '@tamagui/helpers'
 import { ThemeableStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import type { GetProps } from '@tamagui/web'
 import { styled } from '@tamagui/web'
-import * as React from 'react'
 
 /* -------------------------------------------------------------------------------------------------
  * Toggle

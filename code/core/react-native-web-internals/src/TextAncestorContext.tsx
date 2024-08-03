@@ -1,4 +1,4 @@
-/**
+import * as React from "react"; /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * This source code is licensed under the MIT license found in the
@@ -7,8 +7,8 @@
  * @flow strict
  */
 
-import type { Context } from 'react'
-import { createContext } from 'react'
 
-export const TextAncestorContext = createContext(false)
-export default TextAncestorContext as Context<boolean>
+
+
+export const TextAncestorContext = React.createContext(false);
+export default (TextAncestorContext as Context<boolean>);

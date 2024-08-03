@@ -1,4 +1,4 @@
-import type React from 'react'
+import type * as React from 'react'
 
 import type { FontLanguages, FontTokens } from '../types'
 

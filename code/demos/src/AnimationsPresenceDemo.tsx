@@ -1,6 +1,7 @@
+import * as React from 'react'
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { ArrowLeft, ArrowRight } from '@tamagui/lucide-icons'
-import { useState } from 'react'
+
 import { Button, Image, XStack, YStack, styled } from 'tamagui'
 
 // @ts-ignore
@@ -42,7 +43,7 @@ const wrap = (min: number, max: number, v: number) => {
 }
 
 export function AnimationsPresenceDemo() {
-  const [[page, going], setPage] = useState([0, 0])
+  const [[page, going], setPage] = React.useState([0, 0])
 
   const imageIndex = wrap(0, images.length, page)
   const paginate = (going: number) => {
@@ -75,6 +76,7 @@ export function AnimationsPresenceDemo() {
         onPress={() => paginate(-1)}
         zi={100}
       />
+
       <Button
         accessibilityLabel="Carousel right"
         icon={ArrowRight}

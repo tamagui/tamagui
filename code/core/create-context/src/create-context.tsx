@@ -1,7 +1,5 @@
-// from radix
+import * as React from 'react' // from radix
 // https://github.com/radix-ui/primitives/blob/main/packages/react/context/src/createContext.tsx
-
-import * as React from 'react'
 
 export type ScopedProps<P, K extends string> = P & { [Key in `__scope${K}`]?: Scope }
 

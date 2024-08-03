@@ -1,4 +1,4 @@
-/**
+import * as React from "react"; /**
  * Copyright (c) Nicolas Gallagher.
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -8,40 +8,40 @@
  * @flow
  */
 
-import * as React from 'react'
-import { StyleSheet, canUseDOM } from 'react-native-web-internals'
 
-import type { ViewProps } from '../View/index'
-import View from '../View/index'
+import { StyleSheet, canUseDOM } from 'react-native-web-internals';
+
+import type { ViewProps } from '../View/index';
+import View from '../View/index';
 
 const cssFunction: 'constant' | 'env' = (() => {
   if (
-    canUseDOM &&
-    window.CSS &&
-    window.CSS.supports &&
-    window.CSS.supports('top: constant(safe-area-inset-top)')
-  ) {
-    return 'constant'
+  canUseDOM &&
+  window.CSS &&
+  window.CSS.supports &&
+  window.CSS.supports('top: constant(safe-area-inset-top)'))
+  {
+    return 'constant';
   }
-  return 'env'
-})()
+  return 'env';
+})();
 
 const SafeAreaView = React.forwardRef<typeof View, ViewProps>((props, ref) => {
-  const { style, ...rest } = props
+  const { style, ...rest } = props;
   return (
-    <View {...rest} ref={ref as any} style={StyleSheet.compose(styles.root, style)} />
-  )
-})
+    <View {...rest} ref={(ref as any)} style={StyleSheet.compose(styles.root, style)} />);
 
-SafeAreaView.displayName = 'SafeAreaView'
+});
+
+SafeAreaView.displayName = 'SafeAreaView';
 
 const styles = StyleSheet.create({
   root: {
     paddingTop: `${cssFunction}(safe-area-inset-top)`,
     paddingRight: `${cssFunction}(safe-area-inset-right)`,
     paddingBottom: `${cssFunction}(safe-area-inset-bottom)`,
-    paddingLeft: `${cssFunction}(safe-area-inset-left)`,
-  },
-})
+    paddingLeft: `${cssFunction}(safe-area-inset-left)`
+  }
+});
 
-export default SafeAreaView
+export default SafeAreaView;

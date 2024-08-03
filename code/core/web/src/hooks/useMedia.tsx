@@ -1,5 +1,5 @@
+import * as React from 'react'
 import { isServer, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
-import { useRef, useState, useSyncExternalStore } from 'react'
 
 import { getConfig, getSetting } from '../config'
 import { matchMedia } from '../helpers/matchMedia'
@@ -201,7 +201,7 @@ export function useMedia(
   componentContext?: ComponentContextI,
   debug?: DebugProp
 ): UseMediaState {
-  const uid = uidIn ?? useRef()
+  const uid = uidIn ?? React.useRef()
   // performance boost to avoid using context twice
   const disableSSR = getDisableSSR(componentContext)
   const initialState = (disableSSR || !isWeb ? mediaState : initState) || {}
@@ -238,13 +238,13 @@ export function useMedia(
   let state: MediaQueryState
 
   if (process.env.TAMAGUI_SYNC_MEDIA_QUERY) {
-    state = useSyncExternalStore<MediaQueryState>(
+    state = React.useSyncExternalStore<MediaQueryState>(
       subscribe,
       getSnapshot,
       () => initialState
     )
   } else {
-    const [_state, setState] = useState(initialState)
+    const [_state, setState] = React.useState(initialState)
     state = _state
 
     useIsomorphicLayoutEffect(() => {

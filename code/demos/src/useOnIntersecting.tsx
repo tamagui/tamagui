@@ -1,5 +1,5 @@
-import type { MutableRefObject } from 'react'
-import { useEffect, useState } from 'react'
+import * as React from 'react'
+
 import { isWeb, useEvent } from 'tamagui'
 
 type DisposeFn = () => void
@@ -15,7 +15,7 @@ export function useIsIntersecting<Ref extends HTMLRef | HTMLRef[]>(
   refs: Ref,
   { once, ...opts }: IntersectionObserverInit & { once?: boolean } = {}
 ): Ref extends any[] ? boolean[] : boolean {
-  const [values, setValues] = useState<boolean[]>([])
+  const [values, setValues] = React.useState<boolean[]>([])
 
   if (isWeb) {
     useOnIntersecting(
@@ -46,7 +46,7 @@ export function useOnIntersecting<Ref extends HTMLRef | HTMLRef[]>(
 ) {
   const onIntersectEvent = useEvent(incomingCbRaw)
 
-  useEffect(() => {
+  React.useEffect(() => {
     const refs = (Array.isArray(refsIn) ? refsIn : [refsIn]) as HTMLRef[]
     if (!refs.length) return
 

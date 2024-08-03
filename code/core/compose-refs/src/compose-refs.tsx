@@ -1,7 +1,5 @@
-// from radix
+import * as React from 'react' // from radix
 // https://raw.githubusercontent.com/radix-ui/primitives/main/packages/react/compose-refs/src/composeRefs.tsx
-
-import * as React from 'react'
 
 type PossibleRef<T> =
   | React.Ref<T>

@@ -1,15 +1,7 @@
+import type * as React from 'react'
 import type { StyleObject } from '@tamagui/helpers'
 import type { Properties } from 'csstype'
-import type {
-  CSSProperties,
-  ComponentType,
-  ForwardRefExoticComponent,
-  FunctionComponent,
-  HTMLAttributes,
-  ReactNode,
-  RefAttributes,
-  RefObject,
-} from 'react'
+
 import type {
   Text as RNText,
   TextProps as ReactTextProps,
@@ -163,9 +155,7 @@ export type CreateTokens<Val extends VariableVal = VariableVal> = Record<
 export type TokenCategories = 'color' | 'space' | 'size' | 'radius' | 'zIndex'
 
 type Tokenify<A extends GenericTokens> = Omit<
-  {
-    [Key in keyof A]: TokenifyRecord<A[Key]>
-  },
+  { [Key in keyof A]: TokenifyRecord<A[Key]> },
   TokenCategories
 > & {
   color: TokenifyRecord<A['color']>
@@ -175,9 +165,7 @@ type Tokenify<A extends GenericTokens> = Omit<
   zIndex: TokenifyRecord<A['zIndex']>
 }
 
-type TokenifyRecord<A extends Object> = {
-  [Key in keyof A]: CoerceToVariable<A[Key]>
-}
+type TokenifyRecord<A extends Object> = { [Key in keyof A]: CoerceToVariable<A[Key]> }
 
 type CoerceToVariable<A> = A extends Variable ? A : Variable<A>
 
@@ -273,10 +261,9 @@ export type CreateTamaguiConfig<
   tokens: A
   // parsed
   themes: {
-    [Name in keyof B]: {
-      [Key in keyof B[Name]]: CoerceToVariable<B[Name][Key]>
-    }
+    [Name in keyof B]: { [Key in keyof B[Name]]: CoerceToVariable<B[Name][Key]> }
   }
+
   shorthands: C
   media: D
   animations: AnimationDriver<E>
@@ -376,20 +363,17 @@ type NonSubThemeNames<A extends string | number> = A extends `${string}_${string
 type BaseThemeDefinitions = TamaguiConfig['themes'][NonSubThemeNames<
   keyof TamaguiConfig['themes']
 >]
+
 type GenericThemeDefinition = TamaguiConfig['themes'][keyof TamaguiConfig['themes']]
 export type ThemeDefinition = BaseThemeDefinitions extends never
   ? GenericThemeDefinition
   : BaseThemeDefinitions
 export type ThemeKeys = keyof ThemeDefinition
-export type ThemeParsed = {
-  [key in ThemeKeys]: CoerceToVariable<ThemeDefinition[key]>
-}
+export type ThemeParsed = { [key in ThemeKeys]: CoerceToVariable<ThemeDefinition[key]> }
 
 export type Tokens = TamaguiConfig['tokens']
 
-export type TokensParsed = {
-  [Key in keyof Tokens]: TokenPrefixed<Tokens[Key]>
-}
+export type TokensParsed = { [Key in keyof Tokens]: TokenPrefixed<Tokens[Key]> }
 
 type TokenPrefixed<A extends { [key: string]: any }> = {
   [Key in Ensure$Prefix<keyof A> | keyof A]: A[keyof A]
@@ -673,9 +657,7 @@ export type TamaguiSettings = TamaguiConfig['settings']
 
 export type BaseStyleProps = {
   [Key in keyof TextStylePropsBase]?: TextStyle[Key] | GetThemeValueForKey<Key>
-} & {
-  [Key in keyof StackStyleBase]?: StackStyle[Key] | GetThemeValueForKey<Key>
-}
+} & { [Key in keyof StackStyleBase]?: StackStyle[Key] | GetThemeValueForKey<Key> }
 
 export type CreateTamaguiProps = {
   unset?: BaseStyleProps
@@ -823,9 +805,7 @@ export type GenericFont<Key extends GenericFontKey = GenericFontKey> = {
   transform?: Partial<{ [key in Key]: RNTextStyle['textTransform'] | Variable }>
   color?: Partial<{ [key in Key]: string | Variable }>
   // for native use only, lets you map to alternative fonts
-  face?: Partial<{
-    [key in FontWeightValues]: { normal?: string; italic?: string }
-  }>
+  face?: Partial<{ [key in FontWeightValues]: { normal?: string; italic?: string } }>
 }
 
 // media
@@ -885,9 +865,7 @@ export type WebOnlyValidStyleValues = {
   position: '-webkit-sticky' | 'fixed' | 'static' | 'sticky'
 }
 
-export type MediaQueries = {
-  [key in MediaQueryKey]: MediaQueryObject
-}
+export type MediaQueries = { [key in MediaQueryKey]: MediaQueryObject }
 
 export interface MediaQueryList {
   addListener(listener?: any): void
@@ -1092,7 +1070,7 @@ export type SpaceTokens =
   | SpecificTokensSpecial
   | GetTokenString<keyof Tokens['space']>
   | ThemeValueFallbackSpace
-  // TODO can remove / refactor but need to verify
+  /* TODO can remove / refactor but need to verify*/
   | boolean
 
 export type ColorTokens =
@@ -1798,7 +1776,7 @@ export interface StackNonStyleProps
       | 'display'
       | 'children'
       | keyof TamaguiComponentPropsBaseBase
-      // these are added back in by core
+      /* these are added back in by core*/
       | RNOnlyProps
       | keyof ExtendBaseStackProps
       | 'style'
@@ -1823,7 +1801,7 @@ export interface TextNonStyleProps
       ReactTextProps,
       | 'children'
       | keyof WebOnlyPressEvents
-      // these are added back in by core
+      /* these are added back in by core*/
       | RNOnlyProps
       | keyof ExtendBaseTextProps
       | 'style'
@@ -2297,12 +2275,7 @@ type PropLike = { [key: string]: any }
 export type VariantSpreadFunction<Props extends PropLike, Val = any> = (
   val: Val,
   config: VariantSpreadExtras<Props>
-) =>
-  | {
-      [Key in keyof Props]: Props[Key] | Variable | VariableVal
-    }
-  | null
-  | undefined
+) => { [Key in keyof Props]: Props[Key] | Variable | VariableVal } | null | undefined
 
 export type VariantTypeKeys = ':string' | ':boolean' | ':number'
 
@@ -2322,18 +2295,22 @@ export type FontSizeVariantSpreadFunction<A extends PropLike> = VariantSpreadFun
   A,
   FontSizeTokens
 >
+
 export type SizeVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<
   A,
   SizeTokens
 >
+
 export type SpaceVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<
   A,
   SpaceTokens
 >
+
 export type ColorVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<
   A,
   ColorTokens
 >
+
 export type FontLineHeightVariantSpreadFunction<A extends PropLike> =
   VariantSpreadFunction<A, FontLineHeightTokens>
 export type FontLetterSpacingVariantSpreadFunction<A extends PropLike> =
@@ -2342,16 +2319,19 @@ export type FontStyleVariantSpreadFunction<A extends PropLike> = VariantSpreadFu
   A,
   FontStyleTokens
 >
+
 export type FontTransformVariantSpreadFunction<A extends PropLike> =
   VariantSpreadFunction<A, FontTransformTokens>
 export type ZIndexVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<
   A,
   ZIndexTokens
 >
+
 export type RadiusVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<
   A,
   RadiusTokens
 >
+
 export type ThemeVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<
   A,
   ThemeTokens
@@ -2540,9 +2520,7 @@ type Narrowable = string | number | bigint | boolean
 type NarrowRaw<A> =
   | (A extends [] ? [] : never)
   | (A extends Narrowable ? A : never)
-  | {
-      [K in keyof A]: A[K] extends Function ? A[K] : NarrowRaw<A[K]>
-    }
+  | { [K in keyof A]: A[K] extends Function ? A[K] : NarrowRaw<A[K]> }
 
 export type Narrow<A> = Try<A, [], NarrowRaw<A>>
 
@@ -2580,9 +2558,7 @@ type FillInFontValues<
   K extends keyof A,
   DefaultKeys extends string | number,
 > = keyof A[K] extends GenericFontKey
-  ? {
-      [Key in DefaultKeys]: A[K][any]
-    }
+  ? { [Key in DefaultKeys]: A[K][any] }
   : {
       [Key in keyof A[K] | DefaultKeys]: Key extends keyof A[K]
         ? Exclude<A[K][Key], Variable>
@@ -2599,8 +2575,6 @@ export type DedupedTheme = {
 
 export type DedupedThemes = DedupedTheme[]
 
-export type UseMediaState = {
-  [key in MediaQueryKey]: boolean
-}
+export type UseMediaState = { [key in MediaQueryKey]: boolean }
 
 export type TamaDefer = { __tamaDefer: true }

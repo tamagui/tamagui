@@ -1,5 +1,5 @@
-import { useEvent } from '@tamagui/use-event'
 import * as React from 'react'
+import { useEvent } from '@tamagui/use-event'
 
 // can configure to allow most-recent-wins or prop-wins
 // defaults to prop-wins

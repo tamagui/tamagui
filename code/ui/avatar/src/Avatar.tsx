@@ -1,4 +1,4 @@
-// forked from radix https://github.com/radix-ui/primitives/blob/main/packages/react/avatar/src/Avatar.tsx
+import * as React from 'react' // forked from radix https://github.com/radix-ui/primitives/blob/main/packages/react/avatar/src/Avatar.tsx
 
 import type { GetProps, SizeTokens, TamaguiElement } from '@tamagui/core'
 import { getTokens, getVariableValue, styled } from '@tamagui/core'
@@ -9,7 +9,6 @@ import type { ImageProps } from '@tamagui/image'
 import { Image } from '@tamagui/image'
 import { Square, getShapeSize } from '@tamagui/shapes'
 import { YStack } from '@tamagui/stacks'
-import * as React from 'react'
 
 const AVATAR_NAME = 'Avatar'
 

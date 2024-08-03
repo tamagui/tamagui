@@ -1,3 +1,5 @@
+import type { FC } from 'react'
+import * as React from 'react'
 import { isWeb } from '@tamagui/constants'
 import type {
   GetProps,
@@ -7,7 +9,7 @@ import type {
   ThemeValueFallback,
 } from '@tamagui/core'
 import { styled, usePropsAndStyle } from '@tamagui/core'
-import { useEffect, type FC } from 'react'
+
 import { Image as RNImage } from 'react-native'
 
 const StyledImage = styled(RNImage, {
@@ -98,7 +100,7 @@ export const Image = StyledImage.styleable<ImageProps>((inProps, ref) => {
 
     if (process.env.NODE_ENV === 'development' && process.env.TAMAGUI_IMAGE_CHECK_ERROR) {
       // lets add an onload timeout and warning if it fails to load in console
-      useEffect(() => {
+      React.useEffect(() => {
         async function run() {
           if (typeof src === 'string') {
             try {

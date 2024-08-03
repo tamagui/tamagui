@@ -1,11 +1,11 @@
-import type React from 'react'
-import { findDOMNode } from 'react-dom'
+import * as React from "react";
+import { findDOMNode } from 'react-dom';
 
 export const findNodeHandle = (host?: React.ReactInstance | Element | Text) => {
-  let node
+  let node;
   try {
     // @ts-ignore
-    node = findDOMNode(host)
+    node = findDOMNode(host);
   } catch {}
-  return node
-}
+  return node;
+};

@@ -1,6 +1,6 @@
+import * as React from 'react'
 import { YStack } from '@tamagui/stacks'
-import type { FunctionComponent } from 'react'
-import { useEffect, useRef } from 'react'
+
 import { View } from 'react-native'
 
 import { SheetProvider } from './SheetContext'
@@ -29,11 +29,11 @@ export function setupNativeSheet(platform: SheetNativePlatforms, Implementation:
       // const { positions } = useSheetSnapPoints(providerProps)
 
       const { open, setOpen } = state
-      const ref = useRef<{
+      const ref = React.useRef<{
         setVisibility: Function
       }>()
 
-      useEffect(() => {
+      React.useEffect(() => {
         ref.current?.setVisibility(open)
       }, [open])
 

@@ -1,7 +1,7 @@
+import * as React from 'react'
 import { getSpace } from '@tamagui/get-token'
 import type { SizableStackProps } from '@tamagui/stacks'
 import { Paragraph } from '@tamagui/text'
-import * as React from 'react'
 
 import type { TooltipProps } from './Tooltip'
 import { Tooltip } from './Tooltip'

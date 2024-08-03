@@ -1,5 +1,5 @@
-import type { PresenceContextProps, UsePresenceResult } from '@tamagui/web'
 import * as React from 'react'
+import type { PresenceContextProps, UsePresenceResult } from '@tamagui/web'
 
 import { PresenceContext } from './PresenceContext'
 

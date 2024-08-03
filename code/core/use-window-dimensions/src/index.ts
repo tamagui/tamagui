@@ -1,5 +1,6 @@
+import * as React from 'react'
 import { isWeb } from '@tamagui/constants'
-import { useSyncExternalStore } from 'react'
+
 import type { ScaledSize } from 'react-native'
 import { Dimensions } from 'react-native'
 
@@ -37,7 +38,7 @@ function subscribe(cb: WindowSizeListener) {
 export function useWindowDimensions({
   serverValue = initialValue,
 }: { serverValue?: Size } = {}) {
-  return useSyncExternalStore(
+  return React.useSyncExternalStore(
     subscribe,
     () => Dimensions.get('window'),
     () => (isWeb ? serverValue : Dimensions.get('window'))

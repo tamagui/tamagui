@@ -1,12 +1,13 @@
+import * as React from 'react'
 import { LogoIcon } from '@tamagui/logo'
-import { useRef, useState } from 'react'
+
 import { Button, Square, YStack, isWeb } from 'tamagui'
 
 import { useIsIntersecting } from './useOnIntersecting'
 
 export function AnimationsEnterDemo(props: any) {
-  const ref = useRef<HTMLElement>(null)
-  const [key, setKey] = useState(0)
+  const ref = React.useRef<HTMLElement>(null)
+  const [key, setKey] = React.useState(0)
 
   if (isWeb) {
     const hasIntersected = useIsIntersecting(ref, { once: true })

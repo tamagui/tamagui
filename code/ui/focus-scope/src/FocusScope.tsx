@@ -1,6 +1,6 @@
+import * as React from 'react'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { useEvent } from '@tamagui/use-event'
-import * as React from 'react'
 
 import type { FocusScopeProps } from './FocusScopeProps'
 

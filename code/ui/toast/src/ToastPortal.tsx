@@ -1,15 +1,12 @@
+import * as React from 'react'
 import { Portal } from '@tamagui/portal'
 import { Platform } from 'react-native'
 import { ReprogapateToastProvider, useToastProviderContext } from './ToastProvider'
-import type { ReactNode } from 'react'
 
 export function ToastPortal({
   children,
   zIndex,
-}: {
-  children: ReactNode
-  zIndex?: number
-}) {
+}: { children: ReactNode; zIndex?: number }) {
   let content = children
   if (Platform.OS === 'android') {
     content = (

@@ -1,3 +1,4 @@
+import * as React from 'react'
 import { getFontSize } from '@tamagui/font-size'
 import { getFontSized } from '@tamagui/get-font-sized'
 import { getSize, getSpace } from '@tamagui/get-token'
@@ -14,7 +15,6 @@ import type {
   ThemeableProps,
 } from '@tamagui/web'
 import { Spacer, getTokens, getVariableValue, styled, useProps } from '@tamagui/web'
-import type { FunctionComponent, ReactNode } from 'react'
 
 type ListItemIconProps = { color?: any; size?: any }
 type IconProp = JSX.Element | FunctionComponent<ListItemIconProps> | null
@@ -176,11 +176,11 @@ export const useListItem = (
     Text = ListItemText,
     Subtitle = ListItemSubtitle,
     Title = ListItemTitle,
-  }: {
-    Title?: any
-    Subtitle?: any
-    Text?: any
-  } = { Text: ListItemText, Subtitle: ListItemSubtitle, Title: ListItemTitle }
+  }: { Title?: any; Subtitle?: any; Text?: any } = {
+    Text: ListItemText,
+    Subtitle: ListItemSubtitle,
+    Title: ListItemTitle,
+  }
 ): { props: PropsWithoutMediaStyles<ListItemProps> } => {
   // careful not to destructure and re-order props, order is important
   const props = useProps(propsIn)
@@ -265,6 +265,7 @@ export const useListItem = (
           ) : (
             contents
           )}
+
           {themedIconAfter ? (
             <>
               <Spacer size={spaceSize} />

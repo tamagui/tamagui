@@ -1,7 +1,7 @@
+import * as React from 'react'
 import { AdaptParentContext } from '@tamagui/adapt'
 import { Theme, useThemeName } from '@tamagui/core'
 import { PortalItem } from '@tamagui/portal'
-import * as React from 'react'
 
 import { VIEWPORT_NAME } from './constants'
 import {

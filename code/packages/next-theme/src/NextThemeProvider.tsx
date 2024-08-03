@@ -1,8 +1,7 @@
+import * as React from 'react'
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { useEvent } from '@tamagui/use-event'
 import NextHead from 'next/head'
-import * as React from 'react'
-import { memo, useEffect, useMemo, useState } from 'react'
 
 import { MEDIA, colorSchemes } from './constants'
 import { getSystemTheme, getTheme } from './helpers'
@@ -10,7 +9,7 @@ import { ThemeSettingContext } from './ThemeSettingContext'
 import type { ValueObject } from './types'
 import type { ThemeProviderProps, UseThemeProps } from './UseThemeProps'
 
-export const NextThemeProvider = memo(
+export const NextThemeProvider = React.memo(
   ({
     forcedTheme,
     disableTransitionOnChange = false,
@@ -28,8 +27,10 @@ export const NextThemeProvider = memo(
     },
     children,
   }: ThemeProviderProps) => {
-    const [theme, setThemeState] = useState(() => getTheme(storageKey, defaultTheme))
-    const [resolvedTheme, setResolvedTheme] = useState(() => getTheme(storageKey))
+    const [theme, setThemeState] = React.useState(() =>
+      getTheme(storageKey, defaultTheme)
+    )
+    const [resolvedTheme, setResolvedTheme] = React.useState(() => getTheme(storageKey))
     const attrs = !value ? themes : Object.values(value)
 
     const handleMediaQuery = useEvent((e?) => {
@@ -97,7 +98,7 @@ export const NextThemeProvider = memo(
     })
 
     // localStorage event handling
-    useEffect(() => {
+    React.useEffect(() => {
       const handleStorage = (e: StorageEvent) => {
         if (e.key !== storageKey) {
           return
@@ -159,7 +160,7 @@ export const NextThemeProvider = memo(
       | 'dark'
       | undefined
 
-    const contextValue = useMemo(() => {
+    const contextValue = React.useMemo(() => {
       const value: UseThemeProps = {
         theme,
         current: theme,
@@ -197,14 +198,15 @@ export const NextThemeProvider = memo(
             skipNextHead,
           }}
         />
+
         {/* because on SSR we re-run and can avoid whole tree re-render */}
-        {useMemo(() => children, [children])}
+        {React.useMemo(() => children, [children])}
       </ThemeSettingContext.Provider>
     )
   }
 )
 
-const ThemeScript = memo(
+const ThemeScript = React.memo(
   ({
     forcedTheme,
     storageKey,
@@ -264,7 +266,9 @@ const ThemeScript = memo(
             dangerouslySetInnerHTML={{
               __html: `!function(){try {${optimization}var e=localStorage.getItem('${storageKey}');${
                 !defaultSystem ? updateDOM(defaultTheme) + ';' : ''
-              }if("system"===e||(!e&&${defaultSystem})){var t="${MEDIA}",m=window.matchMedia(t);m.media!==t||m.matches?${updateDOM(
+              }if("system"===e||(!e&&${
+                defaultSystem
+              })){var t="${MEDIA}",m=window.matchMedia(t);m.media!==t||m.matches?${updateDOM(
                 'dark'
               )}:${updateDOM('light')}}else if(e) ${
                 value ? `var x=${JSON.stringify(value)};` : ''

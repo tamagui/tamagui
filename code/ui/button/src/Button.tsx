@@ -1,3 +1,4 @@
+import * as React from 'react'
 import { getFontSize } from '@tamagui/font-size'
 import { getButtonSized } from '@tamagui/get-button-sized'
 import { withStaticProperties } from '@tamagui/helpers'
@@ -13,8 +14,6 @@ import {
   styled,
   useProps,
 } from '@tamagui/web'
-import type { FunctionComponent } from 'react'
-import { useContext } from 'react'
 
 type ButtonVariant = 'outlined'
 
@@ -176,7 +175,7 @@ const ButtonText = styled(SizableText, {
 
 const ButtonIcon = (props: { children: React.ReactNode; scaleIcon?: number }) => {
   const { children, scaleIcon = 1 } = props
-  const { size, color } = useContext(ButtonContext)
+  const { size, color } = React.useContext(ButtonContext)
 
   const iconSize =
     (typeof size === 'number' ? size * 0.5 : getFontSize(size as FontSizeTokens)) *
@@ -224,7 +223,7 @@ function useButton<Props extends ButtonProps>(
   { textProps, ...propsIn }: Props,
   { Text = Button.Text }: { Text: any } = { Text: Button.Text }
 ) {
-  const isNested = useContext(ButtonNestingContext)
+  const isNested = React.useContext(ButtonNestingContext)
   const propsActive = useProps(propsIn, {
     noNormalize: true,
     noExpand: true,
@@ -335,6 +334,7 @@ function useButton<Props extends ButtonProps>(
     children: (
       <ButtonNestingContext.Provider value={true}>{inner}</ButtonNestingContext.Provider>
     ),
+
     // forces it to be a runtime pressStyle so it passes through context text colors
     disableClassName: true,
   } as Props
@@ -355,4 +355,5 @@ export {
   // legacy
   useButton,
 }
+
 export type { ButtonProps }

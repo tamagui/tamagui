@@ -1,6 +1,5 @@
-import '@tamagui/polyfill-dev'
-
 import * as React from 'react'
+import '@tamagui/polyfill-dev'
 
 // this fixes various issues people run into (storybook, etc in discord)
 // React doesn't really tree shake so not much danger here...

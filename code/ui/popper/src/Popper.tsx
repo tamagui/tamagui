@@ -1,4 +1,4 @@
-// adapted from radix-ui popper
+import * as React from 'react' // adapted from radix-ui popper
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isAndroid, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import type { ScopedProps, SizeTokens, StackProps } from '@tamagui/core'
@@ -30,7 +30,7 @@ import {
 import { getSpace } from '@tamagui/get-token'
 import type { SizableStackProps, YStackProps } from '@tamagui/stacks'
 import { ThemeableStack, YStack } from '@tamagui/stacks'
-import * as React from 'react'
+
 import type { View } from 'react-native'
 import { Keyboard, useWindowDimensions } from 'react-native'
 

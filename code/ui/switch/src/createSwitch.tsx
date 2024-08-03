@@ -1,3 +1,4 @@
+import * as React from 'react'
 import type { NativeValue, SizeTokens, StackProps } from '@tamagui/core'
 import {
   Stack,
@@ -14,7 +15,7 @@ import type {
 import { registerFocusable } from '@tamagui/focusable'
 import { useSwitch } from '@tamagui/switch-headless'
 import { useControllableState } from '@tamagui/use-controllable-state'
-import * as React from 'react'
+
 import type { SwitchProps as NativeSwitchProps, ViewProps } from 'react-native'
 import { Switch as NativeSwitch } from 'react-native'
 

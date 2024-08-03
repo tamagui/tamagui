@@ -1,5 +1,6 @@
+import * as React from 'react'
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
-import type { RefObject } from 'react'
+
 import { getBoundingClientRect } from '../helpers/getBoundingClientRect'
 
 const LayoutHandlers = new WeakMap<Element, Function>()

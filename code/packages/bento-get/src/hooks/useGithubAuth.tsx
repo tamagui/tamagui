@@ -1,8 +1,8 @@
-// @ts-nocheck
+import * as React from 'react' // @ts-nocheck
 import fetch from 'node-fetch'
 import querystring from 'node:querystring'
 import open from 'open'
-import { useCallback } from 'react'
+
 import useSWR from 'swr'
 import { GITHUB_CLIENT_ID } from '../constants.js'
 import { useGithubAuthPooling } from './useGithubAuthPooling.js'
@@ -44,7 +44,7 @@ export const useGithubAuth = () => {
   data = querystring.parse(data || '')
   useGithubAuthPooling({ deviceCodeData: data as any as GithubCode })
 
-  const openLoginUrl = useCallback(() => {
+  const openLoginUrl = React.useCallback(() => {
     if (isLoading) return
     if (error) return
     if (!data) return

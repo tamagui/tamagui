@@ -1,8 +1,8 @@
+import * as React from 'react'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import type { ListItemProps } from '@tamagui/list-item'
 import { ListItemFrame, useListItem } from '@tamagui/list-item'
-import * as React from 'react'
 
 import { createSelectContext, useSelectItemParentContext } from './context'
 import type { SelectScopedProps } from './types'

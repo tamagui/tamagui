@@ -1,8 +1,7 @@
+import * as React from 'react'
 import { useConstant } from '@tamagui/use-constant'
 import { PresenceContext } from '@tamagui/use-presence'
 import type { PresenceContextProps } from '@tamagui/web'
-import * as React from 'react'
-import { useId } from 'react'
 
 import type { VariantLabels } from './types'
 
@@ -32,7 +31,7 @@ export const PresenceChild = React.memo(
     custom,
   }: PresenceChildProps) => {
     const presenceChildren = useConstant(newChildrenMap)
-    const id = useId() || ''
+    const id = React.useId() || ''
 
     const context = React.useMemo(
       (): PresenceContextProps => {

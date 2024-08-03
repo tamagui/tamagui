@@ -1,9 +1,9 @@
+import * as React from 'react'
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import type { GetProps, TamaguiElement } from '@tamagui/core'
 import { Stack, Text, styled, useEvent } from '@tamagui/core'
 import { Portal } from '@tamagui/portal'
 import { VisuallyHidden } from '@tamagui/visually-hidden'
-import * as React from 'react'
 
 import type { ScopedProps } from './ToastProvider'
 import { useToastProviderContext } from './ToastProvider'

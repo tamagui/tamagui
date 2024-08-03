@@ -1,4 +1,4 @@
-/**
+import * as React from "react"; /**
  * Copyright (c) Nicolas Gallagher.
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -8,24 +8,24 @@
  * @flow
  */
 
-import type { ReactNode } from 'react'
 
-import type { ColorValue } from '../types'
-import type { ViewProps } from '../View/index'
-import View from '../View/index'
+
+import type { ColorValue } from '../types';
+import type { ViewProps } from '../View/index';
+import View from '../View/index';
 
 type RefreshControlProps = {
-  colors?: Array<ColorValue>
-  enabled?: boolean
-  onRefresh?: () => void
-  progressBackgroundColor?: ColorValue
-  progressViewOffset?: number
-  refreshing: boolean
-  size?: 0 | 1
-  tintColor?: ColorValue
-  title?: string
-  titleColor?: ColorValue
-} & ViewProps
+  colors?: Array<ColorValue>;
+  enabled?: boolean;
+  onRefresh?: () => void;
+  progressBackgroundColor?: ColorValue;
+  progressViewOffset?: number;
+  refreshing: boolean;
+  size?: 0 | 1;
+  tintColor?: ColorValue;
+  title?: string;
+  titleColor?: ColorValue;
+} & ViewProps;
 
 function RefreshControl(props: RefreshControlProps): ReactNode {
   const {
@@ -42,9 +42,9 @@ function RefreshControl(props: RefreshControlProps): ReactNode {
     titleColor,
     /* eslint-enable */
     ...rest
-  } = props
+  } = props;
 
-  return <View {...rest} />
+  return <View {...rest} />;
 }
 
-export default RefreshControl
+export default RefreshControl;

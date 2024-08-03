@@ -1,6 +1,4 @@
-// forked from https://github.com/radix-ui/primitives/blob/main/packages/react/direction/src/Direction.tsx
-
-import * as React from 'react'
+import * as React from 'react' // forked from https://github.com/radix-ui/primitives/blob/main/packages/react/direction/src/Direction.tsx
 
 type Direction = 'ltr' | 'rtl'
 const DirectionContext = React.createContext<Direction | undefined>(undefined)

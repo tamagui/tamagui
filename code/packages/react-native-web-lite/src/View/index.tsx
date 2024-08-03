@@ -1,4 +1,4 @@
-/**
+import * as React from "react"; /**
  * Copyright (c) Nicolas Gallagher.
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -8,8 +8,8 @@
  * @flow
  */
 
-import * as React from 'react'
-import { StyleSheet, TextAncestorContext } from 'react-native-web-internals'
+
+import { StyleSheet, TextAncestorContext } from 'react-native-web-internals';
 import {
   forwardPropsListView,
   getLocaleDirection,
@@ -18,14 +18,14 @@ import {
   useLocaleContext,
   useMergeRefs,
   usePlatformMethods,
-  useResponderEvents,
-} from 'react-native-web-internals'
+  useResponderEvents } from
+'react-native-web-internals';
 
-import createElement from '../createElement/index'
-import type { PlatformMethods } from '../types'
-import type { ViewProps } from './types'
+import createElement from '../createElement/index';
+import type { PlatformMethods } from '../types';
+import type { ViewProps } from './types';
 
-const pickProps = (props) => pick(props, forwardPropsListView)
+const pickProps = (props) => pick(props, forwardPropsListView);
 
 const View = React.forwardRef<HTMLElement & PlatformMethods, ViewProps>(
   (props, forwardedRef) => {
@@ -49,23 +49,23 @@ const View = React.forwardRef<HTMLElement & PlatformMethods, ViewProps>(
       onStartShouldSetResponder,
       onStartShouldSetResponderCapture,
       ...rest
-    } = props
+    } = props;
 
     if (process.env.NODE_ENV !== 'production') {
       React.Children.toArray(props.children).forEach((item) => {
         if (typeof item === 'string') {
           console.error(
             `Unexpected text node: ${item}. A text node cannot be a child of a <View>.`
-          )
+          );
         }
-      })
+      });
     }
 
-    const hasTextAncestor = React.useContext(TextAncestorContext)
-    const hostRef = React.useRef(null)
-    const { direction: contextDirection } = useLocaleContext()
+    const hasTextAncestor = React.useContext(TextAncestorContext);
+    const hostRef = React.useRef(null);
+    const { direction: contextDirection } = useLocaleContext();
 
-    useElementLayout(hostRef, onLayout)
+    useElementLayout(hostRef, onLayout);
     useResponderEvents(hostRef, {
       onMoveShouldSetResponder,
       onMoveShouldSetResponderCapture,
@@ -82,48 +82,48 @@ const View = React.forwardRef<HTMLElement & PlatformMethods, ViewProps>(
       onSelectionChangeShouldSetResponder,
       onSelectionChangeShouldSetResponderCapture,
       onStartShouldSetResponder,
-      onStartShouldSetResponderCapture,
-    })
+      onStartShouldSetResponderCapture
+    });
 
-    let component = 'div'
+    let component = 'div';
 
-    const langDirection = props.lang != null ? getLocaleDirection(props.lang) : null
-    const componentDirection = props.dir || langDirection
-    const writingDirection = componentDirection || contextDirection
+    const langDirection = props.lang != null ? getLocaleDirection(props.lang) : null;
+    const componentDirection = props.dir || langDirection;
+    const writingDirection = componentDirection || contextDirection;
 
-    const supportedProps = pickProps(rest) as any
-    supportedProps.dir = componentDirection
+    const supportedProps = (pickProps(rest) as any);
+    supportedProps.dir = componentDirection;
     supportedProps.style = [
-      styles.view$raw,
-      hasTextAncestor && styles.inline,
-      props.style,
-    ]
+    styles.view$raw,
+    hasTextAncestor && styles.inline,
+    props.style];
+
     if (props.href != null) {
-      component = 'a'
+      component = 'a';
       if (hrefAttrs != null) {
-        const { download, rel, target } = hrefAttrs
+        const { download, rel, target } = hrefAttrs;
         if (download != null) {
-          supportedProps.download = download
+          supportedProps.download = download;
         }
         if (rel != null) {
-          supportedProps.rel = rel
+          supportedProps.rel = rel;
         }
         if (typeof target === 'string') {
-          supportedProps.target = target.charAt(0) !== '_' ? '_' + target : target
+          supportedProps.target = target.charAt(0) !== '_' ? '_' + target : target;
         }
       }
     }
 
-    const platformMethodsRef = usePlatformMethods(supportedProps)
-    const setRef = useMergeRefs(hostRef, platformMethodsRef, forwardedRef)
+    const platformMethodsRef = usePlatformMethods(supportedProps);
+    const setRef = useMergeRefs(hostRef, platformMethodsRef, forwardedRef);
 
-    supportedProps.ref = setRef
+    supportedProps.ref = setRef;
 
-    return createElement(component, supportedProps, { writingDirection })
+    return createElement(component, supportedProps, { writingDirection });
   }
-)
+);
 
-View.displayName = 'View'
+View.displayName = 'View';
 
 const styles = StyleSheet.create({
   view$raw: {
@@ -132,13 +132,13 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexBasis: 'auto',
     flexDirection: 'column',
-    flexShrink: 0,
+    flexShrink: 0
   },
   inline: {
-    display: 'inline-flex',
-  },
-})
+    display: 'inline-flex'
+  }
+});
 
-export { ViewProps }
+export { ViewProps };
 
-export default View
+export default View;

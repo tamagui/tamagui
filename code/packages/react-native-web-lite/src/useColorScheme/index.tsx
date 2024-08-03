@@ -1,4 +1,4 @@
-/**
+import * as React from "react"; /**
  * Copyright (c) Nicolas Gallagher.
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -8,21 +8,21 @@
  * @flow
  */
 
-import * as React from 'react'
 
-import type { ColorSchemeName } from '../Appearance/index'
-import Appearance from '../Appearance/index'
+
+import type { ColorSchemeName } from '../Appearance/index';
+import Appearance from '../Appearance/index';
 
 export default function useColorScheme(): ColorSchemeName {
-  const [colorScheme, setColorScheme] = React.useState(Appearance.getColorScheme())
+  const [colorScheme, setColorScheme] = React.useState(Appearance.getColorScheme());
 
   React.useEffect(() => {
     function listener(appearance) {
-      setColorScheme(appearance.colorScheme)
+      setColorScheme(appearance.colorScheme);
     }
-    const { remove } = Appearance.addChangeListener(listener)
-    return remove
-  })
+    const { remove } = Appearance.addChangeListener(listener);
+    return remove;
+  });
 
-  return colorScheme
+  return colorScheme;
 }

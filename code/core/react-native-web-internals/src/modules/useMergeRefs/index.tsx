@@ -1,4 +1,4 @@
-/**
+import * as React from "react"; /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * This source code is licensed under the MIT license found in the
@@ -7,16 +7,16 @@
  * @flow strict-local
  */
 
-import * as React from 'react'
 
-import { mergeRefs } from '../mergeRefs/index'
+
+import { mergeRefs } from '../mergeRefs/index';
 
 export function useMergeRefs(
-  ...args: ReadonlyArray<React.Ref<any>>
-): (node: HTMLElement | null) => void {
+...args: ReadonlyArray<React.Ref<any>>)
+: (node: HTMLElement | null) => void {
   return React.useMemo(
     () => mergeRefs(...args),
     // eslint-disable-next-line
     [...args]
-  )
+  );
 }

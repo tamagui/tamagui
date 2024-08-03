@@ -1,6 +1,5 @@
-import type React from 'react'
+import * as React from 'react'
 import type { DebugProp } from '../types'
-import { startTransition } from 'react'
 
 const callImmediate = (cb) => cb()
 
@@ -11,7 +10,7 @@ export function createShallowSetState<State extends Object>(
   debug?: DebugProp
 ) {
   return (next?: Partial<State>) => {
-    const wrap = transition ? startTransition : callImmediate
+    const wrap = transition ? React.startTransition : callImmediate
     wrap(() => {
       setter((prev) => mergeIfNotShallowEqual(prev, next, isDisabled, debug))
     })

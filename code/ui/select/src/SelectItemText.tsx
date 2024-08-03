@@ -1,8 +1,8 @@
+import * as React from 'react'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import type { GetProps, TamaguiTextElement } from '@tamagui/core'
 import { styled } from '@tamagui/core'
 import { SizableText } from '@tamagui/text'
-import * as React from 'react'
 
 import { useSelectContext, useSelectItemParentContext } from './context'
 import { useSelectItemContext } from './SelectItem'
@@ -82,12 +82,12 @@ export const SelectItemText = SelectItemTextFrame.styleable(function SelectItemT
 
       {/* Portal an option in the bubble select */}
       {/* {context.bubbleSelect
-              ? ReactDOM.createPortal(
-                  // we use `.textContent` because `option` only support `string` or `number`
-                  <option value={itemContext.value}>{ref.current?.textContent}</option>,
-                  context.bubbleSelect
-                )
-              : null} */}
+               ? ReactDOM.createPortal(
+                   // we use `.textContent` because `option` only support `string` or `number`
+                   <option value={itemContext.value}>{ref.current?.textContent}</option>,
+                   context.bubbleSelect
+                 )
+               : null} */}
     </>
   )
 })

@@ -1,9 +1,10 @@
+import * as React from 'react'
 import '@tamagui/polyfill-dev'
 
 import { isServer } from '@tamagui/constants'
 import { YStack } from '@tamagui/stacks'
-import * as React from 'react'
-import { createPortal } from 'react-dom'
+
+import ReactDOM from 'react-dom'
 
 import { useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
 import type { PortalProps } from './PortalProps'
@@ -31,6 +32,6 @@ export const Portal = React.memo(
       />
     )
 
-    return createPortal(didFinishSSR ? contents : null, host) as any
+    return ReactDOM.createPortal(didFinishSSR ? contents : null, host) as any
   }
 )

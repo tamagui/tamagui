@@ -1,8 +1,8 @@
+import * as React from 'react'
 import type { TamaguiElement } from '@tamagui/core'
 import { useConfiguration } from '@tamagui/core'
 import { useConstant } from '@tamagui/use-constant'
 import { useControllableState } from '@tamagui/use-controllable-state'
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
 import type { ScrollBridge, SheetProps } from './types'
 import type { SheetOpenState } from './useSheetOpenState'
@@ -18,8 +18,8 @@ export function useSheetProviderProps(
 ) {
   const handleRef = React.useRef<TamaguiElement>(null)
   const contentRef = React.useRef<TamaguiElement>(null)
-  const [frameSize, setFrameSize] = useState<number>(0)
-  const [maxContentSize, setMaxContentSize] = useState<number>(0)
+  const [frameSize, setFrameSize] = React.useState<number>(0)
+  const [maxContentSize, setMaxContentSize] = React.useState<number>(0)
   const snapPointsMode = props.snapPointsMode ?? 'percent'
   const snapPointsProp: (string | number)[] =
     props.snapPoints ??
@@ -30,7 +30,7 @@ export function useSheetProviderProps(
         : ['fit'])
   const hasFit = snapPointsProp[0] === 'fit'
 
-  const snapPoints = useMemo(
+  const snapPoints = React.useMemo(
     () => (props.dismissOnSnapToBottom ? [...snapPointsProp, 0] : snapPointsProp),
 
     [JSON.stringify(snapPointsProp), props.dismissOnSnapToBottom]
@@ -49,7 +49,7 @@ export function useSheetProviderProps(
 
   const { open } = state
 
-  const setPosition = useCallback(
+  const setPosition = React.useCallback(
     (next: number) => {
       // close on dismissOnSnapToBottom (and set position so it animates)
       if (props.dismissOnSnapToBottom && next === snapPoints.length - 1) {
@@ -121,7 +121,7 @@ export function useSheetProviderProps(
 
   // open must set position
   const shouldSetPositionOpen = open && position < 0
-  useEffect(() => {
+  React.useEffect(() => {
     if (shouldSetPositionOpen) {
       setPosition(0)
     }

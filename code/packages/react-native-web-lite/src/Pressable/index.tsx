@@ -7,61 +7,61 @@
  * @flow strict-local
  */
 
-'use strict'
+'use strict';import * as React from "react";
 
-import { usePressEvents } from '@tamagui/react-native-use-pressable'
-import type { PressResponderConfig } from '@tamagui/react-native-use-pressable'
-import * as React from 'react'
-import { forwardRef, memo, useMemo, useRef, useState } from 'react'
-import { StyleSheet } from 'react-native-web-internals'
-import { useHover, useMergeRefs } from 'react-native-web-internals'
+import { usePressEvents } from '@tamagui/react-native-use-pressable';
+import type { PressResponderConfig } from '@tamagui/react-native-use-pressable';
 
-import type { ViewProps } from '../View/index'
-import View from '../View/index'
 
-type HoverEventsConfig = any
+import { StyleSheet } from 'react-native-web-internals';
+import { useHover, useMergeRefs } from 'react-native-web-internals';
+
+import type { ViewProps } from '../View/index';
+import View from '../View/index';
+
+type HoverEventsConfig = any;
 
 export type StateCallbackType = {
-  focused: boolean
-  hovered: boolean
-  pressed: boolean
-}
+  focused: boolean;
+  hovered: boolean;
+  pressed: boolean;
+};
 
-type ViewStyleProp = ViewProps['style']
+type ViewStyleProp = ViewProps['style'];
 
 type Props = ViewProps & {
-  children: React.ReactNode | ((state: StateCallbackType) => React.ReactNode)
+  children: React.ReactNode | ((state: StateCallbackType) => React.ReactNode);
   // Duration (in milliseconds) from `onPressIn` before `onLongPress` is called.
-  delayLongPress?: number | null
+  delayLongPress?: number | null;
   // Duration (in milliseconds) from `onPressStart` is called after pointerdown
-  delayPressIn?: number | null
+  delayPressIn?: number | null;
   // Duration (in milliseconds) from `onPressEnd` is called after pointerup.
-  delayPressOut?: number | null
+  delayPressOut?: number | null;
   // Whether the press behavior is disabled.
-  disabled?: boolean | null
+  disabled?: boolean | null;
   // Called when the view is hovered
-  onHoverIn?: HoverEventsConfig['onHoverStart']
+  onHoverIn?: HoverEventsConfig['onHoverStart'];
   // Called when the view is no longer hovered
-  onHoverOut?: HoverEventsConfig['onHoverEnd']
+  onHoverOut?: HoverEventsConfig['onHoverEnd'];
   // Called when this view's layout changes
-  onLayout?: ViewProps['onLayout']
+  onLayout?: ViewProps['onLayout'];
   // Called when a long-tap gesture is detected.
-  onLongPress?: PressResponderConfig['onLongPress']
+  onLongPress?: PressResponderConfig['onLongPress'];
   // Called when a single tap gesture is detected.
-  onPress?: PressResponderConfig['onPress']
+  onPress?: PressResponderConfig['onPress'];
   // Called when a touch is engaged, before `onPress`.
-  onPressIn?: PressResponderConfig['onPressStart']
+  onPressIn?: PressResponderConfig['onPressStart'];
   // Called when a touch is moving, after `onPressIn`.
-  onPressMove?: PressResponderConfig['onPressMove']
+  onPressMove?: PressResponderConfig['onPressMove'];
   // Called when a touch is released, before `onPress`.
-  onPressOut?: PressResponderConfig['onPressEnd']
-  style?: ViewStyleProp | ((state: StateCallbackType) => ViewStyleProp)
+  onPressOut?: PressResponderConfig['onPressEnd'];
+  style?: ViewStyleProp | ((state: StateCallbackType) => ViewStyleProp);
   /**
    * Used only for documentation or testing (e.g. snapshot testing).
    */
-  testOnly_hovered?: boolean | null
-  testOnly_pressed?: boolean | null
-}
+  testOnly_hovered?: boolean | null;
+  testOnly_pressed?: boolean | null;
+};
 
 /**
  * Component used to build display components that should respond to whether the
@@ -90,16 +90,16 @@ function Pressable(props: Props, forwardedRef): React.ReactNode {
     testOnly_hovered,
     testOnly_pressed,
     ...rest
-  } = props
+  } = props;
 
-  const [hovered, setHovered] = useForceableState(testOnly_hovered === true)
-  const [focused, setFocused] = useForceableState(false)
-  const [pressed, setPressed] = useForceableState(testOnly_pressed === true)
+  const [hovered, setHovered] = useForceableState(testOnly_hovered === true);
+  const [focused, setFocused] = useForceableState(false);
+  const [pressed, setPressed] = useForceableState(testOnly_pressed === true);
 
-  const hostRef = useRef(null)
-  const setRef = useMergeRefs(forwardedRef, hostRef)
+  const hostRef = React.useRef(null);
+  const setRef = useMergeRefs(forwardedRef, hostRef);
 
-  const pressConfig = useMemo(
+  const pressConfig = React.useMemo(
     () => ({
       delayLongPress,
       delayPressStart: delayPressIn,
@@ -110,90 +110,90 @@ function Pressable(props: Props, forwardedRef): React.ReactNode {
       onPressChange: setPressed,
       onPressStart: onPressIn,
       onPressMove,
-      onPressEnd: onPressOut,
+      onPressEnd: onPressOut
     }),
     [
-      delayLongPress,
-      delayPressIn,
-      delayPressOut,
-      disabled,
-      onLongPress,
-      onPress,
-      onPressIn,
-      onPressMove,
-      onPressOut,
-      setPressed,
-    ]
-  )
+    delayLongPress,
+    delayPressIn,
+    delayPressOut,
+    disabled,
+    onLongPress,
+    onPress,
+    onPressIn,
+    onPressMove,
+    onPressOut,
+    setPressed]
 
-  const pressEventHandlers = usePressEvents(hostRef, pressConfig)
+  );
+
+  const pressEventHandlers = usePressEvents(hostRef, pressConfig);
 
   const { onContextMenu: onContextMenuPress, onKeyDown: onKeyDownPress } =
-    pressEventHandlers
+  pressEventHandlers;
 
   useHover(hostRef, {
     contain: true,
     disabled,
     onHoverChange: setHovered,
     onHoverStart: onHoverIn,
-    onHoverEnd: onHoverOut,
-  })
+    onHoverEnd: onHoverOut
+  });
 
-  const interactionState = { hovered, focused, pressed }
+  const interactionState = { hovered, focused, pressed };
 
   const blurHandler = React.useCallback(
     (e) => {
       if (disabled) {
-        return
+        return;
       }
       if (e.nativeEvent.target === hostRef.current) {
-        setFocused(false)
+        setFocused(false);
         if (onBlur != null) {
-          onBlur(e)
+          onBlur(e);
         }
       }
     },
     [disabled, hostRef, setFocused, onBlur]
-  )
+  );
 
   const focusHandler = React.useCallback(
     (e) => {
       if (disabled) {
-        return
+        return;
       }
       if (e.nativeEvent.target === hostRef.current) {
-        setFocused(true)
+        setFocused(true);
         if (onFocus != null) {
-          onFocus(e)
+          onFocus(e);
         }
       }
     },
     [disabled, hostRef, setFocused, onFocus]
-  )
+  );
 
   const contextMenuHandler = React.useCallback(
     (e) => {
       if (onContextMenuPress != null) {
-        onContextMenuPress(e)
+        onContextMenuPress(e);
       }
       if (onContextMenu != null) {
-        onContextMenu(e)
+        onContextMenu(e);
       }
     },
     [onContextMenu, onContextMenuPress]
-  )
+  );
 
   const keyDownHandler = React.useCallback(
     (e) => {
       if (onKeyDownPress != null) {
-        onKeyDownPress(e)
+        onKeyDownPress(e);
       }
       if (onKeyDown != null) {
-        onKeyDown(e)
+        onKeyDown(e);
       }
     },
     [onKeyDown, onKeyDownPress]
-  )
+  );
 
   return (
     <View
@@ -208,28 +208,28 @@ function Pressable(props: Props, forwardedRef): React.ReactNode {
       pointerEvents={disabled ? 'none' : rest.pointerEvents}
       ref={setRef}
       style={[
-        !disabled && styles.root,
-        typeof style === 'function' ? style(interactionState) : style,
-      ]}
-    >
+      !disabled && styles.root,
+      typeof style === 'function' ? style(interactionState) : style]}>
+
+
       {typeof children === 'function' ? children(interactionState) : children}
-    </View>
-  )
+    </View>);
+
 }
 
 function useForceableState(forced: boolean): [boolean, (boolean) => void] {
-  const [bool, setBool] = useState(false)
-  return [bool || forced, setBool]
+  const [bool, setBool] = React.useState(false);
+  return [bool || forced, setBool];
 }
 
 const styles = StyleSheet.create({
   root: {
     cursor: 'pointer',
-    touchAction: 'manipulation',
-  },
-})
+    touchAction: 'manipulation'
+  }
+});
 
-const MemoedPressable = memo(forwardRef(Pressable as any))
-MemoedPressable.displayName = 'Pressable'
+const MemoedPressable = React.memo(React.forwardRef((Pressable as any)));
+MemoedPressable.displayName = 'Pressable';
 
-export default MemoedPressable
+export default MemoedPressable;

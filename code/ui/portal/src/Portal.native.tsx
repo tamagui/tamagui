@@ -1,5 +1,6 @@
-import { YStack } from '@tamagui/stacks'
 import * as React from 'react'
+import { YStack } from '@tamagui/stacks'
+
 // @ts-ignore
 import { Platform, RootTagContext } from 'react-native'
 

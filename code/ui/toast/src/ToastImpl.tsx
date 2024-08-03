@@ -1,3 +1,4 @@
+import * as React from 'react'
 import { useIsPresent } from '@tamagui/animate-presence'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
@@ -16,7 +17,7 @@ import { Dismissable } from '@tamagui/dismissable'
 import { composeEventHandlers } from '@tamagui/helpers'
 import { PortalItem } from '@tamagui/portal'
 import { ThemeableStack } from '@tamagui/stacks'
-import * as React from 'react'
+
 import type {
   Animated,
   GestureResponderEvent,

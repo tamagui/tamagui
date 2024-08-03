@@ -1,9 +1,10 @@
+import * as React from 'react'
 import { autoUpdate, offset, useFloating } from '@floating-ui/react'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import type { TamaguiElement } from '@tamagui/core'
 import { YStack } from '@tamagui/stacks'
-import * as React from 'react'
-import { flushSync } from 'react-dom'
+
+import ReactDOM from 'react-dom'
 
 import { useSelectContext } from './context'
 import type {
@@ -93,10 +94,10 @@ const SelectScrollButtonImpl = React.memo(
         if (fallback) {
           if (floating.current) {
             floating.current.scrollTop -= amount
-            flushSync(() => setScrollTop!(floating.current?.scrollTop ?? 0))
+            ReactDOM.flushSync(() => setScrollTop!(floating.current?.scrollTop ?? 0))
           }
         } else {
-          flushSync(() => setInnerOffset!((value) => value - amount))
+          ReactDOM.flushSync(() => setInnerOffset!((value) => value - amount))
         }
       }
 

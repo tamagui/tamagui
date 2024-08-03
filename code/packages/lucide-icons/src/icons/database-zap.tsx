@@ -1,6 +1,6 @@
-import React, { memo } from 'react'
-import PropTypes from 'prop-types'
-import type { IconProps } from '@tamagui/helpers-icon'
+import * as React from "react";
+import PropTypes from 'prop-types';
+import type { IconProps } from '@tamagui/helpers-icon';
 import {
   Svg,
   Circle as _Circle,
@@ -17,12 +17,12 @@ import {
   Text as _Text,
   Use,
   Defs,
-  Stop,
-} from 'react-native-svg'
-import { themed } from '@tamagui/helpers-icon'
+  Stop } from
+'react-native-svg';
+import { themed } from '@tamagui/helpers-icon';
 
 const Icon = (props) => {
-  const { color = 'black', size = 24, ...otherProps } = props
+  const { color = 'black', size = 24, ...otherProps } = props;
   return (
     <Svg
       width={size}
@@ -33,17 +33,17 @@ const Icon = (props) => {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      {...otherProps}
-    >
+      {...otherProps}>
+
       <Ellipse cx="12" cy="5" rx="9" ry="3" stroke={color} />
       <Path d="M3 5V19A9 3 0 0 0 15 21.84" stroke={color} />
       <Path d="M21 5V8" stroke={color} />
       <Path d="M21 12L18 17H22L19 22" stroke={color} />
       <Path d="M3 12A9 3 0 0 0 14.59 14.87" stroke={color} />
-    </Svg>
-  )
-}
+    </Svg>);
 
-Icon.displayName = 'DatabaseZap'
+};
 
-export const DatabaseZap = memo<IconProps>(themed(Icon))
+Icon.displayName = 'DatabaseZap';
+
+export const DatabaseZap = React.memo<IconProps>(themed(Icon));

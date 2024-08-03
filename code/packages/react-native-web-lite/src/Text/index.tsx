@@ -1,4 +1,4 @@
-/**
+import * as React from "react"; /**
  * Copyright (c) Nicolas Gallagher.
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -8,12 +8,12 @@
  * @flow
  */
 
-import * as React from 'react'
+
 import {
   StyleSheet,
   TextAncestorContext,
-  getLocaleDirection,
-} from 'react-native-web-internals'
+  getLocaleDirection } from
+'react-native-web-internals';
 import {
   forwardPropsListText,
   pick,
@@ -21,14 +21,14 @@ import {
   useLocaleContext,
   useMergeRefs,
   usePlatformMethods,
-  useResponderEvents,
-} from 'react-native-web-internals'
+  useResponderEvents } from
+'react-native-web-internals';
 
-import createElement from '../createElement/index'
-import type { PlatformMethods } from '../types'
-import type { TextProps } from './types'
+import createElement from '../createElement/index';
+import type { PlatformMethods } from '../types';
+import type { TextProps } from './types';
 
-const pickProps = (props) => pick(props, forwardPropsListText)
+const pickProps = (props) => pick(props, forwardPropsListText);
 
 const Text = React.forwardRef<HTMLElement & PlatformMethods, TextProps>(
   (props, forwardedRef) => {
@@ -56,13 +56,13 @@ const Text = React.forwardRef<HTMLElement & PlatformMethods, TextProps>(
       onStartShouldSetResponderCapture,
       selectable,
       ...rest
-    } = props
+    } = props;
 
-    const hasTextAncestor = React.useContext(TextAncestorContext)
-    const hostRef = React.useRef(null)
-    const { direction: contextDirection } = useLocaleContext()
+    const hasTextAncestor = React.useContext(TextAncestorContext);
+    const hostRef = React.useRef(null);
+    const { direction: contextDirection } = useLocaleContext();
 
-    useElementLayout(hostRef, onLayout)
+    useElementLayout(hostRef, onLayout);
     useResponderEvents(hostRef, {
       onMoveShouldSetResponder,
       onMoveShouldSetResponderCapture,
@@ -79,83 +79,83 @@ const Text = React.forwardRef<HTMLElement & PlatformMethods, TextProps>(
       onSelectionChangeShouldSetResponder,
       onSelectionChangeShouldSetResponderCapture,
       onStartShouldSetResponder,
-      onStartShouldSetResponderCapture,
-    })
+      onStartShouldSetResponderCapture
+    });
 
     const handleClick = React.useCallback(
       (e) => {
         if (onClick != null) {
-          onClick(e)
+          onClick(e);
         } else if (onPress != null) {
-          e.stopPropagation()
-          onPress(e)
+          e.stopPropagation();
+          onPress(e);
         }
       },
       [onClick, onPress]
-    )
+    );
 
-    let component = hasTextAncestor ? 'span' : 'div'
+    let component = hasTextAncestor ? 'span' : 'div';
 
-    const langDirection = props.lang != null ? getLocaleDirection(props.lang) : null
-    const componentDirection = props.dir || langDirection
-    const writingDirection = componentDirection || contextDirection
+    const langDirection = props.lang != null ? getLocaleDirection(props.lang) : null;
+    const componentDirection = props.dir || langDirection;
+    const writingDirection = componentDirection || contextDirection;
 
-    const supportedProps = pickProps(rest) as any
-    supportedProps.dir = componentDirection
+    const supportedProps = (pickProps(rest) as any);
+    supportedProps.dir = componentDirection;
     // 'auto' by default allows browsers to infer writing direction (root elements only)
     if (!hasTextAncestor) {
-      supportedProps.dir = componentDirection != null ? componentDirection : 'auto'
+      supportedProps.dir = componentDirection != null ? componentDirection : 'auto';
     }
 
     if (onClick || onPress) {
-      supportedProps.onClick = handleClick
+      supportedProps.onClick = handleClick;
     }
 
     supportedProps.style = [
-      numberOfLines != null && numberOfLines > 1 && { WebkitLineClamp: numberOfLines },
-      hasTextAncestor === true ? styles.textHasAncestor$raw : styles.text$raw,
-      numberOfLines === 1 && styles.textOneLine,
-      numberOfLines != null && numberOfLines > 1 && styles.textMultiLine,
-      props.style,
-      selectable === true && styles.selectable,
-      selectable === false && styles.notSelectable,
-      onPress && styles.pressable,
-    ]
+    numberOfLines != null && numberOfLines > 1 && { WebkitLineClamp: numberOfLines },
+    hasTextAncestor === true ? styles.textHasAncestor$raw : styles.text$raw,
+    numberOfLines === 1 && styles.textOneLine,
+    numberOfLines != null && numberOfLines > 1 && styles.textMultiLine,
+    props.style,
+    selectable === true && styles.selectable,
+    selectable === false && styles.notSelectable,
+    onPress && styles.pressable];
+
 
     if (props.href != null) {
-      component = 'a'
+      component = 'a';
       if (hrefAttrs != null) {
-        const { download, rel, target } = hrefAttrs
+        const { download, rel, target } = hrefAttrs;
         if (download != null) {
-          supportedProps.download = download
+          supportedProps.download = download;
         }
         if (rel != null) {
-          supportedProps.rel = rel
+          supportedProps.rel = rel;
         }
         if (typeof target === 'string') {
-          supportedProps.target = target.charAt(0) !== '_' ? '_' + target : target
+          supportedProps.target = target.charAt(0) !== '_' ? '_' + target : target;
         }
       }
     }
 
-    const platformMethodsRef = usePlatformMethods(supportedProps)
-    const setRef = useMergeRefs(hostRef, platformMethodsRef, forwardedRef)
+    const platformMethodsRef = usePlatformMethods(supportedProps);
+    const setRef = useMergeRefs(hostRef, platformMethodsRef, forwardedRef);
 
-    supportedProps.ref = setRef
+    supportedProps.ref = setRef;
 
     const element = createElement(component, supportedProps, {
-      writingDirection,
-    })
+      writingDirection
+    });
 
-    return hasTextAncestor ? (
-      element
-    ) : (
-      <TextAncestorContext.Provider value={true}>{element}</TextAncestorContext.Provider>
-    )
+    return hasTextAncestor ?
+    element :
+
+    <TextAncestorContext.Provider value={true}>{element}</TextAncestorContext.Provider>;
+
   }
-)
+);
 
-Text.displayName = 'Text'
+Text.displayName = 'Text';
 
 const textStyle = {
   backgroundColor: 'transparent',
@@ -170,8 +170,8 @@ const textStyle = {
   textAlign: 'inherit',
   textDecoration: 'none',
   whiteSpace: 'pre-wrap',
-  wordWrap: 'break-word',
-}
+  wordWrap: 'break-word'
+};
 
 const styles = StyleSheet.create({
   text$raw: textStyle,
@@ -179,14 +179,14 @@ const styles = StyleSheet.create({
     ...textStyle,
     color: 'inherit',
     font: 'inherit',
-    whiteSpace: 'inherit',
+    whiteSpace: 'inherit'
   },
   textOneLine: {
     maxWidth: '100%',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
-    wordWrap: 'normal',
+    wordWrap: 'normal'
   },
   // See #13
   textMultiLine: {
@@ -194,17 +194,17 @@ const styles = StyleSheet.create({
     maxWidth: '100%',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
-    WebkitBoxOrient: 'vertical',
+    WebkitBoxOrient: 'vertical'
   },
   notSelectable: {
-    userSelect: 'none',
+    userSelect: 'none'
   },
   selectable: {
-    userSelect: 'text',
+    userSelect: 'text'
   },
   pressable: {
-    cursor: 'pointer',
-  },
-})
+    cursor: 'pointer'
+  }
+});
 
-export default Text
+export default Text;

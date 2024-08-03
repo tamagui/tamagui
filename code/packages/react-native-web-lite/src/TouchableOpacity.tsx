@@ -8,13 +8,13 @@
  * @format
  */
 
-'use strict'
+'use strict';import * as React from "react";
 
-import * as React from 'react'
-import { useCallback, useMemo, useRef, useState } from 'react'
-import { StyleSheet, useMergeRefs, usePressEvents } from 'react-native-web-internals'
 
-import View from './View'
+
+import { StyleSheet, useMergeRefs, usePressEvents } from 'react-native-web-internals';
+
+import View from './View';
 
 /**
  * A wrapper for making views respond properly to touches.
@@ -35,37 +35,37 @@ function TouchableOpacity(props, forwardedRef) {
     rejectResponderTermination,
     style,
     ...rest
-  } = props
+  } = props;
 
-  const hostRef = useRef(null)
-  const setRef = useMergeRefs(forwardedRef, hostRef)
+  const hostRef = React.useRef(null);
+  const setRef = useMergeRefs(forwardedRef, hostRef);
 
-  const [duration, setDuration] = useState('0s')
-  const [opacityOverride, setOpacityOverride] = useState(null)
+  const [duration, setDuration] = React.useState('0s');
+  const [opacityOverride, setOpacityOverride] = React.useState(null);
 
-  const setOpacityTo = useCallback(
+  const setOpacityTo = React.useCallback(
     (value, duration: number) => {
-      setOpacityOverride(value)
-      setDuration(duration ? `${duration / 1000}s` : '0s')
+      setOpacityOverride(value);
+      setDuration(duration ? `${duration / 1000}s` : '0s');
     },
     [setOpacityOverride, setDuration]
-  )
+  );
 
-  const setOpacityActive = useCallback(
+  const setOpacityActive = React.useCallback(
     (duration: number) => {
-      setOpacityTo(activeOpacity ?? 0.2, duration)
+      setOpacityTo(activeOpacity ?? 0.2, duration);
     },
     [activeOpacity, setOpacityTo]
-  )
+  );
 
-  const setOpacityInactive = useCallback(
+  const setOpacityInactive = React.useCallback(
     (duration: number) => {
-      setOpacityTo(null, duration)
+      setOpacityTo(null, duration);
     },
     [setOpacityTo]
-  )
+  );
 
-  const pressConfig = useMemo(
+  const pressConfig = React.useMemo(
     () => ({
       cancelable: !rejectResponderTermination,
       disabled,
@@ -76,37 +76,37 @@ function TouchableOpacity(props, forwardedRef) {
       onPress,
       onPressStart(event) {
         const isGrant =
-          event.dispatchConfig != null
-            ? event.dispatchConfig.registrationName === 'onResponderGrant'
-            : event.type === 'keydown'
-        setOpacityActive(isGrant ? 0 : 150)
+        event.dispatchConfig != null ?
+        event.dispatchConfig.registrationName === 'onResponderGrant' :
+        event.type === 'keydown';
+        setOpacityActive(isGrant ? 0 : 150);
         if (onPressIn != null) {
-          onPressIn(event)
+          onPressIn(event);
         }
       },
       onPressEnd(event) {
-        setOpacityInactive(250)
+        setOpacityInactive(250);
         if (onPressOut != null) {
-          onPressOut(event)
+          onPressOut(event);
         }
-      },
+      }
     }),
     [
-      delayLongPress,
-      delayPressIn,
-      delayPressOut,
-      disabled,
-      onLongPress,
-      onPress,
-      onPressIn,
-      onPressOut,
-      rejectResponderTermination,
-      setOpacityActive,
-      setOpacityInactive,
-    ]
-  )
+    delayLongPress,
+    delayPressIn,
+    delayPressOut,
+    disabled,
+    onLongPress,
+    onPress,
+    onPressIn,
+    onPressOut,
+    rejectResponderTermination,
+    setOpacityActive,
+    setOpacityInactive]
 
-  const pressEventHandlers = usePressEvents(hostRef, pressConfig)
+  );
+
+  const pressEventHandlers = usePressEvents(hostRef, pressConfig);
 
   return (
     <View
@@ -116,29 +116,29 @@ function TouchableOpacity(props, forwardedRef) {
       focusable={!disabled && focusable !== false}
       ref={setRef}
       style={[
-        styles.root,
-        !disabled && styles.actionable,
-        style,
-        opacityOverride != null && { opacity: opacityOverride },
-        { transitionDuration: duration },
-      ]}
-    />
-  )
+      styles.root,
+      !disabled && styles.actionable,
+      style,
+      opacityOverride != null && { opacity: opacityOverride },
+      { transitionDuration: duration }]} />);
+
+
+
 }
 
 const styles = StyleSheet.create({
   root: {
     transitionProperty: 'opacity',
     transitionDuration: '0.15s',
-    userSelect: 'none',
+    userSelect: 'none'
   },
   actionable: {
     cursor: 'pointer',
-    touchAction: 'manipulation',
-  },
-})
+    touchAction: 'manipulation'
+  }
+});
 
-const MemoedTouchableOpacity = React.memo(React.forwardRef(TouchableOpacity))
-MemoedTouchableOpacity.displayName = 'TouchableOpacity'
+const MemoedTouchableOpacity = React.memo(React.forwardRef(TouchableOpacity));
+MemoedTouchableOpacity.displayName = 'TouchableOpacity';
 
-export default MemoedTouchableOpacity
+export default MemoedTouchableOpacity;

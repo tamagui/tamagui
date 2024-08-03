@@ -1,3 +1,4 @@
+import * as React from 'react'
 import type { GetProps, TamaguiComponent, UnionableString, Variable } from '@tamagui/core'
 import {
   getConfig,
@@ -14,7 +15,7 @@ import { createContextScope } from '@tamagui/create-context'
 import { withStaticProperties } from '@tamagui/helpers'
 import { ThemeableStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
-import React, { Children, Fragment, forwardRef, isValidElement } from 'react'
+
 import { ScrollView } from 'react-native'
 import { useIndex, useIndexedChildren } from 'reforest'
 
@@ -117,9 +118,9 @@ function createGroup(verticalDefault: boolean) {
 
       const childrenArray = Children.toArray(childrenProp)
       const children = isUsingItems
-        ? Children.toArray(childrenProp).filter(isValidElement)
+        ? Children.toArray(childrenProp).filter(React.isValidElement)
         : childrenArray.map((child, i) => {
-            if (!isValidElement(child) || child.type === Fragment) {
+            if (!React.isValidElement(child) || child.type === React.Fragment) {
               return child
             }
             const disabled = child.props.disabled ?? disabledProp
@@ -200,7 +201,7 @@ export type GroupItemProps = {
   forcePlacement?: 'first' | 'center' | 'last'
 }
 
-const GroupItem = forwardRef(
+const GroupItem = React.forwardRef(
   (
     props: ScopedProps<GroupItemProps>,
     // Note unused, breaks popper targets even if i try and compose it
@@ -208,12 +209,12 @@ const GroupItem = forwardRef(
   ) => {
     const { __scopeGroup, children, forcePlacement } = props
     const groupItemProps = useGroupItem(
-      { disabled: isValidElement(children) ? children.props.disabled : undefined },
+      { disabled: React.isValidElement(children) ? children.props.disabled : undefined },
       forcePlacement,
       __scopeGroup
     )
 
-    if (!isValidElement(children) || children.type === Fragment) {
+    if (!React.isValidElement(children) || children.type === React.Fragment) {
       return children as any
     }
 
@@ -297,6 +298,7 @@ const wrapScroll = (
         {children}
       </ScrollView>
     )
+
   return children
 }
 

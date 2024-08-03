@@ -1,4 +1,4 @@
-/**
+import * as React from "react"; /**
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * This source code is licensed under the MIT license found in the
@@ -8,9 +8,9 @@
  * @format
  */
 
-import * as React from 'react'
-import { useMemo, useRef } from 'react'
-import { pick, useMergeRefs, usePressEvents } from 'react-native-web-internals'
+
+
+import { pick, useMergeRefs, usePressEvents } from 'react-native-web-internals';
 
 const forwardPropsList = {
   accessibilityDisabled: true,
@@ -26,10 +26,10 @@ const forwardPropsList = {
   onBlur: true,
   onFocus: true,
   onLayout: true,
-  testID: true,
-}
+  testID: true
+};
 
-const pickProps = (props) => pick(props, forwardPropsList)
+const pickProps = (props) => pick(props, forwardPropsList);
 
 function TouchableWithoutFeedback(props, forwardedRef) {
   const {
@@ -42,12 +42,12 @@ function TouchableWithoutFeedback(props, forwardedRef) {
     onPress,
     onPressIn,
     onPressOut,
-    rejectResponderTermination,
-  } = props
+    rejectResponderTermination
+  } = props;
 
-  const hostRef = useRef(null)
+  const hostRef = React.useRef(null);
 
-  const pressConfig = useMemo(
+  const pressConfig = React.useMemo(
     () => ({
       cancelable: !rejectResponderTermination,
       disabled,
@@ -57,41 +57,41 @@ function TouchableWithoutFeedback(props, forwardedRef) {
       onLongPress,
       onPress,
       onPressStart: onPressIn,
-      onPressEnd: onPressOut,
+      onPressEnd: onPressOut
     }),
     [
-      disabled,
-      delayPressIn,
-      delayPressOut,
-      delayLongPress,
-      onLongPress,
-      onPress,
-      onPressIn,
-      onPressOut,
-      rejectResponderTermination,
-    ]
-  )
+    disabled,
+    delayPressIn,
+    delayPressOut,
+    delayLongPress,
+    onLongPress,
+    onPress,
+    onPressIn,
+    onPressOut,
+    rejectResponderTermination]
 
-  const pressEventHandlers = usePressEvents(hostRef, pressConfig)
+  );
 
-  const element = React.Children.only(props.children)
-  const children = [element.props.children]
-  const supportedProps = pickProps(props)
+  const pressEventHandlers = usePressEvents(hostRef, pressConfig);
+
+  const element = React.Children.only(props.children);
+  const children = [element.props.children];
+  const supportedProps = pickProps(props);
   // @ts-ignore
-  supportedProps.accessibilityDisabled = disabled
+  supportedProps.accessibilityDisabled = disabled;
   // @ts-ignore
-  supportedProps.focusable = !disabled && focusable !== false
+  supportedProps.focusable = !disabled && focusable !== false;
   // @ts-ignore
-  supportedProps.ref = useMergeRefs(forwardedRef, hostRef, element.ref)
+  supportedProps.ref = useMergeRefs(forwardedRef, hostRef, element.ref);
 
-  const elementProps = Object.assign(supportedProps, pressEventHandlers)
+  const elementProps = Object.assign(supportedProps, pressEventHandlers);
 
-  return React.cloneElement(element, elementProps, ...children)
+  return React.cloneElement(element, elementProps, ...children);
 }
 
 const MemoedTouchableWithoutFeedback = React.memo(
   React.forwardRef(TouchableWithoutFeedback)
-)
-MemoedTouchableWithoutFeedback.displayName = 'TouchableWithoutFeedback'
+);
+MemoedTouchableWithoutFeedback.displayName = 'TouchableWithoutFeedback';
 
-export default MemoedTouchableWithoutFeedback
+export default MemoedTouchableWithoutFeedback;

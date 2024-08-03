@@ -1,8 +1,10 @@
+import type { CSSProperties } from 'react'
+import * as React from 'react'
 import { PresenceContext, ResetPresence, usePresence } from '@tamagui/use-presence'
 import type { AnimationDriver, UniversalAnimatedNumber } from '@tamagui/web'
 import type { TransitionConfig } from 'moti'
 import { useMotify } from 'moti'
-import { useContext, useMemo, type CSSProperties } from 'react'
+
 import type { TextStyle } from 'react-native'
 import type { SharedValue } from 'react-native-reanimated'
 import Animated, {
@@ -91,7 +93,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
     useAnimatedNumber(initial): UniversalAnimatedNumber<ReanimatedAnimatedNumber> {
       const sharedValue = useSharedValue(initial)
 
-      return useMemo(
+      return React.useMemo(
         () => ({
           getInstance() {
             'worklet'
@@ -214,10 +216,10 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
       // without this, the driver breaks on native
       // stringifying -> parsing fixes that
       const animateStr = JSON.stringify(animate)
-      const styles = useMemo(() => JSON.parse(animateStr), [animateStr])
+      const styles = React.useMemo(() => JSON.parse(animateStr), [animateStr])
 
       const isExiting = Boolean(presence?.[1])
-      const presenceContext = useContext(PresenceContext)
+      const presenceContext = React.useContext(PresenceContext)
       const usePresenceValue = (presence || undefined) as any
 
       type UseMotiProps = Parameters<typeof useMotify>[0]

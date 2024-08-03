@@ -1,20 +1,9 @@
+import * as React from 'react'
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 // from https://github.com/gorhom/react-native-portal
 // MIT License Copyright (c) 2020 Mo Gorhom
 import { useEvent } from '@tamagui/core'
 // fixing SSR issue
-import type { ReactNode } from 'react'
-import React, {
-  createContext,
-  memo,
-  startTransition,
-  useCallback,
-  useContext,
-  useEffect,
-  useId,
-  useMemo,
-  useReducer,
-} from 'react'
 
 interface PortalType {
   name: string
@@ -140,11 +129,15 @@ const reducer = (state: Record<string, Array<PortalType>>, action: ActionTypes) 
   }
 }
 
-const PortalStateContext = createContext<Record<string, Array<PortalType>> | null>(null)
-const PortalDispatchContext = createContext<React.Dispatch<ActionTypes> | null>(null)
+const PortalStateContext = React.createContext<Record<string, Array<PortalType>> | null>(
+  null
+)
+const PortalDispatchContext = React.createContext<React.Dispatch<ActionTypes> | null>(
+  null
+)
 
 const usePortalState = (hostName: string) => {
-  const state = useContext(PortalStateContext)
+  const state = React.useContext(PortalStateContext)
 
   if (state === null) {
     throw new Error(
@@ -156,7 +149,7 @@ const usePortalState = (hostName: string) => {
 }
 
 export const usePortal = (hostName = 'root') => {
-  const dispatch = useContext(PortalDispatchContext)
+  const dispatch = React.useContext(PortalDispatchContext)
 
   if (dispatch === null) {
     throw new Error(
@@ -165,21 +158,21 @@ export const usePortal = (hostName = 'root') => {
   }
 
   //#region methods
-  const registerHost = useCallback(() => {
+  const registerHost = React.useCallback(() => {
     dispatch({
       type: ACTIONS.REGISTER_HOST,
       hostName: hostName,
     })
   }, [])
 
-  const deregisterHost = useCallback(() => {
+  const deregisterHost = React.useCallback(() => {
     dispatch({
       type: ACTIONS.DEREGISTER_HOST,
       hostName: hostName,
     })
   }, [])
 
-  const addUpdatePortal = useCallback((name: string, node: ReactNode) => {
+  const addUpdatePortal = React.useCallback((name: string, node: ReactNode) => {
     dispatch({
       type: ACTIONS.ADD_UPDATE_PORTAL,
       hostName,
@@ -188,7 +181,7 @@ export const usePortal = (hostName = 'root') => {
     })
   }, [])
 
-  const removePortal = useCallback((name: string) => {
+  const removePortal = React.useCallback((name: string) => {
     dispatch({
       type: ACTIONS.REMOVE_PORTAL,
       hostName,
@@ -231,10 +224,10 @@ const PortalProviderComponent = ({
   shouldAddRootHost = true,
   children,
 }: PortalProviderProps) => {
-  const [state, dispatch] = useReducer(reducer, INITIAL_STATE)
-  const transitionDispatch = useMemo(() => {
+  const [state, dispatch] = React.useReducer(reducer, INITIAL_STATE)
+  const transitionDispatch = React.useMemo(() => {
     const next = (value: any) => {
-      startTransition(() => {
+      React.startTransition(() => {
         dispatch(value)
       })
     }
@@ -251,7 +244,7 @@ const PortalProviderComponent = ({
   )
 }
 
-export const PortalProvider = memo(PortalProviderComponent)
+export const PortalProvider = React.memo(PortalProviderComponent)
 PortalProvider.displayName = 'PortalProvider'
 
 export interface PortalHostProps {
@@ -278,7 +271,7 @@ const PortalHostComponent = (props: PortalHostProps) => {
   const { registerHost, deregisterHost } = usePortal(props.name)
 
   //#region effects
-  useEffect(() => {
+  React.useEffect(() => {
     if (typeof window === 'undefined') return
     registerHost()
     return () => {
@@ -310,7 +303,7 @@ const PortalHostComponent = (props: PortalHostProps) => {
   //#endregion
 }
 
-export const PortalHost = memo(PortalHostComponent)
+export const PortalHost = React.memo(PortalHostComponent)
 PortalHost.displayName = 'PortalHost'
 
 export interface PortalItemProps {
@@ -365,7 +358,7 @@ const PortalComponent = (props: PortalItemProps) => {
     children,
   } = props
   const { addPortal: addUpdatePortal, removePortal } = usePortal(hostName)
-  const id = useId()
+  const id = React.useId()
   const name = _providedName || id
 
   const handleOnMount = useEvent(() => {
@@ -399,12 +392,12 @@ const PortalComponent = (props: PortalItemProps) => {
     }
   }, [])
 
-  useEffect(() => {
+  React.useEffect(() => {
     handleOnUpdate()
   }, [children])
 
   return null
 }
 
-export const PortalItem = memo(PortalComponent)
+export const PortalItem = React.memo(PortalComponent)
 PortalItem.displayName = 'Portal'

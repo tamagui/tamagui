@@ -1,9 +1,9 @@
-import { createContext } from 'react'
+import * as React from 'react'
 
-export const ParentSheetContext = createContext({
+export const ParentSheetContext = React.createContext({
   zIndex: 100_000,
 })
 
-export const SheetInsideSheetContext = createContext<
+export const SheetInsideSheetContext = React.createContext<
   ((hasChild: boolean) => void) | null
 >(null)

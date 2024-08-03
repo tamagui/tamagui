@@ -1,3 +1,4 @@
+import * as React from 'react'
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
@@ -6,7 +7,6 @@ import { styled } from '@tamagui/core'
 import { PortalHost } from '@tamagui/portal'
 import { YStack } from '@tamagui/stacks'
 import { VisuallyHidden } from '@tamagui/visually-hidden'
-import * as React from 'react'
 
 import { TOAST_CONTEXT } from './constants'
 import { ToastPortal } from './ToastPortal'
@@ -194,6 +194,7 @@ const ToastViewport = React.memo(
               toastNode,
               ...getTabbableCandidates(toastNode),
             ]
+
             return tabbingDirection === 'forwards'
               ? toastTabbableCandidates
               : toastTabbableCandidates.reverse()
@@ -283,6 +284,7 @@ const ToastViewport = React.memo(
               }}
             />
           )}
+
           {/**
            * tabindex on the the list so that it can be focused when items are removed. we focus
            * the list instead of the viewport so it announces number of items remaining.

@@ -1,19 +1,20 @@
+import * as React from 'react'
 import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
 import type { SheetProps } from '@tamagui/sheet'
 import { Sheet, useSheet } from '@tamagui/sheet'
-import { useState } from 'react'
+
 import { Button, H1, H2, Input, Paragraph, XStack, YStack } from 'tamagui'
 
 const spModes = ['percent', 'constant', 'fit', 'mixed'] as const
 
 export const SheetDemo = () => {
-  const [position, setPosition] = useState(0)
-  const [open, setOpen] = useState(false)
-  const [modal, setModal] = useState(true)
-  const [innerOpen, setInnerOpen] = useState(false)
+  const [position, setPosition] = React.useState(0)
+  const [open, setOpen] = React.useState(false)
+  const [modal, setModal] = React.useState(true)
+  const [innerOpen, setInnerOpen] = React.useState(false)
   const [snapPointsMode, setSnapPointsMode] =
-    useState<(typeof spModes)[number]>('percent')
-  const [mixedFitDemo, setMixedFitDemo] = useState(false)
+    React.useState<(typeof spModes)[number]>('percent')
+  const [mixedFitDemo, setMixedFitDemo] = React.useState(false)
 
   const isPercent = snapPointsMode === 'percent'
   const isConstant = snapPointsMode === 'constant'
@@ -57,9 +58,9 @@ export const SheetDemo = () => {
           </Button>
         ) : (
           <XStack paddingVertical="$2.5" justifyContent="center">
-            <Paragraph>{`Snap Points: ${
-              isFit ? '(none)' : JSON.stringify(snapPoints)
-            }`}</Paragraph>
+            <Paragraph>
+              {`Snap Points: ${isFit ? '(none)' : JSON.stringify(snapPoints)}`}
+            </Paragraph>
           </XStack>
         )}
       </YStack>
@@ -82,6 +83,7 @@ export const SheetDemo = () => {
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
         />
+
         <Sheet.Handle />
         <Sheet.Frame padding="$4" justifyContent="center" alignItems="center" space="$5">
           <Button size="$6" circular icon={ChevronDown} onPress={() => setOpen(false)} />
@@ -111,6 +113,7 @@ function InnerSheet(props: SheetProps) {
         enterStyle={{ opacity: 0 }}
         exitStyle={{ opacity: 0 }}
       />
+
       <Sheet.Handle />
       <Sheet.Frame flex={1} justifyContent="center" alignItems="center" space="$5">
         <Sheet.ScrollView>
@@ -122,6 +125,7 @@ function InnerSheet(props: SheetProps) {
               icon={ChevronDown}
               onPress={() => props.onOpenChange?.(false)}
             />
+
             <H2>Hello world</H2>
             {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
               <Paragraph key={i} size="$8">

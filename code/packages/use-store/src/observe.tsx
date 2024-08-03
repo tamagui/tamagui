@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import * as React from 'react'
 
 import { isEqualSubsetShallow } from './comparators'
 import { UNWRAP_PROXY } from './constants'
@@ -67,11 +67,11 @@ export function observe(fn: () => any) {
 }
 
 export function useObserve<A>(fn: () => A): A {
-  const [state, setState] = useState(() => {
+  const [state, setState] = React.useState(() => {
     return getObserverValueAndStoresAccessed(fn)
   })
 
-  useEffect(() => {
+  React.useEffect(() => {
     let dispose
     const unsub = subscribeToStores([...state.storeInfos], () => {
       dispose?.()

@@ -1,8 +1,8 @@
+import * as React from 'react'
 import { FloatingOverlay, FloatingPortal } from '@floating-ui/react'
 import { Theme, useIsTouchDevice, useThemeName } from '@tamagui/core'
 import type { FocusScopeProps } from '@tamagui/focus-scope'
 import { FocusScope } from '@tamagui/focus-scope'
-import { useMemo } from 'react'
 
 import { useSelectContext, useSelectItemParentContext } from './context'
 import type { SelectContentProps } from './types'
@@ -33,7 +33,7 @@ export const SelectContent = ({
 
   const touch = useIsTouchDevice()
 
-  const overlayStyle = useMemo(() => {
+  const overlayStyle = React.useMemo(() => {
     return { zIndex, pointerEvents: context.open ? 'auto' : 'none' } as const
   }, [context.open])
 

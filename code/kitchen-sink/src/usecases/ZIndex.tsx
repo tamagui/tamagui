@@ -1,9 +1,9 @@
-import { useMemo, useState } from 'react'
-import { Modal, StyleSheet, Text, View } from 'react-native'
-import { Button, TooltipSimple } from 'tamagui'
+import * as React from "react";
+import { Modal, StyleSheet, Text, View } from 'react-native';
+import { Button, TooltipSimple } from 'tamagui';
 
 export function ZIndex() {
-  return <TooltipInModal />
+  return <TooltipInModal />;
 }
 
 export function TooltipInModal() {
@@ -17,16 +17,16 @@ export function TooltipInModal() {
       <AnimatedModalStack />
       <Gap />
       <Modalception />
-    </>
-  )
+    </>);
+
 }
 
 function Gap() {
-  return <View style={styles.gap} />
+  return <View style={styles.gap} />;
 }
 
 function AnimatedModal({ animationType }) {
-  const [isVisible, setIsVisible] = useState(false)
+  const [isVisible, setIsVisible] = React.useState(false);
 
   return (
     <>
@@ -34,8 +34,8 @@ function AnimatedModal({ animationType }) {
       <Modal
         animationType={animationType}
         onRequestClose={() => setIsVisible(false)}
-        visible={isVisible}
-      >
+        visible={isVisible}>
+
         <View style={styles.container}>
           <Text>Modal with "animationType" of "{animationType}"</Text>
           <Gap />
@@ -44,8 +44,8 @@ function AnimatedModal({ animationType }) {
           </TooltipSimple>
         </View>
       </Modal>
-    </>
-  )
+    </>);
+
 }
 
 function AnimatedModalStack() {
@@ -56,21 +56,21 @@ function AnimatedModalStack() {
       <AnimatedModal animationType={'slide'} />
       <Gap />
       <AnimatedModal animationType={'fade'} />
-    </>
-  )
+    </>);
+
 }
 
-const WIGGLE_ROOM = 128
+const WIGGLE_ROOM = 128;
 
 function Modalception({ depth = 1 }) {
-  const [isVisible, setIsVisible] = useState(false)
+  const [isVisible, setIsVisible] = React.useState(false);
 
-  const offset = useMemo(() => {
+  const offset = React.useMemo(() => {
     return {
       top: Math.random() * WIGGLE_ROOM - WIGGLE_ROOM / 2,
-      left: Math.random() * WIGGLE_ROOM - WIGGLE_ROOM / 2,
-    }
-  }, [])
+      left: Math.random() * WIGGLE_ROOM - WIGGLE_ROOM / 2
+    };
+  }, []);
 
   return (
     <>
@@ -88,12 +88,12 @@ function Modalception({ depth = 1 }) {
           </TooltipSimple>
         </View>
       </Modal>
-    </>
-  )
+    </>);
+
 }
 
 function SimpleModal() {
-  const [isVisible, setIsVisible] = useState(false)
+  const [isVisible, setIsVisible] = React.useState(false);
 
   return (
     <>
@@ -107,12 +107,12 @@ function SimpleModal() {
           </TooltipSimple>
         </View>
       </Modal>
-    </>
-  )
+    </>);
+
 }
 
 function TransparentModal() {
-  const [isVisible, setIsVisible] = useState(false)
+  const [isVisible, setIsVisible] = React.useState(false);
 
   return (
     <>
@@ -127,15 +127,15 @@ function TransparentModal() {
           </TooltipSimple>
         </View>
       </Modal>
-    </>
-  )
+    </>);
+
 }
 
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   containeralt: {
     alignItems: 'center',
@@ -147,9 +147,9 @@ const styles = StyleSheet.create({
     height: 300,
     margin: 'auto',
     padding: 30,
-    width: 300,
+    width: 300
   },
   gap: {
-    height: 10,
-  },
-})
+    height: 10
+  }
+});

@@ -1,3 +1,4 @@
+import * as React from 'react'
 import { Collapsible } from '@tamagui/collapsible'
 import { createCollection } from '@tamagui/collection'
 import { useComposedRefs } from '@tamagui/compose-refs'
@@ -11,7 +12,6 @@ import { useDirection } from '@tamagui/use-direction'
 import type { GetProps, GetRef, Stack, TamaguiElement } from '@tamagui/web'
 import { View, useEvent } from '@tamagui/web'
 import { createStyledContext, styled } from '@tamagui/web'
-import * as React from 'react'
 
 type Direction = 'ltr' | 'rtl'
 

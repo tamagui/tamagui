@@ -1,4 +1,4 @@
-import { RefObject } from 'react'
+import * as React from 'react'
 
 import type { GetStyleResult, StaticConfig, TamaguiComponentStateRef } from './types'
 import { TamaguiElement } from './types'

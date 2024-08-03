@@ -1,6 +1,6 @@
-import React, { memo } from 'react'
-import PropTypes from 'prop-types'
-import type { IconProps } from '@tamagui/helpers-icon'
+import * as React from "react";
+import PropTypes from 'prop-types';
+import type { IconProps } from '@tamagui/helpers-icon';
 import {
   Svg,
   Circle as _Circle,
@@ -17,12 +17,12 @@ import {
   Text as _Text,
   Use,
   Defs,
-  Stop,
-} from 'react-native-svg'
-import { themed } from '@tamagui/helpers-icon'
+  Stop } from
+'react-native-svg';
+import { themed } from '@tamagui/helpers-icon';
 
 const Icon = (props) => {
-  const { color = 'black', size = 24, ...otherProps } = props
+  const { color = 'black', size = 24, ...otherProps } = props;
   return (
     <Svg
       width={size}
@@ -33,8 +33,8 @@ const Icon = (props) => {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      {...otherProps}
-    >
+      {...otherProps}>
+
       <Path d="M4 6 2 7" stroke={color} />
       <Path d="M10 6h4" stroke={color} />
       <Path d="m22 7-2-1" stroke={color} />
@@ -44,10 +44,10 @@ const Icon = (props) => {
       <Path d="M16 15h.01" stroke={color} />
       <Path d="M6 19v2" stroke={color} />
       <Path d="M18 21v-2" stroke={color} />
-    </Svg>
-  )
-}
+    </Svg>);
 
-Icon.displayName = 'BusFront'
+};
 
-export const BusFront = memo<IconProps>(themed(Icon))
+Icon.displayName = 'BusFront';
+
+export const BusFront = React.memo<IconProps>(themed(Icon));

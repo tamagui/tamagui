@@ -1,6 +1,7 @@
+import * as React from 'react'
 import { config } from '@tamagui/config/v3'
 import { addTheme, updateTheme } from '@tamagui/theme'
-import { useState } from 'react'
+
 import {
   Button,
   Square,
@@ -16,7 +17,7 @@ const colors = config.tokens.color
 const colorKeys = Object.keys(colors)
 
 export function UpdateThemeDemo() {
-  const [theme, setTheme] = useState<any>()
+  const [theme, setTheme] = React.useState<any>()
   const update = useForceUpdate()
 
   useIsomorphicLayoutEffect(() => {

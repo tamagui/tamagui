@@ -1,4 +1,4 @@
-// forked from Radix UI
+import * as React from 'react' // forked from Radix UI
 // https://github.com/radix-ui/primitives/blob/main/packages/react/progress/src/Progress.tsx
 
 import type { GetProps } from '@tamagui/core'
@@ -8,7 +8,6 @@ import { createContextScope } from '@tamagui/create-context'
 import { getSize } from '@tamagui/get-token'
 import { withStaticProperties } from '@tamagui/helpers'
 import { ThemeableStack } from '@tamagui/stacks'
-import * as React from 'react'
 
 const PROGRESS_NAME = 'Progress'
 

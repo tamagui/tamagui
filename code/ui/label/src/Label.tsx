@@ -1,3 +1,4 @@
+import * as React from 'react'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
 import { createContext } from '@tamagui/create-context'
@@ -7,7 +8,7 @@ import { getFontSized } from '@tamagui/get-font-sized'
 import { SizableText } from '@tamagui/text'
 import type { FontSizeTokens, GetProps, ReactComponentWithRef } from '@tamagui/web'
 import { styled, themeable } from '@tamagui/web'
-import * as React from 'react'
+
 import type { View } from 'react-native'
 
 const NAME = 'Label'

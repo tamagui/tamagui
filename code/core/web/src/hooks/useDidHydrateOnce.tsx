@@ -1,4 +1,4 @@
-import { useEffect, useSyncExternalStore } from 'react'
+import * as React from 'react'
 
 let didHydrateOnce = false
 
@@ -35,4 +35,4 @@ const emptySubscribe = () => () => {}
 const getClientSnapshot = () => true
 const getServerSnapshot = () => false
 const useDidHydrateSync = () =>
-  useSyncExternalStore(emptySubscribe, getClientSnapshot, getServerSnapshot)
+  React.useSyncExternalStore(emptySubscribe, getClientSnapshot, getServerSnapshot)

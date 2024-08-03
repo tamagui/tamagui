@@ -1,4 +1,4 @@
-import { forwardRef } from 'react'
+import * as React from 'react'
 
 import type { StaticConfig, ThemeableProps } from '../types'
 import { Theme } from '../views/Theme'
@@ -7,7 +7,10 @@ export function themeable<ComponentType extends (props: any) => any>(
   Component: ComponentType,
   staticConfig?: Partial<StaticConfig>
 ) {
-  const withThemeComponent = forwardRef(function WithTheme(props: ThemeableProps, ref) {
+  const withThemeComponent = React.forwardRef(function WithTheme(
+    props: ThemeableProps,
+    ref
+  ) {
     const { themeInverse, theme, componentName, themeReset, ...rest } = props
 
     const element = (

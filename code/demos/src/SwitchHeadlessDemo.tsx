@@ -1,6 +1,7 @@
+import * as React from 'react'
 import type { SwitchProps as SwitchHeadlessProps } from '@tamagui/switch-headless'
 import { useSwitch } from '@tamagui/switch-headless'
-import { forwardRef, useEffect, useRef, useState } from 'react'
+
 import type { View } from 'react-native'
 import { Animated, Pressable } from 'react-native'
 import { Label, XStack, YStack } from 'tamagui'
@@ -16,17 +17,17 @@ export function SwitchHeadlessDemo() {
   )
 }
 
-const HeadlessSwitch = forwardRef<View, SwitchHeadlessProps>((props, ref) => {
-  const [checked, setChecked] = useState(props.defaultChecked || false)
+const HeadlessSwitch = React.forwardRef<View, SwitchHeadlessProps>((props, ref) => {
+  const [checked, setChecked] = React.useState(props.defaultChecked || false)
   const { switchProps, switchRef, bubbleInput } = useSwitch(
     props,
     [checked, setChecked],
     ref
   )
 
-  const animation = useRef(new Animated.Value(checked ? 1 : 0)).current
+  const animation = React.useRef(new Animated.Value(checked ? 1 : 0)).current
 
-  useEffect(() => {
+  React.useEffect(() => {
     Animated.timing(animation, {
       toValue: checked ? 1 : 0,
       duration: 100,

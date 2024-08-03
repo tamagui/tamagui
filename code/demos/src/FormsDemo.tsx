@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react'
+import * as React from 'react'
 import type { SizeTokens } from 'tamagui'
 import { Button, Form, H4, Spinner } from 'tamagui'
 
 export function FormsDemo(props: { size: SizeTokens }) {
-  const [status, setStatus] = useState<'off' | 'submitting' | 'submitted'>('off')
+  const [status, setStatus] = React.useState<'off' | 'submitting' | 'submitted'>('off')
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (status === 'submitting') {
       const timer = setTimeout(() => setStatus('off'), 2000)
       return () => {

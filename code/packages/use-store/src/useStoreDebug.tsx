@@ -1,4 +1,4 @@
-import React, { useLayoutEffect } from 'react'
+import * as React from 'react'
 
 import type { StoreInfo } from './interfaces'
 
@@ -24,7 +24,7 @@ export function useDebugStoreComponent(StoreCons: any) {
   const stores = DebugComponents.get(cmp)!
   stores.add(StoreCons)
 
-  useLayoutEffect(() => {
+  React.useLayoutEffect(() => {
     return () => {
       DebugStores.delete(StoreCons)
       stores.delete(StoreCons)

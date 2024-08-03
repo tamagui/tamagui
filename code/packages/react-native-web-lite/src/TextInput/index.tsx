@@ -1,4 +1,4 @@
-/**
+import * as React from "react"; /**
  * Copyright (c) Nicolas Gallagher.
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -8,8 +8,8 @@
  * @flow
  */
 
-import * as React from 'react'
-import { StyleSheet } from 'react-native-web-internals'
+
+import { StyleSheet } from 'react-native-web-internals';
 import {
   TextInputState,
   forwardedProps,
@@ -19,22 +19,22 @@ import {
   useLocaleContext,
   useMergeRefs,
   usePlatformMethods,
-  useResponderEvents,
-} from 'react-native-web-internals'
+  useResponderEvents } from
+'react-native-web-internals';
 
-import createElement from '../createElement/index'
-import type { PlatformMethods } from '../types'
-import type { TextInputProps } from './types'
+import createElement from '../createElement/index';
+import type { PlatformMethods } from '../types';
+import type { TextInputProps } from './types';
 
 /**
  * Determines whether a 'selection' prop differs from a node's existing
  * selection state.
  */
 const isSelectionStale = (node, selection) => {
-  const { selectionEnd, selectionStart } = node
-  const { start, end } = selection
-  return start !== selectionStart || end !== selectionEnd
-}
+  const { selectionEnd, selectionStart } = node;
+  const { start, end } = selection;
+  return start !== selectionStart || end !== selectionEnd;
+};
 
 /**
  * Certain input types do no support 'selectSelectionRange' and will throw an
@@ -42,12 +42,12 @@ const isSelectionStale = (node, selection) => {
  */
 const setSelection = (node, selection) => {
   if (isSelectionStale(node, selection)) {
-    const { start, end } = selection
+    const { start, end } = selection;
     try {
-      node.setSelectionRange(start, end || start)
+      node.setSelectionRange(start, end || start);
     } catch (e) {}
   }
-}
+};
 
 const forwardPropsList = Object.assign(
   {},
@@ -76,22 +76,22 @@ const forwardPropsList = Object.assign(
     rows: true,
     spellCheck: true,
     value: true,
-    type: true,
+    type: true
   }
-)
+);
 
-const pickProps = (props) => pick(props, forwardPropsList)
+const pickProps = (props) => pick(props, forwardPropsList);
 
 const useIsomorphicLayoutEffect =
-  typeof window === 'undefined' ? React.useEffect : React.useLayoutEffect
+typeof window === 'undefined' ? React.useEffect : React.useLayoutEffect;
 
 // If an Input Method Editor is processing key input, the 'keyCode' is 229.
 // https://www.w3.org/TR/uievents/#determine-keydown-keyup-keyCode
 function isEventComposing(nativeEvent) {
-  return nativeEvent.isComposing || nativeEvent.keyCode === 229
+  return nativeEvent.isComposing || nativeEvent.keyCode === 229;
 }
 
-let focusTimeout: number | null = null
+let focusTimeout: number | null = null;
 
 const TextInput = React.forwardRef<HTMLElement & PlatformMethods, TextInputProps>(
   (props, forwardedRef) => {
@@ -141,84 +141,84 @@ const TextInput = React.forwardRef<HTMLElement & PlatformMethods, TextInputProps
       secureTextEntry = false,
       selection,
       selectTextOnFocus,
-      spellCheck,
-    } = props
+      spellCheck
+    } = props;
 
-    let type
-    let _inputMode
+    let type;
+    let _inputMode;
 
     if (inputMode != null) {
-      _inputMode = inputMode
+      _inputMode = inputMode;
       if (inputMode === 'email') {
-        type = 'email'
+        type = 'email';
       } else if (inputMode === 'tel') {
-        type = 'tel'
+        type = 'tel';
       } else if (inputMode === 'search') {
-        type = 'search'
+        type = 'search';
       } else if (inputMode === 'url') {
-        type = 'url'
+        type = 'url';
       } else {
-        type = 'text'
+        type = 'text';
       }
     } else if (keyboardType != null) {
-      warn('keyboardType', 'keyboardType is deprecated. Use inputMode.')
+      warn('keyboardType', 'keyboardType is deprecated. Use inputMode.');
       switch (keyboardType) {
         case 'email-address':
-          type = 'email'
-          break
+          type = 'email';
+          break;
         case 'number-pad':
         case 'numeric':
-          _inputMode = 'numeric'
-          break
+          _inputMode = 'numeric';
+          break;
         case 'decimal-pad':
-          _inputMode = 'decimal'
-          break
+          _inputMode = 'decimal';
+          break;
         case 'phone-pad':
-          type = 'tel'
-          break
+          type = 'tel';
+          break;
         case 'search':
         case 'web-search':
-          type = 'search'
-          break
+          type = 'search';
+          break;
         case 'url':
-          type = 'url'
-          break
+          type = 'url';
+          break;
         default:
-          type = 'text'
+          type = 'text';
       }
     }
 
     if (secureTextEntry) {
-      type = 'password'
+      type = 'password';
     }
 
-    const dimensions = React.useRef({ height: null, width: null })
-    const hostRef = React.useRef(null)
+    const dimensions = React.useRef({ height: null, width: null });
+    const hostRef = React.useRef(null);
 
     const handleContentSizeChange = React.useCallback(
       (hostNode) => {
         if (multiline && onContentSizeChange && hostNode != null) {
-          const newHeight = hostNode.scrollHeight
-          const newWidth = hostNode.scrollWidth
+          const newHeight = hostNode.scrollHeight;
+          const newWidth = hostNode.scrollWidth;
           if (
-            newHeight !== dimensions.current.height ||
-            newWidth !== dimensions.current.width
-          ) {
-            dimensions.current.height = newHeight
-            dimensions.current.width = newWidth
+          newHeight !== dimensions.current.height ||
+          newWidth !== dimensions.current.width)
+          {
+            dimensions.current.height = newHeight;
+            dimensions.current.width = newWidth;
             onContentSizeChange({
               nativeEvent: {
                 contentSize: {
                   height: dimensions.current.height,
-                  width: dimensions.current.width,
-                },
-              },
-            })
+                  width: dimensions.current.width
+                }
+              }
+            });
           }
         }
       },
       [multiline, onContentSizeChange]
-    )
+    );
 
     const imperativeRef = React.useMemo(
       () => (hostNode) => {
@@ -228,95 +228,95 @@ const TextInput = React.forwardRef<HTMLElement & PlatformMethods, TextInputProps
         if (hostNode != null) {
           hostNode.clear = function () {
             if (hostNode != null) {
-              hostNode.value = ''
+              hostNode.value = '';
             }
-          }
+          };
           hostNode.isFocused = function () {
-            return hostNode != null && TextInputState.currentlyFocusedField() === hostNode
-          }
-          handleContentSizeChange(hostNode)
+            return hostNode != null && TextInputState.currentlyFocusedField() === hostNode;
+          };
+          handleContentSizeChange(hostNode);
         }
       },
       [handleContentSizeChange]
-    )
+    );
 
     function handleBlur(e) {
-      TextInputState._currentlyFocusedNode = null
+      TextInputState._currentlyFocusedNode = null;
       if (onBlur) {
-        e.nativeEvent.text = e.target.value
-        onBlur(e)
+        e.nativeEvent.text = e.target.value;
+        onBlur(e);
       }
     }
 
     function handleChange(e) {
-      const hostNode = e.target
-      const text = hostNode.value
-      e.nativeEvent.text = text
-      handleContentSizeChange(hostNode)
+      const hostNode = e.target;
+      const text = hostNode.value;
+      e.nativeEvent.text = text;
+      handleContentSizeChange(hostNode);
       if (onChange) {
-        onChange(e)
+        onChange(e);
       }
       if (onChangeText) {
-        onChangeText(text)
+        onChangeText(text);
       }
     }
 
     function handleFocus(e) {
-      const hostNode = e.target
+      const hostNode = e.target;
       if (onFocus) {
-        e.nativeEvent.text = hostNode.value
-        onFocus(e)
+        e.nativeEvent.text = hostNode.value;
+        onFocus(e);
       }
       if (hostNode != null) {
-        TextInputState._currentlyFocusedNode = hostNode
+        TextInputState._currentlyFocusedNode = hostNode;
         if (clearTextOnFocus) {
-          hostNode.value = ''
+          hostNode.value = '';
         }
         if (selectTextOnFocus) {
           // Safari requires selection to occur in a setTimeout
           if (focusTimeout != null) {
-            clearTimeout(focusTimeout)
+            clearTimeout(focusTimeout);
           }
           //@ts-ignore
           focusTimeout = setTimeout(() => {
             if (hostNode != null) {
-              hostNode.select()
+              hostNode.select();
             }
-          }, 0)
+          }, 0);
         }
       }
     }
 
     function handleKeyDown(e) {
-      const hostNode = e.target
+      const hostNode = e.target;
       // Prevent key events bubbling (see #612)
-      e.stopPropagation()
+      e.stopPropagation();
 
-      const blurOnSubmitDefault = !multiline
-      const shouldBlurOnSubmit = blurOnSubmit == null ? blurOnSubmitDefault : blurOnSubmit
+      const blurOnSubmitDefault = !multiline;
+      const shouldBlurOnSubmit = blurOnSubmit == null ? blurOnSubmitDefault : blurOnSubmit;
 
-      const nativeEvent = e.nativeEvent
-      const isComposing = isEventComposing(nativeEvent)
+      const nativeEvent = e.nativeEvent;
+      const isComposing = isEventComposing(nativeEvent);
 
       if (onKeyPress) {
-        onKeyPress(e)
+        onKeyPress(e);
       }
 
       if (
-        e.key === 'Enter' &&
-        !e.shiftKey &&
-        // Do not call submit if composition is occuring.
-        !isComposing &&
-        !e.isDefaultPrevented()
-      ) {
+      e.key === 'Enter' &&
+      !e.shiftKey &&
+      // Do not call submit if composition is occuring.
+      !isComposing &&
+      !e.isDefaultPrevented())
+      {
         if ((blurOnSubmit || !multiline) && onSubmitEditing) {
           // prevent "Enter" from inserting a newline or submitting a form
-          e.preventDefault()
-          nativeEvent.text = e.target.value
-          onSubmitEditing(e)
+          e.preventDefault();
+          nativeEvent.text = e.target.value;
+          onSubmitEditing(e);
         }
         if (shouldBlurOnSubmit && hostNode != null) {
-          setTimeout(() => hostNode.blur(), 0)
+          setTimeout(() => hostNode.blur(), 0);
         }
       }
     }
@@ -324,31 +324,31 @@ const TextInput = React.forwardRef<HTMLElement & PlatformMethods, TextInputProps
     function handleSelectionChange(e) {
       if (onSelectionChange) {
         try {
-          const node = e.target
-          const { selectionStart, selectionEnd } = node
+          const node = e.target;
+          const { selectionStart, selectionEnd } = node;
           e.nativeEvent.selection = {
             start: selectionStart,
-            end: selectionEnd,
-          }
-          e.nativeEvent.text = e.target.value
-          onSelectionChange(e)
+            end: selectionEnd
+          };
+          e.nativeEvent.text = e.target.value;
+          onSelectionChange(e);
         } catch (e) {}
       }
     }
 
     useIsomorphicLayoutEffect(() => {
-      const node = hostRef.current
+      const node = hostRef.current;
       if (node != null && selection != null) {
-        setSelection(node, selection)
+        setSelection(node, selection);
       }
       if (document.activeElement === node) {
-        TextInputState._currentlyFocusedNode = node
+        TextInputState._currentlyFocusedNode = node;
       }
-    }, [hostRef, selection])
+    }, [hostRef, selection]);
 
-    const component = multiline ? 'textarea' : 'input'
+    const component = multiline ? 'textarea' : 'input';
 
-    useElementLayout(hostRef, onLayout)
+    useElementLayout(hostRef, onLayout);
     useResponderEvents(hostRef, {
       onMoveShouldSetResponder,
       onMoveShouldSetResponderCapture,
@@ -365,70 +365,70 @@ const TextInput = React.forwardRef<HTMLElement & PlatformMethods, TextInputProps
       onSelectionChangeShouldSetResponder,
       onSelectionChangeShouldSetResponderCapture,
       onStartShouldSetResponder,
-      onStartShouldSetResponderCapture,
-    })
-    const { direction: contextDirection } = useLocaleContext()
+      onStartShouldSetResponderCapture
+    });
+    const { direction: contextDirection } = useLocaleContext();
 
-    const supportedProps = pickProps(props) as any
-    supportedProps.autoCapitalize = autoCapitalize
-    supportedProps.autoComplete = autoComplete || autoCompleteType || 'on'
-    supportedProps.autoCorrect = autoCorrect ? 'on' : 'off'
+    const supportedProps = (pickProps(props) as any);
+    supportedProps.autoCapitalize = autoCapitalize;
+    supportedProps.autoComplete = autoComplete || autoCompleteType || 'on';
+    supportedProps.autoCorrect = autoCorrect ? 'on' : 'off';
     // 'auto' by default allows browsers to infer writing direction
-    supportedProps.dir = dir !== undefined ? dir : 'auto'
+    supportedProps.dir = dir !== undefined ? dir : 'auto';
     if (returnKeyType != null) {
-      warn('returnKeyType', 'returnKeyType is deprecated. Use enterKeyHint.')
+      warn('returnKeyType', 'returnKeyType is deprecated. Use enterKeyHint.');
     }
-    supportedProps.enterKeyHint = enterKeyHint || returnKeyType
-    supportedProps.inputMode = _inputMode
-    supportedProps.onBlur = handleBlur
-    supportedProps.onChange = handleChange
-    supportedProps.onFocus = handleFocus
-    supportedProps.onKeyDown = handleKeyDown
-    supportedProps.onSelect = handleSelectionChange
+    supportedProps.enterKeyHint = enterKeyHint || returnKeyType;
+    supportedProps.inputMode = _inputMode;
+    supportedProps.onBlur = handleBlur;
+    supportedProps.onChange = handleChange;
+    supportedProps.onFocus = handleFocus;
+    supportedProps.onKeyDown = handleKeyDown;
+    supportedProps.onSelect = handleSelectionChange;
     if (editable != null) {
-      warn('editable', 'editable is deprecated. Use readOnly.')
+      warn('editable', 'editable is deprecated. Use readOnly.');
     }
-    supportedProps.readOnly = readOnly === true || editable === false
+    supportedProps.readOnly = readOnly === true || editable === false;
     if (numberOfLines != null) {
-      warn('numberOfLines', 'TextInput numberOfLines is deprecated. Use rows.')
+      warn('numberOfLines', 'TextInput numberOfLines is deprecated. Use rows.');
     }
-    supportedProps.rows = multiline ? (rows != null ? rows : numberOfLines) : 1
-    supportedProps.spellCheck = spellCheck != null ? spellCheck : autoCorrect
+    supportedProps.rows = multiline ? rows != null ? rows : numberOfLines : 1;
+    supportedProps.spellCheck = spellCheck != null ? spellCheck : autoCorrect;
     supportedProps.style = [
-      { '--placeholderTextColor': placeholderTextColor },
-      styles.textinput$raw,
-      styles.placeholder,
-      props.style,
-    ]
-    supportedProps.type = multiline ? undefined : type
+    { '--placeholderTextColor': placeholderTextColor },
+    styles.textinput$raw,
+    styles.placeholder,
+    props.style];
 
-    const platformMethodsRef = usePlatformMethods(supportedProps)
+    supportedProps.type = multiline ? undefined : type;
 
-    const setRef = useMergeRefs(hostRef, platformMethodsRef, imperativeRef, forwardedRef)
+    const platformMethodsRef = usePlatformMethods(supportedProps);
 
-    supportedProps.ref = setRef
+    const setRef = useMergeRefs(hostRef, platformMethodsRef, imperativeRef, forwardedRef);
 
-    const langDirection = props.lang != null ? getLocaleDirection(props.lang) : null
-    const componentDirection = props.dir || langDirection
-    const writingDirection = componentDirection || contextDirection
+    supportedProps.ref = setRef;
+
+    const langDirection = props.lang != null ? getLocaleDirection(props.lang) : null;
+    const componentDirection = props.dir || langDirection;
+    const writingDirection = componentDirection || contextDirection;
 
     const element = createElement(component, supportedProps, {
-      writingDirection,
-    })
+      writingDirection
+    });
 
-    return element
+    return element;
   }
-)
+);
 
 function warn(...args) {
   if (process.env.NODE_ENV !== 'production') {
-    console.warn(...args)
+    console.warn(...args);
   }
 }
 
-TextInput.displayName = 'TextInput'
+TextInput.displayName = 'TextInput';
 //@ts-ignore
-TextInput.State = TextInputState
+TextInput.State = TextInputState;
 
 const styles = StyleSheet.create({
   textinput$raw: {
@@ -441,11 +441,11 @@ const styles = StyleSheet.create({
     font: '14px System',
     margin: 0,
     padding: 0,
-    resize: 'none',
+    resize: 'none'
   },
   placeholder: {
-    placeholderTextColor: 'var(--placeholderTextColor)',
-  },
-})
+    placeholderTextColor: 'var(--placeholderTextColor)'
+  }
+});
 
-export default TextInput
+export default TextInput;

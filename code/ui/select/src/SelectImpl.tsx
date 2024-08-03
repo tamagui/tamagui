@@ -1,3 +1,4 @@
+import * as React from 'react'
 import type { SideObject } from '@floating-ui/react'
 import {
   autoUpdate,
@@ -17,8 +18,8 @@ import {
 } from '@floating-ui/react'
 import { isClient, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { useEvent, useIsTouchDevice } from '@tamagui/core'
-import * as React from 'react'
-import { flushSync } from 'react-dom'
+
+import ReactDOM from 'react-dom'
 
 import { SCROLL_ARROW_THRESHOLD, WINDOW_PADDING } from './constants'
 import {
@@ -267,7 +268,7 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
             e.preventDefault()
           },
           onScroll(event) {
-            flushSync(() => {
+            ReactDOM.flushSync(() => {
               setScrollTop(event.currentTarget.scrollTop)
             })
           },
@@ -390,17 +391,17 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
         {children}
       </SelectItemParentProvider>
       {/* {isFormControl ? (
-            <BubbleSelect
-              ref={setBubbleSelect}
-              aria-hidden
-              tabIndex={-1}
-              name={name}
-              autoComplete={autoComplete}
-              value={value}
-              // enable form autofill
-              onChange={(event) => setValue(event.target.value)}
-            />
-          ) : null} */}
+             <BubbleSelect
+               ref={setBubbleSelect}
+               aria-hidden
+               tabIndex={-1}
+               name={name}
+               autoComplete={autoComplete}
+               value={value}
+               // enable form autofill
+               onChange={(event) => setValue(event.target.value)}
+             />
+           ) : null} */}
     </SelectProvider>
   )
 }

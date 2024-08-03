@@ -1,4 +1,4 @@
-import type { Component, JSXElementConstructor, Ref } from 'react'
+import * as React from 'react'
 
 import type { TamaguiComponent } from '../types'
 

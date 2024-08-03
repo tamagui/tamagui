@@ -1,7 +1,8 @@
+import * as React from 'react'
 import type { CheckboxProps as CheckboxHeadlessProps } from '@tamagui/checkbox-headless'
 import { useCheckbox } from '@tamagui/checkbox-headless'
 import { Check, Minus } from '@tamagui/lucide-icons'
-import { forwardRef, useState } from 'react'
+
 import type { View } from 'react-native'
 import { Pressable } from 'react-native'
 import { Label, XStack, YStack } from 'tamagui'
@@ -17,8 +18,8 @@ export function CheckboxHeadlessDemo() {
   )
 }
 
-const HeadlessCheckbox = forwardRef<View, CheckboxHeadlessProps>((props, ref) => {
-  const [checked, setChecked] = useState(props.defaultChecked || false)
+const HeadlessCheckbox = React.forwardRef<View, CheckboxHeadlessProps>((props, ref) => {
+  const [checked, setChecked] = React.useState(props.defaultChecked || false)
   const { checkboxProps, checkboxRef, bubbleInput } = useCheckbox(
     props,
     [checked, setChecked],

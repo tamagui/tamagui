@@ -1,6 +1,6 @@
-import React, { memo } from 'react'
-import PropTypes from 'prop-types'
-import type { IconProps } from '@tamagui/helpers-icon'
+import * as React from "react";
+import PropTypes from 'prop-types';
+import type { IconProps } from '@tamagui/helpers-icon';
 import {
   Svg,
   Circle as _Circle,
@@ -17,12 +17,12 @@ import {
   Text as _Text,
   Use,
   Defs,
-  Stop,
-} from 'react-native-svg'
-import { themed } from '@tamagui/helpers-icon'
+  Stop } from
+'react-native-svg';
+import { themed } from '@tamagui/helpers-icon';
 
 const Icon = (props) => {
-  const { color = 'black', size = 24, ...otherProps } = props
+  const { color = 'black', size = 24, ...otherProps } = props;
   return (
     <Svg
       width={size}
@@ -33,8 +33,8 @@ const Icon = (props) => {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      {...otherProps}
-    >
+      {...otherProps}>
+
       <_Circle cx="12" cy="12" r="4" stroke={color} />
       <Path d="M12 3v1" stroke={color} />
       <Path d="M12 20v1" stroke={color} />
@@ -44,10 +44,10 @@ const Icon = (props) => {
       <Path d="m6.343 17.657-.707.707" stroke={color} />
       <Path d="m5.636 5.636.707.707" stroke={color} />
       <Path d="m17.657 17.657.707.707" stroke={color} />
-    </Svg>
-  )
-}
+    </Svg>);
 
-Icon.displayName = 'SunMedium'
+};
 
-export const SunMedium = memo<IconProps>(themed(Icon))
+Icon.displayName = 'SunMedium';
+
+export const SunMedium = React.memo<IconProps>(themed(Icon));

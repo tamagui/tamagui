@@ -1,4 +1,4 @@
-// forked from radix-ui
+import * as React from 'react' // forked from radix-ui
 
 import { composeRefs, useComposedRefs } from '@tamagui/compose-refs'
 import { isClient, isWeb } from '@tamagui/constants'
@@ -16,7 +16,7 @@ import type { SizableStackProps } from '@tamagui/stacks'
 import { ThemeableStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDirection } from '@tamagui/use-direction'
-import * as React from 'react'
+
 import type { View } from 'react-native'
 
 import {
@@ -680,14 +680,15 @@ const SliderComponent = React.forwardRef(
             }
           }}
         />
+
         {/* {isFormControl &&
-        values.map((value, index) => (
-          <BubbleInput
-            key={index}
-            name={name ? name + (values.length > 1 ? '[]' : '') : undefined}
-            value={value}
-          />
-        ))} */}
+          values.map((value, index) => (
+           <BubbleInput
+             key={index}
+             name={name ? name + (values.length > 1 ? '[]' : '') : undefined}
+             value={value}
+           />
+          ))} */}
       </SliderProvider>
     )
   }

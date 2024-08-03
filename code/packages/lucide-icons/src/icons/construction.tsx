@@ -1,6 +1,6 @@
-import React, { memo } from 'react'
-import PropTypes from 'prop-types'
-import type { IconProps } from '@tamagui/helpers-icon'
+import * as React from "react";
+import PropTypes from 'prop-types';
+import type { IconProps } from '@tamagui/helpers-icon';
 import {
   Svg,
   Circle as _Circle,
@@ -17,12 +17,12 @@ import {
   Text as _Text,
   Use,
   Defs,
-  Stop,
-} from 'react-native-svg'
-import { themed } from '@tamagui/helpers-icon'
+  Stop } from
+'react-native-svg';
+import { themed } from '@tamagui/helpers-icon';
 
 const Icon = (props) => {
-  const { color = 'black', size = 24, ...otherProps } = props
+  const { color = 'black', size = 24, ...otherProps } = props;
   return (
     <Svg
       width={size}
@@ -33,8 +33,8 @@ const Icon = (props) => {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      {...otherProps}
-    >
+      {...otherProps}>
+
       <Rect x="2" y="6" width="20" height="8" rx="1" stroke={color} />
       <Path d="M17 14v7" stroke={color} />
       <Path d="M7 14v7" stroke={color} />
@@ -43,10 +43,10 @@ const Icon = (props) => {
       <Path d="M10 14 2.3 6.3" stroke={color} />
       <Path d="m14 6 7.7 7.7" stroke={color} />
       <Path d="m8 6 8 8" stroke={color} />
-    </Svg>
-  )
-}
+    </Svg>);
 
-Icon.displayName = 'Construction'
+};
 
-export const Construction = memo<IconProps>(themed(Icon))
+Icon.displayName = 'Construction';
+
+export const Construction = React.memo<IconProps>(themed(Icon));

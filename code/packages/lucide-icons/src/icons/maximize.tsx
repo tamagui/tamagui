@@ -1,6 +1,6 @@
-import React, { memo } from 'react'
-import PropTypes from 'prop-types'
-import type { IconProps } from '@tamagui/helpers-icon'
+import * as React from "react";
+import PropTypes from 'prop-types';
+import type { IconProps } from '@tamagui/helpers-icon';
 import {
   Svg,
   Circle as _Circle,
@@ -17,12 +17,12 @@ import {
   Text as _Text,
   Use,
   Defs,
-  Stop,
-} from 'react-native-svg'
-import { themed } from '@tamagui/helpers-icon'
+  Stop } from
+'react-native-svg';
+import { themed } from '@tamagui/helpers-icon';
 
 const Icon = (props) => {
-  const { color = 'black', size = 24, ...otherProps } = props
+  const { color = 'black', size = 24, ...otherProps } = props;
   return (
     <Svg
       width={size}
@@ -33,16 +33,16 @@ const Icon = (props) => {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      {...otherProps}
-    >
+      {...otherProps}>
+
       <Path d="M8 3H5a2 2 0 0 0-2 2v3" stroke={color} />
       <Path d="M21 8V5a2 2 0 0 0-2-2h-3" stroke={color} />
       <Path d="M3 16v3a2 2 0 0 0 2 2h3" stroke={color} />
       <Path d="M16 21h3a2 2 0 0 0 2-2v-3" stroke={color} />
-    </Svg>
-  )
-}
+    </Svg>);
 
-Icon.displayName = 'Maximize'
+};
 
-export const Maximize = memo<IconProps>(themed(Icon))
+Icon.displayName = 'Maximize';
+
+export const Maximize = React.memo<IconProps>(themed(Icon));

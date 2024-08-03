@@ -1,4 +1,4 @@
-// @ts-nocheck
+import * as React from "react"; // @ts-nocheck
 /**
  * Copyright (c) Nicolas Gallagher.
  *
@@ -8,25 +8,25 @@
  * @flow
  */
 
-import type { ElementRef } from 'react'
 
-import type { LayoutEvent } from '../../types'
-import canUseDOM from '../canUseDOM'
-import UIManager from '../UIManager/index'
-import useLayoutEffect from '../useLayoutEffect/index'
 
-const DOM_LAYOUT_HANDLER_NAME = '__reactLayoutHandler'
+import type { LayoutEvent } from '../../types';
+import canUseDOM from '../canUseDOM';
+import UIManager from '../UIManager/index';
+import useLayoutEffect from '../useLayoutEffect/index';
 
-let didWarn = !canUseDOM
-let resizeObserver = null
+const DOM_LAYOUT_HANDLER_NAME = '__reactLayoutHandler';
+
+let didWarn = !canUseDOM;
+let resizeObserver = null;
 
 function getResizeObserver(): ResizeObserver | null {
   if (canUseDOM && typeof window.ResizeObserver !== 'undefined') {
     if (resizeObserver == null) {
       resizeObserver = new window.ResizeObserver(function (entries) {
         entries.forEach((entry) => {
-          const node = entry.target
-          const onLayout = node[DOM_LAYOUT_HANDLER_NAME]
+          const node = entry.target;
+          const onLayout = node[DOM_LAYOUT_HANDLER_NAME];
           if (typeof onLayout === 'function') {
             // We still need to measure the view because browsers don't yet provide
             // border-box dimensions in the entry
@@ -34,60 +34,60 @@ function getResizeObserver(): ResizeObserver | null {
               const event: LayoutEvent = {
                 // @ts-ignore
                 nativeEvent: {
-                  layout: { x, y, width, height, left, top },
+                  layout: { x, y, width, height, left, top }
                 },
-                timeStamp: Date.now(),
-              }
+                timeStamp: Date.now()
+              };
               Object.defineProperty(event.nativeEvent, 'target', {
                 enumerable: true,
-                get: () => entry.target,
-              })
-              onLayout(event)
-            })
+                get: () => entry.target
+              });
+              onLayout(event);
+            });
           }
-        })
-      })
+        });
+      });
     }
   } else if (!didWarn) {
     if (process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'test') {
       console.warn(
         'onLayout relies on ResizeObserver which is not supported by your browser. ' +
-          'Please include a polyfill, e.g., https://github.com/que-etc/resize-observer-polyfill.'
-      )
-      didWarn = true
+        'Please include a polyfill, e.g., https://github.com/que-etc/resize-observer-polyfill.'
+      );
+      didWarn = true;
     }
   }
-  return resizeObserver
+  return resizeObserver;
 }
 
 export default function useElementLayout(
-  ref: ElementRef<any>,
-  onLayout?: ((e: LayoutEvent) => void) | null
-) {
-  const observer = getResizeObserver()
+ref: ElementRef<any>,
+onLayout?: ((e: LayoutEvent) => void) | null)
+{
+  const observer = getResizeObserver();
 
   useLayoutEffect(() => {
-    const node = ref.current
+    const node = ref.current;
     if (node != null) {
-      node[DOM_LAYOUT_HANDLER_NAME] = onLayout
+      node[DOM_LAYOUT_HANDLER_NAME] = onLayout;
     }
-  }, [ref, onLayout])
+  }, [ref, onLayout]);
 
   // Observing is done in a separate effect to avoid this effect running
   // when 'onLayout' changes.
   useLayoutEffect(() => {
-    const node = ref.current
+    const node = ref.current;
     if (node != null && observer != null) {
       if (typeof node[DOM_LAYOUT_HANDLER_NAME] === 'function') {
-        observer.observe(node)
+        observer.observe(node);
       } else {
-        observer.unobserve(node)
+        observer.unobserve(node);
       }
     }
     return () => {
       if (node != null && observer != null) {
-        observer.unobserve(node)
+        observer.unobserve(node);
       }
-    }
-  }, [ref, observer])
+    };
+  }, [ref, observer]);
 }

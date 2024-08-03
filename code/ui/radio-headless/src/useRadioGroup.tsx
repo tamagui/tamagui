@@ -1,3 +1,4 @@
+import * as React from 'react'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
 import { registerFocusable } from '@tamagui/focusable'
@@ -5,8 +6,7 @@ import { composeEventHandlers } from '@tamagui/helpers'
 import { useLabelContext } from '@tamagui/label'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import type { StackProps } from '@tamagui/web'
-import type { ReactElement } from 'react'
-import { useContext, useEffect, useRef, useState } from 'react'
+
 import type { GestureResponderEvent } from 'react-native'
 import { BubbleInput } from './BubbleInput'
 import { getState } from './utils'
@@ -108,13 +108,13 @@ export const useRadioGroupItem = (params: UseRadioItemParams) => {
     name,
     native,
     accentColor,
-  } = useContext(radioGroupContext)
+  } = React.useContext(radioGroupContext)
 
-  const [button, setButton] = useState<HTMLButtonElement | null>(null)
-  const hasConsumerStoppedPropagationRef = useRef(false)
-  const ref = useRef<any>(null)
+  const [button, setButton] = React.useState<HTMLButtonElement | null>(null)
+  const hasConsumerStoppedPropagationRef = React.useRef(false)
+  const ref = React.useRef<any>(null)
   const composedRefs = useComposedRefs(refProp, (node) => setButton(node), ref)
-  const isArrowKeyPressedRef = useRef(false)
+  const isArrowKeyPressedRef = React.useRef(false)
 
   const isFormControl = isWeb ? (button ? Boolean(button.closest('form')) : true) : false
 
@@ -123,7 +123,7 @@ export const useRadioGroupItem = (params: UseRadioItemParams) => {
   const labelId = useLabelContext(button)
   const labelledBy = ariaLabelledby || labelId
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (isWeb) {
       const handleKeyDown = (event: KeyboardEvent) => {
         if (ARROW_KEYS.includes(event.key)) {
@@ -143,7 +143,7 @@ export const useRadioGroupItem = (params: UseRadioItemParams) => {
   }, [])
 
   if (process.env.TAMAGUI_TARGET === 'native') {
-    useEffect(() => {
+    React.useEffect(() => {
       if (!id) return
       if (disabled) return
 
@@ -181,6 +181,7 @@ export const useRadioGroupItem = (params: UseRadioItemParams) => {
           })}
       />
     ),
+
     native,
     frameAttrs: {
       'data-state': getState(checked),
@@ -245,7 +246,7 @@ type UseRadioGroupItemIndicatorParams = {
 }
 export function useRadioGroupItemIndicator(params: UseRadioGroupItemIndicatorParams) {
   const { radioGroupItemContext, disabled, ...rest } = params
-  const { checked } = useContext(radioGroupItemContext)
+  const { checked } = React.useContext(radioGroupItemContext)
 
   return {
     checked,

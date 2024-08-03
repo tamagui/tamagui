@@ -1,6 +1,6 @@
+import * as React from 'react'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { usePrevious } from '@tamagui/use-previous'
-import * as React from 'react'
 
 /* -----------------------------------------------------------------------------------------------*/
 const BubbleSelect = React.forwardRef<

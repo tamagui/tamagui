@@ -1,10 +1,10 @@
+import * as React from 'react'
 export type { LinearGradientProps, LinearGradientPoint } from 'expo-linear-gradient'
 import { normalizeColor } from '@tamagui/core'
 import type { LinearGradientProps, LinearGradientPoint } from 'expo-linear-gradient'
 
 // copied from https://raw.githubusercontent.com/expo/expo/main/packages/expo-linear-gradient/src/LinearGradient.web.tsx
 
-import * as React from 'react'
 import { View } from 'react-native'
 
 export function LinearGradient({

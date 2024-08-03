@@ -1,3 +1,4 @@
+import * as React from 'react'
 import '@tamagui/polyfill-dev'
 
 import type { UseHoverProps } from '@floating-ui/react'
@@ -52,7 +53,7 @@ import { Sheet, SheetController } from '@tamagui/sheet'
 import type { YStackProps } from '@tamagui/stacks'
 import { YStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
-import * as React from 'react'
+
 import { Platform, ScrollView } from 'react-native'
 
 import { useFloatingContext } from './useFloatingContext'
@@ -339,6 +340,7 @@ function PopoverContentPortal(props: ScopedPopoverProps<PopoverContentTypeProps>
             onPress={composeEventHandlers(props.onPress as any, context.onOpenToggle)}
           />
         )}
+
         {contents}
       </Theme>
     </Portal>

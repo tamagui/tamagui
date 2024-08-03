@@ -1,5 +1,5 @@
-import { usePrevious } from '@tamagui/use-previous'
 import * as React from 'react'
+import { usePrevious } from '@tamagui/use-previous'
 
 import type { CheckedState } from './useCheckbox'
 import { isIndeterminate } from './utils'

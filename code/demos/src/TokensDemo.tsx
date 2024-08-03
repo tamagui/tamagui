@@ -1,6 +1,7 @@
+import * as React from 'react'
 import type { Tokens } from '@tamagui/core'
 import { getConfig } from '@tamagui/core'
-import { useState } from 'react'
+
 import { Button, H2, H3, H4, Separator, Square, XGroup, XStack, YStack } from 'tamagui'
 
 type Section = 'spaceNegative' | keyof Tokens
@@ -25,7 +26,7 @@ const sections: { name: string; key: Section }[] = [
 ]
 
 export function TokensDemo() {
-  const [section, setSection] = useState<Section>('size')
+  const [section, setSection] = React.useState<Section>('size')
 
   return (
     <YStack space>

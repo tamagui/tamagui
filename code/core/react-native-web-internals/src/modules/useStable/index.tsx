@@ -1,4 +1,4 @@
-/**
+import * as React from "react"; /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * This source code is licensed under the MIT license found in the
@@ -7,18 +7,18 @@
  * @flow strict-local
  */
 
-import * as React from 'react'
+
 
 const UNINITIALIZED =
-  typeof Symbol === 'function' && typeof Symbol() === 'symbol'
-    ? Symbol()
-    : Object.freeze({})
+typeof Symbol === 'function' && typeof Symbol() === 'symbol' ?
+Symbol() :
+Object.freeze({});
 
 export default function useStable<T>(getInitialValue: () => T): T {
-  const ref = React.useRef<any>(UNINITIALIZED)
+  const ref = React.useRef<any>(UNINITIALIZED);
   if (ref.current === UNINITIALIZED) {
-    ref.current = getInitialValue()
+    ref.current = getInitialValue();
   }
   // @ts-ignore  (#64650789) Trouble refining types where `Symbol` is concerned.
-  return ref.current
+  return ref.current;
 }

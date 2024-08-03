@@ -1,4 +1,4 @@
-/* -------------------------------------------------------------------------------------------------
+import * as React from 'react' /* -------------------------------------------------------------------------------------------------
  * SliderImpl
  * -----------------------------------------------------------------------------------------------*/
 
@@ -8,7 +8,7 @@ import { getVariableValue, styled } from '@tamagui/core'
 import { getSize } from '@tamagui/get-token'
 import { composeEventHandlers } from '@tamagui/helpers'
 import { YStack } from '@tamagui/stacks'
-import * as React from 'react'
+
 import type { View } from 'react-native'
 
 import { ARROW_KEYS, PAGE_KEYS, SLIDER_NAME, useSliderContext } from './constants'

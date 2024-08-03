@@ -1,6 +1,7 @@
+import * as React from 'react'
 import type { NativePlatform, NativeValue } from '@tamagui/core'
 import { isWeb } from '@tamagui/core'
-import React, { createContext, useContext, useMemo, useRef } from 'react'
+
 import { Platform } from 'react-native'
 
 import { createNativeToast } from './createNativeToast'
@@ -80,15 +81,15 @@ interface ToastContextI {
   options?: ToastImperativeOptions
 }
 
-const ToastContext = createContext<ToastContextI>({} as any)
-const ToastCurrentContext = createContext<ToastData | null>(null)
+const ToastContext = React.createContext<ToastContextI>({} as any)
+const ToastCurrentContext = React.createContext<ToastData | null>(null)
 
 export const useToastController = () => {
-  return useContext(ToastContext)
+  return React.useContext(ToastContext)
 }
 
 export const useToastState = () => {
-  return useContext(ToastCurrentContext)
+  return React.useContext(ToastCurrentContext)
 }
 
 /** @deprecated use `useToastController` and `useToastState` instead to avoid performance pitfalls */
@@ -111,7 +112,7 @@ export const ToastImperativeProvider = ({
   children,
   options,
 }: ToastImperativeProviderProps) => {
-  const counterRef = useRef(0)
+  const counterRef = React.useRef(0)
 
   const [toast, setToast] = React.useState<ToastData | null>(null)
 
@@ -165,7 +166,7 @@ export const ToastImperativeProvider = ({
     setToast(null)
   }, [setToast, lastNativeToastRef])
 
-  const contextValue = useMemo(() => {
+  const contextValue = React.useMemo(() => {
     return {
       show,
       hide,
