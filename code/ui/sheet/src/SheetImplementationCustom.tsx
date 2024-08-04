@@ -13,16 +13,6 @@ import {
 } from '@tamagui/core'
 import { Portal } from '@tamagui/portal'
 import { useKeyboardVisible } from '@tamagui/use-keyboard-visible'
-import {
-  forwardRef,
-  Fragment,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react'
 import type {
   Animated,
   GestureResponderEvent,
@@ -38,485 +28,492 @@ import { SheetProvider } from './SheetContext'
 import type { SheetProps, SnapPointsMode } from './types'
 import { useSheetOpenState } from './useSheetOpenState'
 import { useSheetProviderProps } from './useSheetProviderProps'
+import React from 'react'
 
 let hiddenSize = 10_000.1
 
 export const SheetImplementationCustom = themeable(
-  forwardRef<View, SheetProps>(function SheetImplementationCustom(props, forwardedRef) {
-    const parentSheet = useContext(ParentSheetContext)
+  React.forwardRef<View, SheetProps>(
+    function SheetImplementationCustom(props, forwardedRef) {
+      const parentSheet = React.useContext(ParentSheetContext)
 
-    const {
-      animation,
-      animationConfig: animationConfigProp,
-      modal = false,
-      zIndex = parentSheet.zIndex + 1,
-      moveOnKeyboardChange = false,
-      unmountChildrenWhenHidden = false,
-      portalProps,
-      containerComponent: ContainerComponent = Fragment,
-    } = props
+      const {
+        animation,
+        animationConfig: animationConfigProp,
+        modal = false,
+        zIndex = parentSheet.zIndex + 1,
+        moveOnKeyboardChange = false,
+        unmountChildrenWhenHidden = false,
+        portalProps,
+        containerComponent: ContainerComponent = React.Fragment,
+      } = props
 
-    const keyboardIsVisible = useKeyboardVisible()
-    const state = useSheetOpenState(props)
-    const [overlayComponent, setOverlayComponent] = useState<any>(null)
+      const keyboardIsVisible = useKeyboardVisible()
+      const state = useSheetOpenState(props)
+      const [overlayComponent, setOverlayComponent] = React.useState<any>(null)
 
-    const providerProps = useSheetProviderProps(props, state, {
-      onOverlayComponent: setOverlayComponent,
-    })
-    const {
-      frameSize,
-      setFrameSize,
-      snapPoints,
-      snapPointsMode,
-      hasFit,
-      position,
-      setPosition,
-      scrollBridge,
-      screenSize,
-      setMaxContentSize,
-      maxSnapPoint,
-    } = providerProps
-    const { open, controller, isHidden } = state
+      const providerProps = useSheetProviderProps(props, state, {
+        onOverlayComponent: setOverlayComponent,
+      })
+      const {
+        frameSize,
+        setFrameSize,
+        snapPoints,
+        snapPointsMode,
+        hasFit,
+        position,
+        setPosition,
+        scrollBridge,
+        screenSize,
+        setMaxContentSize,
+        maxSnapPoint,
+      } = providerProps
+      const { open, controller, isHidden } = state
 
-    const sheetRef = useRef<View>(null)
-    const ref = useComposedRefs(forwardedRef, sheetRef)
+      const sheetRef = React.useRef<View>(null)
+      const ref = useComposedRefs(forwardedRef, sheetRef)
 
-    // TODO this can be extracted into a helper getAnimationConfig(animationProp as array | string)
-    const animationConfig = (() => {
-      const [animationProp, animationPropConfig] = !animation
-        ? []
-        : Array.isArray(animation)
-          ? animation
-          : ([animation] as const)
-      return (
-        animationConfigProp ??
-        (animationProp
-          ? {
-              ...(getConfig().animations.animations[animationProp as string] as Object),
-              ...animationPropConfig,
-            }
-          : null)
+      // TODO this can be extracted into a helper getAnimationConfig(animationProp as array | string)
+      const animationConfig = (() => {
+        const [animationProp, animationPropConfig] = !animation
+          ? []
+          : Array.isArray(animation)
+            ? animation
+            : ([animation] as const)
+        return (
+          animationConfigProp ??
+          (animationProp
+            ? {
+                ...(getConfig().animations.animations[animationProp as string] as Object),
+                ...animationPropConfig,
+              }
+            : null)
+        )
+      })()
+
+      /**
+       * This is a hacky workaround for native:
+       */
+      const [isShowingInnerSheet, setIsShowingInnerSheet] = React.useState(false)
+      const shouldHideParentSheet = !isWeb && modal && isShowingInnerSheet
+      const parentSheetContext = React.useContext(SheetInsideSheetContext)
+      const onInnerSheet = React.useCallback((hasChild: boolean) => {
+        setIsShowingInnerSheet(hasChild)
+      }, [])
+
+      const positions = React.useMemo(
+        () =>
+          snapPoints.map((point) =>
+            getYPositions(snapPointsMode, point, screenSize, frameSize)
+          ),
+        [screenSize, frameSize, snapPoints, snapPointsMode]
       )
-    })()
 
-    /**
-     * This is a hacky workaround for native:
-     */
-    const [isShowingInnerSheet, setIsShowingInnerSheet] = useState(false)
-    const shouldHideParentSheet = !isWeb && modal && isShowingInnerSheet
-    const parentSheetContext = useContext(SheetInsideSheetContext)
-    const onInnerSheet = useCallback((hasChild: boolean) => {
-      setIsShowingInnerSheet(hasChild)
-    }, [])
+      const { animationDriver } = useConfiguration()
+      const { useAnimatedNumber, useAnimatedNumberStyle, useAnimatedNumberReaction } =
+        animationDriver
+      const AnimatedView = (animationDriver.View ?? Stack) as typeof Animated.View
 
-    const positions = useMemo(
-      () =>
-        snapPoints.map((point) =>
-          getYPositions(snapPointsMode, point, screenSize, frameSize)
-        ),
-      [screenSize, frameSize, snapPoints, snapPointsMode]
-    )
+      useIsomorphicLayoutEffect(() => {
+        if (!(parentSheetContext && open)) return
+        parentSheetContext(true)
+        return () => {
+          parentSheetContext(false)
+        }
+      }, [parentSheetContext, open])
 
-    const { animationDriver } = useConfiguration()
-    const { useAnimatedNumber, useAnimatedNumberStyle, useAnimatedNumberReaction } =
-      animationDriver
-    const AnimatedView = (animationDriver.View ?? Stack) as typeof Animated.View
+      const nextParentContext = React.useMemo(
+        () => ({
+          zIndex,
+        }),
+        [zIndex]
+      )
 
-    useIsomorphicLayoutEffect(() => {
-      if (!(parentSheetContext && open)) return
-      parentSheetContext(true)
-      return () => {
-        parentSheetContext(false)
-      }
-    }, [parentSheetContext, open])
+      const animatedNumber = useAnimatedNumber(hiddenSize)
+      const at = React.useRef(hiddenSize)
 
-    const nextParentContext = useMemo(
-      () => ({
-        zIndex,
-      }),
-      [zIndex]
-    )
-
-    const animatedNumber = useAnimatedNumber(hiddenSize)
-    const at = useRef(hiddenSize)
-
-    useAnimatedNumberReaction(
-      {
-        value: animatedNumber,
-        hostRef: sheetRef,
-      },
-      useCallback(
-        (value) => {
-          at.current = value
-          scrollBridge.paneY = value
+      useAnimatedNumberReaction(
+        {
+          value: animatedNumber,
+          hostRef: sheetRef,
         },
-        [animationDriver]
+        React.useCallback(
+          (value) => {
+            at.current = value
+            scrollBridge.paneY = value
+          },
+          [animationDriver]
+        )
       )
-    )
 
-    function stopSpring() {
-      animatedNumber.stop()
-      if (scrollBridge.onFinishAnimate) {
-        scrollBridge.onFinishAnimate()
-        scrollBridge.onFinishAnimate = undefined
+      function stopSpring() {
+        animatedNumber.stop()
+        if (scrollBridge.onFinishAnimate) {
+          scrollBridge.onFinishAnimate()
+          scrollBridge.onFinishAnimate = undefined
+        }
       }
-    }
 
-    const hasntMeasured = at.current === hiddenSize
+      const hasntMeasured = at.current === hiddenSize
 
-    const animateTo = useEvent((position: number) => {
-      if (frameSize === 0) return
+      const animateTo = useEvent((position: number) => {
+        if (frameSize === 0) return
 
-      let toValue = isHidden || position === -1 ? screenSize : positions[position]
+        let toValue = isHidden || position === -1 ? screenSize : positions[position]
 
-      if (at.current === toValue) return
-      at.current = toValue
+        if (at.current === toValue) return
+        at.current = toValue
 
-      stopSpring()
+        stopSpring()
 
-      if (hasntMeasured || isHidden) {
-        // first run, we need to set to screen size before running
-        animatedNumber.setValue(
-          screenSize,
-          {
+        if (hasntMeasured || isHidden) {
+          // first run, we need to set to screen size before running
+          animatedNumber.setValue(
+            screenSize,
+            {
+              type: 'timing',
+              duration: 0,
+            },
+            () => {
+              if (isHidden) {
+                return
+              }
+
+              toValue = positions[position]
+              at.current = toValue
+
+              animatedNumber.setValue(toValue, {
+                type: 'spring',
+                ...animationConfig,
+              })
+            }
+          )
+          return
+        }
+
+        animatedNumber.setValue(toValue, {
+          type: 'spring',
+          ...animationConfig,
+        })
+      })
+
+      useIsomorphicLayoutEffect(() => {
+        if (screenSize && hasntMeasured) {
+          animatedNumber.setValue(screenSize, {
             type: 'timing',
             duration: 0,
+          })
+        }
+      }, [hasntMeasured, screenSize])
+
+      useIsomorphicLayoutEffect(() => {
+        if (!frameSize || !screenSize || isHidden || (hasntMeasured && !open)) {
+          return
+        }
+        animateTo(position)
+      }, [isHidden, frameSize, screenSize, open, position])
+
+      const disableDrag = props.disableDrag ?? controller?.disableDrag
+      const themeName = useThemeName()
+      const [isDragging, setIsDragging] = React.useState(false)
+
+      const panResponder = React.useMemo(() => {
+        if (disableDrag) return
+        if (!frameSize) return
+        if (isShowingInnerSheet) return
+
+        const minY = positions[0]
+        scrollBridge.paneMinY = minY
+        let startY = at.current
+
+        function setPanning(val: boolean) {
+          setIsDragging(val)
+
+          // make unselectable:
+          if (!SHEET_HIDDEN_STYLESHEET) return
+          if (!val) {
+            SHEET_HIDDEN_STYLESHEET.innerText = ''
+          } else {
+            SHEET_HIDDEN_STYLESHEET.innerText =
+              ':root * { user-select: none !important; -webkit-user-select: none !important; }'
+          }
+        }
+
+        const release = ({ vy, dragAt }: { dragAt: number; vy: number }) => {
+          isExternalDrag = false
+          previouslyScrolling = false
+          setPanning(false)
+          const at = dragAt + startY
+          // seems liky vy goes up to about 4 at the very most (+ is down, - is up)
+          // lets base our multiplier on the total layout height
+          const end = at + frameSize * vy * 0.2
+          let closestPoint = 0
+          let dist = Number.POSITIVE_INFINITY
+          for (let i = 0; i < positions.length; i++) {
+            const position = positions[i]
+            const curDist = end > position ? end - position : position - end
+            if (curDist < dist) {
+              dist = curDist
+              closestPoint = i
+            }
+          }
+          // have to call both because state may not change but need to snap back
+          setPosition(closestPoint)
+          animateTo(closestPoint)
+        }
+
+        const finish = (_e: GestureResponderEvent, state: PanResponderGestureState) => {
+          release({
+            vy: state.vy,
+            dragAt: state.dy,
+          })
+        }
+
+        let previouslyScrolling = false
+
+        const onMoveShouldSet = (
+          e: GestureResponderEvent,
+          { dy }: PanResponderGestureState
+        ) => {
+          // if dragging handle always allow:
+          if (e.target === providerProps.handleRef.current) {
+            return true
+          }
+
+          const isScrolled = scrollBridge.y !== 0
+          const isDraggingUp = dy < 0
+          // we can treat near top instead of exactly to avoid trouble with springs
+          const isNearTop = scrollBridge.paneY - 5 <= scrollBridge.paneMinY
+          if (isScrolled) {
+            previouslyScrolling = true
+            return false
+          }
+          // prevent drag once at top and pulling up
+          if (isNearTop) {
+            if (!isScrolled && isDraggingUp) {
+              // TODO: pulling past the limit breaks scroll on native, need to better make ScrollView
+              if (!isWeb) {
+                return false
+              }
+            }
+          }
+          // we could do some detection of other touchables and cancel here..
+          return Math.abs(dy) > 5
+        }
+
+        const grant = () => {
+          setPanning(true)
+          stopSpring()
+          startY = at.current
+        }
+
+        let isExternalDrag = false
+
+        scrollBridge.drag = (dy) => {
+          if (!isExternalDrag) {
+            isExternalDrag = true
+            grant()
+          }
+          const to = dy + startY
+          animatedNumber.setValue(resisted(to, minY), { type: 'direct' })
+        }
+
+        scrollBridge.release = release
+
+        return PanResponder.create({
+          onMoveShouldSetPanResponder: onMoveShouldSet,
+          onPanResponderGrant: grant,
+          onPanResponderMove: (_e, { dy }) => {
+            const toFull = dy + startY
+            const to = resisted(toFull, minY)
+            animatedNumber.setValue(to, { type: 'direct' })
           },
-          () => {
-            if (isHidden) {
-              return
-            }
-
-            toValue = positions[position]
-            at.current = toValue
-
-            animatedNumber.setValue(toValue, {
-              type: 'spring',
-              ...animationConfig,
-            })
-          }
-        )
-        return
-      }
-
-      animatedNumber.setValue(toValue, {
-        type: 'spring',
-        ...animationConfig,
-      })
-    })
-
-    useIsomorphicLayoutEffect(() => {
-      if (screenSize && hasntMeasured) {
-        animatedNumber.setValue(screenSize, {
-          type: 'timing',
-          duration: 0,
+          onPanResponderEnd: finish,
+          onPanResponderTerminate: finish,
+          onPanResponderRelease: finish,
         })
-      }
-    }, [hasntMeasured, screenSize])
+      }, [disableDrag, isShowingInnerSheet, animateTo, frameSize, positions, setPosition])
 
-    useIsomorphicLayoutEffect(() => {
-      if (!frameSize || !screenSize || isHidden || (hasntMeasured && !open)) {
-        return
-      }
-      animateTo(position)
-    }, [isHidden, frameSize, screenSize, open, position])
-
-    const disableDrag = props.disableDrag ?? controller?.disableDrag
-    const themeName = useThemeName()
-    const [isDragging, setIsDragging] = useState(false)
-
-    const panResponder = useMemo(() => {
-      if (disableDrag) return
-      if (!frameSize) return
-      if (isShowingInnerSheet) return
-
-      const minY = positions[0]
-      scrollBridge.paneMinY = minY
-      let startY = at.current
-
-      function setPanning(val: boolean) {
-        setIsDragging(val)
-
-        // make unselectable:
-        if (!SHEET_HIDDEN_STYLESHEET) return
-        if (!val) {
-          SHEET_HIDDEN_STYLESHEET.innerText = ''
-        } else {
-          SHEET_HIDDEN_STYLESHEET.innerText =
-            ':root * { user-select: none !important; -webkit-user-select: none !important; }'
-        }
-      }
-
-      const release = ({ vy, dragAt }: { dragAt: number; vy: number }) => {
-        isExternalDrag = false
-        previouslyScrolling = false
-        setPanning(false)
-        const at = dragAt + startY
-        // seems liky vy goes up to about 4 at the very most (+ is down, - is up)
-        // lets base our multiplier on the total layout height
-        const end = at + frameSize * vy * 0.2
-        let closestPoint = 0
-        let dist = Number.POSITIVE_INFINITY
-        for (let i = 0; i < positions.length; i++) {
-          const position = positions[i]
-          const curDist = end > position ? end - position : position - end
-          if (curDist < dist) {
-            dist = curDist
-            closestPoint = i
-          }
-        }
-        // have to call both because state may not change but need to snap back
-        setPosition(closestPoint)
-        animateTo(closestPoint)
-      }
-
-      const finish = (_e: GestureResponderEvent, state: PanResponderGestureState) => {
-        release({
-          vy: state.vy,
-          dragAt: state.dy,
-        })
-      }
-
-      let previouslyScrolling = false
-
-      const onMoveShouldSet = (
-        e: GestureResponderEvent,
-        { dy }: PanResponderGestureState
-      ) => {
-        // if dragging handle always allow:
-        if (e.target === providerProps.handleRef.current) {
-          return true
-        }
-
-        const isScrolled = scrollBridge.y !== 0
-        const isDraggingUp = dy < 0
-        // we can treat near top instead of exactly to avoid trouble with springs
-        const isNearTop = scrollBridge.paneY - 5 <= scrollBridge.paneMinY
-        if (isScrolled) {
-          previouslyScrolling = true
-          return false
-        }
-        // prevent drag once at top and pulling up
-        if (isNearTop) {
-          if (!isScrolled && isDraggingUp) {
-            // TODO: pulling past the limit breaks scroll on native, need to better make ScrollView
-            if (!isWeb) {
-              return false
-            }
-          }
-        }
-        // we could do some detection of other touchables and cancel here..
-        return Math.abs(dy) > 5
-      }
-
-      const grant = () => {
-        setPanning(true)
-        stopSpring()
-        startY = at.current
-      }
-
-      let isExternalDrag = false
-
-      scrollBridge.drag = (dy) => {
-        if (!isExternalDrag) {
-          isExternalDrag = true
-          grant()
-        }
-        const to = dy + startY
-        animatedNumber.setValue(resisted(to, minY), { type: 'direct' })
-      }
-
-      scrollBridge.release = release
-
-      return PanResponder.create({
-        onMoveShouldSetPanResponder: onMoveShouldSet,
-        onPanResponderGrant: grant,
-        onPanResponderMove: (_e, { dy }) => {
-          const toFull = dy + startY
-          const to = resisted(toFull, minY)
-          animatedNumber.setValue(to, { type: 'direct' })
+      const handleAnimationViewLayout = React.useCallback(
+        (e: LayoutChangeEvent) => {
+          // avoid bugs where it grows forever for whatever reason
+          const next = Math.min(
+            e.nativeEvent?.layout.height,
+            Dimensions.get('window').height
+          )
+          if (!next) return
+          setFrameSize(next)
         },
-        onPanResponderEnd: finish,
-        onPanResponderTerminate: finish,
-        onPanResponderRelease: finish,
+        [keyboardIsVisible]
+      )
+
+      const handleMaxContentViewLayout = React.useCallback(
+        (e: LayoutChangeEvent) => {
+          // avoid bugs where it grows forever for whatever reason
+          const next = Math.min(
+            e.nativeEvent?.layout.height,
+            Dimensions.get('window').height
+          )
+          if (!next) return
+          setMaxContentSize(next)
+        },
+        [keyboardIsVisible]
+      )
+
+      const animatedStyle = useAnimatedNumberStyle(animatedNumber, (val) => {
+        'worklet'
+        const translateY = frameSize === 0 ? hiddenSize : val
+
+        return {
+          transform: [{ translateY }],
+        }
       })
-    }, [disableDrag, isShowingInnerSheet, animateTo, frameSize, positions, setPosition])
 
-    const handleAnimationViewLayout = useCallback(
-      (e: LayoutChangeEvent) => {
-        // avoid bugs where it grows forever for whatever reason
-        const next = Math.min(
-          e.nativeEvent?.layout.height,
-          Dimensions.get('window').height
-        )
-        if (!next) return
-        setFrameSize(next)
-      },
-      [keyboardIsVisible]
-    )
-
-    const handleMaxContentViewLayout = useCallback(
-      (e: LayoutChangeEvent) => {
-        // avoid bugs where it grows forever for whatever reason
-        const next = Math.min(
-          e.nativeEvent?.layout.height,
-          Dimensions.get('window').height
-        )
-        if (!next) return
-        setMaxContentSize(next)
-      },
-      [keyboardIsVisible]
-    )
-
-    const animatedStyle = useAnimatedNumberStyle(animatedNumber, (val) => {
-      'worklet'
-      const translateY = frameSize === 0 ? hiddenSize : val
-
-      return {
-        transform: [{ translateY }],
-      }
-    })
-
-    const sizeBeforeKeyboard = useRef<number | null>(null)
-    useEffect(() => {
-      if (isWeb || !moveOnKeyboardChange) return
-      const keyboardShowListener = Keyboard.addListener(currentPlatform === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow', (e) => {
-        if (sizeBeforeKeyboard.current !== null) return
-        sizeBeforeKeyboard.current = isHidden || position === -1 ? screenSize : positions[position]
-        animatedNumber.setValue(
-          Math.max(sizeBeforeKeyboard.current - e.endCoordinates.height, 0),
-          {
-            type: 'spring',
-            ...animationConfig
+      const sizeBeforeKeyboard = React.useRef<number | null>(null)
+      React.useEffect(() => {
+        if (isWeb || !moveOnKeyboardChange) return
+        const keyboardShowListener = Keyboard.addListener(
+          currentPlatform === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow',
+          (e) => {
+            if (sizeBeforeKeyboard.current !== null) return
+            sizeBeforeKeyboard.current =
+              isHidden || position === -1 ? screenSize : positions[position]
+            animatedNumber.setValue(
+              Math.max(sizeBeforeKeyboard.current - e.endCoordinates.height, 0),
+              {
+                type: 'spring',
+                ...animationConfig,
+              }
+            )
           }
         )
-      })
-      const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
-        if (sizeBeforeKeyboard.current === null) return
-        animatedNumber.setValue(sizeBeforeKeyboard.current, {
-          type: 'spring',
-          ...animationConfig
+        const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
+          if (sizeBeforeKeyboard.current === null) return
+          animatedNumber.setValue(sizeBeforeKeyboard.current, {
+            type: 'spring',
+            ...animationConfig,
+          })
+          sizeBeforeKeyboard.current = null
         })
-        sizeBeforeKeyboard.current = null
-      })
 
-      return () => {
-        keyboardDidHideListener.remove()
-        keyboardShowListener.remove()
-      }
-    }, [moveOnKeyboardChange, positions, position, isHidden])
-
-    // we need to set this *after* fully closed to 0, to avoid it overlapping
-    // the page when resizing quickly on web for example
-    const [opacity, setOpacity] = useState(open ? 1 : 0)
-    if (open && opacity === 0) {
-      setOpacity(1)
-    }
-    useEffect(() => {
-      if (!open) {
-        // need to wait for animation complete, for now lets just do it naively
-        const tm = setTimeout(() => {
-          setOpacity(0)
-        }, 400)
         return () => {
-          clearTimeout(tm)
+          keyboardDidHideListener.remove()
+          keyboardShowListener.remove()
         }
+      }, [moveOnKeyboardChange, positions, position, isHidden])
+
+      // we need to set this *after* fully closed to 0, to avoid it overlapping
+      // the page when resizing quickly on web for example
+      const [opacity, setOpacity] = React.useState(open ? 1 : 0)
+      if (open && opacity === 0) {
+        setOpacity(1)
       }
-    }, [open])
+      React.useEffect(() => {
+        if (!open) {
+          // need to wait for animation complete, for now lets just do it naively
+          const tm = setTimeout(() => {
+            setOpacity(0)
+          }, 400)
+          return () => {
+            clearTimeout(tm)
+          }
+        }
+      }, [open])
 
-    const forcedContentHeight = hasFit
-      ? undefined
-      : snapPointsMode === 'percent'
-        ? `${maxSnapPoint}${isWeb ? 'dvh' : '%'}`
-        : maxSnapPoint
+      const forcedContentHeight = hasFit
+        ? undefined
+        : snapPointsMode === 'percent'
+          ? `${maxSnapPoint}${isWeb ? 'dvh' : '%'}`
+          : maxSnapPoint
 
-    const contents = (
-      <ParentSheetContext.Provider value={nextParentContext}>
-        <SheetProvider {...providerProps}>
-          <AnimatePresence custom={{ open }}>
-            {shouldHideParentSheet || !open ? null : overlayComponent}
-          </AnimatePresence>
+      const contents = (
+        <ParentSheetContext.Provider value={nextParentContext}>
+          <SheetProvider {...providerProps}>
+            <AnimatePresence custom={{ open }}>
+              {shouldHideParentSheet || !open ? null : overlayComponent}
+            </AnimatePresence>
 
-          {snapPointsMode !== 'percent' && (
-            <View
-              style={{
-                opacity: 0,
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                pointerEvents: 'none',
-              }}
-              onLayout={handleMaxContentViewLayout}
-            />
-          )}
-
-          <AnimatedView
-            ref={ref}
-            {...panResponder?.panHandlers}
-            onLayout={handleAnimationViewLayout}
-            {...(!isDragging && {
-              // @ts-ignore for CSS driver this is necessary to attach the transition
-              animation,
-            })}
-            // @ts-ignore
-            disableClassName
-            style={[
-              {
-                position: 'absolute',
-                zIndex,
-                width: '100%',
-                height: forcedContentHeight,
-                minHeight: forcedContentHeight,
-                opacity,
-                ...((shouldHideParentSheet || !open) && {
+            {snapPointsMode !== 'percent' && (
+              <View
+                style={{
+                  opacity: 0,
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
                   pointerEvents: 'none',
-                }),
-              },
-              animatedStyle,
-            ]}
-          >
-            {props.children}
-          </AnimatedView>
-        </SheetProvider>
-      </ParentSheetContext.Provider>
-    )
+                }}
+                onLayout={handleMaxContentViewLayout}
+              />
+            )}
 
-    const adaptContext = useContext(AdaptParentContext)
-
-    // start mounted so we get an accurate measurement the first time
-    const shouldMountChildren = Boolean(opacity || !unmountChildrenWhenHidden)
-
-    if (modal) {
-      const modalContents = (
-        <Portal zIndex={zIndex} {...portalProps}>
-          {shouldMountChildren && (
-            <ContainerComponent>
-              <Theme forceClassName name={themeName}>
-                <AdaptParentContext.Provider value={adaptContext}>
-                  {contents}
-                </AdaptParentContext.Provider>
-              </Theme>
-            </ContainerComponent>
-          )}
-        </Portal>
+            <AnimatedView
+              ref={ref}
+              {...panResponder?.panHandlers}
+              onLayout={handleAnimationViewLayout}
+              {...(!isDragging && {
+                // @ts-ignore for CSS driver this is necessary to attach the transition
+                animation,
+              })}
+              // @ts-ignore
+              disableClassName
+              style={[
+                {
+                  position: 'absolute',
+                  zIndex,
+                  width: '100%',
+                  height: forcedContentHeight,
+                  minHeight: forcedContentHeight,
+                  opacity,
+                  ...((shouldHideParentSheet || !open) && {
+                    pointerEvents: 'none',
+                  }),
+                },
+                animatedStyle,
+              ]}
+            >
+              {props.children}
+            </AnimatedView>
+          </SheetProvider>
+        </ParentSheetContext.Provider>
       )
 
-      if (isWeb) {
-        return modalContents
+      const adaptContext = React.useContext(AdaptParentContext)
+
+      // start mounted so we get an accurate measurement the first time
+      const shouldMountChildren = Boolean(opacity || !unmountChildrenWhenHidden)
+
+      if (modal) {
+        const modalContents = (
+          <Portal zIndex={zIndex} {...portalProps}>
+            {shouldMountChildren && (
+              <ContainerComponent>
+                <Theme forceClassName name={themeName}>
+                  <AdaptParentContext.Provider value={adaptContext}>
+                    {contents}
+                  </AdaptParentContext.Provider>
+                </Theme>
+              </ContainerComponent>
+            )}
+          </Portal>
+        )
+
+        if (isWeb) {
+          return modalContents
+        }
+
+        // on native we don't support multiple modals yet... fix for now is to hide outer one
+        return (
+          <SheetInsideSheetContext.Provider value={onInnerSheet}>
+            {modalContents}
+          </SheetInsideSheetContext.Provider>
+        )
       }
 
-      // on native we don't support multiple modals yet... fix for now is to hide outer one
-      return (
-        <SheetInsideSheetContext.Provider value={onInnerSheet}>
-          {modalContents}
-        </SheetInsideSheetContext.Provider>
-      )
+      return contents
     }
-
-    return contents
-  })
+  )
 )
 
 function getYPositions(
