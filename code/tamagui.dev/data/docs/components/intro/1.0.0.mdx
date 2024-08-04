@@ -25,13 +25,16 @@ You'll need to add a provider for usage of the full component kit as it will set
 
 ```tsx
 import { TamaguiProvider, View } from 'tamagui'
+import defaultConfig from '@tamagui/config/v3'
+
+const config = createTamagui(defaultConfig)
 
 export default () => (
-  <TamaguiProvider config={yourConfig}>
+  <TamaguiProvider config={config}>
     <View />
   </TamaguiProvider>
 )
 ```
 
-See [the configuration docs](/docs/core/configuration) for how to set up `yourConfig`.
+For a full guide on setting up `createTamagui`, read [the core configuration documentation](/docs/core/configuration).
 
