@@ -1,6 +1,7 @@
 postable:
 
 - bring back copy paste on theme tab
+- simplification spree
 
 
 
