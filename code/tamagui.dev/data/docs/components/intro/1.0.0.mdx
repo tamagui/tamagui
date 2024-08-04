@@ -6,10 +6,12 @@ description: An optional suite of fully open source components - in styled and u
 # Tamagui UI
 
 <Description>
-  A suite of OSS components for all&nbsp;React&nbsp;platforms.
+  Fully open source composable components for all&nbsp;React&nbsp;platforms.
 </Description>
 
-Each individual component includes installation instructions and can be installed independently, but you can also use all of the components via:
+Tamagui UI is an open source collection of "[composable components](https://dev.to/haribhandari/react-build-your-own-composable-headless-components-170b)" that all render universally - ie on React web and React Native at once. Some components render the same on all platforms, but many now [Adapt](docs/components/popover) to render as different components depending on platform or capability. And a few even have native adaptations that let you render for example your Sheet contents into native iOS modals.
+
+All components in the kit can be installed independently, or you can install them all at once with:
 
 ```bash
 yarn add tamagui
@@ -17,9 +19,9 @@ yarn add tamagui
 
 ## Setup
 
-One thing to understand is that `tamagui` is a superset of `@tamagui/core`, so if you've already set up core, you'll want to actually replace every reference of "@tamagui/core" with "tamagui", including removing the core dependency altogether from your package.json.
+The package `tamagui` is a superset of `@tamagui/core`, so if you've already installed core you can change all the references to `tamagui`.
 
-When you replace everything with tamagui, you'll get a slightly more helpful TamaguiProvider that sets up a root portal for your various toasts, dialogs, and modals which you'll need to add to the highest point in your app, replacing the core provider if you use it already:
+You'll need to add a provider for usage of the full component kit as it will set up the root portal for components like dialogs and popovers.
 
 ```tsx
 import { TamaguiProvider, View } from 'tamagui'
@@ -31,6 +33,5 @@ export default () => (
 )
 ```
 
-Other than that, there's a large amount of optional configuration through `createTamagui` that is [documented in the Core Installation docs](/docs/intro/installation).
+See [the configuration docs](/docs/core/configuration) for how to set up `yourConfig`.
 
-You are all set!

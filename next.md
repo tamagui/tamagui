@@ -37,6 +37,7 @@ const example = (
 
 v2:
 
+  - remove Provider need just global config once
   - @tamagui/cli => tamagui
     - `tamagui build` document/announce
     - `tamagui lint` fix check and document/announce

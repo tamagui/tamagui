@@ -78,7 +78,7 @@ export default App
 ## Anatomy
 
 ```tsx
-import { Popover } from 'tamagui' // or '@tamagui/popover'
+import { Popover, Adapt } from 'tamagui' // or '@tamagui/popover'
 
 export default () => (
   <Popover>
@@ -93,16 +93,17 @@ export default () => (
     </Popover.Content>
 
     {/* optionally change to sheet when small screen */}
-    <Popover.Adapt when="sm">
+    {/* you can also use <Popover.Adapt /> */}
+    <Adapt when="sm">
       <Popover.Sheet>
         <Popover.Sheet.Overlay />
         <Popover.Sheet.Frame>
           <Popover.Sheet.ScrollView>
-            <Popover.Adapt.Contents />
+            <Adapt.Contents />
           </Popover.Sheet.ScrollView>
         </Popover.Sheet.Frame>
       </Popover.Sheet>
-    </Popover.Adapt>
+    </Adapt>
   </Popover>
 )
 ```
