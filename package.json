@@ -118,8 +118,8 @@
       "resolutions": {
         "@vxrn/react-native-prebuilt": "portal:~/vxrn/packages/react-native-prebuilt",
         "@vxrn/safe-area": "portal:~/vxrn/packages/safe-area",
-        "@vxrn/vite-flow": "portal:~/vxrn/packages/vite-flow",
         "@vxrn/vendor": "portal:~/vxrn/packages/vite-flow",
+        "@vxrn/vite-flow": "portal:~/vxrn/packages/vite-flow",
         "@vxrn/vite-native-client": "portal:~/vxrn/packages/vite-native-client",
         "@vxrn/vite-native-hmr": "portal:~/vxrn/packages/vite-native-hmr",
         "@vxrn/vite-native-swc": "portal:~/vxrn/packages/vite-native-swc",
@@ -143,6 +143,7 @@
     "esbuild": "^0.23.0",
     "esbuild-register": "^3.5.0",
     "fs-extra": "^11.2.0",
+    "h3": "1.11.1",
     "import-sort-style-module": "^6.0.0",
     "json5": "^2.2.3",
     "npm-run-all": "^4.1.5",
@@ -155,8 +156,5 @@
     "ultra-runner": "^3.10.5",
     "update-ts-references": "^3.3.0",
     "zx": "^7.2.3"
-  },
-  "resolutions": {
-    "h3@npm:^1.11.1": "patch:h3@npm%3A1.11.1#~/.yarn/patches/h3-npm-1.11.1-e4c2aa03b9.patch"
   }
 }

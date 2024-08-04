@@ -32,7 +32,7 @@
     "@tamagui/create-theme": "1.108.0-1722728147390",
     "@tamagui/theme-builder": "1.108.0-1722728147390",
     "@tamagui/types": "1.108.0-1722728147390",
-    "esbuild-register": "^3.5.0",
+    "esbuild-register": "^3.6.0",
     "fs-extra": "^11.2.0"
   },
   "devDependencies": {

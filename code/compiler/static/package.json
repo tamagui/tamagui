@@ -58,7 +58,7 @@
     "browserslist": "^4.22.2",
     "check-dependency-version-consistency": "^4.1.0",
     "esbuild": "^0.23.0",
-    "esbuild-register": "^3.5.0",
+    "esbuild-register": "^3.6.0",
     "find-cache-dir": "^3.3.2",
     "find-root": "^1.1.0",
     "fs-extra": "^11.2.0",

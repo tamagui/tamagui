@@ -5734,7 +5734,7 @@ __metadata:
     chokidar: "npm:^3.5.2"
     esbuild: "npm:^0.23.0"
     esbuild-plugin-es5: "npm:^2.1.0"
-    esbuild-register: "npm:^3.5.0"
+    esbuild-register: "npm:^3.6.0"
     execa: "npm:^5.0.0"
     fast-glob: "npm:^3.2.11"
     fs-extra: "npm:^11.2.0"
@@ -6212,8 +6212,7 @@ __metadata:
     acorn-walk: "npm:^8.3.1"
     archiver: "npm:^7.0.1"
     color2k: "npm:^2.0.2"
-    esbuild-register: "npm:^3.5.0"
-    h3: "patch:h3@npm%3A1.11.1#~/.yarn/patches/h3-npm-1.11.1-e4c2aa03b9.patch"
+    esbuild-register: "npm:^3.6.0"
     hsluv: "npm:^0.1.0"
     jsonwebtoken: "npm:^9.0.2"
     mdx-bundler: "npm:^10.0.2"
@@ -6436,7 +6435,7 @@ __metadata:
     "@tamagui/create-theme": "npm:1.108.0-1722728147390"
     "@tamagui/theme-builder": "npm:1.108.0-1722728147390"
     "@tamagui/types": "npm:1.108.0-1722728147390"
-    esbuild-register: "npm:^3.5.0"
+    esbuild-register: "npm:^3.6.0"
     fs-extra: "npm:^11.2.0"
   languageName: unknown
   linkType: soft
@@ -7333,7 +7332,7 @@ __metadata:
     check-dependency-version-consistency: "npm:^4.1.0"
     esbuild: "npm:^0.23.0"
     esbuild-loader: "npm:^3.0.1"
-    esbuild-register: "npm:^3.5.0"
+    esbuild-register: "npm:^3.6.0"
     find-cache-dir: "npm:^3.3.2"
     find-root: "npm:^1.1.0"
     fs-extra: "npm:^11.2.0"
@@ -7430,10 +7429,9 @@ __metadata:
     "@tamagui/logo": "npm:1.108.0-1722728147390"
     "@tamagui/lucide-icons": "npm:1.108.0-1722728147390"
     "@tamagui/react-native-svg": "npm:1.108.0-1722728147390"
-    esbuild-register: "npm:^3.5.0"
+    esbuild-register: "npm:^3.6.0"
     expo-apple-authentication: "npm:~6.4.1"
     expo-crypto: "npm:~13.0.2"
-    h3: "patch:h3@npm%3A1.11.1#~/.yarn/patches/h3-npm-1.11.1-e4c2aa03b9.patch"
     jsonwebtoken: "npm:^9.0.2"
     patch-package: "npm:^8.0.0"
     postmark: "npm:^3.0.18"
@@ -7447,7 +7445,6 @@ __metadata:
     tamagui: "npm:1.108.0-1722728147390"
     vite: "npm:6.0.0-alpha.18"
     vite-plugin-inspect: "npm:^0.8.4"
-    vxrn: "npm:^1.1.162"
     vxs: "npm:^1.1.162"
     zod: "npm:^3.22.4"
   languageName: unknown
@@ -11929,6 +11926,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"cookie-es@npm:^1.1.0":
+  version: 1.2.2
+  resolution: "cookie-es@npm:1.2.2"
+  checksum: 10/0fd742c11caa185928e450543f84df62d4b2c1fc7b5041196b57b7db04e1c6ac6585fb40e4f579a2819efefd2d6a9cbb4d17f71240d05f4dcd8f74ae81341a20
+  languageName: node
+  linkType: hard
+
 "cookie-signature@npm:1.0.6":
   version: 1.0.6
   resolution: "cookie-signature@npm:1.0.6"
@@ -12066,7 +12070,7 @@ __metadata:
     cpy: "npm:7.3.0"
     cross-spawn: "npm:6.0.5"
     detect-package-manager: "npm:^3.0.1"
-    esbuild-register: "npm:^3.5.0"
+    esbuild-register: "npm:^3.6.0"
     fs-extra: "npm:^11.2.0"
     got: "npm:10.7.0"
     opener: "npm:^1.5.2"
@@ -13539,6 +13543,17 @@ __metadata:
   peerDependencies:
     esbuild: ">=0.12 <1"
   checksum: 10/af6874ce9b5fcdb0974c9d9e9f16530a5b9bd80c699b2ba9d7ace33439c1af1be6948535c775d9a6439e2bf23fb31cfd54ac882cfa38308a3f182039f4b98a01
+  languageName: node
+  linkType: hard
+
+"esbuild-register@npm:^3.6.0":
+  version: 3.6.0
+  resolution: "esbuild-register@npm:3.6.0"
+  dependencies:
+    debug: "npm:^4.3.4"
+  peerDependencies:
+    esbuild: ">=0.12 <1"
+  checksum: 10/4ae1a016e3dad5b53c3d68cf07e31d8c1cec1a0b584038ece726097ac80bd33ab48fb224c766c9b341c04793837e652461eaca9327a116e7564f553b61ccca71
   languageName: node
   linkType: hard
 
@@ -15896,21 +15911,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"h3@patch:h3@npm%3A1.11.1#~/.yarn/patches/h3-npm-1.11.1-e4c2aa03b9.patch":
-  version: 1.11.1
-  resolution: "h3@patch:h3@npm%3A1.11.1#~/.yarn/patches/h3-npm-1.11.1-e4c2aa03b9.patch::version=1.11.1&hash=43696d"
+"h3@npm:^1.11.1":
+  version: 1.12.0
+  resolution: "h3@npm:1.12.0"
   dependencies:
-    cookie-es: "npm:^1.0.0"
-    crossws: "npm:^0.2.2"
+    cookie-es: "npm:^1.1.0"
+    crossws: "npm:^0.2.4"
     defu: "npm:^6.1.4"
     destr: "npm:^2.0.3"
-    iron-webcrypto: "npm:^1.0.0"
+    iron-webcrypto: "npm:^1.1.1"
     ohash: "npm:^1.1.3"
-    radix3: "npm:^1.1.0"
-    ufo: "npm:^1.4.0"
+    radix3: "npm:^1.1.2"
+    ufo: "npm:^1.5.3"
     uncrypto: "npm:^0.1.3"
     unenv: "npm:^1.9.0"
-  checksum: 10/e5c287479e184eee0c74a666ebcf7bb8e9cf297d2032d20a8a62419c7c924987b136e1e2ebd17837cb813e058074054ad72d8165c0c4885f40d4d14ccc92b9ef
+  checksum: 10/59c7a3818e863c84a32110cf4ee26ac6deb39b99527c483e56c4334b1cadb77ffca2895472b7af227a205757a5b27da43b73a057cb113b7769547062ace89cc7
   languageName: node
   linkType: hard
 
@@ -17044,6 +17059,13 @@ __metadata:
   version: 1.1.0
   resolution: "iron-webcrypto@npm:1.1.0"
   checksum: 10/b8df74ad0c3c60db2feecf69cda8b3c6ec39f55f71437bc419fefd21f28afdd77f347126da47629a42d3f9a5067d0491e630c6a827bbd160bd8cdb2d25c1933c
+  languageName: node
+  linkType: hard
+
+"iron-webcrypto@npm:^1.1.1":
+  version: 1.2.1
+  resolution: "iron-webcrypto@npm:1.2.1"
+  checksum: 10/c1f52ccfe2780efa5438c134538ee4b26c96a87d22f351d896781219efbce25b4fe716d1cb7f248e02da96881760541135acbcc7c0622ffedf71cb0e227bebf9
   languageName: node
   linkType: hard
 
@@ -22368,7 +22390,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"radix3@npm:^1.1.0":
+"radix3@npm:^1.1.0, radix3@npm:^1.1.2":
   version: 1.1.2
   resolution: "radix3@npm:1.1.2"
   checksum: 10/5ed01a8e4b753e325c6ecb01d993de77f690e548ef9e149e7dc403ee7b109c2cb41e3d09bc3ce004d872c67c8dca1d556dbf7808b1ac7df9f86994e57d757557
@@ -25309,6 +25331,7 @@ __metadata:
     esbuild: "npm:^0.23.0"
     esbuild-register: "npm:^3.5.0"
     fs-extra: "npm:^11.2.0"
+    h3: "npm:1.11.1"
     import-sort-style-module: "npm:^6.0.0"
     json5: "npm:^2.2.3"
     npm-run-all: "npm:^4.1.5"
@@ -27787,7 +27810,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vxrn@npm:1.1.162, vxrn@npm:^1.1.162":
+"vxrn@npm:1.1.162":
   version: 1.1.162
   resolution: "vxrn@npm:1.1.162"
   dependencies:
