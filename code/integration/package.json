@@ -12,23 +12,23 @@
     "upgrade:tamagui": "yarn up '*tamagui*'@latest '@tamagui/*'@latest"
   },
   "dependencies": {
-    "@tamagui/animations-css": "1.105.1",
-    "@tamagui/core": "1.105.1",
-    "@tamagui/create-theme": "1.105.1",
-    "@tamagui/react-native-svg": "1.105.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "@tamagui/animations-css": "1.108.0-1722728147390",
+    "@tamagui/core": "1.108.0-1722728147390",
+    "@tamagui/create-theme": "1.108.0-1722728147390",
+    "@tamagui/react-native-svg": "1.108.0-1722728147390",
+    "react": "^18.2.0 || ^19.0.0",
+    "react-dom": "^18.2.0 || ^19.0.0",
     "react-native-web": "^0.19.12",
-    "tamagui": "1.105.1"
+    "tamagui": "1.108.0-1722728147390"
   },
   "devDependencies": {
     "@playwright/test": "^1.45.2",
-    "@tamagui/vite-plugin": "1.105.1",
+    "@tamagui/vite-plugin": "1.108.0-1722728147390",
     "@vitejs/plugin-react-swc": "^3.6.0",
     "async-retry": "1.3.1",
     "vite": "6.0.0-alpha.18",
     "wait-port": "^0.3.0",
     "zx": "^7.2.3"
   },
-  "version": "1.105.1"
+  "version": "1.108.0-1722728147390"
 }

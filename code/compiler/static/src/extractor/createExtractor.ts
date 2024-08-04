@@ -1,10 +1,6 @@
-/* eslint-disable no-console */
-import { basename, relative } from 'node:path'
-
 import type { NodePath, TraverseOptions } from '@babel/traverse'
 import traverse from '@babel/traverse'
 import * as t from '@babel/types'
-// @ts-ignore why
 import { Color, colorLog } from '@tamagui/cli-color'
 import {
   StyleObjectIdentifier,
@@ -15,6 +11,7 @@ import {
   type StaticConfig,
   type TamaguiComponentState,
 } from '@tamagui/web'
+import { basename, relative } from 'node:path'
 import type { ViewStyle } from 'react-native'
 import * as reactNativeWebInternals from 'react-native-web-internals'
 
@@ -57,11 +54,6 @@ const UNTOUCHED_PROPS = {
   key: true,
   style: true,
   className: true,
-}
-
-const validHooks = {
-  useMedia: true,
-  useTheme: true,
 }
 
 const createTernary = (x: Ternary) => x
@@ -179,6 +171,7 @@ export function createExtractor(
       disableExtractVariables,
       disableDebugAttr,
       enableDynamicEvaluation = false,
+      disableOptimizeHooks,
       includeExtensions = ['.ts', '.tsx', '.jsx'],
       extractStyledDefinitions = false,
       prefixLogs,
@@ -186,6 +179,13 @@ export function createExtractor(
       platform,
       ...restProps
     } = options
+
+    const validHooks = disableOptimizeHooks
+      ? {}
+      : {
+          useMedia: true,
+          useTheme: true,
+        }
 
     if (sourcePath.includes('.tamagui-dynamic-eval')) {
       return null
@@ -1067,6 +1067,15 @@ export function createExtractor(
             }
 
             if (name.startsWith('data-')) {
+              return attr
+            }
+
+            // de-opt on enterStyle={expression}
+            if (
+              (name === 'enterStyle' || name === 'exitStyle') &&
+              t.isJSXExpressionContainer(attribute?.value)
+            ) {
+              shouldDeopt = true
               return attr
             }
 

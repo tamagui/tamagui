@@ -1,6 +1,6 @@
-import React, { memo } from 'react'
-import PropTypes from 'prop-types'
-import type { IconProps } from '@tamagui/helpers-icon'
+import React from "react";
+import PropTypes from 'prop-types';
+import type { IconProps } from '@tamagui/helpers-icon';
 import {
   Svg,
   Circle as _Circle,
@@ -17,12 +17,12 @@ import {
   Text as _Text,
   Use,
   Defs,
-  Stop,
-} from 'react-native-svg'
-import { themed } from '@tamagui/helpers-icon'
+  Stop } from
+'react-native-svg';
+import { themed } from '@tamagui/helpers-icon';
 
 const Icon = (props) => {
-  const { color = 'black', size = 24, ...otherProps } = props
+  const { color = 'black', size = 24, ...otherProps } = props;
   return (
     <Svg
       width={size}
@@ -33,8 +33,8 @@ const Icon = (props) => {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      {...otherProps}
-    >
+      {...otherProps}>
+
       <Rect width="18" height="18" x="3" y="4" rx="2" ry="2" stroke={color} />
       <Line x1="16" x2="16" y1="2" y2="6" stroke={color} />
       <Line x1="8" x2="8" y1="2" y2="6" stroke={color} />
@@ -45,10 +45,10 @@ const Icon = (props) => {
       <Path d="M8 18h.01" stroke={color} />
       <Path d="M12 18h.01" stroke={color} />
       <Path d="M16 18h.01" stroke={color} />
-    </Svg>
-  )
-}
+    </Svg>);
 
-Icon.displayName = 'CalendarDays'
+};
 
-export const CalendarDays = memo<IconProps>(themed(Icon))
+Icon.displayName = 'CalendarDays';
+
+export const CalendarDays = React.memo<IconProps>(themed(Icon));

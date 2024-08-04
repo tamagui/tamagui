@@ -1,3 +1,4 @@
+import React from 'react'
 import { useResponderEvents } from '@tamagui/react-native-use-responder-events'
 import type {
   StackNonStyleProps,
@@ -17,7 +18,6 @@ import {
   composeEventHandlers,
   setupHooks,
 } from '@tamagui/web'
-import { createElement, useMemo, useSyncExternalStore } from 'react'
 
 import { createOptimizedView } from './createOptimizedView'
 import { getBaseViews } from './getBaseViews'
@@ -107,7 +107,7 @@ setupHooks({
 
       if (willHydrate || isDOM) {
         // only necessary for DOM elements, but we need the hooks to stay around
-        const hostRef = useMemo(
+        const hostRef = React.useMemo(
           () => ({
             get current() {
               return stateRef.current.host as Element
@@ -238,7 +238,7 @@ setupHooks({
         if (elementType === baseViews.Text) {
           // further optimize by not even caling elementType.render
           viewProps.children = children
-          return createElement('RCTText', viewProps)
+          return React.createElement('RCTText', viewProps)
         }
       }
     },

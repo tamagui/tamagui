@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/static-tests",
-  "version": "1.105.1",
+  "version": "1.108.0-1722728147390",
   "module": "dist/esm/index.js",
   "private": true,
   "scripts": {
@@ -29,9 +29,9 @@
   "devDependencies": {
     "@babel/plugin-syntax-typescript": "^7.23.3",
     "@babel/types": "^7.23.3",
-    "@tamagui/sandbox-ui": "1.105.1",
-    "@tamagui/test-design-system": "1.105.1",
-    "@testing-library/react": "^14.0.0",
+    "@tamagui/sandbox-ui": "1.108.0-1722728147390",
+    "@tamagui/test-design-system": "1.108.0-1722728147390",
+    "@testing-library/react": "^16.0.0",
     "@types/babel__generator": "^7.6.4",
     "@types/babel__traverse": "^7.18.2",
     "@types/find-root": "^1.1.2",
@@ -42,8 +42,8 @@
     "dedent": "^0.7.0",
     "esbuild-loader": "^3.0.1",
     "null-loader": "^4.0.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "react": "^18.2.0 || ^19.0.0",
+    "react-dom": "^18.2.0 || ^19.0.0",
     "react-native-web": "^0.19.12",
     "react-test-renderer": "^18.2.0",
     "style-loader": "^3.3.3",

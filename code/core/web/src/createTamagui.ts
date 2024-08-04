@@ -227,8 +227,10 @@ ${runtimeStyles}`
 
   const getNewCSS: GetCSS = (opts) => getCSS({ ...opts, sinceLastCall: true })
 
+  const defaultFontSetting = configIn.settings?.defaultFont ?? configIn.defaultFont
+
   let defaultFontName =
-    configIn.defaultFont ||
+    defaultFontSetting ||
     // uses font named "body" if present for compat
     (configIn.fonts && ('body' in configIn.fonts ? 'body' : ''))
 
@@ -252,7 +254,7 @@ ${runtimeStyles}`
     media: {},
     ...configIn,
     unset: {
-      fontFamily: configIn.defaultFont ? defaultFont : undefined,
+      fontFamily: defaultFontName ? defaultFont : undefined,
       ...configIn.unset,
     },
     settings: {
@@ -279,8 +281,8 @@ ${runtimeStyles}`
     // .spacer-sm + ._dsp_contents._dsp-sm-hidden { margin-left: -var(--${}) }
   }
 
-  configureMedia(config)
   setConfig(config)
+  configureMedia(config)
 
   createdConfigs.set(config, true)
 

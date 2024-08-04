@@ -1,3 +1,4 @@
+import React from 'react'
 import type { UseFloatingOptions } from '@floating-ui/react'
 import {
   safePolygon,
@@ -8,7 +9,6 @@ import {
   useInteractions,
   useRole,
 } from '@floating-ui/react'
-import { useCallback } from 'react'
 
 // Custom floating context to override the Popper on web
 export const useFloatingContext = ({
@@ -18,7 +18,7 @@ export const useFloatingContext = ({
   disableFocus,
   hoverable,
 }) => {
-  return useCallback(
+  return React.useCallback(
     (props: UseFloatingOptions) => {
       const floating = useFloating({
         ...props,

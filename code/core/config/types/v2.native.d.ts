@@ -33,9 +33,6 @@ export declare const config: {
             stiffness: number;
         };
     }>;
-    defaultFont: string;
-    shouldAddPrefersColorThemes: true;
-    themeClassNameOnRoot: true;
     themes: Omit<{
         readonly light: {
             background: string;
@@ -3334,17 +3331,22 @@ export declare const config: {
         };
         silkscreen: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 2 | 9 | 15 | 1 | 10 | 5 | 14 | 11 | 12 | 16 | 3 | 4 | 6 | 7 | 8 | 13>;
     };
-    mediaQueryDefaultActive: {
-        xl: boolean;
-        lg: boolean;
-        md: boolean;
-        sm: boolean;
-        xs: boolean;
-        xxs: boolean;
-    };
     selectionStyles: (theme: Record<string, string>) => {
         backgroundColor: string;
         color: string;
     } | null;
+    settings: {
+        defaultFont: string;
+        shouldAddPrefersColorThemes: true;
+        themeClassNameOnRoot: true;
+        mediaQueryDefaultActive: {
+            xl: boolean;
+            lg: boolean;
+            md: boolean;
+            sm: boolean;
+            xs: boolean;
+            xxs: boolean;
+        };
+    };
 };
 //# sourceMappingURL=v2.native.d.ts.map

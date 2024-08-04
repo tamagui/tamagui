@@ -1,6 +1,7 @@
+import React from 'react'
 import { useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
 import { useForceUpdate } from '@tamagui/use-force-update'
-import { useEffect, useId, useState } from 'react'
+
 import { createPortal } from 'react-dom'
 
 import type { ChangedThemeResponse } from '../hooks/useTheme'
@@ -12,16 +13,12 @@ export function ThemeDebug({
   themeState,
   themeProps,
   children,
-}: {
-  themeState: ChangedThemeResponse
-  themeProps: ThemeProps
-  children: any
-}) {
+}: { themeState: ChangedThemeResponse; themeProps: ThemeProps; children: any }) {
   if (process.env.NODE_ENV === 'development') {
     const isHydrated = useDidFinishSSR()
-    const [onChangeCount, setOnChangeCount] = useState(0)
+    const [onChangeCount, setOnChangeCount] = React.useState(0)
     const rerender = useForceUpdate()
-    const id = useId()
+    const id = React.useId()
 
     if (process.env.NODE_ENV === 'development' && typeof document !== 'undefined') {
       if (!node) {
@@ -41,7 +38,7 @@ export function ThemeDebug({
       }
     }
 
-    useEffect(() => {
+    React.useEffect(() => {
       themeState.themeManager?.parentManager?.onChangeTheme((name, manager) => {
         setOnChangeCount((p) => ++p)
         console.warn(
@@ -51,7 +48,7 @@ export function ThemeDebug({
       })
     }, [themeState.themeManager])
 
-    useEffect(() => {
+    React.useEffect(() => {
       // to refresh _listeningIds every so often
       const tm = setInterval(rerender, 1000)
       return () => clearTimeout(tm as any)

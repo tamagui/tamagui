@@ -1,19 +1,67 @@
-- can't use `$platform-web` inside media query?
+apply helps us create much simpler component APIs for v2
+likely last feature needed for it:
+
+```tsx
+import { apply } from '@tamagui/core'
+
+const Text = styled(Text, {
+  className: 'button',
+})
+
+const Icon = styled(Text, {
+  className: 'button',
+})
+
+const Apply = apply(Text, Icon)
+
+const Button = withStaticProperties(ButtonFrame, {
+  Apply,
+  Icon,
+  Text
+})
+
+const example = (
+  <Button>
+    <Button.Apply color="$color10">
+      {/* all of these 👇 get the styles from ^ */}
+      <Button.Text /> 
+      <Button.Text />
+      <Button.Text />
+      <Button.Icon $button-hover={{}} />
+    </Button.Apply>
+  </Button>
+)
+```
 
 ---
 
 v2:
 
+  - @tamagui/cli => tamagui
+    - `tamagui build` document/announce
+    - `tamagui lint` fix check and document/announce
+  - remove deprecated styled acceptsClassName
+  - deprecrate and remove mediaPropOrder
+  - tamagui => @tamagui/ui
+    - new Button, Input, Image, ScrollView
+    - note many are headless
+    - fullscreen => inset={0}
+  - @tamagui/core => @tamagui/style
+  - remove spacer / space
+  - group => container
+  - any tamagui component accepts a function callback to handle passing down styles:
+    - <View>{(props, style, state) => {}}</View>
+    - makes for easy interop, where asChild is more opaque
+    - sets disableClassName true
+  - remove the accumulation of styleProps in propMapper
+  - remove disableRootThemeClass from settings, change to disableRootThemeClassName
+  - defaults onlyAllowShorthands to true, themeClassNameOnRoot to true
   - document input, image
-  - plugin api + styled.div plugin
-  - experimental_webMode
-    - press => click
-    - pressStyle => activeStyle
+  - fix Select hover/type/performance
   - remove deprecated
   - document react 19 mode
   - accessibility props, "focusable" => tabIndex
   - make sure we make any changes for RSD / web alignment
-  - boxShadow
   - move to react native flex compat
   - move to web compat apis
   - no more `as const` needed (ts5)
@@ -21,15 +69,25 @@ v2:
   - redo/remove ThemeableStack
   - rename SizableStack to Surface and simplify a bit
   - v2-3 ListItem simplification esp for performance of Select
-  - Button simplification
+  - button-next finish (using apply)
   - remove suppressHighlighting / margin 0 default from Text
-  - RN transform type accepts string style props now but tamagui doesn't
   - AnimatePresence remove the old style variants in favor of custom
   - disableInjectCSS should maybe just be automated better or defaulted on
-  - can we remove the need for separate Text/View?
-    - seems like we could scan just the direct descendents?
-    https://github.com/facebook/react-strict-dom/blob/429e2fe1cb9370c59378d9ba1f4a40676bef7555/packages/react-strict-dom/src/native/modules/createStrictDOMComponent.js#L529
   - run over components and review for removing some assumptions about `size`
+  - remove nativeID, testID
+  - "Enhance with native semantics" can probably go away right
+  - remove `dataSet`
+  - remove as much of `// TODO: remove this in the future when react native a11y API is removed` as possible
+
+---
+
+v3
+
+- no react-native deps across the ui kit on web
+- html.div, styled('div')
+- plugins
+- zero runtime mode
+  - all functional styles pre-generate the styles across the possible tokens (if :number it uses SizeTokens, probably have to disallow string and '...' types but could have a way to define the values at build-time)
 
 ---
 
@@ -43,6 +101,30 @@ v2:
 
 ---
 
+- we need to beef up tests:
+  - native in general
+  - native/web performance
+  - nextjs (can add to code/next-site), esp light/dark/animations
+  - $group $platform $theme styling
+
+- uniswap //@ts-expect-error TODO in homepage
+- bug in useMedia + compiler
+  - https://app.graphite.dev/github/pr/Uniswap/universe/10626/fix-web-toast-alignment
+
+- bug: type `$platform-web` not working inside media query?
+
+/theme
+
+- generate short url on load
+- randomize button for palettes
+- OG image of theme card (use the tree one we used for the list of themes in studio)
+- save
+- use on bento
+
+
+- can we remove the need for separate Text/View?
+    - seems like we could scan just the direct descendents?
+    https://github.com/facebook/react-strict-dom/blob/429e2fe1cb9370c59378d9ba1f4a40676bef7555/packages/react-strict-dom/src/native/modules/createStrictDOMComponent.js#L529
 
 - AnimatePresence refactor:
   - https://x.com/mattgperry/status/1816842995758498017?s=46&t=5wFlU_OsfjJ0sQPMFbtG0A
@@ -93,7 +175,6 @@ Nate:
 - v2 / headless
 
   - ( Pending PR ) deprecate some createTamagui settings that should move into settings
-    - disableSSR => settings.disableSSR
   - ListItem/Button simplify APIs
   - ( Pending PR ) Image/Input deprecations for web alignment
 
@@ -101,12 +182,6 @@ Nate:
 - 0-runtime mode
 - @tamagui/kit - includes native versions of many things
 - remove RNW - Input, Image
-
-Ongoing work:
-
-- Takeout
-- Bento
-- Core
 
 ---
 
@@ -402,12 +477,10 @@ Maintenance:
 
 - Switch unstyled - make it so it doesn't do any theme stuff
 
-- font-family is being output to DOM on text element
 - font weights in css are generating extra variables with "undefined" value if not filled in
 - add defaultSize and defaultFontFamily to createTamagui
 
   - all instances of $true can become getConfig().defaultSize
-  - all instances of $body can become getConfig().defaultFontFamily
   - remove the validation in createTamagui that enforces the keys
 
 - relative sizing first class (and relative color)

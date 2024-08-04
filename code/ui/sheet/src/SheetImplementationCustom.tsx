@@ -1,3 +1,4 @@
+import React from 'react'
 import { AdaptParentContext } from '@tamagui/adapt'
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { useComposedRefs } from '@tamagui/compose-refs'
@@ -28,7 +29,6 @@ import { SheetProvider } from './SheetContext'
 import type { SheetProps, SnapPointsMode } from './types'
 import { useSheetOpenState } from './useSheetOpenState'
 import { useSheetProviderProps } from './useSheetProviderProps'
-import React from 'react'
 
 let hiddenSize = 10_000.1
 
@@ -104,9 +104,9 @@ export const SheetImplementationCustom = themeable(
       const positions = React.useMemo(
         () =>
           snapPoints.map((point) =>
-            getYPositions(snapPointsMode, point, screenSize, frameSize)
+            getYPositions(snapPointsMode, point, screenSize, frameSize),
           ),
-        [screenSize, frameSize, snapPoints, snapPointsMode]
+        [screenSize, frameSize, snapPoints, snapPointsMode],
       )
 
       const { animationDriver } = useConfiguration()
@@ -126,7 +126,7 @@ export const SheetImplementationCustom = themeable(
         () => ({
           zIndex,
         }),
-        [zIndex]
+        [zIndex],
       )
 
       const animatedNumber = useAnimatedNumber(hiddenSize)
@@ -142,8 +142,8 @@ export const SheetImplementationCustom = themeable(
             at.current = value
             scrollBridge.paneY = value
           },
-          [animationDriver]
-        )
+          [animationDriver],
+        ),
       )
 
       function stopSpring() {
@@ -186,7 +186,7 @@ export const SheetImplementationCustom = themeable(
                 type: 'spring',
                 ...animationConfig,
               })
-            }
+            },
           )
           return
         }
@@ -273,7 +273,7 @@ export const SheetImplementationCustom = themeable(
 
         const onMoveShouldSet = (
           e: GestureResponderEvent,
-          { dy }: PanResponderGestureState
+          { dy }: PanResponderGestureState,
         ) => {
           // if dragging handle always allow:
           if (e.target === providerProps.handleRef.current) {
@@ -339,12 +339,12 @@ export const SheetImplementationCustom = themeable(
           // avoid bugs where it grows forever for whatever reason
           const next = Math.min(
             e.nativeEvent?.layout.height,
-            Dimensions.get('window').height
+            Dimensions.get('window').height,
           )
           if (!next) return
           setFrameSize(next)
         },
-        [keyboardIsVisible]
+        [keyboardIsVisible],
       )
 
       const handleMaxContentViewLayout = React.useCallback(
@@ -352,12 +352,12 @@ export const SheetImplementationCustom = themeable(
           // avoid bugs where it grows forever for whatever reason
           const next = Math.min(
             e.nativeEvent?.layout.height,
-            Dimensions.get('window').height
+            Dimensions.get('window').height,
           )
           if (!next) return
           setMaxContentSize(next)
         },
-        [keyboardIsVisible]
+        [keyboardIsVisible],
       )
 
       const animatedStyle = useAnimatedNumberStyle(animatedNumber, (val) => {
@@ -383,9 +383,9 @@ export const SheetImplementationCustom = themeable(
               {
                 type: 'spring',
                 ...animationConfig,
-              }
+              },
             )
-          }
+          },
         )
         const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
           if (sizeBeforeKeyboard.current === null) return
@@ -512,15 +512,15 @@ export const SheetImplementationCustom = themeable(
       }
 
       return contents
-    }
-  )
+    },
+  ),
 )
 
 function getYPositions(
   mode: SnapPointsMode,
   point: string | number,
   screenSize?: number,
-  frameSize?: number
+  frameSize?: number,
 ) {
   if (!screenSize || !frameSize) return 0
 

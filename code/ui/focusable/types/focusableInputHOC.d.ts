@@ -1,5 +1,5 @@
 import type { TamaguiComponent } from '@tamagui/web';
-import { type MutableRefObject } from 'react';
+import type { MutableRefObject } from 'react';
 type FocusableProps = {
     id?: string;
     onChangeText?: (val: string) => void;

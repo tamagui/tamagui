@@ -49,7 +49,7 @@ export function Highlights({ features, disableLinks, disableTitle, large }: any)
 
           <YStack my="$3" gap="$3">
             <Link
-              href={`https://github.com/tamagui/tamagui/tree/master/packages/${
+              href={`https://github.com/tamagui/tamagui/tree/master/code/ui/${
                 frontmatter.package
                   ? `${frontmatter.package}/src/${frontmatter.component}.tsx`
                   : `tamagui/src/views/${frontmatter.component}.tsx`

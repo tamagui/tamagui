@@ -47,11 +47,12 @@ const ProgressIndicator = ProgressIndicatorFrame.styleable(function ProgressIndi
   props: ScopedProps<ProgressIndicatorProps>,
   forwardedRef
 ) {
-  const { __scopeProgress, ...indicatorProps } = props
+  const { __scopeProgress, animation, ...indicatorProps } = props
   const context = useProgressContext(INDICATOR_NAME, __scopeProgress)
   const pct = context.max - (context.value ?? 0)
   // default somewhat far off
   const x = -(context.width === 0 ? 300 : context.width) * (pct / 100)
+
   return (
     <ProgressIndicatorFrame
       data-state={getProgressState(context.value, context.max)}
@@ -65,6 +66,8 @@ const ProgressIndicator = ProgressIndicatorFrame.styleable(function ProgressIndi
       })}
       {...indicatorProps}
       ref={forwardedRef}
+      // avoid animation on first render so the progress doesn't bounce to initial location
+      animation={!context.width ? null : animation}
     />
   )
 })
@@ -92,20 +95,6 @@ function isValidMaxNumber(max: any): max is number {
 
 function isValidValueNumber(value: any, max: number): value is number {
   return isNumber(value) && !Number.isNaN(value) && value <= max && value >= 0
-}
-
-// Split this out for clearer readability of the error message.
-function getInvalidMaxError(propValue: string, componentName: string) {
-  return `Invalid prop \`max\` of value \`${propValue}\` supplied to \`${componentName}\`. Only numbers greater than 0 are valid max values. Defaulting to \`${DEFAULT_MAX}\`.`
-}
-
-function getInvalidValueError(propValue: string, componentName: string) {
-  return `Invalid prop \`value\` of value \`${propValue}\` supplied to \`${componentName}\`. The \`value\` prop must be:
-  - a positive number
-  - less than the value passed to \`max\` (or ${DEFAULT_MAX} if no \`max\` prop is set)
-  - \`null\` if the progress is indeterminate.
-
-Defaulting to \`null\`.`
 }
 
 /* -------------------------------------------------------------------------------------------------
@@ -202,4 +191,4 @@ const Progress = withStaticProperties(
   }
 )
 
-export { Progress, ProgressIndicator, createProgressScope }
+export { createProgressScope, Progress, ProgressIndicator }

@@ -253,5 +253,5 @@ declare const Progress: React.ForwardRefExoticComponent<Omit<import("@tamagui/co
         chromeless?: boolean | "all" | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
 };
-export { Progress, ProgressIndicator, createProgressScope };
+export { createProgressScope, Progress, ProgressIndicator };
 //# sourceMappingURL=Progress.d.ts.map

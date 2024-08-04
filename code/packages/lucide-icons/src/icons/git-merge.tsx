@@ -1,6 +1,6 @@
-import React, { memo } from 'react'
-import PropTypes from 'prop-types'
-import type { IconProps } from '@tamagui/helpers-icon'
+import React from "react";
+import PropTypes from 'prop-types';
+import type { IconProps } from '@tamagui/helpers-icon';
 import {
   Svg,
   Circle as _Circle,
@@ -17,12 +17,12 @@ import {
   Text as _Text,
   Use,
   Defs,
-  Stop,
-} from 'react-native-svg'
-import { themed } from '@tamagui/helpers-icon'
+  Stop } from
+'react-native-svg';
+import { themed } from '@tamagui/helpers-icon';
 
 const Icon = (props) => {
-  const { color = 'black', size = 24, ...otherProps } = props
+  const { color = 'black', size = 24, ...otherProps } = props;
   return (
     <Svg
       width={size}
@@ -33,15 +33,15 @@ const Icon = (props) => {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      {...otherProps}
-    >
+      {...otherProps}>
+
       <_Circle cx="18" cy="18" r="3" stroke={color} />
       <_Circle cx="6" cy="6" r="3" stroke={color} />
       <Path d="M6 21V9a9 9 0 0 0 9 9" stroke={color} />
-    </Svg>
-  )
-}
+    </Svg>);
 
-Icon.displayName = 'GitMerge'
+};
 
-export const GitMerge = memo<IconProps>(themed(Icon))
+Icon.displayName = 'GitMerge';
+
+export const GitMerge = React.memo<IconProps>(themed(Icon));

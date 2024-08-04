@@ -2,6 +2,7 @@ export type ThemeProviderProps = {
     className?: string;
     defaultTheme: string;
     disableRootThemeClass?: boolean;
+    /** @deprecated moved to createTamagui({ settings: { disableRootThemeClass } }) */
     themeClassNameOnRoot?: boolean;
     children?: any;
     reset?: boolean;

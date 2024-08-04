@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/babel-plugin-fully-specified",
-  "version": "1.105.1",
+  "version": "1.108.0-1722728147390",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",

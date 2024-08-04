@@ -130,8 +130,8 @@ visit your project:
     Find info on the rest of the scripts in ${chalk.cyan(`supabase/README.md`)}
 
     If you've purchased and gained access to font and icon packages, you can run:
-    ${chalk.green('yarn tamagui add icon')}
-    ${chalk.green('yarn tamagui add font')}
+    ${chalk.green('yarn add:icon')}
+    ${chalk.green('yarn add:font')}
   `)
 }
 export default main

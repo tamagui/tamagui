@@ -1,0 +1,50 @@
+diff --git a/node_modules/react/index.web.js b/node_modules/react/index.web.js
+new file mode 100644
+index 0000000..4251744
+--- /dev/null
++++ b/node_modules/react/index.web.js
+@@ -0,0 +1 @@
++module.exports = require('@vxrn/vendor/react-19');
+\ No newline at end of file
+diff --git a/node_modules/react/jsx-dev-runtime.web.js b/node_modules/react/jsx-dev-runtime.web.js
+new file mode 100644
+index 0000000..d1db0b7
+--- /dev/null
++++ b/node_modules/react/jsx-dev-runtime.web.js
+@@ -0,0 +1 @@
++module.exports = require('@vxrn/vendor/react-jsx-dev-19');
+\ No newline at end of file
+diff --git a/node_modules/react/jsx-runtime.web.js b/node_modules/react/jsx-runtime.web.js
+new file mode 100644
+index 0000000..cbf3617
+--- /dev/null
++++ b/node_modules/react/jsx-runtime.web.js
+@@ -0,0 +1 @@
++module.exports = require('@vxrn/vendor/react-jsx-19');
+\ No newline at end of file
+diff --git a/node_modules/react/package.json b/node_modules/react/package.json
+index 79dae68..0253247 100644
+--- a/node_modules/react/package.json
++++ b/node_modules/react/package.json
+@@ -22,11 +22,18 @@
+   "exports": {
+     ".": {
+       "react-server": "./react.shared-subset.js",
+-      "default": "./index.js"
++      "react-native": "./index.js",
++      "default": "./index.web.js"
+     },
+     "./package.json": "./package.json",
+-    "./jsx-runtime": "./jsx-runtime.js",
+-    "./jsx-dev-runtime": "./jsx-dev-runtime.js"
++    "./jsx-runtime": {
++      "react-native": "./jsx-runtime.js",
++      "default": "./jsx-runtime.web.js"
++    },
++    "./jsx-dev-runtime": {
++      "react-native": "./jsx-dev-runtime.js",
++      "default": "./jsx-dev-runtime.web.js"
++    }
+   },
+   "repository": {
+     "type": "git",

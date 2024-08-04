@@ -7,6 +7,7 @@ export declare const useConfiguration: () => {
     language: import("../views/FontLanguage.types").LanguageContextType | null;
     unset?: import("..").BaseStyleProps;
     reactNative?: any;
+    defaultFont?: string;
     selectionStyles?: (theme: Record<string, string>) => null | {
         backgroundColor?: any;
         color?: any;
@@ -54,47 +55,7 @@ export declare const useConfiguration: () => {
         };
     };
     onlyAllowShorthands: boolean | undefined;
-    defaultFont: string | undefined;
-    settings: {
-        styleCompat?: "react-native";
-        allowedStyleValues?: (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | {
-            space?: "number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | "percent";
-            size?: "number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | "percent";
-            radius?: "number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web");
-            zIndex?: "number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web");
-            color?: (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | "named";
-        };
-        autocompleteSpecificTokens?: boolean | "except-special";
-        mediaPropOrder?: boolean;
-        fastSchemeChange?: boolean;
-        webContainerType?: "normal" | "size" | "inline-size" | "inherit" | "initial" | "revert" | "revert-layer" | "unset";
-    } & Omit<{
-        styleCompat?: "react-native";
-        allowedStyleValues?: (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | {
-            space?: "number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | "percent";
-            size?: "number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | "percent";
-            radius?: "number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web");
-            zIndex?: "number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web");
-            color?: (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | "named";
-        };
-        autocompleteSpecificTokens?: boolean | "except-special";
-        mediaPropOrder?: boolean;
-        fastSchemeChange?: boolean;
-        webContainerType?: "normal" | "size" | "inline-size" | "inherit" | "initial" | "revert" | "revert-layer" | "unset";
-    }, keyof {
-        styleCompat?: "react-native";
-        allowedStyleValues?: (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | {
-            space?: "number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | "percent";
-            size?: "number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | "percent";
-            radius?: "number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web");
-            zIndex?: "number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web");
-            color?: (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | "named";
-        };
-        autocompleteSpecificTokens?: boolean | "except-special";
-        mediaPropOrder?: boolean;
-        fastSchemeChange?: boolean;
-        webContainerType?: "normal" | "size" | "inline-size" | "inherit" | "initial" | "revert" | "revert-layer" | "unset";
-    }>;
+    settings: import("..").GenericTamaguiSettings & Omit<import("..").GenericTamaguiSettings, keyof import("..").GenericTamaguiSettings>;
     tokens: Omit<{
         [x: string]: {
             [x: string]: import("..").Variable<any> | import("..").Variable<string> | import("..").Variable<number> | import("..").Variable<import("..").VariableValGeneric>;

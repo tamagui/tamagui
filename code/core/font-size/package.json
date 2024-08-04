@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/font-size",
-  "version": "1.105.1",
+  "version": "1.108.0-1722728147390",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -29,11 +29,11 @@
     "lint:fix": "npx biome check --apply-unsafe src"
   },
   "dependencies": {
-    "@tamagui/core": "1.105.1"
+    "@tamagui/core": "1.108.0-1722728147390"
   },
   "devDependencies": {
-    "@tamagui/build": "1.105.1",
-    "react": "^18.2.0"
+    "@tamagui/build": "1.108.0-1722728147390",
+    "react": "^18.2.0 || ^19.0.0"
   },
   "publishConfig": {
     "access": "public"

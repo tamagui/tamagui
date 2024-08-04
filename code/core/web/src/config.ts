@@ -2,6 +2,7 @@ import { isWeb } from '@tamagui/constants'
 
 import type {
   ConfigListener,
+  GenericTamaguiSettings,
   TamaguiInternalConfig,
   Token,
   Tokens,
@@ -9,6 +10,19 @@ import type {
 } from './types'
 
 let conf: TamaguiInternalConfig | null
+
+export const getSetting = <Key extends keyof GenericTamaguiSettings>(
+  key: Key
+): GenericTamaguiSettings[Key] => {
+  if (process.env.NODE_ENV === 'development') {
+    if (!conf) throw new Error(`Haven't called createTamagui yet`)
+  }
+  return (
+    conf!.settings[key] ??
+    // @ts-expect-error
+    conf[key]
+  )
+}
 
 export const setConfig = (next: TamaguiInternalConfig) => {
   conf = next

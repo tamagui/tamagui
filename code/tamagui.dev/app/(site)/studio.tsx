@@ -75,7 +75,6 @@ export default function StudioSplashPage() {
                       size="$6"
                       borderRadius="$10"
                       elevation="$2"
-                      className="glowing"
                       pe="auto"
                       hoverStyle={{
                         bg: '$color10',

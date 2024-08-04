@@ -5,6 +5,7 @@ import type { Variable } from '../createVariable'
 import { variableToString } from '../createVariable'
 import type { CreateTamaguiProps, ThemeParsed } from '../types'
 import { tokensValueToVariable } from './registerCSSVariable'
+import { getSetting } from '../config'
 
 export function getThemeCSSRules(props: {
   config: CreateTamaguiProps
@@ -59,7 +60,7 @@ export function getThemeCSSRules(props: {
     // since we dont specify dark/light in classnames we have to do an awkward specificity war
     // use config.maxDarkLightNesting to determine how deep you can nest until it breaks
     if (hasDarkLight) {
-      const maxDepth = config.maxDarkLightNesting ?? 3
+      const maxDepth = getSetting('maxDarkLightNesting') ?? 3
 
       for (const subName of names) {
         const isDark = isDarkBase || subName.startsWith('dark_')
@@ -115,7 +116,7 @@ export function getThemeCSSRules(props: {
     // this isBaseTheme logic could probably be done more efficiently above
     const selectorsString = selectors
       .map((x) => {
-        const rootSep = isBaseTheme(x) && config.themeClassNameOnRoot ? '' : ' '
+        const rootSep = isBaseTheme(x) && getSetting('themeClassNameOnRoot') ? '' : ' '
         return `:root${rootSep}${x}`
       })
       .join(', ')
@@ -123,7 +124,7 @@ export function getThemeCSSRules(props: {
     const css = `${selectorsString} {${vars}}`
     cssRuleSets.push(css)
 
-    if (config.shouldAddPrefersColorThemes) {
+    if (getSetting('shouldAddPrefersColorThemes')) {
       const bgString = theme.background
         ? `background:${variableToString(theme.background)};`
         : ''
@@ -154,8 +155,9 @@ export function getThemeCSSRules(props: {
       cssRuleSets.push(prefersMediaSelectors)
     }
 
-    if (config.selectionStyles) {
-      const rules = config.selectionStyles(theme as any)
+    const selectionStyles = getSetting('selectionStyles')
+    if (selectionStyles) {
+      const rules = selectionStyles(theme as any)
       if (rules) {
         const selectionSelectors = baseSelectors.map((s) => `${s} ::selection`).join(', ')
         const styles = Object.entries(rules)

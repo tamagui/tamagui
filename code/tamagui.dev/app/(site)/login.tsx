@@ -212,7 +212,6 @@ function SignIn() {
                     ai="center"
                     jc="center"
                     br="$4"
-                    className="backdrop-blur"
                   >
                     <Paragraph ta="center" mt="$2" col="$color9">
                       Email auth is disabled at the moment.

@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/next-site",
-  "version": "1.105.1",
+  "version": "1.108.0-1722728147390",
   "private": true,
   "source": "src",
   "scripts": {
@@ -31,15 +31,15 @@
     "@types/lodash-es": "^4.17.6",
     "@types/uuid": "^8.3.4",
     "next": "^14.2.5",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "react": "^18.2.0 || ^19.0.0",
+    "react-dom": "^18.2.0 || ^19.0.0",
     "react-native": "0.74.1"
   },
   "devDependencies": {
     "@babel/preset-react": "^7.23.3",
     "@babel/preset-typescript": "^7.23.3",
     "@playwright/test": "^1.45.2",
-    "@tamagui/build": "1.105.1",
-    "tamagui-loader": "1.105.1"
+    "@tamagui/build": "1.108.0-1722728147390",
+    "tamagui-loader": "1.108.0-1722728147390"
   }
 }

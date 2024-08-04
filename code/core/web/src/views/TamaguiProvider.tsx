@@ -1,10 +1,12 @@
+import React from 'react'
 import { isClient, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
-import { useEffect, useState } from 'react'
+
 import { ComponentContext } from '../contexts/ComponentContext'
 import { useDidHydrateOnceRoot } from '../hooks/useDidHydrateOnce'
 import { setupMediaListeners } from '../hooks/useMedia'
 import type { TamaguiProviderProps } from '../types'
 import { ThemeProvider } from './ThemeProvider'
+import { getSetting } from '../config'
 
 export function TamaguiProvider({
   children,
@@ -39,8 +41,12 @@ export function TamaguiProvider({
     <UnmountedClassName>
       <ComponentContext.Provider animationDriver={config?.animations}>
         <ThemeProvider
-          themeClassNameOnRoot={themeClassNameOnRoot ?? config?.themeClassNameOnRoot}
-          disableRootThemeClass={disableRootThemeClass ?? config?.disableRootThemeClass}
+          themeClassNameOnRoot={
+            themeClassNameOnRoot ?? getSetting('themeClassNameOnRoot')
+          }
+          disableRootThemeClass={
+            disableRootThemeClass ?? getSetting('disableRootThemeClass')
+          }
           defaultTheme={defaultTheme ?? (config ? Object.keys(config.themes)[0] : '')}
           reset={reset}
           className={className}
@@ -54,9 +60,9 @@ export function TamaguiProvider({
 
 // for CSS animations
 function UnmountedClassName(props: { children: React.ReactNode }) {
-  const [mounted, setMounted] = useState(false)
+  const [mounted, setMounted] = React.useState(false)
 
-  useEffect(() => {
+  React.useEffect(() => {
     setMounted(true)
   }, [])
 

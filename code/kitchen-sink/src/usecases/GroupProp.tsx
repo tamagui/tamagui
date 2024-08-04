@@ -7,10 +7,34 @@ const GroupTest = styled(Stack, {
 const GroupChild = styled(Stack, {
   width: 100,
   height: 100,
-  backgroundColor: 'rgb(0,0,255)',
+  backgroundColor: 'pink',
+
+  pressStyle: {
+    backgroundColor: 'black',
+  },
 
   '$group-testy': {
     backgroundColor: 'rgb(255,0,0)',
+
+    hoverStyle: {
+      backgroundColor: 'purple',
+    },
+
+    pressStyle: {
+      backgroundColor: 'yellow',
+    },
+  },
+
+  '$group-testy-sm': {
+    backgroundColor: 'rgb(0,255,0)',
+
+    hoverStyle: {
+      backgroundColor: 'purple',
+    },
+
+    pressStyle: {
+      backgroundColor: 'yellow',
+    },
   },
 })
 
@@ -21,10 +45,26 @@ const GroupChildMedia = styled(GroupChild, {
 
   '$group-testy': {
     backgroundColor: 'rgb(255,0,0)',
+
+    hoverStyle: {
+      backgroundColor: 'purple',
+    },
+
+    pressStyle: {
+      backgroundColor: 'yellow',
+    },
   },
 
   '$group-testy-sm': {
     backgroundColor: 'rgb(0,255,0)',
+
+    hoverStyle: {
+      backgroundColor: 'purple',
+    },
+
+    pressStyle: {
+      backgroundColor: 'yellow',
+    },
   },
 })
 
@@ -32,7 +72,7 @@ export function GroupProp() {
   return (
     <>
       <GroupTest>
-        <GroupChild id="styled" />
+        <GroupChild debug="verbose" id="styled" />
       </GroupTest>
 
       <GroupTest w={1000}>

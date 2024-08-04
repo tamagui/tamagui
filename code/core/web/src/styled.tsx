@@ -45,6 +45,7 @@ export function styled<
     variants?: Variants | undefined
     defaultVariants?: GetVariantAcceptedValues<Variants>
     context?: StyledContext
+    /** @deprecated pass in instead as the third argument to styled() */
     acceptsClassName?: boolean
   },
   staticExtractionOptions?: StyledStaticConfig
@@ -201,6 +202,7 @@ export function styled<
       )
 
       const acceptsClassName =
+        staticExtractionOptions?.acceptsClassName ??
         acceptsClassNameProp ??
         (isPlainStyledComponent ||
           isReactNative ||

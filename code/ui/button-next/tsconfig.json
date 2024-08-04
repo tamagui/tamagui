@@ -1,0 +1,34 @@
+{
+  "extends": "../../../tsconfig.json",
+  "compilerOptions": {
+    "composite": true
+  },
+  "references": [
+    {
+      "path": "../../core/font-size"
+    },
+    {
+      "path": "../../core/get-button-sized"
+    },
+    {
+      "path": "../../core/helpers"
+    },
+    {
+      "path": "../../core/helpers-tamagui"
+    },
+    {
+      "path": "../../core/web"
+    },
+    {
+      "path": "../stacks"
+    },
+    {
+      "path": "../text"
+    }
+  ],
+  "exclude": [
+    "types",
+    "dist",
+    "**/__tests__"
+  ]
+}

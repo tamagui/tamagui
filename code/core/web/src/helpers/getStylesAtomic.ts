@@ -14,6 +14,7 @@ import { normalizeValueWithProperty } from './normalizeValueWithProperty'
 import type { PseudoDescriptor } from './pseudoDescriptors'
 import { pseudoDescriptors } from './pseudoDescriptors'
 import { transformsToString } from './transformsToString'
+import { isMediaKey } from '../hooks/useMedia'
 
 // refactor this file away next...
 
@@ -25,6 +26,14 @@ export function getStylesAtomic(style: ViewStyleWithPseudos) {
     if (key in pseudoDescriptors) {
       if (val) {
         out.push(...getStyleAtomic(val, pseudoDescriptors[key]))
+      }
+    } else if (isMediaKey(key)) {
+      for (const subKey in val) {
+        const so = getStyleObject(val, subKey)
+        if (so) {
+          so[0] = key // set the property to be eg $platform-web so we can use it above
+          out.push(so)
+        }
       }
     } else {
       const so = getStyleObject(style, key)

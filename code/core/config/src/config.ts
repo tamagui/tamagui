@@ -6,15 +6,11 @@ import { fonts } from './fonts'
 import { media, mediaQueryDefaultActive } from './media'
 
 export const configWithoutAnimations = {
-  defaultFont: 'body',
-  shouldAddPrefersColorThemes: true,
-  themeClassNameOnRoot: true,
   themes,
   media,
   shorthands,
   tokens,
   fonts,
-  mediaQueryDefaultActive: mediaQueryDefaultActive,
   selectionStyles: (theme) =>
     theme.color5
       ? {
@@ -22,4 +18,11 @@ export const configWithoutAnimations = {
           color: theme.color11,
         }
       : null,
+
+  settings: {
+    defaultFont: 'body',
+    shouldAddPrefersColorThemes: true,
+    themeClassNameOnRoot: true,
+    mediaQueryDefaultActive,
+  },
 } satisfies CreateTamaguiProps

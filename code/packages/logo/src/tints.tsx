@@ -1,4 +1,4 @@
-import { startTransition, useEffect, useState } from 'react'
+import React from 'react'
 import type { ThemeName } from 'tamagui'
 
 type ChangeHandler = (next: TintFamily) => void
@@ -20,9 +20,7 @@ const DEFAULT_FAMILY: Family = 'tamagui'
 
 const familiesNames = Object.keys(familiesValues) as any as Family[]
 
-const families = familiesValues as {
-  [key in Family]: ThemeName[]
-}
+const families = familiesValues as { [key in Family]: ThemeName[] }
 
 type TintFamily = keyof typeof families
 
@@ -59,11 +57,11 @@ export function getTints() {
 }
 
 export function useTints() {
-  const [val, setVal] = useState(getTints())
+  const [val, setVal] = React.useState(getTints())
 
-  useEffect(() => {
+  React.useEffect(() => {
     return onTintFamilyChange(() => {
-      startTransition(() => {
+      React.startTransition(() => {
         setVal(getTints())
       })
     })
@@ -75,7 +73,7 @@ export function useTints() {
 export function setTintFamily(next: TintFamily) {
   if (!families[next]) throw `impossible`
   fam = next
-  startTransition(() => {
+  React.startTransition(() => {
     listeners.forEach((l) => l(next))
   })
 }

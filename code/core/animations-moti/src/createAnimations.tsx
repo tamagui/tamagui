@@ -1,8 +1,9 @@
+import React from 'react'
 import { PresenceContext, ResetPresence, usePresence } from '@tamagui/use-presence'
 import type { AnimationDriver, UniversalAnimatedNumber } from '@tamagui/web'
 import type { TransitionConfig } from 'moti'
 import { useMotify } from 'moti'
-import { useContext, useMemo, type CSSProperties } from 'react'
+import type { CSSProperties } from 'react'
 import type { TextStyle } from 'react-native'
 import type { SharedValue } from 'react-native-reanimated'
 import Animated, {
@@ -69,6 +70,10 @@ const onlyAnimateKeys: { [key in keyof TextStyle | keyof CSSProperties]?: boolea
   right: true,
   top: true,
   bottom: true,
+  fontSize: true,
+  fontWeight: true,
+  lineHeight: true,
+  letterSpacing: true,
 }
 
 export function createAnimations<A extends Record<string, TransitionConfig>>(
@@ -87,7 +92,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
     useAnimatedNumber(initial): UniversalAnimatedNumber<ReanimatedAnimatedNumber> {
       const sharedValue = useSharedValue(initial)
 
-      return useMemo(
+      return React.useMemo(
         () => ({
           getInstance() {
             'worklet'
@@ -178,10 +183,12 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         : props.animation
 
       const isHydrating = componentState.unmounted === true
+      const disableAnimation = isHydrating || !animationKey
+
       let animate = {}
       let dontAnimate = {}
 
-      if (isHydrating) {
+      if (disableAnimation) {
         dontAnimate = style
       } else {
         const animateOnly = props.animateOnly as string[]
@@ -208,26 +215,34 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
       // without this, the driver breaks on native
       // stringifying -> parsing fixes that
       const animateStr = JSON.stringify(animate)
-      const styles = useMemo(() => JSON.parse(animateStr), [animateStr])
+      const styles = React.useMemo(() => JSON.parse(animateStr), [animateStr])
 
       const isExiting = Boolean(presence?.[1])
-      const presenceContext = useContext(PresenceContext)
+      const presenceContext = React.useContext(PresenceContext)
       const usePresenceValue = (presence || undefined) as any
 
       type UseMotiProps = Parameters<typeof useMotify>[0]
 
       // TODO moti is giving us type troubles, but this should work
-      const transition = isHydrating
+      let transition = isHydrating
         ? { type: 'transition', duration: 0 }
-        : {
-            ...(animations[animationKey as keyof typeof animations] as any),
-          }
+        : (animations[animationKey as keyof typeof animations] as any)
+
+      let hasClonedTransition = false
 
       if (Array.isArray(props.animation)) {
         const config = props.animation[1]
         if (config && typeof config === 'object') {
           for (const key in config) {
             const val = config[key]
+
+            // performance - this seems to have (strangely) huge performance effect in uniswap
+            // so instead of cloning up front, we clone only when we absolutely have to
+            if (!hasClonedTransition) {
+              transition = Object.apply({}, transition)
+              hasClonedTransition = true
+            }
+
             // referencing a pre-defined config
             if (typeof val === 'string') {
               transition[key] = animations[val]

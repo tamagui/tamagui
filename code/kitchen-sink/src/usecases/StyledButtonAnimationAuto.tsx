@@ -1,18 +1,18 @@
-import { getSize, getSpace } from '@tamagui/get-token'
-import type { GetProps, SizeTokens } from '@tamagui/web'
+import React from "react";import { getSize, getSpace } from '@tamagui/get-token';
+import type { GetProps, SizeTokens } from '@tamagui/web';
 import {
   View,
   Text,
   createStyledContext,
   styled,
   useTheme,
-  withStaticProperties,
-} from '@tamagui/web'
-import { cloneElement, useContext } from 'react'
+  withStaticProperties } from
+'@tamagui/web';
+
 
 export const ButtonContext = createStyledContext({
-  size: '$md' as SizeTokens,
-})
+  size: ('$md' as SizeTokens)
+});
 export const ButtonFrame = styled(View, {
   name: 'Button',
   context: ButtonContext,
@@ -25,10 +25,10 @@ export const ButtonFrame = styled(View, {
   animation: 'bouncy',
   pressStyle: {
     scale: 0.97,
-    opacity: 0.9,
+    opacity: 0.9
   },
 
-  variants: {
+  variants: ({
     size: {
       '...size': (name, { tokens }) => {
         return {
@@ -45,55 +45,54 @@ export const ButtonFrame = styled(View, {
           gap: tokens.space[name].val * 0.2,
 
           paddingHorizontal: getSpace(name, {
-            shift: -1,
-          }),
-        }
-      },
-    },
-  } as const,
+            shift: -1
+          })
+        };
+      }
+    }
+  } as const),
 
   defaultVariants: {
-    size: '$5',
-  },
-})
-type ButtonProps = GetProps<typeof ButtonFrame>
+    size: '$5'
+  }
+});
+type ButtonProps = GetProps<typeof ButtonFrame>;
 export const ButtonText = styled(Text, {
   name: 'ButtonText',
   context: ButtonContext,
   color: '$color',
   userSelect: 'none',
-  variants: {
+  variants: ({
     size: {
       '...fontSize': (name, { font }) => ({
-        fontSize: font?.size[name],
-      }),
-    },
-  } as const,
-})
+        fontSize: font?.size[name]
+      })
+    }
+  } as const)
+});
 
-const ButtonIcon = (props: { children: any }) => {
-  const { size } = useContext(ButtonContext.context)
+const ButtonIcon = (props: {children: any;}) => {
+  const { size } = React.useContext(ButtonContext.context);
 
   const smaller = getSize(size, {
-    shift: -2,
-  })
+    shift: -2
+  });
 
-  const theme = useTheme()
+  const theme = useTheme();
 
-  return cloneElement(props.children, {
+  return React.cloneElement(props.children, {
     size: smaller.val * 0.5,
-    color: theme.color.get(),
-  })
-}
+    color: theme.color.get()
+  });
+};
 
 const Button = withStaticProperties(ButtonFrame, {
   Props: ButtonContext.Provider,
   Text: ButtonText,
-  Icon: ButtonIcon,
-})
+  Icon: ButtonIcon
+});
 
-export const StyledButtonAnimationAuto = () => (
-  <Button id="test">
+export const StyledButtonAnimationAuto = () =>
+<Button id="test">
     <Button.Text>test</Button.Text>
-  </Button>
-)
+  </Button>;
