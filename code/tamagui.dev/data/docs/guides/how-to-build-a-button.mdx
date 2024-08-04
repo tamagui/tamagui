@@ -2,7 +2,7 @@
 title: How to Build a Button
 description:
   Learn how to create a powerful yet simple API for a button with Tamagui and
-  composable components
+  compound components
 hero: HowToBuildAButton
 demoName: BuildAButton
 ---
@@ -23,14 +23,14 @@ between sub-components' positions, spacing and style.
 All of this ideally delivered in a simple API that still allows complete
 customization.
 
-Tamagui allows for building a button with "composable components," a concept
+Tamagui allows for building a button with "compound components," a concept
 popularized by [Radix](https://www.radix-ui.com/). With the introduction of
 `createStyledContext` in version 1.28 this pattern has become especially easy,
 so we wrote this guide to show off building more advanced composable component
 APIs. While this guide covers a button, this is applicable to many types of UI
 components.
 
-So what are composable components? Simply, it's when you have, say, a
+So what are compound components? Simply, it's when you have, say, a
 `<Button />` that wants children `<Button.Text />` and `<Button.Icon />`.
 
 And why do they exist? Well, we'll explain that and more in this guide.
@@ -40,7 +40,7 @@ Tamagui components off the shelf and use them with inline styles. But sometimes
 you need components that want for multiple related children.
 
 <Notice>
-  This guide is more of a primer on designing composable components, teaching
+  This guide is more of a primer on designing compound components, teaching
   advanced concepts that aren't necessary if you just want to build your app. If
   you just want a simple, ready to use Button, you can use the [Tamagui
   Button](/docs/components/button) itself directly.
@@ -733,7 +733,7 @@ say changing out `children` + `cloneElement` for something like
 ### Conclusion
 
 We hope this has been helpful in explaining a variety of Tamagui features and
-some of the benefits of and ideas behind composable components.
+some of the benefits of and ideas behind compound components.
 
 There's certainly further you can go in building out your Button, but we think
 that in under 150 lines of code you're getting a nearly ideal API, fully typed
