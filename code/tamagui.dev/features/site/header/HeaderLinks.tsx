@@ -91,7 +91,7 @@ export const HeaderLinks = (props: HeaderProps) => {
         </HeadAnchor>
       </Link>
 
-      <Link asChild href="/ui/stacks">
+      <Link asChild href="/ui/intro">
         <HeadAnchor
           // half={forceShowAllLinks}
           grid={forceShowAllLinks}

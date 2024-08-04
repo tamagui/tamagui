@@ -9,7 +9,7 @@ description: An optional suite of fully open source components - in styled and u
   Fully open source composable components for all&nbsp;React&nbsp;platforms.
 </Description>
 
-Tamagui UI is an open source collection of "[composable components](https://dev.to/haribhandari/react-build-your-own-composable-headless-components-170b)" that all render universally - ie on React web and React Native at once. Some components render the same on all platforms, but many now [Adapt](docs/components/popover) to render as different components depending on platform or capability. And a few even have native adaptations that let you render for example your Sheet contents into native iOS modals.
+Tamagui UI is an open source collection of "[composable components](https://dev.to/haribhandari/react-build-your-own-composable-headless-components-170b)" that all render universally - ie on React web and React Native at once. Some components render the same on all platforms, but many now [Adapt](docs/components/popover) to render as different components depending on platform or capability. A few components have native adaptations, for example Sheet can adapt so its contents are rendered into a native iOS UIKit Sheet.
 
 All components in the kit can be installed independently, or you can install them all at once with:
 
@@ -21,7 +21,7 @@ yarn add tamagui
 
 The package `tamagui` is a superset of `@tamagui/core`, so if you've already installed core you can change all the references to `tamagui`.
 
-You'll need to add a provider for usage of the full component kit as it will set up the root portal for components like dialogs and popovers.
+You'll need to add a provider to the root of your app (unlike core where that is optioal), as it will set up the root portal for components like dialogs and popovers.
 
 ```tsx
 import { TamaguiProvider, View } from 'tamagui'
@@ -36,5 +36,5 @@ export default () => (
 )
 ```
 
-For a full guide on setting up `createTamagui`, read [the core configuration documentation](/docs/core/configuration).
+For a full guide on setting up your configuration with `createTamagui`, check [the core configuration docs](/docs/core/configuration).
 

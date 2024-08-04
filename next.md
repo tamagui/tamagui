@@ -1,3 +1,9 @@
+postable:
+
+- bring back copy paste on theme tab
+
+
+
 apply helps us create much simpler component APIs for v2
 likely last feature needed for it:
 
