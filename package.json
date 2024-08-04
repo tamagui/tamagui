@@ -19,7 +19,6 @@
     "./code/tamagui.dev",
     "./code/ui/**/*"
   ],
-  "packageManager": "yarn@4.3.1",
   "scripts": {
     "ooo": "yarn workspace @tamagui/ooo dev:clean",
     "ooo:build": "yarn workspace @tamagui/ooo build:prod",
