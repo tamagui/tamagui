@@ -38,7 +38,7 @@
     "tamagui": "1.108.0-1722728147390",
     "vite": "6.0.0-alpha.18",
     "vite-plugin-inspect": "^0.8.4",
-    "vxs": "^1.1.159",
+    "vxs": "^1.1.162",
     "zod": "^3.22.4"
   },
   "devDependencies": {
@@ -47,6 +47,6 @@
     "h3": "patch:h3@npm%3A1.11.1#~/.yarn/patches/h3-npm-1.11.1-e4c2aa03b9.patch",
     "patch-package": "^8.0.0",
     "supabase": "1.127.4",
-    "vxrn": "^1.1.159"
+    "vxrn": "^1.1.162"
   }
 }

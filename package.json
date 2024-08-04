@@ -149,6 +149,7 @@
     "p-map": "^5.5.0",
     "patch-package": "^8.0.0",
     "prompts": "2.1.0",
+    "react-native-screens": "3.22.1",
     "turbo": "^1.13.3",
     "typescript": "^5.5.2",
     "ultra-runner": "^3.10.5",
