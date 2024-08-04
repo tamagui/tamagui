@@ -93,7 +93,7 @@
     "upgrade:starters:remix": "cd code/starters/remix && yarn && yarn upgrade:tamagui",
     "upgrade:starters:simple-web": "cd code/starters/simple-web && yarn && yarn upgrade:tamagui",
     "upgrade:starters": "yarn upgrade:starters:free && yarn upgrade:starters:simple-web && yarn upgrade:starters:expo-router && yarn upgrade:starters:remix",
-    "upgrade:vxrn": "yarn up '*vxrn*'@latest 'vxs'@latest",
+    "upgrade:vxrn": "yarn up 'vxs'@latest",
     "vercel:build": "yarn build:js && cd code/old-site && yarn ci:build",
     "watch": "npm-run-all --parallel watch:ts watch:packages",
     "watch:packages": "SKIP_TYPES_INITIAL=1 ultra -r --no-pretty --concurrency 400 watch",
