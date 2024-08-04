@@ -382,7 +382,7 @@ export const SheetImplementationCustom = themeable(
               Math.max(sizeBeforeKeyboard.current - e.endCoordinates.height, 0),
               {
                 type: 'timing',
-                duration: 500,
+                duration: 250,
               }
             )
           }
@@ -391,7 +391,7 @@ export const SheetImplementationCustom = themeable(
           if (sizeBeforeKeyboard.current === null) return
           animatedNumber.setValue(sizeBeforeKeyboard.current, {
             type: 'timing',
-            duration: 500,
+            duration: 250,
           })
           sizeBeforeKeyboard.current = null
         })
