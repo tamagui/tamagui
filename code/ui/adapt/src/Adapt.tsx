@@ -16,8 +16,8 @@ export type AdaptProps = {
   when?: MediaQueryKeyString | ((state: { media: UseMediaState }) => boolean)
   platform?: 'native' | 'web' | 'touch' | 'ios' | 'android'
   children?:
-    | React.ReactNode
-    | ((state: { enabled: boolean; media: UseMediaState }) => React.ReactNode)
+    | JSX.Element
+    | ((state: { enabled: boolean; media: UseMediaState }) => JSX.Element)
 }
 
 type When = MediaQueryKeyString | boolean | null
