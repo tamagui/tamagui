@@ -6,7 +6,7 @@ export type AdaptProps = {
         media: UseMediaState;
     }) => boolean);
     platform?: 'native' | 'web' | 'touch' | 'ios' | 'android';
-    children?: JSX.Element | ((state: {
+    children: JSX.Element | ((state: {
         enabled: boolean;
         media: UseMediaState;
     }) => JSX.Element);
@@ -30,7 +30,7 @@ export declare const useAdaptParent: ({ Contents, }: {
     }) => import("react/jsx-runtime").JSX.Element;
     when: When;
 };
-export declare const Adapt: (({ platform, when, children }: AdaptProps) => JSX.Element | null | undefined) & {
+export declare const Adapt: (({ platform, when, children }: AdaptProps) => JSX.Element | null) & {
     Contents: {
         (props: any): React.FunctionComponentElement<any>;
         shouldForwardSpace: boolean;

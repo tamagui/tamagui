@@ -15,7 +15,7 @@ type MediaQueryKeyString = MediaQueryKey extends string ? MediaQueryKey : never
 export type AdaptProps = {
   when?: MediaQueryKeyString | ((state: { media: UseMediaState }) => boolean)
   platform?: 'native' | 'web' | 'touch' | 'ios' | 'android'
-  children?:
+  children:
     | JSX.Element
     | ((state: { enabled: boolean; media: UseMediaState }) => JSX.Element)
 }
