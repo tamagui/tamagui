@@ -25,6 +25,7 @@
     "@tamagui/logo": "1.108.0-1722728147390",
     "@tamagui/lucide-icons": "1.108.0-1722728147390",
     "@tamagui/react-native-svg": "1.108.0-1722728147390",
+    "drizzle-orm": "^0.32.1",
     "expo-apple-authentication": "~6.4.1",
     "expo-crypto": "~13.0.2",
     "jsonwebtoken": "^9.0.2",
@@ -43,8 +44,10 @@
   },
   "devDependencies": {
     "@tamagui/cli": "1.108.0-1722728147390",
+    "drizzle-kit": "0.22.8",
     "esbuild-register": "^3.6.0",
     "patch-package": "^8.0.0",
+    "postgres": "^3.4.4",
     "supabase": "1.127.4"
   }
 }
