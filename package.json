@@ -117,7 +117,7 @@
       "resolutions": {
         "@vxrn/react-native-prebuilt": "portal:~/vxrn/packages/react-native-prebuilt",
         "@vxrn/safe-area": "portal:~/vxrn/packages/safe-area",
-        "@vxrn/vendor": "portal:~/vxrn/packages/vite-flow",
+        "@vxrn/vendor": "portal:~/vxrn/packages/vendor",
         "@vxrn/vite-flow": "portal:~/vxrn/packages/vite-flow",
         "@vxrn/vite-native-client": "portal:~/vxrn/packages/vite-native-client",
         "@vxrn/vite-native-hmr": "portal:~/vxrn/packages/vite-native-hmr",
