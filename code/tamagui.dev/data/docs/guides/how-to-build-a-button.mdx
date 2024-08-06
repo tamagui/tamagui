@@ -26,7 +26,7 @@ customization.
 Tamagui allows for building a button with "compound components," a concept
 popularized by [Radix](https://www.radix-ui.com/). With the introduction of
 `createStyledContext` in version 1.28 this pattern has become especially easy,
-so we wrote this guide to show off building more advanced composable component
+so we wrote this guide to show off building more advanced compound component
 APIs. While this guide covers a button, this is applicable to many types of UI
 components.
 
@@ -464,7 +464,7 @@ The problem with abstracting your Button into a single component is that the
 internals are surprisingly flexible, and ideally they want to each be styled
 independently.
 
-Abstracting the tree structure that's output is our problem. The composable
+Abstracting the tree structure that's output is our problem. The compound
 component API gives us full control - we can customize every piece, even using
 the existing `styled` function to re-style each piece, before re-exporting it
 again:
@@ -498,7 +498,7 @@ Not to mention by staying with the `styled` world, the Tamagui optimizing
 compiler confidently flattens our Button components down to ridiculously fast
 DOM output on the web, and pulls out all styles from the render loop on native.
 
-So we want our composable component API both for ergonomics and for performance,
+So we want our compound component API both for ergonomics and for performance,
 but we need some way to thread our `size` property down from the parent frame to
 the inner sub-components.
 
@@ -507,7 +507,7 @@ the inner sub-components.
 In React this is typically what context is used for.
 
 Here's how we'd solve for size using context in plain-old React, while still
-keeping the composable API:
+keeping the compound API:
 
 ```tsx
 import { createContext } from 'react'
@@ -743,7 +743,7 @@ If you are working on a smaller app, say one that shows only a few buttons at a
 time or with a small set of button variations, then abstracting your Button into
 a single functional Button component is totally fine.
 
-But we'd that encourage you to give the composable component API a try and see
+But we'd that encourage you to give the compound component API a try and see
 how you like it.
 
 With the new Tamagui APIs, we look forward to never having to carefully add a
