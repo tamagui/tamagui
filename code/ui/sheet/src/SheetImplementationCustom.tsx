@@ -2,7 +2,7 @@ import React from 'react'
 import { AdaptParentContext } from '@tamagui/adapt'
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { currentPlatform, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import {
   getConfig,
   Stack,
@@ -14,7 +14,6 @@ import {
 } from '@tamagui/core'
 import { Portal } from '@tamagui/portal'
 import { useKeyboardVisible } from '@tamagui/use-keyboard-visible'
-
 import type {
   Animated,
   GestureResponderEvent,
@@ -373,24 +372,35 @@ export const SheetImplementationCustom = themeable(
       const sizeBeforeKeyboard = React.useRef<number | null>(null)
       React.useEffect(() => {
         if (isWeb || !moveOnKeyboardChange) return
-        const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', (e) => {
-          if (sizeBeforeKeyboard.current !== null) return
-          sizeBeforeKeyboard.current = animatedNumber.getValue()
-          animatedNumber.setValue(
-            Math.max(animatedNumber.getValue() - e.endCoordinates.height, 0)
-          )
-        })
+        const keyboardShowListener = Keyboard.addListener(
+          currentPlatform === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow',
+          (e) => {
+            if (sizeBeforeKeyboard.current !== null) return
+            sizeBeforeKeyboard.current =
+              isHidden || position === -1 ? screenSize : positions[position]
+            animatedNumber.setValue(
+              Math.max(sizeBeforeKeyboard.current - e.endCoordinates.height, 0),
+              {
+                type: 'timing',
+                duration: 250,
+              }
+            )
+          }
+        )
         const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
           if (sizeBeforeKeyboard.current === null) return
-          animatedNumber.setValue(sizeBeforeKeyboard.current)
+          animatedNumber.setValue(sizeBeforeKeyboard.current, {
+            type: 'timing',
+            duration: 250,
+          })
           sizeBeforeKeyboard.current = null
         })
 
         return () => {
           keyboardDidHideListener.remove()
-          keyboardDidShowListener.remove()
+          keyboardShowListener.remove()
         }
-      }, [moveOnKeyboardChange])
+      }, [moveOnKeyboardChange, positions, position, isHidden])
 
       // we need to set this *after* fully closed to 0, to avoid it overlapping
       // the page when resizing quickly on web for example
