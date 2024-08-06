@@ -77,7 +77,7 @@ The `theme` prop is now also available on every component, including ones you cr
 
 Components now apply any sub-theme that matches their name - so `Button`, will look for `dark_blue_Button` if it exists, giving complete control the UI at the theme level, across every component. PLus, icons, buttons and more components have been upgraded to better handle passing themes down automatically.
 
-**I'm really happy with how this landed**. This release could have focused more on new components, but it became obvious while working on [Tooltip](/docs/components/tooltip) / [Popover](/docs/components/popover) / [Sheet](/docs/components/sheet) that _getting animations and themes right needed to happen first_ to avoid future pain.
+**I'm really happy with how this landed**. This release could have focused more on new components, but it became obvious while working on [Tooltip](/ui/tooltip) / [Popover](/ui/popover) / [Sheet](/ui/sheet) that _getting animations and themes right needed to happen first_ to avoid future pain.
 
 We now have a very solid foundation.
 
@@ -122,7 +122,7 @@ In early form, we've added [AnimatePresence](/docs/core/animations#animate-prese
 
 ### New Components
 
-We've added quite a few new components, and a good portion more are nearing release. Since the alpha we've introduced: [Inputs](/docs/components/inputs), [Label](/docs/components/label), [Switch](/docs/components/switch), [Image](/docs/components/image), [Separator](/docs/components/separator), [ThemeInverse](/docs/core/theme#theme-inverse), [Popover](/docs/components/popover), [Tooltip](/docs/components/tooltip), [Drawer](/docs/components/drawer), [Square and Circle](/docs/components/shapes), [HTML Elements](/docs/components/html-elements).
+We've added quite a few new components, and a good portion more are nearing release. Since the alpha we've introduced: [Inputs](/ui/inputs), [Label](/ui/label), [Switch](/ui/switch), [Image](/ui/image), [Separator](/ui/separator), [ThemeInverse](/docs/core/theme#theme-inverse), [Popover](/ui/popover), [Tooltip](/ui/tooltip), [Drawer](/ui/drawer), [Square and Circle](/ui/shapes), [HTML Elements](/ui/html-elements).
 
 Here's the new Switch component working with spring animations:
 
@@ -172,7 +172,7 @@ Tooltip likewise was rebuilt in a similar fashion to Popover - a composable comp
 
 ### Other Component Updates
 
-[LinearGradient](/docs/components/linear-gradient), [Image](/docs/components/image), and [Button](/docs/components/button) have received lots of love. LinearGradient now fully supports all theme values and the compiler will help it extract any style properties. Image should still be considered beta, but has gone through many rounds of bugfixes and improvements. And Button now handles passing more text properties down, themes and sizes icons more reliably, and has many fixes for variants like `circular`.
+[LinearGradient](/ui/linear-gradient), [Image](/ui/image), and [Button](/ui/button) have received lots of love. LinearGradient now fully supports all theme values and the compiler will help it extract any style properties. Image should still be considered beta, but has gone through many rounds of bugfixes and improvements. And Button now handles passing more text properties down, themes and sizes icons more reliably, and has many fixes for variants like `circular`.
 
 ---
 
@@ -208,7 +208,7 @@ Likewise, we've released `@tamagui/shorthands`, nice preset default shorthands.
 
 ### Feather Icons
 
-We've released [@tamagui/lucide-icons](/docs/components/lucide-icons), which have numerous adjustments to work well with themes and sizing.
+We've released [@tamagui/lucide-icons](/ui/lucide-icons), which have numerous adjustments to work well with themes and sizing.
 
 You can import and use them directly, or pass them to Buttons:
 

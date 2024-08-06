@@ -1,3 +1,8 @@
+uniswap:
+
+- not accepting number type in media query: "$platform-web" :{ gridColumnGap: 12 }
+- for some reason "$platform-web" :{ gridTemplateRows } not accepted in media uery only
+
 postable:
 
 - bring back copy paste on theme tab
