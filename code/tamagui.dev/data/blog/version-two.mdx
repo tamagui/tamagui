@@ -7,16 +7,18 @@ poster: banner-two.jpg
 ---
 
 <IntroParagraph>
-  Version two has taken us quite a while. You can call it stability. We definitely wanted a bit too much for a version two, and so delayed it for a while. Instead, we're cutting version 2 sooner than later just to break a few long-deprecated APIs, and to avoid having to write a blog post that is a mile long.
+  It's been nearly two full years since version one. What happened?
 </IntroParagraph>
 
-For new readers, Tamagui is a complete cross-platform styling solution. It has a core styling library, an optional UI kit that can be used unstyled or styled, and a novel optimizing compiler that outputs platform-optimized code, even doing advanced analysis and optimization to flatten VDOM.
+Tamagui is a cross-platform styling library and UI kit for React with a simple but effective optimizing compiler that helps it achieve a near zero-runtime performance while outputting platform-optimized code (div and CSS on web, hoisted objects on native). Every feature works at both runtime and compile-time, and on both native and web, and it let you achieve either consistent UI across platforms, or render to platform-specific UI elements with `<Adapt />` and the `native` prop.
 
-Version 2 doesn't make many breaking changes. We had deprecated a number of APIs over the last year and are now making those changes official.
+Version 2 has been long overdue. We launched two full-on products in the last year, and Tamagui has always been
+a side project of mine for the last few years, though it's been helped along by a great team of developers thanks to sponsors and our products.
 
-The full list of breaking changes is:
+Version 2 only makes a few breaking changes:
 
-- Move from `tamagui` to `@tamagui/ui`
+- `tamagui` becomes `@tamagui/ui`
+- `@tamagui/cli` is now just `tamagui`, so you can `npx tamagui` to use the CLI (for creating starters, linting, one-off compiling, and a doctor command).
 - Accessibility props - 
 - Flex defaults - 
 - TypeScript 5 -
@@ -48,7 +50,18 @@ Here are some highlights since version 1:
 
 ## @tamagui/ui
 
-One of the biggest changes
+### What's changed since v1.0.0
+
+
+### New components
+
+
+
+Image, Input, and Button are all re-written
+
+###
+
+
 
 ## Acknowledgements
 
