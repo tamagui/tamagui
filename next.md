@@ -49,6 +49,7 @@ const example = (
 
 v2:
 
+  - textAlignVertical is deprecated but make sure we map back from textAlign to textAlignVertical on v2 and then remove it
   - remove Provider need just global config once
   - @tamagui/cli => tamagui
     - `tamagui build` document/announce
@@ -96,13 +97,20 @@ v2:
 
 v3
 
+- flat vs style mode, style moves all tamagui styles into `style` besides the other psuedos like hover, enter, etc
 - no react-native deps across the ui kit on web
-- html.div, styled('div')
-- plugins
+- html.div, styled('div'), styled(html.div)
 - zero runtime mode
   - all functional styles pre-generate the styles across the possible tokens (if :number it uses SizeTokens, probably have to disallow string and '...' types but could have a way to define the values at build-time)
 
 ---
+
+v4 and beyond
+
+- plugins
+
+---
+
 
 - config v4
 
@@ -124,8 +132,6 @@ v3
 - bug in useMedia + compiler
   - https://app.graphite.dev/github/pr/Uniswap/universe/10626/fix-web-toast-alignment
 
-- bug: type `$platform-web` not working inside media query?
-
 /theme
 
 - generate short url on load
@@ -133,7 +139,6 @@ v3
 - OG image of theme card (use the tree one we used for the list of themes in studio)
 - save
 - use on bento
-
 
 - can we remove the need for separate Text/View?
     - seems like we could scan just the direct descendents?
