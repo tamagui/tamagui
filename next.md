@@ -49,6 +49,7 @@ const example = (
 
 v2:
 
+  - implement web-only props from flat types or else remove them and leave only in $platform-web
   - textAlignVertical is deprecated but make sure we map back from textAlign to textAlignVertical on v2 and then remove it
   - remove Provider need just global config once
   - @tamagui/cli => tamagui
@@ -92,6 +93,10 @@ v2:
   - "Enhance with native semantics" can probably go away right
   - remove `dataSet`
   - remove as much of `// TODO: remove this in the future when react native a11y API is removed` as possible
+
+stretch
+
+  - @tamagui/style just style() export, takes TextProps
 
 ---
 
