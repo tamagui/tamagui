@@ -5,7 +5,7 @@
   "private": true,
   "main": "index.jsx",
   "scripts": {
-    "dev": "vxs dev",
+    "dev": "npx vxs dev",
     "dev:clean": "vxs dev --clean",
     "clean": "vxs clean",
     "serve": "vxs serve --port 8081",
