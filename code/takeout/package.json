@@ -24,6 +24,7 @@
     "@tamagui/image-next": "1.108.2",
     "@tamagui/logo": "1.108.2",
     "@tamagui/lucide-icons": "1.108.2",
+    "@tamagui/one-theme": "1.108.2",
     "@tamagui/react-native-svg": "1.108.2",
     "drizzle-orm": "^0.32.1",
     "expo-apple-authentication": "~6.4.1",

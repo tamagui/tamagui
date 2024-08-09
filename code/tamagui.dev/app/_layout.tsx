@@ -2,17 +2,13 @@ import '@tamagui/core/reset.css'
 import '~/app.css'
 import '~/tamagui.css'
 
-import { isWeb, setupPopper } from 'tamagui'
+import { HydrateTheme, UserThemeProvider, useUserTheme } from '@tamagui/one-theme'
+import { ToastProvider } from '@tamagui/toast'
+import { isWeb, setupPopper, TamaguiProvider } from 'tamagui'
 import { PageLoadProgressBar, ScrollRestoration, Slot, Stack } from 'vxs'
 import { HeadInfo } from '~/components/HeadInfo'
-import { ToastProvider } from '@tamagui/toast'
-import { TamaguiProvider } from 'tamagui'
-import { SearchProvider } from '~/features/site/search/SearchProvider'
-import { UserThemeProvider, useUserTheme } from '~/features/site/theme/useUserTheme'
 import tamaConf from '~/config/tamagui.config'
-import { version } from 'react'
-
-console.info('React version', version)
+import { SearchProvider } from '~/features/site/search/SearchProvider'
 
 // for navigation container props
 //           theme: {
@@ -116,19 +112,7 @@ export default function Layout() {
         precedence="default"
       />
 
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `let d = document.documentElement.classList
-          d.remove('t_light')
-          d.remove('t_dark')
-          let e = localStorage.getItem('user-theme')
-          let t =
-            'system' === e || !e
-              ? window.matchMedia('(prefers-color-scheme: dark)').matches
-              : e === 'dark'
-          t ? d.add('t_dark') : d.add('t_light')`,
-        }}
-      />
+      <HydrateTheme />
 
       <Providers>
         {isWeb ? (

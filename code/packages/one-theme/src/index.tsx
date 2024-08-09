@@ -1,10 +1,68 @@
-import { createContext, useCallback, useContext, useMemo, useState } from 'react'
-import { useIsomorphicLayoutEffect } from 'tamagui'
-import { useSystemTheme } from './useSystemTheme'
-
-type SchemeSetting = 'system' | 'light' | 'dark'
+import { useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useState,
+} from 'react'
 
 const key = 'user-theme'
+
+type Scheme = 'light' | 'dark'
+type SchemeSetting = 'system' | 'light' | 'dark'
+
+const media =
+  typeof window !== 'undefined' ? window.matchMedia('(prefers-color-scheme: dark)') : null
+
+export function getSystemTheme() {
+  return media?.matches ? 'dark' : 'light'
+}
+
+export const HydrateTheme = () => {
+  if (process.env.TAMAGUI_TARGET === 'native') {
+    return null
+  }
+
+  return (
+    <script
+      dangerouslySetInnerHTML={{
+        __html: `let d = document.documentElement.classList
+          d.remove('t_light')
+          d.remove('t_dark')
+          let e = localStorage.getItem('user-theme')
+          let t =
+            'system' === e || !e
+              ? window.matchMedia('(prefers-color-scheme: dark)').matches
+              : e === 'dark'
+          t ? d.add('t_dark') : d.add('t_light')`,
+      }}
+    />
+  )
+}
+
+export function useSystemTheme() {
+  const [systemTheme, setSystemTheme] = useState<Scheme>(() => getSystemTheme())
+  const didHydrate = useDidFinishSSR()
+
+  useEffect(() => {
+    const onChange = () => {
+      setSystemTheme(getSystemTheme())
+    }
+    media?.addEventListener('change', onChange)
+    return () => {
+      media?.removeEventListener('change', onChange)
+    }
+  }, [])
+
+  if (!didHydrate) {
+    return 'light'
+  }
+
+  return systemTheme
+}
 
 const getSetting = (): SchemeSetting =>
   (typeof localStorage !== 'undefined' && (localStorage.getItem(key) as SchemeSetting)) ||
@@ -39,12 +97,12 @@ export function UserThemeProvider(props: { children: any }) {
   const [userTheme, setUserTheme] = useState<SchemeSetting>('system')
   const resolvedTheme = userTheme === 'system' ? systemTheme : userTheme
 
-  useIsomorphicLayoutEffect(() => {
+  useLayoutEffect(() => {
     setUserTheme(getSetting())
     listener = setUserTheme
   }, [])
 
-  useIsomorphicLayoutEffect(() => {
+  useLayoutEffect(() => {
     const toAdd = `t_${resolvedTheme}`
     const { classList } = document.documentElement
     if (!classList.contains(toAdd)) {
