@@ -7,10 +7,12 @@ It has a few features that make it useful for "universal" libraries:
 - uses tsc to output declaration files to `./types`
 - esbuild to output `dist/esm` and `dist/cjs` for ESModules and CommonJS
 - outputs `.mjs` files in `dist/esm`
+- removes hanging imports that esbuild leaves (see `pkgRemoveSideEffects`)
 - in `dist/esm`, adds path-specific imports to non-specific imports
-- outputs `.native.js` files for all `dist/cjs` files where:
-  - swc transforms for es5 compat
-  - `process.env.TAMAGUI_TARGET` is defined as `native` (otherwise `web`) so code can be tree-shaken
+- outputs `.native.js` and regular `.js` files for all output files, so React Native always loads separate files from web. In the `native` specific files,
+  - swc is sued to transform to es5
+  - `process.env.TAMAGUI_TARGET` is defined `native` (otherwise `web`)
+- on non-native files:
   - imports of `react-native` are transformed to `react-native-web`
 
 It assumes your package.json looks something like this:
