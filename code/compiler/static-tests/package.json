@@ -35,7 +35,7 @@
     "@types/babel__generator": "^7.6.4",
     "@types/babel__traverse": "^7.18.2",
     "@types/find-root": "^1.1.2",
-    "@types/node": "^16.11.9",
+    "@types/node": "^22.1.0",
     "@types/webpack": "^4.41.26",
     "babel-loader": "^9.1.2",
     "css-loader": "^6.7.4",

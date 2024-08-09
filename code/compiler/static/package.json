@@ -74,7 +74,7 @@
     "@expo/match-media": "^0.4.0",
     "@types/babel__core": "^7.20.5",
     "@types/find-root": "^1.1.2",
-    "@types/node": "^16.11.9",
+    "@types/node": "^22.1.0",
     "@types/webpack": "^4.41.26",
     "babel-loader": "^9.1.2",
     "esbuild-loader": "^3.0.1",

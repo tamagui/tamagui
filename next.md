@@ -1,5 +1,11 @@
+site:
+
+- clicking links fast will crash
+
 uniswap:
 
+- AnimatePresence leaving things in DOM
+  - https://uniswapteam.slack.com/archives/C07AHFK2QRK/p1723148309745679
 - enter/exit in media not overriding
 - not accepting number type in media query: "$platform-web" :{ gridColumnGap: 12 }
 - for some reason "$platform-web" :{ gridTemplateRows } not accepted in media uery only
@@ -18,18 +24,24 @@ likely last feature needed for it:
 import { Apply } from '@tamagui/core'
 
 const Text = styled(Text, {
-  className: 'button',
 })
 
 const Icon = styled(Text, {
-  className: 'button',
 })
 
 const Button = withStaticProperties(ButtonFrame, {
-  Children: (props) => <Apply to={} {...props} />,
+  Children: (props) => <Apply to={[Text, Icon]} {...props} />,
   Icon,
   Text
 })
+
+/**
+ * one consideration is that if children are animated and with a js-based
+ * animation driver, then we can't flatten/optimize them + Apply. not a huge
+ * issue because we can figure out ways to re-optimize. i think probably we
+ * add a zero-runtime mode that if enabled, you'd have to do like
+ * <Apply static /> so the compiler knows it can optimize Apple into CSS.
+ **/
 
 const example = (
   <Button>
@@ -42,6 +54,40 @@ const example = (
     </Apply>
   </Button>
 )
+
+
+// we could just use classnames?
+
+import { Style } from '@tamagui/core'
+
+const Text = styled(Text, {
+  className: 'button-item',
+})
+
+const Icon = styled(Text, {
+  className: 'button-item',
+})
+
+const Button = withStaticProperties(ButtonFrame, {
+  StyleChildren: (props) => <Style selector=".button-item" {...props} />,
+  Icon,
+  Text
+})
+
+const example = (
+  <Button>
+    <Button.StyleChildren color="$color10">
+      {/* all of these 👇 get the styles from ^ */}
+      <Button.Text /> 
+      <Button.Text />
+      <Button.Text />
+      <Button.Icon $button-hover={{}} />
+    </Button.StyleChildren>
+  </Button>
+)
+
+
+
 ```
 
 ---
