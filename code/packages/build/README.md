@@ -6,7 +6,7 @@ It has a few features that make it useful for "universal" libraries:
 
 - uses tsc to output declaration files to `./types`
 - esbuild to output `dist/esm` and `dist/cjs` for ESModules and CommonJS
-- outputs `.mjs` files in `dist/esm`
+- outputs `.js` and `.mjs` files in `dist/esm`
 - removes hanging imports that esbuild leaves (see `pkgRemoveSideEffects`)
 - in `dist/esm`, adds path-specific imports to non-specific imports
 - outputs `.native.js` and regular `.js` files for all output files, so React Native always loads separate files from web. In the `native` specific files,
@@ -64,5 +64,5 @@ It assumes your package.json looks something like this:
   - `--ignore-base-url` - if not set, tsc is passed `--baseUrl .`
   - `--skip-mjs` - don't output mjs files
 - `tamagui-build --watch` - watches for changes and does the above
-- `tamagui-build clean` - cleans dist, types folders, node_modules
+- `tamagui-build clean` - cleans dist, types, node_modules folders
 
