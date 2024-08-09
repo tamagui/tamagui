@@ -385,6 +385,12 @@ export const ButtonText = styled(Text, {
 })
 ```
 
+<Notice>
+The `...size` spread variant `name` defaults to implicit any. Update `tsconfig.json`'s `"noImplicitAny": false` to avoid TypeScript errors.
+</Notice>
+
+
+
 So now we can pass in our new `size` property:
 
 ```tsx
