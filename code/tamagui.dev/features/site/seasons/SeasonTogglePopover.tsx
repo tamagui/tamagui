@@ -63,7 +63,8 @@ export const SeasonTogglePopover = (props: { children: any }) => {
                     bg: '$color5',
                   },
                 })}
-                onPress={() => {
+                onPress={(e) => {
+                  e.stopPropagation()
                   setTintFamily(optionName as any)
                 }}
               >

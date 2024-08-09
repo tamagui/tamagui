@@ -152,6 +152,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
                   // o: 0.25,
                   onPress(e) {
                     e.preventDefault()
+                    e.stopPropagation()
                     tint.setNextTint()
                   },
                 })}
