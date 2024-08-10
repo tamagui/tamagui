@@ -175,9 +175,9 @@ export {
   spacedChildren,
   styled,
   themeable,
+  // hooks
   useDidFinishSSR,
   useEvent,
-  // hooks
   useGet,
   useIsTouchDevice,
   useIsomorphicLayoutEffect,
