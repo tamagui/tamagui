@@ -23,11 +23,13 @@ index 1287fb4..e91df6f 100644
 -    ".": "./index.js",
 -    "./client": "./client.js",
 +    ".": {
-+      "react-native": "./index.js",
++      "react-native-import": "./index.js",
+      "react-native": "./index.js",
 +      "default": "./index.web.js"
 +    },
 +    "./client": {
-+      "react-native": "./client.js",
++      "react-native-import": "./client.js",
+      "react-native": "./client.js",
 +      "default": "./client.web.js"
 +    },
      "./server": {
@@ -38,7 +40,8 @@ index 1287fb4..e91df6f 100644
      },
 -    "./server.browser": "./server.browser.js",
 +    "./server.browser": {
-+      "react-native": "./server.browser.js",
++      "react-native-import": "./server.browser.js",
+      "react-native": "./server.browser.js",
 +      "default": "./server.browser.web.js"
 +    },
      "./server.node": "./server.node.js",

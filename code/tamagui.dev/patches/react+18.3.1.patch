@@ -31,18 +31,21 @@ index 79dae68..0253247 100644
      ".": {
        "react-server": "./react.shared-subset.js",
 -      "default": "./index.js"
-+      "react-native": "./index.js",
++      "react-native-import": "./index.js",
+      "react-native": "./index.js",
 +      "default": "./index.web.js"
      },
      "./package.json": "./package.json",
 -    "./jsx-runtime": "./jsx-runtime.js",
 -    "./jsx-dev-runtime": "./jsx-dev-runtime.js"
 +    "./jsx-runtime": {
-+      "react-native": "./jsx-runtime.js",
++      "react-native-import": "./jsx-runtime.js",
+      "react-native": "./jsx-runtime.js",
 +      "default": "./jsx-runtime.web.js"
 +    },
 +    "./jsx-dev-runtime": {
-+      "react-native": "./jsx-dev-runtime.js",
++      "react-native-import": "./jsx-dev-runtime.js",
+      "react-native": "./jsx-dev-runtime.js",
 +      "default": "./jsx-dev-runtime.web.js"
 +    }
    },

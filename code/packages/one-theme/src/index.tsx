@@ -102,15 +102,17 @@ export function UserThemeProvider(props: { children: any }) {
     listener = setUserTheme
   }, [])
 
-  useLayoutEffect(() => {
-    const toAdd = `t_${resolvedTheme}`
-    const { classList } = document.documentElement
-    if (!classList.contains(toAdd)) {
-      const toRemove = resolvedTheme === 'light' ? 'dark' : 'light'
-      classList.remove(`t_${toRemove}`)
-      classList.add(toAdd)
-    }
-  }, [resolvedTheme])
+  if (process.env.TAMAGUI_TARGET !== 'native') {
+    useLayoutEffect(() => {
+      const toAdd = `t_${resolvedTheme}`
+      const { classList } = document.documentElement
+      if (!classList.contains(toAdd)) {
+        const toRemove = resolvedTheme === 'light' ? 'dark' : 'light'
+        classList.remove(`t_${toRemove}`)
+        classList.add(toAdd)
+      }
+    }, [resolvedTheme])
+  }
 
   return (
     <CurrentThemeContext.Provider

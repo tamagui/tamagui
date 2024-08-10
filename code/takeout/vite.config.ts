@@ -54,6 +54,7 @@ export default {
       '@ts-react/form',
       'react-hook-form',
       '@tamagui/animate-presence',
+      '@tamagui/one-theme',
       '@tamagui/presence-child',
       '@github/mini-throttle',
       'swr',
