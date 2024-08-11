@@ -7135,12 +7135,19 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/ooo@workspace:code/ooo"
   dependencies:
+    "@supabase/supabase-js": "npm:^2.44.4"
     "@tamagui/button": "npm:1.108.3"
     "@tamagui/config": "npm:1.108.3"
-    "@tamagui/core": "npm:1.108.3"
     "@tamagui/input": "npm:1.108.3"
+    "@tamagui/linear-gradient": "npm:1.108.3"
+    "@tamagui/lucide-icons": "npm:1.108.3"
+    "@tamagui/mdx": "npm:1.108.3"
+    mdx-bundler: "npm:^10.0.2"
     patch-package: "npm:^8.0.0"
+    postmark: "npm:^3.0.18"
+    react: "npm:^18.3.1"
     react-native: "npm:0.74.1"
+    tamagui: "npm:1.108.3"
     vxs: "npm:^1.1.165"
   languageName: unknown
   linkType: soft
