@@ -7005,6 +7005,7 @@ __metadata:
     hast-util-to-html: "npm:^8.0.3"
     hast-util-to-string: "npm:^2.0.0"
     mdx-bundler: "npm:^10.0.2"
+    parse-numeric-range: "npm:^1.3.0"
     reading-time: "npm:1.3.0"
     refractor: "npm:^4.7.0"
     rehype: "npm:^12.0.1"
