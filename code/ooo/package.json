@@ -19,7 +19,7 @@
     "@tamagui/core": "1.108.3",
     "@tamagui/input": "1.108.3",
     "react-native": "0.74.1",
-    "vxs": "^1.1.164"
+    "vxs": "^1.1.165"
   },
   "devDependencies": {
     "patch-package": "^8.0.0"
