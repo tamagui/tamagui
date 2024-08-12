@@ -4,6 +4,12 @@ site:
 
 uniswap:
 
+- need to fix web types inside platform web inside media query:
+  - $sm={{ "$platform-web": { position: 'fixed' }}
+- When using <Adapt.Contents />  inside an Adapt when="sm"  it seems to hide the children before fully closed
+  - https://uniswapteam.slack.com/archives/C07AHFK2QRK/p1723409606028379
+- When opening a fit Sheet while keyboard is active (at least on ios) the height of the sheet is off
+  - https://uniswapteam.slack.com/archives/C07AHFK2QRK/p1723475036176189
 - AnimatePresence leaving things in DOM
   - https://uniswapteam.slack.com/archives/C07AHFK2QRK/p1723148309745679
 - enter/exit in media not overriding
@@ -183,6 +189,9 @@ v4 and beyond
   - automatically handles tree shaking process.env for themes
 
 ---
+
+- very long classnames could be much shorter:
+ - `_borderBottomRightRadius-_platformweb_5037`
 
 - any tamagui component accepts a function callback to handle passing down styles:
     - <View>{(props, style, state) => {}}</View>

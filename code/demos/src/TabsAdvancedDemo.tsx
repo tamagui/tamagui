@@ -26,7 +26,7 @@ export const TabsAdvancedDemo = () => {
 
       <XStack
         alignItems="center"
-        space
+        gap="$4"
         position="absolute"
         bottom="$3"
         left="$4"
@@ -325,9 +325,9 @@ const TabsRovingIndicator = ({ active, ...props }: { active?: boolean } & StackP
 }
 
 const AnimatedYStack = styled(YStack, {
-  f: 1,
+  flex: 1,
   x: 0,
-  o: 1,
+  opacity: 1,
 
   animation: '100ms',
   variants: {
