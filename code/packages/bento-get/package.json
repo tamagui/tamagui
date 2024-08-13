@@ -1,6 +1,6 @@
 {
   "name": "bento-get",
-  "version": "1.104.2",
+  "version": "1.108.3",
   "license": "MIT",
   "bin": "dist/cli.js",
   "type": "module",
@@ -30,6 +30,7 @@
   "exports": {
     "./package.json": "./package.json",
     ".": {
+      "react-native-import": "./dist/esm/index.native.js",
       "react-native": "./dist/cjs/index.native.js",
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
@@ -39,7 +40,7 @@
   "dependencies": {
     "@inkjs/ui": "^1.0.0",
     "@supabase/supabase-js": "^2.44.4",
-    "@tamagui/use-force-update": "1.104.2",
+    "@tamagui/use-force-update": "1.108.3",
     "conf": "^12.0.0",
     "copy-paste": "^1.5.3",
     "fuse.js": "^7.0.0",
@@ -50,12 +51,12 @@
     "octokit": "^4.0.2",
     "open": "^10.1.0",
     "pastel": "^2.0.0",
-    "react": "^18.2.0",
+    "react": "^18.2.0 || ^19.0.0",
     "swr": "^2.2.5",
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@tamagui/build": "1.104.2",
+    "@tamagui/build": "1.108.3",
     "@types/copy-paste": "^1.1.33",
     "@types/react": "^18.2.55"
   }

@@ -1,7 +1,8 @@
-import { getConfig } from '../config'
+import { getConfig, getSetting } from '../config'
 import { mediaObjectToString } from '../hooks/useMedia'
 import type { IsMediaType, MediaQueries, MediaStyleObject, StyleObject } from '../types'
-import { getGroupPropParts } from './getGroupPropParts'
+import { getGroupPropParts, type GroupParts } from './getGroupPropParts'
+import { isActivePlatform } from './isActivePlatform'
 
 // TODO have this be used by extractMediaStyle in tamagui static
 // not synced to static/constants for now
@@ -14,6 +15,35 @@ const groupPseudoToPseudoCSSMap = {
   press: 'active',
 }
 
+const specifities = new Array(5)
+  .fill(0)
+  .map((_, i) => new Array(i).fill(':root').join(''))
+
+function getThemeOrGroupSelector(
+  name: string,
+  styleInner: string,
+  isGroup: boolean,
+  groupParts: GroupParts,
+  isTheme = false,
+  precedenceImportancePrefix = ''
+) {
+  const selectorStart = styleInner.indexOf(':root')
+  const selectorEnd = styleInner.lastIndexOf('{')
+  const selector = styleInner.slice(selectorStart, selectorEnd)
+  const precedenceSpace = getSetting('themeClassNameOnRoot') && isTheme ? '' : ' '
+  const pseudoSelectorName = groupParts.pseudo
+    ? groupPseudoToPseudoCSSMap[groupParts.pseudo] || groupParts.pseudo
+    : undefined
+
+  const pseudoSelector = pseudoSelectorName ? `:${pseudoSelectorName}` : ''
+  const presedencePrefix = `:root${precedenceImportancePrefix}${precedenceSpace}`
+  const mediaSelector = `.t_${isGroup ? 'group_' : ''}${name}${pseudoSelector}`
+  return [
+    selector,
+    `${presedencePrefix}${mediaSelector} ${selector.replace(':root', '')}`,
+  ] as const
+}
+
 export const createMediaStyle = (
   styleObject: StyleObject,
   mediaKeyIn: string,
@@ -22,9 +52,8 @@ export const createMediaStyle = (
   negate?: boolean,
   priority?: number
 ): MediaStyleObject => {
-  const [property, _value, identifier, _pseudo, rules] = styleObject
-  const conf = getConfig()
-  const enableMediaPropOrder = conf.settings.mediaPropOrder
+  const [property, , identifier, , rules] = styleObject
+  const enableMediaPropOrder = getSetting('mediaPropOrder')
   const isTheme = type === 'theme'
   const isPlatform = type === 'platform'
   const isGroup = type === 'group'
@@ -34,45 +63,42 @@ export const createMediaStyle = (
   const id = `${ogPrefix}${MEDIA_SEP}${mediaKeyIn.replace('-', '')}${negKey}${MEDIA_SEP}`
 
   let styleRule = ''
+  let groupPriority = ''
   let groupMediaKey: string | undefined
   let containerName: string | undefined
   let nextIdentifier = identifier.replace(ogPrefix, id)
   let styleInner = rules.map((rule) => rule.replace(identifier, nextIdentifier)).join(';')
+  let isHover = false
 
   if (isNonWindowMedia) {
-    const precedenceImportancePrefix = new Array((priority || 0) + (isGroup ? 1 : 0))
-      .fill(':root')
-      .join('')
+    let specificity = (priority || 0) + (isGroup || isPlatform ? 1 : 0)
 
     if (isTheme || isGroup) {
-      const groupInfo = getGroupPropParts(mediaKeyIn)
-      const mediaName = groupInfo?.name
-      groupMediaKey = groupInfo?.media
+      const { name, media, pseudo } = getGroupPropParts(mediaKeyIn)
+      groupMediaKey = media
+      const groupParts = getGroupPropParts(mediaKeyIn)
       if (isGroup) {
-        containerName = mediaName
+        containerName = name
       }
-      const name = (isGroup ? 'group_' : '') + mediaName
-
-      const selectorStart = styleInner.indexOf(':root')
-      const selectorEnd = styleInner.lastIndexOf('{')
-      const selector = styleInner.slice(selectorStart, selectorEnd)
-      const precedenceSpace = conf.themeClassNameOnRoot && isTheme ? '' : ' '
-      const pseudoSelectorName = groupInfo.pseudo
-        ? groupPseudoToPseudoCSSMap[groupInfo.pseudo] || groupInfo.pseudo
-        : undefined
-
-      const pseudoSelector = pseudoSelectorName ? `:${pseudoSelectorName}` : ''
-      const presedencePrefix = `:root${precedenceImportancePrefix}${precedenceSpace}`
-      const mediaSelector = `.t_${name}${pseudoSelector}`
-      const nextSelector = `${presedencePrefix}${mediaSelector} ${selector.replace(
-        ':root',
-        ''
-      )}`
+      if (pseudo === 'press') {
+        specificity += 2
+      }
+      if (pseudo === 'hover') {
+        isHover = true
+      }
+      const [selector, nextSelector] = getThemeOrGroupSelector(
+        name,
+        styleInner,
+        isGroup,
+        groupParts,
+        isTheme,
+        specifities[specificity]
+      )
       // const selectors = `${nextSelector}, :root${nextSelector}`
       // add back in the { we used to split
       styleRule = styleInner.replace(selector, nextSelector)
     } else {
-      styleRule = `${precedenceImportancePrefix}${styleInner}`
+      styleRule = `${specifities[specificity]}${styleInner}`
     }
   }
 
@@ -96,12 +122,10 @@ export const createMediaStyle = (
     const screenStr = negate ? 'not all and ' : ''
     const mediaQuery = `${screenStr}${mediaSelector}`
     const precedenceImportancePrefix = groupMediaKey
-      ? ''
-      : enableMediaPropOrder
+      ? groupPriority
+      : enableMediaPropOrder && priority
         ? // this new array should be cached
-          new Array(priority)
-            .fill(':root')
-            .join('')
+          specifities[priority]
         : // @ts-ignore
           prefixes[mediaKey]
     const prefix = groupMediaKey ? `@container ${containerName}` : '@media'
@@ -124,9 +148,13 @@ export const createMediaStyle = (
     // add @supports for legacy browser support to not break container queries
     if (groupMediaKey) {
       styleRule = `@supports (contain: ${
-        conf.settings.webContainerType || 'inline-size'
+        getSetting('webContainerType') || 'inline-size'
       }) {${styleRule}}`
     }
+  }
+
+  if (isHover) {
+    styleRule = `@media (hover:hover){${styleRule}}`
   }
 
   return [property, undefined, nextIdentifier, undefined, [styleRule]]

@@ -1,6 +1,7 @@
+import React from 'react'
 import { styled, useComposedRefs } from '@tamagui/core'
 import { registerFocusable } from '@tamagui/focusable'
-import React, { useEffect } from 'react'
+
 import type { NativeSyntheticEvent, TextInputChangeEventData } from 'react-native'
 import { TextInput } from 'react-native'
 import { styledBody } from './shared'
@@ -133,7 +134,7 @@ export const Input = StyledInput.styleable<InputProps>((inProps, forwardedRef) =
     }
   }
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (!id) return
     if (disabled) return
 

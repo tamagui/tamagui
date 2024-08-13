@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-
 // let it be called as a template string tag function
 
 export function timer() {

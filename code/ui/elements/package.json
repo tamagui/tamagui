@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/elements",
-  "version": "1.104.2",
+  "version": "1.108.3",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -23,6 +23,7 @@
   "exports": {
     "./package.json": "./package.json",
     ".": {
+      "react-native-import": "./dist/esm/index.native.js",
       "react-native": "./dist/cjs/index.native.js",
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
@@ -30,15 +31,15 @@
     }
   },
   "dependencies": {
-    "@tamagui/core": "1.104.2"
+    "@tamagui/core": "1.108.3"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.104.2",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "@tamagui/build": "1.108.3",
+    "react": "^18.2.0 || ^19.0.0",
+    "react-dom": "^18.2.0 || ^19.0.0"
   },
   "publishConfig": {
     "access": "public"

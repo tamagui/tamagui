@@ -1,4 +1,4 @@
-import { useReducer } from 'react'
+import React from 'react'
 
 export const isServerSide =
   process.env.TAMAGUI_TARGET === 'web' && typeof window === 'undefined'
@@ -6,5 +6,7 @@ export const isServerSide =
 const idFn = () => {}
 
 export function useForceUpdate() {
-  return isServerSide ? idFn : (useReducer((x) => Math.random(), 0)[1] as () => void)
+  return isServerSide
+    ? idFn
+    : (React.useReducer((x) => Math.random(), 0)[1] as () => void)
 }

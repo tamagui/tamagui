@@ -319,10 +319,7 @@ const getIdentifierFromTamaguiSelector = (selector: string) => {
   return selector.slice(7)
 }
 
-const sheet =
-  isClient && document.head
-    ? document.head.appendChild(document.createElement('style')).sheet
-    : null
+let sheet: CSSStyleSheet | null = null
 
 export function updateRules(identifier: string, rules: string[]) {
   if (!process.env.TAMAGUI_REACT_19) {
@@ -337,8 +334,20 @@ export function updateRules(identifier: string, rules: string[]) {
   }
 }
 
+let nonce = ''
+export function setNonce(_: string) {
+  nonce = _
+}
+
 export function insertStyleRules(rulesToInsert: RulesToInsert) {
   if (!process.env.TAMAGUI_REACT_19) {
+    if (!sheet && isClient && document.head) {
+      const styleTag = document.createElement('style')
+      if (nonce) {
+        styleTag.nonce = nonce
+      }
+      sheet = document.head.appendChild(styleTag).sheet
+    }
     if (!sheet) return
 
     for (const key in rulesToInsert) {

@@ -1,11 +1,5 @@
-import {
-  createContext,
-  useContext,
-  useMemo,
-  type Context,
-  type ProviderExoticComponent,
-  type ReactNode,
-} from 'react'
+import React from 'react'
+import type { Context, ProviderExoticComponent, ReactNode } from 'react'
 
 import { objectIdentityKey } from './objectIdentityKey'
 
@@ -21,13 +15,14 @@ export type StyledContext<Props extends Object = any> = Omit<
       scope?: string
     }
   >
+
   useStyledContext: (scope?: string) => Props
 }
 
 export function createStyledContext<VariantProps extends Record<string, any>>(
   defaultValues?: VariantProps
 ): StyledContext<VariantProps> {
-  const OGContext = createContext<VariantProps | undefined>(defaultValues)
+  const OGContext = React.createContext<VariantProps | undefined>(defaultValues)
   const OGProvider = OGContext.Provider
   const Context = OGContext as any as StyledContext<VariantProps>
   const scopedContexts = new Map<string, Context<VariantProps | undefined>>()
@@ -37,7 +32,7 @@ export function createStyledContext<VariantProps extends Record<string, any>>(
     scope,
     ...values
   }: VariantProps & { children?: ReactNode; scope: string }) => {
-    const next = useMemo(() => {
+    const next = React.useMemo(() => {
       return {
         // this ! is a workaround for ts error
         ...defaultValues!,
@@ -48,7 +43,7 @@ export function createStyledContext<VariantProps extends Record<string, any>>(
     if (scope) {
       let ScopedContext = scopedContexts.get(scope)
       if (!ScopedContext) {
-        ScopedContext = createContext<VariantProps | undefined>(defaultValues)
+        ScopedContext = React.createContext<VariantProps | undefined>(defaultValues)
         scopedContexts.set(scope, ScopedContext)
       }
       Provider = ScopedContext.Provider
@@ -59,7 +54,7 @@ export function createStyledContext<VariantProps extends Record<string, any>>(
   // use consumerComponent just to give a better error message
   const useStyledContext = (scope?: string) => {
     const context = scope ? scopedContexts.get(scope) : OGContext
-    return useContext(context!) as VariantProps
+    return React.useContext(context!) as VariantProps
   }
 
   // @ts-ignore

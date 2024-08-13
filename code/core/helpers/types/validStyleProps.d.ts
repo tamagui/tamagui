@@ -106,6 +106,8 @@ export declare const stylePropsTransform: {
 };
 export declare const stylePropsView: {
     elevationAndroid?: boolean | undefined;
+    transition?: boolean | undefined;
+    textWrap?: boolean | undefined;
     backdropFilter?: boolean | undefined;
     background?: boolean | undefined;
     backgroundAttachment?: boolean | undefined;
@@ -400,6 +402,8 @@ export declare const stylePropsText: {
     lineHeight: boolean;
     textTransform: boolean;
     elevationAndroid?: boolean | undefined;
+    transition?: boolean | undefined;
+    textWrap?: boolean | undefined;
     backdropFilter?: boolean | undefined;
     background?: boolean | undefined;
     backgroundAttachment?: boolean | undefined;
@@ -651,6 +655,8 @@ export declare const stylePropsAll: {
     lineHeight: boolean;
     textTransform: boolean;
     elevationAndroid?: boolean | undefined;
+    transition?: boolean | undefined;
+    textWrap?: boolean | undefined;
     backdropFilter?: boolean | undefined;
     background?: boolean | undefined;
     backgroundAttachment?: boolean | undefined;
@@ -886,6 +892,8 @@ export declare const validPseudoKeys: {
 };
 export declare const validStyles: {
     elevationAndroid?: boolean | undefined;
+    transition?: boolean | undefined;
+    textWrap?: boolean | undefined;
     backdropFilter?: boolean | undefined;
     background?: boolean | undefined;
     backgroundAttachment?: boolean | undefined;

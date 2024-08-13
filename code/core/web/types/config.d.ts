@@ -1,4 +1,5 @@
-import type { ConfigListener, TamaguiInternalConfig, Token, Tokens, TokensMerged } from './types';
+import type { ConfigListener, GenericTamaguiSettings, TamaguiInternalConfig, Token, Tokens, TokensMerged } from './types';
+export declare const getSetting: <Key extends keyof GenericTamaguiSettings>(key: Key) => GenericTamaguiSettings[Key];
 export declare const setConfig: (next: TamaguiInternalConfig) => void;
 export declare const setConfigFont: (name: string, font: any, fontParsed: any) => void;
 export declare const getConfig: () => TamaguiInternalConfig;

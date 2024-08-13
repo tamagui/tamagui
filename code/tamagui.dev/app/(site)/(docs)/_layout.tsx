@@ -1,17 +1,15 @@
 import { LinearGradient } from '@tamagui/linear-gradient'
 import { ThemeTint } from '@tamagui/logo'
+import { ChevronLeft, ChevronRight } from '@tamagui/lucide-icons'
+import type { ReactNode } from 'react'
 import { ScrollView } from 'react-native'
 import { EnsureFlexed, Paragraph, View, XStack, YStack } from 'tamagui'
-import { Link } from '~/components/Link'
-
-import { ChevronLeft, ChevronRight } from '@tamagui/lucide-icons'
+import { Slot } from 'vxs'
 import { Container } from '~/components/Containers'
-import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
+import { Link } from '~/components/Link'
 import { DocsMenuContents } from '~/features/docs/DocsMenuContents'
 import { useDocsMenu } from '~/features/docs/useDocsMenu'
-import { Slot } from 'vxs'
-import type { ReactNode } from 'react'
-import { useMemo } from 'react'
+import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
 
 export default function DocsLayout() {
   const { currentPath, next, previous, documentVersionPath } = useDocsMenu()

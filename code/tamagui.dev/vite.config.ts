@@ -14,10 +14,10 @@ if (!import.meta.dirname) {
   throw new Error(`Not on Node 22`)
 }
 
-const resolve = async (path) => {
-  const resolved = await import.meta.resolve?.(path)
+const resolve = (path: string) => {
+  const resolved = import.meta.resolve?.(path)
   if (!resolved) {
-    throw new Error(`Not found: ${path}`)
+    throw new Error(`Not found: ${path}, maybe on wrong node version`)
   }
   return resolved.replace('file:/', '')
 }
@@ -45,7 +45,7 @@ export default {
       'react-native-svg': '@tamagui/react-native-svg',
       // 'react-native-web': await resolve('react-native-web-lite'),
       // bugfix docsearch/react, weird
-      '@docsearch/react': await resolve('@docsearch/react'),
+      '@docsearch/react': resolve('@docsearch/react'),
     },
 
     // todo automate, probably can just dedupe all package.json deps?
@@ -65,8 +65,8 @@ export default {
   optimizeDeps: {
     include: [
       ...optimizeInterop,
-      '@tamagui/animate-presence',
-      '@tamagui/presence-child',
+      // '@tamagui/animate-presence',
+      // '@tamagui/presence-child',
       '@docsearch/react',
       '@leeoniya/ufuzzy',
       'react-hook-form',
@@ -75,6 +75,7 @@ export default {
       '@tamagui/demos',
       '@tamagui/bento',
       '@tamagui/bento/data',
+      '@tamagui/use-debounce',
       '@supabase/ssr',
       '@tamagui/animations-moti',
       '@tamagui/animations-react-native',
@@ -186,56 +187,3 @@ const purgeCloudflareCDN = async () => {
     console.error('Error purging Cloudflare cache:', error)
   }
 }
-
-// this just does each page but was causing cache issues
-
-// const pages = Object.values(routeMap).map((path) =>
-//   `${process.env.URL}${path}`.replace('.html', '')
-// )
-// console.info(
-//   ` [cache] tell Cloudflare to clear pages (first page: ${pages[0]})`
-// )
-
-// const purgeCloudflareCDN = async (filesIn: string[]) => {
-//   if (!process.env.CF_ZONE_ID) throw new Error(`Missing process.env.CF_ZONE_ID`)
-//   if (!process.env.CF_EMAIL) throw new Error(`Missing process.env.CF_EMAIL`)
-//   if (!process.env.CF_API_KEY) throw new Error(`Missing process.env.CF_API_KEY`)
-
-//   console.info(`Clearing CDN (${filesIn.length} pages)...`)
-
-//   const url = `https://api.cloudflare.com/client/v4/zones/${process.env.CF_ZONE_ID}/purge_cache`
-//   const files = filesIn //.map((file) => encodeURIComponent(file))
-
-//   try {
-//     const filesChunks: string[][] = []
-//     for (const [index, file] of files.entries()) {
-//       const chunk = index % 10
-//       filesChunks[chunk] ||= []
-//       filesChunks[chunk].push(file)
-//     }
-
-//     for (const [index, chunk] of filesChunks.entries()) {
-//       const response = await fetch(url, {
-//         method: 'POST',
-//         headers: {
-//           'X-Auth-Email': process.env.CF_EMAIL,
-//           'X-Auth-Key': process.env.CF_API_KEY,
-//           'Content-Type': 'application/json',
-//         },
-//         body: JSON.stringify({ files: chunk }),
-//       })
-
-//       if (!response.ok) {
-//         throw new Error(`Failed to purge cache: ${response.statusText}`)
-//       }
-
-//       const result = await response.json()
-//       console.info(
-//         `Cloudflare cache purged (${index + 1}/${filesChunks.length}) success:`,
-//         result.success
-//       )
-//     }
-//   } catch (error) {
-//     console.error('Error purging Cloudflare cache:', error)
-//   }
-// }

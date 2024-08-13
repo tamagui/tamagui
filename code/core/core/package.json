@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/core",
-  "version": "1.104.2",
+  "version": "1.108.3",
   "source": "src/index.tsx",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -35,14 +35,14 @@
     "native-test.d.ts"
   ],
   "dependencies": {
-    "@tamagui/react-native-use-pressable": "1.104.2",
-    "@tamagui/react-native-use-responder-events": "1.104.2",
-    "@tamagui/use-event": "1.104.2",
-    "@tamagui/web": "1.104.2"
+    "@tamagui/react-native-use-pressable": "1.108.3",
+    "@tamagui/react-native-use-responder-events": "1.108.3",
+    "@tamagui/use-event": "1.108.3",
+    "@tamagui/web": "1.108.3"
   },
   "devDependencies": {
-    "@tamagui/build": "1.104.2",
-    "@testing-library/react": "^14.0.0",
+    "@tamagui/build": "1.108.3",
+    "@testing-library/react": "^16.0.0",
     "csstype": "^3.0.10",
     "typescript": "^5.5.2",
     "vitest": "^0.34.3"
@@ -51,6 +51,7 @@
     "./package.json": "./package.json",
     "./reset.css": "./reset.css",
     ".": {
+      "react-native-import": "./dist/esm/index.native.js",
       "react-native": "./dist/cjs/index.native.js",
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
@@ -67,13 +68,11 @@
       "require": "./dist/test.native.js"
     },
     "./inject-styles": {
-      "react-native": "./dist/cjs/inject-styles.native.js",
       "types": "./types/inject-styles.d.ts",
       "import": "./dist/esm/inject-styles.mjs",
       "require": "./dist/cjs/inject-styles.js"
     },
     "./reactNativeTypes": {
-      "react-native": "./dist/cjs/reactNativeTypes.native.js",
       "types": "./types/reactNativeTypes.d.ts",
       "import": "./dist/esm/reactNativeTypes.mjs",
       "require": "./dist/cjs/reactNativeTypes.js"

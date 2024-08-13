@@ -215,13 +215,15 @@ export function getDefaultTamaguiConfig(platform: 'native' | 'web' = 'web') {
   }
 
   return {
-    shouldAddPrefersColorThemes: true,
-    themeClassNameOnRoot: true,
     // animations: platform === 'web' ? animations : animationsNative,
     shorthands,
     fonts,
     themes,
     tokens,
     media,
+    settings: {
+      shouldAddPrefersColorThemes: true,
+      themeClassNameOnRoot: true,
+    },
   }
 }

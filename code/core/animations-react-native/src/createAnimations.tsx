@@ -1,3 +1,4 @@
+import React from 'react'
 import { ResetPresence, usePresence } from '@tamagui/use-presence'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import type {
@@ -7,12 +8,10 @@ import type {
   UniversalAnimatedNumber,
 } from '@tamagui/web'
 import { useEvent } from '@tamagui/web'
-import { useEffect, useMemo, useRef } from 'react'
+
 import { Animated } from 'react-native'
 
-type AnimationsConfig<A extends Object = any> = {
-  [Key in keyof A]: AnimationConfig
-}
+type AnimationsConfig<A extends Object = any> = { [Key in keyof A]: AnimationConfig }
 
 type SpringConfig = { type?: 'spring' } & Partial<
   Pick<
@@ -71,7 +70,7 @@ export const AnimatedText = Animated.Text
 export function useAnimatedNumber(
   initial: number
 ): UniversalAnimatedNumber<Animated.Value> {
-  const state = useRef(
+  const state = React.useRef(
     null as any as {
       val: Animated.Value
       composite: Animated.CompositeAnimation | null
@@ -130,18 +129,14 @@ export function useAnimatedNumber(
 }
 
 export function useAnimatedNumberReaction(
-  {
-    value,
-  }: {
-    value: UniversalAnimatedNumber<Animated.Value>
-  },
+  { value }: { value: UniversalAnimatedNumber<Animated.Value> },
   onValue: (current: number) => void
 ) {
   const onChange = useEvent((current) => {
     onValue(current.value)
   })
 
-  useEffect(() => {
+  React.useEffect(() => {
     const id = value.getInstance().addListener(onChange)
     return () => {
       value.getInstance().removeListener(id)
@@ -174,9 +169,9 @@ export function createAnimations<A extends AnimationsConfig>(
       const sendExitComplete = presence?.[1]
 
       /** store Animated value of each key e.g: color: AnimatedValue */
-      const animateStyles = useRef<Record<string, Animated.Value>>({})
-      const animatedTranforms = useRef<{ [key: string]: Animated.Value }[]>([])
-      const animationsState = useRef(
+      const animateStyles = React.useRef<Record<string, Animated.Value>>({})
+      const animatedTranforms = React.useRef<{ [key: string]: Animated.Value }[]>([])
+      const animationsState = React.useRef(
         new WeakMap<
           Animated.Value,
           {
@@ -194,7 +189,7 @@ export function createAnimations<A extends AnimationsConfig>(
       const args = [JSON.stringify(style), componentState, isExiting, !!onDidAnimate]
 
       // check if there is any style that is not supported by native driver
-      const isThereNoNativeStyleKeys = useMemo(() => {
+      const isThereNoNativeStyleKeys = React.useMemo(() => {
         if (isWeb) return true
         return Object.keys(style).some((key) => {
           if (animateOnly.length) {
@@ -204,7 +199,7 @@ export function createAnimations<A extends AnimationsConfig>(
         })
       }, args)
 
-      const res = useMemo(() => {
+      const res = React.useMemo(() => {
         const runners: Function[] = []
         const completions: Promise<void>[] = []
 

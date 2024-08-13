@@ -584,14 +584,11 @@ const addEvent = <K extends keyof HTMLElementEventMap>(
   disposers: Set<() => void>,
   n: HTMLElement | Window,
   type: K,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   listener: any,
   options?: boolean | AddEventListenerOptions | undefined
 ) => {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   n.addEventListener(type, listener, options)
   disposers.add(() => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     n.removeEventListener(type, listener)
   })
 }

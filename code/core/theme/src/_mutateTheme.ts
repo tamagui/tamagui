@@ -1,3 +1,4 @@
+import React from 'react'
 import { isServer } from '@tamagui/constants'
 import type { ThemeDefinition, ThemeParsed } from '@tamagui/web'
 import {
@@ -9,7 +10,6 @@ import {
   simpleHash,
   updateConfig,
 } from '@tamagui/web'
-import { startTransition } from 'react'
 
 type MutateThemeOptions = {
   mutationType: 'replace' | 'update' | 'add'
@@ -34,15 +34,13 @@ export function mutateThemes({
   insertCSS = true,
   ...props
 }: Omit<MutateThemeOptions, 'mutationType'> & {
-  themes: MutateOneThemeProps[]
-  // if using batch, know that if you later on do addTheme/etc it will break things
+  themes: MutateOneThemeProps[] // if using batch, know that if you later on do addTheme/etc it will break things
   // batch is only useful if you know youre only ever going to change these themes using batch
   // aka only in studio as a preview mode
   batch?: Batch
 }) {
   const allThemesProxied: Record<string, ThemeParsed> = {}
   const allThemesRaw: Record<string, ThemeParsed> = {}
-
   for (const { name, theme } of themes) {
     const res = _mutateTheme({
       ...props,
@@ -61,7 +59,7 @@ export function mutateThemes({
 
   const cssRules = insertCSS ? insertThemeCSS(allThemesRaw, batch) : []
 
-  startTransition(() => {
+  React.startTransition(() => {
     for (const themeName in allThemesProxied) {
       const theme = allThemesProxied[themeName]
       updateThemeConfig(themeName, theme)

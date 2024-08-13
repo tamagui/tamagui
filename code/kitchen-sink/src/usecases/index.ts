@@ -1,4 +1,5 @@
 export { Benchmark } from './Benchmark'
+export { StyledAnchor } from './StyledAnchor'
 export { ButtonCircular } from './ButtonCircular'
 export { ButtonCustom } from './ButtonCustom'
 export { ButtonInverse } from './ButtonInverse'

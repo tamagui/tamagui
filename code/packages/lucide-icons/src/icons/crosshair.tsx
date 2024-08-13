@@ -1,6 +1,6 @@
-import React, { memo } from 'react'
-import PropTypes from 'prop-types'
-import type { IconProps } from '@tamagui/helpers-icon'
+import React from "react";
+import PropTypes from 'prop-types';
+import type { IconProps } from '@tamagui/helpers-icon';
 import {
   Svg,
   Circle as _Circle,
@@ -17,12 +17,12 @@ import {
   Text as _Text,
   Use,
   Defs,
-  Stop,
-} from 'react-native-svg'
-import { themed } from '@tamagui/helpers-icon'
+  Stop } from
+'react-native-svg';
+import { themed } from '@tamagui/helpers-icon';
 
 const Icon = (props) => {
-  const { color = 'black', size = 24, ...otherProps } = props
+  const { color = 'black', size = 24, ...otherProps } = props;
   return (
     <Svg
       width={size}
@@ -33,17 +33,17 @@ const Icon = (props) => {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      {...otherProps}
-    >
+      {...otherProps}>
+
       <_Circle cx="12" cy="12" r="10" stroke={color} />
       <Line x1="22" x2="18" y1="12" y2="12" stroke={color} />
       <Line x1="6" x2="2" y1="12" y2="12" stroke={color} />
       <Line x1="12" x2="12" y1="6" y2="2" stroke={color} />
       <Line x1="12" x2="12" y1="22" y2="18" stroke={color} />
-    </Svg>
-  )
-}
+    </Svg>);
 
-Icon.displayName = 'Crosshair'
+};
 
-export const Crosshair = memo<IconProps>(themed(Icon))
+Icon.displayName = 'Crosshair';
+
+export const Crosshair = React.memo<IconProps>(themed(Icon));

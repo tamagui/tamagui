@@ -1,7 +1,7 @@
+import React from 'react'
 import { isClient, isIos, isServer, isWeb } from '@tamagui/constants'
-import { useContext, useEffect, useMemo, useRef, useState } from 'react'
 
-import { getConfig } from '../config'
+import { getConfig, getSetting } from '../config'
 import type { Variable } from '../createVariable'
 import { getVariable } from '../createVariable'
 import type { ThemeManagerState } from '../helpers/ThemeManager'
@@ -92,7 +92,7 @@ export const useTheme = (props: ThemeProps = emptyProps) => {
 export const useThemeWithState = (
   props: UseThemeWithStateProps
 ): [ChangedThemeResponse, ThemeParsed] => {
-  const keys = useRef<string[]>([])
+  const keys = React.useRef<string[]>([])
 
   const changedThemeState = useChangeThemeEffect(
     props,
@@ -130,7 +130,7 @@ export const useThemeWithState = (
   if (process.env.NODE_ENV === 'development') {
     if (!state?.theme) {
       if (process.env.TAMAGUI_DISABLE_NO_THEME_WARNING !== '1') {
-        console.warn(
+        console.error(
           `[tamagui] No theme found, this could be due to an invalid theme name (given theme props ${JSON.stringify(
             props
           )}).\n\nIf this is intended and you are using Tamagui without any themes, you can disable this warning by setting the environment variable TAMAGUI_DISABLE_NO_THEME_WARNING=1`
@@ -139,7 +139,7 @@ export const useThemeWithState = (
     }
   }
 
-  const themeProxied = useMemo(() => {
+  const themeProxied = React.useMemo(() => {
     if (!themeManager || !state?.theme) {
       return {}
     }
@@ -217,7 +217,7 @@ export function getThemeProxied(
                       platform !== 'web' &&
                       isIos &&
                       !deopt &&
-                      config.settings.fastSchemeChange &&
+                      getSetting('fastSchemeChange') &&
                       !someParentIsInversed(themeManager)
                     ) {
                       if (scheme) {
@@ -300,6 +300,19 @@ const registerThemeManager = (t: ThemeManager) => {
   }
 }
 
+const ogLog = console.error
+const preventWarnSetState =
+  process.env.NODE_ENV === 'production'
+    ? ogLog
+    : // temporary fix for logs, they are harmless in that i've tried to rewrite this
+      // a few times using the "right" ways, but they are always slower. maybe skill issue
+      (a?: any, ...args: any[]) => {
+        if (typeof a === 'string' && a.includes('Cannot update a component')) {
+          return
+        }
+        return ogLog(a, ...args)
+      }
+
 export const useChangeThemeEffect = (
   props: UseThemeWithStateProps,
   isRoot = false,
@@ -307,7 +320,7 @@ export const useChangeThemeEffect = (
   shouldUpdate?: () => boolean | undefined
 ): ChangedThemeResponse => {
   const { disable } = props
-  const parentManagerId = useContext(ThemeManagerIDContext)
+  const parentManagerId = React.useContext(ThemeManagerIDContext)
   const parentManager = getThemeManager(parentManagerId)
 
   if ((!isRoot && !parentManager) || disable) {
@@ -330,7 +343,7 @@ export const useChangeThemeEffect = (
   //   }
   // }
 
-  const [themeState, setThemeState] = useState<ChangedThemeResponse>(createState)
+  const [themeState, setThemeState] = React.useState<ChangedThemeResponse>(createState)
 
   const { state, mounted, isNewTheme, themeManager, inversed } = themeState
   const isInversingOnMount = Boolean(!themeState.mounted && props.inverse)
@@ -355,7 +368,7 @@ export const useChangeThemeEffect = (
 
   if (!isServer) {
     // listen for parent change + notify children change
-    useEffect(() => {
+    React.useEffect(() => {
       if (!themeManager) return
 
       // SSR safe inverse (because server can't know prefers scheme)
@@ -379,7 +392,9 @@ export const useChangeThemeEffect = (
       // for updateTheme/replaceTheme
       const selfListenerDispose = themeManager.onChangeTheme((_a, _b, forced) => {
         if (forced) {
+          console.error = preventWarnSetState
           setThemeState((prev) => createState(prev, true))
+          console.error = ogLog
         }
       })
 
@@ -409,7 +424,9 @@ export const useChangeThemeEffect = (
           }
 
           if (shouldTryUpdate) {
+            console.error = preventWarnSetState
             setThemeState((prev) => createState(prev, force))
+            console.error = ogLog
           }
         },
         themeManager.id
@@ -434,7 +451,7 @@ export const useChangeThemeEffect = (
     ])
 
     if (process.env.NODE_ENV === 'development' && props.debug !== 'profile') {
-      useEffect(() => {
+      React.useEffect(() => {
         globalThis['TamaguiThemeManagers'] ??= new Set()
         globalThis['TamaguiThemeManagers'].add(themeManager)
         return () => {
@@ -525,7 +542,7 @@ export const useChangeThemeEffect = (
       registerThemeManager(themeManager)
     }
 
-    const isWebSSR = isWeb ? !getConfig().disableSSR : false
+    const isWebSSR = isWeb ? !getSetting('disableSSR') : false
     const mounted = isWebSSR ? isRoot || prev?.mounted : true
 
     if (!state) {

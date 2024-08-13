@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/demos",
-  "version": "1.104.2",
+  "version": "1.108.3",
   "sideEffects": [
     "*.css"
   ],
@@ -26,12 +26,14 @@
     "./package.json": "./package.json",
     "./photo/*": "./public/*.jpg",
     ".": {
+      "react-native-import": "./dist/esm/index.native.js",
       "react-native": "./dist/cjs/index.native.js",
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.js"
     },
     "./demo/*": {
+      "react-native-import": "./dist/esm/*.native.js",
       "react-native": "./dist/cjs/*.native.js",
       "types": "./types/*.d.ts",
       "import": "./dist/esm/*.mjs",
@@ -39,31 +41,31 @@
     }
   },
   "dependencies": {
-    "@tamagui/avatar": "1.104.2",
-    "@tamagui/button": "1.104.2",
-    "@tamagui/config": "1.104.2",
-    "@tamagui/core": "1.104.2",
-    "@tamagui/list-item": "1.104.2",
-    "@tamagui/logo": "1.104.2",
-    "@tamagui/lucide-icons": "1.104.2",
-    "@tamagui/menu": "1.104.2",
-    "@tamagui/popover": "1.104.2",
-    "@tamagui/progress": "1.104.2",
-    "@tamagui/radio-group": "1.104.2",
-    "@tamagui/select": "1.104.2",
-    "@tamagui/sheet": "1.104.2",
-    "@tamagui/slider": "1.104.2",
-    "@tamagui/stacks": "1.104.2",
-    "@tamagui/toast": "1.104.2",
-    "tamagui": "1.104.2"
+    "@tamagui/avatar": "1.108.3",
+    "@tamagui/button": "1.108.3",
+    "@tamagui/config": "1.108.3",
+    "@tamagui/core": "1.108.3",
+    "@tamagui/list-item": "1.108.3",
+    "@tamagui/logo": "1.108.3",
+    "@tamagui/lucide-icons": "1.108.3",
+    "@tamagui/menu": "1.108.3",
+    "@tamagui/popover": "1.108.3",
+    "@tamagui/progress": "1.108.3",
+    "@tamagui/radio-group": "1.108.3",
+    "@tamagui/select": "1.108.3",
+    "@tamagui/sheet": "1.108.3",
+    "@tamagui/slider": "1.108.3",
+    "@tamagui/stacks": "1.108.3",
+    "@tamagui/toast": "1.108.3",
+    "tamagui": "1.108.3"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.104.2",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "@tamagui/build": "1.108.3",
+    "react": "^18.2.0 || ^19.0.0",
+    "react-dom": "^18.2.0 || ^19.0.0"
   },
   "publishConfig": {
     "access": "public"

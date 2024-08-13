@@ -1,23 +1,23 @@
-import { isAndroid, isIos, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
-import { isTouchable } from '@tamagui/constants'
-import type { MediaQueryKey } from '@tamagui/core'
+import React from 'react'
+import {
+  isAndroid,
+  isIos,
+  isTouchable,
+  isWeb,
+  useIsomorphicLayoutEffect,
+} from '@tamagui/constants'
+import type { MediaQueryKey, UseMediaState } from '@tamagui/core'
 import { useMedia } from '@tamagui/core'
 import { withStaticProperties } from '@tamagui/helpers'
-import {
-  createContext,
-  createElement,
-  useContext,
-  useMemo,
-  useState,
-  useRef,
-} from 'react'
 
 type MediaQueryKeyString = MediaQueryKey extends string ? MediaQueryKey : never
 
 export type AdaptProps = {
-  when?: MediaQueryKeyString
+  when?: MediaQueryKeyString | ((state: { media: UseMediaState }) => boolean)
   platform?: 'native' | 'web' | 'touch' | 'ios' | 'android'
-  children?: any
+  children:
+    | JSX.Element
+    | ((state: { enabled: boolean; media: UseMediaState }) => JSX.Element)
 }
 
 type When = MediaQueryKeyString | boolean | null
@@ -28,11 +28,11 @@ type AdaptParentContextI = {
   setWhen: (when: When) => any
 }
 
-export const AdaptParentContext = createContext<AdaptParentContextI | null>(null)
+export const AdaptParentContext = React.createContext<AdaptParentContextI | null>(null)
 
 // forward props
 export const AdaptContents = (props: any) => {
-  const context = useContext(AdaptParentContext)
+  const context = React.useContext(AdaptParentContext)
   if (!context?.Contents) {
     throw new Error(
       process.env.NODE_ENV === 'production'
@@ -40,19 +40,17 @@ export const AdaptContents = (props: any) => {
         : `You're rendering a Tamagui <Adapt /> component without nesting it inside a parent that is able to adapt.`
     )
   }
-  return createElement(context.Contents, props)
+  return React.createElement(context.Contents, props)
 }
 
 AdaptContents.shouldForwardSpace = true
 
 export const useAdaptParent = ({
   Contents,
-}: {
-  Contents: AdaptParentContextI['Contents']
-}) => {
-  const [when, setWhen] = useState<When>(null)
+}: { Contents: AdaptParentContextI['Contents'] }) => {
+  const [when, setWhen] = React.useState<When>(null)
 
-  const AdaptProvider = useMemo(() => {
+  const AdaptProvider = React.useMemo(() => {
     const context: AdaptParentContextI = {
       Contents,
       setWhen,
@@ -77,18 +75,25 @@ export const useAdaptParent = ({
 
 export const Adapt = withStaticProperties(
   function Adapt({ platform, when, children }: AdaptProps) {
-    const context = useContext(AdaptParentContext)
+    const context = React.useContext(AdaptParentContext)
     const media = useMedia()
 
-    let enabled = !platform
-    if (platform === 'touch') enabled = isTouchable
-    if (platform === 'native') enabled = !isWeb
-    if (platform === 'web') enabled = isWeb
-    if (platform === 'ios') enabled = isIos
-    if (platform === 'android') enabled = isAndroid
+    let enabled = false
 
-    if (when && !media[when]) {
-      enabled = false
+    if (typeof when === 'function') {
+      enabled = when({ media })
+    } else {
+      enabled = !platform
+
+      if (platform === 'touch') enabled = isTouchable
+      if (platform === 'native') enabled = !isWeb
+      if (platform === 'web') enabled = isWeb
+      if (platform === 'ios') enabled = isIos
+      if (platform === 'android') enabled = isAndroid
+
+      if (when && !media[when]) {
+        enabled = false
+      }
     }
 
     useIsomorphicLayoutEffect(() => {
@@ -98,6 +103,10 @@ export const Adapt = withStaticProperties(
 
     if (!enabled) {
       return null
+    }
+
+    if (typeof children === 'function') {
+      return children({ enabled, media })
     }
 
     return children

@@ -1,11 +1,10 @@
-import { useDelayGroupContext } from '@floating-ui/react'
 import { getSpace } from '@tamagui/get-token'
 import type { SizableStackProps } from '@tamagui/stacks'
 import { Paragraph } from '@tamagui/text'
 import * as React from 'react'
 
 import type { TooltipProps } from './Tooltip'
-import { Tooltip, TooltipGroup } from './Tooltip'
+import { Tooltip } from './Tooltip'
 
 export type TooltipSimpleProps = TooltipProps & {
   disabled?: boolean
@@ -16,16 +15,9 @@ export type TooltipSimpleProps = TooltipProps & {
 
 export const TooltipSimple: React.FC<TooltipSimpleProps> = React.forwardRef(
   ({ label, children, contentProps, disabled, ...tooltipProps }, ref) => {
-    let context
-    try {
-      context = useDelayGroupContext()
-    } catch {
-      // ok
-    }
-
     const child = React.Children.only(children)
 
-    const contents = (
+    return (
       <Tooltip
         disableRTL
         offset={15}
@@ -72,13 +64,5 @@ export const TooltipSimple: React.FC<TooltipSimpleProps> = React.forwardRef(
         </Tooltip.Content>
       </Tooltip>
     )
-
-    if (!context) {
-      return <TooltipGroup delay={defaultTooltipDelay}>{contents}</TooltipGroup>
-    }
-
-    return contents
   }
 )
-
-const defaultTooltipDelay = { open: 3000, close: 100 }

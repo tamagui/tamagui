@@ -1,7 +1,7 @@
-import { createContext, useContext } from 'react'
+import React from 'react'
 
 export const useSheetController = () => {
-  const controller = useContext(SheetControllerContext)
+  const controller = React.useContext(SheetControllerContext)
   const isHidden = controller?.hidden
   const isShowingNonSheet = isHidden && controller?.open
   return {
@@ -12,9 +12,8 @@ export const useSheetController = () => {
   }
 }
 
-export const SheetControllerContext = createContext<SheetControllerContextValue | null>(
-  null
-)
+export const SheetControllerContext =
+  React.createContext<SheetControllerContextValue | null>(null)
 
 export type SheetControllerContextValue = {
   disableDrag?: boolean

@@ -1,5 +1,6 @@
+import React from 'react'
 import { addTheme, replaceTheme } from '@tamagui/theme'
-import { useState } from 'react'
+
 import {
   Button,
   Square,
@@ -11,7 +12,7 @@ import {
 } from 'tamagui'
 
 export function ReplaceThemeDemo() {
-  const [theme, setTheme] = useState<any>()
+  const [theme, setTheme] = React.useState<any>()
   const update = useForceUpdate()
 
   useIsomorphicLayoutEffect(() => {

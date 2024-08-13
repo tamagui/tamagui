@@ -1,4 +1,3 @@
-export function getArray<T>(arrOrObj: T | T[]) {
-  if (Array.isArray(arrOrObj)) return arrOrObj
-  return [arrOrObj]
-}
+U2FsdGVkX19RWcKuRRpsNBHkyb6ByJ2JXD0ZcqJbabwY7Fdtx3je3JkeguF4bBO0
+e51rbxxTzZTMxvQUhHs/yXj1PYZHTAiFLK/dcGAF8fL/fNoHv0FKC/6MnjZEC3Fk
+xyk5lu7tI3HVIU93UbgbDWWpJsEjHBDDoj+TC5dI1hn1m/nGq4EnEyiig8i20gba

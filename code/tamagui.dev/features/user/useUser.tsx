@@ -17,6 +17,12 @@ export const useUser = () => {
       if (res.ok) {
         return (await res.json()) as UserContextType
       }
+
+      // in the case where you are unauthorized lets clear all cookies
+      // this is because we had a bad version of supabase ssr that caused bad cookies
+      // and users with those cookies cant sign in
+      deleteSupabaseCookies()
+
       return null
     },
     refreshInterval: 0,
@@ -27,6 +33,15 @@ export const useUser = () => {
       mutate('user')
     },
   }
+}
+
+function deleteSupabaseCookies() {
+  document.cookie.split(';').forEach((cookie) => {
+    const [name] = cookie.split('=')
+    if (name.startsWith('sb-')) {
+      document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT'
+    }
+  })
 }
 
 export const UserGuard = ({ children }: { children: React.ReactNode }) => {

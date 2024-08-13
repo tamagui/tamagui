@@ -1,6 +1,6 @@
-import React, { memo } from 'react'
-import PropTypes from 'prop-types'
-import type { IconProps } from '@tamagui/helpers-icon'
+import React from "react";
+import PropTypes from 'prop-types';
+import type { IconProps } from '@tamagui/helpers-icon';
 import {
   Svg,
   Circle as _Circle,
@@ -17,12 +17,12 @@ import {
   Text as _Text,
   Use,
   Defs,
-  Stop,
-} from 'react-native-svg'
-import { themed } from '@tamagui/helpers-icon'
+  Stop } from
+'react-native-svg';
+import { themed } from '@tamagui/helpers-icon';
 
 const Icon = (props) => {
-  const { color = 'black', size = 24, ...otherProps } = props
+  const { color = 'black', size = 24, ...otherProps } = props;
   return (
     <Svg
       width={size}
@@ -33,16 +33,16 @@ const Icon = (props) => {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      {...otherProps}
-    >
+      {...otherProps}>
+
       <_Circle cx="11" cy="11" r="8" stroke={color} />
       <Line x1="21" x2="16.65" y1="21" y2="16.65" stroke={color} />
       <Line x1="11" x2="11" y1="8" y2="14" stroke={color} />
       <Line x1="8" x2="14" y1="11" y2="11" stroke={color} />
-    </Svg>
-  )
-}
+    </Svg>);
 
-Icon.displayName = 'ZoomIn'
+};
 
-export const ZoomIn = memo<IconProps>(themed(Icon))
+Icon.displayName = 'ZoomIn';
+
+export const ZoomIn = React.memo<IconProps>(themed(Icon));

@@ -282,7 +282,6 @@ const DescriptionWarning: React.FC<DescriptionWarningProps> = ({ contentRef }) =
       if (!isWeb) return
       const hasDescription = document.getElementById(
         // @ts-ignore
-        // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
         contentRef.current?.getAttribute('aria-describedby')!
       )
       if (!hasDescription) {

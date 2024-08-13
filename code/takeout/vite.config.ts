@@ -1,6 +1,8 @@
+import entryShakingPlugin from 'vite-plugin-entry-shaking'
 import { removeReactNativeWebAnimatedPlugin, vxs } from 'vxs/vite'
 import type { UserConfig } from 'vite'
 import { tamaguiExtractPlugin } from '@tamagui/vite-plugin'
+import { createRequire } from 'node:module'
 
 Error.stackTraceLimit = Number.POSITIVE_INFINITY
 
@@ -12,6 +14,12 @@ if (!import.meta.dirname) {
 
 const optimizeInterop = ['expo-splash-screen']
 
+const require = createRequire(import.meta.url)
+const targets = [
+  require.resolve('@tamagui/lucide-icons').replace('/dist/cjs/index.js', ''),
+  require.resolve('@tamagui/colors').replace('/dist/cjs/index.js', ''),
+]
+
 export default {
   envPrefix: 'NEXT_PUBLIC_',
 
@@ -22,6 +30,7 @@ export default {
   resolve: {
     alias: {
       '~': import.meta.dirname,
+      // TODO not working (see IconApple if you change back)
       'react-native-svg': '@tamagui/react-native-svg',
     },
 
@@ -45,6 +54,7 @@ export default {
       '@ts-react/form',
       'react-hook-form',
       '@tamagui/animate-presence',
+      '@tamagui/one-theme',
       '@tamagui/presence-child',
       '@github/mini-throttle',
       'swr',
@@ -67,6 +77,11 @@ export default {
         }
       },
     }),
+
+    // await entryShakingPlugin({
+    //   targets,
+    //   // debug: true,
+    // }),
 
     removeReactNativeWebAnimatedPlugin(),
 

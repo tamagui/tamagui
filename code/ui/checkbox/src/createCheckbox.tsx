@@ -1,3 +1,4 @@
+import React from 'react'
 import type {
   CheckedState,
   CheckboxExtraProps as HeadlessCheckboxExtraProps,
@@ -16,7 +17,6 @@ import { getFontSize } from '@tamagui/font-size'
 import { getSize } from '@tamagui/get-token'
 import { useGetThemedIcon } from '@tamagui/helpers-tamagui'
 import { useControllableState } from '@tamagui/use-controllable-state'
-import React, { useContext } from 'react'
 
 import { CheckboxFrame, CheckboxIndicatorFrame } from './Checkbox'
 import { CheckboxStyledContext } from './CheckboxStyledContext'
@@ -232,7 +232,7 @@ export function createCheckbox<
         })
       }
 
-      const context = useContext(CheckboxContext)
+      const context = React.useContext(CheckboxContext)
       if (forceMount || isIndeterminate(context.checked) || context.checked === true)
         return (
           <Indicator pointerEvents="none" {...indicatorProps} ref={forwardedRef}>

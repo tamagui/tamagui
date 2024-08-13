@@ -815,9 +815,19 @@ declare const appConfig: import("@tamagui/web").TamaguiInternalConfig<{
         };
     };
     silkscreen: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 2 | 9 | 15 | 1 | 10 | 5 | 14 | 11 | 12 | 16 | 3 | 4 | 6 | 7 | 8 | 13>;
-}, boolean | undefined, string, {
-    allowedStyleValues: false;
-    autocompleteSpecificTokens: "except-special";
+}, boolean | undefined, {
+    mediaQueryDefaultActive: {
+        xl: boolean;
+        lg: boolean;
+        md: boolean;
+        sm: boolean;
+        xs: boolean;
+        xxs: boolean;
+    };
+    defaultFont: string;
+    fastSchemeChange: true;
+    shouldAddPrefersColorThemes: true;
+    themeClassNameOnRoot: true;
 }>;
 export type AppConfig = typeof appConfig;
 declare module 'tamagui' {

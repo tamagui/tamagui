@@ -1,6 +1,4 @@
 export declare function getDefaultTamaguiConfig(platform?: 'native' | 'web'): {
-    shouldAddPrefersColorThemes: boolean;
-    themeClassNameOnRoot: boolean;
     shorthands: {
         readonly ussel: "userSelect";
         readonly cur: "cursor";
@@ -357,6 +355,10 @@ export declare function getDefaultTamaguiConfig(platform?: 'native' | 'web'): {
         pointerCoarse: {
             pointer: string;
         };
+    };
+    settings: {
+        shouldAddPrefersColorThemes: boolean;
+        themeClassNameOnRoot: boolean;
     };
 };
 //# sourceMappingURL=index.d.ts.map

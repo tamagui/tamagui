@@ -1,7 +1,5 @@
 import { normalizeValueWithProperty } from './normalizeValueWithProperty'
 
-// mutates...
-
 export function transformsToString(transforms: Object[]) {
   return transforms
     .map(

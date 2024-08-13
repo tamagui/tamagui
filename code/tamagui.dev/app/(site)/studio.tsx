@@ -21,8 +21,8 @@ import { IS_SAFARI, useHoverGlow } from '~/components/HoverGlow'
 import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
 import { LoadInter900 } from '~/features/site/fonts/LoadFonts'
 import { HeadInfo } from '~/components/HeadInfo'
-import { useUserTheme } from '~/features/site/theme/useUserTheme'
 import { useUser } from '~/features/user/useUser'
+import { useUserTheme } from '@tamagui/one-theme'
 
 export default function StudioSplashPage() {
   const user = useUser()
@@ -75,7 +75,6 @@ export default function StudioSplashPage() {
                       size="$6"
                       borderRadius="$10"
                       elevation="$2"
-                      className="glowing"
                       pe="auto"
                       hoverStyle={{
                         bg: '$color10',

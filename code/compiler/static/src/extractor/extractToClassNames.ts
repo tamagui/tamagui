@@ -11,14 +11,13 @@ import type { ClassNameObject, StyleObject, TamaguiOptions, Ternary } from '../t
 import { babelParse } from './babelParse'
 import { buildClassName } from './buildClassName'
 import type { Extractor } from './createExtractor'
+import { createLogger } from './createLogger'
 import { ensureImportingConcat } from './ensureImportingConcat'
 import { isSimpleSpread } from './extractHelpers'
 import { extractMediaStyle } from './extractMediaStyle'
 import { hoistClassNames } from './hoistClassNames'
-import { logLines } from './logLines'
 import { getFontFamilyClassNameFromProps } from './propsToFontFamilyCache'
 import { timer } from './timer'
-import { createLogger } from './createLogger'
 
 const mergeStyleGroups = {
   shadowOpacity: true,

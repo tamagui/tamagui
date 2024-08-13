@@ -76,7 +76,6 @@ export const HomeGlow = memo(() => {
         >
           <YStack
             fullscreen
-            className="wander"
             style={{
               background: `radial-gradient(var(--${cur}7) 0%, transparent 50%)`,
               transition: `all ease-in-out 1000ms`,

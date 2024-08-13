@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import * as React from 'react'
 
 type DebounceSettings = {
   leading?: boolean
@@ -50,15 +50,15 @@ export function useDebounce<
   options: DebounceSettings = defaultOpts,
   mountArgs: any[] = [fn]
 ): DebouncedFn {
-  const dbEffect = useRef<DebouncedFn | null>(null)
+  const dbEffect = React.useRef<DebouncedFn | null>(null)
 
-  useEffect(() => {
+  React.useEffect(() => {
     return () => {
       dbEffect.current?.cancel()
     }
   }, [])
 
-  return useMemo(() => {
+  return React.useMemo(() => {
     dbEffect.current = debounce(fn, wait, options.leading) as unknown as DebouncedFn
     return dbEffect.current
   }, [options.leading, ...mountArgs])
@@ -69,9 +69,9 @@ export function useDebounce<
  * Note: you may need to memo or this will keep re-rendering
  */
 export function useDebounceValue<A>(val: A, amt = 0): A {
-  const [state, setState] = useState(val)
+  const [state, setState] = React.useState(val)
 
-  useEffect(() => {
+  React.useEffect(() => {
     const tm = setTimeout(() => {
       setState((prev) => {
         if (prev === val) return prev

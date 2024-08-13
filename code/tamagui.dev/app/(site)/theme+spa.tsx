@@ -15,6 +15,7 @@ import {
   useThemeName,
 } from 'tamagui'
 import { useLocalSearchParams, useRouter } from 'vxs'
+import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
 
 import { StudioPreviewComponents } from '~/features/studio/theme/StudioPreviewComponents'
 import { StudioPreviewComponentsBar } from '~/features/studio/theme/StudioPreviewComponentsBar'
@@ -31,7 +32,7 @@ themeBuilderStore.setSteps(steps)
 
 export function loader() {}
 
-export default memo(function StudioTheme() {
+export default function ThemePage() {
   const [loaded, setLoaded] = useState(false)
   const store = useThemeBuilderStore()
   const themeName = useThemeName()
@@ -72,14 +73,15 @@ export default memo(function StudioTheme() {
       </PreviewTheme>
     </>
   )
-})
+}
 
 const PreviewTheme = (props: { children: any }) => {
   const { name: baseStepThemeName } = useBaseThemePreview()
 
   return (
     <Theme key={baseStepThemeName} forceClassName name={baseStepThemeName}>
-      <YStack bg="$background" f={1} pt={60}>
+      <ThemeNameEffect />
+      <YStack bg="$background" f={1} pt={20 + 60} my={-60}>
         {props.children}
       </YStack>
     </Theme>
@@ -90,7 +92,7 @@ const Empty = () => null
 
 const ThemeBuilderModal = memo(() => {
   const store = useThemeBuilderStore()
-  const { sectionTitles, currentSection } = store
+  const { currentSection } = store
   const StepComponent = currentSection?.children ?? Empty
   const ref = useRef<TamaguiElement>(null)
   const [expanded, setExpanded] = useState(false)

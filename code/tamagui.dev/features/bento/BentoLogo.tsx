@@ -31,7 +31,8 @@ export const BentoLogo = ({
     <YStack
       pe="none"
       h={200}
-      w={650}
+      w={550}
+      x={20}
       my={-(1 - scale) * 100}
       mx={-(1 - scale) * 270}
       scale={scale}

@@ -1,7 +1,7 @@
 import { Monitor, Moon, Sun } from '@tamagui/lucide-icons'
 import type { ButtonProps } from 'tamagui'
 import { Button, TooltipSimple } from 'tamagui'
-import { useUserTheme } from './useUserTheme'
+import { useUserTheme } from '@tamagui/one-theme'
 
 const icons = {
   system: Monitor,
@@ -10,7 +10,7 @@ const icons = {
 }
 
 export const ThemeToggle = (props: ButtonProps) => {
-  const [{ resolvedTheme, userTheme }, setUserTheme] = useUserTheme()
+  const [{ userTheme }, setUserTheme] = useUserTheme()
 
   const Icon = icons[userTheme]
 

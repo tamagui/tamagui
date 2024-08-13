@@ -1,4 +1,4 @@
-/**
+import React from "react"; /**
  * Copyright (c) Nicolas Gallagher.
  *
  * This source code is licensed under the MIT license found in the
@@ -9,7 +9,6 @@
  *
  * @flow
  */
-import { useLayoutEffect } from 'react';
-declare const useLayoutEffectImpl: typeof useLayoutEffect;
+declare const useLayoutEffectImpl: typeof React.useLayoutEffect;
 export default useLayoutEffectImpl;
 //# sourceMappingURL=index.d.ts.map

@@ -1,5 +1,261 @@
-- config v4 = no custom fonts just defaults for each platform
-- RN transform type accepts string style props now but tamagui doesn't
+site:
+
+- clicking links fast will crash
+
+uniswap:
+
+- transform issue:
+
+it looks like transform does not work - console is logging [moti]: Invalid transform value. Needs to be an array. but compiler errors on Types of property 'transform' are incompatible. Type '{ translateX: string; }[]' is not assignable to type 'Transform | undefined'.
+
+https://linear.app/uniswap/issue/WEB-4733/tamagui-transform-needs-array-to-work-but-type-expects-string
+
+- this isnt applying display flex on lg:
+
+
+const Layout = styled(Flex, {
+  width: '100%',
+  maxWidth: 1280,
+
+  '$platform-web': {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(4, 1fr)',
+    gridTemplateRows: 'repeat(4, 1fr)',
+    gridColumnGap: '16px',
+    gridRowGap: '16px',
+  },
+
+  $lg: {
+    '$platform-web': {
+      display: 'flex',
+      flexDirection: 'column',
+    },
+  },
+})
+
+
+- need to fix web types inside platform web inside media query:
+  - $sm={{ "$platform-web": { position: 'fixed' }}
+- When using <Adapt.Contents />  inside an Adapt when="sm"  it seems to hide the children before fully closed
+  - https://uniswapteam.slack.com/archives/C07AHFK2QRK/p1723409606028379
+- When opening a fit Sheet while keyboard is active (at least on ios) the height of the sheet is off
+  - https://uniswapteam.slack.com/archives/C07AHFK2QRK/p1723475036176189
+- AnimatePresence leaving things in DOM
+  - https://uniswapteam.slack.com/archives/C07AHFK2QRK/p1723148309745679
+- enter/exit in media not overriding
+- not accepting number type in media query: "$platform-web" :{ gridColumnGap: 12 }
+- for some reason "$platform-web" :{ gridTemplateRows } not accepted in media uery only
+- can't use `mt="1rem"` on web, tried adding allowedStyleValues: 'somewhat-strict-web', still not
+
+postable:
+
+- bring back copy paste on theme tab
+- simplification spree
+
+
+
+apply helps us create much simpler component APIs for v2
+likely last feature needed for it:
+
+```tsx
+import { Apply } from '@tamagui/core'
+
+const Text = styled(Text, {
+})
+
+const Icon = styled(Text, {
+})
+
+const Button = withStaticProperties(ButtonFrame, {
+  Children: (props) => <Apply to={[Text, Icon]} {...props} />,
+  Icon,
+  Text
+})
+
+/**
+ * one consideration is that if children are animated and with a js-based
+ * animation driver, then we can't flatten/optimize them + Apply. not a huge
+ * issue because we can figure out ways to re-optimize. i think probably we
+ * add a zero-runtime mode that if enabled, you'd have to do like
+ * <Apply static /> so the compiler knows it can optimize Apple into CSS.
+ **/
+
+const example = (
+  <Button>
+    <Apply to={[Text, Icon]} color="$color10">
+      {/* all of these 👇 get the styles from ^ */}
+      <Button.Text /> 
+      <Button.Text />
+      <Button.Text />
+      <Button.Icon $button-hover={{}} />
+    </Apply>
+  </Button>
+)
+
+
+// we could just use classnames?
+
+import { Style } from '@tamagui/core'
+
+const Text = styled(Text, {
+  className: 'button-item',
+})
+
+const Icon = styled(Text, {
+  className: 'button-item',
+})
+
+const Button = withStaticProperties(ButtonFrame, {
+  StyleChildren: (props) => <Style selector=".button-item" {...props} />,
+  Icon,
+  Text
+})
+
+const example = (
+  <Button>
+    <Button.StyleChildren color="$color10">
+      {/* all of these 👇 get the styles from ^ */}
+      <Button.Text /> 
+      <Button.Text />
+      <Button.Text />
+      <Button.Icon $button-hover={{}} />
+    </Button.StyleChildren>
+  </Button>
+)
+
+
+
+```
+
+---
+
+v2:
+
+  - Text weirdness fixes (explore)
+    - remove suppressHighlighting / margin 0 default from Text
+    - fix display: inline issue
+    - see what react-strict-dom is doing
+    - move it to <div><span> where div is flex, span is text only props
+        <div {...nonTextStyleProps}>
+          <span {...textStylePropsOnly} style={{ display: 'contents' }}>
+
+          </span>
+        </div>
+  - implement web-only props from flat types or else remove them and leave only in $platform-web
+  - textAlignVertical is deprecated but make sure we map back from textAlign to textAlignVertical on v2 and then remove it
+  - remove Provider need just global config once
+  - @tamagui/cli => tamagui
+    - `tamagui build` document/announce
+    - `tamagui lint` fix check and document/announce
+  - remove deprecated second argument styled acceptsClassName
+    - styled(View, { acceptsClassName }, { acceptsClassName })
+  - deprecrate and remove mediaPropOrder
+  - tamagui => @tamagui/ui
+    - new Button, Input (nice, can be v3), Image (image-next), ScrollView
+    - note many are headless
+    - fullscreen => inset={0}
+      - deprecate fullscreen, make sure inset works
+  - remove spacer / space / separator
+  - remove the accumulation of styleProps in propMapper
+  - remove disableRootThemeClass from settings, change to disableRootThemeClassName
+  - defaults onlyAllowShorthands to true, themeClassNameOnRoot to true
+  - Cleanup Select/ListItem
+    - remove SizableStack (maybe rename to Surface), redo/remove ThemeableStack
+    - v2-3 ListItem simplification esp for performance of Select
+    - fix Select hover/type/performance
+  - remove deprecated
+  - document react 19 mode - process.env.TAMAGUI_REACT_19
+  - react 0.74 alignment:
+    - https://reactnative.dev/blog/2024/04/22/release-0.74
+    - position: 'static'
+  - web alignment, accessibility props, "focusable" => tabIndex
+  - move to react native flex compat, `styleCompat` default to react-native
+    - web alignment?
+  - move to web compat style apis
+  - no more `as const` needed (ts5) typescript const generic
+  - remove deprecated flat settings, prefer createTamagui({ settings: {} })
+  - AnimatePresence: remove deprecated props in favor of `custom`
+  - remove nativeID, maybe testID
+  - remove `dataSet` in favor of `data-` attributes
+  - remove as much of `// TODO: remove this in the future when react native a11y API is removed` as possible
+    - "Enhance with native semantics" can probably go away right
+
+potential
+
+  - sync AnimatePresence with latest changes from framer-motion
+  - group => container
+
+stretch
+
+  - @tamagui/core => @tamagui/style
+    - styled()
+    - @tamagui/style just style({}) export, takes TextProps
+
+---
+
+v3
+
+  - run over components and review for removing some assumptions about `size`
+  - disableInjectCSS should maybe just be automated better or defaulted on
+  - flat vs style mode, style moves all tamagui styles into `style` besides the other psuedos like hover, enter, etc
+  - no react-native deps across the ui kit on web
+  - html.div, styled('div'), styled(html.div)
+  - zero runtime mode
+    - all functional styles pre-generate the styles across the possible tokens (if :number it uses SizeTokens, probably have to disallow string and '...' types but could have a way to define the values at build-time)
+
+---
+
+v4 and beyond
+
+- plugins
+
+---
+
+- config v4
+
+  - can pass in colors
+  - remove: shouldAddPrefersColorThemes, themeClassNameOnRoot
+  - no custom fonts just defaults for each platform
+  - focus styles in the default v3 config are kind of wack
+  - automatically handles tree shaking process.env for themes
+
+---
+
+- very long classnames could be much shorter:
+ - `_borderBottomRightRadius-_platformweb_5037`
+
+- any tamagui component accepts a function callback to handle passing down styles:
+    - <View>{(props, style, state) => {}}</View>
+    - makes for easy interop, where asChild is more opaque
+    - sets disableClassName true
+
+- we need to beef up tests:
+  - native in general
+  - native/web performance
+  - nextjs (can add to code/next-site), esp light/dark/animations
+  - $group $platform $theme styling
+
+- uniswap //@ts-expect-error TODO in homepage
+- bug in useMedia + compiler
+  - https://app.graphite.dev/github/pr/Uniswap/universe/10626/fix-web-toast-alignment
+
+/theme
+
+- generate short url on load
+- randomize button for palettes
+- OG image of theme card (use the tree one we used for the list of themes in studio)
+- save
+- use on bento
+
+- can we remove the need for separate Text/View?
+    - seems like we could scan just the direct descendents?
+    https://github.com/facebook/react-strict-dom/blob/429e2fe1cb9370c59378d9ba1f4a40676bef7555/packages/react-strict-dom/src/native/modules/createStrictDOMComponent.js#L529
+
+- AnimatePresence refactor:
+  - https://x.com/mattgperry/status/1816842995758498017?s=46&t=5wFlU_OsfjJ0sQPMFbtG0A
+
+- className merging in variants!
+  - `positionSticky: { true: { className: 'position-sticky' } }`
 - opacity `/50`
 - AnimateList
   - like AnimatePresence but for >1 items
@@ -13,7 +269,6 @@
 
 - popover transform origin
   - https://codesandbox.io/p/sandbox/floating-ui-react-scale-transform-origin-qv0t1c?file=%2Fsrc%2FApp.tsx%3A43%2C25
-- v2 - boxShadow
 - Setting default props for any style in a parent (variables dynamic / themes dynamic down the tree)
 
 Nate:
@@ -23,14 +278,10 @@ Nate:
 ---
 
 - data-disable-theme is being passed down on web snapshots
-
-- 2.0 = redo/remove ThemeableStack
-- v3 themes: all of the focus styles in the default v3 config are kind of wack
 - activeTheme props for all components
 - in dev mode if no checkbox indicator, warn
   - checkbox should have a default indicator probably with a simple svg check we inline
 - move from useMedia match.addListener to addEventListener
-- 2.0 = TS 5 recent version support raise - no more `as const` needed
 - media query height taking into account the "safe height" is important
 - https://linear.app/uniswap/issue/EXT-925/tamagui-error-breaking-the-extension
 - document Popover.Anchor
@@ -39,18 +290,8 @@ Nate:
 
 ---
 
-Tentpole projects:
-
-- Marketplace
-- Studio launch
-- Storybook/hosted docs
-- Takeout 2 / vxrn/stack
-
-Needed features/maintenance:
-
 - ( Pending PRs ) RSD / web alignment
   - follow what RSD is doing + dont go beyond native support eg aspect-ratio
-  - deprecate accessibility props, "focusable" => tabIndex
   - simple version is good
   - lower priority - em/rem, other nice web styles that rsd/tailwind has
 - RSC support
@@ -59,7 +300,6 @@ Needed features/maintenance:
 - v2 / headless
 
   - ( Pending PR ) deprecate some createTamagui settings that should move into settings
-    - disableSSR => settings.disableSSR
   - ListItem/Button simplify APIs
   - ( Pending PR ) Image/Input deprecations for web alignment
 
@@ -67,12 +307,6 @@ Needed features/maintenance:
 - 0-runtime mode
 - @tamagui/kit - includes native versions of many things
 - remove RNW - Input, Image
-
-Ongoing work:
-
-- Takeout
-- Bento
-- Core
 
 ---
 
@@ -93,8 +327,6 @@ Ongoing work:
   - "auto" too
 
 - Adapt needs public API to support any adaptation
-
-- v2-3 ListItem simplification esp for performance of Select
 
 - Select Virtualization
 
@@ -127,8 +359,6 @@ Ongoing work:
   - https://discord.com/channels/909986013848412191/1178185816426680370/1199854688233857136
 
 - compiler - no need to setup any separate package
-
-- 2.0 rename SizableStack to Surface and simplify a bit
 
 - Remove the need for Text
 
@@ -333,22 +563,6 @@ Maintenance:
 
 ---
 
-V2:
-
-- breaking:
-  - shorthands
-    - col => c
-    - remove bg/bc confusion
-  - remove suppressHighlighting / margin 0 default from Text
-  - compiler can accumulate them and emit a file?
-- basic plugins system
-- no separate UI package necessary for optimization
-- if dynamic eval flattens every usage, remove the definition
-- headless
-- zero runtime
-
----
-
 # Backlog
 
 - move simple-web to themeBuilder
@@ -388,12 +602,10 @@ V2:
 
 - Switch unstyled - make it so it doesn't do any theme stuff
 
-- font-family is being output to DOM on text element
 - font weights in css are generating extra variables with "undefined" value if not filled in
 - add defaultSize and defaultFontFamily to createTamagui
 
   - all instances of $true can become getConfig().defaultSize
-  - all instances of $body can become getConfig().defaultFontFamily
   - remove the validation in createTamagui that enforces the keys
 
 - relative sizing first class (and relative color)

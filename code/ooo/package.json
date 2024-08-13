@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/ooo",
-  "version": "1.104.2",
+  "version": "1.108.3",
   "private": true,
   "files": [],
   "type": "module",
@@ -14,12 +14,19 @@
     "postinstall": "patch-package || true"
   },
   "dependencies": {
-    "@tamagui/button": "1.104.2",
-    "@tamagui/config": "1.104.2",
-    "@tamagui/core": "1.104.2",
-    "@tamagui/input": "1.104.2",
+    "@supabase/supabase-js": "^2.44.4",
+    "@tamagui/button": "1.108.3",
+    "@tamagui/config": "1.108.3",
+    "@tamagui/input": "1.108.3",
+    "@tamagui/linear-gradient": "1.108.3",
+    "@tamagui/lucide-icons": "1.108.3",
+    "@tamagui/mdx": "1.108.3",
+    "mdx-bundler": "^10.0.2",
+    "postmark": "^3.0.18",
+    "react": "^18.3.1",
     "react-native": "0.74.1",
-    "vxs": "^1.1.150"
+    "tamagui": "1.108.3",
+    "vxs": "^1.1.166"
   },
   "devDependencies": {
     "patch-package": "^8.0.0"

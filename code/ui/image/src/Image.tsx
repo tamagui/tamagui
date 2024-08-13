@@ -1,3 +1,4 @@
+import React from 'react'
 import { isWeb } from '@tamagui/constants'
 import type {
   GetProps,
@@ -7,7 +8,7 @@ import type {
   ThemeValueFallback,
 } from '@tamagui/core'
 import { styled, usePropsAndStyle } from '@tamagui/core'
-import { useEffect, type FC } from 'react'
+import type { FC } from 'react'
 import { Image as RNImage } from 'react-native'
 
 const StyledImage = styled(RNImage, {
@@ -51,7 +52,7 @@ let hasWarned = false
 
 export const Image = StyledImage.styleable<ImageProps>((inProps, ref) => {
   const [props, style] = usePropsAndStyle(inProps)
-  const { src, source, ...rest } = props
+  const { src, source, objectFit, ...rest } = props
 
   if (process.env.NODE_ENV === 'development') {
     if (typeof src === 'string') {
@@ -98,7 +99,7 @@ export const Image = StyledImage.styleable<ImageProps>((inProps, ref) => {
 
     if (process.env.NODE_ENV === 'development' && process.env.TAMAGUI_IMAGE_CHECK_ERROR) {
       // lets add an onload timeout and warning if it fails to load in console
-      useEffect(() => {
+      React.useEffect(() => {
         async function run() {
           if (typeof src === 'string') {
             try {
@@ -120,7 +121,15 @@ export const Image = StyledImage.styleable<ImageProps>((inProps, ref) => {
   }
 
   // must set defaultSource to allow SSR, default it to the same as src
-  return <RNImage ref={ref} source={finalSource} style={style} {...(rest as any)} />
+  return (
+    <RNImage
+      resizeMode={objectFit}
+      ref={ref}
+      source={finalSource}
+      style={style}
+      {...(rest as any)}
+    />
+  )
 }) as any as ImageType
 
 Image.getSize = RNImage.getSize

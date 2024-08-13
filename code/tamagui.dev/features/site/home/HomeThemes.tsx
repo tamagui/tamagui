@@ -18,7 +18,7 @@ import { ActiveCircle } from '~/components/ActiveCircle'
 import { ContainerLarge } from '~/components/Containers'
 import { HomeH2, HomeH3 } from './HomeHeaders'
 import { MediaPlayer } from './MediaPlayer'
-import { useUserTheme } from '../theme/useUserTheme'
+import { useUserTheme } from '@tamagui/one-theme'
 
 type Lock = null | 'shouldAnimate' | 'animate' | 'scroll'
 

@@ -1,0 +1,232 @@
+---
+title: Tooltip
+description: A simple tooltip component
+name: tooltip
+component: Tooltip
+package: tooltip
+demoName: Tooltip
+---
+
+# Tooltip
+
+<Description>A tooltip on web, with only accessibility output on native</Description>
+
+<InstallBanner name="@tamagui/tooltip" />
+
+<HeroContainer showAnimationDriverControl>
+  <TooltipDemo />
+</HeroContainer>
+
+```tsx hero template=Tooltip
+
+```
+
+<Highlights
+  features={[
+    `Doesn't open until your mouse stops moving.`,
+    `Easy to animate enter and exit.`,
+    `Sizable, positionable, unstyled or styled.`,
+  ]}
+/>
+
+<Notice>
+  Note that Tooltip doesn't render on native platforms.
+</Notice>
+
+## Installation
+
+Tooltip is already installed in `tamagui`, or you can install it independently:
+
+```bash
+npm install @tamagui/tooltip
+```
+
+### PortalProvider
+
+Only if you aren't not using `tamagui` (but rather `@tamagui/core`) you'll need to install the `@tamagui/portal` package: 
+
+```bash
+npm install @tamagui/portal
+```
+
+Then add `PortalProvider` to the root of your app:
+
+```tsx fileName="App.tsx"
+import { PortalProvider } from '@tamagui/portal'
+import YourApp from './components/YourApp'
+
+function App() {
+  return (
+    <PortalProvider shouldAddRootHost>
+      <YourApp />
+    </PortalProvider>
+  )
+}
+
+export default App
+```
+
+<PropsTable
+  data={[
+    {
+      name: 'shouldAddRootHost',
+      type: 'boolean',
+      required: false,
+      description: `Defines whether to add a default root host or not.`,
+    },
+  ]}
+/>
+
+## Anatomy
+
+```tsx
+import { Tooltip } from 'tamagui' // or '@tamagui/tooltip'
+
+export default () => (
+  <Tooltip>
+    <Tooltip.Trigger />
+    <Tooltip.Content>
+      <Tooltip.Arrow />
+      {/* ... */}
+    </Tooltip.Content>
+  </Tooltip>
+)
+```
+
+## API Reference
+
+### Tooltip
+
+Contains every component for the tooltip.
+
+<PropsTable
+  data={[
+    {
+      name: 'children',
+      type: 'React.ReactNode',
+      required: true,
+      description: `Must contain Popover.Content`,
+    },
+    {
+      name: 'groupId',
+      type: 'string',
+      required: false,
+      description: `If given, will work alongside TooltipGroup to ensure only one tooltip in the groups stays open.`,
+    },
+    {
+      name: 'restMs',
+      type: 'number',
+      required: false,
+      description: `Time needed for cursor to rest before showing.`,
+    },
+    {
+      name: 'delay',
+      type: `number | { open?: number; close?: number }`,
+      required: false,
+      description: `Maximum time before showing (can be set independently for open/close).`,
+    },
+    {
+      name: 'size',
+      type: 'SizeTokens',
+      required: false,
+      description: `Passes size down too all sub-components when set for padding, arrow, borderRadius`,
+    },
+    {
+      name: 'placement',
+      type: 'Placement',
+      required: false,
+      description: `'top' | 'right' | 'bottom' | 'left' | 'top-start' | 'top-end' | 'right-start' | 'right-end' | 'bottom-start' | 'bottom-end' | 'left-start' | 'left-end'`,
+    },
+    {
+      name: 'open',
+      type: 'boolean',
+      required: false,
+      description: ``,
+    },
+    {
+      name: 'defaultOpen',
+      type: 'boolean',
+      required: false,
+    },
+    {
+      name: 'onOpenChange',
+      type: '(open: boolean) => void',
+      required: false,
+    },
+    {
+      name: 'modal',
+      type: 'boolean',
+      default: 'true',
+      required: false,
+      description: `Renders into root of app instead of inline`,
+    },
+    {
+      name: 'stayInFrame',
+      type: 'ShiftProps',
+      required: false,
+      description: `See floating-ui shift()`,
+    },
+    {
+      name: 'allowFlip',
+      type: 'FlipProps',
+      required: false,
+      description: `See floating-ui flip`,
+    },
+    {
+      name: 'offset',
+      type: 'OffsetOptions',
+      required: false,
+      description: `Determines the distance the Popover appears from the target, see floating-ui offset().`,
+    },
+  ]}
+/>
+
+<Notice>
+  If using `modal={true}` (which is `true` by default), refer to the [PortalProvider installation](/ui/tooltip/1.0.0#portalprovider) for more information.
+</Notice>
+
+### Tooltip.Trigger
+
+Used to trigger opening of the popover when uncontrolled, see YStack in [Stacks](/docs/components/stacks).
+
+### Tooltip.Content
+
+Renders as SizableStack (see [Stacks](/docs/components/stacks)) with an extra `size` prop that accepts any `SizeTokens`.
+
+### Tooltip.Anchor
+
+Renders as YStack, see [Stacks](/docs/components/stacks).
+
+When you want the Trigger to be in another location from where the Tooltip attaches, use Anchor. When used, Anchor is where the Tooltip will attach, while Trigger will open it.
+
+### TooltipGroup
+
+This allows you to logically group any tooltips rendered below this component. You can control their delay props, and components inside a TooltipGroup will be smart about opening quicker if you are moving between targets with tooltips, ensuring that subsequent tooltips show immediately rather than after a delay.
+
+See the [Floating UI docs](https://floating-ui.com/docs/floatingdelaygroup) for full details on how this works.
+
+<PropsTable
+  data={[
+    {
+      name: 'delay',
+      type: 'number | { open?: number; close?: number }',
+      default: 0,
+      required: false,
+      description: `The delay to use for the group.`,
+    },
+    {
+      name: 'timeoutMs',
+      type: 'number',
+      default: 0,
+      required: false,
+      description: `An optional timeout to use for the group, which represents when grouping logic will no longer be active after the close delay completes. Useful if you want grouping to last longer than the close delay, for example if there is no close delay at all.`,
+    },
+    {
+      name: 'preventAnimation',
+      type: 'boolean',
+      default: false,
+      required: false,
+      description: `Will disable the enter/exit animations while the group is active, but not for the initial enter animation of the first hovered tooltip.`,
+    },
+  ]}
+/>

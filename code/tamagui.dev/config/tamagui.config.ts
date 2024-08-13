@@ -73,20 +73,20 @@ const fixTypescript55Bug = {
 }
 
 const config = {
-  defaultFont: 'body',
-  shouldAddPrefersColorThemes: true,
-  themeClassNameOnRoot: true,
   animations,
   themes: maybeThemes,
   media,
   shorthands,
   tokens: fixTypescript55Bug,
-  mediaQueryDefaultActive,
-  selectionStyles: (theme) => ({
-    backgroundColor: theme.color5,
-    color: theme.color11,
-  }),
   settings: {
+    defaultFont: 'body',
+    shouldAddPrefersColorThemes: true,
+    themeClassNameOnRoot: true,
+    mediaQueryDefaultActive,
+    selectionStyles: (theme) => ({
+      backgroundColor: theme.color5,
+      color: theme.color11,
+    }),
     allowedStyleValues: 'somewhat-strict-web',
     autocompleteSpecificTokens: 'except-special',
     // mediaPropOrder: true,

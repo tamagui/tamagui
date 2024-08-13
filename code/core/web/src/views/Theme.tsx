@@ -7,6 +7,7 @@ import type { ChangedThemeResponse } from '../hooks/useTheme'
 import { useChangeThemeEffect } from '../hooks/useTheme'
 import type { ThemeProps } from '../types'
 import { ThemeDebug } from './ThemeDebug'
+import { log } from '../helpers/log'
 
 export const Theme = forwardRef(function Theme({ children, ...props }: ThemeProps, ref) {
   // @ts-expect-error only for internal views
@@ -75,10 +76,9 @@ export function getThemedChildren(
   // always be true if ever themed so we avoid re-parenting
   let shouldRenderChildrenWithTheme =
     isNewTheme ||
-    'inverse' in props ||
-    'name' in props ||
+    isRoot ||
     stateRef.current.hasEverThemed ||
-    isRoot
+    typeof props.inverse === 'boolean'
 
   if (shouldRenderChildrenWithTheme) {
     stateRef.current.hasEverThemed = true
@@ -86,6 +86,15 @@ export function getThemedChildren(
 
   if (!shouldRenderChildrenWithTheme) {
     return children
+  }
+
+  if (process.env.NODE_ENV === 'development') {
+    if (shouldRenderChildrenWithTheme && props.debug) {
+      log(
+        `adding theme: isRoot ${isRoot}, inverse ${'inverse' in props}, isNewTheme ${isNewTheme}, hasEver ${stateRef.current.hasEverThemed}`,
+        props
+      )
+    }
   }
 
   let next = children

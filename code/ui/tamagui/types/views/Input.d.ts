@@ -1,3 +1,4 @@
+import React from 'react';
 import type { GetProps } from '@tamagui/core';
 import { TextInput } from 'react-native';
 export declare const defaultStyles: {
@@ -389,6 +390,8 @@ export declare function useInputProps(props: InputProps, ref: any): {
     rotateY?: "unset" | import("@tamagui/core").UnionableString | `${number}deg` | undefined;
     rotateX?: "unset" | import("@tamagui/core").UnionableString | `${number}deg` | undefined;
     rotateZ?: "unset" | import("@tamagui/core").UnionableString | `${number}deg` | undefined;
+    transition?: import("csstype").Properties["transition"];
+    textWrap?: "unset" | "wrap" | "nowrap" | "balance" | "pretty" | "stable" | undefined;
     contain?: import("csstype").Properties["contain"];
     touchAction?: import("csstype").Properties["touchAction"];
     cursor?: import("csstype").Properties["cursor"];
@@ -492,7 +495,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
     maxInlineSize?: number | "unset" | import("@tamagui/core").SizeTokens | undefined;
     space?: number | "unset" | import("@tamagui/core").GetThemeValueForKey<"space"> | undefined;
     spaceDirection?: "unset" | import("@tamagui/core").SpaceDirection | undefined;
-    separator?: import("react").ReactNode;
+    separator?: React.ReactNode;
     animation?: import("@tamagui/core").AnimationProp | null;
     animateOnly?: string[] | "unset" | undefined;
     animatePresence?: boolean | "unset" | undefined;

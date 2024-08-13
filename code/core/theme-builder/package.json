@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/theme-builder",
-  "version": "1.104.2",
+  "version": "1.108.3",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
@@ -21,6 +21,7 @@
   "exports": {
     "./package.json": "./package.json",
     ".": {
+      "react-native-import": "./dist/esm/index.native.js",
       "react-native": "./dist/cjs/index.native.js",
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
@@ -28,11 +29,11 @@
     }
   },
   "dependencies": {
-    "@tamagui/create-theme": "1.104.2",
+    "@tamagui/create-theme": "1.108.3",
     "color2k": "^2.0.2"
   },
   "devDependencies": {
-    "@tamagui/build": "1.104.2"
+    "@tamagui/build": "1.108.3"
   },
   "publishConfig": {
     "access": "public"

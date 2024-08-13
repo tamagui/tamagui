@@ -1,7 +1,7 @@
-import type { IconProps } from '@tamagui/helpers-icon'
-import { themed } from '@tamagui/helpers-icon'
-import PropTypes from 'prop-types'
-import React, { memo } from 'react'
+import React from "react";import type { IconProps } from '@tamagui/helpers-icon';
+import { themed } from '@tamagui/helpers-icon';
+import PropTypes from 'prop-types';
+
 import {
   Defs,
   Ellipse,
@@ -18,11 +18,11 @@ import {
   Symbol,
   Use,
   Circle as _Circle,
-  Text as _Text,
-} from 'react-native-svg'
+  Text as _Text } from
+'react-native-svg';
 
 const Icon = (props) => {
-  const { color = 'black', size = 24, ...otherProps } = props
+  const { color = 'black', size = 24, ...otherProps } = props;
   return (
     <Svg
       width={size}
@@ -33,17 +33,17 @@ const Icon = (props) => {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      {...otherProps}
-    >
+      {...otherProps}>
+
       <Rect width="18" height="18" x="3" y="3" rx="2" stroke={color} />
       <Path d="M15 14v1" stroke={color} />
       <Path d="M15 19v2" stroke={color} />
       <Path d="M15 3v2" stroke={color} />
       <Path d="M15 9v1" stroke={color} />
-    </Svg>
-  )
-}
+    </Svg>);
 
-Icon.displayName = 'PanelRightInactive'
+};
 
-export const PanelRightInactive = memo<IconProps>(themed(Icon))
+Icon.displayName = 'PanelRightInactive';
+
+export const PanelRightInactive = React.memo<IconProps>(themed(Icon));

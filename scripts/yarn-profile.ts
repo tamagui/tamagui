@@ -39,15 +39,28 @@ const main = async (name: string) => {
 
   console.info(`Profile "${name}" has been ${profile.applied ? 'applied' : 'removed'}.`)
 
-  exec('yarn', (error, stdout, stderr) => {
-    if (error) {
-      console.error(`Error executing yarn: ${error.message}`)
-    } else if (stderr) {
-      console.error(`yarn stderr: ${stderr}`)
-    } else {
-      console.info(`yarn stdout: ${stdout}`)
-    }
+  await new Promise<void>((res) => {
+    exec('yarn', (error, stdout, stderr) => {
+      if (error) {
+        console.error(`Error executing yarn: ${error.message}`)
+      } else if (stderr) {
+        console.error(`yarn stderr: ${stderr}`)
+      } else {
+        console.info(`yarn stdout: ${stdout}`)
+      }
+      res()
+    })
   })
+
+  if (profile.applied) {
+    // clear things
+    exec(
+      'git reset HEAD -- package.json && git checkout -- package.json && git reset HEAD -- yarn.lock && git checkout -- yarn.lock',
+      (error, stdout, stderr) => {
+        if (error) console.error(`err2`, error)
+      }
+    )
+  }
 }
 
 // Example usage: pass the profile name as a command-line argument

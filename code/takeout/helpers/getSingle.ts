@@ -1,4 +1,3 @@
-export function getSingle<T>(arrOrObj: T | T[]) {
-  if (Array.isArray(arrOrObj)) return arrOrObj[0]
-  return arrOrObj
-}
+U2FsdGVkX1928BsIoAlZ+H9fJEsparSGmU8omY4VqsXPjFN9ksSXjXZ8/KTpeyLh
+SoS4S+D8ym3cjUfxOCdXZWLWsO4QyE4EtSoGtFD9cAOn7wMaH9HvuyMIb9qt92tE
+IVH848M6IM71Gu0k0epB42XkRHqzp015MtFMMEGTWk7Kh6XGKo4hFxcQqkkEgci2

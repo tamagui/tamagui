@@ -140,6 +140,8 @@ export declare const styledBody: ({
         lineHeight: boolean;
         textTransform: boolean;
         elevationAndroid?: boolean | undefined;
+        transition?: boolean | undefined;
+        textWrap?: boolean | undefined;
         backdropFilter?: boolean | undefined;
         background?: boolean | undefined;
         backgroundAttachment?: boolean | undefined;

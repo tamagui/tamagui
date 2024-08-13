@@ -12,7 +12,7 @@ import {
   useRole,
 } from '@floating-ui/react'
 import type { ScopedProps, SizeTokens } from '@tamagui/core'
-import { useEvent, styled } from '@tamagui/core'
+import { useEvent } from '@tamagui/core'
 import type { UseFloatingFn } from '@tamagui/floating'
 import { FloatingOverrideContext } from '@tamagui/floating'
 import { getSize } from '@tamagui/get-token'
@@ -41,14 +41,16 @@ type ScopedTooltipProps<P> = ScopedProps<P, 'Tooltip'>
 const TooltipContent = PopperContentFrame.extractable(
   React.forwardRef(
     ({ __scopeTooltip, ...props }: ScopedTooltipProps<PopoverContentProps>, ref: any) => {
+      const preventAnimation = React.useContext(PreventTooltipAnimationContext)
       const popper = usePopperContext(__scopeTooltip || TOOLTIP_SCOPE)
-      const padding =
-        props.padding ??
-        props.size ??
-        popper.size ??
-        getSize('$true', {
-          shift: -2,
-        })
+      const padding = !props.unstyled
+        ? props.padding ??
+          props.size ??
+          popper.size ??
+          getSize('$true', {
+            shift: -2,
+          })
+        : undefined
 
       return (
         <PopoverContent
@@ -61,6 +63,9 @@ const TooltipContent = PopperContentFrame.extractable(
           })}
           ref={ref}
           {...props}
+          {...(preventAnimation && {
+            animation: null,
+          })}
         />
       )
     }
@@ -108,17 +113,29 @@ type Delay =
       close: number
     }>
 
-export const TooltipGroup = ({ children, delay }: { children?: any; delay: Delay }) => {
+const PreventTooltipAnimationContext = React.createContext(false)
+
+export const TooltipGroup = ({
+  children,
+  delay,
+  preventAnimation = false,
+  timeoutMs,
+}: { children?: any; delay: Delay; preventAnimation?: boolean; timeoutMs?: number }) => {
   return (
-    <FloatingDelayGroup delay={React.useMemo(() => delay, [JSON.stringify(delay)])}>
-      {children}
-    </FloatingDelayGroup>
+    <PreventTooltipAnimationContext.Provider value={preventAnimation}>
+      <FloatingDelayGroup
+        timeoutMs={timeoutMs}
+        delay={React.useMemo(() => delay, [JSON.stringify(delay)])}
+      >
+        {children}
+      </FloatingDelayGroup>
+    </PreventTooltipAnimationContext.Provider>
   )
 }
 
 const TooltipComponent = React.forwardRef(function Tooltip(
   props: ScopedTooltipProps<TooltipProps>,
-  // theres no real ref here but React complaining need to see why see SandboxCustomStyledAnimatedTooltip.ts
+  // no real ref here but React complaining need to see why see SandboxCustomStyledAnimatedTooltip.ts
   ref
 ) {
   const {

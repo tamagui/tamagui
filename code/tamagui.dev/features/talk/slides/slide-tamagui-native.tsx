@@ -10,7 +10,7 @@ export default memo(() => {
       title="Tamagui"
       subTitle={
         <>
-          <CodeInline>Native</CodeInline> prop pairs well 🍷 with composable components
+          <CodeInline>Native</CodeInline> prop pairs well 🍷 with compound components
         </>
       }
       theme="blue"
