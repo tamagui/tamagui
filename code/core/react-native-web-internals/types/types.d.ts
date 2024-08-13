@@ -7,12 +7,12 @@
  * @flow
  */
 export type ColorValue = null | string;
-export type DimensionValue = null | number | string;
+export type DimensionValue = null | number | string | `${number}%` | `${number}px` | `${number}vh` | `${number}vw` | `${number}vmin` | `${number}vmax` | `${number}ch`;
 export type EdgeInsetsValue = {
-    top: number;
-    left: number;
-    right: number;
-    bottom: number;
+    top: number | `${number}%`;
+    left: number | `${number}%`;
+    right: number | `${number}%`;
+    bottom: number | `${number}%`;
 };
 export type GenericStyleProp<T> = null | void | T | false | '' | ReadonlyArray<GenericStyleProp<T>>;
 export type LayoutValue = {
