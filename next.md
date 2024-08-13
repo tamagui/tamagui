@@ -4,6 +4,36 @@ site:
 
 uniswap:
 
+- transform issue:
+
+it looks like transform does not work - console is logging [moti]: Invalid transform value. Needs to be an array. but compiler errors on Types of property 'transform' are incompatible. Type '{ translateX: string; }[]' is not assignable to type 'Transform | undefined'.
+
+https://linear.app/uniswap/issue/WEB-4733/tamagui-transform-needs-array-to-work-but-type-expects-string
+
+- this isnt applying display flex on lg:
+
+
+const Layout = styled(Flex, {
+  width: '100%',
+  maxWidth: 1280,
+
+  '$platform-web': {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(4, 1fr)',
+    gridTemplateRows: 'repeat(4, 1fr)',
+    gridColumnGap: '16px',
+    gridRowGap: '16px',
+  },
+
+  $lg: {
+    '$platform-web': {
+      display: 'flex',
+      flexDirection: 'column',
+    },
+  },
+})
+
+
 - need to fix web types inside platform web inside media query:
   - $sm={{ "$platform-web": { position: 'fixed' }}
 - When using <Adapt.Contents />  inside an Adapt when="sm"  it seems to hide the children before fully closed
@@ -15,6 +45,7 @@ uniswap:
 - enter/exit in media not overriding
 - not accepting number type in media query: "$platform-web" :{ gridColumnGap: 12 }
 - for some reason "$platform-web" :{ gridTemplateRows } not accepted in media uery only
+- can't use `mt="1rem"` on web, tried adding allowedStyleValues: 'somewhat-strict-web', still not
 
 postable:
 
