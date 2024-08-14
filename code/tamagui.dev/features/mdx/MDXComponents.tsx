@@ -7,7 +7,6 @@ import {
   ChevronRight,
   Copy,
   File,
-  Info,
   Link as LinkIcon,
 } from '@tamagui/lucide-icons'
 import React, { useState } from 'react'
@@ -37,17 +36,21 @@ import {
   styled,
 } from 'tamagui'
 import { LinearGradient } from 'tamagui/linear-gradient'
-import { Link } from '~/components/Link'
-
 import { Code, CodeInline } from '~/components/Code'
+import { CustomTabs } from '~/components/CustomTabs'
 import { DataTable } from '~/components/DataTable'
 import { Features } from '~/components/Features'
 import { HR } from '~/components/HR'
 import { LI } from '~/components/LI'
+import { Link } from '~/components/Link'
+import { LogoCard } from '~/components/LogoCard'
 import { Notice, NoticeFrame } from '~/components/Notice'
 import { OffsetBox } from '~/components/OffsetBox'
+import { Preview } from '~/components/Preview'
+import { ProductCard } from '~/components/ProductCard'
 import { SubTitle } from '~/components/SubTitle'
 import { TamaguiCard } from '~/components/TamaguiCard'
+import { TamaguiExamplesCode } from '~/components/TamaguiExamples'
 import { UL } from '~/components/UL'
 import { SponsorButton } from '~/features/docs/SponsorButton'
 import { ExternalIcon } from '~/features/icons/ExternalIcon'
@@ -57,22 +60,16 @@ import { BenchmarkChartWeb } from '~/features/site/benchmarks/BenchmarkChartWeb'
 import { MediaPlayer } from '~/features/site/home/MediaPlayer'
 import { SocialLinksRow } from '~/features/site/home/SocialLinksRow'
 import { unwrapText } from '~/helpers/unwrapText'
+import { pkgCommands, useBashCommand } from '~/hooks/useBashCommand'
 import { useClipboard } from '~/hooks/useClipboard'
+import { BentoCard } from '../bento/BentoCard'
 import { DocCodeBlock } from '../docs/DocsCodeBlock'
 import { HeroContainer } from '../docs/HeroContainer'
 import { Highlights } from '../docs/Highlights'
 import { InlineTabs } from '../docs/InlineTabs'
 import { PropsTable } from '../docs/PropsTable'
 import * as Demos from '../docs/demos'
-
-import { CustomTabs } from '~/components/CustomTabs'
-import { LogoCard } from '~/components/LogoCard'
-import { Preview } from '~/components/Preview'
-import { ProductCard } from '~/components/ProductCard'
-import { TamaguiExamplesCode } from '~/components/TamaguiExamples'
-import { BentoCard } from '../bento/BentoCard'
 import { ExampleAnimations } from '../site/home/HomeAnimations'
-import { pkgCommands, useBashCommand } from '~/hooks/useBashCommand'
 
 if (!React.version.startsWith('19')) {
   console.error(`\n\n\n\Not on React 19 ❌\n\n\n\n`)
