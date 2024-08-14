@@ -202,6 +202,7 @@ v3
   - html.div, styled('div'), styled(html.div)
   - zero runtime mode
     - all functional styles pre-generate the styles across the possible tokens (if :number it uses SizeTokens, probably have to disallow string and '...' types but could have a way to define the values at build-time)
+  - `<Theme values={{}} />` dynamic override
 
 ---
 
