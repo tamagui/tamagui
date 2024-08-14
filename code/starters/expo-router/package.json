@@ -44,7 +44,7 @@
     "@expo/metro-config": "~0.18.4",
     "@expo/metro-runtime": "~3.2.1",
     "@tamagui/babel-plugin": "^1.108.3",
-    "@tamagui/metro-plugin": "1.108.2",
+    "@tamagui/metro-plugin": "1.108.3",
     "@types/react": "~18.2.79",
     "@types/react-native": "^0.73.0",
     "typescript": "^5.5.2"
