@@ -6833,6 +6833,8 @@ __metadata:
   resolution: "@tamagui/input@workspace:code/ui/input"
   dependencies:
     "@tamagui/build": "npm:1.108.3"
+    "@tamagui/core": "npm:1.108.3"
+    "@tamagui/focusable": "npm:1.108.3"
     "@tamagui/font-size": "npm:1.108.3"
     "@tamagui/get-button-sized": "npm:1.108.3"
     "@tamagui/helpers": "npm:1.108.3"

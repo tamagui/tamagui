@@ -33,6 +33,8 @@
     }
   },
   "dependencies": {
+    "@tamagui/core": "1.108.3",
+    "@tamagui/focusable": "1.108.3",
     "@tamagui/font-size": "1.108.3",
     "@tamagui/get-button-sized": "1.108.3",
     "@tamagui/helpers": "1.108.3",
