@@ -239,7 +239,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
             // performance - this seems to have (strangely) huge performance effect in uniswap
             // so instead of cloning up front, we clone only when we absolutely have to
             if (!hasClonedTransition) {
-              transition = Object.apply({}, transition)
+              transition = Object.assign({}, transition)
               hasClonedTransition = true
             }
 

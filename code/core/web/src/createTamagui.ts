@@ -258,6 +258,16 @@ ${runtimeStyles}`
       ...configIn.unset,
     },
     settings: {
+      // move deprecated settings here so we can reference them all using `getSetting`
+      // TODO remove this on v2
+      disableSSR: configIn.disableSSR,
+      defaultFont: configIn.defaultFont,
+      disableRootThemeClass: configIn.disableRootThemeClass,
+      onlyAllowShorthands: configIn.onlyAllowShorthands,
+      mediaQueryDefaultActive: configIn.mediaQueryDefaultActive,
+      themeClassNameOnRoot: configIn.themeClassNameOnRoot,
+      cssStyleSeparator: configIn.cssStyleSeparator,
+
       webContainerType: 'inline-size',
       ...configIn.settings,
     },

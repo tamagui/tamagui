@@ -239,7 +239,7 @@ This is the only way to render a Select on Native for now, as mobile apps tend t
 
 See [Sheet](/docs/components/sheet) for more props.
 
-Must use `Select.SheetContents` inside the `Select.Sheet.Frame` to insert the contents given to `Select.Content`
+Must use `Select.Adapt.Contents` inside the `Select.Sheet.Frame` to insert the contents given to `Select.Content`
 
 ```tsx
 import { Select } from 'tamagui' // or '@tamagui/select'
@@ -254,7 +254,7 @@ export default () => (
       {/* or <Select.Sheet> */}
       <Sheet>
         <Sheet.Frame>
-          <SheetContents />
+          <Adapt.Contents />
         </Sheet.Frame>
         <Sheet.Overlay />
       </Sheet>
