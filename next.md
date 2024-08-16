@@ -33,7 +33,7 @@ const Layout = styled(Flex, {
   },
 })
 
-
+- // @ts-expect-error TODO tamagui needs to add gridArea type
 - need to fix web types inside platform web inside media query:
   - $sm={{ "$platform-web": { position: 'fixed' }}
 - When using <Adapt.Contents />  inside an Adapt when="sm"  it seems to hide the children before fully closed
