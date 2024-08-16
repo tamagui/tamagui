@@ -2,10 +2,10 @@ import type React from 'react'
 
 import { UserThemeProvider } from '@tamagui/one-theme'
 
-// import { AuthProvider } from './auth'
 // import { QueryClientProvider } from './react-query'
 // import { SafeAreaProvider } from './safe-area'
-import { WebsiteTamaguiProvider } from './tamagui'
+import { AuthProvider } from '~/features/auth'
+import { WebsiteTamaguiProvider } from './tamagui/index' // TODO: will error "EISDIR: illegal operation on a directory, read" on vxrn React Native without the '/index'. Note that this does not happen for '~/features/auth'
 // import { UniversalThemeProvider } from './theme'
 // import { ToastProvider } from './toast'
 
@@ -29,4 +29,4 @@ const compose = (providers: React.FC<{ children: React.ReactNode }>[]) =>
     return Provider
   })
 
-const Providers = compose([WebsiteTamaguiProvider, UserThemeProvider])
+const Providers = compose([AuthProvider, WebsiteTamaguiProvider, UserThemeProvider])
