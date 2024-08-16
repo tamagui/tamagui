@@ -1,4 +1,5 @@
 import React from 'react'
+import { getSetting } from '../config'
 
 let didHydrateOnce = false
 
@@ -21,6 +22,9 @@ let last = Date.now()
 
 export function useDidHydrateOnce() {
   if (process.env.TAMAGUI_TARGET !== 'web') {
+    return true
+  }
+  if (getSetting('disableSSR')) {
     return true
   }
   // if (process.env.TAMAGUI_REACT_19) {
