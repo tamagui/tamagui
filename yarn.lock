@@ -7137,6 +7137,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/ooo@workspace:code/ooo"
   dependencies:
+    "@leeoniya/ufuzzy": "npm:^1.0.14"
     "@supabase/supabase-js": "npm:^2.44.4"
     "@tamagui/button": "npm:1.108.4"
     "@tamagui/config": "npm:1.108.4"
@@ -7144,6 +7145,7 @@ __metadata:
     "@tamagui/linear-gradient": "npm:1.108.4"
     "@tamagui/lucide-icons": "npm:1.108.4"
     "@tamagui/mdx": "npm:1.108.4"
+    "@tamagui/use-store": "npm:1.108.4"
     mdx-bundler: "npm:^10.0.2"
     patch-package: "npm:^8.0.0"
     postmark: "npm:^3.0.18"

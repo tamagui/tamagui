@@ -46,7 +46,7 @@ RUN git config --global user.email "you@example.com" && git init . && git add -A
 RUN ./scripts/unlock-repo.sh
 
 RUN corepack enable
-RUN corepack prepare yarn@4.3.1 --activate
+RUN corepack prepare yarn@4.4.0 --activate
 RUN yarn install --immutable
 RUN yarn profile react-19
 RUN yarn patch-package

@@ -14,15 +14,15 @@
     "postinstall": "patch-package || true"
   },
   "dependencies": {
+    "@leeoniya/ufuzzy": "^1.0.14",
     "@supabase/supabase-js": "^2.44.4",
     "@tamagui/button": "1.108.4",
     "@tamagui/config": "1.108.4",
-    "@leeoniya/ufuzzy": "^1.0.14",
     "@tamagui/input": "1.108.4",
-    "@tamagui/use-store": "1.108.4",
     "@tamagui/linear-gradient": "1.108.4",
     "@tamagui/lucide-icons": "1.108.4",
     "@tamagui/mdx": "1.108.4",
+    "@tamagui/use-store": "1.108.4",
     "mdx-bundler": "^10.0.2",
     "postmark": "^3.0.18",
     "react": "^18.2.0 || ^19.0.0",
