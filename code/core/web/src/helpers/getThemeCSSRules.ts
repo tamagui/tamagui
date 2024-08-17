@@ -7,6 +7,9 @@ import type { CreateTamaguiProps, ThemeParsed } from '../types'
 import { tokensValueToVariable } from './registerCSSVariable'
 import { getSetting } from '../config'
 
+const darkLight = ['dark', 'light']
+const lightDark = ['light', 'dark']
+
 export function getThemeCSSRules(props: {
   config: CreateTamaguiProps
   themeName: string
@@ -74,7 +77,7 @@ export function getThemeCSSRules(props: {
         }
 
         const childSelector = `${CNP}${subName.replace(/^(dark|light)_/, '')}`
-        const order = isDark ? ['dark', 'light'] : ['light', 'dark']
+        const order = isDark ? darkLight : lightDark
         const [stronger, weaker] = order
         const numSelectors = Math.round(maxDepth * 1.5)
 
@@ -102,7 +105,8 @@ export function getThemeCSSRules(props: {
             childSelector === lastParentSelector ? '' : childSelector
 
           // for light/dark/light:
-          selectorsSet.add(`${parentSelectors.join(' ')} ${nextChildSelector}`.trim())
+          const parentSelectorString = parentSelectors.join(' ')
+          selectorsSet.add(`${parentSelectorString} ${nextChildSelector}`)
           // selectorsSet.add(
           //   `${parentSelectors.join(' ')} ${nextChildSelector}.is_inversed`.trim()
           // )
@@ -129,7 +133,6 @@ export function getThemeCSSRules(props: {
         ? `background:${variableToString(theme.background)};`
         : ''
       const fgString = theme.color ? `color:${variableToString(theme.color)}` : ''
-
       const bodyRules = `body{${bgString}${fgString}}`
       const isDark = themeName.startsWith('dark')
       const baseName = isDark ? 'dark' : 'light'
