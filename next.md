@@ -183,6 +183,7 @@ v2:
 
 potential
 
+  - deprecate shadow props separated in favor of boxShadow, implement boxShadow
   - sync AnimatePresence with latest changes from framer-motion
   - group => container
 

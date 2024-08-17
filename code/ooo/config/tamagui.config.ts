@@ -11,6 +11,10 @@ export type Conf = typeof config
 
 declare module 'tamagui' {
   interface TamaguiCustomConfig extends Conf {}
+
+  interface TypeOverride {
+    groupNames(): 'card'
+  }
 }
 
 export default config
