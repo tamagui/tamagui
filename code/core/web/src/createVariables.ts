@@ -34,13 +34,15 @@ export const createVariables = <A extends DeepTokenObject>(
     const isPrefixed = keyIn[0] === '$'
     const keyWithPrefix = isPrefixed ? keyIn : `$${keyIn}`
     const key = isPrefixed ? keyWithPrefix.slice(1) : keyIn
+
     if (isVariable(val)) {
       res[key] = val
       continue
     }
-    const niceKey = simpleHash(key)
-    let name = isFont ? niceKey.slice(0, 2) : i
-    name = parentPath ? `${parentPath}-${name}` : niceKey
+    const niceKey = simpleHash(key, 1000)
+    const name =
+      parentPath && parentPath !== 'color' ? `${parentPath}-${niceKey}` : niceKey
+
     if (val && typeof val === 'object') {
       // recurse
       res[key] = createVariables(
