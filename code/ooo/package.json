@@ -5,7 +5,7 @@
   "files": [],
   "type": "module",
   "scripts": {
-    "dev": "vxs dev",
+    "dev": "../../node_modules/.bin/vxs dev",
     "dev:clean": "yarn clean && yarn dev",
     "clean": "rm -r dist || true && rm -r node_modules/.vite || true",
     "build:prod": "vxs build",
