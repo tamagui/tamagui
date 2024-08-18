@@ -30,8 +30,6 @@ export default {
   resolve: {
     alias: {
       '~': import.meta.dirname,
-      // TODO not working (see IconApple if you change back)
-      'react-native-svg': '@tamagui/react-native-svg',
     },
 
     // todo automate, probably can just dedupe all package.json deps?
@@ -91,6 +89,17 @@ export default {
         })
       : null,
   ],
+
+  environments: {
+    web: {
+      resolve: {
+        alias: {
+          // TODO not working (see IconApple if you change back)
+          'react-native-svg': '@tamagui/react-native-svg', // Not sure if we actually need this now since commenting out this line doesn't break anything on web (@tamagui/lucide-icons and IconApple still works)
+        },
+      },
+    },
+  },
 } satisfies UserConfig
 
 // const purgeCloudflareCDN = async () => {
