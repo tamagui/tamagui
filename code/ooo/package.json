@@ -22,6 +22,7 @@
     "@tamagui/linear-gradient": "1.108.4",
     "@tamagui/lucide-icons": "1.108.4",
     "@tamagui/mdx": "1.108.4",
+    "@tamagui/themes": "1.108.4",
     "@tamagui/use-store": "1.108.4",
     "mdx-bundler": "^10.0.2",
     "postmark": "^3.0.18",

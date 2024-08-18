@@ -7145,6 +7145,7 @@ __metadata:
     "@tamagui/linear-gradient": "npm:1.108.4"
     "@tamagui/lucide-icons": "npm:1.108.4"
     "@tamagui/mdx": "npm:1.108.4"
+    "@tamagui/themes": "npm:1.108.4"
     "@tamagui/use-store": "npm:1.108.4"
     mdx-bundler: "npm:^10.0.2"
     patch-package: "npm:^8.0.0"
