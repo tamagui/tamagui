@@ -6,9 +6,9 @@ import { themes as themesIn } from './themes'
 import { shorthands } from '@tamagui/shorthands/v2'
 import { tokens } from './tokens'
 
-const smoothBezier = 'cubic-bezier(0.215, 0.610, 0.355, 1.000)'
+export const smoothBezier = 'cubic-bezier(0.215, 0.610, 0.355, 1.000)'
 
-export const animations = createAnimations({
+export const cssTransitions = {
   '75ms': 'ease-in 75ms',
   '100ms': 'ease-in 100ms',
   '200ms': 'ease-in 200ms',
@@ -21,7 +21,9 @@ export const animations = createAnimations({
   quicker: `${smoothBezier} 300ms`,
   quickest: `${smoothBezier} 200ms`,
   tooltip: 'ease-in 400ms',
-})
+}
+
+export const animations = createAnimations(cssTransitions)
 
 export const selectionStyles = (theme) =>
   theme.color5

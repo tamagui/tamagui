@@ -1,3 +1,12 @@
+@jsherrard
+
+- bento fixes
+  - https://discord.com/channels/909986013848412191/1206456825583632384/1274804430524514438
+  - https://discord.com/channels/909986013848412191/1206456825583632384/1273079183999897666
+
+- keep an eye out for login issues, perhaps we can clear cookies if login redirect back to home unsuccessfully? since the older supabase ssr we had set bad cookies which i think are causing this. i tried adding that logic.
+  - also just a check over to see if stale js is being somehow served across deploys
+
 site:
 
 - clicking links fast will crash
@@ -54,45 +63,9 @@ postable:
 
 
 
-apply helps us create much simpler component APIs for v2
-likely last feature needed for it:
+a way to set styles for children:
 
 ```tsx
-import { Apply } from '@tamagui/core'
-
-const Text = styled(Text, {
-})
-
-const Icon = styled(Text, {
-})
-
-const Button = withStaticProperties(ButtonFrame, {
-  Children: (props) => <Apply to={[Text, Icon]} {...props} />,
-  Icon,
-  Text
-})
-
-/**
- * one consideration is that if children are animated and with a js-based
- * animation driver, then we can't flatten/optimize them + Apply. not a huge
- * issue because we can figure out ways to re-optimize. i think probably we
- * add a zero-runtime mode that if enabled, you'd have to do like
- * <Apply static /> so the compiler knows it can optimize Apple into CSS.
- **/
-
-const example = (
-  <Button>
-    <Apply to={[Text, Icon]} color="$color10">
-      {/* all of these 👇 get the styles from ^ */}
-      <Button.Text /> 
-      <Button.Text />
-      <Button.Text />
-      <Button.Icon $button-hover={{}} />
-    </Apply>
-  </Button>
-)
-
-
 // we could just use classnames?
 
 import { Style } from '@tamagui/core'
@@ -214,13 +187,15 @@ v4 and beyond
 
 ---
 
-- config v4
+- config/v4
 
-  - can pass in colors
+  - remove $mono and inter default fonts use system defaults
+    - can also export the existing font config as an option for migration
+  - must pass in colors separately but it exports the defaults still
   - remove: shouldAddPrefersColorThemes, themeClassNameOnRoot
-  - no custom fonts just defaults for each platform
   - focus styles in the default v3 config are kind of wack
   - automatically handles tree shaking process.env for themes
+  - remove some shorthands (shac, less often used ones)
 
 ---
 
