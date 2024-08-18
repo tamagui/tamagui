@@ -1,8 +1,9 @@
 @jsherrard
 
 - bento fixes
-  - https://discord.com/channels/909986013848412191/1206456825583632384/1274804430524514438
-  - https://discord.com/channels/909986013848412191/1206456825583632384/1273079183999897666
+  - fix bento-get https://discord.com/channels/909986013848412191/1206456825583632384/1274804430524514438
+  - fix datpicker import cycle https://discord.com/channels/909986013848412191/1206456825583632384/1273079183999897666
+  - fix customization https://discord.com/channels/909986013848412191/1206456825583632384/1274853294195605525
 
 - keep an eye out for login issues, perhaps we can clear cookies if login redirect back to home unsuccessfully? since the older supabase ssr we had set bad cookies which i think are causing this. i tried adding that logic.
   - also just a check over to see if stale js is being somehow served across deploys
