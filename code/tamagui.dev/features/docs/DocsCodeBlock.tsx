@@ -24,7 +24,7 @@ import { LinearGradient } from 'tamagui/linear-gradient'
 import { Code } from '~/components/Code'
 import { ErrorBoundary } from '~/components/ErrorBoundary'
 import { Pre } from '~/components/Pre'
-import { RowingTabs } from '~/components/RowingTabs'
+import { RovingTabs } from '~/components/RovingTabs'
 import { useBashCommand } from '~/hooks/useBashCommand'
 import { useClipboard } from '~/hooks/useClipboard'
 import { toggleDocsTinted } from './docsTint'
@@ -196,7 +196,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                 </XStack>
               )}
 
-              <RowingTabs className={className} size={size} {...rest}>
+              <RovingTabs className={className} size={size} {...rest}>
                 <ScrollView
                   style={{ width: '100%' }}
                   contentContainerStyle={{ minWidth: '100%' }}
@@ -215,7 +215,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                     {children}
                   </Code>
                 </ScrollView>
-              </RowingTabs>
+              </RovingTabs>
             </Pre>
 
             <AnimatePresence>

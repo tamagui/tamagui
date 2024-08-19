@@ -5,7 +5,7 @@ import { AnimatePresence, Tabs, YStack } from 'tamagui'
 import { Code } from './Code'
 import { useBashCommand } from '~/hooks/useBashCommand'
 
-export function RowingTabs({ className, children, code, size, ...rest }) {
+export function RovingTabs({ className, children, code, size, ...rest }) {
   const {
     isStarter,
     isPackageRunner,

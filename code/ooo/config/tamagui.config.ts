@@ -1,7 +1,7 @@
 import { createAnimations } from '@tamagui/animations-css'
 import { createInterFont } from '@tamagui/font-inter'
 import { createMedia } from '@tamagui/react-native-media-driver'
-import { createTamagui } from 'tamagui'
+import { createFont, createTamagui } from 'tamagui'
 import { themes as themesIn } from './themes'
 import { shorthands } from '@tamagui/shorthands/v2'
 import { tokens } from './tokens'
@@ -113,6 +113,10 @@ export const config = createTamagui({
   fonts: {
     heading: headingFont,
     body: bodyFont,
+    mono: createFont({
+      ...bodyFont,
+      family: 'monospace',
+    }),
   },
   selectionStyles,
   shorthands,
