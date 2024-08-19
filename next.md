@@ -18,6 +18,9 @@
   - team links and @handles showing
   - lots of empty links
   - npx one copy (useClipboard)
+  - rovingtabs design
+  - bash codeblock font is smaller
+  - port Notices from tamagui.dev MDXComponnts
 
 site:
 

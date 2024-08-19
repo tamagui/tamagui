@@ -6490,7 +6490,7 @@ __metadata:
     vite: "npm:6.0.0-alpha.18"
     vite-bundle-analyzer: "npm:^0.9.4"
     vite-plugin-inspect: "npm:^0.8.4"
-    vxs: "npm:^1.1.166"
+    vxs: "npm:^1.1.167"
   languageName: unknown
   linkType: soft
 
@@ -7153,7 +7153,7 @@ __metadata:
     react: "npm:^18.2.0 || ^19.0.0"
     react-native: "npm:0.74.1"
     tamagui: "npm:1.108.4"
-    vxs: "npm:^1.1.166"
+    vxs: "npm:^1.1.167"
   languageName: unknown
   linkType: soft
 
@@ -7732,7 +7732,7 @@ __metadata:
     tamagui: "npm:1.108.4"
     vite: "npm:6.0.0-alpha.18"
     vite-plugin-inspect: "npm:^0.8.4"
-    vxs: "npm:^1.1.166"
+    vxs: "npm:^1.1.167"
     zod: "npm:^3.22.4"
   languageName: unknown
   linkType: soft
@@ -9456,12 +9456,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vxrn/react-native-prebuilt@npm:1.1.166":
-  version: 1.1.166
-  resolution: "@vxrn/react-native-prebuilt@npm:1.1.166"
+"@vxrn/react-native-prebuilt@npm:1.1.167":
+  version: 1.1.167
+  resolution: "@vxrn/react-native-prebuilt@npm:1.1.167"
   dependencies:
-    "@vxrn/vite-flow": "npm:1.1.166"
-    "@vxrn/vite-native-hmr": "npm:1.1.166"
+    "@vxrn/vite-flow": "npm:1.1.167"
+    "@vxrn/vite-native-hmr": "npm:1.1.167"
     esbuild: "npm:^0.23.0"
     fs-extra: "npm:^11.2.0"
     import-meta-resolve: "npm:^4.1.0"
@@ -9469,64 +9469,64 @@ __metadata:
     react: "*"
     react-dom: "*"
     react-native: "*"
-  checksum: 10/c4a65500eb471c676fb2cece3b1b4b1d33aa3ff2123017c6d3b4ac73e80eeba19f429cb2da0f52e95a392603fab2309d576362f3a5bc3642e253cac639a1f2a1
+  checksum: 10/3e8a76b76e4667915af2ac8ef018b30aa79eb8cdf3a685c8ee18688a1081104378b6c9b897f5cb326889d48bcf7d82c8c8cd5504e060adf1a57ca776f56af0a4
   languageName: node
   linkType: hard
 
-"@vxrn/safe-area@npm:1.1.166":
-  version: 1.1.166
-  resolution: "@vxrn/safe-area@npm:1.1.166"
-  checksum: 10/0626517920b57659d3e8bed3925579b6b64715e0a658820145fa333107748f46d90ba8e8c34e2969c30c6bb92ac93b3af0defcbd0788349bc9c7f6fb19af0d0a
+"@vxrn/safe-area@npm:1.1.167":
+  version: 1.1.167
+  resolution: "@vxrn/safe-area@npm:1.1.167"
+  checksum: 10/da75d91f2c8388e9187db20f1b717332b9d2b7a8b6613555653d2721c5bc792fec8f8894db96fdffceb40ee24e8fd60eb90789c9975378bee4eadbccc51d6117
   languageName: node
   linkType: hard
 
-"@vxrn/vendor@npm:1.1.166":
-  version: 1.1.166
-  resolution: "@vxrn/vendor@npm:1.1.166"
-  checksum: 10/51d47b5750ccd7ab9d85c685336f01e99e35582157d47dc624807b3a19b2b9738634e5e70da9914b0afd861882d019f92dabb94d0af62211d415ac1d5f1955a2
+"@vxrn/vendor@npm:1.1.167":
+  version: 1.1.167
+  resolution: "@vxrn/vendor@npm:1.1.167"
+  checksum: 10/c00e49954b2dfe2d24e5c42199e1a1c4747d97f78afca7137a64d7dd20ffcdf94b572c6f039fca3a98fac7bcbe3870167756d2cd0b4517eafdcded9d91bcf390
   languageName: node
   linkType: hard
 
-"@vxrn/vite-flow@npm:1.1.166":
-  version: 1.1.166
-  resolution: "@vxrn/vite-flow@npm:1.1.166"
+"@vxrn/vite-flow@npm:1.1.167":
+  version: 1.1.167
+  resolution: "@vxrn/vite-flow@npm:1.1.167"
   dependencies:
     "@babel/core": "npm:^7.21.8"
     "@babel/plugin-transform-private-methods": "npm:^7.24.7"
     metro-react-native-babel-preset: "npm:^0.77.0"
-  checksum: 10/239cf21c32c3f773c74decc855164088bc3b3a0813f417bf313c7581b5038a51f5060ea530c3950d4874c01f1ebb3be57e6322e4ded62503f895f8435710c229
+  checksum: 10/06be268bbae73eca9df5a3b6a4c1f3eadd3e4768535ad3b73d48520b54e9444a980a8e2d2b4f54cdd956702d0040ff932fd338b9bff6ce13d85d70353dae3028
   languageName: node
   linkType: hard
 
-"@vxrn/vite-native-client@npm:1.1.166":
-  version: 1.1.166
-  resolution: "@vxrn/vite-native-client@npm:1.1.166"
+"@vxrn/vite-native-client@npm:1.1.167":
+  version: 1.1.167
+  resolution: "@vxrn/vite-native-client@npm:1.1.167"
   peerDependencies:
     react-native: "*"
-  checksum: 10/329bba6c647feb8c64e5701fad7e757e3b49791094a1eaffd2285d6931d7deb44051bfd43dddd47d4568799df3919f66fd0e524ee8ae06ba7062bb1823a8d7db
+  checksum: 10/e1a3f53031463dd1c1433f0db86af2fe199753cb3fbdad07b1dec5a03d4bb2cf9235ab5409a9282849849d293877786768e4a56ad6da0000105f64a4a113e1b1
   languageName: node
   linkType: hard
 
-"@vxrn/vite-native-hmr@npm:1.1.166":
-  version: 1.1.166
-  resolution: "@vxrn/vite-native-hmr@npm:1.1.166"
+"@vxrn/vite-native-hmr@npm:1.1.167":
+  version: 1.1.167
+  resolution: "@vxrn/vite-native-hmr@npm:1.1.167"
   dependencies:
     pretty-format: "npm:^28.1.0"
   peerDependencies:
     react-native: "*"
-  checksum: 10/6e7a1142153dd12a4e46e36cfac6e326ec18a7e7b344d04bc6e7829375e206c86f76a95f176ec88356e12ff7e08c238707a7563fc39164636f9ec5505715694e
+  checksum: 10/77adfc5d68efd0053b1f7596b7e1fb9a32ae881ef0c046333619c06317a96cafcc81b3e39057c5434d18128f39c7c00d12eef1d9907ae4b7a2ac128dbe9d58ef
   languageName: node
   linkType: hard
 
-"@vxrn/vite-native-swc@npm:1.1.166":
-  version: 1.1.166
-  resolution: "@vxrn/vite-native-swc@npm:1.1.166"
+"@vxrn/vite-native-swc@npm:1.1.167":
+  version: 1.1.167
+  resolution: "@vxrn/vite-native-swc@npm:1.1.167"
   dependencies:
     "@swc/core": "npm:^1.6.6"
-    "@vxrn/vite-native-client": "npm:1.1.166"
+    "@vxrn/vite-native-client": "npm:1.1.167"
   peerDependencies:
     react-native: "*"
-  checksum: 10/ba6acf0ac1ff514fd2978208d49029b095db07e6027f0cb119798f8f1ef4c8449136185a0392e73af514f0ad5ca2d3d4ba6b836b995db0ac5adeae2ac3267ba6
+  checksum: 10/275a1ba8b33e399a635b9de0c608cb3d8519484032120b87e002703288001492135db6aa5a2e5599e0fba22fc0e8e43755567fc822bf7aa697dd8d38f12fe9fc
   languageName: node
   linkType: hard
 
@@ -18786,6 +18786,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lightningcss-darwin-arm64@npm:1.26.0":
+  version: 1.26.0
+  resolution: "lightningcss-darwin-arm64@npm:1.26.0"
+  conditions: os=darwin & cpu=arm64
+  languageName: node
+  linkType: hard
+
 "lightningcss-darwin-x64@npm:1.19.0":
   version: 1.19.0
   resolution: "lightningcss-darwin-x64@npm:1.19.0"
@@ -18800,9 +18807,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lightningcss-darwin-x64@npm:1.26.0":
+  version: 1.26.0
+  resolution: "lightningcss-darwin-x64@npm:1.26.0"
+  conditions: os=darwin & cpu=x64
+  languageName: node
+  linkType: hard
+
 "lightningcss-freebsd-x64@npm:1.22.0":
   version: 1.22.0
   resolution: "lightningcss-freebsd-x64@npm:1.22.0"
+  conditions: os=freebsd & cpu=x64
+  languageName: node
+  linkType: hard
+
+"lightningcss-freebsd-x64@npm:1.26.0":
+  version: 1.26.0
+  resolution: "lightningcss-freebsd-x64@npm:1.26.0"
   conditions: os=freebsd & cpu=x64
   languageName: node
   linkType: hard
@@ -18821,6 +18842,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lightningcss-linux-arm-gnueabihf@npm:1.26.0":
+  version: 1.26.0
+  resolution: "lightningcss-linux-arm-gnueabihf@npm:1.26.0"
+  conditions: os=linux & cpu=arm
+  languageName: node
+  linkType: hard
+
 "lightningcss-linux-arm64-gnu@npm:1.19.0":
   version: 1.19.0
   resolution: "lightningcss-linux-arm64-gnu@npm:1.19.0"
@@ -18831,6 +18859,13 @@ __metadata:
 "lightningcss-linux-arm64-gnu@npm:1.22.0":
   version: 1.22.0
   resolution: "lightningcss-linux-arm64-gnu@npm:1.22.0"
+  conditions: os=linux & cpu=arm64 & libc=glibc
+  languageName: node
+  linkType: hard
+
+"lightningcss-linux-arm64-gnu@npm:1.26.0":
+  version: 1.26.0
+  resolution: "lightningcss-linux-arm64-gnu@npm:1.26.0"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
@@ -18849,6 +18884,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lightningcss-linux-arm64-musl@npm:1.26.0":
+  version: 1.26.0
+  resolution: "lightningcss-linux-arm64-musl@npm:1.26.0"
+  conditions: os=linux & cpu=arm64 & libc=musl
+  languageName: node
+  linkType: hard
+
 "lightningcss-linux-x64-gnu@npm:1.19.0":
   version: 1.19.0
   resolution: "lightningcss-linux-x64-gnu@npm:1.19.0"
@@ -18859,6 +18901,13 @@ __metadata:
 "lightningcss-linux-x64-gnu@npm:1.22.0":
   version: 1.22.0
   resolution: "lightningcss-linux-x64-gnu@npm:1.22.0"
+  conditions: os=linux & cpu=x64 & libc=glibc
+  languageName: node
+  linkType: hard
+
+"lightningcss-linux-x64-gnu@npm:1.26.0":
+  version: 1.26.0
+  resolution: "lightningcss-linux-x64-gnu@npm:1.26.0"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
@@ -18877,6 +18926,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lightningcss-linux-x64-musl@npm:1.26.0":
+  version: 1.26.0
+  resolution: "lightningcss-linux-x64-musl@npm:1.26.0"
+  conditions: os=linux & cpu=x64 & libc=musl
+  languageName: node
+  linkType: hard
+
+"lightningcss-win32-arm64-msvc@npm:1.26.0":
+  version: 1.26.0
+  resolution: "lightningcss-win32-arm64-msvc@npm:1.26.0"
+  conditions: os=win32 & cpu=arm64
+  languageName: node
+  linkType: hard
+
 "lightningcss-win32-x64-msvc@npm:1.19.0":
   version: 1.19.0
   resolution: "lightningcss-win32-x64-msvc@npm:1.19.0"
@@ -18887,6 +18950,13 @@ __metadata:
 "lightningcss-win32-x64-msvc@npm:1.22.0":
   version: 1.22.0
   resolution: "lightningcss-win32-x64-msvc@npm:1.22.0"
+  conditions: os=win32 & cpu=x64
+  languageName: node
+  linkType: hard
+
+"lightningcss-win32-x64-msvc@npm:1.26.0":
+  version: 1.26.0
+  resolution: "lightningcss-win32-x64-msvc@npm:1.26.0"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
@@ -18925,6 +18995,46 @@ __metadata:
     lightningcss-win32-x64-msvc:
       optional: true
   checksum: 10/4a5917ba7b976c1adc3c83dd69eddc532b25647a4047f2ba480967adc2781f5bb44044f5eb91dc31d73b4a0d9e18f13f81780a223f30c37f9400a4344c51ba73
+  languageName: node
+  linkType: hard
+
+"lightningcss@npm:^1.26.0":
+  version: 1.26.0
+  resolution: "lightningcss@npm:1.26.0"
+  dependencies:
+    detect-libc: "npm:^1.0.3"
+    lightningcss-darwin-arm64: "npm:1.26.0"
+    lightningcss-darwin-x64: "npm:1.26.0"
+    lightningcss-freebsd-x64: "npm:1.26.0"
+    lightningcss-linux-arm-gnueabihf: "npm:1.26.0"
+    lightningcss-linux-arm64-gnu: "npm:1.26.0"
+    lightningcss-linux-arm64-musl: "npm:1.26.0"
+    lightningcss-linux-x64-gnu: "npm:1.26.0"
+    lightningcss-linux-x64-musl: "npm:1.26.0"
+    lightningcss-win32-arm64-msvc: "npm:1.26.0"
+    lightningcss-win32-x64-msvc: "npm:1.26.0"
+  dependenciesMeta:
+    lightningcss-darwin-arm64:
+      optional: true
+    lightningcss-darwin-x64:
+      optional: true
+    lightningcss-freebsd-x64:
+      optional: true
+    lightningcss-linux-arm-gnueabihf:
+      optional: true
+    lightningcss-linux-arm64-gnu:
+      optional: true
+    lightningcss-linux-arm64-musl:
+      optional: true
+    lightningcss-linux-x64-gnu:
+      optional: true
+    lightningcss-linux-x64-musl:
+      optional: true
+    lightningcss-win32-arm64-msvc:
+      optional: true
+    lightningcss-win32-x64-msvc:
+      optional: true
+  checksum: 10/7ba3e8a70f28ea9df5e52b5816a168983af98625c0f6a729b5a5ffe32890b6f056f2cc30af088fc2d7ad6cdafa66159673ca551b289d4f47af843bb015c7daed
   languageName: node
   linkType: hard
 
@@ -22969,6 +23079,21 @@ __metadata:
     react-native-svg:
       optional: true
   checksum: 10/c90c1c97f38c64f4a6d4afd187ed9dcf1315629c75393f141165e47038c909323031c8c6708265035f03d0f61d7d77eb1118b593da27a3e62e891a61eb5f7fe0
+  languageName: node
+  linkType: hard
+
+"react-native-gesture-handler@npm:^2.18.1":
+  version: 2.18.1
+  resolution: "react-native-gesture-handler@npm:2.18.1"
+  dependencies:
+    "@egjs/hammerjs": "npm:^2.0.17"
+    hoist-non-react-statics: "npm:^3.3.0"
+    invariant: "npm:^2.2.4"
+    prop-types: "npm:^15.7.2"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 10/d97cb20ed32c58a66c21a53727ce22cb7ece104bea296b72f4a95a3b3b61d03561e46b437f818603bcc58518dc5cd5bd42aaddb9755fb9eca467ce45358d4765
   languageName: node
   linkType: hard
 
@@ -28275,18 +28400,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vxrn@npm:1.1.166":
-  version: 1.1.166
-  resolution: "vxrn@npm:1.1.166"
+"vxrn@npm:1.1.167":
+  version: 1.1.167
+  resolution: "vxrn@npm:1.1.167"
   dependencies:
     "@babel/core": "npm:^7.21.8"
     "@hono/node-server": "npm:^1.11.1"
     "@vitejs/plugin-react-swc": "npm:^3.7.0"
-    "@vxrn/react-native-prebuilt": "npm:1.1.166"
-    "@vxrn/safe-area": "npm:1.1.166"
-    "@vxrn/vendor": "npm:1.1.166"
-    "@vxrn/vite-flow": "npm:1.1.166"
-    "@vxrn/vite-native-swc": "npm:1.1.166"
+    "@vxrn/react-native-prebuilt": "npm:1.1.167"
+    "@vxrn/safe-area": "npm:1.1.167"
+    "@vxrn/vendor": "npm:1.1.167"
+    "@vxrn/vite-flow": "npm:1.1.167"
+    "@vxrn/vite-native-swc": "npm:1.1.167"
     citty: "npm:^0.1.6"
     crossws: "npm:^0.2.4"
     es-module-lexer: "npm:^1.3.0"
@@ -28298,6 +28423,7 @@ __metadata:
     h3-proxy: "npm:^1.13.0"
     hono: "npm:^4.3.10"
     import-meta-resolve: "npm:^4.1.0"
+    lightningcss: "npm:^1.26.0"
     picocolors: "npm:^1.0.0"
     pkg-types: "npm:^1.0.3"
     vite: "npm:6.0.0-alpha.18"
@@ -28306,13 +28432,13 @@ __metadata:
     ws: "npm:^8.7.0"
   bin:
     vxrn: run.mjs
-  checksum: 10/27423bd69a57b1f53ea27ee48f29853d8e1c8347cd37d8cccdcff177d63aff8b4bfca53dbc9f24ce5705934bcea2e990f4507f5762330e824b0d8f36d0e075ea
+  checksum: 10/f7bd88cb55302c08afe5b6f800f7b8c0fe1f938c3cc9a3d6cea5cde26d616b35e12ebcfbfbbf344c7f3bfebb1686d22dd4a90a34bb2cfccccdd1b6e391d175fc
   languageName: node
   linkType: hard
 
-"vxs@npm:^1.1.166":
-  version: 1.1.166
-  resolution: "vxs@npm:1.1.166"
+"vxs@npm:^1.1.167":
+  version: 1.1.167
+  resolution: "vxs@npm:1.1.167"
   dependencies:
     "@radix-ui/react-slot": "npm:^1.0.2"
     "@react-navigation/bottom-tabs": "npm:^6.5.8"
@@ -28324,7 +28450,6 @@ __metadata:
     "@swc/core": "npm:^1.6.6"
     citty: "npm:^0.1.6"
     dotenv: "npm:^16.4.5"
-    esbuild: "npm:^0.23.0"
     escape-string-regexp: "npm:^5.0.0"
     estree-walker: "npm:^3.0.3"
     expo-linking: "npm:~6.3.1"
@@ -28334,12 +28459,14 @@ __metadata:
     fs-extra: "npm:^11.2.0"
     hono: "npm:^4.3.10"
     import-meta-resolve: "npm:^4.1.0"
+    lightningcss: "npm:^1.26.0"
     magic-string: "npm:^0.30.10"
     micromatch: "npm:^4.0.7"
     nanoid: "npm:^3.3.7"
     perfect-debounce: "npm:^1.0.0"
     react: "npm:^18.3.1"
     react-dom: "npm:^18.3.1"
+    react-native-gesture-handler: "npm:^2.18.1"
     react-native-safe-area-context: "npm:^4.10.1"
     react-native-screens: "npm:3.31.1"
     react-native-web: "npm:^0.19.12"
@@ -28347,12 +28474,12 @@ __metadata:
     rollup-plugin-node-externals: "npm:^7.1.2"
     url-parse: "npm:^1.5.10"
     vite: "npm:6.0.0-alpha.18"
-    vxrn: "npm:1.1.166"
+    vxrn: "npm:1.1.167"
   peerDependencies:
     react-native: "*"
   bin:
     vxs: run.mjs
-  checksum: 10/5818f58ae2bda2830d71aeb9beab34131385dc1bd68c2742f82110d771a5cef08148bb20988e5ec41955f17993ca0ab9ee4196bdbde95662aa3882eb1b60311a
+  checksum: 10/7ac9d0d6ed188522b60836ef3add04ccc8015c9bb9f7468d97fa0d18d852c1340bc9474c727d264f307573a98e0197e47aba94782911f3cdb10c8450f1288792
   languageName: node
   linkType: hard
 
