@@ -11,7 +11,13 @@
   - fix customization https://discord.com/channels/909986013848412191/1206456825583632384/1274853294195605525
 - keep an eye out for login issues, perhaps we can clear cookies if login redirect back to home unsuccessfully? since the older supabase ssr we had set bad cookies which i think are causing this. i tried adding that logic.
   - also just a check over to see if stale js is being somehow served across deploys
-- ooo generally running the site and helping fix obviously broken things, theres plenty, responsive design too.
+- ooo:
+  - respnosive fixes
+  - algolia search (can adopt some from tamagui.dev)
+  - email signup form
+  - team links and @handles showing
+  - lots of empty links
+  - npx one copy (useClipboard)
 
 site:
 
