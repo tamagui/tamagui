@@ -149,11 +149,9 @@ export default {
     //   targets,
     // }),
 
-    process.env.TAMAGUI_EXTRACT || PROD
-      ? tamaguiExtractPlugin({
-          logTimings: true,
-        })
-      : null,
+    tamaguiExtractPlugin({
+      logTimings: true,
+    }),
   ],
 } satisfies UserConfig
 
