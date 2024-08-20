@@ -41,6 +41,7 @@ export default function DocsLayout() {
           $md={{
             display: 'none',
           }}
+          // className="custom-scroll"
           $gtSm={{
             position: 'fixed' as any,
             top: 0,
@@ -78,131 +79,147 @@ export default function DocsLayout() {
         </YStack>
       </YStack>
 
-      <YStack tag="article">
-        <Container pos="relative">
-          <Slot />
-        </Container>
+      <YStack
+        maxWidth="100%"
+        flex={1}
+        py="$8"
+        $gtLg={{
+          l: -50,
+        }}
+        $gtMd={{
+          pb: '$9',
+          pl: 250,
+          pr: 100,
+        }}
+      >
+        <>
+          <YStack tag="article">
+            <Container pos="relative">
+              <Slot />
+            </Container>
 
-        <Container>
-          {(previous || next) && (
-            <XStack
-              aria-label="Pagination navigation"
-              my="$9"
-              jc="space-between"
-              gap="$4"
-            >
-              {previous && (
-                <Link href={previous.route} asChild>
-                  <XStack
-                    tag="a"
-                    group="card"
-                    hoverStyle={{
-                      borderColor: '$color11',
-                    }}
-                    flex={1}
-                    width="50%"
-                    p="$5"
-                    borderRadius="$2"
-                    borderWidth={1}
-                    borderColor="$borderColor"
-                    pressStyle={{
-                      backgroundColor: '$backgroundPress',
-                    }}
-                    aria-label={`Previous page: ${previous.title}`}
-                    ai="center"
-                    gap="$4"
-                    animation="100ms"
-                  >
-                    <View
-                      o={0}
-                      l="$-4"
-                      $group-card-hover={{ o: 1, l: '$0' }}
-                      $group-card-press={{ o: 0, l: '$-4' }}
-                      animation="quickest"
-                    >
-                      <ChevronLeft col="$color11" />
-                    </View>
+            <Container>
+              {(previous || next) && (
+                <XStack
+                  aria-label="Pagination navigation"
+                  my="$9"
+                  jc="space-between"
+                  gap="$4"
+                >
+                  {previous && (
+                    <Link href={previous.route} asChild>
+                      <XStack
+                        tag="a"
+                        group="card"
+                        hoverStyle={{
+                          borderColor: '$color11',
+                        }}
+                        flex={1}
+                        width="50%"
+                        p="$5"
+                        borderRadius="$2"
+                        borderWidth={1}
+                        borderColor="$borderColor"
+                        pressStyle={{
+                          backgroundColor: '$backgroundPress',
+                        }}
+                        aria-label={`Previous page: ${previous.title}`}
+                        ai="center"
+                        gap="$4"
+                        animation="100ms"
+                      >
+                        <View
+                          o={0}
+                          l="$-4"
+                          $group-card-hover={{ o: 1, l: '$0' }}
+                          $group-card-press={{ o: 0, l: '$-4' }}
+                          animation="quickest"
+                        >
+                          <ChevronLeft col="$color11" />
+                        </View>
 
-                    <YStack
-                      l="$-8"
-                      $group-card-hover={{ l: '$0' }}
-                      $group-card-press={{ l: '$-8' }}
-                      animation="quicker"
-                    >
-                      <Paragraph userSelect="none" theme="alt1" size="$5">
-                        Previous
-                      </Paragraph>
-                      <Paragraph userSelect="none" size="$3" color="$gray10">
-                        {previous.title}
-                      </Paragraph>
-                    </YStack>
-                  </XStack>
-                </Link>
+                        <YStack
+                          l="$-8"
+                          $group-card-hover={{ l: '$0' }}
+                          $group-card-press={{ l: '$-8' }}
+                          animation="quicker"
+                        >
+                          <Paragraph userSelect="none" theme="alt1" size="$5">
+                            Previous
+                          </Paragraph>
+                          <Paragraph userSelect="none" size="$3" color="$gray10">
+                            {previous.title}
+                          </Paragraph>
+                        </YStack>
+                      </XStack>
+                    </Link>
+                  )}
+                  {next && (
+                    <Link href={next.route} asChild>
+                      <XStack
+                        tag="a"
+                        group="card"
+                        hoverStyle={{
+                          borderColor: '$color11',
+                        }}
+                        flex={1}
+                        width="50%"
+                        p="$5"
+                        borderRadius="$2"
+                        borderWidth={1}
+                        borderColor="$borderColor"
+                        pressStyle={{
+                          backgroundColor: '$backgroundPress',
+                        }}
+                        aria-label={`Previous page: ${next.title}`}
+                        ai="center"
+                        jc="flex-end"
+                        gap="$4"
+                        animation="100ms"
+                      >
+                        <YStack
+                          r="$-8"
+                          $group-card-hover={{ r: '$0' }}
+                          $group-card-press={{ r: '$-8' }}
+                          animation="quicker"
+                        >
+                          <Paragraph userSelect="none" theme="alt1" size="$5">
+                            Next
+                          </Paragraph>
+                          <Paragraph userSelect="none" size="$3" color="$gray10">
+                            {next.title}
+                          </Paragraph>
+                        </YStack>
+
+                        <View
+                          o={0}
+                          r="$-4"
+                          $group-card-hover={{ o: 1, r: '$0' }}
+                          $group-card-press={{ o: 0, r: '$-4' }}
+                          animation="quickest"
+                        >
+                          <ChevronRight col="$color11" />
+                        </View>
+                      </XStack>
+                    </Link>
+                  )}
+                </XStack>
               )}
-              {next && (
-                <Link href={next.route} asChild>
-                  <XStack
-                    tag="a"
-                    group="card"
-                    hoverStyle={{
-                      borderColor: '$color11',
-                    }}
-                    flex={1}
-                    width="50%"
-                    p="$5"
-                    borderRadius="$2"
-                    borderWidth={1}
-                    borderColor="$borderColor"
-                    pressStyle={{
-                      backgroundColor: '$backgroundPress',
-                    }}
-                    aria-label={`Previous page: ${next.title}`}
-                    ai="center"
-                    jc="flex-end"
-                    gap="$4"
-                    animation="100ms"
-                  >
-                    <YStack
-                      r="$-8"
-                      $group-card-hover={{ r: '$0' }}
-                      $group-card-press={{ r: '$-8' }}
-                      animation="quicker"
-                    >
-                      <Paragraph userSelect="none" theme="alt1" size="$5">
-                        Next
-                      </Paragraph>
-                      <Paragraph userSelect="none" size="$3" color="$gray10">
-                        {next.title}
-                      </Paragraph>
-                    </YStack>
+            </Container>
 
-                    <View
-                      o={0}
-                      r="$-4"
-                      $group-card-hover={{ o: 1, r: '$0' }}
-                      $group-card-press={{ o: 0, r: '$-4' }}
-                      animation="quickest"
-                    >
-                      <ChevronRight col="$color11" />
-                    </View>
-                  </XStack>
-                </Link>
-              )}
-            </XStack>
-          )}
-        </Container>
-
-        <Container my="$3">
-          <Link
-            href={editUrl}
-            // @ts-ignore
-            title="Edit this page on GitHub."
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Edit this page on GitHub.
-          </Link>
-        </Container>
+            <Container my="$3">
+              <Link
+                href={editUrl}
+                // @ts-ignore
+                title="Edit this page on GitHub."
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Edit this page on GitHub.
+              </Link>
+            </Container>
+          </YStack>
+        </>
       </YStack>
     </>
   )
