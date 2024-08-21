@@ -1,7 +1,7 @@
 {
   "workbench.preferredDarkColorTheme": "Monochrome Dark",
   "workbench.preferredLightColorTheme": "Min Light",
-  
+
   "typescript.tsdk": "node_modules/typescript/lib",
   "search.exclude": {
     "**/node_modules": true,
@@ -32,5 +32,8 @@
     "Unflattened",
     "unselectable"
   ],
-  "cSpell.enabled": false
+  "cSpell.enabled": false,
+  "prettier.requireConfig": false,
+  "prettier.singleQuote": true,
+  "prettier.semi": false
 }
