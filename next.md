@@ -28,6 +28,9 @@ site:
 
 uniswap:
 
+- RadioGroup.Indicator can't use AnimatePresence i think because .styleable()
+  - styleable shouldn't probably do anything with presence because the child should expect to handle that, at least need to double check taht
+
 - transform issue:
 
 it looks like transform does not work - console is logging [moti]: Invalid transform value. Needs to be an array. but compiler errors on Types of property 'transform' are incompatible. Type '{ translateX: string; }[]' is not assignable to type 'Transform | undefined'.
