@@ -1,5 +1,4 @@
-type Props = ReturnType<typeof layoutsGetComponentCodes>;
-export declare function layouts(props: Props): import("react/jsx-runtime").JSX.Element;
+export declare function layouts(): import("react/jsx-runtime").JSX.Element;
 export declare function layoutsGetComponentCodes(): {
     codes: {
         SignInScreen: string;
@@ -8,5 +7,4 @@ export declare function layoutsGetComponentCodes(): {
         SignUpTwoSideScreen: string;
     };
 };
-export {};
 //# sourceMappingURL=layouts.d.ts.map
