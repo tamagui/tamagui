@@ -22,6 +22,10 @@ Let's take a quick look through some of the useful other exports in `@tamagui/co
 
 ## Helpers
 
+### getConfig
+
+The exported `getConfig` will return your fully parsed Tamagui config. This is safer than importing it directly as it avoids circular imports. In general you want to use `useTheme` to access themes, and `getTokens`/`getToken`/`getTokenValue` for tokens, but for other parts of the config this can be useful.
+
 ### insertFont
 
 ```tsx
