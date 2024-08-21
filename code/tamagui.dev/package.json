@@ -14,6 +14,7 @@
     "serve:railway": "vxs serve --host 0.0.0.0",
     "build:bento": "node ./scripts/build-bento.cjs",
     "upload:bento": "node ./scripts/upload-bento.cjs",
+    "watch:bento": "node ./scripts/watch-bento.cjs",
     "dev-build-prod": "VXRN_DISABLE_PROD_OPTIMIZATION=1 yarn build:prod && yarn serve"
   },
   "dependencies": {

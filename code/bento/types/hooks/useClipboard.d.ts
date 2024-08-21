@@ -1,5 +1,5 @@
 export declare const copyToClipboard: (text: string) => Promise<void>;
-export declare function useClipboard(text?: string, timeout?: number): {
+export declare function useClipboard(text?: string): {
     value: string;
     onCopy: () => Promise<void>;
     hasCopied: boolean;

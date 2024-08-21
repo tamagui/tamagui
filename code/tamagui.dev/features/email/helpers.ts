@@ -3,10 +3,14 @@ import * as postmark from 'postmark'
 const serverToken = process.env.POSTMARK_SERVER_TOKEN
 
 if (!serverToken) {
-  throw new Error(`No POSTMARK_SERVER_TOKEN env var is set`)
+  if (process.env.NODE_ENV === 'development') {
+    console.warn(`No POSTMARK_SERVER_TOKEN env var is set`)
+  } else {
+    throw new Error(`No POSTMARK_SERVER_TOKEN env var is set`)
+  }
 }
 
-const client = new postmark.ServerClient(serverToken)
+const client = new postmark.ServerClient(serverToken || 'no-token')
 
 export function sendProductPurchaseEmail(
   email: string,

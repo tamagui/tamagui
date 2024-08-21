@@ -18,6 +18,10 @@ declare const _default: React.ForwardRefExoticComponent<PreProps & {
     showLineNumbers?: boolean;
 } & React.RefAttributes<HTMLPreElement>>;
 export default _default;
+export declare const CodeInline: import("tamagui").TamaguiComponent<import("@tamagui/web").TamaDefer, import("tamagui").TamaguiTextElement, import("tamagui").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
+    size?: import("tamagui").FontSizeTokens | undefined;
+    unstyled?: boolean | undefined;
+}, import("@tamagui/web").StaticConfigPublic>;
 declare const Pre: import("tamagui").TamaguiComponent<import("@tamagui/web").TamaDefer, import("tamagui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
     elevation?: number | import("tamagui").SizeTokens | undefined;
     fullscreen?: boolean | undefined;

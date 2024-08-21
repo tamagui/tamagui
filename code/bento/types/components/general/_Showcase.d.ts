@@ -31,6 +31,7 @@ export declare const Showcase: import("tamagui").TamaguiComponent<Omit<import("@
         right?: number;
     } | undefined;
 }, import("@tamagui/web").StaticConfigPublic>;
+export declare const PhoneFrame: (props: any) => import("react/jsx-runtime").JSX.Element;
 export declare const PhoneScaleProvider: React.ProviderExoticComponent<Partial<{
     scale: number;
     invertScale: number;
@@ -83,21 +84,21 @@ export default ResizableBox;
 /** ---------- SIZE CONTROLLER ----------- */
 export declare const RawSizeProvider: React.ProviderExoticComponent<Partial<{
     sizes: SizeTokens[];
-    setSizes: (sizes: SizeTokens[]) => void;
+    setSizes: (_sizes: SizeTokens[]) => void;
     size: SizeTokens;
-    setSize: (size: SizeTokens) => void;
+    setSize: (_size: SizeTokens) => void;
     showController: boolean;
-    setShowController: (val: boolean) => void;
+    setShowController: (_val: boolean) => void;
 }> & {
     children?: React.ReactNode;
     scope?: string;
 }>, useSize: (scope?: string) => {
     sizes: SizeTokens[];
-    setSizes: (sizes: SizeTokens[]) => void;
+    setSizes: (_sizes: SizeTokens[]) => void;
     size: SizeTokens;
-    setSize: (size: SizeTokens) => void;
+    setSize: (_size: SizeTokens) => void;
     showController: boolean;
-    setShowController: (val: boolean) => void;
+    setShowController: (_val: boolean) => void;
 };
 export declare const WithSize: ({ children }: {
     children: any;

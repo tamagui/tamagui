@@ -1,6 +1,6 @@
 import type { Dispatch, SetStateAction } from 'react';
 import React from 'react';
-import type { TamaguiElement } from 'tamagui';
+import type { PortalProps, TamaguiElement } from 'tamagui';
 export declare const DrawerContext: import("@tamagui/web").StyledContext<{
     open: boolean;
     setOpen: Dispatch<SetStateAction<boolean>>;
@@ -13,7 +13,8 @@ type DrawerProps = {
      */
     portalToRoot?: boolean;
 };
-export declare const Drawer: (({ open, onOpenChange, children, portalToRoot, ...rest }: DrawerProps & {
+export declare const DrawerPortal: (props: PortalProps) => import("react/jsx-runtime").JSX.Element | undefined;
+export declare const Drawer: (({ open, onOpenChange, children, }: DrawerProps & {
     children?: React.ReactNode;
 }) => import("react/jsx-runtime").JSX.Element) & {
     Content: import("tamagui").TamaguiComponent<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {

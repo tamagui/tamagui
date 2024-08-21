@@ -1,17 +1,12 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "composite": true
+    "composite": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true
   },
-  "include": [
-    "src"
-  ],
-  "exclude": [
-    "types",
-    "node_modules",
-    "dist",
-    "**/__tests__"
-  ],
+  "include": ["src"],
+  "exclude": ["types", "node_modules", "dist", "**/__tests__"],
   "references": [
     {
       "path": "../compiler/babel-plugin"

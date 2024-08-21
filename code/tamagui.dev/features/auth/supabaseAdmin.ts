@@ -1,13 +1,15 @@
 import { createClient } from '@supabase/supabase-js'
-import type Stripe from 'stripe'
-import type { Price, Product } from '~/features/stripe/types'
-
 import { sendProductPurchaseEmail } from '~/features/email/helpers'
 import { stripe } from '~/features/stripe/stripe'
+import type { Price, Product } from '~/features/stripe/types'
+import type Stripe from 'stripe'
+
 import type { Database } from '../supabase/types'
 
-const SUPA_URL = import.meta.env.NEXT_PUBLIC_SUPABASE_URL || 'http://localhost:54321'
-const SUPA_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || ''
+const SUPA_URL =
+  import.meta.env.NEXT_PUBLIC_SUPABASE_URL || 'http://localhost:54321'
+const SUPA_KEY =
+  process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_KEY || ''
 
 console.info(`Connecting to supabase: ${SUPA_URL} with key? ${!!SUPA_KEY}`)
 
@@ -56,7 +58,8 @@ export const deleteProductRecord = async (id: Stripe.Product['id']) => {
 export const upsertPriceRecord = async (price: Stripe.Price) => {
   const priceData: Price = {
     id: price.id,
-    product_id: typeof price.product === 'string' ? price.product : price.product.id,
+    product_id:
+      typeof price.product === 'string' ? price.product : price.product.id,
     active: price.active,
     currency: price.currency,
     description: price.nickname ?? undefined,
@@ -97,11 +100,12 @@ export const createOrRetrieveCustomer = async ({
     .single()
   if (error) {
     // No customer record found, let's create one.
-    const customerData: { metadata: { supabaseUUID: string }; email?: string } = {
-      metadata: {
-        supabaseUUID: uuid,
-      },
-    }
+    const customerData: { metadata: { supabaseUUID: string }; email?: string } =
+      {
+        metadata: {
+          supabaseUUID: uuid,
+        },
+      }
     if (email) customerData.email = email
     const customer = await stripe.customers.create(customerData)
     // Now insert the customer ID into our Supabase mapping table.
@@ -208,13 +212,15 @@ export const manageSubscriptionStatusChange = async (
   }
 
   console.info(`Insert new subscription_items`)
-  const { error: insertionError } = await supabaseAdmin.from('subscription_items').upsert(
-    subscription.items.data.map((item) => ({
-      id: item.id,
-      subscription_id: subscription.id,
-      price_id: typeof item.price === 'string' ? item.price : item.price.id,
-    }))
-  )
+  const { error: insertionError } = await supabaseAdmin
+    .from('subscription_items')
+    .upsert(
+      subscription.items.data.map((item) => ({
+        id: item.id,
+        subscription_id: subscription.id,
+        price_id: typeof item.price === 'string' ? item.price : item.price.id,
+      }))
+    )
   if (insertionError) {
     throw insertionError
   }
@@ -238,7 +244,9 @@ export const manageSubscriptionStatusChange = async (
     }
   }
 
-  console.info(`Inserted/updated subscription [${subscription.id}] for user [${uuid}]`)
+  console.info(
+    `Inserted/updated subscription [${subscription.id}] for user [${uuid}]`
+  )
   // For a new subscription copy the billing details to the customer object.
   // NOTE: This is a costly operation and should happen at the very end.
   if (createAction && subscription.default_payment_method && uuid) {
@@ -292,7 +300,9 @@ export const manageSubscriptionStatusChange = async (
         name: userName,
         product_name: 'Takeout',
       })
-      console.info(`Takeout purchase email request sent to Postmark for ${email}`)
+      console.info(
+        `Takeout purchase email request sent to Postmark for ${email}`
+      )
     }
     const includesBento = subscribedProducts.some(
       (product) => product.metadata.slug === 'bento'
@@ -308,7 +318,10 @@ export const manageSubscriptionStatusChange = async (
 }
 
 export async function deleteSubscriptionRecord(sub: Stripe.Subscription) {
-  const { error } = await supabaseAdmin.from('subscriptions').delete().eq('id', sub.id)
+  const { error } = await supabaseAdmin
+    .from('subscriptions')
+    .delete()
+    .eq('id', sub.id)
   if (error) throw error
   console.error(`Deleted subscription: ${sub.id}`)
 }
@@ -330,7 +343,9 @@ export async function addRenewalSubscription(
   )
 
   const customerId =
-    typeof session.customer === 'string' ? session.customer : session.customer!.id
+    typeof session.customer === 'string'
+      ? session.customer
+      : session.customer!.id
 
   const { data: userData, error: userError } = await supabaseAdmin
     .from('customers')
@@ -376,7 +391,9 @@ export async function addRenewalSubscription(
       type: 'card',
     })
     const paymentMethod = cardPaymentMethods.data[0]
-    const collectionMethod = paymentMethod ? 'charge_automatically' : 'send_invoice'
+    const collectionMethod = paymentMethod
+      ? 'charge_automatically'
+      : 'send_invoice'
     const renewalSub = await stripe.subscriptions.create({
       ...(toltReferral && {
         metadata: {
@@ -422,7 +439,8 @@ export async function getOrCreateRenewalPriceId(price: Stripe.Price) {
   let renewalPriceId = price.metadata.renewal_price_id
   if (!price.metadata.renewal_price_id) {
     const subscriptionPrice = await stripe.prices.create({
-      product: typeof price.product === 'string' ? price.product : price.product.id,
+      product:
+        typeof price.product === 'string' ? price.product : price.product.id,
       currency: 'USD',
       nickname: `${price.nickname} | Subscription for ${price.id} (Auto-generated)`,
       recurring: { interval: 'year', interval_count: 1 },
