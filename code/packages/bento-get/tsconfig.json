@@ -4,14 +4,11 @@
     "composite": true,
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
-    "outDir": "dist"
+    "outDir": "dist",
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitAny": true
   },
-  "include": [
-    "src/**/*"
-  ],
-  "exclude": [
-    "types",
-    "dist",
-    "**/__tests__"
-  ]
+  "include": ["src/**/*"],
+  "exclude": ["types", "dist", "**/__tests__"]
 }

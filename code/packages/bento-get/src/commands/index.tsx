@@ -1,5 +1,3 @@
-// @ts-nocheck
-import React from 'react'
 import { Alert, Badge, Spinner } from '@inkjs/ui'
 import Conf from 'conf'
 import { copy } from 'copy-paste'
@@ -7,22 +5,49 @@ import Fuse from 'fuse.js'
 import { Box, Spacer, Text, useApp, useInput } from 'ink'
 import TextInput from 'ink-text-input'
 import open from 'open'
+// @ts-nocheck
+import React from 'react'
 
 import { componentsList } from '../components.js'
+import type { ComponentSchema } from '../components.js'
 import { useGithubAuth } from '../hooks/useGithubAuth.js'
 import { useInstallComponent } from '../hooks/useInstallComponent.js'
 
+export interface InstallState {
+  installingComponent: ComponentSchema | null | undefined
+  installedComponents: ComponentSchema[]
+  enterToOpenBrowser: boolean
+  tokenIsInstalled: boolean
+}
+
+interface AppContextType {
+  tokenStore: Conf<any>
+  copyToClipboard: boolean
+  setCopyToClipboard: React.Dispatch<React.SetStateAction<boolean>>
+  results: Array<{ item: ComponentSchema }>
+  setResults: React.Dispatch<
+    React.SetStateAction<Array<{ item: ComponentSchema }>>
+  >
+  selectedId: number
+  setSelectedId: React.Dispatch<React.SetStateAction<number>>
+  input: string
+  setInput: React.Dispatch<React.SetStateAction<string>>
+  setInstall: React.Dispatch<React.SetStateAction<InstallState>>
+  setInstallcomponent: React.Dispatch<React.SetStateAction<ComponentSchema>>
+
+  install: InstallState
+  exit: () => void
+}
+
 const tokenStore = new Conf({ projectName: 'bento-cli' })
 
-const handleKeypress = (key: string, modifier, appContext) => {
-  const {
-    selectedId,
-    setSelectedId,
-    setInstall,
-    results,
-    copyToClipboard,
-    setCopyToClipboard,
-  } = appContext
+const handleKeypress = (
+  key: string,
+  modifier: any,
+  appContext: AppContextType
+) => {
+  const { selectedId, setSelectedId, setInstall, results, setCopyToClipboard } =
+    appContext
 
   if (modifier.shift + key === 'l') {
     tokenStore.clear()
@@ -62,7 +87,10 @@ const handleKeypress = (key: string, modifier, appContext) => {
     return
   }
 
-  if (appContext.install.installingComponent && (modifier.upArrow || modifier.downArrow))
+  if (
+    appContext.install.installingComponent &&
+    (modifier.upArrow || modifier.downArrow)
+  )
     return
 
   if (
@@ -98,7 +126,7 @@ const handleKeypress = (key: string, modifier, appContext) => {
 }
 
 // TODO type this properly!
-export const AppContext = React.createContext<any>({
+export const AppContext = React.createContext<AppContextType>({
   tokenStore: {} as typeof tokenStore,
   copyToClipboard: false,
   setCopyToClipboard: () => {},
@@ -110,18 +138,24 @@ export const AppContext = React.createContext<any>({
   setInput: () => {},
   setInstall: () => {},
   setInstallcomponent: () => {},
-  install: null,
+  install: {
+    installingComponent: null,
+    installedComponents: [],
+    enterToOpenBrowser: false,
+    tokenIsInstalled: false,
+  },
+  exit: () => {},
 })
 
 const SearchBar = () => {
   const appContext = React.useContext(AppContext)
-  const search = (query) => {
+  const search = (query: string) => {
     const fuse = new Fuse(componentsList, {
       keys: ['name', 'category', 'categorySection'],
     })
     return fuse.search(query)
   }
-  const handleChange = (value) => {
+  const handleChange = (value: string) => {
     if ((appContext.install as any).installingComponent?.isOSS) return
     appContext.setInput(value)
     const results = search(value)
@@ -147,7 +181,10 @@ const SearchBar = () => {
 const ResultsContainer = () => {
   const appContext = React.useContext(AppContext)
   return (
-    <Box flexDirection="column" display={appContext.results.length ? 'flex' : 'none'}>
+    <Box
+      flexDirection="column"
+      display={appContext.results.length ? 'flex' : 'none'}
+    >
       <Box flexDirection="column" borderStyle="round" paddingX={1} gap={1}>
         {appContext.results.slice(0, 5).map((result, i) => (
           <ResultCard
@@ -172,7 +209,7 @@ const Footer = () => {
   )
 }
 
-const InstalledBadge = ({ item }) => {
+const InstalledBadge = ({ item }: { item: ComponentSchema }) => {
   const appContext = React.useContext(AppContext)
   const componentIsInstalled = appContext.install?.installedComponents
     ?.map((component) => component.fileName)
@@ -188,17 +225,23 @@ const InstalledBadge = ({ item }) => {
   )
 }
 
-const ResultCard = ({ result, isSelected }) => {
+const ResultCard = ({
+  result,
+  isSelected,
+}: {
+  result: { item: ComponentSchema }
+  isSelected: boolean
+}) => {
   const appContext = React.useContext(AppContext)
   return (
     <Box flexDirection="row" minWidth={'100%'}>
       <Box flexDirection="row">
-        <Text textWrap="nowrap" bold style={{ textWrap: 'nowrap' }} color="gray">
+        <Text bold color="gray">
           {(() => {
             switch (true) {
               case appContext.install.installingComponent && isSelected:
                 return ''
-              case appContext.install.installingComponent:
+              case Boolean(appContext.install.installingComponent):
                 return '  '
               case isSelected:
                 return '❯ '
@@ -207,8 +250,10 @@ const ResultCard = ({ result, isSelected }) => {
             }
           })()}
         </Text>
-        {appContext.install.installingComponent && isSelected && <InstallComponent />}
-        <Text bold style={{ textWrap: 'nowrap' }} color={isSelected ? 'white' : 'black'}>
+        {appContext.install.installingComponent && isSelected && (
+          <InstallComponent />
+        )}
+        <Text bold color={isSelected ? 'white' : 'black'}>
           {result.item?.name}
         </Text>
         <InstalledBadge item={result.item} />
@@ -220,8 +265,7 @@ const ResultCard = ({ result, isSelected }) => {
   )
 }
 
-const CategorySectionBadge = ({ item }) => {
-  const appContext = React.useContext(AppContext)
+const CategorySectionBadge = ({ item }: { item: ComponentSchema }) => {
   return (
     <Box marginLeft={1} gap={1}>
       <Text color={'black'} backgroundColor={'white'}>
@@ -233,8 +277,7 @@ const CategorySectionBadge = ({ item }) => {
     </Box>
   )
 }
-const TypeOfComponentAccess = ({ item }) => {
-  const appContext = React.useContext(AppContext)
+const TypeOfComponentAccess = ({ item }: { item: ComponentSchema }) => {
   return (
     <Box marginLeft={1} gap={1} display={item?.isOSS ? 'flex' : 'none'}>
       <Text color={'black'} backgroundColor={'gray'}>
@@ -276,9 +319,9 @@ const InstallComponent = () => {
 const UsageBanner = () => {
   return (
     <Alert variant="info">
-      Search any component by category, section or name. <Text underline>Up</Text> and{' '}
-      <Text underline>down</Text> arrows to select. <Text underline>Enter</Text> to
-      install.
+      Search any component by category, section or name.{' '}
+      <Text underline>Up</Text> and <Text underline>down</Text> arrows to
+      select. <Text underline>Enter</Text> to install.
     </Alert>
   )
 }
@@ -297,7 +340,7 @@ const CodeAuthScreen = () => {
     }
   }, [])
 
-  appContext.tokenStore.onDidChange('token', (newvalue, oldvalue) => {
+  appContext.tokenStore.onDidChange('token', () => {
     appContext.setInstall((prev) => ({
       ...prev,
       tokenIsInstalled: true,
@@ -314,8 +357,8 @@ const CodeAuthScreen = () => {
   return (
     <Box flexDirection="column" display="flex">
       <Alert variant="info">
-        Press <Text underline>Enter</Text> to open browser window and authenticate to your
-        Github account with the following auth code.
+        Press <Text underline>Enter</Text> to open browser window and
+        authenticate to your Github account with the following auth code.
       </Alert>
       <Box justifyContent="space-between" paddingRight={1}>
         <Text>
@@ -331,12 +374,17 @@ const CodeAuthScreen = () => {
           </Text>
         )}
       </Box>
-      <Box flexDirection="row" borderStyle="round" paddingY={1} justifyContent="center">
+      <Box
+        flexDirection="row"
+        borderStyle="round"
+        paddingY={1}
+        justifyContent="center"
+      >
         {appContext.install.tokenIsInstalled ? (
           <Box paddingY={1}>
             <Text color="green">
-              Github Authentication Successful. Press <Text underline>ESC</Text> to go
-              back ✔︎
+              Github Authentication Successful. Press <Text underline>ESC</Text>{' '}
+              to go back ✔︎
             </Text>
           </Box>
         ) : isLoading ? (
@@ -356,7 +404,7 @@ const CodeAuthScreen = () => {
               alignItems="center"
               justifyContent="center"
             >
-              <Text width={5}>{item}</Text>
+              <Text>{item}</Text>
             </Box>
           ))
         )}
@@ -366,10 +414,12 @@ const CodeAuthScreen = () => {
 }
 
 export default function Search() {
-  const [results, setResults] = React.useState([])
+  const [results, setResults] = React.useState<
+    Array<{ item: ComponentSchema }>
+  >([])
   const [selectedId, setSelectedId] = React.useState(-1)
   const [input, setInput] = React.useState('')
-  const [install, setInstall] = React.useState({
+  const [install, setInstall] = React.useState<InstallState>({
     installingComponent: null,
     installedComponents: [],
     enterToOpenBrowser: false,
@@ -377,8 +427,6 @@ export default function Search() {
   })
   const [copyToClipboard, setCopyToClipboard] = React.useState(false)
   const { exit } = useApp()
-  const { access_token } = tokenStore?.get('token') ?? {}
-  // tokenStore.delete("token");
 
   useInput((input, key) =>
     handleKeypress(input, key, {
@@ -394,6 +442,7 @@ export default function Search() {
       setInput,
       setInstall,
       install,
+      setInstallcomponent: () => {}, // Add this line
     })
   )
 
@@ -411,6 +460,8 @@ export default function Search() {
         setInput,
         install,
         setInstall,
+        setInstallcomponent: () => {},
+        exit: () => {},
       }}
     >
       <Provider>
@@ -427,7 +478,7 @@ export default function Search() {
 }
 
 const Provider = ({ children }: { children: React.ReactNode }) => {
-  const { error, data } = useInstallComponent()
+  const { error } = useInstallComponent()
 
   if (error) {
     if (error.status === 401) {
@@ -440,7 +491,9 @@ const Provider = ({ children }: { children: React.ReactNode }) => {
 
     return (
       <Box flexDirection="column">
-        <Alert variant="error">Error installing component: {JSON.stringify(error)}</Alert>
+        <Alert variant="error">
+          Error installing component: {JSON.stringify(error)}
+        </Alert>
         {children}
       </Box>
     )

@@ -1,61 +1,90 @@
-// @ts-nocheck
+import { existsSync, promises as fsPromises, mkdirSync } from 'node:fs'
+import path from 'node:path'
+
 import React from 'react'
 
-import { useGetComponent } from './useGetComponent.js'
 import { AppContext } from '../commands/index.js'
-import { mkdirSync, existsSync, promises as fs } from 'node:fs'
-import path from 'node:path'
-import { componentsList, type ComponentSchema } from '../components.js'
+import { InstallState } from '../commands/index.js'
+import { componentsList } from '../components.js'
+import type { ComponentSchema } from '../components.js'
+import { useGetComponent } from './useGetComponent.js'
 
-// for expo router setups
-const appDir = path.join(process.cwd(), 'app')
+const getMonorepoRoot = async () => {
+  let currentDir = process.cwd() as string
 
-const hasAppDir = () => {
-  existsSync(path.join(process.cwd(), 'app'))
+  while (currentDir !== path.parse(currentDir).root) {
+    if (
+      existsSync(path.join(currentDir, 'lerna.json')) ||
+      existsSync(path.join(currentDir, 'pnpm-workspace.yaml')) ||
+      existsSync(path.join(currentDir, 'nx.json')) ||
+      (existsSync(path.join(currentDir, 'package.json')) &&
+        JSON.parse(
+          await fsPromises.readFile(
+            path.join(currentDir, 'package.json'),
+            'utf8'
+          )
+        ).workspaces)
+    ) {
+      return currentDir
+    }
+
+    if (existsSync(path.join(currentDir, 'yarn.lock'))) {
+      const packageJsonPath = path.join(currentDir, 'package.json')
+      if (existsSync(packageJsonPath)) {
+        const packageJson = JSON.parse(
+          await fsPromises.readFile(packageJsonPath, 'utf8')
+        )
+        if (packageJson.workspaces || packageJson.private === true) {
+          return currentDir
+        }
+      }
+    }
+
+    currentDir = path.dirname(currentDir)
+  }
+
+  return process.cwd()
 }
 
-const hasAppDirAndSrcDir = () => {
-  existsSync(path.join(process.cwd(), 'app', 'src'))
-}
+const monorepoRoot = await getMonorepoRoot()
 
-// for remix setups
-const hasAppDirAndRoutesDir = () => {
-  existsSync(path.join(process.cwd(), 'app', 'routes'))
-}
-
-const hasSrcDir = () => {
-  existsSync(path.join(process.cwd(), 'src'))
-}
-
-const createUIDir = () => {
-  mkdirSync(path.join(process.cwd(), 'packages', 'ui'), {
-    recursive: true,
-  })
-}
-
-const createDir = ({
-  component,
-  uiPath,
-}: { component: ComponentSchema; uiPath: string[] } = {}) =>
-  mkdirSync(path.join(process.cwd()), {
-    recursive: true,
-  })
-
-// for monorepo setups
+const hasAppDir = () => existsSync(path.join(monorepoRoot, 'app'))
+const hasAppDirAndRoutesDir = () =>
+  existsSync(path.join(monorepoRoot, 'app', 'routes'))
+const hasSrcDir = () => existsSync(path.join(monorepoRoot, 'src'))
 const hasPackagesAndUIDir = () => {
-  const packagesDir = path.join(process.cwd(), 'packages')
+  const packagesDir = path.join(monorepoRoot, 'packages')
   const uiDir = path.join(packagesDir, 'ui')
   const srcDir = path.join(uiDir, 'src')
   return existsSync(packagesDir) && existsSync(uiDir) && existsSync(srcDir)
 }
+const isTakeoutRepo = () => {
+  const takeoutConfigPath = path.join(monorepoRoot, 'takeout.config.json')
+  return existsSync(takeoutConfigPath)
+}
 
-const getComponentsFromTextFile = (components) => {
+/**
+ * Extracts individual components from a text file containing multiple components.
+ *
+ * @param {string} componentString - A string containing multiple component definitions.
+ * @returns {Array<{name: string, content: string}>} An array of objects, each representing a component with its name and content.
+ *
+ * This function does the following:
+ * 1. Defines a regex to identify the start of each component file.
+ * 2. Splits the input string into lines.
+ * 3. Iterates through each line:
+ *    - If it matches the start of a new component, it saves the previous component (if any) and starts a new one.
+ *    - Otherwise, it accumulates the content of the current component.
+ * 4. After the iteration, it saves the last component if there is one.
+ * 5. Returns an array of all extracted components.
+ */
+const getComponentsFromTextFile = (componentString: string) => {
   const startOfTheFileRegex = /\/\*\* START of the file (.+\.tsx) \*\//
-  const lines = components.split('\n')
+  const lines = componentString.split('\n')
   let accContent = ''
   let componentName = ''
   const allComponents: { name: string; content: string }[] = []
-  lines.forEach((line, index) => {
+  lines.forEach((line: string) => {
     const matchedLine = line.match(startOfTheFileRegex)
     if (matchedLine) {
       const fileName = matchedLine[1]
@@ -74,42 +103,35 @@ const getComponentsFromTextFile = (components) => {
   return allComponents
 }
 
-export const installComponent = async ({ component, setInstall, install }) => {
+export const installComponent = async ({
+  component,
+  setInstall,
+  install,
+}: {
+  component: string
+  setInstall: React.Dispatch<React.SetStateAction<InstallState>>
+  install: InstallState
+}) => {
   const components = getComponentsFromTextFile(component)
+  const uiDir = getUIDirectory()
+  await subFoldersInstallStep(uiDir, install, components)
 
-  if (hasPackagesAndUIDir()) {
-    //TODO: think of adding later on the --overwrite flag in this piece of the process
-    await Promise.all(
-      components.map((component) =>
-        fs.writeFile(
-          path.join(process.cwd(), 'packages', 'ui', 'src', component.name),
-          component.content
-        )
-      )
-    )
-  } else if (hasAppDirAndRoutesDir()) {
-    const uiDir = path.join(process.cwd(), 'components', 'ui')
-    await subFoldersInstallStep(uiDir, install, components)
-  } else if (hasAppDir()) {
-    const uiDir = path.join(process.cwd(), 'components', 'ui')
-    await subFoldersInstallStep(uiDir, install, components)
-  } else if (hasSrcDir()) {
-    const uiDir = path.join(process.cwd(), 'src', 'components', 'ui')
-    await subFoldersInstallStep(uiDir, install, components)
-  } else {
-    console.warn(`No relevant directory found, installing directly in this directory`)
-    await subFoldersInstallStep('.', install, components)
-  }
-
+  // In the useInstallComponent function
   setInstall((prev) => ({
-    installingComponent: null,
-    installedComponents: [...prev.installedComponents, install.installingComponent],
+    ...prev,
+    installingComponent: null, // Change undefined to null
+    installedComponents: [
+      ...prev.installedComponents,
+      install.installingComponent,
+    ].filter(
+      (component): component is ComponentSchema => component !== undefined
+    ),
   }))
 }
 
 export const useInstallComponent = () => {
   const { install, setInstall } = React.useContext(AppContext)
-  const { data, error, isLoading } = useGetComponent()
+  const { data, error } = useGetComponent()
 
   React.useEffect(() => {
     if (data && install?.installingComponent) {
@@ -120,38 +142,92 @@ export const useInstallComponent = () => {
   return { data, error }
 }
 
+const getUIDirectory = () => {
+  if (isTakeoutRepo()) {
+    return path.join(monorepoRoot, 'packages', 'ui', 'src', 'components')
+  } else if (hasPackagesAndUIDir()) {
+    return path.join(monorepoRoot, 'packages', 'ui', 'src')
+  } else if (hasAppDirAndRoutesDir() || hasAppDir()) {
+    return path.join(monorepoRoot, 'components', 'ui')
+  } else if (hasSrcDir()) {
+    return path.join(monorepoRoot, 'src', 'components', 'ui')
+  } else {
+    console.warn(`No relevant directory found, using current directory`)
+    return '.'
+  }
+}
+
 async function subFoldersInstallStep(
   uiDir: string,
-  install: any,
+  install: InstallState,
   components: { name: string; content: string }[]
 ) {
   if (!existsSync(uiDir)) {
     mkdirSync(uiDir, { recursive: true })
   }
 
-  const componentSchema = componentsList.find(
-    (i) => i.name === install?.installingComponent?.name
+  const componentSchema: ComponentSchema | undefined = componentsList.find(
+    (i: ComponentSchema) => i.name === install?.installingComponent?.name
   )
 
-  await Promise.all(
-    components.map((component) => {
-      const componentName = component.name.split('.')[0]
+  if (!componentSchema) {
+    console.error(
+      `Component schema not found for: ${install?.installingComponent?.name}`
+    )
+    return
+  }
 
-      const toFolder = componentSchema.moveFilesToFolder.find(
-        (i) => i.file === componentName
-      )?.to
+  const installedFiles = new Set()
 
+  for (const moveFile of componentSchema.moveFilesToFolder || []) {
+    const sourceFile = components.find(
+      (c) => c.name.split('.')[0] === moveFile.file
+    )
+    if (sourceFile) {
+      const destinationDir = path.join(
+        uiDir,
+        componentSchema.category,
+        componentSchema.categorySection,
+        moveFile.to
+      )
+      await installFile(sourceFile, destinationDir)
+      installedFiles.add(sourceFile.name)
+    } else {
+      console.warn(`File not found for moveFilesToFolder: ${moveFile.file}`)
+    }
+  }
+
+  // Install any remaining files that weren't explicitly moved
+  for (const component of components) {
+    if (!installedFiles.has(component.name)) {
       const componentDir = path.join(
         uiDir,
-        componentSchema?.category,
-        componentSchema?.categorySection,
-        toFolder ?? ''
+        componentSchema.category,
+        componentSchema.categorySection
       )
+      await installFile(component, componentDir)
+    }
+  }
+}
 
-      if (!existsSync(componentDir)) {
-        mkdirSync(componentDir, { recursive: true })
-      }
-      fs.writeFile(path.join(componentDir, component.name), component.content)
-    })
-  )
+async function installFile(
+  file: { name: string; content: string },
+  destinationDir: string
+) {
+  if (!existsSync(destinationDir)) {
+    try {
+      mkdirSync(destinationDir, { recursive: true })
+    } catch (error) {
+      console.error(`Failed to create directory: ${destinationDir}`, error)
+      return
+    }
+  }
+
+  const destinationPath = path.join(destinationDir, file.name)
+
+  try {
+    await fsPromises.writeFile(destinationPath, file.content)
+  } catch (error) {
+    console.error(`Failed to write file: ${destinationPath}`, error)
+  }
 }
