@@ -28,6 +28,10 @@ site:
 
 uniswap:
 
+- Checkbox disabled prop not disabling on native
+
+- if Popover can not be portaled that would be useful for some use cases
+
 - RadioGroup.Indicator can't use AnimatePresence i think because .styleable()
   - styleable shouldn't probably do anything with presence because the child should expect to handle that, at least need to double check taht
 
@@ -216,6 +220,12 @@ v4 and beyond
   - remove some shorthands (shac, less often used ones)
 
 ---
+
+- lower priority uniswap:
+  - seems <Switch checked defaultChecked> isnt showing in the checked position
+  - <Theme name="dark"> with switch, the thumb is not picking up the right surface color, must be a multiple-nested theme issue
+
+- small win: `useTheme()` could take a theme name to use a diff theme than the current one
 
 - very long classnames could be much shorter:
  - `_borderBottomRightRadius-_platformweb_5037`
