@@ -19,9 +19,10 @@ const fetcher = async (url: string) => {
     }),
   })
   if (!res.ok) {
-    const error = new Error(
-      'An error occurred while fetching the data.'
-    ) as Error & { info?: any; status?: number }
+    const error = new Error('An error occurred while fetching the data.') as Error & {
+      info?: any
+      status?: number
+    }
     error.info = await res.json()
     error.status = res.status
     throw error
@@ -49,26 +50,20 @@ export const useGithubAuth = () => {
     return querystring.parse(data) as unknown as GithubCode
   }, [data])
 
+  const openLoginUrl = React.useCallback(() => {
+    if (parsedData) {
+      open(parsedData.verification_uri)
+    }
+  }, [parsedData])
+
   if (parsedData) {
     useGithubAuthPooling({ deviceCodeData: parsedData })
+  }
 
-    const openLoginUrl = React.useCallback(() => {
-      if (isLoading || error || !parsedData) return
-      open(parsedData.verification_uri)
-    }, [parsedData, error, isLoading])
-
-    return {
-      data: parsedData,
-      error,
-      isLoading,
-      openLoginUrl,
-    }
-  } else {
-    return {
-      data: null,
-      error,
-      isLoading,
-      openLoginUrl: () => {},
-    }
+  return {
+    data: parsedData,
+    error,
+    isLoading,
+    openLoginUrl,
   }
 }
