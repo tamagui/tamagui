@@ -4,7 +4,7 @@ import path from 'node:path'
 import React from 'react'
 
 import { AppContext } from '../commands/index.js'
-import { InstallState } from '../commands/index.js'
+import type { InstallState } from '../commands/index.js'
 import { componentsList } from '../components.js'
 import type { ComponentSchema } from '../components.js'
 import { useGetComponent } from './useGetComponent.js'
@@ -19,10 +19,7 @@ const getMonorepoRoot = async () => {
       existsSync(path.join(currentDir, 'nx.json')) ||
       (existsSync(path.join(currentDir, 'package.json')) &&
         JSON.parse(
-          await fsPromises.readFile(
-            path.join(currentDir, 'package.json'),
-            'utf8'
-          )
+          await fsPromises.readFile(path.join(currentDir, 'package.json'), 'utf8')
         ).workspaces)
     ) {
       return currentDir
@@ -31,9 +28,7 @@ const getMonorepoRoot = async () => {
     if (existsSync(path.join(currentDir, 'yarn.lock'))) {
       const packageJsonPath = path.join(currentDir, 'package.json')
       if (existsSync(packageJsonPath)) {
-        const packageJson = JSON.parse(
-          await fsPromises.readFile(packageJsonPath, 'utf8')
-        )
+        const packageJson = JSON.parse(await fsPromises.readFile(packageJsonPath, 'utf8'))
         if (packageJson.workspaces || packageJson.private === true) {
           return currentDir
         }
@@ -49,8 +44,7 @@ const getMonorepoRoot = async () => {
 const monorepoRoot = await getMonorepoRoot()
 
 const hasAppDir = () => existsSync(path.join(monorepoRoot, 'app'))
-const hasAppDirAndRoutesDir = () =>
-  existsSync(path.join(monorepoRoot, 'app', 'routes'))
+const hasAppDirAndRoutesDir = () => existsSync(path.join(monorepoRoot, 'app', 'routes'))
 const hasSrcDir = () => existsSync(path.join(monorepoRoot, 'src'))
 const hasPackagesAndUIDir = () => {
   const packagesDir = path.join(monorepoRoot, 'packages')
@@ -123,9 +117,7 @@ export const installComponent = async ({
     installedComponents: [
       ...prev.installedComponents,
       install.installingComponent,
-    ].filter(
-      (component): component is ComponentSchema => component !== undefined
-    ),
+    ].filter((component): component is ComponentSchema => component !== undefined),
   }))
 }
 
@@ -145,16 +137,18 @@ export const useInstallComponent = () => {
 const getUIDirectory = () => {
   if (isTakeoutRepo()) {
     return path.join(monorepoRoot, 'packages', 'ui', 'src', 'components')
-  } else if (hasPackagesAndUIDir()) {
-    return path.join(monorepoRoot, 'packages', 'ui', 'src')
-  } else if (hasAppDirAndRoutesDir() || hasAppDir()) {
-    return path.join(monorepoRoot, 'components', 'ui')
-  } else if (hasSrcDir()) {
-    return path.join(monorepoRoot, 'src', 'components', 'ui')
-  } else {
-    console.warn(`No relevant directory found, using current directory`)
-    return '.'
   }
+  if (hasPackagesAndUIDir()) {
+    return path.join(monorepoRoot, 'packages', 'ui', 'src')
+  }
+  if (hasAppDirAndRoutesDir() || hasAppDir()) {
+    return path.join(monorepoRoot, 'components', 'ui')
+  }
+  if (hasSrcDir()) {
+    return path.join(monorepoRoot, 'src', 'components', 'ui')
+  }
+  console.warn(`No relevant directory found, using current directory`)
+  return '.'
 }
 
 async function subFoldersInstallStep(
@@ -171,18 +165,14 @@ async function subFoldersInstallStep(
   )
 
   if (!componentSchema) {
-    console.error(
-      `Component schema not found for: ${install?.installingComponent?.name}`
-    )
+    console.error(`Component schema not found for: ${install?.installingComponent?.name}`)
     return
   }
 
   const installedFiles = new Set()
 
   for (const moveFile of componentSchema.moveFilesToFolder || []) {
-    const sourceFile = components.find(
-      (c) => c.name.split('.')[0] === moveFile.file
-    )
+    const sourceFile = components.find((c) => c.name.split('.')[0] === moveFile.file)
     if (sourceFile) {
       const destinationDir = path.join(
         uiDir,

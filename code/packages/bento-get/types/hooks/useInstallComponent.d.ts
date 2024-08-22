@@ -1,5 +1,5 @@
 import React from 'react';
-import { InstallState } from '../commands/index.js';
+import type { InstallState } from '../commands/index.js';
 export declare const installComponent: ({ component, setInstall, install, }: {
     component: string;
     setInstall: React.Dispatch<React.SetStateAction<InstallState>>;
