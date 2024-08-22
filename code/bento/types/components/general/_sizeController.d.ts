@@ -23,7 +23,7 @@ export declare const SizeController: import("tamagui").TamaguiComponent<Omit<Omi
     chromeless?: boolean | "all" | undefined;
 }>, keyof import("tamagui").GroupExtraProps | "__scopeGroup"> & import("tamagui").GroupExtraProps & {
     __scopeGroup?: import("tamagui").Scope;
-}, "size" | "setSize" | "sizes"> & {
+}, "size" | "sizes" | "setSize"> & {
     size: SizeTokens;
     setSize: (size: SizeTokens) => void;
     sizes?: SizeTokens[];
