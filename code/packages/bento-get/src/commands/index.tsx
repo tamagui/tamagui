@@ -1,3 +1,4 @@
+import React from 'react'
 import { Alert, Badge, Spinner } from '@inkjs/ui'
 import Conf from 'conf'
 import { copy } from 'copy-paste'
@@ -5,8 +6,6 @@ import Fuse from 'fuse.js'
 import { Box, Spacer, Text, useApp, useInput } from 'ink'
 import TextInput from 'ink-text-input'
 import open from 'open'
-// @ts-nocheck
-import React from 'react'
 
 import { componentsList } from '../components.js'
 import type { ComponentSchema } from '../components.js'
@@ -25,9 +24,7 @@ interface AppContextType {
   copyToClipboard: boolean
   setCopyToClipboard: React.Dispatch<React.SetStateAction<boolean>>
   results: Array<{ item: ComponentSchema }>
-  setResults: React.Dispatch<
-    React.SetStateAction<Array<{ item: ComponentSchema }>>
-  >
+  setResults: React.Dispatch<React.SetStateAction<Array<{ item: ComponentSchema }>>>
   selectedId: number
   setSelectedId: React.Dispatch<React.SetStateAction<number>>
   input: string
@@ -41,11 +38,7 @@ interface AppContextType {
 
 const tokenStore = new Conf({ projectName: 'bento-cli' })
 
-const handleKeypress = (
-  key: string,
-  modifier: any,
-  appContext: AppContextType
-) => {
+const handleKeypress = (key: string, modifier: any, appContext: AppContextType) => {
   const { selectedId, setSelectedId, setInstall, results, setCopyToClipboard } =
     appContext
 
@@ -87,10 +80,7 @@ const handleKeypress = (
     return
   }
 
-  if (
-    appContext.install.installingComponent &&
-    (modifier.upArrow || modifier.downArrow)
-  )
+  if (appContext.install.installingComponent && (modifier.upArrow || modifier.downArrow))
     return
 
   if (
@@ -181,10 +171,7 @@ const SearchBar = () => {
 const ResultsContainer = () => {
   const appContext = React.useContext(AppContext)
   return (
-    <Box
-      flexDirection="column"
-      display={appContext.results.length ? 'flex' : 'none'}
-    >
+    <Box flexDirection="column" display={appContext.results.length ? 'flex' : 'none'}>
       <Box flexDirection="column" borderStyle="round" paddingX={1} gap={1}>
         {appContext.results.slice(0, 5).map((result, i) => (
           <ResultCard
@@ -250,9 +237,7 @@ const ResultCard = ({
             }
           })()}
         </Text>
-        {appContext.install.installingComponent && isSelected && (
-          <InstallComponent />
-        )}
+        {appContext.install.installingComponent && isSelected && <InstallComponent />}
         <Text bold color={isSelected ? 'white' : 'black'}>
           {result.item?.name}
         </Text>
@@ -319,9 +304,9 @@ const InstallComponent = () => {
 const UsageBanner = () => {
   return (
     <Alert variant="info">
-      Search any component by category, section or name.{' '}
-      <Text underline>Up</Text> and <Text underline>down</Text> arrows to
-      select. <Text underline>Enter</Text> to install.
+      Search any component by category, section or name. <Text underline>Up</Text> and{' '}
+      <Text underline>down</Text> arrows to select. <Text underline>Enter</Text> to
+      install.
     </Alert>
   )
 }
@@ -357,8 +342,8 @@ const CodeAuthScreen = () => {
   return (
     <Box flexDirection="column" display="flex">
       <Alert variant="info">
-        Press <Text underline>Enter</Text> to open browser window and
-        authenticate to your Github account with the following auth code.
+        Press <Text underline>Enter</Text> to open browser window and authenticate to your
+        Github account with the following auth code.
       </Alert>
       <Box justifyContent="space-between" paddingRight={1}>
         <Text>
@@ -374,17 +359,12 @@ const CodeAuthScreen = () => {
           </Text>
         )}
       </Box>
-      <Box
-        flexDirection="row"
-        borderStyle="round"
-        paddingY={1}
-        justifyContent="center"
-      >
+      <Box flexDirection="row" borderStyle="round" paddingY={1} justifyContent="center">
         {appContext.install.tokenIsInstalled ? (
           <Box paddingY={1}>
             <Text color="green">
-              Github Authentication Successful. Press <Text underline>ESC</Text>{' '}
-              to go back ✔︎
+              Github Authentication Successful. Press <Text underline>ESC</Text> to go
+              back ✔︎
             </Text>
           </Box>
         ) : isLoading ? (
@@ -414,9 +394,7 @@ const CodeAuthScreen = () => {
 }
 
 export default function Search() {
-  const [results, setResults] = React.useState<
-    Array<{ item: ComponentSchema }>
-  >([])
+  const [results, setResults] = React.useState<Array<{ item: ComponentSchema }>>([])
   const [selectedId, setSelectedId] = React.useState(-1)
   const [input, setInput] = React.useState('')
   const [install, setInstall] = React.useState<InstallState>({
@@ -491,9 +469,7 @@ const Provider = ({ children }: { children: React.ReactNode }) => {
 
     return (
       <Box flexDirection="column">
-        <Alert variant="error">
-          Error installing component: {JSON.stringify(error)}
-        </Alert>
+        <Alert variant="error">Error installing component: {JSON.stringify(error)}</Alert>
         {children}
       </Box>
     )

@@ -1,5 +1,5 @@
-import Conf from 'conf';
 import React from 'react';
+import Conf from 'conf';
 import type { ComponentSchema } from '../components.js';
 export interface InstallState {
     installingComponent: ComponentSchema | null | undefined;
