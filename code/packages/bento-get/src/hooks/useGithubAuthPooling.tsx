@@ -1,12 +1,15 @@
 import React from 'react'
 import useSWR from 'swr'
+
 import { AppContext } from '../commands/index.js'
 import { GITHUB_CLIENT_ID } from '../constants.js'
 import type { GithubCode } from './useGithubAuth.js'
 
 export const useGithubAuthPooling = ({
   deviceCodeData,
-}: { deviceCodeData: GithubCode }) => {
+}: {
+  deviceCodeData: GithubCode
+}) => {
   const appContext = React.useContext(AppContext)
 
   const fetchAccessToken = async (url: string) => {
@@ -43,12 +46,12 @@ export const useGithubAuthPooling = ({
   }
 
   const { data, error, isLoading } = useSWR<string>(
-    appContext.install?.enterToOpenBrowser && deviceCodeData
+    appContext.installState?.shouldOpenBrowser && deviceCodeData
       ? 'https://github.com/login/oauth/access_token'
       : null,
     fetchAccessToken,
     {
-      onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
+      onErrorRetry: (_error, _key, _config, revalidate, { retryCount }) => {
         // // Never retry on 404.
         // if (error.status === 404) return;
 

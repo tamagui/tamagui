@@ -5,6 +5,7 @@ import type { Price, Product } from '~/features/stripe/types'
 import { sendProductPurchaseEmail } from '~/features/email/helpers'
 import { stripe } from '~/features/stripe/stripe'
 import type { Database } from '../supabase/types'
+import { ConstantColorFactor } from 'three'
 
 const SUPA_URL = import.meta.env.NEXT_PUBLIC_SUPABASE_URL || 'http://localhost:54321'
 const SUPA_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || ''
@@ -30,6 +31,93 @@ export const getBentoCode = async (codePath: string) => {
     throw new Error(`Error getting bento code for ${codePath}`)
   }
   return data.text()
+}
+
+export const getBentoComponentCategory = async ({
+  categoryPath,
+  categorySectionPath,
+  fileName,
+}: {
+  categoryPath: string
+  categorySectionPath?: string
+  fileName?: string
+}) => {
+  let rootPath = `${categoryPath}`
+  if (categorySectionPath) {
+    rootPath += `/${categorySectionPath}`
+  }
+
+  const downloadPath = `unmerged/${rootPath}`
+
+  const { data: fileList, error } = await supabaseAdmin.storage
+    .from('bento')
+    .list(downloadPath)
+
+  if (error) {
+    throw new Error(`Error getting bento code for ${categoryPath} ${categorySectionPath}`)
+  }
+
+  let result: { [key: string]: Array<{ path: string; downloadUrl: string }> } = {}
+
+  const processFolder = async (folderPath: string, folderName: string) => {
+    const { data: subFileList, error: subError } = await supabaseAdmin.storage
+      .from('bento')
+      .list(folderPath)
+
+    if (subError) {
+      throw new Error(`Error getting bento code for ${folderPath}`)
+    }
+
+    const subFiles = await Promise.all(
+      subFileList.map(async (subFile) => {
+        const { data: signedUrl, error: signError } = await supabaseAdmin.storage
+          .from('bento')
+          .createSignedUrl(`${folderPath}/${subFile.name}`, 60)
+
+        if (signError) {
+          throw new Error(`Error creating signed URL for ${subFile.name}`)
+        }
+
+        return {
+          path: `${folderName}/${subFile.name}`,
+          downloadUrl: signedUrl.signedUrl,
+        }
+      })
+    )
+
+    return subFiles.filter(
+      (file): file is { path: string; downloadUrl: string } => file !== null
+    )
+  }
+
+  for (const item of fileList) {
+    if (item.id === null) {
+      // This is a folder, process its contents
+      const folderFiles = await processFolder(
+        `${downloadPath}/${item.name}`,
+        `${rootPath}/${item.name}`
+      )
+      if (folderFiles.length > 0) {
+        result[`${rootPath}/${item.name}`] = folderFiles
+      }
+    } else if (item.name.includes(fileName || '')) {
+      // This is a file in the main folder
+      const { data: signedUrl, error: signError } = await supabaseAdmin.storage
+        .from('bento')
+        .createSignedUrl(`${downloadPath}/${item.name}`, 60)
+
+      if (signError) {
+        throw new Error(`Error creating signed URL for ${item.name}`)
+      }
+
+      result[rootPath] = result[rootPath] || []
+      result[rootPath].push({
+        path: item.name,
+        downloadUrl: signedUrl.signedUrl,
+      })
+    }
+  }
+  return result
 }
 
 export const upsertProductRecord = async (product: Stripe.Product) => {

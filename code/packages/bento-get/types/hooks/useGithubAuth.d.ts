@@ -6,7 +6,7 @@ export type GithubCode = {
     verification_uri: string;
 };
 export declare const useGithubAuth: () => {
-    data: string | undefined;
+    data: GithubCode | null;
     error: any;
     isLoading: boolean;
     openLoginUrl: () => void;

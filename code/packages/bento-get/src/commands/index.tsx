@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React from 'react'
 import { Alert, Badge, Spinner } from '@inkjs/ui'
 import Conf from 'conf'
@@ -7,134 +6,229 @@ import Fuse from 'fuse.js'
 import { Box, Spacer, Text, useApp, useInput } from 'ink'
 import TextInput from 'ink-text-input'
 import open from 'open'
+import path from 'path'
 
 import { componentsList } from '../components.js'
+import type { ComponentSchema } from '../components.js'
 import { useGithubAuth } from '../hooks/useGithubAuth.js'
 import { useInstallComponent } from '../hooks/useInstallComponent.js'
+import { filePathsToTree, treeToString } from 'file-paths-to-tree'
+
+// Wrapper function for conditional logging
+export const debugLog = (...args: any[]) => {
+  // biome-ignore lint/suspicious/noConsoleLog: This is a debug logging function
+  if (process.env.DEBUG === 'true') console.log(...args)
+}
+
+// Define the state for the installation process
+export interface InstallState {
+  installingComponent: ComponentSchema | null | undefined
+  installedComponents: ComponentSchema[]
+  shouldOpenBrowser: boolean
+  isTokenInstalled: boolean
+  componentToInstall: {
+    name: string
+    path: string
+  } | null
+}
+
+// Define the possible screens for the application
+export type AppScreen =
+  | 'SearchScreen'
+  | 'InstallScreen'
+  | 'AuthScreen'
+  | 'InstallConfirmScreen'
+  | 'PackageInstallCommandScreen'
+
+// Define the context type for the application
+interface AppContextType {
+  tokenStore: Conf<any>
+  isCopyingToClipboard: boolean
+  setCopyingToClipboard: React.Dispatch<React.SetStateAction<boolean>>
+  searchResults: Array<{ item: ComponentSchema }>
+  setSearchResults: React.Dispatch<React.SetStateAction<Array<{ item: ComponentSchema }>>>
+  selectedResultIndex: number
+  setSelectedResultIndex: React.Dispatch<React.SetStateAction<number>>
+  searchInput: string
+  setSearchInput: React.Dispatch<React.SetStateAction<string>>
+  setInstallState: React.Dispatch<React.SetStateAction<InstallState>>
+  setInstallingComponent: React.Dispatch<React.SetStateAction<ComponentSchema>>
+  installState: InstallState
+  currentScreen: AppScreen
+  setCurrentScreen: React.Dispatch<React.SetStateAction<AppScreen>>
+  exitApp: () => void
+  confirmationPending: boolean
+  setConfirmationPending: React.Dispatch<React.SetStateAction<boolean>>
+}
 
 const tokenStore = new Conf({ projectName: 'bento-cli' })
 
-const handleKeypress = (key: string, modifier, appContext) => {
+// Handle keypress events for the CLI
+const handleKeypress = (key: string, modifier: any, appContext: AppContextType) => {
   const {
-    selectedId,
-    setSelectedId,
-    setInstall,
-    results,
-    copyToClipboard,
-    setCopyToClipboard,
+    selectedResultIndex,
+    setSelectedResultIndex,
+    setInstallState,
+    searchResults,
+    setCopyingToClipboard,
+    currentScreen,
+    setCurrentScreen,
+    setConfirmationPending,
   } = appContext
 
-  if (modifier.shift + key === 'l') {
+  if (modifier.shift && key === 'l') {
     tokenStore.clear()
     return
   }
 
-  if (key === 'c' && appContext.install.enterToOpenBrowser) {
-    setCopyToClipboard(true)
+  if (key === 'c' && appContext.installState.shouldOpenBrowser) {
+    setCopyingToClipboard(true)
     return
   }
 
-  // after token addition on pressing esc go back to previous screen
-  if (modifier.escape && appContext.install.tokenIsInstalled) {
-    appContext.setInstall((prev) => ({
+  if (currentScreen === 'InstallConfirmScreen') {
+    if (key === 'y') {
+      setConfirmationPending(false)
+      setCurrentScreen('SearchScreen')
+      return
+    }
+    if (key === 'n') {
+      setConfirmationPending(true)
+      setCurrentScreen('SearchScreen')
+      setSelectedResultIndex(-1)
+      setInstallState((prev) => ({
+        ...prev,
+        componentToInstall: null,
+        installingComponent: null,
+      }))
+      return
+    }
+    return
+  }
+
+  // After token addition, go back to the previous screen on pressing ESC
+  if (modifier.escape && appContext.installState.isTokenInstalled) {
+    appContext.setInstallState((prev) => ({
       ...prev,
       installingComponent: null,
-      tokenIsInstalled: false,
+      isTokenInstalled: false,
     }))
     return
   }
 
   if (
     modifier.escape &&
-    appContext.install.installingComponent !== null &&
-    !appContext.install.installingComponent?.isOSS
+    appContext.installState.installingComponent !== null &&
+    !appContext.installState.installingComponent?.isOSS
   ) {
-    appContext.setInstall((prev) => ({
+    appContext.setInstallState((prev) => ({
       ...prev,
       installingComponent: null,
-      enterToOpenBrowser: false,
+      shouldOpenBrowser: false,
     }))
     return
   }
 
   if (modifier.escape) {
-    appContext.exit()
+    if (currentScreen === ('InstallConfirmScreen' as AppScreen)) {
+      setCurrentScreen('SearchScreen')
+      return
+    }
+    appContext.exitApp()
     return
   }
 
-  if (appContext.install.installingComponent && (modifier.upArrow || modifier.downArrow))
+  if (
+    appContext.installState.installingComponent &&
+    (modifier.upArrow || modifier.downArrow)
+  )
     return
 
   if (
     modifier.return &&
-    !appContext.install.installingComponent?.isOSS &&
-    appContext.install.enterToOpenBrowser
+    !appContext.installState.installingComponent?.isOSS &&
+    appContext.installState.shouldOpenBrowser
   ) {
     open('https://github.com/login/device')
     return
   }
 
-  if (appContext.install.installingComponent?.isOSS) {
-    return
-  }
-
   if (modifier.upArrow) {
-    selectedId > -1 && setSelectedId(selectedId - 1)
+    selectedResultIndex > -1 && setSelectedResultIndex(selectedResultIndex - 1)
     return
   }
 
   if (modifier.downArrow) {
-    selectedId < appContext.results.length - 1 && setSelectedId(selectedId + 1)
+    selectedResultIndex < appContext.searchResults.length - 1 &&
+      setSelectedResultIndex(selectedResultIndex + 1)
     return
   }
 
   if (modifier.return) {
-    setInstall((prev) => ({
+    setInstallState((prev) => ({
       ...prev,
-      installingComponent: results[selectedId]?.item,
+      installingComponent: searchResults[selectedResultIndex]?.item,
     }))
+    debugLog('Installing component', searchResults[selectedResultIndex]?.item)
+    setCurrentScreen('InstallConfirmScreen')
     return
   }
 }
 
-// TODO type this properly!
-export const AppContext = React.createContext<any>({
+// Create the AppContext with default values
+export const AppContext = React.createContext<AppContextType>({
   tokenStore: {} as typeof tokenStore,
-  copyToClipboard: false,
-  setCopyToClipboard: () => {},
-  results: [],
-  setResults: () => {},
-  selectedId: -1,
-  setSelectedId: () => {},
-  input: '',
-  setInput: () => {},
-  setInstall: () => {},
-  setInstallcomponent: () => {},
-  install: null,
+  isCopyingToClipboard: false,
+  setCopyingToClipboard: () => {},
+  searchResults: [],
+  setSearchResults: () => {},
+  selectedResultIndex: -1,
+  setSelectedResultIndex: () => {},
+  searchInput: '',
+  setSearchInput: () => {},
+  setInstallState: () => {},
+  setInstallingComponent: () => {},
+  installState: {
+    installingComponent: null,
+    installedComponents: [],
+    shouldOpenBrowser: false,
+    isTokenInstalled: false,
+    componentToInstall: null,
+  },
+  exitApp: () => {},
+  currentScreen: 'SearchScreen',
+  setCurrentScreen: () => {},
+  confirmationPending: false,
+  setConfirmationPending: () => {},
 })
 
 const SearchBar = () => {
   const appContext = React.useContext(AppContext)
-  const search = (query) => {
+
+  // Perform search using Fuse.js for fuzzy matching
+  const performSearch = (query: string) => {
     const fuse = new Fuse(componentsList, {
       keys: ['name', 'category', 'categorySection'],
     })
     return fuse.search(query)
   }
-  const handleChange = (value) => {
-    if ((appContext.install as any).installingComponent?.isOSS) return
-    appContext.setInput(value)
-    const results = search(value)
-    appContext.setResults(results)
-    appContext.setSelectedId(-1)
+
+  const handleInputChange = (value: string) => {
+    if (appContext.currentScreen !== 'SearchScreen') return
+    if ((appContext.installState as any).installingComponent?.isOSS) return
+    appContext.setSearchInput(value)
+    const results = performSearch(value)
+    appContext.setSearchResults(results)
+    appContext.setSelectedResultIndex(-1)
   }
+
   return (
     <Box marginX={1} justifyContent="space-between">
       <Box>
         <Text bold>Search: </Text>
         <TextInput
-          value={appContext.input}
-          onChange={handleChange}
+          value={appContext.searchInput}
+          onChange={handleInputChange}
           // @ts-ignore
           marginRight={'auto'}
         />
@@ -147,13 +241,16 @@ const SearchBar = () => {
 const ResultsContainer = () => {
   const appContext = React.useContext(AppContext)
   return (
-    <Box flexDirection="column" display={appContext.results.length ? 'flex' : 'none'}>
+    <Box
+      flexDirection="column"
+      display={appContext.searchResults.length ? 'flex' : 'none'}
+    >
       <Box flexDirection="column" borderStyle="round" paddingX={1} gap={1}>
-        {appContext.results.slice(0, 5).map((result, i) => (
+        {appContext.searchResults.slice(0, 5).map((result, i) => (
           <ResultCard
             result={result}
             key={result.item.fileName}
-            isSelected={appContext.selectedId === i}
+            isSelected={appContext.selectedResultIndex === i}
           />
         ))}
       </Box>
@@ -172,15 +269,15 @@ const Footer = () => {
   )
 }
 
-const InstalledBadge = ({ item }) => {
+const InstalledBadge = ({ item }: { item: ComponentSchema }) => {
   const appContext = React.useContext(AppContext)
-  const componentIsInstalled = appContext.install?.installedComponents
+  const isComponentInstalled = appContext.installState?.installedComponents
     ?.map((component) => component.fileName)
     .includes(item.fileName)
 
-  if (!appContext.install?.installedComponents) return null
+  if (!appContext.installState?.installedComponents) return null
   return (
-    componentIsInstalled && (
+    isComponentInstalled && (
       <Box marginLeft={1}>
         <Badge color="green">Installed</Badge>
       </Box>
@@ -188,17 +285,23 @@ const InstalledBadge = ({ item }) => {
   )
 }
 
-const ResultCard = ({ result, isSelected }) => {
+const ResultCard = ({
+  result,
+  isSelected,
+}: {
+  result: { item: ComponentSchema }
+  isSelected: boolean
+}) => {
   const appContext = React.useContext(AppContext)
   return (
     <Box flexDirection="row" minWidth={'100%'}>
       <Box flexDirection="row">
-        <Text textWrap="nowrap" bold style={{ textWrap: 'nowrap' }} color="gray">
+        <Text bold color="gray">
           {(() => {
             switch (true) {
-              case appContext.install.installingComponent && isSelected:
+              case appContext.installState.installingComponent && isSelected:
                 return ''
-              case appContext.install.installingComponent:
+              case Boolean(appContext.installState.installingComponent):
                 return '  '
               case isSelected:
                 return '❯ '
@@ -207,38 +310,41 @@ const ResultCard = ({ result, isSelected }) => {
             }
           })()}
         </Text>
-        {appContext.install.installingComponent && isSelected && <InstallComponent />}
-        <Text bold style={{ textWrap: 'nowrap' }} color={isSelected ? 'white' : 'black'}>
+        {appContext.installState.installingComponent && isSelected && (
+          <InstallingSpinnerLabel />
+        )}
+        <Text bold color={isSelected ? 'white' : 'black'}>
           {result.item?.name}
         </Text>
         <InstalledBadge item={result.item} />
       </Box>
       <Spacer />
-      <TypeOfComponentAccess item={result.item} />
+      <ComponentAccessType item={result.item} />
       <CategorySectionBadge item={result.item} />
     </Box>
   )
 }
 
-const CategorySectionBadge = ({ item }) => {
-  const appContext = React.useContext(AppContext)
+const CategorySectionBadge = ({ item }: { item: ComponentSchema }) => {
+  const capitalizeFirstLetter = (str: string) =>
+    str.charAt(0).toUpperCase() + str.slice(1)
+
   return (
     <Box marginLeft={1} gap={1}>
       <Text color={'black'} backgroundColor={'white'}>
         {' '}
-        {item?.category.charAt(0).toUpperCase() + item?.category.slice(1)} {'>'}{' '}
-        {item?.categorySection.charAt(0).toUpperCase() +
-          item?.categorySection.slice(1)}{' '}
+        {capitalizeFirstLetter(item?.category)} {'>'}{' '}
+        {capitalizeFirstLetter(item?.categorySection)}{' '}
       </Text>
     </Box>
   )
 }
-const TypeOfComponentAccess = ({ item }) => {
-  const appContext = React.useContext(AppContext)
+
+const ComponentAccessType = ({ item }: { item: ComponentSchema }) => {
   return (
-    <Box marginLeft={1} gap={1} display={item?.isOSS ? 'flex' : 'none'}>
-      <Text color={'black'} backgroundColor={'gray'}>
-        OSS
+    <Box marginLeft={1} gap={1}>
+      <Text color={'black'} backgroundColor={item?.isOSS ? 'green' : 'blue'}>
+        {item?.isOSS ? 'FREE' : 'PRO'}
       </Text>
     </Box>
   )
@@ -246,23 +352,23 @@ const TypeOfComponentAccess = ({ item }) => {
 
 const ResultsCounter = () => {
   const appContext = React.useContext(AppContext)
+  const resultCount = appContext.searchResults.length
   return (
     <Box>
-      {!!appContext.results.length && (
+      {!!resultCount && (
         <Text bold color="gray">
-          {appContext.results.length} result
-          {appContext.results.length > 1 ? 's' : ''}
+          {resultCount} result{resultCount > 1 ? 's' : ''}
         </Text>
       )}
     </Box>
   )
 }
 
-const InstallComponent = () => {
+const InstallingSpinnerLabel = () => {
   const appContext = React.useContext(AppContext)
   return (
     <Box>
-      {appContext.install.installingComponent ? (
+      {appContext.installState.installingComponent ? (
         <Box>
           <Spinner label="Installing " />
         </Box>
@@ -288,28 +394,28 @@ const CodeAuthScreen = () => {
   const { data, isLoading } = useGithubAuth()
 
   React.useEffect(() => {
-    appContext.setInstall((prev) => ({
+    appContext.setInstallState((prev) => ({
       ...prev,
-      enterToOpenBrowser: true,
+      shouldOpenBrowser: true,
     }))
     return () => {
-      appContext.setCopyToClipboard(false)
+      appContext.setCopyingToClipboard(false)
     }
   }, [])
 
-  appContext.tokenStore.onDidChange('token', (newvalue, oldvalue) => {
-    appContext.setInstall((prev) => ({
+  appContext.tokenStore.onDidChange('token', () => {
+    appContext.setInstallState((prev) => ({
       ...prev,
-      tokenIsInstalled: true,
+      isTokenInstalled: true,
     }))
   })
 
   React.useEffect(() => {
-    if (appContext.copyToClipboard) {
+    if (appContext.isCopyingToClipboard) {
       copy(data?.user_code)
       console.warn(`Copied to clipboard`)
     }
-  }, [appContext.copyToClipboard])
+  }, [appContext.isCopyingToClipboard])
 
   return (
     <Box flexDirection="column" display="flex">
@@ -323,7 +429,7 @@ const CodeAuthScreen = () => {
           <Text underline>ESC</Text> to go Back
         </Text>
 
-        {appContext.copyToClipboard ? (
+        {appContext.isCopyingToClipboard ? (
           <Text color="green">copied!</Text>
         ) : (
           <Text>
@@ -332,7 +438,7 @@ const CodeAuthScreen = () => {
         )}
       </Box>
       <Box flexDirection="row" borderStyle="round" paddingY={1} justifyContent="center">
-        {appContext.install.tokenIsInstalled ? (
+        {appContext.installState.isTokenInstalled ? (
           <Box paddingY={1}>
             <Text color="green">
               Github Authentication Successful. Press <Text underline>ESC</Text> to go
@@ -356,7 +462,7 @@ const CodeAuthScreen = () => {
               alignItems="center"
               justifyContent="center"
             >
-              <Text width={5}>{item}</Text>
+              <Text>{item}</Text>
             </Box>
           ))
         )}
@@ -365,60 +471,171 @@ const CodeAuthScreen = () => {
   )
 }
 
-export default function Search() {
-  const [results, setResults] = React.useState([])
-  const [selectedId, setSelectedId] = React.useState(-1)
-  const [input, setInput] = React.useState('')
-  const [install, setInstall] = React.useState({
+const InstallConfirmScreen = () => {
+  const appContext = React.useContext(AppContext)
+  const { componentToInstall, installingComponent } = appContext.installState
+
+  if (!componentToInstall || !installingComponent) {
+    return null
+  }
+
+  const getInstallPaths = () => {
+    const callDirectory = process.cwd()
+    const basePath =
+      `${componentToInstall.path}/${installingComponent.category}/${installingComponent.categorySection}`.replace(
+        callDirectory,
+        ''
+      )
+    const mainComponentPath = `${basePath}/${installingComponent.fileName}.tsx`
+    const bentoDependencies = installingComponent.bentoDependencies || []
+
+    const dependencyPaths = bentoDependencies.map((dep) => {
+      const [fileName, folder] = dep.split('/').reverse()
+      return folder
+        ? `${basePath}/${folder}/${fileName}.tsx`
+        : `${basePath}/${fileName}.tsx`
+    })
+
+    const allPaths = [mainComponentPath, ...dependencyPaths]
+
+    // Find the longest path
+    const longestPath = allPaths.reduce((a, b) => (a.length > b.length ? a : b))
+    const longestPathParts = longestPath.split('/')
+
+    // Prune to last 7 segments of the longest path
+    const startIndex = Math.max(0, longestPathParts.length - 7)
+    const prunedLongestPath = longestPathParts.slice(startIndex).join('/')
+
+    return {
+      basePath,
+      mainComponentPath,
+      dependencyPaths,
+      allPaths: allPaths.map((path) => {
+        const parts = path.split('/')
+        const startFromIndex = parts.findIndex((segment) =>
+          prunedLongestPath.includes(segment)
+        )
+        return parts.slice(startFromIndex).join('/')
+      }),
+    }
+  }
+  const allInstallPaths = getInstallPaths().allPaths
+  return (
+    <Box
+      flexDirection="column"
+      padding={1}
+      gap={2}
+      borderColor="white"
+      borderStyle="round"
+    >
+      <Text>
+        CONFIRM: Install the component "<Text bold>{componentToInstall.name}</Text>" here?
+      </Text>
+      <Box
+        borderColor="blue"
+        flexDirection="column"
+        padding={1}
+        borderStyle="round"
+        gap={1}
+      >
+        <Box flexDirection="column">
+          {allInstallPaths.map((path, i) => (
+            <Text key={i}>- {path}</Text>
+          ))}
+        </Box>
+        <Box borderColor="blue" borderStyle="round" padding={1}>
+          <Text>
+            {treeToString(
+              filePathsToTree(allInstallPaths, {
+                connectors: {
+                  tee: '├─ ',
+                  elbow: '└─ ',
+                  padding: ' ',
+                },
+              })
+            )}
+          </Text>
+        </Box>
+      </Box>
+      <Spacer />
+      <Text>
+        Press{' '}
+        <Text color="green" bold>
+          Y
+        </Text>{' '}
+        to confirm or{' '}
+        <Text color="red" bold>
+          N
+        </Text>{' '}
+        to cancel.
+      </Text>
+    </Box>
+  )
+}
+
+export default function BentoGet() {
+  const [searchResults, setSearchResults] = React.useState<
+    Array<{ item: ComponentSchema }>
+  >([])
+  const [selectedResultIndex, setSelectedResultIndex] = React.useState(-1)
+  const [searchInput, setSearchInput] = React.useState('')
+  const [confirmationPending, setConfirmationPending] = React.useState(true)
+  const [installState, setInstallState] = React.useState<InstallState>({
     installingComponent: null,
     installedComponents: [],
-    enterToOpenBrowser: false,
-    tokenIsInstalled: false,
+    shouldOpenBrowser: false,
+    isTokenInstalled: false,
+    componentToInstall: null,
   })
-  const [copyToClipboard, setCopyToClipboard] = React.useState(false)
+  const [currentScreen, setCurrentScreen] = React.useState<AppScreen>('SearchScreen')
+  const [isCopyingToClipboard, setCopyingToClipboard] = React.useState(false)
   const { exit } = useApp()
-  const { access_token } = tokenStore?.get('token') ?? {}
-  // tokenStore.delete("token");
 
-  useInput((input, key) =>
-    handleKeypress(input, key, {
+  const appContextValues = React.useMemo(
+    () => ({
       tokenStore,
-      copyToClipboard,
-      setCopyToClipboard,
-      exit,
-      results,
-      setResults,
-      selectedId,
-      setSelectedId,
-      input,
-      setInput,
-      setInstall,
-      install,
-    })
+      isCopyingToClipboard,
+      setCopyingToClipboard,
+      exitApp: exit,
+      searchResults,
+      setSearchResults,
+      selectedResultIndex,
+      setSelectedResultIndex,
+      searchInput,
+      setSearchInput,
+      setInstallState,
+      installState,
+      setInstallingComponent: () => {}, // This seems unused, consider removing
+      currentScreen,
+      setCurrentScreen,
+      confirmationPending,
+      setConfirmationPending,
+    }),
+    [
+      isCopyingToClipboard,
+      searchResults,
+      selectedResultIndex,
+      searchInput,
+      installState,
+      currentScreen,
+      confirmationPending,
+    ]
   )
 
+  useInput((input, key) => handleKeypress(input, key, appContextValues))
   return (
-    <AppContext.Provider
-      value={{
-        tokenStore,
-        copyToClipboard,
-        setCopyToClipboard,
-        results,
-        setResults,
-        selectedId,
-        setSelectedId,
-        input,
-        setInput,
-        install,
-        setInstall,
-      }}
-    >
+    <AppContext.Provider value={appContextValues}>
       <Provider>
         <Box flexDirection="column">
           <Box flexDirection="column">
-            <UsageBanner />
-            <SearchBar />
-            <ResultsContainer />
+            {currentScreen === 'InstallConfirmScreen' && <InstallConfirmScreen />}
+            {currentScreen === 'SearchScreen' && (
+              <>
+                <UsageBanner />
+                <SearchBar />
+                <ResultsContainer />
+              </>
+            )}
           </Box>
         </Box>
       </Provider>
@@ -427,8 +644,7 @@ export default function Search() {
 }
 
 const Provider = ({ children }: { children: React.ReactNode }) => {
-  const { error, data } = useInstallComponent()
-
+  const { error } = useInstallComponent()
   if (error) {
     if (error.status === 401) {
       return (
@@ -440,7 +656,9 @@ const Provider = ({ children }: { children: React.ReactNode }) => {
 
     return (
       <Box flexDirection="column">
-        <Alert variant="error">Error installing component: {JSON.stringify(error)}</Alert>
+        <Alert variant="error">
+          Error installing component: {JSON.stringify(error, null, 2)}
+        </Alert>
         {children}
       </Box>
     )

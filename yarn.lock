@@ -8969,7 +8969,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:*, @types/react@npm:^18.2.55":
+"@types/react@npm:*":
   version: 18.2.56
   resolution: "@types/react@npm:18.2.56"
   dependencies:
@@ -8977,6 +8977,17 @@ __metadata:
     "@types/scheduler": "npm:*"
     csstype: "npm:^3.0.2"
   checksum: 10/de0df184f2b80e8724d79eead47f23e43e91a68c0712a5d989db3f1242f2c24179cf8e26520b5a141396b55f4928ce9a6c3a3a121a98eca8e82973920209f06c
+  languageName: node
+  linkType: hard
+
+"@types/react@npm:@types/react@18.2.55":
+  version: 18.2.55
+  resolution: "@types/react@npm:18.2.55"
+  dependencies:
+    "@types/prop-types": "npm:*"
+    "@types/scheduler": "npm:*"
+    csstype: "npm:^3.0.2"
+  checksum: 10/bf8fe19e73575489e63c0726355f164157cd69e75f2a862436ad2c0586e732cb953a7255a6bc73145e8f9506ee7a723f9a569ca9a39c53984e5b12b84e1c718a
   languageName: node
   linkType: hard
 
@@ -10782,7 +10793,7 @@ __metadata:
     "@tamagui/build": "npm:1.108.4"
     "@tamagui/use-force-update": "npm:1.108.4"
     "@types/copy-paste": "npm:^1.1.33"
-    "@types/react": "npm:^18.2.55"
+    "@types/react": "npm:@types/react@18.2.55"
     conf: "npm:^12.0.0"
     copy-paste: "npm:^1.5.3"
     fuse.js: "npm:^7.0.0"
@@ -10793,7 +10804,7 @@ __metadata:
     octokit: "npm:^4.0.2"
     open: "npm:^10.1.0"
     pastel: "npm:^2.0.0"
-    react: "npm:^18.2.0 || ^19.0.0"
+    react: "npm:react@18.2.0"
     swr: "npm:^2.2.5"
     zod: "npm:^3.22.4"
   bin:
@@ -15209,6 +15220,13 @@ __metadata:
   peerDependencies:
     webpack: ^4.0.0 || ^5.0.0
   checksum: 10/3a854be3a7501bdb0fd8a1c0d45c156c0dc8f0afced07cbdac0b13a79c2f2a03f7770d68cb555ff30b5ea7c20719df34e1b2bd896c93e3138ee31f0bdc560310
+  languageName: node
+  linkType: hard
+
+"file-paths-to-tree@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "file-paths-to-tree@npm:4.0.0"
+  checksum: 10/976fd4e20a7a6c6cf0af7835fa009ee93ff84e07ab88ce3dd47bf7714952e121dcaffbafa7235acc6ed45768b3ff49d06a81c40f50f369d6471635f2690fac2b
   languageName: node
   linkType: hard
 
@@ -23450,6 +23468,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react@npm:react@18.2.0":
+  version: 18.2.0
+  resolution: "react@npm:18.2.0"
+  dependencies:
+    loose-envify: "npm:^1.1.0"
+  checksum: 10/b9214a9bd79e99d08de55f8bef2b7fc8c39630be97c4e29d7be173d14a9a10670b5325e94485f74cd8bff4966ef3c78ee53c79a7b0b9b70cba20aa8973acc694
+  languageName: node
+  linkType: hard
+
 "read-cmd-shim@npm:^4.0.0":
   version: 4.0.0
   resolution: "read-cmd-shim@npm:4.0.0"
@@ -25913,6 +25940,7 @@ __metadata:
     dotenv-cli: "npm:^7.4.2"
     esbuild: "npm:^0.23.0"
     esbuild-register: "npm:^3.6.0"
+    file-paths-to-tree: "npm:^4.0.0"
     fs-extra: "npm:^11.2.0"
     h3: "npm:1.11.1"
     import-sort-style-module: "npm:^6.0.0"

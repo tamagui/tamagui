@@ -4,6 +4,7 @@ export type ComponentSchema = {
     categorySection: string;
     fileName: string;
     dependencies?: string[];
+    bentoDependencies?: string[];
     isOSS: boolean;
     moveFilesToFolder?: MoveFileToFolder[];
 };
@@ -11,6 +12,6 @@ type MoveFileToFolder = {
     file: string;
     to: string;
 };
-export declare const componentsList: Omit<ComponentSchema, 'isOSS'>[];
+export declare const componentsList: ComponentSchema[];
 export {};
 //# sourceMappingURL=components.d.ts.map
