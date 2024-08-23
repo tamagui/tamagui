@@ -8,6 +8,7 @@ import type { InstallState } from '../commands/index.js'
 import { componentsList } from '../components.js'
 import type { ComponentSchema } from '../components.js'
 import { useFetchComponent } from './useFetchComponent.js'
+import { debugLog } from '../commands/index.js'
 
 export const getMonorepoRoot = async () => {
   let currentDir = process.cwd() as string
@@ -70,7 +71,9 @@ export const installComponent = async ({
   setInstallState: React.Dispatch<React.SetStateAction<InstallState>>
   installState: InstallState
 }) => {
+  debugLog('Installing component', installState.installingComponent)
   const uiDir = getUIDirectory()
+  debugLog('UI directory', uiDir)
   await subFoldersInstallStep(uiDir, installState, componentFiles)
 
   // In the useInstallComponent function
@@ -85,10 +88,23 @@ export const installComponent = async ({
 }
 
 export const useInstallComponent = () => {
-  const { installState, setInstallState, confirmationPending, setConfirmationPending } =
-    React.useContext(AppContext)
+  const {
+    installState,
+    setInstallState,
+    currentScreen,
+    confirmationPending,
+    setConfirmationPending,
+  } = React.useContext(AppContext)
 
   const { data, error } = useFetchComponent()
+  if (error) {
+    console.error('Error fetching component data', error)
+    throw new Error('Error fetching component data')
+  }
+  debugLog('Fetched component data', data, {
+    confirmationPending,
+    currentScreen,
+  })
 
   React.useEffect(() => {
     if (installState?.installingComponent && confirmationPending) {
@@ -147,6 +163,7 @@ async function subFoldersInstallStep(
   install: InstallState,
   componentFiles: { [key: string]: Array<{ path: string; filePlainText: string }> }
 ) {
+  debugLog('Sub folders install step')
   if (!existsSync(uiDir)) {
     mkdirSync(uiDir, { recursive: true })
   }

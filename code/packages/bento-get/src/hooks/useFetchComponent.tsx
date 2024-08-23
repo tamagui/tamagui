@@ -3,7 +3,7 @@ import querystring from 'node:querystring'
 import { Octokit } from 'octokit'
 import React from 'react'
 import useSWR from 'swr'
-import { AppContext } from '../commands/index.js'
+import { AppContext, debugLog } from '../commands/index.js'
 
 interface GithubUserData {
   login: string
@@ -80,6 +80,8 @@ export const useFetchComponent = () => {
         Array<{ path: string; downloadUrl: string }>
       > = JSON.parse(response)
 
+      debugLog('Files data', filesData)
+
       const downloadedFiles: Record<
         string,
         Array<{ path: string; filePlainText: string }>
@@ -101,6 +103,17 @@ export const useFetchComponent = () => {
           )
         )
       }
+      debugLog(
+        'Downloaded files',
+        Object.keys(downloadedFiles).map((key) =>
+          downloadedFiles[key].map((x) => {
+            return {
+              path: x.path,
+              filePlainText: x.filePlainText.substring(0, 50) + '...',
+            }
+          })
+        )
+      )
       return downloadedFiles
     },
     {

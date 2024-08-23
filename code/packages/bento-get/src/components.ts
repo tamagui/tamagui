@@ -823,6 +823,8 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'GroupedRadio',
     category: 'forms',
     categorySection: 'radiogroups',
+    dependencies: [],
+    bentoDependencies: ['./components/radioParts'],
     moveFilesToFolder: [
       { file: 'GroupedRadio', to: '' },
       { file: 'radioParts', to: 'components' },

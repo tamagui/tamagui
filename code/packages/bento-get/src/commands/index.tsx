@@ -13,6 +13,12 @@ import { useGithubAuth } from '../hooks/useGithubAuth.js'
 import { useInstallComponent } from '../hooks/useInstallComponent.js'
 import { filePathsToTree, treeToString } from 'file-paths-to-tree'
 
+// Wrapper function for conditional logging
+export const debugLog = (...args: any[]) => {
+  // biome-ignore lint/suspicious/noConsoleLog: This is a debug logging function
+  if (process.env.DEBUG === 'true') console.log(...args)
+}
+
 // Define the state for the installation process
 export interface InstallState {
   installingComponent: ComponentSchema | null | undefined
@@ -76,10 +82,6 @@ const handleKeypress = (key: string, modifier: any, appContext: AppContextType) 
 
   if (key === 'c' && appContext.installState.shouldOpenBrowser) {
     setCopyingToClipboard(true)
-    return
-  }
-
-  if (appContext.installState.installingComponent?.isOSS) {
     return
   }
 
@@ -166,6 +168,7 @@ const handleKeypress = (key: string, modifier: any, appContext: AppContextType) 
       ...prev,
       installingComponent: searchResults[selectedResultIndex]?.item,
     }))
+    debugLog('Installing component', searchResults[selectedResultIndex]?.item)
     setCurrentScreen('InstallConfirmScreen')
     return
   }
@@ -616,7 +619,9 @@ const Provider = ({ children }: { children: React.ReactNode }) => {
 
     return (
       <Box flexDirection="column">
-        <Alert variant="error">Error installing component: {JSON.stringify(error)}</Alert>
+        <Alert variant="error">
+          Error installing component: {JSON.stringify(error, null, 2)}
+        </Alert>
         {children}
       </Box>
     )
