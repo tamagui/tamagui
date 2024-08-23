@@ -9,7 +9,7 @@ import { componentsList } from '../components.js'
 import type { ComponentSchema } from '../components.js'
 import { useGetComponent } from './useGetComponent.js'
 
-const getMonorepoRoot = async () => {
+export const getMonorepoRoot = async () => {
   let currentDir = process.cwd() as string
 
   while (currentDir !== path.parse(currentDir).root) {
@@ -122,15 +122,47 @@ export const installComponent = async ({
 }
 
 export const useInstallComponent = () => {
-  const { installState, setInstallState } = React.useContext(AppContext)
+  const {
+    installState,
+    setInstallState,
+    setCurrentScreen,
+    confirmationPending,
+    setConfirmationPending,
+  } = React.useContext(AppContext)
 
   const { data, error } = useGetComponent()
 
   React.useEffect(() => {
-    if (data && installState?.installingComponent) {
-      installComponent({ component: data, setInstallState, installState })
+    if (installState?.installingComponent && confirmationPending) {
+      const componentName = installState.installingComponent.name
+      const installPath = getUIDirectory()
+      setInstallState((prev) => ({
+        ...prev,
+        componentToInstall: {
+          name: componentName,
+          path: installPath,
+        },
+      }))
     }
-  }, [data, installState?.installingComponent, setInstallState])
+  }, [
+    installState?.installingComponent,
+    setInstallState,
+    confirmationPending,
+    setConfirmationPending,
+  ])
+
+  React.useEffect(() => {
+    if (data && installState?.installingComponent && confirmationPending === false) {
+      installComponent({ component: data, setInstallState, installState })
+      setConfirmationPending(true)
+    }
+  }, [
+    data,
+    installState?.installingComponent,
+    setInstallState,
+    confirmationPending,
+    setConfirmationPending,
+  ])
 
   return { data, error }
 }

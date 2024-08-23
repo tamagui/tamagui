@@ -6,7 +6,12 @@ export interface InstallState {
     installedComponents: ComponentSchema[];
     shouldOpenBrowser: boolean;
     isTokenInstalled: boolean;
+    componentToInstall: {
+        name: string;
+        path: string;
+    } | null;
 }
+export type AppScreen = 'SearchScreen' | 'InstallScreen' | 'AuthScreen' | 'InstallConfirmScreen' | 'PackageInstallCommandScreen';
 interface AppContextType {
     tokenStore: Conf<any>;
     isCopyingToClipboard: boolean;
@@ -24,9 +29,13 @@ interface AppContextType {
     setInstallState: React.Dispatch<React.SetStateAction<InstallState>>;
     setInstallingComponent: React.Dispatch<React.SetStateAction<ComponentSchema>>;
     installState: InstallState;
+    currentScreen: AppScreen;
+    setCurrentScreen: React.Dispatch<React.SetStateAction<AppScreen>>;
     exitApp: () => void;
+    confirmationPending: boolean;
+    setConfirmationPending: React.Dispatch<React.SetStateAction<boolean>>;
 }
 export declare const AppContext: React.Context<AppContextType>;
-export default function Search(): import("react/jsx-runtime").JSX.Element;
+export default function BentoGet(): import("react/jsx-runtime").JSX.Element;
 export {};
 //# sourceMappingURL=index.d.ts.map

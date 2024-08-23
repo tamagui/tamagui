@@ -2,33 +2,35 @@ import fetch from 'node-fetch'
 import querystring from 'node:querystring'
 import { Octokit } from 'octokit'
 import React from 'react'
-
 import useSWR from 'swr'
 import { AppContext } from '../commands/index.js'
-import { installComponent } from './useInstallComponent.js'
 
 interface GithubUserData {
   login: string
   id: number
   node_id: string
-  // Add other properties as needed
 }
 
 export const useGetComponent = () => {
-  const { installState, tokenStore, setInstallState } = React.useContext(AppContext)
+  const { installState, tokenStore, setCurrentScreen } = React.useContext(AppContext)
   const { access_token } = tokenStore.get?.('token') ?? {}
   const [githubData, setGithubData] = React.useState<GithubUserData | null>(null)
 
   React.useEffect(() => {
     if (!access_token) {
+      setCurrentScreen('AuthScreen')
       return
     }
     const octokit = new Octokit({
       auth: access_token,
     })
     const fetchGithubData = async () => {
-      const { data } = await octokit.rest.users.getAuthenticated()
-      setGithubData(data)
+      try {
+        const { data } = await octokit.rest.users.getAuthenticated()
+        setGithubData(data)
+      } catch (error) {
+        console.error('Failed to authenticate:', error)
+      }
     }
     fetchGithubData()
   }, [access_token, installState.installingComponent])
@@ -76,18 +78,11 @@ export const useGetComponent = () => {
     }
   )
 
-  // useEffect(() => {
-  //   if (error?.info?.error.includes('user is not authenticated')) {
-  //     tokenStore.delete('token')
-  //     forceUpdate()
-  //   }
-  // }, [error])
-
   React.useEffect(() => {
-    if (data) {
-      installComponent({ component: data, setInstallState, installState })
+    if (error?.info?.error?.includes('user is not authenticated')) {
+      tokenStore.delete('token')
     }
-  }, [data])
+  }, [error, tokenStore, setCurrentScreen])
 
   return { data, error, isLoading }
 }

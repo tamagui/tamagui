@@ -11,6 +11,8 @@ import { componentsList } from '../components.js'
 import type { ComponentSchema } from '../components.js'
 import { useGithubAuth } from '../hooks/useGithubAuth.js'
 import { useInstallComponent } from '../hooks/useInstallComponent.js'
+import { filePathsToTree, treeToString } from 'file-paths-to-tree'
+import { getMonorepoRoot } from '../hooks/useInstallComponent.js'
 
 // Define the state for the installation process
 export interface InstallState {
@@ -18,7 +20,19 @@ export interface InstallState {
   installedComponents: ComponentSchema[]
   shouldOpenBrowser: boolean
   isTokenInstalled: boolean
+  componentToInstall: {
+    name: string
+    path: string
+  } | null
 }
+
+// Define the possible screens for the application
+export type AppScreen =
+  | 'SearchScreen'
+  | 'InstallScreen'
+  | 'AuthScreen'
+  | 'InstallConfirmScreen'
+  | 'PackageInstallCommandScreen'
 
 // Define the context type for the application
 interface AppContextType {
@@ -34,7 +48,11 @@ interface AppContextType {
   setInstallState: React.Dispatch<React.SetStateAction<InstallState>>
   setInstallingComponent: React.Dispatch<React.SetStateAction<ComponentSchema>>
   installState: InstallState
+  currentScreen: AppScreen
+  setCurrentScreen: React.Dispatch<React.SetStateAction<AppScreen>>
   exitApp: () => void
+  confirmationPending: boolean
+  setConfirmationPending: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const tokenStore = new Conf({ projectName: 'bento-cli' })
@@ -47,6 +65,9 @@ const handleKeypress = (key: string, modifier: any, appContext: AppContextType) 
     setInstallState,
     searchResults,
     setCopyingToClipboard,
+    currentScreen,
+    setCurrentScreen,
+    setConfirmationPending,
   } = appContext
 
   if (modifier.shift && key === 'l') {
@@ -56,6 +77,30 @@ const handleKeypress = (key: string, modifier: any, appContext: AppContextType) 
 
   if (key === 'c' && appContext.installState.shouldOpenBrowser) {
     setCopyingToClipboard(true)
+    return
+  }
+
+  if (appContext.installState.installingComponent?.isOSS) {
+    return
+  }
+
+  if (currentScreen === 'InstallConfirmScreen') {
+    if (key === 'y') {
+      setConfirmationPending(false)
+      setCurrentScreen('SearchScreen')
+      return
+    }
+    if (key === 'n') {
+      setConfirmationPending(true)
+      setCurrentScreen('SearchScreen')
+      setSelectedResultIndex(-1)
+      setInstallState((prev) => ({
+        ...prev,
+        componentToInstall: null,
+        installingComponent: null,
+      }))
+      return
+    }
     return
   }
 
@@ -83,6 +128,10 @@ const handleKeypress = (key: string, modifier: any, appContext: AppContextType) 
   }
 
   if (modifier.escape) {
+    if (currentScreen === ('InstallConfirmScreen' as AppScreen)) {
+      setCurrentScreen('SearchScreen')
+      return
+    }
     appContext.exitApp()
     return
   }
@@ -102,10 +151,6 @@ const handleKeypress = (key: string, modifier: any, appContext: AppContextType) 
     return
   }
 
-  if (appContext.installState.installingComponent?.isOSS) {
-    return
-  }
-
   if (modifier.upArrow) {
     selectedResultIndex > -1 && setSelectedResultIndex(selectedResultIndex - 1)
     return
@@ -122,6 +167,7 @@ const handleKeypress = (key: string, modifier: any, appContext: AppContextType) 
       ...prev,
       installingComponent: searchResults[selectedResultIndex]?.item,
     }))
+    setCurrentScreen('InstallConfirmScreen')
     return
   }
 }
@@ -144,8 +190,13 @@ export const AppContext = React.createContext<AppContextType>({
     installedComponents: [],
     shouldOpenBrowser: false,
     isTokenInstalled: false,
+    componentToInstall: null,
   },
   exitApp: () => {},
+  currentScreen: 'SearchScreen',
+  setCurrentScreen: () => {},
+  confirmationPending: false,
+  setConfirmationPending: () => {},
 })
 
 const SearchBar = () => {
@@ -160,6 +211,7 @@ const SearchBar = () => {
   }
 
   const handleInputChange = (value: string) => {
+    if (appContext.currentScreen !== 'SearchScreen') return
     if ((appContext.installState as any).installingComponent?.isOSS) return
     appContext.setSearchInput(value)
     const results = performSearch(value)
@@ -256,7 +308,7 @@ const ResultCard = ({
           })()}
         </Text>
         {appContext.installState.installingComponent && isSelected && (
-          <InstallComponent />
+          <InstallingSpinnerLabel />
         )}
         <Text bold color={isSelected ? 'white' : 'black'}>
           {result.item?.name}
@@ -309,7 +361,7 @@ const ResultsCounter = () => {
   )
 }
 
-const InstallComponent = () => {
+const InstallingSpinnerLabel = () => {
   const appContext = React.useContext(AppContext)
   return (
     <Box>
@@ -416,23 +468,91 @@ const CodeAuthScreen = () => {
   )
 }
 
-export default function Search() {
+const InstallConfirmScreen = () => {
+  const appContext = React.useContext(AppContext)
+  const { componentToInstall, installingComponent } = appContext.installState
+
+  if (!componentToInstall) {
+    return null
+  }
+  const installPath = (() => {
+    const parts =
+      `${componentToInstall.path}/${installingComponent?.category}/${installingComponent?.categorySection}/${installingComponent?.fileName}.tsx`.split(
+        '/'
+      )
+    const lastSeven = parts.slice(-7)
+    return lastSeven.join('/')
+  })()
+  return (
+    <Box
+      flexDirection="column"
+      padding={1}
+      gap={2}
+      borderColor="white"
+      borderStyle="round"
+    >
+      <Text>
+        Are you sure you want to install the component "{componentToInstall.name}" to the
+        following path?
+      </Text>
+      <Box
+        borderColor="blue"
+        flexDirection="column"
+        padding={1}
+        borderStyle="round"
+        gap={1}
+      >
+        <Text>$ {installPath}</Text>
+        <Text>
+          ---
+          {'\n'}
+          {treeToString(
+            filePathsToTree([installPath], {
+              connectors: {
+                tee: '├─ ',
+                elbow: '└─ ',
+                padding: ' ',
+              },
+            })
+          )}
+        </Text>
+      </Box>
+      <Spacer />
+      <Text>
+        Press{' '}
+        <Text color="green" bold>
+          Y
+        </Text>{' '}
+        to confirm or{' '}
+        <Text color="red" bold>
+          N
+        </Text>{' '}
+        to cancel.
+      </Text>
+    </Box>
+  )
+}
+
+export default function BentoGet() {
   const [searchResults, setSearchResults] = React.useState<
     Array<{ item: ComponentSchema }>
   >([])
   const [selectedResultIndex, setSelectedResultIndex] = React.useState(-1)
   const [searchInput, setSearchInput] = React.useState('')
+  const [confirmationPending, setConfirmationPending] = React.useState(true)
   const [installState, setInstallState] = React.useState<InstallState>({
     installingComponent: null,
     installedComponents: [],
     shouldOpenBrowser: false,
     isTokenInstalled: false,
+    componentToInstall: null,
   })
+  const [currentScreen, setCurrentScreen] = React.useState<AppScreen>('SearchScreen')
   const [isCopyingToClipboard, setCopyingToClipboard] = React.useState(false)
   const { exit } = useApp()
 
-  useInput((input, key) =>
-    handleKeypress(input, key, {
+  const appContextValues = React.useMemo(
+    () => ({
       tokenStore,
       isCopyingToClipboard,
       setCopyingToClipboard,
@@ -446,33 +566,36 @@ export default function Search() {
       setInstallState,
       installState,
       setInstallingComponent: () => {}, // This seems unused, consider removing
-    })
+      currentScreen,
+      setCurrentScreen,
+      confirmationPending,
+      setConfirmationPending,
+    }),
+    [
+      isCopyingToClipboard,
+      searchResults,
+      selectedResultIndex,
+      searchInput,
+      installState,
+      currentScreen,
+      confirmationPending,
+    ]
   )
 
+  useInput((input, key) => handleKeypress(input, key, appContextValues))
   return (
-    <AppContext.Provider
-      value={{
-        tokenStore,
-        isCopyingToClipboard,
-        setCopyingToClipboard,
-        searchResults,
-        setSearchResults,
-        selectedResultIndex,
-        setSelectedResultIndex,
-        searchInput,
-        setSearchInput,
-        installState,
-        setInstallState,
-        setInstallingComponent: () => {}, // This seems unused, consider removing
-        exitApp: exit,
-      }}
-    >
+    <AppContext.Provider value={appContextValues}>
       <Provider>
         <Box flexDirection="column">
           <Box flexDirection="column">
-            <UsageBanner />
-            <SearchBar />
-            <ResultsContainer />
+            {currentScreen === 'InstallConfirmScreen' && <InstallConfirmScreen />}
+            {currentScreen === 'SearchScreen' && (
+              <>
+                <UsageBanner />
+                <SearchBar />
+                <ResultsContainer />
+              </>
+            )}
           </Box>
         </Box>
       </Provider>
@@ -482,7 +605,6 @@ export default function Search() {
 
 const Provider = ({ children }: { children: React.ReactNode }) => {
   const { error } = useInstallComponent()
-
   if (error) {
     if (error.status === 401) {
       return (

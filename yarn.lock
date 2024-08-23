@@ -15223,6 +15223,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"file-paths-to-tree@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "file-paths-to-tree@npm:4.0.0"
+  checksum: 10/976fd4e20a7a6c6cf0af7835fa009ee93ff84e07ab88ce3dd47bf7714952e121dcaffbafa7235acc6ed45768b3ff49d06a81c40f50f369d6471635f2690fac2b
+  languageName: node
+  linkType: hard
+
 "file-selector@npm:^0.6.0":
   version: 0.6.0
   resolution: "file-selector@npm:0.6.0"
@@ -25933,6 +25940,7 @@ __metadata:
     dotenv-cli: "npm:^7.4.2"
     esbuild: "npm:^0.23.0"
     esbuild-register: "npm:^3.6.0"
+    file-paths-to-tree: "npm:^4.0.0"
     fs-extra: "npm:^11.2.0"
     h3: "npm:1.11.1"
     import-sort-style-module: "npm:^6.0.0"
