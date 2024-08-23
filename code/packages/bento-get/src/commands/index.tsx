@@ -6,6 +6,7 @@ import Fuse from 'fuse.js'
 import { Box, Spacer, Text, useApp, useInput } from 'ink'
 import TextInput from 'ink-text-input'
 import open from 'open'
+import path from 'path'
 
 import { componentsList } from '../components.js'
 import type { ComponentSchema } from '../components.js'
@@ -474,17 +475,51 @@ const InstallConfirmScreen = () => {
   const appContext = React.useContext(AppContext)
   const { componentToInstall, installingComponent } = appContext.installState
 
-  if (!componentToInstall) {
+  if (!componentToInstall || !installingComponent) {
     return null
   }
-  const installPath = (() => {
-    const parts =
-      `${componentToInstall.path}/${installingComponent?.category}/${installingComponent?.categorySection}/${installingComponent?.fileName}.tsx`.split(
-        '/'
+
+  const getInstallPaths = () => {
+    const callDirectory = process.cwd()
+    const basePath =
+      `${componentToInstall.path}/${installingComponent.category}/${installingComponent.categorySection}`.replace(
+        callDirectory,
+        ''
       )
-    const lastSeven = parts.slice(-7)
-    return lastSeven.join('/')
-  })()
+    const mainComponentPath = `${basePath}/${installingComponent.fileName}.tsx`
+    const bentoDependencies = installingComponent.bentoDependencies || []
+
+    const dependencyPaths = bentoDependencies.map((dep) => {
+      const [fileName, folder] = dep.split('/').reverse()
+      return folder
+        ? `${basePath}/${folder}/${fileName}.tsx`
+        : `${basePath}/${fileName}.tsx`
+    })
+
+    const allPaths = [mainComponentPath, ...dependencyPaths]
+
+    // Find the longest path
+    const longestPath = allPaths.reduce((a, b) => (a.length > b.length ? a : b))
+    const longestPathParts = longestPath.split('/')
+
+    // Prune to last 7 segments of the longest path
+    const startIndex = Math.max(0, longestPathParts.length - 7)
+    const prunedLongestPath = longestPathParts.slice(startIndex).join('/')
+
+    return {
+      basePath,
+      mainComponentPath,
+      dependencyPaths,
+      allPaths: allPaths.map((path) => {
+        const parts = path.split('/')
+        const startFromIndex = parts.findIndex((segment) =>
+          prunedLongestPath.includes(segment)
+        )
+        return parts.slice(startFromIndex).join('/')
+      }),
+    }
+  }
+  const allInstallPaths = getInstallPaths().allPaths
   return (
     <Box
       flexDirection="column"
@@ -494,8 +529,7 @@ const InstallConfirmScreen = () => {
       borderStyle="round"
     >
       <Text>
-        Are you sure you want to install the component "{componentToInstall.name}" to the
-        following path?
+        CONFIRM: Install the component "<Text bold>{componentToInstall.name}</Text>" here?
       </Text>
       <Box
         borderColor="blue"
@@ -504,21 +538,24 @@ const InstallConfirmScreen = () => {
         borderStyle="round"
         gap={1}
       >
-        <Text>$ {installPath}</Text>
-        <Text>
-          ---
-          {'\n'}
-          {'\n'}
-          {treeToString(
-            filePathsToTree([installPath], {
-              connectors: {
-                tee: '├─ ',
-                elbow: '└─ ',
-                padding: ' ',
-              },
-            })
-          )}
-        </Text>
+        <Box flexDirection="column">
+          {allInstallPaths.map((path, i) => (
+            <Text key={i}>- {path}</Text>
+          ))}
+        </Box>
+        <Box borderColor="blue" borderStyle="round" padding={1}>
+          <Text>
+            {treeToString(
+              filePathsToTree(allInstallPaths, {
+                connectors: {
+                  tee: '├─ ',
+                  elbow: '└─ ',
+                  padding: ' ',
+                },
+              })
+            )}
+          </Text>
+        </Box>
       </Box>
       <Spacer />
       <Text>
