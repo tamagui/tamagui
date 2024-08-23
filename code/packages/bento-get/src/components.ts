@@ -517,7 +517,11 @@ export const componentsList: ComponentSchema[] = [
     fileName: 'RangePicker',
     category: 'elements',
     categorySection: 'datepickers',
-    dependencies: ['@tamagui/lucide-icons', '@rehookify/datepicker', '@tamagui/linear-gradient',],
+    dependencies: [
+      '@tamagui/lucide-icons',
+      '@rehookify/datepicker',
+      '@tamagui/linear-gradient',
+    ],
     bentoDependencies: ['./common/dateParts', './common/useDateAnimation'],
     moveFilesToFolder: [
       { file: 'MultiSelectPicker', to: '' },
@@ -1002,7 +1006,7 @@ export const componentsList: ComponentSchema[] = [
   },
   {
     name: 'Email Preferences',
-    fileName: 'LocationNotification',
+    fileName: 'EmailPreferences',
     category: 'user',
     categorySection: 'preferences',
     dependencies: [
@@ -1010,7 +1014,7 @@ export const componentsList: ComponentSchema[] = [
       '@tamagui/lucide-icons',
       '@tamagui/get-font-sized',
     ],
-    moveFilesToFolder: [{ file: 'LocationNotification', to: '' }],
+    moveFilesToFolder: [{ file: 'EmailPreferences', to: '' }],
   },
   {
     name: 'Employees Status Tracker',

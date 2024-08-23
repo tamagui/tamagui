@@ -505,6 +505,7 @@ const InstallConfirmScreen = () => {
         <Text>
           ---
           {'\n'}
+          {'\n'}
           {treeToString(
             filePathsToTree([installPath], {
               connectors: {

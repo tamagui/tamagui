@@ -3,4 +3,4 @@ export declare const useFetchComponentFromGithub: () => {
     error: any;
     isLoading: boolean;
 };
-//# sourceMappingURL=useGetComponent.d.ts.map
+//# sourceMappingURL=useFetchComponentFromGithub.d.ts.map

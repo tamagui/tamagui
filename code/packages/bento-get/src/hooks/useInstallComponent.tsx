@@ -7,7 +7,7 @@ import { AppContext } from '../commands/index.js'
 import type { InstallState } from '../commands/index.js'
 import { componentsList } from '../components.js'
 import type { ComponentSchema } from '../components.js'
-import { useGetComponent } from './useGetComponent.js'
+import { useFetchComponentFromGithub } from './useFetchComponentFromGithub.js'
 
 export const getMonorepoRoot = async () => {
   let currentDir = process.cwd() as string
@@ -125,7 +125,7 @@ export const useInstallComponent = () => {
   const { installState, setInstallState, confirmationPending, setConfirmationPending } =
     React.useContext(AppContext)
 
-  const { data, error } = useGetComponent()
+  const { data, error } = useFetchComponentFromGithub()
 
   React.useEffect(() => {
     if (installState?.installingComponent && confirmationPending) {

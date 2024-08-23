@@ -11,7 +11,7 @@ interface GithubUserData {
   node_id: string
 }
 
-export const useGetComponent = () => {
+export const useFetchComponentFromGithub = () => {
   const { installState, tokenStore, setCurrentScreen } = React.useContext(AppContext)
   const { access_token } = tokenStore.get?.('token') ?? {}
   const [githubData, setGithubData] = React.useState<GithubUserData | null>(null)
