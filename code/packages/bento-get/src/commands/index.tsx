@@ -12,7 +12,6 @@ import type { ComponentSchema } from '../components.js'
 import { useGithubAuth } from '../hooks/useGithubAuth.js'
 import { useInstallComponent } from '../hooks/useInstallComponent.js'
 import { filePathsToTree, treeToString } from 'file-paths-to-tree'
-import { getMonorepoRoot } from '../hooks/useInstallComponent.js'
 
 // Define the state for the installation process
 export interface InstallState {
