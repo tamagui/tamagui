@@ -1,19 +1,23 @@
-// @ts-nocheck
-import React from 'react'
 import fetch from 'node-fetch'
 import querystring from 'node:querystring'
 import { Octokit } from 'octokit'
+import React from 'react'
 
 import useSWR from 'swr'
 import { AppContext } from '../commands/index.js'
 import { installComponent } from './useInstallComponent.js'
-import { useForceUpdate } from '@tamagui/use-force-update'
+
+interface GithubUserData {
+  login: string
+  id: number
+  node_id: string
+  // Add other properties as needed
+}
 
 export const useGetComponent = () => {
-  const forceUpdate = useForceUpdate()
-  const { install, tokenStore, setInstall } = React.useContext(AppContext)
+  const { installState, tokenStore, setInstallState } = React.useContext(AppContext)
   const { access_token } = tokenStore.get?.('token') ?? {}
-  const [githubData, setGithubData] = React.useState(null)
+  const [githubData, setGithubData] = React.useState<GithubUserData | null>(null)
 
   React.useEffect(() => {
     if (!access_token) {
@@ -27,9 +31,9 @@ export const useGetComponent = () => {
       setGithubData(data)
     }
     fetchGithubData()
-  }, [access_token, install.installingComponent])
+  }, [access_token, installState.installingComponent])
 
-  const fetcher = async (url) => {
+  const fetcher = async (url: string) => {
     const res = await fetch(url, {
       headers: {
         'Content-Type': 'application/json',
@@ -38,7 +42,10 @@ export const useGetComponent = () => {
     })
 
     if (!res.ok) {
-      const error = new Error('An error occurred while fetching the data.')
+      const error = new Error('An error occurred while fetching the data.') as Error & {
+        info?: any
+        status?: number
+      }
       error.info = await res.json()
       error.status = res.status
       throw error
@@ -50,19 +57,19 @@ export const useGetComponent = () => {
   }
 
   const query =
-    install.installingComponent?.category &&
-    install.installingComponent?.categorySection &&
+    installState.installingComponent?.category &&
+    installState.installingComponent?.categorySection &&
     querystring.stringify({
-      section: install.installingComponent?.category,
-      part: install.installingComponent?.categorySection,
-      fileName: install.installingComponent?.fileName,
+      section: installState.installingComponent?.category,
+      part: installState.installingComponent?.categorySection,
+      fileName: installState.installingComponent?.fileName,
       userGithubId: githubData?.node_id || '',
     })
 
   const codePath = query ? `https://tamagui.dev/api/bento/code?${query}` : ''
 
   const { data, error, isLoading } = useSWR(
-    install.installingComponent ? codePath : null,
+    installState.installingComponent ? codePath : null,
     fetcher,
     {
       loadingTimeout: 3000,
@@ -78,7 +85,7 @@ export const useGetComponent = () => {
 
   React.useEffect(() => {
     if (data) {
-      installComponent({ component: data, setInstall, install })
+      installComponent({ component: data, setInstallState, installState })
     }
   }, [data])
 
