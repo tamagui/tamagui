@@ -99,37 +99,38 @@ const getComponentsFromTextFile = (componentString: string) => {
 
 export const installComponent = async ({
   component,
-  setInstall,
-  install,
+  setInstallState,
+  installState,
 }: {
   component: string
-  setInstall: React.Dispatch<React.SetStateAction<InstallState>>
-  install: InstallState
+  setInstallState: React.Dispatch<React.SetStateAction<InstallState>>
+  installState: InstallState
 }) => {
   const components = getComponentsFromTextFile(component)
   const uiDir = getUIDirectory()
-  await subFoldersInstallStep(uiDir, install, components)
+  await subFoldersInstallStep(uiDir, installState, components)
 
   // In the useInstallComponent function
-  setInstall((prev) => ({
+  setInstallState((prev) => ({
     ...prev,
     installingComponent: null, // Change undefined to null
     installedComponents: [
       ...prev.installedComponents,
-      install.installingComponent,
+      installState.installingComponent,
     ].filter((component): component is ComponentSchema => component !== undefined),
   }))
 }
 
 export const useInstallComponent = () => {
-  const { install, setInstall } = React.useContext(AppContext)
+  const { installState, setInstallState } = React.useContext(AppContext)
+
   const { data, error } = useGetComponent()
 
   React.useEffect(() => {
-    if (data && install?.installingComponent) {
-      installComponent({ component: data, setInstall, install })
+    if (data && installState?.installingComponent) {
+      installComponent({ component: data, setInstallState, installState })
     }
-  }, [data, install?.installingComponent, setInstall])
+  }, [data, installState?.installingComponent, setInstallState])
 
   return { data, error }
 }

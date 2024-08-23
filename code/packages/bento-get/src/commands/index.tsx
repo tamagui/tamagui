@@ -12,153 +12,168 @@ import type { ComponentSchema } from '../components.js'
 import { useGithubAuth } from '../hooks/useGithubAuth.js'
 import { useInstallComponent } from '../hooks/useInstallComponent.js'
 
+// Define the state for the installation process
 export interface InstallState {
   installingComponent: ComponentSchema | null | undefined
   installedComponents: ComponentSchema[]
-  enterToOpenBrowser: boolean
-  tokenIsInstalled: boolean
+  shouldOpenBrowser: boolean
+  isTokenInstalled: boolean
 }
 
+// Define the context type for the application
 interface AppContextType {
   tokenStore: Conf<any>
-  copyToClipboard: boolean
-  setCopyToClipboard: React.Dispatch<React.SetStateAction<boolean>>
-  results: Array<{ item: ComponentSchema }>
-  setResults: React.Dispatch<React.SetStateAction<Array<{ item: ComponentSchema }>>>
-  selectedId: number
-  setSelectedId: React.Dispatch<React.SetStateAction<number>>
-  input: string
-  setInput: React.Dispatch<React.SetStateAction<string>>
-  setInstall: React.Dispatch<React.SetStateAction<InstallState>>
-  setInstallcomponent: React.Dispatch<React.SetStateAction<ComponentSchema>>
-
-  install: InstallState
-  exit: () => void
+  isCopyingToClipboard: boolean
+  setCopyingToClipboard: React.Dispatch<React.SetStateAction<boolean>>
+  searchResults: Array<{ item: ComponentSchema }>
+  setSearchResults: React.Dispatch<React.SetStateAction<Array<{ item: ComponentSchema }>>>
+  selectedResultIndex: number
+  setSelectedResultIndex: React.Dispatch<React.SetStateAction<number>>
+  searchInput: string
+  setSearchInput: React.Dispatch<React.SetStateAction<string>>
+  setInstallState: React.Dispatch<React.SetStateAction<InstallState>>
+  setInstallingComponent: React.Dispatch<React.SetStateAction<ComponentSchema>>
+  installState: InstallState
+  exitApp: () => void
 }
 
 const tokenStore = new Conf({ projectName: 'bento-cli' })
 
+// Handle keypress events for the CLI
 const handleKeypress = (key: string, modifier: any, appContext: AppContextType) => {
-  const { selectedId, setSelectedId, setInstall, results, setCopyToClipboard } =
-    appContext
+  const {
+    selectedResultIndex,
+    setSelectedResultIndex,
+    setInstallState,
+    searchResults,
+    setCopyingToClipboard,
+  } = appContext
 
-  if (modifier.shift + key === 'l') {
+  if (modifier.shift && key === 'l') {
     tokenStore.clear()
     return
   }
 
-  if (key === 'c' && appContext.install.enterToOpenBrowser) {
-    setCopyToClipboard(true)
+  if (key === 'c' && appContext.installState.shouldOpenBrowser) {
+    setCopyingToClipboard(true)
     return
   }
 
-  // after token addition on pressing esc go back to previous screen
-  if (modifier.escape && appContext.install.tokenIsInstalled) {
-    appContext.setInstall((prev) => ({
+  // After token addition, go back to the previous screen on pressing ESC
+  if (modifier.escape && appContext.installState.isTokenInstalled) {
+    appContext.setInstallState((prev) => ({
       ...prev,
       installingComponent: null,
-      tokenIsInstalled: false,
+      isTokenInstalled: false,
     }))
     return
   }
 
   if (
     modifier.escape &&
-    appContext.install.installingComponent !== null &&
-    !appContext.install.installingComponent?.isOSS
+    appContext.installState.installingComponent !== null &&
+    !appContext.installState.installingComponent?.isOSS
   ) {
-    appContext.setInstall((prev) => ({
+    appContext.setInstallState((prev) => ({
       ...prev,
       installingComponent: null,
-      enterToOpenBrowser: false,
+      shouldOpenBrowser: false,
     }))
     return
   }
 
   if (modifier.escape) {
-    appContext.exit()
+    appContext.exitApp()
     return
   }
 
-  if (appContext.install.installingComponent && (modifier.upArrow || modifier.downArrow))
+  if (
+    appContext.installState.installingComponent &&
+    (modifier.upArrow || modifier.downArrow)
+  )
     return
 
   if (
     modifier.return &&
-    !appContext.install.installingComponent?.isOSS &&
-    appContext.install.enterToOpenBrowser
+    !appContext.installState.installingComponent?.isOSS &&
+    appContext.installState.shouldOpenBrowser
   ) {
     open('https://github.com/login/device')
     return
   }
 
-  if (appContext.install.installingComponent?.isOSS) {
+  if (appContext.installState.installingComponent?.isOSS) {
     return
   }
 
   if (modifier.upArrow) {
-    selectedId > -1 && setSelectedId(selectedId - 1)
+    selectedResultIndex > -1 && setSelectedResultIndex(selectedResultIndex - 1)
     return
   }
 
   if (modifier.downArrow) {
-    selectedId < appContext.results.length - 1 && setSelectedId(selectedId + 1)
+    selectedResultIndex < appContext.searchResults.length - 1 &&
+      setSelectedResultIndex(selectedResultIndex + 1)
     return
   }
 
   if (modifier.return) {
-    setInstall((prev) => ({
+    setInstallState((prev) => ({
       ...prev,
-      installingComponent: results[selectedId]?.item,
+      installingComponent: searchResults[selectedResultIndex]?.item,
     }))
     return
   }
 }
 
-// TODO type this properly!
+// Create the AppContext with default values
 export const AppContext = React.createContext<AppContextType>({
   tokenStore: {} as typeof tokenStore,
-  copyToClipboard: false,
-  setCopyToClipboard: () => {},
-  results: [],
-  setResults: () => {},
-  selectedId: -1,
-  setSelectedId: () => {},
-  input: '',
-  setInput: () => {},
-  setInstall: () => {},
-  setInstallcomponent: () => {},
-  install: {
+  isCopyingToClipboard: false,
+  setCopyingToClipboard: () => {},
+  searchResults: [],
+  setSearchResults: () => {},
+  selectedResultIndex: -1,
+  setSelectedResultIndex: () => {},
+  searchInput: '',
+  setSearchInput: () => {},
+  setInstallState: () => {},
+  setInstallingComponent: () => {},
+  installState: {
     installingComponent: null,
     installedComponents: [],
-    enterToOpenBrowser: false,
-    tokenIsInstalled: false,
+    shouldOpenBrowser: false,
+    isTokenInstalled: false,
   },
-  exit: () => {},
+  exitApp: () => {},
 })
 
 const SearchBar = () => {
   const appContext = React.useContext(AppContext)
-  const search = (query: string) => {
+
+  // Perform search using Fuse.js for fuzzy matching
+  const performSearch = (query: string) => {
     const fuse = new Fuse(componentsList, {
       keys: ['name', 'category', 'categorySection'],
     })
     return fuse.search(query)
   }
-  const handleChange = (value: string) => {
-    if ((appContext.install as any).installingComponent?.isOSS) return
-    appContext.setInput(value)
-    const results = search(value)
-    appContext.setResults(results)
-    appContext.setSelectedId(-1)
+
+  const handleInputChange = (value: string) => {
+    if ((appContext.installState as any).installingComponent?.isOSS) return
+    appContext.setSearchInput(value)
+    const results = performSearch(value)
+    appContext.setSearchResults(results)
+    appContext.setSelectedResultIndex(-1)
   }
+
   return (
     <Box marginX={1} justifyContent="space-between">
       <Box>
         <Text bold>Search: </Text>
         <TextInput
-          value={appContext.input}
-          onChange={handleChange}
+          value={appContext.searchInput}
+          onChange={handleInputChange}
           // @ts-ignore
           marginRight={'auto'}
         />
@@ -171,13 +186,16 @@ const SearchBar = () => {
 const ResultsContainer = () => {
   const appContext = React.useContext(AppContext)
   return (
-    <Box flexDirection="column" display={appContext.results.length ? 'flex' : 'none'}>
+    <Box
+      flexDirection="column"
+      display={appContext.searchResults.length ? 'flex' : 'none'}
+    >
       <Box flexDirection="column" borderStyle="round" paddingX={1} gap={1}>
-        {appContext.results.slice(0, 5).map((result, i) => (
+        {appContext.searchResults.slice(0, 5).map((result, i) => (
           <ResultCard
             result={result}
             key={result.item.fileName}
-            isSelected={appContext.selectedId === i}
+            isSelected={appContext.selectedResultIndex === i}
           />
         ))}
       </Box>
@@ -198,13 +216,13 @@ const Footer = () => {
 
 const InstalledBadge = ({ item }: { item: ComponentSchema }) => {
   const appContext = React.useContext(AppContext)
-  const componentIsInstalled = appContext.install?.installedComponents
+  const isComponentInstalled = appContext.installState?.installedComponents
     ?.map((component) => component.fileName)
     .includes(item.fileName)
 
-  if (!appContext.install?.installedComponents) return null
+  if (!appContext.installState?.installedComponents) return null
   return (
-    componentIsInstalled && (
+    isComponentInstalled && (
       <Box marginLeft={1}>
         <Badge color="green">Installed</Badge>
       </Box>
@@ -226,9 +244,9 @@ const ResultCard = ({
         <Text bold color="gray">
           {(() => {
             switch (true) {
-              case appContext.install.installingComponent && isSelected:
+              case appContext.installState.installingComponent && isSelected:
                 return ''
-              case Boolean(appContext.install.installingComponent):
+              case Boolean(appContext.installState.installingComponent):
                 return '  '
               case isSelected:
                 return '❯ '
@@ -237,36 +255,41 @@ const ResultCard = ({
             }
           })()}
         </Text>
-        {appContext.install.installingComponent && isSelected && <InstallComponent />}
+        {appContext.installState.installingComponent && isSelected && (
+          <InstallComponent />
+        )}
         <Text bold color={isSelected ? 'white' : 'black'}>
           {result.item?.name}
         </Text>
         <InstalledBadge item={result.item} />
       </Box>
       <Spacer />
-      <TypeOfComponentAccess item={result.item} />
+      <ComponentAccessType item={result.item} />
       <CategorySectionBadge item={result.item} />
     </Box>
   )
 }
 
 const CategorySectionBadge = ({ item }: { item: ComponentSchema }) => {
+  const capitalizeFirstLetter = (str: string) =>
+    str.charAt(0).toUpperCase() + str.slice(1)
+
   return (
     <Box marginLeft={1} gap={1}>
       <Text color={'black'} backgroundColor={'white'}>
         {' '}
-        {item?.category.charAt(0).toUpperCase() + item?.category.slice(1)} {'>'}{' '}
-        {item?.categorySection.charAt(0).toUpperCase() +
-          item?.categorySection.slice(1)}{' '}
+        {capitalizeFirstLetter(item?.category)} {'>'}{' '}
+        {capitalizeFirstLetter(item?.categorySection)}{' '}
       </Text>
     </Box>
   )
 }
-const TypeOfComponentAccess = ({ item }: { item: ComponentSchema }) => {
+
+const ComponentAccessType = ({ item }: { item: ComponentSchema }) => {
   return (
-    <Box marginLeft={1} gap={1} display={item?.isOSS ? 'flex' : 'none'}>
-      <Text color={'black'} backgroundColor={'gray'}>
-        OSS
+    <Box marginLeft={1} gap={1}>
+      <Text color={'black'} backgroundColor={item?.isOSS ? 'green' : 'blue'}>
+        {item?.isOSS ? 'FREE' : 'PRO'}
       </Text>
     </Box>
   )
@@ -274,12 +297,12 @@ const TypeOfComponentAccess = ({ item }: { item: ComponentSchema }) => {
 
 const ResultsCounter = () => {
   const appContext = React.useContext(AppContext)
+  const resultCount = appContext.searchResults.length
   return (
     <Box>
-      {!!appContext.results.length && (
+      {!!resultCount && (
         <Text bold color="gray">
-          {appContext.results.length} result
-          {appContext.results.length > 1 ? 's' : ''}
+          {resultCount} result{resultCount > 1 ? 's' : ''}
         </Text>
       )}
     </Box>
@@ -290,7 +313,7 @@ const InstallComponent = () => {
   const appContext = React.useContext(AppContext)
   return (
     <Box>
-      {appContext.install.installingComponent ? (
+      {appContext.installState.installingComponent ? (
         <Box>
           <Spinner label="Installing " />
         </Box>
@@ -316,28 +339,28 @@ const CodeAuthScreen = () => {
   const { data, isLoading } = useGithubAuth()
 
   React.useEffect(() => {
-    appContext.setInstall((prev) => ({
+    appContext.setInstallState((prev) => ({
       ...prev,
-      enterToOpenBrowser: true,
+      shouldOpenBrowser: true,
     }))
     return () => {
-      appContext.setCopyToClipboard(false)
+      appContext.setCopyingToClipboard(false)
     }
   }, [])
 
   appContext.tokenStore.onDidChange('token', () => {
-    appContext.setInstall((prev) => ({
+    appContext.setInstallState((prev) => ({
       ...prev,
-      tokenIsInstalled: true,
+      isTokenInstalled: true,
     }))
   })
 
   React.useEffect(() => {
-    if (appContext.copyToClipboard) {
+    if (appContext.isCopyingToClipboard) {
       copy(data?.user_code)
       console.warn(`Copied to clipboard`)
     }
-  }, [appContext.copyToClipboard])
+  }, [appContext.isCopyingToClipboard])
 
   return (
     <Box flexDirection="column" display="flex">
@@ -351,7 +374,7 @@ const CodeAuthScreen = () => {
           <Text underline>ESC</Text> to go Back
         </Text>
 
-        {appContext.copyToClipboard ? (
+        {appContext.isCopyingToClipboard ? (
           <Text color="green">copied!</Text>
         ) : (
           <Text>
@@ -360,7 +383,7 @@ const CodeAuthScreen = () => {
         )}
       </Box>
       <Box flexDirection="row" borderStyle="round" paddingY={1} justifyContent="center">
-        {appContext.install.tokenIsInstalled ? (
+        {appContext.installState.isTokenInstalled ? (
           <Box paddingY={1}>
             <Text color="green">
               Github Authentication Successful. Press <Text underline>ESC</Text> to go
@@ -394,33 +417,35 @@ const CodeAuthScreen = () => {
 }
 
 export default function Search() {
-  const [results, setResults] = React.useState<Array<{ item: ComponentSchema }>>([])
-  const [selectedId, setSelectedId] = React.useState(-1)
-  const [input, setInput] = React.useState('')
-  const [install, setInstall] = React.useState<InstallState>({
+  const [searchResults, setSearchResults] = React.useState<
+    Array<{ item: ComponentSchema }>
+  >([])
+  const [selectedResultIndex, setSelectedResultIndex] = React.useState(-1)
+  const [searchInput, setSearchInput] = React.useState('')
+  const [installState, setInstallState] = React.useState<InstallState>({
     installingComponent: null,
     installedComponents: [],
-    enterToOpenBrowser: false,
-    tokenIsInstalled: false,
+    shouldOpenBrowser: false,
+    isTokenInstalled: false,
   })
-  const [copyToClipboard, setCopyToClipboard] = React.useState(false)
+  const [isCopyingToClipboard, setCopyingToClipboard] = React.useState(false)
   const { exit } = useApp()
 
   useInput((input, key) =>
     handleKeypress(input, key, {
       tokenStore,
-      copyToClipboard,
-      setCopyToClipboard,
-      exit,
-      results,
-      setResults,
-      selectedId,
-      setSelectedId,
-      input,
-      setInput,
-      setInstall,
-      install,
-      setInstallcomponent: () => {}, // Add this line
+      isCopyingToClipboard,
+      setCopyingToClipboard,
+      exitApp: exit,
+      searchResults,
+      setSearchResults,
+      selectedResultIndex,
+      setSelectedResultIndex,
+      searchInput,
+      setSearchInput,
+      setInstallState,
+      installState,
+      setInstallingComponent: () => {}, // This seems unused, consider removing
     })
   )
 
@@ -428,18 +453,18 @@ export default function Search() {
     <AppContext.Provider
       value={{
         tokenStore,
-        copyToClipboard,
-        setCopyToClipboard,
-        results,
-        setResults,
-        selectedId,
-        setSelectedId,
-        input,
-        setInput,
-        install,
-        setInstall,
-        setInstallcomponent: () => {},
-        exit: () => {},
+        isCopyingToClipboard,
+        setCopyingToClipboard,
+        searchResults,
+        setSearchResults,
+        selectedResultIndex,
+        setSelectedResultIndex,
+        searchInput,
+        setSearchInput,
+        installState,
+        setInstallState,
+        setInstallingComponent: () => {}, // This seems unused, consider removing
+        exitApp: exit,
       }}
     >
       <Provider>

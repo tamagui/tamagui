@@ -46,7 +46,7 @@ export const useGithubAuthPooling = ({
   }
 
   const { data, error, isLoading } = useSWR<string>(
-    appContext.install?.enterToOpenBrowser && deviceCodeData
+    appContext.installState?.shouldOpenBrowser && deviceCodeData
       ? 'https://github.com/login/oauth/access_token'
       : null,
     fetchAccessToken,

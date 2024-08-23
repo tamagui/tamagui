@@ -1,9 +1,9 @@
 import React from 'react';
 import type { InstallState } from '../commands/index.js';
-export declare const installComponent: ({ component, setInstall, install, }: {
+export declare const installComponent: ({ component, setInstallState, installState, }: {
     component: string;
-    setInstall: React.Dispatch<React.SetStateAction<InstallState>>;
-    install: InstallState;
+    setInstallState: React.Dispatch<React.SetStateAction<InstallState>>;
+    installState: InstallState;
 }) => Promise<void>;
 export declare const useInstallComponent: () => {
     data: string | undefined;
