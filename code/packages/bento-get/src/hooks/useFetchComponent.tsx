@@ -11,7 +11,7 @@ interface GithubUserData {
   node_id: string
 }
 
-export const useFetchComponentFromGithub = () => {
+export const useFetchComponent = () => {
   const { installState, tokenStore, setCurrentScreen } = React.useContext(AppContext)
   const { access_token } = tokenStore.get?.('token') ?? {}
   const [githubData, setGithubData] = React.useState<GithubUserData | null>(null)
@@ -68,11 +68,41 @@ export const useFetchComponentFromGithub = () => {
       userGithubId: githubData?.node_id || '',
     })
 
-  const codePath = query ? `https://tamagui.dev/api/bento/code?${query}` : ''
+  const apiBase = process.env.API_BASE || 'https://tamagui.dev'
+  const codePath = query ? `${apiBase}/api/bento/code-download?${query}` : apiBase
 
   const { data, error, isLoading } = useSWR(
     installState.installingComponent ? codePath : null,
-    fetcher,
+    async (url) => {
+      const response = await fetcher(url)
+      const filesData: Record<
+        string,
+        Array<{ path: string; downloadUrl: string }>
+      > = JSON.parse(response)
+
+      const downloadedFiles: Record<
+        string,
+        Array<{ path: string; filePlainText: string }>
+      > = {}
+
+      for (const [category, files] of Object.entries(filesData)) {
+        downloadedFiles[category] = await Promise.all(
+          files.map(
+            async (file: {
+              path: string
+              downloadUrl: string
+            }) => {
+              const fileContent = await fetcher(file.downloadUrl)
+              return {
+                path: file.path,
+                filePlainText: fileContent,
+              }
+            }
+          )
+        )
+      }
+      return downloadedFiles
+    },
     {
       loadingTimeout: 3000,
     }
