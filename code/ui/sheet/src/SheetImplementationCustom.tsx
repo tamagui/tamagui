@@ -339,7 +339,7 @@ export const SheetImplementationCustom = themeable(
           // avoid bugs where it grows forever for whatever reason
           const next = Math.min(
             e.nativeEvent?.layout.height,
-            Dimensions.get('window').height
+            Dimensions.get('screen').height
           )
           if (!next) return
           setFrameSize(next)
@@ -352,7 +352,7 @@ export const SheetImplementationCustom = themeable(
           // avoid bugs where it grows forever for whatever reason
           const next = Math.min(
             e.nativeEvent?.layout.height,
-            Dimensions.get('window').height
+            Dimensions.get('screen').height
           )
           if (!next) return
           setMaxContentSize(next)
