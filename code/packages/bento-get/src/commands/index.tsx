@@ -1,4 +1,3 @@
-import React from 'react'
 import { Alert, Badge, Spinner } from '@inkjs/ui'
 import Conf from 'conf'
 import { copy } from 'copy-paste'
@@ -6,13 +5,13 @@ import Fuse from 'fuse.js'
 import { Box, Spacer, Text, useApp, useInput } from 'ink'
 import TextInput from 'ink-text-input'
 import open from 'open'
-import path from 'path'
+import React from 'react'
 
-import { componentsList } from '../components.js'
+import { filePathsToTree, treeToString } from 'file-paths-to-tree'
 import type { ComponentSchema } from '../components.js'
+import { componentsList } from '../components.js'
 import { useGithubAuth } from '../hooks/useGithubAuth.js'
 import { useInstallComponent } from '../hooks/useInstallComponent.js'
-import { filePathsToTree, treeToString } from 'file-paths-to-tree'
 
 // Wrapper function for conditional logging
 export const debugLog = (...args: any[]) => {

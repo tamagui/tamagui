@@ -4,29 +4,35 @@ export const simpleHash = (str: string, hashMin: number | 'strict' = 10) => {
   if (cache.has(str)) {
     return cache.get(str)
   }
+
   let hash = 0
   let valids = ''
+  let added = 0
   const len = str.length
+
   for (let i = 0; i < len; i++) {
-    const char = str.charCodeAt(i)
-    // . => d0t
-    if (hashMin !== 'strict') {
+    if (hashMin !== 'strict' && added <= hashMin) {
+      const char = str.charCodeAt(i)
       if (char === 46) {
-        valids += 'd0t'
+        valids += '--'
+        continue
       }
-      // dont do more than 10 non-hashed to avoid getting too girthy
-      if (isValidCSSCharCode(char) && len <= hashMin) {
+      if (isValidCSSCharCode(char)) {
+        added++
         valids += str[i]
         continue
       }
     }
     hash = hashChar(hash, str[i])
   }
+
   const res = valids + (hash ? Math.abs(hash) : '')
+
   if (cache.size > 10_000) {
     cache.clear()
   }
   cache.set(str, res)
+
   return res
 }
 

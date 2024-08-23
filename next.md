@@ -28,6 +28,9 @@ site:
 
 uniswap:
 
+- remove boolean for SpaceTokens
+  - why is a boolean value allowed for SpaceTokens? I see there's a TODO in the tamagui repo. Is there a way for us to restrict that typecheck in our codebase? Seems really bad if it leads to a crash
+
 - Checkbox disabled prop not disabling on native
 
 - if Popover can not be portaled that would be useful for some use cases

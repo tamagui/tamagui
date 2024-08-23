@@ -39,8 +39,8 @@ test(`should handle decimal placement differently`, () => {
     right: 11.1,
   })
 
-  expect(out[0][StyleObjectIdentifier]).toBe(`_l-1d0t11px46`)
-  expect(out[1][StyleObjectIdentifier]).toBe(`_r-11d0t1px46`)
+  expect(out[0][StyleObjectIdentifier]).toBe(`_l-1--11px`)
+  expect(out[1][StyleObjectIdentifier]).toBe(`_r-11--1px`)
 })
 
 test(`should turn columnGap into gap-column`, () => {

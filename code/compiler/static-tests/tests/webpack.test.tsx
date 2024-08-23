@@ -150,7 +150,7 @@ describe('webpack-tests', () => {
     const out2 = getTest('TestVariantDefaultFalseOff').renderer.toJSON()
     const out2Cn = out2.children[0].children[0].children[0].props.className
 
-    expect(outCn).to.not.contain(`_pt-1316330145`)
-    expect(out2Cn).to.contain(`_pt-1316330145`)
+    expect(outCn).to.not.contain(`_pt-var--space-40093`)
+    expect(out2Cn).to.contain(`_pt-var--space-40093`)
   })
 })

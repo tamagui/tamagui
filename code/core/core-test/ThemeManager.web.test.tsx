@@ -226,14 +226,14 @@ describe('ThemeManager', () => {
         "theme": {
           "background": {
             "isVar": true,
-            "key": "color-2",
+            "key": "black",
             "name": "background",
             "val": "#000",
             "variable": "var(--background)",
           },
           "color": {
             "isVar": true,
-            "key": "color-1",
+            "key": "white",
             "name": "color",
             "val": "#fff",
             "variable": "var(--color)",

@@ -3,7 +3,7 @@ type Params = {
 };
 export declare function useFetchCode(params?: Params): {
     data: string | undefined;
-    status: "loading" | "error" | "idle" | "success";
+    status: "error" | "loading" | "success" | "idle";
     fetchData: (url: string) => Promise<void>;
 };
 export {};

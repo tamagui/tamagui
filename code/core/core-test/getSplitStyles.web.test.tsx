@@ -53,7 +53,7 @@ describe('getSplitStyles', () => {
           fontSize: '$1',
         }).rulesToInsert
       ).find((rule) => rule[StyleObjectProperty] === 'fontSize')?.[StyleObjectValue]
-    ).toEqual('var(--f-si-1)') // no family provided - this is expected
+    ).toEqual('var(--f-size-1)') // no family provided - this is expected
 
     expect(
       Object.values(
@@ -62,7 +62,7 @@ describe('getSplitStyles', () => {
           fontFamily: '$body',
         }).rulesToInsert
       ).find((rule) => rule[StyleObjectProperty] === 'fontSize')?.[StyleObjectValue]
-    ).toEqual('var(--f-si-1)')
+    ).toEqual('var(--f-size-1)')
 
     expect(
       Object.values(
@@ -71,7 +71,7 @@ describe('getSplitStyles', () => {
           fontSize: '$1',
         }).rulesToInsert
       ).find((rule) => rule[StyleObjectProperty] === 'fontSize')?.[StyleObjectValue]
-    ).toEqual('var(--f-si-1)')
+    ).toEqual('var(--f-size-1)')
   })
 
   test(`font props get the font family from a variant, regardless of the order`, () => {
@@ -92,7 +92,7 @@ describe('getSplitStyles', () => {
           type: 'myValue',
         }).rulesToInsert
       ).find((rule) => rule[StyleObjectProperty] === 'fontSize')?.[StyleObjectValue]
-    ).toEqual('var(--f-si-1)')
+    ).toEqual('var(--f-size-1)')
 
     expect(
       Object.values(
@@ -101,18 +101,19 @@ describe('getSplitStyles', () => {
           fontSize: '$1',
         }).rulesToInsert
       ).find((rule) => rule[StyleObjectProperty] === 'fontSize')?.[StyleObjectValue]
-    ).toEqual('var(--f-si-1)')
+    ).toEqual('var(--f-size-1)')
   })
 
   test(`z-index resolves to respective tokens`, () => {
     const styles = simplifiedGetSplitStyles(Text, {
       zIndex: '$1',
     })
+
     expect(
       Object.values(styles.rulesToInsert)[0][StyleObjectProperty] === 'zIndex'
     ).toBeTruthy()
     expect(Object.values(styles.rulesToInsert)[0][StyleObjectValue]).toEqual(
-      'var(--zIndex-2)'
+      'var(--zIndex-1)'
     )
   })
 
@@ -257,7 +258,7 @@ describe('getSplitStyles', () => {
   //     (rule) => rule[StyleObjectProperty] === 'fontSize'
   //   )
 
-  //   expect(fontSizeRule?.rules[0].includes('font-size:var(--f-si-1)')).toBeTruthy()
+  //   expect(fontSizeRule?.rules[0].includes('font-size:var(--f-size-1)')).toBeTruthy()
   // })
 
   // test(`prop "tabIndex" defaults to "0", overrides to "-1" when tag = button`, () => {

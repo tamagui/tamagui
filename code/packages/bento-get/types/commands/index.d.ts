@@ -1,5 +1,5 @@
-import React from 'react';
 import Conf from 'conf';
+import React from 'react';
 import type { ComponentSchema } from '../components.js';
 export declare const debugLog: (...args: any[]) => void;
 export interface InstallState {
