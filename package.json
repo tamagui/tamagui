@@ -142,7 +142,6 @@
     "dotenv-cli": "^7.4.2",
     "esbuild": "^0.23.0",
     "esbuild-register": "^3.6.0",
-    "file-paths-to-tree": "^4.0.0",
     "fs-extra": "^11.2.0",
     "h3": "1.11.1",
     "import-sort-style-module": "^6.0.0",
