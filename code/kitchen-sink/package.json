@@ -71,7 +71,7 @@
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.10",
     "@tamagui/babel-plugin": "1.109.1",
     "@welldone-software/why-did-you-render": "^7.0.1",
-    "babel-plugin-module-resolver": "^5.0.0",
+    "babel-plugin-module-resolver": "^5.0.2",
     "html-webpack-plugin": "^5.5.0",
     "mini-css-extract-plugin": "^2.7.6",
     "pod-install": "^0.2.0",

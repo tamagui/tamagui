@@ -37,7 +37,7 @@
     "@types/find-root": "^1.1.2",
     "@types/node": "^22.1.0",
     "@types/webpack": "^4.41.26",
-    "babel-loader": "^9.1.2",
+    "babel-loader": "^9.1.3",
     "css-loader": "^6.7.4",
     "dedent": "^0.7.0",
     "esbuild-loader": "^3.0.1",
