@@ -2,7 +2,7 @@
 import { removeReactNativeWebAnimatedPlugin, vxs } from 'vxs/vite'
 // import { mdx } from '@cyco130/vite-plugin-mdx'
 import type { UserConfig } from 'vite'
-import { tamaguiExtractPlugin } from '@tamagui/vite-plugin'
+import { tamaguiExtractPlugin, tamaguiPlugin } from '@tamagui/vite-plugin'
 // import inpsectPlugin from 'vite-plugin-inspect'
 
 Error.stackTraceLimit = Number.POSITIVE_INFINITY
@@ -105,6 +105,10 @@ export default {
 
   plugins: [
     vxs({
+      // fixDependencies: {
+      //   'mdx-bundler/client': true,
+      // },
+
       async afterServerStart(options, app, { routeMap }) {
         if (process.env.SHOULD_PURGE_CDN) {
           await purgeCloudflareCDN()
@@ -149,9 +153,11 @@ export default {
     //   targets,
     // }),
 
-    tamaguiExtractPlugin({
-      logTimings: true,
-    }),
+    PROD
+      ? tamaguiExtractPlugin({
+          logTimings: true,
+        })
+      : null,
   ],
 } satisfies UserConfig
 

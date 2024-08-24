@@ -1,4 +1,3 @@
-import React from 'react'
 import type {
   RadioGroupContextValue,
   RadioGroupItemContextValue,
@@ -9,8 +8,8 @@ import {
   useRadioGroupItemIndicator,
 } from '@tamagui/radio-headless'
 import { RovingFocusGroup } from '@tamagui/roving-focus'
-
-import { StyleSheet, View, Pressable, Text } from 'react-native'
+import React from 'react'
+import { Pressable, StyleSheet, Text, View } from 'react-native'
 import { isWeb, useTheme } from 'tamagui'
 
 const RadioGroupContext = React.createContext<RadioGroupContextValue>({})

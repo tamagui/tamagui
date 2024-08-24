@@ -62,7 +62,7 @@ export default function DocIntroPage() {
           <Component components={components as any} />
         </TamaguiExamples.Provider>
       </ThemeTint>
-      <DocsQuickNav key={'ok'} />
+      <DocsQuickNav />
     </>
   )
 }
