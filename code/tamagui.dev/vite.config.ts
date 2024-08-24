@@ -105,9 +105,9 @@ export default {
 
   plugins: [
     vxs({
-      // fixDependencies: {
-      //   'mdx-bundler/client': true,
-      // },
+      deps: {
+        'moti/author': true,
+      },
 
       async afterServerStart(options, app, { routeMap }) {
         if (process.env.SHOULD_PURGE_CDN) {
