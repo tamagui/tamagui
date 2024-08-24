@@ -40,8 +40,6 @@ const tamaguiOptions = {
   enableDynamicEvaluation: false,
 }
 
-const projectRoot = __dirname
-
 module.exports = {
   resolve: {
     alias: {
@@ -57,7 +55,7 @@ module.exports = {
         test: /\.[jt]sx?$/,
         // you'll likely want to adjust this helper function,
         // but it serves as a decent start that you can copy/paste from
-        exclude: path => shouldExclude(path, projectRoot, tamaguiOptions),
+        exclude: path => shouldExclude(path, __dirname, tamaguiOptions),
         use: [
           // optionally thread-loader for significantly faster compile!
           'thread-loader',
@@ -93,7 +91,7 @@ module.exports = {
       disableExtraction: process.env.NODE_ENV === 'development',
     }),
   ],
-
+}
 ```
 
 Some notes on the options:
