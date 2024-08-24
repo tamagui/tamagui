@@ -9,7 +9,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@babel/core": "^7.23.3",
+    "@babel/core": "^7.25.2",
     "@tamagui/babel-plugin-fully-specified": "1.109.0",
     "@types/fs-extra": "^9.0.13",
     "babel-plugin-fully-specified": "*",

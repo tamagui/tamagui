@@ -36,8 +36,8 @@
     "react-native": "0.74.1"
   },
   "devDependencies": {
-    "@babel/preset-react": "^7.23.3",
-    "@babel/preset-typescript": "^7.23.3",
+    "@babel/preset-react": "^7.24.7",
+    "@babel/preset-typescript": "^7.24.7",
     "@playwright/test": "^1.45.2",
     "@tamagui/build": "1.109.0",
     "tamagui-loader": "1.109.0"

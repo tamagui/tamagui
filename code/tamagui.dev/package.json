@@ -5,7 +5,7 @@
   "private": true,
   "main": "index.jsx",
   "scripts": {
-    "dev": "npx vxs dev",
+    "dev": "../../node_modules/.bin/vxs dev",
     "dev:clean": "vxs dev --clean",
     "clean": "vxs clean",
     "serve": "vxs serve --port 8081",
@@ -53,7 +53,7 @@
     "victory": "^37.0.2",
     "vite": "6.0.0-alpha.18",
     "vite-plugin-inspect": "^0.8.4",
-    "vxs": "^1.1.167"
+    "vxs": "^1.1.181"
   },
   "devDependencies": {
     "@tamagui/cli": "1.109.0",

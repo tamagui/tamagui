@@ -31,7 +31,7 @@
     }
   },
   "dependencies": {
-    "@babel/preset-react": "^7.23.3",
+    "@babel/preset-react": "^7.24.7",
     "@tamagui/proxy-worm": "1.109.0",
     "@tamagui/react-native-svg": "1.109.0",
     "@tamagui/static": "1.109.0",
