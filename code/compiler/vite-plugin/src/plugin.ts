@@ -1,55 +1,66 @@
 import type { TamaguiOptions } from '@tamagui/static'
-import * as StaticIn from '@tamagui/static'
 import type { Plugin } from 'vite'
 import { transformWithEsbuild } from 'vite'
 
-const Static = (StaticIn['default'] || StaticIn) as typeof StaticIn
-
 export function tamaguiPlugin(tamaguiOptionsIn: TamaguiOptions = {}): Plugin {
-  const options = {
-    ...tamaguiOptionsIn,
-    ...Static.loadTamaguiBuildConfigSync(tamaguiOptionsIn),
+  let options: TamaguiOptions
+  let Static
+  let watcher
+  let extensions: string[] = []
+  let noExternalSSR: any = null
+
+  async function load() {
+    if (!Static) {
+      Static = (await import('@tamagui/static')).default
+
+      options = {
+        ...tamaguiOptionsIn,
+        ...Static.loadTamaguiBuildConfigSync(tamaguiOptionsIn),
+      }
+
+      watcher = options.disableWatchTamaguiConfig
+        ? null
+        : Static.watchTamaguiConfig({
+            components: ['tamagui'],
+            config: './src/tamagui.config.ts',
+            ...options,
+          }).catch((err) => {
+            console.error(` [Tamagui] Error watching config: ${err}`)
+          })
+
+      const components = [
+        ...new Set([...(options.components || []), 'tamagui', '@tamagui/core']),
+      ]
+
+      noExternalSSR = new RegExp(
+        `${components.join('|')}|react-native|expo-linear-gradient`,
+        'ig'
+      )
+
+      extensions = [
+        `.${options.platform}.mjs`,
+        `.${options.platform}.js`,
+        `.${options.platform}.jsx`,
+        `.${options.platform}.ts`,
+        `.${options.platform}.tsx`,
+        '.mjs',
+        '.js',
+        '.mts',
+        '.ts',
+        '.jsx',
+        '.tsx',
+        '.json',
+      ]
+    }
   }
-
-  const { platform = 'web' } = options
-
-  const watcher = options.disableWatchTamaguiConfig
-    ? null
-    : Static.watchTamaguiConfig({
-        platform,
-        components: ['tamagui'],
-        config: './src/tamagui.config.ts',
-        ...options,
-      }).catch((err) => {
-        console.error(` [Tamagui] Error watching config: ${err}`)
-      })
-
-  const components = [
-    ...new Set([...(options.components || []), 'tamagui', '@tamagui/core']),
-  ]
-  const noExternalSSR = new RegExp(
-    `${components.join('|')}|react-native|expo-linear-gradient`,
-    'ig'
-  )
-
-  const extensions = [
-    `.${platform}.mjs`,
-    `.${platform}.js`,
-    `.${platform}.jsx`,
-    `.${platform}.ts`,
-    `.${platform}.tsx`,
-    '.mjs',
-    '.js',
-    '.mts',
-    '.ts',
-    '.jsx',
-    '.tsx',
-    '.json',
-  ]
 
   const plugin: Plugin = {
     name: 'tamagui-base',
     enforce: 'pre',
+
+    async load() {
+      await load()
+    },
 
     async buildEnd() {
       await watcher?.then((res) => {
@@ -71,12 +82,14 @@ export function tamaguiPlugin(tamaguiOptionsIn: TamaguiOptions = {}): Plugin {
     },
 
     async config(userConfig, env) {
+      await load()
+
       return {
         define: {
           // reanimated support
           _frameTimestamp: undefined,
           _WORKLET: false,
-          __DEV__: `${env.mode === 'development' ? true : false}`,
+          __DEV__: `${env.mode === 'development'}`,
           'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || env.mode),
           'process.env.ENABLE_RSC': JSON.stringify(process.env.ENABLE_RSC || ''),
           'process.env.ENABLE_STEPS': JSON.stringify(process.env.ENABLE_STEPS || ''),
@@ -87,7 +100,7 @@ export function tamaguiPlugin(tamaguiOptionsIn: TamaguiOptions = {}): Plugin {
         },
         optimizeDeps: {
           jsx: 'transform',
-          include: platform === 'web' ? ['expo-linear-gradient'] : [],
+          include: options.platform === 'web' ? ['expo-linear-gradient'] : [],
           // disabled: false,
           esbuildOptions: {
             resolveExtensions: extensions,
@@ -102,7 +115,7 @@ export function tamaguiPlugin(tamaguiOptionsIn: TamaguiOptions = {}): Plugin {
         resolve: {
           extensions: extensions,
           alias: {
-            ...(platform !== 'native' && {
+            ...(options.platform !== 'native' && {
               'react-native/Libraries/Renderer/shims/ReactFabric': '@tamagui/proxy-worm',
               'react-native/Libraries/Utilities/codegenNativeComponent':
                 '@tamagui/proxy-worm',

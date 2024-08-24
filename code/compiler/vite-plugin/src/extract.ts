@@ -1,13 +1,11 @@
 // fork from https://github.com/seek-oss/vanilla-extract
 
 import type { TamaguiOptions } from '@tamagui/static'
-import * as StaticIn from '@tamagui/static'
 import path from 'node:path'
 import type { Plugin, ResolvedConfig, ViteDevServer } from 'vite'
 import { normalizePath, type Environment } from 'vite'
 
 // some sort of weird esm compat
-const Static = (StaticIn['default'] || StaticIn) as typeof StaticIn
 
 const styleUpdateEvent = (fileId: string) => `tamagui-style-update:${fileId}`
 
@@ -38,8 +36,11 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
     return environment?.name && environment.name !== 'client'
   }
 
+  let Static
+
   async function loadTamaguiBuildConfig() {
     if (!extractor) {
+      Static = (await import('@tamagui/static')).default
       tamaguiOptions = Static.loadTamaguiBuildConfigSync({
         ...optionsIn,
         platform: 'web',
