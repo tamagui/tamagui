@@ -88,13 +88,8 @@ export const installComponent = async ({
 }
 
 export const useInstallComponent = () => {
-  const {
-    installState,
-    setInstallState,
-    currentScreen,
-    confirmationPending,
-    setConfirmationPending,
-  } = React.useContext(AppContext)
+  const { installState, setInstallState, confirmationPending, setConfirmationPending } =
+    React.useContext(AppContext)
 
   const { data, error } = useFetchComponent()
   if (error) {
@@ -103,7 +98,6 @@ export const useInstallComponent = () => {
   }
   debugLog('Fetched component data', data, {
     confirmationPending,
-    currentScreen,
   })
 
   React.useEffect(() => {

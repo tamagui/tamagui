@@ -6,6 +6,14 @@ import { Box, Spacer, Text, useApp, useInput } from 'ink'
 import TextInput from 'ink-text-input'
 import open from 'open'
 import React from 'react'
+import {
+  MemoryRouter,
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+} from 'react-router-dom'
 
 import { filePathsToTree, treeToString } from 'file-paths-to-tree'
 import type { ComponentSchema } from '../components.js'
@@ -33,11 +41,11 @@ export interface InstallState {
 
 // Define the possible screens for the application
 export type AppScreen =
-  | 'SearchScreen'
-  | 'InstallScreen'
-  | 'AuthScreen'
-  | 'InstallConfirmScreen'
-  | 'PackageInstallCommandScreen'
+  | '/search'
+  | '/install'
+  | '/auth'
+  | '/install-confirm'
+  | '/package-install-command'
 
 // Define the context type for the application
 interface AppContextType {
@@ -53,8 +61,6 @@ interface AppContextType {
   setInstallState: React.Dispatch<React.SetStateAction<InstallState>>
   setInstallingComponent: React.Dispatch<React.SetStateAction<ComponentSchema>>
   installState: InstallState
-  currentScreen: AppScreen
-  setCurrentScreen: React.Dispatch<React.SetStateAction<AppScreen>>
   exitApp: () => void
   confirmationPending: boolean
   setConfirmationPending: React.Dispatch<React.SetStateAction<boolean>>
@@ -63,15 +69,19 @@ interface AppContextType {
 const tokenStore = new Conf({ projectName: 'bento-cli' })
 
 // Handle keypress events for the CLI
-const handleKeypress = (key: string, modifier: any, appContext: AppContextType) => {
+const handleKeypress = (
+  key: string,
+  modifier: any,
+  appContext: AppContextType,
+  navigate: (path: string) => void,
+  location: { pathname: string }
+) => {
   const {
     selectedResultIndex,
     setSelectedResultIndex,
     setInstallState,
     searchResults,
     setCopyingToClipboard,
-    currentScreen,
-    setCurrentScreen,
     setConfirmationPending,
   } = appContext
 
@@ -85,15 +95,15 @@ const handleKeypress = (key: string, modifier: any, appContext: AppContextType) 
     return
   }
 
-  if (currentScreen === 'InstallConfirmScreen') {
+  if (location.pathname === '/install-confirm') {
     if (key === 'y') {
       setConfirmationPending(false)
-      setCurrentScreen('SearchScreen')
+      navigate('/search')
       return
     }
     if (key === 'n') {
       setConfirmationPending(true)
-      setCurrentScreen('SearchScreen')
+      navigate('/search')
       setSelectedResultIndex(-1)
       setInstallState((prev) => ({
         ...prev,
@@ -129,8 +139,8 @@ const handleKeypress = (key: string, modifier: any, appContext: AppContextType) 
   }
 
   if (modifier.escape) {
-    if (currentScreen === ('InstallConfirmScreen' as AppScreen)) {
-      setCurrentScreen('SearchScreen')
+    if (location.pathname === '/install-confirm') {
+      navigate('/search')
       return
     }
     appContext.exitApp()
@@ -169,7 +179,7 @@ const handleKeypress = (key: string, modifier: any, appContext: AppContextType) 
       installingComponent: searchResults[selectedResultIndex]?.item,
     }))
     debugLog('Installing component', searchResults[selectedResultIndex]?.item)
-    setCurrentScreen('InstallConfirmScreen')
+    navigate('/install-confirm')
     return
   }
 }
@@ -195,8 +205,6 @@ export const AppContext = React.createContext<AppContextType>({
     componentToInstall: null,
   },
   exitApp: () => {},
-  currentScreen: 'SearchScreen',
-  setCurrentScreen: () => {},
   confirmationPending: false,
   setConfirmationPending: () => {},
 })
@@ -213,7 +221,7 @@ const SearchBar = () => {
   }
 
   const handleInputChange = (value: string) => {
-    if (appContext.currentScreen !== 'SearchScreen') return
+    // Remove the condition checking for "/search"
     if ((appContext.installState as any).installingComponent?.isOSS) return
     appContext.setSearchInput(value)
     const results = performSearch(value)
@@ -572,7 +580,25 @@ const InstallConfirmScreen = () => {
   )
 }
 
-export default function BentoGet() {
+const SearchScreen = () => (
+  <>
+    <UsageBanner />
+    <SearchBar />
+    <ResultsContainer />
+  </>
+)
+
+export default function App() {
+  return (
+    <MemoryRouter>
+      <BentoGet />
+    </MemoryRouter>
+  )
+}
+
+function BentoGet() {
+  const navigate = useNavigate()
+  const location = useLocation()
   const [searchResults, setSearchResults] = React.useState<
     Array<{ item: ComponentSchema }>
   >([])
@@ -586,7 +612,6 @@ export default function BentoGet() {
     isTokenInstalled: false,
     componentToInstall: null,
   })
-  const [currentScreen, setCurrentScreen] = React.useState<AppScreen>('SearchScreen')
   const [isCopyingToClipboard, setCopyingToClipboard] = React.useState(false)
   const { exit } = useApp()
 
@@ -605,8 +630,6 @@ export default function BentoGet() {
       setInstallState,
       installState,
       setInstallingComponent: () => {}, // This seems unused, consider removing
-      currentScreen,
-      setCurrentScreen,
       confirmationPending,
       setConfirmationPending,
     }),
@@ -616,27 +639,23 @@ export default function BentoGet() {
       selectedResultIndex,
       searchInput,
       installState,
-      currentScreen,
       confirmationPending,
     ]
   )
 
-  useInput((input, key) => handleKeypress(input, key, appContextValues))
+  useInput((input, key) =>
+    handleKeypress(input, key, appContextValues, navigate, location)
+  )
+
   return (
     <AppContext.Provider value={appContextValues}>
       <Provider>
-        <Box flexDirection="column">
-          <Box flexDirection="column">
-            {currentScreen === 'InstallConfirmScreen' && <InstallConfirmScreen />}
-            {currentScreen === 'SearchScreen' && (
-              <>
-                <UsageBanner />
-                <SearchBar />
-                <ResultsContainer />
-              </>
-            )}
-          </Box>
-        </Box>
+        <Routes>
+          <Route path="/" element={<Navigate to="/search" replace />} />
+          <Route path="/search" element={<SearchScreen />} />
+          <Route path="/install-confirm" element={<InstallConfirmScreen />} />
+          <Route path="/auth" element={<CodeAuthScreen />} />
+        </Routes>
       </Provider>
     </AppContext.Provider>
   )

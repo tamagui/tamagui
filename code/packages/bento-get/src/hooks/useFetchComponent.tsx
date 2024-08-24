@@ -4,6 +4,7 @@ import { Octokit } from 'octokit'
 import React from 'react'
 import useSWR from 'swr'
 import { AppContext, debugLog } from '../commands/index.js'
+import { useNavigate } from 'react-router-dom'
 
 interface GithubUserData {
   login: string
@@ -12,13 +13,15 @@ interface GithubUserData {
 }
 
 export const useFetchComponent = () => {
-  const { installState, tokenStore, setCurrentScreen } = React.useContext(AppContext)
+  const { installState, tokenStore } = React.useContext(AppContext)
   const { access_token } = tokenStore.get?.('token') ?? {}
   const [githubData, setGithubData] = React.useState<GithubUserData | null>(null)
 
+  const navigate = useNavigate()
+
   React.useEffect(() => {
     if (!access_token) {
-      setCurrentScreen('AuthScreen')
+      navigate('/auth')
       return
     }
     const octokit = new Octokit({
@@ -125,7 +128,7 @@ export const useFetchComponent = () => {
     if (error?.info?.error?.includes('user is not authenticated')) {
       tokenStore.delete('token')
     }
-  }, [error, tokenStore, setCurrentScreen])
+  }, [error, tokenStore])
 
   return { data, error, isLoading }
 }
