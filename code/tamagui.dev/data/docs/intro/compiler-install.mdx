@@ -35,7 +35,7 @@ const tamaguiOptions = {
   importsWhitelist: ['constants.js', 'colors.js'],
   logTimings: true,
   disableExtraction: process.env.NODE_ENV === 'development',
-  // optional advanced optimization of styled() definitions within your app itself, not just ones in your `components` option
+  // optional advanced optimization of styled() definitions within your app itself, not just ones in your components option
   // default is false
   enableDynamicEvaluation: false,
 }
@@ -176,14 +176,14 @@ export default withPlugins([
     disableFontSupport: false,
 
     // Many packages give difficulty to the nextjs server-side (node) runtime when un-bundled.
-    // for example, tamagui configures aliases like `react-native` => `react-native-web`.
+    // for example, tamagui configures aliases like react-native => react-native-web.
     // if you're running into a module that has errors importing react-native, you'll want to
     // use a custom shouldExcludeFromServer function to include it (or override the default).
     // this is the exact same return type as webpack.externals.
     // returning undefined will let tamagui handle it, boolean or other values to override.
     shouldExcludeFromServer: ({ fullPath, request }) => {
       if (fullPath.includes('my-module')) {
-        return `commonjs ${commonjs}`
+        return 'commonjs ' + commonjs
       }
       if (request === 'some-hard-to-bundle-package') {
         return true
