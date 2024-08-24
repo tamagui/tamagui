@@ -5,11 +5,11 @@
   "files": [],
   "type": "module",
   "scripts": {
-    "dev": "bunx vxs dev",
-    "dev:clean": "bunx vxs dev --clean",
-    "build:prod": "bunx vxs build",
-    "serve": "bunx vxs serve",
-    "serve:railway": "bunx vxs serve --host 0.0.0.0",
+    "dev": "npx vxs dev",
+    "dev:clean": "npx vxs dev --clean",
+    "build:prod": "npx vxs build",
+    "serve": "npx vxs serve",
+    "serve:railway": "npx vxs serve --host 0.0.0.0",
     "postinstall": "patch-package || true"
   },
   "dependencies": {

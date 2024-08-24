@@ -4,13 +4,13 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "bunx vxs dev",
-    "dev:clean": "bunx vxs dev --clean",
-    "clean": "bunx vxs clean",
-    "serve": "bunx vxs serve --port 8081",
+    "dev": "npx vxs dev",
+    "dev:clean": "npx vxs dev --clean",
+    "clean": "npx vxs clean",
+    "serve": "npx vxs serve --port 8081",
     "build:prod": "yarn clean && bunx vxs build",
     "prod": "yarn build:prod && yarn serve",
-    "serve:railway": "bunx vxs serve --host 0.0.0.0"
+    "serve:railway": "npx vxs serve --host 0.0.0.0"
   },
   "dependencies": {
     "@react-three/drei": "^9.105.6",
