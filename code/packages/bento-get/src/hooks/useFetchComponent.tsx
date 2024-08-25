@@ -37,7 +37,7 @@ export const useFetchComponent = () => {
         const { data } = await octokit.rest.users.getAuthenticated()
         setGithubData(data)
       } catch (error) {
-        console.error('Failed to authenticate:', error)
+        process.env.DEBUG === 'true' && console.error('Failed to authenticate:', error)
       }
     }
     fetchGithubData()
