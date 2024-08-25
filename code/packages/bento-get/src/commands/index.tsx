@@ -19,7 +19,7 @@ import { componentsList } from '../components.js'
 import { useInstallComponent } from '../hooks/useInstallComponent.js'
 import { CodeAuthScreen } from '../screens/CodeAuthScreen.js'
 import { AppContext, tokenStore } from '../data/AppContext.js'
-import type { AppContextType, AppScreen, InstallState } from '../data/AppContext.js'
+import type { AppContextType, InstallState } from '../data/AppContext.js'
 
 // Wrapper function for conditional logging
 export const debugLog = (...args: any[]) => {
@@ -87,7 +87,7 @@ const handleKeypress = (
       installingComponent: null,
       isTokenInstalled: false,
     }))
-    return
+    return navigate('/search')
   }
 
   if (
@@ -150,6 +150,7 @@ const handleKeypress = (
 }
 
 const SearchBar = () => {
+  const location = useLocation()
   const appContext = React.useContext(AppContext)
 
   // Perform search using Fuse.js for fuzzy matching
@@ -161,7 +162,7 @@ const SearchBar = () => {
   }
 
   const handleInputChange = (value: string) => {
-    // Remove the condition checking for "/search"
+    if (location.pathname !== '/search') return
     if ((appContext.installState as any).installingComponent?.isOSS) return
     appContext.setSearchInput(value)
     const results = performSearch(value)
@@ -522,18 +523,15 @@ function BentoGet() {
 const Provider = ({ children }: { children: React.ReactNode }) => {
   const appContext = React.useContext(AppContext)
   const { access_token } = appContext.tokenStore.get('token') || {}
+  const navigate = useNavigate()
+  const location = useLocation()
 
-  // React.useEffect(() => {
-  //   if (!access_token) {
-  //     appContext.setCurrentScreen('AuthScreen')
-  //   }
-  // }, [access_token, appContext.currentScreen])
+  React.useEffect(() => {
+    if (!access_token) {
+      navigate('/auth')
+    }
+  }, [access_token, location.pathname])
 
-  // if (appContext.currentScreen === 'AuthScreen') {
-  //   return <CodeAuthScreen />
-  // }
-
-  // // Only call useInstallComponent when not on AuthScreen
   const { error } = useInstallComponent()
 
   if (error) {

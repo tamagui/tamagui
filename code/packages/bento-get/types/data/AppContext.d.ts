@@ -11,7 +11,6 @@ export interface InstallState {
         path: string;
     } | null;
 }
-export type AppScreen = 'SearchScreen' | 'InstallScreen' | 'AuthScreen' | 'InstallConfirmScreen' | 'PackageInstallCommandScreen';
 export interface AppContextType {
     tokenStore: Conf<any>;
     isCopyingToClipboard: boolean;
@@ -29,8 +28,6 @@ export interface AppContextType {
     setInstallState: React.Dispatch<React.SetStateAction<InstallState>>;
     setInstallingComponent: React.Dispatch<React.SetStateAction<ComponentSchema>>;
     installState: InstallState;
-    currentScreen: AppScreen;
-    setCurrentScreen: React.Dispatch<React.SetStateAction<AppScreen>>;
     exitApp: () => void;
     confirmationPending: boolean;
     setConfirmationPending: React.Dispatch<React.SetStateAction<boolean>>;
