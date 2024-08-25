@@ -3,7 +3,7 @@ import Fuse from 'fuse.js'
 import { Box, Spacer, Text, useApp, useInput } from 'ink'
 import TextInput from 'ink-text-input'
 import open from 'open'
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
   MemoryRouter,
   Navigate,
@@ -160,6 +160,11 @@ const SearchBar = () => {
     })
     return fuse.search(query)
   }
+
+  useEffect(() => {
+    // When navigation location changes, reset search Input
+    appContext.setSearchInput('')
+  }, [location.pathname])
 
   const handleInputChange = (value: string) => {
     if (location.pathname !== '/search') return
