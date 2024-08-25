@@ -20,12 +20,18 @@ export const CodeAuthScreen = () => {
     }
   }, [])
 
-  appContext.tokenStore.onDidChange('token', () => {
-    appContext.setInstallState((prev) => ({
-      ...prev,
-      isTokenInstalled: true,
-    }))
-  })
+  React.useEffect(() => {
+    const unsubscribe = appContext.tokenStore.onDidChange('token', () => {
+      appContext.setInstallState((prev) => ({
+        ...prev,
+        isTokenInstalled: true,
+      }))
+    })
+
+    return () => {
+      unsubscribe()
+    }
+  }, [appContext.tokenStore, appContext.setInstallState])
 
   React.useEffect(() => {
     if (appContext.isCopyingToClipboard) {
