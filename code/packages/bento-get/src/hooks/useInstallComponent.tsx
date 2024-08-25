@@ -3,8 +3,8 @@ import path from 'node:path'
 
 import React from 'react'
 
-import { AppContext } from '../commands/index.js'
-import type { InstallState } from '../commands/index.js'
+import { AppContext } from '../data/AppContext.js'
+import type { InstallState } from '../data/AppContext.js'
 import { componentsList } from '../components.js'
 import type { ComponentSchema } from '../components.js'
 import { useFetchComponent } from './useFetchComponent.js'

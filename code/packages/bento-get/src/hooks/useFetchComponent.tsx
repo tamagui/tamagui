@@ -3,7 +3,8 @@ import querystring from 'node:querystring'
 import { Octokit } from 'octokit'
 import React from 'react'
 import useSWR from 'swr'
-import { AppContext, debugLog } from '../commands/index.js'
+import { AppContext } from '../data/AppContext.js'
+import { debugLog } from '../commands/index.js'
 
 interface GithubUserData {
   login: string

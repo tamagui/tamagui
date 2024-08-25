@@ -1,7 +1,7 @@
 import React from 'react'
 import useSWR from 'swr'
 
-import { AppContext } from '../commands/index.js'
+import { AppContext } from '../data/AppContext.js'
 import { GITHUB_CLIENT_ID } from '../constants.js'
 import type { GithubCode } from './useGithubAuth.js'
 
