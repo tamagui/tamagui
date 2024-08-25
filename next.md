@@ -212,6 +212,9 @@ v4 and beyond
 
 ---
 
+- Select is using focusScope which React.Children.only erroring in most usages
+  - we should try and redo FocusScope to not cloneElement at all and instead wrap with an element + display: contents
+
 - config/v4
 
   - remove $mono and inter default fonts use system defaults
