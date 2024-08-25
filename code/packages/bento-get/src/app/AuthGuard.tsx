@@ -1,24 +1,16 @@
-import React, { useContext } from 'react'
 import { Alert } from '@inkjs/ui'
 import { Box } from 'ink'
-import { useLocation, useNavigate } from 'react-router-dom'
-
-import { AppContext } from '../data/AppContext.js'
+import { useNavigate } from 'react-router-dom'
 import { useInstallComponent } from '../hooks/useInstallComponent.js'
+import { debugLog } from '../commands/index.js'
 
 export const AuthGuard = ({ children }: { children: React.ReactNode }) => {
-  const appContext = useContext(AppContext)
-  const { access_token } = appContext.tokenStore.get('token') || {}
   const navigate = useNavigate()
-  const location = useLocation()
-
-  React.useEffect(() => {
-    if (!access_token) {
-      navigate('/auth')
-    }
-  }, [access_token, location.pathname])
 
   const { error } = useInstallComponent()
+  debugLog({
+    useInstallComponentError: error,
+  })
 
   if (error) {
     if (error.status === 401) {

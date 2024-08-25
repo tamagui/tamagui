@@ -36,6 +36,7 @@ export default function App() {
 function BentoGet() {
   const navigate = useNavigate()
   const location = useLocation()
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [searchResults, setSearchResults] = useState<Array<{ item: ComponentSchema }>>([])
   const [selectedResultIndex, setSelectedResultIndex] = useState(-1)
   const [searchInput, setSearchInput] = useState('')
@@ -66,6 +67,8 @@ function BentoGet() {
       installState,
       confirmationPending,
       setConfirmationPending,
+      isLoggedIn,
+      setIsLoggedIn,
     }),
     [
       isCopyingToClipboard,

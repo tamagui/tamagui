@@ -17,6 +17,8 @@ export interface InstallState {
 // Define the context type for the application
 export interface AppContextType {
   tokenStore: Conf<any>
+  isLoggedIn: boolean
+  setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>
   isCopyingToClipboard: boolean
   setCopyingToClipboard: React.Dispatch<React.SetStateAction<boolean>>
   searchResults: Array<{ item: ComponentSchema }>
@@ -37,6 +39,8 @@ export const tokenStore = new Conf({ projectName: 'bento-cli' })
 // Create the AppContext with default values
 export const AppContext = React.createContext<AppContextType>({
   tokenStore: tokenStore,
+  isLoggedIn: false,
+  setIsLoggedIn: () => {},
   isCopyingToClipboard: false,
   setCopyingToClipboard: () => {},
   searchResults: [],

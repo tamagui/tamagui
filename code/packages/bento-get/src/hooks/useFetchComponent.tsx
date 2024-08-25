@@ -21,7 +21,11 @@ export const useFetchComponent = () => {
   const navigate = useNavigate()
 
   React.useEffect(() => {
-    if (!access_token) {
+    if (
+      !access_token &&
+      installState.installingComponent &&
+      !installState.installingComponent.isOSS
+    ) {
       navigate('/auth')
       return
     }
@@ -40,6 +44,7 @@ export const useFetchComponent = () => {
   }, [access_token, installState.installingComponent])
 
   const fetcher = async (url: string) => {
+    debugLog('fetcher', url)
     const res = await fetch(url, {
       headers: {
         'Content-Type': 'application/json',

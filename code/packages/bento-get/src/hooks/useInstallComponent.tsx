@@ -92,10 +92,6 @@ export const useInstallComponent = () => {
     React.useContext(AppContext)
 
   const { data, error } = useFetchComponent()
-  if (error) {
-    console.error('Error fetching component data', error)
-    throw new Error('Error fetching component data')
-  }
   debugLog('Fetched component data', data, {
     confirmationPending,
   })

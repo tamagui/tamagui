@@ -13,6 +13,8 @@ export interface InstallState {
 }
 export interface AppContextType {
     tokenStore: Conf<any>;
+    isLoggedIn: boolean;
+    setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
     isCopyingToClipboard: boolean;
     setCopyingToClipboard: React.Dispatch<React.SetStateAction<boolean>>;
     searchResults: Array<{
