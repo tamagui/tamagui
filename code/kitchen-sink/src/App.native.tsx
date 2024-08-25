@@ -1,62 +1,63 @@
-import React from "react";import { ToastViewport } from '@tamagui/sandbox-ui';
-import { useFonts } from 'expo-font';
+import React from 'react'
+import { ToastViewport } from '@tamagui/sandbox-ui'
+import { useFonts } from 'expo-font'
 
-import { Appearance, Platform, useColorScheme } from 'react-native';
-import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Appearance, Platform, useColorScheme } from 'react-native'
+import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context'
 
-import { Navigation } from './Navigation';
-import { Provider } from './provider';
-import { ThemeContext } from './useKitchenSinkTheme';
+import { Navigation } from './Navigation'
+import { Provider } from './provider'
+import { ThemeContext } from './useKitchenSinkTheme'
 
 if (Platform.OS === 'ios') {
-  require('./iosSheetSetup');
+  require('./iosSheetSetup')
 }
 
 export default function App() {
-  const [theme, setTheme] = React.useState(Appearance.getColorScheme());
+  const [theme, setTheme] = React.useState(Appearance.getColorScheme())
   const [loaded] = useFonts({
     Inter: require('@tamagui/font-inter/otf/Inter-Medium.otf'),
-    InterBold: require('@tamagui/font-inter/otf/Inter-Bold.otf')
-  });
+    InterBold: require('@tamagui/font-inter/otf/Inter-Bold.otf'),
+  })
 
-  const colorScheme = useColorScheme();
+  const colorScheme = useColorScheme()
 
   React.useEffect(() => {
-    setTheme(colorScheme);
-  }, [colorScheme]);
+    setTheme(colorScheme)
+  }, [colorScheme])
 
   const children = React.useMemo(() => {
-    return <Navigation />;
-  }, []);
+    return <Navigation />
+  }, [])
 
   const themeContext = React.useMemo(() => {
     return {
       value: theme,
       set: (next) => {
-        Appearance.setColorScheme(next);
-        setTheme(next);
-      }
-    };
-  }, [theme]);
+        Appearance.setColorScheme(next)
+        setTheme(next)
+      },
+    }
+  }, [theme])
 
   if (!loaded) {
-    return null;
+    return null
   }
 
   return (
     <SafeAreaProvider>
       <ThemeContext.Provider value={themeContext}>
-        <Provider defaultTheme={(theme as any)}>
+        <Provider defaultTheme={theme as any}>
           {children}
           <SafeToastViewport />
         </Provider>
       </ThemeContext.Provider>
-    </SafeAreaProvider>);
-
+    </SafeAreaProvider>
+  )
 }
 
 const SafeToastViewport = () => {
-  const { left, top, right } = useSafeAreaInsets();
+  const { left, top, right } = useSafeAreaInsets()
   return (
     <>
       <ToastViewport
@@ -64,8 +65,8 @@ const SafeToastViewport = () => {
         top={top}
         left={left}
         right={right}
-        mx="auto" />
-
-    </>);
-
-};
+        mx="auto"
+      />
+    </>
+  )
+}

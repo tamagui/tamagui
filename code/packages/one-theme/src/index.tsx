@@ -15,7 +15,9 @@ type Scheme = 'light' | 'dark'
 type SchemeSetting = 'system' | 'light' | 'dark'
 
 const media =
-  typeof window !== 'undefined' ? window.matchMedia('(prefers-color-scheme: dark)') : null
+  typeof window !== 'undefined' && window.matchMedia
+    ? window.matchMedia('(prefers-color-scheme: dark)')
+    : null
 
 export function getSystemTheme() {
   return media?.matches ? 'dark' : 'light'
