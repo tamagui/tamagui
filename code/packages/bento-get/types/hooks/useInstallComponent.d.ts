@@ -1,5 +1,5 @@
 import React from 'react';
-import type { InstallState } from '../commands/index.js';
+import type { InstallState } from '../data/AppContext.js';
 export declare const getMonorepoRoot: () => Promise<string>;
 export declare const installComponent: ({ componentFiles, setInstallState, installState, }: {
     componentFiles: {

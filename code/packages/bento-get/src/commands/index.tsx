@@ -1,6 +1,4 @@
 import { Alert, Badge, Spinner } from '@inkjs/ui'
-import Conf from 'conf'
-import { copy } from 'copy-paste'
 import Fuse from 'fuse.js'
 import { Box, Spacer, Text, useApp, useInput } from 'ink'
 import TextInput from 'ink-text-input'
@@ -18,55 +16,16 @@ import {
 import { filePathsToTree, treeToString } from 'file-paths-to-tree'
 import type { ComponentSchema } from '../components.js'
 import { componentsList } from '../components.js'
-import { useGithubAuth } from '../hooks/useGithubAuth.js'
 import { useInstallComponent } from '../hooks/useInstallComponent.js'
+import { CodeAuthScreen } from '../screens/CodeAuthScreen.js'
+import { AppContext, tokenStore } from '../data/AppContext.js'
+import type { AppContextType, AppScreen, InstallState } from '../data/AppContext.js'
 
 // Wrapper function for conditional logging
 export const debugLog = (...args: any[]) => {
   // biome-ignore lint/suspicious/noConsoleLog: This is a debug logging function
   if (process.env.DEBUG === 'true') console.log(...args)
 }
-
-// Define the state for the installation process
-export interface InstallState {
-  installingComponent: ComponentSchema | null | undefined
-  installedComponents: ComponentSchema[]
-  shouldOpenBrowser: boolean
-  isTokenInstalled: boolean
-  componentToInstall: {
-    name: string
-    path: string
-  } | null
-}
-
-// Define the possible screens for the application
-export type AppScreen =
-  | '/search'
-  | '/install'
-  | '/auth'
-  | '/install-confirm'
-  | '/package-install-command'
-
-// Define the context type for the application
-interface AppContextType {
-  tokenStore: Conf<any>
-  isCopyingToClipboard: boolean
-  setCopyingToClipboard: React.Dispatch<React.SetStateAction<boolean>>
-  searchResults: Array<{ item: ComponentSchema }>
-  setSearchResults: React.Dispatch<React.SetStateAction<Array<{ item: ComponentSchema }>>>
-  selectedResultIndex: number
-  setSelectedResultIndex: React.Dispatch<React.SetStateAction<number>>
-  searchInput: string
-  setSearchInput: React.Dispatch<React.SetStateAction<string>>
-  setInstallState: React.Dispatch<React.SetStateAction<InstallState>>
-  setInstallingComponent: React.Dispatch<React.SetStateAction<ComponentSchema>>
-  installState: InstallState
-  exitApp: () => void
-  confirmationPending: boolean
-  setConfirmationPending: React.Dispatch<React.SetStateAction<boolean>>
-}
-
-const tokenStore = new Conf({ projectName: 'bento-cli' })
 
 // Handle keypress events for the CLI
 const handleKeypress = (
@@ -85,8 +44,14 @@ const handleKeypress = (
     setConfirmationPending,
   } = appContext
 
-  if (modifier.shift && key === 'l') {
+  debugLog({
+    modifier,
+    key,
+  })
+
+  if (modifier.shift && key === 'L') {
     tokenStore.clear()
+    console.warn('Cleared Github Token')
     return
   }
 
@@ -183,31 +148,6 @@ const handleKeypress = (
     return
   }
 }
-
-// Create the AppContext with default values
-export const AppContext = React.createContext<AppContextType>({
-  tokenStore: {} as typeof tokenStore,
-  isCopyingToClipboard: false,
-  setCopyingToClipboard: () => {},
-  searchResults: [],
-  setSearchResults: () => {},
-  selectedResultIndex: -1,
-  setSelectedResultIndex: () => {},
-  searchInput: '',
-  setSearchInput: () => {},
-  setInstallState: () => {},
-  setInstallingComponent: () => {},
-  installState: {
-    installingComponent: null,
-    installedComponents: [],
-    shouldOpenBrowser: false,
-    isTokenInstalled: false,
-    componentToInstall: null,
-  },
-  exitApp: () => {},
-  confirmationPending: false,
-  setConfirmationPending: () => {},
-})
 
 const SearchBar = () => {
   const appContext = React.useContext(AppContext)
@@ -396,88 +336,6 @@ const UsageBanner = () => {
   )
 }
 
-const CodeAuthScreen = () => {
-  const appContext = React.useContext(AppContext)
-  const { data, isLoading } = useGithubAuth()
-
-  React.useEffect(() => {
-    appContext.setInstallState((prev) => ({
-      ...prev,
-      shouldOpenBrowser: true,
-    }))
-    return () => {
-      appContext.setCopyingToClipboard(false)
-    }
-  }, [])
-
-  appContext.tokenStore.onDidChange('token', () => {
-    appContext.setInstallState((prev) => ({
-      ...prev,
-      isTokenInstalled: true,
-    }))
-  })
-
-  React.useEffect(() => {
-    if (appContext.isCopyingToClipboard) {
-      copy(data?.user_code)
-      console.warn(`Copied to clipboard`)
-    }
-  }, [appContext.isCopyingToClipboard])
-
-  return (
-    <Box flexDirection="column" display="flex">
-      <Alert variant="info">
-        Press <Text underline>Enter</Text> to open browser window and authenticate to your
-        Github account with the following auth code.
-      </Alert>
-      <Box justifyContent="space-between" paddingRight={1}>
-        <Text>
-          {' < '}
-          <Text underline>ESC</Text> to go Back
-        </Text>
-
-        {appContext.isCopyingToClipboard ? (
-          <Text color="green">copied!</Text>
-        ) : (
-          <Text>
-            Hit <Text underline>c</Text> to copy to clipboard
-          </Text>
-        )}
-      </Box>
-      <Box flexDirection="row" borderStyle="round" paddingY={1} justifyContent="center">
-        {appContext.installState.isTokenInstalled ? (
-          <Box paddingY={1}>
-            <Text color="green">
-              Github Authentication Successful. Press <Text underline>ESC</Text> to go
-              back ✔︎
-            </Text>
-          </Box>
-        ) : isLoading ? (
-          <Box paddingY={1}>
-            <Spinner label="Loading..." />
-          </Box>
-        ) : (
-          data?.user_code?.split('')?.map((item, key) => (
-            <Box
-              key={key}
-              flexDirection="column"
-              {...(item !== '-' && { borderStyle: 'round' })}
-              paddingX={1}
-              gap={1}
-              width={item !== '-' ? 5 : 3}
-              height={3}
-              alignItems="center"
-              justifyContent="center"
-            >
-              <Text>{item}</Text>
-            </Box>
-          ))
-        )}
-      </Box>
-    </Box>
-  )
-}
-
 const InstallConfirmScreen = () => {
   const appContext = React.useContext(AppContext)
   const { componentToInstall, installingComponent } = appContext.installState
@@ -662,7 +520,22 @@ function BentoGet() {
 }
 
 const Provider = ({ children }: { children: React.ReactNode }) => {
+  const appContext = React.useContext(AppContext)
+  const { access_token } = appContext.tokenStore.get('token') || {}
+
+  // React.useEffect(() => {
+  //   if (!access_token) {
+  //     appContext.setCurrentScreen('AuthScreen')
+  //   }
+  // }, [access_token, appContext.currentScreen])
+
+  // if (appContext.currentScreen === 'AuthScreen') {
+  //   return <CodeAuthScreen />
+  // }
+
+  // // Only call useInstallComponent when not on AuthScreen
   const { error } = useInstallComponent()
+
   if (error) {
     if (error.status === 401) {
       return (
