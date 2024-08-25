@@ -26,7 +26,6 @@ export interface AppContextType {
     searchInput: string;
     setSearchInput: React.Dispatch<React.SetStateAction<string>>;
     setInstallState: React.Dispatch<React.SetStateAction<InstallState>>;
-    setInstallingComponent: React.Dispatch<React.SetStateAction<ComponentSchema>>;
     installState: InstallState;
     exitApp: () => void;
     confirmationPending: boolean;
