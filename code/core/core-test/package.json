@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/core-test",
-  "version": "1.109.2",
+  "version": "1.109.3",
   "module": "dist/esm",
   "type": "module",
   "private": true,
@@ -15,7 +15,7 @@
     "test": "yarn test:native && yarn test:web"
   },
   "devDependencies": {
-    "@tamagui/core": "1.109.2",
+    "@tamagui/core": "1.109.3",
     "@testing-library/react": "^16.0.0",
     "@testing-library/react-native": "^12.4.3",
     "csstype": "^3.0.10",

@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/logo",
-  "version": "1.109.2",
+  "version": "1.109.3",
   "sideEffects": false,
   "source": "src/index.tsx",
   "types": "./types/index.d.ts",
@@ -21,10 +21,10 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "tamagui": "1.109.2"
+    "tamagui": "1.109.3"
   },
   "devDependencies": {
-    "@tamagui/build": "1.109.2",
+    "@tamagui/build": "1.109.3",
     "react": "^18.2.0 || ^19.0.0"
   },
   "peerDependencies": {

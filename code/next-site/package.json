@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/next-site",
-  "version": "1.109.2",
+  "version": "1.109.3",
   "private": true,
   "source": "src",
   "scripts": {
@@ -39,7 +39,7 @@
     "@babel/preset-react": "^7.24.7",
     "@babel/preset-typescript": "^7.24.7",
     "@playwright/test": "^1.45.2",
-    "@tamagui/build": "1.109.2",
-    "tamagui-loader": "1.109.2"
+    "@tamagui/build": "1.109.3",
+    "tamagui-loader": "1.109.3"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/code-to-html",
-  "version": "1.109.2",
+  "version": "1.109.3",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
@@ -30,7 +30,7 @@
     "url": "^0.11.0"
   },
   "devDependencies": {
-    "@tamagui/build": "1.109.2"
+    "@tamagui/build": "1.109.3"
   },
   "publishConfig": {
     "access": "public"

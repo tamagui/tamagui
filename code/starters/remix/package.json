@@ -16,8 +16,8 @@
     "@remix-run/node": "^2.10.3",
     "@remix-run/react": "^2.10.3",
     "@remix-run/serve": "^2.10.3",
-    "@tamagui/config": "^1.109.2",
-    "@tamagui/core": "^1.109.2",
+    "@tamagui/config": "^1.109.3",
+    "@tamagui/core": "^1.109.3",
     "isbot": "^4.1.0",
     "react": "^18.2.0 || ^19.0.0",
     "react-dom": "^18.2.0 || ^19.0.0"
@@ -25,7 +25,7 @@
   "devDependencies": {
     "@biomejs/biome": "^1.5.3",
     "@remix-run/dev": "^2.10.3",
-    "@tamagui/vite-plugin": "^1.109.2",
+    "@tamagui/vite-plugin": "^1.109.3",
     "@types/react": "^18.2.55",
     "@types/react-dom": "^18.2.19",
     "typescript": "^5.5.2",
