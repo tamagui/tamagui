@@ -3,7 +3,9 @@ import querystring from 'node:querystring'
 import { Octokit } from 'octokit'
 import React from 'react'
 import useSWR from 'swr'
-import { AppContext, debugLog } from '../commands/index.js'
+import { useNavigate } from 'react-router-dom'
+import { AppContext } from '../data/AppContext.js'
+import { debugLog } from '../commands/index.js'
 
 interface GithubUserData {
   login: string
@@ -12,13 +14,19 @@ interface GithubUserData {
 }
 
 export const useFetchComponent = () => {
-  const { installState, tokenStore, setCurrentScreen } = React.useContext(AppContext)
+  const { installState, tokenStore } = React.useContext(AppContext)
   const { access_token } = tokenStore.get?.('token') ?? {}
   const [githubData, setGithubData] = React.useState<GithubUserData | null>(null)
 
+  const navigate = useNavigate()
+
   React.useEffect(() => {
-    if (!access_token) {
-      setCurrentScreen('AuthScreen')
+    if (
+      !access_token &&
+      installState.installingComponent &&
+      !installState.installingComponent.isOSS
+    ) {
+      navigate('/auth')
       return
     }
     const octokit = new Octokit({
@@ -29,13 +37,14 @@ export const useFetchComponent = () => {
         const { data } = await octokit.rest.users.getAuthenticated()
         setGithubData(data)
       } catch (error) {
-        console.error('Failed to authenticate:', error)
+        process.env.DEBUG === 'true' && console.error('Failed to authenticate:', error)
       }
     }
     fetchGithubData()
   }, [access_token, installState.installingComponent])
 
   const fetcher = async (url: string) => {
+    debugLog('fetcher', url)
     const res = await fetch(url, {
       headers: {
         'Content-Type': 'application/json',
@@ -125,7 +134,7 @@ export const useFetchComponent = () => {
     if (error?.info?.error?.includes('user is not authenticated')) {
       tokenStore.delete('token')
     }
-  }, [error, tokenStore, setCurrentScreen])
+  }, [error, tokenStore])
 
   return { data, error, isLoading }
 }

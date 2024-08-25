@@ -52,6 +52,7 @@
     "open": "^10.1.0",
     "pastel": "^2.0.0",
     "react": "npm:react@18.2.0",
+    "react-router-dom": "6.4",
     "swr": "^2.2.5",
     "zod": "^3.22.4"
   },

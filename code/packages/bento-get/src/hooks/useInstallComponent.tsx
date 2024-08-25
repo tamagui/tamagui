@@ -3,8 +3,8 @@ import path from 'node:path'
 
 import React from 'react'
 
-import { AppContext } from '../commands/index.js'
-import type { InstallState } from '../commands/index.js'
+import { AppContext } from '../data/AppContext.js'
+import type { InstallState } from '../data/AppContext.js'
 import { componentsList } from '../components.js'
 import type { ComponentSchema } from '../components.js'
 import { useFetchComponent } from './useFetchComponent.js'
@@ -88,22 +88,12 @@ export const installComponent = async ({
 }
 
 export const useInstallComponent = () => {
-  const {
-    installState,
-    setInstallState,
-    currentScreen,
-    confirmationPending,
-    setConfirmationPending,
-  } = React.useContext(AppContext)
+  const { installState, setInstallState, confirmationPending, setConfirmationPending } =
+    React.useContext(AppContext)
 
   const { data, error } = useFetchComponent()
-  if (error) {
-    console.error('Error fetching component data', error)
-    throw new Error('Error fetching component data')
-  }
   debugLog('Fetched component data', data, {
     confirmationPending,
-    currentScreen,
   })
 
   React.useEffect(() => {

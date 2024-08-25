@@ -1,13 +1,12 @@
+import React from 'react'
 import querystring from 'node:querystring'
-
 import fetch from 'node-fetch'
 import open from 'open'
-// @ts-nocheck
-import React from 'react'
 import useSWR from 'swr'
 
 import { GITHUB_CLIENT_ID } from '../constants.js'
 import { useGithubAuthPooling } from './useGithubAuthPooling.js'
+import { debugLog } from '../commands/index.js'
 
 const fetcher = async (url: string) => {
   const res = await fetch(url, {
@@ -37,7 +36,7 @@ export type GithubCode = {
   interval: string
   user_code: string
   verification_uri: string
-}
+} | null
 
 export const useGithubAuth = () => {
   const { data, error, isLoading } = useSWR<string>(
@@ -50,15 +49,17 @@ export const useGithubAuth = () => {
     return querystring.parse(data) as unknown as GithubCode
   }, [data])
 
+  debugLog({
+    parsedData,
+  })
+
+  useGithubAuthPooling({ deviceCodeData: parsedData })
+
   const openLoginUrl = React.useCallback(() => {
     if (parsedData) {
       open(parsedData.verification_uri)
     }
   }, [parsedData])
-
-  if (parsedData) {
-    useGithubAuthPooling({ deviceCodeData: parsedData })
-  }
 
   return {
     data: parsedData,

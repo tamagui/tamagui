@@ -5128,6 +5128,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@remix-run/router@npm:1.0.5":
+  version: 1.0.5
+  resolution: "@remix-run/router@npm:1.0.5"
+  checksum: 10/e8a9fd5bbff793e4d84e44453c9e926deee8cb02f4d4219c473d68704efc19bb23dd242bcc74c61dd1604cc0795a9fe135e2be67766828052f02ef313d2f00c0
+  languageName: node
+  linkType: hard
+
 "@repeaterjs/repeater@npm:^3.0.4":
   version: 3.0.4
   resolution: "@repeaterjs/repeater@npm:3.0.4"
@@ -11202,6 +11209,7 @@ __metadata:
     open: "npm:^10.1.0"
     pastel: "npm:^2.0.0"
     react: "npm:react@18.2.0"
+    react-router-dom: "npm:6.4"
     swr: "npm:^2.2.5"
     zod: "npm:^3.22.4"
   bin:
@@ -24077,6 +24085,30 @@ __metadata:
     "@types/react":
       optional: true
   checksum: 10/f0646ac384ce3852d1f41e30a9f9e251b11cf3b430d1d114c937c8fa7f90a895c06378d0d6b6ff0b2d00cbccf15e845921944fd6074ae67a0fb347a718106d88
+  languageName: node
+  linkType: hard
+
+"react-router-dom@npm:6.4":
+  version: 6.4.5
+  resolution: "react-router-dom@npm:6.4.5"
+  dependencies:
+    "@remix-run/router": "npm:1.0.5"
+    react-router: "npm:6.4.5"
+  peerDependencies:
+    react: ">=16.8"
+    react-dom: ">=16.8"
+  checksum: 10/d79ac07a47a1e018962d1633ea65a68d68961092bdcb85414327a046a72afe22afe52d96fe397cda4741cc53ebd4a02e8c478a608768d1bbcef96f4aae1bdb6c
+  languageName: node
+  linkType: hard
+
+"react-router@npm:6.4.5":
+  version: 6.4.5
+  resolution: "react-router@npm:6.4.5"
+  dependencies:
+    "@remix-run/router": "npm:1.0.5"
+  peerDependencies:
+    react: ">=16.8"
+  checksum: 10/0241b06269981720dd8be9b215a97e5f3ccdd4383ba6f69d0818395766df0697b391a0923ff134684812be8a2247d80b7354a0b59343f022187586448b2ca947
   languageName: node
   linkType: hard
 
