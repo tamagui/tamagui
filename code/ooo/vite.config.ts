@@ -20,6 +20,10 @@ export default {
   //   include: ['react-wrap-balancer'],
   // },
 
+  ssr: {
+    external: ['@tamagui/mdx'],
+  },
+
   plugins: [
     vxs(),
     // tamaguiPlugin(),
