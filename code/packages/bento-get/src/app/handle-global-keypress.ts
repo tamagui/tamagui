@@ -26,7 +26,7 @@ export const handleGlobalKeyPress = (
     key,
   })
 
-  if (modifier.control && key === 'd') {
+  if (modifier.ctrl && key === 'd') {
     tokenStore.clear()
     console.warn('Cleared Github Token')
     return
