@@ -7,8 +7,8 @@ import { useGithubAuth } from '../hooks/useGithubAuth.js'
 import { AppContext } from '../data/AppContext.js'
 
 export const CodeAuthScreen = () => {
-  const appContext = React.useContext(AppContext)
   const { data, isLoading } = useGithubAuth()
+  const appContext = React.useContext(AppContext)
 
   React.useEffect(() => {
     appContext.setInstallState((prev) => ({

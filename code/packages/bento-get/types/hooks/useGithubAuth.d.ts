@@ -4,9 +4,9 @@ export type GithubCode = {
     interval: string;
     user_code: string;
     verification_uri: string;
-};
+} | null;
 export declare const useGithubAuth: () => {
-    data: GithubCode | null;
+    data: GithubCode;
     error: any;
     isLoading: boolean;
     openLoginUrl: () => void;
