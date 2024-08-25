@@ -8,7 +8,7 @@ import type { H3 } from '@tamagui/text'
 import { H1 } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDirection } from '@tamagui/use-direction'
-import type { GetProps, GetRef, Stack, TamaguiElement, ViewProps } from '@tamagui/web'
+import type { GetProps, GetRef, Stack, TamaguiElement } from '@tamagui/web'
 import { View, useEvent } from '@tamagui/web'
 import { createStyledContext, styled } from '@tamagui/web'
 import * as React from 'react'
@@ -579,7 +579,7 @@ const AccordionContent = AccordionContentFrame.styleable(function AccordionConte
   )
 })
 
-const HeightAnimator = View.styleable<{ innerViewProps?: ViewProps }>(({ innerViewProps = {}, ...props}, ref) => {
+const HeightAnimator = View.styleable((props, ref) => {
   const itemContext = useAccordionItemContext()
   const { children, ...rest } = props
   const [height, setHeight] = React.useState(0)
@@ -599,8 +599,9 @@ const HeightAnimator = View.styleable<{ innerViewProps?: ViewProps }>(({ innerVi
   return (
     <View ref={ref} height={height} {...rest}>
       <View
-        {...innerViewProps}
         position="absolute"
+        left={0}
+        right={0}
         //@ts-ignore
         onLayout={onLayout}
       >
