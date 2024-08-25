@@ -25,14 +25,6 @@ export const debugLog = (...args: any[]) => {
   if (process.env.DEBUG === 'true') console.log(...args)
 }
 
-export default function App() {
-  return (
-    <MemoryRouter>
-      <BentoGet />
-    </MemoryRouter>
-  )
-}
-
 function BentoGet() {
   const navigate = useNavigate()
   const location = useLocation()
@@ -95,5 +87,13 @@ function BentoGet() {
         </Routes>
       </AuthGuard>
     </AppContext.Provider>
+  )
+}
+
+export default function App() {
+  return (
+    <MemoryRouter>
+      <BentoGet />
+    </MemoryRouter>
   )
 }
