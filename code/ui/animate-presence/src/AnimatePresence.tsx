@@ -134,7 +134,7 @@ export const AnimatePresence: FunctionComponent<
 
   // If we currently have exiting children, and we're deferring rendering incoming children
   // until after all current children have exiting, empty the childrenToRender array
-  if ((mode === 'wait' && exiting.size) || (exitBeforeEnter && exiting.size)) {
+  if ((mode === 'wait' || exitBeforeEnter) && exiting.size) {
     childrenToRender = []
   }
 
@@ -211,7 +211,7 @@ export const AnimatePresence: FunctionComponent<
 
   if (
     process.env.NODE_ENV !== 'production' &&
-    mode === 'wait' &&
+    (mode === 'wait' || exitBeforeEnter) &&
     childrenToRender.length > 1
   ) {
     console.warn(
