@@ -1,7 +1,15 @@
 import { useForceUpdate } from '@tamagui/use-force-update'
 import type { ReactElement, ReactNode } from 'react'
 import type { FunctionComponent, PropsWithChildren } from 'react'
-import { Children, cloneElement, isValidElement, useContext, useRef } from 'react'
+import React, {
+  Children,
+  cloneElement,
+  isValidElement,
+  useContext,
+  useRef,
+  useEffect,
+  useMemo,
+} from 'react'
 
 import { LayoutGroupContext } from './LayoutGroupContext'
 import { PresenceChild } from './PresenceChild'
@@ -42,13 +50,30 @@ export const AnimatePresence: FunctionComponent<
   exitBeforeEnter,
   presenceAffectsLayout = true,
   custom,
+  mode = 'sync',
 }) => {
+  // Add a useEffect hook to check for children without keys
+  useEffect(() => {
+    const childrenArray = Children.toArray(children)
+    const childrenWithoutKeys = childrenArray.filter(
+      (child) => isValidElement(child) && child.key === null
+    )
+
+    if (childrenWithoutKeys.length > 0) {
+      console.warn(
+        "AnimatePresence: One or more children don't have a key prop. " +
+          'This may cause incorrect animations. ' +
+          'Please ensure that all children of AnimatePresence have a unique key.'
+      )
+    }
+  }, [children])
+
   // We want to force a re-render once all exiting animations have finished. We
   // either use a local forceRender function, or one from a parent context if it exists.
   let forceRender = useContext(LayoutGroupContext).forceRender ?? useForceUpdate()
 
   // Filter out any children that aren't ReactElements. We can only track ReactElements with a props.key
-  const filteredChildren = onlyElements(children)
+  const filteredChildren = useMemo(() => onlyElements(children), [children])
 
   // Keep a living record of the children we're actually rendering so we
   // can diff to figure out which are entering and exiting
@@ -63,6 +88,8 @@ export const AnimatePresence: FunctionComponent<
   // If this is the initial component render, just deal with logic surrounding whether
   // we play onMount animations or not.
   const isInitialRender = useRef(true)
+
+  const exitComplete = useRef(new Map<ComponentKey, boolean>()).current
 
   if (isInitialRender.current) {
     isInitialRender.current = false
@@ -107,7 +134,7 @@ export const AnimatePresence: FunctionComponent<
 
   // If we currently have exiting children, and we're deferring rendering incoming children
   // until after all current children have exiting, empty the childrenToRender array
-  if (exitBeforeEnter && exiting.size) {
+  if ((mode === 'wait' && exiting.size) || (exitBeforeEnter && exiting.size)) {
     childrenToRender = []
   }
 
@@ -123,14 +150,18 @@ export const AnimatePresence: FunctionComponent<
     const insertionIndex = presentKeys.indexOf(key)
 
     const onExit = () => {
-      allChildren.delete(key)
-      exiting.delete(key)
-      const removeIndex = presentChildren.current.findIndex(
-        (presentChild) => presentChild.key === key
-      )
-      presentChildren.current.splice(removeIndex, 1)
+      if (exitComplete.has(key)) {
+        exitComplete.set(key, true)
+      } else {
+        return
+      }
 
-      if (!exiting.size) {
+      let isEveryExitComplete = true
+      exitComplete.forEach((isExitComplete) => {
+        if (!isExitComplete) isEveryExitComplete = false
+      })
+
+      if (isEveryExitComplete) {
         presentChildren.current = filteredChildren
         forceRender()
         onExitComplete?.()
@@ -178,12 +209,31 @@ export const AnimatePresence: FunctionComponent<
 
   presentChildren.current = childrenToRender
 
+  if (
+    process.env.NODE_ENV !== 'production' &&
+    mode === 'wait' &&
+    childrenToRender.length > 1
+  ) {
+    console.warn(
+      `You're attempting to animate multiple children within AnimatePresence, but its mode is set to "wait". This will lead to odd visual behaviour.`
+    )
+  }
+
   return (
     <>
       {exiting.size
         ? childrenToRender
-        : // biome-ignore lint/correctness/useJsxKeyInIterable: <explanation>
-          childrenToRender.map((child) => cloneElement(child))}
+        : childrenToRender.map((child) => {
+            if (!child.key) {
+              process.env.NODE_ENV !== 'production' &&
+                console.warn(
+                  `AnimatePresence: Child component is missing a key prop. ` +
+                    `This may cause incorrect animations. Component:`,
+                  child
+                )
+            }
+            return cloneElement(child, { key: child.key })
+          })}
     </>
   )
 }

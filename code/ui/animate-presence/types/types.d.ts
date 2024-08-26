@@ -57,20 +57,25 @@ export interface AnimatePresenceProps {
      */
     onExitComplete?: () => void;
     /**
-     * If set to `true`, `AnimatePresence` will only render one component at a time. The exiting component
-     * will finish its exit animation before the entering component is rendered.
+     * Replace with `mode="wait"`
      *
-     * ```jsx
-     * const MyComponent = ({ currentItem }) => (
-     *   <AnimatePresence exitBeforeEnter>
-     *     <motion.div key={currentItem} exit={{ opacity: 0 }} />
-     *   </AnimatePresence>
-     * )
-     * ```
+     * @deprecated
      *
-     * @beta
+     * Replace with `mode="wait"`
      */
     exitBeforeEnter?: boolean;
+    /**
+     * Determines how to handle entering and exiting elements.
+     *
+     * - `"sync"`: Default. Elements animate in and out as soon as they're added/removed.
+     * - `"popLayout"`: Exiting elements are "popped" from the page layout, allowing sibling
+     *      elements to immediately occupy their new layouts.
+     * - `"wait"`: Only renders one component at a time. Wait for the exiting component to animate out
+     *      before animating the next component in.
+     *
+     * @public
+     */
+    mode?: 'sync' | 'popLayout' | 'wait';
     /**
      * Used in Framer to flag that sibling children *shouldn't* re-render as a result of a
      * child being removed.
