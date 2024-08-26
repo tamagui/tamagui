@@ -1,15 +1,15 @@
+import React from 'react'
 import { Alert } from '@inkjs/ui'
 import { Box } from 'ink'
 import { useNavigate } from 'react-router-dom'
 import { useInstallComponent } from '../hooks/useInstallComponent.js'
 import { debugLog } from '../commands/index.js'
-import { useEffect } from 'react'
 
 export const AuthGuard = ({ children }: { children: React.ReactNode }) => {
   const navigate = useNavigate()
   const { error } = useInstallComponent()
 
-  useEffect(() => {
+  React.useEffect(() => {
     debugLog({
       errorStatus: error?.status,
       useInstallComponentError: error,

@@ -1,7 +1,6 @@
+import React from 'react'
 import { existsSync, promises as fsPromises, mkdirSync } from 'node:fs'
 import path from 'node:path'
-
-import React from 'react'
 
 import { AppContext } from '../data/AppContext.js'
 import type { InstallState } from '../data/AppContext.js'
