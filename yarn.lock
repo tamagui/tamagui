@@ -7360,7 +7360,7 @@ __metadata:
     camelcase: "npm:^6.0.0"
     cheerio: "npm:^1.0.0-rc.5"
     glob: "npm:^7.1.6"
-    lucide-static: "npm:0.311.0"
+    lucide-static: "npm:0.436.0"
     prettier: "npm:^2.8.1"
     prettier-plugin-import-sort: "npm:^0.0.7"
     prop-types: "npm:^15.7.2"
@@ -20031,10 +20031,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lucide-static@npm:0.311.0":
-  version: 0.311.0
-  resolution: "lucide-static@npm:0.311.0"
-  checksum: 10/8eb33322eeca7567c7b7b5937be3e30bcd28d6b955a4ab504a14b2561cbd0b762bb04b52c11a309e21b50c9791e629b4772581a7495eca3b36bbedccf3bb1399
+"lucide-static@npm:0.436.0":
+  version: 0.436.0
+  resolution: "lucide-static@npm:0.436.0"
+  checksum: 10/0b5284c069152ba2c3ad2ec33e24340e1e36d48afe4f704cbe3d6bee19321fd6a77202a34dde83ceae9338493ad39e87a13004286652513c99af33b78288b74d
   languageName: node
   linkType: hard
 

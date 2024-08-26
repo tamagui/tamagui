@@ -1,6 +1,6 @@
-import React from "react";
-import PropTypes from 'prop-types';
-import type { IconProps } from '@tamagui/helpers-icon';
+import React from 'react'
+import PropTypes from 'prop-types'
+import type { IconProps } from '@tamagui/helpers-icon'
 import {
   Svg,
   Circle as _Circle,
@@ -17,12 +17,12 @@ import {
   Text as _Text,
   Use,
   Defs,
-  Stop } from
-'react-native-svg';
-import { themed } from '@tamagui/helpers-icon';
+  Stop,
+} from 'react-native-svg'
+import { themed } from '@tamagui/helpers-icon'
 
 const Icon = (props) => {
-  const { color = 'black', size = 24, ...otherProps } = props;
+  const { color = 'black', size = 24, ...otherProps } = props
   return (
     <Svg
       width={size}
@@ -33,17 +33,17 @@ const Icon = (props) => {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      {...otherProps}>
-
+      {...otherProps}
+    >
       <Rect width="20" height="5" x="2" y="3" rx="1" stroke={color} />
       <Path d="M4 8v11a2 2 0 0 0 2 2h2" stroke={color} />
       <Path d="M20 8v11a2 2 0 0 1-2 2h-2" stroke={color} />
       <Path d="m9 15 3-3 3 3" stroke={color} />
       <Path d="M12 12v9" stroke={color} />
-    </Svg>);
+    </Svg>
+  )
+}
 
-};
+Icon.displayName = 'ArchiveRestore'
 
-Icon.displayName = 'ArchiveRestore';
-
-export const ArchiveRestore = React.memo<IconProps>(themed(Icon));
+export const ArchiveRestore = React.memo<IconProps>(themed(Icon))

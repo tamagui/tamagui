@@ -1,6 +1,6 @@
-import React from "react";
-import PropTypes from 'prop-types';
-import type { IconProps } from '@tamagui/helpers-icon';
+import React from 'react'
+import PropTypes from 'prop-types'
+import type { IconProps } from '@tamagui/helpers-icon'
 import {
   Svg,
   Circle as _Circle,
@@ -17,12 +17,12 @@ import {
   Text as _Text,
   Use,
   Defs,
-  Stop } from
-'react-native-svg';
-import { themed } from '@tamagui/helpers-icon';
+  Stop,
+} from 'react-native-svg'
+import { themed } from '@tamagui/helpers-icon'
 
 const Icon = (props) => {
-  const { color = 'black', size = 24, ...otherProps } = props;
+  const { color = 'black', size = 24, ...otherProps } = props
   return (
     <Svg
       width={size}
@@ -33,8 +33,8 @@ const Icon = (props) => {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      {...otherProps}>
-
+      {...otherProps}
+    >
       <Path d="M13.5 3.1c-.5 0-1-.1-1.5-.1s-1 .1-1.5.1" stroke={color} />
       <Path d="M19.3 6.8a10.45 10.45 0 0 0-2.1-2.1" stroke={color} />
       <Path d="M20.9 13.5c.1-.5.1-1 .1-1.5s-.1-1-.1-1.5" stroke={color} />
@@ -43,10 +43,10 @@ const Icon = (props) => {
       <Path d="M3.5 17.5 2 22l4.5-1.5" stroke={color} />
       <Path d="M3.1 10.5c0 .5-.1 1-.1 1.5s.1 1 .1 1.5" stroke={color} />
       <Path d="M6.8 4.7a10.45 10.45 0 0 0-2.1 2.1" stroke={color} />
-    </Svg>);
+    </Svg>
+  )
+}
 
-};
+Icon.displayName = 'MessageCircleDashed'
 
-Icon.displayName = 'MessageCircleDashed';
-
-export const MessageCircleDashed = React.memo<IconProps>(themed(Icon));
+export const MessageCircleDashed = React.memo<IconProps>(themed(Icon))

@@ -34,7 +34,7 @@
     "camelcase": "^6.0.0",
     "cheerio": "^1.0.0-rc.5",
     "glob": "^7.1.6",
-    "lucide-static": "0.311.0",
+    "lucide-static": "0.436.0",
     "prettier": "^2.8.1",
     "prettier-plugin-import-sort": "^0.0.7",
     "prop-types": "^15.7.2",

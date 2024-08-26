@@ -1,6 +1,6 @@
-import React from "react";
-import PropTypes from 'prop-types';
-import type { IconProps } from '@tamagui/helpers-icon';
+import React from 'react'
+import PropTypes from 'prop-types'
+import type { IconProps } from '@tamagui/helpers-icon'
 import {
   Svg,
   Circle as _Circle,
@@ -17,12 +17,12 @@ import {
   Text as _Text,
   Use,
   Defs,
-  Stop } from
-'react-native-svg';
-import { themed } from '@tamagui/helpers-icon';
+  Stop,
+} from 'react-native-svg'
+import { themed } from '@tamagui/helpers-icon'
 
 const Icon = (props) => {
-  const { color = 'black', size = 24, ...otherProps } = props;
+  const { color = 'black', size = 24, ...otherProps } = props
   return (
     <Svg
       width={size}
@@ -33,8 +33,8 @@ const Icon = (props) => {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      {...otherProps}>
-
+      {...otherProps}
+    >
       <Path d="m4 4 2.5 2.5" stroke={color} />
       <Path d="M13.5 6.5a4.95 4.95 0 0 0-7 7" stroke={color} />
       <Path d="M15 5 5 15" stroke={color} />
@@ -45,10 +45,10 @@ const Icon = (props) => {
       <Path d="M11 20v.01" stroke={color} />
       <Path d="M17 14v.01" stroke={color} />
       <Path d="M20 11v.01" stroke={color} />
-    </Svg>);
+    </Svg>
+  )
+}
 
-};
+Icon.displayName = 'ShowerHead'
 
-Icon.displayName = 'ShowerHead';
-
-export const ShowerHead = React.memo<IconProps>(themed(Icon));
+export const ShowerHead = React.memo<IconProps>(themed(Icon))
