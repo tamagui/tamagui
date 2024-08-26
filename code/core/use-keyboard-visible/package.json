@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/use-keyboard-visible",
-  "version": "1.109.3",
+  "version": "1.109.4",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -28,7 +28,7 @@
     }
   },
   "devDependencies": {
-    "@tamagui/build": "1.109.3",
+    "@tamagui/build": "1.109.4",
     "react": "^18.2.0 || ^19.0.0",
     "react-native": "0.74.1"
   },
