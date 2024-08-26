@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/list-item",
-  "version": "1.109.4",
+  "version": "1.109.5",
   "sideEffects": [
     "*.css"
   ],
@@ -33,17 +33,17 @@
     }
   },
   "dependencies": {
-    "@tamagui/font-size": "1.109.4",
-    "@tamagui/get-font-sized": "1.109.4",
-    "@tamagui/get-token": "1.109.4",
-    "@tamagui/helpers": "1.109.4",
-    "@tamagui/helpers-tamagui": "1.109.4",
-    "@tamagui/stacks": "1.109.4",
-    "@tamagui/text": "1.109.4",
-    "@tamagui/web": "1.109.4"
+    "@tamagui/font-size": "1.109.5",
+    "@tamagui/get-font-sized": "1.109.5",
+    "@tamagui/get-token": "1.109.5",
+    "@tamagui/helpers": "1.109.5",
+    "@tamagui/helpers-tamagui": "1.109.5",
+    "@tamagui/stacks": "1.109.5",
+    "@tamagui/text": "1.109.5",
+    "@tamagui/web": "1.109.5"
   },
   "devDependencies": {
-    "@tamagui/build": "1.109.4",
+    "@tamagui/build": "1.109.5",
     "react": "^18.2.0 || ^19.0.0"
   },
   "publishConfig": {
