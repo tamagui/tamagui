@@ -1,0 +1,1 @@
+export { WebsiteTamaguiProvider } from './WebsiteTamaguiProvider'
