@@ -1,5 +1,5 @@
+import React from 'react'
 import { useApp, useInput } from 'ink'
-import { useMemo, useState } from 'react'
 import {
   MemoryRouter,
   Navigate,
@@ -28,22 +28,24 @@ export const debugLog = (...args: any[]) => {
 function BentoGet() {
   const navigate = useNavigate()
   const location = useLocation()
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const [searchResults, setSearchResults] = useState<Array<{ item: ComponentSchema }>>([])
-  const [selectedResultIndex, setSelectedResultIndex] = useState(-1)
-  const [searchInput, setSearchInput] = useState('')
-  const [confirmationPending, setConfirmationPending] = useState(true)
-  const [installState, setInstallState] = useState<InstallState>({
+  const [isLoggedIn, setIsLoggedIn] = React.useState(false)
+  const [searchResults, setSearchResults] = React.useState<
+    Array<{ item: ComponentSchema }>
+  >([])
+  const [selectedResultIndex, setSelectedResultIndex] = React.useState(-1)
+  const [searchInput, setSearchInput] = React.useState('')
+  const [confirmationPending, setConfirmationPending] = React.useState(true)
+  const [installState, setInstallState] = React.useState<InstallState>({
     installingComponent: null,
     installedComponents: [],
     shouldOpenBrowser: false,
     isTokenInstalled: false,
     componentToInstall: null,
   })
-  const [isCopyingToClipboard, setCopyingToClipboard] = useState(false)
+  const [isCopyingToClipboard, setCopyingToClipboard] = React.useState(false)
   const { exit } = useApp()
 
-  const appContextValues = useMemo(
+  const appContextValues = React.useMemo(
     () => ({
       tokenStore,
       isCopyingToClipboard,

@@ -1,7 +1,7 @@
 import Fuse from 'fuse.js'
 import { Box, Text } from 'ink'
 import TextInput from 'ink-text-input'
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useLocation } from 'react-router-dom'
 
 import { ResultsCounter } from '../cli-components/index.js'
@@ -20,7 +20,7 @@ export const SearchBar = () => {
     return fuse.search(query)
   }
 
-  useEffect(() => {
+  React.useEffect(() => {
     // When navigation location changes, reset search Input
     appContext.setSearchInput('')
   }, [location.pathname])
