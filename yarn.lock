@@ -6278,6 +6278,15 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/babel-plugin-fully-specified@npm:1.109.3":
+  version: 1.109.3
+  resolution: "@tamagui/babel-plugin-fully-specified@npm:1.109.3"
+  dependencies:
+    "@babel/core": "npm:^7.25.2"
+  checksum: 10/a71214a91317f7c2c6b2a5253fadc38c66cdeb23943288361c37625ff0060e8789c2186342cc2cb69b7b8dbba98ce408e538d5e60193dadb0cf262878f5a62c0
+  languageName: node
+  linkType: hard
+
 "@tamagui/babel-plugin-fully-specified@npm:1.109.4, @tamagui/babel-plugin-fully-specified@workspace:code/packages/babel-plugin-fully-specified":
   version: 0.0.0-use.local
   resolution: "@tamagui/babel-plugin-fully-specified@workspace:code/packages/babel-plugin-fully-specified"
@@ -6356,6 +6365,29 @@ __metadata:
     zod: "npm:^3.22.4"
   languageName: unknown
   linkType: soft
+
+"@tamagui/build@npm:1.109.3":
+  version: 1.109.3
+  resolution: "@tamagui/build@npm:1.109.3"
+  dependencies:
+    "@babel/core": "npm:^7.25.2"
+    "@tamagui/babel-plugin-fully-specified": "npm:1.109.3"
+    "@types/fs-extra": "npm:^9.0.13"
+    babel-plugin-fully-specified: "npm:*"
+    chokidar: "npm:^3.5.2"
+    esbuild: "npm:^0.23.0"
+    esbuild-plugin-es5: "npm:^2.1.0"
+    esbuild-register: "npm:^3.6.0"
+    execa: "npm:^5.0.0"
+    fast-glob: "npm:^3.2.11"
+    fs-extra: "npm:^11.2.0"
+    lodash.debounce: "npm:^4.0.8"
+  bin:
+    tamagui-build: tamagui-build.js
+    teesx: teesx.sh
+  checksum: 10/5edb84c099e79a40e7e698923f55e481a64a198c04c8f2e5567810453cdc7029d2473b8752d2aad6c1b416e63b889f0467a4e89e8f383c63ff782d725cff9b77
+  languageName: node
+  linkType: hard
 
 "@tamagui/build@npm:1.109.4, @tamagui/build@npm:^1.109.0, @tamagui/build@workspace:code/packages/build":
   version: 0.0.0-use.local
@@ -11194,7 +11226,7 @@ __metadata:
   dependencies:
     "@inkjs/ui": "npm:^1.0.0"
     "@supabase/supabase-js": "npm:^2.44.4"
-    "@tamagui/build": "npm:1.109.4"
+    "@tamagui/build": "npm:1.109.3"
     "@types/copy-paste": "npm:^1.1.33"
     "@types/react": "npm:@types/react@18.2.55"
     conf: "npm:^12.0.0"
@@ -11208,7 +11240,7 @@ __metadata:
     octokit: "npm:^4.0.2"
     open: "npm:^10.1.0"
     pastel: "npm:^2.0.0"
-    react: "npm:react@18.2.0"
+    react: "npm:^18.2.0 || ^19.0.0"
     react-router-dom: "npm:6.4"
     swr: "npm:^2.2.5"
     zod: "npm:^3.22.4"
@@ -24172,15 +24204,6 @@ __metadata:
   dependencies:
     loose-envify: "npm:^1.1.0"
   checksum: 10/261137d3f3993eaa2368a83110466fc0e558bc2c7f7ae7ca52d94f03aac945f45146bd85e5f481044db1758a1dbb57879e2fcdd33924e2dde1bdc550ce73f7bf
-  languageName: node
-  linkType: hard
-
-"react@npm:react@18.2.0":
-  version: 18.2.0
-  resolution: "react@npm:18.2.0"
-  dependencies:
-    loose-envify: "npm:^1.1.0"
-  checksum: 10/b9214a9bd79e99d08de55f8bef2b7fc8c39630be97c4e29d7be173d14a9a10670b5325e94485f74cd8bff4966ef3c78ee53c79a7b0b9b70cba20aa8973acc694
   languageName: node
   linkType: hard
 
