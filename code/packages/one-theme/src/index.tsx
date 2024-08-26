@@ -88,7 +88,9 @@ export function useUserTheme() {
   return [
     values,
     useCallback((next: SchemeSetting) => {
-      localStorage.setItem(key, next)
+      if (typeof localStorage !== 'undefined') {
+        localStorage.setItem(key, next)
+      }
       listener?.(next)
     }, []),
   ] as const
