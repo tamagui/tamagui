@@ -600,6 +600,7 @@ const HeightAnimator = View.styleable((props, ref) => {
     <View ref={ref} height={height} {...rest}>
       <View
         position="absolute"
+        width="100%"
         //@ts-ignore
         onLayout={onLayout}
       >
