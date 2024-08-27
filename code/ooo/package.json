@@ -20,6 +20,7 @@
     "@tamagui/input": "1.109.5",
     "@tamagui/linear-gradient": "1.109.5",
     "@tamagui/lucide-icons": "1.109.5",
+    "@tamagui/one-theme": "1.109.5",
     "@tamagui/mdx": "1.109.5",
     "@tamagui/themes": "1.109.5",
     "@tamagui/use-store": "1.109.5",

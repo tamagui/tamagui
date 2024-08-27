@@ -20,7 +20,11 @@ export default {
   },
 
   plugins: [
-    vxs(),
+    vxs({
+      deps: {
+        '@tamagui/lucide-icons': true,
+      },
+    }),
     // tamaguiPlugin(),
     // tamaguiExtractPlugin(),
   ],
