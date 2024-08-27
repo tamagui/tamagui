@@ -72,7 +72,7 @@ export function GroupProp() {
   return (
     <>
       <GroupTest>
-        <GroupChild debug="verbose" id="styled" />
+        <GroupChild id="styled" />
       </GroupTest>
 
       <GroupTest w={1000}>

@@ -35,7 +35,6 @@ export const Sandbox = () => {
 
       {/* <Demo3 /> */}
       {/* <Circle
-        debug="verbose"
         size={100}
         bg="red"
         animation="bouncy"
@@ -50,7 +49,6 @@ export const Sandbox = () => {
       {/* group animatable defaults */}
       {/* <YStack group="testy" w={400} h={400} bg="red">
         <YStack
-          debug="verbose"
           animation="quick"
           w={100}
           h={200}

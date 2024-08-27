@@ -19,11 +19,7 @@ export function StyledAnchor() {
         hi
       </StyledAnchor1>
 
-      <StyledAnchor2
-        debug="verbose"
-        testID="test-anchor2"
-        href="https://tamagui.dev/test-link"
-      >
+      <StyledAnchor2 testID="test-anchor2" href="https://tamagui.dev/test-link">
         hi
       </StyledAnchor2>
     </>
