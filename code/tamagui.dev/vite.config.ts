@@ -97,6 +97,7 @@ export default {
 
   ssr: {
     external: ['@tamagui/mdx'],
+    noExternal: true,
   },
 
   build: {

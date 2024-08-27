@@ -15,6 +15,7 @@ export default {
   },
 
   ssr: {
+    noExternal: true,
     external: ['@tamagui/mdx'],
   },
 
