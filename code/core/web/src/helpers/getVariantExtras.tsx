@@ -20,14 +20,17 @@ export const getVariantExtras = (styleState: GetStyleState) => {
     tokens: conf.tokensParsed,
     theme,
     get fontFamily() {
-      return getVariableValue(
-        styleState.fontFamily ||
-          styleState.curProps.fontFamily ||
-          styleState.conf.defaultFont
+      return (
+        getVariableValue(styleState.fontFamily || styleState.curProps.fontFamily) ||
+        props.fontFamily ||
+        getVariableValue(styleState.conf.defaultFont)
       )
     },
     get font() {
-      return fonts[this.fontFamily] || fonts[styleState.conf.defaultFont!]
+      return (
+        fonts[this.fontFamily] ||
+        (!props.fontFamily ? styleState.conf.defaultFont : undefined)
+      )
     },
     // TODO do this in splitstlye
     // we avoid passing in default props for media queries because that would confuse things like SizableText.size:
