@@ -176,6 +176,8 @@ v2:
   - AnimatePresence: remove deprecated props in favor of `custom`
   - remove nativeID, maybe testID
   - remove `dataSet` in favor of `data-` attributes
+  - deprecate shadow style props before v2 release and remove in v2
+    - "shadow*" style props are deprecated. Use "boxShadow".
   - remove as much of `// TODO: remove this in the future when react native a11y API is removed` as possible
     - "Enhance with native semantics" can probably go away right
 
