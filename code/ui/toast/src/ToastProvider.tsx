@@ -7,6 +7,7 @@ import { TOAST_CONTEXT } from './constants'
 import type { ToastImperativeOptions } from './ToastImperative'
 import { ToastImperativeProvider } from './ToastImperative'
 import type { BurntToastOptions } from './types'
+import { startTransition } from '@tamagui/start-transition'
 
 /* -------------------------------------------------------------------------------------------------
  * ToastProvider
@@ -111,7 +112,7 @@ const ToastProvider: React.FC<ToastProviderProps> = (
 
   const handleViewportChange = React.useCallback(
     (name: string, viewport: TamaguiElement | null) => {
-      React.startTransition(() => {
+      startTransition(() => {
         setViewports((prev) => ({ ...prev, [name]: viewport }))
       })
     },
@@ -142,12 +143,12 @@ const ToastProvider: React.FC<ToastProviderProps> = (
         viewports={viewports}
         onViewportChange={handleViewportChange}
         onToastAdd={React.useCallback(() => {
-          React.startTransition(() => {
+          startTransition(() => {
             setToastCount((prevCount) => prevCount + 1)
           })
         }, [])}
         onToastRemove={React.useCallback(() => {
-          React.startTransition(() => {
+          startTransition(() => {
             setToastCount((prevCount) => prevCount - 1)
           })
         }, [])}

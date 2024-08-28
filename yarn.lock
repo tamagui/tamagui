@@ -7925,6 +7925,17 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/start-transition@workspace:code/core/start-transition":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/start-transition@workspace:code/core/start-transition"
+  dependencies:
+    "@tamagui/build": "npm:1.109.6"
+    react: "npm:^18.2.0 || ^19.0.0"
+  peerDependencies:
+    react: "*"
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/static-tests@workspace:code/compiler/static-tests":
   version: 0.0.0-use.local
   resolution: "@tamagui/static-tests@workspace:code/compiler/static-tests"

@@ -4,6 +4,7 @@ import { Stack, Text, styled, useEvent } from '@tamagui/core'
 import { Portal } from '@tamagui/portal'
 import { VisuallyHidden } from '@tamagui/visually-hidden'
 import * as React from 'react'
+import { startTransition } from '@tamagui/start-transition'
 
 import type { ScopedProps } from './ToastProvider'
 import { useToastProviderContext } from './ToastProvider'
@@ -48,7 +49,7 @@ const ToastAnnounce: React.FC<ScopedProps<ToastAnnounceProps>> = (
 
   // render text content in the next frame to ensure toast is announced in NVDA
   useNextFrame(() => {
-    React.startTransition(() => {
+    startTransition(() => {
       setRenderAnnounceText(true)
     })
   })

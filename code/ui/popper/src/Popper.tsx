@@ -27,6 +27,7 @@ import {
   shift,
   useFloating,
 } from '@tamagui/floating'
+import { startTransition } from '@tamagui/start-transition'
 import { getSpace } from '@tamagui/get-token'
 import type { SizableStackProps, YStackProps } from '@tamagui/stacks'
 import { ThemeableStack, YStack } from '@tamagui/stacks'
@@ -168,12 +169,12 @@ export function Popper(props: ScopedPopperProps<PopperProps>) {
     const [keyboardOpen, setKeyboardOpen] = React.useState(false)
     React.useEffect(() => {
       const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
-        React.startTransition(() => {
+        startTransition(() => {
           setKeyboardOpen(true)
         })
       })
       const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
-        React.startTransition(() => {
+        startTransition(() => {
           setKeyboardOpen(false)
         })
       })
