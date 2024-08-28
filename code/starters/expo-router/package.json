@@ -16,9 +16,9 @@
   },
   "dependencies": {
     "@react-navigation/native": "^6.1.17",
-    "@tamagui/config": "^1.109.6",
-    "@tamagui/lucide-icons": "^1.109.6",
-    "@tamagui/toast": "^1.109.6",
+    "@tamagui/config": "^1.109.8",
+    "@tamagui/lucide-icons": "^1.109.8",
+    "@tamagui/toast": "^1.109.8",
     "babel-preset-expo": "^11.0.6",
     "burnt": "^0.12.2",
     "expo": "~51.0.31",
@@ -38,7 +38,7 @@
     "react-native-screens": "~3.31.1",
     "react-native-svg": "15.2.0",
     "react-native-web": "^0.19.12",
-    "tamagui": "^1.109.6"
+    "tamagui": "^1.109.8"
   },
   "devDependencies": {
     "@babel/core": "^7.24.6",

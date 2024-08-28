@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 /* eslint-disable no-console */
 
-const { es5Plugin } = require('esbuild-plugin-es5')
 const { transform } = require('@babel/core')
 const exec = require('execa')
 const fs = require('fs-extra')
@@ -11,6 +10,7 @@ const createExternalPlugin = require('./externalNodePlugin')
 const debounce = require('lodash.debounce')
 const { basename, dirname } = require('node:path')
 const alias = require('./esbuildAliasPlugin')
+const { es5Plugin } = require('./esbuild-es5')
 
 const jsOnly = !!process.env.JS_ONLY
 const skipJS = !!(process.env.SKIP_JS || false)
@@ -443,20 +443,7 @@ async function esbuildWriteIfChanged(
       ...(platform === 'native'
         ? [
             // class isnt supported by hermes
-            es5Plugin({
-              swc: {
-                jsc: {
-                  preserveAllComments: true,
-                  externalHelpers: false,
-                  transform: {
-                    react: {
-                      runtime: 'automatic',
-                      development: false,
-                    },
-                  },
-                },
-              },
-            }),
+            es5Plugin(),
           ]
         : []),
 

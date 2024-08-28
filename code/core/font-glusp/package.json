@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/font-glusp",
-  "version": "1.109.6",
+  "version": "1.109.8",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -20,10 +20,10 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/web": "1.109.6"
+    "@tamagui/web": "1.109.8"
   },
   "devDependencies": {
-    "@tamagui/build": "1.109.6"
+    "@tamagui/build": "1.109.8"
   },
   "publishConfig": {
     "access": "public"
