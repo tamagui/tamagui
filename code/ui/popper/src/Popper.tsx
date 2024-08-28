@@ -1,6 +1,7 @@
 // adapted from radix-ui popper
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isAndroid, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { startTransition } from '@tamagui/start-transition'
 import type { ScopedProps, SizeTokens, StackProps } from '@tamagui/core'
 import {
   Stack,
@@ -168,12 +169,12 @@ export function Popper(props: ScopedPopperProps<PopperProps>) {
     const [keyboardOpen, setKeyboardOpen] = React.useState(false)
     React.useEffect(() => {
       const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
-        React.startTransition(() => {
+        startTransition(() => {
           setKeyboardOpen(true)
         })
       })
       const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
-        React.startTransition(() => {
+        startTransition(() => {
           setKeyboardOpen(false)
         })
       })
