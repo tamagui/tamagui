@@ -8327,7 +8327,6 @@ __metadata:
   resolution: "@tamagui/use-did-finish-ssr@workspace:code/core/use-did-finish-ssr"
   dependencies:
     "@tamagui/build": "npm:1.109.6"
-    "@tamagui/constants": "npm:1.109.6"
     react: "npm:^18.2.0 || ^19.0.0"
   peerDependencies:
     react: "*"
