@@ -1,8 +1,7 @@
 {
-  "name": "start-transition",
+  "name": "@tamagui/start-transition",
   "version": "1.0.0",
   "source": "src/index.ts",
-  "sideEffects": false,
   "license": "MIT",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
