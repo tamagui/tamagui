@@ -29,7 +29,9 @@ export const getVariantExtras = (styleState: GetStyleState) => {
     get font() {
       return (
         fonts[this.fontFamily] ||
-        (!props.fontFamily ? styleState.conf.defaultFont : undefined)
+        (!props.fontFamily || props.fontFamily[0] === '$'
+          ? fonts[styleState.conf.defaultFont!]
+          : undefined)
       )
     },
     // TODO do this in splitstlye
