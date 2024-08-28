@@ -1,5 +1,6 @@
 import { useEvent } from '@tamagui/use-event'
 import * as React from 'react'
+import { startTransition } from '@tamagui/start-transition'
 
 // can configure to allow most-recent-wins or prop-wins
 // defaults to prop-wins
@@ -29,7 +30,7 @@ export function useControllableState<T>({
   const value = propWins ? prop : state
   const onChangeCb = useEvent(onChange || idFn)
 
-  const transitionFn = transition ? React.startTransition : emptyCallbackFn
+  const transitionFn = transition ? startTransition : emptyCallbackFn
 
   React.useEffect(() => {
     if (prop === undefined) return

@@ -10,6 +10,7 @@ import {
   simpleHash,
   updateConfig,
 } from '@tamagui/web'
+import { startTransition } from '@tamagui/start-transition'
 
 type MutateThemeOptions = {
   mutationType: 'replace' | 'update' | 'add'
@@ -59,7 +60,7 @@ export function mutateThemes({
 
   const cssRules = insertCSS ? insertThemeCSS(allThemesRaw, batch) : []
 
-  React.startTransition(() => {
+  startTransition(() => {
     for (const themeName in allThemesProxied) {
       const theme = allThemesProxied[themeName]
       updateThemeConfig(themeName, theme)
