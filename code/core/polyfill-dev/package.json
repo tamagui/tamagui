@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/polyfill-dev",
-  "version": "1.109.9",
+  "version": "1.110.0",
   "main": "index.js",
   "publishConfig": {
     "access": "public"
