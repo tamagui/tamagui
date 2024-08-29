@@ -3,7 +3,7 @@ import { Menu, Moon, Search, Sun, X } from '@tamagui/lucide-icons'
 import { useUserTheme } from '@tamagui/one-theme'
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock'
 import { useEffect, useRef, useState } from 'react'
-import { useMedia, View, XStack } from 'tamagui'
+import { Stack, useMedia, View, XStack } from 'tamagui'
 import { Link } from 'vxs'
 import { OneLogo } from '~/features/brand/Logo'
 import { GithubIcon } from '~/features/icons/GithubIcon'
@@ -25,71 +25,81 @@ export const TopNav = () => {
     return undefined
   }, [isMenuOpen])
   return (
-    <XStack jc="space-between" ai="center" px="$5" py="$2">
+    <>
       <XStack
-        gap="$3"
-        left="$0"
+        jc="space-between"
         ai="center"
+        px="$5"
+        py="$2"
         $gtSm={{
-          display: 'none',
+          jc: 'flex-end',
+          top: 16,
         }}
       >
-        <Button circular onPress={() => setIsMenuOpen((prev) => !prev)}>
-          <Button.Icon>
-            {isMenuOpen ? (
-              <X width={16} height={16} color="$color12" />
-            ) : (
-              <Menu width={16} height={16} color="$color12" />
-            )}
-          </Button.Icon>
-        </Button>
-        <View
-          group
-          containerType="normal"
-          pos="relative"
-          mx="auto"
+        <XStack
+          gap="$3"
+          left="$0"
+          ai="center"
           $gtSm={{
             display: 'none',
           }}
         >
-          <OneLogo size={gtSm ? 1 : 0.5} animate />
-        </View>
-      </XStack>
-
-      <XStack
-        position="absolute"
-        ai="center"
-        jc="center"
-        gap="$0"
-        right="$3"
-        $gtSm={{
-          gap: '$4',
-        }}
-      >
-        <Button chromeless circular size="$4">
-          <Search width={24} height={24} color="$color12" strokeWidth={2} />
-        </Button>
-        <Button
-          circular
-          chromeless
-          onPress={() => setTheme(resolvedTheme === 'light' ? 'dark' : 'light')}
-          size="$4"
-        >
-          {resolvedTheme === 'light' ? <Moon /> : <Sun />}
-        </Button>
-
-        <Link target="_blank" href="https://github.com/tamagui/tamagui">
-          <XStack
-            ai="center"
+          <Button circular onPress={() => setIsMenuOpen((prev) => !prev)}>
+            <Button.Icon p="$4">
+              {isMenuOpen ? (
+                <X width={16} height={16} color="$color12" />
+              ) : (
+                <Menu width={16} height={16} color="$color12" />
+              )}
+            </Button.Icon>
+          </Button>
+          <View
             group
             containerType="normal"
-            gap="$2"
-            p="$2"
-            opacity={0.9}
-            hoverStyle={{ opacity: 1 }}
+            pos="relative"
+            mx="auto"
+            pointerEvents="none"
+            $gtSm={{
+              display: 'none',
+            }}
           >
-            <GithubIcon width={36} height={36} />
-            {/* <SizableText
+            <OneLogo size={gtSm ? 1 : 0.5} animate />
+          </View>
+        </XStack>
+
+        <XStack
+          ai="center"
+          jc="center"
+          gap="$0"
+          right="$0"
+          $gtSm={{
+            gap: '$4',
+          }}
+        >
+          <Button chromeless circular size="$4">
+            <Search width={24} height={24} color="$color12" strokeWidth={2} />
+          </Button>
+          <Button
+            circular
+            chromeless
+            onPress={() => setTheme(resolvedTheme === 'light' ? 'dark' : 'light')}
+            size="$4"
+          >
+            {resolvedTheme === 'light' ? <Moon /> : <Sun />}
+          </Button>
+
+          <Link target="_blank" href="https://github.com/tamagui/tamagui">
+            <XStack
+              ai="center"
+              group
+              containerType="normal"
+              gap="$2"
+              p="$2"
+              opacity={0.9}
+              hoverStyle={{ opacity: 1 }}
+            >
+              <GithubIcon width={36} height={36} />
+              {/* <SizableText
           $md={{ display: 'none' }}
           size="$3"
           color="$color12"
@@ -100,9 +110,11 @@ export const TopNav = () => {
         >
           Github
         </SizableText> */}
-          </XStack>
-        </Link>
+            </XStack>
+          </Link>
+        </XStack>
       </XStack>
-    </XStack>
+      {isMenuOpen ? <Stack tag="aside" ref={scrollParentRef}></Stack> : null}
+    </>
   )
 }
