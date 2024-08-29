@@ -7,7 +7,6 @@ import type { ReactNode } from 'react'
 import React, {
   createContext,
   memo,
-  startTransition,
   useCallback,
   useContext,
   useEffect,
@@ -15,6 +14,7 @@ import React, {
   useMemo,
   useReducer,
 } from 'react'
+import { startTransition } from '@tamagui/start-transition'
 
 interface PortalType {
   name: string

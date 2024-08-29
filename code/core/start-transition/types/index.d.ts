@@ -1,1 +1,2 @@
-export declare function startTransition(callback: () => void): void
+export declare const startTransition: (callback: React.TransitionFunction) => void;
+//# sourceMappingURL=index.d.ts.map

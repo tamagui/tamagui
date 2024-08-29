@@ -1,27 +1,16 @@
+import { Button } from '@tamagui/button'
 import { Menu, Moon, Search, Sun, X } from '@tamagui/lucide-icons'
 import { useUserTheme } from '@tamagui/one-theme'
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock'
-import {
-  AnimatePresence,
-  ScrollView,
-  Spacer,
-  Stack,
-  useMedia,
-  useWindowDimensions,
-  View,
-  XStack,
-  YStack,
-} from 'tamagui'
-import { Link, router } from 'vxs'
-import { OneLogo } from '~/features/brand/Logo'
-import { GithubIcon } from '~/features/icons/GithubIcon'
-import { DocsMenuContents } from '~/features/docs/DocsMenuContents'
+import { useEffect, useRef, useState } from 'react'
+import { ScrollView, Spacer, useMedia, useWindowDimensions, View, XStack } from 'tamagui'
+import { Link } from 'vxs'
 import { Drawer } from '~/components/Drawer'
+import { OneLogo } from '~/features/brand/Logo'
+import { DocsMenuContents } from '~/features/docs/DocsMenuContents'
+import { GithubIcon } from '~/features/icons/GithubIcon'
 
-import { Search as SearchIcon } from '@tamagui/lucide-icons'
-import { memo, useContext, useEffect, useRef, useState } from 'react'
-import type { ButtonProps } from 'tamagui'
-import { Button, SizableText, TooltipSimple } from 'tamagui'
+import { useContext } from 'react'
 
 import { SearchContext } from '~/features/search/SearchContext'
 
@@ -160,7 +149,7 @@ export const TopNav = () => {
               display: 'none',
             }}
           >
-            <Button.Icon p="$4">
+            <Button.Icon>
               {isMenuOpen ? (
                 <X width={16} height={16} color="$color12" />
               ) : (
