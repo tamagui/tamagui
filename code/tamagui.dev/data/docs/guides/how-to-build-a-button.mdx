@@ -130,10 +130,10 @@ const ButtonIcon = (props: { children: any }) => {
     shift: -2,
   })
   const theme = useTheme()
-  return cloneElement(props.children, {
+  return isValidElement(props.children) ? cloneElement(props.children, {
     size: smaller.val * 0.5,
     color: theme.color.get(),
-  })
+  }) : null
 }
 
 export const Button = withStaticProperties(ButtonFrame, {
@@ -386,10 +386,9 @@ export const ButtonText = styled(Text, {
 ```
 
 <Notice>
-The `...size` spread variant `name` defaults to implicit any. Update `tsconfig.json`'s `"noImplicitAny": false` to avoid TypeScript errors.
+  The `...size` spread variant `name` defaults to implicit any. Update
+  `tsconfig.json`'s `"noImplicitAny": false` to avoid TypeScript errors.
 </Notice>
-
-
 
 So now we can pass in our new `size` property:
 
