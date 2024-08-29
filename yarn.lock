@@ -1773,6 +1773,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@docsearch/css@npm:3.6.1":
+  version: 3.6.1
+  resolution: "@docsearch/css@npm:3.6.1"
+  checksum: 10/9afddf93797d85519e18ba7b747a1dc7e2a7e46d5530180fbb890657bcf77039bd728e435a82b143363da6f05d4bb993a000963ac41491c60725874b55ccc696
+  languageName: node
+  linkType: hard
+
 "@docsearch/react@npm:^3.6.0":
   version: 3.6.0
   resolution: "@docsearch/react@npm:3.6.0"
@@ -1796,6 +1803,32 @@ __metadata:
     search-insights:
       optional: true
   checksum: 10/9345b37b46563cca30b0d769bb49ec70d7ffdce1cffd1850df92733083783fef55b090bfb02861a11885e82cb4505d31c6be2063b3af32184a705b1e001b9f71
+  languageName: node
+  linkType: hard
+
+"@docsearch/react@npm:^3.6.1":
+  version: 3.6.1
+  resolution: "@docsearch/react@npm:3.6.1"
+  dependencies:
+    "@algolia/autocomplete-core": "npm:1.9.3"
+    "@algolia/autocomplete-preset-algolia": "npm:1.9.3"
+    "@docsearch/css": "npm:3.6.1"
+    algoliasearch: "npm:^4.19.1"
+  peerDependencies:
+    "@types/react": ">= 16.8.0 < 19.0.0"
+    react: ">= 16.8.0 < 19.0.0"
+    react-dom: ">= 16.8.0 < 19.0.0"
+    search-insights: ">= 1 < 3"
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+    react:
+      optional: true
+    react-dom:
+      optional: true
+    search-insights:
+      optional: true
+  checksum: 10/9c2e5a8d697f49d31c5bc8e2fd4301601abacfd7f8d3b3940d7e446c99949595b1c2a75796370544b9981ecd641737afb765416820f990f8c10e0a55aaace215
   languageName: node
   linkType: hard
 
@@ -7634,6 +7667,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/ooo@workspace:code/ooo"
   dependencies:
+    "@docsearch/react": "npm:^3.6.1"
     "@leeoniya/ufuzzy": "npm:^1.0.14"
     "@supabase/supabase-js": "npm:^2.44.4"
     "@tamagui/button": "npm:1.110.0"

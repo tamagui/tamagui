@@ -1,229 +1,119 @@
-import { FocusScope } from '@tamagui/focus-scope'
-import { Portal } from '@tamagui/portal'
-import type { Dispatch, SetStateAction } from 'react'
-import React, { forwardRef, useRef, useState } from 'react'
-import { Modal, PanResponder, Platform } from 'react-native'
-import type { Animated } from 'react-native'
-import type { PortalProps, StackProps, TamaguiElement } from 'tamagui'
-import {
-  Stack,
-  YStack,
-  createStyledContext,
-  styled,
-  useConfiguration,
-  useControllableState,
-  usePropsAndStyle,
-  withStaticProperties,
-} from 'tamagui'
-import { AnimatePresence } from '@tamagui/animate-presence'
-
-export const DrawerContext = createStyledContext<{
-  open: boolean
-  setOpen: Dispatch<SetStateAction<boolean>>
-}>({
-  open: false,
-  setOpen: () => {},
-})
-
-const SwipeDismissableComponent = React.forwardRef<
-  TamaguiElement,
-  StackProps & { onDismiss: () => void; children: any; dismissAfter?: number }
->(({ onDismiss, children, dismissAfter = 80, ...rest }, ref) => {
-  const { animationDriver } = useConfiguration()
-  const { useAnimatedNumber, useAnimatedNumberStyle } = animationDriver
-  const AnimatedView = (animationDriver.View ?? Stack) as typeof Animated.View
-  const pan = useAnimatedNumber(0)
-  const [props, style] = usePropsAndStyle(rest)
-  const [dragStarted, setDragStarted] = useState(false)
-  const dismissAfterRef = useRef(dismissAfter)
-
-  const panResponder = useRef(
-    PanResponder.create({
-      onStartShouldSetPanResponder: () => true,
-      onPanResponderMove: (event, gestureState) => {
-        const { dx } = gestureState
-        if (dx < 0) {
-          setDragStarted(true)
-          pan.setValue(dx, {
-            type: 'direct',
-          })
-        }
-      },
-      onPanResponderRelease: (e, gestureState) => {
-        setDragStarted(false)
-        if (gestureState.dx < -dismissAfterRef.current) {
-          if (onDismiss) {
-            onDismiss()
-          }
-        } else {
-          pan.setValue(0, {
-            type: 'spring',
-            overshootClamping: true,
-          })
-        }
-      },
-    })
-  ).current
-
-  const panStyle = useAnimatedNumberStyle(pan, (val) => {
-    'worklet'
-    return {
-      transform: [{ translateX: val }],
-    }
-  })
-
-  return (
-    <AnimatedView
-      ref={ref}
-      style={[
-        panStyle,
-        {
-          height: '100%',
-          ...(style as any),
-          ...(dragStarted && {
-            pointerEvents: 'none',
-          }),
-        },
-      ]}
-      {...panResponder.panHandlers}
-      {...(props as any)}
-    >
-      {children}
-    </AnimatedView>
-  )
-})
-
-const DrawerFrame = styled(YStack, {
-  variants: {
-    unstyled: {
-      false: {
-        themeInverse: true,
-        paddingVertical: '$2',
-        tag: 'nav',
-        width: 210,
-        alignItems: 'flex-start',
-        justifyContent: 'flex-start',
-        backgroundColor: '$background',
-        x: 0,
-        gap: '$4',
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: false,
-  },
-})
-
-type DrawerProps = {
-  open: boolean
-  onOpenChange?: (open: boolean) => void
-  /**
-   * When true, uses a portal to render at the very top of the root TamaguiProvider.
-   */
-  portalToRoot?: boolean
-}
-
-const Overlay = styled(YStack, {
-  name: 'DrawerOverlay',
-  context: DrawerContext,
-  enterStyle: {
-    opacity: 0,
-  },
-  exitStyle: {
-    opacity: 0,
-  },
-
-  variants: {
-    unstyled: {
-      false: {
-        fullscreen: true,
-        position: 'absolute',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        zIndex: 100_000 - 1,
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
-})
-
-const DrawerOverlay = Overlay.styleable((props, ref) => {
-  const { setOpen } = DrawerContext.useStyledContext()
-  return <Overlay ref={ref} onPress={() => setOpen(false)} {...props} />
-})
-
-const DrawerSwipeable = forwardRef<
-  TamaguiElement,
-  Omit<React.ComponentProps<typeof SwipeDismissableComponent>, 'onDismiss'>
->((props, ref) => {
-  const { setOpen, open: _open } = DrawerContext.useStyledContext()
-  return (
-    <SwipeDismissableComponent
-      onDismiss={() => setOpen(false)}
-      zIndex={1000_000_000}
-      position="absolute"
-      {...props}
-      ref={ref}
-    />
-  )
-})
-
-const DrawerContent = DrawerFrame.styleable((props, ref) => {
-  const { children, ...rest } = props
-
-  return (
-    <FocusScope trapped enabled={true} loop>
-      <DrawerFrame
-        ref={ref}
-        animation="medium"
-        enterStyle={{ x: -(rest.width || rest.w || 210) }}
-        exitStyle={{ x: -(rest.width || rest.w || 210) }}
-        {...rest}
-      >
-        {children}
-      </DrawerFrame>
-    </FocusScope>
-  )
-})
-
-const DrawerImpl = ({
-  open = false,
-  onOpenChange,
-  children,
-  portalToRoot,
-  ...rest
-}: DrawerProps & { children?: React.ReactNode }) => {
-  const [_open, setOpen] = useControllableState({
-    prop: open,
-    defaultProp: false,
-    onChange: onOpenChange,
-  })
-  // biome-ignore lint/complexity/noUselessFragments: necessary for AnimatedPresence
-  const content = open && <React.Fragment key="content">{children}</React.Fragment>
-  return (
-    <DrawerContext.Provider open={_open} setOpen={setOpen}>
-      <AnimatePresence>{open && content}</AnimatePresence>
-    </DrawerContext.Provider>
-  )
-}
-
-const DrawerPortal = (props: PortalProps) => {
-  return Platform.select({
-    web: <Portal zIndex={1000000000} {...props} />,
-    native: (
-      <Modal animationType="none" transparent={true}>
-        {props.children}
-      </Modal>
-    ),
-  })
-}
-
-export const Drawer = withStaticProperties(DrawerImpl, {
-  Content: DrawerContent,
-  Overlay: DrawerOverlay,
-  Swipeable: DrawerSwipeable,
-  Portal: DrawerPortal,
-})
+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
+VtBchasMvr6nYVN/jTaPHQ==

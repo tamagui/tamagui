@@ -1,113 +1,68 @@
-import { Github, Twitter } from '@tamagui/lucide-icons'
-import { Spacer, View, XStack, YStack } from 'tamagui'
-import { Link } from 'vxs'
-import { PrettyText } from './typography'
-
-export const Team = () => {
-  return (
-    <>
-      <PrettyText fontSize="$6" lineHeight="$6" color="$color" fow="bold" ta="center">
-        Team
-      </PrettyText>
-      <View
-        my="$4"
-        fd="row"
-        fw="wrap"
-        gap="$4"
-        ai="center"
-        jc="space-between"
-        $gtSm={{
-          gap: '$8',
-          jc: 'center',
-        }}
-      >
-        {[
-          {
-            image: 'nate',
-            name: `Nate`,
-            xHandle: 'natebirdman',
-            githubHandle: 'natebirdman',
-          },
-          {
-            image: 'pokai',
-            name: `Pokai`,
-            githubHandle: 'zetavg',
-            xHandle: 'zetavag',
-          },
-          {
-            image: 'jon',
-            name: `Jon`,
-            xHandle: 'jshez',
-            githubHandle: 'jonsherrard',
-          },
-          { image: 'dominic', name: `Dominic` },
-        ].map(({ name, image, xHandle, githubHandle }) => {
-          return (
-            <YStack
-              p="$2.5"
-              pt="$3"
-              miw="$12"
-              br="$4"
-              key={name}
-              gap="$0"
-              ai="flex-start"
-              jc="flex-start"
-              als={'stretch'}
-              bw={0.5}
-              borderColor="$yellow5Light"
-            >
-              <img
-                style={{
-                  width: 70,
-                  height: 70,
-                  borderRadius: 100,
-                  alignSelf: 'center',
-                }}
-                src={`/${image}.jpg`}
-              />
-              <PrettyText als="flex-start" fow="bold" fontSize="$4" theme="alt1" mt="$2">
-                {name}
-              </PrettyText>
-              {xHandle ? (
-                <Link href={`https://x.com/${xHandle}`} target="_blank">
-                  <XStack ai="center" gap="$2">
-                    <Twitter
-                      width={12}
-                      height={12}
-                      color="$color12"
-                      strokeWidth={1}
-                      fill={'$color12'}
-                    />
-                    <PrettyText fontSize="$1" theme="alt1">
-                      @{xHandle}
-                    </PrettyText>
-                  </XStack>
-                </Link>
-              ) : (
-                <Spacer size="$3" />
-              )}
-              {githubHandle ? (
-                <Link href={`https://github.com/${githubHandle}`} target="_blank">
-                  <XStack ai="center" gap="$2">
-                    <Github
-                      width={12}
-                      height={12}
-                      color="$color12"
-                      strokeWidth={1}
-                      fill="$color12"
-                    />
-                    <PrettyText fontSize="$1" theme="alt1">
-                      {githubHandle}
-                    </PrettyText>
-                  </XStack>
-                </Link>
-              ) : (
-                <Spacer size="$3" />
-              )}
-            </YStack>
-          )
-        })}
-      </View>
-    </>
-  )
-}
+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
