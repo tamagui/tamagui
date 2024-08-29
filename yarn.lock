@@ -6394,15 +6394,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/babel-plugin-fully-specified@npm:1.109.6":
-  version: 1.109.6
-  resolution: "@tamagui/babel-plugin-fully-specified@npm:1.109.6"
-  dependencies:
-    "@babel/core": "npm:^7.25.2"
-  checksum: 10/f26ebb4c72740ea6a3fc0ffbc028a8a41401c091ae6cf315fe3ab428167a118d77a02b88b7623bdce682aaf638cfcf81877f43baad3050a6bba8f4d860ff4576
-  languageName: node
-  linkType: hard
-
 "@tamagui/babel-plugin-fully-specified@npm:1.109.8, @tamagui/babel-plugin-fully-specified@workspace:code/packages/babel-plugin-fully-specified":
   version: 0.0.0-use.local
   resolution: "@tamagui/babel-plugin-fully-specified@workspace:code/packages/babel-plugin-fully-specified"
@@ -6481,29 +6472,6 @@ __metadata:
     zod: "npm:^3.22.4"
   languageName: unknown
   linkType: soft
-
-"@tamagui/build@npm:1.109.6":
-  version: 1.109.6
-  resolution: "@tamagui/build@npm:1.109.6"
-  dependencies:
-    "@babel/core": "npm:^7.25.2"
-    "@tamagui/babel-plugin-fully-specified": "npm:1.109.6"
-    "@types/fs-extra": "npm:^9.0.13"
-    babel-plugin-fully-specified: "npm:*"
-    chokidar: "npm:^3.5.2"
-    esbuild: "npm:^0.23.0"
-    esbuild-plugin-es5: "npm:^2.1.0"
-    esbuild-register: "npm:^3.6.0"
-    execa: "npm:^5.0.0"
-    fast-glob: "npm:^3.2.11"
-    fs-extra: "npm:^11.2.0"
-    lodash.debounce: "npm:^4.0.8"
-  bin:
-    tamagui-build: tamagui-build.js
-    teesx: teesx.sh
-  checksum: 10/aaaa09c55337f68f5c15c3ea923995aaeff6b73f08ec254c01d9534accf7fbba4a575e3eb9abd018ca5559ed0377407fa58cf2314961895fe0c4ed28c2ab1057
-  languageName: node
-  linkType: hard
 
 "@tamagui/build@npm:1.109.8, @tamagui/build@npm:^1.109.0, @tamagui/build@workspace:code/packages/build":
   version: 0.0.0-use.local
@@ -8078,7 +8046,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/start-transition@workspace:code/core/start-transition"
   dependencies:
-    "@tamagui/build": "npm:1.109.6"
+    "@tamagui/build": "npm:1.109.8"
     react: "npm:^18.2.0 || ^19.0.0"
   peerDependencies:
     react: "*"
