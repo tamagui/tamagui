@@ -3,11 +3,22 @@ import { Menu, Moon, Search, Sun, X } from '@tamagui/lucide-icons'
 import { useUserTheme } from '@tamagui/one-theme'
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock'
 import { useEffect, useRef, useState } from 'react'
-import { Stack, useMedia, View, XStack } from 'tamagui'
-import { Link } from 'vxs'
+import {
+  AnimatePresence,
+  ScrollView,
+  Spacer,
+  Stack,
+  useMedia,
+  useWindowDimensions,
+  View,
+  XStack,
+  YStack,
+} from 'tamagui'
+import { Link, router } from 'vxs'
 import { OneLogo } from '~/features/brand/Logo'
 import { GithubIcon } from '~/features/icons/GithubIcon'
-import { Container, ContainerDocs } from '~/features/site/Containers'
+import { DocsMenuContents } from '~/features/docs/DocsMenuContents'
+import { Drawer } from '~/components/Drawer'
 
 export const TopNav = () => {
   // While the overlay is open, disable body scroll.
@@ -24,9 +35,20 @@ export const TopNav = () => {
     }
     return undefined
   }, [isMenuOpen])
+
+  useEffect(() => {
+    if (isMenuOpen) {
+      gtSm && setIsMenuOpen(false)
+    }
+    return undefined
+  }, [gtSm])
+
+  const { height, width } = useWindowDimensions()
+
   return (
     <>
       <XStack
+        ref={scrollParentRef}
         jc="space-between"
         ai="center"
         px="$5"
@@ -114,7 +136,46 @@ export const TopNav = () => {
           </Link>
         </XStack>
       </XStack>
-      {isMenuOpen ? <Stack tag="aside" ref={scrollParentRef}></Stack> : null}
+      <Drawer
+        open={isMenuOpen}
+        onOpenChange={() => {
+          setIsMenuOpen((prev) => !prev)
+        }}
+      >
+        {/* <Drawer.Portal> */}
+        <Drawer.Overlay
+          height={height}
+          width={width + 100}
+          animation="200ms"
+          enterStyle={{ opacity: 0 }}
+          exitStyle={{ opacity: 0 }}
+        />
+        <Drawer.Swipeable>
+          <Drawer.Content
+            height={height}
+            width={260}
+            alignItems="flex-start"
+            justifyContent="flex-start"
+            backgroundColor="$background"
+            gap="$4"
+            enterStyle={{ x: -260 }}
+            exitStyle={{ x: -260 }}
+          >
+            <ScrollView
+              key="nav-scroll"
+              pb="$20"
+              width="100%"
+              height="100%"
+              showsVerticalScrollIndicator={false}
+              paddingRight="$4"
+            >
+              <Spacer size="$3" />
+              <DocsMenuContents />
+            </ScrollView>
+          </Drawer.Content>
+        </Drawer.Swipeable>
+        {/* </Drawer.Portal> */}
+      </Drawer>
     </>
   )
 }
