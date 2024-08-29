@@ -1,6 +1,7 @@
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import type { GetProps, TamaguiElement } from '@tamagui/core'
 import { Stack, Text, styled, useEvent } from '@tamagui/core'
+import { startTransition } from '@tamagui/start-transition'
 import { Portal } from '@tamagui/portal'
 import { VisuallyHidden } from '@tamagui/visually-hidden'
 import * as React from 'react'
@@ -48,7 +49,7 @@ const ToastAnnounce: React.FC<ScopedProps<ToastAnnounceProps>> = (
 
   // render text content in the next frame to ensure toast is announced in NVDA
   useNextFrame(() => {
-    React.startTransition(() => {
+    startTransition(() => {
       setRenderAnnounceText(true)
     })
   })

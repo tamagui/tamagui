@@ -1,5 +1,6 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { useEvent } from '@tamagui/use-event'
+import { startTransition } from '@tamagui/start-transition'
 import * as React from 'react'
 
 import type { FocusScopeProps } from './FocusScopeProps'
@@ -51,7 +52,7 @@ export function useFocusScope(
   const onUnmountAutoFocus = useEvent(onUnmountAutoFocusProp)
   const lastFocusedElementRef = React.useRef<HTMLElement | null>(null)
   const composedRefs = useComposedRefs(forwardedRef, (node) => {
-    React.startTransition(() => {
+    startTransition(() => {
       setContainer(node)
     })
   })
