@@ -1,204 +1,117 @@
-import { Button } from '@tamagui/button'
-import { Menu, Moon, Search, Sun, X } from '@tamagui/lucide-icons'
-import { useUserTheme } from '@tamagui/one-theme'
-import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock'
-import { useEffect, useRef, useState } from 'react'
-import { ScrollView, Spacer, useMedia, useWindowDimensions, View, XStack } from 'tamagui'
-import { Link } from 'vxs'
-import { Drawer } from '~/components/Drawer'
-import { OneLogo } from '~/features/brand/Logo'
-import { DocsMenuContents } from '~/features/docs/DocsMenuContents'
-import { GithubIcon } from '~/features/icons/GithubIcon'
-
-import { useContext } from 'react'
-
-import { SearchContext } from '~/features/search/SearchContext'
-
-export const TopNav = () => {
-  // While the overlay is open, disable body scroll.
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const scrollParentRef = useRef<HTMLDivElement>(null)
-  const [{ resolvedTheme }, setTheme] = useUserTheme()
-  const { gtSm } = useMedia()
-
-  useEffect(() => {
-    if (isMenuOpen) {
-      const preferredScrollParent = scrollParentRef.current!
-      disableBodyScroll(preferredScrollParent)
-      return () => enableBodyScroll(preferredScrollParent)
-    }
-    return undefined
-  }, [isMenuOpen])
-
-  useEffect(() => {
-    if (isMenuOpen) {
-      gtSm && setIsMenuOpen(false)
-    }
-    return undefined
-  }, [gtSm])
-  const searchRef = useRef()
-  const { onOpen, onInput } = useContext(SearchContext)
-
-  useEffect(() => {
-    const onKeyDown = (event: any) => {
-      if (
-        !searchRef.current ||
-        searchRef.current !== document.activeElement ||
-        !onInput
-      ) {
-        return
-      }
-      if (!/[a-zA-Z0-9]/.test(String.fromCharCode(event.keyCode))) {
-        return
-      }
-      onInput(event)
-    }
-    window.addEventListener('keydown', onKeyDown)
-    return () => {
-      window.removeEventListener('keydown', onKeyDown)
-    }
-  }, [onInput, searchRef])
-
-  const { height, width } = useWindowDimensions()
-
-  return (
-    <>
-      <XStack
-        ref={scrollParentRef}
-        jc="space-between"
-        ai="center"
-        px="$5"
-        py="$2"
-        $gtSm={{
-          jc: 'flex-end',
-          top: 16,
-        }}
-      >
-        <XStack
-          gap="$3"
-          left="$0"
-          ai="center"
-          $gtSm={{
-            display: 'none',
-          }}
-        >
-          <View
-            group
-            containerType="normal"
-            pos="relative"
-            mx="auto"
-            pointerEvents="none"
-            $gtSm={{
-              display: 'none',
-            }}
-          >
-            <OneLogo size={gtSm ? 1 : 0.5} animate />
-          </View>
-        </XStack>
-
-        <XStack
-          ai="center"
-          jc="center"
-          gap="$0"
-          right="$0"
-          $gtSm={{
-            gap: '$2',
-          }}
-        >
-          <Button chromeless circular size="$4" onPress={onOpen} ref={searchRef}>
-            <Search width={24} height={24} color="$color12" strokeWidth={2} />
-          </Button>
-          <Button
-            circular
-            chromeless
-            onPress={() => setTheme(resolvedTheme === 'light' ? 'dark' : 'light')}
-            size="$4"
-          >
-            {resolvedTheme === 'light' ? <Moon /> : <Sun />}
-          </Button>
-
-          <Link target="_blank" href="https://github.com/tamagui/tamagui">
-            <XStack
-              ai="center"
-              group
-              containerType="normal"
-              gap="$2"
-              p="$2"
-              opacity={0.9}
-              hoverStyle={{ opacity: 1 }}
-            >
-              <GithubIcon width={gtSm ? 36 : 24} height={gtSm ? 36 : 24} />
-              {/* <SizableText
-          $md={{ display: 'none' }}
-          size="$3"
-          color="$color12"
-          o={0.5}
-          $group-hover={{
-            o: 0.8,
-          }}
-        >
-          Github
-        </SizableText> */}
-            </XStack>
-          </Link>
-          <Button
-            circular
-            ml="$2"
-            onPress={() => setIsMenuOpen((prev) => !prev)}
-            $gtSm={{
-              display: 'none',
-            }}
-          >
-            <Button.Icon>
-              {isMenuOpen ? (
-                <X width={16} height={16} color="$color12" />
-              ) : (
-                <Menu width={16} height={16} color="$color12" />
-              )}
-            </Button.Icon>
-          </Button>
-        </XStack>
-      </XStack>
-      <Drawer
-        open={isMenuOpen}
-        onOpenChange={() => {
-          setIsMenuOpen((prev) => !prev)
-        }}
-      >
-        {/* <Drawer.Portal> */}
-        <Drawer.Overlay
-          height={height}
-          width={width + 100}
-          animation="200ms"
-          enterStyle={{ opacity: 0 }}
-          exitStyle={{ opacity: 0 }}
-        />
-        <Drawer.Swipeable>
-          <Drawer.Content
-            height={height}
-            width={260}
-            alignItems="flex-start"
-            justifyContent="flex-start"
-            backgroundColor="$background"
-            gap="$4"
-            enterStyle={{ x: -260 }}
-            exitStyle={{ x: -260 }}
-          >
-            <ScrollView
-              key="nav-scroll"
-              pb="$20"
-              width="100%"
-              height="100%"
-              showsVerticalScrollIndicator={false}
-              paddingRight="$4"
-            >
-              <Spacer size="$3" />
-              <DocsMenuContents />
-            </ScrollView>
-          </Drawer.Content>
-        </Drawer.Swipeable>
-        {/* </Drawer.Portal> */}
-      </Drawer>
-    </>
-  )
-}
+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

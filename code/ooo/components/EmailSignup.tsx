@@ -1,169 +1,102 @@
-import { useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
-import { useState } from 'react'
-import { View, Text, Input, Button } from 'tamagui'
-import { PrettyTextMedium } from './typography'
-
-export const EmailSignup = () => {
-  const isHydrated = useDidFinishSSR()
-  const [formState, setFormState] = useState<{
-    loading: boolean
-    message: string
-    type: null | 'success' | 'error'
-  }>({ loading: false, message: '', type: null })
-
-  const handleSubmit = async (event) => {
-    event.preventDefault()
-    setFormState({ loading: true, message: '', type: null })
-
-    const formData = new FormData(event.target)
-
-    try {
-      const response = await fetch('/api/mailing-list-signup', {
-        method: 'POST',
-        body: formData,
-      })
-
-      const result = await response.json()
-
-      if (result.status === 'success') {
-        setFormState({
-          loading: false,
-          message: 'Thank you for signing up!',
-          type: 'success',
-        })
-      } else {
-        setFormState({
-          loading: false,
-          message: `Error: ${result.message}`,
-          type: 'error',
-        })
-      }
-    } catch (error) {
-      setFormState({
-        loading: false,
-        message: 'An unexpected error occurred. Please try again later.',
-        type: 'error',
-      })
-    }
-  }
-
-  return (
-    <View
-      theme="yellow"
-      br="$6"
-      bc="$color5"
-      mt="$6"
-      gap="$3"
-      w="100%"
-      $gtSm={{
-        px: '$8',
-      }}
-    >
-      <View gap="$1">
-        <PrettyTextMedium>For occasional development updates:</PrettyTextMedium>
-      </View>
-
-      <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" defer></script>
-
-      <form onSubmit={handleSubmit} action="/api/mailing-list-signup" method="POST">
-        <View fd="row" gap="$3">
-          <Input
-            type={'email' as any}
-            f={1}
-            size="$5"
-            placeholderTextColor="$color11"
-            placeholder="Email"
-          />
-          <Button
-            size="$5"
-            icon={
-              <Text color="$color11">
-                {formState.loading ? (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="6"
-                    viewBox="0 0 24 6"
-                    fill="none"
-                  >
-                    <circle cx="3" cy="3" r="3" fill="currentColor">
-                      <animate
-                        attributeName="opacity"
-                        values="1;0;1"
-                        dur="1s"
-                        repeatCount="indefinite"
-                        begin="0.1s"
-                      />
-                    </circle>
-                    <circle cx="12" cy="3" r="3" fill="currentColor">
-                      <animate
-                        attributeName="opacity"
-                        values="1;0;1"
-                        dur="1s"
-                        repeatCount="indefinite"
-                        begin="0.3s"
-                      />
-                    </circle>
-                    <circle cx="21" cy="3" r="3" fill="currentColor">
-                      <animate
-                        attributeName="opacity"
-                        values="1;0;1"
-                        dur="1s"
-                        repeatCount="indefinite"
-                        begin="0.5s"
-                      />
-                    </circle>
-                  </svg>
-                ) : (
-                  <svg
-                    width={20}
-                    height={20}
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <rect
-                      width="20"
-                      height="16"
-                      x="2"
-                      y="4"
-                      rx="2"
-                      stroke="currentColor"
-                    />
-                    <path
-                      d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"
-                      stroke="currentColor"
-                    />
-                  </svg>
-                )}
-              </Text>
-            }
-          />
-        </View>
-
-        {isHydrated && (
-          <div
-            className="cf-turnstile"
-            data-size="compact"
-            data-sitekey="0x4AAAAAAAhB3YybI4UeXEYX"
-          />
-        )}
-
-        {formState.message && (
-          <View
-            theme={formState.type === 'success' ? 'green' : 'red'}
-            mt="$3"
-            p="$2"
-            br="$4"
-            bg="$color2"
-          >
-            <Text>{formState.message}</Text>
-          </View>
-        )}
-      </form>
-    </View>
-  )
-}
+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

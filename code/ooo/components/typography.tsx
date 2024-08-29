@@ -1,47 +1,18 @@
-import { Paragraph, styled } from 'tamagui'
-
-export const PrettyText = styled(Paragraph, {
-  className: 'pretty-text',
-  textWrap: 'pretty',
-  theme: 'yellow',
-  color: '$color12',
-  fontSize: '$6',
-  lineHeight: '$7',
-})
-
-export const PrettyTextMedium = styled(PrettyText, {
-  fontSize: '$5',
-  lineHeight: '$5',
-})
-
-export const PrettyTextBigger = styled(PrettyText, {
-  my: 5,
-  letterSpacing: -0.4,
-  fontSize: 18,
-  lineHeight: 30,
-  className: '',
-  color: '$color12',
-  $gtSm: {
-    fontSize: 23,
-    lineHeight: 38,
-  },
-})
-
-export const PrettyTextBiggest = styled(PrettyText, {
-  // fontFamily: 'Perfectly Nineties',
-  fontSize: 100,
-  lineHeight: 100,
-  fontWeight: '500',
-  color: '$color11',
-  paddingBottom: 20,
-
-  $sm: {
-    fontSize: 58,
-    lineHeight: 62,
-  },
-
-  $xs: {
-    fontSize: 48,
-    lineHeight: 58,
-  },
-})
+U2FsdGVkX18bFZUFQi+GiFjPBjx4rt8OOtguaBOEeFIdAQ7aQI/SGeMBS1sdbIuA
+Kl6hb95637riMj4ICwSbTMXNP3Zx3GrRQP3TkTgZl/+tA/iHXIDMcwkeQiFm+1WP
+/5Vy+lEjAgI7GnnbjTWXtQ9Jvri/s8DLHr/CyaSpHfaycAlnDar115kEJcKh+lrc
+gSAfRB1E32nurP25mFzmXfvsrvAdkPZEs1JY4gwFEfGwfFNG2KG54qW8cRi3OCFR
+wGOcmNkWf209Auw7h9WZNIkQ6SD1WjzRhLYjxuJAP5oLq2WJjWfCYRTFu8ALUX1B
+ZgAuM+Nch99ATA23XBztaq4WXmZMhwxK85hoCP5snq83gVwJ3wyFl0pZ7vyAx2nJ
+29j2HU/ds9WP5J3Ao3T6/rBj64nQUrUFOP/t2YkM7hwdEukW99BeHsLLte3t5DeP
+nHAqw85T7B1aWqAYFCyVIauBHibgHnW5gXVl4vaCx486BEVqTwpS9qSETofwCQLQ
+REBa55J4/CM7f2mmp1fTVt+sHZrAJ6e1uuRZcE1I6pABAmLS+Fei3wIBQsFbVama
+pV29Ym27rJpyfTPk123QKcKfcf3jjcG5eNU+PVQlG7+H8GRqvzVyaRq7msxkN/X6
+Hkyiu3hDH0Gyfmc0CLy/Yiof1oQUJ5ThYtLM+f0iv8ibSq13Rnzv/C8XEyjc6jwi
+4+iCfGCF91GX23yeXxxjffbw9nrkv4vhWR/FORShJ24dzBCXVTLQJO/u+c3F2Lcy
+v3+FjRzehX4vrKP+OD3oL6kNNKtzbsD5T66ZERbJNN2ICxbMKvoIUgVJORUslF90
+t/fLU9iO/iz9nuK7WAs0V9egSVsgwQykFBVGmUnhn1SPkhSAwFDl2NSgPwDsPc3j
+5YPXC/BVkRPy8PTt0DKBggY5mI8eayJ4ZQwqYq1EVhdoPekdtTF6aJKO+QYDIauA
+NaL0oNF837vnHoVPLBt2BvIvUgbQsZYJ/+cCE1+oeO4f7ccHegV14EIn+4uUtF2W
+roNfpkT6oTymVJO+XBKmJay3b8cK0KzSL4UqZ6YSrc0SxG2aslOrtkR4/oyupszu
+cFH3GkhRX++p1zEfACC7O0P3Zi0QUMQ21YzYxynCAcHcCOsTiJhrJh4wtD++MMjh
