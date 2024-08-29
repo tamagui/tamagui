@@ -1,3 +1,7 @@
+@natew
+
+- algolia creds
+
 @jsherrard
 
 - uniswap/tamagui fixes, see uniswap section
