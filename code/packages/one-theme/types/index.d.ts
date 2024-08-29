@@ -1,8 +1,6 @@
-type Scheme = 'light' | 'dark';
-type SchemeSetting = 'system' | 'light' | 'dark';
-export declare function getSystemTheme(): "light" | "dark";
+import type { SchemeSetting } from './types';
+export { useSystemTheme } from './useSystemTheme';
 export declare const HydrateTheme: () => import("react/jsx-runtime").JSX.Element | null;
-export declare function useSystemTheme(): Scheme;
 export declare function useUserTheme(): readonly [{
     systemTheme: SchemeSetting;
     userTheme: SchemeSetting;
@@ -11,5 +9,4 @@ export declare function useUserTheme(): readonly [{
 export declare function UserThemeProvider(props: {
     children: any;
 }): import("react/jsx-runtime").JSX.Element;
-export {};
 //# sourceMappingURL=index.d.ts.map

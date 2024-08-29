@@ -1,6 +1,6 @@
 import { startTransition as reactStartTransition } from 'react'
 
-const startTransition = (callback) => {
+export const startTransition = (callback: React.TransitionFunction) => {
   if (process.env.TAMAGUI_TARGET !== 'web') {
     // Pass-through function
     callback()
@@ -9,5 +9,3 @@ const startTransition = (callback) => {
     reactStartTransition(callback)
   }
 }
-
-export { startTransition }

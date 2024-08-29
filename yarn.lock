@@ -7623,6 +7623,7 @@ __metadata:
     "@tamagui/build": "npm:1.109.8"
     "@tamagui/use-did-finish-ssr": "npm:1.109.8"
     react: "npm:^18.2.0 || ^19.0.0"
+    react-native: "npm:0.74.1"
   peerDependencies:
     react: "*"
     react-native: "*"
