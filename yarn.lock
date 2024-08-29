@@ -7643,6 +7643,7 @@ __metadata:
     "@tamagui/one-theme": "npm:1.109.8"
     "@tamagui/themes": "npm:1.109.8"
     "@tamagui/use-store": "npm:1.109.8"
+    body-scroll-lock: "npm:^4.0.0-beta.0"
     mdx-bundler: "npm:^10.0.2"
     patch-package: "npm:^8.0.0"
     postmark: "npm:^3.0.18"
@@ -11425,6 +11426,13 @@ __metadata:
     type-is: "npm:~1.6.18"
     unpipe: "npm:1.0.0"
   checksum: 10/3cf171b82190cf91495c262b073e425fc0d9e25cc2bf4540d43f7e7bbca27d6a9eae65ca367b6ef3993eea261159d9d2ab37ce444e8979323952e12eb3df319a
+  languageName: node
+  linkType: hard
+
+"body-scroll-lock@npm:^4.0.0-beta.0":
+  version: 4.0.0-beta.0
+  resolution: "body-scroll-lock@npm:4.0.0-beta.0"
+  checksum: 10/19e574a36b44c1e1d8b7e024ca06740927f8ddce5d957475c79964cfb7d4caa204e04f05e9b86fca0e339ad746df8d36efd77d05b91983000a35c160e2645963
   languageName: node
   linkType: hard
 
