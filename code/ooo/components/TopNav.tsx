@@ -47,6 +47,28 @@ export const TopNav = () => {
     }
     return undefined
   }, [gtSm])
+  const searchRef = useRef()
+  const { onOpen, onInput } = useContext(SearchContext)
+
+  useEffect(() => {
+    const onKeyDown = (event: any) => {
+      if (
+        !searchRef.current ||
+        searchRef.current !== document.activeElement ||
+        !onInput
+      ) {
+        return
+      }
+      if (!/[a-zA-Z0-9]/.test(String.fromCharCode(event.keyCode))) {
+        return
+      }
+      onInput(event)
+    }
+    window.addEventListener('keydown', onKeyDown)
+    return () => {
+      window.removeEventListener('keydown', onKeyDown)
+    }
+  }, [onInput, searchRef])
 
   const { height, width } = useWindowDimensions()
 
@@ -71,15 +93,6 @@ export const TopNav = () => {
             display: 'none',
           }}
         >
-          <Button circular onPress={() => setIsMenuOpen((prev) => !prev)}>
-            <Button.Icon p="$4">
-              {isMenuOpen ? (
-                <X width={16} height={16} color="$color12" />
-              ) : (
-                <Menu width={16} height={16} color="$color12" />
-              )}
-            </Button.Icon>
-          </Button>
           <View
             group
             containerType="normal"
@@ -100,10 +113,10 @@ export const TopNav = () => {
           gap="$0"
           right="$0"
           $gtSm={{
-            gap: '$4',
+            gap: '$2',
           }}
         >
-          <Button chromeless circular size="$4">
+          <Button chromeless circular size="$4" onPress={onOpen} ref={searchRef}>
             <Search width={24} height={24} color="$color12" strokeWidth={2} />
           </Button>
           <Button
@@ -125,7 +138,7 @@ export const TopNav = () => {
               opacity={0.9}
               hoverStyle={{ opacity: 1 }}
             >
-              <GithubIcon width={36} height={36} />
+              <GithubIcon width={gtSm ? 36 : 24} height={gtSm ? 36 : 24} />
               {/* <SizableText
           $md={{ display: 'none' }}
           size="$3"
@@ -139,6 +152,22 @@ export const TopNav = () => {
         </SizableText> */}
             </XStack>
           </Link>
+          <Button
+            circular
+            ml="$2"
+            onPress={() => setIsMenuOpen((prev) => !prev)}
+            $gtSm={{
+              display: 'none',
+            }}
+          >
+            <Button.Icon p="$4">
+              {isMenuOpen ? (
+                <X width={16} height={16} color="$color12" />
+              ) : (
+                <Menu width={16} height={16} color="$color12" />
+              )}
+            </Button.Icon>
+          </Button>
         </XStack>
       </XStack>
       <Drawer
@@ -184,44 +213,3 @@ export const TopNav = () => {
     </>
   )
 }
-
-export const SearchButton = memo((props: ButtonProps) => {
-  const { onOpen, onInput } = useContext(SearchContext)
-
-  const ref = useRef()
-
-  useEffect(() => {
-    const onKeyDown = (event: any) => {
-      if (!ref || ref.current !== document.activeElement || !onInput) {
-        return
-      }
-      if (!/[a-zA-Z0-9]/.test(String.fromCharCode(event.keyCode))) {
-        return
-      }
-      onInput(event)
-    }
-    window.addEventListener('keydown', onKeyDown)
-    return () => {
-      window.removeEventListener('keydown', onKeyDown)
-    }
-  }, [onInput, ref])
-
-  return (
-    <TooltipSimple groupId="header-actions-search" label="Search">
-      <Button
-        aria-label="Search docs"
-        ref={ref as any}
-        onPress={onOpen}
-        gap="$1"
-        icon={SearchIcon}
-        // dont hide this on touchables to avoid layout shifts...
-        iconAfter={
-          <SizableText size="$1" mx="$1" $sm={{ maw: 0, ov: 'hidden', mx: -1 }} o={0.25}>
-            /
-          </SizableText>
-        }
-        {...props}
-      />
-    </TooltipSimple>
-  )
-})
