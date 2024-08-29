@@ -188,17 +188,7 @@ export const getSplitStyles: StyleSplitter = (
   /**
    * Not the biggest fan of creating an object but it is a nice API
    */
-  let curPropsState
   const styleState: GetStyleState = {
-    // this should go away, right now we're doing really crazy cumulative props,
-    // as variants are resolved basically we go back and merge the results onto
-    // the curProps, so that each following variant function recieves the current
-    // "styles" with variants expanded. powerful, but i think too fancy
-    // there's some part of the ui kit that depends on it we'd have to find and fix
-    get curProps() {
-      curPropsState ||= {}
-      return curPropsState
-    },
     classNames,
     conf,
     props,
@@ -338,13 +328,6 @@ export const getSplitStyles: StyleSplitter = (
         }
       }
     }
-
-    // if (valInit !== props[keyInit]) {
-    //   // we collect updated props as we go, for functional variants later
-    //   // functional variants receive a prop object that represents the current
-    //   // props at that point in the loop
-    //   styleState.curProps[keyInit] = valInit
-    // }
 
     if (process.env.TAMAGUI_TARGET === 'native') {
       if (!isValidStyleKeyInit) {
@@ -550,7 +533,6 @@ export const getSplitStyles: StyleSplitter = (
           variant: variants?.[keyInit],
           isVariant,
           isHOCShouldPassThrough,
-          curProps: { ...styleState.curProps },
           parentStaticConfig,
         })
       }
@@ -634,7 +616,6 @@ export const getSplitStyles: StyleSplitter = (
             shouldPassProp,
             isHOCShouldPassThrough,
             usedKeys: { ...usedKeys },
-            curProps: { ...styleState.curProps },
           })
           log('expanded', expanded, '\nusedKeys', { ...usedKeys }, '\ncurrent', {
             ...styleState.style,
@@ -1497,13 +1478,13 @@ export const getSubStyle = (
   styleIn: Object,
   avoidMergeTransform?: boolean
 ): TextStyle => {
-  const { staticConfig, props, conf, styleProps } = styleState
+  const { staticConfig, conf, styleProps } = styleState
   const styleOut: TextStyle = {}
 
   for (let key in styleIn) {
     const val = styleIn[key]
     key = conf.shorthands[key] || key
-    const expanded = propMapper(key, val, styleState, { ...props, ...props[subKey] })
+    const expanded = propMapper(key, val, styleState)
     if (!expanded || (!staticConfig.isHOC && key in skipProps && !styleProps.noSkip)) {
       continue
     }

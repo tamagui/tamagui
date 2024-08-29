@@ -20,7 +20,7 @@ import { isObj } from './isObj'
 import { pseudoDescriptors } from './pseudoDescriptors'
 import { skipProps } from './skipProps'
 
-export const propMapper: PropMapper = (key, value, styleStateIn, subPropsIn) => {
+export const propMapper: PropMapper = (key, value, styleState) => {
   lastFontFamilyToken = null
 
   if (!(process.env.TAMAGUI_TARGET === 'native' && isAndroid)) {
@@ -28,7 +28,7 @@ export const propMapper: PropMapper = (key, value, styleStateIn, subPropsIn) => 
     if (key === 'elevationAndroid') return
   }
 
-  const { conf, styleProps, fontFamily, staticConfig } = styleStateIn
+  const { conf, styleProps, fontFamily, staticConfig } = styleState
 
   if (value === 'unset') {
     const unsetVal = conf.unset?.[key]
@@ -40,17 +40,10 @@ export const propMapper: PropMapper = (key, value, styleStateIn, subPropsIn) => 
     }
   }
 
-  // we use this for the sub-props like pseudos so we need to overwrite the "props" in styleState
-  // fallbackProps is awkward thanks to static
-  // also we need to override the props here because subStyles pass in a sub-style props object
-  const subProps = styleProps.fallbackProps || subPropsIn
-  const styleState = subProps
-    ? new Proxy(styleStateIn, {
-        get(_, k) {
-          return k === 'curProps' ? subProps : Reflect.get(_, k)
-        },
-      })
-    : styleStateIn
+  // only used by compiler
+  if (styleProps.fallbackProps) {
+    styleState.props = styleProps.fallbackProps
+  }
 
   const { variants } = staticConfig
 
@@ -69,8 +62,6 @@ export const propMapper: PropMapper = (key, value, styleStateIn, subPropsIn) => 
 
   if (!styleProps.noExpand) {
     if (variants && key in variants) {
-      styleState.curProps[key] = value
-
       const variantValue = resolveVariants(key, value, styleProps, styleState, '')
       if (variantValue) {
         return variantValue
@@ -124,7 +115,6 @@ const resolveVariants: StyleResolver = (
       value,
       variantValue,
       variants,
-      curProps: { ...styleState.curProps },
     })
     console.groupEnd()
   }
@@ -253,9 +243,6 @@ const resolveTokensAndVariants: StyleResolver<Object> = (
       res[subKey] = val
     } else {
       if (variants && subKey in variants) {
-        // if its a variant expanded, attach to curProps
-        styleState.curProps[subKey] = val
-
         // avoids infinite loop if variant is matching a style prop
         // eg: { variants: { flex: { true: { flex: 2 } } } }
         if (parentVariantKey && parentVariantKey === key) {

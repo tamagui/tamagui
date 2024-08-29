@@ -931,7 +931,6 @@ export function createExtractor(
             theme: defaultTheme,
             viewProps: defaultProps,
             conf: tamaguiConfig!,
-            curProps: defaultProps,
             props: defaultProps,
             componentState,
             styleProps: {
@@ -1890,7 +1889,6 @@ export function createExtractor(
                     const styleState = {
                       ...propMapperStyleState,
                       props: completeProps,
-                      curProps: completeProps,
                     }
 
                     let out = Object.fromEntries(

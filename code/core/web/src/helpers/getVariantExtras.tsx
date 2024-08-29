@@ -9,7 +9,7 @@ export const getVariantExtras = (styleState: GetStyleState) => {
     return cache.get(styleState)
   }
 
-  const { curProps, props, conf, context, theme } = styleState
+  const { props, conf, context, theme } = styleState
   let fonts = conf.fontsParsed
   if (context?.language) {
     fonts = getFontsForLanguage(conf.fontsParsed, context.language)
@@ -21,7 +21,7 @@ export const getVariantExtras = (styleState: GetStyleState) => {
     theme,
     get fontFamily() {
       return (
-        getVariableValue(styleState.fontFamily || styleState.curProps.fontFamily) ||
+        getVariableValue(styleState.fontFamily || styleState.props.fontFamily) ||
         props.fontFamily ||
         getVariableValue(styleState.conf.defaultFont)
       )
@@ -34,18 +34,7 @@ export const getVariantExtras = (styleState: GetStyleState) => {
           : undefined)
       )
     },
-    // TODO do this in splitstlye
-    // we avoid passing in default props for media queries because that would confuse things like SizableText.size:
-    props: new Proxy(props, {
-      // handles shorthands
-      get(target, key) {
-        for (const tryKey of [key, conf.inverseShorthands[key as any]]) {
-          if (!tryKey) continue
-          if (Reflect.has(curProps, tryKey)) return Reflect.get(curProps, tryKey)
-          return Reflect.get(target, tryKey)
-        }
-      },
-    }),
+    props,
   }
 
   cache.set(styleState, next)

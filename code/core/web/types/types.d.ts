@@ -1240,7 +1240,6 @@ export type GetStyleState = {
     theme: ThemeParsed;
     props: Record<string, any>;
     context?: ComponentContextI;
-    curProps: Record<string, any>;
     viewProps: Record<string, any>;
     styleProps: SplitStyleProps;
     componentState: TamaguiComponentState;
