@@ -1,27 +1,17 @@
-import { useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
 import {
   createContext,
   useCallback,
   useContext,
-  useEffect,
   useLayoutEffect,
   useMemo,
   useState,
 } from 'react'
+import { useSystemTheme } from './useSystemTheme'
+import type { SchemeSetting } from './types'
+
+export { useSystemTheme } from './useSystemTheme'
 
 const key = 'user-theme'
-
-type Scheme = 'light' | 'dark'
-type SchemeSetting = 'system' | 'light' | 'dark'
-
-const media =
-  typeof window !== 'undefined' && window.matchMedia
-    ? window.matchMedia('(prefers-color-scheme: dark)')
-    : null
-
-export function getSystemTheme() {
-  return media?.matches ? 'dark' : 'light'
-}
 
 export const HydrateTheme = () => {
   if (process.env.TAMAGUI_TARGET === 'native') {
@@ -43,27 +33,6 @@ export const HydrateTheme = () => {
       }}
     />
   )
-}
-
-export function useSystemTheme() {
-  const [systemTheme, setSystemTheme] = useState<Scheme>(() => getSystemTheme())
-  const didHydrate = useDidFinishSSR()
-
-  useEffect(() => {
-    const onChange = () => {
-      setSystemTheme(getSystemTheme())
-    }
-    media?.addEventListener('change', onChange)
-    return () => {
-      media?.removeEventListener('change', onChange)
-    }
-  }, [])
-
-  if (!didHydrate) {
-    return 'light'
-  }
-
-  return systemTheme
 }
 
 const getSetting = (): SchemeSetting =>
