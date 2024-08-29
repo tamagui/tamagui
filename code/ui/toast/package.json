@@ -43,6 +43,7 @@
     "@tamagui/polyfill-dev": "1.109.8",
     "@tamagui/portal": "1.109.8",
     "@tamagui/stacks": "1.109.8",
+    "@tamagui/start-transition": "1.109.8",
     "@tamagui/text": "1.109.8",
     "@tamagui/use-controllable-state": "1.109.8",
     "@tamagui/visually-hidden": "1.109.8"

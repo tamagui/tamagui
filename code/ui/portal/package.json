@@ -32,6 +32,7 @@
     "@tamagui/constants": "1.109.8",
     "@tamagui/core": "1.109.8",
     "@tamagui/stacks": "1.109.8",
+    "@tamagui/start-transition": "1.109.8",
     "@tamagui/use-did-finish-ssr": "1.109.8",
     "@tamagui/use-event": "1.109.8"
   },

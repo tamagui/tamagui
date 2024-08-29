@@ -7028,6 +7028,7 @@ __metadata:
   dependencies:
     "@tamagui/build": "npm:1.109.8"
     "@tamagui/compose-refs": "npm:1.109.8"
+    "@tamagui/start-transition": "npm:1.109.8"
     "@tamagui/use-event": "npm:1.109.8"
     react: "npm:^18.2.0 || ^19.0.0"
   peerDependencies:
@@ -7703,6 +7704,7 @@ __metadata:
     "@tamagui/floating": "npm:1.109.8"
     "@tamagui/get-token": "npm:1.109.8"
     "@tamagui/stacks": "npm:1.109.8"
+    "@tamagui/start-transition": "npm:1.109.8"
     "@tamagui/use-controllable-state": "npm:1.109.8"
     react: "npm:^18.2.0 || ^19.0.0"
     react-native: "npm:0.74.1"
@@ -7719,6 +7721,7 @@ __metadata:
     "@tamagui/constants": "npm:1.109.8"
     "@tamagui/core": "npm:1.109.8"
     "@tamagui/stacks": "npm:1.109.8"
+    "@tamagui/start-transition": "npm:1.109.8"
     "@tamagui/use-did-finish-ssr": "npm:1.109.8"
     "@tamagui/use-event": "npm:1.109.8"
     react: "npm:^18.2.0 || ^19.0.0"
@@ -8044,7 +8047,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/start-transition@workspace:code/core/start-transition":
+"@tamagui/start-transition@npm:1.109.8, @tamagui/start-transition@workspace:code/core/start-transition":
   version: 0.0.0-use.local
   resolution: "@tamagui/start-transition@workspace:code/core/start-transition"
   dependencies:
@@ -8345,6 +8348,7 @@ __metadata:
     "@tamagui/polyfill-dev": "npm:1.109.8"
     "@tamagui/portal": "npm:1.109.8"
     "@tamagui/stacks": "npm:1.109.8"
+    "@tamagui/start-transition": "npm:1.109.8"
     "@tamagui/text": "npm:1.109.8"
     "@tamagui/use-controllable-state": "npm:1.109.8"
     "@tamagui/visually-hidden": "npm:1.109.8"
@@ -8434,6 +8438,7 @@ __metadata:
   resolution: "@tamagui/use-controllable-state@workspace:code/core/use-controllable-state"
   dependencies:
     "@tamagui/build": "npm:1.109.8"
+    "@tamagui/start-transition": "npm:1.109.8"
     "@tamagui/use-event": "npm:1.109.8"
     react: "npm:^18.2.0 || ^19.0.0"
   peerDependencies:
