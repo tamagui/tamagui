@@ -108,6 +108,7 @@ export default {
     vxs({
       deps: {
         'moti/author': true,
+        '@supabase/postgrest-js': true,
       },
 
       async afterServerStart(options, app, { routeMap }) {
