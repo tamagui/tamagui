@@ -218,6 +218,11 @@ v4 and beyond
 
 ---
 
+- seems like styledContext not overriding defaultVariant
+
+- useDidFinishSSR can avoid re-renders when disableSSR: true
+  - make it export a `disable()` helper we call from tamagui
+
 - Select is using focusScope which React.Children.only erroring in most usages
   - we should try and redo FocusScope to not cloneElement at all and instead wrap with an element + display: contents
 
