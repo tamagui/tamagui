@@ -480,11 +480,8 @@ export function createComponent<
         // if not set, use context
         if (propVal === undefined) {
           if (contextValue) {
-            const isValidValue = key in validStyles || key in variants
-            if (isValidValue) {
-              styledContextProps ||= {}
-              styledContextProps[key] = contextValue[key]
-            }
+            styledContextProps ||= {}
+            styledContextProps[key] = contextValue[key]
           }
         }
         // if set in props, update context
