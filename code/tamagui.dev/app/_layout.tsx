@@ -5,7 +5,7 @@ import '~/tamagui.css'
 import { HydrateTheme, UserThemeProvider, useUserTheme } from '@tamagui/one-theme'
 import { ToastProvider } from '@tamagui/toast'
 import { isWeb, setupPopper, TamaguiProvider } from 'tamagui'
-import { PageLoadProgressBar, ScrollRestoration, Slot, Stack } from 'vxs'
+import { PageLoadProgressBar, Slot, Stack } from 'vxs'
 import { HeadInfo } from '~/components/HeadInfo'
 import tamaConf from '~/config/tamagui.config'
 import { SearchProvider } from '~/features/site/search/SearchProvider'
@@ -64,7 +64,6 @@ export default function Layout() {
         }}
       />
 
-      <ScrollRestoration />
       <PageLoadProgressBar />
 
       <meta name="robots" content="index,follow" />

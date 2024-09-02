@@ -34,7 +34,7 @@
     "dev:extract": "TAMAGUI_EXTRACT=1 yarn workspace @tamagui/dot-dev dev:clean",
     "dev:build": "yarn workspace @tamagui/dot-dev build:prod",
     "dev:serve": "yarn workspace @tamagui/dot-dev serve",
-    "dev:prod": "yarn dev:build && yarn dev:serve",
+    "dev:prod": "yarn profile react-19 && yarn dev:build && yarn dev:serve",
     "dev:prod-only-homepage": "yarn dev:build --only index && yarn dev:serve",
     "postinstall": "patch-package || true && ./scripts/unlock-repo.sh",
     "build:force": "yarn clean:build && yarn build --force",
