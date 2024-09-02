@@ -30,7 +30,7 @@
     "@tamagui/core": "1.110.1",
     "@tamagui/static": "1.110.1",
     "@tamagui/web": "1.110.1",
-    "esbuild-loader": "^3.0.1",
+    "esbuild-loader": "^4.2.2",
     "esm-resolve": "^1.0.8",
     "fs-extra": "^11.2.0",
     "loader-utils": "^3.2.1",

@@ -420,7 +420,7 @@ async function esbuildWriteIfChanged(
     // see lucide icons a-arrow-down for example, the Path are put into an array
     // and then you get key errors on native, i presume native needs some update
     // so it can support automatic jsx runtime
-    jsx: 'preserve',
+    jsx: 'transform',
     platform: 'node',
   }
 

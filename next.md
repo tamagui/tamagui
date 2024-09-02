@@ -218,6 +218,19 @@ v4 and beyond
 
 ---
 
+- SSR safe styled context, something like:
+
+const Context = createStyledContext({
+  isVertical: {
+    $sm: true,
+    $gtSm: false,
+  },
+})
+
+
+- seems like vite plugin in basic vxrn app on features/home/HomeLayout.tsx
+  - when tamaguiExtract is on, it seems to get stale source code after one save
+
 - seems like styledContext not overriding defaultVariant
 
 - useDidFinishSSR can avoid re-renders when disableSSR: true

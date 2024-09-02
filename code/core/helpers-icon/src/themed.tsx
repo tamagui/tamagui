@@ -1,4 +1,4 @@
-import { getTokenValue, getVariable, usePropsAndStyle, Text } from '@tamagui/core'
+import { styled, Text, usePropsAndStyle } from '@tamagui/core'
 import React from 'react'
 
 import type { IconProps } from './IconProps'
@@ -16,6 +16,22 @@ type Opts = ThemedOptions & {
   noClassNames?: boolean
 }
 
+const Sized = styled(
+  Text,
+  {
+    variants: {
+      size: {
+        '...size': (val) => ({ width: val, height: val }),
+      },
+    } as const,
+  },
+  {
+    accept: {
+      strokeWidth: 'size',
+    },
+  }
+)
+
 export function themed(
   Component: React.FC<IconProps>,
   opts: Opts = {
@@ -25,37 +41,17 @@ export function themed(
   }
 ) {
   const wrapped = (propsIn: IconProps) => {
-    const [props, style, theme] = usePropsAndStyle(propsIn, {
+    const [props, style] = usePropsAndStyle(propsIn, {
       ...opts,
-      forComponent: Text,
+      forComponent: Sized,
       resolveValues: 'web', // iOS doesnt support dynamic values for SVG so only optimize on web
     })
 
-    const defaultColor = style.color ?? opts.defaultThemeColor
-
-    const color = getVariable(
-      (defaultColor ? theme[defaultColor as string] : undefined) ||
-        style.color ||
-        (!props.disableTheme ? theme.color : null) ||
-        opts.fallbackColor
-    )
-
-    const size =
-      typeof props.size === 'string'
-        ? getTokenValue(props.size as any, 'size')
-        : props.size
-
-    const strokeWidth =
-      typeof props.strokeWidth === 'string'
-        ? getTokenValue(props.strokeWidth as any, 'size')
-        : props.strokeWidth ?? `${opts.defaultStrokeWidth}`
-
     return (
       <Component
+        color={opts.defaultThemeColor}
+        strokeWidth={opts.defaultStrokeWidth}
         {...props}
-        color={color}
-        size={size}
-        strokeWidth={strokeWidth}
         style={style as any}
       />
     )
