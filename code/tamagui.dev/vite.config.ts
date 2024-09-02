@@ -107,7 +107,10 @@ export default {
   plugins: [
     vxs({
       deps: {
-        'moti/author': true,
+        '@supabase/postgrest-js': true,
+        '@supabase/node-fetch': true,
+        postmark: true,
+        stripe: true,
       },
 
       async afterServerStart(options, app, { routeMap }) {

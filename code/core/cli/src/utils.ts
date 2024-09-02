@@ -1,5 +1,3 @@
-import { join } from 'path'
-
 import type { TamaguiOptions, TamaguiProjectInfo } from '@tamagui/static'
 import {
   loadTamaguiBuildConfigSync,
@@ -8,6 +6,7 @@ import {
 import type { CLIResolvedOptions, CLIUserOptions } from '@tamagui/types'
 import chalk from 'chalk'
 import fs, { pathExists, readJSON } from 'fs-extra'
+import { join } from 'node:path'
 
 export async function getOptions({
   root = process.cwd(),
@@ -66,6 +65,7 @@ export function ensure(condition: boolean, message: string) {
 
 const defaultPaths = ['tamagui.config.ts', join('src', 'tamagui.config.ts')]
 let cachedPath = ''
+
 async function getDefaultTamaguiConfigPath() {
   if (cachedPath) return cachedPath
   const existingPaths = await Promise.all(defaultPaths.map((path) => pathExists(path)))
@@ -78,18 +78,14 @@ async function getDefaultTamaguiConfigPath() {
   return found
 }
 
-let cached: TamaguiProjectInfo | null = null
 export const loadTamagui = async (
   opts: Partial<TamaguiOptions>
 ): Promise<TamaguiProjectInfo | null> => {
   const loaded = await loadTamaguiStatic({
-    config: await getDefaultTamaguiConfigPath(),
     components: ['tamagui'],
     ...opts,
+    config: opts.config ?? (await getDefaultTamaguiConfigPath()),
   })
-  if (loaded) {
-    cached = loaded
-  }
   return loaded
 }
 

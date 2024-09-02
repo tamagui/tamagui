@@ -1,7 +1,7 @@
 import { getSize } from '@tamagui/get-token'
 import { Image } from '@tamagui/image-next'
 import { ThemeTint, ThemeTintAlt, useTint } from '@tamagui/logo'
-import { Check, Dot, Hammer, PlayCircle, ShoppingCart, X } from '@tamagui/lucide-icons'
+import { Check, Dot, Hammer, PlayCircle, X } from '@tamagui/lucide-icons'
 import { useClientValue, useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
 import React, { Suspense, lazy, memo, useEffect, useState } from 'react'
 import type {

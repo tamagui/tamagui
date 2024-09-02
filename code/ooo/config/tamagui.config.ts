@@ -134,6 +134,7 @@ export const config = createTamagui({
     fastSchemeChange: true,
     shouldAddPrefersColorThemes: false,
     themeClassNameOnRoot: false,
+    maxDarkLightNesting: 1,
   },
 })
 

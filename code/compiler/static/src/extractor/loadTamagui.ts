@@ -316,7 +316,9 @@ export async function getOptions({
       platform: (process.env.TAMAGUI_TARGET as any) || 'web',
       components: ['tamagui'],
       ...tamaguiOptions,
-      config: await getDefaultTamaguiConfigPath(root, tamaguiOptions?.config),
+      config:
+        tamaguiOptions?.config ??
+        (await getDefaultTamaguiConfigPath(root, tamaguiOptions?.config)),
     },
     paths: {
       root,

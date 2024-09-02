@@ -33,7 +33,7 @@ export default {
   plugins: [
     vxs({
       deps: {
-        '@tamagui/lucide-icons': true,
+        // '@tamagui/lucide-icons': true,
       },
     }),
     // tamaguiPlugin(),
