@@ -416,11 +416,7 @@ async function esbuildWriteIfChanged(
     supported: {
       'logical-assignment': false,
     },
-    // with "automatic" it converts children to an array and then native complains
-    // see lucide icons a-arrow-down for example, the Path are put into an array
-    // and then you get key errors on native, i presume native needs some update
-    // so it can support automatic jsx runtime
-    jsx: 'transform',
+    jsx: 'automatic',
     platform: 'node',
   }
 
@@ -469,6 +465,7 @@ async function esbuildWriteIfChanged(
 
     treeShaking: true,
     minifySyntax: true,
+    // minifyIdentifiers: true,
     write: false,
     color: true,
     allowOverwrite: true,
