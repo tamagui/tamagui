@@ -744,6 +744,7 @@ export function createComponent<
       isExiting,
       isAnimated,
       willBeAnimated,
+      styledContextProps,
     } as const
 
     // HOOK 15 (-1 if no animation, -1 if disableSSR, -1 if no context, -1 if production)

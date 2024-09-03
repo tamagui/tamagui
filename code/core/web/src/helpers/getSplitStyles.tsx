@@ -124,6 +124,7 @@ function isValidStyleKey(key: string, staticConfig: StaticConfig) {
   const validStyleProps =
     staticConfig.validStyles ||
     (staticConfig.isText || staticConfig.isInput ? stylePropsText : validStyles)
+
   return validStyleProps[key] || staticConfig.accept?.[key]
 }
 
@@ -1049,6 +1050,10 @@ export const getSplitStyles: StyleSplitter = (
 
       // pass to view props
       if (!isVariant) {
+        if (styleProps.styledContextProps && key in styleProps.styledContextProps) {
+          continue
+        }
+
         viewProps[key] = val
       }
     }
