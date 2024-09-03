@@ -9,7 +9,9 @@ type GetFontSizeOpts = {
 const getFontKey = (conf: TamaguiInternalConfig, opts?: GetFontSizeOpts) => {
   const FALLBACK_FONT_KEY = '$body'
 
-  return opts?.font || conf.settings?.defaultFont || FALLBACK_FONT_KEY
+  const tokenizedDefaultFont = conf.settings?.defaultFont ? `$${conf.settings.defaultFont}` : undefined;
+
+  return opts?.font || tokenizedDefaultFont || FALLBACK_FONT_KEY
 }
 
 export const getFontSize = (
