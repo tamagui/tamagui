@@ -1,9 +1,15 @@
-import type { FontSizeTokens, FontTokens } from '@tamagui/core'
+import type { FontSizeTokens, FontTokens, TamaguiInternalConfig } from '@tamagui/core'
 import { getConfig, isVariable } from '@tamagui/core'
 
 type GetFontSizeOpts = {
   relativeSize?: number
   font?: FontTokens
+}
+
+const getFontKey = (conf: TamaguiInternalConfig, opts?: GetFontSizeOpts) => {
+  const FALLBACK_FONT_KEY = '$body'
+
+  return opts?.font || conf.settings?.defaultFont || FALLBACK_FONT_KEY
 }
 
 export const getFontSize = (
@@ -26,7 +32,7 @@ export const getFontSizeVariable = (
     return inSize
   }
   const conf = getConfig()
-  return conf.fontsParsed[opts?.font || '$body'].size[token]
+  return conf.fontsParsed[getFontKey(conf, opts)].size[token]
 }
 
 export const getFontSizeToken = (
@@ -39,7 +45,7 @@ export const getFontSizeToken = (
   // backwards compat
   const relativeSize = opts?.relativeSize || 0
   const conf = getConfig()
-  const fontSize = conf.fontsParsed[opts?.font || '$body'].size
+  const fontSize = conf.fontsParsed[getFontKey(conf, opts)].size
   const size =
     (inSize === '$true' && !('$true' in fontSize) ? '$4' : inSize) ??
     ('$true' in fontSize ? '$true' : '$4')
