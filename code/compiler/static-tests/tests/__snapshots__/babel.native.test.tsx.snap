@@ -212,6 +212,25 @@ export function Test() {
 }"
 `;
 
+exports[`theme value extraction should work when no theme variables used 2`] = `
+"const __ReactNativeStyleSheet = require('react-native').StyleSheet;
+const _sheet = __ReactNativeStyleSheet.create({
+  \\"0\\": {
+    \\"fontFamily\\": \\"Inter\\",
+    \\"letterSpacing\\": 0,
+    \\"fontSize\\": 14,
+    \\"lineHeight\\": 23,
+    \\"color\\": \\"red\\"
+  }
+});
+const __ReactNativeView = require('react-native').View;
+const __ReactNativeText = require('react-native').Text;
+import { Paragraph } from 'tamagui';
+export function Test() {
+  return <__ReactNativeText style={_sheet[\\"0\\"]}>hello world</__ReactNativeText>;
+}"
+`;
+
 exports[`theme value extraction should work when theme variables used 1`] = `
 "const __ReactNativeStyleSheet = require('react-native').StyleSheet;
 const _sheet = __ReactNativeStyleSheet.create({
