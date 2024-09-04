@@ -24,6 +24,7 @@ export function getDefaultTamaguiConfig(platform: 'native' | 'web' = 'web') {
       1: 0,
     },
   })
+
   const font = createFont({
     family: 'System',
     size: {

@@ -12,7 +12,9 @@ export const getFontSized: VariantSpreadFunction<TextProps, FontSizeTokens> = (
   { font, fontFamily, props }
 ) => {
   if (!font) {
-    return
+    return {
+      fontSize: sizeTokenIn,
+    }
   }
 
   const sizeToken = sizeTokenIn === '$true' ? getDefaultSizeToken(font) : sizeTokenIn

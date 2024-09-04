@@ -25,8 +25,13 @@ export const SizableText = styled(Text, {
 // we are doing weird stuff to avoid bad types
 // TODO make this just work
 SizableText.staticConfig.variants!.fontFamily = {
-  '...': (_, extras) => {
-    const size = extras.props['size'] || '$true'
+  '...': (_val, extras) => {
+    const sizeProp = extras.props['size']
+    const fontSizeProp = extras.props['fontSize']
+    const size =
+      sizeProp === '$true' && fontSizeProp
+        ? fontSizeProp
+        : extras.props['size'] || '$true'
     return getFontSized(size, extras)
   },
 }

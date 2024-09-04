@@ -1,6 +1,8 @@
 @natew
 
 - algolia creds
+- can skip a ton of CSS by disabling prefers color theme setting
+  - so long as they use next-theme, or vxrn/color-scheme
 
 @jsherrard
 
@@ -201,6 +203,8 @@ stretch
 
 v3
 
+  - light-dark()
+    - this is an official css thing so would be easy-ish to implement
   - run over components and review for removing some assumptions about `size`
   - disableInjectCSS should maybe just be automated better or defaulted on
   - flat vs style mode, style moves all tamagui styles into `style` besides the other psuedos like hover, enter, etc
@@ -214,6 +218,7 @@ v3
 
 v4 and beyond
 
+- flatMode - no nested objects, everything in flat props
 - plugins
 
 ---
