@@ -1,8 +1,7 @@
 {
-  "extends": "../../tsconfig.json",
-  "compilerOptions": { "composite": true},
-  "references": [
-    { "path": "../create-context" },
-    { "path": "../compose-refs" }
-  ]
+  "extends": "../../../tsconfig.json",
+  "compilerOptions": {
+    "composite": true
+  },
+  "exclude": ["types", "dist", "**/__tests__"]
 }

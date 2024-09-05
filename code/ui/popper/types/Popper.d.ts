@@ -1,4 +1,4 @@
-import type { SizeTokens } from '@tamagui/core';
+import type { ScopedProps, SizeTokens } from '@tamagui/core';
 import type { Coords, OffsetOptions, Placement, Strategy, UseFloatingReturn } from '@tamagui/floating';
 import { flip, shift } from '@tamagui/floating';
 import type { SizableStackProps, YStackProps } from '@tamagui/stacks';
@@ -32,18 +32,12 @@ export type PopperProps = {
     offset?: OffsetOptions;
     disableRTL?: boolean;
 };
-<<<<<<< HEAD:packages/popper/types/Popper.d.ts
-export declare const Popper: React.ForwardRefExoticComponent<PopperProps & {
-    __scopePopper?: string | undefined;
-} & React.RefAttributes<unknown>>;
-=======
 type ScopedPopperProps<P> = ScopedProps<P, 'Popper'>;
 export type PopperSetupOptions = {
     disableRTL?: boolean;
 };
 export declare function setupPopper(options?: PopperSetupOptions): void;
 export declare function Popper(props: ScopedPopperProps<PopperProps>): import("react/jsx-runtime").JSX.Element;
->>>>>>> master:code/ui/popper/types/Popper.d.ts
 type PopperAnchorRef = HTMLElement | View;
 export type PopperAnchorProps = YStackProps & {
     virtualRef?: React.RefObject<any>;
