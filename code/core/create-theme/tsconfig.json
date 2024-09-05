@@ -1,0 +1,16 @@
+{
+  "extends": "../../../tsconfig.json",
+  "compilerOptions": {
+    "composite": true
+  },
+  "exclude": [
+    "types",
+    "dist",
+    "**/__tests__"
+  ],
+  "references": [
+    {
+      "path": "../web"
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "name": "@tamagui/web",
+  "version": "1.110.2",
+  "source": "src/index.ts",
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "types": "./types/index.d.ts",
+  "license": "MIT",
+  "author": {
+    "name": "Nate Wienert"
+  },
+  "sideEffects": [
+    "*.css"
+  ],
+  "scripts": {
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch",
+    "lint": "npx biome check src",
+    "lint:fix": "npx biome check --apply-unsafe src",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build"
+  },
+  "files": [
+    "types",
+    "dist",
+    "src",
+    "reset.css"
+  ],
+  "dependencies": {
+    "@tamagui/compose-refs": "1.110.2",
+    "@tamagui/constants": "1.110.2",
+    "@tamagui/helpers": "1.110.2",
+    "@tamagui/normalize-css-color": "1.110.2",
+    "@tamagui/timer": "1.110.2",
+    "@tamagui/types": "1.110.2",
+    "@tamagui/use-did-finish-ssr": "1.110.2",
+    "@tamagui/use-event": "1.110.2",
+    "@tamagui/use-force-update": "1.110.2"
+  },
+  "devDependencies": {
+    "@tamagui/build": "1.110.2",
+    "@testing-library/react": "^16.0.0",
+    "csstype": "^3.0.10",
+    "typescript": "^5.5.2",
+    "vitest": "^0.34.3"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    "./reset.css": "./reset.css",
+    ".": {
+      "react-native-import": "./dist/esm/index.native.js",
+      "react-native": "./dist/cjs/index.native.js",
+      "types": "./types/index.d.ts",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.js"
+    },
+    "./native": {
+      "react-native-import": "./dist/esm/index.native.native.js",
+      "react-native": "./dist/cjs/index.native.native.js",
+      "import": "./dist/esm/index.native.mjs",
+      "require": "./dist/cjs/index.native.js"
+    },
+    "./inject-styles": {
+      "react-native-import": "./dist/esm/inject-styles.native.js",
+      "react-native": "./dist/cjs/inject-styles.native.js",
+      "types": "./types/inject-styles.d.ts",
+      "import": "./dist/esm/inject-styles.mjs",
+      "require": "./dist/cjs/inject-styles.js"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tamagui/tamagui.git",
+    "directory": "packages/web"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "extends": "../../../tsconfig.json",
+  "compilerOptions": {
+    "composite": true
+  },
+  "exclude": [
+    "types",
+    "dist",
+    "**/__tests__"
+  ],
+  "references": [
+    {
+      "path": "../create-theme"
+    },
+    {
+      "path": "../theme-builder"
+    },
+    {
+      "path": "../types"
+    }
+  ]
+}

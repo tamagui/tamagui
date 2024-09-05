@@ -1,0 +1,28 @@
+{
+  "extends": "../../../tsconfig.json",
+  "compilerOptions": {
+    "composite": true
+  },
+  "references": [
+    {
+      "path": "../../compiler/static"
+    },
+    {
+      "path": "../../compiler/vite-plugin"
+    },
+    {
+      "path": "../create-theme"
+    },
+    {
+      "path": "../generate-themes"
+    },
+    {
+      "path": "../types"
+    }
+  ],
+  "exclude": [
+    "types",
+    "dist",
+    "**/__tests__"
+  ]
+}

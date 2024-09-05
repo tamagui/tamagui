@@ -1,10 +1,11 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.5.1/schema.json",
+  "$schema": "https://biomejs.dev/schemas/1.8.3/schema.json",
   "organizeImports": {
     "enabled": false
   },
   "linter": {
     "enabled": true,
+    "ignore": ["**/*/generated-new.ts", "**/*/generated-v2.ts", ".tamagui"],
     "rules": {
       "correctness": {
         "useExhaustiveDependencies": "off",
@@ -32,7 +33,8 @@
         "useConst": "off",
         "useEnumInitializers": "off",
         "useTemplate": "off",
-        "useSelfClosingElements": "off"
+        "useSelfClosingElements": "off",
+        "useImportType": "error"
       },
       "security": {
         "noDangerouslySetInnerHtml": "off",
@@ -45,6 +47,7 @@
       "complexity": {
         "noForEach": "off",
         "noBannedTypes": "off",
+        "noUselessFragments": "off",
         "useLiteralKeys": "off",
         "useSimplifiedLogicExpression": "off",
         "useOptionalChain": "off"
@@ -64,11 +67,11 @@
     "indentStyle": "space",
     "indentWidth": 2,
     "lineWidth": 90,
-    "ignore": ["**/*/generated-new.ts", "**/*/generated-v2.ts"]
+    "ignore": ["**/*/generated-new.ts", "**/*/generated-v2.ts", ".tamagui"]
   },
   "javascript": {
     "formatter": {
-      "trailingComma": "es5",
+      "trailingCommas": "es5",
       "jsxQuoteStyle": "double",
       "semicolons": "asNeeded",
       "quoteStyle": "single"

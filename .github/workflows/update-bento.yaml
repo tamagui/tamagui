@@ -3,9 +3,9 @@ name: Bento
 on:
   push:
     paths:
-      - "apps/bento/**"
-      - "apps/site/scripts/build-bento.js"
-      - "apps/site/scripts/upload-bento.js"
+      - "code/bento/**"
+      - "code/tamagui.dev/scripts/build-bento.js"
+      - "code/tamagui.dev/scripts/upload-bento.js"
     branches:
       - master
 
@@ -15,27 +15,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Unlock Secrets
-        uses: sliteteam/github-action-git-crypt-unlock@1.2.0
-        env:
-          GIT_CRYPT_KEY: ${{ secrets.GIT_CRYPT_KEY }}
+        uses: actions/checkout@v4
 
       - name: Install
         uses: ./.github/actions/install
+        with:
+          transcrypt_password: ${{ secrets.transcrypt_password }}
 
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
 
       - name: Link Vercel Project
-        run: cd apps/site && vercel link --project site --scope=tamagui --yes --token=${{ secrets.VERCEL_TOKEN }}
+        run: cd code/tamagui.dev && vercel link --project site --scope=tamagui --yes --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Pull Vercel Environment Information
-        run: cd apps/site && vercel env pull .env.local --environment production --scope=tamagui --yes --token=${{ secrets.VERCEL_TOKEN }}
+        run: cd code/tamagui.dev && vercel env pull .env.local --environment production --scope=tamagui --yes --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Build Bento Components
-        run: cd apps/site && yarn build:bento
+        run: cd code/tamagui.dev && yarn build:bento
 
       - name: Upload To Supabase
-        run: cd apps/site && yarn upload-bento
+        run: cd code/tamagui.dev && yarn upload:bento

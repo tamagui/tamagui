@@ -1,0 +1,41 @@
+{
+  "extends": "../../../tsconfig.json",
+  "compilerOptions": {
+    "composite": true,
+    "strict": true
+  },
+  "references": [
+    {
+      "path": "../../packages/timer"
+    },
+    {
+      "path": "../compose-refs"
+    },
+    {
+      "path": "../constants"
+    },
+    {
+      "path": "../helpers"
+    },
+    {
+      "path": "../normalize-css-color"
+    },
+    {
+      "path": "../types"
+    },
+    {
+      "path": "../use-did-finish-ssr"
+    },
+    {
+      "path": "../use-event"
+    },
+    {
+      "path": "../use-force-update"
+    }
+  ],
+  "exclude": [
+    "types",
+    "dist",
+    "**/__tests__"
+  ]
+}

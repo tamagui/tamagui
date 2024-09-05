@@ -1,0 +1,23 @@
+{
+  "extends": "../../../tsconfig.json",
+  "compilerOptions": {
+    "composite": true,
+    "strict": true
+  },
+  "references": [
+    {
+      "path": "../animations-css"
+    },
+    {
+      "path": "../core"
+    },
+    {
+      "path": "../shorthands"
+    }
+  ],
+  "exclude": [
+    "types",
+    "dist",
+    "**/__tests__"
+  ]
+}

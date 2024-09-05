@@ -1,0 +1,28 @@
+{
+  "name": "@tamagui/config-default",
+  "version": "1.110.2",
+  "source": "src/index.ts",
+  "main": "dist",
+  "types": "./types/index.d.ts",
+  "scripts": {
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build"
+  },
+  "files": [
+    "types",
+    "dist"
+  ],
+  "dependencies": {
+    "@tamagui/animations-css": "1.110.2",
+    "@tamagui/core": "1.110.2",
+    "@tamagui/shorthands": "1.110.2"
+  },
+  "devDependencies": {
+    "@tamagui/build": "1.110.2"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

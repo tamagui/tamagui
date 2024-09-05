@@ -1,0 +1,12 @@
+{
+  "name": "@tamagui/react-17-patch",
+  "version": "1.110.2",
+  "main": "index.js",
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@reach/auto-id": "^0.18.0",
+    "use-sync-external-store": "^1.2.0"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "extends": "../../../tsconfig.json",
+  "compilerOptions": {
+    "composite": true,
+    "jsx": "react-jsx",
+    "allowJs": true
+  },
+  "references": [
+    {
+      "path": "../normalize-css-color"
+    },
+    {
+      "path": "../react-native-use-pressable"
+    },
+    {
+      "path": "../react-native-use-responder-events"
+    },
+    {
+      "path": "../simple-hash"
+    }
+  ],
+  "exclude": [
+    "types",
+    "dist",
+    "**/__tests__"
+  ]
+}

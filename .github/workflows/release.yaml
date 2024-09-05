@@ -13,12 +13,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           token: ${{ secrets.PAT }}
 
       - name: Install
         uses: ./.github/actions/install
+        with:
+          transcrypt_password: ${{ secrets.transcrypt_password }}
 
       - name: Install playwright
         run: npx playwright install

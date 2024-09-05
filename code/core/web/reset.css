@@ -1,0 +1,38 @@
+/* mimic the native viewport full width/height + flex */
+body, #root, #__next {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-width: calc(100vw - (100vw - 100%)); /* reserve space for scrollbar */
+  margin: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  color: inherit;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  padding: 0;
+}
+
+li, select, input, button, [role="slider"], [role="listbox"] {
+  outline: none;
+}
+
+.is_Fieldset {
+  all: unset;
+}
+
+p, input, textarea, button, ul, ol, li, pre, dialog {
+  all: unset;
+  box-sizing: border-box;
+}
+
+a.is_Button, .is_Anchor:has(.is_Button) {
+  text-decoration: none;
+}

@@ -1,0 +1,62 @@
+{
+  "name": "@tamagui/cli",
+  "version": "1.110.2",
+  "source": "src/index.ts",
+  "types": "./types/index.d.ts",
+  "main": "dist",
+  "bin": {
+    "tama": "./dist/index.js",
+    "tamagui": "./dist/index.js"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
+  "scripts": {
+    "build": "tamagui-build",
+    "watch": "yarn build --watch",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build"
+  },
+  "dependencies": {
+    "@tamagui/create-theme": "1.110.2",
+    "@tamagui/generate-themes": "1.110.2",
+    "@tamagui/static": "1.110.2",
+    "@tamagui/types": "1.110.2",
+    "@tamagui/vite-plugin": "1.110.2",
+    "@vitejs/plugin-react-swc": "^3.7.0",
+    "arg": "^5.0.2",
+    "chalk": "^4.1.2",
+    "change-case": "^4.1.2",
+    "chokidar": "^3.5.2",
+    "esbuild": "^0.23.1",
+    "execa": "^5.0.0",
+    "express": "^4.18.2",
+    "fs-extra": "^11.2.0",
+    "get-port": "^7.0.0",
+    "graphology": "^0.24.1",
+    "graphql": "^16.8.0",
+    "graphql-yoga": "^4.0.4",
+    "http-proxy-middleware": "^2.0.6",
+    "kill-port": "^2.0.1",
+    "marked": "^5.1.0",
+    "marked-terminal": "^5.2.0",
+    "micromatch": "^4.0.7",
+    "opener": "^1.5.2",
+    "prompts": "2.1.0",
+    "ts-morph": "^15.1.0",
+    "typescript": "^5.5.2",
+    "url": "^0.11.0",
+    "vite": "6.0.0-alpha.18",
+    "vite-plugin-entry-shaking": "^0.4.3"
+  },
+  "devDependencies": {
+    "@tamagui/build": "1.110.2",
+    "@types/chokidar": "^2.1.3",
+    "@types/marked": "^5.0.0"
+  }
+}

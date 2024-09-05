@@ -1,7 +1,0 @@
-{
-  "extends": "./tsconfig.build",
-  "references": [
-    { "path": "apps/kitchen-sink" },
-    { "path": "apps/site" },
-  ]
-}

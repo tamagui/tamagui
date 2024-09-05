@@ -1,0 +1,76 @@
+name: Test Tamagui Expo Router Setup
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: ["*"]
+  workflow_dispatch:
+
+jobs:
+  test-create-tamagui-expo-router:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Create Tamagui project
+        uses: borales/actions-yarn@v5
+        with:
+          cmd: dlx create-tamagui@latest --template expo-router my-tamagui-app
+        env:
+          IS_TEST: true
+          YARN_ENABLE_IMMUTABLE_INSTALLS: false
+          COREPACK_ENABLE_STRICT: false
+
+      - name: Start Expo project and wait for Metro bundler
+        working-directory: ./my-tamagui-app
+        env:
+          CI: false
+        run: |
+          yarn start > startup.log 2>&1 &
+          PID=$!
+
+          # Function to check if Metro bundler is ready
+          metro_ready() {
+            grep -q "Logs for your project will appear below." startup.log
+          }
+
+          # Function to check if yarn start failed
+          yarn_failed() {
+            grep -qiE "error|exception" startup.log
+          }
+
+          # Wait for Metro bundler or failure
+          TIMEOUT=30  # 100 seconds timeout
+          COUNTER=0
+          while [ $COUNTER -lt $TIMEOUT ]; do
+            if metro_ready; then
+              echo "Metro bundler is ready!"
+              kill $PID
+              exit 0
+            fi
+            if yarn_failed; then
+              echo "yarn start failed!"
+              kill $PID
+              exit 1
+            fi
+            sleep 1
+            COUNTER=$((COUNTER + 1))
+          done
+
+          echo "Timed out waiting for Metro bundler"
+          kill $PID
+          exit 1
+
+      - name: Check startup log
+        if: always()
+        working-directory: ./my-tamagui-app
+        run: |
+          echo "Startup log contents:"
+          cat startup.log

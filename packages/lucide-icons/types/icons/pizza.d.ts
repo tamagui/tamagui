@@ -1,4 +1,0 @@
-import React from 'react';
-import type { IconProps } from '@tamagui/helpers-icon';
-export declare const Pizza: React.NamedExoticComponent<IconProps>;
-//# sourceMappingURL=pizza.d.ts.map

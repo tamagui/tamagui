@@ -1,0 +1,65 @@
+html,
+body {
+  max-width: 100vw;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol';
+}
+
+body {
+  background: var(--color2) !important;
+}
+
+body {
+  margin: 0;
+  position: relative;
+  max-width: 100vw;
+}
+
+* {
+  box-sizing: border-box;
+  outline: 0;
+}
+
+#__next {
+  display: flex;
+  flex: 1;
+  max-width: 100vw;
+}
+
+a,
+.text-decoration-none {
+  text-decoration: none;
+}
+
+a {
+  color: inherit;
+  font-weight: 300;
+}
+
+.next-link {
+  display: contents;
+}
+
+.next-link.link {
+  display: inline;
+  font-weight: inherit;
+  font-style: inherit;
+  font-size: inherit;
+}
+
+:is(.is_Paragraph a, .link a, article p a, footer a) {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 2px;
+  text-decoration-color: var(--color6);
+  transition: text-decoration-thickness ease-in-out 100ms;
+}
+
+:is(.is_Paragraph a, .link a, article p a, footer a):hover {
+  text-decoration: underline;
+  cursor: pointer;
+  text-decoration-thickness: 4px;
+  text-decoration-color: var(--color8);
+}
+

@@ -7,8 +7,9 @@
     "noEmit": true
   },
   "references": [
-    { "path": "apps/kitchen-sink" },
-    { "path": "apps/studio" },
-    { "path": "apps/site" },
+    { "path": "code/kitchen-sink" },
+    { "path": "code/bento" },
+    { "path": "code/demos" },
+    { "path": "code/tamagui.dev" },
   ]
 }

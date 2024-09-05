@@ -5,34 +5,35 @@
     "rootDir": ".",
     "paths": {
       "tamagui": [
-        "packages/tamagui"
-      ],
-      "tamagui-loader": [
-        "packages/loader"
+        "code/ui/tamagui"
       ],
       "@tamagui/*": [
-        "packages/*"
+        "code/core/*",
+        "code/ui/*"
       ],
-      "@tamagui/studio": [
-        "apps/studio"
+      "@tamagui/bento": [
+        "code/bento",
       ],
-      "@takeout/*": [
-        "takeout/*"
-      ],
+      "@tamagui/demos": [
+        "code/demos"
+      ]
     },
     "outDir": "dist",
     "importHelpers": true,
+    "isolatedModules": true,
     "allowJs": false,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "declaration": true,
+    "experimentalDecorators": false,
+    "emitDecoratorMetadata": false,
     "downlevelIteration": true,
     "strict": true,
     "esModuleInterop": true,
     "inlineSourceMap": true,
     "preserveSymlinks": true,
     "jsx": "react-jsx",
-    "module": "system",
+    "module": "System",
     "moduleResolution": "node",
     "noEmitOnError": false,
     "noImplicitAny": false,
@@ -46,11 +47,460 @@
     "sourceMap": false,
     "strictNullChecks": true,
     "target": "es2020",
-    "types": ["node", "react"],
-    "lib": ["dom", "esnext"],
+    "types": [
+      "node",
+      "react"
+    ],
+    "lib": [
+      "dom",
+      "esnext"
+    ]
   },
-  "exclude": ["test", "dist", "types", "**/__tests__"],
+  "exclude": [
+    "test",
+    "dist",
+    "types",
+    "**/__tests__",
+    "node_modules"
+  ],
   "typeAcquisition": {
     "enable": true
   },
+  "references": [
+    {
+      "path": "code/compiler/babel-plugin"
+    },
+    {
+      "path": "code/compiler/loader"
+    },
+    {
+      "path": "code/compiler/metro-plugin"
+    },
+    {
+      "path": "code/compiler/next-plugin"
+    },
+    {
+      "path": "code/compiler/static-tests"
+    },
+    {
+      "path": "code/compiler/static"
+    },
+    {
+      "path": "code/compiler/vite-plugin"
+    },
+    {
+      "path": "code/core/animations-css"
+    },
+    {
+      "path": "code/core/animations-moti"
+    },
+    {
+      "path": "code/core/animations-react-native"
+    },
+    {
+      "path": "code/core/animations-reanimated"
+    },
+    {
+      "path": "code/core/aria-hidden"
+    },
+    {
+      "path": "code/core/assert"
+    },
+    {
+      "path": "code/core/calc"
+    },
+    {
+      "path": "code/core/cli"
+    },
+    {
+      "path": "code/core/colors"
+    },
+    {
+      "path": "code/core/compose-refs"
+    },
+    {
+      "path": "code/core/config-base"
+    },
+    {
+      "path": "code/core/config-default"
+    },
+    {
+      "path": "code/core/config"
+    },
+    {
+      "path": "code/core/constants"
+    },
+    {
+      "path": "code/core/core-test"
+    },
+    {
+      "path": "code/core/core"
+    },
+    {
+      "path": "code/core/create-context"
+    },
+    {
+      "path": "code/core/create-tamagui"
+    },
+    {
+      "path": "code/core/create-theme"
+    },
+    {
+      "path": "code/core/create-themes"
+    },
+    {
+      "path": "code/core/cubic-bezier-animator"
+    },
+    {
+      "path": "code/core/floating"
+    },
+    {
+      "path": "code/core/font-cherry-bomb"
+    },
+    {
+      "path": "code/core/font-dm-sans"
+    },
+    {
+      "path": "code/core/font-dm-serif-display"
+    },
+    {
+      "path": "code/core/font-fira-mono"
+    },
+    {
+      "path": "code/core/font-glusp"
+    },
+    {
+      "path": "code/core/font-inter"
+    },
+    {
+      "path": "code/core/font-munro"
+    },
+    {
+      "path": "code/core/font-nohemi"
+    },
+    {
+      "path": "code/core/font-silkscreen"
+    },
+    {
+      "path": "code/core/font-size"
+    },
+    {
+      "path": "code/core/font"
+    },
+    {
+      "path": "code/core/generate-themes"
+    },
+    {
+      "path": "code/core/get-button-sized"
+    },
+    {
+      "path": "code/core/get-font-sized"
+    },
+    {
+      "path": "code/core/get-token"
+    },
+    {
+      "path": "code/core/helpers-icon"
+    },
+    {
+      "path": "code/core/helpers-node"
+    },
+    {
+      "path": "code/core/helpers-tamagui"
+    },
+    {
+      "path": "code/core/helpers"
+    },
+    {
+      "path": "code/core/normalize-css-color"
+    },
+    {
+      "path": "code/core/react-native-media-driver"
+    },
+    {
+      "path": "code/core/react-native-use-pressable"
+    },
+    {
+      "path": "code/core/react-native-use-responder-events"
+    },
+    {
+      "path": "code/core/react-native-web-internals"
+    },
+    {
+      "path": "code/core/shorthands"
+    },
+    {
+      "path": "code/core/simple-hash"
+    },
+    {
+      "path": "code/core/test-design-system"
+    },
+    {
+      "path": "code/core/theme-base"
+    },
+    {
+      "path": "code/core/theme-builder"
+    },
+    {
+      "path": "code/core/theme"
+    },
+    {
+      "path": "code/core/themes"
+    },
+    {
+      "path": "code/core/types"
+    },
+    {
+      "path": "code/core/use-callback-ref"
+    },
+    {
+      "path": "code/core/use-constant"
+    },
+    {
+      "path": "code/core/use-controllable-state"
+    },
+    {
+      "path": "code/core/use-debounce"
+    },
+    {
+      "path": "code/core/use-did-finish-ssr"
+    },
+    {
+      "path": "code/core/use-direction"
+    },
+    {
+      "path": "code/core/use-escape-keydown"
+    },
+    {
+      "path": "code/core/use-event"
+    },
+    {
+      "path": "code/core/use-force-update"
+    },
+    {
+      "path": "code/core/use-keyboard-visible"
+    },
+    {
+      "path": "code/core/use-presence"
+    },
+    {
+      "path": "code/core/use-previous"
+    },
+    {
+      "path": "code/core/use-window-dimensions"
+    },
+    {
+      "path": "code/core/web"
+    },
+    {
+      "path": "code/packages/babel-plugin-fully-specified"
+    },
+    {
+      "path": "code/packages/bento-get"
+    },
+    {
+      "path": "code/packages/cli-color"
+    },
+    {
+      "path": "code/packages/code-to-html"
+    },
+    {
+      "path": "code/packages/logo"
+    },
+    {
+      "path": "code/packages/lucide-icons"
+    },
+    {
+      "path": "code/packages/mdx"
+    },
+    {
+      "path": "code/packages/next-theme"
+    },
+    {
+      "path": "code/packages/react-native-svg"
+    },
+    {
+      "path": "code/packages/react-native-web-lite"
+    },
+    {
+      "path": "code/packages/sandbox-ui"
+    },
+    {
+      "path": "code/packages/timer"
+    },
+    {
+      "path": "code/packages/use-store"
+    },
+    {
+      "path": "code/packages/vite-plugin-internal"
+    },
+    {
+      "path": "code/ui/accordion"
+    },
+    {
+      "path": "code/ui/adapt"
+    },
+    {
+      "path": "code/ui/alert-dialog"
+    },
+    {
+      "path": "code/ui/animate-presence"
+    },
+    {
+      "path": "code/ui/animate"
+    },
+    {
+      "path": "code/ui/avatar"
+    },
+    {
+      "path": "code/ui/button"
+    },
+    {
+      "path": "code/ui/card"
+    },
+    {
+      "path": "code/ui/checkbox-headless"
+    },
+    {
+      "path": "code/ui/checkbox"
+    },
+    {
+      "path": "code/ui/collapsible"
+    },
+    {
+      "path": "code/ui/collection"
+    },
+    {
+      "path": "code/ui/dialog"
+    },
+    {
+      "path": "code/ui/dismissable"
+    },
+    {
+      "path": "code/ui/elements"
+    },
+    {
+      "path": "code/ui/focus-scope"
+    },
+    {
+      "path": "code/ui/focusable"
+    },
+    {
+      "path": "code/ui/form"
+    },
+    {
+      "path": "code/ui/group"
+    },
+    {
+      "path": "code/ui/image-next"
+    },
+    {
+      "path": "code/ui/image"
+    },
+    {
+      "path": "code/ui/input"
+    },
+    {
+      "path": "code/ui/label"
+    },
+    {
+      "path": "code/ui/linear-gradient"
+    },
+    {
+      "path": "code/ui/list-item"
+    },
+    {
+      "path": "code/ui/menu"
+    },
+    {
+      "path": "code/ui/popover"
+    },
+    {
+      "path": "code/ui/popper"
+    },
+    {
+      "path": "code/ui/portal"
+    },
+    {
+      "path": "code/ui/progress"
+    },
+    {
+      "path": "code/ui/radio-group"
+    },
+    {
+      "path": "code/ui/radio-headless"
+    },
+    {
+      "path": "code/ui/remove-scroll"
+    },
+    {
+      "path": "code/ui/roving-focus"
+    },
+    {
+      "path": "code/ui/scroll-view"
+    },
+    {
+      "path": "code/ui/select"
+    },
+    {
+      "path": "code/ui/separator"
+    },
+    {
+      "path": "code/ui/shapes"
+    },
+    {
+      "path": "code/ui/sheet"
+    },
+    {
+      "path": "code/ui/slider"
+    },
+    {
+      "path": "code/ui/stacks"
+    },
+    {
+      "path": "code/ui/switch-headless"
+    },
+    {
+      "path": "code/ui/switch"
+    },
+    {
+      "path": "code/ui/tabs"
+    },
+    {
+      "path": "code/ui/tamagui"
+    },
+    {
+      "path": "code/ui/text"
+    },
+    {
+      "path": "code/ui/toast"
+    },
+    {
+      "path": "code/ui/toggle-group"
+    },
+    {
+      "path": "code/ui/tooltip"
+    },
+    {
+      "path": "code/ui/visually-hidden"
+    },
+    {
+      "path": "code/bento"
+    },
+    {
+      "path": "code/demos"
+    },
+    {
+      "path": "code/integration"
+    },
+    {
+      "path": "code/kitchen-sink"
+    },
+    {
+      "path": "code/ooo"
+    },
+    {
+      "path": "code/tamagui.dev"
+    }
+  ]
 }

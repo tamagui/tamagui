@@ -1,0 +1,15 @@
+# simulate ci
+.DS_Store
+.git
+node_modules
+.yarn/install-state.gz
+
+./dist
+**/*/node_modules
+**/*/dist
+**/*/.turbo
+**/*/.tamagui
+
+# expo
+**/*/.expo
+**/*/ios

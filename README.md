@@ -1,5 +1,5 @@
 <div align="center">
-  <img margin="auto" width="572px" src="https://github.com/tamagui/tamagui/raw/master/apps/site/public/social.png" alt="Tamagui">
+  <img margin="auto" width="572px" src="https://github.com/tamagui/tamagui/raw/master/code/tamagui.dev/public/social.png" alt="Tamagui">
 </div>
 
 <h3 align="center">
@@ -25,13 +25,13 @@
 
 Tamagui lets you share more code between web and native apps without sacrificing the two things that typically suffer when you do: performance and code quality.
 
-It does this with an optimizing compiler that outputs platform-specific optimizations - it turns styled components, even with complex logic or cross-module imports, into a simple `div` alongiside atomic CSS on the web, or a View with its style objects hoisted on native.
+It does this with an optimizing compiler that outputs platform-specific optimizations - it turns styled components, even with complex logic or cross-module imports, into a simple `div` alongside atomic CSS on the web, or a View with its style objects hoisted on native.
 
 The entirety of Tamagui works at compile time and runtime, and can be set up gradually, with initial usage as simple as importing it and using the base views and styled function.
 
 We recommend checking out the starters with `npm create tamagui@latest`, they range from a simple learning example to a production-ready monorepo.
 
-The compiler optimizes most and ultimately flattens a majority of styled components. In the [~500px² responsive browser section](https://tamagui.dev) of the Tamagui website, 49 of the 55 or so [inline styled components](https://github.com/tamagui/tamagui/blob/master/apps/site/components/HeroResponsive.tsx) are flattened to a `div`. The homepage gains nearly 15% on Lighthouse with the compiler on.
+The compiler optimizes most and ultimately flattens a majority of styled components. In the [~500px² responsive browser section](https://tamagui.dev) of the Tamagui website, 49 of the 55 or so [inline styled components](https://github.com/tamagui/tamagui/blob/master/code/tamagui.dev/components/HeroResponsive.tsx) are flattened to a `div`. The homepage gains nearly 15% on Lighthouse with the compiler on.
 
 [Learn more on the website](https://tamagui.dev/docs/intro/introduction).
 
@@ -66,43 +66,8 @@ export default tamaguiConfig
 
 **Note:** The `v3` config imports the `@tamagui/animations-css` driver on web and `@tamagui/animations-react-native` on native. You can change these as you please, we provide exports for `animationsCSS` and `animationsNative`. If you want to use Reanimated, you can [copy and paste this code](https://github.com/tamagui/tamagui/blob/c9adbbe4a45d2a728f06605b0e5e91382dd5b92d/packages/config/src/animationsReanimated.ts) and pass it as `animations` to `createTamagui`.
 
-### Usage
-
-To use Tamagui in your Expo or Next.js projects, all you need to do is wrap your application in the `TamaguiProvider`:
-
-```tsx
-// this provides some helpful reset styles to ensure a more consistent look
-// only import this from your web app, not native
-import '@tamagui/core/reset.css'
-
-import { TamaguiProvider } from 'tamagui'
-import tamaguiConfig from './tamagui.config'
-
-export default function App() {
-  return (
-    <TamaguiProvider config={tamaguiConfig}>
-      {/* your app here */}
-    </TamaguiProvider>
-  )
-}
-```
-
-Done! Now try out some components:
-
-```tsx
-import { Button, Text } from 'tamagui'
-
-function Example() {
-  return (
-    <Button>
-      <Text>My button</Text>
-    </Button>
-  );
-}
-```
-
 ## Contributing
 
 To contribute to Tamagui reference the [contributing guide](https://github.com/tamagui/tamagui/blob/master/CONTRIBUTING.md).
 
-To contribute to documentation reference the [writing guide](https://github.com/tamagui/tamagui/blob/master/apps/site/WRITING-GUIDE.md).
+To contribute to documentation reference the [writing guide](https://github.com/tamagui/tamagui/blob/master/code/tamagui.dev/WRITING-GUIDE.md).

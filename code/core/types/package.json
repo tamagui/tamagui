@@ -1,0 +1,16 @@
+{
+  "name": "@tamagui/types",
+  "version": "1.110.2",
+  "types": "./types.ts",
+  "files": [
+    "types.ts"
+  ],
+  "exports": {
+    ".": {
+      "types": "./types.ts"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

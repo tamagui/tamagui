@@ -16,11 +16,11 @@ jobs:
       PRODUCTION_PROJECT_ID: akrzjiwwabjhzbvvnypu
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - uses: supabase/setup-cli@v1
 
       - run: |
-          cd apps/site
+          cd code/tamagui.dev
           supabase link --project-ref $PRODUCTION_PROJECT_ID
           supabase db push

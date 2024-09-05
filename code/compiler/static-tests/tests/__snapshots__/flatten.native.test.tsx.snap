@@ -1,0 +1,104 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`flatten-tests > flattened media queries 1`] = `
+"const __ReactNativeStyleSheet = require('react-native').StyleSheet;
+const _sheet = __ReactNativeStyleSheet.create({
+  \\"0\\": {
+    \\"flexDirection\\": \\"column\\",
+    \\"transform\\": [{
+      \\"translateY\\": 10
+    }, {
+      \\"translateX\\": 20
+    }, {
+      \\"rotate\\": \\"10deg\\"
+    }]
+  },
+  \\"1\\": {
+    \\"borderTopLeftRadius\\": 10,
+    \\"borderTopRightRadius\\": 10,
+    \\"borderBottomRightRadius\\": 10,
+    \\"borderBottomLeftRadius\\": 10,
+    \\"transform\\": [{
+      \\"scale\\": 2
+    }]
+  },
+  \\"2\\": {},
+  \\"3\\": {
+    \\"backgroundColor\\": \\"red\\"
+  },
+  \\"4\\": {},
+  \\"5\\": {
+    \\"backgroundColor\\": \\"blue\\"
+  },
+  \\"6\\": {}
+});
+const __withStableStyle = require('@tamagui/core')._withStableStyle;
+const __ReactNativeView = require('react-native').View;
+const __ReactNativeText = require('react-native').Text;
+import { YStack } from 'tamagui/src/YStack';
+import { useMedia } from 'tamagui';
+export function Test(isLoading) {
+  const media = useMedia();
+  return <_ReactNativeViewWrapper expressions={[media.sm, media.sm && isLoading, media.sm && !isLoading]} />;
+}
+const _ReactNativeViewWrapper = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
+  return React.useMemo(() => {
+    return [_sheet[\\"0\\"], _expressions[0] ? _sheet[\\"1\\"] : _sheet[\\"2\\"], _expressions[1] ? _sheet[\\"3\\"] : _sheet[\\"4\\"], _expressions[2] ? _sheet[\\"5\\"] : _sheet[\\"6\\"]];
+  }, [..._expressions]);
+});"
+`;
+
+exports[`flatten-tests > work with experimentalFlattenThemesOnNative + ternary 1`] = `
+"const __ReactNativeStyleSheet = require('react-native').StyleSheet;
+const _sheet = __ReactNativeStyleSheet.create({
+  \\"0\\": {},
+  \\"1\\": {}
+});
+const __withStableStyle = require('@tamagui/core')._withStableStyle;
+const __ReactNativeView = require('react-native').View;
+const __ReactNativeText = require('react-native').Text;
+// debug
+import { View } from 'tamagui';
+export function Test() {
+  return <_ReactNativeViewWrapper expressions={[showBackground]} />;
+}
+const _ReactNativeViewWrapper = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
+  return React.useMemo(() => {
+    return [_sheet[\\"0\\"], _sheet[\\"1\\"], _expressions[0] ? {
+      \\"backgroundColor\\": theme.color1.get()
+    } : {
+      \\"backgroundColor\\": theme.color2.get()
+    }];
+  }, [..._expressions]);
+});"
+`;
+
+exports[`flatten-tests > work with experimentalFlattenThemesOnNative 1`] = `
+"const __ReactNativeStyleSheet = require('react-native').StyleSheet;
+const _sheet = __ReactNativeStyleSheet.create({
+  \\"0\\": {
+    \\"flexDirection\\": \\"column\\",
+    \\"transform\\": [{
+      \\"translateY\\": 10
+    }, {
+      \\"translateX\\": 20
+    }, {
+      \\"rotate\\": \\"10deg\\"
+    }]
+  }
+});
+const __withStableStyle = require('@tamagui/core')._withStableStyle;
+const __ReactNativeView = require('react-native').View;
+const __ReactNativeText = require('react-native').Text;
+import { YStack } from 'tamagui/src/YStack';
+export function Test(isLoading) {
+  return <_ReactNativeViewWrapper />;
+}
+const _ReactNativeViewWrapper = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
+  return React.useMemo(() => {
+    return [_sheet[\\"0\\"], {
+      \\"backgroundColor\\": theme.background.get()
+    }];
+  }, [..._expressions]);
+});"
+`;
