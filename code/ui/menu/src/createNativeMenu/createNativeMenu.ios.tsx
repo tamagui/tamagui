@@ -2,14 +2,15 @@
  * Credit to the nandorojo/Zeego for the original implementation of this file
  */
 import { withStaticProperties } from '@tamagui/core'
-import React, { Children, ReactElement, cloneElement, useRef } from 'react'
+import type React from 'react'
+import { Children, type ReactElement, cloneElement, useRef } from 'react'
 import { Image } from 'react-native'
 import {
   ContextMenuButton,
   ContextMenuView,
-  MenuActionConfig,
+  type MenuActionConfig,
 } from 'react-native-ios-context-menu'
-import type { ImageSystemConfig } from 'react-native-ios-context-menu/src/types/ImageItemConfig'
+import type { ImageSystemConfig } from 'react-native-ios-context-menu'
 import { View } from 'tamagui'
 
 import { NativePropProvider } from '../createMenu'
@@ -271,7 +272,10 @@ If you want to use a custom component as your <Content />, you can use the creat
 
           if (imageChild) {
             if (imageChild.props.source) {
-              const { source, ios: { lazy = true, style } = {} } = imageChild.props
+              const {
+                source,
+                ios: { lazy = true, style } = {},
+              } = imageChild.props
               if (typeof source === 'object' && 'uri' in source && source.uri) {
                 icon = {
                   type: 'IMAGE_REMOTE_URL',
@@ -304,7 +308,7 @@ If you want to use a custom component as your <Content />, you can use the creat
           // if the key doesn't exist as a string
           typeof child.key != 'string' ||
           // or if flattenChildren assigned the key as `.${key}${index}`
-          (child.key.startsWith('.') && !isNaN(Number(maybeIndexKey)))
+          (child.key.startsWith('.') && !Number.isNaN(Number(maybeIndexKey)))
         ) {
           console.warn(
             `Menu <Item /> is missing a unique key. Pass a unique key string for each item, such as: <Item key="${

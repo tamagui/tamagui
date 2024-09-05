@@ -16,23 +16,23 @@ import { useFocusGuards } from '@tamagui/focus-guard'
 import { FocusScope } from '@tamagui/focus-scope'
 import * as PopperPrimitive from '@tamagui/popper'
 import type { PopperContentProps } from '@tamagui/popper'
-import { Portal as PortalPrimitive, PortalProps } from '@tamagui/portal'
+import { Portal as PortalPrimitive, type PortalProps } from '@tamagui/portal'
 import { RovingFocusGroup } from '@tamagui/roving-focus'
 import type { RovingFocusGroupProps } from '@tamagui/roving-focus'
 import {
-  SizableStackProps,
+  type SizableStackProps,
   ThemeableStack,
-  ThemeableStackProps,
+  type ThemeableStackProps,
   YStack,
 } from '@tamagui/stacks'
 import { useCallbackRef } from '@tamagui/use-callback-ref'
 import { useDirection } from '@tamagui/use-direction'
-import { Stack, isAndroid, isWeb, styled, withStaticProperties } from '@tamagui/web'
-import { TamaguiElement } from '@tamagui/web/types'
+import { type Stack, isAndroid, isWeb, styled, withStaticProperties } from '@tamagui/web'
+import type { TamaguiElement } from '@tamagui/web/types'
 import { hideOthers } from 'aria-hidden'
 import { useId } from 'react'
 import * as React from 'react'
-import { Image, ImageProps } from 'react-native'
+import type { Image, ImageProps } from 'react-native'
 import { RemoveScroll } from 'react-remove-scroll'
 
 import { MenuPredefinied } from './Menu'
@@ -374,6 +374,8 @@ export function createMenu({
   Item: _Item = MenuPredefinied.MenuItem,
   Title: _Title = MenuPredefinied.Title,
   SubTitle: _SubTitle = MenuPredefinied.SubTitle,
+  // TODO: fix this type error with _Image
+  // @ts-ignore
   Image: _Image = MenuPredefinied.MenuImage,
   Icon: _Icon = MenuPredefinied.MenuIcon,
   Indicator: _Indicator = MenuPredefinied.MenuIndicator,
@@ -971,7 +973,6 @@ export function createMenu({
               if (!isPointerDownRef.current) event.currentTarget?.click()
             }
           })}
-          children={content}
           {...(isWeb
             ? {
                 onKeyDown: composeEventHandlers(
@@ -995,7 +996,9 @@ export function createMenu({
                 ),
               }
             : {})}
-        />
+        >
+          {content}
+        </MenuItemImpl>
       )
     }
   )
@@ -1708,7 +1711,7 @@ function isPointInPolygon(point: Point, polygon: Polygon) {
     const yj = polygon[j].y
 
     // prettier-ignore
-    const intersect = ((yi > y) !== (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+    const intersect = yi > y !== yj > y && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi
     if (intersect) inside = !inside
   }
 

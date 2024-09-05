@@ -1,11 +1,11 @@
 import { Slot, isAndroid, withStaticProperties } from '@tamagui/core'
-import { MenuProps, MenuSubProps, createMenu } from '@tamagui/menu'
+import { type MenuProps, type MenuSubProps, createMenu } from '@tamagui/menu'
 import type { Menu as MenuTypes } from '@tamagui/menu'
 import { useId } from 'react'
 import * as React from 'react'
 import {
   Button,
-  TamaguiElement,
+  type TamaguiElement,
   YStack,
   composeEventHandlers,
   composeRefs,
@@ -235,7 +235,6 @@ export function createNonNativeDropdownMenu(params: Parameters<typeof createMenu
             tag="button"
             id={context.triggerId}
             aria-haspopup="menu"
-            children={children}
             aria-expanded={context.open}
             aria-controls={context.open ? context.contentId : undefined}
             data-state={context.open ? 'open' : 'closed'}
@@ -277,7 +276,9 @@ export function createNonNativeDropdownMenu(params: Parameters<typeof createMenu
               }),
             })}
             {...triggerProps}
-          />
+          >
+            {children}
+          </Comp>
         </DropdownMenuTriggerFrame>
       )
     }
@@ -305,8 +306,9 @@ export function createNonNativeDropdownMenu(params: Parameters<typeof createMenu
       <Menu.Portal
         __scopeMenu={__scopeDropdownMenu || DROPDOWN_MENU_CONTEXT}
         {...portalProps}
-        children={content}
-      />
+      >
+        {children}
+      </Menu.Portal>
     )
   }
 

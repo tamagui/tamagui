@@ -1,8 +1,8 @@
-import type { ImageProps } from "react-native";
-import type { ContextMenuView, MenuAuxiliaryPreviewConfig, ContextMenuButton } from "react-native-ios-context-menu";
-import type { ImageOptions, ImageSystemSymbolConfiguration } from "react-native-ios-context-menu/build/types/ImageItemConfig";
-import type { ComponentProps } from "react";
-import type { SFSymbol } from "sf-symbols-typescript";
+import type { ImageProps } from 'react-native';
+import type { ContextMenuView, MenuAuxiliaryPreviewConfig, ContextMenuButton } from 'react-native-ios-context-menu';
+import type { ImageOptions } from 'react-native-ios-context-menu';
+import type { ComponentProps } from 'react';
+import type { SFSymbol } from 'sf-symbols-typescript';
 export type MenuProps = {
     children: React.ReactNode;
     native?: boolean;
@@ -18,7 +18,7 @@ export type MenuProps = {
 /**
  * See the docs on `react-native-ios-context-menu` for usage: https://github.com/dominicstop/react-native-ios-context-menu#ContextMenuView-Auxiliary-Preview---Example-01
  */
-export type ContextMenuAuxliliaryProps = Omit<MenuAuxiliaryPreviewConfig, "marginAuxiliaryPreview"> & {
+export type ContextMenuAuxliliaryProps = Omit<MenuAuxiliaryPreviewConfig, 'marginAuxiliaryPreview'> & {
     children: React.ReactNode | ((options: {
         dismissMenu: () => void;
     }) => React.ReactNode);
@@ -34,7 +34,7 @@ export type MenuTriggerProps = {
      *
      * Only applies for `ios` and `android`.
      */
-    action?: "press" | "longPress";
+    action?: 'press' | 'longPress';
 };
 export type MenuContentProps = {
     children: React.ReactNode;
@@ -70,7 +70,7 @@ export interface MenuItemCommonProps {
      *
      * @platform ios
      */
-    ios?: ImageSystemSymbolConfiguration & {
+    ios?: {
         name: SFSymbol;
     };
     /**
@@ -85,7 +85,7 @@ export type MenuItemImageProps = MenuItemCommonProps & {
     /**
      * `source={require('path/to/image')}`
      */
-    source: ImageProps["source"];
+    source: ImageProps['source'];
     ios?: {
         style?: ImageOptions;
         lazy?: boolean;
@@ -109,9 +109,9 @@ export type MenuItemSubtitleProps = {
     children: string;
 };
 export type MenuSeparatorProps = {};
-export type MenuCheckboxItemProps = Omit<MenuItemProps, "onSelect"> & {
-    value: "mixed" | "on" | "off" | boolean;
-    onValueChange?: (state: "mixed" | "on" | "off", prevState: "mixed" | "on" | "off") => void;
+export type MenuCheckboxItemProps = Omit<MenuItemProps, 'onSelect'> & {
+    value: 'mixed' | 'on' | 'off' | boolean;
+    onValueChange?: (state: 'mixed' | 'on' | 'off', prevState: 'mixed' | 'on' | 'off') => void;
     key: string;
 };
 export type MenuItemIndicatorProps = {
@@ -127,8 +127,8 @@ export type MenuLabelProps = {
 type Not<T extends object, O extends keyof NonNullable<T>> = Omit<T, O>;
 export type ContextMenuPreviewProps = {
     children: React.ReactNode | (() => React.ReactNode);
-    size?: NonNullable<React.ComponentProps<typeof ContextMenuView>["previewConfig"]>["previewSize"];
-    onPress?: React.ComponentProps<typeof ContextMenuView>["onPressMenuPreview"];
-} & Not<NonNullable<React.ComponentProps<typeof ContextMenuView>["previewConfig"]>, "targetViewNode" | "previewSize" | "previewType">;
+    size?: NonNullable<React.ComponentProps<typeof ContextMenuView>['previewConfig']>['previewSize'];
+    onPress?: React.ComponentProps<typeof ContextMenuView>['onPressMenuPreview'];
+} & Not<NonNullable<React.ComponentProps<typeof ContextMenuView>['previewConfig']>, 'targetViewNode' | 'previewSize' | 'previewType'>;
 export {};
 //# sourceMappingURL=createNativeMenuTypes.d.ts.map

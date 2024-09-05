@@ -4,9 +4,9 @@
 
 import React, {
   Children,
-  ReactChild,
-  ReactElement,
-  ReactNode,
+  type ReactChild,
+  type ReactElement,
+  type ReactNode,
   cloneElement,
   isValidElement,
 } from 'react'
@@ -72,7 +72,7 @@ export function flattenChildren(
     }, [])
 }
 
-export const pickChildren = <Props = any,>(
+export const pickChildren = <Props = any>(
   _children: React.ReactNode | undefined,
   targetChild: React.ElementType,
   componentNamesToIgnore?: string[]

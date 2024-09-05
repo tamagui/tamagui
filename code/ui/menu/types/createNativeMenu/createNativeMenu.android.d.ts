@@ -1,6 +1,6 @@
-import React from 'react';
+import type React from 'react';
 import type { ContextMenuAuxliliaryProps, ContextMenuPreviewProps, MenuArrowProps, MenuCheckboxItemProps, MenuContentProps, MenuGroupProps, MenuItemImageProps, MenuItemIndicatorProps, MenuItemProps, MenuItemSubtitleProps, MenuItemTitleProps, MenuLabelProps, MenuProps, MenuSeparatorProps, MenuSubContentProps, MenuSubProps, MenuSubTriggerProps, MenuTriggerProps } from './createNativeMenuTypes';
-declare const createAndroidMenu: (MenuType: 'ContextMenu' | 'DropdownMenu') => {
+declare const createAndroidMenu: (MenuType: "ContextMenu" | "DropdownMenu") => {
     Menu: React.FC<MenuProps> & {
         Trigger: React.FC<MenuTriggerProps>;
         Content: React.FC<MenuContentProps>;

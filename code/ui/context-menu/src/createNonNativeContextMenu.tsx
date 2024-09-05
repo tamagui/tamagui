@@ -1,5 +1,5 @@
 import {
-  GestureReponderEvent,
+  type GestureReponderEvent,
   Stack,
   composeEventHandlers,
   createStyledContext,
@@ -10,11 +10,11 @@ import {
 } from '@tamagui/core'
 import {
   Menu,
-  MenuItemIconProps,
-  MenuItemImageProps,
-  MenuProps,
-  MenuSubProps,
-  createMenu,
+  type MenuItemIconProps,
+  type MenuItemImageProps,
+  type MenuProps,
+  type MenuSubProps,
+  type createMenu,
 } from '@tamagui/menu'
 import { YStack } from '@tamagui/stacks'
 import { useCallbackRef } from '@tamagui/use-callback-ref'
@@ -358,7 +358,13 @@ export function createNonNativeContextMenu(param: Parameters<typeof createMenu>[
   const PORTAL_NAME = 'ContextMenuPortal'
 
   const ContextMenuPortal = (props: ScopedProps<ContextMenuPortalProps>) => {
-    const { __scopeContextMenu, children, ...portalProps } = props
+    const {
+      __scopeContextMenu,
+      // TODO: fix this children type error
+      // @ts-ignore
+      children,
+      ...portalProps
+    } = props
 
     const context = isAndroid ? useContextMenuContext(__scopeContextMenu) : null
 
@@ -371,8 +377,9 @@ export function createNonNativeContextMenu(param: Parameters<typeof createMenu>[
       <Menu.Portal
         __scopeMenu={__scopeContextMenu || CONTEXTMENU_CONTEXT}
         {...portalProps}
-        children={content}
-      />
+      >
+        {children}
+      </Menu.Portal>
     )
   }
 
@@ -736,6 +743,8 @@ export function createNonNativeContextMenu(param: Parameters<typeof createMenu>[
         // TODO: handle native as well
         style={
           isWeb && {
+            // TODO: fix style prop doesn't exists type error
+            // @ts-ignore
             ...(props.style as Object),
             // re-namespace exposed content custom properties
             ...({

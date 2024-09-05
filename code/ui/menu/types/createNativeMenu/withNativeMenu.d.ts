@@ -1,4 +1,3 @@
-/// <reference types="react" />
 export declare function withNativeMenu<C extends React.ComponentType<any>, N extends React.ComponentType<any>>({ Component, NativeComponent, useNativeProp, useNativePropScope, isRoot, }: {
     Component: C;
     NativeComponent: N;
@@ -10,7 +9,7 @@ export declare function withNativeMenu<C extends React.ComponentType<any>, N ext
 }): C | {
     (props: React.ComponentProps<C> & React.ComponentProps<N> & {
         native?: boolean;
-    }): JSX.Element;
+    }): import("react/jsx-runtime").JSX.Element;
     displayName: string;
 };
 //# sourceMappingURL=withNativeMenu.d.ts.map

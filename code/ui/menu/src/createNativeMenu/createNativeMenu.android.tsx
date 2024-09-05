@@ -3,7 +3,8 @@
  */
 import { MenuView } from '@react-native-menu/menu'
 import { withStaticProperties } from '@tamagui/core'
-import React, { Children, ReactElement, cloneElement } from 'react'
+import type React from 'react'
+import { Children, type ReactElement, cloneElement } from 'react'
 import { View } from 'tamagui'
 
 import { NativePropProvider } from '../createMenu'
@@ -288,7 +289,7 @@ If you want to use a custom component as your <Content />, you can use the creat
           // if the key doesn't exist as a string
           typeof child.key != 'string' ||
           // or if flattenChildren assigned the key as `.${key}${index}`
-          (child.key.startsWith('.') && !isNaN(Number(maybeIndexKey)))
+          (child.key.startsWith('.') && !Number.isNaN(Number(maybeIndexKey)))
         ) {
           console.warn(
             `Menu <Item /> is missing a unique key. Pass a unique key string for each item, such as: <Item key="${

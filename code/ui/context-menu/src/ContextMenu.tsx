@@ -9,8 +9,8 @@ import React from 'react'
 
 import {
   CONTEXTMENU_CONTEXT,
-  ContextMenuItemIconProps,
-  ContextMenuSubTriggerProps,
+  type ContextMenuItemIconProps,
+  type ContextMenuSubTriggerProps,
   createNonNativeContextMenu,
 } from './createNonNativeContextMenu'
 

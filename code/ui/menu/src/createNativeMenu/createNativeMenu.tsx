@@ -1,7 +1,7 @@
 import { withStaticProperties } from '@tamagui/core'
 import type { FC } from 'react'
 
-import {
+import type {
   ContextMenuPreviewProps,
   MenuArrowProps,
   MenuCheckboxItemProps,

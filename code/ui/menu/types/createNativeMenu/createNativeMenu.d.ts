@@ -1,6 +1,6 @@
 import type { FC } from 'react';
-import { ContextMenuPreviewProps, MenuArrowProps, MenuCheckboxItemProps, MenuContentProps, MenuGroupProps, MenuItemImageProps, MenuItemIndicatorProps, MenuItemProps, MenuItemSubtitleProps, MenuItemTitleProps, MenuLabelProps, MenuProps, MenuSeparatorProps, MenuSubContentProps, MenuSubProps, MenuSubTriggerProps, MenuTriggerProps } from './createNativeMenuTypes';
-export declare const createNativeMenu: (MenuType: 'ContextMenu' | 'DropdownMenu') => {
+import type { ContextMenuPreviewProps, MenuArrowProps, MenuCheckboxItemProps, MenuContentProps, MenuGroupProps, MenuItemImageProps, MenuItemIndicatorProps, MenuItemProps, MenuItemSubtitleProps, MenuItemTitleProps, MenuLabelProps, MenuProps, MenuSeparatorProps, MenuSubContentProps, MenuSubProps, MenuSubTriggerProps, MenuTriggerProps } from './createNativeMenuTypes';
+export declare const createNativeMenu: (MenuType: "ContextMenu" | "DropdownMenu") => {
     Menu: FC<MenuProps> & {
         Trigger: FC<MenuTriggerProps>;
         Content: FC<MenuContentProps>;

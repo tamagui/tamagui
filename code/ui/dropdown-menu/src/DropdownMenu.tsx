@@ -1,6 +1,6 @@
 import { withStaticProperties } from '@tamagui/core'
 import {
-  createMenu,
+  type createMenu,
   createNativeMenu,
   useNativeProp,
   withNativeMenu,

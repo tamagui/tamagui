@@ -15,14 +15,7 @@ export function ContextMenuDemo() {
   return (
     <ContextMenu allowFlip native={native} placement="bottom-start">
       <ContextMenu.Trigger asChild>
-        <YStack
-          jc="center"
-          ai="center"
-          bw={1}
-          boc="$borderColor"
-          width={250}
-          height={200}
-        >
+        <YStack jc="center" ai="center" bw={1} bc="$borderColor" width={250} height={200}>
           <Text textAlign="center">Right Click or longPress</Text>
         </YStack>
       </ContextMenu.Trigger>
