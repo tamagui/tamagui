@@ -1,19 +1,13 @@
 {
-  "name": "@tamagui/context-menu",
-  "version": "1.91.5",
-  "sideEffects": [
-    "*.css"
-  ],
+  "name": "@tamagui/focus-guard",
+  "version": "1.110.2",
+  "sideEffects": true,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
   "module:jsx": "dist/jsx",
-  "files": [
-    "src",
-    "types",
-    "dist"
-  ],
+  "files": ["src", "types", "dist"],
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
@@ -23,18 +17,17 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/core": "1.91.5",
-    "@tamagui/popover": "1.91.5"
+    "@tamagui/compose-refs": "1.110.2",
+    "@tamagui/use-event": "1.110.2"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.91.5",
+    "@tamagui/build": "1.110.2",
     "react": "^18.2.0"
   },
   "publishConfig": {
     "access": "public"
-  },
-  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14"
+  }
 }
