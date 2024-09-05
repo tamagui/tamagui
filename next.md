@@ -1,5 +1,6 @@
 @natew
 
+- button media queries break due to useStyle hook
 - algolia creds
 - can skip a ton of CSS by disabling prefers color theme setting
   - so long as they use next-theme, or vxrn/color-scheme

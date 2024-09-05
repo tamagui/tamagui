@@ -7,6 +7,7 @@
   "scripts": {
     "dev": "npx vxs dev",
     "dev:clean": "npx vxs dev --clean",
+    "subset-font-pn": "node --import=@nitrogql/esbuild-register ./helpers/subset-font.ts",
     "build:prod": "npx vxs build",
     "serve": "npx vxs serve",
     "serve:railway": "npx vxs serve --host 0.0.0.0",
@@ -34,6 +35,7 @@
     "vxs": "^1.1.203"
   },
   "devDependencies": {
+    "@nitrogql/esbuild-register": "^1.7.0",
     "patch-package": "^8.0.0"
   },
   "publishConfig": {
