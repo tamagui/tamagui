@@ -1,0 +1,28 @@
+{
+  "extends": "../../../tsconfig.json",
+  "compilerOptions": {
+    "composite": true
+  },
+  "references": [
+    {
+      "path": "../../core/compose-refs"
+    },
+    {
+      "path": "../../core/core"
+    },
+    {
+      "path": "../../core/helpers"
+    },
+    {
+      "path": "../../core/use-escape-keydown"
+    },
+    {
+      "path": "../../core/use-event"
+    }
+  ],
+  "exclude": [
+    "types",
+    "dist",
+    "**/__tests__"
+  ]
+}

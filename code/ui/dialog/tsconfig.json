@@ -1,0 +1,64 @@
+{
+  "extends": "../../../tsconfig.json",
+  "compilerOptions": {
+    "composite": true
+  },
+  "references": [
+    {
+      "path": "../../core/aria-hidden"
+    },
+    {
+      "path": "../../core/compose-refs"
+    },
+    {
+      "path": "../../core/constants"
+    },
+    {
+      "path": "../../core/core"
+    },
+    {
+      "path": "../../core/create-context"
+    },
+    {
+      "path": "../../core/helpers"
+    },
+    {
+      "path": "../../core/use-controllable-state"
+    },
+    {
+      "path": "../adapt"
+    },
+    {
+      "path": "../animate-presence"
+    },
+    {
+      "path": "../dismissable"
+    },
+    {
+      "path": "../focus-scope"
+    },
+    {
+      "path": "../popper"
+    },
+    {
+      "path": "../portal"
+    },
+    {
+      "path": "../remove-scroll"
+    },
+    {
+      "path": "../sheet"
+    },
+    {
+      "path": "../stacks"
+    },
+    {
+      "path": "../text"
+    }
+  ],
+  "exclude": [
+    "types",
+    "dist",
+    "**/__tests__"
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "name": "@tamagui/animate-presence",
+  "version": "1.110.2",
+  "source": "src/index.ts",
+  "sideEffects": false,
+  "license": "MIT",
+  "types": "./types/index.d.ts",
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
+  "dependencies": {
+    "@tamagui/helpers": "1.110.2",
+    "@tamagui/use-constant": "1.110.2",
+    "@tamagui/use-force-update": "1.110.2",
+    "@tamagui/use-presence": "1.110.2",
+    "@tamagui/web": "1.110.2"
+  },
+  "devDependencies": {
+    "@tamagui/build": "1.110.2"
+  },
+  "scripts": {
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build",
+    "lint": "npx biome check src",
+    "lint:fix": "npx biome check --apply-unsafe src"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "react-native-import": "./dist/esm/index.native.js",
+      "react-native": "./dist/cjs/index.native.js",
+      "types": "./types/index.d.ts",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.js"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14"
+}

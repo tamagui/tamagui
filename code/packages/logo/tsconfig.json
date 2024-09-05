@@ -1,0 +1,17 @@
+{
+  "extends": "../../../tsconfig.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "composite": true
+  },
+  "references": [
+    {
+      "path": "../../ui/tamagui"
+    }
+  ],
+  "exclude": [
+    "types",
+    "dist",
+    "**/__tests__"
+  ]
+}

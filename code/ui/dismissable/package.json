@@ -1,0 +1,50 @@
+{
+  "name": "@tamagui/dismissable",
+  "version": "1.110.2",
+  "sideEffects": true,
+  "source": "src/index.ts",
+  "types": "./types/index.d.ts",
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "module:jsx": "dist/jsx",
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
+  "scripts": {
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch",
+    "lint": "npx biome check src",
+    "lint:fix": "npx biome check --apply-unsafe src",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "react-native-import": "./dist/esm/index.native.js",
+      "react-native": "./dist/cjs/index.native.js",
+      "types": "./types/index.d.ts",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.js"
+    }
+  },
+  "dependencies": {
+    "@tamagui/compose-refs": "1.110.2",
+    "@tamagui/core": "1.110.2",
+    "@tamagui/helpers": "1.110.2",
+    "@tamagui/use-escape-keydown": "1.110.2",
+    "@tamagui/use-event": "1.110.2"
+  },
+  "devDependencies": {
+    "@tamagui/build": "1.110.2",
+    "react": "^18.2.0 || ^19.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "peerDependencies": {
+    "react": "*"
+  }
+}

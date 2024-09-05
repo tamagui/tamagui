@@ -1,0 +1,90 @@
+---
+title: Linear Gradient
+description: Linear gradients that works with Tamagui style props
+name: html
+component: LinearGradient
+demoName: LinearGradient
+---
+
+# Linear Gradient
+
+<Description>Linear Gradient that works with Tamagui style props.</Description>
+
+<InstallBanner name="@tamagui/linear-gradient" />
+
+<HeroContainer>
+  <LinearGradientDemo />
+</HeroContainer>
+
+```tsx hero template=LinearGradient
+
+```
+
+<Highlights
+  features={[
+    'Works on native and web.',
+    'Accepts Tamagui style props and theme colors.',
+    'Bundles easily with webpack.',
+  ]}
+/>
+
+## Installation
+
+LinearGradient is already installed in `tamagui`, or you can install it independently:
+
+```bash
+npm install @tamagui/linear-gradient
+```
+
+To use this package you'll need to add `expo-linear-gradient` to your app. This works [with vanilla React Native](https://github.com/expo/expo/tree/sdk-47/packages/expo-linear-gradient) or Expo.
+
+## Usage
+
+Because LinearGradient requires a more complex to install native package, we've left it out of the `tamagui` export until Metro supports async import. Import it either separately or using the path `/linear-gradient`:
+
+```tsx
+import { LinearGradient } from '@tamagui/linear-gradient'
+import { LinearGradient } from 'tamagui/linear-gradient'
+```
+
+LinearGradient is a YStack that accepts all Tamagui style props as well as theme colors, that places `expo-linear-gradient` inside it set to absoluteFill.
+
+## API Reference
+
+### LinearGradient
+
+See the [expo docs](https://docs.expo.dev/versions/latest/sdk/linear-gradient/) for more complete information.
+
+LinearGradient extends YStack, inheriting [Stack props](/docs/components/stacks) and therefore the [Tamagui standard props](/docs/intro/props), plus:
+
+<PropsTable
+  data={[
+    {
+      name: 'colors',
+      required: true,
+      type: 'string[]',
+      description: `Two or more colors.`,
+    },
+    {
+      name: 'locations',
+      required: false,
+      type: 'number[] | null',
+      description: `An array that contains numbers ranging from 0 to 1, inclusive, and is the same length as the colors property. Each number indicates a color-stop location where each respective color should be located.`,
+      default: '[0.0, 1.0]',
+    },
+    {
+      name: 'start',
+      required: false,
+      type: 'LinearGradientPoint | null',
+      default: '{ x: 0.5, y: 0.0 }',
+      description: `For example, { x: 0.1, y: 0.2 } means that the gradient will start 10% from the left and 20% from the top.`,
+    },
+    {
+      name: 'end',
+      required: false,
+      type: 'LinearGradientPoint | null',
+      default: '{ x: 0.5, y: 1.0 }',
+      description: `For example, { x: 0.1, y: 0.2 } means that the gradient will end 10% from the left and 20% from the bottom.`,
+    },
+  ]}
+/>

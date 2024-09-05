@@ -1,0 +1,60 @@
+---
+title: Metro Guide
+description: How to set up Tamagui with Metro
+---
+
+## Native
+
+If you're using a monorepo, you probably want to use this Metro configuration in your `metro.config.js`:
+
+```ts fileName="metro.config.js"
+// Learn more https://docs.expo.io/guides/customizing-metro
+const { getDefaultConfig } = require('expo/metro-config')
+
+/** @type {import('expo/metro-config').MetroConfig} */
+const config = getDefaultConfig(__dirname, {
+  // [Web-only]: Enables CSS support in Metro.
+  isCSSEnabled: true,
+})
+
+// Expo 49 issue: default metro config needs to include "mjs"
+// https://github.com/expo/expo/issues/23180
+config.resolver.sourceExts.push('mjs')
+
+module.exports = config
+```
+
+## Web support
+
+Early support for Metro web support is here.
+
+First install `@tamagui/metro-plugin`:
+
+```bash
+yarn add tamagui @tamagui/config @tamagui/metro-plugin
+```
+
+Then adjust your `metro.config.js`:
+
+```tsx fileName="metro.config.js"
+// Learn more https://docs.expo.io/guides/customizing-metro
+const { getDefaultConfig } = require('expo/metro-config')
+
+/** @type {import('expo/metro-config').MetroConfig} */
+const config = getDefaultConfig(__dirname, {
+  // [Web-only]: Enables CSS support in Metro.
+  isCSSEnabled: true,
+})
+
+// add nice web support with optimizing compiler + CSS extraction
+const { withTamagui } = require('@tamagui/metro-plugin')
+module.exports = withTamagui(config, {
+  components: ['tamagui'],
+  config: './tamagui.config.ts',
+  outputCSS: './tamagui-web.css',
+})
+```
+
+<Notice>
+  If you're using Metro as your web bundler, you have to turn `isCSSEnabled` on. See [Expo's docs](https://docs.expo.dev/versions/latest/config/metro/#css).
+</Notice>

@@ -1,0 +1,67 @@
+diff --git a/node_modules/react-dom/client.web.js b/node_modules/react-dom/client.web.js
+new file mode 100644
+index 0000000..a8bbd35
+--- /dev/null
++++ b/node_modules/react-dom/client.web.js
+@@ -0,0 +1 @@
++module.exports = require('@vxrn/vendor/react-dom-client-19')
+diff --git a/node_modules/react-dom/index.web.js b/node_modules/react-dom/index.web.js
+new file mode 100644
+index 0000000..a53da61
+--- /dev/null
++++ b/node_modules/react-dom/index.web.js
+@@ -0,0 +1 @@
++module.exports = require('@vxrn/vendor/react-dom-19')
+diff --git a/node_modules/react-dom/package.json b/node_modules/react-dom/package.json
+index 1287fb4..1d73408 100644
+--- a/node_modules/react-dom/package.json
++++ b/node_modules/react-dom/package.json
+@@ -37,18 +37,30 @@
+     "umd/"
+   ],
+   "exports": {
+-    ".": "./index.js",
+-    "./client": "./client.js",
++    ".": {
++      "react-native": "./index.js",
++      "default": "./index.web.js"
++    },
++    "./client": {
++      "react-native": "./client.js",
++      "default": "./client.web.js"
++    },
+     "./server": {
+       "deno": "./server.browser.js",
+       "worker": "./server.browser.js",
+       "browser": "./server.browser.js",
+       "default": "./server.node.js"
+     },
+-    "./server.browser": "./server.browser.js",
++    "./server.browser": {
++      "react-native": "./server.browser.js",
++      "default": "./server.browser.web.js"
++    },
+     "./server.node": "./server.node.js",
+     "./profiling": "./profiling.js",
+-    "./test-utils": "./test-utils.js",
++    "./test-utils": {
++      "react-native": "./test-utils.js",
++      "default": "./test-utils.web.js"
++    },
+     "./package.json": "./package.json"
+   },
+   "browser": {
+diff --git a/node_modules/react-dom/server.browser.web.js b/node_modules/react-dom/server.browser.web.js
+new file mode 100644
+index 0000000..f3b8cf0
+--- /dev/null
++++ b/node_modules/react-dom/server.browser.web.js
+@@ -0,0 +1 @@
++module.exports = require('@vxrn/vendor/react-dom-server.browser-19')
+diff --git a/node_modules/react-dom/test-utils.web.js b/node_modules/react-dom/test-utils.web.js
+new file mode 100644
+index 0000000..94a0472
+--- /dev/null
++++ b/node_modules/react-dom/test-utils.web.js
+@@ -0,0 +1 @@
++module.exports = require('@vxrn/vendor/react-dom-test-utils-19')

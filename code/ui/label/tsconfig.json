@@ -1,0 +1,37 @@
+{
+  "extends": "../../../tsconfig.json",
+  "compilerOptions": {
+    "composite": true
+  },
+  "references": [
+    {
+      "path": "../../core/compose-refs"
+    },
+    {
+      "path": "../../core/constants"
+    },
+    {
+      "path": "../../core/create-context"
+    },
+    {
+      "path": "../../core/get-button-sized"
+    },
+    {
+      "path": "../../core/get-font-sized"
+    },
+    {
+      "path": "../../core/web"
+    },
+    {
+      "path": "../focusable"
+    },
+    {
+      "path": "../text"
+    }
+  ],
+  "exclude": [
+    "types",
+    "dist",
+    "**/__tests__"
+  ]
+}

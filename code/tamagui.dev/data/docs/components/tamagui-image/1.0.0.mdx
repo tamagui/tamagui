@@ -1,0 +1,107 @@
+---
+title: Image
+description: Web compatible and super light image component with Tamagui style props.
+name: html
+component: Image
+package: image-next
+demoName: WebNativeImageDemo
+---
+
+# Image
+
+<Description>React Native Web Image + Tamagui style props.</Description>
+
+<HeroContainer noPad>
+  <WebNativeImageDemo />
+</HeroContainer>
+
+```tsx hero template=WebNativeImage
+
+```
+
+<Highlights
+  features={[
+    "Web compatible.",
+    "Supports SSR.",
+    "Works on native and web.",
+    "No react-native-web depedency",
+    "Super light",
+  ]}
+/>
+
+## Installation
+
+Image is already installed in `tamagui`, or you can install it independently:
+
+```bash
+npm install @tamagui/image-next
+```
+
+## Usage
+
+```tsx
+export default () => (
+  <Image
+    src='https://...'
+    width={300}
+    height={400}
+  />
+)
+```
+
+## API Reference
+
+### Image
+
+[Tamagui props](/docs/intro/props) + [Web img props](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img) + [React Native Image props](https://necolas.github.io/react-native-web/docs/image/).
+
+<Notice>
+  All web [img](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img)
+  props are supported on web, and all native
+  [Image](https://necolas.github.io/react-native-web/docs/image/) props are
+  supported on native. on native we are still using web img APIs, but not all
+  web img props are supported. like `decoding`
+</Notice>
+
+#### Some common props
+
+<PropsTable
+  data={[
+    {
+      name: "src",
+      required: true,
+      type: "string",
+      description: `The image URL.`,
+    },
+    {
+      name: "alt",
+      required: false,
+      type: "string",
+      description: `mandatory and incredibly useful for accessibility`,
+    },
+    {
+      name: "objectFit",
+      required: false,
+      type: "CSS.ObjectFit",
+      description: `sets how the content of image is resized to fit its container. it's alternative to resizeMode prop`,
+    },
+    {
+      name: "unstyled",
+      required: false,
+      type: "boolean",
+      description: `When true will remove all default styles`,
+    },
+    {
+      name: "onLoad",
+      required: false,
+      type: "function",
+      description: `Callback when image is loaded`,
+    },
+    {
+      name: "onError",
+      required: false,
+      type: "function",
+      description: `Callback when image fails to load`,
+    },
+  ]}
+/>

@@ -1,0 +1,227 @@
+---
+title: Design Systems
+description: Put together your own design system.
+---
+
+To skip to some real examples:
+
+- `create-tamagui` is itself a
+  [well structured monorepo](https://github.com/tamagui/tamagui/tree/master/code/starters).
+- More complete, the
+  [tamagui](https://github.com/tamagui/tamagui/tree/master/code/ui/tamagui)
+  package itself.
+
+Tamagui allows you to build our your own set of components that are optimized
+with the compiler whenever they are used in your app.
+
+By default, if you just use `styled()` in your app, Tamagui **won't** be able to
+optimize those components. This is because the compiler needs to know about
+those components at build-time.
+
+Let's break down how to set this up in more detail.
+
+## Step 1: Create a package
+
+Your design system needs to live in it's own npm module, which can be private to
+just your app. That way you can later direct the compiler to look for that
+package.
+
+Design systems can extend off each other. In fact `tamagui` extends off
+`@tamagui/core`, which contains simple base level components.
+
+So, for example, if you'd like to use the Tamagui `XStack`, `YStack`, `Button`
+and `Paragraph` in your design system, you would add `tamagui` to your design
+system's package.json.
+
+If you want to build more from scratch, then use `@tamagui/core` and only import
+either the `View` or `Text` components. For the purpose of this guide, we'll use
+`@tamagui/core`.
+
+Add package.json:
+
+```json
+{
+  "name": "@ourapp/components",
+  "types": "./types/index.d.ts",
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "module:jsx": "dist/jsx",
+  "files": ["types", "src", "dist"],
+  "sideEffects": ["*.css"],
+  "dependencies": {
+    "@tamagui/core": "*"
+  },
+  "scripts": {
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch"
+  },
+  "devDependencies": {
+    "@tamagui/build": "*"
+  }
+}
+```
+
+If using Typescript, a `tsconfig.json` of your choosing:
+
+```
+{
+  "types": ["node", "react"],
+  "lib": ["dom", "esnext"],
+  "compilerOptions": {
+    "baseUrl": "./", // resolve absolute module names from here
+    "outDir": "dist"
+  },
+  "include": ["./**/*.ts"],
+  "exclude": [
+    "node_modules/**/*"
+  ]
+}
+```
+
+There are a few things to note here:
+
+- We're using `@tamagui/build` to build this package, which is a small script
+  built around `esbuild` and `typescript` that makes sure you output your
+  components _with JSX preserved_.
+- We then set `module:jsx`, which then needs to be added to your webpack
+  `resolve.mainFields`.
+  - The Next.js plugin handles this for you automatically.
+- `sideEffects` field is important, otherwise webpack will remove the generated
+  CSS in production.
+
+## Step 2: Create your design system.
+
+Check the [configuration](/docs/core/configuration) for more detail on this
+step.
+
+You'll be creating a `tamagui.config.ts` at the the root of your app. It will
+contain a full suite of tokens, themes, and fonts exported onto a single named
+`config` export.
+
+## Step 3: Define and export components
+
+Now, create and export the components. You can re-export components from
+`tamagui` or `@tamagui/core` as well. Let's create a Circle component
+
+`Circle.tsx`:
+
+```tsx
+import { GetProps, YStack, styled } from 'tamagui' // or '@tamagui/core' if extending just that
+
+export const Circle = styled(YStack, {
+  alignItems: 'center',
+  justifyContent: 'center',
+  borderRadius: 100_000_000,
+  overflow: 'hidden',
+
+  variants: {
+    size: {
+      '...size': (size, { tokens }) => {
+        return {
+          width: tokens.size[size] ?? size,
+          height: tokens.size[size] ?? size,
+        }
+      },
+    },
+  },
+})
+
+export type CircleProps = GetProps<typeof Circle>
+```
+
+And then export from `index.tsx`:
+
+```tsx
+export * from './Circle'
+```
+
+## Step 4: Set up your build
+
+Now in your app, add `@ourapp/components` and `tamagui` (since we are extending
+it) to your package.json, and update your tamagui build configuration.
+
+### Webpack
+
+In your `webpack.config.js`:
+
+```js
+{
+  loader: 'tamagui-loader',
+  options: {
+    config: './tamagui.config.ts',
+    components: ['@ourapp/components', 'tamagui'],
+  },
+}
+```
+
+### Next.js
+
+In your `next.config.js`:
+
+```js
+export default withPlugins([
+  withTamagui({
+    config: './tamagui.config.ts',
+    components: ['@ourapp/components', 'tamagui'],
+  })
+])
+```
+
+### React Native
+
+In your `babel.config.js`:
+
+```js
+export default {
+  plugins: [
+    [
+      '@tamagui/babel-plugin',
+      {
+        exclude: /node_modules/,
+        config: './tamagui.config.ts',
+        components: ['@ourapp/components', 'tamagui']
+      },
+    ],
+  ],
+}
+```
+
+### Configuration notes
+
+You only need `tamagui` in your `components` array if you extend it, otherwise
+no need. You can also extend your own base level module so long as they export
+Tamagui `styled` components.
+
+## Step 5: Test it out
+
+In your app, you should now be able to import and use your Circle component.
+Using the debug pragma, you can also verify the extraction is working. Make sure
+the build settings `logTimings: true` and `disableExtraction: false` are set so
+you can see the compiler at work:
+
+Anywhere in your app:
+
+```tsx
+import { Circle } from '@ourapp/components'
+
+export default () => <Circle size="$large" />
+```
+
+When it compiles you should see something like:
+
+```bash
+»                  app.tsx  16ms ׁ·    1 optimized · 1 flattened
+```
+
+To get more information on any extraction, use the `// debug` pragma:
+
+```tsx
+// debug
+// ^ the above pragma will direct Tamagui to output a lot of information on the extraction
+import { Circle } from '@ourapp/components'
+
+export default () => <Circle size="$large" />
+```
+
+You should see much more log output with details on how it extracted, including
+the final CSS and JS.

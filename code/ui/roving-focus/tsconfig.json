@@ -1,0 +1,40 @@
+{
+  "extends": "../../../tsconfig.json",
+  "compilerOptions": {
+    "composite": true
+  },
+  "references": [
+    {
+      "path": "../../core/compose-refs"
+    },
+    {
+      "path": "../../core/constants"
+    },
+    {
+      "path": "../../core/core"
+    },
+    {
+      "path": "../../core/create-context"
+    },
+    {
+      "path": "../../core/helpers"
+    },
+    {
+      "path": "../../core/use-controllable-state"
+    },
+    {
+      "path": "../../core/use-direction"
+    },
+    {
+      "path": "../../core/use-event"
+    },
+    {
+      "path": "../collection"
+    }
+  ],
+  "exclude": [
+    "types",
+    "dist",
+    "**/__tests__"
+  ]
+}

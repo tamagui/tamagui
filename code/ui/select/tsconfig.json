@@ -1,0 +1,76 @@
+{
+  "extends": "../../../tsconfig.json",
+  "compilerOptions": {
+    "composite": true
+  },
+  "references": [
+    {
+      "path": "../../core/compose-refs"
+    },
+    {
+      "path": "../../core/constants"
+    },
+    {
+      "path": "../../core/core"
+    },
+    {
+      "path": "../../core/create-context"
+    },
+    {
+      "path": "../../core/get-token"
+    },
+    {
+      "path": "../../core/helpers"
+    },
+    {
+      "path": "../../core/use-controllable-state"
+    },
+    {
+      "path": "../../core/use-debounce"
+    },
+    {
+      "path": "../../core/use-event"
+    },
+    {
+      "path": "../../core/use-previous"
+    },
+    {
+      "path": "../adapt"
+    },
+    {
+      "path": "../animate-presence"
+    },
+    {
+      "path": "../dismissable"
+    },
+    {
+      "path": "../focus-scope"
+    },
+    {
+      "path": "../list-item"
+    },
+    {
+      "path": "../portal"
+    },
+    {
+      "path": "../remove-scroll"
+    },
+    {
+      "path": "../separator"
+    },
+    {
+      "path": "../sheet"
+    },
+    {
+      "path": "../stacks"
+    },
+    {
+      "path": "../text"
+    }
+  ],
+  "exclude": [
+    "types",
+    "dist",
+    "**/__tests__"
+  ]
+}

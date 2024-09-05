@@ -1,0 +1,80 @@
+---
+title: Tamagui 2
+publishedAt: '2024-08-31'
+description: A simpler, more reliable Tamagui
+by: nate
+poster: banner-two.jpg
+---
+
+<IntroParagraph>
+  It's been nearly two full years since version one. What happened?
+</IntroParagraph>
+
+Tamagui is a cross-platform styling library and UI kit for React with a simple but effective optimizing compiler that helps it achieve a near zero-runtime performance while outputting platform-optimized code (div and CSS on web, hoisted objects on native). Every feature works at both runtime and compile-time, and on both native and web, and it let you achieve either consistent UI across platforms, or render to platform-specific UI elements with `<Adapt />` and the `native` prop.
+
+Version 2 has been long overdue. We launched two full-on products in the last year, and Tamagui has always been
+a side project of mine for the last few years, though it's been helped along by a great team of developers thanks to sponsors and our products.
+
+Version 2 only makes a few breaking changes:
+
+- `tamagui` becomes `@tamagui/ui`
+- `@tamagui/cli` is now just `tamagui`, so you can `npx tamagui` to use the CLI (for creating starters, linting, one-off compiling, and a doctor command).
+- Accessibility props - 
+- Flex defaults - 
+- TypeScript 5 -
+- Button - Button moves to a compound component only API (with the old button available still as `OldButton`)
+- ListItem - ListItem moves to a compound component only API
+- Select - Select inherits from ListItem, so it just inherits the same changes.
+
+---
+
+A ton has changed since version 1, we've collected all the major changes below.
+
+---
+
+## @tamagui/core
+
+The core styling library now has no dependency at all outside of React. It's a self-contained 30Kb universal styling library. It implements the React Native View, Text and styling APIs (which are basically a subset of CSS, in Typescript), and expands them to include a lot more of what CSS can do. It feels in practice much like a typed Stitches or Styled Components.
+
+Here are some highlights since version 1:
+
+#### Aligning
+
+#### Container Queries
+
+#### useProps, useStyle, usePropsAndStyle
+
+#### 
+
+---
+
+## @tamagui/ui
+
+### What's changed since v1.0.0
+
+
+### New components
+
+
+
+Image, Input, and Button are all re-written
+
+###
+
+
+
+## Acknowledgements
+
+We've had 38 new contributors since early this year, exponentially increasing! Thanks to all of them, and also to the many QA testers that join in our Discord chat every day :).
+
+Early sponsors have made a huge difference: I owe a large thank you to [Vercel](https://vercel.com), [Codingscape](https://codingscape.com), [QuestPortal](https://www.questportal.com) and [BeatGig](https://beatgig.com), the first corporate sponsors ❤️.
+
+Tamagui draws inspiration and small areas of code from some incredible other libraries: [Radix](https://www.radix-ui.com/) provided much of the compound component APIs, [Floating UI](https://floating-ui.com/) handles all of the floating elements positioning, [Moti](https://moti.fyi) which served as a start point for the animation drivers, and [Framer Motion](https://github.com/framer/motion) for the nifty AnimatePresence functionality.
+
+---
+
+### Join the community
+
+<Wide>
+  <SocialLinksRow />
+</Wide>

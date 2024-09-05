@@ -1,0 +1,176 @@
+---
+title: ToggleGroup
+description: Two-state buttons that can be toggled on or off
+name: toggleGroup
+component: ToggleGroup
+package: toggle-group
+demoName: ToggleGroup
+---
+
+# ToggleGroup <Beta />
+
+<Description>Two-state buttons that can be toggled on or off</Description>
+
+<InstallBanner name="@tamagui/toggle-group" />
+
+<HeroContainer>
+  <ToggleGroupDemo />
+</HeroContainer>
+
+```tsx hero template=ToggleGroup
+
+```
+
+<Highlights
+  features={[
+    `Full keyboard navigation.`,
+    `Supports horizontal/vertical orientation.`,
+    `Support single and multiple pressed buttons.`,
+    `Can be controlled or uncontrolled.`,
+  ]}
+/>
+
+## Installation
+
+ToggleGroup is already installed in `tamagui`, or you can install it independently:
+
+```bash
+npm install @tamagui/toggle-group
+```
+
+## Usage
+
+```tsx
+import { ToggleGroup } from 'tamagui'
+
+export default () => {
+  return (
+    <ToggleGroup type="single">
+      <ToggleGroup.Item value="foo"></ToggleGroup.Item>
+      <ToggleGroup.Item value="bar"></ToggleGroup.Item>
+    </ToggleGroup>
+  )
+}
+```
+
+## API Reference
+
+### ToggleGroup
+
+`ToggleGroup` extends the [Group](/docs/components/group) component. You can disable passing border radius to children by passing `disablePassBorderRadius`. plus:
+
+<PropsTable
+  data={[
+    {
+      name: 'asChild',
+      type: 'boolean',
+      description: `When true, Tamagui expects a single child element. Instead of rendering its own element, it will pass all props to that child, merging together any event handling props.`,
+      default: `false`,
+    },
+    {
+      name: 'type',
+      type: 'enum',
+      description: `Determines whether a single or multiple items can be pressed at a time.`,
+    },
+    {
+      name: 'value',
+      type: 'string',
+      description: `The controlled value of the pressed item when type is "single". Must be used in conjunction with onValueChange.`,
+    },
+    {
+      name: 'defaultValue',
+      description: 'The values of the items to show as pressed when initially rendered.',
+      type: 'string',
+      default: ``,
+    },
+    {
+      name: 'orientation',
+      type: 'enum',
+      description: `The orientation of the component, which determines how focus moves: horizontal for left/right arrows and vertical for up/down arrows.`,
+      default: `horizontal`,
+    },
+    {
+      name: 'disabled',
+      type: 'boolean',
+      description: `When true, prevents the user from interacting with the toggle group and all its items.`,
+      default: `false`,
+    },
+    {
+      name: 'onValueChange',
+      type: '(value: string[]) => void',
+      description: `Event handler called when the pressed state of an item changes and type is "multiple".`,
+    },
+    {
+      name: 'loop',
+      type: 'boolean',
+      description: `Whether or not to loop over after reaching the end or start of the items. Used mainly for managing keyboard navigation.`,
+      default: `true`,
+    },
+    {
+      name: 'disableDeactivation',
+      type: 'boolean',
+      description: `Won't let the user turn the active item off. Only applied to single toggle group.`,
+      default: 'false',
+    },
+    {
+      name: 'unstyled',
+      type: 'boolean',
+      default: 'false',
+      description: `When true, remove all default tamagui styling.`,
+    },
+    {
+      name: 'sizeAdjust',
+      type: 'number',
+      description: `Adjust the component's size scaling by this number.`,
+    },
+  ]}
+/>
+
+### ToggleGroup.Item
+
+`ToggleGroup.Item` extend Stack views inheriting all the [Tamagui standard props](notion://www.notion.so/docs/intro/props), plus:
+
+<PropsTable
+  data={[
+    {
+      name: 'asChild',
+      type: 'boolean',
+      description: `When true, Tamagui expects a single child element. Instead of rendering its own element, it will pass all props to that child, merging together any event handling props.`,
+      default: `false`,
+    },
+    {
+      name: 'value',
+      type: 'string',
+      description: `The controlled value of the pressed item when type is "single".`,
+    },
+    {
+      name: 'disabled',
+      type: 'boolean',
+      description: `When true, prevents the user from interacting with the toggle group item.`,
+      default: `false`,
+    },
+    {
+      name: 'unstyled',
+      type: 'boolean',
+      default: 'false',
+      description: `When true, remove all default tamagui styling.`,
+    },
+  ]}
+/>
+
+When it is active, it will receive an `active` prop set to true. This means you can customize the active styles like so:
+
+```tsx
+import { ToggleGroup } from '@tamagui/toggle-group'
+import { styled } from 'tamagui'
+
+const MyToggleGroupItem = styled(ToggleGroup.Item, {
+  variants: {
+    active: {
+      true: {
+        backgroundColor: 'red'
+      },
+    },
+  },
+})
+```

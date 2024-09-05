@@ -1,0 +1,73 @@
+---
+title: Shapes
+description: Square and Circle components
+name: shapes
+component: Square
+package: shapes
+demoName: Shapes
+---
+
+# Shapes
+
+<Description>Easy to use Square and Circle</Description>
+
+<InstallBanner name="@tamagui/shapes" />
+
+<HeroContainer>
+  <ShapesDemo />
+</HeroContainer>
+
+```tsx hero template=Shapes
+
+```
+
+<Highlights
+  features={[
+    'Accepts size props as number or token value.',
+    'Sets min and max width and height.',
+  ]}
+/>
+
+## Usage
+
+Tamagui supports sizing shapes using your `size` tokens, or plain numbers.
+
+```tsx
+import { Circle, Square } from 'tamagui'
+
+export default () => (
+  <>
+    <Square size="$4" />
+    <Square size={100} />
+    <Circle size="$4" />
+    <Circle size={100} />
+  </>
+)
+```
+
+## API Reference
+
+### Square
+
+`Square` extends Stack views inheriting all the [Tamagui standard props](/docs/intro/props), plus:
+
+<PropsTable
+  data={[
+    {
+      name: 'size',
+      required: false,
+      type: 'string | tokens.size',
+      description: `Set a size, number or one of the size token values.`,
+    },
+    {
+      name: 'circular',
+      required: false,
+      type: 'boolean',
+      description: `Rounds the border radius to be circular.`,
+    },
+  ]}
+/>
+
+### Circle
+
+`Circle` extends [Square](#square), setting `circular` to `true`.

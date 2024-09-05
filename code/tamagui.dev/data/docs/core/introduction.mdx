@@ -1,0 +1,20 @@
+---
+title: Introduction
+description: What is @tamagui/core?
+---
+
+<IntroParagraph>
+  Core is a React [style and design system library](/docs/core/configuration), a bit like a fully-typed and modern [styled-components](https://styled-components.com) or [Stitches](https://stitches.dev) that can compile to near 0-runtime, and happens to work on React Native the same as on web, despite having no outside dependencies.
+</IntroParagraph>
+
+Well, sort of - on iOS and Android it depends on React Native, but on the web it has no outside dependencies besides React - yet it supports the full React Native API surface in 24-28Kb, depending on tree-shaking.
+
+It primarily exports a [`styled`](/docs/core/styled) function and [`View` & `Text`](/docs/core/stack-and-text) components, all of which accept the superset of the React Native API surface that Tamagui supports. 
+
+Tamagui supports a [superset](/docs/intro/styles) of the React Native style API, bringing many powerful abilities from CSS like media queries, pseudo selectors, container queries, and other selectors.
+
+With [`createTamagui`](/docs/core/configuration) you can create what are essentially media queries and typed CSS variables that work for styling, but also with the [`useTheme`](/docs/core/use-theme) and [`useMedia`](/docs/core/use-media) hooks. Both can compile away with the optimizing compiler when used for styling, but they also are written to be extremely performant with explicit dirty tracking and signal-like re-render granularity.
+
+Core supports its full feature-set at runtime and at compile-time (with [`@tamagui/static`](/docs/intro/compiler-install)). This means it's easy to set up and test out, but gives amazing performance when you need it.
+
+Below `@tamagui/core` is `@tamagui/web`, which drops the React Native non-style props and saves an extra 10Kb or so of size. It's a great web-only style library much like a typed version of Stitches.

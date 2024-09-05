@@ -1,0 +1,51 @@
+---
+title: Visually Hidden
+description: Visually Hidden that works with Tamagui style props.
+name: html
+component: VisuallyHidden
+---
+
+# Visually Hidden
+
+<Description>Hide content accessibly</Description>
+
+<InstallBanner name="@tamagui/visually-hidden" />
+
+VisuallyHidden hides an item but ensures it remains visible to accessibility readers.
+
+<Highlights
+  features={[
+    'Keeps content hidden on screen but visible to assistive tech.',
+    'Works with "space" prop to not disturb spacing.',
+  ]}
+/>
+
+## Usage
+
+Simply wrap the content you want hidden in VisuallyHidden:
+
+```tsx
+import { Text, VisuallyHidden } from 'tamagui'
+
+export default () => (
+  <VisuallyHidden>
+    <Text>Add annotations here</Text>
+  </VisuallyHidden>
+)
+```
+
+When using with the `space` property, it will avoid double-spacing:
+
+```tsx
+import { H1, Text, VisuallyHidden, YStack } from 'tamagui'
+
+export default () => (
+  <YStack space>
+    <H1>Title</H1>
+
+    <VisuallyHidden>
+      <Text>Add annotations here</Text>
+    </VisuallyHidden>
+  </YStack>
+)
+```

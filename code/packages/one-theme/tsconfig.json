@@ -1,0 +1,20 @@
+{
+  "extends": "../../../tsconfig.json",
+  "compilerOptions": {
+    "composite": true,
+    "removeComments": false
+  },
+  "references": [
+    {
+      "path": "../../core/constants"
+    },
+    {
+      "path": "../../core/use-event"
+    }
+  ],
+  "exclude": [
+    "types",
+    "dist",
+    "**/__tests__"
+  ]
+}

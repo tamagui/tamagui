@@ -1,0 +1,168 @@
+{
+  "extends": "../../../tsconfig.json",
+  "compilerOptions": {
+    "composite": true
+  },
+  "exclude": [
+    "tamagui.config.ts",
+    "test",
+    "dist",
+    "types",
+    "./linear-gradient",
+    "./native.d.ts",
+    "./native-test.d.ts",
+    "**/__tests__"
+  ],
+  "references": [
+    {
+      "path": "../../core/compose-refs"
+    },
+    {
+      "path": "../../core/constants"
+    },
+    {
+      "path": "../../core/core"
+    },
+    {
+      "path": "../../core/create-context"
+    },
+    {
+      "path": "../../core/font-size"
+    },
+    {
+      "path": "../../core/get-button-sized"
+    },
+    {
+      "path": "../../core/get-font-sized"
+    },
+    {
+      "path": "../../core/get-token"
+    },
+    {
+      "path": "../../core/helpers-tamagui"
+    },
+    {
+      "path": "../../core/react-native-media-driver"
+    },
+    {
+      "path": "../../core/theme"
+    },
+    {
+      "path": "../../core/use-controllable-state"
+    },
+    {
+      "path": "../../core/use-debounce"
+    },
+    {
+      "path": "../../core/use-force-update"
+    },
+    {
+      "path": "../../core/use-window-dimensions"
+    },
+    {
+      "path": "../accordion"
+    },
+    {
+      "path": "../adapt"
+    },
+    {
+      "path": "../alert-dialog"
+    },
+    {
+      "path": "../animate-presence"
+    },
+    {
+      "path": "../avatar"
+    },
+    {
+      "path": "../button"
+    },
+    {
+      "path": "../card"
+    },
+    {
+      "path": "../checkbox"
+    },
+    {
+      "path": "../dialog"
+    },
+    {
+      "path": "../elements"
+    },
+    {
+      "path": "../focusable"
+    },
+    {
+      "path": "../form"
+    },
+    {
+      "path": "../group"
+    },
+    {
+      "path": "../image"
+    },
+    {
+      "path": "../label"
+    },
+    {
+      "path": "../linear-gradient"
+    },
+    {
+      "path": "../list-item"
+    },
+    {
+      "path": "../popover"
+    },
+    {
+      "path": "../popper"
+    },
+    {
+      "path": "../portal"
+    },
+    {
+      "path": "../progress"
+    },
+    {
+      "path": "../radio-group"
+    },
+    {
+      "path": "../scroll-view"
+    },
+    {
+      "path": "../select"
+    },
+    {
+      "path": "../separator"
+    },
+    {
+      "path": "../shapes"
+    },
+    {
+      "path": "../sheet"
+    },
+    {
+      "path": "../slider"
+    },
+    {
+      "path": "../stacks"
+    },
+    {
+      "path": "../switch"
+    },
+    {
+      "path": "../tabs"
+    },
+    {
+      "path": "../text"
+    },
+    {
+      "path": "../toggle-group"
+    },
+    {
+      "path": "../tooltip"
+    },
+    {
+      "path": "../visually-hidden"
+    }
+  ]
+}

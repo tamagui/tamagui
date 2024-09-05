@@ -1,0 +1,14 @@
+{
+  "extends": "../../../tsconfig.json",
+  "compilerOptions": {
+    "composite": true
+  },
+  "references": [
+    {
+      "path": "../../compiler/vite-plugin"
+    },
+    {
+      "path": "../../core/config-default"
+    }
+  ]
+}

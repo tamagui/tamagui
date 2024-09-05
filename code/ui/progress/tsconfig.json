@@ -1,0 +1,31 @@
+{
+  "extends": "../../../tsconfig.json",
+  "compilerOptions": {
+    "composite": true
+  },
+  "references": [
+    {
+      "path": "../../core/compose-refs"
+    },
+    {
+      "path": "../../core/core"
+    },
+    {
+      "path": "../../core/create-context"
+    },
+    {
+      "path": "../../core/get-token"
+    },
+    {
+      "path": "../../core/helpers"
+    },
+    {
+      "path": "../stacks"
+    }
+  ],
+  "exclude": [
+    "types",
+    "dist",
+    "**/__tests__"
+  ]
+}

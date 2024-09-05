@@ -1,0 +1,301 @@
+---
+title: Dialog
+description: A simple dialog component
+name: dialog
+component: Dialog
+package: dialog
+demoName: Dialog
+---
+
+# Dialog
+
+<Description>Show a modal with configurable layout and accessible actions</Description>
+
+<InstallBanner name="@tamagui/dialog" />
+
+<HeroContainer showAnimationDriverControl>
+  <DialogDemo />
+</HeroContainer>
+
+```tsx hero template=Dialog
+
+```
+
+<Highlights
+  features={[
+    `Comes with styling, yet completely customizable and themeable.`,
+    `Accepts animations, themes, size props and more.`,
+    `Accessible with dev-time checks to ensure ARIA props.`,
+  ]}
+/>
+
+<Notice>
+  Dialog does not work on native, instead you can Adapt it to a Sheet as shown in the demo
+  code above.
+</Notice>
+
+## Installation
+
+Dialog is already installed in `tamagui`, or you can install it independently:
+
+```bash
+npm install @tamagui/dialog
+```
+
+In order to use this component independently of `tamagui`, you'll first need to install the `@tamagui/portal` package: 
+
+```bash
+npm install @tamagui/portal
+```
+
+Then add `PortalProvider` to the root of your app:
+
+```tsx fileName="App.tsx"
+import { PortalProvider } from '@tamagui/portal'
+import YourApp from './components/YourApp'
+
+function App() {
+  return (
+    <PortalProvider shouldAddRootHost>
+      <YourApp />
+    </PortalProvider>
+  )
+}
+
+export default App
+```
+
+## Anatomy
+
+```tsx
+import { Dialog } from 'tamagui' // or '@tamagui/dialog'
+
+export default () => (
+  <Dialog>
+    <Dialog.Trigger />
+    <Dialog.Portal>
+      <Dialog.Overlay />
+      <Dialog.Content>
+        <Dialog.Title />
+        <Dialog.Description />
+        <Dialog.Close />
+        {/* ... */}
+      </Dialog.Content>
+    </Dialog.Portal>
+  </Dialog>
+)
+```
+
+## API Reference
+
+### Dialog
+
+Contains every component for the dialog. Beyond [Tamagui Props](/docs/intro/props), adds:
+
+<PropsTable
+  data={[
+    {
+      name: 'children',
+      type: 'React.ReactNode',
+      required: true,
+      description: `Must contain Dialog.Content`,
+    },
+    {
+      name: 'size',
+      type: 'SizeTokens',
+      description: `Passes size down too all sub-components when set for padding, arrow, borderRadius`,
+    },
+    {
+      name: 'open',
+      type: 'boolean',
+      description: ``,
+    },
+    {
+      name: 'defaultOpen',
+      type: 'boolean',
+    },
+    {
+      name: 'onOpenChange',
+      type: '(open: boolean) => void',
+    },
+    {
+      name: 'modal',
+      type: 'boolean',
+      default: 'true',
+      description: `Renders into root of app instead of inline`,
+    },
+    {
+      name: 'disableRemoveScroll',
+      type: 'boolean',
+      required: false,
+      description: `Used to disable the automatic removal of scrolling from the page when open.`,
+    },
+  ]}
+/>
+
+### Dialog.Trigger
+
+Just [Tamagui Props](/docs/intro/props).
+
+### Dialog.Portal
+
+Renders Dialog into appropriate container. Beyond [Tamagui Props](/docs/intro/props), adds:
+
+<PropsTable
+  data={[
+    {
+      name: 'forceMount',
+      type: 'boolean',
+      required: false,
+      description: `Used to force mounting when more control is needed. Useful when controlling animation with React animation libraries.`,
+    },
+    {
+      name: 'unstyled',
+      required: false,
+      type: `boolean`,
+      description: `Removes all default Tamagui styles.`,
+    },
+  ]}
+/>
+
+### Dialog.Content
+
+Main container for Dialog content, this is where you should apply animations.
+
+Beyond [Tamagui Props](/docs/intro/props), adds:
+
+<PropsTable
+  data={[
+    {
+      name: 'forceMount',
+      type: 'boolean',
+      required: false,
+      description: `Used to force mounting when more control is needed. Useful when controlling animation with React animation libraries.`,
+    },
+    {
+      name: 'unstyled',
+      required: false,
+      type: `boolean`,
+      description: `Removes all default Tamagui styles.`,
+    },
+  ]}
+/>
+
+### Dialog.Overlay
+
+Displays behind Content. Beyond [Tamagui Props](/docs/intro/props), adds:
+
+<PropsTable
+  data={[
+    {
+      name: 'forceMount',
+      type: 'boolean',
+      required: false,
+      description: `Used to force mounting when more control is needed. Useful when controlling animation with React animation libraries.`,
+    },
+  ]}
+/>
+
+### Dialog.Title
+
+Required. Can wrap in VisuallyHidden to hide.
+
+Defaults to H2, see [Headings](/docs/components/headings).
+
+### Dialog.Description
+
+Required. Can wrap in VisuallyHidden to hide.
+
+Defaults to Paragraph, see [Paragraph](/docs/components/text).
+
+### Dialog.Close
+
+Closes the Dialog, accepts the same props as YStack. Recommended to use with your own component and `asChild`.
+
+<PropsTable
+  data={[
+    {
+      name: 'displayWhenAdapted',
+      type: 'boolean',
+      description: `By default Close elements hide when Adapt is active. If set to true, they will show when adapted.`,
+    },
+  ]}
+/>
+
+Just [Tamagui Props](/docs/intro/props).
+
+### Dialog.Sheet
+
+When used with `Adapt`, Dialog will render as a sheet when that breakpoint is active.
+
+See [Sheet](/docs/components/sheet) for more props.
+
+Must use `Adapt.Contents` inside the `Dialog.Sheet.Frame` to insert the contents given to `Dialog.Content`
+
+```tsx
+import { Dialog } from 'tamagui' // or '@tamagui/dialog'
+
+export default () => (
+  <Dialog>
+    <Dialog.Trigger />
+
+    <Dialog.Portal>
+      <Dialog.Overlay />
+      <Dialog.Content>
+        <Dialog.Title />
+        <Dialog.Description />
+        <Dialog.Close />
+        {/* ... */}
+      </Dialog.Content>
+    </Dialog.Portal>
+
+    {/* optionally change to sheet when small screen */}
+    <Dialog.Adapt when="sm">
+      <Dialog.Sheet>
+        <Dialog.Sheet.Frame>
+          <Dialog.Adapt.Contents />
+        </Dialog.Sheet.Frame>
+        <Dialog.Sheet.Overlay />
+      </Dialog.Sheet>
+    </Dialog.Adapt>
+  </Dialog>
+)
+```
+
+<Notice>
+  Note that Dialog.Sheet currently doesn't preserve state of the contents when it
+  transitions between Sheet and Portal. In the future, we can do this on the web using
+  react-reparenting.
+</Notice>
+
+### PortalProvider
+
+<PropsTable
+  data={[
+    {
+      name: 'shouldAddRootHost',
+      type: 'boolean',
+      required: false,
+      description: `Defines whether to add a default root host or not.`,
+    },
+  ]}
+/>
+
+## Examples
+
+### Inside native modals
+
+If you're using native modals (maybe from react-navigation), you'll notice the Dialogs won't show up inside the modal. To get around this, you should wrap your screen inside `PortalProvider`, like so:
+
+```tsx
+import { PortalProvider } from 'tamagui'
+
+// this component used in react-navigation/expo-router with `presentation: "modal"`
+export function Page() {
+  return (
+    <PortalProvider>
+      {/* rest of your page, including the Dialog... */}
+    </PortalProvider>
+  )
+}
+```

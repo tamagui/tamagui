@@ -1,0 +1,110 @@
+---
+title: Stacks
+description: Stacks are your lowest level view for laying things out
+name: stacks
+component: Stacks
+package: stacks
+demoName: Stacks
+---
+
+# Stacks
+
+<Description>
+  An optional base for creating flex-based&nbsp;layouts.
+</Description>
+
+<InstallBanner name="@tamagui/stacks" />
+
+<HeroContainer>
+  <StacksDemo />
+</HeroContainer>
+
+```tsx hero template=Stacks
+
+```
+
+<Highlights
+  features={[
+    'X, Y, and Z stacks for easy flex layouts.',
+    'Gap property to add space between elements.',
+    'Handle press, focus, and layout events easily.',
+  ]}
+/>
+
+Tamagui UI includes optional stack views - XStack, YStack and ZStack. They extend directly off the [View](/docs/core/stack-and-text) from `@tamagui/core`.
+
+Stack props accept [every prop from react-native-web](https://necolas.github.io/react-native-web/docs/view/) View, as well as all [the style properties Tamagui supports](/docs/intro/props).
+
+In this example you'd show three `YStack` elements spaced out.
+
+```tsx
+import { XStack, YStack } from 'tamagui'
+
+export default () => (
+  <XStack gap="$2">
+    <YStack />
+    <YStack />
+    <YStack />
+  </XStack>
+)
+```
+
+To see all the style properties supported, see the [Props](/docs/intro/props) documentation.
+
+### Fuller example
+
+An example using a wide variety of style properties:
+
+```tsx
+import { Text, XStack, YStack } from 'tamagui'
+
+export default () => (
+  <XStack
+    flex={1}
+    flexWrap="wrap"
+    backgroundColor="#fff"
+    hoverStyle={{
+      backgroundColor: 'red',
+    }}
+    // media query
+    $gtSm={{
+      flexDirection: 'column',
+      flexWrap: 'nowrap',
+    }}
+  >
+    <YStack gap="$3">
+      <Text>Hello</Text>
+      <Text>World</Text>
+    </YStack>
+  </XStack>
+)
+```
+
+## API Reference
+
+### XStack, YStack, ZStack
+
+Beyond the [Tamagui Props](/docs/intro/props), the stacks add just two variants:
+
+<PropsTable
+  data={[
+    {
+      name: 'fullscreen',
+      required: false,
+      type: 'boolean',
+      description: (
+        <span>Sets position: absolute, top: 0, left: 0, right: 0, bottom: 0.</span>
+      ),
+    },
+    {
+      name: 'elevation',
+      required: false,
+      type: 'number | tokens.size',
+      description: (
+        <span>
+          Sets a natural looking shadow that expands out and away as the size gets bigger.
+        </span>
+      ),
+    },
+  ]}
+/>

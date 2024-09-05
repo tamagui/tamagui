@@ -1,0 +1,440 @@
+---
+title: Animations
+description: Swap out animation drivers per-platform or at runtime
+---
+
+<HeroContainer>
+  <AnimationsDemo />
+</HeroContainer>
+
+```tsx hero template=Animations
+
+```
+
+<Highlights
+  disableLinks
+  features={[
+    `Animate any style prop with animation config per-prop.`,
+    `Can animate across all states (media queries, hover, etc).`,
+    `Three drivers you can swap out with type safety.`,
+    `SSR safe mount animations.`,
+    `Enter and exit animations with AnimatePresence.`,
+  ]}
+/>
+
+Add animations to Tamagui with an animation driver. See the configuration docs
+for more on
+[how to set it up, and how to set up different animation drivers per-platform](/docs/core/configuration#animations).
+
+Animation drivers are designed to be swappable, so you can use lightweight CSS
+animations or other web-focused animation libraries on the web, while using
+larger but more advanced libraries like `reanimated` on native - all without
+having to change a line outside of configuration.
+
+## Installation
+
+### CSS
+
+The `@tamagui/animations-css` package works with the tamagui compiler and
+runtime to give you simple ways to share typed animations across all your
+components.
+
+To install it add to your package.json:
+
+```bash
+yarn add @tamagui/animations-css
+```
+
+Then add it to your [config](/docs/core/configuration):
+
+```tsx
+import { createAnimations } from '@tamagui/animations-css'
+import { createTamagui } from 'tamagui'
+
+export default createTamagui({
+  animations: createAnimations({
+    fast: 'ease-in 150ms',
+    medium: 'ease-in 300ms',
+    slow: 'ease-in 450ms',
+  }),
+  // ...
+})
+```
+
+At runtime, the plugin does very little except to set the `transition` property
+in CSS. At compile-time, the compiler does the same, ensuring you get all the
+benefits of prop removal and view flattening even when using animations.
+
+### React Native Animated
+
+[React Native's Animated library](https://reactnative.dev/docs/animated) is the
+animation library that comes built into React Native and React Native Web.
+
+To install it add to your package.json:
+
+```bash
+yarn add @tamagui/animations-react-native
+```
+
+Then add it to your [config](/docs/core/configuration):
+
+```tsx
+import { createAnimations } from '@tamagui/animations-react-native'
+import { createTamagui } from 'tamagui'
+
+export default createTamagui({
+  animations: createAnimations({
+    fast: {
+      damping: 20,
+      mass: 1.2,
+      stiffness: 250,
+    },
+    medium: {
+      damping: 10,
+      mass: 0.9,
+      stiffness: 100,
+    },
+    slow: {
+      damping: 20,
+      stiffness: 60,
+    },
+  }),
+  // ...
+})
+```
+
+### Reanimated
+
+[Reanimated](https://docs.swmansion.com/react-native-reanimated/) is an
+animation library that targets React Native and React Native Web. It runs
+off-thread animations, and provides simple syntax and hooks.
+
+To install it add to your package.json:
+
+```bash
+yarn add @tamagui/animations-moti react-native-reanimated
+```
+
+Tamagui leverages and appreciates the popular open source library [Moti](https://moti.fyi) for the Reanimated driver as it saved us many lines of complex code.
+
+Add your animations to your [configuration](/docs/core/configuration):
+
+```tsx
+import { createAnimations } from '@tamagui/animations-moti'
+import { createTamagui } from 'tamagui'
+
+export default createTamagui({
+  animations: createAnimations({
+    fast: {
+      type: 'spring',
+      damping: 20,
+      mass: 1.2,
+      stiffness: 250,
+    },
+    medium: {
+      type: 'spring',
+      damping: 10,
+      mass: 0.9,
+      stiffness: 100,
+    },
+    slow: {
+      type: 'spring',
+      damping: 20,
+      stiffness: 60,
+    },
+  }),
+  // ...
+})
+```
+
+At runtime, this plugin parses animatable style properties and hands them over
+to reanimated off-thread, using worklets. It doesn't do anything at compile
+time - reanimated must run via JS.
+
+---
+
+Note the keys match between CSS and reanimated, so you can swap them out.
+
+<Notice theme="green">
+  The Animated driver in React Native Web can be excluded from your bundle with either the Webpack or Next.js plugins with [`excludeReactNativeWebExports`
+  compiler option](#excludeReactNativeWebExports).
+</Notice>
+
+### Usage
+
+The `animation` can now accept `slow` as a value. By default, animations will
+apply to all animatable styles, a lot like setting `all` in a CSS `transition`.
+Let's test this by setting `hoverStyle`:
+
+Here's an example animating `hoverStyle`:
+
+<HeroContainer>
+  <AnimationsHoverDemo />
+</HeroContainer>
+
+```tsx hero template=AnimationsHover
+
+```
+
+### The animation props rules
+
+If you add an `animation` prop, you must always keep the prop. If you need the animation to be disabled,
+pass false, null or even undefined if it suits you.
+
+The spring-based animation drivers have expensive hooks that would degrate runtime
+performance if present on every component. As a workaround, the animation hooks
+are called conditionally on whether the animation key is present in the props object.
+
+So, `<Square animation={isActive ? 'bouncy' : null} />` rather than
+`<Square {...isActive && { animation: 'bouncy' }} />`.
+
+If you'd like to remove or add an animation prop after a component has already rendered, you'd have
+to change the key.
+
+### enterStyle
+
+Setting `enterStyle` styles on any component tell it to start with those styles,
+and after mount animate to their flat styles:
+
+<HeroContainer>
+  <AnimationsEnterDemo />
+</HeroContainer>
+
+```tsx hero template=AnimationsEnter
+
+```
+
+### Granular animations
+
+The `animation` prop accepts a string or a more complex object to customize
+animations per-property.
+
+The basic object we'll call an `AnimationConfig`, looks like this:
+
+```tsx
+import { YStack } from 'tamagui'
+
+export default () => (
+  <YStack
+    animation={{
+      // only x and y will apply animations
+      x: 'bouncy',
+      y: {
+        type: 'bouncy',
+        overshootClamping: true,
+      },
+    }}
+  />
+)
+```
+
+Note that values can either map to `AnimationKey` as a string, or to
+`{ type: AnimationKey, ...configuration }`
+
+You can set a default value using a two-arity array with the default in the
+first position:
+
+```tsx
+import { YStack } from 'tamagui'
+
+export default () => (
+  <YStack
+    animation={[
+      // all attributes get "bouncy"
+      'bouncy',
+      // these are customized
+      {
+        y: 'slow',
+        scale: {
+          type: 'fast',
+          repeat: 2,
+        },
+      },
+    ]}
+  />
+)
+```
+
+### animateOnly
+
+The `animateOnly` prop will limit your animation config to certain keys. It
+accepts an array of strings that correspond to style property names.
+
+## AnimatePresence
+
+### exitStyle
+
+AnimatePresence animates direct children before they unmount. It's inspired by
+and forked from [Framer Motion](https://github.com/framer/motion), but works
+with any animation in Tamagui.
+
+To use with `@tamagui/core`, install and import `@tamagui/animate-presence`.
+It's already bundled and exported from `tamagui`.
+
+You can use it simply with `enterStyle` + `exitStyle`:
+
+```tsx
+import { AnimatePresence, View } from 'tamagui'
+
+export const MyComponent = ({ isVisible }) => (
+  <AnimatePresence>
+    {isVisible && (
+      <View
+        key="my-square"
+        animation="bouncy"
+        backgroundColor="green"
+        size={50}
+        enterStyle={{
+          opacity: 0,
+          y: 10,
+          scale: 0.9,
+        }}
+        exitStyle={{
+          opacity: 0,
+          y: -10,
+          scale: 0.9,
+        }}
+      />
+    )}
+  </AnimatePresence>
+)
+```
+
+<Notice>
+  Note you don't even need to set `opacity` on the base style. Tamagui knows to
+  normalize styles like opacity and scale to 1 (and y to 0) if it's not defined
+  on the base styles but is defined on `enterStyle` or `exitStyle`.
+</Notice>
+
+Wrap one or more tamagui components with AnimatePresence. This component will
+animate on enter and exit.
+
+<Notice>
+  Animated child components must each have a unique key prop so AnimatePresence
+  can track their presence in the tree.
+</Notice>
+
+### The `custom` prop
+
+<HeroContainer noPad>
+  <AnimationsPresenceDemo />
+</HeroContainer>
+
+```tsx hero template=AnimationsPresence
+
+```
+
+AnimatePresence also takes a `custom` property that allows you to update a
+variant of the animated child before it runs it's exit animation. This is useful
+for animating a child out of the screen before it unmounts in a different
+direction, like the example above:
+
+```tsx
+import { AnimatePresence } from '@tamagui/animate-presence'
+import { ArrowLeft, ArrowRight } from '@tamagui/lucide-icons'
+import { useState } from 'react'
+import { Button, Image, XStack, YStack, styled } from 'tamagui'
+
+const GalleryItem = styled(YStack, {
+  zIndex: 1,
+  x: 0,
+  opacity: 1,
+  fullscreen: true,
+
+  variants: {
+    // 1 = right, 0 = nowhere, -1 = left
+    going: {
+      ':number': (going) => ({
+        enterStyle: {
+          x: going > 0 ? 1000 : -1000,
+          opacity: 0,
+        },
+        exitStyle: {
+          zIndex: 0,
+          x: going < 0 ? 1000 : -1000,
+          opacity: 0,
+        },
+      }),
+    },
+  } as const,
+})
+
+const photos = [
+  'https://picsum.photos/500/300',
+  'https://picsum.photos/501/300',
+  'https://picsum.photos/502/300',
+]
+
+const wrap = (min: number, max: number, v: number) => {
+  const rangeSize = max - min
+  return ((((v - min) % rangeSize) + rangeSize) % rangeSize) + min
+}
+
+export function Demo() {
+  const [[page, going], setPage] = useState([0, 0])
+
+  const imageIndex = wrap(0, photos.length, page)
+  const paginate = (going: number) => {
+    setPage([page + going, going])
+  }
+
+  return (
+    <XStack
+      overflow="hidden"
+      backgroundColor="#000"
+      position="relative"
+      height={300}
+      width="100%"
+      alignItems="center"
+    >
+      <AnimatePresence initial={false} custom={{ going }}>
+        <GalleryItem key={page} animation="slowest" going={going}>
+          <Image source={{ uri: photos[imageIndex], width: 500, height: 300 }} />
+        </GalleryItem>
+      </AnimatePresence>
+
+      <Button
+        accessibilityLabel="Carousel left"
+        icon={ArrowLeft}
+        size="$5"
+        position="absolute"
+        left="$4"
+        circular
+        elevate
+        onPress={() => paginate(-1)}
+        zi={100}
+      />
+      <Button
+        accessibilityLabel="Carousel right"
+        icon={ArrowRight}
+        size="$5"
+        position="absolute"
+        right="$4"
+        circular
+        elevate
+        onPress={() => paginate(1)}
+        zi={100}
+      />
+    </XStack>
+  )
+}
+```
+
+### What to know when animating
+
+#### Conditional animations and HMR
+
+The animation hooks are heavy, which initially meant we either had to choose
+great performance or animations. We've settled on a trade-off. We track if the
+`animation` prop is set, and if so, we enable the hook. If it _is ever set, even
+just once_, then the hooks will continue to run for the remainder of the
+component lifecycle. This means if you ever plan to animate a component you
+should keep `animation` always set on the component props. You can disable it
+like so:
+
+```tsx
+<View animation={condition ? 'animation-name' : null} />
+```
+
+Note that because of this constraint, you also will see an error if you add the
+`animation` prop to a component in dev mode during an HMR. Often just saving once more will remove the screen, or reloading at worst.

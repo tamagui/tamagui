@@ -1,0 +1,175 @@
+---
+title: Tabs
+description: Vertical and horizontal accessible tabs.
+name: tabs
+component: Tabs
+package: tabs
+demoName: Tabs
+---
+
+# Tabs <Beta />
+
+<Description>Use in pages to manage sub-pages</Description>
+
+<InstallBanner name="@tamagui/tabs" />
+
+<HeroContainer>
+  <TabsDemo />
+</HeroContainer>
+
+```tsx hero template=Tabs
+
+```
+
+<Highlights
+  features={[
+    `Accessible, easy to compose, customize and animate`,
+    `Sizable & works controlled or uncontrolled`,
+    `Supports automatic and manual activation modes for web`,
+    `Full keyboard navigation`,
+  ]}
+/>
+
+Note: Tabs have landed on v1.7 and not fully ready for runtime. Send us your feedback and we'll address it. We're marking it Beta a such as there may be hopefully minimal breaking changes as we get feedback on the API.
+
+## Usage
+
+```tsx
+import { SizableText, Tabs } from 'tamagui'
+
+export default () => (
+  <Tabs defaultValue="tab1" width={400}>
+    <Tabs.List space>
+      <Tabs.Tab value="tab1">
+        <SizableText>Tab 1</SizableText>
+      </Tabs.Tab>
+      <Tabs.Tab value="tab2">
+        <SizableText>Tab 2</SizableText>
+      </Tabs.Tab>
+    </Tabs.List>
+
+    <Tabs.Content value="tab1">
+      <H5>Tab 1</H5>
+    </Tabs.Content>
+    <Tabs.Content value="tab2">
+      <H5>Tab 2</H5>
+    </Tabs.Content>
+  </Tabs>
+)
+```
+
+## API Reference
+
+### Tabs
+
+Root tabs component. Extends [Stack](/docs/components/stack). Passing the `size` prop to this component will have effect on the descendants.
+
+<PropsTable
+  data={[
+    {
+      name: 'value',
+      type: 'string',
+      description: `The value for the selected tab, if controlled`,
+    },
+    {
+      name: 'defaultValue',
+      type: 'string',
+      description: `The value of the tab to select by default, if uncontrolled`,
+    },
+    {
+      name: 'onValueChange',
+      type: '(value: string) => void',
+      description: `A function called when a new tab is selected`,
+    },
+    {
+      name: 'orientation',
+      type: '"horizontal" | "vertical"',
+      default: 'horizontal',
+      description: `The orientation the tabs are layed out`,
+    },
+    {
+      name: 'dir',
+      type: '"ltr" | "rtl"',
+      description: `The direction of navigation between toolbar items`,
+    },
+    {
+      name: 'activationMode',
+      type: '"manual" | "automatic"',
+      default: 'automatic',
+      description: `Whether or not a tab is activated automatically or manually. Not applicable on mobile`,
+    },
+  ]}
+/>
+
+### Tabs.List
+
+Container for the trigger buttons. Supports scrolling by extending [Group](/docs/components/group). You can disable passing border radius to children by passing `disablePassBorderRadius`.
+
+<PropsTable
+  data={[
+    {
+      name: 'loop',
+      type: 'boolean',
+      default: 'true',
+      description: `Whether or not to loop over after reaching the end or start of the items. Used mainly for managing keyboard navigation`,
+    },
+  ]}
+/>
+
+### Tabs.Trigger
+
+Extends [Button](/docs/components/button), adding:
+
+<PropsTable
+  data={[
+    {
+      name: 'value',
+      type: 'string',
+      description: `The value for the tabs state to be changed to after activation of the trigger`,
+    },
+    {
+      name: 'onInteraction',
+      type: `(type: InteractionType, layout: TabTriggerLayout | null) => void`,
+      description: `Used for making custom indicators when trigger interacted with`,
+    },
+    {
+      name: 'unstyled',
+      type: `boolean`,
+      description: `When true, remove all default tamagui styling`,
+    },
+  ]}
+/>
+
+### Tabs.Content
+
+Where each tab's content will be shown. Extends [ThemeableStack](/docs/components/stacks#themeablestack), adding:
+
+<PropsTable
+  data={[
+    {
+      name: 'value',
+      type: 'string',
+      description: `Will show the content when the value matches the state of Tabs root`,
+    },
+    {
+      name: 'forceMount',
+      type: 'boolean',
+      default: 'false',
+      description: `Used to force mounting when more control is needed. Useful when controlling animation with Tamagui animations`,
+    },
+  ]}
+/>
+
+## Examples
+
+### Animations
+
+Here is a demo with more advanced animations using [AnimatePresence](/docs/core/animations#animatepresence-and-exitstyle) and [Trigger](#trigger)'s `onInteraction` prop.
+
+<HeroContainer noPad showAnimationDriverControl>
+  <TabsAdvancedDemo />
+</HeroContainer>
+
+```tsx hero template=TabsAdvanced
+
+```

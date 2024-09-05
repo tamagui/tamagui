@@ -1,0 +1,77 @@
+---
+title: Form
+description: A simple form component
+name: form
+component: Form
+package: form
+demoName: Form
+---
+
+# Form
+
+<Description>
+  Use the Form to wrap input elements, define a trigger element, and get a top level
+  submit callback.
+</Description>
+
+<InstallBanner name="@tamagui/form" />
+
+<HeroContainer>
+  <FormsDemo />
+</HeroContainer>
+
+```tsx hero template=Forms
+
+```
+
+<Highlights
+  features={[
+    `Works on native and web.`,
+    `Outputs accessible forms.`,
+    `Works with every Tamagui prop.`,
+  ]}
+/>
+
+## Installation
+
+Form is already installed in `tamagui`, or you can install it independently:
+
+```bash
+npm install @tamagui/form
+```
+
+## Anatomy
+
+```tsx
+import { Form } from 'tamagui' // or '@tamagui/form'
+
+export default () => (
+  <Form>
+    {/* ... */}
+    <Form.Trigger asChild>
+      <Button />
+    </Form.Trigger>
+  </Form>
+)
+```
+
+## API Reference
+
+### Form
+
+<PropsTable
+  data={[
+    {
+      name: 'onSubmit',
+      type: '() => void',
+      required: true,
+      description: `Must use Form.Trigger to ensure onSubmit will callback.`,
+    },
+  ]}
+/>
+
+### Form.Trigger
+
+Wrap this around your submitting element to make the form submit. We recommend using `asChild` to a child element of your choosing for more control.
+
+Accepts [Tamagui Props](/docs/intro/props).

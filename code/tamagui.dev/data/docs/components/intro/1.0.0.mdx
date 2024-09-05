@@ -1,0 +1,40 @@
+---
+title: Tamagui UI
+description: An optional suite of fully open source components - in styled and unstyled forms.
+---
+
+# Tamagui UI
+
+<Description>
+  Fully open source compound components on all&nbsp;React&nbsp;platforms, styled or unstyled.
+</Description>
+
+Tamagui UI is an open source collection of "[compound components](https://www.smashingmagazine.com/2021/08/compound-components-react/)" that all work on both on web and React Native. Some components render the same on all platforms, but many now [Adapt](/ui/popover) to render as different components depending on platform or capability. A few components have `native` adaptations where they can render to platform-native output. For example, Sheet, which can optionally on iOS render into a native UIKit Sheet.
+
+All components in the kit can be installed independently, or you can install them all at once with:
+
+```bash
+yarn add tamagui
+```
+
+## Setup
+
+The package `tamagui` is a superset of `@tamagui/core`, so if you've already installed core you can change all the references to `tamagui`.
+
+You'll need to add a provider to the root of your app (unlike core, where that is optional), as it will set up the root portal for components like dialogs and popovers.
+
+```tsx
+import { TamaguiProvider, View } from 'tamagui'
+import defaultConfig from '@tamagui/config/v3'
+
+const config = createTamagui(defaultConfig)
+
+export default () => (
+  <TamaguiProvider config={config}>
+    <View />
+  </TamaguiProvider>
+)
+```
+
+For a full guide configuration with `createTamagui`, check [the core configuration docs](/docs/core/configuration).
+

@@ -1,0 +1,350 @@
+---
+title: Sheet
+description: A simple sheet component
+name: sheet
+component: Sheet
+package: sheet
+demoName: Sheet
+---
+
+# Sheet
+
+<Description>A bottom sheet that slides up</Description>
+
+<InstallBanner name="@tamagui/sheet" />
+
+<HeroContainer showAnimationDriverControl>
+  <SheetDemo />
+</HeroContainer>
+
+```tsx hero template=Sheet
+
+```
+
+<Highlights
+  features={[
+    `Lightweight implementation with dragging support.`,
+    `Multiple snap point points and a handle.`,
+    `Automatically adjusts to screen size.`,
+    `Accepts animations, themes, size props and more.`,
+  ]}
+/>
+
+## Installation
+
+Sheet is already installed in `tamagui`, or you can install it independently:
+
+```bash
+npm install @tamagui/sheet
+```
+
+### PortalProvider
+
+When rendering into root of app instead of inline, you'll first need to install the `@tamagui/portal` package: 
+
+```bash
+npm install @tamagui/portal
+```
+
+Then add `PortalProvider` to the root of your app:
+
+```tsx fileName="App.tsx"
+import { PortalProvider } from '@tamagui/portal'
+import YourApp from './components/YourApp'
+
+function App() {
+  return (
+    <PortalProvider shouldAddRootHost>
+      <YourApp />
+    </PortalProvider>
+  )
+}
+
+export default App
+```
+
+<PropsTable
+  data={[
+    {
+      name: 'shouldAddRootHost',
+      type: 'boolean',
+      required: false,
+      description: `Defines whether to add a default root host or not.`,
+    },
+  ]}
+/>
+
+## Anatomy
+
+```tsx
+import { Sheet } from 'tamagui' // or '@tamagui/sheet'
+
+export default () => (
+  <Sheet>
+    <Sheet.Overlay />
+    <Sheet.Handle />
+    <Sheet.Frame>{/* ...inner contents */}</Sheet.Frame>
+  </Sheet>
+)
+```
+
+## Snap points
+
+By default, snap points are treated as percentages.
+
+```tsx
+<Sheet snapPoints={[85, 50]}> // 85% and 50%
+```
+
+The behavior of snap points can be changed by setting the `snapPointsMode` prop to any of these values:
+
+- **percent** (default) - Snap points are percentages of the parent container or screen as numbers
+- **constant** - Snap points are raw pixel values as numbers
+- **fit** - The sheet is constrained to the content's natural height without the `snapPoints` prop
+- **mixed** - Snap points can be either numbers (pixels), percentages as strings (ex: `"50%"`), or `"fit"` for fit behavior
+
+Snap points should be ordered from largest to smallest (most visible to least visible). When using `mixed` mode with the `"fit"` as a snap point, it must be the first and largest snap point.
+
+## Unstyled
+
+Adding the `unstyled` prop to your Handle, Overlay or Frame will turn off the default styles allowing you to customize without having to override any of the built-in styling.
+
+## Headless with `createSheet`
+
+Using the `createSheet` export, you can create a fully custom sheet without using any of the default styles. This is similar to `unstyled`, but it lets you also control the `open` variant.
+
+Here's an example:
+
+```tsx
+import { Stack, styled } from '@tamagui/core'
+import { createSheet } from '@tamagui/sheet'
+
+const Handle = styled(Stack, {
+  variants: {
+    open: {
+      true: {
+        opacity: 0.35,
+      },
+      false: {
+        opacity: 0.5,
+      },
+    },
+  } as const,
+})
+
+const Overlay = styled(Stack, {
+  variants: {
+    open: {
+      true: {
+        opacity: 1,
+        pointerEvents: 'auto',
+      },
+      false: {
+        opacity: 0,
+        pointerEvents: 'none',
+      },
+    },
+  } as const,
+})
+
+const Frame = styled(Stack, {
+  backgroundColor: '$background',
+  // can add open variant as well
+})
+
+export const Sheet = createSheet({
+  Frame,
+  Handle,
+  Overlay,
+})
+```
+
+## Native support
+
+Sheets now support rendering to a native iOS sheet, while still rendering any of your React Native content inside of them.
+
+Because Metro doesn't support conditional imports and we don't want to make `tamagui` enforce installing native dependencies in order to get started, there's an install step:
+
+```sh
+yarn add react-native-ios-modal
+pod install
+# rebuild your app (expo ios, or use react-native cli)
+```
+
+And set it up as follows:
+
+```tsx
+import { Sheet, setupNativeSheet } from '@tamagui/sheet'
+import { ModalView } from 'react-native-ios-modal'
+
+setupNativeSheet('ios', ModalView)
+
+export default (
+  <Sheet native>
+    {/* The rest of your sheet views, see Anatomy, example and props API */}
+  </Sheet>
+)
+```
+
+## API Reference
+
+### Sheet
+
+Contains every component for the sheet.
+
+<PropsTable
+  data={[
+    { name: 'open', type: 'boolean', description: `Set to use as controlled component.` },
+    {
+      name: 'defaultOpen',
+      type: 'boolean',
+      description: `Uncontrolled open state on mount.`,
+    },
+    {
+      name: 'onOpenChange',
+      type: '(open: boolean) => void',
+      description: `Called on change open, controlled or uncontrolled.`,
+    },
+    {
+      name: 'position',
+      type: 'number',
+      description: `Controlled position, set to an index of snapPoints.`,
+    },
+    {
+      name: 'defaultPosition',
+      type: 'number',
+      description: `Uncontrolled default position on mount.`,
+    },
+    {
+      name: 'snapPoints',
+      type: '(number | string)[] | undefined',
+      default: `[80]`,
+      description: `Array of values representing different sizes for the sheet to snap to. Not used in 'fit' mode. See docs above for usage information.`,
+    },
+    {
+      name: 'snapPointsMode',
+      type: '"percent" | "constant" | "fit" | "mixed"',
+      default: '"percent"',
+      description: `Alters the behavior of the 'snapPoints' prop. See docs above for usage information.`,
+    },
+    {
+      name: 'onPositionChange',
+      type: '(position: number) => void',
+      description: `Called on change position, controlled or uncontrolled.`,
+    },
+    {
+      name: 'dismissOnOverlayPress',
+      type: 'boolean',
+      default: 'true',
+      description: `Controls tapping on the overlay to close, defaults to true.`,
+    },
+    {
+      name: 'animationConfig',
+      type: 'Animated.SpringAnimationConfig',
+      default: 'true',
+      description: `Customize the spring used, passed to react-native Animated.spring().`,
+    },
+    {
+      name: 'native',
+      type: 'boolean | "ios"[]',
+      description: `(iOS only) Render to a native sheet, must install native dependency first.`,
+    },
+    {
+      name: 'disableDrag',
+      type: 'boolean',
+      description: `Disables all touch events to drag the sheet.`,
+    },
+    {
+      name: 'modal',
+      type: 'boolean',
+      description: `Renders sheet into the root of your app instead of inline.`,
+    },
+    {
+      name: 'dismissOnSnapToBottom',
+      type: 'boolean',
+      description: `Adds a snap point to the end of your snap points set to "0", that when snapped to will set open to false (uncontrolled) and call onOpenChange with false (controlled).`,
+    },
+    {
+      name: 'forceRemoveScrollEnabled',
+      type: 'boolean',
+      default: 'false',
+      description: `By default. Tamagui uses react-remove-scroll to prevent anything outside the sheet scrolling. This can cause some issues so you can override the behavior with this prop (either true or false).`,
+    },
+    {
+      name: 'portalProps',
+      type: 'Object',
+      description: `YStack props that can be passed to the Portal that sheet uses when in modal mode.`,
+    },
+    {
+      name: 'moveOnKeyboardChange',
+      type: 'boolean',
+      default: 'false',
+      description:
+        'Native-only flag that will make the sheet move up when the mobile keyboard opens so the focused input remains visible.',
+    },
+      {
+      name: 'unmountChildrenWhenHidden',
+      type: 'boolean',
+      default: 'false',
+      description:
+        'Flag to enable unmounting the children after the exit animation has completed.',
+    },
+  ]}
+/>
+
+
+<Notice>
+  If using `modal={true}` (which is `true` by default), refer to the [PortalProvider installation](/ui/sheet/1.59.0#portalprovider) for more information.
+</Notice>
+
+### Sheet.Overlay
+
+Displays behind Frame. Extends [YStack](/docs/components/stacks).
+
+### Sheet.Frame
+
+Contains the content. Extends [YStack](/docs/components/stacks).
+
+<PropsTable
+  data={[
+    {
+      name: 'disableHideBottomOverflow',
+      type: 'boolean',
+      description: `Disables Sheet cloning the Frame and positioning it below the frame, which helps to hide content that may appear underneath when spring animations bounce past 100%.`,
+    },
+  ]}
+/>
+
+### Sheet.Handle
+
+Shows a handle above the frame by default, on tap it will cycle between `snapPoints` but this can be overridden with `onPress`.
+
+Extends [XStack](/docs/components/stacks).
+
+### Sheet.ScrollView
+
+Allows scrolling within Sheet. Extends [ScrollView](/docs/components/scroll-view).
+
+#### useSheet
+
+Use this to control the sheet programatically.
+
+<PropsTable
+  data={[
+    { name: 'open', type: 'boolean', description: `Set to use as controlled component.` },
+    {
+      name: 'setOpen',
+      type: 'Function',
+      description: `Control the open state of the sheet.`,
+    },
+    {
+      name: 'setPosition',
+      type: '(index: number) => void',
+      description: `Control the position of the sheet.`,
+    },
+  ]}
+/>
+
+## Notes
+
+For Android you need to manually re-propagate any context when using `modal`. This is because React Native doesn't support portals yet.

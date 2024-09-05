@@ -1,0 +1,75 @@
+---
+title: Webpack Guide
+description: How to set up Tamagui with Webpack
+---
+
+## Install
+
+First, install [webpack and webpack-cli](https://webpack.js.org/guides/installation/):
+
+```bash
+yarn add -D webpack webpack-cli
+```
+
+Then install the Tamagui plugin:
+
+```bash
+yarn add -D tamagui-loader
+```
+
+### Configuration
+
+You can then use the plugin in `webpack.config.js`:
+
+```tsx fileName="webpack.config.js"
+const { TamaguiPlugin } = require('tamagui-loader')
+
+config.plugins.push(
+  new TamaguiPlugin({
+    config: './src/tamagui.config.ts',
+    components: ['tamagui'],
+  }),
+)
+```
+
+Or use a minimal manual setup:
+
+```tsx showMore fileName="webpack.config.js"
+// some stuff for react-native
+config.plugins.push(
+  new webpack.DefinePlugin({
+    process: {
+      env: {
+        __DEV__: process.env.NODE_ENV === 'development' ? 'true' : 'false',
+        NODE_ENV: JSON.stringify(process.env.NODE_ENV),
+      },
+    },
+  })
+)
+
+config.resolve.alias['react-native$'] = 'react-native-web'
+
+// set up web extensions
+compiler.options.resolve.extensions = [
+  '.web.tsx',
+  '.web.ts',
+  '.web.js',
+  '.ts',
+  '.tsx',
+  '.js',
+]
+```
+
+## Usage
+
+To run server locally, install [webpack-dev-server](https://github.com/webpack/webpack-dev-server):
+
+```bash
+yarn add -D webpack-dev-server
+```
+
+You can then use the following command to start the server:
+
+```bash
+yarn run webpack serve
+```
