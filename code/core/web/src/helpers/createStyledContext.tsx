@@ -20,7 +20,9 @@ export type StyledContext<Props extends Object = any> = Omit<
 }
 
 export function createStyledContext<VariantProps extends Record<string, any>>(
-  defaultValues?: VariantProps
+  defaultValues?: VariantProps,
+  /** for debugging it's recommended to provided a name */
+  name?: string
 ): StyledContext<VariantProps> {
   const OGContext = React.createContext<VariantProps | undefined>(defaultValues)
   const OGProvider = OGContext.Provider
@@ -52,7 +54,7 @@ export function createStyledContext<VariantProps extends Record<string, any>>(
   }
 
   // use consumerComponent just to give a better error message
-  const useStyledContext = (scope?: string) => {
+  const useStyledContext = (scope?: string, consumer?: string) => {
     const context = scope ? scopedContexts.get(scope) : OGContext
     return React.useContext(context!) as VariantProps
   }

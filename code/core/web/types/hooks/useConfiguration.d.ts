@@ -5,24 +5,24 @@ export declare const useConfiguration: () => {
     disableSSR?: boolean;
     inText: boolean;
     language: import("../views/FontLanguage.types").LanguageContextType | null;
-    unset?: import("..").BaseStyleProps;
+    unset?: import("..").BaseStyleProps | undefined;
     reactNative?: any;
-    defaultFont?: string;
-    selectionStyles?: (theme: Record<string, string>) => null | {
+    defaultFont?: string | undefined;
+    selectionStyles?: ((theme: Record<string, string>) => null | {
         backgroundColor?: any;
         color?: any;
-    };
-    disableRootThemeClass?: boolean;
-    defaultProps?: Record<string, any> & {
+    }) | undefined;
+    disableRootThemeClass?: boolean | undefined;
+    defaultProps?: (Record<string, any> & {
         Stack?: import("..").StackProps;
         Text?: import("..").TextProps;
         Spacer?: import("..").SpacerProps;
-    };
-    mediaQueryDefaultActive?: Record<string, boolean>;
-    cssStyleSeparator?: string;
-    maxDarkLightNesting?: number;
-    shouldAddPrefersColorThemes?: boolean;
-    themeClassNameOnRoot?: boolean;
+    }) | undefined;
+    mediaQueryDefaultActive?: Record<string, boolean> | undefined;
+    cssStyleSeparator?: string | undefined;
+    maxDarkLightNesting?: number | undefined;
+    shouldAddPrefersColorThemes?: boolean | undefined;
+    themeClassNameOnRoot?: boolean | undefined;
     fonts: {
         [x: string]: import("..").GenericFont<string | number | symbol>;
     };

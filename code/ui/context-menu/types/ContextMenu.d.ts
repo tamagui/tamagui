@@ -1,0 +1,4 @@
+import type { createMenu } from '@tamagui/menu';
+export declare function createContextMenu(param: Parameters<typeof createMenu>[0]): any;
+export type { ContextMenuProps, ContextMenuTriggerProps, ContextMenuContentProps, ContextMenuGroupProps, ContextMenuItemProps, ContextMenuCheckboxItemProps, ContextMenuRadioGroupProps, ContextMenuRadioItemProps, ContextMenuItemIndicatorProps, ContextMenuSeparatorProps, ContextMenuArrowProps, ContextMenuSubProps, ContextMenuSubTriggerProps, ContextMenuSubContentProps, ContextMenuItemIconProps, ContextMenuItemImageProps, } from './createNonNativeContextMenu';
+//# sourceMappingURL=ContextMenu.d.ts.map

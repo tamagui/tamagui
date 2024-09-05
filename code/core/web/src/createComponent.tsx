@@ -1186,6 +1186,13 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`hooks`
 
+    if (process.env.TAMAGUI_TARGET === 'web' && isReactNative) {
+      Object.assign(viewProps, {
+        onFocus: events?.onFocus,
+        onBlur: events?.onBlur,
+      })
+    }
+
     let content =
       !children || asChild
         ? children
@@ -1312,6 +1319,8 @@ export function createComponent<
           <span
             className="_dsp_contents"
             {...(isHydrated && events && getWebEvents(events))}
+            // /** we passed these events to the content instead */
+            {...(events && { onFocus: undefined, onBlur: undefined })}
           >
             {content}
           </span>

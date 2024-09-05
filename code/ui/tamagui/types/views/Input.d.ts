@@ -88,10 +88,10 @@ export declare const Input: import("@tamagui/core").TamaguiComponent<Omit<import
 export declare function useInputProps(props: InputProps, ref: any): {
     placeholderTextColor: any;
     onChangeText: (value: any) => void;
-    theme?: import("@tamagui/core").ThemeName | null;
-    debug?: import("@tamagui/core").DebugProp;
+    theme?: (import("@tamagui/core").ThemeName | null) | undefined;
+    debug?: import("@tamagui/core").DebugProp | undefined;
     children?: any | any[];
-    className?: string;
+    className?: string | undefined;
     onPress?: ((e: import("react-native").NativeSyntheticEvent<import("react-native").NativeTouchEvent>) => void) | undefined;
     onPressIn?: ((e: import("react-native").NativeSyntheticEvent<import("react-native").NativeTouchEvent>) => void) | undefined;
     onPressOut?: ((e: import("react-native").NativeSyntheticEvent<import("react-native").NativeTouchEvent>) => void) | undefined;
@@ -113,7 +113,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
     onMoveShouldSetResponderCapture?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     style?: import("react-native").StyleProp<import("react-native").TextStyle> | undefined;
     allowFontScaling?: boolean | undefined;
-    id?: string;
+    id?: string | undefined;
     numberOfLines?: number | undefined;
     testID?: string | undefined;
     nativeID?: string | undefined;
@@ -153,22 +153,22 @@ export declare function useInputProps(props: InputProps, ref: any): {
     onMagicTap?: (() => void) | undefined;
     accessibilityIgnoresInvertColors?: boolean | undefined;
     accessibilityLanguage?: string | undefined;
-    target?: string;
-    htmlFor?: string;
-    asChild?: boolean | "except-style" | "except-style-web" | "web";
+    target?: string | undefined;
+    htmlFor?: string | undefined;
+    asChild?: (boolean | "except-style" | "except-style-web" | "web") | undefined;
     dangerouslySetInnerHTML?: {
         __html: string;
-    };
-    themeShallow?: boolean;
-    themeInverse?: boolean;
-    tag?: (string & {}) | "address" | "article" | "aside" | "footer" | "header" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "main" | "nav" | "section" | "search" | "blockquote" | "dd" | "div" | "dl" | "dt" | "figcaption" | "figure" | "hr" | "li" | "ol" | "ul" | "p" | "pre" | "a" | "abbr" | "p" | "b" | "abbr" | "bdi" | "bdo" | "br" | "cite" | "code" | "data" | "dfn" | "em" | "i" | "kbd" | "mark" | "q" | "rp" | "rt" | "rtc" | "ruby" | "s" | "samp" | "small" | "span" | "strong" | "sub" | "sup" | "time" | "u" | "var" | "wbr" | "area" | "audio" | "img" | "map" | "track" | "video" | "embed" | "object" | "param" | "picture" | "source" | "canvas" | "noscript" | "script" | "del" | "ins" | "caption" | "col" | "colgroup" | "table" | "thead" | "tbody" | "td" | "th" | "tr" | "button" | "datalist" | "fieldset" | "form" | "input" | "label" | "legend" | "meter" | "optgroup" | "option" | "output" | "progress" | "select" | "textarea" | "details" | "dialog" | "menu" | "summary" | "template";
-    group?: import("@tamagui/core").GroupNames | boolean;
-    untilMeasured?: "hide" | "show";
-    componentName?: string;
+    } | undefined;
+    themeShallow?: boolean | undefined;
+    themeInverse?: boolean | undefined;
+    tag?: ((string & {}) | "address" | "article" | "aside" | "footer" | "header" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "main" | "nav" | "section" | "search" | "blockquote" | "dd" | "div" | "dl" | "dt" | "figcaption" | "figure" | "hr" | "li" | "ol" | "ul" | "p" | "pre" | "a" | "abbr" | "p" | "b" | "abbr" | "bdi" | "bdo" | "br" | "cite" | "code" | "data" | "dfn" | "em" | "i" | "kbd" | "mark" | "q" | "rp" | "rt" | "rtc" | "ruby" | "s" | "samp" | "small" | "span" | "strong" | "sub" | "sup" | "time" | "u" | "var" | "wbr" | "area" | "audio" | "img" | "map" | "track" | "video" | "embed" | "object" | "param" | "picture" | "source" | "canvas" | "noscript" | "script" | "del" | "ins" | "caption" | "col" | "colgroup" | "table" | "thead" | "tbody" | "td" | "th" | "tr" | "button" | "datalist" | "fieldset" | "form" | "input" | "label" | "legend" | "meter" | "optgroup" | "option" | "output" | "progress" | "select" | "textarea" | "details" | "dialog" | "menu" | "summary" | "template") | undefined;
+    group?: (import("@tamagui/core").GroupNames | boolean) | undefined;
+    untilMeasured?: ("hide" | "show") | undefined;
+    componentName?: string | undefined;
     tabIndex?: 0 | -1 | undefined;
-    disableOptimization?: boolean;
-    forceStyle?: "hover" | "press" | "focus" | "focusVisible";
-    disableClassName?: boolean;
+    disableOptimization?: boolean | undefined;
+    forceStyle?: ("hover" | "press" | "focus" | "focusVisible") | undefined;
+    disableClassName?: boolean | undefined;
     hitSlop?: ((number | import("@tamagui/core").Insets) & (number | import("react-native").Insets)) | null | undefined;
     needsOffscreenAlphaCompositing?: boolean | undefined;
     removeClippedSubviews?: boolean | undefined;
@@ -383,8 +383,8 @@ export declare function useInputProps(props: InputProps, ref: any): {
     scale?: number | "unset" | import("@tamagui/core").GetThemeValueForKey<"scale"> | undefined;
     scaleX?: number | "unset" | import("@tamagui/core").GetThemeValueForKey<"scaleX"> | undefined;
     scaleY?: number | "unset" | import("@tamagui/core").GetThemeValueForKey<"scaleY"> | undefined;
-    skewX?: string;
-    skewY?: string;
+    skewX?: string | undefined;
+    skewY?: string | undefined;
     matrix?: "unset" | number[] | undefined;
     rotate?: "unset" | import("@tamagui/core").UnionableString | `${number}deg` | undefined;
     rotateY?: "unset" | import("@tamagui/core").UnionableString | `${number}deg` | undefined;
@@ -496,7 +496,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
     space?: number | "unset" | import("@tamagui/core").GetThemeValueForKey<"space"> | undefined;
     spaceDirection?: "unset" | import("@tamagui/core").SpaceDirection | undefined;
     separator?: React.ReactNode;
-    animation?: import("@tamagui/core").AnimationProp | null;
+    animation?: (import("@tamagui/core").AnimationProp | null) | undefined;
     animateOnly?: string[] | "unset" | undefined;
     animatePresence?: boolean | "unset" | undefined;
     selectionColor?: "unset" | Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;

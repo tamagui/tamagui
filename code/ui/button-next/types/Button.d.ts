@@ -24,8 +24,8 @@ export declare const Button: import("react").ForwardRefExoticComponent<import("@
     }, import("@tamagui/web").StaticConfigPublic];
 } & {
     Apply: import("react").ProviderExoticComponent<Partial<{
-        size?: SizeTokens;
-        variant?: ButtonVariant;
+        size?: SizeTokens | undefined;
+        variant?: ButtonVariant | undefined;
     }> & {
         children?: import("react").ReactNode;
         scope?: string;
