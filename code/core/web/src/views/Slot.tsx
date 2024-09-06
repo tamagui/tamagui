@@ -4,7 +4,7 @@ import { composeRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
 import { composeEventHandlers } from '@tamagui/helpers'
 import type { ReactNode } from 'react'
-import { Children, cloneElement, forwardRef, isValidElement, version } from 'react'
+import { Children, cloneElement, forwardRef, isValidElement, version, memo } from 'react'
 
 /* -------------------------------------------------------------------------------------------------
  * Slot
@@ -16,29 +16,29 @@ interface SlotProps {
 
 const is19 = version.startsWith('19.')
 
-export const Slot = forwardRef<any, SlotProps>(function Slot(props, forwardedRef) {
-  const { children, ...slotProps } = props
+export const Slot = memo(
+  forwardRef<any, SlotProps>(function Slot(props, forwardedRef) {
+    const { children, ...slotProps } = props
 
-  if (isValidElement(children)) {
-    const mergedProps = mergeSlotProps(children, slotProps)
-    return cloneElement(
-      children,
-      children.type['avoidForwardRef']
-        ? mergedProps
-        : {
-            ...mergedProps,
-            ref: composeRefs(
-              forwardedRef,
-              is19 ? (children as any).props.ref : (children as any).ref
-            ),
-          }
-    )
-  }
+    if (isValidElement(children)) {
+      const mergedProps = mergeSlotProps(children, slotProps)
+      return cloneElement(
+        children,
+        children.type['avoidForwardRef']
+          ? mergedProps
+          : {
+              ...mergedProps,
+              ref: composeRefs(
+                forwardedRef,
+                is19 ? (children as any).props.ref : (children as any).ref
+              ),
+            }
+      )
+    }
 
-  return Children.count(children) > 1 ? Children.only(null) : null
-})
-
-Slot['displayName'] = 'Slot'
+    return Children.count(children) > 1 ? Children.only(null) : null
+  })
+)
 
 /* -------------------------------------------------------------------------------------------------
  * Slottable
