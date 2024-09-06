@@ -34,7 +34,7 @@ export interface AppContextType {
   setConfirmationPending: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export const tokenStore = new Conf({ projectName: 'bento-cli' })
+export const tokenStore = new Conf({ projectName: 'bento-cli/v2' })
 
 // Create the AppContext with default values
 export const AppContext = React.createContext<AppContextType>({

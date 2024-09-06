@@ -5,6 +5,9 @@ import { debugLog } from '../commands/index.js'
 import type { AppContextType } from '../data/AppContext.js'
 import { tokenStore } from '../data/AppContext.js'
 
+const apiBase = process.env.API_BASE || 'https://tamagui.dev'
+const ACCESS_TOKEN_URL = `${apiBase}/account/items`
+
 export const handleGlobalKeyPress = (
   key: string,
   modifier: any,
@@ -96,11 +99,12 @@ export const handleGlobalKeyPress = (
     return
 
   if (
-    modifier.return &&
+    key === 'o' &&
     !appContext.installState.installingComponent?.isOSS &&
-    appContext.installState.shouldOpenBrowser
+    appContext.installState.shouldOpenBrowser &&
+    location.pathname === '/auth'
   ) {
-    open('https://github.com/login/device')
+    open(ACCESS_TOKEN_URL)
     return
   }
 
@@ -116,12 +120,14 @@ export const handleGlobalKeyPress = (
   }
 
   if (modifier.return) {
-    setInstallState((prev) => ({
-      ...prev,
-      installingComponent: searchResults[selectedResultIndex]?.item,
-    }))
-    debugLog('Installing component', searchResults[selectedResultIndex]?.item)
-    navigate('/install-confirm')
-    return
+    if (location.pathname === '/search') {
+      setInstallState((prev) => ({
+        ...prev,
+        installingComponent: searchResults[selectedResultIndex]?.item,
+      }))
+      debugLog('Installing component', searchResults[selectedResultIndex]?.item)
+      navigate('/install-confirm')
+      return
+    }
   }
 }

@@ -1,13 +1,11 @@
-import { Alert, Spinner } from '@inkjs/ui'
-import { copy } from 'copy-paste'
+import { Alert, Spinner, TextInput } from '@inkjs/ui'
 import { Box, Text } from 'ink'
 import React from 'react'
 
-import { useGithubAuth } from '../hooks/useGithubAuth.js'
 import { AppContext } from '../data/AppContext.js'
+import { debugLog } from '../commands/index.js'
 
 export const CodeAuthScreen = () => {
-  const { data, isLoading } = useGithubAuth()
   const appContext = React.useContext(AppContext)
 
   React.useEffect(() => {
@@ -33,19 +31,10 @@ export const CodeAuthScreen = () => {
     }
   }, [appContext.tokenStore, appContext.setInstallState])
 
-  React.useEffect(() => {
-    if (appContext.isCopyingToClipboard) {
-      copy(data?.user_code)
-      console.warn(`Copied to clipboard`)
-    }
-  }, [appContext.isCopyingToClipboard])
+  const [accessToken, setAccessToken] = React.useState('')
 
   return (
     <Box flexDirection="column" display="flex">
-      <Alert variant="info">
-        Press <Text underline>Enter</Text> to open browser window and authenticate to your
-        Github account with the following auth code.
-      </Alert>
       <Box justifyContent="space-between" paddingRight={1}>
         <Text>
           {' < '}
@@ -60,34 +49,40 @@ export const CodeAuthScreen = () => {
           </Text>
         )}
       </Box>
+      <Alert variant="info">
+        Press <Text underline>o</Text> to open browser window and get your access token
+        from your Tamagui account.
+      </Alert>
       <Box flexDirection="row" borderStyle="round" paddingY={1} justifyContent="center">
         {appContext.installState.isTokenInstalled ? (
           <Box paddingY={1}>
             <Text color="green">
-              Github Authentication Successful. Press <Text underline>ESC</Text> to go
-              back ✔︎
+              Authentication Successful. Press <Text underline>ESC</Text> to go back ✔︎
             </Text>
           </Box>
-        ) : isLoading ? (
-          <Box paddingY={1}>
-            <Spinner label="Loading..." />
-          </Box>
         ) : (
-          data?.user_code?.split('')?.map((item, key) => (
-            <Box
-              key={key}
-              flexDirection="column"
-              {...(item !== '-' && { borderStyle: 'round' })}
-              paddingX={1}
-              gap={1}
-              width={item !== '-' ? 5 : 3}
-              height={3}
-              alignItems="center"
-              justifyContent="center"
-            >
-              <Text>{item}</Text>
+          <Box flexDirection="column" gap={1} paddingX={2}>
+            <Alert variant="info">Your are trying to install a Pro component.</Alert>
+            <Text>Paste/Enter your Bento access token:</Text>
+            <Box minHeight={10}>
+              <TextInput
+                defaultValue={accessToken}
+                onChange={(value) => setAccessToken(value)}
+                onSubmit={() => {
+                  debugLog('accessToken', accessToken)
+                  appContext.setInstallState((prev) => ({
+                    ...prev,
+                    accessToken,
+                  }))
+                  debugLog('installState', appContext.installState)
+                }}
+              />
             </Box>
-          ))
+            <Text color={'magenta'}>
+              (Press <Text underline>o</Text> to retrieve your access token from
+              tamagui.dev)
+            </Text>
+          </Box>
         )}
       </Box>
     </Box>
