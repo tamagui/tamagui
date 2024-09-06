@@ -7668,6 +7668,7 @@ __metadata:
     "@tamagui/one-theme": "npm:1.110.2"
     "@tamagui/themes": "npm:1.110.2"
     "@tamagui/use-store": "npm:1.110.2"
+    "@vxrn/color-scheme": "npm:^1.1.210"
     body-scroll-lock: "npm:^4.0.0-beta.0"
     mdx-bundler: "npm:^10.0.2"
     patch-package: "npm:^8.0.0"
@@ -8479,7 +8480,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/use-did-finish-ssr@npm:1.110.2, @tamagui/use-did-finish-ssr@workspace:code/core/use-did-finish-ssr":
+"@tamagui/use-did-finish-ssr@npm:1.110.2, @tamagui/use-did-finish-ssr@npm:^1.110.1, @tamagui/use-did-finish-ssr@workspace:code/core/use-did-finish-ssr":
   version: 0.0.0-use.local
   resolution: "@tamagui/use-did-finish-ssr@workspace:code/core/use-did-finish-ssr"
   dependencies:
@@ -10008,6 +10009,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@vxrn/color-scheme@npm:^1.1.210":
+  version: 1.1.210
+  resolution: "@vxrn/color-scheme@npm:1.1.210"
+  dependencies:
+    "@tamagui/use-did-finish-ssr": "npm:^1.110.1"
+    "@vxrn/universal-color-scheme": "npm:1.1.210"
+    "@vxrn/use-isomorphic-layout-effect": "npm:1.1.210"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 10/01228231312e0cb38a4bdac1b232be2dd981ee6f7a8d8f4e88893afad6b5512193fece0047ac6e15155b49190c01a673e34e2918ddee44313afea790d86c52f2
+  languageName: node
+  linkType: hard
+
 "@vxrn/react-native-prebuilt@npm:1.1.203":
   version: 1.1.203
   resolution: "@vxrn/react-native-prebuilt@npm:1.1.203"
@@ -10045,12 +10060,33 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@vxrn/universal-color-scheme@npm:1.1.210":
+  version: 1.1.210
+  resolution: "@vxrn/universal-color-scheme@npm:1.1.210"
+  dependencies:
+    "@vxrn/use-isomorphic-layout-effect": "npm:1.1.210"
+    react: "npm:^18.2.0 || ^19.0.0"
+  peerDependencies:
+    react-native: "*"
+  checksum: 10/109bbff0a0c891e5ee69732b2af9be591f4893d9b26ad325665c063bbf1e09f092c56914c400329f93578c30c5fc6dc9f4c8cb671b048b78bdd17aab8b1f5d92
+  languageName: node
+  linkType: hard
+
 "@vxrn/use-isomorphic-layout-effect@npm:1.1.203":
   version: 1.1.203
   resolution: "@vxrn/use-isomorphic-layout-effect@npm:1.1.203"
   dependencies:
     react: "npm:^18.2.0 || ^19.0.0"
   checksum: 10/4dbcfbea5ce4a8c99295bbca6ed56baaa0c334e17acadd12ba367acb7aad8f44489e955b38c02246c58cd2db009e16a4a283d90e195ee0e84a61103b496e7929
+  languageName: node
+  linkType: hard
+
+"@vxrn/use-isomorphic-layout-effect@npm:1.1.210":
+  version: 1.1.210
+  resolution: "@vxrn/use-isomorphic-layout-effect@npm:1.1.210"
+  dependencies:
+    react: "npm:^18.2.0 || ^19.0.0"
+  checksum: 10/fea60bd909139f0dcf853d298dab435aa2438f47bcaa4a6537b3895f191e5ced1c4b8f974ba9c7cee9a3fe4a5488fea1bb81d81c4e22d730563cce92aaa61823
   languageName: node
   linkType: hard
 
