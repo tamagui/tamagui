@@ -1,7 +1,7 @@
 import { isAndroid } from '@tamagui/constants'
 import { tokenCategories } from '@tamagui/helpers'
 
-import { getConfig } from '../config'
+import { getConfig, getSetting } from '../config'
 import { isDevTools } from '../constants/isDevTools'
 import type { Variable } from '../createVariable'
 import { getVariableValue, isVariable } from '../createVariable'
@@ -418,7 +418,7 @@ export const getTokenForKey = (
         case 'lineHeight':
         case 'letterSpacing':
         case 'fontWeight': {
-          const defaultFont = conf.defaultFont || (conf.settings?.defaultFont ? `$${conf.settings.defaultFont}` : undefined) || '$body'
+          const defaultFont = conf.defaultFont || (getSetting("defaultFont") ? `$${getSetting("defaultFont")}` : undefined) || '$body'
           const fam = fontFamily || defaultFont
           if (fam) {
             const fontsParsed = context?.language
