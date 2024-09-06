@@ -91,6 +91,7 @@ export default {
       'glob',
       'reading-time',
       'unified',
+      '@discordjs/core',
     ],
     needsInterop: optimizeInterop,
   },
@@ -111,6 +112,11 @@ export default {
         '@supabase/node-fetch': true,
         postmark: true,
         stripe: true,
+        jsonwebtoken: true,
+        bottleneck: true,
+        octokit: true,
+        'node-fetch': true,
+        'fetch-blob': true,
       },
 
       async afterServerStart(options, app, { routeMap }) {
