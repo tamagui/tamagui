@@ -38,39 +38,45 @@ export default function RootLayout() {
     return null
   }
 
-  return <RootLayoutNav />
+  return (
+    <Providers>
+      <RootLayoutNav />
+    </Providers>
+  )
+}
+
+const Providers = ({ children }: { children: React.ReactNode }) => {
+  return <Provider>{children}</Provider>
 }
 
 function RootLayoutNav() {
   const colorScheme = useColorScheme()
   const theme = useTheme()
   return (
-    <Provider>
-      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <StatusBar barStyle={colorScheme === 'dark' ? 'light-content' : 'dark-content'} />
-        <Stack>
-          <Stack.Screen
-            name="(tabs)"
-            options={{
-              headerShown: false,
-            }}
-          />
+    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+      <StatusBar barStyle={colorScheme === 'dark' ? 'light-content' : 'dark-content'} />
+      <Stack>
+        <Stack.Screen
+          name="(tabs)"
+          options={{
+            headerShown: false,
+          }}
+        />
 
-          <Stack.Screen
-            name="modal"
-            options={{
-              title: 'Tamagui + Expo',
-              presentation: 'modal',
-              animation: 'slide_from_right',
-              gestureEnabled: true,
-              gestureDirection: 'horizontal',
-              contentStyle: {
-                backgroundColor: theme.background.val,
-              },
-            }}
-          />
-        </Stack>
-      </ThemeProvider>
-    </Provider>
+        <Stack.Screen
+          name="modal"
+          options={{
+            title: 'Tamagui + Expo',
+            presentation: 'modal',
+            animation: 'slide_from_right',
+            gestureEnabled: true,
+            gestureDirection: 'horizontal',
+            contentStyle: {
+              backgroundColor: theme.background.val,
+            },
+          }}
+        />
+      </Stack>
+    </ThemeProvider>
   )
 }
