@@ -2,7 +2,6 @@ import { isAndroid } from '@tamagui/constants'
 import { tokenCategories } from '@tamagui/helpers'
 
 import { getConfig, getSetting } from '../config'
-import { isDevTools } from '../constants/isDevTools'
 import type { Variable } from '../createVariable'
 import { getVariableValue, isVariable } from '../createVariable'
 import type {
