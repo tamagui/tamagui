@@ -7,9 +7,9 @@ type GetFontSizeOpts = {
   font?: FontTokens
 }
 
-const getFontKey = (opts?: GetFontSizeOpts) => {
-  const FALLBACK_FONT_KEY = '$body'
+const FALLBACK_FONT_KEY = '$body'
 
+const getFontKey = (opts?: GetFontSizeOpts) => {
   return opts?.font || getSetting("defaultFont") ? `$${getSetting("defaultFont")}` : undefined || FALLBACK_FONT_KEY
 }
 
