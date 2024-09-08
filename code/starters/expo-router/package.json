@@ -1,5 +1,5 @@
 {
-  "name": "expo-router-new-arch",
+  "name": "expo-router",
   "main": "expo-router/entry",
   "version": "1.0.0",
   "scripts": {
