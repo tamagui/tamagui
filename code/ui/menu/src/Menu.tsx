@@ -1,10 +1,6 @@
-import { styled, useMedia, Text } from '@tamagui/core'
-import { withStaticProperties } from '@tamagui/helpers'
+import { styled, Text } from '@tamagui/core'
+import { Image } from '@tamagui/image'
 import { ThemeableStack } from '@tamagui/stacks'
-// import { Drawer, DrawerProvider } from '@tamagui/drawer'
-import { useControllableState } from '@tamagui/use-controllable-state'
-import type React from 'react'
-import { useMemo } from 'react'
 
 /* -------------------------------------------------------------------------------------------------
  * MenuGroup

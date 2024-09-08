@@ -307,7 +307,7 @@ export function createNonNativeDropdownMenu(params: Parameters<typeof createMenu
         __scopeMenu={__scopeDropdownMenu || DROPDOWN_MENU_CONTEXT}
         {...portalProps}
       >
-        {children}
+        {content}
       </Menu.Portal>
     )
   }
