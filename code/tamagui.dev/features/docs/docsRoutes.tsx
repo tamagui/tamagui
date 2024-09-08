@@ -146,6 +146,8 @@ export const docsRoutes = [
       { title: 'Sheet', route: '/ui/sheet' },
       { title: 'Tooltip', route: '/ui/tooltip' },
       { title: 'Toast', route: '/ui/toast' },
+      { title: 'DropDownMenu', route: '/ui/dropdown-menu' },
+      { title: 'ContextMenu', route: '/ui/context-menu' },
     ],
   },
 
