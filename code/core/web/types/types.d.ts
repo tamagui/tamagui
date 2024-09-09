@@ -1430,6 +1430,7 @@ export type SplitStyleProps = {
     isExiting?: boolean;
     exitVariant?: string;
     enterVariant?: string;
+    hasRNAnimation?: boolean;
 };
 export interface PresenceContextProps {
     id: string;

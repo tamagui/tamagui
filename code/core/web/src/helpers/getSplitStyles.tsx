@@ -304,7 +304,7 @@ export const getSplitStyles: StyleSplitter = (
     // this is all for partially optimized (not flattened)... maybe worth removing?
     if (process.env.TAMAGUI_TARGET === 'web') {
       // react-native-web ignore data-* attributes, we need this for AnimatedView
-      if (styleProps.isAnimated && keyInit.startsWith('data-')) {
+      if (styleProps.hasRNAnimation && keyInit.startsWith('data-')) {
         keyInit = keyInit.replace('data-', '')
         viewProps['dataSet'] ||= {}
         viewProps['dataSet'][keyInit] = valInit
