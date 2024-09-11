@@ -477,11 +477,13 @@ export function createComponent<
           propsIn[inverseShorthands[key]] ??
           defaultProps?.[key] ??
           defaultProps?.[inverseShorthands[key]]
+
         // if not set, use context
         if (propVal === undefined) {
-          if (contextValue) {
+          const val = contextValue?.[key]
+          if (val !== undefined) {
             styledContextProps ||= {}
-            styledContextProps[key] = contextValue[key]
+            styledContextProps[key] = val
           }
         }
         // if set in props, update context
