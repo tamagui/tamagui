@@ -1,5 +1,5 @@
 {
-  "name": "remix-test",
+  "name": "@tamagui/remix-starter",
   "private": true,
   "sideEffects": false,
   "type": "module",
