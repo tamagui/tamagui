@@ -11,12 +11,16 @@ installGlobals()
 export default defineConfig({
   clearScreen: false,
   plugins: [
-    tamaguiPlugin() as any,
-    tamaguiExtractPlugin({
-      logTimings: true,
-    }),
     remix(),
     tsconfigPaths(),
+    tamaguiPlugin({
+      components: ['tamagui'],
+      config: './tamagui.config',
+    }) as any,
+    tamaguiExtractPlugin({
+      logTimings: true,
+      
+    }),
     commonjs({
       filter(id) {
         if (id.includes('node_modules/@react-native/normalize-color')) {
