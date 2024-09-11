@@ -1,5 +1,6 @@
 import type { MetaFunction } from '@remix-run/node'
-import { Text } from '@tamagui/core'
+import { Text, Stack } from 'tamagui'
+import { Link } from '@remix-run/react'
 
 export const meta: MetaFunction = () => {
   return [
@@ -10,24 +11,27 @@ export const meta: MetaFunction = () => {
 
 export default function Index() {
   return (
-    <div style={{ fontFamily: 'system-ui, sans-serif', lineHeight: '1.8' }}>
+    <Stack tag="section" style={{ fontFamily: 'system-ui, sans-serif', lineHeight: '1.8' }}>
       <Text>Tamagui + Remix</Text>
-      <ul>
-        <li>
-          <a
+      <Stack tag="ul">
+        <Stack tag="li">
+          <Link to="/test">Test</Link>
+        </Stack>
+        <Stack tag="li">
+          <Link
             target="_blank"
             href="https://developers.cloudflare.com/pages/framework-guides/deploy-a-remix-site/"
             rel="noreferrer"
           >
             Cloudflare Pages Docs - Remix guide
-          </a>
-        </li>
-        <li>
-          <a target="_blank" href="https://remix.run/docs" rel="noreferrer">
+          </Link>
+        </Stack>
+        <Stack tag="li">
+          <Link target="_blank" href="https://remix.run/docs" rel="noreferrer">
             Remix Docs
-          </a>
-        </li>
-      </ul>
-    </div>
+          </Link>
+        </Stack>
+      </Stack>
+    </Stack>
   )
 }
