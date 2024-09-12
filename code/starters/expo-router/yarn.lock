@@ -53,7 +53,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/core@npm:^7.13.16, @babel/core@npm:^7.20.0, @babel/core@npm:^7.24.6, @babel/core@npm:^7.25.2":
+"@babel/core@npm:^7.13.16, @babel/core@npm:^7.20.0, @babel/core@npm:^7.25.2":
   version: 7.25.2
   resolution: "@babel/core@npm:7.25.2"
   dependencies:
@@ -1582,7 +1582,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@expo/metro-config@npm:0.18.11, @expo/metro-config@npm:~0.18.4":
+"@expo/metro-config@npm:0.18.11, @expo/metro-config@npm:~0.18.11":
   version: 0.18.11
   resolution: "@expo/metro-config@npm:0.18.11"
   dependencies:
@@ -1608,7 +1608,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@expo/metro-runtime@npm:3.2.3, @expo/metro-runtime@npm:~3.2.1":
+"@expo/metro-runtime@npm:3.2.3, @expo/metro-runtime@npm:~3.2.3":
   version: 3.2.3
   resolution: "@expo/metro-runtime@npm:3.2.3"
   peerDependencies:
@@ -2672,7 +2672,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-navigation/native@npm:^6.1.17, @react-navigation/native@npm:~6.1.6":
+"@react-navigation/native@npm:^6.1.18, @react-navigation/native@npm:~6.1.6":
   version: 6.1.18
   resolution: "@react-navigation/native@npm:6.1.18"
   dependencies:
@@ -4574,13 +4574,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:~18.2.79":
-  version: 18.2.79
-  resolution: "@types/react@npm:18.2.79"
+"@types/react@npm:~18.3.5":
+  version: 18.3.5
+  resolution: "@types/react@npm:18.3.5"
   dependencies:
     "@types/prop-types": "npm:*"
     csstype: "npm:^3.0.2"
-  checksum: 10/2ef833e7d0a5c226beddbbe090811582371f6ae5e2f092a3d9f47cc6087c8bce0b96ee33e351de6d1d470f0a0ec5892d971933f841ef31538c1821681fc6569e
+  checksum: 10/ba0477c5ad4a762157c6262a199af6ccf9e24576877a26a7f516d5a9ba35374a6ac7f8686a10e5e8030513214f02bcb66e8363e43905afb7cd313deaf673de05
   languageName: node
   linkType: hard
 
@@ -5119,7 +5119,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-preset-expo@npm:^11.0.6, babel-preset-expo@npm:~11.0.14":
+"babel-preset-expo@npm:^11.0.14, babel-preset-expo@npm:~11.0.14":
   version: 11.0.14
   resolution: "babel-preset-expo@npm:11.0.14"
   dependencies:
@@ -6846,18 +6846,18 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "expo-router@workspace:."
   dependencies:
-    "@babel/core": "npm:^7.24.6"
-    "@expo/metro-config": "npm:~0.18.4"
-    "@expo/metro-runtime": "npm:~3.2.1"
-    "@react-navigation/native": "npm:^6.1.17"
-    "@tamagui/babel-plugin": "npm:^1.110.3"
-    "@tamagui/config": "npm:^1.110.3"
-    "@tamagui/lucide-icons": "npm:^1.110.3"
-    "@tamagui/metro-plugin": "npm:^1.110.3"
-    "@tamagui/toast": "npm:^1.110.3"
-    "@types/react": "npm:~18.2.79"
+    "@babel/core": "npm:^7.25.2"
+    "@expo/metro-config": "npm:~0.18.11"
+    "@expo/metro-runtime": "npm:~3.2.3"
+    "@react-navigation/native": "npm:^6.1.18"
+    "@tamagui/babel-plugin": "npm:1.110.2"
+    "@tamagui/config": "npm:1.110.2"
+    "@tamagui/lucide-icons": "npm:1.110.2"
+    "@tamagui/metro-plugin": "npm:1.110.2"
+    "@tamagui/toast": "npm:1.110.2"
+    "@types/react": "npm:~18.3.5"
     "@types/react-native": "npm:^0.73.0"
-    babel-preset-expo: "npm:^11.0.6"
+    babel-preset-expo: "npm:^11.0.14"
     burnt: "npm:^0.12.2"
     expo: "npm:~51.0.32"
     expo-build-properties: "npm:~0.12.5"
@@ -6876,7 +6876,7 @@ __metadata:
     react-native-screens: "npm:~3.34.0"
     react-native-svg: "npm:15.6.0"
     react-native-web: "npm:^0.19.12"
-    tamagui: "npm:^1.110.3"
+    tamagui: "npm:1.110.2"
     typescript: "npm:^5.5.2"
   languageName: unknown
   linkType: soft
