@@ -22,7 +22,6 @@ export declare const useComponentState: (props: StackProps | TextProps | Record<
     supportsCSSVars: boolean | undefined;
     willBeAnimated: boolean;
     willBeAnimatedClient: boolean;
-    hasRNAnimation: boolean | undefined;
 };
 export declare function createComponent<ComponentPropTypes extends Record<string, any> = {}, Ref extends TamaguiElement = TamaguiElement, BaseProps = never, BaseStyles extends Object = never>(staticConfig: StaticConfig): TamaguiComponent<ComponentPropTypes, Ref, BaseProps, BaseStyles, {}>;
 export declare function Unspaced(props: {

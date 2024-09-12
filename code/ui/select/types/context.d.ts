@@ -2,7 +2,7 @@ import type { SelectScopedProps, SelectContextValue, SelectItemParentContextValu
 export declare const createSelectContext: <ContextValueType extends object | null>(rootComponentName: string, defaultContext?: ContextValueType) => readonly [{
     (props: ContextValueType & {
         scope: import("@tamagui/create-context").Scope<ContextValueType>;
-        children: import("react").ReactNode;
+        children: React.ReactNode;
     }): import("react/jsx-runtime").JSX.Element;
     displayName: string;
 }, (consumerName: string, scope: import("@tamagui/create-context").Scope<ContextValueType | undefined>, options?: {
@@ -12,7 +12,7 @@ export declare const createSelectContext: <ContextValueType extends object | nul
 export declare const SelectProvider: {
     (props: SelectContextValue & {
         scope: import("@tamagui/create-context").Scope<SelectContextValue>;
-        children: import("react").ReactNode;
+        children: React.ReactNode;
     }): import("react/jsx-runtime").JSX.Element;
     displayName: string;
 }, useSelectContext: (consumerName: string, scope: import("@tamagui/create-context").Scope<SelectContextValue | undefined>, options?: {
@@ -22,7 +22,7 @@ export declare const SelectProvider: {
 export declare const createSelectItemParentContext: <ContextValueType extends object | null>(rootComponentName: string, defaultContext?: ContextValueType) => readonly [{
     (props: ContextValueType & {
         scope: import("@tamagui/create-context").Scope<ContextValueType>;
-        children: import("react").ReactNode;
+        children: React.ReactNode;
     }): import("react/jsx-runtime").JSX.Element;
     displayName: string;
 }, (consumerName: string, scope: import("@tamagui/create-context").Scope<ContextValueType | undefined>, options?: {
@@ -32,7 +32,7 @@ export declare const createSelectItemParentContext: <ContextValueType extends ob
 export declare const SelectItemParentProvider: {
     (props: SelectItemParentContextValue & {
         scope: import("@tamagui/create-context").Scope<SelectItemParentContextValue>;
-        children: import("react").ReactNode;
+        children: React.ReactNode;
     }): import("react/jsx-runtime").JSX.Element;
     displayName: string;
 }, useSelectItemParentContext: (consumerName: string, scope: import("@tamagui/create-context").Scope<SelectItemParentContextValue | undefined>, options?: {

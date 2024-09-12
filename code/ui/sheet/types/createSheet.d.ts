@@ -34,7 +34,7 @@ export declare function createSheet<H extends TamaguiComponent | SheetStyledComp
     zIndex?: number;
     portalProps?: import("@tamagui/portal").PortalProps;
     moveOnKeyboardChange?: boolean;
-    containerComponent?: import("react").ComponentType<any>;
+    containerComponent?: React.ComponentType<any>;
 } & {
     __scopeSheet?: import("@tamagui/create-context").Scope<any>;
 } & RefAttributes<View>> & {
