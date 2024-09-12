@@ -1,6 +1,6 @@
-import React from "react";
-import PropTypes from 'prop-types';
-import type { IconProps } from '@tamagui/helpers-icon';
+import React from 'react'
+import PropTypes from 'prop-types'
+import type { IconProps } from '@tamagui/helpers-icon'
 import {
   Svg,
   Circle as _Circle,
@@ -17,12 +17,12 @@ import {
   Text as _Text,
   Use,
   Defs,
-  Stop } from
-'react-native-svg';
-import { themed } from '@tamagui/helpers-icon';
+  Stop,
+} from 'react-native-svg'
+import { themed } from '@tamagui/helpers-icon'
 
 const Icon = (props) => {
-  const { color = 'black', size = 24, ...otherProps } = props;
+  const { color = 'black', size = 24, ...otherProps } = props
   return (
     <Svg
       width={size}
@@ -33,16 +33,16 @@ const Icon = (props) => {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      {...otherProps}>
-
+      {...otherProps}
+    >
       <Path
         d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"
-        stroke={color} />
+        stroke={color}
+      />
+    </Svg>
+  )
+}
 
-    </Svg>);
+Icon.displayName = 'Droplet'
 
-};
-
-Icon.displayName = 'Droplet';
-
-export const Droplet = React.memo<IconProps>(themed(Icon));
+export const Droplet = React.memo<IconProps>(themed(Icon))

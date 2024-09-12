@@ -1,6 +1,6 @@
-import React from "react";
-import PropTypes from 'prop-types';
-import type { IconProps } from '@tamagui/helpers-icon';
+import React from 'react'
+import PropTypes from 'prop-types'
+import type { IconProps } from '@tamagui/helpers-icon'
 import {
   Svg,
   Circle as _Circle,
@@ -17,12 +17,12 @@ import {
   Text as _Text,
   Use,
   Defs,
-  Stop } from
-'react-native-svg';
-import { themed } from '@tamagui/helpers-icon';
+  Stop,
+} from 'react-native-svg'
+import { themed } from '@tamagui/helpers-icon'
 
 const Icon = (props) => {
-  const { color = 'black', size = 24, ...otherProps } = props;
+  const { color = 'black', size = 24, ...otherProps } = props
   return (
     <Svg
       width={size}
@@ -33,17 +33,17 @@ const Icon = (props) => {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      {...otherProps}>
-
+      {...otherProps}
+    >
       <Path d="M3 5v14" stroke={color} />
       <Path d="M8 5v14" stroke={color} />
       <Path d="M12 5v14" stroke={color} />
       <Path d="M17 5v14" stroke={color} />
       <Path d="M21 5v14" stroke={color} />
-    </Svg>);
+    </Svg>
+  )
+}
 
-};
+Icon.displayName = 'Barcode'
 
-Icon.displayName = 'Barcode';
-
-export const Barcode = React.memo<IconProps>(themed(Icon));
+export const Barcode = React.memo<IconProps>(themed(Icon))

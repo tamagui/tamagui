@@ -1,6 +1,6 @@
-import React from "react";
-import PropTypes from 'prop-types';
-import type { IconProps } from '@tamagui/helpers-icon';
+import React from 'react'
+import PropTypes from 'prop-types'
+import type { IconProps } from '@tamagui/helpers-icon'
 import {
   Svg,
   Circle as _Circle,
@@ -17,12 +17,12 @@ import {
   Text as _Text,
   Use,
   Defs,
-  Stop } from
-'react-native-svg';
-import { themed } from '@tamagui/helpers-icon';
+  Stop,
+} from 'react-native-svg'
+import { themed } from '@tamagui/helpers-icon'
 
 const Icon = (props) => {
-  const { color = 'black', size = 24, ...otherProps } = props;
+  const { color = 'black', size = 24, ...otherProps } = props
   return (
     <Svg
       width={size}
@@ -33,16 +33,18 @@ const Icon = (props) => {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      {...otherProps}>
-
+      {...otherProps}
+    >
       <_Circle cx="12" cy="12" r="3" stroke={color} />
       <Path
         d="M4.5 10H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-.5"
-        stroke={color} />
+        stroke={color}
+      />
 
       <Path
         d="M4.5 14H4a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2h-.5"
-        stroke={color} />
+        stroke={color}
+      />
 
       <Path d="M6 6h.01" stroke={color} />
       <Path d="M6 18h.01" stroke={color} />
@@ -54,10 +56,10 @@ const Icon = (props) => {
       <Path d="m8.3 13.6 1-.4" stroke={color} />
       <Path d="m14.7 10.8 1-.4" stroke={color} />
       <Path d="m13.4 8.3-.3.9" stroke={color} />
-    </Svg>);
+    </Svg>
+  )
+}
 
-};
+Icon.displayName = 'ServerCog'
 
-Icon.displayName = 'ServerCog';
-
-export const ServerCog = React.memo<IconProps>(themed(Icon));
+export const ServerCog = React.memo<IconProps>(themed(Icon))

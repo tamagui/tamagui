@@ -1,6 +1,6 @@
-import React from "react";
-import PropTypes from 'prop-types';
-import type { IconProps } from '@tamagui/helpers-icon';
+import React from 'react'
+import PropTypes from 'prop-types'
+import type { IconProps } from '@tamagui/helpers-icon'
 import {
   Svg,
   Circle as _Circle,
@@ -17,12 +17,12 @@ import {
   Text as _Text,
   Use,
   Defs,
-  Stop } from
-'react-native-svg';
-import { themed } from '@tamagui/helpers-icon';
+  Stop,
+} from 'react-native-svg'
+import { themed } from '@tamagui/helpers-icon'
 
 const Icon = (props) => {
-  const { color = 'black', size = 24, ...otherProps } = props;
+  const { color = 'black', size = 24, ...otherProps } = props
   return (
     <Svg
       width={size}
@@ -33,18 +33,18 @@ const Icon = (props) => {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      {...otherProps}>
-
+      {...otherProps}
+    >
       <Rect width="6" height="14" x="4" y="5" rx="2" stroke={color} />
       <Rect width="6" height="10" x="14" y="7" rx="2" stroke={color} />
       <Path d="M17 22v-5" stroke={color} />
       <Path d="M17 7V2" stroke={color} />
       <Path d="M7 22v-3" stroke={color} />
       <Path d="M7 5V2" stroke={color} />
-    </Svg>);
+    </Svg>
+  )
+}
 
-};
+Icon.displayName = 'AlignHorizontalDistributeCenter'
 
-Icon.displayName = 'AlignHorizontalDistributeCenter';
-
-export const AlignHorizontalDistributeCenter = React.memo<IconProps>(themed(Icon));
+export const AlignHorizontalDistributeCenter = React.memo<IconProps>(themed(Icon))

@@ -1,6 +1,6 @@
-import React from "react";
-import PropTypes from 'prop-types';
-import type { IconProps } from '@tamagui/helpers-icon';
+import React from 'react'
+import PropTypes from 'prop-types'
+import type { IconProps } from '@tamagui/helpers-icon'
 import {
   Svg,
   Circle as _Circle,
@@ -17,12 +17,12 @@ import {
   Text as _Text,
   Use,
   Defs,
-  Stop } from
-'react-native-svg';
-import { themed } from '@tamagui/helpers-icon';
+  Stop,
+} from 'react-native-svg'
+import { themed } from '@tamagui/helpers-icon'
 
 const Icon = (props) => {
-  const { color = 'black', size = 24, ...otherProps } = props;
+  const { color = 'black', size = 24, ...otherProps } = props
   return (
     <Svg
       width={size}
@@ -33,8 +33,8 @@ const Icon = (props) => {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      {...otherProps}>
-
+      {...otherProps}
+    >
       <Path d="M6 19V5" stroke={color} />
       <Path d="M10 19V6.8" stroke={color} />
       <Path d="M14 19v-7.8" stroke={color} />
@@ -43,12 +43,12 @@ const Icon = (props) => {
       <Path d="M22 19V9" stroke={color} />
       <Path
         d="M2 19V9a4 4 0 0 1 4-4c2 0 4 1.33 6 4s4 4 6 4a4 4 0 1 0-3-6.65"
-        stroke={color} />
+        stroke={color}
+      />
+    </Svg>
+  )
+}
 
-    </Svg>);
+Icon.displayName = 'RollerCoaster'
 
-};
-
-Icon.displayName = 'RollerCoaster';
-
-export const RollerCoaster = React.memo<IconProps>(themed(Icon));
+export const RollerCoaster = React.memo<IconProps>(themed(Icon))

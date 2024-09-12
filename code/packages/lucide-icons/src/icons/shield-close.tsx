@@ -1,6 +1,7 @@
-import React from "react";import type { IconProps } from '@tamagui/helpers-icon';
-import { themed } from '@tamagui/helpers-icon';
-import PropTypes from 'prop-types';
+import React from 'react'
+import type { IconProps } from '@tamagui/helpers-icon'
+import { themed } from '@tamagui/helpers-icon'
+import PropTypes from 'prop-types'
 
 import {
   Defs,
@@ -18,11 +19,11 @@ import {
   Symbol,
   Use,
   Circle as _Circle,
-  Text as _Text } from
-'react-native-svg';
+  Text as _Text,
+} from 'react-native-svg'
 
 const Icon = (props) => {
-  const { color = 'black', size = 24, ...otherProps } = props;
+  const { color = 'black', size = 24, ...otherProps } = props
   return (
     <Svg
       width={size}
@@ -33,15 +34,15 @@ const Icon = (props) => {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      {...otherProps}>
-
+      {...otherProps}
+    >
       <Path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke={color} />
       <Line x1="9.5" x2="14.5" y1="9" y2="14" stroke={color} />
       <Line x1="14.5" x2="9.5" y1="9" y2="14" stroke={color} />
-    </Svg>);
+    </Svg>
+  )
+}
 
-};
+Icon.displayName = 'ShieldClose'
 
-Icon.displayName = 'ShieldClose';
-
-export const ShieldClose = React.memo<IconProps>(themed(Icon));
+export const ShieldClose = React.memo<IconProps>(themed(Icon))
