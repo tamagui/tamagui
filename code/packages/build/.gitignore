@@ -1,39 +1,8 @@
-# Node modules
-node_modules/
-
-# Build output
-dist/
-types/
-.turbo/
-tsconfig.tsbuildinfo
-
-# Logs
-logs/
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# Temporary files
-tmp/
-temp/
-
 # Test output
 __tests__/fixtures/simple-package/dist/
 __tests__/fixtures/simple-package/node_modules/
+__tests__/fixtures/simple-package/types/
+__tests__/fixtures/watch-package/dist/
+__tests__/fixtures/watch-package/node_modules/
+__tests__/fixtures/watch-package/types/
 
-# Ignore lock files
-yarn.lock
-package-lock.json
-
-# Ignore IDE/editor specific files
-.vscode/
-.idea/
-.DS_Store
-
-# Ignore environment variable files
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
