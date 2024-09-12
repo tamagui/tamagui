@@ -358,7 +358,6 @@ export const useComponentState = (
     supportsCSSVars,
     willBeAnimated,
     willBeAnimatedClient,
-    hasRNAnimation,
   }
 }
 
@@ -604,7 +603,6 @@ export function createComponent<
       supportsCSSVars,
       willBeAnimated,
       willBeAnimatedClient,
-      hasRNAnimation,
     } = useComponentState(props, componentContext, staticConfig, config!)
 
     const shouldForcePseudo = !!propsIn.forceStyle
@@ -749,7 +747,6 @@ export function createComponent<
       isAnimated,
       willBeAnimated,
       styledContextProps,
-      hasRNAnimation,
     } as const
 
     // HOOK 15 (-1 if no animation, -1 if disableSSR, -1 if no context, -1 if production)
