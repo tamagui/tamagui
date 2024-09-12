@@ -5,6 +5,9 @@
     "tamagui-build": "tamagui-build.js",
     "teesx": "./teesx.sh"
   },
+  "scripts": {
+    "test": "vitest --ui --no-file-parallelism"
+  },
   "publishConfig": {
     "access": "public"
   },
@@ -21,10 +24,12 @@
     "execa": "^5.0.0",
     "fast-glob": "^3.2.11",
     "fs-extra": "^11.2.0",
-    "lodash.debounce": "^4.0.8"
-  },
-  "devDependencies": {
+    "lodash.debounce": "^4.0.8",
     "typescript": "^5.5.2"
   },
-  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14"
+  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
+  "devDependencies": {
+    "@vitest/ui": "^2.1.0",
+    "vitest": "^2.1.0"
+  }
 }

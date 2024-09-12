@@ -1,0 +1,8 @@
+# Test output
+__tests__/fixtures/simple-package/dist/
+__tests__/fixtures/simple-package/node_modules/
+__tests__/fixtures/simple-package/types/
+__tests__/fixtures/watch-package/dist/
+__tests__/fixtures/watch-package/node_modules/
+__tests__/fixtures/watch-package/types/
+
