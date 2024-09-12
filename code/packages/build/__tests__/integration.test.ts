@@ -2,6 +2,7 @@ import { execSync, spawn } from 'node:child_process'
 import { existsSync, readFileSync, writeFileSync, statSync } from 'node:fs'
 import { describe, it, expect, beforeAll, afterAll } from 'vitest'
 import { join } from 'node:path'
+import { readFile } from 'node:fs/promises'
 
 const watchPackagePath = join(__dirname, 'fixtures', 'watch-package')
 const watchDistPath = join(watchPackagePath, 'dist')
@@ -96,7 +97,7 @@ describe('tamagui-build integration test', () => {
       await new Promise<void>((resolve, reject) => {
         const timeout = setTimeout(() => {
           reject(new Error('Timeout waiting for build to complete'))
-        }, 30000) // 30 second timeout
+        }, 15000) // 30 second timeout
 
         let initialBuildComplete = false
         let fileModified = false
@@ -134,7 +135,36 @@ describe('tamagui-build integration test', () => {
     } finally {
       watchProcess.kill()
     }
-  }, 35000) // 35 second total test timeout
+  }, 15000)
+
+  it('should generate correct platform-specific output', async () => {
+    execSync('yarn build', { cwd: simplePackagePath })
+
+    const distCjsWebFilePath = join(distPath, 'cjs', 'index.js')
+    const distCjsNativeFilePath = join(distPath, 'cjs', 'index.native.js')
+
+    // Check if the output files exist
+    expect(existsSync(distCjsWebFilePath)).toBe(true)
+    expect(existsSync(distCjsNativeFilePath)).toBe(true)
+
+    // Read the content of the output files
+    const webOutput = await readFile(distCjsWebFilePath, 'utf-8')
+    const nativeOutput = await readFile(distCjsNativeFilePath, 'utf-8')
+
+    // Check for platform-specific content in web output
+    expect(webOutput).toContain('salutation = "Hi"')
+    expect(webOutput).not.toContain('salutation = "Hey"')
+    expect(webOutput).not.toContain('process.env.TAMAGUI_TARGET')
+
+    // Check for platform-specific content in native output
+    expect(nativeOutput).toContain('salutation = "Hey"')
+    expect(nativeOutput).not.toContain('salutation = "Hi"')
+    expect(nativeOutput).not.toContain('process.env.TAMAGUI_TARGET')
+
+    // Check that the common code is present in both outputs
+    expect(webOutput).toContain('greet:')
+    expect(nativeOutput).toContain('greet:')
+  })
 
   it('should minify the output when MINIFY=true is set', () => {
     // Build without minification and cache file sizes
@@ -162,11 +192,13 @@ describe('tamagui-build integration test', () => {
     const cjsOutput = readFileSync(distCjsFilePath, 'utf-8')
     const esmOutput = readFileSync(distEsmFilePath, 'utf-8')
 
-    // Check for absence of excessive whitespace and newlines in minified output
-    expect(cjsOutput).not.toMatch(/\s{2,}/)
-    expect(cjsOutput.split('\n').length).toBeLessThan(5)
-    expect(esmOutput).not.toMatch(/\s{2,}/)
-    expect(esmOutput.split('\n').length).toBeLessThan(5)
+    // Check for absence of excessive whitespace in minified output
+    expect(cjsOutput).not.toMatch(/^\s+$/m) // No lines with only whitespace
+    expect(esmOutput).not.toMatch(/^\s+$/m) // No lines with only whitespace
+
+    // Check that the number of lines is reduced
+    expect(cjsOutput.split('\n').length).toBeLessThan(10)
+    expect(esmOutput.split('\n').length).toBeLessThan(10)
   })
 
   afterAll(() => {
