@@ -2,7 +2,6 @@
 /* eslint-disable no-console */
 
 const { transform } = require('@babel/core')
-const exec = require('execa')
 const fs = require('fs-extra')
 const esbuild = require('esbuild')
 const fg = require('fast-glob')
@@ -11,6 +10,11 @@ const debounce = require('lodash.debounce')
 const { basename, dirname } = require('node:path')
 const alias = require('./esbuildAliasPlugin')
 const { es5Plugin } = require('./esbuild-es5')
+const ts = require('typescript')
+const path = require('node:path')
+
+// biome-ignore lint/suspicious/noConsoleLog: <explanation>
+console.log('TypeScript version:', ts.version)
 
 const jsOnly = !!process.env.JS_ONLY
 const skipJS = !!(process.env.SKIP_JS || false)
@@ -63,6 +67,8 @@ const replaceRNWeb = {
     to: 'require("react-native-web")',
   },
 }
+
+let cachedConfig = null
 
 async function clean() {
   try {
@@ -134,48 +140,137 @@ async function build({ skipTypes } = {}) {
   }
 }
 
-// const targetDir = `.types${Math.floor(Math.random() * 1_000_000)}`
-// const cleanup = () => {
-//   try {
-//     fs.removeSync(targetDir)
-//   } catch {
-//     // ok
-//   }
-// }
-
-// process.once('beforeExit', cleanup)
-// process.once('SIGINT', cleanup)
-// process.once('SIGTERM', cleanup)
-
 async function buildTsc() {
-  if (!pkgTypes) return
-  if (jsOnly || shouldSkipTypes) return
+  if (!pkgTypes || jsOnly || shouldSkipTypes) return
   if (shouldSkipInitialTypes) {
     shouldSkipInitialTypes = false
     return
   }
 
   const targetDir = 'types'
+  await fs.ensureDir(targetDir)
+
   try {
-    // typescripts build cache messes up when doing declarationOnly
-    await fs.remove('tsconfig.tsbuildinfo')
-    await fs.ensureDir(targetDir)
+    console.info(`Starting TypeScript compilation for ${pkg.name}`)
 
-    const declarationToRootFlag = declarationToRoot ? ' --declarationDir ./' : ''
-    const baseUrlFlag = ignoreBaseUrl ? '' : ` --baseUrl ${baseUrl}`
-    const tsProjectFlag = tsProject ? ` --project ${tsProject}` : ''
-    const cmd = `tsc${baseUrlFlag}${tsProjectFlag} --outDir ${targetDir} --rootDir src ${declarationToRootFlag}--emitDeclarationOnly --declarationMap`
+    const { config, error } = await loadTsConfig()
+    if (error) throw error
 
-    console.info('\x1b[2m$', `npx ${cmd}`)
-    await exec('npx', cmd.split(' '))
+    const compilerOptions = createCompilerOptions(config.options, targetDir)
+    const { program, emitResult, diagnostics } = await compileTypeScript(
+      config.fileNames,
+      compilerOptions
+    )
+
+    reportDiagnostics(diagnostics)
+
+    if (emitResult.emitSkipped) {
+      throw new Error('TypeScript compilation failed')
+    }
+
+    console.info(`TypeScript compilation completed successfully for ${pkg.name}`)
   } catch (err) {
-    console.info(err.message)
+    if (err.code === 'ENOTFOUND' || err.code === 'ECONNREFUSED') {
+      console.error(`Network error during compilation for ${pkg.name}:`, err.message)
+    } else {
+      console.error(`Error during TypeScript compilation for ${pkg.name}:`, err)
+    }
     if (!shouldWatch) {
       process.exit(1)
     }
   } finally {
     await fs.remove('tsconfig.tsbuildinfo')
   }
+}
+
+async function loadTsConfig() {
+  if (cachedConfig && shouldWatch) {
+    return cachedConfig
+  }
+
+  const configPath = ts.findConfigFile(
+    './',
+    ts.sys.fileExists,
+    tsProject || 'tsconfig.json'
+  )
+  if (!configPath) {
+    return { error: new Error("Could not find a valid 'tsconfig.json'.") }
+  }
+
+  const configFile = ts.readConfigFile(configPath, ts.sys.readFile)
+  if (configFile.error) {
+    return {
+      error: new Error(`Error reading tsconfig.json: ${configFile.error.messageText}`),
+    }
+  }
+
+  const parsedCommandLine = ts.parseJsonConfigFileContent(
+    configFile.config,
+    ts.sys,
+    path.dirname(configPath)
+  )
+
+  if (parsedCommandLine.errors.length) {
+    return {
+      error: new Error(
+        `Error parsing tsconfig.json: ${ts.formatDiagnostics(parsedCommandLine.errors, formatHost)}`
+      ),
+    }
+  }
+
+  cachedConfig = { config: parsedCommandLine }
+  return cachedConfig
+}
+
+function createCompilerOptions(baseOptions, targetDir) {
+  const compilerOptions = {
+    ...baseOptions,
+    declaration: true,
+    emitDeclarationOnly: true,
+    declarationMap: true,
+    outDir: targetDir,
+    rootDir: 'src',
+    incremental: true,
+    tsBuildInfoFile: 'tsconfig.tsbuildinfo',
+  }
+
+  if (declarationToRoot) {
+    compilerOptions.declarationDir = './'
+  }
+
+  if (!ignoreBaseUrl) {
+    compilerOptions.baseUrl = baseUrl
+  }
+
+  return compilerOptions
+}
+
+async function compileTypeScript(fileNames, options) {
+  const program = ts.createProgram(fileNames, options)
+  const emitResult = program.emit()
+  const allDiagnostics = ts.getPreEmitDiagnostics(program).concat(emitResult.diagnostics)
+
+  return { program, emitResult, diagnostics: allDiagnostics }
+}
+
+const formatHost = {
+  getCanonicalFileName: (path) => path,
+  getCurrentDirectory: ts.sys.getCurrentDirectory,
+  getNewLine: () => ts.sys.newLine,
+}
+
+function reportDiagnostics(diagnostics) {
+  diagnostics.forEach((diagnostic) => {
+    let message = ts.flattenDiagnosticMessageText(diagnostic.messageText, '\n')
+    if (diagnostic.file && diagnostic.start !== undefined) {
+      const { line, character } = ts.getLineAndCharacterOfPosition(
+        diagnostic.file,
+        diagnostic.start
+      )
+      message = `${diagnostic.file.fileName} (${line + 1},${character + 1}): ${message}`
+    }
+    console.error(message)
+  })
 }
 
 async function buildJs() {
