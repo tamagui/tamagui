@@ -2382,6 +2382,7 @@ export type SplitStyleProps = {
   isExiting?: boolean
   exitVariant?: string
   enterVariant?: string
+  hasRNAnimation?: boolean
 }
 
 // Presence
