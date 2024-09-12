@@ -21,9 +21,7 @@
     "execa": "^5.0.0",
     "fast-glob": "^3.2.11",
     "fs-extra": "^11.2.0",
-    "lodash.debounce": "^4.0.8"
-  },
-  "devDependencies": {
+    "lodash.debounce": "^4.0.8",
     "typescript": "^5.5.2"
   },
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14"
