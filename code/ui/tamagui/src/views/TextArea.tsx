@@ -5,7 +5,6 @@ import { styled, useComposedRefs } from '@tamagui/core'
 import { textAreaSizeVariant } from '../helpers/inputHelpers'
 import type { Input, InputExtraProps, InputProps } from './Input'
 import { InputFrame, defaultStyles, useInputProps } from './Input'
-import { registerFocusable } from '@tamagui/focusable'
 
 /**
  * Is basically Input but with rows = 4 to start
@@ -47,20 +46,6 @@ export const TextArea = TextAreaFrame.styleable<InputExtraProps>(
     const linesProp = {
       // web uses rows now, but native not caught up :/
       [isWeb ? 'rows' : 'numberOfLines']: propsIn.unstyled ? undefined : 4,
-    }
-
-    if (process.env.TAMAGUI_TARGET === 'native') {
-      React.useEffect(() => {
-        if (!props.id) return
-        if (props.disabled) return
-
-        return registerFocusable(props.id, {
-          focusAndSelect: () => {
-            ref.current?.focus()
-          },
-          focus: () => {},
-        })
-      }, [props.id, props.disabled])
     }
 
     return <TextAreaFrame {...linesProp} {...props} />
