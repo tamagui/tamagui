@@ -430,7 +430,7 @@ const BotInstallPanel = ({
   )
   const installationUrl = `/api/github/install-bot?${new URLSearchParams({
     subscription_item_id: subItemId,
-  })}`
+  })}` as const
 
   return (
     <YStack gap="$3">
@@ -464,7 +464,7 @@ const BotInstallPanel = ({
 
       <XStack>
         <ButtonLink
-          href={installationUrl}
+          href={installationUrl as any}
           themeInverse
           replace={false}
           target="_blank"

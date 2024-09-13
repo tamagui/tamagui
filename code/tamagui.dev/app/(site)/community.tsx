@@ -1,4 +1,3 @@
-import { authors } from '~/data/authors'
 // import { getAllFrontmatter } from '@lib/mdx'
 import { useTint } from '@tamagui/logo'
 import { ChevronRight } from '@tamagui/lucide-icons'
@@ -18,14 +17,15 @@ import {
   YStack,
 } from 'tamagui'
 
+import type { Href } from 'vxs'
 import { Card } from '~/components/Card'
 import { ContainerLarge } from '~/components/Containers'
 import { FlatBubbleCard } from '~/components/FlatBubbleCard'
-import { Link } from '~/components/Link'
-import { SocialLinksRow } from '~/features/site/home/SocialLinksRow'
-import { GithubIcon } from '~/features/icons/GithubIcon'
-import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
 import { HeadInfo } from '~/components/HeadInfo'
+import { Link } from '~/components/Link'
+import { GithubIcon } from '~/features/icons/GithubIcon'
+import { SocialLinksRow } from '~/features/site/home/SocialLinksRow'
+import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
 
 export default function Community({ frontmatters }) {
   return (
@@ -353,7 +353,7 @@ const StarterRepoCard = ({
   name,
   url,
 }: {
-  url: string
+  url: Href
   name: string
   author: string
 }) => {
@@ -364,7 +364,7 @@ const StarterRepoCard = ({
       maw={300}
       space="$2"
       tag="a"
-      href={url}
+      href={url as string}
       target="_blank"
       p="$5"
       jc="space-between"
@@ -384,7 +384,7 @@ const StarterRepoCard = ({
 
 function GoldSponsor(props: {
   name: string
-  link: string
+  link: Href
   image: string
   imageWidth: number
   imageHeight: number
@@ -425,7 +425,7 @@ function IndividualSponsor(props: { name: string; link: string }) {
     <FlatBubbleCard flat mb="$4">
       <YStack maxWidth="100%" fs={0} als="center">
         <XStack gap="$4" $sm={{ flexDirection: 'column' }}>
-          <Link href={props.link} target="_blank">
+          <Link href={props.link as any} target="_blank">
             <YStack
               cursor="pointer"
               p="$4"

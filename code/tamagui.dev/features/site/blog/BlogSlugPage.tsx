@@ -113,7 +113,7 @@ export function BlogSlugPage(props: BlogPost) {
   const tweetUrl = `https://tamagui.dev/blog/${frontmatter.slug}`
   const twitterShare = `https://twitter.com/intent/tweet?text="${enc(
     tweetText
-  )}"&url=${enc(tweetUrl)}`
+  )}"&url=${enc(tweetUrl)}` as const
 
   return (
     <>

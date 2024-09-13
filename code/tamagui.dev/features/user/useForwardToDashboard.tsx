@@ -41,7 +41,10 @@ export function useForwardToDashboard() {
               }
             }
           }
-          await router.replace(redirectTo)
+          await router.replace(
+            // @ts-expect-error
+            redirectTo
+          )
         }
       }
     }

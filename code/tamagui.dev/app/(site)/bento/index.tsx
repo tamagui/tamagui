@@ -741,7 +741,7 @@ function SectionCard({
   const Icon = icons[name] ?? Null
 
   return (
-    <Link href={BASE_PATH + path} asChild>
+    <Link href={(BASE_PATH + path) as any} asChild>
       <YStack
         tag="a"
         ov="hidden"

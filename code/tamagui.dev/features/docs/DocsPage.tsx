@@ -1,12 +1,12 @@
 import { LinearGradient } from '@tamagui/linear-gradient'
 import { ThemeTint } from '@tamagui/logo'
+import { ChevronLeft, ChevronRight } from '@tamagui/lucide-icons'
 import * as React from 'react'
 import { ScrollView } from 'react-native'
 import { EnsureFlexed, Paragraph, View, XStack, YStack } from 'tamagui'
-import { Link } from '~/components/Link'
-
-import { ChevronLeft, ChevronRight } from '@tamagui/lucide-icons'
+import type { Href } from 'vxs'
 import { Container } from '~/components/Containers'
+import { Link } from '~/components/Link'
 import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
 import { DocsMenuContents } from './DocsMenuContents'
 import { useDocsMenu } from './useDocsMenu'
@@ -14,9 +14,10 @@ import { useDocsMenu } from './useDocsMenu'
 export function DocsPage({ children }: { children: React.ReactNode }) {
   const { currentPath, next, previous, documentVersionPath } = useDocsMenu()
 
-  const GITHUB_URL = 'https://github.com'
-  const REPO_NAME = 'tamagui/tamagui'
-  const editUrl = `${GITHUB_URL}/${REPO_NAME}/edit/master/code/tamagui.dev/data${currentPath}${documentVersionPath}.mdx`
+  const GITHUB_URL = 'https://github.com' as const
+  const REPO_NAME = 'tamagui/tamagui' as const
+  const editUrl =
+    `${GITHUB_URL}/${REPO_NAME}/edit/master/code/tamagui.dev/data${currentPath}${documentVersionPath}.mdx` as const
 
   const pageContents = React.useMemo(() => {
     return (
@@ -36,7 +37,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                 gap="$4"
               >
                 {previous && (
-                  <Link href={previous.route} asChild>
+                  <Link href={previous.route as Href} asChild>
                     <XStack
                       tag="a"
                       group="card"
@@ -84,7 +85,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                   </Link>
                 )}
                 {next && (
-                  <Link href={next.route} asChild>
+                  <Link href={next.route as Href} asChild>
                     <XStack
                       tag="a"
                       group="card"

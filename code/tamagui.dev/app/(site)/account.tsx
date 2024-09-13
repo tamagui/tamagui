@@ -192,9 +192,7 @@ const ProfileContent = () => {
       {!!userDetails?.full_name && (
         <Paragraph theme="alt1">{userDetails?.full_name}</Paragraph>
       )}
-      <Paragraph theme="alt1">
-        {user?.email} <Link href="/account/change-email">(Change)</Link>
-      </Paragraph>
+      <Paragraph theme="alt1">{user?.email}</Paragraph>
     </XStack>
   )
 }

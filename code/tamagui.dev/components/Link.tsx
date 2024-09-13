@@ -26,7 +26,7 @@ export const Link = ({ href, replace, asChild, ...props }: LinkProps) => {
 }
 
 export const ParagraphLink = ({
-  href = '',
+  href = '' as any,
   replace,
   onPress,
   children,
@@ -52,7 +52,7 @@ export type ButtonLinkProps = Pick<LinkProps, 'href' | 'replace' | 'target' | 'r
   ButtonProps
 
 export const ButtonLink = ({
-  href = '',
+  href = '' as any,
   rel,
   target,
   replace,

@@ -31,7 +31,7 @@ export default function StudioSplashPage() {
 
   useEffect(() => {
     if (hasStudioAccess) {
-      router.replace('/studio/theme')
+      router.replace('/studio')
     }
   }, [hasStudioAccess])
 
