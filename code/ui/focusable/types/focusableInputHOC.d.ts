@@ -1,4 +1,3 @@
-import type { TamaguiComponent } from '@tamagui/web';
 import type { MutableRefObject } from 'react';
 type FocusableProps = {
     id?: string;
@@ -14,6 +13,5 @@ export declare function useFocusable({ isInput, props, ref, }: {
     ref: (node: any) => void;
     onChangeText: (value: any) => void;
 };
-export declare function focusableInputHOC<A extends TamaguiComponent>(Component: A): A;
 export {};
 //# sourceMappingURL=focusableInputHOC.d.ts.map

@@ -158,7 +158,7 @@ async function run() {
       await Promise.all(
         packageJsons.map(async ({ cwd, json }) => {
           const distDir = join(cwd, 'dist')
-          if (!json.scripts || json.scripts.build === 'true') {
+          if (!json.scripts || !json.scripts.build || json.scripts.build === 'true') {
             return
           }
           if (!(await fs.pathExists(distDir))) {
