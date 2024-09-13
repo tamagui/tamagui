@@ -534,6 +534,7 @@ export type TamaguiInternalConfig<A extends GenericTokens = GenericTokens, B ext
     fontSizeTokens: Set<string>;
     specificTokens: Record<string, Variable>;
     settings: Omit<GenericTamaguiSettings, keyof I> & I;
+    defaultFontToken: `${string}`;
 };
 export type GetAnimationKeys<A extends GenericTamaguiConfig> = keyof A['animations'];
 export type UnionableString = string & {};

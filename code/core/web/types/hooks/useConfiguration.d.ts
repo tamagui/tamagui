@@ -136,5 +136,6 @@ export declare const useConfiguration: () => {
     inverseShorthands: Record<string, string>;
     fontSizeTokens: Set<string>;
     specificTokens: Record<string, import("..").Variable>;
+    defaultFontToken: `${string}`;
 };
 //# sourceMappingURL=useConfiguration.d.ts.map
