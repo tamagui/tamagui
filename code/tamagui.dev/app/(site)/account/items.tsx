@@ -659,7 +659,7 @@ const DiscordMember = ({
 }
 
 const GithubAppMessage = () => {
-  const query = useLocalSearchParams()
+  const query = useLocalSearchParams<any>()
   const githubAppInstalled = !!query.github_app_installed
   if (!githubAppInstalled) return null
   return <Paragraph theme="green_alt2"></Paragraph>

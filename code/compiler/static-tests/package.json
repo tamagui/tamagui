@@ -48,7 +48,7 @@
     "react-test-renderer": "^18.2.0",
     "style-loader": "^3.3.3",
     "typescript": "^5.5.2",
-    "vitest": "^0.34.3",
+    "vitest": "0.34.3",
     "webpack": "^5.88.2"
   },
   "peerDependencies": {

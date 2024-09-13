@@ -45,7 +45,7 @@
     "@testing-library/react": "^16.0.0",
     "csstype": "^3.0.10",
     "typescript": "^5.5.2",
-    "vitest": "^0.34.3"
+    "vitest": "0.34.3"
   },
   "exports": {
     "./package.json": "./package.json",

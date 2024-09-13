@@ -16,7 +16,7 @@
     "build:target-native": "TAMAGUI_TARGET=native node ../../../tamagui-build.js"
   },
   "devDependencies": {
-    "@tamagui/build": "latest",
+    "@tamagui/build": "1.110.3",
     "typescript": "^5.5.2"
   }
 }

@@ -28,7 +28,7 @@
   },
   "devDependencies": {
     "@babel/types": "^7.25.4",
-    "vitest": "^0.34.3"
+    "vitest": "0.34.3"
   },
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14"
 }
