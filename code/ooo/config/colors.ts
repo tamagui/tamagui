@@ -49,55 +49,38 @@ export const lightShadowColorStrong = 'rgba(0,0,0,0.085)'
 export const darkShadowColor = 'rgba(0,0,0,0.2)'
 export const darkShadowColorStrong = 'rgba(0,0,0,0.3)'
 
-export const tintColors = {
-  blueLight: 'hsl(210, 60%, 95%)',
-  blueDark: 'hsl(210, 60%, 10%)',
-
-  greenLight: 'hsl(120, 60%, 95%)',
-  greenDark: 'hsl(120, 60%, 10%)',
-
-  redLight: 'hsl(0, 60%, 95%)',
-  redDark: 'hsl(0, 60%, 10%)',
-
-  purpleLight: 'hsl(270, 60%, 95%)',
-  purpleDark: 'hsl(270, 60%, 10%)',
-
-  pinkLight: 'hsl(330, 60%, 95%)',
-  pinkDark: 'hsl(330, 60%, 10%)',
-}
-
 export const darkColors = {
   ...colorTokens.dark.yellow,
   ...colorTokens.dark.gray,
 
-  blue: tintColors.blueDark,
-  green: tintColors.greenDark,
-  red: tintColors.redDark,
-  purple: tintColors.purpleDark,
-  pink: tintColors.pinkDark,
+  blue: 'hsla(210, 60%, 20%, 0.4)',
+  green: 'hsla(120, 60%, 20%, 0.4)',
+  red: 'hsla(0, 60%, 20%, 0.4)',
+  purple: 'hsla(270, 60%, 20%, 0.4)',
+  pink: 'hsla(330, 60%, 20%, 0.4)',
 
-  blueFg: tintColors.blueLight,
-  greenFg: tintColors.greenLight,
-  redFg: tintColors.redLight,
-  purpleFg: tintColors.purpleLight,
-  pinkFg: tintColors.pinkLight,
+  blueFg: 'hsl(210, 60%, 95%)',
+  greenFg: 'hsl(120, 60%, 95%)',
+  redFg: 'hsl(0, 60%, 95%)',
+  purpleFg: 'hsl(270, 60%, 95%)',
+  pinkFg: 'hsl(330, 60%, 95%)',
 }
 
 export const lightColors = {
   ...colorTokens.light.yellow,
   ...colorTokens.light.gray,
 
-  blue: tintColors.blueLight,
-  green: tintColors.greenLight,
-  red: tintColors.redLight,
-  purple: tintColors.purpleLight,
-  pink: tintColors.pinkLight,
+  blue: 'hsla(210, 60%, 90%, 0.35)',
+  green: 'hsla(120, 60%, 90%, 0.35)',
+  red: 'hsla(0, 60%, 90%, 0.35)',
+  purple: 'hsla(270, 60%, 90%, 0.35)',
+  pink: 'hsla(330, 60%, 90%, 0.35)',
 
-  blueFg: tintColors.blueDark,
-  greenFg: tintColors.greenDark,
-  redFg: tintColors.redDark,
-  purpleFg: tintColors.purpleDark,
-  pinkFg: tintColors.pinkDark,
+  blueFg: 'hsl(210, 60%, 10%)',
+  greenFg: 'hsl(120, 60%, 10%)',
+  redFg: 'hsl(0, 60%, 10%)',
+  purpleFg: 'hsl(270, 60%, 10%)',
+  pinkFg: 'hsl(330, 60%, 10%)',
 }
 
 export const color = {
