@@ -7,7 +7,7 @@ const heading = createInterFont(
       5: 13,
       6: 15,
       9: 32,
-      10: 44,
+      10: 48,
     },
     transform: {
       6: 'uppercase',
@@ -51,7 +51,7 @@ const body = createInterFont(
   },
   {
     sizeSize: (size) => Math.round(size),
-    sizeLineHeight: (size) => Math.round(size * 1.1 + (size >= 12 ? 8 : 4)),
+    sizeLineHeight: (size) => Math.round(size * 1.1 + (size >= 12 ? 10 : 4)),
   }
 )
 
