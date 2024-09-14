@@ -14,6 +14,7 @@ const yellow = {
   yellow10: 'hsl(50, 100%, 48.5%)',
   yellow11: 'hsl(42, 90%, 34.0%)',
   yellow12: 'hsl(40, 55.0%, 13.5%)',
+  yellow13: '#000',
 }
 
 const yellowDark = {
@@ -29,6 +30,7 @@ const yellowDark = {
   yellow10: 'hsl(54, 100%, 60.0%)',
   yellow11: 'hsl(48, 100%, 80.0%)',
   yellow12: 'hsl(53, 100%, 91.0%)',
+  yellow13: '#fff',
 }
 
 const colorTokens = {
@@ -47,14 +49,55 @@ export const lightShadowColorStrong = 'rgba(0,0,0,0.085)'
 export const darkShadowColor = 'rgba(0,0,0,0.2)'
 export const darkShadowColorStrong = 'rgba(0,0,0,0.3)'
 
+export const tintColors = {
+  blueLight: 'hsl(210, 60%, 95%)',
+  blueDark: 'hsl(210, 60%, 10%)',
+
+  greenLight: 'hsl(120, 60%, 95%)',
+  greenDark: 'hsl(120, 60%, 10%)',
+
+  redLight: 'hsl(0, 60%, 95%)',
+  redDark: 'hsl(0, 60%, 10%)',
+
+  purpleLight: 'hsl(270, 60%, 95%)',
+  purpleDark: 'hsl(270, 60%, 10%)',
+
+  pinkLight: 'hsl(330, 60%, 95%)',
+  pinkDark: 'hsl(330, 60%, 10%)',
+}
+
 export const darkColors = {
   ...colorTokens.dark.yellow,
   ...colorTokens.dark.gray,
+
+  blue: tintColors.blueDark,
+  green: tintColors.greenDark,
+  red: tintColors.redDark,
+  purple: tintColors.purpleDark,
+  pink: tintColors.pinkDark,
+
+  blueFg: tintColors.blueLight,
+  greenFg: tintColors.greenLight,
+  redFg: tintColors.redLight,
+  purpleFg: tintColors.purpleLight,
+  pinkFg: tintColors.pinkLight,
 }
 
 export const lightColors = {
   ...colorTokens.light.yellow,
   ...colorTokens.light.gray,
+
+  blue: tintColors.blueLight,
+  green: tintColors.greenLight,
+  red: tintColors.redLight,
+  purple: tintColors.purpleLight,
+  pink: tintColors.pinkLight,
+
+  blueFg: tintColors.blueDark,
+  greenFg: tintColors.greenDark,
+  redFg: tintColors.redDark,
+  purpleFg: tintColors.purpleDark,
+  pinkFg: tintColors.pinkDark,
 }
 
 export const color = {
@@ -149,6 +192,7 @@ export const palettes = (() => {
     color.white10,
     color.white11,
     color.white12,
+    '#000',
     color.black075,
     color.black05,
     color.black025,
@@ -174,6 +218,7 @@ export const palettes = (() => {
     color.black10,
     color.black11,
     color.black12,
+    '#fff',
     color.white075,
     color.white05,
     color.white025,
