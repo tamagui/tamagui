@@ -30,7 +30,7 @@ module.exports = {
   },
   resolve: {
     mainFields: ['module:jsx', 'browser', 'module', 'main'],
-    extensions: ['.ts', '.tsx', '.mjs', '.js'],
+    extensions: ['.ts', '.tsx', '.js'],
     alias: {
       'react-native$': 'react-native-web',
       'react-native-svg': '@tamagui/react-native-svg',

@@ -13,9 +13,6 @@ const { es5Plugin } = require('./esbuild-es5')
 const ts = require('typescript')
 const path = require('node:path')
 
-// biome-ignore lint/suspicious/noConsoleLog: <explanation>
-console.log('TypeScript version:', ts.version)
-
 const jsOnly = !!process.env.JS_ONLY
 const skipJS = !!(process.env.SKIP_JS || false)
 const shouldSkipTypes = !!(
@@ -165,8 +162,6 @@ async function buildTsc() {
     if (emitResult.emitSkipped) {
       throw new Error('TypeScript compilation failed')
     }
-
-    console.info(`TypeScript compilation completed successfully for ${pkg.name}`)
   } catch (err) {
     if (err.code === 'ENOTFOUND' || err.code === 'ECONNREFUSED') {
       console.error(`Network error during compilation for ${pkg.name}:`, err.message)
@@ -719,11 +714,13 @@ async function esbuildWriteIfChanged(
   )
 
   // if we do mjs we should remove js after to avoid bloat
-  if (cleanupNonMjsFiles.length) {
-    await Promise.all(
-      cleanupNonMjsFiles.map(async (file) => {
-        await fs.remove(file)
-      })
-    )
+  if (process.env.TAMAGUI_BUILD_REMOVE_ESM_JS_FILES) {
+    if (cleanupNonMjsFiles.length) {
+      await Promise.all(
+        cleanupNonMjsFiles.map(async (file) => {
+          await fs.remove(file)
+        })
+      )
+    }
   }
 }
