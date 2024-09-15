@@ -3163,7 +3163,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tamagui/babel-plugin@npm:^1.110.5":
+"@tamagui/babel-plugin@npm:1.110.5":
   version: 1.110.5
   resolution: "@tamagui/babel-plugin@npm:1.110.5"
   dependencies:
@@ -3343,7 +3343,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tamagui/config@npm:^1.110.5":
+"@tamagui/config@npm:1.110.5":
   version: 1.110.5
   resolution: "@tamagui/config@npm:1.110.5"
   dependencies:
@@ -3719,7 +3719,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tamagui/lucide-icons@npm:^1.110.5":
+"@tamagui/lucide-icons@npm:1.110.5":
   version: 1.110.5
   resolution: "@tamagui/lucide-icons@npm:1.110.5"
   dependencies:
@@ -3732,7 +3732,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tamagui/metro-plugin@npm:^1.110.5":
+"@tamagui/metro-plugin@npm:1.110.5":
   version: 1.110.5
   resolution: "@tamagui/metro-plugin@npm:1.110.5"
   dependencies:
@@ -4250,7 +4250,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tamagui/toast@npm:^1.110.5":
+"@tamagui/toast@npm:1.110.5":
   version: 1.110.5
   resolution: "@tamagui/toast@npm:1.110.5"
   dependencies:
@@ -6851,11 +6851,11 @@ __metadata:
     "@expo/metro-config": "npm:~0.18.4"
     "@expo/metro-runtime": "npm:~3.2.1"
     "@react-navigation/native": "npm:^6.1.17"
-    "@tamagui/babel-plugin": "npm:^1.110.5"
-    "@tamagui/config": "npm:^1.110.5"
-    "@tamagui/lucide-icons": "npm:^1.110.5"
-    "@tamagui/metro-plugin": "npm:^1.110.5"
-    "@tamagui/toast": "npm:^1.110.5"
+    "@tamagui/babel-plugin": "npm:1.110.5"
+    "@tamagui/config": "npm:1.110.5"
+    "@tamagui/lucide-icons": "npm:1.110.5"
+    "@tamagui/metro-plugin": "npm:1.110.5"
+    "@tamagui/toast": "npm:1.110.5"
     "@types/react": "npm:~18.2.79"
     "@types/react-native": "npm:^0.73.0"
     babel-preset-expo: "npm:^11.0.6"
@@ -6877,7 +6877,7 @@ __metadata:
     react-native-screens: "npm:~3.34.0"
     react-native-svg: "npm:15.6.0"
     react-native-web: "npm:^0.19.12"
-    tamagui: "npm:^1.110.5"
+    tamagui: "npm:1.110.5"
     typescript: "npm:^5.5.2"
   languageName: unknown
   linkType: soft
@@ -11852,7 +11852,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tamagui@npm:^1.110.5":
+"tamagui@npm:1.110.5":
   version: 1.110.5
   resolution: "tamagui@npm:1.110.5"
   dependencies:

@@ -3084,7 +3084,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tamagui/adapt@npm:^1.110.5":
+"@tamagui/adapt@npm:1.110.5":
   version: 1.110.5
   resolution: "@tamagui/adapt@npm:1.110.5"
   dependencies:
@@ -3135,7 +3135,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tamagui/animate-presence@npm:^1.110.5":
+"@tamagui/animate-presence@npm:1.110.5":
   version: 1.110.5
   resolution: "@tamagui/animate-presence@npm:1.110.5"
   dependencies:
@@ -3245,7 +3245,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tamagui/build@npm:1.110.5, @tamagui/build@npm:^1.110.5":
+"@tamagui/build@npm:1.110.5":
   version: 1.110.5
   resolution: "@tamagui/build@npm:1.110.5"
   dependencies:
@@ -3421,7 +3421,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tamagui/config@npm:^1.110.5":
+"@tamagui/config@npm:1.110.5":
   version: 1.110.5
   resolution: "@tamagui/config@npm:1.110.5"
   dependencies:
@@ -3448,7 +3448,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tamagui/constants@npm:1.110.5, @tamagui/constants@npm:^1.110.5":
+"@tamagui/constants@npm:1.110.5":
   version: 1.110.5
   resolution: "@tamagui/constants@npm:1.110.5"
   peerDependencies:
@@ -3469,7 +3469,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tamagui/core@npm:1.110.5, @tamagui/core@npm:^1.110.5":
+"@tamagui/core@npm:1.110.5":
   version: 1.110.5
   resolution: "@tamagui/core@npm:1.110.5"
   dependencies:
@@ -3490,7 +3490,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tamagui/create-context@npm:^1.110.5":
+"@tamagui/create-context@npm:1.110.5":
   version: 1.110.5
   resolution: "@tamagui/create-context@npm:1.110.5"
   peerDependencies:
@@ -3692,7 +3692,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tamagui/get-button-sized@npm:^1.110.5":
+"@tamagui/get-button-sized@npm:1.110.5":
   version: 1.110.5
   resolution: "@tamagui/get-button-sized@npm:1.110.5"
   dependencies:
@@ -3807,7 +3807,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tamagui/helpers@npm:1.110.5, @tamagui/helpers@npm:^1.110.5":
+"@tamagui/helpers@npm:1.110.5":
   version: 1.110.5
   resolution: "@tamagui/helpers@npm:1.110.5"
   dependencies:
@@ -3903,7 +3903,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tamagui/polyfill-dev@npm:^1.110.5":
+"@tamagui/polyfill-dev@npm:1.110.5":
   version: 1.110.5
   resolution: "@tamagui/polyfill-dev@npm:1.110.5"
   checksum: 10/c4195d3efbcdd127b5ccef28b533cf0921e0600fedb003bd86334d051d64d702e5d4c8e285fb7dcf7b74cb1f2917636686c15a24e3220f2cecc8fae1698b2e42
@@ -4113,23 +4113,23 @@ __metadata:
     "@remix-run/node": "npm:^2.10.3"
     "@remix-run/react": "npm:^2.10.3"
     "@remix-run/serve": "npm:^2.10.3"
-    "@tamagui/adapt": "npm:^1.110.5"
-    "@tamagui/animate-presence": "npm:^1.110.5"
-    "@tamagui/build": "npm:^1.110.5"
-    "@tamagui/config": "npm:^1.110.5"
-    "@tamagui/constants": "npm:^1.110.5"
-    "@tamagui/core": "npm:^1.110.5"
-    "@tamagui/create-context": "npm:^1.110.5"
-    "@tamagui/get-button-sized": "npm:^1.110.5"
-    "@tamagui/helpers": "npm:^1.110.5"
-    "@tamagui/polyfill-dev": "npm:^1.110.5"
-    "@tamagui/stacks": "npm:^1.110.5"
-    "@tamagui/start-transition": "npm:^1.110.5"
-    "@tamagui/text": "npm:^1.110.5"
-    "@tamagui/use-did-finish-ssr": "npm:^1.110.5"
-    "@tamagui/use-direction": "npm:^1.110.5"
-    "@tamagui/vite-plugin": "npm:^1.110.5"
-    "@tamagui/web": "npm:^1.110.5"
+    "@tamagui/adapt": "npm:1.110.5"
+    "@tamagui/animate-presence": "npm:1.110.5"
+    "@tamagui/build": "npm:1.110.5"
+    "@tamagui/config": "npm:1.110.5"
+    "@tamagui/constants": "npm:1.110.5"
+    "@tamagui/core": "npm:1.110.5"
+    "@tamagui/create-context": "npm:1.110.5"
+    "@tamagui/get-button-sized": "npm:1.110.5"
+    "@tamagui/helpers": "npm:1.110.5"
+    "@tamagui/polyfill-dev": "npm:1.110.5"
+    "@tamagui/stacks": "npm:1.110.5"
+    "@tamagui/start-transition": "npm:1.110.5"
+    "@tamagui/text": "npm:1.110.5"
+    "@tamagui/use-did-finish-ssr": "npm:1.110.5"
+    "@tamagui/use-direction": "npm:1.110.5"
+    "@tamagui/vite-plugin": "npm:1.110.5"
+    "@tamagui/web": "npm:1.110.5"
     "@types/babel__template": "npm:^7"
     "@types/react": "npm:^18.2.55"
     "@types/react-dom": "npm:^18.2.19"
@@ -4323,7 +4323,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tamagui/stacks@npm:^1.110.5":
+"@tamagui/stacks@npm:1.110.5":
   version: 1.110.5
   resolution: "@tamagui/stacks@npm:1.110.5"
   dependencies:
@@ -4343,7 +4343,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tamagui/start-transition@npm:^1.110.5":
+"@tamagui/start-transition@npm:1.110.5":
   version: 1.110.5
   resolution: "@tamagui/start-transition@npm:1.110.5"
   dependencies:
@@ -4465,7 +4465,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tamagui/text@npm:^1.110.5":
+"@tamagui/text@npm:1.110.5":
   version: 1.110.5
   resolution: "@tamagui/text@npm:1.110.5"
   dependencies:
@@ -4641,7 +4641,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tamagui/use-did-finish-ssr@npm:1.110.5, @tamagui/use-did-finish-ssr@npm:^1.110.5":
+"@tamagui/use-did-finish-ssr@npm:1.110.5":
   version: 1.110.5
   resolution: "@tamagui/use-did-finish-ssr@npm:1.110.5"
   peerDependencies:
@@ -4659,7 +4659,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tamagui/use-direction@npm:^1.110.5":
+"@tamagui/use-direction@npm:1.110.5":
   version: 1.110.5
   resolution: "@tamagui/use-direction@npm:1.110.5"
   peerDependencies:
@@ -4777,7 +4777,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tamagui/vite-plugin@npm:^1.110.5":
+"@tamagui/vite-plugin@npm:1.110.5":
   version: 1.110.5
   resolution: "@tamagui/vite-plugin@npm:1.110.5"
   dependencies:
@@ -4810,7 +4810,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tamagui/web@npm:1.110.5, @tamagui/web@npm:^1.110.5":
+"@tamagui/web@npm:1.110.5":
   version: 1.110.5
   resolution: "@tamagui/web@npm:1.110.5"
   dependencies:
