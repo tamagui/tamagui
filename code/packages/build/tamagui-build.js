@@ -720,8 +720,6 @@ async function esbuildWriteIfChanged(
     })
   )
 
-  console.log('???', cleanupNonMjsFiles)
-
   // if we do mjs we should remove js after to avoid bloat
   if (cleanupNonMjsFiles.length) {
     await Promise.all(
