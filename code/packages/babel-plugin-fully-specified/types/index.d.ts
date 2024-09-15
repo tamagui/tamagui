@@ -6,8 +6,6 @@ export interface FullySpecifiedOptions {
     tryExtensions: Array<string>;
     /** List of extensions that can run in Node.js or in the Browser. */
     esExtensions: Array<string>;
-    /** List of packages that also should be transformed with this plugin. */
-    includePackages: Array<string>;
 }
 export default function FullySpecified(api: ConfigAPI, rawOptions: FullySpecifiedOptions): PluginObj;
 //# sourceMappingURL=index.d.ts.map

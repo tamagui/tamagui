@@ -136,7 +136,7 @@ async function build({ skipTypes } = {}) {
     ])
     console.info('built', pkg.name, 'in', Date.now() - start, 'ms')
   } catch (error) {
-    console.error(`Error building:`, error.message)
+    console.error(` ❌ Error building in ${process.cwd()}:\n\n`, error.stack + '\n')
   }
 }
 
@@ -151,8 +151,6 @@ async function buildTsc() {
   await fs.ensureDir(targetDir)
 
   try {
-    console.info(`Starting TypeScript compilation for ${pkg.name}`)
-
     const { config, error } = await loadTsConfig()
     if (error) throw error
 
