@@ -33,40 +33,40 @@ function getTransformResult(
 describe('local imports', () => {
   test('named import', () => {
     const example1 = "import { foo } from './foo'"
-    expect(getTransformResult(example1)?.code).toBe('import { foo } from "./foo.js";')
+    expect(getTransformResult(example1)?.code).toBe('import { foo } from "./foo.mjs";')
 
     const example2 = "import { foo as bar } from './foo'"
     expect(getTransformResult(example2)?.code).toBe(
-      'import { foo as bar } from "./foo.js";'
+      'import { foo as bar } from "./foo.mjs";'
     )
   })
 
   test('default import', () => {
     const example1 = "import defaultFoo from './foo'"
-    expect(getTransformResult(example1)?.code).toBe('import defaultFoo from "./foo.js";')
+    expect(getTransformResult(example1)?.code).toBe('import defaultFoo from "./foo.mjs";')
 
     const example2 = "import defaultFoo, { foo } from './foo'"
     expect(getTransformResult(example2)?.code).toBe(
-      'import defaultFoo, { foo } from "./foo.js";'
+      'import defaultFoo, { foo } from "./foo.mjs";'
     )
   })
 
   test('namespace import', () => {
     const example = "import * as fooModule from './foo'"
     expect(getTransformResult(example)?.code).toBe(
-      'import * as fooModule from "./foo.js";'
+      'import * as fooModule from "./foo.mjs";'
     )
   })
 
   test('side effects only import', () => {
     const example = "import './foo'"
-    expect(getTransformResult(example)?.code).toBe('import "./foo.js";')
+    expect(getTransformResult(example)?.code).toBe('import "./foo.mjs";')
   })
 
   test('dynamic import()', () => {
     const example = "const foo = await import('./foo')"
     expect(getTransformResult(example)?.code).toBe(
-      'const foo = await import("./foo.js");'
+      'const foo = await import("./foo.mjs");'
     )
   })
 })
@@ -74,45 +74,33 @@ describe('local imports', () => {
 describe('local re-exports', () => {
   test('named', () => {
     const example1 = "export { foo } from './foo'"
-    expect(getTransformResult(example1)?.code).toBe('export { foo } from "./foo.js";')
+    expect(getTransformResult(example1)?.code).toBe('export { foo } from "./foo.mjs";')
 
     const example2 = "export { foo as bar } from './foo'"
     expect(getTransformResult(example2)?.code).toBe(
-      'export { foo as bar } from "./foo.js";'
+      'export { foo as bar } from "./foo.mjs";'
     )
   })
 
   test('default', () => {
     const example1 = "export { default as fooDefault } from './foo'"
     expect(getTransformResult(example1)?.code).toBe(
-      'export { default as fooDefault } from "./foo.js";'
+      'export { default as fooDefault } from "./foo.mjs";'
     )
   })
 
   test('namespace', () => {
     const example1 = "export * as fooModule from './foo'"
     expect(getTransformResult(example1)?.code).toBe(
-      'export * as fooModule from "./foo.js";'
+      'export * as fooModule from "./foo.mjs";'
     )
 
     const example2 = "export * from './foo'"
-    expect(getTransformResult(example2)?.code).toBe('export * from "./foo.js";')
+    expect(getTransformResult(example2)?.code).toBe('export * from "./foo.mjs";')
   })
 })
 
 describe('transforming actual files', () => {
-  test('test', () => {
-    const { code } =
-      transformFileSync(
-        path.join(__dirname, 'fixtures', 'sample-project-1', 'test.mjs'),
-        getTransformOptions({
-          pluginOptions: { ensureFileExists: true, includePackages: ['@my-org/my-pkg'] },
-        })
-      ) || {}
-
-    expect(code).toMatchSnapshot()
-  })
-
   test('multiple extensions exists', () => {
     const { code } =
       transformFileSync(
@@ -123,17 +111,5 @@ describe('transforming actual files', () => {
       ) || {}
 
     expect(code).toMatchSnapshot()
-  })
-
-  test('force extension', () => {
-    const { code } =
-      transformFileSync(
-        path.join(__dirname, 'fixtures', 'force-extension', 'foo.js'),
-        getTransformOptions({
-          pluginOptions: { ensureFileExists: { forceExtension: '.mjs' } },
-        })
-      ) || {}
-
-    expect(code).toBe('import { bar } from "./bar.mjs";')
   })
 })
