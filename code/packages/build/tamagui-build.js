@@ -436,6 +436,7 @@ async function buildJs() {
     pkgModule
       ? esbuildWriteIfChanged(esmConfig, {
           platform: 'native',
+          mjs: true,
         })
       : null,
 
@@ -507,7 +508,7 @@ async function esbuildWriteIfChanged(
   // compat with jsx and hermes back a few versions generally:
   /** @type { import('esbuild').BuildOptions } */
   const nativeEsbuildSettings = {
-    target: 'node16',
+    target: mjs ? 'esnext' : 'node16',
     supported: {
       'logical-assignment': false,
     },
@@ -596,6 +597,8 @@ async function esbuildWriteIfChanged(
       return []
     })
   )
+
+  const cleanupNonMjsFiles = []
 
   await Promise.all(
     built.outputFiles.map(async (file) => {
@@ -691,17 +694,7 @@ async function esbuildWriteIfChanged(
                 configFile: false,
                 sourceMap: true,
                 plugins: [
-                  [
-                    require.resolve('@tamagui/babel-plugin-fully-specified'),
-                    {
-                      ensureFileExists: {
-                        forceExtension: '.mjs',
-                      },
-                      esExtensionDefault: '.mjs',
-                      tryExtensions: ['.js'],
-                      esExtensions: ['.mjs'],
-                    },
-                  ],
+                  require.resolve('@tamagui/babel-plugin-fully-specified'),
                   // pkg.tamagui?.build?.skipEnvToMeta
                   //   ? null
                   //   : require.resolve('./babel-plugin-process-env-to-meta'),
@@ -715,6 +708,10 @@ async function esbuildWriteIfChanged(
               (result.map ? `\n//# sourceMappingURL=${basename(mjsOutPath)}.map\n` : ''),
             'utf8'
           )
+
+          cleanupNonMjsFiles.push(outPath)
+          cleanupNonMjsFiles.push(outPath + '.map')
+
           if (result.map) {
             await fs.writeFile(mjsOutPath + '.map', JSON.stringify(result.map), 'utf8')
           }
@@ -722,4 +719,15 @@ async function esbuildWriteIfChanged(
       })()
     })
   )
+
+  console.log('???', cleanupNonMjsFiles)
+
+  // if we do mjs we should remove js after to avoid bloat
+  if (cleanupNonMjsFiles.length) {
+    await Promise.all(
+      cleanupNonMjsFiles.map(async (file) => {
+        await fs.remove(file)
+      })
+    )
+  }
 }
