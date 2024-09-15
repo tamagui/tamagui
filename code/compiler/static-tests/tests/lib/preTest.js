@@ -58,7 +58,7 @@ async function extractStaticWebpackApp() {
     },
     externals: [externalizeModules],
     resolve: {
-      extensions: ['.ts', '.tsx', '.js'],
+      extensions: ['.ts', '.tsx', '.mjs', '.js'],
       mainFields: ['module:jsx', 'browser', 'module', 'main'],
       // exportsFields: ['react-native', 'exports', 'module', 'main'],
       alias,
