@@ -26,14 +26,14 @@
     "./package.json": "./package.json",
     "./photo/*": "./public/*.jpg",
     ".": {
-      "react-native-import": "./dist/esm/index.native.js",
+      "react-native-import": "./dist/esm/index.native.mjs",
       "react-native": "./dist/cjs/index.native.js",
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.js"
     },
     "./demo/*": {
-      "react-native-import": "./dist/esm/*.native.js",
+      "react-native-import": "./dist/esm/*.native.mjs",
       "react-native": "./dist/cjs/*.native.js",
       "types": "./types/*.d.ts",
       "import": "./dist/esm/*.mjs",

@@ -25,7 +25,7 @@
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "react-native-import": "./dist/esm/index.native.js",
+      "react-native-import": "./dist/esm/index.native.mjs",
       "react-native": "./dist/cjs/index.native.js",
       "types": "./types/index.d.ts",
       "require": "./dist/cjs/index.js",

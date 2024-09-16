@@ -38,14 +38,14 @@
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "react-native-import": "./dist/esm/index.native.js",
+      "react-native-import": "./dist/esm/index.native.mjs",
       "react-native": "./dist/cjs/index.native.js",
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.js"
     },
     "./web": {
-      "react-native-import": "./dist/esm/index.native.js",
+      "react-native-import": "./dist/esm/index.native.mjs",
       "react-native": "./dist/cjs/index.native.js",
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
@@ -60,7 +60,7 @@
       "require": "./dist/test.js"
     },
     "./linear-gradient": {
-      "react-native-import": "./dist/esm/linear-gradient.native.js",
+      "react-native-import": "./dist/esm/linear-gradient.native.mjs",
       "react-native": "./dist/cjs/linear-gradient.native.js",
       "types": "./types/linear-gradient.d.ts",
       "import": "./dist/esm/linear-gradient.mjs",
