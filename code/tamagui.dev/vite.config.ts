@@ -156,6 +156,8 @@ export default {
 
     removeReactNativeWebAnimatedPlugin(),
 
+    tamaguiPlugin(),
+
     // hmmm breaking ssr for some reason on lucide:
     // can use vite env api and only run this on client, make it part of vxs
     // @ts-ignore

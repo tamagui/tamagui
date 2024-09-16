@@ -5,25 +5,42 @@ import { tamaguiOptions, Static, loadTamaguiBuildConfig } from './loadTamagui'
 
 export function tamaguiPlugin(tamaguiOptionsIn: TamaguiOptions = {}): Plugin {
   let watcher
-  let extensions: string[] = []
-  let noExternalSSR: any = null
+
+  const extensions = [
+    `.web.mjs`,
+    `.web.js`,
+    `.web.jsx`,
+    `.web.ts`,
+    `.web.tsx`,
+    '.mjs',
+    '.js',
+    '.mts',
+    '.ts',
+    '.jsx',
+    '.tsx',
+    '.json',
+  ]
+
+  let noExternalSSR = /react-native|expo-linear-gradient/gi
 
   async function load() {
     await loadTamaguiBuildConfig(tamaguiOptionsIn)
+
+    if (tamaguiOptions!.disableWatchTamaguiConfig) {
+      return
+    }
 
     if (!Static) {
       throw new Error(`Not loaded`)
     }
 
-    watcher = tamaguiOptions!.disableWatchTamaguiConfig
-      ? null
-      : Static.watchTamaguiConfig({
-          components: ['tamagui'],
-          config: './src/tamagui.config.ts',
-          ...tamaguiOptions,
-        }).catch((err) => {
-          console.error(` [Tamagui] Error watching config: ${err}`)
-        })
+    watcher = Static.watchTamaguiConfig({
+      components: ['tamagui'],
+      config: './src/tamagui.config.ts',
+      ...tamaguiOptions,
+    }).catch((err) => {
+      console.error(` [Tamagui] Error watching config: ${err}`)
+    })
 
     const components = [
       ...new Set([...(tamaguiOptions!.components || []), 'tamagui', '@tamagui/core']),
@@ -33,21 +50,6 @@ export function tamaguiPlugin(tamaguiOptionsIn: TamaguiOptions = {}): Plugin {
       `${components.join('|')}|react-native|expo-linear-gradient`,
       'ig'
     )
-
-    extensions = [
-      `.${tamaguiOptions!.platform}.mjs`,
-      `.${tamaguiOptions!.platform}.js`,
-      `.${tamaguiOptions!.platform}.jsx`,
-      `.${tamaguiOptions!.platform}.ts`,
-      `.${tamaguiOptions!.platform}.tsx`,
-      '.mjs',
-      '.js',
-      '.mts',
-      '.ts',
-      '.jsx',
-      '.tsx',
-      '.json',
-    ]
   }
 
   return {

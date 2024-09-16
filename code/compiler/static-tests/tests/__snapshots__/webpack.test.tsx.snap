@@ -426,7 +426,7 @@ exports[`webpack-tests > 15. extracts spacer (complex expansion) 1`] = `
       }
     >
       <span
-        className="  is_Spacer _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-var--space-1255806259 _miw-var--space-1255806259 _fs-0 _w-var--space-1255806259 _h-var--space-1255806259 _pe-none "
+        className="  is_Spacer _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-var--t-spac1835447243 _miw-var--t-spac1835447243 _fs-0 _w-var--t-spac1835447243 _h-var--t-spac1835447243 _pe-none "
       />
       <span
         className="  is_Spacer _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-10px _miw-10px _fs-1 _pe-none _fg-1 _w-10px _h-10px "

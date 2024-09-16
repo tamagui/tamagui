@@ -27,7 +27,7 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
 
   let config: ResolvedConfig
   let server: ViteDevServer
-  let virtualExt: string
+  const virtualExt = `.tamagui.css`
 
   const getAbsoluteVirtualFileId = (filePath: string) => {
     if (filePath.startsWith(config.root)) {
@@ -59,11 +59,7 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
     },
 
     async configResolved(resolvedConfig) {
-      if (extractor) {
-        return
-      }
       config = resolvedConfig
-      virtualExt = `.tamagui.css`
     },
 
     async resolveId(source) {

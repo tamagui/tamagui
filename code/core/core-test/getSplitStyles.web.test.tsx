@@ -113,7 +113,7 @@ describe('getSplitStyles', () => {
       Object.values(styles.rulesToInsert)[0][StyleObjectProperty] === 'zIndex'
     ).toBeTruthy()
     expect(Object.values(styles.rulesToInsert)[0][StyleObjectValue]).toEqual(
-      'var(--zIndex-1)'
+      'var(--t-zIndex-1)'
     )
   })
 
