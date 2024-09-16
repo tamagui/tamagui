@@ -1,4 +1,3 @@
-import { outputFile, pathExists } from 'fs-extra'
 import type {
   JsTransformerConfig,
   JsTransformOptions,
@@ -60,32 +59,28 @@ export async function transform(
       sourcePath,
     })
 
-    // just write it out to our tmp dir and require it for metro to do the rest of the css work
+    // inject the styles in place. This is in lieu of previous behavior that
+    // wrote to the fs. Not supported by metro mental modal
     if (out?.styles) {
-      const tmpDir = join(projectRoot, '.tamagui', 'css')
-      const outStylePath = toPosixPath(
-        join(tmpDir, `${filename}`.replace(/[^a-zA-Z0-9]/gi, '') + '.css')
-      )
-      if (process.env.DEBUG?.includes('tamagui')) {
-        console.info(' Outputting CSS file:', outStylePath)
-      }
-
-      const existsAlready = await pathExists(outStylePath)
-
-      await outputFile(outStylePath, out.styles, 'utf-8')
-
-      if (!existsAlready) {
-        // metro has some sort of bug, expo starter wont build properly first time without this... :(
-        await new Promise((res) => setTimeout(res, 400))
-      }
+      const cssInjectionCode = `
+      (function() {
+        if (typeof document !== 'undefined') {
+          var css = ${JSON.stringify(out.styles)};
+          var style = document.createElement('style');
+          style.type = 'text/css';
+          style.appendChild(document.createTextNode(css));
+          document.head.appendChild(style);
+        }
+      })();
+      `;
 
       return transformer(
         config,
         projectRoot,
         filename,
-        Buffer.from(`${out.js}\nrequire("${outStylePath}")`, 'utf-8'),
+        Buffer.from(`${out.js}\n${cssInjectionCode}`, 'utf-8'),
         options
-      )
+      );
     }
   }
 
