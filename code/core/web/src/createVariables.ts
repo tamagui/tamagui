@@ -41,7 +41,7 @@ export const createVariables = <A extends DeepTokenObject>(
     }
     const niceKey = simpleHash(key, 1000)
     const name =
-      parentPath && parentPath !== 't-color' ? `${parentPath}-${niceKey}` : niceKey
+      parentPath && parentPath !== 't-color' ? `${parentPath}-${niceKey}` : `c-${niceKey}`
 
     if (val && typeof val === 'object') {
       // recurse
