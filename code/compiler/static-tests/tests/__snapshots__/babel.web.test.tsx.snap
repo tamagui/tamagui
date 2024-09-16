@@ -26,6 +26,23 @@ exports[`className + conditional styles get full base styles merged onto + short
 :root ._bg-blue{background-color:blue;}"
 `;
 
+exports[`className + conditional styles get full base styles merged onto + shorthand 3`] = `
+"const _cn3 = \\" _bg-blue\\";
+const _cn2 = \\" _bg-red\\";
+const _cn = \\" _w-10px  \\";
+import { Stack } from '@tamagui/core';
+export function Test(props) {
+  return <div className={concatClassName(\\"\\" + (_cn + (props.green ? _cn2 : _cn3) + (props.className ? \\" \\" + props.className : \\"\\")))} />;
+}
+import { concatClassName } from \\"@tamagui/helpers\\";"
+`;
+
+exports[`className + conditional styles get full base styles merged onto + shorthand 4`] = `
+":root ._w-10px{width:10px;}
+:root ._bg-red{background-color:red;}
+:root ._bg-blue{background-color:blue;}"
+`;
+
 exports[`conditional styles get full base styles merged onto + shorthand 1`] = `
 "const _cn3 = \\" _bg-blue\\";
 const _cn2 = \\" _bg-red\\";
@@ -48,6 +65,23 @@ exports[`conditional styles get full base styles merged onto + shorthand 2`] = `
 :root ._miw-0px{min-width:0px;}
 :root ._fs-0{flex-shrink:0;}
 :root ._w-10px{width:10px;}
+:root ._bg-red{background-color:red;}
+:root ._bg-blue{background-color:blue;}"
+`;
+
+exports[`conditional styles get full base styles merged onto + shorthand 3`] = `
+"const _cn3 = \\" _bg-blue\\";
+const _cn2 = \\" _bg-red\\";
+const _cn = \\" _w-10px  \\";
+import { Stack } from '@tamagui/core';
+export function Test(props) {
+  return <div className={concatClassName(\\"\\" + (_cn + (props.green ? _cn2 : _cn3)))} />;
+}
+import { concatClassName } from \\"@tamagui/helpers\\";"
+`;
+
+exports[`conditional styles get full base styles merged onto + shorthand 4`] = `
+":root ._w-10px{width:10px;}
 :root ._bg-red{background-color:red;}
 :root ._bg-blue{background-color:blue;}"
 `;

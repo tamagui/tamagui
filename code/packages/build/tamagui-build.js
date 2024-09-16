@@ -2,7 +2,7 @@
 /* eslint-disable no-console */
 
 const { transform } = require('@babel/core')
-const fs = require('fs-extra')
+const FSE = require('fs-extra')
 const esbuild = require('esbuild')
 const fg = require('fast-glob')
 const createExternalPlugin = require('./externalNodePlugin')
@@ -41,7 +41,7 @@ const tsProject =
 const exclude =
   exludeIndex > -1 && process.argv[exludeIndex + 1] ? process.argv[exludeIndex + 1] : null
 
-const pkg = fs.readJSONSync('./package.json')
+const pkg = FSE.readJSONSync('./package.json')
 let shouldSkipInitialTypes = !!process.env.SKIP_TYPES_INITIAL
 const pkgMain = pkg.main
 const pkgSource = pkg.source
@@ -71,10 +71,10 @@ async function clean() {
   try {
     await Promise.allSettled([
       //
-      fs.remove('.turbo'),
-      fs.remove('node_modules'),
-      fs.remove('types'),
-      fs.remove('dist'),
+      FSE.remove('.turbo'),
+      FSE.remove('node_modules'),
+      FSE.remove('types'),
+      FSE.remove('dist'),
     ])
   } catch {
     // ok
@@ -84,7 +84,7 @@ async function clean() {
     process.exit(0)
   }
   try {
-    await Promise.allSettled([fs.remove('node_modules')])
+    await Promise.allSettled([FSE.remove('node_modules')])
   } catch {
     // ok
   }
@@ -145,7 +145,7 @@ async function buildTsc() {
   }
 
   const targetDir = 'types'
-  await fs.ensureDir(targetDir)
+  await FSE.ensureDir(targetDir)
 
   try {
     const { config, error } = await loadTsConfig()
@@ -172,7 +172,7 @@ async function buildTsc() {
       process.exit(1)
     }
   } finally {
-    await fs.remove('tsconfig.tsbuildinfo')
+    await FSE.remove('tsconfig.tsbuildinfo')
   }
 }
 
@@ -364,7 +364,7 @@ async function buildJs() {
 
   if (pkgSource) {
     try {
-      const contents = await fs.readFile(pkgSource)
+      const contents = await FSE.readFile(pkgSource)
       if (contents.slice(0, 40).includes('GITCRYPT')) {
         // encrypted file, ignore
         console.info(`This package is encrypted, skipping`)
@@ -554,8 +554,8 @@ async function esbuildWriteIfChanged(
 
     treeShaking: true,
     minifySyntax: true,
-    // minifyIdentifiers: true,
     write: false,
+
     color: true,
     allowOverwrite: true,
     keepNames: false,
@@ -593,123 +593,142 @@ async function esbuildWriteIfChanged(
 
   const cleanupNonMjsFiles = []
 
-  await Promise.all(
-    built.outputFiles.map(async (file) => {
-      let outPath = file.path
+  async function flush(path, contents) {
+    if (shouldWatch) {
+      if (
+        !(await FSE.pathExists(path)) ||
+        (await FSE.readFile(path, 'utf8')) !== contents
+      ) {
+        await FSE.outputFile(path, contents, 'utf8')
+        return true
+      }
+    } else {
+      await FSE.outputFile(path, contents, 'utf8')
+      return true
+    }
+  }
 
-      if (outPath.endsWith('.js') || outPath.endsWith('.js.map')) {
-        const [_, extPlatform] =
-          outPath.match(/(web|native|ios|android)\.js(\.map)?$/) ?? []
+  const outputs = (
+    await Promise.all(
+      built.outputFiles.map(async (file) => {
+        let path = file.path
 
-        if (platform === 'native') {
-          if (!extPlatform && nativeFilesMap[outPath.replace('.js', '.native.js')]) {
-            // if native exists, avoid outputting non-native
-            return
+        if (path.endsWith('.js') || path.endsWith('.js.map')) {
+          const [_, extPlatform] =
+            path.match(/(web|native|ios|android)\.js(\.map)?$/) ?? []
+
+          if (platform === 'native') {
+            if (!extPlatform && nativeFilesMap[path.replace('.js', '.native.js')]) {
+              // if native exists, avoid outputting non-native
+              return
+            }
+
+            if (extPlatform === 'web') {
+              return
+            }
+            if (!extPlatform) {
+              path = path.replace('.js', '.native.js')
+            }
           }
 
-          if (extPlatform === 'web') {
-            return
-          }
-          if (!extPlatform) {
-            outPath = outPath.replace('.js', '.native.js')
+          if (platform === 'web') {
+            if (
+              extPlatform === 'native' ||
+              extPlatform === 'android' ||
+              extPlatform === 'ios'
+            ) {
+              return
+            }
           }
         }
+
+        let contents = new TextDecoder().decode(file.contents)
 
         if (platform === 'web') {
-          if (
-            extPlatform === 'native' ||
-            extPlatform === 'android' ||
-            extPlatform === 'ios'
-          ) {
-            return
+          const rnWebReplacer = replaceRNWeb[opts.format]
+          if (rnWebReplacer) {
+            contents = contents.replaceAll(rnWebReplacer.from, rnWebReplacer.to)
           }
         }
-      }
 
-      const outDir = dirname(outPath)
+        if (pkgRemoveSideEffects && isESM) {
+          const allowedSideEffects = pkg.sideEffects || []
 
-      await fs.ensureDir(outDir)
-      let outString = new TextDecoder().decode(file.contents)
-
-      if (platform === 'web') {
-        const rnWebReplacer = replaceRNWeb[opts.format]
-        if (rnWebReplacer) {
-          outString = outString.replaceAll(rnWebReplacer.from, rnWebReplacer.to)
-        }
-      }
-
-      if (pkgRemoveSideEffects && isESM) {
-        const allowedSideEffects = pkg.sideEffects || []
-
-        const result = []
-        const lines = outString.split('\n')
-        for (const line of lines) {
-          if (
-            !line.startsWith('import ') ||
-            allowedSideEffects.some((allowed) => line.includes(allowed))
-          ) {
-            result.push(line)
-            continue
+          const result = []
+          const lines = contents.split('\n')
+          for (const line of lines) {
+            if (
+              !line.startsWith('import ') ||
+              allowedSideEffects.some((allowed) => line.includes(allowed))
+            ) {
+              result.push(line)
+              continue
+            }
+            result.push(line.replace(/import "[^"]+";/g, ''))
           }
-          result.push(line.replace(/import "[^"]+";/g, ''))
+
+          // match whitespace to preserve sourcemaps
+          contents = result.join('\n')
         }
 
-        // match whitespace to preserve sourcemaps
-        outString = result.join('\n')
+        await flush(path, contents)
+
+        return {
+          path,
+          contents,
+        }
+      })
+    )
+  ).filter(Boolean)
+
+  // path specifics:
+
+  await Promise.all(
+    outputs.map(async (file) => {
+      if (!file) return
+      const { path, contents } = file
+
+      const shouldDoMJS = !shouldSkipMJS && isESM && mjs && path.endsWith('.js')
+
+      if (!shouldDoMJS) return
+
+      const mjsOutPath = path.replace('.js', '.mjs')
+      // if bundling no need to specify as its all internal
+      // and babel is bad on huge bundled files
+      const result = shouldBundle
+        ? { code: contents }
+        : transform(contents, {
+            filename: mjsOutPath,
+            configFile: false,
+            sourceMap: true,
+            plugins: [
+              [
+                require.resolve('@tamagui/babel-plugin-fully-specified'),
+                {
+                  esExtensionDefault: platform === 'native' ? '.native.mjs' : '.mjs',
+                },
+              ],
+              // pkg.tamagui?.build?.skipEnvToMeta
+              //   ? null
+              //   : require.resolve('./babel-plugin-process-env-to-meta'),
+            ].filter(Boolean),
+          })
+
+      cleanupNonMjsFiles.push(path)
+      cleanupNonMjsFiles.push(path + '.map')
+
+      // output to mjs fully specified
+      if (
+        await flush(
+          mjsOutPath,
+          result.code +
+            (result.map ? `\n//# sourceMappingURL=${basename(mjsOutPath)}.map\n` : '')
+        )
+      ) {
+        if (result.map) {
+          await FSE.writeFile(mjsOutPath + '.map', JSON.stringify(result.map), 'utf8')
+        }
       }
-
-      async function flush(contents, path) {
-        if (shouldWatch) {
-          if (
-            !(await fs.pathExists(path)) ||
-            (await fs.readFile(path, 'utf8')) !== contents
-          ) {
-            await fs.writeFile(path, contents, 'utf8')
-          }
-        } else {
-          await fs.writeFile(path, contents, 'utf8')
-        }
-      }
-
-      // flush before fully specified so it finds the file
-      await flush(outString, outPath)
-
-      await (async () => {
-        const shouldDoMJS = !shouldSkipMJS && isESM && mjs && outPath.endsWith('.js')
-        if (shouldDoMJS) {
-          const mjsOutPath = outPath.replace('.js', '.mjs')
-          // if bundling no need to specify as its all internal
-          // and babel is bad on huge bundled files
-          const result = shouldBundle
-            ? { code: outString }
-            : transform(outString, {
-                filename: mjsOutPath,
-                configFile: false,
-                sourceMap: true,
-                plugins: [
-                  require.resolve('@tamagui/babel-plugin-fully-specified'),
-                  // pkg.tamagui?.build?.skipEnvToMeta
-                  //   ? null
-                  //   : require.resolve('./babel-plugin-process-env-to-meta'),
-                ].filter(Boolean),
-              })
-
-          // output to mjs fully specified
-          await fs.writeFile(
-            mjsOutPath,
-            result.code +
-              (result.map ? `\n//# sourceMappingURL=${basename(mjsOutPath)}.map\n` : ''),
-            'utf8'
-          )
-
-          cleanupNonMjsFiles.push(outPath)
-          cleanupNonMjsFiles.push(outPath + '.map')
-
-          if (result.map) {
-            await fs.writeFile(mjsOutPath + '.map', JSON.stringify(result.map), 'utf8')
-          }
-        }
-      })()
     })
   )
 
@@ -718,7 +737,7 @@ async function esbuildWriteIfChanged(
     if (cleanupNonMjsFiles.length) {
       await Promise.all(
         cleanupNonMjsFiles.map(async (file) => {
-          await fs.remove(file)
+          await FSE.remove(file)
         })
       )
     }

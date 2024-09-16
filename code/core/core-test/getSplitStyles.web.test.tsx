@@ -9,7 +9,7 @@ import {
   Text,
   createTamagui,
   styled,
-} from '../core/src'
+} from '../web/src'
 import { simplifiedGetSplitStyles } from './utils'
 
 beforeAll(() => {
@@ -27,6 +27,8 @@ describe('getSplitStyles', () => {
         tag: 'input',
       }
     )
+
+    console.log('got', viewProps)
 
     expect(viewProps['aria-required']).toEqual(false)
     expect(viewProps.required).toEqual(false)
