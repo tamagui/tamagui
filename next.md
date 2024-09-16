@@ -29,6 +29,23 @@
   - bash codeblock font is smaller
   - port Notices from tamagui.dev MDXComponnts
 
+
+we can turn this pattern:
+
+```
+<style
+        // @ts-ignore
+        precedence="default"
+        key="tamagui-css"
+        // @ts-ignore
+        href="tamagui-css"
+      >
+        {config.getCSS()}
+      </style>
+```
+
+into just `{config.getStyleTag()}`
+
 site:
 
 - clicking links fast will crash
