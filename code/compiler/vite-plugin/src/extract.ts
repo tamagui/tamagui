@@ -40,6 +40,12 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
     return environment?.name && environment.name !== 'client'
   }
 
+  function isVite6Native(environment?: Environment) {
+    return (
+      environment?.name && (environment.name === 'ios' || environment.name === 'android')
+    )
+  }
+
   return {
     name: 'tamagui-extract',
     enforce: 'pre',
@@ -63,6 +69,10 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
     },
 
     async resolveId(source) {
+      if (isVite6Native(this.environment)) {
+        return
+      }
+
       // lazy load, vite for some reason runs plugins twice in some esm compat thing
       await loadTamaguiBuildConfig(optionsIn)
 
@@ -110,6 +120,9 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
         // only optimize on client - server should produce identical styles anyway!
         return
       }
+      if (isVite6Native(this.environment)) {
+        return
+      }
       if (
         tamaguiOptions?.disableServerOptimization &&
         isVite6AndNotClient(this.environment)
@@ -125,7 +138,9 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
         // only optimize on client - server should produce identical styles anyway!
         return
       }
-
+      if (isVite6Native(this.environment)) {
+        return
+      }
       if (
         tamaguiOptions?.disableServerOptimization &&
         isVite6AndNotClient(this.environment)
