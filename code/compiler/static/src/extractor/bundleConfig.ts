@@ -76,8 +76,6 @@ export function hasBundledConfigChanged() {
 }
 
 export async function getBundledConfig(props: TamaguiOptions, rebuild = false) {
-  console.trace('??????????????????????', props)
-
   if (isBundling) {
     await new Promise((res) => {
       waitForBundle.add(res)
