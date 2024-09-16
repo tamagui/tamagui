@@ -1,60 +1,56 @@
 import type { TamaguiOptions } from '@tamagui/static'
 import type { Plugin } from 'vite'
 import { transformWithEsbuild } from 'vite'
+import { tamaguiOptions, Static, loadTamaguiBuildConfig } from './loadTamagui'
 
 export function tamaguiPlugin(tamaguiOptionsIn: TamaguiOptions = {}): Plugin {
-  let options: TamaguiOptions
-  let Static
   let watcher
   let extensions: string[] = []
   let noExternalSSR: any = null
 
   async function load() {
+    await loadTamaguiBuildConfig(tamaguiOptionsIn)
+
     if (!Static) {
-      Static = (await import('@tamagui/static')).default
-
-      options = {
-        ...tamaguiOptionsIn,
-        ...Static.loadTamaguiBuildConfigSync(tamaguiOptionsIn),
-      }
-
-      watcher = options.disableWatchTamaguiConfig
-        ? null
-        : Static.watchTamaguiConfig({
-            components: ['tamagui'],
-            config: './src/tamagui.config.ts',
-            ...options,
-          }).catch((err) => {
-            console.error(` [Tamagui] Error watching config: ${err}`)
-          })
-
-      const components = [
-        ...new Set([...(options.components || []), 'tamagui', '@tamagui/core']),
-      ]
-
-      noExternalSSR = new RegExp(
-        `${components.join('|')}|react-native|expo-linear-gradient`,
-        'ig'
-      )
-
-      extensions = [
-        `.${options.platform}.mjs`,
-        `.${options.platform}.js`,
-        `.${options.platform}.jsx`,
-        `.${options.platform}.ts`,
-        `.${options.platform}.tsx`,
-        '.mjs',
-        '.js',
-        '.mts',
-        '.ts',
-        '.jsx',
-        '.tsx',
-        '.json',
-      ]
+      throw new Error(`Not loaded`)
     }
+
+    watcher = tamaguiOptions!.disableWatchTamaguiConfig
+      ? null
+      : Static.watchTamaguiConfig({
+          components: ['tamagui'],
+          config: './src/tamagui.config.ts',
+          ...tamaguiOptions,
+        }).catch((err) => {
+          console.error(` [Tamagui] Error watching config: ${err}`)
+        })
+
+    const components = [
+      ...new Set([...(tamaguiOptions!.components || []), 'tamagui', '@tamagui/core']),
+    ]
+
+    noExternalSSR = new RegExp(
+      `${components.join('|')}|react-native|expo-linear-gradient`,
+      'ig'
+    )
+
+    extensions = [
+      `.${tamaguiOptions!.platform}.mjs`,
+      `.${tamaguiOptions!.platform}.js`,
+      `.${tamaguiOptions!.platform}.jsx`,
+      `.${tamaguiOptions!.platform}.ts`,
+      `.${tamaguiOptions!.platform}.tsx`,
+      '.mjs',
+      '.js',
+      '.mts',
+      '.ts',
+      '.jsx',
+      '.tsx',
+      '.json',
+    ]
   }
 
-  const plugin: Plugin = {
+  return {
     name: 'tamagui-base',
     enforce: 'pre',
 
@@ -68,21 +64,22 @@ export function tamaguiPlugin(tamaguiOptionsIn: TamaguiOptions = {}): Plugin {
       })
     },
 
-    // // fix expo-linear-gradient
     async transform(code, id) {
-      if (!id.includes('expo-linear-gradient')) {
-        return
+      if (id.includes('expo-linear-gradient')) {
+        // fix expo-linear-gradient
+        return transformWithEsbuild(code, id, {
+          loader: 'jsx',
+          jsx: 'automatic', // 👈
+        })
       }
-      // Use the exposed transform from vite, instead of directly
-      // transforming with esbuild
-      return transformWithEsbuild(code, id, {
-        loader: 'jsx',
-        jsx: 'automatic', // 👈 this is important
-      })
     },
 
-    async config(userConfig, env) {
+    async config(_, env) {
       await load()
+
+      if (!tamaguiOptions) {
+        throw new Error(`No options loaded`)
+      }
 
       return {
         define: {
@@ -98,34 +95,23 @@ export function tamaguiPlugin(tamaguiOptionsIn: TamaguiOptions = {}): Plugin {
             'process.env.TAMAGUI_OPTIMIZE_THEMES': JSON.stringify(true),
           }),
         },
-        optimizeDeps: {
-          jsx: 'transform',
-          include: options.platform === 'web' ? ['expo-linear-gradient'] : [],
-          // disabled: false,
-          esbuildOptions: {
-            resolveExtensions: extensions,
-            loader: {
-              '.js': 'jsx',
-            },
-          },
-        },
         ssr: {
           noExternal: noExternalSSR,
         },
         resolve: {
           extensions: extensions,
           alias: {
-            ...(options.platform !== 'native' && {
+            ...(tamaguiOptions.platform !== 'native' && {
               'react-native/Libraries/Renderer/shims/ReactFabric': '@tamagui/proxy-worm',
               'react-native/Libraries/Utilities/codegenNativeComponent':
                 '@tamagui/proxy-worm',
               'react-native-svg': '@tamagui/react-native-svg',
               'react-native': 'react-native-web',
-              ...(options.useReactNativeWebLite && {
+              ...(tamaguiOptions.useReactNativeWebLite && {
                 'react-native': 'react-native-web-lite',
                 'react-native-web': 'react-native-web-lite',
               }),
-              ...(options.useReactNativeWebLite === 'without-animated' && {
+              ...(tamaguiOptions.useReactNativeWebLite === 'without-animated' && {
                 'react-native': 'react-native-web-lite/without-animated',
                 'react-native-web': 'react-native-web-lite/without-animated',
               }),
@@ -134,7 +120,5 @@ export function tamaguiPlugin(tamaguiOptionsIn: TamaguiOptions = {}): Plugin {
         },
       }
     },
-  }
-
-  return plugin
+  } satisfies Plugin
 }
