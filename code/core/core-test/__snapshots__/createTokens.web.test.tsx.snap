@@ -6,16 +6,16 @@ exports[`snapshot 1`] = `
     "black": {
       "isVar": true,
       "key": "$black",
-      "name": "black",
+      "name": "c-black",
       "val": "#000",
-      "variable": "var(--black)",
+      "variable": "var(--c-black)",
     },
     "white": {
       "isVar": true,
       "key": "$white",
-      "name": "white",
+      "name": "c-white",
       "val": "#fff",
-      "variable": "var(--white)",
+      "variable": "var(--c-white)",
     },
   },
   "radius": {
