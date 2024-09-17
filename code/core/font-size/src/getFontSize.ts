@@ -26,7 +26,7 @@ export const getFontSizeVariable = (
     return inSize
   }
   const conf = getConfig()
-  return conf.fontsParsed[opts?.font || '$body'].size[token]
+  return conf.fontsParsed[opts?.font || conf.defaultFontToken].size[token]
 }
 
 export const getFontSizeToken = (
@@ -39,11 +39,13 @@ export const getFontSizeToken = (
   // backwards compat
   const relativeSize = opts?.relativeSize || 0
   const conf = getConfig()
-  const fontSize = conf.fontsParsed[opts?.font || '$body'].size
+  const fontSize = conf.fontsParsed[opts?.font || conf.defaultFontToken].size
   const size =
     (inSize === '$true' && !('$true' in fontSize) ? '$4' : inSize) ??
     ('$true' in fontSize ? '$true' : '$4')
+
   const sizeTokens = Object.keys(fontSize)
+
   let foundIndex = sizeTokens.indexOf(size)
   if (foundIndex === -1) {
     if (size.endsWith('.5')) {

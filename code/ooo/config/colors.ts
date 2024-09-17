@@ -1,5 +1,5 @@
 import { gray, grayDark } from '@tamagui/colors'
-import { objectFromEntries, objectKeys, postfixObjKeys } from '~/helpers/typeHelpers'
+import { objectFromEntries, objectKeys, postfixObjKeys } from '../helpers/typeHelpers'
 
 const yellow = {
   yellow1: 'hsl(60, 54.0%, 98.5%)',
@@ -14,11 +14,12 @@ const yellow = {
   yellow10: 'hsl(50, 100%, 48.5%)',
   yellow11: 'hsl(42, 90%, 34.0%)',
   yellow12: 'hsl(40, 55.0%, 13.5%)',
+  yellow13: '#000',
 }
 
 const yellowDark = {
-  yellow1: 'hsl(45, 70%, 5.5%)',
-  yellow2: 'hsl(46, 70%, 6.7%)',
+  yellow1: 'hsl(45, 50%, 4%)',
+  yellow2: 'hsl(46, 60%, 6.7%)',
   yellow3: 'hsl(45, 70%, 8.7%)',
   yellow4: 'hsl(45, 70%, 10.4%)',
   yellow5: 'hsl(47, 70%, 12.1%)',
@@ -29,6 +30,7 @@ const yellowDark = {
   yellow10: 'hsl(54, 100%, 60.0%)',
   yellow11: 'hsl(48, 100%, 80.0%)',
   yellow12: 'hsl(53, 100%, 91.0%)',
+  yellow13: '#fff',
 }
 
 const colorTokens = {
@@ -50,11 +52,35 @@ export const darkShadowColorStrong = 'rgba(0,0,0,0.3)'
 export const darkColors = {
   ...colorTokens.dark.yellow,
   ...colorTokens.dark.gray,
+
+  blue: 'hsla(210, 60%, 20%, 0.4)',
+  green: 'hsla(120, 60%, 20%, 0.4)',
+  red: 'hsla(0, 60%, 20%, 0.4)',
+  purple: 'hsla(270, 60%, 20%, 0.4)',
+  pink: 'hsla(330, 60%, 20%, 0.4)',
+
+  blueFg: 'hsl(210, 60%, 95%)',
+  greenFg: 'hsl(120, 60%, 95%)',
+  redFg: 'hsl(0, 60%, 95%)',
+  purpleFg: 'hsl(270, 60%, 95%)',
+  pinkFg: 'hsl(330, 60%, 95%)',
 }
 
 export const lightColors = {
   ...colorTokens.light.yellow,
   ...colorTokens.light.gray,
+
+  blue: 'hsla(210, 60%, 90%, 0.35)',
+  green: 'hsla(120, 60%, 90%, 0.35)',
+  red: 'hsla(0, 60%, 90%, 0.35)',
+  purple: 'hsla(270, 60%, 90%, 0.35)',
+  pink: 'hsla(330, 60%, 90%, 0.35)',
+
+  blueFg: 'hsl(210, 60%, 10%)',
+  greenFg: 'hsl(120, 60%, 10%)',
+  redFg: 'hsl(0, 60%, 10%)',
+  purpleFg: 'hsl(270, 60%, 10%)',
+  pinkFg: 'hsl(330, 60%, 10%)',
 }
 
 export const color = {
@@ -149,6 +175,7 @@ export const palettes = (() => {
     color.white10,
     color.white11,
     color.white12,
+    '#000',
     color.black075,
     color.black05,
     color.black025,
@@ -174,6 +201,7 @@ export const palettes = (() => {
     color.black10,
     color.black11,
     color.black12,
+    '#fff',
     color.white075,
     color.white05,
     color.white025,

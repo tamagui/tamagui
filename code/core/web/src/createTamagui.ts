@@ -229,22 +229,23 @@ ${runtimeStyles}`
 
   const defaultFontSetting = configIn.settings?.defaultFont ?? configIn.defaultFont
 
-  let defaultFontName =
-    defaultFontSetting ||
-    // uses font named "body" if present for compat
-    (configIn.fonts && ('body' in configIn.fonts ? 'body' : ''))
-
-  if (!defaultFontName && configIn.fonts) {
-    // defaults to the first font to make life easier
-    defaultFontName = Object.keys(configIn.fonts)[0]
-  }
-
-  if (defaultFontName?.[0] === '$') {
-    defaultFontName = defaultFontName.slice(1)
-  }
+  const defaultFont = (() => {
+    let val =
+      defaultFontSetting ||
+      // uses font named "body" if present for compat
+      (configIn.fonts && ('body' in configIn.fonts ? 'body' : ''))
+    if (!val && configIn.fonts) {
+      // defaults to the first font to make life easier
+      val = Object.keys(configIn.fonts)[0]
+    }
+    if (val?.[0] === '$') {
+      val = val.slice(1)
+    }
+    return val
+  })()
 
   // ensure prefixed with $
-  const defaultFont = `$${defaultFontName}`
+  const defaultFontToken = `$${defaultFont}`
 
   const config: TamaguiInternalConfig = {
     fonts: {},
@@ -254,7 +255,7 @@ ${runtimeStyles}`
     media: {},
     ...configIn,
     unset: {
-      fontFamily: defaultFontName ? defaultFont : undefined,
+      fontFamily: defaultFont ? defaultFontToken : undefined,
       ...configIn.unset,
     },
     settings: {
@@ -287,6 +288,7 @@ ${runtimeStyles}`
     defaultFont,
     fontSizeTokens: fontSizeTokens || new Set(),
     specificTokens,
+    defaultFontToken,
     // const tokens = [...getToken(tokens.size[0])]
     // .spacer-sm + ._dsp_contents._dsp-sm-hidden { margin-left: -var(--${}) }
   }

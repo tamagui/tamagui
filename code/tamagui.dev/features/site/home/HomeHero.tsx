@@ -55,7 +55,7 @@ const HeroSubTitle = memo(() => {
         </Tag>
       </Link>{' '}
       ·{' '}
-      <Link asChild href="/docs/components/stacks">
+      <Link asChild href="/ui/stacks">
         <Tag theme="purple" onHoverIn={() => setHovered(2)} active={hovered === 2}>
           UI&nbsp;kit
         </Tag>

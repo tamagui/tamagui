@@ -23,10 +23,12 @@ export const GET: Endpoint = async (req) => {
     }
 
     // Return the new access token as JSON
-    return Response.json({
-      success: true,
-      accessToken: data.session?.access_token,
-    })
+    return new Response(
+      JSON.stringify({
+        success: true,
+        accessToken: data.session?.access_token,
+      })
+    )
   } catch (error) {
     console.error('CLI login error:', error)
     return Response.json(

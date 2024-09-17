@@ -11,11 +11,27 @@ import type {
 
 let conf: TamaguiInternalConfig | null
 
+const haventCalledErrorMessage =
+  process.env.NODE_ENV === 'development'
+    ? `
+Haven't called createTamagui yet.
+
+  This often happens due to having duplicate Tamagui sub-dependencies.
+
+  Tamagui needs every @tamagui/* dependency to be on the exact same version, we include an upgrade script
+  with the starter kits that you can call with "yarn upgrade:tamagui" to help with this.
+
+  Be sure to remove "react-native-web-lite" as it has been deprecated and can cause this too.
+
+  You may want to clear your node_modules as well and run a fresh install after ugprading.
+`
+    : `❌ Error 001`
+
 export const getSetting = <Key extends keyof GenericTamaguiSettings>(
   key: Key
 ): GenericTamaguiSettings[Key] => {
   if (process.env.NODE_ENV === 'development') {
-    if (!conf) throw new Error(`Haven't called createTamagui yet`)
+    if (!conf) throw new Error(haventCalledErrorMessage)
   }
   return (
     conf!.settings[key] ??
@@ -30,7 +46,7 @@ export const setConfig = (next: TamaguiInternalConfig) => {
 
 export const setConfigFont = (name: string, font: any, fontParsed: any) => {
   if (process.env.NODE_ENV === 'development') {
-    if (!conf) throw new Error(`Haven't called createTamagui yet`)
+    if (!conf) throw new Error(haventCalledErrorMessage)
   }
   conf!.fonts[name] = font
   conf!.fontsParsed[`$${name}`] = fontParsed
@@ -61,7 +77,7 @@ export const getTokens = ({
   prefixed?: boolean
 } = {}): TokensMerged => {
   if (process.env.NODE_ENV === 'development') {
-    if (!conf) throw new Error(`Haven't called createTamagui yet`)
+    if (!conf) throw new Error(haventCalledErrorMessage)
   }
   const { tokens, tokensParsed } = conf!
   if (prefixed === false) return tokens as any

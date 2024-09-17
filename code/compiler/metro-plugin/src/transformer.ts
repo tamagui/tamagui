@@ -70,13 +70,42 @@ export async function transform(
         console.info(' Outputting CSS file:', outStylePath)
       }
 
+      if (process.env.TAMAGUI_METRO_INLINE_CSS) {
+        const cssInjectionCode = `
+          (function() {
+            if (typeof document !== 'undefined') {
+              var css = ${JSON.stringify(out.styles)};
+              var style = document.createElement('style');
+              style.type = 'text/css';
+              style.appendChild(document.createTextNode(css));
+              document.head.appendChild(style);
+            }
+          })();
+          `
+
+        return transformer(
+          config,
+          projectRoot,
+          filename,
+          Buffer.from(`${out.js}\n${cssInjectionCode}`, 'utf-8'),
+          options
+        )
+      }
+
       const existsAlready = await pathExists(outStylePath)
 
       await outputFile(outStylePath, out.styles, 'utf-8')
 
       if (!existsAlready) {
         // metro has some sort of bug, expo starter wont build properly first time without this... :(
-        await new Promise((res) => setTimeout(res, 400))
+        await new Promise((res) =>
+          setTimeout(
+            res,
+            process.env.TAMAGUI_METRO_CSS_EMIT_DELAY
+              ? +process.env.TAMAGUI_METRO_CSS_EMIT_DELAY
+              : 1000
+          )
+        )
       }
 
       return transformer(

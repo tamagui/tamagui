@@ -1,11 +1,12 @@
 import '../tamagui-web.css'
 
 import { useEffect } from 'react'
-import { useColorScheme } from 'react-native'
+import { StatusBar, useColorScheme } from 'react-native'
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native'
 import { useFonts } from 'expo-font'
 import { SplashScreen, Stack } from 'expo-router'
 import { Provider } from './Provider'
+import { useTheme } from 'tamagui'
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -37,35 +38,45 @@ export default function RootLayout() {
     return null
   }
 
-  return <RootLayoutNav />
+  return (
+    <Providers>
+      <RootLayoutNav />
+    </Providers>
+  )
+}
+
+const Providers = ({ children }: { children: React.ReactNode }) => {
+  return <Provider>{children}</Provider>
 }
 
 function RootLayoutNav() {
   const colorScheme = useColorScheme()
-
+  const theme = useTheme()
   return (
-    <Provider>
-      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <Stack>
-          <Stack.Screen
-            name="(tabs)"
-            options={{
-              headerShown: false,
-            }}
-          />
+    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+      <StatusBar barStyle={colorScheme === 'dark' ? 'light-content' : 'dark-content'} />
+      <Stack>
+        <Stack.Screen
+          name="(tabs)"
+          options={{
+            headerShown: false,
+          }}
+        />
 
-          <Stack.Screen
-            name="modal"
-            options={{
-              title: 'Tamagui + Expo',
-              presentation: 'modal',
-              animation: 'slide_from_right',
-              gestureEnabled: true,
-              gestureDirection: 'horizontal',
-            }}
-          />
-        </Stack>
-      </ThemeProvider>
-    </Provider>
+        <Stack.Screen
+          name="modal"
+          options={{
+            title: 'Tamagui + Expo',
+            presentation: 'modal',
+            animation: 'slide_from_right',
+            gestureEnabled: true,
+            gestureDirection: 'horizontal',
+            contentStyle: {
+              backgroundColor: theme.background.val,
+            },
+          }}
+        />
+      </Stack>
+    </ThemeProvider>
   )
 }

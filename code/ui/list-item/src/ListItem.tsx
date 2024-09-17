@@ -79,6 +79,7 @@ export const ListItemFrame = styled(ThemeableStack, {
         overflow: 'hidden',
         flexDirection: 'row',
         backgroundColor: '$background',
+        cursor: 'default',
       },
     },
 
@@ -127,7 +128,7 @@ export const ListItemText = styled(SizableText, {
         flexGrow: 1,
         flexShrink: 1,
         ellipse: true,
-        cursor: 'default',
+        cursor: 'inherit',
       },
     },
   } as const,

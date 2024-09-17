@@ -69,7 +69,7 @@ export declare const Sheet: import("react").ForwardRefExoticComponent<{
     zIndex?: number;
     portalProps?: import("@tamagui/portal").PortalProps;
     moveOnKeyboardChange?: boolean;
-    containerComponent?: import("react").ComponentType<any>;
+    containerComponent?: React.ComponentType<any>;
 } & {
     __scopeSheet?: import("@tamagui/create-context").Scope<any>;
 } & import("react").RefAttributes<import("react-native").View>> & {

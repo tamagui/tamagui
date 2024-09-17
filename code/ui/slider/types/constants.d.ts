@@ -4,7 +4,7 @@ export declare const SLIDER_NAME = "Slider";
 export declare const createSliderContext: <ContextValueType extends object | null>(rootComponentName: string, defaultContext?: ContextValueType) => readonly [{
     (props: ContextValueType & {
         scope: import("@tamagui/create-context").Scope<ContextValueType>;
-        children: import("react").ReactNode;
+        children: React.ReactNode;
     }): import("react/jsx-runtime").JSX.Element;
     displayName: string;
 }, (consumerName: string, scope: import("@tamagui/create-context").Scope<ContextValueType | undefined>, options?: {
@@ -14,7 +14,7 @@ export declare const createSliderContext: <ContextValueType extends object | nul
 export declare const SliderProvider: {
     (props: SliderContextValue & {
         scope: import("@tamagui/create-context").Scope<SliderContextValue>;
-        children: import("react").ReactNode;
+        children: React.ReactNode;
     }): import("react/jsx-runtime").JSX.Element;
     displayName: string;
 }, useSliderContext: (consumerName: string, scope: import("@tamagui/create-context").Scope<SliderContextValue | undefined>, options?: {
@@ -36,7 +36,7 @@ export declare const SliderOrientationProvider: {
             size: number | SizeTokens;
             direction: number;
         }>;
-        children: import("react").ReactNode;
+        children: React.ReactNode;
     }): import("react/jsx-runtime").JSX.Element;
     displayName: string;
 }, useSliderOrientationContext: (consumerName: string, scope: import("@tamagui/create-context").Scope<{

@@ -2,6 +2,19 @@
 title: Errors
 ---
 
+### Error 001
+
+Haven't called createTamagui yet.
+
+This often happens due to having duplicate Tamagui sub-dependencies.
+
+Tamagui needs every `@tamagui/*` dependency to be on the exact same version, we include an upgrade script
+with the starter kits that you can call with "yarn upgrade:tamagui" to help with this.
+
+Be sure to remove "react-native-web-lite" as it has been deprecated and can cause this too.
+
+You may want to clear your node_modules as well and run a fresh install after ugprading.
+
 ### Warning 001
 
 #### Ignorable modules

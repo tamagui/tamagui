@@ -227,7 +227,10 @@ function ThemeSuiteCard({ themeSuite }: { themeSuite: ThemeSuiteItem }) {
         }}
         elevation="$1"
         onPress={() => {
-          router.push(`/builder/${id}`)
+          router.push(
+            // @ts-expect-error
+            `/builder/${id}`
+          )
         }}
         cursor="pointer"
         // w="calc(50% - var(--size-4))"

@@ -10,7 +10,7 @@ type FormContextValue = {
 export declare const FormProvider: {
     (props: FormContextValue & {
         scope: Scope<FormContextValue>;
-        children: import("react").ReactNode;
+        children: React.ReactNode;
     }): import("react/jsx-runtime").JSX.Element;
     displayName: string;
 }, useFormContext: (consumerName: string, scope: Scope<FormContextValue | undefined>, options?: {

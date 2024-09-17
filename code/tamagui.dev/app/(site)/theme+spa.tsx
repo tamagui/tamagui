@@ -37,7 +37,7 @@ export default function ThemePage() {
   const store = useThemeBuilderStore()
   const themeName = useThemeName()
   const router = useRouter()
-  const params = useLocalSearchParams()
+  const params = useLocalSearchParams<any>()
 
   useEffect(() => {
     // give it a bit to load many dynamic charts that animate etc

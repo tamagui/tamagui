@@ -2,7 +2,6 @@
 /* eslint-disable no-console */
 
 const { transform } = require('@babel/core')
-const exec = require('execa')
 const fs = require('fs-extra')
 const esbuild = require('esbuild')
 const fg = require('fast-glob')
@@ -11,6 +10,8 @@ const debounce = require('lodash.debounce')
 const { basename, dirname } = require('node:path')
 const alias = require('./esbuildAliasPlugin')
 const { es5Plugin } = require('./esbuild-es5')
+const ts = require('typescript')
+const path = require('node:path')
 
 const jsOnly = !!process.env.JS_ONLY
 const skipJS = !!(process.env.SKIP_JS || false)
@@ -63,6 +64,8 @@ const replaceRNWeb = {
     to: 'require("react-native-web")',
   },
 }
+
+let cachedConfig = null
 
 async function clean() {
   try {
@@ -130,52 +133,137 @@ async function build({ skipTypes } = {}) {
     ])
     console.info('built', pkg.name, 'in', Date.now() - start, 'ms')
   } catch (error) {
-    console.error(`Error building:`, error.message)
+    console.error(` ❌ Error building in ${process.cwd()}:\n\n`, error.stack + '\n')
   }
 }
 
-// const targetDir = `.types${Math.floor(Math.random() * 1_000_000)}`
-// const cleanup = () => {
-//   try {
-//     fs.removeSync(targetDir)
-//   } catch {
-//     // ok
-//   }
-// }
-
-// process.once('beforeExit', cleanup)
-// process.once('SIGINT', cleanup)
-// process.once('SIGTERM', cleanup)
-
 async function buildTsc() {
-  if (!pkgTypes) return
-  if (jsOnly || shouldSkipTypes) return
+  if (!pkgTypes || jsOnly || shouldSkipTypes) return
   if (shouldSkipInitialTypes) {
     shouldSkipInitialTypes = false
     return
   }
 
   const targetDir = 'types'
+  await fs.ensureDir(targetDir)
+
   try {
-    // typescripts build cache messes up when doing declarationOnly
-    await fs.remove('tsconfig.tsbuildinfo')
-    await fs.ensureDir(targetDir)
+    const { config, error } = await loadTsConfig()
+    if (error) throw error
 
-    const declarationToRootFlag = declarationToRoot ? ' --declarationDir ./' : ''
-    const baseUrlFlag = ignoreBaseUrl ? '' : ` --baseUrl ${baseUrl}`
-    const tsProjectFlag = tsProject ? ` --project ${tsProject}` : ''
-    const cmd = `tsc${baseUrlFlag}${tsProjectFlag} --outDir ${targetDir} --rootDir src ${declarationToRootFlag}--emitDeclarationOnly --declarationMap`
+    const compilerOptions = createCompilerOptions(config.options, targetDir)
+    const { program, emitResult, diagnostics } = await compileTypeScript(
+      config.fileNames,
+      compilerOptions
+    )
 
-    console.info('\x1b[2m$', `npx ${cmd}`)
-    await exec('npx', cmd.split(' '))
+    reportDiagnostics(diagnostics)
+
+    if (emitResult.emitSkipped) {
+      throw new Error('TypeScript compilation failed')
+    }
   } catch (err) {
-    console.info(err.message)
+    if (err.code === 'ENOTFOUND' || err.code === 'ECONNREFUSED') {
+      console.error(`Network error during compilation for ${pkg.name}:`, err.message)
+    } else {
+      console.error(`Error during TypeScript compilation for ${pkg.name}:`, err)
+    }
     if (!shouldWatch) {
       process.exit(1)
     }
   } finally {
     await fs.remove('tsconfig.tsbuildinfo')
   }
+}
+
+async function loadTsConfig() {
+  if (cachedConfig && shouldWatch) {
+    return cachedConfig
+  }
+
+  const configPath = ts.findConfigFile(
+    './',
+    ts.sys.fileExists,
+    tsProject || 'tsconfig.json'
+  )
+  if (!configPath) {
+    return { error: new Error("Could not find a valid 'tsconfig.json'.") }
+  }
+
+  const configFile = ts.readConfigFile(configPath, ts.sys.readFile)
+  if (configFile.error) {
+    return {
+      error: new Error(`Error reading tsconfig.json: ${configFile.error.messageText}`),
+    }
+  }
+
+  const parsedCommandLine = ts.parseJsonConfigFileContent(
+    configFile.config,
+    ts.sys,
+    path.dirname(configPath)
+  )
+
+  if (parsedCommandLine.errors.length) {
+    return {
+      error: new Error(
+        `Error parsing tsconfig.json: ${ts.formatDiagnostics(parsedCommandLine.errors, formatHost)}`
+      ),
+    }
+  }
+
+  cachedConfig = { config: parsedCommandLine }
+  return cachedConfig
+}
+
+function createCompilerOptions(baseOptions, targetDir) {
+  const compilerOptions = {
+    ...baseOptions,
+    declaration: true,
+    emitDeclarationOnly: true,
+    declarationMap: true,
+    outDir: targetDir,
+    rootDir: 'src',
+    incremental: true,
+    tsBuildInfoFile: 'tsconfig.tsbuildinfo',
+  }
+
+  if (declarationToRoot) {
+    compilerOptions.declarationDir = './'
+  }
+
+  if (!ignoreBaseUrl) {
+    compilerOptions.baseUrl = baseUrl
+  }
+
+  return compilerOptions
+}
+
+async function compileTypeScript(fileNames, options) {
+  const program = ts.createProgram(fileNames, options)
+  const emitResult = program.emit()
+  const allDiagnostics = ts.getPreEmitDiagnostics(program).concat(emitResult.diagnostics)
+
+  return { program, emitResult, diagnostics: allDiagnostics }
+}
+
+const formatHost = {
+  getCanonicalFileName: (path) => path,
+  getCurrentDirectory: ts.sys.getCurrentDirectory,
+  getNewLine: () => ts.sys.newLine,
+}
+
+function reportDiagnostics(diagnostics) {
+  diagnostics.forEach((diagnostic) => {
+    let message = ts.flattenDiagnosticMessageText(diagnostic.messageText, '\n')
+    if (diagnostic.file && diagnostic.start !== undefined) {
+      const { line, character } = ts.getLineAndCharacterOfPosition(
+        diagnostic.file,
+        diagnostic.start
+      )
+      message = `${diagnostic.file.fileName} (${line + 1},${character + 1}): ${message}`
+    }
+    console.error(message)
+  })
 }
 
 async function buildJs() {
@@ -341,6 +429,7 @@ async function buildJs() {
     pkgModule
       ? esbuildWriteIfChanged(esmConfig, {
           platform: 'native',
+          mjs: true,
         })
       : null,
 
@@ -412,7 +501,7 @@ async function esbuildWriteIfChanged(
   // compat with jsx and hermes back a few versions generally:
   /** @type { import('esbuild').BuildOptions } */
   const nativeEsbuildSettings = {
-    target: 'node16',
+    target: mjs ? 'esnext' : 'node16',
     supported: {
       'logical-assignment': false,
     },
@@ -501,6 +590,8 @@ async function esbuildWriteIfChanged(
       return []
     })
   )
+
+  const cleanupNonMjsFiles = []
 
   await Promise.all(
     built.outputFiles.map(async (file) => {
@@ -596,17 +687,7 @@ async function esbuildWriteIfChanged(
                 configFile: false,
                 sourceMap: true,
                 plugins: [
-                  [
-                    require.resolve('@tamagui/babel-plugin-fully-specified'),
-                    {
-                      ensureFileExists: {
-                        forceExtension: '.mjs',
-                      },
-                      esExtensionDefault: '.mjs',
-                      tryExtensions: ['.js'],
-                      esExtensions: ['.mjs'],
-                    },
-                  ],
+                  require.resolve('@tamagui/babel-plugin-fully-specified'),
                   // pkg.tamagui?.build?.skipEnvToMeta
                   //   ? null
                   //   : require.resolve('./babel-plugin-process-env-to-meta'),
@@ -620,6 +701,10 @@ async function esbuildWriteIfChanged(
               (result.map ? `\n//# sourceMappingURL=${basename(mjsOutPath)}.map\n` : ''),
             'utf8'
           )
+
+          cleanupNonMjsFiles.push(outPath)
+          cleanupNonMjsFiles.push(outPath + '.map')
+
           if (result.map) {
             await fs.writeFile(mjsOutPath + '.map', JSON.stringify(result.map), 'utf8')
           }
@@ -627,4 +712,15 @@ async function esbuildWriteIfChanged(
       })()
     })
   )
+
+  // if we do mjs we should remove js after to avoid bloat
+  if (process.env.TAMAGUI_BUILD_REMOVE_ESM_JS_FILES) {
+    if (cleanupNonMjsFiles.length) {
+      await Promise.all(
+        cleanupNonMjsFiles.map(async (file) => {
+          await fs.remove(file)
+        })
+      )
+    }
+  }
 }

@@ -1,6 +1,6 @@
-// import { tamaguiExtractPlugin, tamaguiPlugin } from '@tamagui/vite-plugin'
+import { tamaguiExtractPlugin } from '@tamagui/vite-plugin'
 import type { UserConfig } from 'vite'
-import { vxs } from 'vxs/vite'
+import { removeReactNativeWebAnimatedPlugin, vxs } from 'vxs/vite'
 
 const resolve = (path: string) => {
   const resolved = import.meta.resolve?.(path)
@@ -11,16 +11,11 @@ const resolve = (path: string) => {
 }
 
 export default {
-  define: {
-    'process.env.TAMAGUI_REACT_19': '"1"',
-  },
-
   resolve: {
     alias: {
       '~': import.meta.dirname,
       'react-native-svg': '@tamagui/react-native-svg',
       // bugfix docsearch/react
-      // bugfix docsearch/react, weird
       '@docsearch/react': resolve('@docsearch/react'),
     },
   },
@@ -31,12 +26,13 @@ export default {
   },
 
   plugins: [
-    vxs({
-      deps: {
-        // '@tamagui/lucide-icons': true,
-      },
+    vxs({}),
+
+    removeReactNativeWebAnimatedPlugin(),
+
+    tamaguiExtractPlugin({
+      components: ['tamagui'],
+      config: './config/tamagui.config.ts',
     }),
-    // tamaguiPlugin(),
-    // tamaguiExtractPlugin(),
   ],
 } satisfies UserConfig

@@ -36,6 +36,7 @@ import {
   styled,
 } from 'tamagui'
 import { LinearGradient } from 'tamagui/linear-gradient'
+import { Href } from 'vxs'
 import { Code, CodeInline } from '~/components/Code'
 import { CustomTabs } from '~/components/CustomTabs'
 import { DataTable } from '~/components/DataTable'
@@ -482,7 +483,7 @@ const componentsIn = {
 
   a: ({ href = '', children, ...props }) => {
     return (
-      <Link className="link" href={href} asChild>
+      <Link className="link" href={href as Href} asChild>
         {/* @ts-ignore */}
         <Paragraph
           tag="a"
@@ -579,7 +580,7 @@ const componentsIn = {
 
     if (linked) {
       return (
-        <Link target="_blank" href={props.src as string}>
+        <Link target="_blank" href={props.src as Href}>
           {content}
         </Link>
       )

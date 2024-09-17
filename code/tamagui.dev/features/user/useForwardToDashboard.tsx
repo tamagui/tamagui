@@ -8,7 +8,7 @@ const ALLOWED_REDIRECT_DOMAINS = ['tamagui.dev']
 export function useForwardToDashboard() {
   const { data, isLoading } = useUser()
   const user = data?.user
-  const query = useGlobalSearchParams()
+  const query = useGlobalSearchParams<any>()
   const router = useRouter()
 
   useEffect(() => {
@@ -41,7 +41,10 @@ export function useForwardToDashboard() {
               }
             }
           }
-          await router.replace(redirectTo)
+          await router.replace(
+            // @ts-expect-error
+            redirectTo
+          )
         }
       }
     }

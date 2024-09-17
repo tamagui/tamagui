@@ -158,7 +158,7 @@ async function run() {
       await Promise.all(
         packageJsons.map(async ({ cwd, json }) => {
           const distDir = join(cwd, 'dist')
-          if (!json.scripts || json.scripts.build === 'true') {
+          if (!json.scripts || !json.scripts.build || json.scripts.build === 'true') {
             return
           }
           if (!(await fs.pathExists(distDir))) {
@@ -265,7 +265,7 @@ async function run() {
       }
     }
 
-    if (!(finish && !rePublish) && !skipPublish) {
+    if (!finish && !rePublish && !skipPublish) {
       const erroredPackages: { name: string }[] = []
 
       // publish with tag
@@ -341,7 +341,9 @@ async function run() {
     }
 
     if (!finish) {
-      await sleep(4 * 1000)
+      if (!rePublish) {
+        await sleep(4 * 1000)
+      }
 
       if (rePublish) {
         // if all successful, re-tag as latest
@@ -352,7 +354,20 @@ async function run() {
 
             console.info(`Publishing ${name}${tag}`)
 
-            await spawnify(`npm publish${tag}`, {
+            try {
+              await spawnify(`npm publish${tag}`, {
+                cwd,
+              })
+            } catch (err) {
+              if (err.includes(`code E403`)) {
+                // thats fine its already published
+              } else {
+                throw err
+              }
+            }
+
+            const distTag = canary ? 'canary' : 'latest'
+            await spawnify(`npm dist-tag add ${name}@${version} ${distTag}`, {
               cwd,
             }).catch((err) => console.error(err))
           },

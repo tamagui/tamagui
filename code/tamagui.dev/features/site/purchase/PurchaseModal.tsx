@@ -20,6 +20,7 @@ import {
   XStack,
   YStack,
 } from 'tamagui'
+import type { Href } from 'vxs'
 import type { TakeoutPageProps } from '~/app/(site)/takeout'
 import { Link } from '~/components/Link'
 import { useUser } from '~/features/user/useUser'
@@ -515,25 +516,27 @@ export const PurchaseModal = ({
                   <Link
                     asChild
                     target="_blank"
-                    href={`api/checkout?${(() => {
-                      const params = new URLSearchParams()
-                      if (starterPriceId) {
-                        params.append('product_id', starter.id)
-                        params.append(`price-${starter?.id}`, starterPriceId)
-                      }
-                      if (bentoPriceId) {
-                        params.append('product_id', bento.id)
-                        params.append(`price-${bento?.id}`, bentoPriceId)
-                      }
-                      if (
-                        isUserEligibleForBentoTakeoutDiscount &&
-                        store.disableAutomaticDiscount
-                      ) {
-                        params.append('disable_automatic_discount', '1')
-                      }
+                    href={
+                      `api/checkout?${(() => {
+                        const params = new URLSearchParams()
+                        if (starterPriceId) {
+                          params.append('product_id', starter.id)
+                          params.append(`price-${starter?.id}`, starterPriceId)
+                        }
+                        if (bentoPriceId) {
+                          params.append('product_id', bento.id)
+                          params.append(`price-${bento?.id}`, bentoPriceId)
+                        }
+                        if (
+                          isUserEligibleForBentoTakeoutDiscount &&
+                          store.disableAutomaticDiscount
+                        ) {
+                          params.append('disable_automatic_discount', '1')
+                        }
 
-                      return params.toString()
-                    })()}`}
+                        return params.toString()
+                      })()}` as Href
+                    }
                   >
                     <PurchaseButton
                       disabled={noProductSelected}
