@@ -24,7 +24,10 @@ export function tamaguiPlugin(tamaguiOptionsIn: TamaguiOptions = {}): Plugin {
   let noExternalSSR = /react-native|expo-linear-gradient/gi
 
   async function load() {
-    await loadTamaguiBuildConfig(tamaguiOptionsIn)
+    await loadTamaguiBuildConfig({
+      ...tamaguiOptionsIn,
+      disableWatchTamaguiConfig: true,
+    })
 
     if (tamaguiOptions!.disableWatchTamaguiConfig) {
       return

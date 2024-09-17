@@ -24,17 +24,16 @@ export async function loadTamaguiBuildConfig(
   // only do it once
   if (Static) return
 
-  if (optionsIn?.disableWatchTamaguiConfig) {
-    tamaguiOptions = optionsIn
-    return
-  }
-
   await getStatic()
 
   tamaguiOptions = Static!.loadTamaguiBuildConfigSync({
     ...optionsIn,
     platform: 'web',
   })
+
+  if (optionsIn?.disableWatchTamaguiConfig) {
+    return
+  }
 
   disableStatic = Boolean(tamaguiOptions.disable)
   extractor = Static!.createExtractor({
