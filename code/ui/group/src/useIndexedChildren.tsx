@@ -95,5 +95,5 @@ export function useIndexedChildren(children: React.ReactNode) {
  * parseIndexPath('0.10.2') -> [0, 10, 2]
  */
 function parseIndexPath(indexPathString: string) {
-  return indexPathString.split('.').map((index) => parseInt(index, 10))
+  return indexPathString.split('.').map((index) => Number.parseInt(index, 10))
 }
