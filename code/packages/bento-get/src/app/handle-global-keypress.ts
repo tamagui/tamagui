@@ -3,7 +3,6 @@ import open from 'open'
 import { debugLog } from '../commands/index.js'
 
 import type { AppContextType } from '../data/AppContext.js'
-import { tokenStore } from '../data/AppContext.js'
 
 const apiBase = process.env.API_BASE || 'https://tamagui.dev'
 const ACCESS_TOKEN_URL = `${apiBase}/account/items`
@@ -30,7 +29,9 @@ export const handleGlobalKeyPress = (
   })
 
   if (modifier.ctrl && key === 'd') {
-    tokenStore.clear()
+    appContext.tokenStore.clear()
+    appContext.setAccessToken(null)
+    appContext.setIsLoggedIn(false)
     console.warn('Cleared Auth Token')
     return
   }

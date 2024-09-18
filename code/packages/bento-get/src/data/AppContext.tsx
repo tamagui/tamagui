@@ -2,6 +2,21 @@ import React from 'react'
 import Conf from 'conf'
 import type { ComponentSchema } from '../components.js'
 
+export interface FetchState {
+  status: 'idle' | 'loading' | 'success' | 'error'
+  isLoading: boolean
+  isSuccess: boolean
+  isError: boolean
+  data?: any
+  error?: Error
+  statusCode?: number
+}
+
+export interface TokenStorageState {
+  hasToken: boolean
+  token: string | null
+}
+
 // Define the state for the installation process
 export interface InstallState {
   installingComponent: ComponentSchema | null | undefined
@@ -34,9 +49,19 @@ export interface AppContextType {
   exitApp: () => void
   confirmationPending: boolean
   setConfirmationPending: React.Dispatch<React.SetStateAction<boolean>>
+  fetchState: FetchState
+  setFetchState: React.Dispatch<React.SetStateAction<FetchState>>
 }
 
-export const tokenStore = new Conf({ projectName: 'bento-cli/v2' })
+const schema = {
+  accessToken: {
+    type: 'string',
+    minLength: 1024,
+    maxLength: 1536,
+  },
+}
+
+const tokenStore = new Conf({ projectName: 'bento-cli/v3.0', schema })
 
 // Create the AppContext with default values
 export const AppContext = React.createContext<AppContextType>({
@@ -64,4 +89,14 @@ export const AppContext = React.createContext<AppContextType>({
   exitApp: () => {},
   confirmationPending: false,
   setConfirmationPending: () => {},
+  fetchState: {
+    status: 'idle',
+    isLoading: false,
+    isSuccess: false,
+    isError: false,
+    data: null,
+    error: undefined,
+    statusCode: undefined,
+  },
+  setFetchState: () => {},
 })

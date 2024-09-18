@@ -7,9 +7,10 @@ import { AppContext } from '../data/AppContext.js'
 import { debugLog } from '../commands/index.js'
 
 export const useFetchComponent = () => {
-  const { installState, accessToken } = React.useContext(AppContext)
-  const navigate = useNavigate()
+  const { installState, accessToken, tokenStore, setIsLoggedIn, setAccessToken } =
+    React.useContext(AppContext)
 
+  const navigate = useNavigate()
   React.useEffect(() => {
     if (
       !accessToken &&
@@ -22,6 +23,7 @@ export const useFetchComponent = () => {
 
   const fetcher = async (url: string) => {
     debugLog('fetcher', url)
+    debugLog({ accessToken })
     const res = await fetch(url, {
       headers: {
         'Content-Type': 'application/json',
@@ -99,10 +101,15 @@ export const useFetchComponent = () => {
 
   React.useEffect(() => {
     if (error?.info?.error?.includes('user is not authenticated')) {
-      // Handle unauthenticated error (e.g., redirect to auth page)
+      // Delete the access token from the token store
+      tokenStore.clear()
+      // Update the context
+      setAccessToken(null)
+      setIsLoggedIn(false)
+      // Redirect to auth page
       navigate('/auth')
     }
-  }, [error, navigate])
+  }, [error, navigate, tokenStore, setAccessToken])
 
   return { data, error, isLoading }
 }

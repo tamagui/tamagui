@@ -12,28 +12,7 @@ export const CodeAuthScreen = () => {
   const location = useLocation()
   const navigate = useNavigate()
 
-  React.useEffect(() => {
-    appContext.setInstallState((prev) => ({
-      ...prev,
-      shouldOpenBrowser: true,
-    }))
-    return () => {
-      appContext.setCopyingToClipboard(false)
-    }
-  }, [])
-
-  React.useEffect(() => {
-    const unsubscribe = appContext.tokenStore.onDidChange('token', () => {
-      appContext.setInstallState((prev) => ({
-        ...prev,
-        isTokenInstalled: true,
-      }))
-    })
-
-    return () => {
-      unsubscribe()
-    }
-  }, [appContext.tokenStore, appContext.setInstallState])
+  const [localAccessToken, setLocalAccessToken] = React.useState(appContext.accessToken)
 
   const handleInputChange = (value: string) => {
     debugLog('----\nauth input change ----\n', {
@@ -42,6 +21,12 @@ export const CodeAuthScreen = () => {
     })
     if (location.pathname !== '/auth') return
     appContext.setAccessToken(value)
+    appContext.setIsLoggedIn(true)
+    appContext.tokenStore.set('accessToken', value)
+    appContext.tokenStore.onDidChange('accessToken', (newValue) => {
+      debugLog('tokenStore changed', newValue)
+    })
+    navigate('/install-confirm')
   }
 
   return (
@@ -67,17 +52,11 @@ export const CodeAuthScreen = () => {
               <TextInput
                 focus
                 placeholder={Array(10).fill('*').join('')}
-                value={appContext.accessToken ?? ''}
-                onChange={handleInputChange}
-                onSubmit={() => {
-                  debugLog('accessToken', appContext.accessToken)
-                  appContext.setInstallState((prev) => ({
-                    ...prev,
-                    accessToken: appContext.accessToken,
-                  }))
-                  debugLog('installState', appContext.installState)
-                  return navigate('/install-confirm')
+                value={localAccessToken ?? ''}
+                onChange={(value) => {
+                  setLocalAccessToken(value)
                 }}
+                onSubmit={handleInputChange}
               />
             </Box>
             <Text color={'magenta'}>

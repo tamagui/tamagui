@@ -11,11 +11,12 @@ import {
 
 import { AuthGuard } from '../app/AuthGuard.js'
 import type { ComponentSchema } from '../components.js'
-import type { InstallState } from '../data/AppContext.js'
-import { AppContext, tokenStore } from '../data/AppContext.js'
+import type { AppContextType, FetchState, InstallState } from '../data/AppContext.js'
+import { AppContext } from '../data/AppContext.js'
 import { CodeAuthScreen } from '../screens/CodeAuthScreen.js'
 import { InstallConfirmScreen } from '../screens/InstallConfirmScreen.js'
 import { SearchScreen } from '../screens/SearchScreen.js'
+import Conf from 'conf'
 
 import { handleGlobalKeyPress } from '../app/handle-global-keypress.js'
 
@@ -28,6 +29,7 @@ export const debugLog = (...args: any[]) => {
 function BentoGet() {
   const navigate = useNavigate()
   const location = useLocation()
+  const tokenStore = new Conf({ projectName: 'bento-cli/v2' })
   const [isLoggedIn, setIsLoggedIn] = React.useState(false)
   const [searchResults, setSearchResults] = React.useState<
     Array<{ item: ComponentSchema }>
@@ -35,6 +37,15 @@ function BentoGet() {
   const [selectedResultIndex, setSelectedResultIndex] = React.useState(-1)
   const [searchInput, setSearchInput] = React.useState('')
   const [confirmationPending, setConfirmationPending] = React.useState(true)
+  const [fetchState, setFetchState] = React.useState<FetchState>({
+    status: 'idle',
+    isLoading: false,
+    isSuccess: false,
+    isError: false,
+    data: null,
+    error: undefined,
+    statusCode: undefined,
+  })
   const [installState, setInstallState] = React.useState<InstallState>({
     installingComponent: null,
     installedComponents: [],
@@ -47,9 +58,8 @@ function BentoGet() {
 
   const [accessToken, setAccessToken] = React.useState<string | null>(null)
 
-  const appContextValues = React.useMemo(
+  const appContextValues: AppContextType = React.useMemo(
     () => ({
-      tokenStore,
       isCopyingToClipboard,
       setCopyingToClipboard,
       exitApp: exit,
@@ -67,6 +77,9 @@ function BentoGet() {
       setIsLoggedIn,
       accessToken,
       setAccessToken,
+      fetchState,
+      setFetchState,
+      tokenStore,
     }),
     [
       isCopyingToClipboard,
@@ -76,6 +89,8 @@ function BentoGet() {
       installState,
       confirmationPending,
       accessToken,
+      fetchState,
+      tokenStore,
     ]
   )
 
