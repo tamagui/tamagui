@@ -17,21 +17,21 @@
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "react-native-import": "./dist/esm/index.native.mjs",
+      "react-native-import": "./dist/esm/index.native.js",
       "react-native": "./dist/cjs/index.native.js",
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.js"
     },
     "./data": {
-      "react-native-import": "./dist/esm/data.native.mjs",
+      "react-native-import": "./dist/esm/data.native.js",
       "react-native": "./dist/cjs/data.native.js",
       "types": "./types/data.d.ts",
       "import": "./dist/esm/data.mjs",
       "require": "./dist/cjs/data.js"
     },
     "./component/*": {
-      "react-native-import": "./dist/esm/components/*.native.mjs",
+      "react-native-import": "./dist/esm/components/*.native.js",
       "react-native": "./dist/cjs/components/*.native.js",
       "types": "./types/components/*.d.ts",
       "import": "./dist/esm/components/*.mjs",

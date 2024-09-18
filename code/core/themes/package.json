@@ -21,35 +21,35 @@
     "./package.json": "./package.json",
     "./src/themes-new.ts": "./src/themes-new.ts",
     ".": {
-      "react-native-import": "./dist/esm/index.native.mjs",
+      "react-native-import": "./dist/esm/index.native.js",
       "react-native": "./dist/cjs/index.native.js",
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.js"
     },
     "./v2": {
-      "react-native-import": "./dist/esm/v2.native.mjs",
+      "react-native-import": "./dist/esm/v2.native.js",
       "react-native": "./dist/cjs/v2.native.js",
       "types": "./types/v2.d.ts",
       "import": "./dist/esm/v2.mjs",
       "require": "./dist/cjs/v2.js"
     },
     "./v2-themes": {
-      "react-native-import": "./dist/esm/v2-themes.native.mjs",
+      "react-native-import": "./dist/esm/v2-themes.native.js",
       "react-native": "./dist/cjs/v2-themes.native.js",
       "types": "./types/v2-themes.d.ts",
       "import": "./dist/esm/v2-themes.mjs",
       "require": "./dist/cjs/v2-themes.js"
     },
     "./v3": {
-      "react-native-import": "./dist/esm/v3.native.mjs",
+      "react-native-import": "./dist/esm/v3.native.js",
       "react-native": "./dist/cjs/v3.native.js",
       "types": "./types/v3.d.ts",
       "import": "./dist/esm/v3.mjs",
       "require": "./dist/cjs/v3.js"
     },
     "./v3-themes": {
-      "react-native-import": "./dist/esm/v3-themes.native.mjs",
+      "react-native-import": "./dist/esm/v3-themes.native.js",
       "react-native": "./dist/cjs/v3-themes.native.js",
       "types": "./types/v3-themes.d.ts",
       "import": "./dist/esm/v3-themes.mjs",

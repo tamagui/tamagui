@@ -19,13 +19,13 @@
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "react-native-import": "./dist/esm/index.native.mjs",
+      "react-native-import": "./dist/esm/index.native.js",
       "react-native": "./dist/cjs/index.native.js",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.js"
     },
     "./without-animated": {
-      "react-native-import": "./dist/esm/without-animated.native.mjs",
+      "react-native-import": "./dist/esm/without-animated.native.js",
       "react-native": "./dist/cjs/without-animated.native.js",
       "import": "./dist/esm/without-animated.mjs",
       "require": "./dist/cjs/without-animated.js"

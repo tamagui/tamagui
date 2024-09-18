@@ -32,7 +32,7 @@ It assumes your package.json looks something like this:
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "react-native-import": "./dist/esm/index.native.mjs",
+      "react-native-import": "./dist/esm/index.native.js",
       "react-native": "./dist/cjs/index.native.js",
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
