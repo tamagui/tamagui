@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/vite-plugin-internal",
-  "version": "1.111.8",
+  "version": "1.111.9",
   "private": true,
   "main": "./dist/cjs/vite.config.js",
   "module": "./dist/esm/vite.config.js",
@@ -21,9 +21,9 @@
     "clean:build": "tamagui-build clean:build"
   },
   "devDependencies": {
-    "@tamagui/build": "1.111.8",
-    "@tamagui/config-default": "1.111.8",
-    "@tamagui/vite-plugin": "1.111.8",
+    "@tamagui/build": "1.111.9",
+    "@tamagui/config-default": "1.111.9",
+    "@tamagui/vite-plugin": "1.111.9",
     "@vitejs/plugin-react-swc": "^3.7.0",
     "happy-dom": "^10.11.2",
     "vitest": "0.34.3",
