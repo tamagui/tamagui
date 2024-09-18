@@ -15,6 +15,8 @@ export interface AppContextType {
     tokenStore: Conf<any>;
     isLoggedIn: boolean;
     setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+    accessToken: string | null;
+    setAccessToken: React.Dispatch<React.SetStateAction<string | null>>;
     isCopyingToClipboard: boolean;
     setCopyingToClipboard: React.Dispatch<React.SetStateAction<boolean>>;
     searchResults: Array<{

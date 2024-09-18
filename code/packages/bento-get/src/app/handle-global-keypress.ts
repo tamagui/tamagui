@@ -31,7 +31,7 @@ export const handleGlobalKeyPress = (
 
   if (modifier.ctrl && key === 'd') {
     tokenStore.clear()
-    console.warn('Cleared Github Token')
+    console.warn('Cleared Auth Token')
     return
   }
 
@@ -58,6 +58,10 @@ export const handleGlobalKeyPress = (
       return
     }
     return
+  }
+
+  if (modifier.escape && location.pathname === '/auth') {
+    return navigate('/search')
   }
 
   // After token addition, go back to the previous screen on pressing ESC
@@ -99,13 +103,13 @@ export const handleGlobalKeyPress = (
     return
 
   if (
-    key === 'o' &&
+    modifier.ctrl &&
+    modifier.return &&
     !appContext.installState.installingComponent?.isOSS &&
     appContext.installState.shouldOpenBrowser &&
     location.pathname === '/auth'
   ) {
-    open(ACCESS_TOKEN_URL)
-    return
+    return open(ACCESS_TOKEN_URL)
   }
 
   if (modifier.upArrow) {

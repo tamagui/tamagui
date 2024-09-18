@@ -1,12 +1,16 @@
-import { Alert, Spinner, TextInput } from '@inkjs/ui'
+import { Alert } from '@inkjs/ui'
 import { Box, Text } from 'ink'
 import React from 'react'
+import TextInput from 'ink-text-input'
 
-import { AppContext } from '../data/AppContext.js'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { debugLog } from '../commands/index.js'
+import { AppContext } from '../data/AppContext.js'
 
 export const CodeAuthScreen = () => {
   const appContext = React.useContext(AppContext)
+  const location = useLocation()
+  const navigate = useNavigate()
 
   React.useEffect(() => {
     appContext.setInstallState((prev) => ({
@@ -31,7 +35,14 @@ export const CodeAuthScreen = () => {
     }
   }, [appContext.tokenStore, appContext.setInstallState])
 
-  const [accessToken, setAccessToken] = React.useState('')
+  const handleInputChange = (value: string) => {
+    debugLog('----\nauth input change ----\n', {
+      value,
+      at: appContext.accessToken,
+    })
+    if (location.pathname !== '/auth') return
+    appContext.setAccessToken(value)
+  }
 
   return (
     <Box flexDirection="column" display="flex">
@@ -40,19 +51,7 @@ export const CodeAuthScreen = () => {
           {' < '}
           <Text underline>ESC</Text> to go Back
         </Text>
-
-        {appContext.isCopyingToClipboard ? (
-          <Text color="green">copied!</Text>
-        ) : (
-          <Text>
-            Hit <Text underline>c</Text> to copy to clipboard
-          </Text>
-        )}
       </Box>
-      <Alert variant="info">
-        Press <Text underline>o</Text> to open browser window and get your access token
-        from your Tamagui account.
-      </Alert>
       <Box flexDirection="row" borderStyle="round" paddingY={1} justifyContent="center">
         {appContext.installState.isTokenInstalled ? (
           <Box paddingY={1}>
@@ -66,21 +65,23 @@ export const CodeAuthScreen = () => {
             <Text>Paste/Enter your Bento access token:</Text>
             <Box minHeight={10}>
               <TextInput
-                defaultValue={accessToken}
-                onChange={(value) => setAccessToken(value)}
+                focus
+                placeholder={Array(10).fill('*').join('')}
+                value={appContext.accessToken ?? ''}
+                onChange={handleInputChange}
                 onSubmit={() => {
-                  debugLog('accessToken', accessToken)
+                  debugLog('accessToken', appContext.accessToken)
                   appContext.setInstallState((prev) => ({
                     ...prev,
-                    accessToken,
+                    accessToken: appContext.accessToken,
                   }))
                   debugLog('installState', appContext.installState)
+                  return navigate('/install-confirm')
                 }}
               />
             </Box>
             <Text color={'magenta'}>
-              (Press <Text underline>o</Text> to retrieve your access token from
-              tamagui.dev)
+              Retrieve your access token from https://tamagui.dev/account/items
             </Text>
           </Box>
         )}

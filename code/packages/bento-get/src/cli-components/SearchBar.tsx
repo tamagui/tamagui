@@ -39,6 +39,7 @@ export const SearchBar = () => {
       <Box>
         <Text bold>Search: </Text>
         <TextInput
+          focus
           value={appContext.searchInput}
           onChange={handleInputChange}
           // @ts-ignore

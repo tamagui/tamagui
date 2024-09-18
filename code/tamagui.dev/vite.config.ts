@@ -167,7 +167,10 @@ export default {
       ? tamaguiExtractPlugin({
           logTimings: true,
         })
-      : null,
+      : tamaguiExtractPlugin({
+          disable: false,
+          disableDebugAttr: false,
+        }),
   ],
 } satisfies UserConfig
 

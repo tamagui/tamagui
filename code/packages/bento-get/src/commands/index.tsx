@@ -45,6 +45,8 @@ function BentoGet() {
   const [isCopyingToClipboard, setCopyingToClipboard] = React.useState(false)
   const { exit } = useApp()
 
+  const [accessToken, setAccessToken] = React.useState<string | null>(null)
+
   const appContextValues = React.useMemo(
     () => ({
       tokenStore,
@@ -63,6 +65,8 @@ function BentoGet() {
       setConfirmationPending,
       isLoggedIn,
       setIsLoggedIn,
+      accessToken,
+      setAccessToken,
     }),
     [
       isCopyingToClipboard,
@@ -71,6 +75,7 @@ function BentoGet() {
       searchInput,
       installState,
       confirmationPending,
+      accessToken,
     ]
   )
 
