@@ -37,8 +37,7 @@
     "@tamagui/create-context": "1.111.8",
     "@tamagui/helpers": "1.111.8",
     "@tamagui/stacks": "1.111.8",
-    "@tamagui/use-controllable-state": "1.111.8",
-    "reforest": "^0.13.0"
+    "@tamagui/use-controllable-state": "1.111.8"
   },
   "devDependencies": {
     "@tamagui/build": "1.111.8",
