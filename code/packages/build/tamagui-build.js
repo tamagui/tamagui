@@ -681,7 +681,10 @@ async function esbuildWriteIfChanged(
   await Promise.all(
     outputs.map(async (file) => {
       if (!file) return
+
       const { path, contents } = file
+
+      if (!path.endsWith('.js')) return
 
       // for web do mjs, for native keep js since rollup gets confused when you have both
       const mjsOutPath = platform === 'native' ? path : path.replace('.js', '.mjs')
