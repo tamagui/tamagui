@@ -47,6 +47,7 @@ export function getConfig(tamaguiPlugin: any) {
             return {
               resolve: {
                 alias: {
+                  // TODO can this juse use resolve conditions?
                   '@tamagui/core': import.meta.resolve
                     ? await import.meta.resolve!(`@tamagui/core/native-test`)
                     : `@tamagui/core/native-test`,

@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/use-keyboard-visible",
-  "version": "1.111.2",
+  "version": "1.111.8",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -20,7 +20,7 @@
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "react-native-import": "./dist/esm/index.native.js",
+      "react-native-import": "./dist/esm/index.native.mjs",
       "react-native": "./dist/cjs/index.native.js",
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
@@ -28,7 +28,7 @@
     }
   },
   "devDependencies": {
-    "@tamagui/build": "1.111.2",
+    "@tamagui/build": "1.111.8",
     "react": "^18.2.0 || ^19.0.0",
     "react-native": "0.74.1"
   },

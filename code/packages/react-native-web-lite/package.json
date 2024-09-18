@@ -1,6 +1,6 @@
 {
   "name": "react-native-web-lite",
-  "version": "1.111.2",
+  "version": "1.111.8",
   "description": "React Native for Web",
   "sideEffects": false,
   "main": "dist/cjs",
@@ -19,13 +19,13 @@
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "react-native-import": "./dist/esm/index.native.js",
+      "react-native-import": "./dist/esm/index.native.mjs",
       "react-native": "./dist/cjs/index.native.js",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.js"
     },
     "./without-animated": {
-      "react-native-import": "./dist/esm/without-animated.native.js",
+      "react-native-import": "./dist/esm/without-animated.native.mjs",
       "react-native": "./dist/cjs/without-animated.native.js",
       "import": "./dist/esm/without-animated.mjs",
       "require": "./dist/cjs/without-animated.js"
@@ -35,15 +35,15 @@
     "./dist/*": "./dist/cjs/*/index.js"
   },
   "dependencies": {
-    "@tamagui/normalize-css-color": "1.111.2",
-    "@tamagui/react-native-use-pressable": "1.111.2",
-    "@tamagui/react-native-use-responder-events": "1.111.2",
+    "@tamagui/normalize-css-color": "1.111.8",
+    "@tamagui/react-native-use-pressable": "1.111.8",
+    "@tamagui/react-native-use-responder-events": "1.111.8",
     "invariant": "^2.2.4",
-    "react-native-web-internals": "1.111.2",
+    "react-native-web-internals": "1.111.8",
     "styleq": "^0.1.3"
   },
   "devDependencies": {
-    "@tamagui/build": "1.111.2",
+    "@tamagui/build": "1.111.8",
     "react": "^18.2.0 || ^19.0.0",
     "react-dom": "^18.2.0 || ^19.0.0"
   },
