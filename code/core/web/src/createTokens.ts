@@ -3,7 +3,7 @@ import { createVariables } from './createVariables'
 import type { CreateTokens } from './types'
 
 export function createTokens<T extends CreateTokens>(tokens: T): MakeTokens<T> {
-  return createVariables(tokens) as any
+  return createVariables(tokens, process.env.TAMAGUI_TOKEN_PREFIX ?? 't') as any
 }
 
 type NormalizeTokens<A, Type = A[keyof A]> = {

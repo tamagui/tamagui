@@ -33,6 +33,8 @@ const getFilledOptions = (propsIn: Partial<TamaguiOptions>): TamaguiOptions => (
   ...(propsIn as Partial<TamaguiOptions>),
 })
 
+let loaded = false
+
 export async function loadTamagui(
   propsIn: Partial<TamaguiOptions>
 ): Promise<TamaguiProjectInfo | null> {

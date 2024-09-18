@@ -20,3 +20,13 @@ exports[`styled() tests > extracts to className at call-site 2`] = `
 :root ._fs-0{flex-shrink:0;}
 :root ._bg-green{background-color:green;}"
 `;
+
+exports[`styled() tests > extracts to className at call-site 3`] = `
+"const _cn = \\"  _bg-green \\";
+import { MyStack } from '@tamagui/test-design-system';
+export function Test() {
+  return <div className={_cn} />;
+}"
+`;
+
+exports[`styled() tests > extracts to className at call-site 4`] = `":root ._bg-green{background-color:green;}"`;

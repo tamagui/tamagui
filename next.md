@@ -91,6 +91,9 @@ const Layout = styled(Flex, {
   },
 })
 
+
+- bug: if you name a file `polyfill-native.ts` tamagui-biuld doesnt output the .native files properly
+
 - // @ts-expect-error TODO tamagui needs to add gridArea type
 - need to fix web types inside platform web inside media query:
   - $sm={{ "$platform-web": { position: 'fixed' }}
