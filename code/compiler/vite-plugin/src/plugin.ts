@@ -5,6 +5,7 @@ import { tamaguiOptions, Static, loadTamaguiBuildConfig } from './loadTamagui'
 
 export function tamaguiPlugin(tamaguiOptionsIn: TamaguiOptions = {}): Plugin {
   let watcher
+  let loaded = false
 
   const extensions = [
     `.web.mjs`,
@@ -24,10 +25,9 @@ export function tamaguiPlugin(tamaguiOptionsIn: TamaguiOptions = {}): Plugin {
   let noExternalSSR = /react-native|expo-linear-gradient/gi
 
   async function load() {
-    await loadTamaguiBuildConfig({
-      ...tamaguiOptionsIn,
-      disableWatchTamaguiConfig: true,
-    })
+    loaded = true
+
+    await loadTamaguiBuildConfig(tamaguiOptionsIn)
 
     if (tamaguiOptions!.disableWatchTamaguiConfig) {
       return
@@ -58,10 +58,6 @@ export function tamaguiPlugin(tamaguiOptionsIn: TamaguiOptions = {}): Plugin {
   return {
     name: 'tamagui-base',
     enforce: 'pre',
-
-    async load() {
-      await load()
-    },
 
     async buildEnd() {
       await watcher?.then((res) => {

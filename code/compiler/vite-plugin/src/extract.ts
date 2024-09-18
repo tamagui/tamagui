@@ -54,6 +54,10 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
       server = _server
     },
 
+    async buildStart() {
+      await loadTamaguiBuildConfig(optionsIn)
+    },
+
     buildEnd() {
       extractor?.cleanupBeforeExit()
     },
@@ -72,9 +76,6 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
       if (isVite6Native(this.environment)) {
         return
       }
-
-      // lazy load, vite for some reason runs plugins twice in some esm compat thing
-      await loadTamaguiBuildConfig(optionsIn)
 
       if (
         tamaguiOptions?.disableServerOptimization &&
@@ -114,8 +115,6 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
      */
 
     async load(id) {
-      await loadTamaguiBuildConfig(optionsIn)
-
       if (disableStatic) {
         // only optimize on client - server should produce identical styles anyway!
         return
