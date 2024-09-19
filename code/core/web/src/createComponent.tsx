@@ -784,7 +784,7 @@ export function createComponent<
     const mediaListeningKeys = hasRuntimeMediaKeys
       ? (splitStyles.hasMedia as Record<string, boolean>)
       : null
-    if (process.env.NODE_ENV === 'development' && debugProp) {
+    if (process.env.NODE_ENV === 'development' && debugProp === 'verbose') {
       console.info(`useMedia() createComponent`, shouldListenForMedia, mediaListeningKeys)
     }
 
@@ -870,7 +870,7 @@ export function createComponent<
         animationStyles = animations.style
         viewProps.style = animationStyles
         if (animations.className) {
-          viewProps.className = `${viewProps.className || ''} ${animations.className}`
+          viewProps.className = `${state.unmounted === 'should-enter' ? 't_unmounted ' : ''}${viewProps.className || ''} ${animations.className}`
         }
       }
 
@@ -948,9 +948,21 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && isWeb) {
       useIsomorphicLayoutEffect(() => {
-        if (debugProp) {
-          console.groupCollapsed(`Rendered style >`)
-          console.warn(getComputedStyle(stateRef.current.host! as any))
+        if (debugProp === 'verbose') {
+          function cssStyleDeclarationToObject(style: CSSStyleDeclaration) {
+            const styleObject: Record<string, any> = {}
+            for (let i = 0; i < style.length; i++) {
+              let prop = style[i]
+              styleObject[prop] = style.getPropertyValue(prop)
+            }
+            return styleObject
+          }
+          const computed = cssStyleDeclarationToObject(
+            getComputedStyle(stateRef.current.host! as any)
+          )
+          console.groupCollapsed(`Rendered > (opacity: ${computed.opacity})`)
+          console.warn(stateRef.current.host)
+          console.warn(computed)
           console.groupEnd()
         }
       })
@@ -966,8 +978,17 @@ export function createComponent<
         return
       }
 
+      let tm
+
       if (state.unmounted) {
-        setStateShallow({ unmounted: false })
+        if (process.env.TAMAGUI_REACT_19 && animationDriver?.supportsCSSVars) {
+          // this fixes css driver enter animations - from what i can tell they are correct but react 19 somehow messing it up
+          tm = setTimeout(() => {
+            setStateShallow({ unmounted: false })
+          })
+        } else {
+          setStateShallow({ unmounted: false })
+        }
         return
       }
 
@@ -981,6 +1002,7 @@ export function createComponent<
       })
 
       return () => {
+        clearTimeout(tm)
         dispose?.()
         componentSetStates.delete(setState)
       }
@@ -1390,8 +1412,9 @@ export function createComponent<
             log('viewProps', viewProps)
             log('children', content)
             if (typeof window !== 'undefined') {
-              log('props in', propsIn, 'mapped to', props, 'in order', Object.keys(props))
               log({
+                propsIn,
+                props,
                 animationStyles,
                 classNames,
                 content,
