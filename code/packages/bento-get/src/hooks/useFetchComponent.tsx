@@ -1,54 +1,21 @@
 import fetch from 'node-fetch'
 import querystring from 'node:querystring'
-import { Octokit } from 'octokit'
 import React from 'react'
 import useSWR from 'swr'
-import { useNavigate } from 'react-router-dom'
 import { AppContext } from '../data/AppContext.js'
 import { debugLog } from '../commands/index.js'
 
-interface GithubUserData {
-  login: string
-  id: number
-  node_id: string
-}
-
 export const useFetchComponent = () => {
-  const { installState, tokenStore } = React.useContext(AppContext)
-  const { access_token } = tokenStore.get?.('token') ?? {}
-  const [githubData, setGithubData] = React.useState<GithubUserData | null>(null)
-
-  const navigate = useNavigate()
-
-  React.useEffect(() => {
-    if (
-      !access_token &&
-      installState.installingComponent &&
-      !installState.installingComponent.isOSS
-    ) {
-      navigate('/auth')
-      return
-    }
-    const octokit = new Octokit({
-      auth: access_token,
-    })
-    const fetchGithubData = async () => {
-      try {
-        const { data } = await octokit.rest.users.getAuthenticated()
-        setGithubData(data)
-      } catch (error) {
-        process.env.DEBUG === 'true' && console.error('Failed to authenticate:', error)
-      }
-    }
-    fetchGithubData()
-  }, [access_token, installState.installingComponent])
+  const { installState, accessToken, tokenStore, setIsLoggedIn, setAccessToken } =
+    React.useContext(AppContext)
 
   const fetcher = async (url: string) => {
     debugLog('fetcher', url)
+    debugLog({ accessToken })
     const res = await fetch(url, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${access_token || ''}`,
+        Authorization: `Bearer ${accessToken || ''}`,
       },
     })
 
@@ -62,9 +29,7 @@ export const useFetchComponent = () => {
       throw error
     }
 
-    const result = await res.text()
-
-    return result
+    return await res.text()
   }
 
   const query =
@@ -74,11 +39,10 @@ export const useFetchComponent = () => {
       section: installState.installingComponent?.category,
       part: installState.installingComponent?.categorySection,
       fileName: installState.installingComponent?.fileName,
-      userGithubId: githubData?.node_id || '',
     })
 
   const apiBase = process.env.API_BASE || 'https://tamagui.dev'
-  const codePath = query ? `${apiBase}/api/bento/code-download?${query}` : apiBase
+  const codePath = query ? `${apiBase}/api/bento/cli/v2/code-download?${query}` : apiBase
 
   const { data, error, isLoading } = useSWR(
     installState.installingComponent ? codePath : null,
@@ -98,29 +62,22 @@ export const useFetchComponent = () => {
 
       for (const [category, files] of Object.entries(filesData)) {
         downloadedFiles[category] = await Promise.all(
-          files.map(
-            async (file: {
-              path: string
-              downloadUrl: string
-            }) => {
-              const fileContent = await fetcher(file.downloadUrl)
-              return {
-                path: file.path,
-                filePlainText: fileContent,
-              }
+          files.map(async (file: { path: string; downloadUrl: string }) => {
+            const fileContent = await fetcher(file.downloadUrl)
+            return {
+              path: file.path,
+              filePlainText: fileContent,
             }
-          )
+          })
         )
       }
       debugLog(
         'Downloaded files',
         Object.keys(downloadedFiles).map((key) =>
-          downloadedFiles[key].map((x) => {
-            return {
-              path: x.path,
-              filePlainText: x.filePlainText.substring(0, 50) + '...',
-            }
-          })
+          downloadedFiles[key].map((x) => ({
+            path: x.path,
+            filePlainText: x.filePlainText.substring(0, 50) + '...',
+          }))
         )
       )
       return downloadedFiles
@@ -132,9 +89,13 @@ export const useFetchComponent = () => {
 
   React.useEffect(() => {
     if (error?.info?.error?.includes('user is not authenticated')) {
-      tokenStore.delete('token')
+      // Delete the access token from the token store
+      tokenStore.clear()
+      // Update the context
+      setAccessToken(null)
+      setIsLoggedIn(false)
     }
-  }, [error, tokenStore])
+  }, [error, tokenStore, setAccessToken])
 
   return { data, error, isLoading }
 }
