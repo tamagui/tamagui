@@ -41,15 +41,6 @@ jobs:
       - name: Install playwright
         run: npx playwright install
 
-      - name: Install Vercel CLI
-        run: npm install --global vercel@latest
-
-      - name: Link Vercel Project
-        run: cd code/tamagui.dev && vercel link --project site --scope=tamagui --yes --token=${{ secrets.VERCEL_TOKEN }}
-
-      - name: Pull Vercel Environment Information
-        run: cd code/tamagui.dev && vercel env pull .env --scope=tamagui --yes --token=${{ secrets.VERCEL_TOKEN }}
-
       - uses: nick-fields/retry@v2
         with:
           timeout_minutes: 15
