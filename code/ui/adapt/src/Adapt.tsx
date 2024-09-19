@@ -99,6 +99,10 @@ export const Adapt = withStaticProperties(
     useIsomorphicLayoutEffect(() => {
       if (!enabled) return
       context?.setWhen((when || enabled) as When)
+
+      return () => {
+        context?.setWhen(null)
+      }
     }, [when, context, enabled])
 
     if (!enabled) {
