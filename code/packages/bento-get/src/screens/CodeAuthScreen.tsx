@@ -47,7 +47,9 @@ export const CodeAuthScreen = () => {
           </Box>
         ) : (
           <Box flexDirection="column" gap={1} paddingX={2}>
-            <Alert variant="info">Your are trying to install a Pro component.</Alert>
+            <Alert variant="info">
+              Your are trying to install a Pro component. ({fileName})
+            </Alert>
             <Text>Paste/Enter your Bento access token:</Text>
             <Box minHeight={10}>
               <TextInput

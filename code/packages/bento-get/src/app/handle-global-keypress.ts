@@ -61,7 +61,7 @@ export const handleGlobalKeyPress = (
     return
   }
 
-  if (modifier.escape && location.pathname === '/auth') {
+  if (modifier.escape && location.pathname.includes('/auth')) {
     return navigate('/search')
   }
 
@@ -89,7 +89,7 @@ export const handleGlobalKeyPress = (
   }
 
   if (modifier.escape) {
-    if (location.pathname === '/install-confirm') {
+    if (location.pathname.includes('/install-confirm')) {
       navigate('/search')
       return
     }
@@ -108,7 +108,7 @@ export const handleGlobalKeyPress = (
     modifier.return &&
     !appContext.installState.installingComponent?.isOSS &&
     appContext.installState.shouldOpenBrowser &&
-    location.pathname === '/auth'
+    location.pathname.includes('/auth')
   ) {
     return open(ACCESS_TOKEN_URL)
   }
@@ -125,7 +125,7 @@ export const handleGlobalKeyPress = (
   }
 
   if (modifier.return) {
-    if (location.pathname === '/search') {
+    if (location.pathname.includes('/search')) {
       setInstallState((prev) => ({
         ...prev,
         installingComponent: searchResults[selectedResultIndex]?.item,
