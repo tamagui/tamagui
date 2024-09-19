@@ -33,7 +33,7 @@
     }
   },
   "dependencies": {
-    "@floating-ui/react": "^0.26.24",
+    "@floating-ui/react": "^0.26.16",
     "@tamagui/adapt": "1.111.10",
     "@tamagui/animate": "1.111.10",
     "@tamagui/aria-hidden": "1.111.10",

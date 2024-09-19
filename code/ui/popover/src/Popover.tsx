@@ -248,8 +248,6 @@ export const PopoverContent = PopperContentFrame.extractable(
       }
     }
 
-    console.warn('render popover contnet')
-
     return (
       <PopoverContentPortal __scopePopover={__scopePopover} zIndex={props.zIndex}>
         <Stack pointerEvents={context.open ? 'auto' : 'none'}>

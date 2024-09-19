@@ -5,6 +5,7 @@ import { YStack } from '@tamagui/stacks'
 import * as React from 'react'
 import { createPortal } from 'react-dom'
 
+import { useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
 import type { PortalProps } from './PortalProps'
 
 // web only version
@@ -15,7 +16,9 @@ export const Portal = React.memo(
       return null
     }
 
-    return createPortal(
+    const didFinishSSR = useDidFinishSSR()
+
+    const contents = (
       <YStack
         contain="strict"
         fullscreen
@@ -25,8 +28,9 @@ export const Portal = React.memo(
         maxHeight="100vh"
         pointerEvents="none"
         {...props}
-      />,
-      host
-    ) as any
+      />
+    )
+
+    return createPortal(didFinishSSR ? contents : null, host) as any
   }
 )
