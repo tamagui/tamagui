@@ -42,7 +42,7 @@ export const useFetchComponent = () => {
     })
 
   const apiBase = process.env.API_BASE || 'https://tamagui.dev'
-  const codePath = query ? `${apiBase}/api/bento/code-download?${query}` : apiBase
+  const codePath = query ? `${apiBase}/api/bento/cli/v2/code-download?${query}` : apiBase
 
   const { data, error, isLoading } = useSWR(
     installState.installingComponent ? codePath : null,
