@@ -2879,7 +2879,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@floating-ui/react-dom@npm:^2.1.0, @floating-ui/react-dom@npm:^2.1.2":
+"@floating-ui/react-dom@npm:^2.1.2":
   version: 2.1.2
   resolution: "@floating-ui/react-dom@npm:2.1.2"
   dependencies:
@@ -2903,7 +2903,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@floating-ui/react@npm:^0.26.16, @floating-ui/react@npm:^0.26.24":
+"@floating-ui/react@npm:^0.26.24":
   version: 0.26.24
   resolution: "@floating-ui/react@npm:0.26.24"
   dependencies:
@@ -6528,7 +6528,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/floating@workspace:code/core/floating"
   dependencies:
-    "@floating-ui/react-dom": "npm:^2.1.0"
+    "@floating-ui/react-dom": "npm:^2.1.2"
     "@floating-ui/react-native": "npm:^0.10.6"
     "@tamagui/build": "npm:1.111.10"
     react: "npm:^18.2.0 || ^19.0.0"
@@ -7184,7 +7184,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/popover@workspace:code/ui/popover"
   dependencies:
-    "@floating-ui/react": "npm:^0.26.16"
+    "@floating-ui/react": "npm:^0.26.24"
     "@tamagui/adapt": "npm:1.111.10"
     "@tamagui/animate": "npm:1.111.10"
     "@tamagui/aria-hidden": "npm:1.111.10"
