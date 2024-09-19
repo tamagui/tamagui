@@ -30,6 +30,7 @@ runs:
       shell: bash
       run: yarn check
 
+    # Run lint before build
     - name: Lint
       shell: bash
       run: yarn lint
