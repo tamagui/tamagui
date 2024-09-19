@@ -7,11 +7,7 @@
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
-  "files": [
-    "src",
-    "types",
-    "dist"
-  ],
+  "files": ["src", "types", "dist"],
   "dependencies": {
     "@tamagui/animate-presence": "1.111.10"
   },
@@ -24,7 +20,7 @@
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build",
     "lint": "npx biome check src",
-    "lint:fix": "npx biome check --apply-unsafe src"
+    "lint:fix": "npx biome check --write src"
   },
   "exports": {
     "./package.json": "./package.json",

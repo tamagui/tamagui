@@ -1,25 +1,19 @@
 {
   "name": "@tamagui/accordion",
   "version": "1.111.10",
-  "sideEffects": [
-    "*.css"
-  ],
+  "sideEffects": ["*.css"],
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
   "module:jsx": "dist/jsx",
-  "files": [
-    "src",
-    "types",
-    "dist"
-  ],
+  "files": ["src", "types", "dist"],
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
     "clean": "tamagui-build clean",
     "lint": "npx biome check src",
-    "lint:fix": "npx biome check --apply-unsafe src"
+    "lint:fix": "npx biome check --write src"
   },
   "dependencies": {
     "@tamagui/collapsible": "1.111.10",

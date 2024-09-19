@@ -2,12 +2,8 @@
   "name": "tamagui",
   "version": "1.111.10",
   "removeSideEffects": true,
-  "alsoPublishAs_disabled": [
-    "@tamagui/ui"
-  ],
-  "sideEffects": [
-    "setup.js"
-  ],
+  "alsoPublishAs_disabled": ["@tamagui/ui"],
+  "sideEffects": ["setup.js"],
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
@@ -17,21 +13,14 @@
     "bundle.native": "./src/index.ts",
     "bundle.native.test": "./src/index.ts"
   },
-  "files": [
-    "src",
-    "types",
-    "dist",
-    "linear-gradient",
-    "native.js",
-    "native.d.ts"
-  ],
+  "files": ["src", "types", "dist", "linear-gradient", "native.js", "native.d.ts"],
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build",
     "lint": "npx biome check src",
-    "lint:fix": "npx biome check --apply-unsafe src",
+    "lint:fix": "npx biome check --write src",
     "check": "yarn check-circular-deps",
     "check-circular-deps": "npx madge --circular ./src/index.ts"
   },

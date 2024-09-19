@@ -17,7 +17,7 @@ glob(`${lucideIconsDir}/**.svg`, (err, icons) => {
   fs.writeFileSync(path.join(rootDir, 'src', 'index.ts'), '', 'utf-8')
 
   console.info(`Processing`, icons)
-  
+
   icons.forEach((i) => {
     const svg = fs.readFileSync(i, 'utf-8')
     const id = path.basename(i, '.svg')
@@ -157,6 +157,5 @@ glob(`${lucideIconsDir}/**.svg`, (err, icons) => {
   })
 })
 
-
 // run biome:
-require('child_process').execSync(`biome check --apply-unsafe src`)
+require('child_process').execSync(`biome check --write src`)

@@ -8,7 +8,7 @@
     "build:production": "remix vite:build",
     "dev": "remix vite:dev",
     "lint": "biome check app",
-    "lint:fix": "biome check --apply-unsafe app",
+    "lint:fix": "biome check --write app",
     "start": "remix-serve ./build/server/index.js",
     "typecheck": "tsc"
   },
