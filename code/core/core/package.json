@@ -13,14 +13,12 @@
   "author": {
     "name": "Nate Wienert"
   },
-  "sideEffects": [
-    "*.css"
-  ],
+  "sideEffects": ["*.css"],
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
     "lint": "npx biome check src",
-    "lint:fix": "npx biome check --apply-unsafe src",
+    "lint:fix": "npx biome check --write --unsafe src",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },

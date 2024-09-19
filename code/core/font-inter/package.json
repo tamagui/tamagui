@@ -5,13 +5,7 @@
   "main": "dist/cjs",
   "module": "dist/esm",
   "module:jsx": "dist/jsx",
-  "files": [
-    "types",
-    "dist",
-    "css",
-    "otf",
-    "woff2"
-  ],
+  "files": ["types", "dist", "css", "otf", "woff2"],
   "exports": {
     "./package.json": "./package.json",
     "./css/100.css": "./css/100.css",
@@ -54,7 +48,7 @@
     "subset": "node -r esbuild-register subset.ts",
     "watch": "tamagui-build --watch",
     "lint": "npx biome check src",
-    "lint:fix": "npx biome check --apply-unsafe src",
+    "lint:fix": "npx biome check --write --unsafe src",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },

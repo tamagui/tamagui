@@ -117,7 +117,7 @@ export function Popper(props: ScopedPopperProps<PopperProps>) {
     placement,
     sameScrollView: false, // this only takes effect on native
     platform:
-      disableRTL ?? setupOptions.disableRTL
+      (disableRTL ?? setupOptions.disableRTL)
         ? {
             ...platform,
             isRTL(element) {

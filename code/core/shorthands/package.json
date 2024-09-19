@@ -6,18 +6,12 @@
   "main": "dist/cjs",
   "module": "dist/esm",
   "module:jsx": "dist/jsx",
-  "files": [
-    "src",
-    "types",
-    "dist",
-    "v2.js",
-    "v2.d.ts"
-  ],
+  "files": ["src", "types", "dist", "v2.js", "v2.d.ts"],
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
     "lint": "npx biome check src",
-    "lint:fix": "npx biome check --apply-unsafe src",
+    "lint:fix": "npx biome check --write --unsafe src",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },

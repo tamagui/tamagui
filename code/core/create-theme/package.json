@@ -5,17 +5,12 @@
   "main": "dist/cjs",
   "module": "dist/esm",
   "sideEffects": false,
-  "files": [
-    "src",
-    "types",
-    "dist",
-    "theme-builder"
-  ],
+  "files": ["src", "types", "dist", "theme-builder"],
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
     "lint": "npx biome check src",
-    "lint:fix": "npx biome check --apply-unsafe src",
+    "lint:fix": "npx biome check --write --unsafe src",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },

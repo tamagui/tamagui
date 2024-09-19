@@ -1,24 +1,18 @@
 {
   "name": "@tamagui/group",
   "version": "1.111.10",
-  "sideEffects": [
-    "*.css"
-  ],
+  "sideEffects": ["*.css"],
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
   "module:jsx": "dist/jsx",
-  "files": [
-    "src",
-    "types",
-    "dist"
-  ],
+  "files": ["src", "types", "dist"],
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
     "lint": "npx biome check src",
-    "lint:fix": "npx biome check --apply-unsafe src",
+    "lint:fix": "npx biome check --write --unsafe src",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },

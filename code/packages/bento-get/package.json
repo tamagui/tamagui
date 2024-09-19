@@ -13,16 +13,12 @@
   "source": "src/cli.tsx",
   "types": "./types/cli.d.ts",
   "module": "dist",
-  "files": [
-    "source",
-    "types",
-    "dist"
-  ],
+  "files": ["source", "types", "dist"],
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
     "lint": "npx biome check src",
-    "lint:fix": "npx biome check --apply-unsafe src",
+    "lint:fix": "npx biome check --write --unsafe src",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build",
     "local-npm-link": "npm link --local --force"

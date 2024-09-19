@@ -22,7 +22,7 @@ export const ThemeProvider = (props: ThemeProviderProps) => {
       if (props.disableRootThemeClass) return
       const cn = `${THEME_CLASSNAME_PREFIX}${props.defaultTheme}`
       const target =
-        props.themeClassNameOnRoot ?? getSetting('themeClassNameOnRoot')
+        (props.themeClassNameOnRoot ?? getSetting('themeClassNameOnRoot'))
           ? document.documentElement
           : document.body
       target.classList.add(cn)

@@ -79,7 +79,7 @@ export const Image = StyledImage.styleable<ImageProps>((inProps, ref) => {
             height: props.height || style?.height,
           }),
         }
-      : source ?? src
+      : (source ?? src)
 
   if (finalSource && typeof finalSource === 'object') {
     if (process.env.TAMAGUI_TARGET === 'native') {

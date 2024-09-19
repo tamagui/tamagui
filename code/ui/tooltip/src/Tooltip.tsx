@@ -44,12 +44,12 @@ const TooltipContent = PopperContentFrame.extractable(
       const preventAnimation = React.useContext(PreventTooltipAnimationContext)
       const popper = usePopperContext(__scopeTooltip || TOOLTIP_SCOPE)
       const padding = !props.unstyled
-        ? props.padding ??
+        ? (props.padding ??
           props.size ??
           popper.size ??
           getSize('$true', {
             shift: -2,
-          })
+          }))
         : undefined
 
       return (

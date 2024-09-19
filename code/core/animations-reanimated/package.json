@@ -7,11 +7,7 @@
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
-  "files": [
-    "src",
-    "types",
-    "dist"
-  ],
+  "files": ["src", "types", "dist"],
   "exports": {
     "./package.json": "./package.json",
     ".": {
@@ -29,7 +25,7 @@
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
     "lint": "npx biome check src",
-    "lint:fix": "npx biome check --apply-unsafe src",
+    "lint:fix": "npx biome check --write --unsafe src",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },

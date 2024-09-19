@@ -6,14 +6,8 @@
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
-  "sideEffects": [
-    "polyfill.js"
-  ],
-  "files": [
-    "src",
-    "types",
-    "dist"
-  ],
+  "sideEffects": ["polyfill.js"],
+  "files": ["src", "types", "dist"],
   "dependencies": {
     "@tamagui/use-presence": "1.111.10",
     "@tamagui/web": "1.111.10"
@@ -28,7 +22,7 @@
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
     "lint": "npx biome check src",
-    "lint:fix": "npx biome check --apply-unsafe src",
+    "lint:fix": "npx biome check --write --unsafe src",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
