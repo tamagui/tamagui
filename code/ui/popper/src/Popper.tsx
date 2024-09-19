@@ -143,6 +143,7 @@ export function Popper(props: ScopedPopperProps<PopperProps>) {
     open,
   } = floating
 
+  // leaving this here as reference, seems we don't need it anymore at least as used currently
   // if (process.env.TAMAGUI_TARGET === 'web') {
   //   useIsomorphicLayoutEffect(() => {
   //     if (!open) return
@@ -183,9 +184,9 @@ export function Popper(props: ScopedPopperProps<PopperProps>) {
       }
     }, [])
 
-    // useIsomorphicLayoutEffect(() => {
-    //   floating.update()
-    // }, [dimensions, keyboardOpen])
+    useIsomorphicLayoutEffect(() => {
+      floating.update()
+    }, [dimensions, keyboardOpen])
   }
 
   const popperContext = {
@@ -327,16 +328,15 @@ export const PopperContent = React.forwardRef<
 
   // const [needsMeasure, setNeedsMeasure] = React.useState(true)
   // React.useEffect(() => {
+  //   if (!enableAnimationForPositionChange) return
   //   if (x || y) {
   //     setNeedsMeasure(false)
   //   }
-  // }, [x, y])
+  // }, [enableAnimationForPositionChange, x, y])
 
   // useIsomorphicLayoutEffect(() => {
-  //   if (isMounted) {
-  //     update()
-  //   }
-  // }, [isMounted])
+  //   update()
+  // }, [])
 
   // default to not showing if positioned at 0, 0
   let show = true
@@ -359,12 +359,12 @@ export const PopperContent = React.forwardRef<
     left: 0,
     position: strategy,
     opacity: show ? 1 : 0,
-    ...(enableAnimationForPositionChange && {
-      // apply animation but disable it on initial render to avoid animating from 0 to the first position
-      animation: rest.animation,
-      // animateOnly: needsMeasure ? ['none'] : rest.animateOnly,
-      animatePresence: false,
-    }),
+    // ...(enableAnimationForPositionChange && {
+    //   // apply animation but disable it on initial render to avoid animating from 0 to the first position
+    //   animation: rest.animation,
+    //   animateOnly: needsMeasure ? ['none'] : rest.animateOnly,
+    //   animatePresence: false,
+    // }),
   }
 
   // outer frame because we explicitly don't want animation to apply to this
