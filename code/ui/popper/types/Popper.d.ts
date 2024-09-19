@@ -7,7 +7,6 @@ import type { View } from 'react-native';
 type ShiftProps = typeof shift extends (options: infer Opts) => void ? Opts : never;
 type FlipProps = typeof flip extends (options: infer Opts) => void ? Opts : never;
 export type PopperContextValue = UseFloatingReturn & {
-    isMounted: boolean;
     size?: SizeTokens;
     placement?: Placement;
     arrowRef: any;
