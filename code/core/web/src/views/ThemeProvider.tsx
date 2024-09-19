@@ -21,10 +21,13 @@ export const ThemeProvider = (props: ThemeProviderProps) => {
     React.useLayoutEffect(() => {
       if (props.disableRootThemeClass) return
       const cn = `${THEME_CLASSNAME_PREFIX}${props.defaultTheme}`
-      const target =
-        (props.themeClassNameOnRoot ?? getSetting('themeClassNameOnRoot'))
-          ? document.documentElement
-          : document.body
+      const target = (
+        typeof props.themeClassNameOnRoot !== 'undefined'
+          ? props.themeClassNameOnRoot
+          : getSetting('themeClassNameOnRoot')
+      )
+        ? document.documentElement
+        : document.body
       target.classList.add(cn)
       return () => {
         target.classList.remove(cn)
