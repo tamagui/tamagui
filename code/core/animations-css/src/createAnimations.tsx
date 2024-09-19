@@ -98,7 +98,7 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
           .join(', ')
       }
 
-      if (process.env.NODE_ENV === 'development' && props['debug']) {
+      if (process.env.NODE_ENV === 'development' && props['debug'] === 'verbose') {
         console.info('CSS animation', {
           props,
           animations,

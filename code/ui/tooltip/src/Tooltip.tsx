@@ -41,6 +41,7 @@ type ScopedTooltipProps<P> = ScopedProps<P, 'Tooltip'>
 const TooltipContent = PopperContentFrame.extractable(
   React.forwardRef(
     ({ __scopeTooltip, ...props }: ScopedTooltipProps<PopoverContentProps>, ref: any) => {
+      console.warn('render tooltip contnet')
       const preventAnimation = React.useContext(PreventTooltipAnimationContext)
       const popper = usePopperContext(__scopeTooltip || TOOLTIP_SCOPE)
       const padding = !props.unstyled
@@ -223,6 +224,8 @@ const TooltipComponent = React.forwardRef(function Tooltip(
         shift: -2,
         bounds: [0],
       })
+
+  console.warn('nreder tooltip')
 
   return (
     // TODO: FloatingOverrideContext might also need to be scoped
