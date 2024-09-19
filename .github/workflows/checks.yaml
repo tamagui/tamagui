@@ -4,8 +4,8 @@ on:
   pull_request:
   push:
     paths-ignore:
-      - "assets/**"
-      - ".vscode/**"
+      - 'assets/**'
+      - '.vscode/**'
     branches:
       - master
 
@@ -20,12 +20,6 @@ jobs:
         uses: ./.github/actions/install
         with:
           transcrypt_password: ${{ secrets.transcrypt_password }}
-
-      - name: Check
-        run: yarn check
-
-      - name: Lint
-        run: yarn lint
 
   tests:
     runs-on: ubuntu-latest
@@ -54,4 +48,4 @@ jobs:
         with:
           timeout_minutes: 15
           max_attempts: 2
-          command: "yarn test:ci"
+          command: 'yarn test:ci'

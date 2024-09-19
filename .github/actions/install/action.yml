@@ -24,7 +24,15 @@ runs:
       env:
         # postinstall uses this
         TRANSCRYPT_PASSWORD: ${{ inputs.transcrypt_password }}
-        SHOULD_UNLOCK_GIT_CRYPT: "1"
+        SHOULD_UNLOCK_GIT_CRYPT: '1'
+
+    - name: Check
+      shell: bash
+      run: yarn check
+
+    - name: Lint
+      shell: bash
+      run: yarn lint
 
     - name: Build JS
       shell: bash
