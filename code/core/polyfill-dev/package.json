@@ -5,5 +5,8 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14"
+  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.2"
+  }
 }

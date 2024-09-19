@@ -6,8 +6,14 @@
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
-  "sideEffects": ["polyfill.js"],
-  "files": ["src", "types", "dist"],
+  "sideEffects": [
+    "polyfill.js"
+  ],
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
   "dependencies": {
     "@tamagui/use-presence": "1.111.10",
     "@tamagui/web": "1.111.10"

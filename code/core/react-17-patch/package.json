@@ -8,5 +8,8 @@
   "dependencies": {
     "@reach/auto-id": "^0.18.0",
     "use-sync-external-store": "^1.2.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.2"
   }
 }

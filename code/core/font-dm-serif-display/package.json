@@ -18,6 +18,7 @@
     "clean:build": "tamagui-build clean:build"
   },
   "devDependencies": {
+    "@biomejs/biome": "^1.9.2",
     "@tamagui/build": "1.111.10",
     "@tamagui/core": "1.111.10",
     "subset-font": "^2.1.0"

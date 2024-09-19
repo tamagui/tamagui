@@ -37,6 +37,7 @@
     "fs-extra": "^11.2.0"
   },
   "devDependencies": {
+    "@biomejs/biome": "^1.9.2",
     "@tamagui/build": "1.111.10"
   }
 }

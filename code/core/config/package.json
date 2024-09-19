@@ -71,6 +71,7 @@
     "@tamagui/web": "1.111.10"
   },
   "devDependencies": {
+    "@biomejs/biome": "^1.9.2",
     "@tamagui/build": "1.111.10"
   },
   "publishConfig": {

@@ -67,6 +67,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
+    "@biomejs/biome": "^1.9.2",
     "@playwright/test": "^1.45.2",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.10",
     "@tamagui/babel-plugin": "1.111.10",

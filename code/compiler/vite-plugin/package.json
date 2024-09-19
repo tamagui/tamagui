@@ -43,6 +43,7 @@
     "react-native-web": "^0.19.12"
   },
   "devDependencies": {
+    "@biomejs/biome": "^1.9.2",
     "@tamagui/build": "1.111.10"
   },
   "publishConfig": {

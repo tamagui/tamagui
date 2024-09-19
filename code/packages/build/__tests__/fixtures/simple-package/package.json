@@ -16,6 +16,7 @@
     "build:target-native": "TAMAGUI_TARGET=native node ../../../tamagui-build.js"
   },
   "devDependencies": {
+    "@biomejs/biome": "^1.9.2",
     "@tamagui/build": "1.111.10",
     "typescript": "^5.5.2"
   }

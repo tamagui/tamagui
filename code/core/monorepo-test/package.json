@@ -12,6 +12,7 @@
     "test": "vitest --run --config ../../packages/vite-plugin-internal/src/vite.config.ts"
   },
   "devDependencies": {
+    "@biomejs/biome": "^1.9.2",
     "vitest": "0.34.3",
     "zx": "^7.2.3"
   }

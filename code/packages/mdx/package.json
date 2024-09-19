@@ -5,7 +5,11 @@
   "main": "dist/cjs",
   "module": "dist/esm",
   "type": "module",
-  "files": ["src", "types", "dist"],
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
@@ -43,6 +47,7 @@
     "unist-util-visit": "^2.0.3"
   },
   "devDependencies": {
+    "@biomejs/biome": "^1.9.2",
     "@tamagui/build": "1.111.10"
   },
   "publishConfig": {

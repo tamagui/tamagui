@@ -35,6 +35,7 @@
     "vxs": "^1.1.227"
   },
   "devDependencies": {
+    "@biomejs/biome": "^1.9.2",
     "@nitrogql/esbuild-register": "^1.7.0",
     "patch-package": "^8.0.0"
   },

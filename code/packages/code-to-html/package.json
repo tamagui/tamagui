@@ -5,7 +5,11 @@
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
-  "files": ["src", "types", "dist"],
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
   "scripts": {
     "build": "tamagui-build --bundle",
     "watch": "tamagui-build --bundle --watch",
@@ -26,6 +30,7 @@
     "url": "^0.11.0"
   },
   "devDependencies": {
+    "@biomejs/biome": "^1.9.2",
     "@tamagui/build": "1.111.10"
   },
   "publishConfig": {

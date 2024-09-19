@@ -63,6 +63,7 @@
     "@tamagui/web": "1.111.10"
   },
   "devDependencies": {
+    "@biomejs/biome": "^1.9.2",
     "@tamagui/build": "1.111.10",
     "@tamagui/cli": "1.111.10",
     "vitest": "0.34.3"

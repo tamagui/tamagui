@@ -5,7 +5,12 @@
   "main": "dist/cjs",
   "module": "dist/esm",
   "module:jsx": "dist/jsx",
-  "files": ["types", "dist", "css", "files"],
+  "files": [
+    "types",
+    "dist",
+    "css",
+    "files"
+  ],
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
@@ -18,6 +23,7 @@
     "@tamagui/core": "1.111.10"
   },
   "devDependencies": {
+    "@biomejs/biome": "^1.9.2",
     "@tamagui/build": "1.111.10"
   },
   "publishConfig": {

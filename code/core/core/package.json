@@ -13,7 +13,9 @@
   "author": {
     "name": "Nate Wienert"
   },
-  "sideEffects": ["*.css"],
+  "sideEffects": [
+    "*.css"
+  ],
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
@@ -39,6 +41,7 @@
     "@tamagui/web": "1.111.10"
   },
   "devDependencies": {
+    "@biomejs/biome": "^1.9.2",
     "@tamagui/build": "1.111.10",
     "@testing-library/react": "^16.0.0",
     "csstype": "^3.0.10",

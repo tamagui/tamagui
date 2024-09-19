@@ -1348,18 +1348,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@biomejs/biome@npm:^1.8.3":
-  version: 1.8.3
-  resolution: "@biomejs/biome@npm:1.8.3"
+"@biomejs/biome@npm:^1.9.2":
+  version: 1.9.2
+  resolution: "@biomejs/biome@npm:1.9.2"
   dependencies:
-    "@biomejs/cli-darwin-arm64": "npm:1.8.3"
-    "@biomejs/cli-darwin-x64": "npm:1.8.3"
-    "@biomejs/cli-linux-arm64": "npm:1.8.3"
-    "@biomejs/cli-linux-arm64-musl": "npm:1.8.3"
-    "@biomejs/cli-linux-x64": "npm:1.8.3"
-    "@biomejs/cli-linux-x64-musl": "npm:1.8.3"
-    "@biomejs/cli-win32-arm64": "npm:1.8.3"
-    "@biomejs/cli-win32-x64": "npm:1.8.3"
+    "@biomejs/cli-darwin-arm64": "npm:1.9.2"
+    "@biomejs/cli-darwin-x64": "npm:1.9.2"
+    "@biomejs/cli-linux-arm64": "npm:1.9.2"
+    "@biomejs/cli-linux-arm64-musl": "npm:1.9.2"
+    "@biomejs/cli-linux-x64": "npm:1.9.2"
+    "@biomejs/cli-linux-x64-musl": "npm:1.9.2"
+    "@biomejs/cli-win32-arm64": "npm:1.9.2"
+    "@biomejs/cli-win32-x64": "npm:1.9.2"
   dependenciesMeta:
     "@biomejs/cli-darwin-arm64":
       optional: true
@@ -1379,62 +1379,62 @@ __metadata:
       optional: true
   bin:
     biome: bin/biome
-  checksum: 10/62dfa5147712ef21c384ea7b3c93c0ccac58291a85f2bbd2dee22c8381da5e347cd07bdb7bfcafcecb07fc112349e9d101e697774155553bde987fd47f9b12a1
+  checksum: 10/154179a3e0160e7430e311bd9c39ddc37160296374bb16361798620a81febba2a514f685d5fceb85169f93f3fbdff048ea4b34c41736234ce3e42b3ea306e0fd
   languageName: node
   linkType: hard
 
-"@biomejs/cli-darwin-arm64@npm:1.8.3":
-  version: 1.8.3
-  resolution: "@biomejs/cli-darwin-arm64@npm:1.8.3"
+"@biomejs/cli-darwin-arm64@npm:1.9.2":
+  version: 1.9.2
+  resolution: "@biomejs/cli-darwin-arm64@npm:1.9.2"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"@biomejs/cli-darwin-x64@npm:1.8.3":
-  version: 1.8.3
-  resolution: "@biomejs/cli-darwin-x64@npm:1.8.3"
+"@biomejs/cli-darwin-x64@npm:1.9.2":
+  version: 1.9.2
+  resolution: "@biomejs/cli-darwin-x64@npm:1.9.2"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"@biomejs/cli-linux-arm64-musl@npm:1.8.3":
-  version: 1.8.3
-  resolution: "@biomejs/cli-linux-arm64-musl@npm:1.8.3"
+"@biomejs/cli-linux-arm64-musl@npm:1.9.2":
+  version: 1.9.2
+  resolution: "@biomejs/cli-linux-arm64-musl@npm:1.9.2"
   conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
 
-"@biomejs/cli-linux-arm64@npm:1.8.3":
-  version: 1.8.3
-  resolution: "@biomejs/cli-linux-arm64@npm:1.8.3"
+"@biomejs/cli-linux-arm64@npm:1.9.2":
+  version: 1.9.2
+  resolution: "@biomejs/cli-linux-arm64@npm:1.9.2"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@biomejs/cli-linux-x64-musl@npm:1.8.3":
-  version: 1.8.3
-  resolution: "@biomejs/cli-linux-x64-musl@npm:1.8.3"
+"@biomejs/cli-linux-x64-musl@npm:1.9.2":
+  version: 1.9.2
+  resolution: "@biomejs/cli-linux-x64-musl@npm:1.9.2"
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
 
-"@biomejs/cli-linux-x64@npm:1.8.3":
-  version: 1.8.3
-  resolution: "@biomejs/cli-linux-x64@npm:1.8.3"
+"@biomejs/cli-linux-x64@npm:1.9.2":
+  version: 1.9.2
+  resolution: "@biomejs/cli-linux-x64@npm:1.9.2"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@biomejs/cli-win32-arm64@npm:1.8.3":
-  version: 1.8.3
-  resolution: "@biomejs/cli-win32-arm64@npm:1.8.3"
+"@biomejs/cli-win32-arm64@npm:1.9.2":
+  version: 1.9.2
+  resolution: "@biomejs/cli-win32-arm64@npm:1.9.2"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"@biomejs/cli-win32-x64@npm:1.8.3":
-  version: 1.8.3
-  resolution: "@biomejs/cli-win32-x64@npm:1.8.3"
+"@biomejs/cli-win32-x64@npm:1.9.2":
+  version: 1.9.2
+  resolution: "@biomejs/cli-win32-x64@npm:1.9.2"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
@@ -5761,6 +5761,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/adapt@workspace:code/ui/adapt"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     "@tamagui/constants": "npm:1.111.10"
     "@tamagui/core": "npm:1.111.10"
@@ -5854,6 +5855,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/animations-react-native@workspace:code/core/animations-react-native"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     "@tamagui/constants": "npm:1.111.10"
     "@tamagui/use-presence": "npm:1.111.10"
@@ -5877,6 +5879,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/aria-hidden@workspace:code/core/aria-hidden"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     aria-hidden: "npm:^1.1.3"
     react: "npm:^18.2.0 || ^19.0.0"
@@ -5889,6 +5892,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/assert@workspace:code/core/assert"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
   languageName: unknown
   linkType: soft
@@ -5897,6 +5901,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/avatar@workspace:code/ui/avatar"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     "@tamagui/core": "npm:1.111.10"
     "@tamagui/helpers": "npm:1.111.10"
@@ -5929,6 +5934,7 @@ __metadata:
     "@babel/template": "npm:^7.25.0"
     "@babel/traverse": "npm:^7.25.4"
     "@babel/types": "npm:^7.25.4"
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     "@tamagui/static": "npm:1.111.10"
   languageName: unknown
@@ -6097,6 +6103,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/checkbox@workspace:code/ui/checkbox"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     "@tamagui/checkbox-headless": "npm:1.111.10"
     "@tamagui/compose-refs": "npm:1.111.10"
@@ -6122,6 +6129,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/cli-color@workspace:code/packages/cli-color"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
   languageName: unknown
   linkType: soft
@@ -6173,6 +6181,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/code-to-html@workspace:code/packages/code-to-html"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     hast-util-to-html: "npm:^8.0.3"
     hast-util-to-string: "npm:^2.0.0"
@@ -6190,6 +6199,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/collapsible@workspace:code/ui/collapsible"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/animate-presence": "npm:1.111.10"
     "@tamagui/build": "npm:1.111.10"
     "@tamagui/compose-refs": "npm:1.111.10"
@@ -6227,6 +6237,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/colors@workspace:code/core/colors"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
   languageName: unknown
   linkType: soft
@@ -6263,6 +6274,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/config-base@workspace:code/core/config-base"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
   languageName: unknown
   linkType: soft
@@ -6282,6 +6294,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/config@workspace:code/core/config"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/animations-css": "npm:1.111.10"
     "@tamagui/animations-moti": "npm:1.111.10"
     "@tamagui/animations-react-native": "npm:1.111.10"
@@ -6328,6 +6341,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/core@workspace:code/core/core"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     "@tamagui/react-native-use-pressable": "npm:1.111.10"
     "@tamagui/react-native-use-responder-events": "npm:1.111.10"
@@ -6344,6 +6358,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/create-context@workspace:code/core/create-context"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     react: "npm:^18.2.0 || ^19.0.0"
   peerDependencies:
@@ -6355,6 +6370,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/create-theme@workspace:code/core/create-theme"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     "@tamagui/web": "npm:1.111.10"
   languageName: unknown
@@ -6364,6 +6380,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/create-themes@workspace:code/core/create-themes"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     "@tamagui/core": "npm:1.111.10"
   languageName: unknown
@@ -6410,6 +6427,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/dialog@workspace:code/ui/dialog"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/adapt": "npm:1.111.10"
     "@tamagui/animate-presence": "npm:1.111.10"
     "@tamagui/aria-hidden": "npm:1.111.10"
@@ -6440,6 +6458,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/dismissable@workspace:code/ui/dismissable"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     "@tamagui/compose-refs": "npm:1.111.10"
     "@tamagui/core": "npm:1.111.10"
@@ -6543,6 +6562,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/focus-scope@workspace:code/ui/focus-scope"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     "@tamagui/compose-refs": "npm:1.111.10"
     "@tamagui/start-transition": "npm:1.111.10"
@@ -6557,6 +6577,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/focusable@workspace:code/ui/focusable"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     "@tamagui/compose-refs": "npm:1.111.10"
     "@tamagui/web": "npm:1.111.10"
@@ -6581,6 +6602,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/font-dm-sans@workspace:code/core/font-dm-sans"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     "@tamagui/core": "npm:1.111.10"
     subset-font: "npm:^2.1.0"
@@ -6591,6 +6613,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/font-dm-serif-display@workspace:code/core/font-dm-serif-display"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     "@tamagui/core": "npm:1.111.10"
     subset-font: "npm:^2.1.0"
@@ -6610,6 +6633,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/font-glusp@workspace:code/core/font-glusp"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     "@tamagui/web": "npm:1.111.10"
   languageName: unknown
@@ -6619,6 +6643,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/font-inter@workspace:code/core/font-inter"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     "@tamagui/core": "npm:1.111.10"
     subset-font: "npm:^2.1.0"
@@ -6629,6 +6654,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/font-munro@workspace:code/core/font-munro"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     "@tamagui/core": "npm:1.111.10"
   languageName: unknown
@@ -6638,6 +6664,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/font-nohemi@workspace:code/core/font-nohemi"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     "@tamagui/core": "npm:1.111.10"
     subset-font: "npm:^2.1.0"
@@ -6648,6 +6675,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/font-silkscreen@workspace:code/core/font-silkscreen"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     "@tamagui/core": "npm:1.111.10"
   languageName: unknown
@@ -6657,6 +6685,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/font-size@workspace:code/core/font-size"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     "@tamagui/core": "npm:1.111.10"
     react: "npm:^18.2.0 || ^19.0.0"
@@ -6669,6 +6698,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/font@workspace:code/core/font"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     "@tamagui/constants": "npm:1.111.10"
     "@tamagui/web": "npm:1.111.10"
@@ -6682,6 +6712,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/form@workspace:code/ui/form"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     "@tamagui/compose-refs": "npm:1.111.10"
     "@tamagui/core": "npm:1.111.10"
@@ -6701,6 +6732,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/generate-themes@workspace:code/core/generate-themes"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     "@tamagui/create-theme": "npm:1.111.10"
     "@tamagui/theme-builder": "npm:1.111.10"
@@ -6727,6 +6759,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/get-font-sized@workspace:code/core/get-font-sized"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     "@tamagui/core": "npm:1.111.10"
     react: "npm:^18.2.0 || ^19.0.0"
@@ -6739,6 +6772,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/get-token@workspace:code/core/get-token"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     "@tamagui/web": "npm:1.111.10"
     react: "npm:^18.2.0 || ^19.0.0"
@@ -6791,6 +6825,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/helpers-tamagui@workspace:code/core/helpers-tamagui"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     "@tamagui/helpers": "npm:1.111.10"
     "@tamagui/web": "npm:1.111.10"
@@ -6805,6 +6840,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/helpers@workspace:code/core/helpers"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     "@tamagui/constants": "npm:1.111.10"
     "@tamagui/simple-hash": "npm:1.111.10"
@@ -6815,6 +6851,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/image-next@workspace:code/ui/image-next"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     "@tamagui/constants": "npm:1.111.10"
     "@tamagui/web": "npm:1.111.10"
@@ -6829,6 +6866,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/image@workspace:code/ui/image"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     "@tamagui/constants": "npm:1.111.10"
     "@tamagui/core": "npm:1.111.10"
@@ -6843,6 +6881,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/input@workspace:code/ui/input"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     "@tamagui/core": "npm:1.111.10"
     "@tamagui/focusable": "npm:1.111.10"
@@ -6865,6 +6904,7 @@ __metadata:
   resolution: "@tamagui/kitchen-sink@workspace:code/kitchen-sink"
   dependencies:
     "@babel/core": "npm:^7.25.2"
+    "@biomejs/biome": "npm:^1.9.2"
     "@playwright/test": "npm:^1.45.2"
     "@pmmmwh/react-refresh-webpack-plugin": "npm:^0.5.10"
     "@react-native-async-storage/async-storage": "npm:1.23.1"
@@ -6921,6 +6961,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/label@workspace:code/ui/label"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     "@tamagui/compose-refs": "npm:1.111.10"
     "@tamagui/constants": "npm:1.111.10"
@@ -6956,6 +6997,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/list-item@workspace:code/ui/list-item"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     "@tamagui/font-size": "npm:1.111.10"
     "@tamagui/get-font-sized": "npm:1.111.10"
@@ -6975,6 +7017,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/logo@workspace:code/packages/logo"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     react: "npm:^18.2.0 || ^19.0.0"
     tamagui: "npm:1.111.10"
@@ -6987,7 +7030,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/lucide-icons@workspace:code/packages/lucide-icons"
   dependencies:
-    "@biomejs/biome": "npm:^1.8.3"
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     "@tamagui/core": "npm:1.111.10"
     "@tamagui/helpers-icon": "npm:1.111.10"
@@ -7011,6 +7054,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/mdx@workspace:code/packages/mdx"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     "@tamagui/demos": "npm:1.111.10"
     compare-versions: "npm:^4.1.3"
@@ -7035,6 +7079,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/menu@workspace:code/ui/menu"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     "@tamagui/core": "npm:1.111.10"
     "@tamagui/helpers": "npm:1.111.10"
@@ -7062,6 +7107,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/monorepo-test@workspace:code/core/monorepo-test"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     vitest: "npm:0.34.3"
     zx: "npm:^7.2.3"
   languageName: unknown
@@ -7072,6 +7118,7 @@ __metadata:
   resolution: "@tamagui/next-plugin@workspace:code/compiler/next-plugin"
   dependencies:
     "@babel/preset-react": "npm:^7.24.7"
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     "@tamagui/proxy-worm": "npm:1.111.10"
     "@tamagui/react-native-svg": "npm:1.111.10"
@@ -7127,6 +7174,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/normalize-css-color@workspace:code/core/normalize-css-color"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@react-native/normalize-color": "npm:^2.1.0"
     "@tamagui/build": "npm:1.111.10"
   languageName: unknown
@@ -7136,6 +7184,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/one-theme@workspace:code/packages/one-theme"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     "@tamagui/use-did-finish-ssr": "npm:1.111.10"
     react: "npm:^18.2.0 || ^19.0.0"
@@ -7150,6 +7199,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/ooo@workspace:code/ooo"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@docsearch/react": "npm:^3.6.1"
     "@leeoniya/ufuzzy": "npm:^1.0.14"
     "@nitrogql/esbuild-register": "npm:^1.7.0"
@@ -7177,6 +7227,8 @@ __metadata:
 "@tamagui/polyfill-dev@npm:1.111.10, @tamagui/polyfill-dev@workspace:code/core/polyfill-dev":
   version: 0.0.0-use.local
   resolution: "@tamagui/polyfill-dev@workspace:code/core/polyfill-dev"
+  dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
   languageName: unknown
   linkType: soft
 
@@ -7216,6 +7268,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/popper@workspace:code/ui/popper"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     "@tamagui/compose-refs": "npm:1.111.10"
     "@tamagui/constants": "npm:1.111.10"
@@ -7236,6 +7289,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/portal@workspace:code/ui/portal"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     "@tamagui/constants": "npm:1.111.10"
     "@tamagui/core": "npm:1.111.10"
@@ -7254,6 +7308,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/progress@workspace:code/ui/progress"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     "@tamagui/compose-refs": "npm:1.111.10"
     "@tamagui/core": "npm:1.111.10"
@@ -7278,6 +7333,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/radio-group@workspace:code/ui/radio-group"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     "@tamagui/compose-refs": "npm:1.111.10"
     "@tamagui/constants": "npm:1.111.10"
@@ -7321,6 +7377,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/react-17-patch@workspace:code/core/react-17-patch"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@reach/auto-id": "npm:^0.18.0"
     use-sync-external-store: "npm:^1.2.0"
   languageName: unknown
@@ -7342,6 +7399,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/react-native-svg@workspace:code/packages/react-native-svg"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
   languageName: unknown
   linkType: soft
@@ -7350,6 +7408,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/react-native-use-pressable@workspace:code/core/react-native-use-pressable"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     react: "npm:^18.2.0 || ^19.0.0"
   peerDependencies:
@@ -7361,6 +7420,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/react-native-use-responder-events@workspace:code/core/react-native-use-responder-events"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     react: "npm:^18.2.0 || ^19.0.0"
   peerDependencies:
@@ -7372,6 +7432,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/remove-scroll@workspace:code/ui/remove-scroll"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     react: "npm:^18.2.0 || ^19.0.0"
     react-remove-scroll: "npm:2.5.5"
@@ -7384,6 +7445,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/roving-focus@workspace:code/ui/roving-focus"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     "@tamagui/collection": "npm:1.111.10"
     "@tamagui/compose-refs": "npm:1.111.10"
@@ -7431,6 +7493,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/select@workspace:code/ui/select"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@floating-ui/react": "npm:^0.26.24"
     "@floating-ui/react-dom": "npm:^2.1.2"
     "@floating-ui/react-native": "npm:^0.10.6"
@@ -7468,6 +7531,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/separator@workspace:code/ui/separator"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     "@tamagui/constants": "npm:1.111.10"
     "@tamagui/core": "npm:1.111.10"
@@ -7481,6 +7545,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/shapes@workspace:code/ui/shapes"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     "@tamagui/stacks": "npm:1.111.10"
     "@tamagui/web": "npm:1.111.10"
@@ -7519,6 +7584,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/shorthands@workspace:code/core/shorthands"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
   languageName: unknown
   linkType: soft
@@ -7527,6 +7593,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/simple-hash@workspace:code/core/simple-hash"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
   languageName: unknown
   linkType: soft
@@ -7535,6 +7602,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/slider@workspace:code/ui/slider"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     "@tamagui/compose-refs": "npm:1.111.10"
     "@tamagui/constants": "npm:1.111.10"
@@ -7557,6 +7625,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/stacks@workspace:code/ui/stacks"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     "@tamagui/core": "npm:1.111.10"
     "@tamagui/get-button-sized": "npm:1.111.10"
@@ -7570,6 +7639,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/start-transition@workspace:code/core/start-transition"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     react: "npm:^18.2.0 || ^19.0.0"
   languageName: unknown
@@ -7581,6 +7651,7 @@ __metadata:
   dependencies:
     "@babel/plugin-syntax-typescript": "npm:^7.25.4"
     "@babel/types": "npm:^7.25.4"
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/sandbox-ui": "npm:1.111.10"
     "@tamagui/test-design-system": "npm:1.111.10"
     "@testing-library/react": "npm:^16.0.0"
@@ -7682,6 +7753,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/switch@workspace:code/ui/switch"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     "@tamagui/compose-refs": "npm:1.111.10"
     "@tamagui/constants": "npm:1.111.10"
@@ -7704,6 +7776,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/tabs@workspace:code/ui/tabs"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     "@tamagui/compose-refs": "npm:1.111.10"
     "@tamagui/constants": "npm:1.111.10"
@@ -7769,6 +7842,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/test-design-system@workspace:code/core/test-design-system"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     "@tamagui/core": "npm:1.111.10"
   languageName: unknown
@@ -7778,6 +7852,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/text-test@workspace:code/ui/text-test"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/text": "npm:1.111.10"
     vitest: "npm:0.34.3"
   languageName: unknown
@@ -7787,6 +7862,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/text@workspace:code/ui/text"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     "@tamagui/get-font-sized": "npm:1.111.10"
     "@tamagui/helpers-tamagui": "npm:1.111.10"
@@ -7801,6 +7877,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/theme-base@workspace:code/core/theme-base"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
   languageName: unknown
   linkType: soft
@@ -7832,6 +7909,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/themes@workspace:code/core/themes"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     "@tamagui/cli": "npm:1.111.10"
     "@tamagui/colors": "npm:1.111.10"
@@ -7846,6 +7924,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/timer@workspace:code/packages/timer"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
   languageName: unknown
   linkType: soft
@@ -7880,6 +7959,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/toggle-group@workspace:code/ui/toggle-group"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     "@tamagui/constants": "npm:1.111.10"
     "@tamagui/create-context": "npm:1.111.10"
@@ -7904,6 +7984,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/tooltip@workspace:code/ui/tooltip"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@floating-ui/react": "npm:^0.26.24"
     "@tamagui/build": "npm:1.111.10"
     "@tamagui/compose-refs": "npm:1.111.10"
@@ -7928,6 +8009,8 @@ __metadata:
 "@tamagui/types@npm:1.111.10, @tamagui/types@workspace:code/core/types":
   version: 0.0.0-use.local
   resolution: "@tamagui/types@workspace:code/core/types"
+  dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
   languageName: unknown
   linkType: soft
 
@@ -7935,6 +8018,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/use-callback-ref@workspace:code/core/use-callback-ref"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
   languageName: unknown
   linkType: soft
@@ -7967,6 +8051,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/use-debounce@workspace:code/core/use-debounce"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     react: "npm:^18.2.0 || ^19.0.0"
   peerDependencies:
@@ -7978,6 +8063,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/use-did-finish-ssr@workspace:code/core/use-did-finish-ssr"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     react: "npm:^18.2.0 || ^19.0.0"
   peerDependencies:
@@ -7989,6 +8075,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/use-direction@workspace:code/core/use-direction"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     react: "npm:^18.2.0 || ^19.0.0"
   peerDependencies:
@@ -8032,6 +8119,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/use-keyboard-visible@workspace:code/core/use-keyboard-visible"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     react: "npm:^18.2.0 || ^19.0.0"
     react-native: "npm:0.74.1"
@@ -8091,6 +8179,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/visually-hidden@workspace:code/ui/visually-hidden"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     "@tamagui/web": "npm:1.111.10"
     react: "npm:^18.2.0 || ^19.0.0"
@@ -8103,6 +8192,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/vite-plugin-cjs@workspace:code/compiler/vite-plugin-cjs"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/vite-plugin": "npm:1.111.10"
   languageName: unknown
   linkType: soft
@@ -8111,6 +8201,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/vite-plugin-internal@workspace:code/packages/vite-plugin-internal"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     "@tamagui/config-default": "npm:1.111.10"
     "@tamagui/vite-plugin": "npm:1.111.10"
@@ -8127,6 +8218,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/vite-plugin@workspace:code/compiler/vite-plugin"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     "@tamagui/fake-react-native": "npm:1.111.10"
     "@tamagui/proxy-worm": "npm:1.111.10"
@@ -8143,6 +8235,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/web@workspace:code/core/web"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     "@tamagui/compose-refs": "npm:1.111.10"
     "@tamagui/constants": "npm:1.111.10"
@@ -23262,6 +23355,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "react-native-web-lite@workspace:code/packages/react-native-web-lite"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     "@tamagui/normalize-css-color": "npm:1.111.10"
     "@tamagui/react-native-use-pressable": "npm:1.111.10"
@@ -25876,6 +25970,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "tamagui-build-test-simple-tpackage@workspace:code/packages/build/__tests__/fixtures/simple-package"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     typescript: "npm:^5.5.2"
   languageName: unknown
@@ -25885,6 +25980,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "tamagui-build-test-watch-package@workspace:code/packages/build/__tests__/fixtures/watch-package"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     typescript: "npm:^5.5.2"
   languageName: unknown
@@ -25913,7 +26009,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "tamagui-monorepo@workspace:."
   dependencies:
-    "@biomejs/biome": "npm:^1.8.3"
+    "@biomejs/biome": "npm:^1.9.2"
     "@manypkg/cli": "npm:^0.19.1"
     "@playwright/test": "npm:^1.45.2"
     "@testing-library/dom": "npm:^10.4.0"
@@ -25941,6 +26037,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "tamagui@workspace:code/ui/tamagui"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/accordion": "npm:1.111.10"
     "@tamagui/adapt": "npm:1.111.10"
     "@tamagui/alert-dialog": "npm:1.111.10"

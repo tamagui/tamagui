@@ -1,7 +1,9 @@
 {
   "name": "@tamagui/sheet",
   "version": "1.111.10",
-  "sideEffects": ["*.css"],
+  "sideEffects": [
+    "*.css"
+  ],
   "removeSideEffects": true,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -9,7 +11,11 @@
   "module": "dist/esm",
   "module:jsx": "dist/jsx",
   "license": "MIT",
-  "files": ["src", "types", "dist"],
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",

@@ -12,5 +12,8 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.2"
   }
 }

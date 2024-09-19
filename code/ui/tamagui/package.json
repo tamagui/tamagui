@@ -2,8 +2,12 @@
   "name": "tamagui",
   "version": "1.111.10",
   "removeSideEffects": true,
-  "alsoPublishAs_disabled": ["@tamagui/ui"],
-  "sideEffects": ["setup.js"],
+  "alsoPublishAs_disabled": [
+    "@tamagui/ui"
+  ],
+  "sideEffects": [
+    "setup.js"
+  ],
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
@@ -13,7 +17,14 @@
     "bundle.native": "./src/index.ts",
     "bundle.native.test": "./src/index.ts"
   },
-  "files": ["src", "types", "dist", "linear-gradient", "native.js", "native.d.ts"],
+  "files": [
+    "src",
+    "types",
+    "dist",
+    "linear-gradient",
+    "native.js",
+    "native.d.ts"
+  ],
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
@@ -111,6 +122,7 @@
     "@tamagui/visually-hidden": "1.111.10"
   },
   "devDependencies": {
+    "@biomejs/biome": "^1.9.2",
     "@tamagui/build": "1.111.10",
     "react": "^18.2.0 || ^19.0.0",
     "react-native-web": "^0.19.12"

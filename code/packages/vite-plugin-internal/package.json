@@ -21,6 +21,7 @@
     "clean:build": "tamagui-build clean:build"
   },
   "devDependencies": {
+    "@biomejs/biome": "^1.9.2",
     "@tamagui/build": "1.111.10",
     "@tamagui/config-default": "1.111.10",
     "@tamagui/vite-plugin": "1.111.10",

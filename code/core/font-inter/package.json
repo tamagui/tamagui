@@ -5,7 +5,13 @@
   "main": "dist/cjs",
   "module": "dist/esm",
   "module:jsx": "dist/jsx",
-  "files": ["types", "dist", "css", "otf", "woff2"],
+  "files": [
+    "types",
+    "dist",
+    "css",
+    "otf",
+    "woff2"
+  ],
   "exports": {
     "./package.json": "./package.json",
     "./css/100.css": "./css/100.css",
@@ -56,6 +62,7 @@
     "@tamagui/core": "1.111.10"
   },
   "devDependencies": {
+    "@biomejs/biome": "^1.9.2",
     "@tamagui/build": "1.111.10",
     "subset-font": "^2.1.0"
   },
