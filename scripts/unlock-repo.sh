@@ -12,12 +12,14 @@ if [ "$SHOULD_UNLOCK_GIT_CRYPT" = "1" ]; then
       # Check if CI variable is set to true
       if [ "$CI" = "true" ]; then
         echo "CI environment detected. Creating commit..."
+        git config --global user.email "ci@tamagui.dev"
+        git config --global user.name "CI Bot"
 
         # Stage all changes
         git add -A
 
         # Create a commit with a message indicating it was made in CI, using a generic author
-        if git commit --author="CI Bot <ci@example.com>" -m "Automated commit created in CI environment [skip ci]"; then
+        if git commit -m "Automated commit created in CI environment [skip ci]"; then
           echo "Commit created successfully."
         else
           echo "Failed to create commit."
