@@ -29,8 +29,8 @@
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
     "clean": "tamagui-build clean",
-    "lint": "npx biome check src",
-    "lint:fix": "npx biome check --write src",
+    "lint": "biome check src",
+    "lint:fix": "biome check --write src",
     "clean:build": "tamagui-build clean:build"
   },
   "publishConfig": {

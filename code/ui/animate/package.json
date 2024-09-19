@@ -23,8 +23,8 @@
     "watch": "tamagui-build --watch",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build",
-    "lint": "npx biome check src",
-    "lint:fix": "npx biome check --write src"
+    "lint": "biome check src",
+    "lint:fix": "biome check --write src"
   },
   "exports": {
     "./package.json": "./package.json",
