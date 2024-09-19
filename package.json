@@ -104,7 +104,7 @@
   "profile": {
     "//": "run 'yarn profile x' to toggle it on/off",
     "react-19": {
-      "applied": true,
+      "applied": false,
       "resolutions": {
         "@react-three/fiber": "9.0.0-alpha.6",
         "react": "19.0.0-rc-fb9a90fa48-20240614",
@@ -180,11 +180,5 @@
     "ultra-runner": "^3.10.5",
     "update-ts-references": "^3.3.0",
     "zx": "^7.2.3"
-  },
-  "resolutions": {
-    "@react-three/fiber": "9.0.0-alpha.6",
-    "react": "19.0.0-rc-fb9a90fa48-20240614",
-    "react-dom": "19.0.0-rc-fb9a90fa48-20240614",
-    "react-native-reanimated": "3.13.0-rc.1"
   }
 }
