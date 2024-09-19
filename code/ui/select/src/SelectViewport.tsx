@@ -123,7 +123,7 @@ export const SelectViewport = SelectViewportFrame.styleable<SelectViewportExtraP
                 {...style}
                 {...floatingProps}
                 {...(!props.unstyled && {
-                  overflowY: disableScroll ? undefined : style.overflow ?? 'auto',
+                  overflowY: disableScroll ? undefined : (style.overflow ?? 'auto'),
                 })}
                 ref={composedRefs}
               >

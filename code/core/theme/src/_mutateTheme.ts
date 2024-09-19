@@ -101,7 +101,7 @@ export function _mutateTheme(props: MutateThemeOptions & MutateOneThemeProps) {
   }
 
   const theme = {
-    ...(mutationType === 'update' ? config.themes[themeName] ?? {} : {}),
+    ...(mutationType === 'update' ? (config.themes[themeName] ?? {}) : {}),
     ...themeIn,
   } as ThemeParsed
 

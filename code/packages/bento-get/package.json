@@ -13,7 +13,11 @@
   "source": "src/cli.tsx",
   "types": "./types/cli.d.ts",
   "module": "dist",
-  "files": ["source", "types", "dist"],
+  "files": [
+    "source",
+    "types",
+    "dist"
+  ],
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",

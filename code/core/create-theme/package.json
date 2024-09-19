@@ -5,7 +5,12 @@
   "main": "dist/cjs",
   "module": "dist/esm",
   "sideEffects": false,
-  "files": ["src", "types", "dist", "theme-builder"],
+  "files": [
+    "src",
+    "types",
+    "dist",
+    "theme-builder"
+  ],
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",

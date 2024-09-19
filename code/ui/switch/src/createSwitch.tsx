@@ -95,7 +95,7 @@ export function createSwitch<
       const unstyled =
         process.env.TAMAGUI_HEADLESS === '1'
           ? true
-          : unstyledProp ?? unstyledContext ?? false
+          : (unstyledProp ?? unstyledContext ?? false)
       const size = sizeProp ?? sizeContext ?? '$true'
 
       const initialChecked = React.useRef(checked).current

@@ -1,7 +1,9 @@
 {
   "name": "@tamagui/test-design-system",
   "version": "1.111.10",
-  "sideEffects": ["*.css"],
+  "sideEffects": [
+    "*.css"
+  ],
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",

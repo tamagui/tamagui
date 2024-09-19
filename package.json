@@ -159,7 +159,7 @@
   },
   "packageManager": "yarn@4.4.0",
   "dependencies": {
-    "@biomejs/biome": "^1.8.3",
+    "@biomejs/biome": "^1.9.2",
     "@manypkg/cli": "^0.19.1",
     "@playwright/test": "^1.45.2",
     "@testing-library/dom": "^10.4.0",

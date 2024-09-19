@@ -1348,18 +1348,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@biomejs/biome@npm:^1.8.3":
-  version: 1.9.1
-  resolution: "@biomejs/biome@npm:1.9.1"
+"@biomejs/biome@npm:^1.9.2":
+  version: 1.9.2
+  resolution: "@biomejs/biome@npm:1.9.2"
   dependencies:
-    "@biomejs/cli-darwin-arm64": "npm:1.9.1"
-    "@biomejs/cli-darwin-x64": "npm:1.9.1"
-    "@biomejs/cli-linux-arm64": "npm:1.9.1"
-    "@biomejs/cli-linux-arm64-musl": "npm:1.9.1"
-    "@biomejs/cli-linux-x64": "npm:1.9.1"
-    "@biomejs/cli-linux-x64-musl": "npm:1.9.1"
-    "@biomejs/cli-win32-arm64": "npm:1.9.1"
-    "@biomejs/cli-win32-x64": "npm:1.9.1"
+    "@biomejs/cli-darwin-arm64": "npm:1.9.2"
+    "@biomejs/cli-darwin-x64": "npm:1.9.2"
+    "@biomejs/cli-linux-arm64": "npm:1.9.2"
+    "@biomejs/cli-linux-arm64-musl": "npm:1.9.2"
+    "@biomejs/cli-linux-x64": "npm:1.9.2"
+    "@biomejs/cli-linux-x64-musl": "npm:1.9.2"
+    "@biomejs/cli-win32-arm64": "npm:1.9.2"
+    "@biomejs/cli-win32-x64": "npm:1.9.2"
   dependenciesMeta:
     "@biomejs/cli-darwin-arm64":
       optional: true
@@ -1379,62 +1379,62 @@ __metadata:
       optional: true
   bin:
     biome: bin/biome
-  checksum: 10/ca385e220d6aca88df60cfe3139f91dc094d8debdaf0582488f47b204d5ba2052d5f7d225e07b2e5bdca6a56fe34047928f95d75a4501d5fae67b7a996f39635
+  checksum: 10/154179a3e0160e7430e311bd9c39ddc37160296374bb16361798620a81febba2a514f685d5fceb85169f93f3fbdff048ea4b34c41736234ce3e42b3ea306e0fd
   languageName: node
   linkType: hard
 
-"@biomejs/cli-darwin-arm64@npm:1.9.1":
-  version: 1.9.1
-  resolution: "@biomejs/cli-darwin-arm64@npm:1.9.1"
+"@biomejs/cli-darwin-arm64@npm:1.9.2":
+  version: 1.9.2
+  resolution: "@biomejs/cli-darwin-arm64@npm:1.9.2"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"@biomejs/cli-darwin-x64@npm:1.9.1":
-  version: 1.9.1
-  resolution: "@biomejs/cli-darwin-x64@npm:1.9.1"
+"@biomejs/cli-darwin-x64@npm:1.9.2":
+  version: 1.9.2
+  resolution: "@biomejs/cli-darwin-x64@npm:1.9.2"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"@biomejs/cli-linux-arm64-musl@npm:1.9.1":
-  version: 1.9.1
-  resolution: "@biomejs/cli-linux-arm64-musl@npm:1.9.1"
+"@biomejs/cli-linux-arm64-musl@npm:1.9.2":
+  version: 1.9.2
+  resolution: "@biomejs/cli-linux-arm64-musl@npm:1.9.2"
   conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
 
-"@biomejs/cli-linux-arm64@npm:1.9.1":
-  version: 1.9.1
-  resolution: "@biomejs/cli-linux-arm64@npm:1.9.1"
+"@biomejs/cli-linux-arm64@npm:1.9.2":
+  version: 1.9.2
+  resolution: "@biomejs/cli-linux-arm64@npm:1.9.2"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@biomejs/cli-linux-x64-musl@npm:1.9.1":
-  version: 1.9.1
-  resolution: "@biomejs/cli-linux-x64-musl@npm:1.9.1"
+"@biomejs/cli-linux-x64-musl@npm:1.9.2":
+  version: 1.9.2
+  resolution: "@biomejs/cli-linux-x64-musl@npm:1.9.2"
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
 
-"@biomejs/cli-linux-x64@npm:1.9.1":
-  version: 1.9.1
-  resolution: "@biomejs/cli-linux-x64@npm:1.9.1"
+"@biomejs/cli-linux-x64@npm:1.9.2":
+  version: 1.9.2
+  resolution: "@biomejs/cli-linux-x64@npm:1.9.2"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@biomejs/cli-win32-arm64@npm:1.9.1":
-  version: 1.9.1
-  resolution: "@biomejs/cli-win32-arm64@npm:1.9.1"
+"@biomejs/cli-win32-arm64@npm:1.9.2":
+  version: 1.9.2
+  resolution: "@biomejs/cli-win32-arm64@npm:1.9.2"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"@biomejs/cli-win32-x64@npm:1.9.1":
-  version: 1.9.1
-  resolution: "@biomejs/cli-win32-x64@npm:1.9.1"
+"@biomejs/cli-win32-x64@npm:1.9.2":
+  version: 1.9.2
+  resolution: "@biomejs/cli-win32-x64@npm:1.9.2"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
@@ -6980,7 +6980,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/lucide-icons@workspace:code/packages/lucide-icons"
   dependencies:
-    "@biomejs/biome": "npm:^1.8.3"
+    "@biomejs/biome": "npm:^1.9.2"
     "@tamagui/build": "npm:1.111.10"
     "@tamagui/core": "npm:1.111.10"
     "@tamagui/helpers-icon": "npm:1.111.10"
@@ -25936,7 +25936,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "tamagui-monorepo@workspace:."
   dependencies:
-    "@biomejs/biome": "npm:^1.8.3"
+    "@biomejs/biome": "npm:^1.9.2"
     "@manypkg/cli": "npm:^0.19.1"
     "@playwright/test": "npm:^1.45.2"
     "@testing-library/dom": "npm:^10.4.0"

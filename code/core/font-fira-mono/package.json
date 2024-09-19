@@ -5,7 +5,12 @@
   "main": "dist/cjs",
   "module": "dist/esm",
   "module:jsx": "dist/jsx",
-  "files": ["types", "dist", "css", "ttf"],
+  "files": [
+    "types",
+    "dist",
+    "css",
+    "ttf"
+  ],
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",

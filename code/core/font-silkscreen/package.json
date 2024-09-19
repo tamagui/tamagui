@@ -5,7 +5,12 @@
   "main": "dist/cjs",
   "module": "dist/esm",
   "module:jsx": "dist/jsx",
-  "files": ["types", "dist", "css", "files"],
+  "files": [
+    "types",
+    "dist",
+    "css",
+    "files"
+  ],
   "exports": {
     "./package.json": "./package.json",
     ".": {

@@ -71,7 +71,7 @@ const SelectValue = SelectValueFrame.styleable<SelectValueExtraProps>(
     const composedRefs = useComposedRefs(forwardedRef, context.onValueNodeChange)
     const children = childrenProp ?? context.selectedItem
     const isEmptyValue = context.value == null || context.value === ''
-    const selectValueChildren = isEmptyValue ? placeholder ?? children : children
+    const selectValueChildren = isEmptyValue ? (placeholder ?? children) : children
 
     return (
       <SelectValueFrame
@@ -361,7 +361,7 @@ export const Select = withStaticProperties(
 
     const internalId = React.useId()
     const scopeKey = __scopeSelect
-      ? Object.keys(__scopeSelect)[0] ?? internalId
+      ? (Object.keys(__scopeSelect)[0] ?? internalId)
       : internalId
 
     const { when, AdaptProvider } = useAdaptParent({

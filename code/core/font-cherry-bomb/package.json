@@ -5,7 +5,13 @@
   "main": "dist/cjs",
   "module": "dist/esm",
   "module:jsx": "dist/jsx",
-  "files": ["types", "dist", "css", "otf", "woff2"],
+  "files": [
+    "types",
+    "dist",
+    "css",
+    "otf",
+    "woff2"
+  ],
   "scripts": {
     "build": "tamagui-build",
     "subset": "node -r esbuild-register subset.ts",
