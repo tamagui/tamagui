@@ -3,7 +3,7 @@ import { Box, Text } from 'ink'
 import React from 'react'
 import TextInput from 'ink-text-input'
 
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { debugLog } from '../commands/index.js'
 import { AppContext } from '../data/AppContext.js'
 
@@ -11,7 +11,7 @@ export const CodeAuthScreen = () => {
   const appContext = React.useContext(AppContext)
   const location = useLocation()
   const navigate = useNavigate()
-
+  const { fileName } = useParams()
   const [localAccessToken, setLocalAccessToken] = React.useState(appContext.accessToken)
 
   const handleInputChange = (value: string) => {
@@ -19,14 +19,15 @@ export const CodeAuthScreen = () => {
       value,
       at: appContext.accessToken,
     })
-    if (location.pathname !== '/auth') return
+    if (!location.pathname.includes('/auth/')) return
     appContext.setAccessToken(value)
     appContext.setIsLoggedIn(true)
     appContext.tokenStore.set('accessToken', value)
     appContext.tokenStore.onDidChange('accessToken', (newValue) => {
       debugLog('tokenStore changed', newValue)
     })
-    navigate('/install-confirm')
+    debugLog('navigating to install-confirm', { fileName })
+    navigate(`/install-confirm/${fileName}`)
   }
 
   return (

@@ -1,5 +1,5 @@
 import React from 'react'
-import { useApp, useInput } from 'ink'
+import { Box, useApp, useInput, Text } from 'ink'
 import {
   MemoryRouter,
   Navigate,
@@ -7,6 +7,7 @@ import {
   Routes,
   useLocation,
   useNavigate,
+  useParams,
 } from 'react-router-dom'
 
 import { AuthGuard } from '../app/AuthGuard.js'
@@ -98,16 +99,41 @@ function BentoGet() {
     handleGlobalKeyPress(input, key, appContextValues, navigate, location)
   )
 
+  React.useEffect(() => {
+    // On initial boot set the token if we have one
+    const token = tokenStore.get('accessToken')
+    if (token) {
+      setAccessToken(token as string)
+      setIsLoggedIn(true)
+      debugLog('Token found, setting isLoggedIn to true')
+      debugLog({ token })
+    } else {
+      setIsLoggedIn(false)
+    }
+  }, [])
+
   return (
     <AppContext.Provider value={appContextValues}>
       <AuthGuard>
         <Routes>
           <Route path="/" element={<Navigate to="/search" replace />} />
           <Route path="/search" element={<SearchScreen />} />
-          <Route path="/install-confirm" element={<InstallConfirmScreen />} />
-          <Route path="/auth" element={<CodeAuthScreen />} />
+          <Route path="/auth/:fileName" element={<CodeAuthScreen />} />
+          <Route
+            path="/install-confirm/:fileName"
+            element={<ProtectedRoute component={InstallConfirmScreen} />}
+          />
         </Routes>
       </AuthGuard>
+      {process.env.DEBUG && (
+        <Box borderStyle="round" borderColor="" padding={1}>
+          <Text>Current Route: {location.pathname}</Text>
+          <Text color={'magenta'}> | </Text>
+          <Text color={isLoggedIn ? 'green' : 'red'}>
+            {isLoggedIn ? 'Logged In' : 'Logged Out'}
+          </Text>
+        </Box>
+      )}
     </AppContext.Provider>
   )
 }
@@ -118,4 +144,14 @@ export default function App() {
       <BentoGet />
     </MemoryRouter>
   )
+}
+
+type ProtectedRouteProps = {
+  component: React.ComponentType<any>
+}
+
+const ProtectedRoute = ({ component: Component }: ProtectedRouteProps) => {
+  const { fileName } = useParams()
+  const { isLoggedIn } = React.useContext(AppContext)
+  return isLoggedIn ? <Component /> : <Navigate to={`/auth/${fileName}`} replace />
 }

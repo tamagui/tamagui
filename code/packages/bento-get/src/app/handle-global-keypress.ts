@@ -33,7 +33,7 @@ export const handleGlobalKeyPress = (
     appContext.setAccessToken(null)
     appContext.setIsLoggedIn(false)
     console.warn('Cleared Auth Token')
-    return
+    return navigate('/')
   }
 
   if (key === 'c' && appContext.installState.shouldOpenBrowser) {
@@ -41,7 +41,7 @@ export const handleGlobalKeyPress = (
     return
   }
 
-  if (location.pathname === '/install-confirm') {
+  if (location.pathname.includes('/install-confirm')) {
     if (key === 'y') {
       setConfirmationPending(false)
       navigate('/search')
@@ -131,7 +131,7 @@ export const handleGlobalKeyPress = (
         installingComponent: searchResults[selectedResultIndex]?.item,
       }))
       debugLog('Installing component', searchResults[selectedResultIndex]?.item)
-      navigate('/install-confirm')
+      navigate(`/install-confirm/${searchResults[selectedResultIndex]?.item.fileName}`)
       return
     }
   }

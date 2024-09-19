@@ -2,24 +2,12 @@ import fetch from 'node-fetch'
 import querystring from 'node:querystring'
 import React from 'react'
 import useSWR from 'swr'
-import { useNavigate } from 'react-router-dom'
 import { AppContext } from '../data/AppContext.js'
 import { debugLog } from '../commands/index.js'
 
 export const useFetchComponent = () => {
   const { installState, accessToken, tokenStore, setIsLoggedIn, setAccessToken } =
     React.useContext(AppContext)
-
-  const navigate = useNavigate()
-  React.useEffect(() => {
-    if (
-      !accessToken &&
-      installState.installingComponent &&
-      !installState.installingComponent.isOSS
-    ) {
-      navigate('/auth')
-    }
-  }, [accessToken, installState.installingComponent, navigate])
 
   const fetcher = async (url: string) => {
     debugLog('fetcher', url)
@@ -106,10 +94,8 @@ export const useFetchComponent = () => {
       // Update the context
       setAccessToken(null)
       setIsLoggedIn(false)
-      // Redirect to auth page
-      navigate('/auth')
     }
-  }, [error, navigate, tokenStore, setAccessToken])
+  }, [error, tokenStore, setAccessToken])
 
   return { data, error, isLoading }
 }

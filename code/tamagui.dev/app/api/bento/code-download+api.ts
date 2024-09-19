@@ -37,7 +37,7 @@ export const GET: Endpoint = async (req) => {
   // Check Bento access
   const resultHasBentoAccess = await hasBentoAccess(user.user.id)
   if (!resultHasBentoAccess) {
-    return Response.json({ error: 'not_authorized' }, { status: 402 })
+    return Response.json({ error: 'not_authorized' }, { status: 401 })
   }
 
   return Response.json(
