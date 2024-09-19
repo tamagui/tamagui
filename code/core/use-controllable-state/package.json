@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/use-controllable-state",
-  "version": "1.111.8",
+  "version": "1.111.10",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -22,7 +22,7 @@
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "react-native-import": "./dist/esm/index.native.mjs",
+      "react-native-import": "./dist/esm/index.native.js",
       "react-native": "./dist/cjs/index.native.js",
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
@@ -30,11 +30,11 @@
     }
   },
   "dependencies": {
-    "@tamagui/start-transition": "1.111.8",
-    "@tamagui/use-event": "1.111.8"
+    "@tamagui/start-transition": "1.111.10",
+    "@tamagui/use-event": "1.111.10"
   },
   "devDependencies": {
-    "@tamagui/build": "1.111.8",
+    "@tamagui/build": "1.111.10",
     "react": "^18.2.0 || ^19.0.0"
   },
   "publishConfig": {

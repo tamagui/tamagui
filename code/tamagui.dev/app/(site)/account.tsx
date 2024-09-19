@@ -107,10 +107,6 @@ const Account = () => {
 
       <YStack separator={<Separator />} gap="$5">
         <Paragraph ff="$mono">User ID: {userDetails?.id}</Paragraph>
-        <YStack gap="$5">
-          <Paragraph ff="$mono">bento-get Access Token:</Paragraph>
-          <Input placeholder={Array(120).fill('*').join('')} value={user?.access_token} />
-        </YStack>
       </YStack>
     </Container>
   )

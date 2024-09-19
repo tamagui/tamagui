@@ -89,7 +89,7 @@ export function getThemedChildren(
   }
 
   if (process.env.NODE_ENV === 'development') {
-    if (shouldRenderChildrenWithTheme && props.debug) {
+    if (shouldRenderChildrenWithTheme && props.debug === 'verbose') {
       log(
         `adding theme: isRoot ${isRoot}, inverse ${'inverse' in props}, isNewTheme ${isNewTheme}, hasEver ${stateRef.current.hasEverThemed}`,
         props

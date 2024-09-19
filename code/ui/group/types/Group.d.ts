@@ -1,8 +1,8 @@
-import React from 'react';
-import type { GetProps, TamaguiComponent } from '@tamagui/core';
+import type { GetProps } from '@tamagui/core';
 import type { Scope } from '@tamagui/create-context';
+import React from 'react';
 type DisablePassBorderRadius = boolean | 'bottom' | 'top' | 'start' | 'end';
-export declare const GroupFrame: TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+export declare const GroupFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     unstyled?: boolean | undefined;
     size?: any;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;

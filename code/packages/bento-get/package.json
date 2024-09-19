@@ -1,6 +1,6 @@
 {
   "name": "bento-get",
-  "version": "1.111.8",
+  "version": "1.111.10",
   "license": "MIT",
   "bin": "dist/cli.js",
   "type": "module",
@@ -30,7 +30,7 @@
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "react-native-import": "./dist/esm/index.native.mjs",
+      "react-native-import": "./dist/esm/index.native.js",
       "react-native": "./dist/cjs/index.native.js",
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
@@ -57,7 +57,7 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@tamagui/build": "1.111.8",
+    "@tamagui/build": "1.111.10",
     "@types/copy-paste": "^1.1.33",
     "@types/react": "npm:@types/react@18.2.55"
   }

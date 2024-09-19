@@ -43,7 +43,6 @@ type FlipProps = typeof flip extends (options: infer Opts) => void ? Opts : neve
  * -----------------------------------------------------------------------------------------------*/
 
 export type PopperContextValue = UseFloatingReturn & {
-  isMounted: boolean
   size?: SizeTokens
   placement?: Placement
   arrowRef: any
@@ -109,7 +108,6 @@ export function Popper(props: ScopedPopperProps<PopperProps>) {
     __scopePopper,
   } = props
 
-  const isMounted = useDidFinishSSR()
   const [arrowEl, setArrow] = React.useState<any>(null)
   const [arrowSize, setArrowSize] = React.useState(0)
   const offsetOptions = offset ?? arrowSize
@@ -145,19 +143,20 @@ export function Popper(props: ScopedPopperProps<PopperProps>) {
     open,
   } = floating
 
-  if (process.env.TAMAGUI_TARGET === 'web') {
-    useIsomorphicLayoutEffect(() => {
-      if (!open) return
-      if (!(refs.reference.current && refs.floating.current)) {
-        return
-      }
+  // leaving this here as reference, seems we don't need it anymore at least as used currently
+  // if (process.env.TAMAGUI_TARGET === 'web') {
+  //   useIsomorphicLayoutEffect(() => {
+  //     if (!open) return
+  //     if (!(refs.reference.current && refs.floating.current)) {
+  //       return
+  //     }
 
-      floating.update()
+  //     floating.update()
 
-      // Only call this when the floating element is rendered
-      return autoUpdate(refs.reference.current, refs.floating.current, floating.update)
-    }, [open, floating.update, refs.floating, refs.reference])
-  }
+  //     // Only call this when the floating element is rendered
+  //     return autoUpdate(refs.reference.current, refs.floating.current, floating.update)
+  //   }, [open, floating.update, refs.floating, refs.reference])
+  // }
 
   if (process.env.TAMAGUI_TARGET === 'native') {
     // On Native there's no autoupdate so we call update() when necessary
@@ -195,7 +194,6 @@ export function Popper(props: ScopedPopperProps<PopperProps>) {
     arrowRef: setArrow,
     arrowStyle: middlewareData.arrow,
     onArrowSize: setArrowSize,
-    isMounted,
     scope: __scopePopper,
     hasFloating: middlewareData.checkFloating?.hasFloating,
     ...floating,
@@ -296,7 +294,6 @@ export const PopperContent = React.forwardRef<
     y,
     getFloatingProps,
     size,
-    isMounted,
     update,
     floatingStyles,
     hasFloating,
@@ -307,11 +304,9 @@ export const PopperContent = React.forwardRef<
   if (isAndroid) {
     const initialRender = React.useRef(true)
     const finalHasFloating = React.useRef(false)
-
     if (hasFloating === false) {
       initialRender.current = false
     }
-
     if (!initialRender.current) {
       finalHasFloating.current = hasFloating
     }
@@ -333,16 +328,15 @@ export const PopperContent = React.forwardRef<
 
   const [needsMeasure, setNeedsMeasure] = React.useState(true)
   React.useEffect(() => {
+    if (!enableAnimationForPositionChange) return
     if (x || y) {
       setNeedsMeasure(false)
     }
-  }, [x, y])
+  }, [enableAnimationForPositionChange, x, y])
 
-  useIsomorphicLayoutEffect(() => {
-    if (isMounted) {
-      update()
-    }
-  }, [isMounted])
+  // useIsomorphicLayoutEffect(() => {
+  //   update()
+  // }, [])
 
   // default to not showing if positioned at 0, 0
   let show = true
@@ -355,11 +349,6 @@ export const PopperContent = React.forwardRef<
         setShow(true)
       }
     }, [finalHasFloatingValue, x, y])
-  }
-
-  // all poppers hidden on ssr by default
-  if (!isMounted) {
-    return null
   }
 
   const frameProps = {

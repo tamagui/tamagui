@@ -353,6 +353,7 @@ async function buildJs() {
   }
 
   const esmConfig = {
+    target: 'esnext',
     format: 'esm',
     entryPoints: files,
     outdir: flatOut ? 'dist' : 'dist/esm',
@@ -421,7 +422,6 @@ async function buildJs() {
     pkgModule
       ? esbuildWriteIfChanged(esmConfig, {
           platform: 'web',
-          mjs: true,
         })
       : null,
 
@@ -429,7 +429,6 @@ async function buildJs() {
     pkgModule
       ? esbuildWriteIfChanged(esmConfig, {
           platform: 'native',
-          mjs: true,
         })
       : null,
 
@@ -450,7 +449,6 @@ async function buildJs() {
           },
           {
             platform: 'web',
-            mjs: true,
           }
         )
       : null,
@@ -488,8 +486,7 @@ async function buildJs() {
 async function esbuildWriteIfChanged(
   /** @type { import('esbuild').BuildOptions } */
   opts,
-  { platform, env, mjs } = {
-    mjs: false,
+  { platform, env } = {
     platform: '',
     env: '',
   }
@@ -498,85 +495,73 @@ async function esbuildWriteIfChanged(
     return await esbuild.build(opts)
   }
 
-  // compat with jsx and hermes back a few versions generally:
-  /** @type { import('esbuild').BuildOptions } */
-  const nativeEsbuildSettings = {
-    target: mjs ? 'esnext' : 'node16',
-    supported: {
-      'logical-assignment': false,
-    },
-    jsx: 'automatic',
-    platform: 'node',
-  }
+  const isESM = opts.target === 'esm' || opts.target === 'esnext'
 
-  /** @type { import('esbuild').BuildOptions } */
-  const webEsbuildSettings = {
-    target: 'esnext',
-    jsx: 'automatic',
-    platform: shouldBundle ? 'node' : 'neutral',
-    tsconfigRaw: {
-      compilerOptions: {
-        paths: {
-          'react-native': ['react-native-web'],
+  const buildSettings = (() => {
+    // compat with jsx and hermes back a few versions generally:
+    /** @type { import('esbuild').BuildOptions } */
+    const nativeEsbuildSettings = {
+      target: isESM ? 'esnext' : 'node16',
+      supported: {
+        'logical-assignment': false,
+      },
+      jsx: 'automatic',
+      platform: 'node',
+    }
+
+    /** @type { import('esbuild').BuildOptions } */
+    const webEsbuildSettings = {
+      target: 'esnext',
+      jsx: 'automatic',
+      platform: shouldBundle ? 'node' : 'neutral',
+      tsconfigRaw: {
+        compilerOptions: {
+          paths: {
+            'react-native': ['react-native-web'],
+          },
         },
       },
-    },
-  }
+    }
 
-  const buildSettings = {
-    ...opts,
+    return {
+      ...opts,
 
-    plugins: [
-      ...(opts.plugins || []),
+      plugins: [
+        ...(opts.plugins || []),
 
-      ...(platform === 'native'
-        ? [
-            // class isnt supported by hermes
-            es5Plugin(),
-          ]
-        : []),
+        ...(platform === 'native'
+          ? [
+              // class isnt supported by hermes
+              es5Plugin(),
+            ]
+          : []),
+      ].filter(Boolean),
 
-      // not workin
-      // {
-      //   name: 'no-side-effects',
-      //   setup(build) {
-      //     build.onResolve({ filter: /@tamagui.*/ }, async ({ path, ...options }) => {
-      //       const result = await build.resolve(path, {
-      //         ...options,
-      //         namespace: 'noRecurse',
-      //       })
-      //       console.log('no side effects', path)
-      //       return { ...result, sideEffects: false }
-      //     })
-      //   },
-      // },
-    ].filter(Boolean),
+      treeShaking: true,
+      minifySyntax: true,
+      write: false,
 
-    treeShaking: true,
-    minifySyntax: true,
-    write: false,
-
-    color: true,
-    allowOverwrite: true,
-    keepNames: false,
-    sourcemap: true,
-    sourcesContent: false,
-    logLevel: 'error',
-    ...(platform === 'native' && nativeEsbuildSettings),
-    ...(platform === 'web' && webEsbuildSettings),
-    define: {
-      ...(platform && {
-        'process.env.TAMAGUI_TARGET': `"${platform}"`,
-      }),
-      ...(env && {
-        'process.env.NODE_ENV': `"${env}"`,
-      }),
-      ...opts.define,
-    },
-  }
+      color: true,
+      allowOverwrite: true,
+      keepNames: false,
+      sourcemap: true,
+      sourcesContent: false,
+      logLevel: 'error',
+      ...(platform === 'native' && nativeEsbuildSettings),
+      ...(platform === 'web' && webEsbuildSettings),
+      define: {
+        ...(platform && {
+          'process.env.TAMAGUI_TARGET': `"${platform}"`,
+        }),
+        ...(env && {
+          'process.env.NODE_ENV': `"${env}"`,
+        }),
+        ...opts.define,
+      },
+    }
+  })()
 
   const built = await esbuild.build(buildSettings)
-  const isESM = buildSettings.target === 'esm' || buildSettings.target === 'esnext'
 
   if (!built.outputFiles) {
     return
@@ -613,7 +598,9 @@ async function esbuildWriteIfChanged(
       built.outputFiles.map(async (file) => {
         let path = file.path
 
-        if (path.endsWith('.js') || path.endsWith('.js.map')) {
+        const isMap = path.endsWith('.js.map')
+
+        if (path.endsWith('.js') || isMap) {
           const [_, extPlatform] =
             path.match(/(web|native|ios|android)\.js(\.map)?$/) ?? []
 
@@ -673,6 +660,10 @@ async function esbuildWriteIfChanged(
 
         await flush(path, contents)
 
+        if (isMap) {
+          return
+        }
+
         return {
           path,
           contents,
@@ -683,16 +674,21 @@ async function esbuildWriteIfChanged(
 
   // path specifics:
 
+  if (shouldSkipMJS || !isESM) {
+    return
+  }
+
   await Promise.all(
     outputs.map(async (file) => {
       if (!file) return
+
       const { path, contents } = file
 
-      const shouldDoMJS = !shouldSkipMJS && isESM && mjs && path.endsWith('.js')
+      if (!path.endsWith('.js')) return
 
-      if (!shouldDoMJS) return
+      // for web do mjs, for native keep js since rollup gets confused when you have both
+      const mjsOutPath = platform === 'native' ? path : path.replace('.js', '.mjs')
 
-      const mjsOutPath = path.replace('.js', '.mjs')
       // if bundling no need to specify as its all internal
       // and babel is bad on huge bundled files
       const result = shouldBundle
@@ -705,12 +701,10 @@ async function esbuildWriteIfChanged(
               [
                 require.resolve('@tamagui/babel-plugin-fully-specified'),
                 {
-                  esExtensionDefault: platform === 'native' ? '.native.mjs' : '.mjs',
+                  esExtensionDefault: platform === 'native' ? '.native.js' : '.mjs',
+                  esExtensions: platform === 'native' ? ['.js'] : ['.mjs'],
                 },
               ],
-              // pkg.tamagui?.build?.skipEnvToMeta
-              //   ? null
-              //   : require.resolve('./babel-plugin-process-env-to-meta'),
             ].filter(Boolean),
           })
 

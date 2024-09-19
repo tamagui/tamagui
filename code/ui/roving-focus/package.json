@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/roving-focus",
-  "version": "1.111.8",
+  "version": "1.111.10",
   "sideEffects": [
     "*.css"
   ],
@@ -25,7 +25,7 @@
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "react-native-import": "./dist/esm/index.native.mjs",
+      "react-native-import": "./dist/esm/index.native.js",
       "react-native": "./dist/cjs/index.native.js",
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
@@ -33,18 +33,18 @@
     }
   },
   "dependencies": {
-    "@tamagui/collection": "1.111.8",
-    "@tamagui/compose-refs": "1.111.8",
-    "@tamagui/constants": "1.111.8",
-    "@tamagui/core": "1.111.8",
-    "@tamagui/create-context": "1.111.8",
-    "@tamagui/helpers": "1.111.8",
-    "@tamagui/use-controllable-state": "1.111.8",
-    "@tamagui/use-direction": "1.111.8",
-    "@tamagui/use-event": "1.111.8"
+    "@tamagui/collection": "1.111.10",
+    "@tamagui/compose-refs": "1.111.10",
+    "@tamagui/constants": "1.111.10",
+    "@tamagui/core": "1.111.10",
+    "@tamagui/create-context": "1.111.10",
+    "@tamagui/helpers": "1.111.10",
+    "@tamagui/use-controllable-state": "1.111.10",
+    "@tamagui/use-direction": "1.111.10",
+    "@tamagui/use-event": "1.111.10"
   },
   "devDependencies": {
-    "@tamagui/build": "1.111.8",
+    "@tamagui/build": "1.111.10",
     "react": "^18.2.0 || ^19.0.0"
   },
   "publishConfig": {

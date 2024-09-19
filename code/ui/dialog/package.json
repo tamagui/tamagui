@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/dialog",
-  "version": "1.111.8",
+  "version": "1.111.10",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
@@ -25,7 +25,7 @@
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "react-native-import": "./dist/esm/index.native.mjs",
+      "react-native-import": "./dist/esm/index.native.js",
       "react-native": "./dist/cjs/index.native.js",
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
@@ -33,30 +33,30 @@
     }
   },
   "dependencies": {
-    "@tamagui/adapt": "1.111.8",
-    "@tamagui/animate-presence": "1.111.8",
-    "@tamagui/aria-hidden": "1.111.8",
-    "@tamagui/compose-refs": "1.111.8",
-    "@tamagui/constants": "1.111.8",
-    "@tamagui/core": "1.111.8",
-    "@tamagui/create-context": "1.111.8",
-    "@tamagui/dismissable": "1.111.8",
-    "@tamagui/focus-scope": "1.111.8",
-    "@tamagui/helpers": "1.111.8",
-    "@tamagui/polyfill-dev": "1.111.8",
-    "@tamagui/popper": "1.111.8",
-    "@tamagui/portal": "1.111.8",
-    "@tamagui/remove-scroll": "1.111.8",
-    "@tamagui/sheet": "1.111.8",
-    "@tamagui/stacks": "1.111.8",
-    "@tamagui/text": "1.111.8",
-    "@tamagui/use-controllable-state": "1.111.8"
+    "@tamagui/adapt": "1.111.10",
+    "@tamagui/animate-presence": "1.111.10",
+    "@tamagui/aria-hidden": "1.111.10",
+    "@tamagui/compose-refs": "1.111.10",
+    "@tamagui/constants": "1.111.10",
+    "@tamagui/core": "1.111.10",
+    "@tamagui/create-context": "1.111.10",
+    "@tamagui/dismissable": "1.111.10",
+    "@tamagui/focus-scope": "1.111.10",
+    "@tamagui/helpers": "1.111.10",
+    "@tamagui/polyfill-dev": "1.111.10",
+    "@tamagui/popper": "1.111.10",
+    "@tamagui/portal": "1.111.10",
+    "@tamagui/remove-scroll": "1.111.10",
+    "@tamagui/sheet": "1.111.10",
+    "@tamagui/stacks": "1.111.10",
+    "@tamagui/text": "1.111.10",
+    "@tamagui/use-controllable-state": "1.111.10"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.111.8",
+    "@tamagui/build": "1.111.10",
     "react": "^18.2.0 || ^19.0.0",
     "react-native": "0.74.1"
   },
