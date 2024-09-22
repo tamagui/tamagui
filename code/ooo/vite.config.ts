@@ -34,9 +34,10 @@ export default {
     removeReactNativeWebAnimatedPlugin(),
 
     tamaguiExtractPlugin({
-      disableExtraction: process.env.NODE_ENV === 'development',
+      // disableExtraction: process.env.NODE_ENV === 'development',
       components: ['tamagui'],
       config: './config/tamagui.config.ts',
+      outputCSS: './app/tamagui.css',
     }),
   ],
 } satisfies UserConfig
