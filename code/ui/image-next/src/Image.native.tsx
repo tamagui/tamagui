@@ -1,4 +1,4 @@
-import { getTokenValue, styled } from '@tamagui/web'
+import { getTokenValue, styled, usePropsAndStyle } from '@tamagui/web'
 import { Image as RNImage } from 'react-native'
 
 import type { ImageResizeMode } from 'react-native'
@@ -9,6 +9,7 @@ const StyledImage = styled(RNImage, {
 })
 
 export const Image = StyledImage.styleable<ImageProps>((inProps, ref) => {
+  const [props, style] = usePropsAndStyle(inProps)
   const {
     src,
     width,
@@ -29,7 +30,7 @@ export const Image = StyledImage.styleable<ImageProps>((inProps, ref) => {
     onLoad,
     onError,
     ...rest
-  } = inProps
+  } = props
 
   let resizeMode: ImageResizeMode = 'cover'
   if (objectFit) {
@@ -51,17 +52,20 @@ export const Image = StyledImage.styleable<ImageProps>((inProps, ref) => {
 
   const finalProps = {
     ...rest,
-    source: {
-      uri: src,
-      width:
-        typeof width === 'string' && width[0] === '$'
-          ? getTokenValue(width as any)
-          : width,
-      height:
-        typeof height === 'string' && height[0] === '$'
-          ? getTokenValue(height as any)
-          : height,
-    },
+    source:
+      !!src && typeof src !== 'string' // In React Native, if an imported (or required) asset is passed as `src`.
+        ? src
+        : {
+            uri: src,
+            width:
+              typeof width === 'string' && width[0] === '$'
+                ? getTokenValue(width as any)
+                : width,
+            height:
+              typeof height === 'string' && height[0] === '$'
+                ? getTokenValue(height as any)
+                : height,
+          },
     resizeMode,
   } as any
 
@@ -86,7 +90,7 @@ export const Image = StyledImage.styleable<ImageProps>((inProps, ref) => {
     }
   }
 
-  return <StyledImage ref={ref} {...finalProps} />
+  return <StyledImage ref={ref} style={style} {...finalProps} />
 }) as unknown as ImageType
 
 Image.getSize = RNImage.getSize
