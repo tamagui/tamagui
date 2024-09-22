@@ -46,6 +46,22 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
     )
   }
 
+  function invalidateModule(absoluteId: string) {
+    if (!server) return
+
+    const { moduleGraph } = server
+    const modules = moduleGraph.getModulesByFile(absoluteId)
+
+    if (modules) {
+      for (const module of modules) {
+        moduleGraph.invalidateModule(module)
+
+        // Vite uses this timestamp to add `?t=` query string automatically for HMR.
+        module.lastHMRTimestamp = module.lastInvalidationTimestamp || Date.now()
+      }
+    }
+  }
+
   return {
     name: 'tamagui-extract',
     enforce: 'pre',
@@ -185,27 +201,10 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
       let source = extracted.js
 
       if (extracted.styles) {
-        if (
-          server &&
-          cssMap.has(absoluteId) &&
-          cssMap.get(absoluteId) !== extracted.styles
-        ) {
-          const { moduleGraph } = server
-          const [module] = Array.from(moduleGraph.getModulesByFile(absoluteId) || [])
+        this.addWatchFile(rootRelativeId)
 
-          if (module) {
-            moduleGraph.invalidateModule(module)
-
-            // Vite uses this timestamp to add `?t=` query string automatically for HMR.
-            module.lastHMRTimestamp =
-              (module as any).lastInvalidationTimestamp || Date.now()
-          }
-
-          server.ws.send({
-            type: 'custom',
-            event: styleUpdateEvent(absoluteId),
-            data: extracted.styles,
-          })
+        if (server && cssMap.has(absoluteId)) {
+          invalidateModule(rootRelativeId)
         }
 
         source = `${source}\nimport "${rootRelativeId}";`
