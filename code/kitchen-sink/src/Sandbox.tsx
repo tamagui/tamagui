@@ -39,8 +39,8 @@ export const Sandbox = () => {
       <Test />
 
       <StyledImage
-        width={20}
-        height={20}
+        width={30}
+        height={30}
         src="https://akittenplace.org/wp-content/uploads/2019/10/kitten4.jpg"
       />
 

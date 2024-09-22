@@ -1,4 +1,4 @@
-import { getTokenValue, styled, usePropsAndStyle } from '@tamagui/web'
+import { getTokenValue, styled } from '@tamagui/web'
 import { Image as RNImage } from 'react-native'
 
 import type { ImageResizeMode } from 'react-native'
@@ -8,8 +8,7 @@ const StyledImage = styled(RNImage, {
   name: 'Image',
 })
 
-export const Image = StyledImage.styleable<ImageProps>((inProps, ref) => {
-  const [props, style] = usePropsAndStyle(inProps)
+export const Image = StyledImage.styleable<ImageProps>((props, ref) => {
   const {
     src,
     width,
@@ -90,7 +89,7 @@ export const Image = StyledImage.styleable<ImageProps>((inProps, ref) => {
     }
   }
 
-  return <StyledImage ref={ref} style={style} {...finalProps} />
+  return <StyledImage ref={ref} {...finalProps} />
 }) as unknown as ImageType
 
 Image.getSize = RNImage.getSize
