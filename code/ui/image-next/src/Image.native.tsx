@@ -8,7 +8,7 @@ const StyledImage = styled(RNImage, {
   name: 'Image',
 })
 
-export const Image = StyledImage.styleable<ImageProps>((inProps, ref) => {
+export const Image = StyledImage.styleable<ImageProps>((props, ref) => {
   const {
     src,
     width,
@@ -29,7 +29,7 @@ export const Image = StyledImage.styleable<ImageProps>((inProps, ref) => {
     onLoad,
     onError,
     ...rest
-  } = inProps
+  } = props
 
   let resizeMode: ImageResizeMode = 'cover'
   if (objectFit) {
@@ -51,17 +51,20 @@ export const Image = StyledImage.styleable<ImageProps>((inProps, ref) => {
 
   const finalProps = {
     ...rest,
-    source: {
-      uri: src,
-      width:
-        typeof width === 'string' && width[0] === '$'
-          ? getTokenValue(width as any)
-          : width,
-      height:
-        typeof height === 'string' && height[0] === '$'
-          ? getTokenValue(height as any)
-          : height,
-    },
+    source:
+      !!src && typeof src !== 'string' // In React Native, if an imported (or required) asset is passed as `src`.
+        ? src
+        : {
+            uri: src,
+            width:
+              typeof width === 'string' && width[0] === '$'
+                ? getTokenValue(width as any)
+                : width,
+            height:
+              typeof height === 'string' && height[0] === '$'
+                ? getTokenValue(height as any)
+                : height,
+          },
     resizeMode,
   } as any
 

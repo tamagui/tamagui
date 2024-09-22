@@ -3,6 +3,12 @@
 import { styled, useMedia } from 'tamagui'
 import { View } from '@tamagui/web'
 import { View as RNView } from 'react-native'
+import { Image } from '@tamagui/image-next'
+
+const StyledImage = styled(Image, {
+  margin: 10,
+  scale: 4,
+})
 
 const Test = styled(View, {
   width: 100,
@@ -31,6 +37,12 @@ export const Sandbox = () => {
   return (
     <RNView style={{ width: '100%', height: '100%', padding: 50 }}>
       <Test />
+
+      <StyledImage
+        width={30}
+        height={30}
+        src="https://akittenplace.org/wp-content/uploads/2019/10/kitten4.jpg"
+      />
 
       {/* <Demo3 /> */}
       {/* <Circle
