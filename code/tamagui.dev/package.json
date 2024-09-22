@@ -51,9 +51,9 @@
     "three": "^0.152.2",
     "valibot": "^0.35.0",
     "victory": "^37.0.2",
-    "vite": "6.0.0-alpha.18",
+    "vite": "6.0.0-beta.1",
     "vite-plugin-inspect": "^0.8.4",
-    "vxs": "^1.1.232"
+    "vxs": "^1.1.234"
   },
   "devDependencies": {
     "@tamagui/cli": "1.111.11",

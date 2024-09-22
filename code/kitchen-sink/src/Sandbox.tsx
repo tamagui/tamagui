@@ -1,4 +1,3 @@
-//! debug-verbose
 // import './wdyr'
 
 import { styled, useMedia } from 'tamagui'
@@ -10,10 +9,6 @@ const StyledImage = styled(Image, {
   margin: 10,
   scale: 4,
 })
-
-async function* name() {
-  yield 'hello-world'
-}
 
 const Test = styled(View, {
   width: 100,
