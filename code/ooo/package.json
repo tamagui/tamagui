@@ -32,7 +32,7 @@
     "react": "^18.2.0 || ^19.0.0",
     "react-native": "0.74.1",
     "tamagui": "1.111.11",
-    "vxs": "^1.1.232"
+    "vxs": "^1.1.233"
   },
   "devDependencies": {
     "@nitrogql/esbuild-register": "^1.7.0",

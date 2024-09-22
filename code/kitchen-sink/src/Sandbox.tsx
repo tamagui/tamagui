@@ -1,13 +1,8 @@
-//! debug-verbose
 // import './wdyr'
 
 import { styled, useMedia } from 'tamagui'
 import { View } from '@tamagui/web'
 import { View as RNView } from 'react-native'
-
-async function* name() {
-  yield 'hello-world'
-}
 
 const Test = styled(View, {
   width: 100,

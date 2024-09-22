@@ -51,7 +51,7 @@
     "ts-morph": "^15.1.0",
     "typescript": "^5.5.2",
     "url": "^0.11.0",
-    "vite": "6.0.0-alpha.18",
+    "vite": "6.0.0-beta.1",
     "vite-plugin-entry-shaking": "^0.4.3"
   },
   "devDependencies": {
