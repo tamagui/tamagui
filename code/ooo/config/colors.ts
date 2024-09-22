@@ -53,11 +53,11 @@ export const darkColors = {
   ...colorTokens.dark.yellow,
   ...colorTokens.dark.gray,
 
-  blue: 'hsla(210, 60%, 20%, 0.5)',
-  green: 'hsla(120, 60%, 20%, 0.5)',
-  red: 'hsla(0, 60%, 20%, 0.6)',
-  purple: 'hsla(270, 60%, 20%, 0.6)',
-  pink: 'hsla(330, 60%, 20%, 0.6)',
+  blue: 'hsla(210, 60%, 40%, 0.7)',
+  green: 'hsla(120, 60%, 40%, 0.7)',
+  red: 'hsla(0, 60%, 40%, 0.7)',
+  purple: 'hsla(270, 60%, 40%, 0.7)',
+  pink: 'hsla(330, 60%, 40%, 0.7)',
 
   blueFg: 'hsl(210, 60%, 90%)',
   greenFg: 'hsl(120, 60%, 90%)',
@@ -70,11 +70,11 @@ export const lightColors = {
   ...colorTokens.light.yellow,
   ...colorTokens.light.gray,
 
-  blue: 'hsla(210, 60%, 90%, 0.6)',
-  green: 'hsla(120, 60%, 90%, 0.6)',
-  red: 'hsla(0, 60%, 90%, 0.6)',
-  purple: 'hsla(270, 60%, 90%, 0.6)',
-  pink: 'hsla(330, 60%, 90%, 0.6)',
+  blue: 'hsla(210, 60%, 80%, 0.6)',
+  green: 'hsla(120, 60%, 80%, 0.7)',
+  red: 'hsla(0, 60%, 80%, 0.6)',
+  purple: 'hsla(270, 60%, 80%, 0.6)',
+  pink: 'hsla(330, 60%, 80%, 0.6)',
 
   blueFg: 'hsl(210, 60%, 10%)',
   greenFg: 'hsl(120, 60%, 10%)',
