@@ -359,7 +359,7 @@ async function run() {
                 cwd,
               })
             } catch (err) {
-              if (err.includes(`code E403`)) {
+              if (`${err}`.includes(`E403`)) {
                 // thats fine its already published
               } else {
                 throw err
