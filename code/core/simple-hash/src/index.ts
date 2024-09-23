@@ -5,6 +5,11 @@ export const simpleHash = (str: string, hashMin: number | 'strict' = 10) => {
     return cache.get(str)
   }
 
+  // remove var()
+  if (str[0] === 'v' && str.startsWith('var(')) {
+    str = str.slice(6, str.length - 1)
+  }
+
   let hash = 0
   let valids = ''
   let added = 0

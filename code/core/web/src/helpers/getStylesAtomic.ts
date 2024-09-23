@@ -75,7 +75,7 @@ const getStyleObject = (
     val = transformsToString(val)
   }
   const value = normalizeValueWithProperty(val, key)
-  const hash = simpleHash(`${value}`)
+  const hash = simpleHash(typeof value === 'string' ? value : `${value}`)
   const pseudoPrefix = pseudo ? `0${pseudo.name}-` : ''
   conf ||= getConfig()
   const shortProp = conf.inverseShorthands[key] || key
