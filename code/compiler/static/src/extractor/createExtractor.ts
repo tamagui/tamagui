@@ -946,7 +946,6 @@ export function createExtractor(
             .flatMap((path) => {
               try {
                 const res = evaluateAttribute(path)
-                tm.mark('jsx-element-evaluate-attr', !!shouldPrintDebug)
                 if (!res) {
                   path.remove()
                 }
@@ -1254,7 +1253,7 @@ export function createExtractor(
 
               if (isValidStyleKey(name, staticConfig)) {
                 if (shouldPrintDebug) {
-                  logger.info(`  style: ${name} = ${styleValue}`)
+                  logger.info(`  style: ${name} = ${JSON.stringify(styleValue)}`)
                 }
                 if (!(name in defaultProps)) {
                   if (!hasSetOptimized) {
@@ -2020,6 +2019,8 @@ export function createExtractor(
               }
             }
 
+            const before = process.env.IS_STATIC
+            process.env.IS_STATIC = 'is_static'
             try {
               const out = getSplitStyles(
                 props,
@@ -2073,6 +2074,8 @@ export function createExtractor(
             } catch (err: any) {
               logger.info(['error', err.message, err.stack].join(' '))
               return {}
+            } finally {
+              process.env.IS_STATIC = before
             }
           }
 
