@@ -280,6 +280,8 @@ const Context = createStyledContext({
 
 ---
 
+- as long as you use the nextjs or other new color scheme helpers they always add t_dark/t_light on first render so as long as youre ok with dark mode not working for js-off users, you could turn default the tamagui/config v4 to shouldAddPrefersColorThemes: false
+
 - lower priority uniswap:
   - seems <Switch checked defaultChecked> isnt showing in the checked position
   - <Theme name="dark"> with switch, the thumb is not picking up the right surface color, must be a multiple-nested theme issue
