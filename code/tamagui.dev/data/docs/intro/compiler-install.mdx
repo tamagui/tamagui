@@ -110,16 +110,19 @@ See the [Vite guide](/docs/guides/vite) for more complete setup.
 Add `@tamagui/vite-plugin` and update your `vite.config.ts`:
 
 ```tsx
-import { tamaguiExtractPlugin, tamaguiPlugin } from '@tamagui/vite-plugin'
+import { tamaguiPlugin } from '@tamagui/vite-plugin'
 
 export default defineConfig({
   plugins: [
     tamaguiPlugin({
-      config: './src/tamagui.config.ts',
+      // points to your tamagui config file
+      config: 'src/tamagui.config.ts',
+      // points to any linked packages or node_modules
+      // that have tamagui components to optimize
       components: ['tamagui'],
+      // turns on the optimizing compiler
+      optimize: true,
     }),
-    // optional, adds the optimizing compiler:
-    tamaguiExtractPlugin(tamaguiConfig),
   ],
 })
 ```

@@ -1,4 +1,4 @@
-import { tamaguiExtractPlugin } from '@tamagui/vite-plugin'
+import { tamaguiPlugin } from '@tamagui/vite-plugin'
 import type { UserConfig } from 'vite'
 import { removeReactNativeWebAnimatedPlugin, vxs } from 'vxs/vite'
 import { ViteImageOptimizer } from 'vite-plugin-image-optimizer'
@@ -33,8 +33,8 @@ export default {
 
     removeReactNativeWebAnimatedPlugin(),
 
-    tamaguiExtractPlugin({
-      // disableExtraction: process.env.NODE_ENV === 'development',
+    tamaguiPlugin({
+      optimize: true,
       components: ['tamagui'],
       config: './config/tamagui.config.ts',
       outputCSS: './app/tamagui.css',

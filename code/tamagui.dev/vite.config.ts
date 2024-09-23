@@ -1,8 +1,8 @@
 // import entryShakingPlugin from 'vite-plugin-entry-shaking'
 import { removeReactNativeWebAnimatedPlugin, vxs } from 'vxs/vite'
 // import { mdx } from '@cyco130/vite-plugin-mdx'
+import { tamaguiPlugin } from '@tamagui/vite-plugin'
 import type { UserConfig } from 'vite'
-import { tamaguiExtractPlugin, tamaguiPlugin } from '@tamagui/vite-plugin'
 // import inpsectPlugin from 'vite-plugin-inspect'
 
 Error.stackTraceLimit = Number.POSITIVE_INFINITY
@@ -158,7 +158,9 @@ export default {
 
     removeReactNativeWebAnimatedPlugin(),
 
-    tamaguiPlugin(),
+    tamaguiPlugin({
+      optimize: true,
+    }),
 
     // hmmm breaking ssr for some reason on lucide:
     // can use vite env api and only run this on client, make it part of vxs
@@ -166,10 +168,6 @@ export default {
     // entryShakingPlugin({
     //   targets,
     // }),
-
-    tamaguiExtractPlugin({
-      logTimings: true,
-    }),
   ],
 } satisfies UserConfig
 

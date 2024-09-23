@@ -23,6 +23,7 @@ export async function loadTamaguiBuildConfig(
   optionsIn?: Partial<TamaguiOptions>,
   logger?: Logger
 ) {
+  if (extractor) return
   if (isLoading) return await isLoading
 
   let resolve

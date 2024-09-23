@@ -359,22 +359,19 @@ The compiler now supports analyzing components outside of just your design syste
 Tamagui now fully works [with Vite 3 and 4](/docs/guides/vite), both with the compiler and without. A simple `vite.config.js` would look like this:
 
 ```tsx
-import { tamaguiExtractPlugin, tamaguiPlugin } from '@tamagui/vite-plugin'
+import { tamaguiPlugin } from '@tamagui/vite-plugin'
 import react from '@vitejs/plugin-react-swc'
 import { defineConfig } from 'vite'
-
-const tamaguiCompilerConfig = {
-  components: ['tamagui'],
-  config: 'tamagui.config.ts',
-  useReactNativeWebLite: true,
-}
 
 export default defineConfig({
   clearScreen: false,
   plugins: [
     react(),
-    tamaguiPlugin(tamaguiCompilerConfig),
-    tamaguiExtractPlugin(tamaguiCompilerConfig),
+    tamaguiPlugin({
+      optimize: true, // turns on the optimizing compiler
+      components: ['tamagui'],
+      config: 'tamagui.config.ts',
+    }),
   ],
 })
 ```

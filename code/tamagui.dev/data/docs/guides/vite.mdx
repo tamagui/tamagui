@@ -28,30 +28,26 @@ yarn add @tamagui/vite-plugin
 Update your `vite.config.ts`:
 
 ```tsx fileName="vite.config.ts"
-import react from '@vitejs/plugin-react'
-import { tamaguiExtractPlugin, tamaguiPlugin } from '@tamagui/vite-plugin'
-
-const tamaguiBuildConfig = {
-  components: ['tamagui'],
-  // points to your tamagui config file
-  config: 'src/tamagui.config.ts',
-}
+import react from '@vitejs/plugin-react-swc'
+import { tamaguiPlugin } from '@tamagui/vite-plugin'
 
 export default {
   plugins: [
     react(),
-
-    tamaguiPlugin(tamaguiBuildConfig),
-
-    // optional, adds the optimizing compiler:
-    process.env.NODE_ENV === 'production'
-      ? tamaguiExtractPlugin(tamaguiBuildConfig)
-      : null,
+    tamaguiPlugin({
+      // points to your tamagui config file
+      config: 'src/tamagui.config.ts',
+      // points to any linked packages or node_modules
+      // that have tamagui components to optimize
+      components: ['tamagui'],
+      // turns on the optimizing compiler
+      optimize: true,
+    }),
   ].filter(Boolean),
 }
 ```
 
-Or a minimal manual setup for Vite:
+Or a minimal manual setup for Vite that just adds some compatibility for react-native-web and react-native extensions:
 
 ```tsx showMore
 config.define = {

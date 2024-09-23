@@ -2,8 +2,12 @@ import type { TamaguiOptions } from '@tamagui/static'
 import type { Plugin } from 'vite'
 import { transformWithEsbuild } from 'vite'
 import { tamaguiOptions, Static, loadTamaguiBuildConfig } from './loadTamagui'
+import { tamaguiExtractPlugin } from './extract'
 
-export function tamaguiPlugin(tamaguiOptionsIn: TamaguiOptions = {}): Plugin {
+export function tamaguiPlugin(
+  tamaguiOptionsIn: TamaguiOptions & { optimize?: boolean } = {}
+): Plugin | Plugin[] {
+  const shouldAddCompiler = !!tamaguiOptionsIn?.optimize
   let watcher
   let loaded = false
 
@@ -25,6 +29,7 @@ export function tamaguiPlugin(tamaguiOptionsIn: TamaguiOptions = {}): Plugin {
   let noExternalSSR = /react-native|expo-linear-gradient/gi
 
   async function load() {
+    if (loaded) return
     loaded = true
 
     await loadTamaguiBuildConfig(tamaguiOptionsIn)
@@ -55,7 +60,7 @@ export function tamaguiPlugin(tamaguiOptionsIn: TamaguiOptions = {}): Plugin {
     )
   }
 
-  return {
+  const compatPlugin = {
     name: 'tamagui-base',
     enforce: 'pre',
 
@@ -122,4 +127,10 @@ export function tamaguiPlugin(tamaguiOptionsIn: TamaguiOptions = {}): Plugin {
       }
     },
   } satisfies Plugin
+
+  if (shouldAddCompiler) {
+    return [compatPlugin, tamaguiExtractPlugin(tamaguiOptionsIn)]
+  }
+
+  return compatPlugin
 }
