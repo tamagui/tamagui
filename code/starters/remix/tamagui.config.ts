@@ -1,7 +1,7 @@
-import { createTamagui, createFont } from "@tamagui/web";
+import { createTamagui, createFont } from '@tamagui/web'
 
 const body = createFont({
-  family: "Inter",
+  family: 'Inter',
   size: {
     1: 12,
     2: 14,
@@ -12,24 +12,23 @@ const body = createFont({
     7: 48,
     8: 64,
   },
-});
+})
 
 const customConfig = {
   settings: {
-    onlyAllowShorthands: true,
-    defaultFont: "body",
+    defaultFont: 'body',
   },
   fonts: {
     body,
   },
   themes: {
     light: {
-      background: "#fecc1b",
-      color: "#131313",
+      background: '#fecc1b',
+      color: '#131313',
     },
     dark: {
-      background: "#121212",
-      color: "#d83bd2",
+      background: '#121212',
+      color: '#d83bd2',
     },
   },
   media: {
@@ -42,8 +41,8 @@ const customConfig = {
   },
   tokens: {
     color: {
-      primary: "#bada55",
-      secondary: "#ffa500",
+      primary: '#bada55',
+      secondary: '#ffa500',
     },
     size: {
       small: 8,
@@ -66,10 +65,10 @@ const customConfig = {
       high: 100,
     },
   },
-};
+}
 
-const tamaguiConfig = createTamagui(customConfig);
+const tamaguiConfig = createTamagui(customConfig)
 
-export type TamaguiConfig = typeof tamaguiConfig;
+export type TamaguiConfig = typeof tamaguiConfig
 
-export default tamaguiConfig;
+export default tamaguiConfig
