@@ -4,4 +4,3 @@ node_modules
 /build
 .env
 .tamagui
-app/tamagui.css
