@@ -1,13 +1,13 @@
 const cache = new Map()
 
 export const simpleHash = (str: string, hashMin: number | 'strict' = 10) => {
-  if (cache.has(str)) {
-    return cache.get(str)
-  }
-
   // remove var()
   if (str[0] === 'v' && str.startsWith('var(')) {
     str = str.slice(6, str.length - 1)
+  }
+
+  if (cache.has(str)) {
+    return cache.get(str)
   }
 
   let hash = 0
