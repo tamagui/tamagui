@@ -3,7 +3,7 @@
   "version": "1.112.0",
   "description": "React Native for Web",
   "sideEffects": false,
-  "main": "dist/cjs/index.cjs",
+  "main": "dist/cjs/index.js",
   "module": "dist/esm",
   "typings": "./types/index.d.ts",
   "files": ["types", "dist", "src"],
@@ -20,7 +20,7 @@
       "react-native": "./dist/cjs/index.native.js",
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
-      "require": "./dist/cjs/index.cjs"
+      "require": "./dist/cjs/index.js"
     }
   },
   "dependencies": {

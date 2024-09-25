@@ -4,7 +4,7 @@
   "private": true,
   "sideEffects": ["*.css"],
   "types": "./types/index",
-  "main": "dist/cjs/index.cjs",
+  "main": "dist/cjs/index.js",
   "module": "dist/esm",
   "module:jsx": "dist/jsx",
   "files": ["types", "dist"],

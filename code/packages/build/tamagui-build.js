@@ -354,9 +354,11 @@ async function buildJs() {
     (x) => !x.includes('.d.ts') && (exclude ? !x.match(exclude) : true)
   )
 
+  const entryPoints = shouldBundleFlag ? [pkgSource || './src/index.ts'] : allFiles
+
   const cjsConfig = {
     format: 'cjs',
-    entryPoints: shouldBundleFlag ? [pkgSource || './src/index.ts'] : allFiles,
+    entryPoints,
     outdir: flatOut ? 'dist' : 'dist/cjs',
     bundle: shouldBundleFlag,
     external,
@@ -367,13 +369,16 @@ async function buildJs() {
 
   const cjsConfigWeb = {
     ...cjsConfig,
-    outExtension: { '.js': '.cjs' },
+
+    // metro cant do platform-specific with cjs :/
+    // outExtension: { '.js': '.cjs' },
   }
 
   const esmConfig = {
     target: 'esnext',
     format: 'esm',
-    entryPoints: allFiles,
+    entryPoints,
+    bundle: shouldBundleFlag,
     outdir: flatOut ? 'dist' : 'dist/esm',
     allowOverwrite: true,
     minify: !!process.env.MINIFY,
@@ -398,7 +403,7 @@ async function buildJs() {
       ? esbuildWriteIfChanged(cjsConfigWeb, {
           platform: 'web',
           bundle: shouldBundleFlag,
-          specifyCJS: true,
+          // specifyCJS: true,
         })
       : null,
 
@@ -440,6 +445,7 @@ async function buildJs() {
     pkgModule
       ? esbuildWriteIfChanged(esmConfig, {
           platform: 'web',
+          bundle: shouldBundleFlag,
         })
       : null,
 
@@ -457,7 +463,7 @@ async function buildJs() {
             // only diff is jsx preserve and outdir
             jsx: 'preserve',
             outdir: flatOut ? 'dist' : 'dist/jsx',
-            entryPoints: files,
+            entryPoints,
             bundle: shouldBundleFlag,
             allowOverwrite: true,
             target: 'esnext',
@@ -478,7 +484,7 @@ async function buildJs() {
             // only diff is jsx preserve and outdir
             jsx: 'preserve',
             outdir: flatOut ? 'dist' : 'dist/jsx',
-            entryPoints: files,
+            entryPoints,
             bundle: shouldBundleFlag,
             allowOverwrite: true,
             target: 'node16',

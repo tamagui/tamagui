@@ -4,7 +4,7 @@
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
-  "main": "dist/cjs/index.cjs",
+  "main": "dist/cjs/index.js",
   "module": "dist/esm",
   "module:jsx": "dist/jsx",
   "files": ["src", "types", "dist"],
@@ -29,7 +29,7 @@
       "react-native": "./dist/cjs/index.native.js",
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
-      "require": "./dist/cjs/index.cjs"
+      "require": "./dist/cjs/index.js"
     }
   },
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",

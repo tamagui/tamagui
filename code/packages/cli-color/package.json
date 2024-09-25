@@ -1,7 +1,7 @@
 {
   "name": "@tamagui/cli-color",
   "version": "1.112.0",
-  "main": "dist/cjs/index.cjs",
+  "main": "dist/cjs/index.js",
   "module": "dist/esm",
   "types": "./types/index.d.ts",
   "scripts": {
@@ -19,7 +19,7 @@
       "react-native": "./dist/cjs/index.native.js",
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
-      "require": "./dist/cjs/index.cjs"
+      "require": "./dist/cjs/index.js"
     }
   },
   "devDependencies": {

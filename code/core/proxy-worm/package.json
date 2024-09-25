@@ -8,7 +8,7 @@
   "exports": {
     "./empty-react-native-view": {
       "import": "./empty-react-native-view.mjs",
-      "require": "./empty-react-native-view.cjs"
+      "require": "./empty-react-native-view.js"
     },
     ".": "./index.js"
   },

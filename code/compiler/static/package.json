@@ -4,12 +4,8 @@
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "type": "commonjs",
-  "main": "dist/index.cjs",
-  "files": [
-    "src",
-    "types",
-    "dist"
-  ],
+  "main": "dist/index.js",
+  "files": ["src", "types", "dist"],
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
@@ -22,8 +18,8 @@
     "./package.json": "./package.json",
     ".": {
       "types": "./types/index.d.ts",
-      "require": "./dist/index.cjs",
-      "import": "./dist/index.cjs"
+      "require": "./dist/index.js",
+      "import": "./dist/index.js"
     }
   },
   "tests": {

@@ -5,7 +5,7 @@
   "sideEffects": ["*.css"],
   "source": "index.jsx",
   "types": "./types/index.d.ts",
-  "main": "dist/cjs/index.cjs",
+  "main": "dist/cjs/index.js",
   "module": "dist/esm",
   "files": ["src", "types", "dist"],
   "exports": {
@@ -15,21 +15,21 @@
       "react-native": "./dist/cjs/index.native.js",
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
-      "require": "./dist/cjs/index.cjs"
+      "require": "./dist/cjs/index.js"
     },
     "./data": {
       "react-native-import": "./dist/esm/data.native.js",
       "react-native": "./dist/cjs/data.native.js",
       "types": "./types/data.d.ts",
       "import": "./dist/esm/data.mjs",
-      "require": "./dist/cjs/data.cjs"
+      "require": "./dist/cjs/data.js"
     },
     "./component/*": {
       "react-native-import": "./dist/esm/components/*.native.js",
       "react-native": "./dist/cjs/components/*.native.js",
       "types": "./types/components/*.d.ts",
       "import": "./dist/esm/components/*.mjs",
-      "require": "./dist/cjs/components/*.cjs"
+      "require": "./dist/cjs/components/*.js"
     }
   },
   "scripts": {

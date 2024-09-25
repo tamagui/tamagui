@@ -2,7 +2,7 @@
   "name": "@tamagui/web",
   "version": "1.112.0",
   "source": "src/index.ts",
-  "main": "dist/cjs/index.cjs",
+  "main": "dist/cjs/index.js",
   "module": "dist/esm",
   "types": "./types/index.d.ts",
   "license": "MIT",
@@ -45,7 +45,7 @@
       "react-native": "./dist/cjs/index.native.js",
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
-      "require": "./dist/cjs/index.cjs"
+      "require": "./dist/cjs/index.js"
     },
     "./native": {
       "react-native-import": "./dist/esm/index.native.native.js",
@@ -58,7 +58,7 @@
       "react-native": "./dist/cjs/inject-styles.native.js",
       "types": "./types/inject-styles.d.ts",
       "import": "./dist/esm/inject-styles.mjs",
-      "require": "./dist/cjs/inject-styles.cjs"
+      "require": "./dist/cjs/inject-styles.js"
     }
   },
   "repository": {

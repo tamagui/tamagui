@@ -4,7 +4,7 @@
   "source": "src/index.ts",
   "license": "MIT",
   "types": "./types/index.d.ts",
-  "main": "dist/cjs/index.cjs",
+  "main": "dist/cjs/index.js",
   "module": "dist/esm",
   "sideEffects": ["polyfill.js"],
   "files": ["src", "types", "dist"],

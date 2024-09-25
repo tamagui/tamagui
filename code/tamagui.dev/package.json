@@ -12,8 +12,8 @@
     "build:prod": "npx vxs build",
     "prod": "yarn build:prod && yarn serve",
     "serve:railway": "npx vxs serve --host 0.0.0.0",
-    "build:bento": "node ./scripts/build-bento.cjs",
-    "upload:bento": "node ./scripts/upload-bento.cjs",
+    "build:bento": "node ./scripts/build-bento.js",
+    "upload:bento": "node ./scripts/upload-bento.js",
     "dev-build-prod": "VXRN_DISABLE_PROD_OPTIMIZATION=1 yarn build:prod && yarn serve"
   },
   "dependencies": {

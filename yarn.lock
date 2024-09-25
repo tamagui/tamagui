@@ -7172,6 +7172,7 @@ __metadata:
     "@tamagui/themes": "npm:1.112.0"
     "@tamagui/toast": "npm:1.112.0"
     "@tamagui/web": "npm:1.112.0"
+    "@vxrn/vendor": "npm:^1.1.241"
     "@welldone-software/why-did-you-render": "npm:^7.0.1"
     babel-plugin-module-resolver: "npm:^5.0.2"
     burnt: "npm:^0.12.2"
@@ -9870,7 +9871,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vxrn/vendor@npm:1.1.241":
+"@vxrn/vendor@npm:1.1.241, @vxrn/vendor@npm:^1.1.241":
   version: 1.1.241
   resolution: "@vxrn/vendor@npm:1.1.241"
   checksum: 10/524f0ae34ae37017c9ccc29930c008ff8ef5a23d6b15fe0710cdf80fa4cb225f8597a2c13fbb347499df679820ef523ba77b43b4118ed2051918e401921074fc

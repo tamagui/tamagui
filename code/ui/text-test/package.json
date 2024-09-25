@@ -1,7 +1,7 @@
 {
   "name": "@tamagui/text-test",
   "version": "1.112.0",
-  "main": "dist/cjs/index.cjs",
+  "main": "dist/cjs/index.js",
   "type": "module",
   "private": true,
   "module": "dist/esm",

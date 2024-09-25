@@ -3,7 +3,7 @@
   "version": "1.112.0",
   "description": "React Native for Web",
   "sideEffects": false,
-  "main": "dist/cjs/index.cjs",
+  "main": "dist/cjs/index.js",
   "module": "dist/cjs",
   "files": ["types", "dist", "src"],
   "scripts": {
@@ -18,13 +18,13 @@
       "react-native-import": "./dist/esm/index.native.js",
       "react-native": "./dist/cjs/index.native.js",
       "import": "./dist/esm/index.mjs",
-      "require": "./dist/cjs/index.cjs"
+      "require": "./dist/cjs/index.js"
     },
     "./without-animated": {
       "react-native-import": "./dist/esm/without-animated.native.js",
       "react-native": "./dist/cjs/without-animated.native.js",
       "import": "./dist/esm/without-animated.mjs",
-      "require": "./dist/cjs/without-animated.cjs"
+      "require": "./dist/cjs/without-animated.js"
     },
     "./dist/modules/*": "./dist/esm/modules/*/index.js",
     "./dist/exports/*": "./dist/esm/exports/*/index.js",

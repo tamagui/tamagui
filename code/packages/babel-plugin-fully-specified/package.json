@@ -3,13 +3,9 @@
   "version": "1.112.0",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
-  "main": "dist/cjs/index.cjs",
+  "main": "dist/cjs/index.js",
   "module": "dist/esm/index.mjs",
-  "files": [
-    "src",
-    "types",
-    "dist"
-  ],
+  "files": ["src", "types", "dist"],
   "license": "MIT",
   "publishConfig": {
     "access": "public"
@@ -27,12 +23,12 @@
     ".": {
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
-      "require": "./dist/cjs/index.cjs"
+      "require": "./dist/cjs/index.js"
     },
     "./commonjs": {
       "types": "./types/commonjs.d.ts",
       "import": "./dist/esm/commonjs.mjs",
-      "require": "./dist/cjs/commonjs.cjs"
+      "require": "./dist/cjs/commonjs.js"
     }
   },
   "dependencies": {

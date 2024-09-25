@@ -13,11 +13,7 @@
   "source": "src/cli.tsx",
   "types": "./types/cli.d.ts",
   "module": "dist",
-  "files": [
-    "source",
-    "types",
-    "dist"
-  ],
+  "files": ["source", "types", "dist"],
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
@@ -34,7 +30,7 @@
       "react-native": "./dist/cjs/index.native.js",
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
-      "require": "./dist/cjs/index.cjs"
+      "require": "./dist/cjs/index.js"
     }
   },
   "dependencies": {

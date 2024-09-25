@@ -3,7 +3,7 @@
   "version": "1.112.0",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
-  "main": "dist/cjs/index.cjs",
+  "main": "dist/cjs/index.js",
   "module": "dist/esm",
   "module:jsx": "dist/jsx",
   "files": ["src", "types", "dist", "v2.js", "v2.d.ts"],
@@ -22,14 +22,14 @@
       "react-native": "./dist/cjs/index.native.js",
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
-      "require": "./dist/cjs/index.cjs"
+      "require": "./dist/cjs/index.js"
     },
     "./v2": {
       "react-native-import": "./dist/esm/v2.native.js",
       "react-native": "./dist/cjs/v2.native.js",
       "types": "./types/v2.d.ts",
       "import": "./dist/esm/v2.mjs",
-      "require": "./dist/cjs/v2.cjs"
+      "require": "./dist/cjs/v2.js"
     }
   },
   "devDependencies": {

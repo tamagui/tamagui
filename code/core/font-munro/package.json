@@ -2,7 +2,7 @@
   "name": "@tamagui/font-munro",
   "version": "1.112.0",
   "types": "./types/index.d.ts",
-  "main": "dist/cjs/index.cjs",
+  "main": "dist/cjs/index.js",
   "module": "dist/esm",
   "module:jsx": "dist/jsx",
   "files": ["types", "dist", "css", "files"],

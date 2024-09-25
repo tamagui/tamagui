@@ -4,7 +4,7 @@
   "source": "src/index.ts",
   "license": "MIT",
   "types": "./types/index.d.ts",
-  "main": "dist/cjs/index.cjs",
+  "main": "dist/cjs/index.js",
   "module": "dist/esm",
   "files": ["src", "types", "dist"],
   "exports": {
@@ -12,7 +12,7 @@
     ".": {
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
-      "require": "./dist/cjs/index.cjs"
+      "require": "./dist/cjs/index.js"
     }
   },
   "dependencies": {

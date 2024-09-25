@@ -6,7 +6,7 @@
   "sideEffects": ["setup.js"],
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
-  "main": "dist/cjs/index.cjs",
+  "main": "dist/cjs/index.js",
   "module": "dist/esm",
   "module:jsx": "dist/jsx",
   "tamagui": {
@@ -31,29 +31,29 @@
       "react-native": "./dist/cjs/index.native.js",
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
-      "require": "./dist/cjs/index.cjs"
+      "require": "./dist/cjs/index.js"
     },
     "./web": {
       "react-native-import": "./dist/esm/index.native.js",
       "react-native": "./dist/cjs/index.native.js",
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
-      "require": "./dist/cjs/index.cjs"
+      "require": "./dist/cjs/index.js"
     },
     "./native": {
       "types": "./types/index.d.ts",
-      "require": "./dist/native.cjs"
+      "require": "./dist/native.js"
     },
     "./native-test": {
       "types": "./types/index.d.ts",
-      "require": "./dist/test.cjs"
+      "require": "./dist/test.js"
     },
     "./linear-gradient": {
       "react-native-import": "./dist/esm/linear-gradient.native.js",
       "react-native": "./dist/cjs/linear-gradient.native.js",
       "types": "./types/linear-gradient.d.ts",
       "import": "./dist/esm/linear-gradient.mjs",
-      "require": "./dist/cjs/linear-gradient.cjs"
+      "require": "./dist/cjs/linear-gradient.js"
     }
   },
   "dependencies": {
