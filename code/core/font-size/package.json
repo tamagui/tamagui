@@ -7,7 +7,11 @@
   "main": "dist/cjs/index.js",
   "module": "dist/esm",
   "module:jsx": "dist/jsx",
-  "files": ["src", "types", "dist"],
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
   "exports": {
     "./package.json": "./package.json",
     ".": {

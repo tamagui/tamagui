@@ -1,9 +1,11 @@
-import { Octokit } from 'octokit'
-import fetch from 'node-fetch'
+export const getOctokit = async () => {
+  const fetch = await import('node-fetch')
+  const { Octokit } = await import('octokit')
 
-export const octokit = new Octokit({
-  auth: process.env.GITHUB_ADMIN_TOKEN,
-  request: {
-    fetch,
-  },
-})
+  return new Octokit({
+    auth: process.env.GITHUB_ADMIN_TOKEN,
+    request: {
+      fetch,
+    },
+  })
+}

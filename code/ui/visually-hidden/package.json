@@ -1,13 +1,19 @@
 {
   "name": "@tamagui/visually-hidden",
   "version": "1.112.0",
-  "sideEffects": ["*.css"],
+  "sideEffects": [
+    "*.css"
+  ],
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs/index.js",
   "module": "dist/esm",
   "module:jsx": "dist/jsx",
-  "files": ["src", "types", "dist"],
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",

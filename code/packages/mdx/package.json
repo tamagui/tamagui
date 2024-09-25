@@ -5,10 +5,14 @@
   "main": "dist/cjs/index.js",
   "module": "dist/esm",
   "type": "module",
-  "files": ["src", "types", "dist"],
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
   "scripts": {
     "build": "tamagui-build --bundle --bundle-modules",
-    "watch": "build --watch",
+    "watch": "tamagui-build --watch",
     "lint": "biome check src",
     "lint:fix": "biome check --write src",
     "clean": "tamagui-build clean",

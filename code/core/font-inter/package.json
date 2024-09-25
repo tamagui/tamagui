@@ -5,7 +5,13 @@
   "main": "dist/cjs/index.js",
   "module": "dist/esm",
   "module:jsx": "dist/jsx",
-  "files": ["types", "dist", "css", "otf", "woff2"],
+  "files": [
+    "types",
+    "dist",
+    "css",
+    "otf",
+    "woff2"
+  ],
   "exports": {
     "./package.json": "./package.json",
     "./css/100.css": "./css/100.css",

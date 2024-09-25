@@ -1,5 +1,4 @@
 import { ThemeTint } from '@tamagui/logo'
-import { getAllFrontmatter, getCompilationExamples, getMDXBySlug } from '@tamagui/mdx'
 import { useLoader } from 'vxs'
 import { getMDXComponent } from 'mdx-bundler/client'
 import { useMemo } from 'react'
@@ -12,6 +11,7 @@ import { getOgUrl } from '~/features/site/getOgUrl'
 import { TamaguiExamples } from '~/components/TamaguiExamples'
 
 export async function generateStaticParams() {
+  const { getAllFrontmatter } = await import('@tamagui/mdx')
   const frontmatters = getAllFrontmatter('data/docs/intro')
   const paths = frontmatters.map(({ slug }) => ({
     slug: slug.replace(/.*docs\/intro\//, ''),
@@ -20,6 +20,7 @@ export async function generateStaticParams() {
 }
 
 export async function loader({ params }) {
+  const { getMDXBySlug, getCompilationExamples } = await import('@tamagui/mdx')
   const { frontmatter, code } = await getMDXBySlug(`data/docs/intro`, params.slug)
   return {
     frontmatter,

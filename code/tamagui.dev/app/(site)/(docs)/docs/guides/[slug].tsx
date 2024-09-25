@@ -2,16 +2,15 @@ import { ThemeTint } from '@tamagui/logo'
 import { getMDXComponent } from 'mdx-bundler/client'
 import { useMemo } from 'react'
 import { useLoader } from 'vxs'
+import { HeadInfo } from '~/components/HeadInfo'
 import { SubTitle, nbspLastWord } from '~/components/SubTitle'
 import { DocsQuickNav } from '~/features/docs/DocsQuickNav'
-import { HomeH1 } from '~/features/site/home/HomeHeaders'
-
-import { getAllFrontmatter, getMDXBySlug } from '@tamagui/mdx'
-import { HeadInfo } from '~/components/HeadInfo'
 import { components } from '~/features/mdx/MDXComponents'
 import { getOgUrl } from '~/features/site/getOgUrl'
+import { HomeH1 } from '~/features/site/home/HomeHeaders'
 
 export async function generateStaticParams() {
+  const { getAllFrontmatter } = await import('@tamagui/mdx')
   const frontmatters = getAllFrontmatter('data/docs/guides')
   const paths = frontmatters.map(({ slug }) => ({
     slug: slug.replace(/.*docs\/guides\//, ''),
@@ -20,6 +19,7 @@ export async function generateStaticParams() {
 }
 
 export async function loader({ params }) {
+  const { getMDXBySlug } = await import('@tamagui/mdx')
   const { frontmatter, code } = await getMDXBySlug('data/docs/guides', params.slug)
   return {
     frontmatter,

@@ -2,12 +2,17 @@
   "name": "@tamagui/sandbox-ui",
   "version": "1.112.0",
   "private": true,
-  "sideEffects": ["*.css"],
+  "sideEffects": [
+    "*.css"
+  ],
   "types": "./types/index",
   "main": "dist/cjs/index.js",
   "module": "dist/esm",
   "module:jsx": "dist/jsx",
-  "files": ["types", "dist"],
+  "files": [
+    "types",
+    "dist"
+  ],
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",

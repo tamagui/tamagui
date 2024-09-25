@@ -5,7 +5,13 @@
   "main": "dist/cjs/index.js",
   "module": "dist/esm",
   "module:jsx": "dist/jsx",
-  "files": ["types", "dist", "css", "fonts", "nohemi.css"],
+  "files": [
+    "types",
+    "dist",
+    "css",
+    "fonts",
+    "nohemi.css"
+  ],
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",

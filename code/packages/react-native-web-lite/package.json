@@ -5,7 +5,11 @@
   "sideEffects": false,
   "main": "dist/cjs/index.js",
   "module": "dist/cjs",
-  "files": ["types", "dist", "src"],
+  "files": [
+    "types",
+    "dist",
+    "src"
+  ],
   "scripts": {
     "build": "tamagui-build --skip-types",
     "watch": "tamagui-build --watch --skip-types",
@@ -47,8 +51,15 @@
     "react": "*"
   },
   "license": "MIT",
-  "tags": ["react"],
-  "keywords": ["react", "react-component", "react-native", "web"],
+  "tags": [
+    "react"
+  ],
+  "keywords": [
+    "react",
+    "react-component",
+    "react-native",
+    "web"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/tamagui/tamagui.git",

@@ -1,4 +1,4 @@
-import { octokit } from '~/features/github/octokit'
+import { getOctokit } from '~/features/github/octokit'
 
 export type GithubSponsorshipStatus =
   | {
@@ -449,7 +449,8 @@ export const inviteCollaboratorToRepo = async (
   )
 
   try {
-    await octokit.rest.repos.addCollaborator({
+    const octokit = await getOctokit()
+    octokit.rest.repos.addCollaborator({
       owner: 'tamagui',
       repo: repoName,
       username: userLogin,

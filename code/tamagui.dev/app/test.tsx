@@ -1,4 +1,16 @@
-import { Button, Circle, H2, styled } from 'tamagui'
+import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp } from '@tamagui/lucide-icons'
+import type { TooltipProps } from 'tamagui'
+import {
+  Button,
+  Circle,
+  H2,
+  Paragraph,
+  styled,
+  Tooltip,
+  TooltipGroup,
+  XStack,
+  YStack,
+} from 'tamagui'
 
 global.shouldDebugMoti = true
 
@@ -17,10 +29,6 @@ export const HomeH2 = styled(H2, {
     size: '$9',
   },
 })
-
-import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp } from '@tamagui/lucide-icons'
-import type { TooltipProps } from 'tamagui'
-import { Paragraph, Tooltip, TooltipGroup, XStack, YStack } from 'tamagui'
 
 export function TooltipDemo() {
   return (

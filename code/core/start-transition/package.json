@@ -6,7 +6,11 @@
   "types": "./types/index.d.ts",
   "main": "dist/cjs/index.js",
   "module": "dist/esm",
-  "files": ["src", "types", "dist"],
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
   "exports": {
     "./package.json": "./package.json",
     ".": {

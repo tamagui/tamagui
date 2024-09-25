@@ -1,4 +1,3 @@
-import { getCompilationExamples } from '@tamagui/mdx'
 import { YStack } from 'tamagui'
 import { useLoader } from 'vxs'
 import { HeadInfo } from '~/components/HeadInfo'
@@ -18,6 +17,7 @@ import { HomeSection, SectionTinted, TintSection } from '~/features/site/home/Ti
 import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
 
 export async function loader() {
+  const { getCompilationExamples } = await import('@tamagui/mdx')
   return getCompilationExamples()
 }
 

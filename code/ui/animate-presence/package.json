@@ -7,7 +7,11 @@
   "types": "./types/index.d.ts",
   "main": "dist/cjs/index.js",
   "module": "dist/esm",
-  "files": ["src", "types", "dist"],
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
   "dependencies": {
     "@tamagui/helpers": "1.112.0",
     "@tamagui/use-constant": "1.112.0",

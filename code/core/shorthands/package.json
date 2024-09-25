@@ -6,7 +6,13 @@
   "main": "dist/cjs/index.js",
   "module": "dist/esm",
   "module:jsx": "dist/jsx",
-  "files": ["src", "types", "dist", "v2.js", "v2.d.ts"],
+  "files": [
+    "src",
+    "types",
+    "dist",
+    "v2.js",
+    "v2.d.ts"
+  ],
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
