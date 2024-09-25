@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/checkbox",
-  "version": "1.112.0",
+  "version": "1.112.0-1727286694781",
   "sideEffects": [
     "*.css"
   ],
@@ -24,20 +24,20 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/checkbox-headless": "1.112.0",
-    "@tamagui/compose-refs": "1.112.0",
-    "@tamagui/constants": "1.112.0",
-    "@tamagui/core": "1.112.0",
-    "@tamagui/create-context": "1.112.0",
-    "@tamagui/focusable": "1.112.0",
-    "@tamagui/font-size": "1.112.0",
-    "@tamagui/get-token": "1.112.0",
-    "@tamagui/helpers": "1.112.0",
-    "@tamagui/helpers-tamagui": "1.112.0",
-    "@tamagui/label": "1.112.0",
-    "@tamagui/stacks": "1.112.0",
-    "@tamagui/use-controllable-state": "1.112.0",
-    "@tamagui/use-previous": "1.112.0"
+    "@tamagui/checkbox-headless": "1.112.0-1727286694781",
+    "@tamagui/compose-refs": "1.112.0-1727286694781",
+    "@tamagui/constants": "1.112.0-1727286694781",
+    "@tamagui/core": "1.112.0-1727286694781",
+    "@tamagui/create-context": "1.112.0-1727286694781",
+    "@tamagui/focusable": "1.112.0-1727286694781",
+    "@tamagui/font-size": "1.112.0-1727286694781",
+    "@tamagui/get-token": "1.112.0-1727286694781",
+    "@tamagui/helpers": "1.112.0-1727286694781",
+    "@tamagui/helpers-tamagui": "1.112.0-1727286694781",
+    "@tamagui/label": "1.112.0-1727286694781",
+    "@tamagui/stacks": "1.112.0-1727286694781",
+    "@tamagui/use-controllable-state": "1.112.0-1727286694781",
+    "@tamagui/use-previous": "1.112.0-1727286694781"
   },
   "exports": {
     "./package.json": "./package.json",
@@ -50,7 +50,7 @@
     }
   },
   "devDependencies": {
-    "@tamagui/build": "1.112.0",
+    "@tamagui/build": "1.112.0-1727286694781",
     "react": "^18.2.0 || ^19.0.0"
   },
   "publishConfig": {
