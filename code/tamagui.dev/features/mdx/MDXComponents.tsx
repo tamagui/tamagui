@@ -36,7 +36,7 @@ import {
   styled,
 } from 'tamagui'
 import { LinearGradient } from 'tamagui/linear-gradient'
-import { Href } from 'vxs'
+import type { Href } from 'vxs'
 import { Code, CodeInline } from '~/components/Code'
 import { CustomTabs } from '~/components/CustomTabs'
 import { DataTable } from '~/components/DataTable'
@@ -63,7 +63,6 @@ import { SocialLinksRow } from '~/features/site/home/SocialLinksRow'
 import { unwrapText } from '~/helpers/unwrapText'
 import { pkgCommands, useBashCommand } from '~/hooks/useBashCommand'
 import { useClipboard } from '~/hooks/useClipboard'
-import { BentoCard } from '../bento/BentoCard'
 import { DocCodeBlock } from '../docs/DocsCodeBlock'
 import { HeroContainer } from '../docs/HeroContainer'
 import { Highlights } from '../docs/Highlights'
@@ -204,8 +203,6 @@ const componentsIn = {
       {props.children}
     </YStack>
   ),
-
-  BentoCard,
 
   Adapt,
 

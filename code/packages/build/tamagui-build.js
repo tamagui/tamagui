@@ -516,8 +516,8 @@ async function esbuildWriteIfChanged(
     env: '',
   }
 ) {
-  if (!shouldWatch && !platform) {
-    return await esbuild.build(opts)
+  if (!platform) {
+    throw new Error(`Must provide platform of web or native`)
   }
 
   const isESM = opts.target === 'esm' || opts.target === 'esnext'
