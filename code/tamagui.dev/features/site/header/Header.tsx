@@ -3,6 +3,7 @@ import * as React from 'react'
 import { SizableText, TooltipGroup, XGroup, XStack, YStack, isClient } from 'tamagui'
 import { usePathname } from 'vxs'
 import { Link } from '~/components/Link'
+import { ToggleThemeButton } from '~/components/ToggleThemeButton'
 import { GithubIcon } from '~/features/icons/GithubIcon'
 import { SeasonTogglePopover } from '~/features/site/seasons/SeasonTogglePopover'
 import { ThemeToggle } from '~/features/site/theme/ThemeToggle'
@@ -164,7 +165,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
           <TooltipGroup delay={tooltipDelay}>
             <XGroup mah={32} bc="transparent" ai="center" size="$4">
               <XGroup.Item>
-                <ThemeToggle borderWidth={0} chromeless />
+                <ToggleThemeButton />
               </XGroup.Item>
             </XGroup>
           </TooltipGroup>

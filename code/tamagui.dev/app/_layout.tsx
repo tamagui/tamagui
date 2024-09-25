@@ -2,7 +2,7 @@ import '@tamagui/core/reset.css'
 import '~/app.css'
 import '~/tamagui.css'
 
-import { HydrateTheme, UserThemeProvider, useUserTheme } from '@tamagui/one-theme'
+import { useColorScheme, SchemeProvider } from '@vxrn/color-scheme'
 import { ToastProvider } from '@tamagui/toast'
 import { isWeb, setupPopper, TamaguiProvider } from 'tamagui'
 import { PageLoadProgressBar, Slot, Stack } from 'vxs'
@@ -111,8 +111,6 @@ export default function Layout() {
         precedence="default"
       />
 
-      <HydrateTheme />
-
       <Providers>
         {isWeb ? (
           <Slot />
@@ -142,23 +140,22 @@ export default function Layout() {
 export const Providers = (props: { children: any }) => {
   return (
     <SearchProvider>
-      <UserThemeProvider>
+      <SchemeProvider>
         <WebsiteTamaguiProvider>{props.children}</WebsiteTamaguiProvider>
-      </UserThemeProvider>
+      </SchemeProvider>
     </SearchProvider>
   )
 }
 
 function WebsiteTamaguiProvider(props: { children: any }) {
-  const [{ resolvedTheme }] = useUserTheme()
-
+  const [scheme] = useColorScheme()
   return (
     // react 19 hydration breaks if theres not a single root node, which disableRootThemeClass causes
     <span style={{ display: 'contents' }}>
       <TamaguiProvider
         disableRootThemeClass
         disableInjectCSS
-        defaultTheme={resolvedTheme}
+        defaultTheme={scheme}
         config={tamaConf}
       >
         <ToastProvider swipeDirection="horizontal">{props.children}</ToastProvider>
