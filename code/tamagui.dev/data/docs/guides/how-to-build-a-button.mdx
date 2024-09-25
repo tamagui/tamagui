@@ -101,7 +101,7 @@ export const ButtonFrame = styled(View, {
       },
     },
   } as const,
-  // defaultVariants take priority over values passed higher up in the component tree.
+  // defaultVariants win / overwrite over values passed higher up in the component tree.
   // example:
   // <Button.Props size="$lg">
   //   <Button>
@@ -390,10 +390,9 @@ export const ButtonText = styled(Text, {
 ```
 
 <Notice>
-The `...size` spread variant `name` defaults to implicit any. Update `tsconfig.json`'s `"noImplicitAny": false` to avoid TypeScript errors.
+  The `...size` spread variant `name` defaults to implicit any. Update
+  `tsconfig.json`'s `"noImplicitAny": false` to avoid TypeScript errors.
 </Notice>
-
-
 
 So now we can pass in our new `size` property:
 
