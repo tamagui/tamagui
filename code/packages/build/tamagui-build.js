@@ -352,6 +352,11 @@ async function buildJs() {
     platform: 'node',
   }
 
+  const cjsConfigWeb = {
+    ...cjsConfig,
+    outExtension: { '.js': '.cjs' },
+  }
+
   const esmConfig = {
     target: 'esnext',
     format: 'esm',
@@ -379,8 +384,9 @@ async function buildJs() {
   return await Promise.all([
     // web output to cjs
     pkgMain
-      ? esbuildWriteIfChanged(cjsConfig, {
+      ? esbuildWriteIfChanged(cjsConfigWeb, {
           platform: 'web',
+          specifyCJS: true,
         })
       : null,
 
@@ -486,8 +492,9 @@ async function buildJs() {
 async function esbuildWriteIfChanged(
   /** @type { import('esbuild').BuildOptions } */
   opts,
-  { platform, env } = {
+  { platform, env, specifyCJS } = {
     platform: '',
+    specifyCJS: false,
     env: '',
   }
 ) {
@@ -673,6 +680,32 @@ async function esbuildWriteIfChanged(
   ).filter(Boolean)
 
   // path specifics:
+
+  if (specifyCJS) {
+    await Promise.all(
+      outputs.map(async (file) => {
+        if (!file) return
+
+        const { path, contents } = file
+
+        if (!path.endsWith('.cjs')) return
+
+        const result = shouldBundle
+          ? { code: contents }
+          : transform(contents, {
+              filename: path,
+              configFile: false,
+              sourceMap: true,
+              plugins: [
+                require.resolve('@tamagui/babel-plugin-fully-specified/commonjs'),
+              ].filter(Boolean),
+            })
+
+        await FSE.writeFile(path, result.code)
+      })
+    )
+    return
+  }
 
   if (shouldSkipMJS || !isESM) {
     return

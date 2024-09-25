@@ -66,15 +66,17 @@ const fixScripts = async ({ location }, pkgJson: any) => {
 }
 
 const fixExportsPathSpecific = async ({ name, location }, pkgJson: any) => {
-  if (name === '@tamagui/static') {
-    return
-  }
   if (pkgJson.exports) {
     Object.keys(pkgJson.exports).forEach((key) => {
       const obj = pkgJson.exports?.[key]
       const importField = obj?.import
       if (importField?.endsWith('.js')) {
         obj.import = importField.replace('.js', '.mjs')
+      }
+
+      const requireField = obj?.require
+      if (requireField?.endsWith('.js')) {
+        obj.require = requireField.replace('.js', '.cjs')
       }
     })
   }
@@ -101,10 +103,10 @@ async function format() {
           encoding: 'utf-8',
         })
       )
-      await fixPeerDeps(pkg, pkgJson)
-      await fixExports(pkg, pkgJson)
+      // await fixPeerDeps(pkg, pkgJson)
+      // await fixExports(pkg, pkgJson)
       await fixExportsPathSpecific(pkg, pkgJson)
-      await fixScripts(pkg, pkgJson)
+      // await fixScripts(pkg, pkgJson)
       await writeFile(jsonPath, JSON.stringify(pkgJson, null, 2) + '\n', {
         encoding: 'utf-8',
       })

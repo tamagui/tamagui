@@ -58,13 +58,28 @@
       "path": "../core/config"
     },
     {
-      "path": "../core/core"
+      "path": "../core/themes"
+    },
+    {
+      "path": "../packages/lucide-icons"
+    },
+    {
+      "path": "../packages/mdx"
+    },
+    {
+      "path": "../packages/use-store"
     },
     {
       "path": "../ui/button"
     },
     {
       "path": "../ui/input"
+    },
+    {
+      "path": "../ui/linear-gradient"
+    },
+    {
+      "path": "../ui/tamagui"
     }
   ]
 }

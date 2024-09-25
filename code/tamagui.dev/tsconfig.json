@@ -60,10 +60,16 @@
   },
   "references": [
     {
+      "path": "../bento"
+    },
+    {
       "path": "../core/assert"
     },
     {
       "path": "../core/cli"
+    },
+    {
+      "path": "../core/get-token"
     },
     {
       "path": "../demos"
@@ -76,6 +82,9 @@
     },
     {
       "path": "../packages/mdx"
+    },
+    {
+      "path": "../packages/one-theme"
     },
     {
       "path": "../packages/use-store"

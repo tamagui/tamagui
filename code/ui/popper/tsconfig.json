@@ -20,6 +20,9 @@
       "path": "../../core/get-token"
     },
     {
+      "path": "../../core/start-transition"
+    },
+    {
       "path": "../../core/use-controllable-state"
     },
     {

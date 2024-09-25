@@ -3,13 +3,9 @@
   "version": "1.112.0",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
-  "main": "dist/cjs",
-  "module": "dist/esm",
-  "files": [
-    "src",
-    "types",
-    "dist"
-  ],
+  "main": "dist/cjs/index.cjs",
+  "module": "dist/esm/index.mjs",
+  "files": ["src", "types", "dist"],
   "license": "MIT",
   "publishConfig": {
     "access": "public"
@@ -22,6 +18,18 @@
     "test": "vitest --run",
     "clean": "node ../../../node_modules/.bin/tamagui-build clean",
     "clean:build": "node ../../../node_modules/.bin/tamagui-build clean:build"
+  },
+  "exports": {
+    ".": {
+      "types": "./types/index.d.ts",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.cjs"
+    },
+    "./commonjs": {
+      "types": "./types/commonjs.d.ts",
+      "import": "./dist/esm/commonjs.mjs",
+      "require": "./dist/cjs/commonjs.cjs"
+    }
   },
   "dependencies": {
     "@babel/core": "^7.25.2"

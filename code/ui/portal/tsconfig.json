@@ -11,6 +11,9 @@
       "path": "../../core/core"
     },
     {
+      "path": "../../core/start-transition"
+    },
+    {
       "path": "../../core/use-did-finish-ssr"
     },
     {

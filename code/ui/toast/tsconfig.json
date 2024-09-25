@@ -20,6 +20,9 @@
       "path": "../../core/helpers"
     },
     {
+      "path": "../../core/start-transition"
+    },
+    {
       "path": "../../core/use-controllable-state"
     },
     {

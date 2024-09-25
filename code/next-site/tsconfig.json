@@ -82,19 +82,7 @@
   ],
   "references": [
     {
-      "path": "../../packages/colors"
-    },
-    {
-      "path": "../../packages/lucide-icons"
-    },
-    {
-      "path": "../../packages/tamagui"
-    },
-    {
-      "path": "../../packages/next-plugin"
-    },
-    {
-      "path": "../../packages/loader"
+      "path": "../compiler/loader"
     }
   ]
 }

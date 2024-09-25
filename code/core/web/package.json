@@ -9,9 +9,7 @@
   "author": {
     "name": "Nate Wienert"
   },
-  "sideEffects": [
-    "*.css"
-  ],
+  "sideEffects": ["*.css"],
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
@@ -20,12 +18,7 @@
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
-  "files": [
-    "types",
-    "dist",
-    "src",
-    "reset.css"
-  ],
+  "files": ["types", "dist", "src", "reset.css"],
   "dependencies": {
     "@tamagui/compose-refs": "1.112.0",
     "@tamagui/constants": "1.112.0",
@@ -52,7 +45,7 @@
       "react-native": "./dist/cjs/index.native.js",
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
-      "require": "./dist/cjs/index.js"
+      "require": "./dist/cjs/index.cjs"
     },
     "./native": {
       "react-native-import": "./dist/esm/index.native.native.js",
@@ -65,7 +58,7 @@
       "react-native": "./dist/cjs/inject-styles.native.js",
       "types": "./types/inject-styles.d.ts",
       "import": "./dist/esm/inject-styles.mjs",
-      "require": "./dist/cjs/inject-styles.js"
+      "require": "./dist/cjs/inject-styles.cjs"
     }
   },
   "repository": {

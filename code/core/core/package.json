@@ -55,27 +55,27 @@
       "react-native": "./dist/cjs/index.native.js",
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
-      "require": "./dist/cjs/index.js"
+      "require": "./dist/cjs/index.cjs"
     },
     "./native": {
       "types": "./types/index.d.ts",
-      "import": "./dist/native.js",
-      "require": "./dist/native.js"
+      "import": "./dist/native.mjs",
+      "require": "./dist/native.cjs"
     },
     "./native-test": {
       "types": "./types/index.d.ts",
-      "import": "./dist/test.native.js",
-      "require": "./dist/test.native.js"
+      "import": "./dist/test.native.mjs",
+      "require": "./dist/test.native.cjs"
     },
     "./inject-styles": {
       "types": "./types/inject-styles.d.ts",
       "import": "./dist/esm/inject-styles.mjs",
-      "require": "./dist/cjs/inject-styles.js"
+      "require": "./dist/cjs/inject-styles.cjs"
     },
     "./reactNativeTypes": {
       "types": "./types/reactNativeTypes.d.ts",
       "import": "./dist/esm/reactNativeTypes.mjs",
-      "require": "./dist/cjs/reactNativeTypes.js"
+      "require": "./dist/cjs/reactNativeTypes.cjs"
     }
   },
   "repository": {

@@ -125,6 +125,12 @@ export default {
         }
       },
 
+      build: {
+        server: {
+          outputFormat: 'cjs',
+        },
+      },
+
       web: {
         redirects: [
           {

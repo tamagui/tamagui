@@ -1,5 +1,5 @@
-import { existsSync, readFileSync, lstatSync } from 'node:fs'
-import { resolve, extname, dirname } from 'node:path'
+import { existsSync, lstatSync } from 'node:fs'
+import { dirname, extname, resolve } from 'node:path'
 
 import type { ConfigAPI, NodePath, PluginObj, PluginPass } from '@babel/core'
 import type {

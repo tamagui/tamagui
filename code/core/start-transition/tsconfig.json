@@ -4,5 +4,9 @@
     "composite": true
   },
   "references": [],
-  "exclude": ["types", "dist", "**/__tests__"]
+  "exclude": [
+    "types",
+    "dist",
+    "**/__tests__"
+  ]
 }

@@ -60,10 +60,16 @@
   },
   "references": [
     {
+      "path": "../bento"
+    },
+    {
       "path": "../core/assert"
     },
     {
       "path": "../core/cli"
+    },
+    {
+      "path": "../core/get-token"
     },
     {
       "path": "../demos"
@@ -75,10 +81,10 @@
       "path": "../packages/lucide-icons"
     },
     {
-      "path": "../packages/mdx"
+      "path": "../packages/one-theme"
     },
     {
-      "path": "../packages/use-store"
+      "path": "../packages/react-native-svg"
     },
     {
       "path": "../ui/image-next"
