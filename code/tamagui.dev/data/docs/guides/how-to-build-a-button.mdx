@@ -101,7 +101,14 @@ export const ButtonFrame = styled(View, {
       },
     },
   } as const,
-
+  // defaultVariants take priority over values passed higher up in the component tree.
+  // example:
+  // <Button.Props size="$lg">
+  //   <Button>
+  //     <Button.Text size="$sm">Hello world</Button.Text>
+  //   </Button>
+  // </Button.Props>
+  // would render a button with size $md
   defaultVariants: {
     size: '$md',
   },
@@ -202,13 +209,11 @@ export default createTamagui({
     },
     // ... the rest of your tokens
   }),
-
   themes: {
     light: {
       background: '#fff',
       color: '#000',
     },
-
     // define a Button sub-theme, see the Themes docs for more
     light_Button: {
       background: '#ccc',
@@ -217,7 +222,6 @@ export default createTamagui({
       color: '#222'
     },
   },
-
   // ... the rest of your tamagui.config.ts
 })
 ```
@@ -300,11 +304,11 @@ We can use our simple button. It's nicely themed, but only renders at one size:
 
 ```tsx
 export default () => (
-  <Button>
+  <ButtonFrame>
     <ButtonText>
       Hello world
     </ButtonText>
-  </Button>
+  </ButtonFrame>
 )
 ```
 
@@ -693,8 +697,8 @@ sizes, showing how you can use them together with external React components.
 import { getTokens, useTheme } from '@tamagui/core'
 import * as React from 'react'
 
-const ButtonIcon = (props: { children: React.ReactNode }) => {
-  const { size } = React.useContext(ButtonContext)
+const ButtonIcon = (props: { children: React.ReactElement }) => {
+  const { size } = React.useContext(ButtonContext.context)
   const tokens = getTokens()
   const smallerSize = tokens.size[size].val * 0.5
   const theme = useTheme()
