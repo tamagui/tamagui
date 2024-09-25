@@ -2,7 +2,7 @@
   "name": "@tamagui/core",
   "version": "1.112.0",
   "source": "src/index.tsx",
-  "main": "dist/cjs",
+  "main": "dist/cjs/index.cjs",
   "module": "dist/esm",
   "tamagui": {
     "bundle.native": "./src/index.tsx",
@@ -13,9 +13,7 @@
   "author": {
     "name": "Nate Wienert"
   },
-  "sideEffects": [
-    "*.css"
-  ],
+  "sideEffects": ["*.css"],
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",

@@ -5,13 +5,9 @@
   "sideEffects": false,
   "license": "MIT",
   "types": "./types/index.d.ts",
-  "main": "dist/cjs",
+  "main": "dist/cjs/index.cjs",
   "module": "dist/esm",
-  "files": [
-    "src",
-    "types",
-    "dist"
-  ],
+  "files": ["src", "types", "dist"],
   "dependencies": {
     "@tamagui/helpers": "1.112.0",
     "@tamagui/use-constant": "1.112.0",

@@ -3,14 +3,10 @@
   "version": "1.112.0",
   "description": "React Native for Web",
   "sideEffects": false,
-  "main": "dist/cjs",
+  "main": "dist/cjs/index.cjs",
   "module": "dist/esm",
   "typings": "./types/index.d.ts",
-  "files": [
-    "types",
-    "dist",
-    "src"
-  ],
+  "files": ["types", "dist", "src"],
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
@@ -39,13 +35,6 @@
     "@tamagui/build": "1.112.0"
   },
   "license": "MIT",
-  "tags": [
-    "react"
-  ],
-  "keywords": [
-    "react",
-    "react-component",
-    "react-native",
-    "web"
-  ]
+  "tags": ["react"],
+  "keywords": ["react", "react-component", "react-native", "web"]
 }

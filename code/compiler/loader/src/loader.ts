@@ -8,7 +8,17 @@ const { createExtractor, extractToClassNames, getPragmaOptions } = Static
 Error.stackTraceLimit = Number.POSITIVE_INFINITY
 
 // pass loader as path
-const CSS_LOADER_PATH = requireResolve('./css')
+let CSS_LOADER_PATH = ''
+
+try {
+  CSS_LOADER_PATH = requireResolve('./css.cjs')
+} catch {
+  try {
+    CSS_LOADER_PATH = requireResolve('./css.esm')
+  } catch {
+    CSS_LOADER_PATH = requireResolve('./css.js')
+  }
+}
 
 Error.stackTraceLimit = Number.POSITIVE_INFINITY
 const extractor = createExtractor()

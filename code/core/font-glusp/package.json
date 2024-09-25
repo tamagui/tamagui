@@ -2,15 +2,10 @@
   "name": "@tamagui/font-glusp",
   "version": "1.112.0",
   "types": "./types/index.d.ts",
-  "main": "dist/cjs",
+  "main": "dist/cjs/index.cjs",
   "module": "dist/esm",
   "module:jsx": "dist/jsx",
-  "files": [
-    "types",
-    "dist",
-    "css",
-    "files"
-  ],
+  "files": ["types", "dist", "css", "files"],
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",

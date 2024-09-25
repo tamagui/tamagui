@@ -4,7 +4,7 @@
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
-  "main": "dist/cjs",
+  "main": "dist/cjs/index.cjs",
   "module": "dist/esm",
   "exports": {
     "./package.json": "./package.json",
@@ -16,11 +16,7 @@
       "require": "./dist/cjs/index.cjs"
     }
   },
-  "files": [
-    "src",
-    "types",
-    "dist"
-  ],
+  "files": ["src", "types", "dist"],
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",

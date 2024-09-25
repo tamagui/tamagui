@@ -19,7 +19,7 @@ const shouldSkipTypes = !!(
   process.argv.includes('--skip-types') || process.env.SKIP_TYPES
 )
 const shouldSkipMJS = !!process.argv.includes('--skip-mjs')
-const shouldBundle = !!process.argv.includes('--bundle')
+const shouldBundleFlag = !!process.argv.includes('--bundle')
 const shouldBundleNodeModules = !!process.argv.includes('--bundle-modules')
 const shouldClean = !!process.argv.includes('clean')
 const shouldCleanBuildOnly = !!process.argv.includes('clean:build')
@@ -271,17 +271,26 @@ async function buildJs() {
     return
   }
 
-  const files = shouldBundle
-    ? [pkgSource || './src/index.ts']
-    : (await fg(['src/**/*.(m)?[jt]s(x)?', 'src/**/*.css'])).filter(
-        (x) => !x.includes('.d.ts') && (exclude ? !x.match(exclude) : true)
-      )
-
   const externalPlugin = createExternalPlugin({
     skipNodeModulesBundle: true,
   })
 
-  const external = shouldBundle ? ['@swc/*', '*.node'] : undefined
+  const bundlePlugin = {
+    name: `external-most-modules`,
+    setup(build) {
+      build.onResolve({ filter: /.*/ }, (args) => {
+        if (
+          !args.path.startsWith('.') &&
+          !args.path.startsWith('/') &&
+          !args.path.startsWith('node:')
+        ) {
+          return { external: /^(esbuild|mdx-bundler)$/.test(args.path) }
+        }
+      })
+    },
+  }
+
+  const external = shouldBundleFlag ? ['@swc/*', '*.node'] : undefined
 
   /** @type { import('esbuild').BuildOptions } */
   const esbuildBundleProps =
@@ -341,13 +350,17 @@ async function buildJs() {
 
   const start = Date.now()
 
+  const allFiles = (await fg(['src/**/*.(m)?[jt]s(x)?', 'src/**/*.css'])).filter(
+    (x) => !x.includes('.d.ts') && (exclude ? !x.match(exclude) : true)
+  )
+
   const cjsConfig = {
     format: 'cjs',
-    entryPoints: files,
+    entryPoints: shouldBundleFlag ? [pkgSource || './src/index.ts'] : allFiles,
     outdir: flatOut ? 'dist' : 'dist/cjs',
-    bundle: shouldBundle,
+    bundle: shouldBundleFlag,
     external,
-    plugins: shouldBundleNodeModules ? [] : [externalPlugin],
+    plugins: shouldBundleNodeModules ? [bundlePlugin] : [externalPlugin],
     minify: !!process.env.MINIFY,
     platform: 'node',
   }
@@ -360,10 +373,8 @@ async function buildJs() {
   const esmConfig = {
     target: 'esnext',
     format: 'esm',
-    entryPoints: files,
+    entryPoints: allFiles,
     outdir: flatOut ? 'dist' : 'dist/esm',
-    bundle: shouldBundle,
-    external,
     allowOverwrite: true,
     minify: !!process.env.MINIFY,
   }
@@ -386,6 +397,7 @@ async function buildJs() {
     pkgMain
       ? esbuildWriteIfChanged(cjsConfigWeb, {
           platform: 'web',
+          bundle: shouldBundleFlag,
           specifyCJS: true,
         })
       : null,
@@ -446,7 +458,7 @@ async function buildJs() {
             jsx: 'preserve',
             outdir: flatOut ? 'dist' : 'dist/jsx',
             entryPoints: files,
-            bundle: shouldBundle,
+            bundle: shouldBundleFlag,
             allowOverwrite: true,
             target: 'esnext',
             format: 'esm',
@@ -467,7 +479,7 @@ async function buildJs() {
             jsx: 'preserve',
             outdir: flatOut ? 'dist' : 'dist/jsx',
             entryPoints: files,
-            bundle: shouldBundle,
+            bundle: shouldBundleFlag,
             allowOverwrite: true,
             target: 'node16',
             format: 'esm',
@@ -520,7 +532,7 @@ async function esbuildWriteIfChanged(
     const webEsbuildSettings = {
       target: 'esnext',
       jsx: 'automatic',
-      platform: shouldBundle ? 'node' : 'neutral',
+      platform: opts.bundle ? 'node' : 'neutral',
       tsconfigRaw: {
         compilerOptions: {
           paths: {
@@ -690,7 +702,7 @@ async function esbuildWriteIfChanged(
 
         if (!path.endsWith('.cjs')) return
 
-        const result = shouldBundle
+        const result = opts.bundle
           ? { code: contents }
           : transform(contents, {
               filename: path,
@@ -724,7 +736,7 @@ async function esbuildWriteIfChanged(
 
       // if bundling no need to specify as its all internal
       // and babel is bad on huge bundled files
-      const result = shouldBundle
+      const result = opts.bundle
         ? { code: contents }
         : transform(contents, {
             filename: mjsOutPath,

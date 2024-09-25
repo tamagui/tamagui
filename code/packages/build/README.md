@@ -21,7 +21,7 @@ It assumes your package.json looks something like this:
 {
   "source": "src/index.tsx",
   "types": "./types/index.d.ts",
-  "main": "dist/cjs",
+  "main": "dist/cjs/index.cjs",
   "module": "dist/esm",
   "removeSideEffects": "true",
   "scripts": {

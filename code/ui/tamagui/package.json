@@ -2,29 +2,18 @@
   "name": "tamagui",
   "version": "1.112.0",
   "removeSideEffects": true,
-  "alsoPublishAs_disabled": [
-    "@tamagui/ui"
-  ],
-  "sideEffects": [
-    "setup.js"
-  ],
+  "alsoPublishAs_disabled": ["@tamagui/ui"],
+  "sideEffects": ["setup.js"],
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
-  "main": "dist/cjs",
+  "main": "dist/cjs/index.cjs",
   "module": "dist/esm",
   "module:jsx": "dist/jsx",
   "tamagui": {
     "bundle.native": "./src/index.ts",
     "bundle.native.test": "./src/index.ts"
   },
-  "files": [
-    "src",
-    "types",
-    "dist",
-    "linear-gradient",
-    "native.js",
-    "native.d.ts"
-  ],
+  "files": ["src", "types", "dist", "linear-gradient", "native.js", "native.d.ts"],
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",

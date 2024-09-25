@@ -4,13 +4,9 @@
   "source": "src/index.ts",
   "license": "MIT",
   "types": "./types/index.d.ts",
-  "main": "dist/cjs",
+  "main": "dist/cjs/index.cjs",
   "module": "dist/esm",
-  "files": [
-    "src",
-    "types",
-    "dist"
-  ],
+  "files": ["src", "types", "dist"],
   "exports": {
     "./package.json": "./package.json",
     ".": {

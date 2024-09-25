@@ -2,15 +2,10 @@
   "name": "@tamagui/create-theme",
   "version": "1.112.0",
   "types": "./types/index.d.ts",
-  "main": "dist/cjs",
+  "main": "dist/cjs/index.cjs",
   "module": "dist/esm",
   "sideEffects": false,
-  "files": [
-    "src",
-    "types",
-    "dist",
-    "theme-builder"
-  ],
+  "files": ["src", "types", "dist", "theme-builder"],
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",

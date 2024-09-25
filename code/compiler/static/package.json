@@ -5,7 +5,11 @@
   "types": "./types/index.d.ts",
   "type": "commonjs",
   "main": "dist/index.cjs",
-  "files": ["src", "types", "dist"],
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",

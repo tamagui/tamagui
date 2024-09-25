@@ -3,16 +3,10 @@
   "version": "1.112.0",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
-  "main": "dist/cjs",
+  "main": "dist/cjs/index.cjs",
   "module": "dist/esm",
   "module:jsx": "dist/jsx",
-  "files": [
-    "src",
-    "types",
-    "dist",
-    "v2.js",
-    "v2.d.ts"
-  ],
+  "files": ["src", "types", "dist", "v2.js", "v2.d.ts"],
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
