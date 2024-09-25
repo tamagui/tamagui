@@ -2,7 +2,7 @@
   "name": "@tamagui/core",
   "version": "1.112.0",
   "source": "src/index.tsx",
-  "main": "dist/cjs/index.js",
+  "main": "dist/cjs",
   "module": "dist/esm",
   "tamagui": {
     "bundle.native": "./src/index.tsx",

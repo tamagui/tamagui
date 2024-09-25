@@ -2,7 +2,7 @@
   "name": "@tamagui/web",
   "version": "1.112.0",
   "source": "src/index.ts",
-  "main": "dist/cjs/index.js",
+  "main": "dist/cjs",
   "module": "dist/esm",
   "types": "./types/index.d.ts",
   "license": "MIT",

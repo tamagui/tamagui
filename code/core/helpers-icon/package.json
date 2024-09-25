@@ -5,7 +5,7 @@
   "description": "Utilities for icon packages",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
-  "main": "dist/cjs/index.js",
+  "main": "dist/cjs",
   "module": "dist/esm",
   "module:jsx": "dist/jsx",
   "files": [
