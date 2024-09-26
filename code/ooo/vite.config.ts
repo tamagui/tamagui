@@ -1,8 +1,8 @@
 import { tamaguiPlugin } from '@tamagui/vite-plugin'
 import type { UserConfig } from 'vite'
-import { removeReactNativeWebAnimatedPlugin, vxs } from 'vxs/vite'
 import { ViteImageOptimizer } from 'vite-plugin-image-optimizer'
 import tsconfigPaths from 'vite-tsconfig-paths'
+import { vxs } from 'vxs/vite'
 
 const resolve = (path: string) => {
   const resolved = import.meta.resolve?.(path)

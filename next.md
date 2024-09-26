@@ -131,25 +131,22 @@ const Icon = styled(Text, {
 })
 
 const Button = withStaticProperties(ButtonFrame, {
-  StyleChildren: (props) => <Style selector=".button-item" {...props} />,
   Icon,
   Text
 })
 
 const example = (
-  <Button>
-    <Button.StyleChildren color="$color10">
+  <Button gap="$4">
+    {/* prefer not renaming so compiler can optimize: */}
+    <Style selector=".button-item" color="$color10">
       {/* all of these 👇 get the styles from ^ */}
       <Button.Text /> 
       <Button.Text />
       <Button.Text />
       <Button.Icon $button-hover={{}} />
-    </Button.StyleChildren>
+    </Style>
   </Button>
 )
-
-
-
 ```
 
 ---

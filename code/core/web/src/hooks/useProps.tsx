@@ -1,12 +1,12 @@
 import React from 'react'
-
 import { getConfig } from '../config'
 import { ComponentContext } from '../contexts/ComponentContext'
-import { subscribeToContextGroup, useComponentState } from '../createComponent'
 import { useSplitStyles } from '../helpers/getSplitStyles'
+import { subscribeToContextGroup } from '../helpers/subscribeToContextGroup'
 import type { SplitStyleProps, StaticConfig, ThemeParsed, UseMediaState } from '../types'
 import { Stack } from '../views/Stack'
 import type { ViewProps, ViewStyle } from '../views/View'
+import { useComponentState } from './useComponentState'
 import { useMedia } from './useMedia'
 import { useThemeWithState } from './useTheme'
 

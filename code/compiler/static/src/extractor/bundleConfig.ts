@@ -264,7 +264,8 @@ export async function writeTamaguiCSS(outputCSS: string, config: TamaguiInternal
     } else {
       await flush()
     }
-  } catch {
+  } catch (err) {
+    console.log('err', err)
     await flush()
   }
 }
