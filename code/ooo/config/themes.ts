@@ -1,5 +1,5 @@
 import { createThemeBuilder } from '@tamagui/theme-builder'
-import { defaultComponentThemes, defaultTemplates } from '@tamagui/themes/v3-themes'
+import { defaultTemplates } from '@tamagui/themes/v3-themes'
 import {
   darkColors,
   darkShadowColor,
@@ -67,9 +67,10 @@ const themeBuilder = createThemeBuilder()
       template: 'alt2',
     },
   })
-  .addComponentThemes(defaultComponentThemes, {
-    avoidNestingWithin: ['alt1', 'alt2'],
-  })
+// no need for componet themes for us
+// .addComponentThemes(defaultComponentThemes, {
+//   avoidNestingWithin: ['alt1', 'alt2'],
+// })
 
 // --- themes ---
 

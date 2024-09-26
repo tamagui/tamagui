@@ -8,7 +8,7 @@
  * @flow
  */
 
-import { dismissKeyboard } from 'react-native-web-internals'
+import { dismissKeyboard } from '@tamagui/react-native-web-internals'
 
 const Keyboard = {
   addListener(): {

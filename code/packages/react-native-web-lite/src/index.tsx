@@ -23,7 +23,7 @@ export {
   clickProps,
   TextAncestorContext,
   flattenStyle,
-} from 'react-native-web-internals'
+} from '@tamagui/react-native-web-internals'
 export { default as render } from './render/index'
 export { unmountComponentAtNode } from 'react-dom'
 export { default as NativeModules } from './NativeModules/index'

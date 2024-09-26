@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
 import { basename, dirname, extname, join, relative, sep } from 'node:path'
 
 import generate from '@babel/generator'
@@ -254,19 +254,18 @@ export async function bundleConfig(props: TamaguiOptions) {
 
 export async function writeTamaguiCSS(outputCSS: string, config: TamaguiInternalConfig) {
   const flush = async () => {
-    colorLog(Color.FgYellow, `    ➡ [tamagui] output css: ${outputCSS}\n`)
+    colorLog(Color.FgYellow, `    ➡ [tamagui] output css: ${outputCSS}`)
     await FS.writeFile(outputCSS, css)
   }
   const css = config.getCSS()
   try {
-    if ((await readFile(outputCSS, 'utf8')) === css) {
+    if (existsSync(outputCSS) && (await readFile(outputCSS, 'utf8')) === css) {
       // no change
     } else {
       await flush()
     }
   } catch (err) {
-    console.log('err', err)
-    await flush()
+    console.info('Error writing themes', err)
   }
 }
 

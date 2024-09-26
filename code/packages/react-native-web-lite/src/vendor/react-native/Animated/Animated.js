@@ -1,5 +1,5 @@
 import _objectSpread from '@babel/runtime/helpers/objectSpread2'
-import { Platform } from 'react-native-web-internals'
+import { Platform } from '@tamagui/react-native-web-internals'
 
 import * as AnimatedImplementation from './AnimatedImplementation'
 import * as AnimatedMock from './AnimatedMock'

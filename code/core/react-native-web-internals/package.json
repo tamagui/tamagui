@@ -1,5 +1,5 @@
 {
-  "name": "react-native-web-internals",
+  "name": "@tamagui/react-native-web-internals",
   "version": "1.112.1",
   "description": "React Native for Web",
   "sideEffects": false,

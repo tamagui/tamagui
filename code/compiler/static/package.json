@@ -51,6 +51,7 @@
     "@tamagui/helpers": "1.112.1",
     "@tamagui/helpers-node": "1.112.1",
     "@tamagui/proxy-worm": "1.112.1",
+    "@tamagui/react-native-web-internals": "1.112.1",
     "@tamagui/shorthands": "1.112.1",
     "@tamagui/types": "1.112.1",
     "babel-literal-to-ast": "^2.1.0",
@@ -65,7 +66,6 @@
     "lodash": "^4.17.21",
     "react-dom": "^18.2.0 || ^19.0.0",
     "react-native-web": "^0.19.12",
-    "react-native-web-internals": "1.112.1",
     "react-native-web-lite": "1.112.1"
   },
   "devDependencies": {

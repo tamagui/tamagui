@@ -9,7 +9,7 @@
  */
 
 import * as React from 'react'
-import { StyleSheet } from 'react-native-web-internals'
+import { StyleSheet } from '@tamagui/react-native-web-internals'
 import {
   TextInputState,
   forwardedProps,
@@ -20,7 +20,7 @@ import {
   useMergeRefs,
   usePlatformMethods,
   useResponderEvents,
-} from 'react-native-web-internals'
+} from '@tamagui/react-native-web-internals'
 
 import createElement from '../createElement/index'
 import type { PlatformMethods } from '../types'

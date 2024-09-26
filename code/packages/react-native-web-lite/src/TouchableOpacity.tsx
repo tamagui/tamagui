@@ -12,7 +12,11 @@
 
 import * as React from 'react'
 import { useCallback, useMemo, useRef, useState } from 'react'
-import { StyleSheet, useMergeRefs, usePressEvents } from 'react-native-web-internals'
+import {
+  StyleSheet,
+  useMergeRefs,
+  usePressEvents,
+} from '@tamagui/react-native-web-internals'
 
 import View from './View'
 

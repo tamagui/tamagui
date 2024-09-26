@@ -12,7 +12,7 @@
 'use strict'
 
 import normalizeColor from '@tamagui/normalize-css-color'
-import { invariant } from 'react-native-web-internals'
+import { invariant } from '@tamagui/react-native-web-internals'
 
 import NativeAnimatedHelper from '../NativeAnimatedHelper'
 import AnimatedWithChildren from './AnimatedWithChildren'

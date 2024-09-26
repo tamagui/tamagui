@@ -6,7 +6,7 @@
  *
  * @flow
  */
-import { canUseDOM } from 'react-native-web-internals'
+import { canUseDOM } from '@tamagui/react-native-web-internals'
 
 function isScreenReaderEnabled(): Promise<unknown> {
   return new Promise((resolve, reject) => {

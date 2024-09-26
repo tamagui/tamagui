@@ -11,7 +11,7 @@
 
 import type { ComponentType, ReactNode } from 'react'
 import { unmountComponentAtNode } from 'react-dom'
-import { invariant } from 'react-native-web-internals'
+import { invariant } from '@tamagui/react-native-web-internals'
 
 import renderApplication, { getApplication } from './renderApplication'
 

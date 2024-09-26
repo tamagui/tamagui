@@ -7696,6 +7696,20 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/react-native-web-internals@npm:1.112.1, @tamagui/react-native-web-internals@workspace:code/core/react-native-web-internals":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/react-native-web-internals@workspace:code/core/react-native-web-internals"
+  dependencies:
+    "@tamagui/build": "npm:1.112.1"
+    "@tamagui/normalize-css-color": "npm:1.112.1"
+    "@tamagui/react-native-use-pressable": "npm:1.112.1"
+    "@tamagui/react-native-use-responder-events": "npm:1.112.1"
+    "@tamagui/simple-hash": "npm:1.112.1"
+    react: "npm:^18.2.0 || ^19.0.0"
+    styleq: "npm:^0.1.3"
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/react-native-web@npm:1.112.1, @tamagui/react-native-web@workspace:code/ui/react-native-web":
   version: 0.0.0-use.local
   resolution: "@tamagui/react-native-web@workspace:code/ui/react-native-web"
@@ -7973,6 +7987,7 @@ __metadata:
     "@tamagui/helpers": "npm:1.112.1"
     "@tamagui/helpers-node": "npm:1.112.1"
     "@tamagui/proxy-worm": "npm:1.112.1"
+    "@tamagui/react-native-web-internals": "npm:1.112.1"
     "@tamagui/shorthands": "npm:1.112.1"
     "@tamagui/types": "npm:1.112.1"
     "@types/babel__core": "npm:^7.20.5"
@@ -7995,7 +8010,6 @@ __metadata:
     react: "npm:^18.2.0 || ^19.0.0"
     react-dom: "npm:^18.2.0 || ^19.0.0"
     react-native-web: "npm:^0.19.12"
-    react-native-web-internals: "npm:1.112.1"
     react-native-web-lite: "npm:1.112.1"
     typescript: "npm:^5.5.2"
   peerDependencies:
@@ -23832,20 +23846,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-web-internals@npm:1.112.1, react-native-web-internals@workspace:code/core/react-native-web-internals":
-  version: 0.0.0-use.local
-  resolution: "react-native-web-internals@workspace:code/core/react-native-web-internals"
-  dependencies:
-    "@tamagui/build": "npm:1.112.1"
-    "@tamagui/normalize-css-color": "npm:1.112.1"
-    "@tamagui/react-native-use-pressable": "npm:1.112.1"
-    "@tamagui/react-native-use-responder-events": "npm:1.112.1"
-    "@tamagui/simple-hash": "npm:1.112.1"
-    react: "npm:^18.2.0 || ^19.0.0"
-    styleq: "npm:^0.1.3"
-  languageName: unknown
-  linkType: soft
-
 "react-native-web-lite@npm:1.112.1, react-native-web-lite@workspace:code/packages/react-native-web-lite":
   version: 0.0.0-use.local
   resolution: "react-native-web-lite@workspace:code/packages/react-native-web-lite"
@@ -23854,10 +23854,10 @@ __metadata:
     "@tamagui/normalize-css-color": "npm:1.112.1"
     "@tamagui/react-native-use-pressable": "npm:1.112.1"
     "@tamagui/react-native-use-responder-events": "npm:1.112.1"
+    "@tamagui/react-native-web-internals": "npm:1.112.1"
     invariant: "npm:^2.2.4"
     react: "npm:^18.2.0 || ^19.0.0"
     react-dom: "npm:^18.2.0 || ^19.0.0"
-    react-native-web-internals: "npm:1.112.1"
     styleq: "npm:^0.1.3"
   peerDependencies:
     react: "*"

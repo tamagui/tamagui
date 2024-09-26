@@ -13,7 +13,7 @@ import {
 } from '@tamagui/web'
 import { basename, relative } from 'node:path'
 import type { ViewStyle } from 'react-native'
-import * as reactNativeWebInternals from 'react-native-web-internals'
+import * as reactNativeWebInternals from '@tamagui/react-native-web-internals'
 
 import { FAILED_EVAL } from '../constants'
 import { requireTamaguiCore } from '../helpers/requireTamaguiCore'

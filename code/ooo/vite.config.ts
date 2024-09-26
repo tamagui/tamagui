@@ -19,22 +19,6 @@ export default {
         find: '@docsearch/react',
         replacement: resolve('@docsearch/react'),
       },
-      // {
-      //   find: /^react-native$/,
-      //   replacement: '/Users/n8/tamagui/code/ui/react-native-web/dist/esm/index.mjs',
-      // },
-      // {
-      //   find: /^react-native\/(.*)$/,
-      //   replacement: '/Users/n8/tamagui/code/ui/react-native-web/dist/esm/index.mjs',
-      // },
-      // {
-      //   find: /^react-native-web$/,
-      //   replacement: '/Users/n8/tamagui/code/ui/react-native-web/dist/esm/index.mjs',
-      // },
-      // {
-      //   find: /^react-native-web\/(.*)$/,
-      //   replacement: '/Users/n8/tamagui/code/ui/react-native-web/dist/esm/index.mjs',
-      // },
     ],
 
     dedupe: [
@@ -58,6 +42,7 @@ export default {
 
   define: {
     'process.env.TAMAGUI_DISABLE_NO_THEME_WARNING': '"1"',
+    'process.env.TAMAGUI_SKIP_THEME_OPTIMIZATION': '"1"',
   },
 
   plugins: [
@@ -77,9 +62,14 @@ export default {
 
     tamaguiPlugin({
       optimize: true,
+      useReactNativeWebLite: true,
       components: ['tamagui'],
       config: './config/tamagui.config.ts',
       outputCSS: './app/tamagui.css',
+      themeBuilder: {
+        input: './config/themes.ts',
+        output: './config/themesOut.ts',
+      },
     }),
   ],
 } satisfies UserConfig

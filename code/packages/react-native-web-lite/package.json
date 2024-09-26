@@ -38,8 +38,8 @@
     "@tamagui/normalize-css-color": "1.112.1",
     "@tamagui/react-native-use-pressable": "1.112.1",
     "@tamagui/react-native-use-responder-events": "1.112.1",
+    "@tamagui/react-native-web-internals": "1.112.1",
     "invariant": "^2.2.4",
-    "react-native-web-internals": "1.112.1",
     "styleq": "^0.1.3"
   },
   "devDependencies": {

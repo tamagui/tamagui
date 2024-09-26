@@ -8,7 +8,7 @@ export { TextAncestorContext } from './TextAncestorContext';
 export * from '@tamagui/react-native-use-pressable';
 export * from '@tamagui/react-native-use-responder-events';
 export { colorProps } from './colorProps';
-export { default as AccessibilityUtil } from './modules/AccessibilityUtil/index';
+export { AccessibilityUtil } from './modules/AccessibilityUtil/index';
 export { default as canUseDOM } from './modules/canUseDOM';
 export { default as createDOMProps } from './modules/createDOMProps/index';
 export { default as createEventHandle } from './modules/createEventHandle/index';

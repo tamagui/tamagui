@@ -19,7 +19,7 @@ import {
   invariant,
   mergeRefs,
   warning,
-} from 'react-native-web-internals'
+} from '@tamagui/react-native-web-internals'
 
 import Dimensions from '../Dimensions/index'
 import View from '../View/index'

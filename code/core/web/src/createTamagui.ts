@@ -64,10 +64,17 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   let foundThemes: DedupedThemes | undefined
   if (configIn.themes) {
     const noThemes = Object.keys(configIn.themes).length === 0
-    foundThemes = scanAllSheets(noThemes, tokensParsed)
+    if (noThemes) {
+      foundThemes = scanAllSheets(noThemes, tokensParsed)
+    }
+    if (process.env.TAMAGUI_REACT_19 && process.env.TAMAGUI_SKIP_THEME_OPTIMIZATION) {
+      // save some bundle
+    } else {
+      if (noThemes) {
+        listenForSheetChanges()
+      }
+    }
   }
-
-  listenForSheetChanges()
 
   let fontSizeTokens: Set<string> | null = null
   let fontsParsed:
@@ -164,7 +171,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
       }
     }
 
-    const themesIn = { ...configIn.themes } as ThemesLikeObject
+    const themesIn = configIn.themes as ThemesLikeObject
     const dedupedThemes = foundThemes ?? getThemesDeduped(themesIn)
     const themes = proxyThemesToParents(dedupedThemes)
 

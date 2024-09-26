@@ -7,9 +7,9 @@
  * @flow
  */
 
-import { canUseDOM } from 'react-native-web-internals'
+import { canUseDOM } from '@tamagui/react-native-web-internals'
 
-import type { DisplayMetrics } from '../Dimensions/index';
+import type { DisplayMetrics } from '../Dimensions/index'
 import Dimensions from '../Dimensions/index'
 
 const DeviceInfo = {

@@ -8,7 +8,7 @@
  * @flow
  */
 
-import { invariant } from 'react-native-web-internals'
+import { invariant } from '@tamagui/react-native-web-internals'
 
 type Content =
   | {

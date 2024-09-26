@@ -9,7 +9,7 @@
  */
 'use strict'
 
-import { InteractionManager } from 'react-native-web-internals'
+import { InteractionManager } from '@tamagui/react-native-web-internals'
 
 import NativeAnimatedHelper from '../NativeAnimatedHelper'
 import AnimatedInterpolation from './AnimatedInterpolation'
@@ -248,7 +248,7 @@ class AnimatedValue extends AnimatedWithChildren {
     var previousAnimation = this._animation
     this._animation && this._animation.stop()
     this._animation = animation
-    
+
     animation.start(
       this._value,
       (value) => {

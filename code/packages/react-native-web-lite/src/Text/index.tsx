@@ -13,7 +13,7 @@ import {
   StyleSheet,
   TextAncestorContext,
   getLocaleDirection,
-} from 'react-native-web-internals'
+} from '@tamagui/react-native-web-internals'
 import {
   forwardPropsListText,
   pick,
@@ -22,7 +22,7 @@ import {
   useMergeRefs,
   usePlatformMethods,
   useResponderEvents,
-} from 'react-native-web-internals'
+} from '@tamagui/react-native-web-internals'
 
 import createElement from '../createElement/index'
 import type { PlatformMethods } from '../types'

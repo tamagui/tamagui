@@ -6,7 +6,7 @@
  *
  * @flow
  */
-declare const AccessibilityUtil: {
+export declare const AccessibilityUtil: {
     isDisabled: (props: Record<string, any>) => boolean;
     propsToAccessibilityComponent: (props?: Object) => void | string;
     propsToAriaRole: ({ accessibilityRole, }: {

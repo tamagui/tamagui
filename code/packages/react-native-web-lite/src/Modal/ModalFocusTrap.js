@@ -8,7 +8,7 @@
  *
  */
 import * as React from 'react'
-import { StyleSheet, UIManager, canUseDOM } from 'react-native-web-internals'
+import { StyleSheet, UIManager, canUseDOM } from '@tamagui/react-native-web-internals'
 
 import createElement from '../createElement/index'
 import View from '../View'
@@ -109,11 +109,7 @@ var ModalFocusTrap = (_ref) => {
               hasFocused = focusLastDescendant(trapElementRef.current)
             } // If we couldn't focus a new element then we need to focus onto the trap target
 
-            if (
-              !hasFocused &&
-              trapElementRef.current != null &&
-              document.activeElement
-            ) {
+            if (!hasFocused && trapElementRef.current != null && document.activeElement) {
               UIManager.focus(trapElementRef.current)
             }
           }
@@ -153,9 +149,9 @@ var ModalFocusTrap = (_ref) => {
       {
         ref: trapElementRef,
       },
-      children,
+      children
     ),
-    /*#__PURE__*/ React.createElement(FocusBracket, null),
+    /*#__PURE__*/ React.createElement(FocusBracket, null)
   )
 }
 

@@ -8,7 +8,7 @@
  * @noflow
  */
 
-import { canUseDOM, invariant } from 'react-native-web-internals'
+import { canUseDOM, invariant } from '@tamagui/react-native-web-internals'
 
 // Android 4.4 browser
 const isPrefixed =

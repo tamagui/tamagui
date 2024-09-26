@@ -89,7 +89,7 @@ export const generateThemesAndLog = async (options: TamaguiOptions, force = fals
       const whitespaceBefore = `    `
       colorLog(
         Color.FgYellow,
-        `\n${whitespaceBefore}➡ [tamagui] generated themes: ${relative(
+        `${whitespaceBefore}➡ [tamagui] generated themes: ${relative(
           process.cwd(),
           options.themeBuilder.output
         )}`

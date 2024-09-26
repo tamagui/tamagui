@@ -11,7 +11,7 @@ import isDisabled from './isDisabled'
 import propsToAccessibilityComponent from './propsToAccessibilityComponent'
 import propsToAriaRole from './propsToAriaRole'
 
-const AccessibilityUtil = {
+export const AccessibilityUtil = {
   isDisabled,
   propsToAccessibilityComponent,
   propsToAriaRole,

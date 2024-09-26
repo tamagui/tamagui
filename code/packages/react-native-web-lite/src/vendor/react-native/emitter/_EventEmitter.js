@@ -8,7 +8,7 @@
  *
  * @typecheck
  */
-import { invariant } from 'react-native-web-internals'
+import { invariant } from '@tamagui/react-native-web-internals'
 
 import EmitterSubscription from './_EmitterSubscription'
 import EventSubscriptionVendor from './_EventSubscriptionVendor'
@@ -56,11 +56,11 @@ class EventEmitter {
   addListener(
     eventType, // FIXME: listeners should return void instead of mixed to prevent issues
     listener,
-    context,
+    context
   ) {
     return this._subscriber.addSubscription(
       eventType,
-      new EmitterSubscription(this, this._subscriber, listener, context),
+      new EmitterSubscription(this, this._subscriber, listener, context)
     )
   }
   /**
@@ -81,7 +81,7 @@ class EventEmitter {
   removeSubscription(subscription) {
     invariant(
       subscription.emitter === this,
-      'Subscription does not belong to this emitter.',
+      'Subscription does not belong to this emitter.'
     )
 
     this._subscriber.removeSubscription(subscription)
@@ -124,9 +124,7 @@ class EventEmitter {
 
     if (subscriptions) {
       for (
-        var _len = arguments.length,
-          args = new Array(_len > 1 ? _len - 1 : 0),
-          _key = 1;
+        var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1;
         _key < _len;
         _key++
       ) {
@@ -148,14 +146,14 @@ class EventEmitter {
 
   removeListener(
     eventType, // FIXME: listeners should return void instead of mixed to prevent issues
-    listener,
+    listener
   ) {
     console.error(
       "EventEmitter.removeListener('" +
         eventType +
         "', ...): Method has been " +
         'deprecated. Please instead use `remove()` on the subscription ' +
-        'returned by `EventEmitter.addListener`.',
+        'returned by `EventEmitter.addListener`.'
     )
 
     var subscriptions = this._subscriber.getSubscriptionsForType(eventType)

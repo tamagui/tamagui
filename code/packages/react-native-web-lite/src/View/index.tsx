@@ -9,7 +9,7 @@
  */
 
 import * as React from 'react'
-import { StyleSheet, TextAncestorContext } from 'react-native-web-internals'
+import { StyleSheet, TextAncestorContext } from '@tamagui/react-native-web-internals'
 import {
   forwardPropsListView,
   getLocaleDirection,
@@ -19,7 +19,7 @@ import {
   useMergeRefs,
   usePlatformMethods,
   useResponderEvents,
-} from 'react-native-web-internals'
+} from '@tamagui/react-native-web-internals'
 
 import createElement from '../createElement/index'
 import type { PlatformMethods } from '../types'

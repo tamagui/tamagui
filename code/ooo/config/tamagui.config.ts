@@ -3,7 +3,7 @@ import { createMedia } from '@tamagui/react-native-media-driver'
 import { shorthands } from '@tamagui/shorthands/v2'
 import { createTamagui } from 'tamagui'
 import { fonts } from './fonts'
-import { themes } from './themesOut'
+import * as themes from './themesOut'
 import { tokens } from './tokens'
 
 export const smoothBezier = 'cubic-bezier(0.215, 0.610, 0.355, 1.000)'

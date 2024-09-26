@@ -8,7 +8,7 @@
  *
  */
 import * as React from 'react'
-import { StyleSheet } from 'react-native-web-internals'
+import { StyleSheet } from '@tamagui/react-native-web-internals'
 
 import createElement from '../createElement/index'
 
@@ -59,7 +59,7 @@ function ModalAnimation(props) {
         }
       }
     },
-    [onDismiss, onShow, visible],
+    [onDismiss, onShow, visible]
   )
   React.useEffect(() => {
     if (visible) {
@@ -75,9 +75,7 @@ function ModalAnimation(props) {
   }, [isAnimated, visible, animationEndCallback])
   return isRendering || visible
     ? createElement('div', {
-        style: isRendering
-          ? getAnimationStyle(animationType, visible)
-          : styles.hidden,
+        style: isRendering ? getAnimationStyle(animationType, visible) : styles.hidden,
         onAnimationEnd: animationEndCallback,
         children,
       })

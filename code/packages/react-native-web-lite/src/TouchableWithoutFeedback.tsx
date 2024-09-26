@@ -10,7 +10,7 @@
 
 import * as React from 'react'
 import { useMemo, useRef } from 'react'
-import { pick, useMergeRefs, usePressEvents } from 'react-native-web-internals'
+import { pick, useMergeRefs, usePressEvents } from '@tamagui/react-native-web-internals'
 
 const forwardPropsList = {
   accessibilityDisabled: true,

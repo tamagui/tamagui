@@ -35,7 +35,7 @@ const COMMAND_MAP = {
 
       const isNonTamaguiNamedDep = {
         'react-native-web-lite': true,
-        'react-native-web-internals': true,
+        '@tamagui/react-native-web-internals': true,
       }
 
       for (const dep of instance.getDependencies()) {

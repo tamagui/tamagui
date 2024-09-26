@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { useMergeRefs } from 'react-native-web-internals'
+import { useMergeRefs } from '@tamagui/react-native-web-internals'
 
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.

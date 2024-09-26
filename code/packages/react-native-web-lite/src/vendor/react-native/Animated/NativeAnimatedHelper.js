@@ -7,7 +7,7 @@
  *
  * @format
  */
-import { Platform, invariant } from 'react-native-web-internals'
+import { Platform, invariant } from '@tamagui/react-native-web-internals'
 
 import { ReactNativeFeatureFlags } from '../FeatureFlags'
 import NativeEventEmitter from '../NativeEventEmitter/index'
@@ -546,7 +546,8 @@ export default {
   // $FlowExpectedError[missing-type-arg] - unsafe getter lint suppresion
   get nativeEventEmitter() {
     if (!nativeEventEmitter) {
-      nativeEventEmitter = new NativeEventEmitter( // T88715063: NativeEventEmitter only used this parameter on iOS. Now it uses it on all platforms, so this code was modified automatically to preserve its behavior
+      nativeEventEmitter = new NativeEventEmitter(
+        // T88715063: NativeEventEmitter only used this parameter on iOS. Now it uses it on all platforms, so this code was modified automatically to preserve its behavior
         // If you want to use the native module on other platforms, please remove this condition and test its behavior
         Platform.OS !== 'ios' ? null : NativeAnimatedModule
       )

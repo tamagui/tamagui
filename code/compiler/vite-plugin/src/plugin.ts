@@ -60,85 +60,109 @@ export function tamaguiPlugin(
     )
   }
 
-  const compatPlugin = {
-    name: 'tamagui-base',
-    enforce: 'pre',
+  const compatPlugins = [
+    {
+      name: 'tamagui-base',
+      enforce: 'pre',
 
-    async buildEnd() {
-      await watcher?.then((res) => {
-        res?.dispose()
-      })
-    },
-
-    async transform(code, id) {
-      if (id.includes('expo-linear-gradient')) {
-        // fix expo-linear-gradient
-        return transformWithEsbuild(code, id, {
-          loader: 'jsx',
-          jsx: 'automatic', // 👈
+      async buildEnd() {
+        await watcher?.then((res) => {
+          res?.dispose()
         })
-      }
-    },
+      },
 
-    async config(_, env) {
-      await load()
+      async transform(code, id) {
+        if (id.includes('expo-linear-gradient')) {
+          // fix expo-linear-gradient
+          return transformWithEsbuild(code, id, {
+            loader: 'jsx',
+            jsx: 'automatic', // 👈
+          })
+        }
+      },
 
-      if (!tamaguiOptions) {
-        throw new Error(`No options loaded`)
-      }
+      async config(_, env) {
+        await load()
 
-      return {
-        environments: {
-          client: {
-            define: {
-              'process.env.TAMAGUI_IS_CLIENT': JSON.stringify(true),
+        if (!tamaguiOptions) {
+          throw new Error(`No options loaded`)
+        }
+
+        return {
+          environments: {
+            client: {
+              define: {
+                'process.env.TAMAGUI_IS_CLIENT': JSON.stringify(true),
+              },
             },
           },
-        },
 
-        define: {
-          // reanimated support
-          _frameTimestamp: undefined,
-          _WORKLET: false,
-          __DEV__: `${env.mode === 'development'}`,
-          'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || env.mode),
-          'process.env.ENABLE_RSC': JSON.stringify(process.env.ENABLE_RSC || ''),
-          'process.env.ENABLE_STEPS': JSON.stringify(process.env.ENABLE_STEPS || ''),
-          'process.env.IS_STATIC': JSON.stringify(false),
-          ...(env.mode === 'production' && {
-            'process.env.TAMAGUI_OPTIMIZE_THEMES': JSON.stringify(true),
-          }),
-        },
-        ssr: {
-          noExternal: noExternalSSR,
-        },
-        resolve: {
-          extensions: extensions,
-          alias: {
-            ...(tamaguiOptions.platform !== 'native' && {
-              'react-native/Libraries/Renderer/shims/ReactFabric': '@tamagui/proxy-worm',
-              'react-native/Libraries/Utilities/codegenNativeComponent':
-                '@tamagui/proxy-worm',
-              'react-native-svg': '@tamagui/react-native-svg',
-              'react-native': 'react-native-web',
-              ...(tamaguiOptions.useReactNativeWebLite && {
-                'react-native': 'react-native-web-lite',
-                'react-native-web': 'react-native-web-lite',
-              }),
-              ...(tamaguiOptions.useReactNativeWebLite === 'without-animated' && {
-                'react-native': 'react-native-web-lite/without-animated',
-                'react-native-web': 'react-native-web-lite/without-animated',
-              }),
+          define: {
+            // reanimated support
+            _frameTimestamp: undefined,
+            _WORKLET: false,
+            __DEV__: `${env.mode === 'development'}`,
+            'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || env.mode),
+            'process.env.ENABLE_RSC': JSON.stringify(process.env.ENABLE_RSC || ''),
+            'process.env.ENABLE_STEPS': JSON.stringify(process.env.ENABLE_STEPS || ''),
+            'process.env.IS_STATIC': JSON.stringify(false),
+            ...(env.mode === 'production' && {
+              'process.env.TAMAGUI_OPTIMIZE_THEMES': JSON.stringify(true),
             }),
           },
-        },
-      }
+          ssr: {
+            noExternal: noExternalSSR,
+          },
+          resolve: {
+            extensions: extensions,
+            alias: {
+              ...(tamaguiOptions.platform !== 'native' && {
+                'react-native/Libraries/Renderer/shims/ReactFabric':
+                  '@tamagui/proxy-worm',
+                'react-native/Libraries/Utilities/codegenNativeComponent':
+                  '@tamagui/proxy-worm',
+                'react-native-svg': '@tamagui/react-native-svg',
+                'react-native': 'react-native-web',
+              }),
+            },
+          },
+        }
+      },
     },
-  } satisfies Plugin
+    {
+      name: 'tamagui-rnw-lite',
+      config() {
+        if (tamaguiOptions?.useReactNativeWebLite) {
+          return {
+            resolve: {
+              alias: [
+                {
+                  find: /^react-native$/,
+                  replacement: 'react-native-web-lite',
+                },
+                {
+                  find: /^react-native\/(.*)$/,
+                  replacement: 'react-native-web-lite',
+                },
+                {
+                  find: /^react-native-web$/,
+                  replacement: 'react-native-web-lite',
+                },
+                {
+                  find: /^react-native-web\/(.*)$/,
+                  replacement: 'react-native-web-lite',
+                },
+              ],
+            },
+          }
+        }
+      },
+    },
+  ] satisfies Plugin[]
 
   if (shouldAddCompiler) {
-    return [compatPlugin, tamaguiExtractPlugin(tamaguiOptionsIn)]
+    return [...compatPlugins, tamaguiExtractPlugin(tamaguiOptionsIn)]
   }
 
-  return compatPlugin
+  return [...compatPlugins]
 }

@@ -39,6 +39,7 @@ function addTransform(identifier: string, css: string, rule?: CSSRule) {
   }
 }
 
+// once react 19 onyl supported we can remove most of this
 // gets existing ones (client side)
 // takes ~0.1ms for a fairly large page
 // used now for three things:

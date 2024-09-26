@@ -9,7 +9,7 @@
  */
 
 import * as React from 'react'
-import { StyleSheet, canUseDOM } from 'react-native-web-internals'
+import { StyleSheet, canUseDOM } from '@tamagui/react-native-web-internals'
 
 import type { ViewProps } from '../View/index'
 import View from '../View/index'
