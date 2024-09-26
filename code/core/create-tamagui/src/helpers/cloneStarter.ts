@@ -5,7 +5,6 @@ import chalk from 'chalk'
 import { copy, ensureDir, pathExists, remove } from 'fs-extra'
 import { rimraf } from 'rimraf'
 import { $, cd } from 'zx'
-import { IS_TEST } from '../create-tamagui-constants'
 import type { templates } from '../templates'
 
 const open = require('opener')
@@ -17,8 +16,7 @@ const exec = (cmd: string, options?: Parameters<typeof execSync>[1]) => {
   })
 }
 
-const home = homedir()
-const tamaguiDir = join(home, '.tamagui')
+const tamaguiDir = join(homedir(), '.tamagui-repo-cache')
 let targetGitDir = ''
 
 export const cloneStarter = async (
@@ -26,9 +24,7 @@ export const cloneStarter = async (
   resolvedProjectPath: string,
   projectName: string
 ) => {
-  targetGitDir = IS_TEST
-    ? join(tamaguiDir, 'tamagui-test', template.repo.url.split('/').at(-1)!)
-    : join(tamaguiDir, 'tamagui', template.repo.url.split('/').at(-1)!)
+  targetGitDir = join(tamaguiDir, 'tamagui', template.repo.url.split('/').at(-1)!)
 
   console.info()
   await setupTamaguiDotDir(template)
@@ -51,13 +47,7 @@ export const cloneStarter = async (
 }
 
 async function setupTamaguiDotDir(template: (typeof templates)[number], isRetry = false) {
-  const repoRoot = join(__dirname, '..', '..', '..')
-
   console.info(`Setting up ${chalk.blueBright(targetGitDir)}...`)
-
-  if (IS_TEST) {
-    cd(repoRoot)
-  }
 
   if (process.env.GITHUB_HEAD_REF) {
     try {
@@ -68,16 +58,6 @@ async function setupTamaguiDotDir(template: (typeof templates)[number], isRetry 
   }
 
   const branch = template.repo.branch
-
-  // setup tests for CI
-  if (IS_TEST) {
-    console.info(`Test mode: cleaning old tamagui git dir`)
-    // always clean for test
-    await remove(targetGitDir)
-    if (!(await pathExists(join(repoRoot, '.git')))) {
-      throw new Error(`Not in a git folder`)
-    }
-  }
 
   await ensureDir(tamaguiDir)
   cd(tamaguiDir)
@@ -141,11 +121,17 @@ async function setupTamaguiDotDir(template: (typeof templates)[number], isRetry 
   }
   try {
     const remoteName = getDefaultRemoteName()
-    const cmd2 = `git pull --rebase --allow-unrelated-histories --depth 1 ${remoteName} ${branch}`
-    exec(cmd2, {
-      cwd: targetGitDir,
-    })
-    console.info()
+    if (await pathExists(join(targetGitDir, '.git'))) {
+      const cmd2 = `git pull --rebase --allow-unrelated-histories --depth 1 ${remoteName} ${branch}`
+      exec(cmd2, {
+        cwd: targetGitDir,
+      })
+      console.info()
+    } else {
+      console.warn(
+        `Warning: ${targetGitDir} is not a git repository. Skipping pull operation.`
+      )
+    }
   } catch (err: any) {
     console.info(
       `Error updating: ${err.message} ${
@@ -166,10 +152,20 @@ async function setupTamaguiDotDir(template: (typeof templates)[number], isRetry 
 // Get the default remote name
 const getDefaultRemoteName = () => {
   try {
-    const remotes = execSync('git remote').toString().trim().split('\n')
+    if (!pathExists(join(targetGitDir, '.git'))) {
+      console.warn(
+        'Warning: Not in a git repository. Using default remote name "origin".'
+      )
+      return 'origin'
+    }
+    const remotes = execSync('git remote', { cwd: targetGitDir })
+      .toString()
+      .trim()
+      .split('\n')
     return remotes[0] || 'origin'
   } catch (error) {
-    console.error('Error getting default remote name:', error)
+    console.warn('Error getting default remote name:', error)
+    console.warn('Using default remote name "origin".')
     return 'origin'
   }
 }

@@ -63,133 +63,141 @@ if (process.argv.includes('--version')) {
 const info = !!program.info
 
 async function run() {
-  if (info) {
-    let template = await getTemplateInfo(program.template)
-    await template.extraSteps({
-      isFullClone: false,
-      projectName: path.basename(cwd()),
-      projectPath: cwd(),
-    })
-    return
-  }
-
-  console.info()
-  console.info(
-    chalk.bold(
-      ' Note: You may need to run "npm create tamagui@latest" to get the latest version!'
-    )
-  )
-  console.info()
-
-  console.info() // this newline prevents the ascii art from breaking
-  console.info(tamaguiRainbowAsciiArt)
-  console.info(chalk.bold('Creating tamagui app...'))
-
-  const gitVersionString = parseFloat(
-    execSync(`git --version`).toString().replace(`git version `, '').trim()
-  )
-  if (gitVersionString < 2.27) {
-    console.error(`\n\n ⚠️ Tamagui can't install: Git version must be >= 2.27\n\n`)
-    process.exit(1)
-  }
-
-  projectPath ||= await getProjectName(projectPath)
-
-  let template = await getTemplateInfo(program.template)
-
-  if (template.type === 'premium') {
-    const didPurchase = (
-      await prompts({
-        type: 'confirm',
-        name: 'purchased',
-        message: `Have you purchased Takeout on https://tamagui.dev/takeout`,
-      })
-    ).purchased
-
-    if (!didPurchase) {
-      open(`https://tamagui.dev/takeout`)
-      console.info(
-        `\nOpening Takeout website - once you purchase you can restart the create process. Thank you!\n`
-      )
+  try {
+    if (info) {
+      let template = await getTemplateInfo(program.template)
+      if (template?.extraSteps) {
+        await template.extraSteps({
+          isFullClone: false,
+          projectName: path.basename(cwd()),
+          projectPath: cwd(),
+        })
+      }
       process.exit(0)
     }
-  }
 
-  // space
-  console.info()
-
-  const resolvedProjectPath = path.resolve(process.cwd(), projectPath)
-  const projectName = path.basename(resolvedProjectPath)
-
-  const { valid, problems } = validateNpmName(projectName)
-  if (!valid) {
-    console.error(
-      `Could not create a project called ${chalk.red(
-        `"${projectName}"`
-      )} because of npm naming restrictions:`
-    )
-
-    problems!.forEach((p) => console.error(`    ${chalk.red.bold('*')} ${p}`))
-    process.exit(1)
-  }
-
-  if (fs.existsSync(resolvedProjectPath)) {
     console.info()
     console.info(
-      chalk.red('🚨 [tamagui] error'),
-      `You tried to make a project called ${chalk.underline(
-        chalk.blueBright(projectName)
-      )}, but a folder with that name already exists: ${chalk.blueBright(
-        resolvedProjectPath
-      )}
-
-${chalk.bold(chalk.red(`Please pick a different project name 🥸`))}`
+      chalk.bold(
+        ' Note: You may need to run "npm create tamagui@latest" to get the latest version!'
+      )
     )
     console.info()
-    console.info()
-    process.exit(1)
-  }
-  console.info()
-  console.info(`Creating a new tamagui app ${chalk.blueBright(resolvedProjectPath)}...`)
-  fs.mkdirSync(resolvedProjectPath)
-  console.info(chalk.green(`${projectName} folder created.`))
 
-  try {
-    await cloneStarter(template, resolvedProjectPath, projectName)
-    cd(resolvedProjectPath)
+    console.info() // this newline prevents the ascii art from breaking
+    console.info(tamaguiRainbowAsciiArt)
+    console.info(chalk.bold('Creating tamagui app...'))
+
+    const gitVersionString = Number.parseFloat(
+      execSync(`git --version`).toString().replace(`git version `, '').trim()
+    )
+    if (gitVersionString < 2.27) {
+      console.error(`\n\n ⚠️ Tamagui can't install: Git version must be >= 2.27\n\n`)
+      process.exit(1)
+    }
+
+    projectPath ||= await getProjectName(projectPath)
+
+    let template = await getTemplateInfo(program.template)
+
+    if (template.type === 'premium') {
+      const didPurchase = (
+        await prompts({
+          type: 'confirm',
+          name: 'purchased',
+          message: `Have you purchased Takeout on https://tamagui.dev/takeout`,
+        })
+      ).purchased
+
+      if (!didPurchase) {
+        open(`https://tamagui.dev/takeout`)
+        console.info(
+          `\nOpening Takeout website - once you purchase you can restart the create process. Thank you!\n`
+        )
+        process.exit(0)
+      }
+    }
+
     // space
     console.info()
-  } catch (e) {
-    console.error(`[tamagui] Failed to copy example into ${resolvedProjectPath}\n\n`, e)
+
+    const resolvedProjectPath = path.resolve(process.cwd(), projectPath)
+    const projectName = path.basename(resolvedProjectPath)
+
+    const { valid, problems } = validateNpmName(projectName)
+    if (!valid) {
+      console.error(
+        `Could not create a project called ${chalk.red(
+          `"${projectName}"`
+        )} because of npm naming restrictions:`
+      )
+
+      problems!.forEach((p) => console.error(`    ${chalk.red.bold('*')} ${p}`))
+      process.exit(1)
+    }
+
+    if (fs.existsSync(resolvedProjectPath)) {
+      console.info()
+      console.info(
+        chalk.red('🚨 [tamagui] error'),
+        `You tried to make a project called ${chalk.underline(
+          chalk.blueBright(projectName)
+        )}, but a folder with that name already exists: ${chalk.blueBright(
+          resolvedProjectPath
+        )}
+
+${chalk.bold(chalk.red(`Please pick a different project name 🥸`))}`
+      )
+      console.info()
+      console.info()
+      process.exit(1)
+    }
+    console.info()
+    console.info(`Creating a new tamagui app ${chalk.blueBright(resolvedProjectPath)}...`)
+    fs.mkdirSync(resolvedProjectPath)
+    console.info(chalk.green(`${projectName} folder created.`))
+
+    try {
+      await cloneStarter(template, resolvedProjectPath, projectName)
+      cd(resolvedProjectPath)
+      // space
+      console.info()
+    } catch (e) {
+      console.error(`[tamagui] Failed to copy example into ${resolvedProjectPath}\n\n`, e)
+      process.exit(1)
+    }
+
+    // change root package.json's name to project name
+    updatePackageJsonName(projectName, resolvedProjectPath)
+
+    console.info('Installing packages. This might take a couple of minutes.')
+    console.info()
+
+    const packageManager =
+      ('packageManager' in template ? template.packageManager : undefined) ||
+      (await detect())
+
+    try {
+      console.info('installing with ' + packageManager)
+      await installDependencies(resolvedProjectPath, packageManager)
+    } catch (e: any) {
+      console.error('[tamagui] error installing with ' + packageManager + '\n' + `${e}`)
+      process.exit(1)
+    }
+
+    await template?.extraSteps?.({
+      isFullClone: true,
+      projectName,
+      projectPath: resolvedProjectPath,
+    })
+
+    console.info()
+    console.info(chalk.gray(tamaguiDuckAsciiArt))
+    process.exit(0)
+  } catch (error) {
+    console.error('An unexpected error occurred:', error)
     process.exit(1)
   }
-
-  // change root package.json's name to project name
-  updatePackageJsonName(projectName, resolvedProjectPath)
-
-  console.info('Installing packages. This might take a couple of minutes.')
-  console.info()
-
-  const packageManager =
-    ('packageManager' in template ? template.packageManager : undefined) ||
-    (await detect())
-
-  try {
-    console.info('installing with ' + packageManager)
-    await installDependencies(resolvedProjectPath, packageManager)
-  } catch (e: any) {
-    console.error('[tamagui] error installing with ' + packageManager + '\n' + `${e}`)
-    process.exit(1)
-  }
-
-  await template.extraSteps({
-    isFullClone: true,
-    projectName,
-    projectPath: resolvedProjectPath,
-  })
-
-  console.info()
-  console.info(chalk.gray(tamaguiDuckAsciiArt))
 }
 
 function updatePackageJsonName(projectName: string, dir: string) {
@@ -204,4 +212,7 @@ function updatePackageJsonName(projectName: string, dir: string) {
   }
 }
 
-run()
+run().catch((error) => {
+  console.error('An unexpected error occurred:', error)
+  process.exit(1)
+})

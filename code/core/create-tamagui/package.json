@@ -3,16 +3,14 @@
   "version": "1.112.1",
   "bin": "./run.js",
   "main": "dist",
-  "files": [
-    "run.js",
-    "dist"
-  ],
+  "files": ["run.js", "dist"],
   "scripts": {
     "start": "./run.js",
     "//": "disabling for now need to migrate to new stack",
-    "test": "true",
     "test-disabled": "NODE_ENV=test node -r esbuild-register ../../../node_modules/.bin/playwright test integration.test.ts",
     "test:debug": "yarn test --debug",
+    "test": "yarn build:test && vitest run",
+    "build:test": "yarn build",
     "prerelease": "rimraf ./dist/",
     "prepublish": "yarn build",
     "build": "tamagui-build --skip-types --bundle --bundle-modules",
@@ -45,13 +43,16 @@
     "prompts": "2.1.0",
     "rimraf": "^5.0.1",
     "tar": "4.4.10",
+    "tempy": "^3.1.0",
     "update-check": "1.5.4",
     "validate-npm-package-name": "3.0.0",
+    "vitest": "^2.1.1",
     "wait-port": "^0.3.0",
     "zx": "^7.2.3"
   },
   "engines": {
-    "node": ">=12.22.0"
+    "node": ">=20.22.0",
+    "yarn": ">=4.4.0"
   },
   "publishConfig": {
     "access": "public"

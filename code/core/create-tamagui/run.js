@@ -4,9 +4,9 @@ const command = require.resolve('create-tamagui')
 const args = process.argv.slice(2)
 
 try {
-  require('child_process').execSync(`node ${command} ${args.join(' ')}`, {
+  require('node:child_process').execSync(`node ${command} ${args.join(' ')}`, {
     stdio: 'inherit',
   })
-} catch(err) {
+} catch (err) {
   process.exit(1)
 }
