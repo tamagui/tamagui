@@ -114,13 +114,6 @@ function track(id: string, remove = false) {
 const bailAfterEnv = process.env.TAMAGUI_BAIL_AFTER_SCANNING_X_CSS_RULES
 const bailAfter = bailAfterEnv ? +bailAfterEnv : 250
 
-let isLoaded = false
-if (isClient) {
-  window.onload = () => {
-    isLoaded = true
-  }
-}
-
 function updateSheetStyles(
   sheet: CSSStyleSheet,
   remove = false,
@@ -139,16 +132,10 @@ function updateSheetStyles(
     return
   }
 
-  if (!isLoaded) {
-    console.warn(`Not loaded yet!`, rules[0])
-  }
-
   const firstSelector = getTamaguiSelector(rules[0], collectThemes)?.[0]
   const lastSelector = getTamaguiSelector(rules[rules.length - 1], collectThemes)?.[0]
   const cacheKey = `${rules.length}${firstSelector}${lastSelector}`
   const lastScanned = scannedCache.get(sheet)
-
-  console.log('rules', rules, firstSelector, lastSelector, cacheKey)
 
   if (!remove) {
     // avoid re-scanning
@@ -161,6 +148,11 @@ function updateSheetStyles(
   let fails = 0
 
   let dedupedThemes: DedupedThemes | undefined
+
+  // because end-users can add their own css like .t_dark { --something: #000 }
+  // and this actually entirely breaks scanning, we need to ensure we can handle multiple
+  // themes, so track that here. also, css processing utils could cause this too
+  const nameToTheme: Record<string, ThemeParsed> = {}
 
   for (let i = 0; i < len; i++) {
     const rule = rules[i]
@@ -185,6 +177,14 @@ function updateSheetStyles(
     if (isTheme) {
       const deduped = addThemesFromCSS(cssRule, tokens)
       if (deduped) {
+        for (const name of deduped.names) {
+          if (nameToTheme[name]) {
+            Object.apply(nameToTheme[name], deduped.theme as any)
+            deduped.names = deduped.names.filter((x) => x !== name)
+          } else {
+            nameToTheme[name] = deduped.theme
+          }
+        }
         dedupedThemes ||= []
         dedupedThemes.push(deduped)
       }

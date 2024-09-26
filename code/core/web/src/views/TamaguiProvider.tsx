@@ -1,12 +1,11 @@
-import React from 'react'
 import { isClient, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import React from 'react'
 
+import { getSetting } from '../config'
 import { ComponentContext } from '../contexts/ComponentContext'
-import { useDidHydrateOnceRoot } from '../hooks/useDidHydrateOnce'
 import { setupMediaListeners } from '../hooks/useMedia'
 import type { TamaguiProviderProps } from '../types'
 import { ThemeProvider } from './ThemeProvider'
-import { getSetting } from '../config'
 
 export function TamaguiProvider({
   children,
@@ -22,8 +21,6 @@ export function TamaguiProvider({
 
   if (isClient) {
     // inject CSS if asked to (not SSR compliant)
-    useDidHydrateOnceRoot()
-
     useIsomorphicLayoutEffect(() => {
       if (!config) return
       if (!disableInjectCSS) {

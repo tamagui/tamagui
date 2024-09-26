@@ -2,17 +2,8 @@
 
 export * from '@tamagui/react-native-use-responder-events'
 export * from '@tamagui/react-native-use-pressable'
-// export { View, Text } from '@tamagui/core'
-
-// import { View, Text } from '@tamagui/core'
-
-export const View = (props) => {
-  return <span>{props.children}</span>
-}
-
-export const Text = (props) => {
-  return <span>{props.children}</span>
-}
+export { View, Text } from '@tamagui/web'
+import { View, Text } from '@tamagui/web'
 
 export * from './Dimensions'
 
