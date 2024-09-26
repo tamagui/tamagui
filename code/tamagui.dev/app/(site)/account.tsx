@@ -94,10 +94,6 @@ const Account = () => {
           <ButtonLink href="/account/items" size="$5">
             Items & Subscriptions
           </ButtonLink>
-
-          <ButtonLink href="https://studio.tamagui.dev" size="$5">
-            Studio
-          </ButtonLink>
         </ThemeTint>
       </XStack>
 
