@@ -19,22 +19,22 @@ export default {
         find: '@docsearch/react',
         replacement: resolve('@docsearch/react'),
       },
-      {
-        find: /^react-native$/,
-        replacement: '/Users/n8/tamagui/code/ui/react-native-web/dist/esm/index.mjs',
-      },
-      {
-        find: /^react-native\/(.*)$/,
-        replacement: '/Users/n8/tamagui/code/ui/react-native-web/dist/esm/index.mjs',
-      },
-      {
-        find: /^react-native-web$/,
-        replacement: '/Users/n8/tamagui/code/ui/react-native-web/dist/esm/index.mjs',
-      },
-      {
-        find: /^react-native-web\/(.*)$/,
-        replacement: '/Users/n8/tamagui/code/ui/react-native-web/dist/esm/index.mjs',
-      },
+      // {
+      //   find: /^react-native$/,
+      //   replacement: '/Users/n8/tamagui/code/ui/react-native-web/dist/esm/index.mjs',
+      // },
+      // {
+      //   find: /^react-native\/(.*)$/,
+      //   replacement: '/Users/n8/tamagui/code/ui/react-native-web/dist/esm/index.mjs',
+      // },
+      // {
+      //   find: /^react-native-web$/,
+      //   replacement: '/Users/n8/tamagui/code/ui/react-native-web/dist/esm/index.mjs',
+      // },
+      // {
+      //   find: /^react-native-web\/(.*)$/,
+      //   replacement: '/Users/n8/tamagui/code/ui/react-native-web/dist/esm/index.mjs',
+      // },
     ],
 
     dedupe: [
@@ -62,7 +62,7 @@ export default {
 
   plugins: [
     vxs({
-      setupFile: './config/setupTamagui.ts',
+      // setupFile: './config/setupTamagui.ts',
 
       server: {
         compression: true,
