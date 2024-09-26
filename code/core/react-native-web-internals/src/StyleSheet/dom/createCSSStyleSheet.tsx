@@ -15,6 +15,7 @@ export default function createCSSStyleSheet(
   rootNode?: Document | ShadowRoot,
   textContent?: string
 ): CSSStyleSheet | null {
+
   if (canUseDOM) {
     const root = rootNode != null ? rootNode : document
     let element = root.getElementById(id)

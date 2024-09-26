@@ -113,7 +113,7 @@ const Text = React.forwardRef<HTMLElement & PlatformMethods, TextProps>(
 
     supportedProps.style = [
       numberOfLines != null && numberOfLines > 1 && { WebkitLineClamp: numberOfLines },
-      hasTextAncestor === true ? styles.textHasAncestor$raw : styles.text$raw,
+      hasTextAncestor === true ? styles.textHasAncestor$raw : styles.text,
       numberOfLines === 1 && styles.textOneLine,
       numberOfLines != null && numberOfLines > 1 && styles.textMultiLine,
       props.style,
@@ -173,8 +173,8 @@ const textStyle = {
   wordWrap: 'break-word',
 }
 
-const styles = StyleSheet.create({
-  text$raw: textStyle,
+const styles = {
+  text: textStyle,
   textHasAncestor$raw: {
     ...textStyle,
     color: 'inherit',
@@ -205,6 +205,6 @@ const styles = StyleSheet.create({
   pressable: {
     cursor: 'pointer',
   },
-})
+}
 
 export default Text

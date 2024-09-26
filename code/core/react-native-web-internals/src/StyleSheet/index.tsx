@@ -64,7 +64,7 @@ const absoluteFillObject = {
   bottom: 0,
 }
 
-const absoluteFill = create({ x: { ...absoluteFillObject } }).x
+const absoluteFill = absoluteFillObject as any
 
 /**
  * create

@@ -33,51 +33,57 @@ const initialRules = [
 export function createSheet(root?: HTMLElement, id = defaultId): Sheet {
   let sheet
 
-  if (canUseDOM) {
-    const rootNode: Node = root != null ? root.getRootNode() : document
-    // Create the initial style sheet
-    if (sheets.length === 0) {
-      sheet = createOrderedCSSStyleSheet(createCSSStyleSheet(id))
-      initialRules.forEach((rule) => {
-        sheet.insert(rule, 0)
-      })
-      roots.set(rootNode, sheets.length)
-      sheets.push(sheet)
-    } else {
-      const index = roots.get(rootNode)
-      if (index == null) {
-        const initialSheet = sheets[0]
-        // If we're creating a new sheet, populate it with existing styles
-        const textContent = initialSheet != null ? initialSheet.getTextContent() : ''
-        // Cast rootNode to 'any' because Flow types for getRootNode are wrong
-        sheet = createOrderedCSSStyleSheet(
-          createCSSStyleSheet(id, rootNode as any, textContent)
-        )
+  function createSheet() {
+    if (sheet) return
+
+    if (canUseDOM) {
+      const rootNode: Node = root != null ? root.getRootNode() : document
+      // Create the initial style sheet
+      if (sheets.length === 0) {
+        sheet = createOrderedCSSStyleSheet(createCSSStyleSheet(id))
+        initialRules.forEach((rule) => {
+          sheet.insert(rule, 0)
+        })
         roots.set(rootNode, sheets.length)
         sheets.push(sheet)
       } else {
-        sheet = sheets[index]
+        const index = roots.get(rootNode)
+        if (index == null) {
+          const initialSheet = sheets[0]
+          // If we're creating a new sheet, populate it with existing styles
+          const textContent = initialSheet != null ? initialSheet.getTextContent() : ''
+          // Cast rootNode to 'any' because Flow types for getRootNode are wrong
+          sheet = createOrderedCSSStyleSheet(
+            createCSSStyleSheet(id, rootNode as any, textContent)
+          )
+          roots.set(rootNode, sheets.length)
+          sheets.push(sheet)
+        } else {
+          sheet = sheets[index]
+        }
       }
-    }
-  } else {
-    // Create the initial style sheet
-    if (sheets.length === 0) {
-      sheet = createOrderedCSSStyleSheet(createCSSStyleSheet(id))
-      initialRules.forEach((rule) => {
-        sheet.insert(rule, 0)
-      })
-      sheets.push(sheet)
     } else {
-      sheet = sheets[0]
+      // Create the initial style sheet
+      if (sheets.length === 0) {
+        sheet = createOrderedCSSStyleSheet(createCSSStyleSheet(id))
+        initialRules.forEach((rule) => {
+          sheet.insert(rule, 0)
+        })
+        sheets.push(sheet)
+      } else {
+        sheet = sheets[0]
+      }
     }
   }
 
   return {
     getTextContent() {
+      createSheet()
       return sheet.getTextContent()
     },
     id,
     insert(cssText: string, groupValue: number) {
+      createSheet()
       sheets.forEach((s) => {
         s.insert(cssText, groupValue)
       })

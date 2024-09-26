@@ -710,7 +710,7 @@ const commonStyle = {
   WebkitOverflowScrolling: 'touch',
 }
 
-const styles = StyleSheet.create({
+const styles = {
   baseVertical: {
     ...commonStyle,
     flexDirection: 'column',
@@ -744,7 +744,7 @@ const styles = StyleSheet.create({
   pagingEnabledChild: {
     scrollSnapAlign: 'start',
   },
-})
+}
 
 const ForwardedScrollView = React.forwardRef((props, forwardedRef) => {
   return <ScrollView {...props} forwardedRef={forwardedRef} />

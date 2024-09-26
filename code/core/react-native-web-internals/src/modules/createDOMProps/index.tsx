@@ -25,20 +25,7 @@ function processIDRefList(idRefList: string | Array<string>): string {
   return isArray(idRefList) ? idRefList.join(' ') : idRefList
 }
 
-const pointerEventsStyles = StyleSheet.create({
-  auto: {
-    pointerEvents: 'auto',
-  },
-  'box-none': {
-    pointerEvents: 'box-none',
-  },
-  'box-only': {
-    pointerEvents: 'box-only',
-  },
-  none: {
-    pointerEvents: 'none',
-  },
-})
+let pointerEventsStyles
 
 const createDOMProps = (elementType, props, options?) => {
   if (!props) {
@@ -331,7 +318,29 @@ const createDOMProps = (elementType, props, options?) => {
 
   // Resolve styles
   const [className, inlineStyle] = StyleSheet(
-    [style, pointerEvents && pointerEventsStyles[pointerEvents]],
+    [
+      style,
+      pointerEvents &&
+        (() => {
+          if (!pointerEventsStyles) {
+            pointerEventsStyles = StyleSheet.create({
+              auto: {
+                pointerEvents: 'auto',
+              },
+              'box-none': {
+                pointerEvents: 'box-none',
+              },
+              'box-only': {
+                pointerEvents: 'box-only',
+              },
+              none: {
+                pointerEvents: 'none',
+              },
+            })
+          }
+          return pointerEventsStyles
+        })(),
+    ],
     { writingDirection: options ? options.writingDirection : 'ltr' }
   )
   if (className) {

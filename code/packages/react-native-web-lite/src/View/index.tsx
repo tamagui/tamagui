@@ -8,18 +8,18 @@
  * @flow
  */
 
-import * as React from 'react'
-import { StyleSheet, TextAncestorContext } from '@tamagui/react-native-web-internals'
 import {
   forwardPropsListView,
   getLocaleDirection,
   pick,
+  TextAncestorContext,
   useElementLayout,
   useLocaleContext,
   useMergeRefs,
   usePlatformMethods,
   useResponderEvents,
 } from '@tamagui/react-native-web-internals'
+import * as React from 'react'
 
 import createElement from '../createElement/index'
 import type { PlatformMethods } from '../types'
@@ -93,11 +93,7 @@ const View = React.forwardRef<HTMLElement & PlatformMethods, ViewProps>(
 
     const supportedProps = pickProps(rest) as any
     supportedProps.dir = componentDirection
-    supportedProps.style = [
-      styles.view$raw,
-      hasTextAncestor && styles.inline,
-      props.style,
-    ]
+    supportedProps.style = [styles.view, hasTextAncestor && styles.inline, props.style]
     if (props.href != null) {
       component = 'a'
       if (hrefAttrs != null) {
@@ -125,8 +121,8 @@ const View = React.forwardRef<HTMLElement & PlatformMethods, ViewProps>(
 
 View.displayName = 'View'
 
-const styles = StyleSheet.create({
-  view$raw: {
+const styles = {
+  view: {
     alignItems: 'stretch',
     boxSizing: 'border-box',
     display: 'flex',
@@ -137,7 +133,7 @@ const styles = StyleSheet.create({
   inline: {
     display: 'inline-flex',
   },
-})
+}
 
 export { ViewProps }
 
