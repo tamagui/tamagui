@@ -78,10 +78,6 @@ describe('create-tamagui CLI', () => {
     expect(fs.existsSync(projectPath)).toBe(true)
   })
 
-  it('should create the project in the temporary directory', () => {
-    expect(projectPath.startsWith(tempDir)).toBe(true)
-  })
-
   it('should create essential files', () => {
     const essentialFiles = [
       'package.json',
@@ -121,5 +117,103 @@ describe('create-tamagui CLI', () => {
 
   it('should not contain any git errors', () => {
     expect(output).not.toContain('fatal: not a git repository')
+  })
+})
+
+describe('create-tamagui CLI with --template flag', () => {
+  let tempDir: string
+  let cli: ChildProcess
+  let projectName: string
+  let projectPath: string
+  let output: string
+
+  beforeAll(async () => {
+    tempDir = temporaryDirectory()
+    console.info({ tempDir })
+    projectName = 'expo-router-project'
+    const cliPath = path.join(__dirname, '../dist/index.js')
+    projectPath = path.join(tempDir, projectName)
+
+    cli = spawn('node', [cliPath, '--template', 'expo-router'], {
+      cwd: tempDir,
+      stdio: ['pipe', 'pipe', 'pipe'],
+    })
+
+    output = ''
+
+    cli.stdout?.on('data', (data) => {
+      output += data.toString()
+      if (process.env.DEBUG === 'test') {
+        console.info(data.toString())
+      }
+    })
+
+    cli.stderr?.on('data', (data) => {
+      output += data.toString()
+      if (process.env.DEBUG === 'test') {
+        console.error(data.toString())
+      }
+    })
+
+    // Simulate user input for project name only
+    await new Promise<void>((resolve) => {
+      setTimeout(() => {
+        cli.stdin?.write(`${projectName}\r`)
+        resolve()
+      }, 1000)
+    })
+
+    // Wait for the process to finish
+    await new Promise<void>((resolve, reject) => {
+      cli.on('exit', (code) => {
+        if (code === 0) {
+          resolve()
+        } else {
+          reject(new Error(`CLI process exited with code ${code}`))
+        }
+      })
+    })
+  }, 60000) // 60 second timeout for the setup
+
+  afterAll(() => {
+    if (tempDir && fs.existsSync(tempDir)) {
+      fs.rmSync(tempDir, { recursive: true, force: true })
+    }
+  })
+
+  it('should create the expo-router project directory', () => {
+    expect(fs.existsSync(projectPath)).toBe(true)
+  })
+
+  it('should skip the template picker step', () => {
+    expect(output).not.toContain('Select a template:')
+    expect(output).not.toContain('Free - Expo + Next in a production ready monorepo')
+  })
+
+  it('should create essential files for expo-router project', () => {
+    const essentialFiles = [
+      'package.json',
+      'tsconfig.json',
+      'app.json',
+      'tamagui.config.ts',
+      'app/_layout.tsx',
+    ]
+
+    essentialFiles.forEach((file) => {
+      expect(fs.existsSync(path.join(projectPath, file))).toBe(true)
+    })
+  })
+
+  it('should indicate successful expo-router project creation', () => {
+    expect(output).toContain(`Done! created a new project`)
+    expect(output).toContain(`cd ${projectName}`)
+  })
+
+  it('should not contain any errors', () => {
+    expect(output).not.toContain('Error:')
+  })
+
+  it('should contain expo-router specific instructions', () => {
+    expect(output).toContain('expo-router')
   })
 })
