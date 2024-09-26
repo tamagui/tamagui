@@ -45,12 +45,12 @@ const docSearchCSS = `
 }
 
 .DocSearch-Hit a {
-  background: var(--background);
+  background: transparent;
   box-shadow: none !important;
 }
 
 .DocSearch-Hit[aria-selected=true] a {
-  background: var(--color10);
+  background: var(--color3);
 }
 
 .DocSearch-Modal {
@@ -94,6 +94,14 @@ const docSearchCSS = `
   color: var(--color9);
 }
 
+.DocSearch-Hit-source {
+  background: transparent;
+}
+
+.DocSearch-Hit-Container {
+  background: transparent;
+}
+
 .DocSearch-Input {
   font-size: 16px;
 }
@@ -114,4 +122,16 @@ const docSearchCSS = `
   --docsearch-key-gradient: linear-gradient(-26.5deg, #161618, #4a4a4a);
 }
 
+.DocSearch-Logo {
+  opacity: 0;
+}
+
+.DocSearch-Hit[aria-selected="true"] .DocSearch-Hit-action, .DocSearch-Hit[aria-selected="true"] .DocSearch-Hit-icon, .DocSearch-Hit[aria-selected="true"] .DocSearch-Hit-path, .DocSearch-Hit[aria-selected="true"] .DocSearch-Hit-text, .DocSearch-Hit[aria-selected="true"] .DocSearch-Hit-title, .DocSearch-Hit[aria-selected="true"] .DocSearch-Hit-Tree, .DocSearch-Hit[aria-selected="true"] mark {
+  color: var(--color12) !important;
+}
+
+.DocSearch-Hit-title {
+  font-family: Inter, sans-serif;
+  font-size: 16px;
+}
 `
