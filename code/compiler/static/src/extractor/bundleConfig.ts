@@ -15,6 +15,7 @@ import type { TamaguiOptions } from '../types'
 import { babelParse } from './babelParse'
 import { bundle, esbuildLoaderConfig } from './bundle'
 import { getTamaguiConfigPathFromOptionsConfig } from './getTamaguiConfigPathFromOptionsConfig'
+import { readFile } from 'node:fs/promises'
 
 type NameToPaths = {
   [key: string]: Set<string>
@@ -154,17 +155,20 @@ export async function bundleConfig(props: TamaguiOptions) {
       colorLog(
         Color.FgYellow,
         `
-    ➡ [tamagui] built config and components (${Date.now() - start}ms):`
+    ➡ [tamagui] built config and components (${Date.now() - start}ms)`
       )
-      colorLog(
-        Color.Dim,
-        `
-        Config     .${sep}${relative(process.cwd(), configOutPath)}
-        Components ${[
-          ...componentOutPaths.map((p) => `.${sep}${relative(process.cwd(), p)}`),
-        ].join('\n             ')}
-        `
-      )
+
+      if (process.env.DEBUG?.startsWith('tamagui')) {
+        colorLog(
+          Color.Dim,
+          `
+          Config     .${sep}${relative(process.cwd(), configOutPath)}
+          Components ${[
+            ...componentOutPaths.map((p) => `.${sep}${relative(process.cwd(), p)}`),
+          ].join('\n             ')}
+          `
+        )
+      }
     }
 
     let out
@@ -186,6 +190,10 @@ export async function bundleConfig(props: TamaguiOptions) {
 
     if (!config) {
       throw new Error(`No config: ${config}`)
+    }
+
+    if (props.outputCSS) {
+      await writeTamaguiCSS(props.outputCSS, config)
     }
 
     let components = loadComponents({
@@ -241,6 +249,23 @@ export async function bundleConfig(props: TamaguiOptions) {
     isBundling = false
     waitForBundle.forEach((cb) => cb())
     waitForBundle.clear()
+  }
+}
+
+export async function writeTamaguiCSS(outputCSS: string, config: TamaguiInternalConfig) {
+  const flush = async () => {
+    colorLog(Color.FgYellow, `    ➡ [tamagui] output css: ${outputCSS}\n`)
+    await FS.writeFile(outputCSS, css)
+  }
+  const css = config.getCSS()
+  try {
+    if ((await readFile(outputCSS, 'utf8')) === css) {
+      // no change
+    } else {
+      await flush()
+    }
+  } catch {
+    await flush()
   }
 }
 

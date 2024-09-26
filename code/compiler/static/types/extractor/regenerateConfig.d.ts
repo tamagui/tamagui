@@ -6,4 +6,4 @@ import type { BundledConfig } from './bundleConfig';
 export declare function regenerateConfig(tamaguiOptions: TamaguiOptions, configIn?: BundledConfig | null, rebuild?: boolean): Promise<void>;
 export declare function regenerateConfigSync(_tamaguiOptions: TamaguiOptions, config: BundledConfig): void;
 export declare function generateTamaguiThemes(tamaguiOptions: TamaguiOptions, force?: boolean): Promise<boolean | undefined>;
-//# sourceMappingURL=generateTamaguiStudioConfig.d.ts.map
+//# sourceMappingURL=regenerateConfig.d.ts.map

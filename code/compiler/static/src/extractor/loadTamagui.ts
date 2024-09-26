@@ -1,4 +1,3 @@
-import { readFileSync, writeFileSync } from 'node:fs'
 import { basename, dirname, extname, join, relative, resolve } from 'node:path'
 // @ts-ignore why
 import { Color, colorLog } from '@tamagui/cli-color'
@@ -7,23 +6,22 @@ import type { TamaguiInternalConfig } from '@tamagui/web'
 import esbuild from 'esbuild'
 import * as fsExtra from 'fs-extra'
 
-import { readFile } from 'node:fs/promises'
 import { SHOULD_DEBUG } from '../constants'
 import { requireTamaguiCore } from '../helpers/requireTamaguiCore'
-import { minifyCSS } from '../minifyCSS'
 import { getNameToPaths, registerRequire } from '../registerRequire'
 import {
   type TamaguiProjectInfo,
   getBundledConfig,
   hasBundledConfigChanged,
   loadComponents,
+  writeTamaguiCSS,
 } from './bundleConfig'
-import {
-  generateTamaguiStudioConfig,
-  generateTamaguiStudioConfigSync,
-  generateTamaguiThemes,
-} from './generateTamaguiStudioConfig'
 import { getTamaguiConfigPathFromOptionsConfig } from './getTamaguiConfigPathFromOptionsConfig'
+import {
+  generateTamaguiThemes,
+  regenerateConfig,
+  regenerateConfigSync,
+} from './regenerateConfig'
 
 const getFilledOptions = (propsIn: Partial<TamaguiOptions>): TamaguiOptions => ({
   // defaults
@@ -64,27 +62,11 @@ export async function loadTamagui(
 
     const { outputCSS } = props
     if (outputCSS && props.platform === 'web') {
-      const flush = async () => {
-        colorLog(Color.FgYellow, `    ➡ [tamagui] output css: ${outputCSS}\n`)
-        await fsExtra.writeFile(outputCSS, css)
-      }
-      // default to not minifying it messes up ssr parsing
-      const cssOut = config.getCSS()
-      const css = props.disableMinifyCSS === false ? minifyCSS(cssOut).code : cssOut
-      try {
-        if ((await readFile(outputCSS, 'utf8')) === css) {
-          // no change
-        } else {
-          await flush()
-        }
-      } catch {
-        await flush()
-      }
     }
   }
 
   if (process.env.NODE_ENV === 'development') {
-    await generateTamaguiStudioConfig(props, bundleInfo)
+    await regenerateConfig(props, bundleInfo)
   }
 
   return bundleInfo
@@ -231,28 +213,10 @@ export function loadTamaguiSync({
       if (tamaguiConfig) {
         const { outputCSS } = props
         if (outputCSS) {
-          const flush = () => {
-            colorLog(Color.FgYellow, `    ➡ [tamagui] output css: ${outputCSS}\n`)
-            writeFileSync(outputCSS, css)
-          }
-
-          const css =
-            props.disableMinifyCSS === false
-              ? minifyCSS(tamaguiConfig.getCSS()).code
-              : tamaguiConfig.getCSS()
-
-          try {
-            if (readFileSync(outputCSS, 'utf-8') === css) {
-              // no change
-            } else {
-              flush()
-            }
-          } catch {
-            flush()
-          }
+          writeTamaguiCSS(outputCSS, tamaguiConfig)
         }
 
-        generateTamaguiStudioConfigSync(props, info)
+        regenerateConfigSync(props, info)
       }
 
       last[key] = {

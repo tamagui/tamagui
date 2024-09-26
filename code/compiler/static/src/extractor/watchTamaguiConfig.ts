@@ -1,5 +1,5 @@
 import type { TamaguiOptions } from '@tamagui/types'
-import { generateTamaguiStudioConfig } from './generateTamaguiStudioConfig'
+import { regenerateConfig } from './regenerateConfig'
 import { getOptions, esbuildWatchFiles, generateThemesAndLog } from './loadTamagui'
 
 export async function watchTamaguiConfig(tamaguiOptions: TamaguiOptions) {
@@ -18,7 +18,7 @@ export async function watchTamaguiConfig(tamaguiOptions: TamaguiOptions) {
   const disposeConfigWatcher = await esbuildWatchFiles(
     options.tamaguiOptions.config,
     () => {
-      void generateTamaguiStudioConfig(options.tamaguiOptions, null, true)
+      void regenerateConfig(options.tamaguiOptions, null, true)
     }
   )
 

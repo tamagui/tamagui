@@ -36,6 +36,7 @@ export declare function bundleConfig(props: TamaguiOptions): Promise<{
     nameToPaths: {};
     tamaguiConfig: any;
 } | undefined>;
+export declare function writeTamaguiCSS(outputCSS: string, config: TamaguiInternalConfig): Promise<void>;
 export declare function loadComponents(props: TamaguiOptions, forceExports?: boolean): LoadedComponents[];
 export declare function loadComponentsInner(props: TamaguiOptions, forceExports?: boolean): null | LoadedComponents[];
 export {};

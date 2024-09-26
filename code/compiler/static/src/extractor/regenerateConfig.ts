@@ -16,12 +16,14 @@ const confFile = join(tamaguiDir, 'tamagui.config.json')
  * Sort of a super-set of bundleConfig(), this code needs some refactoring ideally
  */
 
-export async function generateTamaguiStudioConfig(
+export async function regenerateConfig(
   tamaguiOptions: TamaguiOptions,
   configIn?: BundledConfig | null,
   rebuild = false
 ) {
   try {
+    // this has a side effect of rebuilding config and css!
+    // need to improve code here:
     const config = configIn ?? (await getBundledConfig(tamaguiOptions, rebuild))
     if (!config) return
     const out = transformConfig(config, tamaguiOptions.platform || 'web')
@@ -32,13 +34,13 @@ export async function generateTamaguiStudioConfig(
     })
   } catch (err) {
     if (process.env.DEBUG?.includes('tamagui') || process.env.IS_TAMAGUI_DEV) {
-      console.warn('generateTamaguiStudioConfig error', err)
+      console.warn('regenerateConfig error', err)
     }
     // ignore for now
   }
 }
 
-export function generateTamaguiStudioConfigSync(
+export function regenerateConfigSync(
   _tamaguiOptions: TamaguiOptions,
   config: BundledConfig
 ) {
@@ -53,7 +55,7 @@ export function generateTamaguiStudioConfigSync(
     )
   } catch (err) {
     if (process.env.DEBUG?.includes('tamagui') || process.env.IS_TAMAGUI_DEV) {
-      console.warn('generateTamaguiStudioConfig error', err)
+      console.warn('regenerateConfig error', err)
     }
     // ignore for now
   }
