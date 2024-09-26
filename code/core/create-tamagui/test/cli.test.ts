@@ -13,7 +13,6 @@ describe('create-tamagui CLI', () => {
 
   beforeAll(async () => {
     tempDir = temporaryDirectory()
-    console.info({ tempDir })
     projectName = 'test-project'
     const cliPath = path.join(__dirname, '../dist/index.js')
     projectPath = path.join(tempDir, projectName)

@@ -6,8 +6,13 @@ description: How to set up Tamagui with Expo
 We've created a new template repo for starting an Expo Router based app based on
 the Expo 3 starter repo.
 
+<Notice>
+  This template requires Yarn 4.4.0 or greater. You can set yarn to the latest
+  version by running `yarn set version stable`.
+</Notice>
+
 ```bash
-npm create tamagui@latest --template expo-router
+yarn create tamagui@latest --template expo-router
 ```
 
 There are also [pre-made community Expo starters](/community).
@@ -17,7 +22,8 @@ There are also [pre-made community Expo starters](/community).
 Use this guide to set up Tamagui with Expo Native and Web.
 
 <Notice>
-    To support dark mode, update your `app.json` to `app.config.ts` and set `userInterfaceStyle` to `"automatic"`.
+  To support dark mode, update your `app.json` to `app.config.ts` and set
+  `userInterfaceStyle` to `"automatic"`.
 </Notice>
 
 ### Native
@@ -25,12 +31,10 @@ Use this guide to set up Tamagui with Expo Native and Web.
 Create a new [Expo](https://docs.expo.dev/get-started/create-a-project/#initialize-a-new-project) project:
 
 ```bash
-npx create-expo-app -t expo-template-blank-typescript
+yarn dlx create-expo-app -t expo-template-blank-typescript
 ```
 
-<Notice>
-    This guide assumes Expo is configured with TypeScript support.
-</Notice>
+<Notice>This guide assumes Expo is configured with TypeScript support.</Notice>
 
 - The following steps are optional but useful for many apps, they enable the optimizing compiler, reanimated, as well as using `process.env.XYZ`for environment variables.
 
@@ -67,7 +71,8 @@ module.exports = function (api) {
 ```
 
 <Notice>
-    If you're using a monorepo you probably want to use [this Metro configuration](/docs/guides/metro#native).
+  If you're using a monorepo you probably want to use [this Metro
+  configuration](/docs/guides/metro#native).
 </Notice>
 
 ### Expo Router / Web
@@ -169,13 +174,17 @@ function App() {
   return <MyApp />
 }
 ```
+
 </InlineTabs.Content>
 
 <InlineTabs.Content value="expo">
 Using the `@expo-google-fonts` package which is a collection of Google Fonts that work with Expo:
 
 <Notice theme="green">
-  You can find the [full list of fonts](https://github.com/expo/google-fonts/tree/master/font-packages) and usage instructions in the [Expo documentation](https://github.com/expo/google-fonts).
+  You can find the [full list of
+  fonts](https://github.com/expo/google-fonts/tree/master/font-packages) and
+  usage instructions in the [Expo
+  documentation](https://github.com/expo/google-fonts).
 </Notice>
 
 Install the font package:
@@ -208,11 +217,13 @@ function App() {
   return <MyApp />
 }
 ```
+
 </InlineTabs.Content>
 </InlineTabs>
 
 <Notice>
-    For more information on loading fonts in Expo, see the [Expo documentation](https://docs.expo.dev/develop/user-interface/fonts/).
+  For more information on loading fonts in Expo, see the [Expo
+  documentation](https://docs.expo.dev/develop/user-interface/fonts/).
 </Notice>
 
 ## First time starting Expo

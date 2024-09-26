@@ -1,89 +1,140 @@
-import type { ReactNode } from 'react'
-import { Children, isValidElement } from 'react'
+import { type ReactNode, isValidElement } from 'react'
 import { useLocalStorageWatcher } from './useLocalStorageWatcher'
 
-export const pkgCommands = {
-  yarn: 'yarn',
-  bun: 'bun',
-  npm: 'npm',
-  pnpm: 'pnpm',
+const PACKAGE_MANAGERS = ['npm', 'yarn', 'bun', 'pnpm']
+
+export const pkgCommands = PACKAGE_MANAGERS.reduce(
+  (acc, pkg) => {
+    acc[pkg] = pkg
+    return acc
+  },
+  {} as Record<(typeof PACKAGE_MANAGERS)[number], (typeof PACKAGE_MANAGERS)[number]>
+)
+
+const RUN_COMMANDS = {
+  npm: 'npx',
+  yarn: 'yarn dlx',
+  bun: 'bunx',
+  pnpm: 'pnpm dlx',
 }
 
-const pkgRunCommands = {
-  npx: 'npx',
-  bunx: 'bunx',
+const INSTALL_COMMANDS = {
+  npm: 'install',
+  yarn: 'add',
+  bun: 'add',
+  pnpm: 'install',
 }
 
-const commands = {
-  yarn: 'yarn add',
-  bun: 'bun add',
-  npm: 'npm install',
-  pnpm: 'pnpm install',
-  npx: 'npx',
-  bunx: 'bunx',
+const CREATE_COMMANDS = {
+  npm: 'create',
+  yarn: 'create',
+  bun: 'create',
+  pnpm: 'create',
 }
 
-const startsWithCommand = (text: string, commandList: Record<string, string>) =>
-  Object.values(commandList).some((command) => text?.startsWith(command))
+const parseCommand = (text: string) => {
+  const words = text.trim().split(' ')
+  const packageManager = words[0]
+  const command = words[1]
+  const args = words.slice(2).join(' ')
+  return { packageManager, command, args }
+}
 
-const getPackageToInstall = (text: string) => text?.split(' ').splice(2).join(' ')
-const getPackageToRun = (text: string) => text?.split(' ').splice(1).join(' ')
+const isInstallCommand = (text: string) => {
+  const { packageManager, command } = parseCommand(text)
+  return (
+    PACKAGE_MANAGERS.includes(packageManager) &&
+    Object.values(INSTALL_COMMANDS).includes(command)
+  )
+}
+
+const isRunCommand = (text: string) => {
+  return Object.values(RUN_COMMANDS).some((runCmd) => text.startsWith(runCmd))
+}
+
+const isCreateCommand = (text: string) => {
+  const { packageManager, command } = parseCommand(text)
+  return (
+    PACKAGE_MANAGERS.includes(packageManager) &&
+    Object.values(CREATE_COMMANDS).includes(command) &&
+    !isRunCommand(text)
+  )
+}
+
+function getBashText(children: ReactNode): string {
+  const extractText = (node: ReactNode): string => {
+    if (typeof node === 'string') return node
+    if (Array.isArray(node)) return node.map(extractText).join('')
+    if (isValidElement(node)) {
+      return extractText(node.props.children)
+    }
+    return ''
+  }
+  return extractText(children)
+}
 
 export function useBashCommand(children: ReactNode, className: string) {
-  const bashText = getBashText(children)
-
+  const bashText = getBashText(children).trim()
   const isBash = className === 'language-bash'
-  const isPackage = startsWithCommand(bashText, pkgCommands)
-  const isPackageRunner = startsWithCommand(bashText, pkgRunCommands)
 
-  const isStarter = bashText?.startsWith('npm create')
-  const isTerminal = isBash && !isPackage && !isPackageRunner && !isStarter
-
-  const packageToInstall = getPackageToInstall(bashText)
-  const packageToRun = getPackageToRun(bashText)
+  const isInstall = isInstallCommand(bashText)
+  const isRun = isRunCommand(bashText)
+  const isCreate = isCreateCommand(bashText)
+  const isTerminal = isBash && !isInstall && !isRun && !isCreate
 
   const showTabs = isBash && !isTerminal
 
+  const defaultTab = isCreate ? 'yarn' : isRun ? 'yarn' : 'npm'
   const { storageItem: currentSelectedTab, setItem: setCurrentSelectedTab } =
-    useLocalStorageWatcher(
-      isPackageRunner ? 'bashPkgRunTab' : 'bashPkgInstallTab',
-      isStarter ? 'npm' : isPackageRunner ? 'npx' : 'yarn'
-    )
+    useLocalStorageWatcher(isRun ? 'bashRunTab' : 'bashInstallTab', defaultTab)
 
-  const command = isStarter
-    ? bashText
-    : `${commands[currentSelectedTab]} ${isPackage ? packageToInstall : packageToRun}`
+  let commandString = bashText
+
+  if (isInstall) {
+    const { args } = parseCommand(bashText)
+    const installCmd = INSTALL_COMMANDS[currentSelectedTab]
+    commandString = `${currentSelectedTab} ${installCmd} ${args}`
+  } else if (isRun) {
+    const parts = bashText.split(' ')
+    const runCmd = RUN_COMMANDS[currentSelectedTab]
+
+    if (runCmd.includes(' ')) {
+      // For commands like 'yarn dlx' or 'pnpm dlx'
+      const [cmdPart1, cmdPart2] = runCmd.split(' ')
+      const args = parts.slice(2).join(' ')
+      commandString = `${cmdPart1} ${cmdPart2} ${args}`
+    } else {
+      // For commands like 'npx' or 'bunx'
+      const args = parts.slice(1).join(' ')
+      commandString = `${runCmd} ${args}`
+    }
+
+    // Remove any 'dlx' that appears after 'npx' or 'bunx'
+    commandString = commandString.replace(/(npx|bunx)\s+dlx/, '$1')
+  } else if (isCreate) {
+    const { args } = parseCommand(bashText)
+    const createCmd = CREATE_COMMANDS[currentSelectedTab]
+    commandString = `${currentSelectedTab} ${createCmd} ${args}`
+  }
 
   const getCode = (code: string) => {
     if (isBash) {
-      if (isTerminal || isStarter) {
+      if (isTerminal || isCreate) {
         return code.trim()
       }
-      return command.trim()
+      return commandString.trim()
     }
     return code.trim()
   }
 
   return {
     isTerminal,
-    isStarter,
-    isPackageRunner,
+    isCreate,
+    isRun,
     showTabs,
-    command,
+    command: commandString,
     getCode,
     currentSelectedTab,
     setCurrentSelectedTab,
   }
-}
-
-export function getBashText(children: any): any {
-  return `${Children.toArray(children)
-    .flatMap((x) => {
-      if (typeof x === 'string') return x
-      if (isValidElement(x)) {
-        return x?.props?.children ? getBashText(x.props.children) : x
-      }
-      return ''
-    })
-    .join('')}`
 }
