@@ -129,8 +129,8 @@ export function useBashCommand(children: ReactNode, className: string) {
 
   return {
     isTerminal,
-    isCreate,
-    isRun,
+    isStarter: isCreate,
+    isPackageRunner: isRun,
     showTabs,
     command: commandString,
     getCode,
