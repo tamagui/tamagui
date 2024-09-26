@@ -15,7 +15,12 @@ export default {
   resolve: {
     alias: {
       '~': import.meta.dirname,
-      'react-native': resolve('react-native-web-lite'),
+      'react-native-web/dist/exports/StyleSheet/preprocess':
+        '/Users/n8/tamagui/code/ui/react-native-web/dist/esm/index.mjs',
+      'react-native-web/dist/exports/StyleSheet/compiler/createReactDOMStyle':
+        '/Users/n8/tamagui/code/ui/react-native-web/dist/esm/index.mjs',
+      'react-native': '/Users/n8/tamagui/code/ui/react-native-web/dist/esm/index.mjs',
+      'react-native-web': '/Users/n8/tamagui/code/ui/react-native-web/dist/esm/index.mjs',
       'react-native-svg': resolve('@tamagui/react-native-svg'),
       '@docsearch/react': resolve('@docsearch/react'),
     },
@@ -27,7 +32,9 @@ export default {
   },
 
   plugins: [
-    vxs({}),
+    vxs({
+      setupFile: './config/setupTamagui.ts',
+    }),
 
     ViteImageOptimizer(),
 

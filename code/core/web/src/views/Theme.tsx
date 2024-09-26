@@ -64,11 +64,12 @@ export function getThemedChildren(
 
   // its always there.. should fix type
   if (!themeManager) {
-    throw new Error(
-      process.env.NODE_ENV === 'development'
-        ? `❌ No theme found, either incorrect name, potential duplicate tamagui deps, or TamaguiProvider not providing themes.`
-        : `❌ 005`
-    )
+    return children
+    // throw new Error(
+    //   process.env.NODE_ENV === 'development'
+    //     ? `❌ No theme found, either incorrect name, potential duplicate tamagui deps, or TamaguiProvider not providing themes.`
+    //     : `❌ 005`
+    // )
   }
 
   const { shallow, forceClassName } = props

@@ -21,6 +21,7 @@ export type * from './interfaces/TamaguiComponentPropsBaseBase'
 export * from './interfaces/GetRef'
 
 export {
+  setConfig,
   setupDev,
   getConfig,
   getThemes,

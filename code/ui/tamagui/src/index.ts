@@ -157,6 +157,7 @@ export {
   getVariableName,
   getVariableValue,
   insertFont,
+  setConfig,
   setupDev,
   // constants
   isChrome,
