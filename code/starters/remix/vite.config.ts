@@ -16,7 +16,6 @@ export default defineConfig({
     tamaguiPlugin({
       config: './tamagui.config',
       optimize: true,
-      disableMinifyCSS: true,
       outputCSS: './app/tamagui.css',
     }),
   ],

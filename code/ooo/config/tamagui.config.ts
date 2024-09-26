@@ -34,8 +34,8 @@ export const selectionStyles = (theme) =>
     : null
 
 const media = createMedia({
-  xl: { maxWidth: 1650 },
-  lg: { maxWidth: 1280 },
+  xl: { maxWidth: 1450 },
+  lg: { maxWidth: 1180 },
   md: { maxWidth: 1020 },
   sm: { maxWidth: 800 },
   xs: { maxWidth: 660 },
@@ -43,8 +43,8 @@ const media = createMedia({
   gtXs: { minWidth: 660 + 1 },
   gtSm: { minWidth: 800 + 1 },
   gtMd: { minWidth: 1020 + 1 },
-  gtLg: { minWidth: 1280 + 1 },
-  gtXl: { minWidth: 1650 + 1 },
+  gtLg: { minWidth: 1180 + 1 },
+  gtXl: { minWidth: 1450 + 1 },
 })
 
 export const config = createTamagui({
