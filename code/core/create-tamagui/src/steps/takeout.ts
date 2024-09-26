@@ -1,7 +1,7 @@
-import { execSync } from 'child_process'
-import { existsSync, readFileSync, readSync, renameSync } from 'fs'
-import fs from 'fs/promises'
-import path from 'path'
+import { execSync } from 'node:child_process'
+import { existsSync, readFileSync, renameSync } from 'node:fs'
+import fs from 'node:fs/promises'
+import path from 'node:path'
 
 import chalk from 'chalk'
 import prompts from 'prompts'
