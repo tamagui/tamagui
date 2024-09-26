@@ -71,6 +71,7 @@ import { pseudoDescriptors, pseudoPriorities } from './pseudoDescriptors'
 import { skipProps } from './skipProps'
 import { transformsToString } from './transformsToString'
 import { isActivePlatform } from './isActivePlatform'
+import { sortString } from './sortString'
 
 const consoleGroupCollapsed = isWeb ? console.groupCollapsed : console.info
 
@@ -1108,7 +1109,7 @@ export const getSplitStyles: StyleSplitter = (
       // to the "flat" transform props
       styleState.style ||= {}
       Object.entries(styleState.flatTransforms)
-        .sort(([a], [b]) => a.localeCompare(b))
+        .sort(([a], [b]) => sortString(a, b))
         .forEach(([key, val]) => {
           mergeTransform(styleState.style!, key, val, true)
         })

@@ -6,6 +6,7 @@ import { variableToString } from '../createVariable'
 import type { CreateTamaguiProps, ThemeParsed } from '../types'
 import { tokensValueToVariable } from './registerCSSVariable'
 import { getSetting } from '../config'
+import { sortString } from './sortString'
 
 const darkLight = ['dark', 'light']
 const lightDark = ['light', 'dark']
@@ -114,7 +115,7 @@ export function getThemeCSSRules(props: {
       }
     }
 
-    const selectors = [...selectorsSet].sort((a, b) => a.localeCompare(b))
+    const selectors = [...selectorsSet].sort(sortString)
 
     // only do our :root attach if it's not light/dark - not support sub themes on root saves a lot of effort/size
     // this isBaseTheme logic could probably be done more efficiently above
