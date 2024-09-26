@@ -2,6 +2,7 @@ import { tamaguiPlugin } from '@tamagui/vite-plugin'
 import type { UserConfig } from 'vite'
 import { removeReactNativeWebAnimatedPlugin, vxs } from 'vxs/vite'
 import { ViteImageOptimizer } from 'vite-plugin-image-optimizer'
+import tsconfigPaths from 'vite-tsconfig-paths'
 
 const resolve = (path: string) => {
   const resolved = import.meta.resolve?.(path)
@@ -13,17 +14,41 @@ const resolve = (path: string) => {
 
 export default {
   resolve: {
-    alias: {
-      '~': import.meta.dirname,
-      'react-native-web/dist/exports/StyleSheet/preprocess':
-        '/Users/n8/tamagui/code/ui/react-native-web/dist/esm/index.mjs',
-      'react-native-web/dist/exports/StyleSheet/compiler/createReactDOMStyle':
-        '/Users/n8/tamagui/code/ui/react-native-web/dist/esm/index.mjs',
-      'react-native': '/Users/n8/tamagui/code/ui/react-native-web/dist/esm/index.mjs',
-      'react-native-web': '/Users/n8/tamagui/code/ui/react-native-web/dist/esm/index.mjs',
-      'react-native-svg': resolve('@tamagui/react-native-svg'),
-      '@docsearch/react': resolve('@docsearch/react'),
-    },
+    alias: [
+      {
+        find: '@docsearch/react',
+        replacement: resolve('@docsearch/react'),
+      },
+      {
+        find: /^react-native$/,
+        replacement: '/Users/n8/tamagui/code/ui/react-native-web/dist/esm/index.mjs',
+      },
+      {
+        find: /^react-native\/(.*)$/,
+        replacement: '/Users/n8/tamagui/code/ui/react-native-web/dist/esm/index.mjs',
+      },
+      {
+        find: /^react-native-web$/,
+        replacement: '/Users/n8/tamagui/code/ui/react-native-web/dist/esm/index.mjs',
+      },
+      {
+        find: /^react-native-web\/(.*)$/,
+        replacement: '/Users/n8/tamagui/code/ui/react-native-web/dist/esm/index.mjs',
+      },
+    ],
+
+    dedupe: [
+      'react',
+      'react-dom',
+      '@tamagui/core',
+      '@tamagui/web',
+      '@tamagui/animations-moti',
+      '@tamagui/toast',
+      'tamagui',
+      '@tamagui/use-presence',
+      'react-native-reanimated',
+      '@tamagui/react-native-web',
+    ],
   },
 
   ssr: {
@@ -31,14 +56,24 @@ export default {
     external: ['@tamagui/mdx'],
   },
 
+  define: {
+    'process.env.TAMAGUI_DISABLE_NO_THEME_WARNING': '"1"',
+  },
+
   plugins: [
     vxs({
       setupFile: './config/setupTamagui.ts',
+
+      server: {
+        compression: true,
+      },
     }),
+
+    tsconfigPaths(),
 
     ViteImageOptimizer(),
 
-    removeReactNativeWebAnimatedPlugin(),
+    // removeReactNativeWebAnimatedPlugin(),
 
     tamaguiPlugin({
       optimize: true,

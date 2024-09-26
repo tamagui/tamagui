@@ -129,7 +129,11 @@ export function useSheetProviderProps(
 
   const { animationDriver } = useConfiguration()
   if (!animationDriver) {
-    throw new Error('Must set animations in tamagui.config.ts')
+    throw new Error(
+      process.env.NODE_ENV === 'production'
+        ? `❌ 008`
+        : 'Must set animations in tamagui.config.ts'
+    )
   }
 
   const scrollBridge = useConstant<ScrollBridge>(() => ({

@@ -88,6 +88,14 @@ export function tamaguiPlugin(
       }
 
       return {
+        environments: {
+          client: {
+            define: {
+              'process.env.TAMAGUI_IS_CLIENT': JSON.stringify(true),
+            },
+          },
+        },
+
         define: {
           // reanimated support
           _frameTimestamp: undefined,

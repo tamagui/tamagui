@@ -82,17 +82,17 @@ export function scanAllSheets(
   const sheets = document.styleSheets || []
   const prev = lastScannedSheets
   const current = new Set(sheets as any as CSSStyleSheet[])
-  if (document.styleSheets) {
-    for (const sheet of current) {
-      if (sheet) {
-        const out = updateSheetStyles(sheet, false, collectThemes, tokens)
-        if (out) {
-          themes = out
-        }
+
+  for (const sheet of current) {
+    if (sheet) {
+      const out = updateSheetStyles(sheet, false, collectThemes, tokens)
+      if (out) {
+        themes = out
       }
     }
-    lastScannedSheets = current
   }
+
+  lastScannedSheets = current
 
   if (prev) {
     for (const sheet of prev) {
@@ -114,6 +114,13 @@ function track(id: string, remove = false) {
 const bailAfterEnv = process.env.TAMAGUI_BAIL_AFTER_SCANNING_X_CSS_RULES
 const bailAfter = bailAfterEnv ? +bailAfterEnv : 250
 
+let isLoaded = false
+if (isClient) {
+  window.onload = () => {
+    isLoaded = true
+  }
+}
+
 function updateSheetStyles(
   sheet: CSSStyleSheet,
   remove = false,
@@ -132,10 +139,16 @@ function updateSheetStyles(
     return
   }
 
+  if (!isLoaded) {
+    console.warn(`Not loaded yet!`, rules[0])
+  }
+
   const firstSelector = getTamaguiSelector(rules[0], collectThemes)?.[0]
   const lastSelector = getTamaguiSelector(rules[rules.length - 1], collectThemes)?.[0]
   const cacheKey = `${rules.length}${firstSelector}${lastSelector}`
   const lastScanned = scannedCache.get(sheet)
+
+  console.log('rules', rules, firstSelector, lastSelector, cacheKey)
 
   if (!remove) {
     // avoid re-scanning

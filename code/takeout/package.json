@@ -40,7 +40,7 @@
     "tamagui": "1.112.0-1727286694781",
     "vite": "6.0.0-beta.1",
     "vite-plugin-inspect": "^0.8.4",
-    "vxs": "^1.1.247",
+    "vxs": "^1.1.253",
     "zod": "^3.22.4"
   },
   "devDependencies": {

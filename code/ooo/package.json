@@ -2,6 +2,7 @@
   "name": "@tamagui/ooo",
   "version": "1.112.0-1727286694781",
   "private": true,
+  "sideEffects": false,
   "files": [],
   "type": "module",
   "scripts": {
@@ -18,11 +19,11 @@
     "@leeoniya/ufuzzy": "^1.0.14",
     "@supabase/supabase-js": "^2.44.4",
     "@tamagui/button": "1.112.0-1727286694781",
-    "@tamagui/config": "1.112.0-1727286694781",
     "@tamagui/input": "1.112.0-1727286694781",
     "@tamagui/linear-gradient": "1.112.0-1727286694781",
     "@tamagui/lucide-icons": "1.112.0-1727286694781",
     "@tamagui/mdx": "1.112.0-1727286694781",
+    "@tamagui/react-native-web": "1.112.0-1727286694781",
     "@tamagui/themes": "1.112.0-1727286694781",
     "@tamagui/use-store": "1.112.0-1727286694781",
     "@vxrn/color-scheme": "1.1.210",
@@ -32,14 +33,15 @@
     "react": "^18.2.0 || ^19.0.0",
     "react-native": "0.74.1",
     "tamagui": "1.112.0-1727286694781",
-    "vxs": "^1.1.247"
+    "vxs": "^1.1.253"
   },
   "devDependencies": {
     "@nitrogql/esbuild-register": "^1.7.0",
     "patch-package": "^8.0.0",
     "sharp": "^0.33.5",
     "svgo": "^3.3.2",
-    "vite-plugin-image-optimizer": "^1.1.8"
+    "vite-plugin-image-optimizer": "^1.1.8",
+    "vite-tsconfig-paths": "^5.0.1"
   },
   "publishConfig": {
     "access": "public"

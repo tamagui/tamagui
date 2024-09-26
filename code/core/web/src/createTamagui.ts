@@ -1,5 +1,4 @@
 import { isWeb } from '@tamagui/constants'
-
 import { configListeners, setConfig, setTokens } from './config'
 import type { Variable } from './createVariable'
 import type { DeepVariableObject } from './createVariables'

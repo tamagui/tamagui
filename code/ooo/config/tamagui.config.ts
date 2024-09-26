@@ -3,7 +3,7 @@ import { createMedia } from '@tamagui/react-native-media-driver'
 import { shorthands } from '@tamagui/shorthands/v2'
 import { createTamagui } from 'tamagui'
 import { fonts } from './fonts'
-import { themes as themesIn } from './themes'
+import { themes } from './themesOut'
 import { tokens } from './tokens'
 
 export const smoothBezier = 'cubic-bezier(0.215, 0.610, 0.355, 1.000)'
@@ -32,10 +32,6 @@ export const selectionStyles = (theme) =>
         color: theme.color11,
       }
     : null
-
-// tree shake away themes in production
-const themes =
-  process.env.TAMAGUI_OPTIMIZE_THEMES === 'true' ? ({} as typeof themesIn) : themesIn
 
 const media = createMedia({
   xl: { maxWidth: 1650 },
