@@ -10,19 +10,20 @@
     "typecheck": "tsc",
     "prod": "npm run build && npm run start",
     "lint": "biome check ./app",
-    "lint:fix": "biome check ./app --fix"
+    "lint:fix": "biome check ./app --fix",
+    "upgrade:tamagui": "yarn up '*tamagui*'@latest '@tamagui/*'@latest"
   },
   "dependencies": {
     "@remix-run/node": "^2.12.1",
     "@remix-run/react": "^2.12.1",
     "@remix-run/serve": "^2.12.1",
-    "@tamagui/config": "^1.112.0",
-    "@tamagui/core": "^1.112.0",
-    "@tamagui/vite-plugin": "^1.112.0",
+    "@tamagui/config": "^1.112.1",
+    "@tamagui/core": "^1.112.1",
+    "@tamagui/vite-plugin": "^1.112.1",
     "isbot": "^4.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "tamagui": "^1.112.0"
+    "tamagui": "^1.112.1"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.2",

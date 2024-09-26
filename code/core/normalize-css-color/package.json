@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/normalize-css-color",
-  "version": "1.112.0-1727286694781",
+  "version": "1.112.1",
   "sideEffects": [
     "*.css"
   ],
@@ -23,7 +23,7 @@
     "@react-native/normalize-color": "^2.1.0"
   },
   "devDependencies": {
-    "@tamagui/build": "1.112.0-1727286694781"
+    "@tamagui/build": "1.112.1"
   },
   "exports": {
     "./package.json": "./package.json",
