@@ -149,7 +149,6 @@ export const PopoverTrigger = React.forwardRef<
 
   const trigger = (
     <View
-      aria-haspopup="dialog"
       aria-expanded={context.open}
       // TODO not matching
       // aria-controls={context.contentId}
