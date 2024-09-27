@@ -6,8 +6,6 @@ export const GET: Endpoint = async (req) => {
   const code = url.searchParams.get('code')
   const next = url.searchParams.get('next') ?? '/'
 
-  console.info(` - code ${code}`)
-
   if (!code) {
     return Response.error()
   }
@@ -28,7 +26,7 @@ export const GET: Endpoint = async (req) => {
     `<html>
         <head>
           <script>
-            window.location.href = "${next}"
+            window.location.href = "${next}?login_success=true"
           </script>
         </head>
       </html>`,
