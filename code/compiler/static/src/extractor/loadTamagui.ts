@@ -345,9 +345,17 @@ export async function esbuildWatchFiles(entry: string, onChanged: () => void) {
   const context = await esbuild.context({
     bundle: true,
     entryPoints: [entry],
-    resolveExtensions: ['.ts', '.tsx', '.js', '.jsx', '.mjs'],
+    resolveExtensions: ['.ts', '.tsx'],
     logLevel: 'silent',
     write: false,
+
+    alias: {
+      'react-native-web': '@tamagui/proxy-worm',
+      'react-native': '@tamagui/proxy-worm',
+    },
+
+    external: ['node_modules/*'],
+
     plugins: [
       {
         name: `on-rebuild`,
