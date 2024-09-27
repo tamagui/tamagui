@@ -216,7 +216,7 @@ export function createSheet<
     const hydrated = useDidFinishSSR()
     const { isShowingNonSheet } = useSheetController()
 
-    let SheetImplementation = SheetImplementationCustom
+    let SheetImplementation = SheetImplementationCustom as any
 
     if (props.native && Platform.OS === 'ios') {
       if (process.env.TAMAGUI_TARGET === 'native') {
