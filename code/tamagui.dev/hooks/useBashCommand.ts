@@ -1,7 +1,7 @@
 import { type ReactNode, isValidElement } from 'react'
 import { useLocalStorageWatcher } from './useLocalStorageWatcher'
 
-const PACKAGE_MANAGERS = ['npm', 'yarn', 'bun', 'pnpm']
+export const PACKAGE_MANAGERS = ['yarn', 'npm', 'bun', 'pnpm']
 
 export const pkgCommands = PACKAGE_MANAGERS.reduce(
   (acc, pkg) => {
@@ -84,9 +84,9 @@ export function useBashCommand(children: ReactNode, className: string) {
 
   const showTabs = isBash && !isTerminal
 
-  const defaultTab = isCreate ? 'yarn' : isRun ? 'yarn' : 'npm'
+  const defaultTab = 'yarn'
   const { storageItem: currentSelectedTab, setItem: setCurrentSelectedTab } =
-    useLocalStorageWatcher(isRun ? 'bashRunTab' : 'bashInstallTab', defaultTab)
+    useLocalStorageWatcher('bashRunTab', defaultTab)
 
   let commandString = bashText
 
@@ -96,13 +96,21 @@ export function useBashCommand(children: ReactNode, className: string) {
     commandString = `${currentSelectedTab} ${installCmd} ${args}`
   } else if (isRun) {
     const parts = bashText.split(' ')
-    const runCmd = RUN_COMMANDS[currentSelectedTab]
+    const runCmd = RUN_COMMANDS[currentSelectedTab as keyof typeof RUN_COMMANDS]
 
-    if (runCmd.includes(' ')) {
+    if (runCmd.includes(' dlx')) {
       // For commands like 'yarn dlx' or 'pnpm dlx'
       const [cmdPart1, cmdPart2] = runCmd.split(' ')
-      const args = parts.slice(2).join(' ')
-      commandString = `${cmdPart1} ${cmdPart2} ${args}`
+      const dlxIndex = parts.findIndex((part) => part === 'dlx')
+      if (dlxIndex !== -1) {
+        // If 'dlx' is in the original command, keep it
+        const args = parts.slice(dlxIndex).join(' ')
+        commandString = `${cmdPart1} ${args}`
+      } else {
+        // If 'dlx' is not in the original command, add it
+        const args = parts.slice(1).join(' ')
+        commandString = `${cmdPart1} ${cmdPart2} ${args}`
+      }
     } else {
       // For commands like 'npx' or 'bunx'
       const args = parts.slice(1).join(' ')
@@ -131,6 +139,9 @@ export function useBashCommand(children: ReactNode, className: string) {
     isTerminal,
     isStarter: isCreate,
     isPackageRunner: isRun,
+    isCreate,
+    isInstall,
+    isRun,
     showTabs,
     command: commandString,
     getCode,
