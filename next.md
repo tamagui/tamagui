@@ -1,3 +1,5 @@
+- nan issue: nan start or end NaN 22 bytes: 0-22 [ 'bytes: 0', '22' ]
+
 @natew
 
 - button media queries break due to useStyle hook

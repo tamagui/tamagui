@@ -26,14 +26,14 @@
     "@tamagui/react-native-web": "1.112.1",
     "@tamagui/themes": "1.112.1",
     "@tamagui/use-store": "1.112.1",
-    "@vxrn/color-scheme": "^1.1.256",
+    "@vxrn/color-scheme": "^1.1.257",
     "body-scroll-lock": "^4.0.0-beta.0",
     "mdx-bundler": "^10.0.2",
     "postmark": "^3.0.18",
     "react": "^18.2.0 || ^19.0.0",
     "react-native": "0.74.1",
     "tamagui": "1.112.1",
-    "vxs": "^1.1.256"
+    "vxs": "^1.1.257"
   },
   "devDependencies": {
     "@nitrogql/esbuild-register": "^1.7.0",
