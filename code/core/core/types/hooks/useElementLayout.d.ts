@@ -1,4 +1,5 @@
 import type { RefObject } from 'react';
+import { TamaguiComponentStateRef } from '@tamagui/web/types';
 export type LayoutValue = {
     x: number;
     y: number;
@@ -16,5 +17,5 @@ export type LayoutEvent = {
 };
 export declare const measureElement: (target: HTMLElement) => Promise<LayoutEvent>;
 export declare const measureLayout: (node: HTMLElement, relativeTo: HTMLElement | null, callback: (x: number, y: number, width: number, height: number, left: number, top: number) => void) => void;
-export declare function useElementLayout(ref: RefObject<Element>, onLayout?: ((e: LayoutEvent) => void) | null): void;
+export declare function useElementLayout(ref: RefObject<TamaguiComponentStateRef>, onLayout?: ((e: LayoutEvent) => void) | null): void;
 //# sourceMappingURL=useElementLayout.d.ts.map

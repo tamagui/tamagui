@@ -1,3 +1,4 @@
 import type { RefObject } from 'react';
-export declare function usePlatformMethods(hostRef: RefObject<Element>): void;
+import type { TamaguiComponentStateRef } from '@tamagui/web';
+export declare function usePlatformMethods(stateRef: RefObject<TamaguiComponentStateRef>, props?: Object): void;
 //# sourceMappingURL=usePlatformMethods.d.ts.map

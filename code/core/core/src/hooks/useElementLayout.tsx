@@ -1,6 +1,7 @@
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import type { RefObject } from 'react'
 import { getBoundingClientRect } from '../helpers/getBoundingClientRect'
+import { TamaguiComponentStateRef } from '@tamagui/web/types'
 
 const LayoutHandlers = new WeakMap<Element, Function>()
 const resizeListeners = new Set<Function>()
@@ -125,30 +126,37 @@ const getBoundingClientRectAsync = (
 }
 
 export function useElementLayout(
-  ref: RefObject<Element>,
+  ref: RefObject<TamaguiComponentStateRef>,
   onLayout?: ((e: LayoutEvent) => void) | null
 ) {
-  // two effects because expensive to re-run on every change of onLayout
-  useIsomorphicLayoutEffect(() => {
-    if (!onLayout) return
-    const node = ref.current
-    if (!node) return
+  const node = ref.current?.host as Element
+
+  // ensure always up to date so we can avoid re-running effect
+  if (node && onLayout) {
     LayoutHandlers.set(node, onLayout)
-  }, [ref, onLayout])
+  }
 
   useIsomorphicLayoutEffect(() => {
     if (!resizeObserver) return
-    const node = ref.current
+    const node = ref.current?.host as Element
     if (!node) return
-    if (!LayoutHandlers.has(node)) return
+
+    // setup once
+    if (onLayout) {
+      LayoutHandlers.set(node, onLayout)
+    }
     const onResize = () => {
       measureElement(node as HTMLElement).then(onLayout)
     }
     resizeListeners.add(onResize)
     resizeObserver.observe(node)
+
     return () => {
+      if (onLayout) {
+        LayoutHandlers.delete(node)
+      }
       resizeListeners.delete(onResize)
       resizeObserver?.unobserve(node)
     }
-  }, [ref])
+  }, [ref, !!onLayout])
 }
