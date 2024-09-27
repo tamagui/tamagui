@@ -6,7 +6,7 @@ import { fonts } from './fonts'
 import * as themes from './themesOut'
 import { tokens } from './tokens'
 
-export const smoothBezier = 'cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+export const smoothBezier = 'cubic-bezier(0.215, 0.610, 0.355, 1.000)'
 
 export const cssTransitions = {
   '75ms': 'ease-in 75ms',
