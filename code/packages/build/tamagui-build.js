@@ -498,7 +498,11 @@ async function buildJs() {
         )
       : null,
   ]).then(() => {
-    if (process.env.DEBUG) console.info(`built js in ${Date.now() - start}ms`)
+    if (process.env.DEBUG) {
+      console.info(`built js in ${Date.now() - start}ms`)
+    }
+
+    void esbuild.stop()
   })
 }
 
