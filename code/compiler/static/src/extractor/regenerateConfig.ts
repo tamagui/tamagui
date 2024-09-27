@@ -79,10 +79,6 @@ export async function generateTamaguiThemes(
     force ||
     (await (async () => {
       try {
-        const themeBuilderJsonExists = await FS.pathExists(
-          join(tamaguiDir, 'theme-builder.json')
-        )
-        if (!themeBuilderJsonExists) return true
         if (!generatedOutput) return false
         const next = generatedOutput.generated
         const current = await FS.readFile(outPath, 'utf-8')
