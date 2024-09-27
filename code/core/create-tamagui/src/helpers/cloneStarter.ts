@@ -51,7 +51,7 @@ async function setupTamaguiDotDir(template: (typeof templates)[number], isRetry 
 
   if (process.env.GITHUB_HEAD_REF) {
     try {
-      await $`git switch -c ${process.env.GITHUB_HEAD_REF}`
+      await $`cd ${targetGitDir} && git switch -c ${process.env.GITHUB_HEAD_REF}`
     } catch {
       // re-tries branch already exists
     }

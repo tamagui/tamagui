@@ -1,4 +1,4 @@
-import { tamaguiPlugin } from '@tamagui/vite-plugin-cjs'
+import { tamaguiPlugin } from '@tamagui/vite-plugin'
 import react from '@vitejs/plugin-react-swc'
 import { defineConfig } from 'vite'
 
@@ -10,7 +10,7 @@ export default defineConfig({
   plugins: [
     react(),
     tamaguiPlugin({
-      optimize: process.env.EXTRACT === '1',
+      optimize: true,
       components: ['tamagui'],
       config: 'src/tamagui.config.ts',
     }),
