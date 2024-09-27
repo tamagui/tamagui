@@ -1,7 +1,7 @@
 import { type ReactNode, isValidElement } from 'react'
 import { useLocalStorageWatcher } from './useLocalStorageWatcher'
 
-export const PACKAGE_MANAGERS = ['yarn', 'npm', 'bun', 'pnpm']
+const PACKAGE_MANAGERS = ['npm', 'yarn', 'bun', 'pnpm']
 
 export const pkgCommands = PACKAGE_MANAGERS.reduce(
   (acc, pkg) => {
