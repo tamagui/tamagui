@@ -152,10 +152,10 @@ export function tamaguiPlugin(
                   find: /^react-native-web$/,
                   replacement: rnwl,
                 },
-                {
-                  find: /^react-native-web\/(.*)$/,
-                  replacement: rnwl,
-                },
+                // {
+                //   find: /^react-native-web\/(.*)$/,
+                //   replacement: rnwl,
+                // },
               ],
             },
           }

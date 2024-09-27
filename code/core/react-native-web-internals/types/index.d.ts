@@ -11,6 +11,7 @@ export { colorProps } from './colorProps';
 export { AccessibilityUtil } from './modules/AccessibilityUtil/index';
 export { default as canUseDOM } from './modules/canUseDOM';
 export { default as createDOMProps } from './modules/createDOMProps/index';
+export { default as createReactDOMStyle } from './StyleSheet/compiler/createReactDOMStyle';
 export { default as createEventHandle } from './modules/createEventHandle/index';
 export { default as dismissKeyboard } from './modules/dismissKeyboard/index';
 export { default as getBoundingClientRect } from './modules/getBoundingClientRect/index';

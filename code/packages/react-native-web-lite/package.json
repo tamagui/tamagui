@@ -5,11 +5,7 @@
   "sideEffects": false,
   "main": "dist/cjs",
   "module": "dist/cjs",
-  "files": [
-    "types",
-    "dist",
-    "src"
-  ],
+  "files": ["types", "dist", "src"],
   "scripts": {
     "build": "tamagui-build --skip-types",
     "watch": "tamagui-build --watch --skip-types",
@@ -30,9 +26,10 @@
       "import": "./dist/esm/without-animated.mjs",
       "require": "./dist/cjs/without-animated.js"
     },
-    "./dist/modules/*": "./dist/esm/modules/*/index.js",
-    "./dist/exports/*": "./dist/esm/exports/*/index.js",
-    "./dist/*": "./dist/cjs/*/index.js"
+    "./dist/exports/StyleSheet/compiler/createReactDOMStyle": "./dist/esm/createReactDOMStyle.mjs",
+    "./dist/modules/*": "./dist/esm/modules/*/index.mjs",
+    "./dist/exports/*": "./dist/esm/exports/*/index.mjs",
+    "./dist/*": "./dist/cjs/*/index.mjs"
   },
   "dependencies": {
     "@tamagui/normalize-css-color": "1.112.2",
@@ -51,15 +48,8 @@
     "react": "*"
   },
   "license": "MIT",
-  "tags": [
-    "react"
-  ],
-  "keywords": [
-    "react",
-    "react-component",
-    "react-native",
-    "web"
-  ],
+  "tags": ["react"],
+  "keywords": ["react", "react-component", "react-native", "web"],
   "repository": {
     "type": "git",
     "url": "https://github.com/tamagui/tamagui.git",
