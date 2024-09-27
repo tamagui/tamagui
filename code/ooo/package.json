@@ -6,12 +6,12 @@
   "files": [],
   "type": "module",
   "scripts": {
-    "dev": "npx vxs dev",
-    "dev:clean": "npx vxs dev --clean",
+    "dev": "vxs dev",
+    "dev:clean": "vxs dev --clean",
     "subset-font-pn": "node --import=@nitrogql/esbuild-register ./helpers/subset-font.ts",
-    "build:prod": "npx vxs build",
-    "serve": "npx vxs serve",
-    "serve:railway": "npx vxs serve --host 0.0.0.0",
+    "build:prod": "vxs build",
+    "serve": "vxs serve",
+    "serve:railway": "vxs serve --host 0.0.0.0",
     "postinstall": "patch-package || true"
   },
   "dependencies": {
