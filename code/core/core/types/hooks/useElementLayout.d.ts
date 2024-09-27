@@ -1,5 +1,5 @@
+import type { TamaguiComponentStateRef } from '@tamagui/web';
 import type { RefObject } from 'react';
-import { TamaguiComponentStateRef } from '@tamagui/web/types';
 export type LayoutValue = {
     x: number;
     y: number;
