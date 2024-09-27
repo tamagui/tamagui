@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import type { TabLayout, TabsTabProps, ViewProps } from 'tamagui'
-import { Avatar, SizableText, XStack, styled } from 'tamagui'
+import { SizableText, XStack, styled } from 'tamagui'
 import { AnimatePresence, Tabs, YStack } from 'tamagui'
 import { Code } from './Code'
 import { useBashCommand, PACKAGE_MANAGERS } from '~/hooks/useBashCommand'
+import { Image } from '@tamagui/image-next'
 
 export function RovingTabs({ className, children, code, size, ...rest }) {
   const { showTabs, command, setCurrentSelectedTab, currentSelectedTab } = useBashCommand(
@@ -146,20 +147,11 @@ function Tab({
       onInteraction={onInteraction}
     >
       <XStack gap="$1.5" ai="center" jc="center">
-        <Avatar
-          style={{
-            filter: active ? '' : 'grayscale(100%)',
-          }}
-          size="$1"
-          br="$2"
-        >
-          <Avatar.Image
-            scale={imageName === 'pnpm' ? 0.7 : 0.8}
-            y={imageName === 'pnpm' ? 0 : 0}
-            src={`/logos/${imageName}.svg`}
-          />
-          <Avatar.Fallback bg="$color6" bc="$color8" />
-        </Avatar>
+        <Image
+          scale={imageName === 'pnpm' ? 0.7 : 0.8}
+          y={imageName === 'pnpm' ? 0 : 0}
+          src={`/logos/${imageName}.svg`}
+        />
         <SizableText
           y={-0.5}
           size="$2"
