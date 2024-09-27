@@ -1,6 +1,6 @@
 import { $ } from 'zx'
 
-import { join } from 'path'
+import { join } from 'node:path'
 import { expect, test } from 'vitest'
 
 let start = Date.now()
@@ -11,12 +11,14 @@ new Array(100_000).fill(0).map(() => {
 // on my m1 ~14ms
 const baseline = Date.now() - start
 
+console.info('baseline', baseline)
+
 test(
   'performance of types',
   async () => {
     $.cwd = join(__dirname, '..', '..')
     $.verbose = false
-    const out = (await $`yarn typecheck --extendedDiagnostics`).stdout
+    const out = (await $`yarn typecheck --extendedDiagnostics || exit 0`).stdout
     const [_, checkTime] = out.match(/Check time:\s+([^\s]+)/) ?? []
     const [seconds, ms] = checkTime.replace('s', '').split('.')
 

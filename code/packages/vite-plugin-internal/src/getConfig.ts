@@ -46,14 +46,10 @@ export function getConfig(tamaguiPlugin: any) {
           if (isNative) {
             return {
               resolve: {
+                conditions: ['native', 'default'],
                 alias: {
-                  // TODO can this juse use resolve conditions?
-                  '@tamagui/core': import.meta.resolve
-                    ? await import.meta.resolve!(`@tamagui/core/native-test`)
-                    : `@tamagui/core/native-test`,
-                  '@tamagui/web': import.meta.resolve
-                    ? await import.meta.resolve!(`@tamagui/core/native-test`)
-                    : `@tamagui/core/native-test`,
+                  '@tamagui/core': '@tamagui/core/native-test',
+                  '@tamagui/web': '@tamagui/core/native-test',
                 },
                 extensions: nativeExtensions,
               },

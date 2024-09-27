@@ -1,6 +1,7 @@
 {
   "name": "integration",
   "private": true,
+  "type": "module",
   "scripts": {
     "web": "yarn dev",
     "test": "node -r esbuild-register ../../node_modules/.bin/playwright test simple.integration.test.tsx",
@@ -18,6 +19,7 @@
     "@tamagui/react-native-svg": "1.112.1",
     "react": "^18.2.0 || ^19.0.0",
     "react-dom": "^18.2.0 || ^19.0.0",
+    "react-native": "^0.75.3",
     "react-native-web": "^0.19.12",
     "tamagui": "1.112.1"
   },

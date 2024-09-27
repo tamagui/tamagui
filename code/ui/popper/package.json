@@ -43,12 +43,13 @@
     "@tamagui/use-controllable-state": "1.112.1"
   },
   "peerDependencies": {
-    "react": "*"
+    "react": "*",
+    "react-native": "*"
   },
   "devDependencies": {
     "@tamagui/build": "1.112.1",
     "react": "^18.2.0 || ^19.0.0",
-    "react-native": "0.74.1"
+    "react-native": "^0.75.3"
   },
   "publishConfig": {
     "access": "public"

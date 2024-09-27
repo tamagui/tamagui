@@ -65,7 +65,7 @@
   "devDependencies": {
     "@tamagui/build": "1.112.1",
     "@tamagui/cli": "1.112.1",
-    "vitest": "0.34.3"
+    "vitest": "2.1.1"
   },
   "publishConfig": {
     "access": "public"
