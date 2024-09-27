@@ -133,24 +133,28 @@ export function tamaguiPlugin(
       name: 'tamagui-rnw-lite',
       config() {
         if (tamaguiOptions?.useReactNativeWebLite) {
+          const rnwl = import.meta
+            .resolve?.('react-native-web-lite')
+            .replace('file://', '')
+
           return {
             resolve: {
               alias: [
                 {
                   find: /^react-native$/,
-                  replacement: 'react-native-web-lite',
+                  replacement: rnwl,
                 },
                 {
                   find: /^react-native\/(.*)$/,
-                  replacement: 'react-native-web-lite',
+                  replacement: rnwl,
                 },
                 {
                   find: /^react-native-web$/,
-                  replacement: 'react-native-web-lite',
+                  replacement: rnwl,
                 },
                 {
                   find: /^react-native-web\/(.*)$/,
-                  replacement: 'react-native-web-lite',
+                  replacement: rnwl,
                 },
               ],
             },
