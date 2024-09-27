@@ -1,7 +1,7 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`styled() tests > extracts to className at call-site 1`] = `
-"const _cn = \\"  _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _bg-green \\";
+"const _cn = "  _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _bg-green ";
 import { MyStack } from '@tamagui/test-design-system';
 export function Test() {
   return <div className={_cn} />;

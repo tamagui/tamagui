@@ -1,17 +1,17 @@
 import '@tamagui/core/reset.css'
 
-import { H1, TamaguiProvider, YStack } from 'tamagui'
-import { LinearGradient } from 'tamagui/linear-gradient'
+import { Text, TamaguiProvider, View } from '@tamagui/core'
+import { LinearGradient } from '@tamagui/linear-gradient'
 
 import config from './tamagui.config'
 
 export const Root = () => {
   return (
     <TamaguiProvider config={config} defaultTheme="light">
-      <YStack f={1} ai="center" jc="center">
-        <H1>Hello world</H1>
+      <View fd="column" f={1} ai="center" jc="center">
+        <Text tag="h1">Hello world</Text>
         <LinearGradient zIndex={-1} fullscreen colors={['red', 'blue']} />
-      </YStack>
+      </View>
     </TamaguiProvider>
   )
 }

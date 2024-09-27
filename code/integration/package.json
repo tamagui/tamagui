@@ -1,6 +1,7 @@
 {
   "name": "integration",
   "private": true,
+  "type": "module",
   "scripts": {
     "web": "yarn dev",
     "test": "node -r esbuild-register ../../node_modules/.bin/playwright test simple.integration.test.tsx",

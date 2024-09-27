@@ -49,10 +49,11 @@ describe('create-tamagui CLI', () => {
     }
 
     // Simulate user input
-    await writeWithDelay(`${projectName}\r`, 1000)
-    await writeWithDelay('\x1B\x5B\x42', 1000) // Down arrow
-    await writeWithDelay('\x1B\x5B\x42', 1000) // Down arrow
-    await writeWithDelay('\r', 1000) // Enter
+    await writeWithDelay(`${projectName}`, 300)
+    await writeWithDelay('\r', 300) // Enter
+    await writeWithDelay('\x1B\x5B\x42', 300) // Down arrow
+    await writeWithDelay('\x1B\x5B\x42', 300) // Down arrow
+    await writeWithDelay('\r', 300) // Enter
 
     // Wait for the process to finish
     await new Promise<void>((resolve, reject) => {
@@ -128,7 +129,6 @@ describe('create-tamagui CLI with --template flag', () => {
 
   beforeAll(async () => {
     tempDir = temporaryDirectory()
-    console.info({ tempDir })
     projectName = 'expo-router-project'
     const cliPath = path.join(__dirname, '../dist/index.js')
     projectPath = path.join(tempDir, projectName)
