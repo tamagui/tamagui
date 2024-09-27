@@ -18,13 +18,13 @@ const yellow = {
 }
 
 const yellowDark = {
-  yellow1: 'hsl(45, 50%, 4%)',
-  yellow2: 'hsl(46, 60%, 6.7%)',
-  yellow3: 'hsl(45, 70%, 8.7%)',
-  yellow4: 'hsl(45, 70%, 10.4%)',
-  yellow5: 'hsl(47, 70%, 12.1%)',
-  yellow6: 'hsl(49, 70%, 14.3%)',
-  yellow7: 'hsl(49, 90.3%, 18.4%)',
+  yellow1: 'hsl(45, 40%, 5%)',
+  yellow2: 'hsl(46, 40%, 6.7%)',
+  yellow3: 'hsl(45, 40%, 8.7%)',
+  yellow4: 'hsl(45, 50%, 10.4%)',
+  yellow5: 'hsl(47, 60%, 12.1%)',
+  yellow6: 'hsl(49, 60%, 14.3%)',
+  yellow7: 'hsl(49, 60.3%, 18.4%)',
   yellow8: 'hsl(53, 100%, 25.0%)',
   yellow9: 'hsl(53, 92.0%, 40.0%)',
   yellow10: 'hsl(54, 100%, 60.0%)',
