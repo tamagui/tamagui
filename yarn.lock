@@ -8524,7 +8524,6 @@ __metadata:
     "@tamagui/proxy-worm": "npm:1.112.1"
     "@tamagui/react-native-svg": "npm:1.112.1"
     "@tamagui/static": "npm:1.112.1"
-    "@tamagui/use-debounce": "npm:1.112.1"
     esm-resolve: "npm:^1.0.8"
     fs-extra: "npm:^11.2.0"
     outdent: "npm:^0.8.0"
