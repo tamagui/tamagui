@@ -4,6 +4,8 @@ import { transformWithEsbuild } from 'vite'
 import { tamaguiOptions, Static, loadTamaguiBuildConfig } from './loadTamagui'
 import { tamaguiExtractPlugin } from './extract'
 
+const resolve = (name: string) => import.meta.resolve?.(name).replace('file://', '')
+
 export function tamaguiPlugin(
   tamaguiOptionsIn: TamaguiOptions & { optimize?: boolean } = {}
 ): Plugin | Plugin[] {
@@ -118,11 +120,11 @@ export function tamaguiPlugin(
             alias: {
               ...(tamaguiOptions.platform !== 'native' && {
                 'react-native/Libraries/Renderer/shims/ReactFabric':
-                  '@tamagui/proxy-worm',
+                  resolve('@tamagui/proxy-worm'),
                 'react-native/Libraries/Utilities/codegenNativeComponent':
-                  '@tamagui/proxy-worm',
-                'react-native-svg': '@tamagui/react-native-svg',
-                'react-native': 'react-native-web',
+                  resolve('@tamagui/proxy-worm'),
+                'react-native-svg': resolve('@tamagui/react-native-svg'),
+                'react-native': resolve('react-native-web'),
               }),
             },
           },
@@ -133,9 +135,7 @@ export function tamaguiPlugin(
       name: 'tamagui-rnw-lite',
       config() {
         if (tamaguiOptions?.useReactNativeWebLite) {
-          const rnwl = import.meta
-            .resolve?.('react-native-web-lite')
-            .replace('file://', '')
+          const rnwl = resolve('react-native-web-lite')
 
           return {
             resolve: {
