@@ -6,10 +6,14 @@ import { Code } from './Code'
 import { useBashCommand } from '~/hooks/useBashCommand'
 
 export function RovingTabs({ className, children, code, size, ...rest }) {
-  const { showTabs, command, setCurrentSelectedTab, currentSelectedTab } = useBashCommand(
-    code || children,
-    className
-  )
+  const {
+    isStarter,
+    isPackageRunner,
+    showTabs,
+    command,
+    setCurrentSelectedTab,
+    currentSelectedTab,
+  } = useBashCommand(code || children, className)
 
   const [tabState, setTabState] = useState<{
     // Layout of the Tab user might intend to select (hovering / focusing)
@@ -34,6 +38,14 @@ export function RovingTabs({ className, children, code, size, ...rest }) {
     }))
 
   const { activeAt, intentAt, prevActiveAt } = tabState
+
+  // 1 = right, 0 = nowhere, -1 = left
+  // const direction = (() => {
+  //   if (!activeAt || !prevActiveAt || activeAt.x === prevActiveAt.x) {
+  //     return 0
+  //   }
+  //   return activeAt.x > prevActiveAt.x ? -1 : 1
+  // })()
 
   const handleOnInteraction: TabsTabProps['onInteraction'] = (type, layout) => {
     if (type === 'select') {
@@ -88,31 +100,56 @@ export function RovingTabs({ className, children, code, size, ...rest }) {
                 aria-label="package manager"
                 gap="$2"
               >
-                <>
-                  <Tab
-                    active={currentSelectedTab === 'yarn'}
-                    pkgManager="yarn"
-                    onInteraction={handleOnInteraction}
-                  />
-                  <Tab
-                    active={currentSelectedTab === 'bun'}
-                    pkgManager="bun"
-                    onInteraction={handleOnInteraction}
-                  />
+                {isStarter ? (
                   <Tab
                     active={currentSelectedTab === 'npm'}
                     pkgManager="npm"
                     onInteraction={handleOnInteraction}
                   />
-                  <Tab
-                    active={currentSelectedTab === 'pnpm'}
-                    pkgManager="pnpm"
-                    onInteraction={handleOnInteraction}
-                  />
-                </>
+                ) : isPackageRunner ? (
+                  <>
+                    <Tab
+                      active={currentSelectedTab === 'npx'}
+                      pkgManager="npx"
+                      logo="npm"
+                      onInteraction={handleOnInteraction}
+                    />
+                    <Tab
+                      active={currentSelectedTab === 'bunx'}
+                      pkgManager="bunx"
+                      logo="bun"
+                      onInteraction={handleOnInteraction}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <Tab
+                      active={currentSelectedTab === 'yarn'}
+                      pkgManager="yarn"
+                      onInteraction={handleOnInteraction}
+                    />
+                    <Tab
+                      active={currentSelectedTab === 'bun'}
+                      pkgManager="bun"
+                      onInteraction={handleOnInteraction}
+                    />
+                    <Tab
+                      active={currentSelectedTab === 'npm'}
+                      pkgManager="npm"
+                      onInteraction={handleOnInteraction}
+                    />
+                    <Tab
+                      active={currentSelectedTab === 'pnpm'}
+                      pkgManager="pnpm"
+                      onInteraction={handleOnInteraction}
+                    />
+                  </>
+                )}
               </Tabs.List>
             </YStack>
 
+            {/* <AnimatePresence exitBeforeEnter custom={{ direction }} initial={false}> */}
+            {/* <AnimatedYStack key={currentSelectedTab}> */}
             <Tabs.Content value={currentSelectedTab} forceMount>
               <Code
                 p="$4"
@@ -126,6 +163,8 @@ export function RovingTabs({ className, children, code, size, ...rest }) {
                 {command}
               </Code>
             </Tabs.Content>
+            {/* </AnimatedYStack> */}
+            {/* </AnimatePresence> */}
           </YStack>
         </Tabs>
       ) : (

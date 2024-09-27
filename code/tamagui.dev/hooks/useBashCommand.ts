@@ -84,7 +84,7 @@ export function useBashCommand(children: ReactNode, className: string) {
 
   const showTabs = isBash && !isTerminal
 
-  const defaultTab = isCreate ? 'yarn' : 'npm'
+  const defaultTab = isCreate ? 'yarn' : isRun ? 'yarn' : 'npm'
   const { storageItem: currentSelectedTab, setItem: setCurrentSelectedTab } =
     useLocalStorageWatcher(isRun ? 'bashRunTab' : 'bashInstallTab', defaultTab)
 
@@ -96,7 +96,7 @@ export function useBashCommand(children: ReactNode, className: string) {
     commandString = `${currentSelectedTab} ${installCmd} ${args}`
   } else if (isRun) {
     const parts = bashText.split(' ')
-    const runCmd = RUN_COMMANDS[currentSelectedTab as keyof typeof RUN_COMMANDS]
+    const runCmd = RUN_COMMANDS[currentSelectedTab]
 
     if (runCmd.includes(' ')) {
       // For commands like 'yarn dlx' or 'pnpm dlx'
@@ -104,7 +104,7 @@ export function useBashCommand(children: ReactNode, className: string) {
       const args = parts.slice(2).join(' ')
       commandString = `${cmdPart1} ${cmdPart2} ${args}`
     } else {
-      // For commands like 'npx'
+      // For commands like 'npx' or 'bunx'
       const args = parts.slice(1).join(' ')
       commandString = `${runCmd} ${args}`
     }
@@ -131,9 +131,6 @@ export function useBashCommand(children: ReactNode, className: string) {
     isTerminal,
     isStarter: isCreate,
     isPackageRunner: isRun,
-    isCreate,
-    isInstall,
-    isRun,
     showTabs,
     command: commandString,
     getCode,
