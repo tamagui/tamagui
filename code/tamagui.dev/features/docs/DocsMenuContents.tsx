@@ -47,7 +47,6 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
   inMenu,
 }: { inMenu?: boolean }) {
   const store = useStore(DocsItemsStore)
-  const pathname = usePathname()
   const { currentPath } = useDocsMenu()
   const activeSection = currentPath.startsWith('/ui') ? 'ui' : 'docs'
   const activeItems = inMenu ? allItems : sections[activeSection]

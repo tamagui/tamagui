@@ -165,7 +165,8 @@ export default {
     removeReactNativeWebAnimatedPlugin(),
 
     tamaguiPlugin({
-      optimize: true,
+      optimize: process.env.NODE_ENV === 'production',
+      // useReactNativeWebLite: true,
     }),
 
     // hmmm breaking ssr for some reason on lucide:

@@ -1,7 +1,6 @@
 import { useTint } from '@tamagui/logo'
 import { Menu } from '@tamagui/lucide-icons'
 import * as React from 'react'
-import type { ThemeName } from 'tamagui'
 import {
   Adapt,
   Button,
@@ -16,10 +15,10 @@ import {
 } from 'tamagui'
 
 import { usePathname } from 'vxs'
-import { useUser } from '~/features/user/useUser'
 import { DocsMenuContents } from '~/features/docs/DocsMenuContents'
-import { HeaderLinks } from './HeaderLinks'
 import { useDocsMenu } from '~/features/docs/useDocsMenu'
+import { useUser } from '~/features/user/useUser'
+import { HeaderLinks } from './HeaderLinks'
 import { UserAvatar } from './UserAvatar'
 
 export const HeaderMenu = React.memo(function HeaderMenu() {
@@ -139,7 +138,6 @@ const HeaderMenuContent = React.memo(function HeaderMenuContent({
     <Popover.Content
       mt={-5}
       bw={0}
-      bg="transparent"
       enterStyle={{ x: -10, o: 0 }}
       exitStyle={{ x: 10, o: 0 }}
       x={0}
@@ -161,6 +159,7 @@ const HeaderMenuContent = React.memo(function HeaderMenuContent({
       shadowColor="#000"
       shadowOpacity={0.2}
       zIndex={100000000}
+      bg="$color5"
       trapFocus
       br="$6"
       {...{
@@ -171,17 +170,9 @@ const HeaderMenuContent = React.memo(function HeaderMenuContent({
       }}
     >
       <Popover.Arrow bg="$color5" size="$4" borderWidth={0} o={0.84} />
-      <YStack fullscreen bg="$color5" zi={0} br="$6" o={0.84} />
 
       <Popover.ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
-        <YStack
-          // @ts-ignore
-          inert={!open}
-          aria-label="Home menu contents"
-          miw={230}
-          p="$3"
-          ai="flex-end"
-        >
+        <YStack aria-label="Home menu contents" miw={230} p="$3" ai="flex-end">
           <XStack fw="wrap" f={1} gap="$2">
             <HeaderLinks forceShowAllLinks />
           </XStack>

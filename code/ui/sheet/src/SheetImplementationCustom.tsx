@@ -221,8 +221,6 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       if (!frameSize) return
       if (isShowingInnerSheet) return
 
-      console.log('pane responding')
-
       const minY = positions[0]
       scrollBridge.paneMinY = minY
       let startY = at.current
@@ -426,8 +424,6 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       : snapPointsMode === 'percent'
         ? `${maxSnapPoint}${isWeb ? 'dvh' : '%'}`
         : maxSnapPoint
-
-    console.log('passing to pane respodner', panResponder?.panHandlers)
 
     const contents = (
       <ParentSheetContext.Provider value={nextParentContext}>
