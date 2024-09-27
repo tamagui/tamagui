@@ -3,7 +3,7 @@ import type { TabLayout, TabsTabProps, ViewProps } from 'tamagui'
 import { Avatar, SizableText, XStack, styled } from 'tamagui'
 import { AnimatePresence, Tabs, YStack } from 'tamagui'
 import { Code } from './Code'
-import { useBashCommand } from '~/hooks/useBashCommand'
+import { useBashCommand, PACKAGE_MANAGERS } from '~/hooks/useBashCommand'
 
 export function RovingTabs({ className, children, code, size, ...rest }) {
   const { showTabs, command, setCurrentSelectedTab, currentSelectedTab } = useBashCommand(
@@ -89,26 +89,14 @@ export function RovingTabs({ className, children, code, size, ...rest }) {
                 gap="$2"
               >
                 <>
-                  <Tab
-                    active={currentSelectedTab === 'yarn'}
-                    pkgManager="yarn"
-                    onInteraction={handleOnInteraction}
-                  />
-                  <Tab
-                    active={currentSelectedTab === 'bun'}
-                    pkgManager="bun"
-                    onInteraction={handleOnInteraction}
-                  />
-                  <Tab
-                    active={currentSelectedTab === 'npm'}
-                    pkgManager="npm"
-                    onInteraction={handleOnInteraction}
-                  />
-                  <Tab
-                    active={currentSelectedTab === 'pnpm'}
-                    pkgManager="pnpm"
-                    onInteraction={handleOnInteraction}
-                  />
+                  {PACKAGE_MANAGERS.map((pkgManager) => (
+                    <Tab
+                      key={pkgManager}
+                      active={currentSelectedTab === pkgManager}
+                      pkgManager={pkgManager}
+                      onInteraction={handleOnInteraction}
+                    />
+                  ))}
                 </>
               </Tabs.List>
             </YStack>
