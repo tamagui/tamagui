@@ -1,6 +1,7 @@
 // fork from https://github.com/seek-oss/vanilla-extract
 
 import type { TamaguiOptions } from '@tamagui/static'
+import { debounce } from '@tamagui/use-debounce'
 import path from 'node:path'
 import type { Plugin, ResolvedConfig, ViteDevServer } from 'vite'
 import { normalizePath, type Environment } from 'vite'
@@ -62,6 +63,10 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
     }
   }
 
+  const debouncedLoad = debounce(() => {
+    loadTamaguiBuildConfig(optionsIn)
+  }, 50)
+
   return {
     name: 'tamagui-extract',
     enforce: 'pre',
@@ -71,7 +76,7 @@ export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugi
     },
 
     async buildStart() {
-      await loadTamaguiBuildConfig(optionsIn)
+      debouncedLoad()
     },
 
     buildEnd() {

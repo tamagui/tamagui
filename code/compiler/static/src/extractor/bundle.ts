@@ -137,14 +137,14 @@ function getESBuildConfig(
   return res
 }
 
-export async function bundle(
+export async function esbundleTamaguiConfig(
   props: Props,
   platform: TamaguiPlatform,
   aliases?: Record<string, string>
 ) {
   await asyncLock(props)
   const config = getESBuildConfig(props, platform, aliases)
-  return esbuild.build(config)
+  return await esbuild.build(config)
 }
 
 // until i do fancier things w plugins:

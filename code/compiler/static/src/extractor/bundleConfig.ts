@@ -13,7 +13,7 @@ import * as FS from 'fs-extra'
 import { registerRequire, setRequireResult } from '../registerRequire'
 import type { TamaguiOptions } from '../types'
 import { babelParse } from './babelParse'
-import { bundle, esbuildLoaderConfig } from './bundle'
+import { esbundleTamaguiConfig, esbuildLoaderConfig } from './bundle'
 import { getTamaguiConfigPathFromOptionsConfig } from './getTamaguiConfigPathFromOptionsConfig'
 import { readFile } from 'node:fs/promises'
 
@@ -126,7 +126,7 @@ export async function bundleConfig(props: TamaguiOptions) {
 
       await Promise.all([
         props.config
-          ? bundle(
+          ? esbundleTamaguiConfig(
               {
                 entryPoints: [configEntry],
                 external,
@@ -138,7 +138,7 @@ export async function bundleConfig(props: TamaguiOptions) {
             )
           : null,
         ...baseComponents.map((componentModule, i) => {
-          return bundle(
+          return esbundleTamaguiConfig(
             {
               entryPoints: [componentModule],
               resolvePlatformSpecificEntries: true,
@@ -151,6 +151,8 @@ export async function bundleConfig(props: TamaguiOptions) {
           )
         }),
       ])
+
+      void esbuild.stop()
 
       colorLog(
         Color.FgYellow,
@@ -346,6 +348,8 @@ export function loadComponentsInner(
             sourcemap: false,
             loader: esbuildLoaderConfig,
           })
+
+          void esbuild.stop()
         }
 
         if (process.env.DEBUG === 'tamagui') {

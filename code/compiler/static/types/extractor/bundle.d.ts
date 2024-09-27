@@ -33,6 +33,6 @@ type Props = Omit<Partial<esbuild.BuildOptions>, 'entryPoints'> & {
     entryPoints: string[];
     resolvePlatformSpecificEntries?: boolean;
 };
-export declare function bundle(props: Props, platform: TamaguiPlatform, aliases?: Record<string, string>): Promise<esbuild.BuildResult<esbuild.BuildOptions>>;
+export declare function esbundleTamaguiConfig(props: Props, platform: TamaguiPlatform, aliases?: Record<string, string>): Promise<esbuild.BuildResult<esbuild.BuildOptions>>;
 export {};
 //# sourceMappingURL=bundle.d.ts.map
