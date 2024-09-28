@@ -1,12 +1,11 @@
+const getTitle = (source: string) => source.replace(/^\#+\s+/, '').replace(/\<.*\>/, ' ')
+
 export const getHeadings = (source: string) =>
   source
     .split('\n')
     .filter((x) => x.startsWith('#'))
     .map((x) => ({
-      title: x.replace(/^\#+\s+/, ''),
+      title: getTitle(x),
       priority: x.trim().split(' ')[0].length,
-      id: `#${x
-        .replace(/^\#+\s+/, '')
-        .replace(/\s+/, '-')
-        .toLowerCase()}`,
+      id: `#${getTitle(x).replace(/\s+/, '-').toLowerCase()}`,
     }))
