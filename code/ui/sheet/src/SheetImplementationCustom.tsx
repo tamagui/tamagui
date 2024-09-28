@@ -1,19 +1,23 @@
-import React from 'react'
 import { AdaptParentContext } from '@tamagui/adapt'
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { currentPlatform, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import {
+  currentPlatform,
+  isClient,
+  isWeb,
+  useIsomorphicLayoutEffect,
+} from '@tamagui/constants'
 import {
   getConfig,
   Stack,
   Theme,
-  themeable,
   useConfiguration,
   useEvent,
   useThemeName,
 } from '@tamagui/core'
 import { Portal } from '@tamagui/portal'
 import { useKeyboardVisible } from '@tamagui/use-keyboard-visible'
+import React from 'react'
 import type {
   Animated,
   GestureResponderEvent,
@@ -21,8 +25,6 @@ import type {
   PanResponderGestureState,
 } from 'react-native'
 import { Dimensions, Keyboard, PanResponder, View } from 'react-native'
-
-import { SHEET_HIDDEN_STYLESHEET } from './constants'
 import { ParentSheetContext, SheetInsideSheetContext } from './contexts'
 import { resisted } from './helpers'
 import { SheetProvider } from './SheetContext'
@@ -31,6 +33,8 @@ import { useSheetOpenState } from './useSheetOpenState'
 import { useSheetProviderProps } from './useSheetProviderProps'
 
 let hiddenSize = 10_000.1
+
+let sheetHiddenStyleSheet: HTMLStyleElement | null = null
 
 export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
   function SheetImplementationCustom(props, forwardedRef) {
@@ -229,12 +233,19 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
         setIsDragging(val)
 
         // make unselectable:
-        if (!SHEET_HIDDEN_STYLESHEET) return
-        if (!val) {
-          SHEET_HIDDEN_STYLESHEET.innerText = ''
-        } else {
-          SHEET_HIDDEN_STYLESHEET.innerText =
-            ':root * { user-select: none !important; -webkit-user-select: none !important; }'
+        if (isClient) {
+          if (!sheetHiddenStyleSheet) {
+            sheetHiddenStyleSheet = document.createElement('style')
+            if (typeof document.head !== 'undefined') {
+              document.head.appendChild(sheetHiddenStyleSheet)
+            }
+          }
+          if (!val) {
+            sheetHiddenStyleSheet.innerText = ''
+          } else {
+            sheetHiddenStyleSheet.innerText =
+              ':root * { user-select: none !important; -webkit-user-select: none !important; }'
+          }
         }
       }
 
