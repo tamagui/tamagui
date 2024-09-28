@@ -19,39 +19,56 @@ export function TamaguiProvider({
 }: TamaguiProviderProps) {
   setupMediaListeners()
 
-  if (isClient) {
-    // inject CSS if asked to (not SSR compliant)
-    useIsomorphicLayoutEffect(() => {
-      if (!config) return
-      if (!disableInjectCSS) {
-        const style = document.createElement('style')
-        style.appendChild(document.createTextNode(config.getCSS()))
-        document.head.appendChild(style)
-        return () => {
-          document.head.removeChild(style)
+  if (!process.env.TAMAGUI_REACT_19) {
+    if (isClient) {
+      // inject CSS if asked to (not SSR compliant)
+      useIsomorphicLayoutEffect(() => {
+        if (!config) return
+        if (!disableInjectCSS) {
+          const style = document.createElement('style')
+          style.appendChild(document.createTextNode(config.getCSS()))
+          document.head.appendChild(style)
+          return () => {
+            document.head.removeChild(style)
+          }
         }
-      }
-    }, [config, disableInjectCSS])
+      }, [config, disableInjectCSS])
+    }
   }
 
   return (
-    <UnmountedClassName>
-      <ComponentContext.Provider animationDriver={config?.animations}>
-        <ThemeProvider
-          themeClassNameOnRoot={
-            themeClassNameOnRoot ?? getSetting('themeClassNameOnRoot')
-          }
-          disableRootThemeClass={
-            disableRootThemeClass ?? getSetting('disableRootThemeClass')
-          }
-          defaultTheme={defaultTheme ?? (config ? Object.keys(config.themes)[0] : '')}
-          reset={reset}
-          className={className}
+    <>
+      <UnmountedClassName>
+        <ComponentContext.Provider animationDriver={config?.animations}>
+          <ThemeProvider
+            themeClassNameOnRoot={
+              themeClassNameOnRoot ?? getSetting('themeClassNameOnRoot')
+            }
+            disableRootThemeClass={
+              disableRootThemeClass ?? getSetting('disableRootThemeClass')
+            }
+            defaultTheme={defaultTheme ?? (config ? Object.keys(config.themes)[0] : '')}
+            reset={reset}
+            className={className}
+          >
+            {children}
+          </ThemeProvider>
+        </ComponentContext.Provider>
+      </UnmountedClassName>
+
+      {process.env.TAMAGUI_REACT_19 && config && !disableInjectCSS && (
+        <style
+          // react 19 feature to hoist style tags to header:
+          // https://react.dev/reference/react-dom/components/style
+          // @ts-ignore
+          precedence="default"
+          href="tamagui-css"
+          key="tamagui-css"
         >
-          {children}
-        </ThemeProvider>
-      </ComponentContext.Provider>
-    </UnmountedClassName>
+          {config.getCSS()}
+        </style>
+      )}
+    </>
   )
 }
 
