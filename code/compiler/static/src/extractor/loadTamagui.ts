@@ -12,6 +12,7 @@ import { getNameToPaths, registerRequire } from '../registerRequire'
 import {
   type TamaguiProjectInfo,
   getBundledConfig,
+  getLoadedConfig,
   hasBundledConfigChanged,
   loadComponents,
   writeTamaguiCSS,
@@ -72,7 +73,6 @@ export async function loadTamagui(
 
 // debounce a bit
 let waiting = false
-let hasLoggedOnce = false
 
 export const generateThemesAndLog = async (options: TamaguiOptions, force = false) => {
   if (waiting) return
@@ -81,9 +81,9 @@ export const generateThemesAndLog = async (options: TamaguiOptions, force = fals
     waiting = true
     await new Promise((res) => setTimeout(res, 30))
     const didGenerate = await generateTamaguiThemes(options, force)
+
     // only logs when changed
-    if (!hasLoggedOnce && didGenerate) {
-      hasLoggedOnce = true
+    if (didGenerate) {
       const whitespaceBefore = `    `
       colorLog(
         Color.FgYellow,
@@ -92,6 +92,13 @@ export const generateThemesAndLog = async (options: TamaguiOptions, force = fals
           options.themeBuilder.output
         )}`
       )
+
+      if (options.outputCSS) {
+        const loadedConfig = getLoadedConfig()
+        if (loadedConfig) {
+          await writeTamaguiCSS(options.outputCSS, loadedConfig)
+        }
+      }
     }
   } finally {
     waiting = false

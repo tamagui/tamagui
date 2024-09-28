@@ -32,8 +32,8 @@ export async function watchTamaguiConfig(tamaguiOptions: TamaguiOptions) {
     } catch {
       // ok
     }
-    disposeThemesWatcher = await esbuildWatchFiles(inputPath, () => {
-      void generateThemesAndLog(options.tamaguiOptions)
+    disposeThemesWatcher = await esbuildWatchFiles(inputPath, async () => {
+      await generateThemesAndLog(options.tamaguiOptions)
     })
   }
 

@@ -10,12 +10,12 @@ import type { StaticConfig, TamaguiInternalConfig } from '@tamagui/web'
 import esbuild from 'esbuild'
 import * as FS from 'fs-extra'
 
+import { readFile } from 'node:fs/promises'
 import { registerRequire, setRequireResult } from '../registerRequire'
 import type { TamaguiOptions } from '../types'
 import { babelParse } from './babelParse'
-import { esbundleTamaguiConfig, esbuildLoaderConfig } from './bundle'
+import { esbuildLoaderConfig, esbundleTamaguiConfig } from './bundle'
 import { getTamaguiConfigPathFromOptionsConfig } from './getTamaguiConfigPathFromOptionsConfig'
-import { readFile } from 'node:fs/promises'
 
 type NameToPaths = {
   [key: string]: Set<string>
@@ -75,6 +75,10 @@ export function hasBundledConfigChanged() {
   lastBundle = currentBundle
   return true
 }
+
+let loadedConfig: TamaguiInternalConfig | null = null
+
+export const getLoadedConfig = () => loadedConfig
 
 export async function getBundledConfig(props: TamaguiOptions, rebuild = false) {
   if (isBundling) {
@@ -193,6 +197,8 @@ export async function bundleConfig(props: TamaguiOptions) {
     if (!config) {
       throw new Error(`No config: ${config}`)
     }
+
+    loadedConfig = config
 
     if (props.outputCSS) {
       await writeTamaguiCSS(props.outputCSS, config)

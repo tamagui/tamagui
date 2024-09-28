@@ -26,6 +26,7 @@ export declare const esbuildOptions: {
 };
 export type BundledConfig = Exclude<Awaited<ReturnType<typeof bundleConfig>>, undefined>;
 export declare function hasBundledConfigChanged(): boolean;
+export declare const getLoadedConfig: () => TamaguiInternalConfig | null;
 export declare function getBundledConfig(props: TamaguiOptions, rebuild?: boolean): Promise<{
     components: LoadedComponents[];
     nameToPaths: {};

@@ -136,6 +136,9 @@ export function tamaguiPlugin(
       config() {
         if (tamaguiOptions?.useReactNativeWebLite) {
           const rnwl = resolve('react-native-web-lite')
+          const rnwlSS = resolve(
+            'react-native-web-lite/dist/exports/StyleSheet/compiler/createReactDOMStyle'
+          )
 
           return {
             resolve: {
@@ -152,10 +155,14 @@ export function tamaguiPlugin(
                   find: /^react-native-web$/,
                   replacement: rnwl,
                 },
-                // {
-                //   find: /^react-native-web\/(.*)$/,
-                //   replacement: rnwl,
-                // },
+                {
+                  find: /react-native-web-lite\/dist\/exports\/StyleSheet\/compiler\/createReactDOMStyle/,
+                  replacement: rnwlSS,
+                },
+                {
+                  find: /^react-native-web\/(.*)$/,
+                  replacement: rnwl,
+                },
               ],
             },
           }
