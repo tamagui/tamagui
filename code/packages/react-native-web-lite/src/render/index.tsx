@@ -16,22 +16,18 @@ import {
   createRoot as domCreateRoot,
   hydrateRoot as domHydrateRoot,
 } from 'react-dom/client'
-import { createSheet } from '@tamagui/react-native-web-internals'
 
 export function hydrate(element, root) {
-  createSheet(root)
   return domHydrateRoot(root, element)
 }
 
 export function render(element, root) {
-  createSheet(root)
   const reactRoot = domCreateRoot(root)
   reactRoot.render(element)
   return reactRoot
 }
 
 export function hydrateLegacy(element, root, callback) {
-  createSheet(root)
   domLegacyHydrate(element, root, callback)
   return {
     unmount: function () {
@@ -41,7 +37,6 @@ export function hydrateLegacy(element, root, callback) {
 }
 
 export default function renderLegacy(element, root, callback) {
-  createSheet(root)
   domLegacyRender(element, root, callback)
   return {
     unmount: function () {

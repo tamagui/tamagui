@@ -70,23 +70,23 @@ const absoluteFill = absoluteFillObject as any
  * create
  */
 function create(styles) {
-  Object.keys(styles).forEach((key) => {
-    const styleObj = styles[key]
-    // Only compile at runtime if the style is not already compiled
-    if (styleObj != null && styleObj.$$css !== true) {
-      let compiledStyles
-      if (key.indexOf('$raw') > -1) {
-        compiledStyles = compileAndInsertReset(styleObj, key.split('$raw')[0])
-      } else {
-        if (process.env.NODE_ENV !== 'production') {
-          validate(styleObj)
-          styles[key] = Object.freeze(styleObj)
-        }
-        compiledStyles = compileAndInsertAtomic(styleObj)
-      }
-      staticStyleMap.set(styleObj, compiledStyles)
-    }
-  })
+  // Object.keys(styles).forEach((key) => {
+  //   const styleObj = styles[key]
+  //   // Only compile at runtime if the style is not already compiled
+  //   if (styleObj != null && styleObj.$$css !== true) {
+  //     let compiledStyles
+  //     if (key.indexOf('$raw') > -1) {
+  //       compiledStyles = compileAndInsertReset(styleObj, key.split('$raw')[0])
+  //     } else {
+  //       if (process.env.NODE_ENV !== 'production') {
+  //         validate(styleObj)
+  //         styles[key] = Object.freeze(styleObj)
+  //       }
+  //       compiledStyles = compileAndInsertAtomic(styleObj)
+  //     }
+  //     staticStyleMap.set(styleObj, compiledStyles)
+  //   }
+  // })
   return styles
 }
 

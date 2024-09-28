@@ -309,7 +309,8 @@ function getTamaguiSelector(
         return [getIdentifierFromTamaguiSelector(text), rule]
       }
       if (collectThemes) {
-        if (text.startsWith(':root.t_') || text.startsWith(':root .t_')) {
+        // only matches t_ starting selector chains
+        if (/^(:root\s?(\.t_[a-z0-9_]+\s*)+(,)?\s*)+$/i.test(text)) {
           return [
             text.slice(0, 20), // just used as uid
             rule,
