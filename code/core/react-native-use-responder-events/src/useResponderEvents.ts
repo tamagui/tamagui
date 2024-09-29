@@ -42,17 +42,18 @@ export function useResponderEvents(
       onStartShouldSetResponderCapture,
     } = config
 
-    const requiresResponderSystem =
-      onMoveShouldSetResponder != null ||
-      onMoveShouldSetResponderCapture != null ||
-      onScrollShouldSetResponder != null ||
-      onScrollShouldSetResponderCapture != null ||
-      onSelectionChangeShouldSetResponder != null ||
-      onSelectionChangeShouldSetResponderCapture != null ||
-      onStartShouldSetResponder != null ||
-      onStartShouldSetResponderCapture != null
+    const requiresResponderSystem = Boolean(
+      onMoveShouldSetResponder ||
+        onMoveShouldSetResponderCapture ||
+        onScrollShouldSetResponder ||
+        onScrollShouldSetResponderCapture ||
+        onSelectionChangeShouldSetResponder ||
+        onSelectionChangeShouldSetResponderCapture ||
+        onStartShouldSetResponder ||
+        onStartShouldSetResponderCapture
+    )
 
-    const node = hostRef.current
+    const node = hostRef.current.host
 
     if (requiresResponderSystem) {
       ResponderSystem.addNode(id, node, config)
