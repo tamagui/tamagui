@@ -1,13 +1,9 @@
 // import entryShakingPlugin from 'vite-plugin-entry-shaking'
 import { removeReactNativeWebAnimatedPlugin, vxs } from 'vxs/vite'
-// import { mdx } from '@cyco130/vite-plugin-mdx'
 import { tamaguiPlugin } from '@tamagui/vite-plugin'
 import type { UserConfig } from 'vite'
-// import inpsectPlugin from 'vite-plugin-inspect'
 
 Error.stackTraceLimit = Number.POSITIVE_INFINITY
-
-const PROD = process.env.NODE_ENV === 'production'
 
 // @ts-ignore
 if (!import.meta.dirname) {
@@ -119,19 +115,11 @@ export default {
         'fetch-blob': true,
       },
 
-      async afterServerStart(options, app, { routeMap }) {
-        if (process.env.SHOULD_PURGE_CDN) {
-          await purgeCloudflareCDN()
-        }
-      },
-
-      build: {
-        api: {
-          outputFormat: 'esm',
-        },
-
-        server: {
-          outputFormat: 'esm',
+      server: {
+        async afterStart() {
+          if (process.env.NODE_ENV === 'production' && process.env.SHOULD_PURGE_CDN) {
+            await purgeCloudflareCDN()
+          }
         },
       },
 

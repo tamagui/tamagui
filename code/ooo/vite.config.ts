@@ -1,7 +1,6 @@
 import { tamaguiPlugin } from '@tamagui/vite-plugin'
 import type { UserConfig } from 'vite'
 import { ViteImageOptimizer } from 'vite-plugin-image-optimizer'
-import tsconfigPaths from 'vite-tsconfig-paths'
 import { vxs } from 'vxs/vite'
 
 const resolve = (path: string) => {
@@ -53,8 +52,6 @@ export default {
         compression: true,
       },
     }),
-
-    tsconfigPaths(),
 
     ViteImageOptimizer(),
 
