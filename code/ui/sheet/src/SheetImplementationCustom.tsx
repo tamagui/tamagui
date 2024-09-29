@@ -16,7 +16,6 @@ import {
   useThemeName,
 } from '@tamagui/core'
 import { Portal } from '@tamagui/portal'
-import { useKeyboardVisible } from '@tamagui/use-keyboard-visible'
 import React from 'react'
 import type {
   Animated,
@@ -51,7 +50,6 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       containerComponent: ContainerComponent = React.Fragment,
     } = props
 
-    const keyboardIsVisible = useKeyboardVisible()
     const state = useSheetOpenState(props)
     const [overlayComponent, setOverlayComponent] = React.useState<any>(null)
 
@@ -344,31 +342,19 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       })
     }, [disableDrag, isShowingInnerSheet, animateTo, frameSize, positions, setPosition])
 
-    const handleAnimationViewLayout = React.useCallback(
-      (e: LayoutChangeEvent) => {
-        // avoid bugs where it grows forever for whatever reason
-        const next = Math.min(
-          e.nativeEvent?.layout.height,
-          Dimensions.get('screen').height
-        )
-        if (!next) return
-        setFrameSize(next)
-      },
-      [keyboardIsVisible]
-    )
+    const handleAnimationViewLayout = React.useCallback((e: LayoutChangeEvent) => {
+      // avoid bugs where it grows forever for whatever reason
+      const next = Math.min(e.nativeEvent?.layout.height, Dimensions.get('screen').height)
+      if (!next) return
+      setFrameSize(next)
+    }, [])
 
-    const handleMaxContentViewLayout = React.useCallback(
-      (e: LayoutChangeEvent) => {
-        // avoid bugs where it grows forever for whatever reason
-        const next = Math.min(
-          e.nativeEvent?.layout.height,
-          Dimensions.get('screen').height
-        )
-        if (!next) return
-        setMaxContentSize(next)
-      },
-      [keyboardIsVisible]
-    )
+    const handleMaxContentViewLayout = React.useCallback((e: LayoutChangeEvent) => {
+      // avoid bugs where it grows forever for whatever reason
+      const next = Math.min(e.nativeEvent?.layout.height, Dimensions.get('screen').height)
+      if (!next) return
+      setMaxContentSize(next)
+    }, [])
 
     const animatedStyle = useAnimatedNumberStyle(animatedNumber, (val) => {
       'worklet'
