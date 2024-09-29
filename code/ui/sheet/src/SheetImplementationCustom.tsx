@@ -35,6 +35,9 @@ let hiddenSize = 10_000.1
 
 let sheetHiddenStyleSheet: HTMLStyleElement | null = null
 
+// on web we are always relative to window, on to screen
+const relativeDimensionTo = isWeb ? 'window' : 'screen'
+
 export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
   function SheetImplementationCustom(props, forwardedRef) {
     const parentSheet = React.useContext(ParentSheetContext)
@@ -344,14 +347,20 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
 
     const handleAnimationViewLayout = React.useCallback((e: LayoutChangeEvent) => {
       // avoid bugs where it grows forever for whatever reason
-      const next = Math.min(e.nativeEvent?.layout.height, Dimensions.get('screen').height)
+      const next = Math.min(
+        e.nativeEvent?.layout.height,
+        Dimensions.get(relativeDimensionTo).height
+      )
       if (!next) return
       setFrameSize(next)
     }, [])
 
     const handleMaxContentViewLayout = React.useCallback((e: LayoutChangeEvent) => {
       // avoid bugs where it grows forever for whatever reason
-      const next = Math.min(e.nativeEvent?.layout.height, Dimensions.get('screen').height)
+      const next = Math.min(
+        e.nativeEvent?.layout.height,
+        Dimensions.get(relativeDimensionTo).height
+      )
       if (!next) return
       setMaxContentSize(next)
     }, [])
