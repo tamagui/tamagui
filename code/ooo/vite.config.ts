@@ -62,6 +62,7 @@ export default {
 
     tamaguiPlugin({
       optimize: true,
+      disableServerOptimization: true,
       useReactNativeWebLite: process.env.NODE_ENV === 'production',
       components: ['tamagui'],
       config: './config/tamagui.config.ts',
