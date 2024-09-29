@@ -1,5 +1,6 @@
+import fetch from 'node-fetch'
+
 export const getOctokit = async () => {
-  const fetch = await import('node-fetch')
   const { Octokit } = await import('octokit')
 
   return new Octokit({
