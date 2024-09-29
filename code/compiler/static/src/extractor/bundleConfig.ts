@@ -345,7 +345,7 @@ export function loadComponentsInner(
             entryPoints: [loadModule],
             outfile: loadModule,
             alias: {
-              'react-native': require.resolve('react-native-web-lite'),
+              'react-native': require.resolve('@tamagui/react-native-web-lite'),
             },
             bundle: true,
             packages: 'external',

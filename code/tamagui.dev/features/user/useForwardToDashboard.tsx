@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useGlobalSearchParams, useRouter } from 'vxs'
 import { useUser } from './useUser'
 
-const ALLOWED_REDIRECT_DOMAINS = ['tamagui.dev']
+const ALLOWED_REDIRECT_DOMAINS = ['tamagui.dev', '127.0.0.1', 'localhost']
 
 export function useForwardToDashboard() {
   const { data, isLoading } = useUser()

@@ -114,7 +114,7 @@ function getESBuildConfig(
 
           build.onResolve({ filter: /^(react-native|react-native\/.*)$/ }, (args) => {
             return {
-              path: 'react-native-web-lite',
+              path: '@tamagui/react-native-web-lite',
               external: true,
             }
           })

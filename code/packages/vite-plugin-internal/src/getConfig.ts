@@ -73,7 +73,7 @@ export function getConfig(tamaguiPlugin: any) {
 
     resolve: {
       alias: {
-        'react-native': 'react-native-web-lite',
+        'react-native': '@tamagui/react-native-web-lite',
       },
     },
 

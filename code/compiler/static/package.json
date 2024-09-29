@@ -5,11 +5,7 @@
   "types": "./types/index.d.ts",
   "type": "commonjs",
   "main": "dist/index.js",
-  "files": [
-    "src",
-    "types",
-    "dist"
-  ],
+  "files": ["src", "types", "dist"],
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
@@ -66,7 +62,7 @@
     "lodash": "^4.17.21",
     "react-dom": "^18.2.0 || ^19.0.0",
     "react-native-web": "^0.19.12",
-    "react-native-web-lite": "1.112.4"
+    "@tamagui/react-native-web-lite": "1.112.4"
   },
   "devDependencies": {
     "@babel/plugin-syntax-typescript": "^7.25.4",

@@ -84,7 +84,7 @@ export function registerRequire(
       return packageJson
     }
 
-    if (path === 'react-native-web-lite' || path.startsWith('react-native')) {
+    if (path === '@tamagui/react-native-web-lite' || path.startsWith('react-native')) {
       return rnw
     }
 

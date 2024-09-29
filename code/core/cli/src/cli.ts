@@ -33,13 +33,8 @@ const COMMAND_MAP = {
         depType: ['dependencies', 'devDependencies'],
       })
 
-      const isNonTamaguiNamedDep = {
-        'react-native-web-lite': true,
-        '@tamagui/react-native-web-internals': true,
-      }
-
       for (const dep of instance.getDependencies()) {
-        if (!dep.name.includes('tamagui') && !isNonTamaguiNamedDep[dep.name]) continue
+        if (!dep.name.includes('tamagui')) continue
         if (!dep.isMismatching) continue
         console.warn(
           `-------------------------------------------------------------------------------------------------

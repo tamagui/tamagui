@@ -126,8 +126,12 @@ export default {
       },
 
       build: {
+        api: {
+          outputFormat: 'esm',
+        },
+
         server: {
-          outputFormat: 'cjs',
+          outputFormat: 'esm',
         },
       },
 

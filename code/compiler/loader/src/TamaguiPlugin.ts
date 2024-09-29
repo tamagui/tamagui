@@ -103,8 +103,8 @@ export class TamaguiPlugin {
 
         ...(this.options.useReactNativeWebLite
           ? [
-              ['react-native$', 'react-native-web-lite'],
-              ['react-native-web$', 'react-native-web-lite'],
+              ['react-native$', '@tamagui/react-native-web-lite'],
+              ['react-native-web$', '@tamagui/react-native-web-lite'],
             ]
           : [
               ['react-native$', 'react-native-web'],
