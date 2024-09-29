@@ -17,60 +17,91 @@ const Ids = new WeakMap<any, string>()
 
 export function useResponderEvents(
   hostRef: any,
-  config: ResponderSystem.ResponderConfig = emptyObject
+  configIn: ResponderSystem.ResponderConfig = emptyObject
 ) {
-  if (!Ids.has(hostRef)) {
-    Ids.set(hostRef, `${Math.random()}`)
-  }
-  const id = Ids.get(hostRef)!
+  const config = getResponderConfigIfDefined(configIn)
+  // tamagui + rnw compat
+  const node = hostRef.current?.host || hostRef.current
 
   // Register and unregister with the Responder System as necessary
   React.useEffect(() => {
+    if (config === emptyObject) return
+
     ResponderSystem.attachListeners()
 
-    const {
-      onMoveShouldSetResponder,
-      onMoveShouldSetResponderCapture,
-      onScrollShouldSetResponder,
-      onScrollShouldSetResponderCapture,
-      onSelectionChangeShouldSetResponder,
-      onSelectionChangeShouldSetResponderCapture,
-      onStartShouldSetResponder,
-      onStartShouldSetResponderCapture,
-    } = config
-
-    const requiresResponderSystem = Boolean(
-      onMoveShouldSetResponder ||
-        onMoveShouldSetResponderCapture ||
-        onScrollShouldSetResponder ||
-        onScrollShouldSetResponderCapture ||
-        onSelectionChangeShouldSetResponder ||
-        onSelectionChangeShouldSetResponderCapture ||
-        onStartShouldSetResponder ||
-        onStartShouldSetResponderCapture
-    )
-
-    const node = hostRef.current.host
-
-    if (requiresResponderSystem) {
-      ResponderSystem.addNode(id, node, config)
-      Attached.set(hostRef, true)
-
-      return () => {
-        ResponderSystem.removeNode(node)
-      }
+    if (!Ids.has(hostRef)) {
+      Ids.set(hostRef, `${Math.random()}`)
     }
+    const id = Ids.get(hostRef)!
 
-    if (Attached.get(node)) {
+    ResponderSystem.addNode(id, node, config)
+    Attached.set(hostRef, true)
+
+    return () => {
       ResponderSystem.removeNode(node)
       Attached.set(hostRef, false)
     }
-  }, [config, hostRef, id])
+  }, [config, hostRef])
 
   if (process.env.NODE_ENV === 'development') {
     React.useDebugValue({
-      isResponder: hostRef.current === ResponderSystem.getResponderNode(),
+      isResponder: node === ResponderSystem.getResponderNode(),
     })
     React.useDebugValue(config)
   }
+}
+
+export function getResponderConfigIfDefined({
+  onMoveShouldSetResponder,
+  onMoveShouldSetResponderCapture,
+  onResponderEnd,
+  onResponderGrant,
+  onResponderMove,
+  onResponderReject,
+  onResponderRelease,
+  onResponderStart,
+  onResponderTerminate,
+  onResponderTerminationRequest,
+  onScrollShouldSetResponder,
+  onScrollShouldSetResponderCapture,
+  onSelectionChangeShouldSetResponder,
+  onSelectionChangeShouldSetResponderCapture,
+  onStartShouldSetResponder,
+  onStartShouldSetResponderCapture,
+}: ResponderSystem.ResponderConfig): ResponderSystem.ResponderConfig {
+  return onMoveShouldSetResponder ||
+    onMoveShouldSetResponderCapture ||
+    onResponderEnd ||
+    onResponderGrant ||
+    onResponderMove ||
+    onResponderReject ||
+    onResponderRelease ||
+    onResponderStart ||
+    onResponderTerminate ||
+    onResponderTerminationRequest ||
+    onScrollShouldSetResponder ||
+    onScrollShouldSetResponderCapture ||
+    onSelectionChangeShouldSetResponder ||
+    onSelectionChangeShouldSetResponderCapture ||
+    onStartShouldSetResponder ||
+    onStartShouldSetResponderCapture
+    ? {
+        onMoveShouldSetResponder,
+        onMoveShouldSetResponderCapture,
+        onResponderEnd,
+        onResponderGrant,
+        onResponderMove,
+        onResponderReject,
+        onResponderRelease,
+        onResponderStart,
+        onResponderTerminate,
+        onResponderTerminationRequest,
+        onScrollShouldSetResponder,
+        onScrollShouldSetResponderCapture,
+        onSelectionChangeShouldSetResponder,
+        onSelectionChangeShouldSetResponderCapture,
+        onStartShouldSetResponder,
+        onStartShouldSetResponderCapture,
+      }
+    : emptyObject
 }

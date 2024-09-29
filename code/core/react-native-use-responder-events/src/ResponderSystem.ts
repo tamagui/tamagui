@@ -227,6 +227,7 @@ function eventListener(domEvent: any) {
     if (eventPaths != null) {
       // If a node wants to become the responder, attempt to transfer.
       wantsResponder = findWantsResponder(eventPaths, domEvent, responderEvent)
+
       if (wantsResponder != null) {
         // Sets responder if none exists, or negotates with existing responder.
         attemptTransfer(responderEvent, wantsResponder)
@@ -344,7 +345,7 @@ function eventListener(domEvent: any) {
 function findWantsResponder(eventPaths, domEvent, responderEvent) {
   const shouldSetCallbacks = shouldSetResponderEvents[domEvent.type as any] // for Flow
 
-  if (shouldSetCallbacks != null) {
+  if (shouldSetCallbacks) {
     const { idPath, nodePath } = eventPaths
 
     const shouldSetCallbackCaptureName = shouldSetCallbacks[0]

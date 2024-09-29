@@ -91,7 +91,7 @@ setupHooks({
 
       // replicate react-native-web functionality
       const {
-        // event props
+        // remove event props handles by useResponderEvents
         onMoveShouldSetResponder,
         onMoveShouldSetResponderCapture,
         onResponderEnd,
@@ -125,29 +125,7 @@ setupHooks({
 
       if (willHydrate || isDOM) {
         useElementLayout(stateRef, !isDOM ? undefined : (onLayout as any))
-        useResponderEvents(
-          stateRef,
-          !isDOM
-            ? undefined
-            : ({
-                onMoveShouldSetResponder,
-                onMoveShouldSetResponderCapture,
-                onResponderEnd,
-                onResponderGrant,
-                onResponderMove,
-                onResponderReject,
-                onResponderRelease,
-                onResponderStart,
-                onResponderTerminate,
-                onResponderTerminationRequest,
-                onScrollShouldSetResponder,
-                onScrollShouldSetResponderCapture,
-                onSelectionChangeShouldSetResponder,
-                onSelectionChangeShouldSetResponderCapture,
-                onStartShouldSetResponder,
-                onStartShouldSetResponderCapture,
-              } as any)
-        )
+        useResponderEvents(stateRef, propsIn)
       }
 
       if (isDOM) {

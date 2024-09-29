@@ -124,7 +124,13 @@ export function tamaguiPlugin(
                 'react-native/Libraries/Utilities/codegenNativeComponent':
                   resolve('@tamagui/proxy-worm'),
                 'react-native-svg': resolve('@tamagui/react-native-svg'),
-                'react-native': resolve('react-native-web'),
+                ...(!tamaguiOptions?.useReactNativeWebLite && {
+                  'react-native/dist/exports/StyleSheet/compiler/createReactDOMStyle':
+                    resolve(
+                      'react-native-web/dist/exports/StyleSheet/compiler/createReactDOMStyle'
+                    ),
+                  'react-native': resolve('react-native-web'),
+                }),
               }),
             },
           },
@@ -143,6 +149,11 @@ export function tamaguiPlugin(
           return {
             resolve: {
               alias: [
+                // fix reanimated issue not finding this
+                {
+                  find: /react-native.*\/dist\/exports\/StyleSheet\/compiler\/createReactDOMStyle/,
+                  replacement: rnwlSS,
+                },
                 {
                   find: /^react-native$/,
                   replacement: rnwl,
@@ -154,11 +165,6 @@ export function tamaguiPlugin(
                 {
                   find: /^react-native-web$/,
                   replacement: rnwl,
-                },
-                // fix reanimated issue not finding this
-                {
-                  find: /react-native-web-lite\/dist\/exports\/StyleSheet\/compiler\/createReactDOMStyle/,
-                  replacement: rnwlSS,
                 },
                 {
                   find: /^react-native-web\/(.*)$/,
