@@ -12,25 +12,22 @@ export * from './utils'
 
 const emptyObject = {}
 
+const Attached = new WeakMap<any, boolean>()
+const Ids = new WeakMap<any, string>()
+
 export function useResponderEvents(
   hostRef: any,
   config: ResponderSystem.ResponderConfig = emptyObject
 ) {
-  const id = React.useId()
-  const isAttachedRef = React.useRef(false)
-
-  // This is a separate effects so it doesn't run when the config changes.
-  // On initial mount, attach global listeners if needed.
-  // On unmount, remove node potentially attached to the Responder System.
-  React.useEffect(() => {
-    ResponderSystem.attachListeners()
-    return () => {
-      ResponderSystem.removeNode(id)
-    }
-  }, [id])
+  if (!Ids.has(hostRef)) {
+    Ids.set(hostRef, `${Math.random()}`)
+  }
+  const id = Ids.get(hostRef)!
 
   // Register and unregister with the Responder System as necessary
   React.useEffect(() => {
+    ResponderSystem.attachListeners()
+
     const {
       onMoveShouldSetResponder,
       onMoveShouldSetResponderCapture,
@@ -57,10 +54,16 @@ export function useResponderEvents(
 
     if (requiresResponderSystem) {
       ResponderSystem.addNode(id, node, config)
-      isAttachedRef.current = true
-    } else if (isAttachedRef.current) {
-      ResponderSystem.removeNode(id)
-      isAttachedRef.current = false
+      Attached.set(hostRef, true)
+
+      return () => {
+        ResponderSystem.removeNode(node)
+      }
+    }
+
+    if (Attached.get(node)) {
+      ResponderSystem.removeNode(node)
+      Attached.set(hostRef, false)
     }
   }, [config, hostRef, id])
 
