@@ -741,7 +741,7 @@ export function createComponent<
       let tm
 
       if (state.unmounted) {
-        if (process.env.TAMAGUI_REACT_19 && animationDriver?.supportsCSSVars) {
+        if (animationDriver?.supportsCSSVars) {
           // this fixes css driver enter animations - from what i can tell they are correct but react 19 somehow messing it up
           tm = setTimeout(() => {
             setStateShallow({ unmounted: false })
