@@ -162,7 +162,7 @@ export default {
       },
     }),
 
-    // removeReactNativeWebAnimatedPlugin(),
+    removeReactNativeWebAnimatedPlugin(),
 
     tamaguiPlugin({
       optimize: process.env.NODE_ENV === 'production',
