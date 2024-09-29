@@ -30,14 +30,8 @@ const optimizeInterop = ['expo-splash-screen']
 export default {
   envPrefix: 'NEXT_PUBLIC_',
 
-  define: {
-    'process.env.TAMAGUI_REACT_19': '"1"',
-  },
-
   resolve: {
     alias: {
-      // @ts-ignore
-      '~': import.meta.dirname,
       'react-native-svg': '@tamagui/react-native-svg',
       // 'react-native-web': await resolve('react-native-web-lite'),
       // bugfix docsearch/react, weird
