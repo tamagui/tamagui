@@ -125,7 +125,7 @@ setupHooks({
 
       if (willHydrate || isDOM) {
         useElementLayout(stateRef, !isDOM ? undefined : (onLayout as any))
-        useResponderEvents(stateRef, propsIn)
+        useResponderEvents(stateRef, !isDOM ? undefined : propsIn)
       }
 
       if (isDOM) {

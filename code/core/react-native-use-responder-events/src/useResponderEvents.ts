@@ -21,7 +21,7 @@ export function useResponderEvents(
 ) {
   const config = getResponderConfigIfDefined(configIn)
   // tamagui + rnw compat
-  const node = hostRef.current?.host || hostRef.current
+  const node = hostRef?.current?.host || hostRef?.current
 
   // Register and unregister with the Responder System as necessary
   React.useEffect(() => {
