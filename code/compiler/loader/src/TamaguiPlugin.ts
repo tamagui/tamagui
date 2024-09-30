@@ -117,7 +117,17 @@ export class TamaguiPlugin {
   apply(compiler: Compiler) {
     const { isServer } = this.options
 
-    if (compiler.watchMode && !this.options.disableWatchConfig) {
+    const loadPromise = loadTamagui(this.options)
+
+    compiler.hooks.beforeRun.tapPromise(this.pluginName, async () => {
+      await loadPromise
+    })
+
+    compiler.hooks.watchRun.tapPromise(this.pluginName, async () => {
+      await loadPromise
+    })
+
+    if (compiler.options.mode === 'development' && !this.options.disableWatchConfig) {
       void watchTamaguiConfig(this.options).then((watcher) => {
         // yes this is weirdly done promise...
         process.once('exit', () => {
@@ -125,10 +135,6 @@ export class TamaguiPlugin {
         })
       })
     }
-
-    compiler.hooks.beforeRun.tapPromise(this.pluginName, async () => {
-      await loadTamagui(this.options)
-    })
 
     // mark as side effect
     compiler.hooks.normalModuleFactory.tap(this.pluginName, (nmf) => {
