@@ -113,7 +113,7 @@ function track(id: string, remove = false) {
 }
 
 const bailAfterEnv = process.env.TAMAGUI_BAIL_AFTER_SCANNING_X_CSS_RULES
-const bailAfter = bailAfterEnv ? +bailAfterEnv : 250
+const bailAfter = bailAfterEnv ? +bailAfterEnv : 700
 
 function updateSheetStyles(
   sheet: CSSStyleSheet,
