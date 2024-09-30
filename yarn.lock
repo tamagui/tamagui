@@ -6800,7 +6800,7 @@ __metadata:
     color2k: "npm:^2.0.2"
     esbuild-register: "npm:^3.6.0"
     hsluv: "npm:^0.1.0"
-    jsdom: "npm:25"
+    jsdom: "npm:^25.0.1"
     jsonwebtoken: "npm:^9.0.2"
     mdx-bundler: "npm:^10.0.2"
     patch-package: "npm:^8.0.0"
@@ -18994,7 +18994,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jsdom@npm:25, jsdom@npm:^25.0.1":
+"jsdom@npm:^25.0.1":
   version: 25.0.1
   resolution: "jsdom@npm:25.0.1"
   dependencies:
