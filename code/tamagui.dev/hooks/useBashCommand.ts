@@ -34,19 +34,24 @@ const CREATE_COMMANDS = {
 
 const parseCommand = (text: string) => {
   const words = text.trim().split(' ')
-  let packageManager
-  let command
-  let args
+  let packageManager = ''
+  let command = ''
+  let args = ''
 
-  if (words[0] === 'yarn' && words[1] === 'dlx') {
-    packageManager = 'yarn'
-    command = 'yarn dlx'
-    args = words.slice(2).join(' ')
-  } else if (words[0] === 'pnpm' && words[1] === 'dlx') {
-    packageManager = 'pnpm'
-    command = 'pnpm dlx'
-    args = words.slice(2).join(' ')
-  } else {
+  // Find the package manager and its corresponding run command
+  for (const [pm, runCmd] of Object.entries(RUN_COMMANDS)) {
+    const runCmdParts = runCmd.split(' ')
+    if (words[0] === pm && words.slice(0, runCmdParts.length).join(' ') === runCmd) {
+      packageManager = pm
+      command = runCmd
+      args = words.slice(runCmdParts.length).join(' ')
+      break
+    }
+  }
+
+  // If no run command was found, assume the first word is the package manager
+  // and the second word is the command
+  if (!packageManager) {
     packageManager = words[0]
     command = words[1]
     args = words.slice(2).join(' ')
