@@ -40,7 +40,6 @@
     "@tamagui/use-store": "1.112.7",
     "@vercel/og": "^0.5.8",
     "color2k": "^2.0.2",
-    "happy-dom": "^15.7.4",
     "hsluv": "^0.1.0",
     "jsonwebtoken": "^9.0.2",
     "postmark": "^3.0.18",

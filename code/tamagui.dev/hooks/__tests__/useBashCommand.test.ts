@@ -1,5 +1,3 @@
-// @vitest-environment happy-dom
-
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { useBashCommand } from '../useBashCommand'
 import { renderHook } from '@testing-library/react-hooks'

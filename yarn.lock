@@ -6799,7 +6799,6 @@ __metadata:
     archiver: "npm:^7.0.1"
     color2k: "npm:^2.0.2"
     esbuild-register: "npm:^3.6.0"
-    happy-dom: "npm:^15.7.4"
     hsluv: "npm:^0.1.0"
     jsonwebtoken: "npm:^9.0.2"
     mdx-bundler: "npm:^10.0.2"
@@ -16959,17 +16958,6 @@ __metadata:
     whatwg-encoding: "npm:^2.0.0"
     whatwg-mimetype: "npm:^3.0.0"
   checksum: 10/d44977aa61f91c0d5c3ee984cac33bfdc7f1c78c52dd711c6ffbc499b3c15e6b382b64eeeb73a48993d2229748cbda50916d46cc988f50d1357bcbc82316fcc0
-  languageName: node
-  linkType: hard
-
-"happy-dom@npm:^15.7.4":
-  version: 15.7.4
-  resolution: "happy-dom@npm:15.7.4"
-  dependencies:
-    entities: "npm:^4.5.0"
-    webidl-conversions: "npm:^7.0.0"
-    whatwg-mimetype: "npm:^3.0.0"
-  checksum: 10/fd5026e8a2d9437f161e4c6d9725ffe68f6d31cd09ac7d729b3cd5dd2207a3833272607171da1caf4b1247839ead8bd01a4381a0e31909589af29d27fa24a0f5
   languageName: node
   linkType: hard
 
