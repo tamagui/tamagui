@@ -1,9 +1,8 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
+import { renderHook, act, waitFor } from '@testing-library/react'
 import { useBashCommand } from '../useBashCommand'
-import { renderHook } from '@testing-library/react-hooks'
 import { useLocalStorageWatcher } from '../useLocalStorageWatcher'
-import { stringIsExecCommand } from '../useBashCommand'
-import { stringIsCreateCommand } from '../useBashCommand'
+import { stringIsExecCommand, stringIsCreateCommand } from '../useBashCommand'
 
 // Mock useLocalStorageWatcher
 vi.mock('../useLocalStorageWatcher', () => ({
@@ -24,7 +23,7 @@ describe('useBashCommand', () => {
     vi.clearAllMocks()
   })
 
-  it('converts install commands', () => {
+  it('converts install commands', async () => {
     vi.mocked(useLocalStorageWatcher).mockReturnValue({
       storageItem: 'yarn',
       setItem: vi.fn(),
@@ -37,10 +36,12 @@ describe('useBashCommand', () => {
       )
     )
 
-    expect(result.current.isInstallCommand).toBe(true)
-    expect(result.current.transformedCommand).toBe(
-      'yarn add @tamagui/core @tamagui/animations-react-native'
-    )
+    await waitFor(() => {
+      expect(result.current.isInstallCommand).toBe(true)
+      expect(result.current.transformedCommand).toBe(
+        'yarn add @tamagui/core @tamagui/animations-react-native'
+      )
+    })
   })
 
   it('converts create commands', () => {

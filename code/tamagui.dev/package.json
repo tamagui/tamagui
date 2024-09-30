@@ -15,7 +15,7 @@
     "build:bento": "node ./scripts/build-bento.js",
     "upload:bento": "node ./scripts/upload-bento.js",
     "dev-build-prod": "VXRN_DISABLE_PROD_OPTIMIZATION=1 yarn build:prod && yarn serve",
-    "test": "VXRN_DISABLE_PROD_OPTIMIZATION=1 vitest run --root ./ --dom --isolate --environment jsdom -c vitest.config.ts",
+    "test": "vitest run",
     "test:watch": "vitest"
   },
   "dependencies": {
