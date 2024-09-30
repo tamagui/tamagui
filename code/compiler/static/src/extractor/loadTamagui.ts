@@ -77,7 +77,6 @@ export async function loadTamagui(
 
     return bundleInfo
   } finally {
-    console.warn('setting back to false')
     isLoading = false
   }
 }
