@@ -31,7 +31,7 @@
     "@babel/types": "^7.25.4",
     "@tamagui/sandbox-ui": "1.112.7",
     "@tamagui/test-design-system": "1.112.7",
-    "@testing-library/react": "^16.0.0",
+    "@testing-library/react": "^16.0.1",
     "@types/babel__generator": "^7.6.4",
     "@types/babel__traverse": "^7.18.2",
     "@types/find-root": "^1.1.2",

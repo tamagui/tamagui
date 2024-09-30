@@ -7,17 +7,12 @@ import { useBashCommand, PACKAGE_MANAGERS } from '~/hooks/useBashCommand'
 import { Image } from '@tamagui/image-next'
 
 export function RovingTabs({ className, children, code, size, ...rest }) {
-  const { showTabs, command, setCurrentSelectedTab, currentSelectedTab } = useBashCommand(
-    code || children,
-    className
-  )
+  const { showTabs, transformedCommand, selectedPackageManager, setPackageManager } =
+    useBashCommand(code || children, className)
 
   const [tabState, setTabState] = useState<{
-    // Layout of the Tab user might intend to select (hovering / focusing)
     intentAt: TabLayout | null
-    // Layout of the Tab user selected
     activeAt: TabLayout | null
-    // Used to get the direction of activation for animating the active indicator
     prevActiveAt: TabLayout | null
   }>({
     intentAt: null,
@@ -52,9 +47,9 @@ export function RovingTabs({ className, children, code, size, ...rest }) {
           orientation="horizontal"
           size="$4"
           br="$4"
-          value={currentSelectedTab}
+          value={selectedPackageManager}
           onPress={(e) => e.stopPropagation()}
-          onValueChange={setCurrentSelectedTab}
+          onValueChange={setPackageManager}
           group
           mt={1}
         >
@@ -93,7 +88,7 @@ export function RovingTabs({ className, children, code, size, ...rest }) {
                   {PACKAGE_MANAGERS.map((pkgManager) => (
                     <Tab
                       key={pkgManager}
-                      active={currentSelectedTab === pkgManager}
+                      active={selectedPackageManager === pkgManager}
                       pkgManager={pkgManager}
                       onInteraction={handleOnInteraction}
                     />
@@ -102,7 +97,7 @@ export function RovingTabs({ className, children, code, size, ...rest }) {
               </Tabs.List>
             </YStack>
 
-            <Tabs.Content value={currentSelectedTab} forceMount>
+            <Tabs.Content value={selectedPackageManager} forceMount>
               <Code
                 p="$4"
                 backgroundColor="transparent"
@@ -112,7 +107,7 @@ export function RovingTabs({ className, children, code, size, ...rest }) {
                 lineHeight={size ?? '$5'}
                 {...rest}
               >
-                {command}
+                {transformedCommand}
               </Code>
             </Tabs.Content>
           </YStack>

@@ -70,8 +70,20 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
   const { hasCopied, onCopy } = useClipboard(code)
   const showLineNumbers = showLineNumbersIn ?? lines > 10
 
-  const { command, getCode, isTerminal } = useBashCommand(children, className)
-  const showFileName = fileName || isTerminal
+  const {
+    isTerminalCommand,
+    isCreateCommand,
+    isInstallCommand,
+    isExecCommand,
+    showTabs,
+    commandType,
+    transformedCommand,
+    originalPackageManager,
+    selectedPackageManager,
+    setPackageManager,
+  } = useBashCommand(children, className)
+
+  const showFileName = fileName || isTerminalCommand
 
   const isPreVisible = !isCollapsed || !isCollapsible
 
@@ -81,7 +93,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
       if (codeElement) {
         // remove double line breaks
         const codeExtract = codeElement.innerText.replace(/\n{3,}/g, '\n')
-        setCode(getCode(codeExtract))
+        setCode(transformedCommand)
       }
     } catch (err) {
       console.warn('err', err)
@@ -91,7 +103,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
 
   useEffect(() => {
     onCommandChange()
-  }, [command, onCommandChange])
+  }, [transformedCommand, onCommandChange])
 
   return (
     <YStack
@@ -185,13 +197,13 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                   bc="$background"
                   br="$5"
                 >
-                  {isTerminal ? (
+                  {isTerminalCommand ? (
                     <TerminalSquare size="$1" col="$color11" />
                   ) : (
                     <FileCode2 size="$1" col="$color11" />
                   )}
                   <Paragraph col="$color11">
-                    {isTerminal ? 'Terminal' : fileName}
+                    {isTerminalCommand ? 'Terminal' : fileName}
                   </Paragraph>
                 </XStack>
               )}

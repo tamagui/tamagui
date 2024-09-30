@@ -14,7 +14,9 @@
     "serve:railway": "vxs serve --host 0.0.0.0",
     "build:bento": "node ./scripts/build-bento.js",
     "upload:bento": "node ./scripts/upload-bento.js",
-    "dev-build-prod": "VXRN_DISABLE_PROD_OPTIMIZATION=1 yarn build:prod && yarn serve"
+    "dev-build-prod": "VXRN_DISABLE_PROD_OPTIMIZATION=1 yarn build:prod && yarn serve",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@discordjs/core": "^0.6.0",
@@ -57,13 +59,16 @@
   },
   "devDependencies": {
     "@tamagui/cli": "1.112.7",
+    "@testing-library/react-hooks": "^8.0.1",
     "acorn": "^8.11.3",
     "acorn-walk": "^8.3.1",
     "archiver": "^7.0.1",
     "esbuild-register": "^3.6.0",
+    "jsdom": "^25.0.1",
     "mdx-bundler": "^10.0.2",
     "patch-package": "^8.0.0",
     "supabase": "1.127.4",
-    "vite-bundle-analyzer": "^0.9.4"
+    "vite-bundle-analyzer": "^0.9.4",
+    "vitest": "2.1.1"
   }
 }
