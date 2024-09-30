@@ -6283,7 +6283,7 @@ __metadata:
     foxact: "npm:^0.2.33"
     html-webpack-plugin: "npm:^5.5.0"
     metro-runtime: "npm:*"
-    mini-css-extract-plugin: "npm:^2.7.6"
+    mini-css-extract-plugin: "npm:^2.9.1"
     pod-install: "npm:^0.2.0"
     react: "npm:^18.2.0 || ^19.0.0"
     react-dom: "npm:^18.2.0 || ^19.0.0"
@@ -7212,7 +7212,7 @@ __metadata:
     expo-linking: "npm:~6.3.1"
     expo-splash-screen: "npm:~0.27.4"
     html-webpack-plugin: "npm:^5.5.0"
-    mini-css-extract-plugin: "npm:^2.7.6"
+    mini-css-extract-plugin: "npm:^2.9.1"
     pod-install: "npm:^0.2.0"
     react: "npm:^18.2.0 || ^19.0.0"
     react-dom: "npm:^18.2.0 || ^19.0.0"
@@ -21242,7 +21242,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mini-css-extract-plugin@npm:^2.7.6":
+"mini-css-extract-plugin@npm:^2.9.1":
   version: 2.9.1
   resolution: "mini-css-extract-plugin@npm:2.9.1"
   dependencies:
