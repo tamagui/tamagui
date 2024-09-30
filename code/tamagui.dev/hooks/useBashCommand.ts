@@ -34,10 +34,35 @@ const CREATE_COMMANDS = {
 
 const parseCommand = (text: string) => {
   const words = text.trim().split(' ')
-  const packageManager = words[0]
-  const command = words[1]
-  const args = words.slice(2).join(' ')
+  let packageManager
+  let command
+  let args
+
+  if (words[0] === 'yarn' && words[1] === 'dlx') {
+    packageManager = 'yarn'
+    command = 'yarn dlx'
+    args = words.slice(2).join(' ')
+  } else if (words[0] === 'pnpm' && words[1] === 'dlx') {
+    packageManager = 'pnpm'
+    command = 'pnpm dlx'
+    args = words.slice(2).join(' ')
+  } else {
+    packageManager = words[0]
+    command = words[1]
+    args = words.slice(2).join(' ')
+  }
+
   return { packageManager, command, args }
+}
+
+const isPackageManagerCommand = (text: string) => {
+  const { packageManager, command } = parseCommand(text)
+  return (
+    PACKAGE_MANAGERS.includes(packageManager) &&
+    (Object.values(INSTALL_COMMANDS).includes(command) ||
+      Object.values(CREATE_COMMANDS).includes(command) ||
+      isRunCommand(text))
+  )
 }
 
 const isInstallCommand = (text: string) => {
@@ -49,7 +74,12 @@ const isInstallCommand = (text: string) => {
 }
 
 const isRunCommand = (text: string) => {
-  return Object.values(RUN_COMMANDS).some((runCmd) => text.startsWith(runCmd))
+  return PACKAGE_MANAGERS.some((pm) => {
+    const runCmd = RUN_COMMANDS[pm as keyof typeof RUN_COMMANDS]
+    return (
+      text.startsWith(`${runCmd} `) || (pm === 'yarn' && text.startsWith('yarn run '))
+    )
+  })
 }
 
 const isCreateCommand = (text: string) => {
@@ -77,10 +107,12 @@ export function useBashCommand(children: ReactNode, className: string) {
   const bashText = getBashText(children).trim()
   const isBash = className === 'language-bash'
 
-  const isInstall = isInstallCommand(bashText)
-  const isRun = isRunCommand(bashText)
-  const isCreate = isCreateCommand(bashText)
-  const isTerminal = isBash && !isInstall && !isRun && !isCreate
+  const isPackageCommand = isBash && isPackageManagerCommand(bashText)
+
+  const isInstall = isPackageCommand && isInstallCommand(bashText)
+  const isRun = isPackageCommand && isRunCommand(bashText)
+  const isCreate = isPackageCommand && isCreateCommand(bashText)
+  const isTerminal = isBash && !isPackageCommand
 
   const showTabs = isBash && !isTerminal
 
@@ -120,14 +152,15 @@ export function useBashCommand(children: ReactNode, className: string) {
     // Remove any 'dlx' that appears after 'npx' or 'bunx'
     commandString = commandString.replace(/(npx|bunx)\s+dlx/, '$1')
   } else if (isCreate) {
-    const { args } = parseCommand(bashText)
+    const { packageManager, args } = parseCommand(bashText)
     const createCmd = CREATE_COMMANDS[currentSelectedTab]
+    // Always use the currentSelectedTab (which is 'yarn' by default) for create commands
     commandString = `${currentSelectedTab} ${createCmd} ${args}`
   }
 
   const getCode = (code: string) => {
     if (isBash) {
-      if (isTerminal || isCreate) {
+      if (isTerminal) {
         return code.trim()
       }
       return commandString.trim()

@@ -247,8 +247,8 @@ const componentsIn = {
 
   InstallBanner: ({ name = '' }) => {
     const { command, currentSelectedTab, setCurrentSelectedTab } = useBashCommand(
-      name,
-      ''
+      `yarn add ${name}`,
+      'language-bash'
     )
     const tamaguiCommand = `${command} tamagui`
     const { onCopy, hasCopied } = useClipboard(command)
@@ -281,10 +281,7 @@ const componentsIn = {
                 cur="pointer"
                 onPress={onCopy}
               >
-                <SizableText color="$color11">
-                  {command}
-                  {name}
-                </SizableText>
+                <SizableText color="$color11">{command}</SizableText>
 
                 <CopyIcon
                   p="$0.5"
@@ -330,8 +327,7 @@ const componentsIn = {
               onPress={tamaguiCmdClip.onCopy}
             >
               <SizableText color="$color11">
-                {command}
-                tamagui
+                {command.split(' ').slice(0, -1).join(' ')} tamagui
               </SizableText>
 
               <CopyIcon2
