@@ -2,6 +2,8 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { useBashCommand } from '../useBashCommand'
 import { renderHook } from '@testing-library/react-hooks'
 import { useLocalStorageWatcher } from '../useLocalStorageWatcher'
+import { stringIsExecCommand } from '../useBashCommand'
+import { stringIsCreateCommand } from '../useBashCommand'
 
 // Mock useLocalStorageWatcher
 vi.mock('../useLocalStorageWatcher', () => ({
@@ -22,41 +24,7 @@ describe('useBashCommand', () => {
     vi.clearAllMocks()
   })
 
-  it('handles npm install command with default yarn', () => {
-    vi.mocked(useLocalStorageWatcher).mockReturnValue({
-      storageItem: 'yarn',
-      setItem: vi.fn(),
-    })
-
-    const { result } = renderHook(() =>
-      useBashCommand('npm install @tamagui/select', 'language-bash')
-    )
-
-    expect(result.current.isInstall).toBe(true)
-    expect(result.current.command).toBe('yarn add @tamagui/select')
-    expect(result.current.getCode('npm install @tamagui/select')).toBe(
-      'yarn add @tamagui/select'
-    )
-  })
-
-  it('handles npm install command with npm selected', () => {
-    vi.mocked(useLocalStorageWatcher).mockReturnValue({
-      storageItem: 'npm',
-      setItem: vi.fn(),
-    })
-
-    const { result } = renderHook(() =>
-      useBashCommand('npm install @tamagui/select', 'language-bash')
-    )
-
-    expect(result.current.isInstall).toBe(true)
-    expect(result.current.command).toBe('npm install @tamagui/select')
-    expect(result.current.getCode('npm install @tamagui/select')).toBe(
-      'npm install @tamagui/select'
-    )
-  })
-
-  it('converts npm install to yarn add with yarn selected', () => {
+  it('converts install commands', () => {
     vi.mocked(useLocalStorageWatcher).mockReturnValue({
       storageItem: 'yarn',
       setItem: vi.fn(),
@@ -69,70 +37,13 @@ describe('useBashCommand', () => {
       )
     )
 
-    expect(result.current.isInstall).toBe(true)
-    expect(result.current.command).toBe(
+    expect(result.current.isInstallCommand).toBe(true)
+    expect(result.current.transformedCommand).toBe(
       'yarn add @tamagui/core @tamagui/animations-react-native'
     )
-    expect(
-      result.current.getCode('npm install @tamagui/core @tamagui/animations-react-native')
-    ).toBe('yarn add @tamagui/core @tamagui/animations-react-native')
   })
 
-  it('handles yarn dlx create command', () => {
-    vi.mocked(useLocalStorageWatcher).mockReturnValue({
-      storageItem: 'yarn',
-      setItem: vi.fn(),
-    })
-
-    const { result } = renderHook(() =>
-      useBashCommand('yarn dlx create-expo app -t basic', 'language-bash')
-    )
-
-    expect(result.current.isRun).toBe(true)
-    expect(result.current.command).toBe('yarn dlx create-expo app -t basic')
-    expect(result.current.getCode('yarn dlx create-expo app -t basic')).toBe(
-      'yarn dlx create-expo app -t basic'
-    )
-  })
-
-  it('handles yarn add command', () => {
-    vi.mocked(useLocalStorageWatcher).mockReturnValue({
-      storageItem: 'yarn',
-      setItem: vi.fn(),
-    })
-
-    const { result } = renderHook(() =>
-      useBashCommand('yarn add tamagui', 'language-bash')
-    )
-
-    expect(result.current.isInstall).toBe(true)
-    expect(result.current.command).toBe('yarn add tamagui')
-    expect(result.current.getCode('yarn add tamagui')).toBe('yarn add tamagui')
-  })
-
-  it('handles pnpm create command with default yarn', () => {
-    vi.mocked(useLocalStorageWatcher).mockReturnValue({
-      storageItem: 'yarn',
-      setItem: vi.fn(),
-    })
-
-    const { result } = renderHook(() =>
-      useBashCommand(
-        'pnpm create tamagui@latest --template remix-starter',
-        'language-bash'
-      )
-    )
-
-    expect(result.current.isCreate).toBe(true)
-    expect(result.current.command).toBe(
-      'yarn create tamagui@latest --template remix-starter'
-    )
-    expect(
-      result.current.getCode('pnpm create tamagui@latest --template remix-starter')
-    ).toBe('yarn create tamagui@latest --template remix-starter')
-  })
-
-  it('handles pnpm create command with pnpm selected', () => {
+  it('converts create commands', () => {
     vi.mocked(useLocalStorageWatcher).mockReturnValue({
       storageItem: 'pnpm',
       setItem: vi.fn(),
@@ -140,128 +51,143 @@ describe('useBashCommand', () => {
 
     const { result } = renderHook(() =>
       useBashCommand(
-        'pnpm create tamagui@latest --template remix-starter',
+        'npm create tamagui@latest --template remix-starter',
         'language-bash'
       )
     )
 
-    expect(result.current.isCreate).toBe(true)
-    expect(result.current.command).toBe(
+    expect(result.current.isCreateCommand).toBe(true)
+    expect(result.current.transformedCommand).toBe(
       'pnpm create tamagui@latest --template remix-starter'
     )
-    expect(
-      result.current.getCode('pnpm create tamagui@latest --template remix-starter')
-    ).toBe('pnpm create tamagui@latest --template remix-starter')
   })
 
-  it('handles non-bash commands', () => {
+  it('converts from alias run command to sub-command format', () => {
+    vi.mocked(useLocalStorageWatcher).mockReturnValue({
+      storageItem: 'yarn',
+      setItem: vi.fn(),
+    })
+
     const { result } = renderHook(() =>
-      useBashCommand('console.log("Hello, World!")', 'language-javascript')
+      useBashCommand('npx create-expo-app MyApp', 'language-bash')
     )
 
-    expect(result.current.isTerminal).toBe(false)
-    expect(result.current.command).toBe('console.log("Hello, World!")')
-    expect(result.current.getCode('console.log("Hello, World!")')).toBe(
-      'console.log("Hello, World!")'
-    )
+    expect(result.current.isExecCommand).toBe(true)
+    expect(result.current.transformedCommand).toBe('yarn dlx create-expo-app MyApp')
   })
 
-  it('handles terminal commands', () => {
-    const { result } = renderHook(() => useBashCommand('ls -la', 'language-bash'))
-
-    expect(result.current.isTerminal).toBe(true)
-    expect(result.current.command).toBe('ls -la')
-    expect(result.current.getCode('ls -la')).toBe('ls -la')
-  })
-
-  it('does not treat non-install commands as install commands', () => {
-    const { result } = renderHook(() => useBashCommand('npm run start', 'language-bash'))
-
-    expect(result.current.isInstall).toBe(false)
-    expect(result.current.isRun).toBe(false)
-    expect(result.current.isTerminal).toBe(true)
-  })
-
-  it('does not treat non-run commands as run commands', () => {
-    const { result } = renderHook(() =>
-      useBashCommand('npm install package', 'language-bash')
-    )
-
-    expect(result.current.isRun).toBe(false)
-    expect(result.current.isInstall).toBe(true)
-  })
-
-  it('does not treat non-create commands as create commands', () => {
-    const { result } = renderHook(() =>
-      useBashCommand('npm install create-react-app', 'language-bash')
-    )
-
-    expect(result.current.isCreate).toBe(false)
-    expect(result.current.isInstall).toBe(true)
-  })
-
-  it('handles bun commands correctly', () => {
+  it('converts from sub-command run command to alias run command', () => {
     vi.mocked(useLocalStorageWatcher).mockReturnValue({
       storageItem: 'bun',
       setItem: vi.fn(),
     })
 
     const { result } = renderHook(() =>
-      useBashCommand('bun add package', 'language-bash')
+      useBashCommand('pnpm dlx create-next-app my-app', 'language-bash')
     )
 
-    expect(result.current.isInstall).toBe(true)
-    expect(result.current.command).toBe('bun add package')
+    expect(result.current.isExecCommand).toBe(true)
+    expect(result.current.transformedCommand).toBe('bunx create-next-app my-app')
   })
 
-  it('sets showTabs correctly for bash and non-bash commands', () => {
-    const { result: bashResult } = renderHook(() =>
-      useBashCommand('npm install package', 'language-bash')
-    )
-    expect(bashResult.current.showTabs).toBe(true)
-
-    const { result: nonBashResult } = renderHook(() =>
-      useBashCommand('console.log("Hello")', 'language-javascript')
-    )
-    expect(nonBashResult.current.showTabs).toBe(false)
-  })
-
-  it('handles multiple terminal commands', () => {
+  it('recognises terminal commands', () => {
     const { result } = renderHook(() =>
-      useBashCommand('cd project-name && touch yarn.lock', 'language-bash')
+      useBashCommand('cd project && ls -la && touch file.txt', 'language-bash')
     )
 
-    expect(result.current.isTerminal).toBe(true)
-    expect(result.current.isInstall).toBe(false)
-    expect(result.current.isRun).toBe(false)
-    expect(result.current.isCreate).toBe(false)
-    expect(result.current.command).toBe('cd project-name && touch yarn.lock')
-    expect(result.current.getCode('cd project-name && touch yarn.lock')).toBe(
-      'cd project-name && touch yarn.lock'
+    expect(result.current.isTerminalCommand).toBe(true)
+    expect(result.current.transformedCommand).toBe(
+      'cd project && ls -la && touch file.txt'
     )
   })
 
-  it('correctly handles complex terminal commands with create and add keywords', () => {
+  it('handles non-bash commands', () => {
     const { result } = renderHook(() =>
-      useBashCommand(
-        'npx create-expo-app MyApp && cd MyApp && yarn add expo-router && touch app/index.js',
-        'language-bash'
-      )
+      useBashCommand('console.log("Hello, world!")', 'language-javascript')
     )
 
-    expect(result.current.isTerminal).toBe(true)
-    expect(result.current.isInstall).toBe(false)
-    expect(result.current.isRun).toBe(false)
-    expect(result.current.isCreate).toBe(false)
-    expect(result.current.command).toBe(
-      'npx create-expo-app MyApp && cd MyApp && yarn add expo-router && touch app/index.js'
-    )
-    expect(
-      result.current.getCode(
-        'npx create-expo-app MyApp && cd MyApp && yarn add expo-router && touch app/index.js'
-      )
-    ).toBe(
-      'npx create-expo-app MyApp && cd MyApp && yarn add expo-router && touch app/index.js'
-    )
+    expect(result.current.isTerminalCommand).toBe(false)
+    expect(result.current.showTabs).toBe(false)
+    expect(result.current.transformedCommand).toBe('console.log("Hello, world!")')
+  })
+
+  describe('stringIsExecCommand', () => {
+    it('recognizes npm exec commands', () => {
+      expect(stringIsExecCommand('npx create-react-app my-app')).toBe(true)
+      expect(stringIsExecCommand('npx -p @angular/cli ng new my-angular-app')).toBe(true)
+      expect(stringIsExecCommand('npx create-expo-app MyApp')).toBe(true)
+    })
+
+    it('recognizes yarn exec commands', () => {
+      expect(stringIsExecCommand('yarn dlx create-next-app my-next-app')).toBe(true)
+      expect(stringIsExecCommand('yarn dlx -p typescript tsc')).toBe(true)
+    })
+
+    it('recognizes pnpm exec commands', () => {
+      expect(stringIsExecCommand('pnpm dlx create-vite my-vite-app')).toBe(true)
+      expect(stringIsExecCommand('pnpm dlx --package=typescript tsc')).toBe(true)
+    })
+
+    it('recognizes bun exec commands', () => {
+      expect(stringIsExecCommand('bunx create-react-app my-react-app')).toBe(true)
+      expect(stringIsExecCommand('bunx --bun vite')).toBe(true)
+    })
+
+    it('returns false for non-exec commands', () => {
+      expect(stringIsExecCommand('npm install react')).toBe(false)
+      expect(stringIsExecCommand('yarn add lodash')).toBe(false)
+      expect(stringIsExecCommand('pnpm run build')).toBe(false)
+      expect(stringIsExecCommand('bun run test')).toBe(false)
+    })
+
+    it('returns false for terminal commands', () => {
+      expect(stringIsExecCommand('cd my-project')).toBe(false)
+      expect(stringIsExecCommand('ls -la')).toBe(false)
+      expect(stringIsExecCommand('echo "Hello, World!"')).toBe(false)
+    })
+  })
+
+  describe('stringIsCreateCommand', () => {
+    it('recognizes npm create commands', () => {
+      expect(stringIsCreateCommand('npm create vite@latest my-vite-app')).toBe(true)
+      expect(stringIsCreateCommand('npm create react-app my-react-app')).toBe(true)
+    })
+
+    it('recognizes yarn create commands', () => {
+      expect(stringIsCreateCommand('yarn create next-app my-next-app')).toBe(true)
+      expect(
+        stringIsCreateCommand('yarn create tamagui@latest --template expo-starter')
+      ).toBe(true)
+    })
+
+    it('recognizes pnpm create commands', () => {
+      expect(stringIsCreateCommand('pnpm create vite my-vite-app')).toBe(true)
+      expect(stringIsCreateCommand('pnpm create react-app my-react-app')).toBe(true)
+    })
+
+    it('recognizes bun create commands', () => {
+      expect(stringIsCreateCommand('bun create vite my-vite-app')).toBe(true)
+      expect(stringIsCreateCommand('bun create next-app my-next-app')).toBe(true)
+    })
+
+    it('returns false for non-create commands', () => {
+      expect(stringIsCreateCommand('npm install react')).toBe(false)
+      expect(stringIsCreateCommand('yarn add lodash')).toBe(false)
+      expect(stringIsCreateCommand('pnpm run build')).toBe(false)
+      expect(stringIsCreateCommand('bun run test')).toBe(false)
+    })
+
+    it('returns false for exec commands', () => {
+      expect(stringIsCreateCommand('npx create-expo-app MyApp')).toBe(false)
+      expect(stringIsCreateCommand('yarn dlx create-next-app my-app')).toBe(false)
+      expect(stringIsCreateCommand('pnpm dlx create-vite my-app')).toBe(false)
+      expect(stringIsCreateCommand('bunx create-react-app my-app')).toBe(false)
+    })
+
+    it('returns false for terminal commands', () => {
+      expect(stringIsCreateCommand('cd my-project')).toBe(false)
+      expect(stringIsCreateCommand('ls -la')).toBe(false)
+      expect(stringIsCreateCommand('echo "Hello, World!"')).toBe(false)
+    })
   })
 })
