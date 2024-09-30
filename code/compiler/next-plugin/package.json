@@ -42,7 +42,6 @@
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.5.0",
     "tamagui-loader": "1.112.7",
-    "thread-loader": "^4.0.1",
     "url-loader": "^4.1.1"
   },
   "devDependencies": {

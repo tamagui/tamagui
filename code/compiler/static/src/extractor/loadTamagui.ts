@@ -90,7 +90,6 @@ export const generateThemesAndLog = async (options: TamaguiOptions, force = fals
   try {
     waiting = true
     await new Promise((res) => setTimeout(res, 30))
-    console.trace('wtf')
     const didGenerate = await generateTamaguiThemes(options, force)
 
     // only logs when changed

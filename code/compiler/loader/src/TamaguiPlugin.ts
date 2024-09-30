@@ -1,5 +1,5 @@
 import type { TamaguiOptions } from '@tamagui/static'
-import Static from '@tamagui/static'
+import Static, { loadTamaguiSync } from '@tamagui/static'
 import { existsSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import type { Compiler, RuleSetRule } from 'webpack'
@@ -115,23 +115,13 @@ export class TamaguiPlugin {
   }
 
   apply(compiler: Compiler) {
-    const { isServer } = this.options
-
-    const loadPromise = loadTamagui(this.options)
-
-    compiler.hooks.beforeRun.tapPromise(this.pluginName, async () => {
-      await loadPromise
-    })
-
-    compiler.hooks.watchRun.tapPromise(this.pluginName, async () => {
-      await loadPromise
-    })
+    loadTamaguiSync(this.options)
 
     if (compiler.options.mode === 'development' && !this.options.disableWatchConfig) {
       void watchTamaguiConfig(this.options).then((watcher) => {
         // yes this is weirdly done promise...
         process.once('exit', () => {
-          watcher.dispose()
+          watcher?.dispose()
         })
       })
     }

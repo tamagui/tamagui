@@ -89,7 +89,20 @@ export async function getBundledConfig(props: TamaguiOptions, rebuild = false) {
   return currentBundle
 }
 
+global.tamaguiLastLoaded ||= 0
+
+function updateLastLoaded(config: any) {
+  global.tamaguiLastLoaded = Date.now()
+  global.tamaguiLastBundledConfig = config
+}
+
 export async function bundleConfig(props: TamaguiOptions) {
+  // webpack is calling this a ton for no reason
+  if (global.tamaguiLastBundledConfig && Date.now() - global.tamaguiLastLoaded < 3000) {
+    // just loaded recently
+    return global.tamaguiLastBundledConfig
+  }
+
   try {
     isBundling = true
 
@@ -248,6 +261,7 @@ export async function bundleConfig(props: TamaguiOptions) {
     }
 
     currentBundle = res
+    updateLastLoaded(res)
 
     return res
   } catch (err: any) {
