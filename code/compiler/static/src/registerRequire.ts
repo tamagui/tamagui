@@ -92,15 +92,6 @@ export function registerRequire(
       return proxyWorm
     }
 
-    if (!whitelisted[path]) {
-      if (proxyWormImports && !path.includes('.tamagui-dynamic-eval')) {
-        if (path === 'tamagui') {
-          return og.apply(this, [path])
-        }
-        return proxyWorm
-      }
-    }
-
     try {
       const out = og.apply(this, arguments)
       // only for studio disable for now
@@ -179,6 +170,7 @@ export function registerRequire(
 const IGNORES = process.env.TAMAGUI_IGNORE_BUNDLE_ERRORS
 const extraIgnores =
   IGNORES === 'true' ? [] : process.env.TAMAGUI_IGNORE_BUNDLE_ERRORS?.split(',')
+
 const knownIgnorableModules = {
   'expo-modules': true,
   solito: true,

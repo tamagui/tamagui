@@ -17,8 +17,9 @@ export async function watchTamaguiConfig(tamaguiOptions: TamaguiOptions) {
 
   const disposeConfigWatcher = await esbuildWatchFiles(
     options.tamaguiOptions.config,
-    () => {
-      void regenerateConfig(options.tamaguiOptions, null, true)
+    async () => {
+      await generateThemesAndLog(options.tamaguiOptions)
+      await regenerateConfig(options.tamaguiOptions, null, true)
     }
   )
 

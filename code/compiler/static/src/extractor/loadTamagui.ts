@@ -350,21 +350,34 @@ export async function esbuildWatchFiles(entry: string, onChanged: () => void) {
   const context = await esbuild.context({
     bundle: true,
     entryPoints: [entry],
-    resolveExtensions: ['.ts', '.tsx'],
+    resolveExtensions: ['.ts', '.tsx', '.js', '.mjs'],
     logLevel: 'silent',
     write: false,
 
     alias: {
+      '@react-native/normalize-color': '@tamagui/proxy-worm',
       'react-native-web': '@tamagui/proxy-worm',
       'react-native': '@tamagui/proxy-worm',
     },
 
-    external: ['node_modules/*'],
-
     plugins: [
+      // to log what its watching:
+      // {
+      //   name: 'test',
+      //   setup({ onResolve }) {
+      //     onResolve({ filter: /.*/ }, (args) => {
+      //       console.log('wtf', args.path)
+      //     })
+      //   },
+      // },
+
       {
         name: `on-rebuild`,
-        setup({ onEnd }) {
+        setup({ onEnd, onResolve }) {
+          // external node modules
+          let filter = /^[^.\/]|^\.[^.\/]|^\.\.[^\/]/ // Must not start with "/" or "./" or "../"
+          onResolve({ filter }, (args) => ({ path: args.path, external: true }))
+
           onEnd(() => {
             if (!hasRunOnce) {
               hasRunOnce = true

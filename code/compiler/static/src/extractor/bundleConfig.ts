@@ -156,8 +156,6 @@ export async function bundleConfig(props: TamaguiOptions) {
         }),
       ])
 
-      void esbuild.stop()
-
       colorLog(
         Color.FgYellow,
         `
@@ -180,6 +178,14 @@ export async function bundleConfig(props: TamaguiOptions) {
     let out
     const { unregister } = registerRequire(props.platform || 'web')
     try {
+      // clear cache to get new files
+      for (const key in require.cache) {
+        // avoid clearing core/web it seems to break things
+        if (!/(core|web)[\/\\]dist/.test(key)) {
+          delete require.cache[key]
+        }
+      }
+
       out = require(configOutPath)
     } catch (err) {
       // biome-ignore lint/complexity/noUselessCatch: <explanation>
@@ -354,8 +360,6 @@ export function loadComponentsInner(
             sourcemap: false,
             loader: esbuildLoaderConfig,
           })
-
-          void esbuild.stop()
         }
 
         if (process.env.DEBUG === 'tamagui') {
