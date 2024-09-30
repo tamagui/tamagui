@@ -6551,8 +6551,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/components-test@workspace:code/ui/components-test"
   dependencies:
-    "@testing-library/jest-dom": "npm:^6.1.2"
-    "@testing-library/react": "npm:^16.0.0"
+    "@testing-library/jest-dom": "npm:^6.5.0"
+    "@testing-library/react": "npm:^16.0.1"
     csstype: "npm:^3.0.10"
     jsdom: "npm:^25.0.1"
     react: "npm:^18.2.0 || ^19.0.0"
@@ -6628,8 +6628,8 @@ __metadata:
   resolution: "@tamagui/core-test@workspace:code/core/core-test"
   dependencies:
     "@tamagui/core": "npm:1.112.7"
-    "@testing-library/react": "npm:^16.0.0"
-    "@testing-library/react-native": "npm:^12.4.3"
+    "@testing-library/react": "npm:^16.0.1"
+    "@testing-library/react-native": "npm:^12.7.2"
     csstype: "npm:^3.0.10"
     react: "npm:^18.2.0 || ^19.0.0"
     react-dom: "npm:^18.2.0 || ^19.0.0"
@@ -6649,7 +6649,7 @@ __metadata:
     "@tamagui/react-native-use-responder-events": "npm:1.112.7"
     "@tamagui/use-event": "npm:1.112.7"
     "@tamagui/web": "npm:1.112.7"
-    "@testing-library/react": "npm:^16.0.0"
+    "@testing-library/react": "npm:^16.0.1"
     csstype: "npm:^3.0.10"
     typescript: "npm:^5.5.2"
     vitest: "npm:2.1.1"
@@ -7953,7 +7953,7 @@ __metadata:
     "@babel/types": "npm:^7.25.4"
     "@tamagui/sandbox-ui": "npm:1.112.7"
     "@tamagui/test-design-system": "npm:1.112.7"
-    "@testing-library/react": "npm:^16.0.0"
+    "@testing-library/react": "npm:^16.0.1"
     "@types/babel__generator": "npm:^7.6.4"
     "@types/babel__traverse": "npm:^7.18.2"
     "@types/find-root": "npm:^1.1.2"
@@ -8436,7 +8436,7 @@ __metadata:
   dependencies:
     "@tamagui/build": "npm:1.112.7"
     "@tamagui/simple-hash": "npm:1.112.7"
-    "@testing-library/react": "npm:^16.0.0"
+    "@testing-library/react": "npm:^16.0.1"
     react: "npm:^18.2.0 || ^19.0.0"
     vitest: "npm:2.1.1"
   peerDependencies:
@@ -8523,7 +8523,7 @@ __metadata:
     "@tamagui/use-did-finish-ssr": "npm:1.112.7"
     "@tamagui/use-event": "npm:1.112.7"
     "@tamagui/use-force-update": "npm:1.112.7"
-    "@testing-library/react": "npm:^16.0.0"
+    "@testing-library/react": "npm:^16.0.1"
     csstype: "npm:^3.0.10"
     typescript: "npm:^5.5.2"
     vitest: "npm:2.1.1"
@@ -8565,7 +8565,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@testing-library/jest-dom@npm:^6.1.2":
+"@testing-library/jest-dom@npm:^6.5.0":
   version: 6.5.0
   resolution: "@testing-library/jest-dom@npm:6.5.0"
   dependencies:
@@ -8602,7 +8602,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@testing-library/react-native@npm:^12.4.3":
+"@testing-library/react-native@npm:^12.7.2":
   version: 12.7.2
   resolution: "@testing-library/react-native@npm:12.7.2"
   dependencies:
@@ -8621,7 +8621,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@testing-library/react@npm:^16.0.0":
+"@testing-library/react@npm:^16.0.1":
   version: 16.0.1
   resolution: "@testing-library/react@npm:16.0.1"
   dependencies:
