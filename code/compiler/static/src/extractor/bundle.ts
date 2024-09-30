@@ -1,8 +1,6 @@
 import { basename, dirname, join } from 'node:path'
-
 import esbuild from 'esbuild'
 import * as FS from 'fs-extra'
-
 import type { TamaguiPlatform } from '../types'
 import { esbuildAliasPlugin } from './esbuildAliasPlugin'
 import { resolveWebOrNativeSpecificEntry } from './loadTamagui'

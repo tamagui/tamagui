@@ -1,15 +1,13 @@
-import { existsSync, readFileSync } from 'node:fs'
-import { basename, dirname, extname, join, relative, sep } from 'node:path'
-
 import generate from '@babel/generator'
 import traverse from '@babel/traverse'
 import * as t from '@babel/types'
+import { existsSync, readFileSync } from 'node:fs'
+import { basename, dirname, extname, join, relative, sep } from 'node:path'
 // @ts-ignore why
 import { Color, colorLog } from '@tamagui/cli-color'
 import type { StaticConfig, TamaguiInternalConfig } from '@tamagui/web'
 import esbuild from 'esbuild'
 import * as FS from 'fs-extra'
-
 import { readFile } from 'node:fs/promises'
 import { registerRequire, setRequireResult } from '../registerRequire'
 import type { TamaguiOptions } from '../types'

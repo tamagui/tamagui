@@ -23,6 +23,7 @@ import {
   regenerateConfig,
   regenerateConfigSync,
 } from './regenerateConfig'
+import { pid } from 'node:process'
 
 const getFilledOptions = (propsIn: Partial<TamaguiOptions>): TamaguiOptions => ({
   // defaults
@@ -32,43 +33,53 @@ const getFilledOptions = (propsIn: Partial<TamaguiOptions>): TamaguiOptions => (
   ...(propsIn as Partial<TamaguiOptions>),
 })
 
+let isLoading = false
+
 export async function loadTamagui(
   propsIn: Partial<TamaguiOptions>
 ): Promise<TamaguiProjectInfo | null> {
-  const props = getFilledOptions(propsIn)
+  if (isLoading) return null
+  isLoading = true
 
-  const bundleInfo = await getBundledConfig(props)
-  if (!bundleInfo) {
-    console.warn(
-      `No bundled config generated, maybe an error in bundling. Set DEBUG=tamagui and re-run to get logs.`
-    )
-    return null
-  }
+  try {
+    const props = getFilledOptions(propsIn)
 
-  // this affects the bundled config so run it first
-  await generateThemesAndLog(props)
-
-  if (!hasBundledConfigChanged()) {
-    return bundleInfo
-  }
-
-  // this depends on the config so run it after
-  if (bundleInfo) {
-    const { createTamagui } = requireTamaguiCore(props.platform || 'web')
-
-    // init config
-    const config = createTamagui(bundleInfo.tamaguiConfig) as any
-
-    const { outputCSS } = props
-    if (outputCSS && props.platform === 'web') {
+    const bundleInfo = await getBundledConfig(props)
+    if (!bundleInfo) {
+      console.warn(
+        `No bundled config generated, maybe an error in bundling. Set DEBUG=tamagui and re-run to get logs.`
+      )
+      return null
     }
-  }
 
-  if (process.env.NODE_ENV === 'development') {
-    await regenerateConfig(props, bundleInfo)
-  }
+    // this affects the bundled config so run it first
+    await generateThemesAndLog(props)
 
-  return bundleInfo
+    if (!hasBundledConfigChanged()) {
+      return bundleInfo
+    }
+
+    // this depends on the config so run it after
+    if (bundleInfo) {
+      const { createTamagui } = requireTamaguiCore(props.platform || 'web')
+
+      // init config
+      const config = createTamagui(bundleInfo.tamaguiConfig) as any
+
+      const { outputCSS } = props
+      if (outputCSS && props.platform === 'web') {
+      }
+    }
+
+    if (process.env.NODE_ENV === 'development') {
+      await regenerateConfig(props, bundleInfo)
+    }
+
+    return bundleInfo
+  } finally {
+    console.warn('setting back to false')
+    isLoading = false
+  }
 }
 
 // debounce a bit
@@ -80,6 +91,7 @@ export const generateThemesAndLog = async (options: TamaguiOptions, force = fals
   try {
     waiting = true
     await new Promise((res) => setTimeout(res, 30))
+    console.trace('wtf')
     const didGenerate = await generateTamaguiThemes(options, force)
 
     // only logs when changed

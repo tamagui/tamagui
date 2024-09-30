@@ -1,18 +1,27 @@
 import type { TamaguiOptions } from '@tamagui/types'
+import { esbuildWatchFiles, generateThemesAndLog, getOptions } from './loadTamagui'
 import { regenerateConfig } from './regenerateConfig'
-import { getOptions, esbuildWatchFiles, generateThemesAndLog } from './loadTamagui'
+
+let isWatching = false
 
 export async function watchTamaguiConfig(tamaguiOptions: TamaguiOptions) {
-  const options = await getOptions({ tamaguiOptions })
-
-  if (!options.tamaguiOptions.config) {
-    throw new Error(`No config`)
-  }
-
   if (process.env.NODE_ENV === 'production') {
     return {
       dispose() {},
     }
+  }
+
+  if (isWatching) {
+    return
+  }
+
+  isWatching = true
+
+  const options = await getOptions({ tamaguiOptions })
+
+  if (!options.tamaguiOptions.config) {
+    isWatching = false
+    throw new Error(`No config`)
   }
 
   const disposeConfigWatcher = await esbuildWatchFiles(
@@ -40,6 +49,7 @@ export async function watchTamaguiConfig(tamaguiOptions: TamaguiOptions) {
 
   return {
     dispose() {
+      isWatching = false
       disposeConfigWatcher()
       disposeThemesWatcher?.()
     },
