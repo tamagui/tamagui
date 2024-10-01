@@ -1,7 +1,7 @@
+import { redirect } from 'vxs'
 import { apiRoute } from '~/features/api/apiRoute'
 import { ensureAuth } from '~/features/api/ensureAuth'
 import { getQuery } from '~/features/api/getQuery'
-import { redirect } from '~/features/api/redirect'
 import { supabaseAdmin } from '~/features/auth/supabaseAdmin'
 
 // is called after bot is installed
