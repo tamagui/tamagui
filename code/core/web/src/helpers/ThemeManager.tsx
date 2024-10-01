@@ -95,17 +95,17 @@ export class ThemeManager {
   updateState(nextState: ThemeManagerState, shouldNotify = true) {
     this.state = nextState
     this._allKeys = null
-    if (shouldNotify) {
-      if (process.env.TAMAGUI_TARGET === 'native') {
-        // native is way slower with queueMicrotask
-        this.notify()
-      } else {
-        // web is way faster this way
-        queueMicrotask(() => {
-          this.notify()
-        })
-      }
-    }
+    // if (shouldNotify) {
+    //   if (process.env.TAMAGUI_TARGET === 'native') {
+    //     // native is way slower with queueMicrotask
+    //     this.notify()
+    //   } else {
+    //     // web is way faster this way
+    //     queueMicrotask(() => {
+    //       this.notify()
+    //     })
+    //   }
+    // }
   }
 
   getStateIfChanged(

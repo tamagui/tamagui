@@ -373,7 +373,7 @@ export const useChangeThemeEffect = (
   }
 
   if (!isServer) {
-    React.useEffect(() => {
+    React.useLayoutEffect(() => {
       // one homepage breaks on useTheme() in MetaTheme if this isnt set up
       if (themeManager && state && prevState && state !== prevState) {
         themeManager.notify()
@@ -405,12 +405,10 @@ export const useChangeThemeEffect = (
       // for updateTheme/replaceTheme
       const selfListenerDispose = themeManager.onChangeTheme((_a, _b, forced) => {
         if (forced) {
-          console.error = preventWarnSetState
           setThemeState((prev) => {
             const next = createState(prev, forced !== 'self')
             return next
           })
-          console.error = ogLog
         }
       }, true)
 
@@ -440,9 +438,7 @@ export const useChangeThemeEffect = (
           }
 
           if (shouldTryUpdate) {
-            console.error = preventWarnSetState
             setThemeState((prev) => createState(prev, force))
-            console.error = ogLog
           }
         },
         themeManager.id
