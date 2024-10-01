@@ -1,9 +1,11 @@
 const cache = new Map()
 
-export const simpleHash = (str: string, hashMin: number | 'strict' = 10) => {
-  if (cache.has(str)) {
-    return cache.get(str)
+export const simpleHash = (strIn: string, hashMin: number | 'strict' = 10) => {
+  if (cache.has(strIn)) {
+    return cache.get(strIn)
   }
+
+  let str = strIn
 
   // remove var()
   if (str[0] === 'v' && str.startsWith('var(')) {
@@ -36,7 +38,8 @@ export const simpleHash = (str: string, hashMin: number | 'strict' = 10) => {
   if (cache.size > 10_000) {
     cache.clear()
   }
-  cache.set(str, res)
+
+  cache.set(strIn, res)
 
   return res
 }
