@@ -70,7 +70,7 @@ export async function transform(
         console.info(' Outputting CSS file:', outStylePath)
       }
 
-      if (process.env.TAMAGUI_METRO_INLINE_CSS) {
+      if (process.env.TAMAGUI_METRO_INLINE_CSS !== '0') {
         const cssInjectionCode = `
           (function() {
             if (typeof document !== 'undefined') {
