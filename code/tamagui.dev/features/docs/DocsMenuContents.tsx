@@ -59,7 +59,7 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
 
   return (
     <>
-      <Input
+      {/* <Input
         size="$4"
         w="100%"
         bw={0}
@@ -125,7 +125,7 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
           setItems(found)
           store.index = 0
         }}
-      />
+      /> */}
 
       <Spacer />
 

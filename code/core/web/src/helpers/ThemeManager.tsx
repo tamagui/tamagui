@@ -7,7 +7,7 @@ import type { ColorScheme, ThemeParsed, ThemeProps } from '../types'
 type ThemeListener = (
   name: string | null,
   themeManager: ThemeManager,
-  forced: boolean
+  forced: boolean | 'self'
 ) => void
 
 export type SetActiveThemeProps = {
@@ -95,17 +95,17 @@ export class ThemeManager {
   updateState(nextState: ThemeManagerState, shouldNotify = true) {
     this.state = nextState
     this._allKeys = null
-    if (shouldNotify) {
-      if (process.env.TAMAGUI_TARGET === 'native') {
-        // native is way slower with queueMicrotask
-        this.notify()
-      } else {
-        // web is way faster this way
-        queueMicrotask(() => {
-          this.notify()
-        })
-      }
-    }
+    // if (shouldNotify) {
+    //   if (process.env.TAMAGUI_TARGET === 'native') {
+    //     // native is way slower with queueMicrotask
+    //     this.notify()
+    //   } else {
+    //     // web is way faster this way
+    //     queueMicrotask(() => {
+    //       this.notify()
+    //     })
+    //   }
+    // }
   }
 
   getStateIfChanged(
@@ -158,12 +158,22 @@ export class ThemeManager {
     }
   }
 
-  onChangeTheme(cb: ThemeListener, debugId?: number) {
+  _selfListener?: ThemeListener
+
+  selfUpdate() {
+    this._selfListener?.(this.state.name, this, 'self')
+  }
+
+  onChangeTheme(cb: ThemeListener, debugId?: number | true) {
     if (process.env.NODE_ENV !== 'production' && debugId) {
       // @ts-ignore
       this._listeningIds ??= new Set()
       // @ts-ignore
       this._listeningIds.add(debugId)
+    }
+
+    if (debugId === true) {
+      this._selfListener = cb
     }
 
     this.themeListeners.add(cb)

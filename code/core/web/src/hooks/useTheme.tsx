@@ -20,6 +20,7 @@ import type {
 
 export type ChangedThemeResponse = {
   state?: ThemeManagerState
+  prevState?: ThemeManagerState
   themeManager?: ThemeManager | null
   isNewTheme: boolean
   // null = never been inversed
@@ -168,6 +169,11 @@ export function getThemeProxied(
 
   function track(key: string) {
     if (keys && !keys.includes(key)) {
+      if (!keys.length) {
+        // tracking new key for first time, do an update check
+        themeManager?.selfUpdate()
+      }
+
       keys.push(key)
       if (process.env.NODE_ENV === 'development' && debug) {
         console.info(` 🎨 useTheme() tracking new key: ${key}`)
@@ -345,7 +351,7 @@ export const useChangeThemeEffect = (
 
   const [themeState, setThemeState] = React.useState<ChangedThemeResponse>(createState)
 
-  const { state, mounted, isNewTheme, themeManager, inversed } = themeState
+  const { state, mounted, isNewTheme, themeManager, inversed, prevState } = themeState
   const isInversingOnMount = Boolean(!themeState.mounted && props.inverse)
 
   function getShouldUpdateTheme(
@@ -367,6 +373,13 @@ export const useChangeThemeEffect = (
   }
 
   if (!isServer) {
+    React.useLayoutEffect(() => {
+      // one homepage breaks on useTheme() in MetaTheme if this isnt set up
+      if (themeManager && state && prevState && state !== prevState) {
+        themeManager.notify()
+      }
+    }, [state])
+
     // listen for parent change + notify children change
     React.useEffect(() => {
       if (!themeManager) return
@@ -392,11 +405,12 @@ export const useChangeThemeEffect = (
       // for updateTheme/replaceTheme
       const selfListenerDispose = themeManager.onChangeTheme((_a, _b, forced) => {
         if (forced) {
-          console.error = preventWarnSetState
-          setThemeState((prev) => createState(prev, true))
-          console.error = ogLog
+          setThemeState((prev) => {
+            const next = createState(prev, forced !== 'self')
+            return next
+          })
         }
-      })
+      }, true)
 
       const disposeChangeListener = parentManager?.onChangeTheme(
         (name, manager, forced) => {
@@ -424,9 +438,7 @@ export const useChangeThemeEffect = (
           }
 
           if (shouldTryUpdate) {
-            console.error = preventWarnSetState
             setThemeState((prev) => createState(prev, force))
-            console.error = ogLog
           }
         },
         themeManager.id
@@ -588,6 +600,7 @@ export const useChangeThemeEffect = (
 
     // after we compare equal we set the state
     response.state = state
+    response.prevState = prev?.state
 
     if (process.env.NODE_ENV === 'development' && props['debug'] && isClient) {
       console.groupCollapsed(`🔷 [${themeManager.id}] useChangeThemeEffect createState`)

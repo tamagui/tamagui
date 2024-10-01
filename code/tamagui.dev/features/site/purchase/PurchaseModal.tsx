@@ -97,7 +97,7 @@ export const PurchaseModal = ({
     let final = 0
     if (starterPriceId) {
       final += starterPriceId
-        ? starter.prices.find((p) => p.id === starterPriceId)?.unit_amount ?? 0
+        ? (starter.prices.find((p) => p.id === starterPriceId)?.unit_amount ?? 0)
         : 0
     }
     if (starterPriceId) {
@@ -108,7 +108,7 @@ export const PurchaseModal = ({
     }
     if (bentoPriceId) {
       final += bentoPriceId
-        ? bento.prices.find((p) => p.id === bentoPriceId)?.unit_amount ?? 0
+        ? (bento.prices.find((p) => p.id === bentoPriceId)?.unit_amount ?? 0)
         : 0
     }
     return final
@@ -432,10 +432,10 @@ export const PurchaseModal = ({
                         : null
 
                       if (starterPrice) {
-                        items.push(`Takeout ${starterPrice?.description}`)
+                        items.push(`Takeout ${starterPrice?.description || ''}`)
                       }
                       if (bentoPrice) {
-                        items.push(`Bento ${bentoPrice?.description}`)
+                        items.push(`Bento ${bentoPrice?.description || ''}`)
                       }
 
                       return items.join(' + ')

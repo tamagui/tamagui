@@ -68,10 +68,12 @@ export default {
 
   plugins: [
     vxs({
-      async afterServerStart(options, app, { routeMap }) {
-        if (process.env.SHOULD_PURGE_CDN) {
-          // await purgeCloudflareCDN()
-        }
+      server: {
+        async afterStart() {
+          if (process.env.SHOULD_PURGE_CDN) {
+            // await purgeCloudflareCDN()
+          }
+        },
       },
     }),
 

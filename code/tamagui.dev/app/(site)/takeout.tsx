@@ -244,10 +244,10 @@ export default function TakeoutPage() {
                 <Paragraph className="text-wrap-balance" size="$7" $sm={{ size: '$7' }}>
                   Takeout is a production-ready stack for any user-based app. It shares a
                   large percent of code between native and web, while maintaining a high
-                  bar for UX and performance. It's builds off our OSS starter (
-                  <CodeInline>npm create tamagui</CodeInline>) with React, React Native,
-                  Next.js, Expo, Supabase, tRPC, Zod, and more. Plus custom themes,
-                  screens, user features, and typed, themeable fonts and icons from{' '}
+                  bar for UX and performance. Building off our OSS starter (
+                  <CodeInline>npm create tamagui</CodeInline>), we add Supabase, tRPC,
+                  Zod, custom themes, screens, a user system, and typed, themeable fonts
+                  and icons from{' '}
                   <Link href="https://fonts.google.com" target="_blank">
                     Google Fonts
                   </Link>{' '}
