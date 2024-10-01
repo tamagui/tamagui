@@ -150,6 +150,19 @@ export function tamaguiPlugin({
         return {
           define: serverAndClientDefine,
           resolve: reactNativeResolve,
+
+          ssr: {
+            optimizeDeps: {
+              include: [
+                'tamagui',
+                '@tamagui/core',
+                '@tamagui/web',
+                '@react-native/normalize-color',
+                'react',
+                'react/jsx-runtime',
+              ],
+            },
+          },
         }
       },
     },
