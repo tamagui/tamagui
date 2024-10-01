@@ -23,7 +23,6 @@ import {
   regenerateConfig,
   regenerateConfigSync,
 } from './regenerateConfig'
-import { pid } from 'node:process'
 
 const getFilledOptions = (propsIn: Partial<TamaguiOptions>): TamaguiOptions => ({
   // defaults

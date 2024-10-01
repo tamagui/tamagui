@@ -70,13 +70,16 @@ export function registerRequire(
       return {}
     }
 
+    if (path === 'react-native-svg') {
+      return og.apply(this, ['@tamagui/react-native-svg'])
+    }
+
     if (
       path === '@gorhom/bottom-sheet' ||
       path.startsWith('react-native-reanimated') ||
       path === 'expo-linear-gradient' ||
       path === '@expo/vector-icons' ||
-      path === 'tamagui/linear-gradient' ||
-      path === 'react-native-svg'
+      path === 'tamagui/linear-gradient'
     ) {
       return proxyWorm
     }
