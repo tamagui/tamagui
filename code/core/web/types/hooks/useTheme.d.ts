@@ -4,6 +4,7 @@ import { ThemeManager } from '../helpers/ThemeManager';
 import type { DebugProp, ThemeParsed, ThemeProps, Tokens, UseThemeWithStateProps, VariableVal, VariableValGeneric } from '../types';
 export type ChangedThemeResponse = {
     state?: ThemeManagerState;
+    prevState?: ThemeManagerState;
     themeManager?: ThemeManager | null;
     isNewTheme: boolean;
     inversed?: null | boolean;

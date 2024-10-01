@@ -1,5 +1,5 @@
 import type { ColorScheme, ThemeParsed, ThemeProps } from '../types';
-type ThemeListener = (name: string | null, themeManager: ThemeManager, forced: boolean) => void;
+type ThemeListener = (name: string | null, themeManager: ThemeManager, forced: boolean | 'self') => void;
 export type SetActiveThemeProps = {
     className?: string;
     parentManager?: ThemeManager | null;
@@ -33,7 +33,9 @@ export declare class ThemeManager {
     _allKeys: Set<string> | null;
     get allKeys(): Set<string>;
     notify(forced?: boolean): void;
-    onChangeTheme(cb: ThemeListener, debugId?: number): () => void;
+    _selfListener?: ThemeListener;
+    selfUpdate(): void;
+    onChangeTheme(cb: ThemeListener, debugId?: number | true): () => void;
 }
 type MaybeThemeManager = ThemeManager | undefined;
 export declare function getManagers(themeManager?: ThemeManager | null): readonly [MaybeThemeManager[], MaybeThemeManager[]];
