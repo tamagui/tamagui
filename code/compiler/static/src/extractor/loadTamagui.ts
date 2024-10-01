@@ -33,13 +33,17 @@ const getFilledOptions = (propsIn: Partial<TamaguiOptions>): TamaguiOptions => (
   ...(propsIn as Partial<TamaguiOptions>),
 })
 
-let isLoading = false
+let isLoadingPromise: null | Promise<any>
 
 export async function loadTamagui(
   propsIn: Partial<TamaguiOptions>
 ): Promise<TamaguiProjectInfo | null> {
-  if (isLoading) return null
-  isLoading = true
+  if (isLoadingPromise) return await isLoadingPromise
+
+  let resolvePromise
+  isLoadingPromise = new Promise((res) => {
+    resolvePromise = res
+  })
 
   try {
     const props = getFilledOptions(propsIn)
@@ -59,25 +63,14 @@ export async function loadTamagui(
       return bundleInfo
     }
 
-    // this depends on the config so run it after
-    if (bundleInfo) {
-      const { createTamagui } = requireTamaguiCore(props.platform || 'web')
-
-      // init config
-      const config = createTamagui(bundleInfo.tamaguiConfig) as any
-
-      const { outputCSS } = props
-      if (outputCSS && props.platform === 'web') {
-      }
-    }
-
     if (process.env.NODE_ENV === 'development') {
       await regenerateConfig(props, bundleInfo)
     }
 
+    resolvePromise(bundleInfo)
     return bundleInfo
   } finally {
-    isLoading = false
+    isLoadingPromise = null
   }
 }
 
