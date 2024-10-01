@@ -45,13 +45,7 @@ export default {
   },
 
   plugins: [
-    vxs({
-      // setupFile: './config/setupTamagui.ts',
-
-      server: {
-        compression: true,
-      },
-    }),
+    vxs(),
 
     ViteImageOptimizer(),
 
@@ -59,8 +53,8 @@ export default {
 
     tamaguiPlugin({
       optimize: true,
-      disableServerOptimization: true,
-      useReactNativeWebLite: process.env.NODE_ENV === 'production',
+      disableServerOptimization: process.env.NODE_ENV === 'development',
+      useReactNativeWebLite: true,
       components: ['tamagui'],
       config: './config/tamagui.config.ts',
       outputCSS: './app/tamagui.css',

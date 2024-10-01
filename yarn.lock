@@ -8500,11 +8500,15 @@ __metadata:
     "@tamagui/fake-react-native": "npm:1.112.12"
     "@tamagui/proxy-worm": "npm:1.112.12"
     "@tamagui/react-native-svg": "npm:1.112.12"
+    "@tamagui/react-native-web-lite": "npm:1.112.12"
     "@tamagui/static": "npm:1.112.12"
     esm-resolve: "npm:^1.0.8"
     fs-extra: "npm:^11.2.0"
     outdent: "npm:^0.8.0"
     react-native-web: "npm:^0.19.12"
+    vite: "npm:6.0.0-beta.1"
+  peerDependencies:
+    vite: "*"
   languageName: unknown
   linkType: soft
 

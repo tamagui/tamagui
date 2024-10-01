@@ -36,6 +36,7 @@
     "@tamagui/fake-react-native": "1.112.12",
     "@tamagui/proxy-worm": "1.112.12",
     "@tamagui/react-native-svg": "1.112.12",
+    "@tamagui/react-native-web-lite": "1.112.12",
     "@tamagui/static": "1.112.12",
     "esm-resolve": "^1.0.8",
     "fs-extra": "^11.2.0",
@@ -43,9 +44,13 @@
     "react-native-web": "^0.19.12"
   },
   "devDependencies": {
-    "@tamagui/build": "1.112.12"
+    "@tamagui/build": "1.112.12",
+    "vite": "6.0.0-beta.1"
   },
   "publishConfig": {
     "access": "public"
+  },
+  "peerDependencies": {
+    "vite": "*"
   }
 }
