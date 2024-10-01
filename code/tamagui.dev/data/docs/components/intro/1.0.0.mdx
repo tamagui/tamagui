@@ -14,7 +14,7 @@ Tamagui UI is an open source collection of "[compound components](https://www.sm
 All components in the kit can be installed independently, or you can install them all at once with:
 
 ```bash
-yarn add tamagui
+yarn add tamagui @tamagui/config
 ```
 
 ## Setup
@@ -24,7 +24,7 @@ The package `tamagui` is a superset of `@tamagui/core`, so if you've already ins
 You'll need to add a provider to the root of your app (unlike core, where that is optional), as it will set up the root portal for components like dialogs and popovers.
 
 ```tsx
-import { TamaguiProvider, View } from 'tamagui'
+import { createTamagui,TamaguiProvider, View } from 'tamagui'
 import defaultConfig from '@tamagui/config/v3'
 
 const config = createTamagui(defaultConfig)
