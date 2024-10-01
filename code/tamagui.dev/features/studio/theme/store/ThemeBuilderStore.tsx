@@ -1,15 +1,16 @@
 import type { Template, ThemeDefinitions } from '@tamagui/theme-builder'
 import { createStore, createUseStore } from '@tamagui/use-store'
 
+import { getURL } from 'vxs'
 import { toastController } from '~/features/studio/ToastProvider'
 import { demoOptions, optionValues } from '~/features/studio/theme/demoOptions'
 import { getRandomElement } from '~/features/studio/theme/helpers/getRandomElement'
 import { getUniqueId } from '~/features/studio/theme/helpers/getUniqueId'
 import type { SectionStep, ThemeStudioSection } from '~/features/studio/theme/types'
-import { getURL } from '~/helpers/getURL'
 import { generateThemeBuilderCode } from '../../api'
 import { defaultThemeSuiteItem } from '../defaultThemeSuiteItem'
 import { getThemeSuitePalettes } from '../getThemeSuitePalettes'
+import { getFinalPalettes } from '../helpers/getFinalPalettes'
 import { updatePreviewTheme } from '../previewTheme'
 import type {
   BuildPalette,
@@ -20,7 +21,6 @@ import type {
   ThemeSuiteItem,
   ThemeSuiteItemData,
 } from '../types'
-import { getFinalPalettes } from '../helpers/getFinalPalettes'
 
 export class ThemeBuilderStore {
   loaded = false

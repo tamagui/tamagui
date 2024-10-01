@@ -1,6 +1,6 @@
+import { redirect } from 'vxs'
 import { setupCors } from './cors'
 import { getSupabaseServerClient } from './getSupabaseServerClient'
-import { redirect } from './redirect'
 
 /**
  * makes a supabase instance for the current user and returns a 401 if there's no user

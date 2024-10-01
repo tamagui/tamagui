@@ -1,6 +1,6 @@
 import * as colors from '@tamagui/colors'
-import { getURL } from '~/helpers/getURL'
 import type { ReactElement } from 'react'
+import { getURL } from 'vxs'
 import { apiRoute } from '~/features/api/apiRoute'
 
 export default apiRoute(async (req) => {

@@ -1,3 +1,4 @@
+import { getURL } from 'vxs'
 import { apiRoute } from '~/features/api/apiRoute'
 import { ensureAuth } from '~/features/api/ensureAuth'
 import { getQuery } from '~/features/api/getQuery'
@@ -5,7 +6,6 @@ import { createOrRetrieveCustomer } from '~/features/auth/supabaseAdmin'
 import { checkDiscountEligibility } from '~/features/site/purchase/checkDiscountEligibility'
 import { stripe } from '~/features/stripe/stripe'
 import { getUserAccessInfo } from '~/features/user/helpers'
-import { getURL } from '~/helpers/getURL'
 
 export const GET = apiRoute(async (req) => {
   const { supabase, user } = await ensureAuth({ req, shouldRedirect: true })
