@@ -4,8 +4,8 @@ on:
   push:
     paths:
       - "code/bento/**"
-      - "code/tamagui.dev/scripts/build-bento.js"
-      - "code/tamagui.dev/scripts/upload-bento.js"
+      - "code/tamagui.dev/scripts/build-bento.cjs"
+      - "code/tamagui.dev/scripts/upload-bento.cjs"
     branches:
       - master
 
