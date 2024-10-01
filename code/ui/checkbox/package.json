@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/checkbox",
-  "version": "1.112.12-1727815818229",
+  "version": "1.112.13",
   "sideEffects": [
     "*.css"
   ],
@@ -24,20 +24,20 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/checkbox-headless": "1.112.12-1727815818229",
-    "@tamagui/compose-refs": "1.112.12-1727815818229",
-    "@tamagui/constants": "1.112.12-1727815818229",
-    "@tamagui/core": "1.112.12-1727815818229",
-    "@tamagui/create-context": "1.112.12-1727815818229",
-    "@tamagui/focusable": "1.112.12-1727815818229",
-    "@tamagui/font-size": "1.112.12-1727815818229",
-    "@tamagui/get-token": "1.112.12-1727815818229",
-    "@tamagui/helpers": "1.112.12-1727815818229",
-    "@tamagui/helpers-tamagui": "1.112.12-1727815818229",
-    "@tamagui/label": "1.112.12-1727815818229",
-    "@tamagui/stacks": "1.112.12-1727815818229",
-    "@tamagui/use-controllable-state": "1.112.12-1727815818229",
-    "@tamagui/use-previous": "1.112.12-1727815818229"
+    "@tamagui/checkbox-headless": "1.112.13",
+    "@tamagui/compose-refs": "1.112.13",
+    "@tamagui/constants": "1.112.13",
+    "@tamagui/core": "1.112.13",
+    "@tamagui/create-context": "1.112.13",
+    "@tamagui/focusable": "1.112.13",
+    "@tamagui/font-size": "1.112.13",
+    "@tamagui/get-token": "1.112.13",
+    "@tamagui/helpers": "1.112.13",
+    "@tamagui/helpers-tamagui": "1.112.13",
+    "@tamagui/label": "1.112.13",
+    "@tamagui/stacks": "1.112.13",
+    "@tamagui/use-controllable-state": "1.112.13",
+    "@tamagui/use-previous": "1.112.13"
   },
   "exports": {
     "./package.json": "./package.json",
@@ -50,7 +50,7 @@
     }
   },
   "devDependencies": {
-    "@tamagui/build": "1.112.12-1727815818229",
+    "@tamagui/build": "1.112.13",
     "react": "^18.2.0 || ^19.0.0"
   },
   "publishConfig": {
