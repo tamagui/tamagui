@@ -1,4 +1,5 @@
 const cache = new Map()
+let cacheSize = 0
 
 export const simpleHash = (strIn: string, hashMin: number | 'strict' = 10) => {
   if (cache.has(strIn)) {
@@ -35,11 +36,13 @@ export const simpleHash = (strIn: string, hashMin: number | 'strict' = 10) => {
 
   const res = valids + (hash ? Math.abs(hash) : '')
 
-  if (cache.size > 10_000) {
+  if (cacheSize > 10_000) {
     cache.clear()
+    cacheSize = 0
   }
 
   cache.set(strIn, res)
+  cacheSize++
 
   return res
 }
