@@ -28,7 +28,11 @@ export const Portal = (props: PortalProps) => {
     />
   )
 
-  if (Platform.OS === 'android' || !rootTag) {
+  if (
+    process.env.TAMAGUI_USE_NATIVE_PORTAL === 'false' ||
+    Platform.OS === 'android' ||
+    !rootTag
+  ) {
     return <PortalItem hostName="root">{contents}</PortalItem>
   }
 
