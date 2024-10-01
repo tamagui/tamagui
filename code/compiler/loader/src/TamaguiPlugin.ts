@@ -1,5 +1,5 @@
 import type { TamaguiOptions } from '@tamagui/static'
-import Static, { loadTamaguiSync } from '@tamagui/static'
+import Static from '@tamagui/static'
 import { existsSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import type { Compiler, RuleSetRule } from 'webpack'
@@ -115,7 +115,7 @@ export class TamaguiPlugin {
   }
 
   apply(compiler: Compiler) {
-    loadTamaguiSync(this.options)
+    Static.loadTamaguiSync(this.options)
 
     if (compiler.options.mode === 'development' && !this.options.disableWatchConfig) {
       void watchTamaguiConfig(this.options).then((watcher) => {

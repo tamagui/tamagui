@@ -40,8 +40,10 @@ export async function loadTamagui(
   if (isLoadingPromise) return await isLoadingPromise
 
   let resolvePromise
-  isLoadingPromise = new Promise((res) => {
+  let rejectPromise
+  isLoadingPromise = new Promise((res, rej) => {
     resolvePromise = res
+    rejectPromise = rej
   })
 
   try {
@@ -52,6 +54,7 @@ export async function loadTamagui(
       console.warn(
         `No bundled config generated, maybe an error in bundling. Set DEBUG=tamagui and re-run to get logs.`
       )
+      resolvePromise(null)
       return null
     }
 
@@ -59,6 +62,7 @@ export async function loadTamagui(
     await generateThemesAndLog(props)
 
     if (!hasBundledConfigChanged()) {
+      resolvePromise(bundleInfo)
       return bundleInfo
     }
 
@@ -68,6 +72,9 @@ export async function loadTamagui(
 
     resolvePromise(bundleInfo)
     return bundleInfo
+  } catch (err) {
+    rejectPromise()
+    throw err
   } finally {
     isLoadingPromise = null
   }
