@@ -168,6 +168,11 @@ export function getThemeProxied(
 
   function track(key: string) {
     if (keys && !keys.includes(key)) {
+      if (!keys.length) {
+        // tracking new key for first time, do an update check
+        themeManager?.notify(true)
+      }
+
       keys.push(key)
       if (process.env.NODE_ENV === 'development' && debug) {
         console.info(` 🎨 useTheme() tracking new key: ${key}`)
