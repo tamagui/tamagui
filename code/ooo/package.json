@@ -26,7 +26,7 @@
     "@tamagui/react-native-web": "1.112.12",
     "@tamagui/themes": "1.112.12",
     "@tamagui/use-store": "1.112.12",
-    "@vxrn/color-scheme": "^1.1.268",
+    "@vxrn/color-scheme": "^1.1.269",
     "body-scroll-lock": "^4.0.0-beta.0",
     "mdx-bundler": "^10.0.2",
     "postmark": "^3.0.18",

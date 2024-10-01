@@ -7202,7 +7202,7 @@ __metadata:
     "@tamagui/themes": "npm:1.112.12"
     "@tamagui/toast": "npm:1.112.12"
     "@tamagui/web": "npm:1.112.12"
-    "@vxrn/vendor": "npm:^1.1.268"
+    "@vxrn/vendor": "npm:^1.1.269"
     "@welldone-software/why-did-you-render": "npm:^7.0.1"
     babel-plugin-module-resolver: "npm:^5.0.2"
     burnt: "npm:^0.12.2"
@@ -7481,7 +7481,7 @@ __metadata:
     "@tamagui/react-native-web": "npm:1.112.12"
     "@tamagui/themes": "npm:1.112.12"
     "@tamagui/use-store": "npm:1.112.12"
-    "@vxrn/color-scheme": "npm:^1.1.268"
+    "@vxrn/color-scheme": "npm:^1.1.269"
     body-scroll-lock: "npm:^4.0.0-beta.0"
     mdx-bundler: "npm:^10.0.2"
     patch-package: "npm:^8.0.0"
@@ -9912,17 +9912,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vxrn/color-scheme@npm:^1.1.268":
-  version: 1.1.268
-  resolution: "@vxrn/color-scheme@npm:1.1.268"
+"@vxrn/color-scheme@npm:^1.1.269":
+  version: 1.1.269
+  resolution: "@vxrn/color-scheme@npm:1.1.269"
   dependencies:
     "@tamagui/use-did-finish-ssr": "npm:^1.112.8"
-    "@vxrn/universal-color-scheme": "npm:1.1.268"
-    "@vxrn/use-isomorphic-layout-effect": "npm:1.1.268"
+    "@vxrn/universal-color-scheme": "npm:1.1.269"
+    "@vxrn/use-isomorphic-layout-effect": "npm:1.1.269"
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 10/49d8e9fc5860486d3b644f16855c2c74474b121f4b94837df81b94f947cf7b4ed708daaf1fa530d8095ed76ae926fea4b286ee5acb3b76c7eec699ee45d138bf
+  checksum: 10/bbd8c0cdf73482325a30485d1f94e373b397a191ce1dc88e36a3491660c0e3a279f094be99e32da1028c80e9368722c5bda27ea8c262ba52b1fd49c6e8468ff6
   languageName: node
   linkType: hard
 
@@ -9962,6 +9962,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@vxrn/universal-color-scheme@npm:1.1.269":
+  version: 1.1.269
+  resolution: "@vxrn/universal-color-scheme@npm:1.1.269"
+  dependencies:
+    "@vxrn/use-isomorphic-layout-effect": "npm:1.1.269"
+    react: "npm:^18.2.0 || ^19.0.0"
+  peerDependencies:
+    react-native: "*"
+  checksum: 10/cd9e22987409d170e1b11b724a0dfdbecd227a5ca340226f924298d4c8bf3a59258257c767ea9dd341270c8499b8db6ec44344b34e1bf8bed5eb79ba16579e46
+  languageName: node
+  linkType: hard
+
 "@vxrn/use-isomorphic-layout-effect@npm:1.1.268":
   version: 1.1.268
   resolution: "@vxrn/use-isomorphic-layout-effect@npm:1.1.268"
@@ -9971,10 +9983,26 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vxrn/vendor@npm:1.1.268, @vxrn/vendor@npm:^1.1.268":
+"@vxrn/use-isomorphic-layout-effect@npm:1.1.269":
+  version: 1.1.269
+  resolution: "@vxrn/use-isomorphic-layout-effect@npm:1.1.269"
+  dependencies:
+    react: "npm:^18.2.0 || ^19.0.0"
+  checksum: 10/768cf58b1714085b66476ca14933645b3a15eb0659323febc1f7c009534760682caaa9277998365d434b9b9ab51b76b4093cb0a023181f75b1c762db5ffce0e8
+  languageName: node
+  linkType: hard
+
+"@vxrn/vendor@npm:1.1.268":
   version: 1.1.268
   resolution: "@vxrn/vendor@npm:1.1.268"
   checksum: 10/f9d564b89415842411554c2a073e07456560063badca5630f68c0db11004f2e4a3935b491706e6930bbbe7a7562800c9ada69754c7d441903e12f2235ddc3e3d
+  languageName: node
+  linkType: hard
+
+"@vxrn/vendor@npm:^1.1.269":
+  version: 1.1.269
+  resolution: "@vxrn/vendor@npm:1.1.269"
+  checksum: 10/086bafb03966d976a9aace0829a0d9b106eafd3164ae6154a08205975bcdddd2b5471d893599b87dbd8ddd901de2aeec1f31bb0531bd8ae234f26cfba5ade9a5
   languageName: node
   linkType: hard
 
