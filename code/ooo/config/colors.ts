@@ -44,10 +44,10 @@ const colorTokens = {
   },
 }
 
-export const lightShadowColor = 'rgba(0,0,0,0.04)'
-export const lightShadowColorStrong = 'rgba(0,0,0,0.085)'
-export const darkShadowColor = 'rgba(0,0,0,0.2)'
-export const darkShadowColorStrong = 'rgba(0,0,0,0.3)'
+export const lightShadowColor = 'rgba(0,0,0,0.02)'
+export const lightShadowColorStrong = 'rgba(0,0,0,0.04)'
+export const darkShadowColor = 'rgba(0,0,0,0.1)'
+export const darkShadowColorStrong = 'rgba(0,0,0,0.15)'
 
 export const darkColors = {
   ...colorTokens.dark.yellow,

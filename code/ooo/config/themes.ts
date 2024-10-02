@@ -54,6 +54,10 @@ const themeBuilder = createThemeBuilder()
     },
   })
   .addChildThemes({
+    gray: {
+      palette: 'gray',
+      template: 'base',
+    },
     yellow: {
       palette: 'yellow',
       template: 'base',
