@@ -12,7 +12,7 @@ const yellow = {
   yellow8: 'hsl(54, 100%, 42%)',
   yellow9: 'hsl(54, 92.0%, 38.0%)',
   yellow10: 'hsl(54, 100%, 48.5%)',
-  yellow11: 'hsl(54, 90%, 34.0%)',
+  yellow11: 'hsl(54, 90%, 30.0%)',
   yellow12: 'hsl(54, 55.0%, 13.5%)',
   yellow13: '#000',
 }
