@@ -1,9 +1,9 @@
 import type { TamaguiOptions } from '@tamagui/static'
-import { version } from 'vite'
-import type { Plugin, UserConfig } from 'vite'
+import type { Plugin } from 'vite'
 import { transformWithEsbuild } from 'vite'
+import { tamaguiOptions, Static, loadTamaguiBuildConfig } from './loadTamagui'
 import { tamaguiExtractPlugin } from './extract'
-import { Static, loadTamaguiBuildConfig, tamaguiOptions } from './loadTamagui'
+import { version } from 'vite'
 
 const isVite6 = version.startsWith('6.')
 const resolve = (name: string) => import.meta.resolve?.(name).replace('file://', '')
@@ -21,6 +21,21 @@ export function tamaguiPlugin({
 
   // TODO temporary fix
   const enableNativeEnv = !!globalThis.__vxrnEnableNativeEnv
+
+  const extensions = [
+    `.web.mjs`,
+    `.web.js`,
+    `.web.jsx`,
+    `.web.ts`,
+    `.web.tsx`,
+    '.mjs',
+    '.js',
+    '.mts',
+    '.ts',
+    '.jsx',
+    '.tsx',
+    '.json',
+  ]
 
   async function load() {
     if (loaded) return
@@ -66,29 +81,6 @@ export function tamaguiPlugin({
         }
       },
 
-      resolveId(id) {
-        if (disableResolveConfig || enableNativeEnv) {
-          return
-        }
-        if (!tamaguiOptions) {
-          throw new Error(`No options loaded`)
-        }
-        if (tamaguiOptions.platform !== 'native') {
-          return
-        }
-        if (
-          id === 'react-native/Libraries/Renderer/shims/ReactFabric' ||
-          id === 'react-native/Libraries/Utilities/codegenNativeComponent'
-        ) {
-          return resolve('@tamagui/proxy-worm')
-        }
-        if (!tamaguiOptions?.useReactNativeWebLite) {
-          if (id === 'react-native') {
-            return resolve('react-native-web')
-          }
-        }
-      },
-
       async config(_, env) {
         await load()
 
@@ -96,73 +88,46 @@ export function tamaguiPlugin({
           throw new Error(`No options loaded`)
         }
 
-        const reactNativeResolve: UserConfig['resolve'] =
-          disableResolveConfig || enableNativeEnv
-            ? {}
-            : {
-                extensions: [
-                  `.web.mjs`,
-                  `.web.js`,
-                  `.web.jsx`,
-                  `.web.ts`,
-                  `.web.tsx`,
-                  '.mjs',
-                  '.js',
-                  '.mts',
-                  '.ts',
-                  '.jsx',
-                  '.tsx',
-                  '.json',
-                ],
-              }
-
-        const serverAndClientDefine: UserConfig['define'] = {
-          // reanimated support
-          _frameTimestamp: undefined,
-          _WORKLET: false,
-          __DEV__: `${env.mode === 'development'}`,
-          'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || env.mode),
-          'process.env.IS_STATIC': JSON.stringify(false),
-          ...(env.mode === 'production' && {
-            'process.env.TAMAGUI_OPTIMIZE_THEMES': JSON.stringify(true),
-          }),
-        }
-
-        if (isVite6) {
-          return {
-            resolve: reactNativeResolve,
-            environments: {
-              client: {
-                define: {
-                  'process.env.TAMAGUI_IS_CLIENT': JSON.stringify(true),
-                  ...serverAndClientDefine,
-                },
-              },
-
-              ssr: {
-                define: serverAndClientDefine,
-              },
-            },
-            // vite 5 + 6 compat
-          } as any
-        }
-
         return {
-          define: serverAndClientDefine,
-          resolve: reactNativeResolve,
-
-          ssr: {
-            optimizeDeps: {
-              include: [
-                'tamagui',
-                '@tamagui/core',
-                '@tamagui/web',
-                '@react-native/normalize-color',
-                'react',
-                'react/jsx-runtime',
-              ],
+          environments: {
+            client: {
+              define: {
+                'process.env.TAMAGUI_IS_CLIENT': JSON.stringify(true),
+              },
             },
           },
+
+          define: {
+            // reanimated support
+            _frameTimestamp: undefined,
+            _WORKLET: false,
+            __DEV__: `${env.mode === 'development'}`,
+            'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || env.mode),
+            'process.env.ENABLE_RSC': JSON.stringify(process.env.ENABLE_RSC || ''),
+            'process.env.ENABLE_STEPS': JSON.stringify(process.env.ENABLE_STEPS || ''),
+            'process.env.IS_STATIC': JSON.stringify(false),
+            ...(env.mode === 'production' && {
+              'process.env.TAMAGUI_OPTIMIZE_THEMES': JSON.stringify(true),
+            }),
+          },
+          resolve:
+            disableResolveConfig || enableNativeEnv
+              ? {}
+              : {
+                  extensions,
+                  alias: {
+                    ...(tamaguiOptions.platform !== 'native' && {
+                      'react-native/Libraries/Renderer/shims/ReactFabric':
+                        resolve('@tamagui/proxy-worm'),
+                      'react-native/Libraries/Utilities/codegenNativeComponent':
+                        resolve('@tamagui/proxy-worm'),
+                      'react-native-svg': resolve('@tamagui/react-native-svg'),
+                      ...(!tamaguiOptions?.useReactNativeWebLite && {
+                        'react-native': resolve('react-native-web'),
+                      }),
+                    }),
+                  },
+                },
         }
       },
     },
@@ -170,31 +135,64 @@ export function tamaguiPlugin({
     {
       name: 'tamagui-rnw-lite',
 
-      resolveId(id) {
-        const envName = this['environment']?.name as any // vite 5 + 6 compat
+      // enforce: 'pre',
 
-        if (isVite6 && (envName === 'client' || envName === 'ssr')) {
-          return
-        }
+      // resolveId(source) {
+      //   const envName = this['environment']?.name as any // vite 5 + 6 compat
+      //   if (isVite6 && envName !== 'client' && envName !== 'ssr') {
+      //     return
+      //   }
 
+      //   if (source === 'react-native-svg') {
+      //     return '@tamagui/react-native-svg'
+      //   }
+
+      //   console.log('cmon', source)
+
+      //   if (tamaguiOptions?.useReactNativeWebLite) {
+      //     if (/^react-native$/.test(source)) {
+      //       return 'react-native-web'
+      //     }
+      //   } else {
+      //     if (/^react-native$/.test(source)) {
+      //       return '@tamagui/react-native-web-lite'
+      //     }
+      //   }
+      // },
+
+      config() {
         if (tamaguiOptions?.useReactNativeWebLite) {
-          if (
-            /react-native.*\/dist\/exports\/StyleSheet\/compiler\/createReactDOMStyle/.test(
-              id
-            )
-          ) {
-            return resolve(
-              '@tamagui/react-native-web-lite/dist/exports/StyleSheet/compiler/createReactDOMStyle'
-            )
-          }
+          const rnwl = resolve('@tamagui/react-native-web-lite')
+          const rnwlSS = resolve(
+            '@tamagui/react-native-web-lite/dist/exports/StyleSheet/compiler/createReactDOMStyle'
+          )
 
-          if (
-            /^react-native$/.test(id) ||
-            /^react-native\/(.*)$/.test(id) ||
-            /^react-native-web$/.test(id) ||
-            /^react-native-web\/(.*)$/.test(id)
-          ) {
-            return resolve('@tamagui/react-native-web-lite')
+          return {
+            resolve: {
+              alias: [
+                // fix reanimated issue not finding this
+                {
+                  find: /react-native.*\/dist\/exports\/StyleSheet\/compiler\/createReactDOMStyle/,
+                  replacement: rnwlSS,
+                },
+                {
+                  find: /^react-native$/,
+                  replacement: rnwl,
+                },
+                {
+                  find: /^react-native\/(.*)$/,
+                  replacement: rnwl,
+                },
+                {
+                  find: /^react-native-web$/,
+                  replacement: rnwl,
+                },
+                {
+                  find: /^react-native-web\/(.*)$/,
+                  replacement: rnwl,
+                },
+              ],
+            },
           }
         }
       },
