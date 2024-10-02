@@ -12,16 +12,12 @@ import {
 
 const shadows = {
   light: {
-    shadowColor: lightShadowColorStrong,
-    shadowColorHover: lightShadowColorStrong,
-    shadowColorPress: lightShadowColor,
-    shadowColorFocus: lightShadowColor,
+    shadowColor: lightShadowColor,
+    shadowColorStrong: lightShadowColorStrong,
   },
   dark: {
-    shadowColor: darkShadowColorStrong,
-    shadowColorHover: darkShadowColorStrong,
-    shadowColorPress: darkShadowColor,
-    shadowColorFocus: darkShadowColor,
+    shadowColor: darkShadowColor,
+    shadowColorStrong: darkShadowColorStrong,
   },
 }
 
