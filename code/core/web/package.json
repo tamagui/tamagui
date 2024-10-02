@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/web",
-  "version": "1.112.15",
+  "version": "1.112.16",
   "source": "src/index.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -27,18 +27,18 @@
     "reset.css"
   ],
   "dependencies": {
-    "@tamagui/compose-refs": "1.112.15",
-    "@tamagui/constants": "1.112.15",
-    "@tamagui/helpers": "1.112.15",
-    "@tamagui/normalize-css-color": "1.112.15",
-    "@tamagui/timer": "1.112.15",
-    "@tamagui/types": "1.112.15",
-    "@tamagui/use-did-finish-ssr": "1.112.15",
-    "@tamagui/use-event": "1.112.15",
-    "@tamagui/use-force-update": "1.112.15"
+    "@tamagui/compose-refs": "1.112.16",
+    "@tamagui/constants": "1.112.16",
+    "@tamagui/helpers": "1.112.16",
+    "@tamagui/normalize-css-color": "1.112.16",
+    "@tamagui/timer": "1.112.16",
+    "@tamagui/types": "1.112.16",
+    "@tamagui/use-did-finish-ssr": "1.112.16",
+    "@tamagui/use-event": "1.112.16",
+    "@tamagui/use-force-update": "1.112.16"
   },
   "devDependencies": {
-    "@tamagui/build": "1.112.15",
+    "@tamagui/build": "1.112.16",
     "@testing-library/react": "^16.0.1",
     "csstype": "^3.0.10",
     "typescript": "^5.5.2",

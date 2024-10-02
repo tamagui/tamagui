@@ -139,10 +139,10 @@ describe('getSplitStyles', () => {
         color: 'red',
       },
     })
-    expect(
-      Object.values(styles.rulesToInsert)[0][StyleObjectRules][0]
-    ).toMatchInlineSnapshot(
-      '"@supports (contain: inline-size) {@container testy (max-width: 800px){:root:root .t_group_testy  ._col-_grouptesty-sm_red{color:red;}}}"'
+    const rule = Object.values(styles.rulesToInsert)[0][StyleObjectRules][0]
+
+    expect(rule).toMatchInlineSnapshot(
+      '"@supports (contain: inline-size) {@container testy (max-width: 800px){:root:root:root .t_group_testy  ._col-_grouptesty-sm_red{color:red;}}}"'
     )
   })
 
