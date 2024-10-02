@@ -1,5 +1,5 @@
+import { type Href, useActiveParams, useRouter } from 'one'
 import { useEffect } from 'react'
-import { useGlobalSearchParams, useRouter } from 'one'
 import { useUser } from './useUser'
 
 const ALLOWED_REDIRECT_DOMAINS = ['tamagui.dev', '127.0.0.1', 'localhost']
@@ -7,7 +7,7 @@ const ALLOWED_REDIRECT_DOMAINS = ['tamagui.dev', '127.0.0.1', 'localhost']
 export function useForwardToDashboard() {
   const { data, isLoading } = useUser()
   const user = data?.user
-  const query = useGlobalSearchParams<any>()
+  const query = useActiveParams<any>()
   const router = useRouter()
 
   useEffect(() => {
@@ -34,10 +34,7 @@ export function useForwardToDashboard() {
             }
           }
         }
-        await router.replace(
-          // @ts-expect-error
-          redirectTo
-        )
+        await router.replace(redirectTo as Href)
       }
     }
     main()

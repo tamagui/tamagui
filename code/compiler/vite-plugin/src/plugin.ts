@@ -112,7 +112,11 @@ export function tamaguiPlugin({
           },
           resolve:
             disableResolveConfig || enableNativeEnv
-              ? {}
+              ? {
+                  alias: {
+                    'react-native-svg': resolve('@tamagui/react-native-svg'),
+                  },
+                }
               : {
                   extensions,
                   alias: {
@@ -133,7 +137,7 @@ export function tamaguiPlugin({
     },
 
     {
-      name: 'tamagui-rnw-lite',
+      name: 'tamagui-rnw-lite-web-only',
 
       // enforce: 'pre',
 

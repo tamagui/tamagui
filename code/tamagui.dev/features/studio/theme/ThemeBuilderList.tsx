@@ -1,4 +1,5 @@
 import { MoreVertical, Pencil, Plus, Trash, X } from '@tamagui/lucide-icons'
+import { type Href, Slot, useRouter } from 'one'
 import { useState } from 'react'
 import type { DialogProps } from 'tamagui'
 import {
@@ -23,11 +24,6 @@ import {
   YGroup,
   YStack,
 } from 'tamagui'
-
-// TODO make layout
-
-import { Slot, useRouter } from 'one'
-import { defaultThemeSuiteItem } from './constants/defaultThemeSuiteItem'
 import {
   ModalTitle,
   ThemeBuilderModalFrame,
@@ -37,6 +33,7 @@ import {
   useThemeBuilderStore,
 } from '~/features/studio/theme/store/ThemeBuilderStore'
 import type { ThemeSuiteItem } from '~/features/studio/theme/types'
+import { defaultThemeSuiteItem } from './constants/defaultThemeSuiteItem'
 
 export function ThemeBuilderList() {
   const { themeSuites } = useThemeBuilderStore()
@@ -227,10 +224,7 @@ function ThemeSuiteCard({ themeSuite }: { themeSuite: ThemeSuiteItem }) {
         }}
         elevation="$1"
         onPress={() => {
-          router.push(
-            // @ts-expect-error
-            `/builder/${id}`
-          )
+          router.push(`/builder/${id}` as Href)
         }}
         cursor="pointer"
         // w="calc(50% - var(--size-4))"
