@@ -1,5 +1,4 @@
 import { createThemeBuilder } from '@tamagui/theme-builder'
-import { defaultTemplates } from '@tamagui/themes/v3-themes'
 import {
   darkColors,
   darkShadowColor,
@@ -34,9 +33,42 @@ const nonInherited = {
 
 // --- themeBuilder ---
 
+const templates = {
+  base: {
+    accentBackground: 0,
+    accentColor: -0,
+
+    background0: 1,
+    background025: 2,
+    background05: 3,
+    background075: 4,
+    color1: 5,
+    color2: 6,
+    color3: 7,
+    color4: 8,
+    color5: 9,
+    color6: 10,
+    color7: 11,
+    color8: 12,
+    color9: 13,
+    color10: 14,
+    color11: 15,
+    color12: 16,
+    color13: 17,
+    color0: -1,
+    color025: -2,
+    color05: -3,
+    color075: -4,
+
+    color: 17,
+    background: 4,
+    borderColor: 6,
+  },
+}
+
 const themeBuilder = createThemeBuilder()
   .addPalettes(palettes)
-  .addTemplates(defaultTemplates)
+  .addTemplates(templates)
   .addThemes({
     light: {
       template: 'base',
@@ -59,14 +91,6 @@ const themeBuilder = createThemeBuilder()
       template: 'base',
     },
   })
-  .addChildThemes({
-    alt1: {
-      template: 'alt1',
-    },
-    alt2: {
-      template: 'alt2',
-    },
-  })
 // no need for componet themes for us
 // .addComponentThemes(defaultComponentThemes, {
 //   avoidNestingWithin: ['alt1', 'alt2'],
@@ -76,9 +100,7 @@ const themeBuilder = createThemeBuilder()
 
 const themesIn = themeBuilder.build()
 
-type ThemeKeys =
-  | keyof typeof defaultTemplates.light_base
-  | keyof typeof nonInherited.light
+type ThemeKeys = keyof typeof templates.base | keyof typeof nonInherited.light
 
 export type Theme = Record<ThemeKeys, string>
 

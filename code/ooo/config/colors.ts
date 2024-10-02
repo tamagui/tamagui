@@ -129,25 +129,24 @@ export const palettes = (() => {
   const transparent = (hsl: string, opacity = 0) =>
     hsl.replace(`%)`, `%, ${opacity})`).replace(`hsl(`, `hsla(`)
 
-  const getColorPalette = (colors: Object, accentColors: Object): string[] => {
+  const getColorPalette = (
+    colors: Object,
+    accentColors: Object,
+    scheme: 'light' | 'dark'
+  ): string[] => {
     const colorPalette = Object.values(colors)
-    // make the transparent color vibrant and towards the middle
     const colorI = colorPalette.length - 4
-
-    // accents!
     const accentPalette = Object.values(accentColors)
     const accentBackground = accentPalette[0]
     const accentColor = accentPalette[accentPalette.length - 1]
-
-    // add our transparent colors first/last
-    // and make sure the last (foreground) color is white/black rather than colorful
-    // this is mostly for consistency with the older theme-base
+    const isDark = scheme === 'dark'
+    const adjustForDarkness = isDark ? 0.5 : 1
     return [
       accentBackground,
       transparent(colorPalette[0], 0),
-      transparent(colorPalette[0], 0.25),
-      transparent(colorPalette[0], 0.5),
-      transparent(colorPalette[0], 0.75),
+      transparent(colorPalette[0], 0.25 * adjustForDarkness),
+      transparent(colorPalette[0], 0.5 * adjustForDarkness),
+      transparent(colorPalette[0], 0.75 * adjustForDarkness),
       ...colorPalette,
       transparent(colorPalette[colorI], 0.75),
       transparent(colorPalette[colorI], 0.5),
@@ -217,7 +216,8 @@ export const palettes = (() => {
           `light_${key}`,
           getColorPalette(
             colorTokens.light[key],
-            colorTokens.light[lightColorNames[(index + 1) % lightColorNames.length]]
+            colorTokens.light[lightColorNames[(index + 1) % lightColorNames.length]],
+            'light'
           ),
         ] as const
     )
@@ -231,7 +231,8 @@ export const palettes = (() => {
           `dark_${key}`,
           getColorPalette(
             colorTokens.dark[key],
-            colorTokens.light[darkColorNames[(index + 1) % darkColorNames.length]]
+            colorTokens.light[darkColorNames[(index + 1) % darkColorNames.length]],
+            'dark'
           ),
         ] as const
     )
