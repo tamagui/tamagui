@@ -171,7 +171,9 @@ export function getThemeProxied(
     if (keys && !keys.includes(key)) {
       if (!keys.length) {
         // tracking new key for first time, do an update check
-        themeManager?.selfUpdate()
+        setTimeout(() => {
+          themeManager?.selfUpdate()
+        })
       }
 
       keys.push(key)
@@ -406,7 +408,7 @@ export const useChangeThemeEffect = (
       const selfListenerDispose = themeManager.onChangeTheme((_a, _b, forced) => {
         if (forced) {
           setThemeState((prev) => {
-            const next = createState(prev, forced !== 'self')
+            const next = createState(prev, !!forced)
             return next
           })
         }
