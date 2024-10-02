@@ -1,7 +1,7 @@
 import { LogoWords, TamaguiLogo, ThemeTint, useTint } from '@tamagui/logo'
 import * as React from 'react'
 import { SizableText, TooltipGroup, XGroup, XStack, YStack, isClient } from 'tamagui'
-import { usePathname } from 'vxs'
+import { usePathname } from 'one'
 import { Link } from '~/components/Link'
 import { GithubIcon } from '~/features/icons/GithubIcon'
 import { SeasonTogglePopover } from '~/features/site/seasons/SeasonTogglePopover'

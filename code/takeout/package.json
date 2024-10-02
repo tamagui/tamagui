@@ -4,13 +4,13 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "vxs dev",
-    "dev:clean": "vxs dev --clean",
-    "clean": "vxs clean",
-    "serve": "vxs serve --port 8081",
-    "build:prod": "yarn clean && vxs build",
+    "dev": "one dev",
+    "dev:clean": "one dev --clean",
+    "clean": "one clean",
+    "serve": "one serve --port 8081",
+    "build:prod": "yarn clean && one build",
     "prod": "yarn build:prod && yarn serve",
-    "serve:railway": "vxs serve --host 0.0.0.0"
+    "serve:railway": "one serve --host 0.0.0.0"
   },
   "dependencies": {
     "@react-three/drei": "^9.105.6",
@@ -30,6 +30,7 @@
     "expo-apple-authentication": "~6.4.1",
     "expo-crypto": "~13.0.2",
     "jsonwebtoken": "^9.0.2",
+    "one": "1.1.271",
     "postmark": "^3.0.18",
     "react": "^18.2.0 || ^19.0.0",
     "react-dom": "^18.2.0 || ^19.0.0",
@@ -40,7 +41,6 @@
     "tamagui": "1.112.14",
     "vite": "6.0.0-beta.1",
     "vite-plugin-inspect": "^0.8.4",
-    "vxs": "^1.1.268",
     "zod": "^3.22.4"
   },
   "devDependencies": {

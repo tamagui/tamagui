@@ -3,7 +3,7 @@ import {
   parseCookieHeader,
   serializeCookieHeader,
 } from '@supabase/ssr'
-import { setCurrentRequestHeaders } from 'vxs/headers'
+import { setCurrentRequestHeaders } from 'one/headers'
 
 export function getSupabaseServerClient(request: Request) {
   if (!import.meta.env.NEXT_PUBLIC_SUPABASE_URL) {

@@ -14,7 +14,7 @@ import {
   isTouchable,
 } from 'tamagui'
 
-import { usePathname } from 'vxs'
+import { usePathname } from 'one'
 import { DocsMenuContents } from '~/features/docs/DocsMenuContents'
 import { useDocsMenu } from '~/features/docs/useDocsMenu'
 import { useUser } from '~/features/user/useUser'

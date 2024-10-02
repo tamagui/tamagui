@@ -14,7 +14,7 @@ import {
 } from 'tamagui'
 import { docsRoutes } from './docsRoutes'
 
-import { usePathname, router, Link } from 'vxs'
+import { usePathname, router, Link } from 'one'
 import { DocsNavHeading } from './DocsNavHeading'
 import { DocsItemsStore, DocsRouteNavItem } from './DocsRouteNavItem'
 import { useDocsMenu } from './useDocsMenu'

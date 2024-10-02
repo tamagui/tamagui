@@ -1,7 +1,7 @@
 import { tamaguiPlugin } from '@tamagui/vite-plugin'
 import { createRequire } from 'node:module'
 import type { UserConfig } from 'vite'
-import { removeReactNativeWebAnimatedPlugin, vxs } from 'vxs/vite'
+import { removeReactNativeWebAnimatedPlugin, one } from 'one/vite'
 
 Error.stackTraceLimit = Number.POSITIVE_INFINITY
 
@@ -67,7 +67,7 @@ export default {
   },
 
   plugins: [
-    vxs({
+    one({
       server: {
         async afterStart() {
           if (process.env.SHOULD_PURGE_CDN) {

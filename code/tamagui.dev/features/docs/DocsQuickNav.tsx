@@ -1,7 +1,7 @@
 import { classNames } from '@tamagui/remove-scroll'
 import { useEffect, useState } from 'react'
 import { Circle, H4, Paragraph, ScrollView, Separator, XStack, YStack } from 'tamagui'
-import type { Href } from 'vxs'
+import type { Href } from 'one'
 
 import type { LinkProps } from '~/components/Link'
 

@@ -1,6 +1,6 @@
 import { ThemeTint } from '@tamagui/logo'
 import { Theme } from 'tamagui'
-import { Slot } from 'vxs'
+import { Slot } from 'one'
 import { useBentoStore } from '~/features/bento/BentoStore'
 import { Footer } from '~/features/site/Footer'
 import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'

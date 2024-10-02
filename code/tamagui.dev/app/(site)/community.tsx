@@ -17,7 +17,7 @@ import {
   YStack,
 } from 'tamagui'
 
-import type { Href } from 'vxs'
+import type { Href } from 'one'
 import { Card } from '~/components/Card'
 import { ContainerLarge } from '~/components/Containers'
 import { FlatBubbleCard } from '~/components/FlatBubbleCard'

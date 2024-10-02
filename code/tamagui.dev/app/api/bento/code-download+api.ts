@@ -1,4 +1,4 @@
-import type { Endpoint } from 'vxs'
+import type { Endpoint } from 'one'
 import { getQuery } from '~/features/api/getQuery'
 import { getBentoComponentCategory } from '~/features/auth/supabaseAdmin'
 import { hasBentoAccess } from '~/features/bento/hasBentoAccess'

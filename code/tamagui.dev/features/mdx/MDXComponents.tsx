@@ -36,7 +36,7 @@ import {
   styled,
 } from 'tamagui'
 import { LinearGradient } from 'tamagui/linear-gradient'
-import type { Href } from 'vxs'
+import type { Href } from 'one'
 import { Code, CodeInline } from '~/components/Code'
 import { CustomTabs } from '~/components/CustomTabs'
 import { DataTable } from '~/components/DataTable'

@@ -36,7 +36,7 @@ import {
   useThemeName,
 } from 'tamagui'
 import { LinearGradient } from 'tamagui/linear-gradient'
-import { useLoader } from 'vxs'
+import { useLoader } from 'one'
 import { ContainerLarge } from '~/components/Containers'
 import { ErrorBoundary } from '~/components/ErrorBoundary'
 import { HeadInfo } from '~/components/HeadInfo'

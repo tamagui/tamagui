@@ -1,7 +1,7 @@
 import { ThemeTint } from '@tamagui/logo'
 import { getMDXComponent } from 'mdx-bundler/client'
 import { useMemo } from 'react'
-import { useLoader } from 'vxs'
+import { useLoader } from 'one'
 import { HeadInfo } from '~/components/HeadInfo'
 import { SubTitle, nbspLastWord } from '~/components/SubTitle'
 import { DocsQuickNav } from '~/features/docs/DocsQuickNav'

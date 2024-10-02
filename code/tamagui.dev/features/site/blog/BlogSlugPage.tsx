@@ -14,7 +14,7 @@ import {
   YStack,
 } from 'tamagui'
 import { LinearGradient } from 'tamagui/linear-gradient'
-import { usePathname } from 'vxs'
+import { usePathname } from 'one'
 import { Container } from '~/components/Containers'
 import { Link } from '~/components/Link'
 import { authors } from '~/data/authors'

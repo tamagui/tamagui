@@ -1,4 +1,4 @@
-import { redirect } from 'vxs'
+import { redirect } from 'one'
 import { setupCors } from './cors'
 import { getSupabaseServerClient } from './getSupabaseServerClient'
 

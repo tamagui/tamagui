@@ -14,7 +14,7 @@ import {
   styled,
   useThemeName,
 } from 'tamagui'
-import { useLocalSearchParams, useRouter } from 'vxs'
+import { useLocalSearchParams, useRouter } from 'one'
 import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
 
 import { StudioPreviewComponents } from '~/features/studio/theme/StudioPreviewComponents'

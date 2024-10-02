@@ -1,5 +1,5 @@
 import { ToastViewport } from '@tamagui/toast'
-import { Slot, usePathname } from 'vxs'
+import { Slot, usePathname } from 'one'
 import { Footer } from '~/features/site/Footer'
 import { LoadCherryBomb, LoadMunro } from '~/features/site/fonts/LoadFonts'
 import { Header } from '~/features/site/header/Header'

@@ -1,5 +1,5 @@
 import { ThemeTint } from '@tamagui/logo'
-import { useLoader } from 'vxs'
+import { useLoader } from 'one'
 import { getMDXComponent } from 'mdx-bundler/client'
 import { useMemo } from 'react'
 import { SubTitle, nbspLastWord } from '~/components/SubTitle'

@@ -1,4 +1,4 @@
-import { useLoader } from 'vxs'
+import { useLoader } from 'one'
 import { H2, Paragraph, Spacer, XStack } from 'tamagui'
 import { ContainerLarge } from '~/components/Containers'
 import { Link } from '~/components/Link'

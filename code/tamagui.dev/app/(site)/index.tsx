@@ -1,5 +1,5 @@
 import { YStack } from 'tamagui'
-import { useLoader } from 'vxs'
+import { useLoader } from 'one'
 import { HeadInfo } from '~/components/HeadInfo'
 import { HomeAnimations } from '~/features/site/home/HomeAnimations'
 import { HomeCommunity } from '~/features/site/home/HomeCommunity'

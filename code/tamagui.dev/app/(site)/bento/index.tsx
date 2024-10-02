@@ -50,7 +50,7 @@ import {
   XStack,
   YStack,
 } from 'tamagui'
-import { useLoader } from 'vxs'
+import { useLoader } from 'one'
 import { CodeInline } from '~/components/Code'
 import { ContainerLarge } from '~/components/Containers'
 import { HeadInfo } from '~/components/HeadInfo'

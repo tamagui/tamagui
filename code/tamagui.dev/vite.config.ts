@@ -1,5 +1,5 @@
 // import entryShakingPlugin from 'vite-plugin-entry-shaking'
-import { removeReactNativeWebAnimatedPlugin, vxs } from 'vxs/vite'
+import { removeReactNativeWebAnimatedPlugin, one } from 'one/vite'
 import { tamaguiPlugin } from '@tamagui/vite-plugin'
 import type { UserConfig } from 'vite'
 
@@ -96,7 +96,7 @@ export default {
   },
 
   plugins: [
-    vxs({
+    one({
       deps: {
         '@supabase/postgrest-js': true,
         '@supabase/node-fetch': true,
@@ -156,7 +156,7 @@ export default {
     }),
 
     // hmmm breaking ssr for some reason on lucide:
-    // can use vite env api and only run this on client, make it part of vxs
+    // can use vite env api and only run this on client, make it part of one
     // @ts-ignore
     // entryShakingPlugin({
     //   targets,

@@ -1,5 +1,5 @@
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
-import { Link, useRouter } from 'vxs'
+import { Link, useRouter } from 'one'
 import { memo, useEffect } from 'react'
 import type { HeadingProps } from 'tamagui'
 import {

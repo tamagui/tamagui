@@ -1,4 +1,4 @@
-import { getURL } from 'vxs'
+import { getURL } from 'one'
 import { apiRoute } from '~/features/api/apiRoute'
 import { ensureAuth } from '~/features/api/ensureAuth'
 import { getQuery } from '~/features/api/getQuery'

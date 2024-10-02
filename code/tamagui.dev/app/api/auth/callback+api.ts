@@ -1,4 +1,4 @@
-import type { Endpoint } from 'vxs'
+import type { Endpoint } from 'one'
 import { getSupabaseServerClient } from '~/features/api/getSupabaseServerClient'
 
 export const GET: Endpoint = async (req) => {
@@ -21,7 +21,7 @@ export const GET: Endpoint = async (req) => {
   const headers = new Headers()
   headers.set('content-type', 'text/html')
 
-  // this will get the cookies added in getSupabaseServerClient thanks to vxs
+  // this will get the cookies added in getSupabaseServerClient thanks to one
   return new Response(
     `<html>
         <head>

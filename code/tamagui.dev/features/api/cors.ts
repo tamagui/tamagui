@@ -1,4 +1,4 @@
-import { setCurrentRequestHeaders } from 'vxs/headers'
+import { setCurrentRequestHeaders } from 'one/headers'
 
 export const setupCors = (req: Request) => {
   const origin = req.headers.get('origin')

@@ -1,7 +1,7 @@
 import React, { startTransition, useEffect } from 'react'
 
 import { allNotPending } from './docsRoutes'
-import { usePathname, useRouter } from 'vxs'
+import { usePathname, useRouter } from 'one'
 
 export const useDocsMenu = () => {
   const [open, setOpen] = React.useState(false)

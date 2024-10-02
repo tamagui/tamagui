@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { Spinner, YStack } from 'tamagui'
-import { useRouter } from 'vxs'
+import { useRouter } from 'one'
 import { HeadInfo } from '~/components/HeadInfo'
 import { UserGuard } from '~/features/user/useUser'
 

@@ -1,7 +1,7 @@
 import { tamaguiPlugin } from '@tamagui/vite-plugin'
 import type { UserConfig } from 'vite'
 import { ViteImageOptimizer } from 'vite-plugin-image-optimizer'
-import { vxs } from 'vxs/vite'
+import { one } from 'one/vite'
 
 const resolve = (path: string) => {
   const resolved = import.meta.resolve?.(path)
@@ -45,7 +45,7 @@ export default {
   },
 
   plugins: [
-    vxs(),
+    one(),
 
     ViteImageOptimizer(),
 

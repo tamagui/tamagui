@@ -20,7 +20,7 @@ import {
   XStack,
   YStack,
 } from 'tamagui'
-import type { Href } from 'vxs'
+import type { Href } from 'one'
 import type { TakeoutPageProps } from '~/app/(site)/takeout'
 import { Link } from '~/components/Link'
 import { useUser } from '~/features/user/useUser'

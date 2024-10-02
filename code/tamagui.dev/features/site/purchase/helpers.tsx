@@ -16,7 +16,7 @@ import {
 import type { Database } from '~/features/supabase/types'
 import { getTakeoutPriceInfo } from './getProductInfo'
 
-import { usePathname } from 'vxs'
+import { usePathname } from 'one'
 
 const ua = (() => {
   if (typeof window === 'undefined') return

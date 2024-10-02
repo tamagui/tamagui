@@ -1,4 +1,4 @@
-import type { Endpoint } from 'vxs'
+import type { Endpoint } from 'one'
 import { ensureAccess } from '~/features/api/ensureAccess'
 import { ensureAuth } from '~/features/api/ensureAuth'
 import { getQuery } from '~/features/api/getQuery'

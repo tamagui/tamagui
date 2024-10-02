@@ -26,7 +26,7 @@ import {
 
 // TODO make layout
 
-import { Slot, useRouter } from 'vxs'
+import { Slot, useRouter } from 'one'
 import { defaultThemeSuiteItem } from './constants/defaultThemeSuiteItem'
 import {
   ModalTitle,

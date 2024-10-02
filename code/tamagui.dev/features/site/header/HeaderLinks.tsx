@@ -17,7 +17,7 @@ import {
   debounce,
   styled,
 } from 'tamagui'
-import type { Href } from 'vxs'
+import type { Href } from 'one'
 import { Link } from '~/components/Link'
 import { BentoPageFrame } from '~/features/bento/BentoPageFrame'
 import { BentoIcon } from '~/features/icons/BentoIcon'

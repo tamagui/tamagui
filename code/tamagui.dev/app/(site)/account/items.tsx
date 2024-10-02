@@ -22,7 +22,7 @@ import {
   XStack,
   YStack,
 } from 'tamagui'
-import { useLocalSearchParams, useRouter } from 'vxs'
+import { useLocalSearchParams, useRouter } from 'one'
 import type { DiscordChannelStatus } from '~/app/api/discord/channel+api'
 import { Container } from '~/components/Containers'
 import { ButtonLink, Link } from '~/components/Link'
@@ -409,7 +409,7 @@ const ItemDetails = (
           <BotInstallPanel
             subItemId={item.id.toString()}
             appInstallations={getArray(
-              'app_installations' in item ? item.app_installations ?? [] : []
+              'app_installations' in item ? (item.app_installations ?? []) : []
             )}
           />
         )}

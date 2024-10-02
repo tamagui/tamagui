@@ -1,4 +1,4 @@
-import { getURL } from 'vxs'
+import { getURL } from 'one'
 
 export const getOgUrl = ({
   type,

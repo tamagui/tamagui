@@ -1,4 +1,4 @@
-import { redirect } from 'vxs'
+import { redirect } from 'one'
 import { apiRoute } from '~/features/api/apiRoute'
 import { ensureAuth } from '~/features/api/ensureAuth'
 import { getQuery } from '~/features/api/getQuery'

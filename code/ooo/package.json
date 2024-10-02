@@ -6,12 +6,12 @@
   "files": [],
   "type": "module",
   "scripts": {
-    "dev": "vxs dev",
-    "dev:clean": "vxs dev --clean",
+    "dev": "one dev",
+    "dev:clean": "one dev --clean",
     "subset-font-pn": "node --import=@nitrogql/esbuild-register ./helpers/subset-font.ts",
-    "build:prod": "vxs build",
-    "serve": "vxs serve",
-    "serve:railway": "vxs serve --host 0.0.0.0",
+    "build:prod": "one build",
+    "serve": "one serve",
+    "serve:railway": "one serve --host 0.0.0.0",
     "postinstall": "patch-package || true"
   },
   "dependencies": {
@@ -26,14 +26,14 @@
     "@tamagui/react-native-web": "1.112.14",
     "@tamagui/themes": "1.112.14",
     "@tamagui/use-store": "1.112.14",
-    "@vxrn/color-scheme": "^1.1.269",
+    "@vxrn/color-scheme": "^1.1.271",
     "body-scroll-lock": "^4.0.0-beta.0",
     "mdx-bundler": "^10.0.2",
+    "one": "1.1.271",
     "postmark": "^3.0.18",
     "react": "^18.2.0 || ^19.0.0",
     "react-native": "0.74.1",
-    "tamagui": "1.112.14",
-    "vxs": "^1.1.268"
+    "tamagui": "1.112.14"
   },
   "devDependencies": {
     "@nitrogql/esbuild-register": "^1.7.0",

@@ -1,7 +1,7 @@
 import type { Template, ThemeDefinitions } from '@tamagui/theme-builder'
 import { createStore, createUseStore } from '@tamagui/use-store'
 
-import { getURL } from 'vxs'
+import { getURL } from 'one'
 import { toastController } from '~/features/studio/ToastProvider'
 import { demoOptions, optionValues } from '~/features/studio/theme/demoOptions'
 import { getRandomElement } from '~/features/studio/theme/helpers/getRandomElement'

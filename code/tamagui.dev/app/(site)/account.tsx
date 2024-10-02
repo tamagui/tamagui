@@ -14,7 +14,7 @@ import {
   XStack,
   YStack,
 } from 'tamagui'
-import { useRouter } from 'vxs'
+import { useRouter } from 'one'
 import { Container } from '~/components/Containers'
 import { ButtonLink, Link } from '~/components/Link'
 import { Notice } from '~/components/Notice'
