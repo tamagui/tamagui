@@ -130,7 +130,7 @@ const perfectlyNineties = createFont({
 
 const mono = createFont({
   ...body,
-  family: 'monospace',
+  family: '"SF Mono", Consolas, monospace, monospace',
 })
 
 export const fonts = {

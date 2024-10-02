@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/button-next",
-  "version": "1.112.14",
+  "version": "1.112.15",
   "sideEffects": [
     "*.css"
   ],
@@ -33,13 +33,13 @@
     }
   },
   "dependencies": {
-    "@tamagui/get-button-sized": "1.112.14",
-    "@tamagui/stacks": "1.112.14",
-    "@tamagui/text": "1.112.14",
-    "@tamagui/web": "1.112.14"
+    "@tamagui/get-button-sized": "1.112.15",
+    "@tamagui/stacks": "1.112.15",
+    "@tamagui/text": "1.112.15",
+    "@tamagui/web": "1.112.15"
   },
   "devDependencies": {
-    "@tamagui/build": "1.112.14",
+    "@tamagui/build": "1.112.15",
     "react": "^18.2.0 || ^19.0.0",
     "vitest": "2.1.1"
   },
