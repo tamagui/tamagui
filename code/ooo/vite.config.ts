@@ -52,7 +52,7 @@ export default {
     // removeReactNativeWebAnimatedPlugin(),
 
     tamaguiPlugin({
-      optimize: true,
+      // optimize: true,
       disableServerOptimization: process.env.NODE_ENV === 'development',
       useReactNativeWebLite: true,
       components: ['tamagui'],

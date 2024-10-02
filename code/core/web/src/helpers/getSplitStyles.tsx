@@ -811,7 +811,7 @@ export const getSplitStyles: StyleSplitter = (
         // for some reason 'space' in val upsetting next ssr during prod build
         // technically i guess this also will not apply if 0 space which makes sense?
         const hasSpace = val['space']
-        const mediaKeyShort = key.slice(1)
+        const mediaKeyShort = key.slice(isMedia == 'theme' ? 7 : 1)
 
         hasMedia ||= true
 
@@ -1502,7 +1502,13 @@ export const getSubStyle = (
     if (!expanded || (!staticConfig.isHOC && key in skipProps && !styleProps.noSkip)) {
       continue
     }
-    for (const [skey, sval] of expanded) {
+
+    for (let [skey, sval] of expanded) {
+      // pseudo inside media
+      if (skey in validPseudoKeys) {
+        sval = getSubStyle(styleState, skey, sval, avoidMergeTransform)
+      }
+
       if (!avoidMergeTransform && skey in stylePropsTransform) {
         mergeTransform(styleOut, skey, sval)
       } else {
