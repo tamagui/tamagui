@@ -320,6 +320,9 @@ const createDOMProps = (elementType, props, options?) => {
   const flat = []
     .concat(style)
     .flat()
+    .flat()
+    .flat()
+    .flat()
     .reduce((acc, cur) => {
       if (cur) {
         Object.assign(acc, cur)
@@ -328,6 +331,9 @@ const createDOMProps = (elementType, props, options?) => {
     }, {})
 
   domProps.style = getStylesAtomic(flat).reduce((acc, [key, value]) => {
+    if (key === '$css' || key.startsWith('is_' || key === '')) {
+      return acc
+    }
     acc[key] = value
     return acc
   }, {})

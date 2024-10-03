@@ -60,7 +60,7 @@ export default {
   plugins: [
     one(),
 
-    ViteImageOptimizer(),
+    // ViteImageOptimizer(),
 
     // removeReactNativeWebAnimatedPlugin(),
 
