@@ -1,0 +1,12 @@
+{
+  "name": "@tamagui/proxy-tabbable",
+  "sideEffects": false,
+  "version": "1.112.16",
+  "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
+  "exports": {
+    ".": "./index.mjs"
+  }
+}

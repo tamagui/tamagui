@@ -8,7 +8,7 @@ const resolve = (path: string) => {
   if (!resolved) {
     throw new Error(`Not found: ${path}, maybe on wrong node version`)
   }
-  return resolved.replace('file:/', '')
+  return resolved.replace('file:/', '').replace(/\/+/, '/')
 }
 
 export default {
@@ -18,6 +18,18 @@ export default {
         find: '@docsearch/react',
         replacement: resolve('@docsearch/react'),
       },
+      {
+        find: 'tabbable',
+        replacement: resolve('@tamagui/proxy-tabbable'),
+      },
+      {
+        find: '@tamagui/select',
+        replacement: resolve('@tamagui/proxy-tabbable'),
+      },
+      // {
+      //   find: 'tslib',
+      //   replacement: resolve('@tamagui/proxy-worm'),
+      // },
     ],
 
     dedupe: [
