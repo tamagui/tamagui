@@ -1,0 +1,169 @@
+---
+title: Build or Run the Native iOS App
+description: Run your iOS app in development with custom dependencies, or build it for App Store and TestFlight
+---
+
+This guide explains how to build and upload your iOS app to the App Store or TestFlight, or run it locally during development with custom native dependencies.
+
+You'll use the `prebuild` command to generate the native code and Xcode project for iOS, open it with Xcode, and either run the app or archive it for distribution.
+
+<Notice>
+  If you just want to run your iOS app in development mode without any custom native dependencies added, you won't need to follow this guide at all.
+
+  All you need is an iOS device with [Expo Go](https://apps.apple.com/us/app/expo-go/id982107779) installed, then press the key combination <kbd>q</kbd>, <kbd>r</kbd> in your terminal which is running the One dev server, and follow the instructions to open the app in Expo Go.
+</Notice>
+
+<Notice>
+  **Prerequisites**: To build and run the iOS app, you'll need a Mac with Xcode installed. To upload the app to the App Store or TestFlight, you'll additionally need a paid Apple Developer account.
+</Notice>
+
+<Notice theme="blue">
+  If you are starting with a bare React Native or Expo project without using one of our templates, please follow the instructions in the [Project Setup](#project-setup) section to configure your project first.
+</Notice>
+
+
+## Prebuild
+
+Before you can run or build your iOS app, you'll need to generate the native code and Xcode project for iOS.
+
+First, ensure the `prebuild:native` script is defined in your `package.json`:
+
+```json
+{
+  "scripts": {
+    "prebuild:native": "one prebuild"
+  }
+ }
+```
+
+Next, run the following command in your terminal:
+
+```bash
+yarn prebuild:native
+```
+
+This command may prompt you with some questions and could take a few minutes to install CocoaPods dependencies on it's first run.
+
+Once finished, your iOS project will be available in the `./ios` directory and ready for use.
+
+
+## Running the App in Development
+
+To run the app, open the `.xcworkspace` file in the `./ios` directory. The filename will vary based on your app's name, but you can generally open it by running this command:
+
+```bash
+open ios/*.xcworkspace
+```
+
+Once Xcode opens, ➊ choose a simulator or physical device, and ➋ click the run button to build and launch the app.
+
+![](https://hackmd.io/_uploads/r1k5LhYRA.png)
+
+
+## Building for Production
+
+Open the .xcworkspace file from the ios directory. You can do this by running the following command:
+
+```bash
+open ios/*.xcworkspace
+```
+
+Once Xcode opens, follow these steps:
+
+* ➊ Click your app project in the Project Navigator.
+* ➋ Under “TARGETS,” select your app.
+* ➌ Go to the “Signing & Capabilities” tab.
+* ➍ Ensure “Automatically manage signing” is checked.
+* ➎ Select a development team.
+
+![](https://hackmd.io/_uploads/BkLe23YAA.png)
+
+
+<Notice>
+  You need a paid [Apple Developer Program](https://developer.apple.com/programs/) account to upload apps to the App Store or TestFlight. If you're not signed into your Apple Developer account in Xcode, select "Add an Account…" from the dropdown to log in.
+</Notice>
+
+<Notice>
+  If you encounter any other problems, try to follow the instructions that Xcode give you to fix them.
+</Notice>
+
+Once code signing is set up, click "Product" →  "Archive" on the menu bar to start the Archive process.
+
+![](https://hackmd.io/_uploads/B12qjntRA.png)
+
+After the archive process completes, Xcode will automatically open the Organizer window with your build. From there, click "Distribute App" to upload the app to the App Store or TestFlight.
+
+![](https://hackmd.io/_uploads/S1buC2FR0.png)
+
+<Notice>
+  You can also open the Organizer window by clicking "Window" → "Organizer" on the menu bar.
+</Notice>
+
+
+## Project Setup
+
+<Notice>
+  We've ususlly done this for you in our project template, so you can skip this section if you've created your project with `npx one`.
+</Notice>
+
+### React Native
+
+You should add a `react-native.config.cjs` file in your project root to configure React Native to use Vite as the JS bundler during the native build process:
+
+```js
+module.exports = {
+  commands: [...require('vxrn/react-native-commands')]
+}
+```
+
+By doing so, the `react-native build` command will be overwritten to use Vite as the JS bundler instead of Metro.
+
+<Notice>
+  If you are using React Native 0.74.x or below, we rely on a patch to the `@react-native-community/cli` package to make this work. For the patch to apply, you'll need to start the dev server at least once.
+</Notice>
+
+### Expo Prebuild
+
+If you're using [Expo Prebuild](https://docs.expo.dev/workflow/prebuild), you should also add `"vxrn/expo-plugin"` in your app config (app.json/app.config.js/app.config.ts):
+
+```json
+{
+  "expo": {
+    "plugins": ["vxrn/expo-plugin"]
+  }
+}
+```
+
+
+## Troubleshooting
+
+### `ios/*.xcworkspace` isn't there
+
+Try `cd ios && pod install && cd ..`.
+
+### Error: `node: No such file or directory` during Xcode build
+
+This often comes with `Node found at: /private/var/folders/.../T/xfs-.../node
+` and then `/private/var/folders/.../T/xfs-.../node: No such file or directory`.
+
+Try to delete `ios/.xcode.env.local`.
+
+### Error: `No Metro config found`
+
+1. Make sure there's a `react-native.config.cjs` in your project which contains something like this:
+
+    ```js
+    module.exports = {
+      commands: [...require('vxrn/react-native-commands')]
+    }
+    ```
+2. Make sure you have `vxrn/expo-plugin` included in your `app.json` (or .js, etc.):
+
+    ```json
+    {
+      "expo": {
+        "plugins": ["vxrn/expo-plugin"]
+      }
+    }
+    ```
+3. Try to delete the `ios` directory and run `prebuild` again.

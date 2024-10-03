@@ -1,0 +1,15 @@
+---
+title: <Redirect />
+---
+
+Redirect to another page when this page is focused.
+
+This component uses `useFocusEffect` to only run when the route it's rendered inside of is active. Once active, it will redirect immediately to a new route.
+
+### Props
+
+```
+interface RedirectProps {
+  href: string
+}
+```

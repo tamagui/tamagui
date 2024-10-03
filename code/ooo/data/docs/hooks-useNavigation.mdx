@@ -1,0 +1,13 @@
+---
+title: useNavigation
+---
+
+Return the navigation object for the current route.
+
+It takes an optional argument named `parent` of type `string`:
+
+- `parent` - Provide an absolute path like `/(root)` to the parent route or a relative path like `../../` to the parent route.
+
+It returns the result of [`useNavigation` from React Navigation](https://reactnavigation.org/docs/use-navigation), you can see the methods available on this object on the [React Navigation navigation prop reference page](https://reactnavigation.org/docs/navigation-prop).
+
+You should prefer to use [`useRouter`]() as it is strongly typed and only exposes functions that are guaranteed to work within One, but useNavigation gives you lower level access to the underling React Navigation instance.

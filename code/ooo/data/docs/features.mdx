@@ -1,0 +1,65 @@
+---
+title: Features
+description: One is a complete solution to cross-platform development with React and React Native. We're experimenting with a features document to offer a high-level overview of One.
+---
+
+See the [Status document](/docs/status) for the status of features.
+
+## Vite
+
+The One Vite Plugin automates away much of the setup & boilerplate required for cross-platform React Native & web development.
+
+Out of the box, the One Vite plugin does the following:
+
+- Sets up a [file system router](/docs/routing) in the `./app` folder
+- Generates [types for routes](/docs/routing#types) and updates them when routes change
+- Enables [loaders](/docs/routing-loader) and tree shakes them out on client. Using the amazing [babel-dead-code-elimination](https://github.com/pcattori/babel-dead-code-elimination) module
+- Enables the [`deps` option](/docs/configuration#deps) that allows for easy node_module patching
+- Swaps between React 18 for native and React 19 for web
+- Adds [vite-tsconfig-paths](https://github.com/aleclarson/vite-tsconfig-paths) plugin, unless it detects you've added it already
+- Loads `.env` file into `process.env` before running anything using [dotenv](https://www.npmjs.com/package/dotenv)
+- Adds a well-configured `tsconfig.json` if it doesn't exist
+- Configures native to resolve "react-native" (CJS) and "react-native-import" (ESM) exports field
+- Configures platform-specific extensions `web|native|ios|android` for extensions `ts|tsx|js|mjs`, eg `.ios.ts`
+- Adds a ssr-css plugin that enables perfect dev-mode CSS on first load, matching production
+- Configures a wide variety of optimizeDeps presets for React Native library compatibility
+- Patches a large number of known-bad node_modules to work with Vite
+- Ensures optimized deps across all routes are found before first load, avoiding hard reloads and slow loads in development mode
+
+## Universal
+
+- Uses [React Navigation](https://reactnavigation.org/) routing and truly native layouts
+- Adds [loaders](/docs/routing-loader) that work on native and web
+- Adds a [Link](/docs/components-Link) component for navigation
+- Adds a wide variety of hooks for routing
+- Adds [`react-native-safe-area-context`](https://github.com/th3rdwave/react-native-safe-area-context) and exports [SafeAreaView](/docs/components-SafeAreaView)
+
+## Native
+
+- Implements a custom bundle output with React Native compatible commonjs
+- Implements custom hot reloading that works with commonjs
+- Implements a custom bridge to React Native for debug logging
+- Implements logic to support importing assets, like images
+
+## Web
+
+- Adds `serve` command that sets up a [Hono](https://hono.dev/) server for production
+- Implements SPA, SSG, and SSR style routing on a [per-page and global basis](/docs/routing-modes)
+- Server rendering - find JS and CSS for all nested routes and layouts and hoists it to header to avoid waterfalls and flickering
+- Automatically preloads next page JS when hovering a link or navigating to a new route, including loaders
+  - Doesn't require up-front route map so no scaling cost
+- Automatically handles scroll restoration and [allows configuration](/docs/components-ScrollRestoration)
+- Adds an easy [`redirects` option](/docs/configuration)
+- Adds [`generateStaticParams` export](/docs/routing-exports#generatestaticparams) for SSG and SSR routes
+- Implements [API routes](/docs/routing-modes#api)
+- Adds a [page loading progress bar](/docs/components-LoadProgressBar)
+- Allows configuration of [routing scroll position logic](/docs/components-ScrollRestoration)
+- Swaps `query-string` and `url-parse` libraries to save ~20Kb
+- Adds a [Redirect component](/docs/components-Redirect) 
+
+## Extras
+
+- Exports a variety of [helpful utility functions](/docs/helpers-utility-functions)
+- Analyze your web client-side bundle with `VXRN_ANALYZE_BUNDLE=1`
+- Guide for [MDX support](/docs/guides-mdx)
+- Guide for [light and dark mode](/docs/guides-dark-mode)

@@ -1,0 +1,121 @@
+---
+title: Dark Mode
+description: SSR safe and with meta theme-color
+---
+
+<IntroParagraph>
+Supporting SSR safe styling while also supporting Native and web requires a lot of work - until now.
+</IntroParagraph>
+
+To start, there's only one cross-platform style library that supports SSR - [Tamagui](https://tamagui.dev) 👌.
+
+Tamagui gives you styling out of the box that works perfectly with no flickers, and even renders properly with JS turned off (give it a try on this very page).
+
+Using our style-library-agnostic `@vxrn/color-scheme` library, you can also let your users choose between three options: light, dark, or system settings - also, fully SSR safe.
+
+Finally, there's another wrinkle in the [theme-color meta tag](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta/name/theme-color) - it also requires some fancy scripting to be SSR safe. Luckily, `@vxrn/color-scheme` helps again with the MetaTheme component.
+
+Here's a complete example in just a few lines of code, all set up in your root `_layout.tsx` file. We're using Tamagui, but if you just want light/dark mode without SSR, you can swap out your own solution.
+
+```tsx
+import { Slot } from 'one'
+import { TamaguiProvider, Theme } from '@tamagui/core'
+import { config } from '@tamagui/config/v3'
+import { MetaTheme, SchemeProvider, useColorScheme } from '@vxrn/color-scheme'
+
+export default function Layout() {
+  return (
+    <SchemeProvider>
+      <MetaTheme
+        darkColor={config.themes.dark.color1.val}
+        lightColor={config.themes.light.color1.val}
+      />
+      <TamaguiRoot>
+        <Theme name="yellow">
+          <Slot />
+        </Theme>
+      </TamaguiRoot>
+    </SchemeProvider>
+  )
+}
+
+const TamaguiRoot = ({ children }) => {
+  const [scheme] = useColorScheme()
+  return (
+    <TamaguiProvider disableInjectCSS config={config} defaultTheme={scheme}>
+      {children}
+    </TamaguiProvider>
+  )
+}
+```
+
+Now lets make a toggle button:
+
+```tsx fileName=features/theme/ThemeToggleButton.tsx
+import { Moon, Sun, SunMoon } from '@tamagui/lucide-icons'
+import { useSchemeSetting } from '@vxrn/color-scheme'
+import { Appearance } from 'react-native'
+import { View, isWeb, Paragraph, YStack } from 'tamagui'
+
+const schemeSettings = ['light', 'dark', 'system'] as const
+
+export function ThemeToggleButton() {
+  const { onPress, Icon, setting } = useToggleTheme()
+
+  return (
+    <View group ai="center" containerType="normal" gap="$1">
+      <View
+        p="$3"
+        br="$10"
+        hoverStyle={{
+          bg: '$color2',
+        }}
+        pressStyle={{
+          bg: '$color1',
+        }}
+        pointerEvents="auto"
+        cur="pointer"
+        onPress={onPress}
+      >
+        <Icon size={20} />
+      </View>
+
+      <YStack>
+        <Paragraph
+          animation="100ms"
+          size="$1"
+          mb={-20}
+          color="$color10"
+          o={0}
+          $group-hover={{
+            o: 1,
+          }}
+        >
+          {setting[0].toUpperCase()}
+          {setting.slice(1)}
+        </Paragraph>
+      </YStack>
+    </View>
+  )
+}
+
+export function useToggleTheme() {
+  const [{ setting, scheme }, setSchemeSetting] = useSchemeSetting()
+  const Icon = setting === 'system' ? SunMoon : setting === 'dark' ? Moon : Sun
+
+  return {
+    setting,
+    scheme,
+    Icon,
+    onPress: () => {
+      const next = schemeSettings[(schemeSettings.indexOf(setting) + 1) % 3]
+
+      if (!isWeb) {
+        Appearance.setColorScheme(next === 'system' ? scheme : next)
+      }
+
+      setSchemeSetting(next)
+    },
+  }
+}
+```

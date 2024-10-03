@@ -1,0 +1,112 @@
+---
+title: Loaders
+---
+
+Loaders are useful for one-time loading of data from the server to the client and can only be used in routes in your `app` directory.
+
+For a more general purpose data solution, see [load and query]().
+
+Loaders run on the server, either once during build-time for normal routes, or once on each request for `+ssr` routes.
+
+Loaders and their imports are removed from client bundles, so you can access private information from within the loader. The data returned from the loader will be passed to the client, and so should be clear of private information. To access the loader data on the client, you must use the `useLoader` hook:
+
+```tsx
+import { useLoader } from 'one'
+
+export async function loader() {
+  return {
+    user: 'tamagui'
+  }
+}
+
+export default function HomePage() {
+  const data = useLoader(loader)
+  
+  return (
+    <p>
+      {data.user}
+    </p>
+  )
+}
+```
+
+The useLoader hook is automatically type safe.
+
+## Loader arguments
+
+Loaders receive a single argument object:
+
+### params
+
+ The `params` key will provide values from any dynamic route segments:
+
+```tsx fileName=app/user/[id].tsx
+export async function loader({ params }) {
+  // for route /user/jamon params.id is a string "jamon"
+  const user = await getUser(params.id)
+  
+  return {
+    greet: `Hello ${user.name}`
+  }
+}
+```
+
+### path
+
+The `path` key is the fully resolved pathname:
+
+```tsx fileName=app/user/[id].tsx
+export async function loader({ path }) {
+  // if the route is /user/123 then path is "/user/123"
+}
+```
+
+## Accepted Return Types
+
+Most JavaScript values, including primitives and objects, will be converted to JSON.
+
+You may also return a `Response`:
+
+```tsx
+export async function loader({ params: { id } }) {
+  const user = await db.users.findOne({ id })
+  const body = JSON.stringify(user)
+  return new Response(body, {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+}
+```
+
+## Throwing a Response
+
+A final handy pattern for loaders is throwing a response to end it early:
+
+```tsx
+export async function loader({ params: { id } }) {
+  const user = await db.users.findOne({ id })
+
+  if (!user) {
+    throw Response.error()
+  }
+  
+  // ... rest of function
+}
+```
+
+You can combine this with the [redirect utility function](/docs/helpers-utility-functions#redirect):
+
+```tsx
+import { redirect } from 'one'
+
+export async function loader({ params: { id } }) {
+  const user = await db.users.findOne({ id })
+
+  if (!user) {
+    throw redirect('/login')
+  }
+
+  // ... rest of function
+}
+```

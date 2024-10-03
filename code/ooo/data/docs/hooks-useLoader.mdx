@@ -1,0 +1,25 @@
+---
+title: useLoader
+---
+
+Returns the data of the the given loader. Only supports the loader from within the same file.
+
+```tsx
+import { useLoader } from 'one'
+
+export function loader() {
+  return { hello: 'world' }
+}
+
+export default function Page() {
+  const data = useLoader(loader)
+
+  return (
+    <>{data.hello}</>
+  )
+}
+```
+
+### Related to
+
+- [loader]()

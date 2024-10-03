@@ -1,0 +1,164 @@
+---
+title: Routing
+---
+
+The `app` directory is where One handles universal file system routing. Every file you create in it will be turned into a route, except for files named `_layout`. One only supports file system routes at this time, but we have a [discussion](https://github.com/onejs/one/discussions/108) for those who want to help us figure out a configuration-based approach.
+
+Here's an example:
+
+<RouteTree
+  routes={[
+    { name: '_layout.tsx', description: 'Wraps all files in this directory and below' },
+    { name: 'index.tsx', description: 'Matches "/"' },
+    { name: 'blog.tsx', children: [
+      { name: 'index.tsx', description: 'Matches "/blog"' },
+      { name: '[slug].tsx', description: 'Matches a single sub-path of "/blog", like "/blog/hello"' },
+      { name: '[...rest].tsx', description: 'Matches all sub-paths, like "/blog/hello/world"' }
+    ] },
+  ]}
+/>
+
+One routes support the popular feature of nested layouts, via `_layout.tsx` files, and parallel render-as-you-fetch data loading via `export loader`.
+
+## Route Structure
+
+All `.tsx` files in the `app` dir are used to match your routes, besides layouts. Each individual file is referred to as a "page" to disambiguate them from the term "route," which we use to refer to the actual URL state in a browser on web (or React Navigation state on native).
+
+All pages must export a React component to be rendered. You can choose between two ways to export it: `export default` or plain `export`. If you don't `default` export, we look for the first `export` that is capitalized. The reason we support this is simple - the React Refresh library doesn't support hot reloading default exports. We're looking into modifying it to support them for route files, but until then you may want to simply use `export` to maintain a nice hot reloading experience.
+
+### Simple Routes
+
+A simple page that matches the `/` route and will render on native and web:
+
+```tsx fileName=app/index.tsx
+import { Text } from 'react-native'
+
+export default function HomePage() {
+  return (
+    <Text>Hello world</Text>
+  )
+}
+```
+
+If you are targeting web-only, you may use HTML elements:
+
+```tsx fileName=app/index.tsx
+export default function HomePage() {
+  return (
+    <div>Hello world</div>
+  )
+}
+```
+
+All `index` files match against `/`, so `app/index.tsx` matches to your root `/` route. You can give your page a name as well, for example `app/about.tsx` will the `/about` route.
+
+### Dynamic Routes
+
+The segments of a route, for example `/hello/world`, are referred to as "route parameters" or just "params", where "hello" and "word" are each a single parameter. Pages can match against parameters dynamically in two ways: matching a single parameter, or matching all parameters below them.
+
+#### Single Parameter Routes
+
+One uses brackets to match against a single dynamic parameter: `./blog/[slug].tsx` matches `/blog/post-one` and `/blog/post-two`:
+
+<RouteTree
+  routes={[
+    { name: 'blog.tsx', children: [
+      { name: 'index.tsx', description: `Matches "/blog"` },
+      { name: '[slug].tsx', description: `Matches a single sub-path of "/blog", like "/blog/hello"` }
+    ] },
+  ]}
+/>
+
+One will match `./blog/[slug].tsx` to any `/blog/*` route, and pass in the parameters to the route as follows:
+
+```tsx
+export function loader({ params }) {
+  // params.slug will be a string matching the URL parameter
+}
+
+export default function BlogPostPage({ params }) {
+  // params.slug will be a string matching the URL parameter
+}
+```
+
+#### Rest Parameter Routes
+
+Much like JavaScript supports rest parameters, One supports rest parameter routes which are defined using the `[...rest].tsx` syntax.
+
+<RouteTree
+  routes={[
+    { name: 'catalog.tsx', children: [
+      { name: 'index.tsx', description: `Matches "/catalog"` },
+      { name: '[...rest].tsx', description: `Matches all sub-paths of "/catalog", like "/catalog/a/b/c"` }
+    ] },
+  ]}
+/>
+
+In the case where a user navigates to `/catalog/a/b/c`, the `[...rest].tsx` route would receive a params prop as follows:
+
+```tsx
+export function loader({ params }) {
+  // params.rest is an array ['a', 'b', 'c']
+}
+
+export default function BlogPostPage({ params }) {
+  // params.rest is an array ['a', 'b', 'c']
+}
+```
+
+## Routing Modes
+
+You can choose a rendering strategy on a per-page basis using a filename suffix. For more on these modes, [see the next documentation page, Routing Modes](/docs/routing-modes).
+
+- `route+ssg.tsx` - Matches "/route", but will render the page as a SSG route.
+- `route+spa.tsx` - Matches "/route", but will render the page as a SPA route.
+- `route+ssr.tsx` - Matches "/route", but will render the page as a SSR route.
+- `route+api.tsx` - Matches "/route", but will render the page as an API route.
+
+## Routing per-platform
+
+You can target a specific platform using the same specific extension convention as React Native - ie, using `.web.tsx`, `.native.tsx`, `.ios.tsx`, or `.android.tsx` as the last part of the filename.
+
+This lets you diverge the routing based on the platform. For example:
+
+<RouteTree
+  routes={[
+    { name: 'index.tsx', description: `Matches "/" on native"` },
+    { name: 'index.web.tsx', description: `Matches "/" on web` },
+    { name: 'blog.web.tsx', description: `Matches "/blog" on web, on native there will be no route` },
+  ]}
+/>
+
+## Groups
+
+You can define a group by naming a folder with surrounding parenthesis:
+
+
+<RouteTree
+  routes={[
+    { name: '_layout.tsx', description: '' },
+    { name: '(blog)', children: [
+      { name: '_layout.tsx', description: 'This layout will nest inside the above layout' },
+      { name: 'blog.tsx', description: 'Matches "/blog"' },
+      { name: '[slug].tsx', description: 'Matches a single sub-path of "/blog", like "/blog/hello"' },
+    ] },
+  ]}
+/>
+
+Groups are useful for a couple reasons:
+
+- They're useful to organize similar things without forcing you to nest URL segments.
+- They let you nest layouts, also without nesting segments.
+
+
+## 404 / Not found Routes
+
+Adding a `+not-found.tsx` file anywhere will act as a catch-all route for any route that is hit that doesn't match against the current URL. It acts much like a `[...rest].tsx` style route in this way, except the server will send it with a 404 response status.
+
+These routes match lowest in strength, so a rest parameter route will always override it.
+
+## Types
+
+One generates types for your routes, so that you get type checking on a variety of things like the [Link component](/docs/components-Link).
+
+The types are generated into your root directory, in a `routes.d.ts` file. You must make sure your tsconfig.json picks up this file.

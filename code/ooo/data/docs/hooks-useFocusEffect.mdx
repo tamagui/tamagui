@@ -1,0 +1,28 @@
+---
+title: useFocusEffect
+---
+
+Similar to React `useEffect`, but only runs when the current route is focused. This is directly based off [React Navigation's useFocusEffect](https://reactnavigation.org/docs/use-focus-effect/).
+
+You should pass it a function that is wrapped in a useCallback to avoid running it every render.
+
+Example:
+
+```tsx
+import { useFocusEffect } from '@react-navigation/native'
+import { useCallback } from 'react'
+
+function Profile({ userId }) {
+  const [user, setUser] = React.useState(null)
+
+  useFocusEffect(
+    useCallback(() => {
+      const unsubscribe = API.subscribe(userId, (user) => setUser(user))
+
+      return () => unsubscribe();
+    }, [userId])
+  )
+
+  return <ProfileContent user={user} />
+}
+```

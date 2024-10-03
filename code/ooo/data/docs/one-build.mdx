@@ -1,0 +1,55 @@
+---
+title: one build
+---
+
+Building your app for production happens through `one build`.
+
+It takes the first argument as the platform, which defaults to `web`.
+
+```bash
+npx one build [web | ios | android]
+```
+
+To build for iOS for example, you would run:
+
+```bash
+npx one build ios
+```
+
+## Building for web
+
+Ensure your `.env` file has a `ONE_SERVER_URL` set to your production URL, like:
+
+```
+ONE_SERVER_URL=https://onestack.dev
+```
+
+You can choose a deploy target, for now we only support `node` or `vercel`. This can be chosen via your Vite configuration:
+
+```tsx fileName=vite.config.ts
+import { one } from 'one/vite'
+
+export default {
+  plugins: [
+    one({
+      web: {
+        deploy: 'vercel' // defaults to node
+      }
+    })
+  ]
+}
+```
+
+And the CLI will print instructions on how to deploy when you run `npx one build`.
+
+You can also choose the platform when you run serve, after the build is complete:
+
+```bash
+npx one serve --platform vercel
+```
+
+## Building for native
+
+We don't have an end to end build command just yet, but we do easily slot into your existing Expo or plain React Native native app build process.
+
+Check out the [iOS Native Guide](/docs/guides-ios-native) for more information.

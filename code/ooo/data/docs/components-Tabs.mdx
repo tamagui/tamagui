@@ -1,0 +1,17 @@
+---
+title: <Tabs />
+---
+
+This component should only be rendered inside a `_layout.tsx` file, where it will serve as the location that children will render for routes below the layout.
+
+Tabs is simply a [React Navigation Bottom Tabs view](https://reactnavigation.org/docs/bottom-tab-navigator) and accepts the same props as React Navigation.
+
+```tsx
+import { Tabs } from 'one'
+
+export default function Layout() {
+  return (
+    <Tabs />
+  )
+}
+```

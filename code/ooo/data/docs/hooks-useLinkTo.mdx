@@ -1,0 +1,26 @@
+---
+title: useLinkTo
+---
+
+Used to create props that can be passed to a React Native or web component for creating a custom link.
+
+Accepts a single argument of type:
+
+```tsx
+type LinkToProps = {
+  href: Href;
+  replace?: boolean
+}
+``` 
+
+Note that `Href` is a string that is typed based on your file system routes.
+
+Returns an object of type:
+
+```tsx
+type LinkToResult = {
+  href: string
+  role: 'link'
+  onPress: (event: e?: React.MouseEvent<HTMLAnchorElement, MouseEvent> | GestureResponderEvent) => void
+}
+```

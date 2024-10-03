@@ -1,0 +1,114 @@
+---
+title: Tamagui and One
+description: Setting up Tamagui on One
+---
+
+Tamagui and One go together so well you'd swear they were made by the same person. When targeting both native and web, and wanting to share UI, you don't have many options.
+
+Tamagui does many things that no other universal libraries do: all of it's features work with SSR without flashing of styles, it supports spring and CSS animations (also SSR safe), it supports light and dark mode (also SSR safe), it's fully type safe, it supports container queries, and it outputs nearly ideal code for each platform.
+
+A generally nice Tamagui set starts with installing your packages. We're going to support SSR-safe light and dark mode with `@vxrn/color-scheme`:
+
+```
+npm add tamagui @tamagui/config @tamagui/vite-plugin @vxrn/color-scheme
+```
+
+Be sure to check out the [Dark mode guide](/docs/guides-dark-mode) for more detail there.
+
+Next, update your root `_layout.tsx`:
+
+```tsx fileName=app/_layout.tsx
+import { TamaguiProvider, Theme } from 'tamagui'
+import { MetaTheme, SchemeProvider, useColorScheme } from '@vxrn/color-scheme'
+import { LoadProgressBar, Slot, usePathname } from 'one'
+import config from '../config/tamagui.config'
+
+export default function Layout() {
+  return (
+    <SchemeProvider>
+      <ThemeProvider>
+        <Slot />
+      </ThemeProvider>
+    </SchemeProvider>
+  )
+}
+
+const ThemeProvider = ({ children }) => {
+  const [scheme] = useColorScheme()
+  return (
+    <TamaguiProvider config={config} defaultTheme={scheme}>
+      {children}
+    </TamaguiProvider>
+  )
+}
+```
+
+And add your `config/tamagui.config.ts`:
+
+```tsx fileName=config/tamagui.config.ts
+import { config } from '@tamagui/config/v3'
+import { createTamagui } from 'tamagui'
+
+export const config = createTamagui(config)
+```
+
+The reason we separate this file out is that it lets the Tamagui compiler optimize things. You don't have to do this, but it's pretty easy. You also don't need to set up the Tamagui Vite plugin, but even if not using the optimizing compiler, it does add some nice DOM attributes to help you link files to DOM nodes.
+
+```tsx fileName=vite.config.ts
+export default {
+  plugins: [
+    tamaguiPlugin({
+      optimize: true,
+      components: ['tamagui'],
+      config: './config/tamagui.config.ts',
+    })
+  ]
+}
+```
+
+### Optimizing further
+
+If you want to optimize things a bit further, we can output the Tamagui design system CSS to a stylesheet by changing our plugin configuration:
+
+```tsx fileName=vite.config.ts
+export default {
+  plugins: [
+    tamaguiPlugin({
+      optimize: true,
+      components: ['tamagui'],
+      config: './config/tamagui.config.ts',
+      outputCSS: './public/tamagui.css'
+    })
+  ]
+}
+```
+
+And then changing our root layout adding `disableInjectCSS` and importing the CSS:
+
+```tsx fileName=app/_layout.tsx
+import '../public/tamagui.css'
+
+import { TamaguiProvider, Theme } from 'tamagui'
+import { MetaTheme, SchemeProvider, useColorScheme } from '@vxrn/color-scheme'
+import { LoadProgressBar, Slot, usePathname } from 'one'
+import config from '../config/tamagui.config'
+
+export default function Layout() {
+  return (
+    <SchemeProvider>
+      <ThemeProvider>
+        <Slot />
+      </ThemeProvider>
+    </SchemeProvider>
+  )
+}
+
+const ThemeProvider = ({ children }) => {
+  const [scheme] = useColorScheme()
+  return (
+    <TamaguiProvider config={config} defaultTheme={scheme} disableInjectCSS>
+      {children}
+    </TamaguiProvider>
+  )
+}
+```

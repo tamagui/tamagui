@@ -1,0 +1,131 @@
+---
+title: Installation
+description: A quick tutorial from start to finish
+---
+
+Getting started with One is as as easy as:
+
+```bash
+npx one
+```
+
+The CLI will guide you through the process of bootstrapping one of our starter templates.
+
+If this is your first One app, we recommend taking this route, as you can choose between bare-bones example all the way up to a full stack with a user system and authentication. We will be launching more starters as the project matures.
+
+### 5-minute tutorial
+
+While we recommend using a preset to get started, it's helpful to walk through creating a new One app from scratch.
+
+For those of you who prefer to learn by doing, we've put together a 5-minute tutorial that will have you building a basic app in no time.
+
+Let's begin with our package.json:
+
+```json fileName=package.json
+{
+  "name": "one-app",
+  "version": "0.0.0",
+  "type": "module",
+  "sideEffects": false,
+  "scripts": {
+    "dev": "one dev",
+    "build": "one build",
+    "serve": "one serve"
+  },
+  "dependencies": {
+    "expo": "~51.0.28",
+    "one": "latest",
+    "react": "^18.3.1",
+    "react-native": "^0.74.1",
+    "react-native-web": "^0.19.12"
+  }
+}
+```
+
+Note the `sideEffects` field - for production builds, this will enable much better tree shaking.
+
+
+It is strongly recommended to pin the `one` version for production stability:
+
+```bash
+npm install one@latest --save-exact
+```
+
+This ensures consistent behavior across different environments and deployments.
+
+### Vite Config
+
+Next, let's add our ultra-simple `vite.config.ts`:
+
+```tsx fileName=vite.config.ts
+// Typed as UserConfig for handy autocomplete
+import type { UserConfig } from 'vite'
+import { one } from 'one/vite'
+
+export default {
+  plugins: [
+    one(),
+  ],
+} satisfies UserConfig
+```
+
+### File System Routes
+
+One expects your file system routes to be placed in an `app` directory.
+
+`app/_layout.tsx` serves as the top-level wrapper for all routes, ideal for:
+
+1. Consistent page structure
+2. Global styles or themes
+3. Persistent navigation
+4. App-wide state management
+
+One uses the `<Slot />` component to indicate where child components should render, allowing for nested layouts and fine-grained control over your UI structure.
+
+Let's create a root layout `app/_layout.tsx`:
+
+```tsx fileName=app/_layout.tsx
+import { Slot } from 'one'
+
+export default function Layout() {
+  return <Slot />
+}
+```
+
+And then create a simple index page `app/index.tsx`:
+
+```tsx fileName=app/index.tsx
+import { View, Text } from "react-native";
+
+export default function MyApp() {
+  return (
+    <View
+      style={{
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        minHeight: "100vh",
+      }}
+    >
+      <Text>Hello from One</Text>
+    </View>
+  );
+}
+```
+
+You can now install your node modules and run your app. 🎉
+
+```bash
+yarn install && yarn dev
+```
+
+### Running your app
+
+If the port isn't taken, you should be able to load [http://localhost:8081](http://localhost:8081) and to see your website (use `--port` to change the port).
+
+On native, you can use an [Expo Go](https://apps.apple.com/us/app/expo-go/id982107779) development app and load your app with [exp://0.0.0.0:8081](exp://0.0.0.0.:8081). Press the key combination <kbd>q</kbd>, <kbd>r</kbd> in your terminal which is running the dev server, and scan the QR code with your iPhone's camera if your computer and iPhone are connected to the same WiFi network.
+
+Note that for web-only projects you don't need `react-native`, and further note that if you want something that has a much broader styling featureset and much lighter bundle-size on web, you can use [Tamagui](https://tamagui.dev), which has no dependency on React Native.
+
+
+
