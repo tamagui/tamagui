@@ -8,51 +8,13 @@
  * @flow
  */
 
-import { styleq } from 'styleq'
-import { localizeStyle } from 'styleq/transform-localize-style.js'
-
-import { canUseDOM } from '../index'
-import { atomic, classic, inline } from './compiler/index'
-import { createSheet } from './dom/index'
-import { preprocess } from './preprocess'
-import { validate } from './validate'
-
 const staticStyleMap: WeakMap<Object, Object> = new WeakMap()
-const sheet = createSheet()
 
-function customStyleq(styles, isRTL) {
-  return styleq.factory({
-    transform(style) {
-      const compiledStyle = staticStyleMap.get(style)
-      if (compiledStyle != null) {
-        return localizeStyle(compiledStyle, isRTL)
-      }
-      return style
-    },
-  })(styles)
-}
+function insertRules(compiledOrderedRules) {}
 
-function insertRules(compiledOrderedRules) {
-  compiledOrderedRules.forEach(([rules, order]) => {
-    if (sheet != null) {
-      rules.forEach((rule) => {
-        sheet.insert(rule, order)
-      })
-    }
-  })
-}
+function compileAndInsertAtomic(style) {}
 
-function compileAndInsertAtomic(style) {
-  const [compiledStyle, compiledOrderedRules] = atomic(preprocess(style))
-  insertRules(compiledOrderedRules)
-  return compiledStyle
-}
-
-function compileAndInsertReset(style, key) {
-  const [compiledStyle, compiledOrderedRules] = classic(style, key)
-  insertRules(compiledOrderedRules)
-  return compiledStyle
-}
+function compileAndInsertReset(style, key) {}
 
 /* ----- API ----- */
 
@@ -70,72 +32,25 @@ const absoluteFill = absoluteFillObject as any
  * create
  */
 function create(styles) {
-  // Object.keys(styles).forEach((key) => {
-  //   const styleObj = styles[key]
-  //   // Only compile at runtime if the style is not already compiled
-  //   if (styleObj != null && styleObj.$$css !== true) {
-  //     let compiledStyles
-  //     if (key.indexOf('$raw') > -1) {
-  //       compiledStyles = compileAndInsertReset(styleObj, key.split('$raw')[0])
-  //     } else {
-  //       if (process.env.NODE_ENV !== 'production') {
-  //         validate(styleObj)
-  //         styles[key] = Object.freeze(styleObj)
-  //       }
-  //       compiledStyles = compileAndInsertAtomic(styleObj)
-  //     }
-  //     staticStyleMap.set(styleObj, compiledStyles)
-  //   }
-  // })
   return styles
 }
 
 /**
  * compose
  */
-function compose(style1: any, style2: any): any {
-  if (process.env.NODE_ENV !== 'production') {
-    /* eslint-disable prefer-rest-params */
-    const len = arguments.length
-    if (len > 2) {
-      const readableStyles = [...arguments].map((a) => flatten(a))
-      throw new Error(
-        `StyleSheet.compose() only accepts 2 arguments, received ${len}: ${JSON.stringify(
-          readableStyles
-        )}`
-      )
-    }
-    /* eslint-enable prefer-rest-params */
-  }
-  if (style1 && style2) {
-    return [style1, style2]
-  } else {
-    return style1 || style2
-  }
-}
+function compose(style1: any, style2: any): any {}
 
 /**
  * flatten
  */
-export function flatten(...styles: any): { [key: string]: any } {
-  const flatArray = styles.flat(Infinity)
-  const result = {}
-  for (let i = 0; i < flatArray.length; i++) {
-    const style = flatArray[i]
-    if (style != null && typeof style === 'object') {
-      // @ts-ignore
-      Object.assign(result, style)
-    }
-  }
-  return result
-}
+export function flatten(...styles: any): { [key: string]: any } {}
 
 /**
  * getSheet
  */
 function getSheet(): { id: string; textContent: string } {
   return {
-    id: sheet.id,
+    id: '',
     textContent: sheet.getTextContent(),
   }
 }
@@ -146,14 +61,7 @@ function getSheet(): { id: string; textContent: string } {
 type StyleProps = [string, { [key: string]: any } | null]
 type Options = { writingDirection: 'ltr' | 'rtl' }
 
-export default function StyleSheet(styles: any, options?: Options): StyleProps {
-  const isRTL = options != null && options.writingDirection === 'rtl'
-  const styleProps: StyleProps = customStyleq(styles, isRTL)
-  if (Array.isArray(styleProps) && styleProps[1] != null) {
-    styleProps[1] = inline(preprocess(styleProps[1]), isRTL)
-  }
-  return styleProps
-}
+export default function StyleSheet(styles: any, options?: Options): StyleProps {}
 
 StyleSheet.absoluteFill = absoluteFill
 StyleSheet.absoluteFillObject = absoluteFillObject
@@ -175,9 +83,3 @@ export type IStyleSheet = {
   getSheet: typeof getSheet
   hairlineWidth: number
 }
-
-setTimeout(() => {
-  if (canUseDOM && window.__REACT_DEVTOOLS_GLOBAL_HOOK__) {
-    window.__REACT_DEVTOOLS_GLOBAL_HOOK__.resolveRNStyle = StyleSheet.flatten
-  }
-}, 100)

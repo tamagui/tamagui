@@ -317,42 +317,22 @@ const createDOMProps = (elementType, props, options?) => {
   }
 
   // Resolve styles
-  const [className, inlineStyle] = StyleSheet(
-    [
-      style,
-      pointerEvents &&
-        (() => {
-          if (!pointerEventsStyles) {
-            pointerEventsStyles = StyleSheet.create({
-              auto: {
-                pointerEvents: 'auto',
-              },
-              'box-none': {
-                pointerEvents: 'box-none',
-              },
-              'box-only': {
-                pointerEvents: 'box-only',
-              },
-              none: {
-                pointerEvents: 'none',
-              },
-            })
-          }
-          return pointerEventsStyles
-        })(),
-    ],
-    { writingDirection: options ? options.writingDirection : 'ltr' }
-  )
-  if (className) {
-    domProps.className = className
+  domProps.style = []
+    .concat(style)
+    .flat()
+    .reduce((acc, cur) => {
+      if (cur) {
+        Object.assign(acc, cur)
+      }
+      return acc
+    }, {})
+
+  if (props.className) {
+    domProps.className = props.className
   }
 
   if (tmgCN) {
     domProps.className = tmgCN
-  }
-
-  if (inlineStyle) {
-    domProps.style = inlineStyle
   }
 
   // OTHER
