@@ -6,7 +6,7 @@ import type { Compiler, RuleSetRule } from 'webpack'
 import webpack from 'webpack'
 import { requireResolve } from './requireResolve'
 
-const { loadTamagui, watchTamaguiConfig } = Static
+const { watchTamaguiConfig } = Static
 
 export type PluginOptions = TamaguiOptions & {
   isServer?: boolean
