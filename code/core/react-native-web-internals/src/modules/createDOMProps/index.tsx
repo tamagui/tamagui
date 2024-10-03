@@ -7,8 +7,8 @@
  * @noflow
  */
 
-import StyleSheet from '../../StyleSheet/index'
 import AccessibilityUtil from '../AccessibilityUtil/index'
+import { getStylesAtomic } from '@tamagui/web'
 
 const emptyObject = {}
 const hasOwnProperty = Object.prototype.hasOwnProperty
@@ -317,42 +317,33 @@ const createDOMProps = (elementType, props, options?) => {
   }
 
   // Resolve styles
-  const [className, inlineStyle] = StyleSheet(
-    [
-      style,
-      pointerEvents &&
-        (() => {
-          if (!pointerEventsStyles) {
-            pointerEventsStyles = StyleSheet.create({
-              auto: {
-                pointerEvents: 'auto',
-              },
-              'box-none': {
-                pointerEvents: 'box-none',
-              },
-              'box-only': {
-                pointerEvents: 'box-only',
-              },
-              none: {
-                pointerEvents: 'none',
-              },
-            })
-          }
-          return pointerEventsStyles
-        })(),
-    ],
-    { writingDirection: options ? options.writingDirection : 'ltr' }
-  )
-  if (className) {
-    domProps.className = className
+  const flat = []
+    .concat(style)
+    .flat()
+    .flat()
+    .flat()
+    .flat()
+    .reduce((acc, cur) => {
+      if (cur) {
+        Object.assign(acc, cur)
+      }
+      return acc
+    }, {})
+
+  domProps.style = getStylesAtomic(flat).reduce((acc, [key, value]) => {
+    if (key === '$css' || key.startsWith('is_') || key === '') {
+      return acc
+    }
+    acc[key] = value
+    return acc
+  }, {})
+
+  if (props.className) {
+    domProps.className = props.className
   }
 
   if (tmgCN) {
     domProps.className = tmgCN
-  }
-
-  if (inlineStyle) {
-    domProps.style = inlineStyle
   }
 
   // OTHER

@@ -8,23 +8,23 @@ const yellow = {
   yellow4: 'hsl(54, 100%, 83.6%)',
   yellow5: 'hsl(54, 97.9%, 78.0%)',
   yellow6: 'hsl(54, 89.4%, 72.1%)',
-  yellow7: 'hsl(54, 80.4%, 60.0%)',
-  yellow8: 'hsl(54, 90%, 57%)',
-  yellow9: 'hsl(54, 95%, 55.0%)',
-  yellow10: 'hsl(54, 100%, 40%)',
-  yellow11: 'hsl(54, 90%, 30.0%)',
-  yellow12: 'hsl(54, 55.0%, 13.5%)',
+  yellow7: 'hsl(54, 80.4%, 65.0%)',
+  yellow8: 'hsl(54, 90%, 62%)',
+  yellow9: 'hsl(54, 100%, 58.0%)',
+  yellow10: 'hsl(54, 90%, 40%)',
+  yellow11: 'hsl(54, 80%, 30.0%)',
+  yellow12: 'hsl(54, 55.0%, 15%)',
   yellow13: '#000',
 }
 
 const yellowDark = {
-  yellow1: 'hsl(54, 30%, 5.5%)',
-  yellow2: 'hsl(54, 30%, 6.7%)',
-  yellow3: 'hsl(54, 30%, 8.7%)',
-  yellow4: 'hsl(54, 40%, 10.4%)',
-  yellow5: 'hsl(54, 50%, 12.1%)',
-  yellow6: 'hsl(54, 50%, 14.3%)',
-  yellow7: 'hsl(54, 50%, 18.4%)',
+  yellow1: 'hsl(54, 20%, 5.5%)',
+  yellow2: 'hsl(54, 20%, 6.7%)',
+  yellow3: 'hsl(54, 20%, 8.7%)',
+  yellow4: 'hsl(54, 30%, 10.4%)',
+  yellow5: 'hsl(54, 40%, 12.1%)',
+  yellow6: 'hsl(54, 40%, 14.3%)',
+  yellow7: 'hsl(54, 40%, 18.4%)',
   yellow8: 'hsl(54, 100%, 25.0%)',
   yellow9: 'hsl(54, 92.0%, 40.0%)',
   yellow10: 'hsl(54, 100%, 60.0%)',
@@ -70,11 +70,11 @@ export const lightColors = {
   ...colorTokens.light.yellow,
   ...colorTokens.light.gray,
 
-  blue: 'hsla(210, 60%, 80%, 0.6)',
-  green: 'hsla(120, 60%, 80%, 0.7)',
-  red: 'hsla(0, 60%, 80%, 0.6)',
-  purple: 'hsla(270, 60%, 80%, 0.6)',
-  pink: 'hsla(330, 60%, 80%, 0.6)',
+  blue: 'hsla(210, 60%, 80%, 0.7)',
+  green: 'hsla(120, 60%, 80%, 0.8)',
+  red: 'hsla(0, 60%, 80%, 0.7)',
+  purple: 'hsla(270, 60%, 80%, 0.7)',
+  pink: 'hsla(330, 60%, 80%, 0.7)',
 
   blueFg: 'hsl(210, 60%, 10%)',
   greenFg: 'hsl(120, 60%, 10%)',
@@ -129,25 +129,24 @@ export const palettes = (() => {
   const transparent = (hsl: string, opacity = 0) =>
     hsl.replace(`%)`, `%, ${opacity})`).replace(`hsl(`, `hsla(`)
 
-  const getColorPalette = (colors: Object, accentColors: Object): string[] => {
+  const getColorPalette = (
+    colors: Object,
+    accentColors: Object,
+    scheme: 'light' | 'dark'
+  ): string[] => {
     const colorPalette = Object.values(colors)
-    // make the transparent color vibrant and towards the middle
     const colorI = colorPalette.length - 4
-
-    // accents!
     const accentPalette = Object.values(accentColors)
     const accentBackground = accentPalette[0]
     const accentColor = accentPalette[accentPalette.length - 1]
-
-    // add our transparent colors first/last
-    // and make sure the last (foreground) color is white/black rather than colorful
-    // this is mostly for consistency with the older theme-base
+    const isDark = scheme === 'dark'
+    const adjustForDarkness = isDark ? 0.5 : 1
     return [
       accentBackground,
       transparent(colorPalette[0], 0),
-      transparent(colorPalette[0], 0.25),
-      transparent(colorPalette[0], 0.5),
-      transparent(colorPalette[0], 0.75),
+      transparent(colorPalette[0], 0.25 * adjustForDarkness),
+      transparent(colorPalette[0], 0.5 * adjustForDarkness),
+      transparent(colorPalette[0], 0.75 * adjustForDarkness),
       ...colorPalette,
       transparent(colorPalette[colorI], 0.75),
       transparent(colorPalette[colorI], 0.5),
@@ -217,7 +216,8 @@ export const palettes = (() => {
           `light_${key}`,
           getColorPalette(
             colorTokens.light[key],
-            colorTokens.light[lightColorNames[(index + 1) % lightColorNames.length]]
+            colorTokens.light[lightColorNames[(index + 1) % lightColorNames.length]],
+            'light'
           ),
         ] as const
     )
@@ -231,7 +231,8 @@ export const palettes = (() => {
           `dark_${key}`,
           getColorPalette(
             colorTokens.dark[key],
-            colorTokens.light[darkColorNames[(index + 1) % darkColorNames.length]]
+            colorTokens.light[darkColorNames[(index + 1) % darkColorNames.length]],
+            'dark'
           ),
         ] as const
     )

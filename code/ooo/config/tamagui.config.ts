@@ -6,9 +6,9 @@ import { fonts } from './fonts'
 import * as themes from './themesOut'
 import { tokens } from './tokens'
 
-export const smoothBezier = 'cubic-bezier(0.215, 0.610, 0.355, 1.000)'
+const smoothBezier = 'cubic-bezier(0.215, 0.610, 0.355, 1.000)'
 
-export const cssTransitions = {
+const cssTransitions = {
   '75ms': 'ease-in 75ms',
   '100ms': 'ease-in 100ms',
   '200ms': 'ease-in 200ms',
@@ -23,9 +23,9 @@ export const cssTransitions = {
   tooltip: 'ease-in 400ms',
 }
 
-export const animations = createAnimations(cssTransitions)
+const animations = createAnimations(cssTransitions)
 
-export const selectionStyles = (theme) =>
+const selectionStyles = (theme) =>
   theme.color5
     ? {
         backgroundColor: theme.color5,

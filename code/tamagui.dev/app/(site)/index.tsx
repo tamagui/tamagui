@@ -16,6 +16,8 @@ import { HomeTypography } from '~/features/site/home/HomeTypography'
 import { HomeSection, SectionTinted, TintSection } from '~/features/site/home/TintSection'
 import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
 
+console.log('wtf', process.env.ONE_SERVER_URL)
+
 export async function loader() {
   const { getCompilationExamples } = await import('@tamagui/mdx')
   return getCompilationExamples()

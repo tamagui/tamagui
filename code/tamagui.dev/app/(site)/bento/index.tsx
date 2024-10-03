@@ -637,7 +637,7 @@ const Body = () => {
         $theme-dark={{ bg: '#000' }}
       />
       <YStack>
-        <ContainerLarge>
+        {/* <ContainerLarge>
           <Input
             unstyled
             ref={inputRef as any}
@@ -652,7 +652,7 @@ const Body = () => {
             placeholderTextColor="rgba(150,150,150,0.5)"
             zi={100}
           />
-        </ContainerLarge>
+        </ContainerLarge> */}
 
         {filteredSections.map(({ sectionName, parts }) => {
           return (
