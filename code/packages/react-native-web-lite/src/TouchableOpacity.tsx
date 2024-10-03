@@ -145,4 +145,8 @@ const styles = StyleSheet.create({
 const MemoedTouchableOpacity = React.memo(React.forwardRef(TouchableOpacity))
 MemoedTouchableOpacity.displayName = 'TouchableOpacity'
 
+// compat
+// @ts-ignore
+MemoedTouchableOpacity.Mixin = {}
+
 export default MemoedTouchableOpacity
