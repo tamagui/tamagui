@@ -62,7 +62,7 @@ export function tamaguiPlugin({
 
   const compatPlugins = [
     {
-      name: 'tamagui-base',
+      name: 'tamagui-base-web-only',
       enforce: 'pre',
 
       async buildEnd() {
