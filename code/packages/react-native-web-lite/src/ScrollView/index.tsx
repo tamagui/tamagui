@@ -48,10 +48,6 @@ class ScrollView extends React.Component<any> {
   observedScrollSinceBecomingResponder = false
   becameResponderWhileAnimating = false
 
-  flashScrollIndicators() {
-    this.scrollResponderFlashScrollIndicators()
-  }
-
   /**
    * Returns a reference to the underlying scroll responder, which supports
    * operations like `scrollTo`. All ScrollView-like components should
@@ -76,56 +72,6 @@ class ScrollView extends React.Component<any> {
 
   getNativeScrollRef() {
     return this._scrollNodeRef
-  }
-
-  /**
-   * Scrolls to a given x, y offset, either immediately or with a smooth animation.
-   * Syntax:
-   *
-   * scrollTo(options: {x: number = 0; y: number = 0; animated: boolean = true})
-   *
-   * Note: The weird argument signature is due to the fact that, for historical reasons,
-   * the function also accepts separate arguments as as alternative to the options object.
-   * This is deprecated due to ambiguity (y before x), and SHOULD NOT BE USED.
-   */
-  scrollTo(
-    y?: number | { x?: number; y?: number; animated?: boolean },
-    x?: number,
-    animated?: boolean
-  ) {
-    if (typeof y === 'number') {
-      console.warn(
-        '`scrollTo(y, x, animated)` is deprecated. Use `scrollTo({x: 5, y: 5, animated: true})` instead.'
-      )
-    } else {
-      // eslint-disable-next-line @typescript-eslint/no-extra-semi
-      ;({ x, y, animated } = y || emptyObject)
-    }
-
-    this.getScrollResponder().scrollResponderScrollTo({
-      x: x || 0,
-      y: y || 0,
-      animated: animated !== false,
-    })
-  }
-
-  /**
-   * If this is a vertical ScrollView scrolls to the bottom.
-   * If this is a horizontal ScrollView scrolls to the right.
-   *
-   * Use `scrollToEnd({ animated: true })` for smooth animated scrolling,
-   * `scrollToEnd({ animated: false })` for immediate scrolling.
-   * If no options are passed, `animated` defaults to true.
-   */
-  scrollToEnd(options?: { animated?: boolean }) {
-    // Default to true
-    const animated = (options && options.animated) !== false
-    const { horizontal } = this.props
-    const scrollResponder = this.getScrollResponder()
-    const scrollResponderNode = this._scrollNodeRef
-    const x = horizontal ? scrollResponderNode.scrollWidth : 0
-    const y = horizontal ? 0 : scrollResponderNode.scrollHeight
-    scrollResponder.scrollResponderScrollTo({ x, y, animated })
   }
 
   render() {
@@ -290,7 +236,6 @@ class ScrollView extends React.Component<any> {
       node.getScrollableNode = this.getScrollableNode
       node.scrollTo = this.scrollTo
       node.scrollToEnd = this.scrollToEnd
-      node.flashScrollIndicators = this.flashScrollIndicators
       node.scrollResponderZoomTo = this.scrollResponderZoomTo
       node.scrollResponderScrollNativeHandleToKeyboard =
         this.scrollResponderScrollNativeHandleToKeyboard
@@ -514,188 +459,6 @@ class ScrollView extends React.Component<any> {
       timeSinceLastMomentumScrollEnd < IS_ANIMATING_TOUCH_START_THRESHOLD_MS ||
       this.lastMomentumScrollEndTime < this.lastMomentumScrollBeginTime
     return isAnimating
-  }
-
-  /**
-   * A helper function to scroll to a specific point in the scrollview.
-   * This is currently used to help focus on child textviews, but can also
-   * be used to quickly scroll to any element we want to focus. Syntax:
-   *
-   * scrollResponderScrollTo(options: {x: number = 0; y: number = 0; animated: boolean = true})
-   *
-   * Note: The weird argument signature is due to the fact that, for historical reasons,
-   * the function also accepts separate arguments as as alternative to the options object.
-   * This is deprecated due to ambiguity (y before x), and SHOULD NOT BE USED.
-   */
-  scrollResponderScrollTo(
-    x?:
-      | number
-      | {
-          x?: number
-          y?: number
-          animated?: boolean
-        },
-    y?: number,
-    animated?: boolean
-  ) {
-    if (typeof x === 'number') {
-      console.warn(
-        '`scrollResponderScrollTo(x, y, animated)` is deprecated. Use `scrollResponderScrollTo({x: 5, y: 5, animated: true})` instead.'
-      )
-    } else {
-      ;({ x, y, animated } = x || emptyObject)
-    }
-    const node = this.options.getScrollableNode()
-    const left = x || 0
-    const top = y || 0
-    if (typeof node.scroll === 'function') {
-      node.scroll({ top, left, behavior: !animated ? 'auto' : 'smooth' })
-    } else {
-      node.scrollLeft = left
-      node.scrollTop = top
-    }
-  }
-
-  /**
-   * A helper function to zoom to a specific rect in the scrollview. The argument has the shape
-   * {x: number; y: number; width: number; height: number; animated: boolean = true}
-   *
-   * @platform ios
-   */
-  scrollResponderZoomTo(
-    rect: {
-      x: number
-      y: number
-      width: number
-      height: number
-      animated?: boolean
-    },
-    animated?: boolean // deprecated, put this inside the rect argument instead
-  ) {
-    if (Platform.OS !== 'ios') {
-      invariant('zoomToRect is not implemented')
-    }
-  }
-
-  /**
-   * Displays the scroll indicators momentarily.
-   */
-  scrollResponderFlashScrollIndicators() {}
-
-  /**
-   * This method should be used as the callback to onFocus in a TextInputs'
-   * parent view. Note that any module using this mixin needs to return
-   * the parent view's ref in getScrollViewRef() in order to use this method.
-   * @param {any} nodeHandle The TextInput node handle
-   * @param {number} additionalOffset The scroll view's top "contentInset".
-   *        Default is 0.
-   * @param {bool} preventNegativeScrolling Whether to allow pulling the content
-   *        down to make it meet the keyboard's top. Default is false.
-   */
-  scrollResponderScrollNativeHandleToKeyboard = (
-    nodeHandle: any,
-    additionalOffset?: number,
-    preventNegativeScrollOffset?: boolean
-  ) => {
-    this.additionalScrollOffset = additionalOffset || 0
-    this.preventNegativeScrollOffset = !!preventNegativeScrollOffset
-    UIManager.measureLayout(
-      nodeHandle,
-      this.options.getInnerViewNode(),
-      this.scrollResponderTextInputFocusError,
-      this.scrollResponderInputMeasureAndScrollToKeyboard
-    )
-  }
-
-  /**
-   * The calculations performed here assume the scroll view takes up the entire
-   * screen - even if has some content inset. We then measure the offsets of the
-   * keyboard, and compensate both for the scroll view's "contentInset".
-   *
-   * @param {number} left Position of input w.r.t. table view.
-   * @param {number} top Position of input w.r.t. table view.
-   * @param {number} width Width of the text input.
-   * @param {number} height Height of the text input.
-   */
-  scrollResponderInputMeasureAndScrollToKeyboard = (
-    left: number,
-    top: number,
-    width: number,
-    height: number
-  ) => {
-    let keyboardScreenY = Dimensions.get('window').height
-    if (this.keyboardWillOpenTo) {
-      keyboardScreenY = this.keyboardWillOpenTo.endCoordinates.screenY
-    }
-    let scrollOffsetY = top - keyboardScreenY + height + this.additionalScrollOffset
-
-    // By default, this can scroll with negative offset, pulling the content
-    // down so that the target component's bottom meets the keyboard's top.
-    // If requested otherwise, cap the offset at 0 minimum to avoid content
-    // shifting down.
-    if (this.preventNegativeScrollOffset) {
-      scrollOffsetY = Math.max(0, scrollOffsetY)
-    }
-    this.scrollResponderScrollTo({ x: 0, y: scrollOffsetY, animated: true })
-
-    this.additionalOffset = 0
-    this.preventNegativeScrollOffset = false
-  }
-
-  scrollResponderTextInputFocusError(e: Event) {
-    console.error('Error measuring text field: ', e)
-  }
-
-  /**
-   * Warning, this may be called several times for a single keyboard opening.
-   * It's best to store the information in this method and then take any action
-   * at a later point (either in `keyboardDidShow` or other).
-   *
-   * Here's the order that events occur in:
-   * - focus
-   * - willShow {startCoordinates, endCoordinates} several times
-   * - didShow several times
-   * - blur
-   * - willHide {startCoordinates, endCoordinates} several times
-   * - didHide several times
-   *
-   * The `ScrollResponder` providesModule callbacks for each of these events.
-   * Even though any user could have easily listened to keyboard events
-   * themselves, using these `props` callbacks ensures that ordering of events
-   * is consistent - and not dependent on the order that the keyboard events are
-   * subscribed to. This matters when telling the scroll view to scroll to where
-   * the keyboard is headed - the scroll responder better have been notified of
-   * the keyboard destination before being instructed to scroll to where the
-   * keyboard will be. Stick to the `ScrollResponder` callbacks, and everything
-   * will work.
-   *
-   * WARNING: These callbacks will fire even if a keyboard is displayed in a
-   * different navigation pane. Filter out the events to determine if they are
-   * relevant to you. (For example, only if you receive these callbacks after
-   * you had explicitly focused a node etc).
-   */
-  scrollResponderKeyboardWillShow(e: Event) {
-    this.keyboardWillOpenTo = e
-    this.props.onKeyboardWillShow && this.props.onKeyboardWillShow(e)
-  }
-
-  scrollResponderKeyboardWillHide(e: Event) {
-    this.keyboardWillOpenTo = null
-    this.props.onKeyboardWillHide && this.props.onKeyboardWillHide(e)
-  }
-
-  scrollResponderKeyboardDidShow(e: Event) {
-    // TODO(7693961): The event for DidShow is not available on iOS yet.
-    // Use the one from WillShow and do not assign.
-    if (e) {
-      this.keyboardWillOpenTo = e
-    }
-    this.props.onKeyboardDidShow && this.props.onKeyboardDidShow(e)
-  }
-
-  scrollResponderKeyboardDidHide(e: Event) {
-    this.keyboardWillOpenTo = null
-    this.props.onKeyboardDidHide && this.props.onKeyboardDidHide(e)
   }
 }
 
