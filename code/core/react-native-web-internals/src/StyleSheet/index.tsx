@@ -38,12 +38,26 @@ function create(styles) {
 /**
  * compose
  */
-function compose(style1: any, style2: any): any {}
+function compose(style1: any, style2: any): any {
+  return flatten(style1, style2)
+}
 
 /**
  * flatten
  */
-export function flatten(...styles: any): { [key: string]: any } {}
+export function flatten(...styles: any): { [key: string]: any } {
+  return styles
+    .flat()
+    .flat()
+    .flat()
+    .flat()
+    .reduce((acc, cur) => {
+      if (cur) {
+        Object.assign(acc, cur)
+      }
+      return acc
+    }, {})
+}
 
 /**
  * getSheet
