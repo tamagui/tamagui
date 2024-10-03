@@ -32,8 +32,8 @@
     "@tamagui/react-native-use-pressable": "1.112.16",
     "@tamagui/react-native-use-responder-events": "1.112.16",
     "@tamagui/simple-hash": "1.112.16",
-    "@tamagui/web": "1.112.16",
-    "react": "^18.2.0 || ^19.0.0"
+    "react": "^18.2.0 || ^19.0.0",
+    "styleq": "^0.1.3"
   },
   "devDependencies": {
     "@tamagui/build": "1.112.16"
