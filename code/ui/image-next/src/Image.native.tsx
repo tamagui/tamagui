@@ -49,6 +49,15 @@ export const Image = StyledImage.styleable<ImageProps>((props, ref) => {
     }
   }
 
+  const size = {
+    width:
+      typeof width === 'string' && width[0] === '$' ? getTokenValue(width as any) : width,
+    height:
+      typeof height === 'string' && height[0] === '$'
+        ? getTokenValue(height as any)
+        : height,
+  }
+
   const finalProps = {
     ...rest,
     source:
@@ -56,16 +65,10 @@ export const Image = StyledImage.styleable<ImageProps>((props, ref) => {
         ? src
         : {
             uri: src,
-            width:
-              typeof width === 'string' && width[0] === '$'
-                ? getTokenValue(width as any)
-                : width,
-            height:
-              typeof height === 'string' && height[0] === '$'
-                ? getTokenValue(height as any)
-                : height,
+            ...size,
           },
     resizeMode,
+    style: size,
   } as any
 
   if (onLoad) {
