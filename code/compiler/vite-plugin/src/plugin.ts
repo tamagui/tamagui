@@ -4,6 +4,7 @@ import { transformWithEsbuild } from 'vite'
 import { tamaguiOptions, Static, loadTamaguiBuildConfig } from './loadTamagui'
 import { tamaguiExtractPlugin } from './extract'
 import { version } from 'vite'
+import { dirname, join } from 'node:path'
 
 const isVite6 = version.startsWith('6.')
 const resolve = (name: string) => import.meta.resolve?.(name).replace('file://', '')
@@ -112,11 +113,7 @@ export function tamaguiPlugin({
           },
           resolve:
             disableResolveConfig || enableNativeEnv
-              ? {
-                  alias: {
-                    'react-native-svg': resolve('@tamagui/react-native-svg'),
-                  },
-                }
+              ? {}
               : {
                   extensions,
                   alias: {
