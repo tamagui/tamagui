@@ -331,7 +331,7 @@ const createDOMProps = (elementType, props, options?) => {
     }, {})
 
   domProps.style = getStylesAtomic(flat).reduce((acc, [key, value]) => {
-    if (key === '$css' || key.startsWith('is_') || key === '') {
+    if (key === '$$css' || key.startsWith('is_') || key === '' || key[0] === '_') {
       return acc
     }
     acc[key] = value
