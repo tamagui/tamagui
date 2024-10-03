@@ -17,13 +17,13 @@
     "@remix-run/node": "^2.12.1",
     "@remix-run/react": "^2.12.1",
     "@remix-run/serve": "^2.12.1",
-    "@tamagui/config": "^1.112.16",
-    "@tamagui/core": "^1.112.16",
-    "@tamagui/vite-plugin": "^1.112.16",
+    "@tamagui/config": "^1.112.17",
+    "@tamagui/core": "^1.112.17",
+    "@tamagui/vite-plugin": "^1.112.17",
     "isbot": "^4.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "tamagui": "^1.112.16"
+    "tamagui": "^1.112.17"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.2",
