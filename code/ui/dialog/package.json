@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/dialog",
-  "version": "1.112.20",
+  "version": "1.112.21",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
@@ -33,30 +33,30 @@
     }
   },
   "dependencies": {
-    "@tamagui/adapt": "1.112.20",
-    "@tamagui/animate-presence": "1.112.20",
-    "@tamagui/aria-hidden": "1.112.20",
-    "@tamagui/compose-refs": "1.112.20",
-    "@tamagui/constants": "1.112.20",
-    "@tamagui/core": "1.112.20",
-    "@tamagui/create-context": "1.112.20",
-    "@tamagui/dismissable": "1.112.20",
-    "@tamagui/focus-scope": "1.112.20",
-    "@tamagui/helpers": "1.112.20",
-    "@tamagui/polyfill-dev": "1.112.20",
-    "@tamagui/popper": "1.112.20",
-    "@tamagui/portal": "1.112.20",
-    "@tamagui/remove-scroll": "1.112.20",
-    "@tamagui/sheet": "1.112.20",
-    "@tamagui/stacks": "1.112.20",
-    "@tamagui/text": "1.112.20",
-    "@tamagui/use-controllable-state": "1.112.20"
+    "@tamagui/adapt": "1.112.21",
+    "@tamagui/animate-presence": "1.112.21",
+    "@tamagui/aria-hidden": "1.112.21",
+    "@tamagui/compose-refs": "1.112.21",
+    "@tamagui/constants": "1.112.21",
+    "@tamagui/core": "1.112.21",
+    "@tamagui/create-context": "1.112.21",
+    "@tamagui/dismissable": "1.112.21",
+    "@tamagui/focus-scope": "1.112.21",
+    "@tamagui/helpers": "1.112.21",
+    "@tamagui/polyfill-dev": "1.112.21",
+    "@tamagui/popper": "1.112.21",
+    "@tamagui/portal": "1.112.21",
+    "@tamagui/remove-scroll": "1.112.21",
+    "@tamagui/sheet": "1.112.21",
+    "@tamagui/stacks": "1.112.21",
+    "@tamagui/text": "1.112.21",
+    "@tamagui/use-controllable-state": "1.112.21"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.112.20",
+    "@tamagui/build": "1.112.21",
     "react": "^18.2.0 || ^19.0.0",
     "react-native": "0.74.1"
   },
