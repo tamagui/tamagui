@@ -1,8 +1,12 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { renderHook, act, waitFor } from '@testing-library/react'
-import { useBashCommand } from '../useBashCommand'
+import {
+  useBashCommand,
+  stringIsExecCommand,
+  stringIsCreateCommand,
+  stringIsScriptCommand,
+} from '../useBashCommand'
 import { useLocalStorageWatcher } from '../useLocalStorageWatcher'
-import { stringIsExecCommand, stringIsCreateCommand } from '../useBashCommand'
 
 // Mock useLocalStorageWatcher
 vi.mock('../useLocalStorageWatcher', () => ({
@@ -77,6 +81,30 @@ describe('useBashCommand', () => {
     expect(result.current.transformedCommand).toBe('yarn dlx create-expo-app MyApp')
   })
 
+  it('converts yarn script commands', () => {
+    vi.mocked(useLocalStorageWatcher).mockReturnValue({
+      storageItem: 'yarn',
+      setItem: vi.fn(),
+    })
+
+    const { result } = renderHook(() => useBashCommand('npm run dev', 'language-bash'))
+
+    expect(result.current.transformedCommand).toBe('yarn dev')
+  })
+
+  it('converts script commands with &&', () => {
+    vi.mocked(useLocalStorageWatcher).mockReturnValue({
+      storageItem: 'npm',
+      setItem: vi.fn(),
+    })
+
+    const { result } = renderHook(() =>
+      useBashCommand('yarn dev && yarn build', 'language-bash')
+    )
+
+    expect(result.current.transformedCommand).toBe('npm run dev && npm run build')
+  })
+
   it('converts from sub-command run command to alias run command', () => {
     vi.mocked(useLocalStorageWatcher).mockReturnValue({
       storageItem: 'bun',
@@ -100,6 +128,30 @@ describe('useBashCommand', () => {
     expect(result.current.transformedCommand).toBe(
       'cd project && ls -la && touch file.txt'
     )
+  })
+
+  it('should convert npm install to yarn install when there ano arguments', () => {
+    vi.mocked(useLocalStorageWatcher).mockReturnValue({
+      storageItem: 'yarn',
+      setItem: vi.fn(),
+    })
+
+    const { result } = renderHook(() => useBashCommand('npm install', 'language-bash'))
+
+    expect(result.current.isInstallCommand).toBe(true)
+    expect(result.current.transformedCommand).toBe('yarn install')
+  })
+
+  it('should convert pnpm install to bun install when there ano arguments', () => {
+    vi.mocked(useLocalStorageWatcher).mockReturnValue({
+      storageItem: 'bun',
+      setItem: vi.fn(),
+    })
+
+    const { result } = renderHook(() => useBashCommand('pnpm install', 'language-bash'))
+
+    expect(result.current.isInstallCommand).toBe(true)
+    expect(result.current.transformedCommand).toBe('bun install')
   })
 
   it('handles non-bash commands', () => {
@@ -189,6 +241,45 @@ describe('useBashCommand', () => {
       expect(stringIsCreateCommand('cd my-project')).toBe(false)
       expect(stringIsCreateCommand('ls -la')).toBe(false)
       expect(stringIsCreateCommand('echo "Hello, World!"')).toBe(false)
+    })
+  })
+
+  describe('stringIsScriptCommand', () => {
+    it('recognizes npm script commands', () => {
+      expect(stringIsScriptCommand('npm run dev')).toBe(true)
+      expect(stringIsScriptCommand('npm run build')).toBe(true)
+    })
+
+    it('recognizes yarn script commands', () => {
+      expect(stringIsScriptCommand('yarn dev')).toBe(true)
+      expect(stringIsScriptCommand('yarn build')).toBe(true)
+    })
+
+    it('recognizes pnpm script commands', () => {
+      expect(stringIsScriptCommand('pnpm dev')).toBe(true)
+      expect(stringIsScriptCommand('pnpm build')).toBe(true)
+    })
+
+    it('recognizes bun script commands', () => {
+      expect(stringIsScriptCommand('bun run dev')).toBe(true)
+      expect(stringIsScriptCommand('bun run build')).toBe(true)
+    })
+
+    it('returns false for non-script commands', () => {
+      expect(stringIsScriptCommand('npm install react')).toBe(false)
+      expect(stringIsScriptCommand('yarn add lodash')).toBe(false)
+      expect(stringIsScriptCommand('pnpm add vite')).toBe(false)
+      expect(stringIsScriptCommand('bun add typescript')).toBe(false)
+    })
+
+    it('returns false for exec commands', () => {
+      expect(stringIsScriptCommand('npx create-react-app my-app')).toBe(false)
+      expect(stringIsScriptCommand('yarn dlx create-next-app my-app')).toBe(false)
+    })
+
+    it('returns false for terminal commands', () => {
+      expect(stringIsScriptCommand('cd my-project')).toBe(false)
+      expect(stringIsScriptCommand('ls -la')).toBe(false)
     })
   })
 })

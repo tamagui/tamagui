@@ -32,6 +32,13 @@ const CREATE_COMMANDS = {
   pnpm: 'create',
 }
 
+const SCRIPT_COMMANDS = {
+  npm: 'run',
+  yarn: '',
+  bun: 'run',
+  pnpm: '',
+}
+
 const parseCommand = (text: string) => {
   const words = text.trim().split(' ')
   let packageManager = ''
@@ -58,7 +65,30 @@ const parseCommand = (text: string) => {
   command = words[1]
   args = words.slice(2).join(' ')
 
+  // Special case for 'install' command without arguments
+  if (command === 'install' && args === '') {
+    return { packageManager, command: 'install', args: '' }
+  }
+
   return { packageManager, command, args }
+}
+
+export const stringIsScriptCommand = (text: string) => {
+  const { packageManager, command } = parseCommand(text)
+  if (!PACKAGE_MANAGERS.includes(packageManager)) return false
+
+  const scriptCmd = SCRIPT_COMMANDS[packageManager as keyof typeof SCRIPT_COMMANDS]
+  if (scriptCmd === '') {
+    // For package managers like yarn and pnpm that don't require 'run'
+    return (
+      command !== 'add' &&
+      command !== 'install' &&
+      command !== 'create' &&
+      !stringIsExecCommand(text)
+    )
+  }
+  // For package managers like npm and bun that require 'run'
+  return command === 'run'
 }
 
 const isPackageManagerCommand = (text: string) => {
@@ -68,7 +98,8 @@ const isPackageManagerCommand = (text: string) => {
     (Object.values(INSTALL_COMMANDS).includes(command) ||
       Object.values(CREATE_COMMANDS).includes(command) ||
       Object.values(EXEC_COMMANDS).includes(command) ||
-      stringIsExecCommand(text))
+      stringIsExecCommand(text) ||
+      stringIsScriptCommand(text))
   )
 }
 
@@ -118,6 +149,7 @@ type UseBashCommandOutputs = {
   isCreateCommand: boolean
   isInstallCommand: boolean
   isExecCommand: boolean
+  isScriptCommand: boolean
   showTabs: boolean
   commandType: string
   transformedCommand: string
@@ -135,9 +167,16 @@ export function useBashCommand(
 
   const isPackageCommand = isBash && isPackageManagerCommand(bashText)
 
+  const {
+    packageManager: originalPackageManager,
+    command: commandType,
+    args,
+  } = parseCommand(bashText)
+
   const isInstallCommand = isPackageCommand && stringIsInstallCommand(bashText)
   const isExecCommand = isPackageCommand && stringIsExecCommand(bashText)
   const isCreateCommand = isPackageCommand && stringIsCreateCommand(bashText)
+  const isScriptCommand = isPackageCommand && stringIsScriptCommand(bashText)
   const isTerminalCommand = isBash && !isPackageCommand
 
   const showTabs = isBash && !isTerminalCommand
@@ -146,36 +185,44 @@ export function useBashCommand(
   const { storageItem: selectedPackageManager, setItem: setPackageManager } =
     useLocalStorageWatcher('bashRunTab', defaultTab)
 
-  const {
-    packageManager: originalPackageManager,
-    command: commandType,
-    args,
-  } = parseCommand(bashText)
-
   const transformCommand = (inputCommand: string): string => {
     if (!isBash) return inputCommand.trim()
     if (isTerminalCommand) return inputCommand.trim()
 
-    if (isInstallCommand) {
-      const installCmd = INSTALL_COMMANDS[selectedPackageManager]
-      return `${selectedPackageManager} ${installCmd} ${args}`.trim()
-    }
+    const commands = inputCommand.split('&&').map((cmd) => cmd.trim())
+    const transformedCommands = commands.map((cmd) => {
+      const { packageManager, command, args } = parseCommand(cmd)
 
-    if (isCreateCommand) {
-      const createCmd = CREATE_COMMANDS[selectedPackageManager]
-      return `${selectedPackageManager} ${createCmd} ${args}`.trim()
-    }
+      if (stringIsInstallCommand(cmd)) {
+        // Special case for 'install' command without arguments
+        if (command === 'install' && args === '') {
+          return `${selectedPackageManager} install`.trim()
+        }
+        const installCmd = INSTALL_COMMANDS[selectedPackageManager]
+        return `${selectedPackageManager} ${installCmd} ${args}`.trim()
+      }
 
-    if (isExecCommand) {
-      const runCmd = EXEC_COMMANDS[selectedPackageManager as keyof typeof EXEC_COMMANDS]
+      if (stringIsCreateCommand(cmd)) {
+        const createCmd = CREATE_COMMANDS[selectedPackageManager]
+        return `${selectedPackageManager} ${createCmd} ${args}`.trim()
+      }
 
-      if (Object.values(EXEC_COMMANDS).some((cmd) => inputCommand.startsWith(cmd))) {
+      if (stringIsExecCommand(cmd)) {
+        const runCmd = EXEC_COMMANDS[selectedPackageManager as keyof typeof EXEC_COMMANDS]
         return `${runCmd} ${args}`.trim()
       }
-      return `${selectedPackageManager} ${commandType} ${args}`.trim()
-    }
 
-    return inputCommand.trim()
+      if (stringIsScriptCommand(cmd)) {
+        const scriptCmd =
+          SCRIPT_COMMANDS[selectedPackageManager as keyof typeof SCRIPT_COMMANDS]
+        const scriptName = args || command // Use 'args' if available, otherwise use 'command'
+        return `${selectedPackageManager}${scriptCmd ? ' ' + scriptCmd : ''} ${scriptName}`.trim()
+      }
+
+      return cmd
+    })
+
+    return transformedCommands.join(' && ')
   }
 
   const transformedCommand = transformCommand(bashText)
@@ -185,6 +232,7 @@ export function useBashCommand(
     isCreateCommand,
     isInstallCommand,
     isExecCommand,
+    isScriptCommand,
     showTabs,
     commandType,
     transformedCommand,
