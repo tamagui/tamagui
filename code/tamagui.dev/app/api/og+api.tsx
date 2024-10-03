@@ -3,8 +3,6 @@ import type { ReactElement } from 'react'
 import { getURL } from 'one'
 import { apiRoute } from '~/features/api/apiRoute'
 
-console.log('wtf', getURL())
-
 export default apiRoute(async (req) => {
   const { ImageResponse } = await import('@vercel/og')
 
