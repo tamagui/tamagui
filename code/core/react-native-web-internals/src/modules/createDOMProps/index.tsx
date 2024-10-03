@@ -7,8 +7,8 @@
  * @noflow
  */
 
-import StyleSheet from '../../StyleSheet/index'
 import AccessibilityUtil from '../AccessibilityUtil/index'
+import { getStylesAtomic } from '@tamagui/web'
 
 const emptyObject = {}
 const hasOwnProperty = Object.prototype.hasOwnProperty
@@ -317,7 +317,7 @@ const createDOMProps = (elementType, props, options?) => {
   }
 
   // Resolve styles
-  domProps.style = []
+  const flat = []
     .concat(style)
     .flat()
     .reduce((acc, cur) => {
@@ -326,6 +326,11 @@ const createDOMProps = (elementType, props, options?) => {
       }
       return acc
     }, {})
+
+  domProps.style = getStylesAtomic(flat).reduce((acc, [key, value]) => {
+    acc[key] = value
+    return acc
+  }, {})
 
   if (props.className) {
     domProps.className = props.className

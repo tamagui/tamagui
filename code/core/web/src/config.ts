@@ -61,6 +61,10 @@ export const getConfig = () => {
   return conf
 }
 
+export const getConfigMaybe = () => {
+  return conf
+}
+
 let tokensMerged: TokensMerged
 export function setTokens(_: TokensMerged) {
   tokensMerged = _

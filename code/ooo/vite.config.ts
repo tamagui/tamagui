@@ -43,6 +43,7 @@ export default {
       '@tamagui/use-presence',
       'react-native-reanimated',
       '@tamagui/react-native-web',
+      'react-native-web-internals',
     ],
   },
 
