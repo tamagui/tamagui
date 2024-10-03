@@ -171,11 +171,6 @@ export default withPlugins([
       output: './themes.tsx',
     },
 
-    // adds mini-css-extract and css-minimizer-plugin, can fix issues with unique configurations
-    enableCSSOptimizations: false,
-    // disable tamagui config to make fonts easier to import
-    disableFontSupport: false,
-
     // Many packages give difficulty to the nextjs server-side (node) runtime when un-bundled.
     // for example, tamagui configures aliases like react-native => react-native-web.
     // if you're running into a module that has errors importing react-native, you'll want to
