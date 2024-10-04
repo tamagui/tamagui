@@ -235,7 +235,7 @@ export default function HomePage() {
 
               <PrettyTextBigger>
                 Native apps feel better and are easier to write thanks to client-side
-                databases. Say&nbsp;bye&nbsp;👋 to server boundaries, lose&nbsp;the glue
+                databases. Say&nbsp;bye&nbsp;to server boundaries, lose&nbsp;the glue
                 code, mutate instantly, and have things
                 Just&nbsp;Work™&nbsp;offline&#x2026;
               </PrettyTextBigger>
@@ -488,7 +488,7 @@ function Video() {
         <Paragraph
           animation="quick"
           ff="$perfectlyNineties"
-          size="$8"
+          size="$7"
           ta="center"
           w={340}
           zi={2}
@@ -516,7 +516,7 @@ function Video() {
             scale: 0.97,
           }}
           $sm={{
-            size: '$7',
+            size: '$6',
           }}
         >
           Watch the demo
