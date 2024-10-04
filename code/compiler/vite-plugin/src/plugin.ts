@@ -163,7 +163,11 @@ export function tamaguiPlugin({
 
       config() {
         if (tamaguiOptions?.useReactNativeWebLite) {
-          const rnwl = resolve('@tamagui/react-native-web-lite')
+          const rnwl = resolve(
+            tamaguiOptions?.useReactNativeWebLite === 'without-animated'
+              ? '@tamagui/react-native-web-lite/without-animated'
+              : '@tamagui/react-native-web-lite'
+          )
           const rnwlSS = resolve(
             '@tamagui/react-native-web-lite/dist/exports/StyleSheet/compiler/createReactDOMStyle'
           )
