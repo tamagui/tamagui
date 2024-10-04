@@ -7,7 +7,11 @@ Tamagui and One go together so well you'd swear they were made by the same perso
 
 Tamagui does many things that no other universal libraries do: all of it's features work with SSR without flashing of styles, it supports spring and CSS animations (also SSR safe), it supports light and dark mode (also SSR safe), it's fully type safe, it supports container queries, and it outputs nearly ideal code for each platform.
 
-A generally nice Tamagui set starts with installing your packages. We're going to support SSR-safe light and dark mode with `@vxrn/color-scheme`:
+<Notice>
+  We just got this guide up, it's based on a few existing apps but we haven't tested it e2e yet. Figure it's better than nothing. If you want a real working example to look at, see the Tamagui example via `npx one`, or the [source code for this website](https://github.com/tamagui/tamagui/tree/master/code/ooo).
+</Notice>
+
+We're going to support SSR-safe light and dark mode with `@vxrn/color-scheme`:
 
 ```
 npm add tamagui @tamagui/config @tamagui/vite-plugin @vxrn/color-scheme
@@ -33,6 +37,7 @@ export default function Layout() {
   )
 }
 
+// this is in its own component so it can access the useColorScheme hook
 const ThemeProvider = ({ children }) => {
   const [scheme] = useColorScheme()
   return (
@@ -52,7 +57,11 @@ import { createTamagui } from 'tamagui'
 export const config = createTamagui(config)
 ```
 
-The reason we separate this file out is that it lets the Tamagui compiler optimize things. You don't have to do this, but it's pretty easy. You also don't need to set up the Tamagui Vite plugin, but even if not using the optimizing compiler, it does add some nice DOM attributes to help you link files to DOM nodes.
+The reason we separate this file out is that it lets the Tamagui compiler optimize things. You don't have to do this, but it's pretty easy.
+
+This preset config we recommend as it lets you just get working on your app, but if you want a custom configuration, the `npx one` starter has a [nice custom configuration example](https://github.com/onejs/one/blob/main/examples/one-tamagui/config/tamagui/tamagui.config.ts).
+
+Next for the Vite plugin. You don't need to set up the Tamagui Vite plugin, but even if not using the optimizing compiler, it adds a lot of nice stuff: debug attributes, broader react-native compatibility, and the optimizing compiler.
 
 ```tsx fileName=vite.config.ts
 export default {
@@ -83,7 +92,7 @@ export default {
 }
 ```
 
-And then changing our root layout adding `disableInjectCSS` and importing the CSS:
+And then changing our root layout to add `disableInjectCSS`, and instead importing the CSS at the top:
 
 ```tsx fileName=app/_layout.tsx
 import '../public/tamagui.css'
@@ -112,3 +121,7 @@ const ThemeProvider = ({ children }) => {
   )
 }
 ```
+
+That should be about it! You now have SSR safe styling, light and dark mode, and a bunch of advanced styling features.
+
+Check out the [Tamagui site](https://tamagui.dev) for a lot documentation.
