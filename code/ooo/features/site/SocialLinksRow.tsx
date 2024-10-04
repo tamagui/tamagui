@@ -36,7 +36,7 @@ export const SocialLinksRow = () => {
 
       <HoverableLink
         target="_blank"
-        href="https://github.com/tamagui/tamagui"
+        href="https://github.com/onejs/one"
         aria-label="GitHub"
       >
         <GithubIcon width={28} height={28} aria-hidden="true" />
