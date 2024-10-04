@@ -8,7 +8,7 @@ export const TakeoutPolicy = () => {
       <H3>Delivery</H3>
 
       <Paragraph>
-        Tamagui LLC will deliver to you access to a Github repository that contains the
+        Tamagui LLC will deliver to you access to a GitHub repository that contains the
         Takeout stack code. This code includes all the functionality to build and ship
         apps using Tamagui on React Native, supporting the most recent two versions of iOS
         and Android, as well as building and shipping websites that support Chrome,
@@ -40,8 +40,8 @@ export const TakeoutPolicy = () => {
 
       <Paragraph>
         The Takeout subscription is yearly at the rate of the purchase price. It will keep
-        your access to the Takeout Github repository, as well as to updates via the
-        TakeoutBot Github Bot. You may cancel this at any time from{' '}
+        your access to the Takeout GitHub repository, as well as to updates via the
+        TakeoutBot GitHub Bot. You may cancel this at any time from{' '}
         <a href="https://tamagui.dev/account">your account</a> by going to Subscriptions
         and then hitting "Cancel," or you can email us at support@tamagui.dev.
       </Paragraph>

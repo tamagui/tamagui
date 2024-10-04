@@ -1469,7 +1469,7 @@ const Points = () => (
     <Point>+150 icon packs</Point>
     <Point>2 all new theme suites: Pastel & Neon</Point>
     <Point>All of Google fonts fonts</Point>
-    <Point>Github template with PR bot for updates</Point>
+    <Point>GitHub template with PR bot for updates</Point>
     <Point>Fully tested CI/CD: unit, integration, web and native</Point>
     <Point>Preview deploys for web, app-store builds with EAS</Point> */}
     {Object.entries(points).map(([key, group]) => (
