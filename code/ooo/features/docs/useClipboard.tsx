@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react'
-import { useEvent } from 'tamagui'
 
 export const copyToClipboard = (text: string) => {
+  if (!navigator.clipboard) {
+    alert(`No navigator.clipboard, can't copy, sorry!\n\n${text}`)
+    return
+  }
   return navigator.clipboard.writeText(text)
 }
 

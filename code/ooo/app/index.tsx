@@ -539,7 +539,7 @@ const Separator = styled(View, {
 const CopyCommand = () => {
   const [hovered, setHovered] = useState(false)
   const { hasCopied: hasNpxRunCommandCopied, onCopy: handleCopyNpxRunCommand } =
-    useClipboard(`npx one`)
+    useClipboard(`npx one@latest`)
 
   const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     if (event.key === 'Enter' || event.key === ' ') {
