@@ -42,7 +42,7 @@ export const Team = () => {
             image: 'nate',
             name: `Nate`,
             xHandle: 'natebirdman',
-            githubHandle: 'natebirdman',
+            githubHandle: 'natew',
           },
           {
             image: 'pokai',
