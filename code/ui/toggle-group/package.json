@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/toggle-group",
-  "version": "1.112.21",
+  "version": "1.112.22",
   "sideEffects": [
     "*.css"
   ],
@@ -33,22 +33,22 @@
     }
   },
   "dependencies": {
-    "@tamagui/constants": "1.112.21",
-    "@tamagui/create-context": "1.112.21",
-    "@tamagui/focusable": "1.112.21",
-    "@tamagui/font-size": "1.112.21",
-    "@tamagui/get-token": "1.112.21",
-    "@tamagui/group": "1.112.21",
-    "@tamagui/helpers": "1.112.21",
-    "@tamagui/helpers-tamagui": "1.112.21",
-    "@tamagui/roving-focus": "1.112.21",
-    "@tamagui/stacks": "1.112.21",
-    "@tamagui/use-controllable-state": "1.112.21",
-    "@tamagui/use-direction": "1.112.21",
-    "@tamagui/web": "1.112.21"
+    "@tamagui/constants": "1.112.22",
+    "@tamagui/create-context": "1.112.22",
+    "@tamagui/focusable": "1.112.22",
+    "@tamagui/font-size": "1.112.22",
+    "@tamagui/get-token": "1.112.22",
+    "@tamagui/group": "1.112.22",
+    "@tamagui/helpers": "1.112.22",
+    "@tamagui/helpers-tamagui": "1.112.22",
+    "@tamagui/roving-focus": "1.112.22",
+    "@tamagui/stacks": "1.112.22",
+    "@tamagui/use-controllable-state": "1.112.22",
+    "@tamagui/use-direction": "1.112.22",
+    "@tamagui/web": "1.112.22"
   },
   "devDependencies": {
-    "@tamagui/build": "1.112.21",
+    "@tamagui/build": "1.112.22",
     "react": "^18.2.0 || ^19.0.0"
   },
   "publishConfig": {
