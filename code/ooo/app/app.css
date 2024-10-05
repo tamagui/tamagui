@@ -369,12 +369,12 @@ h1 + h2 {
   background: var(--color7);
   z-index: -1;
   top: 50px;
-  filter: blur(90px);
+  filter: blur(80px);
   transform: scale(0.9);
 }
 
 .t_dark .video-glow::after {
-  background: var(--color7);
+  background: var(--color6);
 }
 
 .t_light .video-glow::after {

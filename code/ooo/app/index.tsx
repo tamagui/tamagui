@@ -220,7 +220,7 @@ export default function HomePage() {
                   color: '$color10',
                 }}
               >
-                Local, First
+                Local-focused
               </PrettyTextBiggest>
 
               <PrettyTextBigger style={{ textWrap: 'stable' }}>
