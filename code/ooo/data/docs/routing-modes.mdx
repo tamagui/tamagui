@@ -58,9 +58,9 @@ It's downsides include a slower initial load time, and worse SEO. Though we are 
 
 If you name a route with the `+ssr` suffix, like `app/issues+ssr.tsx`, you will get a server rendered page. This mode will generate the JS for both server and client at build-time, but instead of rendering out the HTML and CSS right then, it will instead wait for a request to the production server before it imports the server JS, renders the page, and then returns the HTML and CSS.
 
-This mode is great for thing that need to be dynamically rendered more often than whenever you deploy. One example is something more like Github Issues. By server rendering a page like this, you get faster initial loads, and better SEO than a SPA-type page. But it is the most expensive in terms of cost - each request will now run a full render of the route, and also the slower than SSG in terms of initial response time, at least by default.
+This mode is great for thing that need to be dynamically rendered more often than whenever you deploy. One example is something more like GitHub Issues. By server rendering a page like this, you get faster initial loads, and better SEO than a SPA-type page. But it is the most expensive in terms of cost - each request will now run a full render of the route, and also the slower than SSG in terms of initial response time, at least by default.
 
-In the case of a Github Issues type page, what you'd do is cache the SSR response on a CDN, and then clear the CDN cache whenever data for that page updates. This is complex, and generally SSR is the most complex of the three render modes to support. Because it is more complex and more expensive, we generally recommend using SPA or SSG unless you are certain you can afford to pay for the extra render cost, and/or cache responses without too much trouble.
+In the case of a GitHub Issues type page, what you'd do is cache the SSR response on a CDN, and then clear the CDN cache whenever data for that page updates. This is complex, and generally SSR is the most complex of the three render modes to support. Because it is more complex and more expensive, we generally recommend using SPA or SSG unless you are certain you can afford to pay for the extra render cost, and/or cache responses without too much trouble.
 
 ### API
 

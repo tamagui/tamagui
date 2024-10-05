@@ -44,6 +44,6 @@ const Icon = (props) => {
 
 };
 
-Icon.displayName = 'Github';
+Icon.displayName = 'GitHub';
 
 export const Github = React.memo<IconProps>(themed(Icon));

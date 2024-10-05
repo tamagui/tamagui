@@ -190,7 +190,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
                     o: 0.8,
                   }}
                 >
-                  Github
+                  GitHub
                 </SizableText>
               </XStack>
             </XStack>
