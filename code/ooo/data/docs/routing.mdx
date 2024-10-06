@@ -151,12 +151,6 @@ Groups are useful for a couple reasons:
 - They let you nest layouts, also without nesting segments.
 
 
-## 404 / Not found Routes
-
-Adding a `+not-found.tsx` file anywhere will act as a catch-all route for any route that is hit that doesn't match against the current URL. It acts much like a `[...rest].tsx` style route in this way, except the server will send it with a 404 response status.
-
-These routes match lowest in strength, so a rest parameter route will always override it.
-
 ## Types
 
 One generates types for your routes, so that you get type checking on a variety of things like the [Link component](/docs/components-Link).
