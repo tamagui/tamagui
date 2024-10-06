@@ -3,6 +3,7 @@
   "version": "1.112.22",
   "type": "module",
   "private": true,
+  "sideEffects": false,
   "main": "index.jsx",
   "scripts": {
     "dev": "one dev",
@@ -42,7 +43,7 @@
     "color2k": "^2.0.2",
     "hsluv": "^0.1.0",
     "jsonwebtoken": "^9.0.2",
-    "one": "1.1.288",
+    "one": "1.1.296",
     "postmark": "^3.0.18",
     "react-hotkeys-hook": "^4.5.0",
     "react-native": "0.74.1",
