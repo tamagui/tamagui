@@ -304,36 +304,47 @@ export default function HomePage() {
 
           <Separator />
 
-          <Link href="https://testflight.apple.com/join/aNcDUHZY" target="_blank">
-            <XStack
-              my="$6"
-              gap="$6"
-              ai="center"
-              jc="center"
-              animation="medium"
-              hoverStyle={{
-                y: -3,
-              }}
-              $sm={{
-                fd: 'column',
-              }}
-            >
-              <img width={80} height={80} src="/testflight.webp" alt="Testflight Icon" />
+          {/* <Link href="https://testflight.apple.com/join/aNcDUHZY" target="_blank"> */}
+          <XStack
+            my="$6"
+            gap="$6"
+            ai="center"
+            jc="center"
+            animation="medium"
+            hoverStyle={{
+              y: -3,
+            }}
+            $sm={{
+              fd: 'column',
+            }}
+          >
+            <img width={80} height={80} src="/testflight.webp" alt="Testflight Icon" />
 
+            <YStack>
               <PrettyText
                 ff="$perfectlyNineties"
                 fontSize="$7"
                 lineHeight="$7"
                 color="$color"
                 ta="center"
+                // style={{
+                //   textDecoration: 'line-through',
+                // }}
                 $sm={{
                   size: '$5',
                 }}
+                mb="$4"
               >
-                Try the demo app on Testflight
+                TestFlight demo incoming
               </PrettyText>
-            </XStack>
-          </Link>
+
+              <PrettyText maw={400}>
+                We had a TestFlight demo that on launch, but it lacks the refinement we
+                expect. We have a variety of improvements coming soon.
+              </PrettyText>
+            </YStack>
+          </XStack>
+          {/* </Link> */}
 
           <Separator />
 
