@@ -96,6 +96,8 @@ function updateLastLoaded(config: any) {
   global.tamaguiLastBundledConfig = config
 }
 
+let hasBundledOnce = false
+
 export async function bundleConfig(props: TamaguiOptions) {
   // webpack is calling this a ton for no reason
   if (global.tamaguiLastBundledConfig && Date.now() - global.tamaguiLastLoaded < 3000) {
@@ -189,12 +191,17 @@ export async function bundleConfig(props: TamaguiOptions) {
     let out
     const { unregister } = registerRequire(props.platform || 'web')
     try {
-      // clear cache to get new files
-      for (const key in require.cache) {
-        // avoid clearing core/web it seems to break things
-        if (!/(core|web)[\/\\]dist/.test(key)) {
-          delete require.cache[key]
+      if (hasBundledOnce) {
+        // this did cause mini-css-extract plugin to freak out
+        // clear cache to get new files
+        for (const key in require.cache) {
+          // avoid clearing core/web it seems to break things
+          if (!/(core|web)[\/\\]dist/.test(key)) {
+            delete require.cache[key]
+          }
         }
+      } else {
+        hasBundledOnce = true
       }
 
       out = require(configOutPath)
