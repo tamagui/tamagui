@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/progress",
-  "version": "1.112.22",
+  "version": "1.112.23",
   "sideEffects": [
     "*.css"
   ],
@@ -33,18 +33,18 @@
     }
   },
   "dependencies": {
-    "@tamagui/compose-refs": "1.112.22",
-    "@tamagui/core": "1.112.22",
-    "@tamagui/create-context": "1.112.22",
-    "@tamagui/get-token": "1.112.22",
-    "@tamagui/helpers": "1.112.22",
-    "@tamagui/stacks": "1.112.22"
+    "@tamagui/compose-refs": "1.112.23",
+    "@tamagui/core": "1.112.23",
+    "@tamagui/create-context": "1.112.23",
+    "@tamagui/get-token": "1.112.23",
+    "@tamagui/helpers": "1.112.23",
+    "@tamagui/stacks": "1.112.23"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.112.22",
+    "@tamagui/build": "1.112.23",
     "react": "^18.2.0 || ^19.0.0",
     "react-native": "0.74.1"
   },
