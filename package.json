@@ -114,7 +114,7 @@
       }
     },
     "one": {
-      "applied": false,
+      "applied": true,
       "resolutions": {
         "@vxrn/react-native-prebuilt": "portal:~/one/packages/react-native-prebuilt",
         "@vxrn/universal-color-scheme": "portal:~/one/packages/universal-color-scheme",
@@ -160,5 +160,19 @@
     "ultra-runner": "^3.10.5",
     "update-ts-references": "^3.3.0",
     "zx": "^7.2.3"
+  },
+  "resolutions": {
+    "@vxrn/react-native-prebuilt": "portal:/Users/n8/one/packages/react-native-prebuilt",
+    "@vxrn/universal-color-scheme": "portal:/Users/n8/one/packages/universal-color-scheme",
+    "@vxrn/color-scheme": "portal:/Users/n8/one/packages/color-scheme",
+    "@vxrn/use-isomorphic-layout-effect": "portal:/Users/n8/one/packages/use-isomorphic-layout-effect",
+    "@vxrn/safe-area": "portal:/Users/n8/one/packages/safe-area",
+    "@vxrn/vendor": "portal:/Users/n8/one/packages/vendor",
+    "@vxrn/vite-flow": "portal:/Users/n8/one/packages/vite-flow",
+    "@vxrn/vite-native-client": "portal:/Users/n8/one/packages/vite-native-client",
+    "@vxrn/vite-native-hmr": "portal:/Users/n8/one/packages/vite-native-hmr",
+    "@vxrn/vite-native-swc": "portal:/Users/n8/one/packages/vite-native-swc",
+    "vxrn": "portal:/Users/n8/one/packages/vxrn",
+    "one": "portal:/Users/n8/one/packages/one"
   }
 }

@@ -11,11 +11,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "files": [
-    "src",
-    "types",
-    "dist"
-  ],
+  "files": ["src", "types", "dist"],
   "scripts": {
     "build": "tamagui-build",
     "watch": "yarn build --watch",

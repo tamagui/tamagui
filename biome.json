@@ -34,7 +34,8 @@
         "useEnumInitializers": "off",
         "useTemplate": "off",
         "useSelfClosingElements": "off",
-        "useImportType": "error"
+        "useImportType": "error",
+        "noUselessElse": "off"
       },
       "security": {
         "noDangerouslySetInnerHtml": "off",

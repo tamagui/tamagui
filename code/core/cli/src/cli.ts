@@ -29,28 +29,7 @@ const COMMAND_MAP = {
         loadTamaguiOptions: true,
       })
 
-      const instance = await checkDeps(options.paths.root, {
-        depType: ['dependencies', 'devDependencies'],
-      })
-
-      for (const dep of instance.getDependencies()) {
-        if (!dep.name.includes('tamagui')) continue
-        if (!dep.isMismatching) continue
-        console.warn(
-          `-------------------------------------------------------------------------------------------------
-
-⚠️  [tamagui] Mis-matching dependency version found in: ${dep.name}
-
-      This will cause errors in your app. To fix, make sure all tamagui dependencies
-      in your repo are on on the same version.
-          
-      Other versions used in the repo: ${dep.versions
-        .map((version) => version.version)
-        .join(', ')}
-
--------------------------------------------------------------------------------------------------`
-        )
-      }
+      await checkDeps(options.paths.root, {})
     },
   },
 

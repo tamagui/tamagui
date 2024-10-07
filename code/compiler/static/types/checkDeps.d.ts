@@ -1,4 +1,3 @@
-import type { CDVC as Type } from 'check-dependency-version-consistency';
 export declare enum DEPENDENCY_TYPE {
     dependencies = "dependencies",
     devDependencies = "devDependencies",
@@ -16,5 +15,5 @@ export type Options = {
     ignorePath?: readonly string[];
     ignorePathPattern?: readonly string[];
 };
-export declare function checkDeps(root: string, options: Options): Promise<Type>;
+export declare function checkDeps(root: string): Promise<void>;
 //# sourceMappingURL=checkDeps.d.ts.map
