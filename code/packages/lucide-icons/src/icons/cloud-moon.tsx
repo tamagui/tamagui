@@ -17,15 +17,17 @@ const Icon = (props) => {
       strokeLinejoin="round"
       {...otherProps}
     >
-      <Path d="M13 16a3 3 0 1 1 0 6H7a5 5 0 1 1 4.9-6Z" stroke={color} />
       <Path
-        d="M10.1 9A6 6 0 0 1 16 4a4.24 4.24 0 0 0 6 6 6 6 0 0 1-3 5.197"
+        d="M10.188 8.5A6 6 0 0 1 16 4a1 1 0 0 0 6 6 6 6 0 0 1-3 5.197"
         stroke={color}
       />
+      <Path d="M13 16a3 3 0 1 1 0 6H7a5 5 0 1 1 4.9-6Z" stroke={color} />
     </Svg>
   )
 }
 
 Icon.displayName = 'CloudMoon'
 
-export const CloudMoon = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const CloudMoon = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

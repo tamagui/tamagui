@@ -17,14 +17,16 @@ const Icon = (props) => {
       strokeLinejoin="round"
       {...otherProps}
     >
-      <Rect x="9" y="7" width="6" height="6" stroke={color} />
-      <Rect width="20" height="14" x="2" y="3" rx="2" stroke={color} />
       <Path d="M12 17v4" stroke={color} />
       <Path d="M8 21h8" stroke={color} />
+      <Rect x="2" y="3" width="20" height="14" rx="2" stroke={color} />
+      <Rect x="9" y="7" width="6" height="6" rx="1" stroke={color} />
     </Svg>
   )
 }
 
 Icon.displayName = 'MonitorStop'
 
-export const MonitorStop = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const MonitorStop = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

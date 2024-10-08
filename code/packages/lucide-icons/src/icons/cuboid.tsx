@@ -29,4 +29,6 @@ const Icon = (props) => {
 
 Icon.displayName = 'Cuboid'
 
-export const Cuboid = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const Cuboid = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

@@ -30,4 +30,6 @@ const Icon = (props) => {
 
 Icon.displayName = 'Aperture'
 
-export const Aperture = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const Aperture = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

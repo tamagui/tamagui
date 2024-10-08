@@ -17,16 +17,18 @@ const Icon = (props) => {
       strokeLinejoin="round"
       {...otherProps}
     >
+      <Path d="M12 7v6" stroke={color} />
       <Path
-        d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"
+        d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20"
         stroke={color}
       />
       <Path d="M9 10h6" stroke={color} />
-      <Path d="M12 7v6" stroke={color} />
     </Svg>
   )
 }
 
 Icon.displayName = 'BookPlus'
 
-export const BookPlus = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const BookPlus = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

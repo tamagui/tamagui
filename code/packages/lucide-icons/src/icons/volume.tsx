@@ -1,6 +1,6 @@
 import { memo } from 'react'
 import type { IconProps } from '@tamagui/helpers-icon'
-import { Svg, Polygon } from 'react-native-svg'
+import { Svg, Path } from 'react-native-svg'
 import { themed } from '@tamagui/helpers-icon'
 
 const Icon = (props) => {
@@ -17,11 +17,16 @@ const Icon = (props) => {
       strokeLinejoin="round"
       {...otherProps}
     >
-      <Polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" stroke={color} />
+      <Path
+        d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"
+        stroke={color}
+      />
     </Svg>
   )
 }
 
 Icon.displayName = 'Volume'
 
-export const Volume = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const Volume = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

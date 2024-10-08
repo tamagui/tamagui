@@ -23,15 +23,15 @@ const Icon = (props) => {
       <Path d="M15 2h.01" stroke={color} />
       <Path d="M22 20h.01" stroke={color} />
       <Path
-        d="m22 2-2.24.75a2.9 2.9 0 0 0-1.96 3.12v0c.1.86-.57 1.63-1.45 1.63h-.38c-.86 0-1.6.6-1.76 1.44L14 10"
+        d="m22 2-2.24.75a2.9 2.9 0 0 0-1.96 3.12c.1.86-.57 1.63-1.45 1.63h-.38c-.86 0-1.6.6-1.76 1.44L14 10"
         stroke={color}
       />
       <Path
-        d="m22 13-.82-.33c-.86-.34-1.82.2-1.98 1.11v0c-.11.7-.72 1.22-1.43 1.22H17"
+        d="m22 13-.82-.33c-.86-.34-1.82.2-1.98 1.11c-.11.7-.72 1.22-1.43 1.22H17"
         stroke={color}
       />
       <Path
-        d="m11 2 .33.82c.34.86-.2 1.82-1.11 1.98v0C9.52 4.9 9 5.52 9 6.23V7"
+        d="m11 2 .33.82c.34.86-.2 1.82-1.11 1.98C9.52 4.9 9 5.52 9 6.23V7"
         stroke={color}
       />
       <Path
@@ -44,4 +44,6 @@ const Icon = (props) => {
 
 Icon.displayName = 'PartyPopper'
 
-export const PartyPopper = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const PartyPopper = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

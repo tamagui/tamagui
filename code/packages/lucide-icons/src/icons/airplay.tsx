@@ -1,6 +1,6 @@
 import { memo } from 'react'
 import type { IconProps } from '@tamagui/helpers-icon'
-import { Svg, Path, Polygon } from 'react-native-svg'
+import { Svg, Path } from 'react-native-svg'
 import { themed } from '@tamagui/helpers-icon'
 
 const Icon = (props) => {
@@ -21,11 +21,13 @@ const Icon = (props) => {
         d="M5 17H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-1"
         stroke={color}
       />
-      <Polygon points="12 15 17 21 7 21 12 15" stroke={color} />
+      <Path d="m12 15 5 6H7Z" stroke={color} />
     </Svg>
   )
 }
 
 Icon.displayName = 'Airplay'
 
-export const Airplay = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const Airplay = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

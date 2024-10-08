@@ -17,12 +17,14 @@ const Icon = (props) => {
       strokeLinejoin="round"
       {...otherProps}
     >
-      <Rect width="20" height="14" x="2" y="7" rx="2" ry="2" stroke={color} />
-      <Path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" stroke={color} />
+      <Path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" stroke={color} />
+      <Rect width="20" height="14" x="2" y="6" rx="2" stroke={color} />
     </Svg>
   )
 }
 
 Icon.displayName = 'Briefcase'
 
-export const Briefcase = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const Briefcase = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

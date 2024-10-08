@@ -25,11 +25,16 @@ const Icon = (props) => {
       <Path d="M2 10h4" stroke={color} />
       <Path d="M2 14h4" stroke={color} />
       <Path d="M2 18h4" stroke={color} />
-      <Path d="M18.4 2.6a2.17 2.17 0 0 1 3 3L16 11l-4 1 1-4Z" stroke={color} />
+      <Path
+        d="M21.378 5.626a1 1 0 1 0-3.004-3.004l-5.01 5.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z"
+        stroke={color}
+      />
     </Svg>
   )
 }
 
 Icon.displayName = 'NotebookPen'
 
-export const NotebookPen = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const NotebookPen = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

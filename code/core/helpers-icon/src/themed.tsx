@@ -21,7 +21,7 @@ type Options = {
 }
 
 export function themed(Component: React.FC<IconProps>, optsIn: Options = {}) {
-  const opts = {
+  const opts: Options = {
     defaultThemeColor: process.env.DEFAULT_ICON_THEME_COLOR || '$color',
     defaultStrokeWidth: 2,
     fallbackColor: '#000',
@@ -33,14 +33,14 @@ export function themed(Component: React.FC<IconProps>, optsIn: Options = {}) {
     const [props, style, theme] = usePropsAndStyle(propsIn, {
       ...opts,
       forComponent: Text,
-      resolveValues: 'web', // iOS doesnt support dynamic values for SVG so only optimize on web
+      resolveValues: opts.resolveValues,
     })
 
     const defaultColor = opts.defaultThemeColor
 
     const colorIn =
-      (defaultColor ? theme[defaultColor as string] : undefined) ||
       style.color ||
+      (defaultColor ? theme[defaultColor as string] : undefined) ||
       (!props.disableTheme ? theme.color : null) ||
       opts.fallbackColor
 

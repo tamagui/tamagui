@@ -28,4 +28,6 @@ const Icon = (props) => {
 
 Icon.displayName = 'ArrowUpWideNarrow'
 
-export const ArrowUpWideNarrow = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const ArrowUpWideNarrow = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

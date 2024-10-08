@@ -29,4 +29,6 @@ const Icon = (props) => {
 
 Icon.displayName = 'SpellCheck2'
 
-export const SpellCheck2 = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const SpellCheck2 = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

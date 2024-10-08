@@ -17,14 +17,16 @@ const Icon = (props) => {
       strokeLinejoin="round"
       {...otherProps}
     >
-      <Path d="m9 9-2 2 2 2" stroke={color} />
-      <Path d="m13 13 2-2-2-2" stroke={color} />
-      <_Circle cx="11" cy="11" r="8" stroke={color} />
+      <Path d="m13 13.5 2-2.5-2-2.5" stroke={color} />
       <Path d="m21 21-4.3-4.3" stroke={color} />
+      <Path d="M9 8.5 7 11l2 2.5" stroke={color} />
+      <_Circle cx="11" cy="11" r="8" stroke={color} />
     </Svg>
   )
 }
 
 Icon.displayName = 'SearchCode'
 
-export const SearchCode = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const SearchCode = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

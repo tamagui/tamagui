@@ -17,17 +17,19 @@ const Icon = (props) => {
       strokeLinejoin="round"
       {...otherProps}
     >
+      <Path d="M12 6v7" stroke={color} />
+      <Path d="M16 8v3" stroke={color} />
       <Path
-        d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"
+        d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20"
         stroke={color}
       />
       <Path d="M8 8v3" stroke={color} />
-      <Path d="M12 6v7" stroke={color} />
-      <Path d="M16 8v3" stroke={color} />
     </Svg>
   )
 }
 
 Icon.displayName = 'BookAudio'
 
-export const BookAudio = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const BookAudio = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

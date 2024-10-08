@@ -30,5 +30,5 @@ const Icon = (props) => {
 Icon.displayName = 'MessageSquareWarning'
 
 export const MessageSquareWarning = memo<IconProps>(
-  themed(Icon, { resolveValues: 'auto' })
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
 )

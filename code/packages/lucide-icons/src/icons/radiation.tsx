@@ -17,7 +17,7 @@ const Icon = (props) => {
       strokeLinejoin="round"
       {...otherProps}
     >
-      <Path d="M12 12h0.01" stroke={color} />
+      <Path d="M12 12h.01" stroke={color} />
       <Path
         d="M7.5 4.2c-.3-.5-.9-.7-1.3-.4C3.9 5.5 2.3 8.1 2 11c-.1.5.4 1 1 1h5c0-1.5.8-2.8 2-3.4-1.1-1.9-2-3.5-2.5-4.4z"
         stroke={color}
@@ -36,4 +36,6 @@ const Icon = (props) => {
 
 Icon.displayName = 'Radiation'
 
-export const Radiation = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const Radiation = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

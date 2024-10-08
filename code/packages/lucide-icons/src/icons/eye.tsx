@@ -17,7 +17,10 @@ const Icon = (props) => {
       strokeLinejoin="round"
       {...otherProps}
     >
-      <Path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" stroke={color} />
+      <Path
+        d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"
+        stroke={color}
+      />
       <_Circle cx="12" cy="12" r="3" stroke={color} />
     </Svg>
   )
@@ -25,4 +28,6 @@ const Icon = (props) => {
 
 Icon.displayName = 'Eye'
 
-export const Eye = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const Eye = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

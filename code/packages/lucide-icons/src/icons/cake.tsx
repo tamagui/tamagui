@@ -23,13 +23,15 @@ const Icon = (props) => {
       <Path d="M7 8v3" stroke={color} />
       <Path d="M12 8v3" stroke={color} />
       <Path d="M17 8v3" stroke={color} />
-      <Path d="M7 4h0.01" stroke={color} />
-      <Path d="M12 4h0.01" stroke={color} />
-      <Path d="M17 4h0.01" stroke={color} />
+      <Path d="M7 4h.01" stroke={color} />
+      <Path d="M12 4h.01" stroke={color} />
+      <Path d="M17 4h.01" stroke={color} />
     </Svg>
   )
 }
 
 Icon.displayName = 'Cake'
 
-export const Cake = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const Cake = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

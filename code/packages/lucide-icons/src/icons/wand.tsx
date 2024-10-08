@@ -22,7 +22,7 @@ const Icon = (props) => {
       <Path d="M8 9h2" stroke={color} />
       <Path d="M20 9h2" stroke={color} />
       <Path d="M17.8 11.8 19 13" stroke={color} />
-      <Path d="M15 9h0" stroke={color} />
+      <Path d="M15 9h.01" stroke={color} />
       <Path d="M17.8 6.2 19 5" stroke={color} />
       <Path d="m3 21 9-9" stroke={color} />
       <Path d="M12.2 6.2 11 5" stroke={color} />
@@ -32,4 +32,6 @@ const Icon = (props) => {
 
 Icon.displayName = 'Wand'
 
-export const Wand = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const Wand = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

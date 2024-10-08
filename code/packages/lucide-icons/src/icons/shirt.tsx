@@ -27,4 +27,6 @@ const Icon = (props) => {
 
 Icon.displayName = 'Shirt'
 
-export const Shirt = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const Shirt = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

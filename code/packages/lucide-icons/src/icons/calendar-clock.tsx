@@ -1,6 +1,6 @@
 import { memo } from 'react'
 import type { IconProps } from '@tamagui/helpers-icon'
-import { Svg, Path } from 'react-native-svg'
+import { Svg, Circle as _Circle, Path } from 'react-native-svg'
 import { themed } from '@tamagui/helpers-icon'
 
 const Icon = (props) => {
@@ -24,12 +24,14 @@ const Icon = (props) => {
       <Path d="M16 2v4" stroke={color} />
       <Path d="M8 2v4" stroke={color} />
       <Path d="M3 10h5" stroke={color} />
-      <Path d="M17.5 17.5 16 16.25V14" stroke={color} />
-      <Path d="M22 16a6 6 0 1 1-12 0 6 6 0 0 1 12 0Z" stroke={color} />
+      <Path d="M17.5 17.5 16 16.3V14" stroke={color} />
+      <_Circle cx="16" cy="16" r="6" stroke={color} />
     </Svg>
   )
 }
 
 Icon.displayName = 'CalendarClock'
 
-export const CalendarClock = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const CalendarClock = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

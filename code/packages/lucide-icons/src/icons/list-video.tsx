@@ -27,4 +27,6 @@ const Icon = (props) => {
 
 Icon.displayName = 'ListVideo'
 
-export const ListVideo = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const ListVideo = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

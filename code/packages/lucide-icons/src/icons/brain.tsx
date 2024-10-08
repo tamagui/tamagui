@@ -18,17 +18,26 @@ const Icon = (props) => {
       {...otherProps}
     >
       <Path
-        d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"
+        d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"
         stroke={color}
       />
       <Path
-        d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"
+        d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"
         stroke={color}
       />
+      <Path d="M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4" stroke={color} />
+      <Path d="M17.599 6.5a3 3 0 0 0 .399-1.375" stroke={color} />
+      <Path d="M6.003 5.125A3 3 0 0 0 6.401 6.5" stroke={color} />
+      <Path d="M3.477 10.896a4 4 0 0 1 .585-.396" stroke={color} />
+      <Path d="M19.938 10.5a4 4 0 0 1 .585.396" stroke={color} />
+      <Path d="M6 18a4 4 0 0 1-1.967-.516" stroke={color} />
+      <Path d="M19.967 17.484A4 4 0 0 1 18 18" stroke={color} />
     </Svg>
   )
 }
 
 Icon.displayName = 'Brain'
 
-export const Brain = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const Brain = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

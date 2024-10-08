@@ -28,5 +28,5 @@ const Icon = (props) => {
 Icon.displayName = 'AlignHorizontalDistributeStart'
 
 export const AlignHorizontalDistributeStart = memo<IconProps>(
-  themed(Icon, { resolveValues: 'auto' })
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
 )

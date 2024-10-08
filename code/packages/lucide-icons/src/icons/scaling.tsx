@@ -17,14 +17,19 @@ const Icon = (props) => {
       strokeLinejoin="round"
       {...otherProps}
     >
-      <Path d="M21 3 9 15" stroke={color} />
-      <Path d="M12 3H3v18h18v-9" stroke={color} />
-      <Path d="M16 3h5v5" stroke={color} />
+      <Path
+        d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"
+        stroke={color}
+      />
       <Path d="M14 15H9v-5" stroke={color} />
+      <Path d="M16 3h5v5" stroke={color} />
+      <Path d="M21 3 9 15" stroke={color} />
     </Svg>
   )
 }
 
 Icon.displayName = 'Scaling'
 
-export const Scaling = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const Scaling = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

@@ -31,4 +31,6 @@ const Icon = (props) => {
 
 Icon.displayName = 'FileEdit'
 
-export const FileEdit = React.memo<IconProps>(themed(Icon))
+export const FileEdit = React.memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

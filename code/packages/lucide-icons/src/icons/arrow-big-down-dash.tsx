@@ -18,11 +18,13 @@ const Icon = (props) => {
       {...otherProps}
     >
       <Path d="M15 5H9" stroke={color} />
-      <Path d="M15 9v3h4l-7 7-7-7h4V9h6z" stroke={color} />
+      <Path d="M15 9v3h4l-7 7-7-7h4V9z" stroke={color} />
     </Svg>
   )
 }
 
 Icon.displayName = 'ArrowBigDownDash'
 
-export const ArrowBigDownDash = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const ArrowBigDownDash = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

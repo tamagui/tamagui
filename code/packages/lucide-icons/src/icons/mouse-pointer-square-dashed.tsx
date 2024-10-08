@@ -34,5 +34,5 @@ const Icon = (props) => {
 Icon.displayName = 'MousePointerSquareDashed'
 
 export const MousePointerSquareDashed = memo<IconProps>(
-  themed(Icon, { resolveValues: 'auto' })
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
 )

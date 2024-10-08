@@ -22,7 +22,7 @@ const Icon = (props) => {
         stroke={color}
       />
       <Polyline points="15,9 18,9 18,11" stroke={color} />
-      <Path d="M6.5 5C9 5 11 7 11 9.5V17a2 2 0 0 1-2 2v0" stroke={color} />
+      <Path d="M6.5 5C9 5 11 7 11 9.5V17a2 2 0 0 1-2 2" stroke={color} />
       <Line x1="6" x2="7" y1="10" y2="10" stroke={color} />
     </Svg>
   )
@@ -30,4 +30,6 @@ const Icon = (props) => {
 
 Icon.displayName = 'Mailbox'
 
-export const Mailbox = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const Mailbox = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

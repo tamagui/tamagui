@@ -17,12 +17,14 @@ const Icon = (props) => {
       strokeLinejoin="round"
       {...otherProps}
     >
-      <Line x1="9" x2="15" y1="15" y2="9" stroke={color} />
       <_Circle cx="12" cy="12" r="10" stroke={color} />
+      <Line x1="9" x2="15" y1="15" y2="9" stroke={color} />
     </Svg>
   )
 }
 
 Icon.displayName = 'CircleSlash'
 
-export const CircleSlash = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const CircleSlash = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

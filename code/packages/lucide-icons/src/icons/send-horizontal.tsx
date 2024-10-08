@@ -17,7 +17,10 @@ const Icon = (props) => {
       strokeLinejoin="round"
       {...otherProps}
     >
-      <Path d="m3 3 3 9-3 9 19-9Z" stroke={color} />
+      <Path
+        d="M3.714 3.048a.498.498 0 0 0-.683.627l2.843 7.627a2 2 0 0 1 0 1.396l-2.842 7.627a.498.498 0 0 0 .682.627l18-8.5a.5.5 0 0 0 0-.904z"
+        stroke={color}
+      />
       <Path d="M6 12h16" stroke={color} />
     </Svg>
   )
@@ -25,4 +28,6 @@ const Icon = (props) => {
 
 Icon.displayName = 'SendHorizontal'
 
-export const SendHorizontal = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const SendHorizontal = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

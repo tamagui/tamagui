@@ -26,4 +26,6 @@ const Icon = (props) => {
 
 Icon.displayName = 'CircleEqual'
 
-export const CircleEqual = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const CircleEqual = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

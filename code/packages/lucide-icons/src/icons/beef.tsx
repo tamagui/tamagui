@@ -32,4 +32,6 @@ const Icon = (props) => {
 
 Icon.displayName = 'Beef'
 
-export const Beef = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const Beef = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

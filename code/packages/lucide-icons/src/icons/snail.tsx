@@ -28,4 +28,6 @@ const Icon = (props) => {
 
 Icon.displayName = 'Snail'
 
-export const Snail = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const Snail = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

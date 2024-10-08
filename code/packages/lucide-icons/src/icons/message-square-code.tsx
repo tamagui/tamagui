@@ -17,16 +17,18 @@ const Icon = (props) => {
       strokeLinejoin="round"
       {...otherProps}
     >
+      <Path d="M10 7.5 8 10l2 2.5" stroke={color} />
+      <Path d="m14 7.5 2 2.5-2 2.5" stroke={color} />
       <Path
         d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
         stroke={color}
       />
-      <Path d="m10 8-2 2 2 2" stroke={color} />
-      <Path d="m14 8 2 2-2 2" stroke={color} />
     </Svg>
   )
 }
 
 Icon.displayName = 'MessageSquareCode'
 
-export const MessageSquareCode = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const MessageSquareCode = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

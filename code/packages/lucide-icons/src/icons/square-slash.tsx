@@ -1,8 +1,7 @@
-import React from 'react'
+import { memo } from 'react'
 import type { IconProps } from '@tamagui/helpers-icon'
+import { Svg, Line, Rect } from 'react-native-svg'
 import { themed } from '@tamagui/helpers-icon'
-
-import { Line, Rect, Svg } from 'react-native-svg'
 
 const Icon = (props) => {
   const { color = 'black', size = 24, ...otherProps } = props
@@ -26,4 +25,6 @@ const Icon = (props) => {
 
 Icon.displayName = 'SquareSlash'
 
-export const SquareSlash = React.memo<IconProps>(themed(Icon))
+export const SquareSlash = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

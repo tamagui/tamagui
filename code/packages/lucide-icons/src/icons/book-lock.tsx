@@ -17,14 +17,16 @@ const Icon = (props) => {
       strokeLinejoin="round"
       {...otherProps}
     >
-      <Path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H10" stroke={color} />
-      <Path d="M20 15v7H6.5a2.5 2.5 0 0 1 0-5H20" stroke={color} />
-      <Rect width="8" height="5" x="12" y="6" rx="1" stroke={color} />
       <Path d="M18 6V4a2 2 0 1 0-4 0v2" stroke={color} />
+      <Path d="M20 15v6a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20" stroke={color} />
+      <Path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H10" stroke={color} />
+      <Rect x="12" y="6" width="8" height="5" rx="1" stroke={color} />
     </Svg>
   )
 }
 
 Icon.displayName = 'BookLock'
 
-export const BookLock = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const BookLock = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

@@ -29,4 +29,6 @@ const Icon = (props) => {
 
 Icon.displayName = 'PanelBottomInactive'
 
-export const PanelBottomInactive = React.memo<IconProps>(themed(Icon))
+export const PanelBottomInactive = React.memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

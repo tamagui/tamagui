@@ -28,4 +28,6 @@ const Icon = (props) => {
 
 Icon.displayName = 'Fullscreen'
 
-export const Fullscreen = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const Fullscreen = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

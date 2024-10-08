@@ -30,4 +30,6 @@ const Icon = (props) => {
 
 Icon.displayName = 'ScanBarcode'
 
-export const ScanBarcode = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const ScanBarcode = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

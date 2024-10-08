@@ -22,12 +22,14 @@ const Icon = (props) => {
       <Path d="M12 3v8" stroke={color} />
       <Path d="m8 19-2 3" stroke={color} />
       <Path d="m18 22-2-3" stroke={color} />
-      <Path d="M8 15h0" stroke={color} />
-      <Path d="M16 15h0" stroke={color} />
+      <Path d="M8 15h.01" stroke={color} />
+      <Path d="M16 15h.01" stroke={color} />
     </Svg>
   )
 }
 
 Icon.displayName = 'TramFront'
 
-export const TramFront = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const TramFront = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

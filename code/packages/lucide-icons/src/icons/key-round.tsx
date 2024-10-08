@@ -18,14 +18,16 @@ const Icon = (props) => {
       {...otherProps}
     >
       <Path
-        d="M2 18v3c0 .6.4 1 1 1h4v-3h3v-3h2l1.4-1.4a6.5 6.5 0 1 0-4-4Z"
+        d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"
         stroke={color}
       />
-      <_Circle cx="16.5" cy="7.5" r=".5" stroke={color} />
+      <_Circle cx="16.5" cy="7.5" r=".5" fill="currentColor" stroke={color} />
     </Svg>
   )
 }
 
 Icon.displayName = 'KeyRound'
 
-export const KeyRound = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const KeyRound = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

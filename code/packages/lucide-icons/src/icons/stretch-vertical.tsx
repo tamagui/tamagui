@@ -25,4 +25,6 @@ const Icon = (props) => {
 
 Icon.displayName = 'StretchVertical'
 
-export const StretchVertical = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const StretchVertical = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

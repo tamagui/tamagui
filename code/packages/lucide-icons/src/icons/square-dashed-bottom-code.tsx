@@ -17,14 +17,14 @@ const Icon = (props) => {
       strokeLinejoin="round"
       {...otherProps}
     >
-      <Path d="m10 10-2 2 2 2" stroke={color} />
-      <Path d="m14 14 2-2-2-2" stroke={color} />
+      <Path d="M10 9.5 8 12l2 2.5" stroke={color} />
+      <Path d="M14 21h1" stroke={color} />
+      <Path d="m14 9.5 2 2.5-2 2.5" stroke={color} />
       <Path
         d="M5 21a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2"
         stroke={color}
       />
       <Path d="M9 21h1" stroke={color} />
-      <Path d="M14 21h1" stroke={color} />
     </Svg>
   )
 }
@@ -32,5 +32,5 @@ const Icon = (props) => {
 Icon.displayName = 'SquareDashedBottomCode'
 
 export const SquareDashedBottomCode = memo<IconProps>(
-  themed(Icon, { resolveValues: 'auto' })
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
 )

@@ -17,12 +17,12 @@ const Icon = (props) => {
       strokeLinejoin="round"
       {...otherProps}
     >
-      <Path d="M18 11.5V9a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v1.4" stroke={color} />
-      <Path d="M14 10V8a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v2" stroke={color} />
-      <Path d="M10 9.9V9a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v5" stroke={color} />
-      <Path d="M6 14v0a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0" stroke={color} />
+      <Path d="M18 11.5V9a2 2 0 0 0-2-2a2 2 0 0 0-2 2v1.4" stroke={color} />
+      <Path d="M14 10V8a2 2 0 0 0-2-2a2 2 0 0 0-2 2v2" stroke={color} />
+      <Path d="M10 9.9V9a2 2 0 0 0-2-2a2 2 0 0 0-2 2v5" stroke={color} />
+      <Path d="M6 14a2 2 0 0 0-2-2a2 2 0 0 0-2 2" stroke={color} />
       <Path
-        d="M18 11v0a2 2 0 1 1 4 0v3a8 8 0 0 1-8 8h-4a8 8 0 0 1-8-8 2 2 0 1 1 4 0"
+        d="M18 11a2 2 0 1 1 4 0v3a8 8 0 0 1-8 8h-4a8 8 0 0 1-8-8 2 2 0 1 1 4 0"
         stroke={color}
       />
     </Svg>
@@ -31,4 +31,6 @@ const Icon = (props) => {
 
 Icon.displayName = 'Grab'
 
-export const Grab = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const Grab = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

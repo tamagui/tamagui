@@ -5,6 +5,7 @@ import { themed } from '@tamagui/helpers-icon'
 
 const Icon = (props) => {
   const { color = 'black', size = 24, ...otherProps } = props
+
   return (
     <Svg
       width={size}
@@ -24,4 +25,6 @@ const Icon = (props) => {
 
 Icon.displayName = 'ChevronRight'
 
-export const ChevronRight = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const ChevronRight = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

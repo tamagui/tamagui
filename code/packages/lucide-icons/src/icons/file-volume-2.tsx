@@ -31,4 +31,6 @@ const Icon = (props) => {
 
 Icon.displayName = 'FileVolume2'
 
-export const FileVolume2 = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const FileVolume2 = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

@@ -1,6 +1,6 @@
 import { memo } from 'react'
 import type { IconProps } from '@tamagui/helpers-icon'
-import { Svg, Line, Path } from 'react-native-svg'
+import { Svg, Path } from 'react-native-svg'
 import { themed } from '@tamagui/helpers-icon'
 
 const Icon = (props) => {
@@ -17,17 +17,19 @@ const Icon = (props) => {
       strokeLinejoin="round"
       {...otherProps}
     >
-      <Line x1="2" x2="22" y1="2" y2="22" stroke={color} />
-      <Line x1="12" x2="12" y1="17" y2="22" stroke={color} />
+      <Path d="M12 17v5" stroke={color} />
+      <Path d="M15 9.34V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H7.89" stroke={color} />
+      <Path d="m2 2 20 20" stroke={color} />
       <Path
-        d="M9 9v1.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V17h12"
+        d="M9 9v1.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h11"
         stroke={color}
       />
-      <Path d="M15 9.34V6h1a2 2 0 0 0 0-4H7.89" stroke={color} />
     </Svg>
   )
 }
 
 Icon.displayName = 'PinOff'
 
-export const PinOff = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const PinOff = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

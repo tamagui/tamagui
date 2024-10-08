@@ -22,8 +22,8 @@ const Icon = (props) => {
         stroke={color}
       />
       <Path d="M14 3v4a2 2 0 0 0 2 2h4" stroke={color} />
-      <Path d="M8 13h0" stroke={color} />
-      <Path d="M16 13h0" stroke={color} />
+      <Path d="M8 13h.01" stroke={color} />
+      <Path d="M16 13h.01" stroke={color} />
       <Path d="M10 16s.8 1 2 1c1.3 0 2-1 2-1" stroke={color} />
     </Svg>
   )
@@ -31,4 +31,6 @@ const Icon = (props) => {
 
 Icon.displayName = 'Sticker'
 
-export const Sticker = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const Sticker = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

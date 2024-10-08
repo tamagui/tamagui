@@ -26,4 +26,6 @@ const Icon = (props) => {
 
 Icon.displayName = 'MoveVertical'
 
-export const MoveVertical = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const MoveVertical = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

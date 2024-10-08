@@ -25,4 +25,6 @@ const Icon = (props) => {
 
 Icon.displayName = 'ChevronLast'
 
-export const ChevronLast = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const ChevronLast = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

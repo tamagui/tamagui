@@ -17,17 +17,19 @@ const Icon = (props) => {
       strokeLinejoin="round"
       {...otherProps}
     >
+      <Path d="M10 2v3a1 1 0 0 0 1 1h5" stroke={color} />
+      <Path d="M18 18v-6a1 1 0 0 0-1-1h-6a1 1 0 0 0-1 1v6" stroke={color} />
+      <Path d="M18 22H4a2 2 0 0 1-2-2V6" stroke={color} />
       <Path
-        d="M6 4a2 2 0 0 1 2-2h10l4 4v10.2a2 2 0 0 1-2 1.8H8a2 2 0 0 1-2-2Z"
+        d="M8 18a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9.172a2 2 0 0 1 1.414.586l2.828 2.828A2 2 0 0 1 22 6.828V16a2 2 0 0 1-2.01 2z"
         stroke={color}
       />
-      <Path d="M10 2v4h6" stroke={color} />
-      <Path d="M18 18v-7h-8v7" stroke={color} />
-      <Path d="M18 22H4a2 2 0 0 1-2-2V6" stroke={color} />
     </Svg>
   )
 }
 
 Icon.displayName = 'SaveAll'
 
-export const SaveAll = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const SaveAll = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

@@ -25,4 +25,6 @@ const Icon = (props) => {
 
 Icon.displayName = 'PictureInPicture2'
 
-export const PictureInPicture2 = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const PictureInPicture2 = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

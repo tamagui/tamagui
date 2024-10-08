@@ -17,16 +17,21 @@ const Icon = (props) => {
       strokeLinejoin="round"
       {...otherProps}
     >
-      <Path d="M16 22h2a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v18" stroke={color} />
-      <Path d="M14 2v4a2 2 0 0 0 2 2h4" stroke={color} />
-      <_Circle cx="10" cy="20" r="2" stroke={color} />
-      <Path d="M10 7V6" stroke={color} />
       <Path d="M10 12v-1" stroke={color} />
       <Path d="M10 18v-2" stroke={color} />
+      <Path d="M10 7V6" stroke={color} />
+      <Path d="M14 2v4a2 2 0 0 0 2 2h4" stroke={color} />
+      <Path
+        d="M15.5 22H18a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v16a2 2 0 0 0 .274 1.01"
+        stroke={color}
+      />
+      <_Circle cx="10" cy="20" r="2" stroke={color} />
     </Svg>
   )
 }
 
 Icon.displayName = 'FileArchive'
 
-export const FileArchive = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const FileArchive = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

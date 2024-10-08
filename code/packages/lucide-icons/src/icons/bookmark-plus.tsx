@@ -26,4 +26,6 @@ const Icon = (props) => {
 
 Icon.displayName = 'BookmarkPlus'
 
-export const BookmarkPlus = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const BookmarkPlus = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

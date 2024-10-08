@@ -22,7 +22,7 @@ const Icon = (props) => {
         stroke={color}
       />
       <Path
-        d="M12 5 9.04 7.96a2.17 2.17 0 0 0 0 3.08v0c.82.82 2.13.85 3 .07l2.07-1.9a2.82 2.82 0 0 1 3.79 0l2.96 2.66"
+        d="M12 5 9.04 7.96a2.17 2.17 0 0 0 0 3.08c.82.82 2.13.85 3 .07l2.07-1.9a2.82 2.82 0 0 1 3.79 0l2.96 2.66"
         stroke={color}
       />
       <Path d="m18 15-2-2" stroke={color} />
@@ -33,4 +33,6 @@ const Icon = (props) => {
 
 Icon.displayName = 'HeartHandshake'
 
-export const HeartHandshake = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const HeartHandshake = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

@@ -17,9 +17,15 @@ const Icon = (props) => {
       strokeLinejoin="round"
       {...otherProps}
     >
-      <Path d="m12 19 7-7 3 3-7 7-3-3z" stroke={color} />
-      <Path d="m18 13-1.5-7.5L2 2l3.5 14.5L13 18l5-5z" stroke={color} />
-      <Path d="m2 2 7.586 7.586" stroke={color} />
+      <Path
+        d="M15.707 21.293a1 1 0 0 1-1.414 0l-1.586-1.586a1 1 0 0 1 0-1.414l5.586-5.586a1 1 0 0 1 1.414 0l1.586 1.586a1 1 0 0 1 0 1.414z"
+        stroke={color}
+      />
+      <Path
+        d="m18 13-1.375-6.874a1 1 0 0 0-.746-.776L3.235 2.028a1 1 0 0 0-1.207 1.207L5.35 15.879a1 1 0 0 0 .776.746L13 18"
+        stroke={color}
+      />
+      <Path d="m2.3 2.3 7.286 7.286" stroke={color} />
       <_Circle cx="11" cy="11" r="2" stroke={color} />
     </Svg>
   )
@@ -27,4 +33,6 @@ const Icon = (props) => {
 
 Icon.displayName = 'PenTool'
 
-export const PenTool = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const PenTool = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

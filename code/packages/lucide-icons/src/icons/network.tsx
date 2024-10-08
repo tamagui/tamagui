@@ -28,4 +28,6 @@ const Icon = (props) => {
 
 Icon.displayName = 'Network'
 
-export const Network = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const Network = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

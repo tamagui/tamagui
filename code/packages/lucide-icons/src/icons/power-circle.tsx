@@ -26,4 +26,6 @@ const Icon = (props) => {
 
 Icon.displayName = 'PowerCircle'
 
-export const PowerCircle = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const PowerCircle = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

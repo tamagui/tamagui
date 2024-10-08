@@ -17,13 +17,21 @@ const Icon = (props) => {
       strokeLinejoin="round"
       {...otherProps}
     >
-      <Path d="M19.7 14a6.9 6.9 0 0 0 .3-2V5l-8-3-3.2 1.2" stroke={color} />
       <Path d="m2 2 20 20" stroke={color} />
-      <Path d="M4.7 4.7 4 5v7c0 6 8 10 8 10a20.3 20.3 0 0 0 5.62-4.38" stroke={color} />
+      <Path
+        d="M5 5a1 1 0 0 0-1 1v7c0 5 3.5 7.5 7.67 8.94a1 1 0 0 0 .67.01c2.35-.82 4.48-1.97 5.9-3.71"
+        stroke={color}
+      />
+      <Path
+        d="M9.309 3.652A12.252 12.252 0 0 0 11.24 2.28a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1v7a9.784 9.784 0 0 1-.08 1.264"
+        stroke={color}
+      />
     </Svg>
   )
 }
 
 Icon.displayName = 'ShieldOff'
 
-export const ShieldOff = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const ShieldOff = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

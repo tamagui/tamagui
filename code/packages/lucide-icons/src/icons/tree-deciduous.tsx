@@ -28,4 +28,6 @@ const Icon = (props) => {
 
 Icon.displayName = 'TreeDeciduous'
 
-export const TreeDeciduous = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const TreeDeciduous = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

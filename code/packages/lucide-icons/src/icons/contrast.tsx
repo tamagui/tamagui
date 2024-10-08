@@ -25,4 +25,6 @@ const Icon = (props) => {
 
 Icon.displayName = 'Contrast'
 
-export const Contrast = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const Contrast = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

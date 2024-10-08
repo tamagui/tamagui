@@ -27,4 +27,6 @@ const Icon = (props) => {
 
 Icon.displayName = 'Webcam'
 
-export const Webcam = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const Webcam = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

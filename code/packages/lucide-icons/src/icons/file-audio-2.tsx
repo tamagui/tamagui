@@ -28,4 +28,6 @@ const Icon = (props) => {
 
 Icon.displayName = 'FileAudio2'
 
-export const FileAudio2 = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const FileAudio2 = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

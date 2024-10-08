@@ -25,7 +25,7 @@ const Icon = (props) => {
       />
       <Path d="M5 18a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" stroke={color} />
       <Path
-        d="M14.33 22h-.09a.35.35 0 0 1-.24-.32v-10a.34.34 0 0 1 .33-.34c.08 0 .15.03.21.08l7.34 6a.33.33 0 0 1-.21.59h-4.49l-2.57 3.85a.35.35 0 0 1-.28.14v0z"
+        d="M14.33 22h-.09a.35.35 0 0 1-.24-.32v-10a.34.34 0 0 1 .33-.34c.08 0 .15.03.21.08l7.34 6a.33.33 0 0 1-.21.59h-4.49l-2.57 3.85a.35.35 0 0 1-.28.14z"
         stroke={color}
       />
     </Svg>
@@ -34,4 +34,6 @@ const Icon = (props) => {
 
 Icon.displayName = 'LassoSelect'
 
-export const LassoSelect = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const LassoSelect = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

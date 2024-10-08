@@ -1,6 +1,6 @@
 import { memo } from 'react'
 import type { IconProps } from '@tamagui/helpers-icon'
-import { Svg, Line, Path, Rect } from 'react-native-svg'
+import { Svg, Path, Rect } from 'react-native-svg'
 import { themed } from '@tamagui/helpers-icon'
 
 const Icon = (props) => {
@@ -17,10 +17,10 @@ const Icon = (props) => {
       strokeLinejoin="round"
       {...otherProps}
     >
-      <Rect width="18" height="18" x="3" y="4" rx="2" ry="2" stroke={color} />
-      <Line x1="16" x2="16" y1="2" y2="6" stroke={color} />
-      <Line x1="8" x2="8" y1="2" y2="6" stroke={color} />
-      <Line x1="3" x2="21" y1="10" y2="10" stroke={color} />
+      <Rect width="18" height="18" x="3" y="4" rx="2" stroke={color} />
+      <Path d="M16 2v4" stroke={color} />
+      <Path d="M3 10h18" stroke={color} />
+      <Path d="M8 2v4" stroke={color} />
       <Path d="M17 14h-6" stroke={color} />
       <Path d="M13 18H7" stroke={color} />
       <Path d="M7 14h.01" stroke={color} />
@@ -31,4 +31,6 @@ const Icon = (props) => {
 
 Icon.displayName = 'CalendarRange'
 
-export const CalendarRange = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const CalendarRange = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

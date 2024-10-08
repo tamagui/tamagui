@@ -18,17 +18,19 @@ const Icon = (props) => {
       {...otherProps}
     >
       <Path
-        d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"
+        d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"
         stroke={color}
       />
-      <Path d="M5 3v4" stroke={color} />
-      <Path d="M19 17v4" stroke={color} />
-      <Path d="M3 5h4" stroke={color} />
-      <Path d="M17 19h4" stroke={color} />
+      <Path d="M20 3v4" stroke={color} />
+      <Path d="M22 5h-4" stroke={color} />
+      <Path d="M4 17v2" stroke={color} />
+      <Path d="M5 18H3" stroke={color} />
     </Svg>
   )
 }
 
 Icon.displayName = 'Sparkles'
 
-export const Sparkles = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const Sparkles = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

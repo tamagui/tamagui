@@ -18,7 +18,7 @@ const Icon = (props) => {
       {...otherProps}
     >
       <Path
-        d="M14.5 2v17.5c0 1.4-1.1 2.5-2.5 2.5h0c-1.4 0-2.5-1.1-2.5-2.5V2"
+        d="M14.5 2v17.5c0 1.4-1.1 2.5-2.5 2.5c-1.4 0-2.5-1.1-2.5-2.5V2"
         stroke={color}
       />
       <Path d="M8.5 2h7" stroke={color} />
@@ -29,4 +29,6 @@ const Icon = (props) => {
 
 Icon.displayName = 'TestTube'
 
-export const TestTube = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const TestTube = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

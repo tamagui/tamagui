@@ -30,4 +30,6 @@ const Icon = (props) => {
 
 Icon.displayName = 'AlarmMinus'
 
-export const AlarmMinus = React.memo<IconProps>(themed(Icon))
+export const AlarmMinus = React.memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

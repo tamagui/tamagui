@@ -17,8 +17,8 @@ const Icon = (props) => {
       strokeLinejoin="round"
       {...otherProps}
     >
-      <Rect x="4" y="4" width="16" height="16" rx="2" stroke={color} />
-      <Rect x="9" y="9" width="6" height="6" stroke={color} />
+      <Rect width="16" height="16" x="4" y="4" rx="2" stroke={color} />
+      <Rect width="6" height="6" x="9" y="9" rx="1" stroke={color} />
       <Path d="M15 2v2" stroke={color} />
       <Path d="M15 20v2" stroke={color} />
       <Path d="M2 15h2" stroke={color} />
@@ -33,4 +33,6 @@ const Icon = (props) => {
 
 Icon.displayName = 'Cpu'
 
-export const Cpu = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const Cpu = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

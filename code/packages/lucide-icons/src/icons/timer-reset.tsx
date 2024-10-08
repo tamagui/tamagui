@@ -27,4 +27,6 @@ const Icon = (props) => {
 
 Icon.displayName = 'TimerReset'
 
-export const TimerReset = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const TimerReset = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

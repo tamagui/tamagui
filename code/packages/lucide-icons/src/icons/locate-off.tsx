@@ -36,4 +36,6 @@ const Icon = (props) => {
 
 Icon.displayName = 'LocateOff'
 
-export const LocateOff = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const LocateOff = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

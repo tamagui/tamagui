@@ -20,11 +20,13 @@ const Icon = (props) => {
       <Path d="M5 16v2" stroke={color} />
       <Path d="M19 16v2" stroke={color} />
       <Rect width="20" height="8" x="2" y="8" rx="2" stroke={color} />
-      <Path d="M18 12h0" stroke={color} />
+      <Path d="M18 12h.01" stroke={color} />
     </Svg>
   )
 }
 
 Icon.displayName = 'RadioReceiver'
 
-export const RadioReceiver = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const RadioReceiver = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

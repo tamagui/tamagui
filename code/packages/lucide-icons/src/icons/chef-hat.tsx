@@ -1,6 +1,6 @@
 import { memo } from 'react'
 import type { IconProps } from '@tamagui/helpers-icon'
-import { Svg, Line, Path } from 'react-native-svg'
+import { Svg, Path } from 'react-native-svg'
 import { themed } from '@tamagui/helpers-icon'
 
 const Icon = (props) => {
@@ -18,14 +18,16 @@ const Icon = (props) => {
       {...otherProps}
     >
       <Path
-        d="M6 13.87A4 4 0 0 1 7.41 6a5.11 5.11 0 0 1 1.05-1.54 5 5 0 0 1 7.08 0A5.11 5.11 0 0 1 16.59 6 4 4 0 0 1 18 13.87V21H6Z"
+        d="M17 21a1 1 0 0 0 1-1v-5.35c0-.457.316-.844.727-1.041a4 4 0 0 0-2.134-7.589 5 5 0 0 0-9.186 0 4 4 0 0 0-2.134 7.588c.411.198.727.585.727 1.041V20a1 1 0 0 0 1 1Z"
         stroke={color}
       />
-      <Line x1="6" x2="18" y1="17" y2="17" stroke={color} />
+      <Path d="M6 17h12" stroke={color} />
     </Svg>
   )
 }
 
 Icon.displayName = 'ChefHat'
 
-export const ChefHat = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const ChefHat = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

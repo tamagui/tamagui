@@ -18,14 +18,13 @@ const Icon = (props) => {
       {...otherProps}
     >
       <Path d="M9 14 4 9l5-5" stroke={color} />
-      <Path
-        d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5v0a5.5 5.5 0 0 1-5.5 5.5H11"
-        stroke={color}
-      />
+      <Path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5a5.5 5.5 0 0 1-5.5 5.5H11" stroke={color} />
     </Svg>
   )
 }
 
 Icon.displayName = 'Undo2'
 
-export const Undo2 = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const Undo2 = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

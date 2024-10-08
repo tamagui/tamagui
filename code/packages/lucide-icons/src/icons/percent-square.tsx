@@ -27,4 +27,6 @@ const Icon = (props) => {
 
 Icon.displayName = 'PercentSquare'
 
-export const PercentSquare = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const PercentSquare = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)

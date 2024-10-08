@@ -17,19 +17,21 @@ const Icon = (props) => {
       strokeLinejoin="round"
       {...otherProps}
     >
-      <Rect width="20" height="16" x="2" y="4" rx="2" ry="2" stroke={color} />
-      <Path d="M6 8h.001" stroke={color} />
-      <Path d="M10 8h.001" stroke={color} />
-      <Path d="M14 8h.001" stroke={color} />
-      <Path d="M18 8h.001" stroke={color} />
-      <Path d="M8 12h.001" stroke={color} />
-      <Path d="M12 12h.001" stroke={color} />
-      <Path d="M16 12h.001" stroke={color} />
+      <Path d="M10 8h.01" stroke={color} />
+      <Path d="M12 12h.01" stroke={color} />
+      <Path d="M14 8h.01" stroke={color} />
+      <Path d="M16 12h.01" stroke={color} />
+      <Path d="M18 8h.01" stroke={color} />
+      <Path d="M6 8h.01" stroke={color} />
       <Path d="M7 16h10" stroke={color} />
+      <Path d="M8 12h.01" stroke={color} />
+      <Rect width="20" height="16" x="2" y="4" rx="2" stroke={color} />
     </Svg>
   )
 }
 
 Icon.displayName = 'Keyboard'
 
-export const Keyboard = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))
+export const Keyboard = memo<IconProps>(
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+)
