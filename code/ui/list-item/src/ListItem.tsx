@@ -184,7 +184,9 @@ export const useListItem = (
   } = { Text: ListItemText, Subtitle: ListItemSubtitle, Title: ListItemTitle }
 ): { props: PropsWithoutMediaStyles<ListItemProps> } => {
   // careful not to destructure and re-order props, order is important
-  const props = useProps(propsIn)
+  const props = useProps(propsIn, {
+    resolveValues: 'none',
+  })
 
   const {
     children,
