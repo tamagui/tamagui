@@ -1,0 +1,153 @@
+---
+title: Migrating from Create React App to One
+description: One makes a great replacement for Create React App. With a few simple steps, you can move over to One and enjoy the power of the Vite ecosystem.
+---
+
+<IntroParagraph>
+Transitioning from Create React App (CRA) to One is a straightforward process that unlocks a world of performance improvements and modern development features.
+</IntroParagraph>
+
+One is a build system and React framework for web, iOS, and Android, built on the power of Vite. It offers faster build times, better developer experience, and seamless cross-platform development capabilities.
+
+Let's walk through the migration process step by step.
+
+### Step 1: Add One to Your Project
+
+First, let's add One and its dependencies to your project:
+
+```bash
+yarn add one react-native-web
+```
+
+### Step 2: Update Your Project Structure
+
+One uses a file-based routing system, which means we need to adjust our project structure slightly. Here's what we'll do:
+
+<RouteTree
+  routes={[
+    { name: 'package.json' },
+    { name: 'vite.config.ts', add: true, highlight: true, description: 'Add a vite.config.ts file to configure our build system.'},
+    { name: 'public', children: [
+      { name: 'favicon.ico' },
+      { name: 'index.html', delete: true, description: 'Remove index.html as One will handle app rendering.' },
+    ] },
+    { name: 'app', add: true, description: 'Add an app directory for our file system routes.', children: [
+      { name: 'index.tsx', add: true, highlight: true, description: 'Move and rename App.js to index.tsx.' },
+    ] },
+    { name: 'src', children: [
+      { name: 'App.css' },
+      { name: 'App.js', delete: true, description: 'Move App.js content to app/index.tsx.' },
+      { name: 'App.test.js' },
+      { name: 'index.css' },
+      { name: 'index.js', delete: true, description:'Remove index.js. One\'s file system router replaces this.'  },
+      { name: 'reportWebVitals.js', delete: true, description: 'Remove reportWebVitals.js.' },
+      { name: 'setupTests.js', delete: true, description: 'Remove setupTests.js. We\'ll use Vitest for testing.' }
+    ] }
+  ]}
+/>
+
+### Step 3: Configure Vite
+
+Create a new `vite.config.ts` file in your project root with the following content:
+
+```tsx fileName=vite.config.ts
+import type { UserConfig } from 'vite'
+import { one } from 'one/vite'
+
+export default {
+  plugins: [
+    one({
+      web: {
+        defaultRenderMode: 'spa'
+      }
+    }),
+  ],
+} satisfies UserConfig
+```
+
+This minimal configuration sets up One with Vite, enabling all the goodness that comes with it. Note that we're setting `defaultRenderMode` to 'spa' (Single Page App) for compatibility with Create React App. This ensures that your app behaves similarly to how it did with CRA, rendering entirely on the client side.
+
+The 'spa' mode is the simplest strategy, where your app is not rendered on the server at all. Instead, only the JavaScript to render your page is served to the user's browser. This avoids some of the complexity associated with server-side rendering, making it a good starting point for migrating from CRA.
+
+If you want to explore other rendering modes later, such as Static Site Generation (SSG) or Server-Side Rendering (SSR), you can change this setting. Each mode has its own trade-offs in terms of performance, SEO, and complexity. For more information on the available render modes and their implications, refer to the [One configuration documentation](/docs/configuration#defaultrendermode).
+
+### Step 4: Update package.json Scripts
+
+Let's update our `package.json` scripts to use One's commands:
+
+```json fileName=package.json
+{
+  "scripts": {
+    "start": "one dev",
+    "build": "one build",
+    "test": "vitest run"
+  }
+}
+```
+
+These new scripts replace the CRA equivalents, giving you access to One's optimized development and build processes.
+
+### Step 5: Update Your Main Component
+
+Now, let's update our main component. We'll move `src/App.js` to `app/index.tsx` and make a few adjustments:
+
+```tsx fileName=app/index.tsx
+import "~/src/App.css";
+import logo from "~/src/logo.svg";
+
+export default function App() {
+  return (
+    <div className="App">
+      <header className="App-header">
+        <img src={logo} className="App-logo" alt="logo" />
+        <p>
+          Edit <code>app/index.tsx</code> and save to reload.
+        </p>
+        <a
+          className="App-link"
+          href="https://reactjs.org"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Learn React
+        </a>
+      </header>
+    </div>
+  );
+}
+```
+
+Notice how we've updated the import paths using the `~` alias, which One provides out of the box for referencing files from your project root.
+
+### Step 6: Remove Unnecessary Files
+
+You can now safely remove the following files:
+
+- `public/index.html`
+- `src/index.js`
+- `src/reportWebVitals.js`
+- `src/setupTests.js`
+
+One handles app rendering and provides its own optimized setup for these functionalities.
+
+### Step 7: Run Your Migrated App
+
+You're all set! Now you can start your newly migrated One app:
+
+```bash
+yarn start
+```
+
+Visit [http://localhost:8081](http://localhost:8081) to see your app in action. Use the `--port` flag if you need to change the port.
+
+## Next Steps
+
+Congratulations! You've successfully migrated from Create React App to One. Here are some next steps to consider:
+
+1. **Explore One's features**: Check out the [One documentation](/docs/introduction) to learn about its powerful features like SSR, file-based routing, and more.
+
+2. **Optimize for production**: One provides excellent production optimizations out of the box. Run `yarn build` to create an optimized production build.
+
+3. **Add Tamagui**: For a powerful, fully type-safe UI kit that works seamlessly with One, consider adding [Tamagui](/docs/guides-tamagui). It provides SSR-safe styling, animations, and themes.
+
+4. **Implement dark mode**: One makes it easy to add SSR-safe dark mode. Check out our [Dark Mode guide](/docs/guides-dark-mode) for a quick setup.

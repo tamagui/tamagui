@@ -1,4 +1,4 @@
-import { File, Folder } from '@tamagui/lucide-icons'
+import { File, Folder, Plus, Minus } from '@tamagui/lucide-icons'
 import { Paragraph, ScrollView, XStack, YStack } from 'tamagui'
 
 type RouteNode = {
@@ -6,6 +6,8 @@ type RouteNode = {
   description?: string
   highlight?: boolean
   children?: RouteNode[]
+  delete?: boolean
+  add?: boolean
 }
 
 export const RouteTree = ({
@@ -38,13 +40,22 @@ export const RouteTree = ({
         <YStack f={1}>
           {routes.map((route, i) => {
             const Icon = route.children ? Folder : File
+            const StatusIcon = route.delete ? Minus : route.add ? Plus : null
+            const statusColor = route.delete
+              ? '$red10'
+              : route.add
+                ? '$green10'
+                : undefined
+
             return (
               <YStack
+                componentName="RouteTree"
                 key={i}
                 bbw={1}
+                theme={route.delete ? 'light_gray' : route.add ? 'add' : undefined}
                 bbc="$color3"
                 bg="$color1"
-                {...(route.highlight && {
+                {...((route.highlight || route.add) && {
                   bg: '$color2',
                 })}
                 {...(i === routes.length - 1 && {
@@ -70,6 +81,7 @@ export const RouteTree = ({
                         opacity: 0.5,
                       })}
                     />
+                    {StatusIcon && <StatusIcon size={12} color={statusColor} />}
                     <Paragraph f={1} ww="normal" ov="hidden" ellipse ff="$mono">
                       {route.name}
                     </Paragraph>
