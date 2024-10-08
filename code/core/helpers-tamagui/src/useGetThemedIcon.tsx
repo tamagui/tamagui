@@ -1,5 +1,4 @@
 import React from 'react'
-
 import type { ColorProp } from './useCurrentColor'
 import { useCurrentColor } from './useCurrentColor'
 
