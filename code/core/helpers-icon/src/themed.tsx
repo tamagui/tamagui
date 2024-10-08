@@ -31,14 +31,15 @@ export function themed(
       resolveValues: 'web', // iOS doesnt support dynamic values for SVG so only optimize on web
     })
 
-    const defaultColor = style.color ?? opts.defaultThemeColor
+    const defaultColor = opts.defaultThemeColor
 
-    const color = getVariable(
+    const colorIn =
       (defaultColor ? theme[defaultColor as string] : undefined) ||
-        style.color ||
-        (!props.disableTheme ? theme.color : null) ||
-        opts.fallbackColor
-    )
+      style.color ||
+      (!props.disableTheme ? theme.color : null) ||
+      opts.fallbackColor
+
+    const color = getVariable(colorIn)
 
     const size =
       typeof props.size === 'string'
@@ -48,17 +49,17 @@ export function themed(
     const strokeWidth =
       typeof props.strokeWidth === 'string'
         ? getTokenValue(props.strokeWidth as any, 'size')
-        : props.strokeWidth ?? `${opts.defaultStrokeWidth}`
+        : (props.strokeWidth ?? `${opts.defaultStrokeWidth}`)
 
-    return (
-      <Component
-        {...props}
-        color={color}
-        size={size}
-        strokeWidth={strokeWidth}
-        style={style as any}
-      />
-    )
+    const finalProps = {
+      ...props,
+      color,
+      size,
+      strokeWidth,
+      style: style as any,
+    }
+
+    return <Component {...finalProps} />
   }
 
   return wrapped

@@ -2036,8 +2036,8 @@ export function createExtractor(
                 undefined,
                 undefined,
                 undefined,
-                debugPropValue || shouldPrintDebug,
-                options.experimentalFlattenThemesOnNative
+                debugPropValue || shouldPrintDebug
+                // options.experimentalFlattenThemesOnNative
               )
 
               let outProps = {

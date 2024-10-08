@@ -467,6 +467,7 @@ function resolveVariableValue(
     if (resolveValues === 'value') {
       return valOrVar.val
     }
+
     // @ts-expect-error this is fine until we can type better
     const get = valOrVar?.get
 

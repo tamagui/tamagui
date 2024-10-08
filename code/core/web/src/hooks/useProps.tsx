@@ -86,7 +86,7 @@ export function usePropsAndStyle<A extends PropsLikeObject>(
     getConfig()
   )
 
-  const media = useMedia()
+  const mediaState = useMedia()
   const splitStyles = useSplitStyles(
     props,
     staticConfig,
@@ -95,7 +95,7 @@ export function usePropsAndStyle<A extends PropsLikeObject>(
     state,
     {
       isAnimated: false,
-      mediaState: media,
+      mediaState,
       noSkip: true,
       noMergeStyle: true,
       noClassNames: true,
@@ -132,5 +132,5 @@ export function usePropsAndStyle<A extends PropsLikeObject>(
     mediaGroups ? Object.keys([...mediaGroups]).join('') : 0,
   ])
 
-  return [splitStyles.viewProps, splitStyles.style || {}, theme, media] as any
+  return [splitStyles.viewProps, splitStyles.style || {}, theme, mediaState] as any
 }
