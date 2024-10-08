@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/form",
-  "version": "1.112.25-1728362181133",
+  "version": "1.112.25-1728362181133-1728364521310",
   "sideEffects": [
     "*.css"
   ],
@@ -33,17 +33,17 @@
     }
   },
   "dependencies": {
-    "@tamagui/compose-refs": "1.112.25-1728362181133",
-    "@tamagui/core": "1.112.25-1728362181133",
-    "@tamagui/create-context": "1.112.25-1728362181133",
-    "@tamagui/focusable": "1.112.25-1728362181133",
-    "@tamagui/get-button-sized": "1.112.25-1728362181133",
-    "@tamagui/get-font-sized": "1.112.25-1728362181133",
-    "@tamagui/helpers": "1.112.25-1728362181133",
-    "@tamagui/text": "1.112.25-1728362181133"
+    "@tamagui/compose-refs": "1.112.25-1728362181133-1728364521310",
+    "@tamagui/core": "1.112.25-1728362181133-1728364521310",
+    "@tamagui/create-context": "1.112.25-1728362181133-1728364521310",
+    "@tamagui/focusable": "1.112.25-1728362181133-1728364521310",
+    "@tamagui/get-button-sized": "1.112.25-1728362181133-1728364521310",
+    "@tamagui/get-font-sized": "1.112.25-1728362181133-1728364521310",
+    "@tamagui/helpers": "1.112.25-1728362181133-1728364521310",
+    "@tamagui/text": "1.112.25-1728362181133-1728364521310"
   },
   "devDependencies": {
-    "@tamagui/build": "1.112.25-1728362181133",
+    "@tamagui/build": "1.112.25-1728362181133-1728364521310",
     "react": "^18.2.0 || ^19.0.0"
   },
   "publishConfig": {

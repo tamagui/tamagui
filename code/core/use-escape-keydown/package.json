@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/use-escape-keydown",
-  "version": "1.112.25-1728362181133",
+  "version": "1.112.25-1728362181133-1728364521310",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -18,10 +18,10 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/use-callback-ref": "1.112.25-1728362181133"
+    "@tamagui/use-callback-ref": "1.112.25-1728362181133-1728364521310"
   },
   "devDependencies": {
-    "@tamagui/build": "1.112.25-1728362181133"
+    "@tamagui/build": "1.112.25-1728362181133-1728364521310"
   },
   "exports": {
     "./package.json": "./package.json",

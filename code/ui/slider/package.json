@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/slider",
-  "version": "1.112.25-1728362181133",
+  "version": "1.112.25-1728362181133-1728364521310",
   "sideEffects": [
     "*.css"
   ],
@@ -33,22 +33,22 @@
     }
   },
   "dependencies": {
-    "@tamagui/compose-refs": "1.112.25-1728362181133",
-    "@tamagui/constants": "1.112.25-1728362181133",
-    "@tamagui/core": "1.112.25-1728362181133",
-    "@tamagui/create-context": "1.112.25-1728362181133",
-    "@tamagui/get-token": "1.112.25-1728362181133",
-    "@tamagui/helpers": "1.112.25-1728362181133",
-    "@tamagui/stacks": "1.112.25-1728362181133",
-    "@tamagui/use-controllable-state": "1.112.25-1728362181133",
-    "@tamagui/use-debounce": "1.112.25-1728362181133",
-    "@tamagui/use-direction": "1.112.25-1728362181133"
+    "@tamagui/compose-refs": "1.112.25-1728362181133-1728364521310",
+    "@tamagui/constants": "1.112.25-1728362181133-1728364521310",
+    "@tamagui/core": "1.112.25-1728362181133-1728364521310",
+    "@tamagui/create-context": "1.112.25-1728362181133-1728364521310",
+    "@tamagui/get-token": "1.112.25-1728362181133-1728364521310",
+    "@tamagui/helpers": "1.112.25-1728362181133-1728364521310",
+    "@tamagui/stacks": "1.112.25-1728362181133-1728364521310",
+    "@tamagui/use-controllable-state": "1.112.25-1728362181133-1728364521310",
+    "@tamagui/use-debounce": "1.112.25-1728362181133-1728364521310",
+    "@tamagui/use-direction": "1.112.25-1728362181133-1728364521310"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.112.25-1728362181133",
+    "@tamagui/build": "1.112.25-1728362181133-1728364521310",
     "react": "^18.2.0 || ^19.0.0",
     "react-native": "0.74.1"
   },
