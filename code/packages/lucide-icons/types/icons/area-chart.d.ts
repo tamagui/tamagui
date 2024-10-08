@@ -1,4 +1,3 @@
-import React from "react";
 import type { IconProps } from '@tamagui/helpers-icon';
-export declare const AreaChart: React.NamedExoticComponent<IconProps>;
+export declare const AreaChart: import("react").NamedExoticComponent<IconProps>;
 //# sourceMappingURL=area-chart.d.ts.map

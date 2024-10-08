@@ -1,4 +1,3 @@
-import React from "react";
 import type { IconProps } from '@tamagui/helpers-icon';
-export declare const PawPrint: React.NamedExoticComponent<IconProps>;
+export declare const PawPrint: import("react").NamedExoticComponent<IconProps>;
 //# sourceMappingURL=paw-print.d.ts.map

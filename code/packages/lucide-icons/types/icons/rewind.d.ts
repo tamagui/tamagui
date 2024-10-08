@@ -1,4 +1,3 @@
-import React from "react";
 import type { IconProps } from '@tamagui/helpers-icon';
-export declare const Rewind: React.NamedExoticComponent<IconProps>;
+export declare const Rewind: import("react").NamedExoticComponent<IconProps>;
 //# sourceMappingURL=rewind.d.ts.map

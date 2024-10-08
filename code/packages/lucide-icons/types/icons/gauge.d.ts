@@ -1,4 +1,3 @@
-import React from "react";
 import type { IconProps } from '@tamagui/helpers-icon';
-export declare const Gauge: React.NamedExoticComponent<IconProps>;
+export declare const Gauge: import("react").NamedExoticComponent<IconProps>;
 //# sourceMappingURL=gauge.d.ts.map

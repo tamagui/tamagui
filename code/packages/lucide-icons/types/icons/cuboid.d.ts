@@ -1,4 +1,3 @@
-import React from "react";
 import type { IconProps } from '@tamagui/helpers-icon';
-export declare const Cuboid: React.NamedExoticComponent<IconProps>;
+export declare const Cuboid: import("react").NamedExoticComponent<IconProps>;
 //# sourceMappingURL=cuboid.d.ts.map

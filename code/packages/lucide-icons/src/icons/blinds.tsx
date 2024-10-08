@@ -1,28 +1,10 @@
-import React from "react";
-import PropTypes from 'prop-types';
-import type { IconProps } from '@tamagui/helpers-icon';
-import {
-  Svg,
-  Circle as _Circle,
-  Ellipse,
-  G,
-  LinearGradient,
-  RadialGradient,
-  Line,
-  Path,
-  Polygon,
-  Polyline,
-  Rect,
-  Symbol,
-  Text as _Text,
-  Use,
-  Defs,
-  Stop } from
-'react-native-svg';
-import { themed } from '@tamagui/helpers-icon';
+import { memo } from 'react'
+import type { IconProps } from '@tamagui/helpers-icon'
+import { Svg, Circle as _Circle, Path } from 'react-native-svg'
+import { themed } from '@tamagui/helpers-icon'
 
 const Icon = (props) => {
-  const { color = 'black', size = 24, ...otherProps } = props;
+  const { color = 'black', size = 24, ...otherProps } = props
   return (
     <Svg
       width={size}
@@ -33,8 +15,8 @@ const Icon = (props) => {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      {...otherProps}>
-
+      {...otherProps}
+    >
       <Path d="M3 3h18" stroke={color} />
       <Path d="M20 7H8" stroke={color} />
       <Path d="M20 11H8" stroke={color} />
@@ -42,10 +24,10 @@ const Icon = (props) => {
       <Path d="M8 15h12" stroke={color} />
       <Path d="M4 3v14" stroke={color} />
       <_Circle cx="4" cy="19" r="2" stroke={color} />
-    </Svg>);
+    </Svg>
+  )
+}
 
-};
+Icon.displayName = 'Blinds'
 
-Icon.displayName = 'Blinds';
-
-export const Blinds = React.memo<IconProps>(themed(Icon));
+export const Blinds = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))

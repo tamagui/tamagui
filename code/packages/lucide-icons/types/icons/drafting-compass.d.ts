@@ -1,4 +1,3 @@
-import React from "react";
 import type { IconProps } from '@tamagui/helpers-icon';
-export declare const DraftingCompass: React.NamedExoticComponent<IconProps>;
+export declare const DraftingCompass: import("react").NamedExoticComponent<IconProps>;
 //# sourceMappingURL=drafting-compass.d.ts.map

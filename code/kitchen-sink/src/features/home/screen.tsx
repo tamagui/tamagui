@@ -1,22 +1,10 @@
-import { ChevronRight, Moon, Sun } from '@tamagui/lucide-icons'
+import { ChevronRight } from '@tamagui/lucide-icons'
 import { ScrollView } from 'react-native'
 import type { UseLinkProps } from 'solito/link'
 import { useLink } from 'solito/link'
-// import { UseLinkProps, useLink } from 'solito/link'
 import type { ListItemProps } from 'tamagui'
-import {
-  Button,
-  H1,
-  ListItem,
-  Paragraph,
-  Separator,
-  Spacer,
-  Switch,
-  YGroup,
-  YStack,
-} from 'tamagui'
-
-import { useThemeControl } from '../../useKitchenSinkTheme'
+import { H1, ListItem, Paragraph, Separator, YGroup, YStack } from 'tamagui'
+import { ColorSchemeListItem } from './ColorSchemeListItem'
 
 export function HomeScreen() {
   return (
@@ -83,38 +71,6 @@ export const LinkListItem = ({
       iconAfter={<ChevronRight color="$color10" />}
     >
       {children}
-    </ListItem>
-  )
-}
-
-const ColorSchemeListItem = (props: ListItemProps) => {
-  const theme = useThemeControl()
-  const checked = theme.value === 'light'
-
-  return (
-    <ListItem {...props} bg="$color1" pressTheme paddingVertical={0}>
-      <ListItem.Text>Theme</ListItem.Text>
-      <Spacer flex />
-      <Button chromeless disabled w={20} icon={Moon} />
-      <Switch
-        native
-        checked={checked}
-        onCheckedChange={() => {
-          theme.set(theme.value === 'dark' ? 'light' : 'dark')
-        }}
-      >
-        <Switch.Thumb
-          animation={[
-            'quick',
-            {
-              transform: {
-                overshootClamping: true,
-              },
-            },
-          ]}
-        />
-      </Switch>
-      <Button chromeless disabled w={20} icon={Sun} />
     </ListItem>
   )
 }

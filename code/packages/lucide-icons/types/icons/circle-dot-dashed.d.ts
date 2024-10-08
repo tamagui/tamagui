@@ -1,4 +1,3 @@
-import React from "react";
 import type { IconProps } from '@tamagui/helpers-icon';
-export declare const CircleDotDashed: React.NamedExoticComponent<IconProps>;
+export declare const CircleDotDashed: import("react").NamedExoticComponent<IconProps>;
 //# sourceMappingURL=circle-dot-dashed.d.ts.map

@@ -1,28 +1,10 @@
-import React from "react";
-import PropTypes from 'prop-types';
-import type { IconProps } from '@tamagui/helpers-icon';
-import {
-  Svg,
-  Circle as _Circle,
-  Ellipse,
-  G,
-  LinearGradient,
-  RadialGradient,
-  Line,
-  Path,
-  Polygon,
-  Polyline,
-  Rect,
-  Symbol,
-  Text as _Text,
-  Use,
-  Defs,
-  Stop } from
-'react-native-svg';
-import { themed } from '@tamagui/helpers-icon';
+import { memo } from 'react'
+import type { IconProps } from '@tamagui/helpers-icon'
+import { Svg, Path } from 'react-native-svg'
+import { themed } from '@tamagui/helpers-icon'
 
 const Icon = (props) => {
-  const { color = 'black', size = 24, ...otherProps } = props;
+  const { color = 'black', size = 24, ...otherProps } = props
   return (
     <Svg
       width={size}
@@ -33,8 +15,8 @@ const Icon = (props) => {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      {...otherProps}>
-
+      {...otherProps}
+    >
       <Path d="m5.2 6.2 1.4 1.4" stroke={color} />
       <Path d="M2 13h2" stroke={color} />
       <Path d="M20 13h2" stroke={color} />
@@ -43,10 +25,10 @@ const Icon = (props) => {
       <Path d="M22 21H2" stroke={color} />
       <Path d="M16 13a4 4 0 0 0-8 0" stroke={color} />
       <Path d="M12 5V2.5" stroke={color} />
-    </Svg>);
+    </Svg>
+  )
+}
 
-};
+Icon.displayName = 'Haze'
 
-Icon.displayName = 'Haze';
-
-export const Haze = React.memo<IconProps>(themed(Icon));
+export const Haze = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))

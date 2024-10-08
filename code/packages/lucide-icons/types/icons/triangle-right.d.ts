@@ -1,4 +1,3 @@
-import React from "react";
 import type { IconProps } from '@tamagui/helpers-icon';
-export declare const TriangleRight: React.NamedExoticComponent<IconProps>;
+export declare const TriangleRight: import("react").NamedExoticComponent<IconProps>;
 //# sourceMappingURL=triangle-right.d.ts.map

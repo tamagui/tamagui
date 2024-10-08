@@ -1,4 +1,3 @@
-import React from "react";
 import type { IconProps } from '@tamagui/helpers-icon';
-export declare const Umbrella: React.NamedExoticComponent<IconProps>;
+export declare const Umbrella: import("react").NamedExoticComponent<IconProps>;
 //# sourceMappingURL=umbrella.d.ts.map

@@ -1,4 +1,3 @@
-import React from "react";
 import type { IconProps } from '@tamagui/helpers-icon';
-export declare const ArrowDownAZ: React.NamedExoticComponent<IconProps>;
+export declare const ArrowDownAZ: import("react").NamedExoticComponent<IconProps>;
 //# sourceMappingURL=arrow-down-a-z.d.ts.map

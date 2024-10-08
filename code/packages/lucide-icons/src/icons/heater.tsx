@@ -1,28 +1,10 @@
-import React from "react";
-import PropTypes from 'prop-types';
-import type { IconProps } from '@tamagui/helpers-icon';
-import {
-  Svg,
-  Circle as _Circle,
-  Ellipse,
-  G,
-  LinearGradient,
-  RadialGradient,
-  Line,
-  Path,
-  Polygon,
-  Polyline,
-  Rect,
-  Symbol,
-  Text as _Text,
-  Use,
-  Defs,
-  Stop } from
-'react-native-svg';
-import { themed } from '@tamagui/helpers-icon';
+import { memo } from 'react'
+import type { IconProps } from '@tamagui/helpers-icon'
+import { Svg, Path } from 'react-native-svg'
+import { themed } from '@tamagui/helpers-icon'
 
 const Icon = (props) => {
-  const { color = 'black', size = 24, ...otherProps } = props;
+  const { color = 'black', size = 24, ...otherProps } = props
   return (
     <Svg
       width={size}
@@ -33,8 +15,8 @@ const Icon = (props) => {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      {...otherProps}>
-
+      {...otherProps}
+    >
       <Path d="M11 8c2-3-2-3 0-6" stroke={color} />
       <Path d="M15.5 8c2-3-2-3 0-6" stroke={color} />
       <Path d="M6 10h.01" stroke={color} />
@@ -44,14 +26,14 @@ const Icon = (props) => {
       <Path d="M18 16v-4" stroke={color} />
       <Path
         d="M20 6a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h3"
-        stroke={color} />
-
+        stroke={color}
+      />
       <Path d="M5 20v2" stroke={color} />
       <Path d="M19 20v2" stroke={color} />
-    </Svg>);
+    </Svg>
+  )
+}
 
-};
+Icon.displayName = 'Heater'
 
-Icon.displayName = 'Heater';
-
-export const Heater = React.memo<IconProps>(themed(Icon));
+export const Heater = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))

@@ -1,28 +1,10 @@
-import React from "react";
-import PropTypes from 'prop-types';
-import type { IconProps } from '@tamagui/helpers-icon';
-import {
-  Svg,
-  Circle as _Circle,
-  Ellipse,
-  G,
-  LinearGradient,
-  RadialGradient,
-  Line,
-  Path,
-  Polygon,
-  Polyline,
-  Rect,
-  Symbol,
-  Text as _Text,
-  Use,
-  Defs,
-  Stop } from
-'react-native-svg';
-import { themed } from '@tamagui/helpers-icon';
+import { memo } from 'react'
+import type { IconProps } from '@tamagui/helpers-icon'
+import { Svg, Circle as _Circle, Path } from 'react-native-svg'
+import { themed } from '@tamagui/helpers-icon'
 
 const Icon = (props) => {
-  const { color = 'black', size = 24, ...otherProps } = props;
+  const { color = 'black', size = 24, ...otherProps } = props
   return (
     <Svg
       width={size}
@@ -33,8 +15,8 @@ const Icon = (props) => {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      {...otherProps}>
-
+      {...otherProps}
+    >
       <_Circle cx="12" cy="12" r="10" stroke={color} />
       <Path d="m14.31 8 5.74 9.94" stroke={color} />
       <Path d="M9.69 8h11.48" stroke={color} />
@@ -42,10 +24,10 @@ const Icon = (props) => {
       <Path d="M9.69 16 3.95 6.06" stroke={color} />
       <Path d="M14.31 16H2.83" stroke={color} />
       <Path d="m16.62 12-5.74 9.94" stroke={color} />
-    </Svg>);
+    </Svg>
+  )
+}
 
-};
+Icon.displayName = 'Aperture'
 
-Icon.displayName = 'Aperture';
-
-export const Aperture = React.memo<IconProps>(themed(Icon));
+export const Aperture = memo<IconProps>(themed(Icon, { resolveValues: 'auto' }))

@@ -1,4 +1,3 @@
-import React from "react";
 import type { IconProps } from '@tamagui/helpers-icon';
-export declare const Twitch: React.NamedExoticComponent<IconProps>;
+export declare const Twitch: import("react").NamedExoticComponent<IconProps>;
 //# sourceMappingURL=twitch.d.ts.map

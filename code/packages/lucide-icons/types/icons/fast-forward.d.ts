@@ -1,4 +1,3 @@
-import React from "react";
 import type { IconProps } from '@tamagui/helpers-icon';
-export declare const FastForward: React.NamedExoticComponent<IconProps>;
+export declare const FastForward: import("react").NamedExoticComponent<IconProps>;
 //# sourceMappingURL=fast-forward.d.ts.map

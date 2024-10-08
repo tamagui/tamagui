@@ -1,4 +1,3 @@
-import React from "react";
 import type { IconProps } from '@tamagui/helpers-icon';
-export declare const Maximize: React.NamedExoticComponent<IconProps>;
+export declare const Maximize: import("react").NamedExoticComponent<IconProps>;
 //# sourceMappingURL=maximize.d.ts.map

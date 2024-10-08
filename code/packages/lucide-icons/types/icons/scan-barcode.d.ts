@@ -1,4 +1,3 @@
-import React from "react";
 import type { IconProps } from '@tamagui/helpers-icon';
-export declare const ScanBarcode: React.NamedExoticComponent<IconProps>;
+export declare const ScanBarcode: import("react").NamedExoticComponent<IconProps>;
 //# sourceMappingURL=scan-barcode.d.ts.map

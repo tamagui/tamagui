@@ -168,6 +168,7 @@ export function getThemeProxied(
   const config = getConfig()
 
   function track(key: string) {
+    console.log('track', key)
     if (keys && !keys.includes(key)) {
       if (!keys.length) {
         // tracking new key for first time, do an update check
@@ -213,6 +214,7 @@ export function getThemeProxied(
             get(_, subkey) {
               if (subkey === 'val') {
                 // always track .val
+                console.log('///2', keyString, key)
                 track(keyString)
               } else if (subkey === 'get') {
                 return (platform?: 'web') => {
@@ -248,6 +250,13 @@ export function getThemeProxied(
                     }
 
                     // if we dont return early with a dynamic val on native, always track
+                    console.log('///1', keyString, key, {
+                      platform,
+                      isIos,
+                      deopt,
+                      s: getSetting('fastSchemeChange'),
+                      p: someParentIsInversed(themeManager),
+                    })
                     track(keyString)
                   }
 

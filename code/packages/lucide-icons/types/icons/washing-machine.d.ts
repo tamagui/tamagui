@@ -1,4 +1,3 @@
-import React from "react";
 import type { IconProps } from '@tamagui/helpers-icon';
-export declare const WashingMachine: React.NamedExoticComponent<IconProps>;
+export declare const WashingMachine: import("react").NamedExoticComponent<IconProps>;
 //# sourceMappingURL=washing-machine.d.ts.map

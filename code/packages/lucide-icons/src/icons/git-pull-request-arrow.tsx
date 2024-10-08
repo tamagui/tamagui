@@ -1,28 +1,10 @@
-import React from "react";
-import PropTypes from 'prop-types';
-import type { IconProps } from '@tamagui/helpers-icon';
-import {
-  Svg,
-  Circle as _Circle,
-  Ellipse,
-  G,
-  LinearGradient,
-  RadialGradient,
-  Line,
-  Path,
-  Polygon,
-  Polyline,
-  Rect,
-  Symbol,
-  Text as _Text,
-  Use,
-  Defs,
-  Stop } from
-'react-native-svg';
-import { themed } from '@tamagui/helpers-icon';
+import { memo } from 'react'
+import type { IconProps } from '@tamagui/helpers-icon'
+import { Svg, Circle as _Circle, Path } from 'react-native-svg'
+import { themed } from '@tamagui/helpers-icon'
 
 const Icon = (props) => {
-  const { color = 'black', size = 24, ...otherProps } = props;
+  const { color = 'black', size = 24, ...otherProps } = props
   return (
     <Svg
       width={size}
@@ -33,17 +15,19 @@ const Icon = (props) => {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      {...otherProps}>
-
+      {...otherProps}
+    >
       <_Circle cx="5" cy="6" r="3" stroke={color} />
       <Path d="M5 9v12" stroke={color} />
       <_Circle cx="19" cy="18" r="3" stroke={color} />
       <Path d="m15 9-3-3 3-3" stroke={color} />
       <Path d="M12 6h5a2 2 0 0 1 2 2v7" stroke={color} />
-    </Svg>);
+    </Svg>
+  )
+}
 
-};
+Icon.displayName = 'GitPullRequestArrow'
 
-Icon.displayName = 'GitPullRequestArrow';
-
-export const GitPullRequestArrow = React.memo<IconProps>(themed(Icon));
+export const GitPullRequestArrow = memo<IconProps>(
+  themed(Icon, { resolveValues: 'auto' })
+)

@@ -1,4 +1,3 @@
-import React from "react";
 import type { IconProps } from '@tamagui/helpers-icon';
-export declare const LayoutTemplate: React.NamedExoticComponent<IconProps>;
+export declare const LayoutTemplate: import("react").NamedExoticComponent<IconProps>;
 //# sourceMappingURL=layout-template.d.ts.map

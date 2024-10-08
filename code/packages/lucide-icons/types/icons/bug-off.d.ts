@@ -1,4 +1,3 @@
-import React from "react";
 import type { IconProps } from '@tamagui/helpers-icon';
-export declare const BugOff: React.NamedExoticComponent<IconProps>;
+export declare const BugOff: import("react").NamedExoticComponent<IconProps>;
 //# sourceMappingURL=bug-off.d.ts.map

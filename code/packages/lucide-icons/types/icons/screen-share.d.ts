@@ -1,4 +1,3 @@
-import React from "react";
 import type { IconProps } from '@tamagui/helpers-icon';
-export declare const ScreenShare: React.NamedExoticComponent<IconProps>;
+export declare const ScreenShare: import("react").NamedExoticComponent<IconProps>;
 //# sourceMappingURL=screen-share.d.ts.map

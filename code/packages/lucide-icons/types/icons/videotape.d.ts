@@ -1,4 +1,3 @@
-import React from "react";
 import type { IconProps } from '@tamagui/helpers-icon';
-export declare const Videotape: React.NamedExoticComponent<IconProps>;
+export declare const Videotape: import("react").NamedExoticComponent<IconProps>;
 //# sourceMappingURL=videotape.d.ts.map

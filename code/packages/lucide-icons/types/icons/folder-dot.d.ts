@@ -1,4 +1,3 @@
-import React from "react";
 import type { IconProps } from '@tamagui/helpers-icon';
-export declare const FolderDot: React.NamedExoticComponent<IconProps>;
+export declare const FolderDot: import("react").NamedExoticComponent<IconProps>;
 //# sourceMappingURL=folder-dot.d.ts.map

@@ -1,4 +1,3 @@
-import React from "react";
 import type { IconProps } from '@tamagui/helpers-icon';
-export declare const Sailboat: React.NamedExoticComponent<IconProps>;
+export declare const Sailboat: import("react").NamedExoticComponent<IconProps>;
 //# sourceMappingURL=sailboat.d.ts.map

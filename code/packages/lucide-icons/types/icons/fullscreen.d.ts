@@ -1,4 +1,3 @@
-import React from "react";
 import type { IconProps } from '@tamagui/helpers-icon';
-export declare const Fullscreen: React.NamedExoticComponent<IconProps>;
+export declare const Fullscreen: import("react").NamedExoticComponent<IconProps>;
 //# sourceMappingURL=fullscreen.d.ts.map

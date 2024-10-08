@@ -1,4 +1,3 @@
-import React from "react";
 import type { IconProps } from '@tamagui/helpers-icon';
-export declare const Printer: React.NamedExoticComponent<IconProps>;
+export declare const Printer: import("react").NamedExoticComponent<IconProps>;
 //# sourceMappingURL=printer.d.ts.map

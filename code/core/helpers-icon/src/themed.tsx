@@ -1,4 +1,10 @@
-import { getTokenValue, getVariable, usePropsAndStyle, Text } from '@tamagui/core'
+import {
+  getTokenValue,
+  getVariable,
+  Text,
+  usePropsAndStyle,
+  type ResolveVariableAs,
+} from '@tamagui/core'
 import React from 'react'
 
 import type { IconProps } from './IconProps'
@@ -6,24 +12,23 @@ import type { IconProps } from './IconProps'
 // sad fix https://github.com/tamagui/tamagui/issues/1812
 React['keep']
 
-type ThemedOptions = {
+type Options = {
+  noClassNames?: boolean
   defaultThemeColor?: string
   defaultStrokeWidth?: number
   fallbackColor?: string
+  resolveValues?: ResolveVariableAs
 }
 
-type Opts = ThemedOptions & {
-  noClassNames?: boolean
-}
-
-export function themed(
-  Component: React.FC<IconProps>,
-  opts: Opts = {
+export function themed(Component: React.FC<IconProps>, optsIn: Options = {}) {
+  const opts = {
     defaultThemeColor: process.env.DEFAULT_ICON_THEME_COLOR || '$color',
     defaultStrokeWidth: 2,
     fallbackColor: '#000',
+    resolveValues: 'web',
+    ...optsIn,
   }
-) {
+
   const wrapped = (propsIn: IconProps) => {
     const [props, style, theme] = usePropsAndStyle(propsIn, {
       ...opts,
