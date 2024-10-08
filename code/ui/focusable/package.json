@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/focusable",
-  "version": "1.113.1",
+  "version": "1.113.2",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -32,11 +32,11 @@
     }
   },
   "dependencies": {
-    "@tamagui/compose-refs": "1.113.1",
-    "@tamagui/web": "1.113.1"
+    "@tamagui/compose-refs": "1.113.2",
+    "@tamagui/web": "1.113.2"
   },
   "devDependencies": {
-    "@tamagui/build": "1.113.1",
+    "@tamagui/build": "1.113.2",
     "react": "^18.2.0 || ^19.0.0"
   },
   "publishConfig": {
