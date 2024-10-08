@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/cli",
-  "version": "1.112.25",
+  "version": "1.112.25-1728362181133",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist",
@@ -23,11 +23,11 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/create-theme": "1.112.25",
-    "@tamagui/generate-themes": "1.112.25",
-    "@tamagui/static": "1.112.25",
-    "@tamagui/types": "1.112.25",
-    "@tamagui/vite-plugin": "1.112.25",
+    "@tamagui/create-theme": "1.112.25-1728362181133",
+    "@tamagui/generate-themes": "1.112.25-1728362181133",
+    "@tamagui/static": "1.112.25-1728362181133",
+    "@tamagui/types": "1.112.25-1728362181133",
+    "@tamagui/vite-plugin": "1.112.25-1728362181133",
     "@vitejs/plugin-react-swc": "^3.7.0",
     "arg": "^5.0.2",
     "chalk": "^4.1.2",
@@ -55,7 +55,7 @@
     "vite-plugin-entry-shaking": "^0.4.3"
   },
   "devDependencies": {
-    "@tamagui/build": "1.112.25",
+    "@tamagui/build": "1.112.25-1728362181133",
     "@types/chokidar": "^2.1.3",
     "@types/marked": "^5.0.0"
   }
