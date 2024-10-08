@@ -1,11 +1,13 @@
 import { ToastViewport } from '@tamagui/sandbox-ui'
 import { useFonts } from 'expo-font'
 import React from 'react'
-import { Appearance, Platform, useColorScheme } from 'react-native'
+import { Appearance, DynamicColorIOS, Platform, useColorScheme } from 'react-native'
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context'
 import { Navigation } from './Navigation'
 import { Provider } from './provider'
 import { ThemeContext } from './useKitchenSinkTheme'
+import Svg, { Circle, Path } from 'react-native-svg'
+import { ChevronRight, Moon, Sun } from '@tamagui/lucide-icons'
 
 if (Platform.OS === 'ios') {
   require('./iosSheetSetup')
