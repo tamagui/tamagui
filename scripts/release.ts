@@ -405,7 +405,8 @@ async function run() {
       const gitTag = `${tagPrefix}${version}`
 
       if (!finish) {
-        await sleep(4 * 1000)
+        // longer sleep since npm was missing some deps
+        await sleep(10 * 1000)
       }
 
       if (!canary && !skipStarters) {
