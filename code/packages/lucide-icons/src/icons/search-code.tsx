@@ -27,6 +27,4 @@ const Icon = (props) => {
 
 Icon.displayName = 'SearchCode'
 
-export const SearchCode = memo<IconProps>(
-  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_RESOLVE || 'auto' })
-)
+export const SearchCode = memo<IconProps>(themed(Icon))

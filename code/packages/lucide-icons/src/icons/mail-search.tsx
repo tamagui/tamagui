@@ -31,6 +31,4 @@ const Icon = (props) => {
 
 Icon.displayName = 'MailSearch'
 
-export const MailSearch = memo<IconProps>(
-  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_RESOLVE || 'auto' })
-)
+export const MailSearch = memo<IconProps>(themed(Icon))

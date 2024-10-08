@@ -29,6 +29,4 @@ const Icon = (props) => {
 
 Icon.displayName = 'CalendarPlus2'
 
-export const CalendarPlus2 = memo<IconProps>(
-  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_RESOLVE || 'auto' })
-)
+export const CalendarPlus2 = memo<IconProps>(themed(Icon))

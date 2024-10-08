@@ -26,6 +26,4 @@ const Icon = (props) => {
 
 Icon.displayName = 'AlignLeft'
 
-export const AlignLeft = memo<IconProps>(
-  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_RESOLVE || 'auto' })
-)
+export const AlignLeft = memo<IconProps>(themed(Icon))

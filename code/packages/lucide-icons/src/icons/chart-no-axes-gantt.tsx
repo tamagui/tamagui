@@ -26,6 +26,4 @@ const Icon = (props) => {
 
 Icon.displayName = 'ChartNoAxesGantt'
 
-export const ChartNoAxesGantt = memo<IconProps>(
-  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_RESOLVE || 'auto' })
-)
+export const ChartNoAxesGantt = memo<IconProps>(themed(Icon))

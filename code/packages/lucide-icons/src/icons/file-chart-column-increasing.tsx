@@ -31,6 +31,4 @@ const Icon = (props) => {
 
 Icon.displayName = 'FileChartColumnIncreasing'
 
-export const FileChartColumnIncreasing = memo<IconProps>(
-  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_RESOLVE || 'auto' })
-)
+export const FileChartColumnIncreasing = memo<IconProps>(themed(Icon))

@@ -36,6 +36,4 @@ const Icon = (props) => {
 
 Icon.displayName = 'NotepadTextDashed'
 
-export const NotepadTextDashed = memo<IconProps>(
-  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_RESOLVE || 'auto' })
-)
+export const NotepadTextDashed = memo<IconProps>(themed(Icon))

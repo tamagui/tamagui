@@ -30,6 +30,4 @@ const Icon = (props) => {
 
 Icon.displayName = 'HardDrive'
 
-export const HardDrive = memo<IconProps>(
-  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_RESOLVE || 'auto' })
-)
+export const HardDrive = memo<IconProps>(themed(Icon))

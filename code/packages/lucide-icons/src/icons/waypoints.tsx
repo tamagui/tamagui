@@ -30,6 +30,4 @@ const Icon = (props) => {
 
 Icon.displayName = 'Waypoints'
 
-export const Waypoints = memo<IconProps>(
-  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_RESOLVE || 'auto' })
-)
+export const Waypoints = memo<IconProps>(themed(Icon))

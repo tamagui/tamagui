@@ -34,6 +34,4 @@ const Icon = (props) => {
 
 Icon.displayName = 'TableRowsSplit'
 
-export const TableRowsSplit = memo<IconProps>(
-  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_RESOLVE || 'auto' })
-)
+export const TableRowsSplit = memo<IconProps>(themed(Icon))

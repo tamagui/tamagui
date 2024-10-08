@@ -26,6 +26,4 @@ const Icon = (props) => {
 
 Icon.displayName = 'UnlockKeyhole'
 
-export const UnlockKeyhole = memo<IconProps>(
-  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_RESOLVE || 'auto' })
-)
+export const UnlockKeyhole = memo<IconProps>(themed(Icon))

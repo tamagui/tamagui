@@ -24,6 +24,4 @@ const Icon = (props) => {
 
 Icon.displayName = 'Bookmark'
 
-export const Bookmark = memo<IconProps>(
-  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_RESOLVE || 'auto' })
-)
+export const Bookmark = memo<IconProps>(themed(Icon))

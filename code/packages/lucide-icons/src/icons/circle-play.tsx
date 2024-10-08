@@ -25,6 +25,4 @@ const Icon = (props) => {
 
 Icon.displayName = 'CirclePlay'
 
-export const CirclePlay = memo<IconProps>(
-  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_RESOLVE || 'auto' })
-)
+export const CirclePlay = memo<IconProps>(themed(Icon))

@@ -29,6 +29,4 @@ const Icon = (props) => {
 
 Icon.displayName = 'Delete'
 
-export const Delete = memo<IconProps>(
-  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_RESOLVE || 'auto' })
-)
+export const Delete = memo<IconProps>(themed(Icon))

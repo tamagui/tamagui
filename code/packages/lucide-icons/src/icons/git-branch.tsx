@@ -27,6 +27,4 @@ const Icon = (props) => {
 
 Icon.displayName = 'GitBranch'
 
-export const GitBranch = memo<IconProps>(
-  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_RESOLVE || 'auto' })
-)
+export const GitBranch = memo<IconProps>(themed(Icon))

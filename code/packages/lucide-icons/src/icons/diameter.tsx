@@ -28,6 +28,4 @@ const Icon = (props) => {
 
 Icon.displayName = 'Diameter'
 
-export const Diameter = memo<IconProps>(
-  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_RESOLVE || 'auto' })
-)
+export const Diameter = memo<IconProps>(themed(Icon))

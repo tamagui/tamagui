@@ -26,6 +26,4 @@ const Icon = (props) => {
 
 Icon.displayName = 'GalleryHorizontal'
 
-export const GalleryHorizontal = memo<IconProps>(
-  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_RESOLVE || 'auto' })
-)
+export const GalleryHorizontal = memo<IconProps>(themed(Icon))

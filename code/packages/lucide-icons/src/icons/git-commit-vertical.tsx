@@ -26,6 +26,4 @@ const Icon = (props) => {
 
 Icon.displayName = 'GitCommitVertical'
 
-export const GitCommitVertical = memo<IconProps>(
-  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_RESOLVE || 'auto' })
-)
+export const GitCommitVertical = memo<IconProps>(themed(Icon))

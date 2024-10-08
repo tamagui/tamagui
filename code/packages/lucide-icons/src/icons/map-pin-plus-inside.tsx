@@ -29,6 +29,4 @@ const Icon = (props) => {
 
 Icon.displayName = 'MapPinPlusInside'
 
-export const MapPinPlusInside = memo<IconProps>(
-  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_RESOLVE || 'auto' })
-)
+export const MapPinPlusInside = memo<IconProps>(themed(Icon))

@@ -29,6 +29,4 @@ const Icon = (props) => {
 
 Icon.displayName = 'FlipHorizontal2'
 
-export const FlipHorizontal2 = memo<IconProps>(
-  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_RESOLVE || 'auto' })
-)
+export const FlipHorizontal2 = memo<IconProps>(themed(Icon))

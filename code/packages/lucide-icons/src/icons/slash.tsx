@@ -24,6 +24,4 @@ const Icon = (props) => {
 
 Icon.displayName = 'Slash'
 
-export const Slash = memo<IconProps>(
-  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_RESOLVE || 'auto' })
-)
+export const Slash = memo<IconProps>(themed(Icon))

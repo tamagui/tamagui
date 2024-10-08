@@ -29,6 +29,4 @@ const Icon = (props) => {
 
 Icon.displayName = 'FolderUp'
 
-export const FolderUp = memo<IconProps>(
-  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_RESOLVE || 'auto' })
-)
+export const FolderUp = memo<IconProps>(themed(Icon))

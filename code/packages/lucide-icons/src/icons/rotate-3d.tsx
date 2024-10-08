@@ -32,6 +32,4 @@ const Icon = (props) => {
 
 Icon.displayName = 'Rotate3d'
 
-export const Rotate3d = memo<IconProps>(
-  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_RESOLVE || 'auto' })
-)
+export const Rotate3d = memo<IconProps>(themed(Icon))

@@ -25,6 +25,4 @@ const Icon = (props) => {
 
 Icon.displayName = 'ArrowBigDownDash'
 
-export const ArrowBigDownDash = memo<IconProps>(
-  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_RESOLVE || 'auto' })
-)
+export const ArrowBigDownDash = memo<IconProps>(themed(Icon))

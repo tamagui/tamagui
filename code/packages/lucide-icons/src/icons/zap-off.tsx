@@ -30,6 +30,4 @@ const Icon = (props) => {
 
 Icon.displayName = 'ZapOff'
 
-export const ZapOff = memo<IconProps>(
-  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_RESOLVE || 'auto' })
-)
+export const ZapOff = memo<IconProps>(themed(Icon))

@@ -25,6 +25,4 @@ const Icon = (props) => {
 
 Icon.displayName = 'Undo2'
 
-export const Undo2 = memo<IconProps>(
-  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_RESOLVE || 'auto' })
-)
+export const Undo2 = memo<IconProps>(themed(Icon))

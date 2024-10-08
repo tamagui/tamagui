@@ -28,6 +28,4 @@ const Icon = (props) => {
 
 Icon.displayName = 'SendHorizontal'
 
-export const SendHorizontal = memo<IconProps>(
-  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_RESOLVE || 'auto' })
-)
+export const SendHorizontal = memo<IconProps>(themed(Icon))

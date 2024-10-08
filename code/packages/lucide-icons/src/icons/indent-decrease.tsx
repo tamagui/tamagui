@@ -27,6 +27,4 @@ const Icon = (props) => {
 
 Icon.displayName = 'IndentDecrease'
 
-export const IndentDecrease = memo<IconProps>(
-  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_RESOLVE || 'auto' })
-)
+export const IndentDecrease = memo<IconProps>(themed(Icon))

@@ -26,6 +26,4 @@ const Icon = (props) => {
 
 Icon.displayName = 'Grid2x2'
 
-export const Grid2x2 = memo<IconProps>(
-  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_RESOLVE || 'auto' })
-)
+export const Grid2x2 = memo<IconProps>(themed(Icon))

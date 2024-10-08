@@ -26,6 +26,4 @@ const Icon = (props) => {
 
 Icon.displayName = 'BluetoothConnected'
 
-export const BluetoothConnected = memo<IconProps>(
-  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_RESOLVE || 'auto' })
-)
+export const BluetoothConnected = memo<IconProps>(themed(Icon))

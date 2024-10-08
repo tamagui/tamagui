@@ -27,6 +27,4 @@ const Icon = (props) => {
 
 Icon.displayName = 'SquarePi'
 
-export const SquarePi = memo<IconProps>(
-  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_RESOLVE || 'auto' })
-)
+export const SquarePi = memo<IconProps>(themed(Icon))

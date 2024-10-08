@@ -27,6 +27,4 @@ const Icon = (props) => {
 
 Icon.displayName = 'ALargeSmall'
 
-export const ALargeSmall = memo<IconProps>(
-  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_RESOLVE || 'auto' })
-)
+export const ALargeSmall = memo<IconProps>(themed(Icon))

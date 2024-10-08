@@ -26,6 +26,4 @@ const Icon = (props) => {
 
 Icon.displayName = 'ArrowUpRightFromSquare'
 
-export const ArrowUpRightFromSquare = memo<IconProps>(
-  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_RESOLVE || 'auto' })
-)
+export const ArrowUpRightFromSquare = memo<IconProps>(themed(Icon))

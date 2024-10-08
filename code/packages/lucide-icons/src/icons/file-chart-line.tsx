@@ -29,6 +29,4 @@ const Icon = (props) => {
 
 Icon.displayName = 'FileChartLine'
 
-export const FileChartLine = memo<IconProps>(
-  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_RESOLVE || 'auto' })
-)
+export const FileChartLine = memo<IconProps>(themed(Icon))

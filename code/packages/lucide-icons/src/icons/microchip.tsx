@@ -37,6 +37,4 @@ const Icon = (props) => {
 
 Icon.displayName = 'Microchip'
 
-export const Microchip = memo<IconProps>(
-  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_RESOLVE || 'auto' })
-)
+export const Microchip = memo<IconProps>(themed(Icon))

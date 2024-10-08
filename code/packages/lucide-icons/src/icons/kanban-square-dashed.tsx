@@ -38,6 +38,4 @@ const Icon = (props) => {
 
 Icon.displayName = 'KanbanSquareDashed'
 
-export const KanbanSquareDashed = memo<IconProps>(
-  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_RESOLVE || 'auto' })
-)
+export const KanbanSquareDashed = memo<IconProps>(themed(Icon))

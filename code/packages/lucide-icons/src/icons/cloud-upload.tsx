@@ -26,6 +26,4 @@ const Icon = (props) => {
 
 Icon.displayName = 'CloudUpload'
 
-export const CloudUpload = memo<IconProps>(
-  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_RESOLVE || 'auto' })
-)
+export const CloudUpload = memo<IconProps>(themed(Icon))

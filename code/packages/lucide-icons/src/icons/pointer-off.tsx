@@ -35,6 +35,4 @@ const Icon = (props) => {
 
 Icon.displayName = 'PointerOff'
 
-export const PointerOff = memo<IconProps>(
-  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_RESOLVE || 'auto' })
-)
+export const PointerOff = memo<IconProps>(themed(Icon))

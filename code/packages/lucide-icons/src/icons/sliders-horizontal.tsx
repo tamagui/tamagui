@@ -32,6 +32,4 @@ const Icon = (props) => {
 
 Icon.displayName = 'SlidersHorizontal'
 
-export const SlidersHorizontal = memo<IconProps>(
-  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_RESOLVE || 'auto' })
-)
+export const SlidersHorizontal = memo<IconProps>(themed(Icon))

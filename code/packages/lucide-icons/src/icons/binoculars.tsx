@@ -35,6 +35,4 @@ const Icon = (props) => {
 
 Icon.displayName = 'Binoculars'
 
-export const Binoculars = memo<IconProps>(
-  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_RESOLVE || 'auto' })
-)
+export const Binoculars = memo<IconProps>(themed(Icon))

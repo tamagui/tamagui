@@ -24,6 +24,4 @@ const Icon = (props) => {
 
 Icon.displayName = 'RectangleHorizontal'
 
-export const RectangleHorizontal = memo<IconProps>(
-  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_RESOLVE || 'auto' })
-)
+export const RectangleHorizontal = memo<IconProps>(themed(Icon))

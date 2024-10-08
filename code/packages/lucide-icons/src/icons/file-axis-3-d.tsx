@@ -31,6 +31,4 @@ const Icon = (props) => {
 
 Icon.displayName = 'FileAxis3d'
 
-export const FileAxis3d = React.memo<IconProps>(
-  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_RESOLVE || 'auto' })
-)
+export const FileAxis3d = React.memo<IconProps>(themed(Icon))

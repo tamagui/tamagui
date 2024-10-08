@@ -26,6 +26,4 @@ const Icon = (props) => {
 
 Icon.displayName = 'PanelRightOpen'
 
-export const PanelRightOpen = memo<IconProps>(
-  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_RESOLVE || 'auto' })
-)
+export const PanelRightOpen = memo<IconProps>(themed(Icon))

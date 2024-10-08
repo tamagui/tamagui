@@ -28,6 +28,4 @@ const Icon = (props) => {
 
 Icon.displayName = 'ShieldBan'
 
-export const ShieldBan = memo<IconProps>(
-  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_RESOLVE || 'auto' })
-)
+export const ShieldBan = memo<IconProps>(themed(Icon))

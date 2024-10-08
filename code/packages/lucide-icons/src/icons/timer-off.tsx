@@ -28,6 +28,4 @@ const Icon = (props) => {
 
 Icon.displayName = 'TimerOff'
 
-export const TimerOff = memo<IconProps>(
-  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_RESOLVE || 'auto' })
-)
+export const TimerOff = memo<IconProps>(themed(Icon))

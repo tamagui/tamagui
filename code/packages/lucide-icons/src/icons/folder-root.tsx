@@ -29,6 +29,4 @@ const Icon = (props) => {
 
 Icon.displayName = 'FolderRoot'
 
-export const FolderRoot = memo<IconProps>(
-  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_RESOLVE || 'auto' })
-)
+export const FolderRoot = memo<IconProps>(themed(Icon))

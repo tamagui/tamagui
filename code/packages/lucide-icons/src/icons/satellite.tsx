@@ -28,6 +28,4 @@ const Icon = (props) => {
 
 Icon.displayName = 'Satellite'
 
-export const Satellite = memo<IconProps>(
-  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_RESOLVE || 'auto' })
-)
+export const Satellite = memo<IconProps>(themed(Icon))

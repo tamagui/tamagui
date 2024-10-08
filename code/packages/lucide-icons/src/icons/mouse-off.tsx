@@ -27,6 +27,4 @@ const Icon = (props) => {
 
 Icon.displayName = 'MouseOff'
 
-export const MouseOff = memo<IconProps>(
-  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_RESOLVE || 'auto' })
-)
+export const MouseOff = memo<IconProps>(themed(Icon))

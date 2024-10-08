@@ -27,6 +27,4 @@ const Icon = (props) => {
 
 Icon.displayName = 'Scale3d'
 
-export const Scale3d = memo<IconProps>(
-  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_RESOLVE || 'auto' })
-)
+export const Scale3d = memo<IconProps>(themed(Icon))

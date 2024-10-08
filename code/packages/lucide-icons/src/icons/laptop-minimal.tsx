@@ -25,6 +25,4 @@ const Icon = (props) => {
 
 Icon.displayName = 'LaptopMinimal'
 
-export const LaptopMinimal = memo<IconProps>(
-  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_RESOLVE || 'auto' })
-)
+export const LaptopMinimal = memo<IconProps>(themed(Icon))

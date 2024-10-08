@@ -29,6 +29,4 @@ const Icon = (props) => {
 
 Icon.displayName = 'ChartScatter'
 
-export const ChartScatter = memo<IconProps>(
-  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_RESOLVE || 'auto' })
-)
+export const ChartScatter = memo<IconProps>(themed(Icon))

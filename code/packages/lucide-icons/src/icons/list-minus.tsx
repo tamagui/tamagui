@@ -27,6 +27,4 @@ const Icon = (props) => {
 
 Icon.displayName = 'ListMinus'
 
-export const ListMinus = memo<IconProps>(
-  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_RESOLVE || 'auto' })
-)
+export const ListMinus = memo<IconProps>(themed(Icon))

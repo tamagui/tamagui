@@ -25,6 +25,4 @@ const Icon = (props) => {
 
 Icon.displayName = 'Copy'
 
-export const Copy = memo<IconProps>(
-  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_RESOLVE || 'auto' })
-)
+export const Copy = memo<IconProps>(themed(Icon))

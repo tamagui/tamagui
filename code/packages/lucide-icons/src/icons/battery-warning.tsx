@@ -28,6 +28,4 @@ const Icon = (props) => {
 
 Icon.displayName = 'BatteryWarning'
 
-export const BatteryWarning = memo<IconProps>(
-  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_RESOLVE || 'auto' })
-)
+export const BatteryWarning = memo<IconProps>(themed(Icon))

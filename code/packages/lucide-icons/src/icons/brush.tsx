@@ -31,6 +31,4 @@ const Icon = (props) => {
 
 Icon.displayName = 'Brush'
 
-export const Brush = memo<IconProps>(
-  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_RESOLVE || 'auto' })
-)
+export const Brush = memo<IconProps>(themed(Icon))

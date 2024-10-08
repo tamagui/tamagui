@@ -29,6 +29,4 @@ const Icon = (props) => {
 
 Icon.displayName = 'GitPullRequestCreateArrow'
 
-export const GitPullRequestCreateArrow = memo<IconProps>(
-  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_RESOLVE || 'auto' })
-)
+export const GitPullRequestCreateArrow = memo<IconProps>(themed(Icon))

@@ -28,6 +28,4 @@ const Icon = (props) => {
 
 Icon.displayName = 'Ligature'
 
-export const Ligature = memo<IconProps>(
-  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_RESOLVE || 'auto' })
-)
+export const Ligature = memo<IconProps>(themed(Icon))

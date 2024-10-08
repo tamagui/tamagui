@@ -28,6 +28,4 @@ const Icon = (props) => {
 
 Icon.displayName = 'DatabaseZap'
 
-export const DatabaseZap = memo<IconProps>(
-  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_RESOLVE || 'auto' })
-)
+export const DatabaseZap = memo<IconProps>(themed(Icon))
