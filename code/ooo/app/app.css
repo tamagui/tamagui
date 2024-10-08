@@ -120,6 +120,9 @@ a {
   color: inherit;
 }
 
+:root [role=heading] {
+  text-wrap: pretty;
+}
 
 .container-sm-shadow {
   box-shadow:
