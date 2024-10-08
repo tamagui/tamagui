@@ -110,14 +110,8 @@ export const useThemeWithState = (
             props.debug !== 'profile'
           ) {
             console.info(
-              `  🎨 useTheme() shouldUpdate?`,
-              next,
-              isClient
-                ? {
-                    shouldUpdateProp: props.shouldUpdate?.(),
-                    keys: [...keys.current],
-                  }
-                : ''
+              `  🎨 useTheme() shouldUpdate? tracking keys ${keys.current.length} ${props.shouldUpdate?.()}`,
+              next
             )
           }
 
@@ -141,6 +135,9 @@ export const useThemeWithState = (
   }
 
   const themeProxied = React.useMemo(() => {
+    // reset keys on new theme
+    keys.current = []
+
     if (!themeManager || !state?.theme) {
       return {}
     }
@@ -212,8 +209,16 @@ export function getThemeProxied(
             // if its a variable (web), its ignored!
             get(_, subkey) {
               if (subkey === 'val') {
-                // always track .val
-                track(keyString)
+                if (!globalThis.tamaguiAvoidTracking) {
+                  if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+                    console.info(
+                      ` 🎨 useTheme() tracking new key because of .val access`,
+                      new Error().stack
+                    )
+                  }
+                  // always track .val
+                  track(keyString)
+                }
               } else if (subkey === 'get') {
                 return (platform?: 'web') => {
                   const outVal = getVariable(val)
@@ -255,6 +260,11 @@ export function getThemeProxied(
                         fastScheme: ${getSetting('fastSchemeChange')}
                         parent inversed: ${someParentIsInversed(themeManager)}
                       `)
+                      if (someParentIsInversed(themeManager)) {
+                        console.info(
+                          ` some parent is inversed: ${themeManager?.state.name} => ${themeManager?.parentManager?.state.name}`
+                        )
+                      }
                     }
 
                     track(keyString)

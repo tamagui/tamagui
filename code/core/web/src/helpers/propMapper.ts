@@ -392,7 +392,12 @@ export const getTokenForKey = (
   if (theme && value in theme) {
     valOrVar = theme[value]
     if (process.env.NODE_ENV === 'development' && styleState.debug === 'verbose') {
-      console.info(` - resolving ${key} to theme value ${value}`, valOrVar)
+      globalThis.tamaguiAvoidTracking = true
+      console.info(
+        ` - resolving ${key} to theme value ${value} resolveAs ${resolveAs}`,
+        valOrVar
+      )
+      globalThis.tamaguiAvoidTracking = false
     }
     hasSet = true
   } else {
@@ -449,7 +454,9 @@ export const getTokenForKey = (
   if (hasSet) {
     const out = resolveVariableValue(key, valOrVar, resolveAs)
     if (process.env.NODE_ENV === 'development' && styleState.debug === 'verbose') {
+      globalThis.tamaguiAvoidTracking = true
       console.info(`resolved`, resolveAs, valOrVar, out)
+      globalThis.tamaguiAvoidTracking = false
     }
     return out
   }
@@ -478,7 +485,8 @@ function resolveVariableValue(
     // shadowColor doesn't support dynamic style
     if (process.env.TAMAGUI_TARGET !== 'native' || key !== 'shadowColor') {
       if (typeof get === 'function') {
-        return get(resolveValues === 'web' ? 'web' : undefined)
+        const resolveDynamicFor = resolveValues === 'web' ? 'web' : undefined
+        return get(resolveDynamicFor)
       }
     }
 

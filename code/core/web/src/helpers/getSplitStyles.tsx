@@ -624,9 +624,11 @@ export const getSplitStyles: StyleSplitter = (
             isHOCShouldPassThrough,
             usedKeys: { ...usedKeys },
           })
+          globalThis.tamaguiAvoidTracking = true
           log('expanded', expanded, '\nusedKeys', { ...usedKeys }, '\ncurrent', {
             ...styleState.style,
           })
+          globalThis.tamaguiAvoidTracking = false
         }
       } catch {
         // rn can run into PayloadTooLargeError: request entity too large
