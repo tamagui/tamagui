@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/toggle-group",
-  "version": "1.112.25-1728362181133-1728364521310",
+  "version": "1.112.25-1728365940312",
   "sideEffects": [
     "*.css"
   ],
@@ -33,22 +33,22 @@
     }
   },
   "dependencies": {
-    "@tamagui/constants": "1.112.25-1728362181133-1728364521310",
-    "@tamagui/create-context": "1.112.25-1728362181133-1728364521310",
-    "@tamagui/focusable": "1.112.25-1728362181133-1728364521310",
-    "@tamagui/font-size": "1.112.25-1728362181133-1728364521310",
-    "@tamagui/get-token": "1.112.25-1728362181133-1728364521310",
-    "@tamagui/group": "1.112.25-1728362181133-1728364521310",
-    "@tamagui/helpers": "1.112.25-1728362181133-1728364521310",
-    "@tamagui/helpers-tamagui": "1.112.25-1728362181133-1728364521310",
-    "@tamagui/roving-focus": "1.112.25-1728362181133-1728364521310",
-    "@tamagui/stacks": "1.112.25-1728362181133-1728364521310",
-    "@tamagui/use-controllable-state": "1.112.25-1728362181133-1728364521310",
-    "@tamagui/use-direction": "1.112.25-1728362181133-1728364521310",
-    "@tamagui/web": "1.112.25-1728362181133-1728364521310"
+    "@tamagui/constants": "1.112.25-1728365940312",
+    "@tamagui/create-context": "1.112.25-1728365940312",
+    "@tamagui/focusable": "1.112.25-1728365940312",
+    "@tamagui/font-size": "1.112.25-1728365940312",
+    "@tamagui/get-token": "1.112.25-1728365940312",
+    "@tamagui/group": "1.112.25-1728365940312",
+    "@tamagui/helpers": "1.112.25-1728365940312",
+    "@tamagui/helpers-tamagui": "1.112.25-1728365940312",
+    "@tamagui/roving-focus": "1.112.25-1728365940312",
+    "@tamagui/stacks": "1.112.25-1728365940312",
+    "@tamagui/use-controllable-state": "1.112.25-1728365940312",
+    "@tamagui/use-direction": "1.112.25-1728365940312",
+    "@tamagui/web": "1.112.25-1728365940312"
   },
   "devDependencies": {
-    "@tamagui/build": "1.112.25-1728362181133-1728364521310",
+    "@tamagui/build": "1.112.25-1728365940312",
     "react": "^18.2.0 || ^19.0.0"
   },
   "publishConfig": {

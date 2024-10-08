@@ -44,7 +44,7 @@ const curVersion = fs.readJSONSync('./code/ui/tamagui/package.json').version
 
 const nextVersion = (() => {
   if (canary) {
-    return `${curVersion}-${Date.now()}`
+    return `${curVersion.replace(/(-\d+)+$/, '')}-${Date.now()}`
   }
 
   if (rePublish) {

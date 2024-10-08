@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/popover",
-  "version": "1.112.25-1728362181133-1728364521310",
+  "version": "1.112.25-1728365940312",
   "sideEffects": [
     "*.css"
   ],
@@ -34,31 +34,31 @@
   },
   "dependencies": {
     "@floating-ui/react": "^0.26.24",
-    "@tamagui/adapt": "1.112.25-1728362181133-1728364521310",
-    "@tamagui/animate": "1.112.25-1728362181133-1728364521310",
-    "@tamagui/aria-hidden": "1.112.25-1728362181133-1728364521310",
-    "@tamagui/compose-refs": "1.112.25-1728362181133-1728364521310",
-    "@tamagui/constants": "1.112.25-1728362181133-1728364521310",
-    "@tamagui/core": "1.112.25-1728362181133-1728364521310",
-    "@tamagui/dismissable": "1.112.25-1728362181133-1728364521310",
-    "@tamagui/floating": "1.112.25-1728362181133-1728364521310",
-    "@tamagui/focus-scope": "1.112.25-1728362181133-1728364521310",
-    "@tamagui/helpers": "1.112.25-1728362181133-1728364521310",
-    "@tamagui/polyfill-dev": "1.112.25-1728362181133-1728364521310",
-    "@tamagui/popper": "1.112.25-1728362181133-1728364521310",
-    "@tamagui/portal": "1.112.25-1728362181133-1728364521310",
-    "@tamagui/remove-scroll": "1.112.25-1728362181133-1728364521310",
-    "@tamagui/scroll-view": "1.112.25-1728362181133-1728364521310",
-    "@tamagui/sheet": "1.112.25-1728362181133-1728364521310",
-    "@tamagui/stacks": "1.112.25-1728362181133-1728364521310",
-    "@tamagui/use-controllable-state": "1.112.25-1728362181133-1728364521310",
+    "@tamagui/adapt": "1.112.25-1728365940312",
+    "@tamagui/animate": "1.112.25-1728365940312",
+    "@tamagui/aria-hidden": "1.112.25-1728365940312",
+    "@tamagui/compose-refs": "1.112.25-1728365940312",
+    "@tamagui/constants": "1.112.25-1728365940312",
+    "@tamagui/core": "1.112.25-1728365940312",
+    "@tamagui/dismissable": "1.112.25-1728365940312",
+    "@tamagui/floating": "1.112.25-1728365940312",
+    "@tamagui/focus-scope": "1.112.25-1728365940312",
+    "@tamagui/helpers": "1.112.25-1728365940312",
+    "@tamagui/polyfill-dev": "1.112.25-1728365940312",
+    "@tamagui/popper": "1.112.25-1728365940312",
+    "@tamagui/portal": "1.112.25-1728365940312",
+    "@tamagui/remove-scroll": "1.112.25-1728365940312",
+    "@tamagui/scroll-view": "1.112.25-1728365940312",
+    "@tamagui/sheet": "1.112.25-1728365940312",
+    "@tamagui/stacks": "1.112.25-1728365940312",
+    "@tamagui/use-controllable-state": "1.112.25-1728365940312",
     "react-freeze": "^1.0.3"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.112.25-1728362181133-1728364521310",
+    "@tamagui/build": "1.112.25-1728365940312",
     "react": "^18.2.0 || ^19.0.0",
     "react-native": "0.74.1"
   },

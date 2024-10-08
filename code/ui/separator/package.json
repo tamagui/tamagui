@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/separator",
-  "version": "1.112.25-1728362181133-1728364521310",
+  "version": "1.112.25-1728365940312",
   "sideEffects": [
     "*.css"
   ],
@@ -33,11 +33,11 @@
     }
   },
   "dependencies": {
-    "@tamagui/constants": "1.112.25-1728362181133-1728364521310",
-    "@tamagui/core": "1.112.25-1728362181133-1728364521310"
+    "@tamagui/constants": "1.112.25-1728365940312",
+    "@tamagui/core": "1.112.25-1728365940312"
   },
   "devDependencies": {
-    "@tamagui/build": "1.112.25-1728362181133-1728364521310",
+    "@tamagui/build": "1.112.25-1728365940312",
     "react": "^18.2.0 || ^19.0.0"
   },
   "publishConfig": {
