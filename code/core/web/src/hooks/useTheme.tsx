@@ -401,7 +401,9 @@ export const useChangeThemeEffect = (
       const next = createState(themeState)
       if (next.state?.name !== themeState.state?.name) {
         setThemeState(next)
+        console.error = preventWarnSetState
         themeManager.notify()
+        console.error = ogLog
       }
     }
   }

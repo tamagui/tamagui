@@ -48,7 +48,7 @@
     "react-hotkeys-hook": "^4.5.0",
     "react-native": "0.74.1",
     "react-native-reanimated": "npm:react-native-reanimated@3.13.0-rc.1",
-    "react-native-svg": "15.2.0",
+    "react-native-svg": "^15.7.1",
     "stripe": "^9.1.0",
     "swr": "^2.2.5",
     "tamagui": "1.112.25-1728362181133",

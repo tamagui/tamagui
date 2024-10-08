@@ -6733,7 +6733,7 @@ __metadata:
     react-native: "npm:0.74.1"
     react-native-ios-modal: "npm:2.0.0-3"
     react-native-safe-area-context: "npm:4.10.1"
-    react-native-svg: "npm:15.2.0"
+    react-native-svg: "npm:^15.7.1"
     react-native-web: "npm:^0.19.12"
     swr: "npm:^2.2.5"
     tamagui: "npm:1.112.25-1728362181133"
@@ -7275,7 +7275,7 @@ __metadata:
     react-hotkeys-hook: "npm:^4.5.0"
     react-native: "npm:0.74.1"
     react-native-reanimated: "npm:react-native-reanimated@3.13.0-rc.1"
-    react-native-svg: "npm:15.2.0"
+    react-native-svg: "npm:^15.7.1"
     stripe: "npm:^9.1.0"
     supabase: "npm:1.127.4"
     swr: "npm:^2.2.5"
@@ -7555,7 +7555,7 @@ __metadata:
     "@tamagui/build": "npm:1.112.25-1728362181133"
     "@tamagui/core": "npm:1.112.25-1728362181133"
     react: "npm:^18.2.0 || ^19.0.0"
-    react-native-svg: "npm:15.2.0"
+    react-native-svg: "npm:^15.7.1"
   peerDependencies:
     react: "*"
     react-native-svg: ">=12"
@@ -7691,7 +7691,7 @@ __metadata:
     react-native-reanimated: "npm:~3.11.0"
     react-native-safe-area-context: "npm:4.10.1"
     react-native-screens: "npm:3.31.1"
-    react-native-svg: "npm:15.2.0"
+    react-native-svg: "npm:^15.7.1"
     react-native-web: "npm:^0.19.12"
     solito: "npm:^4.2.2"
     tamagui: "npm:1.112.25-1728362181133"
@@ -7783,7 +7783,7 @@ __metadata:
     lucide-static: "npm:^0.447.0"
     prop-types: "npm:^15.7.2"
     react: "npm:^18.2.0 || ^19.0.0"
-    react-native-svg: "npm:15.2.0"
+    react-native-svg: "npm:^15.7.1"
     uppercamelcase: "npm:^3.0.0"
   peerDependencies:
     react: "*"
@@ -8602,7 +8602,7 @@ __metadata:
     react-hook-form: "npm:^7.51.0"
     react-native: "npm:0.74.1"
     react-native-reanimated: "npm:react-native-reanimated@3.13.0-rc.1"
-    react-native-svg: "npm:15.2.0"
+    react-native-svg: "npm:^15.7.1"
     supabase: "npm:1.127.4"
     tamagui: "npm:1.112.25-1728362181133"
     vite: "npm:6.0.0-beta.1"
@@ -24289,16 +24289,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-svg@npm:15.2.0":
-  version: 15.2.0
-  resolution: "react-native-svg@npm:15.2.0"
+"react-native-svg@npm:^15.7.1":
+  version: 15.7.1
+  resolution: "react-native-svg@npm:15.7.1"
   dependencies:
     css-select: "npm:^5.1.0"
     css-tree: "npm:^1.1.3"
+    warn-once: "npm:0.1.1"
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 10/5042e1377b9d66679898ce812760691d01602efac27a32eed0914b518652c66d575dc7eb1493d3315a7db043d4974796d9107fe17f4b331b6bbbff16906016e9
+  checksum: 10/343d2603b0bd54d24303a09c37698612e208b83e449c92d108aaa6d7826a7ac39fe2bad0b439bff789a24d5f54280e3eb218202006658b8a7e117b2d1d8ccfeb
   languageName: node
   linkType: hard
 
@@ -29715,7 +29716,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"warn-once@npm:^0.1.0":
+"warn-once@npm:0.1.1, warn-once@npm:^0.1.0":
   version: 0.1.1
   resolution: "warn-once@npm:0.1.1"
   checksum: 10/e6a5a1f5a8dba7744399743d3cfb571db4c3947897875d4962a7c5b1bf2195ab4518c838cb4cea652e71729f21bba2e98dc75686f5fccde0fabbd894e2ed0c0d

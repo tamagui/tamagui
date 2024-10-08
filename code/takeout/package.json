@@ -37,7 +37,7 @@
     "react-hook-form": "^7.51.0",
     "react-native": "0.74.1",
     "react-native-reanimated": "npm:react-native-reanimated@3.13.0-rc.1",
-    "react-native-svg": "15.2.0",
+    "react-native-svg": "^15.7.1",
     "tamagui": "1.112.25-1728362181133",
     "vite": "6.0.0-beta.1",
     "vite-plugin-inspect": "^0.8.4",
