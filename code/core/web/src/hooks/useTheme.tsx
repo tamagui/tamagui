@@ -247,6 +247,16 @@ export function getThemeProxied(
                       }
                     }
 
+                    if (process.env.NODE_ENV === 'development' && debug) {
+                      console.info(` 🎨 useTheme() tracking new key because of: 
+                        not web: ${platform !== 'web'}
+                        isIOS: ${isIos}
+                        deopt: ${deopt}
+                        fastScheme: ${getSetting('fastSchemeChange')}
+                        parent inversed: ${someParentIsInversed(themeManager)}
+                      `)
+                    }
+
                     track(keyString)
                   }
 

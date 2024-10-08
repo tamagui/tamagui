@@ -48,7 +48,12 @@ export default function App() {
     <SafeAreaProvider>
       <ThemeContext.Provider value={themeContext}>
         <Provider defaultTheme={theme as any}>
-          {children}
+          {/* {children} */}
+
+          <XStack h={200} w={20} bg="red" />
+          <ColorSchemeListItem />
+          <Card />
+
           <SafeToastViewport />
         </Provider>
       </ThemeContext.Provider>
@@ -70,3 +75,37 @@ const SafeToastViewport = () => {
     </>
   )
 }
+
+import { styled, XStack } from 'tamagui'
+import { ColorSchemeListItem } from './features/home/ColorSchemeListItem'
+
+const Card = styled(XStack, {
+  ov: 'hidden',
+  minWidth: '100%',
+  p: '$4',
+  gap: '$4',
+  bbw: 1,
+  bbc: '$borderColor',
+
+  hoverStyle: {
+    bg: '$color2',
+  },
+
+  pressStyle: {
+    bg: '$color2',
+  },
+
+  variants: {
+    disableLink: {
+      true: {
+        hoverStyle: {
+          bg: 'transparent',
+        },
+
+        pressStyle: {
+          bg: 'transparent',
+        },
+      },
+    },
+  } as const,
+})

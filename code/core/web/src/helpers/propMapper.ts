@@ -139,7 +139,11 @@ const resolveVariants: StyleResolver = (
     const extras = getVariantExtras(styleState)
     variantValue = fn(value, extras)
 
-    if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+    if (
+      process.env.NODE_ENV === 'development' &&
+      debug === 'verbose' &&
+      process.env.TAMAGUI_TARGET !== 'native'
+    ) {
       console.groupCollapsed('   expanded functional variant', key)
       console.info({ fn, variantValue, extras })
       console.groupEnd()
