@@ -67,6 +67,31 @@ const replaceRNWeb = {
 
 let cachedConfig = null
 
+const getProcessLabel = () => {
+  const labels = {
+    clean: 'clean',
+    'clean:build': 'clean:build',
+    watch: 'watch',
+    build: 'build',
+    tsc: 'build-tsc',
+    js: 'build-js',
+  }
+
+  if (shouldClean) return labels.clean
+  if (shouldCleanBuildOnly) return labels['clean:build']
+  if (shouldWatch) return labels.watch
+  if (shouldSkipTypes) return labels.js
+  if (!skipJS && !jsOnly) return labels.build
+  if (jsOnly) return labels.js
+  if (!shouldSkipTypes && pkgTypes) return labels.tsc
+
+  return 'Unknown'
+}
+
+const label = getProcessLabel()
+
+process.title = `tamagui-build:${label} ${process.cwd().split('/').pop()}`
+
 async function clean() {
   try {
     await Promise.allSettled([
