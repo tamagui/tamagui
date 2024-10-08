@@ -489,7 +489,8 @@ export const useChangeThemeEffect = (
 
           if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
             // prettier-ignore
-            console.info(` 🔸 onChange`, themeManager.id, {
+            console.info(` 🔸 onChange`, {
+              id: themeManager.id,
               force,
               shouldTryUpdate,
               props,
