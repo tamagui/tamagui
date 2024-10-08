@@ -155,6 +155,7 @@ const example = (
 
 v2:
 
+  - // TODO can remove 'web'
   - TODO remove this on v2
   - Text weirdness fixes (explore)
     - remove suppressHighlighting / margin 0 default from Text
