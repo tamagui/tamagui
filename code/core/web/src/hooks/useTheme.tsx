@@ -168,7 +168,6 @@ export function getThemeProxied(
   const config = getConfig()
 
   function track(key: string) {
-    console.log('track', key)
     if (keys && !keys.includes(key)) {
       if (!keys.length) {
         // tracking new key for first time, do an update check
@@ -214,7 +213,6 @@ export function getThemeProxied(
             get(_, subkey) {
               if (subkey === 'val') {
                 // always track .val
-                console.log('///2', keyString, key)
                 track(keyString)
               } else if (subkey === 'get') {
                 return (platform?: 'web') => {
@@ -249,14 +247,6 @@ export function getThemeProxied(
                       }
                     }
 
-                    // if we dont return early with a dynamic val on native, always track
-                    console.log('///1', keyString, key, {
-                      platform,
-                      isIos,
-                      deopt,
-                      s: getSetting('fastSchemeChange'),
-                      p: someParentIsInversed(themeManager),
-                    })
                     track(keyString)
                   }
 
@@ -292,7 +282,28 @@ function someParentIsInversed(manager?: ThemeManager) {
     let cur: ThemeManager | null | undefined = manager
     while (cur) {
       if (!cur.parentManager) return false
-      if (cur.parentManager.state.scheme !== cur.state.scheme) return true
+      if (cur.parentManager.state.scheme !== cur.state.scheme) {
+        if (process.env.NODE_ENV === 'development') {
+          if (
+            !globalThis.TAMAGUI_DITW &&
+            !process.env.TAMAGUI_DISABLE_INVERSE_THEME_WARNING
+          ) {
+            console.info(` ‼️ De-opted a theme value access due to an inversed parent.
+  
+  This means you've accessed a theme value without .get() in a child of an inversed theme.
+  
+  This isn't necessarily a bug, but can often be due to a mistaken inverse (for example,
+  you may have a Theme inside your TamaguiProvider with mis-matched theme values for light/dark).
+  
+  For this reason we've added this warning. If this is intentional, you can disable it with:
+  
+    process.env.TAMAGUI_DISABLE_INVERSE_THEME_WARNING === 1
+    or globalThis.TAMAGUI_DITW = true
+  `)
+          }
+        }
+        return true
+      }
       cur = cur.parentManager
     }
   }
@@ -374,13 +385,25 @@ export const useChangeThemeEffect = (
     const forceUpdate = shouldUpdate?.()
     if (!manager || (!forceShouldChange && forceUpdate === false)) return
     const next = nextState || manager.getState(props, parentManager)
-    if (forceShouldChange) return next
+    if (forceShouldChange) {
+      return next
+    }
     if (!next) return
     if (forceUpdate !== true && !manager.getStateShouldChange(next, prevState)) {
       return
     }
 
     return next
+  }
+
+  if (!isWeb && themeManager) {
+    if (getShouldUpdateTheme(themeManager)) {
+      const next = createState(themeState)
+      if (next.state?.name !== themeState.state?.name) {
+        setThemeState(next)
+        themeManager.notify()
+      }
+    }
   }
 
   if (!isServer) {
@@ -417,7 +440,7 @@ export const useChangeThemeEffect = (
       const selfListenerDispose = themeManager.onChangeTheme((_a, _b, forced) => {
         if (forced) {
           setThemeState((prev) => {
-            const next = createState(prev, !!forced)
+            const next = createState(prev, forced !== 'self')
             return next
           })
         }
@@ -528,7 +551,7 @@ export const useChangeThemeEffect = (
         // at all anymore. this forces updates onChangeTheme for all dynamic style accessed components
         // which is correct, potentially in the future we can avoid forceChange and just know to
         // update if keys.length is set + onChangeTheme called
-        const forceChange = force || Boolean(keys?.length)
+        const forceChange = force
         const next = themeManager.getState(props, parentManager)
         const nextState = getShouldUpdateTheme(
           themeManager,
