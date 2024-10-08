@@ -146,7 +146,13 @@ export const useThemeWithState = (
 
   if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
     console.groupCollapsed(`  🔹 [${themeManager?.id}] useTheme =>`, state?.name)
-    console.info('returning state', changedThemeState, 'from props', props)
+    console.info(
+      'returning state',
+      changedThemeState.state,
+      changedThemeState.isNewTheme,
+      'from props',
+      props
+    )
     console.groupEnd()
   }
 
@@ -488,7 +494,6 @@ export const useChangeThemeEffect = (
               shouldTryUpdate,
               props,
               name,
-              manager,
               keys,
             })
           }

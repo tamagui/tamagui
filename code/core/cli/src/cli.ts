@@ -29,7 +29,7 @@ const COMMAND_MAP = {
         loadTamaguiOptions: true,
       })
 
-      await checkDeps(options.paths.root, {})
+      await checkDeps(options.paths.root)
     },
   },
 

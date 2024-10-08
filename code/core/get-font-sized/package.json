@@ -4,11 +4,7 @@
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
-  "files": [
-    "src",
-    "types",
-    "dist"
-  ],
+  "files": ["src", "types", "dist"],
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
@@ -28,6 +24,7 @@
     }
   },
   "dependencies": {
+    "@tamagui/constants": "1.113.2",
     "@tamagui/core": "1.113.2"
   },
   "devDependencies": {
