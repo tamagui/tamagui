@@ -753,7 +753,7 @@ async function esbuildWriteIfChanged(
     return
   }
 
-  if (shouldSkipMJS || !isESM) {
+  if (shouldSkipMJS || !isESM || platform === 'native') {
     return
   }
 
