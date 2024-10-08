@@ -12,6 +12,15 @@ export const docsRoutes = [
   },
 
   {
+    title: 'CLI',
+    pages: [
+      { title: 'Dev', route: '/docs/one-dev' },
+      { title: 'Build', route: '/docs/one-build' },
+      { title: 'Serve', route: '/docs/one-serve' },
+    ],
+  },
+
+  {
     title: 'Routing',
     pages: [
       { title: 'Overview', route: '/docs/routing' },
@@ -24,27 +33,19 @@ export const docsRoutes = [
   },
 
   {
-    title: 'CLI',
+    title: 'Layout',
     pages: [
-      { title: 'Dev', route: '/docs/one-dev' },
-      { title: 'Build', route: '/docs/one-build' },
-      { title: 'Serve', route: '/docs/one-serve' },
+      { title: 'Slot', route: '/docs/components-Slot' },
+      { title: 'Stack', route: '/docs/components-Stack' },
+      { title: 'Tabs', route: '/docs/components-Tabs' },
+      { title: 'Drawer', route: '/docs/components-Drawer' },
+      { title: 'withLayoutContext', route: '/docs/exports-withLayoutContext' },
     ],
   },
 
   {
     title: 'Data',
     pages: [{ title: 'Introduction', route: '/docs/data' }],
-  },
-
-  {
-    title: 'Layout',
-    pages: [
-      { title: 'Stack', route: '/docs/components-Stack' },
-      { title: 'Slot', route: '/docs/components-Slot' },
-      { title: 'Drawer', route: '/docs/components-Drawer' },
-      { title: 'Tabs', route: '/docs/components-Tabs' },
-    ],
   },
 
   {

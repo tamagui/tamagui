@@ -43,7 +43,7 @@
     "@tamagui/themes": "1.113.0",
     "@tamagui/toast": "1.113.0",
     "@tamagui/web": "1.113.0",
-    "@vxrn/vendor": "^1.1.297",
+    "@vxrn/vendor": "^1.1.298",
     "burnt": "^0.12.2",
     "expo": "^51.0.0",
     "expo-dev-client": "~4.0.13",
