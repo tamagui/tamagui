@@ -553,7 +553,7 @@ export const useChangeThemeEffect = (
         // at all anymore. this forces updates onChangeTheme for all dynamic style accessed components
         // which is correct, potentially in the future we can avoid forceChange and just know to
         // update if keys.length is set + onChangeTheme called
-        const forceChange = force
+        const forceChange = force || Boolean(keys?.length)
         const next = themeManager.getState(props, parentManager)
         const nextState = getShouldUpdateTheme(
           themeManager,
