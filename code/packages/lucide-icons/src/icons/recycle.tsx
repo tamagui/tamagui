@@ -39,5 +39,5 @@ const Icon = (props) => {
 Icon.displayName = 'Recycle'
 
 export const Recycle = memo<IconProps>(
-  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_RESOLVE || 'auto' })
 )

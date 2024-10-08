@@ -26,5 +26,5 @@ const Icon = (props) => {
 Icon.displayName = 'Redo2'
 
 export const Redo2 = memo<IconProps>(
-  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_RESOLVE || 'auto' })
 )

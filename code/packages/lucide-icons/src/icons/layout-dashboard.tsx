@@ -28,5 +28,5 @@ const Icon = (props) => {
 Icon.displayName = 'LayoutDashboard'
 
 export const LayoutDashboard = memo<IconProps>(
-  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_RESOLVE || 'auto' })
 )

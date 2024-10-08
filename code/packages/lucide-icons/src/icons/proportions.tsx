@@ -27,5 +27,5 @@ const Icon = (props) => {
 Icon.displayName = 'Proportions'
 
 export const Proportions = memo<IconProps>(
-  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_RESOLVE || 'auto' })
 )

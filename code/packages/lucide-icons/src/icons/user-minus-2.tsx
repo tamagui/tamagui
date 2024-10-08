@@ -28,5 +28,5 @@ const Icon = (props) => {
 Icon.displayName = 'UserMinus2'
 
 export const UserMinus2 = React.memo<IconProps>(
-  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_RESOLVE || 'auto' })
 )

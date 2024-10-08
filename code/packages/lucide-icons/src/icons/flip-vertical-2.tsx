@@ -30,5 +30,5 @@ const Icon = (props) => {
 Icon.displayName = 'FlipVertical2'
 
 export const FlipVertical2 = memo<IconProps>(
-  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_RESOLVE || 'auto' })
 )

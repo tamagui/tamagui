@@ -28,5 +28,5 @@ const Icon = (props) => {
 Icon.displayName = 'DivideSquare'
 
 export const DivideSquare = memo<IconProps>(
-  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' })
+  themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_RESOLVE || 'auto' })
 )

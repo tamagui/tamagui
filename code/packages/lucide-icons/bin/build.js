@@ -147,7 +147,7 @@ glob(`${lucideIconsDir}/**.svg`, (err, icons) => {
 
       Icon.displayName = '${cname}'
 
-      export const ${cname} = memo<IconProps>(themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_DYNAMIC ? 'auto' : 'web' }))
+      export const ${cname} = memo<IconProps>(themed(Icon, { resolveValues: process.env.TAMAGUI_ICON_COLOR_RESOLVE || 'auto' }))
     `
 
     fs.writeFileSync(location, out, 'utf-8')
