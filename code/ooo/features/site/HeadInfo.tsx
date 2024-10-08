@@ -17,7 +17,7 @@ export function HeadInfo({
     images?: { url: string; width?: number; height?: number }[]
   }
 }) {
-  const fullTitle = title?.includes('Tamagui') ? title : `${title} | Tamagui`
+  const fullTitle = title?.includes('One') ? title : `${title} | One`
 
   return (
     <>
