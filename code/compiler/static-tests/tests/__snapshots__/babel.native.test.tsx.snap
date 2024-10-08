@@ -166,6 +166,22 @@ const _ReactNativeViewWrapper = __withStableStyle(__ReactNativeView, (theme, _ex
 });"
 `;
 
+exports[`normalize dynamic values with theme access only 2`] = `
+"const __ReactNativeStyleSheet = require('react-native').StyleSheet;
+const _sheet = __ReactNativeStyleSheet.create({
+  "0": {
+    "flexDirection": "column",
+    "backgroundColor": "#fff"
+  }
+});
+const __ReactNativeView = require('react-native').View;
+const __ReactNativeText = require('react-native').Text;
+import { YStack } from 'tamagui';
+export function Test(props) {
+  return <__ReactNativeView style={_sheet["0"]} />;
+}"
+`;
+
 exports[`normalize ternaries flips the conditional properly 1`] = `
 "const __ReactNativeStyleSheet = require('react-native').StyleSheet;
 const _sheet = __ReactNativeStyleSheet.create({
@@ -236,4 +252,23 @@ const _ReactNativeTextWrapper = __withStableStyle(__ReactNativeText, (theme, _ex
     }];
   }, [..._expressions]);
 });"
+`;
+
+exports[`theme value extraction should work when theme variables used 2`] = `
+"const __ReactNativeStyleSheet = require('react-native').StyleSheet;
+const _sheet = __ReactNativeStyleSheet.create({
+  "0": {
+    "fontFamily": "Inter",
+    "letterSpacing": 0,
+    "fontSize": 14,
+    "lineHeight": 23,
+    "color": "#fff"
+  }
+});
+const __ReactNativeView = require('react-native').View;
+const __ReactNativeText = require('react-native').Text;
+import { Paragraph } from 'tamagui';
+export function Test() {
+  return <__ReactNativeText style={_sheet["0"]}>hello world</__ReactNativeText>;
+}"
 `;
