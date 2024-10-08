@@ -8,17 +8,18 @@ export const spawnify = async (
   cmd: string,
   opts?: proc.SpawnOptionsWithoutStdio & {
     avoidLog?: boolean
+    cwd?: string
   }
 ): Promise<string> => {
   console.info('>', cmd)
   const [head, ...rest] = cmd.split(' ')
   return new Promise((res, rej) => {
-    const avoidLog = opts?.avoidLog
-    const child = spawn(
-      head,
-      rest,
-      avoidLog ? opts : { stdio: ['inherit', 'pipe', 'pipe'], ...opts }
-    )
+    const { avoidLog, cwd, ...spawnOpts } = opts || {}
+    const child = spawn(head, rest, {
+      stdio: avoidLog ? undefined : ['inherit', 'pipe', 'pipe'],
+      cwd,
+      ...spawnOpts,
+    })
     const outStr = []
     const errStr = []
     if (!avoidLog) {

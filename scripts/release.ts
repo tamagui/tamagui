@@ -412,6 +412,8 @@ async function run() {
       if (!canary && !skipStarters) {
         await spawnify(`yarn upgrade:starters`)
         const starterFreeDir = join(process.cwd(), '../starter-free')
+        // Run yarn test in starter-free directory
+        await spawnify(`yarn test`, { cwd: starterFreeDir })
         await finishAndCommit(starterFreeDir)
       }
 
