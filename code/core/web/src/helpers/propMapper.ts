@@ -387,16 +387,8 @@ export const getTokenForKey = (
 
   if (theme && value in theme) {
     valOrVar = theme[value]
-    if (styleState.skipThemeTokenResolution && valOrVar?.val) {
-      if (process.env.NODE_ENV === 'development' && styleState.debug === 'verbose') {
-        console.info(
-          ` - keep original value: ${value} for ${key} due to enableFlattenThemeOnNative: true`
-        )
-      }
-      return value
-    }
     if (process.env.NODE_ENV === 'development' && styleState.debug === 'verbose') {
-      console.info(` - resolving ${key} to theme value ${value}: ${valOrVar?.val}`)
+      console.info(` - resolving ${key} to theme value ${value}`, valOrVar)
     }
     hasSet = true
   } else {

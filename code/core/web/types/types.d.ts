@@ -1249,7 +1249,6 @@ export type GetStyleState = {
     fontFamily?: string;
     debug?: DebugProp;
     flatTransforms?: Record<string, any>;
-    skipThemeTokenResolution?: boolean;
 };
 export type StyleResolver<Response = PropMappedValue> = (key: string, value: any, props: SplitStyleProps, state: GetStyleState, parentVariantKey: string) => Response;
 export type PropMapper = (key: string, value: any, state: GetStyleState, subProps?: Record<string, any>) => PropMappedValue;
