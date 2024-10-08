@@ -20,7 +20,7 @@ import { SearchProvider } from '~/features/search/SearchProvider'
 import { ContainerDocs, ContainerSm } from '~/features/site/Containers'
 
 const GITHUB_URL = 'https://github.com'
-const REPO_NAME = 'tamagui/tamagui'
+const REPO_NAME = 'one-js/one'
 
 export default function DocsLayout() {
   const { currentPath, next, previous, documentVersionPath } = useDocsMenu()

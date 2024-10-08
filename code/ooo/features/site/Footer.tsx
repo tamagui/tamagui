@@ -1,8 +1,10 @@
 import { Paragraph, Spacer, XStack, YStack } from 'tamagui'
 import { SocialLinksRow } from '~/features/site/SocialLinksRow'
 import { OneBall } from '../brand/Logo'
+import { useLinkTo } from 'one'
 
 export const Footer = () => {
+  const linkProps = useLinkTo({ href: '/' })
   return (
     <XStack
       group="card"
@@ -22,7 +24,7 @@ export const Footer = () => {
           jc: 'center',
         }}
       >
-        <YStack $sm={{ x: 3 }}>
+        <YStack $sm={{ x: 3 }} {...linkProps} cursor="pointer">
           <OneBall />
         </YStack>
 

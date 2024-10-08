@@ -252,11 +252,13 @@ const componentsIn = {
       isExecCommand,
       isCreateCommand,
       selectedPackageManager,
-      commandType,
       setPackageManager,
     } = useBashCommand(`yarn add ${name}`, 'language-bash')
 
-    const tamaguiCommand = `${selectedPackageManager} ${commandType} tamagui`
+    const { transformedCommand: tamaguiCommand } = useBashCommand(
+      `npm install tamagui`,
+      'language-bash'
+    )
     const { onCopy, hasCopied } = useClipboard(transformedCommand)
     const tamaguiCmdClip = useClipboard(tamaguiCommand)
 
