@@ -501,7 +501,7 @@ iframe {
 
 *[data-line-numbers='true'].highlight-line {
   position: relative;
-  padding-left: var(--space-4);
+  padding-left: var(--t-space-4);
 }
 
 .typewriter {

@@ -1,8 +1,20 @@
-import { X } from '@tamagui/lucide-icons'
+import {
+  BoxSelect,
+  Database,
+  Download,
+  FileStack,
+  Folder,
+  FolderCheck,
+  Loader,
+  TabletSmartphone,
+  Triangle,
+  X,
+} from '@tamagui/lucide-icons'
 import { useState, type KeyboardEvent } from 'react'
 import {
   Circle,
   EnsureFlexed,
+  H5,
   Paragraph,
   Portal,
   Spacer,
@@ -30,8 +42,8 @@ const ButtonText = styled(Text, {
   lh: 0,
   animation: 'quickest',
   color: '$color13',
+  fontWeight: '600',
   '$theme-dark': {
-    fontWeight: '600',
     color: '$color6',
   },
 })
@@ -124,7 +136,14 @@ export default function HomePage() {
         </XStack>
 
         <View gap="$3">
-          <PrettyTextBiggest color="$color13" mt={10} mb={-2} $sm={{ mt: 20 }}>
+          <PrettyTextBiggest
+            color="$color13"
+            mt={10}
+            mb={-2}
+            $sm={{ mt: 20, scale: 1 }}
+            scale={0.95}
+            transformOrigin="left center"
+          >
             Creating websites and&nbsp;apps is simply too complex.
           </PrettyTextBiggest>
 
@@ -153,7 +172,6 @@ export default function HomePage() {
           </PrettyTextBigger>
 
           <XStack
-            className="bbb"
             my="$5"
             als="center"
             ai="center"
@@ -164,15 +182,7 @@ export default function HomePage() {
             bc="$color4"
             py={12}
           >
-            <span className="corner top-left"></span>
-            <span className="corner top-right"></span>
-            <span className="corner bottom-left"></span>
-            <span className="corner bottom-right"></span>
-
-            <span className="triangle top-left"></span>
-            <span className="triangle top-right"></span>
-            <span className="triangle bottom-left"></span>
-            <span className="triangle bottom-right"></span>
+            <Corners />
 
             <Text
               $sm={{ dsp: 'none' }}
@@ -192,6 +202,8 @@ export default function HomePage() {
 
           <YStack>
             <Video />
+
+            <InfoBoxes />
 
             <View
               id="zero"
@@ -359,6 +371,70 @@ export default function HomePage() {
   )
 }
 
+const InfoBoxes = () => {
+  return (
+    <XStack
+      mx="$-8"
+      fw="wrap"
+      rowGap="$1"
+      columnGap="$5"
+      mb="$13"
+      $sm={{ fd: 'column', mx: 0 }}
+    >
+      <InfoCard title="Typed  FS Routing" Icon={FolderCheck}>
+        Simple file-system routes with nested layouts and groups, fully typed.
+      </InfoCard>
+      <InfoCard title="Routing Modes" Icon={FileStack}>
+        SPA, SSR, or SSG? One lets you choose - globally <em>and</em> per-page.
+      </InfoCard>
+      <InfoCard title="Loaders" Icon={Loader}>
+        Typed loaders make it easy to bring in data and migrate from other frameworks.
+      </InfoCard>
+      <InfoCard title="Web + Native" Icon={TabletSmartphone}>
+        Build a website with React. Or a native app with React Native. Or both at once.
+      </InfoCard>
+      <InfoCard title="100% Vite" Icon={ViteIcon}>
+        That's right, no more Metro. One Vite plugin one Vite server, one port, three
+        platforms.
+      </InfoCard>
+      <InfoCard title="The future of data" Icon={Database}>
+        Coming soon, an integration with{' '}
+        <a target="_blank" href="https://zerosync.dev" rel="noreferrer">
+          ZeroSync
+        </a>{' '}
+        that will delight.
+      </InfoCard>
+    </XStack>
+  )
+}
+
+const ViteIcon = (props) => <Triangle rotate="180deg" {...props} />
+
+const InfoCard = ({ title, Icon, children }) => {
+  return (
+    <YStack
+      pos="relative"
+      width="calc(50% - var(--t-space-3))"
+      mb="$4"
+      py="$2"
+      // br="$5"
+      // bg="$background075"
+      $sm={{ w: '100%', mb: '$2' }}
+    >
+      <YStack fullscreen o={0.25}>
+        <Corners />
+      </YStack>
+      <YStack gap="$2" p="$4">
+        <Icon als="flex-end" mb={-20} o={0.1} size={28} />
+        <H5 size="$7" color="$color13" mt={-10}>
+          {title}
+        </H5>
+        <PrettyText color="$color12">{children}</PrettyText>
+      </YStack>
+    </YStack>
+  )
+}
+
 function Video() {
   const [showVideo, setShowVideo] = useState(false)
 
@@ -420,6 +496,7 @@ function Video() {
         group="card"
         containerType="normal"
         onPress={() => setShowVideo(true)}
+        zi={0}
         className="video-glow"
       >
         <View
@@ -659,3 +736,17 @@ const CopyCommand = () => {
     </Tooltip>
   )
 }
+
+const Corners = () => (
+  <>
+    <span className="corner top-left"></span>
+    <span className="corner top-right"></span>
+    <span className="corner bottom-left"></span>
+    <span className="corner bottom-right"></span>
+
+    <span className="triangle top-left"></span>
+    <span className="triangle top-right"></span>
+    <span className="triangle bottom-left"></span>
+    <span className="triangle bottom-right"></span>
+  </>
+)
