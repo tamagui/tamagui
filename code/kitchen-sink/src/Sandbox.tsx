@@ -11,12 +11,25 @@ const ctx = createStyledContext({
 
 const MyView = styled(View, {
   context: ctx,
+
+  variants: {
+    testProp: {
+      true: {},
+      false: {},
+    },
+  } as const,
+})
+
+const HOCMyView = MyView.styleable((props, ref) => {
+  console.log('what is', ctx.useStyledContext())
+
+  return <MyView {...props} />
 })
 
 export const Sandbox = () => {
   return (
     <RNView style={{ width: '100%', height: '100%', padding: 50 }}>
-      <MyView />
+      <HOCMyView testProp={true} />
 
       {/* <Test />
 

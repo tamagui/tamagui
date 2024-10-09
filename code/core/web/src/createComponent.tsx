@@ -186,7 +186,7 @@ export function createComponent<
   }
 
   const component = React.forwardRef<Ref, ComponentPropTypes>((propsIn, forwardedRef) => {
-    // HOOK
+
     const internalID = process.env.NODE_ENV === 'development' ? React.useId() : ''
 
     if (process.env.NODE_ENV === 'development') {
@@ -216,7 +216,6 @@ export function createComponent<
       }
     }
 
-    // HOOK
     const componentContext = React.useContext(ComponentContext)
 
     // set variants through context
@@ -227,16 +226,12 @@ export function createComponent<
     const { context, isReactNative } = staticConfig
 
     if (context) {
-      // HOOK 3 (-1 if production)
       contextValue = React.useContext(context)
-      const { inverseShorthands } = getConfig()
       for (const key in context.props) {
         const propVal =
           // because its after default props but before props this annoying amount of checks
           propsIn[key] ??
-          propsIn[inverseShorthands[key]] ??
           defaultProps?.[key] ??
-          defaultProps?.[inverseShorthands[key]]
 
         // if not set, use context
         if (propVal === undefined) {
@@ -270,7 +265,6 @@ export function createComponent<
     const componentName = props.componentName || staticConfig.componentName
 
     if (process.env.NODE_ENV === 'development' && isClient) {
-      // HOOK
       React.useEffect(() => {
         let overlay: HTMLSpanElement | null = null
 
@@ -334,7 +328,6 @@ export function createComponent<
 
     // conditional but if ever true stays true
     // [animated, inversed]
-    // HOOK
 
     if (process.env.NODE_ENV === 'development' && time) time`stateref`
 
@@ -477,7 +470,6 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`pre-theme-media`
 
-    // HOOK 10-13 (-1 if no animation, -1 if disableSSR, -1 if no context, -1 if production)
     const [themeState, theme] = useThemeWithState(themeStateProps)
 
     elementType = Component || elementType
@@ -485,7 +477,6 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`theme`
 
-    // HOOK 14 (-1 if no animation, -1 if disableSSR, -1 if no context, -1 if production)
     const mediaState = useMedia(stateRef, componentContext, debugProp)
 
     setDidGetVariableValue(false)
@@ -509,7 +500,6 @@ export function createComponent<
       styledContextProps,
     } as const
 
-    // HOOK 15 (-1 if no animation, -1 if disableSSR, -1 if no context, -1 if production)
     const splitStyles = useSplitStyles(
       props,
       staticConfig,
@@ -548,10 +538,7 @@ export function createComponent<
       console.info(`useMedia() createComponent`, shouldListenForMedia, mediaListeningKeys)
     }
 
-    setMediaShouldUpdate(stateRef, {
-      enabled: shouldListenForMedia,
-      keys: mediaListeningKeys,
-    })
+    setMediaShouldUpdate(stateRef, shouldListenForMedia, mediaListeningKeys)
 
     const {
       viewProps: viewPropsIn,
@@ -601,7 +588,7 @@ export function createComponent<
       viewProps.theme = _themeProp
     }
 
-    if (elementType['acceptTagProp']) {
+    if (tagProp && elementType['acceptTagProp']) {
       viewProps.tag = tagProp
     }
 
@@ -612,7 +599,6 @@ export function createComponent<
       (supportsCSSVars ? willBeAnimatedClient : willBeAnimated) && useAnimations && !isHOC
 
     if (shouldUseAnimation) {
-      // HOOK 16... (depends on driver) (-1 if no animation, -1 if disableSSR, -1 if no context, -1 if production)
       const animations = useAnimations({
         props: propsWithAnimation,
         // if hydrating, send empty style
@@ -663,7 +649,6 @@ export function createComponent<
       )
     }
 
-    // HOOKS (0-4 more):
     viewProps =
       hooks.usePropsTransform?.(
         elementType,
@@ -672,7 +657,6 @@ export function createComponent<
         curStateRef.willHydrate
       ) || nonTamaguiProps
 
-    // HOOK (1 more):
     if (!curStateRef.composedRef) {
       curStateRef.composedRef = composeRefs<TamaguiElement>(
         (x) => (stateRef.current.host = x as TamaguiElement),
@@ -1103,7 +1087,7 @@ export function createComponent<
       }
     }
 
-    // ensure we override new context with syle resolved values
+    // ensure we override new context with style resolved values
     if (staticConfig.context) {
       const contextProps = staticConfig.context.props
       for (const key in contextProps) {

@@ -13,6 +13,18 @@ export function themeable<ComponentType extends (props: any) => any>(
   ) {
     const { themeInverse, theme, componentName, themeReset, ...rest } = props
 
+    let overriddenContextProps: Object | undefined
+    const context = staticConfig?.context
+    if (context) {
+      for (const key in context.props) {
+        const val = props[key]
+        if (val !== undefined) {
+          overriddenContextProps ||= {}
+          overriddenContextProps[key] = val
+        }
+      }
+    }
+
     const element = (
       // @ts-expect-error its ok
       <Component ref={ref} {...rest} data-disable-theme />
@@ -30,6 +42,16 @@ export function themeable<ComponentType extends (props: any) => any>(
         {element}
       </Theme>
     )
+
+    if (context) {
+      const Provider = context.Provider
+      const contextValue = React.useContext(context)
+      contents = (
+        <Provider {...contextValue} {...overriddenContextProps}>
+          {contents}
+        </Provider>
+      )
+    }
 
     return contents
   })
