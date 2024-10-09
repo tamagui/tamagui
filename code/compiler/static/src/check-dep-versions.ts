@@ -314,10 +314,6 @@ function getPackages(
   if (!Package.exists(root)) {
     throw new Error('No package.json found at provided path.')
   }
-  const package_ = new Package(root, root)
-  if (package_.workspacePatterns.length === 0) {
-    throw new Error('Package at provided path has no workspaces specified.')
-  }
 
   const packages = accumulatePackages(root, ['.'])
 
@@ -579,7 +575,7 @@ function check(path: string): {
   dependencies: Dependencies
 } {
   const options: Options = {
-    includeDepPattern: ['tamagui'],
+    includeDepPattern: ['tamagui', 'react-native-web-lite', 'react-native-web-internals'],
   }
 
   if (
