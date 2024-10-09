@@ -50,9 +50,16 @@ export function DocCorePage() {
       />
 
       <>
+        {/* @ts-ignore */}
         {!frontmatter.hideTitle && (
           <>
-            <H1 mb="$4" mt="$2">
+            <H1
+              mb="$4"
+              mt="$2"
+              $platform-web={{
+                textWrap: 'balance',
+              }}
+            >
               {nbspLastWord(frontmatter.title)}
             </H1>
             {!!frontmatter.description && (
