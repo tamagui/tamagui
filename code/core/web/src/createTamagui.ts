@@ -236,14 +236,7 @@ ${runtimeStyles}`
   const defaultFontSetting = configIn.settings?.defaultFont ?? configIn.defaultFont
 
   const defaultFont = (() => {
-    let val =
-      defaultFontSetting ||
-      // uses font named "body" if present for compat
-      (configIn.fonts && ('body' in configIn.fonts ? 'body' : ''))
-    if (!val && configIn.fonts) {
-      // defaults to the first font to make life easier
-      val = Object.keys(configIn.fonts)[0]
-    }
+    let val = defaultFontSetting
     if (val?.[0] === '$') {
       val = val.slice(1)
     }
@@ -251,7 +244,12 @@ ${runtimeStyles}`
   })()
 
   // ensure prefixed with $
-  const defaultFontToken = `$${defaultFont}`
+  const defaultFontToken = defaultFont ? `$${defaultFont}` : ''
+
+  const unset = { ...configIn.unset }
+  if (!unset.fontFamily && defaultFont) {
+    unset.fontFamily = defaultFontToken
+  }
 
   const config: TamaguiInternalConfig = {
     fonts: {},
@@ -260,10 +258,7 @@ ${runtimeStyles}`
     animations: {} as any,
     media: {},
     ...configIn,
-    unset: {
-      fontFamily: defaultFont ? defaultFontToken : undefined,
-      ...configIn.unset,
-    },
+    unset,
     settings: {
       // move deprecated settings here so we can reference them all using `getSetting`
       // TODO remove this on v2
