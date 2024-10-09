@@ -144,19 +144,19 @@ export function Popper(props: ScopedPopperProps<PopperProps>) {
   } = floating
 
   // leaving this here as reference, seems we don't need it anymore at least as used currently
-  // if (process.env.TAMAGUI_TARGET === 'web') {
-  //   useIsomorphicLayoutEffect(() => {
-  //     if (!open) return
-  //     if (!(refs.reference.current && refs.floating.current)) {
-  //       return
-  //     }
+  if (process.env.TAMAGUI_TARGET === 'web') {
+    useIsomorphicLayoutEffect(() => {
+      if (!open) return
+      if (!(refs.reference.current && refs.floating.current)) {
+        return
+      }
 
-  //     floating.update()
+      floating.update()
 
-  //     // Only call this when the floating element is rendered
-  //     return autoUpdate(refs.reference.current, refs.floating.current, floating.update)
-  //   }, [open, floating.update, refs.floating, refs.reference])
-  // }
+      // Only call this when the floating element is rendered
+      return autoUpdate(refs.reference.current, refs.floating.current, floating.update)
+    }, [open, floating.update, refs.floating, refs.reference])
+  }
 
   if (process.env.TAMAGUI_TARGET === 'native') {
     // On Native there's no autoupdate so we call update() when necessary
