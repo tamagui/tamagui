@@ -1,33 +1,100 @@
 // import './wdyr'
 
-import { View as RNView, Text } from 'react-native'
-import { Paragraph } from 'tamagui'
+import { View as RNView } from 'react-native'
+import { createStyledContext, styled, Text, View, withStaticProperties } from 'tamagui'
 
-// const ctx = createStyledContext({
-//   testProp: false,
-// })
+const height = 32
 
-// const MyView = styled(View, {
-//   context: ctx,
+const context = createStyledContext<{ loading?: boolean }>({
+  loading: false,
+})
 
-//   variants: {
-//     testProp: {
-//       true: {},
-//       false: {},
-//     },
-//   } as const,
-// })
+const borderWidth = 2
 
-// const HOCMyView = MyView.styleable((props, ref) => {
-//   console.log('what is', ctx.useStyledContext())
+const Frame = styled(View, {
+  px: '$2',
+  height,
+  bg: '$color3',
+  bw: borderWidth,
+  bc: '$color6',
+  hoverStyle: {
+    bg: '$color4',
+  },
+  context,
+  variants: {
+    loading: {
+      true: {
+        cursor: 'not-allowed',
+        opacity: 0.5,
+      },
+      false: {
+        opacity: 1,
+      },
+    },
+  } as const,
+  jc: 'center',
+  tag: 'button',
+  br: 6,
+  defaultVariants: {
+    loading: false,
+  },
+})
 
-//   return <MyView {...props} />
-// })
+const ButtonFrame = Frame.styleable<{ loading?: boolean }>((props) => {
+  const { children, ...rest } = props
+
+  console.log('props.loading', props.loading)
+
+  return (
+    <Frame
+      {...rest}
+      disabled={props.disabled || props.loading || false}
+      loading={props.loading || false}
+    >
+      {children}
+    </Frame>
+  )
+})
+
+export const ButtonText = styled(Text, {
+  context,
+  userSelect: 'none',
+  debug: 'verbose',
+
+  variants: {
+    loading: {
+      true: {
+        backgroundColor: 'red',
+        opacity: 0,
+      },
+      false: {
+        backgroundColor: 'blue',
+        opacity: 1,
+      },
+    },
+  } as const,
+
+  defaultVariants: {
+    loading: false,
+  },
+})
+
+export const Button = withStaticProperties(ButtonFrame, {
+  Text: ButtonText,
+})
 
 export const Sandbox = () => {
   return (
     <RNView style={{ width: '100%', height: '100%', padding: 50 }}>
-      <Paragraph
+      <Button loading>
+        <Button.Text>hello world</Button.Text>
+      </Button>
+
+      {/* <Button loading={false}>
+        <Button.Text>hello world</Button.Text>
+      </Button> */}
+
+      {/* <Paragraph
         debug="verbose"
         ov="hidden"
         fos="$5"
@@ -47,7 +114,7 @@ export const Sandbox = () => {
         }}
       >
         hello world
-      </Text>
+      </Text> */}
 
       {/* <Text debug="verbose" fow="bold">
         with bold2
@@ -206,4 +273,25 @@ export const Sandbox = () => {
 //       backgroundColor: 'blue',
 //     },
 //   },
+// })
+
+// const ctx = createStyledContext({
+//   testProp: false,
+// })
+
+// const MyView = styled(View, {
+//   context: ctx,
+
+//   variants: {
+//     testProp: {
+//       true: {},
+//       false: {},
+//     },
+//   } as const,
+// })
+
+// const HOCMyView = MyView.styleable((props, ref) => {
+//   console.log('what is', ctx.useStyledContext())
+
+//   return <MyView {...props} />
 // })

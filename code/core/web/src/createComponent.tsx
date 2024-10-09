@@ -226,23 +226,32 @@ export function createComponent<
 
     if (context) {
       contextValue = React.useContext(context)
-      for (const key in context.props) {
-        const propVal =
-          // because its after default props but before props this annoying amount of checks
-          propsIn[key] ?? defaultProps?.[key]
 
-        // if not set, use context
-        if (propVal === undefined) {
-          const val = contextValue?.[key]
-          if (val !== undefined) {
-            styledContextProps ||= {}
-            styledContextProps[key] = val
-          }
+      if (contextValue) {
+        if (
+          process.env.NODE_ENV === 'development' &&
+          (propsIn['debug'] || defaultProps?.['debug'])
+        ) {
+          log(` 👇 contextValue`, contextValue)
         }
-        // if set in props, update context
-        else {
-          overriddenContextProps ||= {}
-          overriddenContextProps[key] = propVal
+
+        for (const key in context.props) {
+          const propVal = propsIn[key]
+          // if not set, use context
+          if (propVal === undefined) {
+            const val = contextValue?.[key]
+            if (val !== undefined) {
+              styledContextProps ||= {}
+              styledContextProps[key] = val
+            }
+          }
+
+          // update context if needed (including value from defaultProps)
+          const finalVal = propVal ?? defaultProps?.[key]
+          if (finalVal !== undefined) {
+            overriddenContextProps ||= {}
+            overriddenContextProps[key] = finalVal
+          }
         }
       }
     }
