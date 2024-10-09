@@ -224,6 +224,7 @@ export function getDefaultTamaguiConfig(platform: 'native' | 'web' = 'web') {
     media,
     settings: {
       shouldAddPrefersColorThemes: true,
+      defaultFont: 'body',
       themeClassNameOnRoot: true,
     },
   }

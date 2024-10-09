@@ -28,8 +28,6 @@ describe('getSplitStyles', () => {
       }
     )
 
-    console.log('got', viewProps)
-
     expect(viewProps['aria-required']).toEqual(false)
     expect(viewProps.required).toEqual(false)
     expect(viewProps.accessibilityRequired).toEqual(undefined)
@@ -48,13 +46,15 @@ describe('getSplitStyles', () => {
     expect(Object.values(out.rulesToInsert)[0]?.[StyleObjectValue]).toEqual('10px')
   })
 
-  test(`font props get the font family, regardless of the order`, () => {
+  test.only(`font props get the font family, regardless of the order`, () => {
+    const styles = simplifiedGetSplitStyles(Text, {
+      fontSize: '$1',
+    }).rulesToInsert
+
     expect(
-      Object.values(
-        simplifiedGetSplitStyles(Text, {
-          fontSize: '$1',
-        }).rulesToInsert
-      ).find((rule) => rule[StyleObjectProperty] === 'fontSize')?.[StyleObjectValue]
+      Object.values(styles).find((rule) => rule[StyleObjectProperty] === 'fontSize')?.[
+        StyleObjectValue
+      ]
     ).toEqual('var(--f-size-1)') // no family provided - this is expected
 
     expect(
