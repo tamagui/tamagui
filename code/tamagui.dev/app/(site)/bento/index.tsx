@@ -67,7 +67,9 @@ import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
 
 export const loader = async () => {
   try {
-    return await getProductsForServerSideRendering()
+    const products = await getProductsForServerSideRendering()
+    console.log('got', products)
+    return products
   } catch (err) {
     assertIsError(err)
     console.error(`Error getting props`, err.message)
