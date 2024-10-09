@@ -422,7 +422,7 @@ const InfoCard = ({ title, Icon, children }) => {
       $sm={{ w: '100%', mb: '$2' }}
     >
       <YStack fullscreen o={0.25}>
-        <Corners />
+        {/* <Corners /> */}
       </YStack>
       <YStack gap="$2" p="$4">
         <Icon als="flex-end" mb={-20} o={0.1} size={28} />
