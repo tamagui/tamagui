@@ -26,7 +26,8 @@ export const getFontSizeVariable = (
     return inSize
   }
   const conf = getConfig()
-  return conf.fontsParsed[opts?.font || conf.defaultFontToken].size[token]
+  const font = conf.fontsParsed[opts?.font || conf.defaultFontToken]
+  return font?.size[token]
 }
 
 export const getFontSizeToken = (
@@ -39,7 +40,11 @@ export const getFontSizeToken = (
   // backwards compat
   const relativeSize = opts?.relativeSize || 0
   const conf = getConfig()
-  const fontSize = conf.fontsParsed[opts?.font || conf.defaultFontToken].size
+  const font = conf.fontsParsed[opts?.font || conf.defaultFontToken]
+  const fontSize =
+    font?.size ||
+    // fallback to size tokens
+    conf.tokensParsed.size
   const size =
     (inSize === '$true' && !('$true' in fontSize) ? '$4' : inSize) ??
     ('$true' in fontSize ? '$true' : '$4')
