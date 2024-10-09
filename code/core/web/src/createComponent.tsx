@@ -186,7 +186,6 @@ export function createComponent<
   }
 
   const component = React.forwardRef<Ref, ComponentPropTypes>((propsIn, forwardedRef) => {
-
     const internalID = process.env.NODE_ENV === 'development' ? React.useId() : ''
 
     if (process.env.NODE_ENV === 'development') {
@@ -230,8 +229,7 @@ export function createComponent<
       for (const key in context.props) {
         const propVal =
           // because its after default props but before props this annoying amount of checks
-          propsIn[key] ??
-          defaultProps?.[key] ??
+          propsIn[key] ?? defaultProps?.[key]
 
         // if not set, use context
         if (propVal === undefined) {
