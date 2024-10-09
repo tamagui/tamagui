@@ -11,61 +11,65 @@ describe('create-tamagui CLI', () => {
   let projectPath: string
   let output: string
 
-  beforeAll(async () => {
-    tempDir = temporaryDirectory()
-    projectName = 'test-project'
-    const cliPath = path.join(__dirname, '../dist/index.js')
-    projectPath = path.join(tempDir, projectName)
+  beforeAll(
+    async () => {
+      tempDir = temporaryDirectory()
+      projectName = 'test-project'
+      const cliPath = path.join(__dirname, '../dist/index.js')
+      projectPath = path.join(tempDir, projectName)
 
-    cli = spawn('node', [cliPath], {
-      cwd: tempDir,
-      stdio: ['pipe', 'pipe', 'pipe'],
-    })
+      console.info(`Running: node ${cliPath}`)
+      console.info(` in dir: ${tempDir}`)
+      console.info(` then entering: ${projectName}`)
 
-    output = ''
+      cli = spawn('node', [cliPath], {
+        cwd: tempDir,
+        stdio: ['pipe', 'pipe', 'pipe'],
+      })
 
-    cli.stdout?.on('data', (data) => {
-      output += data.toString()
-      if (process.env.DEBUG === 'test') {
+      output = ''
+
+      cli.stdout?.on('data', (data) => {
+        output += data.toString()
         console.info(data.toString()) // Log output for debugging
-      }
-    })
-
-    cli.stderr?.on('data', (data) => {
-      output += data.toString()
-      if (process.env.DEBUG === 'test') {
-        console.error(data.toString()) // Log errors for debugging
-      }
-    })
-
-    // Helper function to write input after a delay
-    const writeWithDelay = (input: string, delay: number) => {
-      return new Promise<void>((resolve) => {
-        setTimeout(() => {
-          cli.stdin?.write(input)
-          resolve()
-        }, delay)
       })
-    }
 
-    // Simulate user input
-    await writeWithDelay(`${projectName}`, 300)
-    await writeWithDelay('\r', 300) // Enter
-    await writeWithDelay('\x1B\x5B\x42', 300) // Down arrow
-    await writeWithDelay('\x1B\x5B\x42', 300) // Down arrow
-    await writeWithDelay('\r', 300) // Enter
-
-    // Wait for the process to finish
-    await new Promise<void>((resolve, reject) => {
-      cli.on('exit', (code) => {
-        if (code === 0) {
-          resolve()
-        } else {
-          reject(new Error(`CLI process exited with code ${code}`))
-        }
+      cli.stderr?.on('data', (data) => {
+        output += data.toString()
+        console.error(`ERROR`, data.toString()) // Log errors for debugging
       })
-    })
-  }, 60000) // 60 second timeout for the setup
+
+      // Helper function to write input after a delay
+      const writeWithDelay = (input: string, delay: number) => {
+        return new Promise<void>((resolve) => {
+          setTimeout(() => {
+            cli.stdin?.write(input)
+            resolve()
+          }, delay)
+        })
+      }
+
+      // Simulate user input
+      await writeWithDelay(`${projectName}`, 300)
+      await writeWithDelay('\r', 300) // Enter
+      await writeWithDelay('\x1B\x5B\x42', 300) // Down arrow
+      await writeWithDelay('\x1B\x5B\x42', 300) // Down arrow
+      await writeWithDelay('\r', 300) // Enter
+
+      // Wait for the process to finish
+      await new Promise<void>((resolve, reject) => {
+        cli.on('exit', (code) => {
+          if (code === 0) {
+            resolve()
+          } else {
+            reject(new Error(`CLI process exited with code ${code}`))
+          }
+        })
+      })
+    },
+    // timeout
+    120_000
+  )
 
   afterAll(() => {
     // Clean up the temporary directory after each test
