@@ -24,6 +24,7 @@ export async function checkDeps(root: string) {
 
   if (!summary) {
     console.info(`Tamagui dependencies look good ✅`)
+    process.exit(0)
   }
 
   console.error(summary)
