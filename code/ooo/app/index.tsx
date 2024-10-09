@@ -394,7 +394,7 @@ const InfoBoxes = () => {
         Build a website with React. Or a native app with React Native. Or both at once.
       </InfoCard>
       <InfoCard title="100% Vite" Icon={ViteIcon}>
-        That's right, no more Metro. One Vite plugin one Vite server, one port, three
+        That's right, no more Metro. One Vite plugin, one Vite server, one port - three
         platforms.
       </InfoCard>
       <InfoCard title="The future of data" Icon={Database}>
