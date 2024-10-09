@@ -177,11 +177,20 @@ type MediaState = {
 
 const States = new WeakMap<any, MediaState>()
 
-export function setMediaShouldUpdate(ref: any, props: MediaState) {
-  return States.set(ref, {
-    ...(States.get(ref) as any),
-    ...props,
-  })
+export function setMediaShouldUpdate(
+  ref: any,
+  enabled?: boolean,
+  keys?: MediaState['keys']
+) {
+  const cur = States.get(ref)
+
+  if (!cur || cur.enabled !== enabled || keys) {
+    States.set(ref, {
+      ...cur,
+      enabled,
+      keys,
+    })
+  }
 }
 
 type UseMediaInternalState = {
