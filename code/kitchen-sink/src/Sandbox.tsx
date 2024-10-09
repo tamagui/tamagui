@@ -1,48 +1,30 @@
 // import './wdyr'
 
 import { styled, useMedia } from 'tamagui'
-import { View } from '@tamagui/web'
+import { createStyledContext, View } from '@tamagui/web'
 import { View as RNView } from 'react-native'
 import { Image } from '@tamagui/image-next'
 
-const StyledImage = styled(Image, {
-  margin: 10,
-  scale: 4,
+const ctx = createStyledContext({
+  testProp: false,
 })
 
-const Test = styled(View, {
-  width: 100,
-  height: 100,
-  backgroundColor: 'red',
-  debug: 'verbose',
-
-  '$platform-native': {
-    backgroundColor: 'yellow',
-  },
-
-  $gtXs: {
-    '$platform-web': {
-      backgroundColor: 'green',
-    },
-  },
-
-  $xl: {
-    '$platform-native': {
-      backgroundColor: 'blue',
-    },
-  },
+const MyView = styled(View, {
+  context: ctx,
 })
 
 export const Sandbox = () => {
   return (
     <RNView style={{ width: '100%', height: '100%', padding: 50 }}>
-      <Test />
+      <MyView />
+
+      {/* <Test />
 
       <StyledImage
         width={30}
         height={30}
         src="https://akittenplace.org/wp-content/uploads/2019/10/kitten4.jpg"
-      />
+      /> */}
 
       {/* <Demo3 /> */}
       {/* <Circle
@@ -160,3 +142,31 @@ export const Sandbox = () => {
 //     return null
 //   }
 // )
+
+// const StyledImage = styled(Image, {
+//   margin: 10,
+//   scale: 4,
+// })
+
+// const Test = styled(View, {
+//   width: 100,
+//   height: 100,
+//   backgroundColor: 'red',
+//   debug: 'verbose',
+
+//   '$platform-native': {
+//     backgroundColor: 'yellow',
+//   },
+
+//   $gtXs: {
+//     '$platform-web': {
+//       backgroundColor: 'green',
+//     },
+//   },
+
+//   $xl: {
+//     '$platform-native': {
+//       backgroundColor: 'blue',
+//     },
+//   },
+// })

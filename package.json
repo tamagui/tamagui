@@ -59,7 +59,6 @@
     "kitchen-sink:android": "yarn workspace @tamagui/kitchen-sink start:android",
     "kitchen-sink:clean": "yarn workspace @tamagui/kitchen-sink start:clean",
     "kitchen-sink:extract": "yarn workspace @tamagui/kitchen-sink start:extract",
-    "kitchen-sink:web": "yarn workspace @tamagui/kitchen-sink web",
     "kitchen-sink": "yarn workspace @tamagui/kitchen-sink start",
     "kitchen-sink:prod": "yarn workspace @tamagui/kitchen-sink start:prod",
     "lighthouse:live": "npx lighthouse https://tamagui.dev --view --chrome-flags='--headless' --throttling.cpuSlowdownMultiplier=16 --output-path=/tmp/report.html",
