@@ -12,7 +12,7 @@ export default function TabOneScreen() {
       <XStack ai="center" jc="center" fw="wrap" gap="$1.5" pos="absolute" b="$8">
         <Paragraph fos="$5">Add</Paragraph>
 
-        <Paragraph fos="$5" px="$2" py="$1" col="$blue10" bg="$blue5" br="$3">
+        <Paragraph fos="$5" px="$2" py="$1" col="$blue10" bg="$blue5">
           tamagui.config.ts
         </Paragraph>
 

@@ -1,9 +1,7 @@
 // import './wdyr'
 
-import { H2, styled, Text, useMedia } from 'tamagui'
-import { createStyledContext, View } from '@tamagui/web'
-import { View as RNView } from 'react-native'
-import { Image } from '@tamagui/image-next'
+import { View as RNView, Text } from 'react-native'
+import { Paragraph } from 'tamagui'
 
 // const ctx = createStyledContext({
 //   testProp: false,
@@ -29,9 +27,31 @@ import { Image } from '@tamagui/image-next'
 export const Sandbox = () => {
   return (
     <RNView style={{ width: '100%', height: '100%', padding: 50 }}>
-      <Text debug="verbose" fow="bold">
-        with bold2
+      <Paragraph
+        debug="verbose"
+        ov="hidden"
+        fos="$5"
+        px="$2"
+        py="$1"
+        col="$blue10"
+        bg="$blue5"
+        br="$3"
+      >
+        hello world2
+      </Paragraph>
+
+      <Text
+        style={{
+          borderRadius: 20,
+          backgroundColor: 'red',
+        }}
+      >
+        hello world
       </Text>
+
+      {/* <Text debug="verbose" fow="bold">
+        with bold2
+      </Text> */}
 
       {/* <HOCMyView testProp={true} /> */}
 
