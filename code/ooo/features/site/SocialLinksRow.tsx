@@ -45,7 +45,7 @@ export const SocialLinksRow = () => {
       <View dsp="none" $group-card-gtXs={{ dsp: 'inline-flex' }}>
         <HoverableLink
           target="_blank"
-          href="https://discord.gg/kJs5jeQp"
+          href="https://discord.gg/YpUKRqaFtm"
           aria-label="Discord"
         >
           <DiscordIcon width={28} height={28} aria-hidden="true" />
