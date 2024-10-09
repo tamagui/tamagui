@@ -229,8 +229,8 @@ export const useListItem = (
   const iconSize = getFontSize(size as any) * scaleIcon
   const getThemedIcon = useGetThemedIcon({ size: iconSize, color: color as any })
   const [themedIcon, themedIconAfter] = [icon, iconAfter].map(getThemedIcon)
-  const spaceSize =
-    getVariableValue(getTokens().space[props.space as any] ?? iconSize) * scaleSpace
+  const sizeToken = getTokens().space[props.space as any] ?? iconSize
+  const spaceSize = getVariableValue(sizeToken) * scaleSpace
 
   const contents = wrapChildrenInText(Text, textProps)
 

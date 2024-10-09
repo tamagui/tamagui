@@ -1,35 +1,39 @@
 // import './wdyr'
 
-import { styled, useMedia } from 'tamagui'
+import { H2, styled, Text, useMedia } from 'tamagui'
 import { createStyledContext, View } from '@tamagui/web'
 import { View as RNView } from 'react-native'
 import { Image } from '@tamagui/image-next'
 
-const ctx = createStyledContext({
-  testProp: false,
-})
+// const ctx = createStyledContext({
+//   testProp: false,
+// })
 
-const MyView = styled(View, {
-  context: ctx,
+// const MyView = styled(View, {
+//   context: ctx,
 
-  variants: {
-    testProp: {
-      true: {},
-      false: {},
-    },
-  } as const,
-})
+//   variants: {
+//     testProp: {
+//       true: {},
+//       false: {},
+//     },
+//   } as const,
+// })
 
-const HOCMyView = MyView.styleable((props, ref) => {
-  console.log('what is', ctx.useStyledContext())
+// const HOCMyView = MyView.styleable((props, ref) => {
+//   console.log('what is', ctx.useStyledContext())
 
-  return <MyView {...props} />
-})
+//   return <MyView {...props} />
+// })
 
 export const Sandbox = () => {
   return (
     <RNView style={{ width: '100%', height: '100%', padding: 50 }}>
-      <HOCMyView testProp={true} />
+      <Text debug="verbose" fow="bold">
+        with bold2
+      </Text>
+
+      {/* <HOCMyView testProp={true} /> */}
 
       {/* <Test />
 

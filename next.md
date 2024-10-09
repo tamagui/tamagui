@@ -155,6 +155,7 @@ const example = (
 
 v2:
 
+  - // TODO remove in v2
   - // TODO can remove 'web'
   - TODO remove this on v2
   - Text weirdness fixes (explore)
