@@ -18,7 +18,9 @@
     "lint": "biome check src",
     "lint:fix": "biome check --write src",
     "clean": "tamagui-build clean",
-    "clean:build": "tamagui-build clean:build"
+    "clean:build": "tamagui-build clean:build",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "files": [
     "types",
@@ -42,7 +44,7 @@
     "@testing-library/react": "^16.0.1",
     "csstype": "^3.0.10",
     "typescript": "^5.5.2",
-    "vitest": "2.1.1"
+    "vitest": "^2.1.2"
   },
   "exports": {
     "./package.json": "./package.json",
