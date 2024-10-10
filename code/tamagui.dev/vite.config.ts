@@ -25,8 +25,6 @@ const resolve = (path: string) => {
 //   require.resolve('@tamagui/colors').replace('/dist/cjs/index.js', ''),
 // ]
 
-const optimizeInterop = ['expo-splash-screen']
-
 export default {
   envPrefix: 'NEXT_PUBLIC_',
 
@@ -39,25 +37,11 @@ export default {
     },
 
     // todo automate, probably can just dedupe all package.json deps?
-    dedupe: [
-      'react',
-      'react-dom',
-      '@tamagui/core',
-      '@tamagui/web',
-      '@tamagui/demos',
-      '@tamagui/constants',
-      '@tamagui/bento',
-      '@tamagui/animations-moti',
-      'tamagui',
-      'react-hook-form',
-      '@tamagui/use-presence',
-      'react-native-reanimated',
-    ],
+    dedupe: ['react', 'react-dom', 'react-hook-form'],
   },
 
   optimizeDeps: {
     include: [
-      ...optimizeInterop,
       '@docsearch/react',
       '@leeoniya/ufuzzy',
       'react-hook-form',
@@ -78,7 +62,6 @@ export default {
       'unified',
       '@discordjs/core',
     ],
-    needsInterop: optimizeInterop,
   },
 
   ssr: {
