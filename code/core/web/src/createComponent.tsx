@@ -1,13 +1,8 @@
 import { composeRefs } from '@tamagui/compose-refs'
 import { isClient, isServer, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
-import {
-  StyleObjectIdentifier,
-  StyleObjectRules,
-  composeEventHandlers,
-  validStyles,
-} from '@tamagui/helpers'
+import { composeEventHandlers, validStyles } from '@tamagui/helpers'
 import React from 'react'
-import { devConfig, getConfig, onConfiguredOnce } from './config'
+import { devConfig, onConfiguredOnce } from './config'
 import { stackDefaultStyles } from './constants/constants'
 import { isDevTools } from './constants/isDevTools'
 import { ComponentContext } from './contexts/ComponentContext'
@@ -19,6 +14,7 @@ import { mergeProps } from './helpers/mergeProps'
 import { setElementProps } from './helpers/setElementProps'
 import { subscribeToContextGroup } from './helpers/subscribeToContextGroup'
 import { themeable } from './helpers/themeable'
+import { wrapStyleTags } from './helpers/wrapStyleTags'
 import { useComponentState } from './hooks/useComponentState'
 import { setMediaShouldUpdate, useMedia } from './hooks/useMedia'
 import { useThemeWithState } from './hooks/useTheme'
@@ -1115,32 +1111,9 @@ export function createComponent<
     }
 
     // add in <style> tags inline
-    if (process.env.TAMAGUI_REACT_19 && process.env.TAMAGUI_TARGET !== 'native') {
-      const { rulesToInsert } = splitStyles
-      const keys = Object.keys(splitStyles.rulesToInsert)
-      if (keys.length) {
-        content = (
-          <>
-            {content}
-            {/* lets see if we can put a single style tag per rule for optimal de-duping */}
-            {keys.map((key) => {
-              const styleObject = rulesToInsert[key]
-              const identifier = styleObject[StyleObjectIdentifier]
-              return (
-                <style
-                  key={identifier}
-                  // @ts-ignore
-                  href={`t_${identifier}`}
-                  // @ts-ignore
-                  precedence="default"
-                >
-                  {styleObject[StyleObjectRules].join('\n')}
-                </style>
-              )
-            })}
-          </>
-        )
-      }
+    const { rulesToInsert } = splitStyles
+    if (process.env.TAMAGUI_TARGET === 'web' && process.env.TAMAGUI_REACT_19) {
+      content = wrapStyleTags(Object.values(rulesToInsert), content)
     }
 
     if (process.env.NODE_ENV === 'development') {

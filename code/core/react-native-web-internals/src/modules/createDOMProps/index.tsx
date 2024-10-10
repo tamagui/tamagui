@@ -8,7 +8,7 @@
  */
 
 import AccessibilityUtil from '../AccessibilityUtil/index'
-import { getStylesAtomic } from '@tamagui/web'
+import { getStylesAtomic, wrapStyleTags } from '@tamagui/web'
 
 const emptyObject = {}
 const hasOwnProperty = Object.prototype.hasOwnProperty
@@ -26,6 +26,8 @@ function processIDRefList(idRefList: string | Array<string>): string {
 }
 
 let pointerEventsStyles
+
+export const stylesFromProps = new WeakMap()
 
 const createDOMProps = (elementType, props, options?) => {
   if (!props) {
@@ -330,20 +332,30 @@ const createDOMProps = (elementType, props, options?) => {
       return acc
     }, {})
 
-  domProps.style = getStylesAtomic(flat).reduce((acc, [key, value]) => {
-    if (key === '$$css' || key.startsWith('is_') || key === '' || key[0] === '_') {
+  let className = tmgCN || ''
+
+  if (props.className) {
+    className += ` ${props.className}`
+  }
+
+  const stylesAtomic = getStylesAtomic(flat)
+
+  stylesFromProps.set(domProps, stylesAtomic)
+
+  domProps.style = stylesAtomic.reduce((acc, [key, value]) => {
+    if (key[0] === '_' || key.startsWith('is_') || key.startsWith('font_')) {
+      className += ` ${key}`
+      return acc
+    }
+    if (key === '$$css' || key === '') {
       return acc
     }
     acc[key] = value
     return acc
   }, {})
 
-  if (props.className) {
-    domProps.className = props.className
-  }
-
-  if (tmgCN) {
-    domProps.className = tmgCN
+  if (className) {
+    domProps.className = className
   }
 
   // OTHER

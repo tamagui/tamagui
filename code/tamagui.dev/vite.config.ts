@@ -25,6 +25,28 @@ const resolve = (path: string) => {
 //   require.resolve('@tamagui/colors').replace('/dist/cjs/index.js', ''),
 // ]
 
+const include = [
+  '@docsearch/react',
+  '@leeoniya/ufuzzy',
+  'react-hook-form',
+  '@github/mini-throttle',
+  'swr',
+  '@supabase/ssr',
+  'is-buffer',
+  'extend',
+  'minimatch',
+  'gray-matter',
+  'execa',
+  'jiti',
+  'hsluv',
+  'rehype-parse',
+  'refractor',
+  'glob',
+  'reading-time',
+  'unified',
+  '@discordjs/core',
+]
+
 export default {
   envPrefix: 'NEXT_PUBLIC_',
 
@@ -37,31 +59,19 @@ export default {
     },
 
     // todo automate, probably can just dedupe all package.json deps?
-    dedupe: ['react', 'react-dom', 'react-hook-form'],
+    dedupe: [
+      'react',
+      'react-dom',
+      'react-hook-form',
+      'react-native',
+      'react-native-web',
+      'react-native-svg',
+      ...include,
+    ],
   },
 
   optimizeDeps: {
-    include: [
-      '@docsearch/react',
-      '@leeoniya/ufuzzy',
-      'react-hook-form',
-      '@github/mini-throttle',
-      'swr',
-      '@supabase/ssr',
-      'is-buffer',
-      'extend',
-      'minimatch',
-      'gray-matter',
-      'execa',
-      'jiti',
-      'hsluv',
-      'rehype-parse',
-      'refractor',
-      'glob',
-      'reading-time',
-      'unified',
-      '@discordjs/core',
-    ],
+    include,
   },
 
   ssr: {
@@ -126,11 +136,11 @@ export default {
       },
     }),
 
-    removeReactNativeWebAnimatedPlugin(),
+    // removeReactNativeWebAnimatedPlugin(),
 
     tamaguiPlugin({
       optimize: process.env.NODE_ENV === 'production',
-      // useReactNativeWebLite: true,
+      useReactNativeWebLite: true,
     }),
 
     // hmmm breaking ssr for some reason on lucide:

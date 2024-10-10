@@ -22,6 +22,7 @@ export function getStylesAtomic(style: ViewStyleWithPseudos) {
   styleToCSS(style)
   const out: StyleObject[] = []
   for (const key in style) {
+    if (key === '$$css') continue
     const val = style[key]
     if (key in pseudoDescriptors) {
       if (val) {

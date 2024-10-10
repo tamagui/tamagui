@@ -62,6 +62,7 @@ export * from './helpers/pseudoDescriptors'
 export * from './helpers/themeable'
 export * from './helpers/themes'
 export * from './helpers/transformsToString'
+export * from './helpers/wrapStyleTags'
 
 export {
   configureMedia,

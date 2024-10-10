@@ -6,6 +6,7 @@
  *
  * @noflow
  */
+export declare const stylesFromProps: WeakMap<WeakKey, any>;
 declare const createDOMProps: (elementType: any, props: any, options?: any) => any;
 export default createDOMProps;
 //# sourceMappingURL=index.d.ts.map

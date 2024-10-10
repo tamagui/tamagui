@@ -1,25 +1,13 @@
-import uFuzzy from '@leeoniya/ufuzzy'
-import { getStore, useStore } from '@tamagui/use-store'
+import { getStore } from '@tamagui/use-store'
 import * as React from 'react'
-import {
-  Input,
-  Paragraph,
-  Separator,
-  SizableStack,
-  SizableText,
-  Spacer,
-  Theme,
-  XStack,
-  YStack,
-} from 'tamagui'
+import { Paragraph, Separator, Spacer, Theme, XStack, YStack } from 'tamagui'
 import { docsRoutes } from './docsRoutes'
 
-import { usePathname, router, Link } from 'one'
 import { DocsNavHeading } from './DocsNavHeading'
 import { DocsItemsStore, DocsRouteNavItem } from './DocsRouteNavItem'
 import { useDocsMenu } from './useDocsMenu'
 
-const fuz = new uFuzzy({})
+// const fuz = new uFuzzy({})
 
 const sections = {
   docs: docsRoutes
@@ -36,17 +24,17 @@ const sections = {
 
 const allItems = [...sections.docs, ...sections.ui]
 
-const sectionStrings = {
-  docs: sections.docs.map((s) =>
-    `${s?.page.title || ''} ${s?.section?.title || ''}`.trim()
-  ),
-  ui: sections.ui.map((s) => `${s?.page.title || ''} ${s?.section?.title || ''}`.trim()),
-}
+// const sectionStrings = {
+//   docs: sections.docs.map((s) =>
+//     `${s?.page.title || ''} ${s?.section?.title || ''}`.trim()
+//   ),
+//   ui: sections.ui.map((s) => `${s?.page.title || ''} ${s?.section?.title || ''}`.trim()),
+// }
 
 export const DocsMenuContents = React.memo(function DocsMenuContents({
   inMenu,
 }: { inMenu?: boolean }) {
-  const store = useStore(DocsItemsStore)
+  // const store = useStore(DocsItemsStore)
   const { currentPath } = useDocsMenu()
   const activeSection = currentPath.startsWith('/ui') ? 'ui' : 'docs'
   const activeItems = inMenu ? allItems : sections[activeSection]
