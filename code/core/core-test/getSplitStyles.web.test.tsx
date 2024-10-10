@@ -46,7 +46,7 @@ describe('getSplitStyles', () => {
     expect(Object.values(out.rulesToInsert)[0]?.[StyleObjectValue]).toEqual('10px')
   })
 
-  test.only(`font props get the font family, regardless of the order`, () => {
+  test(`font props get the font family, regardless of the order`, () => {
     const styles = simplifiedGetSplitStyles(Text, {
       fontSize: '$1',
     }).rulesToInsert
