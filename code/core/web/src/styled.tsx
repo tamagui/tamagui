@@ -137,104 +137,100 @@ export function styled<
   )
 
   const staticConfigProps = (() => {
-    if (options) {
-      let {
-        variants,
-        name,
-        defaultVariants,
-        acceptsClassName: acceptsClassNameProp,
-        context,
-        ...defaultProps
-      } = options
+    let {
+      variants,
+      name,
+      defaultVariants,
+      acceptsClassName: acceptsClassNameProp,
+      context,
+      ...defaultProps
+    } = options || {}
 
-      let parentDefaultVariants
-      let parentDefaultProps
+    let parentDefaultVariants
+    let parentDefaultProps
 
-      if (parentStaticConfig) {
-        const avoid = parentStaticConfig.isHOC && !parentStaticConfig.isStyledHOC
-        if (!avoid) {
-          const pdp = parentStaticConfig.defaultProps
+    if (parentStaticConfig) {
+      const avoid = parentStaticConfig.isHOC && !parentStaticConfig.isStyledHOC
+      if (!avoid) {
+        const pdp = parentStaticConfig.defaultProps
 
-          // apply parent props only if not already defined, they are lesser specificity
-          for (const key in pdp) {
-            const val = pdp[key]
-            if (parentStaticConfig.defaultVariants) {
-              if (key in parentStaticConfig.defaultVariants) {
-                // ensure we don't add it if its also in our default variants so we keep the order!
-                if (!defaultVariants || !(key in defaultVariants)) {
-                  parentDefaultVariants ||= {}
-                  parentDefaultVariants[key] = val
-                }
+        // apply parent props only if not already defined, they are lesser specificity
+        for (const key in pdp) {
+          const val = pdp[key]
+          if (parentStaticConfig.defaultVariants) {
+            if (key in parentStaticConfig.defaultVariants) {
+              // ensure we don't add it if its also in our default variants so we keep the order!
+              if (!defaultVariants || !(key in defaultVariants)) {
+                parentDefaultVariants ||= {}
+                parentDefaultVariants[key] = val
               }
             }
-            if (!(key in defaultProps)) {
-              parentDefaultProps ||= {}
-              parentDefaultProps[key] = pdp[key]
-            }
           }
-          if (parentStaticConfig.variants) {
-            // @ts-expect-error
-            variants = mergeVariants(parentStaticConfig.variants, variants)
+          if (!(key in defaultProps)) {
+            parentDefaultProps ||= {}
+            parentDefaultProps[key] = pdp[key]
           }
         }
-      }
-
-      // applies everything in the right order! order is important
-      if (parentDefaultProps || defaultVariants || parentDefaultVariants) {
-        defaultProps = {
-          ...parentDefaultProps,
-          ...parentDefaultVariants,
-          ...defaultProps,
-          ...defaultVariants,
+        if (parentStaticConfig.variants) {
+          // @ts-expect-error
+          variants = mergeVariants(parentStaticConfig.variants, variants)
         }
       }
-
-      if (parentStaticConfig?.isHOC) {
-        // if HOC we map name => componentName as we have a difference in how we name prop vs styled() there
-        if (name) {
-          // @ts-ignore
-          defaultProps.componentName = name
-        }
-      }
-
-      const isText = Boolean(
-        staticExtractionOptions?.isText || parentStaticConfig?.isText
-      )
-
-      const acceptsClassName =
-        staticExtractionOptions?.acceptsClassName ??
-        acceptsClassNameProp ??
-        (isPlainStyledComponent ||
-          isReactNative ||
-          (parentStaticConfig?.isHOC && parentStaticConfig?.acceptsClassName))
-
-      const conf: Partial<StaticConfig> = {
-        ...parentStaticConfig,
-        ...staticExtractionOptions,
-        ...(!isPlainStyledComponent && {
-          Component,
-        }),
-        // @ts-expect-error
-        variants,
-        defaultProps,
-        defaultVariants,
-        componentName: name || parentStaticConfig?.componentName,
-        isReactNative,
-        isText,
-        acceptsClassName,
-        context,
-        ...reactNativeConfig,
-        isStyledHOC: Boolean(parentStaticConfig?.isHOC),
-        parentStaticConfig,
-      }
-
-      // bail on non className views as well
-      if (defaultProps.children || !acceptsClassName || context) {
-        conf.neverFlatten = true
-      }
-
-      return conf
     }
+
+    // applies everything in the right order! order is important
+    if (parentDefaultProps || defaultVariants || parentDefaultVariants) {
+      defaultProps = {
+        ...parentDefaultProps,
+        ...parentDefaultVariants,
+        ...defaultProps,
+        ...defaultVariants,
+      }
+    }
+
+    if (parentStaticConfig?.isHOC) {
+      // if HOC we map name => componentName as we have a difference in how we name prop vs styled() there
+      if (name) {
+        // @ts-ignore
+        defaultProps.componentName = name
+      }
+    }
+
+    const isText = Boolean(staticExtractionOptions?.isText || parentStaticConfig?.isText)
+
+    const acceptsClassName =
+      staticExtractionOptions?.acceptsClassName ??
+      acceptsClassNameProp ??
+      (isPlainStyledComponent ||
+        isReactNative ||
+        (parentStaticConfig?.isHOC && parentStaticConfig?.acceptsClassName))
+
+    const conf: Partial<StaticConfig> = {
+      ...parentStaticConfig,
+      ...staticExtractionOptions,
+      ...(!isPlainStyledComponent && {
+        Component,
+      }),
+      // @ts-expect-error
+      variants,
+      defaultProps,
+      defaultVariants,
+      componentName: name || parentStaticConfig?.componentName,
+      isReactNative,
+      isText,
+      acceptsClassName,
+      context,
+      ...reactNativeConfig,
+      isStyledHOC: Boolean(parentStaticConfig?.isHOC),
+      parentStaticConfig,
+    }
+
+    // bail on non className views as well
+    if (defaultProps['children'] || !acceptsClassName || context) {
+      conf.neverFlatten = true
+    }
+
+    return conf
   })()
 
   const component = createComponent(staticConfigProps || {})
