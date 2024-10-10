@@ -1,13 +1,14 @@
-import { describe, it, expect, beforeAll } from 'vitest'
+import { config } from '@tamagui/config/v3'
 import {
   TamaguiProvider,
+  Text,
   createFont,
   createTamagui,
   type TamaguiInternalConfig,
 } from '@tamagui/web'
-import { Text } from '@tamagui/web'
 import { render, screen } from '@testing-library/react'
-import { config } from '@tamagui/config/v3'
+import React from 'react'
+import { beforeAll, describe, expect, it } from 'vitest'
 
 describe('@tamagui/web Text', () => {
   const createTestConfig = (
@@ -86,19 +87,19 @@ describe('@tamagui/web Text', () => {
     })
 
     it('should set the correct line heights', () => {
-      expect(testFont.lineHeight[1]).toBe(16)
-      expect(testFont.lineHeight[2]).toBe(20)
-      expect(testFont.lineHeight[3]).toBe(24)
+      expect(testFont.lineHeight?.[1]).toBe(16)
+      expect(testFont.lineHeight?.[2]).toBe(20)
+      expect(testFont.lineHeight?.[3]).toBe(24)
     })
 
     it('should set the correct font weights', () => {
-      expect(testFont.weight[4]).toBe('300')
-      expect(testFont.weight[6]).toBe('600')
+      expect(testFont.weight?.[4]).toBe('300')
+      expect(testFont.weight?.[6]).toBe('600')
     })
 
     it('should set the correct letter spacing', () => {
-      expect(testFont.letterSpacing[4]).toBe(0)
-      expect(testFont.letterSpacing[8]).toBe(-1)
+      expect(testFont.letterSpacing?.[4]).toBe(0)
+      expect(testFont.letterSpacing?.[8]).toBe(-1)
     })
   })
 
