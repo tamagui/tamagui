@@ -4,19 +4,10 @@
     "baseUrl": ".",
     "rootDir": ".",
     "paths": {
-      "tamagui": [
-        "code/ui/tamagui"
-      ],
-      "@tamagui/*": [
-        "code/core/*",
-        "code/ui/*"
-      ],
-      "@tamagui/bento": [
-        "code/bento"
-      ],
-      "@tamagui/demos": [
-        "code/demos"
-      ]
+      "tamagui": ["code/ui/tamagui"],
+      "@tamagui/*": ["code/core/*", "code/ui/*"],
+      "@tamagui/bento": ["code/bento"],
+      "@tamagui/demos": ["code/demos"]
     },
     "outDir": "dist",
     "importHelpers": true,
@@ -47,22 +38,11 @@
     "sourceMap": false,
     "strictNullChecks": true,
     "target": "es2020",
-    "types": [
-      "node",
-      "react"
-    ],
-    "lib": [
-      "dom",
-      "esnext"
-    ]
+    "types": ["node", "react"],
+    "lib": ["dom", "esnext"]
   },
-  "exclude": [
-    "test",
-    "dist",
-    "types",
-    "**/__tests__",
-    "node_modules"
-  ],
+  "include": ["**/__tests__/**/*.ts", "**/__tests__/**/*.tsx"],
+  "exclude": ["test", "dist", "types", "node_modules"],
   "typeAcquisition": {
     "enable": true
   },

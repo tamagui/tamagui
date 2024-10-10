@@ -4,6 +4,8 @@
     "composite": true,
     "strict": true
   },
+  "types": ["@testing-library/jest-dom"],
+  "include": ["./__tests__/setup.ts", "./__tests__/**/*.ts", "./__tests__/**/*.tsx"],
   "references": [
     {
       "path": "../../packages/timer"
@@ -33,9 +35,5 @@
       "path": "../use-force-update"
     }
   ],
-  "exclude": [
-    "types",
-    "dist",
-    "**/__tests__"
-  ]
+  "exclude": ["types", "dist"]
 }

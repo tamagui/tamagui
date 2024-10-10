@@ -8354,7 +8354,9 @@ __metadata:
     "@tamagui/use-did-finish-ssr": "npm:1.114.2"
     "@tamagui/use-event": "npm:1.114.2"
     "@tamagui/use-force-update": "npm:1.114.2"
+    "@testing-library/jest-dom": "npm:^6.5.0"
     "@testing-library/react": "npm:^16.0.1"
+    "@types/testing-library__jest-dom": "npm:^6.0.0"
     csstype: "npm:^3.0.10"
     typescript: "npm:^5.5.2"
     vitest: "npm:^2.1.2"
@@ -8396,7 +8398,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@testing-library/jest-dom@npm:^6.5.0":
+"@testing-library/jest-dom@npm:*, @testing-library/jest-dom@npm:^6.5.0":
   version: 6.5.0
   resolution: "@testing-library/jest-dom@npm:6.5.0"
   dependencies:
@@ -9349,6 +9351,15 @@ __metadata:
     "@types/minipass": "npm:*"
     "@types/node": "npm:*"
   checksum: 10/35a16cce96db41892d0afbae4a7bdf2e3fb50ebb6ffb8dc36435214b04b4f38063f11cf3aa2ae8c474e1ea81f347d7580ced38e1b5cc9025e806e634753d9f30
+  languageName: node
+  linkType: hard
+
+"@types/testing-library__jest-dom@npm:^6.0.0":
+  version: 6.0.0
+  resolution: "@types/testing-library__jest-dom@npm:6.0.0"
+  dependencies:
+    "@testing-library/jest-dom": "npm:*"
+  checksum: 10/1b4db1aa3c4225524203b4d1c3b36c7129e9d1e0547e46d2e5283c3ece226a3c16f5f20387cc71b33ab0eecd99d0cf91111bb327e8adb240388d99fb94af7a4d
   languageName: node
   linkType: hard
 

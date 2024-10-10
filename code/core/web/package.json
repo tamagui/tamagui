@@ -41,7 +41,9 @@
   },
   "devDependencies": {
     "@tamagui/build": "1.114.2",
+    "@testing-library/jest-dom": "^6.5.0",
     "@testing-library/react": "^16.0.1",
+    "@types/testing-library__jest-dom": "^6.0.0",
     "csstype": "^3.0.10",
     "typescript": "^5.5.2",
     "vitest": "^2.1.2"
