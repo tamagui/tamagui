@@ -83,11 +83,13 @@ export const Adapt = withStaticProperties(
     if (typeof when === 'function') {
       enabled = when({ media })
     } else {
+      enabled = !platform
+
       if (platform === 'touch') enabled = isTouchable
-      else if (platform === 'native') enabled = !isWeb
-      else if (platform === 'web') enabled = isWeb
-      else if (platform === 'ios') enabled = isIos
-      else if (platform === 'android') enabled = isAndroid
+      if (platform === 'native') enabled = !isWeb
+      if (platform === 'web') enabled = isWeb
+      if (platform === 'ios') enabled = isIos
+      if (platform === 'android') enabled = isAndroid
 
       if (when && !media[when]) {
         enabled = false
