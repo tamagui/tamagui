@@ -1,11 +1,19 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.5.1/schema.json",
+  "$schema": "https://biomejs.dev/schemas/1.9.2/schema.json",
   "organizeImports": {
     "enabled": false
   },
   "linter": {
     "enabled": true,
     "ignore": ["**/*/generated-new.ts", "**/*/generated-v2.ts", ".tamagui"],
+    "include": [
+      "./app/**/*.{ts,tsx,js,jsx}",
+      "./components/**/*.{ts,tsx,js,jsx}",
+      "./config/**/*.{ts,tsx,js,jsx}",
+      "./features/**/*.{ts,tsx,js,jsx}",
+      "./helpers/**/*.{ts,tsx,js,jsx}",
+      "./data/**/*.{ts,tsx,js,jsx}"
+    ],
     "rules": {
       "correctness": {
         "useExhaustiveDependencies": "off",
@@ -67,7 +75,15 @@
     "indentStyle": "space",
     "indentWidth": 2,
     "lineWidth": 100,
-    "ignore": ["**/*/generated-new.ts", "**/*/generated-v2.ts", ".tamagui"]
+    "ignore": ["**/*/generated-new.ts", "**/*/generated-v2.ts", ".tamagui"],
+    "include": [
+      "./app/**/*.{ts,tsx,js,jsx}",
+      "./components/**/*.{ts,tsx,js,jsx}",
+      "./config/**/*.{ts,tsx,js,jsx}",
+      "./features/**/*.{ts,tsx,js,jsx}",
+      "./helpers/**/*.{ts,tsx,js,jsx}",
+      "./data/**/*.{ts,tsx,js,jsx}"
+    ]
   },
   "javascript": {
     "formatter": {

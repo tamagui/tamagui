@@ -11,7 +11,8 @@
         "useExhaustiveDependencies": "off",
         "noInnerDeclarations": "off",
         "noUnnecessaryContinue": "off",
-        "noConstructorReturn": "off"
+        "noConstructorReturn": "off",
+        "noUnusedVariables": "error"
       },
       "suspicious": {
         "noImplicitAnyLet": "off",

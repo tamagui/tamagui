@@ -1383,9 +1383,51 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@biomejs/biome@npm:^1.9.3":
+  version: 1.9.3
+  resolution: "@biomejs/biome@npm:1.9.3"
+  dependencies:
+    "@biomejs/cli-darwin-arm64": "npm:1.9.3"
+    "@biomejs/cli-darwin-x64": "npm:1.9.3"
+    "@biomejs/cli-linux-arm64": "npm:1.9.3"
+    "@biomejs/cli-linux-arm64-musl": "npm:1.9.3"
+    "@biomejs/cli-linux-x64": "npm:1.9.3"
+    "@biomejs/cli-linux-x64-musl": "npm:1.9.3"
+    "@biomejs/cli-win32-arm64": "npm:1.9.3"
+    "@biomejs/cli-win32-x64": "npm:1.9.3"
+  dependenciesMeta:
+    "@biomejs/cli-darwin-arm64":
+      optional: true
+    "@biomejs/cli-darwin-x64":
+      optional: true
+    "@biomejs/cli-linux-arm64":
+      optional: true
+    "@biomejs/cli-linux-arm64-musl":
+      optional: true
+    "@biomejs/cli-linux-x64":
+      optional: true
+    "@biomejs/cli-linux-x64-musl":
+      optional: true
+    "@biomejs/cli-win32-arm64":
+      optional: true
+    "@biomejs/cli-win32-x64":
+      optional: true
+  bin:
+    biome: bin/biome
+  checksum: 10/22278454245f3ca178762df09721389abb884fbce87f834f6979a6a9d8db397df160a6d5019a3c7f6bd7d54d136bfaf1b6d3e6852fd9cf45bebc2be0337cb7dd
+  languageName: node
+  linkType: hard
+
 "@biomejs/cli-darwin-arm64@npm:1.9.2":
   version: 1.9.2
   resolution: "@biomejs/cli-darwin-arm64@npm:1.9.2"
+  conditions: os=darwin & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@biomejs/cli-darwin-arm64@npm:1.9.3":
+  version: 1.9.3
+  resolution: "@biomejs/cli-darwin-arm64@npm:1.9.3"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
@@ -1397,9 +1439,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@biomejs/cli-darwin-x64@npm:1.9.3":
+  version: 1.9.3
+  resolution: "@biomejs/cli-darwin-x64@npm:1.9.3"
+  conditions: os=darwin & cpu=x64
+  languageName: node
+  linkType: hard
+
 "@biomejs/cli-linux-arm64-musl@npm:1.9.2":
   version: 1.9.2
   resolution: "@biomejs/cli-linux-arm64-musl@npm:1.9.2"
+  conditions: os=linux & cpu=arm64 & libc=musl
+  languageName: node
+  linkType: hard
+
+"@biomejs/cli-linux-arm64-musl@npm:1.9.3":
+  version: 1.9.3
+  resolution: "@biomejs/cli-linux-arm64-musl@npm:1.9.3"
   conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
@@ -1411,9 +1467,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@biomejs/cli-linux-arm64@npm:1.9.3":
+  version: 1.9.3
+  resolution: "@biomejs/cli-linux-arm64@npm:1.9.3"
+  conditions: os=linux & cpu=arm64 & libc=glibc
+  languageName: node
+  linkType: hard
+
 "@biomejs/cli-linux-x64-musl@npm:1.9.2":
   version: 1.9.2
   resolution: "@biomejs/cli-linux-x64-musl@npm:1.9.2"
+  conditions: os=linux & cpu=x64 & libc=musl
+  languageName: node
+  linkType: hard
+
+"@biomejs/cli-linux-x64-musl@npm:1.9.3":
+  version: 1.9.3
+  resolution: "@biomejs/cli-linux-x64-musl@npm:1.9.3"
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
@@ -1425,6 +1495,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@biomejs/cli-linux-x64@npm:1.9.3":
+  version: 1.9.3
+  resolution: "@biomejs/cli-linux-x64@npm:1.9.3"
+  conditions: os=linux & cpu=x64 & libc=glibc
+  languageName: node
+  linkType: hard
+
 "@biomejs/cli-win32-arm64@npm:1.9.2":
   version: 1.9.2
   resolution: "@biomejs/cli-win32-arm64@npm:1.9.2"
@@ -1432,9 +1509,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@biomejs/cli-win32-arm64@npm:1.9.3":
+  version: 1.9.3
+  resolution: "@biomejs/cli-win32-arm64@npm:1.9.3"
+  conditions: os=win32 & cpu=arm64
+  languageName: node
+  linkType: hard
+
 "@biomejs/cli-win32-x64@npm:1.9.2":
   version: 1.9.2
   resolution: "@biomejs/cli-win32-x64@npm:1.9.2"
+  conditions: os=win32 & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@biomejs/cli-win32-x64@npm:1.9.3":
+  version: 1.9.3
+  resolution: "@biomejs/cli-win32-x64@npm:1.9.3"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
@@ -6595,6 +6686,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/dot-dev@workspace:code/tamagui.dev"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.3"
     "@discordjs/core": "npm:^0.6.0"
     "@docsearch/react": "npm:^3.6.1"
     "@github/mini-throttle": "npm:^2.1.0"
@@ -7291,6 +7383,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/ooo@workspace:code/ooo"
   dependencies:
+    "@biomejs/biome": "npm:^1.9.3"
     "@docsearch/react": "npm:^3.6.1"
     "@leeoniya/ufuzzy": "npm:^1.0.14"
     "@nitrogql/esbuild-register": "npm:^1.7.0"

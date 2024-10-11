@@ -262,7 +262,7 @@ const TabsTrigger = TabsTriggerFrame.styleable<ScopedProps<TabsTabProps>>(
                   }
                 }
               ),
-              onFocus: composeEventHandlers(props.onFocus, (event) => {
+              onFocus: composeEventHandlers(props.onFocus, () => {
                 if (layout) {
                   onInteraction?.('focus', layout)
                 }

@@ -12,7 +12,9 @@
     "build:prod": "VXRN_ANALYZE_BUNDLE=1 one build",
     "serve": "one serve",
     "serve:railway": "one serve --host 0.0.0.0",
-    "postinstall": "patch-package || true"
+    "postinstall": "patch-package || true",
+    "lint": "biome check",
+    "lint:fix": "biome check --write"
   },
   "dependencies": {
     "@docsearch/react": "^3.6.1",
@@ -37,6 +39,7 @@
     "tamagui": "1.114.2"
   },
   "devDependencies": {
+    "@biomejs/biome": "^1.9.3",
     "@nitrogql/esbuild-register": "^1.7.0",
     "patch-package": "^8.0.0",
     "sharp": "^0.33.5",
