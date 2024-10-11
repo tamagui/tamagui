@@ -135,6 +135,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@algolia/client-common@npm:5.8.1":
+  version: 5.8.1
+  resolution: "@algolia/client-common@npm:5.8.1"
+  checksum: 10/1c51f380252015a5aabec18f1a4f9e998f71e7da38f83b986c2e9d69ef207271fca5e3ce79d1108b3e347992bae2f7ae47420f70da661da7f29f643372771757
+  languageName: node
+  linkType: hard
+
 "@algolia/client-personalization@npm:4.24.0":
   version: 4.24.0
   resolution: "@algolia/client-personalization@npm:4.24.0"
@@ -154,6 +161,18 @@ __metadata:
     "@algolia/requester-common": "npm:4.24.0"
     "@algolia/transporter": "npm:4.24.0"
   checksum: 10/2cdcc4239b1bd84e3bd642e380d9135612b80dc68393d23211088141d7c8cb055394588babdf5c984817b997e9e0c4356cd50a8a56dd1ee6ad594f5f76c44acb
+  languageName: node
+  linkType: hard
+
+"@algolia/client-search@npm:^5.8.1":
+  version: 5.8.1
+  resolution: "@algolia/client-search@npm:5.8.1"
+  dependencies:
+    "@algolia/client-common": "npm:5.8.1"
+    "@algolia/requester-browser-xhr": "npm:5.8.1"
+    "@algolia/requester-fetch": "npm:5.8.1"
+    "@algolia/requester-node-http": "npm:5.8.1"
+  checksum: 10/ab0737f1891faee5f1bd48cb8dc3c27e2b9e8a6394acf66c1da642ce1d97e500b356407d9e8057ee84f8dba86f30fcc76ef656a752d155bf6a7f1cc3810723ea
   languageName: node
   linkType: hard
 
@@ -201,10 +220,28 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@algolia/requester-browser-xhr@npm:5.8.1":
+  version: 5.8.1
+  resolution: "@algolia/requester-browser-xhr@npm:5.8.1"
+  dependencies:
+    "@algolia/client-common": "npm:5.8.1"
+  checksum: 10/a093ac770c27a1b705ccdd349a2477b1c9fe569d9af2960bbf8a873070fe0bc0a6fb60e01d44e00f878bf9f37d6b19736abfeba76002ea7fbd117f3ecc578c0c
+  languageName: node
+  linkType: hard
+
 "@algolia/requester-common@npm:4.24.0":
   version: 4.24.0
   resolution: "@algolia/requester-common@npm:4.24.0"
   checksum: 10/5ca1abd00918ad2c9aed379208d920883c7c3e69b480afe0b1d00b4eb205e39ccd347809b368ba764889261f659c85963f9a00d3da3bd59592db74108d54788b
+  languageName: node
+  linkType: hard
+
+"@algolia/requester-fetch@npm:5.8.1":
+  version: 5.8.1
+  resolution: "@algolia/requester-fetch@npm:5.8.1"
+  dependencies:
+    "@algolia/client-common": "npm:5.8.1"
+  checksum: 10/781023bde06d333f4b6c95b1f74980e7b9f9d1c258a74f4b6c0f8735bf4039bad2d18764549ffa9be745573917b11eb0d29f5eac9413fc178a922503ab4defa0
   languageName: node
   linkType: hard
 
@@ -214,6 +251,15 @@ __metadata:
   dependencies:
     "@algolia/requester-common": "npm:4.24.0"
   checksum: 10/387ee892bf35f46be269996de88f9ea12841796aa33cb5088ba6460a48733614a33300ee44bca0af22b6fded05c16ec92631fb998e9a7e1e6a30504d8b407c23
+  languageName: node
+  linkType: hard
+
+"@algolia/requester-node-http@npm:5.8.1":
+  version: 5.8.1
+  resolution: "@algolia/requester-node-http@npm:5.8.1"
+  dependencies:
+    "@algolia/client-common": "npm:5.8.1"
+  checksum: 10/0bdb6fb987430e885bcf30033681fa732cb682b889565ef1f4ee424478853d0009ee594a1986ed27d3492cdf4f5d9cbcea35edd8a70d6409669059412b7969de
   languageName: node
   linkType: hard
 
@@ -3550,7 +3596,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mdx-js/mdx@npm:^3.0.0":
+"@mdx-js/mdx@npm:^3.0.0, @mdx-js/mdx@npm:^3.0.1":
   version: 3.0.1
   resolution: "@mdx-js/mdx@npm:3.0.1"
   dependencies:
@@ -3578,6 +3624,18 @@ __metadata:
     unist-util-visit: "npm:^5.0.0"
     vfile: "npm:^6.0.0"
   checksum: 10/e3f0b57e6940b491fdae3ab6d746d9cb8283a3ffaa4de2f989fef883c21fbb04978bd33ae7186b16e511c007a608a00bd76fb652fb631362170f8cd7e3be1221
+  languageName: node
+  linkType: hard
+
+"@mdx-js/react@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "@mdx-js/react@npm:3.0.1"
+  dependencies:
+    "@types/mdx": "npm:^2.0.0"
+  peerDependencies:
+    "@types/react": ">=16"
+    react: ">=16"
+  checksum: 10/d566407af11e76f498f8133fbfa8a9d8a2ad80dc7a66ca109d29fcb92e953a2d2d7aaedc0c28571d126f1967faeb126dd2e4ab4ea474c994bf5c76fa204c5997
   languageName: node
   linkType: hard
 
@@ -7291,8 +7349,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/ooo@workspace:code/ooo"
   dependencies:
+    "@algolia/client-search": "npm:^5.8.1"
     "@docsearch/react": "npm:^3.6.1"
     "@leeoniya/ufuzzy": "npm:^1.0.14"
+    "@mdx-js/mdx": "npm:^3.0.1"
+    "@mdx-js/react": "npm:^3.0.1"
     "@nitrogql/esbuild-register": "npm:^1.7.0"
     "@supabase/supabase-js": "npm:^2.44.4"
     "@tamagui/button": "npm:1.114.2"
@@ -7306,6 +7367,8 @@ __metadata:
     "@tamagui/use-store": "npm:1.114.2"
     "@vxrn/color-scheme": "npm:^1.1.300"
     body-scroll-lock: "npm:^4.0.0-beta.0"
+    gray-matter: "npm:^4.0.3"
+    marked: "npm:^14.1.2"
     mdx-bundler: "npm:^10.0.2"
     one: "npm:1.1.300"
     patch-package: "npm:^8.0.0"
@@ -7315,6 +7378,7 @@ __metadata:
     sharp: "npm:^0.33.5"
     svgo: "npm:^3.3.2"
     tamagui: "npm:1.114.2"
+    typescript: "npm:^5.6.3"
     vite-plugin-image-optimizer: "npm:^1.1.8"
     vite-tsconfig-paths: "npm:^5.0.1"
   languageName: unknown
@@ -19806,6 +19870,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"marked@npm:^14.1.2":
+  version: 14.1.2
+  resolution: "marked@npm:14.1.2"
+  bin:
+    marked: bin/marked.js
+  checksum: 10/2bfc03712c87bc0dff517ca82a3f33b816d4d1fec1b90e8cb3cfac5d8054b06e749d0ddbddfdfbd1ec4ec3067e997e1cf593db8d3fe7ca0a970aa5fc6ad7b868
+  languageName: node
+  linkType: hard
+
 "marked@npm:^5.1.0":
   version: 5.1.2
   resolution: "marked@npm:5.1.2"
@@ -27104,6 +27177,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"typescript@npm:^5.6.3":
+  version: 5.6.3
+  resolution: "typescript@npm:5.6.3"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 10/c328e418e124b500908781d9f7b9b93cf08b66bf5936d94332b463822eea2f4e62973bfb3b8a745fdc038785cb66cf59d1092bac3ec2ac6a3e5854687f7833f1
+  languageName: node
+  linkType: hard
+
 "typescript@patch:typescript@npm%3A^4.0#optional!builtin<compat/typescript>":
   version: 4.9.5
   resolution: "typescript@patch:typescript@npm%3A4.9.5#optional!builtin<compat/typescript>::version=4.9.5&hash=289587"
@@ -27116,11 +27199,21 @@ __metadata:
 
 "typescript@patch:typescript@npm%3A^5.0.4#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A^5.5.2#optional!builtin<compat/typescript>":
   version: 5.6.2
-  resolution: "typescript@patch:typescript@npm%3A5.6.2#optional!builtin<compat/typescript>::version=5.6.2&hash=74658d"
+  resolution: "typescript@patch:typescript@npm%3A5.6.2#optional!builtin<compat/typescript>::version=5.6.2&hash=8c6c40"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 10/060a7349adf698477b411be4ace470aee6c2c1bd99917fdf5d33697c17ec55c64fe724eb10399387530b50e9913b41528dd8bfcca0a5fc8f8bac63fbb4580a2e
+  checksum: 10/8bfc7ca0d9feca4c3fcbd6c70741abfcd714197d6448e68225ae71e462447d904d3bfba49759a8fbe4956d87f054e2d346833c8349c222daa594a2626d4e1be8
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@npm%3A^5.6.3#optional!builtin<compat/typescript>":
+  version: 5.6.3
+  resolution: "typescript@patch:typescript@npm%3A5.6.3#optional!builtin<compat/typescript>::version=5.6.3&hash=8c6c40"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 10/00504c01ee42d470c23495426af07512e25e6546bce7e24572e72a9ca2e6b2e9bea63de4286c3cfea644874da1467dcfca23f4f98f7caf20f8b03c0213bb6837
   languageName: node
   linkType: hard
 

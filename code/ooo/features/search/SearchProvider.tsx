@@ -7,9 +7,9 @@ import { SearchContext } from './SearchContext'
 
 // const ACTION_KEY_DEFAULT = ['Ctrl ', 'Control']
 // const ACTION_KEY_APPLE = ['⌘', 'Command']
-const API_KEY = '10e7bbeb85d3909346e1519bfcdf82dc'
-const APP_ID = 'AIE0I4P8ZS'
-const INDEX = 'tamagui'
+const API_KEY = '944bc68c2db83c04ef4785e559c6c573'
+const APP_ID = '4XXMYD3SML'
+const INDEX = 'one_docs'
 
 export type LinkProps = ViewProps & OneLinkProps
 
@@ -85,7 +85,7 @@ export const SearchProvider = memo(({ children }: any) => {
         DocSearchModal &&
         createPortal(
           <DocSearchModal
-            placeholder="Search docs..."
+            placeholder="Search One docs..."
             hitComponent={ResultItem}
             searchParameters={{
               // facetFilters: ['version:1.0.0'],
@@ -105,27 +105,22 @@ export const SearchProvider = memo(({ children }: any) => {
               },
             }}
             transformItems={(items) => {
-              return items.map((item, index) => {
-                const aEl = document.createElement('a')
-                aEl.href = item.url
-                const hash = aEl.hash
+              console.log({ items })
+              return items.map((item) => {
+                const url = new URL(item.url)
                 return {
                   ...item,
-                  url: `${aEl.pathname}${hash}`,
-                  isResult: () => true,
-                  isParent: () => item.type === 'lvl1' && items.length > 1 && index === 0,
-                  isChild: () =>
-                    items.length > 1 &&
-                    items[0].type === 'lvl1' &&
-                    item.type !== 'lvl1' &&
-                    index !== 0,
-                  isFirst: () => index === 1,
-                  isLast: () => index === items.length - 1 && index !== 0,
+                  url: `${url.pathname}${url.hash}`,
+                  content: item.content,
+                  highlightedContent:
+                    item._highlightResult?.content?.value || item.content,
+                  snippet: item._snippetResult?.content?.value || '',
+                  objectID: item.objectID,
+                  type: item.type || 'content',
                 }
               })
             }}
           />,
-          // <View width={200} height={200} bg={"$red10"} zIndex={500000} pos={"absolute"} top={0} left={0}/>,
           document.body
         )}
     </>
