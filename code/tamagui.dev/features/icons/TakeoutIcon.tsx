@@ -1,7 +1,12 @@
 import { YStack } from 'tamagui'
 
 export const TakeoutIcon = YStack.styleable((props, ref) => (
-  <YStack {...props} ref={ref as any} p="$4" m="$-4">
+  <YStack
+    {...props}
+    ref={ref as any}
+    p="$4"
+    m="$-4"
+  >
     <svg
       width="24px"
       height="24px"
@@ -16,16 +21,46 @@ export const TakeoutIcon = YStack.styleable((props, ref) => (
           y2="7.64973958%"
           id="linearGradient-1"
         >
-          <stop stopColor="#DADADA" offset="0%"></stop>
-          <stop stopColor="#FFFFFF" offset="100%"></stop>
+          <stop
+            stopColor="#DADADA"
+            offset="0%"
+          ></stop>
+          <stop
+            stopColor="#FFFFFF"
+            offset="100%"
+          ></stop>
         </linearGradient>
-        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-2">
-          <stop stopColor="#EEEEEE" offset="0%"></stop>
-          <stop stopColor="#D8D8D8" offset="100%"></stop>
+        <linearGradient
+          x1="50%"
+          y1="0%"
+          x2="50%"
+          y2="100%"
+          id="linearGradient-2"
+        >
+          <stop
+            stopColor="#EEEEEE"
+            offset="0%"
+          ></stop>
+          <stop
+            stopColor="#D8D8D8"
+            offset="100%"
+          ></stop>
         </linearGradient>
-        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-3">
-          <stop stopColor="#FDFDFD" offset="0%"></stop>
-          <stop stopColor="#D0D0D0" offset="100%"></stop>
+        <linearGradient
+          x1="50%"
+          y1="0%"
+          x2="50%"
+          y2="100%"
+          id="linearGradient-3"
+        >
+          <stop
+            stopColor="#FDFDFD"
+            offset="0%"
+          ></stop>
+          <stop
+            stopColor="#D0D0D0"
+            offset="100%"
+          ></stop>
         </linearGradient>
         <linearGradient
           x1="77.7522044%"
@@ -34,19 +69,41 @@ export const TakeoutIcon = YStack.styleable((props, ref) => (
           y2="69.6638897%"
           id="linearGradient-4"
         >
-          <stop stopColor="#F7F7F7" offset="0%"></stop>
-          <stop stopColor="#EDEDED" offset="88.7869068%"></stop>
-          <stop stopColor="#ECECEC" offset="100%"></stop>
+          <stop
+            stopColor="#F7F7F7"
+            offset="0%"
+          ></stop>
+          <stop
+            stopColor="#EDEDED"
+            offset="88.7869068%"
+          ></stop>
+          <stop
+            stopColor="#ECECEC"
+            offset="100%"
+          ></stop>
         </linearGradient>
       </defs>
-      <g id="takeout-custom" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
-        <g id="Group-2-Copy" transform="translate(6.000000, 1.000000)">
+      <g
+        id="takeout-custom"
+        stroke="none"
+        strokeWidth="1"
+        fill="none"
+        fillRule="evenodd"
+      >
+        <g
+          id="Group-2-Copy"
+          transform="translate(6.000000, 1.000000)"
+        >
           <polygon
             id="Path"
             fill="#D8D8D8"
             points="0 31 59 49.5 59 127 7.58921162 108.75"
           ></polygon>
-          <g id="Group" transform="translate(0.000000, 31.000000)" fillRule="nonzero">
+          <g
+            id="Group"
+            transform="translate(0.000000, 31.000000)"
+            fillRule="nonzero"
+          >
             <polygon
               id="Path"
               fill="#FF0000"

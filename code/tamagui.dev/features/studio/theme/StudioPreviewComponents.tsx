@@ -37,7 +37,12 @@ export const StudioPreviewComponents = memo(() => {
   const demoProps = useDemoProps()
 
   return (
-    <XStack w="100%" pr={570} $md={{ pr: 80 }} jc="flex-end">
+    <XStack
+      w="100%"
+      pr={570}
+      $md={{ pr: 80 }}
+      jc="flex-end"
+    >
       <YStack
         gap="$4"
         ref={previewRef as any}
@@ -51,7 +56,13 @@ export const StudioPreviewComponents = memo(() => {
           p: '$4',
         }}
       >
-        <Panel disableSettings m={0} f={0} h="auto" w="calc(100% + 24px)">
+        <Panel
+          disableSettings
+          m={0}
+          f={0}
+          h="auto"
+          w="calc(100% + 24px)"
+        >
           <YStack
             {...demoProps.panelProps}
             {...demoProps.stackOutlineProps}
@@ -204,12 +215,18 @@ const Contents = memo(() => {
         </Panel>
       </div>
       <div style={{ gridArea: 'statistics-line' }}>
-        <Panel initialAccent fileToCopyName="Statistics">
+        <Panel
+          initialAccent
+          fileToCopyName="Statistics"
+        >
           <StatisticsLineScreen />
         </Panel>
       </div>
       <div style={{ gridArea: 'overview-1' }}>
-        <Panel fileToCopyName="Overviews" initialAccent>
+        <Panel
+          fileToCopyName="Overviews"
+          initialAccent
+        >
           <Overview1 />
         </Panel>
       </div>
@@ -254,7 +271,10 @@ const Contents = memo(() => {
         </Panel>
       </div>
       <div style={{ gridArea: 'calendar' }}>
-        <Panel fileToCopyName="Calendar" initialAccent>
+        <Panel
+          fileToCopyName="Calendar"
+          initialAccent
+        >
           <Calendar />
         </Panel>
       </div>
@@ -305,7 +325,10 @@ const PalettePreviewPanels = memo(() => {
               p="$0"
               ov="hidden"
             >
-              <StudioPaletteBar showLabelIndices colors={palette} />
+              <StudioPaletteBar
+                showLabelIndices
+                colors={palette}
+              />
             </YStack>
           </Panel>
         )

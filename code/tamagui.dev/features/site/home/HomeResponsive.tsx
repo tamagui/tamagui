@@ -1,16 +1,8 @@
 import { throttle } from '@github/mini-throttle'
+import { Image } from '@tamagui/image-next'
 import { useTint } from '@tamagui/logo'
 import { ChevronLeft, ChevronRight, Lock, MapPin, Star } from '@tamagui/lucide-icons'
-import { demoMedia } from '~/config/media'
-import {
-  memo,
-  startTransition,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react'
+import { memo, startTransition, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { YStackProps } from 'tamagui'
 import {
   Button,
@@ -30,14 +22,13 @@ import {
   useIsomorphicLayoutEffect,
   useMedia,
 } from 'tamagui'
-import { Image } from '@tamagui/image-next'
 import { LinearGradient } from 'tamagui/linear-gradient'
+import { demoMedia } from '~/config/media'
 
-import { useOnIntersecting } from '~/hooks/useOnIntersecting'
 import { Container, ContainerLarge } from '~/components/Containers'
 import { useTransitionState } from '~/hooks/useTransitionState'
-import { HomeH2, HomeH3 } from './HomeHeaders'
 import favicon from '~/public/favicon.svg'
+import { HomeH2, HomeH3 } from './HomeHeaders'
 
 const breakpoints = [
   { name: 'xs', at: demoMedia[0] },
@@ -104,26 +95,6 @@ export const HomeResponsive = memo(() => {
     }
   }, [])
 
-  const onMove = throttle((e: MouseEvent) => {
-    const state = getState()
-    if (!state.isDragging) return
-    if (!state.bounding) {
-      updateBoundings()
-      return
-    }
-    if (!state.bounding) return
-    setHasInteracted(true)
-    const right = state.bounding.width + state.bounding.x
-    const x = e.pageX - right
-    const maxMove = breakpoints[breakpoints.length - 1].at - initialWidth + 120
-    const nextMove = Math.min(maxMove, Math.max(0, x))
-    const next = nextMove + (prevMove.current || 0)
-
-    setMove(next)
-
-    prevMove.current = 0
-  }, 24)
-
   const stop = () => {
     prevMove.current = getState().move
     setIsDragging(false)
@@ -184,10 +155,18 @@ export const HomeResponsive = memo(() => {
   const scale = 0.7 - smIndex * 0.05
 
   return (
-    <YStack ref={ref} y={0} mt={-80} pos="relative">
+    <YStack
+      ref={ref}
+      y={0}
+      mt={-80}
+      pos="relative"
+    >
       <ContainerLarge pos="relative">
         <ResponsiveHeader />
-        <Spacer size="$6" $sm={{ size: '$0' }} />
+        <Spacer
+          size="$6"
+          $sm={{ size: '$0' }}
+        />
         <YStack h={browserHeight + 80} />
         <XStack
           b={-20}
@@ -216,12 +195,21 @@ export const HomeResponsive = memo(() => {
               }
             }}
           >
-            <Safari shouldLoad={hasInteracted} isSmall={isSmall} />
+            <Safari
+              shouldLoad={hasInteracted}
+              isSmall={isSmall}
+            />
           </YStack>
 
-          <Container zi={1} pos="absolute">
-            <XStack x={-10} $sm={{ display: 'none' }}>
-              {breakpoints.map((bp, i) => {
+          <Container
+            zi={1}
+            pos="absolute"
+          >
+            <XStack
+              x={-10}
+              $sm={{ display: 'none' }}
+            >
+              {breakpoints.map((_bp, i) => {
                 return (
                   <Marker
                     key={i}
@@ -270,10 +258,32 @@ export const HomeResponsive = memo(() => {
           ai="center"
           jc="center"
         >
-          <XStack pos="absolute" t={0} l={0} r={0} bbw={1} bc="$color" opacity={0.1} />
-          <YStack pos="relative" f={1} h="100%" w="100%">
-            <YStack fullscreen className="mask-gradient-down" zi={-1}>
-              <YStack fullscreen bottom="auto" height={439} className="bg-grid" />
+          <XStack
+            pos="absolute"
+            t={0}
+            l={0}
+            r={0}
+            bbw={1}
+            bc="$color"
+            opacity={0.1}
+          />
+          <YStack
+            pos="relative"
+            f={1}
+            h="100%"
+            w="100%"
+          >
+            <YStack
+              fullscreen
+              className="mask-gradient-down"
+              zi={-1}
+            >
+              <YStack
+                fullscreen
+                bottom="auto"
+                height={439}
+                className="bg-grid"
+              />
             </YStack>
           </YStack>
         </YStack>
@@ -290,8 +300,16 @@ const Marker = memo(({ name, active, onPress, ...props }: any) => {
       pos="absolute"
       {...props}
     >
-      <XStack y={-60} ai="flex-start">
-        <YStack w={1} h={70} bg="$colorHover" opacity={active ? 0.2 : 0.05} />
+      <XStack
+        y={-60}
+        ai="flex-start"
+      >
+        <YStack
+          w={1}
+          h={70}
+          bg="$colorHover"
+          opacity={active ? 0.2 : 0.05}
+        />
         <Button
           accessibilityLabel={`Responsive size ${name}`}
           borderWidth={1}
@@ -316,14 +334,26 @@ const Marker = memo(({ name, active, onPress, ...props }: any) => {
 
 const ResponsiveHeader = memo(() => {
   return (
-    <YStack f={1} space="$3">
+    <YStack
+      f={1}
+      space="$3"
+    >
       <XStack>
-        <HomeH2 ta="left" als="flex-start">
+        <HomeH2
+          ta="left"
+          als="flex-start"
+        >
           Easily responsive
         </HomeH2>
       </XStack>
 
-      <HomeH3 ta="left" als="flex-start" p={0} maxWidth={450} theme="alt2">
+      <HomeH3
+        ta="left"
+        als="flex-start"
+        p={0}
+        maxWidth={450}
+        theme="alt2"
+      >
         Responsive props and hooks, compiled to atomic CSS on web.
       </HomeH3>
     </YStack>
@@ -357,22 +387,52 @@ export const Safari = memo(
 
     return (
       <SafariFrame>
-        <YStack bg="$background" px="$4" jc="center" borderBottomWidth={0} h={50}>
-          <XStack pos="relative" ai="center" space="$4">
+        <YStack
+          bg="$background"
+          px="$4"
+          jc="center"
+          borderBottomWidth={0}
+          h={50}
+        >
+          <XStack
+            pos="relative"
+            ai="center"
+            space="$4"
+          >
             <XStack gap="$2">
-              <Circle bg="$red10" size={10} />
-              <Circle bg="$yellow10" size={10} />
-              <Circle bg="$green10" size={10} />
+              <Circle
+                bg="$red10"
+                size={10}
+              />
+              <Circle
+                bg="$yellow10"
+                size={10}
+              />
+              <Circle
+                bg="$green10"
+                size={10}
+              />
             </XStack>
 
             {!isSmall && (
               <XStack gap="$1">
-                <ChevronLeft size={20} color="var(--color)" opacity={0.25} />
-                <ChevronRight size={20} color="var(--color)" opacity={0.25} />
+                <ChevronLeft
+                  size={20}
+                  color="var(--color)"
+                  opacity={0.25}
+                />
+                <ChevronRight
+                  size={20}
+                  color="var(--color)"
+                  opacity={0.25}
+                />
               </XStack>
             )}
 
-            <XStack fullscreen ai="center">
+            <XStack
+              fullscreen
+              ai="center"
+            >
               <XStack f={1} />
               <XStack
                 h={30}
@@ -386,8 +446,14 @@ export const Safari = memo(
                 jc="center"
                 space
               >
-                <Lock color="var(--colorPress)" size={12} />
-                <Paragraph theme="alt1" size="$2">
+                <Lock
+                  color="var(--colorPress)"
+                  size={12}
+                />
+                <Paragraph
+                  theme="alt1"
+                  size="$2"
+                >
                   tamagui.dev
                 </Paragraph>
               </XStack>
@@ -396,20 +462,39 @@ export const Safari = memo(
           </XStack>
         </YStack>
 
-        <XStack bg="$background" mx={-2}>
-          <Tab bc="var(--green7)" btlr={0}>
+        <XStack
+          bg="$background"
+          mx={-2}
+        >
+          <Tab
+            bc="var(--green7)"
+            btlr={0}
+          >
             Github
           </Tab>
-          <Tab bc="var(--pink7)" active>
+          <Tab
+            bc="var(--pink7)"
+            active
+          >
             Tamagui - React Native & Web UI kits
           </Tab>
-          <Tab bc="var(--yellow7)" btrr={0}>
+          <Tab
+            bc="var(--yellow7)"
+            btrr={0}
+          >
             @natebirdman
           </Tab>
         </XStack>
 
-        <YStack pos="relative" bg="$color1" h={browserHeight}>
-          <YStack h="100%" pe="none">
+        <YStack
+          pos="relative"
+          bg="$color1"
+          h={browserHeight}
+        >
+          <YStack
+            h="100%"
+            pe="none"
+          >
             {shouldLoad && (
               <YStack
                 fullscreen
@@ -435,18 +520,46 @@ export const Safari = memo(
               </YStack>
             )}
 
-            <YStack zi={0} fullscreen p="$4">
-              <XStack ai="center" jc="center" pos="relative" br="$6" ov="hidden">
-                <YStack width={800} height={200}>
-                  <LinearGradient o={0.1} fullscreen colors={['$yellow10', '$green10']} />
+            <YStack
+              zi={0}
+              fullscreen
+              p="$4"
+            >
+              <XStack
+                ai="center"
+                jc="center"
+                pos="relative"
+                br="$6"
+                ov="hidden"
+              >
+                <YStack
+                  width={800}
+                  height={200}
+                >
+                  <LinearGradient
+                    o={0.1}
+                    fullscreen
+                    colors={['$yellow10', '$green10']}
+                  />
                 </YStack>
-                <YStack p="$4" pos="absolute" fullscreen f={1}>
+                <YStack
+                  p="$4"
+                  pos="absolute"
+                  fullscreen
+                  f={1}
+                >
                   <YStack f={1} />
                   <XStack>
                     <YStack f={1}>
                       <H3>Enchanting Garden</H3>
-                      <XStack ai="center" space>
-                        <MapPin size={12} color="var(--color)" />
+                      <XStack
+                        ai="center"
+                        space
+                      >
+                        <MapPin
+                          size={12}
+                          color="var(--color)"
+                        />
                         <H5>Kailua, HI</H5>
                       </XStack>
                     </YStack>
@@ -462,25 +575,37 @@ export const Safari = memo(
 
               <YStack px="$4">
                 <XStack>
-                  <XStack ai="center" space>
+                  <XStack
+                    ai="center"
+                    space
+                  >
                     <Paragraph theme="alt2">4 guests</Paragraph>
                     <Paragraph theme="alt2">&middot;</Paragraph>
                     <Paragraph theme="alt2">Entire house</Paragraph>
                   </XStack>
                   <Spacer flex={1} />
-                  <XStack ai="center" space>
-                    <Star size={20} color="var(--purple10)" />
+                  <XStack
+                    ai="center"
+                    space
+                  >
+                    <Star
+                      size={20}
+                      color="var(--purple10)"
+                    />
                     <Paragraph theme="purple_alt2">4.55</Paragraph>
                   </XStack>
                 </XStack>
 
                 <Spacer />
 
-                <Paragraph theme="alt1" size="$4">
-                  A lovely, private and very clean cottage with all amenities for a
-                  comfortable and peaceful stay. We are a 20 minute walk from the Hawaii
-                  Tropical Botanical Garden and well situated for touring to Akaka Falls,
-                  Volcano National Park, and many other destinations.
+                <Paragraph
+                  theme="alt1"
+                  size="$4"
+                >
+                  A lovely, private and very clean cottage with all amenities for a comfortable and
+                  peaceful stay. We are a 20 minute walk from the Hawaii Tropical Botanical Garden
+                  and well situated for touring to Akaka Falls, Volcano National Park, and many
+                  other destinations.
                 </Paragraph>
               </YStack>
             </YStack>
@@ -513,11 +638,23 @@ const Tab = memo(({ active, children, bc, ...props }: any) => {
         jc="center"
         {...props}
       >
-        <Circle size={16} bg={bc}>
-          <Image width={10} height={10} src={favicon} />
+        <Circle
+          size={16}
+          bg={bc}
+        >
+          <Image
+            width={10}
+            height={10}
+            src={favicon}
+          />
         </Circle>
         <Spacer size="$2" />
-        <Paragraph o={active ? 1 : 0.5} cursor="default" size="$1" ellipse>
+        <Paragraph
+          o={active ? 1 : 0.5}
+          cursor="default"
+          size="$1"
+          ellipse
+        >
           {children}
         </Paragraph>
       </XStack>

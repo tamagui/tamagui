@@ -21,7 +21,12 @@ export const InstallInput = memo(() => {
       elevation="$3"
       br="$10"
     >
-      <YStack zi={-1} fullscreen bg="$background025" className="blur-8" />
+      <YStack
+        zi={-1}
+        fullscreen
+        bg="$background025"
+        className="blur-8"
+      />
       <Paragraph
         ta="center"
         size="$4"

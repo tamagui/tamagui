@@ -50,8 +50,7 @@ const parseCommand = (text: string) => {
     const execCmdParts = execCmd.split(' ')
     if (
       words[0] === execCmdParts[0] &&
-      (execCmdParts.length === 1 ||
-        words.slice(0, execCmdParts.length).join(' ') === execCmd)
+      (execCmdParts.length === 1 || words.slice(0, execCmdParts.length).join(' ') === execCmd)
     ) {
       packageManager = pm
       command = execCmd
@@ -106,8 +105,7 @@ const isPackageManagerCommand = (text: string) => {
 const stringIsInstallCommand = (text: string) => {
   const { packageManager, command } = parseCommand(text)
   return (
-    PACKAGE_MANAGERS.includes(packageManager) &&
-    Object.values(INSTALL_COMMANDS).includes(command)
+    PACKAGE_MANAGERS.includes(packageManager) && Object.values(INSTALL_COMMANDS).includes(command)
   )
 }
 
@@ -213,8 +211,7 @@ export function useBashCommand(
       }
 
       if (stringIsScriptCommand(cmd)) {
-        const scriptCmd =
-          SCRIPT_COMMANDS[selectedPackageManager as keyof typeof SCRIPT_COMMANDS]
+        const scriptCmd = SCRIPT_COMMANDS[selectedPackageManager as keyof typeof SCRIPT_COMMANDS]
         const scriptName = args || command // Use 'args' if available, otherwise use 'command'
         return `${selectedPackageManager}${scriptCmd ? ' ' + scriptCmd : ''} ${scriptName}`.trim()
       }

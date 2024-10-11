@@ -22,7 +22,10 @@ export const BuildThemeItemFrame = ({
     <FieldsetWithLabel
       {...props}
       afterLabel={
-        <XStack gap="$2" ai="center">
+        <XStack
+          gap="$2"
+          ai="center"
+        >
           {afterLabel}
 
           {!!onDelete && (

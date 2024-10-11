@@ -31,36 +31,64 @@ export const Components = () => {
 
       <Separator />
 
-      <XStack w="100%" {...demoProps.gapPropsLg} fw="wrap">
+      <XStack
+        w="100%"
+        {...demoProps.gapPropsLg}
+        fw="wrap"
+      >
         <XStack {...demoProps.gapPropsLg}>
           <AccentTheme>
-            <Button size="$3" {...demoProps.borderRadiusProps}>
+            <Button
+              size="$3"
+              {...demoProps.borderRadiusProps}
+            >
               Active
             </Button>
           </AccentTheme>
-          <Button size="$3" theme="alt1" {...demoProps.borderRadiusProps}>
+          <Button
+            size="$3"
+            theme="alt1"
+            {...demoProps.borderRadiusProps}
+          >
             Subtle
           </Button>
         </XStack>
 
         <Spacer flex />
 
-        <XStack {...demoProps.gapPropsLg} f={1} flexWrap="wrap">
+        <XStack
+          {...demoProps.gapPropsLg}
+          f={1}
+          flexWrap="wrap"
+        >
           <YStack maxWidth={'47%'}>
             <SelectDemoItem size="$3" />
           </YStack>
-          <XGroup {...demoProps.borderRadiusProps} bw={0} maxWidth={'47%'}>
+          <XGroup
+            {...demoProps.borderRadiusProps}
+            bw={0}
+            maxWidth={'47%'}
+          >
             <Group.Item>
-              <Input size="$3" placeholder="Search" />
+              <Input
+                size="$3"
+                placeholder="Search"
+              />
             </Group.Item>
             <Group.Item>
-              <Button size="$3" icon={Filter}></Button>
+              <Button
+                size="$3"
+                icon={Filter}
+              ></Button>
             </Group.Item>
           </XGroup>
         </XStack>
       </XStack>
 
-      <XStack gap="$4" flexWrap="wrap">
+      <XStack
+        gap="$4"
+        flexWrap="wrap"
+      >
         {/* <Card
             f={1}
             elevate
@@ -75,13 +103,30 @@ export const Components = () => {
             </Card.Header>
           </Card> */}
 
-        <YStack f={1} gap="$2">
-          <CheckboxWithLabel defaultChecked size="$4" />
+        <YStack
+          f={1}
+          gap="$2"
+        >
+          <CheckboxWithLabel
+            defaultChecked
+            size="$4"
+          />
 
-          <RadioGroup defaultValue="1" name="form">
+          <RadioGroup
+            defaultValue="1"
+            name="form"
+          >
             <XStack>
-              <RadioGroupItemWithLabel size="$3" value="1" label="First" />
-              <RadioGroupItemWithLabel size="$3" value="2" label="Second" />
+              <RadioGroupItemWithLabel
+                size="$3"
+                value="1"
+                label="First"
+              />
+              <RadioGroupItemWithLabel
+                size="$3"
+                value="2"
+                label="Second"
+              />
             </XStack>
           </RadioGroup>
 

@@ -1,8 +1,4 @@
-import {
-  createServerClient,
-  parseCookieHeader,
-  serializeCookieHeader,
-} from '@supabase/ssr'
+import { createServerClient, parseCookieHeader, serializeCookieHeader } from '@supabase/ssr'
 import { setCurrentRequestHeaders } from 'one/headers'
 
 export function getSupabaseServerClient(request: Request) {

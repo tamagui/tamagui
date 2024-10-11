@@ -2,10 +2,7 @@ import type { Database } from '~/features/supabase/types'
 import { getSingle } from '~/helpers/getSingle'
 import { supabaseAdmin } from '../auth/supabaseAdmin'
 import type { SupabaseClient, User } from '@supabase/supabase-js'
-import {
-  whitelistGithubUsernames,
-  whitelistBentoUsernames,
-} from '~/features/github/helpers'
+import { whitelistGithubUsernames, whitelistBentoUsernames } from '~/features/github/helpers'
 import { tiersPriority } from '../stripe/tiers'
 import { getArray } from '~/helpers/getArray'
 
@@ -20,11 +17,7 @@ export const getUserDetails = async (supabase: SupabaseClient<Database>) => {
 }
 
 export const getUserPrivateInfo = async (userId: string) => {
-  const result = await supabaseAdmin
-    .from('users_private')
-    .select('*')
-    .eq('id', userId)
-    .limit(1)
+  const result = await supabaseAdmin.from('users_private').select('*').eq('id', userId).limit(1)
 
   if (result.error) {
     throw new Error(`Error getting user private info: ${result.error.message}`)
@@ -62,9 +55,7 @@ export const getSubscriptions = async (supabase: SupabaseClient<Database>) => {
 }
 
 export const getOwnedProducts = async (supabase: SupabaseClient<Database>) => {
-  const result = await supabase
-    .from('product_ownership')
-    .select('*, prices(*, products(*))')
+  const result = await supabase.from('product_ownership').select('*, prices(*, products(*))')
 
   if (result.error) {
     throw new Error(result.error.message)
@@ -80,9 +71,7 @@ export const getOwnedProducts = async (supabase: SupabaseClient<Database>) => {
 }
 
 export const getProductOwnerships = async (supabase: SupabaseClient<Database>) => {
-  const result = await supabase
-    .from('product_ownership')
-    .select('*, prices(*, products(*))')
+  const result = await supabase.from('product_ownership').select('*, prices(*, products(*))')
   if (result.error) {
     throw new Error(result.error.message)
   }
@@ -95,10 +84,7 @@ export const getProductOwnerships = async (supabase: SupabaseClient<Database>) =
   })
 }
 
-export function getPersonalTeam(
-  teams: Awaited<ReturnType<typeof getUserTeams>>,
-  userId: string
-) {
+export function getPersonalTeam(teams: Awaited<ReturnType<typeof getUserTeams>>, userId: string) {
   return getSingle(teams?.filter((team) => team.is_personal && team.owner_id === userId))
 }
 
@@ -109,10 +95,7 @@ export function getOrgTeams(teams: Awaited<ReturnType<typeof getUserTeams>>) {
 export function getMainTeam(teams: Awaited<ReturnType<typeof getUserTeams>>) {
   const sortedTeams = teams
     ?.filter((t) => t.is_active)
-    .sort(
-      (a, b) =>
-        tiersPriority.indexOf(a.tier as any) - tiersPriority.indexOf(b.tier as any)
-    )
+    .sort((a, b) => tiersPriority.indexOf(a.tier as any) - tiersPriority.indexOf(b.tier as any))
   return sortedTeams?.[0]
 }
 
@@ -135,8 +118,7 @@ function checkAccessToProduct(
     }
   }
   const hasLifetimeOwnership = ownedProducts.some(
-    (ownedProduct) =>
-      getSingle(ownedProduct.price?.product?.metadata?.['slug']) === productSlug
+    (ownedProduct) => getSingle(ownedProduct.price?.product?.metadata?.['slug']) === productSlug
   )
   if (hasLifetimeOwnership) {
     return {
@@ -149,21 +131,14 @@ function checkAccessToProduct(
   }
 }
 
-export async function getUserAccessInfo(
-  supabase: SupabaseClient<Database>,
-  user: User | null
-) {
+export async function getUserAccessInfo(supabase: SupabaseClient<Database>, user: User | null) {
   const [subscriptions, ownedProducts] = await Promise.all([
     getSubscriptions(supabase),
     getOwnedProducts(supabase),
   ])
 
   const bentoAccessInfo = checkAccessToProduct('bento', subscriptions, ownedProducts)
-  const takeoutAccessInfo = checkAccessToProduct(
-    'universal-starter',
-    subscriptions,
-    ownedProducts
-  )
+  const takeoutAccessInfo = checkAccessToProduct('universal-starter', subscriptions, ownedProducts)
 
   const teamsResult = await supabase.from('teams').select('id, name, is_active')
   if (teamsResult.error) {
@@ -171,14 +146,11 @@ export async function getUserAccessInfo(
   }
   const teams = getArray(teamsResult.data)
   const teamsWithAccess = teams.filter(
-    (team) =>
-      team.is_active || whitelistGithubUsernames.some((name) => team.name === name)
+    (team) => team.is_active || whitelistGithubUsernames.some((name) => team.name === name)
   )
   const hasTeamAccess = teamsWithAccess.length > 0
 
-  const isBentoWhitelisted = teams.some((team) =>
-    whitelistBentoUsernames.has(team.name || '')
-  )
+  const isBentoWhitelisted = teams.some((team) => whitelistBentoUsernames.has(team.name || ''))
 
   const hasStudioAccess =
     takeoutAccessInfo.access || // if the user has purchased takeout, we give them studio access

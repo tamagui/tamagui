@@ -3,7 +3,8 @@ import { Image } from '@tamagui/image-next'
 import { ThemeTint, ThemeTintAlt, useTint } from '@tamagui/logo'
 import { Check, Dot, Hammer, PlayCircle, X } from '@tamagui/lucide-icons'
 import { useClientValue, useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
-import React, { Suspense, lazy, memo, useEffect, useState } from 'react'
+import type React from 'react'
+import { Suspense, lazy, memo, useEffect, useState } from 'react'
 import type {
   FontSizeTokens,
   GetProps,
@@ -156,7 +157,12 @@ export default function TakeoutPage() {
         }}
         zi={-1}
       >
-        <Image alt="mandala" width={2500} height={2500} src="/takeout/geometric.svg" />
+        <Image
+          alt="mandala"
+          width={2500}
+          height={2500}
+          src="/takeout/geometric.svg"
+        />
       </YStack>
 
       {/* <Glow /> */}
@@ -181,8 +187,15 @@ export default function TakeoutPage() {
       </ThemeTint>
 
       <ContainerLarge px={0}>
-        <YStack h={0} mah={0}>
-          <YStack position="absolute" t={30} r="2%">
+        <YStack
+          h={0}
+          mah={0}
+        >
+          <YStack
+            position="absolute"
+            t={30}
+            r="2%"
+          >
             <PurchaseButton
               // icon={ShoppingCart}
               onPress={() => {
@@ -221,11 +234,22 @@ export default function TakeoutPage() {
               px: '$2',
             }}
           >
-            <YStack mt={-700} $md={{ mt: 0 }} ml={20} mr={0}>
+            <YStack
+              mt={-700}
+              $md={{ mt: 0 }}
+              ml={20}
+              mr={0}
+            >
               {starter && <StarterCard product={starter} />}
             </YStack>
 
-            <YStack mt={-580} $md={{ mt: -520 }} group="takeoutBody" f={1} gap="$5">
+            <YStack
+              mt={-580}
+              $md={{ mt: -520 }}
+              group="takeoutBody"
+              f={1}
+              gap="$5"
+            >
               <FeaturesIconRow />
 
               <ThemeTintAlt>
@@ -241,26 +265,40 @@ export default function TakeoutPage() {
                   A starter for user-based apps across all platforms.
                 </Paragraph>
 
-                <Paragraph className="text-wrap-balance" size="$7" $sm={{ size: '$7' }}>
-                  Takeout is a production-ready stack for any user-based app. It shares a
-                  large percent of code between native and web, while maintaining a high
-                  bar for UX and performance. Building off our OSS starter (
-                  <CodeInline>npm create tamagui</CodeInline>), we add Supabase, tRPC,
-                  Zod, custom themes, screens, a user system, and typed, themeable fonts
-                  and icons from{' '}
-                  <Link href="https://fonts.google.com" target="_blank">
+                <Paragraph
+                  className="text-wrap-balance"
+                  size="$7"
+                  $sm={{ size: '$7' }}
+                >
+                  Takeout is a production-ready stack for any user-based app. It shares a large
+                  percent of code between native and web, while maintaining a high bar for UX and
+                  performance. Building off our OSS starter (
+                  <CodeInline>npm create tamagui</CodeInline>), we add Supabase, tRPC, Zod, custom
+                  themes, screens, a user system, and typed, themeable fonts and icons from{' '}
+                  <Link
+                    href="https://fonts.google.com"
+                    target="_blank"
+                  >
                     Google Fonts
                   </Link>{' '}
                   and{' '}
-                  <Link href="https://icones.js.org" target="_blank">
+                  <Link
+                    href="https://icones.js.org"
+                    target="_blank"
+                  >
                     icones.js.org
                   </Link>{' '}
-                  with <CodeInline>yarn&nbsp;add:icon</CodeInline> or{' '}
-                  <CodeInline>font</CodeInline>.
+                  with <CodeInline>yarn&nbsp;add:icon</CodeInline> or <CodeInline>font</CodeInline>.
                 </Paragraph>
               </ThemeTintAlt>
 
-              <XStack fw="wrap" gap="$3" mx="$-10" ai="center" jc="center">
+              <XStack
+                fw="wrap"
+                gap="$3"
+                mx="$-10"
+                ai="center"
+                jc="center"
+              >
                 <TakeoutCard
                   theme="orange"
                   title="Monorepo"
@@ -367,7 +405,12 @@ export default function TakeoutPage() {
 
               <Spacer />
 
-              <YStack marginTop={-430} marginBottom={-330} x={800} zi={-1}>
+              <YStack
+                marginTop={-430}
+                marginBottom={-330}
+                x={800}
+                zi={-1}
+              >
                 <div
                   style={{
                     transform: 'rotateX(41deg) rotateZ(33deg)',
@@ -378,7 +421,11 @@ export default function TakeoutPage() {
                   }}
                 >
                   {/* phone */}
-                  <svg width={715 * 0.5} height={1467 * 0.5} viewBox="0 0 715 1467">
+                  <svg
+                    width={715 * 0.5}
+                    height={1467 * 0.5}
+                    viewBox="0 0 715 1467"
+                  >
                     <path
                       d="M0 166.4C0 108.155 0 79.0318 11.3353 56.785C21.3062 37.2161 37.2161 21.3062 56.785 11.3353C79.0318 0 108.155 0 166.4 0H548.6C606.845 0 635.968 0 658.215 11.3353C677.784 21.3062 693.694 37.2161 703.665 56.785C715 79.0318 715 108.155 715 166.4V1300.6C715 1358.85 715 1387.97 703.665 1410.21C693.694 1429.78 677.784 1445.69 658.215 1455.66C635.968 1467 606.845 1467 548.6 1467H166.4C108.155 1467 79.0318 1467 56.785 1455.66C37.2161 1445.69 21.3062 1429.78 11.3353 1410.21C0 1387.97 0 1358.85 0 1300.6V166.4Z"
                       fill="var(--color2)"
@@ -401,7 +448,10 @@ export default function TakeoutPage() {
                       />
                     </mask>
                     <g mask="url(#mask0_2_131)">
-                      <path d="M25 22H702V1489H25V22Z" fill="var(--background)" />
+                      <path
+                        d="M25 22H702V1489H25V22Z"
+                        fill="var(--background)"
+                      />
                       <g clipPath="url(#clip0_2_131)">
                         <path
                           d="M379.351 710.63H385.629V716.909H379.351V710.63Z"
@@ -649,24 +699,41 @@ export default function TakeoutPage() {
                     h={1000}
                     scale={1.5}
                   />
-                  <Paragraph fontFamily="$munro" tt="uppercase" ls={4} size="$4">
+                  <Paragraph
+                    fontFamily="$munro"
+                    tt="uppercase"
+                    ls={4}
+                    size="$4"
+                  >
                     The bot
                   </Paragraph>
-                  <Paragraph size="$7" $sm={{ size: '$6' }} fow="400">
-                    The TamaguiBot sends updates every so often, after we test everything
-                    out, in a tidy PR with a changelog.
+                  <Paragraph
+                    size="$7"
+                    $sm={{ size: '$6' }}
+                    fow="400"
+                  >
+                    The TamaguiBot sends updates every so often, after we test everything out, in a
+                    tidy PR with a changelog.
                   </Paragraph>
-                  <Paragraph size="$7" $sm={{ size: '$6' }} fow="400">
-                    As you diverge, we can't be perfect at sending updates, but ultimately
-                    we think Takeout is valuable even just as a reference - we test
-                    upgrades across every feature in the repo.
+                  <Paragraph
+                    size="$7"
+                    $sm={{ size: '$6' }}
+                    fow="400"
+                  >
+                    As you diverge, we can't be perfect at sending updates, but ultimately we think
+                    Takeout is valuable even just as a reference - we test upgrades across every
+                    feature in the repo.
                   </Paragraph>
                 </YStack>
               </ThemeTint>
 
               <Spacer />
 
-              <YStack br="$12" p="$7" gap="$3">
+              <YStack
+                br="$12"
+                p="$7"
+                gap="$3"
+              >
                 <YStack mih={530}>
                   <Lazy>
                     <TakeoutGallery />
@@ -738,9 +805,7 @@ const TakeoutGallery = lazy(() => import('../../features/takeout/TakeoutGallery'
 
 const heroHeight = 1050
 
-export type TakeoutPageProps = Awaited<
-  ReturnType<typeof getProductsForServerSideRendering>
->
+export type TakeoutPageProps = Awaited<ReturnType<typeof getProductsForServerSideRendering>>
 
 const TakeoutCard2Frame = styled(YStack, {
   minWidth: 282,
@@ -831,7 +896,11 @@ const TakeoutCard = ({ children, title, icon, ...props }: TakeoutCardFrameProps)
           <borderGlow.Component />
         </YStack> */}
 
-        <YStack f={1} space zi={100}>
+        <YStack
+          f={1}
+          space
+          zi={100}
+        >
           <H2
             fontFamily="$munro"
             size="$8"
@@ -848,8 +917,18 @@ const TakeoutCard = ({ children, title, icon, ...props }: TakeoutCardFrameProps)
           {children}
 
           {!!icon && (
-            <YStack pos="absolute" b={0} r={0}>
-              <Image className="pixelate" src={icon} alt="Icon" width={32} height={32} />
+            <YStack
+              pos="absolute"
+              b={0}
+              r={0}
+            >
+              <Image
+                className="pixelate"
+                src={icon}
+                alt="Icon"
+                width={32}
+                height={32}
+              />
             </YStack>
           )}
         </YStack>
@@ -921,7 +1000,14 @@ const TakeoutHero = () => {
 
       <TakeoutLogo />
 
-      <YStack position="absolute" pe="none" top={300} r={0} $md={{ r: -150 }} zIndex={-1}>
+      <YStack
+        position="absolute"
+        pe="none"
+        top={300}
+        r={0}
+        $md={{ r: -150 }}
+        zIndex={-1}
+      >
         {enable3d && (
           <Suspense fallback={null}>
             <ErrorBoundary noMessage>
@@ -997,12 +1083,29 @@ const Point = ({
   size?: FontSizeTokens
 }) => {
   return (
-    <XStack tag="li" ai="flex-start" space f={1} ov="hidden" {...props}>
-      <YStack mr={-12} py="$1.5">
-        <Dot size={16} color="$color10" />
+    <XStack
+      tag="li"
+      ai="flex-start"
+      space
+      f={1}
+      ov="hidden"
+      {...props}
+    >
+      <YStack
+        mr={-12}
+        py="$1.5"
+      >
+        <Dot
+          size={16}
+          color="$color10"
+        />
       </YStack>
       <YStack f={1}>
-        <Paragraph color="$color" wordWrap="break-word" size={size}>
+        <Paragraph
+          color="$color"
+          wordWrap="break-word"
+          size={size}
+        >
           {children}
         </Paragraph>
         {!!subtitle && (
@@ -1029,7 +1132,7 @@ const IconFrame = styled(Stack, {
   bg: 'rgba(255, 255, 255, 0.035)',
 })
 
-const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] }) => {
+const StarterCard = memo(() => {
   const [ref, setRef] = useState<any>()
 
   const store = useTakeoutStore()
@@ -1101,7 +1204,12 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
           mt: 100,
         }}
       >
-        <YStack zi={-1} fullscreen bg="$color5" o={0.5} />
+        <YStack
+          zi={-1}
+          fullscreen
+          bg="$color5"
+          o={0.5}
+        />
 
         <ThemeTintAlt>
           <LinearGradient
@@ -1115,7 +1223,13 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
           />
         </ThemeTintAlt>
 
-        <YStack pos="absolute" b="$4" l="$4" r="$4" zi={100}>
+        <YStack
+          pos="absolute"
+          b="$4"
+          l="$4"
+          r="$4"
+          zi={100}
+        >
           {/* cant use buttonlink it breaks scroll on press if not enabled, conditionally use a link */}
           {/* subscription ? `/account/items#${subscription.id}` : '' */}
           <PurchaseButton
@@ -1127,10 +1241,18 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
           </PurchaseButton>
         </YStack>
 
-        <ScrollView p="$6" disabled={media.md} showsVerticalScrollIndicator={false}>
+        <ScrollView
+          p="$6"
+          disabled={media.md}
+          showsVerticalScrollIndicator={false}
+        >
           <YStack gap="$2">
             <ThemeTintAlt>
-              <MunroP color="$color11" size="$7" ls={2}>
+              <MunroP
+                color="$color11"
+                size="$7"
+                ls={2}
+              >
                 The Stack
               </MunroP>
             </ThemeTintAlt>
@@ -1209,7 +1331,10 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
               />
             </YStack>
 
-            <Spacer f={1} minHeight={120} />
+            <Spacer
+              f={1}
+              minHeight={120}
+            />
           </YStack>
         </ScrollView>
       </TakeoutCardFrame>
@@ -1237,8 +1362,17 @@ const Row = (props: { title: any; description: any; after: any }) => {
         },
       }}
     >
-      <YStack f={1} py="$3" space="$1">
-        <Paragraph fontFamily="$munro" tt="uppercase" ls={4} size="$4">
+      <YStack
+        f={1}
+        py="$3"
+        space="$1"
+      >
+        <Paragraph
+          fontFamily="$munro"
+          tt="uppercase"
+          ls={4}
+          size="$4"
+        >
           {props.title}
         </Paragraph>
         <Paragraph
@@ -1263,288 +1397,288 @@ const TakeoutCardFrame = styled(YStack, {
   ov: 'hidden',
 })
 
-const tabs = [{ value: '1' }, { value: '2' }, { value: '4' }, { value: '8' }]
+// const tabs = [{ value: '1' }, { value: '2' }, { value: '4' }, { value: '8' }]
 
-const PurchaseSelectTeam = ({
-  value: currentTab,
-  onValueChange: setCurrentTab,
-}: TabsProps) => {
-  const [tabRovingState, setTabRovingState] = useState<{
-    /**
-     * Layout of the Tab user might intend to select (hovering / focusing)
-     */
-    intentAt: TabLayout | null
-    /**
-     * Layout of the Tab user selected
-     */
-    activeAt: TabLayout | null
-    /**
-     * Used to get the direction of activation for animating the active indicator
-     */
-    prevActiveAt: TabLayout | null
-  }>({
-    activeAt: null,
-    intentAt: null,
-    prevActiveAt: null,
-  })
+// const PurchaseSelectTeam = ({
+//   value: currentTab,
+//   onValueChange: setCurrentTab,
+// }: TabsProps) => {
+//   const [tabRovingState, setTabRovingState] = useState<{
+//     /**
+//      * Layout of the Tab user might intend to select (hovering / focusing)
+//      */
+//     intentAt: TabLayout | null
+//     /**
+//      * Layout of the Tab user selected
+//      */
+//     activeAt: TabLayout | null
+//     /**
+//      * Used to get the direction of activation for animating the active indicator
+//      */
+//     prevActiveAt: TabLayout | null
+//   }>({
+//     activeAt: null,
+//     intentAt: null,
+//     prevActiveAt: null,
+//   })
 
-  const [idPreset, setIsPreset] = useState(true)
+//   const [idPreset, setIsPreset] = useState(true)
 
-  const handleChangePresetValue = (value: string) => {
-    setIsPreset(true)
-    setCurrentTab?.(value)
-  }
+//   const handleChangePresetValue = (value: string) => {
+//     setIsPreset(true)
+//     setCurrentTab?.(value)
+//   }
 
-  const setIntentIndicator = (intentAt) =>
-    setTabRovingState({ ...tabRovingState, intentAt })
-  const setActiveIndicator = (activeAt) =>
-    setTabRovingState({
-      ...tabRovingState,
-      prevActiveAt: tabRovingState.activeAt,
-      activeAt,
-    })
-  const { activeAt, intentAt } = tabRovingState
+//   const setIntentIndicator = (intentAt) =>
+//     setTabRovingState({ ...tabRovingState, intentAt })
+//   const setActiveIndicator = (activeAt) =>
+//     setTabRovingState({
+//       ...tabRovingState,
+//       prevActiveAt: tabRovingState.activeAt,
+//       activeAt,
+//     })
+//   const { activeAt, intentAt } = tabRovingState
 
-  /**
-   * -1: from left
-   *  0: n/a
-   *  1: from right
-   */
-  //   const direction = (() => {
-  //     if (!activeAt || !prevActiveAt || activeAt.x === prevActiveAt.x) {
-  //       return 0
-  //     }
-  //     return activeAt.x > prevActiveAt.x ? -1 : 1
-  //   })()
+//   /**
+//    * -1: from left
+//    *  0: n/a
+//    *  1: from right
+//    */
+//   //   const direction = (() => {
+//   //     if (!activeAt || !prevActiveAt || activeAt.x === prevActiveAt.x) {
+//   //       return 0
+//   //     }
+//   //     return activeAt.x > prevActiveAt.x ? -1 : 1
+//   //   })()
 
-  //   const enterVariant =
-  //     direction === 1 ? 'isLeft' : direction === -1 ? 'isRight' : 'defaultFade'
-  //   const exitVariant =
-  //     direction === 1 ? 'isRight' : direction === -1 ? 'isLeft' : 'defaultFade'
+//   //   const enterVariant =
+//   //     direction === 1 ? 'isLeft' : direction === -1 ? 'isRight' : 'defaultFade'
+//   //   const exitVariant =
+//   //     direction === 1 ? 'isRight' : direction === -1 ? 'isLeft' : 'defaultFade'
 
-  const handleOnInteraction: TabsTabProps['onInteraction'] = (type, layout) => {
-    if (type === 'select') {
-      setActiveIndicator(layout)
-    } else {
-      setIntentIndicator(layout)
-    }
-  }
+//   const handleOnInteraction: TabsTabProps['onInteraction'] = (type, layout) => {
+//     if (type === 'select') {
+//       setActiveIndicator(layout)
+//     } else {
+//       setIntentIndicator(layout)
+//     }
+//   }
 
-  // const usingPresetValues = tabs.find((t) => t.value === currentTab)
+//   // const usingPresetValues = tabs.find((t) => t.value === currentTab)
 
-  return (
-    <Tabs
-      value={currentTab}
-      onValueChange={handleChangePresetValue}
-      orientation="horizontal"
-      size="$4"
-      flexDirection="column"
-      activationMode="manual"
-      position="relative"
-      p="$2"
-      bg="$background"
-      als="center"
-      br="$3"
-    >
-      <YStack>
-        <AnimatePresence>
-          {intentAt && (
-            <TabsRovingIndicator
-              animation="100ms"
-              key="intent-indicator"
-              width={intentAt.width}
-              height={intentAt.height}
-              x={intentAt.x}
-              y={intentAt.y}
-            />
-          )}
-        </AnimatePresence>
-        <AnimatePresence>
-          <ThemeTint>
-            {activeAt && (
-              <TabsRovingIndicator
-                key="active-indicator"
-                isActive
-                width={activeAt.width}
-                height={activeAt.height}
-                x={activeAt.x}
-                y={activeAt.y}
-              />
-            )}
-          </ThemeTint>
-        </AnimatePresence>
+//   return (
+//     <Tabs
+//       value={currentTab}
+//       onValueChange={handleChangePresetValue}
+//       orientation="horizontal"
+//       size="$4"
+//       flexDirection="column"
+//       activationMode="manual"
+//       position="relative"
+//       p="$2"
+//       bg="$background"
+//       als="center"
+//       br="$3"
+//     >
+//       <YStack>
+//         <AnimatePresence>
+//           {intentAt && (
+//             <TabsRovingIndicator
+//               animation="100ms"
+//               key="intent-indicator"
+//               width={intentAt.width}
+//               height={intentAt.height}
+//               x={intentAt.x}
+//               y={intentAt.y}
+//             />
+//           )}
+//         </AnimatePresence>
+//         <AnimatePresence>
+//           <ThemeTint>
+//             {activeAt && (
+//               <TabsRovingIndicator
+//                 key="active-indicator"
+//                 isActive
+//                 width={activeAt.width}
+//                 height={activeAt.height}
+//                 x={activeAt.x}
+//                 y={activeAt.y}
+//               />
+//             )}
+//           </ThemeTint>
+//         </AnimatePresence>
 
-        <Tabs.List
-          disablePassBorderRadius
-          loop={false}
-          aria-label="Manage your account"
-          space="$2"
-          backgroundColor="transparent"
-        >
-          {tabs.map(({ value }) => (
-            <Tabs.Tab
-              key={value}
-              unstyled
-              bc="transparent"
-              px="$4"
-              value={value}
-              onInteraction={handleOnInteraction}
-            >
-              <Paragraph>{value}</Paragraph>
-            </Tabs.Tab>
-          ))}
-          {idPreset ? (
-            <Button
-              width={100}
-              onPress={() => {
-                setCurrentTab?.('10')
-                setIsPreset(false)
-                setIntentIndicator(null)
-                setActiveIndicator(null)
-              }}
-              bc="transparent"
-              borderColor="transparent"
-              borderRadius="$2"
-              px="$4"
-            >
-              <Paragraph>Custom</Paragraph>
-            </Button>
-          ) : (
-            <ThemeTint>
-              <Input
-                backgroundColor="$color7"
-                autoFocus
-                width={100}
-                borderRadius="$2"
-                value={currentTab}
-                onChangeText={(text) => {
-                  if (Number.isNaN(Number(text))) return
-                  setActiveIndicator(null)
-                  setCurrentTab?.(text)
-                }}
-              />
-            </ThemeTint>
-          )}
-        </Tabs.List>
-      </YStack>
-    </Tabs>
-  )
-}
+//         <Tabs.List
+//           disablePassBorderRadius
+//           loop={false}
+//           aria-label="Manage your account"
+//           space="$2"
+//           backgroundColor="transparent"
+//         >
+//           {tabs.map(({ value }) => (
+//             <Tabs.Tab
+//               key={value}
+//               unstyled
+//               bc="transparent"
+//               px="$4"
+//               value={value}
+//               onInteraction={handleOnInteraction}
+//             >
+//               <Paragraph>{value}</Paragraph>
+//             </Tabs.Tab>
+//           ))}
+//           {idPreset ? (
+//             <Button
+//               width={100}
+//               onPress={() => {
+//                 setCurrentTab?.('10')
+//                 setIsPreset(false)
+//                 setIntentIndicator(null)
+//                 setActiveIndicator(null)
+//               }}
+//               bc="transparent"
+//               borderColor="transparent"
+//               borderRadius="$2"
+//               px="$4"
+//             >
+//               <Paragraph>Custom</Paragraph>
+//             </Button>
+//           ) : (
+//             <ThemeTint>
+//               <Input
+//                 backgroundColor="$color7"
+//                 autoFocus
+//                 width={100}
+//                 borderRadius="$2"
+//                 value={currentTab}
+//                 onChangeText={(text) => {
+//                   if (Number.isNaN(Number(text))) return
+//                   setActiveIndicator(null)
+//                   setCurrentTab?.(text)
+//                 }}
+//               />
+//             </ThemeTint>
+//           )}
+//         </Tabs.List>
+//       </YStack>
+//     </Tabs>
+//   )
+// }
 
-const TabsRovingIndicator = ({
-  isActive,
-  ...props
-}: { isActive?: boolean } & YStackProps) => {
-  return (
-    <YStack
-      borderRadius="$2"
-      position="absolute"
-      backgroundColor="$color3"
-      animation="quicker"
-      enterStyle={{
-        opacity: 0,
-      }}
-      exitStyle={{
-        opacity: 0,
-      }}
-      opacity={0.7}
-      {...(isActive && {
-        backgroundColor: '$color6',
-        opacity: 1,
-      })}
-      {...props}
-    />
-  )
-}
+// const TabsRovingIndicator = ({
+//   isActive,
+//   ...props
+// }: { isActive?: boolean } & YStackProps) => {
+//   return (
+//     <YStack
+//       borderRadius="$2"
+//       position="absolute"
+//       backgroundColor="$color3"
+//       animation="quicker"
+//       enterStyle={{
+//         opacity: 0,
+//       }}
+//       exitStyle={{
+//         opacity: 0,
+//       }}
+//       opacity={0.7}
+//       {...(isActive && {
+//         backgroundColor: '$color6',
+//         opacity: 1,
+//       })}
+//       {...props}
+//     />
+//   )
+// }
 
-const Points = () => (
-  <YStack tag="ul" gap="$1.5" zi={2} ov="hidden">
-    {/* <Point>React (web, native, ios) monorepo sharing a single codebase</Point>
-    <Point>
-      All the important screens: Onboard, Register, Login, Forgot Password, Account,
-      Settings, Profile, Edit Profile, Feed
-    </Point>
-    <Point>SSR, RSC, choose from 3 animation drivers</Point>
-    <Point>Complete & fully typed design system</Point>
-    <Point>+150 icon packs</Point>
-    <Point>2 all new theme suites: Pastel & Neon</Point>
-    <Point>All of Google fonts fonts</Point>
-    <Point>GitHub template with PR bot for updates</Point>
-    <Point>Fully tested CI/CD: unit, integration, web and native</Point>
-    <Point>Preview deploys for web, app-store builds with EAS</Point> */}
-    {Object.entries(points).map(([key, group]) => (
-      <React.Fragment key={key}>
-        {group.map((point) => (
-          <Point key={point}>{point}</Point>
-        ))}
-      </React.Fragment>
-    ))}
-  </YStack>
-)
+// const Points = () => (
+//   <YStack tag="ul" gap="$1.5" zi={2} ov="hidden">
+//     {/* <Point>React (web, native, ios) monorepo sharing a single codebase</Point>
+//     <Point>
+//       All the important screens: Onboard, Register, Login, Forgot Password, Account,
+//       Settings, Profile, Edit Profile, Feed
+//     </Point>
+//     <Point>SSR, RSC, choose from 3 animation drivers</Point>
+//     <Point>Complete & fully typed design system</Point>
+//     <Point>+150 icon packs</Point>
+//     <Point>2 all new theme suites: Pastel & Neon</Point>
+//     <Point>All of Google fonts fonts</Point>
+//     <Point>GitHub template with PR bot for updates</Point>
+//     <Point>Fully tested CI/CD: unit, integration, web and native</Point>
+//     <Point>Preview deploys for web, app-store builds with EAS</Point> */}
+//     {Object.entries(points).map(([key, group]) => (
+//       <React.Fragment key={key}>
+//         {group.map((point) => (
+//           <Point key={point}>{point}</Point>
+//         ))}
+//       </React.Fragment>
+//     ))}
+//   </YStack>
+// )
 
-const HeartsRow = () => (
-  <XStack gap="$12" my="$4" als="center" spaceDirection="horizontal">
-    <img src="/heart.svg" style={{ width: 16, height: 16 }} />
-    <img src="/heart.svg" style={{ width: 16, height: 16 }} />
-    <img src="/heart.svg" style={{ width: 16, height: 16 }} />
-    <img src="/heart.svg" style={{ width: 16, height: 16 }} />
-    <img src="/heart.svg" style={{ width: 16, height: 16 }} />
-  </XStack>
-)
+// const HeartsRow = () => (
+//   <XStack gap="$12" my="$4" als="center" spaceDirection="horizontal">
+//     <img src="/heart.svg" style={{ width: 16, height: 16 }} />
+//     <img src="/heart.svg" style={{ width: 16, height: 16 }} />
+//     <img src="/heart.svg" style={{ width: 16, height: 16 }} />
+//     <img src="/heart.svg" style={{ width: 16, height: 16 }} />
+//     <img src="/heart.svg" style={{ width: 16, height: 16 }} />
+//   </XStack>
+// )
 
-const DiscountText = ({
-  children,
-}: {
-  children: React.ReactNode
-}) => {
-  return (
-    <ThemeTintAlt offset={6}>
-      <YStack m="auto" scale={1} $xs={{ scale: 1.2 }}>
-        {/* <YStack
-          fullscreen
-          shadowColor="$shadowColor"
-          shadowRadius={30}
-          shadowOffset={{ height: 5, width: 0 }}
-          scale={0.95}
-        /> */}
-        <YStack
-          px="$4"
-          py="$1"
-          rotate="10deg"
-          y={-40}
-          $sm={{ dsp: 'none' }}
-          // backgroundColor="$color8"
-          // style={{
-          //   clipPath: `polygon(
-          //   0% 3px,
-          //   3px 3px,
-          //   3px 0%,
-          //   calc(100% - 3px) 0%,
-          //   calc(100% - 3px) 3px,
-          //   100% 3px,
-          //   100% calc(100% - 3px),
-          //   calc(100% - 3px) calc(100% - 3px),
-          //   calc(100% - 3px) 100%,
-          //   3px 100%,
-          //   3px calc(100% - 3px),
-          //   0% calc(100% - 3px)
-          // )`,
-          // }}
-        >
-          <Paragraph
-            o={0.8}
-            ff="$silkscreen"
-            color="$color11"
-            textAlign="center"
-            size="$5"
-          >
-            {children}
-          </Paragraph>
-        </YStack>
-      </YStack>
-    </ThemeTintAlt>
-  )
-}
+// const DiscountText = ({
+//   children,
+// }: {
+//   children: React.ReactNode
+// }) => {
+//   return (
+//     <ThemeTintAlt offset={6}>
+//       <YStack m="auto" scale={1} $xs={{ scale: 1.2 }}>
+//         {/* <YStack
+//           fullscreen
+//           shadowColor="$shadowColor"
+//           shadowRadius={30}
+//           shadowOffset={{ height: 5, width: 0 }}
+//           scale={0.95}
+//         /> */}
+//         <YStack
+//           px="$4"
+//           py="$1"
+//           rotate="10deg"
+//           y={-40}
+//           $sm={{ dsp: 'none' }}
+//           // backgroundColor="$color8"
+//           // style={{
+//           //   clipPath: `polygon(
+//           //   0% 3px,
+//           //   3px 3px,
+//           //   3px 0%,
+//           //   calc(100% - 3px) 0%,
+//           //   calc(100% - 3px) 3px,
+//           //   100% 3px,
+//           //   100% calc(100% - 3px),
+//           //   calc(100% - 3px) calc(100% - 3px),
+//           //   calc(100% - 3px) 100%,
+//           //   3px 100%,
+//           //   3px calc(100% - 3px),
+//           //   0% calc(100% - 3px)
+//           // )`,
+//           // }}
+//         >
+//           <Paragraph
+//             o={0.8}
+//             ff="$silkscreen"
+//             color="$color11"
+//             textAlign="center"
+//             size="$5"
+//           >
+//             {children}
+//           </Paragraph>
+//         </YStack>
+//       </YStack>
+//     </ThemeTintAlt>
+//   )
+// }
 
 let keepCycling = true
 
@@ -1581,7 +1715,10 @@ const FeatureIcon = ({
 
   return (
     <Theme name={theme}>
-      <PixelTooltip active={active} label={title}>
+      <PixelTooltip
+        active={active}
+        label={title}
+      >
         <IconFrame
           onMouseEnter={() => {
             keepCycling = false
@@ -1589,7 +1726,13 @@ const FeatureIcon = ({
           }}
           backgroundColor={active ? '$color9' : '$color10'}
         >
-          <Image className="pixelate" src={icon} alt="Icon" height={14} width={14} />
+          <Image
+            className="pixelate"
+            src={icon}
+            alt="Icon"
+            height={14}
+            width={14}
+          />
         </IconFrame>
       </PixelTooltip>
     </Theme>
@@ -1613,7 +1756,11 @@ const PixelTooltip = ({
         scale: 1.1,
       })}
     >
-      <Paragraph color="$color12" fontFamily="$munro" size="$2">
+      <Paragraph
+        color="$color12"
+        fontFamily="$munro"
+        size="$2"
+      >
         {label}
       </Paragraph>
       {children}
@@ -1691,8 +1838,16 @@ const PromoVideo = () => {
         bc="$borderColor"
       >
         {!open && (
-          <YStack fullscreen ai="center" jc="center" bc="rgba(0,0,0,0.75)">
-            <PlayCircle size={150} color="red" />
+          <YStack
+            fullscreen
+            ai="center"
+            jc="center"
+            bc="rgba(0,0,0,0.75)"
+          >
+            <PlayCircle
+              size={150}
+              color="red"
+            />
             <Paragraph
               size="$12"
               pos="absolute"
@@ -1747,18 +1902,33 @@ const Bullet = ({
       $gtLg={{ w: 'calc(50% - 20px)' }}
     >
       <YStack y={-1}>
-        <Circle size={32} elevation="$1">
+        <Circle
+          size={32}
+          elevation="$1"
+        >
           {status === 'done' ? (
-            <Check size={18} color="$color10" />
+            <Check
+              size={18}
+              color="$color10"
+            />
           ) : status === 'building' ? (
-            <Hammer size={18} color="$color10" />
+            <Hammer
+              size={18}
+              color="$color10"
+            />
           ) : (
-            <Dot size={18} color="$color10" />
+            <Dot
+              size={18}
+              color="$color10"
+            />
           )}
         </Circle>
       </YStack>
       <YStack f={1}>
-        <Paragraph wordWrap="break-word" size={size}>
+        <Paragraph
+          wordWrap="break-word"
+          size={size}
+        >
           {children}
         </Paragraph>
         {!!subtitle && (

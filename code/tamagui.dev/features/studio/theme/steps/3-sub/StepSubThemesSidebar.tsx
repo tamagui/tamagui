@@ -1,14 +1,6 @@
 import { useStore } from '@tamagui/use-store'
 import type { ThemeName } from 'tamagui'
-import {
-  Separator,
-  SizableText,
-  Spinner,
-  Theme,
-  XStack,
-  YStack,
-  useThemeName,
-} from 'tamagui'
+import { Separator, SizableText, Spinner, Theme, XStack, YStack, useThemeName } from 'tamagui'
 
 import { StudioProcedureStore } from '../../callApi'
 import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
@@ -30,23 +22,45 @@ export function StepSubThemesSidebar() {
   store.themeSuiteVersion
 
   return (
-    <YStack f={1} pl={20}>
-      <YStack p="$4" f={1} gap="$4">
-        <XStack ai="center" gap="$4">
+    <YStack
+      f={1}
+      pl={20}
+    >
+      <YStack
+        p="$4"
+        f={1}
+        gap="$4"
+      >
+        <XStack
+          ai="center"
+          gap="$4"
+        >
           <Separator />
-          <SizableText size="$4" selectable={false}>
+          <SizableText
+            size="$4"
+            selectable={false}
+          >
             Parent theme: {currentThemeName}
           </SizableText>
           <Separator />
         </XStack>
 
         <Theme name={topThemeName}>
-          <StudioThemesQuickPreviewSection scheme="light" hasAccent={hasAccent} />
+          <StudioThemesQuickPreviewSection
+            scheme="light"
+            hasAccent={hasAccent}
+          />
         </Theme>
 
-        <XStack ai="center" gap="$4">
+        <XStack
+          ai="center"
+          gap="$4"
+        >
           <Separator />
-          <SizableText size="$4" selectable={false}>
+          <SizableText
+            size="$4"
+            selectable={false}
+          >
             Sub theme: {subThemeName}
           </SizableText>
           <Separator />
@@ -54,7 +68,10 @@ export function StepSubThemesSidebar() {
 
         <Theme name={topThemeName}>
           <Theme name={bottomThemeName}>
-            <StudioThemesQuickPreviewSection scheme="dark" hasAccent={hasAccent} />
+            <StudioThemesQuickPreviewSection
+              scheme="dark"
+              hasAccent={hasAccent}
+            />
           </Theme>
         </Theme>
 

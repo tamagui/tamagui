@@ -3,19 +3,7 @@ import { useTint } from '@tamagui/logo'
 import { ChevronRight } from '@tamagui/lucide-icons'
 import { useMemo } from 'react'
 import { ScrollView } from 'react-native'
-import {
-  Button,
-  H1,
-  H2,
-  H3,
-  H4,
-  H5,
-  Image,
-  Paragraph,
-  Spacer,
-  XStack,
-  YStack,
-} from 'tamagui'
+import { Button, H1, H2, H3, H4, H5, Image, Paragraph, Spacer, XStack, YStack } from 'tamagui'
 
 import type { Href } from 'one'
 import { Card } from '~/components/Card'
@@ -27,7 +15,7 @@ import { GithubIcon } from '~/features/icons/GithubIcon'
 import { SocialLinksRow } from '~/features/site/home/SocialLinksRow'
 import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
 
-export default function Community({ frontmatters }) {
+export default function Community() {
   return (
     <CommunityLayout>
       <ThemeNameEffect />
@@ -47,7 +35,12 @@ export default function Community({ frontmatters }) {
         <Spacer />
 
         <XStack $sm={{ flexDirection: 'column' }}>
-          <FlatBubbleCard w="50%" $sm={{ w: 'auto' }} ai="center" bw={0}>
+          <FlatBubbleCard
+            w="50%"
+            $sm={{ w: 'auto' }}
+            ai="center"
+            bw={0}
+          >
             <Link href="/blog">
               <Button
                 bg="transparent"
@@ -58,7 +51,11 @@ export default function Community({ frontmatters }) {
                 iconAfter={ChevronRight}
                 br="$10"
               >
-                <H2 cur="pointer" size="$9" ta="center">
+                <H2
+                  cur="pointer"
+                  size="$9"
+                  ta="center"
+                >
                   The Blog
                 </H2>
               </Button>
@@ -106,12 +103,22 @@ export default function Community({ frontmatters }) {
 
           <Spacer size="$4" />
 
-          <FlatBubbleCard ai="center" feature bw={0}>
-            <H2 size="$9" ta="center">
+          <FlatBubbleCard
+            ai="center"
+            feature
+            bw={0}
+          >
+            <H2
+              size="$9"
+              ta="center"
+            >
               Figma Design Kit
             </H2>
             <Spacer size="$6" />
-            <YStack ai="center" gap>
+            <YStack
+              ai="center"
+              gap
+            >
               <Link href="https://www.figma.com/community/file/1326593766534421119">
                 <YStack
                   target="_blank"
@@ -145,12 +152,24 @@ export default function Community({ frontmatters }) {
 
         <Spacer />
 
-        <FlatBubbleCard bw={0.5} gap>
-          <H3 id="starter-repos" ta="center">
+        <FlatBubbleCard
+          bw={0.5}
+          gap
+        >
+          <H3
+            id="starter-repos"
+            ta="center"
+          >
             Starter repos & Guides
           </H3>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            <XStack py="$2" space="$4">
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+          >
+            <XStack
+              py="$2"
+              space="$4"
+            >
               <StarterRepoCard
                 url="https://galaxies.dev/course/react-native-tamagui  "
                 name="Universal Apps with Tamagui (Guide)"
@@ -211,12 +230,21 @@ export default function Community({ frontmatters }) {
         <Spacer />
 
         <FlatBubbleCard bw={0}>
-          <H2 size="$9" ta="center" className="rainbow clip-text">
+          <H2
+            size="$9"
+            ta="center"
+            className="rainbow clip-text"
+          >
             Enterprise Sponsors
           </H2>
         </FlatBubbleCard>
 
-        <XStack gap="$4" jc="center" ai="center" flexWrap="wrap">
+        <XStack
+          gap="$4"
+          jc="center"
+          ai="center"
+          flexWrap="wrap"
+        >
           <GoldSponsor
             name="Uniswap"
             bg="#FF007A"
@@ -237,12 +265,21 @@ export default function Community({ frontmatters }) {
         </XStack>
 
         <FlatBubbleCard bw={0}>
-          <H2 size="$9" ta="center" color="$yellow10">
+          <H2
+            size="$9"
+            ta="center"
+            color="$yellow10"
+          >
             Gold Sponsors
           </H2>
         </FlatBubbleCard>
 
-        <XStack gap="$4" jc="center" ai="center" flexWrap="wrap">
+        <XStack
+          gap="$4"
+          jc="center"
+          ai="center"
+          flexWrap="wrap"
+        >
           <GoldSponsor
             name="Appfolio"
             link="https://www.appfolio.com/"
@@ -262,12 +299,20 @@ export default function Community({ frontmatters }) {
         <Spacer />
 
         <FlatBubbleCard bw={0}>
-          <H2 size="$9" ta="center">
+          <H2
+            size="$9"
+            ta="center"
+          >
             Bronze Sponsors
           </H2>
         </FlatBubbleCard>
 
-        <XStack gap="$4" jc="center" ai="center" flexWrap="wrap">
+        <XStack
+          gap="$4"
+          jc="center"
+          ai="center"
+          flexWrap="wrap"
+        >
           <GoldSponsor
             name="Bounty"
             link="https://bounty.co"
@@ -287,12 +332,20 @@ export default function Community({ frontmatters }) {
         <Spacer />
 
         <FlatBubbleCard bw={0}>
-          <H2 size="$9" ta="center">
+          <H2
+            size="$9"
+            ta="center"
+          >
             Indie Sponsors
           </H2>
         </FlatBubbleCard>
 
-        <XStack gap="$4" jc="center" ai="center" flexWrap="wrap">
+        <XStack
+          gap="$4"
+          jc="center"
+          ai="center"
+          flexWrap="wrap"
+        >
           <GoldSponsor
             name="CodingScape"
             link="https://codingscape.com"
@@ -326,20 +379,38 @@ export default function Community({ frontmatters }) {
         <Spacer />
 
         <FlatBubbleCard bw={0}>
-          <H2 size="$9" ta="center">
+          <H2
+            size="$9"
+            ta="center"
+          >
             Early Sponsors
           </H2>
         </FlatBubbleCard>
 
-        <XStack space flexWrap="wrap">
+        <XStack
+          space
+          flexWrap="wrap"
+        >
           <IndividualSponsor
             name="@barelyreaper"
             link="https://twitter.com/barelyreaper"
           />
-          <IndividualSponsor name="@pontusab" link="https://twitter.com/pontusab" />
-          <IndividualSponsor name="@AntelaBrais" link="https://twitter.com/AntelaBrais" />
-          <IndividualSponsor name="Hirbod" link="https://twitter.com/nightstomp" />
-          <IndividualSponsor name="Dimension" link="https://twitter.com/joindimension" />
+          <IndividualSponsor
+            name="@pontusab"
+            link="https://twitter.com/pontusab"
+          />
+          <IndividualSponsor
+            name="@AntelaBrais"
+            link="https://twitter.com/AntelaBrais"
+          />
+          <IndividualSponsor
+            name="Hirbod"
+            link="https://twitter.com/nightstomp"
+          />
+          <IndividualSponsor
+            name="Dimension"
+            link="https://twitter.com/joindimension"
+          />
         </XStack>
       </ContainerLarge>
 
@@ -371,11 +442,18 @@ const StarterRepoCard = ({
     >
       <YStack gap="$2">
         <GithubIcon />
-        <H4 cursor="pointer" fontFamily="$silkscreen" ls={0}>
+        <H4
+          cursor="pointer"
+          fontFamily="$silkscreen"
+          ls={0}
+        >
           {name}
         </H4>
       </YStack>
-      <Paragraph cursor="pointer" theme="alt2">
+      <Paragraph
+        cursor="pointer"
+        theme="alt2"
+      >
         by {author}
       </Paragraph>
     </Card>
@@ -391,8 +469,17 @@ function GoldSponsor(props: {
   bg?: any
 }) {
   return (
-    <FlatBubbleCard mb="$4" flat p={0} fb={0} bg={props.bg}>
-      <Link href={props.link} target="_blank">
+    <FlatBubbleCard
+      mb="$4"
+      flat
+      p={0}
+      fb={0}
+      bg={props.bg}
+    >
+      <Link
+        href={props.link}
+        target="_blank"
+      >
         <YStack
           ai="center"
           jc="center"
@@ -411,7 +498,13 @@ function GoldSponsor(props: {
               width: props.imageWidth,
             }}
           />
-          <H5 ta="center" cursor="inherit" als="center" letterSpacing={4} ai="center">
+          <H5
+            ta="center"
+            cursor="inherit"
+            als="center"
+            letterSpacing={4}
+            ai="center"
+          >
             {props.name}
           </H5>
         </YStack>
@@ -422,10 +515,23 @@ function GoldSponsor(props: {
 
 function IndividualSponsor(props: { name: string; link: string }) {
   return (
-    <FlatBubbleCard flat mb="$4">
-      <YStack maxWidth="100%" fs={0} als="center">
-        <XStack gap="$4" $sm={{ flexDirection: 'column' }}>
-          <Link href={props.link as any} target="_blank">
+    <FlatBubbleCard
+      flat
+      mb="$4"
+    >
+      <YStack
+        maxWidth="100%"
+        fs={0}
+        als="center"
+      >
+        <XStack
+          gap="$4"
+          $sm={{ flexDirection: 'column' }}
+        >
+          <Link
+            href={props.link as any}
+            target="_blank"
+          >
             <YStack
               cursor="pointer"
               p="$4"
@@ -434,7 +540,12 @@ function IndividualSponsor(props: { name: string; link: string }) {
               pressStyle={{ bg: 'rgba(0,0,0,0.2)' }}
               space
             >
-              <H5 cursor="inherit" als="center" letterSpacing={4} ai="center">
+              <H5
+                cursor="inherit"
+                als="center"
+                letterSpacing={4}
+                ai="center"
+              >
                 {props.name}
               </H5>
             </YStack>

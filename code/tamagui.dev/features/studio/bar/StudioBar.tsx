@@ -1,26 +1,14 @@
 import { LogoIcon } from '@tamagui/logo'
 import { Moon, Sun, X } from '@tamagui/lucide-icons'
 import { memo } from 'react'
-import {
-  Button,
-  Paragraph,
-  Popover,
-  PortalHost,
-  SizableText,
-  Switch,
-  XStack,
-  YStack,
-} from 'tamagui'
+import { Button, Paragraph, Popover, PortalHost, Switch, XStack, YStack } from 'tamagui'
 
 import { topBarHeight } from '~/features/studio/constants'
-import { useRootStore } from '../state/useGlobalState'
-import { BarTabs } from './Tabs'
 import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
-import { usePathname, useRouter } from 'one'
+import { useRootStore } from '../state/useGlobalState'
 
 export const StudioBar = memo(function Header() {
   const themeBuilderStore = useThemeBuilderStore()
-  const showMinimal = !themeBuilderStore.isCentered
 
   return (
     <XStack
@@ -50,8 +38,18 @@ export const StudioBar = memo(function Header() {
       maxWidth={192}
       className="all ease-in-out ms300"
     >
-      <YStack br="$10" fullscreen className="blur-medium" />
-      <YStack br="$10" fullscreen bg="$background" bw={1} bc="$borderColor" />
+      <YStack
+        br="$10"
+        fullscreen
+        className="blur-medium"
+      />
+      <YStack
+        br="$10"
+        fullscreen
+        bg="$background"
+        bw={1}
+        bc="$borderColor"
+      />
 
       {/* <XStack ai="center"> */}
       {/* <YStack> */}
@@ -85,36 +83,36 @@ export const StudioBar = memo(function Header() {
   )
 })
 
-const AccountButton = () => {
-  // todo
-  return null
-  // const { data } = useUser()
-  // const user = data?.session?.user
+// const AccountButton = () => {
+//   // todo
+//   return null
+//   // const { data } = useUser()
+//   // const user = data?.session?.user
 
-  // return (
-  //   <XStack ai="center" jc="center" space="$2">
-  //     <Anchor href={`${siteRootDir}/account`}>
-  //       <TooltipSimple label="Account">
-  //         {data?.userDetails ? (
-  //           <Avatar size="$2" circular>
-  //             <Avatar.Image
-  //               source={{
-  //                 uri:
-  //                   data.userDetails?.avatar_url ??
-  //                   getDefaultAvatarImage(
-  //                     data.userDetails?.full_name ?? user?.email ?? 'User'
-  //                   ),
-  //               }}
-  //             />
-  //           </Avatar>
-  //         ) : (
-  //           <Button fontWeight="900" icon={User} size="$2" />
-  //         )}
-  //       </TooltipSimple>
-  //     </Anchor>
-  //   </XStack>
-  // )
-}
+//   // return (
+//   //   <XStack ai="center" jc="center" space="$2">
+//   //     <Anchor href={`${siteRootDir}/account`}>
+//   //       <TooltipSimple label="Account">
+//   //         {data?.userDetails ? (
+//   //           <Avatar size="$2" circular>
+//   //             <Avatar.Image
+//   //               source={{
+//   //                 uri:
+//   //                   data.userDetails?.avatar_url ??
+//   //                   getDefaultAvatarImage(
+//   //                     data.userDetails?.full_name ?? user?.email ?? 'User'
+//   //                   ),
+//   //               }}
+//   //             />
+//   //           </Avatar>
+//   //         ) : (
+//   //           <Button fontWeight="900" icon={User} size="$2" />
+//   //         )}
+//   //       </TooltipSimple>
+//   //     </Anchor>
+//   //   </XStack>
+//   // )
+// }
 
 export const ThemeSwitch = memo(() => {
   const rootStore = useRootStore()
@@ -125,9 +123,16 @@ export const ThemeSwitch = memo(() => {
   const isLight = rootStore.theme === 'light'
 
   return (
-    <Popover open={tipOpen} stayInFrame={{ padding: 10 }} size="$3">
+    <Popover
+      open={tipOpen}
+      stayInFrame={{ padding: 10 }}
+      size="$3"
+    >
       <Popover.Trigger>
-        <XStack mx="$2" ai="center">
+        <XStack
+          mx="$2"
+          ai="center"
+        >
           <Switch
             checked={isLight}
             size="$2"
@@ -149,7 +154,12 @@ export const ThemeSwitch = memo(() => {
 
             // rotate="-45deg"
           >
-            <XStack fullscreen zi={100} x={2} y={0.5}>
+            <XStack
+              fullscreen
+              zi={100}
+              x={2}
+              y={0.5}
+            >
               {isLight && (
                 <Button
                   tag="span"
@@ -168,7 +178,14 @@ export const ThemeSwitch = memo(() => {
               )}
             </XStack>
 
-            <XStack pos="absolute" t={0} r={0} zi={100} x={1} y={0}>
+            <XStack
+              pos="absolute"
+              t={0}
+              r={0}
+              zi={100}
+              x={1}
+              y={0}
+            >
               {!isLight && (
                 <Button
                   tag="span"
@@ -242,7 +259,11 @@ export const ThemeSwitch = memo(() => {
           },
         ]}
       >
-        <Popover.Arrow size="$5" borderWidth={2} borderColor="$borderColor" />
+        <Popover.Arrow
+          size="$5"
+          borderWidth={2}
+          borderColor="$borderColor"
+        />
 
         <Paragraph size="$2">{tip}</Paragraph>
         <Button
@@ -261,61 +282,61 @@ export const ThemeSwitch = memo(() => {
   )
 })
 
-const StudioTabs = memo(function StudioTabs() {
-  const router = useRouter()
-  const pathname = usePathname()
+// const StudioTabs = memo(function StudioTabs() {
+//   const router = useRouter()
+//   const pathname = usePathname()
 
-  return (
-    <BarTabs
-      currentTab={pathname.split('/').pop() as string}
-      onTabChange={(val) => router.push(val)}
-      tabs={[
-        {
-          component: (
-            <SizableText size="$2" fow="500">
-              Theme Studio
-            </SizableText>
-          ),
-          value: 'builder',
-          hasChanges: false,
-        },
-        {
-          component: (
-            <SizableText size="$2" fow="500">
-              Config
-            </SizableText>
-          ),
-          value: 'config',
-          hasChanges: false,
-        },
-        // {
-        //   component: <SizableText size="$2" fow="500">Tokens</SizableText>,
-        //   value: 'tokens',
-        //   hasChanges: false,
-        // },
-        // {
-        //   component: <SizableText size="$2" fow="500">Colors</SizableText>,
-        //   value: 'colors',
-        //   hasChanges: useObserve(() => colorsStore.hasChanges),
-        // },
-        {
-          component: (
-            <SizableText size="$2" fow="500">
-              Themes
-            </SizableText>
-          ),
-          value: 'themes',
-          hasChanges: false,
-        },
-        // {
-        //   component: <SizableText size="$2" fow="500">Animations</SizableText>,
-        //   value: 'animations',
-        //   hasChanges: useObserve(() => animationsStore.hasChanges),
-        // },
-      ]}
-    />
-  )
-})
+//   return (
+//     <BarTabs
+//       currentTab={pathname.split('/').pop() as string}
+//       onTabChange={(val) => router.push(val)}
+//       tabs={[
+//         {
+//           component: (
+//             <SizableText size="$2" fow="500">
+//               Theme Studio
+//             </SizableText>
+//           ),
+//           value: 'builder',
+//           hasChanges: false,
+//         },
+//         {
+//           component: (
+//             <SizableText size="$2" fow="500">
+//               Config
+//             </SizableText>
+//           ),
+//           value: 'config',
+//           hasChanges: false,
+//         },
+//         // {
+//         //   component: <SizableText size="$2" fow="500">Tokens</SizableText>,
+//         //   value: 'tokens',
+//         //   hasChanges: false,
+//         // },
+//         // {
+//         //   component: <SizableText size="$2" fow="500">Colors</SizableText>,
+//         //   value: 'colors',
+//         //   hasChanges: useObserve(() => colorsStore.hasChanges),
+//         // },
+//         {
+//           component: (
+//             <SizableText size="$2" fow="500">
+//               Themes
+//             </SizableText>
+//           ),
+//           value: 'themes',
+//           hasChanges: false,
+//         },
+//         // {
+//         //   component: <SizableText size="$2" fow="500">Animations</SizableText>,
+//         //   value: 'animations',
+//         //   hasChanges: useObserve(() => animationsStore.hasChanges),
+//         // },
+//       ]}
+//     />
+//   )
+// })
 
 // function DesignSystemSelector() {
 //   return (
@@ -377,8 +398,8 @@ const StudioTabs = memo(function StudioTabs() {
 //   )
 // // }
 
-const getDefaultAvatarImage = (name: string) => {
-  const params = new URLSearchParams()
-  params.append('name', name)
-  return `https://ui-avatars.com/api/?${params.toString()}`
-}
+// const getDefaultAvatarImage = (name: string) => {
+//   const params = new URLSearchParams()
+//   params.append('name', name)
+//   return `https://ui-avatars.com/api/?${params.toString()}`
+// }

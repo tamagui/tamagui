@@ -10,7 +10,15 @@ export type PreviewComponent = {
 export const components = {
   ButtonPreview: {
     parts: [
-      { name: 'Button', Preview: () => <ButtonFrame size="$4" miw={200}></ButtonFrame> },
+      {
+        name: 'Button',
+        Preview: () => (
+          <ButtonFrame
+            size="$4"
+            miw={200}
+          ></ButtonFrame>
+        ),
+      },
       { name: 'ButtonText', Preview: () => <ButtonText>Abc</ButtonText> },
     ],
     Preview: () => {

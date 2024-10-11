@@ -33,11 +33,7 @@ export const getProductsForServerSideRendering = async (): Promise<{
         .select('*, prices(*)')
         .eq('metadata->>slug', 'font-packs')
         .single(),
-      supabaseAdmin
-        .from('products')
-        .select('*, prices(*)')
-        .eq('metadata->>slug', 'bento')
-        .single(),
+      supabaseAdmin.from('products').select('*, prices(*)').eq('metadata->>slug', 'bento').single(),
     ]
     const promises = [...productPromises]
     const products = await Promise.all(promises)

@@ -17,7 +17,12 @@ export const TwitterIcon = (props) => (
     </g>
     <defs>
       <clipPath id="clip0">
-        <rect width="28" height="23" fill="white" transform="translate(1 3.78235)" />
+        <rect
+          width="28"
+          height="23"
+          fill="white"
+          transform="translate(1 3.78235)"
+        />
       </clipPath>
     </defs>
   </svg>

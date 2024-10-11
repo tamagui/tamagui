@@ -100,9 +100,7 @@ export default apiRoute(async (req) => {
         const createdSub = event.data.object as Stripe.Subscription
         await manageSubscriptionStatusChange(
           createdSub.id,
-          typeof createdSub.customer === 'string'
-            ? createdSub.customer
-            : createdSub.customer.id,
+          typeof createdSub.customer === 'string' ? createdSub.customer : createdSub.customer.id,
           true
         )
         break
@@ -111,9 +109,7 @@ export default apiRoute(async (req) => {
         const updatedSub = event.data.object as Stripe.Subscription
         await manageSubscriptionStatusChange(
           updatedSub.id,
-          typeof updatedSub.customer === 'string'
-            ? updatedSub.customer
-            : updatedSub.customer.id
+          typeof updatedSub.customer === 'string' ? updatedSub.customer : updatedSub.customer.id
         )
         break
       }

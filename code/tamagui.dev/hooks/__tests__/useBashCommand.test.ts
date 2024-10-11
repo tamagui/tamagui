@@ -34,10 +34,7 @@ describe('useBashCommand', () => {
     })
 
     const { result } = renderHook(() =>
-      useBashCommand(
-        'npm install @tamagui/core @tamagui/animations-react-native',
-        'language-bash'
-      )
+      useBashCommand('npm install @tamagui/core @tamagui/animations-react-native', 'language-bash')
     )
 
     await waitFor(() => {
@@ -55,10 +52,7 @@ describe('useBashCommand', () => {
     })
 
     const { result } = renderHook(() =>
-      useBashCommand(
-        'npm create tamagui@latest --template remix-starter',
-        'language-bash'
-      )
+      useBashCommand('npm create tamagui@latest --template remix-starter', 'language-bash')
     )
 
     expect(result.current.isCreateCommand).toBe(true)
@@ -98,9 +92,7 @@ describe('useBashCommand', () => {
       setItem: vi.fn(),
     })
 
-    const { result } = renderHook(() =>
-      useBashCommand('yarn dev && yarn build', 'language-bash')
-    )
+    const { result } = renderHook(() => useBashCommand('yarn dev && yarn build', 'language-bash'))
 
     expect(result.current.transformedCommand).toBe('npm run dev && npm run build')
   })
@@ -125,9 +117,7 @@ describe('useBashCommand', () => {
     )
 
     expect(result.current.isTerminalCommand).toBe(true)
-    expect(result.current.transformedCommand).toBe(
-      'cd project && ls -la && touch file.txt'
-    )
+    expect(result.current.transformedCommand).toBe('cd project && ls -la && touch file.txt')
   })
 
   it('should convert npm install to yarn install when there ano arguments', () => {
@@ -208,9 +198,7 @@ describe('useBashCommand', () => {
 
     it('recognizes yarn create commands', () => {
       expect(stringIsCreateCommand('yarn create next-app my-next-app')).toBe(true)
-      expect(
-        stringIsCreateCommand('yarn create tamagui@latest --template expo-starter')
-      ).toBe(true)
+      expect(stringIsCreateCommand('yarn create tamagui@latest --template expo-starter')).toBe(true)
     })
 
     it('recognizes pnpm create commands', () => {

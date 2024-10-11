@@ -1,4 +1,4 @@
-import { Href, useRouter } from 'one'
+import { type Href, useRouter } from 'one'
 import { memo, useCallback, useEffect, useMemo, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { Paragraph, View } from 'tamagui'
@@ -101,7 +101,10 @@ export const SearchProvider = memo(({ children }: any) => {
 const ResultItem = ({ hit, children }) => {
   return (
     <Link href={(window.location.origin + hit.url) as Href}>
-      <Paragraph tag="span" color="$color">
+      <Paragraph
+        tag="span"
+        color="$color"
+      >
         {children}
       </Paragraph>
     </Link>

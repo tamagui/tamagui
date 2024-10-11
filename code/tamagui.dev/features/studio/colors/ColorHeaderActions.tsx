@@ -1,8 +1,6 @@
 import type { ColorsStore } from '../state/ColorsStore'
-import { useGlobalState } from '../state/useGlobalState'
 
 export const ColorHeaderActions = () => {
-  const state = useGlobalState()
   return null
   // return (
   //   <ExportActions

@@ -19,7 +19,7 @@ export function NumberInput({
 }: NumberInputProps) {
   const handleUpdate = (newVal: string | number) => {
     const numberVal = Number(newVal)
-    if (isNaN(numberVal)) {
+    if (Number.isNaN(numberVal)) {
       return
     }
     if (

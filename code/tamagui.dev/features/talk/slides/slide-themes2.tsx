@@ -74,8 +74,7 @@ export default memo(() => {
                     type: 'text',
                     content: (
                       <>
-                        Instead of setting{' '}
-                        <CodeInline>Text color="$alternate"</CodeInline>
+                        Instead of setting <CodeInline>Text color="$alternate"</CodeInline>
                       </>
                     ),
                   },
@@ -85,7 +84,13 @@ export default memo(() => {
               {
                 type: 'content',
                 content: (
-                  <XStack py="$10" display="flex" w="100%" ai="center" jc="center">
+                  <XStack
+                    py="$10"
+                    display="flex"
+                    w="100%"
+                    ai="center"
+                    jc="center"
+                  >
                     <H1>Generics for styling!</H1>
                   </XStack>
                 ),

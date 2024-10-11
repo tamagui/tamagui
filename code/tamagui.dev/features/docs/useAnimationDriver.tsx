@@ -39,15 +39,11 @@ export const AnimationDriverTogglerContextProvider = ({
 }: {
   children: React.ReactNode
 }) => {
-  const [driverName, setDriverName] =
-    useState<(typeof ANIMATION_DRIVERS)[number]>('react-native')
+  const [driverName, setDriverName] = useState<(typeof ANIMATION_DRIVERS)[number]>('react-native')
 
   const nextDriver = () => {
     setDriverName(
-      (prev) =>
-        ANIMATION_DRIVERS[
-          (ANIMATION_DRIVERS.indexOf(prev) + 1) % ANIMATION_DRIVERS.length
-        ]
+      (prev) => ANIMATION_DRIVERS[(ANIMATION_DRIVERS.indexOf(prev) + 1) % ANIMATION_DRIVERS.length]
     )
   }
 

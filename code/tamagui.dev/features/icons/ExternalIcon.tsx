@@ -1,4 +1,4 @@
-export function ExternalIcon(props) {
+export function ExternalIcon() {
   return (
     <svg
       style={{ opacity: 0.4 }}

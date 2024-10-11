@@ -30,9 +30,7 @@ export const GET = apiRoute(async (req) => {
 
   let couponId: string | undefined
   const userAccessInfo = await getUserAccessInfo(supabase, user)
-  const purchaseContainsBento = products.data.some(
-    (product) => product.metadata.slug === 'bento'
-  )
+  const purchaseContainsBento = products.data.some((product) => product.metadata.slug === 'bento')
   const purchaseContainsTakeout = products.data.some(
     (product) => product.metadata.slug === 'universal-starter'
   )
@@ -101,9 +99,7 @@ export const GET = apiRoute(async (req) => {
     },
   })
 
-  console.info(
-    `Stripe checkout, redirect: ${stripeSession.url}\n  internal url ${getURL()}`
-  )
+  console.info(`Stripe checkout, redirect: ${stripeSession.url}\n  internal url ${getURL()}`)
 
   if (stripeSession.url) {
     return Response.redirect(stripeSession.url)

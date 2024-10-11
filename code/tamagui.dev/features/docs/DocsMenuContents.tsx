@@ -129,6 +129,7 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
       <div
         style={{ width: '100%' }}
         tabIndex={0}
+        // biome-ignore lint/a11y/useSemanticElements: custom interactive element
         role="listbox"
         onMouseEnter={() => {
           getStore(DocsItemsStore).hovered = true
@@ -183,9 +184,17 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
                           ai="center"
                           gap="$3"
                         >
-                          <Separator bc="$color025" o={0.25} my="$2" />
+                          <Separator
+                            bc="$color025"
+                            o={0.25}
+                            my="$2"
+                          />
                           <Theme name="gray">
-                            <Paragraph size="$4" fow="600" color="$color10">
+                            <Paragraph
+                              size="$4"
+                              fow="600"
+                              color="$color10"
+                            >
                               {section.title}
                             </Paragraph>
                           </Theme>

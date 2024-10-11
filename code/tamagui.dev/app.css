@@ -1,9 +1,8 @@
 html,
 body {
   max-width: 100vw;
-  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-    Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-    'Segoe UI Symbol';
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
+    sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
 body {
@@ -45,7 +44,8 @@ body .preview {
   text-decoration: none;
 }
 
-p a, .t_Link {
+p a,
+.t_Link {
   text-decoration: underline;
 }
 
@@ -79,7 +79,6 @@ a {
   text-decoration-color: var(--color8);
 }
 
-
 .is_Paragraph:has(> ul) {
   margin-bottom: 0;
 }
@@ -110,12 +109,7 @@ span._display-1adg3ll > span._display-xoduu5 {
 }
 
 .hero-gradient {
-  background: linear-gradient(
-    30deg,
-    var(--background) -50%,
-    transparent,
-    var(--background) 150%
-  );
+  background: linear-gradient(30deg, var(--background) -50%, transparent, var(--background) 150%);
 }
 
 /* reset */
@@ -237,12 +231,7 @@ pre {
 }
 
 .easter-season .rainbow {
-  background-image: -webkit-linear-gradient(
-    -220deg,
-    var(--pink10),
-    var(--yellow10),
-    var(--pink10)
-  );
+  background-image: -webkit-linear-gradient(-220deg, var(--pink10), var(--yellow10), var(--pink10));
 }
 
 .clip-text {
@@ -308,7 +297,7 @@ iframe {
 .bg-grid {
   contain: paint;
   background-position: center center;
-  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoAQMAAAC2MCouAAAABlBMVEWBgYFHcEyMaNnGAAAAAnRSTlP/AOW3MEoAAAAQSURBVHgBY4CA+v9AMBJIALryrr41QoYVAAAAAElFTkSuQmCC');
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoAQMAAAC2MCouAAAABlBMVEWBgYFHcEyMaNnGAAAAAnRSTlP/AOW3MEoAAAAQSURBVHgBY4CA+v9AMBJIALryrr41QoYVAAAAAElFTkSuQmCC");
   opacity: 0.05;
 }
 
@@ -316,7 +305,7 @@ iframe {
   pointer-events: none;
 }
 
-@media (prefer-color-scheme: dark) {
+@media (prefers-color-scheme: dark) {
   .bg-grid {
     opacity: 0.125;
   }
@@ -479,7 +468,7 @@ iframe {
   transition: color 150ms ease;
 }
 
-.highlight-line[data-highlighted='false'] {
+.highlight-line[data-highlighted="false"] {
   color: var(--gray12);
 }
 
@@ -499,7 +488,7 @@ iframe {
   color: var(--yellow10);
 }
 
-*[data-line-numbers='true'].highlight-line {
+*[data-line-numbers="true"].highlight-line {
   position: relative;
   padding-left: var(--t-space-4);
 }
@@ -591,7 +580,7 @@ textarea {
 }
 
 .text-3d {
-  text-shadow: 
+  text-shadow:
     1px 1px 1px var(--color8), 1px 2px 1px var(--color8),
     1px 3px 1px var(--color8), 1px 4px 1px var(--color8),
     1px 5px 1px var(--color8), 1px 6px 1px var(--color8),
@@ -611,7 +600,7 @@ textarea {
   outline: none;
 }
 
-.c-target-parent[data-dragging='true'] .target,
+.c-target-parent[data-dragging="true"] .target,
 .c-target-parent:hover > .target {
   opacity: 1;
 }
@@ -653,8 +642,8 @@ textarea {
 }
 
 .font-outlined-sm {
-  text-shadow: 1px 1px var(--color), -1px -1px var(--color),
-    -1px 1px var(--color), 1px -1px var(--color);
+  text-shadow: 1px 1px var(--color), -1px -1px var(--color), -1px 1px var(--color), 1px -1px
+    var(--color);
 }
 
 .invert {
@@ -682,7 +671,7 @@ textarea {
     animation: clip-fade2 70s infinite alternate;
     mix-blend-mode: difference !important;
   }
-  
+
   .clip-slice-2 {
     mask-image: url(./public/takeouticon.svg);
     mask-size: 30% 30%;
@@ -705,7 +694,6 @@ textarea {
 .slice-alt {
   mask-size: 50% 50%;
   animation: clip-fade2 80s infinite alternate;
-  
 }
 
 @keyframes clip-fade {
@@ -741,7 +729,8 @@ textarea {
   -webkit-text-wrap: balance;
 }
 
-.text-wrap-pretty, p {
+.text-wrap-pretty,
+p {
   text-wrap: pretty;
   -webkit-text-wrap: pretty;
 }
@@ -761,12 +750,13 @@ textarea {
 }
 
 .t_dark .bento-shadow {
-  text-shadow: 1px 1px var(--color9), 1px 2px 1px var(--color8),
+  text-shadow:
+    1px 1px var(--color9), 1px 2px 1px var(--color8),
     1px 3px 1px var(--color7), 1px 4px 1px var(--color7),
     1px 5px 1px var(--color6), 1px 6px 1px var(--color6),
     1px 7px 1px var(--color5), 1px 8px 1px var(--color4),
     1px 9px 1px var(--color4), 1px 11px 1px var(--color3),
-    1px 10px 40px rgba(255,255,255,0.07);
+    1px 10px 40px rgba(255, 255, 255, 0.07);
 }
 
 .bento-up-text {
@@ -782,7 +772,7 @@ textarea {
 }
 
 .dark-shadow {
-  text-shadow: 0 10px 10px rgba(0,0,0,1);
+  text-shadow: 0 10px 10px rgba(0, 0, 0, 1);
 }
 
 .glow-shadow {
@@ -819,6 +809,6 @@ textarea {
   left: 0 !important;
   right: 0 !important;
   z-index: 10000000000000000 !important;
-  background-color: rgba(0,0,0,0.5) !important;
+  background-color: rgba(0, 0, 0, 0.5) !important;
   backdrop-filter: blur(50px) !important;
 }

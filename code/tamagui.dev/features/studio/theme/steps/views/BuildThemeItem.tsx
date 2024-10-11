@@ -10,8 +10,7 @@ import type { BuildThemeItemFrameProps } from './BuildThemeItemFrame'
 import { BuildThemeItemFrame } from './BuildThemeItemFrame'
 import { StepThemeTemplate } from './StepThemeTemplate'
 
-export type BuildThemeItemPropsBase = ThemeStepProps &
-  Omit<BuildThemeItemFrameProps, 'children'>
+export type BuildThemeItemPropsBase = ThemeStepProps & Omit<BuildThemeItemFrameProps, 'children'>
 
 export const BuildThemeItem = ({
   label,
@@ -74,13 +73,20 @@ export const BuildThemeItem = ({
               {templateNames.map((name, idx) => {
                 const item = store.templates[name]
                 return (
-                  <Select.Item index={idx} key={`${item}${idx}`} value={name}>
+                  <Select.Item
+                    index={idx}
+                    key={`${item}${idx}`}
+                    value={name}
+                  >
                     {name}
                   </Select.Item>
                 )
               })}
 
-              <Select.Item index={templateNames.length} value={CREATE_NEW}>
+              <Select.Item
+                index={templateNames.length}
+                value={CREATE_NEW}
+              >
                 Create New...
               </Select.Item>
             </Select>

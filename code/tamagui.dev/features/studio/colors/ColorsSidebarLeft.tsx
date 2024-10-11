@@ -1,16 +1,7 @@
 'use client'
 
 import { memo } from 'react'
-import {
-  Button,
-  Label,
-  Separator,
-  SizableText,
-  Spacer,
-  Tabs,
-  XStack,
-  YStack,
-} from 'tamagui'
+import { Button, Label, Separator, SizableText, Spacer, Tabs, XStack, YStack } from 'tamagui'
 
 import { SidebarLeft, SidebarPanel, SidebarPanelUnpad } from '../components/Sidebar'
 import { colorsStore } from '../state/ColorsStore'
@@ -25,16 +16,30 @@ const ColorsSidebarPalettes = () => {
   return (
     <SidebarPanel title="Palettes">
       <SidebarPanelUnpad>
-        <XStack ai="center" jc="center">
+        <XStack
+          ai="center"
+          jc="center"
+        >
           <Tabs
             value={state.colors.scheme}
             onValueChange={(v) => state.colors.setScheme(v)}
             size="$3"
           >
-            <Tabs.List disablePassBorderRadius backgroundColor="transparent" space="$3">
+            <Tabs.List
+              disablePassBorderRadius
+              backgroundColor="transparent"
+              space="$3"
+            >
               {Object.values(state.colors.palettesByScheme).map(({ id, name }) => (
-                <Tabs.Tab br="$2" value={id} key={id}>
-                  <SizableText size="$3" color="$color">
+                <Tabs.Tab
+                  br="$2"
+                  value={id}
+                  key={id}
+                >
+                  <SizableText
+                    size="$3"
+                    color="$color"
+                  >
                     {name}
                   </SizableText>
                 </Tabs.Tab>
@@ -87,14 +92,21 @@ export const ColorsSidebarLeft = memo(function ColorsSidebarLeft() {
       <SidebarLeft>
         <SidebarPanel>
           <YStack space="$3">
-            <XStack space="$2" ai="center">
+            <XStack
+              space="$2"
+              ai="center"
+            >
               <ColorPicker
                 value={palette?.backgroundColor}
                 onChange={(color) => {
                   state.colors.setBackgroundColor(color)
                 }}
               />
-              <Label ellipse size="$3" htmlFor="bg-color">
+              <Label
+                ellipse
+                size="$3"
+                htmlFor="bg-color"
+              >
                 Background
               </Label>
             </XStack>

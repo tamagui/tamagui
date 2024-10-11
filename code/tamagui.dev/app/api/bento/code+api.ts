@@ -41,9 +41,7 @@ export const GET: Endpoint = async (req) => {
     checkForBentoAccess: true,
   })
 
-  const fileResult = await supabaseAdmin.storage
-    .from('bento')
-    .download(`merged/${codePath}.tsx`)
+  const fileResult = await supabaseAdmin.storage.from('bento').download(`merged/${codePath}.tsx`)
 
   if (fileResult.error) {
     console.error(fileResult.error)

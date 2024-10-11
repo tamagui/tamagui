@@ -10,12 +10,18 @@ export function StepSchemes() {
   const store = useThemeBuilderStore()
 
   return (
-    <YStack f={1} my="$4" gap="$4">
+    <YStack
+      f={1}
+      my="$4"
+      gap="$4"
+    >
       <H4>Dark and light schemes</H4>
 
-      <Paragraph size="$5" theme="alt1">
-        At the base of your themes we recommend a light and dark theme, but you can choose
-        just one.
+      <Paragraph
+        size="$5"
+        theme="alt1"
+      >
+        At the base of your themes we recommend a light and dark theme, but you can choose just one.
       </Paragraph>
 
       <XStack gap="$3">
@@ -103,10 +109,17 @@ const Option = ({
         </Checkbox.Indicator>
       </Checkbox>
 
-      <YStack gap="$2" f={1}>
+      <YStack
+        gap="$2"
+        f={1}
+      >
         <Paragraph size="$5">{label}</Paragraph>
         {!!description && (
-          <Paragraph size="$3" lh="$1" theme="alt2">
+          <Paragraph
+            size="$3"
+            lh="$1"
+            theme="alt2"
+          >
             {description}
           </Paragraph>
         )}

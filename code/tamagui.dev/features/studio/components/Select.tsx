@@ -114,7 +114,12 @@ const SelectComponent = (
           bw={1}
           bc="transparent"
         >
-          <XStack fullscreen zi={0} bg="$background" o={0.7} />
+          <XStack
+            fullscreen
+            zi={0}
+            bg="$background"
+            o={0.7}
+          />
           {children}
         </SelectFrame.Viewport>
 

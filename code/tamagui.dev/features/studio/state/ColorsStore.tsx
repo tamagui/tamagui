@@ -134,10 +134,7 @@ export class ColorsStore {
     // edge case when prev scale had more colors than new one and selected index is out of range
     // e.g. palette 1, color 10 was selected -> user selects palette 2 with 5 colors -> error
 
-    this.selectedIndex = Math.min(
-      newScaleLength - 1,
-      Number(this.selectedIndex)
-    ).toString()
+    this.selectedIndex = Math.min(newScaleLength - 1, Number(this.selectedIndex)).toString()
   }
 
   get scale() {
@@ -179,9 +176,7 @@ export class ColorsStore {
     const palette = this.palette
     const scale = this.scale
     try {
-      const color = index
-        ? getColor(palette.curves, scale, parseInt(index, 10))
-        : undefined
+      const color = index ? getColor(palette.curves, scale, Number.parseInt(index, 10)) : undefined
       val = color ? colorToHex(color) : undefined
     } catch (error) {}
     return val

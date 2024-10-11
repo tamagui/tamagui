@@ -89,8 +89,7 @@ const claimRepositoryAccess: ClaimFunction = async ({ user, metadata, request })
   console.info(`Claim: checking private users`)
 
   const repoName = metadata.repository_name
-  if (typeof repoName !== 'string')
-    throw new Error('No repository_name is present on metadata')
+  if (typeof repoName !== 'string') throw new Error('No repository_name is present on metadata')
 
   console.info(`Claim: inviting collaborator`)
 

@@ -37,7 +37,10 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                 gap="$4"
               >
                 {previous && (
-                  <Link href={previous.route as Href} asChild>
+                  <Link
+                    href={previous.route as Href}
+                    asChild
+                  >
                     <XStack
                       tag="a"
                       group="card"
@@ -74,10 +77,18 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                         $group-card-press={{ l: '$-8' }}
                         animation="quicker"
                       >
-                        <Paragraph userSelect="none" theme="alt1" size="$5">
+                        <Paragraph
+                          userSelect="none"
+                          theme="alt1"
+                          size="$5"
+                        >
                           Previous
                         </Paragraph>
-                        <Paragraph userSelect="none" size="$3" color="$gray10">
+                        <Paragraph
+                          userSelect="none"
+                          size="$3"
+                          color="$gray10"
+                        >
                           {previous.title}
                         </Paragraph>
                       </YStack>
@@ -85,7 +96,10 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                   </Link>
                 )}
                 {next && (
-                  <Link href={next.route as Href} asChild>
+                  <Link
+                    href={next.route as Href}
+                    asChild
+                  >
                     <XStack
                       tag="a"
                       group="card"
@@ -113,10 +127,18 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                         $group-card-press={{ r: '$-8' }}
                         animation="quicker"
                       >
-                        <Paragraph userSelect="none" theme="alt1" size="$5">
+                        <Paragraph
+                          userSelect="none"
+                          theme="alt1"
+                          size="$5"
+                        >
                           Next
                         </Paragraph>
-                        <Paragraph userSelect="none" size="$3" color="$gray10">
+                        <Paragraph
+                          userSelect="none"
+                          size="$3"
+                          color="$gray10"
+                        >
                           {next.title}
                         </Paragraph>
                       </YStack>

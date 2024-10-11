@@ -27,7 +27,10 @@ export function lazyDemo(importFunc: any) {
 
     return (
       <Suspense fallback={<Spinner />}>
-        <View display="contents" id="demo">
+        <View
+          display="contents"
+          id="demo"
+        >
           <Component />
         </View>
       </Suspense>
@@ -184,9 +187,7 @@ export const AnimationsEnterDemo = lazyDemo(() =>
 )
 export const AnimationsPresenceDemo = lazyDemo(() =>
   // @ts-ignore
-  import('@tamagui/demos/demo/AnimationsPresenceDemo').then(
-    (x) => x.AnimationsPresenceDemo
-  )
+  import('@tamagui/demos/demo/AnimationsPresenceDemo').then((x) => x.AnimationsPresenceDemo)
 )
 export const SwitchDemo = lazyDemo(
   // @ts-ignore
@@ -258,13 +259,9 @@ export const RadioGroupDemo = lazyDemo(
 )
 export const RadioGroupHeadlessDemo = lazyDemo(
   // @ts-ignore
-  import('@tamagui/demos/demo/RadioGroupHeadlessDemo').then(
-    (x) => x.RadioGroupHeadlessDemo
-  )
+  import('@tamagui/demos/demo/RadioGroupHeadlessDemo').then((x) => x.RadioGroupHeadlessDemo)
 )
 export const RadioGroupUnstyledDemo = lazyDemo(
   // @ts-ignore
-  import('@tamagui/demos/demo/RadioGroupUnstyledDemo').then(
-    (x) => x.RadioGroupUnstyledDemo
-  )
+  import('@tamagui/demos/demo/RadioGroupUnstyledDemo').then((x) => x.RadioGroupUnstyledDemo)
 )

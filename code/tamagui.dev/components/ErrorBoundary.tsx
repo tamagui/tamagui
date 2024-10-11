@@ -1,17 +1,32 @@
-import { Component } from 'react'
+import React, { Component, type ErrorInfo, type ReactNode } from 'react'
 
-export class ErrorBoundary extends Component<any> {
-  constructor(props) {
+interface ErrorBoundaryProps {
+  children: ReactNode
+  noMessage?: boolean
+}
+
+interface ErrorBoundaryState {
+  hasError: boolean
+  noMessage: boolean
+}
+
+export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  constructor(props: ErrorBoundaryProps) {
     super(props)
-    this.state.noMessage = props.noMessage
+    this.state = {
+      hasError: false,
+      noMessage: props.noMessage || false,
+    }
   }
-  state = { hasError: false, noMessage: false }
 
-  static getDerivedStateFromError(error) {
+  static getDerivedStateFromError(_: Error): Partial<ErrorBoundaryState> {
     return { hasError: true }
   }
 
-  componentDidCatch(error, errorInfo) {}
+  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    // Log the error to an error reporting service
+    console.error('ErrorBoundary caught an error:', error, errorInfo)
+  }
 
   render() {
     if (this.state.hasError) {
@@ -21,7 +36,10 @@ export class ErrorBoundary extends Component<any> {
       return (
         <div>
           <h2>Oops, there is an error!</h2>
-          <button type="button" onClick={() => this.setState({ hasError: false })}>
+          <button
+            type="button"
+            onClick={() => this.setState({ hasError: false })}
+          >
             Try again?
           </button>
         </div>

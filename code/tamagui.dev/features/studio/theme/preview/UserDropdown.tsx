@@ -15,15 +15,34 @@ export const UserDropdown = () => {
       {...demoProps.elevationProps}
       {...demoProps.panelPaddingProps}
     >
-      <YStack borderBottomWidth="$0.25" borderBottomColor="$borderColor" pb="$4">
-        <XStack gap="$4" jc="space-between" ai="center" flexWrap="wrap">
-          <Avatar size="$5" {...demoProps.borderRadiusProps}>
+      <YStack
+        borderBottomWidth="$0.25"
+        borderBottomColor="$borderColor"
+        pb="$4"
+      >
+        <XStack
+          gap="$4"
+          jc="space-between"
+          ai="center"
+          flexWrap="wrap"
+        >
+          <Avatar
+            size="$5"
+            {...demoProps.borderRadiusProps}
+          >
             <Avatar.Image src="https://i.pravatar.cc/300?u=some-user" />
           </Avatar>
-          <XStack ai="center" f={1} jc="space-between">
+          <XStack
+            ai="center"
+            f={1}
+            jc="space-between"
+          >
             <YStack>
               <H4 {...demoProps.headingFontFamilyProps}>John Doe</H4>
-              <Paragraph theme="alt1" size="$3">
+              <Paragraph
+                theme="alt1"
+                size="$3"
+              >
                 johndoe@acme.co
               </Paragraph>
             </YStack>
@@ -58,7 +77,11 @@ export const UserDropdown = () => {
         </Progress>
       </YStack> */}
 
-      <YStack f={1} mx="$-2" gap="$2">
+      <YStack
+        f={1}
+        mx="$-2"
+        gap="$2"
+      >
         <ListItem
           bg="transparent"
           hoverStyle={{
@@ -67,7 +90,12 @@ export const UserDropdown = () => {
           {...demoProps.borderRadiusProps}
           scaleIcon={1.5}
           icon={<Cog opacity={0.75} />}
-          iconAfter={<ChevronRight opacity={0.2} size={15} />}
+          iconAfter={
+            <ChevronRight
+              opacity={0.2}
+              size={15}
+            />
+          }
         >
           Settings
         </ListItem>
@@ -92,7 +120,12 @@ export const UserDropdown = () => {
           }}
           scaleIcon={1.5}
           icon={<Bell opacity={0.75} />}
-          iconAfter={<ChevronRight opacity={0.2} size={15} />}
+          iconAfter={
+            <ChevronRight
+              opacity={0.2}
+              size={15}
+            />
+          }
         >
           Notifications
         </ListItem>
@@ -106,7 +139,12 @@ export const UserDropdown = () => {
           }}
           scaleIcon={1.5}
           icon={<Workflow opacity={0.75} />}
-          iconAfter={<ChevronRight opacity={0.2} size={15} />}
+          iconAfter={
+            <ChevronRight
+              opacity={0.2}
+              size={15}
+            />
+          }
         >
           My Workflows
         </ListItem>
@@ -120,7 +158,12 @@ export const UserDropdown = () => {
           }}
           scaleIcon={1.5}
           icon={<Boxes opacity={0.75} />}
-          iconAfter={<ChevronRight opacity={0.2} size={15} />}
+          iconAfter={
+            <ChevronRight
+              opacity={0.2}
+              size={15}
+            />
+          }
         >
           Projects
         </ListItem>

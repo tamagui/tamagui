@@ -17,9 +17,18 @@ export function Palettes({
   const { selectedSchemes } = useThemeBuilderStore()
 
   return (
-    <YStack br="$4" ov="hidden" bc="$color8" bw={0.5} elevation="$1">
+    <YStack
+      br="$4"
+      ov="hidden"
+      bc="$color8"
+      bw={0.5}
+      elevation="$1"
+    >
       {selectedSchemes.light && (
-        <StudioPaletteBar showLabelIndices={!condensed} colors={palettes.light} />
+        <StudioPaletteBar
+          showLabelIndices={!condensed}
+          colors={palettes.light}
+        />
       )}
 
       {!condensed && (
@@ -32,34 +41,70 @@ export function Palettes({
             jc="space-between"
             ai="center"
           >
-            <XStack ai="center" space="$1">
-              <ArrowLeft opacity={0.33} size={12} />
+            <XStack
+              ai="center"
+              space="$1"
+            >
+              <ArrowLeft
+                opacity={0.33}
+                size={12}
+              />
               <Paragraph size="$1">Background</Paragraph>
             </XStack>
 
             {selectedSchemes.light && selectedSchemes.dark && (
-              <XStack pos="absolute" l="25%" r="25%" ai="center" space jc="center">
-                <XStack y={0} ai="center" space="$1">
-                  <ArrowUp opacity={0.33} size={12} />
+              <XStack
+                pos="absolute"
+                l="25%"
+                r="25%"
+                ai="center"
+                space
+                jc="center"
+              >
+                <XStack
+                  y={0}
+                  ai="center"
+                  space="$1"
+                >
+                  <ArrowUp
+                    opacity={0.33}
+                    size={12}
+                  />
                   <Paragraph size="$1">Light</Paragraph>
                 </XStack>
-                <XStack y={0} ai="center" space="$1">
+                <XStack
+                  y={0}
+                  ai="center"
+                  space="$1"
+                >
                   <Paragraph size="$1">Dark</Paragraph>
-                  <ArrowDown opacity={0.33} size={12} />
+                  <ArrowDown
+                    opacity={0.33}
+                    size={12}
+                  />
                 </XStack>
               </XStack>
             )}
 
-            <XStack ai="center" space="$1">
+            <XStack
+              ai="center"
+              space="$1"
+            >
               <Paragraph size="$1">Foreground</Paragraph>
-              <ArrowRight opacity={0.33} size={12} />
+              <ArrowRight
+                opacity={0.33}
+                size={12}
+              />
             </XStack>
           </XStack>
         </Theme>
       )}
 
       {selectedSchemes.dark && (
-        <StudioPaletteBar showLabelIndices={!condensed} colors={palettes.dark} />
+        <StudioPaletteBar
+          showLabelIndices={!condensed}
+          colors={palettes.dark}
+        />
       )}
     </YStack>
   )

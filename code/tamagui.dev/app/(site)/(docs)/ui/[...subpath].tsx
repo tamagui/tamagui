@@ -35,10 +35,7 @@ export async function generateStaticParams() {
 
 export async function loader(props: LoaderProps) {
   const { getMDXBySlug, getAllVersionsFromPath } = await import('@tamagui/mdx')
-  const { frontmatter, code } = await getMDXBySlug(
-    'data/docs/components',
-    props.params.subpath
-  )
+  const { frontmatter, code } = await getMDXBySlug('data/docs/components', props.params.subpath)
   const [componentName, componentVersion] = props.params.subpath.split('/')
   const versions = getAllVersionsFromPath(`data/docs/components/${componentName}`)
   return {
@@ -95,7 +92,10 @@ export default function DocComponentsPage() {
       )} */}
       <MDXProvider frontmatter={frontmatter}>
         <ThemeTint disable={!isTinted}>
-          <MDXTabs id="type" defaultValue="styled">
+          <MDXTabs
+            id="type"
+            defaultValue="styled"
+          >
             <Component components={components as any} />
           </MDXTabs>
         </ThemeTint>

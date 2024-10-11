@@ -61,11 +61,7 @@ export function useHoverGlow(props: HoverGlowProps) {
   const elementRef = useRef<HTMLDivElement>(null)
   const transformRef = useRef('')
 
-  const getStyle = (
-    transform: string,
-    bounds: Bounds,
-    isResting = true
-  ): CSSProperties => {
+  const getStyle = (transform: string, bounds: Bounds, isResting = true): CSSProperties => {
     // estimate size close to final measured size
     const fullSize = full ? `calc(100 * ${scale || 1})%` : 0
     const width = bounds.width || size || fullSize
@@ -127,8 +123,7 @@ export function useHoverGlow(props: HoverGlowProps) {
               border: '1px solid red',
             })
           }
-          const consoleNode =
-            elementRef.current?.parentNode?.querySelector('.hoverglow-debug')
+          const consoleNode = elementRef.current?.parentNode?.querySelector('.hoverglow-debug')
           if (consoleNode) {
             const parentBounds = getBounds()
             if (!parentBounds) return
@@ -142,10 +137,7 @@ height: ${parentBounds.height}`
           }
         }
         transformRef.current = transform
-        Object.assign(
-          elementRef.current?.style || {},
-          getStyle(transform, glowBounds, isResting)
-        )
+        Object.assign(elementRef.current?.style || {}, getStyle(transform, glowBounds, isResting))
       }
     )
 
@@ -315,11 +307,11 @@ export const useRelativePositionedItem = (
     }
 
     const width = Math.min(
-      limitToParentSize ? bounds.width : Infinity,
+      limitToParentSize ? bounds.width : Number.POSITIVE_INFINITY,
       scale * (full ? bounds.width : size || propWidth)
     )
     const height = Math.min(
-      limitToParentSize ? bounds.height : Infinity,
+      limitToParentSize ? bounds.height : Number.POSITIVE_INFINITY,
       scale * (full ? bounds.height : size || propHeight)
     )
     return {
@@ -378,10 +370,7 @@ export const useRelativePositionedItem = (
             y: doInverse(bounds.height, doResist(bounds.width, position.y)),
           },
           inversed: {
-            x: doInverse(
-              bounds.width,
-              doInverse(bounds.width, doResist(bounds.width, position.x))
-            ),
+            x: doInverse(bounds.width, doInverse(bounds.width, doResist(bounds.width, position.x))),
             y: doInverse(
               bounds.height,
               doInverse(bounds.height, doResist(bounds.width, position.y))
@@ -574,10 +563,7 @@ const useGetBounds = ({
     // onDidUpdate is event callback
   }, [node])
 
-  return useCallback(
-    () => state.current || defaultBounds,
-    [JSON.stringify(defaultBounds)]
-  )
+  return useCallback(() => state.current || defaultBounds, [JSON.stringify(defaultBounds)])
 }
 
 const addEvent = <K extends keyof HTMLElementEventMap>(

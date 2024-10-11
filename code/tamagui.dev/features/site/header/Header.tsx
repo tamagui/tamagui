@@ -46,7 +46,12 @@ export function Header(props: HeaderProps) {
           px: '$1',
         }}
       >
-        <XStack pe="auto" width="100%" maw={1200} pos="relative">
+        <XStack
+          pe="auto"
+          width="100%"
+          maw={1200}
+          pos="relative"
+        >
           <XStack
             className={`ease-out all ms300`}
             py="$1.5"
@@ -93,9 +98,16 @@ export function Header(props: HeaderProps) {
                 bg: '$color7',
               }}
             />
-            <YStack mx="auto" px="$4" w="100%">
+            <YStack
+              mx="auto"
+              px="$4"
+              w="100%"
+            >
               <ThemeTint>
-                <HeaderContents floating {...props} />
+                <HeaderContents
+                  floating
+                  {...props}
+                />
               </ThemeTint>
             </YStack>
           </XStack>
@@ -116,7 +128,10 @@ export function Header(props: HeaderProps) {
           />
         </XStack>
       </XStack>
-      <YStack height={54} w="100%" />
+      <YStack
+        height={54}
+        w="100%"
+      />
     </>
   )
 }
@@ -140,7 +155,10 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
       zi={50000}
     >
       {!props.minimal && (
-        <XStack ai="center" gap="$4">
+        <XStack
+          ai="center"
+          gap="$4"
+        >
           <Link href="/">
             <SeasonTogglePopover>
               <YStack
@@ -162,16 +180,31 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
           </Link>
 
           <TooltipGroup delay={tooltipDelay}>
-            <XGroup mah={32} bc="transparent" ai="center" size="$4">
+            <XGroup
+              mah={32}
+              bc="transparent"
+              ai="center"
+              size="$4"
+            >
               <XGroup.Item>
-                <ThemeToggle borderWidth={0} chromeless />
+                <ThemeToggle
+                  borderWidth={0}
+                  chromeless
+                />
               </XGroup.Item>
             </XGroup>
           </TooltipGroup>
 
-          <SearchButton size="$2" br="$10" elevation="$0.5" />
+          <SearchButton
+            size="$2"
+            br="$10"
+            elevation="$0.5"
+          />
 
-          <Link target="_blank" href="https://github.com/tamagui/tamagui">
+          <Link
+            target="_blank"
+            href="https://github.com/tamagui/tamagui"
+          >
             <XStack group>
               <XStack
                 ai="center"
@@ -210,7 +243,10 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
         pointerEvents="none"
         ai="center"
       >
-        <Link href="/" aria-label="Homepage">
+        <Link
+          href="/"
+          aria-label="Homepage"
+        >
           <XStack
             cursor={isHome ? 'default' : 'pointer'}
             pointerEvents="auto"
@@ -223,9 +259,20 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
 
       {/*  prevent layout shift */}
       {!props.minimal && (
-        <XStack h={40} jc="flex-end" pointerEvents="auto" tag="nav">
-          <XStack ai="center" gap="$2">
-            <HeaderLinks isHeader {...props} />
+        <XStack
+          h={40}
+          jc="flex-end"
+          pointerEvents="auto"
+          tag="nav"
+        >
+          <XStack
+            ai="center"
+            gap="$2"
+          >
+            <HeaderLinks
+              isHeader
+              {...props}
+            />
             <HeaderMenu />
           </XStack>
         </XStack>

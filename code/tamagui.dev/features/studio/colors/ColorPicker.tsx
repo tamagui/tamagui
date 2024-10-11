@@ -34,7 +34,7 @@ export type HSLA = {
   alpha: number
 }
 
-export const ColorPicker = memo((props: ColorPickerProps) => {
+export const ColorPicker = memo(() => {
   // can't do the hover effect with hoverStyle - not sure why
   // const [hovered, setHovered] = useState(false)
   return <></>
@@ -46,9 +46,9 @@ const hueLinearGradient = `linear-gradient(to right, ${Array.from(Array(36))
 
 export const ColorPickerContents = memo((props: ColorPickerProps) => {
   const defaultValue = props.value || 'hsl(10, 50%, 50%)'
-  const [state, setState] = useState(() => getNextState(defaultValue))
+  const [state, setState] = useState(() => getNextState())
 
-  function getNextState(nextValue: string) {
+  function getNextState() {
     const [hue, sat, light, alpha] = parseToHsla(defaultValue)
     return {
       hue,
@@ -59,7 +59,7 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
   }
 
   useEffect(() => {
-    setState(getNextState(defaultValue))
+    setState(getNextState())
   }, [defaultValue])
 
   const { hue, sat, light } = state
@@ -114,7 +114,7 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
         }
         setState(newState)
         sendOnChangeDelayed(newState)
-      } catch (error) {
+      } catch (_error) {
         console.info(`invalid hex ${newHex}`)
       }
     }),
@@ -127,9 +127,19 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
   }
 
   return (
-    <XStack gap="$4" ai="center">
-      <XGroup bw={1} bc="$borderColor">
-        <Stack width="$3" height="$3" ov="hidden">
+    <XStack
+      gap="$4"
+      ai="center"
+    >
+      <XGroup
+        bw={1}
+        bc="$borderColor"
+      >
+        <Stack
+          width="$3"
+          height="$3"
+          ov="hidden"
+        >
           <YStack
             userSelect="none"
             pointerEvents="none"
@@ -139,7 +149,10 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
             jc="center"
           >
             {!props.value && <Checkerboard rotate="45deg" />}
-            <YStack fullscreen backgroundColor={hex as any} />
+            <YStack
+              fullscreen
+              backgroundColor={hex as any}
+            />
           </YStack>
         </Stack>
 
@@ -183,7 +196,11 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
           y="$-2"
           gap="$1"
         >
-          <SizableText size="$1" userSelect="none" theme="alt2">
+          <SizableText
+            size="$1"
+            userSelect="none"
+            theme="alt2"
+          >
             Hue
           </SizableText>
           <Slider
@@ -202,7 +219,13 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
                 background: hueLinearGradient,
               }}
             ></Slider.Track>
-            <Slider.Thumb bg="$color1" size="$1" index={0} circular elevate />
+            <Slider.Thumb
+              bg="$color1"
+              size="$1"
+              index={0}
+              circular
+              elevate
+            />
           </Slider>
         </YStack>
 
@@ -213,10 +236,17 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
           y="$-2"
           gap="$1"
         >
-          <SizableText size="$1" userSelect="none" theme="alt2">
+          <SizableText
+            size="$1"
+            userSelect="none"
+            theme="alt2"
+          >
             Saturation
           </SizableText>
-          <YStack bg="$color" br="$2">
+          <YStack
+            bg="$color"
+            br="$2"
+          >
             <Slider
               orientation="horizontal"
               min={0}
@@ -233,14 +263,27 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
                   background: `linear-gradient(to right, hsl(${hue}, 0%, 50%), hsl(${hue}, 100%, 50%))`,
                 }}
               ></Slider.Track>
-              <Slider.Thumb bg="$color1" size="$1" index={0} circular elevate />
+              <Slider.Thumb
+                bg="$color1"
+                size="$1"
+                index={0}
+                circular
+                elevate
+              />
             </Slider>
           </YStack>
         </YStack>
 
         {!props.disableLightness && (
-          <YStack y="$-2" gap="$1">
-            <SizableText size="$1" userSelect="none" theme="alt2">
+          <YStack
+            y="$-2"
+            gap="$1"
+          >
+            <SizableText
+              size="$1"
+              userSelect="none"
+              theme="alt2"
+            >
               Lightness
             </SizableText>
             <YStack br="$2">
@@ -261,7 +304,13 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
                   }}
                 />
 
-                <Slider.Thumb bg="$color1" size="$1" index={0} circular elevate />
+                <Slider.Thumb
+                  bg="$color1"
+                  size="$1"
+                  index={0}
+                  circular
+                  elevate
+                />
               </Slider>
             </YStack>
           </YStack>

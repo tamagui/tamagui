@@ -96,7 +96,11 @@ export const docsRoutes = [
       {
         title: `GitHub`,
         icon: () => (
-          <GithubIcon width={16} height={16} style={{ margin: '0 0 -2.5px 2px' }} />
+          <GithubIcon
+            width={16}
+            height={16}
+            style={{ margin: '0 0 -2.5px 2px' }}
+          />
         ),
         route: 'https://github.com/tamagui/tamagui',
       },

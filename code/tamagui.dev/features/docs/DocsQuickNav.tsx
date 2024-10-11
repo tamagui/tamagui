@@ -6,7 +6,10 @@ import type { Href } from 'one'
 import type { LinkProps } from '~/components/Link'
 
 const QuickNavLink = ({ href, ...rest }: LinkProps) => (
-  <a onClick={(e) => [e.stopPropagation()]} href={href as any}>
+  <a
+    onClick={(e) => [e.stopPropagation()]}
+    href={href as any}
+  >
     <Paragraph
       tag="span"
       size="$3"
@@ -66,19 +69,36 @@ export function DocsQuickNav() {
         display={headings.length === 0 ? 'none' : 'flex'}
         gap="$2"
       >
-        <H4 size="$2" mx="$2" theme="alt1" id="site-quick-nav-heading">
+        <H4
+          size="$2"
+          mx="$2"
+          theme="alt1"
+          id="site-quick-nav-heading"
+        >
           Quick nav
         </H4>
         <Separator />
 
         <ScrollView maxHeight="calc(100vh - var(--space-25))">
-          <YStack px="$2" py="$2">
+          <YStack
+            px="$2"
+            py="$2"
+          >
             <ul style={{ margin: 0, padding: 0 }}>
               {headings.map(({ id, nodeName, innerText }, i) => {
                 const level = getLevel(nodeName)
                 return (
-                  <XStack key={i} tag="li" ai="center">
-                    {level > 2 && <Circle size={4} mx="$2" />}
+                  <XStack
+                    key={i}
+                    tag="li"
+                    ai="center"
+                  >
+                    {level > 2 && (
+                      <Circle
+                        size={4}
+                        mx="$2"
+                      />
+                    )}
                     <QuickNavLink href={`#${id}` as Href}>{innerText}</QuickNavLink>
                   </XStack>
                 )

@@ -1,16 +1,6 @@
 import { Info, Send } from '@tamagui/lucide-icons'
 import React, { memo, useState } from 'react'
-import {
-  Avatar,
-  Button,
-  Form,
-  H4,
-  Input,
-  Paragraph,
-  ScrollView,
-  XStack,
-  YStack,
-} from 'tamagui'
+import { Avatar, Button, Form, H4, Input, Paragraph, ScrollView, XStack, YStack } from 'tamagui'
 import { AccentTheme } from '../../components/AccentTheme'
 import { useDemoProps } from '../hooks/useDemoProps'
 
@@ -118,13 +108,15 @@ export const ChatScreen = () => {
       {...demoProps.elevationProps}
       {...demoProps.panelPaddingProps}
     >
-      <YStack borderBottomWidth="$0.25" borderBottomColor="$borderColor" pb="$4">
+      <YStack
+        borderBottomWidth="$0.25"
+        borderBottomColor="$borderColor"
+        pb="$4"
+      >
         <XStack jc="space-between">
           <YStack>
             <H4 {...demoProps.headingFontFamilyProps}>Group Chat</H4>
-            <Paragraph {...demoProps.panelDescriptionProps}>
-              3 online &mdash; 5 members
-            </Paragraph>
+            <Paragraph {...demoProps.panelDescriptionProps}>3 online &mdash; 5 members</Paragraph>
           </YStack>
           <Button
             color="$color9"
@@ -139,7 +131,10 @@ export const ChatScreen = () => {
       </YStack>
 
       <YStack flex={1}>
-        <ScrollView m="$-4" p="$6">
+        <ScrollView
+          m="$-4"
+          p="$6"
+        >
           <YStack {...demoProps.gapPropsMd}>
             {messages.map((message, idx) => {
               const isLastFromUser =
@@ -162,7 +157,11 @@ export const ChatScreen = () => {
       </YStack>
 
       <YStack mt="$4">
-        <Form flexDirection="row" onSubmit={() => sendMessage(input)} gap="$2">
+        <Form
+          flexDirection="row"
+          onSubmit={() => sendMessage(input)}
+          gap="$2"
+        >
           <Input
             value={input}
             onChangeText={setInput}
@@ -229,13 +228,20 @@ const ChatMessage = memo(
         gap="$2"
       >
         {includeAvatar ? (
-          <Avatar size="$2" mt="$1" {...demoProps.borderRadiusProps}>
+          <Avatar
+            size="$2"
+            mt="$1"
+            {...demoProps.borderRadiusProps}
+          >
             <Avatar.Image src={avatarSrc} />
           </Avatar>
         ) : (
           <YStack width="$2" />
         )}
-        <XStack ai="flex-end" mb="$1">
+        <XStack
+          ai="flex-end"
+          mb="$1"
+        >
           {contents}
         </XStack>
       </XStack>

@@ -94,11 +94,7 @@ class GalleryStore {
   galleryImageIdx = 0
   galleryDirection = 0
   paginateGallery(newDirection: number) {
-    this.galleryImageIdx = wrap(
-      0,
-      takeoutImages.length,
-      this.galleryImageIdx + newDirection
-    )
+    this.galleryImageIdx = wrap(0, takeoutImages.length, this.galleryImageIdx + newDirection)
     this.galleryDirection = newDirection
   }
 }
@@ -187,9 +183,18 @@ export default function TakeoutGallery() {
 
       <Spacer size="$8" />
 
-      <XStack fw="wrap" gap="$4" mx="$1" ai="center" jc="center">
+      <XStack
+        fw="wrap"
+        gap="$4"
+        mx="$1"
+        ai="center"
+        jc="center"
+      >
         {takeoutImages.slice(1, 12).map((image, index) => (
-          <YStack key={index} pos="relative">
+          <YStack
+            key={index}
+            pos="relative"
+          >
             <TakeoutImage
               alt={image.alt}
               src={image.src}
@@ -203,7 +208,10 @@ export default function TakeoutGallery() {
             />
           </YStack>
         ))}
-        <YStack pos="relative" overflow="hidden">
+        <YStack
+          pos="relative"
+          overflow="hidden"
+        >
           <YStack
             onPress={() => {
               store.galleryOpen = true
@@ -218,7 +226,10 @@ export default function TakeoutGallery() {
             ai="center"
             jc="center"
           >
-            <H6 fontFamily="$munro" color="black">
+            <H6
+              fontFamily="$munro"
+              color="black"
+            >
               +{takeoutImages.length - 11}
             </H6>
           </YStack>
@@ -266,7 +277,12 @@ const ImageGallery = () => {
         >
           <ImagesCarousel />
           <Unspaced>
-            <YStack pos="absolute" right="$6" bottom="$8" zi="$4">
+            <YStack
+              pos="absolute"
+              right="$6"
+              bottom="$8"
+              zi="$4"
+            >
               <Paragraph
                 textShadowColor="black"
                 textShadowOffset={{ height: 1, width: 1 }}
@@ -277,7 +293,12 @@ const ImageGallery = () => {
               </Paragraph>
             </YStack>
 
-            <YStack pos="absolute" left="$6" bottom="$8" zi="$4">
+            <YStack
+              pos="absolute"
+              left="$6"
+              bottom="$8"
+              zi="$4"
+            >
               <Paragraph
                 textShadowColor="black"
                 textShadowOffset={{ height: 1, width: 1 }}
@@ -337,7 +358,10 @@ const ImagesCarousel = () => {
       width="100vw"
       alignItems="center"
     >
-      <AnimatePresence enterVariant={enterVariant} exitVariant={exitVariant}>
+      <AnimatePresence
+        enterVariant={enterVariant}
+        exitVariant={exitVariant}
+      >
         <YStackEnterable
           key={store.galleryImageIdx}
           animation="medium"

@@ -22,7 +22,12 @@ import { HomeH2, HomeH3 } from './HomeHeaders'
 
 export const AnimationsDemo = (props) => {
   const { tint } = useTint()
-  return <AnimationsDemoBase tint={tint} {...props} />
+  return (
+    <AnimationsDemoBase
+      tint={tint}
+      {...props}
+    />
+  )
 }
 
 const animationDescriptions = [
@@ -54,14 +59,20 @@ export function HomeAnimations({ animationCode }: { animationCode: string }) {
 
   return (
     <YStack>
-      <ContainerLarge position="relative" space="$8">
-        <YStack zi={1} space="$3">
+      <ContainerLarge
+        position="relative"
+        space="$8"
+      >
+        <YStack
+          zi={1}
+          space="$3"
+        >
           <HomeH2 pos="relative">
             Universal <span className="rainbow clip-text">Animations</span>
           </HomeH2>
           <HomeH3>
-            Better platform targeting with animation drivers that can be changed without
-            changing code.
+            Better platform targeting with animation drivers that can be changed without changing
+            code.
           </HomeH3>
         </YStack>
 
@@ -96,7 +107,11 @@ export function HomeAnimations({ animationCode }: { animationCode: string }) {
               ai="center"
               jc="center"
             >
-              <YStack fullscreen top="60%" o={0.5} />
+              <YStack
+                fullscreen
+                top="60%"
+                o={0.5}
+              />
               <Button
                 accessibilityLabel="View more"
                 y={200}
@@ -123,9 +138,15 @@ export function HomeAnimations({ animationCode }: { animationCode: string }) {
           </YStack>
         </XStack>
 
-        <XStack als="center" gap="$3">
+        <XStack
+          als="center"
+          gap="$3"
+        >
           <Link href="/docs/core/animations">
-            <Button accessibilityLabel="Animation docs" fontFamily="$silkscreen">
+            <Button
+              accessibilityLabel="Animation docs"
+              fontFamily="$silkscreen"
+            >
               Docs &raquo;
             </Button>
           </Link>
@@ -194,16 +215,32 @@ export const ExampleAnimations = memo(() => {
         width="60%"
         $sm={{ width: '100%' }}
       >
-        <YStack fullscreen zi={-1} bg="$background" o={0.5} />
+        <YStack
+          fullscreen
+          zi={-1}
+          bg="$background"
+          o={0.5}
+        />
         {isIntersecting ? (
-          <AnimationsDemo position={positionI} animation={animation.animation} />
+          <AnimationsDemo
+            position={positionI}
+            animation={animation.animation}
+          />
         ) : null}
       </YStack>
 
       <Separator vertical />
 
-      <YStack pos="relative" $sm={{ display: 'none' }} width="40%">
-        <YStack f={1} theme="alt2" bg="$color1">
+      <YStack
+        pos="relative"
+        $sm={{ display: 'none' }}
+        width="40%"
+      >
+        <YStack
+          f={1}
+          theme="alt2"
+          bg="$color1"
+        >
           {animationDescriptions.map((item, i) => {
             const isActive = item === animation
             return (
@@ -227,7 +264,12 @@ export const ExampleAnimations = memo(() => {
 
         <Separator />
 
-        <XStack bg="$background" p="$4" ai="center" jc="center">
+        <XStack
+          bg="$background"
+          p="$4"
+          ai="center"
+          jc="center"
+        >
           {/* @ts-ignore */}
           {settings.map(([key, value], i) => {
             if (key === 'type') {
@@ -239,7 +281,12 @@ export const ExampleAnimations = memo(() => {
                   <Paragraph size="$2">{key}</Paragraph>
                   <Paragraph>{value}</Paragraph>
                 </YStack>
-                {i < settings.length - 1 && <Separator vertical mx={15} />}
+                {i < settings.length - 1 && (
+                  <Separator
+                    vertical
+                    mx={15}
+                  />
+                )}
               </React.Fragment>
             )
           })}

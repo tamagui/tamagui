@@ -88,7 +88,7 @@ export class StepExportStore {
 
   updateSelectedPlatformData() {
     this.selectedPlatformData = this.selectedPlatform
-      ? this.platformData?.[this.selectedPlatform] ?? null
+      ? (this.platformData?.[this.selectedPlatform] ?? null)
       : null
   }
 
@@ -394,23 +394,35 @@ export const StepExportCode = () => {
   }, [])
 
   return (
-    <YStack py="$4" gap="$3" px="$4">
+    <YStack
+      py="$4"
+      gap="$3"
+      px="$4"
+    >
       <FieldsetWithLabel label="Options">
-        <YStack gap="$1" p="$4">
-          <Fieldset flexDirection="row" ai="center" gap="$3">
+        <YStack
+          gap="$1"
+          p="$4"
+        >
+          <Fieldset
+            flexDirection="row"
+            ai="center"
+            gap="$3"
+          >
             <YStack>
               <Switch
                 id="include-component-themes-switch"
                 checked={store.includeComponentThemes}
-                onCheckedChange={(newChecked) =>
-                  store.setIncludeComponentThemes(!!newChecked)
-                }
+                onCheckedChange={(newChecked) => store.setIncludeComponentThemes(!!newChecked)}
                 size="$2"
               >
                 <Switch.Thumb animation="quickest" />
               </Switch>
             </YStack>
-            <Label size="$3" htmlFor="include-component-themes-switch">
+            <Label
+              size="$3"
+              htmlFor="include-component-themes-switch"
+            >
               Include Component Themes
             </Label>
           </Fieldset>
@@ -448,12 +460,19 @@ export const StepExportCode = () => {
                     borderColor: active ? '$color10' : '$color7',
                   }}
                 >
-                  <RadioGroup.Item id={htmlId} size="$3" value={platform}>
+                  <RadioGroup.Item
+                    id={htmlId}
+                    size="$3"
+                    value={platform}
+                  >
                     <RadioGroup.Indicator />
                   </RadioGroup.Item>
                   <YStack f={1}>
                     <Paragraph size="$6">{data?.name}</Paragraph>
-                    <Paragraph size="$4" theme="alt1">
+                    <Paragraph
+                      size="$4"
+                      theme="alt1"
+                    >
                       {data?.description}
                     </Paragraph>
                   </YStack>
@@ -476,17 +495,47 @@ export const StepExportCodeSidebar = () => {
   }
 
   return (
-    <ScrollView py="$2" pt="$4">
-      <YStack gap="$8" pt="$1" pb="$6" key={store.selectedPlatform}>
+    <ScrollView
+      py="$2"
+      pt="$4"
+    >
+      <YStack
+        gap="$8"
+        pt="$1"
+        pb="$6"
+        key={store.selectedPlatform}
+      >
         {platform.steps.map((step, idx) => (
-          <YStack key={idx} gap="$3">
-            <XStack gap="$3" ai="center" ml="$3">
-              <Circle bg="$background" size={20} jc="center" ai="center">
-                <SizableText ta="center" fontFamily="$heading" size="$1" x={1}>
+          <YStack
+            key={idx}
+            gap="$3"
+          >
+            <XStack
+              gap="$3"
+              ai="center"
+              ml="$3"
+            >
+              <Circle
+                bg="$background"
+                size={20}
+                jc="center"
+                ai="center"
+              >
+                <SizableText
+                  ta="center"
+                  fontFamily="$heading"
+                  size="$1"
+                  x={1}
+                >
                   {idx + 1}
                 </SizableText>
               </Circle>
-              <SizableText fontFamily="$heading" size="$3" color="$color11" ls={1}>
+              <SizableText
+                fontFamily="$heading"
+                size="$3"
+                color="$color11"
+                ls={1}
+              >
                 {step.name}
               </SizableText>
             </XStack>
@@ -494,14 +543,24 @@ export const StepExportCodeSidebar = () => {
             <YStack gap="$4">
               {step.steps.map((subStep, _idx) => {
                 return (
-                  <XStack key={_idx} ml="$4" mr="$3">
+                  <XStack
+                    key={_idx}
+                    ml="$4"
+                    mr="$3"
+                  >
                     {subStep.type === 'text' && (
-                      <Paragraph theme="alt1" size="$4">
+                      <Paragraph
+                        theme="alt1"
+                        size="$4"
+                      >
                         {subStep.content}
                       </Paragraph>
                     )}
                     {subStep.type === 'command' && (
-                      <Code filename="" content={subStep.content} />
+                      <Code
+                        filename=""
+                        content={subStep.content}
+                      />
                     )}
                     {subStep.type === 'files' && (
                       <Tabs
@@ -529,7 +588,10 @@ export const StepExportCodeSidebar = () => {
                               bg="$color2"
                               value={file.filename}
                             >
-                              <SizableText color="$color8" size="$2">
+                              <SizableText
+                                color="$color8"
+                                size="$2"
+                              >
                                 {file.filename}
                               </SizableText>
                             </Tabs.Tab>
@@ -537,7 +599,10 @@ export const StepExportCodeSidebar = () => {
                         </Tabs.List>
 
                         {subStep.files.map((file, i) => (
-                          <Tabs.Content key={i} value={file.filename}>
+                          <Tabs.Content
+                            key={i}
+                            value={file.filename}
+                          >
                             <Code {...file} />
                           </Tabs.Content>
                         ))}
@@ -586,7 +651,13 @@ const Code = ({ content, downloadable, maxHeight, filename }: FileType) => {
           end={[0, 0]}
         />
       )}
-      <XStack pos="absolute" right="$2.5" top={10} gap="$2" flexDirection="row-reverse">
+      <XStack
+        pos="absolute"
+        right="$2.5"
+        top={10}
+        gap="$2"
+        flexDirection="row-reverse"
+      >
         <Button
           onPress={() => {
             copyText(content)
@@ -617,10 +688,7 @@ const Code = ({ content, downloadable, maxHeight, filename }: FileType) => {
 
 function downloadFile(filename, text) {
   const element = document.createElement('a')
-  element.setAttribute(
-    'href',
-    'data:text/plain;charset=utf-8,' + encodeURIComponent(text)
-  )
+  element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text))
   element.setAttribute('download', filename)
 
   element.style.display = 'none'

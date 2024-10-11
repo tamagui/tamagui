@@ -3,15 +3,9 @@
     "baseUrl": ".",
     "rootDir": ".",
     "paths": {
-      "~/*": [
-        "./*"
-      ],
-      "tamagui": [
-        "../tamagui"
-      ],
-      "@tamagui/*": [
-        "../../packages/*"
-      ]
+      "~/*": ["./*"],
+      "tamagui": ["../tamagui"],
+      "@tamagui/*": ["../../packages/*"]
     },
     "outDir": "dist",
     "importHelpers": true,
@@ -39,22 +33,10 @@
     "sourceMap": false,
     "strictNullChecks": true,
     "target": "es2020",
-    "types": [
-      "node",
-      "react",
-      "vite/client"
-    ],
-    "lib": [
-      "dom",
-      "esnext"
-    ]
+    "types": ["node", "react", "vite/client"],
+    "lib": ["dom", "esnext"]
   },
-  "exclude": [
-    "**/test",
-    "**/dist",
-    "**/types",
-    "**/__tests__"
-  ],
+  "exclude": ["**/test", "**/dist", "**/types", "**/__tests__"],
   "typeAcquisition": {
     "enable": true
   },

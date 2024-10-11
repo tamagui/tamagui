@@ -31,11 +31,7 @@ export default apiRoute(async (req) => {
     )
   }
 
-  const { error } = await supabase
-    .from('subscriptions')
-    .select('id')
-    .eq('id', subId)
-    .single()
+  const { error } = await supabase.from('subscriptions').select('id').eq('id', subId).single()
 
   if (error) {
     console.error(error)

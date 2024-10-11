@@ -99,8 +99,14 @@ export const FieldsetWithLabel = ({
               <TooltipSimple
                 size="$3"
                 label={
-                  <YStack p="$2" maxWidth={200}>
-                    <Paragraph size="$2" lh="$1">
+                  <YStack
+                    p="$2"
+                    maxWidth={200}
+                  >
+                    <Paragraph
+                      size="$2"
+                      lh="$1"
+                    >
                       {tooltip}
                     </Paragraph>
                   </YStack>
@@ -128,7 +134,15 @@ export const FieldsetWithLabel = ({
       </YStack>
 
       {!!afterLabel && (
-        <XStack pos="absolute" t={-12} r="$4" zi={100} bg="$color2" br="$4" px="$2">
+        <XStack
+          pos="absolute"
+          t={-12}
+          r="$4"
+          zi={100}
+          bg="$color2"
+          br="$4"
+          px="$2"
+        >
           {afterLabel}
         </XStack>
       )}

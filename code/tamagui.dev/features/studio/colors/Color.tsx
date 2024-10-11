@@ -18,7 +18,7 @@ export function Color({
   const state = useGlobalState()
   const palette = state.colors.palettesByScheme[paletteId]
   const scale = palette.scales[scaleId]
-  const indexAsNumber = parseInt(index, 10)
+  const indexAsNumber = Number.parseInt(index, 10)
   const color = scale.colors[indexAsNumber]
 
   if (!color) {
@@ -31,10 +31,27 @@ export function Color({
   return (
     <SidebarPanel title={`${scale.name}.${index}`}>
       <YStack space="$3">
-        <YStack bw={1} bc="$borderColor" w="100%" h={48} bg={hex as any} br="$2" />
-        <XStack ov="hidden" f={1} space="$2">
-          <XStack ai="center" space="$2">
-            <Label size="$2" htmlFor="color-hue">
+        <YStack
+          bw={1}
+          bc="$borderColor"
+          w="100%"
+          h={48}
+          bg={hex as any}
+          br="$2"
+        />
+        <XStack
+          ov="hidden"
+          f={1}
+          space="$2"
+        >
+          <XStack
+            ai="center"
+            space="$2"
+          >
+            <Label
+              size="$2"
+              htmlFor="color-hue"
+            >
               {scale.curves.hue ? 'H offset' : 'H'}
             </Label>
             <Input
@@ -53,8 +70,14 @@ export function Color({
               }}
             />
           </XStack>
-          <XStack ai="center" space="$2">
-            <Label size="$2" htmlFor="color-saturation">
+          <XStack
+            ai="center"
+            space="$2"
+          >
+            <Label
+              size="$2"
+              htmlFor="color-saturation"
+            >
               {scale.curves.saturation ? 'S offset' : 'S'}
             </Label>
             <Input
@@ -73,8 +96,14 @@ export function Color({
               }}
             />
           </XStack>
-          <XStack ai="center" space="$2">
-            <Label size="$2" htmlFor="color-lightness">
+          <XStack
+            ai="center"
+            space="$2"
+          >
+            <Label
+              size="$2"
+              htmlFor="color-lightness"
+            >
               {scale.curves.lightness ? 'L offset' : 'L'}
             </Label>
             <Input
@@ -96,8 +125,7 @@ export function Color({
         </XStack>
 
         <Code>
-          hsluv({computedColor.hue}, {computedColor.saturation}%,{' '}
-          {computedColor.lightness}%)
+          hsluv({computedColor.hue}, {computedColor.saturation}%, {computedColor.lightness}%)
         </Code>
 
         <Code>{hex}</Code>
@@ -109,7 +137,7 @@ export function Color({
         <Button
           size="$2"
           onPress={() => {
-            state.colors.deleteColor(parseInt(index))
+            state.colors.deleteColor(Number.parseInt(index))
           }}
         >
           Delete color

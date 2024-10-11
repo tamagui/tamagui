@@ -35,15 +35,24 @@ export const LoginScreen = () => {
           pb="$4"
           bbw="$0"
         >
-          <H4 {...demoProps.headingFontFamilyProps} ta="center">
+          <H4
+            {...demoProps.headingFontFamilyProps}
+            ta="center"
+          >
             Welcome Back!
           </H4>
-          <Paragraph ta="center" {...demoProps.panelDescriptionProps}>
+          <Paragraph
+            ta="center"
+            {...demoProps.panelDescriptionProps}
+          >
             Connect your git provider
           </Paragraph>
         </YStack>
 
-        <YStack flex={1} {...demoProps.gapPropsLg}>
+        <YStack
+          flex={1}
+          {...demoProps.gapPropsLg}
+        >
           <XStack {...demoProps.gapPropsLg}>
             <>
               <Button
@@ -69,10 +78,24 @@ export const LoginScreen = () => {
             </>
           </XStack>
 
-          <XStack my="$2" w="100%">
-            <XStack pos="absolute" l={0} r={0} ai="center" gap="$4">
+          <XStack
+            my="$2"
+            w="100%"
+          >
+            <XStack
+              pos="absolute"
+              l={0}
+              r={0}
+              ai="center"
+              gap="$4"
+            >
               <Separator f={1} />
-              <SizableText fontFamily="$heading" ta="center" theme="alt2" size="$1">
+              <SizableText
+                fontFamily="$heading"
+                ta="center"
+                theme="alt2"
+                size="$1"
+              >
                 or continue with
               </SizableText>
               <Separator f={1} />

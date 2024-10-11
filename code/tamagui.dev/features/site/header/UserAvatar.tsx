@@ -6,7 +6,10 @@ export const UserAvatar = ({ size = 28 }: { size?: number }) => {
   const userSwr = useUser()
 
   return (
-    <Avatar circular size={size}>
+    <Avatar
+      circular
+      size={size}
+    >
       <Avatar.Image
         width={size}
         height={size}

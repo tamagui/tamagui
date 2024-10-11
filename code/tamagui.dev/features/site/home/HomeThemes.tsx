@@ -3,16 +3,7 @@ import { useIsIntersecting } from '~/hooks/useOnIntersecting'
 import type { SetStateAction } from 'react'
 import { memo, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import type { ThemeName } from 'tamagui'
-import {
-  Theme,
-  XGroup,
-  XStack,
-  YStack,
-  debounce,
-  useDebounce,
-  useEvent,
-  useGet,
-} from 'tamagui'
+import { Theme, XGroup, XStack, YStack, debounce, useDebounce, useEvent, useGet } from 'tamagui'
 
 import { ActiveCircle } from '~/components/ActiveCircle'
 import { ContainerLarge } from '~/components/Containers'
@@ -155,20 +146,36 @@ export const HomeThemes = memo(function HomeThemes() {
     <YStack pos="relative">
       {useMemo(() => {
         return (
-          <ContainerLarge position="relative" space="$3">
+          <ContainerLarge
+            position="relative"
+            space="$3"
+          >
             <HomeH2>Smart themes and sub-themes down to the component.</HomeH2>
             <HomeH3>
-              Themes that act like CSS variables, overriding as they descend and compiled
-              to CSS to avoid re-renders.
+              Themes that act like CSS variables, overriding as they descend and compiled to CSS to
+              avoid re-renders.
             </HomeH3>
           </ContainerLarge>
         )
       }, [])}
 
-      <YStack my="$8" ai="center" jc="center">
+      <YStack
+        my="$8"
+        ai="center"
+        jc="center"
+      >
         <XStack className="scroll-horizontal no-scrollbar">
-          <XStack px="$4" space="$2">
-            <XGroup disablePassBorderRadius bordered p="$2" br="$10" als="center">
+          <XStack
+            px="$4"
+            space="$2"
+          >
+            <XGroup
+              disablePassBorderRadius
+              bordered
+              p="$2"
+              br="$10"
+              als="center"
+            >
               {(['light', 'dark'] as const).map((name, i) => {
                 const isActive = resolvedTheme === name
                 return (
@@ -183,7 +190,13 @@ export const HomeThemes = memo(function HomeThemes() {
               })}
             </XGroup>
 
-            <XGroup disablePassBorderRadius bordered p="$2" br="$10" als="center">
+            <XGroup
+              disablePassBorderRadius
+              bordered
+              p="$2"
+              br="$10"
+              als="center"
+            >
               {themes[0].map((color, i) => {
                 const isActive = curColorI === i
                 return (
@@ -200,7 +213,13 @@ export const HomeThemes = memo(function HomeThemes() {
               })}
             </XGroup>
 
-            <XGroup disablePassBorderRadius bordered p="$2" br="$10" als="center">
+            <XGroup
+              disablePassBorderRadius
+              bordered
+              p="$2"
+              br="$10"
+              als="center"
+            >
               <XGroup.Item>
                 <Theme name={colorName}>
                   <XStack>
@@ -231,7 +250,11 @@ export const HomeThemes = memo(function HomeThemes() {
           pointerEvents={scrollLock === 'animate' ? 'none' : 'auto'}
           maxWidth={1400}
         >
-          <YStack fullscreen pe="none" zIndex={1000000000} />
+          <YStack
+            fullscreen
+            pe="none"
+            zIndex={1000000000}
+          />
           <XStack
             className="scroll-horizontal no-scrollbar"
             ref={scrollView}
@@ -241,10 +264,7 @@ export const HomeThemes = memo(function HomeThemes() {
                 return
               }
               const scrollX = Math.max(0, e.target.scrollLeft)
-              const itemI = Math.min(
-                Math.floor(scrollX / (width + 30)),
-                themeCombos.length - 1
-              )
+              const itemI = Math.min(Math.floor(scrollX / (width + 30)), themeCombos.length - 1)
               const [n1, n2] = flatToSplit(itemI)
               const [c1, c2] = activeI
               if (n1 !== c1 || n2 !== c2) {

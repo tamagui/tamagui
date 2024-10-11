@@ -22,14 +22,24 @@ export function HomePerformance() {
 
   return (
     <ContainerLarge position="relative">
-      <YStack ai="center" zi={1} gap="$4">
-        <YStack ai="center" gap="$2">
-          <HomeH2 size="$10" maw={500} ref={ref}>
+      <YStack
+        ai="center"
+        zi={1}
+        gap="$4"
+      >
+        <YStack
+          ai="center"
+          gap="$2"
+        >
+          <HomeH2
+            size="$10"
+            maw={500}
+            ref={ref}
+          >
             Automatically fast
           </HomeH2>
           <HomeH3>
-            Partial evaluation, tree flattening, hoisting and
-            dead-code&nbsp;elimination&nbsp;✅
+            Partial evaluation, tree flattening, hoisting and dead-code&nbsp;elimination&nbsp;✅
           </HomeH3>
         </YStack>
 
@@ -58,7 +68,10 @@ export function HomePerformance() {
           {show && <BenchmarkChartWeb />}
         </YStack>
 
-        <XStack space flexWrap="wrap">
+        <XStack
+          space
+          flexWrap="wrap"
+        >
           <BenchmarksLink />
           <CompilerLink />
         </XStack>
@@ -86,7 +99,11 @@ const CompilerLink = () => {
   const { tint } = useTint()
   return (
     <Link href="/docs/intro/why-a-compiler">
-      <Button accessibilityLabel="Compiler" fontFamily="$silkscreen" theme={tint as any}>
+      <Button
+        accessibilityLabel="Compiler"
+        fontFamily="$silkscreen"
+        theme={tint as any}
+      >
         About &raquo;
       </Button>
     </Link>

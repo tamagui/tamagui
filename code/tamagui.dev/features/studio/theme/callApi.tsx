@@ -52,9 +52,7 @@ export async function callStudioProcedure<P extends Procedure>(
       // get from next api route - this checks for auth and access to studio
       const response = await fetch(
         `${
-          process.env.NODE_ENV === 'production'
-            ? 'https://tamagui.dev'
-            : 'http://localhost:8081'
+          process.env.NODE_ENV === 'production' ? 'https://tamagui.dev' : 'http://localhost:8081'
         }/api/studio/procedure?procedure=${procedureName}`,
         {
           method: 'POST',

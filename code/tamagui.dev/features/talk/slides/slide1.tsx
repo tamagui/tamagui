@@ -58,10 +58,7 @@ export default memo(({ subTitle }: { subTitle?: string }) => {
   }
 
   const letters = lettersConf.map(
-    (
-      { underlayStyle, glow, letter, props: { scale, rotate, zIndex, ...headingProps } },
-      index
-    ) => {
+    ({ underlayStyle, glow, letter, props: { scale, rotate, zIndex, ...headingProps } }, index) => {
       const colorVar = `var(--${headingProps.theme}8)`
 
       const Glow = useHoverGlow({
@@ -104,9 +101,18 @@ export default memo(({ subTitle }: { subTitle?: string }) => {
       })
 
       const Component = (
-        <YStack key={index} pos="relative" scale={scale} zIndex={zIndex}>
+        <YStack
+          key={index}
+          pos="relative"
+          scale={scale}
+          zIndex={zIndex}
+        >
           <Glow.Component>
-            <YStack pos="relative" w={320} h={320}>
+            <YStack
+              pos="relative"
+              w={320}
+              h={320}
+            >
               <H1
                 pos="absolute"
                 t={0}
@@ -185,8 +191,15 @@ export default memo(({ subTitle }: { subTitle?: string }) => {
                     <YStack>
                       {glow.Component()}
                       {glint.Component()}
-                      <YStack ai="center" pos="relative" w="100%">
-                        <YStack w="100%" h={lettersContainerBounds.height}>
+                      <YStack
+                        ai="center"
+                        pos="relative"
+                        w="100%"
+                      >
+                        <YStack
+                          w="100%"
+                          h={lettersContainerBounds.height}
+                        >
                           {letters.map(({ Component }) => {
                             return Component
                           })}
@@ -197,19 +210,37 @@ export default memo(({ subTitle }: { subTitle?: string }) => {
                 </YStack>
 
                 {subTitle !== ' ' && (
-                  <Container mt={-200} ai="center">
+                  <Container
+                    mt={-200}
+                    ai="center"
+                  >
                     <>
                       <Spacer size="$8" />
-                      <XStack maw={790} space="$8" separator={<Separator vertical />}>
-                        <H2 als="center" size="$9" fow="900" $sm={{ size: '$5' }}>
+                      <XStack
+                        maw={790}
+                        space="$8"
+                        separator={<Separator vertical />}
+                      >
+                        <H2
+                          als="center"
+                          size="$9"
+                          fow="900"
+                          $sm={{ size: '$5' }}
+                        >
                           {subTitle || 'Better apps with less code'}
                         </H2>
                       </XStack>
 
                       <Spacer />
 
-                      <XStack space ai="center">
-                        <SizableText o={0.5} size="$3">
+                      <XStack
+                        space
+                        ai="center"
+                      >
+                        <SizableText
+                          o={0.5}
+                          size="$3"
+                        >
                           By Nate Wienert
                         </SizableText>
                       </XStack>

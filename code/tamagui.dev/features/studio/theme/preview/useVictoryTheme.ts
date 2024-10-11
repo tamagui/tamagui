@@ -24,9 +24,7 @@ export const useVictoryTheme = (): VictoryThemeDefinition => {
     padding: 50,
   }
 
-  const accentColor = getVariableValue(
-    isAccent ? theme.color : theme[demoProps.accentBackground]
-  )
+  const accentColor = getVariableValue(isAccent ? theme.color : theme[demoProps.accentBackground])
 
   // *
   // * Labels

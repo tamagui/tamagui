@@ -6,9 +6,7 @@ import { BentoIcon } from '~/features/icons/BentoIcon'
 import { TakeoutIcon } from '~/features/icons/TakeoutIcon'
 import { Link } from './Link'
 
-const productSettings = (
-  product: string
-): { colorOffset: number; Icon: React.ReactNode } => {
+const productSettings = (product: string): { colorOffset: number; Icon: React.ReactNode } => {
   switch (product) {
     case 'bento':
       return { colorOffset: 6, Icon: <BentoIcon scale={2.5} /> }
@@ -27,7 +25,10 @@ export function ProductCard({ product, children, ...props }) {
   const { colorOffset, Icon } = productSettings(product)
 
   return (
-    <Link asChild href={link as Href}>
+    <Link
+      asChild
+      href={link as Href}
+    >
       <Stack
         group="card"
         tag="a"
@@ -60,7 +61,11 @@ export function ProductCard({ product, children, ...props }) {
           />
         </ThemeTintAlt>
 
-        <Card tag="a" bg="transparent" {...props}>
+        <Card
+          tag="a"
+          bg="transparent"
+          {...props}
+        >
           <View
             pos="absolute"
             als="flex-end"
@@ -75,15 +80,26 @@ export function ProductCard({ product, children, ...props }) {
             {Icon}
           </View>
           <Card.Header>
-            <YStack ai="center" gap="$5" px="$5">
+            <YStack
+              ai="center"
+              gap="$5"
+              px="$5"
+            >
               <H3>{title}</H3>
-              <Paragraph size="$5" theme="alt1">
+              <Paragraph
+                size="$5"
+                theme="alt1"
+              >
                 {childText}
               </Paragraph>
             </YStack>
           </Card.Header>
 
-          <Card.Footer animation="quicker" x={0} $group-card-hover={{ x: 5 }}>
+          <Card.Footer
+            animation="quicker"
+            x={0}
+            $group-card-hover={{ x: 5 }}
+          >
             <ChevronRight
               size="$1"
               pos="absolute"

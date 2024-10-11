@@ -182,17 +182,26 @@ const SlideInner = (props: SlideProps) => {
     props.stepsStrategy === 'replace'
       ? getStep(props.steps[step - 1])
       : props.steps
-          .slice(0, showAllSteps ? Infinity : step)
+          .slice(0, showAllSteps ? Number.POSITIVE_INFINITY : step)
           .map((s, i) => <React.Fragment key={i}>{getStep(s)}</React.Fragment>)
 
   const nextStepPreload = getStep(props.steps[step])
 
   return (
     <>
-      <YStack fullscreen zi={-1}>
+      <YStack
+        fullscreen
+        zi={-1}
+      >
         {showAllSteps ? null : glows.elements}
       </YStack>
-      <YStack ref={glows.ref as any} space="$7" w="90%" h="100%" p="$12">
+      <YStack
+        ref={glows.ref as any}
+        space="$7"
+        w="90%"
+        h="100%"
+        p="$12"
+      >
         <YStack gap="$4">
           {Boolean(props.title) && (
             <H1
@@ -208,17 +217,31 @@ const SlideInner = (props: SlideProps) => {
           )}
 
           {Boolean(props.subTitle) && (
-            <H2 size="$10" theme="alt2" als="center">
+            <H2
+              size="$10"
+              theme="alt2"
+              als="center"
+            >
               {props.subTitle}
             </H2>
           )}
         </YStack>
 
-        <YStack f={1} gap="$10" maxHeight="100%" flexWrap="wrap" w="100%">
+        <YStack
+          f={1}
+          gap="$10"
+          maxHeight="100%"
+          flexWrap="wrap"
+          w="100%"
+        >
           {stepsContent}
         </YStack>
 
-        <YStack pos="absolute" o={0} zi={-1}>
+        <YStack
+          pos="absolute"
+          o={0}
+          zi={-1}
+        >
           {nextStepPreload}
         </YStack>
       </YStack>
@@ -359,7 +382,12 @@ function getTextContent(
                   })}
                 >
                   {!!item.title && (
-                    <H4 size="$10" als="center" mb="$4" color="$color9">
+                    <H4
+                      size="$10"
+                      als="center"
+                      mb="$4"
+                      color="$color9"
+                    >
                       {item.title}
                     </H4>
                   )}
@@ -369,9 +397,18 @@ function getTextContent(
 
             case 'horizontal':
               return (
-                <XStack ai="center" jc="center" h="100%">
+                <XStack
+                  ai="center"
+                  jc="center"
+                  h="100%"
+                >
                   {!!item.title && (
-                    <H4 size="$10" als="center" mb="$4" color="$color9">
+                    <H4
+                      size="$10"
+                      als="center"
+                      mb="$4"
+                      color="$color9"
+                    >
                       {item.title}
                     </H4>
                   )}
@@ -392,10 +429,22 @@ function getTextContent(
                     my: 120,
                   })}
                 >
-                  <YStack jc="center" als="stretch" maw="50%" f={1} ov="hidden">
+                  <YStack
+                    jc="center"
+                    als="stretch"
+                    maw="50%"
+                    f={1}
+                    ov="hidden"
+                  >
                     {getTextContent([item.content[0]], options)}
                   </YStack>
-                  <YStack jc="center" als="stretch" maw="50%" f={1} ov="hidden">
+                  <YStack
+                    jc="center"
+                    als="stretch"
+                    maw="50%"
+                    f={1}
+                    ov="hidden"
+                  >
                     {getTextContent([item.content[1]], options)}
                   </YStack>
                 </XStack>
@@ -467,7 +516,10 @@ function getTextContent(
 
               if (item.title) {
                 return (
-                  <YStack ai="center" space>
+                  <YStack
+                    ai="center"
+                    space
+                  >
                     <H4 size="$9">{item.title}</H4>
                     {content}
                   </YStack>
@@ -482,10 +534,7 @@ function getTextContent(
 
               if (!item.size) {
                 if (typeof item.content === 'string') {
-                  const sizeNum = Math.min(
-                    Math.max(11, Math.round(430 / item.content.length)),
-                    15
-                  )
+                  const sizeNum = Math.min(Math.max(11, Math.round(430 / item.content.length)), 15)
                   size = `$${sizeNum}`
                 }
               }
@@ -543,16 +592,22 @@ function getTextContent(
               let size = '$10' as any
 
               if (typeof item.content === 'string') {
-                const sizeNum = Math.min(
-                  Math.max(8, Math.round(700 / item.content.length)),
-                  16
-                )
+                const sizeNum = Math.min(Math.max(8, Math.round(700 / item.content.length)), 16)
                 size = `$${sizeNum}`
               }
 
               return (
-                <YStack f={1} ai="center" jc="center" px="$6">
-                  <Paragraph als="center" ta="center" size={size}>
+                <YStack
+                  f={1}
+                  ai="center"
+                  jc="center"
+                  px="$6"
+                >
+                  <Paragraph
+                    als="center"
+                    ta="center"
+                    size={size}
+                  >
                     {item.content}&nbsp;
                   </Paragraph>
                 </YStack>
@@ -564,7 +619,12 @@ function getTextContent(
 
             case 'text':
               return (
-                <Paragraph fos={36} fow="400" lh="$10" {...item.props}>
+                <Paragraph
+                  fos={36}
+                  fow="400"
+                  lh="$10"
+                  {...item.props}
+                >
                   {item.content}&nbsp;
                 </Paragraph>
               )

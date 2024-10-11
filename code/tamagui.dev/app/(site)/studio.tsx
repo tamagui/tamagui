@@ -37,7 +37,10 @@ export default function StudioSplashPage() {
 
   return (
     <>
-      <HeadInfo title="Tamagui Studio" description="Tamagui Studio" />
+      <HeadInfo
+        title="Tamagui Studio"
+        description="Tamagui Studio"
+      />
 
       <LoadInter900 />
 
@@ -54,7 +57,10 @@ export default function StudioSplashPage() {
           <YStack>
             <StudioScreen1 />
 
-            <Container pe="none" ai="center">
+            <Container
+              pe="none"
+              ai="center"
+            >
               <YStack
                 ai="center"
                 jc="center"
@@ -66,7 +72,10 @@ export default function StudioSplashPage() {
                 $sm={{ mt: -100, fd: 'column' }}
               >
                 <ThemeTintAlt>
-                  <Link target="_blank" href="https://github.com/sponsors/natew">
+                  <Link
+                    target="_blank"
+                    href="https://github.com/sponsors/natew"
+                  >
                     <Button
                       mt={60}
                       animation="quick"
@@ -94,13 +103,22 @@ export default function StudioSplashPage() {
                 </ThemeTintAlt>
 
                 <Link href="/login">
-                  <Button pe="auto" variant="outlined" size="$3" borderRadius="$10">
+                  <Button
+                    pe="auto"
+                    variant="outlined"
+                    size="$3"
+                    borderRadius="$10"
+                  >
                     Login
                   </Button>
                 </Link>
               </YStack>
 
-              <XStack maw={790} space="$8" separator={<Separator vertical />}>
+              <XStack
+                maw={790}
+                space="$8"
+                separator={<Separator vertical />}
+              >
                 <H2
                   theme="alt1"
                   className="text-glow"
@@ -123,7 +141,11 @@ export default function StudioSplashPage() {
               als="center"
               $sm={{ fd: 'column', maw: '100%' }}
             >
-              <YStack px="$6" maw="50%" $sm={{ maw: '100%', p: '$2' }}>
+              <YStack
+                px="$6"
+                maw="50%"
+                $sm={{ maw: '100%', p: '$2' }}
+              >
                 <EnsureFlexed />
                 <Features
                   size="$5"
@@ -135,7 +157,11 @@ export default function StudioSplashPage() {
                 />
               </YStack>
 
-              <YStack px="$6" maw="50%" $sm={{ maw: '100%', p: '$2' }}>
+              <YStack
+                px="$6"
+                maw="50%"
+                $sm={{ maw: '100%', p: '$2' }}
+              >
                 <EnsureFlexed />
                 <Features
                   soon
@@ -198,12 +224,7 @@ const StudioScreen1 = memo(() => {
   }
 
   const letters = lettersConf.map(
-    ({
-      underlayStyle,
-      glow,
-      letter,
-      props: { scale, rotate, zIndex, ...headingProps },
-    }) => {
+    ({ underlayStyle, glow, letter, props: { scale, rotate, zIndex, ...headingProps } }) => {
       const colorVar = `var(--${headingProps.theme}8)`
 
       const Glow = useHoverGlow({
@@ -246,7 +267,12 @@ const StudioScreen1 = memo(() => {
       })
 
       const Component = (
-        <YStack key={letter} pos="relative" scale={scale} zIndex={zIndex}>
+        <YStack
+          key={letter}
+          pos="relative"
+          scale={scale}
+          zIndex={zIndex}
+        >
           <Glow.Component>
             <YStack
               animation={[
@@ -315,7 +341,13 @@ const StudioScreen1 = memo(() => {
 
   return (
     <ThemeTint>
-      <YStack y={-54} pe="none" o={0.0175} fullscreen className="bg-grid" />
+      <YStack
+        y={-54}
+        pe="none"
+        o={0.0175}
+        fullscreen
+        className="bg-grid"
+      />
 
       <YStack
         als="center"
@@ -343,8 +375,15 @@ const StudioScreen1 = memo(() => {
           <YStack>
             {glow.Component()}
             {shadow.Component()}
-            <YStack ai="center" pos="relative" w="100%">
-              <YStack w="100%" h={lettersContainerBounds.height}>
+            <YStack
+              ai="center"
+              pos="relative"
+              w="100%"
+            >
+              <YStack
+                w="100%"
+                h={lettersContainerBounds.height}
+              >
                 {letters.map(({ Component }) => {
                   return Component
                 })}

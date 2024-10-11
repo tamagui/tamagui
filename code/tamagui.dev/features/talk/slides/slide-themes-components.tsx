@@ -44,8 +44,14 @@ export default memo(() => {
               {
                 type: 'content',
                 content: (
-                  <YStack ai="center" jc="center">
-                    <Square size={300} bc="red" />
+                  <YStack
+                    ai="center"
+                    jc="center"
+                  >
+                    <Square
+                      size={300}
+                      bc="red"
+                    />
                   </YStack>
                 ),
               },

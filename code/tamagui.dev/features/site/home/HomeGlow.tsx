@@ -47,9 +47,7 @@ export const HomeGlow = memo(() => {
       const xRand = isOnHeroBelow ? 1 : positions[isOpposing ? 1 - i : i][0]
       const yRand = isOnHeroBelow ? 1 : positions[isOpposing ? 1 - i : i][1]
       const heroBelowShift = tintIndex === 2 ? -100 : tintIndex === 4 ? 100 : 0
-      const x =
-        xRand +
-        (isOnHeroBelow ? heroBelowShift + (isAlt ? -250 : 250) : isAlt ? -300 : 300)
+      const x = xRand + (isOnHeroBelow ? heroBelowShift + (isAlt ? -250 : 250) : isAlt ? -300 : 300)
 
       return (
         <YStack

@@ -1,8 +1,5 @@
 import { Circle, YStack, useThemeName } from 'tamagui'
-import {
-  PALETTE_BACKGROUND_OFFSET,
-  getThemeSuitePalettes,
-} from '../helpers/getThemeSuitePalettes'
+import { PALETTE_BACKGROUND_OFFSET, getThemeSuitePalettes } from '../helpers/getThemeSuitePalettes'
 import type { BuildPalette } from '../types'
 
 export const ColorThemeIndicator = ({
@@ -17,16 +14,15 @@ export const ColorThemeIndicator = ({
   const isDark = useThemeName().startsWith('dark')
   const palettes = [primary, secondary]
     .filter(Boolean)
-    .map(
-      (x) =>
-        getThemeSuitePalettes(x!)[isDark ? 'dark' : 'light'][
-          PALETTE_BACKGROUND_OFFSET + 8
-        ]
-    )
+    .map((x) => getThemeSuitePalettes(x!)[isDark ? 'dark' : 'light'][PALETTE_BACKGROUND_OFFSET + 8])
 
   return (
     <YStack>
-      <Circle width={size} height={size} bg={palettes[0] as any} />
+      <Circle
+        width={size}
+        height={size}
+        bg={palettes[0] as any}
+      />
       {!!palettes[1] && (
         <Circle
           pos="absolute"

@@ -4,8 +4,17 @@ import { unwrapText } from '~/helpers/unwrapText'
 
 export const Notice = ({ children, theme = 'yellow', disableUnwrap, ...props }: any) => {
   return (
-    <NoticeFrame theme={theme} {...props}>
-      <Paragraph py="$2" theme="alt1" mt={-3} mb={-3} className="paragraph-parent">
+    <NoticeFrame
+      theme={theme}
+      {...props}
+    >
+      <Paragraph
+        py="$2"
+        theme="alt1"
+        mt={-3}
+        mb={-3}
+        className="paragraph-parent"
+      >
         {disableUnwrap ? children : unwrapText(children)}
       </Paragraph>
     </NoticeFrame>

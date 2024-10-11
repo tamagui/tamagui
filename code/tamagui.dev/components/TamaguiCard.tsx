@@ -30,7 +30,13 @@ export function TamaguiCard({ children, title, subTitle, ...props }) {
 
       {!!subTitle && <XStack o={0.5}>{subTitle}</XStack>}
 
-      <Paragraph tag="span" size="$4" cursor="inherit" theme="alt2" o={0.7}>
+      <Paragraph
+        tag="span"
+        size="$4"
+        cursor="inherit"
+        theme="alt2"
+        o={0.7}
+      >
         {children}
       </Paragraph>
     </Card>

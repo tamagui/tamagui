@@ -10,11 +10,7 @@ export function getDemoProps(demosOptions: DemoOptions, hasAccent = false) {
 
   const accentColor = hasAccent ? '$accentColor' : '$color1'
   const accentBackground = hasAccent ? accentToken : ('$color11' as const)
-  const accentBorder = isOutlined
-    ? hasAccent
-      ? accentToken
-      : '$borderColor'
-    : 'transparent'
+  const accentBorder = isOutlined ? (hasAccent ? accentToken : '$borderColor') : 'transparent'
 
   const accentStyle = {
     backgroundColor: isOutlined ? 'transparent' : accentToken,
@@ -62,8 +58,7 @@ export function getDemoProps(demosOptions: DemoOptions, hasAccent = false) {
     } as ButtonProps,
 
     stackOutlineProps: {
-      backgroundColor:
-        demosOptions.backgroundAccent === 'low' ? '$color1' : '$background025',
+      backgroundColor: demosOptions.backgroundAccent === 'low' ? '$color1' : '$background025',
     } as const,
 
     chatFrameProps: {

@@ -47,14 +47,10 @@ export class TokensStore {
     }
   }
 
-  updateDemoValue(
-    demo: keyof TokensStore['demoValues'],
-    value: TokensStore['demoValues']['size']
-  ) {
+  updateDemoValue(demo: keyof TokensStore['demoValues'], value: TokensStore['demoValues']['size']) {
     if (this.lockedDemos && demo !== 'color') {
       const idx = this.sets[demo].findIndex((item) => item.key === value.key)
-      const division =
-        idx === this.sets[demo].length - 1 ? 1 : idx / this.sets[demo].length
+      const division = idx === this.sets[demo].length - 1 ? 1 : idx / this.sets[demo].length
       const size = getDivisionItem(this.sets.size, division) ?? this.demoValues.size
       const space = getDivisionItem(this.sets.space, division) ?? this.demoValues.space
       const radius = getDivisionItem(this.sets.radius, division) ?? this.demoValues.radius

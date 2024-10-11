@@ -96,15 +96,10 @@ function processFile(filePath, visitedFiles = new Set()) {
   let fileContent = fs.readFileSync(filePath, 'utf8')
   fileContent = replaceInternals(fileContent)
 
-  const importStatements = Array.from(
-    fileContent.matchAll(matchImportsRegex),
-    (m) => m[0]
-  )
+  const importStatements = Array.from(fileContent.matchAll(matchImportsRegex), (m) => m[0])
 
   let appendedContent = fileContent
-  appendedContent = `/** START of the file ${filePath
-    .split('/')
-    .pop()} */\n${appendedContent}`
+  appendedContent = `/** START of the file ${filePath.split('/').pop()} */\n${appendedContent}`
 
   for (const importStatement of importStatements) {
     const importPathMatch = importStatement.match(/from ['"](.*?)['"]/)
@@ -120,10 +115,7 @@ function processFile(filePath, visitedFiles = new Set()) {
         const possibleFileExtensions = ['.native.tsx', '.tsx', '.ts']
         let foundImport = false
         for (const extension of possibleFileExtensions) {
-          const alternativePath = path.resolve(
-            path.dirname(filePath),
-            `${importPath}${extension}`
-          )
+          const alternativePath = path.resolve(path.dirname(filePath), `${importPath}${extension}`)
           if (fs.existsSync(alternativePath)) {
             appendedContent += processFile(alternativePath, visitedFiles)
             foundImport = true
@@ -131,9 +123,7 @@ function processFile(filePath, visitedFiles = new Set()) {
         }
 
         if (!foundImport) {
-          console.error(
-            `Warning: File not found for import statement: ${importStatement}`
-          )
+          console.error(`Warning: File not found for import statement: ${importStatement}`)
         }
       }
     }
@@ -169,9 +159,7 @@ function zipDirectory(sourceDir, outputDir) {
     archive.directory(sourceDir, false)
     output.on('close', () => {
       console.info(
-        `archived ${outputDir
-          .split('/')
-          .pop()} finalized with ${archive.pointer()} total bytes`
+        `archived ${outputDir.split('/').pop()} finalized with ${archive.pointer()} total bytes`
       )
       resolve()
     })

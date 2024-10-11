@@ -9,7 +9,10 @@ export function AvatarCard({ title, subtitle, img, link, colorOffset, ...props }
 
   return (
     <ThemeTintAlt offset={colorOffset}>
-      <Link asChild href={link}>
+      <Link
+        asChild
+        href={link}
+      >
         <Card
           tag="a"
           animation="quickest"
@@ -26,23 +29,51 @@ export function AvatarCard({ title, subtitle, img, link, colorOffset, ...props }
           <Card.Header>
             <XStack jc="space-between">
               <YStack gap="$2.5">
-                <H5 size="$6" color="$color9" fontFamily="$silkscreen">
+                <H5
+                  size="$6"
+                  color="$color9"
+                  fontFamily="$silkscreen"
+                >
                   {title}
                 </H5>
-                <Paragraph w="$19" lh="$1" color="$color8">
+                <Paragraph
+                  w="$19"
+                  lh="$1"
+                  color="$color8"
+                >
                   {subtitle}
                 </Paragraph>
               </YStack>
 
-              <Avatar br="$true" size="$3" p="$3" bg="$color6">
-                <Avatar.Image scale={0.6} src={img} />
-                <Avatar.Fallback bg="$color6" bc="$color8" />
+              <Avatar
+                br="$true"
+                size="$3"
+                p="$3"
+                bg="$color6"
+              >
+                <Avatar.Image
+                  scale={0.6}
+                  src={img}
+                />
+                <Avatar.Fallback
+                  bg="$color6"
+                  bc="$color8"
+                />
               </Avatar>
             </XStack>
           </Card.Header>
 
-          <Card.Footer animation="quicker" x={isHovered ? 5 : 0}>
-            <ChevronRight size="$1" pos="absolute" b="$4" r="$4" color="$color11" />
+          <Card.Footer
+            animation="quicker"
+            x={isHovered ? 5 : 0}
+          >
+            <ChevronRight
+              size="$1"
+              pos="absolute"
+              b="$4"
+              r="$4"
+              color="$color11"
+            />
           </Card.Footer>
         </Card>
       </Link>

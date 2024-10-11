@@ -1,17 +1,7 @@
 import { Copy, MoreVertical } from '@tamagui/lucide-icons'
 import { createContext, useContext, useState } from 'react'
 import type { YStackProps } from 'tamagui'
-import {
-  Adapt,
-  Button,
-  ListItem,
-  Paragraph,
-  Popover,
-  Switch,
-  Theme,
-  YGroup,
-  YStack,
-} from 'tamagui'
+import { Adapt, Button, ListItem, Paragraph, Popover, Switch, Theme, YGroup, YStack } from 'tamagui'
 
 import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
 import { accentThemeName } from '../../accentThemeName'
@@ -101,7 +91,11 @@ export function Panel({
           top={'$-2'}
           zIndex={100}
         >
-          <Popover size="$5" allowFlip placement="bottom">
+          <Popover
+            size="$5"
+            allowFlip
+            placement="bottom"
+          >
             <Popover.Trigger asChild>
               <Button
                 onPress={(event) => {
@@ -115,8 +109,14 @@ export function Panel({
               />
             </Popover.Trigger>
 
-            <Adapt when="sm" platform="touch">
-              <Popover.Sheet modal dismissOnSnapToBottom>
+            <Adapt
+              when="sm"
+              platform="touch"
+            >
+              <Popover.Sheet
+                modal
+                dismissOnSnapToBottom
+              >
                 <Popover.Sheet.Frame padding="$4">
                   <Adapt.Contents />
                 </Popover.Sheet.Frame>
@@ -147,7 +147,10 @@ export function Panel({
                 },
               ]}
             >
-              <Popover.Arrow borderWidth={1} borderColor="$borderColor" />
+              <Popover.Arrow
+                borderWidth={1}
+                borderColor="$borderColor"
+              />
 
               <YGroup>
                 {/* {!!fileToCopyName && (
@@ -173,7 +176,12 @@ export function Panel({
                   gap="$3"
                   onPress={() => setInverse((val) => !val)}
                 >
-                  <Paragraph size="$3" mr="$2" ta="left" userSelect="none">
+                  <Paragraph
+                    size="$3"
+                    mr="$2"
+                    ta="left"
+                    userSelect="none"
+                  >
                     Inverse
                   </Paragraph>
 
@@ -204,7 +212,12 @@ export function Panel({
                     gap="$3"
                     onPress={() => setAccent((val) => !val)}
                   >
-                    <Paragraph size="$3" mr="$2" ta="left" userSelect="none">
+                    <Paragraph
+                      size="$3"
+                      mr="$2"
+                      ta="left"
+                      userSelect="none"
+                    >
                       Accent
                     </Paragraph>
 

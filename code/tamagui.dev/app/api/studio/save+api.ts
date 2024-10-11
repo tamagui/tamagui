@@ -15,11 +15,7 @@ export default apiRoute(async (req) => {
 
   const body: StoreData = await readBodyJSON(req)
 
-  await supabase
-    .from('studio_themes')
-    .delete()
-    .eq('user_id', user.id)
-    .eq('team_id', teamId)
+  await supabase.from('studio_themes').delete().eq('user_id', user.id).eq('team_id', teamId)
 
   try {
     console.info(`Saving theme suite ids ${Object.keys(body.themeSuites).join(', ')}`)

@@ -90,7 +90,10 @@ export function Slides(props: { slides: Slides }) {
         bc="$borderColor"
         alignItems="center"
       >
-        <AnimatePresence custom={{ going: direction }} initial={false}>
+        <AnimatePresence
+          custom={{ going: direction }}
+          initial={false}
+        >
           <YStackEnterable
             key={page}
             animation="lazy"
@@ -127,7 +130,15 @@ export function Slides(props: { slides: Slides }) {
           onPress={nextStep}
         />
 
-        <Paragraph pos="absolute" b="$4" size="$2" theme="alt2" l={0} r={0} ta="center">
+        <Paragraph
+          pos="absolute"
+          b="$4"
+          size="$2"
+          theme="alt2"
+          l={0}
+          r={0}
+          ta="center"
+        >
           {index} / {total}
         </Paragraph>
       </XStack>

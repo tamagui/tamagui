@@ -16,21 +16,15 @@ import {
 export default apiRoute(async (req) => {
   const { supabase, user } = await ensureAuth({ req })
 
-  const [
-    userTeams,
-    userDetails,
-    subscriptions,
-    productOwnerships,
-    privateInfo,
-    accessInfo,
-  ] = await Promise.all([
-    getUserTeams(supabase),
-    getUserDetails(supabase),
-    getSubscriptions(supabase),
-    getProductOwnerships(supabase),
-    getUserPrivateInfo(user.id),
-    getUserAccessInfo(supabase, user),
-  ])
+  const [userTeams, userDetails, subscriptions, productOwnerships, privateInfo, accessInfo] =
+    await Promise.all([
+      getUserTeams(supabase),
+      getUserDetails(supabase),
+      getSubscriptions(supabase),
+      getProductOwnerships(supabase),
+      getUserPrivateInfo(user.id),
+      getUserAccessInfo(supabase, user),
+    ])
 
   return Response.json({
     user,

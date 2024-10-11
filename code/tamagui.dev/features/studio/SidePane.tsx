@@ -1,6 +1,7 @@
 import { ArrowLeft, X } from '@tamagui/lucide-icons'
 import { useStore } from '@tamagui/use-store'
-import React, { memo, useEffect } from 'react'
+import type React from 'react'
+import { memo, useEffect } from 'react'
 import { Button, H4, PortalHost, ScrollView, Spacer, XStack, YStack } from 'tamagui'
 
 import { SidePaneStore } from './state/SidePaneStore'
@@ -21,7 +22,10 @@ export const SidePane = ({
       // space for floating menu:
       mb="$14"
     >
-      <XStack p="$8" pb="$4">
+      <XStack
+        p="$8"
+        pb="$4"
+      >
         <H4 size="$10">{title}</H4>
         <Spacer f={1} />
         {controls}
@@ -29,8 +33,15 @@ export const SidePane = ({
 
       <YStack f={1}>
         <ScrollView horizontal={false}>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} f={1}>
-            <YStack p="$6" f={1}>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            f={1}
+          >
+            <YStack
+              p="$6"
+              f={1}
+            >
               {children}
             </YStack>
           </ScrollView>

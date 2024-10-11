@@ -97,7 +97,11 @@ const TabsListFrame = styled(XStack, {
 const TabsList = (props) => {
   return (
     <TabsListFrame className="sticky">
-      <Tabs.List size="$4" width="100%" {...props} />
+      <Tabs.List
+        size="$4"
+        width="100%"
+        {...props}
+      />
     </TabsListFrame>
   )
 }

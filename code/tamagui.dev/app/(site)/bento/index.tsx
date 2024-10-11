@@ -68,7 +68,6 @@ import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
 export const loader = async () => {
   try {
     const products = await getProductsForServerSideRendering()
-    console.log('got', products)
     return products
   } catch (err) {
     assertIsError(err)
@@ -179,17 +178,26 @@ const Intermediate = () => {
         }}
       >
         <ThemeTintAlt offset={-1}>
-          <IntermediateCard Icon={Globe} title="Universal">
+          <IntermediateCard
+            Icon={Globe}
+            title="Universal"
+          >
             Components that adapt well to all screen sizes and platforms.
           </IntermediateCard>
         </ThemeTintAlt>
         <ThemeTintAlt offset={0}>
-          <IntermediateCard Icon={Puzzle} title="Copy & Paste">
+          <IntermediateCard
+            Icon={Puzzle}
+            title="Copy & Paste"
+          >
             Customize to your design system, designed to be used independently.
           </IntermediateCard>
         </ThemeTintAlt>
         <ThemeTintAlt offset={1}>
-          <IntermediateCard Icon={Leaf} title="Growing">
+          <IntermediateCard
+            Icon={Leaf}
+            title="Growing"
+          >
             We continuously improve and add to the collection.
           </IntermediateCard>
         </ThemeTintAlt>
@@ -204,12 +212,32 @@ const IntermediateCard = ({
   Icon,
 }: { title?: any; children?: any; Icon?: any }) => {
   return (
-    <XStack className="" ov="hidden" f={1} gap="$5" px="$5" py="$4">
-      <YStack f={1} gap="$2">
-        <H4 ff="$silkscreen" color="$color11" className="text-glow" size="$2">
+    <XStack
+      className=""
+      ov="hidden"
+      f={1}
+      gap="$5"
+      px="$5"
+      py="$4"
+    >
+      <YStack
+        f={1}
+        gap="$2"
+      >
+        <H4
+          ff="$silkscreen"
+          color="$color11"
+          className="text-glow"
+          size="$2"
+        >
           {title}
         </H4>
-        <Paragraph mb={-5} size="$3" color="$color12" o={0.7}>
+        <Paragraph
+          mb={-5}
+          size="$3"
+          color="$color12"
+          o={0.7}
+        >
           {children}
         </Paragraph>
         <EnsureFlexed />
@@ -224,7 +252,10 @@ const IntermediateCard = ({
         backdropFilter="blur(5px)"
         // bg="$color025"
       >
-        <Icon color="$color11" o={0.85} />
+        <Icon
+          color="$color11"
+          o={0.85}
+        />
       </Circle>
     </XStack>
   )
@@ -234,7 +265,10 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['bento'] }) => 
   const store = useTakeoutStore()
 
   return (
-    <YStack pos="relative" zi={10}>
+    <YStack
+      pos="relative"
+      zi={10}
+    >
       <ContainerLarge>
         <XStack
           gap="$6"
@@ -321,7 +355,10 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['bento'] }) => 
                     y={3}
                     $sm={{ scale: 0.8, y: 7 }}
                   >
-                    <BentoIcon bright scale={1.2} />
+                    <BentoIcon
+                      bright
+                      scale={1.2}
+                    />
                   </YStack>
                 </Paragraph>
               </XStack>
@@ -332,18 +369,34 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['bento'] }) => 
                 mr="$4"
                 $md={{ mx: 0, fd: 'column', gap: '$3' }}
               >
-                <Paragraph color="$color10" size="$5" $md={{ size: '$3' }}>
+                <Paragraph
+                  color="$color10"
+                  size="$5"
+                  $md={{ size: '$3' }}
+                >
                   One-time Purchase
                 </Paragraph>
 
-                <Circle size={4} bg="$color10" $md={{ dsp: 'none' }} />
+                <Circle
+                  size={4}
+                  bg="$color10"
+                  $md={{ dsp: 'none' }}
+                />
 
-                <XStack ai="center" jc="space-between">
+                <XStack
+                  ai="center"
+                  jc="space-between"
+                >
                   <Spacer />
                   <Theme name="green">
                     {/* $199 */}
                     <Button
-                      iconAfter={<ShoppingCart y={-0.5} x={-1} />}
+                      iconAfter={
+                        <ShoppingCart
+                          y={-0.5}
+                          x={-1}
+                        />
+                      }
                       // iconAfter={
                       //   <YStack
                       //     zi={100}
@@ -402,16 +455,25 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['bento'] }) => 
                         </sup>
                         {(mainProduct?.prices.sort(
                           (a, b) =>
-                            (a.unit_amount || Infinity) - (b.unit_amount || Infinity)
+                            (a.unit_amount || Number.POSITIVE_INFINITY) -
+                            (b.unit_amount || Number.POSITIVE_INFINITY)
                         )[0].unit_amount || 0) / 100}
                       </Button.Text>
                     </Button>
                   </Theme>
                 </XStack>
 
-                <Circle size={4} bg="$color10" $md={{ dsp: 'none' }} />
+                <Circle
+                  size={4}
+                  bg="$color10"
+                  $md={{ dsp: 'none' }}
+                />
 
-                <Paragraph color="$color10" size="$5" $md={{ size: '$3' }}>
+                <Paragraph
+                  color="$color10"
+                  size="$5"
+                  $md={{ size: '$3' }}
+                >
                   Lifetime rights
                 </Paragraph>
               </XStack>
@@ -439,8 +501,17 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['bento'] }) => 
                 ov="hidden"
                 className="blur-8"
               >
-                <YStack o={0.5} bg="$color10" fullscreen br="$5" />
-                <YStack py="$3.5" px="$4" f={1}>
+                <YStack
+                  o={0.5}
+                  bg="$color10"
+                  fullscreen
+                  br="$5"
+                />
+                <YStack
+                  py="$3.5"
+                  px="$4"
+                  f={1}
+                >
                   <H3
                     ff="$silkscreen"
                     size="$2"
@@ -460,8 +531,8 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['bento'] }) => 
                       color: '$color10',
                     }}
                   >
-                    Use <CodeInline>npx bento-get</CodeInline> to search and copy any
-                    component directly to your repo.
+                    Use <CodeInline>npx bento-get</CodeInline> to search and copy any component
+                    directly to your repo.
                   </Paragraph>
                 </YStack>
                 <AlertCircle
@@ -511,7 +582,11 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['bento'] }) => 
                   mb: -60,
                 }}
               >
-                <YStack br="$4" shac="rgba(0,0,0,0.2)" shar="$8">
+                <YStack
+                  br="$4"
+                  shac="rgba(0,0,0,0.2)"
+                  shar="$8"
+                >
                   <ThemeTintAlt>
                     <Theme name="surface4">
                       <LocationNotification />
@@ -658,7 +733,11 @@ const Body = () => {
 
         {filteredSections.map(({ sectionName, parts }) => {
           return (
-            <YStack id={sectionName} key={sectionName} jc={'space-between'}>
+            <YStack
+              id={sectionName}
+              key={sectionName}
+              jc={'space-between'}
+            >
               <Theme name="tan">
                 <YStack pos="relative">
                   <YStack
@@ -669,7 +748,11 @@ const Body = () => {
                     }}
                   />
                   <ContainerLarge>
-                    <YStack py="$2" px="$3" pos="relative">
+                    <YStack
+                      py="$2"
+                      px="$3"
+                      pos="relative"
+                    >
                       <H3
                         ff="$silkscreen"
                         size="$3"
@@ -716,7 +799,10 @@ const Body = () => {
                       ))}
 
                       {/* @ts-ignore */}
-                      <Spacer width="calc(50vw - 300px)" $gtMd={{ dsp: 'none' }} />
+                      <Spacer
+                        width="calc(50vw - 300px)"
+                        $gtMd={{ dsp: 'none' }}
+                      />
                     </XStack>
                   </Theme>
                 </ContainerLarge>
@@ -743,7 +829,10 @@ function SectionCard({
   const Icon = icons[name] ?? Null
 
   return (
-    <Link href={(BASE_PATH + path) as any} asChild>
+    <Link
+      href={(BASE_PATH + path) as any}
+      asChild
+    >
       <YStack
         tag="a"
         ov="hidden"
@@ -772,14 +861,26 @@ function SectionCard({
           m: '$2',
         }}
       >
-        <YStack f={1} p="$4">
+        <YStack
+          f={1}
+          p="$4"
+        >
           <Theme name="gray">
-            <H4 ff="$body" size="$4" fow="600" color="$color12">
+            <H4
+              ff="$body"
+              size="$4"
+              fow="600"
+              color="$color12"
+            >
               {name}
             </H4>
           </Theme>
 
-          <H5 theme="alt1" size="$1" ls={1}>
+          <H5
+            theme="alt1"
+            size="$1"
+            ls={1}
+          >
             {numberOfComponents} components
           </H5>
 
@@ -792,7 +893,10 @@ function SectionCard({
             p="$2"
             o={0.4}
           >
-            <Icon size={25} color="$color10" />
+            <Icon
+              size={25}
+              color="$color10"
+            />
           </YStack>
         </YStack>
       </YStack>

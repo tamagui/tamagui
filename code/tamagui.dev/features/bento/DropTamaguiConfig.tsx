@@ -1,16 +1,7 @@
 import { Paintbrush, X } from '@tamagui/lucide-icons'
 import { useEffect, useState } from 'react'
 // import { useLocalStorage } from 'foxact/use-local-storage'
-import {
-  Button,
-  Dialog,
-  H2,
-  Paragraph,
-  ScrollView,
-  Theme,
-  TooltipSimple,
-  YStack,
-} from 'tamagui'
+import { Button, Dialog, H2, Paragraph, ScrollView, Theme, TooltipSimple, YStack } from 'tamagui'
 import { Features } from '~/components/Features'
 import { Code, CodeInline } from '~/components/Code'
 import { useLocalStorageWatcher } from '~/hooks/useLocalStorageWatcher'
@@ -50,7 +41,7 @@ export const DropTamaguiConfig = () => {
     document.addEventListener('drop', handleDrop)
 
     return () => {
-      document.removeEventListener('dragover', (e) => setDragging(true))
+      document.removeEventListener('dragover', () => setDragging(true))
       document.removeEventListener('dragleave', () => setDragging(false))
       document.removeEventListener('dragend', () => setDragging(false))
       document.removeEventListener('drop', handleDrop)
@@ -78,7 +69,10 @@ export const DropTamaguiConfig = () => {
         </Theme>
       </TooltipSimple>
 
-      <Dialog open={show} onOpenChange={setShow}>
+      <Dialog
+        open={show}
+        onOpenChange={setShow}
+      >
         <Dialog.Portal>
           <Dialog.Overlay
             key="overlay"
@@ -141,8 +135,8 @@ export const DropTamaguiConfig = () => {
                   <>
                     <Paragraph size="$4">Nice, we've got your config.</Paragraph>
                     <Paragraph size="$4">
-                      You can now go copy code from any component and we will adapt the
-                      copy-paste code to use your tokens.
+                      You can now go copy code from any component and we will adapt the copy-paste
+                      code to use your tokens.
                     </Paragraph>
                     <Button
                       als="flex-end"
@@ -158,13 +152,12 @@ export const DropTamaguiConfig = () => {
                 {!config.storageItem && (
                   <>
                     <Paragraph size="$4">
-                      Drag and drop your{' '}
-                      <CodeInline>.tamagui/tamagui.config.json</CodeInline> here to
-                      customize the code we generate to your design system!
+                      Drag and drop your <CodeInline>.tamagui/tamagui.config.json</CodeInline> here
+                      to customize the code we generate to your design system!
                     </Paragraph>
                     <Paragraph size="$4">
-                      If you have a compiler plugin installed, this is done for you
-                      automatically. If not, use the CLI.
+                      If you have a compiler plugin installed, this is done for you automatically.
+                      If not, use the CLI.
                     </Paragraph>
                     <Paragraph size="$4">
                       But first, set up a <CodeInline>tamagui.build.ts</CodeInline>:
@@ -172,21 +165,17 @@ export const DropTamaguiConfig = () => {
 
                     <Features
                       items={[
-                        // biome-ignore lint/correctness/useJsxKeyInIterable: <explanation>
                         <>
-                          Create a <CodeInline>tamagui.build.ts</CodeInline> at the root
-                          of your app and move your build configuration into it as a
-                          default export. All of the bundler plugins load from this file
-                          on startup.
+                          Create a <CodeInline key="1">tamagui.build.ts</CodeInline> at the root of
+                          your app and move your build configuration into it as a default export.
+                          All of the bundler plugins load from this file on startup.
                         </>,
-                        // biome-ignore lint/correctness/useJsxKeyInIterable: <explanation>
                         <>
                           If not using a compiler plugin, run generate —{' '}
-                          <Code>npx @tamagui/cli generate</Code>
+                          <Code key="2">npx @tamagui/cli generate</Code>
                         </>,
-                        // biome-ignore lint/correctness/useJsxKeyInIterable: <explanation>
                         <>
-                          Drop the generated <Code>.tamagui/tamagui.config.json</Code> on
+                          Drop the generated <Code key="3">.tamagui/tamagui.config.json</Code> on
                           this window.
                         </>,
                       ]}

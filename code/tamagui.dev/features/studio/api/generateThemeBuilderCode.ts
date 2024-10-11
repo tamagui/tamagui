@@ -1,4 +1,4 @@
-import type { ThemeBuilder, ThemeDefinitions } from '@tamagui/theme-builder'
+import type { ThemeBuilder } from '@tamagui/theme-builder'
 // import * as prettier from 'prettier'
 // import tsParser from 'prettier/parser-typescript'
 
@@ -18,7 +18,6 @@ export async function generateThemeBuilderCode({
   selectedSchemes,
   templates,
   includeComponentThemes,
-  includeSizeTokens,
 }: GenerateThemeBuilderCodeProps) {
   const { themeBuilder } = buildThemeSuite({
     templates,

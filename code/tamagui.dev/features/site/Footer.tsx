@@ -8,9 +8,16 @@ import { ExternalIcon } from '../icons/ExternalIcon'
 
 export const Footer = memo(() => {
   return (
-    <YStack tag="footer" pos="relative" mb="$10">
+    <YStack
+      tag="footer"
+      pos="relative"
+      mb="$10"
+    >
       <ContainerLarge>
-        <XStack py="$7" $sm={{ flexDirection: 'column', ai: 'center' }}>
+        <XStack
+          py="$7"
+          $sm={{ flexDirection: 'column', ai: 'center' }}
+        >
           <YStack
             ai="flex-start"
             $sm={{ ai: 'center' }}
@@ -20,11 +27,20 @@ export const Footer = memo(() => {
             px="$6"
             gap="$4"
           >
-            <Link href="/" aria-label="Homepage">
+            <Link
+              href="/"
+              aria-label="Homepage"
+            >
               <VisuallyHidden>homepage</VisuallyHidden>
-              <TamaguiLogo showWords downscale={1} />
+              <TamaguiLogo
+                showWords
+                downscale={1}
+              />
             </Link>
-            <Paragraph size="$3" o={0.25}>
+            <Paragraph
+              size="$3"
+              o={0.25}
+            >
               built with Tamagui
             </Paragraph>
           </YStack>
@@ -37,7 +53,13 @@ export const Footer = memo(() => {
             flex={1.5}
             gap="$3"
           >
-            <H4 mb="$3" fontFamily="$silkscreen" fontSize={12} ls={0.5} o={0.5}>
+            <H4
+              mb="$3"
+              fontFamily="$silkscreen"
+              fontSize={12}
+              ls={0.5}
+              o={0.5}
+            >
               Overview
             </H4>
             <ParagraphLink href="/docs/intro/introduction">Introduction</ParagraphLink>
@@ -56,7 +78,13 @@ export const Footer = memo(() => {
             flex={1.5}
             gap="$3"
           >
-            <H4 mb="$3" fontFamily="$silkscreen" fontSize={12} ls={0.5} o={0.5}>
+            <H4
+              mb="$3"
+              fontFamily="$silkscreen"
+              fontSize={12}
+              ls={0.5}
+              o={0.5}
+            >
               Docs
             </H4>
             <ParagraphLink href="/docs/intro/introduction">Introduction</ParagraphLink>
@@ -74,29 +102,59 @@ export const Footer = memo(() => {
             flex={1.5}
             gap="$3"
           >
-            <H4 mb="$3" fontFamily="$silkscreen" fontSize={12} ls={0.5} o={0.5}>
+            <H4
+              mb="$3"
+              fontFamily="$silkscreen"
+              fontSize={12}
+              ls={0.5}
+              o={0.5}
+            >
               Community
             </H4>
-            <XStack gap="$1" ai="center">
+            <XStack
+              gap="$1"
+              ai="center"
+            >
               <ParagraphLink href="/community">Community</ParagraphLink>
             </XStack>
-            <XStack gap="$1" ai="center">
+            <XStack
+              gap="$1"
+              ai="center"
+            >
               <ParagraphLink href="/blog">Blog</ParagraphLink>
             </XStack>
-            <XStack gap="$1" ai="center">
-              <ParagraphLink href="https://github.com/tamagui/tamagui" target="_blank">
+            <XStack
+              gap="$1"
+              ai="center"
+            >
+              <ParagraphLink
+                href="https://github.com/tamagui/tamagui"
+                target="_blank"
+              >
                 GitHub
               </ParagraphLink>
               <ExternalIcon />
             </XStack>
-            <XStack gap="$1" ai="center">
-              <ParagraphLink href="https://twitter.com/tamagui_js" target="_blank">
+            <XStack
+              gap="$1"
+              ai="center"
+            >
+              <ParagraphLink
+                href="https://twitter.com/tamagui_js"
+                target="_blank"
+              >
                 Twitter
               </ParagraphLink>
               <ExternalIcon />
             </XStack>
-            <XStack gap="$1" ai="center">
-              <ParagraphLink href="https://discord.gg/4qh6tdcVDa" target="_blank">
+            <XStack
+              gap="$1"
+              ai="center"
+            >
+              <ParagraphLink
+                href="https://discord.gg/4qh6tdcVDa"
+                target="_blank"
+              >
                 Discord
               </ParagraphLink>
               <ExternalIcon />

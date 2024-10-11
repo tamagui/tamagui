@@ -42,15 +42,25 @@ export const StudioThemesQuickPreviewSection = memo(
         maxWidth={400}
         als="center"
       >
-        <YStack gap="$3" height="100%" f={1} pt="$4" px="$4" jc="space-between">
+        <YStack
+          gap="$3"
+          height="100%"
+          f={1}
+          pt="$4"
+          px="$4"
+          jc="space-between"
+        >
           <YStack gap="$2">
             <H3>Preview</H3>
             <Paragraph color="$color11">
-              This is just an example, your actual components can use any values from the
-              palette.
+              This is just an example, your actual components can use any values from the palette.
             </Paragraph>
           </YStack>
-          <XStack width={200} alignItems="center" gap="$4">
+          <XStack
+            width={200}
+            alignItems="center"
+            gap="$4"
+          >
             <Label
               paddingRight="$0"
               minWidth={90}
@@ -59,7 +69,10 @@ export const StudioThemesQuickPreviewSection = memo(
             >
               Label
             </Label>
-            <Separator minHeight={20} vertical />
+            <Separator
+              minHeight={20}
+              vertical
+            />
             <>
               <Switch
                 id="switch"
@@ -82,9 +95,19 @@ export const StudioThemesQuickPreviewSection = memo(
             </>
           </XStack>
 
-          <YStack pb="$4" gap="$4">
-            <XStack my="$-2" jc="center">
-              <XStack width={300} alignItems="center" space="$4">
+          <YStack
+            pb="$4"
+            gap="$4"
+          >
+            <XStack
+              my="$-2"
+              jc="center"
+            >
+              <XStack
+                width={300}
+                alignItems="center"
+                space="$4"
+              >
                 <Checkbox
                   id={checkId}
                   onCheckedChange={(val) => {
@@ -104,7 +127,10 @@ export const StudioThemesQuickPreviewSection = memo(
               <Button f={1}>Cancel</Button>
 
               <AccentTheme>
-                <Button f={1} onPress={onPressButton}>
+                <Button
+                  f={1}
+                  onPress={onPressButton}
+                >
                   Accept
                 </Button>
               </AccentTheme>

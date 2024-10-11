@@ -54,7 +54,11 @@ const Items = () => {
   if (!subscriptions || !productOwnerships) return null
 
   return (
-    <Container f={1} py="$8" gap="$8">
+    <Container
+      f={1}
+      py="$8"
+      gap="$8"
+    >
       <GithubAppMessage />
 
       <YStack gap="$4">
@@ -62,20 +66,37 @@ const Items = () => {
         <YStack gap="$8">
           {productOwnerships?.length === 0 ? (
             <YStack gap="$1">
-              <Paragraph ta="center" theme="alt1">
+              <Paragraph
+                ta="center"
+                theme="alt1"
+              >
                 You don't have any owned items.
               </Paragraph>
-              <Paragraph ta="center" theme="alt2">
-                You may need to refresh your page after a few seconds to see the new
-                items.
+              <Paragraph
+                ta="center"
+                theme="alt2"
+              >
+                You may need to refresh your page after a few seconds to see the new items.
               </Paragraph>
             </YStack>
           ) : (
-            <YStack borderColor="$color2" borderWidth="$1" borderRadius="$4">
-              <YStack p="$4" gap="$6" separator={<Separator o={0.5} />}>
+            <YStack
+              borderColor="$color2"
+              borderWidth="$1"
+              borderRadius="$4"
+            >
+              <YStack
+                p="$4"
+                gap="$6"
+                separator={<Separator o={0.5} />}
+              >
                 {productOwnerships.map((ownership) => {
                   return (
-                    <ItemDetails key={ownership.id} type="owned_item" item={ownership} />
+                    <ItemDetails
+                      key={ownership.id}
+                      type="owned_item"
+                      item={ownership}
+                    />
                   )
                 })}
               </YStack>
@@ -89,17 +110,27 @@ const Items = () => {
         <YStack gap="$8">
           {subscriptions.length === 0 && (
             <YStack gap="$1">
-              <Paragraph ta="center" theme="alt1">
+              <Paragraph
+                ta="center"
+                theme="alt1"
+              >
                 You don't have any subscriptions.
               </Paragraph>
-              <Paragraph ta="center" theme="alt2">
-                You may need to refresh your page after a few seconds to see the new
-                subscriptions.
+              <Paragraph
+                ta="center"
+                theme="alt2"
+              >
+                You may need to refresh your page after a few seconds to see the new subscriptions.
               </Paragraph>
             </YStack>
           )}
           {subscriptions.map((sub) => {
-            return <SubscriptionDetail key={sub.id} subscription={sub} />
+            return (
+              <SubscriptionDetail
+                key={sub.id}
+                subscription={sub}
+              />
+            )
           })}
         </YStack>
       </YStack>
@@ -204,11 +235,18 @@ const SubscriptionDetail = ({ subscription }: SubscriptionDetailProps) => {
         // separator={<Separator />}
         flexWrap="wrap"
       >
-        <XStack gap="$2" separator={<Separator vertical my="$1" />} flexWrap="wrap">
+        <XStack
+          gap="$2"
+          separator={
+            <Separator
+              vertical
+              my="$1"
+            />
+          }
+          flexWrap="wrap"
+        >
           <SizableText>Started at {dateFormatter.format(startDate)}</SizableText>
-          <SizableText>
-            Current period ends at {dateFormatter.format(periodEnd)}
-          </SizableText>
+          <SizableText>Current period ends at {dateFormatter.format(periodEnd)}</SizableText>
           {canceledAt ? (
             <SizableText>
               Canceled at {dateFormatter.format(canceledAt)} -{' '}
@@ -236,7 +274,16 @@ const SubscriptionDetail = ({ subscription }: SubscriptionDetailProps) => {
           )}
         </XStack>
 
-        <XStack gap="$4" separator={<Separator vertical my="$1" />} flexWrap="wrap">
+        <XStack
+          gap="$4"
+          separator={
+            <Separator
+              vertical
+              my="$1"
+            />
+          }
+          flexWrap="wrap"
+        >
           <SizableText>Sub ID: {subscription.id}</SizableText>
           <SizableText>
             <SizableText>Status: </SizableText>
@@ -250,7 +297,11 @@ const SubscriptionDetail = ({ subscription }: SubscriptionDetailProps) => {
         </XStack>
       </YStack>
 
-      <YStack p="$4" gap="$6" separator={<Separator o={0.5} />}>
+      <YStack
+        p="$4"
+        gap="$6"
+        separator={<Separator o={0.5} />}
+      >
         {items.map((item) => {
           const product = getSingle(item.price?.products)
           if (!item.price || !product) return null
@@ -351,8 +402,14 @@ const ItemDetails = (
   //     : null
 
   return (
-    <YStack key={product.id} gap="$4">
-      <XStack gap="$2" jc="space-between">
+    <YStack
+      key={product.id}
+      gap="$4"
+    >
+      <XStack
+        gap="$2"
+        jc="space-between"
+      >
         <Image
           source={{
             width: 100,
@@ -387,14 +444,23 @@ const ItemDetails = (
 
       <YStack>
         <H3>{product.name}</H3>
-        <Paragraph size="$5" theme="alt2">
+        <Paragraph
+          size="$5"
+          theme="alt2"
+        >
           {product.description}
         </Paragraph>
       </YStack>
 
-      <YStack gap="$6" separator={<Separator o={0.5} />}>
+      <YStack
+        gap="$6"
+        separator={<Separator o={0.5} />}
+      >
         {installInstructions && (
-          <Paragraph size="$5" theme="alt1">
+          <Paragraph
+            size="$5"
+            theme="alt1"
+          >
             {installInstructions}
           </Paragraph>
         )}
@@ -425,16 +491,18 @@ const BotInstallPanel = ({
   subItemId: string
   appInstallations: Database['public']['Tables']['app_installations']['Row'][]
 }) => {
-  const activeInstallations = appInstallations.filter(
-    (installation) => !!installation.installed_at
-  )
+  const activeInstallations = appInstallations.filter((installation) => !!installation.installed_at)
   const installationUrl = `/api/github/install-bot?${new URLSearchParams({
     subscription_item_id: subItemId,
   })}` as const
 
   return (
     <YStack gap="$3">
-      <XStack jc="space-between" gap="$2" ai="center">
+      <XStack
+        jc="space-between"
+        gap="$2"
+        ai="center"
+      >
         <H4>GitHub App</H4>
       </XStack>
 
@@ -455,9 +523,9 @@ const BotInstallPanel = ({
       ) : (
         <>
           <Notice my={0}>
-            No install found. To receive updates, install the Takeout GitHub Bot on your
-            repo. If you have already installed the bot and don't see it here, uninstall
-            the bot from GitHub, then come back to this page and try again.
+            No install found. To receive updates, install the Takeout GitHub Bot on your repo. If
+            you have already installed the bot and don't see it here, uninstall the bot from GitHub,
+            then come back to this page and try again.
           </Notice>
         </>
       )}
@@ -481,21 +549,15 @@ const DiscordPanel = ({ subscriptionId }: { subscriptionId: string }) => {
   const groupInfoSwr = useSWR<DiscordChannelStatus>(
     `/api/discord/channel?${new URLSearchParams({ subscription_id: subscriptionId })}`,
     (url) =>
-      fetch(url, { headers: { 'Content-Type': 'application/json' } }).then((res) =>
-        res.json()
-      ),
+      fetch(url, { headers: { 'Content-Type': 'application/json' } }).then((res) => res.json()),
     { revalidateOnFocus: false, revalidateOnReconnect: false, errorRetryCount: 0 }
   )
   const [draftQuery, setDraftQuery] = useState('')
   const [query, setQuery] = useState(draftQuery)
   const searchSwr = useSWR<RESTGetAPIGuildMembersSearchResult>(
-    query
-      ? `/api/discord/search-member?${new URLSearchParams({ query }).toString()}`
-      : null,
+    query ? `/api/discord/search-member?${new URLSearchParams({ query }).toString()}` : null,
     (url) =>
-      fetch(url, { headers: { 'Content-Type': 'application/json' } }).then((res) =>
-        res.json()
-      )
+      fetch(url, { headers: { 'Content-Type': 'application/json' } }).then((res) => res.json())
   )
 
   const resetChannelMutation = useSWRMutation(
@@ -529,7 +591,11 @@ const DiscordPanel = ({ subscriptionId }: { subscriptionId: string }) => {
 
   return (
     <YStack gap="$3">
-      <XStack jc="space-between" gap="$2" ai="center">
+      <XStack
+        jc="space-between"
+        gap="$2"
+        ai="center"
+      >
         <H4>
           Discord Access{' '}
           {!!groupInfoSwr.data &&
@@ -545,9 +611,18 @@ const DiscordPanel = ({ subscriptionId }: { subscriptionId: string }) => {
         </Button>
       </XStack>
 
-      <Form onSubmit={handleSearch} gap="$2" flexDirection="row" ai="flex-end">
+      <Form
+        onSubmit={handleSearch}
+        gap="$2"
+        flexDirection="row"
+        ai="flex-end"
+      >
         <Fieldset>
-          <Label size="$3" theme="alt1" htmlFor="discord-username">
+          <Label
+            size="$3"
+            theme="alt1"
+            htmlFor="discord-username"
+          >
             Username / Nickname
           </Label>
           <Input
@@ -565,9 +640,15 @@ const DiscordPanel = ({ subscriptionId }: { subscriptionId: string }) => {
       </Form>
 
       <XStack tag="article">
-        <Paragraph size="$3" theme="alt1">
+        <Paragraph
+          size="$3"
+          theme="alt1"
+        >
           Note: You must{' '}
-          <Link target="_blank" href="https://discord.gg/4qh6tdcVDa">
+          <Link
+            target="_blank"
+            href="https://discord.gg/4qh6tdcVDa"
+          >
             join the Discord server
           </Link>{' '}
           first so we can find your username.
@@ -635,22 +716,43 @@ const DiscordMember = ({
     ? `https://cdn.discordapp.com/avatars/${member.user?.id}/${member.user?.avatar}.png`
     : null
   return (
-    <XStack gap="$2" ai="center" flexWrap="wrap">
-      <Button minWidth={70} size="$2" disabled={isMutating} onPress={() => trigger()}>
+    <XStack
+      gap="$2"
+      ai="center"
+      flexWrap="wrap"
+    >
+      <Button
+        minWidth={70}
+        size="$2"
+        disabled={isMutating}
+        onPress={() => trigger()}
+      >
         {isMutating ? 'Inviting...' : 'Add'}
       </Button>
-      <Avatar circular size="$2">
-        <Avatar.Image accessibilityLabel={`avatar for ${username}`} src={avatarSrc!} />
+      <Avatar
+        circular
+        size="$2"
+      >
+        <Avatar.Image
+          accessibilityLabel={`avatar for ${username}`}
+          src={avatarSrc!}
+        />
         <Avatar.Fallback backgroundColor="$blue10" />
       </Avatar>
       <Paragraph>{`${username}${name ? ` (${name})` : ''}`}</Paragraph>
       {data && (
-        <Paragraph size="$1" theme="green_alt2">
+        <Paragraph
+          size="$1"
+          theme="green_alt2"
+        >
           {data.message}
         </Paragraph>
       )}
       {error && (
-        <Paragraph size="$1" theme="red_alt2">
+        <Paragraph
+          size="$1"
+          theme="red_alt2"
+        >
           {error.message}
         </Paragraph>
       )}
@@ -667,36 +769,42 @@ const GithubAppMessage = () => {
 
 const BentoGetKeyPanel = () => {
   const [reveal, setReveal] = useState(false)
-  const { data, error, isLoading, mutate } = useSWR(
-    '/api/bento/cli/login',
-    async (url) => {
-      const response = await fetch(url)
-      if (!response.ok) {
-        throw new Error('Failed to fetch access token')
-      }
-      return response.json()
+  const { data, error, isLoading, mutate } = useSWR('/api/bento/cli/login', async (url) => {
+    const response = await fetch(url)
+    if (!response.ok) {
+      throw new Error('Failed to fetch access token')
     }
-  )
+    return response.json()
+  })
 
   const refreshToken = async () => {
     await mutate()
   }
   const { onCopy } = useClipboard(data?.accessToken ?? '')
-  const tokenValue = reveal
-    ? data?.accessToken
-    : '*'.repeat(data?.accessToken?.length ?? 0)
+  const tokenValue = reveal ? data?.accessToken : '*'.repeat(data?.accessToken?.length ?? 0)
 
   return (
     <YStack gap="$5">
       <Paragraph>
         Get your Bento access token for use with{' '}
-        <Paragraph ff="$mono" tag="span">
+        <Paragraph
+          ff="$mono"
+          tag="span"
+        >
           bento-get
         </Paragraph>
       </Paragraph>
-      <Form gap="$5" onSubmit={refreshToken}>
+      <Form
+        gap="$5"
+        onSubmit={refreshToken}
+      >
         <XStack gap="$2">
-          <Input ff="$mono" width={'100%'} id="access-token" value={tokenValue} />
+          <Input
+            ff="$mono"
+            width={'100%'}
+            id="access-token"
+            value={tokenValue}
+          />
           <Button onPress={() => setReveal(!reveal)}>
             <Button.Icon>{reveal ? <EyeOff /> : <Eye />}</Button.Icon>
           </Button>
@@ -712,7 +820,12 @@ const BentoGetKeyPanel = () => {
             <Button.Icon>
               <>
                 {!isLoading && <RefreshCcw />}
-                {isLoading && <Spinner theme="blue_active" size="small" />}
+                {isLoading && (
+                  <Spinner
+                    theme="blue_active"
+                    size="small"
+                  />
+                )}
               </>
             </Button.Icon>
           </Button>

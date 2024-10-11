@@ -65,27 +65,27 @@ type StageProps = {
   center?: Partial<CenterProps>
 }
 
-function Refit({ radius, adjustCamera }) {
-  const api = useBounds()
-  React.useEffect(() => {
-    setTimeout(() => {
-      if (adjustCamera) {
-        api.refresh().clip().fit()
-      }
-    }, 100)
-    setTimeout(() => {
-      if (adjustCamera) {
-        api.refresh().clip().fit()
-      }
-    }, 150)
-    setTimeout(() => {
-      if (adjustCamera) {
-        api.refresh().clip().fit()
-      }
-    }, 200)
-  }, [radius, adjustCamera])
-  return null
-}
+// function Refit({ radius, adjustCamera }) {
+//   const api = useBounds()
+//   React.useEffect(() => {
+//     setTimeout(() => {
+//       if (adjustCamera) {
+//         api.refresh().clip().fit()
+//       }
+//     }, 100)
+//     setTimeout(() => {
+//       if (adjustCamera) {
+//         api.refresh().clip().fit()
+//       }
+//     }, 150)
+//     setTimeout(() => {
+//       if (adjustCamera) {
+//         api.refresh().clip().fit()
+//       }
+//     }, 200)
+//   }, [radius, adjustCamera])
+//   return null
+// }
 
 export function Stage({
   children,
@@ -112,8 +112,7 @@ export function Stage({
   const normalBias = (shadows as StageShadows)?.normalBias ?? 0
   const shadowSize = (shadows as StageShadows)?.size ?? 1024
   const shadowOffset = (shadows as StageShadows)?.offset ?? 0
-  const contactShadow =
-    shadows === 'contact' || (shadows as StageShadows)?.type === 'contact'
+  const contactShadow = shadows === 'contact' || (shadows as StageShadows)?.type === 'contact'
   const accumulativeShadow =
     shadows === 'accumulative' || (shadows as StageShadows)?.type === 'accumulative'
   const shadowSpread = { ...(typeof shadows === 'object' ? shadows : {}) }
@@ -127,11 +126,7 @@ export function Stage({
       <ambientLight intensity={intensity / 3} />
       <spotLight
         penumbra={1}
-        position={[
-          config.main[0] * radius,
-          config.main[1] * radius,
-          config.main[2] * radius,
-        ]}
+        position={[config.main[0] * radius, config.main[1] * radius, config.main[2] * radius]}
         intensity={intensity * 2}
         castShadow={!!shadows}
         shadow-bias={shadowBias}
@@ -139,11 +134,7 @@ export function Stage({
         shadow-mapSize={shadowSize}
       />
       <pointLight
-        position={[
-          config.fill[0] * radius,
-          config.fill[1] * radius,
-          config.fill[2] * radius,
-        ]}
+        position={[config.fill[0] * radius, config.fill[1] * radius, config.fill[2] * radius]}
         intensity={intensity}
       />
       <Bounds
@@ -190,11 +181,7 @@ export function Stage({
               radius={(shadowSpread as RandomizedLightProps).radius ?? radius}
               ambient={(shadowSpread as RandomizedLightProps).ambient ?? 0.5}
               intensity={(shadowSpread as RandomizedLightProps).intensity ?? 1}
-              position={[
-                config.main[0] * radius,
-                config.main[1] * radius,
-                config.main[2] * radius,
-              ]}
+              position={[config.main[0] * radius, config.main[1] * radius, config.main[2] * radius]}
               size={radius * 4}
               bias={-shadowBias}
               mapSize={shadowSize}

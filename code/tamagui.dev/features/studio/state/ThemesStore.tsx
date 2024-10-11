@@ -238,9 +238,7 @@ export class ThemesStore {
       return this.themesList
     }
 
-    return this.themesList.filter(
-      (x) => x.category !== 'component' && x.id.startsWith(prefix)
-    )
+    return this.themesList.filter((x) => x.category !== 'component' && x.id.startsWith(prefix))
     // return getUniqueThemeCombos(this.themesList()).filter((x) => x.startsWith(prefix))
   }
 
@@ -258,9 +256,7 @@ export class ThemesStore {
 
   get baseThemeVals() {
     return Object.fromEntries(
-      Object.entries(this.themeVals).filter(
-        ([k]) => !pseudoKeys.some((key) => k.endsWith(key))
-      )
+      Object.entries(this.themeVals).filter(([k]) => !pseudoKeys.some((key) => k.endsWith(key)))
     )
   }
 
@@ -412,8 +408,7 @@ export class ThemesStore {
     this.row = row
     this.column = column
     if (name) {
-      const nextName =
-        name in this.themes ? name : removeComponentName(this.themeId) + `_${name}`
+      const nextName = name in this.themes ? name : removeComponentName(this.themeId) + `_${name}`
       this.setTheme(nextName)
     }
     if (shouldPin) {

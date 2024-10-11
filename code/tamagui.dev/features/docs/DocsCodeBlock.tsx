@@ -4,7 +4,6 @@ import {
   Code2,
   Copy,
   FileCode2,
-  Paintbrush,
   TerminalSquare,
 } from '@tamagui/lucide-icons'
 import { useStore } from '@tamagui/use-store'
@@ -27,7 +26,6 @@ import { Pre } from '~/components/Pre'
 import { RovingTabs } from '~/components/RovingTabs'
 import { useBashCommand } from '~/hooks/useBashCommand'
 import { useClipboard } from '~/hooks/useClipboard'
-import { toggleDocsTinted } from './docsTint'
 
 class CollapseStore {
   isCollapsed: boolean
@@ -70,18 +68,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
   const { hasCopied, onCopy } = useClipboard(code)
   const showLineNumbers = showLineNumbersIn ?? lines > 10
 
-  const {
-    isTerminalCommand,
-    isCreateCommand,
-    isInstallCommand,
-    isExecCommand,
-    showTabs,
-    commandType,
-    transformedCommand,
-    originalPackageManager,
-    selectedPackageManager,
-    setPackageManager,
-  } = useBashCommand(children, className)
+  const { isTerminalCommand, transformedCommand } = useBashCommand(children, className)
 
   const showFileName = fileName || isTerminalCommand
 
@@ -92,7 +79,6 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
       const codeElement = preRef.current.querySelector('code')
       if (codeElement) {
         // remove double line breaks
-        const codeExtract = codeElement.innerText.replace(/\n{3,}/g, '\n')
         setCode(transformedCommand)
       }
     } catch (err) {
@@ -167,7 +153,10 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                 zi={1000}
               >
                 <Spacer f={1} />
-                <Button onPress={() => setIsCutoff(!isCutoff)} als="center">
+                <Button
+                  onPress={() => setIsCutoff(!isCutoff)}
+                  als="center"
+                >
                   Show more
                 </Button>
                 <Spacer size="$4" />
@@ -198,17 +187,25 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                   br="$5"
                 >
                   {isTerminalCommand ? (
-                    <TerminalSquare size="$1" col="$color11" />
+                    <TerminalSquare
+                      size="$1"
+                      col="$color11"
+                    />
                   ) : (
-                    <FileCode2 size="$1" col="$color11" />
+                    <FileCode2
+                      size="$1"
+                      col="$color11"
+                    />
                   )}
-                  <Paragraph col="$color11">
-                    {isTerminalCommand ? 'Terminal' : fileName}
-                  </Paragraph>
+                  <Paragraph col="$color11">{isTerminalCommand ? 'Terminal' : fileName}</Paragraph>
                 </XStack>
               )}
 
-              <RovingTabs className={className} size={size} {...rest}>
+              <RovingTabs
+                className={className}
+                size={size}
+                {...rest}
+              >
                 <ScrollView
                   style={{ width: '100%' }}
                   contentContainerStyle={{ minWidth: '100%' }}

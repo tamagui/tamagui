@@ -1,17 +1,9 @@
 // import { readFile } from 'node:fs/promises'
-import { join } from 'node:path'
-import type { DemoOptions } from '../theme/demoOptions'
-import { getDemoProps } from './getDemoProps'
+// import type { DemoOptions } from '../theme/demoOptions'
 
 // TODO move to api
 
-export async function exportDemoComponent({
-  componentName,
-  options,
-}: {
-  componentName: string
-  options: DemoOptions
-}) {
+export async function exportDemoComponent() {
   // // this only really gets called from the next.js app - so we create the direction based on that.
   // let component = (
   //   await readFile(
@@ -33,4 +25,5 @@ export async function exportDemoComponent({
   //   )
   // }
   // return component
+  return null
 }

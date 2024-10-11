@@ -58,8 +58,7 @@ const HeadAnchor = styled(Paragraph, {
         px: '$4',
 
         hoverStyle: {
-          backgroundColor:
-            'color-mix(in srgb, var(--color8) 10%, transparent 50%)' as any,
+          backgroundColor: 'color-mix(in srgb, var(--color8) 10%, transparent 50%)' as any,
         },
       },
     },
@@ -74,13 +73,16 @@ const HeadAnchor = styled(Paragraph, {
 })
 
 export const HeaderLinks = (props: HeaderProps) => {
-  const { showExtra, forceShowAllLinks, isHeader } = props
+  const { showExtra, forceShowAllLinks } = props
   const userSwr = useUser()
   // there is user context and supabase setup in the current page
 
   const primaryLinks = (
     <>
-      <Link asChild href="/docs/intro/introduction">
+      <Link
+        asChild
+        href="/docs/intro/introduction"
+      >
         <HeadAnchor
           // half={forceShowAllLinks}
           grid={forceShowAllLinks}
@@ -92,7 +94,10 @@ export const HeaderLinks = (props: HeaderProps) => {
         </HeadAnchor>
       </Link>
 
-      <Link asChild href="/ui/intro">
+      <Link
+        asChild
+        href="/ui/intro"
+      >
         <HeadAnchor
           // half={forceShowAllLinks}
           grid={forceShowAllLinks}
@@ -104,7 +109,10 @@ export const HeaderLinks = (props: HeaderProps) => {
         </HeadAnchor>
       </Link>
 
-      <Link asChild href="/theme">
+      <Link
+        asChild
+        href="/theme"
+      >
         <HeadAnchor
           // half={forceShowAllLinks}
           grid={forceShowAllLinks}
@@ -123,7 +131,11 @@ export const HeaderLinks = (props: HeaderProps) => {
       {forceShowAllLinks ? (
         <>
           {primaryLinks}
-          <Separator bc="$color025" o={0.25} my="$2" />
+          <Separator
+            bc="$color025"
+            o={0.25}
+            my="$2"
+          />
         </>
       ) : (
         primaryLinks
@@ -141,23 +153,50 @@ export const HeaderLinks = (props: HeaderProps) => {
 
       {forceShowAllLinks && (
         <>
-          <XStack fw="wrap" f={1} gap="$2" w="100%">
-            <Link asChild href="/takeout">
-              <HeadAnchor grid half tag="a">
+          <XStack
+            fw="wrap"
+            f={1}
+            gap="$2"
+            w="100%"
+          >
+            <Link
+              asChild
+              href="/takeout"
+            >
+              <HeadAnchor
+                grid
+                half
+                tag="a"
+              >
                 <XStack ai="center">
                   Takeout{' '}
-                  <YStack dsp={'inline-block' as any} x={6} my={-20} o={0.8}>
+                  <YStack
+                    dsp={'inline-block' as any}
+                    x={6}
+                    my={-20}
+                    o={0.8}
+                  >
                     <TakeoutIcon scale={0.65} />
                   </YStack>
                 </XStack>
-                <SizableText size="$2" theme="alt2">
+                <SizableText
+                  size="$2"
+                  theme="alt2"
+                >
                   Starter Kit
                 </SizableText>
               </HeadAnchor>
             </Link>
 
-            <Link asChild href="/bento">
-              <HeadAnchor grid half tag="a">
+            <Link
+              asChild
+              href="/bento"
+            >
+              <HeadAnchor
+                grid
+                half
+                tag="a"
+              >
                 <XStack ai="center">
                   Bento{' '}
                   <YStack
@@ -171,21 +210,39 @@ export const HeaderLinks = (props: HeaderProps) => {
                     <BentoIcon scale={0.65} />
                   </YStack>
                 </XStack>
-                <SizableText size="$2" theme="alt2">
+                <SizableText
+                  size="$2"
+                  theme="alt2"
+                >
                   Copy-paste UI
                 </SizableText>
               </HeadAnchor>
             </Link>
           </XStack>
-          <Separator bc="$color025" o={0.25} my="$2" />
+          <Separator
+            bc="$color025"
+            o={0.25}
+            my="$2"
+          />
         </>
       )}
 
       {forceShowAllLinks && (
         <>
-          <XStack fw="wrap" f={1} gap="$2" w="100%">
-            <Link asChild href="/community">
-              <HeadAnchor grid tag="a">
+          <XStack
+            fw="wrap"
+            f={1}
+            gap="$2"
+            w="100%"
+          >
+            <Link
+              asChild
+              href="/community"
+            >
+              <HeadAnchor
+                grid
+                tag="a"
+              >
                 Community
               </HeadAnchor>
             </Link>
@@ -202,7 +259,11 @@ export const HeaderLinks = (props: HeaderProps) => {
               </HeadAnchor>
             </Link> */}
           </XStack>
-          <Separator bc="$color025" o={0.25} my="$2" />
+          <Separator
+            bc="$color025"
+            o={0.25}
+            my="$2"
+          />
         </>
       )}
 
@@ -265,31 +326,60 @@ export const HeaderLinks = (props: HeaderProps) => {
       )}
 
       {showExtra && (
-        <Link asChild href="/studio">
+        <Link
+          asChild
+          href="/studio"
+        >
           <HeadAnchor grid={forceShowAllLinks}>Studio</HeadAnchor>
         </Link>
       )}
 
       {forceShowAllLinks && (
         <>
-          <Separator bc="$color025" o={0.25} my="$2" />
+          <Separator
+            bc="$color025"
+            o={0.25}
+            my="$2"
+          />
           {!userSwr.data?.userDetails && (
-            <Link asChild href="/login">
+            <Link
+              asChild
+              href="/login"
+            >
               <HeadAnchor grid>
                 Login
-                <YStack dsp={'inline-block' as any} y={2} x={10} als="flex-end">
-                  <LogIn color="$color10" size={14} />
+                <YStack
+                  dsp={'inline-block' as any}
+                  y={2}
+                  x={10}
+                  als="flex-end"
+                >
+                  <LogIn
+                    color="$color10"
+                    size={14}
+                  />
                 </YStack>
               </HeadAnchor>
             </Link>
           )}
           {userSwr.data?.userDetails && (
-            <Link asChild href="/login">
+            <Link
+              asChild
+              href="/login"
+            >
               <HeadAnchor grid>
-                <XStack ai="center" jc="center">
+                <XStack
+                  ai="center"
+                  jc="center"
+                >
                   Account
                   <YStack flex={10} />
-                  <YStack dsp={'inline-block' as any} y={-2} my={-3} als="flex-end">
+                  <YStack
+                    dsp={'inline-block' as any}
+                    y={-2}
+                    my={-3}
+                    als="flex-end"
+                  >
                     <UserAvatar size={22} />
                   </YStack>
                 </XStack>
@@ -301,14 +391,35 @@ export const HeaderLinks = (props: HeaderProps) => {
 
       {forceShowAllLinks && (
         <>
-          <Separator bc="$color025" o={0.25} my="$2" />
+          <Separator
+            bc="$color025"
+            o={0.25}
+            my="$2"
+          />
 
-          <XStack fw="wrap" f={1} gap="$2" w="100%">
+          <XStack
+            fw="wrap"
+            f={1}
+            gap="$2"
+            w="100%"
+          >
             {forceShowAllLinks && (
-              <Link asChild href="https://github.com/tamagui/tamagui">
-                <HeadAnchor target="_blank" half grid={forceShowAllLinks}>
+              <Link
+                asChild
+                href="https://github.com/tamagui/tamagui"
+              >
+                <HeadAnchor
+                  target="_blank"
+                  half
+                  grid={forceShowAllLinks}
+                >
                   Github{' '}
-                  <YStack dsp={'inline-block' as any} y={10} my={-20} o={0.8}>
+                  <YStack
+                    dsp={'inline-block' as any}
+                    y={10}
+                    my={-20}
+                    o={0.8}
+                  >
                     <GithubIcon width={14} />
                   </YStack>
                 </HeadAnchor>
@@ -320,27 +431,58 @@ export const HeaderLinks = (props: HeaderProps) => {
                 asChild
                 href="https://www.figma.com/community/file/1326593766534421119/tamagui-v1-2-1"
               >
-                <HeadAnchor target="_blank" half grid={forceShowAllLinks}>
+                <HeadAnchor
+                  target="_blank"
+                  half
+                  grid={forceShowAllLinks}
+                >
                   Figma{' '}
-                  <YStack dsp={'inline-block' as any} y={2} my={-20} o={0.8}>
+                  <YStack
+                    dsp={'inline-block' as any}
+                    y={2}
+                    my={-20}
+                    o={0.8}
+                  >
                     <Figma size={14} />
                   </YStack>
                 </HeadAnchor>
               </Link>
             )}
 
-            <Link asChild href="/blog">
-              <HeadAnchor half grid={forceShowAllLinks}>
+            <Link
+              asChild
+              href="/blog"
+            >
+              <HeadAnchor
+                half
+                grid={forceShowAllLinks}
+              >
                 Blog
               </HeadAnchor>
             </Link>
 
             {forceShowAllLinks && (
-              <Link asChild href="https://github.com/sponsors/natew">
-                <HeadAnchor half target="_blank" grid={forceShowAllLinks}>
+              <Link
+                asChild
+                href="https://github.com/sponsors/natew"
+              >
+                <HeadAnchor
+                  half
+                  target="_blank"
+                  grid={forceShowAllLinks}
+                >
                   Sponsor
-                  <YStack dsp={'inline-block' as any} y={0} my={-20} ml={12} o={0.8}>
-                    <ExternalLink size={10} o={0.5} />
+                  <YStack
+                    dsp={'inline-block' as any}
+                    y={0}
+                    my={-20}
+                    ml={12}
+                    o={0.8}
+                  >
+                    <ExternalLink
+                      size={10}
+                      o={0.5}
+                    />
                   </YStack>
                 </HeadAnchor>
               </Link>
@@ -355,9 +497,6 @@ export const HeaderLinks = (props: HeaderProps) => {
 const CTAHeaderLink = ({
   href,
   icon,
-  name,
-  excludeRoutes,
-  description,
   forceShowAllLinks,
 }: HeaderProps & {
   href: Href
@@ -368,7 +507,10 @@ const CTAHeaderLink = ({
 }) => {
   // disabling for now it clutters things
   return (
-    <Link asChild href={href}>
+    <Link
+      asChild
+      href={href}
+    >
       <HeadAnchor
         grid={forceShowAllLinks}
         fontSize={24}
@@ -484,14 +626,24 @@ const CTAHeaderLink = ({
 }
 
 const StudioIcon = () => (
-  <YStack h={24} w={24} mx={-4} y={-0.5}>
+  <YStack
+    h={24}
+    w={24}
+    mx={-4}
+    y={-0.5}
+  >
     <Paintbrush />
   </YStack>
 )
 
 const SlidingPopoverContext = React.createContext({
-  setActive(id: string, layout: LayoutRectangle) {},
-  setInactive(id: string) {},
+  setActive(id: string, layout: LayoutRectangle) {
+    void id
+    void layout
+  },
+  setInactive(id: string) {
+    void id
+  },
   close() {},
 })
 
@@ -528,7 +680,7 @@ const SlidingPopover = (props: PopoverProps) => {
         restMs: 40,
         move: false,
       }}
-      onOpenChange={(val, event) => {
+      onOpenChange={(val) => {
         if (!val) {
           setActive('')
         }
@@ -544,59 +696,57 @@ const SlidingPopover = (props: PopoverProps) => {
   )
 }
 
-const SlidingPopoverTrigger = YStack.styleable<{ id: string }>(
-  ({ id, ...props }, ref) => {
-    const context = React.useContext(SlidingPopoverContext)
-    const [layout, setLayout_] = React.useState<LayoutRectangle>()
-    const setLayout = createShallowSetState<LayoutRectangle>(setLayout_ as any)
-    const triggerRef = React.useRef<HTMLElement>(null)
-    const combinedRef = useComposedRefs(ref)
+const SlidingPopoverTrigger = YStack.styleable<{ id: string }>(({ id, ...props }, ref) => {
+  const context = React.useContext(SlidingPopoverContext)
+  const [layout, setLayout_] = React.useState<LayoutRectangle>()
+  const setLayout = createShallowSetState<LayoutRectangle>(setLayout_ as any)
+  const triggerRef = React.useRef<HTMLElement>(null)
+  const combinedRef = useComposedRefs(ref)
 
-    React.useEffect(() => {
-      const handleMove = debounce(() => {
-        const layout = triggerRef.current?.getBoundingClientRect()
-        if (layout) {
-          setLayout(layout)
-        }
-      }, 32)
-      window.addEventListener('resize', handleMove)
-      return () => {
-        window.removeEventListener('resize', handleMove)
+  React.useEffect(() => {
+    const handleMove = debounce(() => {
+      const layout = triggerRef.current?.getBoundingClientRect()
+      if (layout) {
+        setLayout(layout)
       }
-    }, [])
+    }, 32)
+    window.addEventListener('resize', handleMove)
+    return () => {
+      window.removeEventListener('resize', handleMove)
+    }
+  }, [])
 
-    return (
-      <YStack
-        onMouseEnter={() => {
-          if (layout) {
-            context.setActive(id, layout)
-          }
-        }}
-        // onMouseLeave={() => {
-        //   context.setInactive(id)
-        // }}
-        onPress={() => {
-          setTimeout(() => {
-            context.close()
-          }, 400)
-        }}
-        onLayout={(e) => {
-          React.startTransition(() => {
-            setLayout({
-              ...e.nativeEvent.layout,
-              // @ts-ignore
-              x: e.nativeEvent.layout.left,
-              // @ts-ignore
-              y: e.nativeEvent.layout.top,
-            })
+  return (
+    <YStack
+      onMouseEnter={() => {
+        if (layout) {
+          context.setActive(id, layout)
+        }
+      }}
+      // onMouseLeave={() => {
+      //   context.setInactive(id)
+      // }}
+      onPress={() => {
+        setTimeout(() => {
+          context.close()
+        }, 400)
+      }}
+      onLayout={(e) => {
+        React.startTransition(() => {
+          setLayout({
+            ...e.nativeEvent.layout,
+            // @ts-ignore
+            x: e.nativeEvent.layout.left,
+            // @ts-ignore
+            y: e.nativeEvent.layout.top,
           })
-        }}
-        ref={combinedRef}
-        {...props}
-      />
-    )
-  }
-)
+        })
+      }}
+      ref={combinedRef}
+      {...props}
+    />
+  )
+})
 
 const order = ['', 'takeout', 'bento', 'studio']
 
@@ -641,10 +791,16 @@ const SlidingPopoverContent = React.memo(({ active }: { active: string }) => {
     >
       {active === 'bento' ? (
         <Theme name="tan">
-          <Popover.Arrow bg="$color6" size="$4" />
+          <Popover.Arrow
+            bg="$color6"
+            size="$4"
+          />
         </Theme>
       ) : (
-        <Popover.Arrow bg="$color4" size="$4" />
+        <Popover.Arrow
+          bg="$color4"
+          size="$4"
+        />
       )}
 
       <YStack
@@ -656,10 +812,13 @@ const SlidingPopoverContent = React.memo(({ active }: { active: string }) => {
         ov="hidden"
         br="$6"
       >
-        <AnimatePresence custom={{ going }} initial={false}>
+        <AnimatePresence
+          custom={{ going }}
+          initial={false}
+        >
           {active === 'takeout' && (
             <Frame key="takeout">
-              <ThemeTintAlt>
+              <Theme name="tan">
                 <YStack
                   fullscreen
                   br="$6"
@@ -669,7 +828,7 @@ const SlidingPopoverContent = React.memo(({ active }: { active: string }) => {
                     mixBlendMode: 'color',
                   }}
                 />
-              </ThemeTintAlt>
+              </Theme>
               <ThemeTintAlt offset={-1}>
                 <YStack
                   fullscreen
@@ -757,17 +916,42 @@ const TooltipLabelLarge = ({
   href,
 }: { href: string; icon: any; title: string; subtitle: string }) => {
   return (
-    <Link asChild href={href as Href}>
-      <YStack cur="pointer" f={1} ai="center" p="$7" br="$4" ov="hidden">
-        <H2 ff="$silkscreen" f={1} fow="600" size="$7">
+    <Link
+      asChild
+      href={href as Href}
+    >
+      <YStack
+        cur="pointer"
+        f={1}
+        ai="center"
+        p="$7"
+        br="$4"
+        ov="hidden"
+      >
+        <H2
+          ff="$silkscreen"
+          f={1}
+          fow="600"
+          size="$7"
+        >
           {title}
         </H2>
 
-        <Paragraph theme="alt1" f={1} size="$5">
+        <Paragraph
+          theme="alt1"
+          f={1}
+          size="$5"
+        >
           {subtitle}
         </Paragraph>
 
-        <YStack pos="absolute" b={15} r={17} scale={2.25} rotate="-10deg">
+        <YStack
+          pos="absolute"
+          b={15}
+          r={17}
+          scale={2.25}
+          rotate="-10deg"
+        >
           {icon}
         </YStack>
       </YStack>

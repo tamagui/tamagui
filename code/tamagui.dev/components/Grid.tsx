@@ -5,10 +5,9 @@ export type GridProps = {
   children?: any
   itemMinWidth?: number
   gap?: any
-  columns?: number
 }
 
-export function Grid({ children, columns, itemMinWidth = 200, gap }: GridProps) {
+export function Grid({ children, itemMinWidth = 200, gap }: GridProps) {
   if (isWeb) {
     return (
       <div
@@ -29,7 +28,11 @@ export function Grid({ children, columns, itemMinWidth = 200, gap }: GridProps) 
   const childrenList = React.Children.toArray(children)
 
   return (
-    <XStack alignItems="center" justifyContent="center" flexWrap="wrap">
+    <XStack
+      alignItems="center"
+      justifyContent="center"
+      flexWrap="wrap"
+    >
       {childrenList.map((child, i) => {
         if (!child) {
           return null

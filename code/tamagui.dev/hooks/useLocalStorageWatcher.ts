@@ -33,10 +33,7 @@ export function useLocalStorageWatcher(key: string, defaultValue: string) {
       window.addEventListener('localStorageChange', handleStorageChange as EventListener)
       return () => {
         window.removeEventListener('storage', handleStorageChange)
-        window.removeEventListener(
-          'localStorageChange',
-          handleStorageChange as EventListener
-        )
+        window.removeEventListener('localStorageChange', handleStorageChange as EventListener)
       }
     }
   }, [key, isMounted, defaultValue, handleStorageChange])

@@ -1,17 +1,7 @@
 import { CheckCircle, XCircle } from '@tamagui/lucide-icons'
 import { getContrast } from 'color2k'
 import { memo } from 'react'
-import {
-  Button,
-  Input,
-  Label,
-  Paragraph,
-  Separator,
-  Spacer,
-  Square,
-  XStack,
-  YStack,
-} from 'tamagui'
+import { Button, Input, Label, Paragraph, Separator, Spacer, Square, XStack, YStack } from 'tamagui'
 
 // import {
 //   changeScaleCurve,
@@ -42,12 +32,19 @@ export const ColorsSidebarRight = memo(function ColorsSidebarRight() {
     <>
       <Separator />
 
-      <Color paletteId={paletteId} scaleId={scaleId} index={index} />
+      <Color
+        paletteId={paletteId}
+        scaleId={scaleId}
+        index={index}
+      />
 
       <Separator />
 
       <SidebarPanel title={`Accent of ${scale.name}.${index}`}>
-        <YStack tag="ul" space="$1">
+        <YStack
+          tag="ul"
+          space="$1"
+        >
           {[
             {
               name: 'bg',
@@ -82,8 +79,16 @@ export const ColorsSidebarRight = memo(function ColorsSidebarRight() {
             const { name, hex, accent } = result
 
             return (
-              <XStack key={`${name}${i}`} ov="hidden" ai="center">
-                <XStack ai="center" f={1000} space="$2">
+              <XStack
+                key={`${name}${i}`}
+                ov="hidden"
+                ai="center"
+              >
+                <XStack
+                  ai="center"
+                  f={1000}
+                  space="$2"
+                >
                   <Square
                     aria-hidden
                     size="$2.5"
@@ -92,20 +97,38 @@ export const ColorsSidebarRight = memo(function ColorsSidebarRight() {
                     bc="$borderColor"
                     backgroundColor={hex as any}
                   >
-                    <Paragraph size="$2" color={focusedHex as any}>
+                    <Paragraph
+                      size="$2"
+                      color={focusedHex as any}
+                    >
                       Aa
                     </Paragraph>
                   </Square>
-                  <Paragraph size="$2" ellipse>
+                  <Paragraph
+                    size="$2"
+                    ellipse
+                  >
                     on {name}
                   </Paragraph>
                 </XStack>
                 <Spacer flex />
-                <XStack ov="hidden" f={1} space="$2" ai="center">
-                  <Paragraph size="$2" mr="$2">
+                <XStack
+                  ov="hidden"
+                  f={1}
+                  space="$2"
+                  ai="center"
+                >
+                  <Paragraph
+                    size="$2"
+                    mr="$2"
+                  >
                     {accent.toFixed(2)}
                   </Paragraph>
-                  <Paragraph size="$2" ellipse fow="800">
+                  <Paragraph
+                    size="$2"
+                    ellipse
+                    fow="800"
+                  >
                     {getAccentScore(getContrast(hex, focusedHex || ''))}{' '}
                   </Paragraph>
                   {getAccentScore(getContrast(hex, focusedHex || '')) === 'Fail' ? (
@@ -127,7 +150,10 @@ export const ColorsSidebarRight = memo(function ColorsSidebarRight() {
       <SidebarPanel title={`Palette`}>
         <YStack space="$2">
           <YStack space="$1">
-            <Label size="$2" htmlFor="scale-name">
+            <Label
+              size="$2"
+              htmlFor="scale-name"
+            >
               Name
             </Label>
             <Input

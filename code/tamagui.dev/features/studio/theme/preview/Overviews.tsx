@@ -88,9 +88,21 @@ export const OverviewCard = ({
   const demoProps = useDemoProps()
 
   return (
-    <Card backgroundColor="transparent" {...props}>
-      <Card.Header f={1} jc="space-between" {...demoProps.gapPropsLg}>
-        <Paragraph fontWeight="400" size="$4" lh="$1" mb="$-2">
+    <Card
+      backgroundColor="transparent"
+      {...props}
+    >
+      <Card.Header
+        f={1}
+        jc="space-between"
+        {...demoProps.gapPropsLg}
+      >
+        <Paragraph
+          fontWeight="400"
+          size="$4"
+          lh="$1"
+          mb="$-2"
+        >
           {title}
         </Paragraph>
         <H4 size="$9">{value}</H4>

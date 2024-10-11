@@ -15,7 +15,10 @@ export const BentoLogoTheme = ({
   const curTint = useTint(offset).tintAlt
   const name = disable ? null : curTint
   return (
-    <Theme name={name} {...rest}>
+    <Theme
+      name={name}
+      {...rest}
+    >
       {children}
     </Theme>
   )

@@ -79,9 +79,18 @@ const PreviewTheme = (props: { children: any }) => {
   const { name: baseStepThemeName } = useBaseThemePreview()
 
   return (
-    <Theme key={baseStepThemeName} forceClassName name={baseStepThemeName}>
+    <Theme
+      key={baseStepThemeName}
+      forceClassName
+      name={baseStepThemeName}
+    >
       <ThemeNameEffect />
-      <YStack bg="$background" f={1} pt={20 + 60} my={-60}>
+      <YStack
+        bg="$background"
+        f={1}
+        pt={20 + 60}
+        my={-60}
+      >
         {props.children}
       </YStack>
     </Theme>
@@ -140,8 +149,15 @@ const ThemeBuilderModal = memo(() => {
           }}
         ></Button>
 
-        <YStack gap="$4" separator={<Separator bw={1} />} f={1}>
-          <AnimatePresence exitBeforeEnter custom={{ going: store.direction }}>
+        <YStack
+          gap="$4"
+          separator={<Separator bw={1} />}
+          f={1}
+        >
+          <AnimatePresence
+            exitBeforeEnter
+            custom={{ going: store.direction }}
+          >
             <Section
               f={1}
               animation="75ms"
@@ -150,7 +166,10 @@ const ThemeBuilderModal = memo(() => {
             >
               {useMemo(() => {
                 return (
-                  <ScrollView flex={1} contentContainerStyle={{ flex: 1 }}>
+                  <ScrollView
+                    flex={1}
+                    contentContainerStyle={{ flex: 1 }}
+                  >
                     <YStack f={1}>
                       {/* @ts-ignore */}
                       <StepComponent />
@@ -188,7 +207,15 @@ const StudioThemeBuilderTray = memo(() => {
 
 const StudioThemeBuilderBottomBar = memo(() => {
   return (
-    <XStack p="$4" py="$3" ai="center" bc="$borderColor" btw={1} zi={100} bg="$color2">
+    <XStack
+      p="$4"
+      py="$3"
+      ai="center"
+      bc="$borderColor"
+      btw={1}
+      zi={100}
+      bg="$color2"
+    >
       <CurrentStepActionBar />
       <Spacer flex />
       <ThemeStudioStepButtonsBar />
@@ -209,14 +236,7 @@ const CurrentStepActionBar = () => {
 
 const ThemeStudioStepButtonsBar = () => {
   const store = useThemeBuilderStore()
-  const {
-    canGoBackward,
-    canGoForward,
-    backward,
-    forward,
-    currentSection,
-    disableForward,
-  } = store
+  const { canGoBackward, canGoForward, backward, forward, currentSection, disableForward } = store
   const forwardOrFinish = () => {
     if (!canGoForward) {
       console.warn('done')

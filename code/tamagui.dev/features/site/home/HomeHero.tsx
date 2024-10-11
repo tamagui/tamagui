@@ -43,20 +43,41 @@ const HeroSubTitle = memo(() => {
 
   return (
     <Subtitle>
-      <Link asChild href="/docs/core/configuration">
-        <Tag theme="green" onHoverIn={() => setHovered(0)} active={hovered === 0}>
+      <Link
+        asChild
+        href="/docs/core/configuration"
+      >
+        <Tag
+          theme="green"
+          onHoverIn={() => setHovered(0)}
+          active={hovered === 0}
+        >
           styles
         </Tag>
       </Link>{' '}
       ·{' '}
-      <Link asChild href="/docs/intro/why-a-compiler">
-        <Tag theme="blue" onHoverIn={() => setHovered(1)} active={hovered === 1}>
+      <Link
+        asChild
+        href="/docs/intro/why-a-compiler"
+      >
+        <Tag
+          theme="blue"
+          onHoverIn={() => setHovered(1)}
+          active={hovered === 1}
+        >
           optimizing compiler
         </Tag>
       </Link>{' '}
       ·{' '}
-      <Link asChild href="/ui/stacks">
-        <Tag theme="purple" onHoverIn={() => setHovered(2)} active={hovered === 2}>
+      <Link
+        asChild
+        href="/ui/stacks"
+      >
+        <Tag
+          theme="purple"
+          onHoverIn={() => setHovered(2)}
+          active={hovered === 2}
+        >
           UI&nbsp;kit
         </Tag>
       </Link>{' '}
@@ -66,10 +87,13 @@ const HeroSubTitle = memo(() => {
 })
 
 const HeroContents = memo(function HeroContents() {
-  const { name, tint, tintAlt } = useTint()
+  const { name, tint } = useTint()
 
   return (
-    <ContainerLarge contain="layout" pos="relative">
+    <ContainerLarge
+      contain="layout"
+      pos="relative"
+    >
       <YStack
         fullscreen
         left={-500}
@@ -103,7 +127,12 @@ const HeroContents = memo(function HeroContents() {
         }}
       >
         <>
-          <XGroup pos="absolute" als="center" y={-80} br="$8">
+          <XGroup
+            pos="absolute"
+            als="center"
+            y={-80}
+            br="$8"
+          >
             <Link href="/takeout">
               <XGroup.Item>
                 <Button
@@ -117,7 +146,10 @@ const HeroContents = memo(function HeroContents() {
                   brw={0.5}
                 >
                   Takeout
-                  <YStack y={-1} dsp="inline-flex">
+                  <YStack
+                    y={-1}
+                    dsp="inline-flex"
+                  >
                     <TakeoutIcon scale={0.75} />
                   </YStack>
                   <Text
@@ -173,7 +205,11 @@ const HeroContents = memo(function HeroContents() {
           </XGroup>
         </>
 
-        <YStack ai="flex-start" $gtSm={{ ai: 'center' }} gap="$4">
+        <YStack
+          ai="flex-start"
+          $gtSm={{ ai: 'center' }}
+          gap="$4"
+        >
           <H1
             ta="left"
             size="$10"
@@ -285,9 +321,22 @@ const HeroContents = memo(function HeroContents() {
           gap="$2"
           $xxs={{ ai: 'center', fw: 'wrap', gap: 0 }}
         >
-          <Link target="_blank" href="https://twitter.com/tamagui_js">
-            <TooltipSimple placement="top" delay={0} restMs={25} label="Twitter">
-              <YStack p="$5" $sm={{ p: '$3' }} opacity={0.65} hoverStyle={{ opacity: 1 }}>
+          <Link
+            target="_blank"
+            href="https://twitter.com/tamagui_js"
+          >
+            <TooltipSimple
+              placement="top"
+              delay={0}
+              restMs={25}
+              label="Twitter"
+            >
+              <YStack
+                p="$5"
+                $sm={{ p: '$3' }}
+                opacity={0.65}
+                hoverStyle={{ opacity: 1 }}
+              >
                 <VisuallyHidden>
                   <Text>Twitter</Text>
                 </VisuallyHidden>
@@ -297,7 +346,10 @@ const HeroContents = memo(function HeroContents() {
           </Link>
 
           <ThemeTint>
-            <Link asChild href="/docs/intro/introduction">
+            <Link
+              asChild
+              href="/docs/intro/introduction"
+            >
               <Button
                 aria-label="Get started (docs)"
                 fontFamily="$silkscreen"
@@ -326,8 +378,17 @@ const HeroContents = memo(function HeroContents() {
             </Link>
           </ThemeTint>
 
-          <TooltipSimple placement="top" delay={0} restMs={25} label="Discord">
-            <Link asChild target="_blank" href="https://discord.gg/4qh6tdcVDa">
+          <TooltipSimple
+            placement="top"
+            delay={0}
+            restMs={25}
+            label="Discord"
+          >
+            <Link
+              asChild
+              target="_blank"
+              href="https://discord.gg/4qh6tdcVDa"
+            >
               <YStack
                 tag="a"
                 p="$5"
@@ -338,7 +399,10 @@ const HeroContents = memo(function HeroContents() {
                 <VisuallyHidden>
                   <Text>Discord</Text>
                 </VisuallyHidden>
-                <DiscordIcon plain width={24} />
+                <DiscordIcon
+                  plain
+                  width={24}
+                />
               </YStack>
             </Link>
           </TooltipSimple>

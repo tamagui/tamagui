@@ -1,4 +1,5 @@
-import React, { memo } from 'react'
+import type React from 'react'
+import { memo } from 'react'
 import type { YStackProps } from 'tamagui'
 import { H4, H5, ScrollView, Spacer, XStack, YStack, styled } from 'tamagui'
 
@@ -80,24 +81,41 @@ export const SidebarPanel = ({
       {...props}
     >
       {!!(title || controls) && (
-        <XStack px={scrollable ? '$3' : 0} ai="center" h="$3">
+        <XStack
+          px={scrollable ? '$3' : 0}
+          ai="center"
+          h="$3"
+        >
           {!!title && (
-            <H5 size="$2" userSelect="none" cursor="default">
+            <H5
+              size="$2"
+              userSelect="none"
+              cursor="default"
+            >
               {title}
             </H5>
           )}
 
           <Spacer flex />
 
-          <XStack ai="center" space="$2">
+          <XStack
+            ai="center"
+            space="$2"
+          >
             {controls}
           </XStack>
         </XStack>
       )}
 
-      <YStack space={space} separator={separator}>
+      <YStack
+        space={space}
+        separator={separator}
+      >
         {scrollable ? (
-          <ScrollView maxHeight={maxHeight} showsVerticalScrollIndicator={false}>
+          <ScrollView
+            maxHeight={maxHeight}
+            showsVerticalScrollIndicator={false}
+          >
             {children}
           </ScrollView>
         ) : (

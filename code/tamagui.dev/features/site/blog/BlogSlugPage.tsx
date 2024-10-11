@@ -1,18 +1,7 @@
 import { ThemeTint } from '@tamagui/logo'
 import { ArrowLeft } from '@tamagui/lucide-icons'
 import type { Frontmatter } from '@tamagui/mdx'
-import {
-  Button,
-  H1,
-  H2,
-  H3,
-  H6,
-  Paragraph,
-  Separator,
-  Spacer,
-  XStack,
-  YStack,
-} from 'tamagui'
+import { Button, H1, H2, H3, H6, Paragraph, Separator, Spacer, XStack, YStack } from 'tamagui'
 import { LinearGradient } from 'tamagui/linear-gradient'
 import { usePathname } from 'one'
 import { Container } from '~/components/Containers'
@@ -31,31 +20,61 @@ export function BlogArticleHeader({ frontmatter }: BlogPost) {
   const pathname = usePathname()
   const isDraft = pathname.startsWith('/draft')
   return (
-    <YStack mt="$-10" pt="$12" mb="$4" pos="relative">
+    <YStack
+      mt="$-10"
+      pt="$12"
+      mb="$4"
+      pos="relative"
+    >
       <ThemeTint>
-        <LinearGradient fullscreen colors={['$background', 'transparent']} />
+        <LinearGradient
+          fullscreen
+          colors={['$background', 'transparent']}
+        />
       </ThemeTint>
 
       <Container>
-        <YStack mt="$2" ai="flex-start">
+        <YStack
+          mt="$2"
+          ai="flex-start"
+        >
           <ThemeTint>
             <Link href={isDraft ? '/draft' : '/blog'}>
-              <Button size="$3" chromeless icon={ArrowLeft} ml="$-2">
+              <Button
+                size="$3"
+                chromeless
+                icon={ArrowLeft}
+                ml="$-2"
+              >
                 {isDraft ? 'Drafts' : 'Blog'}
               </Button>
             </Link>
           </ThemeTint>
         </YStack>
 
-        <H1 letterSpacing={-1} mt="$5" mb="$2">
+        <H1
+          letterSpacing={-1}
+          mt="$5"
+          mb="$2"
+        >
           {frontmatter.title}
         </H1>
 
-        <H2 o={0.5} theme="alt1" size="$7" fontWeight="500" fontFamily="$body" mb="$1">
+        <H2
+          o={0.5}
+          theme="alt1"
+          size="$7"
+          fontWeight="500"
+          fontFamily="$body"
+          mb="$1"
+        >
           {frontmatter.description}
         </H2>
 
-        <XStack ai="center" my="$3">
+        <XStack
+          ai="center"
+          my="$3"
+        >
           {/* <Avatar src={authors[data.by].avatar} mr={2} /> */}
 
           <Link
@@ -63,14 +82,27 @@ export function BlogArticleHeader({ frontmatter }: BlogPost) {
             rel="noopener noreferrer"
             target="_blank"
           >
-            <Paragraph size="$3" theme="alt1" whiteSpace="nowrap">
+            <Paragraph
+              size="$3"
+              theme="alt1"
+              whiteSpace="nowrap"
+            >
               {authors?.[frontmatter.by || '']?.name}
             </Paragraph>
           </Link>
 
-          <Separator vertical mx="$2" />
+          <Separator
+            vertical
+            mx="$2"
+          />
 
-          <Paragraph o={0.4} tag="time" size="$3" theme="alt1" whiteSpace="nowrap">
+          <Paragraph
+            o={0.4}
+            tag="time"
+            size="$3"
+            theme="alt1"
+            whiteSpace="nowrap"
+          >
             {Intl.DateTimeFormat('en-US', {
               month: 'short',
               year: 'numeric',
@@ -78,16 +110,30 @@ export function BlogArticleHeader({ frontmatter }: BlogPost) {
             }).format(new Date(frontmatter.publishedAt || ''))}
           </Paragraph>
 
-          <Separator vertical mx="$2" />
+          <Separator
+            vertical
+            mx="$2"
+          />
 
-          <YStack ai="center" display="none" $gtSm={{ display: 'flex' }}>
-            <Paragraph o={0.4} size="$3" theme="alt1">
+          <YStack
+            ai="center"
+            display="none"
+            $gtSm={{ display: 'flex' }}
+          >
+            <Paragraph
+              o={0.4}
+              size="$3"
+              theme="alt1"
+            >
               {frontmatter.readingTime?.text}
             </Paragraph>
 
             {frontmatter.type === 'changelog' && (
               <>
-                <Separator vertical mx="$2" />
+                <Separator
+                  vertical
+                  mx="$2"
+                />
                 <Button>Changelog</Button>
               </>
             )}
@@ -119,13 +165,22 @@ export function BlogSlugPage(props: BlogPost) {
       <BlogArticleHeader {...props} />
 
       <Container>
-        <YStack tag="article" px="$2">
+        <YStack
+          tag="article"
+          px="$2"
+        >
           <Component components={components as any} />
         </YStack>
 
-        <Separator my="$8" mx="auto" />
+        <Separator
+          my="$8"
+          mx="auto"
+        />
 
-        <YStack mb="$8" ai="center">
+        <YStack
+          mb="$8"
+          ai="center"
+        >
           <Paragraph>
             Share this post on{' '}
             <Link
@@ -142,12 +197,22 @@ export function BlogSlugPage(props: BlogPost) {
 
         {relatedPosts && (
           <YStack>
-            <Separator my="$8" mx="auto" />
-            <H3 mb="$3" ta="center" textTransform="uppercase">
+            <Separator
+              my="$8"
+              mx="auto"
+            />
+            <H3
+              mb="$3"
+              ta="center"
+              textTransform="uppercase"
+            >
               Related
             </H3>
 
-            <YStack my="$4" space="$4">
+            <YStack
+              my="$4"
+              space="$4"
+            >
               {relatedPosts.map((frontmatter) => {
                 return (
                   <Paragraph

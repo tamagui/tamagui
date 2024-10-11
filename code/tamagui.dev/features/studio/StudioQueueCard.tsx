@@ -90,11 +90,7 @@ const QueueCardFrame = ({
 
   return (
     <YStack
-      ref={composeRefs(
-        glow.parentRef as any,
-        glow2.parentRef as any,
-        glow3.parentRef as any
-      )}
+      ref={composeRefs(glow.parentRef as any, glow2.parentRef as any, glow3.parentRef as any)}
       p="$4"
       br="$4"
       bw={4}
@@ -105,54 +101,86 @@ const QueueCardFrame = ({
       ov="hidden"
       elevation="$4"
     >
-      <YStack fullscreen br={7} bw={1} bc="$borderColor" />
+      <YStack
+        fullscreen
+        br={7}
+        bw={1}
+        bc="$borderColor"
+      />
 
       <YStack className="rotate-slow-right">{glow.Component()}</YStack>
       <YStack className="rotate-slow-left">{glow2.Component()}</YStack>
       <YStack className="rotate-slow-right">{glow3.Component()}</YStack>
 
-      {[
-        5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100,
-      ].map((deg) => (
-        <YStack
-          key={deg}
-          pos="absolute"
-          rotate={`${deg}deg`}
-          t="$5"
-          l="$5"
-          r="$5"
-          b="$5"
-          br="$3"
-          bc="$color8"
-          o={0.2}
-          bw={1}
-          scale={1.3}
-        />
-      ))}
+      {[5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100].map(
+        (deg) => (
+          <YStack
+            key={deg}
+            pos="absolute"
+            rotate={`${deg}deg`}
+            t="$5"
+            l="$5"
+            r="$5"
+            b="$5"
+            br="$3"
+            bc="$color8"
+            o={0.2}
+            bw={1}
+            scale={1.3}
+          />
+        )
+      )}
 
       <YStack>
         <Paragraph size="$8">{teamName}</Paragraph>
         <Paragraph size="$4">Studio Access</Paragraph>
 
-        <Paragraph theme="alt2" size="$3">
+        <Paragraph
+          theme="alt2"
+          size="$3"
+        >
           In queue for access {estimatedDate}
         </Paragraph>
       </YStack>
 
       <Spacer flex />
 
-      <Paragraph pos="absolute" size="$12" b="$6" l="$15" scale={4} o={0.015} fow="900">
+      <Paragraph
+        pos="absolute"
+        size="$12"
+        b="$6"
+        l="$15"
+        scale={4}
+        o={0.015}
+        fow="900"
+      >
         {place}
       </Paragraph>
 
-      <XStack pb="$1" ai="flex-end">
-        <Paragraph als="flex-start" mr="$1" size="$6" o={0.35} ml="$-1">
+      <XStack
+        pb="$1"
+        ai="flex-end"
+      >
+        <Paragraph
+          als="flex-start"
+          mr="$1"
+          size="$6"
+          o={0.35}
+          ml="$-1"
+        >
           #
         </Paragraph>
-        <Paragraph my="$-3" size="$12" fow="900">
+        <Paragraph
+          my="$-3"
+          size="$12"
+          fow="900"
+        >
           {place}
         </Paragraph>
-        <Paragraph ml="$3" theme="alt2">
+        <Paragraph
+          ml="$3"
+          theme="alt2"
+        >
           in the {tierName ?? 'non-sponsor'} tier
         </Paragraph>
 

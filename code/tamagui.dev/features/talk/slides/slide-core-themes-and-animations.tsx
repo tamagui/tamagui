@@ -84,8 +84,8 @@ export default memo(() => {
                     type: 'text',
                     content: (
                       <>
-                        On the web this doesn't trigger a render on theme change - or even
-                        on animation when using the CSS&nbsp;driver.
+                        On the web this doesn't trigger a render on theme change - or even on
+                        animation when using the CSS&nbsp;driver.
                       </>
                     ),
                   },

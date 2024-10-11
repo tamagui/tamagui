@@ -173,8 +173,16 @@ const snippetUsageInverseSub = highlightCode(
 )
 
 const MyWidget = ({ text, stack }: any = {}) => (
-  <Square size={250} bg={stack || '$background'} ai="center" jc="center">
-    <Paragraph size="$8" color={text || '$color'}>
+  <Square
+    size={250}
+    bg={stack || '$background'}
+    ai="center"
+    jc="center"
+  >
+    <Paragraph
+      size="$8"
+      color={text || '$color'}
+    >
       Hello world
     </Paragraph>
   </Square>
@@ -365,7 +373,10 @@ export default memo(() => {
                 type: 'content',
                 content: (
                   <Container>
-                    <MyWidget text="red" stack="white" />
+                    <MyWidget
+                      text="red"
+                      stack="white"
+                    />
                   </Container>
                 ),
               },
@@ -385,8 +396,14 @@ export default memo(() => {
                 type: 'content',
                 content: (
                   <Container>
-                    <MyWidget text="red" stack="white" />
-                    <MyWidget text="white" stack="red" />
+                    <MyWidget
+                      text="red"
+                      stack="white"
+                    />
+                    <MyWidget
+                      text="white"
+                      stack="red"
+                    />
                   </Container>
                 ),
               },

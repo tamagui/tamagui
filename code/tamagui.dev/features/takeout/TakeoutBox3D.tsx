@@ -71,7 +71,11 @@ function TakeoutBox3D(props) {
         preset="portrait"
         intensity={1.5}
       >
-        <group ref={ref} dispose={null} {...props}>
+        <group
+          ref={ref}
+          dispose={null}
+          {...props}
+        >
           <mesh
             castShadow
             receiveShadow

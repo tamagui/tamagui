@@ -17,11 +17,19 @@ const ToastImportHandler = () => {
 
 export const ToastProvider = ({ children }: { children: React.ReactNode }) => {
   return (
-    <ToastProviderOG swipeDirection="vertical" swipeThreshold={80}>
+    <ToastProviderOG
+      swipeDirection="vertical"
+      swipeThreshold={80}
+    >
       <ToastHandler />
       {children}
       <ToastImportHandler />
-      <ToastViewport m="$0.5" left="50%" x="-50%" top={0} />
+      <ToastViewport
+        m="$0.5"
+        left="50%"
+        x="-50%"
+        top={0}
+      />
     </ToastProviderOG>
   )
 }

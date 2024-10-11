@@ -7,7 +7,10 @@ import { TwitterIcon } from '~/features/icons/TwitterIcon'
 
 export const SocialLinksRow = () => {
   return (
-    <XStack gap="$4" $sm={{ flexDirection: 'column' }}>
+    <XStack
+      gap="$4"
+      $sm={{ flexDirection: 'column' }}
+    >
       <Card
         width="33.33%"
         jc="center"
@@ -20,10 +23,16 @@ export const SocialLinksRow = () => {
         p="$5"
       >
         <TwitterIcon />
-        <H4 cursor="pointer" fontFamily="$silkscreen">
+        <H4
+          cursor="pointer"
+          fontFamily="$silkscreen"
+        >
           Twitter
         </H4>
-        <Paragraph cursor="pointer" theme="alt2">
+        <Paragraph
+          cursor="pointer"
+          theme="alt2"
+        >
           Announcements and general updates.
         </Paragraph>
       </Card>
@@ -40,10 +49,16 @@ export const SocialLinksRow = () => {
       >
         <DiscordIcon />
         {/* TODO this is using $body for other attributes not $silkscreen */}
-        <H4 cursor="pointer" fontFamily="$silkscreen">
+        <H4
+          cursor="pointer"
+          fontFamily="$silkscreen"
+        >
           Discord
         </H4>
-        <Paragraph cursor="pointer" theme="alt2">
+        <Paragraph
+          cursor="pointer"
+          theme="alt2"
+        >
           Get involved and get questions answered.
         </Paragraph>
       </Card>
@@ -59,10 +74,16 @@ export const SocialLinksRow = () => {
         p="$5"
       >
         <GithubIcon />
-        <H4 cursor="pointer" fontFamily="$silkscreen">
+        <H4
+          cursor="pointer"
+          fontFamily="$silkscreen"
+        >
           GitHub
         </H4>
-        <Paragraph cursor="pointer" theme="alt2">
+        <Paragraph
+          cursor="pointer"
+          theme="alt2"
+        >
           Issues, feature requests, and contributing.
         </Paragraph>
       </Card>

@@ -17,7 +17,9 @@
     "upload:bento": "node ./scripts/upload-bento.cjs",
     "dev-build-prod": "VXRN_DISABLE_PROD_OPTIMIZATION=1 yarn build:prod && yarn serve",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "lint": "biome check --config-path ./biome.json",
+    "lint:fix": "biome check --write"
   },
   "dependencies": {
     "@discordjs/core": "^0.6.0",
@@ -59,6 +61,7 @@
     "vite-plugin-inspect": "^0.8.4"
   },
   "devDependencies": {
+    "@biomejs/biome": "^1.9.3",
     "@tamagui/cli": "1.114.2",
     "@testing-library/react-hooks": "^8.0.1",
     "acorn": "^8.11.3",

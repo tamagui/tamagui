@@ -27,7 +27,10 @@ export const SearchButton = memo((props: ButtonProps) => {
   }, [onInput, ref])
 
   return (
-    <TooltipSimple groupId="header-actions-search" label="Search">
+    <TooltipSimple
+      groupId="header-actions-search"
+      label="Search"
+    >
       <Button
         aria-label="Search docs"
         ref={ref as any}
@@ -36,7 +39,12 @@ export const SearchButton = memo((props: ButtonProps) => {
         icon={SearchIcon}
         // dont hide this on touchables to avoid layout shifts...
         iconAfter={
-          <SizableText size="$1" mx="$1" $sm={{ maw: 0, ov: 'hidden', mx: -1 }} o={0.25}>
+          <SizableText
+            size="$1"
+            mx="$1"
+            $sm={{ maw: 0, ov: 'hidden', mx: -1 }}
+            o={0.25}
+          >
             /
           </SizableText>
         }

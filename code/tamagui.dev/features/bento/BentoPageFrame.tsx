@@ -23,7 +23,12 @@ const Wave = () => {
         mask: `linear-gradient(black 80%, transparent)`,
       }}
     >
-      <Image alt="ocean" width={2000} height={2000} src="/takeout/wave.svg" />
+      <Image
+        alt="ocean"
+        width={2000}
+        height={2000}
+        src="/takeout/wave.svg"
+      />
     </YStack>
   )
 }
@@ -44,18 +49,22 @@ const Break = () => {
       }}
       zi={-1}
     >
-      <Image width={2000} height={2000} src="/takeout/geometric.svg" />
+      <Image
+        width={2000}
+        height={2000}
+        src="/takeout/geometric.svg"
+      />
     </YStack>
   )
 }
 
-export const BentoPageFrame = ({
-  children,
-  simpler,
-}: { children: any; simpler?: boolean }) => {
+export const BentoPageFrame = ({ children, simpler }: { children: any; simpler?: boolean }) => {
   return (
     <>
-      <YStack f={1} pt={simpler ? 0 : '$2'}>
+      <YStack
+        f={1}
+        pt={simpler ? 0 : '$2'}
+      >
         <Theme name="tan">
           <YStack
             // className={simpler ? `mask-gradient-down` : ``}
@@ -65,7 +74,10 @@ export const BentoPageFrame = ({
             y={simpler ? 0 : -100}
             b={-100}
           >
-            <YStack fullscreen bg="$color6" />
+            <YStack
+              fullscreen
+              bg="$color6"
+            />
 
             <YStack
               className="grain"
@@ -105,7 +117,10 @@ export const BentoPageFrame = ({
 
               <Wave />
 
-              <YStack x={100} y={100}>
+              <YStack
+                x={100}
+                y={100}
+              >
                 <Wave />
               </YStack>
             </YStack>

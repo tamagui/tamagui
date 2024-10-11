@@ -32,7 +32,15 @@ import { useGlobalState } from '../state/useGlobalState'
 const DialogCloseButton = () => (
   <Unspaced>
     <Dialog.Close asChild="except-style">
-      <Button size="$3" pos="absolute" t="$3" r="$3" circular icon={X} zi={1000} />
+      <Button
+        size="$3"
+        pos="absolute"
+        t="$3"
+        r="$3"
+        circular
+        icon={X}
+        zi={1000}
+      />
     </Dialog.Close>
   </Unspaced>
 )
@@ -102,20 +110,38 @@ const CreateWorkspaceDialog = () => {
       <YStack space="$4">
         <YStack space="$2">
           <Dialog.Title size="$7">Create Workspace</Dialog.Title>
-          <Dialog.Description size="$3" theme="alt2">
-            A workspace contains assets: colors, themes, fonts, and icons. You can import
-            existing assets into the workspace after creation.
+          <Dialog.Description
+            size="$3"
+            theme="alt2"
+          >
+            A workspace contains assets: colors, themes, fonts, and icons. You can import existing
+            assets into the workspace after creation.
           </Dialog.Description>
         </YStack>
 
-        <Fieldset space="$4" horizontal>
-          <Label size="$3" w={160} justifyContent="flex-end" htmlFor="workspace-name">
+        <Fieldset
+          space="$4"
+          horizontal
+        >
+          <Label
+            size="$3"
+            w={160}
+            justifyContent="flex-end"
+            htmlFor="workspace-name"
+          >
             Name
           </Label>
-          <Input size="$3" f={1} id="workspace-name" />
+          <Input
+            size="$3"
+            f={1}
+            id="workspace-name"
+          />
         </Fieldset>
 
-        <YStack ai="flex-end" mt="$2">
+        <YStack
+          ai="flex-end"
+          mt="$2"
+        >
           <DialogClose>
             <Button aria-label="Close">Create</Button>
           </DialogClose>
@@ -144,16 +170,31 @@ const CreateThemeDialog = (props: CreateThemeDialogProps) => {
       <YStack space="$4">
         <YStack space="$2">
           <Dialog.Title size="$7">Create Theme</Dialog.Title>
-          <Dialog.Description size="$3" theme="alt2">
+          <Dialog.Description
+            size="$3"
+            theme="alt2"
+          >
             Create a new theme in scope {props.category}.
           </Dialog.Description>
         </YStack>
 
-        <Fieldset space="$4" horizontal>
-          <Label size="$3" w={160} justifyContent="flex-end" htmlFor="theme-name">
+        <Fieldset
+          space="$4"
+          horizontal
+        >
+          <Label
+            size="$3"
+            w={160}
+            justifyContent="flex-end"
+            htmlFor="theme-name"
+          >
             Name
           </Label>
-          <Input size="$3" f={1} id="theme-name" />
+          <Input
+            size="$3"
+            f={1}
+            id="theme-name"
+          />
         </Fieldset>
         <DialogClose>
           <Button aria-label="Close">Create</Button>
@@ -167,20 +208,32 @@ const ConfirmDeleteDialog = (props: ConfirmDeleteDialogProps) => {
   return (
     <>
       <DialogCloseButton />
-      <YStack space="$6" p="$2">
+      <YStack
+        space="$6"
+        p="$2"
+      >
         <YStack space="$2">
           <Dialog.Title size="$7">Delete {props.thingName}?</Dialog.Title>
-          <Dialog.Description size="$3" theme="alt2">
+          <Dialog.Description
+            size="$3"
+            theme="alt2"
+          >
             Are you sure you want to delete {props.thingName}?
           </Dialog.Description>
         </YStack>
 
-        <XStack jc="flex-end" space>
+        <XStack
+          jc="flex-end"
+          space
+        >
           <Dialog.Close asChild>
             <Button>Cancel</Button>
           </Dialog.Close>
           <DialogClose>
-            <Button theme="red" aria-label="Close">
+            <Button
+              theme="red"
+              aria-label="Close"
+            >
               Delete
             </Button>
           </DialogClose>
@@ -194,17 +247,29 @@ const AlertDialog = (props: StudioAlertDialogProps) => {
   return (
     <>
       <DialogCloseButton />
-      <YStack space="$6" p="$2">
+      <YStack
+        space="$6"
+        p="$2"
+      >
         <YStack space="$2">
           <Dialog.Title size="$7">{props.title}</Dialog.Title>
-          <Dialog.Description size="$3" theme="alt2">
+          <Dialog.Description
+            size="$3"
+            theme="alt2"
+          >
             {props.message}
           </Dialog.Description>
         </YStack>
 
-        <XStack jc="flex-end" space>
+        <XStack
+          jc="flex-end"
+          space
+        >
           <DialogClose>
-            <Button themeInverse aria-label="Ok">
+            <Button
+              themeInverse
+              aria-label="Ok"
+            >
               Ok
             </Button>
           </DialogClose>
@@ -214,7 +279,7 @@ const AlertDialog = (props: StudioAlertDialogProps) => {
   )
 }
 
-const CreateAnimationDialog = (props: CreateAnimationDialogProps) => {
+const CreateAnimationDialog = () => {
   const state = useGlobalState()
   const [name, setName] = useState('')
 
@@ -224,13 +289,24 @@ const CreateAnimationDialog = (props: CreateAnimationDialogProps) => {
       <YStack space="$4">
         <YStack space="$2">
           <Dialog.Title size="$7">Create Theme</Dialog.Title>
-          <Dialog.Description size="$3" theme="alt2">
+          <Dialog.Description
+            size="$3"
+            theme="alt2"
+          >
             Create a new animation.
           </Dialog.Description>
         </YStack>
 
-        <Fieldset space="$4" horizontal>
-          <Label size="$3" w={160} justifyContent="flex-end" htmlFor="animation-name">
+        <Fieldset
+          space="$4"
+          horizontal
+        >
+          <Label
+            size="$3"
+            w={160}
+            justifyContent="flex-end"
+            htmlFor="animation-name"
+          >
             Name
           </Label>
           <Input
@@ -286,7 +362,10 @@ const ExportDialog = (props: ExportDialogProps) => {
       <YStack space="$4">
         <YStack space="$2">
           <Dialog.Title size="$7">Export</Dialog.Title>
-          <Dialog.Description size="$3" theme="alt2">
+          <Dialog.Description
+            size="$3"
+            theme="alt2"
+          >
             Copy and paste (for now)
           </Dialog.Description>
         </YStack>
@@ -297,7 +376,11 @@ const ExportDialog = (props: ExportDialogProps) => {
           value={tab}
           onValueChange={(newTab) => setTab(newTab)}
         >
-          <XStack jc="space-between" ai="center" mb="$2">
+          <XStack
+            jc="space-between"
+            ai="center"
+            mb="$2"
+          >
             <Tabs.List disablePassBorderRadius>
               <Tabs.Tab value="current">
                 <SizableText>Current Tab</SizableText>
@@ -332,7 +415,11 @@ const ExportDialog = (props: ExportDialogProps) => {
           />
         </Tabs>
 
-        <XStack jc="flex-end" mt="$2" space>
+        <XStack
+          jc="flex-end"
+          mt="$2"
+          space
+        >
           <DialogClose>
             <Button aria-label="Close">Done</Button>
           </DialogClose>

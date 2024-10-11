@@ -23,15 +23,21 @@ export default function SiteLayout() {
 
   return (
     <>
-      <Header showAuth={showAuth} disableNew={disableNew} />
+      <Header
+        showAuth={showAuth}
+        disableNew={disableNew}
+      />
       <LoadCherryBomb prefetch />
       <LoadMunro prefetch />
-      {!isDocs && !isIndex && !isBento && !isTakeout && (
-        <ThemeNameEffect colorKey="$color2" />
-      )}
+      {!isDocs && !isIndex && !isBento && !isTakeout && <ThemeNameEffect colorKey="$color2" />}
       <Slot />
       {!hideFooter && <Footer />}
-      <ToastViewport flexDirection="column-reverse" top="$2" left={0} right={0} />
+      <ToastViewport
+        flexDirection="column-reverse"
+        top="$2"
+        left={0}
+        right={0}
+      />
       <ToastViewport
         multipleToasts
         name="viewport-multiple"

@@ -101,14 +101,24 @@ const TabsListFrame = styled(XStack, {
 const TabsList = (props) => {
   return (
     <TabsListFrame className="sticky">
-      <Tabs.List gap="$3" {...props} />
+      <Tabs.List
+        gap="$3"
+        {...props}
+      />
     </TabsListFrame>
   )
 }
 
 const TabsContent = (props) => {
   return (
-    <Tabs.Content width="100%" jc="flex-start" ai="stretch" t="$-2" pt="$4" {...props} />
+    <Tabs.Content
+      width="100%"
+      jc="flex-start"
+      ai="stretch"
+      t="$-2"
+      pt="$4"
+      {...props}
+    />
   )
 }
 

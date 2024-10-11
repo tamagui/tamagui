@@ -67,9 +67,7 @@ export const PurchaseModal = ({
   const sortedStarterPrices = (starter?.prices ?? []).sort(
     (a, b) => a.unit_amount! - b.unit_amount!
   )
-  const sortedBentoPrices = (bento?.prices ?? []).sort(
-    (a, b) => a.unit_amount! - b.unit_amount!
-  )
+  const sortedBentoPrices = (bento?.prices ?? []).sort((a, b) => a.unit_amount! - b.unit_amount!)
   const [starterPriceId, setStarterPriceId] = useState<null | string>(
     defaultValue === 'takeout' ? sortedStarterPrices[0]?.id || null : null
   )
@@ -146,8 +144,17 @@ export const PurchaseModal = ({
       <TakeoutFaqModal />
 
       <Dialog.Adapt when="sm">
-        <Sheet zIndex={200000} modal dismissOnSnapToBottom animation="medium">
-          <Sheet.Frame bg="$color2" padding={0} gap>
+        <Sheet
+          zIndex={200000}
+          modal
+          dismissOnSnapToBottom
+          animation="medium"
+        >
+          <Sheet.Frame
+            bg="$color2"
+            padding={0}
+            gap
+          >
             <Sheet.ScrollView>
               <Dialog.Adapt.Contents />
             </Sheet.ScrollView>
@@ -197,7 +204,10 @@ export const PurchaseModal = ({
             value={currentTab}
           >
             <Tabs.List disablePassBorderRadius>
-              <YStack width={'50%'} f={1}>
+              <YStack
+                width={'50%'}
+                f={1}
+              >
                 <Tab
                   py={12}
                   onPress={() => setCurrentTab('takeout')}
@@ -207,22 +217,41 @@ export const PurchaseModal = ({
                   <TakeoutLogo scale={0.11} />
                 </Tab>
               </YStack>
-              <Separator vertical bc="$color4" mb={2} mx={-1} />
-              <YStack width={'50%'} f={1}>
+              <Separator
+                vertical
+                bc="$color4"
+                mb={2}
+                mx={-1}
+              />
+              <YStack
+                width={'50%'}
+                f={1}
+              >
                 <Tab
                   onPress={() => setCurrentTab('bento')}
                   isActive={currentTab === 'bento'}
                   value="bento"
                   end
                 >
-                  <BentoLogo noShadow scale={0.26} />
+                  <BentoLogo
+                    noShadow
+                    scale={0.26}
+                  />
                 </Tab>
               </YStack>
             </Tabs.List>
             <ScrollView $gtSm={{ height: '60vh' }}>
               <PageTheme>
-                <YStack f={1} group="takeoutBody" px="$4" pb="$4">
-                  <Tabs.Content f={1} value="takeout">
+                <YStack
+                  f={1}
+                  group="takeoutBody"
+                  px="$4"
+                  pb="$4"
+                >
+                  <Tabs.Content
+                    f={1}
+                    value="takeout"
+                  >
                     <XStack
                       f={1}
                       gap="$4"
@@ -252,16 +281,31 @@ export const PurchaseModal = ({
                               br="$4"
                               gap="$3"
                             >
-                              <Check size={24} mt={2} color="$color9" />
-                              <MunroP size="$5" color="$color11" ls={1.5}>
+                              <Check
+                                size={24}
+                                mt={2}
+                                color="$color9"
+                              />
+                              <MunroP
+                                size="$5"
+                                color="$color11"
+                                ls={1.5}
+                              >
                                 Every plan includes the starter, icons & fonts
                               </MunroP>
                             </XStack>
                           </YStack>
                         </YStack>
 
-                        <YStack mt="$6" gap="$4" ai="center">
-                          <Paragraph size="$3" theme="alt1">
+                        <YStack
+                          mt="$6"
+                          gap="$4"
+                          ai="center"
+                        >
+                          <Paragraph
+                            size="$3"
+                            theme="alt1"
+                          >
                             Instant one-click cancel your subscription from{' '}
                             <Link href="/account/items">Subscriptions</Link>
                           </Paragraph>
@@ -270,7 +314,10 @@ export const PurchaseModal = ({
 
                       <Separator vertical />
 
-                      <YStack f={2} gap="$2">
+                      <YStack
+                        f={2}
+                        gap="$2"
+                      >
                         <RadioGroup
                           gap="$2"
                           value={starterPriceId || ''}
@@ -294,15 +341,16 @@ export const PurchaseModal = ({
                                       : 'Personal'}
                                 </H4>
 
-                                <Paragraph theme="alt2">
-                                  {getPriceDescription(price)}
-                                </Paragraph>
+                                <Paragraph theme="alt2">{getPriceDescription(price)}</Paragraph>
                               </RadioGroupItem>
                             )
                           })}
                         </RadioGroup>
 
-                        <XStack jc="flex-end" my="$2">
+                        <XStack
+                          jc="flex-end"
+                          my="$2"
+                        >
                           <Button
                             onPress={() => setStarterPriceId(null)}
                             o={starterPriceId ? 1 : 0}
@@ -318,7 +366,10 @@ export const PurchaseModal = ({
                   </Tabs.Content>
 
                   <Tabs.Content value="bento">
-                    <XStack jc="flex-end" my="$2">
+                    <XStack
+                      jc="flex-end"
+                      my="$2"
+                    >
                       <Button
                         onPress={() => setBentoPriceId(null)}
                         o={bentoPriceId ? 1 : 0}
@@ -349,8 +400,15 @@ export const PurchaseModal = ({
                           </YStack>
                         </YStack>
 
-                        <YStack mt="$6" gap="$4" ai="center">
-                          <Paragraph size="$3" theme="alt1">
+                        <YStack
+                          mt="$6"
+                          gap="$4"
+                          ai="center"
+                        >
+                          <Paragraph
+                            size="$3"
+                            theme="alt1"
+                          >
                             Instant one-click cancel your subscription from{' '}
                             <Link href="/account/items">Subscriptions</Link>
                           </Paragraph>
@@ -359,7 +417,10 @@ export const PurchaseModal = ({
 
                       <Separator vertical />
 
-                      <YStack f={1} gap="$4">
+                      <YStack
+                        f={1}
+                        gap="$4"
+                      >
                         <YStack gap="$4">
                           <YStack gap="$2">
                             <RadioGroup
@@ -385,9 +446,7 @@ export const PurchaseModal = ({
                                           : 'Personal'}
                                     </H4>
 
-                                    <Paragraph theme="gray">
-                                      {getPriceDescription(price)}
-                                    </Paragraph>
+                                    <Paragraph theme="gray">{getPriceDescription(price)}</Paragraph>
                                     {/* <Paragraph theme="alt1" size="$2">
                                 {formatPrice(price.unit_amount! / (100 * 2), 'usd')}{' '}
                                 annual renewal (cancel anytime)
@@ -406,7 +465,11 @@ export const PurchaseModal = ({
               <Spacer size="$1" />
             </ScrollView>
             <Separator />
-            <YStack p="$6" gap="$2" bg="$color1">
+            <YStack
+              p="$6"
+              gap="$2"
+              bg="$color1"
+            >
               <YStack
                 jc="center"
                 ai="center"
@@ -417,11 +480,19 @@ export const PurchaseModal = ({
                   flexDirection: 'row',
                 }}
               >
-                <YStack f={1} width="100%" $gtXs={{ width: '40%' }}>
+                <YStack
+                  f={1}
+                  width="100%"
+                  $gtXs={{ width: '40%' }}
+                >
                   <XStack>
                     <H3 size="$11">{formatPrice(sum! / 100, 'usd')}</H3>
                   </XStack>
-                  <Paragraph theme="alt1" ellipse size="$4">
+                  <Paragraph
+                    theme="alt1"
+                    ellipse
+                    size="$4"
+                  >
                     {(() => {
                       const items: string[] = []
                       const starterPrice = starterPriceId
@@ -453,7 +524,10 @@ export const PurchaseModal = ({
                       >
                         {store.disableAutomaticDiscount ? (
                           <>
-                            <Paragraph size="$1" theme="alt2">
+                            <Paragraph
+                              size="$1"
+                              theme="alt2"
+                            >
                               You can apply a promo code on the next page.
                             </Paragraph>
                             <SizableText
@@ -470,7 +544,10 @@ export const PurchaseModal = ({
                           </>
                         ) : (
                           <>
-                            <Paragraph size="$2" theme="green_alt2">
+                            <Paragraph
+                              size="$2"
+                              theme="green_alt2"
+                            >
                               A $50 discount applies if you add both Bento and Takeout.
                             </Paragraph>
                             <SizableText
@@ -512,7 +589,11 @@ export const PurchaseModal = ({
                 </YStack>
               </Unspaced> */}
 
-                <YStack gap="$2" width="100%" $gtXs={{ width: '40%' }}>
+                <YStack
+                  gap="$2"
+                  width="100%"
+                  $gtXs={{ width: '40%' }}
+                >
                   <Link
                     asChild
                     target="_blank"
@@ -545,10 +626,21 @@ export const PurchaseModal = ({
                       Purchase
                     </PurchaseButton>
                   </Link>
-                  <XStack jc="space-between" gap="$4" ai="center" mb="$2">
+                  <XStack
+                    jc="space-between"
+                    gap="$4"
+                    ai="center"
+                    mb="$2"
+                  >
                     <XStack
                       ai="center"
-                      separator={<Separator vertical bg="$color8" my="$2" />}
+                      separator={
+                        <Separator
+                          vertical
+                          bg="$color8"
+                          my="$2"
+                        />
+                      }
                       gap="$2"
                     >
                       {/* currently no FAQ for bento - to add, just remove the condition and add the FAQ modal like the takeout one. */}
@@ -612,7 +704,10 @@ export const PurchaseModal = ({
                       </SizableText>
                     </XStack>
                     <Theme name="alt1">
-                      <PoweredByStripeIcon width={96} height={40} />
+                      <PoweredByStripeIcon
+                        width={96}
+                        height={40}
+                      />
                     </Theme>
                   </XStack>
                 </YStack>

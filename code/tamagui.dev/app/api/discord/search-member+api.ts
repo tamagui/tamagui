@@ -13,13 +13,10 @@ export default apiRoute(async (req) => {
   }
 
   const discordClient = await getDiscordClient()
-  const results = await discordClient.api.guilds.searchForMembers(
-    TAMAGUI_DISCORD_GUILD_ID,
-    {
-      query: query,
-      limit: 5,
-    }
-  )
+  const results = await discordClient.api.guilds.searchForMembers(TAMAGUI_DISCORD_GUILD_ID, {
+    query: query,
+    limit: 5,
+  })
 
   return Response.json(results)
 })

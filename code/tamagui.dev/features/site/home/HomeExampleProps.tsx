@@ -6,11 +6,18 @@ import { ContainerLarge } from '~/components/Containers'
 const FeatureItem = ({ label, children }) => {
   return (
     <SizableText>
-      <SizableText size="$5" fow="800">
+      <SizableText
+        size="$5"
+        fow="800"
+      >
         {label}
       </SizableText>
       &nbsp;&nbsp;-&nbsp;&nbsp;
-      <SizableText size="$5" tag="span" theme="alt2">
+      <SizableText
+        size="$5"
+        tag="span"
+        theme="alt2"
+      >
         {children}
       </SizableText>
     </SizableText>
@@ -19,9 +26,17 @@ const FeatureItem = ({ label, children }) => {
 
 const Features = ({ items, ...props }: any) => {
   return (
-    <YStack space {...props}>
+    <YStack
+      space
+      {...props}
+    >
       {items.map((feature, i) => (
-        <Card key={i} p="$6" elevation="$1" $sm={{ p: '$4' }}>
+        <Card
+          key={i}
+          p="$6"
+          elevation="$1"
+          $sm={{ p: '$4' }}
+        >
           <XStack tag="li">
             <Text color="$green9">
               <CheckCircle />
@@ -37,30 +52,63 @@ const Features = ({ items, ...props }: any) => {
 export const HomeExampleProps = () => {
   return (
     <ContainerLarge position="relative">
-      <XStack px="$6" pt="$8" space="$4" $sm={{ flexDirection: 'column', px: 0 }}>
-        <YStack w="50%" $sm={{ w: '100%' }}>
+      <XStack
+        px="$6"
+        pt="$8"
+        space="$4"
+        $sm={{ flexDirection: 'column', px: 0 }}
+      >
+        <YStack
+          w="50%"
+          $sm={{ w: '100%' }}
+        >
           <Features
             space="$4"
             items={[
-              <FeatureItem label="Press & hover events">
+              <FeatureItem
+                key="1"
+                label="Press & hover events"
+              >
                 onHoverIn, onHoverOut, onPressIn, and onPressOut.
               </FeatureItem>,
-              <FeatureItem label="Pseudo styles">
+              <FeatureItem
+                key="2"
+                label="Pseudo styles"
+              >
                 Style hover, press, and focus, in combination with media queries.
               </FeatureItem>,
-              <FeatureItem label="Media queries">For every style/variant.</FeatureItem>,
+              <FeatureItem
+                key="3"
+                label="Media queries"
+              >
+                For every style/variant.
+              </FeatureItem>,
             ]}
           />
         </YStack>
-        <YStack w="50%" $sm={{ w: `100%` }}>
+        <YStack
+          w="50%"
+          $sm={{ w: `100%` }}
+        >
           <Features
             space="$4"
             items={[
-              <FeatureItem label="Themes">Change theme on any component.</FeatureItem>,
-              <FeatureItem label="Animations">
+              <FeatureItem
+                key="4"
+                label="Themes"
+              >
+                Change theme on any component.
+              </FeatureItem>,
+              <FeatureItem
+                key="5"
+                label="Animations"
+              >
                 Animate every component, enter and exit styling, works with pseudo states.
               </FeatureItem>,
-              <FeatureItem label="DOM escape hatches">
+              <FeatureItem
+                key="6"
+                label="DOM escape hatches"
+              >
                 Support for className and other HTML attributes.
               </FeatureItem>,
             ]}

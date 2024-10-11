@@ -61,9 +61,7 @@ export function useOnIntersecting<Ref extends HTMLRef | HTMLRef[]>(
     }
     const io = new IntersectionObserver((entries) => {
       currentEntries = refs.map((ref, index) => {
-        return (
-          entries.find((x) => x.target === ref.current) ?? currentEntries[index] ?? null
-        )
+        return entries.find((x) => x.target === ref.current) ?? currentEntries[index] ?? null
       })
       dispose?.()
       dispose = onIntersectEvent(currentEntries) || null

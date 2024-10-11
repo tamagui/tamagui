@@ -15,22 +15,34 @@ export const AllTasks = () => {
       {...demoProps.elevationProps}
       {...demoProps.panelPaddingProps}
     >
-      <YStack borderBottomWidth="$0.25" borderBottomColor="$borderColor" pb="$4">
+      <YStack
+        borderBottomWidth="$0.25"
+        borderBottomColor="$borderColor"
+        pb="$4"
+      >
         <H4 {...demoProps.headingFontFamilyProps}>Tasks</H4>
-        <Paragraph {...demoProps.panelDescriptionProps}>
-          Active task for your team
-        </Paragraph>
+        <Paragraph {...demoProps.panelDescriptionProps}>Active task for your team</Paragraph>
       </YStack>
 
-      <YStack flex={1} {...demoProps.gapPropsMd}>
+      <YStack
+        flex={1}
+        {...demoProps.gapPropsMd}
+      >
         <Task>
           <Paragraph size="$5">Migrate to the new version</Paragraph>
-          <Paragraph theme="alt1" size="$2" numberOfLines={1}>
+          <Paragraph
+            theme="alt1"
+            size="$2"
+            numberOfLines={1}
+          >
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum amet
           </Paragraph>
         </Task>
         <Task checked>
-          <Paragraph size="$5" textDecorationLine="line-through">
+          <Paragraph
+            size="$5"
+            textDecorationLine="line-through"
+          >
             Make a tabs component
           </Paragraph>
           <Paragraph
@@ -43,7 +55,10 @@ export const AllTasks = () => {
           </Paragraph>
         </Task>
         <Task checked>
-          <Paragraph size="$5" textDecorationLine="line-through">
+          <Paragraph
+            size="$5"
+            textDecorationLine="line-through"
+          >
             Implement the design system
           </Paragraph>
           <Paragraph
@@ -95,13 +110,23 @@ const Task = ({
             ai="center"
             {...demoProps.borderRadiusProps}
           >
-            {checked && <Check size={10} color="$color" />}
+            {checked && (
+              <Check
+                size={10}
+                color="$color"
+              />
+            )}
           </YStack>
         </AccentTheme>
       }
       {...props}
     >
-      <YStack gap="$1" opacity={checked ? 0.3 : 1} ai="flex-start" f={1}>
+      <YStack
+        gap="$1"
+        opacity={checked ? 0.3 : 1}
+        ai="flex-start"
+        f={1}
+      >
         {children}
       </YStack>
     </ListItem>

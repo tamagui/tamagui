@@ -1,13 +1,8 @@
 import { LogoWords } from '@tamagui/logo'
-import React from 'react'
+import type React from 'react'
 import { H4, XStack, YStack, styled, useWindowDimensions } from 'tamagui'
 
-import {
-  MODAL_MAX_HEIGHT,
-  MODAL_MIN_HEIGHT,
-  MODAL_WIDTH,
-  SIDEBAR_WIDTH,
-} from '../constants'
+import { MODAL_MAX_HEIGHT, MODAL_MIN_HEIGHT, MODAL_WIDTH, SIDEBAR_WIDTH } from '../constants'
 
 export const ThemeBuilderModalFrame = ({
   children,
@@ -33,9 +28,7 @@ export const ThemeBuilderModalFrame = ({
   }
 
   const x =
-    -windowDimensions.width / 2 +
-    MODAL_WIDTH / 2 +
-    (hasSidebar ? SIDEBAR_WIDTH / 2 : SIDEBAR_WIDTH)
+    -windowDimensions.width / 2 + MODAL_WIDTH / 2 + (hasSidebar ? SIDEBAR_WIDTH / 2 : SIDEBAR_WIDTH)
   const y = windowDimensions.height / 2 - modalHeight / 2 - (noBottomBar ? 0 : 16)
 
   const HEADER_BAR_HEIGHT = 64

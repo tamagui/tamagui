@@ -4,16 +4,7 @@ import { CheckCircle, Minus, Plus, XCircle } from '@tamagui/lucide-icons'
 import { useObserve } from '@tamagui/use-store'
 import { getContrast, readableColor } from 'color2k'
 import React, { memo } from 'react'
-import {
-  Button,
-  Paragraph,
-  Spacer,
-  Unspaced,
-  XGroup,
-  XStack,
-  YStack,
-  ZStack,
-} from 'tamagui'
+import { Button, Paragraph, Spacer, Unspaced, XGroup, XStack, YStack, ZStack } from 'tamagui'
 
 import { Canvas } from '../components/Canvas'
 import { colorsStore } from '../state/ColorsStore'
@@ -25,9 +16,7 @@ import { getColor, colorToHex, getAccentScore, getRange } from './helpers'
 const ColorCanvasFrame = ({ children }) => {
   const palette = useObserve(() => colorsStore.palette)
   return (
-    <Canvas backgroundColor={(palette.backgroundColor as any) || 'transparent'}>
-      {children}
-    </Canvas>
+    <Canvas backgroundColor={(palette.backgroundColor as any) || 'transparent'}>{children}</Canvas>
   )
 }
 
@@ -56,17 +45,20 @@ export const ColorCanvas = memo(function ColorCanvas() {
 
   const barWidth = `${(1 / scale.colors.length) * 100}%`
 
-  const readableLabelColor = scale.colors[0]
-    ? readableColor(
-        `hsl(${scale.colors[0].hue}, ${scale.colors[0].saturation}%, ${scale.colors[0].lightness}%)`
-      )
-    : 'var(--background)'
-
   return (
     <ColorCanvasFrame>
-      <XStack p="$2" space pos="relative">
+      <XStack
+        p="$2"
+        space
+        pos="relative"
+      >
         <Unspaced>
-          <YStack fullscreen zi={0} bg="$background" o={0.5} />
+          <YStack
+            fullscreen
+            zi={0}
+            bg="$background"
+            o={0.5}
+          />
         </Unspaced>
 
         <XGroup>
@@ -108,8 +100,15 @@ export const ColorCanvas = memo(function ColorCanvas() {
         </XGroup>
       </XStack>
 
-      <ZStack f={1} m="$5">
-        <XStack maw="100%" h="100%" px="$2">
+      <ZStack
+        f={1}
+        m="$5"
+      >
+        <XStack
+          maw="100%"
+          h="100%"
+          px="$2"
+        >
           {scale.colors.map((_, i) => {
             const color = getColor(palette.curves, scale, i)
             const hex = colorToHex(color)
@@ -144,7 +143,14 @@ export const ColorCanvas = memo(function ColorCanvas() {
                 onPress={() => state.colors.setColorIndex(String(i))}
               >
                 <Spacer flex />
-                <YStack ml="auto" ai="flex-end" pos="relative" br="$4" ov="hidden" p="$2">
+                <YStack
+                  ml="auto"
+                  ai="flex-end"
+                  pos="relative"
+                  br="$4"
+                  ov="hidden"
+                  p="$2"
+                >
                   <YStack
                     zi={-1}
                     fullscreen
@@ -157,13 +163,22 @@ export const ColorCanvas = memo(function ColorCanvas() {
                     }
                     o={0.2}
                   />
-                  <Paragraph lineHeight={0} color={labelColor as any}>
+                  <Paragraph
+                    lineHeight={0}
+                    color={labelColor as any}
+                  >
                     {accentScore !== 'Fail' ? (
                       // @ts-ignore
-                      <CheckCircle size={16} color="currentColor" />
+                      <CheckCircle
+                        size={16}
+                        color="currentColor"
+                      />
                     ) : (
                       // @ts-ignore
-                      <XCircle size={16} color="currentColor" />
+                      <XCircle
+                        size={16}
+                        color="currentColor"
+                      />
                     )}
                   </Paragraph>
                   <Paragraph
@@ -181,7 +196,7 @@ export const ColorCanvas = memo(function ColorCanvas() {
         </XStack>
         {(Object.entries(scale.curves) as [Curve['type'], string | undefined][])
           .filter(([type]) => visibleCurves[type])
-          .map(([type, curveId]) => {
+          .map(([_, curveId]) => {
             if (!curveId) return null
 
             return null
@@ -198,7 +213,7 @@ export const ColorCanvas = memo(function ColorCanvas() {
           })}
         {(['hue', 'saturation', 'lightness'] as const)
           .filter((type) => visibleCurves[type])
-          .map((type) => {
+          .map(() => {
             return null
             // return (
             //   <CurveEditor
@@ -240,10 +255,10 @@ export const ColorCanvas = memo(function ColorCanvas() {
         {index ? (
           <>
             {Object.values(palette.scales)
-              .filter((scale) => scale.colors.length > parseInt(index))
+              .filter((scale) => scale.colors.length > Number.parseInt(index))
               .map((currentScale, i) => {
                 const numScales = Object.values(palette.scales).filter(
-                  (scale) => scale.colors.length > parseInt(index)
+                  (scale) => scale.colors.length > Number.parseInt(index)
                 ).length
                 return (
                   <YStack
@@ -254,7 +269,7 @@ export const ColorCanvas = memo(function ColorCanvas() {
                     f={1}
                     backgroundColor={
                       colorToHex(
-                        getColor(palette.curves, currentScale, parseInt(index))
+                        getColor(palette.curves, currentScale, Number.parseInt(index))
                       ) as any
                     }
                     borderTopLeftRadius={i === 0 ? 2 : 0}

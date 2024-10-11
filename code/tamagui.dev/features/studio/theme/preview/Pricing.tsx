@@ -38,16 +38,27 @@ export const PricingCards = () => {
         pb="$2"
         gap="$1"
       >
-        <H4 {...demoProps.headingFontFamilyProps} ta="center">
+        <H4
+          {...demoProps.headingFontFamilyProps}
+          ta="center"
+        >
           Subscribe
         </H4>
-        <Paragraph theme="alt2" size="$4" ta="center">
+        <Paragraph
+          theme="alt2"
+          size="$4"
+          ta="center"
+        >
           Select a plan
         </Paragraph>
       </YStack>
 
       <YStack flex={1}>
-        <RadioGroup {...demoProps.gapPropsMd} value={val} onValueChange={setVal}>
+        <RadioGroup
+          {...demoProps.gapPropsMd}
+          value={val}
+          onValueChange={setVal}
+        >
           {options.map((price) => {
             const active = val === price.value
             const htmlId = `demo-item-${price.value}`
@@ -67,12 +78,19 @@ export const PricingCards = () => {
                 }}
                 {...demoProps.borderRadiusProps}
               >
-                <RadioGroup.Item id={htmlId} size="$3" value={price.value}>
+                <RadioGroup.Item
+                  id={htmlId}
+                  size="$3"
+                  value={price.value}
+                >
                   <RadioGroup.Indicator />
                 </RadioGroup.Item>
                 <YStack f={1}>
                   <Paragraph size="$6">{price.title}</Paragraph>
-                  <Paragraph size="$3" color="$color11">
+                  <Paragraph
+                    size="$3"
+                    color="$color11"
+                  >
                     {price.description}
                   </Paragraph>
                 </YStack>
@@ -82,15 +100,30 @@ export const PricingCards = () => {
         </RadioGroup>
       </YStack>
 
-      <YStack mt="$4" gap="$4">
-        <Paragraph size="$3" ta="center" theme="alt1" color="$color10">
+      <YStack
+        mt="$4"
+        gap="$4"
+      >
+        <Paragraph
+          size="$3"
+          ta="center"
+          theme="alt1"
+          color="$color10"
+        >
           Have a coupon?{' '}
-          <Paragraph tag="span" textDecorationLine="underline">
+          <Paragraph
+            tag="span"
+            textDecorationLine="underline"
+          >
             Click here
           </Paragraph>
         </Paragraph>
         <XStack gap="$2">
-          <Button f={1} size="$5" {...demoProps.borderRadiusProps}>
+          <Button
+            f={1}
+            size="$5"
+            {...demoProps.borderRadiusProps}
+          >
             Cancel
           </Button>
 

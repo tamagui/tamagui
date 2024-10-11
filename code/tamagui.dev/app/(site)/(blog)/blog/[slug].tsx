@@ -70,7 +70,10 @@ export default function BlogSlug() {
       />
 
       <TamaguiExamples.Provider value={data.examples}>
-        <BlogSlugPage Component={Component} {...data} />
+        <BlogSlugPage
+          Component={Component}
+          {...data}
+        />
       </TamaguiExamples.Provider>
     </>
   )

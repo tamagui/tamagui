@@ -1,15 +1,6 @@
 'use client'
 
-import {
-  H5,
-  ListItem,
-  Popover,
-  SizableText,
-  Theme,
-  XStack,
-  YStack,
-  styled,
-} from 'tamagui'
+import { H5, ListItem, Popover, SizableText, Theme, XStack, YStack, styled } from 'tamagui'
 
 import type { Palette, Scale } from '../state/types'
 import { ColorPicker } from './ColorPicker'
@@ -27,7 +18,6 @@ const OffsetIndicator = styled(SizableText, {
 export const ColorPaletteListItem = ({
   isActive,
   scale,
-  palette,
   indicateActive,
   showOffsetIndicators,
   hoverTheme,
@@ -56,14 +46,29 @@ export const ColorPaletteListItem = ({
         bc={isActive ? '$borderColor' : 'transparent'}
         bg={isActive ? '$background' : 'transparent'}
       >
-        <YStack p="$3" w="100%" mt={-1}>
+        <YStack
+          p="$3"
+          w="100%"
+          mt={-1}
+        >
           {!hideTitle && (
-            <H5 size="$2" userSelect="none" cursor="default" zi={10} mb="$1">
+            <H5
+              size="$2"
+              userSelect="none"
+              cursor="default"
+              zi={10}
+              mb="$1"
+            >
               Palette: {scale?.name}
             </H5>
           )}
 
-          <YStack w="100%" pos="relative" space="$2" zi={100}>
+          <YStack
+            w="100%"
+            pos="relative"
+            space="$2"
+            zi={100}
+          >
             {showOffsetIndicators && (
               <XStack>
                 {colors.map((_, index) => (
@@ -73,7 +78,10 @@ export const ColorPaletteListItem = ({
                 ))}
               </XStack>
             )}
-            <XStack w="100%" h={24}>
+            <XStack
+              w="100%"
+              h={24}
+            >
               {colors.map((color, index) => {
                 // const color = getColor(palette.curves, scale, index)
                 return (
@@ -103,15 +111,21 @@ export const ColorPaletteListItem = ({
                           bbrr: '$8',
                         })}
                       >
-                        <YStack backgroundColor={colorToHex(color) as any} fullscreen />
+                        <YStack
+                          backgroundColor={colorToHex(color) as any}
+                          fullscreen
+                        />
                       </YStack>
                     </Popover.Trigger>
 
                     <Popover.Content>
-                      <XStack space="$2" ai="center">
+                      <XStack
+                        space="$2"
+                        ai="center"
+                      >
                         <ColorPicker
                           value=""
-                          onChange={(color) => {
+                          onChange={() => {
                             // state.colors.setBackgroundColor(color)
                           }}
                         />
@@ -144,7 +158,12 @@ export const ColorPaletteListItem = ({
                   12
                 }
               >
-                <YStack h="100%" ai="center" jc="flex-end" pb="$2">
+                <YStack
+                  h="100%"
+                  ai="center"
+                  jc="flex-end"
+                  pb="$2"
+                >
                   <YStack
                     x={-14}
                     y={indicateActive < 0 ? -12 : 12}

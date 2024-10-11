@@ -40,7 +40,11 @@ export const TakeoutLogo = (props: { scale?: number }) => {
       >
         <>
           <ThemeTintAlt>
-            <TAKEOUT className="text-3d" zi={1000} color="$color10" />
+            <TAKEOUT
+              className="text-3d"
+              zi={1000}
+              color="$color10"
+            />
           </ThemeTintAlt>
         </>
       </YStack>
@@ -54,7 +58,11 @@ export const TakeoutLogo = (props: { scale?: number }) => {
         }}
       >
         <ThemeTintAlt offset={-1}>
-          <TAKEOUT className="font-outlined" zi={1000} color="var(--color8)" />
+          <TAKEOUT
+            className="font-outlined"
+            zi={1000}
+            color="var(--color8)"
+          />
         </ThemeTintAlt>
 
         {!disableMotion && (

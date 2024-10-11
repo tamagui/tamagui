@@ -59,9 +59,15 @@ export const StepSubThemes = memo(({ previewMode }: StepSubThemesProps) => {
   }, [store.subThemes.length])
 
   return (
-    <YStack mx="$-5" f={1}>
+    <YStack
+      mx="$-5"
+      f={1}
+    >
       <StageButtonBar steps={steps} />
-      <Stage current={steps.index} steps={[<ThemeBuilderPalettesPane />, <Themes />]} />
+      <Stage
+        current={steps.index}
+        steps={[<ThemeBuilderPalettesPane />, <Themes />]}
+      />
     </YStack>
   )
 })
@@ -70,7 +76,12 @@ export const Themes = memo(({ previewMode }: StepSubThemesProps) => {
   const store = useThemeBuilderStore()
 
   return (
-    <YStack f={1} gap="$4" py="$4" px="$2">
+    <YStack
+      f={1}
+      gap="$4"
+      py="$4"
+      px="$2"
+    >
       {store.subThemes
         // .sort((a, b) => (a.id === store.selectedSubTheme ? -1 : 1))
         .map((theme, index) => {
@@ -102,7 +113,12 @@ export const Themes = memo(({ previewMode }: StepSubThemesProps) => {
         })}
 
       {!store.subThemes.length && (
-        <YStack f={1} ai="center" jc="center" gap="$4">
+        <YStack
+          f={1}
+          ai="center"
+          jc="center"
+          gap="$4"
+        >
           <Paragraph theme="alt1">Add a theme to get started</Paragraph>
           <Button
             themeInverse
@@ -125,8 +141,14 @@ export function StepSubThemesActions() {
   const setShow = (val: boolean) => (store.showAddThemeMenu = val)
 
   return (
-    <XStack ai="center" space>
-      <AddDropdown open={show} onOpenChange={setShow}>
+    <XStack
+      ai="center"
+      space
+    >
+      <AddDropdown
+        open={show}
+        onOpenChange={setShow}
+      >
         <YGroup>
           <AddDropdown.Title>Palette Themes</AddDropdown.Title>
 
@@ -139,14 +161,24 @@ export function StepSubThemesActions() {
                 store.addSubTheme(theme)
                 setShow(false)
               }}
-              iconAfter={<ColorThemeIndicator size={10} primary={palette} />}
+              iconAfter={
+                <ColorThemeIndicator
+                  size={10}
+                  primary={palette}
+                />
+              }
               title={theme.name}
             />
           ))}
 
           <AddDropdown.Separator />
 
-          <H6 size="$1" pt="$2" px="$3" o={0.5}>
+          <H6
+            size="$1"
+            pt="$2"
+            px="$3"
+            o={0.5}
+          >
             Custom
           </H6>
 
@@ -302,18 +334,26 @@ export function BaseThemesStepPreviewThemes() {
 
 export function BaseThemesStepPreview() {
   return (
-    <YStack py="$4" gap="$4">
+    <YStack
+      py="$4"
+      gap="$4"
+    >
       <H4>Alright, thats our base and sub-themes&nbsp;&nbsp;🙌</H4>
 
-      <Paragraph theme="alt1" size="$5">
+      <Paragraph
+        theme="alt1"
+        size="$5"
+      >
         We've made the foundation of our theme suite.
       </Paragraph>
 
-      <StudioNotice my="$3" title="Coming later...">
+      <StudioNotice
+        my="$3"
+        title="Coming later..."
+      >
         <NoticeParagraph>
-          You'll be able to customize <em>component themes</em> later, so don't worry if
-          some specific components look a little off (like if you want brighter
-          backgrounds on buttons).
+          You'll be able to customize <em>component themes</em> later, so don't worry if some
+          specific components look a little off (like if you want brighter backgrounds on buttons).
         </NoticeParagraph>
       </StudioNotice>
     </YStack>
@@ -345,25 +385,42 @@ export function BaseThemesStepPreview2() {
   })
 
   return (
-    <YStack py="$4" gap="$3">
+    <YStack
+      py="$4"
+      gap="$3"
+    >
       <H4>The full list, so far:</H4>
 
-      <Paragraph size="$5" theme="alt1">
+      <Paragraph
+        size="$5"
+        theme="alt1"
+      >
         Congrats! That's the core of your theme suite.
       </Paragraph>
 
-      <Paragraph size="$5" theme="alt1">
-        In the future, we'll allow customizing component themes as well, but for now this
-        gives you everything you need. You can of course manually override the component
-        styles very easily inline.
+      <Paragraph
+        size="$5"
+        theme="alt1"
+      >
+        In the future, we'll allow customizing component themes as well, but for now this gives you
+        everything you need. You can of course manually override the component styles very easily
+        inline.
       </Paragraph>
 
-      <Paragraph size="$5" theme="alt1">
+      <Paragraph
+        size="$5"
+        theme="alt1"
+      >
         We've now generated the following themes:
       </Paragraph>
 
       <YGroup
-        separator={<Separator borderWidth={0.5} o={0.25} />}
+        separator={
+          <Separator
+            borderWidth={0.5}
+            o={0.25}
+          />
+        }
         bw={1}
         bc="$borderColor"
         my="$2"

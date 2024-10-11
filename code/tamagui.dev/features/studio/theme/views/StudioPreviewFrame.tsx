@@ -68,7 +68,10 @@ export const StudioPreviewFrame = memo(
       >
         {showSettingsBar && <StudioPreviewComponentsBar scrollView={scrollView} />}
 
-        <Theme key={themeResetKey} name={schemeTheme}>
+        <Theme
+          key={themeResetKey}
+          name={schemeTheme}
+        >
           <Theme name={themeName}>
             <YStack
               fullscreen
@@ -85,7 +88,10 @@ export const StudioPreviewFrame = memo(
               id="preview-scroll-view"
             >
               <StudioPreviewContainer>
-                <YStack pt="$12" data-tauri-drag-region>
+                <YStack
+                  pt="$12"
+                  data-tauri-drag-region
+                >
                   {children}
                 </YStack>
               </StudioPreviewContainer>

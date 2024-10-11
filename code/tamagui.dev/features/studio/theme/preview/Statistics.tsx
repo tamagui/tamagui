@@ -22,11 +22,20 @@ export const StatisticsBarScreen = () => {
       >
         <XStack jc="space-between">
           <YStack gap="$2">
-            <H4 size="$3" {...demoProps.headingFontFamilyProps} mt="$0" color="$color10">
+            <H4
+              size="$3"
+              {...demoProps.headingFontFamilyProps}
+              mt="$0"
+              color="$color10"
+            >
               New user sign-ups
             </H4>
             <H4 size="$10">+1,200</H4>
-            <Paragraph mt="$2" {...demoProps.panelDescriptionProps} fontSize="$3">
+            <Paragraph
+              mt="$2"
+              {...demoProps.panelDescriptionProps}
+              fontSize="$3"
+            >
               Data from the past 6 months
             </Paragraph>
           </YStack>
@@ -43,7 +52,13 @@ export const StatisticsBarScreen = () => {
         </XStack>
       </YStack>
 
-      <YStack flex={1} gap="$6" mx="$-4" f={1} jc="space-around">
+      <YStack
+        flex={1}
+        gap="$6"
+        mx="$-4"
+        f={1}
+        jc="space-around"
+      >
         {/* <ScrollView
           contentContainerStyle={{
             minWidth: '100%',
@@ -101,7 +116,11 @@ export const StatisticsLineScreen = () => {
               Revenue Growth
             </H4>
             <H4 size="$10">$42.3K</H4>
-            <Paragraph mt="$1" {...demoProps.panelDescriptionProps} fontSize="$3">
+            <Paragraph
+              mt="$1"
+              {...demoProps.panelDescriptionProps}
+              fontSize="$3"
+            >
               The past 6 months
             </Paragraph>
           </YStack>
@@ -118,7 +137,13 @@ export const StatisticsLineScreen = () => {
         </XStack>
       </YStack>
 
-      <YStack flex={1} gap="$6" mx="$-4" f={1} jc="space-around">
+      <YStack
+        flex={1}
+        gap="$6"
+        mx="$-4"
+        f={1}
+        jc="space-around"
+      >
         <XStack gap="$4">
           {/* <Theme name={'accent' as any}> */}
           <LineChart />

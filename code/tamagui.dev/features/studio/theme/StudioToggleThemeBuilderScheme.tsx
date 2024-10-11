@@ -6,7 +6,11 @@ export function StudioToggleThemeBuilderScheme() {
   const rootStore = useRootStore()
 
   return (
-    <XGroup bc="transparent" ai="center" jc="center">
+    <XGroup
+      bc="transparent"
+      ai="center"
+      jc="center"
+    >
       <Button
         theme={rootStore.scheme === 'light' ? 'active' : null}
         onPress={() => {

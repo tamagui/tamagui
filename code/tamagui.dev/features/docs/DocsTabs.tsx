@@ -26,8 +26,7 @@ function TabsComponent(props: TabsProps) {
     // })
   }
 
-  const value =
-    typeof params[id] === 'string' ? (params[id] as string) : props.defaultValue
+  const value = typeof params[id] === 'string' ? (params[id] as string) : props.defaultValue
 
   return (
     <Tabs
@@ -99,7 +98,11 @@ const TabsListFrame = styled(XStack, {
 const TabsList = (props) => {
   return (
     <TabsListFrame className="sticky">
-      <Tabs.List size="$4" width="100%" {...props} />
+      <Tabs.List
+        size="$4"
+        width="100%"
+        {...props}
+      />
     </TabsListFrame>
   )
 }

@@ -1,6 +1,7 @@
 import { LinearGradient } from '@tamagui/linear-gradient'
 import { Check, ChevronLeft, ChevronRight, Lightbulb } from '@tamagui/lucide-icons'
-import React, { useRef, useState } from 'react'
+import type React from 'react'
+import { useRef, useState } from 'react'
 import type { ScrollViewProps, XStackProps } from 'tamagui'
 import {
   AnimatePresence,
@@ -22,14 +23,7 @@ type PanelProps = XStackProps & {
   chromeless?: boolean
 }
 
-const Panel = ({
-  children,
-  title,
-  icon,
-  afterTitle,
-  chromeless,
-  ...props
-}: PanelProps) => {
+const Panel = ({ children, title, icon, afterTitle, chromeless, ...props }: PanelProps) => {
   return (
     <NoticeFrame
       {...props}
@@ -40,11 +34,21 @@ const Panel = ({
     >
       {!!title && (
         <>
-          <XStack ai="center" jc="space-between" mb="$3">
-            <Paragraph size="$6" fow="600">
+          <XStack
+            ai="center"
+            jc="space-between"
+            mb="$3"
+          >
+            <Paragraph
+              size="$6"
+              fow="600"
+            >
               {title}
             </Paragraph>
-            <XStack ai="center" gap="$4">
+            <XStack
+              ai="center"
+              gap="$4"
+            >
               {afterTitle}
               {icon}
             </XStack>
@@ -54,12 +58,11 @@ const Panel = ({
       )}
 
       <XStack f={1}>
-        <YStack f={1} gap="$2">
-          {typeof children === 'string' ? (
-            <NoticeParagraph>{children}</NoticeParagraph>
-          ) : (
-            children
-          )}
+        <YStack
+          f={1}
+          gap="$2"
+        >
+          {typeof children === 'string' ? <NoticeParagraph>{children}</NoticeParagraph> : children}
         </YStack>
 
         <YStack>{!title && icon}</YStack>
@@ -80,11 +83,23 @@ export const StudioNotice = ({ children, steps, ...props }: PanelProps) => {
 
   return (
     <Panel
-      icon={<Lightbulb size="$1" color="$color7" />}
+      icon={
+        <Lightbulb
+          size="$1"
+          color="$color7"
+        />
+      }
       afterTitle={
         !steps ? null : (
-          <XStack gap="$2" ai="center">
-            <Paragraph mr="$2" size="$2" theme="alt2">
+          <XStack
+            gap="$2"
+            ai="center"
+          >
+            <Paragraph
+              mr="$2"
+              size="$2"
+              theme="alt2"
+            >
               {index + 1}/{total}
             </Paragraph>
 
@@ -112,7 +127,12 @@ export const StudioNotice = ({ children, steps, ...props }: PanelProps) => {
       {children ? (
         children
       ) : steps ? (
-        <YStack f={1} ov="hidden" mx="$-4" my="$-2">
+        <YStack
+          f={1}
+          ov="hidden"
+          mx="$-4"
+          my="$-2"
+        >
           <ScrollViewWithFade showsVerticalScrollIndicator={false}>
             <AnimatePresence
               initial={false}
@@ -159,9 +179,9 @@ const ScrollViewWithFade = ({
     },
   })
 
-  const [status, setStatus] = useState<
-    'fade-top' | 'fade-bottom' | 'fade-both' | 'no-fade'
-  >('no-fade')
+  const [status, setStatus] = useState<'fade-top' | 'fade-bottom' | 'fade-both' | 'no-fade'>(
+    'no-fade'
+  )
 
   function update() {
     const horizontal = !!props.horizontal
@@ -205,7 +225,10 @@ const ScrollViewWithFade = ({
   }
 
   return (
-    <Stack f={1} pos="relative">
+    <Stack
+      f={1}
+      pos="relative"
+    >
       {(status === 'fade-top' || status === 'fade-both') && (
         <LinearGradient
           pe="none"
@@ -316,7 +339,18 @@ const YStackEnterable = styled(YStack, {
 })
 
 export const StudioSuccess = (props: PanelProps) => {
-  return <Panel theme="green" icon={<Check size="$1" color="$color7" />} {...props} />
+  return (
+    <Panel
+      theme="green"
+      icon={
+        <Check
+          size="$1"
+          color="$color7"
+        />
+      }
+      {...props}
+    />
+  )
 }
 
 export const NoticeParagraph = styled(Paragraph, {

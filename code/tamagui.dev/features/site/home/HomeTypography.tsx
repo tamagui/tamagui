@@ -47,10 +47,22 @@ export const HomeTypography = memo(() => {
 
   return (
     <>
-      <YStack fullscreen className="" o={0.1} />
+      <YStack
+        fullscreen
+        className=""
+        o={0.1}
+      />
       {/* -5 my to fir grid nicely */}
-      <ContainerLarge my={-5} position="relative" space="$8">
-        <YStack ref={ref} ai="center" space="$3">
+      <ContainerLarge
+        my={-5}
+        position="relative"
+        space="$8"
+      >
+        <YStack
+          ref={ref}
+          ai="center"
+          space="$3"
+        >
           <HomeH2>
             Beautifully expressive font systems with{' '}
             <span className="clip-text rainbow">rhythm</span>.
@@ -79,7 +91,11 @@ export const HomeTypography = memo(() => {
             y={5}
             $sm={{ y: 0, miw: '110%', ai: 'center', x: 0, scale: 0.9 }}
           >
-            <YStack ai="flex-end" contain="paint layout" h={270}>
+            <YStack
+              ai="flex-end"
+              contain="paint layout"
+              h={270}
+            >
               <AnimatePresence exitBeforeEnter>
                 <AnimatedHeading
                   disableAnimation={!isIntersecting}
@@ -155,7 +171,13 @@ const OverlayCard = () => {
 
   // {/* TODO elevation not overriding? */}
   return (
-    <Card bw={1} bc="$borderColor" br="$6" elevation="$6" shadowRadius={60}>
+    <Card
+      bw={1}
+      bc="$borderColor"
+      br="$6"
+      elevation="$6"
+      shadowRadius={60}
+    >
       <YStack
         jc="center"
         p="$6"
@@ -163,16 +185,29 @@ const OverlayCard = () => {
         maw="calc(min(90vw, 400px))"
         $sm={{ p: '$5' }}
       >
-        <Paragraph ta="left" size="$8" fow="400" ls={-1}>
+        <Paragraph
+          ta="left"
+          size="$8"
+          fow="400"
+          ls={-1}
+        >
           Use, swap and share fonts with typed vertical rhythm.
         </Paragraph>
 
-        <Paragraph ta="left" size="$6" theme="alt2" fow="400">
-          Typed, sizable fonts with control over every facet - weight, spacing,
-          line-height, letter-spacing, color and more.
+        <Paragraph
+          ta="left"
+          size="$6"
+          theme="alt2"
+          fow="400"
+        >
+          Typed, sizable fonts with control over every facet - weight, spacing, line-height,
+          letter-spacing, color and more.
         </Paragraph>
 
-        <Link asChild href="/docs/core/configuration">
+        <Link
+          asChild
+          href="/docs/core/configuration"
+        >
           <Button
             accessibilityLabel="Fonts docs"
             fontFamily="$silkscreen"
@@ -203,7 +238,10 @@ const AnimatedHeading = memo(
     index: number
   } & TextProps) => {
     return (
-      <Delay passThrough={disableAnimation} by={index * 180 + 20}>
+      <Delay
+        passThrough={disableAnimation}
+        by={index * 180 + 20}
+      >
         <Component
           animation={disableAnimation ? null : 'lazy'}
           enterStyle={{ o: 0, y: -10 }}

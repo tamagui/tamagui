@@ -41,11 +41,21 @@ export const HomeExamples = memo(
 
     return (
       <ContainerLarge position="relative">
-        <YStack zi={1} space="$6" mb="$4">
+        <YStack
+          zi={1}
+          space="$6"
+          mb="$4"
+        >
           {!onlyDemo && (
-            <YStack ai="center" space="$3">
+            <YStack
+              ai="center"
+              space="$3"
+            >
               <HomeH2>A powerful style system</HomeH2>
-              <HomeH3 ai="center" jc="center">
+              <HomeH3
+                ai="center"
+                jc="center"
+              >
                 A multi-faceted optimizing compiler enables
                 <br />
                 <strong>{subtitles[activeIndex]}</strong>.
@@ -113,7 +123,10 @@ export const HomeExamples = memo(
               >
                 <span style={{ opacity: 0.65 }}>{activeExample.input.description}</span>
               </Paragraph>
-              <CodeExamples title="Input" {...activeExample.input} />
+              <CodeExamples
+                title="Input"
+                {...activeExample.input}
+              />
             </YStack>
 
             <YStack
@@ -129,8 +142,16 @@ export const HomeExamples = memo(
               zIndex={1000}
               pe="none"
             >
-              <IconStack als="center" p="$2.5" mb={0} elevation="$2">
-                <FastForward color="var(--colorHover)" size="$1" />
+              <IconStack
+                als="center"
+                p="$2.5"
+                mb={0}
+                elevation="$2"
+              >
+                <FastForward
+                  color="var(--colorHover)"
+                  size="$1"
+                />
               </IconStack>
             </YStack>
             <YStack
@@ -152,7 +173,10 @@ export const HomeExamples = memo(
               >
                 <span style={{ opacity: 0.65 }}>{activeExample.output.description}</span>
               </Paragraph>
-              <CodeExamples title="Output" {...activeExample.output} />
+              <CodeExamples
+                title="Output"
+                {...activeExample.output}
+              />
             </YStack>
           </XStack>
         </YStack>
@@ -167,7 +191,10 @@ const CodeExamples = memo(({ examples = [], title }: any) => {
   const { tint } = useTint()
 
   return (
-    <YStack overflow="hidden" flex={1}>
+    <YStack
+      overflow="hidden"
+      flex={1}
+    >
       <>
         <ScrollView
           als="center"
@@ -178,11 +205,23 @@ const CodeExamples = memo(({ examples = [], title }: any) => {
           mb="$-2.5"
           maw="100%"
         >
-          <XStack px="$4" fs={0} space>
-            <Button disabled size="$2" fontSize="$4" px="$4">
+          <XStack
+            px="$4"
+            fs={0}
+            space
+          >
+            <Button
+              disabled
+              size="$2"
+              fontSize="$4"
+              px="$4"
+            >
               {title}
             </Button>
-            <XGroup size="$2" bordered>
+            <XGroup
+              size="$2"
+              bordered
+            >
               {examples.map((example, i) => (
                 <XGroup.Item key={i}>
                   <Button
@@ -200,8 +239,16 @@ const CodeExamples = memo(({ examples = [], title }: any) => {
           </XStack>
         </ScrollView>
       </>
-      <XStack maxWidth="100%" f={1}>
-        <YStack f={1} maxWidth="100%" opacity={0.9} hoverStyle={{ opacity: 1 }}>
+      <XStack
+        maxWidth="100%"
+        f={1}
+      >
+        <YStack
+          f={1}
+          maxWidth="100%"
+          opacity={0.9}
+          hoverStyle={{ opacity: 1 }}
+        >
           <CodeDemoPreParsed
             height={325}
             maxHeight={325}

@@ -39,16 +39,30 @@ export default function BentoPage() {
   }
 
   return (
-    <CurrentRouteProvider section={section} part={part}>
+    <CurrentRouteProvider
+      section={section}
+      part={part}
+    >
       <ThemeNameEffect />
       <BentoPageFrame>
         <ContainerBento>
           <DetailHeader>{`${section[0].toUpperCase()}${section.slice(1)}`}</DetailHeader>
         </ContainerBento>
 
-        <ThemeTint key={bentoStore.disableTint as any} disable={bentoStore.disableTint}>
-          <YStack py="$8" bg="$background">
-            <YStack pe="none" fullscreen className="bg-grid" o={0.033} />
+        <ThemeTint
+          key={bentoStore.disableTint as any}
+          disable={bentoStore.disableTint}
+        >
+          <YStack
+            py="$8"
+            bg="$background"
+          >
+            <YStack
+              pe="none"
+              fullscreen
+              className="bg-grid"
+              o={0.033}
+            />
             <ContainerBento>
               <Comp />
               <CurrentToast />
@@ -67,11 +81,24 @@ export const DetailHeader = (props: { children: string }) => {
   const subCategory = (typeof part === 'string' ? part : part?.[0]) || ''
 
   return (
-    <YStack gap="$4" $sm={{ px: '$4' }} pb="$4">
+    <YStack
+      gap="$4"
+      $sm={{ px: '$4' }}
+      pb="$4"
+    >
       <YStack gap="$4">
-        <XStack ai="center" jc="space-between" $sm={{ fd: 'column-reverse' }}>
+        <XStack
+          ai="center"
+          jc="space-between"
+          $sm={{ fd: 'column-reverse' }}
+        >
           <Theme name="gray">
-            <H1 mb={-50} ff="$silkscreen" size="$10" $sm={{ size: '$6', mb: '$4' }}>
+            <H1
+              mb={-50}
+              ff="$silkscreen"
+              size="$10"
+              $sm={{ size: '$6', mb: '$4' }}
+            >
               {props.children}
             </H1>
           </Theme>
@@ -108,31 +135,54 @@ export const DetailHeader = (props: { children: string }) => {
           </YStack>
         </XStack>
 
-        <XStack p={0.5} ai="center" gap="$2">
+        <XStack
+          p={0.5}
+          ai="center"
+          gap="$2"
+        >
           <Link href="/bento/">
-            <Anchor tag="span" textTransform="capitalize">
+            <Anchor
+              tag="span"
+              textTransform="capitalize"
+            >
               Bento
             </Anchor>
           </Link>
 
-          <SizableText theme="alt1" tag="span" selectable={false} size="$2">
+          <SizableText
+            theme="alt1"
+            tag="span"
+            selectable={false}
+            size="$2"
+          >
             &raquo;
           </SizableText>
 
           {/* TODO for some reason these break [vite:build-import-analysis */}
           <Link href={`/bento#${category}`}>
-            <Anchor tag="span" textTransform="capitalize">
+            <Anchor
+              tag="span"
+              textTransform="capitalize"
+            >
               {category}
             </Anchor>
           </Link>
 
-          <SizableText theme="alt1" tag="span" selectable={false} size="$2">
+          <SizableText
+            theme="alt1"
+            tag="span"
+            selectable={false}
+            size="$2"
+          >
             &raquo;
           </SizableText>
 
           {/* TODO for some reason these break [vite:build-import-analysis */}
           <Link href={`/bento/${subCategory}`}>
-            <Anchor tag="span" textTransform="capitalize">
+            <Anchor
+              tag="span"
+              textTransform="capitalize"
+            >
               {subCategory.replace('_', ' ').replace('#', '')}
             </Anchor>
           </Link>
@@ -163,9 +213,7 @@ const CurrentToast = () => {
     >
       <YStack>
         <Toast.Title>{currentToast.title}</Toast.Title>
-        {!!currentToast.message && (
-          <Toast.Description>{currentToast.message}</Toast.Description>
-        )}
+        {!!currentToast.message && <Toast.Description>{currentToast.message}</Toast.Description>}
       </YStack>
     </Toast>
   )

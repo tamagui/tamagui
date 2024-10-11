@@ -28,8 +28,7 @@ export const StepThemeTemplate = memo(({ buildTheme }: { buildTheme: BuildTheme 
   const themeBuilderStore = useThemeBuilderStore()
   const palettes = getFinalPalettes(themeBuilderStore.palettes)
   const template =
-    themeBuilderStore.templates[buildTheme.template || 'base'] ||
-    themeBuilderStore.templates.base
+    themeBuilderStore.templates[buildTheme.template || 'base'] || themeBuilderStore.templates.base
   const paletteName = `${scheme}_${buildTheme.palette}`
   const theme = createThemeWithPalettes(palettes, paletteName, template)
   const updateTemplateDebounced = useDebounce(
@@ -41,7 +40,11 @@ export const StepThemeTemplate = memo(({ buildTheme }: { buildTheme: BuildTheme 
 
   return (
     <YStack>
-      <XStack jc="space-between" p="$3" px="$3">
+      <XStack
+        jc="space-between"
+        p="$3"
+        px="$3"
+      >
         <XStack gap="$2">
           <Label size="$2">Palette:</Label>
           <Select
@@ -58,7 +61,11 @@ export const StepThemeTemplate = memo(({ buildTheme }: { buildTheme: BuildTheme 
           >
             {Object.entries(themeBuilderStore.palettes).map(([name, palette], idx) => {
               return (
-                <Select.Item index={idx} key={name} value={palette.name}>
+                <Select.Item
+                  index={idx}
+                  key={name}
+                  value={palette.name}
+                >
                   {palette.name}
                 </Select.Item>
               )
@@ -66,7 +73,10 @@ export const StepThemeTemplate = memo(({ buildTheme }: { buildTheme: BuildTheme 
           </Select>
         </XStack>
 
-        <XStack ai="center" gap="$2">
+        <XStack
+          ai="center"
+          gap="$2"
+        >
           <Label size="$2">Scheme:</Label>
           <ThemeSwitch />
         </XStack>
@@ -123,11 +133,19 @@ export const StepThemeTemplate = memo(({ buildTheme }: { buildTheme: BuildTheme 
               bbc="$color4"
             >
               <CellFrame f={1}>
-                <Label y={-6} size="$3" fow="500">
+                <Label
+                  y={-6}
+                  size="$3"
+                  fow="500"
+                >
                   {item.keys.join(', ')}
                 </Label>
 
-                <Label theme="alt1" mt={-20} size="$2">
+                <Label
+                  theme="alt1"
+                  mt={-20}
+                  size="$2"
+                >
                   {item.value}
                 </Label>
               </CellFrame>
@@ -142,7 +160,7 @@ export const StepThemeTemplate = memo(({ buildTheme }: { buildTheme: BuildTheme 
                   onChangeText={(next) => {
                     updateTemplateDebounced({
                       ...template,
-                      [name]: !isNaN(parseInt(next)) ? parseInt(next) : next,
+                      [name]: !isNaN(Number.parseInt(next)) ? Number.parseInt(next) : next,
                     })
                   }}
                 />
@@ -165,20 +183,28 @@ export const CellFrame = styled(YStack, {
 })
 
 export const isNegativeZero = (number: number) => {
-  const isNegative = 1 / number === -Infinity
+  const isNegative = 1 / number === Number.NEGATIVE_INFINITY
   return number === 0 && isNegative
 }
 
 export const getFromPalette = (colors: string[], index: number) => {
-  const isNegative = 1 / index === -Infinity
+  const isNegative = 1 / index === Number.NEGATIVE_INFINITY
   return colors[isNegative ? colors.length - 1 + index : index]
 }
 
 export const ColorSquare = ({ color }: { color: string }) => {
   return (
-    <XStack h={32} w={32} bw={1} bc="$color9">
+    <XStack
+      h={32}
+      w={32}
+      bw={1}
+      bc="$color9"
+    >
       <Checkerboard opacity={0.5} />
-      <XStack fullscreen bg={color as any} />
+      <XStack
+        fullscreen
+        bg={color as any}
+      />
     </XStack>
   )
 }

@@ -45,7 +45,11 @@ function SignIn() {
 
   if (!supabase) {
     return (
-      <YStack ai="center" flex={1} jc="center">
+      <YStack
+        ai="center"
+        flex={1}
+        jc="center"
+      >
         <Spinner size="small" />
       </YStack>
     )
@@ -104,8 +108,20 @@ function SignIn() {
 
   if (!user)
     return (
-      <YStack mih="100vh" miw="100vw" ai="center" jc="center" p="$2">
-        <YStack miw={300} maw={320} jc="space-between" p="$2" gap="$4">
+      <YStack
+        mih="100vh"
+        miw="100vw"
+        ai="center"
+        jc="center"
+        p="$2"
+      >
+        <YStack
+          miw={300}
+          maw={320}
+          jc="space-between"
+          p="$2"
+          gap="$4"
+        >
           <YStack mb="$4">
             <LogoIcon />
           </YStack>
@@ -127,14 +143,22 @@ function SignIn() {
             Continue with GitHub
           </Button>
 
-          <Paragraph ta="center" color="$color8">
-            Note: If part of a sponsoring organization, you'll need to grant access to
-            your org when logging in to access sponsor benefits.
+          <Paragraph
+            ta="center"
+            color="$color8"
+          >
+            Note: If part of a sponsoring organization, you'll need to grant access to your org when
+            logging in to access sponsor benefits.
           </Paragraph>
 
           {!emailAuthDisabledFlag && (
             <>
-              <XStack mx="$4" jc="center" space ai="center">
+              <XStack
+                mx="$4"
+                jc="center"
+                space
+                ai="center"
+              >
                 <Separator />
                 <Paragraph size="$2">Or</Paragraph>
                 <Separator />
@@ -192,9 +216,7 @@ function SignIn() {
                         // @ts-ignore
                         type="submit"
                         loading={loading}
-                        disabled={
-                          !password.length || !email.length || emailAuthDisabledFlag
-                        }
+                        disabled={!password.length || !email.length || emailAuthDisabledFlag}
                       >
                         Sign in
                       </Button>
@@ -213,7 +235,11 @@ function SignIn() {
                     jc="center"
                     br="$4"
                   >
-                    <Paragraph ta="center" mt="$2" col="$color9">
+                    <Paragraph
+                      ta="center"
+                      mt="$2"
+                      col="$color9"
+                    >
                       Email auth is disabled at the moment.
                     </Paragraph>
                   </YStack>

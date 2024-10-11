@@ -22,7 +22,11 @@ export default function PaymentFinishedPage() {
       <HeadInfo title="Account" />
 
       <UserGuard>
-        <YStack ai="center" flex={1} jc="center">
+        <YStack
+          ai="center"
+          flex={1}
+          jc="center"
+        >
           <Spinner size="large" />
         </YStack>
       </UserGuard>

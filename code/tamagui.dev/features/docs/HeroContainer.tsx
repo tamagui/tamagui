@@ -1,15 +1,7 @@
 import { ThemeTint } from '@tamagui/logo'
 import { Timer, Waves } from '@tamagui/lucide-icons'
-import React from 'react'
-import {
-  Configuration,
-  Switch,
-  Theme,
-  TooltipSimple,
-  XStack,
-  YStack,
-  styled,
-} from 'tamagui'
+import type React from 'react'
+import { Configuration, Switch, Theme, TooltipSimple, XStack, YStack, styled } from 'tamagui'
 import {
   AnimationDriverTogglerContextProvider,
   useAnimationDriverToggler,
@@ -38,9 +30,7 @@ export function HeroContainer({
   tinted?: boolean
   showAnimationDriverControl?: boolean
 }) {
-  const demo = (
-    <HeroContainerInner demoMultiple={demoMultiple}>{children}</HeroContainerInner>
-  )
+  const demo = <HeroContainerInner demoMultiple={demoMultiple}>{children}</HeroContainerInner>
 
   const contents = (
     <YStack
@@ -133,8 +123,14 @@ const AnimationControl = () => {
       placement="top"
       label={`Animations: ${niceNames[animationDriverToggler.driverName]}`}
     >
-      <XStack gap="$2" ai="center">
-        <Timer size={14} opacity={0.6} />
+      <XStack
+        gap="$2"
+        ai="center"
+      >
+        <Timer
+          size={14}
+          opacity={0.6}
+        />
         <Switch
           size="$1"
           checked={animationDriverToggler.driverName === 'react-native'}
@@ -144,7 +140,10 @@ const AnimationControl = () => {
         >
           <Switch.Thumb animation="quick" />
         </Switch>
-        <Waves size={14} opacity={0.6} />
+        <Waves
+          size={14}
+          opacity={0.6}
+        />
       </XStack>
     </TooltipSimple>
   )
@@ -160,10 +159,16 @@ const HeroContainerInner = ({
   const { driver, driverName } = useAnimationDriverToggler()
 
   return (
-    <Configuration animationDriver={driver} key={driverName}>
+    <Configuration
+      animationDriver={driver}
+      key={driverName}
+    >
       <ErrorBoundary>
         {demoMultiple ? (
-          <XStack gap="$3" px="$8">
+          <XStack
+            gap="$3"
+            px="$8"
+          >
             <Card bg="$color2">{children}</Card>
             <Theme name="blue">
               <Card>{children}</Card>

@@ -14,13 +14,18 @@ export const PieScreen = () => {
       {...demoProps.elevationProps}
       {...demoProps.panelPaddingProps}
     >
-      <YStack borderBottomWidth="$0.25" borderBottomColor="$borderColor" pb="$4">
-        <H4 {...demoProps.headingFontFamilyProps} {...demoProps.headingFontFamilyProps}>
+      <YStack
+        borderBottomWidth="$0.25"
+        borderBottomColor="$borderColor"
+        pb="$4"
+      >
+        <H4
+          {...demoProps.headingFontFamilyProps}
+          {...demoProps.headingFontFamilyProps}
+        >
           Traffic Sources
         </H4>
-        <Paragraph {...demoProps.panelDescriptionProps}>
-          Organic and non-organic
-        </Paragraph>
+        <Paragraph {...demoProps.panelDescriptionProps}>Organic and non-organic</Paragraph>
       </YStack>
 
       <YStack flex={1}>

@@ -28,20 +28,21 @@ const getBarColor = (name: string) => {
   }
 }
 
-export function BenchmarkChart({
-  data,
-  large,
-  skipOthers = false,
-  animateEnter = false,
-}) {
+export function BenchmarkChart({ data, large, skipOthers = false, animateEnter = false }) {
   const maxValue = Math.max(...data.map((r) => r.value))
 
   return (
-    <YStack gap="$2" my="$4">
+    <YStack
+      gap="$2"
+      my="$4"
+    >
       {data.map((result, i) => {
         const width = `${Math.round((result.value / maxValue) * 100)}%`
         return (
-          <XStack gap="$3" key={i}>
+          <XStack
+            gap="$3"
+            key={i}
+          >
             <YStack w={large ? 120 : 70}>
               <Paragraph
                 key={result.name}
@@ -54,7 +55,11 @@ export function BenchmarkChart({
                 {result.name}
               </Paragraph>
             </YStack>
-            <XStack mr={65} flex={1} ai="center">
+            <XStack
+              mr={65}
+              flex={1}
+              ai="center"
+            >
               <YStack
                 bg={getBarColor(result.name)}
                 o={result.name === 'Tamagui' ? 1 : skipOthers ? 1 : 1}

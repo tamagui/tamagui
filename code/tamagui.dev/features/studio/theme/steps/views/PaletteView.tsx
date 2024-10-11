@@ -1,10 +1,4 @@
-import {
-  Anchor,
-  ArrowLeft,
-  ArrowLeftRight,
-  ArrowRight,
-  ArrowUpDown,
-} from '@tamagui/lucide-icons'
+import { Anchor, ArrowLeft, ArrowLeftRight, ArrowRight, ArrowUpDown } from '@tamagui/lucide-icons'
 import { Store, getStore, useStore } from '@tamagui/use-store'
 import { parseToHsla } from 'color2k'
 import { memo } from 'react'
@@ -220,7 +214,14 @@ export const PaletteView = memo((props: Props) => {
   const lightDarkSynced = anchors.every((a) => a.hue.sync && a.sat.sync)
 
   return (
-    <YStack contain="paint" p="$4" mx="$-4" mb="$0" f={1} gap="$4">
+    <YStack
+      contain="paint"
+      p="$4"
+      mx="$-4"
+      mb="$0"
+      f={1}
+      gap="$4"
+    >
       <XLabeledItem label={<SizableText size="$4">Light</SizableText>}>
         <StepThemeHoverablePalette
           isActive={!isDark}
@@ -243,7 +244,10 @@ export const PaletteView = memo((props: Props) => {
 
       <XLabeledItem label="">
         <YStack gap="$4">
-          <XStack gap="$4" separator={<Separator vertical />}>
+          <XStack
+            gap="$4"
+            separator={<Separator vertical />}
+          >
             <DataItem
               width={50}
               labelTop=""
@@ -271,7 +275,12 @@ export const PaletteView = memo((props: Props) => {
             <DataItem
               labelTop={anchor ? 'Anchor' : 'Sync'}
               labelBottom={
-                <XStack w={50} ov="hidden" ai="center" jc="center">
+                <XStack
+                  w={50}
+                  ov="hidden"
+                  ai="center"
+                  jc="center"
+                >
                   <Button
                     chromeless
                     size="$2"
@@ -304,13 +313,27 @@ export const PaletteView = memo((props: Props) => {
       <YStack my={-12}>
         <XLabeledItem label="">
           <XStack w={115}>
-            <Label pe="none" miw={115} jc="flex-end" size="$1" col="$color10" o={0.5}>
+            <Label
+              pe="none"
+              miw={115}
+              jc="flex-end"
+              size="$1"
+              col="$color10"
+              o={0.5}
+            >
               Sync:
             </Label>
           </XStack>
 
-          <XStack gap="$4" ai="center" ml={10}>
-            <XStack jc="space-between" w={100}>
+          <XStack
+            gap="$4"
+            ai="center"
+            ml={10}
+          >
+            <XStack
+              jc="space-between"
+              w={100}
+            >
               <SyncButtons
                 anchorKey="hue"
                 {...props}
@@ -319,7 +342,10 @@ export const PaletteView = memo((props: Props) => {
                 nextAnchor={nextAnchor}
               />
             </XStack>
-            <XStack jc="space-between" w={80}>
+            <XStack
+              jc="space-between"
+              w={80}
+            >
               <SyncButtons
                 anchorKey="sat"
                 {...props}
@@ -458,7 +484,10 @@ const DataItem = ({
   width,
 }: { labelTop: any; labelBottom: any; width?: any }) => {
   return (
-    <YStack w={width} maw={width}>
+    <YStack
+      w={width}
+      maw={width}
+    >
       <SizableText userSelect="none">{labelTop}</SizableText>
       <SizableText
         userSelect="none"
@@ -491,9 +520,21 @@ export const StepThemeHoverablePalette = memo((props: PaletteProps) => {
   const borderRadius = size === 'medium' ? 10 : 6
 
   return (
-    <XStack f={1} br={borderRadius} bw={1} bc="$color7">
+    <XStack
+      f={1}
+      br={borderRadius}
+      bw={1}
+      bc="$color7"
+    >
       {colors.map((color, i) => {
-        return <PaletteColor {...props} color={color} index={i} key={i} />
+        return (
+          <PaletteColor
+            {...props}
+            color={color}
+            index={i}
+            key={i}
+          />
+        )
       })}
     </XStack>
   )
@@ -537,16 +578,7 @@ const PaletteColor = memo(
       index: number
     }
   ) => {
-    const {
-      color,
-      index,
-      colors,
-      size = 'medium',
-      children,
-      palette,
-      onSelect,
-      isActive,
-    } = props
+    const { color, index, colors, size = 'medium', children, palette, onSelect, isActive } = props
     const store = usePaletteStore(palette.name)
     const { hoveredColor, selectedColor } = store
     const borderRadius = size === 'medium' ? 10 : 6
@@ -645,7 +677,12 @@ const PaletteColor = memo(
             />
           </>
         )}
-        <XStack fullscreen bg={color as any} ai="center" jc="center">
+        <XStack
+          fullscreen
+          bg={color as any}
+          ai="center"
+          jc="center"
+        >
           <SizableText
             selectable={false}
             color={index > 4 ? '$background' : '$color'}

@@ -29,7 +29,7 @@ export function RovingTabs({ className, children, code, size, ...rest }) {
       activeAt,
     }))
 
-  const { activeAt, intentAt, prevActiveAt } = tabState
+  const { activeAt, intentAt } = tabState
 
   const handleOnInteraction: TabsTabProps['onInteraction'] = (type, layout) => {
     if (type === 'select') {
@@ -54,7 +54,12 @@ export function RovingTabs({ className, children, code, size, ...rest }) {
           mt={1}
         >
           <YStack w="100%">
-            <YStack p="$1.5" m="$2" mb={0} br="$5">
+            <YStack
+              p="$1.5"
+              m="$2"
+              mb={0}
+              br="$5"
+            >
               <AnimatePresence initial={false}>
                 {intentAt && (
                   <TabIndicator
@@ -97,7 +102,10 @@ export function RovingTabs({ className, children, code, size, ...rest }) {
               </Tabs.List>
             </YStack>
 
-            <Tabs.Content value={selectedPackageManager} forceMount>
+            <Tabs.Content
+              value={selectedPackageManager}
+              forceMount
+            >
               <Code
                 p="$4"
                 backgroundColor="transparent"
@@ -141,7 +149,11 @@ function Tab({
       value={pkgManager}
       onInteraction={onInteraction}
     >
-      <XStack gap="$1.5" ai="center" jc="center">
+      <XStack
+        gap="$1.5"
+        ai="center"
+        jc="center"
+      >
         <Image
           scale={imageName === 'pnpm' ? 0.7 : 0.8}
           y={imageName === 'pnpm' ? 0 : 0}
@@ -182,27 +194,3 @@ function TabIndicator({ active, ...props }: { active?: boolean } & ViewProps) {
     />
   )
 }
-
-const AnimatedYStack = styled(YStack, {
-  f: 1,
-  x: 0,
-  o: 1,
-
-  animation: '100ms',
-  variants: {
-    // 1 = right, 0 = nowhere, -1 = left
-    direction: {
-      ':number': (direction) => ({
-        enterStyle: {
-          x: direction > 0 ? -10 : -10,
-          opacity: 0,
-        },
-        exitStyle: {
-          zIndex: 0,
-          x: direction < 0 ? -10 : -10,
-          opacity: 0,
-        },
-      }),
-    },
-  } as const,
-})

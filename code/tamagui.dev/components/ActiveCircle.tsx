@@ -31,7 +31,11 @@ export const ActiveCircle = (props: CircleProps & { isActive?: boolean }) => {
         borderColor="transparent"
         cursor="pointer"
       >
-        <Circle size={16} opacity={opacity} backgroundColor={backgroundColor} />
+        <Circle
+          size={16}
+          opacity={opacity}
+          backgroundColor={backgroundColor}
+        />
       </YStack>
     </YStack>
   )

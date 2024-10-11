@@ -26,10 +26,7 @@ export default apiRoute(async (req) => {
     }
 
     if (!(procedureName in APIs)) {
-      return Response.json(
-        { error: `No procedure found: ${procedureName}` },
-        { status: 400 }
-      )
+      return Response.json({ error: `No procedure found: ${procedureName}` }, { status: 400 })
     }
 
     try {

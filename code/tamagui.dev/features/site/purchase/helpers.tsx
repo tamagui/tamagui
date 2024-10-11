@@ -43,8 +43,15 @@ export function PurchaseButton(props: ButtonProps) {
   const isBento = usePathname().startsWith('/bento')
 
   const contents = (
-    <Button size="$5" borderWidth={2} {...props}>
-      <Button.Text size="$3" ff="$silkscreen">
+    <Button
+      size="$5"
+      borderWidth={2}
+      {...props}
+    >
+      <Button.Text
+        size="$3"
+        ff="$silkscreen"
+      >
         {props.children}
       </Button.Text>
     </Button>
@@ -104,7 +111,10 @@ export const CheckboxGroupItem = ({ children, ...props }: CheckboxProps) => {
         </Checkbox.Indicator>
       </Checkbox>
 
-      <YStack gap="$1" f={1}>
+      <YStack
+        gap="$1"
+        f={1}
+      >
         {children}
       </YStack>
     </Label>
@@ -132,11 +142,17 @@ export const RadioGroupItem = ({
         borderColor: active ? '$color10' : '$color7',
       }}
     >
-      <RadioGroup.Item size="$6" {...props}>
+      <RadioGroup.Item
+        size="$6"
+        {...props}
+      >
         <RadioGroup.Indicator />
       </RadioGroup.Item>
 
-      <YStack gap="$0" f={1}>
+      <YStack
+        gap="$0"
+        f={1}
+      >
         {children}
       </YStack>
     </Label>
@@ -174,31 +190,62 @@ export function BentoTable({
       borderRadius="$4"
       bc="$color5"
     >
-      <XStack px="$4" py="$4" gap="$3">
+      <XStack
+        px="$4"
+        py="$4"
+        gap="$3"
+      >
         <YStack width="80%">
-          <Paragraph size="$6" fow="bold">
+          <Paragraph
+            size="$6"
+            fow="bold"
+          >
             Lifetime access
           </Paragraph>
-          <Paragraph size="$3" theme="alt1">
+          <Paragraph
+            size="$3"
+            theme="alt1"
+          >
             {price?.metadata?.['is_lifetime']
               ? 'You own and can use the code forever, get updates forever.'
               : "You own and can use the code for life, get updates as long as you're subscribed."}
           </Paragraph>
         </YStack>
-        <XStack f={1} ai="center" gap="$2" jc="center">
+        <XStack
+          f={1}
+          ai="center"
+          gap="$2"
+          jc="center"
+        >
           <Paragraph size="$8">{checkCircle}</Paragraph>
         </XStack>
       </XStack>
-      <XStack px="$4" py="$4" gap="$3">
+      <XStack
+        px="$4"
+        py="$4"
+        gap="$3"
+      >
         <YStack width="80%">
-          <Paragraph size="$6" fow="bold">
+          <Paragraph
+            size="$6"
+            fow="bold"
+          >
             Seats
           </Paragraph>
-          <Paragraph size="$3" theme="alt1" lh="$2">
+          <Paragraph
+            size="$3"
+            theme="alt1"
+            lh="$2"
+          >
             Accounts given access
           </Paragraph>
         </YStack>
-        <XStack f={1} ai="center" gap="$2" jc="center">
+        <XStack
+          f={1}
+          ai="center"
+          gap="$2"
+          jc="center"
+        >
           <Paragraph size="$8">{priceInfo?.seats || '-'}</Paragraph>
         </XStack>
       </XStack>
@@ -224,62 +271,130 @@ export const TakeoutTable = ({
       borderRadius="$4"
       borderColor="$borderColor"
     >
-      <XStack px="$4" py="$4" gap="$3">
+      <XStack
+        px="$4"
+        py="$4"
+        gap="$3"
+      >
         <YStack width="80%">
-          <Paragraph size="$6" fow="bold">
+          <Paragraph
+            size="$6"
+            fow="bold"
+          >
             Lifetime access, 1 year of updates
           </Paragraph>
-          <Paragraph className="text-wrap-balance" size="$3" theme="alt1">
+          <Paragraph
+            className="text-wrap-balance"
+            size="$3"
+            theme="alt1"
+          >
             You own the code for life, with updates for a year
           </Paragraph>
         </YStack>
-        <XStack f={1} ai="center" gap="$2" jc="center">
+        <XStack
+          f={1}
+          ai="center"
+          gap="$2"
+          jc="center"
+        >
           <Paragraph size="$8">{checkCircle}</Paragraph>
         </XStack>
       </XStack>
-      <XStack px="$4" py="$4" gap="$3">
+      <XStack
+        px="$4"
+        py="$4"
+        gap="$3"
+      >
         <YStack width="80%">
           <Paragraph size="$6">License Seats</Paragraph>
-          <Paragraph className="text-wrap-balance" size="$3" theme="alt1">
+          <Paragraph
+            className="text-wrap-balance"
+            size="$3"
+            theme="alt1"
+          >
             Number of people allowed to&nbsp;develop&nbsp;on&nbsp;it
           </Paragraph>
         </YStack>
-        <XStack f={1} ai="center" gap="$2" jc="center">
+        <XStack
+          f={1}
+          ai="center"
+          gap="$2"
+          jc="center"
+        >
           <Paragraph size="$8">{takeoutPriceInfo.licenseSeats}</Paragraph>
         </XStack>
       </XStack>
-      <XStack px="$4" py="$4" gap="$3">
+      <XStack
+        px="$4"
+        py="$4"
+        gap="$3"
+      >
         <YStack width="80%">
           <Paragraph size="$6">Discord Seats</Paragraph>
-          <Paragraph className="text-wrap-balance" size="$3" theme="alt1">
+          <Paragraph
+            className="text-wrap-balance"
+            size="$3"
+            theme="alt1"
+          >
             Access to the Discord #takeout room
           </Paragraph>
         </YStack>
-        <XStack f={1} ai="center" gap="$2" jc="center">
+        <XStack
+          f={1}
+          ai="center"
+          gap="$2"
+          jc="center"
+        >
           <Paragraph size="$8">{takeoutPriceInfo.discordSeats}</Paragraph>
         </XStack>
       </XStack>
-      <XStack px="$4" py="$4" gap="$3">
+      <XStack
+        px="$4"
+        py="$4"
+        gap="$3"
+      >
         <YStack width="80%">
           <Paragraph size="$6">Discord Private Channel</Paragraph>
-          <Paragraph className="text-wrap-balance" size="$3" theme="alt1">
+          <Paragraph
+            className="text-wrap-balance"
+            size="$3"
+            theme="alt1"
+          >
             Private chat for your team only
           </Paragraph>
         </YStack>
-        <XStack f={1} ai="center" gap="$2" jc="center">
+        <XStack
+          f={1}
+          ai="center"
+          gap="$2"
+          jc="center"
+        >
           <Paragraph size="$8">
             {takeoutPriceInfo.hasDiscordPrivateChannels ? checkCircle : xCircle}
           </Paragraph>
         </XStack>
       </XStack>
-      <XStack px="$4" py="$4" gap="$3">
+      <XStack
+        px="$4"
+        py="$4"
+        gap="$3"
+      >
         <YStack width="80%">
           <Paragraph size="$6">GitHub Seats</Paragraph>
-          <Paragraph className="text-wrap-balance" size="$3" theme="alt1">
+          <Paragraph
+            className="text-wrap-balance"
+            size="$3"
+            theme="alt1"
+          >
             Open PRs and issues on the GitHub repo
           </Paragraph>
         </YStack>
-        <XStack f={1} ai="center" gap="$2" jc="center">
+        <XStack
+          f={1}
+          ai="center"
+          gap="$2"
+          jc="center"
+        >
           <Paragraph size="$8">{takeoutPriceInfo.githubSeats}</Paragraph>
         </XStack>
       </XStack>
@@ -288,4 +403,9 @@ export const TakeoutTable = ({
 }
 
 const checkCircle = <CheckCircle color="$green9" />
-const xCircle = <XCircle size={28} color="$red9" />
+const xCircle = (
+  <XCircle
+    size={28}
+    color="$red9"
+  />
+)

@@ -33,22 +33,53 @@ export default function Layout() {
   return (
     <>
       <meta charSet="utf-8" />
-      <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
+      <meta
+        httpEquiv="X-UA-Compatible"
+        content="IE=edge"
+      />
       <meta
         name="viewport"
         content="width=device-width, initial-scale=1, maximum-scale=5"
       />
 
-      <link rel="icon" href="/favicon.png" />
-      <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-      <meta name="docsearch:language" content="en" />
-      <meta name="docsearch:version" content="1.0.0,latest" />
-      <meta id="theme-color" name="theme-color" />
-      <meta name="color-scheme" content="light dark" />
+      <link
+        rel="icon"
+        href="/favicon.png"
+      />
+      <link
+        rel="icon"
+        href="/favicon.svg"
+        type="image/svg+xml"
+      />
+      <meta
+        name="docsearch:language"
+        content="en"
+      />
+      <meta
+        name="docsearch:version"
+        content="1.0.0,latest"
+      />
+      <meta
+        id="theme-color"
+        name="theme-color"
+      />
+      <meta
+        name="color-scheme"
+        content="light dark"
+      />
 
-      <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:site" content="@tamagui_js" />
-      <meta name="twitter:creator" content="@natebirdman" />
+      <meta
+        name="twitter:card"
+        content="summary_large_image"
+      />
+      <meta
+        name="twitter:site"
+        content="@tamagui_js"
+      />
+      <meta
+        name="twitter:creator"
+        content="@natebirdman"
+      />
 
       <HeadInfo
         openGraph={{
@@ -66,9 +97,16 @@ export default function Layout() {
 
       <LoadProgressBar />
 
-      <meta name="robots" content="index,follow" />
+      <meta
+        name="robots"
+        content="index,follow"
+      />
 
-      <link crossOrigin="anonymous" href="/fonts/inter-700.css" rel="stylesheet" />
+      <link
+        crossOrigin="anonymous"
+        href="/fonts/inter-700.css"
+        rel="stylesheet"
+      />
       <link
         rel="stylesheet preload prefetch"
         href="/fonts/Inter-ExtraBold.woff2"

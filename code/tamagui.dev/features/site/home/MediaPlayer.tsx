@@ -14,14 +14,7 @@ export const MediaPlayer = memo(
       pointerEventsControls?: any
     }
   ) => {
-    const {
-      theme,
-      alt,
-      onHoverSection,
-      pointerEvents,
-      pointerEventsControls,
-      ...cardProps
-    } = props
+    const { theme, alt, onHoverSection, pointerEvents, pointerEventsControls, ...cardProps } = props
     const tint = !alt ? null : (`alt${alt}` as ThemeName)
 
     return (
@@ -45,17 +38,42 @@ export const MediaPlayer = memo(
             mb={40}
             {...cardProps}
           >
-            <XStack ai="center" p="$4" space="$5">
-              <Square pos="relative" ov="hidden" br="$6" size="$8">
-                <Image src={image} width={90} height={90} />
+            <XStack
+              ai="center"
+              p="$4"
+              space="$5"
+            >
+              <Square
+                pos="relative"
+                ov="hidden"
+                br="$6"
+                size="$8"
+              >
+                <Image
+                  src={image}
+                  width={90}
+                  height={90}
+                />
               </Square>
 
-              <YStack als="center" y={-3} miw={165} jc="center">
+              <YStack
+                als="center"
+                y={-3}
+                miw={165}
+                jc="center"
+              >
                 <Paragraph fontWeight="700">Billie Jean</Paragraph>
-                <Paragraph color="$color11" size="$3">
+                <Paragraph
+                  color="$color11"
+                  size="$3"
+                >
                   Michael Jackson
                 </Paragraph>
-                <Paragraph color="$color11" o={0.65} size="$3">
+                <Paragraph
+                  color="$color11"
+                  o={0.65}
+                  size="$3"
+                >
                   Thriller
                 </Paragraph>
               </YStack>

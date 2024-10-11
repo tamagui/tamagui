@@ -44,11 +44,18 @@ export default function TamaguiHomePage() {
           maskImage: `linear-gradient(transparent, rgba(0, 0, 0, 1) 100px)`,
         }}
       />
-      <TintSection index={0} p={0}>
+      <TintSection
+        index={0}
+        p={0}
+      >
         <Hero />
       </TintSection>
       <HomeHeroBelow />
-      <TintSection index={2} contain="paint layout" zi={1000}>
+      <TintSection
+        index={2}
+        contain="paint layout"
+        zi={1000}
+      >
         <YStack
           pe="none"
           zi={0}
@@ -60,7 +67,13 @@ export default function TamaguiHomePage() {
         />
         <HomeExamples examples={compilationExamples} />
       </TintSection>
-      <TintSection my={-50} index={3} contain="paint layout" pos="relative" zi={100}>
+      <TintSection
+        my={-50}
+        index={3}
+        contain="paint layout"
+        pos="relative"
+        zi={100}
+      >
         <YStack
           pe="none"
           zi={0}
@@ -72,15 +85,29 @@ export default function TamaguiHomePage() {
         />
         <HomeThemes />
       </TintSection>
-      <TintSection index={4} mb={-120} zIndex={10000}>
+      <TintSection
+        index={4}
+        mb={-120}
+        zIndex={10000}
+      >
         <HomeResponsive />
       </TintSection>
-      <TintSection index={5} p={0} zIndex={0}>
-        <SectionTinted gradient bubble>
+      <TintSection
+        index={5}
+        p={0}
+        zIndex={0}
+      >
+        <SectionTinted
+          gradient
+          bubble
+        >
           <HomePerformance />
         </SectionTinted>
       </TintSection>
-      <TintSection index={6} zi={100}>
+      <TintSection
+        index={6}
+        zi={100}
+      >
         <YStack
           fullscreen
           className="bg-grid"
@@ -90,7 +117,10 @@ export default function TamaguiHomePage() {
         />
         <HomeAnimations animationCode={animationCode} />
       </TintSection>
-      <TintSection index={7} zi={1}>
+      <TintSection
+        index={7}
+        zi={1}
+      >
         <HomeFeaturesGrid />
         <YStack
           pe="none"
@@ -102,8 +132,17 @@ export default function TamaguiHomePage() {
           }}
         />
       </TintSection>
-      <TintSection index={8} my="$-4" p={0} zIndex={100}>
-        <SectionTinted zi={1000} bubble gradient>
+      <TintSection
+        index={8}
+        my="$-4"
+        p={0}
+        zIndex={100}
+      >
+        <SectionTinted
+          zi={1000}
+          bubble
+          gradient
+        >
           <HomeTypography />
         </SectionTinted>
       </TintSection>

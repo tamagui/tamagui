@@ -31,15 +31,14 @@ export const BarTabs = memo(function HeaderTabs({
   })
 
   const setCurrentTab = onTabChange
-  const setIntentIndicator = (intentAt) =>
-    setTabRovingState({ ...tabRovingState, intentAt })
+  const setIntentIndicator = (intentAt) => setTabRovingState({ ...tabRovingState, intentAt })
   const setActiveIndicator = (activeAt) =>
     setTabRovingState({
       ...tabRovingState,
       prevActiveAt: tabRovingState.activeAt,
       activeAt,
     })
-  const { activeAt, intentAt, prevActiveAt } = tabRovingState
+  const { activeAt, intentAt } = tabRovingState
 
   /**
    * -1: from left
@@ -141,10 +140,7 @@ export const BarTabs = memo(function HeaderTabs({
   )
 })
 
-const TabsRovingIndicator = ({
-  isActive,
-  ...props
-}: { isActive?: boolean } & YStackProps) => {
+const TabsRovingIndicator = ({ isActive, ...props }: { isActive?: boolean } & YStackProps) => {
   return (
     <YStack
       borderRadius="$2"

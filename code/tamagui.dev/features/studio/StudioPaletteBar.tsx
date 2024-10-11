@@ -35,7 +35,12 @@ export function StudioPaletteBar({
           ))}
         </XStack>
       )}
-      <XStack ov="hidden" br="$4" bw={1} bc="$color7">
+      <XStack
+        ov="hidden"
+        br="$4"
+        bw={1}
+        bc="$color7"
+      >
         {colors.map((color, i) => (
           <XStack
             key={color + i}
@@ -47,10 +52,23 @@ export function StudioPaletteBar({
             })}
           >
             <Checkerboard opacity={0.5} />
-            <XStack fullscreen bg={color as any} />
+            <XStack
+              fullscreen
+              bg={color as any}
+            />
             {showLabelIndices && (
-              <YStack fullscreen jc="center" ai="center" pe="none">
-                <Paragraph size="$1" fos={11} ls={-1} color={readableColor(color) as any}>
+              <YStack
+                fullscreen
+                jc="center"
+                ai="center"
+                pe="none"
+              >
+                <Paragraph
+                  size="$1"
+                  fos={11}
+                  ls={-1}
+                  color={readableColor(color) as any}
+                >
                   {i}
                 </Paragraph>
               </YStack>

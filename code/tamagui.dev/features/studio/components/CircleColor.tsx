@@ -7,9 +7,17 @@ import { Checkerboard } from './Checkerboard'
 export const CircleColor = (propsIn: CircleProps) => {
   const { backgroundColor, ...props } = useProps(propsIn)
   return (
-    <Circle bw={1} bc="$borderColor" ov="hidden" {...props}>
+    <Circle
+      bw={1}
+      bc="$borderColor"
+      ov="hidden"
+      {...props}
+    >
       <Checkerboard />
-      <YStack fullscreen bg={backgroundColor} />
+      <YStack
+        fullscreen
+        bg={backgroundColor}
+      />
       <YStack
         zi={100}
         fullscreen

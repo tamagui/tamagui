@@ -47,9 +47,7 @@ export const getBentoComponentCategory = async ({
 
   const downloadPath = `unmerged/${rootPath}`
 
-  const { data: fileList, error } = await supabaseAdmin.storage
-    .from('bento')
-    .list(downloadPath)
+  const { data: fileList, error } = await supabaseAdmin.storage.from('bento').list(downloadPath)
 
   if (error) {
     throw new Error(`Error getting bento code for ${categoryPath} ${categorySectionPath}`)
@@ -83,9 +81,7 @@ export const getBentoComponentCategory = async ({
       })
     )
 
-    return subFiles.filter(
-      (file): file is { path: string; downloadUrl: string } => file !== null
-    )
+    return subFiles.filter((file): file is { path: string; downloadUrl: string } => file !== null)
   }
 
   for (const item of fileList) {
@@ -204,10 +200,7 @@ export const createOrRetrieveCustomer = async ({
 /**
  * Copies the billing details from the payment method to the customer object.
  */
-const copyBillingDetailsToCustomer = async (
-  uuid: string,
-  payment_method: Stripe.PaymentMethod
-) => {
+const copyBillingDetailsToCustomer = async (uuid: string, payment_method: Stripe.PaymentMethod) => {
   //Todo: check this assertion
   const customer = payment_method.customer as string
   const { name, phone, address } = payment_method.billing_details
@@ -260,12 +253,8 @@ export const manageSubscriptionStatusChange = async (
       canceled_at: subscription.canceled_at
         ? (toDateTime(subscription.canceled_at) as unknown as string)
         : null,
-      current_period_start: toDateTime(
-        subscription.current_period_start
-      ) as unknown as string,
-      current_period_end: toDateTime(
-        subscription.current_period_end
-      ) as unknown as string,
+      current_period_start: toDateTime(subscription.current_period_start) as unknown as string,
+      current_period_end: toDateTime(subscription.current_period_end) as unknown as string,
       created: toDateTime(subscription.created) as unknown as string,
       ended_at: subscription.ended_at
         ? (toDateTime(subscription.ended_at) as unknown as string)
@@ -311,14 +300,11 @@ export const manageSubscriptionStatusChange = async (
       .map((x) => x.id)
       .filter((id) => !subscription.items.data.some((x) => x.id === id))
     console.info(`Delete old subscription_items`, oldRecords)
-    const { error: deleteOldErr } = await supabaseAdmin
-      .from('subscription_items')
-      .delete()
-      .in(
-        'id',
-        // delete ones that aren't leftover
-        oldRecords
-      )
+    const { error: deleteOldErr } = await supabaseAdmin.from('subscription_items').delete().in(
+      'id',
+      // delete ones that aren't leftover
+      oldRecords
+    )
     if (deleteOldErr) {
       throw deleteOldErr
     }
@@ -365,9 +351,7 @@ export const manageSubscriptionStatusChange = async (
     }
 
     const subscribedProducts = await Promise.all(
-      subscription.items.data.map((item) =>
-        stripe.products.retrieve(item.price.product as string)
-      )
+      subscription.items.data.map((item) => stripe.products.retrieve(item.price.product as string))
     )
     const userName = userModel.data.full_name ?? email.split('@').shift()!
     const includesTakeoutStarter = subscribedProducts.some(
@@ -380,9 +364,7 @@ export const manageSubscriptionStatusChange = async (
       })
       console.info(`Takeout purchase email request sent to Postmark for ${email}`)
     }
-    const includesBento = subscribedProducts.some(
-      (product) => product.metadata.slug === 'bento'
-    )
+    const includesBento = subscribedProducts.some((product) => product.metadata.slug === 'bento')
     if (includesBento) {
       await sendProductPurchaseEmail(email, {
         name: userName,
@@ -415,8 +397,7 @@ export async function addRenewalSubscription(
     )
   )
 
-  const customerId =
-    typeof session.customer === 'string' ? session.customer : session.customer!.id
+  const customerId = typeof session.customer === 'string' ? session.customer : session.customer!.id
 
   const { data: userData, error: userError } = await supabaseAdmin
     .from('customers')

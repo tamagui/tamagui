@@ -20,8 +20,14 @@ export default memo(() => {
             type: 'content',
 
             content: (
-              <YStack marginTop={-100} ai="center">
-                <Paragraph theme="alt2" size="$10">
+              <YStack
+                marginTop={-100}
+                ai="center"
+              >
+                <Paragraph
+                  theme="alt2"
+                  size="$10"
+                >
                   (Ironically)
                 </Paragraph>
               </YStack>

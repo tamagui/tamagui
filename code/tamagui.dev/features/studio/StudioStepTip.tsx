@@ -51,7 +51,12 @@ export function StudioStepTip() {
   }
 
   return (
-    <Popover open={show} size="$5" allowFlip placement="bottom">
+    <Popover
+      open={show}
+      size="$5"
+      allowFlip
+      placement="bottom"
+    >
       <Popover.Trigger asChild>{button}</Popover.Trigger>
 
       <Theme name="yellow">
@@ -73,7 +78,10 @@ export function StudioStepTip() {
             },
           ]}
         >
-          <Popover.Arrow borderWidth={2} borderColor="$borderColor" />
+          <Popover.Arrow
+            borderWidth={2}
+            borderColor="$borderColor"
+          />
 
           <Tip />
 

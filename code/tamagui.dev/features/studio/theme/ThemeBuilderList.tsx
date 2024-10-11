@@ -24,10 +24,7 @@ import {
   YGroup,
   YStack,
 } from 'tamagui'
-import {
-  ModalTitle,
-  ThemeBuilderModalFrame,
-} from '~/features/studio/theme/ThemeBuilderModalFrame'
+import { ModalTitle, ThemeBuilderModalFrame } from '~/features/studio/theme/ThemeBuilderModalFrame'
 import {
   themeBuilderStore,
   useThemeBuilderStore,
@@ -50,11 +47,29 @@ export function ThemeBuilderList() {
         onOpenChange={setCreateDialogOpen}
       />
 
-      <YStack pe="none" fullscreen zi={100}>
-        <ThemeBuilderModalFrame noBottomBar isCentered>
-          <YStack pe="auto" f={1}>
-            <YStack py="$3" px="$4" gap="$5">
-              <XStack ai="center" jc="space-between" gap="$4">
+      <YStack
+        pe="none"
+        fullscreen
+        zi={100}
+      >
+        <ThemeBuilderModalFrame
+          noBottomBar
+          isCentered
+        >
+          <YStack
+            pe="auto"
+            f={1}
+          >
+            <YStack
+              py="$3"
+              px="$4"
+              gap="$5"
+            >
+              <XStack
+                ai="center"
+                jc="space-between"
+                gap="$4"
+              >
                 <ModalTitle>Theme Suites</ModalTitle>
                 <Button
                   iconAfter={Plus}
@@ -71,19 +86,38 @@ export function ThemeBuilderList() {
 
             <ScrollView contentContainerStyle={{ minHeight: '100%' }}>
               {themeSuites.length > 0 ? (
-                <XStack fw="wrap" gap="$3" p="$3" f={1}>
+                <XStack
+                  fw="wrap"
+                  gap="$3"
+                  p="$3"
+                  f={1}
+                >
                   {themeSuites.map((themeSuite) =>
                     !themeSuite.name ? null : (
-                      <ThemeSuiteCard key={themeSuite.id} themeSuite={themeSuite} />
+                      <ThemeSuiteCard
+                        key={themeSuite.id}
+                        themeSuite={themeSuite}
+                      />
                     )
                   )}
                 </XStack>
               ) : (
-                <YStack ai="center" jc="center" f={1} gap="$4">
-                  <Paragraph ta="center" theme="alt2">
+                <YStack
+                  ai="center"
+                  jc="center"
+                  f={1}
+                  gap="$4"
+                >
+                  <Paragraph
+                    ta="center"
+                    theme="alt2"
+                  >
                     You don't have any theme suites yet.
                   </Paragraph>
-                  <Button icon={Plus} onPress={() => setCreateDialogOpen(true)}>
+                  <Button
+                    icon={Plus}
+                    onPress={() => setCreateDialogOpen(true)}
+                  >
                     Create your first
                   </Button>
                 </YStack>
@@ -93,7 +127,11 @@ export function ThemeBuilderList() {
         </ThemeBuilderModalFrame>
       </YStack>
 
-      <YStack pe="none" fullscreen zi={1000}>
+      <YStack
+        pe="none"
+        fullscreen
+        zi={1000}
+      >
         <Slot />
       </YStack>
     </>
@@ -122,7 +160,11 @@ function ThemeSuiteCard({ themeSuite }: { themeSuite: ThemeSuiteItem }) {
   }
 
   const menu = (
-    <Popover size="$5" allowFlip placement="bottom">
+    <Popover
+      size="$5"
+      allowFlip
+      placement="bottom"
+    >
       <Popover.Trigger asChild>
         <Button
           onPress={(event) => {
@@ -135,8 +177,14 @@ function ThemeSuiteCard({ themeSuite }: { themeSuite: ThemeSuiteItem }) {
         />
       </Popover.Trigger>
 
-      <Adapt when="sm" platform="touch">
-        <Popover.Sheet modal dismissOnSnapToBottom>
+      <Adapt
+        when="sm"
+        platform="touch"
+      >
+        <Popover.Sheet
+          modal
+          dismissOnSnapToBottom
+        >
           <Popover.Sheet.Frame padding="$4">
             <Adapt.Contents />
           </Popover.Sheet.Frame>
@@ -164,7 +212,10 @@ function ThemeSuiteCard({ themeSuite }: { themeSuite: ThemeSuiteItem }) {
           },
         ]}
       >
-        <Popover.Arrow borderWidth={1} borderColor="$borderColor" />
+        <Popover.Arrow
+          borderWidth={1}
+          borderColor="$borderColor"
+        />
 
         <YGroup>
           <ListItem
@@ -197,10 +248,7 @@ function ThemeSuiteCard({ themeSuite }: { themeSuite: ThemeSuiteItem }) {
     themeSuite.palettes
   )
   const accentPalettes = themeSuite.baseTheme.accent
-    ? themeBuilderStore.getPalettesForTheme(
-        themeSuite.baseTheme.accent,
-        themeSuite.palettes
-      )
+    ? themeBuilderStore.getPalettesForTheme(themeSuite.baseTheme.accent, themeSuite.palettes)
     : []
 
   const scheme = isDark ? 'dark' : 'light'
@@ -235,13 +283,25 @@ function ThemeSuiteCard({ themeSuite }: { themeSuite: ThemeSuiteItem }) {
         shadowRadius="$2"
         f={1}
       >
-        <XStack jc="space-between" p="$4">
+        <XStack
+          jc="space-between"
+          p="$4"
+        >
           <YStack gap="$2">
-            <Paragraph size="$6" cursor="pointer" color={palette[14] as any}>
+            <Paragraph
+              size="$6"
+              cursor="pointer"
+              color={palette[14] as any}
+            >
               {themeSuite.name || 'Untitled'}
             </Paragraph>
 
-            <Paragraph theme="alt1" cursor="pointer" size="$2" color={palette[13] as any}>
+            <Paragraph
+              theme="alt1"
+              cursor="pointer"
+              size="$2"
+              color={palette[13] as any}
+            >
               Created{' '}
               {new Intl.DateTimeFormat('en', {
                 dateStyle: 'medium',
@@ -251,39 +311,94 @@ function ThemeSuiteCard({ themeSuite }: { themeSuite: ThemeSuiteItem }) {
           {menu}
         </XStack>
 
-        <XStack fullscreen ov="hidden">
+        <XStack
+          fullscreen
+          ov="hidden"
+        >
           {/* sun */}
-          <Circle size="$12" pos="absolute" t="$12" r="$4" bg={palette[5] as any} />
+          <Circle
+            size="$12"
+            pos="absolute"
+            t="$12"
+            r="$4"
+            bg={palette[5] as any}
+          />
 
           {/* mountain 0 */}
-          <YStack zi={1} fullscreen x={-140} y={90} scaleX={1.4}>
-            <svg width="400px" height="234px" viewBox="0 0 400 234">
-              <g transform="translate(0.000000, -107.000000)" fill={palette[9]}>
+          <YStack
+            zi={1}
+            fullscreen
+            x={-140}
+            y={90}
+            scaleX={1.4}
+          >
+            <svg
+              width="400px"
+              height="234px"
+              viewBox="0 0 400 234"
+            >
+              <g
+                transform="translate(0.000000, -107.000000)"
+                fill={palette[9]}
+              >
                 <polygon points="12 313 40 266 59 250 72 230 102 211 132 165 160 155 176 132 200 107 236 137 264 184 291 236 344 250 369 291 400 341 0 341"></polygon>
               </g>
             </svg>
           </YStack>
 
           {/* mountain 1 */}
-          <YStack zi={0} fullscreen x={30} y={100} scale={0.9} scaleX={1.4}>
-            <svg width="359px" height="220px" viewBox="0 0 359 220">
-              <g transform="translate(-169.000000, -27.000000)" fill={palette[6]}>
+          <YStack
+            zi={0}
+            fullscreen
+            x={30}
+            y={100}
+            scale={0.9}
+            scaleX={1.4}
+          >
+            <svg
+              width="359px"
+              height="220px"
+              viewBox="0 0 359 220"
+            >
+              <g
+                transform="translate(-169.000000, -27.000000)"
+                fill={palette[6]}
+              >
                 <polygon points="181 219 209 172 228 156 241 136 267 100 288 61 326 27 364 43 413 89 439 136 472 156 497 197 528 247 169 247"></polygon>
               </g>
             </svg>
           </YStack>
 
           {/* mountain 2 */}
-          <YStack fullscreen x={150} y={90} scale={0.75} scaleX={1.1}>
-            <svg width="400px" height="234px" viewBox="0 0 400 234">
-              <g transform="translate(0.000000, -107.000000)" fill={palette[7]}>
+          <YStack
+            fullscreen
+            x={150}
+            y={90}
+            scale={0.75}
+            scaleX={1.1}
+          >
+            <svg
+              width="400px"
+              height="234px"
+              viewBox="0 0 400 234"
+            >
+              <g
+                transform="translate(0.000000, -107.000000)"
+                fill={palette[7]}
+              >
                 <polygon points="12 313 40 266 59 250 72 230 102 211 132 165 160 155 176 132 200 107 236 137 264 184 291 236 344 250 369 291 400 341 0 341"></polygon>
               </g>
             </svg>
           </YStack>
 
           {/* tree */}
-          <YStack fullscreen y={78} x={100} scale={0.5} scaleX={-0.95}>
+          <YStack
+            fullscreen
+            y={78}
+            x={100}
+            scale={0.5}
+            scaleX={-0.95}
+          >
             <svg
               height="532pt"
               preserveAspectRatio="xMidYMid meet"
@@ -299,7 +414,11 @@ function ThemeSuiteCard({ themeSuite }: { themeSuite: ThemeSuiteItem }) {
           </YStack>
         </XStack>
       </YStack>
-      <AlertDialog modal open={deleteDialog} onOpenChange={setDeleteDialog}>
+      <AlertDialog
+        modal
+        open={deleteDialog}
+        onOpenChange={setDeleteDialog}
+      >
         <AlertDialog.Portal zi={9999999999}>
           <AlertDialog.Overlay
             key="overlay"
@@ -334,12 +453,19 @@ function ThemeSuiteCard({ themeSuite }: { themeSuite: ThemeSuiteItem }) {
                 This will delete the theme. This action is irreversible.
               </AlertDialog.Description>
 
-              <XStack mt="$4" gap="$3" justifyContent="flex-end">
+              <XStack
+                mt="$4"
+                gap="$3"
+                justifyContent="flex-end"
+              >
                 <AlertDialog.Cancel asChild>
                   <Button>Cancel</Button>
                 </AlertDialog.Cancel>
                 <AlertDialog.Action asChild>
-                  <Button theme="red_active" onPress={() => handleDeleteTheme()}>
+                  <Button
+                    theme="red_active"
+                    onPress={() => handleDeleteTheme()}
+                  >
                     Delete
                   </Button>
                 </AlertDialog.Action>
@@ -349,10 +475,25 @@ function ThemeSuiteCard({ themeSuite }: { themeSuite: ThemeSuiteItem }) {
         </AlertDialog.Portal>
       </AlertDialog>
 
-      <Dialog modal open={renameDialog} onOpenChange={setRenameDialog}>
-        <Adapt when="sm" platform="touch">
-          <Sheet animation="medium" zIndex={200000} modal dismissOnSnapToBottom>
-            <Sheet.Frame padding="$4" gap="$4">
+      <Dialog
+        modal
+        open={renameDialog}
+        onOpenChange={setRenameDialog}
+      >
+        <Adapt
+          when="sm"
+          platform="touch"
+        >
+          <Sheet
+            animation="medium"
+            zIndex={200000}
+            modal
+            dismissOnSnapToBottom
+          >
+            <Sheet.Frame
+              padding="$4"
+              gap="$4"
+            >
               <Adapt.Contents />
             </Sheet.Frame>
             <Sheet.Overlay
@@ -399,14 +540,24 @@ function ThemeSuiteCard({ themeSuite }: { themeSuite: ThemeSuiteItem }) {
             opacity={1}
             y={0}
           >
-            <Form onSubmit={handleRenameThemeName} gap="$4">
+            <Form
+              onSubmit={handleRenameThemeName}
+              gap="$4"
+            >
               <Dialog.Title>Rename</Dialog.Title>
               <Dialog.Description>
-                Name doesn't change the output code. It's just a way for you to
-                distinguish between the themes.
+                Name doesn't change the output code. It's just a way for you to distinguish between
+                the themes.
               </Dialog.Description>
-              <Fieldset gap="$4" horizontal>
-                <Label width={160} justifyContent="flex-end" htmlFor={`edit_name_${id}`}>
+              <Fieldset
+                gap="$4"
+                horizontal
+              >
+                <Label
+                  width={160}
+                  justifyContent="flex-end"
+                  htmlFor={`edit_name_${id}`}
+                >
                   Name
                 </Label>
                 <Input
@@ -419,9 +570,15 @@ function ThemeSuiteCard({ themeSuite }: { themeSuite: ThemeSuiteItem }) {
                 />
               </Fieldset>
 
-              <XStack alignSelf="flex-end" gap="$4">
+              <XStack
+                alignSelf="flex-end"
+                gap="$4"
+              >
                 <Form.Trigger asChild>
-                  <Button themeInverse aria-label="Close">
+                  <Button
+                    themeInverse
+                    aria-label="Close"
+                  >
                     Save changes
                   </Button>
                 </Form.Trigger>
@@ -465,10 +622,23 @@ function CreateDialog(
   }
 
   return (
-    <Dialog modal {...props}>
-      <Adapt when="sm" platform="touch">
-        <Sheet zIndex={200000} modal dismissOnSnapToBottom>
-          <Sheet.Frame padding="$4" gap>
+    <Dialog
+      modal
+      {...props}
+    >
+      <Adapt
+        when="sm"
+        platform="touch"
+      >
+        <Sheet
+          zIndex={200000}
+          modal
+          dismissOnSnapToBottom
+        >
+          <Sheet.Frame
+            padding="$4"
+            gap
+          >
             <Adapt.Contents />
           </Sheet.Frame>
           <Sheet.Overlay
@@ -518,8 +688,15 @@ function CreateDialog(
             <Dialog.Description>
               Choose a name for your suite of themes, something like <b>Tamagui Site</b>.
             </Dialog.Description>
-            <Fieldset gap="$4" horizontal>
-              <Label pl="$4" justifyContent="flex-end" htmlFor="name">
+            <Fieldset
+              gap="$4"
+              horizontal
+            >
+              <Label
+                pl="$4"
+                justifyContent="flex-end"
+                htmlFor="name"
+              >
                 Name
               </Label>
               <Input
@@ -533,7 +710,10 @@ function CreateDialog(
               />
             </Fieldset>
 
-            <XStack alignSelf="flex-end" gap>
+            <XStack
+              alignSelf="flex-end"
+              gap
+            >
               <Form.Trigger>
                 <Button
                   themeInverse={!disabled}

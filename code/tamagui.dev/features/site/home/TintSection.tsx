@@ -57,8 +57,26 @@ export const TintSection = ({ children, index, themed, zIndex, ...props }: Props
       {useMemo(() => {
         return (
           <>
-            <XStack ref={top} pos="absolute" t="10%" l={0} r={0} h={10} o={0} pe="none" />
-            <XStack ref={mid} pos="absolute" t="50%" l={0} r={0} h={10} o={0} pe="none" />
+            <XStack
+              ref={top}
+              pos="absolute"
+              t="10%"
+              l={0}
+              r={0}
+              h={10}
+              o={0}
+              pe="none"
+            />
+            <XStack
+              ref={mid}
+              pos="absolute"
+              t="50%"
+              l={0}
+              r={0}
+              h={10}
+              o={0}
+              pe="none"
+            />
             <XStack
               ref={bottom}
               pos="absolute"
@@ -72,7 +90,10 @@ export const TintSection = ({ children, index, themed, zIndex, ...props }: Props
           </>
         )
       }, [top, mid, bottom])}
-      <HomeSection theme={(themed ? tint : null) as any} {...props}>
+      <HomeSection
+        theme={(themed ? tint : null) as any}
+        {...props}
+      >
         {children}
       </HomeSection>
     </YStack>

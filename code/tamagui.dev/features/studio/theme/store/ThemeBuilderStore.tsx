@@ -254,10 +254,7 @@ export class ThemeBuilderStore {
       ...this.themeSuite,
       ...next,
     }
-    if (
-      this.themeSuiteVersion > 1 &&
-      JSON.stringify(row) === JSON.stringify(this.themeSuite)
-    ) {
+    if (this.themeSuiteVersion > 1 && JSON.stringify(row) === JSON.stringify(this.themeSuite)) {
       // avoid update if it can
       return
     }
@@ -362,13 +359,9 @@ export class ThemeBuilderStore {
 
   getPalettesForTheme(theme: BuildTheme, palettes = this.palettes) {
     const palette =
-      palettes[theme.palette || 'base'] ||
-      this.palettes[theme.palette] ||
-      this.palettes.base
+      palettes[theme.palette || 'base'] || this.palettes[theme.palette] || this.palettes.base
     if (!palette) {
-      console.warn(
-        `No palette found: ${theme.palette} (${Object.keys(this.palettes).join(', ')})`
-      )
+      console.warn(`No palette found: ${theme.palette} (${Object.keys(this.palettes).join(', ')})`)
       return {
         light: [] as string[],
         dark: [] as string[],
@@ -476,10 +469,7 @@ export class ThemeBuilderStore {
     await this.refreshThemeSuite()
   }
 
-  addTemplate(
-    template: Template,
-    name = `template-${Object.keys(this.templates).length}`
-  ) {
+  addTemplate(template: Template, name = `template-${Object.keys(this.templates).length}`) {
     this.templates = {
       ...this.templates,
       [name]: template,

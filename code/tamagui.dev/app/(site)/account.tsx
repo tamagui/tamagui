@@ -45,9 +45,18 @@ const Account = () => {
   const { userDetails, user, teams } = data
 
   return (
-    <Container gap="$4" f={1}>
-      <XStack mt="$10" gap="$4">
-        <Avatar circular size="$10">
+    <Container
+      gap="$4"
+      f={1}
+    >
+      <XStack
+        mt="$10"
+        gap="$4"
+      >
+        <Avatar
+          circular
+          size="$10"
+        >
           <Avatar.Image
             source={{
               width: 104,
@@ -59,8 +68,17 @@ const Account = () => {
           />
         </Avatar>
 
-        <YStack gap="$3" ai="flex-start" jc="center" f={1}>
-          <XStack jc="space-between" space ai="center">
+        <YStack
+          gap="$3"
+          ai="flex-start"
+          jc="center"
+          f={1}
+        >
+          <XStack
+            jc="space-between"
+            space
+            ai="center"
+          >
             <YStack f={1}>
               <H3
                 style={{
@@ -78,7 +96,10 @@ const Account = () => {
             {teams.orgs
               ?.filter((team) => team.is_active)
               .map((org) => (
-                <TeamBadge key={org.id} org={org} />
+                <TeamBadge
+                  key={org.id}
+                  org={org}
+                />
               ))}
           </YStack>
           <XStack>
@@ -89,9 +110,16 @@ const Account = () => {
 
       <Separator />
 
-      <XStack mt="$4" gap="$4" ai="flex-start">
+      <XStack
+        mt="$4"
+        gap="$4"
+        ai="flex-start"
+      >
         <ThemeTint>
-          <ButtonLink href="/account/items" size="$5">
+          <ButtonLink
+            href="/account/items"
+            size="$5"
+          >
             Items & Subscriptions
           </ButtonLink>
         </ThemeTint>
@@ -101,7 +129,10 @@ const Account = () => {
         <UserSettings />
       </YStack>
 
-      <YStack separator={<Separator />} gap="$5">
+      <YStack
+        separator={<Separator />}
+        gap="$5"
+      >
         <Paragraph ff="$mono">User ID: {userDetails?.id}</Paragraph>
       </YStack>
     </Container>
@@ -110,7 +141,12 @@ const Account = () => {
 
 const SponsorBadge = () => {
   return (
-    <Button theme="yellow" disabled icon={Star} size="$2">
+    <Button
+      theme="yellow"
+      disabled
+      icon={Star}
+      size="$2"
+    >
       Personal Sponsor
     </Button>
   )
@@ -139,19 +175,31 @@ const TeamBadge = ({
 
 const UserSettings = () => {
   return (
-    <YStack gap="$8" separator={<Separator />}>
-      <YStack gap="$6" id="profile"></YStack>
+    <YStack
+      gap="$8"
+      separator={<Separator />}
+    >
+      <YStack
+        gap="$6"
+        id="profile"
+      ></YStack>
 
       {/* <YStack gap="$6" id="studio-queue">
         <QueueContent />
       </YStack> */}
 
-      <YStack gap="$6" id="sponsorship-status">
+      <YStack
+        gap="$6"
+        id="sponsorship-status"
+      >
         <SizableText size="$8">Sponsorship Status</SizableText>
         <SponsorshipContent />
       </YStack>
 
-      <YStack gap="$6" id="connections">
+      <YStack
+        gap="$6"
+        id="connections"
+      >
         <SizableText size="$8">Connections</SizableText>
         <ConnectionsContent />
       </YStack>
@@ -179,10 +227,11 @@ const ProfileContent = () => {
   const { user, userDetails } = data
 
   return (
-    <XStack gap="$4" separator={<Separator vertical />}>
-      {!!userDetails?.full_name && (
-        <Paragraph theme="alt1">{userDetails?.full_name}</Paragraph>
-      )}
+    <XStack
+      gap="$4"
+      separator={<Separator vertical />}
+    >
+      {!!userDetails?.full_name && <Paragraph theme="alt1">{userDetails?.full_name}</Paragraph>}
       <Paragraph theme="alt1">{user?.email}</Paragraph>
     </XStack>
   )
@@ -209,7 +258,10 @@ const QueueContent = () => {
 
   return (
     <YStack gap="$4">
-      <StudioQueueCard key={teams.main.id} teamId={teams.main.id} />
+      <StudioQueueCard
+        key={teams.main.id}
+        teamId={teams.main.id}
+      />
     </YStack>
   )
 
@@ -236,16 +288,22 @@ const SponsorshipContent = () => {
 
   if (!teams.main?.is_active) {
     return (
-      <YStack gap="$4" ai="flex-start">
+      <YStack
+        gap="$4"
+        ai="flex-start"
+      >
         <SponsorButton />
         <YStack space>
           <Paragraph size="$6">
-            You are not a sponsor. Become a sponsor to get early access to the studio and
-            other upcoming features.
+            You are not a sponsor. Become a sponsor to get early access to the studio and other
+            upcoming features.
           </Paragraph>
-          <Paragraph size="$5" theme="alt1">
-            If you're a member of an organization that is sponsoring Tamagui, make sure
-            tamagui has access to that org{' '}
+          <Paragraph
+            size="$5"
+            theme="alt1"
+          >
+            If you're a member of an organization that is sponsoring Tamagui, make sure tamagui has
+            access to that org{' '}
             <Link
               style={{ color: 'var(--color12)' }}
               href={`https://github.com/settings/connections/applications/${process.env.NEXT_PUBLIC_GITHUB_AUTH_CLIENT_ID}`}
@@ -262,9 +320,7 @@ const SponsorshipContent = () => {
   return (
     <YStack gap="$4">
       <YStack>
-        {teams.personal?.is_active && (
-          <Paragraph>You are a personal sponsor. Thank you!</Paragraph>
-        )}
+        {teams.personal?.is_active && <Paragraph>You are a personal sponsor. Thank you!</Paragraph>}
         {teams.orgs?.map((org) => (
           <Paragraph key={org.id}>
             You are a member of a sponsoring organization, {org.name}.
@@ -374,11 +430,20 @@ const Table = ({ data }: { data: Record<string, any> }) => {
   return (
     <YStack gap="$2">
       {Object.entries(data).map(([key, value]) => (
-        <XStack key={key} gap="$4">
-          <SizableText f={1} fb={0}>
+        <XStack
+          key={key}
+          gap="$4"
+        >
+          <SizableText
+            f={1}
+            fb={0}
+          >
             {key}
           </SizableText>
-          <XStack f={3} fb={0}>
+          <XStack
+            f={3}
+            fb={0}
+          >
             {typeof value === 'string' ? (
               <SizableText fontWeight="$10">{value}</SizableText>
             ) : (

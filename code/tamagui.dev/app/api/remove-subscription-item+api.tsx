@@ -56,9 +56,6 @@ export default apiRoute(async (req) => {
 
     return Response.json({ message: 'couldnt delete!' }, { status: 500 })
   } catch (error) {
-    return Response.json(
-      { message: 'deletion failed', error: `${error}` },
-      { status: 500 }
-    )
+    return Response.json({ message: 'deletion failed', error: `${error}` }, { status: 500 })
   }
 })

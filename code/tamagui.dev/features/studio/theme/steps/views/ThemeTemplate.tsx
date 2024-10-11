@@ -15,17 +15,24 @@ export const ThemeTemplate = ({ theme }: { theme: BuildTheme }) => {
   const hide = !stepStore.showTemplate
 
   return (
-    <YStack mah={hide ? 50 : 600} pt="$4" mt="$-4">
+    <YStack
+      mah={hide ? 50 : 600}
+      pt="$4"
+      mt="$-4"
+    >
       <FieldsetWithLabel
         label="Template"
         tooltip={
           <>
-            Tamagui takes your palette from the themes you've defined above and then uses
-            a template to generate your final theme.
+            Tamagui takes your palette from the themes you've defined above and then uses a template
+            to generate your final theme.
           </>
         }
         afterLabel={
-          <XStack gap="$2" ai="center">
+          <XStack
+            gap="$2"
+            ai="center"
+          >
             <Select
               value={selected}
               onValueChange={setSelected}
@@ -34,10 +41,16 @@ export const ThemeTemplate = ({ theme }: { theme: BuildTheme }) => {
               f={1}
               defaultValue="base"
             >
-              <Select.Item index={0} value="base">
+              <Select.Item
+                index={0}
+                value="base"
+              >
                 Base
               </Select.Item>
-              <Select.Item index={0} value="component">
+              <Select.Item
+                index={0}
+                value="component"
+              >
                 Component
               </Select.Item>
             </Select>
@@ -64,7 +77,12 @@ export const ThemeTemplate = ({ theme }: { theme: BuildTheme }) => {
           </XStack>
         }
       >
-        <ScrollView mah={500} m="$-5" p="$5" mt="$0">
+        <ScrollView
+          mah={500}
+          m="$-5"
+          p="$5"
+          mt="$0"
+        >
           {theme && <StepThemeTemplate buildTheme={theme} />}
         </ScrollView>
       </FieldsetWithLabel>

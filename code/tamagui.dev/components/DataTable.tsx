@@ -29,13 +29,21 @@ export function DataTable({
         }}
       >
         {!!title && (
-          <XStack ai="center" py="$2" px="$4" backgroundColor="$borderColor">
+          <XStack
+            ai="center"
+            py="$2"
+            px="$4"
+            backgroundColor="$borderColor"
+          >
             <H3 size="$3">{title}</H3>
           </XStack>
         )}
 
         {rows.map((items, i) => (
-          <ListItem key={i} p={0}>
+          <ListItem
+            key={i}
+            p={0}
+          >
             <XStack
               ai="center"
               pos="relative"

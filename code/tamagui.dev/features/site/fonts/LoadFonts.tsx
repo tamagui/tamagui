@@ -30,7 +30,11 @@ export function LoadFont(props: {
   return (
     <>
       {show && props.cssFile && (
-        <link crossOrigin="anonymous" href={props.cssFile} rel="stylesheet" />
+        <link
+          crossOrigin="anonymous"
+          href={props.cssFile}
+          rel="stylesheet"
+        />
       )}
       {show && props.woff2File && (
         <link

@@ -74,12 +74,7 @@ const generateColorPalette = ({
   const transparentValues = [background, foreground].map((color) => {
     const [h, s, l] = parseToHsla(color)
     // fully transparent to partially
-    return [
-      hsla(h, s, l, 0),
-      hsla(h, s, l, 0.25),
-      hsla(h, s, l, 0.5),
-      hsla(h, s, l, 0.75),
-    ] as const
+    return [hsla(h, s, l, 0), hsla(h, s, l, 0.25), hsla(h, s, l, 0.5), hsla(h, s, l, 0.75)] as const
   })
   const reverseForeground = [...transparentValues[1]].reverse()
   palette = [...transparentValues[0], ...palette, ...reverseForeground]

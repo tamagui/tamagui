@@ -10,7 +10,13 @@ export const StudioThemeBuilderActionBar = memo(function StudioThemeBuilderActio
   const router = useRouter()
 
   return (
-    <XStack zi={100000} gap="$3" flex={1} ai="center" jc="space-between">
+    <XStack
+      zi={100000}
+      gap="$3"
+      flex={1}
+      ai="center"
+      jc="space-between"
+    >
       {/* <Button
         chromeless
         size="$2"

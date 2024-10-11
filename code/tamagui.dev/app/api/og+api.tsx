@@ -6,16 +6,11 @@ import { apiRoute } from '~/features/api/apiRoute'
 export default apiRoute(async (req) => {
   const { ImageResponse } = await import('@vercel/og')
 
-  const [interRegularFont, interBoldFont] = await Promise.all([
-    interRegularFontP,
-    interBoldFontP,
-  ])
+  const [interRegularFont, interBoldFont] = await Promise.all([interRegularFontP, interBoldFontP])
 
   const { searchParams } = new URL(req.url)
 
-  const type = searchParams.has('type')
-    ? searchParams.get('type')?.slice(0, 100)
-    : 'unknown'
+  const type = searchParams.has('type') ? searchParams.get('type')?.slice(0, 100) : 'unknown'
   const logoData = await logo
   const getImageResponse = (jsx: ReactElement) =>
     new ImageResponse(jsx, {
@@ -38,10 +33,20 @@ export default apiRoute(async (req) => {
     })
 
   if (type === 'component') {
-    return getImageResponse(<ComponentOg searchParams={searchParams} logo={logoData} />)
+    return getImageResponse(
+      <ComponentOg
+        searchParams={searchParams}
+        logo={logoData}
+      />
+    )
   }
 
-  return getImageResponse(<BackgroundedOg searchParams={searchParams} logo={logoData} />)
+  return getImageResponse(
+    <BackgroundedOg
+      searchParams={searchParams}
+      logo={logoData}
+    />
+  )
 })
 
 const fetchAsset = (url: URL) => fetch(url).then((res) => res.arrayBuffer())
@@ -50,9 +55,7 @@ const interRegularFontP = fetchAsset(
   new URL(`${getURL()}/fonts/otf/Inter-Regular.otf`, import.meta.url)
 )
 
-const interBoldFontP = fetchAsset(
-  new URL(`${getURL()}/fonts/otf/Inter-Black.otf`, import.meta.url)
-)
+const interBoldFontP = fetchAsset(new URL(`${getURL()}/fonts/otf/Inter-Black.otf`, import.meta.url))
 
 const logo = fetchAsset(new URL(`${getURL()}/tamagui-words-logo.png`, import.meta.url))
 
@@ -68,9 +71,7 @@ const ComponentOg = ({
   const demoName = hasDemo ? searchParams.get('demoName') : null
   // title. e.g. Input And TextArea
   const title = searchParams.has('title') ? searchParams.get('title')! : demoName
-  const description = searchParams.has('description')
-    ? searchParams.get('description')!
-    : ''
+  const description = searchParams.has('description') ? searchParams.get('description')! : ''
 
   const imageData = `${getURL()}/screenshots/dark/${demoName}Demo/650x650.png`
 
@@ -88,7 +89,10 @@ const ComponentOg = ({
         alignItems: 'center',
       }}
     >
-      <Logo pos="left" source={logo} />
+      <Logo
+        pos="left"
+        source={logo}
+      />
 
       <div
         style={{
@@ -129,7 +133,11 @@ const ComponentOg = ({
             flex: 1,
           }}
         >
-          <img width="512" height="512" src={imageData} />
+          <img
+            width="512"
+            height="512"
+            src={imageData}
+          />
         </div>
       )}
     </div>
@@ -148,9 +156,7 @@ const BackgroundedOg = ({
   const demoName = hasDemo ? searchParams.get('demoName') : null
   // title. e.g. Input And TextArea
   const title = searchParams.has('title') ? searchParams.get('title')! : ''
-  const description = searchParams.has('description')
-    ? searchParams.get('description')!
-    : ''
+  const description = searchParams.has('description') ? searchParams.get('description')! : ''
 
   const hasCategory = searchParams.has('category')
   const category = searchParams.get('category')
@@ -185,7 +191,10 @@ const BackgroundedOg = ({
           }}
         />
       ) : (
-        <Logo pos="left" source={logo} />
+        <Logo
+          pos="left"
+          source={logo}
+        />
       )}
 
       {hasDemo && (
@@ -270,7 +279,11 @@ const Logo = ({ source, pos }: { source: any; pos: 'left' | 'center' }) => {
           : {}),
       }}
     >
-      <img width="217" height="23" src={source} />
+      <img
+        width="217"
+        height="23"
+        src={source}
+      />
     </div>
   )
 }

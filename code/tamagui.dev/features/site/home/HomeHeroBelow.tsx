@@ -6,7 +6,6 @@ import { Link } from '~/components/Link'
 
 import { CodeInline } from '~/components/Code'
 import { ContainerLarge } from '~/components/Containers'
-import { useHeroHovered } from './useHeroHovered'
 import { IconStack } from './IconStack'
 
 export const HomeHeroBelow = memo(() => {
@@ -32,8 +31,6 @@ export const HomeHeroBelow = memo(() => {
 })
 
 export const HeroBelowContent = memo(() => {
-  const [hovered, setHovered] = useHeroHovered()
-
   return (
     <ContainerLarge>
       <XStack
@@ -50,37 +47,54 @@ export const HeroBelowContent = memo(() => {
           px: '$6',
         }}
       >
-        <Section theme="green" onHoverIn={() => setHovered(0)}>
+        <Section theme="green">
           <IconStack>
-            <Code size={16} color="var(--color9)" />
+            <Code
+              size={16}
+              color="var(--color9)"
+            />
           </IconStack>
           <TitleLink href="/docs/core/configuration">Core</TitleLink>
-          <Paragraph o={0.7} size="$5">
-            A style library for React and/or React Native with a large typed superset of
-            the React Native style API, with no outside dependencies in about 24Kb.
+          <Paragraph
+            o={0.7}
+            size="$5"
+          >
+            A style library for React and/or React Native with a large typed superset of the React
+            Native style API, with no outside dependencies in about 24Kb.
           </Paragraph>
         </Section>
 
-        <Section theme="blue" onHoverIn={() => setHovered(1)}>
+        <Section theme="blue">
           <IconStack>
-            <Cpu size={16} color="var(--color9)" />
+            <Cpu
+              size={16}
+              color="var(--color9)"
+            />
           </IconStack>
           <TitleLink href="/docs/intro/why-a-compiler">Static</TitleLink>
-          <Paragraph o={0.7} size="$5">
-            A smart optimizer that makes your app fast with partial analysis, extracts
-            CSS, flattens your tree, and removes code. Next, Webpack, Vite, Babel and
-            Metro.
+          <Paragraph
+            o={0.7}
+            size="$5"
+          >
+            A smart optimizer that makes your app fast with partial analysis, extracts CSS, flattens
+            your tree, and removes code. Next, Webpack, Vite, Babel and Metro.
           </Paragraph>
         </Section>
 
-        <Section theme="purple" onHoverIn={() => setHovered(2)}>
+        <Section theme="purple">
           <IconStack>
-            <Layers size={16} color="var(--color9)" />
+            <Layers
+              size={16}
+              color="var(--color9)"
+            />
           </IconStack>
           <TitleLink href="/docs/components/stacks">Tamagui</TitleLink>
-          <Paragraph o={0.7} size="$5">
-            All the components you'd want, cross platform and adaptable to each other.
-            Compound Component APIs, styled or unstyled, sizable, themeable, and more.
+          <Paragraph
+            o={0.7}
+            size="$5"
+          >
+            All the components you'd want, cross platform and adaptable to each other. Compound
+            Component APIs, styled or unstyled, sizable, themeable, and more.
           </Paragraph>
         </Section>
       </XStack>
@@ -90,8 +104,15 @@ export const HeroBelowContent = memo(() => {
 
 const TitleLink = ({ href, children, ...props }: any) => {
   return (
-    <Link asChild href={href}>
-      <H3 cursor="pointer" color="$color" my="$2">
+    <Link
+      asChild
+      href={href}
+    >
+      <H3
+        cursor="pointer"
+        color="$color"
+        my="$2"
+      >
         <CodeInline
           cursor="pointer"
           fontFamily="$silkscreen"

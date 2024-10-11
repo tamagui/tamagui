@@ -12,10 +12,7 @@ export default memo(() => {
           {
             type: 'callout',
             content: (
-              <>
-                We shouldn't make our API surfaces more complex in the name of
-                performance.
-              </>
+              <>We shouldn't make our API surfaces more complex in the name of performance.</>
             ),
           },
         ],

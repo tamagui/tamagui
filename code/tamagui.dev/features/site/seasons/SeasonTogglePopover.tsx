@@ -11,16 +11,25 @@ export const seasons = {
 }
 
 export const SeasonTogglePopover = (props: { children: any }) => {
-  const { name, tint, setNextTint } = useTint()
+  const { name } = useTint()
 
   return (
-    <Popover hoverable offset={20}>
+    <Popover
+      hoverable
+      offset={20}
+    >
       <Popover.Trigger>
         <View>
           {props.children}
 
           {name !== 'tamagui' && (
-            <SizableText size="$8" pos="absolute" b={-10} r={-10} rotate="-10deg">
+            <SizableText
+              size="$8"
+              pos="absolute"
+              b={-10}
+              r={-10}
+              rotate="-10deg"
+            >
               {seasons[name]}
             </SizableText>
           )}
@@ -68,7 +77,10 @@ export const SeasonTogglePopover = (props: { children: any }) => {
                   setTintFamily(optionName as any)
                 }}
               >
-                <SizableText size="$6" cursor="default">
+                <SizableText
+                  size="$6"
+                  cursor="default"
+                >
                   {seasons[optionName]}
                 </SizableText>
               </Square>

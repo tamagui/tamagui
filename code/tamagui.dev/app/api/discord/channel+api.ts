@@ -65,8 +65,8 @@ export default apiRoute(async (req) => {
 
   const starterSubItem = getArray(subscription.data.subscription_items).find(
     (item) =>
-      (getSingle(getSingle(item?.prices)?.products)?.metadata as Record<string, any>)
-        ?.slug === 'universal-starter'
+      (getSingle(getSingle(item?.prices)?.products)?.metadata as Record<string, any>)?.slug ===
+      'universal-starter'
   )
   if (!starterSubItem) {
     return Response.json(
@@ -89,9 +89,7 @@ export default apiRoute(async (req) => {
 
   const pricingDescription = getSingle(starterSubItem.prices)?.description?.toLowerCase()
   const currentlyOccupiedSeats = discordInvites.data.length
-  const { hasDiscordPrivateChannels, discordSeats } = getTakeoutPriceInfo(
-    pricingDescription ?? ''
-  )
+  const { hasDiscordPrivateChannels, discordSeats } = getTakeoutPriceInfo(pricingDescription ?? '')
 
   if (req.method === 'GET') {
     return Response.json({
@@ -115,15 +113,12 @@ export default apiRoute(async (req) => {
       channelName = githubData.data.login
     } catch (error) {}
 
-    const discordChannel = await discordClient.api.guilds.createChannel(
-      TAMAGUI_DISCORD_GUILD_ID,
-      {
-        name: channelName,
-        parent_id: TAKEOUT_GROUP_ID,
-        permission_overwrites: [{ id: DEFAULT_ROLE_ID, type: 0, deny: roleBitField }],
-        topic: `Sub Created at ${subscription.data.created} - ID: ${subscription.data.id}`,
-      }
-    )
+    const discordChannel = await discordClient.api.guilds.createChannel(TAMAGUI_DISCORD_GUILD_ID, {
+      name: channelName,
+      parent_id: TAKEOUT_GROUP_ID,
+      permission_overwrites: [{ id: DEFAULT_ROLE_ID, type: 0, deny: roleBitField }],
+      topic: `Sub Created at ${subscription.data.created} - ID: ${subscription.data.id}`,
+    })
 
     await discordClient.api.channels.createMessage(discordChannel.id, {
       content: `Hello and welcome to your private Takeout channel! The creators of Takeout are here as well, so feel free to ask any questions and give us feedback as you go.`,
@@ -152,10 +147,7 @@ export default apiRoute(async (req) => {
         )
       )
     )
-    await supabaseAdmin
-      .from('discord_invites')
-      .delete()
-      .eq('subscription_id', subscription.data.id)
+    await supabaseAdmin.from('discord_invites').delete().eq('subscription_id', subscription.data.id)
     return Response.json({ message: 'discord invites reset' })
   }
 

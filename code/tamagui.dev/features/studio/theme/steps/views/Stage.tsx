@@ -17,7 +17,10 @@ export function Stage({ steps, current }: { current: number; steps: any[] }) {
             isRight={isRight}
             key={index}
           >
-            <ScrollView contentContainerStyle={{ minHeight: '100%' }} f={1}>
+            <ScrollView
+              contentContainerStyle={{ minHeight: '100%' }}
+              f={1}
+            >
               {step}
             </ScrollView>
           </Section>
@@ -29,11 +32,21 @@ export function Stage({ steps, current }: { current: number; steps: any[] }) {
 
 export function StageButtonBar({ steps }: { steps: UseSteps }) {
   return (
-    <XStack zi={100} bbw={1} bc="$color5">
-      <ToggleButton active={steps.index === 0} onPress={() => steps.setPage(0)}>
+    <XStack
+      zi={100}
+      bbw={1}
+      bc="$color5"
+    >
+      <ToggleButton
+        active={steps.index === 0}
+        onPress={() => steps.setPage(0)}
+      >
         Palettes
       </ToggleButton>
-      <ToggleButton active={steps.index === 1} onPress={() => steps.setPage(1)}>
+      <ToggleButton
+        active={steps.index === 1}
+        onPress={() => steps.setPage(1)}
+      >
         Themes
       </ToggleButton>
     </XStack>

@@ -465,14 +465,11 @@ export const inviteCollaboratorToRepo = async (
 }
 
 export const removeCollaboratorFromRepo = async (repoName: string, userLogin: string) => {
-  await fetch(
-    `https://api.github.com/repos/tamagui/${repoName}/collaborators/${userLogin}`,
-    {
-      method: 'DELETE',
-      headers: {
-        'X-GitHub-Api-Version': '2022-11-28',
-        Authorization: `Bearer ${GITHUB_ADMIN_TOKEN}`,
-      },
-    }
-  )
+  await fetch(`https://api.github.com/repos/tamagui/${repoName}/collaborators/${userLogin}`, {
+    method: 'DELETE',
+    headers: {
+      'X-GitHub-Api-Version': '2022-11-28',
+      Authorization: `Bearer ${GITHUB_ADMIN_TOKEN}`,
+    },
+  })
 }

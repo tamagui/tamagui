@@ -85,13 +85,20 @@ export const HeaderMenu = React.memo(function HeaderMenu() {
               bc: 'color-mix(in srgb, var(--color10) 30%, transparent 60%)',
             }}
           >
-            <Circle size={34} ai="center" jc="center">
+            <Circle
+              size={34}
+              ai="center"
+              jc="center"
+            >
               {userSwr.data?.userDetails ? <UserAvatar /> : <Menu size={16} />}
             </Circle>
           </Button>
         </Popover.Anchor>
 
-        <Adapt platform="touch" when="sm">
+        <Adapt
+          platform="touch"
+          when="sm"
+        >
           <Sheet
             zIndex={100000000}
             modal
@@ -116,7 +123,7 @@ export const HeaderMenu = React.memo(function HeaderMenu() {
           </Sheet>
         </Adapt>
 
-        <HeaderMenuContent open={open} />
+        <HeaderMenuContent />
       </Popover>
     </HeaderMenuTheme>
   )
@@ -126,14 +133,10 @@ const HeaderMenuTheme = (props: { children: any }) => {
   const isBento = usePathname().startsWith('/bento')
   const isTakeout = usePathname().startsWith('/takeout')
   const curTint = useTint().tint
-  return (
-    <Theme name={isTakeout ? 'gray' : isBento ? 'tan' : curTint}>{props.children}</Theme>
-  )
+  return <Theme name={isTakeout ? 'gray' : isBento ? 'tan' : curTint}>{props.children}</Theme>
 }
 
-const HeaderMenuContent = React.memo(function HeaderMenuContent({
-  open,
-}: { open: boolean }) {
+const HeaderMenuContent = React.memo(function HeaderMenuContent() {
   return (
     <Popover.Content
       mt={-5}
@@ -169,11 +172,28 @@ const HeaderMenuContent = React.memo(function HeaderMenuContent({
         },
       }}
     >
-      <Popover.Arrow bg="$color5" size="$4" borderWidth={0} o={0.84} />
+      <Popover.Arrow
+        bg="$color5"
+        size="$4"
+        borderWidth={0}
+        o={0.84}
+      />
 
-      <Popover.ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
-        <YStack aria-label="Home menu contents" miw={230} p="$3" ai="flex-end">
-          <XStack fw="wrap" f={1} gap="$2">
+      <Popover.ScrollView
+        showsVerticalScrollIndicator={false}
+        style={{ flex: 1 }}
+      >
+        <YStack
+          aria-label="Home menu contents"
+          miw={230}
+          p="$3"
+          ai="flex-end"
+        >
+          <XStack
+            fw="wrap"
+            f={1}
+            gap="$2"
+          >
             <HeaderLinks forceShowAllLinks />
           </XStack>
 
