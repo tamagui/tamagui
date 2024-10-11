@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.9.1/schema.json",
+  "$schema": "https://biomejs.dev/schemas/1.9.2/schema.json",
   "organizeImports": {
     "enabled": false
   },
@@ -11,8 +11,7 @@
         "useExhaustiveDependencies": "off",
         "noInnerDeclarations": "off",
         "noUnnecessaryContinue": "off",
-        "noConstructorReturn": "off",
-        "noUnusedVariables": "error"
+        "noConstructorReturn": "off"
       },
       "suspicious": {
         "noImplicitAnyLet": "off",
