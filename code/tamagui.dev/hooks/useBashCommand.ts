@@ -165,11 +165,7 @@ export function useBashCommand(
 
   const isPackageCommand = isBash && isPackageManagerCommand(bashText)
 
-  const {
-    packageManager: originalPackageManager,
-    command: commandType,
-    args,
-  } = parseCommand(bashText)
+  const { packageManager: originalPackageManager, command: commandType } = parseCommand(bashText)
 
   const isInstallCommand = isPackageCommand && stringIsInstallCommand(bashText)
   const isExecCommand = isPackageCommand && stringIsExecCommand(bashText)
@@ -189,7 +185,7 @@ export function useBashCommand(
 
     const commands = inputCommand.split('&&').map((cmd) => cmd.trim())
     const transformedCommands = commands.map((cmd) => {
-      const { packageManager, command, args } = parseCommand(cmd)
+      const { command, args } = parseCommand(cmd)
 
       if (stringIsInstallCommand(cmd)) {
         // Special case for 'install' command without arguments

@@ -65,12 +65,10 @@ export class SettingsStore {
         {
           name: 'mediaQueryDefaultActive',
           type: 'object',
-          fields: Object.entries(Object.fromEntries(mediaQueryDefaultActiveMap)).map(
-            ([key, value]) => ({
-              name: key,
-              type: 'boolean',
-            })
-          ),
+          fields: Object.entries(Object.fromEntries(mediaQueryDefaultActiveMap)).map(([key]) => ({
+            name: key,
+            type: 'boolean',
+          })),
         },
         {
           name: 'disableRootThemeClass',

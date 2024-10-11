@@ -5,7 +5,7 @@
   },
   "linter": {
     "enabled": true,
-    "ignore": ["**/*/generated-new.ts", "**/*/generated-v2.ts", ".tamagui"],
+    "ignore": ["**/*/generated-new.ts", "**/*/generated-v2.ts", ".tamagui", "sticksy.js", "*.css"],
     "rules": {
       "correctness": {
         "useExhaustiveDependencies": "off",

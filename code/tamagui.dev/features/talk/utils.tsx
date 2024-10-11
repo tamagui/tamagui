@@ -1,1 +1,1 @@
-export const createCodeHighlighter = () => (code, lang) => code
+export const createCodeHighlighter = () => (code, _lang) => code

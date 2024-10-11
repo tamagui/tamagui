@@ -56,7 +56,6 @@ export function useHoverGlow(props: HoverGlowProps) {
     scale,
     size,
     restingStyle,
-    underlayStyle,
   } = props
   const elementRef = useRef<HTMLDivElement>(null)
   const transformRef = useRef('')
@@ -527,7 +526,6 @@ const useGetBounds = ({
   node,
   onDidUpdate,
   defaultBounds,
-  useResizeObserverRect,
 }: {
   node?: HTMLElement | null
   onDidUpdate?: (props: Bounds) => void

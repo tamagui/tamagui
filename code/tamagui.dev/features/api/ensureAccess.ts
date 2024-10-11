@@ -33,7 +33,7 @@ export async function ensureAccess({
     try {
       const payload = jwt.verify(oldJwt, JWT_SECRET) as PayloadShape
       return payload
-    } catch (error) {
+    } catch (_error) {
       // continue to create a new one and set it
     }
   }
@@ -43,9 +43,8 @@ export async function ensureAccess({
     throw teamsResult.error
   }
 
-  const user = (await supabase.auth.getUser()).data.user
   const { hasBentoAccess, hasStudioAccess, hasTakeoutAccess, teamsWithAccess } =
-    await getUserAccessInfo(supabase, user)
+    await getUserAccessInfo(supabase)
 
   const payload: PayloadShape = {
     hasStudioAccess,

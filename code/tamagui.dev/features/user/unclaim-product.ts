@@ -34,7 +34,6 @@ export async function unclaimSubscription(subscription: Stripe.Subscription) {
     }
 
     switch (claimData.claim_type) {
-      case 'repo_access':
       default:
         unclaimRepoAccess({ data: claimData, claim, user })
         break
@@ -53,7 +52,7 @@ type UnclaimFunction = (args: {
   claim: Database['public']['Tables']['claims']['Row']
 }) => Promise<void>
 
-const unclaimRepoAccess: UnclaimFunction = async ({ data, user }) => {
+const unclaimRepoAccess: UnclaimFunction = async ({ data }) => {
   const repoName = data.repository_name || data.repo_name
   if (typeof repoName !== 'string') {
     throw new Error(`repository_name is not set on product metadata or is not correct`)

@@ -279,7 +279,7 @@ const AlertDialog = (props: StudioAlertDialogProps) => {
   )
 }
 
-const CreateAnimationDialog = (props: CreateAnimationDialogProps) => {
+const CreateAnimationDialog = () => {
   const state = useGlobalState()
   const [name, setName] = useState('')
 

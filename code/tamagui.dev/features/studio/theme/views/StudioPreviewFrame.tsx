@@ -15,8 +15,6 @@ export const extraPad = 18
 
 export const StudioPreviewContainer = (props: { children: any }) => {
   const store = useThemeBuilderStore()
-  const dimensions = useWindowDimensions()
-  const [lastWidth, setLastWidth] = useState(dimensions.width - MODAL_WIDTH)
 
   return (
     <YStack
@@ -27,9 +25,6 @@ export const StudioPreviewContainer = (props: { children: any }) => {
       p={extraPad * 2}
       w={`calc(100% - ${MODAL_WIDTH}px)`}
       gap="$4"
-      onLayout={(e) => {
-        setLastWidth(e.nativeEvent.layout.width)
-      }}
       // @ts-ignore
       // group="preview"
       data-tauri-drag-region
@@ -49,7 +44,6 @@ export const StudioPreviewFrame = memo(
     const version = store.themeSuiteVersion
     const { name: baseStepThemeName } = useBaseThemePreview()
     const themeResetKey = version > 2 ? 1 : version
-    const [scrollView, setScrollView] = useState<any>(null)
     const isOnComponents = store.currentSection?.id === 'component'
     const themeName = !isOnComponents
       ? baseStepThemeName
@@ -66,7 +60,7 @@ export const StudioPreviewFrame = memo(
         data-tauri-drag-region
         className="font-smooth-aliased"
       >
-        {showSettingsBar && <StudioPreviewComponentsBar scrollView={scrollView} />}
+        {showSettingsBar && <StudioPreviewComponentsBar />}
 
         <Theme
           key={themeResetKey}
@@ -82,7 +76,6 @@ export const StudioPreviewFrame = memo(
             />
 
             <ScrollView
-              ref={setScrollView}
               width="100%"
               height="100%"
               id="preview-scroll-view"

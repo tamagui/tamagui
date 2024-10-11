@@ -237,48 +237,48 @@ const ProfileContent = () => {
   )
 }
 
-const QueueContent = () => {
-  const { data } = useUser()
-  if (!data) return null
+// const QueueContent = () => {
+//   const { data } = useUser()
+//   if (!data) return null
 
-  const { teams } = data
+//   const { teams } = data
 
-  // if (accessStatus.access.studio.access) {
-  //   return (
-  //     <YStack space ai="flex-start">
-  //       <SizableText>You have access to studio!</SizableText>
-  //       <ButtonLink themeInverse href={studioRootDir}>
-  //         Enter Studio
-  //       </ButtonLink>
-  //     </YStack>
-  //   )
-  // }
+//   // if (accessStatus.access.studio.access) {
+//   //   return (
+//   //     <YStack space ai="flex-start">
+//   //       <SizableText>You have access to studio!</SizableText>
+//   //       <ButtonLink themeInverse href={studioRootDir}>
+//   //         Enter Studio
+//   //       </ButtonLink>
+//   //     </YStack>
+//   //   )
+//   // }
 
-  if (!teams.main) return null
+//   if (!teams.main) return null
 
-  return (
-    <YStack gap="$4">
-      <StudioQueueCard
-        key={teams.main.id}
-        teamId={teams.main.id}
-      />
-    </YStack>
-  )
+//   return (
+//     <YStack gap="$4">
+//       <StudioQueueCard
+//         key={teams.main.id}
+//         teamId={teams.main.id}
+//       />
+//     </YStack>
+//   )
 
-  // return (
-  //   <YStack ai="flex-start" space>
-  //     <SizableText>
-  //       {accessStatus.access.studio.message} - You will get access{' '}
-  //       {Intl.DateTimeFormat('en-US', {
-  //         month: 'short',
-  //         year: 'numeric',
-  //         day: 'numeric',
-  //       }).format(new Date(accessStatus.access.studio.accessDate))}
-  //     </SizableText>
-  //     <SponsorButton />
-  //   </YStack>
-  // )
-}
+//   // return (
+//   //   <YStack ai="flex-start" space>
+//   //     <SizableText>
+//   //       {accessStatus.access.studio.message} - You will get access{' '}
+//   //       {Intl.DateTimeFormat('en-US', {
+//   //         month: 'short',
+//   //         year: 'numeric',
+//   //         day: 'numeric',
+//   //       }).format(new Date(accessStatus.access.studio.accessDate))}
+//   //     </SizableText>
+//   //     <SponsorButton />
+//   //   </YStack>
+//   // )
+// }
 
 const SponsorshipContent = () => {
   const { data } = useUser()

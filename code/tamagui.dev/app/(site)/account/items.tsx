@@ -44,7 +44,7 @@ export default function AccountItemsPage() {
 }
 
 const Items = () => {
-  const { data, isLoading, refresh } = useUser()
+  const { data, isLoading } = useUser()
 
   if (isLoading || !data) {
     return <Spinner my="$10" />
@@ -562,7 +562,7 @@ const DiscordPanel = ({ subscriptionId }: { subscriptionId: string }) => {
 
   const resetChannelMutation = useSWRMutation(
     [`/api/discord/channel`, 'DELETE', subscriptionId],
-    (url) =>
+    () =>
       fetch(`/api/discord/channel`, {
         method: 'DELETE',
         headers: {
@@ -769,7 +769,7 @@ const GithubAppMessage = () => {
 
 const BentoGetKeyPanel = () => {
   const [reveal, setReveal] = useState(false)
-  const { data, error, isLoading, mutate } = useSWR('/api/bento/cli/login', async (url) => {
+  const { data, isLoading, mutate } = useSWR('/api/bento/cli/login', async (url) => {
     const response = await fetch(url)
     if (!response.ok) {
       throw new Error('Failed to fetch access token')

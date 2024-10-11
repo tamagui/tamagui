@@ -26,8 +26,8 @@ function SignIn() {
   const { supabase } = useSupabase()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [showPasswordInput, setShowPasswordInput] = useState(false)
   const [loading, setLoading] = useState(false)
+  const showPasswordInput = false
   const [message, setMessage] = useState<{ type?: string; content?: string }>({
     type: '',
     content: '',

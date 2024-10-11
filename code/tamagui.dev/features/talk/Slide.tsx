@@ -42,6 +42,7 @@ const superBouncyOpacityClamped = [
   },
 ] as any
 
+// biome-ignore lint/correctness/noUnusedVariables: <explanation>
 const lessBouncyOpacityClamped = [
   'slow',
   {
@@ -131,6 +132,7 @@ export type SlideStepItem =
 type TextContent = SlideStepItem[]
 
 export const SlideContext = createContext({
+  // biome-ignore lint/correctness/noUnusedVariables: <explanation>
   registerSlide(next: (inc: number, fixStep?: number) => boolean) {},
 })
 
@@ -253,6 +255,7 @@ export const ShowAllStepsContext = createContext(false)
 
 const colors = ['red', 'orange', 'blue', 'purple', 'green', 'pink', 'yellow']
 
+// biome-ignore lint/correctness/noUnusedVariables: <explanation>
 function useGlows(variant: SlideProps['variant']) {
   const colorThemeName = useThemeName().replace('dark_', '').replace('light_', '')
   const next = colors.indexOf(colorThemeName) + 1

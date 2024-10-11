@@ -19,7 +19,6 @@ import { accentThemeName } from '../../../accentThemeName'
 export const StudioThemesQuickPreviewSection = memo(
   ({
     scheme,
-    hasAccent,
     onPressButton,
   }: {
     scheme: string

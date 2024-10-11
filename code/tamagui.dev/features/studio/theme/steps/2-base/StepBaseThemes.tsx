@@ -23,27 +23,6 @@ const useBaseThemesSteps = () => {
 
 export const StepBaseThemes = memo((_props: StepBaseThemesProps) => {
   return <Palettes key={0} />
-
-  const steps = useBaseThemesSteps()
-
-  return (
-    <YStack
-      mx="$-5"
-      f={1}
-    >
-      <StageButtonBar steps={steps} />
-      <Stage
-        current={steps.index}
-        // direction={steps.direction}
-        steps={[
-          //
-          <Palettes key={0} />,
-          //
-          <Themes key={1} />,
-        ]}
-      />
-    </YStack>
-  )
 })
 
 const Palettes = memo(() => {
@@ -79,68 +58,64 @@ const Palettes = memo(() => {
   )
 })
 
-const Themes = memo(() => {
-  const store = useThemeBuilderStore()
-  const theme = store.baseTheme
+// const Themes = memo(() => {
+//   const store = useThemeBuilderStore()
+//   const theme = store.baseTheme
 
-  return (
-    <YStack
-      gap="$4"
-      py="$4"
-      px="$2"
-    >
-      <BuildThemeItem
-        label="light + dark"
-        paletteNote="For now we automate a few things in palettes. We add transparencies to
-        background/foreground, then attach an accent background and foreground."
-        theme={theme}
-        onUpdate={store.updateBaseTheme}
-      />
+//   return (
+//     <YStack gap="$4" py="$4" px="$2">
+//       <BuildThemeItem
+//         label="light + dark"
+//         paletteNote="For now we automate a few things in palettes. We add transparencies to
+//         background/foreground, then attach an accent background and foreground."
+//         theme={theme}
+//         onUpdate={store.updateBaseTheme}
+//       />
 
-      <BuildThemeItem
-        label="accent"
-        paletteNote="This is used for your Accent theme, which you can toggle on the top right of
-          the preview sidebar."
-        theme={
-          theme.accent ||
-          ({
-            id: '',
-            name: '',
-            palette: '',
-            template: '',
-            type: 'theme',
-          } satisfies BuildTheme)
-        }
-        onUpdate={async (next) =>
-          await store.updateBaseTheme({
-            accent: {
-              ...store.baseTheme.accent,
-              ...next,
-            } as BuildTheme,
-          })
-        }
-        disabled={!theme.accent}
-        onDelete={store.deleteAccent}
-        afterLabel={
-          !theme.accent && (
-            <Button
-              icon={Plus}
-              size="$2"
-              br="$10"
-              onPress={async () => {
-                store.updateBaseTheme({
-                  accent: defaultBaseTheme.accent,
-                })
-              }}
-            >
-              Add Accent
-            </Button>
-          )
-        }
-      />
-    </YStack>
-  )
-})
+//       <BuildThemeItem
+//         label="accent"
+//         paletteNote="This is used for your Accent theme, which you can toggle on the top right of
+//           the preview sidebar."
+//         theme={
+//           theme.accent ||
+//           ({
+//             id: '',
+//             name: '',
+//             palette: '',
+//             template: '',
+//             type: 'theme',
+//           } satisfies BuildTheme)
+//         }
+//         onUpdate={async (next) =>
+//           await store.updateBaseTheme({
+//             accent: {
+//               ...store.baseTheme.accent,
+//               ...next,
+//             } as BuildTheme,
+//           })
+//         }
+//         disabled={!theme.accent}
+//         onDelete={store.deleteAccent}
+//         afterLabel={
+//           !theme.accent && (
+//             <Button
+//               icon={Plus}
+//               size="$2"
+//               br="$10"
+//               onPress={async () => {
+//                 store.updateBaseTheme({
+//                   accent: defaultBaseTheme.accent,
+//                 })
+//               }}
+//             >
+//               Add Accent
+//             </Button>
+//           )
+//         }
+//       />
+//     </YStack>
+//   )
+// })
 
 export const StepBaseThemesTray = () => {
   return null
@@ -156,9 +131,8 @@ export const StepLightDarkTip = () => {
       miw={400}
       title="Base and Accent"
       steps={[
-        // biome-ignore lint/correctness/useJsxKeyInIterable: <explanation>
         <>
-          <NoticeParagraph>
+          <NoticeParagraph key={0}>
             This is a multi-step theme generator. This first step sets up your base theme and accent
             color - which then syncs to a separate accent theme, but it doesn't deal with component
             themes which for now are set to defaults, so if you don't like palette selections by the
@@ -166,28 +140,27 @@ export const StepLightDarkTip = () => {
             three.
           </NoticeParagraph>
 
-          <NoticeParagraph>
+          <NoticeParagraph key={1}>
             The base + accent setup is useful because lets you use a brand color or contrasting
             color for one-off cases with the default tokens set on your base theme ($accent,
             $accent1...12), but also lets you re-theme areas with that accent color.
           </NoticeParagraph>
 
-          <NoticeParagraph>
+          <NoticeParagraph key={2}>
             Note that using the light/dark mode toggle shows you the final result for each in the
             Theme tab.
           </NoticeParagraph>
         </>,
 
-        // biome-ignore lint/correctness/useJsxKeyInIterable: <explanation>
         <>
-          <NoticeParagraph>
+          <NoticeParagraph key={3}>
             We start you with a theme template that we find useful. Beyond the color steps from your
             palette ($color1 to $color12) it includes "generic" styles that Tamagui components will
             use ($background, $color, $colorHover...), as well as translucencies ($color0 and
             $background0 025 05 075).
           </NoticeParagraph>
 
-          <NoticeParagraph>
+          <NoticeParagraph key={4}>
             Since it's common to have an accent color and really theme to make areas "pop" we sync
             your Accent theme color here to a few base theme tokens ($accent and $accentBackground,
             $accent1 to 12). This way you can both &lt;Button theme="accent" /&gt; to change the

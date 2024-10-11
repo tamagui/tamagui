@@ -111,7 +111,7 @@ export default apiRoute(async (req) => {
         },
       }).then((res) => res.json())
       channelName = githubData.data.login
-    } catch (error) {}
+    } catch (_error) {}
 
     const discordChannel = await discordClient.api.guilds.createChannel(TAMAGUI_DISCORD_GUILD_ID, {
       name: channelName,

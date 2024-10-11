@@ -7,7 +7,7 @@ export const copyToClipboard = (text: string) => {
 
 export function useClipboard(
   text = '',
-  { timeout = 1500, showToast = true }: { timeout?: number; showToast?: boolean } = {}
+  { timeout = 1500 }: { timeout?: number; showToast?: boolean } = {}
 ) {
   const [hasCopied, setHasCopied] = useState(false)
 

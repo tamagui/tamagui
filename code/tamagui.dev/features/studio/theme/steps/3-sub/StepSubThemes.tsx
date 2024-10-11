@@ -23,15 +23,11 @@ import { BuildThemeItem } from '../views/BuildThemeItem'
 import { Stage, StageButtonBar, useSteps } from '../views/Stage'
 import { ThemeBuilderPalettesPane } from '../views/ThemeBuilderPalettesPane'
 
-type StepSubThemesProps = {
-  previewMode?: boolean
-}
-
 const useSubThemesSteps = () => {
   return useSteps({ id: 'step-sub-themes', total: 2, initial: 1 })
 }
 
-export const StepSubThemes = memo(({ previewMode }: StepSubThemesProps) => {
+export const StepSubThemes = memo(() => {
   const store = useThemeBuilderStore()
   const steps = useSubThemesSteps()
 
@@ -66,13 +62,13 @@ export const StepSubThemes = memo(({ previewMode }: StepSubThemesProps) => {
       <StageButtonBar steps={steps} />
       <Stage
         current={steps.index}
-        steps={[<ThemeBuilderPalettesPane />, <Themes />]}
+        steps={[<ThemeBuilderPalettesPane key={0} />, <Themes key={1} />]}
       />
     </YStack>
   )
 })
 
-export const Themes = memo(({ previewMode }: StepSubThemesProps) => {
+export const Themes = memo(() => {
   const store = useThemeBuilderStore()
 
   return (
@@ -84,7 +80,7 @@ export const Themes = memo(({ previewMode }: StepSubThemesProps) => {
     >
       {store.subThemes
         // .sort((a, b) => (a.id === store.selectedSubTheme ? -1 : 1))
-        .map((theme, index) => {
+        .map((theme) => {
           const handleUpdate = (next) => {
             store.updateSubTheme({
               ...theme,
@@ -329,7 +325,7 @@ const colorThemePresets: { theme: BuildTheme; palette: BuildPalette }[] = [
 ]
 
 export function BaseThemesStepPreviewThemes() {
-  return <StepSubThemes previewMode />
+  return <StepSubThemes />
 }
 
 export function BaseThemesStepPreview() {

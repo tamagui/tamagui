@@ -3,7 +3,7 @@ const path = require('node:path')
 const { parse } = require('acorn')
 const walk = require('acorn-walk')
 const glob = require('glob')
-const { ensureFileSync, ensureDirSync, rmdirSync, rmSync } = require('fs-extra')
+const { ensureFileSync, ensureDirSync, rmSync } = require('fs-extra')
 const archiver = require('archiver')
 const skipImports = ['../../general/_Showcase']
 
@@ -25,7 +25,7 @@ function analyzeIndexFile(filePath) {
 
 function shake(content) {
   return content
-    .replaceAll(/\$group-window-(\w+)/g, (match, group) => `$${group}`)
+    .replaceAll(/\$group-window-(\w+)/g, (_match, group) => `$${group}`)
     .replaceAll(/([a-zA-Z0-9_]+\.fileName\s*=\s*)'([^']*)'/g, '')
     .replace('Portal: ({ children }) => children', 'Portal: DrawerPortal')
 }
@@ -68,7 +68,7 @@ async function copyMergedComponents(directoryPath, outputDirectory) {
 
 function copyUnmergedComponents(directoryPath, outputDirectory) {
   return new Promise((resolve) => {
-    glob(`${directoryPath}/**/*`, { nodir: true }, (error, matches) => {
+    glob(`${directoryPath}/**/*`, { nodir: true }, (_error, matches) => {
       for (const match of matches) {
         let fileContent = fs.readFileSync(match, 'utf8')
         fileContent = replaceInternals(fileContent)

@@ -14,6 +14,7 @@ export const slideDimensions = {
 type Slides = any[]
 
 export function Slides(props: { slides: Slides }) {
+  // biome-ignore lint/correctness/noUnusedVariables: <explanation>
   const disablePreview = window.location.search.includes(`preview-off`)
   const [[page, direction], setPage] = useState([0, 0])
 
@@ -24,11 +25,15 @@ export function Slides(props: { slides: Slides }) {
     setPage([page + newDirection, newDirection])
   }
 
+  // biome-ignore lint/correctness/noUnusedVariables: <explanation>
   const enterVariant = direction === 1 || direction === 0 ? 'isRight' : 'isLeft'
+  // biome-ignore lint/correctness/noUnusedVariables: <explanation>
   const exitVariant = direction === 1 ? 'isLeft' : 'isRight'
 
   const SlideComponent = props.slides[index]
+  // biome-ignore lint/correctness/noUnusedVariables: <explanation>
   const PreviewCurrentSlideComponent = props.slides[index]
+  // biome-ignore lint/correctness/noUnusedVariables: <explanation>
   const PreviewNextSlideComponent = props.slides[index + 1]
 
   const goToNextStep = useRef<(inc: number) => boolean>()
@@ -42,6 +47,7 @@ export function Slides(props: { slides: Slides }) {
   )
 
   const previewSlideGoToNextStep = useRef<(inc: number) => boolean>()
+  // biome-ignore lint/correctness/noUnusedVariables: <explanation>
   const previewSlideContext = useMemo(
     () => ({
       registerSlide: (nextStep: (inc: number) => boolean) => {
@@ -52,6 +58,7 @@ export function Slides(props: { slides: Slides }) {
     []
   )
 
+  // biome-ignore lint/correctness/noUnusedVariables: <explanation>
   const nextSlideContext = useMemo(
     () => ({
       registerSlide: (nextStep: (inc, fix) => boolean) => {
@@ -166,6 +173,7 @@ export function Slides(props: { slides: Slides }) {
   )
 }
 
+// biome-ignore lint/correctness/noUnusedVariables: <explanation>
 const SlidePreview = (props) => (
   <YStack
     ov="hidden"

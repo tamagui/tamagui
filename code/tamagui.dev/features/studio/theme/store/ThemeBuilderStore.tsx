@@ -557,7 +557,7 @@ export class ThemeBuilderStore {
             ...step,
           }
         })
-        .filter((x) => (!this.showExplanationSteps && x.explanation ? false : true))
+        .filter((x) => !(!this.showExplanationSteps && x.explanation))
     })
   }
 
@@ -599,7 +599,7 @@ export class ThemeBuilderStore {
   }
 
   updateDisabledState() {
-    this.stepsDisabledState = this.sectionsFlat.map(({ id, saveOnNext }, idx) => {
+    this.stepsDisabledState = this.sectionsFlat.map(({ _id, saveOnNext }, _idx) => {
       return !!this?.disableForward && !!saveOnNext
     })
   }
@@ -676,33 +676,33 @@ globalThis['themeBuilderStore'] = themeBuilderStore
 
 // for syncing
 
-const loadUrl = `${getURL()}/api/studio/load`
-const saveUrl = `${getURL()}/api/studio/save`
+// const loadUrl = `${getURL()}/api/studio/load`
+// const saveUrl = `${getURL()}/api/studio/save`
 
-const version = '2'
-const localKey = `tamagui-theme-suites-${version}`
+// const version = '2'
+// const localKey = `tamagui-theme-suites-${version}`
 
-const getPersistedState = async () => {
-  // try {
-  //   return await fetch(loadUrl, {
-  //     credentials: 'include',
-  //   }).then((res) => res.json() as unknown as ThemeBuilderState)
-  // } catch (err) {
-  //   const fallback = JSON.parse(
-  //     localStorage.getItem(localKey) || 'null'
-  //   ) as ThemeBuilderState
-  //   console.warn(`Error loading, fallback to localStorage`, loadUrl)
-  //   console.info(`[load]`, fallback)
-  //   return fallback
-  // }
-}
+// const getPersistedState = async () => {
+//   // try {
+//   //   return await fetch(loadUrl, {
+//   //     credentials: 'include',
+//   //   }).then((res) => res.json() as unknown as ThemeBuilderState)
+//   // } catch (err) {
+//   //   const fallback = JSON.parse(
+//   //     localStorage.getItem(localKey) || 'null'
+//   //   ) as ThemeBuilderState
+//   //   console.warn(`Error loading, fallback to localStorage`, loadUrl)
+//   //   console.info(`[load]`, fallback)
+//   //   return fallback
+//   // }
+// }
 
-const persistState = async (state: ThemeBuilderState) => {
-  // console.info('[persist]', saveUrl, state)
-  // localStorage.setItem(localKey, JSON.stringify(state))
-  // return await fetch(saveUrl, {
-  //   method: 'POST',
-  //   body: JSON.stringify(state),
-  //   credentials: 'include',
-  // }).then(() => {})
-}
+// const persistState = async (state: ThemeBuilderState) => {
+//   // console.info('[persist]', saveUrl, state)
+//   // localStorage.setItem(localKey, JSON.stringify(state))
+//   // return await fetch(saveUrl, {
+//   //   method: 'POST',
+//   //   body: JSON.stringify(state),
+//   //   credentials: 'include',
+//   // }).then(() => {})
+// }

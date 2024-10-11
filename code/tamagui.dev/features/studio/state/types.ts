@@ -60,9 +60,6 @@ export type Palette = {
   curves: Record<string, Curve>
 }
 
-type ThemeKey = string
-type ColorId = string
-
 export type ThemeCategory = string
 
 export type ThemeWithCategory = {

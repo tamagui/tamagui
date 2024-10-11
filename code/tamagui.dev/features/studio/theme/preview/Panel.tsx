@@ -1,14 +1,11 @@
-import { Copy, MoreVertical } from '@tamagui/lucide-icons'
+import { MoreVertical } from '@tamagui/lucide-icons'
 import { createContext, useContext, useState } from 'react'
 import type { YStackProps } from 'tamagui'
 import { Adapt, Button, ListItem, Paragraph, Popover, Switch, Theme, YGroup, YStack } from 'tamagui'
 
-import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
 import { accentThemeName } from '../../accentThemeName'
 import { useHasAccent } from '../../hooks/useHasAccent'
 import { toastController } from '../../ToastProvider'
-import { callStudioProcedure } from '../callApi'
-import { useDemoProps } from '../hooks/useDemoProps'
 
 interface IPanelContext {
   inverse: boolean
@@ -41,21 +38,6 @@ export function Panel({
   const [accent, setAccent] = useState(initialAccent)
   const [hovered, setHovered] = useState(false)
   // const store = useThemeBuilderStore()
-  async function copyTheme() {
-    if (!fileToCopyName) {
-      return
-    }
-    console.warn('TODO')
-    const compString = ''
-    // await callStudioProcedure('exportDemoComponent', {
-    //   componentName: fileToCopyName,
-    //   options: store.demosOptions,
-    // })
-    await navigator.clipboard.writeText(compString)
-    toastController.show('Copied successfully', {
-      theme: 'green_alt2',
-    })
-  }
 
   return (
     <YStack

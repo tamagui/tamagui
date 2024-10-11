@@ -4,6 +4,7 @@ import { memo } from 'react'
 
 const highlightCode = createCodeHighlighter()
 
+// biome-ignore lint/correctness/noUnusedVariables: <explanation>
 const snippetUsage1 = highlightCode(
   `
 import { Stack } from '@tamagui/core'

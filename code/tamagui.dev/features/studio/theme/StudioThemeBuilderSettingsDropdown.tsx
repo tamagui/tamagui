@@ -189,7 +189,6 @@ const menuItems = {
       async onPress() {
         // TODO
         alert('todo')
-        debugger
         // await getAuth()?.signOut()
         window.location.reload()
       },

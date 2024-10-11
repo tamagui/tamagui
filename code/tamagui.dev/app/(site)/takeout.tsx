@@ -1782,172 +1782,172 @@ const useLazilyMounted = (extraTime?: number) => {
   return loaded
 }
 
-const PromoVideo = () => {
-  const [open, setOpen] = useState(false)
-  const loaded = useLazilyMounted(0)
+// const PromoVideo = () => {
+//   const [open, setOpen] = useState(false)
+//   const loaded = useLazilyMounted(0)
 
-  return (
-    <YStack
-      className="all ease-in ms300"
-      disableOptimization
-      pos="absolute"
-      t={360}
-      l={-230}
-      pe={!loaded ? 'none' : 'auto'}
-      zi={1000}
-      o={loaded ? 1 : 0}
-      scale={!loaded ? 0.25 : 0.175}
-      rotate="-4deg"
-      $sm={{
-        dsp: 'none',
-      }}
-      {...(open && {
-        scale: 1,
-        rotate: '0deg',
-        x: 400,
-        y: -180,
-      })}
-      cursor="pointer"
-      onPress={() => {
-        setOpen(true)
-      }}
-    >
-      {open && (
-        <Button
-          pos="absolute"
-          t={-20}
-          r={-20}
-          elevation="$4"
-          zi={100}
-          circular
-          icon={X}
-          onPress={(e) => {
-            e.stopPropagation()
-            setOpen(false)
-          }}
-        ></Button>
-      )}
-      <YStack
-        br="$10"
-        ov="hidden"
-        elevation="$10"
-        w={840}
-        h={480}
-        bg="$color3"
-        bw={3}
-        bc="$borderColor"
-      >
-        {!open && (
-          <YStack
-            fullscreen
-            ai="center"
-            jc="center"
-            bc="rgba(0,0,0,0.75)"
-          >
-            <PlayCircle
-              size={150}
-              color="red"
-            />
-            <Paragraph
-              size="$12"
-              pos="absolute"
-              rotate="-10deg"
-              ta="center"
-              ff="$silkscreen"
-            >
-              promo
-            </Paragraph>
-          </YStack>
-        )}
-        <iframe
-          width="840"
-          height="480"
-          style={{
-            width: 840,
-            height: 480,
-          }}
-          src={`https://www.youtube.com/embed/Guwa1oPBvmU?modestbranding=1&rel=0&showinfo=0&autoplay=${
-            open ? 1 : 0
-          }`}
-          title="YouTube video player"
-          frameBorder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          allowFullScreen
-        ></iframe>
-      </YStack>
-    </YStack>
-  )
-}
+//   return (
+//     <YStack
+//       className="all ease-in ms300"
+//       disableOptimization
+//       pos="absolute"
+//       t={360}
+//       l={-230}
+//       pe={!loaded ? 'none' : 'auto'}
+//       zi={1000}
+//       o={loaded ? 1 : 0}
+//       scale={!loaded ? 0.25 : 0.175}
+//       rotate="-4deg"
+//       $sm={{
+//         dsp: 'none',
+//       }}
+//       {...(open && {
+//         scale: 1,
+//         rotate: '0deg',
+//         x: 400,
+//         y: -180,
+//       })}
+//       cursor="pointer"
+//       onPress={() => {
+//         setOpen(true)
+//       }}
+//     >
+//       {open && (
+//         <Button
+//           pos="absolute"
+//           t={-20}
+//           r={-20}
+//           elevation="$4"
+//           zi={100}
+//           circular
+//           icon={X}
+//           onPress={(e) => {
+//             e.stopPropagation()
+//             setOpen(false)
+//           }}
+//         ></Button>
+//       )}
+//       <YStack
+//         br="$10"
+//         ov="hidden"
+//         elevation="$10"
+//         w={840}
+//         h={480}
+//         bg="$color3"
+//         bw={3}
+//         bc="$borderColor"
+//       >
+//         {!open && (
+//           <YStack
+//             fullscreen
+//             ai="center"
+//             jc="center"
+//             bc="rgba(0,0,0,0.75)"
+//           >
+//             <PlayCircle
+//               size={150}
+//               color="red"
+//             />
+//             <Paragraph
+//               size="$12"
+//               pos="absolute"
+//               rotate="-10deg"
+//               ta="center"
+//               ff="$silkscreen"
+//             >
+//               promo
+//             </Paragraph>
+//           </YStack>
+//         )}
+//         <iframe
+//           width="840"
+//           height="480"
+//           style={{
+//             width: 840,
+//             height: 480,
+//           }}
+//           src={`https://www.youtube.com/embed/Guwa1oPBvmU?modestbranding=1&rel=0&showinfo=0&autoplay=${
+//             open ? 1 : 0
+//           }`}
+//           title="YouTube video player"
+//           frameBorder="0"
+//           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+//           allowFullScreen
+//         ></iframe>
+//       </YStack>
+//     </YStack>
+//   )
+// }
 
-const Bullet = ({
-  size = '$6',
-  children,
-  subtitle,
-  status,
-  ...props
-}: XStackProps & {
-  children: any
-  subtitle?: any
-  size?: FontSizeTokens
-  status?: 'building' | 'done'
-}) => {
-  return (
-    <XStack
-      tag="li"
-      ai="flex-start"
-      space
-      f={1}
-      {...props}
-      w="100%"
-      $gtLg={{ w: 'calc(50% - 20px)' }}
-    >
-      <YStack y={-1}>
-        <Circle
-          size={32}
-          elevation="$1"
-        >
-          {status === 'done' ? (
-            <Check
-              size={18}
-              color="$color10"
-            />
-          ) : status === 'building' ? (
-            <Hammer
-              size={18}
-              color="$color10"
-            />
-          ) : (
-            <Dot
-              size={18}
-              color="$color10"
-            />
-          )}
-        </Circle>
-      </YStack>
-      <YStack f={1}>
-        <Paragraph
-          wordWrap="break-word"
-          size={size}
-        >
-          {children}
-        </Paragraph>
-        {!!subtitle && (
-          <Paragraph
-            size={
-              getSize(size, {
-                shift: -2,
-              }) as any
-            }
-            theme="alt2"
-            o={0.5}
-          >
-            {subtitle}
-          </Paragraph>
-        )}
-      </YStack>
-    </XStack>
-  )
-}
+// const Bullet = ({
+//   size = '$6',
+//   children,
+//   subtitle,
+//   status,
+//   ...props
+// }: XStackProps & {
+//   children: any
+//   subtitle?: any
+//   size?: FontSizeTokens
+//   status?: 'building' | 'done'
+// }) => {
+//   return (
+//     <XStack
+//       tag="li"
+//       ai="flex-start"
+//       space
+//       f={1}
+//       {...props}
+//       w="100%"
+//       $gtLg={{ w: 'calc(50% - 20px)' }}
+//     >
+//       <YStack y={-1}>
+//         <Circle
+//           size={32}
+//           elevation="$1"
+//         >
+//           {status === 'done' ? (
+//             <Check
+//               size={18}
+//               color="$color10"
+//             />
+//           ) : status === 'building' ? (
+//             <Hammer
+//               size={18}
+//               color="$color10"
+//             />
+//           ) : (
+//             <Dot
+//               size={18}
+//               color="$color10"
+//             />
+//           )}
+//         </Circle>
+//       </YStack>
+//       <YStack f={1}>
+//         <Paragraph
+//           wordWrap="break-word"
+//           size={size}
+//         >
+//           {children}
+//         </Paragraph>
+//         {!!subtitle && (
+//           <Paragraph
+//             size={
+//               getSize(size, {
+//                 shift: -2,
+//               }) as any
+//             }
+//             theme="alt2"
+//             o={0.5}
+//           >
+//             {subtitle}
+//           </Paragraph>
+//         )}
+//       </YStack>
+//     </XStack>
+//   )
+// }
 
 const Lazy = (props: { children: any }) => {
   const loaded = useLazilyMounted(100)

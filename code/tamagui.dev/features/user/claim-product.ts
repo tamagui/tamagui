@@ -85,7 +85,7 @@ type ClaimFunction = (
   data: { [key: string]: Json | undefined } | null
 }>
 
-const claimRepositoryAccess: ClaimFunction = async ({ user, metadata, request }) => {
+const claimRepositoryAccess: ClaimFunction = async ({ user, metadata }) => {
   console.info(`Claim: checking private users`)
 
   const repoName = metadata.repository_name
@@ -132,7 +132,7 @@ const claimRepositoryAccess: ClaimFunction = async ({ user, metadata, request })
   }
 }
 
-const getDownloadFromSupabaeStorage: ClaimFunction = async ({ user, metadata }) => {
+const getDownloadFromSupabaeStorage: ClaimFunction = async ({ metadata }) => {
   if (typeof metadata.supabase_storage_bucket !== 'string') {
     throw new Error('No supabase_storage_bucket is associated to the product metadata.')
   }
@@ -164,7 +164,7 @@ const getDownloadFromSupabaeStorage: ClaimFunction = async ({ user, metadata }) 
   }
 }
 
-const sendUserToLink: ClaimFunction = async ({ user, metadata }) => {
+const sendUserToLink: ClaimFunction = async ({ metadata }) => {
   if (typeof metadata.usage_link !== 'string') {
     console.error('No metadata.usage_link present')
     throw new ClaimError(

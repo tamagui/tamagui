@@ -167,9 +167,9 @@ export default function StudioSplashPage() {
                   soon
                   size="$5"
                   items={[
-                    <span>Animation test environment and visualizer.</span>,
-                    <span>Advanced theme editor.</span>,
-                    <span>Figma and local integrations.</span>,
+                    <span key="animation">Animation test environment and visualizer.</span>,
+                    <span key="editor">Advanced theme editor.</span>,
+                    <span key="figma">Figma and local integrations.</span>,
                   ]}
                 />
               </YStack>

@@ -114,7 +114,7 @@ export class ThemesStore {
     const colors = ['red', 'orange', 'blue', 'green', 'yellow', 'purple', 'pink', 'gray']
     return Object.keys(this.theme)
       .filter((x) => x !== 'id' && !colors.some((c) => x.startsWith(c)))
-      .sort((a, b) => (/color[0-9]+/.test(a) ? 1 : -1))
+      .sort((a, _b) => (/color[0-9]+/.test(a) ? 1 : -1))
   }
 
   getThemeVals() {
@@ -169,7 +169,7 @@ export class ThemesStore {
 
   get themeColorScale() {
     if (!this.themeColor) {
-      return
+      return null
     }
     return colorsStore.getScale(this.themeColor)
   }
@@ -366,7 +366,8 @@ export class ThemesStore {
           paletteName = `${scheme}_${paletteName}`
         }
         return paletteName
-      } else if ('mask' in themeInfo) {
+      }
+      if ('mask' in themeInfo) {
         // get parent:
         const parent = themeId.split('_').slice(0, -1).join('_')
         if (parent in this.themes) {

@@ -227,7 +227,7 @@ export const PaletteView = memo((props: Props) => {
           isActive={!isDark}
           palette={palette}
           colors={colors.light}
-          onSelect={(color, index) => toggleAnchorAt(index)}
+          onSelect={(_color, index) => toggleAnchorAt(index)}
         />
       </XLabeledItem>
 
@@ -238,7 +238,7 @@ export const PaletteView = memo((props: Props) => {
           isActive={isDark}
           palette={palette}
           colors={colors.dark}
-          onSelect={(color, index) => toggleAnchorAt(index)}
+          onSelect={(_color, index) => toggleAnchorAt(index)}
         />
       </XLabeledItem>
 

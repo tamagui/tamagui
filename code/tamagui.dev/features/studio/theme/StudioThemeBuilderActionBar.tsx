@@ -1,14 +1,10 @@
-import { ChevronLeft } from '@tamagui/lucide-icons'
 import { memo } from 'react'
-import { Button, Spacer, XStack } from 'tamagui'
+import { XStack } from 'tamagui'
 
 import { ThemeSwitch } from '../bar/StudioBar'
 import { StudioThemeBuilderSettingsDropdown } from './StudioThemeBuilderSettingsDropdown'
-import { useRouter } from 'one'
 
 export const StudioThemeBuilderActionBar = memo(function StudioThemeBuilderActionBar() {
-  const router = useRouter()
-
   return (
     <XStack
       zi={100000}

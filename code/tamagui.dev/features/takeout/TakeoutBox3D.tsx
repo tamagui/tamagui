@@ -41,7 +41,7 @@ function TakeoutBox3D(props) {
 
   const { nodes, materials } = useGLTF(modelUrl) as any
 
-  useFrame((state, delta) => {
+  useFrame((_state, delta) => {
     if (!ref.current) return
 
     const entryEffectFrames = 130

@@ -73,16 +73,13 @@ export const StepComponentThemes = memo(() => {
       <StageButtonBar steps={steps} />
       <Stage
         current={steps.index}
-        steps={[<ThemeBuilderPalettesPane />, <Themes />]}
+        steps={[<ThemeBuilderPalettesPane key={0} />, <Themes key={1} />]}
       />
     </YStack>
   )
 })
 
 const SelectComponentTheme = () => {
-  const store = useThemeBuilderStore()
-  const selected = store.selectedComponentTheme
-
   return (
     <XStack
       ai="center"
@@ -104,8 +101,6 @@ const SelectComponentTheme = () => {
 }
 
 export const Themes = memo(() => {
-  const store = useThemeBuilderStore()
-
   return (
     <YStack
       gap="$4"
@@ -114,7 +109,7 @@ export const Themes = memo(() => {
     >
       {[]
         // .sort((a, b) => (a.id === store.selectedComponentTheme ? -1 : 1))
-        .map((theme, index) => {
+        .map(() => {
           return null
           // const handleUpdate = (next) => {
           //   store.updateComponentTheme({
@@ -163,7 +158,7 @@ export function StepComponentThemesActions() {
         <YGroup>
           <AddDropdown.Title>Palette Themes</AddDropdown.Title>
           {[].map(
-            ({ theme, palette }) => null
+            () => null
             // <AddDropdown.Item
             //   size="$3"
             //   key={theme.name}

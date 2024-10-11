@@ -59,38 +59,30 @@ export class RootStore {
     if (isLocal) {
       console.warn(`⚠️ disabled RootStore for now`)
       return
-
-      const domain = process.env.NODE_ENV === 'production' ? '/' : 'http://localhost:8081'
-      const [configJson, themesJson] = await Promise.all([
-        fetch(`${domain}/api/tamagui.config.json`).then((res) => res.json()),
-        fetch(`${domain}/api/tamagui.themes.json`).then((res) => res.json()),
-      ])
-
-      await this.onReloadedTamaguiConfig(configJson)
-      this.themes = themesJson
-    } else {
-      // TODO
-      // try {
-      //   this.unwatchPreviousFileWatch?.()
-      //   this.unwatchPreviousFileWatch = await watchTamaguiDirectory((data) => {
-      //     this.onReloadedTamaguiConfig(data.config)
-      //     this.projectName = data.projectName
-      //     this.fsReadSucceeded = true
-      //   })
-      // } catch (error: unknown) {
-      //   console.error(error)
-      //   if (error instanceof Error) {
-      //     toastController.show('Error', {
-      //       message: error.message,
-      //       customData: {
-      //         theme: 'red',
-      //       },
-      //     })
-      //   }
-      //   this.projectName = ''
-      //   this.fsReadSucceeded = false
-      // }
     }
+    // } else {
+    //   // TODO
+    //   // try {
+    //   //   this.unwatchPreviousFileWatch?.()
+    //   //   this.unwatchPreviousFileWatch = await watchTamaguiDirectory((data) => {
+    //   //     this.onReloadedTamaguiConfig(data.config)
+    //   //     this.projectName = data.projectName
+    //   //     this.fsReadSucceeded = true
+    //   //   })
+    //   // } catch (error: unknown) {
+    //   //   console.error(error)
+    //   //   if (error instanceof Error) {
+    //   //     toastController.show('Error', {
+    //   //       message: error.message,
+    //   //       customData: {
+    //   //         theme: 'red',
+    //   //       },
+    //   //     })
+    //   //   }
+    //   //   this.projectName = ''
+    //   //   this.fsReadSucceeded = false
+    //   // }
+    // }
     return null
   }
 

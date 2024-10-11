@@ -131,7 +131,7 @@ function checkAccessToProduct(
   }
 }
 
-export async function getUserAccessInfo(supabase: SupabaseClient<Database>, user: User | null) {
+export async function getUserAccessInfo(supabase: SupabaseClient<Database>) {
   const [subscriptions, ownedProducts] = await Promise.all([
     getSubscriptions(supabase),
     getOwnedProducts(supabase),

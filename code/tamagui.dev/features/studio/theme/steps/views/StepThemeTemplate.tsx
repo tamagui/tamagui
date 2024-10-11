@@ -160,7 +160,7 @@ export const StepThemeTemplate = memo(({ buildTheme }: { buildTheme: BuildTheme 
                   onChangeText={(next) => {
                     updateTemplateDebounced({
                       ...template,
-                      [name]: !isNaN(Number.parseInt(next)) ? Number.parseInt(next) : next,
+                      [name]: !Number.isNaN(Number.parseInt(next)) ? Number.parseInt(next) : next,
                     })
                   }}
                 />

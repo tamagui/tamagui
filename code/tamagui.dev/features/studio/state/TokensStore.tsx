@@ -24,7 +24,7 @@ export class TokensStore {
 
   lockedDemos = true
 
-  updateLocked(val: boolean) {
+  updateLocked() {
     this.lockedDemos = !this.lockedDemos
   }
 
@@ -84,7 +84,7 @@ const prepareTokens = (type: keyof TokensStore['sets']) =>
     .filter((val) => {
       return (
         !['true', '-true', 'false', '-false'].includes(val.key) &&
-        (isNaN(Number(val.val)) || Number(val.val) >= 0)
+        (Number.isNaN(Number(val.val)) || Number(val.val) >= 0)
       )
     })
 
