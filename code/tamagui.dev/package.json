@@ -18,8 +18,8 @@
     "dev-build-prod": "VXRN_DISABLE_PROD_OPTIMIZATION=1 yarn build:prod && yarn serve",
     "test": "vitest run",
     "test:watch": "vitest",
-    "lint": "biome check --config-path ./biome.json",
-    "lint:fix": "biome check --write"
+    "lint": "biome check --config-path ./biome.json ./",
+    "lint:fix": "biome check --config-path ./biome.json --write ./"
   },
   "dependencies": {
     "@discordjs/core": "^0.6.0",

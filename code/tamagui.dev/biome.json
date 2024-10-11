@@ -63,10 +63,11 @@
   },
   "formatter": {
     "enabled": true,
-    "formatWithErrors": false,
+    "formatWithErrors": true,
     "indentStyle": "space",
     "indentWidth": 2,
     "lineWidth": 100,
+    "lineEnding": "lf",
     "ignore": ["**/*/generated-new.ts", "**/*/generated-v2.ts", ".tamagui"]
   },
   "javascript": {
@@ -75,7 +76,11 @@
       "jsxQuoteStyle": "double",
       "semicolons": "asNeeded",
       "quoteStyle": "single",
-      "attributePosition": "multiline"
+      "attributePosition": "multiline",
+      "arrowParentheses": "always",
+      "quoteProperties": "asNeeded",
+      "bracketSpacing": true,
+      "bracketSameLine": false
     }
   }
 }
