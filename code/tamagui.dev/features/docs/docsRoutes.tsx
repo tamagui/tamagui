@@ -61,6 +61,7 @@ export const docsRoutes = [
       { title: 'Next.js', route: '/docs/guides/next-js' },
       { title: 'Expo', route: '/docs/guides/expo' },
       { title: 'Vite', route: '/docs/guides/vite' },
+      { title: 'One', route: '/docs/guides/one' },
       { title: 'Webpack', route: '/docs/guides/webpack' },
       { title: 'Metro', route: '/docs/guides/metro' },
       { title: 'create-tamagui', route: '/docs/guides/create-tamagui-app' },
