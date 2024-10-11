@@ -6350,7 +6350,7 @@ __metadata:
     graphql-yoga: "npm:^4.0.4"
     http-proxy-middleware: "npm:^2.0.6"
     kill-port: "npm:^2.0.1"
-    marked: "npm:^5.1.0"
+    marked: "npm:^14.1.2"
     marked-terminal: "npm:^5.2.0"
     micromatch: "npm:^4.0.7"
     opener: "npm:^1.5.2"
@@ -7214,7 +7214,7 @@ __metadata:
   dependencies:
     "@tamagui/build": "npm:1.114.2"
     compare-versions: "npm:^4.1.3"
-    gray-matter: "npm:^4.0.2"
+    gray-matter: "npm:^4.0.3"
     hast-util-to-html: "npm:^8.0.3"
     hast-util-to-string: "npm:^2.0.0"
     mdx-bundler: "npm:^10.0.2"
@@ -16696,7 +16696,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"gray-matter@npm:^4.0.2, gray-matter@npm:^4.0.3":
+"gray-matter@npm:^4.0.3":
   version: 4.0.3
   resolution: "gray-matter@npm:4.0.3"
   dependencies:
@@ -19875,15 +19875,6 @@ __metadata:
   bin:
     marked: bin/marked.js
   checksum: 10/2bfc03712c87bc0dff517ca82a3f33b816d4d1fec1b90e8cb3cfac5d8054b06e749d0ddbddfdfbd1ec4ec3067e997e1cf593db8d3fe7ca0a970aa5fc6ad7b868
-  languageName: node
-  linkType: hard
-
-"marked@npm:^5.1.0":
-  version: 5.1.2
-  resolution: "marked@npm:5.1.2"
-  bin:
-    marked: bin/marked.js
-  checksum: 10/e51d15f79c9b2a93e8bd801cfc0f1924027f0bf9ae12c237300d34363edf9dacdfa27de0659074ade78f2ba747cdb1c8246aef144f9ccf91600ee71c87e4d169
   languageName: node
   linkType: hard
 

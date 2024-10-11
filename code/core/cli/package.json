@@ -42,7 +42,7 @@
     "graphql-yoga": "^4.0.4",
     "http-proxy-middleware": "^2.0.6",
     "kill-port": "^2.0.1",
-    "marked": "^5.1.0",
+    "marked": "^14.1.2",
     "marked-terminal": "^5.2.0",
     "micromatch": "^4.0.7",
     "opener": "^1.5.2",
