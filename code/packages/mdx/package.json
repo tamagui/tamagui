@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/mdx",
-  "version": "1.114.2",
+  "version": "1.114.3",
   "types": "./types/index.d.ts",
   "main": "dist/index.js",
   "type": "commonjs",
@@ -44,7 +44,7 @@
     "unist-util-visit": "^2.0.3"
   },
   "devDependencies": {
-    "@tamagui/build": "1.114.2"
+    "@tamagui/build": "1.114.3"
   },
   "publishConfig": {
     "access": "public"
