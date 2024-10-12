@@ -12,6 +12,7 @@
     "./code/demos",
     "./code/integration",
     "./code/kitchen-sink",
+    "./code/sandbox",
     "./code/next-site",
     "./code/ooo",
     "./code/packages/**/*",
