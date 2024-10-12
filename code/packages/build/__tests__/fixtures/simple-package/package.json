@@ -1,6 +1,6 @@
 {
   "name": "tamagui-build-test-simple-tpackage",
-  "version": "1.114.2",
+  "version": "1.114.3",
   "main": "dist/cjs",
   "module": "dist/esm/index.mjs",
   "types": "dist/types/index.d.ts",
@@ -16,7 +16,7 @@
     "build:target-native": "TAMAGUI_TARGET=native node ../../../tamagui-build.js"
   },
   "devDependencies": {
-    "@tamagui/build": "1.114.2",
+    "@tamagui/build": "1.114.3",
     "typescript": "^5.5.2"
   }
 }
