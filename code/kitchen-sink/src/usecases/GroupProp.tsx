@@ -70,7 +70,7 @@ const GroupChildMedia = styled(GroupChild, {
 
 export function GroupProp() {
   return (
-    <>
+    <Stack margin={20}>
       <GroupTest>
         <GroupChild id="styled" />
       </GroupTest>
@@ -91,6 +91,6 @@ export function GroupProp() {
           size={100}
         />
       </XStack>
-    </>
+    </Stack>
   )
 }
