@@ -236,10 +236,17 @@ export function getThemeProxied(
                       platform !== 'web' &&
                       isIos &&
                       !deopt &&
-                      getSetting('fastSchemeChange') &&
-                      !someParentIsInversed(themeManager)
+                      getSetting('fastSchemeChange')
                     ) {
                       if (scheme) {
+                        const isInversed = getIsInversed(themeManager)
+
+                        // this is maybe confusing but basically we track inverse, if inversed
+                        // we inverse it here so that it flips everything properly
+                        if (isInversed) {
+                          scheme = scheme === 'dark' ? 'light' : 'dark'
+                        }
+
                         const oppositeThemeName = name.replace(
                           scheme === 'dark' ? 'dark' : 'light',
                           scheme === 'dark' ? 'light' : 'dark'
@@ -264,13 +271,8 @@ export function getThemeProxied(
                         isIOS: ${isIos}
                         deopt: ${deopt}
                         fastScheme: ${getSetting('fastSchemeChange')}
-                        parent inversed: ${someParentIsInversed(themeManager)}
+                        inversed: ${getIsInversed(themeManager)}
                       `)
-                      if (someParentIsInversed(themeManager)) {
-                        console.info(
-                          ` some parent is inversed: ${themeManager?.state.name} => ${themeManager?.parentManager?.state.name}`
-                        )
-                      }
                     }
 
                     track(keyString)
@@ -303,36 +305,21 @@ export function getThemeProxied(
 }
 
 // to tell if we are inversing the scheme anywhere in the tree, if so we need to de-opt
-function someParentIsInversed(manager?: ThemeManager) {
+function getIsInversed(manager?: ThemeManager) {
   if (process.env.TAMAGUI_TARGET === 'native') {
+    let isInversed = false
+
     let cur: ThemeManager | null | undefined = manager
+
     while (cur) {
       if (!cur.parentManager) return false
       if (cur.parentManager.state.scheme !== cur.state.scheme) {
-        if (process.env.NODE_ENV === 'development') {
-          if (
-            !globalThis.TAMAGUI_DITW &&
-            !process.env.TAMAGUI_DISABLE_INVERSE_THEME_WARNING
-          ) {
-            console.info(` ‼️ De-opted a theme value access due to an inversed parent.
-  
-  This means you've accessed a theme value without .get() in a child of an inversed theme.
-  
-  This isn't necessarily a bug, but can often be due to a mistaken inverse (for example,
-  you may have a Theme inside your TamaguiProvider with mis-matched theme values for light/dark).
-  
-  For this reason we've added this warning. If this is intentional, you can disable it with:
-  
-    process.env.TAMAGUI_DISABLE_INVERSE_THEME_WARNING === 1
-    or globalThis.TAMAGUI_DITW = true
-  `)
-          }
-        }
-        return true
+        isInversed = !isInversed
       }
       cur = cur.parentManager
     }
   }
+
   return false
 }
 
