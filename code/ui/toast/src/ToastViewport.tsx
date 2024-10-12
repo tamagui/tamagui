@@ -262,6 +262,7 @@ const ToastViewport = React.memo(
       const contents = (
         <ToastViewportWrapperFrame
           ref={wrapperRef}
+          // biome-ignore lint/a11y/useSemanticElements: <explanation>
           role="region"
           aria-label={label.replace('{hotkey}', hotkeyLabel)}
           // // Ensure virtual cursor from landmarks menus triggers focus/blur for pause/resume
