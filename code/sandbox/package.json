@@ -1,0 +1,12 @@
+{
+  "name": "@tamagui/sandbox",
+  "version": "1.114.2",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "one dev"
+  },
+  "dependencies": {
+    "one": "1.1.305"
+  }
+}

@@ -248,6 +248,9 @@ v4 and beyond
 
 ---
 
+- usePropsAndStyle lucide icons onPress/onClick issue:
+https://discord.com/channels/909986013848412191/1293655327689932810/1293655327689932810
+
 - SSR safe styled context, something like:
 
 const Context = createStyledContext({

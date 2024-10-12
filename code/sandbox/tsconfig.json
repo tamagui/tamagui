@@ -1,0 +1,11 @@
+{
+  "extends": "../../tsconfig",
+  "compilerOptions": {
+    "paths": {
+      "~/*": [
+        "../kitchen-sink/src/*"
+      ]
+    },
+    "noEmit": true
+  }
+}
