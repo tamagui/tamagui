@@ -3,7 +3,7 @@
   "version": "1.115.1",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
-  "main": "dist/cjs",
+  "main": "dist/cjs/index.js",
   "module": "dist/esm/index.mjs",
   "files": [
     "src",
@@ -27,15 +27,15 @@
     ".": {
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
-      "require": "./dist/cjs/index.cjs",
-      "react-native": "./dist/cjs/index.cjs",
-      "default": "./dist/cjs/index.cjs"
+      "require": "./dist/cjs/index.js",
+      "react-native": "./dist/cjs/index.js",
+      "default": "./dist/cjs/index.js"
     },
     "./commonjs": {
       "types": "./types/commonjs.d.ts",
       "import": "./dist/esm/commonjs.mjs",
-      "require": "./dist/cjs/commonjs.cjs",
-      "react-native": "./dist/cjs/commonjs.cjs"
+      "require": "./dist/cjs/commonjs.js",
+      "react-native": "./dist/cjs/commonjs.js"
     }
   },
   "dependencies": {
