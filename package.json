@@ -88,8 +88,8 @@
     "test:demos": "yarn workspace @tamagui/demos test",
     "test": "CLEANUP=1 turbo run --concurrency=1 test && yarn test:starter-free",
     "test:starter-free": "./scripts/test-starter-free.sh",
-    "test:18.2.0": "REACT_VERSION=18.2.0 node scripts/multi-react-version-tests.js && yarn install && yarn build && yarn test",
-    "test:18.3.1": "REACT_VERSION=18.3.1 node scripts/multi-react-version-tests.js && yarn install && yarn build &&yarn test",
+    "test:18.2.0": "REACT_VERSION=18.2.0 node scripts/multi-react-version-tests.js && yarn install && yarn build && yarn test && yarn reset-package-json",
+    "test:18.3.1": "REACT_VERSION=18.3.1 node scripts/multi-react-version-tests.js && yarn install && yarn build && yarn test && yarn reset-package-json",
     "typecheck": "tsc -b --preserveWatchOutput tsconfig.build.json",
     "typecheck:perf": "yarn workspace @tamagui/monorepo-test test",
     "upgrade:starters:free": "cd ../starter-free && yarn && yarn upgrade:tamagui",
@@ -103,7 +103,8 @@
     "watch:packages": "SKIP_TYPES_INITIAL=1 ultra -r --no-pretty --concurrency 400 watch",
     "watch:js": "SKIP_TYPES=1 yarn watch:packages",
     "watch:ts": "node -r esbuild-register ./scripts/watch-ts.ts",
-    "next-site": "yarn workspace @tamagui/next-site dev"
+    "next-site": "yarn workspace @tamagui/next-site dev",
+    "reset-package-json": "RESET_PACKAGE_JSON=true node -e \"require('./scripts/multi-react-version-tests.js').resetPackageJson()\""
   },
   "profile": {
     "//": "run 'yarn profile x' to toggle it on/off",
