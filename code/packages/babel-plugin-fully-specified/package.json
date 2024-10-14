@@ -5,11 +5,7 @@
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm/index.mjs",
-  "files": [
-    "src",
-    "types",
-    "dist"
-  ],
+  "files": ["src", "types", "dist"],
   "license": "MIT",
   "publishConfig": {
     "access": "public"
@@ -27,12 +23,12 @@
     ".": {
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
-      "require": "./dist/cjs/index.js"
+      "require": "./dist/cjs/index.cjs"
     },
     "./commonjs": {
       "types": "./types/commonjs.d.ts",
       "import": "./dist/esm/commonjs.mjs",
-      "require": "./dist/cjs/commonjs.js"
+      "require": "./dist/cjs/commonjs.cjs"
     }
   },
   "dependencies": {

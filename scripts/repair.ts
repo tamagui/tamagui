@@ -66,17 +66,25 @@ const fixScripts = async ({ location }, pkgJson: any) => {
 }
 
 const fixExportsPathSpecific = async ({ name, location }, pkgJson: any) => {
+  if (!pkgJson.scripts.build?.includes('tamagui-build')) {
+    return
+  }
+
   if (pkgJson.exports) {
     Object.keys(pkgJson.exports).forEach((key) => {
       const obj = pkgJson.exports?.[key]
-      const importField = obj?.import
-      if (importField?.endsWith('.js')) {
-        obj.import = importField.replace('.js', '.mjs')
-      }
+      // const importField = obj?.import
+      // if (importField?.endsWith('.js')) {
+      //   obj.import = importField.replace('.js', '.mjs')
+      // }
 
       const requireField = obj?.require
       if (requireField?.endsWith('.js')) {
         obj.require = requireField.replace('.js', '.cjs')
+      }
+
+      if (!obj?.['react-native'] && requireField) {
+        obj['react-native'] = requireField.replace('.js', '.native.js')
       }
     })
   }
