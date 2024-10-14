@@ -5,6 +5,8 @@ import { getStyles } from './utils'
 
 test.beforeEach(async ({ page }) => {
   await setupPage(page, { name: 'GroupProp', type: 'useCase' })
+  // In some instances the mouses hovers the style breaking the test
+  await page.mouse.move(0, 0)
 })
 
 test(`group prop - styled()`, async ({ page }) => {

@@ -17,11 +17,11 @@ const GroupChild = styled(Stack, {
     backgroundColor: 'rgb(255,0,0)',
 
     hoverStyle: {
-      backgroundColor: 'purple',
+      backgroundColor: 'rgb(160, 32, 240)',
     },
 
     pressStyle: {
-      backgroundColor: 'yellow',
+      backgroundColor: 'rgb(255,255,0)',
     },
   },
 
@@ -29,11 +29,11 @@ const GroupChild = styled(Stack, {
     backgroundColor: 'rgb(0,255,0)',
 
     hoverStyle: {
-      backgroundColor: 'purple',
+      backgroundColor: 'rgb(160, 32, 240)',
     },
 
     pressStyle: {
-      backgroundColor: 'yellow',
+      backgroundColor: 'rgb(255,255,0)',
     },
   },
 })
@@ -47,11 +47,11 @@ const GroupChildMedia = styled(GroupChild, {
     backgroundColor: 'rgb(255,0,0)',
 
     hoverStyle: {
-      backgroundColor: 'purple',
+      backgroundColor: 'rgb(160, 32, 240)',
     },
 
     pressStyle: {
-      backgroundColor: 'yellow',
+      backgroundColor: 'rgb(255,255,0)',
     },
   },
 
@@ -59,18 +59,18 @@ const GroupChildMedia = styled(GroupChild, {
     backgroundColor: 'rgb(0,255,0)',
 
     hoverStyle: {
-      backgroundColor: 'purple',
+      backgroundColor: 'rgb(160, 32, 240)',
     },
 
     pressStyle: {
-      backgroundColor: 'yellow',
+      backgroundColor: 'rgb(255,255,0)',
     },
   },
 })
 
 export function GroupProp() {
   return (
-    <>
+    <Stack margin={20}>
       <GroupTest>
         <GroupChild id="styled" />
       </GroupTest>
@@ -91,6 +91,6 @@ export function GroupProp() {
           size={100}
         />
       </XStack>
-    </>
+    </Stack>
   )
 }
