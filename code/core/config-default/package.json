@@ -10,7 +10,10 @@
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
-  "files": ["types", "dist"],
+  "files": [
+    "types",
+    "dist"
+  ],
   "dependencies": {
     "@tamagui/animations-css": "1.114.4",
     "@tamagui/core": "1.114.4",

@@ -73,19 +73,31 @@ const fixExportsPathSpecific = async ({ name, location }, pkgJson: any) => {
   if (pkgJson.exports) {
     Object.keys(pkgJson.exports).forEach((key) => {
       const obj = pkgJson.exports?.[key]
-      // const importField = obj?.import
-      // if (importField?.endsWith('.js')) {
-      //   obj.import = importField.replace('.js', '.mjs')
+
+      // lets be safe and include a more compat default
+      if (key === '.' && obj.require && obj['react-native'] && !obj.default) {
+        const obj2 = { ...obj }
+        const obj3 = {
+          ...obj2,
+          // assumption is node will always take import/require, but metro may need this
+          default: obj['react-native'],
+        }
+        pkgJson.exports[key] = obj3
+      }
+
+      // // const importField = obj?.import
+      // // if (importField?.endsWith('.js')) {
+      // //   obj.import = importField.replace('.js', '.mjs')
+      // // }
+
+      // const requireField = obj?.require
+      // if (requireField?.endsWith('.js')) {
+      //   obj.require = requireField.replace('.js', '.cjs')
       // }
 
-      const requireField = obj?.require
-      if (requireField?.endsWith('.js')) {
-        obj.require = requireField.replace('.js', '.cjs')
-      }
-
-      if (!obj?.['react-native'] && requireField) {
-        obj['react-native'] = requireField.replace('.js', '.native.js')
-      }
+      // if (!obj?.['react-native'] && requireField) {
+      //   obj['react-native'] = requireField.replace('.js', '.native.js')
+      // }
     })
   }
 }

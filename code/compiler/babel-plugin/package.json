@@ -5,7 +5,11 @@
   "types": "./types/index.d.ts",
   "main": "dist/cjs/index.cjs",
   "module": "dist/esm",
-  "files": ["src", "types", "dist"],
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
   "license": "MIT",
   "publishConfig": {
     "access": "public"

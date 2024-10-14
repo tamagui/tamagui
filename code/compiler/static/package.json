@@ -5,11 +5,7 @@
   "types": "./types/index.d.ts",
   "type": "commonjs",
   "main": "dist/index.js",
-  "files": [
-    "src",
-    "types",
-    "dist"
-  ],
+  "files": ["src", "types", "dist"],
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
@@ -23,8 +19,9 @@
     ".": {
       "types": "./types/index.d.ts",
       "require": "./dist/index.cjs",
-      "import": "./dist/index.js",
-      "react-native": "./dist/index.native.js"
+      "import": "./dist/index.cjs",
+      "react-native": "./dist/index.native.js",
+      "default": "./dist/index.native.js"
     }
   },
   "tests": {

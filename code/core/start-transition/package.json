@@ -6,18 +6,15 @@
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
-  "files": [
-    "src",
-    "types",
-    "dist"
-  ],
+  "files": ["src", "types", "dist"],
   "exports": {
     "./package.json": "./package.json",
     ".": {
+      "react-native": "./dist/cjs/index.native.js",
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
-      "react-native": "./dist/cjs/index.native.js"
+      "default": "./dist/cjs/index.native.js"
     }
   },
   "dependencies": {

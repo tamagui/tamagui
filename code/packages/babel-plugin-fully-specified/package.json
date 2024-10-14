@@ -28,7 +28,8 @@
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
-      "react-native": "./dist/cjs/index.cjs"
+      "react-native": "./dist/cjs/index.cjs",
+      "default": "./dist/cjs/index.cjs"
     },
     "./commonjs": {
       "types": "./types/commonjs.d.ts",

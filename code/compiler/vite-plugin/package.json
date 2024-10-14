@@ -29,7 +29,8 @@
       "react-native": "./dist/cjs/index.native.js",
       "types": "./types/index.d.ts",
       "require": "./dist/cjs/index.cjs",
-      "import": "./dist/esm/index.mjs"
+      "import": "./dist/esm/index.mjs",
+      "default": "./dist/cjs/index.native.js"
     }
   },
   "dependencies": {
