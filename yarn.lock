@@ -6308,8 +6308,8 @@ __metadata:
     vite: "npm:6.0.0-beta.1"
     vite-plugin-entry-shaking: "npm:^0.4.3"
   bin:
-    tama: ./dist/index.js
-    tamagui: ./dist/index.js
+    tama: ./dist/index.cjs
+    tamagui: ./dist/index.cjs
   languageName: unknown
   linkType: soft
 
@@ -7277,6 +7277,15 @@ __metadata:
   checksum: 10/4d4fd26a993fd1b7baec6a42ecefb2caa6b6952b10ac1ebb8c2c7d1036a4fb5cc05cf2dc94c8e997448fce1eacdf0d0f1cc850a104b30d2d595c557168662763
   languageName: node
   linkType: hard
+
+"@tamagui/normalize-css-color@workspace:code/core/normalize-css-color":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/normalize-css-color@workspace:code/core/normalize-css-color"
+  dependencies:
+    "@react-native/normalize-color": "npm:^2.1.0"
+    "@tamagui/build": "npm:1.114.4"
+  languageName: unknown
+  linkType: soft
 
 "@tamagui/one-theme@npm:1.114.4, @tamagui/one-theme@workspace:code/packages/one-theme":
   version: 0.0.0-use.local
@@ -21352,12 +21361,6 @@ __metadata:
   checksum: 10/95a1f6dec8a81cd18cdc2fed93e6f0b4e02cf6bdb4501c848752c6e34f9883d9942f036a5e3b21a699047d8a448562d891e67492df68ec9c373e6198133337ae
   languageName: node
   linkType: hard
-
-"normalize-css-color-fdd07f@workspace:code/core/normalize-css-color":
-  version: 0.0.0-use.local
-  resolution: "normalize-css-color-fdd07f@workspace:code/core/normalize-css-color"
-  languageName: unknown
-  linkType: soft
 
 "normalize-package-data@npm:^2.3.2":
   version: 2.5.0

@@ -3,10 +3,10 @@
   "version": "1.114.4",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
-  "main": "dist",
+  "main": "dist/index.cjs",
   "bin": {
-    "tama": "./dist/index.js",
-    "tamagui": "./dist/index.js"
+    "tama": "./dist/index.cjs",
+    "tamagui": "./dist/index.cjs"
   },
   "publishConfig": {
     "access": "public"

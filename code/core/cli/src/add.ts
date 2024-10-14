@@ -13,8 +13,6 @@ import open from 'opener'
 import prompts from 'prompts'
 
 marked.setOptions({
-  headerIds: false,
-  mangle: false,
   renderer: new TerminalRenderer(),
 })
 
