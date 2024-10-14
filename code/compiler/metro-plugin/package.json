@@ -3,7 +3,7 @@
   "version": "1.115.0",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
-  "main": "dist/cjs",
+  "main": "dist/cjs/index.cjs",
   "module": "dist/esm",
   "files": [
     "src",
