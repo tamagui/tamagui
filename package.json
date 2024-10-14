@@ -88,6 +88,8 @@
     "test:demos": "yarn workspace @tamagui/demos test",
     "test": "CLEANUP=1 turbo run --concurrency=1 test && yarn test:starter-free",
     "test:starter-free": "./scripts/test-starter-free.sh",
+    "test:18.2.0": "REACT_VERSION=18.2.0 node scripts/multi-react-version-tests.js && yarn install && yarn build && yarn test",
+    "test:18.3.1": "REACT_VERSION=18.3.1 node scripts/multi-react-version-tests.js && yarn install && yarn build &&yarn test",
     "typecheck": "tsc -b --preserveWatchOutput tsconfig.build.json",
     "typecheck:perf": "yarn workspace @tamagui/monorepo-test test",
     "upgrade:starters:free": "cd ../starter-free && yarn && yarn upgrade:tamagui",
