@@ -15,7 +15,7 @@ describe('create-tamagui CLI', () => {
     async () => {
       tempDir = temporaryDirectory()
       projectName = 'test-project'
-      const cliPath = path.join(__dirname, '../dist/index.js')
+      const cliPath = path.join(__dirname, '../dist/index.cjs')
       projectPath = path.join(tempDir, projectName)
 
       console.info(`Running: node ${cliPath}`)
@@ -134,7 +134,7 @@ describe('create-tamagui CLI with --template flag', () => {
   beforeAll(async () => {
     tempDir = temporaryDirectory()
     projectName = 'expo-router-project'
-    const cliPath = path.join(__dirname, '../dist/index.js')
+    const cliPath = path.join(__dirname, '../dist/index.cjs')
     projectPath = path.join(tempDir, projectName)
 
     cli = spawn('node', [cliPath, '--template', 'expo-router'], {

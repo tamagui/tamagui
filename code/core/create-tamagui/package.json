@@ -2,11 +2,8 @@
   "name": "create-tamagui",
   "version": "1.114.4",
   "bin": "./run.js",
-  "main": "dist",
-  "files": [
-    "run.js",
-    "dist"
-  ],
+  "main": "dist/index.cjs",
+  "files": ["run.js", "dist"],
   "scripts": {
     "start": "./run.js",
     "//": "disabling for now need to migrate to new stack",
