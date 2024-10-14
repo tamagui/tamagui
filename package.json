@@ -77,7 +77,7 @@
     "sandbox": "yarn workspace @tamagui/kitchen-sink dev:web:extract",
     "scripts:setup": "node -r esbuild-register ./scripts/setup.ts",
     "scripts:format": "node -r esbuild-register ./scripts/format.ts",
-    "repair": "node -r esbuild-register ./scripts/repair.ts && update-ts-references",
+    "repair": "node -r esbuild-register ./scripts/repair.ts",
     "profile": "node -r esbuild-register ./scripts/yarn-profile.ts",
     "starter:native": "yarn workspace @tamagui/starter native",
     "starter:prod": "yarn workspace @tamagui/starter web:prod && yarn workspace @tamagui/starter web:prod:serve",
@@ -159,7 +159,6 @@
     "turbo": "^1.13.3",
     "typescript": "^5.5.2",
     "ultra-runner": "^3.10.5",
-    "update-ts-references": "^3.3.0",
     "zx": "^7.2.3"
   }
 }

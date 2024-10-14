@@ -30,14 +30,14 @@
       "react-native": "./dist/cjs/index.native.js",
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
-      "require": "./dist/cjs/index.js"
+      "require": "./dist/cjs/index.cjs"
     },
     "./demo/*": {
       "react-native-import": "./dist/esm/*.native.js",
       "react-native": "./dist/cjs/*.native.js",
       "types": "./types/*.d.ts",
       "import": "./dist/esm/*.mjs",
-      "require": "./dist/cjs/*.js"
+      "require": "./dist/cjs/*.cjs"
     }
   },
   "dependencies": {

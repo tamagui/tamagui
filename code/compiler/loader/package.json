@@ -22,7 +22,8 @@
     ".": {
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
-      "require": "./dist/cjs/index.js"
+      "require": "./dist/cjs/index.cjs",
+      "react-native": "./dist/cjs/index.native.js"
     }
   },
   "dependencies": {

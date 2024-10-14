@@ -28,14 +28,14 @@
       "react-native": "./dist/cjs/index.native.js",
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
-      "require": "./dist/cjs/index.js"
+      "require": "./dist/cjs/index.cjs"
     },
     "./v2": {
       "react-native-import": "./dist/esm/v2.native.js",
       "react-native": "./dist/cjs/v2.native.js",
       "types": "./types/v2.d.ts",
       "import": "./dist/esm/v2.mjs",
-      "require": "./dist/cjs/v2.js"
+      "require": "./dist/cjs/v2.cjs"
     }
   },
   "devDependencies": {

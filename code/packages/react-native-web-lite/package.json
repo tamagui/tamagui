@@ -22,13 +22,13 @@
       "react-native-import": "./dist/esm/index.native.js",
       "react-native": "./dist/cjs/index.native.js",
       "import": "./dist/esm/index.mjs",
-      "require": "./dist/cjs/index.js"
+      "require": "./dist/cjs/index.cjs"
     },
     "./without-animated": {
       "react-native-import": "./dist/esm/without-animated.native.js",
       "react-native": "./dist/cjs/without-animated.native.js",
       "import": "./dist/esm/without-animated.mjs",
-      "require": "./dist/cjs/without-animated.js"
+      "require": "./dist/cjs/without-animated.cjs"
     },
     "./dist/exports/StyleSheet/compiler/createReactDOMStyle": "./dist/esm/createReactDOMStyle.mjs",
     "./dist/modules/*": "./dist/esm/modules/*/index.mjs",

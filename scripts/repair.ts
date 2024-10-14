@@ -66,7 +66,7 @@ const fixScripts = async ({ location }, pkgJson: any) => {
 }
 
 const fixExportsPathSpecific = async ({ name, location }, pkgJson: any) => {
-  if (!pkgJson.scripts.build?.includes('tamagui-build')) {
+  if (!pkgJson.scripts?.build?.includes('tamagui-build')) {
     return
   }
 
@@ -106,11 +106,13 @@ async function format() {
     async (pkg) => {
       const cwd = join(process.cwd(), pkg.location)
       const jsonPath = join(cwd, 'package.json')
-      const pkgJson = JSON.parse(
-        readFileSync(jsonPath, {
-          encoding: 'utf-8',
-        })
-      )
+      const fileContents = readFileSync(jsonPath, {
+        encoding: 'utf-8',
+      })
+      if (!fileContents) {
+        return
+      }
+      const pkgJson = JSON.parse(fileContents)
       // await fixPeerDeps(pkg, pkgJson)
       // await fixExports(pkg, pkgJson)
       await fixExportsPathSpecific(pkg, pkgJson)

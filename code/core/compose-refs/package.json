@@ -33,7 +33,7 @@
       "react-native": "./dist/cjs/index.native.js",
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
-      "require": "./dist/cjs/index.js"
+      "require": "./dist/cjs/index.cjs"
     }
   },
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",

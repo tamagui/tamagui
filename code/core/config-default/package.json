@@ -2,7 +2,7 @@
   "name": "@tamagui/config-default",
   "version": "1.114.4",
   "source": "src/index.ts",
-  "main": "dist",
+  "main": "dist/index.cjs",
   "types": "./types/index.d.ts",
   "scripts": {
     "build": "tamagui-build",
@@ -10,10 +10,7 @@
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
-  "files": [
-    "types",
-    "dist"
-  ],
+  "files": ["types", "dist"],
   "dependencies": {
     "@tamagui/animations-css": "1.114.4",
     "@tamagui/core": "1.114.4",

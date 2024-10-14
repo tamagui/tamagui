@@ -42,34 +42,37 @@
       "react-native": "./dist/cjs/index.native.js",
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
-      "require": "./dist/cjs/index.js"
+      "require": "./dist/cjs/index.cjs"
     },
     "./react-native-web": {
       "types": "./types/index.d.ts",
       "import": "./dist/esm/react-native-web.mjs",
-      "require": "./dist/cjs/react-native-web.js"
+      "require": "./dist/cjs/react-native-web.cjs",
+      "react-native": "./dist/cjs/react-native-web.native.js"
     },
     "./web": {
       "react-native-import": "./dist/esm/index.native.js",
       "react-native": "./dist/cjs/index.native.js",
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
-      "require": "./dist/cjs/index.js"
+      "require": "./dist/cjs/index.cjs"
     },
     "./native": {
       "types": "./types/index.d.ts",
-      "require": "./dist/native.js"
+      "require": "./dist/native.cjs",
+      "react-native": "./dist/native.native.js"
     },
     "./native-test": {
       "types": "./types/index.d.ts",
-      "require": "./dist/test.js"
+      "require": "./dist/test.cjs",
+      "react-native": "./dist/test.native.js"
     },
     "./linear-gradient": {
       "react-native-import": "./dist/esm/linear-gradient.native.js",
       "react-native": "./dist/cjs/linear-gradient.native.js",
       "types": "./types/linear-gradient.d.ts",
       "import": "./dist/esm/linear-gradient.mjs",
-      "require": "./dist/cjs/linear-gradient.js"
+      "require": "./dist/cjs/linear-gradient.cjs"
     }
   },
   "dependencies": {
