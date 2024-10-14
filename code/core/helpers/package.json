@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/helpers",
-  "version": "1.114.4",
+  "version": "1.115.0",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
@@ -19,11 +19,11 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/constants": "1.114.4",
-    "@tamagui/simple-hash": "1.114.4"
+    "@tamagui/constants": "1.115.0",
+    "@tamagui/simple-hash": "1.115.0"
   },
   "devDependencies": {
-    "@tamagui/build": "1.114.4"
+    "@tamagui/build": "1.115.0"
   },
   "publishConfig": {
     "access": "public"
@@ -35,7 +35,8 @@
       "react-native": "./dist/cjs/index.native.js",
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
-      "require": "./dist/cjs/index.js"
+      "require": "./dist/cjs/index.cjs",
+      "default": "./dist/cjs/index.native.js"
     }
   },
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14"

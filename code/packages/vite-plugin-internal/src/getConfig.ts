@@ -1,10 +1,10 @@
 /// <reference types="vitest" />
 
-import { join } from 'node:path'
-
 import react from '@vitejs/plugin-react-swc'
+import { join } from 'node:path'
 import { type Plugin, defineConfig } from 'vite'
 import reactNative from 'vitest-react-native'
+import { requireResolve } from './requireResolve'
 
 export function getConfig(tamaguiPlugin: any) {
   const isNative =
@@ -21,9 +21,8 @@ export function getConfig(tamaguiPlugin: any) {
     '.ios.tsx',
     '.ios.js',
     '.ios.jsx',
-    '.mjs',
+    '.cjs',
     '.js',
-    '.mts',
     '.ts',
     '.jsx',
     '.tsx',
@@ -32,7 +31,7 @@ export function getConfig(tamaguiPlugin: any) {
 
   return defineConfig({
     plugins: [
-      process.env.DISABLE_REACT_NATIVE ? null : reactNative(),
+      // process.env.DISABLE_REACT_NATIVE ? null : reactNative(),
       react({}),
       tamaguiPlugin({
         components: ['tamagui'],
@@ -46,7 +45,8 @@ export function getConfig(tamaguiPlugin: any) {
           if (isNative) {
             return {
               resolve: {
-                conditions: ['native', 'default'],
+                // 'react-native', breaks because vitest isnt doing .native.js :/
+                conditions: ['require', 'default'],
                 alias: {
                   '@tamagui/core': '@tamagui/core/native-test',
                   '@tamagui/web': '@tamagui/core/native-test',
@@ -81,13 +81,17 @@ export function getConfig(tamaguiPlugin: any) {
     test: {
       // for compat with some jest libs (like @testing-library/jest-dom)
       globals: true,
-      setupFiles: [join(__dirname, 'test-setup.ts')],
+      setupFiles: [
+        join(__dirname, 'test-setup.ts'),
+        requireResolve('vitest-react-native/setup'),
+      ],
       // happy-dom has issues with components-test
       environment: process.env.TEST_ENVIRONMENT || 'happy-dom',
       include: ['**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
       server: {
         deps: {
           external: ['react-native'],
+          noExternal: true,
         },
       },
     },

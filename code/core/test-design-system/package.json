@@ -1,13 +1,13 @@
 {
   "name": "@tamagui/test-design-system",
-  "version": "1.114.4",
+  "version": "1.115.0",
   "sideEffects": [
     "*.css"
   ],
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
-  "main": "dist/cjs",
-  "module": "dist/esm",
+  "main": "dist/cjs/index.cjs",
+  "module": "dist/esm/index.mjs",
   "module:jsx": "dist/jsx",
   "files": [],
   "scripts": {
@@ -19,10 +19,10 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/core": "1.114.4"
+    "@tamagui/core": "1.115.0"
   },
   "devDependencies": {
-    "@tamagui/build": "1.114.4"
+    "@tamagui/build": "1.115.0"
   },
   "publishConfig": {
     "access": "public"

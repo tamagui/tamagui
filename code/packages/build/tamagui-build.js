@@ -394,9 +394,7 @@ async function buildJs() {
 
   const cjsConfigWeb = {
     ...cjsConfig,
-
-    // metro cant do platform-specific with cjs :/
-    // outExtension: { '.js': '.cjs' },
+    outExtension: { '.js': '.cjs' },
   }
 
   const esmConfig = {
@@ -428,7 +426,7 @@ async function buildJs() {
       ? esbuildWriteIfChanged(cjsConfigWeb, {
           platform: 'web',
           bundle: shouldBundleFlag,
-          // specifyCJS: true,
+          specifyCJS: true,
         })
       : null,
 
