@@ -67,6 +67,8 @@ jobs:
         run: npx playwright install
 
       - uses: nick-fields/retry@v3
+        env:
+          YARN_ENABLE_IMMUTABLE_INSTALLS: false
         with:
           timeout_minutes: 15
           max_attempts: 2
