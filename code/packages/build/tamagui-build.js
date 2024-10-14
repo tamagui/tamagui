@@ -54,6 +54,8 @@ const pkgRemoveSideEffects = pkg.removeSideEffects || false
 
 const flatOut = [pkgMain, pkgModule, pkgModuleJSX].filter(Boolean).length === 1
 
+const avoidCJS = pkgMain?.endsWith('.js')
+
 const replaceRNWeb = {
   esm: {
     from: 'from "react-native"',
@@ -392,10 +394,12 @@ async function buildJs() {
     platform: 'node',
   }
 
-  const cjsConfigWeb = {
-    ...cjsConfig,
-    outExtension: { '.js': '.cjs' },
-  }
+  const cjsConfigWeb = avoidCJS
+    ? cjsConfig
+    : {
+        ...cjsConfig,
+        outExtension: { '.js': '.cjs' },
+      }
 
   const esmConfig = {
     target: 'esnext',
@@ -426,7 +430,7 @@ async function buildJs() {
       ? esbuildWriteIfChanged(cjsConfigWeb, {
           platform: 'web',
           bundle: shouldBundleFlag,
-          specifyCJS: true,
+          specifyCJS: !avoidCJS,
         })
       : null,
 
