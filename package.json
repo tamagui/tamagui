@@ -163,11 +163,5 @@
     "typescript": "^5.5.2",
     "ultra-runner": "^3.10.5",
     "zx": "^7.2.3"
-  },
-  "resolutions": {
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "react-native": "0.74.6",
-    "react-test-renderer": "18.2.0"
   }
 }
