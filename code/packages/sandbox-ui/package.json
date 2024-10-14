@@ -6,8 +6,8 @@
     "*.css"
   ],
   "types": "./types/index",
-  "main": "dist/cjs",
-  "module": "dist/esm",
+  "main": "dist/cjs/index.cjs",
+  "module": "dist/esm/index.mjs",
   "module:jsx": "dist/jsx",
   "files": [
     "types",

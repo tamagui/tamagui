@@ -61,13 +61,13 @@
     "./native": {
       "types": "./types/index.d.ts",
       "import": "./dist/native.mjs",
-      "require": "./dist/native.cjs",
+      "require": "./dist/native.js",
       "react-native": "./dist/native.native.js"
     },
     "./native-test": {
       "types": "./types/index.d.ts",
       "import": "./dist/test.native.js",
-      "require": "./dist/test.native.cjs",
+      "require": "./dist/test.native.js",
       "react-native": "./dist/test.native.native.js"
     },
     "./inject-styles": {
