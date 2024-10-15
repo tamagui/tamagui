@@ -16,7 +16,6 @@
     "@swc/core": "^1.7.21",
     "@tamagui/babel-plugin-fully-specified": "1.115.2",
     "@types/fs-extra": "^9.0.13",
-    "babel-plugin-fully-specified": "*",
     "chokidar": "^3.5.2",
     "esbuild": "^0.24.0",
     "esbuild-plugin-es5": "^2.1.1",
