@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/mdx",
-  "version": "1.115.3",
+  "version": "1.115.4",
   "types": "./types/index.d.ts",
   "main": "dist/index.js",
   "type": "commonjs",
@@ -22,8 +22,8 @@
     ".": {
       "types": "./types/index.d.ts",
       "// 👋 note - import === require here, mdx-bundler is cjs only must await import() this package": "./",
-      "import": "./dist/index.cjs",
-      "require": "./dist/index.cjs",
+      "import": "./dist/index.js",
+      "require": "./dist/index.js",
       "react-native": "./dist/index.native.js",
       "default": "./dist/index.native.js"
     }
@@ -46,7 +46,7 @@
     "unist-util-visit": "^2.0.3"
   },
   "devDependencies": {
-    "@tamagui/build": "1.115.3"
+    "@tamagui/build": "1.115.4"
   },
   "publishConfig": {
     "access": "public"
