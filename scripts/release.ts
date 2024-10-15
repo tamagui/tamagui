@@ -205,6 +205,8 @@ async function run() {
       if (!skipTest) {
         await spawnify(`yarn fix:deps`)
         await spawnify(`yarn lint`)
+        // fix stupid cli check
+        await spawnify(`chmod ug+x ./node_modules/.bin/tamagui`)
         await spawnify(`yarn check`)
         await spawnify(`yarn test:ci`)
       }
