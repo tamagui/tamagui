@@ -10,6 +10,20 @@ ENV CI=true
 # Install Yarn
 RUN corepack enable && corepack prepare yarn@4.4.0 --activate
 
+# Set the working directory
+WORKDIR /app
+
+# Copy the entire project into the Docker image
+# Copy the local .git folder into the Docker image
+COPY .git /.git
+
+ARG CACHEBUST=1 
+RUN git clone --local /.git /repo
+COPY .env /repo/.env
+
+WORKDIR /repo
+
+
 # Verify Yarn version
 RUN yarn --version
 
@@ -20,19 +34,9 @@ RUN yarn install
 RUN yarn build:js
 
 # Install Playwright dependencies in a separate layer
-RUN yarn playwright install-deps && \
-  yarn playwright install
+RUN yarn playwright install-deps && yarn playwright install
 
 
-# Set the working directory
-WORKDIR /app
-
-# Copy the entire project into the Docker image
-# Copy the local .git folder into the Docker image
-COPY .git /app/.git
-
-ARG CACHEBUST=1 
-RUN git clone --local /app/.git /app/repo
 
 # Run the tests
 CMD yarn test
