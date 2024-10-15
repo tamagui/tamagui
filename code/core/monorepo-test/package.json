@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/monorepo-test",
-  "version": "1.115.3",
+  "version": "1.115.4",
   "module": "dist/esm",
   "type": "module",
   "private": true,
@@ -12,7 +12,7 @@
     "test": "vitest --run --config ../../packages/vite-plugin-internal/src/vite.config.ts"
   },
   "devDependencies": {
-    "vitest": "2.1.1",
+    "vitest": "^2.1.3",
     "zx": "^7.2.3"
   }
 }
