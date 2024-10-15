@@ -22,8 +22,8 @@
     ".": {
       "types": "./types/index.d.ts",
       "// 👋 note - import === require here, mdx-bundler is cjs only must await import() this package": "./",
-      "import": "./dist/index.cjs",
-      "require": "./dist/index.cjs",
+      "import": "./dist/index.js",
+      "require": "./dist/index.js",
       "react-native": "./dist/index.native.js",
       "default": "./dist/index.native.js"
     }
