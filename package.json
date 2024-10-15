@@ -87,7 +87,7 @@
     "test:ci": "turbo test --concurrency=1",
     "test:docker:build": "docker build -t tamagui-test -f Dockerfile.test .",
     "test:docker:run": "docker run --rm tamagui-test",
-    "test:docker": "docker build -t tamagui-test -f Dockerfile.test . && docker run --rm tamagui-test",
+    "test:docker": "docker build -t tamagui-test -f test/Dockerfile.test . && docker run --rm tamagui-test",
     "test:demos": "yarn workspace @tamagui/demos test",
     "test": "CLEANUP=1 turbo run --concurrency=1 test && yarn test:starter-free",
     "test:starter-free": "./scripts/test-starter-free.sh",

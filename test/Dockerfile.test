@@ -1,0 +1,29 @@
+# This Dockerfile is used to run tests for the Tamagui monorepo in a clean environment
+# If CI is failing you can run yarn test:docker on your own machine to debug
+
+# syntax=docker/dockerfile:1.2
+
+# Use an official Node.js LTS runtime as a parent image
+FROM node:20.17.0
+ENV CI=true
+
+# Set the working directory
+WORKDIR /app
+
+# Copy the entire project into the Docker image
+COPY . .
+
+# Install Yarn
+RUN corepack enable && corepack prepare yarn@4.4.0 --activate
+
+# Verify Yarn version
+RUN yarn --version
+
+# Install dependencies
+RUN yarn install
+
+# Build JavaScript
+RUN yarn build:js
+
+# Run the tests
+CMD yarn test
