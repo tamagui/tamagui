@@ -196,7 +196,7 @@ async function run() {
 
     if (!skipBuild && !finish) {
       // lets do a full clean and build:force, to ensure we dont have weird cached or leftover files
-      await spawnify(`yarn clean:build`)
+      await spawnify(`yarn build:force`)
       await checkDistDirs()
     }
 
