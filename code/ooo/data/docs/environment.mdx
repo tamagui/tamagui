@@ -1,0 +1,30 @@
+---
+title: Environment
+---
+
+This page covers anything One does during development and in production that modifies your environment.
+
+### Variables
+
+#### Loading .env files and process.env
+
+One sets and handle environment variables for in a few ways.
+
+First, it handles loading `.env` files during development and in production. In order to ease compatibility with ESM and CJS, One makes your loaded environment variables (from `.env` and from `process.env`) automatically be defined onto both `import.meta.env` and `process.env`.
+
+Second, One ensures that all environment variables loaded are only available to the server-side functionality, unless they are prefixed with either `VITE_` (to match Vite convention) or `ONE_PUBLIC_`.
+
+So, for example `ONE_PUBLIC_DAYTIME=false one dev` would set both `process.env.ONE_PUBLIC_DAYTIME` and `import.meta.env.ONE_PUBLIC_DAYTIME` to be the string "false" on both server and client.
+
+But, `SOME_RANDOM_VAR=2` would *not* be exposed to the client side, because it lacks the appropriate prefix.
+
+### Preset environment variables
+
+One also sets some environment variables for you, available on both `process.env` and `import.meta.env`.
+
+- `ONE_CACHE_KEY` is set to a random number for each production build, or once for each development server run. You can use this to have a stable cache key across releases.
+- `VITE_ENVIRONMENT` is set to `"client"` for client-side web, `"server"` for server-side web, and `"ios`" or `"android"` for native platforms, respectively.
+- `ONE_SERVER_URL` is set only in development to the current running server URL, like `http://0.0.0.0:8081`. You are expected to set this yourself for production builds.
+- `ONE_DEFAULT_RENDER_MODE` is set to either `"ssr"`, `"ssg"`, or `"spa"` based on your [defaultRenderMode setting](/docs/configuration#web-defaultRenderMode)
+- `ONE_APP_NAME` is set to your [app.key setting](/docs/configuration#app-key)
+- `TAMAGUI_REACT_19` is set to `1`, which turns on Tamagui React 19 mode automatically for you, for performance if using Tamagui.
