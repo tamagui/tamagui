@@ -27,7 +27,12 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => <Atom color={color} />,
           headerRight: () => (
             <Link href="/modal" asChild>
-              <Button mr="$4" bg="$purple8" color="$purple12">
+              <Button
+                mr="$4"
+                bg="$purple8"
+                color="$purple12"
+                $theme-dark={{ bg: '$red8' }}
+              >
                 Hello!
               </Button>
             </Link>
