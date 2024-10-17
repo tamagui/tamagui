@@ -203,7 +203,7 @@ async function run() {
     if (!finish) {
       console.info('run checks')
       if (!skipTest) {
-        await spawnify(`yarn test:docker`)
+        await spawnify(`yarn test`)
       }
     }
 
