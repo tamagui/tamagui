@@ -1,5 +1,5 @@
 import '@expo/match-media'
-import TestRenderer from 'react-test-renderer'
+import { render, screen } from '@testing-library/react'
 import { describe, expect, test } from 'vitest'
 
 /**
@@ -14,143 +14,111 @@ function getTest(name: string) {
   }
   const Provider = app.Provider
   return {
-    get Element() {
-      return (props) => (
-        <Provider>
-          <App {...props} />
-        </Provider>
-      )
-    },
-    get renderer() {
-      return TestRenderer.create(
+    Element: (props: any) => (
+      <Provider>
+        <App {...props} />
+      </Provider>
+    ),
+    renderTrue: () =>
+      render(
         <Provider>
           <App conditional={true} />
         </Provider>
-      )
-    },
-    get rendererFalse() {
-      return TestRenderer.create(
+      ),
+    renderFalse: () =>
+      render(
         <Provider>
           <App conditional={false} />
         </Provider>
-      )
-    },
+      ),
   }
 }
 
 describe('webpack-tests', () => {
   test('1. extracts to a div for simple views, flat transforms', () => {
-    const test1 = getTest('Test1')
-    const out = test1.renderer.toJSON()!
-    expect(out).toMatchSnapshot()
+    const { renderTrue } = getTest('Test1')
+    const { container } = renderTrue()
+    expect(container).toMatchSnapshot()
   })
 
   test('2. extracts className for complex views but keeps other props', () => {
-    const test2 = getTest('Test2')
-    const out = test2.renderer.toJSON()!
-    expect(out).toMatchSnapshot()
-    const outFalse = test2.rendererFalse.toJSON()
-    expect(outFalse).toMatchSnapshot()
+    const { renderTrue, renderFalse } = getTest('Test2')
+    const { container: containerTrue } = renderTrue()
+    expect(containerTrue).toMatchSnapshot()
+    const { container: containerFalse } = renderFalse()
+    expect(containerFalse).toMatchSnapshot()
   })
 
-  // test('3. places className correctly given a single spread', async () => {
-  //   const { Element } = getTest('Test3')
-  //   const out = render(<Element />)
-  //   const list = [...out.container.firstChild?.['classList']]
-  //   expect(list).toMatchSnapshot()
-  // })
-
-  // test('4. leaves dynamic variables', async () => {
-  //   const { renderer, Element } = getTest('Test4')
-  //   const out = render(<Element />)
-  //   const firstChild = out.container.firstChild!
-  //   const classList = [...firstChild['classList']]
-  //   expect(classList).toMatchSnapshot()
-  //   const r = renderer.toJSON()
-  //   expect(r).toMatchSnapshot()
-  // })
-
-  test('5. spread conditional', async () => {
-    const test5 = getTest('Test5')
-    const out = test5.renderer.toJSON()
-    expect(out).toMatchSnapshot()
+  test('5. spread conditional', () => {
+    const { renderTrue } = getTest('Test5')
+    const { container } = renderTrue()
+    expect(container).toMatchSnapshot()
   })
 
-  test('6. spread ternary', async () => {
-    const test6 = getTest('Test6')
-    expect(test6.renderer.toJSON()).toMatchSnapshot()
-    expect(test6.rendererFalse.toJSON()).toMatchSnapshot()
+  test('6. spread ternary', () => {
+    const { renderTrue, renderFalse } = getTest('Test6')
+    expect(renderTrue().container).toMatchSnapshot()
+    expect(renderFalse().container).toMatchSnapshot()
   })
 
-  test('7. ternary + data-is', async () => {
-    const test7 = getTest('Test7')
-    const out = test7.renderer.toJSON()
-    expect(out).toMatchSnapshot()
+  test('7. ternary + data-is', () => {
+    const { renderTrue } = getTest('Test7')
+    const { container } = renderTrue()
+    expect(container).toMatchSnapshot()
   })
 
-  test('8. styleExpansions', async () => {
-    const test8 = getTest('Test8')
-    const out = test8.renderer.toJSON()
-    expect(out).toMatchSnapshot()
+  test('8. styleExpansions', () => {
+    const { renderTrue } = getTest('Test8')
+    const { container } = renderTrue()
+    expect(container).toMatchSnapshot()
   })
 
-  test('9. combines with classname', async () => {
-    const test9 = getTest('Test9')
-    const out = test9.renderer.toJSON()
-    expect(out).toMatchSnapshot()
+  test('9. combines with classname', () => {
+    const { renderTrue } = getTest('Test9')
+    const { container } = renderTrue()
+    expect(container).toMatchSnapshot()
   })
 
-  test('10. extracts Text', async () => {
-    const test10 = getTest('Test10')
-    const out = test10.renderer.toJSON()
-    expect(out).toMatchSnapshot()
+  test('10. extracts Text', () => {
+    const { renderTrue } = getTest('Test10')
+    const { container } = renderTrue()
+    expect(container).toMatchSnapshot()
   })
 
-  // test('11. combines everything', async () => {
-  //   const { Element } = getTest('Test11')
-  //   const out = render(<Element conditional={false} />)
-  //   const firstChild = out.container.firstChild!
-  //   const classList = [...firstChild['classList']]
-  //   expect(classList).toMatchSnapshot()
-  // })
-
-  test('12. te  rnary multiple on same key', async () => {
-    const test12 = getTest('Test12')
-    expect(test12.renderer.toJSON()).toMatchSnapshot()
+  test('12. ternary multiple on same key', () => {
+    const { renderTrue } = getTest('Test12')
+    expect(renderTrue().container).toMatchSnapshot()
   })
 
-  // test('13. text with complex conditional and local vars', async () => {
-  // const test13 } = getTest('{')
-  //   // console.log('test13', test13.renderer!.toTree())
-  //   t.is(1, 1)
-  // })
-
-  test('14. extracts pseudo styles and evaluates constants', async () => {
-    const test14 = getTest('Test14')
-    const out = test14.renderer.toJSON()
-    expect(out).toMatchSnapshot()
+  test('14. extracts pseudo styles and evaluates constants', () => {
+    const { renderTrue } = getTest('Test14')
+    const { container } = renderTrue()
+    expect(container).toMatchSnapshot()
   })
 
   test('15. extracts spacer (complex expansion)', () => {
-    const test15 = getTest('Test15')
-    const out = test15.renderer.toJSON()
-    expect(out).toMatchSnapshot()
+    const { renderTrue } = getTest('Test15')
+    const { container } = renderTrue()
+    expect(container).toMatchSnapshot()
   })
 
   test('16. deopt when spreading multiple', () => {
-    const test16 = getTest('Test16')
-    const out = test16.renderer.toJSON()
-    expect(out).toMatchSnapshot()
+    const { renderTrue } = getTest('Test16')
+    const { container } = renderTrue()
+    expect(container).toMatchSnapshot()
   })
 
   test('17. variant default false flattens properly', () => {
-    const out = getTest('TestVariantDefaultFalseOn').renderer.toJSON()
-    const outCn = out.children[0].children[0].children[0].props.className
+    const { renderTrue: renderOn } = getTest('TestVariantDefaultFalseOn')
+    const { renderTrue: renderOff } = getTest('TestVariantDefaultFalseOff')
 
-    const out2 = getTest('TestVariantDefaultFalseOff').renderer.toJSON()
-    const out2Cn = out2.children[0].children[0].children[0].props.className
+    const { container: containerOn } = renderOn()
+    const { container: containerOff } = renderOff()
 
-    expect(outCn).to.not.contain(`_pl-t-space-4`)
-    expect(out2Cn).to.contain(`_pl-t-space-4`)
+    const outCn = containerOn.firstChild?.firstChild?.firstChild?.className
+    const out2Cn = containerOff.firstChild?.firstChild?.firstChild?.className
+
+    expect(outCn).not.toContain(`_pl-t-space-4`)
+    expect(out2Cn).toContain(`_pl-t-space-4`)
   })
 })
