@@ -145,7 +145,7 @@
       "parser": "typescript"
     }
   },
-  "packageManager": "yarn@4.4.0",
+  "packageManager": "yarn@4.5.0",
   "dependencies": {
     "@biomejs/biome": "^1.9.2",
     "@manypkg/cli": "^0.19.1",

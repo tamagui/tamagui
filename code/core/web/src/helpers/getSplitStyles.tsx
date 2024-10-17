@@ -1,4 +1,3 @@
-import React from 'react'
 import {
   isAndroid,
   isClient,
@@ -17,6 +16,7 @@ import {
   validPseudoKeys,
   validStyles,
 } from '@tamagui/helpers'
+import React from 'react'
 
 import { getConfig, getFont } from '../config'
 import { accessibilityDirectMap } from '../constants/accessibilityDirectMap'
@@ -61,6 +61,8 @@ import {
   shouldInsertStyleRules,
   updateRules,
 } from './insertStyleRule'
+import { isActivePlatform } from './isActivePlatform'
+import { isActiveTheme } from './isActiveTheme'
 import { log } from './log'
 import {
   normalizeValueWithProperty,
@@ -69,9 +71,8 @@ import {
 import { getPropMappedFontFamily, propMapper } from './propMapper'
 import { pseudoDescriptors, pseudoPriorities } from './pseudoDescriptors'
 import { skipProps } from './skipProps'
-import { transformsToString } from './transformsToString'
-import { isActivePlatform } from './isActivePlatform'
 import { sortString } from './sortString'
+import { transformsToString } from './transformsToString'
 
 const consoleGroupCollapsed = isWeb ? console.groupCollapsed : console.info
 
@@ -874,10 +875,8 @@ export const getSplitStyles: StyleSplitter = (
             // for now we're doing weird stuff, getStylesAtomic will put the
             // $platform-web into property so we can check it here
             const property = style[0]
-            if (property[0] === '$') {
-              if (property.startsWith('$platform') && !isActivePlatform(property)) {
-                continue
-              }
+            if (property[0] === '$' && !isActivePlatform(property)) {
+              continue
             }
 
             const out = createMediaStyle(
@@ -930,8 +929,8 @@ export const getSplitStyles: StyleSplitter = (
           if (isThemeMedia) {
             // needed to get updates when theme changes
             dynamicThemeAccess = true
-            const mediaThemeName = mediaKeyShort.slice(6)
-            if (!(themeName === mediaThemeName || themeName.startsWith(mediaThemeName))) {
+
+            if (!(themeName === mediaKeyShort || themeName.startsWith(mediaKeyShort))) {
               continue
             }
           } else if (isGroupMedia) {
@@ -1024,9 +1023,8 @@ export const getSplitStyles: StyleSplitter = (
               continue
             }
             if (subKey[0] === '$') {
-              if (!isActivePlatform(subKey)) {
-                continue
-              }
+              if (!isActivePlatform(subKey)) continue
+              if (!isActiveTheme(subKey, themeName)) continue
               for (const subSubKey in mediaStyle[subKey]) {
                 mergeMediaStyle(subSubKey, mediaStyle[subKey][subSubKey])
               }

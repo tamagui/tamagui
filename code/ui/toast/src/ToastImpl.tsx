@@ -327,6 +327,7 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
           <ToastAnnounce
             __scopeToast={__scopeToast}
             // Toasts are always role=status to avoid stuttering issues with role=alert in SRs.
+            // biome-ignore lint/a11y/useSemanticElements: <explanation>
             role="status"
             aria-live={type === 'foreground' ? 'assertive' : 'polite'}
             aria-atomic
