@@ -143,6 +143,8 @@ function Tab({
     >
       <XStack gap="$1.5" ai="center" jc="center">
         <Image
+          width={16}
+          height={16}
           scale={imageName === 'pnpm' ? 0.7 : 0.8}
           y={imageName === 'pnpm' ? 0 : 0}
           src={`/logos/${imageName}.svg`}

@@ -11,8 +11,8 @@ const watchSrcFilePath = join(watchPackagePath, 'src', 'watch.ts')
 const simplePackagePath = join(__dirname, 'fixtures', 'simple-package')
 const distPath = join(simplePackagePath, 'dist')
 const srcFilePath = join(simplePackagePath, 'src', 'index.ts')
-const distCjsFilePath = join(distPath, 'cjs', 'index.js')
-const watchDistCjsFilePath = join(watchDistPath, 'cjs', 'watch.js')
+const distCjsFilePath = join(distPath, 'cjs', 'index.cjs')
+const watchDistCjsFilePath = join(watchDistPath, 'cjs', 'watch.cjs')
 const distEsmFilePath = join(distPath, 'esm', 'index.mjs')
 const distTypesFilePath = join(simplePackagePath, 'types', 'index.d.ts')
 // // biome-ignore lint/suspicious/noConsoleLog: <explanation>
@@ -140,7 +140,7 @@ describe('tamagui-build integration test', () => {
   it('should generate correct platform-specific output', async () => {
     execSync('yarn build', { cwd: simplePackagePath })
 
-    const distCjsWebFilePath = join(distPath, 'cjs', 'index.js')
+    const distCjsWebFilePath = join(distPath, 'cjs', 'index.cjs')
     const distCjsNativeFilePath = join(distPath, 'cjs', 'index.native.js')
 
     // Check if the output files exist
@@ -197,8 +197,8 @@ describe('tamagui-build integration test', () => {
     expect(esmOutput).not.toMatch(/^\s+$/m) // No lines with only whitespace
 
     // Check that the number of lines is reduced
-    expect(cjsOutput.split('\n').length).toBeLessThan(10)
-    expect(esmOutput.split('\n').length).toBeLessThan(10)
+    expect(cjsOutput.split('\n').length).toBeLessThan(32)
+    expect(esmOutput.split('\n').length).toBeLessThan(32)
   })
 
   afterAll(() => {

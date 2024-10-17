@@ -196,7 +196,7 @@ async function run() {
 
     if (!skipBuild && !finish) {
       // lets do a full clean and build:force, to ensure we dont have weird cached or leftover files
-      await spawnify(`yarn build`)
+      await spawnify(`yarn build:force`)
       await checkDistDirs()
     }
 
@@ -205,6 +205,8 @@ async function run() {
       if (!skipTest) {
         await spawnify(`yarn fix:deps`)
         await spawnify(`yarn lint`)
+        // fix stupid cli check
+        await spawnify(`chmod ug+x ./node_modules/.bin/tamagui`)
         await spawnify(`yarn check`)
         await spawnify(`yarn test:ci`)
       }

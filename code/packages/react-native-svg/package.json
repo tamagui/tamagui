@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/react-native-svg",
-  "version": "1.114.2",
+  "version": "1.115.4",
   "main": "dist/cjs",
   "type": "module",
   "module": "dist/esm/index.js",
@@ -13,7 +13,8 @@
       "react-native-import": "./dist/esm/index.native.js",
       "react-native": "./dist/cjs/index.native.js",
       "import": "./dist/esm/index.mjs",
-      "require": "./dist/cjs/index.js"
+      "require": "./dist/cjs/index.cjs",
+      "default": "./dist/cjs/index.native.js"
     }
   },
   "scripts": {
@@ -23,6 +24,6 @@
     "clean:build": "tamagui-build clean:build"
   },
   "devDependencies": {
-    "@tamagui/build": "1.114.2"
+    "@tamagui/build": "1.115.4"
   }
 }

@@ -4,6 +4,7 @@ export const docsRoutes = [
       { title: 'Introduction', route: '/docs/introduction' },
       { title: 'Installation', route: '/docs/installation' },
       { title: 'Configuration', route: '/docs/configuration' },
+      { title: 'Environment', route: '/docs/environment' },
       { title: 'Features', route: '/docs/features' },
       { title: 'Guides', route: '/docs/guides' },
       { title: 'Status', route: '/docs/status' },
