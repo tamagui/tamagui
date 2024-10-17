@@ -28,6 +28,7 @@ export const esbuildLoaderConfig = {
   '.aac': 'file',
   '.ogg': 'file',
   '.flac': 'file',
+  '.node': 'empty',
 } as const
 
 const dataExtensions = Object.keys(esbuildLoaderConfig)

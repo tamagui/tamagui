@@ -23,6 +23,7 @@ export declare const esbuildLoaderConfig: {
     readonly '.aac': "file";
     readonly '.ogg': "file";
     readonly '.flac': "file";
+    readonly '.node': "empty";
 };
 export declare const esbuildIgnoreFilesRegex: RegExp;
 /**
