@@ -1,6 +1,5 @@
 # simulate ci
 .DS_Store
-.git
 node_modules
 .yarn/install-state.gz
 

@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/core",
-  "version": "1.114.3",
+  "version": "1.115.4",
   "source": "src/index.tsx",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -35,17 +35,17 @@
     "native-test.d.ts"
   ],
   "dependencies": {
-    "@tamagui/react-native-use-pressable": "1.114.3",
-    "@tamagui/react-native-use-responder-events": "1.114.3",
-    "@tamagui/use-event": "1.114.3",
-    "@tamagui/web": "1.114.3"
+    "@tamagui/react-native-use-pressable": "1.115.4",
+    "@tamagui/react-native-use-responder-events": "1.115.4",
+    "@tamagui/use-event": "1.115.4",
+    "@tamagui/web": "1.115.4"
   },
   "devDependencies": {
-    "@tamagui/build": "1.114.3",
+    "@tamagui/build": "1.115.4",
     "@testing-library/react": "^16.0.1",
     "csstype": "^3.0.10",
     "typescript": "^5.5.2",
-    "vitest": "2.1.1"
+    "vitest": "^2.1.3"
   },
   "exports": {
     "./package.json": "./package.json",
@@ -55,27 +55,32 @@
       "react-native": "./dist/cjs/index.native.js",
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
-      "require": "./dist/cjs/index.js"
+      "require": "./dist/cjs/index.cjs",
+      "default": "./dist/cjs/index.native.js"
     },
     "./native": {
       "types": "./types/index.d.ts",
       "import": "./dist/native.mjs",
-      "require": "./dist/native.js"
+      "require": "./dist/native.js",
+      "react-native": "./dist/native.native.js"
     },
     "./native-test": {
       "types": "./types/index.d.ts",
       "import": "./dist/test.native.js",
-      "require": "./dist/test.native.js"
+      "require": "./dist/test.native.js",
+      "react-native": "./dist/test.native.native.js"
     },
     "./inject-styles": {
       "types": "./types/inject-styles.d.ts",
       "import": "./dist/esm/inject-styles.mjs",
-      "require": "./dist/cjs/inject-styles.js"
+      "require": "./dist/cjs/inject-styles.cjs",
+      "react-native": "./dist/cjs/inject-styles.native.js"
     },
     "./reactNativeTypes": {
       "types": "./types/reactNativeTypes.d.ts",
       "import": "./dist/esm/reactNativeTypes.mjs",
-      "require": "./dist/cjs/reactNativeTypes.js"
+      "require": "./dist/cjs/reactNativeTypes.cjs",
+      "react-native": "./dist/cjs/reactNativeTypes.native.js"
     }
   },
   "repository": {

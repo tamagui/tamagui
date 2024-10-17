@@ -196,17 +196,14 @@ async function run() {
 
     if (!skipBuild && !finish) {
       // lets do a full clean and build:force, to ensure we dont have weird cached or leftover files
-      await spawnify(`yarn build`)
+      await spawnify(`yarn build:force`)
       await checkDistDirs()
     }
 
     if (!finish) {
       console.info('run checks')
       if (!skipTest) {
-        await spawnify(`yarn fix:deps`)
-        await spawnify(`yarn lint`)
-        await spawnify(`yarn check`)
-        await spawnify(`yarn test:ci`)
+        await spawnify(`yarn test:docker`)
       }
     }
 

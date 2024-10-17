@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/font-silkscreen",
-  "version": "1.114.3",
+  "version": "1.115.4",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -18,7 +18,8 @@
       "react-native": "./dist/cjs/index.native.js",
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
-      "require": "./dist/cjs/index.js"
+      "require": "./dist/cjs/index.cjs",
+      "default": "./dist/cjs/index.native.js"
     }
   },
   "scripts": {
@@ -30,10 +31,10 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/core": "1.114.3"
+    "@tamagui/core": "1.115.4"
   },
   "devDependencies": {
-    "@tamagui/build": "1.114.3"
+    "@tamagui/build": "1.115.4"
   },
   "publishConfig": {
     "access": "public"

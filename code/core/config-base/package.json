@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/config-base",
-  "version": "1.114.3",
+  "version": "1.115.4",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -25,11 +25,12 @@
       "react-native": "./dist/cjs/index.native.js",
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
-      "require": "./dist/cjs/index.js"
+      "require": "./dist/cjs/index.cjs",
+      "default": "./dist/cjs/index.native.js"
     }
   },
   "devDependencies": {
-    "@tamagui/build": "1.114.3"
+    "@tamagui/build": "1.115.4"
   },
   "publishConfig": {
     "access": "public"

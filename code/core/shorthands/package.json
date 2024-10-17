@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/shorthands",
-  "version": "1.114.3",
+  "version": "1.115.4",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
@@ -28,18 +28,19 @@
       "react-native": "./dist/cjs/index.native.js",
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
-      "require": "./dist/cjs/index.js"
+      "require": "./dist/cjs/index.cjs",
+      "default": "./dist/cjs/index.native.js"
     },
     "./v2": {
       "react-native-import": "./dist/esm/v2.native.js",
       "react-native": "./dist/cjs/v2.native.js",
       "types": "./types/v2.d.ts",
       "import": "./dist/esm/v2.mjs",
-      "require": "./dist/cjs/v2.js"
+      "require": "./dist/cjs/v2.cjs"
     }
   },
   "devDependencies": {
-    "@tamagui/build": "1.114.3"
+    "@tamagui/build": "1.115.4"
   },
   "publishConfig": {
     "access": "public"

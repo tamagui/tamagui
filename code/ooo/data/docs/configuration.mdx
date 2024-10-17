@@ -84,11 +84,23 @@ export default {
 } satisfies UserConfig
 ```
 
+Note that some of this configuration is ultimately stored into [environment variables](/docs/environment) for you.
+
+## app
+
+The app object allows you to configure your native apps.
+
+### app.key
+
+One will set up your React Native app to run via `AppRegistry.registerComponent(app.key)`.
+
+This setting must match the key you gave the React Native app container you've built.
+
 ## web
 
 The web object allows you to configure web specific settings.
 
-### defaultRenderMode
+### web.defaultRenderMode
 
 Choose between one of `ssg`, `spa` or `ssr`. The default is `ssg`.
 

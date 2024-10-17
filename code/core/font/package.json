@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/font",
-  "version": "1.114.3",
+  "version": "1.115.4",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -21,11 +21,11 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/constants": "1.114.3",
-    "@tamagui/web": "1.114.3"
+    "@tamagui/constants": "1.115.4",
+    "@tamagui/web": "1.115.4"
   },
   "devDependencies": {
-    "@tamagui/build": "1.114.3",
+    "@tamagui/build": "1.115.4",
     "react": "^18.2.0 || ^19.0.0"
   },
   "publishConfig": {

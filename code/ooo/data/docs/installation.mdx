@@ -26,7 +26,6 @@ Let's begin with our package.json:
   "name": "one-app",
   "version": "0.0.0",
   "type": "module",
-  "sideEffects": false,
   "scripts": {
     "dev": "one dev",
     "build": "one build",
@@ -45,9 +44,6 @@ Let's begin with our package.json:
 }
 ```
 
-Note the `sideEffects` field - for production builds, this will enable much better tree shaking.
-
-
 It is strongly recommended to pin the `one` version for production stability:
 
 ```bash
@@ -55,6 +51,9 @@ npm install one@latest --save-exact
 ```
 
 This ensures consistent behavior across different environments and deployments.
+
+If using pnpm or a package manager that symlinks dependencies, you'll want to disable that setting.
+One has (just a few) patches that fix dependencies. In part this is to enable switching between React 19 on web and React 18 on native, in part this is because the React Native ecosystem has many, many weirdly published packages - think JSX or Flowtype published in `.js` files, or non-standard legacy babel experimental transforms, etc. We are working with package authors to improve this, but we've found patches to be both simpler and require less mysterious behavior/slowdowns than the alternative - making Vite handle everything internally with magic.
 
 ### Vite Config
 

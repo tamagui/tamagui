@@ -1,9 +1,3 @@
-import type { RenderResult } from '@testing-library/react'
-import { act, cleanup, fireEvent, render } from '@testing-library/react'
-import { last } from 'lodash'
-import React, { StrictMode, version } from 'react'
-import { afterEach, describe, expect, it } from 'vitest'
-
 /**
  * @jest-environment jsdom
  */
@@ -14,6 +8,11 @@ import {
   useGlobalStoreSelector,
   useStore,
 } from '../src'
+import type { RenderResult } from '@testing-library/react'
+import { act, cleanup, fireEvent, render } from '@testing-library/react'
+import { last } from 'lodash'
+import { StrictMode } from 'react'
+import { afterEach, describe, expect, it } from 'vitest'
 
 Error.stackTraceLimit = Infinity
 

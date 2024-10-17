@@ -1,13 +1,13 @@
 {
   "name": "@tamagui/sandbox-ui",
-  "version": "1.114.3",
+  "version": "1.115.4",
   "private": true,
   "sideEffects": [
     "*.css"
   ],
   "types": "./types/index",
-  "main": "dist/cjs",
-  "module": "dist/esm",
+  "main": "dist/cjs/index.cjs",
+  "module": "dist/esm/index.mjs",
   "module:jsx": "dist/jsx",
   "files": [
     "types",
@@ -23,13 +23,13 @@
   },
   "dependencies": {
     "@expo/vector-icons": "^13.0.0",
-    "@tamagui/lucide-icons": "1.114.3",
-    "@tamagui/toast": "1.114.3",
+    "@tamagui/lucide-icons": "1.115.4",
+    "@tamagui/toast": "1.115.4",
     "expo-image": "^1.5.1",
     "solito": "^4.2.2",
-    "tamagui": "1.114.3"
+    "tamagui": "1.115.4"
   },
   "devDependencies": {
-    "@tamagui/build": "1.114.3"
+    "@tamagui/build": "1.115.4"
   }
 }
