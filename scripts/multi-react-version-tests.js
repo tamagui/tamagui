@@ -1,4 +1,4 @@
-const { readFileSync, writeFileSync, existsSync, unlinkSync, rmSync } = require('node:fs')
+const { readFileSync, writeFileSync, existsSync, unlinkSync } = require('node:fs')
 const { join } = require('node:path')
 
 // Path to your root package.json
@@ -6,7 +6,7 @@ const packageJsonPath = join(__dirname, '../', 'package.json')
 const cacheFilePath = join(__dirname, '../', '.package-json-cache')
 
 process.on('beforeExit', () => {
-  rmSync(cacheFilePath)
+  resetPackageJson()
 })
 
 // Function to reset package.json
