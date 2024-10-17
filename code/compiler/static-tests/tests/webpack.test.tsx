@@ -115,8 +115,10 @@ describe('webpack-tests', () => {
     const { container: containerOn } = renderOn()
     const { container: containerOff } = renderOff()
 
-    const outCn = containerOn.firstChild?.firstChild?.firstChild?.className
-    const out2Cn = containerOff.firstChild?.firstChild?.firstChild?.className
+    const outCn =
+      containerOn.firstChild?.firstChild?.firstChild?.firstChild?.['className']
+    const out2Cn =
+      containerOff.firstChild?.firstChild?.firstChild?.firstChild?.['className']
 
     expect(outCn).not.toContain(`_pl-t-space-4`)
     expect(out2Cn).toContain(`_pl-t-space-4`)
