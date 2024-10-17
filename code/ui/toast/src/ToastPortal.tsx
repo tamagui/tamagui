@@ -11,7 +11,7 @@ export function ToastPortal({
   zIndex?: number
 }) {
   let content = children
-  if (Platform.OS === 'android') {
+  if (Platform.OS === 'android' || Platform.OS === 'ios') {
     content = (
       <ReprogapateToastProvider context={useToastProviderContext()}>
         {children}
