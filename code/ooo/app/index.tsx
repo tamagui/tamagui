@@ -26,6 +26,7 @@ import {
   styled,
 } from 'tamagui'
 import { Button } from '~/components/Button'
+import { Community } from '~/components/Community'
 import { Hint } from '~/components/Hint'
 import { Team } from '~/components/Team'
 import { PrettyText, PrettyTextBigger, PrettyTextBiggest } from '~/components/typography'
@@ -314,49 +315,58 @@ export default function HomePage() {
 
           <Spacer /> */}
 
+          <Link asChild href="https://testflight.apple.com/join/aNcDUHZY" target="_blank">
+            <XStack
+              tag="a"
+              className="text-underline-none"
+              my="$6"
+              gap="$6"
+              ai="center"
+              jc="center"
+              animation="medium"
+              cur="pointer"
+              bg="$color1"
+              als="center"
+              px="$4"
+              py="$4"
+              br="$9"
+              hoverStyle={{
+                y: -2,
+                bg: '$color2',
+              }}
+              $sm={{
+                fd: 'column',
+              }}
+            >
+              <img width={80} height={80} src="/testflight.webp" alt="Testflight Icon" />
+
+              <YStack>
+                <PrettyText
+                  ff="$perfectlyNineties"
+                  mb="$1"
+                  className="text-underline-none"
+                  fontSize="$7"
+                  lineHeight="$7"
+                  cur="inherit"
+                  color="$color"
+                  $sm={{
+                    size: '$5',
+                  }}
+                >
+                  Demo
+                </PrettyText>
+
+                <PrettyText o={0.8} cur="inherit" maw={400}>
+                  Check out our small sample app to see a One iOS app in motion. On
+                  Testflight.
+                </PrettyText>
+              </YStack>
+            </XStack>
+          </Link>
+
           <Separator />
 
-          {/* <Link href="https://testflight.apple.com/join/aNcDUHZY" target="_blank"> */}
-          <XStack
-            my="$6"
-            gap="$6"
-            ai="center"
-            jc="center"
-            animation="medium"
-            hoverStyle={{
-              y: -3,
-            }}
-            $sm={{
-              fd: 'column',
-            }}
-          >
-            <img width={80} height={80} src="/testflight.webp" alt="Testflight Icon" />
-
-            <YStack>
-              <PrettyText
-                ff="$perfectlyNineties"
-                fontSize="$7"
-                lineHeight="$7"
-                color="$color"
-                ta="center"
-                // style={{
-                //   textDecoration: 'line-through',
-                // }}
-                $sm={{
-                  size: '$5',
-                }}
-                mb="$4"
-              >
-                TestFlight demo incoming
-              </PrettyText>
-
-              <PrettyText maw={400}>
-                We had a TestFlight demo that on launch, but it lacks the refinement we
-                expect. We have a variety of improvements coming soon.
-              </PrettyText>
-            </YStack>
-          </XStack>
-          {/* </Link> */}
+          <Community />
 
           <Separator />
 
@@ -422,7 +432,7 @@ const InfoCard = ({ title, Icon, children }) => {
       $sm={{ w: '100%', mb: '$2' }}
     >
       <YStack fullscreen o={0.25}>
-        {/* <Corners /> */}
+        <Corners />
       </YStack>
       <YStack gap="$2" p="$4">
         <Icon als="flex-end" mb={-20} o={0.1} size={28} />
@@ -617,7 +627,7 @@ function Video() {
 const Separator = styled(View, {
   width: '100%',
   height: 1,
-  bc: '$borderColor',
+  bc: '$color4',
   borderStyle: 'dotted',
   bw: 0,
   bbw: 1,
