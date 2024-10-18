@@ -1,19 +1,18 @@
 import '@tamagui/polyfill-dev'
 
 import type { UseHoverProps } from '@floating-ui/react'
-import { Adapt, useAdaptParent } from '@tamagui/adapt'
+import {
+  Adapt,
+  AdaptPortalContents,
+  useAdaptParent,
+  useAdaptWhenIsActive,
+} from '@tamagui/adapt'
 import { Animate } from '@tamagui/animate'
 import { ResetPresence } from '@tamagui/animate-presence'
 import { hideOthers } from '@tamagui/aria-hidden'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
-import type {
-  MediaQueryKey,
-  ScopedProps,
-  SizeTokens,
-  StackProps,
-  TamaguiElement,
-} from '@tamagui/core'
+import type { ScopedProps, SizeTokens, StackProps, TamaguiElement } from '@tamagui/core'
 import {
   Stack,
   Theme,
@@ -22,7 +21,6 @@ import {
   createStyledContext,
   useEvent,
   useGet,
-  useMedia,
   useThemeName,
 } from '@tamagui/core'
 import type { DismissableProps } from '@tamagui/dismissable'
@@ -45,7 +43,7 @@ import {
   PopperContext,
   usePopperContext,
 } from '@tamagui/popper'
-import { Portal, PortalItem } from '@tamagui/portal'
+import { Portal } from '@tamagui/portal'
 import type { RemoveScrollProps } from '@tamagui/remove-scroll'
 import { RemoveScroll } from '@tamagui/remove-scroll'
 import { Sheet, SheetController } from '@tamagui/sheet'
@@ -440,7 +438,7 @@ const PopoverContentImpl = React.forwardRef<
     }
 
     // doesn't show as popover yet on native, must use as sheet
-    return <PortalItem hostName={`${context.id}PopoverContents`}>{content}</PortalItem>
+    return <AdaptPortalContents>{content}</AdaptPortalContents>
   }
 
   // const handleDismiss = React.useCallback((event: GestureResponderEvent) =>{
@@ -534,7 +532,7 @@ export const PopoverArrow = PopperArrow.styleable<PopperArrowExtraProps>(
   function PopoverArrow(props: ScopedPopoverProps<PopoverArrowProps>, forwardedRef) {
     const { __scopePopover, ...rest } = props
     const context = usePopoverContext(__scopePopover)
-    const sheetActive = useSheetBreakpointActive(context.sheetBreakpoint)
+    const sheetActive = useAdaptWhenIsActive(context.sheetBreakpoint)
     if (sheetActive) {
       return null
     }
@@ -605,7 +603,7 @@ export const Popover = withStaticProperties(
         setOpen(val)
       })
 
-      const sheetActive = useSheetBreakpointActive(sheetBreakpoint)
+      const sheetActive = useAdaptWhenIsActive(sheetBreakpoint)
 
       const floatingContext = useFloatingContext({
         open,
@@ -733,15 +731,7 @@ const PopoverSheetController = ({
   )
 }
 
-const useSheetBreakpointActive = (breakpoint?: MediaQueryKey | null | boolean) => {
-  const media = useMedia()
-  if (typeof breakpoint === 'boolean' || !breakpoint) {
-    return !!breakpoint
-  }
-  return media[breakpoint]
-}
-
 const useShowPopoverSheet = (context: PopoverContextValue) => {
-  const breakpointActive = useSheetBreakpointActive(context.sheetBreakpoint)
+  const breakpointActive = useAdaptWhenIsActive(context.sheetBreakpoint)
   return context.open === false ? false : breakpointActive
 }

@@ -3,7 +3,6 @@ import React from 'react'
 
 import { getSetting } from '../config'
 import { ComponentContext } from '../contexts/ComponentContext'
-import { setupMediaListeners } from '../hooks/useMedia'
 import type { TamaguiProviderProps } from '../types'
 import { ThemeProvider } from './ThemeProvider'
 
@@ -17,8 +16,6 @@ export function TamaguiProvider({
   reset,
   themeClassNameOnRoot,
 }: TamaguiProviderProps) {
-  setupMediaListeners()
-
   if (!process.env.TAMAGUI_REACT_19) {
     if (isClient) {
       // inject CSS if asked to (not SSR compliant)
