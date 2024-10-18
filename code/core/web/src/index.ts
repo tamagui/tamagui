@@ -69,6 +69,7 @@ export {
   mediaState,
   mediaKeyMatch,
   useMedia,
+  _disableMediaTouch,
   getMedia,
   mediaObjectToString,
   mediaQueryConfig,

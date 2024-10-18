@@ -1,21 +1,20 @@
-import { Adapt, useAdaptParent } from '@tamagui/adapt'
+import { Adapt, useAdaptParent, useAdaptWhenIsActive } from '@tamagui/adapt'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import type { FontSizeTokens, GetProps, TamaguiElement } from '@tamagui/core'
 import { getVariableValue, styled, useEvent, useGet } from '@tamagui/core'
+import { registerFocusable } from '@tamagui/focusable'
 import { getSpace } from '@tamagui/get-token'
 import { withStaticProperties } from '@tamagui/helpers'
 import type { ListItemProps } from '@tamagui/list-item'
 import { ListItem } from '@tamagui/list-item'
-import { PortalHost } from '@tamagui/portal'
 import { Separator } from '@tamagui/separator'
-import { registerFocusable } from '@tamagui/focusable'
 import { Sheet, SheetController } from '@tamagui/sheet'
 import { ThemeableStack, XStack, YStack } from '@tamagui/stacks'
 import { Paragraph, SizableText } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
-import * as React from 'react'
 import { useDebounce } from '@tamagui/use-debounce'
+import * as React from 'react'
 
 import { SELECT_NAME } from './constants'
 import {
@@ -32,11 +31,8 @@ import { ITEM_TEXT_NAME, SelectItemText } from './SelectItemText'
 import { SelectScrollDownButton, SelectScrollUpButton } from './SelectScrollButton'
 import { SelectTrigger } from './SelectTrigger'
 import { SelectViewport } from './SelectViewport'
-import type { SelectScopedProps, SelectImplProps, SelectProps } from './types'
-import {
-  useSelectBreakpointActive,
-  useShowSelectSheet,
-} from './useSelectBreakpointActive'
+import type { SelectImplProps, SelectProps, SelectScopedProps } from './types'
+import { useShowSelectSheet } from './useSelectBreakpointActive'
 
 /* -------------------------------------------------------------------------------------------------
  * SelectValue
@@ -314,7 +310,7 @@ const SelectSheetController = (
 ) => {
   const context = useSelectContext('SelectSheetController', props.__scopeSelect)
   const showSheet = useShowSelectSheet(context)
-  const breakpointActive = useSelectBreakpointActive(context.sheetBreakpoint)
+  const breakpointActive = useAdaptWhenIsActive(context.sheetBreakpoint)
   const getShowSheet = useGet(showSheet)
 
   return (
@@ -368,9 +364,8 @@ export const Select = withStaticProperties(
       portal: `${scopeKey}SheetContents`,
     })
 
-    const sheetBreakpoint = when
-    const isSheet = useSelectBreakpointActive(sheetBreakpoint)
-    const SelectImpl = isSheet || !isWeb ? SelectSheetImpl : SelectInlineImpl
+    const isAdapted = useAdaptWhenIsActive(when)
+    const SelectImpl = isAdapted || !isWeb ? SelectSheetImpl : SelectInlineImpl
     const forceUpdate = React.useReducer(() => ({}), {})[1]
     const [selectedItem, setSelectedItem] = React.useState<React.ReactNode>(null)
 
@@ -486,7 +481,7 @@ export const Select = withStaticProperties(
             valueNode={valueNode}
             onValueNodeChange={setValueNode}
             scopeKey={scopeKey}
-            sheetBreakpoint={sheetBreakpoint}
+            sheetBreakpoint={when}
             activeIndex={activeIndex}
             selectedIndex={selectedIndex}
             setActiveIndex={setActiveIndexDebounced}

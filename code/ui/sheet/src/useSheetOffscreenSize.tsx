@@ -11,6 +11,10 @@ export const useSheetOffscreenSize = ({
     return 0
   }
 
+  if (!snapPoints) {
+    return 0
+  }
+
   if (snapPointsMode === 'constant') {
     const maxSize = Number(snapPoints[0])
     const currentSize = Number(snapPoints[position] ?? 0)

@@ -1,7 +1,7 @@
 import type { FontSizeTokens, TamaguiElement } from '@tamagui/core';
 import type { ListItemProps } from '@tamagui/list-item';
 import * as React from 'react';
-import type { SelectScopedProps, SelectProps } from './types';
+import type { SelectProps, SelectScopedProps } from './types';
 export interface SelectValueExtraProps {
     placeholder?: React.ReactNode;
 }
@@ -30,7 +30,7 @@ export declare const SelectSeparator: import("@tamagui/core").TamaguiComponent<i
     vertical?: boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
 export declare const Select: ((props: SelectScopedProps<SelectProps>) => import("react/jsx-runtime").JSX.Element) & {
-    Adapt: (({ platform, when, children }: import("@tamagui/adapt").AdaptProps) => JSX.Element | null) & {
+    Adapt: (({ platform, when, children }: import("@tamagui/adapt").AdaptProps) => string | number | boolean | JSX.Element | Iterable<React.ReactNode> | null | undefined) & {
         Contents: {
             (props: any): React.FunctionComponentElement<any>;
             shouldForwardSpace: boolean;
