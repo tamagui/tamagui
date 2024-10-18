@@ -6,19 +6,17 @@ import {
   useIsomorphicLayoutEffect,
 } from '@tamagui/constants'
 import type { MediaQueryKey, UseMediaState } from '@tamagui/core'
-import { useMedia } from '@tamagui/core'
+import { useMedia, _disableMediaTouch } from '@tamagui/core'
 import { withStaticProperties } from '@tamagui/helpers'
-import { PortalHost } from '@tamagui/portal'
-import React from 'react'
+import { PortalHost, PortalItem } from '@tamagui/portal'
+import React, { useContext } from 'react'
 
 type MediaQueryKeyString = MediaQueryKey extends string ? MediaQueryKey : never
 
 export type AdaptProps = {
   when?: MediaQueryKeyString | ((state: { media: UseMediaState }) => boolean)
   platform?: 'native' | 'web' | 'touch' | 'ios' | 'android'
-  children:
-    | JSX.Element
-    | ((state: { enabled: boolean; media: UseMediaState }) => JSX.Element)
+  children: JSX.Element | ((children: React.ReactNode) => React.ReactNode)
 }
 
 type When = MediaQueryKeyString | boolean | null
@@ -27,6 +25,7 @@ type Component = (props: any) => any
 type AdaptParentContextI = {
   Contents: Component
   setWhen: (when: When) => any
+  portalName?: string
 }
 
 export const AdaptParentContext = React.createContext<AdaptParentContextI | null>(null)
@@ -51,6 +50,7 @@ export const useAdaptParent = (
     | { Contents: AdaptParentContextI['Contents'] }
     | { portal: string; forwardProps?: any; name?: string }
 ) => {
+  const portalName = 'portal' in props ? props.portal : undefined
   const Contents =
     'Contents' in props
       ? props.Contents
@@ -64,6 +64,7 @@ export const useAdaptParent = (
     const context: AdaptParentContextI = {
       Contents,
       setWhen,
+      portalName,
     }
 
     function AdaptProviderView(props: { children?: any }) {
@@ -75,7 +76,7 @@ export const useAdaptParent = (
     }
 
     return AdaptProviderView
-  }, [Contents])
+  }, [Contents, portalName])
 
   return {
     AdaptProvider,
@@ -89,6 +90,8 @@ export const Adapt = withStaticProperties(
     const media = useMedia()
 
     let enabled = false
+
+    console.log('when2', when)
 
     if (typeof when === 'function') {
       enabled = when({ media })
@@ -115,12 +118,15 @@ export const Adapt = withStaticProperties(
       }
     }, [when, context, enabled])
 
+    console.log('enabled', enabled, children)
+
     if (!enabled) {
       return null
     }
 
     if (typeof children === 'function') {
-      return children({ enabled, media })
+      const Component = context?.Contents
+      return children(Component ? <Component /> : null)
     }
 
     return children
@@ -129,3 +135,19 @@ export const Adapt = withStaticProperties(
     Contents: AdaptContents,
   }
 )
+
+export const AdaptPortalContents = (props: { children: React.ReactNode }) => {
+  const adaptContext = useContext(AdaptParentContext)
+  return <PortalItem hostName={adaptContext?.portalName}>{props.children}</PortalItem>
+}
+
+export const useAdaptWhenIsActive = (breakpoint?: MediaQueryKey | null | boolean) => {
+  const media = useMedia(undefined, true)
+
+  console.warn('useAdaptWhenIsActive', media.gtXs)
+
+  if (typeof breakpoint === 'boolean' || !breakpoint) {
+    return !!breakpoint
+  }
+  return media[breakpoint]
+}
