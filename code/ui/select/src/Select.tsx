@@ -365,10 +365,7 @@ export const Select = withStaticProperties(
       : internalId
 
     const { when, AdaptProvider } = useAdaptParent({
-      Contents: React.useCallback(
-        () => <PortalHost name={`${scopeKey}SheetContents`} />,
-        [scopeKey]
-      ),
+      portal: `${scopeKey}SheetContents`,
     })
 
     const sheetBreakpoint = when
