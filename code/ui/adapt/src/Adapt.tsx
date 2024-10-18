@@ -6,10 +6,10 @@ import {
   useIsomorphicLayoutEffect,
 } from '@tamagui/constants'
 import type { MediaQueryKey, UseMediaState } from '@tamagui/core'
-import { useMedia, _disableMediaTouch } from '@tamagui/core'
+import { useMedia } from '@tamagui/core'
 import { withStaticProperties } from '@tamagui/helpers'
 import { PortalHost, PortalItem } from '@tamagui/portal'
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useId } from 'react'
 
 type MediaQueryKeyString = MediaQueryKey extends string ? MediaQueryKey : never
 
@@ -24,7 +24,9 @@ type When = MediaQueryKeyString | boolean | null
 type Component = (props: any) => any
 type AdaptParentContextI = {
   Contents: Component
+  when?: When
   setWhen: (when: When) => any
+  setChildren: (children: any) => any
   portalName?: string
 }
 
@@ -51,6 +53,7 @@ export const useAdaptParent = (
     | { portal: string; forwardProps?: any; name?: string }
 ) => {
   const portalName = 'portal' in props ? props.portal : undefined
+
   const Contents =
     'Contents' in props
       ? props.Contents
@@ -59,11 +62,14 @@ export const useAdaptParent = (
         }, [props.portal])
 
   const [when, setWhen] = React.useState<When>(null)
+  const [children, setChildren] = React.useState(null)
 
   const AdaptProvider = React.useMemo(() => {
     const context: AdaptParentContextI = {
       Contents,
+      when,
       setWhen,
+      setChildren,
       portalName,
     }
 
@@ -81,6 +87,7 @@ export const useAdaptParent = (
   return {
     AdaptProvider,
     when,
+    children,
   }
 }
 
@@ -90,8 +97,6 @@ export const Adapt = withStaticProperties(
     const media = useMedia()
 
     let enabled = false
-
-    console.log('when2', when)
 
     if (typeof when === 'function') {
       enabled = when({ media })
@@ -110,26 +115,33 @@ export const Adapt = withStaticProperties(
     }
 
     useIsomorphicLayoutEffect(() => {
-      if (!enabled) return
       context?.setWhen((when || enabled) as When)
+    }, [when, context, enabled])
 
+    useIsomorphicLayoutEffect(() => {
       return () => {
         context?.setWhen(null)
       }
-    }, [when, context, enabled])
+    }, [])
 
-    console.log('enabled', enabled, children)
+    let output
+
+    if (typeof children === 'function') {
+      const Component = context?.Contents
+      output = children(Component ? <Component /> : null)
+    }
+
+    useEffect(() => {
+      if (output !== undefined) {
+        context?.setChildren(output)
+      }
+    }, [output])
 
     if (!enabled) {
       return null
     }
 
-    if (typeof children === 'function') {
-      const Component = context?.Contents
-      return children(Component ? <Component /> : null)
-    }
-
-    return children
+    return output === undefined ? children : null
   },
   {
     Contents: AdaptContents,
@@ -138,7 +150,13 @@ export const Adapt = withStaticProperties(
 
 export const AdaptPortalContents = (props: { children: React.ReactNode }) => {
   const adaptContext = useContext(AdaptParentContext)
-  return <PortalItem hostName={adaptContext?.portalName}>{props.children}</PortalItem>
+  const isActive = useAdaptWhenIsActive(adaptContext?.when)
+
+  return (
+    <PortalItem passthrough={!isActive} hostName={adaptContext?.portalName}>
+      {props.children}
+    </PortalItem>
+  )
 }
 
 export const useAdaptWhenIsActive = (breakpoint?: MediaQueryKey | null | boolean) => {
