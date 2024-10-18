@@ -1,8 +1,8 @@
-import { _dmt } from '../hooks/useMedia'
+import { _disableMediaTouch } from '../hooks/useMedia'
 
 export function log(...args: any[]) {
   if (process.env.NODE_ENV === 'production') return
-  _dmt(true)
+  _disableMediaTouch(true)
   try {
     if (process.env.TAMAGUI_TARGET === 'web') {
       return console.info(...args)
@@ -11,6 +11,6 @@ export function log(...args: any[]) {
     // biome-ignore lint/suspicious/noConsoleLog: <explanation>
     return console.log(...args)
   } finally {
-    _dmt(false)
+    _disableMediaTouch(false)
   }
 }

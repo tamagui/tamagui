@@ -110,7 +110,6 @@ module.exports = {
           NODE_ENV: JSON.stringify(NODE_ENV),
           __DEV__: NODE_ENV === 'development' ? 'true' : 'false',
           DEBUG: JSON.stringify(process.env.DEBUG || '0'),
-          TAMAGUI_SYNC_MEDIA_QUERY: JSON.stringify(process.env.TAMAGUI_SYNC_MEDIA_QUERY),
         },
       },
     }),

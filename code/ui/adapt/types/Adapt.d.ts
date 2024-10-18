@@ -6,16 +6,14 @@ export type AdaptProps = {
         media: UseMediaState;
     }) => boolean);
     platform?: 'native' | 'web' | 'touch' | 'ios' | 'android';
-    children: JSX.Element | ((state: {
-        enabled: boolean;
-        media: UseMediaState;
-    }) => JSX.Element);
+    children: JSX.Element | ((children: React.ReactNode) => React.ReactNode);
 };
 type When = MediaQueryKeyString | boolean | null;
 type Component = (props: any) => any;
 type AdaptParentContextI = {
     Contents: Component;
     setWhen: (when: When) => any;
+    portalName?: string;
 };
 export declare const AdaptParentContext: React.Context<AdaptParentContextI | null>;
 export declare const AdaptContents: {
@@ -34,11 +32,15 @@ export declare const useAdaptParent: (props: {
     }) => import("react/jsx-runtime").JSX.Element;
     when: When;
 };
-export declare const Adapt: (({ platform, when, children }: AdaptProps) => JSX.Element | null) & {
+export declare const Adapt: (({ platform, when, children }: AdaptProps) => string | number | boolean | JSX.Element | Iterable<React.ReactNode> | null | undefined) & {
     Contents: {
         (props: any): React.FunctionComponentElement<any>;
         shouldForwardSpace: boolean;
     };
 };
+export declare const AdaptPortalContents: (props: {
+    children: React.ReactNode;
+}) => import("react/jsx-runtime").JSX.Element;
+export declare const useAdaptWhenIsActive: (breakpoint?: MediaQueryKey | null | boolean) => boolean;
 export {};
 //# sourceMappingURL=Adapt.d.ts.map
