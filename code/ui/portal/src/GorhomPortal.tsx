@@ -315,6 +315,11 @@ PortalHost.displayName = 'PortalHost'
 
 export interface PortalItemProps {
   /**
+   * When true, avoid portal and just render children directly
+   */
+  passthrough?: boolean
+
+  /**
    * Portal's key or name to be used as an identifier.
    * @type string
    * @default generated unique key.
@@ -362,6 +367,7 @@ const PortalComponent = (props: PortalItemProps) => {
     handleOnMount: _providedHandleOnMount,
     handleOnUnmount: _providedHandleOnUnmount,
     handleOnUpdate: _providedHandleOnUpdate,
+    passthrough,
     children,
   } = props
   const { addPortal: addUpdatePortal, removePortal } = usePortal(hostName)
@@ -403,7 +409,7 @@ const PortalComponent = (props: PortalItemProps) => {
     handleOnUpdate()
   }, [children])
 
-  return null
+  return passthrough ? children : null
 }
 
 export const PortalItem = memo(PortalComponent)
