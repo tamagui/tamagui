@@ -1,0 +1,31 @@
+html,
+body {
+  max-width: 100vw;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+body {
+  margin: 0;
+  position: relative;
+  max-width: 100vw;
+  background-color: var(--bodyBg) !important;
+}
+
+a {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-decoration-color: var(--color025);
+  text-underline-offset: 3px;
+  transition: all ease-in 100ms;
+}
+
+:root {
+  --bodyBg: #fff;
+}
+
+:root.t_dark {
+  --bodyBg: #000;
+}
