@@ -1,5 +1,5 @@
-import React from 'react';
 import type { MediaQueryKey, UseMediaState } from '@tamagui/core';
+import React from 'react';
 type MediaQueryKeyString = MediaQueryKey extends string ? MediaQueryKey : never;
 export type AdaptProps = {
     when?: MediaQueryKeyString | ((state: {
@@ -22,8 +22,12 @@ export declare const AdaptContents: {
     (props: any): React.FunctionComponentElement<any>;
     shouldForwardSpace: boolean;
 };
-export declare const useAdaptParent: ({ Contents, }: {
+export declare const useAdaptParent: (props: {
     Contents: AdaptParentContextI["Contents"];
+} | {
+    portal: string;
+    forwardProps?: any;
+    name?: string;
 }) => {
     AdaptProvider: (props: {
         children?: any;

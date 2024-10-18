@@ -850,12 +850,8 @@ const Dialog = withStaticProperties(
     }
 
     const { when, AdaptProvider } = useAdaptParent({
-      Contents: React.useCallback(
-        (props) => {
-          return <PortalHost forwardProps={props} name={sheetContentsName} />
-        },
-        [sheetContentsName]
-      ),
+      portal: sheetContentsName,
+      forwardProps: props,
     })
 
     React.useImperativeHandle(

@@ -1,4 +1,3 @@
-import React from 'react'
 import {
   isAndroid,
   isIos,
@@ -9,6 +8,8 @@ import {
 import type { MediaQueryKey, UseMediaState } from '@tamagui/core'
 import { useMedia } from '@tamagui/core'
 import { withStaticProperties } from '@tamagui/helpers'
+import { PortalHost } from '@tamagui/portal'
+import React from 'react'
 
 type MediaQueryKeyString = MediaQueryKey extends string ? MediaQueryKey : never
 
@@ -45,9 +46,18 @@ export const AdaptContents = (props: any) => {
 
 AdaptContents.shouldForwardSpace = true
 
-export const useAdaptParent = ({
-  Contents,
-}: { Contents: AdaptParentContextI['Contents'] }) => {
+export const useAdaptParent = (
+  props:
+    | { Contents: AdaptParentContextI['Contents'] }
+    | { portal: string; forwardProps?: any; name?: string }
+) => {
+  const Contents =
+    'Contents' in props
+      ? props.Contents
+      : React.useCallback(() => {
+          return <PortalHost name={props.portal} forwardProps={props.forwardProps} />
+        }, [props.portal])
+
   const [when, setWhen] = React.useState<When>(null)
 
   const AdaptProvider = React.useMemo(() => {

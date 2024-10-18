@@ -45,7 +45,7 @@ import {
   PopperContext,
   usePopperContext,
 } from '@tamagui/popper'
-import { Portal, PortalHost, PortalItem } from '@tamagui/portal'
+import { Portal, PortalItem } from '@tamagui/portal'
 import type { RemoveScrollProps } from '@tamagui/remove-scroll'
 import { RemoveScroll } from '@tamagui/remove-scroll'
 import { Sheet, SheetController } from '@tamagui/sheet'
@@ -585,9 +585,7 @@ export const Popover = withStaticProperties(
 
       const id = React.useId()
       const { when, AdaptProvider } = useAdaptParent({
-        Contents: React.useCallback(() => {
-          return <PortalHost name={`${id}PopoverContents`} />
-        }, []),
+        portal: `${id}PopoverContents`,
       })
 
       const sheetBreakpoint = when
