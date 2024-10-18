@@ -70,6 +70,10 @@ export interface PortalHostProps {
 export declare const PortalHost: React.MemoExoticComponent<(props: PortalHostProps) => React.ReactElement<any, string | React.JSXElementConstructor<any>>>;
 export interface PortalItemProps {
     /**
+     * When true, avoid portal and just render children directly
+     */
+    passthrough?: boolean;
+    /**
      * Portal's key or name to be used as an identifier.
      * @type string
      * @default generated unique key.
@@ -109,5 +113,5 @@ export interface PortalItemProps {
      */
     children?: ReactNode | ReactNode[];
 }
-export declare const PortalItem: React.MemoExoticComponent<(props: PortalItemProps) => null>;
+export declare const PortalItem: React.MemoExoticComponent<(props: PortalItemProps) => ReactNode>;
 //# sourceMappingURL=GorhomPortal.d.ts.map

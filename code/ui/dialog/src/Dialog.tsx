@@ -1,4 +1,4 @@
-import { Adapt, useAdaptParent } from '@tamagui/adapt'
+import { Adapt, useAdaptParent, useAdaptWhenIsActive } from '@tamagui/adapt'
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { hideOthers } from '@tamagui/aria-hidden'
 import { useComposedRefs } from '@tamagui/compose-refs'
@@ -850,12 +850,8 @@ const Dialog = withStaticProperties(
     }
 
     const { when, AdaptProvider } = useAdaptParent({
-      Contents: React.useCallback(
-        (props) => {
-          return <PortalHost forwardProps={props} name={sheetContentsName} />
-        },
-        [sheetContentsName]
-      ),
+      portal: sheetContentsName,
+      forwardProps: props,
     })
 
     React.useImperativeHandle(
@@ -923,7 +919,7 @@ const DialogSheetController = (
 ) => {
   const context = useDialogContext('DialogSheetController', props.__scopeDialog)
   const showSheet = useShowDialogSheet(context)
-  const breakpointActive = useSheetBreakpointActive(context)
+  const breakpointActive = useAdaptWhenIsActive(context.sheetBreakpoint)
   const getShowSheet = useGet(showSheet)
   return (
     <SheetController
@@ -940,15 +936,8 @@ const DialogSheetController = (
   )
 }
 
-const useSheetBreakpointActive = (context: DialogContextValue) => {
-  const media = useMedia()
-  if (!context.sheetBreakpoint) return false
-  if (context.sheetBreakpoint === true) return true
-  return media[context.sheetBreakpoint]
-}
-
 const useShowDialogSheet = (context: DialogContextValue) => {
-  const breakpointActive = useSheetBreakpointActive(context)
+  const breakpointActive = useAdaptWhenIsActive(context.sheetBreakpoint)
   return context.open === false ? false : breakpointActive
 }
 

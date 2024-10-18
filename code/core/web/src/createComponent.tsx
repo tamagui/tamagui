@@ -480,7 +480,7 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`theme`
 
-    const mediaState = useMedia(stateRef, componentContext, debugProp)
+    const mediaState = useMedia(componentContext, debugProp)
 
     setDidGetVariableValue(false)
 

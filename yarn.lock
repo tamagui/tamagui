@@ -5930,6 +5930,7 @@ __metadata:
     "@tamagui/constants": "npm:1.115.5"
     "@tamagui/core": "npm:1.115.5"
     "@tamagui/helpers": "npm:1.115.5"
+    "@tamagui/portal": "npm:1.115.5"
   languageName: unknown
   linkType: soft
 

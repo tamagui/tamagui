@@ -272,12 +272,16 @@ declare const Dialog: React.ForwardRefExoticComponent<DialogProps & React.RefAtt
         } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
             readonly contentContainerStyle?: Partial<import("@tamagui/core").GetFinalProps<import("react-native").ScrollViewProps, import("@tamagui/core").StackStyleBase, {}>> | undefined;
         }>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase & {
-            readonly contentContainerStyle?: Partial<import("@tamagui/core").GetFinalProps<import("react-native").ScrollViewProps, import("@tamagui/core").StackStyleBase, {}>> | undefined;
+            readonly contentContainerStyle?: Partial<import("@tamagui/core").GetFinalProps<import(
+            /**
+             * exported for internal use with extractable()
+             */
+            "react-native").ScrollViewProps, import("@tamagui/core").StackStyleBase, {}>> | undefined;
         }, {
             fullscreen?: boolean | undefined;
         }>> & import("react").RefAttributes<import("react-native").ScrollView>>;
     };
-    Adapt: (({ platform, when, children }: import("@tamagui/adapt").AdaptProps) => JSX.Element | null) & {
+    Adapt: (({ platform, when, children }: import("@tamagui/adapt").AdaptProps) => string | number | boolean | JSX.Element | Iterable<React.ReactNode> | null | undefined) & {
         Contents: {
             (props: any): React.FunctionComponentElement<any>;
             shouldForwardSpace: boolean;

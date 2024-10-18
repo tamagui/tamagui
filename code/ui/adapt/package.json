@@ -31,7 +31,8 @@
   "dependencies": {
     "@tamagui/constants": "1.115.5",
     "@tamagui/core": "1.115.5",
-    "@tamagui/helpers": "1.115.5"
+    "@tamagui/helpers": "1.115.5",
+    "@tamagui/portal": "1.115.5"
   },
   "devDependencies": {
     "@tamagui/build": "1.115.5"
