@@ -1,6 +1,5 @@
-import React from 'react'
 import { isServer, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
-
+import React, { useRef } from 'react'
 import { getConfig, getSetting } from '../config'
 import { matchMedia } from '../helpers/matchMedia'
 import { pseudoDescriptors } from '../helpers/pseudoDescriptors'
@@ -95,12 +94,7 @@ export const configureMedia = (config: TamaguiInternalConfig) => {
   Object.assign(mediaQueryConfig, media)
   initState = { ...mediaState }
   mediaKeysOrdered = Object.keys(media)
-
-  if (config.disableSSR) {
-    setupMediaListeners()
-  } else {
-    updateCurrentState()
-  }
+  setupMediaListeners()
 }
 
 function unlisten() {
@@ -144,6 +138,7 @@ export function setupMediaListeners() {
       const next = !!getMatch().matches
       if (next === mediaState[key]) return
       mediaState = { ...mediaState, [key]: next }
+      console.warn('UPDATED MEDIA STATE', { ...mediaState })
       updateCurrentState()
     }
   }
@@ -160,6 +155,7 @@ function updateCurrentState() {
   flushVersion = mediaVersion
   flushing = true
   Promise.resolve().then(() => {
+    console.warn('FLUSH', { ...mediaState })
     flushing = false
     listeners.forEach((cb) => cb(mediaState))
   })
@@ -193,11 +189,6 @@ export function setMediaShouldUpdate(
   }
 }
 
-type UseMediaInternalState = {
-  prev: MediaKeysState
-  keys?: string[]
-}
-
 function subscribe(subscriber: any) {
   listeners.add(subscriber)
   return () => {
@@ -205,83 +196,78 @@ function subscribe(subscriber: any) {
   }
 }
 
+type ComponentMediaKeys = Set<string>
+
+type ComponentMediaQueryState = MediaKeysState & {
+  lastKeys?: ComponentMediaKeys
+}
+
 export function useMedia(
-  uidIn?: any,
   componentContext?: ComponentContextI,
   debug?: DebugProp
 ): UseMediaState {
-  const uid = uidIn ?? React.useRef()
   // performance boost to avoid using context twice
   const disableSSR = getDisableSSR(componentContext)
   const initialState = (disableSSR || !isWeb ? mediaState : initState) || {}
+  const [state, setState] = React.useState<ComponentMediaQueryState>(initialState)
 
-  let componentState = States.get(uid)
-  if (!componentState) {
-    componentState = { prev: initialState }
-    States.set(uid, componentState)
-  }
+  let currentKeys: ComponentMediaKeys | undefined
 
-  const getSnapshot = () => {
-    if (!componentState) {
-      return initialState
-    }
+  function getSnapshot(
+    current: ComponentMediaQueryState,
+    keys: ComponentMediaKeys | undefined = current.lastKeys
+  ) {
+    if (!current) return initialState
+    if (!keys) return current
 
-    const { enabled, keys, prev = initialState } = componentState
+    for (const key of keys) {
+      if (mediaState[key] !== current[key]) {
+        console.warn('useMedia() ✍️', key, current[key], '>', mediaState[key])
 
-    if (enabled === false) {
-      return prev
-    }
-
-    const testKeys = keys ?? (enabled && keys) ?? null
-    const hasntUpdated =
-      !testKeys || Object.keys(testKeys).every((key) => mediaState[key] === prev[key])
-
-    if (hasntUpdated) {
-      return prev
-    }
-
-    componentState.prev = mediaState
-    return mediaState
-  }
-
-  let state: MediaQueryState
-
-  if (process.env.TAMAGUI_SYNC_MEDIA_QUERY) {
-    state = React.useSyncExternalStore<MediaQueryState>(
-      subscribe,
-      getSnapshot,
-      () => initialState
-    )
-  } else {
-    const [_state, setState] = React.useState(initialState)
-    state = _state
-
-    useIsomorphicLayoutEffect(() => {
-      function update() {
-        setState(getSnapshot)
+        if (process.env.NODE_ENV === 'development' && debug) {
+          console.warn('useMedia() ✍️', key, current[key], '>', mediaState[key])
+        }
+        return {
+          ...mediaState,
+          lastKeys: new Set(keys),
+        }
       }
+    }
 
-      update()
-
-      // fix media getting stuck on first render causing weird issues in dialogs not positioning
-      if (!disableSSR) {
-        Promise.resolve().then(() => {
-          update()
-        })
-      }
-
-      return subscribe(update)
-    }, [])
+    return current
   }
+
+  let isRendering = true
+  useIsomorphicLayoutEffect(() => {
+    isRendering = false
+  })
+
+  useIsomorphicLayoutEffect(() => {
+    const update = () => setState((prev) => getSnapshot(prev))
+    update()
+    return subscribe(update)
+  }, [])
 
   return new Proxy(state, {
     get(_, key) {
-      if (disableMediaTouch) return
-      if (typeof key === 'string') {
-        componentState.keys ||= {}
-        componentState.keys[key] = true
-        if (process.env.NODE_ENV === 'development' && debug) {
-          console.info(`useMedia() TOUCH`, key)
+      if (isRendering && !disableMediaTouch) {
+        if (typeof key === 'string') {
+          const needsUpdateKeys = !state.lastKeys || !state.lastKeys.has(key)
+
+          if (needsUpdateKeys || state[key] !== mediaState[key]) {
+            if (process.env.NODE_ENV === 'development' && debug) {
+              console.info(`useMedia() TOUCH`, key)
+            }
+
+            currentKeys ||= new Set<string>()
+            currentKeys.add(key)
+
+            const next = getSnapshot(getSnapshot, currentKeys!)
+            if (next !== state) {
+              console.warn('SETO', next, { ...mediaState })
+              setState(next)
+            }
+          }
         }
       }
       return Reflect.get(state, key)
@@ -291,7 +277,7 @@ export function useMedia(
 
 let disableMediaTouch = false
 
-export function _dmt(val: boolean) {
+export function _disableMediaTouch(val: boolean) {
   disableMediaTouch = val
 }
 
