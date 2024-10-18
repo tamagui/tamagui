@@ -138,7 +138,6 @@ export function setupMediaListeners() {
       const next = !!getMatch().matches
       if (next === mediaState[key]) return
       mediaState = { ...mediaState, [key]: next }
-      console.warn('UPDATED MEDIA STATE', { ...mediaState })
       updateCurrentState()
     }
   }
@@ -155,7 +154,6 @@ function updateCurrentState() {
   flushVersion = mediaVersion
   flushing = true
   Promise.resolve().then(() => {
-    console.warn('FLUSH', { ...mediaState })
     flushing = false
     listeners.forEach((cb) => cb(mediaState))
   })
@@ -264,7 +262,6 @@ export function useMedia(
 
             const next = getSnapshot(getSnapshot, currentKeys!)
             if (next !== state) {
-              console.warn('SETO', next, { ...mediaState })
               setState(next)
             }
           }

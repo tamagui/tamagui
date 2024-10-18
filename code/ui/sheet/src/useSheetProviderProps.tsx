@@ -1,8 +1,8 @@
-import React from 'react'
 import type { TamaguiElement } from '@tamagui/core'
 import { useConfiguration } from '@tamagui/core'
 import { useConstant } from '@tamagui/use-constant'
 import { useControllableState } from '@tamagui/use-controllable-state'
+import React from 'react'
 
 import type { ScrollBridge, SheetProps } from './types'
 import type { SheetOpenState } from './useSheetOpenState'
@@ -155,7 +155,21 @@ export function useSheetProviderProps(
       ? frameSize / ((typeof maxSnapPoint === 'number' ? maxSnapPoint : 100) / 100)
       : maxContentSize
 
+  // const animationConfig = useMemo(() => {
+  //   return props.animationConfig
+  // }, [JSON.stringify(props.animationConfig || null)])
+
+  // const portalProps = useMemo(() => {
+  //   return props.portalProps
+  // }, [JSON.stringify(props.portalProps || null)])
+
   const providerProps = {
+    // containerComponent: props.containerComponent,
+    // portalProps,
+    // unmountChildrenWhenHidden: !!props.unmountChildrenWhenHidden,
+    // moveOnKeyboardChange: !!props.moveOnKeyboardChange,
+    // zIndex: props.zIndex,
+    // animationConfig,
     screenSize,
     maxSnapPoint,
     removeScrollEnabled,

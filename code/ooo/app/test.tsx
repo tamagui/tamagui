@@ -2,23 +2,11 @@ import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
 import type { SheetProps } from '@tamagui/sheet'
 import { Sheet } from '@tamagui/sheet'
 import React from 'react'
-import {
-  Adapt,
-  Button,
-  H2,
-  Input,
-  Paragraph,
-  useMedia,
-  View,
-  XStack,
-  YStack,
-} from 'tamagui'
+import { Adapt, Button, H2, Input, Paragraph, View, XStack, YStack } from 'tamagui'
 
 const spModes = ['percent', 'constant', 'fit', 'mixed'] as const
 
 export const SheetDemo = () => {
-  console.warn('wtf', useMedia().gtXs)
-
   const [position, setPosition] = React.useState(0)
   const [open, setOpen] = React.useState(false)
   const [modal, setModal] = React.useState(true)
@@ -112,17 +100,16 @@ export const SheetDemo = () => {
           )}
         </Sheet.Frame>
 
-        {/* <Adapt when="gtXs">
+        <Adapt when="gtXs">
           {(children) => {
+            console.log('children', children)
             return (
               <View w={400} h={400} bg="red">
                 {children}
               </View>
             )
           }}
-        </Adapt> */}
-
-        <View w={400} h={400} bg="red"></View>
+        </Adapt>
       </Sheet>
     </>
   )
