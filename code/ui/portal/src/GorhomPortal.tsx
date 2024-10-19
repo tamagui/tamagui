@@ -399,6 +399,8 @@ const PortalComponent = (props: PortalItemProps) => {
   })
 
   useIsomorphicLayoutEffect(() => {
+    if (passthrough) return
+
     handleOnMount()
     return () => {
       handleOnUnmount()
@@ -406,6 +408,8 @@ const PortalComponent = (props: PortalItemProps) => {
   }, [])
 
   useEffect(() => {
+    if (passthrough) return
+
     handleOnUpdate()
   }, [children])
 

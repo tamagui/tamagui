@@ -64,6 +64,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     const providerProps = useSheetProviderProps(props, state, {
       onOverlayComponent: setOverlayComponent,
     })
+
     const {
       frameSize,
       setFrameSize,
@@ -418,6 +419,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     if (open && opacity === 0) {
       setOpacity(1)
     }
+
     React.useEffect(() => {
       if (!open) {
         // need to wait for animation complete, for now lets just do it naively
@@ -440,25 +442,17 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     const adaptContext = React.useContext(AdaptParentContext)
 
     const id = useId()
-    const { AdaptProvider, when } = useAdaptParent({
+    const { AdaptProvider, when, children } = useAdaptParent({
       portal: `${id}Sheet`,
     })
 
     const isAdapted = useAdaptWhenIsActive(when)
 
-    console.log('isAdapted', isAdapted, when)
-
-    if (isAdapted) {
-      return (
-        <AdaptProvider>
-          <AdaptPortalContents>{props.children}</AdaptPortalContents>
-        </AdaptProvider>
-      )
-    }
-
     const contents = (
       <ParentSheetContext.Provider value={nextParentContext}>
         <SheetProvider {...providerProps}>
+          {isAdapted ? children : null}
+
           {/* overlay */}
           <AnimatePresence custom={{ open }}>
             {shouldHideParentSheet || !open ? null : overlayComponent}
@@ -504,9 +498,10 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
                 }),
               },
               animatedStyle,
+              isAdapted ? { display: 'none' } : null,
             ]}
           >
-            {props.children}
+            <AdaptProvider>{props.children}</AdaptProvider>
           </AnimatedView>
         </SheetProvider>
       </ParentSheetContext.Provider>
@@ -529,20 +524,18 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       )
 
       if (isWeb) {
-        return <AdaptProvider>{modalContents}</AdaptProvider>
+        return <>{modalContents}</>
       }
 
       // on native we don't support multiple modals yet... fix for now is to hide outer one
       return (
-        <AdaptProvider>
-          <SheetInsideSheetContext.Provider value={onInnerSheet}>
-            {modalContents}
-          </SheetInsideSheetContext.Provider>
-        </AdaptProvider>
+        <SheetInsideSheetContext.Provider value={onInnerSheet}>
+          {modalContents}
+        </SheetInsideSheetContext.Provider>
       )
     }
 
-    return <AdaptProvider>{contents}</AdaptProvider>
+    return contents
   }
 )
 

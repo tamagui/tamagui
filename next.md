@@ -248,6 +248,10 @@ v4 and beyond
 
 ---
 
+- Better Portals
+
+Right now PortalItem / PortalHost are far from ideal especially on web where we have proper portals. We should probably abstract this in a way where we have real portals on web, but on native can fallback to the manual ones.
+
 - SSR safe styled context, something like:
 
 const Context = createStyledContext({

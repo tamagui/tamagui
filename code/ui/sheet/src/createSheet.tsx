@@ -24,6 +24,7 @@ import { SheetScrollView } from './SheetScrollView'
 import type { SheetProps, SheetScopedProps } from './types'
 import { useSheetController } from './useSheetController'
 import { useSheetOffscreenSize } from './useSheetOffscreenSize'
+import { AdaptPortalContents } from '@tamagui/adapt'
 
 type SharedSheetProps = {
   open?: boolean
@@ -184,7 +185,10 @@ export function createSheet<
               // causes lots of bugs on touch web on site
               removeScrollBar={false}
             >
-              {sheetContents}
+              <AdaptPortalContents>
+                {/*  */}
+                {sheetContents}
+              </AdaptPortalContents>
             </RemoveScroll>
 
             {/* below frame hide when bouncing past 100% */}

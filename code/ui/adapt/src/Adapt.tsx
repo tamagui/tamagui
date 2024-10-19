@@ -124,15 +124,19 @@ export const Adapt = withStaticProperties(
       }
     }, [])
 
-    let output
+    let output: React.ReactNode
 
     if (typeof children === 'function') {
       const Component = context?.Contents
       output = children(Component ? <Component /> : null)
+    } else {
+      output = children
     }
 
+    // TODO this isn't ideal using an effect to set children, will cause double-renders
+    // on every change
     useEffect(() => {
-      if (output !== undefined) {
+      if (typeof children === 'function' && output !== undefined) {
         context?.setChildren(output)
       }
     }, [output])
@@ -141,7 +145,7 @@ export const Adapt = withStaticProperties(
       return null
     }
 
-    return output === undefined ? children : null
+    return output
   },
   {
     Contents: AdaptContents,
@@ -150,6 +154,7 @@ export const Adapt = withStaticProperties(
 
 export const AdaptPortalContents = (props: { children: React.ReactNode }) => {
   const adaptContext = useContext(AdaptParentContext)
+
   const isActive = useAdaptWhenIsActive(adaptContext?.when)
 
   return (
@@ -160,10 +165,7 @@ export const AdaptPortalContents = (props: { children: React.ReactNode }) => {
 }
 
 export const useAdaptWhenIsActive = (breakpoint?: MediaQueryKey | null | boolean) => {
-  const media = useMedia(undefined, true)
-
-  console.warn('useAdaptWhenIsActive', media.gtXs)
-
+  const media = useMedia()
   if (typeof breakpoint === 'boolean' || !breakpoint) {
     return !!breakpoint
   }

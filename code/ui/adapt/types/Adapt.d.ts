@@ -12,7 +12,9 @@ type When = MediaQueryKeyString | boolean | null;
 type Component = (props: any) => any;
 type AdaptParentContextI = {
     Contents: Component;
+    when?: When;
     setWhen: (when: When) => any;
+    setChildren: (children: any) => any;
     portalName?: string;
 };
 export declare const AdaptParentContext: React.Context<AdaptParentContextI | null>;
@@ -31,8 +33,9 @@ export declare const useAdaptParent: (props: {
         children?: any;
     }) => import("react/jsx-runtime").JSX.Element;
     when: When;
+    children: null;
 };
-export declare const Adapt: (({ platform, when, children }: AdaptProps) => string | number | boolean | JSX.Element | Iterable<React.ReactNode> | null | undefined) & {
+export declare const Adapt: (({ platform, when, children }: AdaptProps) => React.ReactNode) & {
     Contents: {
         (props: any): React.FunctionComponentElement<any>;
         shouldForwardSpace: boolean;
