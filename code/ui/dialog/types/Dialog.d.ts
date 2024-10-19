@@ -1,3 +1,4 @@
+import { type AdaptWhen } from '@tamagui/adapt';
 import type { GetProps, StackProps, TamaguiElement } from '@tamagui/core';
 import type { DismissableProps } from '@tamagui/dismissable';
 import type { FocusScopeProps } from '@tamagui/focus-scope';
@@ -35,7 +36,7 @@ type DialogContextValue = {
     onOpenChange: NonNull<DialogProps['onOpenChange']>;
     modal: NonNull<DialogProps['modal']>;
     allowPinchZoom: NonNull<DialogProps['allowPinchZoom']>;
-    sheetBreakpoint: any;
+    sheetBreakpoint: AdaptWhen;
     scopeKey: string;
 };
 interface DialogTriggerProps extends StackProps {
@@ -272,26 +273,18 @@ declare const Dialog: React.ForwardRefExoticComponent<DialogProps & React.RefAtt
         } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
             readonly contentContainerStyle?: Partial<import("@tamagui/core").GetFinalProps<import("react-native").ScrollViewProps, import("@tamagui/core").StackStyleBase, {}>> | undefined;
         }>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase & {
-            readonly contentContainerStyle?: Partial<import("@tamagui/core").GetFinalProps<import(
-            /**
-             * exported for internal use with extractable()
-             */
-            "react-native").ScrollViewProps, import("@tamagui/core").StackStyleBase, {}>> | undefined;
+            readonly contentContainerStyle?: Partial<import("@tamagui/core").GetFinalProps<import("react-native").ScrollViewProps, import("@tamagui/core").StackStyleBase, {}>> | undefined;
         }, {
             fullscreen?: boolean | undefined;
         }>> & import("react").RefAttributes<import("react-native").ScrollView>>;
     };
-    Adapt: (({ platform, when, children }: import("@tamagui/adapt").AdaptProps) => string | number | boolean | JSX.Element | Iterable<React.ReactNode> | null | undefined) & {
+    Adapt: (({ platform, when, children }: import("@tamagui/adapt").AdaptProps) => React.ReactNode) & {
         Contents: {
             (props: any): React.FunctionComponentElement<any>;
             shouldForwardSpace: boolean;
         };
     };
 };
-export declare const DialogSheetContents: ({ name, ...props }: {
-    name: string;
-    context: Omit<DialogContextValue, "sheetBreakpoint">;
-}) => import("react/jsx-runtime").JSX.Element;
 export { Dialog, DialogClose, DialogContent, DialogDescription, DialogOverlay, DialogPortal, DialogTitle, DialogTrigger, DialogWarningProvider, createDialogScope, };
 export type { DialogCloseProps, DialogContentProps, DialogDescriptionProps, DialogOverlayProps, DialogPortalProps, DialogProps, DialogTitleProps, DialogTriggerProps, };
 //# sourceMappingURL=Dialog.d.ts.map

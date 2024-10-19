@@ -2,6 +2,6 @@ import { DialogDemo } from '@tamagui/demos'
 
 global.shouldDebugMoti = true
 
-export function Test() {
+export function TestPage() {
   return <DialogDemo />
 }

@@ -19,13 +19,13 @@ export type AdaptProps = {
   children: JSX.Element | ((children: React.ReactNode) => React.ReactNode)
 }
 
-type When = MediaQueryKeyString | boolean | null
+export type AdaptWhen = MediaQueryKeyString | boolean | null
 
 type Component = (props: any) => any
 type AdaptParentContextI = {
   Contents: Component
-  when?: When
-  setWhen: (when: When) => any
+  when?: AdaptWhen
+  setWhen: (when: AdaptWhen) => any
   setChildren: (children: any) => any
   portalName?: string
 }
@@ -61,7 +61,7 @@ export const useAdaptParent = (
           return <PortalHost name={props.portal} forwardProps={props.forwardProps} />
         }, [props.portal])
 
-  const [when, setWhen] = React.useState<When>(null)
+  const [when, setWhen] = React.useState<AdaptWhen>(null)
   const [children, setChildren] = React.useState(null)
 
   const AdaptProvider = React.useMemo(() => {
@@ -115,7 +115,7 @@ export const Adapt = withStaticProperties(
     }
 
     useIsomorphicLayoutEffect(() => {
-      context?.setWhen((when || enabled) as When)
+      context?.setWhen((when || enabled) as AdaptWhen)
     }, [when, context, enabled])
 
     useIsomorphicLayoutEffect(() => {
@@ -124,15 +124,19 @@ export const Adapt = withStaticProperties(
       }
     }, [])
 
-    let output
+    let output: React.ReactNode
 
     if (typeof children === 'function') {
       const Component = context?.Contents
       output = children(Component ? <Component /> : null)
+    } else {
+      output = children
     }
 
+    // TODO this isn't ideal using an effect to set children, will cause double-renders
+    // on every change
     useEffect(() => {
-      if (output !== undefined) {
+      if (typeof children === 'function' && output !== undefined) {
         context?.setChildren(output)
       }
     }, [output])
@@ -141,7 +145,7 @@ export const Adapt = withStaticProperties(
       return null
     }
 
-    return output === undefined ? children : null
+    return output
   },
   {
     Contents: AdaptContents,
@@ -150,20 +154,21 @@ export const Adapt = withStaticProperties(
 
 export const AdaptPortalContents = (props: { children: React.ReactNode }) => {
   const adaptContext = useContext(AdaptParentContext)
+
   const isActive = useAdaptWhenIsActive(adaptContext?.when)
 
   return (
-    <PortalItem passthrough={!isActive} hostName={adaptContext?.portalName}>
+    <PortalItem
+      // passthrough={!isActive}
+      hostName={adaptContext?.portalName}
+    >
       {props.children}
     </PortalItem>
   )
 }
 
 export const useAdaptWhenIsActive = (breakpoint?: MediaQueryKey | null | boolean) => {
-  const media = useMedia(undefined, true)
-
-  console.warn('useAdaptWhenIsActive', media.gtXs)
-
+  const media = useMedia()
   if (typeof breakpoint === 'boolean' || !breakpoint) {
     return !!breakpoint
   }

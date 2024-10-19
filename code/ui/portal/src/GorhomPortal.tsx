@@ -336,11 +336,6 @@ function PortalHostNonNative(props: PortalHostProps) {
 
 export interface PortalItemProps {
   /**
-   * When true, avoid portal and just render children directly
-   */
-  passthrough?: boolean
-
-  /**
    * Portal's key or name to be used as an identifier.
    * @type string
    * @default generated unique key.
@@ -410,7 +405,6 @@ const NonNativePortalComponent = (props: PortalItemProps) => {
     handleOnMount: _providedHandleOnMount,
     handleOnUnmount: _providedHandleOnUnmount,
     handleOnUpdate: _providedHandleOnUpdate,
-    passthrough,
     children,
   } = props
 
@@ -453,5 +447,5 @@ const NonNativePortalComponent = (props: PortalItemProps) => {
     handleOnUpdate()
   }, [children])
 
-  return passthrough ? children : null
+  return null
 }

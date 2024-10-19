@@ -1,5 +1,5 @@
 import { isServer, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
-import React, { useRef } from 'react'
+import React, { useId, useRef } from 'react'
 import { getConfig, getSetting } from '../config'
 import { matchMedia } from '../helpers/matchMedia'
 import { pseudoDescriptors } from '../helpers/pseudoDescriptors'
@@ -138,7 +138,6 @@ export function setupMediaListeners() {
       const next = !!getMatch().matches
       if (next === mediaState[key]) return
       mediaState = { ...mediaState, [key]: next }
-      console.warn('UPDATED MEDIA STATE', { ...mediaState })
       updateCurrentState()
     }
   }
@@ -155,7 +154,6 @@ function updateCurrentState() {
   flushVersion = mediaVersion
   flushing = true
   Promise.resolve().then(() => {
-    console.warn('FLUSH', { ...mediaState })
     flushing = false
     listeners.forEach((cb) => cb(mediaState))
   })
@@ -202,30 +200,25 @@ type ComponentMediaQueryState = MediaKeysState & {
   lastKeys?: ComponentMediaKeys
 }
 
-export function useMedia(
-  componentContext?: ComponentContextI,
-  debug?: DebugProp
-): UseMediaState {
+export function useMedia(cc?: ComponentContextI, debug?: DebugProp): UseMediaState {
   // performance boost to avoid using context twice
-  const disableSSR = getDisableSSR(componentContext)
-  const initialState = (disableSSR || !isWeb ? mediaState : initState) || {}
+  const disableSSR = getDisableSSR(cc)
+  const initialState = disableSSR || !isWeb ? mediaState : initState
   const [state, setState] = React.useState<ComponentMediaQueryState>(initialState)
+  const devId = process.env.NODE_ENV === 'development' ? useId() : '0'
 
   let currentKeys: ComponentMediaKeys | undefined
 
   function getSnapshot(
-    current: ComponentMediaQueryState,
-    keys: ComponentMediaKeys | undefined = current.lastKeys
+    cur: ComponentMediaQueryState,
+    keys: ComponentMediaKeys | undefined = cur.lastKeys
   ) {
-    if (!current) return initialState
-    if (!keys) return current
+    if (!keys) return cur
 
     for (const key of keys) {
-      if (mediaState[key] !== current[key]) {
-        console.warn('useMedia() ✍️', key, current[key], '>', mediaState[key])
-
+      if (mediaState[key] !== cur[key]) {
         if (process.env.NODE_ENV === 'development' && debug) {
-          console.warn('useMedia() ✍️', key, current[key], '>', mediaState[key])
+          console.warn(`useMedia(${devId + !!cc})✍️`, key, cur[key], '>', mediaState[key])
         }
         return {
           ...mediaState,
@@ -234,7 +227,7 @@ export function useMedia(
       }
     }
 
-    return current
+    return cur
   }
 
   let isRendering = true
@@ -262,9 +255,8 @@ export function useMedia(
             currentKeys ||= new Set<string>()
             currentKeys.add(key)
 
-            const next = getSnapshot(getSnapshot, currentKeys!)
+            const next = getSnapshot(state, currentKeys!)
             if (next !== state) {
-              console.warn('SETO', next, { ...mediaState })
               setState(next)
             }
           }
@@ -276,7 +268,6 @@ export function useMedia(
 }
 
 let disableMediaTouch = false
-
 export function _disableMediaTouch(val: boolean) {
   disableMediaTouch = val
 }

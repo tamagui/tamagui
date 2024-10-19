@@ -1,18 +1,15 @@
-import { Adapt, useAdaptParent, useAdaptWhenIsActive } from '@tamagui/adapt'
+import {
+  Adapt,
+  useAdaptParent,
+  useAdaptWhenIsActive,
+  type AdaptWhen,
+} from '@tamagui/adapt'
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { hideOthers } from '@tamagui/aria-hidden'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
 import type { GetProps, StackProps, TamaguiElement } from '@tamagui/core'
-import {
-  Theme,
-  View,
-  spacedChildren,
-  styled,
-  useGet,
-  useMedia,
-  useThemeName,
-} from '@tamagui/core'
+import { Theme, View, spacedChildren, styled, useGet, useThemeName } from '@tamagui/core'
 import type { Scope } from '@tamagui/create-context'
 import { createContext, createContextScope } from '@tamagui/create-context'
 import type { DismissableProps } from '@tamagui/dismissable'
@@ -21,7 +18,7 @@ import type { FocusScopeProps } from '@tamagui/focus-scope'
 import { FocusScope } from '@tamagui/focus-scope'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import type { PortalItemProps } from '@tamagui/portal'
-import { Portal, PortalHost, PortalItem } from '@tamagui/portal'
+import { Portal, PortalItem } from '@tamagui/portal'
 import { RemoveScroll } from '@tamagui/remove-scroll'
 import { Overlay, Sheet, SheetController } from '@tamagui/sheet'
 import type { YStackProps } from '@tamagui/stacks'
@@ -70,7 +67,7 @@ type DialogContextValue = {
   onOpenChange: NonNull<DialogProps['onOpenChange']>
   modal: NonNull<DialogProps['modal']>
   allowPinchZoom: NonNull<DialogProps['allowPinchZoom']>
-  sheetBreakpoint: any
+  sheetBreakpoint: AdaptWhen
   scopeKey: string
 }
 
@@ -578,7 +575,7 @@ const DialogContentImpl = React.forwardRef<TamaguiElement, DialogContentImplProp
 
     if (showSheet) {
       return (
-        <DialogPortalItem hostName={getSheetContentsName(context)}>
+        <DialogPortalItem hostName={getAdaptName(context)}>
           {contentProps.children}
         </DialogPortalItem>
       )
@@ -820,7 +817,7 @@ const Dialog = withStaticProperties(
     const titleId = `title-${baseId}`
     const descriptionId = `description-${baseId}`
     const scopeKey = __scopeDialog ? Object.keys(__scopeDialog)[0] : scopeId
-    const sheetContentsName = getSheetContentsName({ scopeKey, contentId })
+    const adaptName = getAdaptName({ scopeKey, contentId })
     const triggerRef = React.useRef<HTMLButtonElement>(null)
     const contentRef = React.useRef<TamaguiElement>(null)
 
@@ -850,7 +847,7 @@ const Dialog = withStaticProperties(
     }
 
     const { when, AdaptProvider } = useAdaptParent({
-      portal: sheetContentsName,
+      portal: adaptName,
       forwardProps: props,
     })
 
@@ -889,27 +886,11 @@ const Dialog = withStaticProperties(
   }
 )
 
-/* -------------------------------------------------------------------------------------------------
- * DialogSheetContents
- * -----------------------------------------------------------------------------------------------*/
-
-const SHEET_CONTENTS_NAME = 'DialogSheetContents'
-
-export const DialogSheetContents = ({
-  name,
-  ...props
-}: {
-  name: string
-  context: Omit<DialogContextValue, 'sheetBreakpoint'>
-}) => {
-  return <PortalHost forwardProps={props} name={name} />
-}
-
-const getSheetContentsName = ({
+const getAdaptName = ({
   scopeKey,
   contentId,
 }: Pick<DialogContextValue, 'scopeKey' | 'contentId'>) =>
-  `${scopeKey || contentId}SheetContents`
+  `${scopeKey || contentId}DialogAdapt`
 
 const DialogSheetController = (
   props: ScopedProps<{
@@ -919,17 +900,16 @@ const DialogSheetController = (
 ) => {
   const context = useDialogContext('DialogSheetController', props.__scopeDialog)
   const showSheet = useShowDialogSheet(context)
-  const breakpointActive = useAdaptWhenIsActive(context.sheetBreakpoint)
-  const getShowSheet = useGet(showSheet)
+
   return (
     <SheetController
       onOpenChange={(val) => {
-        if (getShowSheet()) {
+        if (showSheet) {
           props.onOpenChange?.(val)
         }
       }}
       open={context.open}
-      hidden={breakpointActive === false}
+      hidden={!showSheet}
     >
       {props.children}
     </SheetController>
@@ -937,8 +917,7 @@ const DialogSheetController = (
 }
 
 const useShowDialogSheet = (context: DialogContextValue) => {
-  const breakpointActive = useAdaptWhenIsActive(context.sheetBreakpoint)
-  return context.open === false ? false : breakpointActive
+  return useAdaptWhenIsActive(context.sheetBreakpoint)
 }
 
 export {
