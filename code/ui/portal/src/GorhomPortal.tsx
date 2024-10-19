@@ -1,4 +1,4 @@
-import { useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 // from https://github.com/gorhom/react-native-portal
 // MIT License Copyright (c) 2020 Mo Gorhom
 import { useEvent } from '@tamagui/core'
@@ -15,6 +15,7 @@ import React, {
   useReducer,
 } from 'react'
 import { startTransition } from '@tamagui/start-transition'
+import { createPortal } from 'react-dom'
 
 interface PortalType {
   name: string
@@ -270,14 +271,40 @@ export interface PortalHostProps {
    */
   render?: (children: React.ReactNode) => React.ReactElement
 }
-const defaultRenderer: PortalHostProps['render'] = (children) => <>{children}</>
+const defaultRenderer = (children) => <>{children}</>
 
-const PortalHostComponent = (props: PortalHostProps) => {
+export const PortalHost = memo(function PortalHost(props: PortalHostProps) {
+  if (isWeb) {
+    return <PortalHostWeb {...props} />
+  }
+
+  return <PortalHostNonNative {...props} />
+})
+
+const allPortalHosts = new Map<string, HTMLElement>()
+
+function PortalHostWeb(props: PortalHostProps) {
+  return (
+    <div
+      style={{
+        display: 'contents',
+      }}
+      ref={(node) => {
+        if (node) {
+          allPortalHosts.set(props.name, node)
+        } else {
+          allPortalHosts.delete(props.name)
+        }
+      }}
+    />
+  )
+}
+
+function PortalHostNonNative(props: PortalHostProps) {
   const { name, forwardProps, render = defaultRenderer } = props
   const state = usePortalState(name)
   const { registerHost, deregisterHost } = usePortal(props.name)
 
-  //#region effects
   useEffect(() => {
     if (typeof window === 'undefined') return
     registerHost()
@@ -285,7 +312,6 @@ const PortalHostComponent = (props: PortalHostProps) => {
       deregisterHost()
     }
   }, [])
-  //#endregion
 
   if (forwardProps) {
     return render(
@@ -305,13 +331,8 @@ const PortalHostComponent = (props: PortalHostProps) => {
     )
   }
 
-  //#region render
   return render(state.map((item) => item.node))
-  //#endregion
 }
-
-export const PortalHost = memo(PortalHostComponent)
-PortalHost.displayName = 'PortalHost'
 
 export interface PortalItemProps {
   /**
@@ -355,7 +376,29 @@ export interface PortalItemProps {
   children?: ReactNode | ReactNode[]
 }
 
-const PortalComponent = (props: PortalItemProps) => {
+export const PortalItem = memo(function PortalItem(props: PortalItemProps) {
+  if (isWeb) {
+    return <PortalItemWeb {...props} />
+  }
+  return <NonNativePortalComponent />
+})
+
+const PortalItemWeb = (props: PortalItemProps) => {
+  if (!props.hostName) {
+    throw new Error(`No name`)
+  }
+
+  const hostNode = allPortalHosts.get(props.hostName)
+
+  if (!hostNode) {
+    console.warn(`No host node`, props.hostName)
+    return null
+  }
+
+  return createPortal(props.children, hostNode)
+}
+
+const NonNativePortalComponent = (props: PortalItemProps) => {
   const {
     name: _providedName,
     hostName,
@@ -364,6 +407,7 @@ const PortalComponent = (props: PortalItemProps) => {
     handleOnUpdate: _providedHandleOnUpdate,
     children,
   } = props
+
   const { addPortal: addUpdatePortal, removePortal } = usePortal(hostName)
   const id = useId()
   const name = _providedName || id
@@ -405,6 +449,3 @@ const PortalComponent = (props: PortalItemProps) => {
 
   return null
 }
-
-export const PortalItem = memo(PortalComponent)
-PortalItem.displayName = 'Portal'
