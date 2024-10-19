@@ -16,7 +16,7 @@ type MediaState = {
     keys?: Record<string, boolean> | null;
 };
 export declare function setMediaShouldUpdate(ref: any, enabled?: boolean, keys?: MediaState['keys']): void;
-export declare function useMedia(componentContext?: ComponentContextI, debug?: DebugProp): UseMediaState;
+export declare function useMedia(cc?: ComponentContextI, debug?: DebugProp): UseMediaState;
 export declare function _disableMediaTouch(val: boolean): void;
 export declare function getMediaState(mediaGroups: Set<string>, layout: LayoutEvent['nativeEvent']['layout']): Record<string, boolean>;
 export declare const getMediaImportanceIfMoreImportant: (mediaKey: string, key: string, importancesUsed: Record<string, number>, isSizeMedia: boolean) => number | null;
