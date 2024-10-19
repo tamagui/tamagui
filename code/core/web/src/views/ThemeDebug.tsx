@@ -1,7 +1,6 @@
 import React from 'react'
 import { useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
 import { useForceUpdate } from '@tamagui/use-force-update'
-
 import { createPortal } from 'react-dom'
 
 import type { ChangedThemeResponse } from '../hooks/useTheme'
