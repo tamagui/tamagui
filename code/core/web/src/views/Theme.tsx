@@ -78,8 +78,11 @@ export function getThemedChildren(
   let shouldRenderChildrenWithTheme =
     isNewTheme ||
     isRoot ||
-    stateRef.current.hasEverThemed ||
-    typeof props.inverse === 'boolean'
+    'inverse' in props ||
+    'name' in props ||
+    'reset' in props ||
+    'forceClassName' in props ||
+    stateRef.current.hasEverThemed
 
   if (shouldRenderChildrenWithTheme) {
     stateRef.current.hasEverThemed = true
@@ -153,7 +156,7 @@ function wrapThemeElements({
   }
 
   const inverse = themeState.inversed
-  const requiresExtraWrapper = inverse != null || forceClassName
+  const requiresExtraWrapper = typeof inverse === 'boolean' || forceClassName
 
   const { className, style } = getThemeClassNameAndStyle(themeState, isRoot)
 
@@ -171,6 +174,7 @@ function wrapThemeElements({
       : name.startsWith('dark')
         ? 't_dark is_inversed'
         : ''
+
     themedChildren = (
       <span className={`${inverse ? inverseClassName : ''} _dsp_contents`}>
         {themedChildren}
