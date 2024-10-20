@@ -238,7 +238,6 @@ const TooltipComponent = React.forwardRef(function Tooltip(
         <PopoverContext.Provider
           contentId={contentId}
           triggerRef={triggerRef}
-          sheetBreakpoint={false}
           open={open}
           scope={__scopeTooltip || TOOLTIP_SCOPE}
           onOpenChange={setOpen}

@@ -1,9 +1,4 @@
-import {
-  AdaptParentContext,
-  AdaptPortalContents,
-  useAdaptParent,
-  useAdaptWhenIsActive,
-} from '@tamagui/adapt'
+import { useAdaptParent } from '@tamagui/adapt'
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import {
@@ -64,7 +59,6 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     const providerProps = useSheetProviderProps(props, state, {
       onOverlayComponent: setOverlayComponent,
     })
-
     const {
       frameSize,
       setFrameSize,
@@ -106,7 +100,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
      */
     const [isShowingInnerSheet, setIsShowingInnerSheet] = React.useState(false)
     const shouldHideParentSheet = !isWeb && modal && isShowingInnerSheet
-    const parentSheetContext = React.useContext(SheetInsideSheetContext)
+    const sheetInsideSheet = React.useContext(SheetInsideSheetContext)
     const onInnerSheet = React.useCallback((hasChild: boolean) => {
       setIsShowingInnerSheet(hasChild)
     }, [])
@@ -125,12 +119,12 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     const AnimatedView = (animationDriver.View ?? Stack) as typeof Animated.View
 
     useIsomorphicLayoutEffect(() => {
-      if (!(parentSheetContext && open)) return
-      parentSheetContext(true)
+      if (!(sheetInsideSheet && open)) return
+      sheetInsideSheet(true)
       return () => {
-        parentSheetContext(false)
+        sheetInsideSheet(false)
       }
-    }, [parentSheetContext, open])
+    }, [sheetInsideSheet, open])
 
     const nextParentContext = React.useMemo(
       () => ({
@@ -419,7 +413,6 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     if (open && opacity === 0) {
       setOpacity(1)
     }
-
     React.useEffect(() => {
       if (!open) {
         // need to wait for animation complete, for now lets just do it naively
@@ -438,27 +431,19 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
         ? `${maxSnapPoint}${isWeb ? 'dvh' : '%'}`
         : maxSnapPoint
 
-    // sheet is both a child and a parent to Adapt
-    const adaptContext = React.useContext(AdaptParentContext)
-
     const id = useId()
-    const { AdaptProvider, when, children } = useAdaptParent({
-      portal: `${id}Sheet`,
-    })
-
-    const isAdapted = useAdaptWhenIsActive(when)
+    // const { AdaptProvider, when, children } = useAdaptParent({
+    //   scope: `${id}Sheet`,
+    //   portal: true,
+    // })
 
     const contents = (
       <ParentSheetContext.Provider value={nextParentContext}>
         <SheetProvider {...providerProps}>
-          {isAdapted ? children : null}
-
-          {/* overlay */}
           <AnimatePresence custom={{ open }}>
             {shouldHideParentSheet || !open ? null : overlayComponent}
           </AnimatePresence>
 
-          {/* layout watcher */}
           {snapPointsMode !== 'percent' && (
             <View
               style={{
@@ -474,7 +459,6 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
             />
           )}
 
-          {/* contents */}
           <AnimatedView
             ref={ref}
             {...panResponder?.panHandlers}
@@ -498,10 +482,10 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
                 }),
               },
               animatedStyle,
-              isAdapted ? { display: 'none' } : null,
             ]}
           >
-            <AdaptProvider>{props.children}</AdaptProvider>
+            {/* <AdaptProvider>{props.children}</AdaptProvider> */}
+            {props.children}
           </AnimatedView>
         </SheetProvider>
       </ParentSheetContext.Provider>
@@ -512,13 +496,11 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
 
     if (modal) {
       const modalContents = (
-        <Portal zIndex={zIndex} {...portalProps}>
+        <Portal stackZIndex={zIndex} {...portalProps}>
           {shouldMountChildren && (
             <ContainerComponent>
               <Theme forceClassName name={themeName}>
-                <AdaptParentContext.Provider value={adaptContext}>
-                  {contents}
-                </AdaptParentContext.Provider>
+                {contents}
               </Theme>
             </ContainerComponent>
           )}

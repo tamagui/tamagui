@@ -1,7 +1,19 @@
 import type { MediaQueryKey, UseMediaState } from '@tamagui/core';
 import React from 'react';
+/**
+ * Interfaces
+ */
+type AdaptParentContextI = {
+    Contents: Component;
+    scopeName: string;
+    when?: AdaptWhen;
+    setWhen: (when: AdaptWhen) => any;
+    setChildren: (children: any) => any;
+    portalName?: string;
+};
 type MediaQueryKeyString = MediaQueryKey extends string ? MediaQueryKey : never;
 export type AdaptProps = {
+    scope?: string;
     when?: MediaQueryKeyString | ((state: {
         media: UseMediaState;
     }) => boolean);
@@ -10,40 +22,41 @@ export type AdaptProps = {
 };
 export type AdaptWhen = MediaQueryKeyString | boolean | null;
 type Component = (props: any) => any;
-type AdaptParentContextI = {
-    Contents: Component;
-    when?: AdaptWhen;
-    setWhen: (when: AdaptWhen) => any;
-    setChildren: (children: any) => any;
-    portalName?: string;
+export declare const AdaptContext: import("@tamagui/core").StyledContext<AdaptParentContextI>;
+export declare const useAdaptContext: (scope?: string) => AdaptParentContextI;
+/**
+ * Hooks
+ */
+type AdaptParentProps = {
+    children?: React.ReactNode;
+    scope: string;
+    Contents?: AdaptParentContextI['Contents'];
+    portal?: boolean | {
+        forwardProps?: any;
+    };
 };
-export declare const AdaptParentContext: React.Context<AdaptParentContextI | null>;
+export declare const AdaptParent: ({ children, Contents, scope, portal }: AdaptParentProps) => import("react/jsx-runtime").JSX.Element;
+/**
+ * Components
+ */
 export declare const AdaptContents: {
-    (props: any): React.FunctionComponentElement<any>;
+    ({ scope, ...rest }: {
+        scope?: string;
+    }): React.FunctionComponentElement<any>;
     shouldForwardSpace: boolean;
 };
-export declare const useAdaptParent: (props: {
-    Contents: AdaptParentContextI["Contents"];
-} | {
-    portal: string;
-    forwardProps?: any;
-    name?: string;
-}) => {
-    AdaptProvider: (props: {
-        children?: any;
-    }) => import("react/jsx-runtime").JSX.Element;
-    when: AdaptWhen;
-    children: null;
-};
-export declare const Adapt: (({ platform, when, children }: AdaptProps) => React.ReactNode) & {
+export declare const Adapt: (({ platform, when, children, scope }: AdaptProps) => import("react/jsx-runtime").JSX.Element) & {
     Contents: {
-        (props: any): React.FunctionComponentElement<any>;
+        ({ scope, ...rest }: {
+            scope?: string;
+        }): React.FunctionComponentElement<any>;
         shouldForwardSpace: boolean;
     };
 };
 export declare const AdaptPortalContents: (props: {
     children: React.ReactNode;
+    scope?: string;
 }) => import("react/jsx-runtime").JSX.Element;
-export declare const useAdaptWhenIsActive: (breakpoint?: MediaQueryKey | null | boolean) => boolean;
+export declare const useAdaptIsActive: (scope?: string) => boolean;
 export {};
 //# sourceMappingURL=Adapt.d.ts.map

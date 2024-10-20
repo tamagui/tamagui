@@ -248,9 +248,8 @@ v4 and beyond
 
 ---
 
-- Better Portals
-
-Right now PortalItem / PortalHost are far from ideal especially on web where we have proper portals. We should probably abstract this in a way where we have real portals on web, but on native can fallback to the manual ones.
+- Dialog => Sheet adapt performance
+  - see // TODO this will re-parent, ideally we would not change tree structure
 
 - SSR safe styled context, something like:
 
@@ -264,8 +263,6 @@ const Context = createStyledContext({
 
 - seems like vite plugin in basic vxrn app on features/home/HomeLayout.tsx
   - when tamaguiExtract is on, it seems to get stale source code after one save
-
-- seems like styledContext not overriding defaultVariant
 
 - useDidFinishSSR can avoid re-renders when disableSSR: true
   - make it export a `disable()` helper we call from tamagui

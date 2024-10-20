@@ -1,8 +1,6 @@
-import { type AdaptWhen } from '@tamagui/adapt';
 import type { GetProps, StackProps, TamaguiElement } from '@tamagui/core';
 import type { DismissableProps } from '@tamagui/dismissable';
 import type { FocusScopeProps } from '@tamagui/focus-scope';
-import type { PortalItemProps } from '@tamagui/portal';
 import { RemoveScroll } from '@tamagui/remove-scroll';
 import type { YStackProps } from '@tamagui/stacks';
 import * as React from 'react';
@@ -36,13 +34,12 @@ type DialogContextValue = {
     onOpenChange: NonNull<DialogProps['onOpenChange']>;
     modal: NonNull<DialogProps['modal']>;
     allowPinchZoom: NonNull<DialogProps['allowPinchZoom']>;
-    sheetBreakpoint: AdaptWhen;
     scopeKey: string;
 };
 interface DialogTriggerProps extends StackProps {
 }
 declare const DialogTrigger: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}>, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & void, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic>;
-type DialogPortalProps = Omit<PortalItemProps, 'asChild'> & YStackProps & {
+type DialogPortalProps = YStackProps & {
     /**
      * Used to force mounting when more control is needed. Useful when
      * controlling animation with React animation libraries.
@@ -278,9 +275,11 @@ declare const Dialog: React.ForwardRefExoticComponent<DialogProps & React.RefAtt
             fullscreen?: boolean | undefined;
         }>> & import("react").RefAttributes<import("react-native").ScrollView>>;
     };
-    Adapt: (({ platform, when, children }: import("@tamagui/adapt").AdaptProps) => React.ReactNode) & {
+    Adapt: (({ platform, when, children, scope }: import("@tamagui/adapt").AdaptProps) => import("react/jsx-runtime").JSX.Element) & {
         Contents: {
-            (props: any): React.FunctionComponentElement<any>;
+            ({ scope, ...rest }: {
+                scope?: string;
+            }): React.FunctionComponentElement<any>;
             shouldForwardSpace: boolean;
         };
     };

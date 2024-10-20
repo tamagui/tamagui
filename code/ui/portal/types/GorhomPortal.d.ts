@@ -69,6 +69,7 @@ export interface PortalHostProps {
 }
 export declare const PortalHost: React.NamedExoticComponent<PortalHostProps>;
 export interface PortalItemProps {
+    passthrough?: boolean;
     /**
      * Portal's key or name to be used as an identifier.
      * @type string
