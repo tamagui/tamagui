@@ -102,7 +102,6 @@ export const SheetDemo = () => {
 
         <Adapt when="gtXs">
           {(children) => {
-            console.log('children', children)
             return (
               <View w={400} h={400} bg="red">
                 {children}

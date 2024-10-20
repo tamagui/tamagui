@@ -30,7 +30,7 @@
     }
   },
   "dependencies": {
-    "react-remove-scroll": "2.5.5"
+    "react-remove-scroll": "^2.6.0"
   },
   "devDependencies": {
     "@tamagui/build": "1.115.5",

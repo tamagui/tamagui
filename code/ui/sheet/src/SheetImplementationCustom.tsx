@@ -1,4 +1,9 @@
-import { AdaptParentContext } from '@tamagui/adapt'
+import {
+  AdaptParentContext,
+  AdaptPortalContents,
+  useAdaptParent,
+  useAdaptWhenIsActive,
+} from '@tamagui/adapt'
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import {
@@ -16,7 +21,7 @@ import {
   useThemeName,
 } from '@tamagui/core'
 import { Portal } from '@tamagui/portal'
-import React from 'react'
+import React, { useId } from 'react'
 import type {
   Animated,
   GestureResponderEvent,
@@ -59,6 +64,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     const providerProps = useSheetProviderProps(props, state, {
       onOverlayComponent: setOverlayComponent,
     })
+
     const {
       frameSize,
       setFrameSize,
@@ -75,7 +81,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     const { open, controller, isHidden } = state
 
     const sheetRef = React.useRef<View>(null)
-    const ref = useComposedRefs(forwardedRef, sheetRef)
+    const ref = useComposedRefs(forwardedRef, sheetRef, providerProps.contentRef as any)
 
     // TODO this can be extracted into a helper getAnimationConfig(animationProp as array | string)
     const animationConfig = (() => {
@@ -413,6 +419,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     if (open && opacity === 0) {
       setOpacity(1)
     }
+
     React.useEffect(() => {
       if (!open) {
         // need to wait for animation complete, for now lets just do it naively
@@ -431,13 +438,27 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
         ? `${maxSnapPoint}${isWeb ? 'dvh' : '%'}`
         : maxSnapPoint
 
+    // sheet is both a child and a parent to Adapt
+    const adaptContext = React.useContext(AdaptParentContext)
+
+    const id = useId()
+    // const { AdaptProvider, when, children } = useAdaptParent({
+    //   portal: `${id}Sheet`,
+    // })
+
+    // const isAdapted = useAdaptWhenIsActive(when)
+
     const contents = (
       <ParentSheetContext.Provider value={nextParentContext}>
         <SheetProvider {...providerProps}>
+          {/* {isAdapted ? children : null} */}
+
+          {/* overlay */}
           <AnimatePresence custom={{ open }}>
             {shouldHideParentSheet || !open ? null : overlayComponent}
           </AnimatePresence>
 
+          {/* layout watcher */}
           {snapPointsMode !== 'percent' && (
             <View
               style={{
@@ -453,6 +474,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
             />
           )}
 
+          {/* contents */}
           <AnimatedView
             ref={ref}
             {...panResponder?.panHandlers}
@@ -476,18 +498,18 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
                 }),
               },
               animatedStyle,
+              // isAdapted ? { display: 'none' } : null,
             ]}
           >
+            {/* <AdaptProvider>{props.children}</AdaptProvider> */}
             {props.children}
           </AnimatedView>
         </SheetProvider>
       </ParentSheetContext.Provider>
     )
 
-    const adaptContext = React.useContext(AdaptParentContext)
-
     // start mounted so we get an accurate measurement the first time
-    const shouldMountChildren = Boolean(opacity || !unmountChildrenWhenHidden)
+    const shouldMountChildren = unmountChildrenWhenHidden ? !opacity : true
 
     if (modal) {
       const modalContents = (
