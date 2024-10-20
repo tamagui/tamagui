@@ -1,6 +1,6 @@
 import { getStore } from '@tamagui/use-store'
 import * as React from 'react'
-import { Paragraph, Separator, Spacer, Theme, XStack, YStack } from 'tamagui'
+import { H4, Paragraph, Separator, Spacer, Theme, XStack, YStack } from 'tamagui'
 import { docsRoutes } from './docsRoutes'
 
 import { DocsNavHeading } from './DocsNavHeading'
@@ -22,7 +22,25 @@ const sections = {
     ),
 }
 
-const allItems = [...sections.docs, ...sections.ui]
+const allItems = [
+  {
+    children: (
+      <H4 size="$7" fos={18} dsp="inline-flex" px="$3" mt="$4" pb="$3">
+        Style
+      </H4>
+    ),
+  },
+
+  ...sections.docs,
+  {
+    children: (
+      <H4 size="$7" fos={18} dsp="inline-flex" px="$3" mt="$4" pb="$3">
+        UI
+      </H4>
+    ),
+  },
+  ...sections.ui,
+]
 
 // const sectionStrings = {
 //   docs: sections.docs.map((s) =>
@@ -37,13 +55,13 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
   // const store = useStore(DocsItemsStore)
   const { currentPath } = useDocsMenu()
   const activeSection = currentPath.startsWith('/ui') ? 'ui' : 'docs'
-  const activeItems = inMenu ? allItems : sections[activeSection]
-  const [items, setItems] = React.useState(activeItems)
-  const isFiltered = items !== activeItems
+  const items = inMenu ? allItems : sections[activeSection]
+  // const [items, setItems] = React.useState(activeItems)
+  // const isFiltered = items !== activeItems
 
-  React.useEffect(() => {
-    setItems(activeItems)
-  }, [activeSection])
+  // React.useEffect(() => {
+  //   setItems(activeItems)
+  // }, [activeSection])
 
   return (
     <>
@@ -143,6 +161,10 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
               {items.map((item, index) => {
                 if (!item) return null
 
+                if ('children' in item) {
+                  return <React.Fragment key={index}>{item.children}</React.Fragment>
+                }
+
                 const { section, page } = item
 
                 const contents = (
@@ -161,8 +183,9 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
 
                 const lastItem = items[index - 1]
                 const nextItem = items[index + 1]
-                const isStartingSection = !lastItem || item.section !== lastItem.section
-                const isEndingSection = !nextItem || nextItem.section !== item.section
+                const isStartingSection =
+                  !lastItem || item.section !== lastItem['section']
+                const isEndingSection = !nextItem || nextItem['section'] !== item.section
 
                 if (isStartingSection) {
                   return (
@@ -200,7 +223,7 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
                   return (
                     <React.Fragment key={`${page.route}${index}`}>
                       {contents}
-                      {!isFiltered && <Spacer />}
+                      {/* {!isFiltered && <Spacer />} */}
                     </React.Fragment>
                   )
                 }
