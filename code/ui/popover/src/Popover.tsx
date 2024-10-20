@@ -1,14 +1,7 @@
 import '@tamagui/polyfill-dev'
 
 import type { UseHoverProps } from '@floating-ui/react'
-import {
-  Adapt,
-  AdaptParent,
-  AdaptPortalContents,
-  useAdaptIsActive,
-  useAdaptParent,
-  useAdaptWhenIsActive,
-} from '@tamagui/adapt'
+import { Adapt, AdaptParent, AdaptPortalContents, useAdaptIsActive } from '@tamagui/adapt'
 import { Animate } from '@tamagui/animate'
 import { ResetPresence } from '@tamagui/animate-presence'
 import { hideOthers } from '@tamagui/aria-hidden'

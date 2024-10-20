@@ -1,11 +1,4 @@
-import {
-  Adapt,
-  AdaptParent,
-  useAdaptContext,
-  useAdaptIsActive,
-  useAdaptParent,
-  useAdaptWhenIsActive,
-} from '@tamagui/adapt'
+import { Adapt, AdaptParent, useAdaptIsActive } from '@tamagui/adapt'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import type { FontSizeTokens, GetProps, TamaguiElement } from '@tamagui/core'
@@ -23,7 +16,6 @@ import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDebounce } from '@tamagui/use-debounce'
 import * as React from 'react'
 
-import { SELECT_NAME } from './constants'
 import {
   SelectItemParentProvider,
   SelectProvider,

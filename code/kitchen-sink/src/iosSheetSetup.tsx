@@ -1,4 +1,4 @@
 import { setupNativeSheet } from '@tamagui/sheet'
-import { ModalView } from 'react-native-ios-modal'
+import { ModalSheetView } from 'react-native-ios-modal'
 
-setupNativeSheet('ios', ModalView)
+setupNativeSheet('ios', ModalSheetView)

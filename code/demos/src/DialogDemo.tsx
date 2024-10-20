@@ -20,10 +20,11 @@ export function DialogDemo() {
 }
 
 function DialogInstance() {
+  console.log('wtf')
   return (
     <Dialog modal>
       <Dialog.Trigger asChild>
-        <Button>Show Dialog</Button>
+        <Button>Show Dialog22</Button>
       </Dialog.Trigger>
 
       <Adapt when="sm" platform="touch">
@@ -81,7 +82,7 @@ function DialogInstance() {
                 <Paragraph>Food</Paragraph>
               </TooltipSimple>
             </Label>
-            <SelectDemoItem />
+            {/* <SelectDemoItem /> */}
           </Fieldset>
 
           <XStack alignSelf="flex-end" gap="$4">

@@ -411,6 +411,8 @@ const DialogContentModal = React.forwardRef<TamaguiElement, DialogContentTypePro
     const contentRef = React.useRef<HTMLDivElement>(null)
     const composedRefs = useComposedRefs(forwardedRef, context.contentRef, contentRef)
 
+    console.log('???', isWeb)
+
     // aria-hide everything except the content (better supported equivalent to setting aria-modal)
     if (isWeb) {
       React.useEffect(() => {
@@ -564,6 +566,7 @@ const DialogContentImpl = React.forwardRef<TamaguiElement, DialogContentImplProp
     )
 
     // TODO this will re-parent, ideally we would not change tree structure
+    console.log('wtf', isAdapted, context.open)
     if (isAdapted) {
       if (!isWeb && !context.open) {
         return null
