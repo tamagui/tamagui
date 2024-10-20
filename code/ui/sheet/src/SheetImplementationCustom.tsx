@@ -442,16 +442,16 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     const adaptContext = React.useContext(AdaptParentContext)
 
     const id = useId()
-    // const { AdaptProvider, when, children } = useAdaptParent({
-    //   portal: `${id}Sheet`,
-    // })
+    const { AdaptProvider, when, children } = useAdaptParent({
+      portal: `${id}Sheet`,
+    })
 
-    // const isAdapted = useAdaptWhenIsActive(when)
+    const isAdapted = useAdaptWhenIsActive(when)
 
     const contents = (
       <ParentSheetContext.Provider value={nextParentContext}>
         <SheetProvider {...providerProps}>
-          {/* {isAdapted ? children : null} */}
+          {isAdapted ? children : null}
 
           {/* overlay */}
           <AnimatePresence custom={{ open }}>
@@ -498,11 +498,10 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
                 }),
               },
               animatedStyle,
-              // isAdapted ? { display: 'none' } : null,
+              isAdapted ? { display: 'none' } : null,
             ]}
           >
-            {/* <AdaptProvider>{props.children}</AdaptProvider> */}
-            {props.children}
+            <AdaptProvider>{props.children}</AdaptProvider>
           </AnimatedView>
         </SheetProvider>
       </ParentSheetContext.Provider>
