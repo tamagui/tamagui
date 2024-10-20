@@ -392,7 +392,9 @@ const PortalItemWeb = (props: PortalItemProps) => {
   const hostNode = allPortalHosts.get(props.hostName)
 
   if (!hostNode) {
-    console.warn(`No host node`, props.hostName)
+    if (process.env.NODE_ENV === 'development') {
+      console.warn(`No host node, may just need to wait a frame`)
+    }
     return null
   }
 
