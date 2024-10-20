@@ -288,6 +288,7 @@ function PortalHostWeb(props: PortalHostProps) {
     <div
       style={{
         display: 'contents',
+        // pointerEvents: 'none',
       }}
       ref={(node) => {
         if (node) {
