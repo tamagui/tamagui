@@ -1,5 +1,5 @@
 import { FloatingFocusManager } from '@floating-ui/react'
-import { AdaptPortalContents, useAdaptWhenIsActive } from '@tamagui/adapt'
+import { AdaptPortalContents, useAdaptIsActive } from '@tamagui/adapt'
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { composeRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
@@ -55,7 +55,7 @@ export const SelectViewport = SelectViewportFrame.styleable<SelectViewportExtraP
     const { __scopeSelect, children, disableScroll, ...viewportProps } = props
     const context = useSelectContext(VIEWPORT_NAME, __scopeSelect)
     const itemContext = useSelectItemParentContext(VIEWPORT_NAME, __scopeSelect)
-    const isAdapted = useAdaptWhenIsActive(context.sheetBreakpoint)
+    const isAdapted = useAdaptIsActive()
 
     useIsomorphicLayoutEffect(() => {
       if (context.update) {

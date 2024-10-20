@@ -6,14 +6,28 @@ import {
   useIsomorphicLayoutEffect,
 } from '@tamagui/constants'
 import type { MediaQueryKey, UseMediaState } from '@tamagui/core'
-import { useMedia } from '@tamagui/core'
+import { createStyledContext, useMedia } from '@tamagui/core'
 import { withStaticProperties } from '@tamagui/helpers'
 import { PortalHost, PortalItem } from '@tamagui/portal'
-import React, { useContext, useEffect, useId } from 'react'
+import React, { createContext, useContext, useEffect } from 'react'
+
+/**
+ * Interfaces
+ */
+
+type AdaptParentContextI = {
+  Contents: Component
+  scopeName: string
+  when?: AdaptWhen
+  setWhen: (when: AdaptWhen) => any
+  setChildren: (children: any) => any
+  portalName?: string
+}
 
 type MediaQueryKeyString = MediaQueryKey extends string ? MediaQueryKey : never
 
 export type AdaptProps = {
+  scope?: string
   when?: MediaQueryKeyString | ((state: { media: UseMediaState }) => boolean)
   platform?: 'native' | 'web' | 'touch' | 'ios' | 'android'
   children: JSX.Element | ((children: React.ReactNode) => React.ReactNode)
@@ -22,19 +36,97 @@ export type AdaptProps = {
 export type AdaptWhen = MediaQueryKeyString | boolean | null
 
 type Component = (props: any) => any
-type AdaptParentContextI = {
-  Contents: Component
-  when?: AdaptWhen
-  setWhen: (when: AdaptWhen) => any
-  setChildren: (children: any) => any
-  portalName?: string
+
+/**
+ * Contexts
+ */
+
+const CurrentAdaptContextScope = createContext('')
+
+export const AdaptContext = createStyledContext<AdaptParentContextI>({
+  Contents: null as any,
+  scopeName: '',
+  portalName: '',
+  when: null as any,
+  setChildren: null as any,
+  setWhen: null as any,
+})
+
+const ProvideAdaptContext = ({
+  children,
+  ...context
+}: AdaptParentContextI & { children: any }) => {
+  const scope = context.scopeName || ''
+  return (
+    <CurrentAdaptContextScope.Provider value={scope}>
+      <AdaptContext.Provider scope={scope} {...context}>
+        {children}
+      </AdaptContext.Provider>
+    </CurrentAdaptContextScope.Provider>
+  )
 }
 
-export const AdaptParentContext = React.createContext<AdaptParentContextI | null>(null)
+export const useAdaptContext = (scope = '') => {
+  const contextScope = useContext(CurrentAdaptContextScope)
+  const context = AdaptContext.useStyledContext(
+    scope === '' ? contextScope || scope : scope
+  )
+  return context
+}
 
-// forward props
-export const AdaptContents = (props: any) => {
-  const context = React.useContext(AdaptParentContext)
+/**
+ * Hooks
+ */
+
+type AdaptParentProps = {
+  children?: React.ReactNode
+  scope: string
+  Contents?: AdaptParentContextI['Contents']
+  portal?:
+    | boolean
+    | {
+        forwardProps?: any
+      }
+}
+
+export const AdaptParent = ({ children, Contents, scope, portal }: AdaptParentProps) => {
+  const portalName = `AdaptPortal${scope}`
+
+  const FinalContents =
+    Contents ??
+    React.useCallback(() => {
+      return (
+        <PortalHost
+          name={portalName}
+          forwardProps={typeof portal === 'boolean' ? undefined : portal?.forwardProps}
+        />
+      )
+    }, [typeof portal === 'string' ? portal : null])
+
+  const [when, setWhen] = React.useState<AdaptWhen>(null)
+  const [children2, setChildren] = React.useState(null)
+
+  return (
+    <ProvideAdaptContext
+      Contents={FinalContents}
+      when={when}
+      setWhen={setWhen}
+      setChildren={setChildren}
+      portalName={portalName}
+      scopeName={scope}
+    >
+      {children}
+    </ProvideAdaptContext>
+  )
+}
+
+/**
+ * Components
+ */
+
+export const AdaptContents = ({ scope, ...rest }: { scope?: string }) => {
+  const context = useAdaptContext(scope)
+
   if (!context?.Contents) {
     throw new Error(
       process.env.NODE_ENV === 'production'
@@ -42,58 +134,17 @@ export const AdaptContents = (props: any) => {
         : `You're rendering a Tamagui <Adapt /> component without nesting it inside a parent that is able to adapt.`
     )
   }
-  return React.createElement(context.Contents, props)
+
+  // forwards props - see shouldForwardSpace
+  return React.createElement(context.Contents, rest)
 }
 
 AdaptContents.shouldForwardSpace = true
 
-export const useAdaptParent = (
-  props:
-    | { Contents: AdaptParentContextI['Contents'] }
-    | { portal: string; forwardProps?: any; name?: string }
-) => {
-  const portalName = 'portal' in props ? props.portal : undefined
-
-  const Contents =
-    'Contents' in props
-      ? props.Contents
-      : React.useCallback(() => {
-          return <PortalHost name={props.portal} forwardProps={props.forwardProps} />
-        }, [props.portal])
-
-  const [when, setWhen] = React.useState<AdaptWhen>(null)
-  const [children, setChildren] = React.useState(null)
-
-  const AdaptProvider = React.useMemo(() => {
-    const context: AdaptParentContextI = {
-      Contents,
-      when,
-      setWhen,
-      setChildren,
-      portalName,
-    }
-
-    function AdaptProviderView(props: { children?: any }) {
-      return (
-        <AdaptParentContext.Provider value={context}>
-          {props.children}
-        </AdaptParentContext.Provider>
-      )
-    }
-
-    return AdaptProviderView
-  }, [Contents, portalName])
-
-  return {
-    AdaptProvider,
-    when,
-    children,
-  }
-}
-
 export const Adapt = withStaticProperties(
-  function Adapt({ platform, when, children }: AdaptProps) {
-    const context = React.useContext(AdaptParentContext)
+  function Adapt({ platform, when, children, scope }: AdaptProps) {
+    const context = useAdaptContext(scope)
+    const scopeName = scope ?? context.scopeName
     const media = useMedia()
 
     let enabled = false
@@ -141,36 +192,36 @@ export const Adapt = withStaticProperties(
       }
     }, [output])
 
-    if (!enabled) {
-      return null
-    }
-
-    return output
+    return (
+      <CurrentAdaptContextScope.Provider value={scopeName}>
+        {!enabled ? null : output}
+      </CurrentAdaptContextScope.Provider>
+    )
   },
   {
     Contents: AdaptContents,
   }
 )
 
-export const AdaptPortalContents = (props: { children: React.ReactNode }) => {
-  const adaptContext = useContext(AdaptParentContext)
-
-  const isActive = useAdaptWhenIsActive(adaptContext?.when)
+export const AdaptPortalContents = (props: {
+  children: React.ReactNode
+  scope?: string
+}) => {
+  const isActive = useAdaptIsActive(props.scope)
+  const { portalName } = useAdaptContext(props.scope)
 
   return (
-    <PortalItem
-      // passthrough={!isActive}
-      hostName={adaptContext?.portalName}
-    >
+    <PortalItem passthrough={!isWeb && !isActive} hostName={portalName}>
       {props.children}
     </PortalItem>
   )
 }
 
-export const useAdaptWhenIsActive = (breakpoint?: MediaQueryKey | null | boolean) => {
+export const useAdaptIsActive = (scope?: string) => {
+  const { when } = useAdaptContext(scope)
   const media = useMedia()
-  if (typeof breakpoint === 'boolean' || !breakpoint) {
-    return !!breakpoint
+  if (typeof when === 'boolean' || !when) {
+    return !!when
   }
-  return media[breakpoint]
+  return media[when]
 }

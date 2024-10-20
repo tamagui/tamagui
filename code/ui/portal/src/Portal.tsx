@@ -9,11 +9,41 @@ import type { PortalProps } from './PortalProps'
 
 // web only version
 
+const CurrentPortalZIndices: Record<string, number> = {}
+
 export const Portal = React.memo(
-  ({ host = globalThis.document?.body, ...props }: PortalProps) => {
+  ({
+    host = globalThis.document?.body,
+    stackZIndex,
+    zIndex: zIndexProp = 1000,
+    ...props
+  }: PortalProps) => {
     if (isServer) {
       return null
     }
+
+    const zIndex = (() => {
+      if (stackZIndex) {
+        const highest = Object.values(CurrentPortalZIndices).reduce(
+          (acc, cur) => Math.max(acc, cur),
+          0
+        )
+        return Math.max(stackZIndex, highest + 1)
+      }
+      if (zIndexProp) {
+        return zIndexProp
+      }
+    })()
+
+    const id = React.useId()
+    React.useEffect(() => {
+      if (typeof zIndex === 'number') {
+        CurrentPortalZIndices[id] = zIndex
+        return () => {
+          delete CurrentPortalZIndices[id]
+        }
+      }
+    }, [zIndex])
 
     return createPortal(
       <YStack
@@ -24,6 +54,7 @@ export const Portal = React.memo(
         maxWidth="100vw"
         maxHeight="100vh"
         pointerEvents="none"
+        zIndex={zIndex}
         {...props}
       />,
       host

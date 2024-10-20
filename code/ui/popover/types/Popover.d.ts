@@ -33,7 +33,6 @@ type PopoverContextValue = {
     onCustomAnchorAdd(): void;
     onCustomAnchorRemove(): void;
     size?: SizeTokens;
-    sheetBreakpoint: any;
     breakpointActive?: boolean;
     keepChildrenMounted?: boolean;
     anchorTo?: Rect;
@@ -193,7 +192,7 @@ export declare const Popover: React.ForwardRefExoticComponent<PopperProps & {
     disableFocus?: boolean;
 } & {
     __scopePopover?: string | undefined;
-} & React.RefAttributes<Popover>> & {
+} & React.RefAttributes<unknown>> & {
     Anchor: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "fullscreen" | "inset"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
         elevation?: number | SizeTokens | undefined;
         fullscreen?: boolean | undefined;
@@ -281,9 +280,11 @@ export declare const Popover: React.ForwardRefExoticComponent<PopperProps & {
     }>> & {
         __scopePopover?: string | undefined;
     } & React.RefAttributes<TamaguiElement>>;
-    Adapt: (({ platform, when, children }: import("@tamagui/adapt").AdaptProps) => React.ReactNode) & {
+    Adapt: (({ platform, when, children, scope }: import("@tamagui/adapt").AdaptProps) => import("react/jsx-runtime").JSX.Element) & {
         Contents: {
-            (props: any): React.FunctionComponentElement<any>;
+            ({ scope, ...rest }: {
+                scope?: string;
+            }): React.FunctionComponentElement<any>;
             shouldForwardSpace: boolean;
         };
     };

@@ -1,15 +1,10 @@
-import {
-  Adapt,
-  useAdaptParent,
-  useAdaptWhenIsActive,
-  type AdaptWhen,
-} from '@tamagui/adapt'
+import { Adapt, AdaptParent, AdaptPortalContents, useAdaptIsActive } from '@tamagui/adapt'
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { hideOthers } from '@tamagui/aria-hidden'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
 import type { GetProps, StackProps, TamaguiElement } from '@tamagui/core'
-import { Theme, View, spacedChildren, styled, useGet, useThemeName } from '@tamagui/core'
+import { Theme, View, spacedChildren, styled, useThemeName } from '@tamagui/core'
 import type { Scope } from '@tamagui/create-context'
 import { createContext, createContextScope } from '@tamagui/create-context'
 import type { DismissableProps } from '@tamagui/dismissable'
@@ -17,8 +12,7 @@ import { Dismissable } from '@tamagui/dismissable'
 import type { FocusScopeProps } from '@tamagui/focus-scope'
 import { FocusScope } from '@tamagui/focus-scope'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
-import type { PortalItemProps } from '@tamagui/portal'
-import { Portal, PortalItem } from '@tamagui/portal'
+import { Portal } from '@tamagui/portal'
 import { RemoveScroll } from '@tamagui/remove-scroll'
 import { Overlay, Sheet, SheetController } from '@tamagui/sheet'
 import type { YStackProps } from '@tamagui/stacks'
@@ -67,7 +61,6 @@ type DialogContextValue = {
   onOpenChange: NonNull<DialogProps['onOpenChange']>
   modal: NonNull<DialogProps['modal']>
   allowPinchZoom: NonNull<DialogProps['allowPinchZoom']>
-  sheetBreakpoint: AdaptWhen
   scopeKey: string
 }
 
@@ -124,14 +117,13 @@ const [PortalProvider, usePortalContext] = createDialogContext<PortalContextValu
   }
 )
 
-type DialogPortalProps = Omit<PortalItemProps, 'asChild'> &
-  YStackProps & {
-    /**
-     * Used to force mounting when more control is needed. Useful when
-     * controlling animation with React animation libraries.
-     */
-    forceMount?: true
-  }
+type DialogPortalProps = YStackProps & {
+  /**
+   * Used to force mounting when more control is needed. Useful when
+   * controlling animation with React animation libraries.
+   */
+  forceMount?: true
+}
 
 export const DialogPortalFrame = styled(YStack, {
   pointerEvents: 'none',
@@ -161,13 +153,13 @@ const DialogPortalItem = (props: ScopedProps<DialogPortalProps>) => {
   const context = useDialogContext(PORTAL_NAME, props.__scopeDialog)
 
   return (
-    <PortalItem hostName={props.hostName}>
-      <DialogPortalItemContent {...props} themeName={themeName} context={context} />
-    </PortalItem>
+    <AdaptPortalContents>
+      <DialogPortaledContent {...props} themeName={themeName} context={context} />
+    </AdaptPortalContents>
   )
 }
 
-function DialogPortalItemContent(
+function DialogPortaledContent(
   props: ScopedProps<DialogPortalProps> & {
     themeName: string
     context: DialogContextValue
@@ -226,9 +218,9 @@ const DialogPortal: React.FC<DialogPortalProps> = (
       {isShowing ? children : null}
     </AnimatePresence>
   )
-  const isSheet = useShowDialogSheet(context)
+  const isAdapted = useAdaptIsActive()
 
-  if (isSheet) {
+  if (isAdapted) {
     return children
   }
 
@@ -254,9 +246,7 @@ const DialogPortal: React.FC<DialogPortalProps> = (
       )
     }
 
-    return (
-      <DialogPortalItem __scopeDialog={__scopeDialog}>{framedContents}</DialogPortalItem>
-    )
+    return framedContents
   }
 
   return contents
@@ -301,10 +291,10 @@ const DialogOverlay = DialogOverlayFrame.extractable(
     const portalContext = usePortalContext(OVERLAY_NAME, __scopeDialog)
     const { forceMount = portalContext.forceMount, ...overlayProps } = props
     const context = useDialogContext(OVERLAY_NAME, __scopeDialog)
-    const showSheet = useShowDialogSheet(context)
+    const isAdapted = useAdaptIsActive()
 
     if (!forceMount) {
-      if (!context.modal || showSheet) {
+      if (!context.modal || isAdapted) {
         return null
       }
     }
@@ -561,7 +551,7 @@ const DialogContentImpl = React.forwardRef<TamaguiElement, DialogContentImplProp
 
     const contentRef = React.useRef<HTMLDivElement>(null)
     const composedRefs = useComposedRefs(forwardedRef, contentRef)
-    const showSheet = useShowDialogSheet(context)
+    const isAdapted = useAdaptIsActive()
 
     const contents = (
       <DialogContentFrame
@@ -573,12 +563,13 @@ const DialogContentImpl = React.forwardRef<TamaguiElement, DialogContentImplProp
       />
     )
 
-    if (showSheet) {
-      return (
-        <DialogPortalItem hostName={getAdaptName(context)}>
-          {contentProps.children}
-        </DialogPortalItem>
-      )
+    // TODO this will re-parent, ideally we would not change tree structure
+    if (isAdapted) {
+      if (!isWeb && !context.open) {
+        return null
+      }
+
+      return <DialogPortalItem>{contentProps.children}</DialogPortalItem>
     }
 
     if (!isWeb) {
@@ -693,10 +684,10 @@ const DialogClose = DialogCloseFrame.styleable<DialogCloseExtraProps>(
       warn: false,
       fallback: {},
     })
-    const isSheet = useShowDialogSheet(context)
+    const isAdapted = useAdaptIsActive()
     const isInsideButton = React.useContext(ButtonNestingContext)
 
-    if (isSheet && !displayWhenAdapted) {
+    if (isAdapted && !displayWhenAdapted) {
       return null
     }
 
@@ -846,11 +837,6 @@ const Dialog = withStaticProperties(
       allowPinchZoom,
     }
 
-    const { when, AdaptProvider } = useAdaptParent({
-      portal: adaptName,
-      forwardProps: props,
-    })
-
     React.useImperativeHandle(
       ref,
       () => ({
@@ -860,17 +846,18 @@ const Dialog = withStaticProperties(
     )
 
     return (
-      <AdaptProvider>
-        <DialogProvider
-          {...context}
-          sheetBreakpoint={when}
-          disableRemoveScroll={disableRemoveScroll}
-        >
+      <AdaptParent
+        scope={adaptName}
+        portal={{
+          forwardProps: props,
+        }}
+      >
+        <DialogProvider {...context} disableRemoveScroll={disableRemoveScroll}>
           <DialogSheetController onOpenChange={setOpen} __scopeDialog={__scopeDialog}>
             {children}
           </DialogSheetController>
         </DialogProvider>
-      </AdaptProvider>
+      </AdaptParent>
     )
   }),
   {
@@ -899,25 +886,21 @@ const DialogSheetController = (
   }>
 ) => {
   const context = useDialogContext('DialogSheetController', props.__scopeDialog)
-  const showSheet = useShowDialogSheet(context)
+  const isAdapted = useAdaptIsActive()
 
   return (
     <SheetController
       onOpenChange={(val) => {
-        if (showSheet) {
+        if (isAdapted) {
           props.onOpenChange?.(val)
         }
       }}
       open={context.open}
-      hidden={!showSheet}
+      hidden={!isAdapted}
     >
       {props.children}
     </SheetController>
   )
-}
-
-const useShowDialogSheet = (context: DialogContextValue) => {
-  return useAdaptWhenIsActive(context.sheetBreakpoint)
 }
 
 export {
