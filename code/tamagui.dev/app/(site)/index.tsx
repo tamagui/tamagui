@@ -29,6 +29,12 @@ export default function TamaguiHomePage() {
   }
 
   return (
+    <TintSection index={4} mb={-120} zIndex={10000}>
+      <HomeResponsive />
+    </TintSection>
+  )
+
+  return (
     <>
       <HeadInfo
         title="Tamagui"

@@ -258,19 +258,18 @@ export function useMedia(cc?: ComponentContextI, debug?: DebugProp): UseMediaSta
   return new Proxy(state, {
     get(_, key) {
       if (isRendering && !disableMediaTouch && typeof key === 'string') {
-        if (isInitialState) {
-          // the first update() will get this in an ssr safe way
-        } else {
-          const needsUpdateKeys = !state.lastKeys || !state.lastKeys.has(key)
+        const needsUpdateKeys = !state.lastKeys || !state.lastKeys.has(key)
 
-          if (needsUpdateKeys || state[key] !== mediaState[key]) {
-            if (process.env.NODE_ENV === 'development' && debug) {
-              console.info(`useMedia() TOUCH`, key)
-            }
+        if (needsUpdateKeys || state[key] !== mediaState[key]) {
+          if (process.env.NODE_ENV === 'development' && debug) {
+            console.info(`useMedia() TOUCH`, key)
+          }
 
-            currentKeys ||= new Set<string>()
-            currentKeys.add(key)
+          currentKeys ||= new Set<string>()
+          currentKeys.add(key)
 
+          // the first update() will get this in an ssr safe way in the useLayoutEffect
+          if (!isInitialState) {
             const next = getSnapshot(state, currentKeys!)
             if (next !== state) {
               setState(next)

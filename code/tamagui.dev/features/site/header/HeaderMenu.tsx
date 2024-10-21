@@ -1,5 +1,6 @@
 import { useTint } from '@tamagui/logo'
 import { Menu } from '@tamagui/lucide-icons'
+import { usePathname } from 'one'
 import * as React from 'react'
 import {
   Adapt,
@@ -13,8 +14,6 @@ import {
   YStack,
   isTouchable,
 } from 'tamagui'
-
-import { usePathname } from 'one'
 import { DocsMenuContents } from '~/features/docs/DocsMenuContents'
 import { useDocsMenu } from '~/features/docs/useDocsMenu'
 import { useUser } from '~/features/user/useUser'
@@ -31,6 +30,8 @@ export const HeaderMenu = React.memo(function HeaderMenu() {
   const isBento = usePathname().startsWith('/bento')
   const isPressOpened = state.via === 'press' && open
 
+  console.warn('??', { open, state })
+
   return (
     <HeaderMenuTheme>
       <Popover
@@ -44,6 +45,7 @@ export const HeaderMenu = React.memo(function HeaderMenu() {
         }}
         open={open}
         onOpenChange={(next, via) => {
+          console.warn('11', next, via)
           if (open && state.via === 'press' && via === 'hover') {
             return
           }
