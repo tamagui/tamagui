@@ -63,61 +63,68 @@ async function setupTamaguiDotDir(template: (typeof templates)[number], isRetry 
   cd(tamaguiDir)
 
   const isInSubDir = template.repo.dir.length > 0
+  const sourceGitRepo = template.repo.url
+  const sourceGitRepoSshFallback = template.repo.sshFallback
 
-  if (!(await pathExists(targetGitDir))) {
-    console.info(`Cloning tamagui base directory`)
-    console.info()
-
-    const sourceGitRepo = template.repo.url
-    const sourceGitRepoSshFallback = template.repo.sshFallback
-
-    const cmd = `git clone --branch ${branch} ${
-      isInSubDir ? '--depth 1 --sparse --filter=blob:none ' : ''
-    }${sourceGitRepo} "${targetGitDir}"`
-
-    try {
-      try {
-        console.info(`$ ${cmd}`)
-        console.info()
-        exec(cmd)
-      } catch (error) {
-        if (cmd.includes('https://')) {
-          console.info(`https failed - trying with ssh now...`)
-          const sshCmd = cmd.replace(sourceGitRepo, sourceGitRepoSshFallback)
-          console.info(`$ ${sshCmd}`)
-          console.info()
-          exec(sshCmd)
-        } else {
-          throw error
-        }
-      }
-    } catch (error) {
-      if (error instanceof Error) {
-        if (template.value === 'takeout-starter') {
-          if ((error as any)?.stderr?.includes('Repository not found')) {
-            console.info(
-              chalk.yellow(
-                `You don't have access to this starter. Check 🥡 Tamagui Takeout (https://tamagui.dev/takeout) for more info.`
-              )
-            )
-            open('https://tamagui.dev/takeout')
-            process.exit(0)
-          }
-        }
-      }
-      throw error
+  if (isRetry) {
+    if (!(await pathExists(targetGitDir))) {
+      exec(`git clone --branch ${branch} ${sourceGitRepo} "${targetGitDir}"`)
     }
   } else {
-    if (!(await pathExists(join(targetGitDir, '.git')))) {
-      console.error(`Corrupt Tamagui directory, please delete ${targetGitDir} and re-run`)
-      process.exit(1)
-    }
-  }
+    if (!(await pathExists(targetGitDir))) {
+      console.info(`Cloning tamagui base directory`)
+      console.info()
 
-  if (isInSubDir) {
-    const cmd = `git sparse-checkout set code/starters`
-    exec(cmd, { cwd: targetGitDir })
-    console.info()
+      const cmd = `git clone --branch ${branch} ${
+        isInSubDir ? '--depth 1 --sparse --filter=blob:none ' : ''
+      }${sourceGitRepo} "${targetGitDir}"`
+
+      try {
+        try {
+          console.info(`$ ${cmd}`)
+          console.info()
+          exec(cmd)
+        } catch (error) {
+          if (cmd.includes('https://')) {
+            console.info(`https failed - trying with ssh now...`)
+            const sshCmd = cmd.replace(sourceGitRepo, sourceGitRepoSshFallback)
+            console.info(`$ ${sshCmd}`)
+            console.info()
+            exec(sshCmd)
+          } else {
+            throw error
+          }
+        }
+      } catch (error) {
+        if (error instanceof Error) {
+          if (template.value === 'takeout-starter') {
+            if ((error as any)?.stderr?.includes('Repository not found')) {
+              console.info(
+                chalk.yellow(
+                  `You don't have access to this starter. Check 🥡 Tamagui Takeout (https://tamagui.dev/takeout) for more info.`
+                )
+              )
+              open('https://tamagui.dev/takeout')
+              process.exit(0)
+            }
+          }
+        }
+        throw error
+      }
+    } else {
+      if (!(await pathExists(join(targetGitDir, '.git')))) {
+        console.error(
+          `Corrupt Tamagui directory, please delete ${targetGitDir} and re-run`
+        )
+        process.exit(1)
+      }
+    }
+
+    if (isInSubDir) {
+      const cmd = `git sparse-checkout set code/starters`
+      exec(cmd, { cwd: targetGitDir })
+      console.info()
+    }
   }
 
   try {
@@ -134,7 +141,9 @@ async function setupTamaguiDotDir(template: (typeof templates)[number], isRetry 
       )
     }
   } catch (err: any) {
-    console.info(`Error updating: ${err.message} ${err.stack}`)
+    console.info(
+      `Error updating: ${err.message} ${err.stack}  ${isRetry ? '' : '\n\nretrying...'}`
+    )
     if (isRetry) {
       console.info(
         `Please file an issue: https://github.com/tamagui/tamagui/issues/new?assignees=&labels=&template=bug_report.md&title=`
