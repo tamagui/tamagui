@@ -5,7 +5,7 @@ import {
   isWeb,
   useIsomorphicLayoutEffect,
 } from '@tamagui/constants'
-import type { MediaQueryKey, UseMediaState } from '@tamagui/core'
+import type { AllPlatforms, MediaQueryKey } from '@tamagui/core'
 import { createStyledContext, useMedia } from '@tamagui/core'
 import { withStaticProperties } from '@tamagui/helpers'
 import { PortalHost, PortalItem } from '@tamagui/portal'
@@ -15,10 +15,15 @@ import React, { createContext, useContext, useEffect, useId } from 'react'
  * Interfaces
  */
 
+export type AdaptWhen = MediaQueryKeyString | boolean | null
+export type AdaptPlatform = AllPlatforms | 'touch' | null
+
 type AdaptParentContextI = {
   Contents: Component
   scopeName: string
-  when?: AdaptWhen
+  platform: AdaptPlatform
+  setPlatform: (when: AdaptPlatform) => any
+  when: AdaptWhen
   setWhen: (when: AdaptWhen) => any
   setChildren: (children: any) => any
   portalName?: string
@@ -28,12 +33,10 @@ type MediaQueryKeyString = MediaQueryKey extends string ? MediaQueryKey : never
 
 export type AdaptProps = {
   scope?: string
-  when?: MediaQueryKeyString | ((state: { media: UseMediaState }) => boolean)
-  platform?: 'native' | 'web' | 'touch' | 'ios' | 'android'
+  when?: AdaptWhen
+  platform?: AdaptPlatform
   children: JSX.Element | ((children: React.ReactNode) => React.ReactNode)
 }
-
-export type AdaptWhen = MediaQueryKeyString | boolean | null
 
 type Component = (props: any) => any
 
@@ -47,6 +50,8 @@ export const AdaptContext = createStyledContext<AdaptParentContextI>({
   Contents: null as any,
   scopeName: '',
   portalName: '',
+  platform: null as any,
+  setPlatform: null as any,
   when: null as any,
   setChildren: null as any,
   setWhen: null as any,
@@ -117,12 +122,15 @@ export const AdaptParent = ({ children, Contents, scope, portal }: AdaptParentPr
   }, [])
 
   const [when, setWhen] = React.useState<AdaptWhen>(null)
+  const [platform, setPlatform] = React.useState<AdaptPlatform>(null)
   const [children2, setChildren] = React.useState(null)
 
   return (
     <ProvideAdaptContext
       Contents={FinalContents}
       when={when}
+      platform={platform}
+      setPlatform={setPlatform}
       setWhen={setWhen}
       setChildren={setChildren}
       portalName={portalName}
@@ -155,32 +163,16 @@ export const AdaptContents = ({ scope, ...rest }: { scope?: string }) => {
 AdaptContents.shouldForwardSpace = true
 
 export const Adapt = withStaticProperties(
-  function Adapt({ platform, when, children, scope }: AdaptProps) {
+  function Adapt(props: AdaptProps) {
+    const { platform, when, children, scope } = props
     const context = useAdaptContext(scope)
     const scopeName = scope ?? context.scopeName
-    const media = useMedia()
-
-    let enabled = false
-
-    if (typeof when === 'function') {
-      enabled = when({ media })
-    } else {
-      enabled = !platform
-
-      if (platform === 'touch') enabled = isTouchable
-      if (platform === 'native') enabled = !isWeb
-      if (platform === 'web') enabled = isWeb
-      if (platform === 'ios') enabled = isIos
-      if (platform === 'android') enabled = isAndroid
-
-      if (when && !media[when]) {
-        enabled = false
-      }
-    }
+    const enabled = useAdaptIsActiveGiven(props)
 
     useIsomorphicLayoutEffect(() => {
       context?.setWhen((when || enabled) as AdaptWhen)
-    }, [when, context, enabled])
+      context?.setPlatform(platform || null)
+    }, [when, platform, context, enabled])
 
     useIsomorphicLayoutEffect(() => {
       return () => {
@@ -237,11 +229,30 @@ export const AdaptPortalContents = (props: {
   )
 }
 
-export const useAdaptIsActive = (scope?: string) => {
-  const { when } = useAdaptContext(scope)
+const useAdaptIsActiveGiven = ({
+  when,
+  platform,
+}: Pick<AdaptProps, 'when' | 'platform'>) => {
   const media = useMedia()
-  if (typeof when === 'boolean' || !when) {
-    return !!when
+
+  let enabled = false
+
+  enabled = !platform
+
+  if (platform === 'touch') enabled = isTouchable
+  if (platform === 'native') enabled = !isWeb
+  if (platform === 'web') enabled = isWeb
+  if (platform === 'ios') enabled = isIos
+  if (platform === 'android') enabled = isAndroid
+
+  if (when && typeof when === 'string' && !media[when]) {
+    enabled = false
   }
-  return media[when]
+
+  return enabled
+}
+
+export const useAdaptIsActive = (scope?: string) => {
+  const props = useAdaptContext(scope)
+  return useAdaptIsActiveGiven(props)
 }

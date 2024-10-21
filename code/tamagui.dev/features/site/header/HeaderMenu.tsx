@@ -30,8 +30,6 @@ export const HeaderMenu = React.memo(function HeaderMenu() {
   const isBento = usePathname().startsWith('/bento')
   const isPressOpened = state.via === 'press' && open
 
-  console.warn('??', { open, state })
-
   return (
     <HeaderMenuTheme>
       <Popover
