@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/start-transition",
-  "version": "1.116.0",
+  "version": "1.116.1",
   "source": "src/index.ts",
   "license": "MIT",
   "types": "./types/index.d.ts",
@@ -25,7 +25,7 @@
     "react": "^18.2.0 || ^19.0.0"
   },
   "devDependencies": {
-    "@tamagui/build": "1.116.0"
+    "@tamagui/build": "1.116.1"
   },
   "scripts": {
     "build": "tamagui-build",
