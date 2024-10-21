@@ -7,6 +7,8 @@ Themes map neatly to CSS variables: they are objects whose values you want to co
 
 If you learn faster through example, skip to [the Quick Start](#quick-start).
 
+If you want to style `bento` or `tamagui` components: see [Styling `tamagui` UI components](#styling-tamagui-ui-components).
+
 Once you've learned the basics here, be sure to [check out the ThemeBuilder guide](/docs/guides/theme-builder) for generating more interesting theme suites.
 
 <Notice theme="green">
@@ -106,17 +108,77 @@ This is an incredibly powerful and unique feature that allows authors of UI comp
 
 ---
 
-While `@tamagui/core` isn't prescriptive at all, `tamagui` is. This is because standardizing on specific shared theme keys unlocks huge upside. We recommend authors to use these values as well, to enable maximum sharing.
+### Styling Tamagui UI components
 
-In `tamagui`, all components will look for the following keys:
+Tamagui comes in two parts: a core library and a full UI kit. The core library (`@tamagui/core`) is flexible and doesn't have many rules. But the full UI kit (`tamagui`) has some standard ways of doing things. This helps make everything work well together.
 
-- `background`
-- `color`
-- `borderColor`
-- `shadowColor`
-- `placeholderColor` (no pseudo variants)
+In the `tamagui` UI kit, all components use these main theme keys:
+
+- `background`: for background colors
+- `color`: for text colors
+- `borderColor`: for border colors
+- `shadowColor`: for shadow colors
+- `placeholderColor`: for placeholder text colors (doesn't change when you interact with it)
+
+It also uses special versions of these for when you hover, press, or focus on something. For example, `backgroundHover` or `colorPress`.
+
+Using these standard keys is a good idea. It makes it easier for different parts of your app to match and for other developers to understand your code.
 
 ...plus all the pseudo variants for each, eg, `backgroundHover`, `backgroundPress`, and `backgroundFocus`.
+
+This means that you can easily swap re-theme `tamagui`'s UI kit and your own components together, with light and dark mode.
+
+A minimal theme might look like this:
+
+```tsx
+const dark = {
+  // Standard keys for all components
+  background: '#000',
+  backgroundHover: '#111',
+  backgroundPress: '#222',
+  backgroundFocus: '#333',
+  backgroundStrong: '#444',
+  backgroundTransparent: 'rgba(0, 0, 0, 0.5)',
+  color: '#fff',
+  colorHover: '#eee',
+  colorPress: '#ddd',
+  colorFocus: '#ccc',
+  colorTransparent: 'rgba(255, 255, 255, 0.5)',
+  borderColor: '#555',
+  borderColorHover: '#666',
+  borderColorFocus: '#777',
+  borderColorPress: '#888',
+  placeholderColor: '#999',
+  outlineColor: '#aaa',
+  // Custom tokens like "brand"
+  brandBackground: '#000', // You can add your own tokens like "brand"
+  brandColor: '#fff', // and use them in your components
+}
+
+const light = {
+  // Standard keys for all components
+  background: '#fff',
+  backgroundHover: '#f5f5f5',
+  backgroundPress: '#e0e0e0',
+  backgroundFocus: '#d5d5d5',
+  backgroundStrong: '#ccc',
+  backgroundTransparent: 'rgba(255, 255, 255, 0.5)',
+  color: '#000',
+  colorHover: '#111',
+  colorPress: '#222',
+  colorFocus: '#333',
+  colorTransparent: 'rgba(0, 0, 0, 0.5)',
+  borderColor: '#444',
+  borderColorHover: '#555',
+  borderColorFocus: '#666',
+  borderColorPress: '#777',
+  placeholderColor: '#888',
+  outlineColor: '#999',
+  // Custom tokens like "brand"
+  brandBackground: '#000', // You can add your own tokens like "brand"
+  brandColor: '#fff', // and use them in your components
+}
+```
 
 You can of course do all of this yourself in your own design system with `styled`:
 
