@@ -6,7 +6,6 @@ module.exports = {
   factory: () => ({
     hooks: {
       validateProject: async (project, report) => {
-        console.info('Validating project')
         await checkYarnVersion()
       },
     },
@@ -24,7 +23,6 @@ async function checkYarnVersion() {
   // Extract the required Yarn version from the packageManager field
   const packageManager = packageJson.packageManager || ''
   const requiredYarnVersion = packageManager.match(/yarn@([\d.]+)/)?.[1]
-  console.info('\x1b[33m%s\x1b[0m', `\nRequired Yarn version: ${requiredYarnVersion}`)
 
   // If no required Yarn version is found in packageManager
   if (!requiredYarnVersion) {
@@ -64,7 +62,4 @@ async function checkYarnVersion() {
     )
     process.exit(1) // Exit the process if the version is incorrect
   }
-
-  // If versions match, allow installation to proceed
-  console.info(`Yarn version check passed: using Yarn ${currentYarnVersion}`)
 }

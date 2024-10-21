@@ -192,7 +192,7 @@ export declare const Popover: React.ForwardRefExoticComponent<PopperProps & {
     disableFocus?: boolean;
 } & {
     __scopePopover?: string | undefined;
-} & React.RefAttributes<unknown>> & {
+} & React.RefAttributes<Popover>> & {
     Anchor: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "fullscreen" | "inset"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
         elevation?: number | SizeTokens | undefined;
         fullscreen?: boolean | undefined;

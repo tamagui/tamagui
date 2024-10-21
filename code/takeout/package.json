@@ -47,7 +47,6 @@
     "@tamagui/cli": "1.115.5",
     "drizzle-kit": "0.22.8",
     "esbuild-register": "^3.6.0",
-    "patch-package": "^8.0.0",
     "postgres": "^3.4.4"
   }
 }

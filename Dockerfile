@@ -49,7 +49,6 @@ RUN ./scripts/unlock-repo.sh
 RUN corepack enable
 RUN corepack prepare yarn@4.4.0 --activate
 RUN yarn install --immutable
-RUN yarn patch-package
 RUN yarn build:js
 RUN yarn build:app
 

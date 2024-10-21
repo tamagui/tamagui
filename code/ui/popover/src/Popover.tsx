@@ -560,15 +560,17 @@ export type Popover = {
 }
 
 export const Popover = withStaticProperties(
-  React.forwardRef(function Popover(props: ScopedPopoverProps<PopoverProps>) {
-    const id = React.useId()
+  React.forwardRef<Popover, ScopedPopoverProps<PopoverProps>>(
+    function Popover(props, ref) {
+      const id = React.useId()
 
-    return (
-      <AdaptParent scope={`${id}PopoverContents`} portal>
-        <PopoverInner id={id} {...props} />
-      </AdaptParent>
-    )
-  }),
+      return (
+        <AdaptParent scope={`${id}PopoverContents`} portal>
+          <PopoverInner ref={ref} id={id} {...props} />
+        </AdaptParent>
+      )
+    }
+  ),
   {
     Anchor: PopoverAnchor,
     Arrow: PopoverArrow,
@@ -581,10 +583,10 @@ export const Popover = withStaticProperties(
   }
 )
 
-const PopoverInner = React.forwardRef(function PopoverInner(
-  props: ScopedPopoverProps<PopoverProps> & { id: string },
-  forwardedRef: React.Ref<Popover>
-) {
+const PopoverInner = React.forwardRef<
+  Popover,
+  ScopedPopoverProps<PopoverProps> & { id: string }
+>(function PopoverInner(props, forwardedRef) {
   const {
     children,
     open: openProp,

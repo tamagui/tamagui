@@ -8,11 +8,10 @@
   "scripts": {
     "dev": "one dev",
     "dev:clean": "one dev --clean",
-    "subset-font-pn": "node --import=@nitrogql/esbuild-register ./helpers/subset-font.ts",
+    "subset-font-pn": "tsx ./helpers/subset-font.ts",
     "build:prod": "VXRN_ANALYZE_BUNDLE=1 one build",
     "serve": "one serve",
-    "serve:railway": "one serve --host 0.0.0.0",
-    "postinstall": "patch-package || true"
+    "serve:railway": "one serve --host 0.0.0.0"
   },
   "dependencies": {
     "@docsearch/react": "^3.6.1",
@@ -38,15 +37,9 @@
   },
   "devDependencies": {
     "@algolia/client-search": "^5.8.1",
-    "@mdx-js/mdx": "^3.0.1",
-    "@mdx-js/react": "^3.0.1",
-    "@nitrogql/esbuild-register": "^1.7.0",
     "gray-matter": "^4.0.3",
     "marked": "^14.1.2",
-    "patch-package": "^8.0.0",
-    "sharp": "^0.33.5",
-    "svgo": "^3.3.2",
-    "vite-plugin-image-optimizer": "^1.1.8",
+    "tsx": "^4.19.0",
     "vite-tsconfig-paths": "^5.0.1"
   },
   "publishConfig": {

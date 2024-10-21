@@ -163,25 +163,29 @@ export const Sheet = createSheet({
 
 Sheets now support rendering to a native iOS sheet, while still rendering any of your React Native content inside of them.
 
-Because Metro doesn't support conditional imports and we don't want to make `tamagui` enforce installing native dependencies in order to get started, there's an install step:
+Because Metro doesn't support conditional imports and we don't want to make `tamagui` enforce installing native dependencies in order to get started, there's an install step.
+
+As of the time of writing, we are using the new `3.0.x` branch which is in beta. Until ready, it does require a bit more setup.
 
 ```sh
-yarn add react-native-ios-modal
+yarn add react-native-ios-modal@next react-native-ios-utilities@next @dominicstop/ts-event-emitter
 ```
 
-As of the time of writing, we are using the new `3.0.x` branch, so ensure you install that. Then, you'll need to rebuild your native iOS app. This is either through Expo or plain React Native.
+Then, rebuild your native iOS app so it picks up the new native dependencies. This is done either through Expo or plain React Native.
 
-Finally, you set it up in JS:
+Finally, set it up:
 
 ```tsx
 import { Sheet, setupNativeSheet } from '@tamagui/sheet'
-import { ModalView } from 'react-native-ios-modal'
+import * as NativeModal from 'react-native-ios-modal'
 
-setupNativeSheet('ios', ModalView)
+setupNativeSheet('ios', NativeModal)
+
+// now you can use the `native` prop:
 
 export default (
   <Sheet native>
-    {/* The rest of your sheet views, see Anatomy, example and props API */}
+    {/* ... the rest of your sheet */}
   </Sheet>
 )
 ```
