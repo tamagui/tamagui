@@ -9,7 +9,7 @@ import type { MediaQueryKey, UseMediaState } from '@tamagui/core'
 import { createStyledContext, useMedia } from '@tamagui/core'
 import { withStaticProperties } from '@tamagui/helpers'
 import { PortalHost, PortalItem } from '@tamagui/portal'
-import React, { createContext, useContext, useEffect } from 'react'
+import React, { createContext, useContext, useEffect, useId } from 'react'
 
 /**
  * Interfaces
@@ -57,6 +57,7 @@ const ProvideAdaptContext = ({
   ...context
 }: AdaptParentContextI & { children: any }) => {
   const scope = context.scopeName || ''
+
   return (
     <CurrentAdaptContextScope.Provider value={scope}>
       <AdaptContext.Provider scope={scope} {...context}>
@@ -89,19 +90,31 @@ type AdaptParentProps = {
       }
 }
 
+const AdaptPortals = new Map()
+
 export const AdaptParent = ({ children, Contents, scope, portal }: AdaptParentProps) => {
   const portalName = `AdaptPortal${scope}`
+  const id = useId()
 
-  const FinalContents =
-    Contents ??
-    React.useCallback(() => {
+  let FinalContents = Contents || AdaptPortals.get(id)
+
+  if (!FinalContents) {
+    FinalContents = () => {
       return (
         <PortalHost
           name={portalName}
           forwardProps={typeof portal === 'boolean' ? undefined : portal?.forwardProps}
         />
       )
-    }, [typeof portal === 'string' ? portal : null])
+    }
+    AdaptPortals.set(id, FinalContents)
+  }
+
+  useEffect(() => {
+    return () => {
+      AdaptPortals.delete(id)
+    }
+  }, [])
 
   const [when, setWhen] = React.useState<AdaptWhen>(null)
   const [children2, setChildren] = React.useState(null)
@@ -136,7 +149,7 @@ export const AdaptContents = ({ scope, ...rest }: { scope?: string }) => {
   }
 
   // forwards props - see shouldForwardSpace
-  return React.createElement(context.Contents, rest)
+  return React.createElement(context.Contents, { ...rest, key: `stable` })
 }
 
 AdaptContents.shouldForwardSpace = true
@@ -207,11 +220,18 @@ export const AdaptPortalContents = (props: {
   children: React.ReactNode
   scope?: string
 }) => {
-  const isActive = useAdaptIsActive(props.scope)
+  // const isActive = useAdaptIsActive(props.scope)
   const { portalName } = useAdaptContext(props.scope)
 
+  // if (!isActive) {
+  //   return null
+  // }
+
   return (
-    <PortalItem passthrough={!isWeb && !isActive} hostName={portalName}>
+    <PortalItem
+      // passthrough={!isWeb && !isActive}
+      hostName={portalName}
+    >
       {props.children}
     </PortalItem>
   )

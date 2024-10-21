@@ -12,7 +12,6 @@ import {
   Unspaced,
   XStack,
 } from 'tamagui'
-
 import { SelectDemoItem } from './SelectDemo'
 
 export function DialogDemo() {
@@ -20,7 +19,6 @@ export function DialogDemo() {
 }
 
 function DialogInstance() {
-  console.log('wtf')
   return (
     <Dialog modal>
       <Dialog.Trigger asChild>
@@ -82,7 +80,7 @@ function DialogInstance() {
                 <Paragraph>Food</Paragraph>
               </TooltipSimple>
             </Label>
-            {/* <SelectDemoItem /> */}
+            <SelectDemoItem />
           </Fieldset>
 
           <XStack alignSelf="flex-end" gap="$4">

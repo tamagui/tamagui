@@ -149,31 +149,10 @@ export const DialogPortalFrame = styled(YStack, {
 })
 
 const DialogPortalItem = (props: ScopedProps<DialogPortalProps>) => {
+  const { __scopeDialog, children, space, spaceDirection, separator } = props
+
   const themeName = useThemeName()
   const context = useDialogContext(PORTAL_NAME, props.__scopeDialog)
-
-  return (
-    <AdaptPortalContents>
-      <DialogPortaledContent {...props} themeName={themeName} context={context} />
-    </AdaptPortalContents>
-  )
-}
-
-function DialogPortaledContent(
-  props: ScopedProps<DialogPortalProps> & {
-    themeName: string
-    context: DialogContextValue
-  }
-) {
-  const {
-    __scopeDialog,
-    children,
-    context,
-    themeName,
-    space,
-    spaceDirection,
-    separator,
-  } = props
 
   let childrenSpaced = children
 
@@ -190,9 +169,11 @@ function DialogPortaledContent(
   // have to re-propogate context, sketch
 
   return (
-    <DialogProvider scope={__scopeDialog} {...context}>
-      <Theme name={themeName}>{childrenSpaced}</Theme>
-    </DialogProvider>
+    <AdaptPortalContents>
+      <DialogProvider scope={__scopeDialog} {...context}>
+        <Theme name={themeName}>{childrenSpaced}</Theme>
+      </DialogProvider>
+    </AdaptPortalContents>
   )
 }
 
@@ -411,8 +392,6 @@ const DialogContentModal = React.forwardRef<TamaguiElement, DialogContentTypePro
     const contentRef = React.useRef<HTMLDivElement>(null)
     const composedRefs = useComposedRefs(forwardedRef, context.contentRef, contentRef)
 
-    console.log('???', isWeb)
-
     // aria-hide everything except the content (better supported equivalent to setting aria-modal)
     if (isWeb) {
       React.useEffect(() => {
@@ -555,6 +534,16 @@ const DialogContentImpl = React.forwardRef<TamaguiElement, DialogContentImplProp
     const composedRefs = useComposedRefs(forwardedRef, contentRef)
     const isAdapted = useAdaptIsActive()
 
+    // TODO this will re-parent, ideally we would not change tree structure
+
+    if (isAdapted) {
+      if (!isWeb && !context.open) {
+        return null
+      }
+
+      return <DialogPortalItem>{contentProps.children}</DialogPortalItem>
+    }
+
     const contents = (
       <DialogContentFrame
         id={context.contentId}
@@ -564,16 +553,6 @@ const DialogContentImpl = React.forwardRef<TamaguiElement, DialogContentImplProp
         {...contentProps}
       />
     )
-
-    // TODO this will re-parent, ideally we would not change tree structure
-    console.log('wtf', isAdapted, context.open)
-    if (isAdapted) {
-      if (!isWeb && !context.open) {
-        return null
-      }
-
-      return <DialogPortalItem>{contentProps.children}</DialogPortalItem>
-    }
 
     if (!isWeb) {
       return contents
@@ -838,6 +817,7 @@ const Dialog = withStaticProperties(
       onOpenToggle,
       modal,
       allowPinchZoom,
+      disableRemoveScroll,
     }
 
     React.useImperativeHandle(
@@ -855,7 +835,7 @@ const Dialog = withStaticProperties(
           forwardProps: props,
         }}
       >
-        <DialogProvider {...context} disableRemoveScroll={disableRemoveScroll}>
+        <DialogProvider {...context}>
           <DialogSheetController onOpenChange={setOpen} __scopeDialog={__scopeDialog}>
             {children}
           </DialogSheetController>
