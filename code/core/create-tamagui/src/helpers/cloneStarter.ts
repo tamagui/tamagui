@@ -115,10 +115,11 @@ async function setupTamaguiDotDir(template: (typeof templates)[number], isRetry 
   }
 
   if (isInSubDir) {
-    const cmd = `git sparse-checkout set ${template.repo.dir[0] ?? '.'}`
+    const cmd = `git sparse-checkout set code/starters`
     exec(cmd, { cwd: targetGitDir })
     console.info()
   }
+
   try {
     const remoteName = getDefaultRemoteName()
     if (await pathExists(join(targetGitDir, '.git'))) {
@@ -133,11 +134,7 @@ async function setupTamaguiDotDir(template: (typeof templates)[number], isRetry 
       )
     }
   } catch (err: any) {
-    console.info(
-      `Error updating: ${err.message} ${
-        isRetry ? `failing.\n${err.stack}` : 'trying from fresh.'
-      }`
-    )
+    console.info(`Error updating: ${err.message} ${err.stack}`)
     if (isRetry) {
       console.info(
         `Please file an issue: https://github.com/tamagui/tamagui/issues/new?assignees=&labels=&template=bug_report.md&title=`
