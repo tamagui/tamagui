@@ -15,7 +15,6 @@ import { Paragraph, SizableText } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDebounce } from '@tamagui/use-debounce'
 import * as React from 'react'
-
 import {
   SelectItemParentProvider,
   SelectProvider,

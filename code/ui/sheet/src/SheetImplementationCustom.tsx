@@ -1,4 +1,3 @@
-import { useAdaptParent } from '@tamagui/adapt'
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import {

@@ -3,6 +3,7 @@ import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 // MIT License Copyright (c) 2020 Mo Gorhom
 import { useEvent } from '@tamagui/core'
 // fixing SSR issue
+import { startTransition } from '@tamagui/start-transition'
 import type { ReactNode } from 'react'
 import React, {
   createContext,
@@ -14,7 +15,6 @@ import React, {
   useMemo,
   useReducer,
 } from 'react'
-import { startTransition } from '@tamagui/start-transition'
 import { createPortal } from 'react-dom'
 
 interface PortalType {
@@ -318,10 +318,13 @@ function PortalHostNonNative(props: PortalHostProps) {
       state.map((item) => {
         let next = item.node
 
+        // REMOVE children, can cause gnarly bugs (ask me how i know)
+        const { children, ...restForwardProps } = forwardProps
+
         if (forwardProps) {
           return React.Children.map(next, (child) => {
             return React.isValidElement(child)
-              ? React.cloneElement(child, { key: child.key, ...forwardProps })
+              ? React.cloneElement(child, { key: child.key, ...restForwardProps })
               : child
           })
         }

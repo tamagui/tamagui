@@ -220,6 +220,7 @@ export function useMedia(cc?: ComponentContextI, debug?: DebugProp): UseMediaSta
         if (process.env.NODE_ENV === 'development' && debug) {
           console.warn(`useMedia(${devId + !!cc})✍️`, key, cur[key], '>', mediaState[key])
         }
+
         return {
           ...mediaState,
           lastKeys: new Set(keys),
