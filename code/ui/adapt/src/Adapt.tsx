@@ -237,8 +237,6 @@ const useAdaptIsActiveGiven = ({
 
   let enabled = false
 
-  enabled = !platform
-
   if (platform === 'touch') enabled = isTouchable
   if (platform === 'native') enabled = !isWeb
   if (platform === 'web') enabled = isWeb
