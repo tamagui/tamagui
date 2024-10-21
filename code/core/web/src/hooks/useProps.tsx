@@ -12,11 +12,11 @@ import { useThemeWithState } from './useTheme'
 
 type UsePropsOptions = Pick<
   SplitStyleProps,
-  'noExpand' | 'noNormalize' | 'noClassNames' | 'resolveValues'
+  'noExpand' | 'noNormalize' | 'noClass' | 'resolveValues'
 > & {
   disableExpandShorthands?: boolean
   forComponent?: { staticConfig: StaticConfig }
-  noClassNames?: boolean
+  noClass?: boolean
 }
 
 export type PropsWithoutMediaStyles<A> = {
@@ -98,7 +98,7 @@ export function usePropsAndStyle<A extends PropsLikeObject>(
       mediaState,
       noSkip: true,
       noMergeStyle: true,
-      noClassNames: true,
+      noClass: true,
       resolveValues: 'auto',
       ...opts,
     },

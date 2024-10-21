@@ -1,12 +1,16 @@
-import type { MediaQueryKey, UseMediaState } from '@tamagui/core';
+import type { AllPlatforms, MediaQueryKey } from '@tamagui/core';
 import React from 'react';
 /**
  * Interfaces
  */
+export type AdaptWhen = MediaQueryKeyString | boolean | null;
+export type AdaptPlatform = AllPlatforms | 'touch' | null;
 type AdaptParentContextI = {
     Contents: Component;
     scopeName: string;
-    when?: AdaptWhen;
+    platform: AdaptPlatform;
+    setPlatform: (when: AdaptPlatform) => any;
+    when: AdaptWhen;
     setWhen: (when: AdaptWhen) => any;
     setChildren: (children: any) => any;
     portalName?: string;
@@ -14,13 +18,10 @@ type AdaptParentContextI = {
 type MediaQueryKeyString = MediaQueryKey extends string ? MediaQueryKey : never;
 export type AdaptProps = {
     scope?: string;
-    when?: MediaQueryKeyString | ((state: {
-        media: UseMediaState;
-    }) => boolean);
-    platform?: 'native' | 'web' | 'touch' | 'ios' | 'android';
+    when?: AdaptWhen;
+    platform?: AdaptPlatform;
     children: JSX.Element | ((children: React.ReactNode) => React.ReactNode);
 };
-export type AdaptWhen = MediaQueryKeyString | boolean | null;
 type Component = (props: any) => any;
 export declare const AdaptContext: import("@tamagui/core").StyledContext<AdaptParentContextI>;
 export declare const useAdaptContext: (scope?: string) => AdaptParentContextI;
@@ -45,7 +46,7 @@ export declare const AdaptContents: {
     }): React.FunctionComponentElement<any>;
     shouldForwardSpace: boolean;
 };
-export declare const Adapt: (({ platform, when, children, scope }: AdaptProps) => import("react/jsx-runtime").JSX.Element) & {
+export declare const Adapt: ((props: AdaptProps) => import("react/jsx-runtime").JSX.Element) & {
     Contents: {
         ({ scope, ...rest }: {
             scope?: string;

@@ -1,10 +1,12 @@
+import { isServer, isWeb } from '@tamagui/constants'
+import { useRef, useState } from 'react'
 import {
   defaultComponentState,
   defaultComponentStateMounted,
-  defaultComponentStateShouldEnter,
 } from '../defaultComponentState'
-import { useDidHydrateOnce } from '../hooks/useDidHydrateOnce'
-import { useRef, useState } from 'react'
+import { createShallowSetState } from '../helpers/createShallowSetState'
+import { isObj } from '../helpers/isObj'
+import { log } from '../helpers/log'
 import type {
   ComponentContextI,
   GroupStateListener,
@@ -16,10 +18,6 @@ import type {
   TextProps,
   UseAnimationHook,
 } from '../types'
-import { isServer, isWeb } from '@tamagui/constants'
-import { createShallowSetState } from '../helpers/createShallowSetState'
-import { isObj } from '../helpers/isObj'
-import { log } from '../helpers/log'
 
 export const useComponentState = (
   props: StackProps | TextProps | Record<string, any>,
@@ -57,6 +55,8 @@ export const useComponentState = (
     curStateRef.hasAnimated = true
   }
 
+  const { disableClassName } = props
+
   // HOOK
   const presence =
     (willBeAnimated &&
@@ -68,15 +68,24 @@ export const useComponentState = (
   const isEntering = presenceState?.isPresent === true && presenceState.initial !== false
 
   const hasEnterStyle = !!props.enterStyle
-  // finish animated logic, avoid isAnimated when unmounted
-  const hasRNAnimation = hasAnimationProp && animationDriver?.isReactNative
+
+  const hasAnimationThatNeedsHydrate =
+    hasAnimationProp && (animationDriver?.isReactNative || !supportsCSSVars)
 
   const hasEnterState = hasEnterStyle || isEntering
 
   // this can be conditional because its only ever needed with animations
-  const didHydrateOnce = willBeAnimated ? useDidHydrateOnce(stateRef) : true
-  const shouldEnter = hasEnterState || (!didHydrateOnce && hasRNAnimation)
-  const shouldEnterFromUnhydrated = isWeb && !didHydrateOnce
+  const shouldEnter =
+    hasEnterState ||
+    hasAnimationThatNeedsHydrate ||
+    // disableClassName doesnt work server side, only client, so needs hydrate
+    // this is just for a better ux, supports css variables for light/dark, media queries, etc
+    disableClassName
+
+  // two stage enter: because we switch from css driver to spring driver
+  //   - first render: render to match server with css driver
+  //   - second render: state.unmounted = should-enter, still rendering the initial,
+  //     non-entered state but now with the spring animation driver
 
   const initialState = shouldEnter
     ? // on the very first render we switch all spring animation drivers to css rendering
@@ -84,9 +93,7 @@ export const useComponentState = (
       // without flickers of the wrong colors.
       // but once we do that initial hydration and we are in client side rendering mode,
       // we can avoid the extra re-render on mount
-      shouldEnterFromUnhydrated
-      ? defaultComponentState
-      : defaultComponentStateShouldEnter
+      defaultComponentState
     : defaultComponentStateMounted
 
   // will be nice to deprecate half of these:
@@ -102,11 +109,16 @@ export const useComponentState = (
   const state = props.forceStyle ? { ...states[0], [props.forceStyle]: true } : states[0]
   const setState = states[1]
 
-  const isHydrated = state.unmounted === false || state.unmounted === 'should-enter'
+  const isHydrated = state.unmounted === false
 
   // only web server + initial client render run this when not hydrated:
   let isAnimated = willBeAnimated
-  if (isWeb && hasRNAnimation && !staticConfig.isHOC && state.unmounted === true) {
+  if (
+    isWeb &&
+    hasAnimationThatNeedsHydrate &&
+    !staticConfig.isHOC &&
+    state.unmounted === true
+  ) {
     isAnimated = false
     curStateRef.willHydrate = true
   }
@@ -122,10 +134,6 @@ export const useComponentState = (
   }
 
   let setStateShallow = createShallowSetState(setState, disabled, false, props.debug)
-
-  // if (isHydrated && state.unmounted === 'should-enter') {
-  //   state.unmounted = true
-  // }
 
   // set enter/exit variants onto our new props object
   if (presenceState && isAnimated && isHydrated && staticConfig.variants) {
@@ -151,33 +159,33 @@ export const useComponentState = (
     }
   }
 
-  let shouldAvoidClasses = !isWeb
+  let noClass = !isWeb || !!props.forceStyle
 
   // on server for SSR and animation compat added the && isHydrated but perhaps we want
   // disableClassName="until-hydrated" to be more straightforward
   // see issue if not, Button sets disableClassName to true <Button animation="" /> with
   // the react-native driver errors because it tries to animate var(--color) to rbga(..)
   if (isWeb) {
-    const { disableClassName } = props
+    // no matter what if fully unmounted or on the server we use className
+    // only once we hydrate do we switch to spring animation drivers or disableClassName etc
+    if (!isServer || isHydrated) {
+      const isAnimatedAndHydrated = isAnimated && !supportsCSSVars
 
-    const isAnimatedAndHydrated =
-      isAnimated && !supportsCSSVars && didHydrateOnce && !isServer
+      const isClassNameDisabled =
+        !staticConfig.acceptsClassName && (config.disableSSR || !state.unmounted)
 
-    const isClassNameDisabled =
-      !staticConfig.acceptsClassName && (config.disableSSR || didHydrateOnce)
+      const isDisabledManually = disableClassName && !state.unmounted
 
-    const isDisabledManually =
-      disableClassName && !isServer && didHydrateOnce && state.unmounted === true
+      if (isAnimatedAndHydrated || isDisabledManually || isClassNameDisabled) {
+        noClass = true
 
-    if (isAnimatedAndHydrated || isDisabledManually || isClassNameDisabled) {
-      shouldAvoidClasses = true
-
-      if (process.env.NODE_ENV === 'development' && props.debug) {
-        log(`avoiding className`, {
-          isAnimatedAndHydrated,
-          isDisabledManually,
-          isClassNameDisabled,
-        })
+        if (process.env.NODE_ENV === 'development' && props.debug) {
+          log(`avoiding className`, {
+            isAnimatedAndHydrated,
+            isDisabledManually,
+            isClassNameDisabled,
+          })
+        }
       }
     }
   }
@@ -231,7 +239,7 @@ export const useComponentState = (
     presenceState,
     setState,
     setStateShallow,
-    shouldAvoidClasses,
+    noClass,
     state,
     stateRef,
     supportsCSSVars,

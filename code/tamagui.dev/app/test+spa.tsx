@@ -5,8 +5,8 @@ global.shouldDebugMoti = true
 export function TestPage() {
   return (
     <>
-      <DialogDemo />
-      <SelectDemo />
+      {/* <DialogDemo /> */}
+      {/* <SelectDemo /> */}
       <SheetDemo />
     </>
   )

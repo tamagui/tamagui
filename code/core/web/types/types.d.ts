@@ -1416,7 +1416,7 @@ export type ResolveVariableAs = 'auto' | 'value' | 'variable' | 'none' | 'web';
 export type SplitStyleProps = {
     styledContextProps?: Record<string, any>;
     mediaState?: Record<string, boolean>;
-    noClassNames?: boolean;
+    noClass?: boolean;
     noExpand?: boolean;
     noNormalize?: boolean | 'values';
     noSkip?: boolean;

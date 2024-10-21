@@ -194,9 +194,6 @@ const ButtonComponent = ButtonFrame.styleable<ButtonExtraProps>(
   }
 )
 
-/**
- * @deprecated Instead of useButton, see the Button docs for the newer and much improved Advanced customization pattern: https://tamagui.dev/docs/components/button
- */
 const buttonStaticConfig = {
   inlineProps: new Set([
     // text props go here (can't really optimize them, but we never fully extract button anyway)

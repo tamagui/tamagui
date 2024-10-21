@@ -169,7 +169,7 @@ export const getSplitStyles: StyleSplitter = (
   const viewProps: GetStyleResult['viewProps'] = {}
   const mediaState = styleProps.mediaState || globalMediaState
   const usedKeys: Record<string, number> = {}
-  const shouldDoClasses = acceptsClassName && isWeb && !styleProps.noClassNames
+  const shouldDoClasses = acceptsClassName && isWeb && !styleProps.noClass
   const rulesToInsert: RulesToInsert =
     process.env.TAMAGUI_TARGET === 'native' ? (undefined as any) : {}
   const classNames: ClassNamesObject = {}
@@ -242,12 +242,7 @@ export const getSplitStyles: StyleSplitter = (
         valInit &&
         typeof valInit === 'object'
       ) {
-        viewProps[keyInit] = getSubStyle(
-          styleState,
-          keyInit,
-          valInit,
-          styleProps.noClassNames
-        )
+        viewProps[keyInit] = getSubStyle(styleState, keyInit, valInit, styleProps.noClass)
         continue
       }
     }
@@ -557,7 +552,7 @@ export const getSplitStyles: StyleSplitter = (
       //     valInit,
       //     fontFamily,
       //     true,
-      //     state.noClassNames
+      //     state.noClass
       //   )
       //   const descriptor = pseudoDescriptors[keyInit]
       //   for (const key in pseudoStyleObject) {
@@ -686,12 +681,7 @@ export const getSplitStyles: StyleSplitter = (
 
         // TODO can avoid processing this if !shouldDoClasses + state is off
         // (note: can't because we need to set defaults on enter/exit or else enforce that they should)
-        const pseudoStyleObject = getSubStyle(
-          styleState,
-          key,
-          val,
-          styleProps.noClassNames
-        )
+        const pseudoStyleObject = getSubStyle(styleState, key, val, styleProps.noClass)
 
         const descriptor = pseudoDescriptors[key as keyof typeof pseudoDescriptors]
         const isEnter = key === 'enterStyle'
@@ -1160,7 +1150,7 @@ export const getSplitStyles: StyleSplitter = (
           const [key, value, identifier] = atomicStyle
           const isAnimatedAndAnimateOnly =
             styleProps.isAnimated &&
-            styleProps.noClassNames &&
+            styleProps.noClass &&
             (!props.animateOnly || props.animateOnly.includes(key))
 
           // or not animated but you have animateOnly
