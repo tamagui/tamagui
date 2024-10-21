@@ -4,7 +4,6 @@ import { getSetting } from '../config'
 import { ComponentContext } from '../contexts/ComponentContext'
 import type { TamaguiProviderProps } from '../types'
 import { ThemeProvider } from './ThemeProvider'
-import { useDidHydrateOnceRoot } from '../hooks/useDidHydrateOnce'
 
 export function TamaguiProvider({
   children,
@@ -16,8 +15,6 @@ export function TamaguiProvider({
   reset,
   themeClassNameOnRoot,
 }: TamaguiProviderProps) {
-  useDidHydrateOnceRoot()
-
   if (!process.env.TAMAGUI_REACT_19) {
     if (isClient) {
       // inject CSS if asked to (not SSR compliant)

@@ -353,16 +353,13 @@ export function createComponent<
       presenceState,
       setState,
       setStateShallow,
-      shouldAvoidClasses,
+      noClass,
       state,
       stateRef,
       supportsCSSVars,
       willBeAnimated,
       willBeAnimatedClient,
     } = useComponentState(props, componentContext, staticConfig, config!)
-
-    const shouldForcePseudo = !!propsIn.forceStyle
-    const noClassNames = shouldAvoidClasses || shouldForcePseudo
 
     if (process.env.NODE_ENV === 'development' && time) time`use-state`
 
@@ -434,7 +431,7 @@ export function createComponent<
           (hasEnterStyle ? '(hasEnter)' : ' ') +
           (isAnimated ? '(animated)' : ' ') +
           (isReactNative ? '(rnw)' : ' ') +
-          (shouldAvoidClasses ? '(shouldAvoidClasses)' : ' ') +
+          (noClass ? '(noClass)' : ' ') +
           (state.press || state.pressIn ? '(PRESSED)' : ' ') +
           (state.hover ? '(HOVERED)' : ' ') +
           (state.focus ? '(FOCUSED)' : ' ') +
@@ -448,7 +445,7 @@ export function createComponent<
         )
 
         if (isServer) {
-          log({ noClassNames, isAnimated, shouldAvoidClasses, isWeb, supportsCSSVars })
+          log({ noClass, isAnimated, isWeb, supportsCSSVars })
         } else {
           // if strict mode or something messes with our nesting this fixes:
           console.groupEnd()
@@ -495,7 +492,7 @@ export function createComponent<
 
     const styleProps = {
       mediaState,
-      noClassNames,
+      noClass,
       resolveValues,
       isExiting,
       isAnimated,
@@ -532,7 +529,7 @@ export function createComponent<
     const shouldListenForMedia =
       didGetVariableValue() ||
       hasRuntimeMediaKeys ||
-      (noClassNames && splitStyles.hasMedia === true)
+      (noClass && splitStyles.hasMedia === true)
 
     const mediaListeningKeys = hasRuntimeMediaKeys
       ? (splitStyles.hasMedia as Record<string, boolean>)
@@ -720,23 +717,21 @@ export function createComponent<
         return
       }
 
+      let tm
+
       if (state.unmounted === true && hasEnterStyle) {
         setStateShallow({ unmounted: 'should-enter' })
         return
       }
 
-      let tm
-
       if (state.unmounted) {
-        if (animationDriver?.supportsCSSVars) {
-          // this fixes css driver enter animations - from what i can tell they are correct but react 19 somehow messing it up
-          tm = setTimeout(() => {
-            setStateShallow({ unmounted: false })
-          })
-        } else {
+        // this setTimeout fixes moti and css driver enter animations
+        // not sure why
+        tm = setTimeout(() => {
           setStateShallow({ unmounted: false })
-        }
-        return
+        })
+
+        return () => clearTimeout(tm)
       }
 
       const dispose = subscribeToContextGroup({
@@ -762,10 +757,9 @@ export function createComponent<
 
     // if its a group its gotta listen for pseudos to emit them to children
 
-    const runtimePressStyle = !disabled && noClassNames && pseudos?.pressStyle
-    const runtimeFocusStyle = !disabled && noClassNames && pseudos?.focusStyle
-    const runtimeFocusVisibleStyle =
-      !disabled && noClassNames && pseudos?.focusVisibleStyle
+    const runtimePressStyle = !disabled && noClass && pseudos?.pressStyle
+    const runtimeFocusStyle = !disabled && noClass && pseudos?.focusStyle
+    const runtimeFocusVisibleStyle = !disabled && noClass && pseudos?.focusVisibleStyle
     const attachFocus = Boolean(
       runtimePressStyle ||
         runtimeFocusStyle ||
@@ -785,7 +779,7 @@ export function createComponent<
         onClick ||
         pseudos?.focusVisibleStyle
     )
-    const runtimeHoverStyle = !disabled && noClassNames && pseudos?.hoverStyle
+    const runtimeHoverStyle = !disabled && noClass && pseudos?.hoverStyle
     const needsHoverState = Boolean(
       groupName || runtimeHoverStyle || onHoverIn || onHoverOut
     )
@@ -1151,8 +1145,7 @@ export function createComponent<
                 mediaListeningKeys,
                 pseudos,
                 shouldAttach,
-                shouldAvoidClasses,
-                shouldForcePseudo,
+                noClass,
                 shouldListenForMedia,
                 splitStyles,
                 splitStylesStyle,

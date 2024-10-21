@@ -1,5 +1,6 @@
 import { useTint } from '@tamagui/logo'
 import { Menu } from '@tamagui/lucide-icons'
+import { usePathname } from 'one'
 import * as React from 'react'
 import {
   Adapt,
@@ -13,8 +14,6 @@ import {
   YStack,
   isTouchable,
 } from 'tamagui'
-
-import { usePathname } from 'one'
 import { DocsMenuContents } from '~/features/docs/DocsMenuContents'
 import { useDocsMenu } from '~/features/docs/useDocsMenu'
 import { useUser } from '~/features/user/useUser'
