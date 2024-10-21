@@ -22,7 +22,7 @@ function DialogInstance() {
   return (
     <Dialog modal>
       <Dialog.Trigger asChild>
-        <Button>Show Dialog22</Button>
+        <Button>Show Dialog</Button>
       </Dialog.Trigger>
 
       <Adapt when="sm" platform="touch">
@@ -69,13 +69,13 @@ function DialogInstance() {
             Make changes to your profile here. Click save when you're done.
           </Dialog.Description>
           <Fieldset gap="$4" horizontal>
-            <Label width={160} justifyContent="flex-end" htmlFor="name">
+            <Label width={130} justifyContent="flex-end" htmlFor="name">
               Name
             </Label>
             <Input flex={1} id="name" defaultValue="Nate Wienert" />
           </Fieldset>
           <Fieldset gap="$4" horizontal>
-            <Label width={160} justifyContent="flex-end" htmlFor="username">
+            <Label width={130} justifyContent="flex-end" htmlFor="username">
               <TooltipSimple label="Pick your favorite" placement="bottom-start">
                 <Paragraph>Food</Paragraph>
               </TooltipSimple>

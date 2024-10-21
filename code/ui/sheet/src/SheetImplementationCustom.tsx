@@ -98,7 +98,13 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
      * This is a hacky workaround for native:
      */
     const [isShowingInnerSheet, setIsShowingInnerSheet] = React.useState(false)
-    const shouldHideParentSheet = !isWeb && modal && isShowingInnerSheet
+    const shouldHideParentSheet =
+      !isWeb &&
+      modal &&
+      isShowingInnerSheet &&
+      // if not using weird portal limitation we dont need to hide parent sheet
+      process.env.TAMAGUI_USE_NATIVE_PORTAL !== 'false'
+
     const sheetInsideSheet = React.useContext(SheetInsideSheetContext)
     const onInnerSheet = React.useCallback((hasChild: boolean) => {
       setIsShowingInnerSheet(hasChild)
@@ -475,7 +481,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
                 width: '100%',
                 height: forcedContentHeight,
                 minHeight: forcedContentHeight,
-                opacity,
+                opacity: !shouldHideParentSheet ? opacity : 0,
                 ...((shouldHideParentSheet || !open) && {
                   pointerEvents: 'none',
                 }),
