@@ -199,8 +199,9 @@ const DialogPortal: React.FC<DialogPortalProps> = (
       {isShowing ? children : null}
     </AnimatePresence>
   )
-  const isAdapted = useAdaptIsActive()
 
+  // TODO may not need this, tested on native and didnt need it:
+  const isAdapted = useAdaptIsActive()
   if (isAdapted) {
     return children
   }
