@@ -43,7 +43,6 @@ export const HeaderMenu = React.memo(function HeaderMenu() {
         }}
         open={open}
         onOpenChange={(next, via) => {
-          console.warn('11', next, via)
           if (open && state.via === 'press' && via === 'hover') {
             return
           }

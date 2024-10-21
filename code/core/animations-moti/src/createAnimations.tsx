@@ -1,9 +1,8 @@
-import React, { forwardRef } from 'react'
 import { PresenceContext, ResetPresence, usePresence } from '@tamagui/use-presence'
 import {
   getStylesAtomic,
+  hooks,
   isWeb,
-  styleToCSS,
   useComposedRefs,
   type AnimationDriver,
   type UniversalAnimatedNumber,
@@ -11,6 +10,7 @@ import {
 import type { TransitionConfig } from 'moti'
 import { useMotify } from 'moti/author'
 import type { CSSProperties } from 'react'
+import React, { forwardRef, useRef } from 'react'
 import type { TextStyle } from 'react-native'
 import type { SharedValue } from 'react-native-reanimated'
 import Animated, {
@@ -28,19 +28,53 @@ type ReanimatedAnimatedNumber = SharedValue<number>
 
 // this is our own custom reanimated animated component so we can allow data- attributes, className etc
 // this should ultimately be merged with react-native-web-lite
-function createTamaguiAnimatedComponent(tag = 'div') {
-  const Component = Animated.createAnimatedComponent(
-    forwardRef(({ forwardedRef, style, ...props }: any, ref) => {
-      const composedRefs = useComposedRefs(forwardedRef, ref)
-      const Element = props.tag || tag
 
-      // TODO this block should be exported by web as styleToWebStyle()
-      const styleOut = getStylesAtomic(style).reduce((acc, [key, value]) => {
+function createTamaguiAnimatedComponent(defaultTag = 'div') {
+  const Component = Animated.createAnimatedComponent(
+    forwardRef((propsIn: any, ref) => {
+      const {
+        forwardedRef,
+        style,
+        disableClassName,
+        animation,
+        tag = defaultTag,
+        ...props
+      } = propsIn
+      const hostRef = useRef()
+      const composedRefs = useComposedRefs(forwardedRef, ref, hostRef)
+      const stateRef = useRef<any>()
+      if (!stateRef.current) {
+        stateRef.current = {
+          get host() {
+            return hostRef.current
+          },
+        }
+      }
+
+      const styleFlat = []
+        .concat(style)
+        .flat(100)
+        .reduce((acc, cur) => {
+          if (cur) {
+            Object.assign(acc, cur)
+          }
+          return acc
+        }, {})
+
+      const styleOut = getStylesAtomic(styleFlat).reduce((acc, [key, value]) => {
         acc[key] = value
         return acc
       }, {})
 
-      return <Element {...props} style={styleOut} ref={composedRefs} />
+      const Element = tag
+      const transformedProps = hooks.usePropsTransform?.(tag, props, stateRef, false)
+      const finalProps = {
+        ...transformedProps,
+        style: styleOut,
+        ref: composedRefs,
+      }
+
+      return <Element {...finalProps} />
     })
   )
   Component['acceptTagProp'] = true
@@ -49,6 +83,14 @@ function createTamaguiAnimatedComponent(tag = 'div') {
 
 const AnimatedView = createTamaguiAnimatedComponent('div')
 const AnimatedText = createTamaguiAnimatedComponent('span')
+
+// const AnimatedView = styled(View, {
+//   disableClassName: true,
+// })
+
+// const AnimatedText = styled(Text, {
+//   disableClassName: true,
+// })
 
 const onlyAnimateKeys: { [key in keyof TextStyle | keyof CSSProperties]?: boolean } = {
   transform: true,
