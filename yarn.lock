@@ -6139,7 +6139,6 @@ __metadata:
     react-dropzone: "npm:^14.2.3"
     react-hook-form: "npm:^7.51.0"
     react-native: "npm:0.74.1"
-    react-native-ios-modal: "npm:2.0.0-3"
     react-native-safe-area-context: "npm:4.11.0"
     react-native-svg: "npm:^15.7.1"
     react-native-web: "npm:^0.19.12"
@@ -7031,6 +7030,7 @@ __metadata:
   resolution: "@tamagui/kitchen-sink@workspace:code/kitchen-sink"
   dependencies:
     "@babel/core": "npm:^7.25.2"
+    "@dominicstop/ts-event-emitter": "npm:^1.1.0"
     "@playwright/test": "npm:^1.45.2"
     "@pmmmwh/react-refresh-webpack-plugin": "npm:^0.5.10"
     "@react-native-async-storage/async-storage": "npm:1.23.1"
@@ -7070,7 +7070,8 @@ __metadata:
     react-dom: "npm:^18.2.0 || ^19.0.0"
     react-native: "npm:0.74.1"
     react-native-gesture-handler: "npm:2.20.0"
-    react-native-ios-modal: "npm:2.0.0-3"
+    react-native-ios-modal: "npm:3.0.0-5"
+    react-native-ios-utilities: "npm:5.0.0-45"
     react-native-reanimated: "npm:~3.11.0"
     react-native-safe-area-context: "npm:4.11.0"
     react-native-screens: "npm:3.31.1"
@@ -23369,15 +23370,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-ios-modal@npm:2.0.0-3":
-  version: 2.0.0-3
-  resolution: "react-native-ios-modal@npm:2.0.0-3"
-  dependencies:
-    "@dominicstop/ts-event-emitter": "npm:^1.1.0"
+"react-native-ios-modal@npm:3.0.0-5":
+  version: 3.0.0-5
+  resolution: "react-native-ios-modal@npm:3.0.0-5"
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 10/c0d86350f7edf9dccd1e2c0a6d129af18edfe8e7258075768667fad2d259afb08dfc4e273b3beffb6bc55d7d8d1ae042dcd5e096858626fe6daca4f540cde16b
+    react-native-ios-utilities: 5.0.x
+  checksum: 10/bf2289b401962e769e7b86c67a232599c07be1c39fbde24c37dc6ef649b78085509404fb54e60bee00c55ee8addc6dcf3318615c3855a85b68ced7069ef43f78
+  languageName: node
+  linkType: hard
+
+"react-native-ios-utilities@npm:5.0.0-45":
+  version: 5.0.0-45
+  resolution: "react-native-ios-utilities@npm:5.0.0-45"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 10/bb7a36d4ef70fcf52c5beb23de0e40db8875ca69488893e9ac06e61635302f0b66fa65d2c364a6981938eb4409777a71c9e41181e429b334eb2a718b6621e3ad
   languageName: node
   linkType: hard
 

@@ -86,7 +86,6 @@
     "react-dropzone": "^14.2.3",
     "react-hook-form": "^7.51.0",
     "react-native": "0.74.1",
-    "react-native-ios-modal": "2.0.0-3",
     "react-native-safe-area-context": "4.11.0",
     "react-native-svg": "^15.7.1",
     "react-native-web": "^0.19.12",

@@ -2,7 +2,6 @@ import { YStack } from '@tamagui/stacks'
 import type { FunctionComponent } from 'react'
 import { useEffect, useRef } from 'react'
 import { View } from 'react-native'
-
 import { SheetProvider } from './SheetContext'
 import type { SheetProps } from './types'
 import { useSheetOpenState } from './useSheetOpenState'
@@ -20,7 +19,12 @@ export function getNativeSheet(platform: SheetNativePlatforms) {
   return nativeSheets[platform]
 }
 
-export function setupNativeSheet(platform: SheetNativePlatforms, Implementation: any) {
+export function setupNativeSheet(
+  platform: SheetNativePlatforms,
+  RNIOSModal: { ModalSheetView: any; ModalSheetViewMainContent: any }
+) {
+  const { ModalSheetView, ModalSheetViewMainContent } = RNIOSModal
+
   if (platform === 'ios') {
     nativeSheets[platform] = (props: SheetProps) => {
       const state = useSheetOpenState(props)
@@ -30,12 +34,22 @@ export function setupNativeSheet(platform: SheetNativePlatforms, Implementation:
 
       const { open, setOpen } = state
       const ref = useRef<{
-        setVisibility: Function
+        presentModal: Function
+        dismissModal: Function
       }>()
 
       useEffect(() => {
-        ref.current?.setVisibility(open)
+        if (open) {
+          ref.current?.presentModal()
+        } else {
+          ref.current?.dismissModal()
+        }
       }, [open])
+
+      function setOpenInternal(next: boolean) {
+        props.onOpenChange?.(open)
+        setOpen(next)
+      }
 
       // modalContentPreferredContentSize={{
       //   mode: 'percent',
@@ -46,9 +60,11 @@ export function setupNativeSheet(platform: SheetNativePlatforms, Implementation:
       return (
         <>
           <SheetProvider {...providerProps} onlyShowFrame>
-            <Implementation ref={ref} onModalDismiss={() => setOpen(false)}>
-              <View style={{ flex: 1 }}>{props.children}</View>
-            </Implementation>
+            <ModalSheetView ref={ref} onModalDidDismiss={() => setOpenInternal(false)}>
+              <ModalSheetViewMainContent>
+                <View style={{ flex: 1 }}>{props.children}</View>
+              </ModalSheetViewMainContent>
+            </ModalSheetView>
 
             {/* for some reason select triggers wont show on native if this isn't inside the actual tree not inside implementation... */}
             {/* so just hiding it here for now... not great... */}
