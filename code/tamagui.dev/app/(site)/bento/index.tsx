@@ -68,7 +68,6 @@ import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
 export const loader = async () => {
   try {
     const products = await getProductsForServerSideRendering()
-    console.log('got', products)
     return products
   } catch (err) {
     assertIsError(err)
