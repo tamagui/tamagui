@@ -1,6 +1,13 @@
-import React from 'react'
+import React, { forwardRef } from 'react'
 import { PresenceContext, ResetPresence, usePresence } from '@tamagui/use-presence'
-import type { AnimationDriver, UniversalAnimatedNumber } from '@tamagui/web'
+import {
+  getStylesAtomic,
+  isWeb,
+  styleToCSS,
+  useComposedRefs,
+  type AnimationDriver,
+  type UniversalAnimatedNumber,
+} from '@tamagui/web'
 import type { TransitionConfig } from 'moti'
 import { useMotify } from 'moti/author'
 import type { CSSProperties } from 'react'
@@ -19,31 +26,29 @@ import Animated, {
 
 type ReanimatedAnimatedNumber = SharedValue<number>
 
-// function createTamaguiAnimatedComponent(tag = 'div') {
-//   const Component = Animated.createAnimatedComponent(
-//     forwardRef(({ forwardedRef, style, ...props }: any, ref) => {
-//       const composedRefs = useComposedRefs(forwardedRef, ref)
-//       const Element = props.tag || tag
+// this is our own custom reanimated animated component so we can allow data- attributes, className etc
+// this should ultimately be merged with react-native-web-lite
+function createTamaguiAnimatedComponent(tag = 'div') {
+  const Component = Animated.createAnimatedComponent(
+    forwardRef(({ forwardedRef, style, ...props }: any, ref) => {
+      const composedRefs = useComposedRefs(forwardedRef, ref)
+      const Element = props.tag || tag
 
-//       // TODO this block should be exported by web as styleToWebStyle()
-//       const webStyle = style
-//       styleToCSS(style)
-//       if (Array.isArray(webStyle.transform)) {
-//         style.transform = transformsToString(style.transform)
-//       }
-//       for (const key in style) {
-//         style[key] = normalizeValueWithProperty(style[key], key)
-//       }
+      // TODO this block should be exported by web as styleToWebStyle()
+      const styleOut = getStylesAtomic(style).reduce((acc, [key, value]) => {
+        acc[key] = value
+        return acc
+      }, {})
 
-//       return <Element {...props} style={style} ref={composedRefs} />
-//     })
-//   )
-//   Component['acceptTagProp'] = true
-//   return Component
-// }
+      return <Element {...props} style={styleOut} ref={composedRefs} />
+    })
+  )
+  Component['acceptTagProp'] = true
+  return Component
+}
 
-// const AnimatedView = createTamaguiAnimatedComponent('div')
-// const AnimatedText = createTamaguiAnimatedComponent('span')
+const AnimatedView = createTamaguiAnimatedComponent('div')
+const AnimatedText = createTamaguiAnimatedComponent('span')
 
 const onlyAnimateKeys: { [key in keyof TextStyle | keyof CSSProperties]?: boolean } = {
   transform: true,
@@ -80,10 +85,10 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
   animations: A
 ): AnimationDriver<A> {
   return {
-    // View: isWeb ? AnimatedView : Animated.View,
-    // Text: isWeb ? AnimatedText : Animated.Text,
-    View: Animated.View,
-    Text: Animated.Text,
+    View: isWeb ? AnimatedView : Animated.View,
+    Text: isWeb ? AnimatedText : Animated.Text,
+    // View: Animated.View,
+    // Text: Animated.Text,
     isReactNative: true,
     animations,
     usePresence,
@@ -214,8 +219,14 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
 
       // without this, the driver breaks on native
       // stringifying -> parsing fixes that
-      const animateStr = JSON.stringify(animate)
-      const styles = React.useMemo(() => JSON.parse(animateStr), [animateStr])
+      const styles = (() => {
+        if (process.env.TAMAGUI_TARGET === 'native') {
+          const animateStr = JSON.stringify(animate)
+          return React.useMemo(() => JSON.parse(animateStr), [animateStr])
+        } else {
+          return animate
+        }
+      })()
 
       const isExiting = Boolean(presence?.[1])
       const presenceContext = React.useContext(PresenceContext)
@@ -265,6 +276,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
 
       if (process.env.NODE_ENV === 'development' && props['debug']) {
         console.info(`useMotify(`, JSON.stringify(motiProps, null, 2) + ')', {
+          'componentState.unmounted': componentState.unmounted,
           animationProps,
           motiProps,
           moti,

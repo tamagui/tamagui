@@ -728,14 +728,11 @@ export function createComponent<
       let tm
 
       if (state.unmounted) {
-        if (animationDriver?.supportsCSSVars) {
-          // this fixes css driver enter animations - from what i can tell they are correct but react 19 somehow messing it up
-          tm = setTimeout(() => {
-            setStateShallow({ unmounted: false })
-          })
-        } else {
+        // this setTimeout fixes moti and css driver enter animations
+        // not sure why
+        tm = setTimeout(() => {
           setStateShallow({ unmounted: false })
-        }
+        })
         return
       }
 

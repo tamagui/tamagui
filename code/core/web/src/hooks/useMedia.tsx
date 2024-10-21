@@ -15,7 +15,6 @@ import type {
   UseMediaState,
 } from '../types'
 import { getDisableSSR } from './useDisableSSR'
-import { useDidHydrateOnce } from './useDidHydrateOnce'
 
 export let mediaState: MediaQueryState =
   // development only safeguard
@@ -206,8 +205,6 @@ export function useMedia(cc?: ComponentContextI, debug?: DebugProp): UseMediaSta
   const disableSSR = getSetting('disableSSR') || getDisableSSR(cc)
   const initialState = disableSSR || !isWeb ? mediaState : initState
   const [state, setState] = React.useState<ComponentMediaQueryState>(initialState)
-  const idObject = cc ?? useRef({}).current
-  const didHydrateOnce = useDidHydrateOnce(idObject)
 
   let currentKeys: ComponentMediaKeys | undefined
   const getCurrentKeys = () => currentKeys
@@ -235,6 +232,8 @@ export function useMedia(cc?: ComponentContextI, debug?: DebugProp): UseMediaSta
   }
 
   let isRendering = true
+  const isInitialState = state === initialState
+
   useIsomorphicLayoutEffect(() => {
     isRendering = false
   })
@@ -253,20 +252,15 @@ export function useMedia(cc?: ComponentContextI, debug?: DebugProp): UseMediaSta
 
     update()
 
-    // // fix media getting stuck on first render causing weird issues in dialogs not positioning
-    // if (!disableSSR) {
-    //   Promise.resolve().then(() => {
-    //     update()
-    //   })
-    // }
-
     return subscribe(update)
   }, [])
 
   return new Proxy(state, {
     get(_, key) {
-      if (isRendering && !disableMediaTouch) {
-        if (typeof key === 'string') {
+      if (isRendering && !disableMediaTouch && typeof key === 'string') {
+        if (isInitialState) {
+          // the first update() will get this in an ssr safe way
+        } else {
           const needsUpdateKeys = !state.lastKeys || !state.lastKeys.has(key)
 
           if (needsUpdateKeys || state[key] !== mediaState[key]) {
@@ -278,10 +272,8 @@ export function useMedia(cc?: ComponentContextI, debug?: DebugProp): UseMediaSta
             currentKeys.add(key)
 
             const next = getSnapshot(state, currentKeys!)
-            if (didHydrateOnce) {
-              if (next !== state) {
-                setState(next)
-              }
+            if (next !== state) {
+              setState(next)
             }
           }
         }

@@ -1,10 +1,13 @@
+import { isServer, isWeb } from '@tamagui/constants'
+import { useRef, useState } from 'react'
 import {
   defaultComponentState,
   defaultComponentStateMounted,
   defaultComponentStateShouldEnter,
 } from '../defaultComponentState'
-import { useDidHydrateOnce } from '../hooks/useDidHydrateOnce'
-import { useRef, useState } from 'react'
+import { createShallowSetState } from '../helpers/createShallowSetState'
+import { isObj } from '../helpers/isObj'
+import { log } from '../helpers/log'
 import type {
   ComponentContextI,
   GroupStateListener,
@@ -16,10 +19,6 @@ import type {
   TextProps,
   UseAnimationHook,
 } from '../types'
-import { isServer, isWeb } from '@tamagui/constants'
-import { createShallowSetState } from '../helpers/createShallowSetState'
-import { isObj } from '../helpers/isObj'
-import { log } from '../helpers/log'
 
 export const useComponentState = (
   props: StackProps | TextProps | Record<string, any>,
@@ -74,9 +73,8 @@ export const useComponentState = (
   const hasEnterState = hasEnterStyle || isEntering
 
   // this can be conditional because its only ever needed with animations
-  const didHydrateOnce = willBeAnimated ? useDidHydrateOnce(stateRef) : true
-  const shouldEnter = hasEnterState || (!didHydrateOnce && hasRNAnimation)
-  const shouldEnterFromUnhydrated = isWeb && !didHydrateOnce
+  const shouldEnter = hasEnterState || hasRNAnimation
+  const shouldEnterFromUnhydrated = isWeb
 
   const initialState = shouldEnter
     ? // on the very first render we switch all spring animation drivers to css rendering
@@ -161,13 +159,12 @@ export const useComponentState = (
     const { disableClassName } = props
 
     const isAnimatedAndHydrated =
-      isAnimated && !supportsCSSVars && didHydrateOnce && !isServer
+      isAnimated && !supportsCSSVars && state.unmounted !== true && !isServer
 
     const isClassNameDisabled =
-      !staticConfig.acceptsClassName && (config.disableSSR || didHydrateOnce)
+      !staticConfig.acceptsClassName && (config.disableSSR || !state.unmounted)
 
-    const isDisabledManually =
-      disableClassName && !isServer && didHydrateOnce && state.unmounted === true
+    const isDisabledManually = disableClassName && !isServer
 
     if (isAnimatedAndHydrated || isDisabledManually || isClassNameDisabled) {
       shouldAvoidClasses = true
