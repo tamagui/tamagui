@@ -4,8 +4,6 @@ import { Theme } from 'tamagui'
 
 import { getTints, setNextTintFamily, useTints } from './tints'
 
-// TODO useSyncExternalStore
-
 // no localstorage because its not important to remember and causes a flicker
 // const tintVal = typeof localStorage !== 'undefined' ? localStorage.getItem('tint') : 0
 // const tint = tintVal ? +tintVal 0
