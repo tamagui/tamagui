@@ -15,6 +15,7 @@ import type {
   UseMediaState,
 } from '../types'
 import { getDisableSSR } from './useDisableSSR'
+import { useDidHydrateOnce } from './useDidHydrateOnce'
 
 export let mediaState: MediaQueryState =
   // development only safeguard
@@ -202,12 +203,14 @@ type ComponentMediaQueryState = MediaKeysState & {
 
 export function useMedia(cc?: ComponentContextI, debug?: DebugProp): UseMediaState {
   // performance boost to avoid using context twice
-  const disableSSR = getDisableSSR(cc)
+  const disableSSR = getSetting('disableSSR') || getDisableSSR(cc)
   const initialState = disableSSR || !isWeb ? mediaState : initState
   const [state, setState] = React.useState<ComponentMediaQueryState>(initialState)
-  const devId = process.env.NODE_ENV === 'development' ? useId() : '0'
+  const idObject = cc ?? useRef({}).current
+  const didHydrateOnce = useDidHydrateOnce(idObject)
 
   let currentKeys: ComponentMediaKeys | undefined
+  const getCurrentKeys = () => currentKeys
 
   function getSnapshot(
     cur: ComponentMediaQueryState,
@@ -218,7 +221,7 @@ export function useMedia(cc?: ComponentContextI, debug?: DebugProp): UseMediaSta
     for (const key of keys) {
       if (mediaState[key] !== cur[key]) {
         if (process.env.NODE_ENV === 'development' && debug) {
-          console.warn(`useMedia(${devId + !!cc})✍️`, key, cur[key], '>', mediaState[key])
+          console.warn(`useMedia()✍️`, key, cur[key], '>', mediaState[key])
         }
 
         return {
@@ -237,8 +240,26 @@ export function useMedia(cc?: ComponentContextI, debug?: DebugProp): UseMediaSta
   })
 
   useIsomorphicLayoutEffect(() => {
-    const update = () => setState((prev) => getSnapshot(prev))
+    const update = () =>
+      setState((prev) =>
+        getSnapshot(
+          prev,
+          // because the !didHydrateOnce logic we can't update as we render
+          // we need to get the current keys in case we added
+          // these only ever add keys so likely ok?
+          getCurrentKeys()
+        )
+      )
+
     update()
+
+    // // fix media getting stuck on first render causing weird issues in dialogs not positioning
+    // if (!disableSSR) {
+    //   Promise.resolve().then(() => {
+    //     update()
+    //   })
+    // }
+
     return subscribe(update)
   }, [])
 
@@ -257,8 +278,10 @@ export function useMedia(cc?: ComponentContextI, debug?: DebugProp): UseMediaSta
             currentKeys.add(key)
 
             const next = getSnapshot(state, currentKeys!)
-            if (next !== state) {
-              setState(next)
+            if (didHydrateOnce) {
+              if (next !== state) {
+                setState(next)
+              }
             }
           }
         }

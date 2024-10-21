@@ -74,7 +74,7 @@ export const useComponentState = (
   const hasEnterState = hasEnterStyle || isEntering
 
   // this can be conditional because its only ever needed with animations
-  const didHydrateOnce = willBeAnimated ? useDidHydrateOnce() : true
+  const didHydrateOnce = willBeAnimated ? useDidHydrateOnce(stateRef) : true
   const shouldEnter = hasEnterState || (!didHydrateOnce && hasRNAnimation)
   const shouldEnterFromUnhydrated = isWeb && !didHydrateOnce
 
