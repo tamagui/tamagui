@@ -44,6 +44,7 @@
     "@babel/runtime": "^7.25.4",
     "@babel/traverse": "^7.25.4",
     "@babel/types": "^7.25.4",
+    "@esbuild-plugins/tsconfig-paths": "^0.1.2",
     "@tamagui/build": "1.115.5",
     "@tamagui/cli-color": "1.115.5",
     "@tamagui/config-default": "1.115.5",

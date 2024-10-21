@@ -4,6 +4,7 @@ import * as FS from 'fs-extra'
 import type { TamaguiPlatform } from '../types'
 import { esbuildAliasPlugin } from './esbuildAliasPlugin'
 import { resolveWebOrNativeSpecificEntry } from './loadTamagui'
+import tsConfigPathsPlugin from '@esbuild-plugins/tsconfig-paths'
 
 export const esbuildLoaderConfig = {
   '.js': 'jsx',
@@ -89,6 +90,8 @@ function getESBuildConfig(
     loader: esbuildLoaderConfig,
     logLevel: 'warning',
     plugins: [
+      tsConfigPathsPlugin({}),
+
       {
         name: 'external',
         setup(build) {
