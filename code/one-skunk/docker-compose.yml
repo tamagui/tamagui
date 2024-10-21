@@ -1,0 +1,56 @@
+x-postgres-common:
+  &postgres-common
+  image: postgres:16.2-alpine
+  shm_size: 1g
+  user: postgres
+  restart: always
+  healthcheck:
+    test: 'pg_isready -U user --dbname=postgres'
+    interval: 10s
+    timeout: 5s
+    retries: 5
+
+services:
+  postgres_primary:
+    <<: *postgres-common
+    ports:
+      - 6432:5432
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_DB: postgres
+      POSTGRES_PASSWORD: password
+    command: |
+      postgres 
+      -c wal_level=logical
+      -c max_wal_senders=10 
+      -c max_replication_slots=5 
+      -c hot_standby=on 
+      -c hot_standby_feedback=on
+    volumes:
+      - pgdata_upstream:/var/lib/postgresql/data
+      - ./code/db/init_upstream:/docker-entrypoint-initdb.d
+    
+  postgres_replica:
+    <<: *postgres-common
+    ports:
+      - 6433:5432
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_DB: postgres
+      POSTGRES_PASSWORD: password
+    command: |
+      postgres 
+      -c wal_level=logical
+      -c max_wal_senders=10 
+      -c max_replication_slots=5 
+      -c hot_standby=on 
+      -c hot_standby_feedback=on
+    volumes:
+      - pgdata_sync:/var/lib/postgresql/data
+      - ./code/db/init_sync:/docker-entrypoint-initdb.d
+
+volumes:
+  pgdata_sync:
+    driver: local
+  pgdata_upstream:
+    driver: local
