@@ -2,7 +2,7 @@ import { type ResolveVariableAs } from '@tamagui/core';
 import React from 'react';
 import type { IconProps } from './IconProps';
 type Options = {
-    noClassNames?: boolean;
+    noClass?: boolean;
     defaultThemeColor?: string;
     defaultStrokeWidth?: number;
     fallbackColor?: string;

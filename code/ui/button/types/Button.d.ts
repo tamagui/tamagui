@@ -73,9 +73,6 @@ declare const ButtonIcon: (props: {
     children: React.ReactNode;
     scaleIcon?: number;
 }) => any;
-/**
- * @deprecated Instead of useButton, see the Button docs for the newer and much improved Advanced customization pattern: https://tamagui.dev/docs/components/button
- */
 declare const buttonStaticConfig: {
     inlineProps: Set<string>;
 };

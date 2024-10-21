@@ -280,7 +280,7 @@ export declare const Popover: React.ForwardRefExoticComponent<PopperProps & {
     }>> & {
         __scopePopover?: string | undefined;
     } & React.RefAttributes<TamaguiElement>>;
-    Adapt: (({ platform, when, children, scope }: import("@tamagui/adapt").AdaptProps) => import("react/jsx-runtime").JSX.Element) & {
+    Adapt: ((props: import("@tamagui/adapt").AdaptProps) => import("react/jsx-runtime").JSX.Element) & {
         Contents: {
             ({ scope, ...rest }: {
                 scope?: string;

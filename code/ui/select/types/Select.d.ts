@@ -30,7 +30,7 @@ export declare const SelectSeparator: import("@tamagui/core").TamaguiComponent<i
     vertical?: boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
 export declare const Select: ((props: SelectScopedProps<SelectProps>) => import("react/jsx-runtime").JSX.Element) & {
-    Adapt: (({ platform, when, children, scope }: import("@tamagui/adapt").AdaptProps) => import("react/jsx-runtime").JSX.Element) & {
+    Adapt: ((props: import("@tamagui/adapt").AdaptProps) => import("react/jsx-runtime").JSX.Element) & {
         Contents: {
             ({ scope, ...rest }: {
                 scope?: string;
