@@ -100,7 +100,7 @@ export function createExtractor(
 
   const styleProps: SplitStyleProps = {
     resolveValues: process.env.TAMAGUI_TARGET === 'native' ? 'value' : 'variable',
-    noClassNames: false,
+    noClass: false,
     isAnimated: false,
   }
 
@@ -2030,7 +2030,7 @@ export function createExtractor(
                 componentState,
                 {
                   ...styleProps,
-                  noClassNames: true,
+                  noClass: true,
                   fallbackProps: completeProps,
                 },
                 undefined,

@@ -13,7 +13,7 @@ import type { IconProps } from './IconProps'
 React['keep']
 
 type Options = {
-  noClassNames?: boolean
+  noClass?: boolean
   defaultThemeColor?: string
   defaultStrokeWidth?: number
   fallbackColor?: string
