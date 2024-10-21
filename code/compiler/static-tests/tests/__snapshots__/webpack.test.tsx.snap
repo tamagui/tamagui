@@ -22,6 +22,9 @@ exports[`webpack-tests > 1. extracts to a div for simple views, flat transforms 
             hello world
           </span>
         </div>
+        <div
+          style="display: contents;"
+        />
       </span>
     </span>
   </span>
@@ -53,6 +56,9 @@ exports[`webpack-tests > 2. extracts className for complex views but keeps other
             hello world
           </span>
         </div>
+        <div
+          style="display: contents;"
+        />
       </span>
     </span>
   </span>
@@ -84,6 +90,9 @@ exports[`webpack-tests > 2. extracts className for complex views but keeps other
             hello world
           </span>
         </div>
+        <div
+          style="display: contents;"
+        />
       </span>
     </span>
   </span>
@@ -110,6 +119,9 @@ exports[`webpack-tests > 5. spread conditional 1`] = `
             class="_dsp-flex _ai-stretch _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _fd-column _ox-hidden _oy-hidden hello-world _bg-blue "
           />
         </div>
+        <div
+          style="display: contents;"
+        />
       </span>
     </span>
   </span>
@@ -138,6 +150,9 @@ exports[`webpack-tests > 6. spread ternary 1`] = `
             hello world
           </span>
         </div>
+        <div
+          style="display: contents;"
+        />
       </span>
     </span>
   </span>
@@ -166,6 +181,9 @@ exports[`webpack-tests > 6. spread ternary 2`] = `
             hello world
           </span>
         </div>
+        <div
+          style="display: contents;"
+        />
       </span>
     </span>
   </span>
@@ -192,6 +210,9 @@ exports[`webpack-tests > 7. ternary + data-is 1`] = `
             class="_dsp-flex _ai-stretch _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _fd-column _w-10px _h-10px "
           />
         </div>
+        <div
+          style="display: contents;"
+        />
       </span>
     </span>
   </span>
@@ -222,6 +243,9 @@ exports[`webpack-tests > 8. styleExpansions 1`] = `
             />
           </div>
         </div>
+        <div
+          style="display: contents;"
+        />
       </span>
     </span>
   </span>
@@ -243,6 +267,9 @@ exports[`webpack-tests > 9. combines with classname 1`] = `
       >
         <div
           class="  _dsp-flex _ai-stretch _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _fd-column _pt-15px _pb-15px  home-top-dish"
+        />
+        <div
+          style="display: contents;"
         />
       </span>
     </span>
@@ -276,6 +303,9 @@ exports[`webpack-tests > 10. extracts Text 1`] = `
             </span>
           </span>
         </span>
+        <div
+          style="display: contents;"
+        />
       </span>
     </span>
   </span>
@@ -298,6 +328,9 @@ exports[`webpack-tests > 12. ternary multiple on same key 1`] = `
         <div
           class="_dsp-flex _ai-stretch _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _fd-column _o-1 _transform- "
         />
+        <div
+          style="display: contents;"
+        />
       </span>
     </span>
   </span>
@@ -319,6 +352,9 @@ exports[`webpack-tests > 14. extracts pseudo styles and evaluates constants 1`] 
       >
         <div
           class="_bg-0hover-red _bg-0active-blue _dsp-flex _ai-stretch _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _fd-column"
+        />
+        <div
+          style="display: contents;"
         />
       </span>
     </span>
@@ -345,6 +381,9 @@ exports[`webpack-tests > 15. extracts spacer (complex expansion) 1`] = `
         <span
           class="  is_Spacer _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-10px _miw-10px _fs-1 _pe-none _fg-1 _w-10px _h-10px "
         />
+        <div
+          style="display: contents;"
+        />
       </span>
     </span>
   </span>
@@ -366,6 +405,9 @@ exports[`webpack-tests > 16. deopt when spreading multiple 1`] = `
       >
         <div
           class="_dsp-flex _ai-stretch _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-1 _fd-column _fg-1 _bg-red"
+        />
+        <div
+          style="display: contents;"
         />
       </span>
     </span>
