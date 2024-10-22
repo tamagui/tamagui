@@ -85,10 +85,6 @@ export default {
 
   plugins: [
     one({
-      ssr: {
-        disableAutoDepsPreBundling: true,
-      },
-
       deps: {
         '@supabase/postgrest-js': true,
         '@supabase/node-fetch': true,

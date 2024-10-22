@@ -6602,7 +6602,7 @@ __metadata:
     jsdom: "npm:^25.0.1"
     jsonwebtoken: "npm:^9.0.2"
     mdx-bundler: "npm:^10.0.2"
-    one: "npm:1.1.319"
+    one: "npm:1.1.320"
     postmark: "npm:^3.0.18"
     react-hotkeys-hook: "npm:^4.5.0"
     react-native: "npm:0.74.1"
@@ -7001,7 +7001,7 @@ __metadata:
     "@tamagui/themes": "npm:1.116.1"
     "@tamagui/toast": "npm:1.116.1"
     "@tamagui/web": "npm:1.116.1"
-    "@vxrn/vendor": "npm:^1.1.319"
+    "@vxrn/vendor": "npm:^1.1.320"
     "@welldone-software/why-did-you-render": "npm:^7.0.1"
     babel-plugin-module-resolver: "npm:^5.0.2"
     burnt: "npm:^0.12.2"
@@ -7016,7 +7016,7 @@ __metadata:
     html-webpack-plugin: "npm:^5.5.0"
     metro-react-native-babel-preset: "npm:^0.77.0"
     mini-css-extract-plugin: "npm:^2.9.1"
-    one: "npm:1.1.319"
+    one: "npm:1.1.320"
     pod-install: "npm:^0.2.0"
     react: "npm:^18.2.0 || ^19.0.0"
     react-dom: "npm:^18.2.0 || ^19.0.0"
@@ -7257,11 +7257,11 @@ __metadata:
     "@tamagui/lucide-icons": "npm:1.116.1"
     "@tamagui/mdx": "npm:1.116.1"
     "@tamagui/themes": "npm:1.116.1"
-    "@vxrn/color-scheme": "npm:^1.1.319"
+    "@vxrn/color-scheme": "npm:^1.1.320"
     gray-matter: "npm:^4.0.3"
     marked: "npm:^14.1.2"
     mdx-bundler: "npm:^10.0.2"
-    one: "npm:1.1.319"
+    one: "npm:1.1.320"
     react: "npm:^18.2.0 || ^19.0.0"
     react-native: "npm:0.74.1"
     tamagui: "npm:1.116.1"
@@ -7300,12 +7300,12 @@ __metadata:
     "@tamagui/react-native-web": "npm:1.116.1"
     "@tamagui/themes": "npm:1.116.1"
     "@tamagui/use-store": "npm:1.116.1"
-    "@vxrn/color-scheme": "npm:^1.1.319"
+    "@vxrn/color-scheme": "npm:^1.1.320"
     body-scroll-lock: "npm:^4.0.0-beta.0"
     gray-matter: "npm:^4.0.3"
     marked: "npm:^14.1.2"
     mdx-bundler: "npm:^10.0.2"
-    one: "npm:1.1.319"
+    one: "npm:1.1.320"
     postmark: "npm:^3.0.18"
     react: "npm:^18.2.0 || ^19.0.0"
     react-native: "npm:0.74.1"
@@ -7940,7 +7940,7 @@ __metadata:
     expo-apple-authentication: "npm:~6.4.1"
     expo-crypto: "npm:~13.0.2"
     jsonwebtoken: "npm:^9.0.2"
-    one: "npm:1.1.319"
+    one: "npm:1.1.320"
     postgres: "npm:^3.4.4"
     postmark: "npm:^3.0.18"
     react: "npm:^18.2.0 || ^19.0.0"
@@ -9672,35 +9672,35 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vxrn/color-scheme@npm:^1.1.319":
-  version: 1.1.319
-  resolution: "@vxrn/color-scheme@npm:1.1.319"
+"@vxrn/color-scheme@npm:^1.1.320":
+  version: 1.1.320
+  resolution: "@vxrn/color-scheme@npm:1.1.320"
   dependencies:
     "@tamagui/use-did-finish-ssr": "npm:^1.115.0"
-    "@vxrn/universal-color-scheme": "npm:1.1.319"
-    "@vxrn/use-isomorphic-layout-effect": "npm:1.1.319"
+    "@vxrn/universal-color-scheme": "npm:1.1.320"
+    "@vxrn/use-isomorphic-layout-effect": "npm:1.1.320"
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 10/cad4f3610fe6f8e789063c44c31146e6f634d7706c7fdd2a2f813f2d05622c1fe0a022b42b6ba0ca97b0a979f09e7812648ce0a32b325aaef374befc8ec1444a
+  checksum: 10/cbde4a6651bc894a145f3523ceb45c5a0f960180c198baf0e9e5a07921c514a2de1458d61588f0f61434a472defe89dbcc7c9bf8c4204d60e4e56001cb185f30
   languageName: node
   linkType: hard
 
-"@vxrn/query-string@npm:1.1.319":
-  version: 1.1.319
-  resolution: "@vxrn/query-string@npm:1.1.319"
+"@vxrn/query-string@npm:1.1.320":
+  version: 1.1.320
+  resolution: "@vxrn/query-string@npm:1.1.320"
   dependencies:
     query-string: "npm:^9.1.0"
-  checksum: 10/a6ab76c36e80a0acfe14d4f73e16ec87c4354eb9108fd023ba29ebee632930eb8315f1533b925b46791a941cf9a7bed3014c093499bcd58f6b1c4862ab465ceb
+  checksum: 10/624e530c7921f8b1e47c910d4da13c67b530554bc05cbdafa721844567e02e1c1c46bb2c7d23423385be3a7afb178e4f0386d2407b1918f62901779f32f92a4e
   languageName: node
   linkType: hard
 
-"@vxrn/react-native-prebuilt@npm:1.1.319":
-  version: 1.1.319
-  resolution: "@vxrn/react-native-prebuilt@npm:1.1.319"
+"@vxrn/react-native-prebuilt@npm:1.1.320":
+  version: 1.1.320
+  resolution: "@vxrn/react-native-prebuilt@npm:1.1.320"
   dependencies:
-    "@vxrn/vite-flow": "npm:1.1.319"
-    "@vxrn/vite-native-hmr": "npm:1.1.319"
+    "@vxrn/vite-flow": "npm:1.1.320"
+    "@vxrn/vite-native-hmr": "npm:1.1.320"
     esbuild: "npm:^0.24.0"
     fs-extra: "npm:^11.2.0"
     import-meta-resolve: "npm:^4.1.0"
@@ -9708,103 +9708,103 @@ __metadata:
     react: "*"
     react-dom: "*"
     react-native: "*"
-  checksum: 10/048b0be9ec430825d801d8a9d2d0264eef111a59f1f8cd5dc585d9c4bfa982db6827d5589dcb3195cc203aead51844bf06c11a1bdd4aaa7959d6bf8009c5fd09
+  checksum: 10/be757dd131ec8bd1a35a8935bed19bfb52bb1587cd05e061a86004b8d9ac5b25f9b48b7e47a82464b0852ad880fd630002e2915f7551ade24e67ff7cd885fac4
   languageName: node
   linkType: hard
 
-"@vxrn/resolve@npm:1.1.319":
-  version: 1.1.319
-  resolution: "@vxrn/resolve@npm:1.1.319"
-  checksum: 10/38b5409fd3615d7a509aaf1a0f24c6fc6eb8bc7dc4c996bc5d75ebdafbcbdb19a98a36c602b4a064cab39f5224184f33d381f079b99d9623f8b1c63a5b0ef652
+"@vxrn/resolve@npm:1.1.320":
+  version: 1.1.320
+  resolution: "@vxrn/resolve@npm:1.1.320"
+  checksum: 10/2a477d1f7fdb72a07eb00108aa66ef2177cfc933071786b170402f211b13a499e8bad5eccb4df2c84abf015926be3784a50d191db5ef619bbfa550fdd8180685
   languageName: node
   linkType: hard
 
-"@vxrn/safe-area@npm:1.1.319":
-  version: 1.1.319
-  resolution: "@vxrn/safe-area@npm:1.1.319"
-  checksum: 10/7eedf0316b6d33ba9fc73c27446dc84e562bab56941baf66102e0e63253d82a25c61bcf219d2d05a2f5902a0fb690dae46ae512cce3b4a2f1c0dd7305202dc92
+"@vxrn/safe-area@npm:1.1.320":
+  version: 1.1.320
+  resolution: "@vxrn/safe-area@npm:1.1.320"
+  checksum: 10/320c04715e64c71c0b152a3226de4ceba5fac62ea1366be5d0769eb49cba582c998839916574d15121b4e9f64e1b76b6006f0d1c6d9dcbf35d1f4dc976376f53
   languageName: node
   linkType: hard
 
-"@vxrn/tslib-lite@npm:1.1.319":
-  version: 1.1.319
-  resolution: "@vxrn/tslib-lite@npm:1.1.319"
-  checksum: 10/57352ee5bc88e868cebd3cbfb8029f156dfe5482cf05b3cde15a616b5bd79d348cd271a57d1566272eef4f22fafe67d40e3f6e2c18e51c83eafb4145b7170475
+"@vxrn/tslib-lite@npm:1.1.320":
+  version: 1.1.320
+  resolution: "@vxrn/tslib-lite@npm:1.1.320"
+  checksum: 10/86eac69ab46ff13a0b1c36dd0c57cbcb992f02d4452603de5a1eca9e261c99f3a734aa1a9185d7727fa030e10d871483c946e9dd53eb26ab8ad0e55a82e596ac
   languageName: node
   linkType: hard
 
-"@vxrn/universal-color-scheme@npm:1.1.319":
-  version: 1.1.319
-  resolution: "@vxrn/universal-color-scheme@npm:1.1.319"
+"@vxrn/universal-color-scheme@npm:1.1.320":
+  version: 1.1.320
+  resolution: "@vxrn/universal-color-scheme@npm:1.1.320"
   dependencies:
-    "@vxrn/use-isomorphic-layout-effect": "npm:1.1.319"
+    "@vxrn/use-isomorphic-layout-effect": "npm:1.1.320"
     react: "npm:^18.2.0 || ^19.0.0"
   peerDependencies:
     react-native: "*"
-  checksum: 10/cbe97c13083d0d9a328ee28f37cab8486175c08f8c6e8646ac9b4ea00b396fe38ece1499d3002156b63a8731da09d136f03fa1942720b67a61b192cb416da284
+  checksum: 10/4d57fe92f52a02625ca9ef0dd64796498c2926d33187aefb655e872375be26a158763f1df142faf7c958531b57af33527b30271b95b6bc6dead6caf8405436e2
   languageName: node
   linkType: hard
 
-"@vxrn/url-parse@npm:1.1.319":
-  version: 1.1.319
-  resolution: "@vxrn/url-parse@npm:1.1.319"
+"@vxrn/url-parse@npm:1.1.320":
+  version: 1.1.320
+  resolution: "@vxrn/url-parse@npm:1.1.320"
   dependencies:
     url-parse: "npm:^1.5.10"
-  checksum: 10/b741b35015469d45e6c748c5b82742be360db12543f5522b7f83868902a3dd48e432ef635556ebe23a2962e63037d9d444d7a2fcc02dfd98952bd27511fc6591
+  checksum: 10/492e3fe03177deeb3f807953ab4432b6e17b143af1d4993e2e057f2e6c8c6f1ac3bbad69b8c34069e8d981e9ff0ce6542a0d642f29751b59eeb12f35f656dec8
   languageName: node
   linkType: hard
 
-"@vxrn/use-isomorphic-layout-effect@npm:1.1.319":
-  version: 1.1.319
-  resolution: "@vxrn/use-isomorphic-layout-effect@npm:1.1.319"
+"@vxrn/use-isomorphic-layout-effect@npm:1.1.320":
+  version: 1.1.320
+  resolution: "@vxrn/use-isomorphic-layout-effect@npm:1.1.320"
   dependencies:
     react: "npm:^18.2.0 || ^19.0.0"
-  checksum: 10/99c996a912364c806a6adfca70b52e71bc9c24896d20994b80904980e99b5fc01163520bde922a9ba0fa773e409e1c1ea1296c62706276f04f898a1f0139c974
+  checksum: 10/5693a357239656cbbd9caec2f0a45001b8291fb66a9880ee02ef621d1858d4ae73040acfbe9897b29b05b7bd7ba8d6c03a706e91f98f093e268beb88c527deec
   languageName: node
   linkType: hard
 
-"@vxrn/vendor@npm:1.1.319, @vxrn/vendor@npm:^1.1.319":
-  version: 1.1.319
-  resolution: "@vxrn/vendor@npm:1.1.319"
-  checksum: 10/b5a87865e8173276b2120f66c143282bca0146c2dd7039867c94a9388a478239d132b65e6598bfe8ca286d4b4f146c3c3e4d7a5f2a23aca8776435546ca3a136
+"@vxrn/vendor@npm:1.1.320, @vxrn/vendor@npm:^1.1.320":
+  version: 1.1.320
+  resolution: "@vxrn/vendor@npm:1.1.320"
+  checksum: 10/a03946d2b40d1b265613819cfa8898de46f38fa9771f75b04cdf0c5b81ae0d16753195e287d4df602ef7eda89096e2c9fb802ed408ccbf9067782bf3e76a6ffa
   languageName: node
   linkType: hard
 
-"@vxrn/vite-flow@npm:1.1.319":
-  version: 1.1.319
-  resolution: "@vxrn/vite-flow@npm:1.1.319"
+"@vxrn/vite-flow@npm:1.1.320":
+  version: 1.1.320
+  resolution: "@vxrn/vite-flow@npm:1.1.320"
   dependencies:
     "@babel/core": "npm:^7.21.8"
     "@babel/plugin-transform-private-methods": "npm:^7.24.7"
     flow-remove-types: "npm:^2.247.1"
     metro-react-native-babel-preset: "npm:^0.77.0"
-  checksum: 10/9d20fd505cc80bcd5c27406d9dcd1e3044fb38365b847e63b153f32054722e8e19ac482a66e748e15601aaeb41c78922ade69a162d0b9af7565aabd64b14310d
+  checksum: 10/959829d88b8517285b38e7d9800f5afd41211db85da7091755e24b7a1a26bdcd4ef8b13ebb60d039178049fa0e22947fd6b9cc6471e9a5a302a42471d22b1327
   languageName: node
   linkType: hard
 
-"@vxrn/vite-native-client@npm:1.1.319":
-  version: 1.1.319
-  resolution: "@vxrn/vite-native-client@npm:1.1.319"
+"@vxrn/vite-native-client@npm:1.1.320":
+  version: 1.1.320
+  resolution: "@vxrn/vite-native-client@npm:1.1.320"
   peerDependencies:
     react-native: "*"
-  checksum: 10/301aa50e56580512283daff547e94f0c0927074385ef2a4a5f1d0f91167ca957fecf5526017770a7ee51f4ef4e6edcaa5a342b3487e5e2a52444f9f82fd8fdd3
+  checksum: 10/8ada60e37f9ce3529bfe4f2046f790734f2adebaf57298fa5f687e242c753013c03d95295c2984b9f0f0ff1f627c196a0ed3e8f1683406935866a7eac5c3950c
   languageName: node
   linkType: hard
 
-"@vxrn/vite-native-hmr@npm:1.1.319":
-  version: 1.1.319
-  resolution: "@vxrn/vite-native-hmr@npm:1.1.319"
+"@vxrn/vite-native-hmr@npm:1.1.320":
+  version: 1.1.320
+  resolution: "@vxrn/vite-native-hmr@npm:1.1.320"
   dependencies:
     pretty-format: "npm:^28.1.0"
   peerDependencies:
     react-native: "*"
-  checksum: 10/dcf1fb12c8d4ba7ac02ab1065bebc5dbdaf933814ad57aad1c14a39d3b84cb80ed2265d7d85bdb339a5c4293efa412a89c3ccc71b9fdd1d2b54ae9ff087a4171
+  checksum: 10/932384965d0b14989d7037f166e289d852d9112bb7108501977f0491d62af737651209830a4199732532b761a323f1243d298033adfa6ef80b369f078576511c
   languageName: node
   linkType: hard
 
-"@vxrn/vite-native-swc@npm:1.1.319":
-  version: 1.1.319
-  resolution: "@vxrn/vite-native-swc@npm:1.1.319"
+"@vxrn/vite-native-swc@npm:1.1.320":
+  version: 1.1.320
+  resolution: "@vxrn/vite-native-swc@npm:1.1.320"
   dependencies:
     "@babel/core": "npm:^7.21.8"
     "@babel/plugin-transform-destructuring": "npm:^7.24.8"
@@ -9812,11 +9812,11 @@ __metadata:
     "@babel/plugin-transform-react-jsx": "npm:^7.25.2"
     "@babel/plugin-transform-regenerator": "npm:^7.24.7"
     "@swc/core": "npm:^1.7.14"
-    "@vxrn/vite-native-client": "npm:1.1.319"
+    "@vxrn/vite-native-client": "npm:1.1.320"
     metro-react-native-babel-preset: "npm:^0.77.0"
   peerDependencies:
     react-native: "*"
-  checksum: 10/56baa611b059fa6ce37d7b64f1d7fffa7a6fbd07606f2e40f8017997700196f2adf656041c57600016baaa2dde317916cca2e3f2d5132b408c462901b3a99bde
+  checksum: 10/7c69db2e4f1fe4dc786e92f51e36ab1dfb9d508c886b32b9813f5861a3913f6c3ba7e63ddf13adcef678e41f62938a90be4a795bbed57352e9139a853613c157
   languageName: node
   linkType: hard
 
@@ -12567,9 +12567,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"create-vxrn@npm:1.1.319":
-  version: 1.1.319
-  resolution: "create-vxrn@npm:1.1.319"
+"create-vxrn@npm:1.1.320":
+  version: 1.1.320
+  resolution: "create-vxrn@npm:1.1.320"
   dependencies:
     "@tamagui/build": "npm:^1.115.0"
     "@types/validate-npm-package-name": "npm:^4.0.2"
@@ -12584,7 +12584,7 @@ __metadata:
     yocto-spinner: "npm:^0.1.0"
   bin:
     create-vxrn: run.js
-  checksum: 10/a5334c7e89c82c00614c99281afcae45c7d9eb92fa2694eb7e6ae2abff4fc76c19ff53d018e38f9bb172d0ed4988d83ebc575b0c14539e32ac52ab0672cac725
+  checksum: 10/e6a8cd8e88a5fcebcbff7ab60dd323c53a9b814908a294237e4668d366dffb61a2018ec6f4cb77b9f05f761ffbe93b73ae4cffe8d580c43aecba88805d10d9ee
   languageName: node
   linkType: hard
 
@@ -21645,9 +21645,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"one@npm:1.1.319":
-  version: 1.1.319
-  resolution: "one@npm:1.1.319"
+"one@npm:1.1.320":
+  version: 1.1.320
+  resolution: "one@npm:1.1.320"
   dependencies:
     "@azure/core-asynciterator-polyfill": "npm:^1.0.2"
     "@babel/generator": "npm:^7.25.4"
@@ -21663,14 +21663,14 @@ __metadata:
     "@react-navigation/native-stack": "npm:~6.9.13"
     "@react-navigation/routers": "npm:~6.1.9"
     "@ungap/structured-clone": "npm:^1.2.0"
-    "@vxrn/resolve": "npm:1.1.319"
-    "@vxrn/tslib-lite": "npm:1.1.319"
-    "@vxrn/universal-color-scheme": "npm:1.1.319"
-    "@vxrn/use-isomorphic-layout-effect": "npm:1.1.319"
+    "@vxrn/resolve": "npm:1.1.320"
+    "@vxrn/tslib-lite": "npm:1.1.320"
+    "@vxrn/universal-color-scheme": "npm:1.1.320"
+    "@vxrn/use-isomorphic-layout-effect": "npm:1.1.320"
     babel-dead-code-elimination: "npm:^1.0.6"
     citty: "npm:^0.1.6"
     core-js: "npm:^3.38.1"
-    create-vxrn: "npm:1.1.319"
+    create-vxrn: "npm:1.1.320"
     escape-string-regexp: "npm:^5.0.0"
     expo-linking: "npm:~6.3.1"
     expo-modules-core: "npm:^1.12.24"
@@ -21692,14 +21692,14 @@ __metadata:
     url-parse: "npm:^1.5.10"
     vite: "npm:6.0.0-beta.1"
     vite-tsconfig-paths: "npm:^5.0.1"
-    vxrn: "npm:1.1.319"
+    vxrn: "npm:1.1.320"
     ws: "npm:^8.18.0"
     xxhashjs: "npm:^0.2.2"
   peerDependencies:
     react-native: "*"
   bin:
     one: run.mjs
-  checksum: 10/7d48f3b4e29ef09199a715be3c77bb4ca39fc30e2739c94c0e195355ddba1a902214435e927e589435fb010f24da8af8eedde8aea3c8ab02b895073344d95f9e
+  checksum: 10/9fcf4f7cea0113eac0908acb117e8a3aa5ec0677bc323fe8037286ac4c65f1948908dd8e9fa81f4985f0344a982fbe34b84cb80bd35361c579c1bdd3267b347c
   languageName: node
   linkType: hard
 
@@ -28499,9 +28499,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vxrn@npm:1.1.319":
-  version: 1.1.319
-  resolution: "vxrn@npm:1.1.319"
+"vxrn@npm:1.1.320":
+  version: 1.1.320
+  resolution: "vxrn@npm:1.1.320"
   dependencies:
     "@babel/core": "npm:^7.21.8"
     "@expo/config-plugins": "npm:^8.0.8"
@@ -28509,14 +28509,14 @@ __metadata:
     "@rollup/plugin-node-resolve": "npm:^15.2.3"
     "@tamagui/react-native-svg": "npm:^1.115.0"
     "@vitejs/plugin-react-swc": "npm:^3.7.0"
-    "@vxrn/query-string": "npm:1.1.319"
-    "@vxrn/react-native-prebuilt": "npm:1.1.319"
-    "@vxrn/resolve": "npm:1.1.319"
-    "@vxrn/safe-area": "npm:1.1.319"
-    "@vxrn/url-parse": "npm:1.1.319"
-    "@vxrn/vendor": "npm:1.1.319"
-    "@vxrn/vite-flow": "npm:1.1.319"
-    "@vxrn/vite-native-swc": "npm:1.1.319"
+    "@vxrn/query-string": "npm:1.1.320"
+    "@vxrn/react-native-prebuilt": "npm:1.1.320"
+    "@vxrn/resolve": "npm:1.1.320"
+    "@vxrn/safe-area": "npm:1.1.320"
+    "@vxrn/url-parse": "npm:1.1.320"
+    "@vxrn/vendor": "npm:1.1.320"
+    "@vxrn/vite-flow": "npm:1.1.320"
+    "@vxrn/vite-native-swc": "npm:1.1.320"
     citty: "npm:^0.1.6"
     crossws: "npm:^0.2.4"
     env-editor: "npm:^1.1.0"
@@ -28543,7 +28543,7 @@ __metadata:
     ws: "npm:^8.7.0"
   bin:
     vxrn: run.mjs
-  checksum: 10/05cfb28d29c424aa7e4ff5d41cef7c95232cf6aeb595212435500e4dbfa49f09dca89cc78df611bb0d685c89ad389af7e0ef5370304149b1564c6a86bfcf558c
+  checksum: 10/ddf60413101b88c17e5f424df6f824bb852f23de69482b788166eaf98f18168300dc99f14d100254e21dcd04c0caa18f08bfb2e8ee784131a911b23ef1572d00
   languageName: node
   linkType: hard
 
