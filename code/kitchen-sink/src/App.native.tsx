@@ -1,4 +1,4 @@
-import { Square, ToastViewport } from '@tamagui/sandbox-ui'
+import { ToastViewport } from '@tamagui/sandbox-ui'
 import { useFonts } from 'expo-font'
 import React from 'react'
 import { Appearance, Platform, useColorScheme } from 'react-native'

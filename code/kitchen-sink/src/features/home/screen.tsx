@@ -3,7 +3,17 @@ import { ScrollView } from 'react-native'
 import type { UseLinkProps } from 'solito/link'
 import { useLink } from 'solito/link'
 import type { ListItemProps } from 'tamagui'
-import { H1, ListItem, Paragraph, Separator, Square, YGroup, YStack } from 'tamagui'
+import {
+  H1,
+  ListItem,
+  Paragraph,
+  Separator,
+  Square,
+  Theme,
+  XStack,
+  YGroup,
+  YStack,
+} from 'tamagui'
 import { ColorSchemeListItem } from './ColorSchemeListItem'
 
 export function HomeScreen() {
@@ -14,12 +24,23 @@ export function HomeScreen() {
           Kitchen Sink
         </H1>
 
-        <Square
-          size={30}
-          bg="red"
-          $theme-dark={{ bg: 'yellow' }}
-          $theme-light={{ bg: 'green' }}
-        />
+        <XStack gap="$2">
+          <Square
+            size={30}
+            bg="red"
+            $theme-dark={{ bg: 'yellow' }}
+            $theme-light={{ bg: 'green' }}
+          />
+
+          {/* nested themes */}
+          <Theme name="green">
+            <Square size={30} bg="$color10" />
+
+            <Theme name="pink">
+              <Square size={30} bg="$color10" />
+            </Theme>
+          </Theme>
+        </XStack>
 
         <YGroup size="$4">
           <YGroup.Item>
