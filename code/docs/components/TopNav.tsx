@@ -2,8 +2,6 @@ import { Link } from 'one'
 import { useRef } from 'react'
 import { View, XStack, YStack } from 'tamagui'
 import { OneLogo } from '~/features/brand/Logo'
-import { HeaderMenu } from '~/features/site/HeaderMenu'
-import { SocialLinksRow } from '~/features/site/SocialLinksRow'
 import { ToggleThemeButton } from '~/features/theme/ThemeToggleButton'
 
 export const TopNav = () => {
@@ -11,8 +9,6 @@ export const TopNav = () => {
 
   return (
     <>
-      <HeaderMenu />
-
       <XStack
         ref={scrollParentRef}
         jc="space-between"
@@ -60,10 +56,6 @@ export const TopNav = () => {
         </XStack>
 
         <XStack ai="center" jc="center" gap="$1" pe="auto">
-          <XStack group="card" containerType="normal" ai="center" $sm={{ dsp: 'none' }}>
-            <SocialLinksRow />
-          </XStack>
-
           <ToggleThemeButton />
 
           <YStack w={50} />

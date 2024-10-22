@@ -38,7 +38,7 @@ export function DocsRightSidebar({
         position: 'fixed' as any,
         left: '50%',
         top: 100,
-        marginLeft: 420,
+        marginLeft: 500,
       }}
     >
       <YStack
