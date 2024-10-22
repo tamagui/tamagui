@@ -4,14 +4,10 @@
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
-  "main": "dist/cjs",
+  "main": "dist/cjs/index.cjs",
   "module": "dist/esm",
   "module:jsx": "dist/jsx",
-  "files": [
-    "src",
-    "types",
-    "dist"
-  ],
+  "files": ["src", "types", "dist"],
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
@@ -19,6 +15,17 @@
     "lint:fix": "biome check --write src",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "react-native-import": "./dist/esm/index.native.js",
+      "react-native": "./dist/cjs/index.native.js",
+      "types": "./types/index.d.ts",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.cjs",
+      "default": "./dist/cjs/index.native.js"
+    }
   },
   "dependencies": {
     "@tamagui/constants": "1.116.1",
