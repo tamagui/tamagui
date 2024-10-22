@@ -394,12 +394,7 @@ async function buildJs() {
     platform: 'node',
   }
 
-  const cjsConfigWeb = avoidCJS
-    ? cjsConfig
-    : {
-        ...cjsConfig,
-        outExtension: { '.js': '.cjs' },
-      }
+  const cjsConfigWeb = cjsConfig
 
   const esmConfig = {
     target: 'esnext',
@@ -736,7 +731,10 @@ async function esbuildWriteIfChanged(
 
         const { path, contents } = file
 
-        if (!path.endsWith('.cjs')) return
+        // write it without specifics to just .js for older react-native compat
+        await FSE.writeFile(path, contents)
+
+        if (!path.endsWith('.js')) return
 
         const result = opts.bundle
           ? { code: contents }
@@ -749,7 +747,7 @@ async function esbuildWriteIfChanged(
               ].filter(Boolean),
             })
 
-        await FSE.writeFile(path, result.code)
+        await FSE.writeFile(path.replace(/\.js$/, '.cjs'), result.code)
       })
     )
     return
