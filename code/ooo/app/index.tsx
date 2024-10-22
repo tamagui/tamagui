@@ -86,8 +86,9 @@ export default function HomePage() {
               mt: -20,
             }}
           >
-            <XStack ai="center" gap="$4" $sm={{ jc: 'center' }}>
+            <XStack ai="center" gap="$6" $sm={{ jc: 'center' }}>
               <ToggleThemeButton />
+
               <Link href="/docs/introduction" asChild>
                 <Button
                   size="$5"
@@ -128,7 +129,8 @@ export default function HomePage() {
               group="card"
               containerType="normal"
               ai="center"
-              gap="$2"
+              y={-2}
+              mr={-10}
               $sm={{ jc: 'center' }}
             >
               <SocialLinksRow />

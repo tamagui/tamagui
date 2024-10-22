@@ -1,6 +1,6 @@
 import { Search } from '@tamagui/lucide-icons'
 import { useContext, useRef } from 'react'
-import { styled, View, XStack, YStack } from 'tamagui'
+import { Separator, styled, View, XStack, YStack } from 'tamagui'
 import { Link } from 'one'
 import { OneLogo } from '~/features/brand/Logo'
 import { Status } from '~/features/docs/Status'
@@ -10,6 +10,7 @@ import { SocialLinksRow } from '~/features/site/SocialLinksRow'
 import { ToggleThemeButton } from '~/features/theme/ThemeToggleButton'
 
 const SimpleButton = styled(View, {
+  pe: 'auto',
   w: 42,
   h: 42,
   ai: 'center',
@@ -79,33 +80,47 @@ export const TopNav = () => {
           </Link>
         </XStack>
 
-        <XStack ai="center" jc="center" gap="$1" pe="auto">
-          <View
-            animation="quickest"
-            mt={2}
-            hoverStyle={{
-              y: -2,
-            }}
-            pressStyle={{
-              y: 2,
-            }}
+        <XStack pe="none" ai="center" jc="center" gap="$1" f={1}>
+          <XStack
+            group="card"
+            containerType="normal"
+            ai="center"
+            jc="flex-end"
+            $sm={{ dsp: 'none' }}
+            f={10}
           >
-            <Link href="/docs/status">
-              <Status cur="pointer" is="beta" />
-            </Link>
-          </View>
+            <View
+              animation="quickest"
+              mt={2}
+              pe="auto"
+              hoverStyle={{
+                y: -1,
+              }}
+              pressStyle={{
+                y: 2,
+              }}
+            >
+              <Link href="/docs/status">
+                <Status cur="pointer" is="beta" />
+              </Link>
+            </View>
 
-          <XStack group="card" containerType="normal" ai="center" $sm={{ dsp: 'none' }}>
-            <SocialLinksRow />
+            <XStack pe="auto" y={-2} mx="$4">
+              <Separator vertical />
+              <SocialLinksRow />
+              <Separator vertical />
+            </XStack>
           </XStack>
 
-          <SimpleButton marginTop={-2} marginLeft={2} onPress={onOpen}>
-            <Search width={20} height={20} color="$color12" strokeWidth={2} />
-          </SimpleButton>
+          <XStack pe="none" ai="center" jc="flex-end" f={10} $gtSm={{ f: 0 }}>
+            <SimpleButton marginTop={-3} mr={8} onPress={onOpen}>
+              <Search width={24} height={24} color="$color13" strokeWidth={2} />
+            </SimpleButton>
 
-          <ToggleThemeButton />
+            <ToggleThemeButton />
 
-          <YStack w={50} />
+            <YStack w={50} />
+          </XStack>
         </XStack>
       </XStack>
     </>

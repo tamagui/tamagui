@@ -14,7 +14,7 @@ export const SocialLinksRow = ({ large }: { large?: boolean }) => {
         href="https://x.com/one__js"
         aria-label="X (formerly Twitter)"
       >
-        <Container>
+        <Container miw={large ? 60 : 45}>
           <svg
             style={{
               width: 44 * scale,
@@ -44,7 +44,7 @@ export const SocialLinksRow = ({ large }: { large?: boolean }) => {
         href="https://github.com/onejs/one"
         aria-label="GitHub"
       >
-        <Container>
+        <Container miw={large ? 60 : 45} y={-1}>
           <GithubIcon width={28 * scale} height={28 * scale} aria-hidden="true" />
           <SubTitle dsp={large ? 'flex' : 'none'}>Github</SubTitle>
         </Container>
@@ -56,7 +56,7 @@ export const SocialLinksRow = ({ large }: { large?: boolean }) => {
           href="https://discord.gg/YpUKRqaFtm"
           aria-label="Discord"
         >
-          <Container>
+          <Container miw={large ? 60 : 45}>
             <DiscordIcon width={25 * scale} height={25 * scale} aria-hidden="true" />
             <SubTitle dsp={large ? 'flex' : 'none'}>Discord</SubTitle>
           </Container>
@@ -68,7 +68,7 @@ export const SocialLinksRow = ({ large }: { large?: boolean }) => {
 
 const Container = styled(YStack, {
   gap: '$4',
-  miw: 60,
+  mx: -5,
   ai: 'center',
 })
 
