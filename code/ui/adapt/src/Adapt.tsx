@@ -235,7 +235,7 @@ const useAdaptIsActiveGiven = ({
 }: Pick<AdaptProps, 'when' | 'platform'>) => {
   const media = useMedia()
 
-  let enabled = false
+  let enabled = !platform
 
   if (platform === 'touch') enabled = isTouchable
   if (platform === 'native') enabled = !isWeb
