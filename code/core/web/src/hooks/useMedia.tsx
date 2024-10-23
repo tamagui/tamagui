@@ -110,6 +110,7 @@ function unlisten() {
 let setupVersion = -1
 export function setupMediaListeners() {
   if (isWeb && isServer) return
+  if (process.env.IS_STATIC) return
 
   // avoid setting up more than once per config
   if (setupVersion === mediaVersion) return

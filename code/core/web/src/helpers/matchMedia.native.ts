@@ -5,7 +5,7 @@ let matchMediaImpl: MatchMedia = matchMediaFallback
 export const matchMedia: MatchMedia = (...args) => matchMediaImpl(...args)
 
 function matchMediaFallback(query: string): MediaQueryList {
-  if (process.env.NODE_ENV === 'development') {
+  if (!process.env.IS_STATIC && process.env.NODE_ENV === 'development') {
     console.warn('warning: matchMedia implementation is not provided.')
   }
   return {
@@ -19,10 +19,12 @@ function matchMediaFallback(query: string): MediaQueryList {
 export function setupMatchMedia(_: MatchMedia) {
   if (process.env.NODE_ENV === 'development') {
     if (typeof _ !== 'function') {
-      console.trace(
-        `setupMatchMedia was called without a function, this can cause issues on native`,
-        _
-      )
+      if (!process.env.IS_STATIC) {
+        console.trace(
+          `setupMatchMedia was called without a function, this can cause issues on native`,
+          _
+        )
+      }
     }
   }
 
