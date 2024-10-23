@@ -30,6 +30,7 @@ module.exports = {
     mainFields: ['module:jsx', 'browser', 'module', 'main'],
     extensions: ['.ts', '.tsx', '.js'],
     alias: {
+      'moti/author': require.resolve('moti/author'),
       'react-native$': 'react-native-web',
       'react-native-svg': '@tamagui/react-native-svg',
       '@expo/vector-icons': '@tamagui/proxy-worm',
