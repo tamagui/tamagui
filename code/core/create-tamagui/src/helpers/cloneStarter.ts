@@ -131,9 +131,18 @@ async function setupTamaguiDotDir(template: (typeof templates)[number], isRetry 
     const remoteName = getDefaultRemoteName()
     if (await pathExists(join(targetGitDir, '.git'))) {
       const cmd2 = `git pull --rebase --allow-unrelated-histories --depth 1 ${remoteName} ${branch}`
-      exec(cmd2, {
-        cwd: targetGitDir,
-      })
+
+      // this can fail with "could not parse commit" but if you re-run it generally works
+      try {
+        exec(cmd2, {
+          cwd: targetGitDir,
+        })
+      } catch {
+        // so lets just retry on first failure at least
+        exec(cmd2, {
+          cwd: targetGitDir,
+        })
+      }
       console.info()
     } else {
       console.warn(

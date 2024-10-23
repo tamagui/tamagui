@@ -212,25 +212,7 @@ declare const Dialog: React.ForwardRefExoticComponent<DialogProps & React.RefAtt
     }, import("@tamagui/core").StaticConfigPublic>;
     Close: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}>, "displayWhenAdapted"> & DialogCloseExtraProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & DialogCloseExtraProps, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic>;
     Sheet: React.FunctionComponent<Omit<import("@tamagui/sheet").SheetProps, "open" | "onOpenChange"> & React.RefAttributes<import("react-native").View>> & {
-        Frame: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-            elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-            fullscreen?: boolean | undefined;
-            inset?: number | import("@tamagui/core").SizeTokens | {
-                top?: number;
-                bottom?: number;
-                left?: number;
-                right?: number;
-            } | undefined;
-            unstyled?: boolean | undefined;
-        }>, keyof {
-            disableHideBottomOverflow?: boolean;
-            adjustPaddingForOffscreenContent?: boolean;
-        }> & {
-            disableHideBottomOverflow?: boolean;
-            adjustPaddingForOffscreenContent?: boolean;
-        } & {
-            __scopeSheet?: import("@tamagui/create-context").Scope<any>;
-        } & import("react").RefAttributes<unknown>>;
+        Frame: import("react").ForwardRefExoticComponent<import("react").RefAttributes<unknown>>;
         Overlay: import("react").MemoExoticComponent<(propsIn: import("@tamagui/sheet/types/types").SheetScopedProps<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
             elevation?: number | import("@tamagui/core").SizeTokens | undefined;
             fullscreen?: boolean | undefined;

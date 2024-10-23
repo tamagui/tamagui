@@ -290,25 +290,7 @@ export declare const Popover: React.ForwardRefExoticComponent<PopperProps & {
     };
     ScrollView: typeof ScrollView;
     Sheet: React.FunctionComponent<Omit<import("@tamagui/sheet").SheetProps, "open" | "onOpenChange"> & React.RefAttributes<import("react-native").View>> & {
-        Frame: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-            elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-            fullscreen?: boolean | undefined;
-            inset?: number | import("@tamagui/core").SizeTokens | {
-                top?: number;
-                bottom?: number;
-                left?: number;
-                right?: number;
-            } | undefined;
-            unstyled?: boolean | undefined;
-        }>, keyof {
-            disableHideBottomOverflow?: boolean;
-            adjustPaddingForOffscreenContent?: boolean;
-        }> & {
-            disableHideBottomOverflow?: boolean;
-            adjustPaddingForOffscreenContent?: boolean;
-        } & {
-            __scopeSheet?: import("@tamagui/create-context").Scope<any>;
-        } & import("react").RefAttributes<unknown>>;
+        Frame: import("react").ForwardRefExoticComponent<import("react").RefAttributes<unknown>>;
         Overlay: import("react").MemoExoticComponent<(propsIn: import("@tamagui/sheet/types/types").SheetScopedProps<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
             elevation?: number | import("@tamagui/core").SizeTokens | undefined;
             fullscreen?: boolean | undefined;
