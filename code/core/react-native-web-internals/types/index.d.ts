@@ -1,3 +1,4 @@
+export type { ColorValue, DimensionValue, EdgeInsetsValue, GenericStyleProp, LayoutEvent, LayoutValue, PlatformMethods, PointValue, } from './types';
 export * from './modules/AssetRegistry/index';
 export * from './modules/forwardedProps/index';
 export * from './modules/mergeRefs/index';
