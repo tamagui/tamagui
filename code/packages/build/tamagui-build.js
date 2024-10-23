@@ -724,16 +724,21 @@ async function esbuildWriteIfChanged(
 
   // path specifics:
 
+  // write first so we can find them in next loop with specify
+  await Promise.all(
+    outputs.map(async (file) => {
+      if (!file) return
+      const { path, contents } = file
+      // write it without specifics to just .js for older react-native compat
+      await FSE.writeFile(path, contents)
+    })
+  )
+
   if (specifyCJS) {
     await Promise.all(
       outputs.map(async (file) => {
         if (!file) return
-
         const { path, contents } = file
-
-        // write it without specifics to just .js for older react-native compat
-        await FSE.writeFile(path, contents)
-
         if (!path.endsWith('.js')) return
 
         const result = opts.bundle

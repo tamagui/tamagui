@@ -25,6 +25,7 @@ export default function fullySpecifyCommonJS(api) {
 
               const fileDir = dirname(filePath)
               const cjsExtension = '.cjs'
+              const jsExtension = '.js'
 
               // Check if moduleSpecifier already has an extension
               if (!extname(moduleSpecifier)) {
@@ -33,7 +34,7 @@ export default function fullySpecifyCommonJS(api) {
 
                 // Check if the moduleSpecifier is a directory with an index.cjs file
                 if (isLocalDirectory(resolvedPath)) {
-                  const indexPath = resolve(resolvedPath, 'index' + cjsExtension)
+                  const indexPath = resolve(resolvedPath, 'index' + jsExtension)
                   if (existsSync(indexPath)) {
                     // Append '/' if not present
                     if (!newModuleSpecifier.endsWith('/')) {
@@ -46,8 +47,8 @@ export default function fullySpecifyCommonJS(api) {
                 }
 
                 // Check if the moduleSpecifier.cjs file exists
-                const filePathWithCjs = resolvedPath + cjsExtension
-                if (existsSync(filePathWithCjs)) {
+                const filePathWithJs = resolvedPath + jsExtension
+                if (existsSync(filePathWithJs)) {
                   newModuleSpecifier += cjsExtension
                   arg.value = newModuleSpecifier
                   return
