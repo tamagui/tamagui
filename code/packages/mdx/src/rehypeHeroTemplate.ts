@@ -4,13 +4,13 @@ import path from 'node:path'
 
 import visit from 'unist-util-visit'
 
-export default (options = {}) => {
-  // @ts-ignore
-  const requireFn =
-    typeof require === 'undefined' ? createRequire(import.meta.url) : require
-  const demosPath = requireFn.resolve('@tamagui/demos')
-  const demosRoot = path.join(demosPath, '..', '..', '..')
+// @ts-ignore
+const requireFn =
+  typeof require === 'undefined' ? createRequire(import.meta.url) : require
+const demosPath = requireFn.resolve('@tamagui/demos')
+const demosRoot = path.join(demosPath, '..', '..', '..')
 
+export default (options = {}) => {
   return (tree) => {
     visit(tree, 'element', visitor)
   }

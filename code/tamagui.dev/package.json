@@ -36,7 +36,7 @@
     "@tamagui/image-next": "1.116.7",
     "@tamagui/logo": "1.116.7",
     "@tamagui/lucide-icons": "1.116.7",
-    "@tamagui/mdx": "1.116.7",
+    "@tamagui/mdx-2": "1.116.7",
     "@tamagui/one-theme": "1.116.7",
     "@tamagui/use-store": "1.116.7",
     "@vercel/og": "^0.5.8",

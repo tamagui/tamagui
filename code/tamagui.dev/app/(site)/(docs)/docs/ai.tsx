@@ -9,7 +9,7 @@ import { components } from '~/features/mdx/MDXComponents'
 import { HomeH1 } from '~/features/site/home/HomeHeaders'
 
 export async function loader() {
-  // const { getAllFrontmatter, getMDXBySlug } = await import('@tamagui/mdx')
+  // const { getAllFrontmatter, getMDXBySlug } = await import('@tamagui/mdx-2')
   // const docsSubFolders = ['intro', 'core', 'guides', 'components']
   // const allDocsItems = docsSubFolders.flatMap((folder) => {
   //   const frontmatters = getAllFrontmatter(`data/docs/${folder}`)

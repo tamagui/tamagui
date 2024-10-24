@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@tamagui/lucide-icons": "1.116.7",
-    "@tamagui/mdx": "1.116.7",
+    "@tamagui/mdx-2": "1.116.7",
     "@tamagui/themes": "1.116.7",
     "@vxrn/color-scheme": "^1.1.322",
     "mdx-bundler": "^10.0.2",

@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { Circle, H4, Paragraph, Separator, XStack, YStack } from 'tamagui'
 import type { LinkProps } from 'one'
 import { ScrollView } from '../site/ScrollView'
-import { Frontmatter } from '@tamagui/mdx'
+import { Frontmatter } from '@tamagui/mdx-2'
 
 const QuickNavLink = ({ href, ...rest }: LinkProps) => (
   <a onClick={(e) => [e.stopPropagation()]} href={href as any}>

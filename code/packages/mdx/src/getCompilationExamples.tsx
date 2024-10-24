@@ -1,5 +1,5 @@
 import { animationCode, compilationCode } from './codeExamples'
-import { createCodeHighlighter } from '@vxrn/mdx'
+import { createCodeHighlighter } from './highlightCode'
 
 const highlightCode = createCodeHighlighter()
 

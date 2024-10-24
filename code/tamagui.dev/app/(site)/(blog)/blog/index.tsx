@@ -7,7 +7,7 @@ import { authors } from '~/data/authors'
 import { HeadInfo } from '~/components/HeadInfo'
 
 export async function loader() {
-  const { getAllFrontmatter } = await import('@tamagui/mdx')
+  const { getAllFrontmatter } = await import('@tamagui/mdx-2')
   const frontmatters = getAllFrontmatter('data/blog')
   const sortedFrontmatters = frontmatters
     .filter((x) => !x.draft)

@@ -17,7 +17,7 @@ import { HomeSection, SectionTinted, TintSection } from '~/features/site/home/Ti
 import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
 
 export async function loader() {
-  const { getCompilationExamples } = await import('@tamagui/mdx')
+  const { getCompilationExamples } = await import('@tamagui/mdx-2')
   return getCompilationExamples()
 }
 

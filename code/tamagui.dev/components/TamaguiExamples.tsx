@@ -1,4 +1,4 @@
-import type { getCompilationExamples } from '@tamagui/mdx'
+import type { getCompilationExamples } from '@tamagui/mdx-2'
 import { createContext, useContext } from 'react'
 import { Spacer } from 'tamagui'
 import { HeroContainer } from '~/features/docs/HeroContainer'

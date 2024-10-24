@@ -21,7 +21,7 @@ export default {
 
   ssr: {
     noExternal: true,
-    external: ['@tamagui/mdx'],
+    external: ['@tamagui/mdx-2'],
   },
 
   define: {
