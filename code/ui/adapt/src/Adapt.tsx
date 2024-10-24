@@ -239,13 +239,17 @@ const useAdaptIsActiveGiven = ({
     return false
   }
 
-  let enabled = !platform
+  let enabled = false
 
   if (platform === 'touch') enabled = isTouchable
-  if (platform === 'native') enabled = !isWeb
-  if (platform === 'web') enabled = isWeb
-  if (platform === 'ios') enabled = isIos
-  if (platform === 'android') enabled = isAndroid
+  else if (platform === 'native') enabled = !isWeb
+  else if (platform === 'web') enabled = isWeb
+  else if (platform === 'ios') enabled = isIos
+  else if (platform === 'android') enabled = isAndroid
+
+  if (platform && enabled == false) {
+    return false
+  }
 
   if (when && typeof when === 'string') {
     enabled = media[when]
