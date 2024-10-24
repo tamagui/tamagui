@@ -197,9 +197,9 @@ function subscribe(subscriber: any) {
 
 type ComponentMediaKeys = Set<string>
 
-type ComponentMediaQueryState = MediaKeysState & {
-  lastKeys?: ComponentMediaKeys
-}
+type ComponentMediaQueryState = MediaKeysState
+
+const CurrentKeysMap = new WeakMap<any, ComponentMediaKeys>()
 
 export function useMedia(cc?: ComponentContextI, debug?: DebugProp): UseMediaState {
   // performance boost to avoid using context twice
@@ -207,25 +207,24 @@ export function useMedia(cc?: ComponentContextI, debug?: DebugProp): UseMediaSta
   const initialState = disableSSR || !isWeb ? mediaState : initState
   const [state, setState] = React.useState<ComponentMediaQueryState>(initialState)
 
-  let currentKeys: ComponentMediaKeys | undefined
-  const getCurrentKeys = () => currentKeys
+  if (!CurrentKeysMap.get(setState)) {
+    CurrentKeysMap.set(setState, new Set())
+  }
 
-  function getSnapshot(
-    cur: ComponentMediaQueryState,
-    keys: ComponentMediaKeys | undefined = cur.lastKeys
-  ) {
-    if (!keys) return cur
+  const currentKeys = CurrentKeysMap.get(setState)!
 
-    for (const key of keys) {
+  // clear each render to track only rendered touched keys
+  // if (currentKeys.size) currentKeys.clear()
+
+  function getSnapshot(cur: ComponentMediaQueryState) {
+    if (!currentKeys) return cur
+
+    for (const key of currentKeys) {
       if (mediaState[key] !== cur[key]) {
         if (process.env.NODE_ENV === 'development' && debug) {
           console.warn(`useMedia()✍️`, key, cur[key], '>', mediaState[key])
         }
-
-        return {
-          ...mediaState,
-          lastKeys: new Set(keys),
-        }
+        return mediaState
       }
     }
 
@@ -242,37 +241,41 @@ export function useMedia(cc?: ComponentContextI, debug?: DebugProp): UseMediaSta
   useIsomorphicLayoutEffect(() => {
     const update = () =>
       setState((prev) => {
-        const keys = getCurrentKeys()
-        return getSnapshot(
-          prev,
-          // because the !didHydrateOnce logic we can't update as we render
-          // we need to get the current keys in case we added
-          // these only ever add keys so likely ok?
-          keys
-        )
+        const next = getSnapshot(prev)
+        return next
       })
 
     update()
 
-    return subscribe(update)
-  }, [])
+    const tm = setTimeout(() => {
+      if (currentKeys.size) {
+        update()
+      }
+    })
+
+    const dispose = subscribe(update)
+
+    return () => {
+      dispose()
+      clearTimeout(tm)
+    }
+  }, [setState])
 
   return new Proxy(state, {
     get(_, key) {
       if (isRendering && !disableMediaTouch && typeof key === 'string') {
-        const needsUpdateKeys = !state.lastKeys || !state.lastKeys.has(key)
+        currentKeys.add(key)
 
-        if (needsUpdateKeys || state[key] !== mediaState[key]) {
+        const shouldUpdate = state[key] !== mediaState[key]
+
+        if (shouldUpdate) {
           if (process.env.NODE_ENV === 'development' && debug) {
             console.info(`useMedia() TOUCH`, key)
           }
 
-          currentKeys ||= new Set<string>()
-          currentKeys.add(key)
-
           // the first update() will get this in an ssr safe way in the useLayoutEffect
           if (!isInitialState) {
-            const next = getSnapshot(state, currentKeys!)
+            const next = getSnapshot(state)
             if (next !== state) {
               setState(next)
             }
