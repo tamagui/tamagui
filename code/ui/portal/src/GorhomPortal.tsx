@@ -14,6 +14,7 @@ import React, {
   useId,
   useMemo,
   useReducer,
+  useState,
 } from 'react'
 import { createPortal } from 'react-dom'
 
@@ -282,6 +283,7 @@ export const PortalHost = memo(function PortalHost(props: PortalHostProps) {
 })
 
 const allPortalHosts = new Map<string, HTMLElement>()
+const listeners: Record<string, Set<Function>> = {}
 
 function PortalHostWeb(props: PortalHostProps) {
   return (
@@ -292,6 +294,7 @@ function PortalHostWeb(props: PortalHostProps) {
       ref={(node) => {
         if (node) {
           allPortalHosts.set(props.name, node)
+          listeners[props.name]?.forEach((x) => x(node))
         } else {
           allPortalHosts.delete(props.name)
         }
@@ -393,13 +396,33 @@ const PortalItemWeb = (props: PortalItemProps) => {
     throw new Error(`No name`)
   }
 
-  const hostNode = allPortalHosts.get(props.hostName)
+  const cur = allPortalHosts.get(props.hostName)
+  const [node, setNode] = useState(cur)
 
-  if (!hostNode) {
+  if (cur && !node) {
+    setNode(cur)
+  }
+
+  useEffect(() => {
+    if (!props.hostName) return
+    if (node) return
+
+    const listener = (node) => {
+      setNode(node)
+    }
+
+    listeners[props.hostName] ||= new Set()
+    listeners[props.hostName].add(listener)
+    return () => {
+      listeners[props.hostName!]?.delete(listener)
+    }
+  }, [node])
+
+  if (!node) {
     return null
   }
 
-  return createPortal(props.children, hostNode)
+  return createPortal(props.children, node)
 }
 
 const NonNativePortalComponent = (props: PortalItemProps) => {

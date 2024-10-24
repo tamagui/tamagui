@@ -235,6 +235,10 @@ const useAdaptIsActiveGiven = ({
 }: Pick<AdaptProps, 'when' | 'platform'>) => {
   const media = useMedia()
 
+  if (when == null && platform == null) {
+    return false
+  }
+
   let enabled = !platform
 
   if (platform === 'touch') enabled = isTouchable
@@ -243,8 +247,8 @@ const useAdaptIsActiveGiven = ({
   if (platform === 'ios') enabled = isIos
   if (platform === 'android') enabled = isAndroid
 
-  if (when && typeof when === 'string' && !media[when]) {
-    enabled = false
+  if (when && typeof when === 'string') {
+    enabled = media[when]
   }
 
   return enabled

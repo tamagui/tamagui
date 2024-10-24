@@ -185,6 +185,7 @@ const DialogPortal: React.FC<DialogPortalProps> = (
   const context = useDialogContext(PORTAL_NAME, __scopeDialog)
   const isShowing = forceMount || context.open
   const [isFullyHidden, setIsFullyHidden] = React.useState(!isShowing)
+  const isAdapted = useAdaptIsActive()
 
   if (isShowing && isFullyHidden) {
     setIsFullyHidden(false)
@@ -194,20 +195,14 @@ const DialogPortal: React.FC<DialogPortalProps> = (
     setIsFullyHidden(true)
   }, [])
 
-  const contents = (
-    <AnimatePresence onExitComplete={handleExitComplete}>
-      {isShowing ? children : null}
-    </AnimatePresence>
-  )
-
-  // TODO may not need this, tested on native and didnt need it:
-  const isAdapted = useAdaptIsActive()
-  if (isAdapted) {
-    return children
-  }
-
   if (context.modal) {
-    if (isFullyHidden) {
+    const contents = (
+      <AnimatePresence onExitComplete={handleExitComplete}>
+        {isShowing || isAdapted ? children : null}
+      </AnimatePresence>
+    )
+
+    if (isFullyHidden && !isAdapted) {
       return null
     }
 
@@ -231,7 +226,7 @@ const DialogPortal: React.FC<DialogPortalProps> = (
     return framedContents
   }
 
-  return contents
+  return children
 }
 
 const PassthroughTheme = ({ children }) => {

@@ -271,6 +271,8 @@ const Context = createStyledContext({
 
 ---
 
+- Dialog.Portal and <Dialog modal /> redundant
+
 - as long as you use the nextjs or other new color scheme helpers they always add t_dark/t_light on first render so as long as youre ok with dark mode not working for js-off users, you could turn default the tamagui/config v4 to shouldAddPrefersColorThemes: false
 
 - lower priority uniswap:

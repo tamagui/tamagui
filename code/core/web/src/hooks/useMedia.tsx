@@ -1,5 +1,5 @@
 import { isServer, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
-import React, { useId, useRef } from 'react'
+import React from 'react'
 import { getConfig, getSetting } from '../config'
 import { matchMedia } from '../helpers/matchMedia'
 import { pseudoDescriptors } from '../helpers/pseudoDescriptors'
@@ -241,15 +241,16 @@ export function useMedia(cc?: ComponentContextI, debug?: DebugProp): UseMediaSta
 
   useIsomorphicLayoutEffect(() => {
     const update = () =>
-      setState((prev) =>
-        getSnapshot(
+      setState((prev) => {
+        const keys = getCurrentKeys()
+        return getSnapshot(
           prev,
           // because the !didHydrateOnce logic we can't update as we render
           // we need to get the current keys in case we added
           // these only ever add keys so likely ok?
-          getCurrentKeys()
+          keys
         )
-      )
+      })
 
     update()
 

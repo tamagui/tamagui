@@ -26,6 +26,7 @@ export default function TestAdaptDialogToSheet() {
             Open Sheet
           </Button>
         </Dialog.Trigger>
+
         <Adapt when="sm">
           <Sheet
             snapPointsMode="fit"
@@ -84,7 +85,12 @@ export default function TestAdaptDialogToSheet() {
                   <SizableText>
                     This should be in a Sheet on SM screens but its not
                   </SizableText>
-                  <Button onPress={() => setOpen(false)}>
+                  <Button
+                    pe="auto"
+                    onPress={() => {
+                      setOpen(false)
+                    }}
+                  >
                     <Button.Text>Close</Button.Text>
                   </Button>
                 </YStack>
