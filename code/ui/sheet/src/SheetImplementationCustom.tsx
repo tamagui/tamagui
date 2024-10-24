@@ -497,7 +497,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     )
 
     // start mounted so we get an accurate measurement the first time
-    const shouldMountChildren = unmountChildrenWhenHidden ? !opacity : true
+    const shouldMountChildren = unmountChildrenWhenHidden ? !!opacity : true
 
     if (modal) {
       const modalContents = (
