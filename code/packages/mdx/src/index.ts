@@ -1,6 +1,8 @@
-// export { rehypeHighlightCode } from './rehypeHighlightCode'
-export { getAllFrontmatter } from './getAllFrontmatter'
-export { getMDXBySlug, getAllVersionsFromPath } from './getMDXBySlug'
-export type { Frontmatter } from './types'
+export {
+  type Frontmatter,
+  createCodeHighlighter,
+  getAllFrontmatter,
+  getAllVersionsFromPath,
+} from '@vxrn/mdx'
 export { getCompilationExamples } from './getCompilationExamples'
-export { createCodeHighlighter } from './highlightCode'
+export * from './getMDXBySlug'

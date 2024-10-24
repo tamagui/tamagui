@@ -25,7 +25,7 @@ const sections = {
 const allItems = [
   {
     children: (
-      <H4 size="$7" fos={18} dsp="inline-flex" px="$3" mt="$4" pb="$3">
+      <H4 size="$4" o={0.5} dsp="inline-flex" px="$3" mt="$4" pb="$3">
         Style
       </H4>
     ),
@@ -34,7 +34,7 @@ const allItems = [
   ...sections.docs,
   {
     children: (
-      <H4 size="$7" fos={18} dsp="inline-flex" px="$3" mt="$4" pb="$3">
+      <H4 size="$4" o={0.5} dsp="inline-flex" px="$3" mt="$4" pb="$3">
         UI
       </H4>
     ),
@@ -205,6 +205,7 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
                           px="$4"
                           ai="center"
                           gap="$3"
+                          mt="$4"
                         >
                           <Separator bc="$color025" o={0.25} my="$2" />
                           <Theme name="gray">

@@ -2,7 +2,7 @@ export declare function getCompilationExamples(): {
     compilationExamples: {
         input: {
             examples: {
-                code: string;
+                code: any;
                 name: string;
                 language: string;
             }[];
@@ -10,7 +10,7 @@ export declare function getCompilationExamples(): {
         };
         output: {
             examples: {
-                code: string;
+                code: any;
                 name: string;
                 language: string;
             }[];
@@ -18,6 +18,6 @@ export declare function getCompilationExamples(): {
         };
         name: string;
     }[];
-    animationCode: string;
+    animationCode: any;
 };
 //# sourceMappingURL=getCompilationExamples.d.ts.map
