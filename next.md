@@ -144,8 +144,6 @@ const example = (
 
 v2:
 
-  - // TODO remove in v2
-  - // TODO can remove 'web'
   - Text weirdness fixes (explore)
     - remove suppressHighlighting / margin 0 default from Text
     - fix display: inline issue
@@ -165,8 +163,6 @@ v2:
   - @tamagui/cli => tamagui
     - `tamagui build` document/announce
     - `tamagui lint` fix check and document/announce
-  - remove deprecated second argument styled acceptsClassName
-    - styled(View, { acceptsClassName }, { acceptsClassName })
   - tamagui => @tamagui/ui
     - new Button, Input (nice, can be v3), Image (image-next), ScrollView
     - note many are headless
