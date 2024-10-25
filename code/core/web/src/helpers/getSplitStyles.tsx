@@ -41,7 +41,6 @@ import type {
   PseudoPropKeys,
   PseudoStyles,
   RulesToInsert,
-  SpaceTokens,
   SplitStyleProps,
   StaticConfig,
   StyleObject,
@@ -178,7 +177,6 @@ export const getSplitStyles: StyleSplitter = (
   const transforms: Record<TransformNamespaceKey, [string, string]> = {}
 
   let pseudos: PseudoStyles | null = null
-  let space: SpaceTokens | null = props.space
   let hasMedia: boolean | Record<string, boolean> = false
   let dynamicThemeAccess: boolean | undefined
   let pseudoGroups: Set<string> | undefined
@@ -800,12 +798,11 @@ export const getSplitStyles: StyleSplitter = (
 
         // for some reason 'space' in val upsetting next ssr during prod build
         // technically i guess this also will not apply if 0 space which makes sense?
-        const hasSpace = val['space']
         const mediaKeyShort = key.slice(isMedia == 'theme' ? 7 : 1)
 
         hasMedia ||= true
 
-        if (hasSpace || !shouldDoClasses || styleProps.willBeAnimated) {
+        if (!shouldDoClasses || styleProps.willBeAnimated) {
           if (typeof hasMedia !== 'object') {
             hasMedia = {}
           }
@@ -833,29 +830,6 @@ export const getSplitStyles: StyleSplitter = (
 
         if (shouldDoClasses) {
           const mediaStyle = getSubStyle(styleState, key, val, false)
-
-          if (hasSpace) {
-            delete mediaStyle['space']
-            // TODO group/theme/platform + space support (or just make it official not supported in favor of gap)
-            if (mediaState[mediaKeyShort]) {
-              const importance = getMediaImportanceIfMoreImportant(
-                mediaKeyShort,
-                'space',
-                usedKeys,
-                true
-              )
-              if (importance) {
-                space = val['space']
-                usedKeys['space'] = importance
-                if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-                  log(
-                    `Found more important space for current media ${mediaKeyShort}: ${val} (importance: ${importance})`
-                  )
-                }
-              }
-            }
-          }
-
           const mediaStyles = getStylesAtomic(mediaStyle)
           const priority = mediaStylesSeen
           mediaStylesSeen += 1
@@ -1009,7 +983,6 @@ export const getSplitStyles: StyleSplitter = (
 
           for (const subKey in mediaStyle) {
             if (subKey === 'space') {
-              space = valInit.space
               continue
             }
             if (subKey[0] === '$') {
@@ -1306,7 +1279,6 @@ export const getSplitStyles: StyleSplitter = (
   }
 
   const result: GetStyleResult = {
-    space,
     hasMedia,
     fontFamily: styleState.fontFamily,
     viewProps,

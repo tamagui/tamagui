@@ -5,7 +5,6 @@ import {
   getVariableValue,
   isTamaguiElement,
   mergeProps,
-  spacedChildren,
   styled,
   useProps,
 } from '@tamagui/core'

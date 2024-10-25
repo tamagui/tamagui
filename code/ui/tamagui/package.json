@@ -117,6 +117,7 @@
     "@tamagui/shapes": "1.116.7",
     "@tamagui/sheet": "1.116.7",
     "@tamagui/slider": "1.116.7",
+    "@tamagui/spacer": "1.116.7",
     "@tamagui/stacks": "1.116.7",
     "@tamagui/switch": "1.116.7",
     "@tamagui/tabs": "1.116.7",

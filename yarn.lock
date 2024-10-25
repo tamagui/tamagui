@@ -6658,6 +6658,7 @@ __metadata:
     "@tamagui/core": "npm:1.116.7"
     "@tamagui/create-context": "npm:1.116.7"
     "@tamagui/helpers": "npm:1.116.7"
+    "@tamagui/spacer": "npm:1.116.7"
     "@tamagui/stacks": "npm:1.116.7"
     "@tamagui/use-controllable-state": "npm:1.116.7"
     react: "npm:^18.2.0 || ^19.0.0"
@@ -6870,6 +6871,7 @@ __metadata:
     "@tamagui/get-token": "npm:1.116.7"
     "@tamagui/helpers": "npm:1.116.7"
     "@tamagui/helpers-tamagui": "npm:1.116.7"
+    "@tamagui/spacer": "npm:1.116.7"
     "@tamagui/stacks": "npm:1.116.7"
     "@tamagui/text": "npm:1.116.7"
     "@tamagui/web": "npm:1.116.7"
@@ -7491,6 +7493,19 @@ __metadata:
     "@tamagui/use-controllable-state": "npm:1.116.7"
     "@tamagui/use-debounce": "npm:1.116.7"
     "@tamagui/use-direction": "npm:1.116.7"
+    react: "npm:^18.2.0 || ^19.0.0"
+    react-native: "npm:0.74.1"
+  peerDependencies:
+    react: "*"
+  languageName: unknown
+  linkType: soft
+
+"@tamagui/spacer@npm:1.116.7, @tamagui/spacer@workspace:code/ui/spacer":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/spacer@workspace:code/ui/spacer"
+  dependencies:
+    "@tamagui/build": "npm:1.116.7"
+    "@tamagui/web": "npm:1.116.7"
     react: "npm:^18.2.0 || ^19.0.0"
     react-native: "npm:0.74.1"
   peerDependencies:
@@ -25778,6 +25793,7 @@ __metadata:
     "@tamagui/shapes": "npm:1.116.7"
     "@tamagui/sheet": "npm:1.116.7"
     "@tamagui/slider": "npm:1.116.7"
+    "@tamagui/spacer": "npm:1.116.7"
     "@tamagui/stacks": "npm:1.116.7"
     "@tamagui/switch": "npm:1.116.7"
     "@tamagui/tabs": "npm:1.116.7"

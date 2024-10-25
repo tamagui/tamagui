@@ -14,7 +14,6 @@ export declare const useConfiguration: () => {
     defaultProps?: (Record<string, any> & {
         Stack?: import("..").StackProps;
         Text?: import("..").TextProps;
-        Spacer?: import("..").SpacerProps;
     }) | undefined;
     fonts: {
         [x: string]: import("..").GenericFont<string | number | symbol>;

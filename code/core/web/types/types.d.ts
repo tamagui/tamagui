@@ -260,14 +260,6 @@ export type UseThemeWithStateProps = ThemeProps & {
 };
 type ArrayIntersection<A extends any[]> = A[keyof A];
 type GetAltThemeNames<S> = (S extends `${string}_${infer Alt}` ? GetAltThemeNames<Alt> : S) | S;
-export type SpacerUniqueProps = {
-    size?: SpaceValue | number;
-    flex?: boolean | number;
-    direction?: SpaceDirection;
-};
-export interface SpacerStyleProps extends Omit<StackStyleBase, keyof SpacerUniqueProps>, SpacerUniqueProps {
-}
-export type SpacerProps = WithThemeShorthandsPseudosMedia<SpacerStyleProps>;
 type AllowedValueSettingBase = boolean | 'strict' | 'somewhat-strict' | 'strict-web' | 'somewhat-strict-web';
 type AllowedStyleValuesSettingSize = AllowedValueSettingBase | 'number' | 'percent';
 type AllowedStyleValuesSettingZIndex = AllowedValueSettingBase | 'number';
@@ -459,7 +451,6 @@ export type CreateTamaguiProps = {
     defaultProps?: Record<string, any> & {
         Stack?: StackProps;
         Text?: TextProps;
-        Spacer?: SpacerProps;
     };
 };
 export type GetCSS = (opts?: {
@@ -1005,18 +996,6 @@ export interface ExtendBaseTextProps {
 }
 interface ExtraBaseProps {
     /**
-     * @deprecated Use `gap`
-     */
-    space?: SpaceValue;
-    /**
-     * @deprecated Use `gap`
-     */
-    spaceDirection?: SpaceDirection;
-    /**
-     * @deprecated can implement your own hook or component
-     */
-    separator?: ReactNode;
-    /**
      * Animations are defined using `createTamagui` typically in a tamagui.config.ts file.
      * Pass a string animation here and it uses an animation driver to execute it.
      *
@@ -1478,7 +1457,6 @@ export type GetStyleResult = {
     rulesToInsert: RulesToInsert;
     viewProps: StackProps & Record<string, any>;
     fontFamily: string | undefined;
-    space?: any;
     hasMedia: boolean | Record<string, boolean>;
     dynamicThemeAccess?: boolean;
     pseudoGroups?: Set<string>;

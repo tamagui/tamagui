@@ -1,5 +1,6 @@
 import './setup'
 
+export * from '@tamagui/spacer'
 export * from '@tamagui/accordion'
 export * from '@tamagui/adapt'
 export * from '@tamagui/alert-dialog'
