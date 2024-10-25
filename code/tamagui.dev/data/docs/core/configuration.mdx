@@ -772,13 +772,6 @@ You can pass a `settings` object to `createTamagui`:
       description: `Set up if "specific tokens" ($color.name) are added to the types where tokens are allowed (see below).`,
     },
     {
-      name: 'mediaPropOrder',
-      required: false,
-      type: 'boolean',
-      default: false,
-      description: `(beta) Will change the behavior of media styles. By default they have a fixed specificity: they always override any $theme- or $platform- styles. With this enabled, media styles will have the same precedence as the theme and platform styles, meaning that the order of the props determines if they override.`,
-    },
-    {
       name: 'fastSchemeChange',
       required: false,
       type: 'boolean',

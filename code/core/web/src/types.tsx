@@ -548,18 +548,6 @@ export interface GenericTamaguiSettings {
   autocompleteSpecificTokens?: AutocompleteSpecificTokensSetting
 
   /**
-   * Will change the behavior of media styles. By default they have a fixed
-   * specificity: they always override any $theme- or $platform- styles. With
-   * this enabled, media styles will have the same precedence as the theme and
-   * platform styles, meaning that the order of the props determines if they
-   * override.
-   *
-   * @default false
-   * @deprecated going away in v2
-   */
-  mediaPropOrder?: boolean
-
-  /**
    * On iOS, this enables a mode where Tamagui returns color values using
    * `DynamicColorIOS` This is a React Native built in feature, you can read the
    * docs here: https://reactnative.dev/docs/dynamiccolorios

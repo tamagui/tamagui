@@ -89,7 +89,6 @@ const config = {
     }),
     allowedStyleValues: 'somewhat-strict-web',
     autocompleteSpecificTokens: 'except-special',
-    // mediaPropOrder: true,
   },
   fonts,
 } satisfies CreateTamaguiProps

@@ -67,11 +67,6 @@ export const getMediaKeyImportance = (key: string) => {
     throw new Error('use short key')
   }
 
-  const conf = getConfig()
-  if (conf.settings.mediaPropOrder) {
-    return defaultMediaImportance
-  }
-
   // + 100 because we set base usedKeys=1, pseudos are 2-N (however many we have)
   // all media go above all pseudos so we need to pad it based on that
   // right now theres 5 pseudos but in the future could be a few more
@@ -316,10 +311,9 @@ export const getMediaImportanceIfMoreImportant = (
   importancesUsed: Record<string, number>,
   isSizeMedia: boolean
 ) => {
-  const importance =
-    isSizeMedia && !getSetting('mediaPropOrder')
-      ? getMediaKeyImportance(mediaKey)
-      : defaultMediaImportance
+  const importance = isSizeMedia
+    ? getMediaKeyImportance(mediaKey)
+    : defaultMediaImportance
   return !importancesUsed[key] || importance > importancesUsed[key] ? importance : null
 }
 

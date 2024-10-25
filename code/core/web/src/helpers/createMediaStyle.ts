@@ -52,7 +52,6 @@ export const createMediaStyle = (
   priority?: number
 ): MediaStyleObject => {
   const [property, , identifier, pseudoIn, rules] = styleObject
-  const enableMediaPropOrder = getSetting('mediaPropOrder')
   const isTheme = type === 'theme'
   const isPlatform = type === 'platform'
   const isGroup = type === 'group'
@@ -109,24 +108,16 @@ export const createMediaStyle = (
       selectors = Object.fromEntries(
         mediaKeys.map((key) => [key, mediaObjectToString(mediaQueries[key])])
       )
-      if (!enableMediaPropOrder) {
-        prefixes = Object.fromEntries(
-          mediaKeys.map((k, index) => [k, new Array(index + 1).fill(':root').join('')])
-        )
-      }
+      prefixes = Object.fromEntries(
+        mediaKeys.map((k, index) => [k, new Array(index + 1).fill(':root').join('')])
+      )
     }
 
     const mediaKey = groupMediaKey || mediaKeyIn
     const mediaSelector = selectors[mediaKey]
     const screenStr = negate ? 'not all and ' : ''
     const mediaQuery = `${screenStr}${mediaSelector}`
-    const precedenceImportancePrefix = groupMediaKey
-      ? groupPriority
-      : enableMediaPropOrder && priority
-        ? // this new array should be cached
-          specificities[priority]
-        : // @ts-ignore
-          prefixes[mediaKey]
+    const precedenceImportancePrefix = groupMediaKey ? groupPriority : prefixes![mediaKey]
     const prefix = groupMediaKey ? `@container ${containerName}` : '@media'
 
     if (groupMediaKey) {

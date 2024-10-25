@@ -168,7 +168,6 @@ v2:
     - `tamagui lint` fix check and document/announce
   - remove deprecated second argument styled acceptsClassName
     - styled(View, { acceptsClassName }, { acceptsClassName })
-  - deprecrate and remove mediaPropOrder
   - tamagui => @tamagui/ui
     - new Button, Input (nice, can be v3), Image (image-next), ScrollView
     - note many are headless
