@@ -25,12 +25,6 @@ const generateColorConfig = (input: ColorsStore) => {
 export const generateOutput = (globalStore: ReturnType<typeof useGlobalState>) => {
   const animations = globalStore.animations.draftAnimations
 
-  const settings = globalStore.settings.draft
-  // let configStr = JSON.stringify(settingsStore.draft, null, 2)
-  // const linesArr = configStr.split('\n')
-  // linesArr.splice(1, 0, '  ...baseConfig, // the rest of your config here')
-  // return `const config = createTamagui(${linesArr.join('\n')})`
-
   return `import { config as baseConfig } from '@tamagui/config/v3'
 import { createTamagui } from 'tamagui'
 import { createAnimations } from '@tamagui/animations-react-native'
@@ -43,7 +37,6 @@ export const config = createTamagui({
 ${objToStr(
   { type: 'spread', value: 'baseConfig' },
   { type: 'value', value: 'animations' },
-  { type: 'object', value: settings },
   {
     type: 'value',
     value: `tokens: {

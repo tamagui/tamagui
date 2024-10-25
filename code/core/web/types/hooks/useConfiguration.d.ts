@@ -7,22 +7,15 @@ export declare const useConfiguration: () => {
     language: import("../views/FontLanguage.types").LanguageContextType | null;
     unset?: import("..").BaseStyleProps | undefined;
     reactNative?: any;
-    defaultFont?: string | undefined;
     selectionStyles?: ((theme: Record<string, string>) => null | {
         backgroundColor?: any;
         color?: any;
     }) | undefined;
-    disableRootThemeClass?: boolean | undefined;
     defaultProps?: (Record<string, any> & {
         Stack?: import("..").StackProps;
         Text?: import("..").TextProps;
         Spacer?: import("..").SpacerProps;
     }) | undefined;
-    mediaQueryDefaultActive?: Record<string, boolean> | undefined;
-    cssStyleSeparator?: string | undefined;
-    maxDarkLightNesting?: number | undefined;
-    shouldAddPrefersColorThemes?: boolean | undefined;
-    themeClassNameOnRoot?: boolean | undefined;
     fonts: {
         [x: string]: import("..").GenericFont<string | number | symbol>;
     };
@@ -54,7 +47,6 @@ export declare const useConfiguration: () => {
             [key: string]: string | number;
         };
     };
-    onlyAllowShorthands: boolean | undefined;
     settings: import("..").GenericTamaguiSettings & Omit<import("..").GenericTamaguiSettings, keyof import("..").GenericTamaguiSettings>;
     tokens: Omit<{
         [x: string]: {

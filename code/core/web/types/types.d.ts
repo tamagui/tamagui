@@ -169,8 +169,7 @@ export interface TamaguiCustomConfig {
 }
 export interface TamaguiConfig extends Omit<GenericTamaguiConfig, keyof TamaguiCustomConfig>, TamaguiCustomConfig {
 }
-type OnlyAllowShorthandsSetting = boolean | undefined;
-export type CreateTamaguiConfig<A extends GenericTokens, B extends GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations, F extends GenericFonts = GenericFonts, G extends OnlyAllowShorthandsSetting = OnlyAllowShorthandsSetting, H extends GenericTamaguiSettings = GenericTamaguiSettings> = {
+export type CreateTamaguiConfig<A extends GenericTokens, B extends GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations, F extends GenericFonts = GenericFonts, H extends GenericTamaguiSettings = GenericTamaguiSettings> = {
     fonts: RemoveLanguagePostfixes<F>;
     fontLanguages: GetLanguagePostfixes<F> extends never ? string[] : GetLanguagePostfixes<F>[];
     tokens: A;
@@ -182,7 +181,6 @@ export type CreateTamaguiConfig<A extends GenericTokens, B extends GenericThemes
     shorthands: C;
     media: D;
     animations: AnimationDriver<E>;
-    onlyAllowShorthands: G;
     settings: H;
 };
 type GetLanguagePostfix<Set> = Set extends string ? Set extends `${string}_${infer Postfix}` ? Postfix : never : never;
@@ -191,15 +189,14 @@ type RemoveLanguagePostfixes<F extends GenericFonts> = {
     [Key in OmitLanguagePostfix<keyof F>]: F[Key];
 };
 type GetLanguagePostfixes<F extends GenericFonts> = GetLanguagePostfix<keyof F>;
-type ConfProps<A, B, C, D, E, F, G, I> = {
+type ConfProps<A, B, C, D, E, F, G> = {
     tokens?: A;
     themes?: B;
     shorthands?: C;
     media?: D;
     animations?: E extends AnimationConfig ? AnimationDriver<E> : undefined;
     fonts?: F;
-    onlyAllowShorthands?: G;
-    settings?: I;
+    settings?: G;
 };
 type EmptyTokens = {
     color: {};
@@ -217,7 +214,7 @@ type EmptyTamaguiSettings = {
     allowedStyleValues: false;
     autocompleteSpecificTokens: 'except-special';
 };
-export type InferTamaguiConfig<Conf> = Conf extends ConfProps<infer A, infer B, infer C, infer D, infer E, infer F, infer G, infer H> ? TamaguiInternalConfig<A extends GenericTokens ? A : EmptyTokens, B extends GenericThemes ? B : EmptyThemes, C extends GenericShorthands ? C : EmptyShorthands, D extends GenericMedia ? D : EmptyMedia, E extends GenericAnimations ? E : EmptyAnimations, F extends GenericFonts ? F : EmptyFonts, G extends OnlyAllowShorthandsSetting ? G : OnlyAllowShorthandsSetting, H extends GenericTamaguiSettings ? H : EmptyTamaguiSettings> : unknown;
+export type InferTamaguiConfig<Conf> = Conf extends ConfProps<infer A, infer B, infer C, infer D, infer E, infer F, infer G> ? TamaguiInternalConfig<A extends GenericTokens ? A : EmptyTokens, B extends GenericThemes ? B : EmptyThemes, C extends GenericShorthands ? C : EmptyShorthands, D extends GenericMedia ? D : EmptyMedia, E extends GenericAnimations ? E : EmptyAnimations, F extends GenericFonts ? F : EmptyFonts, G extends GenericTamaguiSettings ? G : EmptyTamaguiSettings> : unknown;
 export type GenericTamaguiConfig = CreateTamaguiConfig<GenericTokens, GenericThemes, GenericShorthands, GenericMedia, GenericAnimations, GenericFonts>;
 type NonSubThemeNames<A extends string | number> = A extends `${string}_${string}` ? never : A;
 type BaseThemeDefinitions = TamaguiConfig['themes'][NonSubThemeNames<keyof TamaguiConfig['themes']>];
@@ -342,16 +339,6 @@ export interface GenericTamaguiSettings {
      */
     autocompleteSpecificTokens?: AutocompleteSpecificTokensSetting;
     /**
-     * Will change the behavior of media styles. By default they have a fixed
-     * specificity: they always override any $theme- or $platform- styles. With
-     * this enabled, media styles will have the same precedence as the theme and
-     * platform styles, meaning that the order of the props determines if they
-     * override.
-     *
-     * @default false
-     */
-    mediaPropOrder?: boolean;
-    /**
      * On iOS, this enables a mode where Tamagui returns color values using
      * `DynamicColorIOS` This is a React Native built in feature, you can read the
      * docs here: https://reactnative.dev/docs/dynamiccolorios
@@ -380,7 +367,7 @@ export interface GenericTamaguiSettings {
      * Only allow shorthands when enabled. Recommended to be true to avoid having
      * two ways to style the same property.
      */
-    onlyAllowShorthands?: OnlyAllowShorthandsSetting;
+    onlyAllowShorthands?: boolean | undefined;
     /**
      * Define a default font, for better types and default font on Text
      */
@@ -463,65 +450,24 @@ export type CreateTamaguiProps = {
     };
     settings?: Partial<GenericTamaguiSettings>;
     /**
-     * Define a default font, for better types and default font on Text
-     */
-    /** @deprecated moved into settings sub-object */
-    defaultFont?: string;
-    /**
      * Web-only: define text-selection CSS
      */
     selectionStyles?: (theme: Record<string, string>) => null | {
         backgroundColor?: any;
         color?: any;
     };
-    /**
-     * *Advanced use case* For all CSS extracted views, this has no effect.
-     *
-     * For SSR compatibility on the web, Tamagui will render once with the settings
-     * from `mediaQueryDefaultActive` set for all media queries. Then, it will render
-     * again after the initial render using the proper media query values. This is so that
-     * hydration will match perfectly with the server.
-     *
-     * Setting disableSSR will avoid this second render by setting the media query state
-     * to the actual browser dimensions on initial load. This is only useful for client-only
-     * apps.
-     *
-     */
-    /** @deprecated moved into settings sub-object */
-    disableSSR?: boolean;
-    /**
-     * Disable inserting a theme class in the DOM or context, allowing you to manually place it higher.
-     * For custom use cases like integration with next-theme.
-     */
-    /** @deprecated moved into settings sub-object */
-    disableRootThemeClass?: boolean;
     defaultProps?: Record<string, any> & {
         Stack?: StackProps;
         Text?: TextProps;
         Spacer?: SpacerProps;
     };
-    /** @deprecated moved into settings sub-object */
-    mediaQueryDefaultActive?: Record<string, boolean>;
-    /** @deprecated moved into settings sub-object */
-    cssStyleSeparator?: string;
-    /** @deprecated moved into settings sub-object */
-    maxDarkLightNesting?: number;
-    /** @deprecated moved into settings sub-object */
-    shouldAddPrefersColorThemes?: boolean;
-    /** @deprecated moved into settings sub-object */
-    themeClassNameOnRoot?: boolean;
-    /**
-     * Only allow shorthands when enabled
-     */
-    /** @deprecated moved into settings sub-object */
-    onlyAllowShorthands?: OnlyAllowShorthandsSetting;
 };
 export type GetCSS = (opts?: {
     separator?: string;
     exclude?: 'themes' | 'design-system' | null;
     sinceLastCall?: boolean;
 }) => string;
-export type TamaguiInternalConfig<A extends GenericTokens = GenericTokens, B extends GenericThemes = GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations, F extends GenericFonts = GenericFonts, G extends OnlyAllowShorthandsSetting = OnlyAllowShorthandsSetting, I extends GenericTamaguiSettings = GenericTamaguiSettings> = Omit<CreateTamaguiProps, keyof GenericTamaguiConfig> & Omit<CreateTamaguiConfig<A, B, C, D, E, F, G, I>, 'tokens'> & {
+export type TamaguiInternalConfig<A extends GenericTokens = GenericTokens, B extends GenericThemes = GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations, F extends GenericFonts = GenericFonts, G extends GenericTamaguiSettings = GenericTamaguiSettings> = Omit<CreateTamaguiProps, keyof GenericTamaguiConfig> & Omit<CreateTamaguiConfig<A, B, C, D, E, F, G>, 'tokens'> & {
     tokens: Tokenify<A>;
     tokensParsed: Tokenify<A>;
     themeConfig: any;
@@ -533,7 +479,7 @@ export type TamaguiInternalConfig<A extends GenericTokens = GenericTokens, B ext
     reactNative?: any;
     fontSizeTokens: Set<string>;
     specificTokens: Record<string, Variable>;
-    settings: Omit<GenericTamaguiSettings, keyof I> & I;
+    settings: Omit<GenericTamaguiSettings, keyof G> & G;
     defaultFontToken: `${string}`;
 };
 export type GetAnimationKeys<A extends GenericTamaguiConfig> = keyof A['animations'];
@@ -710,7 +656,7 @@ export type WithThemeValues<T extends object> = {
 };
 export type NarrowShorthands = Narrow<Shorthands>;
 export type Longhands = NarrowShorthands[keyof NarrowShorthands];
-type OnlyAllowShorthands = TamaguiConfig['onlyAllowShorthands'];
+export type OnlyAllowShorthandsSetting = TamaguiConfig['settings']['onlyAllowShorthands'];
 export type WithShorthands<StyleProps> = {
     [Key in keyof Shorthands]?: Shorthands[Key] extends keyof StyleProps ? StyleProps[Shorthands[Key]] | null : undefined;
 };
@@ -734,7 +680,7 @@ export type PseudoStyles = {
     exitStyle?: ViewStyle;
 };
 export type AllPlatforms = 'web' | 'native' | 'android' | 'ios';
-export type WithThemeAndShorthands<A extends Object, Variants = {}> = OnlyAllowShorthands extends true ? WithThemeValues<Omit<A, Longhands>> & Variants & WithShorthands<WithThemeValues<A>> : WithThemeValues<A> & Variants & WithShorthands<WithThemeValues<A>>;
+export type WithThemeAndShorthands<A extends Object, Variants = {}> = OnlyAllowShorthandsSetting extends true ? WithThemeValues<Omit<A, Longhands>> & Variants & WithShorthands<WithThemeValues<A>> : WithThemeValues<A> & Variants & WithShorthands<WithThemeValues<A>>;
 export type WithThemeShorthandsAndPseudos<A extends Object, Variants = {}> = WithThemeAndShorthands<A, Variants> & WithPseudoProps<WithThemeAndShorthands<A, Variants>>;
 export type WithThemeShorthandsPseudosMedia<A extends Object, Variants = {}> = WithThemeShorthandsAndPseudos<A, Variants> & WithMediaProps<WithThemeShorthandsAndPseudos<A, Variants>>;
 /**

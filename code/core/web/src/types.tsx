@@ -253,9 +253,6 @@ export interface TamaguiConfig
   extends Omit<GenericTamaguiConfig, keyof TamaguiCustomConfig>,
     TamaguiCustomConfig {}
 
-type OnlyAllowShorthandsSetting = boolean | undefined
-type DefaultFontSetting = string | undefined
-
 export type CreateTamaguiConfig<
   A extends GenericTokens,
   B extends GenericThemes,
@@ -263,7 +260,6 @@ export type CreateTamaguiConfig<
   D extends GenericMedia = GenericMedia,
   E extends GenericAnimations = GenericAnimations,
   F extends GenericFonts = GenericFonts,
-  G extends OnlyAllowShorthandsSetting = OnlyAllowShorthandsSetting,
   H extends GenericTamaguiSettings = GenericTamaguiSettings,
 > = {
   fonts: RemoveLanguagePostfixes<F>
@@ -280,7 +276,6 @@ export type CreateTamaguiConfig<
   shorthands: C
   media: D
   animations: AnimationDriver<E>
-  onlyAllowShorthands: G
   settings: H
 }
 
@@ -308,15 +303,14 @@ type GetLanguagePostfixes<F extends GenericFonts> = GetLanguagePostfix<keyof F>
 //   body_en: any
 // }>['fonts']
 
-type ConfProps<A, B, C, D, E, F, G, I> = {
+type ConfProps<A, B, C, D, E, F, G> = {
   tokens?: A
   themes?: B
   shorthands?: C
   media?: D
   animations?: E extends AnimationConfig ? AnimationDriver<E> : undefined
   fonts?: F
-  onlyAllowShorthands?: G
-  settings?: I
+  settings?: G
 }
 
 type EmptyTokens = {
@@ -344,8 +338,7 @@ export type InferTamaguiConfig<Conf> = Conf extends ConfProps<
   infer D,
   infer E,
   infer F,
-  infer G,
-  infer H
+  infer G
 >
   ? TamaguiInternalConfig<
       A extends GenericTokens ? A : EmptyTokens,
@@ -354,8 +347,7 @@ export type InferTamaguiConfig<Conf> = Conf extends ConfProps<
       D extends GenericMedia ? D : EmptyMedia,
       E extends GenericAnimations ? E : EmptyAnimations,
       F extends GenericFonts ? F : EmptyFonts,
-      G extends OnlyAllowShorthandsSetting ? G : OnlyAllowShorthandsSetting,
-      H extends GenericTamaguiSettings ? H : EmptyTamaguiSettings
+      G extends GenericTamaguiSettings ? G : EmptyTamaguiSettings
     >
   : unknown
 
@@ -586,7 +578,7 @@ export interface GenericTamaguiSettings {
    * Only allow shorthands when enabled. Recommended to be true to avoid having
    * two ways to style the same property.
    */
-  onlyAllowShorthands?: OnlyAllowShorthandsSetting
+  onlyAllowShorthands?: boolean | undefined
 
   /**
    * Define a default font, for better types and default font on Text
@@ -683,12 +675,6 @@ export type CreateTamaguiProps = {
   settings?: Partial<GenericTamaguiSettings>
 
   /**
-   * Define a default font, for better types and default font on Text
-   */
-  /** @deprecated moved into settings sub-object */
-  defaultFont?: string
-
-  /**
    * Web-only: define text-selection CSS
    */
   selectionStyles?: (theme: Record<string, string>) => null | {
@@ -696,67 +682,11 @@ export type CreateTamaguiProps = {
     color?: any
   }
 
-  /**
-   * *Advanced use case* For all CSS extracted views, this has no effect.
-   *
-   * For SSR compatibility on the web, Tamagui will render once with the settings
-   * from `mediaQueryDefaultActive` set for all media queries. Then, it will render
-   * again after the initial render using the proper media query values. This is so that
-   * hydration will match perfectly with the server.
-   *
-   * Setting disableSSR will avoid this second render by setting the media query state
-   * to the actual browser dimensions on initial load. This is only useful for client-only
-   * apps.
-   *
-   */
-  /** @deprecated moved into settings sub-object */
-  disableSSR?: boolean
-
-  /**
-   * Disable inserting a theme class in the DOM or context, allowing you to manually place it higher.
-   * For custom use cases like integration with next-theme.
-   */
-  /** @deprecated moved into settings sub-object */
-  disableRootThemeClass?: boolean
-
   defaultProps?: Record<string, any> & {
     Stack?: StackProps
     Text?: TextProps
     Spacer?: SpacerProps
   }
-
-  // for the first render, determines which media queries are true
-  // useful for SSR
-  /** @deprecated moved into settings sub-object */
-  mediaQueryDefaultActive?: Record<string, boolean>
-
-  // what's between each CSS style rule, set to "\n" to be easier to read
-  // defaults: "\n" when NODE_ENV=development, "" otherwise
-  /** @deprecated moved into settings sub-object */
-  cssStyleSeparator?: string
-
-  // (Advanced)
-  // on the web, tamagui treats `dark` and `light` themes as special and
-  // generates extra CSS to avoid having to re-render the entire page.
-  // this CSS relies on specificity hacks that multiply by your sub-themes.
-  // this sets the maxiumum number of nested dark/light themes you can do
-  // defaults to 3 for a balance, but can be higher if you nest them deeply.
-  /** @deprecated moved into settings sub-object */
-  maxDarkLightNesting?: number
-
-  // adds @media(prefers-color-scheme) media queries for dark/light
-  /** @deprecated moved into settings sub-object */
-  shouldAddPrefersColorThemes?: boolean
-
-  // only if you put the theme classname on the html element we have to generate diff
-  /** @deprecated moved into settings sub-object */
-  themeClassNameOnRoot?: boolean
-
-  /**
-   * Only allow shorthands when enabled
-   */
-  /** @deprecated moved into settings sub-object */
-  onlyAllowShorthands?: OnlyAllowShorthandsSetting
 }
 
 export type GetCSS = (opts?: {
@@ -773,10 +703,9 @@ export type TamaguiInternalConfig<
   D extends GenericMedia = GenericMedia,
   E extends GenericAnimations = GenericAnimations,
   F extends GenericFonts = GenericFonts,
-  G extends OnlyAllowShorthandsSetting = OnlyAllowShorthandsSetting,
-  I extends GenericTamaguiSettings = GenericTamaguiSettings,
+  G extends GenericTamaguiSettings = GenericTamaguiSettings,
 > = Omit<CreateTamaguiProps, keyof GenericTamaguiConfig> &
-  Omit<CreateTamaguiConfig<A, B, C, D, E, F, G, I>, 'tokens'> & {
+  Omit<CreateTamaguiConfig<A, B, C, D, E, F, G>, 'tokens'> & {
     // TODO need to make it this but this breaks types, revisit
     // animations: E //AnimationDriver<E>
     // with $ prefixes for fast lookups (one time cost at startup vs every render)
@@ -791,7 +720,7 @@ export type TamaguiInternalConfig<
     reactNative?: any
     fontSizeTokens: Set<string>
     specificTokens: Record<string, Variable>
-    settings: Omit<GenericTamaguiSettings, keyof I> & I
+    settings: Omit<GenericTamaguiSettings, keyof G> & G
     defaultFontToken: `${string}`
   }
 
@@ -1249,7 +1178,7 @@ export type WithThemeValues<T extends object> = {
 export type NarrowShorthands = Narrow<Shorthands>
 export type Longhands = NarrowShorthands[keyof NarrowShorthands]
 
-type OnlyAllowShorthands = TamaguiConfig['onlyAllowShorthands']
+export type OnlyAllowShorthandsSetting = TamaguiConfig['settings']['onlyAllowShorthands']
 
 // adds shorthand props
 export type WithShorthands<StyleProps> = {
@@ -1291,7 +1220,7 @@ export type AllPlatforms = 'web' | 'native' | 'android' | 'ios'
 export type WithThemeAndShorthands<
   A extends Object,
   Variants = {},
-> = OnlyAllowShorthands extends true
+> = OnlyAllowShorthandsSetting extends true
   ? WithThemeValues<Omit<A, Longhands>> & Variants & WithShorthands<WithThemeValues<A>>
   : WithThemeValues<A> & Variants & WithShorthands<WithThemeValues<A>>
 
