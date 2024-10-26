@@ -169,9 +169,6 @@ v2:
     - fullscreen => inset={0}
       - deprecate fullscreen, make sure inset works
   - remove spacer / space / separator
-  - remove the accumulation of styleProps in propMapper
-  - remove disableRootThemeClass from settings, change to disableRootThemeClassName
-  - defaults onlyAllowShorthands to true, themeClassNameOnRoot to true
   - Cleanup Select/ListItem
     - remove SizableStack (maybe rename to Surface), redo/remove ThemeableStack
     - v2-3 ListItem simplification esp for performance of Select

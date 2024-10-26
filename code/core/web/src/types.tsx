@@ -609,12 +609,6 @@ export interface GenericTamaguiSettings {
   disableSSR?: boolean
 
   /**
-   * Disable inserting a theme class in the DOM or context, allowing you to manually place it higher.
-   * For custom use cases like integration with next-theme.
-   */
-  disableRootThemeClass?: boolean
-
-  /**
    * For the first render, determines which media queries are true, this only
    * affects things on native or on web if you disableSSR, as otherwise Tamagui
    * relies on CSS to avoid the need for re-rendering on first render.
@@ -643,11 +637,14 @@ export interface GenericTamaguiSettings {
   shouldAddPrefersColorThemes?: boolean
 
   /**
-   * If you want to style your <body> tag to use themes, you must place the
-   * theme className onto the body element. This will do so. Otherwise, Tamagui
-   * will place the className onto the element rendered by the TamaguiProvider
+   * If you want to style your <body> tag to use theme CSS variables on web, you
+   * must place the theme className onto the body element or above. This will do so.
+   * If disabled, Tamagui will place the className onto the element rendered by
+   * the TamaguiProvider
+   *
+   * @default html
    */
-  themeClassNameOnRoot?: boolean
+  themeClassTarget?: 'body' | 'html' | false
 }
 
 export type TamaguiSettings = TamaguiConfig['settings']
