@@ -6808,8 +6808,6 @@ __metadata:
     react-dom: "npm:^18.2.0 || ^19.0.0"
     react-native: "npm:0.74.1"
     react-native-gesture-handler: "npm:2.20.0"
-    react-native-ios-modal: "npm:3.0.0-5"
-    react-native-ios-utilities: "npm:5.0.0-45"
     react-native-reanimated: "npm:~3.11.0"
     react-native-safe-area-context: "npm:4.11.0"
     react-native-screens: "npm:3.31.1"
@@ -22965,27 +22963,6 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: 10/2b0d638e739534c862eefe4429d634e14f97872fbcd8d6069a1a6af8d6ba65c22f6b00298b3ed6b636f5ab376c23c40e719566313fe7aca304af29b3198a2190
-  languageName: node
-  linkType: hard
-
-"react-native-ios-modal@npm:3.0.0-5":
-  version: 3.0.0-5
-  resolution: "react-native-ios-modal@npm:3.0.0-5"
-  peerDependencies:
-    react: "*"
-    react-native: "*"
-    react-native-ios-utilities: 5.0.x
-  checksum: 10/bf2289b401962e769e7b86c67a232599c07be1c39fbde24c37dc6ef649b78085509404fb54e60bee00c55ee8addc6dcf3318615c3855a85b68ced7069ef43f78
-  languageName: node
-  linkType: hard
-
-"react-native-ios-utilities@npm:5.0.0-45":
-  version: 5.0.0-45
-  resolution: "react-native-ios-utilities@npm:5.0.0-45"
-  peerDependencies:
-    react: "*"
-    react-native: "*"
-  checksum: 10/bb7a36d4ef70fcf52c5beb23de0e40db8875ca69488893e9ac06e61635302f0b66fa65d2c364a6981938eb4409777a71c9e41181e429b334eb2a718b6621e3ad
   languageName: node
   linkType: hard
 

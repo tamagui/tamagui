@@ -57,7 +57,7 @@ export const AdaptContext = createStyledContext<AdaptParentContextI>({
   setWhen: null as any,
 })
 
-const ProvideAdaptContext = ({
+export const ProvideAdaptContext = ({
   children,
   ...context
 }: AdaptParentContextI & { children: any }) => {
@@ -123,6 +123,8 @@ export const AdaptParent = ({ children, Contents, scope, portal }: AdaptParentPr
 
   const [when, setWhen] = React.useState<AdaptWhen>(null)
   const [platform, setPlatform] = React.useState<AdaptPlatform>(null)
+
+  // TODO for inline adapt
   const [children2, setChildren] = React.useState(null)
 
   return (
