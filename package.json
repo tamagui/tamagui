@@ -108,6 +108,9 @@
     "next-site": "yarn workspace @tamagui/next-site dev",
     "reset-package-json": "RESET_PACKAGE_JSON=true node -e \"require('./scripts/multi-react-version-tests.js').resetPackageJson()\""
   },
+  "resolutions": {
+    "vite": "6.0.0-beta.1"
+  },
   "profile": {
     "//": "run 'yarn profile x' to toggle it on/off",
     "react-19": {
