@@ -46,7 +46,7 @@ export const SelectItem = ListItemFrame.styleable<SelectItemExtraProps>(
 
     const { props: listItemProps } = useListItem({
       ...(!props.unstyled && {
-        ellipse: true,
+        ellipsis: true,
       }),
       ...restProps,
     })

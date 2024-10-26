@@ -12,7 +12,7 @@ import {
 import type { Scope } from '@tamagui/create-context'
 import { createContextScope } from '@tamagui/create-context'
 import { withStaticProperties } from '@tamagui/helpers'
-import { ThemeableStack } from '@tamagui/stacks'
+import { YStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import React from 'react'
 import { ScrollView } from 'react-native'
@@ -35,7 +35,7 @@ type ScopedProps<P> = P & { __scopeGroup?: Scope }
 const [createGroupContext, createGroupScope] = createContextScope(GROUP_NAME)
 const [GroupProvider, useGroupContext] = createGroupContext<GroupContextValue>(GROUP_NAME)
 
-export const GroupFrame = styled(ThemeableStack, {
+export const GroupFrame = styled(YStack, {
   name: 'GroupFrame',
 
   variants: {

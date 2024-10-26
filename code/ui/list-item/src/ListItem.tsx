@@ -3,7 +3,7 @@ import { getFontSized } from '@tamagui/get-font-sized'
 import { getSize, getSpace } from '@tamagui/get-token'
 import { withStaticProperties } from '@tamagui/helpers'
 import { useGetThemedIcon } from '@tamagui/helpers-tamagui'
-import { ThemeableStack, YStack } from '@tamagui/stacks'
+import { YStack } from '@tamagui/stacks'
 import type { TextParentStyles } from '@tamagui/text'
 import { SizableText, wrapChildrenInText } from '@tamagui/text'
 import type {
@@ -62,7 +62,7 @@ export type ListItemProps = GetProps<typeof ListItemFrame> & ListItemExtraProps
 
 const NAME = 'ListItem'
 
-export const ListItemFrame = styled(ThemeableStack, {
+export const ListItemFrame = styled(YStack, {
   name: NAME,
   tag: 'li',
 
@@ -127,7 +127,7 @@ export const ListItemText = styled(SizableText, {
         size: '$true',
         flexGrow: 1,
         flexShrink: 1,
-        ellipse: true,
+        ellipsis: true,
         cursor: 'inherit',
       },
     },
@@ -209,7 +209,7 @@ export const useListItem = (
     fontFamily,
     letterSpacing,
     textAlign,
-    ellipse,
+    ellipsis,
 
     ...rest
   } = props
@@ -221,7 +221,7 @@ export const useListItem = (
     fontFamily,
     letterSpacing,
     textAlign,
-    ellipse,
+    ellipsis,
     children,
   }
 

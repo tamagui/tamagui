@@ -16,7 +16,7 @@ import { Portal } from '@tamagui/portal'
 import { RemoveScroll } from '@tamagui/remove-scroll'
 import { Overlay, Sheet, SheetController } from '@tamagui/sheet'
 import type { YStackProps } from '@tamagui/stacks'
-import { ButtonNestingContext, ThemeableStack, YStack } from '@tamagui/stacks'
+import { ButtonNestingContext, YStack } from '@tamagui/stacks'
 import { H2, Paragraph } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
@@ -296,7 +296,7 @@ const DialogOverlay = DialogOverlayFrame.extractable(
 
 const CONTENT_NAME = 'DialogContent'
 
-const DialogContentFrame = styled(ThemeableStack, {
+const DialogContentFrame = styled(YStack, {
   name: CONTENT_NAME,
   tag: 'dialog',
 

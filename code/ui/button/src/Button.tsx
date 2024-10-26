@@ -2,7 +2,7 @@ import { getFontSize } from '@tamagui/font-size'
 import { getButtonSized } from '@tamagui/get-button-sized'
 import { withStaticProperties } from '@tamagui/helpers'
 import { useGetThemedIcon } from '@tamagui/helpers-tamagui'
-import { ButtonNestingContext, ThemeableStack } from '@tamagui/stacks'
+import { ButtonNestingContext, YStack } from '@tamagui/stacks'
 import type { TextContextStyles, TextParentStyles } from '@tamagui/text'
 import { SizableText, wrapChildrenInText } from '@tamagui/text'
 import type { FontSizeTokens, GetProps, SizeTokens, ThemeableProps } from '@tamagui/web'
@@ -28,7 +28,7 @@ export const ButtonContext = createStyledContext<
 >({
   // keeping these here means they work with styled() passing down color to text
   color: undefined,
-  ellipse: undefined,
+  ellipsis: undefined,
   fontFamily: undefined,
   fontSize: undefined,
   fontStyle: undefined,
@@ -81,7 +81,7 @@ type ButtonProps = ButtonExtraProps & GetProps<typeof ButtonFrame>
 
 const BUTTON_NAME = 'Button'
 
-const ButtonFrame = styled(ThemeableStack, {
+const ButtonFrame = styled(YStack, {
   name: BUTTON_NAME,
   tag: 'button',
   context: ButtonContext,
@@ -163,7 +163,7 @@ const ButtonText = styled(SizableText, {
         // flexGrow 1 leads to inconsistent native style where text pushes to start of view
         flexGrow: 0,
         flexShrink: 1,
-        ellipse: true,
+        ellipsis: true,
         color: '$color',
       },
     },
@@ -243,7 +243,7 @@ function useButton<Props extends ButtonProps>(
     fontStyle,
     letterSpacing,
     tag,
-    ellipse,
+    ellipsis,
     maxFontSizeMultiplier,
 
     ...restProps
@@ -279,7 +279,7 @@ function useButton<Props extends ButtonProps>(
           fontWeight,
           fontStyle,
           letterSpacing,
-          ellipse,
+          ellipsis,
           maxFontSizeMultiplier,
         },
         Text === ButtonText && propsActive.unstyled !== true
@@ -347,8 +347,8 @@ export {
   Button,
   ButtonFrame,
   ButtonIcon,
-  ButtonText,
   buttonStaticConfig,
+  ButtonText,
   // legacy
   useButton,
 }

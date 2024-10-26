@@ -7,7 +7,7 @@ import type { Scope } from '@tamagui/create-context'
 import { createContextScope } from '@tamagui/create-context'
 import { getSize } from '@tamagui/get-token'
 import { withStaticProperties } from '@tamagui/helpers'
-import { ThemeableStack } from '@tamagui/stacks'
+import { YStack } from '@tamagui/stacks'
 import * as React from 'react'
 
 const PROGRESS_NAME = 'Progress'
@@ -23,7 +23,7 @@ const [ProgressProvider, useProgressContext] =
 
 const INDICATOR_NAME = 'ProgressIndicator'
 
-export const ProgressIndicatorFrame = styled(ThemeableStack, {
+export const ProgressIndicatorFrame = styled(YStack, {
   name: INDICATOR_NAME,
 
   variants: {
@@ -107,7 +107,7 @@ type ScopedProps<P> = P & { __scopeProgress?: Scope }
 
 type ProgressState = 'indeterminate' | 'complete' | 'loading'
 
-export const ProgressFrame = styled(ThemeableStack, {
+export const ProgressFrame = styled(YStack, {
   name: 'Progress',
 
   variants: {

@@ -8,13 +8,6 @@ import type {
   TextStylePropsBase,
 } from '../types'
 
-const ellipseStyle = {
-  maxWidth: '100%',
-  overflow: 'hidden',
-  textOverflow: 'ellipsis',
-  whiteSpace: 'nowrap',
-}
-
 export type Text = TamaguiTextElement
 
 const defaultWebStyle = {
@@ -27,7 +20,12 @@ const defaultWebStyle = {
 
 const ellipsisStyle =
   process.env.TAMAGUI_TARGET === 'web'
-    ? ellipseStyle
+    ? {
+        maxWidth: '100%',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
+      }
     : {
         numberOfLines: 1,
         lineBreakMode: 'clip',
@@ -57,7 +55,7 @@ export const Text = createComponent<
   variants: {
     ...(process.env.TAMAGUI_TARGET === 'web' && {
       numberOfLines: {
-        1: ellipseStyle,
+        1: ellipsisStyle,
 
         ':number': (numberOfLines) =>
           numberOfLines >= 1
@@ -87,7 +85,7 @@ export const Text = createComponent<
     /**
      * @deprecated Use ellipsis instead
      */
-    ellipse: {
+    ellipsis: {
       true: ellipsisStyle,
     },
 

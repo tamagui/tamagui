@@ -144,6 +144,9 @@ const example = (
 
 v2:
 
+  - need to copy/paste all the component docs to 2.0.0.mdx
+  - need to remove ThemeableStack docs from components mdx, they now are all extensiond YStack instead of ThemeableStack
+  - NativeSelectFrame needs unstyled support
   - see how much of accessibilityDirectMap we can remove for web
   - Text weirdness fixes (explore)
     - remove suppressHighlighting / margin 0 default from Text

@@ -15,7 +15,7 @@ import type { DismissableProps } from '@tamagui/dismissable'
 import { Dismissable } from '@tamagui/dismissable'
 import { composeEventHandlers } from '@tamagui/helpers'
 import { PortalItem } from '@tamagui/portal'
-import { ThemeableStack } from '@tamagui/stacks'
+import { YStack } from '@tamagui/stacks'
 import * as React from 'react'
 import type {
   Animated,
@@ -30,7 +30,7 @@ import type { ScopedProps, SwipeDirection } from './ToastProvider'
 import { Collection, useToastProviderContext } from './ToastProvider'
 import { VIEWPORT_PAUSE, VIEWPORT_RESUME } from './ToastViewport'
 
-const ToastImplFrame = styled(ThemeableStack, {
+const ToastImplFrame = styled(YStack, {
   name: 'ToastImpl',
   focusable: true,
 
@@ -497,5 +497,5 @@ const getGestureDistance = (
   }
 }
 
-export { ToastImpl, ToastImplFrame, type ToastImplProps, useToastInteractiveContext }
+export { ToastImpl, ToastImplFrame, useToastInteractiveContext, type ToastImplProps }
 export type { ToastProps }

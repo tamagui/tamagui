@@ -81,7 +81,7 @@ const Text = styled(SizableText, {
         // flexGrow 1 leads to inconsistent native style where text pushes to start of view
         flexGrow: 0,
         flexShrink: 1,
-        ellipse: true,
+        ellipsis: true,
         color: '$color',
       },
     },
@@ -101,7 +101,7 @@ const Icon = styled(SizableText, {
         // flexGrow 1 leads to inconsistent native style where text pushes to start of view
         flexGrow: 0,
         flexShrink: 1,
-        ellipse: true,
+        ellipsis: true,
         color: '$color',
       },
     },

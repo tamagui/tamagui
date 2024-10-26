@@ -109,7 +109,7 @@ export function PropsTable({
                         o={0.8}
                         fontFamily="$mono"
                         overflow="hidden"
-                        ellipse
+                        ellipsis
                         mr="auto"
                       >
                         {type}

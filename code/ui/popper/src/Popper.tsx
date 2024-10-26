@@ -8,7 +8,6 @@ import {
   createStyledContext,
   getVariableValue,
   styled,
-  useDidFinishSSR,
   useProps,
 } from '@tamagui/core'
 import type {
@@ -29,7 +28,7 @@ import {
 } from '@tamagui/floating'
 import { getSpace } from '@tamagui/get-token'
 import type { SizableStackProps, YStackProps } from '@tamagui/stacks'
-import { ThemeableStack, YStack } from '@tamagui/stacks'
+import { YStack } from '@tamagui/stacks'
 import { startTransition } from '@tamagui/start-transition'
 import * as React from 'react'
 import type { View } from 'react-native'
@@ -253,7 +252,7 @@ export type PopperContentProps = SizableStackProps & {
   enableAnimationForPositionChange?: boolean
 }
 
-export const PopperContentFrame = styled(ThemeableStack, {
+export const PopperContentFrame = styled(YStack, {
   name: 'PopperContent',
 
   variants: {

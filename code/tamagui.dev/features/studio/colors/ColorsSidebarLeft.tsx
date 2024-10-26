@@ -86,15 +86,15 @@ export const ColorsSidebarLeft = memo(function ColorsSidebarLeft() {
     <>
       <SidebarLeft>
         <SidebarPanel>
-          <YStack space="$3">
-            <XStack space="$2" ai="center">
+          <YStack gap="$3">
+            <XStack gap="$2" ai="center">
               <ColorPicker
                 value={palette?.backgroundColor}
                 onChange={(color) => {
                   state.colors.setBackgroundColor(color)
                 }}
               />
-              <Label ellipse size="$3" htmlFor="bg-color">
+              <Label ellipsis size="$3" htmlFor="bg-color">
                 Background
               </Label>
             </XStack>

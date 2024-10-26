@@ -1630,7 +1630,7 @@ export interface StackStyleBase
 export interface TextStylePropsBase
   extends Omit<RNTextStyle, keyof ExtendedBaseProps>,
     ExtendedBaseProps {
-  ellipse?: boolean
+  ellipsis?: boolean
   textDecorationDistance?: number
   textOverflow?: Properties['textOverflow']
   whiteSpace?: Properties['whiteSpace']
