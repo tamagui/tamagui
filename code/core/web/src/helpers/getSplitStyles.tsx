@@ -1209,49 +1209,6 @@ export const getSplitStyles: StyleSplitter = (
         }
       }
     }
-
-    if (viewProps.tabIndex == null) {
-      const isFocusable = viewProps.focusable ?? viewProps.accessible
-
-      if (viewProps.focusable) {
-        delete viewProps.focusable
-      }
-
-      const role = viewProps.role
-      if (isFocusable === false) {
-        viewProps.tabIndex = '-1'
-      }
-      if (
-        // These native elements are focusable by default
-        elementType === 'a' ||
-        elementType === 'button' ||
-        elementType === 'input' ||
-        elementType === 'select' ||
-        elementType === 'textarea'
-      ) {
-        if (isFocusable === false || props.accessibilityDisabled === true) {
-          viewProps.tabIndex = '-1'
-        }
-      } else if (
-        // These roles are made focusable by default
-        role === 'button' ||
-        role === 'checkbox' ||
-        role === 'link' ||
-        role === 'radio' ||
-        // @ts-expect-error (consistent with RNW)
-        role === 'textbox' ||
-        role === 'switch'
-      ) {
-        if (isFocusable !== false) {
-          viewProps.tabIndex = '0'
-        }
-      }
-      // Everything else must explicitly set the prop
-      if (isFocusable) {
-        viewProps.tabIndex = '0'
-        delete viewProps.focusable
-      }
-    }
   }
 
   // merge after the prop loop - and always keep it on style dont turn into className except if RN gives us
