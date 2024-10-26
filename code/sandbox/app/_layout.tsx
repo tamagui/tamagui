@@ -3,7 +3,7 @@ import './_layout.css'
 import './tamagui.css'
 
 import { SchemeProvider, useColorScheme } from '@vxrn/color-scheme'
-import { LoadProgressBar, Slot } from 'one'
+import { LoadProgressBar, SafeAreaView, Slot } from 'one'
 import { isWeb, TamaguiProvider, XStack, YStack } from 'tamagui'
 import { ToggleThemeButton } from '~/components/ToggleThemeButton'
 import config from '~/config/tamagui/tamagui.config'
@@ -29,14 +29,16 @@ export default function Layout() {
       <SchemeProvider>
         <TamaguiRootProvider>
           <YStack bg="$color1" mih="100%" gap="$4" f={1}>
-            <XStack ai="center" jc="center" gap="$4" py="$4">
-              <Image src={oneBall} width={42} height={42} />
-              <ToggleThemeButton />
-            </XStack>
+            <SafeAreaView>
+              <XStack ai="center" jc="center" gap="$4" py="$4">
+                <Image src={oneBall} width={42} height={42} />
+                <ToggleThemeButton />
+              </XStack>
 
-            <YStack>
-              <Slot />
-            </YStack>
+              <YStack>
+                <Slot />
+              </YStack>
+            </SafeAreaView>
           </YStack>
         </TamaguiRootProvider>
       </SchemeProvider>

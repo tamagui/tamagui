@@ -2,6 +2,7 @@ import { AnimatePresence } from '@tamagui/animate-presence'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import {
   currentPlatform,
+  isAndroid,
   isClient,
   isWeb,
   useIsomorphicLayoutEffect,
@@ -29,6 +30,7 @@ import { SheetProvider } from './SheetContext'
 import type { SheetProps, SnapPointsMode } from './types'
 import { useSheetOpenState } from './useSheetOpenState'
 import { useSheetProviderProps } from './useSheetProviderProps'
+import { useAdaptContext, ProvideAdaptContext } from '@tamagui/adapt'
 
 let hiddenSize = 10_000.1
 
@@ -442,7 +444,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     //   portal: true,
     // })
 
-    const contents = (
+    let contents = (
       <ParentSheetContext.Provider value={nextParentContext}>
         <SheetProvider {...providerProps}>
           <AnimatePresence custom={{ open }}>
@@ -495,6 +497,11 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
         </SheetProvider>
       </ParentSheetContext.Provider>
     )
+
+    if (isAndroid) {
+      const adaptContext = useAdaptContext()
+      contents = <ProvideAdaptContext {...adaptContext}>{contents}</ProvideAdaptContext>
+    }
 
     // start mounted so we get an accurate measurement the first time
     const shouldMountChildren = unmountChildrenWhenHidden ? !!opacity : true
