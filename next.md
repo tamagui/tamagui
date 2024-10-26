@@ -144,6 +144,7 @@ const example = (
 
 v2:
 
+  - see how much of accessibilityDirectMap we can remove for web
   - Text weirdness fixes (explore)
     - remove suppressHighlighting / margin 0 default from Text
     - fix display: inline issue
@@ -177,7 +178,6 @@ v2:
   - move to web compat style apis
   - no more `as const` needed (ts5) typescript const generic
   - AnimatePresence: remove deprecated props in favor of `custom`
-  - remove nativeID, maybe testID
   - deprecate shadow style props before v2 release and remove in v2
     - "shadow*" style props are deprecated. Use "boxShadow".
     - "Enhance with native semantics" can probably go away right
