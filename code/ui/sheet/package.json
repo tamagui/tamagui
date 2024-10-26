@@ -48,6 +48,7 @@
     "@tamagui/stacks": "1.116.7",
     "@tamagui/use-constant": "1.116.7",
     "@tamagui/use-controllable-state": "1.116.7",
+    "@tamagui/use-did-finish-ssr": "1.116.7",
     "@tamagui/use-keyboard-visible": "1.116.7"
   },
   "peerDependencies": {

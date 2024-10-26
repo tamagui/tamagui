@@ -349,6 +349,7 @@ export interface GenericTamaguiSettings {
      * override.
      *
      * @default false
+     * @deprecated going away in v2
      */
     mediaPropOrder?: boolean;
     /**
