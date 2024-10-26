@@ -3,8 +3,11 @@ import type { GestureResponderHandlers, LayoutChangeEvent } from 'react-native'
 type OnLayout = ((event: LayoutChangeEvent) => void) | undefined
 
 export interface RNExtraProps {
+  /** @deprecated use tabIndex={0} */
   focusable?: boolean
+  /** @deprecated use data- properties */
   dataSet?: Record<string, string | number | undefined | null>
+
   onScrollShouldSetResponder?: unknown
   onScrollShouldSetResponderCapture?: unknown
   onSelectionChangeShouldSetResponder?: unknown
