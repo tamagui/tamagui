@@ -1,6 +1,5 @@
-import type { DebugProp, SpaceTokens, ThemeValueFallback } from '@tamagui/web';
+import type { DebugProp, SpaceTokens, SpaceValue } from '@tamagui/web';
 export type SpaceDirection = 'vertical' | 'horizontal' | 'both';
-export type SpaceValue = number | SpaceTokens | ThemeValueFallback;
 export type SpacedChildrenProps = {
     isZStack?: boolean;
     children?: React.ReactNode;

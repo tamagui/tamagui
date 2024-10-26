@@ -89,6 +89,7 @@ function createGroup(verticalDefault: boolean) {
         children: childrenProp,
         space,
         size = '$true',
+        flex,
         spaceDirection,
         separator,
         scrollable,
@@ -163,6 +164,9 @@ function createGroup(verticalDefault: boolean) {
         []
       )
 
+      // TODO improve type
+      const flexValue = (flex === true ? 1 : flex === false ? 0 : flex) as any
+
       return (
         <GroupProvider
           disablePassBorderRadius={disablePassBorderRadius}
@@ -179,9 +183,13 @@ function createGroup(verticalDefault: boolean) {
             size={size}
             flexDirection={orientation === 'horizontal' ? 'row' : 'column'}
             borderRadius={borderRadius}
+            flex={flexValue}
             {...restProps}
           >
-            {wrapScroll({ ...activeProps, orientation }, indexedChildren)}
+            {wrapScroll(
+              { ...activeProps, flex: flexValue, orientation },
+              indexedChildren
+            )}
           </GroupFrame>
         </GroupProvider>
       )

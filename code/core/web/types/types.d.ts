@@ -582,6 +582,7 @@ export type AllowedValueSettingZIndex = GetThemeValueSettingForCategory<'zIndex'
 export type AllowedValueSettingRadius = GetThemeValueSettingForCategory<'radius'>;
 export type WebStyleValueUniversal = 'unset' | 'inherit' | VariableString;
 export type ThemeValueFallbackSpace = ThemeValueFallback | GetThemeValueFallbackFor<AllowedValueSettingSpace, never, SomewhatSpecificSpaceValue, UnionableString | UnionableNumber, WebStyleValueUniversal | WebOnlySizeValue>;
+export type SpaceValue = number | SpaceTokens | ThemeValueFallback;
 export type ThemeValueFallbackSize = GetThemeValueFallbackFor<AllowedValueSettingSize, never, SomewhatSpecificSizeValue, UnionableString | UnionableNumber, WebStyleValueUniversal | WebOnlySizeValue>;
 export type ThemeValueFallbackColor = ThemeValueFallback | GetThemeValueFallbackFor<AllowedValueSettingColor, never, SomewhatSpecificColorValue, UnionableString | UnionableNumber, WebStyleValueUniversal>;
 export type ThemeValueFallbackRadius = ThemeValueFallback | GetThemeValueFallbackFor<AllowedValueSettingRadius, never, UnionableNumber, UnionableNumber, WebStyleValueUniversal>;

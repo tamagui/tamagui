@@ -395,9 +395,9 @@ export declare function useInputProps(props: InputProps, ref: any): {
     touchAction?: import("csstype").Properties["touchAction"];
     cursor?: import("csstype").Properties["cursor"];
     outlineColor?: "unset" | import("@tamagui/core").GetThemeValueForKey<"outlineColor"> | undefined;
-    outlineOffset?: any;
+    outlineOffset?: "unset" | import("@tamagui/core").SpaceValue | undefined;
     outlineStyle?: import("csstype").Properties["outlineStyle"];
-    outlineWidth?: any;
+    outlineWidth?: "unset" | import("@tamagui/core").SpaceValue | undefined;
     userSelect?: import("csstype").Properties["userSelect"];
     scrollbarWidth?: import("csstype").Properties["scrollbarWidth"];
     pointerEvents?: "unset" | "auto" | "box-none" | "none" | "box-only" | undefined;

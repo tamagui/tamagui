@@ -922,6 +922,8 @@ export type ThemeValueFallbackSpace =
       WebStyleValueUniversal | WebOnlySizeValue
     >
 
+export type SpaceValue = number | SpaceTokens | ThemeValueFallback
+
 export type ThemeValueFallbackSize = GetThemeValueFallbackFor<
   AllowedValueSettingSize,
   never,

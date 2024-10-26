@@ -609,6 +609,7 @@ const HeightAnimator = View.styleable((props, ref) => {
 function getState(open?: boolean) {
   return open ? 'open' : 'closed'
 }
+
 const Accordion = withStaticProperties(AccordionComponent, {
   Trigger: AccordionTrigger,
   Header: AccordionHeader,

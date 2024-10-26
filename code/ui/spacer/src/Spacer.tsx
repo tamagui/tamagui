@@ -22,12 +22,6 @@ export const Spacer = styled(View, {
       '...': getSpacerSize,
     },
 
-    flex: {
-      true: {
-        flexGrow: 1,
-      },
-    },
-
     direction: {
       horizontal: {
         height: 0,

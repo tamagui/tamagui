@@ -6,13 +6,7 @@ import { ButtonNestingContext, ThemeableStack } from '@tamagui/stacks'
 import type { TextContextStyles, TextParentStyles } from '@tamagui/text'
 import { SizableText, wrapChildrenInText } from '@tamagui/text'
 import type { FontSizeTokens, GetProps, SizeTokens, ThemeableProps } from '@tamagui/web'
-import {
-  createStyledContext,
-  getVariableValue,
-  spacedChildren,
-  styled,
-  useProps,
-} from '@tamagui/web'
+import { createStyledContext, getVariableValue, styled, useProps } from '@tamagui/web'
 import type { FunctionComponent } from 'react'
 import { useContext } from 'react'
 
@@ -290,6 +284,7 @@ function useButton<Props extends ButtonProps>(
           : undefined
       )
 
+  // @ts-expect-error
   const inner = spacedChildren({
     // a bit arbitrary but scaling to font size is necessary so long as button does
     space: spaceSize,
