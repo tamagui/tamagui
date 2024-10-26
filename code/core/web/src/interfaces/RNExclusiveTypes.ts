@@ -13,7 +13,9 @@ export interface RNExtraProps {
   onSelectionChangeShouldSetResponder?: unknown
   onSelectionChangeShouldSetResponderCapture?: unknown
   onLayout?: OnLayout
+  /** @deprecated will be removed in v2 */
   href?: string
+  /** @deprecated will be removed in v2 */
   hrefAttrs?: {
     target?: '_blank' | '_self' | '_top' | 'blank' | 'self' | 'top'
     rel?: string
