@@ -190,7 +190,7 @@ const StudioThemeBuilderBottomBar = memo(() => {
   return (
     <XStack p="$4" py="$3" ai="center" bc="$borderColor" btw={1} zi={100} bg="$color2">
       <CurrentStepActionBar />
-      <Spacer flex />
+      <Spacer flex={1} />
       <ThemeStudioStepButtonsBar />
     </XStack>
   )

@@ -60,7 +60,7 @@ const Account = () => {
         </Avatar>
 
         <YStack gap="$3" ai="flex-start" jc="center" f={1}>
-          <XStack jc="space-between" space ai="center">
+          <XStack jc="space-between" gap="$4" ai="center">
             <YStack f={1}>
               <H3
                 style={{
@@ -101,7 +101,7 @@ const Account = () => {
         <UserSettings />
       </YStack>
 
-      <YStack separator={<Separator />} gap="$5">
+      <YStack gap="$5">
         <Paragraph ff="$mono">User ID: {userDetails?.id}</Paragraph>
       </YStack>
     </Container>
@@ -139,7 +139,7 @@ const TeamBadge = ({
 
 const UserSettings = () => {
   return (
-    <YStack gap="$8" separator={<Separator />}>
+    <YStack gap="$8">
       <YStack gap="$6" id="profile"></YStack>
 
       {/* <YStack gap="$6" id="studio-queue">
@@ -179,7 +179,7 @@ const ProfileContent = () => {
   const { user, userDetails } = data
 
   return (
-    <XStack gap="$4" separator={<Separator vertical />}>
+    <XStack gap="$4">
       {!!userDetails?.full_name && (
         <Paragraph theme="alt1">{userDetails?.full_name}</Paragraph>
       )}

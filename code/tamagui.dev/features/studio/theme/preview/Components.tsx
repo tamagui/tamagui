@@ -43,7 +43,7 @@ export const Components = () => {
           </Button>
         </XStack>
 
-        <Spacer flex />
+        <Spacer flex={1} />
 
         <XStack {...demoProps.gapPropsLg} f={1} flexWrap="wrap">
           <YStack maxWidth={'47%'}>

@@ -143,7 +143,7 @@ const componentsIn = {
             </Paragraph>
           </YStack>
 
-          <Spacer flex />
+          <Spacer flex={1} />
 
           <ChevronRight color="$color11" />
         </XStack>

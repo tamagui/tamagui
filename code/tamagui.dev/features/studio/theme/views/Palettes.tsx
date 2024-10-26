@@ -38,7 +38,7 @@ export function Palettes({
             </XStack>
 
             {selectedSchemes.light && selectedSchemes.dark && (
-              <XStack pos="absolute" l="25%" r="25%" ai="center" space jc="center">
+              <XStack pos="absolute" l="25%" r="25%" ai="center" gap="$4" jc="center">
                 <XStack y={0} ai="center" gap="$1">
                   <ArrowUp opacity={0.33} size={12} />
                   <Paragraph size="$1">Light</Paragraph>

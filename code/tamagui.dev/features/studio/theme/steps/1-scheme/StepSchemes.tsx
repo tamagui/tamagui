@@ -47,7 +47,7 @@ export function StepSchemes() {
         />
       </XStack>
 
-      <Spacer flex />
+      <Spacer flex={1} />
 
       <StudioNotice>
         Tamagui auto-generates media queries on the web using prefers-color-scheme.

@@ -831,7 +831,7 @@ const TakeoutCard = ({ children, title, icon, ...props }: TakeoutCardFrameProps)
           <borderGlow.Component />
         </YStack> */}
 
-        <YStack f={1} space zi={100}>
+        <YStack f={1} gap="$4" zi={100}>
           <H2
             fontFamily="$munro"
             size="$8"

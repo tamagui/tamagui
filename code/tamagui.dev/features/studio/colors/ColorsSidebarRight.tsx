@@ -100,7 +100,7 @@ export const ColorsSidebarRight = memo(function ColorsSidebarRight() {
                     on {name}
                   </Paragraph>
                 </XStack>
-                <Spacer flex />
+                <Spacer flex={1} />
                 <XStack ov="hidden" f={1} gap="$2" ai="center">
                   <Paragraph size="$2" mr="$2">
                     {accent.toFixed(2)}

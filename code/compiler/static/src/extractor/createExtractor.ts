@@ -1836,7 +1836,7 @@ export function createExtractor(
             const cur = attrs[key]
             if (cur.type === 'style') {
               // remove variants because they are processed later, and can lead to invalid values here
-              // see <Spacer flex /> where flex looks like a valid style, but is a variant
+              // see <Spacer flex={1} /> where flex looks like a valid style, but is a variant
               const expanded = normalizeStyleWithoutVariants(cur.value)
               // preserve order
               for (const key in expanded) {

@@ -27,11 +27,11 @@ export function ColorsDemo() {
 
 function ColorsRow({ title, colors }: { title: string; colors: Variable[][] }) {
   return (
-    <YStack space $sm={{ gap: '$2' }}>
+    <YStack gap="$4" $sm={{ gap: '$2' }}>
       <H2 size="$2">{title}</H2>
 
-      <XStack space alignSelf="center">
-        <YStack space $sm={{ gap: '$2' }} alignSelf="center">
+      <XStack gap="$4" alignSelf="center">
+        <YStack gap="$4" $sm={{ gap: '$2' }} alignSelf="center">
           {colors.map((group, index) => {
             return (
               <XStack gap="$2" key={index}>

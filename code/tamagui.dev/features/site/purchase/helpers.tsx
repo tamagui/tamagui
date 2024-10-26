@@ -213,12 +213,7 @@ export const TakeoutTable = ({
   const price = product?.prices.find((price) => price.id === selectedPriceId)
   const takeoutPriceInfo = getTakeoutPriceInfo(price?.description ?? '')
   return (
-    <YStack
-      separator={<Separator o={0.35} />}
-      borderWidth="$0.5"
-      borderRadius="$4"
-      borderColor="$borderColor"
-    >
+    <YStack borderWidth="$0.5" borderRadius="$4" borderColor="$borderColor">
       <XStack px="$4" py="$4" gap="$3">
         <YStack width="80%">
           <Paragraph size="$6" fow="bold">

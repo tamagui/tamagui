@@ -10,7 +10,7 @@ export const ColorSchemeListItem = (props: ListItemProps) => {
   return (
     <ListItem {...props} bg="$color1" pressTheme paddingVertical={0}>
       <ListItem.Text>Theme</ListItem.Text>
-      <Spacer flex />
+      <Spacer flex={1} />
       <Button chromeless disabled w={20} icon={Moon} />
       <Switch
         native
