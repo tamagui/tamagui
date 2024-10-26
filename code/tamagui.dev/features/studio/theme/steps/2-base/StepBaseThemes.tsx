@@ -203,7 +203,7 @@ export function StepBaseThemesActions() {
   const steps = useBaseThemesSteps()
 
   return (
-    <XStack ai="center" space>
+    <XStack ai="center" gap="$4">
       <AddDropdown open={show} onOpenChange={setShow}>
         <YGroup>
           {steps.index === 0 && (

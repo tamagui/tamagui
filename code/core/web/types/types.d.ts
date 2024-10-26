@@ -1,23 +1,22 @@
 import type { StyleObject } from '@tamagui/helpers';
 import type { Properties } from 'csstype';
 import type { CSSProperties, ComponentType, ForwardRefExoticComponent, FunctionComponent, HTMLAttributes, ReactNode, RefAttributes, RefObject } from 'react';
-import type { Text as RNText, TextProps as ReactTextProps, TextStyle as RNTextStyle, View, ViewProps, ViewStyle } from 'react-native';
+import type { Text as RNText, TextStyle as RNTextStyle, TextProps as ReactTextProps, View, ViewProps, ViewStyle } from 'react-native';
 import type { Variable } from './createVariable';
 import type { StyledContext } from './helpers/createStyledContext';
 import type { CSSColorNames } from './interfaces/CSSColorNames';
+import type { ColorKeys, SizeKeys, SpaceKeys } from './interfaces/KeyTypes';
 import type { RNOnlyProps } from './interfaces/RNExclusiveTypes';
-import type { LanguageContextType } from './views/FontLanguage.types';
-import type { ThemeProviderProps } from './views/ThemeProvider';
+import type { TamaguiComponentPropsBaseBase } from './interfaces/TamaguiComponentPropsBaseBase';
 import type { TamaguiComponentState } from './interfaces/TamaguiComponentState';
 import type { WebOnlyPressEvents } from './interfaces/WebOnlyPressEvents';
-import type { TamaguiComponentPropsBaseBase } from './interfaces/TamaguiComponentPropsBaseBase';
-import type { SizeKeys, SpaceKeys, ColorKeys } from './interfaces/KeyTypes';
+import type { LanguageContextType } from './views/FontLanguage.types';
+import type { ThemeProviderProps } from './views/ThemeProvider';
 export * from './interfaces/KeyTypes';
 export * from './interfaces/TamaguiComponentState';
 export type { MediaStyleObject, StyleObject } from '@tamagui/helpers';
 export type ColorScheme = 'light' | 'dark';
 export type IsMediaType = boolean | 'platform' | 'theme' | 'group';
-export type SpaceDirection = 'vertical' | 'horizontal' | 'both';
 export type MaybeTamaguiComponent<A = any> = TamaguiComponent<A> | React.FC<A>;
 export type TamaguiElement = HTMLElement | View;
 export type TamaguiTextElement = HTMLElement | RNText;
@@ -677,7 +676,6 @@ export type WithThemeShorthandsPseudosMedia<A extends Object, Variants = {}> = W
 /**
  * Base style-only props (no media, pseudo):
  */
-export type SpaceValue = number | SpaceTokens | ThemeValueFallback;
 type Px = `${string | number}px`;
 type PxOrPct = Px | `${string | number}%`;
 type TwoValueTransformOrigin = `${PxOrPct | 'left' | 'center' | 'right'} ${PxOrPct | 'top' | 'center' | 'bottom'}`;

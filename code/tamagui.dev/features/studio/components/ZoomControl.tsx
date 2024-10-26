@@ -14,7 +14,7 @@ export const ZoomControls = ({
   const handleResetZoom = () => onChange(1)
 
   return (
-    <XStack ai="center" space>
+    <XStack ai="center" gap="$4">
       <Group orientation="horizontal" size="$2">
         <Group.Item>
           <Button size="$2" icon={ZoomOut} onPress={handleZoomOut} />

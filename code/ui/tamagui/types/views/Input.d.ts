@@ -1,4 +1,3 @@
-import React from 'react';
 import type { GetProps } from '@tamagui/core';
 import { TextInput } from 'react-native';
 export declare const defaultStyles: {
@@ -141,7 +140,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
     importantForAccessibility?: ("auto" | "yes" | "no" | "no-hide-descendants") | undefined;
     'aria-hidden'?: boolean | undefined;
     'aria-modal'?: boolean | undefined;
-    role?: "row" | "none" | "link" | "group" | "separator" | "article" | "main" | "figure" | "img" | "table" | "button" | "form" | "meter" | "option" | "dialog" | "menu" | "summary" | "alert" | "checkbox" | "combobox" | "menubar" | "menuitem" | "progressbar" | "radio" | "radiogroup" | "scrollbar" | "spinbutton" | "switch" | "tab" | "tablist" | "timer" | "list" | "toolbar" | "alertdialog" | "application" | "banner" | "cell" | "columnheader" | "complementary" | "contentinfo" | "definition" | "directory" | "document" | "feed" | "grid" | "heading" | "listitem" | "log" | "marquee" | "math" | "navigation" | "note" | "presentation" | "region" | "rowgroup" | "rowheader" | "searchbox" | "slider" | "status" | "tabpanel" | "term" | "tooltip" | "tree" | "treegrid" | "treeitem" | undefined;
+    role?: "row" | "none" | "link" | "group" | "article" | "main" | "figure" | "img" | "table" | "button" | "form" | "meter" | "option" | "dialog" | "menu" | "summary" | "alert" | "checkbox" | "combobox" | "menubar" | "menuitem" | "progressbar" | "radio" | "radiogroup" | "scrollbar" | "spinbutton" | "switch" | "tab" | "tablist" | "timer" | "list" | "toolbar" | "alertdialog" | "application" | "banner" | "cell" | "columnheader" | "complementary" | "contentinfo" | "definition" | "directory" | "document" | "feed" | "grid" | "heading" | "listitem" | "log" | "marquee" | "math" | "navigation" | "note" | "presentation" | "region" | "rowgroup" | "rowheader" | "searchbox" | "separator" | "slider" | "status" | "tabpanel" | "term" | "tooltip" | "tree" | "treegrid" | "treeitem" | undefined;
     accessibilityLabelledBy?: string | string[] | undefined;
     'aria-labelledby'?: string | undefined;
     accessibilityLiveRegion?: "none" | "polite" | "assertive" | undefined;
@@ -396,9 +395,9 @@ export declare function useInputProps(props: InputProps, ref: any): {
     touchAction?: import("csstype").Properties["touchAction"];
     cursor?: import("csstype").Properties["cursor"];
     outlineColor?: "unset" | import("@tamagui/core").GetThemeValueForKey<"outlineColor"> | undefined;
-    outlineOffset?: "unset" | import("@tamagui/core").SpaceValue | undefined;
+    outlineOffset?: any;
     outlineStyle?: import("csstype").Properties["outlineStyle"];
-    outlineWidth?: "unset" | import("@tamagui/core").SpaceValue | undefined;
+    outlineWidth?: any;
     userSelect?: import("csstype").Properties["userSelect"];
     scrollbarWidth?: import("csstype").Properties["scrollbarWidth"];
     pointerEvents?: "unset" | "auto" | "box-none" | "none" | "box-only" | undefined;
@@ -493,9 +492,6 @@ export declare function useInputProps(props: InputProps, ref: any): {
     inlineSize?: number | "unset" | import("@tamagui/core").SizeTokens | undefined;
     minInlineSize?: number | "unset" | import("@tamagui/core").SizeTokens | undefined;
     maxInlineSize?: number | "unset" | import("@tamagui/core").SizeTokens | undefined;
-    space?: number | "unset" | import("@tamagui/core").GetThemeValueForKey<"space"> | undefined;
-    spaceDirection?: "unset" | import("@tamagui/core").SpaceDirection | undefined;
-    separator?: React.ReactNode;
     animation?: (import("@tamagui/core").AnimationProp | null) | undefined;
     animateOnly?: string[] | "unset" | undefined;
     animatePresence?: boolean | "unset" | undefined;

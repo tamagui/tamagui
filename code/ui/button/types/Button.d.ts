@@ -364,7 +364,7 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
 declare function useButton<Props extends ButtonProps>({ textProps, ...propsIn }: Props, { Text }?: {
     Text: any;
 }): {
-    spaceSize: number | boolean | "unset" | import("@tamagui/web").UnionableString | import("@tamagui/web").Variable<any>;
+    spaceSize: any;
     isNested: boolean;
     props: Props;
 };

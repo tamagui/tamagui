@@ -194,7 +194,7 @@ export const HomeResponsive = memo(() => {
           pos="absolute"
           zi={1}
           f={1}
-          space="$1"
+          gap="$1"
           // mostly keeping this to make sure we get a good ACID test of useMedia().sm
           {...(media.sm && {
             scale,
@@ -316,7 +316,7 @@ const Marker = memo(({ name, active, onPress, ...props }: any) => {
 
 const ResponsiveHeader = memo(() => {
   return (
-    <YStack f={1} space="$3">
+    <YStack f={1} gap="$3">
       <XStack>
         <HomeH2 ta="left" als="flex-start">
           Easily responsive
@@ -358,7 +358,7 @@ export const Safari = memo(
     return (
       <SafariFrame>
         <YStack bg="$background" px="$4" jc="center" borderBottomWidth={0} h={50}>
-          <XStack pos="relative" ai="center" space="$4">
+          <XStack pos="relative" ai="center" gap="$4">
             <XStack gap="$2">
               <Circle bg="$red10" size={10} />
               <Circle bg="$yellow10" size={10} />
@@ -384,7 +384,7 @@ export const Safari = memo(
                 ai="center"
                 px="$2"
                 jc="center"
-                space
+                gap="$4"
               >
                 <Lock color="var(--colorPress)" size={12} />
                 <Paragraph theme="alt1" size="$2">
@@ -445,7 +445,7 @@ export const Safari = memo(
                   <XStack>
                     <YStack f={1}>
                       <H3>Enchanting Garden</H3>
-                      <XStack ai="center" space>
+                      <XStack ai="center" gap="$4">
                         <MapPin size={12} color="var(--color)" />
                         <H5>Kailua, HI</H5>
                       </XStack>
@@ -462,13 +462,13 @@ export const Safari = memo(
 
               <YStack px="$4">
                 <XStack>
-                  <XStack ai="center" space>
+                  <XStack ai="center" gap="$4">
                     <Paragraph theme="alt2">4 guests</Paragraph>
                     <Paragraph theme="alt2">&middot;</Paragraph>
                     <Paragraph theme="alt2">Entire house</Paragraph>
                   </XStack>
                   <Spacer flex={1} />
-                  <XStack ai="center" space>
+                  <XStack ai="center" gap="$4">
                     <Star size={20} color="var(--purple10)" />
                     <Paragraph theme="purple_alt2">4.55</Paragraph>
                   </XStack>

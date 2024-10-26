@@ -34,7 +34,7 @@ export function AlertDialogDemo() {
           opacity={1}
           y={0}
         >
-          <YStack space>
+          <YStack gap="$4">
             <AlertDialog.Title>Accept</AlertDialog.Title>
             <AlertDialog.Description>
               By pressing yes, you accept our terms and conditions.

@@ -21,7 +21,7 @@ import { useThemeControl } from '../../useKitchenSinkTheme'
 export function TestCasesScreen() {
   return (
     <ScrollView>
-      <YStack bg="$background" p="$3" pt="$6" pb="$8" f={1} space>
+      <YStack bg="$background" p="$3" pt="$6" pb="$8" f={1} gap="$4">
         <YStack gap="$4" maw={600}>
           <YGroup size="$4" separator={<Separator />}>
             {Object.keys(TestCases).map((page) => {

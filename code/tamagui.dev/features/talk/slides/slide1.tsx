@@ -200,7 +200,7 @@ export default memo(({ subTitle }: { subTitle?: string }) => {
                   <Container mt={-200} ai="center">
                     <>
                       <Spacer size="$8" />
-                      <XStack maw={790} gap="$8" separator={<Separator vertical />}>
+                      <XStack maw={790} gap="$8">
                         <H2 als="center" size="$9" fow="900" $sm={{ size: '$5' }}>
                           {subTitle || 'Better apps with less code'}
                         </H2>

@@ -214,7 +214,7 @@ const QueueContent = () => {
   )
 
   // return (
-  //   <YStack ai="flex-start" space>
+  //   <YStack ai="flex-start" gap="$4">
   //     <SizableText>
   //       {accessStatus.access.studio.message} - You will get access{' '}
   //       {Intl.DateTimeFormat('en-US', {
@@ -238,7 +238,7 @@ const SponsorshipContent = () => {
     return (
       <YStack gap="$4" ai="flex-start">
         <SponsorButton />
-        <YStack space>
+        <YStack gap="$4">
           <Paragraph size="$6">
             You are not a sponsor. Become a sponsor to get early access to the studio and
             other upcoming features.

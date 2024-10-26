@@ -83,7 +83,7 @@ const Option = ({
       backgroundColor={active ? '$color3' : '$color2'}
       borderColor={active ? '$color6' : '$color7'}
       borderRadius="$5"
-      space="$4"
+      gap="$4"
       ai="center"
       hoverStyle={{
         borderColor: active ? '$color6' : '$color8',

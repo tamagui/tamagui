@@ -16,6 +16,7 @@ import { useControllableState } from '@tamagui/use-controllable-state'
 import React from 'react'
 import { ScrollView } from 'react-native'
 import { useIndex, useIndexedChildren } from './useIndexedChildren'
+import { spacedChildren, type SpaceProps } from '@tamagui/spacer'
 
 type DisablePassBorderRadius = boolean | 'bottom' | 'top' | 'start' | 'end'
 
@@ -57,7 +58,7 @@ export const GroupFrame = styled(ThemeableStack, {
   },
 })
 
-export type GroupExtraProps = {
+export type GroupExtraProps = SpaceProps & {
   /**
    * @deprecated use `orientation` instead
    */

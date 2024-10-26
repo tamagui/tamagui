@@ -91,7 +91,6 @@ export type {
   RadiusTokens,
   Shorthands,
   SizeTokens,
-  SpacerProps,
   SpaceTokens,
   SpecificTokens,
   StackNonStyleProps,
@@ -134,10 +133,8 @@ export {
   ComponentContext,
   FontLanguage,
   // components
-  Spacer,
   Stack,
   Theme,
-  Unspaced,
   View,
   createComponent,
   createFont,
@@ -174,7 +171,6 @@ export {
   mediaObjectToString,
   mediaQueryConfig,
   mediaState,
-  spacedChildren,
   styled,
   themeable,
   // hooks

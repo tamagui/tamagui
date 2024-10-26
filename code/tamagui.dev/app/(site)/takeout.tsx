@@ -1237,7 +1237,7 @@ const Row = (props: { title: any; description: any; after: any }) => {
         },
       }}
     >
-      <YStack f={1} py="$3" space="$1">
+      <YStack f={1} py="$3" gap="$1">
         <Paragraph fontFamily="$munro" tt="uppercase" ls={4} size="$4">
           {props.title}
         </Paragraph>
@@ -1378,7 +1378,7 @@ const PurchaseSelectTeam = ({
           disablePassBorderRadius
           loop={false}
           aria-label="Manage your account"
-          space="$2"
+          gap="$2"
           backgroundColor="transparent"
         >
           {tabs.map(({ value }) => (
@@ -1740,7 +1740,7 @@ const Bullet = ({
     <XStack
       tag="li"
       ai="flex-start"
-      space
+      gap="$4"
       f={1}
       {...props}
       w="100%"

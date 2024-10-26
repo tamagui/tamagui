@@ -99,8 +99,8 @@ const CreateWorkspaceDialog = () => {
   return (
     <>
       <DialogCloseButton />
-      <YStack space="$4">
-        <YStack space="$2">
+      <YStack gap="$4">
+        <YStack gap="$2">
           <Dialog.Title size="$7">Create Workspace</Dialog.Title>
           <Dialog.Description size="$3" theme="alt2">
             A workspace contains assets: colors, themes, fonts, and icons. You can import
@@ -108,7 +108,7 @@ const CreateWorkspaceDialog = () => {
           </Dialog.Description>
         </YStack>
 
-        <Fieldset space="$4" horizontal>
+        <Fieldset gap="$4" horizontal>
           <Label size="$3" w={160} justifyContent="flex-end" htmlFor="workspace-name">
             Name
           </Label>
@@ -141,15 +141,15 @@ const CreateThemeDialog = (props: CreateThemeDialogProps) => {
   return (
     <>
       <DialogCloseButton />
-      <YStack space="$4">
-        <YStack space="$2">
+      <YStack gap="$4">
+        <YStack gap="$2">
           <Dialog.Title size="$7">Create Theme</Dialog.Title>
           <Dialog.Description size="$3" theme="alt2">
             Create a new theme in scope {props.category}.
           </Dialog.Description>
         </YStack>
 
-        <Fieldset space="$4" horizontal>
+        <Fieldset gap="$4" horizontal>
           <Label size="$3" w={160} justifyContent="flex-end" htmlFor="theme-name">
             Name
           </Label>
@@ -167,15 +167,15 @@ const ConfirmDeleteDialog = (props: ConfirmDeleteDialogProps) => {
   return (
     <>
       <DialogCloseButton />
-      <YStack space="$6" p="$2">
-        <YStack space="$2">
+      <YStack gap="$6" p="$2">
+        <YStack gap="$2">
           <Dialog.Title size="$7">Delete {props.thingName}?</Dialog.Title>
           <Dialog.Description size="$3" theme="alt2">
             Are you sure you want to delete {props.thingName}?
           </Dialog.Description>
         </YStack>
 
-        <XStack jc="flex-end" space>
+        <XStack jc="flex-end" gap="$4">
           <Dialog.Close asChild>
             <Button>Cancel</Button>
           </Dialog.Close>
@@ -194,15 +194,15 @@ const AlertDialog = (props: StudioAlertDialogProps) => {
   return (
     <>
       <DialogCloseButton />
-      <YStack space="$6" p="$2">
-        <YStack space="$2">
+      <YStack gap="$6" p="$2">
+        <YStack gap="$2">
           <Dialog.Title size="$7">{props.title}</Dialog.Title>
           <Dialog.Description size="$3" theme="alt2">
             {props.message}
           </Dialog.Description>
         </YStack>
 
-        <XStack jc="flex-end" space>
+        <XStack jc="flex-end" gap="$4">
           <DialogClose>
             <Button themeInverse aria-label="Ok">
               Ok
@@ -221,15 +221,15 @@ const CreateAnimationDialog = (props: CreateAnimationDialogProps) => {
   return (
     <>
       <DialogCloseButton />
-      <YStack space="$4">
-        <YStack space="$2">
+      <YStack gap="$4">
+        <YStack gap="$2">
           <Dialog.Title size="$7">Create Theme</Dialog.Title>
           <Dialog.Description size="$3" theme="alt2">
             Create a new animation.
           </Dialog.Description>
         </YStack>
 
-        <Fieldset space="$4" horizontal>
+        <Fieldset gap="$4" horizontal>
           <Label size="$3" w={160} justifyContent="flex-end" htmlFor="animation-name">
             Name
           </Label>
@@ -241,18 +241,18 @@ const CreateAnimationDialog = (props: CreateAnimationDialogProps) => {
             id="animation-name"
           />
         </Fieldset>
-        {/* <Fieldset space="$4" horizontal>
+        {/* <Fieldset gap="$4" horizontal>
           <Label size="$3" w={160} justifyContent="flex-end" htmlFor="animation-name">
             Type
           </Label>
           <RadioGroup defaultValue="react-native">
-            <XStack ai="center" space>
+            <XStack ai="center" gap="$4">
               <RadioGroup.Item value="react-native" id="radio-react-native">
                 <RadioGroup.Indicator />
               </RadioGroup.Item>
               <Label htmlFor="radio-react-native">React Native</Label>
             </XStack>
-            <XStack ai="center" space>
+            <XStack ai="center" gap="$4">
               <RadioGroup.Item value="css" id="radio-react-css">
                 <RadioGroup.Indicator />
               </RadioGroup.Item>
@@ -283,8 +283,8 @@ const ExportDialog = (props: ExportDialogProps) => {
   return (
     <>
       <DialogCloseButton />
-      <YStack space="$4">
-        <YStack space="$2">
+      <YStack gap="$4">
+        <YStack gap="$2">
           <Dialog.Title size="$7">Export</Dialog.Title>
           <Dialog.Description size="$3" theme="alt2">
             Copy and paste (for now)
@@ -332,7 +332,7 @@ const ExportDialog = (props: ExportDialogProps) => {
           />
         </Tabs>
 
-        <XStack jc="flex-end" mt="$2" space>
+        <XStack jc="flex-end" mt="$2" gap="$4">
           <DialogClose>
             <Button aria-label="Close">Done</Button>
           </DialogClose>

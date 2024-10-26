@@ -5,7 +5,7 @@ import { LinkListItem } from '../home/screen'
 export function BentoScreen() {
   return (
     <ScrollView>
-      <YStack bg="$color2" p="$3" pt="$6" pb="$8" f={1} space>
+      <YStack bg="$color2" p="$3" pt="$6" pb="$8" f={1} gap="$4">
         <YGroup size="$4" separator={<Separator />}>
           {Data.listingData.sections.map(({ parts, sectionName }) => {
             return (

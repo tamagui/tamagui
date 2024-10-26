@@ -63,7 +63,7 @@ export const ColorPaletteListItem = ({
             </H5>
           )}
 
-          <YStack w="100%" pos="relative" space="$2" zi={100}>
+          <YStack w="100%" pos="relative" gap="$2" zi={100}>
             {showOffsetIndicators && (
               <XStack>
                 {colors.map((_, index) => (
@@ -108,7 +108,7 @@ export const ColorPaletteListItem = ({
                     </Popover.Trigger>
 
                     <Popover.Content>
-                      <XStack space="$2" ai="center">
+                      <XStack gap="$2" ai="center">
                         <ColorPicker
                           value=""
                           onChange={(color) => {

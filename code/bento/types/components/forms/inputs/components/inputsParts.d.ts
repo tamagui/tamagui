@@ -53,7 +53,7 @@ export declare const InputContainerFrame: import("tamagui").TamaguiComponent<imp
     size?: import("tamagui").SizeTokens | undefined;
     gapScale?: number | undefined;
 }, import("@tamagui/web").StaticConfigPublic>;
-export declare const InputLabel: import("tamagui").TamaguiComponent<import("@tamagui/web").TamaDefer, import("react-native").View | HTMLButtonElement, import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("tamagui").TextNonStyleProps, "size" | keyof import("@tamagui/web").TextStylePropsBase | "unstyled"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & {
+export declare const InputLabel: import("tamagui").TamaguiComponent<import("@tamagui/web").TamaDefer, import("react-native").View | HTMLButtonElement, import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("tamagui").TextNonStyleProps, "size" | "unstyled" | keyof import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & {
     unstyled?: boolean | undefined;
     size?: number | `$${string}` | `$${number}` | `$${string}.${string}` | `$${string}.${number}` | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | undefined;
 } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & {
@@ -94,9 +94,7 @@ export declare const Input: import("react").ForwardRefExoticComponent<Omit<impor
         gapScale?: number | undefined;
     }, import("@tamagui/web").StaticConfigPublic];
 } & {
-    Box: import("tamagui").TamaguiComponent<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps & import("tamagui").GroupExtraProps & {
-        __scopeGroup?: import("tamagui").Scope;
-    }, import("@tamagui/web").StackStyleBase, {
+    Box: import("tamagui").TamaguiComponent<import("@tamagui/web").GetFinalProps<any, import("@tamagui/web").StackStyleBase, {
         size?: any;
         elevation?: number | import("tamagui").SizeTokens | undefined;
         inset?: number | import("tamagui").SizeTokens | {
@@ -120,9 +118,7 @@ export declare const Input: import("react").ForwardRefExoticComponent<Omit<impor
         chromeless?: boolean | "all" | undefined;
         scaleIcon?: number | undefined;
         applyFocusStyle?: boolean | undefined;
-    }>, import("tamagui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & import("tamagui").GroupExtraProps & {
-        __scopeGroup?: import("tamagui").Scope;
-    } & void, import("@tamagui/web").StackStyleBase, {
+    }>, import("tamagui").TamaguiElement, any, import("@tamagui/web").StackStyleBase, {
         size?: any;
         elevation?: number | import("tamagui").SizeTokens | undefined;
         inset?: number | import("tamagui").SizeTokens | {
@@ -233,7 +229,7 @@ export declare const Input: import("react").ForwardRefExoticComponent<Omit<impor
         size?: FontSizeTokens | undefined;
         unstyled?: boolean | undefined;
     }, import("@tamagui/web").StaticConfigPublic>;
-    Label: import("tamagui").TamaguiComponent<import("@tamagui/web").TamaDefer, import("react-native").View | HTMLButtonElement, import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("tamagui").TextNonStyleProps, "size" | keyof import("@tamagui/web").TextStylePropsBase | "unstyled"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & {
+    Label: import("tamagui").TamaguiComponent<import("@tamagui/web").TamaDefer, import("react-native").View | HTMLButtonElement, import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("tamagui").TextNonStyleProps, "size" | "unstyled" | keyof import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & {
         unstyled?: boolean | undefined;
         size?: number | `$${string}` | `$${number}` | `$${string}.${string}` | `$${string}.${number}` | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | undefined;
     } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & {
@@ -247,9 +243,7 @@ export declare const Input: import("react").ForwardRefExoticComponent<Omit<impor
     } & import("react").RefAttributes<import("react-native").View | HTMLButtonElement>, import("@tamagui/web").StackStyleBase, {
         size?: FontSizeTokens | undefined;
     }, import("@tamagui/web").StaticConfigPublic>;
-    XGroup: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & import("tamagui").GroupExtraProps & {
-        __scopeGroup?: import("tamagui").Scope;
-    }, "size" | "elevation" | keyof import("@tamagui/web").StackStyleBase | "inset" | "fullscreen" | "unstyled" | "transparent" | "hoverTheme" | "pressTheme" | "backgrounded" | "circular" | "focusTheme" | "elevate" | "bordered" | "radiused" | "padded" | "chromeless"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+    XGroup: import("react").ForwardRefExoticComponent<Omit<any, "size" | "elevation" | keyof import("@tamagui/web").StackStyleBase | "inset" | "fullscreen" | "unstyled" | "transparent" | "hoverTheme" | "pressTheme" | "backgrounded" | "circular" | "focusTheme" | "elevate" | "bordered" | "radiused" | "padded" | "chromeless"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
         size?: any;
         elevation?: number | import("tamagui").SizeTokens | undefined;
         inset?: number | import("tamagui").SizeTokens | {
@@ -315,9 +309,7 @@ export declare const Input: import("react").ForwardRefExoticComponent<Omit<impor
         radiused?: boolean | undefined;
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
-    }>> & import("react").RefAttributes<import("tamagui").TamaguiElement>> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("tamagui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & import("tamagui").GroupExtraProps & {
-        __scopeGroup?: import("tamagui").Scope;
-    }, import("@tamagui/web").StackStyleBase, {
+    }>> & import("react").RefAttributes<import("tamagui").TamaguiElement>> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("tamagui").TamaguiElement, any, import("@tamagui/web").StackStyleBase, {
         size?: any;
         elevation?: number | import("tamagui").SizeTokens | undefined;
         inset?: number | import("tamagui").SizeTokens | {
@@ -340,9 +332,7 @@ export declare const Input: import("react").ForwardRefExoticComponent<Omit<impor
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
     }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig" | "extractable" | "styleable"> & {
-        __tama: [import("@tamagui/web").TamaDefer, import("tamagui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & import("tamagui").GroupExtraProps & {
-            __scopeGroup?: import("tamagui").Scope;
-        }, import("@tamagui/web").StackStyleBase, {
+        __tama: [import("@tamagui/web").TamaDefer, import("tamagui").TamaguiElement, any, import("@tamagui/web").StackStyleBase, {
             size?: any;
             elevation?: number | import("tamagui").SizeTokens | undefined;
             inset?: number | import("tamagui").SizeTokens | {

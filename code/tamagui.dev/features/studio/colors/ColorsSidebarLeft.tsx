@@ -31,7 +31,7 @@ const ColorsSidebarPalettes = () => {
             onValueChange={(v) => state.colors.setScheme(v)}
             size="$3"
           >
-            <Tabs.List disablePassBorderRadius backgroundColor="transparent" space="$3">
+            <Tabs.List disablePassBorderRadius backgroundColor="transparent" gap="$3">
               {Object.values(state.colors.palettesByScheme).map(({ id, name }) => (
                 <Tabs.Tab br="$2" value={id} key={id}>
                   <SizableText size="$3" color="$color">
@@ -86,8 +86,8 @@ export const ColorsSidebarLeft = memo(function ColorsSidebarLeft() {
     <>
       <SidebarLeft>
         <SidebarPanel>
-          <YStack space="$3">
-            <XStack space="$2" ai="center">
+          <YStack gap="$3">
+            <XStack gap="$2" ai="center">
               <ColorPicker
                 value={palette?.backgroundColor}
                 onChange={(color) => {
@@ -107,7 +107,7 @@ export const ColorsSidebarLeft = memo(function ColorsSidebarLeft() {
         <Separator />
 
         {/* <SidebarPanel title="Curves">
-          <YStack space="$3">
+          <YStack gap="$3">
             {Object.values(palette.curves).map((curve) => (
               <YStack
                 key={curve.id}
@@ -123,7 +123,7 @@ export const ColorsSidebarLeft = memo(function ColorsSidebarLeft() {
                 //   textDecoration: 'none',
                 // }}
               >
-                <YStack space="$2">
+                <YStack gap="$2">
                   <span>{curve.name}</span>
                   <div
                     style={{

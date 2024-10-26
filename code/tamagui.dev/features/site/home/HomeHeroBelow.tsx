@@ -40,7 +40,7 @@ export const HeroBelowContent = memo(() => {
         flex={1}
         overflow="hidden"
         maxWidth="100%"
-        space="$8"
+        gap="$8"
         flexWrap="nowrap"
         px="$2"
         mb={-8}

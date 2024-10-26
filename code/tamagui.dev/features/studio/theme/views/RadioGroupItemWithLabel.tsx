@@ -1,4 +1,4 @@
-import type { SizeTokens} from 'tamagui';
+import type { SizeTokens } from 'tamagui'
 import { Label, RadioGroup, XStack } from 'tamagui'
 
 export function RadioGroupItemWithLabel(props: {
@@ -8,7 +8,7 @@ export function RadioGroupItemWithLabel(props: {
 }) {
   const id = `radiogroup-${props.value}`
   return (
-    <XStack pr="$4" alignItems="center" space="$4">
+    <XStack pr="$4" alignItems="center" gap="$4">
       <RadioGroup.Item value={props.value} id={id} size={props.size}>
         <RadioGroup.Indicator />
       </RadioGroup.Item>

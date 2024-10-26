@@ -34,7 +34,7 @@ function Col(
 ) {
   const subTheme = props.subTheme ? `_${props.subTheme}` : ''
   return (
-    <YStack padding="$2.5" space="$3.5">
+    <YStack padding="$2.5" gap="$3.5">
       <Square br="$6" size="$10" theme={props.subTheme} bg="$background" {...props} />
       <Square
         br="$6"

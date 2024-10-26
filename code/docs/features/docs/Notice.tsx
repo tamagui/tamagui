@@ -27,7 +27,7 @@ export const NoticeFrame = styled(View, {
   py: '$3',
   bg: '$color3',
   br: '$4',
-  space: '$3',
+  gap: '$3',
   my: '$4',
   pos: 'relative',
 })

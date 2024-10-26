@@ -35,7 +35,7 @@ export default function Community({ frontmatters }) {
 
       <Spacer size="$4" />
 
-      <ContainerLarge space="$4">
+      <ContainerLarge gap="$4">
         <Spacer />
 
         <H1 als="center">Community</H1>
@@ -65,7 +65,7 @@ export default function Community({ frontmatters }) {
             </Link>
             <Spacer />
             {/* TODO */}
-            {/* <YStack w="100%" space>
+            {/* <YStack w="100%" gap="$4">
               {[].map((frontmatter) => (
                 <Link key={frontmatter.title} href={frontmatter.slug}>
                   <Card bc="transparent" p="$4" f={1}>
@@ -79,7 +79,7 @@ export default function Community({ frontmatters }) {
                         {frontmatter.title}
                       </H3>
 
-                      <XStack ai="center" space="$2">
+                      <XStack ai="center" gap="$2">
                         <Paragraph
                           cursor="inherit"
                           tag="time"
@@ -150,7 +150,7 @@ export default function Community({ frontmatters }) {
             Starter repos & Guides
           </H3>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            <XStack py="$2" space="$4">
+            <XStack py="$2" gap="$4">
               <StarterRepoCard
                 url="https://galaxies.dev/course/react-native-tamagui  "
                 name="Universal Apps with Tamagui (Guide)"
@@ -362,7 +362,7 @@ const StarterRepoCard = ({
       f={1}
       fb={0}
       maw={300}
-      space="$2"
+      gap="$2"
       tag="a"
       href={url as string}
       target="_blank"
@@ -401,7 +401,7 @@ function GoldSponsor(props: {
           target="_blank"
           p="$8"
           br="$4"
-          space
+          gap="$4"
         >
           <Image
             accessibilityLabel={props.name}
@@ -432,7 +432,7 @@ function IndividualSponsor(props: { name: string; link: string }) {
               br="$4"
               hoverStyle={{ bg: 'rgba(0,0,0,0.1)' }}
               pressStyle={{ bg: 'rgba(0,0,0,0.2)' }}
-              space
+              gap="$4"
             >
               <H5 cursor="inherit" als="center" letterSpacing={4} ai="center">
                 {props.name}

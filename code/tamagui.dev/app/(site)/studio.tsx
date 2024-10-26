@@ -100,7 +100,7 @@ export default function StudioSplashPage() {
                 </Link>
               </YStack>
 
-              <XStack maw={790} space="$8" separator={<Separator vertical />}>
+              <XStack maw={790} gap="$8" separator={<Separator vertical />}>
                 <H2
                   theme="alt1"
                   className="text-glow"

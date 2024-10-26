@@ -17,7 +17,7 @@ export function ColorsDemo() {
   const [colorsLight, colorsDark] = [getColors(colors), getColors(colors, true)]
 
   return (
-    <YStack marginTop="$4" space="$8">
+    <YStack marginTop="$4" gap="$8">
       <ColorsRow title="Light" colors={colorsLight} />
       <Separator />
       <ColorsRow title="Dark" colors={colorsDark} />
@@ -27,11 +27,11 @@ export function ColorsDemo() {
 
 function ColorsRow({ title, colors }: { title: string; colors: Variable[][] }) {
   return (
-    <YStack space $sm={{ space: '$2' }}>
+    <YStack space $sm={{ gap: '$2' }}>
       <H2 size="$2">{title}</H2>
 
       <XStack space alignSelf="center">
-        <YStack space $sm={{ space: '$2' }} alignSelf="center">
+        <YStack space $sm={{ gap: '$2' }} alignSelf="center">
           {colors.map((group, index) => {
             return (
               <XStack gap="$2" key={index}>

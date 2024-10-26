@@ -41,9 +41,9 @@ export const HomeExamples = memo(
 
     return (
       <ContainerLarge position="relative">
-        <YStack zi={1} space="$6" mb="$4">
+        <YStack zi={1} gap="$6" mb="$4">
           {!onlyDemo && (
-            <YStack ai="center" space="$3">
+            <YStack ai="center" gap="$3">
               <HomeH2>A powerful style system</HomeH2>
               <HomeH3 ai="center" jc="center">
                 A multi-faceted optimizing compiler enables
@@ -101,7 +101,7 @@ export const HomeExamples = memo(
               {...(onlyDemo && { maxWidth: '100%' })}
               $sm={{ maxWidth: '100%' }}
               px="$2"
-              space
+              gap="$4"
             >
               <Paragraph
                 maw={480}
@@ -140,7 +140,7 @@ export const HomeExamples = memo(
               {...(onlyDemo && { maxWidth: '100%', mt: '$6' })}
               $sm={{ maxWidth: '100%', mt: '$6' }}
               px="$2"
-              space
+              gap="$4"
             >
               <Paragraph
                 maw={480}
@@ -178,7 +178,7 @@ const CodeExamples = memo(({ examples = [], title }: any) => {
           mb="$-2.5"
           maw="100%"
         >
-          <XStack px="$4" fs={0} space>
+          <XStack px="$4" fs={0} gap="$4">
             <Button disabled size="$2" fontSize="$4" px="$4">
               {title}
             </Button>

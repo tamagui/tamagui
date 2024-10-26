@@ -37,10 +37,10 @@ const Features = ({ items, ...props }: any) => {
 export const HomeExampleProps = () => {
   return (
     <ContainerLarge position="relative">
-      <XStack px="$6" pt="$8" space="$4" $sm={{ flexDirection: 'column', px: 0 }}>
+      <XStack px="$6" pt="$8" gap="$4" $sm={{ flexDirection: 'column', px: 0 }}>
         <YStack w="50%" $sm={{ w: '100%' }}>
           <Features
-            space="$4"
+            gap="$4"
             items={[
               <FeatureItem label="Press & hover events">
                 onHoverIn, onHoverOut, onPressIn, and onPressOut.
@@ -54,7 +54,7 @@ export const HomeExampleProps = () => {
         </YStack>
         <YStack w="50%" $sm={{ w: `100%` }}>
           <Features
-            space="$4"
+            gap="$4"
             items={[
               <FeatureItem label="Themes">Change theme on any component.</FeatureItem>,
               <FeatureItem label="Animations">

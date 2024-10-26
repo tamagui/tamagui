@@ -1,24 +1,8 @@
-import {
-  type DebugProp,
-  type SpaceDirection,
-  type SpaceValue,
-  createComponent,
-  stackDefaultStyles,
-} from '@tamagui/web'
+import { createComponent, stackDefaultStyles } from '@tamagui/web'
 import React from 'react'
 import { Spacer } from './Spacer'
 import { isUnspaced } from './Unspaced'
-
-export type SpacedChildrenProps = {
-  isZStack?: boolean
-  children?: React.ReactNode
-  space?: SpaceValue
-  spaceFlex?: boolean | number
-  direction?: SpaceDirection | 'unset'
-  separator?: React.ReactNode
-  ensureKeys?: boolean
-  debug?: DebugProp
-}
+import type { SpacedChildrenProps } from './types'
 
 export function spacedChildren(props: SpacedChildrenProps) {
   const { isZStack, children, space, direction, spaceFlex, separator, ensureKeys } = props

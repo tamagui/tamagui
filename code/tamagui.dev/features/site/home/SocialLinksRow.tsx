@@ -12,7 +12,7 @@ export const SocialLinksRow = () => {
         width="33.33%"
         jc="center"
         $sm={{ width: 'auto' }}
-        space="$2"
+        gap="$2"
         tag="a"
         href="https://twitter.com/tamagui_js"
         target="_blank"
@@ -30,7 +30,7 @@ export const SocialLinksRow = () => {
       <Card
         width="33.33%"
         jc="center"
-        space="$2"
+        gap="$2"
         $sm={{ width: 'auto' }}
         tag="a"
         href="https://discord.gg/4qh6tdcVDa"
@@ -51,7 +51,7 @@ export const SocialLinksRow = () => {
         width="33.33%"
         jc="center"
         $sm={{ width: 'auto' }}
-        space="$2"
+        gap="$2"
         tag="a"
         href="https://github.com/tamagui/tamagui"
         target="_blank"

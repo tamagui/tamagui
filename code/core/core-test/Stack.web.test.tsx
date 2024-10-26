@@ -54,7 +54,7 @@ describe('Stack', () => {
   //       renderCount={renderCount}
   //       backgroundColor="blue"
   //       // @ts-ignore
-  //       $sm={{ space: '$2' }}
+  //       $sm={{ gap: '$2' }}
   //     />
   //   )
 

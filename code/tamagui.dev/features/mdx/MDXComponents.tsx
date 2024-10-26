@@ -684,11 +684,11 @@ const componentsIn = {
   SponsorNotice: () => {
     return (
       <NoticeFrame theme="red">
-        <YStack maw="100%" space>
+        <YStack maw="100%" gap="$4">
           <H4 color="$color10" fontFamily="$silkscreen">
             👋 Hey! Listen!
           </H4>
-          <YStack ov="hidden" f={1} o={0.85} space>
+          <YStack ov="hidden" f={1} o={0.85} gap="$4">
             <Paragraph>
               Tamagui is fully OSS, self-funded and built by{' '}
               <a href="https://twitter.com/natebirdman" target="_blank" rel="noreferrer">
@@ -967,7 +967,7 @@ const LinkHeading = ({ id, children, ...props }: { id: string } & XStackProps) =
     data-id={id}
     display="inline-flex"
     ai="center"
-    space
+    gap="$4"
     {...props}
   >
     {children}

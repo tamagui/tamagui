@@ -54,8 +54,8 @@ export function HomeAnimations({ animationCode }: { animationCode: string }) {
 
   return (
     <YStack>
-      <ContainerLarge position="relative" space="$8">
-        <YStack zi={1} space="$3">
+      <ContainerLarge position="relative" gap="$8">
+        <YStack zi={1} gap="$3">
           <HomeH2 pos="relative">
             Universal <span className="rainbow clip-text">Animations</span>
           </HomeH2>

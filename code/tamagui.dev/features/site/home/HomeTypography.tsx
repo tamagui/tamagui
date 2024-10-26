@@ -49,8 +49,8 @@ export const HomeTypography = memo(() => {
     <>
       <YStack fullscreen className="" o={0.1} />
       {/* -5 my to fir grid nicely */}
-      <ContainerLarge my={-5} position="relative" space="$8">
-        <YStack ref={ref} ai="center" space="$3">
+      <ContainerLarge my={-5} position="relative" gap="$8">
+        <YStack ref={ref} ai="center" gap="$3">
           <HomeH2>
             Beautifully expressive font systems with{' '}
             <span className="clip-text rainbow">rhythm</span>.
@@ -61,7 +61,7 @@ export const HomeTypography = memo(() => {
           ai="center"
           jc="center"
           pos="relative"
-          space="$8"
+          gap="$8"
           flexDirection="row-reverse"
           $sm={{
             flexDirection: 'column-reverse',
@@ -72,7 +72,7 @@ export const HomeTypography = memo(() => {
           <YStack
             h={300}
             w="40%"
-            space="$0.5"
+            gap="$0.5"
             jc="center"
             scale={1.1}
             x={-20}
@@ -156,13 +156,7 @@ const OverlayCard = () => {
   // {/* TODO elevation not overriding? */}
   return (
     <Card bw={1} bc="$borderColor" br="$6" elevation="$6" shadowRadius={60}>
-      <YStack
-        jc="center"
-        p="$6"
-        space="$5"
-        maw="calc(min(90vw, 400px))"
-        $sm={{ p: '$5' }}
-      >
+      <YStack jc="center" p="$6" gap="$5" maw="calc(min(90vw, 400px))" $sm={{ p: '$5' }}>
         <Paragraph ta="left" size="$8" fow="400" ls={-1}>
           Use, swap and share fonts with typed vertical rhythm.
         </Paragraph>

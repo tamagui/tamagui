@@ -101,7 +101,7 @@ const RadioGroup = createRadioGroup({
 export function RadioGroupUnstyledDemo() {
   return (
     <RadioGroup aria-labelledby="Select one item" defaultValue="3" name="form">
-      <YStack width={200} alignItems="center" space="$2">
+      <YStack width={200} alignItems="center" gap="$2">
         <RadioGroupItemWithLabel value="2" label="Option One" />
         <RadioGroupItemWithLabel value="3" label="Option Two" />
       </YStack>

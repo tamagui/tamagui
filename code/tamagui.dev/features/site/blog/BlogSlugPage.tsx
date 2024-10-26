@@ -147,7 +147,7 @@ export function BlogSlugPage(props: BlogPost) {
               Related
             </H3>
 
-            <YStack my="$4" space="$4">
+            <YStack my="$4" gap="$4">
               {relatedPosts.map((frontmatter) => {
                 return (
                   <Paragraph

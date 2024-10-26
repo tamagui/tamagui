@@ -32,25 +32,25 @@ export function Palettes({
             jc="space-between"
             ai="center"
           >
-            <XStack ai="center" space="$1">
+            <XStack ai="center" gap="$1">
               <ArrowLeft opacity={0.33} size={12} />
               <Paragraph size="$1">Background</Paragraph>
             </XStack>
 
             {selectedSchemes.light && selectedSchemes.dark && (
               <XStack pos="absolute" l="25%" r="25%" ai="center" space jc="center">
-                <XStack y={0} ai="center" space="$1">
+                <XStack y={0} ai="center" gap="$1">
                   <ArrowUp opacity={0.33} size={12} />
                   <Paragraph size="$1">Light</Paragraph>
                 </XStack>
-                <XStack y={0} ai="center" space="$1">
+                <XStack y={0} ai="center" gap="$1">
                   <Paragraph size="$1">Dark</Paragraph>
                   <ArrowDown opacity={0.33} size={12} />
                 </XStack>
               </XStack>
             )}
 
-            <XStack ai="center" space="$1">
+            <XStack ai="center" gap="$1">
               <Paragraph size="$1">Foreground</Paragraph>
               <ArrowRight opacity={0.33} size={12} />
             </XStack>

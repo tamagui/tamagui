@@ -3,8 +3,8 @@ import { getFontSized } from '@tamagui/get-font-sized'
 import { getSize, getSpace } from '@tamagui/get-token'
 import { withStaticProperties } from '@tamagui/helpers'
 import { useGetThemedIcon } from '@tamagui/helpers-tamagui'
-import { ThemeableStack, YStack } from '@tamagui/stacks'
 import { Spacer } from '@tamagui/spacer'
+import { ThemeableStack, YStack } from '@tamagui/stacks'
 import type { TextParentStyles } from '@tamagui/text'
 import { SizableText, wrapChildrenInText } from '@tamagui/text'
 import type {
@@ -14,7 +14,7 @@ import type {
   SizeTokens,
   ThemeableProps,
 } from '@tamagui/web'
-import { getTokens, getVariableValue, styled, useProps } from '@tamagui/web'
+import { getVariableValue, styled, useProps } from '@tamagui/web'
 import type { FunctionComponent, ReactNode } from 'react'
 
 type ListItemIconProps = { color?: any; size?: any }
@@ -195,8 +195,6 @@ export const useListItem = (
     iconAfter,
     noTextWrap,
     theme: themeName,
-    space,
-    spaceFlex,
     scaleIcon = 1,
     scaleSpace = 1,
     unstyled = false,
@@ -230,7 +228,7 @@ export const useListItem = (
   const iconSize = getFontSize(size as any) * scaleIcon
   const getThemedIcon = useGetThemedIcon({ size: iconSize, color: color as any })
   const [themedIcon, themedIconAfter] = [icon, iconAfter].map(getThemedIcon)
-  const sizeToken = getTokens().space[props.space as any] ?? iconSize
+  const sizeToken = iconSize
   const spaceSize = getVariableValue(sizeToken) * scaleSpace
 
   const contents = wrapChildrenInText(Text, textProps)
