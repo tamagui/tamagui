@@ -482,7 +482,7 @@ export interface GenericTamaguiSettings {
    * When true, flexBasis will be set to 0 when flex is positive. This will be
    * the default in v2 of Tamagui alongside an alternative mode for web compat.
    */
-  styleCompat?: 'react-native'
+  styleCompat?: 'react-native' | 'legacy'
 
   // TODO
   /**

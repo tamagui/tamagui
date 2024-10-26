@@ -176,7 +176,6 @@ v2:
   - remove deprecated
   - react 0.74 alignment:
     - https://reactnative.dev/blog/2024/04/22/release-0.74
-  - web alignment, accessibility props, "focusable" => tabIndex
   - move to react native flex compat, `styleCompat` default to react-native
     - web alignment?
   - move to web compat style apis
