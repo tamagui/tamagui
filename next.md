@@ -166,8 +166,6 @@ v2:
   - tamagui => @tamagui/ui
     - new Button, Input (nice, can be v3), Image (image-next), ScrollView
     - note many are headless
-    - fullscreen => inset={0}
-      - deprecate fullscreen, make sure inset works
   - remove spacer / space / separator
   - Cleanup Select/ListItem
     - remove SizableStack (maybe rename to Surface), redo/remove ThemeableStack
@@ -182,7 +180,6 @@ v2:
   - remove nativeID, maybe testID
   - deprecate shadow style props before v2 release and remove in v2
     - "shadow*" style props are deprecated. Use "boxShadow".
-  - remove as much of `// TODO: remove this in the future when react native a11y API is removed` as possible
     - "Enhance with native semantics" can probably go away right
 
 potential
@@ -201,6 +198,7 @@ stretch
 
 v3
 
+  - remove as much of `// TODO: remove this in the future when react native a11y API is removed` as possible
   - light-dark()
     - this is an official css thing so would be easy-ish to implement
   - run over components and review for removing some assumptions about `size`
