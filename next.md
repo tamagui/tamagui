@@ -174,7 +174,6 @@ v2:
     - v2-3 ListItem simplification esp for performance of Select
     - fix Select hover/type/performance
   - remove deprecated
-  - document react 19 mode - process.env.TAMAGUI_REACT_19
   - react 0.74 alignment:
     - https://reactnative.dev/blog/2024/04/22/release-0.74
   - web alignment, accessibility props, "focusable" => tabIndex

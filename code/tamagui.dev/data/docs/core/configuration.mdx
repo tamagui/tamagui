@@ -832,3 +832,18 @@ defined categories.
 If set to `except-special`, specific tokens will autocomplete only if they don't
 normally use one of the special token groups: space, size, radius, zIndex,
 color.
+
+### Environment Settings
+
+A few things in Tamagui can be configuring via environment variables. Doing it this way lets us avoid extra code being shipped to the client, as we your bundler can tree shake the unused code easily when using envronment variables. You should be sure to either use the Vite or Webpack Tamagui plugins, or configure your bundler to define the environment variables for tree shaking. On native, it is not a concern as the extra size is minimal.
+
+
+#### React 19
+
+We have early support for React 19, which mostly does a single thing: it moves our runtime CSS insertion from [`useInsertionEffect`](https://react.dev/reference/react/useInsertionEffect) to using inline `<style />` tags. React 19 supports hoisting and de-duplicating style tags, which simplifies our implementation and should improve performance.
+
+To enable set the `TAMAGUI_REACT_19` variable to `"1"`:
+
+```
+TAMAGUI_REACT_19=1
+```
