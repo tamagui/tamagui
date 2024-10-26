@@ -177,7 +177,6 @@ v2:
   - document react 19 mode - process.env.TAMAGUI_REACT_19
   - react 0.74 alignment:
     - https://reactnative.dev/blog/2024/04/22/release-0.74
-    - position: 'static'
   - web alignment, accessibility props, "focusable" => tabIndex
   - move to react native flex compat, `styleCompat` default to react-native
     - web alignment?

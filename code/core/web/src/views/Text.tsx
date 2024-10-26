@@ -47,6 +47,7 @@ export const Text = createComponent<
     ...(process.env.TAMAGUI_TARGET === 'web'
       ? defaultWebStyle
       : {
+          position: 'static',
           suppressHighlighting: true,
         }),
   },
