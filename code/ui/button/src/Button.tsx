@@ -190,24 +190,9 @@ const ButtonComponent = ButtonFrame.styleable<ButtonExtraProps>(
   function Button(props, ref) {
     // @ts-ignore
     const { props: buttonProps } = useButton(props)
-    return <ButtonFrame {...buttonProps} ref={ref} />
+    return <ButtonFrame data-disable-theme {...buttonProps} ref={ref} />
   }
 )
-
-const buttonStaticConfig = {
-  inlineProps: new Set([
-    // text props go here (can't really optimize them, but we never fully extract button anyway)
-    // may be able to remove this entirely, as the compiler / runtime have gotten better
-    'color',
-    'fontWeight',
-    'fontSize',
-    'fontFamily',
-    'fontStyle',
-    'letterSpacing',
-    'textAlign',
-    'unstyled',
-  ]),
-}
 
 const Button = withStaticProperties(ButtonComponent, {
   Text: ButtonText,
@@ -348,7 +333,6 @@ export {
   ButtonFrame,
   ButtonIcon,
   ButtonText,
-  buttonStaticConfig,
   // legacy
   useButton,
 }
