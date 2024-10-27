@@ -140,7 +140,7 @@ export default {
 
     tamaguiPlugin({
       optimize: process.env.NODE_ENV === 'production',
-      useReactNativeWebLite: true,
+      // useReactNativeWebLite: true,
     }),
 
     // hmmm breaking ssr for some reason on lucide:
