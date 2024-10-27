@@ -234,9 +234,6 @@ export const getSplitStyles: StyleSplitter = (
     let keyInit = keyOg
     let valInit = props[keyInit]
 
-    // perf on native was helped
-    if (keyInit === 'data-disable-theme') continue
-
     if (process.env.NODE_ENV === 'development' && debug === 'profile') {
       // @ts-expect-error
       time`prop-${keyInit}`
