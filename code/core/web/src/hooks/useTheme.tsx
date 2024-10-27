@@ -312,7 +312,7 @@ function getIsInversed(manager?: ThemeManager) {
     let cur: ThemeManager | null | undefined = manager
 
     while (cur) {
-      if (!cur.parentManager) return false
+      if (!cur.parentManager) return isInversed
       if (cur.parentManager.state.scheme !== cur.state.scheme) {
         isInversed = !isInversed
       }
