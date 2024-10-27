@@ -5908,7 +5908,7 @@ __metadata:
     fast-glob: "npm:^3.2.11"
     fs-extra: "npm:^11.2.0"
     lodash.debounce: "npm:^4.0.8"
-    typescript: "npm:^5.5.2"
+    typescript: "npm:^5.6.3"
     vitest: "npm:^2.1.3"
   bin:
     tamagui-build: tamagui-build.js
@@ -6060,7 +6060,7 @@ __metadata:
     opener: "npm:^1.5.2"
     prompts: "npm:2.1.0"
     ts-morph: "npm:^15.1.0"
-    typescript: "npm:^5.5.2"
+    typescript: "npm:^5.6.3"
     url: "npm:^0.11.0"
     vite: "npm:6.0.0-beta.1"
     vite-plugin-entry-shaking: "npm:^0.4.3"
@@ -6141,7 +6141,7 @@ __metadata:
     csstype: "npm:^3.0.10"
     jsdom: "npm:^25.0.1"
     react: "npm:^18.2.0 || ^19.0.0"
-    typescript: "npm:^5.5.2"
+    typescript: "npm:^5.6.3"
     vitest: "npm:^2.1.3"
     vitest-axe: "npm:^0.1.0"
   peerDependencies:
@@ -6218,7 +6218,7 @@ __metadata:
     csstype: "npm:^3.0.10"
     react: "npm:^18.2.0 || ^19.0.0"
     react-dom: "npm:^18.2.0 || ^19.0.0"
-    typescript: "npm:^5.5.2"
+    typescript: "npm:^5.6.3"
     vitest: "npm:^2.1.3"
   peerDependencies:
     react: "*"
@@ -6236,7 +6236,7 @@ __metadata:
     "@tamagui/web": "npm:1.116.9"
     "@testing-library/react": "npm:^16.0.1"
     csstype: "npm:^3.0.10"
-    typescript: "npm:^5.5.2"
+    typescript: "npm:^5.6.3"
     vitest: "npm:^2.1.3"
   languageName: unknown
   linkType: soft
@@ -7543,7 +7543,7 @@ __metadata:
     react-native-web: "npm:^0.19.12"
     react-test-renderer: "npm:^18.2.0"
     style-loader: "npm:^3.3.3"
-    typescript: "npm:^5.5.2"
+    typescript: "npm:^5.6.3"
     vitest: "npm:^2.1.3"
     webpack: "npm:^5.88.2"
   peerDependencies:
@@ -7601,7 +7601,7 @@ __metadata:
     react: "npm:^18.2.0 || ^19.0.0"
     react-dom: "npm:^18.2.0 || ^19.0.0"
     react-native-web: "npm:^0.19.12"
-    typescript: "npm:^5.5.2"
+    typescript: "npm:^5.6.3"
   peerDependencies:
     react: "*"
   languageName: unknown
@@ -8105,7 +8105,7 @@ __metadata:
     csstype: "npm:^3.0.10"
     react: "npm:^18.2.0 || ^19.0.0"
     react-dom: "npm:^18.2.0 || ^19.0.0"
-    typescript: "npm:^5.5.2"
+    typescript: "npm:^5.6.3"
     vitest: "npm:^2.1.3"
   languageName: unknown
   linkType: soft
@@ -25622,7 +25622,7 @@ __metadata:
   resolution: "tamagui-build-test-simple-tpackage@workspace:code/packages/build/__tests__/fixtures/simple-package"
   dependencies:
     "@tamagui/build": "npm:1.116.9"
-    typescript: "npm:^5.5.2"
+    typescript: "npm:^5.6.3"
   languageName: unknown
   linkType: soft
 
@@ -25631,7 +25631,7 @@ __metadata:
   resolution: "tamagui-build-test-watch-package@workspace:code/packages/build/__tests__/fixtures/watch-package"
   dependencies:
     "@tamagui/build": "npm:1.116.9"
-    typescript: "npm:^5.5.2"
+    typescript: "npm:^5.6.3"
   languageName: unknown
   linkType: soft
 
@@ -25674,7 +25674,7 @@ __metadata:
     prompts: "npm:2.1.0"
     react-native-screens: "npm:3.31.1"
     turbo: "npm:^2.1.3"
-    typescript: "npm:^5.5.2"
+    typescript: "npm:^5.6.3"
     ultra-runner: "npm:^3.10.5"
     zx: "npm:^7.2.3"
   languageName: unknown
@@ -26545,7 +26545,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^5.0.4, typescript@npm:^5.5.2":
+"typescript@npm:^5.0.4, typescript@npm:^5.6.3":
   version: 5.6.3
   resolution: "typescript@npm:5.6.3"
   bin:
@@ -26555,7 +26555,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A^5.0.4#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A^5.5.2#optional!builtin<compat/typescript>":
+"typescript@patch:typescript@npm%3A^5.0.4#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A^5.6.3#optional!builtin<compat/typescript>":
   version: 5.6.3
   resolution: "typescript@patch:typescript@npm%3A5.6.3#optional!builtin<compat/typescript>::version=5.6.3&hash=8c6c40"
   bin:
