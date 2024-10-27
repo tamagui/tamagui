@@ -226,7 +226,7 @@ export function createComponent<
       if (contextValue) {
         if (
           process.env.NODE_ENV === 'development' &&
-          (propsIn['debug'] || defaultProps?.['debug'])
+          defaultProps?.['debug'] === 'verbose'
         ) {
           log(` 👇 contextValue`, contextValue)
         }
@@ -324,15 +324,9 @@ export function createComponent<
     ) {
       const timer = require('@tamagui/timer').timer()
       time = timer.start()
+      globalThis['time'] = time
     }
     if (process.env.NODE_ENV === 'development' && time) time`start (ignore)`
-
-    if (process.env.NODE_ENV === 'development' && time) time`did-finish-ssr`
-
-    // conditional but if ever true stays true
-    // [animated, inversed]
-
-    if (process.env.NODE_ENV === 'development' && time) time`stateref`
 
     /**
      * Component state for tracking animations, pseudos
@@ -500,11 +494,15 @@ export function createComponent<
       styledContextProps,
     } as const
 
+    const themeName = themeState?.state?.name || ''
+
+    if (process.env.NODE_ENV === 'development' && time) time`split-styles-prepare`
+
     const splitStyles = useSplitStyles(
       props,
       staticConfig,
       theme,
-      themeState?.state?.name || '',
+      themeName,
       state,
       styleProps,
       null,
@@ -513,13 +511,13 @@ export function createComponent<
       debugProp
     )
 
+    if (process.env.NODE_ENV === 'development' && time) time`split-styles`
+
     // hide strategy will set this opacity = 0 until measured
     if (props.group && props.untilMeasured === 'hide' && !curStateRef.hasMeasured) {
       splitStyles.style ||= {}
       splitStyles.style.opacity = 0
     }
-
-    if (process.env.NODE_ENV === 'development' && time) time`split-styles`
 
     curStateRef.isListeningToTheme = splitStyles.dynamicThemeAccess
 

@@ -3,14 +3,35 @@
 import { View as RNView } from 'react-native'
 
 import { Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
-import React from 'react'
+import React, { useEffect, useLayoutEffect, useState } from 'react'
 import type { FontSizeTokens, SelectProps } from 'tamagui'
-import { Adapt, Select, Sheet, View, YStack, getFontSize } from 'tamagui'
+import { Adapt, Button, H2, Select, Sheet, View, YStack, getFontSize } from 'tamagui'
 
 export const Sandbox = () => {
+  const start = Date.now()
+  const [x, setX] = useState(0)
+  const [took, setTook] = useState(0)
+
+  useLayoutEffect(() => {
+    setTook(Date.now() - start)
+  }, [x])
+
   return (
     <RNView style={{ width: '100%', height: '100%', padding: 50 }}>
-      <View debug="verbose" themeInverse bg="$background" width={200} height={200} />
+      {/* <View debug="verbose" themeInverse bg="$background" width={200} height={200} /> */}
+
+      <H2>took: {took}</H2>
+      <Button onPress={() => setX(Math.random())}>run</Button>
+
+      <Button debug="profile">hello world</Button>
+      <Button>hello world</Button>
+      <Button>hello world</Button>
+      <Button>hello world</Button>
+      <Button>hello world</Button>
+      <Button>hello world</Button>
+      <Button>hello world</Button>
+      <Button>hello world</Button>
+      <Button>hello world</Button>
 
       {/* <NativeSheetDemo /> */}
 

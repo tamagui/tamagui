@@ -40,6 +40,9 @@ export function HomeScreen() {
               <Square size={30} bg="$color10" />
             </Theme>
           </Theme>
+
+          <Square size={30} themeInverse bg="$background" />
+          <Square size={30} bg="$background" />
         </XStack>
 
         <YGroup size="$4">

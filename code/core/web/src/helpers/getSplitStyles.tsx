@@ -234,6 +234,14 @@ export const getSplitStyles: StyleSplitter = (
     let keyInit = keyOg
     let valInit = props[keyInit]
 
+    // perf on native was helped
+    if (keyInit === 'data-disable-theme') continue
+
+    if (process.env.NODE_ENV === 'development' && debug === 'profile') {
+      // @ts-expect-error
+      time`prop-${keyInit}`
+    }
+
     // for custom accept sub-styles
     if (accept) {
       const accepted = accept[keyInit]
@@ -1067,6 +1075,11 @@ export const getSplitStyles: StyleSplitter = (
     }
   } // end prop loop
 
+  if (process.env.NODE_ENV === 'development' && debug === 'profile') {
+    // @ts-expect-error
+    time`split-styles-propsend`
+  }
+
   // style prop after:
 
   const avoidNormalize = styleProps.noNormalize === false
@@ -1305,6 +1318,11 @@ export const getSplitStyles: StyleSplitter = (
     }
   }
 
+  if (process.env.NODE_ENV === 'development' && debug === 'profile') {
+    // @ts-expect-error
+    time`split-styles-pre-result`
+  }
+
   const result: GetStyleResult = {
     space,
     hasMedia,
@@ -1406,6 +1424,11 @@ export const getSplitStyles: StyleSplitter = (
       }
       console.groupEnd()
     }
+  }
+
+  if (process.env.NODE_ENV === 'development' && debug === 'profile') {
+    // @ts-expect-error
+    time`split-styles-done`
   }
 
   return result
