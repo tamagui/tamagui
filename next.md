@@ -1,3 +1,4 @@
+- deeply nested themeInverse needs a fix see kitchen sink squares
 - nan issue: nan start or end NaN 22 bytes: 0-22 [ 'bytes: 0', '22' ]
 
 @natew

@@ -33,11 +33,6 @@ export default function BentoPage() {
     return null
   }
 
-  // TODO for now not SSRing just client
-  if (typeof window === 'undefined') {
-    return null
-  }
-
   return (
     <CurrentRouteProvider section={section} part={part}>
       <ThemeNameEffect />

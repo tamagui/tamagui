@@ -49,7 +49,7 @@ export function DocsRightSidebar({
         pe="auto"
       >
         <H4 size="$2" mx="$2" id="site-quick-nav-heading">
-          Quick nav
+          Contents
         </H4>
 
         <Separator />
