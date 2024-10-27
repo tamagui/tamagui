@@ -67,7 +67,7 @@ export function DocsQuickNav() {
         gap="$2"
       >
         <H4 size="$2" mx="$2" theme="alt1" id="site-quick-nav-heading">
-          Quick nav
+          Contents
         </H4>
         <Separator />
 
