@@ -145,6 +145,8 @@ const example = (
 
 v2:
 
+  - note: can't remove `as const` using const generics, it just doesnt help with the defaultVariants case at all
+
   - need to copy/paste all the component docs to 2.0.0.mdx
   - need to remove ThemeableStack docs from components mdx, they now are all extensiond YStack instead of ThemeableStack
   - NativeSelectFrame needs unstyled support
@@ -180,7 +182,6 @@ v2:
   - react 0.74 alignment:
     - https://reactnative.dev/blog/2024/04/22/release-0.74
   - move to web compat style apis
-  - no more `as const` needed (ts5) typescript const generic
   - AnimatePresence: remove deprecated props in favor of `custom`
   - deprecate shadow style props before v2 release and remove in v2
     - "shadow*" style props are deprecated. Use "boxShadow".
