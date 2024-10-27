@@ -81,7 +81,6 @@ const config = {
   settings: {
     defaultFont: 'body',
     shouldAddPrefersColorThemes: true,
-    themeClassNameOnRoot: true,
     mediaQueryDefaultActive,
     selectionStyles: (theme) => ({
       backgroundColor: theme.color5,

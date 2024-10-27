@@ -287,7 +287,7 @@ export interface GenericTamaguiSettings {
      * When true, flexBasis will be set to 0 when flex is positive. This will be
      * the default in v2 of Tamagui alongside an alternative mode for web compat.
      */
-    styleCompat?: 'react-native';
+    styleCompat?: 'react-native' | 'legacy';
     /**
      * When true, Tamagui will always prefer a more specific style prop over a
      * less specific one.
@@ -394,11 +394,6 @@ export interface GenericTamaguiSettings {
      */
     disableSSR?: boolean;
     /**
-     * Disable inserting a theme class in the DOM or context, allowing you to manually place it higher.
-     * For custom use cases like integration with next-theme.
-     */
-    disableRootThemeClass?: boolean;
-    /**
      * For the first render, determines which media queries are true, this only
      * affects things on native or on web if you disableSSR, as otherwise Tamagui
      * relies on CSS to avoid the need for re-rendering on first render.
@@ -423,11 +418,14 @@ export interface GenericTamaguiSettings {
      */
     shouldAddPrefersColorThemes?: boolean;
     /**
-     * If you want to style your <body> tag to use themes, you must place the
-     * theme className onto the body element. This will do so. Otherwise, Tamagui
-     * will place the className onto the element rendered by the TamaguiProvider
+     * If you want to style your <body> tag to use theme CSS variables on web, you
+     * must place the theme className onto the body element or above. This will do so.
+     * If disabled, Tamagui will place the className onto the element rendered by
+     * the TamaguiProvider
+     *
+     * @default html
      */
-    themeClassNameOnRoot?: boolean;
+    themeClassTarget?: 'body' | 'html' | false;
 }
 export type TamaguiSettings = TamaguiConfig['settings'];
 export type BaseStyleProps = {
@@ -1040,7 +1038,7 @@ interface ExtendedBaseProps extends TransformStyleProps, ExtendBaseTextProps, Ex
 export interface StackStyleBase extends Omit<ViewStyle, keyof ExtendedBaseProps | 'elevation'>, ExtendedBaseProps {
 }
 export interface TextStylePropsBase extends Omit<RNTextStyle, keyof ExtendedBaseProps>, ExtendedBaseProps {
-    ellipse?: boolean;
+    ellipsis?: boolean;
     textDecorationDistance?: number;
     textOverflow?: Properties['textOverflow'];
     whiteSpace?: Properties['whiteSpace'];

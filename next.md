@@ -250,7 +250,6 @@ const Context = createStyledContext({
   - remove $mono and inter default fonts use system defaults
     - can also export the existing font config as an option for migration
   - must pass in colors separately but it exports the defaults still
-  - remove: shouldAddPrefersColorThemes, themeClassNameOnRoot
   - focus styles in the default v3 config are kind of wack
   - automatically handles tree shaking process.env for themes
   - remove some shorthands (shac, less often used ones)

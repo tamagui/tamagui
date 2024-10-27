@@ -121,7 +121,8 @@ export function getThemeCSSRules(props: {
     // this isBaseTheme logic could probably be done more efficiently above
     const selectorsString = selectors
       .map((x) => {
-        const rootSep = isBaseTheme(x) && getSetting('themeClassNameOnRoot') ? '' : ' '
+        const rootSep =
+          isBaseTheme(x) && getSetting('themeClassTarget') !== false ? '' : ' '
         return `:root${rootSep}${x}`
       })
       .join(', ')

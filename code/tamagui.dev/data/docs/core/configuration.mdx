@@ -718,11 +718,11 @@ You can pass a `settings` object to `createTamagui`:
       description: `What's between each generated CSS style rule. Set as newline to more easily debug outputted CSS.`,
     },
     {
-      name: 'themeClassNameOnRoot',
+      name: 'themeClassTarget',
       required: false,
-      type: 'boolean',
+      type: 'false | 'html' | 'body'',
       default: false,
-      description: `When using next-themes or anything that does SSR and attaches the theme class to the HTML tag, set this to true to have the proper CSS theme selectors generate`,
+      description: `If you want to style your <body> tag to use theme CSS variables on web, you must place the theme className  onto the body element or above. This will do so. If disabled, Tamagui will place the className onto the element rendered by the TamaguiProvider`,
     },
      {
       name: 'disableRootThemeClass',

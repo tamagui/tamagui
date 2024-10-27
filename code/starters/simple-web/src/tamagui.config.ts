@@ -11,7 +11,6 @@ const config = createTamagui({
   defaultFont: 'body',
   animations,
   shouldAddPrefersColorThemes: true,
-  themeClassNameOnRoot: true,
   shorthands,
   fonts,
   themes,

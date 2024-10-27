@@ -3,12 +3,6 @@ import type { SizeTokens } from 'tamagui';
 export declare const Showcase: import("tamagui").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
     elevation?: number | SizeTokens | undefined;
     fullscreen?: boolean | undefined;
-    inset?: number | SizeTokens | {
-        top?: number;
-        bottom?: number;
-        left?: number;
-        right?: number;
-    } | undefined;
 }>, "children" | "isInput" | "title" | "fileName" | "short"> & {
     children: React.ReactNode;
     title: string;
@@ -24,12 +18,6 @@ export declare const Showcase: import("tamagui").TamaguiComponent<Omit<import("@
 }, import("@tamagui/web").StackStyleBase, {
     elevation?: number | SizeTokens | undefined;
     fullscreen?: boolean | undefined;
-    inset?: number | SizeTokens | {
-        top?: number;
-        bottom?: number;
-        left?: number;
-        right?: number;
-    } | undefined;
 }, import("@tamagui/web").StaticConfigPublic>;
 export declare const PhoneScaleProvider: React.ProviderExoticComponent<Partial<{
     scale: number;
@@ -60,21 +48,9 @@ type ResizableBoxExtraProps = {
 declare const ResizableBox: import("tamagui").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
     elevation?: number | SizeTokens | undefined;
     fullscreen?: boolean | undefined;
-    inset?: number | SizeTokens | {
-        top?: number;
-        bottom?: number;
-        left?: number;
-        right?: number;
-    } | undefined;
 }>, "hideDragHandle"> & ResizableBoxExtraProps, import("tamagui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & ResizableBoxExtraProps, import("@tamagui/web").StackStyleBase, {
     elevation?: number | SizeTokens | undefined;
     fullscreen?: boolean | undefined;
-    inset?: number | SizeTokens | {
-        top?: number;
-        bottom?: number;
-        left?: number;
-        right?: number;
-    } | undefined;
 }, import("@tamagui/web").StaticConfigPublic>;
 export declare function Hint({ children }: {
     children: React.ReactNode;

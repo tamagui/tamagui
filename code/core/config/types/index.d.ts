@@ -845,7 +845,6 @@ export declare const config: {
     settings: {
         defaultFont: string;
         shouldAddPrefersColorThemes: true;
-        themeClassNameOnRoot: true;
         mediaQueryDefaultActive: {
             xl: boolean;
             lg: boolean;

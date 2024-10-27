@@ -82,13 +82,6 @@ export const Text = createComponent<
       },
     }),
 
-    /**
-     * @deprecated Use ellipsis instead
-     */
-    ellipsis: {
-      true: ellipsisStyle,
-    },
-
     ellipsis: {
       true: ellipsisStyle,
     },
