@@ -15,6 +15,7 @@ import type {
 } from '@tamagui/web'
 import { Spacer, getTokens, getVariableValue, styled, useProps } from '@tamagui/web'
 import type { FunctionComponent, ReactNode } from 'react'
+import { useTheme } from '@tamagui/core'
 
 type ListItemIconProps = { color?: any; size?: any }
 type IconProp = JSX.Element | FunctionComponent<ListItemIconProps> | null
@@ -78,7 +79,6 @@ export const ListItemFrame = styled(ThemeableStack, {
         maxWidth: '100%',
         overflow: 'hidden',
         flexDirection: 'row',
-        backgroundColor: '$background',
         cursor: 'default',
       },
     },
@@ -283,7 +283,14 @@ export const useListItem = (
 const ListItemComponent = ListItemFrame.styleable<ListItemExtraProps>(
   function ListItem(props, ref) {
     const { props: listItemProps } = useListItem(props)
-    return <ListItemFrame ref={ref} {...listItemProps} />
+    const theme = useTheme()
+    return (
+      <ListItemFrame
+        ref={ref}
+        {...listItemProps}
+        backgroundColor={theme.background?.val}
+      />
+    )
   }
 )
 
