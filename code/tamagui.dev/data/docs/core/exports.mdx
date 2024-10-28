@@ -10,7 +10,7 @@ Let's take a quick look through some of the useful other exports in `@tamagui/co
 [Constants are re-exported from @tamagui/constants](https://github.com/tamagui/tamagui/blob/master/packages/constants/src/index.ts):
 
 - `isWeb` - True if targeting the web. Will be true both for SSR and client.
-- `isWindowDefined` - `typeof window === 'undefined'`
+- `isWindowDefined` - `typeof window !== 'undefined'`
 - `isServer` - `isWeb && !isWindowDefined`.
 - `isClient` - `isWeb && isWindowDefined`.
 - `useIsomorphicLayoutEffect` - `isServer ? useEffect : useLayoutEffect`. Helper for SSR rendering without warnings.
