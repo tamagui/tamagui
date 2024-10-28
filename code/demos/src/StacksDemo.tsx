@@ -3,13 +3,13 @@ import { XStack, YStack, ZStack } from 'tamagui'
 
 export function StacksDemo() {
   return (
-    <XStack maxWidth={250} padding="$2" alignSelf="center" space>
+    <XStack maxWidth={250} padding="$2" alignSelf="center" gap="$2">
       <YStack
         flex={1}
-        space="$2"
         borderWidth={2}
         borderColor="$color"
         borderRadius="$4"
+        gap="$2"
         padding="$2"
       >
         <YStack backgroundColor="$color" borderRadius="$3" padding="$2" />
@@ -19,10 +19,10 @@ export function StacksDemo() {
 
       <XStack
         flex={1}
-        space="$2"
         borderWidth={2}
         borderColor="$color"
         borderRadius="$4"
+        gap="$2"
         padding="$2"
       >
         <YStack backgroundColor="$color" borderRadius="$3" padding="$2" />
