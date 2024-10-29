@@ -16,9 +16,9 @@
     "@tamagui/lucide-icons": "1.116.9",
     "@tamagui/mdx-2": "1.116.9",
     "@tamagui/themes": "1.116.9",
-    "@vxrn/color-scheme": "^1.1.325",
+    "@vxrn/color-scheme": "^1.1.326",
     "mdx-bundler": "^10.0.2",
-    "one": "1.1.325",
+    "one": "1.1.326",
     "react": ">=18.0.0",
     "react-native": "0.74.1",
     "tamagui": "1.116.9"
