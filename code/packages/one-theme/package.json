@@ -17,11 +17,7 @@
       "default": "./dist/cjs/index.native.js"
     }
   },
-  "files": [
-    "src",
-    "types",
-    "dist"
-  ],
+  "files": ["src", "types", "dist"],
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
@@ -35,7 +31,7 @@
   },
   "devDependencies": {
     "@tamagui/build": "1.116.9",
-    "react": "^18.2.0 || ^19.0.0",
+    "react": ">=18.0.0",
     "react-native": "0.74.1"
   },
   "peerDependencies": {

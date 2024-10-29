@@ -6,14 +6,8 @@
   "main": "dist/cjs",
   "module": "dist/esm",
   "module:jsx": "dist/jsx",
-  "sideEffects": [
-    "*.css"
-  ],
-  "files": [
-    "src",
-    "types",
-    "dist"
-  ],
+  "sideEffects": ["*.css"],
+  "files": ["src", "types", "dist"],
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
@@ -58,7 +52,7 @@
   },
   "devDependencies": {
     "@tamagui/build": "1.116.9",
-    "react": "^18.2.0 || ^19.0.0",
+    "react": ">=18.0.0",
     "react-native": "0.74.1"
   },
   "publishConfig": {

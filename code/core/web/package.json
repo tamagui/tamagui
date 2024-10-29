@@ -9,9 +9,7 @@
   "author": {
     "name": "Nate Wienert"
   },
-  "sideEffects": [
-    "*.css"
-  ],
+  "sideEffects": ["*.css"],
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
@@ -20,12 +18,7 @@
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
-  "files": [
-    "types",
-    "dist",
-    "src",
-    "reset.css"
-  ],
+  "files": ["types", "dist", "src", "reset.css"],
   "dependencies": {
     "@tamagui/compose-refs": "1.116.9",
     "@tamagui/constants": "1.116.9",
@@ -36,7 +29,7 @@
     "@tamagui/use-did-finish-ssr": "1.116.9",
     "@tamagui/use-event": "1.116.9",
     "@tamagui/use-force-update": "1.116.9",
-    "react": "^18.2.0 || ^19.0.0",
+    "react": ">=18.0.0",
     "react-dom": "^18.2.0 || ^19.0.0"
   },
   "devDependencies": {
