@@ -69,13 +69,13 @@ export const ListItemFrame = styled(ThemeableStack, {
   variants: {
     unstyled: {
       false: {
-        backgroundColor: '$background',
         size: '$true',
         alignItems: 'center',
         justifyContent: 'space-between',
         flexWrap: 'nowrap',
         width: '100%',
         borderColor: '$borderColor',
+        backgroundColor: '$background',
         maxWidth: '100%',
         overflow: 'hidden',
         flexDirection: 'row',

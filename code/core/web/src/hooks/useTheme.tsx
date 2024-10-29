@@ -1,6 +1,8 @@
 import React from 'react'
 import { isClient, isIos, isServer, isWeb } from '@tamagui/constants'
 
+import { DynamicColorIOS } from 'react-native'
+
 import { getConfig, getSetting } from '../config'
 import type { Variable } from '../createVariable'
 import { getVariable } from '../createVariable'
@@ -32,46 +34,36 @@ export type ChangedThemeResponse = {
 const emptyProps = { name: null }
 
 let cached: any
-function getDefaultThemeProxied() {
-  if (cached) return cached
+
+function getDefaultThemeProxied(): UseThemeResult {
   const config = getConfig()
   const name = config.themes.light ? 'light' : Object.keys(config.themes)[0]
-  const defaultTheme = config.themes[name]
-  cached = getThemeProxied({ theme: defaultTheme, name })
-  return cached
+  if (!cachedDefaultTheme[name]) {
+    const theme = config.themes[name]
+    cachedDefaultTheme[name] = getThemeProxied({
+      theme,
+      name,
+      scheme: 'light',
+    })
+  }
+  return cachedDefaultTheme[name]
 }
-
 export type ThemeGettable<Val> = Val & {
   /**
-   * Tries to return an optimized value that avoids the need for re-rendering:
+   * Returns an optimized value that avoids the need for re-rendering:
    * On web a CSS variable, on iOS a dynamic color, on Android it doesn't
-   * optimize and returns the underyling value.
-   *
-   * See: https://reactnative.dev/docs/dynamiccolorios
+   * optimize and returns the underlying value.
    *
    * @param platform when "web" it will only return the dynamic value for web, avoiding the iOS dynamic value.
    * For things like SVG, gradients, or other external components that don't support it, use this option.
    */
   get: (
     platform?: 'web'
-  ) =>
-    | string
-    | (Val extends Variable<infer X>
-        ? X extends VariableValGeneric
-          ? any
-          : Exclude<X, Variable>
-        : Val extends VariableVal
-          ? string | number
-          : unknown)
+  ) => string | (Val extends VariableVal ? string | number : unknown)
 }
 
 export type UseThemeResult = {
-  [Key in keyof ThemeParsed | keyof Tokens['color']]: ThemeGettable<
-    Key extends keyof ThemeParsed ? ThemeParsed[Key] : Variable<any>
-  >
-} & {
-  // fallback to other tokens
-  [Key in string & {}]?: ThemeGettable<Variable<any>>
+  [Key in keyof ThemeParsed]: ThemeGettable<ThemeParsed[Key]>
 }
 
 // not used by anything but its technically more correct type, but its annoying to have in intellisense so leaving it
@@ -84,11 +76,13 @@ export type UseThemeResult = {
 //   >
 // }
 
-export const useTheme = (props: ThemeProps = emptyProps) => {
+export const useTheme = (props: ThemeProps = {}) => {
   const [_, theme] = useThemeWithState(props)
   const res = theme || getDefaultThemeProxied()
   return res as UseThemeResult
 }
+
+const cachedDefaultTheme: { [key: string]: UseThemeResult } = {}
 
 export const useThemeWithState = (
   props: UseThemeWithStateProps
@@ -141,7 +135,13 @@ export const useThemeWithState = (
     if (!themeManager || !state?.theme) {
       return {}
     }
-    return getThemeProxied(state, props.deopt, themeManager, keys.current, props.debug)
+    return getThemeProxied(
+      { theme: state.theme, name: state.name, scheme: state.scheme as string },
+      props.deopt,
+      themeManager,
+      keys.current,
+      props.debug
+    )
   }, [state?.theme, themeManager, props.deopt, props.debug])
 
   if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
@@ -160,148 +160,135 @@ export const useThemeWithState = (
 }
 
 export function getThemeProxied(
-  { theme, name, scheme }: ThemeManagerState,
+  {
+    theme,
+    name,
+    scheme,
+  }: {
+    theme: ThemeParsed
+    name: string
+    scheme: string
+  },
   deopt = false,
   themeManager?: ThemeManager,
-  keys?: string[],
+  keys: string[] = [],
   debug?: DebugProp
 ): UseThemeResult {
-  if (!theme) return {}
+  if (!theme) return {} as UseThemeResult
 
   const config = getConfig()
 
   function track(key: string) {
     if (keys && !keys.includes(key)) {
       if (!keys.length) {
-        // tracking new key for first time, do an update check
+        // Schedule an update check
         setTimeout(() => {
           themeManager?.selfUpdate()
         })
       }
-
       keys.push(key)
       if (process.env.NODE_ENV === 'development' && debug) {
-        console.info(` 🎨 useTheme() tracking new key: ${key}`)
+        console.info(`🎨 useTheme() tracking new key: ${key}`)
       }
     }
   }
 
-  return new Proxy(theme, {
-    has(_, key) {
-      if (Reflect.has(theme, key)) {
+  const themeProxy = new Proxy(theme, {
+    has(target, key) {
+      if (Reflect.has(target, key)) {
         return true
       }
       if (typeof key === 'string') {
-        if (key[0] === '$') key = key.slice(1)
-        return themeManager?.allKeys.has(key)
+        const keyName = key.startsWith('$') ? key.slice(1) : key
+        return themeManager?.allKeys.has(keyName)
       }
+      return false
     },
-    get(_, key) {
-      if (
-        // dont ask me, idk why but on hermes you can see that useTheme()[undefined] passes in STRING undefined to proxy
-        // if someone is crazy enough to use "undefined" as a theme key then this not working is on them
-        key !== 'undefined' &&
-        typeof key === 'string'
-      ) {
-        // auto convert variables to plain
-        const keyString = key[0] === '$' ? key.slice(1) : key
-        const val = theme[keyString]
+    get(target, key): any {
+      if (key === '__isTheme') return true
+      if (typeof key !== 'string' || key === 'undefined') {
+        return Reflect.get(target, key)
+      }
 
-        if (val && typeof val === 'object') {
-          // TODO this could definitely be done better by at the very minimum
-          // proxying it up front and just having a listener here
-          return new Proxy(val as any, {
-            // when they touch the actual value we only track it
-            // if its a variable (web), its ignored!
-            get(_, subkey) {
-              if (subkey === 'val') {
-                if (!globalThis.tamaguiAvoidTracking) {
-                  if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-                    console.info(
-                      ` 🎨 useTheme() tracking new key because of .val access`,
-                      new Error().stack
-                    )
-                  }
-                  // always track .val
-                  track(keyString)
-                }
-              } else if (subkey === 'get') {
-                return (platform?: 'web') => {
-                  const outVal = getVariable(val)
+      const keyName = key.startsWith('$') ? key.slice(1) : key
+      const val = theme[keyName]
 
-                  if (process.env.TAMAGUI_TARGET === 'native') {
-                    // ios can avoid re-rendering in some cases when we are using a root light/dark
-                    // disabled in cases where we have animations
-                    if (
-                      platform !== 'web' &&
-                      isIos &&
-                      !deopt &&
-                      getSetting('fastSchemeChange')
-                    ) {
-                      if (scheme) {
-                        const isInversed = getIsInversed(themeManager)
-
-                        // this is maybe confusing but basically we track inverse, if inversed
-                        // we inverse it here so that it flips everything properly
-                        if (isInversed) {
-                          scheme = scheme === 'dark' ? 'light' : 'dark'
-                        }
-
-                        const oppositeThemeName = name.replace(
-                          scheme === 'dark' ? 'dark' : 'light',
-                          scheme === 'dark' ? 'light' : 'dark'
-                        )
-                        const oppositeTheme = config.themes[oppositeThemeName]
-                        const oppositeVal = getVariable(oppositeTheme?.[keyString])
-                        if (oppositeVal) {
-                          const dynamicVal = {
-                            dynamic: {
-                              dark: scheme === 'dark' ? outVal : oppositeVal,
-                              light: scheme === 'light' ? outVal : oppositeVal,
-                            },
-                          }
-                          return dynamicVal
-                        }
-                      }
-                    }
-
-                    if (process.env.NODE_ENV === 'development' && debug) {
-                      console.info(` 🎨 useTheme() tracking new key because of: 
-                        not web: ${platform !== 'web'}
-                        isIOS: ${isIos}
-                        deopt: ${deopt}
-                        fastScheme: ${getSetting('fastSchemeChange')}
-                        inversed: ${getIsInversed(themeManager)}
-                      `)
-                    }
-
-                    track(keyString)
-                  }
-
-                  return outVal
-                }
-              }
-
-              return Reflect.get(val as any, subkey)
-            },
-          })
-        }
-
+      if (val === undefined) {
+        // Reintroduce the error handling code
         if (
           process.env.NODE_ENV === 'development' &&
           process.env.TAMAGUI_FEAT_THROW_ON_MISSING_THEME_VALUE === '1'
         ) {
           throw new Error(
-            `[tamagui] No theme key "${key}" found in theme ${name}. \n  Keys in theme: ${Object.keys(
+            `[tamagui] No theme key "${keyName}" found in theme "${name}".\nKeys in theme: ${Object.keys(
               theme
             ).join(', ')}`
           )
         }
+
+        // Return undefined if the key doesn't exist
+        return undefined
       }
 
-      return Reflect.get(_, key)
+      // Ensure key is tracked
+      if (!globalThis.tamaguiAvoidTracking) {
+        track(keyName)
+      }
+
+      if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+        console.info(`🎨 useTheme() accessed key: ${keyName}`)
+      }
+
+      const getFn = (platform?: 'web') => {
+        const outVal = getVariable(val)
+
+        if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+          console.info(
+            `🎨 useTheme() ${keyName}.get(${platform ?? 'native'}) called, outVal:`,
+            outVal
+          )
+        }
+
+        if (
+          process.env.TAMAGUI_TARGET === 'native' &&
+          platform !== 'web' &&
+          isIos &&
+          !deopt &&
+          getSetting('fastSchemeChange')
+        ) {
+          if (scheme) {
+            const isInversed = getIsInversed(themeManager)
+            const colorLight = getVariable(config.themes[name]?.[keyName] ?? val)
+            const colorDark = getVariable(config.themes[`${name}_dark`]?.[keyName] ?? val)
+            const dynamicVal = DynamicColorIOS({
+              light: isInversed ? colorDark : colorLight,
+              dark: isInversed ? colorLight : colorDark,
+            })
+
+            if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+              console.info(
+                `🎨 useTheme() ${keyName}.get(${platform ?? 'native'}) returning DynamicColorIOS`,
+                dynamicVal
+              )
+            }
+
+            return dynamicVal
+          }
+        }
+
+        return outVal
+      }
+
+      // Create the ThemeGettable object
+      const themeGettable: ThemeGettable<typeof val> = Object.assign({}, val, {
+        get: getFn,
+      })
+
+      return themeGettable
     },
-  }) as UseThemeResult
+  })
+
+  return themeProxy as unknown as UseThemeResult
 }
 
 // to tell if we are inversing the scheme anywhere in the tree, if so we need to de-opt
