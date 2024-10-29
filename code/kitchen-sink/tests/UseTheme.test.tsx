@@ -1,15 +1,18 @@
 import { expect, test } from '@playwright/test'
-
 import { setupPage } from './test-utils'
-import { getStyles } from './utils'
 
 test.beforeEach(async ({ page }) => {
   await setupPage(page, { name: 'UseTheme', type: 'useCase' })
 })
 
-test(`useTheme() returns right values`, async ({ page }) => {
-  expect(await page.locator('#theme-get').innerText()).toBe(`var(--background)`)
-  expect(await page.locator('#theme-val').innerText()).toBe(`#fff`)
-  expect(await page.locator('#token-get').innerText()).toBe(`var(--blue1)`)
-  expect(await page.locator('#token-val').innerText()).toBe(`hsl(206, 100%, 99.2%)`)
+test('useTheme() returns correct values', async ({ page }) => {
+  const themeGet = await page.locator('#theme-get').innerText()
+  const themeVal = await page.locator('#theme-val').innerText()
+  const tokenGet = await page.locator('#token-get').innerText()
+  const tokenVal = await page.locator('#token-val').innerText()
+
+  expect(themeGet).toBe('x.background.get():\n"var(--background)"')
+  expect(themeVal).toBe('x.background.val:\n#fff')
+  expect(tokenGet).toBe('x.blue1.get():\n"var(--blue1)"')
+  expect(tokenVal).toBe('x.blue1.val:\nhsl(206, 100%, 99.2%)')
 })
