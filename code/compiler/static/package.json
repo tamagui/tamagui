@@ -68,6 +68,7 @@
     "find-root": "^1.1.0",
     "fs-extra": "^11.2.0",
     "invariant": "^2.2.4",
+    "js-yaml": "^4.1.0",
     "lodash": "^4.17.21",
     "react-dom": "^18.2.0 || ^19.0.0",
     "react-native-web": "^0.19.12"

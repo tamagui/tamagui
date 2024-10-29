@@ -7722,6 +7722,7 @@ __metadata:
     find-root: "npm:^1.1.0"
     fs-extra: "npm:^11.2.0"
     invariant: "npm:^2.2.4"
+    js-yaml: "npm:^4.1.0"
     lodash: "npm:^4.17.21"
     null-loader: "npm:^4.0.1"
     react: "npm:>=18.0.0"
