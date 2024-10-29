@@ -1,10 +1,7 @@
-import React from 'react'
 import { isClient, isIos, isServer, isWeb } from '@tamagui/constants'
-
-import { DynamicColorIOS } from 'react-native'
+import React from 'react'
 
 import { getConfig, getSetting } from '../config'
-import type { Variable } from '../createVariable'
 import { getVariable } from '../createVariable'
 import type { ThemeManagerState } from '../helpers/ThemeManager'
 import { ThemeManager, getHasThemeUpdatingProps } from '../helpers/ThemeManager'
@@ -14,11 +11,12 @@ import type {
   DebugProp,
   ThemeParsed,
   ThemeProps,
-  Tokens,
   UseThemeWithStateProps,
   VariableVal,
-  VariableValGeneric,
 } from '../types'
+
+const DynamicColorIOS =
+  process.env.TAMAGUI_TARGET === 'native' ? require('react-native').DynamicColorIOS : null
 
 export type ChangedThemeResponse = {
   state?: ThemeManagerState
@@ -214,7 +212,6 @@ export function getThemeProxied(
       const val = theme[keyName]
 
       if (val === undefined) {
-        // Reintroduce the error handling code
         if (
           process.env.NODE_ENV === 'development' &&
           process.env.TAMAGUI_FEAT_THROW_ON_MISSING_THEME_VALUE === '1'
@@ -254,7 +251,8 @@ export function getThemeProxied(
           platform !== 'web' &&
           isIos &&
           !deopt &&
-          getSetting('fastSchemeChange')
+          getSetting('fastSchemeChange') &&
+          DynamicColorIOS // Add this check
         ) {
           if (scheme) {
             const isInversed = getIsInversed(themeManager)
