@@ -1,11 +1,13 @@
 import React from 'react'
 import { Button, Card, Square, Theme, YStack, Text } from 'tamagui'
 
+import { TEST_IDS } from '../constants/test-ids'
+
 export function ThemeChange() {
   return (
     <>
-      <Inner>
-        <Inner>
+      <Inner level={0}>
+        <Inner level={1}>
           <Card width={100} height={100} />
         </Inner>
       </Inner>
@@ -13,7 +15,10 @@ export function ThemeChange() {
   )
 }
 
-export function Inner({ children }: { children?: React.ReactNode }) {
+export function Inner({
+  children,
+  level,
+}: { children?: React.ReactNode; level: number }) {
   const themes = [
     'yellow',
     'blue',
@@ -40,13 +45,13 @@ export function Inner({ children }: { children?: React.ReactNode }) {
       justifyContent="center"
       gap="$5"
     >
-      <Text>
+      <Text id={`${TEST_IDS.themeInfo}-${level}`}>
         <Text fontWeight="bold">Inner</Text> {JSON.stringify({ theme })}
       </Text>
 
       <Button
+        id={`${TEST_IDS.changeThemeButton}-${level}`}
         onPress={() => {
-          // setTheme(theme === 'yellow' ? 'blue' : 'yellow')
           cycleTheme()
         }}
       >
@@ -54,8 +59,8 @@ export function Inner({ children }: { children?: React.ReactNode }) {
       </Button>
 
       <Theme name={theme}>
-        <SandboxThemeChildStatic />
-        <SandboxThemeChildDynamic />
+        <SandboxThemeChildStatic level={level} />
+        <SandboxThemeChildDynamic level={level} />
         <YStack gap="$2">
           <Button themeInverse>Inverse</Button>
           <Button>Normal</Button>
@@ -67,10 +72,24 @@ export function Inner({ children }: { children?: React.ReactNode }) {
   )
 }
 
-const SandboxThemeChildStatic = React.memo(() => {
-  return <Square size={20} backgroundColor="$color10" />
+const SandboxThemeChildStatic = React.memo(({ level }: { level: number }) => {
+  return (
+    <Square
+      id={`${TEST_IDS.staticSquare}-${level}`}
+      size={20}
+      backgroundColor="$color10"
+    />
+  )
 })
 
-const SandboxThemeChildDynamic = React.memo(() => {
-  return <Square animation="bouncy" size={20} backgroundColor="$color10" />
+const SandboxThemeChildDynamic = React.memo(({ level }: { level: number }) => {
+  return (
+    <Square
+      id={`${TEST_IDS.dynamicSquare}-${level}`}
+      animation="bouncy"
+      size={20}
+      backgroundColor="$color10"
+      animateOnly={['backgroundColor']}
+    />
+  )
 })
