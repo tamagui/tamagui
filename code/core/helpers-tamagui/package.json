@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/helpers-tamagui",
-  "version": "1.116.9",
+  "version": "1.116.10",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
@@ -30,11 +30,11 @@
     }
   },
   "dependencies": {
-    "@tamagui/helpers": "1.116.9",
-    "@tamagui/web": "1.116.9"
+    "@tamagui/helpers": "1.116.10",
+    "@tamagui/web": "1.116.10"
   },
   "devDependencies": {
-    "@tamagui/build": "1.116.9",
+    "@tamagui/build": "1.116.10",
     "react": ">=18.0.0",
     "vitest": "^2.1.3"
   },
