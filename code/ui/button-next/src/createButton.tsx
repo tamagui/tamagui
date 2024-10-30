@@ -35,7 +35,6 @@ export const createButton = <Variants extends Record<string, any>>(options: {
   })
 
   return withStaticProperties(Frame, {
-    Apply: context.Provider,
     Text,
     Icon,
   })

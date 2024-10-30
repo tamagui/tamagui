@@ -7,7 +7,14 @@ export function HomePage() {
   return (
     <ScrollView horizontal minHeight="100%">
       <XStack>
-        <YStack maw={250}>
+        <YStack w={250}>
+          <H4>Quick Links</H4>
+          <Link href="/sandbox">
+            <ListItem title="Sandbox" />
+          </Link>
+        </YStack>
+
+        <YStack w={250}>
           <H4>Test Cases</H4>
           {Object.keys(AllTests).map((path) => {
             return (
@@ -18,7 +25,7 @@ export function HomePage() {
           })}
         </YStack>
 
-        <YStack maw={250}>
+        <YStack w={250}>
           <H4>Bento</H4>
           {Object.keys(AllBento).map((path) => {
             return (

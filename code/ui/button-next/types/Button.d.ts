@@ -23,13 +23,6 @@ export declare const Button: import("react").ForwardRefExoticComponent<import("@
         variant?: ButtonVariant;
     }, import("@tamagui/web").StaticConfigPublic];
 } & {
-    Apply: import("react").ProviderExoticComponent<Partial<{
-        size?: SizeTokens | undefined;
-        variant?: ButtonVariant | undefined;
-    }> & {
-        children?: import("react").ReactNode;
-        scope?: string;
-    }>;
     Text: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, any, any, any, {
         size?: SizeTokens;
         variant?: ButtonVariant;
