@@ -12,21 +12,29 @@ export function UseTheme() {
   })
   return (
     <YStack gap="$4">
-      <YStack id="theme-get">
+      <YStack>
         <Text>x.background.get():</Text>
-        <Text fontFamily="$mono">{JSON.stringify(x.background.get())}</Text>
+        <Text id="theme-get" fontFamily="$mono">
+          {x.background.get()}
+        </Text>
       </YStack>
-      <YStack id="theme-val">
+      <YStack>
         <Text>x.background.val:</Text>
-        <Text fontFamily="$mono">{x.background.val}</Text>
+        <Text id="theme-val" fontFamily="$mono">
+          {x.background.val}
+        </Text>
       </YStack>
-      <YStack id="token-get">
+      <YStack>
         <Text>x.blue1.get():</Text>
-        <Text fontFamily="$mono">{JSON.stringify(x.blue1.get())}</Text>
+        <Text id="token-get" fontFamily="$mono">
+          {x.blue1.get()}
+        </Text>
       </YStack>
-      <YStack id="token-val">
+      <YStack>
         <Text>x.blue1.val:</Text>
-        <Text fontFamily="$mono">{x.blue1.val}</Text>
+        <Text id="token-val" fontFamily="$mono">
+          {x.blue1.val}
+        </Text>
       </YStack>
     </YStack>
   )
