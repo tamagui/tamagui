@@ -35,6 +35,7 @@
     }
   },
   "dependencies": {
+    "@tamagui/adapt": "1.116.10",
     "@tamagui/animate-presence": "1.116.10",
     "@tamagui/animations-react-native": "1.116.10",
     "@tamagui/compose-refs": "1.116.10",

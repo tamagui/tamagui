@@ -7563,6 +7563,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/sheet@workspace:code/ui/sheet"
   dependencies:
+    "@tamagui/adapt": "npm:1.116.10"
     "@tamagui/animate-presence": "npm:1.116.10"
     "@tamagui/animations-react-native": "npm:1.116.10"
     "@tamagui/build": "npm:1.116.10"
