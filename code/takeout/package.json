@@ -33,7 +33,7 @@
     "one": "1.1.326",
     "postmark": "^3.0.18",
     "react": ">=18.0.0",
-    "react-dom": "^18.2.0 || ^19.0.0",
+    "react-dom": ">=18.0.0",
     "react-hook-form": "^7.51.0",
     "react-native": "0.74.1",
     "react-native-reanimated": "npm:react-native-reanimated@3.13.0-rc.1",
