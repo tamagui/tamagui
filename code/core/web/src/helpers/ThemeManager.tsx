@@ -23,6 +23,11 @@ export type ThemeManagerState = {
   parentName?: string
   theme?: ThemeParsed | null
   isComponent?: boolean
+
+  // if a theme is fixed to light/dark, we need to track
+  // so that dynamiccolorIOS knows its fixed a certain way
+  isSchemeFixed?: boolean
+
   className?: string
   scheme?: ColorScheme
 }
@@ -90,6 +95,16 @@ export class ThemeManager {
       this.updateState(nextState, shouldNotify)
       return nextState
     }
+  }
+
+  getParents() {
+    const parents: ThemeManager[] = []
+    let current: ThemeManager | null = this
+    while (current) {
+      parents.push(current)
+      current = current.parentManager
+    }
+    return parents
   }
 
   updateState(nextState: ThemeManagerState, shouldNotify = true) {
@@ -328,6 +343,7 @@ function getState(
         theme: themes[found],
         className,
         isComponent,
+        isSchemeFixed: props.name === 'light' || props.name === 'dark',
         scheme,
       }
 

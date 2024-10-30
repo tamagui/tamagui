@@ -1,63 +1,95 @@
-import React from "react";
-import { Button, Card, Square, Theme, YStack } from 'tamagui';
+import React from 'react'
+import { Button, Card, Square, Theme, YStack, Text } from 'tamagui'
+
+import { TEST_IDS } from '../constants/test-ids'
 
 export function ThemeChange() {
-  return <Button themeInverse>inverse</Button>;
-
   return (
     <>
-      <Inner>
-        <Inner>
-          <Card w={100} h={100} />
+      <Inner level={0}>
+        <Inner level={1}>
+          <Card width={100} height={100} />
         </Inner>
       </Inner>
-    </>);
-
+    </>
+  )
 }
 
-export function Inner(props: {children?: any;}) {
-  const [theme, setTheme] = React.useState(('yellow' as any));
+export function Inner({
+  children,
+  level,
+}: { children?: React.ReactNode; level: number }) {
+  const themes = [
+    'yellow',
+    'blue',
+    'orange',
+    'green',
+    'purple',
+    'pink',
+    'red',
+    'gray',
+  ] as const
+  const [themeIndex, setThemeIndex] = React.useState(0)
+  const theme = themes[themeIndex]
+
+  const cycleTheme = () => {
+    setThemeIndex((prevIndex) => (prevIndex + 1) % themes.length)
+  }
 
   return (
-    <YStack bw={1} bc="red" p="$4" ai="center" jc="center" gap="$5">
-      <pre>
-        <code>
-          <b>Inner</b>{' '}
-          {JSON.stringify({
-            theme
-          })}
-        </code>
-      </pre>
+    <YStack
+      borderWidth={1}
+      borderColor="red"
+      padding="$4"
+      alignItems="center"
+      justifyContent="center"
+      gap="$5"
+    >
+      <Text id={`${TEST_IDS.themeInfo}-${level}`}>
+        <Text fontWeight="bold">Inner</Text> {JSON.stringify({ theme })}
+      </Text>
 
       <Button
+        id={`${TEST_IDS.changeThemeButton}-${level}`}
         onPress={() => {
-          setTheme(theme === 'yellow' ? 'blue' : 'yellow');
-        }}>
-
+          cycleTheme()
+        }}
+      >
         Change Theme
       </Button>
 
-      {/* @ts-ignore */}
       <Theme name={theme}>
-        <SandboxThemeChildStatic />
-        <SandboxThemeChildDynamic />
+        <SandboxThemeChildStatic level={level} />
+        <SandboxThemeChildDynamic level={level} />
+        <YStack gap="$2">
+          <Button themeInverse>Inverse</Button>
+          <Button>Normal</Button>
+        </YStack>
 
-        <Button themeInverse>inverse</Button>
-
-        {props.children}
+        {children}
       </Theme>
-    </YStack>);
-
+    </YStack>
+  )
 }
 
-const SandboxThemeChildStatic = React.memo(() => {
-  // @ts-ignore
-  return <Square size={20} backgroundColor="$color10" />;
-});
-
-const SandboxThemeChildDynamic = React.memo(() => {
+const SandboxThemeChildStatic = React.memo(({ level }: { level: number }) => {
   return (
-    // @ts-ignore
-    <Square animation="bouncy" size={20} backgroundColor="$color10" />);
+    <Square
+      id={`${TEST_IDS.staticSquare}-${level}`}
+      size={20}
+      backgroundColor="$color10"
+    />
+  )
+})
 
-});
+const SandboxThemeChildDynamic = React.memo(({ level }: { level: number }) => {
+  return (
+    <Square
+      id={`${TEST_IDS.dynamicSquare}-${level}`}
+      animation="bouncy"
+      size={20}
+      backgroundColor="$color10"
+      animateOnly={['backgroundColor']}
+    />
+  )
+})

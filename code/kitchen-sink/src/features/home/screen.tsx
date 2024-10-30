@@ -17,6 +17,16 @@ import {
 import { ColorSchemeListItem } from './ColorSchemeListItem'
 
 export function HomeScreen() {
+  // To test a single case easily:
+  // return (
+  //   <>
+  //     <ColorSchemeToggle />
+  //     <ScrollView>
+  //       <ThemeChange />
+  //     </ScrollView>
+  //   </>
+  // )
+
   return (
     <ScrollView>
       <YStack bg="$color2" p="$3" pt="$6" pb="$8" f={1} space>
