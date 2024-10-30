@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/compose-refs",
-  "version": "1.116.11",
+  "version": "1.116.12",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -20,7 +20,7 @@
     "lint:fix": "biome check --write src"
   },
   "devDependencies": {
-    "@tamagui/build": "1.116.11",
+    "@tamagui/build": "1.116.12",
     "react": ">=18.0.0"
   },
   "publishConfig": {
