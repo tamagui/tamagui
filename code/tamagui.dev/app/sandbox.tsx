@@ -10,7 +10,7 @@ const Test = styled(View, {
   backgroundColor: 'red',
 
   $md: {
-    '$platform-web': {
+    $web: {
       backgroundColor: 'green',
     },
   },

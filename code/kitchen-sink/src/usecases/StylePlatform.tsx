@@ -1,14 +1,16 @@
-import { View } from 'tamagui'
+import { Text, View } from 'tamagui'
 
 export function StylePlatform() {
   return (
     <View
       id="style-platform"
-      $platform-web={{
+      $web={{
         my: 10,
         overflowY: 'scroll',
         backgroundColor: 'red',
       }}
-    />
+    >
+      <Text>Hello</Text>
+    </View>
   )
 }
