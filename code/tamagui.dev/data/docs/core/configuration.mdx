@@ -783,7 +783,7 @@ You can pass a `settings` object to `createTamagui`:
       required: false,
       type: 'boolean',
       default: false,
-      description: `(beta) On iOS, this enables a mode where Tamagui returns color values using DynamicColorIOS significantly speeding up dark/light re-renders. If you use theme inverse or manually change from light to dark without also changing the native color scheme, this will break. We're working on accounting for these last edge cases before removing the beta tag.`,
+      description: `On iOS, this enables a mode where Tamagui returns color values using DynamicColorIOS significantly speeding up dark/light re-renders. Note: When enabled you must make sure the defaultTheme you set on TamaguiProvider matches the current system color scheme.`,
     },
     {
       name: 'webContainerType',
