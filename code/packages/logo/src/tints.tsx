@@ -16,7 +16,7 @@ const familiesValues = {
 
 type Family = keyof typeof familiesValues
 
-const DEFAULT_FAMILY: Family = 'tamagui'
+const DEFAULT_FAMILY: Family = 'halloween'
 
 const familiesNames = Object.keys(familiesValues) as any as Family[]
 
