@@ -50,31 +50,41 @@ export default {
 Or a minimal manual setup for Vite that just adds some compatibility for react-native-web and react-native extensions:
 
 ```tsx showMore
-config.define = {
-  __DEV__: `${process.env.NODE_ENV === 'development' ? true : false}`,
-  'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-}
-
-config.resolve.alias['react-native'] = 'react-native-web'
-
-// set up web extensions
-config.optimizeDeps.esbuildOptions = {
-  ...config.optimizeDeps.esbuildOptions,
-  resolveExtensions: [
-    '.web.js',
-    '.web.jsx',
-    '.web.ts',
-    '.web.tsx',
-    '.mjs',
-    '.js',
-    '.mts',
-    '.ts',
-    '.jsx',
-    '.tsx',
-    '.json',
-  ],
-  loader: {
-    '.js': 'jsx',
+export default {
+  // Mantain all existing config, making sure to destructure nested config.
+  ...config,
+  define: {
+    DEV: `${process.env.NODE_ENV === 'development' ? true : false}`,
+    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
   },
+  resolve: {
+    ...config.resolve,
+    alias: {
+      'react-native': 'react-native-web'
+    }
+  },
+  optimizeDeps: {
+    ...config.optimizeDeps,
+    esbuildOptions: {
+      ...config.optimizeDeps?.esbuildOptions,
+      // set up web extensions
+      resolveExtensions: [
+        '.web.js',
+        '.web.jsx',
+        '.web.ts',
+        '.web.tsx',
+        '.mjs',
+        '.js',
+        '.mts',
+        '.ts',
+        '.jsx',
+        '.tsx',
+        '.json',
+      ],
+      loader: {
+        '.js': 'jsx',
+      },
+    }
+  }
 }
 ```
