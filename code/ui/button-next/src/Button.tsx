@@ -18,11 +18,17 @@ const Frame = styled(View, {
         flexWrap: 'nowrap',
         flexDirection: 'row',
         cursor: 'pointer',
-        hoverTheme: true,
-        pressTheme: true,
-        backgrounded: true,
+        backgroundColor: '$background',
         borderWidth: 1,
         borderColor: 'transparent',
+
+        hoverStyle: {
+          backgroundColor: '$backgroundHover',
+        },
+
+        pressStyle: {
+          backgroundColor: '$backgroundPress',
+        },
 
         focusVisibleStyle: {
           outlineColor: '$outlineColor',
