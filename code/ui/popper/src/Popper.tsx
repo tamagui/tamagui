@@ -341,15 +341,15 @@ export const PopperContent = React.forwardRef<
   // default to not showing if positioned at 0, 0
   let show = true
 
-  if (isAndroid) {
-    const [show_, setShow] = React.useState(false)
-    show = show_
-    React.useEffect(() => {
-      if (finalHasFloatingValue) {
-        setShow(true)
-      }
-    }, [finalHasFloatingValue, x, y])
-  }
+  // if (isAndroid) {
+  //   const [show_, setShow] = React.useState(false)
+  //   show = show_
+  //   React.useEffect(() => {
+  //     if (finalHasFloatingValue) {
+  //       setShow(true)
+  //     }
+  //   }, [finalHasFloatingValue, x, y])
+  // }
 
   const frameProps = {
     ref: contentRefs,
