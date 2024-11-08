@@ -54,8 +54,7 @@
   },
   "devDependencies": {
     "@tamagui/build": "1.116.13",
-    "burnt": "^0.12.2",
-    "react": "*"
+    "burnt": "^0.12.2"
   },
   "publishConfig": {
     "access": "public"

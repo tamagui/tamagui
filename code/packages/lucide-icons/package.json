@@ -36,7 +36,6 @@
     "glob": "^7.1.6",
     "lucide-static": "^0.447.0",
     "prop-types": "^15.7.2",
-    "react": "*",
     "react-native-svg": "^15.7.1",
     "uppercamelcase": "^3.0.0"
   },

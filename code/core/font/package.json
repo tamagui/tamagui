@@ -25,8 +25,7 @@
     "@tamagui/web": "1.116.13"
   },
   "devDependencies": {
-    "@tamagui/build": "1.116.13",
-    "react": "*"
+    "@tamagui/build": "1.116.13"
   },
   "publishConfig": {
     "access": "public"

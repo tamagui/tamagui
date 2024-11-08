@@ -17,8 +17,6 @@
     "@tamagui/core": "1.116.13",
     "@tamagui/create-theme": "1.116.13",
     "@tamagui/react-native-svg": "1.116.13",
-    "react": "*",
-    "react-dom": "*",
     "react-native-web": "^0.19.12",
     "tamagui": "1.116.13"
   },

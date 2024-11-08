@@ -35,9 +35,7 @@
     "@tamagui/stacks": "1.116.13",
     "@tamagui/start-transition": "1.116.13",
     "@tamagui/use-did-finish-ssr": "1.116.13",
-    "@tamagui/use-event": "1.116.13",
-    "react": "*",
-    "react-dom": "*"
+    "@tamagui/use-event": "1.116.13"
   },
   "devDependencies": {
     "@tamagui/build": "1.116.13",

@@ -22,9 +22,7 @@
       "default": "./dist/cjs/index.native.js"
     }
   },
-  "dependencies": {
-    "react": "*"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@tamagui/build": "1.116.13"
   },

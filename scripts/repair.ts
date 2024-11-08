@@ -127,7 +127,24 @@ async function format() {
       const pkgJson = JSON.parse(fileContents)
       // await fixPeerDeps(pkg, pkgJson)
       // await fixExports(pkg, pkgJson)
-      await fixExportsPathSpecific(pkg, pkgJson)
+      // await fixExportsPathSpecific(pkg, pkgJson)
+
+      // write your script here:
+
+      if (pkgJson.dependencies?.react) {
+        delete pkgJson.dependencies?.react
+      }
+      if (pkgJson.dependencies?.['react-dom']) {
+        delete pkgJson.dependencies?.['react-dom']
+      }
+
+      if (pkgJson.devDependencies?.react) {
+        delete pkgJson.devDependencies?.react
+      }
+      if (pkgJson.devDependencies?.['react-dom']) {
+        delete pkgJson.devDependencies?.['react-dom']
+      }
+
       // await fixScripts(pkg, pkgJson)
       await writeFile(jsonPath, JSON.stringify(pkgJson, null, 2) + '\n', {
         encoding: 'utf-8',

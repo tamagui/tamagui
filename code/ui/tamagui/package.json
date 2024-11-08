@@ -132,7 +132,6 @@
   },
   "devDependencies": {
     "@tamagui/build": "1.116.13",
-    "react": "*",
     "react-native-web": "^0.19.12"
   },
   "repository": {

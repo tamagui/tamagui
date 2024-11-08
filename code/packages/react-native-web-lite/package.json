@@ -44,9 +44,7 @@
     "invariant": "^2.2.4"
   },
   "devDependencies": {
-    "@tamagui/build": "1.116.13",
-    "react": "*",
-    "react-dom": "*"
+    "@tamagui/build": "1.116.13"
   },
   "peerDependencies": {
     "react": "*"

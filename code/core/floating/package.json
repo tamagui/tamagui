@@ -43,8 +43,6 @@
   },
   "devDependencies": {
     "@tamagui/build": "1.116.13",
-    "react": "*",
-    "react-dom": "*",
     "react-native": "0.74.1"
   }
 }

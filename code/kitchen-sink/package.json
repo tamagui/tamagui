@@ -56,8 +56,6 @@
     "expo-linking": "~6.3.1",
     "expo-splash-screen": "~0.27.4",
     "metro-react-native-babel-preset": "^0.77.0",
-    "react": "*",
-    "react-dom": "*",
     "react-native": "0.74.1",
     "react-native-gesture-handler": "2.20.0",
     "react-native-reanimated": "~3.11.0",

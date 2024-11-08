@@ -26,7 +26,6 @@
     "expo": "^51.0.0",
     "expo-modules-core": "^1.12.24",
     "one": "1.1.326",
-    "react": "*",
     "react-native": "0.74.1",
     "react-native-reanimated": "~3.11.0",
     "react-native-safe-area-context": "4.11.0",

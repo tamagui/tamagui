@@ -31,8 +31,6 @@
     "@types/lodash-es": "^4.17.6",
     "@types/uuid": "^8.3.4",
     "next": "^14.2.5",
-    "react": "*",
-    "react-dom": "*",
     "react-native": "0.74.1"
   },
   "devDependencies": {
