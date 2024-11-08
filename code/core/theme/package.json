@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/theme",
-  "version": "1.116.12",
+  "version": "1.116.13",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -32,11 +32,11 @@
     }
   },
   "dependencies": {
-    "@tamagui/constants": "1.116.12",
-    "@tamagui/web": "1.116.12"
+    "@tamagui/constants": "1.116.13",
+    "@tamagui/web": "1.116.13"
   },
   "devDependencies": {
-    "@tamagui/build": "1.116.12",
+    "@tamagui/build": "1.116.13",
     "react": "*"
   },
   "publishConfig": {
