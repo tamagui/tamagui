@@ -55,7 +55,7 @@
   "devDependencies": {
     "@tamagui/build": "1.116.12",
     "burnt": "^0.12.2",
-    "react": ">=18.0.0"
+    "react": "*"
   },
   "publishConfig": {
     "access": "public"

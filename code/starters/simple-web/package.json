@@ -18,8 +18,8 @@
     "@tamagui/create-theme": "^1.116.12",
     "@tamagui/react-native-svg": "^1.116.12",
     "expo-linear-gradient": "^12.7.2",
-    "react": ">=18.0.0",
-    "react-dom": ">=18.0.0",
+    "react": "*",
+    "react-dom": "*",
     "react-native-web": "^0.19.10",
     "tamagui": "^1.116.12"
   },

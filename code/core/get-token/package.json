@@ -33,7 +33,7 @@
   },
   "devDependencies": {
     "@tamagui/build": "1.116.12",
-    "react": ">=18.0.0"
+    "react": "*"
   },
   "peerDependencies": {
     "react": "*"

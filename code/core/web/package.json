@@ -35,9 +35,11 @@
     "@tamagui/types": "1.116.12",
     "@tamagui/use-did-finish-ssr": "1.116.12",
     "@tamagui/use-event": "1.116.12",
-    "@tamagui/use-force-update": "1.116.12",
-    "react": ">=18.0.0",
-    "react-dom": ">=18.0.0"
+    "@tamagui/use-force-update": "1.116.12"
+  },
+  "peerDependencies": {
+    "react": "*",
+    "react-dom": "*"
   },
   "devDependencies": {
     "@tamagui/build": "1.116.12",

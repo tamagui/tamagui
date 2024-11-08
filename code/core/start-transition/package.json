@@ -23,7 +23,7 @@
     }
   },
   "dependencies": {
-    "react": ">=18.0.0"
+    "react": "*"
   },
   "devDependencies": {
     "@tamagui/build": "1.116.12"

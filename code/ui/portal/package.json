@@ -36,8 +36,8 @@
     "@tamagui/start-transition": "1.116.12",
     "@tamagui/use-did-finish-ssr": "1.116.12",
     "@tamagui/use-event": "1.116.12",
-    "react": ">=18.0.0",
-    "react-dom": ">=18.0.0"
+    "react": "*",
+    "react-dom": "*"
   },
   "devDependencies": {
     "@tamagui/build": "1.116.12",

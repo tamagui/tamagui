@@ -19,7 +19,7 @@
     "@vxrn/color-scheme": "^1.1.326",
     "mdx-bundler": "^10.0.2",
     "one": "1.1.326",
-    "react": ">=18.0.0",
+    "react": "*",
     "react-native": "0.74.1",
     "tamagui": "1.116.12"
   },
