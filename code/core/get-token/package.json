@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/get-token",
-  "version": "1.116.14",
+  "version": "1.116.15",
   "types": "./types/index.d.ts",
   "main": "dist/cjs/index",
   "module": "dist/esm/index",
@@ -29,10 +29,10 @@
     }
   },
   "dependencies": {
-    "@tamagui/web": "1.116.14"
+    "@tamagui/web": "1.116.15"
   },
   "devDependencies": {
-    "@tamagui/build": "1.116.14"
+    "@tamagui/build": "1.116.15"
   },
   "peerDependencies": {
     "react": "*"

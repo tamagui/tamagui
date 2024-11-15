@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/react-native-web-lite",
-  "version": "1.116.14",
+  "version": "1.116.15",
   "description": "React Native for Web",
   "sideEffects": false,
   "main": "dist/cjs",
@@ -37,14 +37,14 @@
     "./dist/*": "./dist/cjs/*/index.mjs"
   },
   "dependencies": {
-    "@tamagui/normalize-css-color": "1.116.14",
-    "@tamagui/react-native-use-pressable": "1.116.14",
-    "@tamagui/react-native-use-responder-events": "1.116.14",
-    "@tamagui/react-native-web-internals": "1.116.14",
+    "@tamagui/normalize-css-color": "1.116.15",
+    "@tamagui/react-native-use-pressable": "1.116.15",
+    "@tamagui/react-native-use-responder-events": "1.116.15",
+    "@tamagui/react-native-web-internals": "1.116.15",
     "invariant": "^2.2.4"
   },
   "devDependencies": {
-    "@tamagui/build": "1.116.14"
+    "@tamagui/build": "1.116.15"
   },
   "peerDependencies": {
     "react": "*"
