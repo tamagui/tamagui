@@ -1,6 +1,7 @@
 {
   "name": "tamagui",
   "version": "1.116.14",
+  "description": "Style and UI for React (web and native) meet an optimizing compiler",
   "removeSideEffects": true,
   "alsoPublishAs_disabled": [
     "@tamagui/ui"
@@ -137,7 +138,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/tamagui/tamagui.git",
-    "directory": "packages/tamagui"
+    "directory": "code/ui/tamagui"
   },
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "peerDependencies": {
