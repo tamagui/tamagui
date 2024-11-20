@@ -33,7 +33,8 @@
     "aria-hidden": "^1.1.3"
   },
   "devDependencies": {
-    "@tamagui/build": "1.116.15"
+    "@tamagui/build": "1.116.15",
+    "react": "*"
   },
   "publishConfig": {
     "access": "public"
