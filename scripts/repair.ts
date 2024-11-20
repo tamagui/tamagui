@@ -131,18 +131,22 @@ async function format() {
 
       // write your script here:
 
-      if (pkgJson.dependencies?.react) {
-        delete pkgJson.dependencies?.react
-      }
-      if (pkgJson.dependencies?.['react-dom']) {
-        delete pkgJson.dependencies?.['react-dom']
-      }
+      if (pkgJson.exports) {
+        for (const key in pkgJson.exports) {
+          const exf = pkgJson.exports[key]
+          if (typeof exf === 'object') {
+            const ogi = exf['react-native-import']
+            const ogr = exf['react-native']
 
-      if (pkgJson.devDependencies?.react) {
-        delete pkgJson.devDependencies?.react
-      }
-      if (pkgJson.devDependencies?.['react-dom']) {
-        delete pkgJson.devDependencies?.['react-dom']
+            if (ogi) {
+              delete exf['react-native-import']
+              exf['react-native'] = {
+                import: ogi,
+                require: ogr,
+              }
+            }
+          }
+        }
       }
 
       // await fixScripts(pkg, pkgJson)
