@@ -20,7 +20,8 @@
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/cjs/index.native.js"
-    }
+    },
+    "./css/*": "./css/*.css"
   },
   "scripts": {
     "build": "tamagui-build",
