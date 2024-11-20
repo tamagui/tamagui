@@ -42,6 +42,7 @@
     "dedent": "^0.7.0",
     "esbuild-loader": "^4.2.2",
     "null-loader": "^4.0.1",
+    "react": "*",
     "react-native-web": "^0.19.12",
     "react-test-renderer": "^18.2.0",
     "style-loader": "^3.3.3",

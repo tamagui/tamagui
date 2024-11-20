@@ -38,7 +38,8 @@
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.116.15"
+    "@tamagui/build": "1.116.15",
+    "react": "*"
   },
   "publishConfig": {
     "access": "public"

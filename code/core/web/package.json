@@ -45,6 +45,8 @@
     "@tamagui/build": "1.116.15",
     "@testing-library/react": "^16.0.1",
     "csstype": "^3.0.10",
+    "react": "*",
+    "react-dom": "*",
     "typescript": "^5.6.3",
     "vitest": "^2.1.3"
   },
