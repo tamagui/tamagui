@@ -39,8 +39,10 @@
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "react-native-import": "./dist/esm/index.native.js",
-      "react-native": "./dist/cjs/index.native.js",
+      "react-native": {
+        "import": "./dist/esm/index.native.js",
+        "require": "./dist/cjs/index.native.js"
+      },
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
@@ -53,8 +55,10 @@
       "require": "./dist/cjs/react-native-web.cjs"
     },
     "./web": {
-      "react-native-import": "./dist/esm/index.native.js",
-      "react-native": "./dist/cjs/index.native.js",
+      "react-native": {
+        "import": "./dist/esm/index.native.js",
+        "require": "./dist/cjs/index.native.js"
+      },
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs"
@@ -70,8 +74,10 @@
       "react-native": "./dist/test.native.js"
     },
     "./linear-gradient": {
-      "react-native-import": "./dist/esm/linear-gradient.native.js",
-      "react-native": "./dist/cjs/linear-gradient.native.js",
+      "react-native": {
+        "import": "./dist/esm/linear-gradient.native.js",
+        "require": "./dist/cjs/linear-gradient.native.js"
+      },
       "types": "./types/linear-gradient.d.ts",
       "import": "./dist/esm/linear-gradient.mjs",
       "require": "./dist/cjs/linear-gradient.cjs"

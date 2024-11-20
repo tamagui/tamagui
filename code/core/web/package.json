@@ -54,22 +54,28 @@
     "./package.json": "./package.json",
     "./reset.css": "./reset.css",
     ".": {
-      "react-native-import": "./dist/esm/index.native.js",
-      "react-native": "./dist/cjs/index.native.js",
+      "react-native": {
+        "import": "./dist/esm/index.native.js",
+        "require": "./dist/cjs/index.native.js"
+      },
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/cjs/index.native.js"
     },
     "./native": {
-      "react-native-import": "./dist/esm/index.native.native.js",
-      "react-native": "./dist/cjs/index.native.native.js",
+      "react-native": {
+        "import": "./dist/esm/index.native.native.js",
+        "require": "./dist/cjs/index.native.native.js"
+      },
       "import": "./dist/esm/index.native.js",
       "require": "./dist/cjs/index.native.js"
     },
     "./inject-styles": {
-      "react-native-import": "./dist/esm/inject-styles.native.js",
-      "react-native": "./dist/cjs/inject-styles.native.js",
+      "react-native": {
+        "import": "./dist/esm/inject-styles.native.js",
+        "require": "./dist/cjs/inject-styles.native.js"
+      },
       "types": "./types/inject-styles.d.ts",
       "import": "./dist/esm/inject-styles.mjs",
       "require": "./dist/cjs/inject-styles.cjs"

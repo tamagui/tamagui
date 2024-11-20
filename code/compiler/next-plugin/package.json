@@ -23,8 +23,10 @@
     "./package.json": "./package.json",
     "./reset.css": "./reset.css",
     ".": {
-      "react-native-import": "./dist/esm/index.native.js",
-      "react-native": "./dist/cjs/index.native.js",
+      "react-native": {
+        "import": "./dist/esm/index.native.js",
+        "require": "./dist/cjs/index.native.js"
+      },
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
