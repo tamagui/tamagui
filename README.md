@@ -10,6 +10,7 @@
   <img alt="NPM downloads" src="https://img.shields.io/npm/dw/@tamagui/core?logo=npm&label=NPM%20downloads&cacheSeconds=3600"/>
   <img alt="Discord users online" src="https://img.shields.io/github/commit-activity/m/tamagui/tamagui?label=Commits&logo=git" />
   <img alt="Commits per month" src="https://img.shields.io/discord/909986013848412191?logo=discord&label=Discord&cacheSeconds=3600" />
+  <img alt="Gurubase" src="https://img.shields.io/badge/Gurubase-Ask%20Tamagui%20Guru-006BFF" />
 </div>
 
 <br />
