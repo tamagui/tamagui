@@ -498,7 +498,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       </ParentSheetContext.Provider>
     )
 
-    if (isAndroid) {
+    if (process.env.TAMAGUI_USE_NATIVE_PORTAL === 'false' || isAndroid) {
       const adaptContext = useAdaptContext()
       contents = <ProvideAdaptContext {...adaptContext}>{contents}</ProvideAdaptContext>
     }
