@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/core",
-  "version": "1.117.0",
+  "version": "1.117.2",
   "source": "src/index.tsx",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -35,13 +35,13 @@
     "native-test.d.ts"
   ],
   "dependencies": {
-    "@tamagui/react-native-use-pressable": "1.117.0",
-    "@tamagui/react-native-use-responder-events": "1.117.0",
-    "@tamagui/use-event": "1.117.0",
-    "@tamagui/web": "1.117.0"
+    "@tamagui/react-native-use-pressable": "1.117.2",
+    "@tamagui/react-native-use-responder-events": "1.117.2",
+    "@tamagui/use-event": "1.117.2",
+    "@tamagui/web": "1.117.2"
   },
   "devDependencies": {
-    "@tamagui/build": "1.117.0",
+    "@tamagui/build": "1.117.2",
     "@testing-library/react": "^16.0.1",
     "csstype": "^3.0.10",
     "typescript": "^5.6.3",
@@ -64,13 +64,13 @@
       "types": "./types/index.d.ts",
       "import": "./dist/native.mjs",
       "require": "./dist/native.js",
-      "react-native": "./dist/native.native.js"
+      "react-native": "./dist/native.js"
     },
     "./native-test": {
       "types": "./types/index.d.ts",
       "import": "./dist/test.native.js",
       "require": "./dist/test.native.js",
-      "react-native": "./dist/test.native.native.js"
+      "react-native": "./dist/test.native.js"
     },
     "./inject-styles": {
       "types": "./types/inject-styles.d.ts",
