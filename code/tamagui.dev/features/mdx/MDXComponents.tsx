@@ -961,12 +961,13 @@ export const components = Object.fromEntries(
 const LinkHeading = ({ id, children, ...props }: { id: string } & XStackProps) => (
   <XStack
     tag="a"
+    // @ts-expect-error
     href={`#${id}`}
     id={id}
     data-id={id}
     display="inline-flex"
     ai="center"
-    space
+    gap="$4"
     {...props}
   >
     {children}

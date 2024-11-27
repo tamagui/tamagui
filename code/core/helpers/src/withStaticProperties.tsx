@@ -4,7 +4,7 @@ const Decorated = Symbol()
 
 type Combined<A, B> = A & B
 
-export const withStaticProperties = <A extends Function, B>(
+export const withStaticProperties = <A extends Function, B extends Record<string, any>>(
   component: A,
   staticProps: B
 ): Combined<A, B> => {
@@ -28,5 +28,5 @@ export const withStaticProperties = <A extends Function, B>(
   Object.assign(next, staticProps)
   next[Decorated] = true
 
-  return next as any as A & B
+  return next as any
 }

@@ -349,7 +349,7 @@ export const Select = withStaticProperties(
     )
   },
   {
-    Adapt,
+    Adapt: Adapt,
     Content: SelectContent,
     Group: SelectGroup,
     Icon: SelectIcon,

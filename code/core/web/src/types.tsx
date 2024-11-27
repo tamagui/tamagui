@@ -1663,6 +1663,7 @@ interface ExtraStyleProps {
   paddingInline?: SpaceTokens | number
   paddingInlineStart?: SpaceTokens | number
   paddingInlineEnd?: SpaceTokens | number
+  inset?: SpaceTokens | number
   insetBlock?: SpaceTokens | number
   insetBlockStart?: SpaceTokens | number
   insetBlockEnd?: SpaceTokens | number
