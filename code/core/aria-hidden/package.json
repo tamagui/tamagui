@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/aria-hidden",
-  "version": "1.116.9",
+  "version": "1.117.1",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -21,8 +21,10 @@
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "react-native-import": "./dist/esm/index.native.js",
-      "react-native": "./dist/cjs/index.native.js",
+      "react-native": {
+        "import": "./dist/esm/index.native.js",
+        "require": "./dist/cjs/index.native.js"
+      },
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
@@ -33,8 +35,8 @@
     "aria-hidden": "^1.1.3"
   },
   "devDependencies": {
-    "@tamagui/build": "1.116.9",
-    "react": ">=18.0.0",
+    "@tamagui/build": "1.117.1",
+    "react": "*"
   },
   "publishConfig": {
     "access": "public"

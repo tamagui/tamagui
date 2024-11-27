@@ -236,32 +236,27 @@ export function getThemeProxied(
                       platform !== 'web' &&
                       isIos &&
                       !deopt &&
-                      getSetting('fastSchemeChange')
+                      getSetting('fastSchemeChange') &&
+                      !hasFixedSchemeParent(themeManager)
                     ) {
                       if (scheme) {
-                        const isInversed = getIsInversed(themeManager)
-
-                        // this is maybe confusing but basically we track inverse, if inversed
-                        // we inverse it here so that it flips everything properly
-                        if (isInversed) {
-                          scheme = scheme === 'dark' ? 'light' : 'dark'
-                        }
-
-                        const oppositeThemeName = name.replace(
+                        const oppositeName = name.replace(
                           scheme === 'dark' ? 'dark' : 'light',
                           scheme === 'dark' ? 'light' : 'dark'
                         )
-                        const oppositeTheme = config.themes[oppositeThemeName]
-                        const oppositeVal = getVariable(oppositeTheme?.[keyString])
-                        if (oppositeVal) {
-                          const dynamicVal = {
-                            dynamic: {
-                              dark: scheme === 'dark' ? outVal : oppositeVal,
-                              light: scheme === 'light' ? outVal : oppositeVal,
-                            },
-                          }
-                          return dynamicVal
+                        const colorLight = getVariable(config.themes[name]?.[keyString])
+                        const colorDark = getVariable(
+                          config.themes[oppositeName]?.[keyString]
+                        )
+
+                        const dynamicVal = {
+                          dynamic: {
+                            light: colorLight,
+                            dark: colorDark,
+                          },
                         }
+
+                        return dynamicVal
                       }
                     }
 
@@ -318,6 +313,18 @@ function getIsInversed(manager?: ThemeManager) {
       }
       cur = cur.parentManager
     }
+  }
+
+  return false
+}
+
+// on iOS for fast scheme change, we assume the root theme name is matching the system
+// but if any intermediate theme is "fixed" to light or dark, we need to opt out
+// optimizing no-rerenders, because it could change by the end-user at any time in the tree
+// but also theres no point in doing a dynamic color in the first place since scheme is fixed one way
+function hasFixedSchemeParent(manager?: ThemeManager) {
+  if (process.env.TAMAGUI_TARGET === 'native') {
+    return manager?.getParents().some((x) => x.state.isSchemeFixed)
   }
 
   return false
@@ -386,7 +393,7 @@ export const useChangeThemeEffect = (
 
   const [themeState, setThemeState] = React.useState<ChangedThemeResponse>(createState)
 
-  const { state, mounted, isNewTheme, themeManager, inversed, prevState } = themeState
+  const { state, mounted, isNewTheme, themeManager, prevState } = themeState
   const isInversingOnMount = Boolean(!themeState.mounted && props.inverse)
 
   function getShouldUpdateTheme(
@@ -405,18 +412,19 @@ export const useChangeThemeEffect = (
     if (forceUpdate !== true && !manager.getStateShouldChange(next, prevState)) {
       return
     }
-
     return next
   }
 
-  if (!isWeb && themeManager) {
-    if (getShouldUpdateTheme(themeManager)) {
-      const next = createState(themeState)
-      if (next.state?.name !== themeState.state?.name) {
-        setThemeState(next)
-        console.error = preventWarnSetState
-        themeManager.notify()
-        console.error = ogLog
+  if (process.env.TAMAGUI_TARGET === 'native') {
+    if (themeManager) {
+      if (getShouldUpdateTheme(themeManager)) {
+        const next = createState(themeState)
+        if (next.state?.name !== themeState.state?.name) {
+          setThemeState(next)
+          console.error = preventWarnSetState
+          themeManager.notify()
+          console.error = ogLog
+        }
       }
     }
   }
@@ -538,7 +546,7 @@ export const useChangeThemeEffect = (
   return {
     state,
     isNewTheme,
-    inversed,
+    inversed: !!props.inverse,
     themeManager,
   }
 
@@ -615,24 +623,11 @@ export const useChangeThemeEffect = (
       }
     }
 
-    const wasInversed = prev?.inversed
-    const isInherentlyInversed =
-      isNewTheme && state.scheme !== parentManager?.state.scheme
-    const inversed = isRoot
-      ? false
-      : isInherentlyInversed
-        ? true
-        : isWebSSR
-          ? wasInversed != null
-            ? false
-            : null
-          : props.inverse
-
     const response: ChangedThemeResponse = {
       themeManager,
       isNewTheme,
       mounted,
-      inversed,
+      inversed: props.inverse,
     }
 
     const shouldReturnPrev =

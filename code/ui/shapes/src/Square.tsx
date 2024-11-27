@@ -14,6 +14,12 @@ export const Square = styled(YStack, {
       '...size': getShapeSize,
       ':number': getShapeSize,
     },
+
+    circular: {
+      true: {
+        borderRadius: 100_000,
+      },
+    },
   } as const,
 })
 

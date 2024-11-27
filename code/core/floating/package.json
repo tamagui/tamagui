@@ -1,18 +1,24 @@
 {
   "name": "@tamagui/floating",
-  "version": "1.116.9",
+  "version": "1.117.1",
   "sideEffects": true,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
   "module:jsx": "dist/jsx",
-  "files": ["src", "types", "dist"],
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "react-native-import": "./dist/esm/index.native.js",
-      "react-native": "./dist/cjs/index.native.js",
+      "react-native": {
+        "import": "./dist/esm/index.native.js",
+        "require": "./dist/cjs/index.native.js"
+      },
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
@@ -38,9 +44,8 @@
     "@floating-ui/react-native": "^0.10.6"
   },
   "devDependencies": {
-    "@tamagui/build": "1.116.9",
-    "react": ">=18.0.0",
-    "react-dom": "^18.2.0 || ^19.0.0",
+    "@tamagui/build": "1.117.1",
+    "react": "*",
     "react-native": "0.74.1"
   }
 }

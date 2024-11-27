@@ -11,13 +11,13 @@ export default defineConfig({
   },
   // Run your local dev server before starting the tests.
   webServer: {
-    command: 'yarn dev:web',
+    command: 'yarn start:web',
     url: 'http://localhost:9000',
     reuseExistingServer: !process.env.CI,
   },
 
   fullyParallel: true,
-  retries: 1,
+  retries: 2,
 
   timeout: 50_000,
 })

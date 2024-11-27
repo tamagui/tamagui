@@ -9,8 +9,7 @@ import { H1 } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDirection } from '@tamagui/use-direction'
 import type { GetProps, GetRef, Stack, TamaguiElement } from '@tamagui/web'
-import { View, useEvent } from '@tamagui/web'
-import { createStyledContext, styled } from '@tamagui/web'
+import { View, createStyledContext, styled, useEvent } from '@tamagui/web'
 import * as React from 'react'
 
 type Direction = 'ltr' | 'rtl'
@@ -609,15 +608,14 @@ const HeightAnimator = View.styleable((props, ref) => {
 function getState(open?: boolean) {
   return open ? 'open' : 'closed'
 }
-const Accordion = withStaticProperties(AccordionComponent, {
+
+export const Accordion = withStaticProperties(AccordionComponent, {
   Trigger: AccordionTrigger,
   Header: AccordionHeader,
   Content: AccordionContent,
   Item: AccordionItem,
   HeightAnimator: HeightAnimator,
 })
-
-export { Accordion }
 
 export type {
   AccordionContentProps,

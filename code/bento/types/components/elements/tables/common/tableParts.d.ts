@@ -3,22 +3,42 @@ type AlignCells = {
     y: 'center' | 'start' | 'end';
     x: 'center' | 'start' | 'end';
 };
-export declare const Table: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/web").StackStyleBase | "fullscreen"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+export declare const Table: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/web").StackStyleBase | "fullscreen" | "cellWidth" | "cellHeight" | "alignHeaderCells" | "alignCells"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
     elevation?: number | SizeTokens | undefined;
     fullscreen?: boolean | undefined;
+    cellWidth?: SizeTokens | undefined;
+    cellHeight?: SizeTokens | undefined;
+    alignHeaderCells?: any;
+    alignCells?: any;
 } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
     elevation?: number | SizeTokens | undefined;
     fullscreen?: boolean | undefined;
+    cellWidth?: SizeTokens | undefined;
+    cellHeight?: SizeTokens | undefined;
+    alignHeaderCells?: any;
+    alignCells?: any;
 } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {
     elevation?: number | SizeTokens | undefined;
     fullscreen?: boolean | undefined;
+    cellWidth?: SizeTokens | undefined;
+    cellHeight?: SizeTokens | undefined;
+    alignHeaderCells?: any;
+    alignCells?: any;
 }>> & import("react").RefAttributes<import("tamagui").TamaguiElement>> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("tamagui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
     elevation?: number | SizeTokens | undefined;
     fullscreen?: boolean | undefined;
+    cellWidth?: SizeTokens | undefined;
+    cellHeight?: SizeTokens | undefined;
+    alignHeaderCells?: any;
+    alignCells?: any;
 }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig" | "extractable" | "styleable"> & {
     __tama: [import("@tamagui/web").TamaDefer, import("tamagui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
         elevation?: number | SizeTokens | undefined;
         fullscreen?: boolean | undefined;
+        cellWidth?: SizeTokens | undefined;
+        cellHeight?: SizeTokens | undefined;
+        alignHeaderCells?: any;
+        alignCells?: any;
     }, import("@tamagui/web").StaticConfigPublic];
 } & {
     Head: import("tamagui").TamaguiComponent<import("@tamagui/web").TamaDefer, import("tamagui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {

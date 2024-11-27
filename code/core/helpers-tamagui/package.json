@@ -1,11 +1,15 @@
 {
   "name": "@tamagui/helpers-tamagui",
-  "version": "1.116.9",
+  "version": "1.117.1",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
-  "files": ["src", "types", "dist"],
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
@@ -17,8 +21,10 @@
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "react-native-import": "./dist/esm/index.native.js",
-      "react-native": "./dist/cjs/index.native.js",
+      "react-native": {
+        "import": "./dist/esm/index.native.js",
+        "require": "./dist/cjs/index.native.js"
+      },
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
@@ -26,12 +32,12 @@
     }
   },
   "dependencies": {
-    "@tamagui/helpers": "1.116.9",
-    "@tamagui/web": "1.116.9"
+    "@tamagui/helpers": "1.117.1",
+    "@tamagui/web": "1.117.1"
   },
   "devDependencies": {
-    "@tamagui/build": "1.116.9",
-    "react": ">=18.0.0",
+    "@tamagui/build": "1.117.1",
+    "react": "*",
     "vitest": "^2.1.3"
   },
   "peerDependencies": {

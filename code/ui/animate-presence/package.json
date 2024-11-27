@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/animate-presence",
-  "version": "1.116.9",
+  "version": "1.117.1",
   "source": "src/index.ts",
   "sideEffects": false,
   "license": "MIT",
@@ -13,14 +13,14 @@
     "dist"
   ],
   "dependencies": {
-    "@tamagui/helpers": "1.116.9",
-    "@tamagui/use-constant": "1.116.9",
-    "@tamagui/use-force-update": "1.116.9",
-    "@tamagui/use-presence": "1.116.9",
-    "@tamagui/web": "1.116.9"
+    "@tamagui/helpers": "1.117.1",
+    "@tamagui/use-constant": "1.117.1",
+    "@tamagui/use-force-update": "1.117.1",
+    "@tamagui/use-presence": "1.117.1",
+    "@tamagui/web": "1.117.1"
   },
   "devDependencies": {
-    "@tamagui/build": "1.116.9"
+    "@tamagui/build": "1.117.1"
   },
   "scripts": {
     "build": "tamagui-build",
@@ -33,8 +33,10 @@
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "react-native-import": "./dist/esm/index.native.js",
-      "react-native": "./dist/cjs/index.native.js",
+      "react-native": {
+        "import": "./dist/esm/index.native.js",
+        "require": "./dist/cjs/index.native.js"
+      },
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",

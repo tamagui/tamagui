@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/separator",
-  "version": "1.116.9",
+  "version": "1.117.1",
   "sideEffects": [
     "*.css"
   ],
@@ -25,8 +25,10 @@
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "react-native-import": "./dist/esm/index.native.js",
-      "react-native": "./dist/cjs/index.native.js",
+      "react-native": {
+        "import": "./dist/esm/index.native.js",
+        "require": "./dist/cjs/index.native.js"
+      },
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
@@ -34,12 +36,12 @@
     }
   },
   "dependencies": {
-    "@tamagui/constants": "1.116.9",
-    "@tamagui/core": "1.116.9"
+    "@tamagui/constants": "1.117.1",
+    "@tamagui/core": "1.117.1"
   },
   "devDependencies": {
-    "@tamagui/build": "1.116.9",
-    "react": ">=18.0.0",
+    "@tamagui/build": "1.117.1",
+    "react": "*"
   },
   "publishConfig": {
     "access": "public"

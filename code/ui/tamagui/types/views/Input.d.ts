@@ -99,7 +99,6 @@ export declare function useInputProps(props: InputProps, ref: any): {
     onBlur?: ((e: import("react-native").NativeSyntheticEvent<import("react-native").TextInputFocusEventData>) => void) | undefined;
     onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
-    focusable?: boolean | undefined;
     onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
     onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
     onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
@@ -174,6 +173,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
     removeClippedSubviews?: boolean | undefined;
     collapsable?: boolean | undefined;
     renderToHardwareTextureAndroid?: boolean | undefined;
+    focusable?: boolean | undefined;
     shouldRasterizeIOS?: boolean | undefined;
     isTVSelectable?: boolean | undefined;
     hasTVPreferredFocus?: boolean | undefined;
@@ -253,7 +253,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
     returnKeyLabel?: string | undefined;
     underlineColorAndroid?: import("react-native").ColorValue | undefined;
     showSoftInputOnFocus?: boolean | undefined;
-    ellipse?: boolean | "unset" | undefined;
+    ellipsis?: boolean | "unset" | undefined;
     textDecorationDistance?: number | "unset" | undefined;
     textOverflow?: import("csstype").Properties["textOverflow"];
     whiteSpace?: import("csstype").Properties["whiteSpace"];
@@ -404,7 +404,6 @@ export declare function useInputProps(props: InputProps, ref: any): {
     pointerEvents?: "unset" | "auto" | "box-none" | "none" | "box-only" | undefined;
     transformOrigin?: "unset" | "center" | "left" | "right" | "bottom" | "top" | (`${number}%` | `${string}%` | `${string}px` | `${number}px`) | "center center" | "center bottom" | "center top" | `center ${number}%` | `center ${string}%` | `center ${string}px` | `center ${number}px` | "left center" | "left bottom" | "left top" | `left ${number}%` | `left ${string}%` | `left ${string}px` | `left ${number}px` | "right center" | "right bottom" | "right top" | `right ${number}%` | `right ${string}%` | `right ${string}px` | `right ${number}px` | `${number}% center` | `${number}% bottom` | `${number}% top` | `${number}% ${number}%` | `${number}% ${string}%` | `${number}% ${string}px` | `${number}% ${number}px` | `${string}% center` | `${string}% bottom` | `${string}% top` | `${string}% ${number}%` | `${string}% ${string}%` | `${string}% ${string}px` | `${string}% ${number}px` | `${string}px center` | `${string}px bottom` | `${string}px top` | `${string}px ${number}%` | `${string}px ${string}%` | `${string}px ${string}px` | `${string}px ${number}px` | `${number}px center` | `${number}px bottom` | `${number}px top` | `${number}px ${number}%` | `${number}px ${string}%` | `${number}px ${string}px` | `${number}px ${number}px` | `center center ${string}px` | `center center ${number}px` | `center bottom ${string}px` | `center bottom ${number}px` | `center top ${string}px` | `center top ${number}px` | `center ${number}% ${string}px` | `center ${number}% ${number}px` | `center ${string}% ${string}px` | `center ${string}% ${number}px` | `center ${string}px ${string}px` | `center ${string}px ${number}px` | `center ${number}px ${string}px` | `center ${number}px ${number}px` | `left center ${string}px` | `left center ${number}px` | `left bottom ${string}px` | `left bottom ${number}px` | `left top ${string}px` | `left top ${number}px` | `left ${number}% ${string}px` | `left ${number}% ${number}px` | `left ${string}% ${string}px` | `left ${string}% ${number}px` | `left ${string}px ${string}px` | `left ${string}px ${number}px` | `left ${number}px ${string}px` | `left ${number}px ${number}px` | `right center ${string}px` | `right center ${number}px` | `right bottom ${string}px` | `right bottom ${number}px` | `right top ${string}px` | `right top ${number}px` | `right ${number}% ${string}px` | `right ${number}% ${number}px` | `right ${string}% ${string}px` | `right ${string}% ${number}px` | `right ${string}px ${string}px` | `right ${string}px ${number}px` | `right ${number}px ${string}px` | `right ${number}px ${number}px` | `${number}% center ${string}px` | `${number}% center ${number}px` | `${number}% bottom ${string}px` | `${number}% bottom ${number}px` | `${number}% top ${string}px` | `${number}% top ${number}px` | `${number}% ${number}% ${string}px` | `${number}% ${number}% ${number}px` | `${number}% ${string}% ${string}px` | `${number}% ${string}% ${number}px` | `${number}% ${string}px ${string}px` | `${number}% ${string}px ${number}px` | `${number}% ${number}px ${string}px` | `${number}% ${number}px ${number}px` | `${string}% center ${string}px` | `${string}% center ${number}px` | `${string}% bottom ${string}px` | `${string}% bottom ${number}px` | `${string}% top ${string}px` | `${string}% top ${number}px` | `${string}% ${number}% ${string}px` | `${string}% ${number}% ${number}px` | `${string}% ${string}% ${string}px` | `${string}% ${string}% ${number}px` | `${string}% ${string}px ${string}px` | `${string}% ${string}px ${number}px` | `${string}% ${number}px ${string}px` | `${string}% ${number}px ${number}px` | `${string}px center ${string}px` | `${string}px center ${number}px` | `${string}px bottom ${string}px` | `${string}px bottom ${number}px` | `${string}px top ${string}px` | `${string}px top ${number}px` | `${string}px ${number}% ${string}px` | `${string}px ${number}% ${number}px` | `${string}px ${string}% ${string}px` | `${string}px ${string}% ${number}px` | `${string}px ${string}px ${string}px` | `${string}px ${string}px ${number}px` | `${string}px ${number}px ${string}px` | `${string}px ${number}px ${number}px` | `${number}px center ${string}px` | `${number}px center ${number}px` | `${number}px bottom ${string}px` | `${number}px bottom ${number}px` | `${number}px top ${string}px` | `${number}px top ${number}px` | `${number}px ${number}% ${string}px` | `${number}px ${number}% ${number}px` | `${number}px ${string}% ${string}px` | `${number}px ${string}% ${number}px` | `${number}px ${string}px ${string}px` | `${number}px ${string}px ${number}px` | `${number}px ${number}px ${string}px` | `${number}px ${number}px ${number}px` | undefined;
     filter?: import("csstype").Properties["filter"];
-    backdropFilter?: import("csstype").Properties["backdropFilter"];
     mixBlendMode?: import("csstype").Properties["mixBlendMode"];
     backgroundImage?: import("csstype").Properties["backgroundImage"];
     backgroundOrigin?: import("csstype").Properties["backgroundOrigin"];
@@ -416,7 +415,6 @@ export declare function useInputProps(props: InputProps, ref: any): {
     backgroundAttachment?: import("csstype").Properties["backgroundAttachment"];
     background?: import("csstype").Properties["background"];
     clipPath?: import("csstype").Properties["clipPath"];
-    containerType?: import("csstype").Properties["containerType"];
     caretColor?: import("csstype").Properties["caretColor"];
     transformStyle?: import("csstype").Properties["transformStyle"];
     mask?: import("csstype").Properties["mask"];
@@ -452,6 +450,16 @@ export declare function useInputProps(props: InputProps, ref: any): {
     gridColumnStart?: import("csstype").Properties["gridColumnStart"];
     gridTemplateColumns?: import("csstype").Properties["gridTemplateColumns"];
     gridTemplateAreas?: import("csstype").Properties["gridTemplateAreas"];
+    backdropFilter?: import("csstype").Properties["backdropFilter"];
+    containerType?: import("csstype").Properties["containerType"];
+    blockSize?: number | "unset" | import("@tamagui/core").SizeTokens | undefined;
+    inlineSize?: number | "unset" | import("@tamagui/core").SizeTokens | undefined;
+    minBlockSize?: number | "unset" | import("@tamagui/core").SizeTokens | undefined;
+    maxBlockSize?: number | "unset" | import("@tamagui/core").SizeTokens | undefined;
+    objectFit?: import("csstype").Properties["objectFit"];
+    verticalAlign?: import("csstype").Properties["verticalAlign"];
+    minInlineSize?: number | "unset" | import("@tamagui/core").SizeTokens | undefined;
+    maxInlineSize?: number | "unset" | import("@tamagui/core").SizeTokens | undefined;
     borderInlineColor?: "unset" | import("@tamagui/core").GetThemeValueForKey<"borderInlineColor"> | undefined;
     borderInlineStartColor?: "unset" | import("@tamagui/core").GetThemeValueForKey<"borderInlineStartColor"> | undefined;
     borderInlineEndColor?: "unset" | import("@tamagui/core").GetThemeValueForKey<"borderInlineEndColor"> | undefined;
@@ -479,20 +487,12 @@ export declare function useInputProps(props: InputProps, ref: any): {
     paddingInline?: number | "unset" | import("@tamagui/core").GetThemeValueForKey<"paddingInline"> | undefined;
     paddingInlineStart?: number | "unset" | import("@tamagui/core").GetThemeValueForKey<"paddingInlineStart"> | undefined;
     paddingInlineEnd?: number | "unset" | import("@tamagui/core").GetThemeValueForKey<"paddingInlineEnd"> | undefined;
-    objectFit?: import("csstype").Properties["objectFit"];
-    verticalAlign?: import("csstype").Properties["verticalAlign"];
     insetBlock?: number | "unset" | import("@tamagui/core").SpaceTokens | undefined;
     insetBlockStart?: number | "unset" | import("@tamagui/core").SpaceTokens | undefined;
     insetBlockEnd?: number | "unset" | import("@tamagui/core").SpaceTokens | undefined;
     insetInline?: number | "unset" | import("@tamagui/core").SpaceTokens | undefined;
     insetInlineStart?: number | "unset" | import("@tamagui/core").SpaceTokens | undefined;
     insetInlineEnd?: number | "unset" | import("@tamagui/core").SpaceTokens | undefined;
-    blockSize?: number | "unset" | import("@tamagui/core").SizeTokens | undefined;
-    minBlockSize?: number | "unset" | import("@tamagui/core").SizeTokens | undefined;
-    maxBlockSize?: number | "unset" | import("@tamagui/core").SizeTokens | undefined;
-    inlineSize?: number | "unset" | import("@tamagui/core").SizeTokens | undefined;
-    minInlineSize?: number | "unset" | import("@tamagui/core").SizeTokens | undefined;
-    maxInlineSize?: number | "unset" | import("@tamagui/core").SizeTokens | undefined;
     space?: number | "unset" | import("@tamagui/core").GetThemeValueForKey<"space"> | undefined;
     spaceDirection?: "unset" | import("@tamagui/core").SpaceDirection | undefined;
     separator?: React.ReactNode;

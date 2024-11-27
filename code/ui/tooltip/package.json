@@ -1,13 +1,19 @@
 {
   "name": "@tamagui/tooltip",
-  "version": "1.116.9",
-  "sideEffects": ["*.css"],
+  "version": "1.117.1",
+  "sideEffects": [
+    "*.css"
+  ],
   "source": "src/index.tsx",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
   "module:jsx": "dist/jsx",
-  "files": ["src", "types", "dist"],
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
@@ -19,8 +25,10 @@
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "react-native-import": "./dist/esm/index.native.js",
-      "react-native": "./dist/cjs/index.native.js",
+      "react-native": {
+        "import": "./dist/esm/index.native.js",
+        "require": "./dist/cjs/index.native.js"
+      },
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
@@ -29,25 +37,25 @@
   },
   "dependencies": {
     "@floating-ui/react": "^0.26.24",
-    "@tamagui/compose-refs": "1.116.9",
-    "@tamagui/core": "1.116.9",
-    "@tamagui/create-context": "1.116.9",
-    "@tamagui/floating": "1.116.9",
-    "@tamagui/get-token": "1.116.9",
-    "@tamagui/helpers": "1.116.9",
-    "@tamagui/polyfill-dev": "1.116.9",
-    "@tamagui/popover": "1.116.9",
-    "@tamagui/popper": "1.116.9",
-    "@tamagui/stacks": "1.116.9",
-    "@tamagui/text": "1.116.9",
-    "@tamagui/use-controllable-state": "1.116.9"
+    "@tamagui/compose-refs": "1.117.1",
+    "@tamagui/core": "1.117.1",
+    "@tamagui/create-context": "1.117.1",
+    "@tamagui/floating": "1.117.1",
+    "@tamagui/get-token": "1.117.1",
+    "@tamagui/helpers": "1.117.1",
+    "@tamagui/polyfill-dev": "1.117.1",
+    "@tamagui/popover": "1.117.1",
+    "@tamagui/popper": "1.117.1",
+    "@tamagui/stacks": "1.117.1",
+    "@tamagui/text": "1.117.1",
+    "@tamagui/use-controllable-state": "1.117.1"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.116.9",
-    "react": ">=18.0.0",
+    "@tamagui/build": "1.117.1",
+    "react": "*",
     "react-native": "0.74.1"
   },
   "publishConfig": {

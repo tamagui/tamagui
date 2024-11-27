@@ -1139,7 +1139,7 @@ export const getSplitStyles: StyleSplitter = (
           const isAnimatedAndAnimateOnly =
             styleProps.isAnimated &&
             styleProps.noClass &&
-            (!props.animateOnly || props.animateOnly.includes(key))
+            props.animateOnly?.includes(key)
 
           // or not animated but you have animateOnly
           // (moves it to style={}, nice to avoid generating lots of classnames)
@@ -1165,6 +1165,7 @@ export const getSplitStyles: StyleSplitter = (
           console.groupEnd() // ensure group ended from loop above
           consoleGroupCollapsed(`🔹 getSplitStyles final style object`)
           console.info(styleState.style)
+          console.info(`retainedStyles`, retainedStyles)
           console.groupEnd()
         }
 

@@ -1,13 +1,19 @@
 {
   "name": "@tamagui/label",
-  "version": "1.116.9",
-  "sideEffects": ["*.css"],
+  "version": "1.117.1",
+  "sideEffects": [
+    "*.css"
+  ],
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
   "module:jsx": "dist/jsx",
-  "files": ["src", "types", "dist"],
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
@@ -19,8 +25,10 @@
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "react-native-import": "./dist/esm/index.native.js",
-      "react-native": "./dist/cjs/index.native.js",
+      "react-native": {
+        "import": "./dist/esm/index.native.js",
+        "require": "./dist/cjs/index.native.js"
+      },
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
@@ -28,22 +36,22 @@
     }
   },
   "dependencies": {
-    "@tamagui/compose-refs": "1.116.9",
-    "@tamagui/constants": "1.116.9",
-    "@tamagui/create-context": "1.116.9",
-    "@tamagui/focusable": "1.116.9",
-    "@tamagui/get-button-sized": "1.116.9",
-    "@tamagui/get-font-sized": "1.116.9",
-    "@tamagui/text": "1.116.9",
-    "@tamagui/web": "1.116.9"
+    "@tamagui/compose-refs": "1.117.1",
+    "@tamagui/constants": "1.117.1",
+    "@tamagui/create-context": "1.117.1",
+    "@tamagui/focusable": "1.117.1",
+    "@tamagui/get-button-sized": "1.117.1",
+    "@tamagui/get-font-sized": "1.117.1",
+    "@tamagui/text": "1.117.1",
+    "@tamagui/web": "1.117.1"
   },
   "peerDependencies": {
     "react": "*",
     "react-native": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.116.9",
-    "react": ">=18.0.0",
+    "@tamagui/build": "1.117.1",
+    "react": "*",
     "react-native": "0.74.1"
   },
   "publishConfig": {

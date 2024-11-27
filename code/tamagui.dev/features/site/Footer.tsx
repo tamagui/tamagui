@@ -44,6 +44,7 @@ export const Footer = memo(() => {
             <ParagraphLink href="/docs/core/configuration">Configuration</ParagraphLink>
             <ParagraphLink href="/privacy">Privacy Policy</ParagraphLink>
             <ParagraphLink href="/takeout-policy">Fulfillment Policy</ParagraphLink>
+            <ParagraphLink href="/dpa">Data Processing Agreement</ParagraphLink>
             {/* <ParagraphLink href="/docs/api">API</ParagraphLink>
           <ParagraphLink href="/docs/frequently-asked-questions">FAQ</ParagraphLink> */}
           </YStack>

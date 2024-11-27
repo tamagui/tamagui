@@ -127,7 +127,28 @@ async function format() {
       const pkgJson = JSON.parse(fileContents)
       // await fixPeerDeps(pkg, pkgJson)
       // await fixExports(pkg, pkgJson)
-      await fixExportsPathSpecific(pkg, pkgJson)
+      // await fixExportsPathSpecific(pkg, pkgJson)
+
+      // write your script here:
+
+      if (pkgJson.exports) {
+        for (const key in pkgJson.exports) {
+          const exf = pkgJson.exports[key]
+          if (typeof exf === 'object') {
+            const ogi = exf['react-native-import']
+            const ogr = exf['react-native']
+
+            if (ogi) {
+              delete exf['react-native-import']
+              exf['react-native'] = {
+                import: ogi,
+                require: ogr,
+              }
+            }
+          }
+        }
+      }
+
       // await fixScripts(pkg, pkgJson)
       await writeFile(jsonPath, JSON.stringify(pkgJson, null, 2) + '\n', {
         encoding: 'utf-8',

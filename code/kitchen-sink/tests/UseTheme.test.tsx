@@ -1,7 +1,6 @@
 import { expect, test } from '@playwright/test'
 
 import { setupPage } from './test-utils'
-import { getStyles } from './utils'
 
 test.beforeEach(async ({ page }) => {
   await setupPage(page, { name: 'UseTheme', type: 'useCase' })

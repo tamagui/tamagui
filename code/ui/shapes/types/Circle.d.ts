@@ -3,6 +3,7 @@ export declare const Circle: import("@tamagui/web").TamaguiComponent<import("@ta
     elevation?: number | import("@tamagui/web").SizeTokens | undefined;
     size?: number | import("@tamagui/web").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
+    circular?: boolean | undefined;
 }, import("@tamagui/web").StaticConfigPublic>;
 export type CircleProps = GetProps<typeof Circle>;
 //# sourceMappingURL=Circle.d.ts.map

@@ -1,6 +1,6 @@
 {
   "name": "bento-get",
-  "version": "1.116.9",
+  "version": "1.117.1",
   "license": "MIT",
   "bin": "dist/cli.js",
   "type": "module",
@@ -13,7 +13,11 @@
   "source": "src/cli.tsx",
   "types": "./types/cli.d.ts",
   "module": "dist",
-  "files": ["source", "types", "dist"],
+  "files": [
+    "source",
+    "types",
+    "dist"
+  ],
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
@@ -26,8 +30,10 @@
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "react-native-import": "./dist/esm/index.native.js",
-      "react-native": "./dist/cjs/index.native.js",
+      "react-native": {
+        "import": "./dist/esm/index.native.js",
+        "require": "./dist/cjs/index.native.js"
+      },
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
@@ -48,13 +54,12 @@
     "octokit": "^4.0.2",
     "open": "^10.1.0",
     "pastel": "^2.0.0",
-    "react": ">=18.0.0",
     "react-router-dom": "6.4",
     "swr": "^2.2.5",
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@tamagui/build": "1.116.9",
+    "@tamagui/build": "1.117.1",
     "@types/copy-paste": "^1.1.33",
     "@types/react": "npm:@types/react@18.2.55"
   }

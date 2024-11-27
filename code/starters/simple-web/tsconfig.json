@@ -24,10 +24,10 @@
     "strictNullChecks": true,
     "target": "es2020",
     "types": ["node", "react"],
-    "lib": ["dom", "esnext"],
+    "lib": ["dom", "esnext"]
   },
   "exclude": ["test", "dist", "types", "**/__tests__"],
   "typeAcquisition": {
     "enable": true
-  },
+  }
 }

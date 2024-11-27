@@ -1,11 +1,15 @@
 {
   "name": "@tamagui/react-native-web-lite",
-  "version": "1.116.9",
+  "version": "1.117.1",
   "description": "React Native for Web",
   "sideEffects": false,
   "main": "dist/cjs",
   "module": "dist/cjs",
-  "files": ["types", "dist", "src"],
+  "files": [
+    "types",
+    "dist",
+    "src"
+  ],
   "scripts": {
     "build": "tamagui-build --skip-types",
     "watch": "tamagui-build --watch --skip-types",
@@ -15,15 +19,19 @@
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "react-native-import": "./dist/esm/index.native.js",
-      "react-native": "./dist/cjs/index.native.js",
+      "react-native": {
+        "import": "./dist/esm/index.native.js",
+        "require": "./dist/cjs/index.native.js"
+      },
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/cjs/index.native.js"
     },
     "./without-animated": {
-      "react-native-import": "./dist/esm/without-animated.native.js",
-      "react-native": "./dist/cjs/without-animated.native.js",
+      "react-native": {
+        "import": "./dist/esm/without-animated.native.js",
+        "require": "./dist/cjs/without-animated.native.js"
+      },
       "import": "./dist/esm/without-animated.mjs",
       "require": "./dist/cjs/without-animated.cjs"
     },
@@ -33,23 +41,29 @@
     "./dist/*": "./dist/cjs/*/index.mjs"
   },
   "dependencies": {
-    "@tamagui/normalize-css-color": "1.116.9",
-    "@tamagui/react-native-use-pressable": "1.116.9",
-    "@tamagui/react-native-use-responder-events": "1.116.9",
-    "@tamagui/react-native-web-internals": "1.116.9",
+    "@tamagui/normalize-css-color": "1.117.1",
+    "@tamagui/react-native-use-pressable": "1.117.1",
+    "@tamagui/react-native-use-responder-events": "1.117.1",
+    "@tamagui/react-native-web-internals": "1.117.1",
     "invariant": "^2.2.4"
   },
   "devDependencies": {
-    "@tamagui/build": "1.116.9",
-    "react": ">=18.0.0",
-    "react-dom": "^18.2.0 || ^19.0.0"
+    "@tamagui/build": "1.117.1",
+    "react": "*"
   },
   "peerDependencies": {
     "react": "*"
   },
   "license": "MIT",
-  "tags": ["react"],
-  "keywords": ["react", "react-component", "react-native", "web"],
+  "tags": [
+    "react"
+  ],
+  "keywords": [
+    "react",
+    "react-component",
+    "react-native",
+    "web"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/tamagui/tamagui.git",

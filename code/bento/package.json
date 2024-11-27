@@ -1,33 +1,45 @@
 {
   "name": "@tamagui/bento",
-  "version": "1.116.9",
+  "version": "1.117.1",
   "private": true,
-  "sideEffects": ["*.css"],
+  "sideEffects": [
+    "*.css"
+  ],
   "source": "index.jsx",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
-  "files": ["src", "types", "dist"],
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "react-native-import": "./dist/esm/index.native.js",
-      "react-native": "./dist/cjs/index.native.js",
+      "react-native": {
+        "import": "./dist/esm/index.native.js",
+        "require": "./dist/cjs/index.native.js"
+      },
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/cjs/index.native.js"
     },
     "./data": {
-      "react-native-import": "./dist/esm/data.native.js",
-      "react-native": "./dist/cjs/data.native.js",
+      "react-native": {
+        "import": "./dist/esm/data.native.js",
+        "require": "./dist/cjs/data.native.js"
+      },
       "types": "./types/data.d.ts",
       "import": "./dist/esm/data.mjs",
       "require": "./dist/cjs/data.cjs"
     },
     "./component/*": {
-      "react-native-import": "./dist/esm/components/*.native.js",
-      "react-native": "./dist/cjs/components/*.native.js",
+      "react-native": {
+        "import": "./dist/esm/components/*.native.js",
+        "require": "./dist/cjs/components/*.native.js"
+      },
       "types": "./types/components/*.d.ts",
       "import": "./dist/esm/components/*.mjs",
       "require": "./dist/cjs/components/*.cjs"
@@ -57,26 +69,24 @@
     "@hookform/resolvers": "^3.3.4",
     "@ngneat/falso": "^7.2.0",
     "@rehookify/datepicker": "^6.5.0",
-    "@tamagui/animations-reanimated": "1.116.9",
-    "@tamagui/cli": "1.116.9",
-    "@tamagui/colors": "1.116.9",
-    "@tamagui/config": "1.116.9",
-    "@tamagui/core": "1.116.9",
-    "@tamagui/demos": "1.116.9",
-    "@tamagui/font-inter": "1.116.9",
-    "@tamagui/lucide-icons": "1.116.9",
-    "@tamagui/shorthands": "1.116.9",
-    "@tamagui/themes": "1.116.9",
-    "@tamagui/use-store": "1.116.9",
-    "@tamagui/web": "1.116.9",
+    "@tamagui/animations-reanimated": "1.117.1",
+    "@tamagui/cli": "1.117.1",
+    "@tamagui/colors": "1.117.1",
+    "@tamagui/config": "1.117.1",
+    "@tamagui/core": "1.117.1",
+    "@tamagui/demos": "1.117.1",
+    "@tamagui/font-inter": "1.117.1",
+    "@tamagui/lucide-icons": "1.117.1",
+    "@tamagui/shorthands": "1.117.1",
+    "@tamagui/themes": "1.117.1",
+    "@tamagui/use-store": "1.117.1",
+    "@tamagui/web": "1.117.1",
     "@tanstack/react-table": "^8.11.2",
     "@ts-react/form": "^1.8.3",
     "awesome-phonenumber": "^6.4.0",
     "expo-document-picker": "~12.0.1",
     "expo-image-picker": "~15.0.4",
     "foxact": "^0.2.33",
-    "react": ">=18.0.0",
-    "react-dom": "^18.2.0 || ^19.0.0",
     "react-dropzone": "^14.2.3",
     "react-hook-form": "^7.51.0",
     "react-native": "0.74.1",
@@ -84,15 +94,15 @@
     "react-native-svg": "^15.7.1",
     "react-native-web": "^0.19.12",
     "swr": "^2.2.5",
-    "tamagui": "1.116.9",
+    "tamagui": "1.117.1",
     "zod": "^3.22.4"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
     "@playwright/test": "^1.45.2",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.10",
-    "@tamagui/babel-plugin": "1.116.9",
-    "@tamagui/build": "1.116.9",
+    "@tamagui/babel-plugin": "1.117.1",
+    "@tamagui/build": "1.117.1",
     "@welldone-software/why-did-you-render": "^7.0.1",
     "html-webpack-plugin": "^5.5.0",
     "metro-runtime": "*",

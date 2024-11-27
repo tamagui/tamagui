@@ -1,6 +1,6 @@
 // adapted from radix-ui popper
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { isAndroid, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import type { ScopedProps, SizeTokens, StackProps } from '@tamagui/core'
 import {
   Stack,
@@ -299,19 +299,6 @@ export const PopperContent = React.forwardRef<
   } = usePopperContext(__scopePopper)
   const contentRefs = useComposedRefs<any>(refs.setFloating, forwardedRef)
 
-  let finalHasFloatingValue = false
-  if (isAndroid) {
-    const initialRender = React.useRef(true)
-    const finalHasFloating = React.useRef(false)
-    if (hasFloating === false) {
-      initialRender.current = false
-    }
-    if (!initialRender.current) {
-      finalHasFloating.current = hasFloating
-    }
-    finalHasFloatingValue = finalHasFloating.current
-  }
-
   const contents = React.useMemo(() => {
     return (
       <PopperContentFrame
@@ -333,22 +320,8 @@ export const PopperContent = React.forwardRef<
     }
   }, [enableAnimationForPositionChange, x, y])
 
-  // useIsomorphicLayoutEffect(() => {
-  //   update()
-  // }, [])
-
   // default to not showing if positioned at 0, 0
   let show = true
-
-  if (isAndroid) {
-    const [show_, setShow] = React.useState(false)
-    show = show_
-    React.useEffect(() => {
-      if (finalHasFloatingValue) {
-        setShow(true)
-      }
-    }, [finalHasFloatingValue, x, y])
-  }
 
   const frameProps = {
     ref: contentRefs,

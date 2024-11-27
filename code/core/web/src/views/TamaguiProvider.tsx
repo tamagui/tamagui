@@ -43,18 +43,21 @@ export function TamaguiProvider({
         </ComponentContext.Provider>
       </UnmountedClassName>
 
-      {process.env.TAMAGUI_REACT_19 && config && !disableInjectCSS && (
-        <style
-          // react 19 feature to hoist style tags to header:
-          // https://react.dev/reference/react-dom/components/style
-          // @ts-ignore
-          precedence="default"
-          href="tamagui-css"
-          key="tamagui-css"
-        >
-          {config.getCSS()}
-        </style>
-      )}
+      {process.env.TAMAGUI_TARGET !== 'native' &&
+        process.env.TAMAGUI_REACT_19 &&
+        config &&
+        !disableInjectCSS && (
+          <style
+            // react 19 feature to hoist style tags to header:
+            // https://react.dev/reference/react-dom/components/style
+            // @ts-ignore
+            precedence="default"
+            href="tamagui-css"
+            key="tamagui-css"
+          >
+            {config.getCSS()}
+          </style>
+        )}
     </>
   )
 }

@@ -165,6 +165,7 @@ export function createAnimations<A extends AnimationsConfig>(
     usePresence,
     ResetPresence,
     useAnimations: ({ props, onDidAnimate, style, componentState, presence }) => {
+      const isDisabled = isWeb && componentState.unmounted === true
       const isExiting = presence?.[0] === false
       const sendExitComplete = presence?.[1]
 
@@ -207,6 +208,11 @@ export function createAnimations<A extends AnimationsConfig>(
 
         for (const key in style) {
           const val = style[key]
+
+          if (isDisabled) {
+            continue
+          }
+
           if (animatedStyleKey[key] == null && !costlyToAnimateStyleKey[key]) {
             nonAnimatedStyle[key] = val
             continue

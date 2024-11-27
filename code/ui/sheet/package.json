@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/sheet",
-  "version": "1.116.9",
+  "version": "1.117.1",
   "sideEffects": [
     "*.css"
   ],
@@ -26,8 +26,10 @@
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "react-native-import": "./dist/esm/index.native.js",
-      "react-native": "./dist/cjs/index.native.js",
+      "react-native": {
+        "import": "./dist/esm/index.native.js",
+        "require": "./dist/cjs/index.native.js"
+      },
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
@@ -35,28 +37,29 @@
     }
   },
   "dependencies": {
-    "@tamagui/animate-presence": "1.116.9",
-    "@tamagui/animations-react-native": "1.116.9",
-    "@tamagui/compose-refs": "1.116.9",
-    "@tamagui/constants": "1.116.9",
-    "@tamagui/core": "1.116.9",
-    "@tamagui/create-context": "1.116.9",
-    "@tamagui/helpers": "1.116.9",
-    "@tamagui/portal": "1.116.9",
-    "@tamagui/remove-scroll": "1.116.9",
-    "@tamagui/scroll-view": "1.116.9",
-    "@tamagui/stacks": "1.116.9",
-    "@tamagui/use-constant": "1.116.9",
-    "@tamagui/use-controllable-state": "1.116.9",
-    "@tamagui/use-did-finish-ssr": "1.116.9",
-    "@tamagui/use-keyboard-visible": "1.116.9"
+    "@tamagui/adapt": "1.117.1",
+    "@tamagui/animate-presence": "1.117.1",
+    "@tamagui/animations-react-native": "1.117.1",
+    "@tamagui/compose-refs": "1.117.1",
+    "@tamagui/constants": "1.117.1",
+    "@tamagui/core": "1.117.1",
+    "@tamagui/create-context": "1.117.1",
+    "@tamagui/helpers": "1.117.1",
+    "@tamagui/portal": "1.117.1",
+    "@tamagui/remove-scroll": "1.117.1",
+    "@tamagui/scroll-view": "1.117.1",
+    "@tamagui/stacks": "1.117.1",
+    "@tamagui/use-constant": "1.117.1",
+    "@tamagui/use-controllable-state": "1.117.1",
+    "@tamagui/use-did-finish-ssr": "1.117.1",
+    "@tamagui/use-keyboard-visible": "1.117.1"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.116.9",
-    "react": ">=18.0.0",
+    "@tamagui/build": "1.117.1",
+    "react": "*"
   },
   "publishConfig": {
     "access": "public"

@@ -2,7 +2,7 @@ import { getFontSize } from '@tamagui/font-size'
 import { getButtonSized } from '@tamagui/get-button-sized'
 import { withStaticProperties } from '@tamagui/helpers'
 import { useGetThemedIcon } from '@tamagui/helpers-tamagui'
-import { ButtonNestingContext, YStack } from '@tamagui/stacks'
+import { ButtonNestingContext, ThemeableStack } from '@tamagui/stacks'
 import type { TextContextStyles, TextParentStyles } from '@tamagui/text'
 import { SizableText, wrapChildrenInText } from '@tamagui/text'
 import type { FontSizeTokens, GetProps, SizeTokens, ThemeableProps } from '@tamagui/web'
@@ -81,7 +81,7 @@ type ButtonProps = ButtonExtraProps & GetProps<typeof ButtonFrame>
 
 const BUTTON_NAME = 'Button'
 
-const ButtonFrame = styled(YStack, {
+const ButtonFrame = styled(ThemeableStack, {
   name: BUTTON_NAME,
   tag: 'button',
   context: ButtonContext,
