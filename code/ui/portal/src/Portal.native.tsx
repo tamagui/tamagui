@@ -1,19 +1,17 @@
 import { YStack } from '@tamagui/stacks'
 import * as React from 'react'
-// @ts-ignore
-import { Platform, RootTagContext } from 'react-native'
-
+import { RootTagContext } from 'react-native'
+import { IS_FABRIC, USE_NATIVE_PORTAL } from './constants'
 import { PortalItem } from './GorhomPortal'
 import type { PortalProps } from './PortalProps'
 import { useStackedZIndex } from './useStackedZIndex'
 
-const isFabric = global?.nativeFabricUIManager
-let createPortal
-if (isFabric) {
-  createPortal = require('react-native/Libraries/Renderer/shims/ReactFabric').createPortal
-} else {
-  createPortal = require('react-native/Libraries/Renderer/shims/ReactNative').createPortal
-}
+const createPortal = (() => {
+  if (IS_FABRIC) {
+    return require('react-native/Libraries/Renderer/shims/ReactFabric').createPortal
+  }
+  return require('react-native/Libraries/Renderer/shims/ReactNative').createPortal
+})()
 
 export const Portal = (propsIn: PortalProps) => {
   const { stackZIndex, ...props } = propsIn
@@ -32,11 +30,7 @@ export const Portal = (propsIn: PortalProps) => {
     />
   )
 
-  if (
-    process.env.TAMAGUI_USE_NATIVE_PORTAL === 'false' ||
-    Platform.OS === 'android' ||
-    !rootTag
-  ) {
+  if (!USE_NATIVE_PORTAL || !rootTag) {
     return <PortalItem hostName="root">{contents}</PortalItem>
   }
 
