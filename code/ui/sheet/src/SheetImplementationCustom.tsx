@@ -1,8 +1,8 @@
+import { ProvideAdaptContext, useAdaptContext } from '@tamagui/adapt'
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import {
   currentPlatform,
-  isAndroid,
   isClient,
   isWeb,
   useIsomorphicLayoutEffect,
@@ -15,7 +15,7 @@ import {
   useEvent,
   useThemeName,
 } from '@tamagui/core'
-import { Portal } from '@tamagui/portal'
+import { Portal, USE_NATIVE_PORTAL } from '@tamagui/portal'
 import React, { useId } from 'react'
 import type {
   Animated,
@@ -30,7 +30,6 @@ import { SheetProvider } from './SheetContext'
 import type { SheetProps, SnapPointsMode } from './types'
 import { useSheetOpenState } from './useSheetOpenState'
 import { useSheetProviderProps } from './useSheetProviderProps'
-import { useAdaptContext, ProvideAdaptContext } from '@tamagui/adapt'
 
 let hiddenSize = 10_000.1
 
@@ -105,7 +104,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       modal &&
       isShowingInnerSheet &&
       // if not using weird portal limitation we dont need to hide parent sheet
-      process.env.TAMAGUI_USE_NATIVE_PORTAL !== 'false'
+      USE_NATIVE_PORTAL
 
     const sheetInsideSheet = React.useContext(SheetInsideSheetContext)
     const onInnerSheet = React.useCallback((hasChild: boolean) => {
@@ -498,7 +497,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       </ParentSheetContext.Provider>
     )
 
-    if (process.env.TAMAGUI_USE_NATIVE_PORTAL === 'false' || isAndroid) {
+    if (!USE_NATIVE_PORTAL) {
       const adaptContext = useAdaptContext()
       contents = <ProvideAdaptContext {...adaptContext}>{contents}</ProvideAdaptContext>
     }
