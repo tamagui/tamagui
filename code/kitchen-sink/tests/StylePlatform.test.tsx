@@ -5,7 +5,7 @@ test.beforeEach(async ({ page }) => {
   await setupPage(page, { name: 'StylePlatform', type: 'useCase' })
 })
 
-test(`styles: $platform-web styles work`, async ({ page }) => {
+test(`styles: $web styles work`, async ({ page }) => {
   const view = page.locator('#style-platform')
 
   const styles = await view.evaluate((el) => {

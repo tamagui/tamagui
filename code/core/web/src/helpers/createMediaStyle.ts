@@ -53,7 +53,8 @@ export const createMediaStyle = (
 ): MediaStyleObject => {
   const [property, , identifier, pseudoIn, rules] = styleObject
   const isTheme = type === 'theme'
-  const isPlatform = type === 'platform'
+  const isPlatform =
+    type === 'web' || type === 'ios' || type === 'android' || type === 'native'
   const isGroup = type === 'group'
   const isNonWindowMedia = isTheme || isPlatform || isGroup
   const negKey = negate ? '0' : ''

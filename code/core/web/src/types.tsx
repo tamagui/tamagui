@@ -37,7 +37,14 @@ export type { MediaStyleObject, StyleObject } from '@tamagui/helpers'
 
 export type ColorScheme = 'light' | 'dark'
 
-export type IsMediaType = boolean | 'platform' | 'theme' | 'group'
+export type IsMediaType =
+  | boolean
+  | 'web'
+  | 'ios'
+  | 'android'
+  | 'native'
+  | 'theme'
+  | 'group'
 
 export type SpaceDirection = 'vertical' | 'horizontal' | 'both'
 
@@ -753,7 +760,7 @@ export type MediaQueryState = { [key in MediaQueryKey]: boolean }
 export type ThemeMediaKeys<TK extends keyof Themes = keyof Themes> =
   `$theme-${TK extends `${string}_${string}` ? never : TK}`
 
-export type PlatformMediaKeys = `$platform-${AllPlatforms}`
+export type PlatformMediaKeys = `$${AllPlatforms}`
 
 export interface TypeOverride {
   groupNames(): 1
@@ -784,7 +791,7 @@ export type WithMediaProps<A> = {
         // TODO we can support $theme- inside media queries here if we change to ThemeMediaKeys | PlatformMediaKeys
         [Key in PlatformMediaKeys]?: A
       }
-    : Key extends `$platform-web`
+    : Key extends `$web`
       ? {
           [SubKey in keyof A | keyof CSSProperties]?: SubKey extends keyof CSSProperties
             ? CSSProperties[SubKey]

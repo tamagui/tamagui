@@ -43,13 +43,16 @@ export const getMedia = () => mediaState
 
 export const mediaKeys = new Set<string>() // with $ prefix
 
-const mediaKeyRegex = /\$(platform|theme|group)-/
+const mediaKeyRegex = /\$(theme|group)-/
+const platformKeyRegex = /\$(web|ios|android|native)/
 
 export const isMediaKey = (key: string): IsMediaType => {
   if (mediaKeys.has(key)) return true
   if (key[0] === '$') {
     const match = key.match(mediaKeyRegex)
-    if (match) return match[1] as 'platform' | 'theme' | 'group'
+    const platformMatch = key.match(platformKeyRegex)
+    if (match) return match[1] as 'theme' | 'group'
+    if (platformMatch) return platformMatch[1] as 'web' | 'ios' | 'android' | 'native'
   }
   return false
 }

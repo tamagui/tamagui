@@ -796,7 +796,12 @@ export const getSplitStyles: StyleSplitter = (
         }
 
         // can bail early
-        if (isMedia === 'platform') {
+        if (
+          isMedia === 'web' ||
+          isMedia === 'ios' ||
+          isMedia === 'android' ||
+          isMedia === 'native'
+        ) {
           if (!isActivePlatform(key)) {
             continue
           }
@@ -881,7 +886,11 @@ export const getSplitStyles: StyleSplitter = (
         } else {
           const isThemeMedia = isMedia === 'theme'
           const isGroupMedia = isMedia === 'group'
-          const isPlatformMedia = isMedia === 'platform'
+          const isPlatformMedia =
+            isMedia === 'web' ||
+            isMedia === 'ios' ||
+            isMedia === 'android' ||
+            isMedia === 'native'
 
           if (!isThemeMedia && !isPlatformMedia && !isGroupMedia) {
             if (!mediaState[mediaKeyShort]) {
