@@ -12,7 +12,7 @@ import { createShallowSetState, getTokens, getVariableValue, styled } from '@tam
 import { getSize } from '@tamagui/get-token'
 import { clamp, composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import type { SizableStackProps } from '@tamagui/stacks'
-import { YStack } from '@tamagui/stacks'
+import { ThemeableStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDirection } from '@tamagui/use-direction'
 import * as React from 'react'
@@ -410,7 +410,7 @@ const getThumbSize = (val?: SizeTokens | number) => {
   }
 }
 
-export const SliderThumbFrame = styled(YStack, {
+export const SliderThumbFrame = styled(ThemeableStack, {
   name: 'SliderThumb',
 
   variants: {

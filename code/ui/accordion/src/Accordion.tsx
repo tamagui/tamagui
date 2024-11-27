@@ -4,11 +4,11 @@ import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import { YStack } from '@tamagui/stacks'
-import type { H3 } from '@tamagui/text'
+import type { H3, HeadingProps } from '@tamagui/text'
 import { H1 } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDirection } from '@tamagui/use-direction'
-import type { GetProps, GetRef, Stack, TamaguiElement } from '@tamagui/web'
+import type { GetProps, GetRef, StackProps, TamaguiElement } from '@tamagui/web'
 import { View, createStyledContext, styled, useEvent } from '@tamagui/web'
 import * as React from 'react'
 
@@ -26,9 +26,11 @@ const [Collection, useCollection] = createCollection<AccordionTrigger>(ACCORDION
 type ScopedProps<P> = P & { __scopeAccordion?: string }
 
 type AccordionElement = AccordionImplMultipleElement | AccordionImplSingleElement
+
 interface AccordionSingleProps extends AccordionImplSingleProps {
   type: 'single'
 }
+
 interface AccordionMultipleProps extends AccordionImplMultipleProps {
   type: 'multiple'
 }
@@ -56,26 +58,28 @@ const AccordionComponent = React.forwardRef<
 
 AccordionComponent.displayName = ACCORDION_NAME
 
-AccordionComponent.propTypes = {
-  type(props) {
-    const value = props.value || props.defaultValue
-    if (props.type && !['single', 'multiple'].includes(props.type)) {
-      return new Error(
-        'Invalid prop `type` supplied to `Accordion`. Expected one of `single | multiple`.'
-      )
-    }
-    if (props.type === 'multiple' && typeof value === 'string') {
-      return new Error(
-        'Invalid prop `type` supplied to `Accordion`. Expected `single` when `defaultValue` or `value` is type `string`.'
-      )
-    }
-    if (props.type === 'single' && Array.isArray(value)) {
-      return new Error(
-        'Invalid prop `type` supplied to `Accordion`. Expected `multiple` when `defaultValue` or `value` is type `string[]`.'
-      )
-    }
-    return null
-  },
+if (process.env.NODE_ENV === 'development') {
+  AccordionComponent.propTypes = {
+    type(props) {
+      const value = props.value || props.defaultValue
+      if (props.type && !['single', 'multiple'].includes(props.type)) {
+        return new Error(
+          'Invalid prop `type` supplied to `Accordion`. Expected one of `single | multiple`.'
+        )
+      }
+      if (props.type === 'multiple' && typeof value === 'string') {
+        return new Error(
+          'Invalid prop `type` supplied to `Accordion`. Expected `single` when `defaultValue` or `value` is type `string`.'
+        )
+      }
+      if (props.type === 'single' && Array.isArray(value)) {
+        return new Error(
+          'Invalid prop `type` supplied to `Accordion`. Expected `multiple` when `defaultValue` or `value` is type `string[]`.'
+        )
+      }
+      return null
+    },
+  }
 }
 
 /* -----------------------------------------------------------------------------------------------*/
@@ -228,8 +232,8 @@ const { Provider: AccordionImplProvider, useStyledContext: useAccordionContext }
   createStyledContext<AccordionImplContextValue>()
 
 type AccordionImplElement = TamaguiElement
-type PrimitiveDivProps = React.ComponentPropsWithoutRef<typeof Stack>
-interface AccordionImplProps extends PrimitiveDivProps {
+
+interface AccordionImplProps extends StackProps {
   /**
    * Whether or not an accordion is disabled from user interaction.
    *
@@ -443,7 +447,7 @@ AccordionItem.displayName = ITEM_NAME
 const HEADER_NAME = 'AccordionHeader'
 
 type AccordionHeaderElement = React.ElementRef<typeof H3>
-type PrimitiveHeading3Props = React.ComponentPropsWithoutRef<typeof H3>
+type PrimitiveHeading3Props = HeadingProps
 type AccordionHeaderProps = PrimitiveHeading3Props
 
 /**
