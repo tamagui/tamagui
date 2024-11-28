@@ -23,6 +23,12 @@ export interface SelectItemExtraProps {
 }
 export interface SelectItemProps extends Omit<ListItemProps, keyof SelectItemExtraProps>, SelectItemExtraProps {
 }
-export declare const SelectItem: any;
+export declare const SelectItem: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
+    elevation?: number | import("@tamagui/web").SizeTokens | undefined;
+    fullscreen?: boolean | undefined;
+}>, keyof SelectItemExtraProps> & SelectItemExtraProps, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & SelectItemExtraProps, import("@tamagui/web").StackStyleBase, {
+    elevation?: number | import("@tamagui/web").SizeTokens | undefined;
+    fullscreen?: boolean | undefined;
+}, import("@tamagui/web").StaticConfigPublic>;
 export {};
 //# sourceMappingURL=SelectItem.d.ts.map

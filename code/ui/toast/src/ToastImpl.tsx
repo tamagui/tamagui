@@ -367,8 +367,10 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
                       data-state={open ? 'open' : 'closed'}
                       data-swipe-direction={context.swipeDirection}
                       pointerEvents="auto"
-                      touchAction="none"
-                      userSelect="none"
+                      $platform-web={{
+                        touchAction: 'none',
+                        userSelect: 'none',
+                      }}
                       {...toastProps}
                       ref={composedRefs}
                       {...(isWeb && {

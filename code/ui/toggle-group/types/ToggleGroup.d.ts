@@ -89,7 +89,23 @@ interface ToggleGroupImplMultipleProps extends ToggleGroupImplProps {
     disableDeactivation?: never;
 }
 type RovingFocusGroupProps = React.ComponentPropsWithoutRef<typeof RovingFocusGroup>;
-declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, any, any, any, any, any>;
+declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & import("@tamagui/spacer").SpaceProps & {
+    axis?: "horizontal" | "vertical";
+    orientation?: "horizontal" | "vertical";
+    scrollable?: boolean;
+    showScrollIndicator?: boolean;
+    disabled?: boolean;
+    disablePassBorderRadius?: boolean | "bottom" | "end" | "start" | "top";
+    forceUseItem?: boolean;
+} & {
+    __scopeGroup?: import("@tamagui/create-context").Scope;
+}, import("@tamagui/web").StackStyleBase, {
+    unstyled?: boolean | undefined;
+    orientation?: "horizontal" | "vertical" | undefined;
+    size?: any;
+    elevation?: number | SizeTokens | undefined;
+    fullscreen?: boolean | undefined;
+}, import("@tamagui/web").StaticConfigPublic>;
 type ToggleGroupImplProps = GetProps<typeof ToggleGroupImplElementFrame> & GroupProps & {
     rovingFocus?: boolean;
     dir?: RovingFocusGroupProps['dir'];

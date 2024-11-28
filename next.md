@@ -32,14 +32,7 @@ v2:
     - remove SizableStack (maybe rename to Surface), redo/remove ThemeableStack
     - v2-3 ListItem simplification esp for performance of Select
     - fix Select hover/type/performance
-  - remove deprecated
-  - react 0.74 alignment:
-    - https://reactnative.dev/blog/2024/04/22/release-0.74
-  - move to web compat style apis
   - AnimatePresence: remove deprecated props in favor of `custom`
-  - deprecate shadow style props before v2 release and remove in v2
-    - "shadow*" style props are deprecated. Use "boxShadow".
-    - "Enhance with native semantics" can probably go away right
 
 potential
 

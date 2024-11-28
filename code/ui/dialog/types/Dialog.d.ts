@@ -72,19 +72,8 @@ declare const DialogOverlay: React.ForwardRefExoticComponent<DialogOverlayProps 
 declare const DialogContentFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     size?: import("@tamagui/core").SizeTokens | undefined;
-    transparent?: boolean | undefined;
-    circular?: boolean | undefined;
     fullscreen?: boolean | undefined;
     unstyled?: boolean | undefined;
-    hoverTheme?: boolean | undefined;
-    pressTheme?: boolean | undefined;
-    focusTheme?: boolean | undefined;
-    elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined;
-    backgrounded?: boolean | undefined;
-    radiused?: boolean | undefined;
-    padded?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
 type DialogContentFrameProps = GetProps<typeof DialogContentFrame>;
 interface DialogContentProps extends DialogContentFrameProps, Omit<DialogContentTypeProps, 'context' | 'onPointerDownCapture'> {

@@ -65,39 +65,15 @@ export declare const PopperContentFrame: import("@tamagui/core").TamaguiComponen
     fullscreen?: boolean | undefined;
     unstyled?: boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
-export declare const PopperContent: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | "elevation" | keyof import("@tamagui/core").StackStyleBase | "fullscreen" | "circular" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "unstyled"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
-    size?: import("@tamagui/web").SizeTokens | undefined;
+export declare const PopperContent: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "fullscreen"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
     elevation?: number | import("@tamagui/web").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
-    circular?: boolean | undefined;
-    hoverTheme?: boolean | undefined;
-    pressTheme?: boolean | undefined;
-    focusTheme?: boolean | undefined;
-    elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined;
-    unstyled?: boolean | undefined;
 } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
-    size?: import("@tamagui/web").SizeTokens | undefined;
     elevation?: number | import("@tamagui/web").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
-    circular?: boolean | undefined;
-    hoverTheme?: boolean | undefined;
-    pressTheme?: boolean | undefined;
-    focusTheme?: boolean | undefined;
-    elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined;
-    unstyled?: boolean | undefined;
 } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {
-    size?: import("@tamagui/web").SizeTokens | undefined;
     elevation?: number | import("@tamagui/web").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
-    circular?: boolean | undefined;
-    hoverTheme?: boolean | undefined;
-    pressTheme?: boolean | undefined;
-    focusTheme?: boolean | undefined;
-    elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined;
-    unstyled?: boolean | undefined;
 }>> & {
     enableAnimationForPositionChange?: boolean;
 } & {

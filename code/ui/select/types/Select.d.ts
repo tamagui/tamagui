@@ -41,7 +41,13 @@ export declare const Select: ((props: SelectScopedProps<SelectProps>) => import(
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         fullscreen?: boolean | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
-    Item: any;
+    Item: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+        fullscreen?: boolean | undefined;
+    }>, keyof import("./SelectItem").SelectItemExtraProps> & import("./SelectItem").SelectItemExtraProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & import("./SelectItem").SelectItemExtraProps, import("@tamagui/core").StackStyleBase, {
+        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+        fullscreen?: boolean | undefined;
+    }, import("@tamagui/core").StaticConfigPublic>;
     ItemIndicator: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "fullscreen"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         fullscreen?: boolean | undefined;
@@ -59,10 +65,58 @@ export declare const Select: ((props: SelectScopedProps<SelectProps>) => import(
         size?: FontSizeTokens | undefined;
         unstyled?: boolean | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
-    Label: React.ForwardRefExoticComponent<Omit<ListItemProps, "ref"> & React.RefAttributes<TamaguiElement>>;
+    Label: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "fullscreen"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+        fullscreen?: boolean | undefined;
+    } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+        fullscreen?: boolean | undefined;
+    } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {
+        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+        fullscreen?: boolean | undefined;
+    }>> & Omit<import("@tamagui/text").TextParentStyles, "TextComponent" | "noTextWrap"> & import("@tamagui/core").ThemeableProps & {
+        icon?: JSX.Element | React.FunctionComponent<{
+            color?: any;
+            size?: any;
+        }> | null;
+        iconAfter?: JSX.Element | React.FunctionComponent<{
+            color?: any;
+            size?: any;
+        }> | null;
+        scaleIcon?: number;
+        spaceFlex?: number | boolean;
+        scaleSpace?: number;
+        title?: React.ReactNode;
+        subTitle?: React.ReactNode;
+        noTextWrap?: boolean | "all";
+    } & React.RefAttributes<TamaguiElement>>;
     ScrollDownButton: React.ForwardRefExoticComponent<import("./types").SelectScrollButtonProps & React.RefAttributes<TamaguiElement>>;
     ScrollUpButton: React.ForwardRefExoticComponent<import("./types").SelectScrollButtonProps & React.RefAttributes<TamaguiElement>>;
-    Trigger: React.ForwardRefExoticComponent<Omit<ListItemProps, "ref"> & React.RefAttributes<TamaguiElement>>;
+    Trigger: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "fullscreen"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+        fullscreen?: boolean | undefined;
+    } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+        fullscreen?: boolean | undefined;
+    } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {
+        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+        fullscreen?: boolean | undefined;
+    }>> & Omit<import("@tamagui/text").TextParentStyles, "TextComponent" | "noTextWrap"> & import("@tamagui/core").ThemeableProps & {
+        icon?: JSX.Element | React.FunctionComponent<{
+            color?: any;
+            size?: any;
+        }> | null;
+        iconAfter?: JSX.Element | React.FunctionComponent<{
+            color?: any;
+            size?: any;
+        }> | null;
+        scaleIcon?: number;
+        spaceFlex?: number | boolean;
+        scaleSpace?: number;
+        title?: React.ReactNode;
+        subTitle?: React.ReactNode;
+        noTextWrap?: boolean | "all";
+    } & React.RefAttributes<TamaguiElement>>;
     Value: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
         size?: import("@tamagui/web").FontSizeTokens | undefined;
         unstyled?: boolean | undefined;

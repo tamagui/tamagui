@@ -1,8 +1,8 @@
 export declare const copyToClipboard: (text: string) => Promise<void>;
 export declare function useClipboard(text?: string, timeout?: number): {
     value: string;
-    onCopy: any;
+    onCopy: () => Promise<void>;
     hasCopied: boolean;
-    resetState: any;
+    resetState: () => void;
 };
 //# sourceMappingURL=useClipboard.d.ts.map

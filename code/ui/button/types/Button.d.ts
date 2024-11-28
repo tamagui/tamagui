@@ -46,18 +46,7 @@ declare const ButtonFrame: import("@tamagui/web").TamaguiComponent<import("@tama
     disabled?: boolean | undefined;
     elevation?: number | SizeTokens | undefined;
     unstyled?: boolean | undefined;
-    transparent?: boolean | undefined;
-    hoverTheme?: boolean | undefined;
-    pressTheme?: boolean | undefined;
-    backgrounded?: boolean | undefined;
     fullscreen?: boolean | undefined;
-    circular?: boolean | undefined;
-    focusTheme?: boolean | undefined;
-    elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined;
-    radiused?: boolean | undefined;
-    padded?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
 }, import("@tamagui/web").StaticConfigPublic>;
 declare const ButtonText: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
     size?: FontSizeTokens | undefined;
@@ -73,18 +62,7 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
     disabled?: boolean | undefined;
     elevation?: number | SizeTokens | undefined;
     unstyled?: boolean | undefined;
-    transparent?: boolean | undefined;
-    hoverTheme?: boolean | undefined;
-    pressTheme?: boolean | undefined;
-    backgrounded?: boolean | undefined;
     fullscreen?: boolean | undefined;
-    circular?: boolean | undefined;
-    focusTheme?: boolean | undefined;
-    elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined;
-    radiused?: boolean | undefined;
-    padded?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
 }>, keyof TextContextStyles | "unstyled" | "textProps" | "noTextWrap" | keyof ThemeableProps | "icon" | "iconAfter" | "scaleIcon" | "spaceFlex" | "scaleSpace"> & TextContextStyles & {
     textProps?: Partial<import("@tamagui/text").SizableTextProps>;
     noTextWrap?: boolean;
@@ -121,18 +99,7 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
     disabled?: boolean | undefined;
     elevation?: number | SizeTokens | undefined;
     unstyled?: boolean | undefined;
-    transparent?: boolean | undefined;
-    hoverTheme?: boolean | undefined;
-    pressTheme?: boolean | undefined;
-    backgrounded?: boolean | undefined;
     fullscreen?: boolean | undefined;
-    circular?: boolean | undefined;
-    focusTheme?: boolean | undefined;
-    elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined;
-    radiused?: boolean | undefined;
-    padded?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
 }>, keyof TextContextStyles | "unstyled" | "textProps" | "noTextWrap" | keyof ThemeableProps | "icon" | "iconAfter" | "scaleIcon" | "spaceFlex" | "scaleSpace"> & TextContextStyles & {
     textProps?: Partial<import("@tamagui/text").SizableTextProps>;
     noTextWrap?: boolean;
@@ -199,18 +166,7 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
     disabled?: boolean | undefined;
     elevation?: number | SizeTokens | undefined;
     unstyled?: boolean | undefined;
-    transparent?: boolean | undefined;
-    hoverTheme?: boolean | undefined;
-    pressTheme?: boolean | undefined;
-    backgrounded?: boolean | undefined;
     fullscreen?: boolean | undefined;
-    circular?: boolean | undefined;
-    focusTheme?: boolean | undefined;
-    elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined;
-    radiused?: boolean | undefined;
-    padded?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
 }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig" | "extractable" | "styleable"> & {
     __tama: [Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
         size?: number | SizeTokens | undefined;
@@ -218,18 +174,7 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
         disabled?: boolean | undefined;
         elevation?: number | SizeTokens | undefined;
         unstyled?: boolean | undefined;
-        transparent?: boolean | undefined;
-        hoverTheme?: boolean | undefined;
-        pressTheme?: boolean | undefined;
-        backgrounded?: boolean | undefined;
         fullscreen?: boolean | undefined;
-        circular?: boolean | undefined;
-        focusTheme?: boolean | undefined;
-        elevate?: boolean | undefined;
-        bordered?: number | boolean | undefined;
-        radiused?: boolean | undefined;
-        padded?: boolean | undefined;
-        chromeless?: boolean | "all" | undefined;
     }>, keyof TextContextStyles | "unstyled" | "textProps" | "noTextWrap" | keyof ThemeableProps | "icon" | "iconAfter" | "scaleIcon" | "spaceFlex" | "scaleSpace"> & TextContextStyles & {
         textProps?: Partial<import("@tamagui/text").SizableTextProps>;
         noTextWrap?: boolean;
@@ -296,18 +241,7 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
         disabled?: boolean | undefined;
         elevation?: number | SizeTokens | undefined;
         unstyled?: boolean | undefined;
-        transparent?: boolean | undefined;
-        hoverTheme?: boolean | undefined;
-        pressTheme?: boolean | undefined;
-        backgrounded?: boolean | undefined;
         fullscreen?: boolean | undefined;
-        circular?: boolean | undefined;
-        focusTheme?: boolean | undefined;
-        elevate?: boolean | undefined;
-        bordered?: number | boolean | undefined;
-        radiused?: boolean | undefined;
-        padded?: boolean | undefined;
-        chromeless?: boolean | "all" | undefined;
     }, import("@tamagui/web").StaticConfigPublic];
 } & {
     Text: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
