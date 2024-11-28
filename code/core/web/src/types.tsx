@@ -1735,8 +1735,6 @@ export interface TextStylePropsBase
   textOverflow?: Properties['textOverflow']
   whiteSpace?: Properties['whiteSpace']
   wordWrap?: Properties['wordWrap']
-  /** @deprecated use verticalAlign instead */
-  textAlignVertical?: RNTextStyle['textAlignVertical']
 }
 
 //

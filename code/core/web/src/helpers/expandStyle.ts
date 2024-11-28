@@ -33,9 +33,6 @@ export function expandStyle(key: string, value: any): PropMappedValue {
 
     // web only
     switch (key) {
-      case 'textAlignVertical': {
-        return [['verticalAlign', value === 'center' ? 'middle' : value]]
-      }
       case 'writingDirection': {
         return [['direction', value]]
       }

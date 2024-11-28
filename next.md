@@ -20,12 +20,7 @@ v2:
 
           </span>
         </div>
-  - we have some random web-only props accepts on flat props, we should:
-    - either implement them universally if easy
-    - or else remove them (in favor of $platform-web)
   - `$platform-` prefixes should go away in favor of just `$web`, `$native` etc
-  - textAlignVertical is deprecated but make sure we map back from textAlign to textAlignVertical on v2 and then remove it
-  - remove Provider need just global config once
   - @tamagui/cli => tamagui
     - `tamagui build` document/announce
     - `tamagui lint` fix check and document/announce
