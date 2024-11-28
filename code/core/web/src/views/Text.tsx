@@ -69,19 +69,6 @@ export const Text = createComponent<
       },
     }),
 
-    ...(process.env.TAMAGUI_TARGET === 'web' && {
-      selectable: {
-        true: {
-          userSelect: 'text',
-          cursor: 'text',
-        },
-        false: {
-          userSelect: 'none',
-          cursor: 'default',
-        },
-      },
-    }),
-
     ellipsis: {
       true: ellipsisStyle,
     },

@@ -1500,8 +1500,6 @@ export interface TextNonStyleProps
     TamaguiComponentPropsBase {
   // we allow either RN or web style props, of course only web css props only works on web
   style?: StyleProp<LooseCombinedObjects<React.CSSProperties, RNTextStyle>>
-  /** @deprecated use userSelect instead */
-  selectable?: boolean
 }
 
 export type TextStyle = WithThemeShorthandsPseudosMedia<TextStylePropsBase>

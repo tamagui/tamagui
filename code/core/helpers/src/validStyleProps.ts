@@ -246,7 +246,6 @@ export const stylePropsTextOnly = {
   textShadowOffset: true,
   textShadowRadius: true,
   userSelect: true,
-  selectable: true,
   verticalAlign: true,
 
   // allow some web only ones

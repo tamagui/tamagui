@@ -27,7 +27,6 @@ v2:
   - tamagui => @tamagui/ui
     - new Button, Input (nice, can be v3), Image (image-next), ScrollView
     - note many are headless
-  - remove spacer / space / separator
   - Cleanup Select/ListItem
     - remove SizableStack (maybe rename to Surface), redo/remove ThemeableStack
     - v2-3 ListItem simplification esp for performance of Select
