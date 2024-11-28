@@ -113,9 +113,3 @@ export const Sheet = createSheet({
   Handle,
   Overlay,
 })
-
-/** @deprecated use Overlay instead  */
-export const SheetOverlayFrame = Overlay
-
-/** @deprecated use Overlay instead  */
-export const SheetHandleFrame = Handle
