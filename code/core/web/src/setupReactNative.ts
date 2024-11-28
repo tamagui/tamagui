@@ -58,22 +58,3 @@ const RNConfigs = {
     isReactNative: true,
   },
 } satisfies Record<string, Partial<StaticConfig>>
-
-/**
- * @deprecated this is no longer necessary, tamagui auto-detects RN views
- */
-export function setupReactNative(rnExports: Record<string, any>) {
-  // no-op
-  // for (const key in rnExports) {
-  //   if (key[0].toLowerCase() === key[0]) continue
-  //   const val = rnExports[key]
-  //   if (val && typeof val === 'object') {
-  //     ReactNativeStaticConfigs.set(val, {
-  //       isReactNative: true,
-  //       isText: key === 'Text' || key === 'TextInput',
-  //       isInput: key === 'TextInput' || key === 'TextArea',
-  //       inlineProps: key === 'Image' ? new Set(['src', 'width', 'height']) : undefined,
-  //     })
-  //   }
-  // }
-}
