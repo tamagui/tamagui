@@ -59,10 +59,6 @@ export const GroupFrame = styled(YStack, {
 })
 
 export type GroupExtraProps = SpaceProps & {
-  /**
-   * @deprecated use `orientation` instead
-   */
-  axis?: 'horizontal' | 'vertical'
   orientation?: 'horizontal' | 'vertical'
   scrollable?: boolean
   /**
@@ -93,8 +89,7 @@ function createGroup(verticalDefault: boolean) {
         spaceDirection,
         separator,
         scrollable,
-        axis = verticalDefault ? 'vertical' : 'horizontal',
-        orientation = axis,
+        orientation = verticalDefault ? 'vertical' : 'horizontal',
         disabled: disabledProp,
         disablePassBorderRadius: disablePassBorderRadiusProp,
         borderRadius,
