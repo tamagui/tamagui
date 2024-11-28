@@ -1,8 +1,7 @@
-import type { GetProps } from '@tamagui/web'
 import { styled } from '@tamagui/core'
 import { getButtonSized } from '@tamagui/get-button-sized'
-
-import { XStack } from './Stacks'
+import type { GetProps } from '@tamagui/web'
+import { ThemeableStack } from './ThemeableStack'
 import {
   bordered,
   circular,
@@ -12,7 +11,7 @@ import {
   pressTheme,
 } from './variants'
 
-export const SizableStack = styled(XStack, {
+export const SizableStack = styled(ThemeableStack, {
   name: 'SizableStack',
 
   variants: {

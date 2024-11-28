@@ -124,18 +124,11 @@ const TabsTriggerFrame = styled(YStack, {
   },
 })
 
-/**
- * @deprecated Use `TabLayout` instead
- */
-type TabsTriggerLayout = LayoutRectangle
 type TabLayout = LayoutRectangle
 type InteractionType = 'select' | 'focus' | 'hover'
 
 type TabsTriggerFrameProps = GetProps<typeof TabsTriggerFrame>
 
-/**
- * @deprecated use `TabTabsProps` instead
- */
 type TabsTriggerProps = TabsTriggerFrameProps & {
   /** The value for the tabs state to be changed to after activation of the trigger */
   value: string
@@ -406,65 +399,61 @@ type TabsExtraProps = {
 
 type TabsProps = TabsFrameProps & TabsExtraProps
 
-const TabsComponent = TabsFrame.styleable<TabsExtraProps>(
-  (props: ScopedProps<TabsProps>, forwardedRef) => {
-    const {
-      __scopeTabs,
-      value: valueProp,
-      onValueChange,
-      defaultValue,
-      orientation = 'horizontal',
-      dir,
-      activationMode = 'automatic',
-      size = '$true',
-      ...tabsProps
-    } = props
-    const direction = useDirection(dir)
-    const [value, setValue] = useControllableState({
-      prop: valueProp,
-      onChange: onValueChange,
-      defaultProp: defaultValue ?? '',
-    })
-    const [triggersCount, setTriggersCount] = React.useState(0)
-    const registerTrigger = useEvent(() => setTriggersCount((v) => v + 1))
-    const unregisterTrigger = useEvent(() => setTriggersCount((v) => v - 1))
+const TabsComponent = TabsFrame.styleable<TabsExtraProps>(function Tabs(
+  props: ScopedProps<TabsProps>,
+  forwardedRef
+) {
+  const {
+    __scopeTabs,
+    value: valueProp,
+    onValueChange,
+    defaultValue,
+    orientation = 'horizontal',
+    dir,
+    activationMode = 'automatic',
+    size = '$true',
+    ...tabsProps
+  } = props
+  const direction = useDirection(dir)
+  const [value, setValue] = useControllableState({
+    prop: valueProp,
+    onChange: onValueChange,
+    defaultProp: defaultValue ?? '',
+  })
+  const [triggersCount, setTriggersCount] = React.useState(0)
+  const registerTrigger = useEvent(() => setTriggersCount((v) => v + 1))
+  const unregisterTrigger = useEvent(() => setTriggersCount((v) => v - 1))
 
-    return (
-      <TabsProvider
-        scope={__scopeTabs}
-        baseId={React.useId()}
-        value={value}
-        onChange={setValue}
-        orientation={orientation}
-        dir={direction}
-        activationMode={activationMode}
-        size={size}
-        registerTrigger={registerTrigger}
-        triggersCount={triggersCount}
-        unregisterTrigger={unregisterTrigger}
-      >
-        <TabsFrame
-          direction={direction}
-          //   dir={direction}
-          data-orientation={orientation}
-          {...tabsProps}
-          ref={forwardedRef}
-        />
-      </TabsProvider>
-    )
-  }
-)
+  return (
+    <TabsProvider
+      scope={__scopeTabs}
+      baseId={React.useId()}
+      value={value}
+      onChange={setValue}
+      orientation={orientation}
+      dir={direction}
+      activationMode={activationMode}
+      size={size}
+      registerTrigger={registerTrigger}
+      triggersCount={triggersCount}
+      unregisterTrigger={unregisterTrigger}
+    >
+      <TabsFrame
+        direction={direction}
+        //   dir={direction}
+        data-orientation={orientation}
+        {...tabsProps}
+        ref={forwardedRef}
+      />
+    </TabsProvider>
+  )
+})
 
 export const Tabs = withStaticProperties(TabsComponent, {
   List: TabsList,
-  /**
-   * @deprecated Use Tabs.Tab instead
-   */
-  Trigger: TabsTrigger,
   Tab: TabsTrigger,
   Content: TabsContent,
 })
-Tabs.displayName = TABS_NAME
 
 /* ---------------------------------------------------------------------------------------------- */
 
@@ -484,6 +473,5 @@ export type {
   TabsListProps,
   TabsProps,
   TabsTabProps,
-  TabsTriggerLayout,
   TabsTriggerProps,
 }
