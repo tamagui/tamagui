@@ -52,8 +52,6 @@ function getPriceDescription(price: TakeoutPageProps['starter']['prices'][number
 
 export const PurchaseModal = ({
   starter,
-  iconsPack,
-  fontsPack,
   bento,
   defaultValue,
 }: Omit<TakeoutPageProps, 'takeoutPlusBentoCoupon'> & {
@@ -91,7 +89,7 @@ export const PurchaseModal = ({
   // })
   // const sortedPrices = prices.sort((a, b) => (a.unit_amount ?? 0) - (b.unit_amount ?? 0))
   const sum = useMemo(() => {
-    if (!starter || !iconsPack || !fontsPack) {
+    if (!starter) {
       return 0
     }
     let final = 0
@@ -100,19 +98,13 @@ export const PurchaseModal = ({
         ? (starter.prices.find((p) => p.id === starterPriceId)?.unit_amount ?? 0)
         : 0
     }
-    if (starterPriceId) {
-      final += iconsPack.prices[0].unit_amount ?? 0
-    }
-    if (starterPriceId) {
-      final += fontsPack.prices[0].unit_amount ?? 0
-    }
     if (bentoPriceId) {
       final += bentoPriceId
         ? (bento.prices.find((p) => p.id === bentoPriceId)?.unit_amount ?? 0)
         : 0
     }
     return final
-  }, [starterPriceId, bentoPriceId, starter, iconsPack, fontsPack])
+  }, [starterPriceId, bentoPriceId, starter])
 
   const noProductSelected = !bentoPriceId && !starterPriceId
 
@@ -171,6 +163,7 @@ export const PurchaseModal = ({
 
         <Dialog.Content
           bordered
+          ov="hidden"
           elevate
           key="content"
           bg="$color2"
@@ -631,6 +624,12 @@ export const PurchaseModal = ({
               />
             </Dialog.Close>
           </Unspaced>
+
+          <XStack theme="yellow" bg="$color1" w="100%" py="$2" ai="center" jc="center">
+            <Paragraph>
+              Black Friday pricing active: saving $50 on every product
+            </Paragraph>
+          </XStack>
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog>
@@ -658,7 +657,7 @@ function Tab({
       bbc="transparent"
       {...(!isActive && {
         bbc: '$color4',
-        bg: '$color2',
+        bg: '$color1',
       })}
       {...props}
     >

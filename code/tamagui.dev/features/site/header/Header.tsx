@@ -28,6 +28,8 @@ export function Header(props: HeaderProps) {
     }, [])
   }
 
+  const bannerHeight = 35
+
   return (
     <>
       <XStack
@@ -50,7 +52,7 @@ export function Header(props: HeaderProps) {
           <XStack
             className={`ease-out all ms300`}
             py="$1.5"
-            y={0}
+            y={bannerHeight}
             ov="hidden"
             contain="paint"
             width="100%"
@@ -59,7 +61,7 @@ export function Header(props: HeaderProps) {
             $sm={{
               br: 0,
               bw: 0,
-              y: -1,
+              y: -1 + bannerHeight,
               py: '$2',
             }}
             {...(isScrolled && {

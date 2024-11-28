@@ -1,4 +1,4 @@
-import { YStack } from 'tamagui'
+import { XStack, YStack } from 'tamagui'
 import { useLoader } from 'one'
 import { HeadInfo } from '~/components/HeadInfo'
 import { HomeAnimations } from '~/features/site/home/HomeAnimations'
@@ -34,6 +34,7 @@ export default function TamaguiHomePage() {
         title="Tamagui"
         description="React style library and UI kit that unifies React Native and React web"
       />
+
       <ThemeNameEffect colorKey="$color2" />
       <HomeGlow />
       <YStack
@@ -44,6 +45,7 @@ export default function TamaguiHomePage() {
           maskImage: `linear-gradient(transparent, rgba(0, 0, 0, 1) 100px)`,
         }}
       />
+
       <TintSection index={0} p={0}>
         <Hero />
       </TintSection>

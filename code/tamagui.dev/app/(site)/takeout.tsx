@@ -64,7 +64,7 @@ export const loader = async () => {
 const whenIdle = globalThis['requestIdleCallback'] || setTimeout
 
 export default function TakeoutPage() {
-  const { starter, fontsPack, iconsPack, bento } = useLoader(loader)
+  const { starter, bento } = useLoader(loader)
   const store = useTakeoutStore()
 
   return (
@@ -161,13 +161,7 @@ export default function TakeoutPage() {
 
       {/* <Glow /> */}
 
-      <PurchaseModal
-        defaultValue="takeout"
-        starter={starter!}
-        iconsPack={iconsPack!}
-        fontsPack={fontsPack!}
-        bento={bento!}
-      />
+      <PurchaseModal defaultValue="takeout" starter={starter!} bento={bento!} />
 
       {/* gradient on the end of the page */}
       <ThemeTint>
