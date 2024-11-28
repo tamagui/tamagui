@@ -27,15 +27,12 @@ export function expandStyle(key: string, value: any): PropMappedValue {
       return [
         ['flexGrow', value],
         ['flexShrink', 1],
-        ['flexBasis', getConfig().settings.styleCompat === 'react-native' ? 0 : 'auto'],
+        ['flexBasis', getConfig().settings.styleCompat === 'legacy' ? 'auto' : 0],
       ]
     }
 
     // web only
     switch (key) {
-      case 'textAlignVertical': {
-        return [['verticalAlign', value === 'center' ? 'middle' : value]]
-      }
       case 'writingDirection': {
         return [['direction', value]]
       }

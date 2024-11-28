@@ -9,24 +9,12 @@ export declare const Test14Component: import("tamagui").TamaguiComponent<import(
     elevation?: number | import("tamagui").SizeTokens | undefined;
     fullbleed?: boolean | undefined;
     fullscreen?: boolean | undefined;
-    inset?: number | import("tamagui").SizeTokens | {
-        top?: number;
-        bottom?: number;
-        left?: number;
-        right?: number;
-    } | undefined;
 }, import("@tamagui/web").StaticConfigPublic>;
 export declare const TestBorderExtraction: import("tamagui").TamaguiComponent<import("@tamagui/web").TamaDefer, import("tamagui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
     elevation?: number | import("tamagui").SizeTokens | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
-    inset?: number | import("tamagui").SizeTokens | {
-        top?: number;
-        bottom?: number;
-        left?: number;
-        right?: number;
-    } | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
     focusTheme?: boolean | undefined;

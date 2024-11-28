@@ -1,3 +1,4 @@
+import { ProvideAdaptContext, useAdaptContext } from '@tamagui/adapt'
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import {
@@ -14,7 +15,7 @@ import {
   useEvent,
   useThemeName,
 } from '@tamagui/core'
-import { Portal } from '@tamagui/portal'
+import { Portal, USE_NATIVE_PORTAL } from '@tamagui/portal'
 import React, { useId } from 'react'
 import type {
   Animated,
@@ -103,7 +104,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       modal &&
       isShowingInnerSheet &&
       // if not using weird portal limitation we dont need to hide parent sheet
-      process.env.TAMAGUI_USE_NATIVE_PORTAL !== 'false'
+      USE_NATIVE_PORTAL
 
     const sheetInsideSheet = React.useContext(SheetInsideSheetContext)
     const onInnerSheet = React.useCallback((hasChild: boolean) => {
@@ -442,7 +443,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     //   portal: true,
     // })
 
-    const contents = (
+    let contents = (
       <ParentSheetContext.Provider value={nextParentContext}>
         <SheetProvider {...providerProps}>
           <AnimatePresence custom={{ open }}>
@@ -495,6 +496,11 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
         </SheetProvider>
       </ParentSheetContext.Provider>
     )
+
+    if (!USE_NATIVE_PORTAL) {
+      const adaptContext = useAdaptContext()
+      contents = <ProvideAdaptContext {...adaptContext}>{contents}</ProvideAdaptContext>
+    }
 
     // start mounted so we get an accurate measurement the first time
     const shouldMountChildren = unmountChildrenWhenHidden ? !!opacity : true

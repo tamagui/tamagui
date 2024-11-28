@@ -9,23 +9,7 @@ export type CodeBlockProps = PreProps & {
     mode?: 'static';
     showLineNumbers?: boolean;
 };
-declare const _default: React.ForwardRefExoticComponent<PreProps & {
-    language: "tsx";
-    value: string;
-    line?: string;
-    css?: any;
-    mode?: "static";
-    showLineNumbers?: boolean;
-} & React.RefAttributes<HTMLPreElement>>;
+declare const _default: React.ForwardRefExoticComponent<Omit<CodeBlockProps, "ref"> & React.RefAttributes<HTMLPreElement>>;
 export default _default;
-declare const Pre: import("tamagui").TamaguiComponent<import("@tamagui/web").TamaDefer, import("tamagui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
-    elevation?: number | import("tamagui").SizeTokens | undefined;
-    fullscreen?: boolean | undefined;
-    inset?: number | import("tamagui").SizeTokens | {
-        top?: number;
-        bottom?: number;
-        left?: number;
-        right?: number;
-    } | undefined;
-}, import("@tamagui/web").StaticConfigPublic>;
+declare const Pre: any;
 //# sourceMappingURL=CodeBlock.d.ts.map

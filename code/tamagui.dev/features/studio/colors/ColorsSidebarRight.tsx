@@ -96,7 +96,7 @@ export const ColorsSidebarRight = memo(function ColorsSidebarRight() {
                       Aa
                     </Paragraph>
                   </Square>
-                  <Paragraph size="$2" ellipse>
+                  <Paragraph size="$2" ellipsis>
                     on {name}
                   </Paragraph>
                 </XStack>
@@ -105,7 +105,7 @@ export const ColorsSidebarRight = memo(function ColorsSidebarRight() {
                   <Paragraph size="$2" mr="$2">
                     {accent.toFixed(2)}
                   </Paragraph>
-                  <Paragraph size="$2" ellipse fow="800">
+                  <Paragraph size="$2" ellipsis fow="800">
                     {getAccentScore(getContrast(hex, focusedHex || ''))}{' '}
                   </Paragraph>
                   {getAccentScore(getContrast(hex, focusedHex || '')) === 'Fail' ? (

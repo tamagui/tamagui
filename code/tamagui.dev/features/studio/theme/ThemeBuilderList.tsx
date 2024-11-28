@@ -310,7 +310,8 @@ function ThemeSuiteCard({ themeSuite }: { themeSuite: ThemeSuiteItem }) {
           />
           <AlertDialog.Content
             width={400}
-            bordered
+            borderWidth={1}
+            borderColor="$borderColor"
             elevate
             key="content"
             animation={[
@@ -381,7 +382,8 @@ function ThemeSuiteCard({ themeSuite }: { themeSuite: ThemeSuiteItem }) {
           />
           <Dialog.Content
             width={400}
-            bordered
+            borderWidth={1}
+            borderColor="$borderColor"
             elevate
             key="content"
             animation={[
@@ -489,7 +491,7 @@ function CreateDialog(
         />
 
         <Dialog.Content
-          bordered
+          borderRadius="$4"
           elevate
           key="content"
           animateOnly={['transform', 'opacity']}

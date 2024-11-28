@@ -1,11 +1,10 @@
-import type { SizeTokens } from 'tamagui'
-import { Label, ThemeableStack, XStack, YStack, styled } from 'tamagui'
+import { Label, XStack, YStack, styled } from 'tamagui'
 
 import { createRadioGroup } from '@tamagui/radio-group'
 
 const RADIO_GROUP_ITEM_NAME = 'RadioGroupItem'
 
-const RadioGroupItemFrame = styled(ThemeableStack, {
+const RadioGroupItemFrame = styled(YStack, {
   name: RADIO_GROUP_ITEM_NAME,
   tag: 'button',
 
@@ -65,18 +64,17 @@ const RadioGroupItemFrame = styled(ThemeableStack, {
 
 const RADIO_GROUP_INDICATOR_NAME = 'RadioGroupIndicator'
 
-const RadioGroupIndicatorFrame = styled(ThemeableStack, {
+const RadioGroupIndicatorFrame = styled(YStack, {
   name: RADIO_GROUP_INDICATOR_NAME,
   width: '53%',
   height: '53%',
   borderRadius: 1000,
   backgroundColor: '$color',
-  pressTheme: true,
 })
 
 const RADIO_GROUP_NAME = 'RadioGroup'
 
-const RadioGroupFrame = styled(ThemeableStack, {
+const RadioGroupFrame = styled(YStack, {
   name: RADIO_GROUP_NAME,
   variants: {
     orientation: {

@@ -68,7 +68,8 @@ export const Dialogs = memo(() => {
           onPointerDownOutside={() => {
             rootStore.hideDialog()
           }}
-          bordered
+          borderWidth={1}
+          borderColor="$borderColor"
           elevate
           key="content"
           animation={[

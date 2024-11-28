@@ -48,12 +48,6 @@ type DialogPortalProps = YStackProps & {
 };
 export declare const DialogPortalFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number;
-        bottom?: number;
-        left?: number;
-        right?: number;
-    } | undefined;
     fullscreen?: boolean | undefined;
     unstyled?: boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
@@ -64,25 +58,8 @@ declare const DialogPortal: React.FC<DialogPortalProps>;
 export declare const DialogOverlayFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
-    inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number;
-        bottom?: number;
-        left?: number;
-        right?: number;
-    } | undefined;
     open?: boolean | undefined;
-    transparent?: boolean | undefined;
-    circular?: boolean | undefined;
     unstyled?: boolean | undefined;
-    backgrounded?: boolean | undefined;
-    hoverTheme?: boolean | undefined;
-    pressTheme?: boolean | undefined;
-    focusTheme?: boolean | undefined;
-    elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined;
-    radiused?: boolean | undefined;
-    padded?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
 interface DialogOverlayProps extends YStackProps {
     /**
@@ -97,20 +74,14 @@ declare const DialogContentFrame: import("@tamagui/core").TamaguiComponent<impor
     size?: import("@tamagui/core").SizeTokens | undefined;
     transparent?: boolean | undefined;
     circular?: boolean | undefined;
-    inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number;
-        bottom?: number;
-        left?: number;
-        right?: number;
-    } | undefined;
     fullscreen?: boolean | undefined;
     unstyled?: boolean | undefined;
-    backgrounded?: boolean | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
     focusTheme?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
+    backgrounded?: boolean | undefined;
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
@@ -215,12 +186,6 @@ declare const Dialog: React.ForwardRefExoticComponent<DialogProps & React.RefAtt
         Frame: import("react").ForwardRefExoticComponent<import("@tamagui/sheet").SheetScopedProps<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
             elevation?: number | import("@tamagui/core").SizeTokens | undefined;
             fullscreen?: boolean | undefined;
-            inset?: number | import("@tamagui/core").SizeTokens | {
-                top?: number;
-                bottom?: number;
-                left?: number;
-                right?: number;
-            } | undefined;
             unstyled?: boolean | undefined;
         }>, keyof {
             disableHideBottomOverflow?: boolean;
@@ -232,25 +197,8 @@ declare const Dialog: React.ForwardRefExoticComponent<DialogProps & React.RefAtt
         Overlay: import("react").MemoExoticComponent<(propsIn: import("@tamagui/sheet/types/types").SheetScopedProps<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
             elevation?: number | import("@tamagui/core").SizeTokens | undefined;
             fullscreen?: boolean | undefined;
-            inset?: number | import("@tamagui/core").SizeTokens | {
-                top?: number;
-                bottom?: number;
-                left?: number;
-                right?: number;
-            } | undefined;
             open?: boolean | undefined;
-            transparent?: boolean | undefined;
-            circular?: boolean | undefined;
             unstyled?: boolean | undefined;
-            backgrounded?: boolean | undefined;
-            hoverTheme?: boolean | undefined;
-            pressTheme?: boolean | undefined;
-            focusTheme?: boolean | undefined;
-            elevate?: boolean | undefined;
-            bordered?: number | boolean | undefined;
-            radiused?: boolean | undefined;
-            padded?: boolean | undefined;
-            chromeless?: boolean | "all" | undefined;
         }>>) => null>;
         Handle: import("@tamagui/core").TamaguiComponent<any, any, any, any, {
             open?: boolean;
@@ -275,7 +223,13 @@ declare const Dialog: React.ForwardRefExoticComponent<DialogProps & React.RefAtt
     };
     Adapt: ((props: import("@tamagui/adapt").AdaptProps) => import("react/jsx-runtime").JSX.Element) & {
         Contents: {
-            ({ scope, ...rest }: {
+            ({ scope, 
+            /**
+             * @see https://github.com/theKashey/react-remove-scroll#usage
+             */
+            ... /**
+             * @see https://github.com/theKashey/react-remove-scroll#usage
+             */rest }: {
                 scope?: string;
             }): React.FunctionComponentElement<any>;
             shouldForwardSpace: boolean;

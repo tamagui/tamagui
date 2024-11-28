@@ -12,7 +12,13 @@ export function ListItemDemo() {
 
 function ListItemDemo1() {
   return (
-    <YGroup alignSelf="center" bordered width={240} size="$4">
+    <YGroup
+      alignSelf="center"
+      borderWidth={1}
+      borderColor="$borderColor"
+      width={240}
+      size="$4"
+    >
       <YGroup.Item>
         <ListItem hoverTheme icon={Star} title="Star" subTitle="Twinkles" />
       </YGroup.Item>
@@ -37,7 +43,14 @@ function ListItemDemo1() {
 
 function ListItemDemo2() {
   return (
-    <YGroup alignSelf="center" bordered width={240} size="$5" separator={<Separator />}>
+    <YGroup
+      alignSelf="center"
+      borderWidth={1}
+      borderColor="$borderColor"
+      width={240}
+      size="$5"
+      separator={<Separator />}
+    >
       <YGroup.Item>
         <ListItem
           hoverTheme

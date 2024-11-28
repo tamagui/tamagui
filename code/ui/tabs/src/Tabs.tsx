@@ -5,7 +5,7 @@ import type { GroupProps } from '@tamagui/group'
 import { Group, useGroupItem } from '@tamagui/group'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import { RovingFocusGroup } from '@tamagui/roving-focus'
-import { SizableStack, ThemeableStack } from '@tamagui/stacks'
+import { SizableStack, YStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDirection } from '@tamagui/use-direction'
 import type { GetProps, SizeTokens, TamaguiElement } from '@tamagui/web'
@@ -67,7 +67,7 @@ TabsList.displayName = TAB_LIST_NAME
 
 const TRIGGER_NAME = 'TabsTrigger'
 
-const TabsTriggerFrame = styled(ThemeableStack, {
+const TabsTriggerFrame = styled(YStack, {
   name: TRIGGER_NAME,
   tag: 'button',
   justifyContent: 'center',
@@ -292,7 +292,7 @@ TabsTrigger.displayName = TRIGGER_NAME
 
 const CONTENT_NAME = 'TabsContent'
 
-const TabsContentFrame = styled(ThemeableStack, {
+const TabsContentFrame = styled(YStack, {
   name: CONTENT_NAME,
 })
 type TabsContentFrameProps = GetProps<typeof TabsContentFrame>
@@ -479,11 +479,11 @@ function makeContentId(baseId: string, value: string) {
 export { useTabsContext }
 
 export type {
-  TabsProps,
-  TabsListProps,
-  TabsTriggerProps,
-  TabsTriggerLayout,
-  TabsTabProps,
-  TabsContentProps,
   TabLayout,
+  TabsContentProps,
+  TabsListProps,
+  TabsProps,
+  TabsTabProps,
+  TabsTriggerLayout,
+  TabsTriggerProps,
 }

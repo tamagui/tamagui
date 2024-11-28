@@ -1,6 +1,5 @@
 import { isClient, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import React from 'react'
-import { getSetting } from '../config'
 import { ComponentContext } from '../contexts/ComponentContext'
 import type { TamaguiProviderProps } from '../types'
 import { ThemeProvider } from './ThemeProvider'
@@ -11,9 +10,7 @@ export function TamaguiProvider({
   config,
   className,
   defaultTheme,
-  disableRootThemeClass,
   reset,
-  themeClassNameOnRoot,
 }: TamaguiProviderProps) {
   if (!process.env.TAMAGUI_REACT_19) {
     if (isClient) {
@@ -37,12 +34,6 @@ export function TamaguiProvider({
       <UnmountedClassName>
         <ComponentContext.Provider animationDriver={config?.animations}>
           <ThemeProvider
-            themeClassNameOnRoot={
-              themeClassNameOnRoot ?? getSetting('themeClassNameOnRoot')
-            }
-            disableRootThemeClass={
-              disableRootThemeClass ?? getSetting('disableRootThemeClass')
-            }
             defaultTheme={defaultTheme ?? (config ? Object.keys(config.themes)[0] : '')}
             reset={reset}
             className={className}
@@ -52,18 +43,21 @@ export function TamaguiProvider({
         </ComponentContext.Provider>
       </UnmountedClassName>
 
-      {process.env.TAMAGUI_REACT_19 && config && !disableInjectCSS && (
-        <style
-          // react 19 feature to hoist style tags to header:
-          // https://react.dev/reference/react-dom/components/style
-          // @ts-ignore
-          precedence="default"
-          href="tamagui-css"
-          key="tamagui-css"
-        >
-          {config.getCSS()}
-        </style>
-      )}
+      {process.env.TAMAGUI_TARGET !== 'native' &&
+        process.env.TAMAGUI_REACT_19 &&
+        config &&
+        !disableInjectCSS && (
+          <style
+            // react 19 feature to hoist style tags to header:
+            // https://react.dev/reference/react-dom/components/style
+            // @ts-ignore
+            precedence="default"
+            href="tamagui-css"
+            key="tamagui-css"
+          >
+            {config.getCSS()}
+          </style>
+        )}
     </>
   )
 }

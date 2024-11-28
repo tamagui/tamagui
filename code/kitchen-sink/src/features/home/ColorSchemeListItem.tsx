@@ -4,13 +4,21 @@ import { Button, ListItem, Spacer, Switch } from 'tamagui'
 import { useThemeControl } from '../../useKitchenSinkTheme'
 
 export const ColorSchemeListItem = (props: ListItemProps) => {
-  const theme = useThemeControl()
-  const checked = theme.value === 'light'
-
   return (
     <ListItem {...props} bg="$color1" pressTheme paddingVertical={0}>
       <ListItem.Text>Theme</ListItem.Text>
       <Spacer flex={1} />
+      <ColorSchemeToggle />
+    </ListItem>
+  )
+}
+
+export const ColorSchemeToggle = () => {
+  const theme = useThemeControl()
+  const checked = theme.value === 'light'
+
+  return (
+    <>
       <Button chromeless disabled w={20} icon={Moon} />
       <Switch
         native
@@ -31,6 +39,6 @@ export const ColorSchemeListItem = (props: ListItemProps) => {
         />
       </Switch>
       <Button chromeless disabled w={20} icon={Sun} />
-    </ListItem>
+    </>
   )
 }

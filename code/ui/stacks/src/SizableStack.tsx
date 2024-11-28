@@ -1,4 +1,4 @@
-import type { GetProps } from '@tamagui/core'
+import type { GetProps } from '@tamagui/web'
 import { styled } from '@tamagui/core'
 import { getButtonSized } from '@tamagui/get-button-sized'
 

@@ -1,7 +1,7 @@
 import type { GetProps, NativePlatform, NativeValue, TamaguiElement } from '@tamagui/core'
 import { styled, useEvent } from '@tamagui/core'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
-import { ThemeableStack } from '@tamagui/stacks'
+import { YStack } from '@tamagui/stacks'
 import { SizableText } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
@@ -116,7 +116,7 @@ ToastAction.displayName = ACTION_NAME
 
 const CLOSE_NAME = 'ToastClose'
 
-const ToastCloseFrame = styled(ThemeableStack, {
+const ToastCloseFrame = styled(YStack, {
   name: CLOSE_NAME,
   tag: 'button',
 })

@@ -38,38 +38,36 @@ import * as React from 'react'
 const TOOLTIP_SCOPE = 'tooltip'
 type ScopedTooltipProps<P> = ScopedProps<P, 'Tooltip'>
 
-const TooltipContent = PopperContentFrame.extractable(
-  React.forwardRef(
-    ({ __scopeTooltip, ...props }: ScopedTooltipProps<PopoverContentProps>, ref: any) => {
-      const preventAnimation = React.useContext(PreventTooltipAnimationContext)
-      const popper = usePopperContext(__scopeTooltip || TOOLTIP_SCOPE)
-      const padding = !props.unstyled
-        ? (props.padding ??
-          props.size ??
-          popper.size ??
-          getSize('$true', {
-            shift: -2,
-          }))
-        : undefined
+const TooltipContent = PopperContentFrame.styleable(
+  ({ __scopeTooltip, ...props }: ScopedTooltipProps<PopoverContentProps>, ref) => {
+    const preventAnimation = React.useContext(PreventTooltipAnimationContext)
+    const popper = usePopperContext(__scopeTooltip || TOOLTIP_SCOPE)
+    const padding = !props.unstyled
+      ? (props.padding ??
+        props.size ??
+        popper.size ??
+        getSize('$true', {
+          shift: -2,
+        }))
+      : undefined
 
-      return (
-        <PopoverContent
-          __scopePopover={__scopeTooltip || TOOLTIP_SCOPE}
-          componentName="Tooltip"
-          disableRemoveScroll
-          disableFocusScope
-          {...(!props.unstyled && {
-            padding,
-          })}
-          ref={ref}
-          {...props}
-          {...(preventAnimation && {
-            animation: null,
-          })}
-        />
-      )
-    }
-  )
+    return (
+      <PopoverContent
+        __scopePopover={__scopeTooltip || TOOLTIP_SCOPE}
+        componentName="Tooltip"
+        disableRemoveScroll
+        disableFocusScope
+        {...(!props.unstyled && {
+          padding,
+        })}
+        ref={ref}
+        {...props}
+        {...(preventAnimation && {
+          animation: null,
+        })}
+      />
+    )
+  }
 )
 
 const TooltipArrow = React.forwardRef(

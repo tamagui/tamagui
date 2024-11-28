@@ -1,14 +1,6 @@
 import { useParams } from 'one'
-import { lazy } from 'react'
 import { H1, YStack } from 'tamagui'
-import { getTestNameFromPath } from '~/utils/getTestPath'
-
-const AllTestsByPath = import.meta.glob('../../use-cases/*')
-const AllTests = Object.fromEntries(
-  Object.entries(AllTestsByPath).map(([key, value]) => {
-    return [getTestNameFromPath(key), lazy(value as any)]
-  })
-)
+import { AllTests } from '~/components/allComponents'
 
 export function TestPage() {
   const params = useParams<any>()

@@ -881,7 +881,6 @@ declare const appConfig: import("@tamagui/web").TamaguiInternalConfig<{
     defaultFont: string;
     fastSchemeChange: true;
     shouldAddPrefersColorThemes: true;
-    themeClassNameOnRoot: true;
 }>;
 export type AppConfig = typeof appConfig;
 declare module 'tamagui' {

@@ -52,12 +52,6 @@ declare const ButtonFrame: import("@tamagui/web").TamaguiComponent<import("@tama
     backgrounded?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
-    inset?: number | SizeTokens | {
-        top?: number;
-        bottom?: number;
-        left?: number;
-        right?: number;
-    } | undefined;
     focusTheme?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
@@ -73,9 +67,6 @@ declare const ButtonIcon: (props: {
     children: React.ReactNode;
     scaleIcon?: number;
 }) => any;
-declare const buttonStaticConfig: {
-    inlineProps: Set<string>;
-};
 declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
     size?: number | SizeTokens | undefined;
     variant?: "outlined" | undefined;
@@ -88,12 +79,6 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
     backgrounded?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
-    inset?: number | SizeTokens | {
-        top?: number;
-        bottom?: number;
-        left?: number;
-        right?: number;
-    } | undefined;
     focusTheme?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
@@ -142,12 +127,6 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
     backgrounded?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
-    inset?: number | SizeTokens | {
-        top?: number;
-        bottom?: number;
-        left?: number;
-        right?: number;
-    } | undefined;
     focusTheme?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
@@ -226,12 +205,6 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
     backgrounded?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
-    inset?: number | SizeTokens | {
-        top?: number;
-        bottom?: number;
-        left?: number;
-        right?: number;
-    } | undefined;
     focusTheme?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
@@ -251,12 +224,6 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
         backgrounded?: boolean | undefined;
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
-        inset?: number | SizeTokens | {
-            top?: number;
-            bottom?: number;
-            left?: number;
-            right?: number;
-        } | undefined;
         focusTheme?: boolean | undefined;
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
@@ -335,12 +302,6 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
         backgrounded?: boolean | undefined;
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
-        inset?: number | SizeTokens | {
-            top?: number;
-            bottom?: number;
-            left?: number;
-            right?: number;
-        } | undefined;
         focusTheme?: boolean | undefined;
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
@@ -368,6 +329,6 @@ declare function useButton<Props extends ButtonProps>({ textProps, ...propsIn }:
     isNested: boolean;
     props: Props;
 };
-export { Button, ButtonFrame, ButtonIcon, ButtonText, buttonStaticConfig, useButton, };
+export { Button, ButtonFrame, ButtonIcon, ButtonText, useButton, };
 export type { ButtonProps };
 //# sourceMappingURL=Button.d.ts.map

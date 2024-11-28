@@ -7,24 +7,7 @@ export declare const GroupFrame: import("@tamagui/core").TamaguiComponent<import
     unstyled?: boolean | undefined;
     size?: any;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
-    circular?: boolean | undefined;
-    inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number;
-        bottom?: number;
-        left?: number;
-        right?: number;
-    } | undefined;
-    hoverTheme?: boolean | undefined;
-    pressTheme?: boolean | undefined;
-    focusTheme?: boolean | undefined;
-    elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined;
-    backgrounded?: boolean | undefined;
-    radiused?: boolean | undefined;
-    padded?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
 export type GroupExtraProps = SpaceProps & {
     /**
@@ -60,47 +43,13 @@ export declare const Group: React.ForwardRefExoticComponent<any> & import("@tama
     unstyled?: boolean | undefined;
     size?: any;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
-    circular?: boolean | undefined;
-    inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number;
-        bottom?: number;
-        left?: number;
-        right?: number;
-    } | undefined;
-    hoverTheme?: boolean | undefined;
-    pressTheme?: boolean | undefined;
-    focusTheme?: boolean | undefined;
-    elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined;
-    backgrounded?: boolean | undefined;
-    radiused?: boolean | undefined;
-    padded?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
 }, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig" | "extractable" | "styleable"> & {
     __tama: [any, import("@tamagui/core").TamaguiElement, any, import("@tamagui/core").StackStyleBase, {
         unstyled?: boolean | undefined;
         size?: any;
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-        transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
-        circular?: boolean | undefined;
-        inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number;
-            bottom?: number;
-            left?: number;
-            right?: number;
-        } | undefined;
-        hoverTheme?: boolean | undefined;
-        pressTheme?: boolean | undefined;
-        focusTheme?: boolean | undefined;
-        elevate?: boolean | undefined;
-        bordered?: number | boolean | undefined;
-        backgrounded?: boolean | undefined;
-        radiused?: boolean | undefined;
-        padded?: boolean | undefined;
-        chromeless?: boolean | "all" | undefined;
     }, import("@tamagui/core").StaticConfigPublic];
 } & {
     Item: React.ForwardRefExoticComponent<GroupItemProps & {
@@ -111,47 +60,13 @@ export declare const YGroup: React.ForwardRefExoticComponent<any> & import("@tam
     unstyled?: boolean | undefined;
     size?: any;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
-    circular?: boolean | undefined;
-    inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number;
-        bottom?: number;
-        left?: number;
-        right?: number;
-    } | undefined;
-    hoverTheme?: boolean | undefined;
-    pressTheme?: boolean | undefined;
-    focusTheme?: boolean | undefined;
-    elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined;
-    backgrounded?: boolean | undefined;
-    radiused?: boolean | undefined;
-    padded?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
 }, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig" | "extractable" | "styleable"> & {
     __tama: [any, import("@tamagui/core").TamaguiElement, any, import("@tamagui/core").StackStyleBase, {
         unstyled?: boolean | undefined;
         size?: any;
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-        transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
-        circular?: boolean | undefined;
-        inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number;
-            bottom?: number;
-            left?: number;
-            right?: number;
-        } | undefined;
-        hoverTheme?: boolean | undefined;
-        pressTheme?: boolean | undefined;
-        focusTheme?: boolean | undefined;
-        elevate?: boolean | undefined;
-        bordered?: number | boolean | undefined;
-        backgrounded?: boolean | undefined;
-        radiused?: boolean | undefined;
-        padded?: boolean | undefined;
-        chromeless?: boolean | "all" | undefined;
     }, import("@tamagui/core").StaticConfigPublic];
 } & {
     Item: React.ForwardRefExoticComponent<GroupItemProps & {
@@ -162,47 +77,13 @@ export declare const XGroup: React.ForwardRefExoticComponent<any> & import("@tam
     unstyled?: boolean | undefined;
     size?: any;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
-    circular?: boolean | undefined;
-    inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number;
-        bottom?: number;
-        left?: number;
-        right?: number;
-    } | undefined;
-    hoverTheme?: boolean | undefined;
-    pressTheme?: boolean | undefined;
-    focusTheme?: boolean | undefined;
-    elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined;
-    backgrounded?: boolean | undefined;
-    radiused?: boolean | undefined;
-    padded?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
 }, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig" | "extractable" | "styleable"> & {
     __tama: [any, import("@tamagui/core").TamaguiElement, any, import("@tamagui/core").StackStyleBase, {
         unstyled?: boolean | undefined;
         size?: any;
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-        transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
-        circular?: boolean | undefined;
-        inset?: number | import("@tamagui/core").SizeTokens | {
-            top?: number;
-            bottom?: number;
-            left?: number;
-            right?: number;
-        } | undefined;
-        hoverTheme?: boolean | undefined;
-        pressTheme?: boolean | undefined;
-        focusTheme?: boolean | undefined;
-        elevate?: boolean | undefined;
-        bordered?: number | boolean | undefined;
-        backgrounded?: boolean | undefined;
-        radiused?: boolean | undefined;
-        padded?: boolean | undefined;
-        chromeless?: boolean | "all" | undefined;
     }, import("@tamagui/core").StaticConfigPublic];
 } & {
     Item: React.ForwardRefExoticComponent<GroupItemProps & {

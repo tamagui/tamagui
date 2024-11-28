@@ -901,7 +901,6 @@ export declare const config: {
         defaultFont: string;
         fastSchemeChange: true;
         shouldAddPrefersColorThemes: true;
-        themeClassNameOnRoot: true;
     };
 };
 //# sourceMappingURL=v3.d.ts.map

@@ -17,6 +17,16 @@ import {
 import { ColorSchemeListItem } from './ColorSchemeListItem'
 
 export function HomeScreen() {
+  // To test a single case easily:
+  // return (
+  //   <>
+  //     <ColorSchemeToggle />
+  //     <ScrollView>
+  //       <ThemeChange />
+  //     </ScrollView>
+  //   </>
+  // )
+
   return (
     <ScrollView>
       <YStack bg="$color2" p="$3" pt="$6" pb="$8" f={1} gap="$4">
@@ -40,6 +50,9 @@ export function HomeScreen() {
               <Square size={30} bg="$color10" />
             </Theme>
           </Theme>
+
+          <Square size={30} themeInverse bg="$background" />
+          <Square size={30} bg="$background" />
         </XStack>
 
         <YGroup size="$4">

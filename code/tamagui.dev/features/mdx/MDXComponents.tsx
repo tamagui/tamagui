@@ -9,6 +9,7 @@ import {
   File,
   Link as LinkIcon,
 } from '@tamagui/lucide-icons'
+import type { Href } from 'one'
 import React, { useState } from 'react'
 import { ScrollView } from 'react-native'
 import type { ImageProps, XStackProps } from 'tamagui'
@@ -28,7 +29,6 @@ import {
   Spacer,
   Text,
   Theme,
-  ThemeableStack,
   TooltipSimple,
   XGroup,
   XStack,
@@ -36,7 +36,6 @@ import {
   styled,
 } from 'tamagui'
 import { LinearGradient } from 'tamagui/linear-gradient'
-import type { Href } from 'one'
 import { Code, CodeInline } from '~/components/Code'
 import { CustomTabs } from '~/components/CustomTabs'
 import { DataTable } from '~/components/DataTable'
@@ -92,8 +91,9 @@ const IntroParagraph = ({ children, large, disableUnwrapText, ...props }: any) =
   )
 }
 
-const TableFrame = styled(ThemeableStack, {
-  bordered: true,
+const TableFrame = styled(YStack, {
+  borderWidth: 1,
+  borderColor: '$borderColor',
   br: '$4',
   ov: 'hidden',
   my: '$4',
@@ -159,7 +159,7 @@ const TableCell = styled(Paragraph, {
   p: '$2',
   px: '$3',
   size: '$5',
-  ellipse: true,
+  ellipsis: true,
 
   variants: {
     head: {
@@ -175,7 +175,7 @@ const TableCell = styled(Paragraph, {
   } as const,
 })
 
-const TableCol = styled(ThemeableStack, {
+const TableCol = styled(YStack, {
   brw: 1,
   brc: '$borderColor',
   f: 1,
@@ -962,6 +962,7 @@ export const components = Object.fromEntries(
 const LinkHeading = ({ id, children, ...props }: { id: string } & XStackProps) => (
   <XStack
     tag="a"
+    // @ts-expect-error
     href={`#${id}`}
     id={id}
     data-id={id}

@@ -24,6 +24,9 @@ export type AdaptProps = {
 };
 type Component = (props: any) => any;
 export declare const AdaptContext: import("@tamagui/core").StyledContext<AdaptParentContextI>;
+export declare const ProvideAdaptContext: ({ children, ...context }: AdaptParentContextI & {
+    children: any;
+}) => import("react/jsx-runtime").JSX.Element;
 export declare const useAdaptContext: (scope?: string) => AdaptParentContextI;
 /**
  * Hooks

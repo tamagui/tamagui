@@ -12,6 +12,7 @@ export type ThemeManagerState = {
     parentName?: string;
     theme?: ThemeParsed | null;
     isComponent?: boolean;
+    isSchemeFixed?: boolean;
     className?: string;
     scheme?: ColorScheme;
 };
@@ -26,6 +27,7 @@ export declare class ThemeManager {
     updateStateFromProps(props?: ThemeProps & {
         forceTheme?: ThemeParsed;
     }, shouldNotify?: boolean): ThemeManagerState | undefined;
+    getParents(): ThemeManager[];
     updateState(nextState: ThemeManagerState, shouldNotify?: boolean): void;
     getStateIfChanged(props?: ThemeProps, state?: ThemeManagerState | null, parentManager?: ThemeManager | null): ThemeManagerState | null | undefined;
     getStateShouldChange(nextState: ThemeManagerState | null, state?: ThemeManagerState | null): boolean;

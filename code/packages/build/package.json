@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/build",
-  "version": "1.116.7",
+  "version": "1.117.2",
   "bin": {
     "tamagui-build": "tamagui-build.js",
     "teesx": "./teesx.sh"
@@ -14,7 +14,7 @@
   "dependencies": {
     "@babel/core": "^7.25.2",
     "@swc/core": "^1.7.21",
-    "@tamagui/babel-plugin-fully-specified": "1.116.7",
+    "@tamagui/babel-plugin-fully-specified": "1.117.2",
     "@types/fs-extra": "^9.0.13",
     "chokidar": "^3.5.2",
     "esbuild": "^0.24.0",
@@ -24,7 +24,7 @@
     "fast-glob": "^3.2.11",
     "fs-extra": "^11.2.0",
     "lodash.debounce": "^4.0.8",
-    "typescript": "^5.5.2"
+    "typescript": "^5.6.3"
   },
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "devDependencies": {

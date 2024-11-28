@@ -4,7 +4,7 @@ import { AnimatePresence } from '@tamagui/animate-presence'
 import { composeRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { styled } from '@tamagui/core'
-import { ThemeableStack } from '@tamagui/stacks'
+import { YStack } from '@tamagui/stacks'
 import { VIEWPORT_NAME } from './constants'
 import {
   ForwardSelectContext,
@@ -21,7 +21,7 @@ import type {
  * SelectViewport
  * -----------------------------------------------------------------------------------------------*/
 
-export const SelectViewportFrame = styled(ThemeableStack, {
+export const SelectViewportFrame = styled(YStack, {
   name: VIEWPORT_NAME,
 
   variants: {

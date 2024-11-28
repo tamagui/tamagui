@@ -128,7 +128,7 @@ export const ListItemText = styled(SizableText, {
         size: '$true',
         flexGrow: 1,
         flexShrink: 1,
-        ellipse: true,
+        ellipsis: true,
         cursor: 'inherit',
       },
     },
@@ -208,7 +208,7 @@ export const useListItem = (
     fontFamily,
     letterSpacing,
     textAlign,
-    ellipse,
+    ellipsis,
 
     ...rest
   } = props
@@ -220,7 +220,7 @@ export const useListItem = (
     fontFamily,
     letterSpacing,
     textAlign,
-    ellipse,
+    ellipsis,
     children,
   }
 

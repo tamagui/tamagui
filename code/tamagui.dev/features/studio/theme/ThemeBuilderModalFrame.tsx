@@ -144,5 +144,5 @@ export const ModalTitle = styled(H4, {
   size: '$6',
   ls: 2,
   animation: 'quick',
-  ellipse: true,
+  ellipsis: true,
 })

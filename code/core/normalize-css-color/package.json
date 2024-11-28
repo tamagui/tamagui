@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/normalize-css-color",
-  "version": "1.116.7",
+  "version": "1.117.2",
   "sideEffects": [
     "*.css"
   ],
@@ -23,13 +23,15 @@
     "@react-native/normalize-color": "^2.1.0"
   },
   "devDependencies": {
-    "@tamagui/build": "1.116.7"
+    "@tamagui/build": "1.117.2"
   },
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "react-native-import": "./dist/esm/index.native.js",
-      "react-native": "./dist/cjs/index.native.js",
+      "react-native": {
+        "import": "./dist/esm/index.native.js",
+        "require": "./dist/cjs/index.native.js"
+      },
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",

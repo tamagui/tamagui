@@ -517,7 +517,7 @@ const Tab = memo(({ active, children, bc, ...props }: any) => {
           <Image width={10} height={10} src={favicon} />
         </Circle>
         <Spacer size="$2" />
-        <Paragraph o={active ? 1 : 0.5} cursor="default" size="$1" ellipse>
+        <Paragraph o={active ? 1 : 0.5} cursor="default" size="$1" ellipsis>
           {children}
         </Paragraph>
       </XStack>

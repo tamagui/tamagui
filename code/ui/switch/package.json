@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/switch",
-  "version": "1.116.7",
+  "version": "1.117.2",
   "removeSideEffects": true,
   "sideEffects": [
     "*.css"
@@ -26,8 +26,10 @@
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "react-native-import": "./dist/esm/index.native.js",
-      "react-native": "./dist/cjs/index.native.js",
+      "react-native": {
+        "import": "./dist/esm/index.native.js",
+        "require": "./dist/cjs/index.native.js"
+      },
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
@@ -35,24 +37,24 @@
     }
   },
   "dependencies": {
-    "@tamagui/compose-refs": "1.116.7",
-    "@tamagui/constants": "1.116.7",
-    "@tamagui/core": "1.116.7",
-    "@tamagui/focusable": "1.116.7",
-    "@tamagui/get-token": "1.116.7",
-    "@tamagui/helpers": "1.116.7",
-    "@tamagui/label": "1.116.7",
-    "@tamagui/stacks": "1.116.7",
-    "@tamagui/switch-headless": "1.116.7",
-    "@tamagui/use-controllable-state": "1.116.7",
-    "@tamagui/use-previous": "1.116.7"
+    "@tamagui/compose-refs": "1.117.2",
+    "@tamagui/constants": "1.117.2",
+    "@tamagui/core": "1.117.2",
+    "@tamagui/focusable": "1.117.2",
+    "@tamagui/get-token": "1.117.2",
+    "@tamagui/helpers": "1.117.2",
+    "@tamagui/label": "1.117.2",
+    "@tamagui/stacks": "1.117.2",
+    "@tamagui/switch-headless": "1.117.2",
+    "@tamagui/use-controllable-state": "1.117.2",
+    "@tamagui/use-previous": "1.117.2"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.116.7",
-    "react": "^18.2.0 || ^19.0.0"
+    "@tamagui/build": "1.117.2",
+    "react": "*"
   },
   "publishConfig": {
     "access": "public"

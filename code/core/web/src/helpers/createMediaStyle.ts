@@ -29,7 +29,7 @@ function getThemeOrGroupSelector(
   const selectorStart = styleInner.lastIndexOf(':root') + 5
   const selectorEnd = styleInner.lastIndexOf('{')
   const selector = styleInner.slice(selectorStart, selectorEnd)
-  const precedenceSpace = getSetting('themeClassNameOnRoot') && isTheme ? '' : ' '
+  const precedenceSpace = getSetting('themeClassTarget') !== false && isTheme ? '' : ' '
   const pseudoSelectorName = groupParts.pseudo
     ? groupPseudoToPseudoCSSMap[groupParts.pseudo] || groupParts.pseudo
     : undefined

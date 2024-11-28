@@ -56,7 +56,8 @@ export const HomeExamples = memo(
           <ThemeTint>
             <XGroup
               scrollable
-              bordered
+              borderWidth={1}
+              borderColor="$borderColor"
               bg="$color2"
               maxWidth="100%"
               als="center"
@@ -182,7 +183,7 @@ const CodeExamples = memo(({ examples = [], title }: any) => {
             <Button disabled size="$2" fontSize="$4" px="$4">
               {title}
             </Button>
-            <XGroup size="$2" bordered>
+            <XGroup size="$2" borderWidth={1} borderColor="$borderColor">
               {examples.map((example, i) => (
                 <XGroup.Item key={i}>
                   <Button

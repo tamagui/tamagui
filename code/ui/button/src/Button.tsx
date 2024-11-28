@@ -22,7 +22,7 @@ export const ButtonContext = createStyledContext<
 >({
   // keeping these here means they work with styled() passing down color to text
   color: undefined,
-  ellipse: undefined,
+  ellipsis: undefined,
   fontFamily: undefined,
   fontSize: undefined,
   fontStyle: undefined,
@@ -157,7 +157,7 @@ const ButtonText = styled(SizableText, {
         // flexGrow 1 leads to inconsistent native style where text pushes to start of view
         flexGrow: 0,
         flexShrink: 1,
-        ellipse: true,
+        ellipsis: true,
         color: '$color',
       },
     },
@@ -184,24 +184,9 @@ const ButtonComponent = ButtonFrame.styleable<ButtonExtraProps>(
   function Button(props, ref) {
     // @ts-ignore
     const { props: buttonProps } = useButton(props)
-    return <ButtonFrame {...buttonProps} ref={ref} />
+    return <ButtonFrame data-disable-theme {...buttonProps} ref={ref} />
   }
 )
-
-const buttonStaticConfig = {
-  inlineProps: new Set([
-    // text props go here (can't really optimize them, but we never fully extract button anyway)
-    // may be able to remove this entirely, as the compiler / runtime have gotten better
-    'color',
-    'fontWeight',
-    'fontSize',
-    'fontFamily',
-    'fontStyle',
-    'letterSpacing',
-    'textAlign',
-    'unstyled',
-  ]),
-}
 
 const Button = withStaticProperties(ButtonComponent, {
   Text: ButtonText,
@@ -237,7 +222,7 @@ function useButton<Props extends ButtonProps>(
     fontStyle,
     letterSpacing,
     tag,
-    ellipse,
+    ellipsis,
     maxFontSizeMultiplier,
 
     ...restProps
@@ -273,7 +258,7 @@ function useButton<Props extends ButtonProps>(
           fontWeight,
           fontStyle,
           letterSpacing,
-          ellipse,
+          ellipsis,
           maxFontSizeMultiplier,
         },
         Text === ButtonText && propsActive.unstyled !== true
@@ -343,7 +328,6 @@ export {
   ButtonFrame,
   ButtonIcon,
   ButtonText,
-  buttonStaticConfig,
   // legacy
   useButton,
 }

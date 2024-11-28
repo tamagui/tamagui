@@ -44,7 +44,6 @@ export function createOptimizedView(
     focusable,
     id,
     importantForAccessibility,
-    nativeID,
     pointerEvents,
     role,
     tabIndex,
@@ -106,7 +105,7 @@ export function createOptimizedView(
     accessibilityValue: _accessibilityValue,
     importantForAccessibility:
       ariaHidden === true ? 'no-hide-descendants' : importantForAccessibility,
-    nativeID: id ?? nativeID,
+    nativeID: id,
     style,
     pointerEvents: newPointerEvents,
   }

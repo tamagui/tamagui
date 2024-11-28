@@ -232,6 +232,11 @@ export const getSplitStyles: StyleSplitter = (
     let keyInit = keyOg
     let valInit = props[keyInit]
 
+    if (process.env.NODE_ENV === 'development' && debug === 'profile') {
+      // @ts-expect-error
+      time`prop-${keyInit}`
+    }
+
     // for custom accept sub-styles
     if (accept) {
       const accepted = accept[keyInit]
@@ -295,14 +300,6 @@ export const getSplitStyles: StyleSplitter = (
 
     // this is all for partially optimized (not flattened)... maybe worth removing?
     if (process.env.TAMAGUI_TARGET === 'web') {
-      // react-native-web ignores data-* attributes, fixes passing them to animated views
-      if (staticConfig.isReactNative && keyInit.startsWith('data-')) {
-        keyInit = keyInit.replace('data-', '')
-        viewProps['dataSet'] ||= {}
-        viewProps['dataSet'][keyInit] = valInit
-        continue
-      }
-
       if (isValidStyleKeyInit && valInitType === 'string') {
         if (valInit[0] === '_') {
           const isValidClassName = keyInit in validStyles
@@ -347,14 +344,6 @@ export const getSplitStyles: StyleSplitter = (
       }
     }
 
-    // TODO deprecate dataSet be sure we map on native from data-
-    if (keyInit === 'dataSet') {
-      for (const keyInit in valInit) {
-        viewProps[`data-${hyphenate(keyInit)}`] = valInit[keyInit]
-      }
-      continue
-    }
-
     if (process.env.TAMAGUI_TARGET === 'web') {
       if (!noExpand) {
         /**
@@ -381,12 +370,6 @@ export const getSplitStyles: StyleSplitter = (
 
         if (keyInit === 'testID') {
           viewProps[isReactNative ? keyInit : 'data-testid'] = valInit
-          continue
-        }
-
-        if (keyInit === 'id' || keyInit === 'nativeID') {
-          // nativeId now deprecated for RN
-          viewProps.id = valInit
           continue
         }
 
@@ -1040,6 +1023,11 @@ export const getSplitStyles: StyleSplitter = (
     }
   } // end prop loop
 
+  if (process.env.NODE_ENV === 'development' && debug === 'profile') {
+    // @ts-expect-error
+    time`split-styles-propsend`
+  }
+
   // style prop after:
 
   const avoidNormalize = styleProps.noNormalize === false
@@ -1124,7 +1112,7 @@ export const getSplitStyles: StyleSplitter = (
           const isAnimatedAndAnimateOnly =
             styleProps.isAnimated &&
             styleProps.noClass &&
-            (!props.animateOnly || props.animateOnly.includes(key))
+            props.animateOnly?.includes(key)
 
           // or not animated but you have animateOnly
           // (moves it to style={}, nice to avoid generating lots of classnames)
@@ -1150,6 +1138,7 @@ export const getSplitStyles: StyleSplitter = (
           console.groupEnd() // ensure group ended from loop above
           consoleGroupCollapsed(`🔹 getSplitStyles final style object`)
           console.info(styleState.style)
+          console.info(`retainedStyles`, retainedStyles)
           console.groupEnd()
         }
 
@@ -1179,55 +1168,6 @@ export const getSplitStyles: StyleSplitter = (
             ] satisfies StyleObject)
           }
           classNames[namespace] = identifier
-        }
-      }
-    }
-
-    if (isReactNative) {
-      if (viewProps.tabIndex === 0) {
-        viewProps.accessible ??= true
-      }
-    } else {
-      if (viewProps.tabIndex == null) {
-        const isFocusable = viewProps.focusable ?? viewProps.accessible
-
-        if (viewProps.focusable) {
-          delete viewProps.focusable
-        }
-
-        const role = viewProps.role
-        if (isFocusable === false) {
-          viewProps.tabIndex = '-1'
-        }
-        if (
-          // These native elements are focusable by default
-          elementType === 'a' ||
-          elementType === 'button' ||
-          elementType === 'input' ||
-          elementType === 'select' ||
-          elementType === 'textarea'
-        ) {
-          if (isFocusable === false || props.accessibilityDisabled === true) {
-            viewProps.tabIndex = '-1'
-          }
-        } else if (
-          // These roles are made focusable by default
-          role === 'button' ||
-          role === 'checkbox' ||
-          role === 'link' ||
-          role === 'radio' ||
-          // @ts-expect-error (consistent with RNW)
-          role === 'textbox' ||
-          role === 'switch'
-        ) {
-          if (isFocusable !== false) {
-            viewProps.tabIndex = '0'
-          }
-        }
-        // Everything else must explicitly set the prop
-        if (isFocusable) {
-          viewProps.tabIndex = '0'
-          delete viewProps.focusable
         }
       }
     }
@@ -1276,6 +1216,11 @@ export const getSplitStyles: StyleSplitter = (
         log(`Found fontFamily native: ${style.fontFamily}`, faceInfo)
       }
     }
+  }
+
+  if (process.env.NODE_ENV === 'development' && debug === 'profile') {
+    // @ts-expect-error
+    time`split-styles-pre-result`
   }
 
   const result: GetStyleResult = {
@@ -1378,6 +1323,11 @@ export const getSplitStyles: StyleSplitter = (
       }
       console.groupEnd()
     }
+  }
+
+  if (process.env.NODE_ENV === 'development' && debug === 'profile') {
+    // @ts-expect-error
+    time`split-styles-done`
   }
 
   return result

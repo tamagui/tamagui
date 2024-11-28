@@ -1,7 +1,7 @@
 import type { AnimatePresenceProps } from '@tamagui/animate-presence'
 import { AnimatePresence, ResetPresence } from '@tamagui/animate-presence'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
-import type { ThemeableStackProps } from '@tamagui/stacks'
+import type { YStackProps } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import type { GetProps, StackProps } from '@tamagui/web'
 import { Stack, createStyledContext, styled } from '@tamagui/web'
@@ -122,9 +122,7 @@ export interface CollapsibleContentExtraProps extends AnimatePresenceProps {
   forceMount?: true
 }
 
-interface CollapsibleContentProps
-  extends CollapsibleContentExtraProps,
-    ThemeableStackProps {}
+interface CollapsibleContentProps extends CollapsibleContentExtraProps, YStackProps {}
 
 const CONTENT_NAME = 'CollapsibleContent'
 

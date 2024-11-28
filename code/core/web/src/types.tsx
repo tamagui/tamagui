@@ -468,7 +468,7 @@ export interface GenericTamaguiSettings {
    * When true, flexBasis will be set to 0 when flex is positive. This will be
    * the default in v2 of Tamagui alongside an alternative mode for web compat.
    */
-  styleCompat?: 'react-native'
+  styleCompat?: 'react-native' | 'legacy'
 
   // TODO
   /**
@@ -595,12 +595,6 @@ export interface GenericTamaguiSettings {
   disableSSR?: boolean
 
   /**
-   * Disable inserting a theme class in the DOM or context, allowing you to manually place it higher.
-   * For custom use cases like integration with next-theme.
-   */
-  disableRootThemeClass?: boolean
-
-  /**
    * For the first render, determines which media queries are true, this only
    * affects things on native or on web if you disableSSR, as otherwise Tamagui
    * relies on CSS to avoid the need for re-rendering on first render.
@@ -629,11 +623,14 @@ export interface GenericTamaguiSettings {
   shouldAddPrefersColorThemes?: boolean
 
   /**
-   * If you want to style your <body> tag to use themes, you must place the
-   * theme className onto the body element. This will do so. Otherwise, Tamagui
-   * will place the className onto the element rendered by the TamaguiProvider
+   * If you want to style your <body> tag to use theme CSS variables on web, you
+   * must place the theme className onto the body element or above. This will do so.
+   * If disabled, Tamagui will place the className onto the element rendered by
+   * the TamaguiProvider
+   *
+   * @default html
    */
-  themeClassNameOnRoot?: boolean
+  themeClassTarget?: 'body' | 'html' | false
 }
 
 export type TamaguiSettings = TamaguiConfig['settings']
@@ -1165,7 +1162,11 @@ export type WithThemeValues<T extends object> = {
 export type NarrowShorthands = Narrow<Shorthands>
 export type Longhands = NarrowShorthands[keyof NarrowShorthands]
 
-export type OnlyAllowShorthandsSetting = TamaguiConfig['settings']['onlyAllowShorthands']
+export type OnlyAllowShorthandsSetting = TamaguiConfig['settings'] extends {
+  onlyAllowShorthands: infer X
+}
+  ? X
+  : false
 
 // adds shorthand props
 export type WithShorthands<StyleProps> = {
@@ -1326,204 +1327,307 @@ interface ExtraStyleProps {
 
   /**
    * Web-only style property. Will be omitted on native.
+   * @deprecated Web-only style props will move to $platform-web in v2
    */
   filter?: Properties['filter']
   /**
    * Web-only style property. Will be omitted on native.
-   */
-  backdropFilter?: Properties['backdropFilter']
-  /**
-   * Web-only style property. Will be omitted on native.
+   * @deprecated Web-only style props will move to $platform-web in v2
    */
   mixBlendMode?: Properties['mixBlendMode']
   /**
    * Web-only style property. Will be omitted on native.
+   * @deprecated Web-only style props will move to $platform-web in v2
    */
   backgroundImage?: Properties['backgroundImage']
   /**
    * Web-only style property. Will be omitted on native.
+   * @deprecated Web-only style props will move to $platform-web in v2
    */
   backgroundOrigin?: Properties['backgroundOrigin']
   /**
    * Web-only style property. Will be omitted on native.
+   * @deprecated Web-only style props will move to $platform-web in v2
    */
   backgroundPosition?: Properties['backgroundPosition']
   /**
    * Web-only style property. Will be omitted on native.
+   * @deprecated Web-only style props will move to $platform-web in v2
    */
   backgroundRepeat?: Properties['backgroundRepeat']
   /**
    * Web-only style property. Will be omitted on native.
+   * @deprecated Web-only style props will move to $platform-web in v2
    */
   backgroundSize?: Properties['backgroundSize']
   /**
    * Web-only style property. Will be omitted on native.
+   * @deprecated Web-only style props will move to $platform-web in v2
    */
   backgroundClip?: Properties['backgroundClip']
   /**
    * Web-only style property. Will be omitted on native.
+   * @deprecated Web-only style props will move to $platform-web in v2
    */
   backgroundBlendMode?: Properties['backgroundBlendMode']
   /**
    * Web-only style property. Will be omitted on native.
+   * @deprecated Web-only style props will move to $platform-web in v2
    */
   backgroundAttachment?: Properties['backgroundAttachment']
   /**
    * Web-only style property. Will be omitted on native.
+   * @deprecated Web-only style props will move to $platform-web in v2
    */
   background?: Properties['background']
   /**
    * Web-only style property. Will be omitted on native.
+   * @deprecated Web-only style props will move to $platform-web in v2
    */
   clipPath?: Properties['clipPath']
   /**
    * Web-only style property. Will be omitted on native.
-   */
-  containerType?: Properties['containerType']
-  /**
-   * Web-only style property. Will be omitted on native.
+   * @deprecated Web-only style props will move to $platform-web in v2
    */
   caretColor?: Properties['caretColor']
   /**
    * Web-only style property. Will be omitted on native.
+   * @deprecated Web-only style props will move to $platform-web in v2
    */
   transformStyle?: Properties['transformStyle']
   /**
    * Web-only style property. Will be omitted on native.
+   * @deprecated Web-only style props will move to $platform-web in v2
    */
   mask?: Properties['mask']
   /**
    * Web-only style property. Will be omitted on native.
+   * @deprecated Web-only style props will move to $platform-web in v2
    */
   maskImage?: Properties['maskImage']
   /**
    * Web-only style property. Will be omitted on native.
+   * @deprecated Web-only style props will move to $platform-web in v2
    */
   textEmphasis?: Properties['textEmphasis']
   /**
    * Web-only style property. Will be omitted on native.
+   * @deprecated Web-only style props will move to $platform-web in v2
    */
   borderImage?: Properties['borderImage']
   /**
    * Web-only style property. Will be omitted on native.
+   * @deprecated Web-only style props will move to $platform-web in v2
    */
   float?: Properties['float']
   /**
    * Web-only style property. Will be omitted on native.
+   * @deprecated Web-only style props will move to $platform-web in v2
    */
   content?: Properties['content']
   /**
    * Web-only style property. Will be omitted on native.
+   * @deprecated Web-only style props will move to $platform-web in v2
    */
   overflowBlock?: Properties['overflowBlock']
   /**
    * Web-only style property. Will be omitted on native.
+   * @deprecated Web-only style props will move to $platform-web in v2
    */
   overflowInline?: Properties['overflowInline']
   /**
    * Web-only style property. Will be omitted on native.
+   * @deprecated Web-only style props will move to $platform-web in v2
    */
   maskBorder?: Properties['maskBorder']
   /**
    * Web-only style property. Will be omitted on native.
+   * @deprecated Web-only style props will move to $platform-web in v2
    */
   maskBorderMode?: Properties['maskBorderMode']
   /**
    * Web-only style property. Will be omitted on native.
+   * @deprecated Web-only style props will move to $platform-web in v2
    */
   maskBorderOutset?: Properties['maskBorderOutset']
   /**
    * Web-only style property. Will be omitted on native.
+   * @deprecated Web-only style props will move to $platform-web in v2
    */
   maskBorderRepeat?: Properties['maskBorderRepeat']
   /**
    * Web-only style property. Will be omitted on native.
+   * @deprecated Web-only style props will move to $platform-web in v2
    */
   maskBorderSlice?: Properties['maskBorderSlice']
   /**
    * Web-only style property. Will be omitted on native.
+   * @deprecated Web-only style props will move to $platform-web in v2
    */
   maskBorderSource?: Properties['maskBorderSource']
   /**
    * Web-only style property. Will be omitted on native.
+   * @deprecated Web-only style props will move to $platform-web in v2
    */
   maskBorderWidth?: Properties['maskBorderWidth']
   /**
    * Web-only style property. Will be omitted on native.
+   * @deprecated Web-only style props will move to $platform-web in v2
    */
   maskClip?: Properties['maskClip']
   /**
    * Web-only style property. Will be omitted on native.
+   * @deprecated Web-only style props will move to $platform-web in v2
    */
   maskComposite?: Properties['maskComposite']
   /**
    * Web-only style property. Will be omitted on native.
+   * @deprecated Web-only style props will move to $platform-web in v2
    */
   maskMode?: Properties['maskMode']
   /**
    * Web-only style property. Will be omitted on native.
+   * @deprecated Web-only style props will move to $platform-web in v2
    */
   maskOrigin?: Properties['maskOrigin']
   /**
    * Web-only style property. Will be omitted on native.
+   * @deprecated Web-only style props will move to $platform-web in v2
    */
   maskPosition?: Properties['maskPosition']
   /**
    * Web-only style property. Will be omitted on native.
+   * @deprecated Web-only style props will move to $platform-web in v2
    */
   maskRepeat?: Properties['maskRepeat']
   /**
    * Web-only style property. Will be omitted on native.
+   * @deprecated Web-only style props will move to $platform-web in v2
    */
   maskSize?: Properties['maskSize']
   /**
    * Web-only style property. Will be omitted on native.
+   * @deprecated Web-only style props will move to $platform-web in v2
    */
   maskType?: Properties['maskType']
   /**
    * Web-only style property. Will be omitted on native.
+   * @deprecated Web-only style props will move to $platform-web in v2
    */
   gridRow?: Properties['gridRow']
   /**
    * Web-only style property. Will be omitted on native.
+   * @deprecated Web-only style props will move to $platform-web in v2
    */
   gridRowEnd?: Properties['gridRowEnd']
   /**
    * Web-only style property. Will be omitted on native.
+   * @deprecated Web-only style props will move to $platform-web in v2
    */
   gridRowGap?: Properties['gridRowGap']
   /**
    * Web-only style property. Will be omitted on native.
+   * @deprecated Web-only style props will move to $platform-web in v2
    */
   gridRowStart?: Properties['gridRowStart']
   /**
    * Web-only style property. Will be omitted on native.
+   * @deprecated Web-only style props will move to $platform-web in v2
    */
   gridColumn?: Properties['gridColumn']
   /**
    * Web-only style property. Will be omitted on native.
+   * @deprecated Web-only style props will move to $platform-web in v2
    */
   gridColumnEnd?: Properties['gridColumnEnd']
   /**
    * Web-only style property. Will be omitted on native.
+   * @deprecated Web-only style props will move to $platform-web in v2
    */
   gridColumnGap?: Properties['gridColumnGap']
   /**
    * Web-only style property. Will be omitted on native.
+   * @deprecated Web-only style props will move to $platform-web in v2
    */
   gridColumnStart?: Properties['gridColumnStart']
   /**
    * Web-only style property. Will be omitted on native.
+   * @deprecated Web-only style props will move to $platform-web in v2
    */
   gridTemplateColumns?: Properties['gridTemplateColumns']
   /**
    * Web-only style property. Will be omitted on native.
+   * @deprecated Web-only style props will move to $platform-web in v2
    */
   gridTemplateAreas?: Properties['gridTemplateAreas']
 
+  /**
+   * Web-only style property. Will be omitted on native.
+   * @deprecated Web-only style props will move to $platform-web in v2
+   */
+  backdropFilter?: Properties['backdropFilter']
+  /**
+   * Web-only style property. Will be omitted on native.
+   * @deprecated Web-only style props will move to $platform-web in v2
+   */
+  containerType?: Properties['containerType']
+  /**
+   * Web-only style property. Will be omitted on native.
+   * @deprecated Web-only style props will move to $platform-web in v2
+   */
+  blockSize?: SizeTokens | number
+  /**
+   * Web-only style property. Will be omitted on native.
+   * @deprecated Web-only style props will move to $platform-web in v2
+   */
+  inlineSize?: SizeTokens | number
+  /**
+   * Web-only style property. Will be omitted on native.
+   * @deprecated Web-only style props will move to $platform-web in v2
+   */
+  minBlockSize?: SizeTokens | number
+  /**
+   * Web-only style property. Will be omitted on native.
+   * @deprecated Web-only style props will move to $platform-web in v2
+   */
+  maxBlockSize?: SizeTokens | number
+  /**
+   * Web-only style property. Will be omitted on native.
+   * @deprecated Web-only style props will move to $platform-web in v2
+   */
+  objectFit?: Properties['objectFit']
+  /**
+   * Web-only style property. Will be omitted on native.
+   * @deprecated Web-only style props will move to $platform-web in v2
+   */
+  verticalAlign?: Properties['verticalAlign']
+  /**
+   * Web-only style property. Will be omitted on native.
+   * @deprecated Web-only style props will move to $platform-web in v2
+   */
+  minInlineSize?: SizeTokens | number
+  /**
+   * Web-only style property. Will be omitted on native.
+   * @deprecated Web-only style props will move to $platform-web in v2
+   */
+  maxInlineSize?: SizeTokens | number
+  /**
+   * Web-only style property. Will be omitted on native.
+   * @deprecated Web-only style props will move to $platform-web in v2
+   */
   borderInlineColor?: ColorTokens
+  /**
+   * Web-only style property. Will be omitted on native.
+   * @deprecated Web-only style props will move to $platform-web in v2
+   */
   borderInlineStartColor?: ColorTokens
+  /**
+   * Web-only style property. Will be omitted on native.
+   * @deprecated Web-only style props will move to $platform-web in v2
+   */
   borderInlineEndColor?: ColorTokens
+
+  // TODO validate these are supported in react native, if so keep, if not deprecate like the above web-only deprecations
   borderBlockWidth?: SpaceTokens | number
   borderBlockStartWidth?: SpaceTokens | number
   borderBlockEndWidth?: SpaceTokens | number
@@ -1548,20 +1652,13 @@ interface ExtraStyleProps {
   paddingInline?: SpaceTokens | number
   paddingInlineStart?: SpaceTokens | number
   paddingInlineEnd?: SpaceTokens | number
-  objectFit?: Properties['objectFit']
-  verticalAlign?: Properties['verticalAlign']
+  inset?: SpaceTokens | number
   insetBlock?: SpaceTokens | number
   insetBlockStart?: SpaceTokens | number
   insetBlockEnd?: SpaceTokens | number
   insetInline?: SpaceTokens | number
   insetInlineStart?: SpaceTokens | number
   insetInlineEnd?: SpaceTokens | number
-  blockSize?: SizeTokens | number
-  minBlockSize?: SizeTokens | number
-  maxBlockSize?: SizeTokens | number
-  inlineSize?: SizeTokens | number
-  minInlineSize?: SizeTokens | number
-  maxInlineSize?: SizeTokens | number
 }
 
 export interface ExtendBaseStackProps {}
@@ -1605,13 +1702,11 @@ export interface StackStyleBase
 export interface TextStylePropsBase
   extends Omit<RNTextStyle, keyof ExtendedBaseProps>,
     ExtendedBaseProps {
-  ellipse?: boolean
+  ellipsis?: boolean
   textDecorationDistance?: number
   textOverflow?: Properties['textOverflow']
   whiteSpace?: Properties['whiteSpace']
   wordWrap?: Properties['wordWrap']
-  /** @deprecated use verticalAlign instead */
-  textAlignVertical?: RNTextStyle['textAlignVertical']
 }
 
 //

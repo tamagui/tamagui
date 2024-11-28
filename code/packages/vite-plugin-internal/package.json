@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/vite-plugin-internal",
-  "version": "1.116.7",
+  "version": "1.117.2",
   "private": true,
   "main": "./dist/cjs/vite.config.js",
   "module": "./dist/esm/vite.config.js",
@@ -8,8 +8,10 @@
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "react-native-import": "./dist/esm/vite.config.native.js",
-      "react-native": "./dist/cjs/vite.config.native.js",
+      "react-native": {
+        "import": "./dist/esm/vite.config.native.js",
+        "require": "./dist/cjs/vite.config.native.js"
+      },
       "import": "./dist/esm/vite.config.mjs",
       "require": "./dist/cjs/vite.config.cjs",
       "default": "./dist/cjs/vite.config.native.js"
@@ -22,9 +24,9 @@
     "clean:build": "tamagui-build clean:build"
   },
   "devDependencies": {
-    "@tamagui/build": "1.116.7",
-    "@tamagui/config-default": "1.116.7",
-    "@tamagui/vite-plugin": "1.116.7",
+    "@tamagui/build": "1.117.2",
+    "@tamagui/config-default": "1.117.2",
+    "@tamagui/vite-plugin": "1.117.2",
     "@vitejs/plugin-react-swc": "^3.7.0",
     "happy-dom": "^10.11.2",
     "vitest": "^2.1.3",

@@ -220,6 +220,7 @@ describe('ThemeManager', () => {
       {
         "className": "t_sub_theme t_dark",
         "isComponent": false,
+        "isSchemeFixed": true,
         "name": "dark",
         "parentName": undefined,
         "scheme": "dark",

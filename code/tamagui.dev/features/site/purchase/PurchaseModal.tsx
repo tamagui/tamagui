@@ -421,7 +421,7 @@ export const PurchaseModal = ({
                   <XStack>
                     <H3 size="$11">{formatPrice(sum! / 100, 'usd')}</H3>
                   </XStack>
-                  <Paragraph theme="alt1" ellipse size="$4">
+                  <Paragraph theme="alt1" ellipsis size="$4">
                     {(() => {
                       const items: string[] = []
                       const starterPrice = starterPriceId

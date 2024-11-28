@@ -2,17 +2,17 @@ import { ChevronRight, Moon, Sun } from '@tamagui/lucide-icons'
 import { ScrollView } from 'react-native'
 import type { UseLinkProps } from 'solito/link'
 import { useLink } from 'solito/link'
-// import { UseLinkProps, useLink } from 'solito/link'
 import type { ListItemProps } from 'tamagui'
 import {
   Button,
+  H1,
+  H2,
   ListItem,
   Separator,
   Spacer,
   Switch,
   YGroup,
   YStack,
-  useTheme,
 } from 'tamagui'
 
 import * as TestCases from '../../usecases'
@@ -22,6 +22,7 @@ export function TestCasesScreen() {
   return (
     <ScrollView>
       <YStack bg="$background" p="$3" pt="$6" pb="$8" f={1} gap="$4">
+        <H2>All Test Cases</H2>
         <YStack gap="$4" maw={600}>
           <YGroup size="$4" separator={<Separator />}>
             {Object.keys(TestCases).map((page) => {

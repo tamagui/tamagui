@@ -82,7 +82,7 @@ export const RouteTree = ({
                       })}
                     />
                     {StatusIcon && <StatusIcon size={12} color={statusColor} />}
-                    <Paragraph f={1} ww="normal" ov="hidden" ellipse ff="$mono">
+                    <Paragraph f={1} ww="normal" ov="hidden" ellipsis ff="$mono">
                       {route.name}
                     </Paragraph>
                   </XStack>

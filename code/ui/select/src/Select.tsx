@@ -10,7 +10,7 @@ import type { ListItemProps } from '@tamagui/list-item'
 import { ListItem } from '@tamagui/list-item'
 import { Separator } from '@tamagui/separator'
 import { Sheet, SheetController } from '@tamagui/sheet'
-import { ThemeableStack, XStack, YStack } from '@tamagui/stacks'
+import { XStack, YStack } from '@tamagui/stacks'
 import { Paragraph, SizableText } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDebounce } from '@tamagui/use-debounce'
@@ -71,7 +71,7 @@ const SelectValue = SelectValueFrame.styleable<SelectValueExtraProps>(
       <SelectValueFrame
         {...(!props.unstyled && {
           size: itemParentContext.size as any,
-          ellipse: true,
+          ellipsis: true,
           // we don't want events from the portalled `SelectValue` children to bubble
           // through the item they came from
           pointerEvents: 'none',
@@ -165,10 +165,11 @@ const NativeSelectTextFrame = styled(SizableText, {
   },
 })
 
-const NativeSelectFrame = styled(ThemeableStack, {
+const NativeSelectFrame = styled(YStack, {
   name: 'NativeSelect',
 
-  bordered: true,
+  borderWidth: 1,
+  borderColor: '$borderColor',
   userSelect: 'none',
   outlineWidth: 0,
   paddingRight: 10,
@@ -348,7 +349,7 @@ export const Select = withStaticProperties(
     )
   },
   {
-    Adapt,
+    Adapt: Adapt,
     Content: SelectContent,
     Group: SelectGroup,
     Icon: SelectIcon,

@@ -18,11 +18,17 @@ const Frame = styled(View, {
         flexWrap: 'nowrap',
         flexDirection: 'row',
         cursor: 'pointer',
-        hoverTheme: true,
-        pressTheme: true,
-        backgrounded: true,
+        backgroundColor: '$background',
         borderWidth: 1,
         borderColor: 'transparent',
+
+        hoverStyle: {
+          backgroundColor: '$backgroundHover',
+        },
+
+        pressStyle: {
+          backgroundColor: '$backgroundPress',
+        },
 
         focusVisibleStyle: {
           outlineColor: '$outlineColor',
@@ -81,7 +87,7 @@ const Text = styled(SizableText, {
         // flexGrow 1 leads to inconsistent native style where text pushes to start of view
         flexGrow: 0,
         flexShrink: 1,
-        ellipse: true,
+        ellipsis: true,
         color: '$color',
       },
     },
@@ -101,7 +107,7 @@ const Icon = styled(SizableText, {
         // flexGrow 1 leads to inconsistent native style where text pushes to start of view
         flexGrow: 0,
         flexShrink: 1,
-        ellipse: true,
+        ellipsis: true,
         color: '$color',
       },
     },
