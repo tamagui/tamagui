@@ -3,6 +3,7 @@ import { Image } from '@tamagui/image-next'
 import { ThemeTint, ThemeTintAlt, useTint } from '@tamagui/logo'
 import { Check, Dot, Hammer, PlayCircle, X } from '@tamagui/lucide-icons'
 import { useClientValue, useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
+import { useLoader } from 'one'
 import React, { Suspense, lazy, memo, useEffect, useState } from 'react'
 import type {
   FontSizeTokens,
@@ -36,7 +37,6 @@ import {
   useThemeName,
 } from 'tamagui'
 import { LinearGradient } from 'tamagui/linear-gradient'
-import { useLoader } from 'one'
 import { ContainerLarge } from '~/components/Containers'
 import { ErrorBoundary } from '~/components/ErrorBoundary'
 import { HeadInfo } from '~/components/HeadInfo'
@@ -997,7 +997,7 @@ const Point = ({
   size?: FontSizeTokens
 }) => {
   return (
-    <XStack tag="li" ai="flex-start" space f={1} ov="hidden" {...props}>
+    <XStack tag="li" ai="flex-start" gap="$4" f={1} ov="hidden" {...props}>
       <YStack mr={-12} py="$1.5">
         <Dot size={16} color="$color10" />
       </YStack>
@@ -1456,41 +1456,6 @@ const TabsRovingIndicator = ({
     />
   )
 }
-
-const Points = () => (
-  <YStack tag="ul" gap="$1.5" zi={2} ov="hidden">
-    {/* <Point>React (web, native, ios) monorepo sharing a single codebase</Point>
-    <Point>
-      All the important screens: Onboard, Register, Login, Forgot Password, Account,
-      Settings, Profile, Edit Profile, Feed
-    </Point>
-    <Point>SSR, RSC, choose from 3 animation drivers</Point>
-    <Point>Complete & fully typed design system</Point>
-    <Point>+150 icon packs</Point>
-    <Point>2 all new theme suites: Pastel & Neon</Point>
-    <Point>All of Google fonts fonts</Point>
-    <Point>GitHub template with PR bot for updates</Point>
-    <Point>Fully tested CI/CD: unit, integration, web and native</Point>
-    <Point>Preview deploys for web, app-store builds with EAS</Point> */}
-    {Object.entries(points).map(([key, group]) => (
-      <React.Fragment key={key}>
-        {group.map((point) => (
-          <Point key={point}>{point}</Point>
-        ))}
-      </React.Fragment>
-    ))}
-  </YStack>
-)
-
-const HeartsRow = () => (
-  <XStack gap="$12" my="$4" als="center" spaceDirection="horizontal">
-    <img src="/heart.svg" style={{ width: 16, height: 16 }} />
-    <img src="/heart.svg" style={{ width: 16, height: 16 }} />
-    <img src="/heart.svg" style={{ width: 16, height: 16 }} />
-    <img src="/heart.svg" style={{ width: 16, height: 16 }} />
-    <img src="/heart.svg" style={{ width: 16, height: 16 }} />
-  </XStack>
-)
 
 const DiscountText = ({
   children,

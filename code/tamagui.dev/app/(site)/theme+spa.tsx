@@ -140,7 +140,7 @@ const ThemeBuilderModal = memo(() => {
           }}
         ></Button>
 
-        <YStack gap="$4" separator={<Separator bw={1} />} f={1}>
+        <YStack gap="$4" f={1}>
           <AnimatePresence exitBeforeEnter custom={{ going: store.direction }}>
             <Section
               f={1}

@@ -210,11 +210,10 @@ function useButton<Props extends ButtonProps>(
   const {
     icon,
     iconAfter,
-    space,
+    gap,
     spaceFlex,
     scaleIcon = 1,
     scaleSpace = 0.66,
-    separator,
     noTextWrap,
     fontFamily,
     fontSize,
@@ -245,7 +244,7 @@ function useButton<Props extends ButtonProps>(
   })
 
   const [themedIcon, themedIconAfter] = [icon, iconAfter].map(getThemedIcon)
-  const spaceSize = space ?? getVariableValue(iconSize) * scaleSpace
+  const spaceSize = gap ?? getVariableValue(iconSize) * scaleSpace
   const contents = noTextWrap
     ? [propsIn.children]
     : wrapChildrenInText(
@@ -275,7 +274,6 @@ function useButton<Props extends ButtonProps>(
     space: spaceSize,
     spaceFlex,
     ensureKeys: true,
-    separator,
     direction:
       propsActive.flexDirection === 'column' ||
       propsActive.flexDirection === 'column-reverse'

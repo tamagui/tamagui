@@ -331,7 +331,7 @@ export default function Community({ frontmatters }) {
           </H2>
         </FlatBubbleCard>
 
-        <XStack space flexWrap="wrap">
+        <XStack gap="$4" flexWrap="wrap">
           <IndividualSponsor
             name="@barelyreaper"
             link="https://twitter.com/barelyreaper"
