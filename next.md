@@ -1,3 +1,64 @@
+
+v2:
+
+  - note: can't remove `as const` using const generics, it just doesnt help with the defaultVariants case at all
+
+  - border="1px solid $color" border="$4 solid $color"
+
+  - see various `@deprecated` jsdocs
+  - need to copy/paste all the component docs to 2.0.0.mdx
+  - need to remove ThemeableStack docs from components mdx, they now are all extensiond YStack instead of ThemeableStack
+  - NativeSelectFrame needs unstyled support
+  - see how much of accessibilityDirectMap we can remove for web
+  - Text weirdness fixes (explore)
+    - remove suppressHighlighting / margin 0 default from Text
+    - fix display: inline issue
+    - see what react-strict-dom is doing
+    - move it to <div><span> where div is flex, span is text only props
+        <div {...nonTextStyleProps}>
+          <span {...textStylePropsOnly} style={{ display: 'contents' }}>
+
+          </span>
+        </div>
+  - we have some random web-only props accepts on flat props, we should:
+    - either implement them universally if easy
+    - or else remove them (in favor of $platform-web)
+  - `$platform-` prefixes should go away in favor of just `$web`, `$native` etc
+  - textAlignVertical is deprecated but make sure we map back from textAlign to textAlignVertical on v2 and then remove it
+  - remove Provider need just global config once
+  - @tamagui/cli => tamagui
+    - `tamagui build` document/announce
+    - `tamagui lint` fix check and document/announce
+  - tamagui => @tamagui/ui
+    - new Button, Input (nice, can be v3), Image (image-next), ScrollView
+    - note many are headless
+  - remove spacer / space / separator
+  - Cleanup Select/ListItem
+    - remove SizableStack (maybe rename to Surface), redo/remove ThemeableStack
+    - v2-3 ListItem simplification esp for performance of Select
+    - fix Select hover/type/performance
+  - remove deprecated
+  - react 0.74 alignment:
+    - https://reactnative.dev/blog/2024/04/22/release-0.74
+  - move to web compat style apis
+  - AnimatePresence: remove deprecated props in favor of `custom`
+  - deprecate shadow style props before v2 release and remove in v2
+    - "shadow*" style props are deprecated. Use "boxShadow".
+    - "Enhance with native semantics" can probably go away right
+
+potential
+
+  - deprecate shadow props separated in favor of boxShadow, implement boxShadow
+  - sync AnimatePresence with latest changes from framer-motion
+  - group => container
+
+stretch
+
+  - @tamagui/core => @tamagui/style
+    - styled()
+    - @tamagui/style just style({}) export, takes TextProps
+
+
 - deeply nested themeInverse needs a fix see kitchen sink squares
 - nan issue: nan start or end NaN 22 bytes: 0-22 [ 'bytes: 0', '22' ]
 
@@ -7,9 +68,6 @@
 - algolia creds
 - can skip a ton of CSS by disabling prefers color theme setting
   - so long as they use next-theme, or vxrn/color-scheme
-
-@jsherrard
-
 - uniswap/tamagui fixes, see uniswap section
   - the platform-web type issues should be relatively easy
   - fix customization https://discord.com/channels/909986013848412191/1206456825583632384/1274853294195605525
@@ -133,68 +191,6 @@ const example = (
   </Button>
 )
 ```
-
----
-
-v2:
-
-  - note: can't remove `as const` using const generics, it just doesnt help with the defaultVariants case at all
-
-  - need to copy/paste all the component docs to 2.0.0.mdx
-  - need to remove ThemeableStack docs from components mdx, they now are all extensiond YStack instead of ThemeableStack
-  - NativeSelectFrame needs unstyled support
-  - see how much of accessibilityDirectMap we can remove for web
-  - // TODO validate these are supported in...
-  - // TODO remove in v2
-  - // TODO can remove 'web'
-  - TODO remove this on v2
-  - Text weirdness fixes (explore)
-    - remove suppressHighlighting / margin 0 default from Text
-    - fix display: inline issue
-    - see what react-strict-dom is doing
-    - move it to <div><span> where div is flex, span is text only props
-        <div {...nonTextStyleProps}>
-          <span {...textStylePropsOnly} style={{ display: 'contents' }}>
-
-          </span>
-        </div>
-  - we have some random web-only props accepts on flat props, we should:
-    - either implement them universally if easy
-    - or else remove them (in favor of $platform-web)
-  - `$platform-` prefixes should go away in favor of just `$web`, `$native` etc
-  - textAlignVertical is deprecated but make sure we map back from textAlign to textAlignVertical on v2 and then remove it
-  - remove Provider need just global config once
-  - @tamagui/cli => tamagui
-    - `tamagui build` document/announce
-    - `tamagui lint` fix check and document/announce
-  - tamagui => @tamagui/ui
-    - new Button, Input (nice, can be v3), Image (image-next), ScrollView
-    - note many are headless
-  - remove spacer / space / separator
-  - Cleanup Select/ListItem
-    - remove SizableStack (maybe rename to Surface), redo/remove ThemeableStack
-    - v2-3 ListItem simplification esp for performance of Select
-    - fix Select hover/type/performance
-  - remove deprecated
-  - react 0.74 alignment:
-    - https://reactnative.dev/blog/2024/04/22/release-0.74
-  - move to web compat style apis
-  - AnimatePresence: remove deprecated props in favor of `custom`
-  - deprecate shadow style props before v2 release and remove in v2
-    - "shadow*" style props are deprecated. Use "boxShadow".
-    - "Enhance with native semantics" can probably go away right
-
-potential
-
-  - deprecate shadow props separated in favor of boxShadow, implement boxShadow
-  - sync AnimatePresence with latest changes from framer-motion
-  - group => container
-
-stretch
-
-  - @tamagui/core => @tamagui/style
-    - styled()
-    - @tamagui/style just style({}) export, takes TextProps
 
 ---
 

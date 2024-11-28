@@ -66,8 +66,8 @@ export declare const PopperContentFrame: import("@tamagui/core").TamaguiComponen
     unstyled?: boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
 export declare const PopperContent: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | "elevation" | keyof import("@tamagui/core").StackStyleBase | "fullscreen" | "circular" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "unstyled"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
-    size?: import("@tamagui/core").SizeTokens | undefined;
-    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+    size?: import("@tamagui/web").SizeTokens | undefined;
+    elevation?: number | import("@tamagui/web").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     hoverTheme?: boolean | undefined;
@@ -77,8 +77,8 @@ export declare const PopperContent: React.ForwardRefExoticComponent<Omit<import(
     bordered?: number | boolean | undefined;
     unstyled?: boolean | undefined;
 } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
-    size?: import("@tamagui/core").SizeTokens | undefined;
-    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+    size?: import("@tamagui/web").SizeTokens | undefined;
+    elevation?: number | import("@tamagui/web").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     hoverTheme?: boolean | undefined;
@@ -88,8 +88,8 @@ export declare const PopperContent: React.ForwardRefExoticComponent<Omit<import(
     bordered?: number | boolean | undefined;
     unstyled?: boolean | undefined;
 } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {
-    size?: import("@tamagui/core").SizeTokens | undefined;
-    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+    size?: import("@tamagui/web").SizeTokens | undefined;
+    elevation?: number | import("@tamagui/web").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     hoverTheme?: boolean | undefined;

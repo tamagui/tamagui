@@ -654,7 +654,9 @@ export type WithThemeValues<T extends object> = {
 };
 export type NarrowShorthands = Narrow<Shorthands>;
 export type Longhands = NarrowShorthands[keyof NarrowShorthands];
-export type OnlyAllowShorthandsSetting = TamaguiConfig['settings']['onlyAllowShorthands'];
+export type OnlyAllowShorthandsSetting = TamaguiConfig['settings'] extends {
+    onlyAllowShorthands: infer X;
+} ? X : false;
 export type WithShorthands<StyleProps> = {
     [Key in keyof Shorthands]?: Shorthands[Key] extends keyof StyleProps ? StyleProps[Shorthands[Key]] | null : undefined;
 };
@@ -1083,6 +1085,7 @@ interface ExtraStyleProps {
     paddingInline?: SpaceTokens | number;
     paddingInlineStart?: SpaceTokens | number;
     paddingInlineEnd?: SpaceTokens | number;
+    inset?: SpaceTokens | number;
     insetBlock?: SpaceTokens | number;
     insetBlockStart?: SpaceTokens | number;
     insetBlockEnd?: SpaceTokens | number;

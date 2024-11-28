@@ -92,7 +92,8 @@ const IntroParagraph = ({ children, large, disableUnwrapText, ...props }: any) =
 }
 
 const TableFrame = styled(YStack, {
-  bordered: true,
+  borderWidth: 1,
+  borderColor: '$borderColor',
   br: '$4',
   ov: 'hidden',
   my: '$4',

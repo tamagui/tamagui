@@ -67,8 +67,8 @@ type TabsContextValue = {
 };
 declare const useTabsContext: (scope?: string) => TabsContextValue;
 declare const TabsFrame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
-    size?: import("@tamagui/core").SizeTokens | undefined;
-    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+    size?: import("@tamagui/web").SizeTokens | undefined;
+    elevation?: number | import("@tamagui/web").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     hoverTheme?: boolean | undefined;
@@ -105,8 +105,8 @@ type TabsExtraProps = {
 };
 type TabsProps = TabsFrameProps & TabsExtraProps;
 export declare const Tabs: React.ForwardRefExoticComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
-    size?: import("@tamagui/core").SizeTokens | undefined;
-    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+    size?: import("@tamagui/web").SizeTokens | undefined;
+    elevation?: number | import("@tamagui/web").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     hoverTheme?: boolean | undefined;
@@ -116,8 +116,8 @@ export declare const Tabs: React.ForwardRefExoticComponent<Omit<import("@tamagui
     bordered?: number | boolean | undefined;
     unstyled?: boolean | undefined;
 }>, keyof TabsExtraProps> & TabsExtraProps & React.RefAttributes<TamaguiElement>> & import("@tamagui/web").StaticComponentObject<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
-    size?: import("@tamagui/core").SizeTokens | undefined;
-    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+    size?: import("@tamagui/web").SizeTokens | undefined;
+    elevation?: number | import("@tamagui/web").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     hoverTheme?: boolean | undefined;
@@ -127,8 +127,8 @@ export declare const Tabs: React.ForwardRefExoticComponent<Omit<import("@tamagui
     bordered?: number | boolean | undefined;
     unstyled?: boolean | undefined;
 }>, keyof TabsExtraProps> & TabsExtraProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & TabsExtraProps, import("@tamagui/web").StackStyleBase, {
-    size?: import("@tamagui/core").SizeTokens | undefined;
-    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+    size?: import("@tamagui/web").SizeTokens | undefined;
+    elevation?: number | import("@tamagui/web").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     hoverTheme?: boolean | undefined;
@@ -139,8 +139,8 @@ export declare const Tabs: React.ForwardRefExoticComponent<Omit<import("@tamagui
     unstyled?: boolean | undefined;
 }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig" | "extractable" | "styleable"> & {
     __tama: [Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
-        size?: import("@tamagui/core").SizeTokens | undefined;
-        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+        size?: import("@tamagui/web").SizeTokens | undefined;
+        elevation?: number | import("@tamagui/web").SizeTokens | undefined;
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         hoverTheme?: boolean | undefined;
@@ -150,8 +150,8 @@ export declare const Tabs: React.ForwardRefExoticComponent<Omit<import("@tamagui
         bordered?: number | boolean | undefined;
         unstyled?: boolean | undefined;
     }>, keyof TabsExtraProps> & TabsExtraProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & TabsExtraProps, import("@tamagui/web").StackStyleBase, {
-        size?: import("@tamagui/core").SizeTokens | undefined;
-        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+        size?: import("@tamagui/web").SizeTokens | undefined;
+        elevation?: number | import("@tamagui/web").SizeTokens | undefined;
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         hoverTheme?: boolean | undefined;

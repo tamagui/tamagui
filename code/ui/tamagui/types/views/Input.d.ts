@@ -487,6 +487,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
     paddingInline?: number | "unset" | import("@tamagui/core").GetThemeValueForKey<"paddingInline"> | undefined;
     paddingInlineStart?: number | "unset" | import("@tamagui/core").GetThemeValueForKey<"paddingInlineStart"> | undefined;
     paddingInlineEnd?: number | "unset" | import("@tamagui/core").GetThemeValueForKey<"paddingInlineEnd"> | undefined;
+    inset?: number | "unset" | import("@tamagui/core").SpaceTokens | undefined;
     insetBlock?: number | "unset" | import("@tamagui/core").SpaceTokens | undefined;
     insetBlockStart?: number | "unset" | import("@tamagui/core").SpaceTokens | undefined;
     insetBlockEnd?: number | "unset" | import("@tamagui/core").SpaceTokens | undefined;

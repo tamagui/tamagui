@@ -70,7 +70,6 @@ const RadioGroupIndicatorFrame = styled(YStack, {
   height: '53%',
   borderRadius: 1000,
   backgroundColor: '$color',
-  pressTheme: true,
 })
 
 const RADIO_GROUP_NAME = 'RadioGroup'

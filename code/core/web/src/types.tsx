@@ -1175,7 +1175,11 @@ export type WithThemeValues<T extends object> = {
 export type NarrowShorthands = Narrow<Shorthands>
 export type Longhands = NarrowShorthands[keyof NarrowShorthands]
 
-export type OnlyAllowShorthandsSetting = TamaguiConfig['settings']['onlyAllowShorthands']
+export type OnlyAllowShorthandsSetting = TamaguiConfig['settings'] extends {
+  onlyAllowShorthands: infer X
+}
+  ? X
+  : false
 
 // adds shorthand props
 export type WithShorthands<StyleProps> = {

@@ -1,7 +1,7 @@
-import type { GetProps } from '@tamagui/core';
-export declare const SizableStack: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-    size?: import("@tamagui/core").SizeTokens | undefined;
-    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+import type { GetProps } from '@tamagui/web';
+export declare const SizableStack: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
+    size?: import("@tamagui/web").SizeTokens | undefined;
+    elevation?: number | import("@tamagui/web").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     hoverTheme?: boolean | undefined;
@@ -10,6 +10,6 @@ export declare const SizableStack: import("@tamagui/core").TamaguiComponent<impo
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     unstyled?: boolean | undefined;
-}, import("@tamagui/core").StaticConfigPublic>;
+}, import("@tamagui/web").StaticConfigPublic>;
 export type SizableStackProps = GetProps<typeof SizableStack>;
 //# sourceMappingURL=SizableStack.d.ts.map

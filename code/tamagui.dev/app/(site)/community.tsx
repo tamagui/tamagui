@@ -364,6 +364,7 @@ const StarterRepoCard = ({
       maw={300}
       space="$2"
       tag="a"
+      // @ts-expect-error
       href={url as string}
       target="_blank"
       p="$5"
