@@ -61,7 +61,7 @@ export function Header(props: HeaderProps) {
             $sm={{
               br: 0,
               bw: 0,
-              y: -1 + bannerHeight,
+              y: -1 + (isScrolled ? 0 : bannerHeight),
               py: '$2',
             }}
             {...(isScrolled && {
