@@ -3,7 +3,7 @@ import { isWeb } from '@tamagui/constants'
 import type { GestureReponderEvent } from '@tamagui/core'
 import { composeEventHandlers } from '@tamagui/helpers'
 import { useLabelContext } from '@tamagui/label'
-import React from 'react'
+import React, { useCallback } from 'react'
 import type { PressableProps, View, ViewProps } from 'react-native'
 
 import { BubbleInput } from './BubbleInput'
@@ -50,7 +50,7 @@ export function useCheckbox<R extends View, P extends CheckboxProps>(
     ...checkboxProps
   } = props
   const [button, setButton] = React.useState<HTMLButtonElement | null>(null)
-  const composedRefs = useComposedRefs(ref, (node) => setButton(node as any))
+  const composedRefs = useComposedRefs(ref, setButton as any)
   const hasConsumerStoppedPropagationRef = React.useRef(false)
   // We set this to true by default so that events bubble to forms without JS (SSR)
   const isFormControl = isWeb ? (button ? Boolean(button.closest('form')) : true) : false

@@ -1,7 +1,7 @@
 import { FloatingFocusManager } from '@floating-ui/react'
 import { AdaptPortalContents, useAdaptIsActive } from '@tamagui/adapt'
 import { AnimatePresence } from '@tamagui/animate-presence'
-import { composeRefs } from '@tamagui/compose-refs'
+import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { styled } from '@tamagui/core'
 import { ThemeableStack } from '@tamagui/stacks'
@@ -96,7 +96,7 @@ export const SelectViewport = SelectViewportFrame.styleable<SelectViewportExtraP
       ...floatingProps
     } = itemContext.interactions.getFloatingProps()
 
-    const composedRefs = composeRefs(
+    const composedRefs = useComposedRefs(
       forwardedRef,
       context.floatingContext?.refs.setFloating
     )
