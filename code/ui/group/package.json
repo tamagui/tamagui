@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/group",
-  "version": "1.118.0",
+  "version": "1.118.1",
   "sideEffects": [
     "*.css"
   ],
@@ -36,14 +36,14 @@
     }
   },
   "dependencies": {
-    "@tamagui/core": "1.118.0",
-    "@tamagui/create-context": "1.118.0",
-    "@tamagui/helpers": "1.118.0",
-    "@tamagui/stacks": "1.118.0",
-    "@tamagui/use-controllable-state": "1.118.0"
+    "@tamagui/core": "1.118.1",
+    "@tamagui/create-context": "1.118.1",
+    "@tamagui/helpers": "1.118.1",
+    "@tamagui/stacks": "1.118.1",
+    "@tamagui/use-controllable-state": "1.118.1"
   },
   "devDependencies": {
-    "@tamagui/build": "1.118.0",
+    "@tamagui/build": "1.118.1",
     "react": "*"
   },
   "publishConfig": {
