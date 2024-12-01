@@ -28,6 +28,7 @@ async function getAllFilesInDirectoryRecursively(dir) {
   const components = data
     .filter((item) => item.metadata)
     .map((item) => path.join(dir, item.name))
+
   // recursively check the child directories
   const nestedComponents = (
     await Promise.all(
