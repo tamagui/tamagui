@@ -27,7 +27,7 @@
     "fs-extra": "^11.2.0",
     "metro-config": "^0.80.4",
     "metro-transform-worker": "^0.80.4",
-    "react-native-css-interop": "~0.0.21"
+    "react-native-css-interop": "^0.1.22"
   },
   "devDependencies": {
     "@tamagui/build": "1.117.2"
