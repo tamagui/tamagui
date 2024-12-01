@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/get-font-sized",
-  "version": "1.117.2",
+  "version": "1.118.0",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -31,11 +31,11 @@
     }
   },
   "dependencies": {
-    "@tamagui/constants": "1.117.2",
-    "@tamagui/core": "1.117.2"
+    "@tamagui/constants": "1.118.0",
+    "@tamagui/core": "1.118.0"
   },
   "devDependencies": {
-    "@tamagui/build": "1.117.2",
+    "@tamagui/build": "1.118.0",
     "react": "*"
   },
   "publishConfig": {

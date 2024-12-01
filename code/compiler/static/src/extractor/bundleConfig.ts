@@ -291,6 +291,9 @@ export async function writeTamaguiCSS(outputCSS: string, config: TamaguiInternal
     await FS.writeFile(outputCSS, css)
   }
   const css = config.getCSS()
+  if (typeof css !== 'string') {
+    throw new Error(`Invalid CSS: ${typeof css} ${css}`)
+  }
   try {
     if (existsSync(outputCSS) && (await readFile(outputCSS, 'utf8')) === css) {
       // no change

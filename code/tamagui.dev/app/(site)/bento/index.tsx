@@ -104,13 +104,7 @@ export default function BentoPage() {
       />
 
       {data.bento && (
-        <PurchaseModal
-          bento={data.bento}
-          defaultValue="bento"
-          fontsPack={data.fontsPack}
-          iconsPack={data.iconsPack}
-          starter={data.starter}
-        />
+        <PurchaseModal bento={data.bento} defaultValue="bento" starter={data.starter} />
       )}
 
       <Theme name="tan">

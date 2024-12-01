@@ -36,20 +36,21 @@ export const GET = apiRoute(async (req) => {
   const purchaseContainsTakeout = products.data.some(
     (product) => product.metadata.slug === 'universal-starter'
   )
-  if (!disable_automatic_discount) {
-    if (
-      checkDiscountEligibility({
-        accessInfo: userAccessInfo,
-        purchaseContainsBento,
-        purchaseContainsTakeout,
-      })
-    ) {
-      // apply the "takeout + bento" coupon
-      couponId =
-        process.env.STRIPE_COMBO_COUPON ??
-        (process.env.NODE_ENV === 'production' ? '1bJD4ngB' : 'SjRwUFIw')
-    }
-  }
+
+  // if (!disable_automatic_discount) {
+  //   if (
+  //     checkDiscountEligibility({
+  //       accessInfo: userAccessInfo,
+  //       purchaseContainsBento,
+  //       purchaseContainsTakeout,
+  //     })
+  //   ) {
+  //     // apply the "takeout + bento" coupon
+  //     couponId =
+  //       process.env.STRIPE_COMBO_COUPON ??
+  //       (process.env.NODE_ENV === 'production' ? '1bJD4ngB' : 'SjRwUFIw')
+  //   }
+  // }
 
   const stripeCustomerId = await createOrRetrieveCustomer({
     email: user.email!,

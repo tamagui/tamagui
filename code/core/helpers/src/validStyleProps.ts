@@ -215,6 +215,9 @@ export const stylePropsView = {
   ...stylePropsUnitless,
   ...(isAndroid ? { elevationAndroid: true } : {}),
 
+  boxShadow: true,
+  filter: true,
+
   ...(process.env.TAMAGUI_TARGET === 'web' && {
     // web-only for convenience
     contain: true,

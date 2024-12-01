@@ -6,18 +6,12 @@ export const getProductsForServerSideRendering = async (): Promise<{
   starter: Database['public']['Tables']['products']['Row'] & {
     prices: Database['public']['Tables']['prices']['Row'][]
   }
-  iconsPack: Database['public']['Tables']['products']['Row'] & {
-    prices: Database['public']['Tables']['prices']['Row'][]
-  }
-  fontsPack: Database['public']['Tables']['products']['Row'] & {
-    prices: Database['public']['Tables']['prices']['Row'][]
-  }
   bento: Database['public']['Tables']['products']['Row'] & {
     prices: Database['public']['Tables']['prices']['Row'][]
   }
 }> => {
   try {
-    const productPromises = [
+    const products = await Promise.all([
       supabaseAdmin
         .from('products')
         .select('*, prices(*)')
@@ -26,21 +20,9 @@ export const getProductsForServerSideRendering = async (): Promise<{
       supabaseAdmin
         .from('products')
         .select('*, prices(*)')
-        .eq('metadata->>slug', 'icon-packs')
-        .single(),
-      supabaseAdmin
-        .from('products')
-        .select('*, prices(*)')
-        .eq('metadata->>slug', 'font-packs')
-        .single(),
-      supabaseAdmin
-        .from('products')
-        .select('*, prices(*)')
         .eq('metadata->>slug', 'bento')
         .single(),
-    ]
-    const promises = [...productPromises]
-    const products = await Promise.all(promises)
+    ])
 
     if (!products.length) {
       throw new Error(`No products found`)
@@ -61,26 +43,18 @@ export const getProductsForServerSideRendering = async (): Promise<{
       starter: {
         ...products[0].data!,
         name: `Takeout`,
-        prices: getArray(products[0].data!.prices!).filter(
-          (p) => p.active && !(p.metadata as Record<string, any>).hide_from_lists
-        ),
-      },
-      iconsPack: {
-        ...products[1].data!,
-        prices: getArray(products[1].data!.prices!).filter(
-          (p) => p.active && !(p.metadata as Record<string, any>).hide_from_lists
-        ),
-      },
-      fontsPack: {
-        ...products[2].data!,
-        prices: getArray(products[2].data!.prices!).filter(
-          (p) => p.active && !(p.metadata as Record<string, any>).hide_from_lists
+        prices: uniqueDescription(
+          getArray(products[0].data!.prices!).filter(
+            (p) => p.active && (p.metadata as Record<string, any>).is_live
+          )
         ),
       },
       bento: {
-        ...products[3].data!,
-        prices: getArray(products[3].data!.prices!).filter(
-          (p) => p.active && !(p.metadata as Record<string, any>).hide_from_lists
+        ...products[1].data!,
+        prices: uniqueDescription(
+          getArray(products[1].data!.prices!).filter(
+            (p) => p.active && (p.metadata as Record<string, any>).is_live
+          )
         ),
       },
     }
@@ -91,4 +65,16 @@ export const getProductsForServerSideRendering = async (): Promise<{
     }
     throw err
   }
+}
+
+const uniqueDescription = <A extends { description?: string | null }>(
+  prices: A[]
+): A[] => {
+  const res: A[] = []
+  for (const price of prices) {
+    if (!res.some((x) => x.description === price.description)) {
+      res.push(price)
+    }
+  }
+  return res
 }
