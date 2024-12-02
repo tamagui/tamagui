@@ -168,12 +168,6 @@ const NativeSelectTextFrame = styled(SizableText, {
 const NativeSelectFrame = styled(YStack, {
   name: 'NativeSelect',
 
-  borderWidth: 1,
-  borderColor: '$borderColor',
-  userSelect: 'none',
-  outlineWidth: 0,
-  paddingRight: 10,
-
   variants: {
     size: {
       '...size': (val, extras) => {
@@ -191,10 +185,21 @@ const NativeSelectFrame = styled(YStack, {
         }
       },
     },
+
+    unstyled: {
+      false: {
+        borderWidth: 1,
+        borderColor: '$borderColor',
+        userSelect: 'none',
+        outlineWidth: 0,
+        paddingRight: 10,
+      },
+    },
   } as const,
 
   defaultVariants: {
     size: '$2',
+    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
   },
 })
 

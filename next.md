@@ -1,16 +1,12 @@
 
 v2:
 
+note: can't remove `as const` using const generics, it just doesnt help with the defaultVariants case at all
+
   - we may need to move the web-only valid style props to a webOnly const and filter it out on native? how does that work currently...
-  
-  - note: can't remove `as const` using const generics, it just doesnt help with the defaultVariants case at all
-
-  - border="1px solid $color" border="$4 solid $color"
-
   - see various `@deprecated` jsdocs
   - need to copy/paste all the component docs to 2.0.0.mdx
   - need to remove ThemeableStack docs from components mdx, they now are all extensiond YStack instead of ThemeableStack
-  - NativeSelectFrame needs unstyled support
   - see how much of accessibilityDirectMap we can remove for web
   - Text weirdness fixes (explore)
     - remove suppressHighlighting / margin 0 default from Text
@@ -30,13 +26,13 @@ v2:
     - new Button, Input (nice, can be v3), Image (image-next), ScrollView
     - note many are headless
   - Cleanup Select/ListItem
-    - remove SizableStack (maybe rename to Surface), redo/remove ThemeableStack
     - v2-3 ListItem simplification esp for performance of Select
     - fix Select hover/type/performance
   - AnimatePresence: remove deprecated props in favor of `custom`
 
 potential
 
+  - border="1px solid $color" border="$4 solid $color"
   - deprecate shadow props separated in favor of boxShadow, implement boxShadow
   - sync AnimatePresence with latest changes from framer-motion
   - group => container
