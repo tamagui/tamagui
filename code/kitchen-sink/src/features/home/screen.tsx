@@ -123,6 +123,7 @@ const demos = [
   {
     pages: [
       { title: 'Sandbox', route: '/sandbox' },
+      { title: 'Benchmark', route: '/test/Benchmark' },
       {
         title: 'Test Cases',
         route: '/tests',

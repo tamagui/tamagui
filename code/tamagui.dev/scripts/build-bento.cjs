@@ -9,18 +9,23 @@ const skipImports = ['../../general/_Showcase']
 
 function analyzeIndexFile(filePath) {
   const fileContent = fs.readFileSync(filePath, 'utf-8')
-  const ast = parse(fileContent, { sourceType: 'module' })
+  try {
+    const ast = parse(fileContent, { sourceType: 'module' })
 
-  const exportedModules = []
+    const exportedModules = []
 
-  walk.simple(ast, {
-    ExportAllDeclaration(node) {
-      const exportedName = node.source.value
-      exportedModules.push(exportedName)
-    },
-  })
+    walk.simple(ast, {
+      ExportAllDeclaration(node) {
+        const exportedName = node.source.value
+        exportedModules.push(exportedName)
+      },
+    })
 
-  return exportedModules
+    return exportedModules
+  } catch (err) {
+    console.error(`Error parsing file: ${filePath}`)
+    throw new Error(err)
+  }
 }
 
 function shake(content) {

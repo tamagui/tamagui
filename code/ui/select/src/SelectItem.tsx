@@ -93,14 +93,16 @@ export const SelectItem = ListItemFrame.styleable<SelectItemExtraProps>(
 
     const textId = React.useId()
 
-    const composedRefs = useComposedRefs(forwardedRef, (node) => {
+    const refCallback = React.useCallback((node) => {
       if (!isWeb) return
       if (node instanceof HTMLElement) {
         if (listRef) {
           listRef.current[index] = node
         }
       }
-    })
+    }, [])
+
+    const composedRefs = useComposedRefs(forwardedRef, refCallback)
 
     useIsomorphicLayoutEffect(() => {
       setValueAtIndex(index, value)
