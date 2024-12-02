@@ -1325,6 +1325,18 @@ interface ExtraStyleProps {
    * Web-only style property. Will be omitted on native.
    */
   containerType?: Properties['containerType']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  boxSizing?: Properties['boxSizing']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  overflowX?: Properties['boxSizing']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  overflowY?: Properties['boxSizing']
 
   pointerEvents?: ViewProps['pointerEvents']
 

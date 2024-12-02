@@ -9,6 +9,7 @@ import type { FontSizeTokens, GetProps, SizeTokens, ThemeableProps } from '@tama
 import { createStyledContext, getVariableValue, styled, useProps } from '@tamagui/web'
 import type { FunctionComponent } from 'react'
 import { useContext } from 'react'
+import { spacedChildren } from '@tamagui/spacer'
 
 type ButtonVariant = 'outlined'
 
@@ -268,7 +269,6 @@ function useButton<Props extends ButtonProps>(
           : undefined
       )
 
-  // @ts-expect-error
   const inner = spacedChildren({
     // a bit arbitrary but scaling to font size is necessary so long as button does
     space: spaceSize,
