@@ -630,7 +630,7 @@ export interface GenericTamaguiSettings {
    *
    * @default html
    */
-  themeClassTarget?: 'body' | 'html' | false
+  addThemeClassName?: 'body' | 'html' | false
 }
 
 export type TamaguiSettings = TamaguiConfig['settings']
