@@ -129,6 +129,14 @@ export declare const Input: import("@tamagui/core").TamaguiComponent<Omit<import
         outlineOffset?: boolean | undefined;
         outlineStyle?: boolean | undefined;
         outlineWidth?: boolean | undefined;
+        backdropFilter?: boolean | undefined;
+        background?: boolean | undefined;
+        backgroundImage?: boolean | undefined;
+        backgroundOrigin?: boolean | undefined;
+        backgroundPosition?: boolean | undefined;
+        backgroundRepeat?: boolean | undefined;
+        backgroundSize?: boolean | undefined;
+        containerType?: boolean | undefined;
         boxShadow: boolean;
         filter: boolean;
         elevationAndroid?: boolean | undefined;

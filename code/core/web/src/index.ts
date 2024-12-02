@@ -8,7 +8,6 @@ export * from './createVariable'
 export * from './createVariables'
 export * from './insertFont'
 export * from './styled'
-export * from './setupReactNative'
 
 export type { TamaguiBuildOptions } from '@tamagui/types'
 export type * from './types'

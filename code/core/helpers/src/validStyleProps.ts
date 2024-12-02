@@ -234,6 +234,7 @@ export const stylePropsView = {
     backgroundPosition: true,
     backgroundRepeat: true,
     backgroundSize: true,
+    containerType: true,
   }),
 }
 

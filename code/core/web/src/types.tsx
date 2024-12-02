@@ -1296,31 +1296,35 @@ interface ExtraStyleProps {
   /**
    * Web-only style property. Will be omitted on native.
    */
-  backdropFilter?: true
+  backdropFilter?: Properties['backdropFilter']
   /**
    * Web-only style property. Will be omitted on native.
    */
-  background?: true
+  background?: Properties['background']
   /**
    * Web-only style property. Will be omitted on native.
    */
-  backgroundImage?: true
+  backgroundImage?: Properties['backgroundImage']
   /**
    * Web-only style property. Will be omitted on native.
    */
-  backgroundOrigin?: true
+  backgroundOrigin?: Properties['backgroundOrigin']
   /**
    * Web-only style property. Will be omitted on native.
    */
-  backgroundPosition?: true
+  backgroundPosition?: Properties['backgroundPosition']
   /**
    * Web-only style property. Will be omitted on native.
    */
-  backgroundRepeat?: true
+  backgroundRepeat?: Properties['backgroundRepeat']
   /**
    * Web-only style property. Will be omitted on native.
    */
-  backgroundSize?: true
+  backgroundSize?: Properties['backgroundSize']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  containerType?: Properties['containerType']
 
   pointerEvents?: ViewProps['pointerEvents']
 

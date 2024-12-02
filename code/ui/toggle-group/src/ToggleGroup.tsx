@@ -438,7 +438,6 @@ const ToggleGroupImpl = ToggleGroupImplElementFrame.extractable(
               <ToggleGroupImplElementFrame
                 aria-orientation={orientation}
                 orientation={orientation}
-                axis={orientation}
                 ref={forwardedRef}
                 data-disabled={disabled ? '' : undefined}
                 unstyled={unstyled}

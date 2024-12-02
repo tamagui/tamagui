@@ -1,6 +1,8 @@
 
 v2:
 
+  - we may need to move the web-only valid style props to a webOnly const and filter it out on native? how does that work currently...
+  
   - note: can't remove `as const` using const generics, it just doesnt help with the defaultVariants case at all
 
   - border="1px solid $color" border="$4 solid $color"
