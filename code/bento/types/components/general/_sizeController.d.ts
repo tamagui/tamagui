@@ -4,8 +4,7 @@ export declare const SizeController: import("tamagui").TamaguiComponent<Omit<Omi
     size?: any;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
-}>, "disabled" | "orientation" | "disablePassBorderRadius" | keyof import("tamagui").SpaceProps | "axis" | "scrollable" | "showScrollIndicator" | "forceUseItem" | "__scopeGroup"> & import("tamagui").SpaceProps & {
-    axis?: "horizontal" | "vertical";
+}>, "disabled" | "orientation" | "disablePassBorderRadius" | keyof import("tamagui").SpaceProps | "scrollable" | "showScrollIndicator" | "forceUseItem" | "__scopeGroup"> & import("tamagui").SpaceProps & {
     orientation?: "horizontal" | "vertical";
     scrollable?: boolean;
     showScrollIndicator?: boolean;
@@ -19,7 +18,6 @@ export declare const SizeController: import("tamagui").TamaguiComponent<Omit<Omi
     setSize: (size: SizeTokens) => void;
     sizes?: SizeTokens[];
 }, import("tamagui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & import("tamagui").SpaceProps & {
-    axis?: "horizontal" | "vertical";
     orientation?: "horizontal" | "vertical";
     scrollable?: boolean;
     showScrollIndicator?: boolean;

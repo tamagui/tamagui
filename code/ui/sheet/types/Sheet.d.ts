@@ -121,18 +121,4 @@ export declare const Sheet: import("react").ForwardRefExoticComponent<{
         fullscreen?: boolean | undefined;
     }>> & import("react").RefAttributes<import("react-native").ScrollView>>;
 };
-/** @deprecated use Overlay instead  */
-export declare const SheetOverlayFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    fullscreen?: boolean | undefined;
-    open?: boolean | undefined;
-    unstyled?: boolean | undefined;
-}, import("@tamagui/core").StaticConfigPublic>;
-/** @deprecated use Overlay instead  */
-export declare const SheetHandleFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    fullscreen?: boolean | undefined;
-    open?: boolean | undefined;
-    unstyled?: boolean | undefined;
-}, import("@tamagui/core").StaticConfigPublic>;
 //# sourceMappingURL=Sheet.d.ts.map

@@ -4,7 +4,7 @@ import { hideOthers } from '@tamagui/aria-hidden'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
 import type { GetProps, StackProps, TamaguiElement } from '@tamagui/core'
-import { Theme, View, spacedChildren, styled, useThemeName } from '@tamagui/core'
+import { Theme, View, styled, useThemeName } from '@tamagui/core'
 import type { Scope } from '@tamagui/create-context'
 import { createContext, createContextScope } from '@tamagui/create-context'
 import type { DismissableProps } from '@tamagui/dismissable'
@@ -149,21 +149,10 @@ export const DialogPortalFrame = styled(YStack, {
 })
 
 const DialogPortalItem = (props: ScopedProps<DialogPortalProps>) => {
-  const { __scopeDialog, children, space, spaceDirection, separator } = props
+  const { __scopeDialog, children } = props
 
   const themeName = useThemeName()
   const context = useDialogContext(PORTAL_NAME, props.__scopeDialog)
-
-  let childrenSpaced = children
-
-  if (space || separator) {
-    childrenSpaced = spacedChildren({
-      children,
-      separator,
-      space,
-      direction: spaceDirection,
-    })
-  }
 
   // until we can use react-native portals natively
   // have to re-propogate context, sketch
@@ -171,7 +160,7 @@ const DialogPortalItem = (props: ScopedProps<DialogPortalProps>) => {
   return (
     <AdaptPortalContents>
       <DialogProvider scope={__scopeDialog} {...context}>
-        <Theme name={themeName}>{childrenSpaced}</Theme>
+        <Theme name={themeName}>{children}</Theme>
       </DialogProvider>
     </AdaptPortalContents>
   )

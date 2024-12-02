@@ -54,14 +54,14 @@ export declare const InputContainerFrame: import("tamagui").TamaguiComponent<imp
     gapScale?: number | undefined;
 }, import("@tamagui/web").StaticConfigPublic>;
 export declare const InputLabel: import("tamagui").TamaguiComponent<import("@tamagui/web").TamaDefer, import("react-native").View | HTMLButtonElement, import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("tamagui").TextNonStyleProps, "size" | "unstyled" | keyof import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & {
-    size?: import("@tamagui/web").FontSizeTokens | undefined;
     unstyled?: boolean | undefined;
+    size?: number | `$${string}` | `$${number}` | `$${string}.${string}` | `$${string}.${number}` | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | undefined;
 } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & {
-    size?: import("@tamagui/web").FontSizeTokens | undefined;
     unstyled?: boolean | undefined;
+    size?: number | `$${string}` | `$${number}` | `$${string}.${string}` | `$${string}.${number}` | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | undefined;
 } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").TextStylePropsBase, {
-    size?: import("@tamagui/web").FontSizeTokens | undefined;
     unstyled?: boolean | undefined;
+    size?: number | `$${string}` | `$${number}` | `$${string}.${string}` | `$${string}.${number}` | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | undefined;
 }>> & {
     htmlFor?: string;
 } & import("react").RefAttributes<import("react-native").View | HTMLButtonElement>, import("@tamagui/web").StackStyleBase, {
@@ -95,7 +95,6 @@ export declare const Input: import("react").ForwardRefExoticComponent<Omit<impor
     }, import("@tamagui/web").StaticConfigPublic];
 } & {
     Box: import("tamagui").TamaguiComponent<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps & import("tamagui").SpaceProps & {
-        axis?: "horizontal" | "vertical";
         orientation?: "horizontal" | "vertical";
         scrollable?: boolean;
         showScrollIndicator?: boolean;
@@ -112,7 +111,6 @@ export declare const Input: import("react").ForwardRefExoticComponent<Omit<impor
         scaleIcon?: number | undefined;
         applyFocusStyle?: boolean | undefined;
     }>, import("tamagui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & import("tamagui").SpaceProps & {
-        axis?: "horizontal" | "vertical";
         orientation?: "horizontal" | "vertical";
         scrollable?: boolean;
         showScrollIndicator?: boolean;
@@ -181,7 +179,18 @@ export declare const Input: import("react").ForwardRefExoticComponent<Omit<impor
         fullscreen?: boolean | undefined;
         unstyled?: boolean | undefined;
         disabled?: boolean | undefined;
+        transparent?: boolean | undefined;
         variant?: "outlined" | undefined;
+        hoverTheme?: boolean | undefined;
+        pressTheme?: boolean | undefined;
+        backgrounded?: boolean | undefined;
+        circular?: boolean | undefined;
+        radiused?: boolean | undefined;
+        focusTheme?: boolean | undefined;
+        padded?: boolean | undefined;
+        elevate?: boolean | undefined;
+        bordered?: number | boolean | undefined;
+        chromeless?: boolean | "all" | undefined;
     }, import("@tamagui/web").StaticConfigPublic>;
     Icon: import("tamagui").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
         size?: import("tamagui").SizeTokens | undefined;
@@ -199,21 +208,20 @@ export declare const Input: import("react").ForwardRefExoticComponent<Omit<impor
         unstyled?: boolean | undefined;
     }, import("@tamagui/web").StaticConfigPublic>;
     Label: import("tamagui").TamaguiComponent<import("@tamagui/web").TamaDefer, import("react-native").View | HTMLButtonElement, import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("tamagui").TextNonStyleProps, "size" | "unstyled" | keyof import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & {
-        size?: import("@tamagui/web").FontSizeTokens | undefined;
         unstyled?: boolean | undefined;
+        size?: number | `$${string}` | `$${number}` | `$${string}.${string}` | `$${string}.${number}` | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | undefined;
     } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & {
-        size?: import("@tamagui/web").FontSizeTokens | undefined;
         unstyled?: boolean | undefined;
+        size?: number | `$${string}` | `$${number}` | `$${string}.${string}` | `$${string}.${number}` | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | undefined;
     } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").TextStylePropsBase, {
-        size?: import("@tamagui/web").FontSizeTokens | undefined;
         unstyled?: boolean | undefined;
+        size?: number | `$${string}` | `$${number}` | `$${string}.${string}` | `$${string}.${number}` | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | undefined;
     }>> & {
         htmlFor?: string;
     } & import("react").RefAttributes<import("react-native").View | HTMLButtonElement>, import("@tamagui/web").StackStyleBase, {
         size?: FontSizeTokens | undefined;
     }, import("@tamagui/web").StaticConfigPublic>;
     XGroup: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & import("tamagui").SpaceProps & {
-        axis?: "horizontal" | "vertical";
         orientation?: "horizontal" | "vertical";
         scrollable?: boolean;
         showScrollIndicator?: boolean;
@@ -238,7 +246,6 @@ export declare const Input: import("react").ForwardRefExoticComponent<Omit<impor
         fullscreen?: boolean | undefined;
         unstyled?: boolean | undefined;
     }>> & import("react").RefAttributes<import("tamagui").TamaguiElement>> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("tamagui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & import("tamagui").SpaceProps & {
-        axis?: "horizontal" | "vertical";
         orientation?: "horizontal" | "vertical";
         scrollable?: boolean;
         showScrollIndicator?: boolean;
@@ -254,7 +261,6 @@ export declare const Input: import("react").ForwardRefExoticComponent<Omit<impor
         unstyled?: boolean | undefined;
     }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig" | "extractable" | "styleable"> & {
         __tama: [import("@tamagui/web").TamaDefer, import("tamagui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & import("tamagui").SpaceProps & {
-            axis?: "horizontal" | "vertical";
             orientation?: "horizontal" | "vertical";
             scrollable?: boolean;
             showScrollIndicator?: boolean;

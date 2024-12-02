@@ -27,18 +27,18 @@ export declare const Avatar: import("react").ForwardRefExoticComponent<Omit<impo
 } & {
     Content: import("react").ForwardRefExoticComponent<Omit<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | "elevation" | keyof import("@tamagui/web").StackStyleBase | "fullscreen" | "circular"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
         elevation?: number | import("@tamagui/web").SizeTokens | undefined;
-        fullscreen?: boolean | undefined;
         size?: number | import("@tamagui/web").SizeTokens | undefined;
+        fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
     } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
         elevation?: number | import("@tamagui/web").SizeTokens | undefined;
-        fullscreen?: boolean | undefined;
         size?: number | import("@tamagui/web").SizeTokens | undefined;
+        fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
     } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {
         elevation?: number | import("@tamagui/web").SizeTokens | undefined;
-        fullscreen?: boolean | undefined;
         size?: number | import("@tamagui/web").SizeTokens | undefined;
+        fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
     }>> & import("react").RefAttributes<import("tamagui").TamaguiElement>, "ref"> & import("react").RefAttributes<any>>;
     Image: import("react").ForwardRefExoticComponent<Partial<import("tamagui").ImageProps> & {

@@ -72,8 +72,19 @@ declare const DialogOverlay: React.ForwardRefExoticComponent<DialogOverlayProps 
 declare const DialogContentFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     size?: import("@tamagui/core").SizeTokens | undefined;
+    transparent?: boolean | undefined;
+    circular?: boolean | undefined;
     fullscreen?: boolean | undefined;
     unstyled?: boolean | undefined;
+    backgrounded?: boolean | undefined;
+    radiused?: boolean | undefined;
+    hoverTheme?: boolean | undefined;
+    pressTheme?: boolean | undefined;
+    focusTheme?: boolean | undefined;
+    padded?: boolean | undefined;
+    elevate?: boolean | undefined;
+    bordered?: number | boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
 type DialogContentFrameProps = GetProps<typeof DialogContentFrame>;
 interface DialogContentProps extends DialogContentFrameProps, Omit<DialogContentTypeProps, 'context' | 'onPointerDownCapture'> {
@@ -192,7 +203,10 @@ declare const Dialog: React.ForwardRefExoticComponent<DialogProps & React.RefAtt
         Handle: import("@tamagui/core").TamaguiComponent<any, any, any, any, {
             open?: boolean;
         }, {}> | import("@tamagui/core").TamaguiComponent<any, any, any, {}, {}, {}>;
-        ScrollView: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & import("react-native").ScrollViewProps, keyof import("@tamagui/core").StackStyleBase | "fullscreen" | "contentContainerStyle"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
+        ScrollView: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & import("react-native" /**
+         * Used to force mounting when more control is needed. Useful when
+         * controlling animation with React animation libraries.
+         */).ScrollViewProps, keyof import("@tamagui/core").StackStyleBase | "fullscreen" | "contentContainerStyle"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
             readonly contentContainerStyle?: Partial<import("@tamagui/core").GetFinalProps<import("react-native").ScrollViewProps, import("@tamagui/core").StackStyleBase, {}>> | undefined;
         }> & {
             fullscreen?: boolean | undefined;
@@ -212,13 +226,7 @@ declare const Dialog: React.ForwardRefExoticComponent<DialogProps & React.RefAtt
     };
     Adapt: ((props: import("@tamagui/adapt").AdaptProps) => import("react/jsx-runtime").JSX.Element) & {
         Contents: {
-            ({ scope, 
-            /**
-             * @see https://github.com/theKashey/react-remove-scroll#usage
-             */
-            ... /**
-             * @see https://github.com/theKashey/react-remove-scroll#usage
-             */rest }: {
+            ({ scope, ...rest }: {
                 scope?: string;
             }): React.FunctionComponentElement<any>;
             shouldForwardSpace: boolean;

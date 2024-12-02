@@ -10,10 +10,6 @@ export declare const GroupFrame: import("@tamagui/core").TamaguiComponent<import
     fullscreen?: boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
 export type GroupExtraProps = SpaceProps & {
-    /**
-     * @deprecated use `orientation` instead
-     */
-    axis?: 'horizontal' | 'vertical';
     orientation?: 'horizontal' | 'vertical';
     scrollable?: boolean;
     /**
@@ -44,11 +40,7 @@ export declare const Group: React.ForwardRefExoticComponent<Omit<import("@tamagu
     size?: any;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
-}>, "disabled" | keyof SpaceProps | "axis" | "orientation" | "scrollable" | "showScrollIndicator" | "disablePassBorderRadius" | "forceUseItem" | "__scopeGroup"> & SpaceProps & {
-    /**
-     * @deprecated use `orientation` instead
-     */
-    axis?: "horizontal" | "vertical";
+}>, "disabled" | keyof SpaceProps | "orientation" | "scrollable" | "showScrollIndicator" | "disablePassBorderRadius" | "forceUseItem" | "__scopeGroup"> & SpaceProps & {
     orientation?: "horizontal" | "vertical";
     scrollable?: boolean;
     /**
@@ -68,11 +60,7 @@ export declare const Group: React.ForwardRefExoticComponent<Omit<import("@tamagu
     size?: any;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
-}>, "disabled" | keyof SpaceProps | "axis" | "orientation" | "scrollable" | "showScrollIndicator" | "disablePassBorderRadius" | "forceUseItem" | "__scopeGroup"> & SpaceProps & {
-    /**
-     * @deprecated use `orientation` instead
-     */
-    axis?: "horizontal" | "vertical";
+}>, "disabled" | keyof SpaceProps | "orientation" | "scrollable" | "showScrollIndicator" | "disablePassBorderRadius" | "forceUseItem" | "__scopeGroup"> & SpaceProps & {
     orientation?: "horizontal" | "vertical";
     scrollable?: boolean;
     /**
@@ -88,10 +76,6 @@ export declare const Group: React.ForwardRefExoticComponent<Omit<import("@tamagu
 } & {
     __scopeGroup?: Scope;
 }, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & SpaceProps & {
-    /**
-     * @deprecated use `orientation` instead
-     */
-    axis?: "horizontal" | "vertical";
     orientation?: "horizontal" | "vertical";
     scrollable?: boolean;
     /**
@@ -117,11 +101,7 @@ export declare const Group: React.ForwardRefExoticComponent<Omit<import("@tamagu
         size?: any;
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         fullscreen?: boolean | undefined;
-    }>, "disabled" | keyof SpaceProps | "axis" | "orientation" | "scrollable" | "showScrollIndicator" | "disablePassBorderRadius" | "forceUseItem" | "__scopeGroup"> & SpaceProps & {
-        /**
-         * @deprecated use `orientation` instead
-         */
-        axis?: "horizontal" | "vertical";
+    }>, "disabled" | keyof SpaceProps | "orientation" | "scrollable" | "showScrollIndicator" | "disablePassBorderRadius" | "forceUseItem" | "__scopeGroup"> & SpaceProps & {
         orientation?: "horizontal" | "vertical";
         scrollable?: boolean;
         /**
@@ -137,10 +117,6 @@ export declare const Group: React.ForwardRefExoticComponent<Omit<import("@tamagu
     } & {
         __scopeGroup?: Scope;
     }, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & SpaceProps & {
-        /**
-         * @deprecated use `orientation` instead
-         */
-        axis?: "horizontal" | "vertical";
         orientation?: "horizontal" | "vertical";
         scrollable?: boolean;
         /**
@@ -171,11 +147,7 @@ export declare const YGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
     size?: any;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
-}>, "disabled" | keyof SpaceProps | "axis" | "orientation" | "scrollable" | "showScrollIndicator" | "disablePassBorderRadius" | "forceUseItem" | "__scopeGroup"> & SpaceProps & {
-    /**
-     * @deprecated use `orientation` instead
-     */
-    axis?: "horizontal" | "vertical";
+}>, "disabled" | keyof SpaceProps | "orientation" | "scrollable" | "showScrollIndicator" | "disablePassBorderRadius" | "forceUseItem" | "__scopeGroup"> & SpaceProps & {
     orientation?: "horizontal" | "vertical";
     scrollable?: boolean;
     /**
@@ -195,11 +167,7 @@ export declare const YGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
     size?: any;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
-}>, "disabled" | keyof SpaceProps | "axis" | "orientation" | "scrollable" | "showScrollIndicator" | "disablePassBorderRadius" | "forceUseItem" | "__scopeGroup"> & SpaceProps & {
-    /**
-     * @deprecated use `orientation` instead
-     */
-    axis?: "horizontal" | "vertical";
+}>, "disabled" | keyof SpaceProps | "orientation" | "scrollable" | "showScrollIndicator" | "disablePassBorderRadius" | "forceUseItem" | "__scopeGroup"> & SpaceProps & {
     orientation?: "horizontal" | "vertical";
     scrollable?: boolean;
     /**
@@ -215,10 +183,6 @@ export declare const YGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
 } & {
     __scopeGroup?: Scope;
 }, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & SpaceProps & {
-    /**
-     * @deprecated use `orientation` instead
-     */
-    axis?: "horizontal" | "vertical";
     orientation?: "horizontal" | "vertical";
     scrollable?: boolean;
     /**
@@ -244,11 +208,7 @@ export declare const YGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
         size?: any;
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         fullscreen?: boolean | undefined;
-    }>, "disabled" | keyof SpaceProps | "axis" | "orientation" | "scrollable" | "showScrollIndicator" | "disablePassBorderRadius" | "forceUseItem" | "__scopeGroup"> & SpaceProps & {
-        /**
-         * @deprecated use `orientation` instead
-         */
-        axis?: "horizontal" | "vertical";
+    }>, "disabled" | keyof SpaceProps | "orientation" | "scrollable" | "showScrollIndicator" | "disablePassBorderRadius" | "forceUseItem" | "__scopeGroup"> & SpaceProps & {
         orientation?: "horizontal" | "vertical";
         scrollable?: boolean;
         /**
@@ -264,10 +224,6 @@ export declare const YGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
     } & {
         __scopeGroup?: Scope;
     }, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & SpaceProps & {
-        /**
-         * @deprecated use `orientation` instead
-         */
-        axis?: "horizontal" | "vertical";
         orientation?: "horizontal" | "vertical";
         scrollable?: boolean;
         /**
@@ -298,11 +254,7 @@ export declare const XGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
     size?: any;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
-}>, "disabled" | keyof SpaceProps | "axis" | "orientation" | "scrollable" | "showScrollIndicator" | "disablePassBorderRadius" | "forceUseItem" | "__scopeGroup"> & SpaceProps & {
-    /**
-     * @deprecated use `orientation` instead
-     */
-    axis?: "horizontal" | "vertical";
+}>, "disabled" | keyof SpaceProps | "orientation" | "scrollable" | "showScrollIndicator" | "disablePassBorderRadius" | "forceUseItem" | "__scopeGroup"> & SpaceProps & {
     orientation?: "horizontal" | "vertical";
     scrollable?: boolean;
     /**
@@ -322,11 +274,7 @@ export declare const XGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
     size?: any;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
-}>, "disabled" | keyof SpaceProps | "axis" | "orientation" | "scrollable" | "showScrollIndicator" | "disablePassBorderRadius" | "forceUseItem" | "__scopeGroup"> & SpaceProps & {
-    /**
-     * @deprecated use `orientation` instead
-     */
-    axis?: "horizontal" | "vertical";
+}>, "disabled" | keyof SpaceProps | "orientation" | "scrollable" | "showScrollIndicator" | "disablePassBorderRadius" | "forceUseItem" | "__scopeGroup"> & SpaceProps & {
     orientation?: "horizontal" | "vertical";
     scrollable?: boolean;
     /**
@@ -342,10 +290,6 @@ export declare const XGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
 } & {
     __scopeGroup?: Scope;
 }, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & SpaceProps & {
-    /**
-     * @deprecated use `orientation` instead
-     */
-    axis?: "horizontal" | "vertical";
     orientation?: "horizontal" | "vertical";
     scrollable?: boolean;
     /**
@@ -371,11 +315,7 @@ export declare const XGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
         size?: any;
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         fullscreen?: boolean | undefined;
-    }>, "disabled" | keyof SpaceProps | "axis" | "orientation" | "scrollable" | "showScrollIndicator" | "disablePassBorderRadius" | "forceUseItem" | "__scopeGroup"> & SpaceProps & {
-        /**
-         * @deprecated use `orientation` instead
-         */
-        axis?: "horizontal" | "vertical";
+    }>, "disabled" | keyof SpaceProps | "orientation" | "scrollable" | "showScrollIndicator" | "disablePassBorderRadius" | "forceUseItem" | "__scopeGroup"> & SpaceProps & {
         orientation?: "horizontal" | "vertical";
         scrollable?: boolean;
         /**
@@ -391,10 +331,6 @@ export declare const XGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
     } & {
         __scopeGroup?: Scope;
     }, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & SpaceProps & {
-        /**
-         * @deprecated use `orientation` instead
-         */
-        axis?: "horizontal" | "vertical";
         orientation?: "horizontal" | "vertical";
         scrollable?: boolean;
         /**

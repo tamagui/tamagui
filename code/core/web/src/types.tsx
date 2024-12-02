@@ -1293,6 +1293,34 @@ interface ExtraStyleProps {
    * Web-only style property. Will be omitted on native.
    */
   userSelect?: Properties['userSelect']
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  backdropFilter?: true
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  background?: true
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  backgroundImage?: true
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  backgroundOrigin?: true
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  backgroundPosition?: true
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  backgroundRepeat?: true
+  /**
+   * Web-only style property. Will be omitted on native.
+   */
+  backgroundSize?: true
 
   pointerEvents?: ViewProps['pointerEvents']
 

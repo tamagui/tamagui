@@ -227,6 +227,13 @@ export const stylePropsView = {
     outlineStyle: true,
     outlineWidth: true,
     userSelect: true,
+    backdropFilter: true,
+    background: true,
+    backgroundImage: true,
+    backgroundOrigin: true,
+    backgroundPosition: true,
+    backgroundRepeat: true,
+    backgroundSize: true,
   }),
 }
 

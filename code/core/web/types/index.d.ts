@@ -1,7 +1,6 @@
 export * from './Tamagui';
 export * from './createComponent';
 export * from './createShorthands';
-export * from './createTheme';
 export * from './createTamagui';
 export * from './createFont';
 export * from './createTokens';
@@ -26,7 +25,6 @@ export * from './helpers/createMediaStyle';
 export * from './helpers/createShallowSetState';
 export * from './helpers/createStyledContext';
 export * from './helpers/expandStyles';
-export * from './helpers/getExpandedShorthands';
 export * from './helpers/getSplitStyles';
 export * from './helpers/getStylesAtomic';
 export * from './createComponent';

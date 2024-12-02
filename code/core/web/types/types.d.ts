@@ -702,6 +702,62 @@ export interface TransformStyleProps {
     rotateZ?: `${number}deg` | UnionableString;
 }
 interface ExtraStyleProps {
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    contain?: Properties['contain'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    cursor?: Properties['cursor'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    outlineColor?: Properties['outlineColor'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    outlineOffset?: SpaceValue;
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    outlineStyle?: Properties['outlineStyle'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    outlineWidth?: SpaceValue;
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    userSelect?: Properties['userSelect'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    backdropFilter?: true;
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    background?: true;
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    backgroundImage?: true;
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    backgroundOrigin?: true;
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    backgroundPosition?: true;
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    backgroundRepeat?: true;
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    backgroundSize?: true;
     pointerEvents?: ViewProps['pointerEvents'];
     /**
      * The point at which transforms originate from.
@@ -841,8 +897,6 @@ export type StackStyle = WithThemeShorthandsPseudosMedia<StackStyleBase>;
 export type StackProps = StackNonStyleProps & StackStyle;
 export interface TextNonStyleProps extends A11yDeprecated, Omit<ReactTextProps, 'children' | keyof WebOnlyPressEvents | RNOnlyProps | keyof ExtendBaseTextProps | 'style'>, ExtendBaseTextProps, TamaguiComponentPropsBase {
     style?: StyleProp<LooseCombinedObjects<React.CSSProperties, RNTextStyle>>;
-    /** @deprecated use userSelect instead */
-    selectable?: boolean;
 }
 export type TextStyle = WithThemeShorthandsPseudosMedia<TextStylePropsBase>;
 export type TextProps = TextNonStyleProps & TextStyle;

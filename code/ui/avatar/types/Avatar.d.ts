@@ -30,25 +30,25 @@ declare const AvatarFallback: React.ForwardRefExoticComponent<Omit<import("@tama
 } & React.RefAttributes<TamaguiElement>>;
 export declare const AvatarFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | import("@tamagui/web").SizeTokens | undefined;
-    fullscreen?: boolean | undefined;
     size?: number | import("@tamagui/web").SizeTokens | undefined;
+    fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
 type AvatarProps = GetProps<typeof AvatarFrame>;
 declare const Avatar: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | "elevation" | keyof import("@tamagui/core").StackStyleBase | "fullscreen" | "circular"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
     elevation?: number | import("@tamagui/web").SizeTokens | undefined;
-    fullscreen?: boolean | undefined;
     size?: number | import("@tamagui/web").SizeTokens | undefined;
+    fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
 } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
     elevation?: number | import("@tamagui/web").SizeTokens | undefined;
-    fullscreen?: boolean | undefined;
     size?: number | import("@tamagui/web").SizeTokens | undefined;
+    fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
 } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {
     elevation?: number | import("@tamagui/web").SizeTokens | undefined;
-    fullscreen?: boolean | undefined;
     size?: number | import("@tamagui/web").SizeTokens | undefined;
+    fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
 }>> & React.RefAttributes<TamaguiElement>> & {
     Image: React.ForwardRefExoticComponent<Partial<ImageProps> & {

@@ -90,7 +90,6 @@ interface ToggleGroupImplMultipleProps extends ToggleGroupImplProps {
 }
 type RovingFocusGroupProps = React.ComponentPropsWithoutRef<typeof RovingFocusGroup>;
 declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & import("@tamagui/spacer").SpaceProps & {
-    axis?: "horizontal" | "vertical";
     orientation?: "horizontal" | "vertical";
     scrollable?: boolean;
     showScrollIndicator?: boolean;
