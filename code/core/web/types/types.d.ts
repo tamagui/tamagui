@@ -762,6 +762,18 @@ interface ExtraStyleProps {
      * Web-only style property. Will be omitted on native.
      */
     containerType?: Properties['containerType'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    boxSizing?: Properties['boxSizing'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    overflowX?: Properties['boxSizing'];
+    /**
+     * Web-only style property. Will be omitted on native.
+     */
+    overflowY?: Properties['boxSizing'];
     pointerEvents?: ViewProps['pointerEvents'];
     /**
      * The point at which transforms originate from.
@@ -957,7 +969,7 @@ export type StaticComponentObject<Props, Ref, NonStyledProps, BaseStyles extends
     styleable: Styleable<Props extends TamaDefer ? GetFinalProps<NonStyledProps, BaseStyles, VariantProps> : Props, Ref, NonStyledProps, BaseStyles, VariantProps, ParentStaticProperties>;
 };
 export type TamaguiComponentExpectingVariants<Props = {}, Variants extends Object = {}> = TamaguiComponent<Props, any, any, any, Variants>;
-export type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, 'children'>> & {
+export type TamaguiProviderProps = Omit<ThemeProviderProps, 'children'> & {
     config?: TamaguiInternalConfig;
     disableInjectCSS?: boolean;
     children?: ReactNode;

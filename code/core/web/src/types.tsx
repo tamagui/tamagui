@@ -1717,7 +1717,7 @@ export type TamaguiComponentExpectingVariants<
   Variants extends Object = {},
 > = TamaguiComponent<Props, any, any, any, Variants>
 
-export type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, 'children'>> & {
+export type TamaguiProviderProps = Omit<ThemeProviderProps, 'children'> & {
   config?: TamaguiInternalConfig
   disableInjectCSS?: boolean
   children?: ReactNode

@@ -33,11 +33,7 @@ export function TamaguiProvider({
     <>
       <UnmountedClassName>
         <ComponentContext.Provider animationDriver={config?.animations}>
-          <ThemeProvider
-            defaultTheme={defaultTheme ?? (config ? Object.keys(config.themes)[0] : '')}
-            reset={reset}
-            className={className}
-          >
+          <ThemeProvider defaultTheme={defaultTheme} reset={reset} className={className}>
             {children}
           </ThemeProvider>
         </ComponentContext.Provider>
