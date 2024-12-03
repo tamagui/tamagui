@@ -261,7 +261,6 @@ export const PopperContentFrame = styled(YStack, {
         size: '$true',
         backgroundColor: '$background',
         alignItems: 'center',
-        radiused: true,
       },
     },
 

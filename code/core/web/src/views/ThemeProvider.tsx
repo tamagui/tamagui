@@ -35,8 +35,10 @@ export const ThemeProvider = (props: ThemeProviderProps) => {
     <Theme
       className={props.className}
       name={props.defaultTheme}
-      // if root class disabled, force class here
-      forceClassName={addThemeClassName !== false}
+      // we completely disable the className here if its set to any value, 'root', 'body', or false
+      // because in all cases we are putting the classname elsewhere
+      // if its undefined, then the default behavior applies and we use the className here
+      forceClassName={addThemeClassName === undefined}
       // @ts-expect-error
       _isRoot
     >

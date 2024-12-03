@@ -81,7 +81,7 @@ const config = {
   settings: {
     defaultFont: 'body',
     shouldAddPrefersColorThemes: true,
-    addThemeClassName: false,
+    addThemeClassName: 'body',
     styleCompat: 'legacy',
     mediaQueryDefaultActive,
     selectionStyles: (theme) => ({
