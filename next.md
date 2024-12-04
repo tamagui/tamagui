@@ -1,3 +1,13 @@
+- we should add a docs page on testing tamagui:
+
+jest-preset.js should add (for testing native):
+
+testEnvironmentOptions: {
+  customExportConditions: ['react-native'],
+}
+
+- looks like our upgrade to 1.114 added virtualkeyboardpolicy="manual" which broke the auto keyboard appearance on android web, working on a quick fix but wanted to flag
+
 - deeply nested themeInverse needs a fix see kitchen sink squares
 - nan issue: nan start or end NaN 22 bytes: 0-22 [ 'bytes: 0', '22' ]
 
