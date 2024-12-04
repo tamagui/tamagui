@@ -11,6 +11,7 @@
   "scripts": {
     "test:run": "vitest --run --config ../../packages/vite-plugin-internal/src/vite.config.ts",
     "test:web": "TAMAGUI_TARGET=web yarn test:run **/*.web.test.tsx",
+    "test:ios": "TEST_NATIVE_PLATFORM=ios TAMAGUI_TARGET=native yarn test:run **/*.ios.test.tsx",
     "test:native": "TAMAGUI_TARGET=native yarn test:run **/*.native.test.tsx",
     "test": "yarn test:native && yarn test:web"
   },
