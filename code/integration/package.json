@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "web": "yarn dev",
-    "test": "node -r esbuild-register ../../node_modules/.bin/playwright test simple.integration.test.tsx",
+    "test": "node -r esbuild-register ../../node_modules/.bin/playwright test simple.integration.test.js",
     "build:prod": "vite build",
     "preview": "vite preview",
     "dev": "NODE_ENV=development vite --host --clearScreen false",
