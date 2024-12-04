@@ -141,6 +141,7 @@ export const useThemeWithState = (
     if (!themeManager || !state?.theme) {
       return {}
     }
+
     return getThemeProxied(state, props.deopt, themeManager, keys.current, props.debug)
   }, [state?.theme, themeManager, props.deopt, props.debug])
 
