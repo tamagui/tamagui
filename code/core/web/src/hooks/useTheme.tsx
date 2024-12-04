@@ -324,7 +324,13 @@ function getIsInversed(manager?: ThemeManager) {
 // but also theres no point in doing a dynamic color in the first place since scheme is fixed one way
 function hasFixedSchemeParent(manager?: ThemeManager) {
   if (process.env.TAMAGUI_TARGET === 'native') {
-    return manager?.getParents().some((x) => x.state.isSchemeFixed)
+    return (
+      manager
+        ?.getParents()
+        // dont count the root theme level as fixed because it will be matching system theme
+        .slice(1)
+        .some((x) => x.state.isSchemeFixed)
+    )
   }
 
   return false
