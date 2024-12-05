@@ -3,16 +3,18 @@ title: Tamagui 2
 publishedAt: '2024-12-29'
 description: Simpler, faster, and stable.
 by: nate
-poster: banner-one.jpg
+poster: banner-two.jpg
 ---
 
 <IntroParagraph large>
-  Tamagui enables small and large companies to create amazing cross-platform apps with fully shared code.
+  Tamagui makes cross-platform apps with fully shared code much easier and faster.
 </IntroParagraph>
 
 <IntroParagraph>
-  If you want to share styling and UI across React native and web, there is no other choice that gives you as great of UX, performance, consistency, and cohesion. Tamagui is fast on every platform, outputting to native platform primitives and optionally optimizing even further with a compiler. It's featureset is 100% supported across every platform, and it has everything you need from styling, unstyled and styled components, copy-paste UI patterns, a theme generator, and a rich suite of hooks and helpers.
+  Tamagui goes deeper than any other style library at achieving high performance across every platform, outputting to platform-native primitives, and optimizing to the extreme with an optimizing compiler. It gives you fully typed and concise inline styling with a rich featureset that is 100% supported across every platform.
 </IntroParagraph>
+
+Since 1.0, Tamagui has added many more core styling features like container queries, it's added a variety of new compound components, it added unstyled versions of every component, and it launched Bento for copy-paste UI patterns, and a new visual theme generator.
 
 It's been exactly two years since Tamagui 1.0, which is quite a long time (though not for a lack of momentum). The reasons for the gap are a few, but mostly that 1.0 had a massive surface area, and many beta components. Instead of rushing to release new versions, we spent the time to make sure every piece of Tamagui worked better, faster, and installed more easily. Where version 1.0 was ambitious but filled with edge cases, version 2.0 marks the maturation of that ambitious vision.
 
@@ -25,9 +27,16 @@ If you haven't checked out Tamagui since closer to 1.0, you'll find a lot of nic
 
 Version 2 doesn't have many breaking changes, instead it removes a few deprecated things that were holding us back from some more ambitious projects we want to take on going forward.
 
-What has changed:
+What has changed on a high level:
 
+- Button and ListItem are simplified.
 - Removed the `space` and `spaceDirection` props in favor of gap.
 - Moved the `<Spacer />` component from core into `@tamagui/spacer`.
 - Removed the deprecated `StyledComponent.extractable`.
 - Moved all settings on `createTamagui` onto the `settings` object.
+
+### Changes
+
+#### Button
+
+#### ListItem
