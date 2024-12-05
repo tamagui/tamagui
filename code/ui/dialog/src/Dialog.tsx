@@ -249,8 +249,8 @@ interface DialogOverlayProps extends YStackProps {
   forceMount?: true
 }
 
-const DialogOverlay = DialogOverlayFrame.extractable(
-  React.forwardRef<TamaguiElement, DialogOverlayProps>(function DialogOverlay(
+const DialogOverlay = DialogOverlayFrame.styleable<TamaguiElement, DialogOverlayProps>(
+  function DialogOverlay(
     { __scopeDialog, ...props }: ScopedProps<DialogOverlayProps>,
     forwardedRef
   ) {
@@ -276,7 +276,7 @@ const DialogOverlay = DialogOverlayFrame.extractable(
         ref={forwardedRef}
       />
     )
-  })
+  }
 )
 
 /* -------------------------------------------------------------------------------------------------
@@ -326,8 +326,8 @@ interface DialogContentProps
   forceMount?: true
 }
 
-const DialogContent = DialogContentFrame.extractable(
-  React.forwardRef<TamaguiElement, DialogContentProps>(function DialogContent(
+const DialogContent = DialogContentFrame.styleable<TamaguiElement, DialogContentProps>(
+  function DialogContent(
     { __scopeDialog, ...props }: ScopedProps<DialogContentProps>,
     forwardedRef
   ) {
@@ -359,7 +359,7 @@ const DialogContent = DialogContentFrame.extractable(
         </div>
       </RemoveScroll>
     )
-  })
+  }
 )
 
 /* -----------------------------------------------------------------------------------------------*/

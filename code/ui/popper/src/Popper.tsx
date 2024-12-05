@@ -211,7 +211,7 @@ export type PopperAnchorProps = YStackProps & {
   virtualRef?: React.RefObject<any>
 }
 
-export const PopperAnchor = YStack.extractable(
+export const PopperAnchor = YStack.styleable(
   React.forwardRef<PopperAnchorRef, ScopedPopperProps<PopperAnchorProps>>(
     function PopperAnchor(props: ScopedPopperProps<PopperAnchorProps>, forwardedRef) {
       const { virtualRef, __scopePopper, ...anchorProps } = props

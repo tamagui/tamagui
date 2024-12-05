@@ -18,6 +18,16 @@ It's been exactly two years since Tamagui 1.0, which is quite a long time (thoug
 
 If you haven't checked out Tamagui since closer to 1.0, you'll find a lot of nice improvements:
 
-- We made is dramatically easier to install and get started thanks to our hard-fought 0-configuration install.
-- We given you much better defaults out of the box with config v4.
-- We made over 500 commits improving our documentation, greatly improving every area.
+- It's dramatically easier to install with no bundler setup at all.
+- We made configuration optional, and made it easy to generate configuration.
+- Over 500 commits improving documentation.
+- A whole ton of features have been added since version one.
+
+Version 2 doesn't have many breaking changes, instead it removes a few deprecated things that were holding us back from some more ambitious projects we want to take on going forward.
+
+What has changed:
+
+- Removed the `space` and `spaceDirection` props in favor of gap.
+- Moved the `<Spacer />` component from core into `@tamagui/spacer`.
+- Removed the deprecated `StyledComponent.extractable`.
+- Moved all settings on `createTamagui` onto the `settings` object.

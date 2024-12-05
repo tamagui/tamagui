@@ -1197,12 +1197,6 @@ export function createComponent<
     }
   }
 
-  function extractable(Component: any, extended?: Partial<StaticConfig>) {
-    Component.staticConfig = extendStyledConfig(extended)
-    Component.styleable = styleable
-    return Component
-  }
-
   function styleable(Component: any, options?: StyleableOptions) {
     const isForwardedRefAlready = Component.render?.length === 2
 
@@ -1223,7 +1217,6 @@ export function createComponent<
     return out
   }
 
-  res.extractable = extractable
   res.styleable = styleable
 
   return res

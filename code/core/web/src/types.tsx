@@ -1617,7 +1617,7 @@ export type TamaguiComponent<
     Variants,
     ParentStaticProperties
   > &
-  Omit<ParentStaticProperties, 'staticConfig' | 'extractable' | 'styleable'> & {
+  Omit<ParentStaticProperties, 'staticConfig' | 'styleable'> & {
     __tama: [Props, Ref, NonStyledProps, BaseStyles, Variants, ParentStaticProperties]
   }
 
@@ -1695,8 +1695,6 @@ export type StaticComponentObject<
 > = {
   staticConfig: StaticConfig
 
-  /** @deprecated use `styleable` instead (same functionality, better name) */
-  extractable: <X>(a: X, staticConfig?: Partial<StaticConfig>) => X
   /*
    * If you want your HOC of a styled() component to also be able to be styled(), you need this to wrap it.
    */
