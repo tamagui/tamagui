@@ -6,3 +6,6 @@ export const IS_FABRIC =
 
 export const USE_NATIVE_PORTAL =
   !isAndroid && process.env.TAMAGUI_USE_NATIVE_PORTAL !== 'false' && !IS_FABRIC
+
+export const allPortalHosts = new Map<string, HTMLElement>()
+export const portalListeners: Record<string, Set<Function>> = {}
