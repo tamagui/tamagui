@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/switch-headless",
-  "version": "1.118.4",
+  "version": "1.119.0",
   "sideEffects": [
     "*.css"
   ],
@@ -36,17 +36,17 @@
     }
   },
   "dependencies": {
-    "@tamagui/compose-refs": "1.118.4",
-    "@tamagui/constants": "1.118.4",
-    "@tamagui/helpers": "1.118.4",
-    "@tamagui/label": "1.118.4",
-    "@tamagui/use-previous": "1.118.4"
+    "@tamagui/compose-refs": "1.119.0",
+    "@tamagui/constants": "1.119.0",
+    "@tamagui/helpers": "1.119.0",
+    "@tamagui/label": "1.119.0",
+    "@tamagui/use-previous": "1.119.0"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.118.4",
+    "@tamagui/build": "1.119.0",
     "react": "*",
     "react-native": "0.74.1"
   },
