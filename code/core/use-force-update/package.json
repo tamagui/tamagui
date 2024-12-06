@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/use-force-update",
-  "version": "1.119.0",
+  "version": "1.119.1",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -31,7 +31,7 @@
     }
   },
   "devDependencies": {
-    "@tamagui/build": "1.119.0",
+    "@tamagui/build": "1.119.1",
     "react": "*"
   },
   "publishConfig": {

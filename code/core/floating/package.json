@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/floating",
-  "version": "1.119.0",
+  "version": "1.119.1",
   "sideEffects": true,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -44,7 +44,7 @@
     "@floating-ui/react-native": "^0.10.6"
   },
   "devDependencies": {
-    "@tamagui/build": "1.119.0",
+    "@tamagui/build": "1.119.1",
     "react": "*",
     "react-native": "0.74.1"
   }
