@@ -11,32 +11,31 @@ poster: banner-two.jpg
 </IntroParagraph>
 
 <IntroParagraph>
-  Tamagui goes deeper than any other style library at achieving high performance across every platform, outputting to platform-native primitives, and optimizing to the extreme with an optimizing compiler. It gives you fully typed and concise inline styling with a rich featureset that is 100% supported across every platform.
+  Tamagui goes deeper than any other style library at achieving high performance across every platform by outputting to platform-native primitives and its optimizing compiler. It gives a huge amount of features that are all fully typed and 100% supported across every platform, letting you write inline styles that feel great and don't slow your app down.
 </IntroParagraph>
 
-Since 1.0, Tamagui has added many more core styling features like container queries, it's added a variety of new compound components, it added unstyled versions of every component, and it launched Bento for copy-paste UI patterns, and a new visual theme generator.
+In the two years since 1.0, Tamagui has gone from a rough-around-the-edges ambitious project, to a robust, stable and widely adopted solution that is improved in every possible way.
 
-It's been exactly two years since Tamagui 1.0, which is quite a long time (though not for a lack of momentum). The reasons for the gap are a few, but mostly that 1.0 had a massive surface area, and many beta components. Instead of rushing to release new versions, we spent the time to make sure every piece of Tamagui worked better, faster, and installed more easily. Where version 1.0 was ambitious but filled with edge cases, version 2.0 marks the maturation of that ambitious vision.
+We've added many, many things, some highlights include:
 
-If you haven't checked out Tamagui since closer to 1.0, you'll find a lot of nice improvements:
+- Core styling features like container queries, container + media queries, and platform and theme selectors.
+- New compound components like Tabs, Accordion, and ToggleGroup.
+- We made all our compoennts have unstyled versions, so you can more easily style them how you like.
+- We released a free visual Theme builder that lets you build incredibly diverse looks.
+- We launched our Takeout starter kit, and Bento copy-paste components and patterns.
 
-- It's dramatically easier to install with no bundler setup at all.
-- We made configuration optional, and made it easy to generate configuration.
-- Over 500 commits improving documentation.
-- A whole ton of features have been added since version one.
+But we've also spent a lot of time just improving the fundamentals. We had a lot of feedback that Tamagui docs were lacking, and that it was hard to install and configure. So, we focused on those areas a lot, and landed nearly a thousand commits just improving that. If you haven't checked out Tamagui since closer to 1.0, you'll find a lot has gotten better:
 
-Version 2 doesn't have many breaking changes, instead it removes a few deprecated things that were holding us back from some more ambitious projects we want to take on going forward.
+- We imrpoved and open sourced our package build script `@tamagui/build`, which makes it so all of Tamagui requires no special bundler set up at all. That's right - whether using Metro, Vite, or Webpack, you can just install any Tamagui package and use it without touching your bundler.
+- We upgraded `@tamagui/config` continuously, and with the new version 4, made it incredibly easy to BYO colors while still starting quickly with little fuss.
+- We landed over 500 commits improving documentation.
+
+Version 2 doesn't have many breaking changes. Instead it removes a few deprecated things that were holding us back from some more ambitious projects we want to take on going forward.
 
 What has changed on a high level:
 
-- Button and ListItem are simplified.
+- Button and ListItem have new versions that are simplified and faster.
 - Removed the `space` and `spaceDirection` props in favor of gap.
 - Moved the `<Spacer />` component from core into `@tamagui/spacer`.
 - Removed the deprecated `StyledComponent.extractable`.
 - Moved all settings on `createTamagui` onto the `settings` object.
-
-### Changes
-
-#### Button
-
-#### ListItem
