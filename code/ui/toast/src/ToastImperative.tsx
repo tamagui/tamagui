@@ -40,11 +40,6 @@ type ShowOptions = CreateNativeToastOptions &
   CustomData & {
     /**
      * Used when need custom data
-     * @deprecated Use `customData` instead
-     */
-    additionalInfo?: CustomData
-    /**
-     * Used when need custom data
      */
     customData?: CustomData
     /**

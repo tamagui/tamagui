@@ -42,12 +42,6 @@ export declare const DatePicker: ((props: DatePickerProps) => import("react/jsx-
         Arrow: import("tamagui").TamaguiComponent<import("@tamagui/web").TamaDefer, import("tamagui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & import("tamagui").PopperArrowExtraProps, import("@tamagui/web").StackStyleBase, {
             elevation?: number | import("tamagui").SizeTokens | undefined;
             fullscreen?: boolean | undefined;
-            inset?: number | import("tamagui").SizeTokens | {
-                top?: number;
-                bottom?: number;
-                left?: number;
-                right?: number;
-            } | undefined;
             unstyled?: boolean | undefined;
         }, import("@tamagui/web").StaticConfigPublic>;
     };

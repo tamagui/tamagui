@@ -18,6 +18,7 @@ import type {
   TextProps,
   UseAnimationHook,
 } from '../types'
+import { getSetting } from '../config'
 
 export const useComponentState = (
   props: StackProps | TextProps | Record<string, any>,
@@ -172,7 +173,7 @@ export const useComponentState = (
       const isAnimatedAndHydrated = isAnimated && !supportsCSSVars
 
       const isClassNameDisabled =
-        !staticConfig.acceptsClassName && (config.disableSSR || !state.unmounted)
+        !staticConfig.acceptsClassName && (getSetting('disableSSR') || !state.unmounted)
 
       const isDisabledManually = disableClassName && !state.unmounted
 

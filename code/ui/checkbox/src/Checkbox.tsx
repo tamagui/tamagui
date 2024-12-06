@@ -3,7 +3,7 @@
 
 import { getVariableValue, styled } from '@tamagui/core'
 import { getSize } from '@tamagui/get-token'
-import { ThemeableStack } from '@tamagui/stacks'
+import { YStack } from '@tamagui/stacks'
 
 import { CheckboxStyledContext } from './CheckboxStyledContext'
 
@@ -12,7 +12,7 @@ import { CheckboxStyledContext } from './CheckboxStyledContext'
  * -----------------------------------------------------------------------------------------------*/
 const INDICATOR_NAME = 'CheckboxIndicator'
 
-export const CheckboxIndicatorFrame = styled(ThemeableStack, {
+export const CheckboxIndicatorFrame = styled(YStack, {
   // use Checkbox for easier themes
   name: INDICATOR_NAME,
   context: CheckboxStyledContext,
@@ -32,7 +32,7 @@ export const CheckboxIndicatorFrame = styled(ThemeableStack, {
 
 const CHECKBOX_NAME = 'Checkbox'
 
-export const CheckboxFrame = styled(ThemeableStack, {
+export const CheckboxFrame = styled(YStack, {
   name: CHECKBOX_NAME,
   tag: 'button',
 

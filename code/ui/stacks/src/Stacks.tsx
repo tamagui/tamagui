@@ -10,28 +10,8 @@ export type ZStackProps = YStackProps
 
 export const fullscreenStyle = {
   position: 'absolute',
-  top: 0,
-  left: 0,
-  right: 0,
-  bottom: 0,
+  inset: 0,
 } as const
-
-type Insets = {
-  top?: number
-  bottom?: number
-  left?: number
-  right?: number
-}
-
-const getInset = (val: number | SizeTokens | Insets) =>
-  val && typeof val === 'object'
-    ? val
-    : {
-        top: val,
-        left: val,
-        bottom: val,
-        right: val,
-      }
 
 const variants = {
   fullscreen: {
@@ -42,9 +22,29 @@ const variants = {
     '...size': getElevation,
     ':number': getElevation,
   },
-
-  inset: getInset,
 } as const
+
+// compat with older react native versions
+if (process.env.TAMAGUI_TARGET === 'native') {
+  type Insets = {
+    top?: number
+    bottom?: number
+    left?: number
+    right?: number
+  }
+
+  const getInset = (val: number | SizeTokens | Insets) =>
+    val && typeof val === 'object'
+      ? val
+      : {
+          top: val,
+          left: val,
+          bottom: val,
+          right: val,
+        }
+
+  variants['inset'] = getInset
+}
 
 export const YStack = styled(View, {
   flexDirection: 'column',

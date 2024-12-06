@@ -117,20 +117,14 @@ export declare const ThemeableStack: import("@tamagui/core").TamaguiComponent<im
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
-    inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number;
-        bottom?: number;
-        left?: number;
-        right?: number;
-    } | undefined;
+    backgrounded?: boolean | undefined;
+    radiused?: boolean | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
     focusTheme?: boolean | undefined;
+    padded?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
-    backgrounded?: boolean | undefined;
-    radiused?: boolean | undefined;
-    padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
 export type ThemeableStackProps = GetProps<typeof ThemeableStack>;

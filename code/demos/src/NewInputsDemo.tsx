@@ -7,7 +7,7 @@ export function NewInputsDemo() {
       width={200}
       minHeight={250}
       overflow="hidden"
-      space="$2"
+      gap="$2"
       margin="$3"
       padding="$2"
     >
@@ -21,7 +21,7 @@ export function NewInputsDemo() {
 
 function InputDemo(props: { size: SizeTokens }) {
   return (
-    <XStack alignItems="center" space="$2">
+    <XStack alignItems="center" gap="$2">
       <Input flex={1} size={props.size} placeholder={`Size ${props.size}...`} />
       <Button size={props.size}>Go</Button>
     </XStack>

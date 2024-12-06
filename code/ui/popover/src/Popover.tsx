@@ -200,86 +200,84 @@ export interface PopoverContentTypeProps
   enableAnimationForPositionChange?: boolean
 }
 
-export const PopoverContent = PopperContentFrame.extractable(
-  React.forwardRef<
-    PopoverContentTypeElement,
-    ScopedPopoverProps<PopoverContentTypeProps>
-  >(function PopoverContent(
-    props: ScopedPopoverProps<PopoverContentTypeProps>,
-    forwardedRef
-  ) {
-    const {
-      allowPinchZoom,
-      trapFocus,
-      disableRemoveScroll = true,
-      zIndex,
-      __scopePopover,
-      ...contentImplProps
-    } = props
-    const context = usePopoverContext(__scopePopover)
-    const contentRef = React.useRef<any>(null)
-    const composedRefs = useComposedRefs(forwardedRef, contentRef)
-    const isRightClickOutsideRef = React.useRef(false)
-    const [isFullyHidden, setIsFullyHidden] = React.useState(!context.open)
+export const PopoverContent = PopperContentFrame.styleable<
+  PopoverContentTypeElement,
+  ScopedPopoverProps<PopoverContentTypeProps>
+>(function PopoverContent(
+  props: ScopedPopoverProps<PopoverContentTypeProps>,
+  forwardedRef
+) {
+  const {
+    allowPinchZoom,
+    trapFocus,
+    disableRemoveScroll = true,
+    zIndex,
+    __scopePopover,
+    ...contentImplProps
+  } = props
+  const context = usePopoverContext(__scopePopover)
+  const contentRef = React.useRef<any>(null)
+  const composedRefs = useComposedRefs(forwardedRef, contentRef)
+  const isRightClickOutsideRef = React.useRef(false)
+  const [isFullyHidden, setIsFullyHidden] = React.useState(!context.open)
 
-    if (context.open && isFullyHidden) {
-      setIsFullyHidden(false)
+  if (context.open && isFullyHidden) {
+    setIsFullyHidden(false)
+  }
+
+  // aria-hide everything except the content (better supported equivalent to setting aria-modal)
+  React.useEffect(() => {
+    if (!context.open) return
+    const content = contentRef.current
+    if (content) return hideOthers(content)
+  }, [context.open])
+
+  if (!context.keepChildrenMounted) {
+    if (isFullyHidden) {
+      return null
     }
+  }
 
-    // aria-hide everything except the content (better supported equivalent to setting aria-modal)
-    React.useEffect(() => {
-      if (!context.open) return
-      const content = contentRef.current
-      if (content) return hideOthers(content)
-    }, [context.open])
-
-    if (!context.keepChildrenMounted) {
-      if (isFullyHidden) {
-        return null
-      }
-    }
-
-    return (
-      <PopoverContentPortal __scopePopover={__scopePopover} zIndex={props.zIndex}>
-        <Stack pointerEvents={context.open ? 'auto' : 'none'}>
-          <PopoverContentImpl
-            {...contentImplProps}
-            disableRemoveScroll={disableRemoveScroll}
-            ref={composedRefs}
-            setIsFullyHidden={setIsFullyHidden}
-            __scopePopover={__scopePopover}
-            // we make sure we're not trapping once it's been closed
-            // (closed !== unmounted when animating out)
-            trapFocus={trapFocus ?? context.open}
-            disableOutsidePointerEvents
-            onCloseAutoFocus={composeEventHandlers(props.onCloseAutoFocus, (event) => {
-              event.preventDefault()
-              if (!isRightClickOutsideRef.current) context.triggerRef.current?.focus()
-            })}
-            onPointerDownOutside={composeEventHandlers(
-              props.onPointerDownOutside,
-              (event) => {
-                const originalEvent = event.detail.originalEvent
-                const ctrlLeftClick =
-                  originalEvent.button === 0 && originalEvent.ctrlKey === true
-                const isRightClick = originalEvent.button === 2 || ctrlLeftClick
-                isRightClickOutsideRef.current = isRightClick
-              },
-              { checkDefaultPrevented: false }
-            )}
-            // When focus is trapped, a `focusout` event may still happen.
-            // We make sure we don't trigger our `onDismiss` in such case.
-            onFocusOutside={composeEventHandlers(
-              props.onFocusOutside,
-              (event) => event.preventDefault(),
-              { checkDefaultPrevented: false }
-            )}
-          />
-        </Stack>
-      </PopoverContentPortal>
-    )
-  })
-)
+  return (
+    <PopoverContentPortal __scopePopover={__scopePopover} zIndex={props.zIndex}>
+      <Stack pointerEvents={context.open ? 'auto' : 'none'}>
+        <PopoverContentImpl
+          {...contentImplProps}
+          disableRemoveScroll={disableRemoveScroll}
+          ref={composedRefs}
+          setIsFullyHidden={setIsFullyHidden}
+          __scopePopover={__scopePopover}
+          // we make sure we're not trapping once it's been closed
+          // (closed !== unmounted when animating out)
+          trapFocus={trapFocus ?? context.open}
+          disableOutsidePointerEvents
+          onCloseAutoFocus={composeEventHandlers(props.onCloseAutoFocus, (event) => {
+            event.preventDefault()
+            if (!isRightClickOutsideRef.current) context.triggerRef.current?.focus()
+          })}
+          onPointerDownOutside={composeEventHandlers(
+            props.onPointerDownOutside,
+            (event) => {
+              const originalEvent = event.detail.originalEvent
+              const ctrlLeftClick =
+                originalEvent.button === 0 && originalEvent.ctrlKey === true
+              const isRightClick = originalEvent.button === 2 || ctrlLeftClick
+              isRightClickOutsideRef.current = isRightClick
+            },
+            { checkDefaultPrevented: false }
+          )}
+          // When focus is trapped, a `focusout` event may still happen.
+          // We make sure we don't trigger our `onDismiss` in such case.
+          onFocusOutside={composeEventHandlers(
+            props.onFocusOutside,
+            (event) => event.preventDefault(),
+            { checkDefaultPrevented: false }
+          )}
+        />
+      </Stack>
+    </PopoverContentPortal>
+  )
+})
 
 function PopoverRepropagateContext(props: {
   children: any

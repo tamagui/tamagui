@@ -52,20 +52,14 @@ export declare const ListItemFrame: import("@tamagui/web").TamaguiComponent<impo
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
-    inset?: number | SizeTokens | {
-        top?: number;
-        bottom?: number;
-        left?: number;
-        right?: number;
-    } | undefined;
+    backgrounded?: boolean | undefined;
+    radiused?: boolean | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
     focusTheme?: boolean | undefined;
+    padded?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
-    backgrounded?: boolean | undefined;
-    radiused?: boolean | undefined;
-    padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
     active?: boolean | undefined;
 }, import("@tamagui/web").StaticConfigPublic>;
@@ -96,20 +90,14 @@ export declare const ListItem: import("react").ForwardRefExoticComponent<Omit<im
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
-    inset?: number | SizeTokens | {
-        top?: number;
-        bottom?: number;
-        left?: number;
-        right?: number;
-    } | undefined;
+    backgrounded?: boolean | undefined;
+    radiused?: boolean | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
     focusTheme?: boolean | undefined;
+    padded?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
-    backgrounded?: boolean | undefined;
-    radiused?: boolean | undefined;
-    padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
     active?: boolean | undefined;
 }>, "noTextWrap" | keyof import("@tamagui/text").TextContextStyles | "textProps" | keyof ThemeableProps | "icon" | "iconAfter" | "scaleIcon" | "spaceFlex" | "scaleSpace" | "title" | "subTitle"> & Omit<TextParentStyles, "TextComponent" | "noTextWrap"> & ThemeableProps & {
@@ -156,20 +144,14 @@ export declare const ListItem: import("react").ForwardRefExoticComponent<Omit<im
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
-    inset?: number | SizeTokens | {
-        top?: number;
-        bottom?: number;
-        left?: number;
-        right?: number;
-    } | undefined;
+    backgrounded?: boolean | undefined;
+    radiused?: boolean | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
     focusTheme?: boolean | undefined;
+    padded?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
-    backgrounded?: boolean | undefined;
-    radiused?: boolean | undefined;
-    padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
     active?: boolean | undefined;
 }>, "noTextWrap" | keyof import("@tamagui/text").TextContextStyles | "textProps" | keyof ThemeableProps | "icon" | "iconAfter" | "scaleIcon" | "spaceFlex" | "scaleSpace" | "title" | "subTitle"> & Omit<TextParentStyles, "TextComponent" | "noTextWrap"> & ThemeableProps & {
@@ -252,20 +234,14 @@ export declare const ListItem: import("react").ForwardRefExoticComponent<Omit<im
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
-    inset?: number | SizeTokens | {
-        top?: number;
-        bottom?: number;
-        left?: number;
-        right?: number;
-    } | undefined;
+    backgrounded?: boolean | undefined;
+    radiused?: boolean | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
     focusTheme?: boolean | undefined;
+    padded?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
-    backgrounded?: boolean | undefined;
-    radiused?: boolean | undefined;
-    padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
     active?: boolean | undefined;
 }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig" | "extractable" | "styleable"> & {
@@ -277,20 +253,14 @@ export declare const ListItem: import("react").ForwardRefExoticComponent<Omit<im
         transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
-        inset?: number | SizeTokens | {
-            top?: number;
-            bottom?: number;
-            left?: number;
-            right?: number;
-        } | undefined;
+        backgrounded?: boolean | undefined;
+        radiused?: boolean | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
         focusTheme?: boolean | undefined;
+        padded?: boolean | undefined;
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
-        backgrounded?: boolean | undefined;
-        radiused?: boolean | undefined;
-        padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
         active?: boolean | undefined;
     }>, "noTextWrap" | keyof import("@tamagui/text").TextContextStyles | "textProps" | keyof ThemeableProps | "icon" | "iconAfter" | "scaleIcon" | "spaceFlex" | "scaleSpace" | "title" | "subTitle"> & Omit<TextParentStyles, "TextComponent" | "noTextWrap"> & ThemeableProps & {
@@ -373,20 +343,14 @@ export declare const ListItem: import("react").ForwardRefExoticComponent<Omit<im
         transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
-        inset?: number | SizeTokens | {
-            top?: number;
-            bottom?: number;
-            left?: number;
-            right?: number;
-        } | undefined;
+        backgrounded?: boolean | undefined;
+        radiused?: boolean | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
         focusTheme?: boolean | undefined;
+        padded?: boolean | undefined;
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
-        backgrounded?: boolean | undefined;
-        radiused?: boolean | undefined;
-        padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
         active?: boolean | undefined;
     }, import("@tamagui/web").StaticConfigPublic];

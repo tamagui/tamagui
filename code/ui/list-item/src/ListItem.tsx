@@ -3,6 +3,7 @@ import { getFontSized } from '@tamagui/get-font-sized'
 import { getSize, getSpace } from '@tamagui/get-token'
 import { withStaticProperties } from '@tamagui/helpers'
 import { useGetThemedIcon } from '@tamagui/helpers-tamagui'
+import { Spacer } from '@tamagui/spacer'
 import { ThemeableStack, YStack } from '@tamagui/stacks'
 import type { TextParentStyles } from '@tamagui/text'
 import { SizableText, wrapChildrenInText } from '@tamagui/text'
@@ -13,7 +14,7 @@ import type {
   SizeTokens,
   ThemeableProps,
 } from '@tamagui/web'
-import { Spacer, getTokens, getVariableValue, styled, useProps } from '@tamagui/web'
+import { getVariableValue, styled, useProps } from '@tamagui/web'
 import type { FunctionComponent, ReactNode } from 'react'
 
 type ListItemIconProps = { color?: any; size?: any }
@@ -127,7 +128,7 @@ export const ListItemText = styled(SizableText, {
         size: '$true',
         flexGrow: 1,
         flexShrink: 1,
-        ellipse: true,
+        ellipsis: true,
         cursor: 'inherit',
       },
     },
@@ -194,8 +195,6 @@ export const useListItem = (
     iconAfter,
     noTextWrap,
     theme: themeName,
-    space,
-    spaceFlex,
     scaleIcon = 1,
     scaleSpace = 1,
     unstyled = false,
@@ -209,7 +208,7 @@ export const useListItem = (
     fontFamily,
     letterSpacing,
     textAlign,
-    ellipse,
+    ellipsis,
 
     ...rest
   } = props
@@ -221,7 +220,7 @@ export const useListItem = (
     fontFamily,
     letterSpacing,
     textAlign,
-    ellipse,
+    ellipsis,
     children,
   }
 
@@ -229,7 +228,7 @@ export const useListItem = (
   const iconSize = getFontSize(size as any) * scaleIcon
   const getThemedIcon = useGetThemedIcon({ size: iconSize, color: color as any })
   const [themedIcon, themedIconAfter] = [icon, iconAfter].map(getThemedIcon)
-  const sizeToken = getTokens().space[props.space as any] ?? iconSize
+  const sizeToken = iconSize
   const spaceSize = getVariableValue(sizeToken) * scaleSpace
 
   const contents = wrapChildrenInText(Text, textProps)

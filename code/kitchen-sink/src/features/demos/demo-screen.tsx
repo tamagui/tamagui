@@ -31,7 +31,7 @@ const NativeDemos = {
 
   ThemesDemo: () => {
     return (
-      <YStack space>
+      <YStack gap="$4">
         <Demos.AddThemeDemo />
         <Demos.UpdateThemeDemo />
       </YStack>
@@ -60,7 +60,7 @@ export function DemoScreen() {
       jc="center"
       ai="center"
       bg="$background"
-      space
+      gap="$4"
     >
       <YStack miw={200} maw={340} ai="center" p="$10" br="$6">
         <DemoComponent />

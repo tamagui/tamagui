@@ -84,7 +84,7 @@ export const FieldsetWithLabel = ({
           />
         ) : (
           <Paragraph
-            selectable={false}
+            userSelect="none"
             tag="label"
             size="$4"
             color="$color12"

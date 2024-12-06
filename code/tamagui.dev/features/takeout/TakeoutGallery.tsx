@@ -249,7 +249,8 @@ const ImageGallery = () => {
         />
 
         <Dialog.Content
-          bordered
+          borderWidth={1}
+          borderColor="$borderColor"
           elevate
           key="content"
           animation={[

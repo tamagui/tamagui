@@ -124,6 +124,7 @@
     "@tamagui/shapes": "1.119.2",
     "@tamagui/sheet": "1.119.2",
     "@tamagui/slider": "1.119.2",
+    "@tamagui/spacer": "1.119.2",
     "@tamagui/stacks": "1.119.2",
     "@tamagui/switch": "1.119.2",
     "@tamagui/tabs": "1.119.2",

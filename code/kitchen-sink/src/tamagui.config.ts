@@ -155,7 +155,6 @@ const tamaConf = createTamagui({
     : search.includes('animationDriver=native')
       ? animationsNative
       : animationsMoti, // default moti
-  themeClassNameOnRoot: false,
 
   defaultProps: {
     Square: {

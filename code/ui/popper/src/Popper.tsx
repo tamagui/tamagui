@@ -28,7 +28,7 @@ import {
 } from '@tamagui/floating'
 import { getSpace } from '@tamagui/get-token'
 import type { SizableStackProps, YStackProps } from '@tamagui/stacks'
-import { ThemeableStack, YStack } from '@tamagui/stacks'
+import { YStack } from '@tamagui/stacks'
 import { startTransition } from '@tamagui/start-transition'
 import * as React from 'react'
 import type { View } from 'react-native'
@@ -211,7 +211,7 @@ export type PopperAnchorProps = YStackProps & {
   virtualRef?: React.RefObject<any>
 }
 
-export const PopperAnchor = YStack.extractable(
+export const PopperAnchor = YStack.styleable(
   React.forwardRef<PopperAnchorRef, ScopedPopperProps<PopperAnchorProps>>(
     function PopperAnchor(props: ScopedPopperProps<PopperAnchorProps>, forwardedRef) {
       const { virtualRef, __scopePopper, ...anchorProps } = props
@@ -252,7 +252,7 @@ export type PopperContentProps = SizableStackProps & {
   enableAnimationForPositionChange?: boolean
 }
 
-export const PopperContentFrame = styled(ThemeableStack, {
+export const PopperContentFrame = styled(YStack, {
   name: 'PopperContent',
 
   variants: {
@@ -261,7 +261,6 @@ export const PopperContentFrame = styled(ThemeableStack, {
         size: '$true',
         backgroundColor: '$background',
         alignItems: 'center',
-        radiused: true,
       },
     },
 

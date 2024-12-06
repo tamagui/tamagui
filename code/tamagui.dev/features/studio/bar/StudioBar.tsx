@@ -92,7 +92,7 @@ const AccountButton = () => {
   // const user = data?.session?.user
 
   // return (
-  //   <XStack ai="center" jc="center" space="$2">
+  //   <XStack ai="center" jc="center" gap="$2">
   //     <Anchor href={`${siteRootDir}/account`}>
   //       <TooltipSimple label="Account">
   //         {data?.userDetails ? (
@@ -319,7 +319,7 @@ const StudioTabs = memo(function StudioTabs() {
 
 // function DesignSystemSelector() {
 //   return (
-//     <XStack space="$2">
+//     <XStack gap="$2">
 //       <Select size="$2" defaultValue="blueberry">
 //         <Select.Trigger w={150} iconAfter={ChevronDown}>
 //           <Select.Value placeholder="Something" />

@@ -63,13 +63,17 @@ export const FormTrigger = FormTriggerFrame.styleable(
  * Form
  * -----------------------------------------------------------------------------------------------*/
 
-const FormComponent = FormFrame.extractable(function Form({
-  onSubmit,
-  ...props
-}: ScopedProps<FormProps>) {
+const FormComponent = FormFrame.styleable(function Form(
+  { onSubmit, ...props }: ScopedProps<FormProps>,
+  ref
+) {
   return (
     <FormProvider scope={props.__scopeForm} onSubmit={onSubmit}>
-      <FormFrame {...(props as any)} onSubmit={(e: any) => e.preventDefault()} />
+      <FormFrame
+        ref={ref}
+        {...(props as any)}
+        onSubmit={(e: any) => e.preventDefault()}
+      />
     </FormProvider>
   )
 })

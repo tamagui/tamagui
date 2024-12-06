@@ -34,7 +34,7 @@ export function StepSubThemesSidebar() {
       <YStack p="$4" f={1} gap="$4">
         <XStack ai="center" gap="$4">
           <Separator />
-          <SizableText size="$4" selectable={false}>
+          <SizableText size="$4" userSelect="none">
             Parent theme: {currentThemeName}
           </SizableText>
           <Separator />
@@ -46,7 +46,7 @@ export function StepSubThemesSidebar() {
 
         <XStack ai="center" gap="$4">
           <Separator />
-          <SizableText size="$4" selectable={false}>
+          <SizableText size="$4" userSelect="none">
             Sub theme: {subThemeName}
           </SizableText>
           <Separator />

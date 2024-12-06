@@ -72,8 +72,8 @@ export function createSheet<
    * SheetOverlay
    * -----------------------------------------------------------------------------------------------*/
 
-  const SheetOverlay = Overlay.extractable(
-    memo((propsIn: SheetScopedProps<GetProps<typeof Overlay>>) => {
+  const SheetOverlay = Overlay.styleable(
+    memo((propsIn: SheetScopedProps<GetProps<typeof Overlay>>, ref) => {
       const { __scopeSheet, ...props } = propsIn
       const context = useSheetContext(SHEET_OVERLAY_NAME, __scopeSheet)
 
@@ -84,6 +84,7 @@ export function createSheet<
         return (
           // @ts-ignore
           <Overlay
+            ref={ref}
             {...props}
             onPress={composeEventHandlers(
               props.onPress,
@@ -95,7 +96,7 @@ export function createSheet<
             )}
           />
         )
-      }, [props.onPress, context.dismissOnOverlayPress])
+      }, [ref, props.onPress, context.dismissOnOverlayPress])
 
       useIsomorphicLayoutEffect(() => {
         context.onOverlayComponent?.(element)
@@ -129,85 +130,83 @@ export function createSheet<
     adjustPaddingForOffscreenContent?: boolean
   }
 
-  const SheetFrame = Frame.extractable(
-    forwardRef(
-      (
-        {
-          __scopeSheet,
-          adjustPaddingForOffscreenContent,
-          disableHideBottomOverflow,
-          children,
-          ...props
-        }: SheetProps & ExtraFrameProps,
-        forwardedRef
-      ) => {
-        const context = useSheetContext(SHEET_NAME, __scopeSheet)
-        const { hasFit, removeScrollEnabled, frameSize, contentRef, open } = context
-        const composedContentRef = useComposedRefs(forwardedRef, contentRef)
-        const offscreenSize = useSheetOffscreenSize(context)
+  const SheetFrame = Frame.styleable<SheetProps & ExtraFrameProps>(
+    (
+      {
+        __scopeSheet,
+        adjustPaddingForOffscreenContent,
+        disableHideBottomOverflow,
+        children,
+        ...props
+      },
+      forwardedRef
+    ) => {
+      const context = useSheetContext(SHEET_NAME, __scopeSheet)
+      const { hasFit, removeScrollEnabled, frameSize, contentRef, open } = context
+      const composedContentRef = useComposedRefs(forwardedRef, contentRef)
+      const offscreenSize = useSheetOffscreenSize(context)
 
-        const sheetContents = useMemo(() => {
-          return (
+      const sheetContents = useMemo(() => {
+        return (
+          // @ts-ignore
+          <Frame
+            ref={composedContentRef}
+            flex={hasFit ? 0 : 1}
+            height={hasFit ? undefined : frameSize}
+            pointerEvents={open ? 'auto' : 'none'}
+            {...props}
+          >
+            {children}
+
+            {adjustPaddingForOffscreenContent && (
+              <Stack data-sheet-offscreen-pad height={offscreenSize} width="100%" />
+            )}
+          </Frame>
+        )
+      }, [
+        open,
+        props,
+        frameSize,
+        offscreenSize,
+        adjustPaddingForOffscreenContent,
+        hasFit,
+      ])
+
+      return (
+        <>
+          <RemoveScroll
+            forwardProps
+            enabled={removeScrollEnabled}
+            allowPinchZoom
+            shards={[contentRef]}
+            // causes lots of bugs on touch web on site
+            removeScrollBar={false}
+          >
+            {sheetContents}
+          </RemoveScroll>
+
+          {/* below frame hide when bouncing past 100% */}
+          {!disableHideBottomOverflow && (
             // @ts-ignore
             <Frame
-              ref={composedContentRef}
-              flex={hasFit ? 0 : 1}
-              height={hasFit ? undefined : frameSize}
-              pointerEvents={open ? 'auto' : 'none'}
               {...props}
-            >
-              {children}
-
-              {adjustPaddingForOffscreenContent && (
-                <Stack data-sheet-offscreen-pad height={offscreenSize} width="100%" />
-              )}
-            </Frame>
-          )
-        }, [
-          open,
-          props,
-          frameSize,
-          offscreenSize,
-          adjustPaddingForOffscreenContent,
-          hasFit,
-        ])
-
-        return (
-          <>
-            <RemoveScroll
-              forwardProps
-              enabled={removeScrollEnabled}
-              allowPinchZoom
-              shards={[contentRef]}
-              // causes lots of bugs on touch web on site
-              removeScrollBar={false}
-            >
-              {sheetContents}
-            </RemoveScroll>
-
-            {/* below frame hide when bouncing past 100% */}
-            {!disableHideBottomOverflow && (
-              // @ts-ignore
-              <Frame
-                {...props}
-                componentName="SheetCover"
-                // biome-ignore lint/correctness/noChildrenProp: <explanation>
-                children={null}
-                position="absolute"
-                bottom="-100%"
-                zIndex={-1}
-                height={context.frameSize}
-                left={0}
-                right={0}
-                borderWidth={0}
-                borderRadius={0}
-                shadowOpacity={0}
-              />
-            )}
-          </>
-        )
-      }
-    )
+              componentName="SheetCover"
+              // biome-ignore lint/correctness/noChildrenProp: <explanation>
+              children={null}
+              position="absolute"
+              bottom="-100%"
+              zIndex={-1}
+              height={context.frameSize}
+              left={0}
+              right={0}
+              borderWidth={0}
+              borderRadius={0}
+              shadowOpacity={0}
+            />
+          )}
+        </>
+      )
+    }
   ) as any as ForwardRefExoticComponent<
     SheetScopedProps<
       Omit<GetProps<typeof Frame>, keyof ExtraFrameProps> & ExtraFrameProps
