@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/one-docs",
-  "version": "1.119.2",
+  "version": "1.119.3",
   "private": true,
   "sideEffects": false,
   "files": [],
@@ -13,14 +13,14 @@
     "serve:railway": "one serve --host 0.0.0.0"
   },
   "dependencies": {
-    "@tamagui/lucide-icons": "1.119.2",
-    "@tamagui/mdx-2": "1.119.2",
-    "@tamagui/themes": "1.119.2",
+    "@tamagui/lucide-icons": "1.119.3",
+    "@tamagui/mdx-2": "1.119.3",
+    "@tamagui/themes": "1.119.3",
     "@vxrn/color-scheme": "^1.1.335",
     "mdx-bundler": "^10.0.2",
     "one": "1.1.335",
     "react-native": "0.74.1",
-    "tamagui": "1.119.2"
+    "tamagui": "1.119.3"
   },
   "devDependencies": {
     "gray-matter": "^4.0.3",
