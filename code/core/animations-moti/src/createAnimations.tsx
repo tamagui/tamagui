@@ -1,9 +1,12 @@
 import { PresenceContext, ResetPresence, usePresence } from '@tamagui/use-presence'
 import {
-  getStylesAtomic,
+  getSplitStyles,
   hooks,
   isWeb,
+  Text,
   useComposedRefs,
+  useThemeWithState,
+  View,
   type AnimationDriver,
   type UniversalAnimatedNumber,
 } from '@tamagui/web'
@@ -30,16 +33,11 @@ type ReanimatedAnimatedNumber = SharedValue<number>
 // this should ultimately be merged with react-native-web-lite
 
 function createTamaguiAnimatedComponent(defaultTag = 'div') {
+  const isText = defaultTag === 'span'
+
   const Component = Animated.createAnimatedComponent(
     forwardRef((propsIn: any, ref) => {
-      const {
-        forwardedRef,
-        style,
-        disableClassName,
-        animation,
-        tag = defaultTag,
-        ...props
-      } = propsIn
+      const { forwardedRef, animation, tag = defaultTag, ...propsRest } = propsIn
       const hostRef = useRef()
       const composedRefs = useComposedRefs(forwardedRef, ref, hostRef)
       const stateRef = useRef<any>()
@@ -51,30 +49,28 @@ function createTamaguiAnimatedComponent(defaultTag = 'div') {
         }
       }
 
-      const styleFlat = []
-        .concat(style)
-        .flat(100)
-        .reduce((acc, cur) => {
-          if (cur) {
-            Object.assign(acc, cur)
-          }
-          return acc
-        }, {})
+      const [{ state }] = useThemeWithState({})
 
-      const styleOut = getStylesAtomic(styleFlat).reduce((acc, [key, value]) => {
-        acc[key] = value
-        return acc
-      }, {})
+      // get styles but only inline style
+      const result = getSplitStyles(
+        propsRest,
+        isText ? Text.staticConfig : View.staticConfig,
+        state?.theme!,
+        state?.name!,
+        {
+          unmounted: false,
+        } as any,
+        {
+          isAnimated: false,
+          noClass: true,
+        }
+      )
 
+      const props = result.viewProps
       const Element = tag
       const transformedProps = hooks.usePropsTransform?.(tag, props, stateRef, false)
-      const finalProps = {
-        ...transformedProps,
-        style: styleOut,
-        ref: composedRefs,
-      }
 
-      return <Element {...finalProps} />
+      return <Element {...transformedProps} ref={composedRefs} />
     })
   )
   Component['acceptTagProp'] = true
