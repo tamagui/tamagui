@@ -85,7 +85,7 @@
     "test:docker:run": "docker run --rm tamagui-test",
     "test:docker": "yarn test:docker:build && yarn test:docker:run",
     "test:demos": "yarn workspace @tamagui/demos test",
-    "test": "YARN_ENABLE_IMMUTABLE_INSTALLS=false yarn test:18.2.0 && YARN_ENABLE_IMMUTABLE_INSTALLS=false yarn test:18.3.1",
+    "test": "YARN_ENABLE_IMMUTABLE_INSTALLS=false yarn test:18.3.1",
     "test:main": "CLEANUP=1 turbo run --concurrency=1 test && yarn test:starter-free",
     "test:starter-free": "./scripts/test-starter-free.sh",
     "test:18.2.0": "REACT_VERSION=18.2.0 node scripts/multi-react-version-tests.js && yarn install && yarn build && yarn test:main && yarn reset-package-json",

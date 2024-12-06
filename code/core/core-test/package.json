@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/core-test",
-  "version": "1.118.1",
+  "version": "1.119.2",
   "module": "dist/esm",
   "type": "module",
   "private": true,
@@ -11,11 +11,12 @@
   "scripts": {
     "test:run": "vitest --run --config ../../packages/vite-plugin-internal/src/vite.config.ts",
     "test:web": "TAMAGUI_TARGET=web yarn test:run **/*.web.test.tsx",
+    "test:ios": "TEST_NATIVE_PLATFORM=ios TAMAGUI_TARGET=native yarn test:run **/*.ios.test.tsx",
     "test:native": "TAMAGUI_TARGET=native yarn test:run **/*.native.test.tsx",
     "test": "yarn test:native && yarn test:web"
   },
   "devDependencies": {
-    "@tamagui/core": "1.118.1",
+    "@tamagui/core": "1.119.2",
     "@testing-library/react": "^16.0.1",
     "@testing-library/react-native": "^12.7.2",
     "csstype": "^3.0.10",

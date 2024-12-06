@@ -3,7 +3,6 @@
 import react from '@vitejs/plugin-react-swc'
 import { join } from 'node:path'
 import { type Plugin, defineConfig } from 'vite'
-import reactNative from 'vitest-react-native'
 import { requireResolve } from './requireResolve'
 
 export function getConfig(tamaguiPlugin: any) {
@@ -12,27 +11,42 @@ export function getConfig(tamaguiPlugin: any) {
     !process.env.DISABLE_NATIVE_TEST &&
     process.env.TAMAGUI_TARGET !== 'web'
 
-  const nativeExtensions = [
-    '.native.tsx',
-    '.native.ts',
-    '.native.js',
-    '.native.jsx',
-    '.ios.ts',
-    '.ios.tsx',
-    '.ios.js',
-    '.ios.jsx',
-    '.cjs',
-    '.js',
-    '.ts',
-    '.jsx',
-    '.tsx',
-    '.json',
-  ]
+  const nativeExtensions =
+    process.env.TEST_NATIVE_PLATFORM === 'ios'
+      ? [
+          '.ios.ts',
+          '.ios.tsx',
+          '.ios.js',
+          '.ios.jsx',
+          '.cjs',
+          '.js',
+          '.ts',
+          '.jsx',
+          '.tsx',
+          '.json',
+        ]
+      : [
+          '.native.tsx',
+          '.native.ts',
+          '.native.js',
+          '.native.jsx',
+          '.ios.ts',
+          '.ios.tsx',
+          '.ios.js',
+          '.ios.jsx',
+          '.cjs',
+          '.js',
+          '.ts',
+          '.jsx',
+          '.tsx',
+          '.json',
+        ]
 
   return defineConfig({
     plugins: [
       // process.env.DISABLE_REACT_NATIVE ? null : reactNative(),
       react({}),
+
       tamaguiPlugin({
         components: ['tamagui'],
         config: './tamagui.config.ts',
@@ -46,7 +60,7 @@ export function getConfig(tamaguiPlugin: any) {
             return {
               resolve: {
                 // 'react-native', breaks because vitest isnt doing .native.js :/
-                conditions: ['require', 'default'],
+                conditions: ['react-native', 'require', 'default'],
                 alias: {
                   '@tamagui/core': '@tamagui/core/native-test',
                   '@tamagui/web': '@tamagui/core/native-test',
@@ -55,6 +69,7 @@ export function getConfig(tamaguiPlugin: any) {
               },
 
               optimizeDeps: {
+                include: ['@tamagui/constants'],
                 extensions: nativeExtensions,
                 jsx: 'automatic',
               },

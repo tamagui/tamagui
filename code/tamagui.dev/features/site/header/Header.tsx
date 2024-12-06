@@ -10,6 +10,7 @@ import { HeaderLinks } from './HeaderLinks'
 import { HeaderMenu } from './HeaderMenu'
 import { SearchButton } from './SearchButton'
 import type { HeaderProps } from './types'
+import { bannerHeight } from '~/components/PromoBanner'
 
 export function Header(props: HeaderProps) {
   const [isScrolled, setIsScrolled] = React.useState(false)
@@ -27,8 +28,6 @@ export function Header(props: HeaderProps) {
       }
     }, [])
   }
-
-  const bannerHeight = 35
 
   return (
     <>

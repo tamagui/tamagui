@@ -9,16 +9,17 @@ const ThemeProvider = Stack as any
 const Box = Stack as any
 
 import { TimedRender } from '../components/TimedRender'
-import { CheckboxDemo } from 'code/demos'
+// import { CheckboxDemo } from '@tamagui/demos'
 
 export const Benchmark = () => {
-  return (
-    <>
-      <BenchmarkFrame name="checkbox">
-        <CheckboxDemo />
-      </BenchmarkFrame>
-    </>
-  )
+  return null
+  // return (
+  //   <>
+  //     <BenchmarkFrame name="checkbox">
+  //       <CheckboxDemo />
+  //     </BenchmarkFrame>
+  //   </>
+  // )
 }
 
 const BenchStyled = () => {

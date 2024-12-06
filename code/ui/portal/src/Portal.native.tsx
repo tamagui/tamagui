@@ -2,9 +2,9 @@ import { YStack } from '@tamagui/stacks'
 import * as React from 'react'
 import { RootTagContext } from 'react-native'
 import { IS_FABRIC, USE_NATIVE_PORTAL } from './constants'
-import { PortalItem } from './GorhomPortal'
 import type { PortalProps } from './PortalProps'
 import { useStackedZIndex } from './useStackedZIndex'
+import { GorhomPortalItem } from './GorhomPortalItem'
 
 const createPortal = (() => {
   if (IS_FABRIC) {
@@ -31,7 +31,7 @@ export const Portal = (propsIn: PortalProps) => {
   )
 
   if (!USE_NATIVE_PORTAL || !rootTag) {
-    return <PortalItem hostName="root">{contents}</PortalItem>
+    return <GorhomPortalItem hostName="root">{contents}</GorhomPortalItem>
   }
 
   return createPortal(contents, rootTag)

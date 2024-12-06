@@ -1,6 +1,6 @@
 import { ToastViewport } from '@tamagui/toast'
 import { Slot, usePathname } from 'one'
-import { Paragraph, XStack } from 'tamagui'
+import { PromoBanner } from '~/components/PromoBanner'
 import { Footer } from '~/features/site/Footer'
 import { LoadCherryBomb, LoadMunro } from '~/features/site/fonts/LoadFonts'
 import { Header } from '~/features/site/header/Header'
@@ -24,10 +24,7 @@ export default function SiteLayout() {
 
   return (
     <>
-      <XStack bg="$color1" w="100%" py="$1.5" ai="center" jc="center">
-        <Paragraph size="$3">Black Friday: Takeout and Bento each $50 off.</Paragraph>
-      </XStack>
-
+      <PromoBanner />
       <Header showAuth={showAuth} disableNew={disableNew} />
       <LoadCherryBomb prefetch />
       <LoadMunro prefetch />

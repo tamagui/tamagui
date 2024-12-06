@@ -232,6 +232,10 @@ export const getSplitStyles: StyleSplitter = (
     let keyInit = keyOg
     let valInit = props[keyInit]
 
+    if (process.env.NODE_ENV === 'test' && keyInit === 'jestAnimatedStyle') {
+      continue
+    }
+
     if (process.env.NODE_ENV === 'development' && debug === 'profile') {
       // @ts-expect-error
       time`prop-${keyInit}`

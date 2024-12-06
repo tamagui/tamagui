@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/font-size",
-  "version": "1.118.1",
+  "version": "1.119.2",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -33,10 +33,10 @@
     "lint:fix": "biome check --write src"
   },
   "dependencies": {
-    "@tamagui/core": "1.118.1"
+    "@tamagui/core": "1.119.2"
   },
   "devDependencies": {
-    "@tamagui/build": "1.118.1",
+    "@tamagui/build": "1.119.2",
     "react": "*"
   },
   "publishConfig": {

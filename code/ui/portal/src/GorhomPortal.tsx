@@ -1,8 +1,8 @@
-import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 // from https://github.com/gorhom/react-native-portal
 // MIT License Copyright (c) 2020 Mo Gorhom
-import { useEvent } from '@tamagui/core'
 // fixing SSR issue
+
+import { isWeb } from '@tamagui/constants'
 import { startTransition } from '@tamagui/start-transition'
 import type { ReactNode } from 'react'
 import React, {
@@ -11,12 +11,10 @@ import React, {
   useCallback,
   useContext,
   useEffect,
-  useId,
   useMemo,
   useReducer,
-  useState,
 } from 'react'
-import { createPortal } from 'react-dom'
+import { allPortalHosts, portalListeners } from './constants'
 
 interface PortalType {
   name: string
@@ -282,9 +280,6 @@ export const PortalHost = memo(function PortalHost(props: PortalHostProps) {
   return <PortalHostNonNative {...props} />
 })
 
-const allPortalHosts = new Map<string, HTMLElement>()
-const listeners: Record<string, Set<Function>> = {}
-
 function PortalHostWeb(props: PortalHostProps) {
   return (
     <div
@@ -294,7 +289,7 @@ function PortalHostWeb(props: PortalHostProps) {
       ref={(node) => {
         if (node) {
           allPortalHosts.set(props.name, node)
-          listeners[props.name]?.forEach((x) => x(node))
+          portalListeners[props.name]?.forEach((x) => x(node))
         } else {
           allPortalHosts.delete(props.name)
         }
@@ -338,146 +333,4 @@ function PortalHostNonNative(props: PortalHostProps) {
   }
 
   return render(state.map((item) => item.node))
-}
-
-export interface PortalItemProps {
-  passthrough?: boolean
-
-  /**
-   * Portal's key or name to be used as an identifier.
-   * @type string
-   * @default generated unique key.
-   */
-  name?: string
-  /**
-   * Host's name to teleport the portal content to.
-   * @type string
-   * @default 'root'
-   */
-  hostName?: string
-  /**
-   * Override internal mounting functionality, this is useful
-   * if you want to trigger any action before mounting the portal content.
-   * @type (mount?: () => void) => void
-   * @default undefined
-   */
-  handleOnMount?: (mount: () => void) => void
-  /**
-   * Override internal un-mounting functionality, this is useful
-   * if you want to trigger any action before un-mounting the portal content.
-   * @type (unmount?: () => void) => void
-   * @default undefined
-   */
-  handleOnUnmount?: (unmount: () => void) => void
-  /**
-   * Override internal updating functionality, this is useful
-   * if you want to trigger any action before updating the portal content.
-   * @type (update?: () => void) => void
-   * @default undefined
-   */
-  handleOnUpdate?: (update: () => void) => void
-  /**
-   * Portal's content.
-   * @type ReactNode
-   * @default undefined
-   */
-  children?: ReactNode | ReactNode[]
-}
-
-export const PortalItem = memo(function PortalItem(props: PortalItemProps) {
-  if (isWeb) {
-    return <PortalItemWeb {...props} />
-  }
-  return <NonNativePortalComponent {...props} />
-})
-
-const PortalItemWeb = (props: PortalItemProps) => {
-  if (!props.hostName) {
-    throw new Error(`No name`)
-  }
-
-  const cur = allPortalHosts.get(props.hostName)
-  const [node, setNode] = useState(cur)
-
-  if (cur && !node) {
-    setNode(cur)
-  }
-
-  useEffect(() => {
-    if (!props.hostName) return
-    if (node) return
-
-    const listener = (node) => {
-      setNode(node)
-    }
-
-    listeners[props.hostName] ||= new Set()
-    listeners[props.hostName].add(listener)
-    return () => {
-      listeners[props.hostName!]?.delete(listener)
-    }
-  }, [node])
-
-  if (!node) {
-    return null
-  }
-
-  return createPortal(props.children, node)
-}
-
-const NonNativePortalComponent = (props: PortalItemProps) => {
-  const {
-    name: _providedName,
-    hostName,
-    handleOnMount: _providedHandleOnMount,
-    handleOnUnmount: _providedHandleOnUnmount,
-    handleOnUpdate: _providedHandleOnUpdate,
-    children,
-    passthrough,
-  } = props
-
-  const { addPortal: addUpdatePortal, removePortal } = usePortal(hostName)
-  const id = useId()
-  const name = _providedName || id
-
-  const handleOnMount = useEvent(() => {
-    if (_providedHandleOnMount) {
-      _providedHandleOnMount(() => addUpdatePortal(name, children))
-    } else {
-      addUpdatePortal(name, children)
-    }
-  })
-
-  const handleOnUnmount = useEvent(() => {
-    if (_providedHandleOnUnmount) {
-      _providedHandleOnUnmount(() => removePortal(name))
-    } else {
-      removePortal(name)
-    }
-  })
-
-  const handleOnUpdate = useEvent(() => {
-    if (_providedHandleOnUpdate) {
-      _providedHandleOnUpdate(() => addUpdatePortal(name, children))
-    } else {
-      addUpdatePortal(name, children)
-    }
-  })
-
-  useIsomorphicLayoutEffect(() => {
-    if (passthrough) return
-
-    handleOnMount()
-    return () => {
-      handleOnUnmount()
-    }
-  }, [])
-
-  useEffect(() => {
-    if (passthrough) return
-
-    handleOnUpdate()
-  }, [children])
-
-  return passthrough ? children : null
 }

@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/use-controllable-state",
-  "version": "1.118.1",
+  "version": "1.119.2",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -33,11 +33,11 @@
     }
   },
   "dependencies": {
-    "@tamagui/start-transition": "1.118.1",
-    "@tamagui/use-event": "1.118.1"
+    "@tamagui/start-transition": "1.119.2",
+    "@tamagui/use-event": "1.119.2"
   },
   "devDependencies": {
-    "@tamagui/build": "1.118.1",
+    "@tamagui/build": "1.119.2",
     "react": "*"
   },
   "publishConfig": {

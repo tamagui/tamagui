@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/constants",
-  "version": "1.118.1",
+  "version": "1.119.2",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -18,7 +18,7 @@
     "clean:build": "tamagui-build clean:build"
   },
   "devDependencies": {
-    "@tamagui/build": "1.118.1",
+    "@tamagui/build": "1.119.2",
     "react": "*"
   },
   "exports": {
