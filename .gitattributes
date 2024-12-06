@@ -1,3 +1,5 @@
+package.json merge=package-json
+
 code/docs/app/** filter=crypt diff=crypt merge=crypt
 code/docs/data/** filter=crypt diff=crypt merge=crypt
 code/bento/src/** filter=crypt diff=crypt merge=crypt
