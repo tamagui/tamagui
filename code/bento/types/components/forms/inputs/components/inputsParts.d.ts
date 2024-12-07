@@ -87,39 +87,21 @@ export declare const Input: import("react").ForwardRefExoticComponent<Omit<impor
     color?: ColorTokens | undefined;
     size?: import("tamagui").SizeTokens | undefined;
     gapScale?: number | undefined;
-}, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig" | "extractable" | "styleable"> & {
+}, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig" | "styleable"> & {
     __tama: [import("@tamagui/web").TamaDefer, import("tamagui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
         color?: ColorTokens | undefined;
         size?: import("tamagui").SizeTokens | undefined;
         gapScale?: number | undefined;
     }, import("@tamagui/web").StaticConfigPublic];
 } & {
-    Box: import("tamagui").TamaguiComponent<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps & import("tamagui").SpaceProps & {
-        orientation?: "horizontal" | "vertical";
-        scrollable?: boolean;
-        showScrollIndicator?: boolean;
-        disabled?: boolean;
-        disablePassBorderRadius?: boolean | "bottom" | "top" | "end" | "start";
-        forceUseItem?: boolean;
-    } & {
-        __scopeGroup?: import("tamagui").Scope;
-    }, import("@tamagui/web").StackStyleBase, {
+    Box: import("tamagui").TamaguiComponent<import("@tamagui/web").GetFinalProps<any, import("@tamagui/web").StackStyleBase, {
         size?: any;
         elevation?: number | import("tamagui").SizeTokens | undefined;
         fullscreen?: boolean | undefined;
         unstyled?: boolean | undefined;
         scaleIcon?: number | undefined;
         applyFocusStyle?: boolean | undefined;
-    }>, import("tamagui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & import("tamagui").SpaceProps & {
-        orientation?: "horizontal" | "vertical";
-        scrollable?: boolean;
-        showScrollIndicator?: boolean;
-        disabled?: boolean;
-        disablePassBorderRadius?: boolean | "bottom" | "top" | "end" | "start";
-        forceUseItem?: boolean;
-    } & {
-        __scopeGroup?: import("tamagui").Scope;
-    } & void, import("@tamagui/web").StackStyleBase, {
+    }>, import("tamagui").TamaguiElement, any, import("@tamagui/web").StackStyleBase, {
         size?: any;
         elevation?: number | import("tamagui").SizeTokens | undefined;
         fullscreen?: boolean | undefined;
@@ -221,16 +203,7 @@ export declare const Input: import("react").ForwardRefExoticComponent<Omit<impor
     } & import("react").RefAttributes<import("react-native").View | HTMLButtonElement>, import("@tamagui/web").StackStyleBase, {
         size?: FontSizeTokens | undefined;
     }, import("@tamagui/web").StaticConfigPublic>;
-    XGroup: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & import("tamagui").SpaceProps & {
-        orientation?: "horizontal" | "vertical";
-        scrollable?: boolean;
-        showScrollIndicator?: boolean;
-        disabled?: boolean;
-        disablePassBorderRadius?: boolean | "bottom" | "top" | "end" | "start";
-        forceUseItem?: boolean;
-    } & {
-        __scopeGroup?: import("tamagui").Scope;
-    }, "size" | "elevation" | keyof import("@tamagui/web").StackStyleBase | "fullscreen" | "unstyled"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+    XGroup: import("react").ForwardRefExoticComponent<Omit<any, "size" | "elevation" | keyof import("@tamagui/web").StackStyleBase | "fullscreen" | "unstyled"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
         size?: any;
         elevation?: number | import("tamagui").SizeTokens | undefined;
         fullscreen?: boolean | undefined;
@@ -245,31 +218,13 @@ export declare const Input: import("react").ForwardRefExoticComponent<Omit<impor
         elevation?: number | import("tamagui").SizeTokens | undefined;
         fullscreen?: boolean | undefined;
         unstyled?: boolean | undefined;
-    }>> & import("react").RefAttributes<import("tamagui").TamaguiElement>> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("tamagui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & import("tamagui").SpaceProps & {
-        orientation?: "horizontal" | "vertical";
-        scrollable?: boolean;
-        showScrollIndicator?: boolean;
-        disabled?: boolean;
-        disablePassBorderRadius?: boolean | "bottom" | "top" | "end" | "start";
-        forceUseItem?: boolean;
-    } & {
-        __scopeGroup?: import("tamagui").Scope;
-    }, import("@tamagui/web").StackStyleBase, {
+    }>> & import("react").RefAttributes<import("tamagui").TamaguiElement>> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("tamagui").TamaguiElement, any, import("@tamagui/web").StackStyleBase, {
         size?: any;
         elevation?: number | import("tamagui").SizeTokens | undefined;
         fullscreen?: boolean | undefined;
         unstyled?: boolean | undefined;
-    }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig" | "extractable" | "styleable"> & {
-        __tama: [import("@tamagui/web").TamaDefer, import("tamagui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & import("tamagui").SpaceProps & {
-            orientation?: "horizontal" | "vertical";
-            scrollable?: boolean;
-            showScrollIndicator?: boolean;
-            disabled?: boolean;
-            disablePassBorderRadius?: boolean | "bottom" | "top" | "end" | "start";
-            forceUseItem?: boolean;
-        } & {
-            __scopeGroup?: import("tamagui").Scope;
-        }, import("@tamagui/web").StackStyleBase, {
+    }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig" | "styleable"> & {
+        __tama: [import("@tamagui/web").TamaDefer, import("tamagui").TamaguiElement, any, import("@tamagui/web").StackStyleBase, {
             size?: any;
             elevation?: number | import("tamagui").SizeTokens | undefined;
             fullscreen?: boolean | undefined;

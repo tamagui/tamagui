@@ -9,60 +9,8 @@ type CardProps = {
     unstyled?: boolean;
 };
 export declare const Checkboxes: (<K extends string>(props: PropsWithChildren<CheckboxesProps<K>>) => import("react/jsx-runtime").JSX.Element) & {
-    Group: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & import("tamagui").SpaceProps & {
-        orientation?: "horizontal" | "vertical";
-        scrollable?: boolean;
-        showScrollIndicator?: boolean;
-        disabled?: boolean;
-        disablePassBorderRadius?: boolean | "bottom" | "top" | "end" | "start";
-        forceUseItem?: boolean;
-    } & {
-        __scopeGroup?: import("tamagui").Scope;
-    }, "size" | "elevation" | keyof import("@tamagui/web").StackStyleBase | "fullscreen" | "unstyled"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
-        unstyled?: boolean | undefined;
-        size?: any;
-        elevation?: number | import("tamagui").SizeTokens | undefined;
-        fullscreen?: boolean | undefined;
-    } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
-        unstyled?: boolean | undefined;
-        size?: any;
-        elevation?: number | import("tamagui").SizeTokens | undefined;
-        fullscreen?: boolean | undefined;
-    } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {
-        unstyled?: boolean | undefined;
-        size?: any;
-        elevation?: number | import("tamagui").SizeTokens | undefined;
-        fullscreen?: boolean | undefined;
-    }>> & import("react").RefAttributes<import("tamagui").TamaguiElement>> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("tamagui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & import("tamagui").SpaceProps & {
-        orientation?: "horizontal" | "vertical";
-        scrollable?: boolean;
-        showScrollIndicator?: boolean;
-        disabled?: boolean;
-        disablePassBorderRadius?: boolean | "bottom" | "top" | "end" | "start";
-        forceUseItem?: boolean;
-    } & {
-        __scopeGroup?: import("tamagui").Scope;
-    }, import("@tamagui/web").StackStyleBase, {
-        unstyled?: boolean | undefined;
-        size?: any;
-        elevation?: number | import("tamagui").SizeTokens | undefined;
-        fullscreen?: boolean | undefined;
-    }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig" | "extractable" | "styleable"> & {
-        __tama: [import("@tamagui/web").TamaDefer, import("tamagui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & import("tamagui").SpaceProps & {
-            orientation?: "horizontal" | "vertical";
-            scrollable?: boolean;
-            showScrollIndicator?: boolean;
-            disabled?: boolean;
-            disablePassBorderRadius?: boolean | "bottom" | "top" | "end" | "start";
-            forceUseItem?: boolean;
-        } & {
-            __scopeGroup?: import("tamagui").Scope;
-        }, import("@tamagui/web").StackStyleBase, {
-            unstyled?: boolean | undefined;
-            size?: any;
-            elevation?: number | import("tamagui").SizeTokens | undefined;
-            fullscreen?: boolean | undefined;
-        }, import("@tamagui/web").StaticConfigPublic];
+    Group: import("react").ForwardRefExoticComponent<any> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("tamagui").TamaguiElement, any, import("@tamagui/web").StackStyleBase, any, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig" | "styleable"> & {
+        __tama: [import("@tamagui/web").TamaDefer, import("tamagui").TamaguiElement, any, import("@tamagui/web").StackStyleBase, any, import("@tamagui/web").StaticConfigPublic];
     } & {
         Item: import("react").ForwardRefExoticComponent<import("tamagui").GroupItemProps & {
             __scopeGroup?: import("tamagui").Scope;
@@ -120,7 +68,7 @@ export declare const Checkboxes: (<K extends string>(props: PropsWithChildren<Ch
         disabled?: boolean | undefined;
         elevation?: number | import("tamagui").SizeTokens | undefined;
         fullscreen?: boolean | undefined;
-    }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig" | "extractable" | "styleable"> & {
+    }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig" | "styleable"> & {
         __tama: [Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
             size?: import("tamagui").SizeTokens | undefined;
             unstyled?: boolean | undefined;

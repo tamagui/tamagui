@@ -26,16 +26,42 @@ We've added many, many things, some highlights include:
 
 But we've also spent a lot of time just improving the fundamentals. We had a lot of feedback that Tamagui docs were lacking, and that it was hard to install and configure. So, we focused on those areas a lot, and landed nearly a thousand commits just improving that. If you haven't checked out Tamagui since closer to 1.0, you'll find a lot has gotten better:
 
-- We imrpoved and open sourced our package build script `@tamagui/build`, which makes it so all of Tamagui requires no special bundler set up at all. That's right - whether using Metro, Vite, or Webpack, you can just install any Tamagui package and use it without touching your bundler.
+- We improved and open sourced our package build script `@tamagui/build`, which makes it so all of Tamagui requires no special bundler set up at all. That's right - whether using Metro, Vite, or Webpack, you can just install any Tamagui package and use it without touching your bundler.
 - We upgraded `@tamagui/config` continuously, and with the new version 4, made it incredibly easy to BYO colors while still starting quickly with little fuss.
 - We landed over 500 commits improving documentation.
 
 Version 2 doesn't have many breaking changes. Instead it removes a few deprecated things that were holding us back from some more ambitious projects we want to take on going forward.
 
-What has changed on a high level:
+The only breaking changes are:
 
+- Our default flex behavior now aligns with React Native.
 - Button and ListItem have new versions that are simplified and faster.
-- Removed the `space` and `spaceDirection` props in favor of gap.
+- Removed deprecated `space` and `spaceDirection` props in favor of gap.
 - Moved the `<Spacer />` component from core into `@tamagui/spacer`.
 - Removed the deprecated `StyledComponent.extractable`.
 - Moved all settings on `createTamagui` onto the `settings` object.
+
+### What's next
+
+It's sort of incredible how many obvious improvements we have to make to Tamagui, considering how far we've come. This is good news in a way - the problems we're solving are far from solved. Here are the broad projects we're looking at now that we've reached version two:
+
+#### More major versions
+
+We're not going to wait two years to release 3.0. Instead, we'll be aiming for a major release at least twice a year. There are quite a few obvious wins we can already see that we will be deprecating shortly. We especially can reduce the core size and land major features more quickly if we do this, so we will be.
+
+#### Aligment with the web
+
+Much like React Native itself, Tamagui will aggressively be moving it's styling syntax to align with the web. In the next major versions we will make breaking changes (with codemods to help migration) that will do as much.
+
+React Native plans to move to React Strict DOM, which basically brings many props in line with web standards. Tamagui should work with React Strict DOM already, but we will also be ensuring Tamagui core itself also makes these same changes.
+
+#### A more flexible core
+
+Tamagui is pretty opionionated today with how it handles your design system. But it doesn't fit everyones use cases. We're working to make the core of Tamagui completely customizable, so that you can BYO setup, and still have it optimize.
+
+Tamagui really is just an extremely well-developed styling engine that has many hard-fought features to make it performant and platform-native across web and native. No other style library really matches our breadth of features * optimization, and we'd like to make Tamagui able to support many other types of style syntaxes. That could be just your own custom view components, or even something like a Tailwind-like syntax.
+
+#### Native components
+
+The ultimate UI for most iOS and Android apps should use lots of native components. We've already done this with our `<Sheet native />` integration with `react-native-ios-modal`, which brings incredible-feeling iOS native sheets to your React Native apps. We're going to continue working towards making a full suite of native components.
+

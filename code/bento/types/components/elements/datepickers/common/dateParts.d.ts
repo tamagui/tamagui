@@ -32,7 +32,7 @@ export declare const DatePicker: ((props: DatePickerProps) => import("react/jsx-
         __scopePopover?: string | undefined;
     } & import("react").RefAttributes<HTMLElement | import("react-native").View>, import("@tamagui/web").StackStyleBase, {
         unstyled?: boolean | undefined;
-    }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig" | "extractable" | "styleable"> & {
+    }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig" | "styleable"> & {
         __tama: [import("@tamagui/web").TamaDefer, HTMLElement | import("react-native").View, import("@tamagui/web").TamaguiComponentPropsBaseBase & import("tamagui").PopoverContentTypeProps & {
             __scopePopover?: string | undefined;
         } & import("react").RefAttributes<HTMLElement | import("react-native").View>, import("@tamagui/web").StackStyleBase, {
