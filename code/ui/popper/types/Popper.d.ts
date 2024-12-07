@@ -37,24 +37,16 @@ export type PopperSetupOptions = {
 };
 export declare function setupPopper(options?: PopperSetupOptions): void;
 export declare function Popper(props: ScopedPopperProps<PopperProps>): import("react/jsx-runtime").JSX.Element;
-type PopperAnchorRef = HTMLElement | View;
 export type PopperAnchorProps = YStackProps & {
     virtualRef?: React.RefObject<any>;
 };
-export declare const PopperAnchor: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "fullscreen"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+export declare const PopperAnchor: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | SizeTokens | undefined;
     fullscreen?: boolean | undefined;
-} & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+}>, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & void, import("@tamagui/core").StackStyleBase, {
     elevation?: number | SizeTokens | undefined;
     fullscreen?: boolean | undefined;
-} & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {
-    elevation?: number | SizeTokens | undefined;
-    fullscreen?: boolean | undefined;
-}>> & {
-    virtualRef?: React.RefObject<any>;
-} & {
-    __scopePopper?: string | undefined;
-} & React.RefAttributes<PopperAnchorRef>>;
+}, import("@tamagui/core").StaticConfigPublic>;
 type PopperContentElement = HTMLElement | View;
 export type PopperContentProps = SizableStackProps & {
     enableAnimationForPositionChange?: boolean;

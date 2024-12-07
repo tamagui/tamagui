@@ -20,22 +20,31 @@ export declare const DatePicker: ((props: DatePickerProps) => import("react/jsx-
     Trigger: import("react").ForwardRefExoticComponent<import("tamagui").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {}>> & {
         __scopePopover?: string | undefined;
     } & import("react").RefAttributes<import("tamagui").TamaguiElement>>;
-    Content: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/web").TamaguiComponentPropsBaseBase & import("tamagui").PopoverContentTypeProps & {
-        __scopePopover?: string | undefined;
-    } & import("react").RefAttributes<HTMLElement | import("react-native").View>, keyof import("@tamagui/web").StackStyleBase | "unstyled"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+    Content: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & (HTMLElement | import("react-native").View), "size" | "elevation" | keyof import("@tamagui/web").StackStyleBase | "fullscreen" | "unstyled"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+        size?: import("tamagui").SizeTokens | undefined;
+        elevation?: number | import("tamagui").SizeTokens | undefined;
+        fullscreen?: boolean | undefined;
         unstyled?: boolean | undefined;
     } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+        size?: import("tamagui").SizeTokens | undefined;
+        elevation?: number | import("tamagui").SizeTokens | undefined;
+        fullscreen?: boolean | undefined;
         unstyled?: boolean | undefined;
     } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {
+        size?: import("tamagui").SizeTokens | undefined;
+        elevation?: number | import("tamagui").SizeTokens | undefined;
+        fullscreen?: boolean | undefined;
         unstyled?: boolean | undefined;
-    }>> & import("react").RefAttributes<HTMLElement | import("react-native").View>> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, HTMLElement | import("react-native").View, import("@tamagui/web").TamaguiComponentPropsBaseBase & import("tamagui").PopoverContentTypeProps & {
-        __scopePopover?: string | undefined;
-    } & import("react").RefAttributes<HTMLElement | import("react-native").View>, import("@tamagui/web").StackStyleBase, {
+    }>> & import("react").RefAttributes<import("tamagui").TamaguiElement>> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("tamagui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & (HTMLElement | import("react-native").View), import("@tamagui/web").StackStyleBase, {
+        size?: import("tamagui").SizeTokens | undefined;
+        elevation?: number | import("tamagui").SizeTokens | undefined;
+        fullscreen?: boolean | undefined;
         unstyled?: boolean | undefined;
     }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig" | "styleable"> & {
-        __tama: [import("@tamagui/web").TamaDefer, HTMLElement | import("react-native").View, import("@tamagui/web").TamaguiComponentPropsBaseBase & import("tamagui").PopoverContentTypeProps & {
-            __scopePopover?: string | undefined;
-        } & import("react").RefAttributes<HTMLElement | import("react-native").View>, import("@tamagui/web").StackStyleBase, {
+        __tama: [import("@tamagui/web").TamaDefer, import("tamagui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & (HTMLElement | import("react-native").View), import("@tamagui/web").StackStyleBase, {
+            size?: import("tamagui").SizeTokens | undefined;
+            elevation?: number | import("tamagui").SizeTokens | undefined;
+            fullscreen?: boolean | undefined;
             unstyled?: boolean | undefined;
         }, import("@tamagui/web").StaticConfigPublic];
     } & {

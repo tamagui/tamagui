@@ -244,7 +244,7 @@ export declare const ListItem: import("react").ForwardRefExoticComponent<Omit<im
     bordered?: number | boolean | undefined;
     chromeless?: boolean | "all" | undefined;
     active?: boolean | undefined;
-}, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig" | "extractable" | "styleable"> & {
+}, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig" | "styleable"> & {
     __tama: [Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
         unstyled?: boolean | undefined;
         size?: SizeTokens | undefined;

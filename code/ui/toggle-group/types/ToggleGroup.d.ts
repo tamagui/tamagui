@@ -24,34 +24,13 @@ interface ToggleGroupMultipleProps extends ToggleGroupImplMultipleProps {
 }
 type ToggleGroupProps = ToggleGroupSingleProps | ToggleGroupMultipleProps;
 declare const ToggleGroup: React.ForwardRefExoticComponent<ScopedProps<ToggleGroupProps> & React.RefAttributes<HTMLElement>> & {
-    Item: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "unstyled" | "active" | "orientation" | "elevation" | keyof import("@tamagui/web").StackStyleBase | "fullscreen"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+    Item: import("@tamagui/web").TamaguiComponent<ToggleGroupItemProps, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & HTMLButtonElement, import("@tamagui/web").StackStyleBase, {
         unstyled?: boolean | undefined;
         active?: boolean | undefined;
         orientation?: "horizontal" | "vertical" | undefined;
         elevation?: number | SizeTokens | undefined;
         fullscreen?: boolean | undefined;
-    } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
-        unstyled?: boolean | undefined;
-        active?: boolean | undefined;
-        orientation?: "horizontal" | "vertical" | undefined;
-        elevation?: number | SizeTokens | undefined;
-        fullscreen?: boolean | undefined;
-    } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {
-        unstyled?: boolean | undefined;
-        active?: boolean | undefined;
-        orientation?: "horizontal" | "vertical" | undefined;
-        elevation?: number | SizeTokens | undefined;
-        fullscreen?: boolean | undefined;
-    }>> & {
-        value: string;
-        id?: string;
-        disabled?: boolean;
-        size?: SizeTokens;
-        /**
-         * Used to disable passing styles down to children.
-         */
-        disablePassStyles?: boolean;
-    } & React.RefAttributes<HTMLButtonElement>>;
+    }, import("@tamagui/web").StaticConfigPublic>;
 };
 interface ToggleGroupImplSingleProps extends ToggleGroupImplProps {
     /**
@@ -89,16 +68,7 @@ interface ToggleGroupImplMultipleProps extends ToggleGroupImplProps {
     disableDeactivation?: never;
 }
 type RovingFocusGroupProps = React.ComponentPropsWithoutRef<typeof RovingFocusGroup>;
-declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & import("@tamagui/spacer").SpaceProps & {
-    orientation?: "horizontal" | "vertical";
-    scrollable?: boolean;
-    showScrollIndicator?: boolean;
-    disabled?: boolean;
-    disablePassBorderRadius?: boolean | "bottom" | "end" | "start" | "top";
-    forceUseItem?: boolean;
-} & {
-    __scopeGroup?: import("@tamagui/create-context").Scope;
-}, import("@tamagui/web").StackStyleBase, {
+declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, any, import("@tamagui/web").StackStyleBase, {
     unstyled?: boolean | undefined;
     orientation?: "horizontal" | "vertical" | undefined;
     size?: any;

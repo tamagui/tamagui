@@ -43,7 +43,7 @@ declare const Progress: React.ForwardRefExoticComponent<Omit<import("@tamagui/co
     size?: import("@tamagui/core").SizeTokens | undefined;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
-}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig" | "extractable" | "styleable"> & {
+}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig" | "styleable"> & {
     __tama: [Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
         unstyled?: boolean | undefined;
         size?: import("@tamagui/core").SizeTokens | undefined;

@@ -267,12 +267,13 @@ export declare const Select: ((props: SelectScopedProps<SelectProps>) => import(
             disableHideBottomOverflow?: boolean;
             adjustPaddingForOffscreenContent?: boolean;
         }>>;
-        Overlay: import("react").MemoExoticComponent<(propsIn: import("@tamagui/sheet/types/types").SheetScopedProps<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-            elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-            fullscreen?: boolean | undefined;
-            open?: boolean | undefined;
-            unstyled?: boolean | undefined;
-        }>>) => null>;
+        Overlay: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {}>> & {
+            open?: boolean;
+        }, any, any, any, {
+            open?: boolean;
+        }, {}> | import("@tamagui/core").TamaguiComponent<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {}>> & {
+            open?: boolean;
+        }, any, {} & void, {}, {}, {}>;
         Handle: import("@tamagui/core").TamaguiComponent<any, any, any, any, {
             open?: boolean;
         }, {}> | import("@tamagui/core").TamaguiComponent<any, any, any, {}, {}, {}>;

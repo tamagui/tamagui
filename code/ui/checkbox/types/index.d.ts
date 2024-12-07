@@ -44,7 +44,7 @@ export declare const Checkbox: import("react").ForwardRefExoticComponent<Omit<im
     disabled?: boolean | undefined;
     elevation?: number | import("@tamagui/web").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
-}, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig" | "extractable" | "styleable"> & {
+}, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig" | "styleable"> & {
     __tama: [Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
         size?: import("@tamagui/web").SizeTokens | undefined;
         unstyled?: boolean | undefined;

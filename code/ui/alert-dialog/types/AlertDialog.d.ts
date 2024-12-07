@@ -13,7 +13,12 @@ interface AlertDialogPortalProps extends DialogPortalProps {
 declare const AlertDialogPortal: React.FC<AlertDialogPortalProps>;
 interface AlertDialogOverlayProps extends DialogOverlayProps {
 }
-declare const AlertDialogOverlay: React.ForwardRefExoticComponent<AlertDialogOverlayProps & React.RefAttributes<TamaguiElement>>;
+declare const AlertDialogOverlay: import("@tamagui/core").TamaguiComponent<AlertDialogOverlayProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & TamaguiElement, import("@tamagui/core").StackStyleBase, {
+    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+    fullscreen?: boolean | undefined;
+    open?: boolean | undefined;
+    unstyled?: boolean | undefined;
+}, import("@tamagui/core").StaticConfigPublic>;
 interface AlertDialogContentProps extends Omit<DialogContentProps, 'onPointerDownOutside' | 'onInteractOutside'> {
 }
 declare const AlertDialogContent: React.ForwardRefExoticComponent<AlertDialogContentProps & React.RefAttributes<TamaguiElement>>;
@@ -47,7 +52,12 @@ declare const AlertDialogCancel: React.ForwardRefExoticComponent<AlertDialogCanc
 declare const AlertDialog: React.FC<AlertDialogProps> & {
     Trigger: React.ForwardRefExoticComponent<AlertDialogTriggerProps & React.RefAttributes<TamaguiElement>>;
     Portal: React.FC<AlertDialogPortalProps>;
-    Overlay: React.ForwardRefExoticComponent<AlertDialogOverlayProps & React.RefAttributes<TamaguiElement>>;
+    Overlay: import("@tamagui/core").TamaguiComponent<AlertDialogOverlayProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & TamaguiElement, import("@tamagui/core").StackStyleBase, {
+        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+        fullscreen?: boolean | undefined;
+        open?: boolean | undefined;
+        unstyled?: boolean | undefined;
+    }, import("@tamagui/core").StaticConfigPublic>;
     Content: React.ForwardRefExoticComponent<AlertDialogContentProps & React.RefAttributes<TamaguiElement>>;
     Action: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {}>> & import("@tamagui/dialog").DialogCloseExtraProps & React.RefAttributes<TamaguiElement>>;
     Cancel: React.ForwardRefExoticComponent<AlertDialogCancelProps & React.RefAttributes<TamaguiElement>>;

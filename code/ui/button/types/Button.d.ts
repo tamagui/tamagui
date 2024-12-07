@@ -211,7 +211,7 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-}, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig" | "extractable" | "styleable"> & {
+}, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig" | "styleable"> & {
     __tama: [Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
         size?: number | SizeTokens | undefined;
         variant?: "outlined" | undefined;

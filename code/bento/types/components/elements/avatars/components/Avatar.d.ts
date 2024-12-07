@@ -44,18 +44,10 @@ export declare const Avatar: import("react").ForwardRefExoticComponent<Omit<impo
     Image: import("react").ForwardRefExoticComponent<Partial<import("tamagui").ImageProps> & {
         onLoadingStatusChange?: (status: "loaded" | "error" | "loading" | "idle") => void;
     } & import("react").RefAttributes<import("tamagui").TamaguiElement>>;
-    Fallback: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/web").StackStyleBase | "fullscreen"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+    Fallback: import("tamagui").TamaguiComponent<import("tamagui").AvatarFallbackProps, import("tamagui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & import("tamagui").TamaguiElement, import("@tamagui/web").StackStyleBase, {
         elevation?: number | SizeTokens | undefined;
         fullscreen?: boolean | undefined;
-    } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
-        elevation?: number | SizeTokens | undefined;
-        fullscreen?: boolean | undefined;
-    } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {
-        elevation?: number | SizeTokens | undefined;
-        fullscreen?: boolean | undefined;
-    }>> & {
-        delayMs?: number;
-    } & import("react").RefAttributes<import("tamagui").TamaguiElement>>;
+    }, import("@tamagui/web").StaticConfigPublic>;
     Icon: import("tamagui").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
         size?: SizeTokens | undefined;
         offset?: number | undefined;

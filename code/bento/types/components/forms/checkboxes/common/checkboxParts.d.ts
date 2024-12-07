@@ -9,8 +9,33 @@ type CardProps = {
     unstyled?: boolean;
 };
 export declare const Checkboxes: (<K extends string>(props: PropsWithChildren<CheckboxesProps<K>>) => import("react/jsx-runtime").JSX.Element) & {
-    Group: import("react").ForwardRefExoticComponent<any> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("tamagui").TamaguiElement, any, import("@tamagui/web").StackStyleBase, any, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig" | "styleable"> & {
-        __tama: [import("@tamagui/web").TamaDefer, import("tamagui").TamaguiElement, any, import("@tamagui/web").StackStyleBase, any, import("@tamagui/web").StaticConfigPublic];
+    Group: import("react").ForwardRefExoticComponent<Omit<any, "size" | "elevation" | keyof import("@tamagui/web").StackStyleBase | "fullscreen" | "unstyled"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+        unstyled?: boolean | undefined;
+        size?: any;
+        elevation?: number | import("tamagui").SizeTokens | undefined;
+        fullscreen?: boolean | undefined;
+    } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+        unstyled?: boolean | undefined;
+        size?: any;
+        elevation?: number | import("tamagui").SizeTokens | undefined;
+        fullscreen?: boolean | undefined;
+    } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {
+        unstyled?: boolean | undefined;
+        size?: any;
+        elevation?: number | import("tamagui").SizeTokens | undefined;
+        fullscreen?: boolean | undefined;
+    }>> & import("react").RefAttributes<import("tamagui").TamaguiElement>> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("tamagui").TamaguiElement, any, import("@tamagui/web").StackStyleBase, {
+        unstyled?: boolean | undefined;
+        size?: any;
+        elevation?: number | import("tamagui").SizeTokens | undefined;
+        fullscreen?: boolean | undefined;
+    }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig" | "styleable"> & {
+        __tama: [import("@tamagui/web").TamaDefer, import("tamagui").TamaguiElement, any, import("@tamagui/web").StackStyleBase, {
+            unstyled?: boolean | undefined;
+            size?: any;
+            elevation?: number | import("tamagui").SizeTokens | undefined;
+            fullscreen?: boolean | undefined;
+        }, import("@tamagui/web").StaticConfigPublic];
     } & {
         Item: import("react").ForwardRefExoticComponent<import("tamagui").GroupItemProps & {
             __scopeGroup?: import("tamagui").Scope;
@@ -114,7 +139,13 @@ export declare const Checkboxes: (<K extends string>(props: PropsWithChildren<Ch
             elevation?: number | import("tamagui").SizeTokens | undefined;
             fullscreen?: boolean | undefined;
         }, import("@tamagui/web").StaticConfigPublic>;
-        Label: import("@tamagui/web").ReactComponentWithRef<import("tamagui").LabelProps, import("react-native").View | HTMLButtonElement>;
+        Label: import("tamagui").TamaguiComponent<import("@tamagui/web").GetFinalProps<import("tamagui").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
+            unstyled?: boolean | undefined;
+            size?: number | `$${string}` | `$${number}` | `$${string}.${string}` | `$${string}.${number}` | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | undefined;
+        }>, import("tamagui").TamaguiTextElement, import("tamagui").TextNonStyleProps & void, import("@tamagui/web").TextStylePropsBase, {
+            unstyled?: boolean | undefined;
+            size?: number | `$${string}` | `$${number}` | `$${string}.${string}` | `$${string}.${number}` | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | undefined;
+        }, import("@tamagui/web").StaticConfigPublic>;
     };
     Card: import("tamagui").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
         active?: boolean | undefined;

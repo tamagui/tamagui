@@ -17,7 +17,7 @@ export declare const Button: import("react").ForwardRefExoticComponent<import("@
 }> & import("react").RefAttributes<any>> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, any, any, any, {
     size?: SizeTokens;
     variant?: ButtonVariant;
-}, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig" | "extractable" | "styleable"> & {
+}, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig" | "styleable"> & {
     __tama: [import("@tamagui/web").TamaDefer, any, any, any, {
         size?: SizeTokens;
         variant?: ButtonVariant;

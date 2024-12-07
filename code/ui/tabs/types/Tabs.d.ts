@@ -150,7 +150,7 @@ export declare const Tabs: React.ForwardRefExoticComponent<Omit<import("@tamagui
     bordered?: number | boolean | undefined;
     chromeless?: boolean | "all" | undefined;
     unstyled?: boolean | undefined;
-}, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig" | "extractable" | "styleable"> & {
+}, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig" | "styleable"> & {
     __tama: [Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
         size?: import("@tamagui/core").SizeTokens | undefined;
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
@@ -185,35 +185,7 @@ export declare const Tabs: React.ForwardRefExoticComponent<Omit<import("@tamagui
         unstyled?: boolean | undefined;
     }, import("@tamagui/web").StaticConfigPublic];
 } & {
-    List: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/web").StackStyleBase | "unstyled" | "size" | "fullscreen"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
-        unstyled?: boolean | undefined;
-        size?: any;
-        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-        fullscreen?: boolean | undefined;
-    } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
-        unstyled?: boolean | undefined;
-        size?: any;
-        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-        fullscreen?: boolean | undefined;
-    } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {
-        unstyled?: boolean | undefined;
-        size?: any;
-        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-        fullscreen?: boolean | undefined;
-    }>> & import("@tamagui/spacer").SpaceProps & {
-        orientation?: "horizontal" | "vertical";
-        scrollable?: boolean;
-        showScrollIndicator?: boolean;
-        disabled?: boolean;
-        disablePassBorderRadius?: boolean | "bottom" | "end" | "start" | "top";
-        forceUseItem?: boolean;
-    } & {
-        /**
-         * Whether to loop over after reaching the end or start of the items
-         * @default true
-         */
-        loop?: boolean;
-    } & React.RefAttributes<TamaguiElement>>;
+    List: React.ForwardRefExoticComponent<any>;
     Tab: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
         disabled?: boolean | undefined;
         elevation?: number | SizeTokens | undefined;

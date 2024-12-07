@@ -1,6 +1,6 @@
 import '@tamagui/polyfill-dev';
 import type { UseHoverProps } from '@floating-ui/react';
-import type { SizeTokens, StackProps, TamaguiElement } from '@tamagui/core';
+import type { ScopedProps, SizeTokens, StackProps, TamaguiElement } from '@tamagui/core';
 import type { DismissableProps } from '@tamagui/dismissable';
 import type { FocusScopeProps } from '@tamagui/focus-scope';
 import type { PopperArrowExtraProps, PopperArrowProps, PopperContentProps, PopperProps } from '@tamagui/popper';
@@ -22,6 +22,7 @@ export type PopoverProps = PopperProps & {
      */
     disableFocus?: boolean;
 };
+type ScopedPopoverProps<P> = ScopedProps<P, 'Popover'>;
 type PopoverContextValue = {
     id: string;
     triggerRef: React.RefObject<any>;
@@ -65,9 +66,12 @@ export interface PopoverContentTypeProps extends Omit<PopoverContentImplProps, '
     /** enable animation for content position changing */
     enableAnimationForPositionChange?: boolean;
 }
-export declare const PopoverContent: React.ForwardRefExoticComponent<PopoverContentTypeProps & {
-    __scopePopover?: string | undefined;
-} & React.RefAttributes<HTMLElement | import("react-native").View>>;
+export declare const PopoverContent: import("@tamagui/core").TamaguiComponent<ScopedPopoverProps<PopoverContentTypeProps>, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & (HTMLElement | import("react-native").View), import("@tamagui/core").StackStyleBase, {
+    size?: SizeTokens | undefined;
+    elevation?: number | SizeTokens | undefined;
+    fullscreen?: boolean | undefined;
+    unstyled?: boolean | undefined;
+}, import("@tamagui/core").StaticConfigPublic>;
 export interface PopoverContentImplProps extends PopperContentProps, Omit<DismissableProps, 'onDismiss' | 'children' | 'onPointerDownCapture'> {
     /**
      * Whether focus should be trapped within the `Popover`
@@ -169,9 +173,12 @@ export declare const Popover: React.ForwardRefExoticComponent<PopperProps & {
     Trigger: React.ForwardRefExoticComponent<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {}>> & {
         __scopePopover?: string | undefined;
     } & React.RefAttributes<TamaguiElement>>;
-    Content: React.ForwardRefExoticComponent<PopoverContentTypeProps & {
-        __scopePopover?: string | undefined;
-    } & React.RefAttributes<HTMLElement | import("react-native").View>>;
+    Content: import("@tamagui/core").TamaguiComponent<ScopedPopoverProps<PopoverContentTypeProps>, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & (HTMLElement | import("react-native").View), import("@tamagui/core").StackStyleBase, {
+        size?: SizeTokens | undefined;
+        elevation?: number | SizeTokens | undefined;
+        fullscreen?: boolean | undefined;
+        unstyled?: boolean | undefined;
+    }, import("@tamagui/core").StaticConfigPublic>;
     Close: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "fullscreen"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
         elevation?: number | SizeTokens | undefined;
         fullscreen?: boolean | undefined;
@@ -205,12 +212,13 @@ export declare const Popover: React.ForwardRefExoticComponent<PopperProps & {
             disableHideBottomOverflow?: boolean;
             adjustPaddingForOffscreenContent?: boolean;
         }>>;
-        Overlay: import("react").MemoExoticComponent<(propsIn: import("@tamagui/sheet/types/types").SheetScopedProps<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-            elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-            fullscreen?: boolean | undefined;
-            open?: boolean | undefined;
-            unstyled?: boolean | undefined;
-        }>>) => null>;
+        Overlay: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {}>> & {
+            open?: boolean;
+        }, any, any, any, {
+            open?: boolean;
+        }, {}> | import("@tamagui/core").TamaguiComponent<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {}>> & {
+            open?: boolean;
+        }, any, {} & void, {}, {}, {}>;
         Handle: import("@tamagui/core").TamaguiComponent<any, any, any, any, {
             open?: boolean;
         }, {}> | import("@tamagui/core").TamaguiComponent<any, any, any, {}, {}, {}>;

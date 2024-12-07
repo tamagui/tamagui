@@ -68,7 +68,12 @@ interface DialogOverlayProps extends YStackProps {
      */
     forceMount?: true;
 }
-declare const DialogOverlay: React.ForwardRefExoticComponent<DialogOverlayProps & React.RefAttributes<TamaguiElement>>;
+declare const DialogOverlay: import("@tamagui/core").TamaguiComponent<DialogOverlayProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & TamaguiElement, import("@tamagui/core").StackStyleBase, {
+    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+    fullscreen?: boolean | undefined;
+    open?: boolean | undefined;
+    unstyled?: boolean | undefined;
+}, import("@tamagui/core").StaticConfigPublic>;
 declare const DialogContentFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     size?: import("@tamagui/core").SizeTokens | undefined;
@@ -94,7 +99,23 @@ interface DialogContentProps extends DialogContentFrameProps, Omit<DialogContent
      */
     forceMount?: true;
 }
-declare const DialogContent: React.ForwardRefExoticComponent<DialogContentProps & React.RefAttributes<TamaguiElement>>;
+declare const DialogContent: import("@tamagui/core").TamaguiComponent<DialogContentProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & TamaguiElement, import("@tamagui/core").StackStyleBase, {
+    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+    size?: import("@tamagui/core").SizeTokens | undefined;
+    transparent?: boolean | undefined;
+    circular?: boolean | undefined;
+    fullscreen?: boolean | undefined;
+    unstyled?: boolean | undefined;
+    backgrounded?: boolean | undefined;
+    radiused?: boolean | undefined;
+    hoverTheme?: boolean | undefined;
+    pressTheme?: boolean | undefined;
+    focusTheme?: boolean | undefined;
+    padded?: boolean | undefined;
+    elevate?: boolean | undefined;
+    bordered?: number | boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
+}, import("@tamagui/core").StaticConfigPublic>;
 interface DialogContentTypeProps extends Omit<DialogContentImplProps, 'trapFocus' | 'disableOutsidePointerEvents'> {
     context: DialogContextValue;
 }
@@ -165,8 +186,29 @@ declare const Dialog: React.ForwardRefExoticComponent<DialogProps & React.RefAtt
 }>> & {
     Trigger: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}>, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & void, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic>;
     Portal: React.FC<DialogPortalProps>;
-    Overlay: React.ForwardRefExoticComponent<DialogOverlayProps & React.RefAttributes<TamaguiElement>>;
-    Content: React.ForwardRefExoticComponent<DialogContentProps & React.RefAttributes<TamaguiElement>>;
+    Overlay: import("@tamagui/core").TamaguiComponent<DialogOverlayProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & TamaguiElement, import("@tamagui/core").StackStyleBase, {
+        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+        fullscreen?: boolean | undefined;
+        open?: boolean | undefined;
+        unstyled?: boolean | undefined;
+    }, import("@tamagui/core").StaticConfigPublic>;
+    Content: import("@tamagui/core").TamaguiComponent<DialogContentProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & TamaguiElement, import("@tamagui/core").StackStyleBase, {
+        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+        size?: import("@tamagui/core").SizeTokens | undefined;
+        transparent?: boolean | undefined;
+        circular?: boolean | undefined;
+        fullscreen?: boolean | undefined;
+        unstyled?: boolean | undefined;
+        backgrounded?: boolean | undefined;
+        radiused?: boolean | undefined;
+        hoverTheme?: boolean | undefined;
+        pressTheme?: boolean | undefined;
+        focusTheme?: boolean | undefined;
+        padded?: boolean | undefined;
+        elevate?: boolean | undefined;
+        bordered?: number | boolean | undefined;
+        chromeless?: boolean | "all" | undefined;
+    }, import("@tamagui/core").StaticConfigPublic>;
     Title: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").GetFinalProps<import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
         size?: import("@tamagui/core").FontSizeTokens | undefined;
         unstyled?: boolean | undefined;
@@ -194,19 +236,17 @@ declare const Dialog: React.ForwardRefExoticComponent<DialogProps & React.RefAtt
             disableHideBottomOverflow?: boolean;
             adjustPaddingForOffscreenContent?: boolean;
         }>>;
-        Overlay: import("react").MemoExoticComponent<(propsIn: import("@tamagui/sheet/types/types").SheetScopedProps<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-            elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-            fullscreen?: boolean | undefined;
-            open?: boolean | undefined;
-            unstyled?: boolean | undefined;
-        }>>) => null>;
+        Overlay: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {}>> & {
+            open?: boolean;
+        }, any, any, any, {
+            open?: boolean;
+        }, {}> | import("@tamagui/core").TamaguiComponent<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {}>> & {
+            open?: boolean;
+        }, any, {} & void, {}, {}, {}>;
         Handle: import("@tamagui/core").TamaguiComponent<any, any, any, any, {
             open?: boolean;
         }, {}> | import("@tamagui/core").TamaguiComponent<any, any, any, {}, {}, {}>;
-        ScrollView: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & import("react-native" /**
-         * Used to force mounting when more control is needed. Useful when
-         * controlling animation with React animation libraries.
-         */).ScrollViewProps, keyof import("@tamagui/core").StackStyleBase | "fullscreen" | "contentContainerStyle"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
+        ScrollView: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & import("react-native").ScrollViewProps, keyof import("@tamagui/core").StackStyleBase | "fullscreen" | "contentContainerStyle"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
             readonly contentContainerStyle?: Partial<import("@tamagui/core").GetFinalProps<import("react-native").ScrollViewProps, import("@tamagui/core").StackStyleBase, {}>> | undefined;
         }> & {
             fullscreen?: boolean | undefined;

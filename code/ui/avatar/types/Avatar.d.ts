@@ -16,18 +16,10 @@ export declare const AvatarFallbackFrame: import("@tamagui/core").TamaguiCompone
 type AvatarFallbackProps = GetProps<typeof AvatarFallbackFrame> & {
     delayMs?: number;
 };
-declare const AvatarFallback: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "fullscreen"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+declare const AvatarFallback: import("@tamagui/core").TamaguiComponent<AvatarFallbackProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & TamaguiElement, import("@tamagui/core").StackStyleBase, {
     elevation?: number | SizeTokens | undefined;
     fullscreen?: boolean | undefined;
-} & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
-    elevation?: number | SizeTokens | undefined;
-    fullscreen?: boolean | undefined;
-} & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {
-    elevation?: number | SizeTokens | undefined;
-    fullscreen?: boolean | undefined;
-}>> & {
-    delayMs?: number;
-} & React.RefAttributes<TamaguiElement>>;
+}, import("@tamagui/core").StaticConfigPublic>;
 export declare const AvatarFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | import("@tamagui/web").SizeTokens | undefined;
     size?: number | import("@tamagui/web").SizeTokens | undefined;
@@ -54,18 +46,10 @@ declare const Avatar: React.ForwardRefExoticComponent<Omit<import("@tamagui/core
     Image: React.ForwardRefExoticComponent<Partial<ImageProps> & {
         onLoadingStatusChange?: (status: ImageLoadingStatus) => void;
     } & React.RefAttributes<TamaguiElement>>;
-    Fallback: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "fullscreen"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+    Fallback: import("@tamagui/core").TamaguiComponent<AvatarFallbackProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & TamaguiElement, import("@tamagui/core").StackStyleBase, {
         elevation?: number | SizeTokens | undefined;
         fullscreen?: boolean | undefined;
-    } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
-        elevation?: number | SizeTokens | undefined;
-        fullscreen?: boolean | undefined;
-    } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {
-        elevation?: number | SizeTokens | undefined;
-        fullscreen?: boolean | undefined;
-    }>> & {
-        delayMs?: number;
-    } & React.RefAttributes<TamaguiElement>>;
+    }, import("@tamagui/core").StaticConfigPublic>;
 };
 export { createAvatarScope, Avatar, AvatarImage, AvatarFallback };
 export type { AvatarProps, AvatarImageProps, AvatarFallbackProps };
