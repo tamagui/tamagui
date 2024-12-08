@@ -12,11 +12,12 @@ import {
   Stack,
   Theme,
   useConfiguration,
+  useDidFinishSSR,
   useEvent,
   useThemeName,
 } from '@tamagui/core'
 import { Portal, USE_NATIVE_PORTAL } from '@tamagui/portal'
-import React, { useId } from 'react'
+import React, { useEffect, useId, useLayoutEffect, useState } from 'react'
 import type {
   Animated,
   GestureResponderEvent,
@@ -31,7 +32,7 @@ import type { SheetProps, SnapPointsMode } from './types'
 import { useSheetOpenState } from './useSheetOpenState'
 import { useSheetProviderProps } from './useSheetProviderProps'
 
-let hiddenSize = 10_000.1
+const hiddenSize = 10_000.1
 
 let sheetHiddenStyleSheet: HTMLStyleElement | null = null
 
@@ -139,8 +140,12 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       [zIndex]
     )
 
-    const animatedNumber = useAnimatedNumber(hiddenSize)
-    const at = React.useRef(hiddenSize)
+    const isMounted = useDidFinishSSR()
+    const startPosition = isMounted && screenSize ? screenSize : hiddenSize
+    const animatedNumber = useAnimatedNumber(startPosition)
+    const at = React.useRef(startPosition)
+    const hasntMeasured = at.current === hiddenSize
+    const [disableAnimation, setDisableAnimation] = useState(hasntMeasured)
 
     useAnimatedNumberReaction(
       {
@@ -164,43 +169,15 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       }
     }
 
-    const hasntMeasured = at.current === hiddenSize
-
     const animateTo = useEvent((position: number) => {
       if (frameSize === 0) return
 
       let toValue = isHidden || position === -1 ? screenSize : positions[position]
 
       if (at.current === toValue) return
+
       at.current = toValue
-
       stopSpring()
-
-      if (hasntMeasured || isHidden) {
-        // first run, we need to set to screen size before running
-        animatedNumber.setValue(
-          screenSize,
-          {
-            type: 'timing',
-            duration: 0,
-          },
-          () => {
-            if (isHidden) {
-              return
-            }
-
-            toValue = positions[position]
-            at.current = toValue
-
-            animatedNumber.setValue(toValue, {
-              type: 'spring',
-              ...animationConfig,
-            })
-          }
-        )
-        return
-      }
-
       animatedNumber.setValue(toValue, {
         type: 'spring',
         ...animationConfig,
@@ -208,20 +185,40 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     })
 
     useIsomorphicLayoutEffect(() => {
-      if (screenSize && hasntMeasured) {
-        animatedNumber.setValue(screenSize, {
-          type: 'timing',
-          duration: 0,
-        })
-      }
-    }, [hasntMeasured, screenSize])
+      // we need to do a *three* step process for the css driver
+      // first render off screen for ssr safety (hiddenSize)
+      // then render to bottom of screen without animation (screenSize)
+      // then add the animation as it animates from screenSize to position
 
-    useIsomorphicLayoutEffect(() => {
+      if (hasntMeasured && screenSize) {
+        at.current = screenSize
+        animatedNumber.setValue(
+          screenSize,
+          {
+            type: 'timing',
+            duration: 0,
+          },
+          () => {
+            // imperfect but struggling to render properly here
+            setTimeout(() => {
+              setDisableAnimation(false)
+            }, 10)
+          }
+        )
+        return
+      }
+
+      if (disableAnimation) {
+        return
+      }
+
       if (!frameSize || !screenSize || isHidden || (hasntMeasured && !open)) {
         return
       }
+
+      // finally, animate
       animateTo(position)
-    }, [isHidden, frameSize, screenSize, open, position])
+    }, [hasntMeasured, disableAnimation, isHidden, frameSize, screenSize, open, position])
 
     const disableDrag = props.disableDrag ?? controller?.disableDrag
     const themeName = useThemeName()
@@ -437,7 +434,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
         ? `${maxSnapPoint}${isWeb ? 'dvh' : '%'}`
         : maxSnapPoint
 
-    const id = useId()
+    // const id = useId()
     // const { AdaptProvider, when, children } = useAdaptParent({
     //   scope: `${id}Sheet`,
     //   portal: true,
@@ -471,7 +468,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
             onLayout={handleAnimationViewLayout}
             {...(!isDragging && {
               // @ts-ignore for CSS driver this is necessary to attach the transition
-              animation,
+              animation: disableAnimation ? null : animation,
             })}
             // @ts-ignore
             disableClassName
