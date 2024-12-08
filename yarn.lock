@@ -5734,8 +5734,10 @@ __metadata:
     "@tamagui/use-presence": "npm:1.119.3"
     "@tamagui/web": "npm:1.119.3"
     react: "npm:*"
+    react-dom: "npm:*"
   peerDependencies:
     react: "*"
+    react-dom: "*"
   languageName: unknown
   linkType: soft
 
@@ -24015,9 +24017,11 @@ __metadata:
     "@react-native-masked-view/masked-view": "npm:^0.3.1"
     "@tamagui/animations-moti": "npm:1.119.3"
     "@tamagui/colors": "npm:1.119.3"
+    "@tamagui/demos": "npm:1.119.3"
     "@tamagui/image-next": "npm:1.119.3"
     "@tamagui/lucide-icons": "npm:1.119.3"
     "@tamagui/react-native-media-driver": "npm:1.119.3"
+    "@tamagui/toast": "npm:1.119.3"
     "@tamagui/vite-plugin": "npm:1.119.3"
     "@types/react": "npm:^18.3.11"
     "@vxrn/color-scheme": "npm:^1.1.335"

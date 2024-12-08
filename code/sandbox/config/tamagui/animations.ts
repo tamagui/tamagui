@@ -8,6 +8,8 @@ const cssTransitions = {
   quick: `${smoothBezier} 500ms`,
   quicker: `${smoothBezier} 350ms`,
   quickest: `${smoothBezier} 200ms`,
+  medium: 'ease-in 2000ms',
+  lazy: 'ease-in 2000ms',
 }
 
 export const animations = createAnimations(cssTransitions)
