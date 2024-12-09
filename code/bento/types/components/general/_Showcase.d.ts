@@ -1,36 +1,12 @@
 import React from 'react';
 import type { SizeTokens } from 'tamagui';
-export declare const Showcase: import("tamagui").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
-    elevation?: number | SizeTokens | undefined;
-    fullscreen?: boolean | undefined;
-    inset?: number | SizeTokens | {
-        top?: number;
-        bottom?: number;
-        left?: number;
-        right?: number;
-    } | undefined;
-}>, "children" | "isInput" | "title" | "fileName" | "short"> & {
+export declare const Showcase: React.ForwardRefExoticComponent<{
     children: React.ReactNode;
     title: string;
     fileName: string;
     short?: boolean;
     isInput?: boolean;
-}, import("tamagui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & {
-    children: React.ReactNode;
-    title: string;
-    fileName: string;
-    short?: boolean;
-    isInput?: boolean;
-}, import("@tamagui/web").StackStyleBase, {
-    elevation?: number | SizeTokens | undefined;
-    fullscreen?: boolean | undefined;
-    inset?: number | SizeTokens | {
-        top?: number;
-        bottom?: number;
-        left?: number;
-        right?: number;
-    } | undefined;
-}, import("@tamagui/web").StaticConfigPublic>;
+} & React.RefAttributes<any>>;
 export declare const PhoneScaleProvider: React.ProviderExoticComponent<Partial<{
     scale: number;
     invertScale: number;
