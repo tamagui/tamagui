@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/font-dm-sans",
-  "version": "1.120.0",
+  "version": "1.120.1",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -18,8 +18,8 @@
     "clean:build": "tamagui-build clean:build"
   },
   "devDependencies": {
-    "@tamagui/build": "1.120.0",
-    "@tamagui/core": "1.120.0",
+    "@tamagui/build": "1.120.1",
+    "@tamagui/core": "1.120.1",
     "subset-font": "^2.1.0"
   }
 }
