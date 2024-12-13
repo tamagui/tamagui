@@ -91,6 +91,7 @@ export function createExtractor(
   const componentState: TamaguiComponentState = {
     focus: false,
     focusVisible: false,
+    focusWithin: false,
     hover: false,
     unmounted: true,
     press: false,
@@ -567,6 +568,7 @@ export function createExtractor(
           'name',
           'focusStyle',
           'focusVisibleStyle',
+          'focusWithinStyle',
           'disabledStyle',
           'hoverStyle',
           'pressStyle',

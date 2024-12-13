@@ -49,7 +49,6 @@ export type ComponentContextI = {
     language: LanguageContextType | null;
     animationDriver: AnimationDriver | null;
     onWithinFocus: (() => void) | null;
-    onWithinBlur: (() => void) | null;
     groups: GroupContextType;
 };
 type ComponentGroupEvent = {

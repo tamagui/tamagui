@@ -21,7 +21,7 @@ import type {
 
 export const useComponentState = (
   props: StackProps | TextProps | Record<string, any>,
-  { animationDriver, groups, onWithinFocus }: ComponentContextI,
+  { animationDriver, groups }: ComponentContextI,
   staticConfig: StaticConfig,
   config: TamaguiInternalConfig
 ) => {
