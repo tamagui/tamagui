@@ -5,6 +5,8 @@ export declare const useConfiguration: () => {
     disableSSR?: boolean;
     inText: boolean;
     language: import("../views/FontLanguage.types").LanguageContextType | null;
+    onWithinFocus: (() => void) | null;
+    onWithinBlur: (() => void) | null;
     unset?: import("..").BaseStyleProps | undefined;
     reactNative?: any;
     defaultFont?: string | undefined;

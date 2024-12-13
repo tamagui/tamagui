@@ -48,6 +48,8 @@ export type ComponentContextI = {
     inText: boolean;
     language: LanguageContextType | null;
     animationDriver: AnimationDriver | null;
+    onWithinFocus: (() => void) | null;
+    onWithinBlur: (() => void) | null;
     groups: GroupContextType;
 };
 type ComponentGroupEvent = {
@@ -719,6 +721,7 @@ export type WithPseudoProps<A> = {
     hoverStyle?: A | null;
     pressStyle?: A | null;
     focusStyle?: A | null;
+    focusWithinStyle?: A | null;
     focusVisibleStyle?: A | null;
     disabledStyle?: A | null;
     exitStyle?: A | null;
@@ -729,6 +732,7 @@ export type PseudoStyles = {
     hoverStyle?: ViewStyle;
     pressStyle?: ViewStyle;
     focusStyle?: ViewStyle;
+    focusWithinStyle?: ViewStyle;
     focusVisibleStyle?: ViewStyle;
     disabledStyle?: ViewStyle;
     enterStyle?: ViewStyle;
@@ -1436,6 +1440,7 @@ export type ViewStyleWithPseudos = TextStyle | (TextStyle & {
     hoverStyle?: TextStyle;
     pressStyle?: TextStyle;
     focusStyle?: TextStyle;
+    focusWithinStyle?: TextStyle;
     focusVisibleStyle?: TextStyle;
     disabledStyle?: TextStyle;
 });

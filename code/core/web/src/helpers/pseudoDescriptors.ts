@@ -20,6 +20,11 @@ export const pseudoDescriptorsBase = {
     name: 'focus',
     priority: 3,
   },
+  focusWithinStyle: {
+    name: 'focus-within',
+    priority: 3,
+    stateKey: 'focusWithin',
+  },
   disabledStyle: {
     name: 'disabled',
     priority: 4,

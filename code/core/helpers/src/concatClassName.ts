@@ -95,5 +95,6 @@ const pseudoInvert = {
   focus: 'focusStyle',
   press: 'pressStyle',
   focusVisible: 'focusVisibleStyle',
+  focusWithinStyle: 'focusWithinStyle',
   disabled: 'disabledStyle',
 }

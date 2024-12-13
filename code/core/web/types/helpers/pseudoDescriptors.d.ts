@@ -17,6 +17,11 @@ export declare const pseudoDescriptorsBase: {
         readonly name: "focus";
         readonly priority: 3;
     };
+    readonly focusWithinStyle: {
+        readonly name: "focus-within";
+        readonly priority: 3;
+        readonly stateKey: "focusWithin";
+    };
     readonly disabledStyle: {
         readonly name: "disabled";
         readonly priority: 4;

@@ -6,6 +6,7 @@ export const defaultComponentState: TamaguiComponentState = {
   pressIn: false,
   focus: false,
   focusVisible: false,
+  focusWithin: false,
   unmounted: true,
   disabled: false,
 }

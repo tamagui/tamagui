@@ -7,6 +7,7 @@ export type TamaguiComponentState = {
     pressIn?: boolean;
     focus?: boolean;
     focusVisible?: boolean;
+    focusWithin?: boolean;
     animation?: null | {
         style?: any;
         avoidClasses?: boolean;
