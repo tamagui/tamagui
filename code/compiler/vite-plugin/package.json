@@ -44,7 +44,7 @@
     "esm-resolve": "^1.0.8",
     "fs-extra": "^11.2.0",
     "outdent": "^0.8.0",
-    "react-native-web": "^0.19.12"
+    "react-native-web": "^0.19.0"
   },
   "devDependencies": {
     "@tamagui/build": "1.120.1",

@@ -92,7 +92,7 @@
     "react-native": "0.74.1",
     "react-native-safe-area-context": "4.11.0",
     "react-native-svg": "^15.7.1",
-    "react-native-web": "^0.19.12",
+    "react-native-web": "^0.19.0",
     "swr": "^2.2.5",
     "tamagui": "1.120.1",
     "zod": "^3.22.4"

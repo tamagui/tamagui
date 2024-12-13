@@ -140,7 +140,7 @@
   "devDependencies": {
     "@tamagui/build": "1.120.1",
     "react": "*",
-    "react-native-web": "^0.19.12"
+    "react-native-web": "^0.19.0"
   },
   "repository": {
     "type": "git",
