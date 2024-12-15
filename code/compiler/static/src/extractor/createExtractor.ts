@@ -854,7 +854,13 @@ export function createExtractor(
             'disableOptimization',
 
             ...(!isTargetingHTML
-              ? ['pressStyle', 'focusStyle', 'focusVisibleStyle', 'disabledStyle']
+              ? [
+                  'pressStyle',
+                  'focusStyle',
+                  'focusVisibleStyle',
+                  'focusWithinStyle',
+                  'disabledStyle',
+                ]
               : []),
 
             // when using a non-CSS driver, de-opt on enterStyle/exitStyle

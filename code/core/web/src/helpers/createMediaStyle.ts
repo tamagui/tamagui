@@ -12,6 +12,8 @@ let selectors: Record<string, string> | null = null
 
 const groupPseudoToPseudoCSSMap = {
   press: 'active',
+  focusVisible: 'focus-visible',
+  focusWithin: 'focus-within',
 }
 
 const specificities = new Array(5)
@@ -37,6 +39,10 @@ function getThemeOrGroupSelector(
   const pseudoSelector = pseudoSelectorName ? `:${pseudoSelectorName}` : ''
   const presedencePrefix = `:root${precedenceImportancePrefix}${precedenceSpace}`
   const mediaSelector = `.t_${isGroup ? 'group_' : ''}${name}${pseudoSelector}`
+  console.info('final array is ', [
+    selector,
+    `${presedencePrefix}${mediaSelector} ${selector.replaceAll(':root', '')}`,
+  ])
   return [
     selector,
     `${presedencePrefix}${mediaSelector} ${selector.replaceAll(':root', '')}`,
@@ -75,6 +81,7 @@ export const createMediaStyle = (
     if (isTheme || isGroup) {
       const groupParts = getGroupPropParts(isTheme ? 'theme-' + mediaKeyIn : mediaKeyIn)
       const { name, media, pseudo } = groupParts
+      console.info(`groupParts  is `, groupParts)
       groupMediaKey = media
       if (isGroup) {
         containerName = name
@@ -155,6 +162,14 @@ export const createMediaStyle = (
   if (isHover) {
     styleRule = `@media (hover:hover){${styleRule}}`
   }
+
+  console.info('another final array is ', [
+    property,
+    undefined,
+    nextIdentifier,
+    undefined,
+    [styleRule],
+  ])
 
   return [property, undefined, nextIdentifier, undefined, [styleRule]]
 }

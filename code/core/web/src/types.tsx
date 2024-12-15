@@ -114,6 +114,7 @@ type PseudoGroupState = {
   press?: boolean
   focus?: boolean
   focusVisible?: boolean
+  focusWithin?: boolean
 }
 
 // could just be TamaguiComponentState likely
@@ -851,7 +852,7 @@ export type GroupNames = ReturnType<TypeOverride['groupNames']> extends 1
   ? never
   : ReturnType<TypeOverride['groupNames']>
 
-type ParentMediaStates = 'hover' | 'press' | 'focus' | 'focusVisible'
+type ParentMediaStates = 'hover' | 'press' | 'focus' | 'focusVisible' | 'focusWithin'
 
 export type GroupMediaKeys =
   | `$group-${GroupNames}`

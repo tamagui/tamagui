@@ -1,5 +1,5 @@
 import type { ComponentContextI, StackProps, StaticConfig, TamaguiComponentState, TamaguiComponentStateRef, TamaguiInternalConfig, TextProps } from '../types';
-export declare const useComponentState: (props: StackProps | TextProps | Record<string, any>, { animationDriver, groups, onWithinFocus }: ComponentContextI, staticConfig: StaticConfig, config: TamaguiInternalConfig) => {
+export declare const useComponentState: (props: StackProps | TextProps | Record<string, any>, { animationDriver, groups }: ComponentContextI, staticConfig: StaticConfig, config: TamaguiInternalConfig) => {
     curStateRef: TamaguiComponentStateRef;
     disabled: any;
     groupName: string;
