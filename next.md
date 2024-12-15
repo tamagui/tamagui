@@ -1,9 +1,12 @@
-<<<<<<< HEAD
-
 v2:
 
 note: can't remove `as const` using const generics, it just doesnt help with the defaultVariants case at all
 
+  - make sure webContainerType is "right" - probably not `normal` default
+    - https://github.com/tamagui/tamagui/issues/1823#issuecomment-2543950702
+  - we should fix "tag" and have it so you can pass typed props to the tag
+    - tag => as?
+    - tag={['a', { href: '' }]}
   - we may need to move the web-only valid style props to a webOnly const and filter it out on native? how does that work currently...
   - see various `@deprecated` jsdocs
   - need to copy/paste all the component docs to 2.0.0.mdx
@@ -45,7 +48,6 @@ stretch
     - @tamagui/style just style({}) export, takes TextProps
 
 
-=======
 - we should add a docs page on testing tamagui:
 
 jest-preset.js should add (for testing native):
@@ -57,7 +59,7 @@ testEnvironmentOptions: {
 - looks like our upgrade to 1.114 added virtualkeyboardpolicy="manual" which broke the auto keyboard appearance on android web, working on a quick fix but wanted to flag
 
 - deeply nested themeInverse needs a fix see kitchen sink squares
->>>>>>> master
+
 - nan issue: nan start or end NaN 22 bytes: 0-22 [ 'bytes: 0', '22' ]
 
 @natew
