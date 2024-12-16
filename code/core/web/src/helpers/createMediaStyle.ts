@@ -12,6 +12,8 @@ let selectors: Record<string, string> | null = null
 
 const groupPseudoToPseudoCSSMap = {
   press: 'active',
+  focusVisible: 'focus-visible',
+  focusWithin: 'focus-within',
 }
 
 const specificities = new Array(5)

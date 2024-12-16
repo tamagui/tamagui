@@ -332,6 +332,7 @@ export const validPseudoKeys = {
   pressStyle: true,
   focusStyle: true,
   disabledStyle: true,
+  focusWithinStyle: true,
 
   // allow some web only ones
   ...(process.env.TAMAGUI_TARGET === 'web' && {
