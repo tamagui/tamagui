@@ -89,6 +89,8 @@ export type ComponentContextI = {
   inText: boolean
   language: LanguageContextType | null
   animationDriver: AnimationDriver | null
+  onWithinFocus: (() => void) | null
+  onWithinBlur: (() => void) | null
   groups: GroupContextType
 }
 
@@ -112,6 +114,7 @@ type PseudoGroupState = {
   press?: boolean
   focus?: boolean
   focusVisible?: boolean
+  focusWithin?: boolean
 }
 
 // could just be TamaguiComponentState likely
@@ -849,7 +852,7 @@ export type GroupNames = ReturnType<TypeOverride['groupNames']> extends 1
   ? never
   : ReturnType<TypeOverride['groupNames']>
 
-type ParentMediaStates = 'hover' | 'press' | 'focus' | 'focusVisible'
+type ParentMediaStates = 'hover' | 'press' | 'focus' | 'focusVisible' | 'focusWithin'
 
 export type GroupMediaKeys =
   | `$group-${GroupNames}`
@@ -1275,6 +1278,7 @@ export type WithPseudoProps<A> = {
   hoverStyle?: A | null
   pressStyle?: A | null
   focusStyle?: A | null
+  focusWithinStyle?: A | null
   focusVisibleStyle?: A | null
   disabledStyle?: A | null
   exitStyle?: A | null
@@ -1287,6 +1291,7 @@ export type PseudoStyles = {
   hoverStyle?: ViewStyle
   pressStyle?: ViewStyle
   focusStyle?: ViewStyle
+  focusWithinStyle?: ViewStyle
   focusVisibleStyle?: ViewStyle
   disabledStyle?: ViewStyle
   enterStyle?: ViewStyle
@@ -2257,6 +2262,7 @@ export type ViewStyleWithPseudos =
       hoverStyle?: TextStyle
       pressStyle?: TextStyle
       focusStyle?: TextStyle
+      focusWithinStyle?: TextStyle
       focusVisibleStyle?: TextStyle
       disabledStyle?: TextStyle
     })
