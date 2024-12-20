@@ -1,3 +1,5 @@
+- popover trigger should send an event to close tooltips automatically on open
+
 - we should add a docs page on testing tamagui:
 
 jest-preset.js should add (for testing native):

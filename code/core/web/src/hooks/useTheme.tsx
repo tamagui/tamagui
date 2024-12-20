@@ -17,6 +17,7 @@ import type {
   VariableVal,
   VariableValGeneric,
 } from '../types'
+import { shouldDeoptDueToParentScheme } from './shouldDeoptDueToParentScheme'
 
 export type ChangedThemeResponse = {
   state?: ThemeManagerState
@@ -241,19 +242,17 @@ export function getThemeProxied(
                       !shouldDeoptDueToParentScheme(themeManager)
                     ) {
                       if (scheme) {
-                        const oppositeName = name.replace(
-                          scheme === 'dark' ? 'dark' : 'light',
-                          scheme === 'dark' ? 'light' : 'dark'
-                        )
-                        const colorLight = getVariable(config.themes[name]?.[keyString])
-                        const colorDark = getVariable(
+                        const oppositeScheme = scheme === 'dark' ? 'light' : 'dark'
+                        const oppositeName = name.replace(scheme, oppositeScheme)
+                        const color = getVariable(config.themes[name]?.[keyString])
+                        const oppositeColor = getVariable(
                           config.themes[oppositeName]?.[keyString]
                         )
 
                         const dynamicVal = {
                           dynamic: {
-                            light: colorLight,
-                            dark: colorDark,
+                            [scheme]: color,
+                            [oppositeScheme]: oppositeColor,
                           },
                         }
 
@@ -313,36 +312,6 @@ function getIsInversed(manager?: ThemeManager) {
         isInversed = !isInversed
       }
       cur = cur.parentManager
-    }
-  }
-
-  return false
-}
-
-// on iOS for fast scheme change, we assume the root theme name is matching the system
-// but if any intermediate theme is "fixed" to light or dark, we need to opt out
-// optimizing no-rerenders, because it could change by the end-user at any time in the tree
-// but also theres no point in doing a dynamic color in the first place since scheme is fixed one way
-function shouldDeoptDueToParentScheme(manager?: ThemeManager) {
-  if (process.env.TAMAGUI_TARGET === 'native') {
-    // reverse so we get it from root => child (easier to check)
-    const parents = (manager?.getParents() || []).reverse()
-    const rootScheme = parents[0]?.state.scheme
-
-    // de-opt because the root isn't light/dark
-    if (!rootScheme) {
-      return true
-    }
-
-    // dont count the root theme level as fixed because it will be matching system theme
-    let lastParentScheme = rootScheme
-
-    // we want to return true if a scheme changes anywhere in the tree
-    for (const parent of parents) {
-      if (parent.state.scheme !== lastParentScheme) {
-        return true
-      }
-      lastParentScheme = parent.state.scheme
     }
   }
 
