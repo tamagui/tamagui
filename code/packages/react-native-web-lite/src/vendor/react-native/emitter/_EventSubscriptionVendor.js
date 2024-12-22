@@ -9,7 +9,7 @@
  */
 'use strict'
 
-import { invariant } from 'react-native-web-internals'
+import { invariant } from '@tamagui/react-native-web-internals'
 
 /**
  * EventSubscriptionVendor stores a set of EventSubscriptions that are
@@ -29,7 +29,7 @@ class EventSubscriptionVendor {
   addSubscription(eventType, subscription) {
     invariant(
       subscription.subscriber === this,
-      'The subscriber of the subscription is incorrectly set.',
+      'The subscriber of the subscription is incorrectly set.'
     )
 
     if (!this._subscriptionsForType[eventType]) {

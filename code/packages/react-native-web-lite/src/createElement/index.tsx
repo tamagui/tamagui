@@ -12,7 +12,9 @@ import {
   AccessibilityUtil,
   LocaleProvider,
   createDOMProps,
-} from 'react-native-web-internals'
+  stylesFromProps,
+} from '@tamagui/react-native-web-internals'
+import { wrapStyleTags } from '@tamagui/web'
 
 const createElement = (component, props, options?) => {
   // Use equivalent platform elements where possible.
@@ -23,7 +25,13 @@ const createElement = (component, props, options?) => {
   const Component = accessibilityComponent || component
   const domProps = createDOMProps(Component, props, options)
 
-  const element = React.createElement(Component, domProps)
+  const styles = stylesFromProps.get(domProps)
+
+  let element = React.createElement(Component, domProps)
+
+  if (styles) {
+    element = wrapStyleTags(styles, element)
+  }
 
   // Update locale context if element's writing direction prop changes
   const elementWithLocaleProvider = domProps.dir ? (

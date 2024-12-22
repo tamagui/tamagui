@@ -1,11 +1,10 @@
 import { FloatingFocusManager } from '@floating-ui/react'
+import { AdaptPortalContents, useAdaptIsActive } from '@tamagui/adapt'
 import { AnimatePresence } from '@tamagui/animate-presence'
-import { composeRefs } from '@tamagui/compose-refs'
+import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
-import { View, styled } from '@tamagui/core'
-import { PortalItem } from '@tamagui/portal'
+import { styled } from '@tamagui/core'
 import { ThemeableStack } from '@tamagui/stacks'
-
 import { VIEWPORT_NAME } from './constants'
 import {
   ForwardSelectContext,
@@ -17,7 +16,6 @@ import type {
   SelectViewportExtraProps,
   SelectViewportProps,
 } from './types'
-import { useSelectBreakpointActive } from './useSelectBreakpointActive'
 
 /* -------------------------------------------------------------------------------------------------
  * SelectViewport
@@ -57,21 +55,21 @@ export const SelectViewport = SelectViewportFrame.styleable<SelectViewportExtraP
     const { __scopeSelect, children, disableScroll, ...viewportProps } = props
     const context = useSelectContext(VIEWPORT_NAME, __scopeSelect)
     const itemContext = useSelectItemParentContext(VIEWPORT_NAME, __scopeSelect)
-    const breakpointActive = useSelectBreakpointActive(context.sheetBreakpoint)
+    const isAdapted = useAdaptIsActive()
 
     useIsomorphicLayoutEffect(() => {
       if (context.update) {
         context.update()
       }
-    }, [breakpointActive])
+    }, [isAdapted])
 
     if (itemContext.shouldRenderWebNative) {
       return <>{children}</>
     }
 
-    if (breakpointActive || !isWeb) {
+    if (isAdapted || !isWeb) {
       return (
-        <PortalItem hostName={`${context.scopeKey}SheetContents`}>
+        <AdaptPortalContents>
           <ForwardSelectContext
             __scopeSelect={__scopeSelect}
             itemContext={itemContext}
@@ -79,7 +77,7 @@ export const SelectViewport = SelectViewportFrame.styleable<SelectViewportExtraP
           >
             {children}
           </ForwardSelectContext>
-        </PortalItem>
+        </AdaptPortalContents>
       )
     }
 
@@ -98,7 +96,7 @@ export const SelectViewport = SelectViewportFrame.styleable<SelectViewportExtraP
       ...floatingProps
     } = itemContext.interactions.getFloatingProps()
 
-    const composedRefs = composeRefs(
+    const composedRefs = useComposedRefs(
       forwardedRef,
       context.floatingContext?.refs.setFloating
     )
@@ -123,7 +121,7 @@ export const SelectViewport = SelectViewportFrame.styleable<SelectViewportExtraP
                 {...style}
                 {...floatingProps}
                 {...(!props.unstyled && {
-                  overflowY: disableScroll ? undefined : style.overflow ?? 'auto',
+                  overflowY: disableScroll ? undefined : (style.overflow ?? 'auto'),
                 })}
                 ref={composedRefs}
               >

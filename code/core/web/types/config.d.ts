@@ -3,6 +3,7 @@ export declare const getSetting: <Key extends keyof GenericTamaguiSettings>(key:
 export declare const setConfig: (next: TamaguiInternalConfig) => void;
 export declare const setConfigFont: (name: string, font: any, fontParsed: any) => void;
 export declare const getConfig: () => TamaguiInternalConfig;
+export declare const getConfigMaybe: () => TamaguiInternalConfig | null;
 export declare function setTokens(_: TokensMerged): void;
 export declare const getTokens: ({ prefixed, }?: {
     /**

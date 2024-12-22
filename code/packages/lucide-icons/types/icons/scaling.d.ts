@@ -1,4 +1,3 @@
-import React from "react";
 import type { IconProps } from '@tamagui/helpers-icon';
-export declare const Scaling: React.NamedExoticComponent<IconProps>;
+export declare const Scaling: import("react").NamedExoticComponent<IconProps>;
 //# sourceMappingURL=scaling.d.ts.map

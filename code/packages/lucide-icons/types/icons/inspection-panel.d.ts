@@ -1,4 +1,3 @@
-import React from "react";
 import type { IconProps } from '@tamagui/helpers-icon';
-export declare const InspectionPanel: React.NamedExoticComponent<IconProps>;
+export declare const InspectionPanel: import("react").NamedExoticComponent<IconProps>;
 //# sourceMappingURL=inspection-panel.d.ts.map

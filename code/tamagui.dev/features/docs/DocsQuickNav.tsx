@@ -1,7 +1,7 @@
 import { classNames } from '@tamagui/remove-scroll'
 import { useEffect, useState } from 'react'
 import { Circle, H4, Paragraph, ScrollView, Separator, XStack, YStack } from 'tamagui'
-import { Link } from '~/components/Link'
+import type { Href } from 'one'
 
 import type { LinkProps } from '~/components/Link'
 
@@ -67,7 +67,7 @@ export function DocsQuickNav() {
         gap="$2"
       >
         <H4 size="$2" mx="$2" theme="alt1" id="site-quick-nav-heading">
-          Quick nav
+          Contents
         </H4>
         <Separator />
 
@@ -79,7 +79,7 @@ export function DocsQuickNav() {
                 return (
                   <XStack key={i} tag="li" ai="center">
                     {level > 2 && <Circle size={4} mx="$2" />}
-                    <QuickNavLink href={`#${id}`}>{innerText}</QuickNavLink>
+                    <QuickNavLink href={`#${id}` as Href}>{innerText}</QuickNavLink>
                   </XStack>
                 )
               })}

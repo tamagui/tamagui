@@ -9,7 +9,7 @@ import {
   Text,
   createTamagui,
   styled,
-} from '../core/src'
+} from '../web/src'
 import { simplifiedGetSplitStyles } from './utils'
 
 beforeAll(() => {
@@ -47,12 +47,14 @@ describe('getSplitStyles', () => {
   })
 
   test(`font props get the font family, regardless of the order`, () => {
+    const styles = simplifiedGetSplitStyles(Text, {
+      fontSize: '$1',
+    }).rulesToInsert
+
     expect(
-      Object.values(
-        simplifiedGetSplitStyles(Text, {
-          fontSize: '$1',
-        }).rulesToInsert
-      ).find((rule) => rule[StyleObjectProperty] === 'fontSize')?.[StyleObjectValue]
+      Object.values(styles).find((rule) => rule[StyleObjectProperty] === 'fontSize')?.[
+        StyleObjectValue
+      ]
     ).toEqual('var(--f-size-1)') // no family provided - this is expected
 
     expect(
@@ -113,7 +115,7 @@ describe('getSplitStyles', () => {
       Object.values(styles.rulesToInsert)[0][StyleObjectProperty] === 'zIndex'
     ).toBeTruthy()
     expect(Object.values(styles.rulesToInsert)[0][StyleObjectValue]).toEqual(
-      'var(--zIndex-1)'
+      'var(--t-zIndex-1)'
     )
   })
 
@@ -137,10 +139,10 @@ describe('getSplitStyles', () => {
         color: 'red',
       },
     })
-    expect(
-      Object.values(styles.rulesToInsert)[0][StyleObjectRules][0]
-    ).toMatchInlineSnapshot(
-      '"@supports (contain: inline-size) {@container testy (max-width: 800px){:root:root .t_group_testy  ._col-_grouptesty-sm_red{color:red;}}}"'
+    const rule = Object.values(styles.rulesToInsert)[0][StyleObjectRules][0]
+
+    expect(rule).toMatchInlineSnapshot(
+      '"@supports (contain: inline-size) {@container testy (max-width: 800px){:root:root:root .t_group_testy  ._col-_grouptesty-sm_red{color:red;}}}"'
     )
   })
 

@@ -12,61 +12,96 @@ export * from './utils'
 
 const emptyObject = {}
 
+const Attached = new WeakMap<any, boolean>()
+const Ids = new WeakMap<any, string>()
+
 export function useResponderEvents(
   hostRef: any,
-  config: ResponderSystem.ResponderConfig = emptyObject
+  configIn: ResponderSystem.ResponderConfig = emptyObject
 ) {
-  const id = React.useId()
-  const isAttachedRef = React.useRef(false)
-
-  // This is a separate effects so it doesn't run when the config changes.
-  // On initial mount, attach global listeners if needed.
-  // On unmount, remove node potentially attached to the Responder System.
-  React.useEffect(() => {
-    ResponderSystem.attachListeners()
-    return () => {
-      ResponderSystem.removeNode(id)
-    }
-  }, [id])
+  const config = getResponderConfigIfDefined(configIn)
+  // tamagui + rnw compat
+  const node = hostRef?.current?.host || hostRef?.current
 
   // Register and unregister with the Responder System as necessary
   React.useEffect(() => {
-    const {
-      onMoveShouldSetResponder,
-      onMoveShouldSetResponderCapture,
-      onScrollShouldSetResponder,
-      onScrollShouldSetResponderCapture,
-      onSelectionChangeShouldSetResponder,
-      onSelectionChangeShouldSetResponderCapture,
-      onStartShouldSetResponder,
-      onStartShouldSetResponderCapture,
-    } = config
+    if (config === emptyObject) return
 
-    const requiresResponderSystem =
-      onMoveShouldSetResponder != null ||
-      onMoveShouldSetResponderCapture != null ||
-      onScrollShouldSetResponder != null ||
-      onScrollShouldSetResponderCapture != null ||
-      onSelectionChangeShouldSetResponder != null ||
-      onSelectionChangeShouldSetResponderCapture != null ||
-      onStartShouldSetResponder != null ||
-      onStartShouldSetResponderCapture != null
+    ResponderSystem.attachListeners()
 
-    const node = hostRef.current
-
-    if (requiresResponderSystem) {
-      ResponderSystem.addNode(id, node, config)
-      isAttachedRef.current = true
-    } else if (isAttachedRef.current) {
-      ResponderSystem.removeNode(id)
-      isAttachedRef.current = false
+    if (!Ids.has(hostRef)) {
+      Ids.set(hostRef, `${Math.random()}`)
     }
-  }, [config, hostRef, id])
+    const id = Ids.get(hostRef)!
+
+    ResponderSystem.addNode(id, node, config)
+    Attached.set(hostRef, true)
+
+    return () => {
+      ResponderSystem.removeNode(node)
+      Attached.set(hostRef, false)
+    }
+  }, [config, hostRef])
 
   if (process.env.NODE_ENV === 'development') {
     React.useDebugValue({
-      isResponder: hostRef.current === ResponderSystem.getResponderNode(),
+      isResponder: node === ResponderSystem.getResponderNode(),
     })
     React.useDebugValue(config)
   }
+}
+
+export function getResponderConfigIfDefined({
+  onMoveShouldSetResponder,
+  onMoveShouldSetResponderCapture,
+  onResponderEnd,
+  onResponderGrant,
+  onResponderMove,
+  onResponderReject,
+  onResponderRelease,
+  onResponderStart,
+  onResponderTerminate,
+  onResponderTerminationRequest,
+  onScrollShouldSetResponder,
+  onScrollShouldSetResponderCapture,
+  onSelectionChangeShouldSetResponder,
+  onSelectionChangeShouldSetResponderCapture,
+  onStartShouldSetResponder,
+  onStartShouldSetResponderCapture,
+}: ResponderSystem.ResponderConfig): ResponderSystem.ResponderConfig {
+  return onMoveShouldSetResponder ||
+    onMoveShouldSetResponderCapture ||
+    onResponderEnd ||
+    onResponderGrant ||
+    onResponderMove ||
+    onResponderReject ||
+    onResponderRelease ||
+    onResponderStart ||
+    onResponderTerminate ||
+    onResponderTerminationRequest ||
+    onScrollShouldSetResponder ||
+    onScrollShouldSetResponderCapture ||
+    onSelectionChangeShouldSetResponder ||
+    onSelectionChangeShouldSetResponderCapture ||
+    onStartShouldSetResponder ||
+    onStartShouldSetResponderCapture
+    ? {
+        onMoveShouldSetResponder,
+        onMoveShouldSetResponderCapture,
+        onResponderEnd,
+        onResponderGrant,
+        onResponderMove,
+        onResponderReject,
+        onResponderRelease,
+        onResponderStart,
+        onResponderTerminate,
+        onResponderTerminationRequest,
+        onScrollShouldSetResponder,
+        onScrollShouldSetResponderCapture,
+        onSelectionChangeShouldSetResponder,
+        onSelectionChangeShouldSetResponderCapture,
+        onStartShouldSetResponder,
+        onStartShouldSetResponderCapture,
+      }
+    : emptyObject
 }

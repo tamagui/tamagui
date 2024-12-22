@@ -33,6 +33,24 @@ function transformFile(file, options) {
   const isTs = file.endsWith('.ts') || file.endsWith('.tsx')
   const isReact = file.endsWith('.jsx') || file.endsWith('.tsx')
   let transformOptions = {
+    env: {
+      targets: {
+        node: '4',
+      },
+      include: [],
+      // this breaks the uniswap app for any file with a ...spread
+      exclude: [
+        'transform-spread',
+        'transform-destructuring',
+        'transform-object-rest-spread',
+        // `transform-async-to-generator` is relying on `transform-destructuring`.
+        // If we exclude `transform-destructuring` but not `transform-async-to-generator`, the SWC binary will panic
+        // with error: `called `Option::unwrap()` on a `None` value`.
+        // See: https://github.com/swc-project/swc/blob/v1.7.14/crates/swc_ecma_compat_es2015/src/generator.rs#L703-L705
+        'transform-async-to-generator',
+        'transform-regenerator', // Similar to above
+      ],
+    },
     jsc: {
       preserveAllComments: true,
       externalHelpers: false,
@@ -47,7 +65,6 @@ function transformFile(file, options) {
         tsx: isReact && isTs,
         jsx: isReact && !isTs,
       },
-      target: 'es5',
     },
     module: { type: 'es6' },
     sourceFileName: file,

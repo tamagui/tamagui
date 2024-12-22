@@ -4,7 +4,7 @@ import { CircleDashed, Paintbrush } from '@tamagui/lucide-icons'
 import { Toast, useToastState } from '@tamagui/toast'
 import { startTransition } from 'react'
 import { Anchor, Button, H1, SizableText, Theme, View, XStack, YStack } from 'tamagui'
-import { Link, useLocalSearchParams } from 'vxs'
+import { Link, useParams } from 'one'
 import { ContainerBento } from '~/components/Containers'
 import { BentoLogo } from '~/features/bento/BentoLogo'
 import { BentoPageFrame } from '~/features/bento/BentoPageFrame'
@@ -19,7 +19,7 @@ export const generateStaticParams = async () => {
 }
 
 function useParts() {
-  const { parts } = useLocalSearchParams() as { parts: string[] }
+  const { parts } = useParams() as { parts: string[] }
   const [section, part] = parts
   return { section, part }
 }
@@ -30,11 +30,6 @@ export default function BentoPage() {
   const Comp = Sections?.[section]?.[part]
 
   if (!Comp) {
-    return null
-  }
-
-  // TODO for now not SSRing just client
-  if (typeof window === 'undefined') {
     return null
   }
 

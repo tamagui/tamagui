@@ -7,4 +7,4 @@
  * @flow strict
  */
 
-export { useLocaleContext } from 'react-native-web-internals'
+export { useLocaleContext } from '@tamagui/react-native-web-internals'

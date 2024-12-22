@@ -3,7 +3,7 @@ import { isWeb } from '@tamagui/constants'
 import type { GestureReponderEvent } from '@tamagui/core'
 import { composeEventHandlers } from '@tamagui/helpers'
 import { useLabelContext } from '@tamagui/label'
-import React from 'react'
+import React, { useCallback, useMemo } from 'react'
 import type { PressableProps, View, ViewProps } from 'react-native'
 
 import { BubbleInput } from './BubbleInput'
@@ -50,13 +50,39 @@ export function useCheckbox<R extends View, P extends CheckboxProps>(
     ...checkboxProps
   } = props
   const [button, setButton] = React.useState<HTMLButtonElement | null>(null)
-  const composedRefs = useComposedRefs(ref, (node) => setButton(node as any))
+  const composedRefs = useComposedRefs(ref, setButton as any)
   const hasConsumerStoppedPropagationRef = React.useRef(false)
   // We set this to true by default so that events bubble to forms without JS (SSR)
   const isFormControl = isWeb ? (button ? Boolean(button.closest('form')) : true) : false
 
   const labelId = useLabelContext(button)
   const labelledBy = ariaLabelledby || labelId
+
+  const parentKeyDown = (props as React.HTMLProps<HTMLButtonElement>).onKeyDown
+
+  const handleKeyDown = useMemo(
+    () =>
+      composeEventHandlers(parentKeyDown, (event) => {
+        // According to WAI ARIA, Checkboxes don't activate on enter keypress
+        if (event.key === 'Enter') event.preventDefault()
+      }),
+    [parentKeyDown]
+  )
+
+  const handlePress = useMemo(
+    () =>
+      composeEventHandlers(props.onPress as any, (event: GestureReponderEvent) => {
+        setChecked((prevChecked) => (isIndeterminate(prevChecked) ? true : !prevChecked))
+        if (isFormControl && 'isPropagationStopped' in event) {
+          hasConsumerStoppedPropagationRef.current = event.isPropagationStopped()
+          // if checkbox is in a form, stop propagation from the button so that we only propagate
+          // one click event (from the input). We propagate changes from an input so that native
+          // form validation works and form events reflect checkbox updates.
+          if (!hasConsumerStoppedPropagationRef.current) event.stopPropagation()
+        }
+      }),
+    [isFormControl]
+  )
 
   return {
     bubbleInput:
@@ -84,29 +110,9 @@ export function useCheckbox<R extends View, P extends CheckboxProps>(
         'data-state': getState(checked),
         'data-disabled': disabled ? '' : undefined,
         disabled: disabled,
-        onKeyDown: composeEventHandlers(
-          (props as React.HTMLProps<HTMLButtonElement>).onKeyDown,
-          (event) => {
-            // According to WAI ARIA, Checkboxes don't activate on enter keypress
-            if (event.key === 'Enter') event.preventDefault()
-          }
-        ),
+        onKeyDown: handleKeyDown,
       }),
-      onPress: composeEventHandlers(
-        props.onPress as any,
-        (event: GestureReponderEvent) => {
-          setChecked((prevChecked) =>
-            isIndeterminate(prevChecked) ? true : !prevChecked
-          )
-          if (isFormControl && 'isPropagationStopped' in event) {
-            hasConsumerStoppedPropagationRef.current = event.isPropagationStopped()
-            // if checkbox is in a form, stop propagation from the button so that we only propagate
-            // one click event (from the input). We propagate changes from an input so that native
-            // form validation works and form events reflect checkbox updates.
-            if (!hasConsumerStoppedPropagationRef.current) event.stopPropagation()
-          }
-        }
-      ),
+      onPress: handlePress,
     } satisfies CheckboxBaseProps,
   }
 }

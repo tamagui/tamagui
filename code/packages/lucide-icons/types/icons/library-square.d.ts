@@ -1,4 +1,3 @@
-import React from "react";
 import type { IconProps } from '@tamagui/helpers-icon';
-export declare const LibrarySquare: React.NamedExoticComponent<IconProps>;
+export declare const LibrarySquare: import("react").NamedExoticComponent<IconProps>;
 //# sourceMappingURL=library-square.d.ts.map

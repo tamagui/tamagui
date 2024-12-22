@@ -1,2 +1,2 @@
-export declare const simpleHash: (str: string, hashMin?: number | "strict") => any;
+export declare const simpleHash: (strIn: string, hashMin?: number | "strict") => any;
 //# sourceMappingURL=index.d.ts.map

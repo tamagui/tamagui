@@ -11,7 +11,7 @@ import {
 export function withTamagui(
   metroConfig: ComposableIntermediateConfigT,
   optionsIn?: TamaguiOptions & {
-    disableCSSInterop?: boolean
+    enableCSSInterop?: boolean
   }
 ) {
   const options = {
@@ -27,7 +27,7 @@ export function withTamagui(
     void extractor.loadTamagui(options)
   }
 
-  if (!options.disableCSSInterop) {
+  if (options.enableCSSInterop) {
     metroConfig = withCssInterop(metroConfig, {
       ignorePropertyWarningRegex: ['^--'],
       // grouping: ['^group(/.*)?'],

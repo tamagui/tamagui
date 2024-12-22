@@ -1,7 +1,6 @@
 import type { GetProps, StackProps, TamaguiElement } from '@tamagui/core';
 import type { DismissableProps } from '@tamagui/dismissable';
 import type { FocusScopeProps } from '@tamagui/focus-scope';
-import type { PortalItemProps } from '@tamagui/portal';
 import { RemoveScroll } from '@tamagui/remove-scroll';
 import type { YStackProps } from '@tamagui/stacks';
 import * as React from 'react';
@@ -35,13 +34,12 @@ type DialogContextValue = {
     onOpenChange: NonNull<DialogProps['onOpenChange']>;
     modal: NonNull<DialogProps['modal']>;
     allowPinchZoom: NonNull<DialogProps['allowPinchZoom']>;
-    sheetBreakpoint: any;
     scopeKey: string;
 };
 interface DialogTriggerProps extends StackProps {
 }
 declare const DialogTrigger: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}>, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & void, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic>;
-type DialogPortalProps = Omit<PortalItemProps, 'asChild'> & YStackProps & {
+type DialogPortalProps = YStackProps & {
     /**
      * Used to force mounting when more control is needed. Useful when
      * controlling animation with React animation libraries.
@@ -214,7 +212,7 @@ declare const Dialog: React.ForwardRefExoticComponent<DialogProps & React.RefAtt
     }, import("@tamagui/core").StaticConfigPublic>;
     Close: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}>, "displayWhenAdapted"> & DialogCloseExtraProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & DialogCloseExtraProps, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic>;
     Sheet: React.FunctionComponent<Omit<import("@tamagui/sheet").SheetProps, "open" | "onOpenChange"> & React.RefAttributes<import("react-native").View>> & {
-        Frame: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+        Frame: import("react").ForwardRefExoticComponent<import("@tamagui/sheet").SheetScopedProps<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
             elevation?: number | import("@tamagui/core").SizeTokens | undefined;
             fullscreen?: boolean | undefined;
             inset?: number | import("@tamagui/core").SizeTokens | {
@@ -230,9 +228,7 @@ declare const Dialog: React.ForwardRefExoticComponent<DialogProps & React.RefAtt
         }> & {
             disableHideBottomOverflow?: boolean;
             adjustPaddingForOffscreenContent?: boolean;
-        } & {
-            __scopeSheet?: import("@tamagui/create-context").Scope<any>;
-        } & import("react").RefAttributes<unknown>>;
+        }>>;
         Overlay: import("react").MemoExoticComponent<(propsIn: import("@tamagui/sheet/types/types").SheetScopedProps<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
             elevation?: number | import("@tamagui/core").SizeTokens | undefined;
             fullscreen?: boolean | undefined;
@@ -277,17 +273,21 @@ declare const Dialog: React.ForwardRefExoticComponent<DialogProps & React.RefAtt
             fullscreen?: boolean | undefined;
         }>> & import("react").RefAttributes<import("react-native").ScrollView>>;
     };
-    Adapt: (({ platform, when, children }: import("@tamagui/adapt").AdaptProps) => JSX.Element | null) & {
+    Adapt: ((props: import("@tamagui/adapt").AdaptProps) => import("react/jsx-runtime").JSX.Element) & {
         Contents: {
-            (props: any): React.FunctionComponentElement<any>;
+            ({ scope, 
+            /**
+             * @see https://github.com/theKashey/react-remove-scroll#usage
+             */
+            ... /**
+             * @see https://github.com/theKashey/react-remove-scroll#usage
+             */rest }: {
+                scope?: string;
+            }): React.FunctionComponentElement<any>;
             shouldForwardSpace: boolean;
         };
     };
 };
-export declare const DialogSheetContents: ({ name, ...props }: {
-    name: string;
-    context: Omit<DialogContextValue, "sheetBreakpoint">;
-}) => import("react/jsx-runtime").JSX.Element;
 export { Dialog, DialogClose, DialogContent, DialogDescription, DialogOverlay, DialogPortal, DialogTitle, DialogTrigger, DialogWarningProvider, createDialogScope, };
 export type { DialogCloseProps, DialogContentProps, DialogDescriptionProps, DialogOverlayProps, DialogPortalProps, DialogProps, DialogTitleProps, DialogTriggerProps, };
 //# sourceMappingURL=Dialog.d.ts.map

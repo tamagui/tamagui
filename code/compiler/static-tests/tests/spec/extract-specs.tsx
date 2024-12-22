@@ -9,7 +9,6 @@ import {
   createTamagui,
   useMedia,
 } from '@tamagui/sandbox-ui'
-import React from 'react'
 
 import { testColor } from './constants'
 import { baseStyle, nestedStyle } from './extract-spec-constants'

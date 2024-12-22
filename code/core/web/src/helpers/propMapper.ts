@@ -139,7 +139,11 @@ const resolveVariants: StyleResolver = (
     const extras = getVariantExtras(styleState)
     variantValue = fn(value, extras)
 
-    if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+    if (
+      process.env.NODE_ENV === 'development' &&
+      debug === 'verbose' &&
+      process.env.TAMAGUI_TARGET !== 'native'
+    ) {
       console.groupCollapsed('   expanded functional variant', key)
       console.info({ fn, variantValue, extras })
       console.groupEnd()
@@ -387,16 +391,13 @@ export const getTokenForKey = (
 
   if (theme && value in theme) {
     valOrVar = theme[value]
-    if (styleState.skipThemeTokenResolution && valOrVar?.val) {
-      if (process.env.NODE_ENV === 'development' && styleState.debug === 'verbose') {
-        console.info(
-          ` - keep original value: ${value} for ${key} due to enableFlattenThemeOnNative: true`
-        )
-      }
-      return value
-    }
     if (process.env.NODE_ENV === 'development' && styleState.debug === 'verbose') {
-      console.info(` - resolving ${key} to theme value ${value}: ${valOrVar?.val}`)
+      globalThis.tamaguiAvoidTracking = true
+      console.info(
+        ` - resolving ${key} to theme value ${value} resolveAs ${resolveAs}`,
+        valOrVar
+      )
+      globalThis.tamaguiAvoidTracking = false
     }
     hasSet = true
   } else {
@@ -418,13 +419,12 @@ export const getTokenForKey = (
         case 'lineHeight':
         case 'letterSpacing':
         case 'fontWeight': {
-          const defaultFont = conf.defaultFont || '$body'
-          const fam = fontFamily || defaultFont
+          const fam = fontFamily || conf.defaultFontToken
           if (fam) {
             const fontsParsed = context?.language
               ? getFontsForLanguage(conf.fontsParsed, context.language)
               : conf.fontsParsed
-            const font = fontsParsed[fam] || fontsParsed[defaultFont]
+            const font = fontsParsed[fam] || fontsParsed[conf.defaultFontToken]
             valOrVar = font?.[fontShorthand[key] || key]?.[value] || value
             hasSet = true
           }
@@ -454,7 +454,9 @@ export const getTokenForKey = (
   if (hasSet) {
     const out = resolveVariableValue(key, valOrVar, resolveAs)
     if (process.env.NODE_ENV === 'development' && styleState.debug === 'verbose') {
+      globalThis.tamaguiAvoidTracking = true
       console.info(`resolved`, resolveAs, valOrVar, out)
+      globalThis.tamaguiAvoidTracking = false
     }
     return out
   }
@@ -476,13 +478,15 @@ function resolveVariableValue(
     if (resolveValues === 'value') {
       return valOrVar.val
     }
+
     // @ts-expect-error this is fine until we can type better
     const get = valOrVar?.get
 
     // shadowColor doesn't support dynamic style
     if (process.env.TAMAGUI_TARGET !== 'native' || key !== 'shadowColor') {
       if (typeof get === 'function') {
-        return get(resolveValues === 'web' ? 'web' : undefined)
+        const resolveDynamicFor = resolveValues === 'web' ? 'web' : undefined
+        return get(resolveDynamicFor)
       }
     }
 

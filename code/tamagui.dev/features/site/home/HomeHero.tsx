@@ -55,7 +55,7 @@ const HeroSubTitle = memo(() => {
         </Tag>
       </Link>{' '}
       ·{' '}
-      <Link asChild href="/docs/components/stacks">
+      <Link asChild href="/ui/stacks">
         <Tag theme="purple" onHoverIn={() => setHovered(2)} active={hovered === 2}>
           UI&nbsp;kit
         </Tag>
@@ -221,8 +221,7 @@ const HeroContents = memo(function HeroContents() {
             {/* add gradient to other colors: */}
             <br />
             <span style={{ position: 'relative' }}>
-              <span style={{ opacity: 0 }}>runs&nbsp;faster</span>
-              <RunsFasterTextEffects />
+              <TextWithEffects text="runs&nbsp;faster" />
             </span>
           </H1>
 
@@ -445,7 +444,7 @@ const HeroText = styled(Text, {
   },
 })
 
-const RunsFasterTextEffects = () => {
+const TextWithEffects = ({ text }: { text: string }) => {
   // for a fade in delay effect
   // const [show, setShow] = useState(false)
 
@@ -457,71 +456,82 @@ const RunsFasterTextEffects = () => {
   //     clearTimeout(tm)
   //   }
   // }, [])
-
   return (
-    <YStack
-      animation="lazy"
-      fullscreen
-      // {...(!show && {
-      //   y: -10,
-      //   o: 0,
-      // })}
-      // {...(show && {
-      //   y: 0,
-      //   o: 1,
-      // })}
-    >
-      <HeroText className="clip-text rainbow" l={-4} $sm={{ l: 0 }}>
-        runs&nbsp;faster
-      </HeroText>
-      <ThemeTintAlt offset={2}>
+    <>
+      <span style={{ opacity: 0 }}>{text}</span>
+      <YStack
+        animation="lazy"
+        fullscreen
+        // {...(!show && {
+        //   y: -10,
+        //   o: 0,
+        // })}
+        // {...(show && {
+        //   y: 0,
+        //   o: 1,
+        // })}
+      >
         <HeroText
-          className="mask-gradient-down"
-          style={{ mixBlendMode: 'hard-light' }}
-          pe="none"
-          o={0.5}
-          col="$color8"
-          $sm={{ l: 3 }}
-        >
-          runs&nbsp;faster
-        </HeroText>
-      </ThemeTintAlt>
-      <ThemeTintAlt offset={1}>
-        <HeroText
-          l={-3}
-          className="mask-gradient-up"
-          style={{ mixBlendMode: 'hard-light' }}
-          pe="none"
-          col="$color8"
-          $sm={{ l: 1.5 }}
-        >
-          runs&nbsp;faster
-        </HeroText>
-      </ThemeTintAlt>
-      <ThemeTintAlt offset={-2}>
-        <HeroText
-          l={0}
-          className="mask-gradient-right"
-          pe="none"
-          col="$color8"
-          o={0.26}
-          $sm={{ l: 3 }}
-        >
-          runs&nbsp;faster
-        </HeroText>
-      </ThemeTintAlt>
-      <ThemeTintAlt offset={-3}>
-        <HeroText
-          l={0}
-          className="mask-gradient-right"
-          pe="none"
-          col="$color8"
-          o={0.5}
-          $sm={{ l: 3 }}
-        >
-          runs&nbsp;faster
-        </HeroText>
-      </ThemeTintAlt>
-    </YStack>
+          className="clip-text rainbow"
+          l={-4}
+          $sm={{ l: 0 }}
+          dangerouslySetInnerHTML={{
+            __html: text,
+          }}
+        />
+        <ThemeTintAlt offset={2}>
+          <HeroText
+            className="mask-gradient-down"
+            style={{ mixBlendMode: 'hard-light' }}
+            pe="none"
+            o={0.5}
+            col="$color8"
+            $sm={{ l: 3 }}
+            dangerouslySetInnerHTML={{
+              __html: text,
+            }}
+          />
+        </ThemeTintAlt>
+        <ThemeTintAlt offset={1}>
+          <HeroText
+            l={-3}
+            className="mask-gradient-up"
+            style={{ mixBlendMode: 'hard-light' }}
+            pe="none"
+            col="$color8"
+            $sm={{ l: 1.5 }}
+            dangerouslySetInnerHTML={{
+              __html: text,
+            }}
+          />
+        </ThemeTintAlt>
+        <ThemeTintAlt offset={-2}>
+          <HeroText
+            l={0}
+            className="mask-gradient-right"
+            pe="none"
+            col="$color8"
+            o={0.26}
+            $sm={{ l: 3 }}
+            dangerouslySetInnerHTML={{
+              __html: text,
+            }}
+          />
+        </ThemeTintAlt>
+        <ThemeTintAlt offset={-3}>
+          <HeroText
+            l={0}
+            className="mask-gradient-right"
+            pe="none"
+            col="$color8"
+            o={0.5}
+            $sm={{ l: 3 }}
+            dangerouslySetInnerHTML={{
+              __html: text,
+            }}
+          />
+        </ThemeTintAlt>
+      </YStack>
+    </>
   )
 }

@@ -9,7 +9,7 @@
  */
 
 import * as React from 'react'
-import { StyleSheet } from 'react-native-web-internals'
+import { StyleSheet } from '@tamagui/react-native-web-internals'
 import {
   TextInputState,
   forwardedProps,
@@ -20,7 +20,7 @@ import {
   useMergeRefs,
   usePlatformMethods,
   useResponderEvents,
-} from 'react-native-web-internals'
+} from '@tamagui/react-native-web-internals'
 
 import createElement from '../createElement/index'
 import type { PlatformMethods } from '../types'
@@ -61,6 +61,7 @@ const forwardPropsList = Object.assign(
   forwardedProps.styleProps,
   {
     autoCapitalize: true,
+    className: true,
     autoComplete: true,
     autoCorrect: true,
     autoFocus: true,
@@ -431,18 +432,7 @@ TextInput.displayName = 'TextInput'
 TextInput.State = TextInputState
 
 const styles = StyleSheet.create({
-  textinput$raw: {
-    MozAppearance: 'textfield',
-    WebkitAppearance: 'none',
-    backgroundColor: 'transparent',
-    border: '0 solid black',
-    borderRadius: 0,
-    boxSizing: 'border-box',
-    font: '14px System',
-    margin: 0,
-    padding: 0,
-    resize: 'none',
-  },
+  textinput$raw: {},
   placeholder: {
     placeholderTextColor: 'var(--placeholderTextColor)',
   },

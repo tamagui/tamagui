@@ -1,10 +1,10 @@
 import { getStore, useStoreSelector } from '@tamagui/use-store'
-import { Link } from '~/components/Link'
 import { createElement, useRef } from 'react'
 import { SizableText, Spacer, XStack, YStack } from 'tamagui'
-
-import type { NavItemProps } from './DocsPage'
+import type { Href } from 'one'
+import { Link } from '~/components/Link'
 import { ExternalIcon } from '~/features/icons/ExternalIcon'
+import type { NavItemProps } from './DocsPage'
 
 export class DocsItemsStore {
   hovered = false
@@ -32,7 +32,7 @@ export const DocsRouteNavItem = function DocsRouteNavItem({
   return (
     <Link
       {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-      href={href}
+      href={href as Href}
     >
       <XStack
         ref={ref}

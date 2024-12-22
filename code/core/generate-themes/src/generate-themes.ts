@@ -9,10 +9,15 @@ type ThemeBuilderInterceptOpts = {
 
 const ogRequire = Module.prototype.require
 
+let didRegisterOnce = false
+
 export async function generateThemes(inputFile: string) {
-  const { unregister } = require('esbuild-register/dist/node').register({
-    hookIgnoreNodeModules: false,
-  })
+  if (!didRegisterOnce) {
+    // the unregsiter does basically nothing and keeps a process running
+    require('esbuild-register/dist/node').register({
+      hookIgnoreNodeModules: false,
+    })
+  }
 
   const inputFilePath = inputFile[0] === '.' ? join(process.cwd(), inputFile) : inputFile
   purgeCache(inputFilePath)
@@ -72,7 +77,6 @@ export async function generateThemes(inputFile: string) {
     console.warn(` ⚠️ Error running theme builder: ${err}`, err?.['stack'])
   } finally {
     Module.prototype.require = ogRequire
-    unregister()
   }
 }
 
@@ -112,7 +116,7 @@ function generatedThemesToTypescript(themes: Record<string, any>) {
 
   const baseKeys = Object.entries(themes.light || themes[Object.keys(themes)[0]]) as [
     string,
-    string
+    string,
   ][]
 
   const baseTypeString = `type Theme = {

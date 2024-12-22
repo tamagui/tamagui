@@ -1,4 +1,3 @@
-import React from "react";
 import type { IconProps } from '@tamagui/helpers-icon';
-export declare const AlignCenterHorizontal: React.NamedExoticComponent<IconProps>;
+export declare const AlignCenterHorizontal: import("react").NamedExoticComponent<IconProps>;
 //# sourceMappingURL=align-center-horizontal.d.ts.map

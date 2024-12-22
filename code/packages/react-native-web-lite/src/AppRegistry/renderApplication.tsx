@@ -10,8 +10,8 @@
 
 import type { ComponentType, FunctionComponent, ReactNode } from 'react'
 import React from 'react'
-import { StyleSheet } from 'react-native-web-internals'
-import { invariant } from 'react-native-web-internals'
+import { StyleSheet } from '@tamagui/react-native-web-internals'
+import { invariant } from '@tamagui/react-native-web-internals'
 
 import renderLegacy, { hydrate, hydrateLegacy, render } from '../render/index'
 import AppContainer from './AppContainer'

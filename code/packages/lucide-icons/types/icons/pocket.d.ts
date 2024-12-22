@@ -1,4 +1,3 @@
-import React from "react";
 import type { IconProps } from '@tamagui/helpers-icon';
-export declare const Pocket: React.NamedExoticComponent<IconProps>;
+export declare const Pocket: import("react").NamedExoticComponent<IconProps>;
 //# sourceMappingURL=pocket.d.ts.map

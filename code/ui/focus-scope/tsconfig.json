@@ -8,6 +8,9 @@
       "path": "../../core/compose-refs"
     },
     {
+      "path": "../../core/start-transition"
+    },
+    {
       "path": "../../core/use-event"
     }
   ],

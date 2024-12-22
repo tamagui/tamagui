@@ -1,28 +1,10 @@
-import React from "react";
-import PropTypes from 'prop-types';
-import type { IconProps } from '@tamagui/helpers-icon';
-import {
-  Svg,
-  Circle as _Circle,
-  Ellipse,
-  G,
-  LinearGradient,
-  RadialGradient,
-  Line,
-  Path,
-  Polygon,
-  Polyline,
-  Rect,
-  Symbol,
-  Text as _Text,
-  Use,
-  Defs,
-  Stop } from
-'react-native-svg';
-import { themed } from '@tamagui/helpers-icon';
+import { memo } from 'react'
+import type { IconProps } from '@tamagui/helpers-icon'
+import { Svg, Path } from 'react-native-svg'
+import { themed } from '@tamagui/helpers-icon'
 
 const Icon = (props) => {
-  const { color = 'black', size = 24, ...otherProps } = props;
+  const { color = 'black', size = 24, ...otherProps } = props
   return (
     <Svg
       width={size}
@@ -33,15 +15,21 @@ const Icon = (props) => {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      {...otherProps}>
-
-      <Path d="M19.7 14a6.9 6.9 0 0 0 .3-2V5l-8-3-3.2 1.2" stroke={color} />
+      {...otherProps}
+    >
       <Path d="m2 2 20 20" stroke={color} />
-      <Path d="M4.7 4.7 4 5v7c0 6 8 10 8 10a20.3 20.3 0 0 0 5.62-4.38" stroke={color} />
-    </Svg>);
+      <Path
+        d="M5 5a1 1 0 0 0-1 1v7c0 5 3.5 7.5 7.67 8.94a1 1 0 0 0 .67.01c2.35-.82 4.48-1.97 5.9-3.71"
+        stroke={color}
+      />
+      <Path
+        d="M9.309 3.652A12.252 12.252 0 0 0 11.24 2.28a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1v7a9.784 9.784 0 0 1-.08 1.264"
+        stroke={color}
+      />
+    </Svg>
+  )
+}
 
-};
+Icon.displayName = 'ShieldOff'
 
-Icon.displayName = 'ShieldOff';
-
-export const ShieldOff = React.memo<IconProps>(themed(Icon));
+export const ShieldOff = memo<IconProps>(themed(Icon))

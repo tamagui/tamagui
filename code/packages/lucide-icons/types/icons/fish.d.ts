@@ -1,4 +1,3 @@
-import React from "react";
 import type { IconProps } from '@tamagui/helpers-icon';
-export declare const Fish: React.NamedExoticComponent<IconProps>;
+export declare const Fish: import("react").NamedExoticComponent<IconProps>;
 //# sourceMappingURL=fish.d.ts.map

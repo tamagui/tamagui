@@ -9,7 +9,7 @@
   ],
   "compilerOptions": {
     "lib": ["DOM", "DOM.Iterable", "ES2022"],
-    "types": ["vite/client"],
+    "types": ["@remix-run/node", "vite/client"],
     "isolatedModules": true,
     "esModuleInterop": true,
     "jsx": "react-jsx",
@@ -25,6 +25,8 @@
     "paths": {
       "~/*": ["./app/*"]
     },
+
+    // Vite takes care of building everything, not tsc.
     "noEmit": true
   }
 }

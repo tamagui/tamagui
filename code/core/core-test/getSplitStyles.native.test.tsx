@@ -31,6 +31,8 @@ function getSplitStylesStack(props: Record<string, any>, tag?: string) {
       pressIn: false,
       focus: false,
       unmounted: true,
+      disabled: false,
+      focusVisible: false,
     },
     {
       isAnimated: false,

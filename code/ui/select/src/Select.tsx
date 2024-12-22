@@ -1,23 +1,20 @@
-import { Adapt, useAdaptParent } from '@tamagui/adapt'
+import { Adapt, AdaptParent, useAdaptIsActive } from '@tamagui/adapt'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import type { FontSizeTokens, GetProps, TamaguiElement } from '@tamagui/core'
 import { getVariableValue, styled, useEvent, useGet } from '@tamagui/core'
+import { registerFocusable } from '@tamagui/focusable'
 import { getSpace } from '@tamagui/get-token'
 import { withStaticProperties } from '@tamagui/helpers'
 import type { ListItemProps } from '@tamagui/list-item'
 import { ListItem } from '@tamagui/list-item'
-import { PortalHost } from '@tamagui/portal'
 import { Separator } from '@tamagui/separator'
-import { registerFocusable } from '@tamagui/focusable'
 import { Sheet, SheetController } from '@tamagui/sheet'
 import { ThemeableStack, XStack, YStack } from '@tamagui/stacks'
 import { Paragraph, SizableText } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
-import * as React from 'react'
 import { useDebounce } from '@tamagui/use-debounce'
-
-import { SELECT_NAME } from './constants'
+import * as React from 'react'
 import {
   SelectItemParentProvider,
   SelectProvider,
@@ -32,11 +29,8 @@ import { ITEM_TEXT_NAME, SelectItemText } from './SelectItemText'
 import { SelectScrollDownButton, SelectScrollUpButton } from './SelectScrollButton'
 import { SelectTrigger } from './SelectTrigger'
 import { SelectViewport } from './SelectViewport'
-import type { SelectScopedProps, SelectImplProps, SelectProps } from './types'
-import {
-  useSelectBreakpointActive,
-  useShowSelectSheet,
-} from './useSelectBreakpointActive'
+import type { SelectImplProps, SelectProps, SelectScopedProps } from './types'
+import { useShowSelectSheet } from './useSelectBreakpointActive'
 
 /* -------------------------------------------------------------------------------------------------
  * SelectValue
@@ -71,7 +65,7 @@ const SelectValue = SelectValueFrame.styleable<SelectValueExtraProps>(
     const composedRefs = useComposedRefs(forwardedRef, context.onValueNodeChange)
     const children = childrenProp ?? context.selectedItem
     const isEmptyValue = context.value == null || context.value === ''
-    const selectValueChildren = isEmptyValue ? placeholder ?? children : children
+    const selectValueChildren = isEmptyValue ? (placeholder ?? children) : children
 
     return (
       <SelectValueFrame
@@ -314,7 +308,7 @@ const SelectSheetController = (
 ) => {
   const context = useSelectContext('SelectSheetController', props.__scopeSelect)
   const showSheet = useShowSelectSheet(context)
-  const breakpointActive = useSelectBreakpointActive(context.sheetBreakpoint)
+  const isAdapted = useAdaptIsActive()
   const getShowSheet = useGet(showSheet)
 
   return (
@@ -325,7 +319,7 @@ const SelectSheetController = (
         }
       }}
       open={context.open}
-      hidden={breakpointActive === false}
+      hidden={isAdapted === false}
     >
       {props.children}
     </SheetController>
@@ -341,181 +335,16 @@ const SelectSheetImpl = (props: SelectImplProps) => {
  * -----------------------------------------------------------------------------------------------*/
 
 export const Select = withStaticProperties(
-  (props: SelectScopedProps<SelectProps>) => {
-    const {
-      __scopeSelect,
-      native,
-      children,
-      open: openProp,
-      defaultOpen,
-      onOpenChange,
-      value: valueProp,
-      defaultValue,
-      onValueChange,
-      disablePreventBodyScroll,
-      size: sizeProp = '$true',
-      onActiveChange,
-      dir,
-      id,
-    } = props
-
+  function Select(props: SelectScopedProps<SelectProps>) {
     const internalId = React.useId()
-    const scopeKey = __scopeSelect
-      ? Object.keys(__scopeSelect)[0] ?? internalId
+    const scopeKey = props.__scopeSelect
+      ? (Object.keys(props.__scopeSelect)[0] ?? internalId)
       : internalId
 
-    const { when, AdaptProvider } = useAdaptParent({
-      Contents: React.useCallback(
-        () => <PortalHost name={`${scopeKey}SheetContents`} />,
-        [scopeKey]
-      ),
-    })
-
-    const sheetBreakpoint = when
-    const isSheet = useSelectBreakpointActive(sheetBreakpoint)
-    const SelectImpl = isSheet || !isWeb ? SelectSheetImpl : SelectInlineImpl
-    const forceUpdate = React.useReducer(() => ({}), {})[1]
-    const [selectedItem, setSelectedItem] = React.useState<React.ReactNode>(null)
-
-    const [open, setOpen] = useControllableState({
-      prop: openProp,
-      defaultProp: defaultOpen || false,
-      onChange: onOpenChange,
-    })
-
-    const [value, setValue] = useControllableState({
-      prop: valueProp,
-      defaultProp: defaultValue || '',
-      onChange: onValueChange,
-      transition: true,
-    })
-
-    React.useEffect(() => {
-      if (open) {
-        emitValue(value)
-      }
-    }, [open])
-
-    React.useEffect(() => {
-      emitValue(value)
-    }, [value])
-
-    if (process.env.TAMAGUI_TARGET === 'native') {
-      React.useEffect(() => {
-        if (!props.id) return
-
-        return registerFocusable(props.id, {
-          focusAndSelect: () => {
-            setOpen?.((value) => !value)
-          },
-          focus: () => {},
-        })
-      }, [props.id])
-    }
-
-    const [activeIndex, setActiveIndex] = React.useState<number | null>(0)
-
-    const [emitValue, valueSubscribe] = useEmitter<any>()
-    const [emitActiveIndex, activeIndexSubscribe] = useEmitter<number>()
-
-    const selectedIndexRef = React.useRef<number | null>(null)
-    const activeIndexRef = React.useRef<number | null>(null)
-    const listContentRef = React.useRef<string[]>([])
-    const [selectedIndex, setSelectedIndex] = React.useState(0)
-    const [valueNode, setValueNode] = React.useState<HTMLElement | null>(null)
-
-    useIsomorphicLayoutEffect(() => {
-      selectedIndexRef.current = selectedIndex
-      activeIndexRef.current = activeIndex
-    })
-
-    const shouldRenderWebNative =
-      isWeb &&
-      (native === true ||
-        native === 'web' ||
-        (Array.isArray(native) && native.includes('web')))
-
-    // TODO its calling this a bunch if you move mouse around on select items fast
-    // using a debounce for now but need to fix root issue
-    const setActiveIndexDebounced = useDebounce(
-      (index: number | null) => {
-        setActiveIndex((prev) => {
-          if (prev !== index) {
-            if (typeof index === 'number') {
-              emitActiveIndex(index)
-            }
-            return index
-          }
-          return prev
-        })
-      },
-      1,
-      {},
-      []
-    )
-
     return (
-      <AdaptProvider>
-        <SelectItemParentProvider
-          scope={__scopeSelect}
-          initialValue={React.useMemo(() => value, [open])}
-          size={sizeProp}
-          activeIndexSubscribe={activeIndexSubscribe}
-          valueSubscribe={valueSubscribe}
-          setOpen={setOpen}
-          id={id}
-          onChange={React.useCallback((val) => {
-            setValue(val)
-            emitValue(val)
-          }, [])}
-          onActiveChange={useEvent((...args) => {
-            onActiveChange?.(...args)
-          })}
-          setSelectedIndex={setSelectedIndex}
-          setValueAtIndex={React.useCallback((index, value) => {
-            listContentRef.current[index] = value
-          }, [])}
-          shouldRenderWebNative={shouldRenderWebNative}
-        >
-          <SelectProvider
-            scope={__scopeSelect}
-            disablePreventBodyScroll={disablePreventBodyScroll}
-            dir={dir}
-            blockSelection={false}
-            fallback={false}
-            selectedItem={selectedItem}
-            setSelectedItem={setSelectedItem}
-            forceUpdate={forceUpdate}
-            valueNode={valueNode}
-            onValueNodeChange={setValueNode}
-            scopeKey={scopeKey}
-            sheetBreakpoint={sheetBreakpoint}
-            activeIndex={activeIndex}
-            selectedIndex={selectedIndex}
-            setActiveIndex={setActiveIndexDebounced}
-            value={value}
-            open={open}
-            native={native}
-          >
-            <SelectSheetController onOpenChange={setOpen} __scopeSelect={__scopeSelect}>
-              {shouldRenderWebNative ? (
-                children
-              ) : (
-                <SelectImpl
-                  activeIndexRef={activeIndexRef}
-                  listContentRef={listContentRef}
-                  selectedIndexRef={selectedIndexRef}
-                  {...props}
-                  open={open}
-                  value={value}
-                >
-                  {children}
-                </SelectImpl>
-              )}
-            </SelectSheetController>
-          </SelectProvider>
-        </SelectItemParentProvider>
-      </AdaptProvider>
+      <AdaptParent scope={`${scopeKey}SheetContents`} portal>
+        <SelectInner scopeKey={scopeKey} {...props} />
+      </AdaptParent>
     )
   },
   {
@@ -553,5 +382,164 @@ function useEmitter<A>() {
   return [emit, subscribe] as const
 }
 
-// @ts-ignore
-Select.displayName = SELECT_NAME
+function SelectInner(props: SelectScopedProps<SelectProps> & { scopeKey: string }) {
+  const {
+    __scopeSelect,
+    native,
+    children,
+    open: openProp,
+    defaultOpen,
+    onOpenChange,
+    value: valueProp,
+    defaultValue,
+    onValueChange,
+    disablePreventBodyScroll,
+    size: sizeProp = '$true',
+    onActiveChange,
+    dir,
+    id,
+  } = props
+
+  const isAdapted = useAdaptIsActive()
+  const SelectImpl = isAdapted || !isWeb ? SelectSheetImpl : SelectInlineImpl
+  const forceUpdate = React.useReducer(() => ({}), {})[1]
+  const [selectedItem, setSelectedItem] = React.useState<React.ReactNode>(null)
+
+  const [open, setOpen] = useControllableState({
+    prop: openProp,
+    defaultProp: defaultOpen || false,
+    onChange: onOpenChange,
+  })
+
+  const [value, setValue] = useControllableState({
+    prop: valueProp,
+    defaultProp: defaultValue || '',
+    onChange: onValueChange,
+    transition: true,
+  })
+
+  React.useEffect(() => {
+    if (open) {
+      emitValue(value)
+    }
+  }, [open])
+
+  React.useEffect(() => {
+    emitValue(value)
+  }, [value])
+
+  if (process.env.TAMAGUI_TARGET === 'native') {
+    React.useEffect(() => {
+      if (!props.id) return
+
+      return registerFocusable(props.id, {
+        focusAndSelect: () => {
+          setOpen?.((value) => !value)
+        },
+        focus: () => {},
+      })
+    }, [props.id])
+  }
+
+  const [activeIndex, setActiveIndex] = React.useState<number | null>(0)
+
+  const [emitValue, valueSubscribe] = useEmitter<any>()
+  const [emitActiveIndex, activeIndexSubscribe] = useEmitter<number>()
+
+  const selectedIndexRef = React.useRef<number | null>(null)
+  const activeIndexRef = React.useRef<number | null>(null)
+  const listContentRef = React.useRef<string[]>([])
+  const [selectedIndex, setSelectedIndex] = React.useState(0)
+  const [valueNode, setValueNode] = React.useState<HTMLElement | null>(null)
+
+  useIsomorphicLayoutEffect(() => {
+    selectedIndexRef.current = selectedIndex
+    activeIndexRef.current = activeIndex
+  })
+
+  const shouldRenderWebNative =
+    isWeb &&
+    (native === true ||
+      native === 'web' ||
+      (Array.isArray(native) && native.includes('web')))
+
+  // TODO its calling this a bunch if you move mouse around on select items fast
+  // using a debounce for now but need to fix root issue
+  const setActiveIndexDebounced = useDebounce(
+    (index: number | null) => {
+      setActiveIndex((prev) => {
+        if (prev !== index) {
+          if (typeof index === 'number') {
+            emitActiveIndex(index)
+          }
+          return index
+        }
+        return prev
+      })
+    },
+    1,
+    {},
+    []
+  )
+
+  return (
+    <SelectItemParentProvider
+      scope={__scopeSelect}
+      initialValue={React.useMemo(() => value, [open])}
+      size={sizeProp}
+      activeIndexSubscribe={activeIndexSubscribe}
+      valueSubscribe={valueSubscribe}
+      setOpen={setOpen}
+      id={id}
+      onChange={React.useCallback((val) => {
+        setValue(val)
+        emitValue(val)
+      }, [])}
+      onActiveChange={useEvent((...args) => {
+        onActiveChange?.(...args)
+      })}
+      setSelectedIndex={setSelectedIndex}
+      setValueAtIndex={React.useCallback((index, value) => {
+        listContentRef.current[index] = value
+      }, [])}
+      shouldRenderWebNative={shouldRenderWebNative}
+    >
+      <SelectProvider
+        scope={__scopeSelect}
+        disablePreventBodyScroll={disablePreventBodyScroll}
+        dir={dir}
+        blockSelection={false}
+        fallback={false}
+        selectedItem={selectedItem}
+        setSelectedItem={setSelectedItem}
+        forceUpdate={forceUpdate}
+        valueNode={valueNode}
+        onValueNodeChange={setValueNode}
+        scopeKey={props.scopeKey}
+        activeIndex={activeIndex}
+        selectedIndex={selectedIndex}
+        setActiveIndex={setActiveIndexDebounced}
+        value={value}
+        open={open}
+        native={native}
+      >
+        <SelectSheetController onOpenChange={setOpen} __scopeSelect={__scopeSelect}>
+          {shouldRenderWebNative ? (
+            children
+          ) : (
+            <SelectImpl
+              activeIndexRef={activeIndexRef}
+              listContentRef={listContentRef}
+              selectedIndexRef={selectedIndexRef}
+              {...props}
+              open={open}
+              value={value}
+            >
+              {children}
+            </SelectImpl>
+          )}
+        </SelectSheetController>
+      </SelectProvider>
+    </SelectItemParentProvider>
+  )
+}

@@ -44,7 +44,6 @@
     "Unflattened",
     "unselectable"
   ],
-  "cSpell.enabled": false,
   "prettier.requireConfig": false,
   "prettier.singleQuote": true,
   "prettier.semi": false

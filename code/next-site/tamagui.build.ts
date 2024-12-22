@@ -26,6 +26,7 @@ export default {
       'generated-new.ts'
     ),
   },
+
   excludeReactNativeWebExports: [
     'Switch',
     'ProgressBar',

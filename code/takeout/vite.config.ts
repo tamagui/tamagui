@@ -1,8 +1,7 @@
-import entryShakingPlugin from 'vite-plugin-entry-shaking'
-import { removeReactNativeWebAnimatedPlugin, vxs } from 'vxs/vite'
-import type { UserConfig } from 'vite'
-import { tamaguiExtractPlugin } from '@tamagui/vite-plugin'
+import { tamaguiPlugin } from '@tamagui/vite-plugin'
 import { createRequire } from 'node:module'
+import type { UserConfig } from 'vite'
+import { removeReactNativeWebAnimatedPlugin, one } from 'one/vite'
 
 Error.stackTraceLimit = Number.POSITIVE_INFINITY
 
@@ -68,11 +67,13 @@ export default {
   },
 
   plugins: [
-    vxs({
-      async afterServerStart(options, app, { routeMap }) {
-        if (process.env.SHOULD_PURGE_CDN) {
-          // await purgeCloudflareCDN()
-        }
+    one({
+      server: {
+        async afterStart() {
+          if (process.env.SHOULD_PURGE_CDN) {
+            // await purgeCloudflareCDN()
+          }
+        },
       },
     }),
 
@@ -83,7 +84,8 @@ export default {
 
     removeReactNativeWebAnimatedPlugin(),
 
-    tamaguiExtractPlugin({
+    tamaguiPlugin({
+      optimize: true,
       logTimings: true,
     }),
   ],

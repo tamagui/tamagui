@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/use-escape-keydown",
-  "version": "1.110.2",
+  "version": "1.120.1",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -12,25 +12,28 @@
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
-    "lint": "npx biome check src",
-    "lint:fix": "npx biome check --apply-unsafe src",
+    "lint": "biome check src",
+    "lint:fix": "biome check --write src",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/use-callback-ref": "1.110.2"
+    "@tamagui/use-callback-ref": "1.120.1"
   },
   "devDependencies": {
-    "@tamagui/build": "1.110.2"
+    "@tamagui/build": "1.120.1"
   },
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "react-native-import": "./dist/esm/index.native.js",
-      "react-native": "./dist/cjs/index.native.js",
+      "react-native": {
+        "import": "./dist/esm/index.native.js",
+        "require": "./dist/cjs/index.native.js"
+      },
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
-      "require": "./dist/cjs/index.js"
+      "require": "./dist/cjs/index.cjs",
+      "default": "./dist/cjs/index.native.js"
     }
   },
   "publishConfig": {

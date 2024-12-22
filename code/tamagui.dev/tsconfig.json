@@ -53,17 +53,24 @@
     "**/test",
     "**/dist",
     "**/types",
-    "**/__tests__"
+    "**/__tests__",
+    "**/bento-output"
   ],
   "typeAcquisition": {
     "enable": true
   },
   "references": [
     {
+      "path": "../bento"
+    },
+    {
       "path": "../core/assert"
     },
     {
       "path": "../core/cli"
+    },
+    {
+      "path": "../core/get-token"
     },
     {
       "path": "../demos"
@@ -76,6 +83,9 @@
     },
     {
       "path": "../packages/mdx"
+    },
+    {
+      "path": "../packages/one-theme"
     },
     {
       "path": "../packages/use-store"

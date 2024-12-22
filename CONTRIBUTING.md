@@ -56,7 +56,7 @@ When opening issues please make sure that they adhere to these guidelines:
   - Make sure that your bug is Tamagui specific and not an integration with other libraries that we might not support yet. (Seek help in discord for these).
   - Use the Reproducible Bug Report template for all bug reports.
 
-For now this is the only Github issue we support, for any other kinds of issues or general questions please join our discord and feel free to ask for help in the `help-casual` channel or open a help discussion in the `help board`.
+For now this is the only GitHub issue we support, for any other kinds of issues or general questions please join our discord and feel free to ask for help in the `help-casual` channel or open a help discussion in the `help board`.
 
 If your issue does not adhere to these guidelines, in order to save everyone's time we will close it on sight.
 

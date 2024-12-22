@@ -70,13 +70,16 @@ export function registerRequire(
       return {}
     }
 
+    if (path === 'react-native-svg') {
+      return og.apply(this, ['@tamagui/react-native-svg'])
+    }
+
     if (
       path === '@gorhom/bottom-sheet' ||
       path.startsWith('react-native-reanimated') ||
       path === 'expo-linear-gradient' ||
       path === '@expo/vector-icons' ||
-      path === 'tamagui/linear-gradient' ||
-      path === 'react-native-svg'
+      path === 'tamagui/linear-gradient'
     ) {
       return proxyWorm
     }
@@ -84,7 +87,7 @@ export function registerRequire(
       return packageJson
     }
 
-    if (path === 'react-native-web-lite' || path.startsWith('react-native')) {
+    if (path === '@tamagui/react-native-web-lite' || path.startsWith('react-native')) {
       return rnw
     }
 
@@ -179,6 +182,7 @@ export function registerRequire(
 const IGNORES = process.env.TAMAGUI_IGNORE_BUNDLE_ERRORS
 const extraIgnores =
   IGNORES === 'true' ? [] : process.env.TAMAGUI_IGNORE_BUNDLE_ERRORS?.split(',')
+
 const knownIgnorableModules = {
   'expo-modules': true,
   solito: true,

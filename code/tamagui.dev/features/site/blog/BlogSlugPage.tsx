@@ -1,7 +1,6 @@
-import { ThemeTint, useTint } from '@tamagui/logo'
+import { ThemeTint } from '@tamagui/logo'
 import { ArrowLeft } from '@tamagui/lucide-icons'
-import type { Frontmatter } from '@tamagui/mdx'
-import { usePathname } from 'vxs'
+import type { Frontmatter } from '@tamagui/mdx-2'
 import {
   Button,
   H1,
@@ -11,11 +10,11 @@ import {
   Paragraph,
   Separator,
   Spacer,
-  Theme,
   XStack,
   YStack,
 } from 'tamagui'
 import { LinearGradient } from 'tamagui/linear-gradient'
+import { usePathname } from 'one'
 import { Container } from '~/components/Containers'
 import { Link } from '~/components/Link'
 import { authors } from '~/data/authors'
@@ -113,7 +112,7 @@ export function BlogSlugPage(props: BlogPost) {
   const tweetUrl = `https://tamagui.dev/blog/${frontmatter.slug}`
   const twitterShare = `https://twitter.com/intent/tweet?text="${enc(
     tweetText
-  )}"&url=${enc(tweetUrl)}`
+  )}"&url=${enc(tweetUrl)}` as const
 
   return (
     <>

@@ -44,12 +44,12 @@ const TooltipContent = PopperContentFrame.extractable(
       const preventAnimation = React.useContext(PreventTooltipAnimationContext)
       const popper = usePopperContext(__scopeTooltip || TOOLTIP_SCOPE)
       const padding = !props.unstyled
-        ? props.padding ??
+        ? (props.padding ??
           props.size ??
           popper.size ??
           getSize('$true', {
             shift: -2,
-          })
+          }))
         : undefined
 
       return (
@@ -238,7 +238,6 @@ const TooltipComponent = React.forwardRef(function Tooltip(
         <PopoverContext.Provider
           contentId={contentId}
           triggerRef={triggerRef}
-          sheetBreakpoint={false}
           open={open}
           scope={__scopeTooltip || TOOLTIP_SCOPE}
           onOpenChange={setOpen}

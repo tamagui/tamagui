@@ -1,5 +1,4 @@
-// @ts-ignore
-import type { CDVC as Type } from 'check-dependency-version-consistency'
+import { CDVC } from './check-dep-versions'
 
 export enum DEPENDENCY_TYPE {
   dependencies = 'dependencies',
@@ -20,7 +19,14 @@ export type Options = {
   ignorePathPattern?: readonly string[]
 }
 
-export async function checkDeps(root: string, options: Options) {
-  const checker = await import('check-dependency-version-consistency')
-  return new checker.CDVC(root, options) as Type
+export async function checkDeps(root: string) {
+  const summary = new CDVC(root).toMismatchSummary()
+
+  if (!summary) {
+    console.info(`Tamagui dependencies look good ✅`)
+    process.exit(0)
+  }
+
+  console.error(summary)
+  process.exit(1)
 }

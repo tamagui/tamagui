@@ -1,7 +1,8 @@
 import type { APIGuildMember, RESTGetAPIGuildMembersSearchResult } from '@discordjs/core'
-import { Search } from '@tamagui/lucide-icons'
+import { Copy, Eye, EyeOff, RefreshCcw, Search } from '@tamagui/lucide-icons'
 import { useState } from 'react'
 import useSWR, { mutate, useSWRConfig } from 'swr'
+import { useClipboard } from '~/hooks/useClipboard'
 import useSWRMutation from 'swr/mutation'
 import {
   Avatar,
@@ -21,7 +22,7 @@ import {
   XStack,
   YStack,
 } from 'tamagui'
-import { useLocalSearchParams, useRouter } from 'vxs'
+import { useLocalSearchParams, useRouter } from 'one'
 import type { DiscordChannelStatus } from '~/app/api/discord/channel+api'
 import { Container } from '~/components/Containers'
 import { ButtonLink, Link } from '~/components/Link'
@@ -51,6 +52,7 @@ const Items = () => {
 
   const { subscriptions, productOwnerships } = data
   if (!subscriptions || !productOwnerships) return null
+
   return (
     <Container f={1} py="$8" gap="$8">
       <GithubAppMessage />
@@ -289,6 +291,8 @@ const ItemDetails = (
   const hasDiscordInvites =
     (item.price.product?.metadata as Record<string, any>).slug === 'universal-starter'
 
+  const hasBento = (item.price.product?.metadata as Record<string, any>).slug === 'bento'
+
   // const { mutate } = useSWRConfig()
   const [isLoading, setIsLoading] = useState(false)
   const product = item.price.product
@@ -395,6 +399,8 @@ const ItemDetails = (
           </Paragraph>
         )}
 
+        {hasBento ? <BentoGetKeyPanel /> : null}
+
         {hasDiscordInvites && 'subscriptionId' in props && (
           <DiscordPanel subscriptionId={props.subscriptionId} />
         )}
@@ -403,7 +409,7 @@ const ItemDetails = (
           <BotInstallPanel
             subItemId={item.id.toString()}
             appInstallations={getArray(
-              'app_installations' in item ? item.app_installations ?? [] : []
+              'app_installations' in item ? (item.app_installations ?? []) : []
             )}
           />
         )}
@@ -424,7 +430,7 @@ const BotInstallPanel = ({
   )
   const installationUrl = `/api/github/install-bot?${new URLSearchParams({
     subscription_item_id: subItemId,
-  })}`
+  })}` as const
 
   return (
     <YStack gap="$3">
@@ -457,7 +463,13 @@ const BotInstallPanel = ({
       )}
 
       <XStack>
-        <ButtonLink href={installationUrl} themeInverse>
+        <ButtonLink
+          href={installationUrl as any}
+          themeInverse
+          replace={false}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           Install GitHub App
         </ButtonLink>
       </XStack>
@@ -471,7 +483,8 @@ const DiscordPanel = ({ subscriptionId }: { subscriptionId: string }) => {
     (url) =>
       fetch(url, { headers: { 'Content-Type': 'application/json' } }).then((res) =>
         res.json()
-      )
+      ),
+    { revalidateOnFocus: false, revalidateOnReconnect: false, errorRetryCount: 0 }
   )
   const [draftQuery, setDraftQuery] = useState('')
   const [query, setQuery] = useState(draftQuery)
@@ -646,8 +659,65 @@ const DiscordMember = ({
 }
 
 const GithubAppMessage = () => {
-  const query = useLocalSearchParams()
+  const query = useLocalSearchParams<any>()
   const githubAppInstalled = !!query.github_app_installed
   if (!githubAppInstalled) return null
   return <Paragraph theme="green_alt2"></Paragraph>
+}
+
+const BentoGetKeyPanel = () => {
+  const [reveal, setReveal] = useState(false)
+  const { data, error, isLoading, mutate } = useSWR(
+    '/api/bento/cli/login',
+    async (url) => {
+      const response = await fetch(url)
+      if (!response.ok) {
+        throw new Error('Failed to fetch access token')
+      }
+      return response.json()
+    }
+  )
+
+  const refreshToken = async () => {
+    await mutate()
+  }
+  const { onCopy } = useClipboard(data?.accessToken ?? '')
+  const tokenValue = reveal
+    ? data?.accessToken
+    : '*'.repeat(data?.accessToken?.length ?? 0)
+
+  return (
+    <YStack gap="$5">
+      <Paragraph>
+        Get your Bento access token for use with{' '}
+        <Paragraph ff="$mono" tag="span">
+          bento-get
+        </Paragraph>
+      </Paragraph>
+      <Form gap="$5" onSubmit={refreshToken}>
+        <XStack gap="$2">
+          <Input ff="$mono" width={'100%'} id="access-token" value={tokenValue} />
+          <Button onPress={() => setReveal(!reveal)}>
+            <Button.Icon>{reveal ? <EyeOff /> : <Eye />}</Button.Icon>
+          </Button>
+          <Button onPress={onCopy}>
+            <Button.Icon>
+              <Copy />
+            </Button.Icon>
+          </Button>
+        </XStack>
+        <Form.Trigger>
+          <Button theme="blue_active">
+            <Button.Text>{isLoading ? 'Loading' : 'Refresh'} Access Token</Button.Text>
+            <Button.Icon>
+              <>
+                {!isLoading && <RefreshCcw />}
+                {isLoading && <Spinner theme="blue_active" size="small" />}
+              </>
+            </Button.Icon>
+          </Button>
+        </Form.Trigger>
+      </Form>
+    </YStack>
+  )
 }

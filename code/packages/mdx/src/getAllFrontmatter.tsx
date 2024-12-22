@@ -1,10 +1,9 @@
-import fs from 'node:fs'
-import path from 'node:path'
-
 import glob from 'glob'
 import matter from 'gray-matter'
+import fs from 'node:fs'
+import path from 'node:path'
 import readingTime from 'reading-time'
-
+import { getHeadings } from './getHeadings'
 import type { Frontmatter } from './types'
 
 // the front matter and content of all mdx files based on `docsPaths`
@@ -20,6 +19,7 @@ export const getAllFrontmatter = (fromPath: string): Frontmatter[] => {
       return {
         ...data,
         slug,
+        headings: getHeadings(source),
         readingTime: readingTime(content),
       } as Frontmatter
     })

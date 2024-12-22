@@ -171,7 +171,7 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
     const isPresent = useIsPresent()
     const context = useToastProviderContext(__scopeToast)
     const [node, setNode] = React.useState<TamaguiElement | null>(null)
-    const composedRefs = useComposedRefs(forwardedRef, (node) => setNode(node))
+    const composedRefs = useComposedRefs(forwardedRef, setNode)
     const duration = durationProp || context.duration
     const closeTimerStartTimeRef = React.useRef(0)
     const closeTimerRemainingTimeRef = React.useRef(duration)
@@ -327,6 +327,7 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
           <ToastAnnounce
             __scopeToast={__scopeToast}
             // Toasts are always role=status to avoid stuttering issues with role=alert in SRs.
+            // biome-ignore lint/a11y/useSemanticElements: <explanation>
             role="status"
             aria-live={type === 'foreground' ? 'assertive' : 'polite'}
             aria-atomic
@@ -496,5 +497,5 @@ const getGestureDistance = (
   }
 }
 
-export { ToastImpl, ToastImplFrame, type ToastImplProps, useToastInteractiveContext }
+export { ToastImpl, ToastImplFrame, useToastInteractiveContext, type ToastImplProps }
 export type { ToastProps }

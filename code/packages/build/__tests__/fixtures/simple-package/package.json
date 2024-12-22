@@ -1,0 +1,22 @@
+{
+  "name": "tamagui-build-test-simple-tpackage",
+  "version": "1.120.1",
+  "main": "dist/cjs",
+  "module": "dist/esm/index.mjs",
+  "types": "dist/types/index.d.ts",
+  "scripts": {
+    "build": "node ../../../tamagui-build.js",
+    "build:bundle": "node ../../../tamagui-build.js --bundle",
+    "build:skip-mjs": "node ../../../tamagui-build.js --skip-mjs",
+    "build:declaration-root": "node ../../../tamagui-build.js --declaration-root",
+    "build:ignore-base-url": "node ../../../tamagui-build.js --ignore-base-url",
+    "build:watch": "node ../../../tamagui-build.js --watch",
+    "build:minify": "MINIFY=true node ../../../tamagui-build.js",
+    "build:target-web": "TAMAGUI_TARGET=web node ../../../tamagui-build.js",
+    "build:target-native": "TAMAGUI_TARGET=native node ../../../tamagui-build.js"
+  },
+  "devDependencies": {
+    "@tamagui/build": "1.120.1",
+    "typescript": "^5.6.3"
+  }
+}

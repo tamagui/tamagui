@@ -13,7 +13,7 @@ import {
 } from '@tamagui/web'
 import { basename, relative } from 'node:path'
 import type { ViewStyle } from 'react-native'
-import * as reactNativeWebInternals from 'react-native-web-internals'
+import * as reactNativeWebInternals from '@tamagui/react-native-web-internals'
 
 import { FAILED_EVAL } from '../constants'
 import { requireTamaguiCore } from '../helpers/requireTamaguiCore'
@@ -100,7 +100,7 @@ export function createExtractor(
 
   const styleProps: SplitStyleProps = {
     resolveValues: process.env.TAMAGUI_TARGET === 'native' ? 'value' : 'variable',
-    noClassNames: false,
+    noClass: false,
     isAnimated: false,
   }
 
@@ -946,7 +946,6 @@ export function createExtractor(
             .flatMap((path) => {
               try {
                 const res = evaluateAttribute(path)
-                tm.mark('jsx-element-evaluate-attr', !!shouldPrintDebug)
                 if (!res) {
                   path.remove()
                 }
@@ -1254,7 +1253,7 @@ export function createExtractor(
 
               if (isValidStyleKey(name, staticConfig)) {
                 if (shouldPrintDebug) {
-                  logger.info(`  style: ${name} = ${styleValue}`)
+                  logger.info(`  style: ${name} = ${JSON.stringify(styleValue)}`)
                 }
                 if (!(name in defaultProps)) {
                   if (!hasSetOptimized) {
@@ -2020,6 +2019,8 @@ export function createExtractor(
               }
             }
 
+            const before = process.env.IS_STATIC
+            process.env.IS_STATIC = 'is_static'
             try {
               const out = getSplitStyles(
                 props,
@@ -2029,14 +2030,14 @@ export function createExtractor(
                 componentState,
                 {
                   ...styleProps,
-                  noClassNames: true,
+                  noClass: true,
                   fallbackProps: completeProps,
                 },
                 undefined,
                 undefined,
                 undefined,
-                debugPropValue || shouldPrintDebug,
-                options.experimentalFlattenThemesOnNative
+                debugPropValue || shouldPrintDebug
+                // options.experimentalFlattenThemesOnNative
               )
 
               let outProps = {
@@ -2073,6 +2074,8 @@ export function createExtractor(
             } catch (err: any) {
               logger.info(['error', err.message, err.stack].join(' '))
               return {}
+            } finally {
+              process.env.IS_STATIC = before
             }
           }
 

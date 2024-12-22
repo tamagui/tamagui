@@ -1,9 +1,8 @@
 import { ThemeTint } from '@tamagui/logo'
-import { getAllFrontmatter, getAllVersionsFromPath, getMDXBySlug } from '@tamagui/mdx'
 import { getMDXComponent } from 'mdx-bundler/client'
 import React from 'react'
-import type { LoaderProps } from 'vxs'
-import { useLoader } from 'vxs'
+import type { LoaderProps } from 'one'
+import { useLoader } from 'one'
 import { HeadInfo } from '~/components/HeadInfo'
 import { DocsQuickNav } from '~/features/docs/DocsQuickNav'
 import { MDXProvider } from '~/features/docs/MDXProvider'
@@ -13,6 +12,7 @@ import { components } from '~/features/mdx/MDXComponents'
 import { getOgUrl } from '~/features/site/getOgUrl'
 
 export async function generateStaticParams() {
+  const { getAllFrontmatter } = await import('@tamagui/mdx-2')
   const frontmatters = getAllFrontmatter('data/docs/components')
   const paths = frontmatters.map((frontmatter) => {
     return {
@@ -34,6 +34,7 @@ export async function generateStaticParams() {
 }
 
 export async function loader(props: LoaderProps) {
+  const { getMDXBySlug, getAllVersionsFromPath } = await import('@tamagui/mdx-2')
   const { frontmatter, code } = await getMDXBySlug(
     'data/docs/components',
     props.params.subpath

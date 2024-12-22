@@ -9,6 +9,7 @@ import { DemoScreen } from './features/demos/demo-screen'
 import { HomeScreen } from './features/home/screen'
 import { TestCasesScreen } from './features/testcases/screen'
 import { TestScreen } from './features/testcases/test-screen'
+import { ColorSchemeToggle } from './features/home/ColorSchemeListItem'
 
 const bentoScreenNames = Data.listingData.sections.map(({ sectionName }) => sectionName)
 
@@ -106,6 +107,7 @@ const bentoScreensPerElement = Object.entries(Components)
       </Stack.Screen>
     )
   })
+
 export function Navigation() {
   return (
     <Stack.Navigator initialRouteName="home">
@@ -142,6 +144,9 @@ export function Navigation() {
         component={TestScreen}
         options={{
           title: 'Test Case',
+          headerRight() {
+            return <ColorSchemeToggle />
+          },
         }}
       />
       <Stack.Screen

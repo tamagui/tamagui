@@ -64,11 +64,12 @@ export function getThemedChildren(
 
   // its always there.. should fix type
   if (!themeManager) {
-    throw new Error(
-      process.env.NODE_ENV === 'development'
-        ? `❌ No theme found, either incorrect name, potential duplicate tamagui deps, or TamaguiProvider not providing themes.`
-        : `❌ 005`
-    )
+    return children
+    // throw new Error(
+    //   process.env.NODE_ENV === 'development'
+    //     ? `❌ No theme found, either incorrect name, potential duplicate tamagui deps, or TamaguiProvider not providing themes.`
+    //     : `❌ 005`
+    // )
   }
 
   const { shallow, forceClassName } = props
@@ -77,8 +78,11 @@ export function getThemedChildren(
   let shouldRenderChildrenWithTheme =
     isNewTheme ||
     isRoot ||
-    stateRef.current.hasEverThemed ||
-    typeof props.inverse === 'boolean'
+    'inverse' in props ||
+    'name' in props ||
+    'reset' in props ||
+    'forceClassName' in props ||
+    stateRef.current.hasEverThemed
 
   if (shouldRenderChildrenWithTheme) {
     stateRef.current.hasEverThemed = true
@@ -89,7 +93,7 @@ export function getThemedChildren(
   }
 
   if (process.env.NODE_ENV === 'development') {
-    if (shouldRenderChildrenWithTheme && props.debug) {
+    if (shouldRenderChildrenWithTheme && props.debug === 'verbose') {
       log(
         `adding theme: isRoot ${isRoot}, inverse ${'inverse' in props}, isNewTheme ${isNewTheme}, hasEver ${stateRef.current.hasEverThemed}`,
         props
@@ -152,7 +156,7 @@ function wrapThemeElements({
   }
 
   const inverse = themeState.inversed
-  const requiresExtraWrapper = inverse != null || forceClassName
+  const requiresExtraWrapper = typeof inverse === 'boolean' || forceClassName
 
   const { className, style } = getThemeClassNameAndStyle(themeState, isRoot)
 
@@ -170,6 +174,7 @@ function wrapThemeElements({
       : name.startsWith('dark')
         ? 't_dark is_inversed'
         : ''
+
     themedChildren = (
       <span className={`${inverse ? inverseClassName : ''} _dsp_contents`}>
         {themedChildren}

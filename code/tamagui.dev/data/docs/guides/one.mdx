@@ -1,0 +1,158 @@
+---
+title: One Guide
+description: How to set up Tamagui with One
+---
+
+[One](https://onestack.dev) is a React framework for web, iOS, and Android, built on the power of Vite. It offers seamless cross-platform development capabilities and integrates well with Tamagui.
+
+## Install
+
+First, create a new One project:
+```bash
+npx one
+```
+
+Add Tamagui and its dependencies:
+
+```bash
+yarn add tamagui @tamagui/config
+```
+
+## Configuration
+
+Create a `tamagui.config.ts` file in your project root:
+
+```tsx fileName="tamagui.config.ts"
+import { config } from '@tamagui/config/v3'
+import { createTamagui } from 'tamagui'
+
+const tamaguiConfig = createTamagui(config)
+
+export default tamaguiConfig
+
+// this is important!
+export type Conf = typeof tamaguiConfig
+
+declare module 'tamagui' {
+  interface TamaguiCustomConfig extends Conf {}
+}
+```
+
+Update your `vite.config.ts`:
+
+```tsx fileName="vite.config.ts"
+import { one } from 'one/vite'
+import { tamaguiPlugin } from '@tamagui/vite-plugin'
+import type { UserConfig } from 'vite'
+
+export default {
+  plugins: [
+    one({
+      web: {
+        defaultRenderMode: 'ssg',
+      },
+    }),
+    tamaguiPlugin({
+      config: './tamagui.config.ts',
+      components: ['tamagui'],
+    }),
+  ],
+
+  // Vite 6 style configuration
+  ssr: {
+    noExternal: true,
+  },
+
+  optimizeDeps: {
+    include: [
+      '@tamagui/core',
+      '@tamagui/config',
+    ],
+  },
+
+  build: {
+    cssTarget: 'safari15',
+  },
+} satisfies UserConfig
+```
+
+## Setup Tamagui Provider
+
+Update your root layout file (typically `app/_layout.tsx`):
+
+```tsx fileName="app/_layout.tsx"
+import { TamaguiProvider } from 'tamagui'
+import { Slot } from 'one'
+import config from '../tamagui.config'
+
+export default function Layout() {
+  return (
+    <TamaguiProvider config={config}>
+      <Slot />
+    </TamaguiProvider>
+  )
+}
+```
+
+## Usage
+
+Now you can use Tamagui components in your One app:
+
+```tsx fileName="app/index.tsx"
+import { Button, Text, YStack } from 'tamagui'
+
+export default function Home() {
+  return (
+    <YStack f={1} jc="center" ai="center" p="$4" space>
+      <Text fontSize="$6">Welcome to Tamagui with One!</Text>
+      <Button>Click me</Button>
+    </YStack>
+  )
+}
+```
+
+## Themes
+
+To support light and dark modes, you can use One's built-in color scheme support along with Tamagui's theming system. Update your root layout:
+
+```tsx fileName="app/_layout.tsx"
+import { TamaguiProvider, Theme } from 'tamagui'
+import { Slot } from 'one'
+import { useColorScheme } from 'react-native'
+import config from '../tamagui.config'
+
+export default function Layout() {
+  const colorScheme = useColorScheme()
+
+  return (
+    <TamaguiProvider config={config} defaultTheme={colorScheme}>
+      <Theme name={colorScheme}>
+        <Slot />
+      </Theme>
+    </TamaguiProvider>
+  )
+}
+```
+
+## Performance
+
+For better performance, you can use the `outputCSS` option in the Tamagui Vite plugin:
+
+```tsx fileName="vite.config.ts"
+tamaguiPlugin({
+  config: './tamagui.config.ts',
+  components: ['tamagui'],
+  outputCSS: process.env.NODE_ENV === 'production' ? './public/tamagui.css' : null,
+})
+```
+
+Then import the CSS in your root layout:
+
+```tsx fileName="app/_layout.tsx"
+import '../public/tamagui.css'
+// ... rest of your imports and component
+```
+
+## Conclusion
+
+You now have Tamagui set up with [One](https://onestack.dev)! You can start building your cross-platform app using Tamagui's powerful styling system and One's seamless development experience.

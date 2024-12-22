@@ -220,20 +220,21 @@ describe('ThemeManager', () => {
       {
         "className": "t_sub_theme t_dark",
         "isComponent": false,
+        "isSchemeFixed": true,
         "name": "dark",
         "parentName": undefined,
         "scheme": "dark",
         "theme": {
           "background": {
             "isVar": true,
-            "key": "black",
+            "key": "c-black",
             "name": "background",
             "val": "#000",
             "variable": "var(--background)",
           },
           "color": {
             "isVar": true,
-            "key": "white",
+            "key": "c-white",
             "name": "color",
             "val": "#fff",
             "variable": "var(--color)",

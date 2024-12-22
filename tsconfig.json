@@ -12,7 +12,7 @@
         "code/ui/*"
       ],
       "@tamagui/bento": [
-        "code/bento",
+        "code/bento"
       ],
       "@tamagui/demos": [
         "code/demos"
@@ -67,6 +67,9 @@
     "enable": true
   },
   "references": [
+    {
+      "path": "code/bento"
+    },
     {
       "path": "code/compiler/babel-plugin"
     },
@@ -233,6 +236,9 @@
       "path": "code/core/simple-hash"
     },
     {
+      "path": "code/core/start-transition"
+    },
+    {
       "path": "code/core/test-design-system"
     },
     {
@@ -293,10 +299,28 @@
       "path": "code/core/web"
     },
     {
+      "path": "code/demos"
+    },
+    {
+      "path": "code/integration"
+    },
+    {
+      "path": "code/kitchen-sink"
+    },
+    {
+      "path": "code/next-site"
+    },
+    {
       "path": "code/packages/babel-plugin-fully-specified"
     },
     {
       "path": "code/packages/bento-get"
+    },
+    {
+      "path": "code/packages/build/__tests__/fixtures/simple-package"
+    },
+    {
+      "path": "code/packages/build/__tests__/fixtures/watch-package"
     },
     {
       "path": "code/packages/cli-color"
@@ -317,6 +341,9 @@
       "path": "code/packages/next-theme"
     },
     {
+      "path": "code/packages/one-theme"
+    },
+    {
       "path": "code/packages/react-native-svg"
     },
     {
@@ -335,6 +362,12 @@
       "path": "code/packages/vite-plugin-internal"
     },
     {
+      "path": "code/takeout"
+    },
+    {
+      "path": "code/tamagui.dev"
+    },
+    {
       "path": "code/ui/accordion"
     },
     {
@@ -351,6 +384,9 @@
     },
     {
       "path": "code/ui/avatar"
+    },
+    {
+      "path": "code/ui/button-next"
     },
     {
       "path": "code/ui/button"
@@ -483,24 +519,6 @@
     },
     {
       "path": "code/ui/visually-hidden"
-    },
-    {
-      "path": "code/bento"
-    },
-    {
-      "path": "code/demos"
-    },
-    {
-      "path": "code/integration"
-    },
-    {
-      "path": "code/kitchen-sink"
-    },
-    {
-      "path": "code/ooo"
-    },
-    {
-      "path": "code/tamagui.dev"
     }
   ]
 }

@@ -1,4 +1,3 @@
-import React from "react";
 import type { IconProps } from '@tamagui/helpers-icon';
-export declare const Drumstick: React.NamedExoticComponent<IconProps>;
+export declare const Drumstick: import("react").NamedExoticComponent<IconProps>;
 //# sourceMappingURL=drumstick.d.ts.map

@@ -66,16 +66,38 @@ const fixScripts = async ({ location }, pkgJson: any) => {
 }
 
 const fixExportsPathSpecific = async ({ name, location }, pkgJson: any) => {
-  if (name === '@tamagui/static') {
+  if (!pkgJson.scripts?.build?.includes('tamagui-build')) {
     return
   }
+
   if (pkgJson.exports) {
     Object.keys(pkgJson.exports).forEach((key) => {
       const obj = pkgJson.exports?.[key]
-      const importField = obj?.import
-      if (importField?.endsWith('.js')) {
-        obj.import = importField.replace('.js', '.mjs')
+
+      // lets be safe and include a more compat default
+      if (key === '.' && obj.require && obj['react-native'] && !obj.default) {
+        const obj2 = { ...obj }
+        const obj3 = {
+          ...obj2,
+          // assumption is node will always take import/require, but metro may need this
+          default: obj['react-native'],
+        }
+        pkgJson.exports[key] = obj3
       }
+
+      // // const importField = obj?.import
+      // // if (importField?.endsWith('.js')) {
+      // //   obj.import = importField.replace('.js', '.mjs')
+      // // }
+
+      // const requireField = obj?.require
+      // if (requireField?.endsWith('.js')) {
+      //   obj.require = requireField.replace('.js', '.cjs')
+      // }
+
+      // if (!obj?.['react-native'] && requireField) {
+      //   obj['react-native'] = requireField.replace('.js', '.native.js')
+      // }
     })
   }
 }
@@ -96,15 +118,38 @@ async function format() {
     async (pkg) => {
       const cwd = join(process.cwd(), pkg.location)
       const jsonPath = join(cwd, 'package.json')
-      const pkgJson = JSON.parse(
-        readFileSync(jsonPath, {
-          encoding: 'utf-8',
-        })
-      )
-      await fixPeerDeps(pkg, pkgJson)
-      await fixExports(pkg, pkgJson)
-      await fixExportsPathSpecific(pkg, pkgJson)
-      await fixScripts(pkg, pkgJson)
+      const fileContents = readFileSync(jsonPath, {
+        encoding: 'utf-8',
+      })
+      if (!fileContents) {
+        return
+      }
+      const pkgJson = JSON.parse(fileContents)
+      // await fixPeerDeps(pkg, pkgJson)
+      // await fixExports(pkg, pkgJson)
+      // await fixExportsPathSpecific(pkg, pkgJson)
+
+      // write your script here:
+
+      if (pkgJson.exports) {
+        for (const key in pkgJson.exports) {
+          const exf = pkgJson.exports[key]
+          if (typeof exf === 'object') {
+            const ogi = exf['react-native-import']
+            const ogr = exf['react-native']
+
+            if (ogi) {
+              delete exf['react-native-import']
+              exf['react-native'] = {
+                import: ogi,
+                require: ogr,
+              }
+            }
+          }
+        }
+      }
+
+      // await fixScripts(pkg, pkgJson)
       await writeFile(jsonPath, JSON.stringify(pkgJson, null, 2) + '\n', {
         encoding: 'utf-8',
       })

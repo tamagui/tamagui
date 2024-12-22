@@ -1,37 +1,85 @@
-//! debug-verbose
 // import './wdyr'
 
-import { styled, useMedia } from 'tamagui'
-import { View } from '@tamagui/web'
 import { View as RNView } from 'react-native'
 
-const Test = styled(View, {
-  width: 100,
-  height: 100,
-  backgroundColor: 'red',
-  debug: 'verbose',
-
-  '$platform-native': {
-    backgroundColor: 'yellow',
-  },
-
-  $gtXs: {
-    '$platform-web': {
-      backgroundColor: 'green',
-    },
-  },
-
-  $xl: {
-    '$platform-native': {
-      backgroundColor: 'blue',
-    },
-  },
-})
+import { Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
+import React, { useEffect, useLayoutEffect, useState } from 'react'
+import type { FontSizeTokens, SelectProps } from 'tamagui'
+import { Adapt, Button, H2, Select, Sheet, View, YStack, getFontSize } from 'tamagui'
 
 export const Sandbox = () => {
+  const start = Date.now()
+  const [x, setX] = useState(0)
+  const [took, setTook] = useState(0)
+
+  useLayoutEffect(() => {
+    setTook(Date.now() - start)
+  }, [x])
+
   return (
     <RNView style={{ width: '100%', height: '100%', padding: 50 }}>
-      <Test />
+      {/* <View debug="verbose" themeInverse bg="$background" width={200} height={200} /> */}
+
+      <H2>took: {took}</H2>
+      <Button onPress={() => setX(Math.random())}>run</Button>
+
+      <Button debug="profile">hello world</Button>
+      <Button>hello world</Button>
+      <Button>hello world</Button>
+      <Button>hello world</Button>
+      <Button>hello world</Button>
+      <Button>hello world</Button>
+      <Button>hello world</Button>
+      <Button>hello world</Button>
+      <Button>hello world</Button>
+
+      {/* <NativeSheetDemo /> */}
+
+      {/* <TestComponent /> */}
+
+      {/* <Button loading>
+        <Button.Text>hello world</Button.Text>
+      </Button> */}
+
+      {/* <Button loading={false}>
+        <Button.Text>hello world</Button.Text>
+      </Button> */}
+
+      {/* <Paragraph
+        debug="verbose"
+        ov="hidden"
+        fos="$5"
+        px="$2"
+        py="$1"
+        col="$blue10"
+        bg="$blue5"
+        br="$3"
+      >
+        hello world2
+      </Paragraph>
+
+      <Text
+        style={{
+          borderRadius: 20,
+          backgroundColor: 'red',
+        }}
+      >
+        hello world
+      </Text> */}
+
+      {/* <Text debug="verbose" fow="bold">
+        with bold2
+      </Text> */}
+
+      {/* <HOCMyView testProp={true} /> */}
+
+      {/* <Test />
+
+      <StyledImage
+        width={30}
+        height={30}
+        src="https://akittenplace.org/wp-content/uploads/2019/10/kitten4.jpg"
+      /> */}
 
       {/* <Demo3 /> */}
       {/* <Circle
@@ -149,3 +197,133 @@ export const Sandbox = () => {
 //     return null
 //   }
 // )
+
+// const StyledImage = styled(Image, {
+//   margin: 10,
+//   scale: 4,
+// })
+
+// const Test = styled(View, {
+//   width: 100,
+//   height: 100,
+//   backgroundColor: 'red',
+//   debug: 'verbose',
+
+//   '$platform-native': {
+//     backgroundColor: 'yellow',
+//   },
+
+//   $gtXs: {
+//     '$platform-web': {
+//       backgroundColor: 'green',
+//     },
+//   },
+
+//   $xl: {
+//     '$platform-native': {
+//       backgroundColor: 'blue',
+//     },
+//   },
+// })
+
+// const ctx = createStyledContext({
+//   testProp: false,
+// })
+
+// const MyView = styled(View, {
+//   context: ctx,
+
+//   variants: {
+//     testProp: {
+//       true: {},
+//       false: {},
+//     },
+//   } as const,
+// })
+
+// const HOCMyView = MyView.styleable((props, ref) => {
+//   console.log('what is', ctx.useStyledContext())
+
+//   return <MyView {...props} />
+// })
+
+// const height = 32
+
+// const context = createStyledContext<{ loading?: boolean }>({
+//   loading: false,
+// })
+
+// const borderWidth = 2
+
+// const Frame = styled(View, {
+//   px: '$2',
+//   height,
+//   bg: '$color3',
+//   bw: borderWidth,
+//   bc: '$color6',
+//   hoverStyle: {
+//     bg: '$color4',
+//   },
+//   context,
+//   variants: {
+//     loading: {
+//       true: {
+//         cursor: 'not-allowed',
+//         opacity: 0.5,
+//       },
+//       false: {
+//         opacity: 1,
+//       },
+//     },
+//   } as const,
+//   jc: 'center',
+//   tag: 'button',
+//   br: 6,
+//   defaultVariants: {
+//     loading: false,
+//   },
+// })
+
+// const ButtonFrame = Frame.styleable<{ loading?: boolean }>((props) => {
+//   const { children, ...rest } = props
+
+//   return (
+//     <Frame
+//       {...rest}
+//       disabled={props.disabled || props.loading || false}
+//       loading={props.loading || false}
+//     >
+//       {children}
+//     </Frame>
+//   )
+// })
+
+// export const ButtonText = styled(Text, {
+//   context,
+//   userSelect: 'none',
+//   debug: 'verbose',
+
+//   variants: {
+//     loading: {
+//       true: {
+//         backgroundColor: 'red',
+//         opacity: 0,
+//       },
+//       false: {
+//         backgroundColor: 'blue',
+//         opacity: 1,
+//       },
+//     },
+//   } as const,
+
+//   defaultVariants: {
+//     loading: false,
+//   },
+// })
+
+// export const Button = withStaticProperties(ButtonFrame, {
+//   Text: ButtonText,
+// })
+
+// const StyledText = styled(Text)
+// const TestComponent = () => <StyledText>TEST</StyledText>

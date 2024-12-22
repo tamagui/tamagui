@@ -15,6 +15,7 @@ export function useThemeName(opts?: { parent?: true }): ThemeName {
     return manager.onChangeTheme((next, manager) => {
       const name = opts?.parent ? manager.state.parentName || next : next
       if (!name) return
+
       setName(name)
     })
   }, [manager?.state.name])

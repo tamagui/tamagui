@@ -1,4 +1,3 @@
-import React from "react";
 import type { IconProps } from '@tamagui/helpers-icon';
-export declare const ListTree: React.NamedExoticComponent<IconProps>;
+export declare const ListTree: import("react").NamedExoticComponent<IconProps>;
 //# sourceMappingURL=list-tree.d.ts.map

@@ -1,4 +1,3 @@
-import React from "react";
 import type { IconProps } from '@tamagui/helpers-icon';
-export declare const Nfc: React.NamedExoticComponent<IconProps>;
+export declare const Nfc: import("react").NamedExoticComponent<IconProps>;
 //# sourceMappingURL=nfc.d.ts.map

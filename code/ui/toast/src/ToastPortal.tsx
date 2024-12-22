@@ -11,12 +11,12 @@ export function ToastPortal({
   zIndex?: number
 }) {
   let content = children
-  if (Platform.OS === 'android') {
+  if (Platform.OS === 'android' || Platform.OS === 'ios') {
     content = (
       <ReprogapateToastProvider context={useToastProviderContext()}>
         {children}
       </ReprogapateToastProvider>
     )
   }
-  return <Portal zIndex={zIndex || 1000000000}>{content}</Portal>
+  return <Portal zIndex={zIndex || Number.MAX_SAFE_INTEGER}>{content}</Portal>
 }

@@ -584,12 +584,6 @@ const HeightAnimator = View.styleable((props, ref) => {
   const { children, ...rest } = props
   const [height, setHeight] = React.useState(0)
 
-  React.useEffect(() => {
-    if (!itemContext.open) {
-      setHeight(0)
-    }
-  }, [itemContext.open])
-
   const onLayout = useEvent(({ nativeEvent }) => {
     if (nativeEvent.layout.height) {
       setHeight(nativeEvent.layout.height)
@@ -597,7 +591,7 @@ const HeightAnimator = View.styleable((props, ref) => {
   })
 
   return (
-    <View ref={ref} height={height} {...rest}>
+    <View ref={ref} height={itemContext.open ? height : 0} {...rest}>
       <View
         position="absolute"
         width="100%"

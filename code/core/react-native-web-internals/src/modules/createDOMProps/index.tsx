@@ -7,8 +7,8 @@
  * @noflow
  */
 
-import StyleSheet from '../../StyleSheet/index'
 import AccessibilityUtil from '../AccessibilityUtil/index'
+import { getStylesAtomic, wrapStyleTags } from '@tamagui/web'
 
 const emptyObject = {}
 const hasOwnProperty = Object.prototype.hasOwnProperty
@@ -25,20 +25,9 @@ function processIDRefList(idRefList: string | Array<string>): string {
   return isArray(idRefList) ? idRefList.join(' ') : idRefList
 }
 
-const pointerEventsStyles = StyleSheet.create({
-  auto: {
-    pointerEvents: 'auto',
-  },
-  'box-none': {
-    pointerEvents: 'box-none',
-  },
-  'box-only': {
-    pointerEvents: 'box-only',
-  },
-  none: {
-    pointerEvents: 'none',
-  },
-})
+let pointerEventsStyles
+
+export const stylesFromProps = new WeakMap()
 
 const createDOMProps = (elementType, props, options?) => {
   if (!props) {
@@ -330,20 +319,43 @@ const createDOMProps = (elementType, props, options?) => {
   }
 
   // Resolve styles
-  const [className, inlineStyle] = StyleSheet(
-    [style, pointerEvents && pointerEventsStyles[pointerEvents]],
-    { writingDirection: options ? options.writingDirection : 'ltr' }
-  )
+  const flat = []
+    .concat(style)
+    .flat()
+    .flat()
+    .flat()
+    .flat()
+    .reduce((acc, cur) => {
+      if (cur) {
+        Object.assign(acc, cur)
+      }
+      return acc
+    }, {})
+
+  let className = tmgCN || ''
+
+  if (props.className) {
+    className += ` ${props.className}`
+  }
+
+  const stylesAtomic = getStylesAtomic(flat)
+
+  stylesFromProps.set(domProps, stylesAtomic)
+
+  domProps.style = stylesAtomic.reduce((acc, [key, value]) => {
+    if (key[0] === '_' || key.startsWith('is_') || key.startsWith('font_')) {
+      className += ` ${key}`
+      return acc
+    }
+    if (key === '$$css' || key === '') {
+      return acc
+    }
+    acc[key] = value
+    return acc
+  }, {})
+
   if (className) {
     domProps.className = className
-  }
-
-  if (tmgCN) {
-    domProps.className = tmgCN
-  }
-
-  if (inlineStyle) {
-    domProps.style = inlineStyle
   }
 
   // OTHER

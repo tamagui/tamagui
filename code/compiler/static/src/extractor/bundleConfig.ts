@@ -1,19 +1,18 @@
-import { readFileSync } from 'node:fs'
-import { basename, dirname, extname, join, relative, sep } from 'node:path'
-
 import generate from '@babel/generator'
 import traverse from '@babel/traverse'
 import * as t from '@babel/types'
+import { existsSync, readFileSync } from 'node:fs'
+import { basename, dirname, extname, join, relative, sep } from 'node:path'
 // @ts-ignore why
 import { Color, colorLog } from '@tamagui/cli-color'
 import type { StaticConfig, TamaguiInternalConfig } from '@tamagui/web'
 import esbuild from 'esbuild'
 import * as FS from 'fs-extra'
-
+import { readFile } from 'node:fs/promises'
 import { registerRequire, setRequireResult } from '../registerRequire'
 import type { TamaguiOptions } from '../types'
 import { babelParse } from './babelParse'
-import { bundle, esbuildLoaderConfig } from './bundle'
+import { esbuildLoaderConfig, esbundleTamaguiConfig } from './bundle'
 import { getTamaguiConfigPathFromOptionsConfig } from './getTamaguiConfigPathFromOptionsConfig'
 
 type NameToPaths = {
@@ -75,6 +74,10 @@ export function hasBundledConfigChanged() {
   return true
 }
 
+let loadedConfig: TamaguiInternalConfig | null = null
+
+export const getLoadedConfig = () => loadedConfig
+
 export async function getBundledConfig(props: TamaguiOptions, rebuild = false) {
   if (isBundling) {
     await new Promise((res) => {
@@ -86,7 +89,22 @@ export async function getBundledConfig(props: TamaguiOptions, rebuild = false) {
   return currentBundle
 }
 
+global.tamaguiLastLoaded ||= 0
+
+function updateLastLoaded(config: any) {
+  global.tamaguiLastLoaded = Date.now()
+  global.tamaguiLastBundledConfig = config
+}
+
+let hasBundledOnce = false
+
 export async function bundleConfig(props: TamaguiOptions) {
+  // webpack is calling this a ton for no reason
+  if (global.tamaguiLastBundledConfig && Date.now() - global.tamaguiLastLoaded < 3000) {
+    // just loaded recently
+    return global.tamaguiLastBundledConfig
+  }
+
   try {
     isBundling = true
 
@@ -125,7 +143,7 @@ export async function bundleConfig(props: TamaguiOptions) {
 
       await Promise.all([
         props.config
-          ? bundle(
+          ? esbundleTamaguiConfig(
               {
                 entryPoints: [configEntry],
                 external,
@@ -137,7 +155,7 @@ export async function bundleConfig(props: TamaguiOptions) {
             )
           : null,
         ...baseComponents.map((componentModule, i) => {
-          return bundle(
+          return esbundleTamaguiConfig(
             {
               entryPoints: [componentModule],
               resolvePlatformSpecificEntries: true,
@@ -154,22 +172,38 @@ export async function bundleConfig(props: TamaguiOptions) {
       colorLog(
         Color.FgYellow,
         `
-    ➡ [tamagui] built config and components (${Date.now() - start}ms):`
+    ➡ [tamagui] built config and components (${Date.now() - start}ms)`
       )
-      colorLog(
-        Color.Dim,
-        `
-        Config     .${sep}${relative(process.cwd(), configOutPath)}
-        Components ${[
-          ...componentOutPaths.map((p) => `.${sep}${relative(process.cwd(), p)}`),
-        ].join('\n             ')}
-        `
-      )
+
+      if (process.env.DEBUG?.startsWith('tamagui')) {
+        colorLog(
+          Color.Dim,
+          `
+          Config     .${sep}${relative(process.cwd(), configOutPath)}
+          Components ${[
+            ...componentOutPaths.map((p) => `.${sep}${relative(process.cwd(), p)}`),
+          ].join('\n             ')}
+          `
+        )
+      }
     }
 
     let out
     const { unregister } = registerRequire(props.platform || 'web')
     try {
+      if (hasBundledOnce) {
+        // this did cause mini-css-extract plugin to freak out
+        // clear cache to get new files
+        for (const key in require.cache) {
+          // avoid clearing core/web it seems to break things
+          if (!/(core|web)[\/\\]dist/.test(key)) {
+            delete require.cache[key]
+          }
+        }
+      } else {
+        hasBundledOnce = true
+      }
+
       out = require(configOutPath)
     } catch (err) {
       // biome-ignore lint/complexity/noUselessCatch: <explanation>
@@ -186,6 +220,12 @@ export async function bundleConfig(props: TamaguiOptions) {
 
     if (!config) {
       throw new Error(`No config: ${config}`)
+    }
+
+    loadedConfig = config
+
+    if (props.outputCSS) {
+      await writeTamaguiCSS(props.outputCSS, config)
     }
 
     let components = loadComponents({
@@ -228,6 +268,7 @@ export async function bundleConfig(props: TamaguiOptions) {
     }
 
     currentBundle = res
+    updateLastLoaded(res)
 
     return res
   } catch (err: any) {
@@ -241,6 +282,26 @@ export async function bundleConfig(props: TamaguiOptions) {
     isBundling = false
     waitForBundle.forEach((cb) => cb())
     waitForBundle.clear()
+  }
+}
+
+export async function writeTamaguiCSS(outputCSS: string, config: TamaguiInternalConfig) {
+  const flush = async () => {
+    colorLog(Color.FgYellow, `    ➡ [tamagui] output css: ${outputCSS}`)
+    await FS.writeFile(outputCSS, css)
+  }
+  const css = config.getCSS()
+  if (typeof css !== 'string') {
+    throw new Error(`Invalid CSS: ${typeof css} ${css}`)
+  }
+  try {
+    if (existsSync(outputCSS) && (await readFile(outputCSS, 'utf8')) === css) {
+      // no change
+    } else {
+      await flush()
+    }
+  } catch (err) {
+    console.info('Error writing themes', err)
   }
 }
 
@@ -312,7 +373,7 @@ export function loadComponentsInner(
             entryPoints: [loadModule],
             outfile: loadModule,
             alias: {
-              'react-native': require.resolve('react-native-web-lite'),
+              'react-native': require.resolve('@tamagui/react-native-web-lite'),
             },
             bundle: true,
             packages: 'external',

@@ -1,13 +1,13 @@
 {
   "name": "@tamagui/sandbox-ui",
-  "version": "1.110.2",
+  "version": "1.120.1",
   "private": true,
   "sideEffects": [
     "*.css"
   ],
   "types": "./types/index",
   "main": "dist/cjs",
-  "module": "dist/esm",
+  "module": "dist/esm/index.mjs",
   "module:jsx": "dist/jsx",
   "files": [
     "types",
@@ -16,20 +16,20 @@
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
-    "lint": "npx biome check src",
-    "lint:fix": "npx biome check --apply-unsafe src",
+    "lint": "biome check src",
+    "lint:fix": "biome check --write src",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
     "@expo/vector-icons": "^13.0.0",
-    "@tamagui/lucide-icons": "1.110.2",
-    "@tamagui/toast": "1.110.2",
+    "@tamagui/lucide-icons": "1.120.1",
+    "@tamagui/toast": "1.120.1",
     "expo-image": "^1.5.1",
     "solito": "^4.2.2",
-    "tamagui": "1.110.2"
+    "tamagui": "1.120.1"
   },
   "devDependencies": {
-    "@tamagui/build": "1.110.2"
+    "@tamagui/build": "1.120.1"
   }
 }

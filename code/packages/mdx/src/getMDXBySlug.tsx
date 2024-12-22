@@ -9,6 +9,7 @@ import rehypeMetaAttribute from './rehypeMetaAttribute'
 import rehypeHeroTemplate from './rehypeHeroTemplate'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import rehypeSlug from 'rehype-slug'
+import { getHeadings } from './getHeadings'
 
 export const getMDXBySlug = async (
   basePath: string,
@@ -28,7 +29,7 @@ export const getMDXBySlug = async (
   return {
     frontmatter: {
       ...frontmatter,
-      slug,
+      headings: getHeadings(source),
       readingTime: readingTime(code),
     } as Frontmatter,
     code,

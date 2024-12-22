@@ -1,4 +1,3 @@
-import React from "react";
 import type { IconProps } from '@tamagui/helpers-icon';
-export declare const AlertTriangle: React.NamedExoticComponent<IconProps>;
+export declare const AlertTriangle: import("react").NamedExoticComponent<IconProps>;
 //# sourceMappingURL=alert-triangle.d.ts.map

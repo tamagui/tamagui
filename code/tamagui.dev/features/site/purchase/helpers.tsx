@@ -16,7 +16,7 @@ import {
 import type { Database } from '~/features/supabase/types'
 import { getTakeoutPriceInfo } from './getProductInfo'
 
-import { usePathname } from 'vxs'
+import { usePathname } from 'one'
 
 const ua = (() => {
   if (typeof window === 'undefined') return
@@ -276,7 +276,7 @@ export const TakeoutTable = ({
         <YStack width="80%">
           <Paragraph size="$6">GitHub Seats</Paragraph>
           <Paragraph className="text-wrap-balance" size="$3" theme="alt1">
-            Open PRs and issues on the Github repo
+            Open PRs and issues on the GitHub repo
           </Paragraph>
         </YStack>
         <XStack f={1} ai="center" gap="$2" jc="center">

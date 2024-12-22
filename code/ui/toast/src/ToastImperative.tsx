@@ -159,7 +159,7 @@ export const ToastImperativeProvider = ({
       })
       return true
     },
-    [setToast, options.native]
+    [setToast, JSON.stringify(options.native || null)]
   )
   const hide = React.useCallback(() => {
     lastNativeToastRef?.close()

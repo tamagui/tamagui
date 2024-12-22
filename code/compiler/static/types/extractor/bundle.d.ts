@@ -23,6 +23,7 @@ export declare const esbuildLoaderConfig: {
     readonly '.aac': "file";
     readonly '.ogg': "file";
     readonly '.flac': "file";
+    readonly '.node': "empty";
 };
 export declare const esbuildIgnoreFilesRegex: RegExp;
 /**
@@ -33,6 +34,6 @@ type Props = Omit<Partial<esbuild.BuildOptions>, 'entryPoints'> & {
     entryPoints: string[];
     resolvePlatformSpecificEntries?: boolean;
 };
-export declare function bundle(props: Props, platform: TamaguiPlatform, aliases?: Record<string, string>): Promise<esbuild.BuildResult<esbuild.BuildOptions>>;
+export declare function esbundleTamaguiConfig(props: Props, platform: TamaguiPlatform, aliases?: Record<string, string>): Promise<esbuild.BuildResult<esbuild.BuildOptions>>;
 export {};
 //# sourceMappingURL=bundle.d.ts.map

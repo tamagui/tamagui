@@ -1,4 +1,4 @@
-import { getURL } from '~/helpers/getURL'
+import { getURL } from 'one'
 
 export const getOgUrl = ({
   type,

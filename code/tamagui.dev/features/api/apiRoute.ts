@@ -1,6 +1,6 @@
 import type { PostgrestError } from '@supabase/supabase-js'
-import type { Endpoint } from 'vxs'
-import { isResponse } from 'vxs'
+import type { Endpoint } from 'one'
+import { isResponse } from 'one'
 
 export function apiRoute(handler: Endpoint) {
   return (async (req) => {

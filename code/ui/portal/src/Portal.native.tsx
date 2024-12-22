@@ -1,21 +1,33 @@
 import { YStack } from '@tamagui/stacks'
 import * as React from 'react'
-// @ts-ignore
-import { Platform, RootTagContext } from 'react-native'
-
-import { PortalItem } from './GorhomPortal'
+import { RootTagContext } from 'react-native'
+import { IS_FABRIC, USE_NATIVE_PORTAL } from './constants'
 import type { PortalProps } from './PortalProps'
+import { useStackedZIndex } from './useStackedZIndex'
+import { GorhomPortalItem } from './GorhomPortalItem'
 
-const isFabric = global?.nativeFabricUIManager
-let createPortal
-if (isFabric) {
-  createPortal = require('react-native/Libraries/Renderer/shims/ReactFabric').createPortal
-} else {
-  createPortal = require('react-native/Libraries/Renderer/shims/ReactNative').createPortal
-}
+const createPortal = (() => {
+  if (IS_FABRIC) {
+    try {
+      return require('react-native/Libraries/Renderer/shims/ReactFabric').createPortal
+    } catch (err) {
+      console.info(`Note: error importing portal, defaulting to non-native portals`, err)
+      return null
+    }
+  }
+  try {
+    return require('react-native/Libraries/Renderer/shims/ReactNative').createPortal
+  } catch (err) {
+    console.info(`Note: error importing portal, defaulting to non-native portals`, err)
+    return null
+  }
+})()
 
-export const Portal = (props: PortalProps) => {
+export const Portal = (propsIn: PortalProps) => {
+  const { stackZIndex, ...props } = propsIn
+
   const rootTag = React.useContext(RootTagContext)
+  const zIndex = useStackedZIndex(propsIn)
 
   const contents = (
     <YStack
@@ -23,13 +35,13 @@ export const Portal = (props: PortalProps) => {
       fullscreen
       position="absolute"
       maxWidth="100%"
-      zIndex={100000}
       {...props}
+      zIndex={zIndex}
     />
   )
 
-  if (Platform.OS === 'android' || !rootTag) {
-    return <PortalItem hostName="root">{contents}</PortalItem>
+  if (!createPortal || !USE_NATIVE_PORTAL || !rootTag) {
+    return <GorhomPortalItem hostName="root">{contents}</GorhomPortalItem>
   }
 
   return createPortal(contents, rootTag)

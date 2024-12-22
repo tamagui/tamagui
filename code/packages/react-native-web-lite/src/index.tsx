@@ -23,7 +23,7 @@ export {
   clickProps,
   TextAncestorContext,
   flattenStyle,
-} from 'react-native-web-internals'
+} from '@tamagui/react-native-web-internals'
 export { default as render } from './render/index'
 export { unmountComponentAtNode } from 'react-dom'
 export { default as NativeModules } from './NativeModules/index'
@@ -60,8 +60,8 @@ export { default as Vibration } from './Vibration/index'
 // unimplemented
 export { default as DrawerLayoutAndroid } from './UnimplementedView'
 export { default as Switch } from './UnimplementedView'
-export { default as VirtualizedList } from './UnimplementedView'
-export { default as FlatList } from './UnimplementedView'
+export { default as VirtualizedList } from './vendor/react-native/VirtualizedList'
+export { default as FlatList } from './FlatList'
 export { default as TouchableHighlight } from './UnimplementedView'
 export { default as TouchableNativeFeedback } from './UnimplementedView'
 export { default as SectionList } from './UnimplementedView'

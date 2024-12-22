@@ -3,7 +3,9 @@ import open from 'open'
 import { debugLog } from '../commands/index.js'
 
 import type { AppContextType } from '../data/AppContext.js'
-import { tokenStore } from '../data/AppContext.js'
+
+const apiBase = process.env.API_BASE || 'https://tamagui.dev'
+const ACCESS_TOKEN_URL = `${apiBase}/account/items`
 
 export const handleGlobalKeyPress = (
   key: string,
@@ -27,9 +29,11 @@ export const handleGlobalKeyPress = (
   })
 
   if (modifier.ctrl && key === 'd') {
-    tokenStore.clear()
-    console.warn('Cleared Github Token')
-    return
+    appContext.tokenStore.clear()
+    appContext.setAccessToken(null)
+    appContext.setIsLoggedIn(false)
+    console.warn('Cleared Auth Token')
+    return navigate('/')
   }
 
   if (key === 'c' && appContext.installState.shouldOpenBrowser) {
@@ -37,7 +41,7 @@ export const handleGlobalKeyPress = (
     return
   }
 
-  if (location.pathname === '/install-confirm') {
+  if (location.pathname.includes('/install-confirm')) {
     if (key === 'y') {
       setConfirmationPending(false)
       navigate('/search')
@@ -55,6 +59,10 @@ export const handleGlobalKeyPress = (
       return
     }
     return
+  }
+
+  if (modifier.escape && location.pathname.includes('/auth')) {
+    return navigate('/search')
   }
 
   // After token addition, go back to the previous screen on pressing ESC
@@ -81,7 +89,7 @@ export const handleGlobalKeyPress = (
   }
 
   if (modifier.escape) {
-    if (location.pathname === '/install-confirm') {
+    if (location.pathname.includes('/install-confirm')) {
       navigate('/search')
       return
     }
@@ -96,12 +104,13 @@ export const handleGlobalKeyPress = (
     return
 
   if (
+    modifier.ctrl &&
     modifier.return &&
     !appContext.installState.installingComponent?.isOSS &&
-    appContext.installState.shouldOpenBrowser
+    appContext.installState.shouldOpenBrowser &&
+    location.pathname.includes('/auth')
   ) {
-    open('https://github.com/login/device')
-    return
+    return open(ACCESS_TOKEN_URL)
   }
 
   if (modifier.upArrow) {
@@ -116,12 +125,14 @@ export const handleGlobalKeyPress = (
   }
 
   if (modifier.return) {
-    setInstallState((prev) => ({
-      ...prev,
-      installingComponent: searchResults[selectedResultIndex]?.item,
-    }))
-    debugLog('Installing component', searchResults[selectedResultIndex]?.item)
-    navigate('/install-confirm')
-    return
+    if (location.pathname.includes('/search')) {
+      setInstallState((prev) => ({
+        ...prev,
+        installingComponent: searchResults[selectedResultIndex]?.item,
+      }))
+      debugLog('Installing component', searchResults[selectedResultIndex]?.item)
+      navigate(`/install-confirm/${searchResults[selectedResultIndex]?.item.fileName}`)
+      return
+    }
   }
 }

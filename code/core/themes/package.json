@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/themes",
-  "version": "1.110.2",
+  "version": "1.120.1",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -12,8 +12,8 @@
     "generate:v3": "tamagui generate-themes ./src/v3-themes.ts ./src/generated-v3.ts",
     "build": "tamagui-build",
     "watch": "yarn build --watch",
-    "lint": "npx biome check src",
-    "lint:fix": "npx biome check --apply-unsafe src",
+    "lint": "biome check src",
+    "lint:fix": "biome check --write src",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
@@ -21,51 +21,62 @@
     "./package.json": "./package.json",
     "./src/themes-new.ts": "./src/themes-new.ts",
     ".": {
-      "react-native-import": "./dist/esm/index.native.js",
-      "react-native": "./dist/cjs/index.native.js",
+      "react-native": {
+        "import": "./dist/esm/index.native.js",
+        "require": "./dist/cjs/index.native.js"
+      },
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
-      "require": "./dist/cjs/index.js"
+      "require": "./dist/cjs/index.cjs",
+      "default": "./dist/cjs/index.native.js"
     },
     "./v2": {
-      "react-native-import": "./dist/esm/v2.native.js",
-      "react-native": "./dist/cjs/v2.native.js",
+      "react-native": {
+        "import": "./dist/esm/v2.native.js",
+        "require": "./dist/cjs/v2.native.js"
+      },
       "types": "./types/v2.d.ts",
       "import": "./dist/esm/v2.mjs",
-      "require": "./dist/cjs/v2.js"
+      "require": "./dist/cjs/v2.cjs"
     },
     "./v2-themes": {
-      "react-native-import": "./dist/esm/v2-themes.native.js",
-      "react-native": "./dist/cjs/v2-themes.native.js",
+      "react-native": {
+        "import": "./dist/esm/v2-themes.native.js",
+        "require": "./dist/cjs/v2-themes.native.js"
+      },
       "types": "./types/v2-themes.d.ts",
       "import": "./dist/esm/v2-themes.mjs",
-      "require": "./dist/cjs/v2-themes.js"
+      "require": "./dist/cjs/v2-themes.cjs"
     },
     "./v3": {
-      "react-native-import": "./dist/esm/v3.native.js",
-      "react-native": "./dist/cjs/v3.native.js",
+      "react-native": {
+        "import": "./dist/esm/v3.native.js",
+        "require": "./dist/cjs/v3.native.js"
+      },
       "types": "./types/v3.d.ts",
       "import": "./dist/esm/v3.mjs",
-      "require": "./dist/cjs/v3.js"
+      "require": "./dist/cjs/v3.cjs"
     },
     "./v3-themes": {
-      "react-native-import": "./dist/esm/v3-themes.native.js",
-      "react-native": "./dist/cjs/v3-themes.native.js",
+      "react-native": {
+        "import": "./dist/esm/v3-themes.native.js",
+        "require": "./dist/cjs/v3-themes.native.js"
+      },
       "types": "./types/v3-themes.d.ts",
       "import": "./dist/esm/v3-themes.mjs",
-      "require": "./dist/cjs/v3-themes.js"
+      "require": "./dist/cjs/v3-themes.cjs"
     }
   },
   "dependencies": {
-    "@tamagui/colors": "1.110.2",
-    "@tamagui/create-theme": "1.110.2",
-    "@tamagui/theme-builder": "1.110.2",
-    "@tamagui/web": "1.110.2"
+    "@tamagui/colors": "1.120.1",
+    "@tamagui/create-theme": "1.120.1",
+    "@tamagui/theme-builder": "1.120.1",
+    "@tamagui/web": "1.120.1"
   },
   "devDependencies": {
-    "@tamagui/build": "1.110.2",
-    "@tamagui/cli": "1.110.2",
-    "vitest": "^0.34.3"
+    "@tamagui/build": "1.120.1",
+    "@tamagui/cli": "1.120.1",
+    "vitest": "^2.1.3"
   },
   "publishConfig": {
     "access": "public"

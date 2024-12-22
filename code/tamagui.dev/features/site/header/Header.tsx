@@ -1,7 +1,7 @@
 import { LogoWords, TamaguiLogo, ThemeTint, useTint } from '@tamagui/logo'
 import * as React from 'react'
 import { SizableText, TooltipGroup, XGroup, XStack, YStack, isClient } from 'tamagui'
-import { usePathname } from 'vxs'
+import { usePathname } from 'one'
 import { Link } from '~/components/Link'
 import { GithubIcon } from '~/features/icons/GithubIcon'
 import { SeasonTogglePopover } from '~/features/site/seasons/SeasonTogglePopover'
@@ -10,6 +10,7 @@ import { HeaderLinks } from './HeaderLinks'
 import { HeaderMenu } from './HeaderMenu'
 import { SearchButton } from './SearchButton'
 import type { HeaderProps } from './types'
+import { bannerHeight } from '~/components/PromoBanner'
 
 export function Header(props: HeaderProps) {
   const [isScrolled, setIsScrolled] = React.useState(false)
@@ -50,7 +51,7 @@ export function Header(props: HeaderProps) {
           <XStack
             className={`ease-out all ms300`}
             py="$1.5"
-            y={0}
+            y={bannerHeight}
             ov="hidden"
             contain="paint"
             width="100%"
@@ -59,7 +60,7 @@ export function Header(props: HeaderProps) {
             $sm={{
               br: 0,
               bw: 0,
-              y: -1,
+              y: -1 + (isScrolled ? 0 : bannerHeight),
               py: '$2',
             }}
             {...(isScrolled && {
@@ -190,7 +191,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
                     o: 0.8,
                   }}
                 >
-                  Github
+                  GitHub
                 </SizableText>
               </XStack>
             </XStack>

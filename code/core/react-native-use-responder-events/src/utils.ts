@@ -73,6 +73,7 @@ export function getResponderPaths(domEvent: any): {
   const idPath: any[] = []
   const nodePath: any[] = []
   const eventPath = getEventPath(domEvent)
+
   for (let i = 0; i < eventPath.length; i++) {
     const node = eventPath[i]
     const id = getResponderId(node)

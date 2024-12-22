@@ -9,18 +9,23 @@ const skipImports = ['../../general/_Showcase']
 
 function analyzeIndexFile(filePath) {
   const fileContent = fs.readFileSync(filePath, 'utf-8')
-  const ast = parse(fileContent, { sourceType: 'module' })
+  try {
+    const ast = parse(fileContent, { sourceType: 'module' })
 
-  const exportedModules = []
+    const exportedModules = []
 
-  walk.simple(ast, {
-    ExportAllDeclaration(node) {
-      const exportedName = node.source.value
-      exportedModules.push(exportedName)
-    },
-  })
+    walk.simple(ast, {
+      ExportAllDeclaration(node) {
+        const exportedName = node.source.value
+        exportedModules.push(exportedName)
+      },
+    })
 
-  return exportedModules
+    return exportedModules
+  } catch (err) {
+    console.error(`Error parsing file: ${filePath}`)
+    throw new Error(err)
+  }
 }
 
 function shake(content) {
@@ -83,23 +88,28 @@ function copyUnmergedComponents(directoryPath, outputDirectory) {
   })
 }
 
-const matchImportsRegex =
-  /import\s+(?:\w+\s*)?\{\s*(?:\w+\s*,\s*)*\w+\s*\}\s+from\s+'(\.\/|\.\.\/)[^']+'/g
+const matchImportsRegex = /from\s+['"](\.[^'"]+)['"]/gi
 
-function processFile(filePath, visitedFiles = new Set()) {
+function processFile(filePath, visitedFiles = new Set(), indent = 0) {
   if (visitedFiles.has(filePath)) {
     return ''
   }
 
   visitedFiles.add(filePath)
 
+  if (!indent) {
+    console.info('ANALYZE', filePath)
+  }
+
   let fileContent = fs.readFileSync(filePath, 'utf8')
   fileContent = replaceInternals(fileContent)
 
-  const importStatements = Array.from(
-    fileContent.matchAll(matchImportsRegex),
-    (m) => m[0]
-  )
+  const importStatements = []
+  for (const match of fileContent.matchAll(matchImportsRegex)) {
+    importStatements.push(match[0])
+  }
+
+  console.info(indent ? '  ' : '', 'importStatements', importStatements)
 
   let appendedContent = fileContent
   appendedContent = `/** START of the file ${filePath
@@ -125,7 +135,7 @@ function processFile(filePath, visitedFiles = new Set()) {
             `${importPath}${extension}`
           )
           if (fs.existsSync(alternativePath)) {
-            appendedContent += processFile(alternativePath, visitedFiles)
+            appendedContent += processFile(alternativePath, visitedFiles, indent + 1)
             foundImport = true
           }
         }
@@ -137,6 +147,10 @@ function processFile(filePath, visitedFiles = new Set()) {
         }
       }
     }
+  }
+
+  if (!indent) {
+    console.info('DUN')
   }
 
   return appendedContent

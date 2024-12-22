@@ -1,3 +1,16 @@
+- we should add a docs page on testing tamagui:
+
+jest-preset.js should add (for testing native):
+
+testEnvironmentOptions: {
+  customExportConditions: ['react-native'],
+}
+
+- looks like our upgrade to 1.114 added virtualkeyboardpolicy="manual" which broke the auto keyboard appearance on android web, working on a quick fix but wanted to flag
+
+- deeply nested themeInverse needs a fix see kitchen sink squares
+- nan issue: nan start or end NaN 22 bytes: 0-22 [ 'bytes: 0', '22' ]
+
 @natew
 
 - button media queries break due to useStyle hook
@@ -8,26 +21,25 @@
 @jsherrard
 
 - uniswap/tamagui fixes, see uniswap section
-  - AnimatePresence
-    - `yarn ooo` using css driver noticed that animatepresence enter animations not working
-    - "AnimatePresence leaving things in DOM"
   - the platform-web type issues should be relatively easy
-- bento fixes
-  - fix bento-get https://discord.com/channels/909986013848412191/1206456825583632384/1274804430524514438
-  - fix datpicker import cycle https://discord.com/channels/909986013848412191/1206456825583632384/1273079183999897666
   - fix customization https://discord.com/channels/909986013848412191/1206456825583632384/1274853294195605525
-- keep an eye out for login issues, perhaps we can clear cookies if login redirect back to home unsuccessfully? since the older supabase ssr we had set bad cookies which i think are causing this. i tried adding that logic.
-  - also just a check over to see if stale js is being somehow served across deploys
-- ooo:
-  - respnosive fixes
-  - algolia search (can adopt some from tamagui.dev)
-  - email signup form
-  - team links and @handles showing
-  - lots of empty links
-  - npx one copy (useClipboard)
-  - rovingtabs design
-  - bash codeblock font is smaller
-  - port Notices from tamagui.dev MDXComponnts
+
+
+we can turn this pattern:
+
+```
+<style
+        // @ts-ignore
+        precedence="default"
+        key="tamagui-css"
+        // @ts-ignore
+        href="tamagui-css"
+      >
+        {config.getCSS()}
+      </style>
+```
+
+into just `{config.getStyleTag()}`
 
 site:
 
@@ -74,6 +86,9 @@ const Layout = styled(Flex, {
   },
 })
 
+
+- bug: if you name a file `polyfill-native.ts` tamagui-biuld doesnt output the .native files properly
+
 - // @ts-expect-error TODO tamagui needs to add gridArea type
 - need to fix web types inside platform web inside media query:
   - $sm={{ "$platform-web": { position: 'fixed' }}
@@ -111,31 +126,31 @@ const Icon = styled(Text, {
 })
 
 const Button = withStaticProperties(ButtonFrame, {
-  StyleChildren: (props) => <Style selector=".button-item" {...props} />,
   Icon,
   Text
 })
 
 const example = (
-  <Button>
-    <Button.StyleChildren color="$color10">
+  <Button gap="$4">
+    {/* prefer not renaming so compiler can optimize: */}
+    <Style selector=".button-item" color="$color10">
       {/* all of these 👇 get the styles from ^ */}
       <Button.Text /> 
       <Button.Text />
       <Button.Text />
       <Button.Icon $button-hover={{}} />
-    </Button.StyleChildren>
+    </Style>
   </Button>
 )
-
-
-
 ```
 
 ---
 
 v2:
 
+  - // TODO validate these are supported in...
+  - // TODO remove in v2
+  - // TODO can remove 'web'
   - TODO remove this on v2
   - Text weirdness fixes (explore)
     - remove suppressHighlighting / margin 0 default from Text
@@ -147,7 +162,10 @@ v2:
 
           </span>
         </div>
-  - implement web-only props from flat types or else remove them and leave only in $platform-web
+  - we have some random web-only props accepts on flat props, we should:
+    - either implement them universally if easy
+    - or else remove them (in favor of $platform-web)
+  - `$platform-` prefixes should go away in favor of just `$web`, `$native` etc
   - textAlignVertical is deprecated but make sure we map back from textAlign to textAlignVertical on v2 and then remove it
   - remove Provider need just global config once
   - @tamagui/cli => tamagui
@@ -224,6 +242,9 @@ v4 and beyond
 
 ---
 
+- Dialog => Sheet adapt performance
+  - see // TODO this will re-parent, ideally we would not change tree structure
+
 - SSR safe styled context, something like:
 
 const Context = createStyledContext({
@@ -236,8 +257,6 @@ const Context = createStyledContext({
 
 - seems like vite plugin in basic vxrn app on features/home/HomeLayout.tsx
   - when tamaguiExtract is on, it seems to get stale source code after one save
-
-- seems like styledContext not overriding defaultVariant
 
 - useDidFinishSSR can avoid re-renders when disableSSR: true
   - make it export a `disable()` helper we call from tamagui
@@ -256,6 +275,10 @@ const Context = createStyledContext({
   - remove some shorthands (shac, less often used ones)
 
 ---
+
+- Dialog.Portal and <Dialog modal /> redundant
+
+- as long as you use the nextjs or other new color scheme helpers they always add t_dark/t_light on first render so as long as youre ok with dark mode not working for js-off users, you could turn default the tamagui/config v4 to shouldAddPrefersColorThemes: false
 
 - lower priority uniswap:
   - seems <Switch checked defaultChecked> isnt showing in the checked position

@@ -1,10 +1,9 @@
 /// <reference types="vitest" />
 
-import { join } from 'node:path'
-
 import react from '@vitejs/plugin-react-swc'
+import { join } from 'node:path'
 import { type Plugin, defineConfig } from 'vite'
-import reactNative from 'vitest-react-native'
+import { requireResolve } from './requireResolve'
 
 export function getConfig(tamaguiPlugin: any) {
   const isNative =
@@ -12,28 +11,42 @@ export function getConfig(tamaguiPlugin: any) {
     !process.env.DISABLE_NATIVE_TEST &&
     process.env.TAMAGUI_TARGET !== 'web'
 
-  const nativeExtensions = [
-    '.native.tsx',
-    '.native.ts',
-    '.native.js',
-    '.native.jsx',
-    '.ios.ts',
-    '.ios.tsx',
-    '.ios.js',
-    '.ios.jsx',
-    '.mjs',
-    '.js',
-    '.mts',
-    '.ts',
-    '.jsx',
-    '.tsx',
-    '.json',
-  ]
+  const nativeExtensions =
+    process.env.TEST_NATIVE_PLATFORM === 'ios'
+      ? [
+          '.ios.ts',
+          '.ios.tsx',
+          '.ios.js',
+          '.ios.jsx',
+          '.cjs',
+          '.js',
+          '.ts',
+          '.jsx',
+          '.tsx',
+          '.json',
+        ]
+      : [
+          '.native.tsx',
+          '.native.ts',
+          '.native.js',
+          '.native.jsx',
+          '.ios.ts',
+          '.ios.tsx',
+          '.ios.js',
+          '.ios.jsx',
+          '.cjs',
+          '.js',
+          '.ts',
+          '.jsx',
+          '.tsx',
+          '.json',
+        ]
 
   return defineConfig({
     plugins: [
-      process.env.DISABLE_REACT_NATIVE ? null : reactNative(),
+      // process.env.DISABLE_REACT_NATIVE ? null : reactNative(),
       react({}),
+
       tamaguiPlugin({
         components: ['tamagui'],
         config: './tamagui.config.ts',
@@ -46,18 +59,17 @@ export function getConfig(tamaguiPlugin: any) {
           if (isNative) {
             return {
               resolve: {
+                // 'react-native', breaks because vitest isnt doing .native.js :/
+                conditions: ['react-native', 'require', 'default'],
                 alias: {
-                  '@tamagui/core': import.meta.resolve
-                    ? await import.meta.resolve!(`@tamagui/core/native-test`)
-                    : `@tamagui/core/native-test`,
-                  '@tamagui/web': import.meta.resolve
-                    ? await import.meta.resolve!(`@tamagui/core/native-test`)
-                    : `@tamagui/core/native-test`,
+                  '@tamagui/core': '@tamagui/core/native-test',
+                  '@tamagui/web': '@tamagui/core/native-test',
                 },
                 extensions: nativeExtensions,
               },
 
               optimizeDeps: {
+                include: ['@tamagui/constants'],
                 extensions: nativeExtensions,
                 jsx: 'automatic',
               },
@@ -76,7 +88,7 @@ export function getConfig(tamaguiPlugin: any) {
 
     resolve: {
       alias: {
-        'react-native': 'react-native-web-lite',
+        'react-native': '@tamagui/react-native-web-lite',
       },
     },
 
@@ -84,13 +96,17 @@ export function getConfig(tamaguiPlugin: any) {
     test: {
       // for compat with some jest libs (like @testing-library/jest-dom)
       globals: true,
-      setupFiles: [join(__dirname, 'test-setup.ts')],
+      setupFiles: [
+        join(__dirname, 'test-setup.ts'),
+        requireResolve('vitest-react-native/setup'),
+      ],
       // happy-dom has issues with components-test
       environment: process.env.TEST_ENVIRONMENT || 'happy-dom',
       include: ['**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
       server: {
         deps: {
           external: ['react-native'],
+          noExternal: true,
         },
       },
     },

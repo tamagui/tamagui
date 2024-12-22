@@ -1,4 +1,3 @@
-import React from "react";
 import type { IconProps } from '@tamagui/helpers-icon';
-export declare const MoveLeft: React.NamedExoticComponent<IconProps>;
+export declare const MoveLeft: import("react").NamedExoticComponent<IconProps>;
 //# sourceMappingURL=move-left.d.ts.map

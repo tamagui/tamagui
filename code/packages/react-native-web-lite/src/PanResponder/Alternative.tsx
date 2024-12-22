@@ -51,7 +51,7 @@
 
 'use strict'
 
-import { InteractionManager } from 'react-native-web-internals'
+import { InteractionManager } from '@tamagui/react-native-web-internals'
 
 import TouchHistoryMath from '../vendor/react-native/TouchHistoryMath/index'
 

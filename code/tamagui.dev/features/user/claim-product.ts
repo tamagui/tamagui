@@ -120,7 +120,7 @@ const claimRepositoryAccess: ClaimFunction = async ({ user, metadata, request })
         repository_name: repoName,
         permission,
       },
-      message: `Successfully invited. Check your email or Github notifications (${userPrivate.github_user_name}) for an invitation to the repository.`,
+      message: `Successfully invited. Check your email or GitHub notifications (${userPrivate.github_user_name}) for an invitation to the repository.`,
     }
   } catch (error) {
     console.error(

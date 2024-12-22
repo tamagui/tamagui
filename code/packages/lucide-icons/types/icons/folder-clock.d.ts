@@ -1,4 +1,3 @@
-import React from "react";
 import type { IconProps } from '@tamagui/helpers-icon';
-export declare const FolderClock: React.NamedExoticComponent<IconProps>;
+export declare const FolderClock: import("react").NamedExoticComponent<IconProps>;
 //# sourceMappingURL=folder-clock.d.ts.map

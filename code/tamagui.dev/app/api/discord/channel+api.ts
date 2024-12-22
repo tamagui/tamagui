@@ -4,10 +4,10 @@ import { readBodyJSON } from '~/features/api/readBodyJSON'
 import { supabaseAdmin } from '~/features/auth/supabaseAdmin'
 import {
   DEFAULT_ROLE_ID,
+  getDiscordClient,
   TAKEOUT_GROUP_ID,
   TAKEOUT_ROLE_ID,
   TAMAGUI_DISCORD_GUILD_ID,
-  discordClient,
 } from '~/features/discord/helpers'
 import { getTakeoutPriceInfo } from '~/features/site/purchase/getProductInfo'
 import { getArray } from '~/helpers/getArray'
@@ -99,6 +99,8 @@ export default apiRoute(async (req) => {
       discordSeats,
     } satisfies DiscordChannelStatus)
   }
+
+  const discordClient = await getDiscordClient()
 
   let discordChannelId: string | null =
     (subscription.data.metadata as Record<string, any>)?.discord_channel || null

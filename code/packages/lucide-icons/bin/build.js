@@ -4,7 +4,6 @@ const camelcase = require('camelcase')
 const uppercamelcase = require('uppercamelcase')
 const path = require('path')
 const cheerio = require('cheerio')
-const prettier = require('prettier')
 const lucideDir = require.resolve('lucide-static')
 
 const lucideIconsDir = path.join(lucideDir, '..', '..', '..', 'icons')
@@ -13,11 +12,13 @@ const outDir = path.join(rootDir, 'src/icons')
 
 fs.mkdir(outDir, () => {})
 
+let iconExports = []
+
 glob(`${lucideIconsDir}/**.svg`, (err, icons) => {
   fs.writeFileSync(path.join(rootDir, 'src', 'index.ts'), '', 'utf-8')
 
-  console.info(`Processing`, icons)
-  
+  console.info(`Processing icons`, icons)
+
   icons.forEach((i) => {
     const svg = fs.readFileSync(i, 'utf-8')
     const id = path.basename(i, '.svg')
@@ -151,12 +152,13 @@ glob(`${lucideIconsDir}/**.svg`, (err, icons) => {
 
     fs.writeFileSync(location, out, 'utf-8')
 
-    const exportString = `export { ${cname} } from './icons/${id}'\n`
-
-    fs.appendFileSync(path.join(rootDir, 'src', 'index.ts'), exportString, 'utf-8')
+    iconExports.push(`export { ${cname} } from './icons/${id}'`)
   })
 })
 
+setTimeout(() => {
+  fs.writeFileSync(path.join(rootDir, 'src', 'index.ts'), iconExports.join('\n'), 'utf-8')
 
-// run biome:
-require('child_process').execSync(`biome check --apply-unsafe src`)
+  // run biome:
+  require('child_process').execSync(`biome check --write src`)
+}, 1000)

@@ -9,7 +9,7 @@ export function HomeFeaturesGrid() {
       <ContainerLarge space="$8">
         <YStack maw={950} als="center">
           <Grid gap={25} itemMinWidth={280}>
-            <YStack gap="$2" p="$4">
+            <YStack gap="$4" p="$4">
               <H4 ls={0} fontFamily="$silkscreen" ta="center">
                 Fully typed
               </H4>
@@ -20,26 +20,27 @@ export function HomeFeaturesGrid() {
               </Paragraph>
             </YStack>
 
-            <YStack gap="$2" p="$4">
+            <YStack gap="$4" p="$4">
               <H4 ls={0} fontFamily="$silkscreen" ta="center">
-                SSR
+                Server-first
               </H4>
               <Paragraph theme="alt1">
-                Server-side rendering works by default, including responsive styles,
-                themes and variants.
+                SSR and RSC just work, hydrate, and don't flicker, with all animation
+                drivers, responsive styles, and themes.
               </Paragraph>
             </YStack>
 
-            <YStack gap="$2" p="$4">
+            <YStack gap="$4" p="$4">
               <H4 ls={0} fontFamily="$silkscreen" ta="center">
-                Server Components
+                Fast AF
               </H4>
               <Paragraph theme="alt1">
-                Beta support for React Server Components for bundle size reduction.
+                Fully optimizes and flattens to platform-ideal code for web and native,
+                every feature works at compile and runtime.
               </Paragraph>
             </YStack>
 
-            <YStack gap="$2" p="$4">
+            <YStack gap="$4" p="$4">
               <H4 ls={0} fontFamily="$silkscreen" ta="center">
                 Introspection
               </H4>
@@ -50,7 +51,7 @@ export function HomeFeaturesGrid() {
               </Paragraph>
             </YStack>
 
-            <YStack gap="$2" p="$4">
+            <YStack gap="$4" p="$4">
               <H4 ls={0} fontFamily="$silkscreen" ta="center">
                 Compatibility
               </H4>
@@ -60,13 +61,13 @@ export function HomeFeaturesGrid() {
               </Paragraph>
             </YStack>
 
-            <YStack gap="$2" p="$4">
+            <YStack gap="$4" p="$4">
               <H4 ls={0} fontFamily="$silkscreen" ta="center">
                 Full Featured
               </H4>
               <Paragraph theme="alt1">
-                A styled factory, variants, tokens, fonts, themes, media queries,
-                shorthands and more.
+                Style library + headless components. Animations, themes, variants, tokens,
+                fonts. Advanced selectors, and more.
               </Paragraph>
             </YStack>
           </Grid>

@@ -1,4 +1,3 @@
-import React from "react";
 import type { IconProps } from '@tamagui/helpers-icon';
-export declare const ShieldMinus: React.NamedExoticComponent<IconProps>;
+export declare const ShieldMinus: import("react").NamedExoticComponent<IconProps>;
 //# sourceMappingURL=shield-minus.d.ts.map

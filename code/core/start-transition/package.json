@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/start-transition",
-  "version": "1.110.2",
+  "version": "1.120.1",
   "source": "src/index.ts",
   "license": "MIT",
   "types": "./types/index.d.ts",
@@ -14,23 +14,25 @@
   "exports": {
     "./package.json": "./package.json",
     ".": {
+      "react-native": {
+        "import": "./dist/esm/index.native.js",
+        "require": "./dist/cjs/index.native.js"
+      },
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
-      "require": "./dist/cjs/index.js"
+      "require": "./dist/cjs/index.cjs",
+      "default": "./dist/cjs/index.native.js"
     }
   },
-  "dependencies": {
-    "react": "^18.2.0 || ^19.0.0"
-  },
   "devDependencies": {
-    "@tamagui/build": "1.110.2"
+    "@tamagui/build": "1.120.1"
   },
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
     "clean": "tamagui-build clean",
-    "lint": "npx biome check src",
-    "lint:fix": "npx biome check --apply-unsafe src",
+    "lint": "biome check src",
+    "lint:fix": "biome check --write src",
     "clean:build": "tamagui-build clean:build"
   },
   "publishConfig": {

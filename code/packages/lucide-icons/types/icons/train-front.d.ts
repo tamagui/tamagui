@@ -1,4 +1,3 @@
-import React from "react";
 import type { IconProps } from '@tamagui/helpers-icon';
-export declare const TrainFront: React.NamedExoticComponent<IconProps>;
+export declare const TrainFront: import("react").NamedExoticComponent<IconProps>;
 //# sourceMappingURL=train-front.d.ts.map

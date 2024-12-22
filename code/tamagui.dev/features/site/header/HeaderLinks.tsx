@@ -17,14 +17,15 @@ import {
   debounce,
   styled,
 } from 'tamagui'
+import type { Href } from 'one'
 import { Link } from '~/components/Link'
+import { BentoPageFrame } from '~/features/bento/BentoPageFrame'
 import { BentoIcon } from '~/features/icons/BentoIcon'
 import { GithubIcon } from '~/features/icons/GithubIcon'
 import { TakeoutIcon } from '~/features/icons/TakeoutIcon'
 import { useUser } from '~/features/user/useUser'
 import { UserAvatar } from './UserAvatar'
 import type { HeaderProps } from './types'
-import { BentoPageFrame } from '~/features/bento/BentoPageFrame'
 
 const HeadAnchor = styled(Paragraph, {
   tag: 'a',
@@ -359,7 +360,7 @@ const CTAHeaderLink = ({
   description,
   forceShowAllLinks,
 }: HeaderProps & {
-  href: string
+  href: Href
   icon: React.ReactNode
   name: string
   description: string
@@ -756,7 +757,7 @@ const TooltipLabelLarge = ({
   href,
 }: { href: string; icon: any; title: string; subtitle: string }) => {
   return (
-    <Link asChild href={href}>
+    <Link asChild href={href as Href}>
       <YStack cur="pointer" f={1} ai="center" p="$7" br="$4" ov="hidden">
         <H2 ff="$silkscreen" f={1} fow="600" size="$7">
           {title}

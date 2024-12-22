@@ -1,28 +1,10 @@
-import React from "react";
-import PropTypes from 'prop-types';
-import type { IconProps } from '@tamagui/helpers-icon';
-import {
-  Svg,
-  Circle as _Circle,
-  Ellipse,
-  G,
-  LinearGradient,
-  RadialGradient,
-  Line,
-  Path,
-  Polygon,
-  Polyline,
-  Rect,
-  Symbol,
-  Text as _Text,
-  Use,
-  Defs,
-  Stop } from
-'react-native-svg';
-import { themed } from '@tamagui/helpers-icon';
+import { memo } from 'react'
+import type { IconProps } from '@tamagui/helpers-icon'
+import { Svg, Path } from 'react-native-svg'
+import { themed } from '@tamagui/helpers-icon'
 
 const Icon = (props) => {
-  const { color = 'black', size = 24, ...otherProps } = props;
+  const { color = 'black', size = 24, ...otherProps } = props
   return (
     <Svg
       width={size}
@@ -33,18 +15,18 @@ const Icon = (props) => {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      {...otherProps}>
-
+      {...otherProps}
+    >
+      <Path d="M10 7.5 8 10l2 2.5" stroke={color} />
+      <Path d="m14 7.5 2 2.5-2 2.5" stroke={color} />
       <Path
         d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
-        stroke={color} />
+        stroke={color}
+      />
+    </Svg>
+  )
+}
 
-      <Path d="m10 8-2 2 2 2" stroke={color} />
-      <Path d="m14 8 2 2-2 2" stroke={color} />
-    </Svg>);
+Icon.displayName = 'MessageSquareCode'
 
-};
-
-Icon.displayName = 'MessageSquareCode';
-
-export const MessageSquareCode = React.memo<IconProps>(themed(Icon));
+export const MessageSquareCode = memo<IconProps>(themed(Icon))

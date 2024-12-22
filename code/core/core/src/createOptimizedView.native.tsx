@@ -96,7 +96,7 @@ export function createOptimizedView(
 
   const extras = {
     accessibilityLiveRegion:
-      ariaLive === 'off' ? 'none' : ariaLive ?? accessibilityLiveRegion,
+      ariaLive === 'off' ? 'none' : (ariaLive ?? accessibilityLiveRegion),
     accessibilityLabel: ariaLabel ?? accessibilityLabel,
     focusable: tabIndex !== undefined ? !tabIndex : focusable,
     accessibilityState: _accessibilityState,

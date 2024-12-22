@@ -1,4 +1,3 @@
-import React from "react";
 import type { IconProps } from '@tamagui/helpers-icon';
-export declare const ScrollText: React.NamedExoticComponent<IconProps>;
+export declare const ScrollText: import("react").NamedExoticComponent<IconProps>;
 //# sourceMappingURL=scroll-text.d.ts.map

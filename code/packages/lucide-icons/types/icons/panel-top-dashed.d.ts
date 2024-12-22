@@ -1,4 +1,3 @@
-import React from "react";
 import type { IconProps } from '@tamagui/helpers-icon';
-export declare const PanelTopDashed: React.NamedExoticComponent<IconProps>;
+export declare const PanelTopDashed: import("react").NamedExoticComponent<IconProps>;
 //# sourceMappingURL=panel-top-dashed.d.ts.map

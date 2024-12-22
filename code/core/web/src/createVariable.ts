@@ -63,6 +63,10 @@ export function getVariable(
   nameOrVariable: Variable | string | any,
   group: TokenCategories = 'size'
 ) {
+  // dynamic color-like
+  if (nameOrVariable?.dynamic) {
+    return nameOrVariable
+  }
   setDidGetVariableValue(true)
   if (isVariable(nameOrVariable)) {
     return variableToString(nameOrVariable)

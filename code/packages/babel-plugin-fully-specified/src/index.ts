@@ -1,5 +1,5 @@
-import { existsSync, readFileSync, lstatSync } from 'node:fs'
-import { resolve, extname, dirname } from 'node:path'
+import { existsSync, lstatSync } from 'node:fs'
+import { dirname, extname, resolve } from 'node:path'
 
 import type { ConfigAPI, NodePath, PluginObj, PluginPass } from '@babel/core'
 import type {
@@ -10,31 +10,19 @@ import type {
 } from '@babel/types'
 
 export interface FullySpecifiedOptions {
-  ensureFileExists:
-    | boolean
-    | {
-        /**
-         * If you're doing a non-in-place transformation (for example, outputting `.mjs` from `.js`) with `ensureFileExists` enabled, it's possible that the transform will be incorrect due to the imported file is not transformed and written into place yet (for example, we have `foo.js` and `bar.js` and we're transforming them into `foo.mjs` and `bar.mjs` respectively, in `bar.js` we have `import { ... } from './foo.js'` which we expect to be transformed into `import { ... } from './foo.mjs'`, but if `foo.mjs` is not transformed and written yet, it will be transformed into `import { ... } from './foo.js'` because `foo.mjs` can't be found at that time).
-         *
-         * To solve this, you can set this option to `'.mjs'` to force the extension to be transformed into that specified extension.
-         */
-        forceExtension?: string
-      }
+  ensureFileExists: boolean
   esExtensionDefault: string
   /** List of all extensions which we try to find. */
   tryExtensions: Array<string>
   /** List of extensions that can run in Node.js or in the Browser. */
   esExtensions: Array<string>
-  /** List of packages that also should be transformed with this plugin. */
-  includePackages: Array<string>
 }
 
 const DEFAULT_OPTIONS = {
-  ensureFileExists: false,
-  esExtensionDefault: '.js',
-  tryExtensions: ['.js', '.mjs', '.cjs'],
-  esExtensions: ['.js', '.mjs', '.cjs'],
-  includePackages: [],
+  ensureFileExists: true,
+  esExtensionDefault: '.mjs',
+  tryExtensions: ['.js'],
+  esExtensions: ['.mjs'],
 }
 
 export default function FullySpecified(
@@ -165,19 +153,6 @@ function getFullySpecifiedModuleSpecifier(
   const fileExt = extname(filePath)
   const fileDir = dirname(filePath)
 
-  const { includePackages } = options
-
-  let packageData: PackageImportData | null = null
-  if (!isLocalFile(originalModuleSpecifier)) {
-    if (includePackages.some((name) => originalModuleSpecifier.startsWith(name))) {
-      packageData = getPackageData(originalModuleSpecifier, filePath)
-    }
-
-    if (!(packageData && packageData.isDeepImport)) {
-      return null
-    }
-  }
-
   const isDirectory = isLocalDirectory(resolve(fileDir, originalModuleSpecifier))
 
   const currentModuleExtension = extname(originalModuleSpecifier)
@@ -188,7 +163,6 @@ function getFullySpecifiedModuleSpecifier(
     moduleSpecifier: originalModuleSpecifier,
     filenameDirectory: fileDir,
     filenameExtension: fileExt,
-    packageData,
     currentModuleExtension,
     isDirectory,
     tryExtensions,
@@ -197,70 +171,11 @@ function getFullySpecifiedModuleSpecifier(
     ensureFileExists,
   })
 
-  if (targetModule === false || currentModuleExtension === targetModule.extension) {
+  if (targetModule === false) {
     return null
   }
 
-  return targetModule.module
-}
-
-/**
- * Data about how a package is being imported.
- */
-type PackageImportData = {
-  /**
-   * Indicates whether the import from the package is a deep import.
-   *
-   * Example:
-   *
-   * * `import { foo } from '@org/package'` -> `isDeepImport: false`
-   * * `import { foo } from '@org/package/lib/foo'` -> `isDeepImport: true`
-   */
-  isDeepImport: boolean
-  /**
-   * The resolved absolute path of the exact file being imported. This will always be a file path (such as `<project>/node_modules/my-pkg/dist/index.js`), not just a directory path.
-   */
-  modulePath: string
-}
-
-/**
- * Given a module specifier and the file path of the source file which imports that module, returns the package data of that module if it can be found.
- */
-function getPackageData(
-  /** The module specifier, e.g.: `@org/package/lib/someTool`. */
-  moduleSpecifier: string,
-  /** The file path of the source file which imports that module. */
-  filePath?: string
-): PackageImportData | null {
-  try {
-    const modulePath = require.resolve(moduleSpecifier, {
-      paths: filePath ? [filePath] : [],
-    })
-    const parts = modulePath.split('/')
-
-    let packageDir = ''
-    for (let i = parts.length; i >= 0; i--) {
-      const dir = dirname(parts.slice(0, i).join('/'))
-      if (existsSync(`${dir}/package.json`)) {
-        packageDir = dir
-        break
-      }
-    }
-    if (!packageDir) {
-      throw new Error(`no package dir`)
-    }
-
-    const packageJson = JSON.parse(readFileSync(`${packageDir}/package.json`).toString())
-
-    const isDeepImport = !moduleSpecifier.endsWith(packageJson.name)
-    return { isDeepImport, modulePath }
-  } catch (e) {}
-
-  return null
-}
-
-function isLocalFile(moduleSpecifier: string) {
-  return moduleSpecifier.startsWith('.') || moduleSpecifier.startsWith('/')
+  return targetModule
 }
 
 function isLocalDirectory(absoluteDirectory: string) {
@@ -270,7 +185,6 @@ function isLocalDirectory(absoluteDirectory: string) {
 function evaluateTargetModule({
   moduleSpecifier,
   currentModuleExtension,
-  packageData,
   isDirectory,
   filenameDirectory,
   filenameExtension,
@@ -279,69 +193,35 @@ function evaluateTargetModule({
   esExtensionDefault,
   ensureFileExists,
 }) {
-  if (packageData) {
-    if (
-      packageData.modulePath.endsWith('index.js') &&
-      !moduleSpecifier.endsWith('index.js')
-    ) {
-      moduleSpecifier = `${moduleSpecifier}/index`
-    }
-
-    return {
-      module: moduleSpecifier + esExtensionDefault,
-      extension: esExtensionDefault,
-    }
-  }
-
   if (currentModuleExtension && !esExtensions.includes(currentModuleExtension)) {
     return false
-  }
-
-  if (
-    isDirectory &&
-    !existsSync(
-      resolve(
-        filenameDirectory,
-        currentModuleExtension ? moduleSpecifier : moduleSpecifier + esExtensionDefault
-      )
-    )
-  ) {
-    moduleSpecifier = `${moduleSpecifier}/index`
   }
 
   const targetFile = resolve(filenameDirectory, moduleSpecifier)
 
   if (ensureFileExists) {
-    // 1. try first with same extension
-    if (
-      esExtensions.includes(filenameExtension) &&
-      existsSync(targetFile + filenameExtension)
-    ) {
-      return {
-        module: moduleSpecifier + (ensureFileExists.forceExtension || filenameExtension),
-        extension: filenameExtension,
+    for (const extension of tryExtensions) {
+      if (existsSync(targetFile + extension)) {
+        return moduleSpecifier + esExtensionDefault
       }
     }
 
-    // 2. then try with all others
-    for (const extension of tryExtensions) {
-      if (existsSync(targetFile + extension)) {
-        return {
-          module: moduleSpecifier + (ensureFileExists.forceExtension || extension),
-          extension,
-        }
-      }
+    // fallback to directory, so we find the non-dir first
+    if (
+      isDirectory &&
+      !existsSync(
+        resolve(
+          filenameDirectory,
+          currentModuleExtension ? moduleSpecifier : moduleSpecifier + esExtensionDefault
+        )
+      )
+    ) {
+      moduleSpecifier = `${moduleSpecifier}/index`
     }
   } else if (esExtensions.includes(filenameExtension)) {
-    return {
-      module: moduleSpecifier + filenameExtension,
-      extension: filenameExtension,
-    }
+    return moduleSpecifier + esExtensionDefault
   } else {
-    return {
-      module: moduleSpecifier + esExtensionDefault,
-      extension: esExtensionDefault,
-    }
+    return moduleSpecifier + esExtensionDefault
   }
 
   return false

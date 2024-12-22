@@ -1,4 +1,3 @@
-import React from "react";
 import type { IconProps } from '@tamagui/helpers-icon';
-export declare const TimerOff: React.NamedExoticComponent<IconProps>;
+export declare const TimerOff: import("react").NamedExoticComponent<IconProps>;
 //# sourceMappingURL=timer-off.d.ts.map

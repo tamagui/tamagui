@@ -6,10 +6,7 @@
   },
   "references": [
     {
-      "path": "../../core/constants"
-    },
-    {
-      "path": "../../core/use-event"
+      "path": "../../core/use-did-finish-ssr"
     }
   ],
   "exclude": [

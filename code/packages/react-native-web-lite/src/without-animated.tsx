@@ -11,7 +11,7 @@ export {
   useEvent,
   useHover,
   ImageLoader,
-} from 'react-native-web-internals'
+} from '@tamagui/react-native-web-internals'
 export { default as render } from './render/index'
 export { unmountComponentAtNode } from 'react-dom'
 export { default as NativeModules } from './NativeModules/index'
@@ -75,7 +75,7 @@ export { useLocaleContext } from './useLocaleContext/index'
 export { default as useWindowDimensions } from './useWindowDimensions/index'
 
 // // useful internals
-export * from 'react-native-web-internals'
+export * from '@tamagui/react-native-web-internals'
 
 export function requireNativeComponent(name: string) {
   return function FakeComponent() {

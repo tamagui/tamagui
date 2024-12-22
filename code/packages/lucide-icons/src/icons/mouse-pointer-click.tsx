@@ -1,28 +1,10 @@
-import React from "react";
-import PropTypes from 'prop-types';
-import type { IconProps } from '@tamagui/helpers-icon';
-import {
-  Svg,
-  Circle as _Circle,
-  Ellipse,
-  G,
-  LinearGradient,
-  RadialGradient,
-  Line,
-  Path,
-  Polygon,
-  Polyline,
-  Rect,
-  Symbol,
-  Text as _Text,
-  Use,
-  Defs,
-  Stop } from
-'react-native-svg';
-import { themed } from '@tamagui/helpers-icon';
+import { memo } from 'react'
+import type { IconProps } from '@tamagui/helpers-icon'
+import { Svg, Path } from 'react-native-svg'
+import { themed } from '@tamagui/helpers-icon'
 
 const Icon = (props) => {
-  const { color = 'black', size = 24, ...otherProps } = props;
+  const { color = 'black', size = 24, ...otherProps } = props
   return (
     <Svg
       width={size}
@@ -33,17 +15,20 @@ const Icon = (props) => {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      {...otherProps}>
-
-      <Path d="m9 9 5 12 1.8-5.2L21 14Z" stroke={color} />
-      <Path d="M7.2 2.2 8 5.1" stroke={color} />
-      <Path d="m5.1 8-2.9-.8" stroke={color} />
+      {...otherProps}
+    >
       <Path d="M14 4.1 12 6" stroke={color} />
+      <Path d="m5.1 8-2.9-.8" stroke={color} />
       <Path d="m6 12-1.9 2" stroke={color} />
-    </Svg>);
+      <Path d="M7.2 2.2 8 5.1" stroke={color} />
+      <Path
+        d="M9.037 9.69a.498.498 0 0 1 .653-.653l11 4.5a.5.5 0 0 1-.074.949l-4.349 1.041a1 1 0 0 0-.74.739l-1.04 4.35a.5.5 0 0 1-.95.074z"
+        stroke={color}
+      />
+    </Svg>
+  )
+}
 
-};
+Icon.displayName = 'MousePointerClick'
 
-Icon.displayName = 'MousePointerClick';
-
-export const MousePointerClick = React.memo<IconProps>(themed(Icon));
+export const MousePointerClick = memo<IconProps>(themed(Icon))

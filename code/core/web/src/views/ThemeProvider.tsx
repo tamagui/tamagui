@@ -8,8 +8,9 @@ import { getSetting } from '../config'
 export type ThemeProviderProps = {
   className?: string
   defaultTheme: string
-  disableRootThemeClass?: boolean
   /** @deprecated moved to createTamagui({ settings: { disableRootThemeClass } }) */
+  disableRootThemeClass?: boolean
+  /** @deprecated moved to createTamagui({ settings: { themeClassNameOnRoot } }) */
   themeClassNameOnRoot?: boolean
   children?: any
   reset?: boolean
@@ -22,7 +23,7 @@ export const ThemeProvider = (props: ThemeProviderProps) => {
       if (props.disableRootThemeClass) return
       const cn = `${THEME_CLASSNAME_PREFIX}${props.defaultTheme}`
       const target =
-        props.themeClassNameOnRoot ?? getSetting('themeClassNameOnRoot')
+        (props.themeClassNameOnRoot ?? getSetting('themeClassNameOnRoot'))
           ? document.documentElement
           : document.body
       target.classList.add(cn)

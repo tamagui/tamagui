@@ -7,8 +7,8 @@
  * @flow
  */
 
+import { useMergeRefs } from '@tamagui/react-native-web-internals'
 import * as React from 'react'
-import { StyleSheet, useMergeRefs } from 'react-native-web-internals'
 
 import type { ViewProps } from '../View/index'
 import View from '../View/index'
@@ -151,7 +151,9 @@ const ScrollViewBase = React.forwardRef((props: Props, forwardedRef) => {
       ref={useMergeRefs(scrollRef, forwardedRef)}
       style={[
         style,
+        // @ts-ignore
         !scrollEnabled && styles.scrollDisabled,
+        // @ts-ignore
         hideScrollbar && styles.hideScrollbar,
       ]}
     />
@@ -161,7 +163,7 @@ const ScrollViewBase = React.forwardRef((props: Props, forwardedRef) => {
 // Chrome doesn't support e.preventDefault in this case; touch-action must be
 // used to disable scrolling.
 // https://developers.google.com/web/updates/2017/01/scrolling-intervention
-const styles = StyleSheet.create({
+const styles = {
   scrollDisabled: {
     overflowX: 'hidden',
     overflowY: 'hidden',
@@ -170,6 +172,6 @@ const styles = StyleSheet.create({
   hideScrollbar: {
     scrollbarWidth: 'none',
   },
-})
+}
 
 export default ScrollViewBase

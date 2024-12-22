@@ -1,6 +1,5 @@
-import React from 'react'
 import { isServer, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
-
+import React from 'react'
 import { getConfig, getSetting } from '../config'
 import { matchMedia } from '../helpers/matchMedia'
 import { pseudoDescriptors } from '../helpers/pseudoDescriptors'
@@ -95,12 +94,7 @@ export const configureMedia = (config: TamaguiInternalConfig) => {
   Object.assign(mediaQueryConfig, media)
   initState = { ...mediaState }
   mediaKeysOrdered = Object.keys(media)
-
-  if (config.disableSSR) {
-    setupMediaListeners()
-  } else {
-    updateCurrentState()
-  }
+  setupMediaListeners()
 }
 
 function unlisten() {
@@ -116,6 +110,7 @@ function unlisten() {
 let setupVersion = -1
 export function setupMediaListeners() {
   if (isWeb && isServer) return
+  if (process.env.IS_STATIC) return
 
   // avoid setting up more than once per config
   if (setupVersion === mediaVersion) return
@@ -177,16 +172,20 @@ type MediaState = {
 
 const States = new WeakMap<any, MediaState>()
 
-export function setMediaShouldUpdate(ref: any, props: MediaState) {
-  return States.set(ref, {
-    ...(States.get(ref) as any),
-    ...props,
-  })
-}
+export function setMediaShouldUpdate(
+  ref: any,
+  enabled?: boolean,
+  keys?: MediaState['keys']
+) {
+  const cur = States.get(ref)
 
-type UseMediaInternalState = {
-  prev: MediaKeysState
-  keys?: string[]
+  if (!cur || cur.enabled !== enabled || keys) {
+    States.set(ref, {
+      ...cur,
+      enabled,
+      keys,
+    })
+  }
 }
 
 function subscribe(subscriber: any) {
@@ -196,83 +195,91 @@ function subscribe(subscriber: any) {
   }
 }
 
-export function useMedia(
-  uidIn?: any,
-  componentContext?: ComponentContextI,
-  debug?: DebugProp
-): UseMediaState {
-  const uid = uidIn ?? React.useRef()
+type ComponentMediaKeys = Set<string>
+
+type ComponentMediaQueryState = MediaKeysState
+
+const CurrentKeysMap = new WeakMap<any, ComponentMediaKeys>()
+
+export function useMedia(cc?: ComponentContextI, debug?: DebugProp): UseMediaState {
   // performance boost to avoid using context twice
-  const disableSSR = getDisableSSR(componentContext)
-  const initialState = (disableSSR || !isWeb ? mediaState : initState) || {}
+  const disableSSR = getSetting('disableSSR') || getDisableSSR(cc)
+  const initialState = disableSSR || !isWeb ? mediaState : initState
+  const [state, setState] = React.useState<ComponentMediaQueryState>(initialState)
 
-  let componentState = States.get(uid)
-  if (!componentState) {
-    componentState = { prev: initialState }
-    States.set(uid, componentState)
+  if (!CurrentKeysMap.get(setState)) {
+    CurrentKeysMap.set(setState, new Set())
   }
 
-  const getSnapshot = () => {
-    if (!componentState) {
-      return initialState
-    }
+  const currentKeys = CurrentKeysMap.get(setState)!
 
-    const { enabled, keys, prev = initialState } = componentState
+  // clear each render to track only rendered touched keys
+  // if (currentKeys.size) currentKeys.clear()
 
-    if (enabled === false) {
-      return prev
-    }
+  function getSnapshot(cur: ComponentMediaQueryState) {
+    if (!currentKeys) return cur
 
-    const testKeys = keys ?? (enabled && keys) ?? null
-    const hasntUpdated =
-      !testKeys || Object.keys(testKeys).every((key) => mediaState[key] === prev[key])
-
-    if (hasntUpdated) {
-      return prev
-    }
-
-    componentState.prev = mediaState
-    return mediaState
-  }
-
-  let state: MediaQueryState
-
-  if (process.env.TAMAGUI_SYNC_MEDIA_QUERY) {
-    state = React.useSyncExternalStore<MediaQueryState>(
-      subscribe,
-      getSnapshot,
-      () => initialState
-    )
-  } else {
-    const [_state, setState] = React.useState(initialState)
-    state = _state
-
-    useIsomorphicLayoutEffect(() => {
-      function update() {
-        setState(getSnapshot)
+    for (const key of currentKeys) {
+      if (mediaState[key] !== cur[key]) {
+        if (process.env.NODE_ENV === 'development' && debug) {
+          console.warn(`useMedia()✍️`, key, cur[key], '>', mediaState[key])
+        }
+        return mediaState
       }
+    }
 
-      update()
-
-      // fix media getting stuck on first render causing weird issues in dialogs not positioning
-      if (!disableSSR) {
-        Promise.resolve().then(() => {
-          update()
-        })
-      }
-
-      return subscribe(update)
-    }, [])
+    return cur
   }
+
+  let isRendering = true
+  const isInitialState = state === initialState
+
+  useIsomorphicLayoutEffect(() => {
+    isRendering = false
+  })
+
+  useIsomorphicLayoutEffect(() => {
+    const update = () =>
+      setState((prev) => {
+        const next = getSnapshot(prev)
+        return next
+      })
+
+    update()
+
+    const tm = setTimeout(() => {
+      if (currentKeys.size) {
+        update()
+      }
+    })
+
+    const dispose = subscribe(update)
+
+    return () => {
+      dispose()
+      clearTimeout(tm)
+    }
+  }, [setState])
 
   return new Proxy(state, {
     get(_, key) {
-      if (disableMediaTouch) return
-      if (typeof key === 'string') {
-        componentState.keys ||= {}
-        componentState.keys[key] = true
-        if (process.env.NODE_ENV === 'development' && debug) {
-          console.info(`useMedia() TOUCH`, key)
+      if (isRendering && !disableMediaTouch && typeof key === 'string') {
+        currentKeys.add(key)
+
+        const shouldUpdate = state[key] !== mediaState[key]
+
+        if (shouldUpdate) {
+          if (process.env.NODE_ENV === 'development' && debug) {
+            console.info(`useMedia() TOUCH`, key)
+          }
+
+          // the first update() will get this in an ssr safe way in the useLayoutEffect
+          if (!isInitialState) {
+            const next = getSnapshot(state)
+            if (next !== state) {
+              setState(next)
+            }
+          }
         }
       }
       return Reflect.get(state, key)
@@ -281,8 +288,7 @@ export function useMedia(
 }
 
 let disableMediaTouch = false
-
-export function _dmt(val: boolean) {
+export function _disableMediaTouch(val: boolean) {
   disableMediaTouch = val
 }
 

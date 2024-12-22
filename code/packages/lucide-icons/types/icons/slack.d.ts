@@ -1,4 +1,3 @@
-import React from "react";
 import type { IconProps } from '@tamagui/helpers-icon';
-export declare const Slack: React.NamedExoticComponent<IconProps>;
+export declare const Slack: import("react").NamedExoticComponent<IconProps>;
 //# sourceMappingURL=slack.d.ts.map

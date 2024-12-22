@@ -4,8 +4,8 @@ on:
   pull_request:
   push:
     paths-ignore:
-      - "assets/**"
-      - ".vscode/**"
+      - 'assets/**'
+      - '.vscode/**'
     branches:
       - master
 
@@ -16,13 +16,27 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install
-        uses: ./.github/actions/install
+      - name: Setup Node.js 22.x
+        uses: actions/setup-node@v4
         with:
-          transcrypt_password: ${{ secrets.transcrypt_password }}
+          node-version: 22.4
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install yarn
+        run: npm i yarn -g
+
+      - name: Install Dependencies
+        run: yarn install
+        env:
+          # postinstall uses this
+          TRANSCRYPT_PASSWORD: ${{ secrets.transcrypt_password }}
+          SHOULD_UNLOCK_GIT_CRYPT: "1"
+
+      - name: Build JS
+        run: yarn build:js
 
       - name: Check
-        run: yarn check
+        run: yarn && yarn check
 
       - name: Lint
         run: yarn lint
@@ -33,25 +47,39 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install
-        uses: ./.github/actions/install
+      - name: Setup Node.js 22.x
+        uses: actions/setup-node@v4
         with:
-          transcrypt_password: ${{ secrets.transcrypt_password }}
+          node-version: 22.4
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install yarn
+        run: npm i yarn -g
+
+      - name: Install Dependencies
+        run: yarn install
+        env:
+          # postinstall uses this
+          TRANSCRYPT_PASSWORD: ${{ secrets.transcrypt_password }}
+          SHOULD_UNLOCK_GIT_CRYPT: "1"
 
       - name: Install playwright
         run: npx playwright install
 
-      - name: Install Vercel CLI
-        run: npm install --global vercel@latest
-
-      - name: Link Vercel Project
-        run: cd code/tamagui.dev && vercel link --project site --scope=tamagui --yes --token=${{ secrets.VERCEL_TOKEN }}
-
-      - name: Pull Vercel Environment Information
-        run: cd code/tamagui.dev && vercel env pull .env --scope=tamagui --yes --token=${{ secrets.VERCEL_TOKEN }}
-
-      - uses: nick-fields/retry@v2
+      - uses: nick-fields/retry@v3
+        name: "Run tests: React 18.2.0 + React Native 0.74.6"
+        env:
+          YARN_ENABLE_IMMUTABLE_INSTALLS: false
         with:
           timeout_minutes: 15
           max_attempts: 2
-          command: "yarn test:ci"
+          command: 'yarn test:18.2.0'
+
+      - uses: nick-fields/retry@v3
+        name: "Run tests: React 18.3.1 + React Native 0.75.4"
+        env:
+          YARN_ENABLE_IMMUTABLE_INSTALLS: false
+        with:
+          timeout_minutes: 15
+          max_attempts: 2
+          command: 'yarn test:18.3.1'

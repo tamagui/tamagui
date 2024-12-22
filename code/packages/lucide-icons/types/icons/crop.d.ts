@@ -1,4 +1,3 @@
-import React from "react";
 import type { IconProps } from '@tamagui/helpers-icon';
-export declare const Crop: React.NamedExoticComponent<IconProps>;
+export declare const Crop: import("react").NamedExoticComponent<IconProps>;
 //# sourceMappingURL=crop.d.ts.map

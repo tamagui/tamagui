@@ -1,9 +1,9 @@
 {
   "name": "@tamagui/metro-plugin",
-  "version": "1.110.2",
+  "version": "1.120.1",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
-  "main": "dist/cjs",
+  "main": "dist/cjs/index.js",
   "module": "dist/esm",
   "files": [
     "src",
@@ -17,19 +17,19 @@
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
-    "lint": "npx biome check src",
-    "lint:fix": "npx biome check --apply-unsafe src",
+    "lint": "biome check src",
+    "lint:fix": "biome check --write src",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/static": "1.110.2",
+    "@tamagui/static": "1.120.1",
     "fs-extra": "^11.2.0",
     "metro-config": "^0.80.4",
     "metro-transform-worker": "^0.80.4",
-    "react-native-css-interop": "~0.0.21"
+    "react-native-css-interop": "^0.1.22"
   },
   "devDependencies": {
-    "@tamagui/build": "1.110.2"
+    "@tamagui/build": "1.120.1"
   }
 }

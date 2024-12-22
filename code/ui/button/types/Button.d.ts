@@ -73,12 +73,6 @@ declare const ButtonIcon: (props: {
     children: React.ReactNode;
     scaleIcon?: number;
 }) => any;
-/**
- * @deprecated Instead of useButton, see the Button docs for the newer and much improved Advanced customization pattern: https://tamagui.dev/docs/components/button
- */
-declare const buttonStaticConfig: {
-    inlineProps: Set<string>;
-};
 declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
     size?: number | SizeTokens | undefined;
     variant?: "outlined" | undefined;
@@ -371,6 +365,6 @@ declare function useButton<Props extends ButtonProps>({ textProps, ...propsIn }:
     isNested: boolean;
     props: Props;
 };
-export { Button, ButtonFrame, ButtonIcon, ButtonText, buttonStaticConfig, useButton, };
+export { Button, ButtonFrame, ButtonIcon, ButtonText, useButton, };
 export type { ButtonProps };
 //# sourceMappingURL=Button.d.ts.map

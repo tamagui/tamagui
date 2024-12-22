@@ -1,9 +1,8 @@
-import React from 'react'
 import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
 import type { SheetProps } from '@tamagui/sheet'
-import { Sheet, useSheet } from '@tamagui/sheet'
-
-import { Button, H1, H2, Input, Paragraph, XStack, YStack } from 'tamagui'
+import { Sheet } from '@tamagui/sheet'
+import React from 'react'
+import { Button, H2, Input, Paragraph, XStack, YStack } from 'tamagui'
 
 const spModes = ['percent', 'constant', 'fit', 'mixed'] as const
 
@@ -32,8 +31,8 @@ export const SheetDemo = () => {
 
   return (
     <>
-      <YStack space>
-        <XStack space $sm={{ flexDirection: 'column', alignItems: 'center' }}>
+      <YStack gap="$4">
+        <XStack gap="$4" $sm={{ flexDirection: 'column', alignItems: 'center' }}>
           <Button onPress={() => setOpen(true)}>Open</Button>
           <Button onPress={() => setModal((x) => !x)}>
             {modal ? 'Type: Modal' : 'Type: Inline'}
@@ -85,7 +84,7 @@ export const SheetDemo = () => {
         />
 
         <Sheet.Handle />
-        <Sheet.Frame padding="$4" justifyContent="center" alignItems="center" space="$5">
+        <Sheet.Frame padding="$4" justifyContent="center" alignItems="center" gap="$5">
           <Button size="$6" circular icon={ChevronDown} onPress={() => setOpen(false)} />
           <Input width={200} />
           {modal && isPercent && (
@@ -115,7 +114,7 @@ function InnerSheet(props: SheetProps) {
       />
 
       <Sheet.Handle />
-      <Sheet.Frame flex={1} justifyContent="center" alignItems="center" space="$5">
+      <Sheet.Frame flex={1} justifyContent="center" alignItems="center" gap="$5">
         <Sheet.ScrollView>
           <YStack p="$5" gap="$8">
             <Button

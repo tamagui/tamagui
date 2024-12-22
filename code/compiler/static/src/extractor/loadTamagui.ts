@@ -1,4 +1,3 @@
-import { readFileSync, writeFileSync } from 'node:fs'
 import { basename, dirname, extname, join, relative, resolve } from 'node:path'
 // @ts-ignore why
 import { Color, colorLog } from '@tamagui/cli-color'
@@ -7,23 +6,23 @@ import type { TamaguiInternalConfig } from '@tamagui/web'
 import esbuild from 'esbuild'
 import * as fsExtra from 'fs-extra'
 
-import { readFile } from 'node:fs/promises'
 import { SHOULD_DEBUG } from '../constants'
 import { requireTamaguiCore } from '../helpers/requireTamaguiCore'
-import { minifyCSS } from '../minifyCSS'
 import { getNameToPaths, registerRequire } from '../registerRequire'
 import {
   type TamaguiProjectInfo,
   getBundledConfig,
+  getLoadedConfig,
   hasBundledConfigChanged,
   loadComponents,
+  writeTamaguiCSS,
 } from './bundleConfig'
-import {
-  generateTamaguiStudioConfig,
-  generateTamaguiStudioConfigSync,
-  generateTamaguiThemes,
-} from './generateTamaguiStudioConfig'
 import { getTamaguiConfigPathFromOptionsConfig } from './getTamaguiConfigPathFromOptionsConfig'
+import {
+  generateTamaguiThemes,
+  regenerateConfig,
+  regenerateConfigSync,
+} from './regenerateConfig'
 
 const getFilledOptions = (propsIn: Partial<TamaguiOptions>): TamaguiOptions => ({
   // defaults
@@ -33,64 +32,56 @@ const getFilledOptions = (propsIn: Partial<TamaguiOptions>): TamaguiOptions => (
   ...(propsIn as Partial<TamaguiOptions>),
 })
 
+let isLoadingPromise: null | Promise<any>
+
 export async function loadTamagui(
   propsIn: Partial<TamaguiOptions>
 ): Promise<TamaguiProjectInfo | null> {
-  const props = getFilledOptions(propsIn)
+  if (isLoadingPromise) return await isLoadingPromise
 
-  const bundleInfo = await getBundledConfig(props)
-  if (!bundleInfo) {
-    console.warn(
-      `No bundled config generated, maybe an error in bundling. Set DEBUG=tamagui and re-run to get logs.`
-    )
-    return null
-  }
+  let resolvePromise
+  let rejectPromise
+  isLoadingPromise = new Promise((res, rej) => {
+    resolvePromise = res
+    rejectPromise = rej
+  })
 
-  // this affects the bundled config so run it first
-  await generateThemesAndLog(props, true)
+  try {
+    const props = getFilledOptions(propsIn)
 
-  if (!hasBundledConfigChanged()) {
-    return bundleInfo
-  }
-
-  // this depends on the config so run it after
-  if (bundleInfo) {
-    const { createTamagui } = requireTamaguiCore(props.platform || 'web')
-
-    // init config
-    const config = createTamagui(bundleInfo.tamaguiConfig) as any
-
-    const { outputCSS } = props
-    if (outputCSS && props.platform === 'web') {
-      const flush = async () => {
-        colorLog(Color.FgYellow, `    ➡ [tamagui] output css: ${outputCSS}\n`)
-        await fsExtra.writeFile(outputCSS, css)
-      }
-      // default to not minifying it messes up ssr parsing
-      const cssOut = config.getCSS()
-      const css = props.disableMinifyCSS === false ? minifyCSS(cssOut).code : cssOut
-      try {
-        if ((await readFile(outputCSS, 'utf8')) === css) {
-          // no change
-        } else {
-          await flush()
-        }
-      } catch {
-        await flush()
-      }
+    const bundleInfo = await getBundledConfig(props)
+    if (!bundleInfo) {
+      console.warn(
+        `No bundled config generated, maybe an error in bundling. Set DEBUG=tamagui and re-run to get logs.`
+      )
+      resolvePromise(null)
+      return null
     }
-  }
 
-  if (process.env.NODE_ENV === 'development') {
-    await generateTamaguiStudioConfig(props, bundleInfo)
-  }
+    // this affects the bundled config so run it first
+    await generateThemesAndLog(props)
 
-  return bundleInfo
+    if (!hasBundledConfigChanged()) {
+      resolvePromise(bundleInfo)
+      return bundleInfo
+    }
+
+    if (process.env.NODE_ENV === 'development') {
+      await regenerateConfig(props, bundleInfo)
+    }
+
+    resolvePromise(bundleInfo)
+    return bundleInfo
+  } catch (err) {
+    rejectPromise()
+    throw err
+  } finally {
+    isLoadingPromise = null
+  }
 }
 
 // debounce a bit
 let waiting = false
-let hasLoggedOnce = false
 
 export const generateThemesAndLog = async (options: TamaguiOptions, force = false) => {
   if (waiting) return
@@ -99,17 +90,24 @@ export const generateThemesAndLog = async (options: TamaguiOptions, force = fals
     waiting = true
     await new Promise((res) => setTimeout(res, 30))
     const didGenerate = await generateTamaguiThemes(options, force)
+
     // only logs when changed
-    if (!hasLoggedOnce && didGenerate) {
-      hasLoggedOnce = true
+    if (didGenerate) {
       const whitespaceBefore = `    `
       colorLog(
         Color.FgYellow,
-        `\n${whitespaceBefore}➡ [tamagui] generated themes: ${relative(
+        `${whitespaceBefore}➡ [tamagui] generated themes: ${relative(
           process.cwd(),
           options.themeBuilder.output
         )}`
       )
+
+      if (options.outputCSS) {
+        const loadedConfig = getLoadedConfig()
+        if (loadedConfig) {
+          await writeTamaguiCSS(options.outputCSS, loadedConfig)
+        }
+      }
     }
   } finally {
     waiting = false
@@ -229,28 +227,10 @@ export function loadTamaguiSync({
       if (tamaguiConfig) {
         const { outputCSS } = props
         if (outputCSS) {
-          const flush = () => {
-            colorLog(Color.FgYellow, `    ➡ [tamagui] output css: ${outputCSS}\n`)
-            writeFileSync(outputCSS, css)
-          }
-
-          const css =
-            props.disableMinifyCSS === false
-              ? minifyCSS(tamaguiConfig.getCSS()).code
-              : tamaguiConfig.getCSS()
-
-          try {
-            if (readFileSync(outputCSS, 'utf-8') === css) {
-              // no change
-            } else {
-              flush()
-            }
-          } catch {
-            flush()
-          }
+          writeTamaguiCSS(outputCSS, tamaguiConfig)
         }
 
-        generateTamaguiStudioConfigSync(props, info)
+        regenerateConfigSync(props, info)
       }
 
       last[key] = {
@@ -379,13 +359,34 @@ export async function esbuildWatchFiles(entry: string, onChanged: () => void) {
   const context = await esbuild.context({
     bundle: true,
     entryPoints: [entry],
-    resolveExtensions: ['.ts', '.tsx', '.js', '.jsx', '.mjs'],
+    resolveExtensions: ['.ts', '.tsx', '.js', '.mjs'],
     logLevel: 'silent',
     write: false,
+
+    alias: {
+      '@react-native/normalize-color': '@tamagui/proxy-worm',
+      'react-native-web': '@tamagui/proxy-worm',
+      'react-native': '@tamagui/proxy-worm',
+    },
+
     plugins: [
+      // to log what its watching:
+      // {
+      //   name: 'test',
+      //   setup({ onResolve }) {
+      //     onResolve({ filter: /.*/ }, (args) => {
+      //       console.log('wtf', args.path)
+      //     })
+      //   },
+      // },
+
       {
         name: `on-rebuild`,
-        setup({ onEnd }) {
+        setup({ onEnd, onResolve }) {
+          // external node modules
+          let filter = /^[^.\/]|^\.[^.\/]|^\.\.[^\/]/ // Must not start with "/" or "./" or "../"
+          onResolve({ filter }, (args) => ({ path: args.path, external: true }))
+
           onEnd(() => {
             if (!hasRunOnce) {
               hasRunOnce = true

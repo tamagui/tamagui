@@ -1,11 +1,11 @@
 import type { SplitStyleProps, StaticConfig, ThemeParsed, UseMediaState } from '../types';
 import type { ViewProps, ViewStyle } from '../views/View';
-type UsePropsOptions = Pick<SplitStyleProps, 'noExpand' | 'noNormalize' | 'noClassNames' | 'resolveValues'> & {
+type UsePropsOptions = Pick<SplitStyleProps, 'noExpand' | 'noNormalize' | 'noClass' | 'resolveValues'> & {
     disableExpandShorthands?: boolean;
     forComponent?: {
         staticConfig: StaticConfig;
     };
-    noClassNames?: boolean;
+    noClass?: boolean;
 };
 export type PropsWithoutMediaStyles<A> = {
     [Key in keyof A extends `$${string}` ? never : keyof A]?: A[Key];

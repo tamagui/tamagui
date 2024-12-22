@@ -1,28 +1,10 @@
-import React from "react";
-import PropTypes from 'prop-types';
-import type { IconProps } from '@tamagui/helpers-icon';
-import {
-  Svg,
-  Circle as _Circle,
-  Ellipse,
-  G,
-  LinearGradient,
-  RadialGradient,
-  Line,
-  Path,
-  Polygon,
-  Polyline,
-  Rect,
-  Symbol,
-  Text as _Text,
-  Use,
-  Defs,
-  Stop } from
-'react-native-svg';
-import { themed } from '@tamagui/helpers-icon';
+import { memo } from 'react'
+import type { IconProps } from '@tamagui/helpers-icon'
+import { Svg, Path } from 'react-native-svg'
+import { themed } from '@tamagui/helpers-icon'
 
 const Icon = (props) => {
-  const { color = 'black', size = 24, ...otherProps } = props;
+  const { color = 'black', size = 24, ...otherProps } = props
   return (
     <Svg
       width={size}
@@ -33,15 +15,17 @@ const Icon = (props) => {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      {...otherProps}>
+      {...otherProps}
+    >
+      <Path
+        d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"
+        stroke={color}
+      />
+      <Path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4" stroke={color} />
+    </Svg>
+  )
+}
 
-      <Path d="M21 12V7H5a2 2 0 0 1 0-4h14v4" stroke={color} />
-      <Path d="M3 5v14a2 2 0 0 0 2 2h16v-5" stroke={color} />
-      <Path d="M18 12a2 2 0 0 0 0 4h4v-4Z" stroke={color} />
-    </Svg>);
+Icon.displayName = 'Wallet'
 
-};
-
-Icon.displayName = 'Wallet';
-
-export const Wallet = React.memo<IconProps>(themed(Icon));
+export const Wallet = memo<IconProps>(themed(Icon))

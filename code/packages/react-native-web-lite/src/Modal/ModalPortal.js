@@ -9,7 +9,7 @@
  */
 import * as React from 'react'
 import ReactDOM from 'react-dom'
-import { canUseDOM } from 'react-native-web-internals'
+import { canUseDOM } from '@tamagui/react-native-web-internals'
 
 function ModalPortal(props) {
   var children = props.children

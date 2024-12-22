@@ -20,6 +20,7 @@ import type {
 
 export type ChangedThemeResponse = {
   state?: ThemeManagerState
+  prevState?: ThemeManagerState
   themeManager?: ThemeManager | null
   isNewTheme: boolean
   // null = never been inversed
@@ -109,14 +110,8 @@ export const useThemeWithState = (
             props.debug !== 'profile'
           ) {
             console.info(
-              `  🎨 useTheme() shouldUpdate?`,
-              next,
-              isClient
-                ? {
-                    shouldUpdateProp: props.shouldUpdate?.(),
-                    keys: [...keys.current],
-                  }
-                : ''
+              `  🎨 useTheme() shouldUpdate? tracking keys ${keys.current.length} ${props.shouldUpdate?.()}`,
+              next
             )
           }
 
@@ -140,15 +135,25 @@ export const useThemeWithState = (
   }
 
   const themeProxied = React.useMemo(() => {
+    // reset keys on new theme
+    keys.current = []
+
     if (!themeManager || !state?.theme) {
       return {}
     }
+
     return getThemeProxied(state, props.deopt, themeManager, keys.current, props.debug)
   }, [state?.theme, themeManager, props.deopt, props.debug])
 
   if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
     console.groupCollapsed(`  🔹 [${themeManager?.id}] useTheme =>`, state?.name)
-    console.info('returning state', changedThemeState, 'from props', props)
+    console.info(
+      'returning state',
+      changedThemeState.state,
+      changedThemeState.isNewTheme,
+      'from props',
+      props
+    )
     console.groupEnd()
   }
 
@@ -168,6 +173,13 @@ export function getThemeProxied(
 
   function track(key: string) {
     if (keys && !keys.includes(key)) {
+      if (!keys.length) {
+        // tracking new key for first time, do an update check
+        setTimeout(() => {
+          themeManager?.selfUpdate()
+        })
+      }
+
       keys.push(key)
       if (process.env.NODE_ENV === 'development' && debug) {
         console.info(` 🎨 useTheme() tracking new key: ${key}`)
@@ -204,8 +216,16 @@ export function getThemeProxied(
             // if its a variable (web), its ignored!
             get(_, subkey) {
               if (subkey === 'val') {
-                // always track .val
-                track(keyString)
+                if (!globalThis.tamaguiAvoidTracking) {
+                  if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+                    console.info(
+                      ` 🎨 useTheme() tracking new key because of .val access`,
+                      new Error().stack
+                    )
+                  }
+                  // always track .val
+                  track(keyString)
+                }
               } else if (subkey === 'get') {
                 return (platform?: 'web') => {
                   const outVal = getVariable(val)
@@ -218,28 +238,39 @@ export function getThemeProxied(
                       isIos &&
                       !deopt &&
                       getSetting('fastSchemeChange') &&
-                      !someParentIsInversed(themeManager)
+                      !shouldDeoptDueToParentScheme(themeManager)
                     ) {
                       if (scheme) {
-                        const oppositeThemeName = name.replace(
+                        const oppositeName = name.replace(
                           scheme === 'dark' ? 'dark' : 'light',
                           scheme === 'dark' ? 'light' : 'dark'
                         )
-                        const oppositeTheme = config.themes[oppositeThemeName]
-                        const oppositeVal = getVariable(oppositeTheme?.[keyString])
-                        if (oppositeVal) {
-                          const dynamicVal = {
-                            dynamic: {
-                              dark: scheme === 'dark' ? outVal : oppositeVal,
-                              light: scheme === 'light' ? outVal : oppositeVal,
-                            },
-                          }
-                          return dynamicVal
+                        const colorLight = getVariable(config.themes[name]?.[keyString])
+                        const colorDark = getVariable(
+                          config.themes[oppositeName]?.[keyString]
+                        )
+
+                        const dynamicVal = {
+                          dynamic: {
+                            light: colorLight,
+                            dark: colorDark,
+                          },
                         }
+
+                        return dynamicVal
                       }
                     }
 
-                    // if we dont return early with a dynamic val on native, always track
+                    if (process.env.NODE_ENV === 'development' && debug) {
+                      console.info(` 🎨 useTheme() tracking new key because of: 
+                        not web: ${platform !== 'web'}
+                        isIOS: ${isIos}
+                        deopt: ${deopt}
+                        fastScheme: ${getSetting('fastSchemeChange')}
+                        inversed: ${getIsInversed(themeManager)}
+                      `)
+                    }
+
                     track(keyString)
                   }
 
@@ -270,15 +301,51 @@ export function getThemeProxied(
 }
 
 // to tell if we are inversing the scheme anywhere in the tree, if so we need to de-opt
-function someParentIsInversed(manager?: ThemeManager) {
+function getIsInversed(manager?: ThemeManager) {
   if (process.env.TAMAGUI_TARGET === 'native') {
+    let isInversed = false
+
     let cur: ThemeManager | null | undefined = manager
+
     while (cur) {
-      if (!cur.parentManager) return false
-      if (cur.parentManager.state.scheme !== cur.state.scheme) return true
+      if (!cur.parentManager) return isInversed
+      if (cur.parentManager.state.scheme !== cur.state.scheme) {
+        isInversed = !isInversed
+      }
       cur = cur.parentManager
     }
   }
+
+  return false
+}
+
+// on iOS for fast scheme change, we assume the root theme name is matching the system
+// but if any intermediate theme is "fixed" to light or dark, we need to opt out
+// optimizing no-rerenders, because it could change by the end-user at any time in the tree
+// but also theres no point in doing a dynamic color in the first place since scheme is fixed one way
+function shouldDeoptDueToParentScheme(manager?: ThemeManager) {
+  if (process.env.TAMAGUI_TARGET === 'native') {
+    // reverse so we get it from root => child (easier to check)
+    const parents = (manager?.getParents() || []).reverse()
+    const rootScheme = parents[0]?.state.scheme
+
+    // de-opt because the root isn't light/dark
+    if (!rootScheme) {
+      return true
+    }
+
+    // dont count the root theme level as fixed because it will be matching system theme
+    let lastParentScheme = rootScheme
+
+    // we want to return true if a scheme changes anywhere in the tree
+    for (const parent of parents) {
+      if (parent.state.scheme !== lastParentScheme) {
+        return true
+      }
+      lastParentScheme = parent.state.scheme
+    }
+  }
+
   return false
 }
 
@@ -345,7 +412,7 @@ export const useChangeThemeEffect = (
 
   const [themeState, setThemeState] = React.useState<ChangedThemeResponse>(createState)
 
-  const { state, mounted, isNewTheme, themeManager, inversed } = themeState
+  const { state, mounted, isNewTheme, themeManager, prevState } = themeState
   const isInversingOnMount = Boolean(!themeState.mounted && props.inverse)
 
   function getShouldUpdateTheme(
@@ -357,16 +424,38 @@ export const useChangeThemeEffect = (
     const forceUpdate = shouldUpdate?.()
     if (!manager || (!forceShouldChange && forceUpdate === false)) return
     const next = nextState || manager.getState(props, parentManager)
-    if (forceShouldChange) return next
+    if (forceShouldChange) {
+      return next
+    }
     if (!next) return
     if (forceUpdate !== true && !manager.getStateShouldChange(next, prevState)) {
       return
     }
-
     return next
   }
 
+  if (process.env.TAMAGUI_TARGET === 'native') {
+    if (themeManager) {
+      if (getShouldUpdateTheme(themeManager)) {
+        const next = createState(themeState)
+        if (next.state?.name !== themeState.state?.name) {
+          setThemeState(next)
+          console.error = preventWarnSetState
+          themeManager.notify()
+          console.error = ogLog
+        }
+      }
+    }
+  }
+
   if (!isServer) {
+    React.useLayoutEffect(() => {
+      // one homepage breaks on useTheme() in MetaTheme if this isnt set up
+      if (themeManager && state && prevState && state !== prevState) {
+        themeManager.notify()
+      }
+    }, [state])
+
     // listen for parent change + notify children change
     React.useEffect(() => {
       if (!themeManager) return
@@ -392,11 +481,12 @@ export const useChangeThemeEffect = (
       // for updateTheme/replaceTheme
       const selfListenerDispose = themeManager.onChangeTheme((_a, _b, forced) => {
         if (forced) {
-          console.error = preventWarnSetState
-          setThemeState((prev) => createState(prev, true))
-          console.error = ogLog
+          setThemeState((prev) => {
+            const next = createState(prev, forced !== 'self')
+            return next
+          })
         }
-      })
+      }, true)
 
       const disposeChangeListener = parentManager?.onChangeTheme(
         (name, manager, forced) => {
@@ -413,20 +503,18 @@ export const useChangeThemeEffect = (
 
           if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
             // prettier-ignore
-            console.info(` 🔸 onChange`, themeManager.id, {
+            console.info(` 🔸 onChange`, {
+              id: themeManager.id,
               force,
               shouldTryUpdate,
               props,
               name,
-              manager,
               keys,
             })
           }
 
           if (shouldTryUpdate) {
-            console.error = preventWarnSetState
             setThemeState((prev) => createState(prev, force))
-            console.error = ogLog
           }
         },
         themeManager.id
@@ -477,7 +565,7 @@ export const useChangeThemeEffect = (
   return {
     state,
     isNewTheme,
-    inversed,
+    inversed: !!props.inverse,
     themeManager,
   }
 
@@ -554,24 +642,11 @@ export const useChangeThemeEffect = (
       }
     }
 
-    const wasInversed = prev?.inversed
-    const isInherentlyInversed =
-      isNewTheme && state.scheme !== parentManager?.state.scheme
-    const inversed = isRoot
-      ? false
-      : isInherentlyInversed
-        ? true
-        : isWebSSR
-          ? wasInversed != null
-            ? false
-            : null
-          : props.inverse
-
     const response: ChangedThemeResponse = {
       themeManager,
       isNewTheme,
       mounted,
-      inversed,
+      inversed: props.inverse,
     }
 
     const shouldReturnPrev =
@@ -588,6 +663,7 @@ export const useChangeThemeEffect = (
 
     // after we compare equal we set the state
     response.state = state
+    response.prevState = prev?.state
 
     if (process.env.NODE_ENV === 'development' && props['debug'] && isClient) {
       console.groupCollapsed(`🔷 [${themeManager.id}] useChangeThemeEffect createState`)

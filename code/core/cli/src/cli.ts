@@ -1,7 +1,7 @@
 import arg from 'arg'
 import chalk from 'chalk'
 
-import { generatedPackageTypes } from './add.js'
+import { generatedPackageTypes } from './add'
 import { disposeAll, getOptions } from './utils'
 import { loadTamagui, checkDeps } from '@tamagui/static'
 
@@ -29,33 +29,7 @@ const COMMAND_MAP = {
         loadTamaguiOptions: true,
       })
 
-      const instance = await checkDeps(options.paths.root, {
-        depType: ['dependencies', 'devDependencies'],
-      })
-
-      const isNonTamaguiNamedDep = {
-        'react-native-web-lite': true,
-        'react-native-web-internals': true,
-      }
-
-      for (const dep of instance.getDependencies()) {
-        if (!dep.name.includes('tamagui') && !isNonTamaguiNamedDep[dep.name]) continue
-        if (!dep.isMismatching) continue
-        console.warn(
-          `-------------------------------------------------------------------------------------------------
-
-⚠️  [tamagui] Mis-matching dependency version found in: ${dep.name}
-
-      This will cause errors in your app. To fix, make sure all tamagui dependencies
-      in your repo are on on the same version.
-          
-      Other versions used in the repo: ${dep.versions
-        .map((version) => version.version)
-        .join(', ')}
-
--------------------------------------------------------------------------------------------------`
-        )
-      }
+      await checkDeps(options.paths.root)
     },
   },
 
@@ -127,7 +101,7 @@ const COMMAND_MAP = {
     },
     async run() {
       const { _, ...flags } = arg(this.flags)
-      const { installGeneratedPackage } = require('./add.js')
+      const { installGeneratedPackage } = require('./add')
       const [cmd, type, path] = _
       // const options = await getOptions({
       //   debug: flags['--debug'] ? (flags['--verbose'] ? 'verbose' : true) : false,
@@ -150,7 +124,7 @@ const COMMAND_MAP = {
     async run() {
       const { _, ...flags } = arg(this.flags)
       const [_command, dir] = _
-      const imported = await import('./build.js')
+      const imported = await import('./build')
       const options = await getOptions({
         debug: flags['--debug'] ? (flags['--verbose'] ? 'verbose' : true) : false,
       })

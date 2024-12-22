@@ -1,2 +1,2 @@
-export declare const setElementProps: (element: HTMLElement) => void;
+export declare const setElementProps: (node: any) => void;
 //# sourceMappingURL=setElementProps.d.ts.map

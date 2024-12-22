@@ -1,32 +1,22 @@
 import { vitePlugin as remix } from '@remix-run/dev'
 import { defineConfig } from 'vite'
-import { installGlobals } from '@remix-run/node'
 import tsconfigPaths from 'vite-tsconfig-paths'
-import { tamaguiPlugin, tamaguiExtractPlugin } from '@tamagui/vite-plugin'
-import commonjs from 'vite-plugin-commonjs'
-import { analyzer } from 'vite-bundle-analyzer'
-
-installGlobals()
+import { tamaguiPlugin } from '@tamagui/vite-plugin'
 
 export default defineConfig({
-  clearScreen: false,
   plugins: [
-    tamaguiPlugin() as any,
-    tamaguiExtractPlugin({
-      logTimings: true,
-    }),
-    remix(),
-    tsconfigPaths(),
-    commonjs({
-      filter(id) {
-        if (id.includes('node_modules/@react-native/normalize-color')) {
-          return true
-        }
+    remix({
+      future: {
+        v3_fetcherPersist: true,
+        v3_relativeSplatPath: true,
+        v3_throwAbortReason: true,
       },
     }),
-    analyzer({
-      analyzerMode: 'static',
-      fileName: 'report',
+    tsconfigPaths(),
+    tamaguiPlugin({
+      config: './tamagui.config',
+      optimize: true,
+      outputCSS: './app/tamagui.css',
     }),
   ],
 })

@@ -1,5 +1,6 @@
 import { ToastViewport } from '@tamagui/toast'
-import { Slot, usePathname } from 'vxs'
+import { Slot, usePathname } from 'one'
+import { PromoBanner } from '~/components/PromoBanner'
 import { Footer } from '~/features/site/Footer'
 import { LoadCherryBomb, LoadMunro } from '~/features/site/fonts/LoadFonts'
 import { Header } from '~/features/site/header/Header'
@@ -23,6 +24,7 @@ export default function SiteLayout() {
 
   return (
     <>
+      <PromoBanner />
       <Header showAuth={showAuth} disableNew={disableNew} />
       <LoadCherryBomb prefetch />
       <LoadMunro prefetch />

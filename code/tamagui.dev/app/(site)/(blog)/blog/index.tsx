@@ -1,5 +1,4 @@
-import { getAllFrontmatter } from '@tamagui/mdx'
-import { useLoader } from 'vxs'
+import { useLoader } from 'one'
 import { H2, Paragraph, Spacer, XStack } from 'tamagui'
 import { ContainerLarge } from '~/components/Containers'
 import { Link } from '~/components/Link'
@@ -7,7 +6,8 @@ import { TamaguiCard } from '~/components/TamaguiCard'
 import { authors } from '~/data/authors'
 import { HeadInfo } from '~/components/HeadInfo'
 
-export function loader() {
+export async function loader() {
+  const { getAllFrontmatter } = await import('@tamagui/mdx-2')
   const frontmatters = getAllFrontmatter('data/blog')
   const sortedFrontmatters = frontmatters
     .filter((x) => !x.draft)

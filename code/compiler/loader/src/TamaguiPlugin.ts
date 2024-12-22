@@ -6,7 +6,7 @@ import type { Compiler, RuleSetRule } from 'webpack'
 import webpack from 'webpack'
 import { requireResolve } from './requireResolve'
 
-const { loadTamagui, watchTamaguiConfig } = Static
+const { watchTamaguiConfig } = Static
 
 export type PluginOptions = TamaguiOptions & {
   isServer?: boolean
@@ -103,8 +103,8 @@ export class TamaguiPlugin {
 
         ...(this.options.useReactNativeWebLite
           ? [
-              ['react-native$', 'react-native-web-lite'],
-              ['react-native-web$', 'react-native-web-lite'],
+              ['react-native$', '@tamagui/react-native-web-lite'],
+              ['react-native-web$', '@tamagui/react-native-web-lite'],
             ]
           : [
               ['react-native$', 'react-native-web'],
@@ -115,20 +115,16 @@ export class TamaguiPlugin {
   }
 
   apply(compiler: Compiler) {
-    const { isServer } = this.options
+    Static.loadTamaguiSync(this.options)
 
-    if (compiler.watchMode && !this.options.disableWatchConfig) {
+    if (compiler.options.mode === 'development' && !this.options.disableWatchConfig) {
       void watchTamaguiConfig(this.options).then((watcher) => {
         // yes this is weirdly done promise...
         process.once('exit', () => {
-          watcher.dispose()
+          watcher?.dispose()
         })
       })
     }
-
-    compiler.hooks.beforeRun.tapPromise(this.pluginName, async () => {
-      await loadTamagui(this.options)
-    })
 
     // mark as side effect
     compiler.hooks.normalModuleFactory.tap(this.pluginName, (nmf) => {

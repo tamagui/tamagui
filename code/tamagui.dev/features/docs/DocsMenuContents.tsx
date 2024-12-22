@@ -1,25 +1,13 @@
-import uFuzzy from '@leeoniya/ufuzzy'
-import { getStore, useStore } from '@tamagui/use-store'
+import { getStore } from '@tamagui/use-store'
 import * as React from 'react'
-import {
-  Input,
-  Paragraph,
-  Separator,
-  SizableStack,
-  SizableText,
-  Spacer,
-  Theme,
-  XStack,
-  YStack,
-} from 'tamagui'
+import { H4, Paragraph, Separator, Spacer, Theme, XStack, YStack } from 'tamagui'
 import { docsRoutes } from './docsRoutes'
 
-import { usePathname, router, Link } from 'vxs'
 import { DocsNavHeading } from './DocsNavHeading'
 import { DocsItemsStore, DocsRouteNavItem } from './DocsRouteNavItem'
 import { useDocsMenu } from './useDocsMenu'
 
-const fuz = new uFuzzy({})
+// const fuz = new uFuzzy({})
 
 const sections = {
   docs: docsRoutes
@@ -34,33 +22,50 @@ const sections = {
     ),
 }
 
-const allItems = [...sections.docs, ...sections.ui]
+const allItems = [
+  {
+    children: (
+      <H4 size="$4" o={0.5} dsp="inline-flex" px="$3" mt="$4" pb="$3">
+        Style
+      </H4>
+    ),
+  },
 
-const sectionStrings = {
-  docs: sections.docs.map((s) =>
-    `${s?.page.title || ''} ${s?.section?.title || ''}`.trim()
-  ),
-  ui: sections.ui.map((s) => `${s?.page.title || ''} ${s?.section?.title || ''}`.trim()),
-}
+  ...sections.docs,
+  {
+    children: (
+      <H4 size="$4" o={0.5} dsp="inline-flex" px="$3" mt="$4" pb="$3">
+        UI
+      </H4>
+    ),
+  },
+  ...sections.ui,
+]
+
+// const sectionStrings = {
+//   docs: sections.docs.map((s) =>
+//     `${s?.page.title || ''} ${s?.section?.title || ''}`.trim()
+//   ),
+//   ui: sections.ui.map((s) => `${s?.page.title || ''} ${s?.section?.title || ''}`.trim()),
+// }
 
 export const DocsMenuContents = React.memo(function DocsMenuContents({
   inMenu,
 }: { inMenu?: boolean }) {
-  const store = useStore(DocsItemsStore)
-  const pathname = usePathname()
+  // const store = useStore(DocsItemsStore)
   const { currentPath } = useDocsMenu()
   const activeSection = currentPath.startsWith('/ui') ? 'ui' : 'docs'
-  const activeItems = inMenu ? allItems : sections[activeSection]
-  const [items, setItems] = React.useState(activeItems)
-  const isFiltered = items !== activeItems
+  const items = inMenu ? allItems : sections[activeSection]
+  // const [items, setItems] = React.useState(activeItems)
+  // const isFiltered = items !== activeItems
 
-  React.useEffect(() => {
-    setItems(activeItems)
-  }, [activeSection])
+  // React.useEffect(() => {
+  //   setItems(activeItems)
+  // }, [activeSection])
 
   return (
     <>
-      <Input
+      {/* <Input
         size="$4"
         w="100%"
         bw={0}
@@ -126,7 +131,7 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
           setItems(found)
           store.index = 0
         }}
-      />
+      /> */}
 
       <Spacer />
 
@@ -156,6 +161,10 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
               {items.map((item, index) => {
                 if (!item) return null
 
+                if ('children' in item) {
+                  return <React.Fragment key={index}>{item.children}</React.Fragment>
+                }
+
                 const { section, page } = item
 
                 const contents = (
@@ -174,8 +183,9 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
 
                 const lastItem = items[index - 1]
                 const nextItem = items[index + 1]
-                const isStartingSection = !lastItem || item.section !== lastItem.section
-                const isEndingSection = !nextItem || nextItem.section !== item.section
+                const isStartingSection =
+                  !lastItem || item.section !== lastItem['section']
+                const isEndingSection = !nextItem || nextItem['section'] !== item.section
 
                 if (isStartingSection) {
                   return (
@@ -195,6 +205,7 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
                           px="$4"
                           ai="center"
                           gap="$3"
+                          mt="$4"
                         >
                           <Separator bc="$color025" o={0.25} my="$2" />
                           <Theme name="gray">
@@ -213,7 +224,7 @@ export const DocsMenuContents = React.memo(function DocsMenuContents({
                   return (
                     <React.Fragment key={`${page.route}${index}`}>
                       {contents}
-                      {!isFiltered && <Spacer />}
+                      {/* {!isFiltered && <Spacer />} */}
                     </React.Fragment>
                   )
                 }

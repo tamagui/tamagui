@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/linear-gradient",
-  "version": "1.110.2",
+  "version": "1.120.1",
   "sideEffects": [
     "*.css"
   ],
@@ -19,27 +19,30 @@
     "watch": "tamagui-build --watch",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build",
-    "lint": "npx biome check src",
-    "lint:fix": "npx biome check --apply-unsafe src"
+    "lint": "biome check src",
+    "lint:fix": "biome check --write src"
   },
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "react-native-import": "./dist/esm/index.native.js",
-      "react-native": "./dist/cjs/index.native.js",
+      "react-native": {
+        "import": "./dist/esm/index.native.js",
+        "require": "./dist/cjs/index.native.js"
+      },
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
-      "require": "./dist/cjs/index.js"
+      "require": "./dist/cjs/index.cjs",
+      "default": "./dist/cjs/index.native.js"
     }
   },
   "dependencies": {
-    "@tamagui/core": "1.110.2",
-    "@tamagui/stacks": "1.110.2"
+    "@tamagui/core": "1.120.1",
+    "@tamagui/stacks": "1.120.1"
   },
   "devDependencies": {
-    "@tamagui/build": "1.110.2",
+    "@tamagui/build": "1.120.1",
     "expo-linear-gradient": "~13.0.2",
-    "react": "^18.2.0 || ^19.0.0"
+    "react": "*"
   },
   "publishConfig": {
     "access": "public"

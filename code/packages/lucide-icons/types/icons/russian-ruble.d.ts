@@ -1,4 +1,3 @@
-import React from "react";
 import type { IconProps } from '@tamagui/helpers-icon';
-export declare const RussianRuble: React.NamedExoticComponent<IconProps>;
+export declare const RussianRuble: import("react").NamedExoticComponent<IconProps>;
 //# sourceMappingURL=russian-ruble.d.ts.map

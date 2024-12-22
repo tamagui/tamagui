@@ -1,5 +1,4 @@
-import React from 'react'
-import type { GetProps, TamaguiComponent, UnionableString, Variable } from '@tamagui/core'
+import type { GetProps, UnionableString, Variable } from '@tamagui/core'
 import {
   getConfig,
   getTokens,
@@ -15,9 +14,9 @@ import { createContextScope } from '@tamagui/create-context'
 import { withStaticProperties } from '@tamagui/helpers'
 import { ThemeableStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
-
+import React from 'react'
 import { ScrollView } from 'react-native'
-import { useIndex, useIndexedChildren } from 'reforest'
+import { useIndex, useIndexedChildren } from './useIndexedChildren'
 
 type DisablePassBorderRadius = boolean | 'bottom' | 'top' | 'start' | 'end'
 

@@ -9,7 +9,7 @@
  */
 'use strict'
 
-import { StyleSheet } from 'react-native-web-internals'
+import { StyleSheet } from '@tamagui/react-native-web-internals'
 
 import NativeAnimatedHelper from '../NativeAnimatedHelper'
 import AnimatedNode from './AnimatedNode'

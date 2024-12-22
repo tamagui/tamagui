@@ -39,6 +39,7 @@ function addTransform(identifier: string, css: string, rule?: CSSRule) {
   }
 }
 
+// once react 19 onyl supported we can remove most of this
 // gets existing ones (client side)
 // takes ~0.1ms for a fairly large page
 // used now for three things:
@@ -82,17 +83,17 @@ export function scanAllSheets(
   const sheets = document.styleSheets || []
   const prev = lastScannedSheets
   const current = new Set(sheets as any as CSSStyleSheet[])
-  if (document.styleSheets) {
-    for (const sheet of current) {
-      if (sheet) {
-        const out = updateSheetStyles(sheet, false, collectThemes, tokens)
-        if (out) {
-          themes = out
-        }
+
+  for (const sheet of current) {
+    if (sheet) {
+      const out = updateSheetStyles(sheet, false, collectThemes, tokens)
+      if (out) {
+        themes = out
       }
     }
-    lastScannedSheets = current
   }
+
+  lastScannedSheets = current
 
   if (prev) {
     for (const sheet of prev) {
@@ -112,7 +113,7 @@ function track(id: string, remove = false) {
 }
 
 const bailAfterEnv = process.env.TAMAGUI_BAIL_AFTER_SCANNING_X_CSS_RULES
-const bailAfter = bailAfterEnv ? +bailAfterEnv : 250
+const bailAfter = bailAfterEnv ? +bailAfterEnv : 700
 
 function updateSheetStyles(
   sheet: CSSStyleSheet,
@@ -149,6 +150,11 @@ function updateSheetStyles(
 
   let dedupedThemes: DedupedThemes | undefined
 
+  // because end-users can add their own css like .t_dark { --something: #000 }
+  // and this actually entirely breaks scanning, we need to ensure we can handle multiple
+  // themes, so track that here. also, css processing utils could cause this too
+  const nameToTheme: Record<string, ThemeParsed> = {}
+
   for (let i = 0; i < len; i++) {
     const rule = rules[i]
     if (!(rule instanceof CSSStyleRule)) continue
@@ -172,6 +178,14 @@ function updateSheetStyles(
     if (isTheme) {
       const deduped = addThemesFromCSS(cssRule, tokens)
       if (deduped) {
+        for (const name of deduped.names) {
+          if (nameToTheme[name]) {
+            Object.apply(nameToTheme[name], deduped.theme as any)
+            deduped.names = deduped.names.filter((x) => x !== name)
+          } else {
+            nameToTheme[name] = deduped.theme
+          }
+        }
         dedupedThemes ||= []
         dedupedThemes.push(deduped)
       }
@@ -295,7 +309,8 @@ function getTamaguiSelector(
         return [getIdentifierFromTamaguiSelector(text), rule]
       }
       if (collectThemes) {
-        if (text.startsWith(':root.t_') || text.startsWith(':root .t_')) {
+        // only matches t_ starting selector chains
+        if (/^(:root\s?(\.t_[a-z0-9_]+\s*)+(,)?\s*)+$/i.test(text)) {
           return [
             text.slice(0, 20), // just used as uid
             rule,

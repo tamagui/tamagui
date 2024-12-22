@@ -10,7 +10,7 @@ Let's take a quick look through some of the useful other exports in `@tamagui/co
 [Constants are re-exported from @tamagui/constants](https://github.com/tamagui/tamagui/blob/master/packages/constants/src/index.ts):
 
 - `isWeb` - True if targeting the web. Will be true both for SSR and client.
-- `isWindowDefined` - `typeof window === 'undefined'`
+- `isWindowDefined` - `typeof window !== 'undefined'`
 - `isServer` - `isWeb && !isWindowDefined`.
 - `isClient` - `isWeb && isWindowDefined`.
 - `useIsomorphicLayoutEffect` - `isServer ? useEffect : useLayoutEffect`. Helper for SSR rendering without warnings.
@@ -141,20 +141,15 @@ You can pass an option to disable the shorthands expansion, and another option t
 
 ```tsx
 function MyButton(props) {
-  const activeProps = useProps(props, {
-    disableExpandShorthands: true,
-    // 'value' resolves to the actual theme/token value on all platforms
-    // 'auto' resolves to CSS variable on web, value on native
-    // 'variable' resolves to CSS variable on all platforms
-    // defaults to not resolving token/theme values so they stay the same as they are input
-    resolveValues: 'value'
-  })
+  const activeProps = useProps(props)
 }
 ```
 
+useProps takes a second argument, which is the same as useStyle, documented in the next section.
+
 ### useStyle
 
-Pass in props that include media styles and shorthands, get back a flat style object with the current media styles merged, shorthands expanded, and all theme/token values resolved (into CSS variables on the web or values on native by default). This will remove any non-style values and will by default expand all variants and resolve all values automatically.
+Pass in props that include media styles and shorthands, get back a flat style object with the current media styles merged, shorthands expanded, and all theme/token values resolved (into CSS variables on the web or values on native by default). This will remove any non-style values and will by default expand all variants and resolve all values.
 
 ```tsx
 // if props is:
@@ -177,13 +172,13 @@ It can take a couple options to control how it resolves values and handles short
 ```tsx
 function MyButton(props) {
   const style = useStyle(props, {
+    // option to disable the shorthand expansion
     disableExpandShorthands: true,
-    // 'value' resolves to the actual theme/token value on all platforms
-    // 'auto' (default) resolves to CSS variable on web, value on native
-    // 'variable' resolves to CSS variable on all platforms
-    // default is 'auto'
+    // option to change how values are resolved
+    // 'auto' (default) resolves to optimized value on all platforms (CSS variable on web, DynamicColor on iOS, not optimized on android)
+    // 'value' resolves to the raw theme/token string on all platforms (the same as useTheme()[name].val)
     resolveValues: 'value',
-    // pass a Tamagui component with custom variants and it will handle them using this option:
+    // pass a Tamagui component to resolve any custom variants:
     forComponent: CustomComponent
   })
 }
@@ -196,8 +191,8 @@ Similar to the above two hooks, this returns your fully resolved/merged/media qu
 ```tsx
 function MyButton(props) {
   const [props, style, theme, media] = usePropsAndStyle(props, opts)
-  // see useProps and useStyle to see opts and how these values are resolved
-  // theme and media are returned as they are used internally already in the hook
+  // see useStyle to for documentation on opts
+  // we return theme, media as they are used internally already in the hook
 }
 ```
 

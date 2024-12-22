@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/compose-refs",
-  "version": "1.110.2",
+  "version": "1.120.1",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -16,12 +16,12 @@
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
     "clean": "tamagui-build clean",
-    "lint": "npx biome check src",
-    "lint:fix": "npx biome check --apply-unsafe src"
+    "lint": "biome check src",
+    "lint:fix": "biome check --write src"
   },
   "devDependencies": {
-    "@tamagui/build": "1.110.2",
-    "react": "^18.2.0 || ^19.0.0"
+    "@tamagui/build": "1.120.1",
+    "react": "*"
   },
   "publishConfig": {
     "access": "public"
@@ -29,11 +29,14 @@
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "react-native-import": "./dist/esm/index.native.js",
-      "react-native": "./dist/cjs/index.native.js",
+      "react-native": {
+        "import": "./dist/esm/index.native.js",
+        "require": "./dist/cjs/index.native.js"
+      },
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
-      "require": "./dist/cjs/index.js"
+      "require": "./dist/cjs/index.cjs",
+      "default": "./dist/cjs/index.native.js"
     }
   },
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",

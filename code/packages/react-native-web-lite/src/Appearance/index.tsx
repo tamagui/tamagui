@@ -7,7 +7,7 @@
  *
  * @flow
  */
-import { canUseDOM } from 'react-native-web-internals'
+import { canUseDOM } from '@tamagui/react-native-web-internals'
 
 export type ColorSchemeName = 'light' | 'dark'
 

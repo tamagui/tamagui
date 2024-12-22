@@ -1,15 +1,14 @@
-import React from 'react'
 import { useResponderEvents } from '@tamagui/react-native-use-responder-events'
 import type {
   StackNonStyleProps,
   StackStyleBase,
+  TamaDefer,
   TamaguiComponent,
   TamaguiElement,
   TamaguiTextElement,
   TextNonStyleProps,
   TextProps,
   TextStylePropsBase,
-  TamaDefer,
 } from '@tamagui/web'
 import {
   Stack as WebStack,
@@ -18,11 +17,12 @@ import {
   composeEventHandlers,
   setupHooks,
 } from '@tamagui/web'
+import React from 'react'
 
 import { createOptimizedView } from './createOptimizedView'
 import { getBaseViews } from './getBaseViews'
-import { useElementLayout } from './hooks/useElementLayout'
-import { usePlatformMethods } from './hooks/usePlatformMethods'
+import { getRect } from './helpers/getRect'
+import { measureLayout, useElementLayout } from './hooks/useElementLayout'
 import type { RNTextProps, RNViewProps } from './reactNativeTypes'
 import { usePressability } from './vendor/Pressability'
 
@@ -67,13 +67,31 @@ const baseViews = getBaseViews()
 setupHooks({
   getBaseViews,
 
+  setElementProps: (node) => {
+    // web only
+    if (node && !node['measure']) {
+      // @ts-ignore
+      node.measure ||= (callback) => measureLayout(node, null, callback)
+      // @ts-ignore
+      node.measureLayout ||= (relativeToNode, success) =>
+        measureLayout(node as HTMLElement, relativeToNode, success)
+      // @ts-ignore
+      node.measureInWindow ||= (callback) => {
+        setTimeout(() => {
+          const { height, left, top, width } = getRect(node as HTMLElement)!
+          callback(left, top, width, height)
+        }, 0)
+      }
+    }
+  },
+
   usePropsTransform(elementType, propsIn, stateRef, willHydrate) {
     if (process.env.TAMAGUI_TARGET === 'web') {
       const isDOM = typeof elementType === 'string'
 
       // replicate react-native-web functionality
       const {
-        // event props
+        // remove event props handles by useResponderEvents
         onMoveShouldSetResponder,
         onMoveShouldSetResponderCapture,
         onResponderEnd,
@@ -106,40 +124,8 @@ setupHooks({
       } = propsIn
 
       if (willHydrate || isDOM) {
-        // only necessary for DOM elements, but we need the hooks to stay around
-        const hostRef = React.useMemo(
-          () => ({
-            get current() {
-              return stateRef.current.host as Element
-            },
-          }),
-          [stateRef]
-        )
-        usePlatformMethods(hostRef)
-        useElementLayout(hostRef, !isDOM ? undefined : (onLayout as any))
-        useResponderEvents(
-          hostRef,
-          !isDOM
-            ? undefined
-            : ({
-                onMoveShouldSetResponder,
-                onMoveShouldSetResponderCapture,
-                onResponderEnd,
-                onResponderGrant,
-                onResponderMove,
-                onResponderReject,
-                onResponderRelease,
-                onResponderStart,
-                onResponderTerminate,
-                onResponderTerminationRequest,
-                onScrollShouldSetResponder,
-                onScrollShouldSetResponderCapture,
-                onSelectionChangeShouldSetResponder,
-                onSelectionChangeShouldSetResponderCapture,
-                onStartShouldSetResponder,
-                onStartShouldSetResponderCapture,
-              } as any)
-        )
+        useElementLayout(stateRef, !isDOM ? undefined : (onLayout as any))
+        useResponderEvents(stateRef, !isDOM ? undefined : propsIn)
       }
 
       if (isDOM) {

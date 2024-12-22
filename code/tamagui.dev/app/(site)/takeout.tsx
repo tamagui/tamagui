@@ -36,7 +36,7 @@ import {
   useThemeName,
 } from 'tamagui'
 import { LinearGradient } from 'tamagui/linear-gradient'
-import { useLoader } from 'vxs'
+import { useLoader } from 'one'
 import { ContainerLarge } from '~/components/Containers'
 import { ErrorBoundary } from '~/components/ErrorBoundary'
 import { HeadInfo } from '~/components/HeadInfo'
@@ -64,7 +64,7 @@ export const loader = async () => {
 const whenIdle = globalThis['requestIdleCallback'] || setTimeout
 
 export default function TakeoutPage() {
-  const { starter, fontsPack, iconsPack, bento } = useLoader(loader)
+  const { starter, bento } = useLoader(loader)
   const store = useTakeoutStore()
 
   return (
@@ -161,13 +161,7 @@ export default function TakeoutPage() {
 
       {/* <Glow /> */}
 
-      <PurchaseModal
-        defaultValue="takeout"
-        starter={starter!}
-        iconsPack={iconsPack!}
-        fontsPack={fontsPack!}
-        bento={bento!}
-      />
+      <PurchaseModal defaultValue="takeout" starter={starter!} bento={bento!} />
 
       {/* gradient on the end of the page */}
       <ThemeTint>
@@ -244,10 +238,10 @@ export default function TakeoutPage() {
                 <Paragraph className="text-wrap-balance" size="$7" $sm={{ size: '$7' }}>
                   Takeout is a production-ready stack for any user-based app. It shares a
                   large percent of code between native and web, while maintaining a high
-                  bar for UX and performance. It's builds off our OSS starter (
-                  <CodeInline>npm create tamagui</CodeInline>) with React, React Native,
-                  Next.js, Expo, Supabase, tRPC, Zod, and more. Plus custom themes,
-                  screens, user features, and typed, themeable fonts and icons from{' '}
+                  bar for UX and performance. Building off our OSS starter (
+                  <CodeInline>npm create tamagui</CodeInline>), we add Supabase, tRPC,
+                  Zod, custom themes, screens, a user system, and typed, themeable fonts
+                  and icons from{' '}
                   <Link href="https://fonts.google.com" target="_blank">
                     Google Fonts
                   </Link>{' '}
@@ -1469,7 +1463,7 @@ const Points = () => (
     <Point>+150 icon packs</Point>
     <Point>2 all new theme suites: Pastel & Neon</Point>
     <Point>All of Google fonts fonts</Point>
-    <Point>Github template with PR bot for updates</Point>
+    <Point>GitHub template with PR bot for updates</Point>
     <Point>Fully tested CI/CD: unit, integration, web and native</Point>
     <Point>Preview deploys for web, app-store builds with EAS</Point> */}
     {Object.entries(points).map(([key, group]) => (

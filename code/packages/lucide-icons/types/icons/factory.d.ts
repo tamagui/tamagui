@@ -1,4 +1,3 @@
-import React from "react";
 import type { IconProps } from '@tamagui/helpers-icon';
-export declare const Factory: React.NamedExoticComponent<IconProps>;
+export declare const Factory: import("react").NamedExoticComponent<IconProps>;
 //# sourceMappingURL=factory.d.ts.map

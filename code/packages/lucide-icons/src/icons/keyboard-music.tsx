@@ -1,28 +1,10 @@
-import React from "react";
-import PropTypes from 'prop-types';
-import type { IconProps } from '@tamagui/helpers-icon';
-import {
-  Svg,
-  Circle as _Circle,
-  Ellipse,
-  G,
-  LinearGradient,
-  RadialGradient,
-  Line,
-  Path,
-  Polygon,
-  Polyline,
-  Rect,
-  Symbol,
-  Text as _Text,
-  Use,
-  Defs,
-  Stop } from
-'react-native-svg';
-import { themed } from '@tamagui/helpers-icon';
+import { memo } from 'react'
+import type { IconProps } from '@tamagui/helpers-icon'
+import { Svg, Path, Rect } from 'react-native-svg'
+import { themed } from '@tamagui/helpers-icon'
 
 const Icon = (props) => {
-  const { color = 'black', size = 24, ...otherProps } = props;
+  const { color = 'black', size = 24, ...otherProps } = props
   return (
     <Svg
       width={size}
@@ -33,8 +15,8 @@ const Icon = (props) => {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      {...otherProps}>
-
+      {...otherProps}
+    >
       <Rect width="20" height="16" x="2" y="4" rx="2" stroke={color} />
       <Path d="M6 8h4" stroke={color} />
       <Path d="M14 8h.01" stroke={color} />
@@ -44,10 +26,10 @@ const Icon = (props) => {
       <Path d="M10 12v4" stroke={color} />
       <Path d="M14 12v4" stroke={color} />
       <Path d="M18 12v4" stroke={color} />
-    </Svg>);
+    </Svg>
+  )
+}
 
-};
+Icon.displayName = 'KeyboardMusic'
 
-Icon.displayName = 'KeyboardMusic';
-
-export const KeyboardMusic = React.memo<IconProps>(themed(Icon));
+export const KeyboardMusic = memo<IconProps>(themed(Icon))

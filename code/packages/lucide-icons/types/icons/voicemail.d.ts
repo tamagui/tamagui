@@ -1,4 +1,3 @@
-import React from "react";
 import type { IconProps } from '@tamagui/helpers-icon';
-export declare const Voicemail: React.NamedExoticComponent<IconProps>;
+export declare const Voicemail: import("react").NamedExoticComponent<IconProps>;
 //# sourceMappingURL=voicemail.d.ts.map

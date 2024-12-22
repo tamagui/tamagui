@@ -4,7 +4,7 @@ import { ChevronLeft, ChevronRight } from '@tamagui/lucide-icons'
 import type { ReactNode } from 'react'
 import { ScrollView } from 'react-native'
 import { EnsureFlexed, Paragraph, View, XStack, YStack } from 'tamagui'
-import { Slot } from 'vxs'
+import { type Href, Slot } from 'one'
 import { Container } from '~/components/Containers'
 import { Link } from '~/components/Link'
 import { DocsMenuContents } from '~/features/docs/DocsMenuContents'
@@ -107,7 +107,7 @@ export default function DocsLayout() {
                   gap="$4"
                 >
                   {previous && (
-                    <Link href={previous.route} asChild>
+                    <Link href={previous.route as Href} asChild>
                       <XStack
                         tag="a"
                         group="card"
@@ -155,7 +155,7 @@ export default function DocsLayout() {
                     </Link>
                   )}
                   {next && (
-                    <Link href={next.route} asChild>
+                    <Link href={next.route as Href} asChild>
                       <XStack
                         tag="a"
                         group="card"
@@ -209,7 +209,7 @@ export default function DocsLayout() {
 
             <Container my="$3">
               <Link
-                href={editUrl}
+                href={editUrl as any}
                 // @ts-ignore
                 title="Edit this page on GitHub."
                 rel="noopener noreferrer"

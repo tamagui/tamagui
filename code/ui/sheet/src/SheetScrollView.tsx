@@ -77,6 +77,8 @@ export const SheetScrollView = React.forwardRef<
         ref={composeRefs(scrollRef as any, ref)}
         flex={1}
         scrollEventThrottle={8}
+        onResponderRelease={release}
+        className="_ovs-contain"
         // scrollEnabled={scrollEnabled}
         onScroll={(e) => {
           const { y } = e.nativeEvent.contentOffset
@@ -137,11 +139,9 @@ export const SheetScrollView = React.forwardRef<
         //     state.current.dys = state.current.dys.slice(-10)
         //   }
         // }}
-        onResponderRelease={release}
-        className="_ovs-contain"
         {...props}
       >
-        {React.useMemo(() => children, [children])}
+        {children}
       </ScrollView>
     )
   }

@@ -1,8 +1,7 @@
-import { getConfig, getSetting } from '../config'
+import { getSetting } from '../config'
 import { mediaObjectToString } from '../hooks/useMedia'
 import type { IsMediaType, MediaQueries, MediaStyleObject, StyleObject } from '../types'
 import { getGroupPropParts, type GroupParts } from './getGroupPropParts'
-import { isActivePlatform } from './isActivePlatform'
 
 // TODO have this be used by extractMediaStyle in tamagui static
 // not synced to static/constants for now
@@ -15,7 +14,7 @@ const groupPseudoToPseudoCSSMap = {
   press: 'active',
 }
 
-const specifities = new Array(5)
+const specificities = new Array(5)
   .fill(0)
   .map((_, i) => new Array(i).fill(':root').join(''))
 
@@ -27,7 +26,7 @@ function getThemeOrGroupSelector(
   isTheme = false,
   precedenceImportancePrefix = ''
 ) {
-  const selectorStart = styleInner.indexOf(':root')
+  const selectorStart = styleInner.lastIndexOf(':root') + 5
   const selectorEnd = styleInner.lastIndexOf('{')
   const selector = styleInner.slice(selectorStart, selectorEnd)
   const precedenceSpace = getSetting('themeClassNameOnRoot') && isTheme ? '' : ' '
@@ -40,7 +39,7 @@ function getThemeOrGroupSelector(
   const mediaSelector = `.t_${isGroup ? 'group_' : ''}${name}${pseudoSelector}`
   return [
     selector,
-    `${presedencePrefix}${mediaSelector} ${selector.replace(':root', '')}`,
+    `${presedencePrefix}${mediaSelector} ${selector.replaceAll(':root', '')}`,
   ] as const
 }
 
@@ -52,7 +51,7 @@ export const createMediaStyle = (
   negate?: boolean,
   priority?: number
 ): MediaStyleObject => {
-  const [property, , identifier, , rules] = styleObject
+  const [property, , identifier, pseudoIn, rules] = styleObject
   const enableMediaPropOrder = getSetting('mediaPropOrder')
   const isTheme = type === 'theme'
   const isPlatform = type === 'platform'
@@ -74,13 +73,13 @@ export const createMediaStyle = (
     let specificity = (priority || 0) + (isGroup || isPlatform ? 1 : 0)
 
     if (isTheme || isGroup) {
-      const { name, media, pseudo } = getGroupPropParts(mediaKeyIn)
+      const groupParts = getGroupPropParts(isTheme ? 'theme-' + mediaKeyIn : mediaKeyIn)
+      const { name, media, pseudo } = groupParts
       groupMediaKey = media
-      const groupParts = getGroupPropParts(mediaKeyIn)
       if (isGroup) {
         containerName = name
       }
-      if (pseudo === 'press') {
+      if (pseudo === 'press' || pseudoIn === 'active') {
         specificity += 2
       }
       if (pseudo === 'hover') {
@@ -92,13 +91,13 @@ export const createMediaStyle = (
         isGroup,
         groupParts,
         isTheme,
-        specifities[specificity]
+        specificities[specificity]
       )
       // const selectors = `${nextSelector}, :root${nextSelector}`
       // add back in the { we used to split
       styleRule = styleInner.replace(selector, nextSelector)
     } else {
-      styleRule = `${specifities[specificity]}${styleInner}`
+      styleRule = `${specificities[specificity]}${styleInner}`
     }
   }
 
@@ -125,7 +124,7 @@ export const createMediaStyle = (
       ? groupPriority
       : enableMediaPropOrder && priority
         ? // this new array should be cached
-          specifities[priority]
+          specificities[priority]
         : // @ts-ignore
           prefixes[mediaKey]
     const prefix = groupMediaKey ? `@container ${containerName}` : '@media'

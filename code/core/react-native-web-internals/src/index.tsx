@@ -1,3 +1,13 @@
+export type {
+  ColorValue,
+  DimensionValue,
+  EdgeInsetsValue,
+  GenericStyleProp,
+  LayoutEvent,
+  LayoutValue,
+  PlatformMethods,
+  PointValue,
+} from './types'
 export * from './modules/AssetRegistry/index'
 export * from './modules/forwardedProps/index'
 export * from './modules/mergeRefs/index'
@@ -10,9 +20,11 @@ export * from '@tamagui/react-native-use-pressable'
 export * from '@tamagui/react-native-use-responder-events'
 
 export { colorProps } from './colorProps'
-export { default as AccessibilityUtil } from './modules/AccessibilityUtil/index'
+export { AccessibilityUtil } from './modules/AccessibilityUtil/index'
 export { default as canUseDOM } from './modules/canUseDOM'
 export { default as createDOMProps } from './modules/createDOMProps/index'
+export { stylesFromProps } from './modules/createDOMProps/index'
+export { default as createReactDOMStyle } from './StyleSheet/compiler/createReactDOMStyle'
 export { default as createEventHandle } from './modules/createEventHandle/index'
 export { default as dismissKeyboard } from './modules/dismissKeyboard/index'
 export { default as getBoundingClientRect } from './modules/getBoundingClientRect/index'

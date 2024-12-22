@@ -1,4 +1,3 @@
-import React from "react";
 import type { IconProps } from '@tamagui/helpers-icon';
-export declare const Infinity: React.NamedExoticComponent<IconProps>;
+export declare const Infinity: import("react").NamedExoticComponent<IconProps>;
 //# sourceMappingURL=infinity.d.ts.map

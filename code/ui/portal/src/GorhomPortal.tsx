@@ -1,8 +1,9 @@
-import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 // from https://github.com/gorhom/react-native-portal
 // MIT License Copyright (c) 2020 Mo Gorhom
-import { useEvent } from '@tamagui/core'
 // fixing SSR issue
+
+import { isWeb } from '@tamagui/constants'
+import { startTransition } from '@tamagui/start-transition'
 import type { ReactNode } from 'react'
 import React, {
   createContext,
@@ -10,11 +11,10 @@ import React, {
   useCallback,
   useContext,
   useEffect,
-  useId,
   useMemo,
   useReducer,
 } from 'react'
-import { startTransition } from '@tamagui/start-transition'
+import { allPortalHosts, portalListeners } from './constants'
 
 interface PortalType {
   name: string
@@ -270,14 +270,39 @@ export interface PortalHostProps {
    */
   render?: (children: React.ReactNode) => React.ReactElement
 }
-const defaultRenderer: PortalHostProps['render'] = (children) => <>{children}</>
+const defaultRenderer = (children) => <>{children}</>
 
-const PortalHostComponent = (props: PortalHostProps) => {
+export const PortalHost = memo(function PortalHost(props: PortalHostProps) {
+  if (isWeb) {
+    return <PortalHostWeb {...props} />
+  }
+
+  return <PortalHostNonNative {...props} />
+})
+
+function PortalHostWeb(props: PortalHostProps) {
+  return (
+    <div
+      style={{
+        display: 'contents',
+      }}
+      ref={(node) => {
+        if (node) {
+          allPortalHosts.set(props.name, node)
+          portalListeners[props.name]?.forEach((x) => x(node))
+        } else {
+          allPortalHosts.delete(props.name)
+        }
+      }}
+    />
+  )
+}
+
+function PortalHostNonNative(props: PortalHostProps) {
   const { name, forwardProps, render = defaultRenderer } = props
   const state = usePortalState(name)
   const { registerHost, deregisterHost } = usePortal(props.name)
 
-  //#region effects
   useEffect(() => {
     if (typeof window === 'undefined') return
     registerHost()
@@ -285,17 +310,19 @@ const PortalHostComponent = (props: PortalHostProps) => {
       deregisterHost()
     }
   }, [])
-  //#endregion
 
   if (forwardProps) {
     return render(
       state.map((item) => {
         let next = item.node
 
+        // REMOVE children, can cause gnarly bugs (ask me how i know)
+        const { children, ...restForwardProps } = forwardProps
+
         if (forwardProps) {
           return React.Children.map(next, (child) => {
             return React.isValidElement(child)
-              ? React.cloneElement(child, { key: child.key, ...forwardProps })
+              ? React.cloneElement(child, { key: child.key, ...restForwardProps })
               : child
           })
         }
@@ -305,106 +332,5 @@ const PortalHostComponent = (props: PortalHostProps) => {
     )
   }
 
-  //#region render
   return render(state.map((item) => item.node))
-  //#endregion
 }
-
-export const PortalHost = memo(PortalHostComponent)
-PortalHost.displayName = 'PortalHost'
-
-export interface PortalItemProps {
-  /**
-   * Portal's key or name to be used as an identifier.
-   * @type string
-   * @default generated unique key.
-   */
-  name?: string
-  /**
-   * Host's name to teleport the portal content to.
-   * @type string
-   * @default 'root'
-   */
-  hostName?: string
-  /**
-   * Override internal mounting functionality, this is useful
-   * if you want to trigger any action before mounting the portal content.
-   * @type (mount?: () => void) => void
-   * @default undefined
-   */
-  handleOnMount?: (mount: () => void) => void
-  /**
-   * Override internal un-mounting functionality, this is useful
-   * if you want to trigger any action before un-mounting the portal content.
-   * @type (unmount?: () => void) => void
-   * @default undefined
-   */
-  handleOnUnmount?: (unmount: () => void) => void
-  /**
-   * Override internal updating functionality, this is useful
-   * if you want to trigger any action before updating the portal content.
-   * @type (update?: () => void) => void
-   * @default undefined
-   */
-  handleOnUpdate?: (update: () => void) => void
-  /**
-   * Portal's content.
-   * @type ReactNode
-   * @default undefined
-   */
-  children?: ReactNode | ReactNode[]
-}
-
-const PortalComponent = (props: PortalItemProps) => {
-  const {
-    name: _providedName,
-    hostName,
-    handleOnMount: _providedHandleOnMount,
-    handleOnUnmount: _providedHandleOnUnmount,
-    handleOnUpdate: _providedHandleOnUpdate,
-    children,
-  } = props
-  const { addPortal: addUpdatePortal, removePortal } = usePortal(hostName)
-  const id = useId()
-  const name = _providedName || id
-
-  const handleOnMount = useEvent(() => {
-    if (_providedHandleOnMount) {
-      _providedHandleOnMount(() => addUpdatePortal(name, children))
-    } else {
-      addUpdatePortal(name, children)
-    }
-  })
-
-  const handleOnUnmount = useEvent(() => {
-    if (_providedHandleOnUnmount) {
-      _providedHandleOnUnmount(() => removePortal(name))
-    } else {
-      removePortal(name)
-    }
-  })
-
-  const handleOnUpdate = useEvent(() => {
-    if (_providedHandleOnUpdate) {
-      _providedHandleOnUpdate(() => addUpdatePortal(name, children))
-    } else {
-      addUpdatePortal(name, children)
-    }
-  })
-
-  useIsomorphicLayoutEffect(() => {
-    handleOnMount()
-    return () => {
-      handleOnUnmount()
-    }
-  }, [])
-
-  useEffect(() => {
-    handleOnUpdate()
-  }, [children])
-
-  return null
-}
-
-export const PortalItem = memo(PortalComponent)
-PortalItem.displayName = 'Portal'

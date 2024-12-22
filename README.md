@@ -35,36 +35,6 @@ The compiler optimizes most and ultimately flattens a majority of styled compone
 
 [Learn more on the website](https://tamagui.dev/docs/intro/introduction).
 
-## Installing Tamagui
-
-To install Tamagui with all its components run:
-
-```bash
-npm install tamagui @tamagui/config
-```
-
-Next, create a Tamagui config file named `tamagui.config.ts`:
-
-```ts
-import { config } from '@tamagui/config/v3'
-
-import { createTamagui } from 'tamagui'
-const tamaguiConfig = createTamagui(config)
-// this makes typescript properly type everything based on the config
-
-type Conf = typeof tamaguiConfig
-
-declare module 'tamagui' {
-
-  interface TamaguiCustomConfig extends Conf {}
-
-}
-export default tamaguiConfig
-// depending on if you chose tamagui, @tamagui/core, or @tamagui/web
-// be sure the import and declare module lines both use that same name
-```
-
-**Note:** The `v3` config imports the `@tamagui/animations-css` driver on web and `@tamagui/animations-react-native` on native. You can change these as you please, we provide exports for `animationsCSS` and `animationsNative`. If you want to use Reanimated, you can [copy and paste this code](https://github.com/tamagui/tamagui/blob/c9adbbe4a45d2a728f06605b0e5e91382dd5b92d/packages/config/src/animationsReanimated.ts) and pass it as `animations` to `createTamagui`.
 
 ## Contributing
 

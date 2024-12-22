@@ -9,7 +9,7 @@
  */
 'use strict'
 
-import { invariant } from 'react-native-web-internals'
+import { invariant } from '@tamagui/react-native-web-internals'
 
 import NativeAnimatedHelper from './NativeAnimatedHelper'
 import { shouldUseNativeDriver } from './NativeAnimatedHelper'

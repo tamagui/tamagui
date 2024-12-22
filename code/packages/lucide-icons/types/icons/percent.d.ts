@@ -1,4 +1,3 @@
-import React from "react";
 import type { IconProps } from '@tamagui/helpers-icon';
-export declare const Percent: React.NamedExoticComponent<IconProps>;
+export declare const Percent: import("react").NamedExoticComponent<IconProps>;
 //# sourceMappingURL=percent.d.ts.map

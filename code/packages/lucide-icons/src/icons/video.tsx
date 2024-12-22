@@ -1,28 +1,10 @@
-import React from "react";
-import PropTypes from 'prop-types';
-import type { IconProps } from '@tamagui/helpers-icon';
-import {
-  Svg,
-  Circle as _Circle,
-  Ellipse,
-  G,
-  LinearGradient,
-  RadialGradient,
-  Line,
-  Path,
-  Polygon,
-  Polyline,
-  Rect,
-  Symbol,
-  Text as _Text,
-  Use,
-  Defs,
-  Stop } from
-'react-native-svg';
-import { themed } from '@tamagui/helpers-icon';
+import { memo } from 'react'
+import type { IconProps } from '@tamagui/helpers-icon'
+import { Svg, Path, Rect } from 'react-native-svg'
+import { themed } from '@tamagui/helpers-icon'
 
 const Icon = (props) => {
-  const { color = 'black', size = 24, ...otherProps } = props;
+  const { color = 'black', size = 24, ...otherProps } = props
   return (
     <Svg
       width={size}
@@ -33,14 +15,17 @@ const Icon = (props) => {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      {...otherProps}>
+      {...otherProps}
+    >
+      <Path
+        d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"
+        stroke={color}
+      />
+      <Rect x="2" y="6" width="14" height="12" rx="2" stroke={color} />
+    </Svg>
+  )
+}
 
-      <Path d="m22 8-6 4 6 4V8Z" stroke={color} />
-      <Rect width="14" height="12" x="2" y="6" rx="2" ry="2" stroke={color} />
-    </Svg>);
+Icon.displayName = 'Video'
 
-};
-
-Icon.displayName = 'Video';
-
-export const Video = React.memo<IconProps>(themed(Icon));
+export const Video = memo<IconProps>(themed(Icon))

@@ -1,13 +1,9 @@
 // import entryShakingPlugin from 'vite-plugin-entry-shaking'
-import { removeReactNativeWebAnimatedPlugin, vxs } from 'vxs/vite'
-// import { mdx } from '@cyco130/vite-plugin-mdx'
+import { removeReactNativeWebAnimatedPlugin, one } from 'one/vite'
+import { tamaguiPlugin } from '@tamagui/vite-plugin'
 import type { UserConfig } from 'vite'
-import { tamaguiExtractPlugin, tamaguiPlugin } from '@tamagui/vite-plugin'
-// import inpsectPlugin from 'vite-plugin-inspect'
 
 Error.stackTraceLimit = Number.POSITIVE_INFINITY
-
-const PROD = process.env.NODE_ENV === 'production'
 
 // @ts-ignore
 if (!import.meta.dirname) {
@@ -29,19 +25,33 @@ const resolve = (path: string) => {
 //   require.resolve('@tamagui/colors').replace('/dist/cjs/index.js', ''),
 // ]
 
-const optimizeInterop = ['expo-splash-screen']
+const include = [
+  '@docsearch/react',
+  '@leeoniya/ufuzzy',
+  'react-hook-form',
+  '@github/mini-throttle',
+  'swr',
+  '@supabase/ssr',
+  'is-buffer',
+  'extend',
+  'minimatch',
+  'gray-matter',
+  'execa',
+  'jiti',
+  'hsluv',
+  'rehype-parse',
+  'refractor',
+  'glob',
+  'reading-time',
+  'unified',
+  '@discordjs/core',
+]
 
 export default {
   envPrefix: 'NEXT_PUBLIC_',
 
-  define: {
-    'process.env.TAMAGUI_REACT_19': '"1"',
-  },
-
   resolve: {
     alias: {
-      // @ts-ignore
-      '~': import.meta.dirname,
       'react-native-svg': '@tamagui/react-native-svg',
       // 'react-native-web': await resolve('react-native-web-lite'),
       // bugfix docsearch/react, weird
@@ -52,51 +62,20 @@ export default {
     dedupe: [
       'react',
       'react-dom',
-      '@tamagui/core',
-      '@tamagui/web',
-      '@tamagui/animations-moti',
-      'tamagui',
       'react-hook-form',
-      '@tamagui/use-presence',
-      'react-native-reanimated',
+      'react-native',
+      'react-native-web',
+      'react-native-svg',
+      ...include,
     ],
   },
 
   optimizeDeps: {
-    include: [
-      ...optimizeInterop,
-      // '@tamagui/animate-presence',
-      // '@tamagui/presence-child',
-      '@docsearch/react',
-      '@leeoniya/ufuzzy',
-      'react-hook-form',
-      '@github/mini-throttle',
-      'swr',
-      '@tamagui/demos',
-      '@tamagui/bento',
-      '@tamagui/bento/data',
-      '@tamagui/use-debounce',
-      '@supabase/ssr',
-      '@tamagui/animations-moti',
-      '@tamagui/animations-react-native',
-      'is-buffer',
-      'extend',
-      'minimatch',
-      'gray-matter',
-      'execa',
-      'jiti',
-      'hsluv',
-      'rehype-parse',
-      'refractor',
-      'glob',
-      'reading-time',
-      'unified',
-    ],
-    needsInterop: optimizeInterop,
+    include,
   },
 
   ssr: {
-    external: ['@tamagui/mdx'],
+    external: ['@tamagui/mdx-2'],
     noExternal: true,
   },
 
@@ -105,63 +84,71 @@ export default {
   },
 
   plugins: [
-    vxs({
+    one({
       deps: {
         '@supabase/postgrest-js': true,
         '@supabase/node-fetch': true,
         postmark: true,
         stripe: true,
+        jsonwebtoken: true,
+        bottleneck: true,
+        octokit: true,
+        'node-fetch': true,
+        'fetch-blob': true,
       },
 
-      async afterServerStart(options, app, { routeMap }) {
-        if (process.env.SHOULD_PURGE_CDN) {
-          await purgeCloudflareCDN()
-        }
+      server: {
+        async afterStart() {
+          if (process.env.NODE_ENV === 'production' && process.env.SHOULD_PURGE_CDN) {
+            await purgeCloudflareCDN()
+          }
+        },
       },
 
-      redirects: [
-        {
-          source: '/account/subscriptions',
-          destination: '/account/items',
-          permanent: false,
-        },
-        {
-          source: '/docs',
-          destination: '/docs/intro/introduction',
-          permanent: true,
-        },
-        {
-          source: '/vite',
-          destination: 'https://vxrn.dev',
-          permanent: true,
-        },
-        {
-          source: '/docs/components/:slug/:version',
-          destination: '/ui/:slug/:version',
-          permanent: true,
-        },
-        {
-          source: '/docs/components/:slug',
-          destination: '/ui/:slug',
-          permanent: true,
-        },
-      ],
+      web: {
+        redirects: [
+          {
+            source: '/account/subscriptions',
+            destination: '/account/items',
+            permanent: false,
+          },
+          {
+            source: '/docs',
+            destination: '/docs/intro/introduction',
+            permanent: true,
+          },
+          {
+            source: '/vite',
+            destination: 'https://vxrn.dev',
+            permanent: true,
+          },
+          {
+            source: '/docs/components/:slug/:version',
+            destination: '/ui/:slug/:version',
+            permanent: true,
+          },
+          {
+            source: '/docs/components/:slug',
+            destination: '/ui/:slug',
+            permanent: true,
+          },
+        ],
+      },
     }),
 
-    removeReactNativeWebAnimatedPlugin(),
+    // removeReactNativeWebAnimatedPlugin(),
+
+    tamaguiPlugin({
+      optimize: process.env.NODE_ENV === 'production',
+      // useReactNativeWebLite: true,
+    }),
 
     // hmmm breaking ssr for some reason on lucide:
-    // can use vite env api and only run this on client, make it part of vxs
+    // can use vite env api and only run this on client, make it part of one
     // @ts-ignore
     // entryShakingPlugin({
     //   targets,
     // }),
-
-    PROD
-      ? tamaguiExtractPlugin({
-          logTimings: true,
-        })
-      : null,
   ],
 } satisfies UserConfig
 

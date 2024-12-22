@@ -1,6 +1,6 @@
+import { redirect } from 'one'
 import { apiRoute } from '~/features/api/apiRoute'
 import { ensureAuth } from '~/features/api/ensureAuth'
-import { redirect } from '~/features/api/redirect'
 
 export default apiRoute(async (req) => {
   const { supabase, user } = await ensureAuth({ req })

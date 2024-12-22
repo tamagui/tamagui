@@ -7,6 +7,7 @@ type PossibleRef<T> =
   | React.Ref<T>
   | React.ForwardedRef<T>
   | React.RefObject<T>
+  | React.Dispatch<React.SetStateAction<T | null>>
   | undefined
 
 /**

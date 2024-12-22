@@ -26,6 +26,9 @@
       "path": "../../core/use-controllable-state"
     },
     {
+      "path": "../../core/use-debounce"
+    },
+    {
       "path": "../../core/use-direction"
     },
     {

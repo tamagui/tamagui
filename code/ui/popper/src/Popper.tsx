@@ -1,6 +1,6 @@
 // adapted from radix-ui popper
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { isAndroid, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import type { ScopedProps, SizeTokens, StackProps } from '@tamagui/core'
 import {
   Stack,
@@ -8,7 +8,6 @@ import {
   createStyledContext,
   getVariableValue,
   styled,
-  useDidFinishSSR,
   useProps,
 } from '@tamagui/core'
 import type {
@@ -43,7 +42,6 @@ type FlipProps = typeof flip extends (options: infer Opts) => void ? Opts : neve
  * -----------------------------------------------------------------------------------------------*/
 
 export type PopperContextValue = UseFloatingReturn & {
-  isMounted: boolean
   size?: SizeTokens
   placement?: Placement
   arrowRef: any
@@ -109,7 +107,6 @@ export function Popper(props: ScopedPopperProps<PopperProps>) {
     __scopePopper,
   } = props
 
-  const isMounted = useDidFinishSSR()
   const [arrowEl, setArrow] = React.useState<any>(null)
   const [arrowSize, setArrowSize] = React.useState(0)
   const offsetOptions = offset ?? arrowSize
@@ -119,7 +116,7 @@ export function Popper(props: ScopedPopperProps<PopperProps>) {
     placement,
     sameScrollView: false, // this only takes effect on native
     platform:
-      disableRTL ?? setupOptions.disableRTL
+      (disableRTL ?? setupOptions.disableRTL)
         ? {
             ...platform,
             isRTL(element) {
@@ -145,6 +142,7 @@ export function Popper(props: ScopedPopperProps<PopperProps>) {
     open,
   } = floating
 
+  // leaving this here as reference, seems we don't need it anymore at least as used currently
   if (process.env.TAMAGUI_TARGET === 'web') {
     useIsomorphicLayoutEffect(() => {
       if (!open) return
@@ -195,7 +193,6 @@ export function Popper(props: ScopedPopperProps<PopperProps>) {
     arrowRef: setArrow,
     arrowStyle: middlewareData.arrow,
     onArrowSize: setArrowSize,
-    isMounted,
     scope: __scopePopper,
     hasFloating: middlewareData.checkFloating?.hasFloating,
     ...floating,
@@ -296,27 +293,11 @@ export const PopperContent = React.forwardRef<
     y,
     getFloatingProps,
     size,
-    isMounted,
     update,
     floatingStyles,
     hasFloating,
   } = usePopperContext(__scopePopper)
   const contentRefs = useComposedRefs<any>(refs.setFloating, forwardedRef)
-
-  let finalHasFloatingValue = false
-  if (isAndroid) {
-    const initialRender = React.useRef(true)
-    const finalHasFloating = React.useRef(false)
-
-    if (hasFloating === false) {
-      initialRender.current = false
-    }
-
-    if (!initialRender.current) {
-      finalHasFloating.current = hasFloating
-    }
-    finalHasFloatingValue = finalHasFloating.current
-  }
 
   const contents = React.useMemo(() => {
     return (
@@ -334,34 +315,14 @@ export const PopperContent = React.forwardRef<
 
   const [needsMeasure, setNeedsMeasure] = React.useState(true)
   React.useEffect(() => {
+    if (!enableAnimationForPositionChange) return
     if (x || y) {
       setNeedsMeasure(false)
     }
-  }, [x, y])
-
-  useIsomorphicLayoutEffect(() => {
-    if (isMounted) {
-      update()
-    }
-  }, [isMounted])
+  }, [enableAnimationForPositionChange, x, y])
 
   // default to not showing if positioned at 0, 0
   let show = true
-
-  if (isAndroid) {
-    const [show_, setShow] = React.useState(false)
-    show = show_
-    React.useEffect(() => {
-      if (finalHasFloatingValue) {
-        setShow(true)
-      }
-    }, [finalHasFloatingValue, x, y])
-  }
-
-  // all poppers hidden on ssr by default
-  if (!isMounted) {
-    return null
-  }
 
   const frameProps = {
     ref: refs.setFloating,

@@ -522,7 +522,11 @@ export const componentsList: ComponentSchema[] = [
       '@rehookify/datepicker',
       '@tamagui/linear-gradient',
     ],
-    bentoDependencies: ['./common/dateParts', './common/useDateAnimation'],
+    bentoDependencies: [
+      './common/dateParts',
+      './common/useDateAnimation',
+      './common/dateParts',
+    ],
     moveFilesToFolder: [
       { file: 'MultiSelectPicker', to: '' },
       { file: 'DatePicker', to: '' },

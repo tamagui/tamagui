@@ -158,14 +158,12 @@ export declare const styledBody: ({
         borderLeftStyle?: boolean | undefined;
         borderRightStyle?: boolean | undefined;
         borderTopStyle?: boolean | undefined;
-        boxShadow?: boolean | undefined;
         boxSizing?: boolean | undefined;
         caretColor?: boolean | undefined;
         clipPath?: boolean | undefined;
         contain?: boolean | undefined;
         containerType?: boolean | undefined;
         content?: boolean | undefined;
-        filter?: boolean | undefined;
         float?: boolean | undefined;
         mask?: boolean | undefined;
         maskBorder?: boolean | undefined;
@@ -199,6 +197,8 @@ export declare const styledBody: ({
         textEmphasis?: boolean | undefined;
         touchAction?: boolean | undefined;
         transformStyle?: boolean | undefined;
+        boxShadow: boolean;
+        filter: boolean;
         animationIterationCount: boolean;
         aspectRatio: boolean;
         borderImageOutset: boolean;

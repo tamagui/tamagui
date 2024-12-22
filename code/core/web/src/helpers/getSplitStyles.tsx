@@ -1,4 +1,3 @@
-import React from 'react'
 import {
   isAndroid,
   isClient,
@@ -17,6 +16,7 @@ import {
   validPseudoKeys,
   validStyles,
 } from '@tamagui/helpers'
+import React from 'react'
 
 import { getConfig, getFont } from '../config'
 import { accessibilityDirectMap } from '../constants/accessibilityDirectMap'
@@ -61,6 +61,8 @@ import {
   shouldInsertStyleRules,
   updateRules,
 } from './insertStyleRule'
+import { isActivePlatform } from './isActivePlatform'
+import { isActiveTheme } from './isActiveTheme'
 import { log } from './log'
 import {
   normalizeValueWithProperty,
@@ -69,8 +71,8 @@ import {
 import { getPropMappedFontFamily, propMapper } from './propMapper'
 import { pseudoDescriptors, pseudoPriorities } from './pseudoDescriptors'
 import { skipProps } from './skipProps'
+import { sortString } from './sortString'
 import { transformsToString } from './transformsToString'
-import { isActivePlatform } from './isActivePlatform'
 
 const consoleGroupCollapsed = isWeb ? console.groupCollapsed : console.info
 
@@ -93,8 +95,7 @@ type StyleSplitter = (
   context?: ComponentContextI,
   // web-only
   elementType?: string,
-  debug?: DebugProp,
-  skipThemeTokenResolution?: boolean
+  debug?: DebugProp
 ) => GetStyleResult
 
 export const PROP_SPLIT = '-'
@@ -138,8 +139,7 @@ export const getSplitStyles: StyleSplitter = (
   parentSplitStyles,
   context,
   elementType,
-  debug,
-  skipThemeTokenResolution
+  debug
 ) => {
   conf = conf || getConfig()
 
@@ -169,7 +169,7 @@ export const getSplitStyles: StyleSplitter = (
   const viewProps: GetStyleResult['viewProps'] = {}
   const mediaState = styleProps.mediaState || globalMediaState
   const usedKeys: Record<string, number> = {}
-  const shouldDoClasses = acceptsClassName && isWeb && !styleProps.noClassNames
+  const shouldDoClasses = acceptsClassName && isWeb && !styleProps.noClass
   const rulesToInsert: RulesToInsert =
     process.env.TAMAGUI_TARGET === 'native' ? (undefined as any) : {}
   const classNames: ClassNamesObject = {}
@@ -202,7 +202,6 @@ export const getSplitStyles: StyleSplitter = (
     viewProps,
     context,
     debug,
-    skipThemeTokenResolution,
   }
 
   if (
@@ -235,6 +234,15 @@ export const getSplitStyles: StyleSplitter = (
     let keyInit = keyOg
     let valInit = props[keyInit]
 
+    if (process.env.NODE_ENV === 'test' && keyInit === 'jestAnimatedStyle') {
+      continue
+    }
+
+    if (process.env.NODE_ENV === 'development' && debug === 'profile') {
+      // @ts-expect-error
+      time`prop-${keyInit}`
+    }
+
     // for custom accept sub-styles
     if (accept) {
       const accepted = accept[keyInit]
@@ -243,12 +251,7 @@ export const getSplitStyles: StyleSplitter = (
         valInit &&
         typeof valInit === 'object'
       ) {
-        viewProps[keyInit] = getSubStyle(
-          styleState,
-          keyInit,
-          valInit,
-          styleProps.noClassNames
-        )
+        viewProps[keyInit] = getSubStyle(styleState, keyInit, valInit, styleProps.noClass)
         continue
       }
     }
@@ -303,6 +306,14 @@ export const getSplitStyles: StyleSplitter = (
 
     // this is all for partially optimized (not flattened)... maybe worth removing?
     if (process.env.TAMAGUI_TARGET === 'web') {
+      // react-native-web ignores data-* attributes, fixes passing them to animated views
+      if (staticConfig.isReactNative && keyInit.startsWith('data-')) {
+        keyInit = keyInit.replace('data-', '')
+        viewProps['dataSet'] ||= {}
+        viewProps['dataSet'][keyInit] = valInit
+        continue
+      }
+
       if (isValidStyleKeyInit && valInitType === 'string') {
         if (valInit[0] === '_') {
           const isValidClassName = keyInit in validStyles
@@ -502,7 +513,7 @@ export const getSplitStyles: StyleSplitter = (
     }
 
     const shouldPassProp =
-      !isStyleProp ||
+      (!isStyleProp && isHOC) ||
       // is in parent variants
       (isHOC && parentVariants && keyInit in parentVariants) ||
       inlineProps?.has(keyInit)
@@ -550,7 +561,7 @@ export const getSplitStyles: StyleSplitter = (
       //     valInit,
       //     fontFamily,
       //     true,
-      //     state.noClassNames
+      //     state.noClass
       //   )
       //   const descriptor = pseudoDescriptors[keyInit]
       //   for (const key in pseudoStyleObject) {
@@ -618,9 +629,11 @@ export const getSplitStyles: StyleSplitter = (
             isHOCShouldPassThrough,
             usedKeys: { ...usedKeys },
           })
+          globalThis.tamaguiAvoidTracking = true
           log('expanded', expanded, '\nusedKeys', { ...usedKeys }, '\ncurrent', {
             ...styleState.style,
           })
+          globalThis.tamaguiAvoidTracking = false
         }
       } catch {
         // rn can run into PayloadTooLargeError: request entity too large
@@ -677,12 +690,7 @@ export const getSplitStyles: StyleSplitter = (
 
         // TODO can avoid processing this if !shouldDoClasses + state is off
         // (note: can't because we need to set defaults on enter/exit or else enforce that they should)
-        const pseudoStyleObject = getSubStyle(
-          styleState,
-          key,
-          val,
-          styleProps.noClassNames
-        )
+        const pseudoStyleObject = getSubStyle(styleState, key, val, styleProps.noClass)
 
         const descriptor = pseudoDescriptors[key as keyof typeof pseudoDescriptors]
         const isEnter = key === 'enterStyle'
@@ -802,7 +810,7 @@ export const getSplitStyles: StyleSplitter = (
         // for some reason 'space' in val upsetting next ssr during prod build
         // technically i guess this also will not apply if 0 space which makes sense?
         const hasSpace = val['space']
-        const mediaKeyShort = key.slice(1)
+        const mediaKeyShort = key.slice(isMedia == 'theme' ? 7 : 1)
 
         hasMedia ||= true
 
@@ -866,10 +874,8 @@ export const getSplitStyles: StyleSplitter = (
             // for now we're doing weird stuff, getStylesAtomic will put the
             // $platform-web into property so we can check it here
             const property = style[0]
-            if (property[0] === '$') {
-              if (property.startsWith('$platform') && !isActivePlatform(property)) {
-                continue
-              }
+            if (property[0] === '$' && !isActivePlatform(property)) {
+              continue
             }
 
             const out = createMediaStyle(
@@ -922,8 +928,8 @@ export const getSplitStyles: StyleSplitter = (
           if (isThemeMedia) {
             // needed to get updates when theme changes
             dynamicThemeAccess = true
-            const mediaThemeName = mediaKeyShort.slice(6)
-            if (!(themeName === mediaThemeName || themeName.startsWith(mediaThemeName))) {
+
+            if (!(themeName === mediaKeyShort || themeName.startsWith(mediaKeyShort))) {
               continue
             }
           } else if (isGroupMedia) {
@@ -1016,9 +1022,8 @@ export const getSplitStyles: StyleSplitter = (
               continue
             }
             if (subKey[0] === '$') {
-              if (!isActivePlatform(subKey)) {
-                continue
-              }
+              if (!isActivePlatform(subKey)) continue
+              if (!isActiveTheme(subKey, themeName)) continue
               for (const subSubKey in mediaStyle[subKey]) {
                 mergeMediaStyle(subSubKey, mediaStyle[subKey][subSubKey])
               }
@@ -1071,6 +1076,11 @@ export const getSplitStyles: StyleSplitter = (
     }
   } // end prop loop
 
+  if (process.env.NODE_ENV === 'development' && debug === 'profile') {
+    // @ts-expect-error
+    time`split-styles-propsend`
+  }
+
   // style prop after:
 
   const avoidNormalize = styleProps.noNormalize === false
@@ -1100,7 +1110,7 @@ export const getSplitStyles: StyleSplitter = (
       // to the "flat" transform props
       styleState.style ||= {}
       Object.entries(styleState.flatTransforms)
-        .sort(([a], [b]) => a.localeCompare(b))
+        .sort(([a], [b]) => sortString(a, b))
         .forEach(([key, val]) => {
           mergeTransform(styleState.style!, key, val, true)
         })
@@ -1154,8 +1164,8 @@ export const getSplitStyles: StyleSplitter = (
           const [key, value, identifier] = atomicStyle
           const isAnimatedAndAnimateOnly =
             styleProps.isAnimated &&
-            styleProps.noClassNames &&
-            (!props.animateOnly || props.animateOnly.includes(key))
+            styleProps.noClass &&
+            props.animateOnly?.includes(key)
 
           // or not animated but you have animateOnly
           // (moves it to style={}, nice to avoid generating lots of classnames)
@@ -1181,6 +1191,7 @@ export const getSplitStyles: StyleSplitter = (
           console.groupEnd() // ensure group ended from loop above
           consoleGroupCollapsed(`🔹 getSplitStyles final style object`)
           console.info(styleState.style)
+          console.info(`retainedStyles`, retainedStyles)
           console.groupEnd()
         }
 
@@ -1309,6 +1320,11 @@ export const getSplitStyles: StyleSplitter = (
     }
   }
 
+  if (process.env.NODE_ENV === 'development' && debug === 'profile') {
+    // @ts-expect-error
+    time`split-styles-pre-result`
+  }
+
   const result: GetStyleResult = {
     space,
     hasMedia,
@@ -1412,6 +1428,11 @@ export const getSplitStyles: StyleSplitter = (
     }
   }
 
+  if (process.env.NODE_ENV === 'development' && debug === 'profile') {
+    // @ts-expect-error
+    time`split-styles-done`
+  }
+
   return result
 }
 
@@ -1493,7 +1514,13 @@ export const getSubStyle = (
     if (!expanded || (!staticConfig.isHOC && key in skipProps && !styleProps.noSkip)) {
       continue
     }
-    for (const [skey, sval] of expanded) {
+
+    for (let [skey, sval] of expanded) {
+      // pseudo inside media
+      if (skey in validPseudoKeys) {
+        sval = getSubStyle(styleState, skey, sval, avoidMergeTransform)
+      }
+
       if (!avoidMergeTransform && skey in stylePropsTransform) {
         mergeTransform(styleOut, skey, sval)
       } else {

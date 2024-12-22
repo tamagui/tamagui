@@ -1,7 +1,5 @@
-import { AdaptParentContext } from '@tamagui/adapt'
+import { AdaptContext, AdaptPortalContents, useAdaptContext } from '@tamagui/adapt'
 import { Theme, useThemeName } from '@tamagui/core'
-import { PortalItem } from '@tamagui/portal'
-import * as React from 'react'
 
 import { VIEWPORT_NAME } from './constants'
 import {
@@ -16,23 +14,22 @@ export const SelectViewport = (props: SelectScopedProps<SelectViewportProps>) =>
   const context = useSelectContext(VIEWPORT_NAME, __scopeSelect)
   const itemParentContext = useSelectItemParentContext(VIEWPORT_NAME, __scopeSelect)
   const themeName = useThemeName()
-  const adaptContext = React.useContext(AdaptParentContext)
 
-  // need to forward context...
+  // re-propogate context...
+  const adaptContext = useAdaptContext()
+
   return (
-    <PortalItem hostName={`${context.scopeKey}SheetContents`}>
+    <AdaptPortalContents>
       <Theme name={themeName}>
         <ForwardSelectContext
           __scopeSelect={__scopeSelect}
           itemContext={itemParentContext}
           context={context}
         >
-          <AdaptParentContext.Provider value={adaptContext}>
-            {children}
-          </AdaptParentContext.Provider>
+          <AdaptContext.Provider {...adaptContext}>{children}</AdaptContext.Provider>
         </ForwardSelectContext>
       </Theme>
-    </PortalItem>
+    </AdaptPortalContents>
   )
 }
 

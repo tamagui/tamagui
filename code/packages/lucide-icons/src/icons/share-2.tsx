@@ -1,28 +1,10 @@
-import React from "react";
-import PropTypes from 'prop-types';
-import type { IconProps } from '@tamagui/helpers-icon';
-import {
-  Svg,
-  Circle as _Circle,
-  Ellipse,
-  G,
-  LinearGradient,
-  RadialGradient,
-  Line,
-  Path,
-  Polygon,
-  Polyline,
-  Rect,
-  Symbol,
-  Text as _Text,
-  Use,
-  Defs,
-  Stop } from
-'react-native-svg';
-import { themed } from '@tamagui/helpers-icon';
+import { memo } from 'react'
+import type { IconProps } from '@tamagui/helpers-icon'
+import { Svg, Circle as _Circle, Line } from 'react-native-svg'
+import { themed } from '@tamagui/helpers-icon'
 
 const Icon = (props) => {
-  const { color = 'black', size = 24, ...otherProps } = props;
+  const { color = 'black', size = 24, ...otherProps } = props
   return (
     <Svg
       width={size}
@@ -33,17 +15,17 @@ const Icon = (props) => {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      {...otherProps}>
-
+      {...otherProps}
+    >
       <_Circle cx="18" cy="5" r="3" stroke={color} />
       <_Circle cx="6" cy="12" r="3" stroke={color} />
       <_Circle cx="18" cy="19" r="3" stroke={color} />
       <Line x1="8.59" x2="15.42" y1="13.51" y2="17.49" stroke={color} />
       <Line x1="15.41" x2="8.59" y1="6.51" y2="10.49" stroke={color} />
-    </Svg>);
+    </Svg>
+  )
+}
 
-};
+Icon.displayName = 'Share2'
 
-Icon.displayName = 'Share2';
-
-export const Share2 = React.memo<IconProps>(themed(Icon));
+export const Share2 = memo<IconProps>(themed(Icon))

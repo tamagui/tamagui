@@ -1,4 +1,3 @@
-import React from "react";
 import type { IconProps } from '@tamagui/helpers-icon';
-export declare const SquareStack: React.NamedExoticComponent<IconProps>;
+export declare const SquareStack: import("react").NamedExoticComponent<IconProps>;
 //# sourceMappingURL=square-stack.d.ts.map

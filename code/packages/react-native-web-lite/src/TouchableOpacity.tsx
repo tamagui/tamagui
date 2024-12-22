@@ -12,7 +12,11 @@
 
 import * as React from 'react'
 import { useCallback, useMemo, useRef, useState } from 'react'
-import { StyleSheet, useMergeRefs, usePressEvents } from 'react-native-web-internals'
+import {
+  StyleSheet,
+  useMergeRefs,
+  usePressEvents,
+} from '@tamagui/react-native-web-internals'
 
 import View from './View'
 
@@ -140,5 +144,9 @@ const styles = StyleSheet.create({
 
 const MemoedTouchableOpacity = React.memo(React.forwardRef(TouchableOpacity))
 MemoedTouchableOpacity.displayName = 'TouchableOpacity'
+
+// compat
+// @ts-ignore
+MemoedTouchableOpacity.Mixin = {}
 
 export default MemoedTouchableOpacity

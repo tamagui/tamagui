@@ -1,4 +1,3 @@
-import React from "react";
 import type { IconProps } from '@tamagui/helpers-icon';
-export declare const Tally3: React.NamedExoticComponent<IconProps>;
+export declare const Tally3: import("react").NamedExoticComponent<IconProps>;
 //# sourceMappingURL=tally-3.d.ts.map

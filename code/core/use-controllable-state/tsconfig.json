@@ -5,6 +5,9 @@
   },
   "references": [
     {
+      "path": "../start-transition"
+    },
+    {
       "path": "../use-event"
     }
   ],

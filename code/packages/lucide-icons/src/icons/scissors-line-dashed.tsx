@@ -1,28 +1,10 @@
-import React from "react";
-import PropTypes from 'prop-types';
-import type { IconProps } from '@tamagui/helpers-icon';
-import {
-  Svg,
-  Circle as _Circle,
-  Ellipse,
-  G,
-  LinearGradient,
-  RadialGradient,
-  Line,
-  Path,
-  Polygon,
-  Polyline,
-  Rect,
-  Symbol,
-  Text as _Text,
-  Use,
-  Defs,
-  Stop } from
-'react-native-svg';
-import { themed } from '@tamagui/helpers-icon';
+import { memo } from 'react'
+import type { IconProps } from '@tamagui/helpers-icon'
+import { Svg, Circle as _Circle, Path } from 'react-native-svg'
+import { themed } from '@tamagui/helpers-icon'
 
 const Icon = (props) => {
-  const { color = 'black', size = 24, ...otherProps } = props;
+  const { color = 'black', size = 24, ...otherProps } = props
   return (
     <Svg
       width={size}
@@ -33,8 +15,8 @@ const Icon = (props) => {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      {...otherProps}>
-
+      {...otherProps}
+    >
       <Path d="M5.42 9.42 8 12" stroke={color} />
       <_Circle cx="4" cy="8" r="2" stroke={color} />
       <Path d="m14 6-8.58 8.58" stroke={color} />
@@ -42,10 +24,10 @@ const Icon = (props) => {
       <Path d="M10.8 14.8 14 18" stroke={color} />
       <Path d="M16 12h-2" stroke={color} />
       <Path d="M22 12h-2" stroke={color} />
-    </Svg>);
+    </Svg>
+  )
+}
 
-};
+Icon.displayName = 'ScissorsLineDashed'
 
-Icon.displayName = 'ScissorsLineDashed';
-
-export const ScissorsLineDashed = React.memo<IconProps>(themed(Icon));
+export const ScissorsLineDashed = memo<IconProps>(themed(Icon))

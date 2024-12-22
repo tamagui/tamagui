@@ -1,5 +1,4 @@
 import { isWeb } from '@tamagui/constants'
-
 import { configListeners, setConfig, setTokens } from './config'
 import type { Variable } from './createVariable'
 import type { DeepVariableObject } from './createVariables'
@@ -65,10 +64,17 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   let foundThemes: DedupedThemes | undefined
   if (configIn.themes) {
     const noThemes = Object.keys(configIn.themes).length === 0
-    foundThemes = scanAllSheets(noThemes, tokensParsed)
+    if (noThemes) {
+      foundThemes = scanAllSheets(noThemes, tokensParsed)
+    }
+    if (process.env.TAMAGUI_REACT_19 && process.env.TAMAGUI_SKIP_THEME_OPTIMIZATION) {
+      // save some bundle
+    } else {
+      if (noThemes) {
+        listenForSheetChanges()
+      }
+    }
   }
-
-  listenForSheetChanges()
 
   let fontSizeTokens: Set<string> | null = null
   let fontsParsed:
@@ -165,7 +171,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
       }
     }
 
-    const themesIn = { ...configIn.themes } as ThemesLikeObject
+    const themesIn = configIn.themes as ThemesLikeObject
     const dedupedThemes = foundThemes ?? getThemesDeduped(themesIn)
     const themes = proxyThemesToParents(dedupedThemes)
 
@@ -229,22 +235,21 @@ ${runtimeStyles}`
 
   const defaultFontSetting = configIn.settings?.defaultFont ?? configIn.defaultFont
 
-  let defaultFontName =
-    defaultFontSetting ||
-    // uses font named "body" if present for compat
-    (configIn.fonts && ('body' in configIn.fonts ? 'body' : ''))
-
-  if (!defaultFontName && configIn.fonts) {
-    // defaults to the first font to make life easier
-    defaultFontName = Object.keys(configIn.fonts)[0]
-  }
-
-  if (defaultFontName?.[0] === '$') {
-    defaultFontName = defaultFontName.slice(1)
-  }
+  const defaultFont = (() => {
+    let val = defaultFontSetting
+    if (val?.[0] === '$') {
+      val = val.slice(1)
+    }
+    return val
+  })()
 
   // ensure prefixed with $
-  const defaultFont = `$${defaultFontName}`
+  const defaultFontToken = defaultFont ? `$${defaultFont}` : ''
+
+  const unset = { ...configIn.unset }
+  if (!unset.fontFamily && defaultFont) {
+    unset.fontFamily = defaultFontToken
+  }
 
   const config: TamaguiInternalConfig = {
     fonts: {},
@@ -253,10 +258,7 @@ ${runtimeStyles}`
     animations: {} as any,
     media: {},
     ...configIn,
-    unset: {
-      fontFamily: defaultFontName ? defaultFont : undefined,
-      ...configIn.unset,
-    },
+    unset,
     settings: {
       // move deprecated settings here so we can reference them all using `getSetting`
       // TODO remove this on v2
@@ -287,6 +289,7 @@ ${runtimeStyles}`
     defaultFont,
     fontSizeTokens: fontSizeTokens || new Set(),
     specificTokens,
+    defaultFontToken,
     // const tokens = [...getToken(tokens.size[0])]
     // .spacer-sm + ._dsp_contents._dsp-sm-hidden { margin-left: -var(--${}) }
   }

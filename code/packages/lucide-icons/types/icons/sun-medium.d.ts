@@ -1,4 +1,3 @@
-import React from "react";
 import type { IconProps } from '@tamagui/helpers-icon';
-export declare const SunMedium: React.NamedExoticComponent<IconProps>;
+export declare const SunMedium: import("react").NamedExoticComponent<IconProps>;
 //# sourceMappingURL=sun-medium.d.ts.map

@@ -1,7 +1,7 @@
 export declare const createSheetContext: <ContextValueType extends object | null>(rootComponentName: string, defaultContext?: ContextValueType) => readonly [{
     (props: ContextValueType & {
         scope: import("@tamagui/create-context").Scope<ContextValueType>;
-        children: import("react").ReactNode;
+        children: React.ReactNode;
     }): import("react/jsx-runtime").JSX.Element;
     displayName: string;
 }, (consumerName: string, scope: import("@tamagui/create-context").Scope<ContextValueType | undefined>, options?: {
@@ -61,7 +61,7 @@ export declare const SheetProvider: {
             setPositionImmediate: import("react").Dispatch<import("react").SetStateAction<number>>;
             onlyShowFrame: boolean;
         }>;
-        children: import("react").ReactNode;
+        children: React.ReactNode;
     }): import("react/jsx-runtime").JSX.Element;
     displayName: string;
 }, useSheetContext: (consumerName: string, scope: import("@tamagui/create-context").Scope<{

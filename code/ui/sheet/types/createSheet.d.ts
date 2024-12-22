@@ -1,5 +1,5 @@
 import type { GetProps, StackProps, TamaguiComponent, TamaguiComponentExpectingVariants } from '@tamagui/core';
-import type { FunctionComponent, RefAttributes } from 'react';
+import type { ForwardRefExoticComponent, FunctionComponent, RefAttributes } from 'react';
 import type { View } from 'react-native';
 import type { SheetProps, SheetScopedProps } from './types';
 type SharedSheetProps = {
@@ -11,7 +11,7 @@ export declare function createSheet<H extends TamaguiComponent | SheetStyledComp
     Handle: H;
     Frame: F;
     Overlay: O;
-}): import("react").ForwardRefExoticComponent<{
+}): ForwardRefExoticComponent<{
     open?: boolean;
     defaultOpen?: boolean;
     onOpenChange?: ((open: boolean) => void) | import("react").Dispatch<import("react").SetStateAction<boolean>>;
@@ -34,12 +34,12 @@ export declare function createSheet<H extends TamaguiComponent | SheetStyledComp
     zIndex?: number;
     portalProps?: import("@tamagui/portal").PortalProps;
     moveOnKeyboardChange?: boolean;
-    containerComponent?: import("react").ComponentType<any>;
+    containerComponent?: React.ComponentType<any>;
 } & {
     __scopeSheet?: import("@tamagui/create-context").Scope<any>;
 } & RefAttributes<View>> & {
     Controlled: FunctionComponent<Omit<SheetProps, "open" | "onOpenChange"> & RefAttributes<View>> & {
-        Frame: import("react").ForwardRefExoticComponent<import("react").PropsWithoutRef<SheetScopedProps<Omit<GetProps<F>, keyof {
+        Frame: ForwardRefExoticComponent<SheetScopedProps<Omit<GetProps<F>, keyof {
             /**
              * By default the sheet adds a view below its bottom that extends down another 50%,
              * this is useful if your Sheet has a spring animation that bounces "past" the top when
@@ -65,10 +65,10 @@ export declare function createSheet<H extends TamaguiComponent | SheetStyledComp
              * turned on, the inner content is always set to the max height of the sheet.
              */
             adjustPaddingForOffscreenContent?: boolean;
-        }>> & RefAttributes<unknown>>;
+        }>>;
         Overlay: import("react").MemoExoticComponent<(propsIn: SheetScopedProps<GetProps<typeof Overlay>>) => null>;
         Handle: TamaguiComponent<any, any, any, any, SharedSheetProps, {}> | TamaguiComponent<any, any, any, {}, {}, {}>;
-        ScrollView: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & import("react-native").ScrollViewProps, keyof import("@tamagui/core").StackStyleBase | "fullscreen" | "contentContainerStyle"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
+        ScrollView: ForwardRefExoticComponent<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & import("react-native").ScrollViewProps, keyof import("@tamagui/core").StackStyleBase | "fullscreen" | "contentContainerStyle"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
             readonly contentContainerStyle?: Partial<import("@tamagui/core").GetFinalProps<import("react-native").ScrollViewProps, import("@tamagui/core").StackStyleBase, {}>> | undefined;
         }> & {
             fullscreen?: boolean | undefined;
@@ -86,7 +86,7 @@ export declare function createSheet<H extends TamaguiComponent | SheetStyledComp
             fullscreen?: boolean | undefined;
         }>> & RefAttributes<import("react-native").ScrollView>>;
     };
-    Frame: import("react").ForwardRefExoticComponent<import("react").PropsWithoutRef<SheetScopedProps<Omit<GetProps<F>, keyof {
+    Frame: ForwardRefExoticComponent<SheetScopedProps<Omit<GetProps<F>, keyof {
         /**
          * By default the sheet adds a view below its bottom that extends down another 50%,
          * this is useful if your Sheet has a spring animation that bounces "past" the top when
@@ -112,10 +112,10 @@ export declare function createSheet<H extends TamaguiComponent | SheetStyledComp
          * turned on, the inner content is always set to the max height of the sheet.
          */
         adjustPaddingForOffscreenContent?: boolean;
-    }>> & RefAttributes<unknown>>;
+    }>>;
     Overlay: import("react").MemoExoticComponent<(propsIn: SheetScopedProps<GetProps<typeof Overlay>>) => null>;
     Handle: TamaguiComponent<any, any, any, any, SharedSheetProps, {}> | TamaguiComponent<any, any, any, {}, {}, {}>;
-    ScrollView: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & import("react-native").ScrollViewProps, keyof import("@tamagui/core").StackStyleBase | "fullscreen" | "contentContainerStyle"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
+    ScrollView: ForwardRefExoticComponent<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & import("react-native").ScrollViewProps, keyof import("@tamagui/core").StackStyleBase | "fullscreen" | "contentContainerStyle"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
         readonly contentContainerStyle?: Partial<import("@tamagui/core").GetFinalProps<import("react-native").ScrollViewProps, import("@tamagui/core").StackStyleBase, {}>> | undefined;
     }> & {
         fullscreen?: boolean | undefined;

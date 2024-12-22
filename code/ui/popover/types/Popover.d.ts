@@ -33,7 +33,6 @@ type PopoverContextValue = {
     onCustomAnchorAdd(): void;
     onCustomAnchorRemove(): void;
     size?: SizeTokens;
-    sheetBreakpoint: any;
     breakpointActive?: boolean;
     keepChildrenMounted?: boolean;
     anchorTo?: Rect;
@@ -281,15 +280,17 @@ export declare const Popover: React.ForwardRefExoticComponent<PopperProps & {
     }>> & {
         __scopePopover?: string | undefined;
     } & React.RefAttributes<TamaguiElement>>;
-    Adapt: (({ platform, when, children }: import("@tamagui/adapt").AdaptProps) => JSX.Element | null) & {
+    Adapt: ((props: import("@tamagui/adapt").AdaptProps) => import("react/jsx-runtime").JSX.Element) & {
         Contents: {
-            (props: any): React.FunctionComponentElement<any>;
+            ({ scope, ...rest }: {
+                scope?: string;
+            }): React.FunctionComponentElement<any>;
             shouldForwardSpace: boolean;
         };
     };
     ScrollView: typeof ScrollView;
     Sheet: React.FunctionComponent<Omit<import("@tamagui/sheet").SheetProps, "open" | "onOpenChange"> & React.RefAttributes<import("react-native").View>> & {
-        Frame: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+        Frame: import("react").ForwardRefExoticComponent<import("@tamagui/sheet").SheetScopedProps<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
             elevation?: number | import("@tamagui/core").SizeTokens | undefined;
             fullscreen?: boolean | undefined;
             inset?: number | import("@tamagui/core").SizeTokens | {
@@ -305,9 +306,7 @@ export declare const Popover: React.ForwardRefExoticComponent<PopperProps & {
         }> & {
             disableHideBottomOverflow?: boolean;
             adjustPaddingForOffscreenContent?: boolean;
-        } & {
-            __scopeSheet?: import("@tamagui/create-context").Scope<any>;
-        } & import("react").RefAttributes<unknown>>;
+        }>>;
         Overlay: import("react").MemoExoticComponent<(propsIn: import("@tamagui/sheet/types/types").SheetScopedProps<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
             elevation?: number | import("@tamagui/core").SizeTokens | undefined;
             fullscreen?: boolean | undefined;
@@ -332,11 +331,9 @@ export declare const Popover: React.ForwardRefExoticComponent<PopperProps & {
             chromeless?: boolean | "all" | undefined;
         }>>) => null>;
         Handle: import("@tamagui/core").TamaguiComponent<any, any, any, any, {
-            open? /**
-             * @see https://github.com/theKashey/react-remove-scroll#usage
-             */: boolean;
+            open?: boolean;
         }, {}> | import("@tamagui/core").TamaguiComponent<any, any, any, {}, {}, {}>;
-        ScrollView: import("react" /** enable animation for content position changing */).ForwardRefExoticComponent<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & import("react-native").ScrollViewProps, keyof import("@tamagui/core").StackStyleBase | "fullscreen" | "contentContainerStyle"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
+        ScrollView: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & import("react-native").ScrollViewProps, keyof import("@tamagui/core").StackStyleBase | "fullscreen" | "contentContainerStyle"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
             readonly contentContainerStyle?: Partial<import("@tamagui/core").GetFinalProps<import("react-native").ScrollViewProps, import("@tamagui/core").StackStyleBase, {}>> | undefined;
         }> & {
             fullscreen?: boolean | undefined;

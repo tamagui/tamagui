@@ -53,6 +53,13 @@ Tamagui has some helpers that make working with variables easier, which are docu
 
 Color tokens are available as fallback values when you access a theme. So when you `useTheme()` and then access a value that isn't in the theme, it will check for a `tokens.color` with the matching name.
 
+Think of it this way:
+
+- Tokens are static and are your base values.
+- Themes are dynamic, they can change in your React tree, and live above tokens.
+
+If you are confused by Tamagui themes, don't be. You can avoid them altogether, or avoid learning them until later. Instead, you can just build your app using regular style props and leave out themes altogether. Or, simply use a `light` and a `dark` theme if you want light and dark mode in your app, but avoid using any nested themes.
+
 ### Using tokens with components
 
 When using `styled` or any Tamagui component like `Stack`, you can access tokens directly. Just like with `useTheme`, it will first look for a theme value that matches, and if not it will fall back to a token.

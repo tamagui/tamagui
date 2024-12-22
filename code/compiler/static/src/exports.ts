@@ -1,4 +1,3 @@
-export * from './minifyCSS'
 export * from './checkDeps'
 export * from './types'
 export { createExtractor } from './extractor/createExtractor'

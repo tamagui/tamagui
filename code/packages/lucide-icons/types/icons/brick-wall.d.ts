@@ -1,4 +1,3 @@
-import React from "react";
 import type { IconProps } from '@tamagui/helpers-icon';
-export declare const BrickWall: React.NamedExoticComponent<IconProps>;
+export declare const BrickWall: import("react").NamedExoticComponent<IconProps>;
 //# sourceMappingURL=brick-wall.d.ts.map

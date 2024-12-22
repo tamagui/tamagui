@@ -1,1 +1,5 @@
-export const setElementProps = undefined as unknown as (element: HTMLElement) => void
+import { hooks } from '../setupHooks'
+
+export const setElementProps = (node) => {
+  hooks.setElementProps?.(node)
+}

@@ -1,28 +1,10 @@
-import React from "react";
-import PropTypes from 'prop-types';
-import type { IconProps } from '@tamagui/helpers-icon';
-import {
-  Svg,
-  Circle as _Circle,
-  Ellipse,
-  G,
-  LinearGradient,
-  RadialGradient,
-  Line,
-  Path,
-  Polygon,
-  Polyline,
-  Rect,
-  Symbol,
-  Text as _Text,
-  Use,
-  Defs,
-  Stop } from
-'react-native-svg';
-import { themed } from '@tamagui/helpers-icon';
+import { memo } from 'react'
+import type { IconProps } from '@tamagui/helpers-icon'
+import { Svg, Path } from 'react-native-svg'
+import { themed } from '@tamagui/helpers-icon'
 
 const Icon = (props) => {
-  const { color = 'black', size = 24, ...otherProps } = props;
+  const { color = 'black', size = 24, ...otherProps } = props
   return (
     <Svg
       width={size}
@@ -33,19 +15,23 @@ const Icon = (props) => {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      {...otherProps}>
+      {...otherProps}
+    >
+      <Path d="M14.4 14.4 9.6 9.6" stroke={color} />
+      <Path
+        d="M18.657 21.485a2 2 0 1 1-2.829-2.828l-1.767 1.768a2 2 0 1 1-2.829-2.829l6.364-6.364a2 2 0 1 1 2.829 2.829l-1.768 1.767a2 2 0 1 1 2.828 2.829z"
+        stroke={color}
+      />
+      <Path d="m21.5 21.5-1.4-1.4" stroke={color} />
+      <Path d="M3.9 3.9 2.5 2.5" stroke={color} />
+      <Path
+        d="M6.404 12.768a2 2 0 1 1-2.829-2.829l1.768-1.767a2 2 0 1 1-2.828-2.829l2.828-2.828a2 2 0 1 1 2.829 2.828l1.767-1.768a2 2 0 1 1 2.829 2.829z"
+        stroke={color}
+      />
+    </Svg>
+  )
+}
 
-      <Path d="m6.5 6.5 11 11" stroke={color} />
-      <Path d="m21 21-1-1" stroke={color} />
-      <Path d="m3 3 1 1" stroke={color} />
-      <Path d="m18 22 4-4" stroke={color} />
-      <Path d="m2 6 4-4" stroke={color} />
-      <Path d="m3 10 7-7" stroke={color} />
-      <Path d="m14 21 7-7" stroke={color} />
-    </Svg>);
+Icon.displayName = 'Dumbbell'
 
-};
-
-Icon.displayName = 'Dumbbell';
-
-export const Dumbbell = React.memo<IconProps>(themed(Icon));
+export const Dumbbell = memo<IconProps>(themed(Icon))

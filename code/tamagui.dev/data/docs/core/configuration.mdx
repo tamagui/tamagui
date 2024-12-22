@@ -492,8 +492,8 @@ createFont({
 
 #### Custom Font Family on Native
 
-You need to load your fonts for React Native to recognize them. Typically this
-looks something like if using Expo, (or you can
+You need to load your fonts for React Native to recognize them. With Expo, this typically
+looks something like this (or you can
 [follow a React Native guide here](https://stackoverflow.com/questions/35255645/how-to-set-default-font-family-in-react-native)):
 
 ```tsx fileName="App.tsx"
@@ -692,7 +692,7 @@ Which will enable usage like:
 where `br` expands into `borderRadius`. 
 
 <Notice theme="green">
-  For a full shorthands setup, see [the @tamagui/shorthands source](https://github.com/tamagui/tamagui/blob/master/packages/shorthands/src/index.ts).
+  For a full shorthands setup, see [the @tamagui/shorthands source](https://github.com/tamagui/tamagui/blob/master/code/core/shorthands/src/index.ts).
 </Notice>
 
 ### Settings
@@ -710,7 +710,7 @@ You can pass a `settings` object to `createTamagui`:
       name: `defaultFont`,
       required: false,
       type: `string`,
-      description: `Map it to the regular key of the font given to createTamgui, so "body" or "heading" make sense as valiues here. This will ensure this font is the fallback for any views that don't define it.`,
+      description: `Map it to the regular key of the font given to createTamagui, so "body" or "heading" make sense as values here. This will ensure this font is the fallback for any views that don't define it.`,
     },
     {
       name: 'mediaQueryDefaultActive',
@@ -783,7 +783,7 @@ You can pass a `settings` object to `createTamagui`:
       required: false,
       type: 'boolean',
       default: false,
-      description: `(beta) On iOS, this enables a mode where Tamagui returns color values using DynamicColorIOS significantly speeding up dark/light re-renders. If you use theme inverse or manually change from light to dark without also changing the native color scheme, this will break. We're working on accounting for these last edge cases before removing the beta tag.`,
+      description: `On iOS, this enables a mode where Tamagui returns color values using DynamicColorIOS significantly speeding up dark/light re-renders. Note: When enabled you must make sure the defaultTheme you set on TamaguiProvider matches the current system color scheme.`,
     },
     {
       name: 'webContainerType',

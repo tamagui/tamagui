@@ -79,6 +79,7 @@ export const ListItemFrame = styled(ThemeableStack, {
         overflow: 'hidden',
         flexDirection: 'row',
         backgroundColor: '$background',
+        cursor: 'default',
       },
     },
 
@@ -127,7 +128,7 @@ export const ListItemText = styled(SizableText, {
         flexGrow: 1,
         flexShrink: 1,
         ellipse: true,
-        cursor: 'default',
+        cursor: 'inherit',
       },
     },
   } as const,
@@ -183,7 +184,9 @@ export const useListItem = (
   } = { Text: ListItemText, Subtitle: ListItemSubtitle, Title: ListItemTitle }
 ): { props: PropsWithoutMediaStyles<ListItemProps> } => {
   // careful not to destructure and re-order props, order is important
-  const props = useProps(propsIn)
+  const props = useProps(propsIn, {
+    resolveValues: 'none',
+  })
 
   const {
     children,
@@ -226,8 +229,8 @@ export const useListItem = (
   const iconSize = getFontSize(size as any) * scaleIcon
   const getThemedIcon = useGetThemedIcon({ size: iconSize, color: color as any })
   const [themedIcon, themedIconAfter] = [icon, iconAfter].map(getThemedIcon)
-  const spaceSize =
-    getVariableValue(getTokens().space[props.space as any] ?? iconSize) * scaleSpace
+  const sizeToken = getTokens().space[props.space as any] ?? iconSize
+  const spaceSize = getVariableValue(sizeToken) * scaleSpace
 
   const contents = wrapChildrenInText(Text, textProps)
 

@@ -1,4 +1,3 @@
-import React from "react";
 import type { IconProps } from '@tamagui/helpers-icon';
-export declare const Popcorn: React.NamedExoticComponent<IconProps>;
+export declare const Popcorn: import("react").NamedExoticComponent<IconProps>;
 //# sourceMappingURL=popcorn.d.ts.map

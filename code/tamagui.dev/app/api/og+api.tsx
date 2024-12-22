@@ -1,14 +1,11 @@
-import { getURL } from '~/helpers/getURL'
 import * as colors from '@tamagui/colors'
-import { ImageResponse } from '@vercel/og'
 import type { ReactElement } from 'react'
+import { getURL } from 'one'
 import { apiRoute } from '~/features/api/apiRoute'
 
-// export const config = {
-//   runtime: 'edge',
-// }
-
 export default apiRoute(async (req) => {
+  const { ImageResponse } = await import('@vercel/og')
+
   const [interRegularFont, interBoldFont] = await Promise.all([
     interRegularFontP,
     interBoldFontP,

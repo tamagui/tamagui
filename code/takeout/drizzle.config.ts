@@ -1,7 +1,5 @@
 import { defineConfig } from 'drizzle-kit'
 
-console.log('wtf', process.env.DB_URL)
-
 export default defineConfig({
   schema: './schema.ts',
   dialect: 'postgresql',

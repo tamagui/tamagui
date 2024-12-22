@@ -1,11 +1,10 @@
 import { basename, dirname, join } from 'node:path'
-
 import esbuild from 'esbuild'
 import * as FS from 'fs-extra'
-
 import type { TamaguiPlatform } from '../types'
 import { esbuildAliasPlugin } from './esbuildAliasPlugin'
 import { resolveWebOrNativeSpecificEntry } from './loadTamagui'
+import { TsconfigPathsPlugin } from './esbuildTsconfigPaths'
 
 export const esbuildLoaderConfig = {
   '.js': 'jsx',
@@ -30,6 +29,7 @@ export const esbuildLoaderConfig = {
   '.aac': 'file',
   '.ogg': 'file',
   '.flac': 'file',
+  '.node': 'empty',
 } as const
 
 const dataExtensions = Object.keys(esbuildLoaderConfig)
@@ -90,6 +90,8 @@ function getESBuildConfig(
     loader: esbuildLoaderConfig,
     logLevel: 'warning',
     plugins: [
+      TsconfigPathsPlugin(),
+
       {
         name: 'external',
         setup(build) {
@@ -114,7 +116,7 @@ function getESBuildConfig(
 
           build.onResolve({ filter: /^(react-native|react-native\/.*)$/ }, (args) => {
             return {
-              path: 'react-native-web-lite',
+              path: '@tamagui/react-native-web-lite',
               external: true,
             }
           })
@@ -137,14 +139,14 @@ function getESBuildConfig(
   return res
 }
 
-export async function bundle(
+export async function esbundleTamaguiConfig(
   props: Props,
   platform: TamaguiPlatform,
   aliases?: Record<string, string>
 ) {
   await asyncLock(props)
   const config = getESBuildConfig(props, platform, aliases)
-  return esbuild.build(config)
+  return await esbuild.build(config)
 }
 
 // until i do fancier things w plugins:

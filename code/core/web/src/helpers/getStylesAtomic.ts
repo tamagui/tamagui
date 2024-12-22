@@ -6,7 +6,7 @@
 import type { StyleObject } from '@tamagui/helpers'
 import { simpleHash } from '@tamagui/helpers'
 
-import { getConfig } from '../config'
+import { getConfig, getConfigMaybe } from '../config'
 import type { TamaguiInternalConfig, ViewStyleWithPseudos } from '../types'
 import { defaultOffset } from './defaultOffset'
 import { normalizeColor } from './normalizeColor'
@@ -22,6 +22,7 @@ export function getStylesAtomic(style: ViewStyleWithPseudos) {
   styleToCSS(style)
   const out: StyleObject[] = []
   for (const key in style) {
+    if (key === '$$css') continue
     const val = style[key]
     if (key in pseudoDescriptors) {
       if (val) {
@@ -60,7 +61,7 @@ export const getStyleAtomic = (
   return out
 }
 
-let conf: TamaguiInternalConfig
+let conf: TamaguiInternalConfig | null = null
 
 // this could be cached for performance?
 const getStyleObject = (
@@ -75,10 +76,10 @@ const getStyleObject = (
     val = transformsToString(val)
   }
   const value = normalizeValueWithProperty(val, key)
-  const hash = simpleHash(`${value}`)
+  const hash = simpleHash(typeof value === 'string' ? value : `${value}`)
   const pseudoPrefix = pseudo ? `0${pseudo.name}-` : ''
-  conf ||= getConfig()
-  const shortProp = conf.inverseShorthands[key] || key
+  conf ||= getConfigMaybe()
+  const shortProp = conf?.inverseShorthands[key] || key
   const identifier = `_${shortProp}-${pseudoPrefix}${hash}`
   const rules = createAtomicRules(identifier, key, value, pseudo)
   return [

@@ -1,4 +1,3 @@
-import React from "react";
 import type { IconProps } from '@tamagui/helpers-icon';
-export declare const Lightbulb: React.NamedExoticComponent<IconProps>;
+export declare const Lightbulb: import("react").NamedExoticComponent<IconProps>;
 //# sourceMappingURL=lightbulb.d.ts.map

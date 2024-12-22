@@ -1,28 +1,28 @@
 {
   "name": "@tamagui/test-design-system",
-  "version": "1.110.2",
+  "version": "1.120.1",
   "sideEffects": [
     "*.css"
   ],
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
-  "module": "dist/esm",
+  "module": "dist/esm/index.mjs",
   "module:jsx": "dist/jsx",
   "files": [],
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
-    "lint": "npx biome check src",
-    "lint:fix": "npx biome check --apply-unsafe src",
+    "lint": "biome check src",
+    "lint:fix": "biome check --write src",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/core": "1.110.2"
+    "@tamagui/core": "1.120.1"
   },
   "devDependencies": {
-    "@tamagui/build": "1.110.2"
+    "@tamagui/build": "1.120.1"
   },
   "publishConfig": {
     "access": "public"

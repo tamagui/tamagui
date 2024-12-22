@@ -1,4 +1,3 @@
-import React from "react";
 import type { IconProps } from '@tamagui/helpers-icon';
-export declare const Chrome: React.NamedExoticComponent<IconProps>;
+export declare const Chrome: import("react").NamedExoticComponent<IconProps>;
 //# sourceMappingURL=chrome.d.ts.map

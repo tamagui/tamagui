@@ -1,3 +1,4 @@
+import { getURL } from 'one'
 import { apiRoute } from '~/features/api/apiRoute'
 import { ensureAuth } from '~/features/api/ensureAuth'
 import { getQuery } from '~/features/api/getQuery'
@@ -5,7 +6,6 @@ import { createOrRetrieveCustomer } from '~/features/auth/supabaseAdmin'
 import { checkDiscountEligibility } from '~/features/site/purchase/checkDiscountEligibility'
 import { stripe } from '~/features/stripe/stripe'
 import { getUserAccessInfo } from '~/features/user/helpers'
-import { getURL } from '~/helpers/getURL'
 
 export const GET = apiRoute(async (req) => {
   const { supabase, user } = await ensureAuth({ req, shouldRedirect: true })
@@ -36,20 +36,21 @@ export const GET = apiRoute(async (req) => {
   const purchaseContainsTakeout = products.data.some(
     (product) => product.metadata.slug === 'universal-starter'
   )
-  if (!disable_automatic_discount) {
-    if (
-      checkDiscountEligibility({
-        accessInfo: userAccessInfo,
-        purchaseContainsBento,
-        purchaseContainsTakeout,
-      })
-    ) {
-      // apply the "takeout + bento" coupon
-      couponId =
-        process.env.STRIPE_COMBO_COUPON ??
-        (process.env.NODE_ENV === 'production' ? '1bJD4ngB' : 'SjRwUFIw')
-    }
-  }
+
+  // if (!disable_automatic_discount) {
+  //   if (
+  //     checkDiscountEligibility({
+  //       accessInfo: userAccessInfo,
+  //       purchaseContainsBento,
+  //       purchaseContainsTakeout,
+  //     })
+  //   ) {
+  //     // apply the "takeout + bento" coupon
+  //     couponId =
+  //       process.env.STRIPE_COMBO_COUPON ??
+  //       (process.env.NODE_ENV === 'production' ? '1bJD4ngB' : 'SjRwUFIw')
+  //   }
+  // }
 
   const stripeCustomerId = await createOrRetrieveCustomer({
     email: user.email!,

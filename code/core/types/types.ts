@@ -116,11 +116,6 @@ export interface TamaguiBuildOptions {
   disableInitialBuild?: boolean
 
   /**
-   * Disables running lightningcss before emitting outputCSS
-   */
-  disableMinifyCSS?: boolean
-
-  /**
    * This can speed up dev builds by only optimizing the client side generated code,
    * but can cause hydration mis-matches
    */

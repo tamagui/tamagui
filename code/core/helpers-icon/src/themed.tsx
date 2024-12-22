@@ -1,4 +1,10 @@
-import { getTokenValue, getVariable, usePropsAndStyle, Text } from '@tamagui/core'
+import {
+  getTokenValue,
+  getVariable,
+  Text,
+  usePropsAndStyle,
+  type ResolveVariableAs,
+} from '@tamagui/core'
 import React from 'react'
 
 import type { IconProps } from './IconProps'
@@ -6,39 +12,39 @@ import type { IconProps } from './IconProps'
 // sad fix https://github.com/tamagui/tamagui/issues/1812
 React['keep']
 
-type ThemedOptions = {
+type Options = {
+  noClass?: boolean
   defaultThemeColor?: string
   defaultStrokeWidth?: number
   fallbackColor?: string
+  resolveValues?: ResolveVariableAs
 }
 
-type Opts = ThemedOptions & {
-  noClassNames?: boolean
-}
-
-export function themed(
-  Component: React.FC<IconProps>,
-  opts: Opts = {
+export function themed(Component: React.FC<IconProps>, optsIn: Options = {}) {
+  const opts: Options = {
     defaultThemeColor: process.env.DEFAULT_ICON_THEME_COLOR || '$color',
     defaultStrokeWidth: 2,
     fallbackColor: '#000',
+    resolveValues: (process.env.TAMAGUI_ICON_COLOR_RESOLVE as any) || 'auto',
+    ...optsIn,
   }
-) {
+
   const wrapped = (propsIn: IconProps) => {
     const [props, style, theme] = usePropsAndStyle(propsIn, {
       ...opts,
       forComponent: Text,
-      resolveValues: 'web', // iOS doesnt support dynamic values for SVG so only optimize on web
+      resolveValues: opts.resolveValues,
     })
 
-    const defaultColor = style.color ?? opts.defaultThemeColor
+    const defaultColor = opts.defaultThemeColor
 
-    const color = getVariable(
+    const colorIn =
+      style.color ||
       (defaultColor ? theme[defaultColor as string] : undefined) ||
-        style.color ||
-        (!props.disableTheme ? theme.color : null) ||
-        opts.fallbackColor
-    )
+      (!props.disableTheme ? theme.color : null) ||
+      opts.fallbackColor
+
+    const color = getVariable(colorIn)
 
     const size =
       typeof props.size === 'string'
@@ -48,17 +54,17 @@ export function themed(
     const strokeWidth =
       typeof props.strokeWidth === 'string'
         ? getTokenValue(props.strokeWidth as any, 'size')
-        : props.strokeWidth ?? `${opts.defaultStrokeWidth}`
+        : (props.strokeWidth ?? `${opts.defaultStrokeWidth}`)
 
-    return (
-      <Component
-        {...props}
-        color={color}
-        size={size}
-        strokeWidth={strokeWidth}
-        style={style as any}
-      />
-    )
+    const finalProps = {
+      ...props,
+      color,
+      size,
+      strokeWidth,
+      style: style as any,
+    }
+
+    return <Component {...finalProps} />
   }
 
   return wrapped

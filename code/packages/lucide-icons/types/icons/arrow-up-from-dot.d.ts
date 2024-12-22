@@ -1,4 +1,3 @@
-import React from "react";
 import type { IconProps } from '@tamagui/helpers-icon';
-export declare const ArrowUpFromDot: React.NamedExoticComponent<IconProps>;
+export declare const ArrowUpFromDot: import("react").NamedExoticComponent<IconProps>;
 //# sourceMappingURL=arrow-up-from-dot.d.ts.map

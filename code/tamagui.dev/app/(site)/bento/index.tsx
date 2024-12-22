@@ -50,7 +50,7 @@ import {
   XStack,
   YStack,
 } from 'tamagui'
-import { useLoader } from 'vxs'
+import { useLoader } from 'one'
 import { CodeInline } from '~/components/Code'
 import { ContainerLarge } from '~/components/Containers'
 import { HeadInfo } from '~/components/HeadInfo'
@@ -67,7 +67,8 @@ import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
 
 export const loader = async () => {
   try {
-    return await getProductsForServerSideRendering()
+    const products = await getProductsForServerSideRendering()
+    return products
   } catch (err) {
     assertIsError(err)
     console.error(`Error getting props`, err.message)
@@ -103,13 +104,7 @@ export default function BentoPage() {
       />
 
       {data.bento && (
-        <PurchaseModal
-          bento={data.bento}
-          defaultValue="bento"
-          fontsPack={data.fontsPack}
-          iconsPack={data.iconsPack}
-          starter={data.starter}
-        />
+        <PurchaseModal bento={data.bento} defaultValue="bento" starter={data.starter} />
       )}
 
       <Theme name="tan">
@@ -741,7 +736,7 @@ function SectionCard({
   const Icon = icons[name] ?? Null
 
   return (
-    <Link href={BASE_PATH + path} asChild>
+    <Link href={(BASE_PATH + path) as any} asChild>
       <YStack
         tag="a"
         ov="hidden"

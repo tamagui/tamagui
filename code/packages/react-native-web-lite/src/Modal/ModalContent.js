@@ -8,7 +8,7 @@
  *
  */
 import * as React from 'react'
-import { StyleSheet, canUseDOM } from 'react-native-web-internals'
+import { StyleSheet, canUseDOM } from '@tamagui/react-native-web-internals'
 
 import View from '../View'
 
@@ -48,8 +48,8 @@ var ModalContent = /*#__PURE__*/ React.forwardRef((props, forwardedRef) => {
       {
         style: styles.container,
       },
-      children,
-    ),
+      children
+    )
   )
 })
 var styles = StyleSheet.create({

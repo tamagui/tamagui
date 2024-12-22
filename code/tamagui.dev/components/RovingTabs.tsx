@@ -1,26 +1,18 @@
 import { useState } from 'react'
 import type { TabLayout, TabsTabProps, ViewProps } from 'tamagui'
-import { Avatar, SizableText, XStack, styled } from 'tamagui'
+import { SizableText, XStack, styled } from 'tamagui'
 import { AnimatePresence, Tabs, YStack } from 'tamagui'
 import { Code } from './Code'
-import { useBashCommand } from '~/hooks/useBashCommand'
+import { useBashCommand, PACKAGE_MANAGERS } from '~/hooks/useBashCommand'
+import { Image } from '@tamagui/image-next'
 
 export function RovingTabs({ className, children, code, size, ...rest }) {
-  const {
-    isStarter,
-    isPackageRunner,
-    showTabs,
-    command,
-    setCurrentSelectedTab,
-    currentSelectedTab,
-  } = useBashCommand(code || children, className)
+  const { showTabs, transformedCommand, selectedPackageManager, setPackageManager } =
+    useBashCommand(code || children, className)
 
   const [tabState, setTabState] = useState<{
-    // Layout of the Tab user might intend to select (hovering / focusing)
     intentAt: TabLayout | null
-    // Layout of the Tab user selected
     activeAt: TabLayout | null
-    // Used to get the direction of activation for animating the active indicator
     prevActiveAt: TabLayout | null
   }>({
     intentAt: null,
@@ -39,14 +31,6 @@ export function RovingTabs({ className, children, code, size, ...rest }) {
 
   const { activeAt, intentAt, prevActiveAt } = tabState
 
-  // 1 = right, 0 = nowhere, -1 = left
-  // const direction = (() => {
-  //   if (!activeAt || !prevActiveAt || activeAt.x === prevActiveAt.x) {
-  //     return 0
-  //   }
-  //   return activeAt.x > prevActiveAt.x ? -1 : 1
-  // })()
-
   const handleOnInteraction: TabsTabProps['onInteraction'] = (type, layout) => {
     if (type === 'select') {
       setActiveIndicator(layout)
@@ -63,9 +47,9 @@ export function RovingTabs({ className, children, code, size, ...rest }) {
           orientation="horizontal"
           size="$4"
           br="$4"
-          value={currentSelectedTab}
+          value={selectedPackageManager}
           onPress={(e) => e.stopPropagation()}
-          onValueChange={setCurrentSelectedTab}
+          onValueChange={setPackageManager}
           group
           mt={1}
         >
@@ -100,57 +84,20 @@ export function RovingTabs({ className, children, code, size, ...rest }) {
                 aria-label="package manager"
                 gap="$2"
               >
-                {isStarter ? (
-                  <Tab
-                    active={currentSelectedTab === 'npm'}
-                    pkgManager="npm"
-                    onInteraction={handleOnInteraction}
-                  />
-                ) : isPackageRunner ? (
-                  <>
+                <>
+                  {PACKAGE_MANAGERS.map((pkgManager) => (
                     <Tab
-                      active={currentSelectedTab === 'npx'}
-                      pkgManager="npx"
-                      logo="npm"
+                      key={pkgManager}
+                      active={selectedPackageManager === pkgManager}
+                      pkgManager={pkgManager}
                       onInteraction={handleOnInteraction}
                     />
-                    <Tab
-                      active={currentSelectedTab === 'bunx'}
-                      pkgManager="bunx"
-                      logo="bun"
-                      onInteraction={handleOnInteraction}
-                    />
-                  </>
-                ) : (
-                  <>
-                    <Tab
-                      active={currentSelectedTab === 'yarn'}
-                      pkgManager="yarn"
-                      onInteraction={handleOnInteraction}
-                    />
-                    <Tab
-                      active={currentSelectedTab === 'bun'}
-                      pkgManager="bun"
-                      onInteraction={handleOnInteraction}
-                    />
-                    <Tab
-                      active={currentSelectedTab === 'npm'}
-                      pkgManager="npm"
-                      onInteraction={handleOnInteraction}
-                    />
-                    <Tab
-                      active={currentSelectedTab === 'pnpm'}
-                      pkgManager="pnpm"
-                      onInteraction={handleOnInteraction}
-                    />
-                  </>
-                )}
+                  ))}
+                </>
               </Tabs.List>
             </YStack>
 
-            {/* <AnimatePresence exitBeforeEnter custom={{ direction }} initial={false}> */}
-            {/* <AnimatedYStack key={currentSelectedTab}> */}
-            <Tabs.Content value={currentSelectedTab} forceMount>
+            <Tabs.Content value={selectedPackageManager} forceMount>
               <Code
                 p="$4"
                 backgroundColor="transparent"
@@ -160,11 +107,9 @@ export function RovingTabs({ className, children, code, size, ...rest }) {
                 lineHeight={size ?? '$5'}
                 {...rest}
               >
-                {command}
+                {transformedCommand}
               </Code>
             </Tabs.Content>
-            {/* </AnimatedYStack> */}
-            {/* </AnimatePresence> */}
           </YStack>
         </Tabs>
       ) : (
@@ -197,20 +142,13 @@ function Tab({
       onInteraction={onInteraction}
     >
       <XStack gap="$1.5" ai="center" jc="center">
-        <Avatar
-          style={{
-            filter: active ? '' : 'grayscale(100%)',
-          }}
-          size="$1"
-          br="$2"
-        >
-          <Avatar.Image
-            scale={imageName === 'pnpm' ? 0.7 : 0.8}
-            y={imageName === 'pnpm' ? 0 : 0}
-            src={`/logos/${imageName}.svg`}
-          />
-          <Avatar.Fallback bg="$color6" bc="$color8" />
-        </Avatar>
+        <Image
+          width={16}
+          height={16}
+          scale={imageName === 'pnpm' ? 0.7 : 0.8}
+          y={imageName === 'pnpm' ? 0 : 0}
+          src={`/logos/${imageName}.svg`}
+        />
         <SizableText
           y={-0.5}
           size="$2"

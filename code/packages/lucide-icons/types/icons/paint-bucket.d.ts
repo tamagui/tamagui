@@ -1,4 +1,3 @@
-import React from "react";
 import type { IconProps } from '@tamagui/helpers-icon';
-export declare const PaintBucket: React.NamedExoticComponent<IconProps>;
+export declare const PaintBucket: import("react").NamedExoticComponent<IconProps>;
 //# sourceMappingURL=paint-bucket.d.ts.map

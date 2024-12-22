@@ -11,7 +11,7 @@ import { Stack } from '@tamagui/core'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import { RemoveScroll } from '@tamagui/remove-scroll'
 import { useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
-import type { FunctionComponent, RefAttributes } from 'react'
+import type { ForwardRefExoticComponent, FunctionComponent, RefAttributes } from 'react'
 import { forwardRef, memo, useMemo } from 'react'
 import type { View } from 'react-native'
 import { Platform } from 'react-native'
@@ -138,9 +138,7 @@ export function createSheet<
           disableHideBottomOverflow,
           children,
           ...props
-        }: SheetScopedProps<
-          Omit<GetProps<typeof Frame>, keyof ExtraFrameProps> & ExtraFrameProps
-        >,
+        }: SheetProps & ExtraFrameProps,
         forwardedRef
       ) => {
         const context = useSheetContext(SHEET_NAME, __scopeSheet)
@@ -210,13 +208,17 @@ export function createSheet<
         )
       }
     )
-  )
+  ) as any as ForwardRefExoticComponent<
+    SheetScopedProps<
+      Omit<GetProps<typeof Frame>, keyof ExtraFrameProps> & ExtraFrameProps
+    >
+  >
 
   const Sheet = forwardRef<View, SheetProps>(function Sheet(props, ref) {
     const hydrated = useDidFinishSSR()
     const { isShowingNonSheet } = useSheetController()
 
-    let SheetImplementation = SheetImplementationCustom
+    let SheetImplementation = SheetImplementationCustom as any
 
     if (props.native && Platform.OS === 'ios') {
       if (process.env.TAMAGUI_TARGET === 'native') {

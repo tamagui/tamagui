@@ -1,7 +1,7 @@
 import type { FontSizeTokens, TamaguiElement } from '@tamagui/core';
 import type { ListItemProps } from '@tamagui/list-item';
 import * as React from 'react';
-import type { SelectScopedProps, SelectProps } from './types';
+import type { SelectProps, SelectScopedProps } from './types';
 export interface SelectValueExtraProps {
     placeholder?: React.ReactNode;
 }
@@ -30,9 +30,11 @@ export declare const SelectSeparator: import("@tamagui/core").TamaguiComponent<i
     vertical?: boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
 export declare const Select: ((props: SelectScopedProps<SelectProps>) => import("react/jsx-runtime").JSX.Element) & {
-    Adapt: (({ platform, when, children }: import("@tamagui/adapt").AdaptProps) => JSX.Element | null) & {
+    Adapt: ((props: import("@tamagui/adapt").AdaptProps) => import("react/jsx-runtime").JSX.Element) & {
         Contents: {
-            (props: any): React.FunctionComponentElement<any>;
+            ({ scope, ...rest }: {
+                scope?: string;
+            }): React.FunctionComponentElement<any>;
             shouldForwardSpace: boolean;
         };
     };
@@ -390,7 +392,7 @@ export declare const Select: ((props: SelectScopedProps<SelectProps>) => import(
         unstyled?: boolean | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
     Sheet: React.FunctionComponent<Omit<import("@tamagui/sheet").SheetProps, "open" | "onOpenChange"> & React.RefAttributes<import("react-native").View>> & {
-        Frame: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+        Frame: import("react").ForwardRefExoticComponent<import("@tamagui/sheet").SheetScopedProps<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
             elevation?: number | import("@tamagui/core").SizeTokens | undefined;
             fullscreen?: boolean | undefined;
             inset?: number | import("@tamagui/core").SizeTokens | {
@@ -406,9 +408,7 @@ export declare const Select: ((props: SelectScopedProps<SelectProps>) => import(
         }> & {
             disableHideBottomOverflow?: boolean;
             adjustPaddingForOffscreenContent?: boolean;
-        } & {
-            __scopeSheet?: import("@tamagui/create-context").Scope<any>;
-        } & import("react").RefAttributes<unknown>>;
+        }>>;
         Overlay: import("react").MemoExoticComponent<(propsIn: import("@tamagui/sheet/types/types").SheetScopedProps<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
             elevation?: number | import("@tamagui/core").SizeTokens | undefined;
             fullscreen?: boolean | undefined;

@@ -4,7 +4,7 @@ import { Button, Spacer, XStack } from 'tamagui'
 
 import { ThemeSwitch } from '../bar/StudioBar'
 import { StudioThemeBuilderSettingsDropdown } from './StudioThemeBuilderSettingsDropdown'
-import { useRouter } from 'vxs'
+import { useRouter } from 'one'
 
 export const StudioThemeBuilderActionBar = memo(function StudioThemeBuilderActionBar() {
   const router = useRouter()

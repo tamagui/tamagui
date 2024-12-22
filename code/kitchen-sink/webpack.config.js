@@ -3,8 +3,6 @@ const webpack = require('webpack')
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { shouldExclude, TamaguiPlugin } = require('tamagui-loader')
-// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
-const MiniCSSExtractPlugin = require('mini-css-extract-plugin')
 
 const NODE_ENV = process.env.NODE_ENV || 'development'
 const target = 'web'
@@ -32,6 +30,7 @@ module.exports = {
     mainFields: ['module:jsx', 'browser', 'module', 'main'],
     extensions: ['.ts', '.tsx', '.js'],
     alias: {
+      'moti/author': require.resolve('moti/author'),
       'react-native$': 'react-native-web',
       'react-native-svg': '@tamagui/react-native-svg',
       '@expo/vector-icons': '@tamagui/proxy-worm',
@@ -69,7 +68,7 @@ module.exports = {
 
           {
             test: /\.css$/,
-            use: [MiniCSSExtractPlugin.loader, 'css-loader'],
+            use: ['style-loader', 'css-loader'],
           },
 
           {
@@ -105,11 +104,6 @@ module.exports = {
       },
       // disable: true,
     }),
-    // new BundleAnalyzerPlugin(),
-    new MiniCSSExtractPlugin({
-      filename: 'static/css/[name].[contenthash].css',
-      ignoreOrder: true,
-    }),
     isProduction ? null : new ReactRefreshWebpackPlugin(),
     new webpack.DefinePlugin({
       process: {
@@ -117,7 +111,6 @@ module.exports = {
           NODE_ENV: JSON.stringify(NODE_ENV),
           __DEV__: NODE_ENV === 'development' ? 'true' : 'false',
           DEBUG: JSON.stringify(process.env.DEBUG || '0'),
-          TAMAGUI_SYNC_MEDIA_QUERY: JSON.stringify(process.env.TAMAGUI_SYNC_MEDIA_QUERY),
         },
       },
     }),

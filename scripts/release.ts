@@ -44,7 +44,7 @@ const curVersion = fs.readJSONSync('./code/ui/tamagui/package.json').version
 
 const nextVersion = (() => {
   if (canary) {
-    return `${curVersion}-${Date.now()}`
+    return `${curVersion.replace(/(-\d+)+$/, '')}-${Date.now()}`
   }
 
   if (rePublish) {
@@ -158,7 +158,7 @@ async function run() {
       await Promise.all(
         packageJsons.map(async ({ cwd, json }) => {
           const distDir = join(cwd, 'dist')
-          if (!json.scripts || json.scripts.build === 'true') {
+          if (!json.scripts || !json.scripts.build || json.scripts.build === 'true') {
             return
           }
           if (!(await fs.pathExists(distDir))) {
@@ -196,17 +196,14 @@ async function run() {
 
     if (!skipBuild && !finish) {
       // lets do a full clean and build:force, to ensure we dont have weird cached or leftover files
-      await spawnify(`yarn build`)
+      await spawnify(`yarn build:force`)
       await checkDistDirs()
     }
 
     if (!finish) {
       console.info('run checks')
       if (!skipTest) {
-        await spawnify(`yarn fix:deps`)
-        await spawnify(`yarn lint`)
-        await spawnify(`yarn check`)
-        await spawnify(`yarn test:ci`)
+        await spawnify(`yarn test`)
       }
     }
 
@@ -265,7 +262,7 @@ async function run() {
       }
     }
 
-    if (!(finish && !rePublish) && !skipPublish) {
+    if (!finish && !rePublish && !skipPublish) {
       const erroredPackages: { name: string }[] = []
 
       // publish with tag
@@ -341,7 +338,9 @@ async function run() {
     }
 
     if (!finish) {
-      await sleep(4 * 1000)
+      if (!rePublish) {
+        await sleep(4 * 1000)
+      }
 
       if (rePublish) {
         // if all successful, re-tag as latest
@@ -352,7 +351,20 @@ async function run() {
 
             console.info(`Publishing ${name}${tag}`)
 
-            await spawnify(`npm publish${tag}`, {
+            try {
+              await spawnify(`npm publish${tag}`, {
+                cwd,
+              })
+            } catch (err) {
+              if (`${err}`.includes(`E403`)) {
+                // thats fine its already published
+              } else {
+                throw err
+              }
+            }
+
+            const distTag = canary ? 'canary' : 'latest'
+            await spawnify(`npm dist-tag add ${name}@${version} ${distTag}`, {
               cwd,
             }).catch((err) => console.error(err))
           },
@@ -390,12 +402,15 @@ async function run() {
       const gitTag = `${tagPrefix}${version}`
 
       if (!finish) {
-        await sleep(4 * 1000)
+        // longer sleep since npm was missing some deps
+        await sleep(10 * 1000)
       }
 
       if (!canary && !skipStarters) {
         await spawnify(`yarn upgrade:starters`)
         const starterFreeDir = join(process.cwd(), '../starter-free')
+        // Run yarn test in starter-free directory
+        await spawnify(`yarn test`, { cwd: starterFreeDir })
         await finishAndCommit(starterFreeDir)
       }
 

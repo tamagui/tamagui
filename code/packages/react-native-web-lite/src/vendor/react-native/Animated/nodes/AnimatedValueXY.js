@@ -9,7 +9,7 @@
  */
 'use strict'
 
-import { invariant } from 'react-native-web-internals'
+import { invariant } from '@tamagui/react-native-web-internals'
 
 import AnimatedValue from './AnimatedValue'
 import AnimatedWithChildren from './AnimatedWithChildren'

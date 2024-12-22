@@ -73,7 +73,6 @@ export interface SelectItemParentContextValue {
 export interface SelectContextValue {
   dir?: SelectDirection
   scopeKey: string
-  sheetBreakpoint: string | boolean | null
   value: any
   selectedItem: ReactNode
   setSelectedItem: (item: ReactNode) => void

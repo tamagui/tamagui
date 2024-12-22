@@ -1,3 +1,4 @@
+import { isClient } from '@tamagui/constants'
 import type {
   FontSizeTokens,
   GenericFont,
@@ -42,7 +43,9 @@ export const getFontSized: VariantSpreadFunction<TextProps, FontSizeTokens> = (
   if (process.env.NODE_ENV === 'development') {
     if (props['debug'] && props['debug'] === 'verbose') {
       console.groupCollapsed('  🔹 getFontSized', sizeTokenIn, sizeToken)
-      console.info({ style, props, font })
+      if (isClient) {
+        console.info({ style, props, font })
+      }
       console.groupEnd()
     }
   }

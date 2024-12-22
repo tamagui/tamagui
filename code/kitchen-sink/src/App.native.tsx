@@ -1,10 +1,8 @@
-import React from 'react'
 import { ToastViewport } from '@tamagui/sandbox-ui'
 import { useFonts } from 'expo-font'
-
+import React from 'react'
 import { Appearance, Platform, useColorScheme } from 'react-native'
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context'
-
 import { Navigation } from './Navigation'
 import { Provider } from './provider'
 import { ThemeContext } from './useKitchenSinkTheme'
@@ -22,7 +20,7 @@ export default function App() {
 
   const colorScheme = useColorScheme()
 
-  React.useEffect(() => {
+  React.useLayoutEffect(() => {
     setTheme(colorScheme)
   }, [colorScheme])
 

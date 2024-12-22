@@ -1,8 +1,8 @@
 import { useStore, useStoreSelector } from '@tamagui/use-store'
-import { router, useGlobalSearchParams } from 'vxs'
 import { forwardRef } from 'react'
 import type { TabsProps, TabsTabProps } from 'tamagui'
 import { Paragraph, Tabs, XStack, styled, withStaticProperties } from 'tamagui'
+import { type Href, router, useGlobalSearchParams } from 'one'
 
 class TabsStore {
   active = 'styled'
@@ -19,7 +19,7 @@ function TabsComponent(props: TabsProps) {
     const url = new URL(location.href)
     url.searchParams.set(id, newValue)
     url.hash = '' // having this set messes with the scroll
-    router.replace(url)
+    router.replace(url as Href)
     // undefined, {
     //   scroll: false,
     //   shallow: true,
