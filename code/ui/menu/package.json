@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/menu",
-  "version": "1.120.1",
+  "version": "1.120.2",
   "sideEffects": [
     "*.css"
   ],
@@ -30,13 +30,13 @@
     "react-native-ios-context-menu": "^2.3.0"
   },
   "peerDependencies": {
-    "@tamagui/core": "1.120.1",
-    "@tamagui/helpers": "1.120.1",
-    "@tamagui/popover": "1.120.1",
+    "@tamagui/core": "1.120.2",
+    "@tamagui/helpers": "1.120.2",
+    "@tamagui/popover": "1.120.2",
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.120.1",
+    "@tamagui/build": "1.120.2",
     "react": "*"
   },
   "publishConfig": {

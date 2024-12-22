@@ -1,6 +1,6 @@
 {
   "name": "sandbox",
-  "version": "1.120.1",
+  "version": "1.120.2",
   "private": true,
   "type": "module",
   "scripts": {
@@ -17,13 +17,13 @@
   },
   "dependencies": {
     "@react-native-masked-view/masked-view": "^0.3.1",
-    "@tamagui/animations-moti": "1.120.1",
-    "@tamagui/colors": "1.120.1",
-    "@tamagui/demos": "1.120.1",
-    "@tamagui/image-next": "1.120.1",
-    "@tamagui/lucide-icons": "1.120.1",
-    "@tamagui/react-native-media-driver": "1.120.1",
-    "@tamagui/toast": "1.120.1",
+    "@tamagui/animations-moti": "1.120.2",
+    "@tamagui/colors": "1.120.2",
+    "@tamagui/demos": "1.120.2",
+    "@tamagui/image-next": "1.120.2",
+    "@tamagui/lucide-icons": "1.120.2",
+    "@tamagui/react-native-media-driver": "1.120.2",
+    "@tamagui/toast": "1.120.2",
     "@vxrn/color-scheme": "^1.1.335",
     "expo": "^51.0.0",
     "expo-modules-core": "^1.12.24",
@@ -33,13 +33,13 @@
     "react-native-safe-area-context": "4.11.0",
     "react-native-screens": "3.31.1",
     "react-native-svg": "^15.7.1",
-    "react-native-web": "^0.19.12",
-    "tamagui": "1.120.1"
+    "react-native-web": "^0.19.0",
+    "tamagui": "1.120.2"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.2",
     "@playwright/test": "^1.45.2",
-    "@tamagui/vite-plugin": "1.120.1",
+    "@tamagui/vite-plugin": "1.120.2",
     "@types/react": "^18.3.11",
     "vite": "6.0.0-beta.1",
     "wait-port": "^0.3.0",
