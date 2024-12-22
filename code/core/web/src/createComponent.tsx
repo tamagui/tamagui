@@ -1,7 +1,7 @@
 import { composeRefs } from '@tamagui/compose-refs'
 import { isClient, isServer, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { composeEventHandlers, validStyles } from '@tamagui/helpers'
-import React from 'react'
+import React, { useCallback } from 'react'
 import { devConfig, onConfiguredOnce } from './config'
 import { stackDefaultStyles } from './constants/constants'
 import { isDevTools } from './constants/isDevTools'
@@ -429,6 +429,7 @@ export function createComponent<
           (state.press || state.pressIn ? '(PRESSED)' : ' ') +
           (state.hover ? '(HOVERED)' : ' ') +
           (state.focus ? '(FOCUSED)' : ' ') +
+          (state.focusWithin ? '(WITHIN FOCUSED)' : ' ') +
           (presenceState?.isPresent === false ? '(EXIT)' : '')
 
         const dataIs = propsIn['data-is'] || ''
@@ -688,6 +689,11 @@ export function createComponent<
 
     const unPress = () => setStateShallow({ press: false, pressIn: false })
 
+    if (propsIn.focusWithinStyle) {
+      componentContext.onWithinFocus = () => setStateShallow({ focusWithin: true })
+      componentContext.onWithinBlur = () => setStateShallow({ focusWithin: false })
+    }
+
     if (process.env.NODE_ENV === 'development' && isWeb) {
       useIsomorphicLayoutEffect(() => {
         if (debugProp === 'verbose') {
@@ -763,7 +769,8 @@ export function createComponent<
         runtimeFocusStyle ||
         runtimeFocusVisibleStyle ||
         onFocus ||
-        onBlur
+        onBlur ||
+        !!componentContext.onWithinFocus
     )
     const attachPress = Boolean(
       groupName ||
@@ -892,6 +899,9 @@ export function createComponent<
             }),
           ...(attachFocus && {
             onFocus: (e) => {
+              if (componentContext.onWithinFocus) {
+                componentContext.onWithinFocus()
+              }
               if (pseudos?.focusVisibleStyle) {
                 setTimeout(() => {
                   setStateShallow({
@@ -908,6 +918,9 @@ export function createComponent<
               onFocus?.(e)
             },
             onBlur: (e) => {
+              if (componentContext.onWithinBlur) {
+                componentContext.onWithinBlur()
+              }
               setStateShallow({
                 focus: false,
                 focusVisible: false,
@@ -1044,7 +1057,7 @@ export function createComponent<
       } satisfies ComponentContextI['groups']
     }, [groupName])
 
-    if (groupName && subGroupContext) {
+    if ((groupName && subGroupContext) || propsIn.focusWithinStyle) {
       content = (
         <ComponentContext.Provider {...componentContext} groups={subGroupContext}>
           {content}
