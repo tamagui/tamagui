@@ -116,6 +116,7 @@ type WithStates = BaseViewStyle & {
   pressStyle?: BaseViewStyle
   focusStyle?: BaseViewStyle
   focusVisibleStyle?: BaseViewStyle
+  focusWithinStyle?: BaseViewStyle
   disabledStyle?: BaseViewStyle
   enterStyle?: BaseViewStyle
   exitStyle?: BaseViewStyle
@@ -129,23 +130,31 @@ type ViewStyle = WithStates & {
   // add group queries
   $group-hover?: WithStates
   $group-focus?: WithStates
+  $group-focusWithin?: WithStates
+  $group-focusVisible?: WithStates
   $group-press?: WithStates
 
   // add group + container queries
   $group-sm-hover?: WithStates
   $group-sm-focus?: WithStates
+  $group-sm-focusWithin?: WithStates
+  $group-sm-focusVisible?: WithStates
   $group-sm-press?: WithStates
 
   // add named group queries
   $group-tabs?: WithStates
   $group-tabs-hover?: WithStates
   $group-tabs-focus?: WithStates
+  $group-tabs-focusWithin?: WithStates
+  $group-tabs-focusVisible?: WithStates
   $group-tabs-press?: WithStates
 
   // add named group + container queries
   $group-tabs-sm?: WithStates
   $group-tabs-sm-hover?: WithStates
   $group-tabs-sm-focus?: WithStates
+  $group-tabs-sm-focusWithin?: WithStates
+  $group-tabs-sm-focusVisible?: WithStates
   $group-tabs-sm-press?: WithStates
 
   // add theme queries
@@ -265,7 +274,7 @@ Group styles also allow for targeting the parent pseudo state:
 ```
 
 Now only when the parent View is hovered the Text will turn white. The allowed
-psuedo modifiers are `hover` (web only), `press`, and `focus`.
+psuedo modifiers are `hover` (web only), `press`, `focus`, `focusWithin`, and `focusVisible`.
 
 For more advanced usecases you can use named groups
 
