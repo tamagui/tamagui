@@ -23,7 +23,6 @@ export function ContextMenuDemo() {
       <ContextMenu.Portal zIndex={100}>
         <ContextMenu.Content
           paddingHorizontal={0}
-          maxWidth={180}
           borderWidth={1}
           ai="flex-start"
           borderColor="$borderColor"

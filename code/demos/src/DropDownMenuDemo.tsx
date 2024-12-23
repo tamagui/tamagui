@@ -29,7 +29,6 @@ export function DropDownMenuDemo() {
       <DropdownMenu.Portal zIndex={100}>
         <DropdownMenu.Content
           paddingHorizontal={0}
-          maxWidth={180}
           borderWidth={1}
           ai="flex-start"
           borderColor="$borderColor"
