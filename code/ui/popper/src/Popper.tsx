@@ -207,39 +207,38 @@ export function Popper(props: ScopedPopperProps<PopperProps>) {
 
 type PopperAnchorRef = HTMLElement | View
 
-export type PopperAnchorProps = YStackProps & {
+export type PopperAnchorExtraProps = {
   virtualRef?: React.RefObject<any>
 }
+export type PopperAnchorProps = YStackProps
 
-export const PopperAnchor = YStack.styleable(
-  React.forwardRef<PopperAnchorRef, ScopedPopperProps<PopperAnchorProps>>(
-    function PopperAnchor(props: ScopedPopperProps<PopperAnchorProps>, forwardedRef) {
-      const { virtualRef, __scopePopper, ...anchorProps } = props
-      const { getReferenceProps, refs } = usePopperContext(__scopePopper)
-      const ref = React.useRef<PopperAnchorRef>(null)
-      const composedRefs = useComposedRefs(forwardedRef, ref, refs.setReference as any)
+export const PopperAnchor = YStack.styleable<ScopedPopperProps<PopperAnchorExtraProps>>(
+  function PopperAnchor(props, forwardedRef) {
+    const { virtualRef, __scopePopper, ...anchorProps } = props
+    const { getReferenceProps, refs } = usePopperContext(__scopePopper)
+    const ref = React.useRef<PopperAnchorRef>(null)
+    const composedRefs = useComposedRefs(forwardedRef, ref, refs.setReference as any)
 
-      React.useEffect(() => {
-        if (virtualRef) {
-          refs.setReference(virtualRef.current)
-        }
-      }, [virtualRef])
-
-      // if (virtualRef) {
-      //   return null
-      // }
-
-      const stackProps = {
-        ref: composedRefs,
-        ...anchorProps,
+    React.useEffect(() => {
+      if (virtualRef) {
+        refs.setReference(virtualRef.current)
       }
-      return (
-        <TamaguiView
-          {...(getReferenceProps ? getReferenceProps(stackProps) : stackProps)}
-        />
-      )
+    }, [virtualRef])
+
+    // if (virtualRef) {
+    //   return null
+    // }
+
+    const stackProps = {
+      ref: composedRefs,
+      ...anchorProps,
     }
-  )
+    return (
+      <TamaguiView
+        {...(getReferenceProps ? getReferenceProps(stackProps) : stackProps)}
+      />
+    )
+  }
 )
 
 /* -------------------------------------------------------------------------------------------------
@@ -248,9 +247,10 @@ export const PopperAnchor = YStack.styleable(
 
 type PopperContentElement = HTMLElement | View
 
-export type PopperContentProps = SizableStackProps & {
+export type PopperContentExtraProps = {
   enableAnimationForPositionChange?: boolean
 }
+export type PopperContentProps = SizableStackProps & PopperContentExtraProps
 
 export const PopperContentFrame = styled(YStack, {
   name: 'PopperContent',
@@ -279,10 +279,9 @@ export const PopperContentFrame = styled(YStack, {
   },
 })
 
-export const PopperContent = React.forwardRef<
-  PopperContentElement,
-  ScopedPopperProps<PopperContentProps>
->(function PopperContent(props: ScopedPopperProps<PopperContentProps>, forwardedRef) {
+export const PopperContent = PopperContentFrame.styleable<
+  ScopedPopperProps<PopperContentExtraProps>
+>(function PopperContent(props, forwardedRef) {
   const { __scopePopper, enableAnimationForPositionChange, ...rest } = props
   const {
     strategy,

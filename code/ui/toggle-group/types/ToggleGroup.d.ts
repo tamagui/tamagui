@@ -3,7 +3,7 @@ import { RovingFocusGroup } from '@tamagui/roving-focus';
 import type { GetProps, SizeTokens } from '@tamagui/web';
 import React from 'react';
 import { ToggleFrame } from './Toggle';
-type ToggleGroupItemProps = GetProps<typeof ToggleFrame> & {
+type ToggleGroupItemExtraProps = {
     value: string;
     id?: string;
     disabled?: boolean;
@@ -13,9 +13,7 @@ type ToggleGroupItemProps = GetProps<typeof ToggleFrame> & {
      */
     disablePassStyles?: boolean;
 };
-type ScopedProps<P> = P & {
-    __scopeToggleGroup?: string;
-};
+type ToggleGroupItemProps = GetProps<typeof ToggleFrame> & ToggleGroupItemExtraProps;
 interface ToggleGroupSingleProps extends ToggleGroupImplSingleProps {
     type: 'single';
 }
@@ -23,8 +21,22 @@ interface ToggleGroupMultipleProps extends ToggleGroupImplMultipleProps {
     type: 'multiple';
 }
 type ToggleGroupProps = ToggleGroupSingleProps | ToggleGroupMultipleProps;
-declare const ToggleGroup: React.ForwardRefExoticComponent<ScopedProps<ToggleGroupProps> & React.RefAttributes<HTMLElement>> & {
-    Item: import("@tamagui/web").TamaguiComponent<ToggleGroupItemProps, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & HTMLButtonElement, import("@tamagui/web").StackStyleBase, {
+declare const ToggleGroup: React.ForwardRefExoticComponent<(Omit<ToggleGroupSingleProps & {
+    __scopeToggleGroup?: string;
+}, "ref"> | Omit<ToggleGroupMultipleProps & {
+    __scopeToggleGroup?: string;
+}, "ref">) & React.RefAttributes<HTMLElement>> & {
+    Item: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
+        unstyled?: boolean | undefined;
+        active?: boolean | undefined;
+        orientation?: "horizontal" | "vertical" | undefined;
+        elevation?: number | SizeTokens | undefined;
+        fullscreen?: boolean | undefined;
+    }>, keyof ToggleGroupItemExtraProps | "__scopeToggleGroup"> & ToggleGroupItemExtraProps & {
+        __scopeToggleGroup?: string;
+    }, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & ToggleGroupItemExtraProps & {
+        __scopeToggleGroup?: string;
+    }, import("@tamagui/web").StackStyleBase, {
         unstyled?: boolean | undefined;
         active?: boolean | undefined;
         orientation?: "horizontal" | "vertical" | undefined;
@@ -75,12 +87,13 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     elevation?: number | SizeTokens | undefined;
     fullscreen?: boolean | undefined;
 }, import("@tamagui/web").StaticConfigPublic>;
-type ToggleGroupImplProps = GetProps<typeof ToggleGroupImplElementFrame> & GroupProps & {
+type ToggleGroupImplExtraProps = GroupProps & {
     rovingFocus?: boolean;
     dir?: RovingFocusGroupProps['dir'];
     loop?: RovingFocusGroupProps['loop'];
     sizeAdjust?: number;
 };
+type ToggleGroupImplProps = GetProps<typeof ToggleGroupImplElementFrame> & ToggleGroupImplExtraProps;
 export { ToggleGroup };
 export type { ToggleGroupItemProps, ToggleGroupMultipleProps, ToggleGroupProps, ToggleGroupSingleProps, };
 //# sourceMappingURL=ToggleGroup.d.ts.map

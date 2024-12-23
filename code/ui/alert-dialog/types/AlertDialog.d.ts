@@ -1,5 +1,6 @@
 import type { TamaguiElement } from '@tamagui/core';
-import type { DialogCloseProps, DialogContentProps, DialogDescriptionProps, DialogOverlayProps, DialogPortalProps, DialogProps, DialogTitleProps, DialogTriggerProps } from '@tamagui/dialog';
+import type { Scope } from '@tamagui/create-context';
+import type { DialogCloseProps, DialogContentProps, DialogDescriptionProps, DialogOverlayProps, DialogPortalProps, DialogOverlayExtraProps, DialogProps, DialogTitleProps, DialogTriggerProps } from '@tamagui/dialog';
 import * as React from 'react';
 declare const createAlertDialogScope: import("@tamagui/create-context").CreateScope;
 type AlertDialogProps = DialogProps & {
@@ -13,7 +14,16 @@ interface AlertDialogPortalProps extends DialogPortalProps {
 declare const AlertDialogPortal: React.FC<AlertDialogPortalProps>;
 interface AlertDialogOverlayProps extends DialogOverlayProps {
 }
-declare const AlertDialogOverlay: import("@tamagui/core").TamaguiComponent<AlertDialogOverlayProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & TamaguiElement, import("@tamagui/core").StackStyleBase, {
+declare const AlertDialogOverlay: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+    fullscreen?: boolean | undefined;
+    open?: boolean | undefined;
+    unstyled?: boolean | undefined;
+}>, "forceMount" | "__scopeAlertDialog"> & DialogOverlayExtraProps & {
+    __scopeAlertDialog?: Scope;
+}, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & DialogOverlayExtraProps & {
+    __scopeAlertDialog?: Scope;
+}, import("@tamagui/core").StackStyleBase, {
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
     open?: boolean | undefined;
@@ -52,7 +62,16 @@ declare const AlertDialogCancel: React.ForwardRefExoticComponent<AlertDialogCanc
 declare const AlertDialog: React.FC<AlertDialogProps> & {
     Trigger: React.ForwardRefExoticComponent<AlertDialogTriggerProps & React.RefAttributes<TamaguiElement>>;
     Portal: React.FC<AlertDialogPortalProps>;
-    Overlay: import("@tamagui/core").TamaguiComponent<AlertDialogOverlayProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & TamaguiElement, import("@tamagui/core").StackStyleBase, {
+    Overlay: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+        fullscreen?: boolean | undefined;
+        open?: boolean | undefined;
+        unstyled?: boolean | undefined;
+    }>, "forceMount" | "__scopeAlertDialog"> & DialogOverlayExtraProps & {
+        __scopeAlertDialog?: Scope;
+    }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & DialogOverlayExtraProps & {
+        __scopeAlertDialog?: Scope;
+    }, import("@tamagui/core").StackStyleBase, {
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         fullscreen?: boolean | undefined;
         open?: boolean | undefined;

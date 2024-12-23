@@ -1,4 +1,5 @@
 import type { GetProps, SizeTokens, TamaguiElement } from '@tamagui/core';
+import type { Scope } from '@tamagui/create-context';
 import type { ImageProps } from '@tamagui/image';
 import * as React from 'react';
 declare const createAvatarScope: import("@tamagui/create-context").CreateScope;
@@ -13,10 +14,18 @@ export declare const AvatarFallbackFrame: import("@tamagui/core").TamaguiCompone
     elevation?: number | SizeTokens | undefined;
     fullscreen?: boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
-type AvatarFallbackProps = GetProps<typeof AvatarFallbackFrame> & {
+type AvatarFallbackExtraProps = {
     delayMs?: number;
 };
-declare const AvatarFallback: import("@tamagui/core").TamaguiComponent<AvatarFallbackProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & TamaguiElement, import("@tamagui/core").StackStyleBase, {
+type AvatarFallbackProps = GetProps<typeof AvatarFallbackFrame> & AvatarFallbackExtraProps;
+declare const AvatarFallback: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+    elevation?: number | SizeTokens | undefined;
+    fullscreen?: boolean | undefined;
+}>, "delayMs" | "__scopeAvatar"> & AvatarFallbackExtraProps & {
+    __scopeAvatar?: Scope;
+}, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & AvatarFallbackExtraProps & {
+    __scopeAvatar?: Scope;
+}, import("@tamagui/core").StackStyleBase, {
     elevation?: number | SizeTokens | undefined;
     fullscreen?: boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
@@ -46,7 +55,14 @@ declare const Avatar: React.ForwardRefExoticComponent<Omit<import("@tamagui/core
     Image: React.ForwardRefExoticComponent<Partial<ImageProps> & {
         onLoadingStatusChange?: (status: ImageLoadingStatus) => void;
     } & React.RefAttributes<TamaguiElement>>;
-    Fallback: import("@tamagui/core").TamaguiComponent<AvatarFallbackProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & TamaguiElement, import("@tamagui/core").StackStyleBase, {
+    Fallback: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+        elevation?: number | SizeTokens | undefined;
+        fullscreen?: boolean | undefined;
+    }>, "delayMs" | "__scopeAvatar"> & AvatarFallbackExtraProps & {
+        __scopeAvatar?: Scope;
+    }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & AvatarFallbackExtraProps & {
+        __scopeAvatar?: Scope;
+    }, import("@tamagui/core").StackStyleBase, {
         elevation?: number | SizeTokens | undefined;
         fullscreen?: boolean | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;

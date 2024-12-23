@@ -103,28 +103,29 @@ export const AvatarFallbackFrame = styled(YStack, {
   zIndex: 0,
 })
 
-type AvatarFallbackProps = GetProps<typeof AvatarFallbackFrame> & {
+type AvatarFallbackExtraProps = {
   delayMs?: number
 }
+type AvatarFallbackProps = GetProps<typeof AvatarFallbackFrame> & AvatarFallbackExtraProps
 
-const AvatarFallback = AvatarFallbackFrame.styleable<TamaguiElement, AvatarFallbackProps>(
-  (props: ScopedProps<AvatarFallbackProps>, forwardedRef) => {
-    const { __scopeAvatar, delayMs, ...fallbackProps } = props
-    const context = useAvatarContext(FALLBACK_NAME, __scopeAvatar)
-    const [canRender, setCanRender] = React.useState(delayMs === undefined)
+const AvatarFallback = AvatarFallbackFrame.styleable<
+  ScopedProps<AvatarFallbackExtraProps>
+>((props, forwardedRef) => {
+  const { __scopeAvatar, delayMs, ...fallbackProps } = props
+  const context = useAvatarContext(FALLBACK_NAME, __scopeAvatar)
+  const [canRender, setCanRender] = React.useState(delayMs === undefined)
 
-    React.useEffect(() => {
-      if (delayMs !== undefined) {
-        const timerId = setTimeout(() => setCanRender(true), delayMs)
-        return () => clearTimeout(timerId)
-      }
-    }, [delayMs])
+  React.useEffect(() => {
+    if (delayMs !== undefined) {
+      const timerId = setTimeout(() => setCanRender(true), delayMs)
+      return () => clearTimeout(timerId)
+    }
+  }, [delayMs])
 
-    return canRender && context.imageLoadingStatus !== 'loaded' ? (
-      <AvatarFallbackFrame {...fallbackProps} ref={forwardedRef} />
-    ) : null
-  }
-)
+  return canRender && context.imageLoadingStatus !== 'loaded' ? (
+    <AvatarFallbackFrame {...fallbackProps} ref={forwardedRef} />
+  ) : null
+})
 
 AvatarFallback.displayName = FALLBACK_NAME
 

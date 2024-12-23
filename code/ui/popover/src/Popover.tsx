@@ -127,68 +127,66 @@ export const PopoverAnchor = React.forwardRef<
 
 export type PopoverTriggerProps = StackProps
 
-export const PopoverTrigger = React.forwardRef<
-  TamaguiElement,
-  ScopedPopoverProps<PopoverTriggerProps>
->(function PopoverTrigger(props: ScopedPopoverProps<PopoverTriggerProps>, forwardedRef) {
-  const { __scopePopover, ...rest } = props
-  const context = usePopoverContext(__scopePopover)
-  const anchorTo = context.anchorTo
+export const PopoverTrigger = PopperAnchor.styleable<ScopedPopoverProps<{}>>(
+  function PopoverTrigger(props, forwardedRef) {
+    const { __scopePopover, ...rest } = props
+    const context = usePopoverContext(__scopePopover)
+    const anchorTo = context.anchorTo
 
-  const composedTriggerRef = useComposedRefs(forwardedRef, context.triggerRef)
+    const composedTriggerRef = useComposedRefs(forwardedRef, context.triggerRef)
 
-  if (!props.children) return null
+    if (!props.children) return null
 
-  const trigger = (
-    <View
-      aria-expanded={context.open}
-      // TODO not matching
-      // aria-controls={context.contentId}
-      data-state={getState(context.open)}
-      {...rest}
-      // @ts-ignore
-      ref={composedTriggerRef}
-      onPress={composeEventHandlers(props.onPress as any, context.onOpenToggle)}
-    />
-  )
+    const trigger = (
+      <View
+        aria-expanded={context.open}
+        // TODO not matching
+        // aria-controls={context.contentId}
+        data-state={getState(context.open)}
+        {...rest}
+        // @ts-ignore
+        ref={composedTriggerRef}
+        onPress={composeEventHandlers(props.onPress as any, context.onOpenToggle)}
+      />
+    )
 
-  if (anchorTo) {
-    const virtualRef = {
-      current: {
-        getBoundingClientRect: () => (isWeb ? DOMRect.fromRect(anchorTo) : anchorTo),
-        ...(!isWeb && {
-          measure: (c) => c(anchorTo?.x, anchorTo?.y, anchorTo?.width, anchorTo?.height),
-          measureInWindow: (c) =>
-            c(anchorTo?.x, anchorTo?.y, anchorTo?.width, anchorTo?.height),
-        }),
-      },
+    if (anchorTo) {
+      const virtualRef = {
+        current: {
+          getBoundingClientRect: () => (isWeb ? DOMRect.fromRect(anchorTo) : anchorTo),
+          ...(!isWeb && {
+            measure: (c) =>
+              c(anchorTo?.x, anchorTo?.y, anchorTo?.width, anchorTo?.height),
+            measureInWindow: (c) =>
+              c(anchorTo?.x, anchorTo?.y, anchorTo?.width, anchorTo?.height),
+          }),
+        },
+      }
+      return (
+        <PopperAnchor
+          virtualRef={virtualRef}
+          __scopePopper={__scopePopover || POPOVER_SCOPE}
+        >
+          {trigger}
+        </PopperAnchor>
+      )
     }
-    return (
-      <PopperAnchor
-        virtualRef={virtualRef}
-        __scopePopper={__scopePopover || POPOVER_SCOPE}
-      >
+
+    return context.hasCustomAnchor ? (
+      trigger
+    ) : (
+      <PopperAnchor __scopePopper={__scopePopover || POPOVER_SCOPE} asChild>
         {trigger}
       </PopperAnchor>
     )
   }
-
-  return context.hasCustomAnchor ? (
-    trigger
-  ) : (
-    <PopperAnchor __scopePopper={__scopePopover || POPOVER_SCOPE} asChild>
-      {trigger}
-    </PopperAnchor>
-  )
-})
+)
 
 /* -------------------------------------------------------------------------------------------------
  * PopoverContent
  * -----------------------------------------------------------------------------------------------*/
 
 export type PopoverContentProps = PopoverContentTypeProps
-
-type PopoverContentTypeElement = PopoverContentImplElement
 
 export interface PopoverContentTypeProps
   extends Omit<PopoverContentImplProps, 'disableOutsidePointerEvents'> {
@@ -201,7 +199,6 @@ export interface PopoverContentTypeProps
 }
 
 export const PopoverContent = PopperContentFrame.styleable<
-  PopoverContentTypeElement,
   ScopedPopoverProps<PopoverContentTypeProps>
 >(function PopoverContent(
   props: ScopedPopoverProps<PopoverContentTypeProps>,
@@ -337,9 +334,8 @@ function PopoverContentPortal(props: ScopedPopoverProps<PopoverContentTypeProps>
 
 type PopoverContentImplElement = React.ElementRef<typeof PopperContent>
 
-export interface PopoverContentImplProps
-  extends PopperContentProps,
-    Omit<DismissableProps, 'onDismiss' | 'children' | 'onPointerDownCapture'> {
+export interface PopoverContentExtraProps
+  extends Omit<DismissableProps, 'onDismiss' | 'children' | 'onPointerDownCapture'> {
   /**
    * Whether focus should be trapped within the `Popover`
    * @default false
@@ -370,6 +366,10 @@ export interface PopoverContentImplProps
 
   setIsFullyHidden?: React.Dispatch<React.SetStateAction<boolean>>
 }
+
+export interface PopoverContentImplProps
+  extends PopperContentProps,
+    PopoverContentExtraProps {}
 
 const PopoverContentImpl = React.forwardRef<
   PopoverContentImplElement,

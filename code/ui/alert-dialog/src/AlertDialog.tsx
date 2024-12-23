@@ -13,6 +13,7 @@ import type {
   DialogDescriptionProps,
   DialogOverlayProps,
   DialogPortalProps,
+  DialogOverlayExtraProps,
   DialogProps,
   DialogTitleProps,
   DialogTriggerProps,
@@ -115,9 +116,8 @@ const AlertDialogOverlayFrame = styled(DialogOverlayFrame, {
 interface AlertDialogOverlayProps extends DialogOverlayProps {}
 
 const AlertDialogOverlay = AlertDialogOverlayFrame.styleable<
-  TamaguiElement,
-  AlertDialogOverlayProps
->((props: ScopedProps<AlertDialogOverlayProps>, forwardedRef) => {
+  ScopedProps<DialogOverlayExtraProps>
+>((props, forwardedRef) => {
   const { __scopeAlertDialog, ...overlayProps } = props
   const dialogScope = useDialogScope(__scopeAlertDialog)
   return <DialogOverlay {...dialogScope} {...overlayProps} ref={forwardedRef} />

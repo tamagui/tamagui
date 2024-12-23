@@ -1,6 +1,6 @@
 import '@tamagui/polyfill-dev';
 import type { UseHoverProps } from '@floating-ui/react';
-import type { ScopedProps, SizeTokens, StackProps, TamaguiElement } from '@tamagui/core';
+import type { SizeTokens, StackProps, TamaguiElement } from '@tamagui/core';
 import type { DismissableProps } from '@tamagui/dismissable';
 import type { FocusScopeProps } from '@tamagui/focus-scope';
 import type { PopperArrowExtraProps, PopperArrowProps, PopperContentProps, PopperProps } from '@tamagui/popper';
@@ -22,7 +22,6 @@ export type PopoverProps = PopperProps & {
      */
     disableFocus?: boolean;
 };
-type ScopedPopoverProps<P> = ScopedProps<P, 'Popover'>;
 type PopoverContextValue = {
     id: string;
     triggerRef: React.RefObject<any>;
@@ -54,9 +53,21 @@ export declare const PopoverAnchor: React.ForwardRefExoticComponent<Omit<import(
     __scopePopover?: string | undefined;
 } & React.RefAttributes<TamaguiElement>>;
 export type PopoverTriggerProps = StackProps;
-export declare const PopoverTrigger: React.ForwardRefExoticComponent<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {}>> & {
+export declare const PopoverTrigger: import("@tamagui/core").TamaguiComponent<Omit<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+    elevation?: number | SizeTokens | undefined;
+    fullscreen?: boolean | undefined;
+}>, "__scopePopper" | "virtualRef"> & import("@tamagui/popper").PopperAnchorExtraProps & {
+    __scopePopper?: string | undefined;
+}, "__scopePopover"> & {
     __scopePopover?: string | undefined;
-} & React.RefAttributes<TamaguiElement>>;
+}, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & import("@tamagui/popper").PopperAnchorExtraProps & {
+    __scopePopper?: string | undefined;
+} & {
+    __scopePopover?: string | undefined;
+}, import("@tamagui/core").StackStyleBase, {
+    elevation?: number | SizeTokens | undefined;
+    fullscreen?: boolean | undefined;
+}, import("@tamagui/core").StaticConfigPublic>;
 export type PopoverContentProps = PopoverContentTypeProps;
 export interface PopoverContentTypeProps extends Omit<PopoverContentImplProps, 'disableOutsidePointerEvents'> {
     /**
@@ -66,13 +77,22 @@ export interface PopoverContentTypeProps extends Omit<PopoverContentImplProps, '
     /** enable animation for content position changing */
     enableAnimationForPositionChange?: boolean;
 }
-export declare const PopoverContent: import("@tamagui/core").TamaguiComponent<ScopedPopoverProps<PopoverContentTypeProps>, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & (HTMLElement | import("react-native").View), import("@tamagui/core").StackStyleBase, {
+export declare const PopoverContent: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+    size?: SizeTokens | undefined;
+    elevation?: number | SizeTokens | undefined;
+    fullscreen?: boolean | undefined;
+    unstyled?: boolean | undefined;
+}>, "__scopePopover" | keyof PopoverContentTypeProps> & PopoverContentTypeProps & {
+    __scopePopover?: string | undefined;
+}, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & PopoverContentTypeProps & {
+    __scopePopover?: string | undefined;
+}, import("@tamagui/core").StackStyleBase, {
     size?: SizeTokens | undefined;
     elevation?: number | SizeTokens | undefined;
     fullscreen?: boolean | undefined;
     unstyled?: boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
-export interface PopoverContentImplProps extends PopperContentProps, Omit<DismissableProps, 'onDismiss' | 'children' | 'onPointerDownCapture'> {
+export interface PopoverContentExtraProps extends Omit<DismissableProps, 'onDismiss' | 'children' | 'onPointerDownCapture'> {
     /**
      * Whether focus should be trapped within the `Popover`
      * @default false
@@ -96,6 +116,8 @@ export interface PopoverContentImplProps extends PopperContentProps, Omit<Dismis
     disableRemoveScroll?: boolean;
     freezeContentsWhenHidden?: boolean;
     setIsFullyHidden?: React.Dispatch<React.SetStateAction<boolean>>;
+}
+export interface PopoverContentImplProps extends PopperContentProps, PopoverContentExtraProps {
 }
 export type PopoverCloseProps = YStackProps;
 export declare const PopoverClose: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "fullscreen"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
@@ -170,10 +192,31 @@ export declare const Popover: React.ForwardRefExoticComponent<PopperProps & {
         fullscreen?: boolean | undefined;
         unstyled?: boolean | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
-    Trigger: React.ForwardRefExoticComponent<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {}>> & {
+    Trigger: import("@tamagui/core").TamaguiComponent<Omit<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+        elevation?: number | SizeTokens | undefined;
+        fullscreen?: boolean | undefined;
+    }>, "__scopePopper" | "virtualRef"> & import("@tamagui/popper").PopperAnchorExtraProps & {
+        __scopePopper?: string | undefined;
+    }, "__scopePopover"> & {
         __scopePopover?: string | undefined;
-    } & React.RefAttributes<TamaguiElement>>;
-    Content: import("@tamagui/core").TamaguiComponent<ScopedPopoverProps<PopoverContentTypeProps>, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & (HTMLElement | import("react-native").View), import("@tamagui/core").StackStyleBase, {
+    }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & import("@tamagui/popper").PopperAnchorExtraProps & {
+        __scopePopper?: string | undefined;
+    } & {
+        __scopePopover?: string | undefined;
+    }, import("@tamagui/core").StackStyleBase, {
+        elevation?: number | SizeTokens | undefined;
+        fullscreen?: boolean | undefined;
+    }, import("@tamagui/core").StaticConfigPublic>;
+    Content: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+        size?: SizeTokens | undefined;
+        elevation?: number | SizeTokens | undefined;
+        fullscreen?: boolean | undefined;
+        unstyled?: boolean | undefined;
+    }>, "__scopePopover" | keyof PopoverContentTypeProps> & PopoverContentTypeProps & {
+        __scopePopover?: string | undefined;
+    }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & PopoverContentTypeProps & {
+        __scopePopover?: string | undefined;
+    }, import("@tamagui/core").StackStyleBase, {
         size?: SizeTokens | undefined;
         elevation?: number | SizeTokens | undefined;
         fullscreen?: boolean | undefined;

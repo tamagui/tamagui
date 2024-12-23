@@ -36,7 +36,7 @@ const { Provider: ToggleGroupContext, useStyledContext: useToggleGroupContext } 
 
 type ToggleGroupItemElement = ToggleGroupItemImplElement
 
-type ToggleGroupItemProps = GetProps<typeof ToggleFrame> & {
+type ToggleGroupItemExtraProps = {
   value: string
   id?: string
   disabled?: boolean
@@ -46,10 +46,12 @@ type ToggleGroupItemProps = GetProps<typeof ToggleFrame> & {
    */
   disablePassStyles?: boolean
 }
+type ToggleGroupItemProps = GetProps<typeof ToggleFrame> & ToggleGroupItemExtraProps
+
 const ToggleGroupItem = ToggleFrame.styleable<
-  ToggleGroupItemElement,
-  ToggleGroupItemProps
->((props: ScopedProps<ToggleGroupItemProps>, forwardedRef) => {
+  ScopedProps<ToggleGroupItemExtraProps>
+  // ToggleGroupItemElement,
+>((props, forwardedRef) => {
   const { disablePassStyles, ...rest } = props
   const valueContext = useToggleGroupValueContext(props.__scopeToggleGroup)
   const context = useToggleGroupContext(props.__scopeToggleGroup)
@@ -382,18 +384,20 @@ const ToggleGroupImplElementFrame = styled(Group, {
   },
 })
 
-type ToggleGroupImplProps = GetProps<typeof ToggleGroupImplElementFrame> &
-  GroupProps & {
-    rovingFocus?: boolean
-    dir?: RovingFocusGroupProps['dir']
-    loop?: RovingFocusGroupProps['loop']
-    sizeAdjust?: number
-  }
+type ToggleGroupImplExtraProps = GroupProps & {
+  rovingFocus?: boolean
+  dir?: RovingFocusGroupProps['dir']
+  loop?: RovingFocusGroupProps['loop']
+  sizeAdjust?: number
+}
 
+type ToggleGroupImplProps = GetProps<typeof ToggleGroupImplElementFrame> &
+  ToggleGroupImplExtraProps
+
+// ToggleGroupImplElement,
 const ToggleGroupImpl = ToggleGroupImplElementFrame.styleable<
-  ToggleGroupImplElement,
-  ToggleGroupImplProps
->((props: ScopedProps<ToggleGroupImplProps>, forwardedRef) => {
+  ScopedProps<ToggleGroupImplExtraProps>
+>((props, forwardedRef) => {
   const {
     __scopeToggleGroup,
     disabled = false,
