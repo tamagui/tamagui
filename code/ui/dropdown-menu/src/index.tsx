@@ -14,7 +14,4 @@ export const DropdownMenu = createDropdownMenu({
   Separator: MenuPredefinied.MenuSeparator,
   SubTitle: MenuPredefinied.SubTitle,
   Title: MenuPredefinied.Title,
-} as const)
-
-export * from './DropdownMenu'
-export type * from './createNonNativeDropdownMenu'
+})

@@ -3,7 +3,6 @@ import '@tamagui/polyfill-dev'
 import { MenuPredefinied } from '@tamagui/menu'
 
 import { createContextMenu } from './ContextMenu'
-export * from './ContextMenu'
 
 export const ContextMenu = createContextMenu({
   Icon: MenuPredefinied.MenuIcon,
@@ -15,4 +14,4 @@ export const ContextMenu = createContextMenu({
   Separator: MenuPredefinied.MenuSeparator,
   SubTitle: MenuPredefinied.SubTitle,
   Title: MenuPredefinied.Title,
-} as const)
+})

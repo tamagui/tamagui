@@ -1,7 +1,7 @@
 import { type MenuProps, type MenuSubProps, createMenu } from '@tamagui/menu';
 import type { Menu as MenuTypes } from '@tamagui/menu';
 import * as React from 'react';
-import { Button } from 'tamagui';
+import { Button, type TamaguiElement } from 'tamagui';
 type Direction = 'ltr' | 'rtl';
 export declare const DROPDOWN_MENU_CONTEXT = "DropdownMenuContext";
 type ScopedProps<P> = P & {
@@ -66,35 +66,235 @@ export declare function createNonNativeDropdownMenu(params: Parameters<typeof cr
         (props: ScopedProps<DropdownMenuProps>): import("react/jsx-runtime").JSX.Element;
         displayName: string;
     };
-    Trigger: any;
+    Trigger: import("tamagui").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+        elevation?: number | import("tamagui").SizeTokens | undefined;
+        fullscreen?: boolean | undefined;
+        inset?: number | import("tamagui").SizeTokens | {
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
+        } | undefined;
+    }>, keyof DropdownMenuTriggerProps | "__scopeDropdownMenu"> & DropdownMenuTriggerProps & {
+        __scopeDropdownMenu?: string;
+    }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & DropdownMenuTriggerProps & {
+        __scopeDropdownMenu?: string;
+    }, import("@tamagui/core").StackStyleBase, {
+        elevation?: number | import("tamagui").SizeTokens | undefined;
+        fullscreen?: boolean | undefined;
+        inset?: number | import("tamagui").SizeTokens | {
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
+        } | undefined;
+    }, import("@tamagui/core").StaticConfigPublic>;
     Portal: {
         (props: ScopedProps<DropdownMenuPortalProps>): import("react/jsx-runtime").JSX.Element;
         displayName: string;
     };
-    Content: React.ForwardRefExoticComponent<Omit<ScopedProps<DropdownMenuContentProps>, "ref"> & React.RefAttributes<any>>;
-    Group: any;
-    Label: any;
-    Item: any;
-    CheckboxItem: any;
-    RadioGroup: React.ForwardRefExoticComponent<DropdownMenuRadioGroupProps & {
+    Content: React.ForwardRefExoticComponent<DropdownMenuContentProps & {
         __scopeDropdownMenu?: string;
-    } & React.RefAttributes<any>>;
-    RadioItem: any;
-    ItemIndicator: any;
-    Separator: any;
-    Arrow: React.ForwardRefExoticComponent<any>;
+    } & React.RefAttributes<HTMLElement | import("react-native").View>>;
+    Group: import("tamagui").TamaguiComponent;
+    Label: import("tamagui").TamaguiComponent;
+    Item: import("tamagui").TamaguiComponent<Omit<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+        elevation?: number | import("tamagui").SizeTokens | undefined;
+        transparent?: boolean | undefined;
+        fullscreen?: boolean | undefined;
+        circular?: boolean | undefined;
+        inset?: number | import("tamagui").SizeTokens | {
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
+        } | undefined;
+        hoverTheme?: boolean | undefined;
+        pressTheme?: boolean | undefined;
+        focusTheme?: boolean | undefined;
+        elevate?: boolean | undefined;
+        bordered?: number | boolean | undefined;
+        backgrounded?: boolean | undefined;
+        radiused?: boolean | undefined;
+        padded?: boolean | undefined;
+        chromeless?: boolean | "all" | undefined;
+    }>, "__scopeMenu" | keyof import("@tamagui/menu").MenuItemProps> & import("@tamagui/menu").MenuItemProps & {
+        __scopeMenu?: string;
+    }, "__scopeDropdownMenu" | keyof DropdownMenuItemProps> & DropdownMenuItemProps & {
+        __scopeDropdownMenu?: string;
+    }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & import("@tamagui/menu").MenuItemProps & {
+        __scopeMenu?: string;
+    } & DropdownMenuItemProps & {
+        __scopeDropdownMenu?: string;
+    }, import("@tamagui/core").StackStyleBase, {
+        elevation?: number | import("tamagui").SizeTokens | undefined;
+        transparent?: boolean | undefined;
+        fullscreen?: boolean | undefined;
+        circular?: boolean | undefined;
+        inset?: number | import("tamagui").SizeTokens | {
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
+        } | undefined;
+        hoverTheme?: boolean | undefined;
+        pressTheme?: boolean | undefined;
+        focusTheme?: boolean | undefined;
+        elevate?: boolean | undefined;
+        bordered?: number | boolean | undefined;
+        backgrounded?: boolean | undefined;
+        radiused?: boolean | undefined;
+        padded?: boolean | undefined;
+        chromeless?: boolean | "all" | undefined;
+    }, import("@tamagui/core").StaticConfigPublic>;
+    CheckboxItem: import("tamagui").TamaguiComponent<Omit<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+        elevation?: number | import("tamagui").SizeTokens | undefined;
+        transparent?: boolean | undefined;
+        fullscreen?: boolean | undefined;
+        circular?: boolean | undefined;
+        inset?: number | import("tamagui").SizeTokens | {
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
+        } | undefined;
+        hoverTheme?: boolean | undefined;
+        pressTheme?: boolean | undefined;
+        focusTheme?: boolean | undefined;
+        elevate?: boolean | undefined;
+        bordered?: number | boolean | undefined;
+        backgrounded?: boolean | undefined;
+        radiused?: boolean | undefined;
+        padded?: boolean | undefined;
+        chromeless?: boolean | "all" | undefined;
+    }>, "__scopeMenu" | keyof import("@tamagui/menu").MenuCheckboxItemProps> & import("@tamagui/menu").MenuCheckboxItemProps & {
+        __scopeMenu?: string;
+    }, "__scopeDropdownMenu" | keyof DropdownMenuCheckboxItemProps> & DropdownMenuCheckboxItemProps & {
+        __scopeDropdownMenu?: string;
+    }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & import("@tamagui/menu").MenuCheckboxItemProps & {
+        __scopeMenu?: string;
+    } & DropdownMenuCheckboxItemProps & {
+        __scopeDropdownMenu?: string;
+    }, import("@tamagui/core").StackStyleBase, {
+        elevation?: number | import("tamagui").SizeTokens | undefined;
+        transparent?: boolean | undefined;
+        fullscreen?: boolean | undefined;
+        circular?: boolean | undefined;
+        inset?: number | import("tamagui").SizeTokens | {
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
+        } | undefined;
+        hoverTheme?: boolean | undefined;
+        pressTheme?: boolean | undefined;
+        focusTheme?: boolean | undefined;
+        elevate?: boolean | undefined;
+        bordered?: number | boolean | undefined;
+        backgrounded?: boolean | undefined;
+        radiused?: boolean | undefined;
+        padded?: boolean | undefined;
+        chromeless?: boolean | "all" | undefined;
+    }, import("@tamagui/core").StaticConfigPublic>;
+    RadioGroup: React.ForwardRefExoticComponent<Omit<ScopedProps<DropdownMenuRadioGroupProps>, "ref"> & React.RefAttributes<any>>;
+    RadioItem: import("tamagui").TamaguiComponent<Omit<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+        elevation?: number | import("tamagui").SizeTokens | undefined;
+        transparent?: boolean | undefined;
+        fullscreen?: boolean | undefined;
+        circular?: boolean | undefined;
+        inset?: number | import("tamagui").SizeTokens | {
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
+        } | undefined;
+        hoverTheme?: boolean | undefined;
+        pressTheme?: boolean | undefined;
+        focusTheme?: boolean | undefined;
+        elevate?: boolean | undefined;
+        bordered?: number | boolean | undefined;
+        backgrounded?: boolean | undefined;
+        radiused?: boolean | undefined;
+        padded?: boolean | undefined;
+        chromeless?: boolean | "all" | undefined;
+    }>, "__scopeMenu" | keyof import("@tamagui/menu").MenuRadioItemProps> & import("@tamagui/menu").MenuRadioItemProps & {
+        __scopeMenu?: string;
+    }, "__scopeDropdownMenu" | keyof DropdownMenuRadioItemProps> & DropdownMenuRadioItemProps & {
+        __scopeDropdownMenu?: string;
+    }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & import("@tamagui/menu").MenuRadioItemProps & {
+        __scopeMenu?: string;
+    } & DropdownMenuRadioItemProps & {
+        __scopeDropdownMenu?: string;
+    }, import("@tamagui/core").StackStyleBase, {
+        elevation?: number | import("tamagui").SizeTokens | undefined;
+        transparent?: boolean | undefined;
+        fullscreen?: boolean | undefined;
+        circular?: boolean | undefined;
+        inset?: number | import("tamagui").SizeTokens | {
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
+        } | undefined;
+        hoverTheme?: boolean | undefined;
+        pressTheme?: boolean | undefined;
+        focusTheme?: boolean | undefined;
+        elevate?: boolean | undefined;
+        bordered?: number | boolean | undefined;
+        backgrounded?: boolean | undefined;
+        radiused?: boolean | undefined;
+        padded?: boolean | undefined;
+        chromeless?: boolean | "all" | undefined;
+    }, import("@tamagui/core").StaticConfigPublic>;
+    ItemIndicator: import("tamagui").TamaguiComponent<Omit<Omit<any, "__scopeMenu" | keyof import("@tamagui/menu").MenuItemIndicatorProps> & import("@tamagui/menu").MenuItemIndicatorProps & {
+        __scopeMenu?: string;
+    }, keyof DropdownMenuItemIndicatorProps> & DropdownMenuItemIndicatorProps & {
+        __scopeDropdownMenu?: string;
+    }, any, import("@tamagui/menu").MenuItemIndicatorProps & {
+        __scopeMenu?: string;
+    } & DropdownMenuItemIndicatorProps & {
+        __scopeDropdownMenu?: string;
+    }, {}, {}, {}>;
+    Separator: import("tamagui").TamaguiComponent;
+    Arrow: React.ForwardRefExoticComponent<Omit<import("@tamagui/menu").MenuArrowProps & {
+        __scopeMenu?: string;
+    } & React.RefAttributes<TamaguiElement>, "ref"> & {
+        __scopeDropdownMenu?: string;
+    } & React.RefAttributes<TamaguiElement>>;
     Sub: {
         (props: ScopedProps<DropdownMenuSubProps>): import("react/jsx-runtime").JSX.Element;
         displayName: string;
     };
-    SubTrigger: any;
+    SubTrigger: import("tamagui").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+        elevation?: number | import("tamagui").SizeTokens | undefined;
+        fullscreen?: boolean | undefined;
+        inset?: number | import("tamagui").SizeTokens | {
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
+        } | undefined;
+    }>, "__scopeDropdownMenu" | keyof DropdownMenuSubTriggerProps> & DropdownMenuSubTriggerProps & {
+        __scopeDropdownMenu?: string;
+    }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & DropdownMenuSubTriggerProps & {
+        __scopeDropdownMenu?: string;
+    }, import("@tamagui/core").StackStyleBase, {
+        elevation?: number | import("tamagui").SizeTokens | undefined;
+        fullscreen?: boolean | undefined;
+        inset?: number | import("tamagui").SizeTokens | {
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
+        } | undefined;
+    }, import("@tamagui/core").StaticConfigPublic>;
     SubContent: React.ForwardRefExoticComponent<DropdownMenuSubContentProps & {
         __scopeDropdownMenu?: string;
-    } & React.RefAttributes<any>>;
-    ItemTitle: any;
-    ItemSubtitle: any;
-    ItemImage: any;
-    ItemIcon: any;
+    } & React.RefAttributes<HTMLElement | import("react-native").View>>;
+    ItemTitle: import("tamagui").TamaguiComponent<any, any, {} & void, {}, {}, {}>;
+    ItemSubtitle: import("tamagui").TamaguiComponent<any, any, {} & void, {}, {}, {}>;
+    ItemImage: React.ForwardRefExoticComponent<import("react-native").ImageProps & React.RefAttributes<import("react-native").Image>>;
+    ItemIcon: import("tamagui").TamaguiComponent<any, any, {} & void, {}, {}, {}>;
 };
 export type { DropdownMenuProps, DropdownMenuTriggerProps, DropdownMenuPortalProps, DropdownMenuContentProps, DropdownMenuGroupProps, DropdownMenuLabelProps, DropdownMenuItemProps, DropdownMenuCheckboxItemProps, DropdownMenuRadioGroupProps, DropdownMenuRadioItemProps, DropdownMenuItemIndicatorProps, DropdownMenuArrowProps, DropdownMenuSubProps, DropdownMenuSubTriggerProps, DropdownMenuSubContentProps, };
 //# sourceMappingURL=createNonNativeDropdownMenu.d.ts.map
