@@ -6,8 +6,6 @@ import { createDropdownMenu } from './DropdownMenu'
 
 export const DropdownMenu = createDropdownMenu({
   Icon: MenuPredefinied.MenuIcon,
-  // TODO: fix this type error
-  // @ts-ignore
   Image: MenuPredefinied.MenuImage,
   Indicator: MenuPredefinied.MenuIndicator,
   Item: MenuPredefinied.MenuItem,
@@ -16,7 +14,7 @@ export const DropdownMenu = createDropdownMenu({
   Separator: MenuPredefinied.MenuSeparator,
   SubTitle: MenuPredefinied.SubTitle,
   Title: MenuPredefinied.Title,
-})
+} as const)
 
 export * from './DropdownMenu'
 export type * from './createNonNativeDropdownMenu'

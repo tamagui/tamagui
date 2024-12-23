@@ -7,8 +7,6 @@ export * from './ContextMenu'
 
 export const ContextMenu = createContextMenu({
   Icon: MenuPredefinied.MenuIcon,
-  // TODO: fix type errors of this one
-  // @ts-ignore
   Image: MenuPredefinied.MenuImage,
   Indicator: MenuPredefinied.MenuIndicator,
   Item: MenuPredefinied.MenuItem,
@@ -17,4 +15,4 @@ export const ContextMenu = createContextMenu({
   Separator: MenuPredefinied.MenuSeparator,
   SubTitle: MenuPredefinied.SubTitle,
   Title: MenuPredefinied.Title,
-})
+} as const)

@@ -6777,7 +6777,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/context-menu@workspace:code/ui/context-menu":
+"@tamagui/context-menu@npm:1.120.2, @tamagui/context-menu@workspace:code/ui/context-menu":
   version: 0.0.0-use.local
   resolution: "@tamagui/context-menu@workspace:code/ui/context-menu"
   dependencies:
@@ -6867,6 +6867,7 @@ __metadata:
     "@tamagui/build": "npm:1.120.2"
     "@tamagui/button": "npm:1.120.2"
     "@tamagui/config": "npm:1.120.2"
+    "@tamagui/context-menu": "npm:1.120.2"
     "@tamagui/core": "npm:1.120.2"
     "@tamagui/list-item": "npm:1.120.2"
     "@tamagui/logo": "npm:1.120.2"

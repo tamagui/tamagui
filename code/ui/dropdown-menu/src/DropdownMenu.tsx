@@ -148,6 +148,6 @@ export function createDropdownMenu(params: Parameters<typeof createMenu>[0]) {
     ItemSubtitle,
     ItemIcon,
     ItemImage,
-  })
+  } as const)
   return DropdownMenu
 }
