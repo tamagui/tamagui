@@ -329,7 +329,7 @@ export declare function createMenu({ Item: _Item, Title: _Title, SubTitle: _SubT
             __scopeMenu?: string;
         }, {}, {}, {}>;
         Separator: TamaguiComponent;
-        Arrow: TamaguiComponent<ScopedProps<MenuArrowProps>, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & PopperPrimitive.PopperArrowExtraProps & TamaguiElement, import("@tamagui/core").StackStyleBase, {
+        Arrow: TamaguiComponent<ScopedProps<MenuArrowProps>, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & (PopperPrimitive.PopperArrowExtraProps & TamaguiElement), import("@tamagui/core").StackStyleBase, {
             elevation?: number | import("@tamagui/core").SizeTokens | undefined;
             fullscreen?: boolean | undefined;
             inset?: number | import("@tamagui/core").SizeTokens | {
