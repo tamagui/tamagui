@@ -16,7 +16,6 @@ export const Portal = React.memo((propsIn: PortalProps) => {
   }
 
   const { host = globalThis.document?.body, stackZIndex, ...props } = propsIn
-
   const zIndex = useStackedZIndex(propsIn)
 
   return createPortal(

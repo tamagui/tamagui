@@ -18,5 +18,5 @@ export function ToastPortal({
       </ReprogapateToastProvider>
     )
   }
-  return <Portal zIndex={zIndex || 1000000000}>{content}</Portal>
+  return <Portal zIndex={zIndex || Number.MAX_SAFE_INTEGER}>{content}</Portal>
 }

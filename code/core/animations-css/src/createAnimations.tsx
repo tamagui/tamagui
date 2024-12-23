@@ -1,8 +1,8 @@
-import React from 'react' // import { animate } from '@tamagui/cubic-bezier-animator'
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { ResetPresence, usePresence } from '@tamagui/use-presence'
 import type { AnimationDriver, UniversalAnimatedNumber } from '@tamagui/web'
 import { transformsToString } from '@tamagui/web'
-import { ResetPresence, usePresence } from '@tamagui/use-presence'
+import React, { useState } from 'react' // import { animate } from '@tamagui/cubic-bezier-animator'
 
 export function createAnimations<A extends Object>(animations: A): AnimationDriver<A> {
   const reactionListeners = new WeakMap<any, Set<Function>>()
@@ -15,6 +15,14 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
 
     useAnimatedNumber(initial): UniversalAnimatedNumber<Function> {
       const [val, setVal] = React.useState(initial)
+      const [onFinish, setOnFinish] = useState<Function | undefined>()
+
+      useIsomorphicLayoutEffect(() => {
+        if (onFinish) {
+          onFinish?.()
+          setOnFinish(undefined)
+        }
+      }, [onFinish])
 
       return {
         getInstance() {
@@ -25,12 +33,7 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
         },
         setValue(next, config, onFinish) {
           setVal(next)
-          const listeners = reactionListeners.get(setVal)
-          if (listeners) {
-            listeners.forEach((cb) => cb(next))
-          }
-          // TODO: this implementation of onFinish() is not correct
-          onFinish?.()
+          setOnFinish(onFinish)
         },
         stop() {},
       }

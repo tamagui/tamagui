@@ -287,6 +287,7 @@ export const stylePropsFont = {
   fontSize: true,
   fontStyle: true,
   fontWeight: true,
+  fontVariant: true,
   letterSpacing: true,
   lineHeight: true,
   textTransform: true,

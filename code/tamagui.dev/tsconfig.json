@@ -54,7 +54,7 @@
     "**/dist",
     "**/types",
     "**/__tests__",
-    "bento-output"
+    "**/bento-output"
   ],
   "typeAcquisition": {
     "enable": true

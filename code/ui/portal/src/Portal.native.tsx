@@ -8,9 +8,19 @@ import { GorhomPortalItem } from './GorhomPortalItem'
 
 const createPortal = (() => {
   if (IS_FABRIC) {
-    return require('react-native/Libraries/Renderer/shims/ReactFabric').createPortal
+    try {
+      return require('react-native/Libraries/Renderer/shims/ReactFabric').createPortal
+    } catch (err) {
+      console.info(`Note: error importing portal, defaulting to non-native portals`, err)
+      return null
+    }
   }
-  return require('react-native/Libraries/Renderer/shims/ReactNative').createPortal
+  try {
+    return require('react-native/Libraries/Renderer/shims/ReactNative').createPortal
+  } catch (err) {
+    console.info(`Note: error importing portal, defaulting to non-native portals`, err)
+    return null
+  }
 })()
 
 export const Portal = (propsIn: PortalProps) => {
@@ -30,7 +40,7 @@ export const Portal = (propsIn: PortalProps) => {
     />
   )
 
-  if (!USE_NATIVE_PORTAL || !rootTag) {
+  if (!createPortal || !USE_NATIVE_PORTAL || !rootTag) {
     return <GorhomPortalItem hostName="root">{contents}</GorhomPortalItem>
   }
 

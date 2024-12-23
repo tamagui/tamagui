@@ -15,7 +15,9 @@ import {
   nohemiFont,
   silkscreenFont,
 } from './fonts'
-import { media, mediaQueryDefaultActive } from './media'
+
+// testing tsconfig paths in compiler
+import { media, mediaQueryDefaultActive } from '~/config/media'
 import { themes } from './themes'
 
 setupDev({
