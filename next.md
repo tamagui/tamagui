@@ -1,4 +1,5 @@
 - popover trigger should send an event to close tooltips automatically on open
+  - closeTooltips() helper
 
 - we should add a docs page on testing tamagui:
 
