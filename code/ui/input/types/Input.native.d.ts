@@ -123,6 +123,7 @@ export declare const Input: import("@tamagui/core").TamaguiComponent<Omit<import
         fontSize: boolean;
         fontStyle: boolean;
         fontWeight: boolean;
+        fontVariant: boolean;
         letterSpacing: boolean;
         lineHeight: boolean;
         textTransform: boolean;

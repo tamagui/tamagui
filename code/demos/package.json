@@ -49,6 +49,7 @@
     "@tamagui/avatar": "1.120.2",
     "@tamagui/button": "1.120.2",
     "@tamagui/config": "1.120.2",
+    "@tamagui/context-menu": "1.120.2",
     "@tamagui/core": "1.120.2",
     "@tamagui/list-item": "1.120.2",
     "@tamagui/logo": "1.120.2",

@@ -302,6 +302,7 @@ export const PopperContent = React.forwardRef<
   const contents = React.useMemo(() => {
     return (
       <PopperContentFrame
+        ref={forwardedRef}
         key="popper-content-frame"
         data-placement={placement}
         data-strategy={strategy}
@@ -324,7 +325,7 @@ export const PopperContent = React.forwardRef<
   let show = true
 
   const frameProps = {
-    ref: contentRefs,
+    ref: refs.setFloating,
     x: x || 0,
     y: y || 0,
     top: 0,
