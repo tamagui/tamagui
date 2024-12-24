@@ -84,7 +84,7 @@ MenuSeparator.displayName = SEPARATOR_NAME
 const MenuIcon = ThemeableStack
 const MenuImage = Image
 const MenuIndicator = ThemeableStack
-const MenuItem = styled(ThemeableStack, { flexDirection: 'row' })
+const MenuItem = styled(ThemeableStack, { flexDirection: 'row', maxWidth: '100%' })
 const Title = Text
 const SubTitle = Text
 
