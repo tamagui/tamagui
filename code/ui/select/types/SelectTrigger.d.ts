@@ -3,8 +3,6 @@ import type { ListItemProps } from '@tamagui/list-item';
 import * as React from 'react';
 export type SelectTriggerProps = ListItemProps;
 export declare const SelectTrigger: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "disabled" | "size" | "elevation" | keyof import("@tamagui/core").StackStyleBase | "transparent" | "fullscreen" | "circular" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless" | "active" | "unstyled"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
-    unstyled?: boolean | undefined;
-    size?: import("@tamagui/core").SizeTokens | undefined;
     disabled?: boolean | undefined;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
@@ -25,10 +23,10 @@ export declare const SelectTrigger: React.ForwardRefExoticComponent<Omit<import(
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
+    size?: import("@tamagui/core").SizeTokens | undefined;
+    unstyled?: boolean | undefined;
     active?: boolean | undefined;
 } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
-    unstyled?: boolean | undefined;
-    size?: import("@tamagui/core").SizeTokens | undefined;
     disabled?: boolean | undefined;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
@@ -49,10 +47,10 @@ export declare const SelectTrigger: React.ForwardRefExoticComponent<Omit<import(
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
+    size?: import("@tamagui/core").SizeTokens | undefined;
+    unstyled?: boolean | undefined;
     active?: boolean | undefined;
 } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {
-    unstyled?: boolean | undefined;
-    size?: import("@tamagui/core").SizeTokens | undefined;
     disabled?: boolean | undefined;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
@@ -73,6 +71,8 @@ export declare const SelectTrigger: React.ForwardRefExoticComponent<Omit<import(
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
+    size?: import("@tamagui/core").SizeTokens | undefined;
+    unstyled?: boolean | undefined;
     active?: boolean | undefined;
 }>> & Omit<import("@tamagui/text").TextParentStyles, "TextComponent" | "noTextWrap"> & import("@tamagui/core").ThemeableProps & {
     icon?: JSX.Element | React.FunctionComponent<{

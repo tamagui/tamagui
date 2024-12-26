@@ -65,7 +65,6 @@
     "acorn-walk": "^8.3.1",
     "archiver": "^7.0.1",
     "esbuild-register": "^3.6.0",
-    "jsdom": "^25.0.1",
     "mdx-bundler": "^10.0.2",
     "vite-bundle-analyzer": "^0.9.4",
     "vitest": "^2.1.3"

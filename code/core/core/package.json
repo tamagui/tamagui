@@ -42,7 +42,7 @@
   },
   "devDependencies": {
     "@tamagui/build": "1.120.2",
-    "@testing-library/react": "^16.0.1",
+    "@testing-library/react": "^16.1.0",
     "csstype": "^3.0.10",
     "typescript": "^5.7.2",
     "vitest": "^2.1.3"

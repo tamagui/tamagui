@@ -1,6 +1,4 @@
 export declare const RadioGroupItemFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-    unstyled?: boolean | undefined;
-    size?: import("@tamagui/core").SizeTokens | undefined;
     disabled?: boolean | undefined;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
@@ -21,9 +19,10 @@ export declare const RadioGroupItemFrame: import("@tamagui/core").TamaguiCompone
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
+    size?: import("@tamagui/core").SizeTokens | undefined;
+    unstyled?: boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
 export declare const RadioGroupIndicatorFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-    unstyled?: boolean | undefined;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
         top?: number;
@@ -43,6 +42,7 @@ export declare const RadioGroupIndicatorFrame: import("@tamagui/core").TamaguiCo
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
+    unstyled?: boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
 export declare const RadioGroupFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;

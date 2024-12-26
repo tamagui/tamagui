@@ -54,14 +54,14 @@ export declare const InputContainerFrame: import("tamagui").TamaguiComponent<imp
     gapScale?: number | undefined;
 }, import("@tamagui/web").StaticConfigPublic>;
 export declare const InputLabel: import("tamagui").TamaguiComponent<import("@tamagui/web").TamaDefer, import("react-native").View | HTMLButtonElement, import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("tamagui").TextNonStyleProps, "size" | keyof import("@tamagui/web").TextStylePropsBase | "unstyled"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & {
-    unstyled?: boolean | undefined;
     size?: number | `$${string}` | `$${number}` | `$${string}.${string}` | `$${string}.${number}` | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | undefined;
+    unstyled?: boolean | undefined;
 } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & {
-    unstyled?: boolean | undefined;
     size?: number | `$${string}` | `$${number}` | `$${string}.${string}` | `$${string}.${number}` | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | undefined;
+    unstyled?: boolean | undefined;
 } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").TextStylePropsBase, {
-    unstyled?: boolean | undefined;
     size?: number | `$${string}` | `$${number}` | `$${string}.${string}` | `$${string}.${number}` | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | undefined;
+    unstyled?: boolean | undefined;
 }>> & {
     htmlFor?: string;
 } & import("react").RefAttributes<import("react-native").View | HTMLButtonElement>, import("@tamagui/web").StackStyleBase, {
@@ -111,10 +111,10 @@ export declare const Input: import("react").ForwardRefExoticComponent<Omit<impor
         fullscreen?: boolean | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
-        backgrounded?: boolean | undefined;
         focusTheme?: boolean | undefined;
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
+        backgrounded?: boolean | undefined;
         radiused?: boolean | undefined;
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
@@ -137,10 +137,10 @@ export declare const Input: import("react").ForwardRefExoticComponent<Omit<impor
         fullscreen?: boolean | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
-        backgrounded?: boolean | undefined;
         focusTheme?: boolean | undefined;
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
+        backgrounded?: boolean | undefined;
         radiused?: boolean | undefined;
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
@@ -210,10 +210,10 @@ export declare const Input: import("react").ForwardRefExoticComponent<Omit<impor
         variant?: "outlined" | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
-        backgrounded?: boolean | undefined;
         focusTheme?: boolean | undefined;
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
+        backgrounded?: boolean | undefined;
         radiused?: boolean | undefined;
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
@@ -234,14 +234,14 @@ export declare const Input: import("react").ForwardRefExoticComponent<Omit<impor
         unstyled?: boolean | undefined;
     }, import("@tamagui/web").StaticConfigPublic>;
     Label: import("tamagui").TamaguiComponent<import("@tamagui/web").TamaDefer, import("react-native").View | HTMLButtonElement, import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("tamagui").TextNonStyleProps, "size" | keyof import("@tamagui/web").TextStylePropsBase | "unstyled"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & {
-        unstyled?: boolean | undefined;
         size?: number | `$${string}` | `$${number}` | `$${string}.${string}` | `$${string}.${number}` | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | undefined;
+        unstyled?: boolean | undefined;
     } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & {
-        unstyled?: boolean | undefined;
         size?: number | `$${string}` | `$${number}` | `$${string}.${string}` | `$${string}.${number}` | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | undefined;
+        unstyled?: boolean | undefined;
     } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").TextStylePropsBase, {
-        unstyled?: boolean | undefined;
         size?: number | `$${string}` | `$${number}` | `$${string}.${string}` | `$${string}.${number}` | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | undefined;
+        unstyled?: boolean | undefined;
     }>> & {
         htmlFor?: string;
     } & import("react").RefAttributes<import("react-native").View | HTMLButtonElement>, import("@tamagui/web").StackStyleBase, {
@@ -249,7 +249,7 @@ export declare const Input: import("react").ForwardRefExoticComponent<Omit<impor
     }, import("@tamagui/web").StaticConfigPublic>;
     XGroup: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & import("tamagui").GroupExtraProps & {
         __scopeGroup?: import("tamagui").Scope;
-    }, "size" | "elevation" | "unstyled" | "transparent" | "circular" | keyof import("@tamagui/web").StackStyleBase | "fullscreen" | "hoverTheme" | "pressTheme" | "backgrounded" | "focusTheme" | "elevate" | "bordered" | "radiused" | "padded" | "chromeless"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+    }, "size" | "elevation" | "unstyled" | "transparent" | "circular" | keyof import("@tamagui/web").StackStyleBase | "fullscreen" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
         size?: any;
         elevation?: number | import("tamagui").SizeTokens | undefined;
         inset?: number | import("tamagui").SizeTokens | {
@@ -264,10 +264,10 @@ export declare const Input: import("react").ForwardRefExoticComponent<Omit<impor
         fullscreen?: boolean | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
-        backgrounded?: boolean | undefined;
         focusTheme?: boolean | undefined;
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
+        backgrounded?: boolean | undefined;
         radiused?: boolean | undefined;
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
@@ -286,10 +286,10 @@ export declare const Input: import("react").ForwardRefExoticComponent<Omit<impor
         fullscreen?: boolean | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
-        backgrounded?: boolean | undefined;
         focusTheme?: boolean | undefined;
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
+        backgrounded?: boolean | undefined;
         radiused?: boolean | undefined;
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
@@ -308,10 +308,10 @@ export declare const Input: import("react").ForwardRefExoticComponent<Omit<impor
         fullscreen?: boolean | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
-        backgrounded?: boolean | undefined;
         focusTheme?: boolean | undefined;
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
+        backgrounded?: boolean | undefined;
         radiused?: boolean | undefined;
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
@@ -332,10 +332,10 @@ export declare const Input: import("react").ForwardRefExoticComponent<Omit<impor
         fullscreen?: boolean | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
-        backgrounded?: boolean | undefined;
         focusTheme?: boolean | undefined;
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
+        backgrounded?: boolean | undefined;
         radiused?: boolean | undefined;
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
@@ -357,10 +357,10 @@ export declare const Input: import("react").ForwardRefExoticComponent<Omit<impor
             fullscreen?: boolean | undefined;
             hoverTheme?: boolean | undefined;
             pressTheme?: boolean | undefined;
-            backgrounded?: boolean | undefined;
             focusTheme?: boolean | undefined;
             elevate?: boolean | undefined;
             bordered?: number | boolean | undefined;
+            backgrounded?: boolean | undefined;
             radiused?: boolean | undefined;
             padded?: boolean | undefined;
             chromeless?: boolean | "all" | undefined;

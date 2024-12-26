@@ -25,7 +25,7 @@ export declare const Avatar: import("react").ForwardRefExoticComponent<Omit<impo
         size?: SizeTokens | undefined;
     }, import("@tamagui/web").StaticConfigPublic];
 } & {
-    Content: import("react").ForwardRefExoticComponent<Omit<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | "elevation" | "transparent" | "circular" | keyof import("@tamagui/web").StackStyleBase | "fullscreen" | "hoverTheme" | "pressTheme" | "backgrounded" | "focusTheme" | "elevate" | "bordered" | "radiused" | "padded" | "chromeless"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+    Content: import("react").ForwardRefExoticComponent<Omit<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | "elevation" | "transparent" | "circular" | keyof import("@tamagui/web").StackStyleBase | "fullscreen" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
         elevation?: number | import("@tamagui/web").SizeTokens | undefined;
         inset?: number | import("@tamagui/web").SizeTokens | {
             top?: number;

@@ -11,8 +11,8 @@
     "test": "yarn test:native"
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^6.5.0",
-    "@testing-library/react": "^16.0.1",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.1.0",
     "csstype": "^3.0.10",
     "jsdom": "^25.0.1",
     "react": "*",

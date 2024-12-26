@@ -94,9 +94,9 @@ export declare const PopperContentFrame: import("@tamagui/core").TamaguiComponen
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     unstyled?: boolean | undefined;
-    radiused?: boolean | undefined;
     transparent?: boolean | undefined;
     backgrounded?: boolean | undefined;
+    radiused?: boolean | undefined;
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;

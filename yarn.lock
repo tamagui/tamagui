@@ -6736,8 +6736,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/components-test@workspace:code/ui/components-test"
   dependencies:
-    "@testing-library/jest-dom": "npm:^6.5.0"
-    "@testing-library/react": "npm:^16.0.1"
+    "@testing-library/jest-dom": "npm:^6.6.3"
+    "@testing-library/react": "npm:^16.1.0"
     csstype: "npm:^3.0.10"
     jsdom: "npm:^25.0.1"
     react: "npm:*"
@@ -6813,8 +6813,8 @@ __metadata:
   resolution: "@tamagui/core-test@workspace:code/core/core-test"
   dependencies:
     "@tamagui/core": "npm:1.120.2"
-    "@testing-library/react": "npm:^16.0.1"
-    "@testing-library/react-native": "npm:^12.7.2"
+    "@testing-library/react": "npm:^16.1.0"
+    "@testing-library/react-native": "npm:^12.9.0"
     csstype: "npm:^3.0.10"
     react: "npm:*"
     typescript: "npm:^5.7.2"
@@ -6833,7 +6833,7 @@ __metadata:
     "@tamagui/react-native-use-responder-events": "npm:1.120.2"
     "@tamagui/use-event": "npm:1.120.2"
     "@tamagui/web": "npm:1.120.2"
-    "@testing-library/react": "npm:^16.0.1"
+    "@testing-library/react": "npm:^16.1.0"
     csstype: "npm:^3.0.10"
     typescript: "npm:^5.7.2"
     vitest: "npm:^2.1.3"
@@ -8095,7 +8095,7 @@ __metadata:
     "@babel/types": "npm:^7.25.4"
     "@tamagui/sandbox-ui": "npm:1.120.2"
     "@tamagui/test-design-system": "npm:1.120.2"
-    "@testing-library/react": "npm:^16.0.1"
+    "@testing-library/react": "npm:^16.1.0"
     "@types/babel__generator": "npm:^7.6.4"
     "@types/babel__traverse": "npm:^7.18.2"
     "@types/find-root": "npm:^1.1.2"
@@ -8573,7 +8573,7 @@ __metadata:
   dependencies:
     "@tamagui/build": "npm:1.120.2"
     "@tamagui/simple-hash": "npm:1.120.2"
-    "@testing-library/react": "npm:^16.0.1"
+    "@testing-library/react": "npm:^16.1.0"
     react: "npm:*"
     vitest: "npm:^2.1.3"
   peerDependencies:
@@ -8664,7 +8664,7 @@ __metadata:
     "@tamagui/use-did-finish-ssr": "npm:1.120.2"
     "@tamagui/use-event": "npm:1.120.2"
     "@tamagui/use-force-update": "npm:1.120.2"
-    "@testing-library/react": "npm:^16.0.1"
+    "@testing-library/react": "npm:^16.1.0"
     csstype: "npm:^3.0.10"
     react: "npm:*"
     react-dom: "npm:*"
@@ -8711,9 +8711,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@testing-library/jest-dom@npm:^6.5.0":
-  version: 6.5.0
-  resolution: "@testing-library/jest-dom@npm:6.5.0"
+"@testing-library/jest-dom@npm:^6.6.3":
+  version: 6.6.3
+  resolution: "@testing-library/jest-dom@npm:6.6.3"
   dependencies:
     "@adobe/css-tools": "npm:^4.4.0"
     aria-query: "npm:^5.0.0"
@@ -8722,7 +8722,7 @@ __metadata:
     dom-accessibility-api: "npm:^0.6.3"
     lodash: "npm:^4.17.21"
     redent: "npm:^3.0.0"
-  checksum: 10/3d2080888af5fd7306f57448beb5a23f55d965e265b5e53394fffc112dfb0678d616a5274ff0200c46c7618f293520f86fc8562eecd8bdbc0dbb3294d63ec431
+  checksum: 10/1f3427e45870eab9dcc59d6504b780d4a595062fe1687762ae6e67d06a70bf439b40ab64cf58cbace6293a99e3764d4647fdc8300a633b721764f5ce39dade18
   languageName: node
   linkType: hard
 
@@ -8748,9 +8748,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@testing-library/react-native@npm:^12.7.2":
-  version: 12.7.2
-  resolution: "@testing-library/react-native@npm:12.7.2"
+"@testing-library/react-native@npm:^12.9.0":
+  version: 12.9.0
+  resolution: "@testing-library/react-native@npm:12.9.0"
   dependencies:
     jest-matcher-utils: "npm:^29.7.0"
     pretty-format: "npm:^29.7.0"
@@ -8763,27 +8763,27 @@ __metadata:
   peerDependenciesMeta:
     jest:
       optional: true
-  checksum: 10/6e50342eb6d6424abf8fb89006b21a127988bdf3697dba69d63254da7ed8eadda7ab5fe02873c63a7dd3e12719e578aebf4a5f12049a6490cd50a07bc6e6df54
+  checksum: 10/dcee1d836e76198a2c397fbcb7db24a40e2c45b2dcbca266a4a5d8a802a859a1e8c50755336a2d70f9eec478de964951673b78acb2e03c007b2bee5b8d8766d1
   languageName: node
   linkType: hard
 
-"@testing-library/react@npm:^16.0.1":
-  version: 16.0.1
-  resolution: "@testing-library/react@npm:16.0.1"
+"@testing-library/react@npm:^16.1.0":
+  version: 16.1.0
+  resolution: "@testing-library/react@npm:16.1.0"
   dependencies:
     "@babel/runtime": "npm:^7.12.5"
   peerDependencies:
     "@testing-library/dom": ^10.0.0
-    "@types/react": ^18.0.0
-    "@types/react-dom": ^18.0.0
-    react: ^18.0.0
-    react-dom: ^18.0.0
+    "@types/react": ^18.0.0 || ^19.0.0
+    "@types/react-dom": ^18.0.0 || ^19.0.0
+    react: ^18.0.0 || ^19.0.0
+    react-dom: ^18.0.0 || ^19.0.0
   peerDependenciesMeta:
     "@types/react":
       optional: true
     "@types/react-dom":
       optional: true
-  checksum: 10/904b48881cf5bd208e25899e168f5c99c78ed6d77389544838d9d861a038d2c5c5385863ee9a367436770cbf7d21c5e05a991b9e24a33806e9ac985df2448185
+  checksum: 10/2a20e0dbfadbc93d45a84e82281ed47deed54a6a5fc1461a523172d7fbc0481e8502cf98a2080f38aba94290b3d745671a1c9e320e6f76ad6afcca67c580b963
   languageName: node
   linkType: hard
 

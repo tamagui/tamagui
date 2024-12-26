@@ -17,8 +17,8 @@
   },
   "devDependencies": {
     "@tamagui/core": "1.120.2",
-    "@testing-library/react": "^16.0.1",
-    "@testing-library/react-native": "^12.7.2",
+    "@testing-library/react": "^16.1.0",
+    "@testing-library/react-native": "^12.9.0",
     "csstype": "^3.0.10",
     "react": "*",
     "typescript": "^5.7.2",
