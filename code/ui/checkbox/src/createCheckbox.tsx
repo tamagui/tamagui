@@ -193,7 +193,7 @@ export function createCheckbox<
               disabled={checkboxProps.disabled}
               {...checkboxProps}
               // react 76 style prop mis-match, but should be fine
-              style={checkboxProps.style as any}
+              style={checkboxProps.style}
             >
               {propsActive.children}
             </Frame>

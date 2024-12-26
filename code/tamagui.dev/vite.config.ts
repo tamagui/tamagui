@@ -97,14 +97,6 @@ export default {
         'fetch-blob': true,
       },
 
-      server: {
-        async afterStart() {
-          if (process.env.NODE_ENV === 'production' && process.env.SHOULD_PURGE_CDN) {
-            await purgeCloudflareCDN()
-          }
-        },
-      },
-
       web: {
         redirects: [
           {
@@ -151,6 +143,8 @@ export default {
     // }),
   ],
 } satisfies UserConfig
+
+// TODO bring back
 
 const purgeCloudflareCDN = async () => {
   if (!process.env.CF_ZONE_ID) throw new Error(`Missing process.env.CF_ZONE_ID`)

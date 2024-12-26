@@ -3,7 +3,7 @@ import { isWeb } from '@tamagui/constants'
 import type { GestureReponderEvent } from '@tamagui/core'
 import { composeEventHandlers } from '@tamagui/helpers'
 import { useLabelContext } from '@tamagui/label'
-import React, { useCallback, useMemo } from 'react'
+import React, { useMemo } from 'react'
 import type { PressableProps, View, ViewProps } from 'react-native'
 
 import { BubbleInput } from './BubbleInput'

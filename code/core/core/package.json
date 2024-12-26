@@ -8,17 +8,15 @@
     "bundle.native": "./src/index.tsx",
     "bundle.native.test": "./src/index.tsx"
   },
-  "types": "./types/index.d.ts",
+  "types": "./src/index.ts",
   "license": "MIT",
   "author": {
     "name": "Nate Wienert"
   },
-  "sideEffects": [
-    "*.css"
-  ],
+  "sideEffects": ["*.css"],
   "scripts": {
-    "build": "tamagui-build",
-    "watch": "tamagui-build --watch",
+    "build": "tamagui-build --skip-types",
+    "watch": "tamagui-build --skip-types --watch",
     "lint": "biome check src",
     "lint:fix": "biome check --write src",
     "clean": "tamagui-build clean",
@@ -55,31 +53,31 @@
         "import": "./dist/esm/index.native.js",
         "require": "./dist/cjs/index.native.js"
       },
-      "types": "./types/index.d.ts",
+      "types": "./src/index.tsx",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/cjs/index.native.js"
     },
     "./native": {
-      "types": "./types/index.d.ts",
+      "types": "./src/index.tsx",
       "import": "./dist/native.mjs",
       "require": "./dist/native.js",
       "react-native": "./dist/native.js"
     },
     "./native-test": {
-      "types": "./types/index.d.ts",
+      "types": "./src/index.tsx",
       "import": "./dist/test.native.js",
       "require": "./dist/test.native.js",
       "react-native": "./dist/test.native.js"
     },
     "./inject-styles": {
-      "types": "./types/inject-styles.d.ts",
+      "types": "./src/inject-styles.ts",
       "import": "./dist/esm/inject-styles.mjs",
       "require": "./dist/cjs/inject-styles.cjs",
       "react-native": "./dist/cjs/inject-styles.native.js"
     },
     "./reactNativeTypes": {
-      "types": "./types/reactNativeTypes.d.ts",
+      "types": "./src/reactNativeTypes.ts",
       "import": "./dist/esm/reactNativeTypes.mjs",
       "require": "./dist/cjs/reactNativeTypes.cjs",
       "react-native": "./dist/cjs/reactNativeTypes.native.js"
