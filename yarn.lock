@@ -6977,7 +6977,19 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/core@npm:1.121.1, @tamagui/core@workspace:code/core/core":
+"@tamagui/core@npm:1.121.1":
+  version: 1.121.1
+  resolution: "@tamagui/core@npm:1.121.1"
+  dependencies:
+    "@tamagui/react-native-use-pressable": "npm:1.121.1"
+    "@tamagui/react-native-use-responder-events": "npm:1.121.1"
+    "@tamagui/use-event": "npm:1.121.1"
+    "@tamagui/web": "npm:1.121.1"
+  checksum: 10/4516d399f6cd6e84946ced13a705ad363c0920cc3b1082747c106a95498649676cf3e698cbd691497b76068cb1d82a0da9e4a91d16ac22d78953b5cdef90df1b
+  languageName: node
+  linkType: hard
+
+"@tamagui/core@workspace:code/core/core":
   version: 0.0.0-use.local
   resolution: "@tamagui/core@workspace:code/core/core"
   dependencies:
