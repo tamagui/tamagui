@@ -3,8 +3,12 @@
   "version": "1.120.2",
   "description": "Style and UI for React (web and native) meet an optimizing compiler",
   "removeSideEffects": true,
-  "alsoPublishAs_disabled": ["@tamagui/ui"],
-  "sideEffects": ["setup.js"],
+  "alsoPublishAs_disabled": [
+    "@tamagui/ui"
+  ],
+  "sideEffects": [
+    "setup.js"
+  ],
   "source": "src/index.ts",
   "types": "./src/index.ts",
   "main": "dist/cjs",
@@ -14,7 +18,14 @@
     "bundle.native": "./src/index.ts",
     "bundle.native.test": "./src/index.ts"
   },
-  "files": ["src", "types", "dist", "linear-gradient", "native.js", "native.d.ts"],
+  "files": [
+    "src",
+    "types",
+    "dist",
+    "linear-gradient",
+    "native.js",
+    "native.d.ts"
+  ],
   "scripts": {
     "build": "tamagui-build --skip-types",
     "watch": "tamagui-build --skip-types --watch",

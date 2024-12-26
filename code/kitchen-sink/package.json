@@ -3,9 +3,6 @@
   "version": "1.120.2",
   "private": true,
   "main": "index.js",
-  "installConfig": {
-    "hoistingLimits": "dependencies"
-  },
   "scripts": {
     "start:one": "one dev",
     "start:web": "DISABLE_EXTRACTION=true NODE_ENV=development webpack serve",
