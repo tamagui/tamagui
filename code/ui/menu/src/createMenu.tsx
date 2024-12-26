@@ -374,8 +374,6 @@ export function createMenu({
   Item: _Item = MenuPredefinied.MenuItem,
   Title: _Title = MenuPredefinied.Title,
   SubTitle: _SubTitle = MenuPredefinied.SubTitle,
-  // TODO: fix this type error with _Image
-  // @ts-ignore
   Image: _Image = MenuPredefinied.MenuImage,
   Icon: _Icon = MenuPredefinied.MenuIcon,
   Indicator: _Indicator = MenuPredefinied.MenuIndicator,
@@ -762,6 +760,7 @@ export function createMenu({
           elevation: 30,
           paddingVertical: '$2',
           backgroundColor: '$background',
+          borderColor: '$borderColor',
           outlineWidth: 0,
         })}
         aria-orientation="vertical"

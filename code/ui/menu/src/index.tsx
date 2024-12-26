@@ -10,8 +10,6 @@ export type { MenuItemImageProps } from './createNativeMenu/createNativeMenuType
 
 export const { Menu } = createMenu({
   Icon: MenuPredefinied.MenuIcon,
-  // TODO: fix this typescript error with Image
-  // @ts-ignore
   Image: MenuPredefinied.MenuImage,
   Indicator: MenuPredefinied.MenuIndicator,
   Item: MenuPredefinied.MenuItem,
