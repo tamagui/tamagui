@@ -24,10 +24,10 @@
     "@tamagui/lucide-icons": "1.120.2",
     "@tamagui/react-native-media-driver": "1.120.2",
     "@tamagui/toast": "1.120.2",
-    "@vxrn/color-scheme": "^1.1.335",
+    "@vxrn/color-scheme": "^1.1.371",
     "expo": "^52.0.23",
     "expo-modules-core": "^1.12.24",
-    "one": "1.1.335",
+    "one": "1.1.371",
     "react-native": "^0.76.5",
     "react-native-reanimated": "~3.16.1",
     "react-native-safe-area-context": "4.11.0",
@@ -41,7 +41,7 @@
     "@playwright/test": "^1.45.2",
     "@tamagui/vite-plugin": "1.120.2",
     "@types/react": "^18.3.11",
-    "vite": "6.0.0-beta.1",
+    "vite": "^6.0.6",
     "wait-port": "^0.3.0",
     "zx": "^7.2.3"
   }
