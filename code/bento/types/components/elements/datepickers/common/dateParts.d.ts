@@ -60,15 +60,15 @@ export declare const DatePickerInput: import("tamagui").TamaguiComponent<Omit<im
     readonly placeholderTextColor?: Omit<import("tamagui").ColorTokens | import("@tamagui/web").ThemeValueFallbackColor, "unset"> | undefined;
     readonly selectionColor?: Omit<import("tamagui").ColorTokens | import("@tamagui/web").ThemeValueFallbackColor, "unset"> | undefined;
 }, {
-    size?: import("tamagui").SizeTokens | undefined;
     disabled?: boolean | undefined;
+    size?: import("tamagui").SizeTokens | undefined;
     unstyled?: boolean | undefined;
 }>, keyof DatePickerInputProps> & DatePickerInputProps, import("react-native").TextInput, import("@tamagui/web").TamaguiComponentPropsBaseBase & import("react-native").TextInputProps & import("tamagui").InputExtraProps & void & DatePickerInputProps, import("@tamagui/web").TextStylePropsBase & {
     readonly placeholderTextColor?: Omit<import("tamagui").ColorTokens | import("@tamagui/web").ThemeValueFallbackColor, "unset"> | undefined;
     readonly selectionColor?: Omit<import("tamagui").ColorTokens | import("@tamagui/web").ThemeValueFallbackColor, "unset"> | undefined;
 }, {
-    size?: import("tamagui").SizeTokens | undefined;
     disabled?: boolean | undefined;
+    size?: import("tamagui").SizeTokens | undefined;
     unstyled?: boolean | undefined;
 }, {
     isInput: true;

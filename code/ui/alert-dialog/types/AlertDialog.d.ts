@@ -18,7 +18,7 @@ interface AlertDialogContentProps extends Omit<DialogContentProps, 'onPointerDow
 }
 declare const AlertDialogContent: React.ForwardRefExoticComponent<AlertDialogContentProps & React.RefAttributes<TamaguiElement>>;
 type AlertDialogTitleProps = DialogTitleProps;
-declare const AlertDialogTitle: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").TextNonStyleProps, "size" | "unstyled" | keyof import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & {
+declare const AlertDialogTitle: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").TextNonStyleProps, keyof import("@tamagui/core").TextStylePropsBase | "size" | "unstyled"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & {
     size?: import("@tamagui/core").FontSizeTokens | undefined;
     unstyled?: boolean | undefined;
 } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & {
@@ -29,7 +29,7 @@ declare const AlertDialogTitle: React.ForwardRefExoticComponent<Omit<import("@ta
     unstyled?: boolean | undefined;
 }>> & React.RefAttributes<TamaguiElement>>;
 type AlertDialogDescriptionProps = DialogDescriptionProps;
-declare const AlertDialogDescription: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").TextNonStyleProps, "size" | "unstyled" | keyof import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & {
+declare const AlertDialogDescription: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").TextNonStyleProps, keyof import("@tamagui/core").TextStylePropsBase | "size" | "unstyled"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & {
     size?: import("@tamagui/core").FontSizeTokens | undefined;
     unstyled?: boolean | undefined;
 } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & {
@@ -51,7 +51,7 @@ declare const AlertDialog: React.FC<AlertDialogProps> & {
     Content: React.ForwardRefExoticComponent<AlertDialogContentProps & React.RefAttributes<TamaguiElement>>;
     Action: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {}>> & import("@tamagui/dialog").DialogCloseExtraProps & React.RefAttributes<TamaguiElement>>;
     Cancel: React.ForwardRefExoticComponent<AlertDialogCancelProps & React.RefAttributes<TamaguiElement>>;
-    Title: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").TextNonStyleProps, "size" | "unstyled" | keyof import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & {
+    Title: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").TextNonStyleProps, keyof import("@tamagui/core").TextStylePropsBase | "size" | "unstyled"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & {
         size?: import("@tamagui/core").FontSizeTokens | undefined;
         unstyled?: boolean | undefined;
     } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & {
@@ -61,7 +61,7 @@ declare const AlertDialog: React.FC<AlertDialogProps> & {
         size?: import("@tamagui/core").FontSizeTokens | undefined;
         unstyled?: boolean | undefined;
     }>> & React.RefAttributes<TamaguiElement>>;
-    Description: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").TextNonStyleProps, "size" | "unstyled" | keyof import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & {
+    Description: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").TextNonStyleProps, keyof import("@tamagui/core").TextStylePropsBase | "size" | "unstyled"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & {
         size?: import("@tamagui/core").FontSizeTokens | undefined;
         unstyled?: boolean | undefined;
     } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & {

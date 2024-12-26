@@ -18,7 +18,6 @@ export declare const SliderTrackFrame: import("@tamagui/core").TamaguiComponent<
     orientation?: "horizontal" | "vertical" | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
 declare const SliderTrack: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "size" | "fullscreen" | "circular" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "unstyled"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
-    size?: import("@tamagui/core").SizeTokens | undefined;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
         top?: number;
@@ -26,6 +25,7 @@ declare const SliderTrack: React.ForwardRefExoticComponent<Omit<import("@tamagui
         left?: number;
         right?: number;
     } | null | undefined;
+    size?: import("@tamagui/core").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     hoverTheme?: boolean | undefined;
@@ -35,7 +35,6 @@ declare const SliderTrack: React.ForwardRefExoticComponent<Omit<import("@tamagui
     bordered?: number | boolean | undefined;
     unstyled?: boolean | undefined;
 } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
-    size?: import("@tamagui/core").SizeTokens | undefined;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
         top?: number;
@@ -43,6 +42,7 @@ declare const SliderTrack: React.ForwardRefExoticComponent<Omit<import("@tamagui
         left?: number;
         right?: number;
     } | null | undefined;
+    size?: import("@tamagui/core").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     hoverTheme?: boolean | undefined;
@@ -52,7 +52,6 @@ declare const SliderTrack: React.ForwardRefExoticComponent<Omit<import("@tamagui
     bordered?: number | boolean | undefined;
     unstyled?: boolean | undefined;
 } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {
-    size?: import("@tamagui/core").SizeTokens | undefined;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
         top?: number;
@@ -60,6 +59,7 @@ declare const SliderTrack: React.ForwardRefExoticComponent<Omit<import("@tamagui
         left?: number;
         right?: number;
     } | null | undefined;
+    size?: import("@tamagui/core").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     hoverTheme?: boolean | undefined;
@@ -193,7 +193,6 @@ declare const Slider: React.ForwardRefExoticComponent<SliderProps & {
     __scopeSlider?: import("@tamagui/create-context").Scope;
 } & React.RefAttributes<unknown>> & {
     Track: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "size" | "fullscreen" | "circular" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "unstyled"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
-        size?: import("@tamagui/core").SizeTokens | undefined;
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
             top?: number;
@@ -201,6 +200,7 @@ declare const Slider: React.ForwardRefExoticComponent<SliderProps & {
             left?: number;
             right?: number;
         } | null | undefined;
+        size?: import("@tamagui/core").SizeTokens | undefined;
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         hoverTheme?: boolean | undefined;
@@ -210,7 +210,6 @@ declare const Slider: React.ForwardRefExoticComponent<SliderProps & {
         bordered?: number | boolean | undefined;
         unstyled?: boolean | undefined;
     } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
-        size?: import("@tamagui/core").SizeTokens | undefined;
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
             top?: number;
@@ -218,6 +217,7 @@ declare const Slider: React.ForwardRefExoticComponent<SliderProps & {
             left?: number;
             right?: number;
         } | null | undefined;
+        size?: import("@tamagui/core").SizeTokens | undefined;
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         hoverTheme?: boolean | undefined;
@@ -227,7 +227,6 @@ declare const Slider: React.ForwardRefExoticComponent<SliderProps & {
         bordered?: number | boolean | undefined;
         unstyled?: boolean | undefined;
     } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {
-        size?: import("@tamagui/core").SizeTokens | undefined;
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
             top?: number;
@@ -235,6 +234,7 @@ declare const Slider: React.ForwardRefExoticComponent<SliderProps & {
             left?: number;
             right?: number;
         } | null | undefined;
+        size?: import("@tamagui/core").SizeTokens | undefined;
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         hoverTheme?: boolean | undefined;
@@ -325,7 +325,6 @@ declare const Slider: React.ForwardRefExoticComponent<SliderProps & {
     }, import("@tamagui/core").StaticConfigPublic>>;
 };
 declare const Track: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "size" | "fullscreen" | "circular" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "unstyled"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
-    size?: import("@tamagui/core").SizeTokens | undefined;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
         top?: number;
@@ -333,6 +332,7 @@ declare const Track: React.ForwardRefExoticComponent<Omit<import("@tamagui/core"
         left?: number;
         right?: number;
     } | null | undefined;
+    size?: import("@tamagui/core").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     hoverTheme?: boolean | undefined;
@@ -342,7 +342,6 @@ declare const Track: React.ForwardRefExoticComponent<Omit<import("@tamagui/core"
     bordered?: number | boolean | undefined;
     unstyled?: boolean | undefined;
 } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
-    size?: import("@tamagui/core").SizeTokens | undefined;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
         top?: number;
@@ -350,6 +349,7 @@ declare const Track: React.ForwardRefExoticComponent<Omit<import("@tamagui/core"
         left?: number;
         right?: number;
     } | null | undefined;
+    size?: import("@tamagui/core").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     hoverTheme?: boolean | undefined;
@@ -359,7 +359,6 @@ declare const Track: React.ForwardRefExoticComponent<Omit<import("@tamagui/core"
     bordered?: number | boolean | undefined;
     unstyled?: boolean | undefined;
 } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {
-    size?: import("@tamagui/core").SizeTokens | undefined;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
         top?: number;
@@ -367,6 +366,7 @@ declare const Track: React.ForwardRefExoticComponent<Omit<import("@tamagui/core"
         left?: number;
         right?: number;
     } | null | undefined;
+    size?: import("@tamagui/core").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     hoverTheme?: boolean | undefined;

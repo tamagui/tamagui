@@ -41,8 +41,6 @@ type ButtonExtraProps = TextParentStyles & ThemeableProps & {
 };
 type ButtonProps = ButtonExtraProps & GetProps<typeof ButtonFrame>;
 declare const ButtonFrame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
-    size?: number | SizeTokens | undefined;
-    variant?: "outlined" | undefined;
     disabled?: boolean | undefined;
     elevation?: number | SizeTokens | undefined;
     inset?: number | SizeTokens | {
@@ -51,6 +49,8 @@ declare const ButtonFrame: import("@tamagui/web").TamaguiComponent<import("@tama
         left?: number;
         right?: number;
     } | null | undefined;
+    size?: number | SizeTokens | undefined;
+    variant?: "outlined" | undefined;
     unstyled?: boolean | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
@@ -74,8 +74,6 @@ declare const ButtonIcon: (props: {
     scaleIcon?: number;
 }) => any;
 declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
-    size?: number | SizeTokens | undefined;
-    variant?: "outlined" | undefined;
     disabled?: boolean | undefined;
     elevation?: number | SizeTokens | undefined;
     inset?: number | SizeTokens | {
@@ -84,6 +82,8 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
         left?: number;
         right?: number;
     } | null | undefined;
+    size?: number | SizeTokens | undefined;
+    variant?: "outlined" | undefined;
     unstyled?: boolean | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
@@ -128,8 +128,6 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
      */
     unstyled?: boolean;
 } & import("react").RefAttributes<import("@tamagui/web").TamaguiElement>> & import("@tamagui/web").StaticComponentObject<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
-    size?: number | SizeTokens | undefined;
-    variant?: "outlined" | undefined;
     disabled?: boolean | undefined;
     elevation?: number | SizeTokens | undefined;
     inset?: number | SizeTokens | {
@@ -138,6 +136,8 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
         left?: number;
         right?: number;
     } | null | undefined;
+    size?: number | SizeTokens | undefined;
+    variant?: "outlined" | undefined;
     unstyled?: boolean | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
@@ -212,8 +212,6 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
      */
     unstyled?: boolean;
 }, import("@tamagui/web").StackStyleBase, {
-    size?: number | SizeTokens | undefined;
-    variant?: "outlined" | undefined;
     disabled?: boolean | undefined;
     elevation?: number | SizeTokens | undefined;
     inset?: number | SizeTokens | {
@@ -222,6 +220,8 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
         left?: number;
         right?: number;
     } | null | undefined;
+    size?: number | SizeTokens | undefined;
+    variant?: "outlined" | undefined;
     unstyled?: boolean | undefined;
     transparent?: boolean | undefined;
     fullscreen?: boolean | undefined;
@@ -237,8 +237,6 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
     chromeless?: boolean | "all" | undefined;
 }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig" | "extractable" | "styleable"> & {
     __tama: [Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
-        size?: number | SizeTokens | undefined;
-        variant?: "outlined" | undefined;
         disabled?: boolean | undefined;
         elevation?: number | SizeTokens | undefined;
         inset?: number | SizeTokens | {
@@ -247,6 +245,8 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
             left?: number;
             right?: number;
         } | null | undefined;
+        size?: number | SizeTokens | undefined;
+        variant?: "outlined" | undefined;
         unstyled?: boolean | undefined;
         transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;
@@ -321,8 +321,6 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
          */
         unstyled?: boolean;
     }, import("@tamagui/web").StackStyleBase, {
-        size?: number | SizeTokens | undefined;
-        variant?: "outlined" | undefined;
         disabled?: boolean | undefined;
         elevation?: number | SizeTokens | undefined;
         inset?: number | SizeTokens | {
@@ -331,6 +329,8 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
             left?: number;
             right?: number;
         } | null | undefined;
+        size?: number | SizeTokens | undefined;
+        variant?: "outlined" | undefined;
         unstyled?: boolean | undefined;
         transparent?: boolean | undefined;
         fullscreen?: boolean | undefined;

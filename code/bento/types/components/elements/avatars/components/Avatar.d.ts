@@ -25,7 +25,7 @@ export declare const Avatar: import("react").ForwardRefExoticComponent<Omit<impo
         size?: SizeTokens | undefined;
     }, import("@tamagui/web").StaticConfigPublic];
 } & {
-    Content: import("react").ForwardRefExoticComponent<Omit<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | "elevation" | "transparent" | "circular" | keyof import("@tamagui/web").StackStyleBase | "fullscreen" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+    Content: import("react").ForwardRefExoticComponent<Omit<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | "size" | "transparent" | "circular" | keyof import("@tamagui/web").StackStyleBase | "fullscreen" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
         elevation?: number | import("@tamagui/web").SizeTokens | undefined;
         inset?: number | import("@tamagui/web").SizeTokens | {
             top?: number;
@@ -90,7 +90,7 @@ export declare const Avatar: import("react").ForwardRefExoticComponent<Omit<impo
         chromeless?: boolean | "all" | undefined;
     }>> & import("react").RefAttributes<import("tamagui").TamaguiElement>, "ref"> & import("react").RefAttributes<any>>;
     Image: import("react").ForwardRefExoticComponent<Partial<import("tamagui").ImageProps> & {
-        onLoadingStatusChange?: (status: "loaded" | "error" | "loading" | "idle") => void;
+        onLoadingStatusChange?: (status: "error" | "loaded" | "loading" | "idle") => void;
     } & import("react").RefAttributes<import("tamagui").TamaguiElement>>;
     Fallback: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/web").StackStyleBase | "fullscreen"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
         elevation?: number | SizeTokens | undefined;

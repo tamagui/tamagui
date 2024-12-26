@@ -680,7 +680,7 @@ declare const appConfig: import("@tamagui/web").TamaguiInternalConfig<{
         $19: import("@tamagui/web").Variable<number>;
         $20: import("@tamagui/web").Variable<number>;
     };
-}, "color" | "size" | "space" | "radius" | "zIndex">, import("@tamagui/themes/v3-themes").ThemesOut, {
+}, "space" | "zIndex" | "color" | "size" | "radius">, import("@tamagui/themes/v3-themes").ThemesOut, {
     readonly ussel: "userSelect";
     readonly cur: "cursor";
     readonly pe: "pointerEvents";
@@ -843,8 +843,8 @@ declare const appConfig: import("@tamagui/web").TamaguiInternalConfig<{
                 normal: string;
             };
         };
-    }, 2 | 9 | 15 | 1 | 10 | 5 | 14 | 11 | 12 | 16 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
-    body: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 2 | 9 | 15 | 1 | 10 | 5 | 14 | 11 | 12 | 16 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
+    }, 2 | 9 | 15 | 1 | 10 | 5 | 14 | 4 | 3 | 6 | 7 | 8 | 11 | 12 | 16 | 13 | "true">;
+    body: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 2 | 9 | 15 | 1 | 10 | 5 | 14 | 4 | 3 | 6 | 7 | 8 | 11 | 12 | 16 | 13 | "true">;
     mono: {
         weight: {
             1: string;
@@ -868,7 +868,7 @@ declare const appConfig: import("@tamagui/web").TamaguiInternalConfig<{
             16: number;
         };
     };
-    silkscreen: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 2 | 9 | 15 | 1 | 10 | 5 | 14 | 11 | 12 | 16 | 3 | 4 | 6 | 7 | 8 | 13>;
+    silkscreen: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 2 | 9 | 15 | 1 | 10 | 5 | 14 | 4 | 3 | 6 | 7 | 8 | 11 | 12 | 16 | 13>;
 }, boolean | undefined, {
     mediaQueryDefaultActive: {
         xl: boolean;
