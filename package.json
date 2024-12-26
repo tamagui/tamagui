@@ -107,7 +107,7 @@
     "reset-package-json": "RESET_PACKAGE_JSON=true node -e \"require('./scripts/multi-react-version-tests.js').resetPackageJson()\""
   },
   "resolutions": {
-    "vite": "6.0.0-beta.5"
+    "@expo/config-plugins": "9.0.12"
   },
   "profile": {
     "//": "run 'yarn profile x' to toggle it on/off",
@@ -160,7 +160,7 @@
     "npm-run-all": "^4.1.5",
     "p-map": "^5.5.0",
     "prompts": "2.1.0",
-    "react-native-screens": "3.31.1",
+    "react-native-screens": "~4.4.0",
     "turbo": "^2.1.3",
     "typescript": "^5.6.3",
     "ultra-runner": "^3.10.5",

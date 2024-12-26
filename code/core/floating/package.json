@@ -46,6 +46,6 @@
   "devDependencies": {
     "@tamagui/build": "1.120.2",
     "react": "*",
-    "react-native": "0.74.1"
+    "react-native": "^0.76.5"
   }
 }
