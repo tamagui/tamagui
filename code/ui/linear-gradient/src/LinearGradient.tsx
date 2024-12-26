@@ -53,8 +53,10 @@ export const LinearGradient = LinearGradientFrame.styleable<LinearGradientExtraP
         <ExpoLinearGradient
           start={start}
           end={end}
-          colors={colors}
-          locations={locations}
+          // these should work with 52
+          colors={colors as any}
+          // these should work with 52
+          locations={locations as any}
           style={gradientStyle}
         />
         {children}

@@ -3,20 +3,20 @@ type AlignCells = {
     y: 'center' | 'start' | 'end';
     x: 'center' | 'start' | 'end';
 };
-export declare const Table: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/web").StackStyleBase | "inset" | "fullscreen" | "transparent" | "hoverTheme" | "pressTheme" | "backgrounded" | "circular" | "focusTheme" | "elevate" | "bordered" | "radiused" | "padded" | "chromeless" | "cellWidth" | "cellHeight" | "alignHeaderCells" | "alignCells"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+export declare const Table: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | "transparent" | "circular" | keyof import("@tamagui/web").StackStyleBase | "fullscreen" | "hoverTheme" | "pressTheme" | "backgrounded" | "focusTheme" | "elevate" | "bordered" | "radiused" | "padded" | "chromeless" | "cellWidth" | "cellHeight" | "alignHeaderCells" | "alignCells"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
     elevation?: number | SizeTokens | undefined;
     inset?: number | SizeTokens | {
         top?: number;
         bottom?: number;
         left?: number;
         right?: number;
-    } | undefined;
-    fullscreen?: boolean | undefined;
+    } | null | undefined;
     transparent?: boolean | undefined;
+    circular?: boolean | undefined;
+    fullscreen?: boolean | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
     backgrounded?: boolean | undefined;
-    circular?: boolean | undefined;
     focusTheme?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
@@ -34,13 +34,13 @@ export declare const Table: import("react").ForwardRefExoticComponent<Omit<impor
         bottom?: number;
         left?: number;
         right?: number;
-    } | undefined;
-    fullscreen?: boolean | undefined;
+    } | null | undefined;
     transparent?: boolean | undefined;
+    circular?: boolean | undefined;
+    fullscreen?: boolean | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
     backgrounded?: boolean | undefined;
-    circular?: boolean | undefined;
     focusTheme?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
@@ -58,13 +58,13 @@ export declare const Table: import("react").ForwardRefExoticComponent<Omit<impor
         bottom?: number;
         left?: number;
         right?: number;
-    } | undefined;
-    fullscreen?: boolean | undefined;
+    } | null | undefined;
     transparent?: boolean | undefined;
+    circular?: boolean | undefined;
+    fullscreen?: boolean | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
     backgrounded?: boolean | undefined;
-    circular?: boolean | undefined;
     focusTheme?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
@@ -82,13 +82,13 @@ export declare const Table: import("react").ForwardRefExoticComponent<Omit<impor
         bottom?: number;
         left?: number;
         right?: number;
-    } | undefined;
-    fullscreen?: boolean | undefined;
+    } | null | undefined;
     transparent?: boolean | undefined;
+    circular?: boolean | undefined;
+    fullscreen?: boolean | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
     backgrounded?: boolean | undefined;
-    circular?: boolean | undefined;
     focusTheme?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
@@ -107,13 +107,13 @@ export declare const Table: import("react").ForwardRefExoticComponent<Omit<impor
             bottom?: number;
             left?: number;
             right?: number;
-        } | undefined;
-        fullscreen?: boolean | undefined;
+        } | null | undefined;
         transparent?: boolean | undefined;
+        circular?: boolean | undefined;
+        fullscreen?: boolean | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
         backgrounded?: boolean | undefined;
-        circular?: boolean | undefined;
         focusTheme?: boolean | undefined;
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
@@ -128,15 +128,15 @@ export declare const Table: import("react").ForwardRefExoticComponent<Omit<impor
 } & {
     Head: import("tamagui").TamaguiComponent<import("@tamagui/web").TamaDefer, import("tamagui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-        transparent?: boolean | undefined;
-        fullscreen?: boolean | undefined;
-        circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
             top?: number;
             bottom?: number;
             left?: number;
             right?: number;
-        } | undefined;
+        } | null | undefined;
+        transparent?: boolean | undefined;
+        fullscreen?: boolean | undefined;
+        circular?: boolean | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
         focusTheme?: boolean | undefined;
@@ -149,15 +149,15 @@ export declare const Table: import("react").ForwardRefExoticComponent<Omit<impor
     }, import("@tamagui/web").StaticConfigPublic>;
     Body: import("tamagui").TamaguiComponent<import("@tamagui/web").TamaDefer, import("tamagui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-        transparent?: boolean | undefined;
-        fullscreen?: boolean | undefined;
-        circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
             top?: number;
             bottom?: number;
             left?: number;
             right?: number;
-        } | undefined;
+        } | null | undefined;
+        transparent?: boolean | undefined;
+        fullscreen?: boolean | undefined;
+        circular?: boolean | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
         focusTheme?: boolean | undefined;
@@ -175,13 +175,13 @@ export declare const Table: import("react").ForwardRefExoticComponent<Omit<impor
             bottom?: number;
             left?: number;
             right?: number;
-        } | undefined;
-        fullscreen?: boolean | undefined;
+        } | null | undefined;
         transparent?: boolean | undefined;
+        circular?: boolean | undefined;
+        fullscreen?: boolean | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
         backgrounded?: boolean | undefined;
-        circular?: boolean | undefined;
         focusTheme?: boolean | undefined;
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
@@ -197,13 +197,13 @@ export declare const Table: import("react").ForwardRefExoticComponent<Omit<impor
             bottom?: number;
             left?: number;
             right?: number;
-        } | undefined;
-        fullscreen?: boolean | undefined;
+        } | null | undefined;
         transparent?: boolean | undefined;
+        circular?: boolean | undefined;
+        fullscreen?: boolean | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
         backgrounded?: boolean | undefined;
-        circular?: boolean | undefined;
         focusTheme?: boolean | undefined;
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
@@ -222,13 +222,13 @@ export declare const Table: import("react").ForwardRefExoticComponent<Omit<impor
             bottom?: number;
             left?: number;
             right?: number;
-        } | undefined;
-        fullscreen?: boolean | undefined;
+        } | null | undefined;
         transparent?: boolean | undefined;
+        circular?: boolean | undefined;
+        fullscreen?: boolean | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
         backgrounded?: boolean | undefined;
-        circular?: boolean | undefined;
         focusTheme?: boolean | undefined;
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
@@ -241,15 +241,15 @@ export declare const Table: import("react").ForwardRefExoticComponent<Omit<impor
     }, import("@tamagui/web").StaticConfigPublic>;
     Foot: import("tamagui").TamaguiComponent<import("@tamagui/web").TamaDefer, import("tamagui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-        transparent?: boolean | undefined;
-        fullscreen?: boolean | undefined;
-        circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
             top?: number;
             bottom?: number;
             left?: number;
             right?: number;
-        } | undefined;
+        } | null | undefined;
+        transparent?: boolean | undefined;
+        fullscreen?: boolean | undefined;
+        circular?: boolean | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
         focusTheme?: boolean | undefined;

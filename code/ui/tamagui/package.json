@@ -3,14 +3,10 @@
   "version": "1.120.2",
   "description": "Style and UI for React (web and native) meet an optimizing compiler",
   "removeSideEffects": true,
-  "alsoPublishAs_disabled": [
-    "@tamagui/ui"
-  ],
-  "sideEffects": [
-    "setup.js"
-  ],
+  "alsoPublishAs_disabled": ["@tamagui/ui"],
+  "sideEffects": ["setup.js"],
   "source": "src/index.ts",
-  "types": "./types/index.d.ts",
+  "types": "./src/index.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
   "module:jsx": "dist/jsx",
@@ -18,17 +14,10 @@
     "bundle.native": "./src/index.ts",
     "bundle.native.test": "./src/index.ts"
   },
-  "files": [
-    "src",
-    "types",
-    "dist",
-    "linear-gradient",
-    "native.js",
-    "native.d.ts"
-  ],
+  "files": ["src", "types", "dist", "linear-gradient", "native.js", "native.d.ts"],
   "scripts": {
-    "build": "tamagui-build",
-    "watch": "tamagui-build --watch",
+    "build": "tamagui-build --skip-types",
+    "watch": "tamagui-build --skip-types --watch",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build",
     "lint": "biome check src",
@@ -43,14 +32,14 @@
         "import": "./dist/esm/index.native.js",
         "require": "./dist/cjs/index.native.js"
       },
-      "types": "./types/index.d.ts",
+      "types": "./src/index.ts",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/cjs/index.native.js"
     },
     "./react-native-web": {
       "react-native": "./dist/cjs/react-native-web.native.js",
-      "types": "./types/index.d.ts",
+      "types": "./src/react-native-web.ts",
       "import": "./dist/esm/react-native-web.mjs",
       "require": "./dist/cjs/react-native-web.cjs"
     },
@@ -59,17 +48,17 @@
         "import": "./dist/esm/index.native.js",
         "require": "./dist/cjs/index.native.js"
       },
-      "types": "./types/index.d.ts",
+      "types": "./src/index.ts",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs"
     },
     "./native": {
-      "types": "./types/index.d.ts",
+      "types": "./src/index.ts",
       "require": "./dist/native.js",
       "react-native": "./dist/native.native.js"
     },
     "./native-test": {
-      "types": "./types/index.d.ts",
+      "types": "./src/index.ts",
       "require": "./dist/test.cjs",
       "react-native": "./dist/test.native.js"
     },
@@ -78,7 +67,7 @@
         "import": "./dist/esm/linear-gradient.native.js",
         "require": "./dist/cjs/linear-gradient.native.js"
       },
-      "types": "./types/linear-gradient.d.ts",
+      "types": "./src/linear-gradient.ts",
       "import": "./dist/esm/linear-gradient.mjs",
       "require": "./dist/cjs/linear-gradient.cjs"
     }

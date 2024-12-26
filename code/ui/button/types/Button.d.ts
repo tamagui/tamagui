@@ -45,6 +45,12 @@ declare const ButtonFrame: import("@tamagui/web").TamaguiComponent<import("@tama
     variant?: "outlined" | undefined;
     disabled?: boolean | undefined;
     elevation?: number | SizeTokens | undefined;
+    inset?: number | SizeTokens | {
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
+    } | null | undefined;
     unstyled?: boolean | undefined;
     transparent?: boolean | undefined;
     hoverTheme?: boolean | undefined;
@@ -52,12 +58,6 @@ declare const ButtonFrame: import("@tamagui/web").TamaguiComponent<import("@tama
     backgrounded?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
-    inset?: number | SizeTokens | {
-        top?: number;
-        bottom?: number;
-        left?: number;
-        right?: number;
-    } | undefined;
     focusTheme?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
@@ -78,6 +78,12 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
     variant?: "outlined" | undefined;
     disabled?: boolean | undefined;
     elevation?: number | SizeTokens | undefined;
+    inset?: number | SizeTokens | {
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
+    } | null | undefined;
     unstyled?: boolean | undefined;
     transparent?: boolean | undefined;
     hoverTheme?: boolean | undefined;
@@ -85,12 +91,6 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
     backgrounded?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
-    inset?: number | SizeTokens | {
-        top?: number;
-        bottom?: number;
-        left?: number;
-        right?: number;
-    } | undefined;
     focusTheme?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
@@ -132,6 +132,12 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
     variant?: "outlined" | undefined;
     disabled?: boolean | undefined;
     elevation?: number | SizeTokens | undefined;
+    inset?: number | SizeTokens | {
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
+    } | null | undefined;
     unstyled?: boolean | undefined;
     transparent?: boolean | undefined;
     hoverTheme?: boolean | undefined;
@@ -139,12 +145,6 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
     backgrounded?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
-    inset?: number | SizeTokens | {
-        top?: number;
-        bottom?: number;
-        left?: number;
-        right?: number;
-    } | undefined;
     focusTheme?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
@@ -216,6 +216,12 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
     variant?: "outlined" | undefined;
     disabled?: boolean | undefined;
     elevation?: number | SizeTokens | undefined;
+    inset?: number | SizeTokens | {
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
+    } | null | undefined;
     unstyled?: boolean | undefined;
     transparent?: boolean | undefined;
     hoverTheme?: boolean | undefined;
@@ -223,12 +229,6 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
     backgrounded?: boolean | undefined;
     fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
-    inset?: number | SizeTokens | {
-        top?: number;
-        bottom?: number;
-        left?: number;
-        right?: number;
-    } | undefined;
     focusTheme?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
@@ -241,6 +241,12 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
         variant?: "outlined" | undefined;
         disabled?: boolean | undefined;
         elevation?: number | SizeTokens | undefined;
+        inset?: number | SizeTokens | {
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
+        } | null | undefined;
         unstyled?: boolean | undefined;
         transparent?: boolean | undefined;
         hoverTheme?: boolean | undefined;
@@ -248,12 +254,6 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
         backgrounded?: boolean | undefined;
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
-        inset?: number | SizeTokens | {
-            top?: number;
-            bottom?: number;
-            left?: number;
-            right?: number;
-        } | undefined;
         focusTheme?: boolean | undefined;
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
@@ -325,6 +325,12 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
         variant?: "outlined" | undefined;
         disabled?: boolean | undefined;
         elevation?: number | SizeTokens | undefined;
+        inset?: number | SizeTokens | {
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
+        } | null | undefined;
         unstyled?: boolean | undefined;
         transparent?: boolean | undefined;
         hoverTheme?: boolean | undefined;
@@ -332,12 +338,6 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
         backgrounded?: boolean | undefined;
         fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
-        inset?: number | SizeTokens | {
-            top?: number;
-            bottom?: number;
-            left?: number;
-            right?: number;
-        } | undefined;
         focusTheme?: boolean | undefined;
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;

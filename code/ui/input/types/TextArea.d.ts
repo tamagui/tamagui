@@ -105,6 +105,7 @@ export declare const TextArea: import("@tamagui/web").TamaguiComponent<import("@
         fontSize: boolean;
         fontStyle: boolean;
         fontWeight: boolean;
+        fontVariant: boolean;
         letterSpacing: boolean;
         lineHeight: boolean;
         textTransform: boolean;
