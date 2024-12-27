@@ -82,7 +82,7 @@ function calculatePseudoAngle(
   startPoint?: LinearGradientPoint | null,
   endPoint?: LinearGradientPoint | null
 ) {
-  const getControlPoints = (): LinearGradientPoint[] => {
+  const getControlPoints = () => {
     let correctedStartPoint: LinearGradientPoint = [0, 0]
     if (Array.isArray(startPoint)) {
       correctedStartPoint = [
@@ -97,7 +97,7 @@ function calculatePseudoAngle(
         endPoint[1] != null ? endPoint[1] : 1.0,
       ]
     }
-    return [correctedStartPoint, correctedEndPoint]
+    return [correctedStartPoint, correctedEndPoint] as const
   }
 
   const [start, end] = getControlPoints()
