@@ -28,9 +28,6 @@
     "prod:web": "NODE_ENV=production webpack --json=dist/compilation-stats.json",
     "test": "yarn test:web"
   },
-  "installConfig": {
-    "hoistingLimits": "dependencies"
-  },
   "dependencies": {
     "@dominicstop/ts-event-emitter": "^1.1.0",
     "@react-native-async-storage/async-storage": "1.23.1",
