@@ -73,7 +73,7 @@
   "packageManager": "yarn@4.5.0",
   "devDependencies": {
     "@babel/core": "^7.25.2",
-    "@playwright/test": "^1.45.2",
+    "@playwright/test": "^1.49.1",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.10",
     "@tamagui/babel-plugin": "1.121.2",
     "@welldone-software/why-did-you-render": "^7.0.1",

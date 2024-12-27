@@ -2,8 +2,8 @@ import type { GetProps, SizeTokens } from '@tamagui/web';
 type ButtonVariant = 'outlined';
 export type ButtonProps = GetProps<typeof Frame>;
 declare const Frame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
-    disabled?: boolean | undefined;
     size?: number | SizeTokens | undefined;
+    disabled?: boolean | undefined;
     unstyled?: boolean | undefined;
     variant?: "outlined" | undefined;
 }, import("@tamagui/web").StaticConfigPublic>;

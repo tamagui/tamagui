@@ -36,7 +36,7 @@
   "devDependencies": {
     "@babel/preset-react": "^7.24.7",
     "@babel/preset-typescript": "^7.24.7",
-    "@playwright/test": "^1.45.2",
+    "@playwright/test": "^1.49.1",
     "@tamagui/build": "1.121.2",
     "tamagui-loader": "1.121.2"
   }

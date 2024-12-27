@@ -38,7 +38,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.2",
-    "@playwright/test": "^1.45.2",
+    "@playwright/test": "^1.49.1",
     "@tamagui/vite-plugin": "1.121.2",
     "@types/react": "^18.3.11",
     "vite": "^6.0.6",

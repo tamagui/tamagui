@@ -148,7 +148,7 @@
   "dependencies": {
     "@biomejs/biome": "^1.9.2",
     "@manypkg/cli": "^0.19.1",
-    "@playwright/test": "^1.45.2",
+    "@playwright/test": "^1.49.1",
     "@testing-library/dom": "^10.4.0",
     "dotenv-cli": "^7.4.2",
     "esbuild": "^0.24.0",

@@ -771,7 +771,7 @@ export declare const config: {
             $19: import("@tamagui/web").Variable<number>;
             $20: import("@tamagui/web").Variable<number>;
         };
-    }, "space" | "zIndex" | "color" | "size" | "radius">;
+    }, "size" | "color" | "space" | "radius" | "zIndex">;
     fonts: {
         heading: import("@tamagui/web").FillInFont<{
             size: {
@@ -814,8 +814,8 @@ export declare const config: {
                     normal: string;
                 };
             };
-        }, 2 | 9 | 15 | 1 | 10 | 5 | 14 | 4 | 3 | 6 | 7 | 8 | 11 | 12 | 16 | 13 | "true">;
-        body: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 2 | 9 | 15 | 1 | 10 | 5 | 14 | 4 | 3 | 6 | 7 | 8 | 11 | 12 | 16 | 13 | "true">;
+        }, 2 | 9 | 15 | 1 | 10 | 5 | 14 | 11 | 12 | 16 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
+        body: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 2 | 9 | 15 | 1 | 10 | 5 | 14 | 11 | 12 | 16 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
         mono: {
             weight: {
                 1: string;
@@ -839,7 +839,7 @@ export declare const config: {
                 16: number;
             };
         };
-        silkscreen: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 2 | 9 | 15 | 1 | 10 | 5 | 14 | 4 | 3 | 6 | 7 | 8 | 11 | 12 | 16 | 13>;
+        silkscreen: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 2 | 9 | 15 | 1 | 10 | 5 | 14 | 11 | 12 | 16 | 3 | 4 | 6 | 7 | 8 | 13>;
     };
     selectionStyles: (theme: Record<string, string>) => {
         backgroundColor: string;

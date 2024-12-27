@@ -5186,14 +5186,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@playwright/test@npm:^1.45.2":
-  version: 1.48.0
-  resolution: "@playwright/test@npm:1.48.0"
+"@playwright/test@npm:^1.49.1":
+  version: 1.49.1
+  resolution: "@playwright/test@npm:1.49.1"
   dependencies:
-    playwright: "npm:1.48.0"
+    playwright: "npm:1.49.1"
   bin:
     playwright: cli.js
-  checksum: 10/8845ed0f0b303e10ee0a0f04562ef83be3f9123fac91d722f697ad964a119af74cd5fb08e1139f1b20b27396479456c984bfdc699fadedd92af9c0490fb4c7c0
+  checksum: 10/bb0d5eda58ee0b5bbca732d2aa57782fadf420d101e08e16d5760179459c667907bd8d224ee3d6f43f3088378e377ef63d32ed605fec37605debf217c3efe8da
   languageName: node
   linkType: hard
 
@@ -6665,7 +6665,7 @@ __metadata:
     "@babel/core": "npm:^7.25.2"
     "@hookform/resolvers": "npm:^3.3.4"
     "@ngneat/falso": "npm:^7.2.0"
-    "@playwright/test": "npm:^1.45.2"
+    "@playwright/test": "npm:^1.49.1"
     "@pmmmwh/react-refresh-webpack-plugin": "npm:^0.5.10"
     "@rehookify/datepicker": "npm:^6.5.0"
     "@tamagui/animations-reanimated": "npm:1.121.2"
@@ -7582,7 +7582,7 @@ __metadata:
   dependencies:
     "@babel/core": "npm:^7.25.2"
     "@dominicstop/ts-event-emitter": "npm:^1.1.0"
-    "@playwright/test": "npm:^1.45.2"
+    "@playwright/test": "npm:^1.49.1"
     "@pmmmwh/react-refresh-webpack-plugin": "npm:^0.5.10"
     "@react-native-async-storage/async-storage": "npm:1.23.1"
     "@react-navigation/native": "npm:^7.0.14"
@@ -7811,7 +7811,7 @@ __metadata:
   dependencies:
     "@babel/preset-react": "npm:^7.24.7"
     "@babel/preset-typescript": "npm:^7.24.7"
-    "@playwright/test": "npm:^1.45.2"
+    "@playwright/test": "npm:^1.49.1"
     "@tamagui/build": "npm:1.121.2"
     "@types/d3-scale": "npm:^4.0.2"
     "@types/lodash-es": "npm:^4.17.6"
@@ -13055,7 +13055,7 @@ __metadata:
   resolution: "create-tamagui@workspace:code/core/create-tamagui"
   dependencies:
     "@expo/package-manager": "npm:^1.1.2"
-    "@playwright/test": "npm:^1.45.2"
+    "@playwright/test": "npm:^1.49.1"
     "@tamagui/build": "npm:1.121.2"
     "@types/async-retry": "npm:1.4.2"
     "@types/cross-spawn": "npm:^6.0.2"
@@ -18040,7 +18040,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "integration@workspace:code/integration"
   dependencies:
-    "@playwright/test": "npm:^1.45.2"
+    "@playwright/test": "npm:^1.49.1"
     "@tamagui/animations-css": "npm:1.121.2"
     "@tamagui/core": "npm:1.121.2"
     "@tamagui/create-theme": "npm:1.121.2"
@@ -22813,15 +22813,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"playwright-core@npm:1.48.0":
-  version: 1.48.0
-  resolution: "playwright-core@npm:1.48.0"
-  bin:
-    playwright-core: cli.js
-  checksum: 10/644489b4de9cc181e83eb639a283d3c4f8e4c3b1b1759d7c93b72fd0373b5a66ba376ee6a5ee3eca67f1b773bf15c5e01b6aeedd43c94c355bf4fc0d110713bc
-  languageName: node
-  linkType: hard
-
 "playwright-core@npm:1.49.1":
   version: 1.49.1
   resolution: "playwright-core@npm:1.49.1"
@@ -22831,22 +22822,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"playwright@npm:1.48.0":
-  version: 1.48.0
-  resolution: "playwright@npm:1.48.0"
-  dependencies:
-    fsevents: "npm:2.3.2"
-    playwright-core: "npm:1.48.0"
-  dependenciesMeta:
-    fsevents:
-      optional: true
-  bin:
-    playwright: cli.js
-  checksum: 10/85b06ae8d0ab7a5a8c9a0d416007b18f35a59455fad40438bda98cbe07c48f338e97b98b1d9214e27f08d6ac284eba0eaab722f5684cd17dd4a47f5b69d004b9
-  languageName: node
-  linkType: hard
-
-"playwright@npm:^1.49.0":
+"playwright@npm:1.49.1, playwright@npm:^1.49.0":
   version: 1.49.1
   resolution: "playwright@npm:1.49.1"
   dependencies:
@@ -24904,7 +24880,7 @@ __metadata:
   resolution: "sandbox@workspace:code/sandbox"
   dependencies:
     "@biomejs/biome": "npm:^1.9.2"
-    "@playwright/test": "npm:^1.45.2"
+    "@playwright/test": "npm:^1.49.1"
     "@react-native-masked-view/masked-view": "npm:^0.3.1"
     "@tamagui/animations-moti": "npm:1.121.2"
     "@tamagui/colors": "npm:1.121.2"
@@ -26372,7 +26348,7 @@ __metadata:
   dependencies:
     "@biomejs/biome": "npm:^1.9.2"
     "@manypkg/cli": "npm:^0.19.1"
-    "@playwright/test": "npm:^1.45.2"
+    "@playwright/test": "npm:^1.49.1"
     "@testing-library/dom": "npm:^10.4.0"
     dotenv-cli: "npm:^7.4.2"
     esbuild: "npm:^0.24.0"
