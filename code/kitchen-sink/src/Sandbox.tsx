@@ -6,6 +6,7 @@ import { Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
 import React, { useEffect, useLayoutEffect, useState } from 'react'
 import type { FontSizeTokens, SelectProps } from 'tamagui'
 import { Adapt, Button, H2, Select, Sheet, View, YStack, getFontSize } from 'tamagui'
+import { AnimationsPresenceDemo } from '@tamagui/demos'
 
 export const Sandbox = () => {
   const start = Date.now()
@@ -20,7 +21,9 @@ export const Sandbox = () => {
     <RNView style={{ width: '100%', height: '100%', padding: 50 }}>
       {/* <View debug="verbose" themeInverse bg="$background" width={200} height={200} /> */}
 
-      <H2>took: {took}</H2>
+      <AnimationsPresenceDemo />
+
+      {/* <H2>took: {took}</H2>
       <Button onPress={() => setX(Math.random())}>run</Button>
 
       <Button debug="profile">hello world</Button>
@@ -31,7 +34,7 @@ export const Sandbox = () => {
       <Button>hello world</Button>
       <Button>hello world</Button>
       <Button>hello world</Button>
-      <Button>hello world</Button>
+      <Button>hello world</Button> */}
 
       {/* <NativeSheetDemo /> */}
 
