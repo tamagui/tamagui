@@ -1,6 +1,5 @@
 import type { PresenceContextProps, UsePresenceResult } from '@tamagui/web'
 import * as React from 'react'
-
 import { PresenceContext } from './PresenceContext'
 
 export function usePresence(): UsePresenceResult {
@@ -10,11 +9,15 @@ export function usePresence(): UsePresenceResult {
     return [true, null, context]
   }
 
-  const { id, isPresent, onExitComplete, register } = context
+  const { isPresent, onExitComplete, register } = context
+  const id = React.useId()
 
   React.useEffect(() => register(id), [])
 
-  const safeToRemove = () => onExitComplete?.(id)
+  const safeToRemove = React.useCallback(
+    () => onExitComplete && onExitComplete(id),
+    [id, onExitComplete]
+  )
 
   return !isPresent && onExitComplete
     ? [false, safeToRemove, context]

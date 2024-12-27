@@ -3,7 +3,7 @@ import { setupDev } from '@tamagui/core'
 import { shorthands } from '@tamagui/shorthands/v2'
 import { tokens } from '@tamagui/themes/v3'
 import { createTamagui } from 'tamagui'
-import { animations } from './animations'
+import { animations } from './animations.rn'
 import {
   bodyFont,
   cherryBombFont,

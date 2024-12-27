@@ -50,6 +50,7 @@ export default function DocsLayout() {
           }}
         >
           <LinearGradient
+            pe="none"
             pos="absolute"
             t={0}
             l={0}

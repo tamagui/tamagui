@@ -50,6 +50,8 @@ export function AnimationsPresenceDemo() {
     setPage([page + going, going])
   }
 
+  console.warn('render demo')
+
   return (
     <XStack
       overflow="hidden"
@@ -60,7 +62,7 @@ export function AnimationsPresenceDemo() {
       alignItems="center"
     >
       <AnimatePresence initial={false} custom={{ going }}>
-        <GalleryItem key={page} animation="slow" going={going}>
+        <GalleryItem debug="verbose" key={page} animation="slow" going={going}>
           <Image source={{ uri: images[imageIndex], width: 820, height: 300 }} />
         </GalleryItem>
       </AnimatePresence>

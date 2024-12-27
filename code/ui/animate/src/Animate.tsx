@@ -37,6 +37,7 @@ export function Animate({ children, type, ...props }: AnimateProps) {
     if (props.keepChildrenMounted) {
       return (
         <PresenceChild
+          mode={props.mode || 'sync'}
           initial={props.initial ? undefined : false}
           onExitComplete={props.onExitComplete}
           enterVariant={props.enterVariant}

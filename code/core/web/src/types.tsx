@@ -2482,13 +2482,19 @@ export type SplitStyleProps = {
 
 // Presence
 
+/**
+ * @public
+ */
+export type PresenceVariantLabels = string | string[]
 export interface PresenceContextProps {
   id: string
   isPresent: boolean
-  register: (id: string) => () => void
-  onExitComplete?: (id: string) => void
-  initial?: false | string | string[]
+  register: (id: string | number) => () => void
+  onExitComplete?: (id: string | number) => void
+  initial?: false | PresenceVariantLabels
   custom?: any
+
+  // backwards-compat, can remove later:
   exitVariant?: string | null
   enterVariant?: string | null
   enterExitVariant?: string | null

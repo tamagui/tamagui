@@ -140,7 +140,8 @@ export const useComponentState = (
     if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
       console.warn(`has presenceState ${JSON.stringify(presenceState)}`)
     }
-    const { enterVariant, exitVariant, enterExitVariant, custom } = presenceState
+    const { enterVariant, exitVariant, enterExitVariant, custom, isPresent } =
+      presenceState
     if (isObj(custom)) {
       Object.assign(props, custom)
     }

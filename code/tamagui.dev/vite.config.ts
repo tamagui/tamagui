@@ -78,11 +78,11 @@ export default {
   plugins: [
     one({
       react: {
-        compiler: true,
+        compiler: process.env.NODE_ENV === 'production',
       },
 
       deps: {
-        '@supabase/postgrest-js': true,
+        '@supabase/postgrest-js': 'interop',
         '@supabase/node-fetch': true,
         postmark: true,
         stripe: true,

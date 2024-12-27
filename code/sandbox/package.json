@@ -29,7 +29,7 @@
     "expo-modules-core": "^1.12.24",
     "one": "1.1.374",
     "react-native": "^0.76.5",
-    "react-native-reanimated": "~3.16.1",
+    "react-native-reanimated": "^3.16.6",
     "react-native-safe-area-context": "4.11.0",
     "react-native-screens": "~4.4.0",
     "react-native-svg": "^15.7.1",
