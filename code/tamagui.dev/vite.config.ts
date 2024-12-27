@@ -1,6 +1,5 @@
-// import entryShakingPlugin from 'vite-plugin-entry-shaking'
-import { removeReactNativeWebAnimatedPlugin, one } from 'one/vite'
 import { tamaguiPlugin } from '@tamagui/vite-plugin'
+import { one } from 'one/vite'
 import type { UserConfig } from 'vite'
 
 Error.stackTraceLimit = Number.POSITIVE_INFINITY
@@ -17,13 +16,6 @@ const resolve = (path: string) => {
   }
   return resolved.replace('file:/', '')
 }
-
-// const require = createRequire(import.meta.url)
-// const targets = [
-//   require.resolve('@tamagui/lucide-icons').replace('/dist/cjs/index.js', ''),
-//   require.resolve('@tamagui/demos').replace('/dist/cjs/index.js', ''),
-//   require.resolve('@tamagui/colors').replace('/dist/cjs/index.js', ''),
-// ]
 
 const include = [
   '@docsearch/react',
@@ -85,6 +77,10 @@ export default {
 
   plugins: [
     one({
+      react: {
+        compiler: true,
+      },
+
       deps: {
         '@supabase/postgrest-js': true,
         '@supabase/node-fetch': true,
@@ -134,13 +130,6 @@ export default {
       optimize: process.env.NODE_ENV === 'production',
       // useReactNativeWebLite: true,
     }),
-
-    // hmmm breaking ssr for some reason on lucide:
-    // can use vite env api and only run this on client, make it part of one
-    // @ts-ignore
-    // entryShakingPlugin({
-    //   targets,
-    // }),
   ],
 } satisfies UserConfig
 

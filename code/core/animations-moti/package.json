@@ -7,7 +7,8 @@
   "main": "dist/cjs",
   "module": "dist/esm",
   "sideEffects": [
-    "polyfill.js"
+    "polyfill.js",
+    "polyfill.mjs"
   ],
   "files": [
     "src",

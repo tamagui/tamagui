@@ -50,8 +50,7 @@
     "ts-morph": "^15.1.0",
     "typescript": "^5.7.2",
     "url": "^0.11.0",
-    "vite": "^6.0.6",
-    "vite-plugin-entry-shaking": "^0.4.3"
+    "vite": "^6.0.6"
   },
   "devDependencies": {
     "@tamagui/build": "1.121.2",
