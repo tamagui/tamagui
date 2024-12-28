@@ -1057,7 +1057,7 @@ export function createComponent<
         <ComponentContext.Provider
           {...componentContext}
           groups={subGroupContext}
-          setParentFocusState={propsIn.focusWithinStyle ? setStateShallow! : null}
+          setParentFocusState={setStateShallow}
         >
           {content}
         </ComponentContext.Provider>
