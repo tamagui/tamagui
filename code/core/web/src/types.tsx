@@ -89,9 +89,10 @@ export type ComponentContextI = {
   inText: boolean
   language: LanguageContextType | null
   animationDriver: AnimationDriver | null
-  onWithinFocus: (() => void) | null
-  onWithinBlur: (() => void) | null
   groups: GroupContextType
+  setParentFocusState:
+    | ((next?: Partial<TamaguiComponentState> | undefined) => void)
+    | null
 }
 
 type ComponentGroupEvent = {
