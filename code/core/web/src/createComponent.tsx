@@ -690,8 +690,8 @@ export function createComponent<
     const unPress = () => setStateShallow({ press: false, pressIn: false })
 
     if (propsIn.focusWithinStyle) {
-      componentContext.onWithinFocus = () => setStateShallow({ focusWithin: true })
-      componentContext.onWithinBlur = () => setStateShallow({ focusWithin: false })
+      componentContext.onWithinFocus ||= () => setStateShallow({ focusWithin: true })
+      componentContext.onWithinBlur ||= () => setStateShallow({ focusWithin: false })
     }
 
     if (process.env.NODE_ENV === 'development' && isWeb) {
