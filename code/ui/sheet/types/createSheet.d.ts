@@ -66,7 +66,13 @@ export declare function createSheet<H extends TamaguiComponent | SheetStyledComp
              */
             adjustPaddingForOffscreenContent?: boolean;
         }>>;
-        Overlay: TamaguiComponent<BaseProps, any, any, any, SharedSheetProps, {}> | TamaguiComponent<BaseProps, any, {} & void, {}, {}, {}>;
+        Overlay: TamaguiComponent<Omit<BaseProps, "__scopeSheet"> & {
+            __scopeSheet?: import("@tamagui/create-context").Scope<any>;
+        }, any, any, any, SharedSheetProps, {}> | TamaguiComponent<Omit<BaseProps, "__scopeSheet"> & {
+            __scopeSheet?: import("@tamagui/create-context").Scope<any>;
+        }, any, {
+            __scopeSheet?: import("@tamagui/create-context").Scope<any>;
+        }, {}, {}, {}>;
         Handle: TamaguiComponent<any, any, any, any, SharedSheetProps, {}> | TamaguiComponent<any, any, any, {}, {}, {}>;
         ScrollView: ForwardRefExoticComponent<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & import("react-native").ScrollViewProps, keyof import("@tamagui/core").StackStyleBase | "fullscreen" | "contentContainerStyle"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
             readonly contentContainerStyle?: Partial<import("@tamagui/core").GetFinalProps<import("react-native").ScrollViewProps, import("@tamagui/core").StackStyleBase, {}>> | undefined;
@@ -113,7 +119,13 @@ export declare function createSheet<H extends TamaguiComponent | SheetStyledComp
          */
         adjustPaddingForOffscreenContent?: boolean;
     }>>;
-    Overlay: TamaguiComponent<BaseProps, any, any, any, SharedSheetProps, {}> | TamaguiComponent<BaseProps, any, {} & void, {}, {}, {}>;
+    Overlay: TamaguiComponent<Omit<BaseProps, "__scopeSheet"> & {
+        __scopeSheet?: import("@tamagui/create-context").Scope<any>;
+    }, any, any, any, SharedSheetProps, {}> | TamaguiComponent<Omit<BaseProps, "__scopeSheet"> & {
+        __scopeSheet?: import("@tamagui/create-context").Scope<any>;
+    }, any, {
+        __scopeSheet?: import("@tamagui/create-context").Scope<any>;
+    }, {}, {}, {}>;
     Handle: TamaguiComponent<any, any, any, any, SharedSheetProps, {}> | TamaguiComponent<any, any, any, {}, {}, {}>;
     ScrollView: ForwardRefExoticComponent<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & import("react-native").ScrollViewProps, keyof import("@tamagui/core").StackStyleBase | "fullscreen" | "contentContainerStyle"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
         readonly contentContainerStyle?: Partial<import("@tamagui/core").GetFinalProps<import("react-native").ScrollViewProps, import("@tamagui/core").StackStyleBase, {}>> | undefined;

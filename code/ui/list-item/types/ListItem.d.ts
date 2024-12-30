@@ -45,8 +45,6 @@ export type ListItemExtraProps = Omit<TextParentStyles, 'TextComponent' | 'noTex
 };
 export type ListItemProps = GetProps<typeof ListItemFrame> & ListItemExtraProps;
 export declare const ListItemFrame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
-    unstyled?: boolean | undefined;
-    size?: SizeTokens | undefined;
     disabled?: boolean | undefined;
     elevation?: number | SizeTokens | undefined;
     transparent?: boolean | undefined;
@@ -61,19 +59,21 @@ export declare const ListItemFrame: import("@tamagui/web").TamaguiComponent<impo
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     chromeless?: boolean | "all" | undefined;
+    size?: SizeTokens | undefined;
+    unstyled?: boolean | undefined;
     active?: boolean | undefined;
 }, import("@tamagui/web").StaticConfigPublic>;
 export declare const ListItemText: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
-    unstyled?: boolean | undefined;
     size?: FontSizeTokens | undefined;
+    unstyled?: boolean | undefined;
 }, import("@tamagui/web").StaticConfigPublic>;
 export declare const ListItemSubtitle: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
-    unstyled?: boolean | undefined;
     size?: number | `$${string}` | `$${number}` | `$${string}.${string}` | `$${string}.${number}` | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | undefined;
+    unstyled?: boolean | undefined;
 }, import("@tamagui/web").StaticConfigPublic>;
 export declare const ListItemTitle: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
-    unstyled?: boolean | undefined;
     size?: FontSizeTokens | undefined;
+    unstyled?: boolean | undefined;
 }, import("@tamagui/web").StaticConfigPublic>;
 export declare const useListItem: (propsIn: ListItemProps, { Text, Subtitle, Title, }?: {
     Title?: any;
@@ -83,8 +83,6 @@ export declare const useListItem: (propsIn: ListItemProps, { Text, Subtitle, Tit
     props: PropsWithoutMediaStyles<ListItemProps>;
 };
 export declare const ListItem: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
-    unstyled?: boolean | undefined;
-    size?: SizeTokens | undefined;
     disabled?: boolean | undefined;
     elevation?: number | SizeTokens | undefined;
     transparent?: boolean | undefined;
@@ -99,6 +97,8 @@ export declare const ListItem: import("react").ForwardRefExoticComponent<Omit<im
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     chromeless?: boolean | "all" | undefined;
+    size?: SizeTokens | undefined;
+    unstyled?: boolean | undefined;
     active?: boolean | undefined;
 }>, "noTextWrap" | keyof import("@tamagui/text").TextContextStyles | "textProps" | keyof ThemeableProps | "icon" | "iconAfter" | "scaleIcon" | "spaceFlex" | "scaleSpace" | "title" | "subTitle"> & Omit<TextParentStyles, "TextComponent" | "noTextWrap"> & ThemeableProps & {
     /**
@@ -137,8 +137,6 @@ export declare const ListItem: import("react").ForwardRefExoticComponent<Omit<im
      */
     noTextWrap?: boolean | "all";
 } & import("react").RefAttributes<import("@tamagui/web").TamaguiElement>> & import("@tamagui/web").StaticComponentObject<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
-    unstyled?: boolean | undefined;
-    size?: SizeTokens | undefined;
     disabled?: boolean | undefined;
     elevation?: number | SizeTokens | undefined;
     transparent?: boolean | undefined;
@@ -153,6 +151,8 @@ export declare const ListItem: import("react").ForwardRefExoticComponent<Omit<im
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     chromeless?: boolean | "all" | undefined;
+    size?: SizeTokens | undefined;
+    unstyled?: boolean | undefined;
     active?: boolean | undefined;
 }>, "noTextWrap" | keyof import("@tamagui/text").TextContextStyles | "textProps" | keyof ThemeableProps | "icon" | "iconAfter" | "scaleIcon" | "spaceFlex" | "scaleSpace" | "title" | "subTitle"> & Omit<TextParentStyles, "TextComponent" | "noTextWrap"> & ThemeableProps & {
     /**
@@ -227,8 +227,6 @@ export declare const ListItem: import("react").ForwardRefExoticComponent<Omit<im
      */
     noTextWrap?: boolean | "all";
 }, import("@tamagui/web").StackStyleBase, {
-    unstyled?: boolean | undefined;
-    size?: SizeTokens | undefined;
     disabled?: boolean | undefined;
     elevation?: number | SizeTokens | undefined;
     transparent?: boolean | undefined;
@@ -243,11 +241,11 @@ export declare const ListItem: import("react").ForwardRefExoticComponent<Omit<im
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     chromeless?: boolean | "all" | undefined;
+    size?: SizeTokens | undefined;
+    unstyled?: boolean | undefined;
     active?: boolean | undefined;
 }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig" | "styleable"> & {
     __tama: [Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
-        unstyled?: boolean | undefined;
-        size?: SizeTokens | undefined;
         disabled?: boolean | undefined;
         elevation?: number | SizeTokens | undefined;
         transparent?: boolean | undefined;
@@ -262,6 +260,8 @@ export declare const ListItem: import("react").ForwardRefExoticComponent<Omit<im
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
         chromeless?: boolean | "all" | undefined;
+        size?: SizeTokens | undefined;
+        unstyled?: boolean | undefined;
         active?: boolean | undefined;
     }>, "noTextWrap" | keyof import("@tamagui/text").TextContextStyles | "textProps" | keyof ThemeableProps | "icon" | "iconAfter" | "scaleIcon" | "spaceFlex" | "scaleSpace" | "title" | "subTitle"> & Omit<TextParentStyles, "TextComponent" | "noTextWrap"> & ThemeableProps & {
         /**
@@ -336,8 +336,6 @@ export declare const ListItem: import("react").ForwardRefExoticComponent<Omit<im
          */
         noTextWrap?: boolean | "all";
     }, import("@tamagui/web").StackStyleBase, {
-        unstyled?: boolean | undefined;
-        size?: SizeTokens | undefined;
         disabled?: boolean | undefined;
         elevation?: number | SizeTokens | undefined;
         transparent?: boolean | undefined;
@@ -352,16 +350,18 @@ export declare const ListItem: import("react").ForwardRefExoticComponent<Omit<im
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
         chromeless?: boolean | "all" | undefined;
+        size?: SizeTokens | undefined;
+        unstyled?: boolean | undefined;
         active?: boolean | undefined;
     }, import("@tamagui/web").StaticConfigPublic];
 } & {
     Text: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
-        unstyled?: boolean | undefined;
         size?: FontSizeTokens | undefined;
+        unstyled?: boolean | undefined;
     }, import("@tamagui/web").StaticConfigPublic>;
     Subtitle: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
-        unstyled?: boolean | undefined;
         size?: number | `$${string}` | `$${number}` | `$${string}.${string}` | `$${string}.${number}` | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | undefined;
+        unstyled?: boolean | undefined;
     }, import("@tamagui/web").StaticConfigPublic>;
 };
 export {};

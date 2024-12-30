@@ -33,7 +33,7 @@ if (process.env.TAMAGUI_TARGET === 'native') {
     right?: number
   }
 
-  const getInset = (val: number | SizeTokens | Insets) =>
+  const getInset = (val: number | SizeTokens | Insets | null) =>
     val && typeof val === 'object'
       ? val
       : {

@@ -7,25 +7,32 @@ const StyledImage = styled(View, {
   tag: 'img',
 })
 
-export const Image = StyledImage.styleable<ImageProps>((inProps, ref) => {
-  const {
-    // exclude native only props
-    blurRadius,
-    capInsets,
-    defaultSource,
-    fadeDuration,
-    loadingIndicatorSource,
-    onLoadEnd,
-    onPartialLoad,
-    progressiveRenderingEnabled,
-    resizeMethod,
-    resizeMode,
-    tintColor,
-    ...rest
-  } = inProps
+export const Image = StyledImage.styleable<ImageProps>(
+  (inProps, ref) => {
+    const {
+      // exclude native only props
+      blurRadius,
+      capInsets,
+      defaultSource,
+      fadeDuration,
+      loadingIndicatorSource,
+      onLoadEnd,
+      onPartialLoad,
+      progressiveRenderingEnabled,
+      resizeMethod,
+      resizeMode,
+      tintColor,
+      ...rest
+    } = inProps
 
-  return <StyledImage ref={ref} {...rest} />
-}) as unknown as ImageType
+    return <StyledImage ref={ref} {...rest} />
+  },
+  {
+    staticConfig: {
+      memo: true,
+    },
+  }
+) as unknown as ImageType
 
 const func = (() => {}) as any
 

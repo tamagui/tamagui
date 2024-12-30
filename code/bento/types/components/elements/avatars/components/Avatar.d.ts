@@ -44,7 +44,18 @@ export declare const Avatar: import("react").ForwardRefExoticComponent<Omit<impo
     Image: import("react").ForwardRefExoticComponent<Partial<import("tamagui").ImageProps> & {
         onLoadingStatusChange?: (status: "loaded" | "error" | "loading" | "idle") => void;
     } & import("react").RefAttributes<import("tamagui").TamaguiElement>>;
-    Fallback: import("tamagui").TamaguiComponent<import("tamagui").AvatarFallbackProps, import("tamagui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & import("tamagui").TamaguiElement, import("@tamagui/web").StackStyleBase, {
+    Fallback: import("tamagui").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
+        elevation?: number | SizeTokens | undefined;
+        fullscreen?: boolean | undefined;
+    }>, "delayMs" | "__scopeAvatar"> & {
+        delayMs?: number;
+    } & {
+        __scopeAvatar?: import("tamagui").Scope;
+    }, import("tamagui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & {
+        delayMs?: number;
+    } & {
+        __scopeAvatar?: import("tamagui").Scope;
+    }, import("@tamagui/web").StackStyleBase, {
         elevation?: number | SizeTokens | undefined;
         fullscreen?: boolean | undefined;
     }, import("@tamagui/web").StaticConfigPublic>;

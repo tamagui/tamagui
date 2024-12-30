@@ -1,1 +1,1 @@
-  export * from '../types/linear-gradient'
+export * from '../src/linear-gradient'

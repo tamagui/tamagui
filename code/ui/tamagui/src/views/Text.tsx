@@ -7,7 +7,7 @@ export const Text = styled(TamaguiText, {
         color: '$color',
       },
     },
-  },
+  } as const,
 
   defaultVariants: {
     unstyled: process.env.TAMAGUI_HEADLESS === '1',

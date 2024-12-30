@@ -72,43 +72,41 @@ export function createSheet<
    * SheetOverlay
    * -----------------------------------------------------------------------------------------------*/
 
-  const SheetOverlay = Overlay.styleable(
-    memo((propsIn: SheetScopedProps<GetProps<typeof Overlay>>, ref) => {
-      const { __scopeSheet, ...props } = propsIn
-      const context = useSheetContext(SHEET_OVERLAY_NAME, __scopeSheet)
+  const SheetOverlay = Overlay.styleable<SheetScopedProps<{}>>((propsIn, ref) => {
+    const { __scopeSheet, ...props } = propsIn
+    const context = useSheetContext(SHEET_OVERLAY_NAME, __scopeSheet)
 
-      // this ones a bit weird for legacy reasons, we need to hoist it above <Sheet /> AnimatedView
-      // so we just pass it up to context
+    // this ones a bit weird for legacy reasons, we need to hoist it above <Sheet /> AnimatedView
+    // so we just pass it up to context
 
-      const element = useMemo(() => {
-        return (
-          // @ts-ignore
-          <Overlay
-            ref={ref}
-            {...props}
-            onPress={composeEventHandlers(
-              props.onPress,
-              context.dismissOnOverlayPress
-                ? () => {
-                    context.setOpen(false)
-                  }
-                : undefined
-            )}
-          />
-        )
-      }, [ref, props.onPress, context.dismissOnOverlayPress])
+    const element = useMemo(() => {
+      return (
+        // @ts-ignore
+        <Overlay
+          ref={ref}
+          {...props}
+          onPress={composeEventHandlers(
+            props.onPress,
+            context.dismissOnOverlayPress
+              ? () => {
+                  context.setOpen(false)
+                }
+              : undefined
+          )}
+        />
+      )
+    }, [ref, props.onPress, context.dismissOnOverlayPress])
 
-      useIsomorphicLayoutEffect(() => {
-        context.onOverlayComponent?.(element)
-      }, [element])
+    useIsomorphicLayoutEffect(() => {
+      context.onOverlayComponent?.(element)
+    }, [element])
 
-      if (context.onlyShowFrame) {
-        return null
-      }
-
+    if (context.onlyShowFrame) {
       return null
-    })
-  )
+    }
+
+    return null
+  })
 
   /* -------------------------------------------------------------------------------------------------
    * Sheet

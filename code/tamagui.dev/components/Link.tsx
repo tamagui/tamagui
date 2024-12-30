@@ -1,5 +1,4 @@
-import type { ViewProps } from 'react-native'
-import { Button, Paragraph, Text, type ButtonProps } from 'tamagui'
+import { type ViewProps, Button, Paragraph, Text, type ButtonProps } from 'tamagui'
 import { useLinkTo, type LinkProps as OneLinkProps } from 'one'
 
 export type LinkProps = ViewProps & OneLinkProps<any>

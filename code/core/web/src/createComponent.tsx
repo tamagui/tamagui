@@ -1131,7 +1131,6 @@ export function createComponent<
                 stateRef,
                 staticConfig,
                 styleProps,
-                tamaguiConfig,
                 themeState,
                 viewProps,
                 willBeAnimated,

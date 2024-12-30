@@ -344,6 +344,7 @@ export declare const stylePropsFont: {
     fontSize: boolean;
     fontStyle: boolean;
     fontWeight: boolean;
+    fontVariant: boolean;
     letterSpacing: boolean;
     lineHeight: boolean;
     textTransform: boolean;
@@ -370,6 +371,7 @@ export declare const stylePropsTextOnly: {
     fontSize: boolean;
     fontStyle: boolean;
     fontWeight: boolean;
+    fontVariant: boolean;
     letterSpacing: boolean;
     lineHeight: boolean;
     textTransform: boolean;
@@ -396,6 +398,7 @@ export declare const stylePropsText: {
     fontSize: boolean;
     fontStyle: boolean;
     fontWeight: boolean;
+    fontVariant: boolean;
     letterSpacing: boolean;
     lineHeight: boolean;
     textTransform: boolean;
@@ -648,6 +651,7 @@ export declare const stylePropsAll: {
     fontSize: boolean;
     fontStyle: boolean;
     fontWeight: boolean;
+    fontVariant: boolean;
     letterSpacing: boolean;
     lineHeight: boolean;
     textTransform: boolean;

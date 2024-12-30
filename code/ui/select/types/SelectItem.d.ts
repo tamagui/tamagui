@@ -24,8 +24,6 @@ export interface SelectItemExtraProps {
 export interface SelectItemProps extends Omit<ListItemProps, keyof SelectItemExtraProps>, SelectItemExtraProps {
 }
 export declare const SelectItem: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
-    unstyled?: boolean | undefined;
-    size?: import("@tamagui/web").SizeTokens | undefined;
     disabled?: boolean | undefined;
     elevation?: number | import("@tamagui/web").SizeTokens | undefined;
     transparent?: boolean | undefined;
@@ -40,10 +38,10 @@ export declare const SelectItem: import("@tamagui/web").TamaguiComponent<Omit<im
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     chromeless?: boolean | "all" | undefined;
+    size?: import("@tamagui/web").SizeTokens | undefined;
+    unstyled?: boolean | undefined;
     active?: boolean | undefined;
 }>, keyof SelectItemExtraProps> & SelectItemExtraProps, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & SelectItemExtraProps, import("@tamagui/web").StackStyleBase, {
-    unstyled?: boolean | undefined;
-    size?: import("@tamagui/web").SizeTokens | undefined;
     disabled?: boolean | undefined;
     elevation?: number | import("@tamagui/web").SizeTokens | undefined;
     transparent?: boolean | undefined;
@@ -58,6 +56,8 @@ export declare const SelectItem: import("@tamagui/web").TamaguiComponent<Omit<im
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     chromeless?: boolean | "all" | undefined;
+    size?: import("@tamagui/web").SizeTokens | undefined;
+    unstyled?: boolean | undefined;
     active?: boolean | undefined;
 }, import("@tamagui/web").StaticConfigPublic>;
 export {};

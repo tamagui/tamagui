@@ -1,5 +1,5 @@
 import { AnimationsPresenceDemo } from '@tamagui/demos'
 
-export const Sandbox = () => {
+export default () => {
   return <AnimationsPresenceDemo />
 }

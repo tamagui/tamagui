@@ -135,6 +135,7 @@ export declare const styledBody: ({
         fontSize: boolean;
         fontStyle: boolean;
         fontWeight: boolean;
+        fontVariant: boolean;
         letterSpacing: boolean;
         lineHeight: boolean;
         textTransform: boolean;
