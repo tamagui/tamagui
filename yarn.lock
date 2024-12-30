@@ -7661,7 +7661,7 @@ __metadata:
     "@tamagui/build": "npm:1.121.3"
     "@tamagui/core": "npm:1.121.3"
     "@tamagui/stacks": "npm:1.121.3"
-    expo-linear-gradient: "npm:~14.0.1"
+    expo-linear-gradient: "npm:~13.0.2"
     react: "npm:*"
   peerDependencies:
     react: "*"
@@ -15614,6 +15614,15 @@ __metadata:
     expo: "*"
     react: "*"
   checksum: 10/a4b72ab4c6c41f44c04f4146f3eda955941f2c7ee500a43da45baff6ca74d40ada8e253b38b4925802a4a003642b0dc0af15501712367b90ae606d5355f7f5f0
+  languageName: node
+  linkType: hard
+
+"expo-linear-gradient@npm:~13.0.2":
+  version: 13.0.2
+  resolution: "expo-linear-gradient@npm:13.0.2"
+  peerDependencies:
+    expo: "*"
+  checksum: 10/2e05592bd9b3f156f0c5912a5cc152e80e930495d049382e4deec3103601ccc90b2e7cb5c208b51aa9d60386c5b762d40cc74cb2d1256a4605012e03d27be72a
   languageName: node
   linkType: hard
 

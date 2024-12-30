@@ -1,1 +1,5 @@
-export { LinearGradient, type LinearGradientProps } from './LinearGradient'
+export {
+  LinearGradient,
+  type LinearGradientProps,
+  type LinearGradientExtraProps,
+} from './LinearGradient'
