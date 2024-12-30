@@ -3,9 +3,14 @@ v2:
 note: can't remove `as const` using const generics, it just doesnt help with the defaultVariants case at all
 
   - button-next is mostly ready now to replace button:
+    - remove old button, move new button into place, fix issues around the site/bento
     - docs update: we should show "headless" style and non-headless
       - <Button.Frame><Button.Icon></Button.Icon></Button.Frame> for headless
       - <Button> for non-headless
+  - input-next
+    - rather than wrapping react-native-web we implement our own
+    - keep it simple, align to web props as much as possible
+  - swap image-next => image
   - make sure webContainerType is "right" - probably not `normal` default
     - https://github.com/tamagui/tamagui/issues/1823#issuecomment-2543950702
   - we should fix "tag" and have it so you can pass typed props to the tag
@@ -31,7 +36,6 @@ note: can't remove `as const` using const generics, it just doesnt help with the
     - `tamagui build` document/announce
     - `tamagui lint` fix check and document/announce
   - tamagui => @tamagui/ui
-    - new Button, Input (nice, can be v3), Image (image-next), ScrollView
     - note many are headless
   - Cleanup Select/ListItem
     - v2-3 ListItem simplification esp for performance of Select
