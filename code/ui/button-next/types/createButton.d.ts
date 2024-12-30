@@ -1,18 +1,26 @@
-import type { TamaguiComponentExpectingVariants, TextProps, ViewProps } from '@tamagui/web';
-export declare const createButton: <Variants extends Record<string, any>>(options: {
-    Frame: TamaguiComponentExpectingVariants<ViewProps, Variants>;
-    Text: TamaguiComponentExpectingVariants<TextProps, Variants>;
-    Icon: TamaguiComponentExpectingVariants<TextProps, Variants>;
+import { type SizableStackProps } from '@tamagui/stacks';
+import { type SizableTextProps } from '@tamagui/text';
+import type { SizeTokens, TamaguiComponentExpectingVariants } from '@tamagui/web';
+export type ButtonFrameProps = SizableStackProps & {
+    iconSize?: SizeTokens;
+    scaleIcon?: number;
+};
+type FrameLike<Variants extends Record<string, any>> = TamaguiComponentExpectingVariants<ButtonFrameProps, Variants>;
+type TextLike<Variants extends Record<string, any>> = TamaguiComponentExpectingVariants<SizableTextProps, Variants>;
+export declare const createButton: <Variants extends Record<string, any>, FrameC extends FrameLike<Variants> = FrameLike<Variants>, TextC extends TextLike<Variants> = TextLike<Variants>, IconC extends TextLike<Variants> = TextLike<Variants>>(options: {
+    Frame: FrameC;
+    Text: TextC;
+    Icon: IconC;
     defaultVariants?: { [Key in keyof Variants]: Variants[Key] | undefined; };
     name?: string;
-}) => import("react").ForwardRefExoticComponent<import("@tamagui/web").GetFinalProps<any, any, Variants> & import("react").RefAttributes<import("@tamagui/web").GetRef<TamaguiComponentExpectingVariants<import("@tamagui/web").StackProps, Variants>>>> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/web").GetRef<TamaguiComponentExpectingVariants<import("@tamagui/web").StackProps, Variants>>, any, any, Variants, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig" | "styleable"> & {
-    __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/web").GetRef<TamaguiComponentExpectingVariants<import("@tamagui/web").StackProps, Variants>>, any, any, Variants, import("@tamagui/web").StaticConfigPublic];
-} & {
+}) => FrameC & {
     Apply: import("react").ProviderExoticComponent<Partial<{ [Key in keyof Variants]: Variants[Key] | undefined; }> & {
         children?: import("react").ReactNode;
         scope?: string;
     }>;
-    Text: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").GetRef<TamaguiComponentExpectingVariants<TextProps, Variants>>, any, any, Variants, import("@tamagui/web").StaticConfigPublic>;
-    Icon: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").GetRef<TamaguiComponentExpectingVariants<TextProps, Variants>>, any, any, Variants, import("@tamagui/web").StaticConfigPublic>;
+    Frame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, any, unknown, unknown, unknown, import("@tamagui/web").StaticConfigPublic>;
+    Text: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, any, unknown, unknown, unknown, import("@tamagui/web").StaticConfigPublic>;
+    Icon: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, any, unknown, unknown, unknown, import("@tamagui/web").StaticConfigPublic>;
 };
+export {};
 //# sourceMappingURL=createButton.d.ts.map

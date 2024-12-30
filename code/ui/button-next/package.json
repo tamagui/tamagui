@@ -1,19 +1,13 @@
 {
   "name": "@tamagui/button-next",
   "version": "1.121.4",
-  "sideEffects": [
-    "*.css"
-  ],
+  "sideEffects": ["*.css"],
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
   "module:jsx": "dist/jsx",
-  "files": [
-    "src",
-    "types",
-    "dist"
-  ],
+  "files": ["src", "types", "dist"],
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
@@ -37,6 +31,7 @@
   },
   "dependencies": {
     "@tamagui/get-button-sized": "1.121.4",
+    "@tamagui/helpers-tamagui": "1.121.4",
     "@tamagui/stacks": "1.121.4",
     "@tamagui/text": "1.121.4",
     "@tamagui/web": "1.121.4"

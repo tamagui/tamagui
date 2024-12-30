@@ -2,6 +2,10 @@ v2:
 
 note: can't remove `as const` using const generics, it just doesnt help with the defaultVariants case at all
 
+  - button-next is mostly ready now to replace button:
+    - docs update: we should show "headless" style and non-headless
+      - <Button.Frame><Button.Icon></Button.Icon></Button.Frame> for headless
+      - <Button> for non-headless
   - make sure webContainerType is "right" - probably not `normal` default
     - https://github.com/tamagui/tamagui/issues/1823#issuecomment-2543950702
   - we should fix "tag" and have it so you can pass typed props to the tag
