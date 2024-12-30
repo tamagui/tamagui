@@ -5,7 +5,7 @@ type ChipIconProps = {
     size?: SizeTokens;
     children: React.ReactNode;
 };
-export declare const Chip: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | "unstyled" | keyof import("@tamagui/web").StackStyleBase | "rounded" | "pressable"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+export declare const Chip: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/web").StackStyleBase | "unstyled" | "rounded" | "pressable"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
     size?: SizeTokens | undefined;
     unstyled?: boolean | undefined;
     rounded?: boolean | undefined;
@@ -25,7 +25,7 @@ export declare const Chip: import("react").ForwardRefExoticComponent<Omit<import
     unstyled?: boolean | undefined;
     rounded?: boolean | undefined;
     pressable?: boolean | undefined;
-}, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig" | "extractable" | "styleable"> & {
+}, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig" | "styleable"> & {
     __tama: [import("@tamagui/web").TamaDefer, import("tamagui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
         size?: SizeTokens | undefined;
         unstyled?: boolean | undefined;

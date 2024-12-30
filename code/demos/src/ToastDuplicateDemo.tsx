@@ -30,7 +30,7 @@ export const ToastDuplicateDemo = () => {
           scale={1}
           animation="100ms"
         >
-          <XStack space alignItems="center">
+          <XStack gap="$4" alignItems="center">
             <YStack>
               <CheckCircle2 />
             </YStack>

@@ -7,7 +7,7 @@ export function AddThemeDemo() {
   const [theme, setTheme] = React.useState<any>()
 
   return (
-    <YStack alignItems="center" space>
+    <YStack alignItems="center" gap="$4">
       <H3>Theme: {theme ?? 'none'}</H3>
 
       <Theme name={theme ?? 'red'}>

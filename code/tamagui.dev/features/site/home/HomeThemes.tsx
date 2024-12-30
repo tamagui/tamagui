@@ -155,7 +155,7 @@ export const HomeThemes = memo(function HomeThemes() {
     <YStack pos="relative">
       {useMemo(() => {
         return (
-          <ContainerLarge position="relative" space="$3">
+          <ContainerLarge position="relative" gap="$3">
             <HomeH2>Smart themes and sub-themes down to the component.</HomeH2>
             <HomeH3>
               Themes that act like CSS variables, overriding as they descend and compiled
@@ -167,8 +167,15 @@ export const HomeThemes = memo(function HomeThemes() {
 
       <YStack my="$8" ai="center" jc="center">
         <XStack className="scroll-horizontal no-scrollbar">
-          <XStack px="$4" space="$2">
-            <XGroup disablePassBorderRadius bordered p="$2" br="$10" als="center">
+          <XStack px="$4" gap="$2">
+            <XGroup
+              disablePassBorderRadius
+              borderWidth={1}
+              borderColor="$borderColor"
+              p="$2"
+              br="$10"
+              als="center"
+            >
               {(['light', 'dark'] as const).map((name, i) => {
                 const isActive = resolvedTheme === name
                 return (
@@ -183,7 +190,14 @@ export const HomeThemes = memo(function HomeThemes() {
               })}
             </XGroup>
 
-            <XGroup disablePassBorderRadius bordered p="$2" br="$10" als="center">
+            <XGroup
+              disablePassBorderRadius
+              borderWidth={1}
+              borderColor="$borderColor"
+              p="$2"
+              br="$10"
+              als="center"
+            >
               {themes[0].map((color, i) => {
                 const isActive = curColorI === i
                 return (
@@ -200,7 +214,14 @@ export const HomeThemes = memo(function HomeThemes() {
               })}
             </XGroup>
 
-            <XGroup disablePassBorderRadius bordered p="$2" br="$10" als="center">
+            <XGroup
+              disablePassBorderRadius
+              borderWidth={1}
+              borderColor="$borderColor"
+              p="$2"
+              br="$10"
+              als="center"
+            >
               <XGroup.Item>
                 <Theme name={colorName}>
                   <XStack>
@@ -256,7 +277,7 @@ export const HomeThemes = memo(function HomeThemes() {
               ai="center"
               py="$6"
               jc="center"
-              space="$5"
+              gap="$5"
               pos="relative"
               px={`calc(50vw + 30px)`}
               x={-45 - 30}

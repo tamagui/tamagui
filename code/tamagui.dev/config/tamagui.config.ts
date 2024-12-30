@@ -83,7 +83,8 @@ const config = {
   settings: {
     defaultFont: 'body',
     shouldAddPrefersColorThemes: true,
-    themeClassNameOnRoot: true,
+    addThemeClassName: 'body',
+    styleCompat: 'legacy',
     mediaQueryDefaultActive,
     selectionStyles: (theme) => ({
       backgroundColor: theme.color5,
@@ -91,7 +92,6 @@ const config = {
     }),
     allowedStyleValues: 'somewhat-strict-web',
     autocompleteSpecificTokens: 'except-special',
-    // mediaPropOrder: true,
   },
   fonts,
 } satisfies CreateTamaguiProps

@@ -5,18 +5,18 @@ import {
   getVariableValue,
   isTamaguiElement,
   mergeProps,
-  spacedChildren,
   styled,
   useProps,
 } from '@tamagui/core'
 import type { Scope } from '@tamagui/create-context'
 import { createContextScope } from '@tamagui/create-context'
 import { withStaticProperties } from '@tamagui/helpers'
-import { ThemeableStack } from '@tamagui/stacks'
+import { YStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import React from 'react'
 import { ScrollView } from 'react-native'
 import { useIndex, useIndexedChildren } from './useIndexedChildren'
+import { spacedChildren, type SpaceProps } from '@tamagui/spacer'
 
 type DisablePassBorderRadius = boolean | 'bottom' | 'top' | 'start' | 'end'
 
@@ -35,7 +35,7 @@ type ScopedProps<P> = P & { __scopeGroup?: Scope }
 const [createGroupContext, createGroupScope] = createContextScope(GROUP_NAME)
 const [GroupProvider, useGroupContext] = createGroupContext<GroupContextValue>(GROUP_NAME)
 
-export const GroupFrame = styled(ThemeableStack, {
+export const GroupFrame = styled(YStack, {
   name: 'GroupFrame',
 
   variants: {
@@ -58,11 +58,7 @@ export const GroupFrame = styled(ThemeableStack, {
   },
 })
 
-export type GroupExtraProps = {
-  /**
-   * @deprecated use `orientation` instead
-   */
-  axis?: 'horizontal' | 'vertical'
+export type GroupExtraProps = SpaceProps & {
   orientation?: 'horizontal' | 'vertical'
   scrollable?: boolean
   /**
@@ -89,11 +85,11 @@ function createGroup(verticalDefault: boolean) {
         children: childrenProp,
         space,
         size = '$true',
+        flex,
         spaceDirection,
         separator,
         scrollable,
-        axis = verticalDefault ? 'vertical' : 'horizontal',
-        orientation = axis,
+        orientation = verticalDefault ? 'vertical' : 'horizontal',
         disabled: disabledProp,
         disablePassBorderRadius: disablePassBorderRadiusProp,
         borderRadius,
@@ -163,6 +159,9 @@ function createGroup(verticalDefault: boolean) {
         []
       )
 
+      // TODO improve type
+      const flexValue = (flex === true ? 1 : flex === false ? 0 : flex) as any
+
       return (
         <GroupProvider
           disablePassBorderRadius={disablePassBorderRadius}
@@ -179,9 +178,13 @@ function createGroup(verticalDefault: boolean) {
             size={size}
             flexDirection={orientation === 'horizontal' ? 'row' : 'column'}
             borderRadius={borderRadius}
+            flex={flexValue}
             {...restProps}
           >
-            {wrapScroll({ ...activeProps, orientation }, indexedChildren)}
+            {wrapScroll(
+              { ...activeProps, flex: flexValue, orientation },
+              indexedChildren
+            )}
           </GroupFrame>
         </GroupProvider>
       )

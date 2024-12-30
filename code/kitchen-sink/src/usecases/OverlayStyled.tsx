@@ -12,7 +12,7 @@ export const MyAlert = AlertDialog
 
 export function OverlayStyled() {
   return (
-    <XStack p="$10" space>
+    <XStack p="$10" gap="$4">
       <WorkingExample />
       <NotWorkingExample />
     </XStack>

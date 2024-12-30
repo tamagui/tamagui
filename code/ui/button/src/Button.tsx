@@ -6,15 +6,10 @@ import { ButtonNestingContext, ThemeableStack } from '@tamagui/stacks'
 import type { TextContextStyles, TextParentStyles } from '@tamagui/text'
 import { SizableText, wrapChildrenInText } from '@tamagui/text'
 import type { FontSizeTokens, GetProps, SizeTokens, ThemeableProps } from '@tamagui/web'
-import {
-  createStyledContext,
-  getVariableValue,
-  spacedChildren,
-  styled,
-  useProps,
-} from '@tamagui/web'
+import { createStyledContext, getVariableValue, styled, useProps } from '@tamagui/web'
 import type { FunctionComponent } from 'react'
 import { useContext } from 'react'
+import { spacedChildren } from '@tamagui/spacer'
 
 type ButtonVariant = 'outlined'
 
@@ -28,7 +23,7 @@ export const ButtonContext = createStyledContext<
 >({
   // keeping these here means they work with styled() passing down color to text
   color: undefined,
-  ellipse: undefined,
+  ellipsis: undefined,
   fontFamily: undefined,
   fontSize: undefined,
   fontStyle: undefined,
@@ -163,7 +158,7 @@ const ButtonText = styled(SizableText, {
         // flexGrow 1 leads to inconsistent native style where text pushes to start of view
         flexGrow: 0,
         flexShrink: 1,
-        ellipse: true,
+        ellipsis: true,
         color: '$color',
       },
     },
@@ -216,11 +211,10 @@ function useButton<Props extends ButtonProps>(
   const {
     icon,
     iconAfter,
-    space,
+    gap,
     spaceFlex,
     scaleIcon = 1,
     scaleSpace = 0.66,
-    separator,
     noTextWrap,
     fontFamily,
     fontSize,
@@ -228,7 +222,7 @@ function useButton<Props extends ButtonProps>(
     fontStyle,
     letterSpacing,
     tag,
-    ellipse,
+    ellipsis,
     maxFontSizeMultiplier,
 
     ...restProps
@@ -251,7 +245,7 @@ function useButton<Props extends ButtonProps>(
   })
 
   const [themedIcon, themedIconAfter] = [icon, iconAfter].map(getThemedIcon)
-  const spaceSize = space ?? getVariableValue(iconSize) * scaleSpace
+  const spaceSize = gap ?? getVariableValue(iconSize) * scaleSpace
   const contents = noTextWrap
     ? [propsIn.children]
     : wrapChildrenInText(
@@ -264,7 +258,7 @@ function useButton<Props extends ButtonProps>(
           fontWeight,
           fontStyle,
           letterSpacing,
-          ellipse,
+          ellipsis,
           maxFontSizeMultiplier,
         },
         Text === ButtonText && propsActive.unstyled !== true
@@ -280,7 +274,6 @@ function useButton<Props extends ButtonProps>(
     space: spaceSize,
     spaceFlex,
     ensureKeys: true,
-    separator,
     direction:
       propsActive.flexDirection === 'column' ||
       propsActive.flexDirection === 'column-reverse'

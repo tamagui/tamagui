@@ -1,10 +1,10 @@
 import { getVariableValue, styled } from '@tamagui/core'
 import { getSize } from '@tamagui/get-token'
-import { ThemeableStack } from '@tamagui/stacks'
+import { YStack } from '@tamagui/stacks'
 
 const RADIO_GROUP_ITEM_NAME = 'RadioGroupItem'
 
-export const RadioGroupItemFrame = styled(ThemeableStack, {
+export const RadioGroupItemFrame = styled(YStack, {
   name: RADIO_GROUP_ITEM_NAME,
   tag: 'button',
 
@@ -85,7 +85,7 @@ export const RadioGroupItemFrame = styled(ThemeableStack, {
 
 const RADIO_GROUP_INDICATOR_NAME = 'RadioGroupIndicator'
 
-export const RadioGroupIndicatorFrame = styled(ThemeableStack, {
+export const RadioGroupIndicatorFrame = styled(YStack, {
   name: RADIO_GROUP_INDICATOR_NAME,
 
   variants: {
@@ -107,7 +107,7 @@ export const RadioGroupIndicatorFrame = styled(ThemeableStack, {
 
 const RADIO_GROUP_NAME = 'RadioGroup'
 
-export const RadioGroupFrame = styled(ThemeableStack, {
+export const RadioGroupFrame = styled(YStack, {
   name: RADIO_GROUP_NAME,
 
   variants: {

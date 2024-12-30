@@ -28,7 +28,7 @@ export function ReplaceThemeDemo() {
   }, [])
 
   return (
-    <YStack alignItems="center" space>
+    <YStack alignItems="center" gap="$4">
       <XStack gap="$5">
         <Theme name={theme ?? null}>
           <Square borderRadius="$8" size={100} backgroundColor="$color" />

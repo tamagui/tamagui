@@ -70,7 +70,7 @@ const AnimatedHeading = memo(
           textShadowColor="$shadowColorFocus"
           textShadowRadius={3}
           textShadowOffset={{ width: 0, height: 3 }}
-          ellipse
+          ellipsis
           {...rest}
         >
           {children}

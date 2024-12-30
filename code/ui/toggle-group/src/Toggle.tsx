@@ -1,5 +1,5 @@
 import { composeEventHandlers } from '@tamagui/helpers'
-import { ThemeableStack } from '@tamagui/stacks'
+import { YStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import type { GetProps } from '@tamagui/web'
 import { styled } from '@tamagui/web'
@@ -15,7 +15,7 @@ type TamaguiButtonElement = HTMLButtonElement
 
 export type ToggleElement = TamaguiButtonElement
 
-export const ToggleFrame = styled(ThemeableStack, {
+export const ToggleFrame = styled(YStack, {
   name: NAME,
   tag: 'button',
 
