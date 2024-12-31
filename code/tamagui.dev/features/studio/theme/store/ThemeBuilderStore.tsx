@@ -1,5 +1,5 @@
 import type { Template, ThemeDefinitions } from '@tamagui/theme-builder'
-import { createPalettes } from '@tamagui/themes/v4'
+import { createPalettes, getThemeSuitePalettes } from '@tamagui/themes/v4'
 import { createStore, createUseStore } from '@tamagui/use-store'
 import { getURL } from 'one'
 import { toastController } from '~/features/studio/ToastProvider'
@@ -9,7 +9,6 @@ import { getUniqueId } from '~/features/studio/theme/helpers/getUniqueId'
 import type { SectionStep, ThemeStudioSection } from '~/features/studio/theme/types'
 import { generateThemeBuilderCode } from '../../api'
 import { defaultThemeSuiteItem } from '../defaultThemeSuiteItem'
-import { getThemeSuitePalettes } from '../getThemeSuitePalettes'
 import { updatePreviewTheme } from '../previewTheme'
 import type {
   BuildPalette,

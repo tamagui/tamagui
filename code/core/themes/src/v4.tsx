@@ -13,127 +13,183 @@ type SimpleThemeDefinitions<TemplateName extends string = string> = {
 
 type SimplePaletteDefinitions = Record<string, string[]>
 
-// allows more detailed configuration, used by studio
-// eventually we should merge this down into simple and have it handle what we need
-export function createThemesComplex(props: BuildThemeSuiteProps) {
-  const palettes = createPalettes(props.palettes)
-  return createThemes({
-    palettes,
-    templates: props.templates,
-    componentThemes: defaultComponentThemes,
+type CreateThemeColors = {
+  base: string[]
+  accent?: string[]
+}
+
+export function createThemes<ComponentThemes extends SimpleThemeDefinitions>({
+  colors,
+  componentThemes = defaultComponentThemes as unknown as any,
+}: {
+  colors: CreateThemeColors
+  componentThemes?: ComponentThemes
+}) {
+  return buildThemes({
+    componentThemes,
+    palettes: createPalettes(getBuildPalettes(colors)),
   })
 }
 
-// a simpler API surface
-export function createThemes<
-  Templates extends BuildTemplates,
-  Palettes extends SimplePaletteDefinitions,
->({
-  templates = defaultTemplates as unknown as Templates,
-  palettes = defaultPalettes as unknown as Palettes,
-  componentThemes = templates === (defaultTemplates as any)
-    ? defaultComponentThemes
-    : undefined,
-}: {
-  palettes?: Palettes
-  templates?: Templates
-  componentThemes?: SimpleThemeDefinitions<
-    keyof Templates extends string ? keyof Templates : string
-  >
-}) {
-  const { base, ...subTemplates } = templates
-  const subTemplateNames = Object.keys(subTemplates)
-
-  const subThemes = Object.fromEntries(
-    subTemplateNames.map((key) => {
-      return [
-        key,
-        {
-          template: key,
-        },
-      ]
-    })
-  )
-
-  // start theme-builder
-  const themeBuilder = createThemeBuilder()
-    .addPalettes(palettes)
-    .addTemplates(templates)
-    .addThemes({
-      light: {
-        template: 'base',
-        palette: 'light',
-      },
-      dark: {
-        template: 'base',
-        palette: 'dark',
-      },
-    })
-    .addChildThemes(
-      palettes.light_accent
-        ? {
-            accent: [
-              {
-                parent: 'light',
-                template: 'base',
-                palette: 'light_accent',
-              },
-              {
-                parent: 'dark',
-                template: 'base',
-                palette: 'dark_accent',
-              },
-            ],
-          }
-        : {}
-    )
-    .addChildThemes(subThemes)
-    .addChildThemes(componentThemes ? getComponentThemes(componentThemes) : {}, {
-      avoidNestingWithin: subTemplateNames,
-    })
-
-  const themes = themeBuilder.build()
-
-  return {
-    themes,
-    themeBuilder,
-  }
+function getBuildPalettes(colors: CreateThemeColors): BuildPalettes {
+  // TODO return this
+  //   return {
+  //     "base": {
+  //         "name": "base",
+  //         "anchors": [
+  //             {
+  //                 "index": 0,
+  //                 "hue": {
+  //                     "sync": true,
+  //                     "light": 0,
+  //                     "dark": 0
+  //                 },
+  //                 "sat": {
+  //                     "sync": true,
+  //                     "light": 0.15,
+  //                     "dark": 0.15
+  //                 },
+  //                 "lum": {
+  //                     "light": 0.985,
+  //                     "dark": 0.1
+  //                 }
+  //             },
+  //             {
+  //                 "index": 9,
+  //                 "hue": {
+  //                     "syncLeft": true,
+  //                     "sync": true,
+  //                     "light": 0,
+  //                     "dark": 0
+  //                 },
+  //                 "sat": {
+  //                     "syncLeft": true,
+  //                     "sync": true,
+  //                     "light": 0.15,
+  //                     "dark": 0.15
+  //                 },
+  //                 "lum": {
+  //                     "light": 0.5,
+  //                     "dark": 0.5
+  //                 }
+  //             },
+  //             {
+  //                 "index": 10,
+  //                 "hue": {
+  //                     "sync": true,
+  //                     "light": 0,
+  //                     "dark": 0
+  //                 },
+  //                 "sat": {
+  //                     "sync": true,
+  //                     "light": 0.15,
+  //                     "dark": 0.15
+  //                 },
+  //                 "lum": {
+  //                     "light": 0.15,
+  //                     "dark": 0.925
+  //                 }
+  //             },
+  //             {
+  //                 "index": 11,
+  //                 "hue": {
+  //                     "syncLeft": true,
+  //                     "sync": true,
+  //                     "light": 0,
+  //                     "dark": 0
+  //                 },
+  //                 "sat": {
+  //                     "syncLeft": true,
+  //                     "sync": true,
+  //                     "light": 0.15,
+  //                     "dark": 0.15
+  //                 },
+  //                 "lum": {
+  //                     "light": 0.1,
+  //                     "dark": 0.95
+  //                 }
+  //             }
+  //         ]
+  //     },
+  //     "accent": {
+  //         "name": "accent",
+  //         "anchors": [
+  //             {
+  //                 "index": 0,
+  //                 "hue": {
+  //                     "sync": true,
+  //                     "light": 250,
+  //                     "dark": 250
+  //                 },
+  //                 "sat": {
+  //                     "sync": true,
+  //                     "light": 0.5,
+  //                     "dark": 0.5
+  //                 },
+  //                 "lum": {
+  //                     "light": 0.4,
+  //                     "dark": 0.35
+  //                 }
+  //             },
+  //             {
+  //                 "index": 9,
+  //                 "hue": {
+  //                     "syncLeft": true,
+  //                     "sync": true,
+  //                     "light": 250,
+  //                     "dark": 250
+  //                 },
+  //                 "sat": {
+  //                     "syncLeft": true,
+  //                     "sync": true,
+  //                     "light": 0.5,
+  //                     "dark": 0.5
+  //                 },
+  //                 "lum": {
+  //                     "light": 0.65,
+  //                     "dark": 0.6
+  //                 }
+  //             },
+  //             {
+  //                 "index": 10,
+  //                 "hue": {
+  //                     "sync": true,
+  //                     "light": 250,
+  //                     "dark": 250
+  //                 },
+  //                 "sat": {
+  //                     "sync": true,
+  //                     "light": 0.5,
+  //                     "dark": 0.5
+  //                 },
+  //                 "lum": {
+  //                     "light": 0.95,
+  //                     "dark": 0.9
+  //                 }
+  //             },
+  //             {
+  //                 "index": 11,
+  //                 "hue": {
+  //                     "syncLeft": true,
+  //                     "sync": true,
+  //                     "light": 250,
+  //                     "dark": 250
+  //                 },
+  //                 "sat": {
+  //                     "syncLeft": true,
+  //                     "sync": true,
+  //                     "light": 0.5,
+  //                     "dark": 0.5
+  //                 },
+  //                 "lum": {
+  //                     "light": 0.95,
+  //                     "dark": 0.95
+  //                 }
+  //             }
+  //         ]
+  //     }
+  // }
 }
-
-export const getComponentThemes = (components: SimpleThemeDefinitions) => {
-  return Object.fromEntries(
-    Object.entries(components).map(([componentName, templateName]) => {
-      return [
-        componentName,
-        {
-          parent: '',
-          template: templateName,
-        },
-      ]
-    })
-  )
-}
-
-export const defaultComponentThemes = {
-  ListItem: 'surface1',
-  SelectTrigger: 'surface1',
-  Card: 'surface1',
-  Button: 'surface3',
-  Checkbox: 'surface2',
-  Switch: 'surface2',
-  SwitchThumb: 'inverseSurface1',
-  TooltipContent: 'surface2',
-  Progress: 'surface1',
-  RadioGroupItem: 'surface2',
-  TooltipArrow: 'surface1',
-  SliderTrackActive: 'surface3',
-  SliderTrack: 'surface1',
-  SliderThumb: 'inverseSurface1',
-  Tooltip: 'inverseSurface1',
-  ProgressIndicator: 'inverseSurface1',
-  Input: 'surface1',
-  TextArea: 'surface1',
-} as const
 
 const defaultPalettes = {
   light: [
@@ -233,6 +289,129 @@ const defaultPalettes = {
     'hsla(0, 0%, 23%, 1)',
   ],
 }
+
+// allows more detailed configuration, used by studio
+// eventually we should merge this down into simple and have it handle what we need
+export function createThemesFromStudio(props: BuildThemeSuiteProps) {
+  const palettes = createPalettes(props.palettes)
+  return buildThemes({
+    palettes,
+    templates: props.templates,
+    componentThemes: defaultComponentThemes,
+  })
+}
+
+// a simpler API surface
+export function buildThemes<
+  Templates extends BuildTemplates,
+  Palettes extends SimplePaletteDefinitions,
+  ComponentThemes extends SimpleThemeDefinitions<
+    keyof Templates extends string ? keyof Templates : string
+  >,
+>({
+  templates = defaultTemplates as unknown as Templates,
+  palettes = defaultPalettes as unknown as Palettes,
+  componentThemes = templates === (defaultTemplates as any)
+    ? (defaultComponentThemes as unknown as ComponentThemes)
+    : undefined,
+}: {
+  palettes?: Palettes
+  templates?: Templates
+  componentThemes?: ComponentThemes
+}) {
+  const { base, ...subTemplates } = templates
+  const subTemplateNames = Object.keys(subTemplates)
+
+  const subThemes = Object.fromEntries(
+    subTemplateNames.map((key) => {
+      return [
+        key,
+        {
+          template: key,
+        },
+      ]
+    })
+  )
+
+  // start theme-builder
+  const themeBuilder = createThemeBuilder()
+    .addPalettes(palettes)
+    .addTemplates(templates)
+    .addThemes({
+      light: {
+        template: 'base',
+        palette: 'light',
+      },
+      dark: {
+        template: 'base',
+        palette: 'dark',
+      },
+    })
+    .addChildThemes(
+      palettes.light_accent
+        ? {
+            accent: [
+              {
+                parent: 'light',
+                template: 'base',
+                palette: 'light_accent',
+              },
+              {
+                parent: 'dark',
+                template: 'base',
+                palette: 'dark_accent',
+              },
+            ],
+          }
+        : {}
+    )
+    .addChildThemes(subThemes)
+    .addChildThemes(componentThemes ? getComponentThemes(componentThemes) : {}, {
+      avoidNestingWithin: subTemplateNames,
+    })
+
+  const themes = themeBuilder.build()
+
+  return {
+    themes,
+    themeBuilder,
+  }
+}
+
+export const getComponentThemes = (components: SimpleThemeDefinitions) => {
+  return Object.fromEntries(
+    Object.entries(components).map(([componentName, templateName]) => {
+      return [
+        componentName,
+        {
+          parent: '',
+          template: templateName,
+        },
+      ]
+    })
+  )
+}
+
+export const defaultComponentThemes = {
+  ListItem: 'surface1',
+  SelectTrigger: 'surface1',
+  Card: 'surface1',
+  Button: 'surface3',
+  Checkbox: 'surface2',
+  Switch: 'surface2',
+  SwitchThumb: 'inverseSurface1',
+  TooltipContent: 'surface2',
+  Progress: 'surface1',
+  RadioGroupItem: 'surface2',
+  TooltipArrow: 'surface1',
+  SliderTrackActive: 'surface3',
+  SliderTrack: 'surface1',
+  SliderThumb: 'inverseSurface1',
+  Tooltip: 'inverseSurface1',
+  ProgressIndicator: 'inverseSurface1',
+  Input: 'surface1',
+  TextArea: 'surface1',
+} as const
 
 export function createPalettes(palettes: BuildPalettes) {
   const accentPalettes = palettes.accent ? getThemeSuitePalettes(palettes.accent) : null
