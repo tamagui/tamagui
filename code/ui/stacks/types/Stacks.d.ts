@@ -17,18 +17,18 @@ type Insets = {
 };
 export declare const YStack: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | SizeTokens | undefined;
+    inset?: number | SizeTokens | Insets | null | undefined;
     fullscreen?: boolean | undefined;
-    inset?: number | SizeTokens | Insets | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
 export declare const XStack: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | SizeTokens | undefined;
+    inset?: number | SizeTokens | Insets | null | undefined;
     fullscreen?: boolean | undefined;
-    inset?: number | SizeTokens | Insets | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
 export declare const ZStack: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | SizeTokens | undefined;
+    inset?: number | SizeTokens | Insets | null | undefined;
     fullscreen?: boolean | undefined;
-    inset?: number | SizeTokens | Insets | undefined;
 }, import("@tamagui/core").StaticConfigPublic & {
     neverFlatten: true;
     isZStack: true;

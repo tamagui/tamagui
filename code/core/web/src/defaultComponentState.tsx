@@ -15,3 +15,8 @@ export const defaultComponentStateMounted: TamaguiComponentState = {
   ...defaultComponentState,
   unmounted: false,
 }
+
+export const defaultComponentStateShouldEnter: TamaguiComponentState = {
+  ...defaultComponentState,
+  unmounted: 'should-enter',
+}

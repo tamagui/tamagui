@@ -1,17 +1,15 @@
 import type { SizeTokens } from 'tamagui';
 export declare const SizeController: import("tamagui").TamaguiComponent<Omit<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
-    unstyled?: boolean | undefined;
-    size?: any;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    transparent?: boolean | undefined;
-    fullscreen?: boolean | undefined;
-    circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
         top?: number;
         bottom?: number;
         left?: number;
         right?: number;
-    } | undefined;
+    } | null | undefined;
+    transparent?: boolean | undefined;
+    fullscreen?: boolean | undefined;
+    circular?: boolean | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
     focusTheme?: boolean | undefined;
@@ -21,6 +19,8 @@ export declare const SizeController: import("tamagui").TamaguiComponent<Omit<Omi
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
+    size?: any;
+    unstyled?: boolean | undefined;
 }>, keyof import("tamagui").GroupExtraProps | "__scopeGroup"> & import("tamagui").GroupExtraProps & {
     __scopeGroup?: import("tamagui").Scope;
 }, "size" | "setSize" | "sizes"> & {
@@ -34,18 +34,16 @@ export declare const SizeController: import("tamagui").TamaguiComponent<Omit<Omi
     setSize: (size: SizeTokens) => void;
     sizes?: SizeTokens[];
 }, import("@tamagui/web").StackStyleBase, {
-    unstyled?: boolean | undefined;
-    size?: any;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    transparent?: boolean | undefined;
-    fullscreen?: boolean | undefined;
-    circular?: boolean | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
         top?: number;
         bottom?: number;
         left?: number;
         right?: number;
-    } | undefined;
+    } | null | undefined;
+    transparent?: boolean | undefined;
+    fullscreen?: boolean | undefined;
+    circular?: boolean | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
     focusTheme?: boolean | undefined;
@@ -55,5 +53,7 @@ export declare const SizeController: import("tamagui").TamaguiComponent<Omit<Omi
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
+    size?: any;
+    unstyled?: boolean | undefined;
 }, import("@tamagui/web").StaticConfigPublic>;
 //# sourceMappingURL=_sizeController.d.ts.map

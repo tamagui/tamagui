@@ -67,19 +67,10 @@ jobs:
         run: npx playwright install
 
       - uses: nick-fields/retry@v3
-        name: "Run tests: React 18.2.0 + React Native 0.74.6"
+        name: "Run tests
         env:
           YARN_ENABLE_IMMUTABLE_INSTALLS: false
         with:
           timeout_minutes: 15
           max_attempts: 2
-          command: 'yarn test:18.2.0'
-
-      - uses: nick-fields/retry@v3
-        name: "Run tests: React 18.3.1 + React Native 0.75.4"
-        env:
-          YARN_ENABLE_IMMUTABLE_INSTALLS: false
-        with:
-          timeout_minutes: 15
-          max_attempts: 2
-          command: 'yarn test:18.3.1'
+          command: 'yarn test'

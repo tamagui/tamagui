@@ -24,22 +24,19 @@ interface ToggleGroupMultipleProps extends ToggleGroupImplMultipleProps {
 }
 type ToggleGroupProps = ToggleGroupSingleProps | ToggleGroupMultipleProps;
 declare const ToggleGroup: React.ForwardRefExoticComponent<ScopedProps<ToggleGroupProps> & React.RefAttributes<HTMLElement>> & {
-    Item: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "unstyled" | "pressTheme" | "active" | "orientation" | "elevation" | keyof import("@tamagui/web").StackStyleBase | "transparent" | "fullscreen" | "circular" | "inset" | "hoverTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
-        unstyled?: boolean | undefined;
-        pressTheme?: boolean | undefined;
-        active?: boolean | undefined;
-        orientation?: "horizontal" | "vertical" | undefined;
+    Item: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/web").StackStyleBase | "transparent" | "fullscreen" | "circular" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless" | "unstyled" | "active" | "orientation"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
         elevation?: number | SizeTokens | undefined;
-        transparent?: boolean | undefined;
-        fullscreen?: boolean | undefined;
-        circular?: boolean | undefined;
         inset?: number | SizeTokens | {
             top?: number;
             bottom?: number;
             left?: number;
             right?: number;
-        } | undefined;
+        } | null | undefined;
+        transparent?: boolean | undefined;
+        fullscreen?: boolean | undefined;
+        circular?: boolean | undefined;
         hoverTheme?: boolean | undefined;
+        pressTheme?: boolean | undefined;
         focusTheme?: boolean | undefined;
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
@@ -47,22 +44,22 @@ declare const ToggleGroup: React.ForwardRefExoticComponent<ScopedProps<ToggleGro
         radiused?: boolean | undefined;
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
+        unstyled?: boolean | undefined;
+        active?: boolean | undefined;
+        orientation?: "horizontal" | "vertical" | undefined;
     } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
-        unstyled?: boolean | undefined;
-        pressTheme?: boolean | undefined;
-        active?: boolean | undefined;
-        orientation?: "horizontal" | "vertical" | undefined;
         elevation?: number | SizeTokens | undefined;
-        transparent?: boolean | undefined;
-        fullscreen?: boolean | undefined;
-        circular?: boolean | undefined;
         inset?: number | SizeTokens | {
             top?: number;
             bottom?: number;
             left?: number;
             right?: number;
-        } | undefined;
+        } | null | undefined;
+        transparent?: boolean | undefined;
+        fullscreen?: boolean | undefined;
+        circular?: boolean | undefined;
         hoverTheme?: boolean | undefined;
+        pressTheme?: boolean | undefined;
         focusTheme?: boolean | undefined;
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
@@ -70,22 +67,22 @@ declare const ToggleGroup: React.ForwardRefExoticComponent<ScopedProps<ToggleGro
         radiused?: boolean | undefined;
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
+        unstyled?: boolean | undefined;
+        active?: boolean | undefined;
+        orientation?: "horizontal" | "vertical" | undefined;
     } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {
-        unstyled?: boolean | undefined;
-        pressTheme?: boolean | undefined;
-        active?: boolean | undefined;
-        orientation?: "horizontal" | "vertical" | undefined;
         elevation?: number | SizeTokens | undefined;
-        transparent?: boolean | undefined;
-        fullscreen?: boolean | undefined;
-        circular?: boolean | undefined;
         inset?: number | SizeTokens | {
             top?: number;
             bottom?: number;
             left?: number;
             right?: number;
-        } | undefined;
+        } | null | undefined;
+        transparent?: boolean | undefined;
+        fullscreen?: boolean | undefined;
+        circular?: boolean | undefined;
         hoverTheme?: boolean | undefined;
+        pressTheme?: boolean | undefined;
         focusTheme?: boolean | undefined;
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
@@ -93,6 +90,9 @@ declare const ToggleGroup: React.ForwardRefExoticComponent<ScopedProps<ToggleGro
         radiused?: boolean | undefined;
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
+        unstyled?: boolean | undefined;
+        active?: boolean | undefined;
+        orientation?: "horizontal" | "vertical" | undefined;
     }>> & {
         value: string;
         id?: string;
@@ -143,21 +143,18 @@ type RovingFocusGroupProps = React.ComponentPropsWithoutRef<typeof RovingFocusGr
 declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & import("@tamagui/group").GroupExtraProps & {
     __scopeGroup?: import("@tamagui/create-context").Scope;
 }, import("@tamagui/web").StackStyleBase, {
-    unstyled?: boolean | undefined;
-    pressTheme?: boolean | undefined;
-    orientation?: "horizontal" | "vertical" | undefined;
-    size?: any;
     elevation?: number | SizeTokens | undefined;
-    transparent?: boolean | undefined;
-    fullscreen?: boolean | undefined;
-    circular?: boolean | undefined;
     inset?: number | SizeTokens | {
         top?: number;
         bottom?: number;
         left?: number;
         right?: number;
-    } | undefined;
+    } | null | undefined;
+    transparent?: boolean | undefined;
+    fullscreen?: boolean | undefined;
+    circular?: boolean | undefined;
     hoverTheme?: boolean | undefined;
+    pressTheme?: boolean | undefined;
     focusTheme?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
@@ -165,6 +162,9 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
+    size?: any;
+    unstyled?: boolean | undefined;
+    orientation?: "horizontal" | "vertical" | undefined;
 }, import("@tamagui/web").StaticConfigPublic>;
 type ToggleGroupImplProps = GetProps<typeof ToggleGroupImplElementFrame> & GroupProps & {
     rovingFocus?: boolean;

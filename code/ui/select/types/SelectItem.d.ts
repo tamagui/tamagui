@@ -24,19 +24,17 @@ export interface SelectItemExtraProps {
 export interface SelectItemProps extends Omit<ListItemProps, keyof SelectItemExtraProps>, SelectItemExtraProps {
 }
 export declare const SelectItem: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
-    unstyled?: boolean | undefined;
-    size?: import("@tamagui/web").SizeTokens | undefined;
     disabled?: boolean | undefined;
     elevation?: number | import("@tamagui/web").SizeTokens | undefined;
-    transparent?: boolean | undefined;
-    fullscreen?: boolean | undefined;
-    circular?: boolean | undefined;
     inset?: number | import("@tamagui/web").SizeTokens | {
         top?: number;
         bottom?: number;
         left?: number;
         right?: number;
-    } | undefined;
+    } | null | undefined;
+    transparent?: boolean | undefined;
+    fullscreen?: boolean | undefined;
+    circular?: boolean | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
     focusTheme?: boolean | undefined;
@@ -46,21 +44,21 @@ export declare const SelectItem: import("@tamagui/web").TamaguiComponent<Omit<im
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
+    size?: import("@tamagui/web").SizeTokens | undefined;
+    unstyled?: boolean | undefined;
     active?: boolean | undefined;
 }>, keyof SelectItemExtraProps> & SelectItemExtraProps, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & SelectItemExtraProps, import("@tamagui/web").StackStyleBase, {
-    unstyled?: boolean | undefined;
-    size?: import("@tamagui/web").SizeTokens | undefined;
     disabled?: boolean | undefined;
     elevation?: number | import("@tamagui/web").SizeTokens | undefined;
-    transparent?: boolean | undefined;
-    fullscreen?: boolean | undefined;
-    circular?: boolean | undefined;
     inset?: number | import("@tamagui/web").SizeTokens | {
         top?: number;
         bottom?: number;
         left?: number;
         right?: number;
-    } | undefined;
+    } | null | undefined;
+    transparent?: boolean | undefined;
+    fullscreen?: boolean | undefined;
+    circular?: boolean | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
     focusTheme?: boolean | undefined;
@@ -70,6 +68,8 @@ export declare const SelectItem: import("@tamagui/web").TamaguiComponent<Omit<im
     radiused?: boolean | undefined;
     padded?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
+    size?: import("@tamagui/web").SizeTokens | undefined;
+    unstyled?: boolean | undefined;
     active?: boolean | undefined;
 }, import("@tamagui/web").StaticConfigPublic>;
 export {};

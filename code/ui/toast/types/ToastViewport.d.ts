@@ -10,7 +10,7 @@ declare const ToastViewportFrame: import("@tamagui/core").TamaguiComponent<impor
         bottom?: number;
         left?: number;
         right?: number;
-    } | undefined;
+    } | null | undefined;
     fullscreen?: boolean | undefined;
     unstyled?: boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
@@ -40,14 +40,14 @@ type ToastViewportProps = ToastViewportFrameProps & {
      */
     portalToRoot?: boolean;
 };
-declare const ToastViewport: React.MemoExoticComponent<React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "inset" | "fullscreen" | "unstyled"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+declare const ToastViewport: React.MemoExoticComponent<React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "fullscreen" | "unstyled"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     inset?: number | import("@tamagui/core").SizeTokens | {
         top?: number;
         bottom?: number;
         left?: number;
         right?: number;
-    } | undefined;
+    } | null | undefined;
     fullscreen?: boolean | undefined;
     unstyled?: boolean | undefined;
 } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
@@ -57,7 +57,7 @@ declare const ToastViewport: React.MemoExoticComponent<React.ForwardRefExoticCom
         bottom?: number;
         left?: number;
         right?: number;
-    } | undefined;
+    } | null | undefined;
     fullscreen?: boolean | undefined;
     unstyled?: boolean | undefined;
 } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {
@@ -67,7 +67,7 @@ declare const ToastViewport: React.MemoExoticComponent<React.ForwardRefExoticCom
         bottom?: number;
         left?: number;
         right?: number;
-    } | undefined;
+    } | null | undefined;
     fullscreen?: boolean | undefined;
     unstyled?: boolean | undefined;
 }>> & {

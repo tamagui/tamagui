@@ -22,7 +22,7 @@ export declare const DatePicker: ((props: DatePickerProps) => import("react/jsx-
     } & import("react").RefAttributes<import("tamagui").TamaguiElement>>;
     Content: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/web").TamaguiComponentPropsBaseBase & import("tamagui").PopoverContentTypeProps & {
         __scopePopover?: string | undefined;
-    } & import("react").RefAttributes<HTMLElement | import("react-native").View>, keyof import("@tamagui/web").StackStyleBase | "unstyled"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+    } & import("react").RefAttributes<HTMLElement | import("react-native").View>, "unstyled" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
         unstyled?: boolean | undefined;
     } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
         unstyled?: boolean | undefined;
@@ -41,13 +41,13 @@ export declare const DatePicker: ((props: DatePickerProps) => import("react/jsx-
     } & {
         Arrow: import("tamagui").TamaguiComponent<import("@tamagui/web").TamaDefer, import("tamagui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & import("tamagui").PopperArrowExtraProps, import("@tamagui/web").StackStyleBase, {
             elevation?: number | import("tamagui").SizeTokens | undefined;
-            fullscreen?: boolean | undefined;
             inset?: number | import("tamagui").SizeTokens | {
                 top?: number;
                 bottom?: number;
                 left?: number;
                 right?: number;
-            } | undefined;
+            } | null | undefined;
+            fullscreen?: boolean | undefined;
             unstyled?: boolean | undefined;
         }, import("@tamagui/web").StaticConfigPublic>;
     };
