@@ -671,7 +671,8 @@ export function createComponent<
           // allow newlines because why not its annoying with mdx
           if (typeof item === 'string' && item !== '\n') {
             console.error(
-              `Unexpected text node: ${item}. A text node cannot be a child of a <View>.`
+              `Unexpected text node: ${item}. A text node cannot be a child of a <${staticConfig.componentName || propsIn.tag || 'View'}>.`,
+              props
             )
           }
         })
