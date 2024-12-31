@@ -8,7 +8,6 @@ import {
   useIsomorphicLayoutEffect,
 } from '@tamagui/constants'
 import {
-  getConfig,
   Stack,
   Theme,
   useConfiguration,
@@ -17,7 +16,7 @@ import {
   useThemeName,
 } from '@tamagui/core'
 import { Portal, USE_NATIVE_PORTAL } from '@tamagui/portal'
-import React, { useEffect, useId, useLayoutEffect, useState } from 'react'
+import React, { useState } from 'react'
 import type {
   Animated,
   GestureResponderEvent,
@@ -79,7 +78,13 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     const ref = useComposedRefs(forwardedRef, sheetRef, providerProps.contentRef as any)
 
     // TODO this can be extracted into a helper getAnimationConfig(animationProp as array | string)
+    const { animationDriver } = useConfiguration()
     const animationConfig = (() => {
+      if (animationDriver.supportsCSSVars) {
+        // for now this detects css driver only, which has no "config"
+        return {}
+      }
+
       const [animationProp, animationPropConfig] = !animation
         ? []
         : Array.isArray(animation)
@@ -89,7 +94,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
         animationConfigProp ??
         (animationProp
           ? {
-              ...(getConfig().animations.animations[animationProp as string] as Object),
+              ...(animationDriver.animations[animationProp as string] as Object),
               ...animationPropConfig,
             }
           : null)
@@ -120,7 +125,6 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       [screenSize, frameSize, snapPoints, snapPointsMode]
     )
 
-    const { animationDriver } = useConfiguration()
     const { useAnimatedNumber, useAnimatedNumberStyle, useAnimatedNumberReaction } =
       animationDriver
     const AnimatedView = (animationDriver.View ?? Stack) as typeof Animated.View
@@ -439,6 +443,8 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     //   scope: `${id}Sheet`,
     //   portal: true,
     // })
+
+    console.warn('animatedStyle', animatedStyle)
 
     let contents = (
       <ParentSheetContext.Provider value={nextParentContext}>

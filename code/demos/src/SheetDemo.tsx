@@ -1,7 +1,7 @@
 import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
 import type { SheetProps } from '@tamagui/sheet'
 import { Sheet } from '@tamagui/sheet'
-import React from 'react'
+import React, { memo } from 'react'
 import { Button, H2, Input, Paragraph, XStack, YStack } from 'tamagui'
 
 const spModes = ['percent', 'constant', 'fit', 'mixed'] as const
@@ -85,24 +85,35 @@ export const SheetDemo = () => {
 
         <Sheet.Handle />
         <Sheet.Frame padding="$4" justifyContent="center" alignItems="center" gap="$5">
-          <Button size="$6" circular icon={ChevronDown} onPress={() => setOpen(false)} />
-          <Input width={200} />
-          {modal && isPercent && (
-            <>
-              <InnerSheet open={innerOpen} onOpenChange={setInnerOpen} />
-              <Button
-                size="$6"
-                circular
-                icon={ChevronUp}
-                onPress={() => setInnerOpen(true)}
-              />
-            </>
-          )}
+          <SheetContents {...{ modal, isPercent, innerOpen, setInnerOpen, setOpen }} />
         </Sheet.Frame>
       </Sheet>
     </>
   )
 }
+
+// in general good to memoize the contents to avoid expensive renders during animations
+const SheetContents = memo(
+  ({ modal, isPercent, innerOpen, setInnerOpen, setOpen }: any) => {
+    return (
+      <>
+        <Button size="$6" circular icon={ChevronDown} onPress={() => setOpen(false)} />
+        <Input width={200} />
+        {modal && isPercent && (
+          <>
+            <InnerSheet open={innerOpen} onOpenChange={setInnerOpen} />
+            <Button
+              size="$6"
+              circular
+              icon={ChevronUp}
+              onPress={() => setInnerOpen(true)}
+            />
+          </>
+        )}
+      </>
+    )
+  }
+)
 
 function InnerSheet(props: SheetProps) {
   return (
