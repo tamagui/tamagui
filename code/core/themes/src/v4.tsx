@@ -14,6 +14,7 @@ type SimpleThemeDefinitions<TemplateName extends string = string> = {
 type SimplePaletteDefinitions = Record<string, string[]>
 
 // allows more detailed configuration, used by studio
+// eventually we should merge this down into simple and have it handle what we need
 export function createThemesComplex(props: BuildThemeSuiteProps) {
   const palettes = createPalettes(props.palettes)
   return createThemes({
