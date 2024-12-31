@@ -498,10 +498,16 @@ export const getSplitStyles: StyleSplitter = (
     let isMediaOrPseudo = Boolean(isMedia || isPseudo)
 
     if (isMediaOrPseudo && keyInit.startsWith('$group-')) {
-      const name = keyInit.split('-')[1]
-      // for simple group, name is not in the key
-      if (context?.groups.subscribe && !context?.groups.state[name]) {
-        keyInit = keyInit.replace('$group-', `$group-true-`)
+      const parts = keyInit.split('-')
+      if (
+        // check if its actually a simple group selector to avoid breaking selectors
+        parts.length === 2 ||
+        (parts.length === 3 && pseudoPriorities[parts[parts.length - 1]])
+      ) {
+        const name = parts[1]
+        if (context?.groups.subscribe && !context?.groups.state[name]) {
+          keyInit = keyInit.replace('$group-', `$group-true-`)
+        }
       }
     }
 
