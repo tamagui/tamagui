@@ -1,6 +1,6 @@
 import type { ThemeBuilder } from '@tamagui/theme-builder'
 import type { BuildThemeSuiteProps } from '../theme/types'
-import { createThemes } from '@tamagui/themes/v4'
+import { createThemesComplex } from '@tamagui/themes/v4'
 
 type GenerateThemeBuilderCodeProps = BuildThemeSuiteProps & {
   includeComponentThemes: boolean
@@ -17,13 +17,13 @@ export async function generateThemeBuilderCode({
   includeComponentThemes,
   includeSizeTokens,
 }: GenerateThemeBuilderCodeProps) {
-  const { themeBuilder } = createThemes({
+  const { themeBuilder } = createThemesComplex({
     templates,
-    baseTheme,
     componentThemes,
-    schemes,
     palettes,
+    baseTheme,
     subThemes,
+    schemes,
   })
   return `
   import { defaultSubThemes, defaultComponentThemes } from '@tamagui/themes/v3-themes'
