@@ -6,9 +6,14 @@ type SimpleThemeDefinitions<TemplateName extends string = string> = {
     [ComponentName: string]: TemplateName;
 };
 type SimplePaletteDefinitions = Record<string, string[]>;
+type Colors = string[];
+type ColorsByScheme = {
+    light: Colors;
+    dark: Colors;
+};
 type CreateThemeColors = {
-    base: string[];
-    accent?: string[];
+    base: Colors | ColorsByScheme;
+    accent?: Colors | ColorsByScheme;
 };
 export declare function createThemes<ComponentThemes extends SimpleThemeDefinitions>({ colors, componentThemes, }: {
     colors: CreateThemeColors;
@@ -33,7 +38,7 @@ export declare function createThemes<ComponentThemes extends SimpleThemeDefiniti
         };
     };
     themeBuilder: import("@tamagui/theme-builder").ThemeBuilder<Omit<{
-        palettes: Record<string, string[]>;
+        palettes: SimplePaletteDefinitions;
     } & {
         templates: BuildTemplates;
     }, "themes"> & {
@@ -1226,7 +1231,7 @@ export declare function createThemesFromStudio(props: BuildThemeSuiteProps): {
         };
     };
     themeBuilder: import("@tamagui/theme-builder").ThemeBuilder<Omit<{
-        palettes: Record<string, string[]>;
+        palettes: SimplePaletteDefinitions;
     } & {
         templates: BuildTemplates;
     }, "themes"> & {
@@ -3634,5 +3639,5 @@ export declare const defaultComponentThemes: {
     readonly Input: "surface1";
     readonly TextArea: "surface1";
 };
-export declare function createPalettes(palettes: BuildPalettes): Record<string, string[]>;
+export declare function createPalettes(palettes: BuildPalettes): SimplePaletteDefinitions;
 //# sourceMappingURL=v4.d.ts.map

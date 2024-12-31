@@ -1,4 +1,5 @@
 import { createThemeBuilder } from '@tamagui/theme-builder'
+import { parseToHsla } from 'color2k'
 import { getThemeSuitePalettes } from './getThemeSuitePalettes'
 import type { BuildPalettes, BuildTemplates, BuildThemeSuiteProps } from './types'
 import { defaultTemplates } from './v4-defaultTemplates'
@@ -13,9 +14,12 @@ type SimpleThemeDefinitions<TemplateName extends string = string> = {
 
 type SimplePaletteDefinitions = Record<string, string[]>
 
+type Colors = string[]
+type ColorsByScheme = { light: Colors; dark: Colors }
+
 type CreateThemeColors = {
-  base: string[]
-  accent?: string[]
+  base: Colors | ColorsByScheme
+  accent?: Colors | ColorsByScheme
 }
 
 export function createThemes<ComponentThemes extends SimpleThemeDefinitions>({
@@ -31,263 +35,52 @@ export function createThemes<ComponentThemes extends SimpleThemeDefinitions>({
   })
 }
 
-function getBuildPalettes(colors: CreateThemeColors): BuildPalettes {
-  // TODO return this
-  //   return {
-  //     "base": {
-  //         "name": "base",
-  //         "anchors": [
-  //             {
-  //                 "index": 0,
-  //                 "hue": {
-  //                     "sync": true,
-  //                     "light": 0,
-  //                     "dark": 0
-  //                 },
-  //                 "sat": {
-  //                     "sync": true,
-  //                     "light": 0.15,
-  //                     "dark": 0.15
-  //                 },
-  //                 "lum": {
-  //                     "light": 0.985,
-  //                     "dark": 0.1
-  //                 }
-  //             },
-  //             {
-  //                 "index": 9,
-  //                 "hue": {
-  //                     "syncLeft": true,
-  //                     "sync": true,
-  //                     "light": 0,
-  //                     "dark": 0
-  //                 },
-  //                 "sat": {
-  //                     "syncLeft": true,
-  //                     "sync": true,
-  //                     "light": 0.15,
-  //                     "dark": 0.15
-  //                 },
-  //                 "lum": {
-  //                     "light": 0.5,
-  //                     "dark": 0.5
-  //                 }
-  //             },
-  //             {
-  //                 "index": 10,
-  //                 "hue": {
-  //                     "sync": true,
-  //                     "light": 0,
-  //                     "dark": 0
-  //                 },
-  //                 "sat": {
-  //                     "sync": true,
-  //                     "light": 0.15,
-  //                     "dark": 0.15
-  //                 },
-  //                 "lum": {
-  //                     "light": 0.15,
-  //                     "dark": 0.925
-  //                 }
-  //             },
-  //             {
-  //                 "index": 11,
-  //                 "hue": {
-  //                     "syncLeft": true,
-  //                     "sync": true,
-  //                     "light": 0,
-  //                     "dark": 0
-  //                 },
-  //                 "sat": {
-  //                     "syncLeft": true,
-  //                     "sync": true,
-  //                     "light": 0.15,
-  //                     "dark": 0.15
-  //                 },
-  //                 "lum": {
-  //                     "light": 0.1,
-  //                     "dark": 0.95
-  //                 }
-  //             }
-  //         ]
-  //     },
-  //     "accent": {
-  //         "name": "accent",
-  //         "anchors": [
-  //             {
-  //                 "index": 0,
-  //                 "hue": {
-  //                     "sync": true,
-  //                     "light": 250,
-  //                     "dark": 250
-  //                 },
-  //                 "sat": {
-  //                     "sync": true,
-  //                     "light": 0.5,
-  //                     "dark": 0.5
-  //                 },
-  //                 "lum": {
-  //                     "light": 0.4,
-  //                     "dark": 0.35
-  //                 }
-  //             },
-  //             {
-  //                 "index": 9,
-  //                 "hue": {
-  //                     "syncLeft": true,
-  //                     "sync": true,
-  //                     "light": 250,
-  //                     "dark": 250
-  //                 },
-  //                 "sat": {
-  //                     "syncLeft": true,
-  //                     "sync": true,
-  //                     "light": 0.5,
-  //                     "dark": 0.5
-  //                 },
-  //                 "lum": {
-  //                     "light": 0.65,
-  //                     "dark": 0.6
-  //                 }
-  //             },
-  //             {
-  //                 "index": 10,
-  //                 "hue": {
-  //                     "sync": true,
-  //                     "light": 250,
-  //                     "dark": 250
-  //                 },
-  //                 "sat": {
-  //                     "sync": true,
-  //                     "light": 0.5,
-  //                     "dark": 0.5
-  //                 },
-  //                 "lum": {
-  //                     "light": 0.95,
-  //                     "dark": 0.9
-  //                 }
-  //             },
-  //             {
-  //                 "index": 11,
-  //                 "hue": {
-  //                     "syncLeft": true,
-  //                     "sync": true,
-  //                     "light": 250,
-  //                     "dark": 250
-  //                 },
-  //                 "sat": {
-  //                     "syncLeft": true,
-  //                     "sync": true,
-  //                     "light": 0.5,
-  //                     "dark": 0.5
-  //                 },
-  //                 "lum": {
-  //                     "light": 0.95,
-  //                     "dark": 0.95
-  //                 }
-  //             }
-  //         ]
-  //     }
-  // }
+// const themes = createThemes({
+//   colors: {
+//     base: ['#000', '#fff'],
+//     accent: ['darkred', 'lightred'],
+//   },
+// })
+
+function getColorsByScheme(colors: Colors): ColorsByScheme {
+  return {
+    light: colors,
+    dark: colors.toReversed(),
+  }
 }
 
-const defaultPalettes = {
-  light: [
-    'hsla(250, 50%, 48%, 1)',
-    'hsla(0, 0%, 99%, 0)',
-    'hsla(0, 0%, 99%, 0.25)',
-    'hsla(0, 0%, 99%, 0.5)',
-    'hsla(0, 0%, 99%, 0.75)',
-    'hsla(0, 0%, 99%, 1)',
-    'hsla(0, 0%, 93%, 1)',
-    'hsla(0, 0%, 88%, 1)',
-    'hsla(0, 0%, 82%, 1)',
-    'hsla(0, 0%, 77%, 1)',
-    'hsla(0, 0%, 72%, 1)',
-    'hsla(0, 0%, 66%, 1)',
-    'hsla(0, 0%, 61%, 1)',
-    'hsla(0, 0%, 55%, 1)',
-    'hsla(0, 0%, 50%, 1)',
-    'hsla(0, 15%, 15%, 1)',
-    'hsla(0, 15%, 10%, 1)',
-    'hsla(0, 14%, 10%, 0.75)',
-    'hsla(0, 14%, 10%, 0.5)',
-    'hsla(0, 14%, 10%, 0.25)',
-    'hsla(0, 14%, 10%, 0)',
-    'hsla(250, 50%, 62%, 1)',
-  ],
-  dark: [
-    'hsla(250, 50%, 57%, 1)',
-    'hsla(0, 0%, 10%, 0)',
-    'hsla(0, 0%, 10%, 0.25)',
-    'hsla(0, 0%, 10%, 0.5)',
-    'hsla(0, 0%, 10%, 0.75)',
-    'hsla(0, 0%, 10%, 1)',
-    'hsla(0, 0%, 14%, 1)',
-    'hsla(0, 0%, 19%, 1)',
-    'hsla(0, 0%, 23%, 1)',
-    'hsla(0, 0%, 28%, 1)',
-    'hsla(0, 0%, 32%, 1)',
-    'hsla(0, 0%, 37%, 1)',
-    'hsla(0, 0%, 41%, 1)',
-    'hsla(0, 0%, 46%, 1)',
-    'hsla(0, 0%, 50%, 1)',
-    'hsla(0, 15%, 93%, 1)',
-    'hsla(0, 15%, 95%, 1)',
-    'hsla(0, 15%, 95%, 0.75)',
-    'hsla(0, 15%, 95%, 0.5)',
-    'hsla(0, 15%, 95%, 0.25)',
-    'hsla(0, 15%, 95%, 0)',
-    'hsla(250, 50%, 43%, 1)',
-  ],
-  light_accent: [
-    'hsla(0, 0%, 82%, 1)',
-    'hsla(250, 50%, 40%, 0)',
-    'hsla(250, 50%, 40%, 0.25)',
-    'hsla(250, 50%, 40%, 0.5)',
-    'hsla(250, 50%, 40%, 0.75)',
-    'hsla(250, 50%, 40%, 1)',
-    'hsla(250, 50%, 43%, 1)',
-    'hsla(250, 50%, 46%, 1)',
-    'hsla(250, 50%, 48%, 1)',
-    'hsla(250, 50%, 51%, 1)',
-    'hsla(250, 50%, 54%, 1)',
-    'hsla(250, 50%, 57%, 1)',
-    'hsla(250, 50%, 59%, 1)',
-    'hsla(250, 50%, 62%, 1)',
-    'hsla(250, 50%, 65%, 1)',
-    'hsla(250, 50%, 95%, 1)',
-    'hsla(250, 50%, 95%, 1)',
-    'hsla(249, 52%, 95%, 0.75)',
-    'hsla(249, 52%, 95%, 0.5)',
-    'hsla(249, 52%, 95%, 0.25)',
-    'hsla(249, 52%, 95%, 0)',
-    'hsla(0, 0%, 55%, 1)',
-  ],
-  dark_accent: [
-    'hsla(0, 0%, 46%, 1)',
-    'hsla(250, 50%, 35%, 0)',
-    'hsla(250, 50%, 35%, 0.25)',
-    'hsla(250, 50%, 35%, 0.5)',
-    'hsla(250, 50%, 35%, 0.75)',
-    'hsla(250, 50%, 35%, 1)',
-    'hsla(250, 50%, 38%, 1)',
-    'hsla(250, 50%, 41%, 1)',
-    'hsla(250, 50%, 43%, 1)',
-    'hsla(250, 50%, 46%, 1)',
-    'hsla(250, 50%, 49%, 1)',
-    'hsla(250, 50%, 52%, 1)',
-    'hsla(250, 50%, 54%, 1)',
-    'hsla(250, 50%, 57%, 1)',
-    'hsla(250, 50%, 60%, 1)',
-    'hsla(250, 50%, 90%, 1)',
-    'hsla(250, 50%, 95%, 1)',
-    'hsla(249, 52%, 95%, 0.75)',
-    'hsla(249, 52%, 95%, 0.5)',
-    'hsla(249, 52%, 95%, 0.25)',
-    'hsla(249, 52%, 95%, 0)',
-    'hsla(0, 0%, 23%, 1)',
-  ],
+function getAnchors(colorsByScheme: ColorsByScheme) {
+  return colorsByScheme.light.map((lcolor, index) => {
+    const dcolor = colorsByScheme.dark[index]
+    const [lhue, lsat, llum] = parseToHsla(lcolor)
+    const [dhue, dsat, dlum] = parseToHsla(dcolor)
+    return {
+      index,
+      hue: { light: lhue, dark: dhue },
+      sat: { light: lsat, dark: dsat },
+      lum: { light: llum, dark: dlum },
+    } as const
+  })
+}
+
+function getBuildPalettes(colors: CreateThemeColors): BuildPalettes {
+  const base = Array.isArray(colors.base) ? getColorsByScheme(colors.base) : colors.base
+  const accent = Array.isArray(colors.accent)
+    ? getColorsByScheme(colors.accent)
+    : colors.accent
+
+  return {
+    base: {
+      name: 'base',
+      anchors: getAnchors(base),
+    },
+    ...(accent && {
+      accent: {
+        name: 'accent',
+        anchors: getAnchors(accent),
+      },
+    }),
+  }
 }
 
 // allows more detailed configuration, used by studio
@@ -300,6 +93,13 @@ export function createThemesFromStudio(props: BuildThemeSuiteProps) {
     componentThemes: defaultComponentThemes,
   })
 }
+
+const defaultPalettes: SimplePaletteDefinitions = createPalettes(
+  getBuildPalettes({
+    base: ['#fff', '#000'],
+    accent: ['darkred', 'lightred'],
+  })
+)
 
 // a simpler API surface
 export function buildThemes<
@@ -413,7 +213,7 @@ export const defaultComponentThemes = {
   TextArea: 'surface1',
 } as const
 
-export function createPalettes(palettes: BuildPalettes) {
+export function createPalettes(palettes: BuildPalettes): SimplePaletteDefinitions {
   const accentPalettes = palettes.accent ? getThemeSuitePalettes(palettes.accent) : null
   const basePalettes = getThemeSuitePalettes(palettes.base)
 
@@ -448,5 +248,5 @@ export function createPalettes(palettes: BuildPalettes) {
     })
   )
 
-  return next as any as Record<string, string[]>
+  return next as any
 }
