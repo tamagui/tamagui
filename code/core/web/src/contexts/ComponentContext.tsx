@@ -6,6 +6,7 @@ export const ComponentContext = createStyledContext<ComponentContextI>({
   inText: false,
   language: null,
   animationDriver: null,
+  setParentFocusState: null,
   groups: {
     emit: null as unknown as GroupStateListener,
     subscribe: null as unknown as (cb: GroupStateListener) => () => void,

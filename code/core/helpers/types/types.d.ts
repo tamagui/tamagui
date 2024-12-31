@@ -2,7 +2,7 @@ export type StyleObject = [
     property: string,
     value: any,
     identifier: string,
-    pseudo: 'hover' | 'focus' | 'focus-visible' | 'active' | undefined,
+    pseudo: 'hover' | 'focus' | 'focus-visible' | 'focus-within' | 'active' | undefined,
     rules: string[]
 ];
 export declare const StyleObjectProperty = 0;
