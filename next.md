@@ -1,3 +1,5 @@
+- reanimated animate presence is making me set `opacity: 1` type default values
+
 - popover trigger should send an event to close tooltips automatically on open
   - closeTooltips() helper
 
