@@ -53,7 +53,8 @@ export const createMediaStyle = (
   negate?: boolean,
   priority?: number
 ): MediaStyleObject => {
-  const [property, , identifier, pseudoIn, rules] = styleObject
+  const [propertyIn, , identifier, pseudoIn, rules] = styleObject
+  let property = propertyIn
   const enableMediaPropOrder = getSetting('mediaPropOrder')
   const isTheme = type === 'theme'
   const isPlatform = type === 'platform'

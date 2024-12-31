@@ -873,8 +873,9 @@ export const getSplitStyles: StyleSplitter = (
             // handle nested media:
             // for now we're doing weird stuff, getStylesAtomic will put the
             // $platform-web into property so we can check it here
-            const property = style[0]
-            if (property[0] === '$' && !isActivePlatform(property)) {
+            const property = style[StyleObjectProperty]
+            const isSubStyle = property[0] === '$'
+            if (isSubStyle && !isActivePlatform(property)) {
               continue
             }
 
@@ -889,7 +890,12 @@ export const getSplitStyles: StyleSplitter = (
             if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
               log(`📺 media style:`, out)
             }
-            const fullKey = `${style[StyleObjectProperty]}${PROP_SPLIT}${mediaKeyShort}${
+            // this is imperfect it should be fixed fruther down, we mess up property when dealing with
+            // media-sub-style, like $sm={{ $platform-web: {} }}
+            // property is just $platform-web, it should br $platform-web-bg, so we add extra info from style
+            // but that info includes the value too
+            const subKey = isSubStyle ? style[2] : ''
+            const fullKey = `${style[StyleObjectProperty]}${subKey}${PROP_SPLIT}${mediaKeyShort}${
               style[StyleObjectPseudo] || ''
             }`
 
