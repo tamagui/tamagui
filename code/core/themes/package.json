@@ -65,9 +65,19 @@
       "types": "./types/v3-themes.d.ts",
       "import": "./dist/esm/v3-themes.mjs",
       "require": "./dist/cjs/v3-themes.cjs"
+    },
+    "./v4": {
+      "react-native": {
+        "import": "./dist/esm/v4.native.js",
+        "require": "./dist/cjs/v4.native.js"
+      },
+      "types": "./types/v4.d.ts",
+      "import": "./dist/esm/v4.mjs",
+      "require": "./dist/cjs/v4.cjs"
     }
   },
   "dependencies": {
+    "color2k": "^2.0.2",
     "@tamagui/colors": "1.121.4",
     "@tamagui/create-theme": "1.121.4",
     "@tamagui/theme-builder": "1.121.4",

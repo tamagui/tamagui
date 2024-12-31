@@ -14,6 +14,8 @@
     "v3.js",
     "v3-themes.js",
     "v3-themes.d.ts",
+    "v4.d.ts",
+    "v4.js",
     "dist",
     "**/__tests__"
   ],

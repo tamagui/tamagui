@@ -1,8 +1,7 @@
 import type { ThemeName } from 'tamagui'
 import { mutateThemes } from 'tamagui'
-
 import type { BuildThemeSuiteProps } from './types'
-import { buildThemeSuite } from '../api/buildThemeSuite'
+import { createThemes } from '@tamagui/themes/v4'
 
 const STUDIO_INTERNAL_THEME_NAME = 'studiodemointernal'
 
@@ -33,7 +32,7 @@ export async function updatePreviewTheme(
   // async lock
   running.set(args.id, cacheKey)
 
-  const { themes } = buildThemeSuite(args)
+  const { themes } = createThemes(args)
 
   // async stale check
   if (running.get(args.id) !== cacheKey) {

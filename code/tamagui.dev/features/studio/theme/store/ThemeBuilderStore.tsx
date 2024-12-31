@@ -1,6 +1,6 @@
 import type { Template, ThemeDefinitions } from '@tamagui/theme-builder'
+import { createPalettes } from '@tamagui/themes/v4'
 import { createStore, createUseStore } from '@tamagui/use-store'
-
 import { getURL } from 'one'
 import { toastController } from '~/features/studio/ToastProvider'
 import { demoOptions, optionValues } from '~/features/studio/theme/demoOptions'
@@ -10,7 +10,6 @@ import type { SectionStep, ThemeStudioSection } from '~/features/studio/theme/ty
 import { generateThemeBuilderCode } from '../../api'
 import { defaultThemeSuiteItem } from '../defaultThemeSuiteItem'
 import { getThemeSuitePalettes } from '../getThemeSuitePalettes'
-import { getFinalPalettes } from '../helpers/getFinalPalettes'
 import { updatePreviewTheme } from '../previewTheme'
 import type {
   BuildPalette,
@@ -71,7 +70,7 @@ export class ThemeBuilderStore {
   componentThemes: ThemeDefinitions = defaultThemeSuiteItem.componentThemes
   palettes: Record<string, BuildPalette> = defaultThemeSuiteItem.palettes
   templates: BuildTemplates = defaultThemeSuiteItem.templates
-  selectedSchemes = defaultThemeSuiteItem.selectedSchemes
+  schemes = defaultThemeSuiteItem.schemes
 
   private async sync(state: ThemeBuilderState) {
     if (!this.themeSuiteId) {
@@ -188,7 +187,7 @@ export class ThemeBuilderStore {
       baseTheme: this.baseTheme,
       subThemes: this.subThemes,
       componentThemes: this.componentThemes,
-      selectedSchemes: this.selectedSchemes,
+      schemes: this.schemes,
     }
   }
 
@@ -407,8 +406,8 @@ export class ThemeBuilderStore {
   }
 
   async setSelectedScheme(scheme: 'dark' | 'light', val: boolean) {
-    this.selectedSchemes = {
-      ...this.selectedSchemes,
+    this.schemes = {
+      ...this.schemes,
       [scheme]: val,
     }
     await this.save()
@@ -658,7 +657,7 @@ export class ThemeBuilderStore {
   }
 
   get palettesBuilt() {
-    return getFinalPalettes(this.palettes)
+    return createPalettes(this.palettes)
   }
 
   async getCode(

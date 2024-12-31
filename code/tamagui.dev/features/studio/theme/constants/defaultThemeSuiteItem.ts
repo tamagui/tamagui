@@ -1,4 +1,8 @@
-import type { MaskOptions, ThemeDefinitions, ThemeWithParent } from '@tamagui/theme-builder'
+import type {
+  MaskOptions,
+  ThemeDefinitions,
+  ThemeWithParent,
+} from '@tamagui/theme-builder'
 
 import type { ThemeSuiteItemData } from '../types'
 import { defaultBaseTheme } from './defaultBaseTheme'
@@ -18,7 +22,7 @@ export const defaultThemeSuiteItem = {
   componentThemes: getComponentThemes(),
   palettes: defaultPalettes,
   templates: defaultTemplates,
-  selectedSchemes: defaultSelectedSchemes,
+  schemes: defaultSelectedSchemes,
 } satisfies ThemeSuiteItemData
 
 function getComponentThemes() {
