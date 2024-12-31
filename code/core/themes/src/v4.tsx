@@ -1,25 +1,39 @@
 import { createThemeBuilder } from '@tamagui/theme-builder'
 import { getThemeSuitePalettes } from './getThemeSuitePalettes'
-import type { BuildPalettes, BuildThemeSuiteProps } from './types'
+import type { BuildPalettes, BuildTemplates, BuildThemeSuiteProps } from './types'
 import { defaultTemplates } from './v4-defaultTemplates'
 
-export { defaultTemplates } from './v4-defaultTemplates'
-export type * from './types'
 export { getThemeSuitePalettes, PALETTE_BACKGROUND_OFFSET } from './getThemeSuitePalettes'
+export type * from './types'
+export { defaultTemplates } from './v4-defaultTemplates'
 
-export function createThemes({
-  templates = defaultTemplates,
-  palettes: palettesIn = defaultPalettes,
+type SimpleThemeDefinitions<TemplateName extends string = string> = {
+  [ComponentName: string]: TemplateName
+}
+
+type SimplePaletteDefinitions = Record<string, string[]>
+
+export function createThemes<
+  Templates extends BuildTemplates,
+  Palettes extends SimplePaletteDefinitions,
+>({
+  templates = defaultTemplates as unknown as Templates,
+  palettes = defaultPalettes as unknown as Palettes,
+  componentThemes = templates === (defaultTemplates as any)
+    ? defaultComponentThemes
+    : undefined,
 }: {
-  palettes?: BuildThemeSuiteProps['palettes']
-  templates?: BuildThemeSuiteProps['templates']
+  palettes?: Palettes
+  templates?: Templates
+  componentThemes?: SimpleThemeDefinitions<
+    keyof Templates extends string ? keyof Templates : string
+  >
 }) {
-  const finalPalettes = createPalettes(palettesIn)
-
   const { base, ...subTemplates } = templates
+  const subTemplateNames = Object.keys(subTemplates)
 
   const subThemes = Object.fromEntries(
-    Object.keys(subTemplates).map((key) => {
+    subTemplateNames.map((key) => {
       return [
         key,
         {
@@ -31,7 +45,7 @@ export function createThemes({
 
   // start theme-builder
   const themeBuilder = createThemeBuilder()
-    .addPalettes(finalPalettes)
+    .addPalettes(palettes)
     .addTemplates(templates)
     .addThemes({
       light: {
@@ -44,7 +58,7 @@ export function createThemes({
       },
     })
     .addChildThemes(
-      finalPalettes.light_accent
+      palettes.light_accent
         ? {
             accent: [
               {
@@ -62,16 +76,8 @@ export function createThemes({
         : {}
     )
     .addChildThemes(subThemes)
-    .addChildThemes(defaultComponentThemes, {
-      avoidNestingWithin: [
-        'alt1',
-        'alt2',
-        'surface1',
-        'surface2',
-        'surface3',
-        'surface4',
-        'active',
-      ],
+    .addChildThemes(componentThemes ? getComponentThemes(componentThemes) : {}, {
+      avoidNestingWithin: subTemplateNames,
     })
 
   const themes = themeBuilder.build()
@@ -82,206 +88,138 @@ export function createThemes({
   }
 }
 
-// export const defaultComponentThemes = {
-//   ListItem: {
-//     template: 'surface1',
-//   },
-//   SelectTrigger: surface1,
-//   Card: surface1,
-//   Button: surface3,
-//   Checkbox: surface2,
-//   Switch: surface2,
-//   SwitchThumb: inverseSurface1,
-//   TooltipContent: surface2,
-//   Progress: {
-//     template: 'surface1',
-//   },
-//   RadioGroupItem: surface2,
-//   TooltipArrow: {
-//     template: 'surface1',
-//   },
-//   SliderTrackActive: {
-//     template: 'surface3',
-//   },
-//   SliderTrack: {
-//     template: 'surface1',
-//   },
-//   SliderThumb: inverseSurface1,
-//   Tooltip: inverseSurface1,
-//   ProgressIndicator: inverseSurface1,
-//   SheetOverlay: overlayThemeDefinitions,
-//   DialogOverlay: overlayThemeDefinitions,
-//   ModalOverlay: overlayThemeDefinitions,
-//   Input: surface1,
-//   TextArea: surface1,
-// } as const
-
-const palettes2 = {
-  base: {
-    light: ['#000', '#fff'],
-    dark: ['#fff', '#000'],
-  },
-  accent: {
-    light: ['#000', '#fff'],
-    dark: ['#fff', '#000'],
-  },
+export const getComponentThemes = (components: SimpleThemeDefinitions) => {
+  return Object.fromEntries(
+    Object.entries(components).map(([componentName, templateName]) => {
+      return [
+        componentName,
+        {
+          parent: '',
+          template: templateName,
+        },
+      ]
+    })
+  )
 }
 
+export const defaultComponentThemes = {
+  ListItem: 'surface1',
+  SelectTrigger: 'surface1',
+  Card: 'surface1',
+  Button: 'surface3',
+  Checkbox: 'surface2',
+  Switch: 'surface2',
+  SwitchThumb: 'inverseSurface1',
+  TooltipContent: 'surface2',
+  Progress: 'surface1',
+  RadioGroupItem: 'surface2',
+  TooltipArrow: 'surface1',
+  SliderTrackActive: 'surface3',
+  SliderTrack: 'surface1',
+  SliderThumb: 'inverseSurface1',
+  Tooltip: 'inverseSurface1',
+  ProgressIndicator: 'inverseSurface1',
+  Input: 'surface1',
+  TextArea: 'surface1',
+} as const
+
 const defaultPalettes = {
-  base: {
-    name: 'base',
-    anchors: [
-      {
-        index: 0,
-        hue: {
-          sync: true,
-          light: 146,
-          dark: 146,
-        },
-        sat: {
-          sync: true,
-          light: 0.2,
-          dark: 0.2,
-        },
-        lum: {
-          light: 0.9901960784313726,
-          dark: 0.1,
-        },
-      },
-      {
-        index: 9,
-        hue: {
-          syncLeft: true,
-          sync: true,
-          light: 146,
-          dark: 146,
-        },
-        sat: {
-          syncLeft: true,
-          sync: true,
-          light: 0.2,
-          dark: 0.2,
-        },
-        lum: {
-          light: 0.5,
-          dark: 0.5,
-        },
-      },
-      {
-        index: 10,
-        hue: {
-          sync: true,
-          light: 0,
-          dark: 0,
-        },
-        sat: {
-          sync: true,
-          light: 0.15,
-          dark: 0.15,
-        },
-        lum: {
-          light: 0.15,
-          dark: 0.925,
-        },
-      },
-      {
-        index: 11,
-        hue: {
-          syncLeft: true,
-          sync: true,
-          light: 0,
-          dark: 0,
-        },
-        sat: {
-          syncLeft: true,
-          sync: true,
-          light: 0.15,
-          dark: 0.15,
-        },
-        lum: {
-          light: 0.1,
-          dark: 0.95,
-        },
-      },
-    ],
-  },
-  accent: {
-    name: 'accent',
-    anchors: [
-      {
-        index: 0,
-        hue: {
-          sync: true,
-          light: 250,
-          dark: 250,
-        },
-        sat: {
-          sync: true,
-          light: 0.5,
-          dark: 0.5,
-        },
-        lum: {
-          light: 0.4,
-          dark: 0.35,
-        },
-      },
-      {
-        index: 9,
-        hue: {
-          syncLeft: true,
-          sync: true,
-          light: 250,
-          dark: 250,
-        },
-        sat: {
-          syncLeft: true,
-          sync: true,
-          light: 0.5,
-          dark: 0.5,
-        },
-        lum: {
-          light: 0.65,
-          dark: 0.6,
-        },
-      },
-      {
-        index: 10,
-        hue: {
-          sync: true,
-          light: 250,
-          dark: 250,
-        },
-        sat: {
-          sync: true,
-          light: 0.5,
-          dark: 0.5,
-        },
-        lum: {
-          light: 0.95,
-          dark: 0.9,
-        },
-      },
-      {
-        index: 11,
-        hue: {
-          syncLeft: true,
-          sync: true,
-          light: 250,
-          dark: 250,
-        },
-        sat: {
-          syncLeft: true,
-          sync: true,
-          light: 0.5,
-          dark: 0.5,
-        },
-        lum: {
-          light: 0.95,
-          dark: 0.95,
-        },
-      },
-    ],
-  },
+  light: [
+    'hsla(250, 50%, 48%, 1)',
+    'hsla(0, 0%, 99%, 0)',
+    'hsla(0, 0%, 99%, 0.25)',
+    'hsla(0, 0%, 99%, 0.5)',
+    'hsla(0, 0%, 99%, 0.75)',
+    'hsla(0, 0%, 99%, 1)',
+    'hsla(0, 0%, 93%, 1)',
+    'hsla(0, 0%, 88%, 1)',
+    'hsla(0, 0%, 82%, 1)',
+    'hsla(0, 0%, 77%, 1)',
+    'hsla(0, 0%, 72%, 1)',
+    'hsla(0, 0%, 66%, 1)',
+    'hsla(0, 0%, 61%, 1)',
+    'hsla(0, 0%, 55%, 1)',
+    'hsla(0, 0%, 50%, 1)',
+    'hsla(0, 15%, 15%, 1)',
+    'hsla(0, 15%, 10%, 1)',
+    'hsla(0, 14%, 10%, 0.75)',
+    'hsla(0, 14%, 10%, 0.5)',
+    'hsla(0, 14%, 10%, 0.25)',
+    'hsla(0, 14%, 10%, 0)',
+    'hsla(250, 50%, 62%, 1)',
+  ],
+  dark: [
+    'hsla(250, 50%, 57%, 1)',
+    'hsla(0, 0%, 10%, 0)',
+    'hsla(0, 0%, 10%, 0.25)',
+    'hsla(0, 0%, 10%, 0.5)',
+    'hsla(0, 0%, 10%, 0.75)',
+    'hsla(0, 0%, 10%, 1)',
+    'hsla(0, 0%, 14%, 1)',
+    'hsla(0, 0%, 19%, 1)',
+    'hsla(0, 0%, 23%, 1)',
+    'hsla(0, 0%, 28%, 1)',
+    'hsla(0, 0%, 32%, 1)',
+    'hsla(0, 0%, 37%, 1)',
+    'hsla(0, 0%, 41%, 1)',
+    'hsla(0, 0%, 46%, 1)',
+    'hsla(0, 0%, 50%, 1)',
+    'hsla(0, 15%, 93%, 1)',
+    'hsla(0, 15%, 95%, 1)',
+    'hsla(0, 15%, 95%, 0.75)',
+    'hsla(0, 15%, 95%, 0.5)',
+    'hsla(0, 15%, 95%, 0.25)',
+    'hsla(0, 15%, 95%, 0)',
+    'hsla(250, 50%, 43%, 1)',
+  ],
+  light_accent: [
+    'hsla(0, 0%, 82%, 1)',
+    'hsla(250, 50%, 40%, 0)',
+    'hsla(250, 50%, 40%, 0.25)',
+    'hsla(250, 50%, 40%, 0.5)',
+    'hsla(250, 50%, 40%, 0.75)',
+    'hsla(250, 50%, 40%, 1)',
+    'hsla(250, 50%, 43%, 1)',
+    'hsla(250, 50%, 46%, 1)',
+    'hsla(250, 50%, 48%, 1)',
+    'hsla(250, 50%, 51%, 1)',
+    'hsla(250, 50%, 54%, 1)',
+    'hsla(250, 50%, 57%, 1)',
+    'hsla(250, 50%, 59%, 1)',
+    'hsla(250, 50%, 62%, 1)',
+    'hsla(250, 50%, 65%, 1)',
+    'hsla(250, 50%, 95%, 1)',
+    'hsla(250, 50%, 95%, 1)',
+    'hsla(249, 52%, 95%, 0.75)',
+    'hsla(249, 52%, 95%, 0.5)',
+    'hsla(249, 52%, 95%, 0.25)',
+    'hsla(249, 52%, 95%, 0)',
+    'hsla(0, 0%, 55%, 1)',
+  ],
+  dark_accent: [
+    'hsla(0, 0%, 46%, 1)',
+    'hsla(250, 50%, 35%, 0)',
+    'hsla(250, 50%, 35%, 0.25)',
+    'hsla(250, 50%, 35%, 0.5)',
+    'hsla(250, 50%, 35%, 0.75)',
+    'hsla(250, 50%, 35%, 1)',
+    'hsla(250, 50%, 38%, 1)',
+    'hsla(250, 50%, 41%, 1)',
+    'hsla(250, 50%, 43%, 1)',
+    'hsla(250, 50%, 46%, 1)',
+    'hsla(250, 50%, 49%, 1)',
+    'hsla(250, 50%, 52%, 1)',
+    'hsla(250, 50%, 54%, 1)',
+    'hsla(250, 50%, 57%, 1)',
+    'hsla(250, 50%, 60%, 1)',
+    'hsla(250, 50%, 90%, 1)',
+    'hsla(250, 50%, 95%, 1)',
+    'hsla(249, 52%, 95%, 0.75)',
+    'hsla(249, 52%, 95%, 0.5)',
+    'hsla(249, 52%, 95%, 0.25)',
+    'hsla(249, 52%, 95%, 0)',
+    'hsla(0, 0%, 23%, 1)',
+  ],
 }
 
 export function createPalettes(palettes: BuildPalettes) {

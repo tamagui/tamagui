@@ -1,29 +1,50 @@
-import type { BuildPalettes, BuildThemeSuiteProps } from './types';
-export { defaultTemplates } from './v4-defaultTemplates';
-export type * from './types';
+import type { BuildPalettes, BuildTemplates } from './types';
 export { getThemeSuitePalettes, PALETTE_BACKGROUND_OFFSET } from './getThemeSuitePalettes';
-export declare function createThemes({ templates, palettes: palettesIn, }: {
-    palettes?: BuildThemeSuiteProps['palettes'];
-    templates?: BuildThemeSuiteProps['templates'];
+export type * from './types';
+export { defaultTemplates } from './v4-defaultTemplates';
+type SimpleThemeDefinitions<TemplateName extends string = string> = {
+    [ComponentName: string]: TemplateName;
+};
+type SimplePaletteDefinitions = Record<string, string[]>;
+export declare function createThemes<Templates extends BuildTemplates, Palettes extends SimplePaletteDefinitions>({ templates, palettes, componentThemes, }: {
+    palettes?: Palettes;
+    templates?: Templates;
+    componentThemes?: SimpleThemeDefinitions<keyof Templates extends string ? keyof Templates : string>;
 }): {
     themes: {
-        [x: `light_${string}`]: any;
-        [x: `dark_${string}`]: any;
-        [x: `light_${string}_${string}`]: any;
-        [x: `dark_${string}_${string}`]: any;
-        [x: `light_${string}_${string}_${string}`]: any;
-        [x: `dark_${string}_${string}_${string}`]: any;
-        readonly light: {
-            [x: string]: string;
-        };
-        readonly dark: {
-            [x: string]: string;
-        };
+        [x: `light_${string}`]: "base" extends infer T ? T extends "base" ? T extends keyof Templates ? Templates[T] extends infer T_1 ? { [key in keyof T_1]: string; } : never : {
+            template: T;
+        } & {
+            readonly template: "base";
+            readonly palette: "light";
+        } : never : never;
+        [x: `dark_${string}`]: "base" extends infer T_2 ? T_2 extends "base" ? T_2 extends keyof Templates ? Templates[T_2] extends infer T_3 ? { [key_1 in keyof T_3]: string; } : never : {
+            template: T_2;
+        } & {
+            readonly template: "base";
+            readonly palette: "dark";
+        } : never : never;
+        [x: `light_${string}_${string}`]: never;
+        [x: `dark_${string}_${string}`]: never;
+        [x: `light_${string}_${string}_${string}`]: never;
+        [x: `dark_${string}_${string}_${string}`]: never;
+        readonly light: "base" extends infer T_4 ? T_4 extends "base" ? T_4 extends keyof Templates ? Templates[T_4] extends infer T_5 ? { [key_2 in keyof T_5]: string; } : never : {
+            template: T_4;
+        } & {
+            readonly template: "base";
+            readonly palette: "light";
+        } : never : never;
+        readonly dark: "base" extends infer T_6 ? T_6 extends "base" ? T_6 extends keyof Templates ? Templates[T_6] extends infer T_7 ? { [key_3 in keyof T_7]: string; } : never : {
+            template: T_6;
+        } & {
+            readonly template: "base";
+            readonly palette: "dark";
+        } : never : never;
     };
     themeBuilder: import("@tamagui/theme-builder").ThemeBuilder<Omit<{
-        palettes: Record<string, string[]>;
+        palettes: Palettes;
     } & {
-        templates: import("./types").BuildTemplates;
+        templates: Templates;
     }, "themes"> & {
         themes: {
             readonly light: {
@@ -1143,14 +1164,82 @@ export declare function createThemes({ templates, palettes: palettesIn, }: {
         };
     } & {
         themes: {
-            [x: `light_${string}`]: any;
-            [x: `dark_${string}`]: any;
-            [x: `light_${string}_${string}`]: any;
-            [x: `dark_${string}_${string}`]: any;
-            [x: `light_${string}_${string}_${string}`]: any;
-            [x: `dark_${string}_${string}_${string}`]: any;
+            [x: `light_${string}`]: {
+                [k: string]: {
+                    parent: string;
+                    template: string;
+                };
+            } & {
+                parent: "light";
+            };
+            [x: `dark_${string}`]: {
+                [k: string]: {
+                    parent: string;
+                    template: string;
+                };
+            } & {
+                parent: "dark";
+            };
+            [x: `light_${string}_${string}`]: {
+                [k: string]: {
+                    parent: string;
+                    template: string;
+                };
+            } & {
+                parent: `light_${string}`;
+            };
+            [x: `dark_${string}_${string}`]: {
+                [k: string]: {
+                    parent: string;
+                    template: string;
+                };
+            } & {
+                parent: `dark_${string}`;
+            };
+            [x: `light_${string}_${string}_${string}`]: {
+                [k: string]: {
+                    parent: string;
+                    template: string;
+                };
+            } & {
+                parent: `light_${string}_${string}`;
+            };
+            [x: `dark_${string}_${string}_${string}`]: {
+                [k: string]: {
+                    parent: string;
+                    template: string;
+                };
+            } & {
+                parent: `dark_${string}_${string}`;
+            };
         };
     }>;
+};
+export declare const getComponentThemes: (components: SimpleThemeDefinitions) => {
+    [k: string]: {
+        parent: string;
+        template: string;
+    };
+};
+export declare const defaultComponentThemes: {
+    readonly ListItem: "surface1";
+    readonly SelectTrigger: "surface1";
+    readonly Card: "surface1";
+    readonly Button: "surface3";
+    readonly Checkbox: "surface2";
+    readonly Switch: "surface2";
+    readonly SwitchThumb: "inverseSurface1";
+    readonly TooltipContent: "surface2";
+    readonly Progress: "surface1";
+    readonly RadioGroupItem: "surface2";
+    readonly TooltipArrow: "surface1";
+    readonly SliderTrackActive: "surface3";
+    readonly SliderTrack: "surface1";
+    readonly SliderThumb: "inverseSurface1";
+    readonly Tooltip: "inverseSurface1";
+    readonly ProgressIndicator: "inverseSurface1";
+    readonly Input: "surface1";
+    readonly TextArea: "surface1";
 };
 export declare function createPalettes(palettes: BuildPalettes): Record<string, string[]>;
 //# sourceMappingURL=v4.d.ts.map

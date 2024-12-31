@@ -1,4 +1,5 @@
 import { objectFromEntries, objectKeys } from './helpers'
+import type { BuildTemplates } from './types'
 
 const getTemplates = () => {
   const lightTemplates = getBaseTemplates('light')
@@ -113,7 +114,7 @@ const getBaseTemplates = (scheme: 'dark' | 'light') => {
     surface1,
     surface2,
     surface3,
-  }
+  } satisfies BuildTemplates
 }
 
 export const defaultTemplates = getTemplates()
