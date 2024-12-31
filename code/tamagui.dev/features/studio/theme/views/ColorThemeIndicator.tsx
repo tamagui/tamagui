@@ -1,8 +1,5 @@
 import { Circle, YStack, useThemeName } from 'tamagui'
-import {
-  PALETTE_BACKGROUND_OFFSET,
-  getThemeSuitePalettes,
-} from '../helpers/getThemeSuitePalettes'
+import { PALETTE_BACKGROUND_OFFSET, getThemeSuitePalettes } from '@tamagui/themes/v4'
 import type { BuildPalette } from '../types'
 
 export const ColorThemeIndicator = ({

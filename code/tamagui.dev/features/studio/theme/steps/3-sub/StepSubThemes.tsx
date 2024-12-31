@@ -321,8 +321,8 @@ export function BaseThemesStepPreview() {
 }
 
 export function BaseThemesStepPreview2() {
-  const { baseTheme, subThemes, selectedSchemes, palettes } = useThemeBuilderStore()
-  const schemes = Object.keys(selectedSchemes)
+  const { baseTheme, subThemes, schemes: userSchemes, palettes } = useThemeBuilderStore()
+  const schemes = Object.keys(userSchemes)
   const fullThemes = schemes.flatMap((scheme) => {
     return [
       {

@@ -8249,6 +8249,7 @@ __metadata:
   resolution: "@tamagui/shorthands@workspace:code/core/shorthands"
   dependencies:
     "@tamagui/build": "npm:1.121.4"
+    "@tamagui/web": "npm:1.121.4"
   languageName: unknown
   linkType: soft
 
@@ -8561,6 +8562,7 @@ __metadata:
     "@tamagui/create-theme": "npm:1.121.4"
     "@tamagui/theme-builder": "npm:1.121.4"
     "@tamagui/web": "npm:1.121.4"
+    color2k: "npm:^2.0.2"
     vitest: "npm:^2.1.8"
   languageName: unknown
   linkType: soft

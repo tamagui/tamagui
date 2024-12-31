@@ -1,3 +1,16 @@
+- v4 config:
+  - createSystemFont into package
+  - v4 themes
+    - based on studio, allows passing in custom colors
+  - remove component themes by default instead just do:
+    - "surface1-3" and have components use that instead of name by default when not unstyled
+
+- v3: shorthands can also take values:
+  - {
+    block: { display: 'block' },
+    'inline-block': { display: 'inline-block' },
+  }
+
 - reanimated animate presence is making me set `opacity: 1` type default values
 
 - popover trigger should send an event to close tooltips automatically on open
