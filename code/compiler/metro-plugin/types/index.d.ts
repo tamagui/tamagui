@@ -1,6 +1,6 @@
 import { type TamaguiOptions } from '@tamagui/static';
-import { type ComposableIntermediateConfigT } from 'react-native-css-interop/metro';
-export declare function withTamagui(metroConfig: ComposableIntermediateConfigT, optionsIn?: TamaguiOptions & {
+import type { IntermediateConfigT } from 'metro-config';
+export declare function withTamagui(metroConfig: Partial<IntermediateConfigT>, optionsIn?: TamaguiOptions & {
     enableCSSInterop?: boolean;
-}): ComposableIntermediateConfigT;
+}): Partial<IntermediateConfigT>;
 //# sourceMappingURL=index.d.ts.map

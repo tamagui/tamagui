@@ -30,6 +30,11 @@ module.exports = {
     mainFields: ['module:jsx', 'browser', 'module', 'main'],
     extensions: ['.ts', '.tsx', '.js'],
     alias: {
+      'react/jsx-runtime': require.resolve('react/jsx-runtime'),
+      'react/jsx-dev-runtime': require.resolve('react/jsx-dev-runtime'),
+      react: require.resolve('react'),
+      'react-dom/client': require.resolve('react-dom/client'),
+      'react-dom': require.resolve('react-dom'),
       'moti/author': require.resolve('moti/author'),
       'react-native$': 'react-native-web',
       'react-native-svg': '@tamagui/react-native-svg',

@@ -1,5 +1,6 @@
 {
   "expo": {
+    "newArchEnabled": true,
     "name": "tamagui-kitchen-sink",
     "slug": "tamagui-kitchen-sink",
     "scheme": "tamagui-kitchen-sink",

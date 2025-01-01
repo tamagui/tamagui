@@ -3,6 +3,7 @@ import { useRef, useState } from 'react'
 import {
   defaultComponentState,
   defaultComponentStateMounted,
+  defaultComponentStateShouldEnter,
 } from '../defaultComponentState'
 import { createShallowSetState } from '../helpers/createShallowSetState'
 import { isObj } from '../helpers/isObj'
@@ -18,6 +19,7 @@ import type {
   TextProps,
   UseAnimationHook,
 } from '../types'
+import { useIsHydrated } from './useIsHydrated'
 
 export const useComponentState = (
   props: StackProps | TextProps | Record<string, any>,
@@ -25,6 +27,7 @@ export const useComponentState = (
   staticConfig: StaticConfig,
   config: TamaguiInternalConfig
 ) => {
+  const isHydrated = useIsHydrated()
   const useAnimations = animationDriver?.useAnimations as UseAnimationHook | undefined
 
   const stateRef = useRef<TamaguiComponentStateRef>(
@@ -70,7 +73,9 @@ export const useComponentState = (
   const hasEnterStyle = !!props.enterStyle
 
   const hasAnimationThatNeedsHydrate =
-    hasAnimationProp && (animationDriver?.isReactNative || !supportsCSSVars)
+    hasAnimationProp &&
+    !isHydrated &&
+    (animationDriver?.isReactNative || !supportsCSSVars)
 
   const hasEnterState = hasEnterStyle || isEntering
 
@@ -93,7 +98,9 @@ export const useComponentState = (
       // without flickers of the wrong colors.
       // but once we do that initial hydration and we are in client side rendering mode,
       // we can avoid the extra re-render on mount
-      defaultComponentState
+      hasEnterState
+      ? defaultComponentStateShouldEnter
+      : defaultComponentState
     : defaultComponentStateMounted
 
   // will be nice to deprecate half of these:
@@ -109,16 +116,9 @@ export const useComponentState = (
   const state = props.forceStyle ? { ...states[0], [props.forceStyle]: true } : states[0]
   const setState = states[1]
 
-  const isHydrated = state.unmounted === false
-
   // only web server + initial client render run this when not hydrated:
   let isAnimated = willBeAnimated
-  if (
-    isWeb &&
-    hasAnimationThatNeedsHydrate &&
-    !staticConfig.isHOC &&
-    state.unmounted === true
-  ) {
+  if (isWeb && hasAnimationThatNeedsHydrate && !staticConfig.isHOC && !isHydrated) {
     isAnimated = false
     curStateRef.willHydrate = true
   }

@@ -49,6 +49,7 @@ export type ComponentContextI = {
     language: LanguageContextType | null;
     animationDriver: AnimationDriver | null;
     groups: GroupContextType;
+    setParentFocusState: ((next?: Partial<TamaguiComponentState> | undefined) => void) | null;
 };
 type ComponentGroupEvent = {
     pseudo?: PseudoGroupState;
@@ -65,6 +66,7 @@ type PseudoGroupState = {
     press?: boolean;
     focus?: boolean;
     focusVisible?: boolean;
+    focusWithin?: boolean;
 };
 export type GroupState = {
     pseudo?: PseudoGroupState;
@@ -585,7 +587,7 @@ export interface TypeOverride {
     groupNames(): 1;
 }
 export type GroupNames = ReturnType<TypeOverride['groupNames']> extends 1 ? never : ReturnType<TypeOverride['groupNames']>;
-type ParentMediaStates = 'hover' | 'press' | 'focus' | 'focusVisible';
+type ParentMediaStates = 'hover' | 'press' | 'focus' | 'focusVisible' | 'focusWithin';
 export type GroupMediaKeys = `$group-${GroupNames}` | `$group-${GroupNames}-${ParentMediaStates}` | `$group-${GroupNames}-${MediaQueryKey}` | `$group-${GroupNames}-${MediaQueryKey}-${ParentMediaStates}` | `$group-${ParentMediaStates}` | `$group-${MediaQueryKey}` | `$group-${MediaQueryKey}-${ParentMediaStates}`;
 export type WithMediaProps<A> = {
     [Key in MediaPropKeys | GroupMediaKeys | ThemeMediaKeys | PlatformMediaKeys]?: Key extends MediaPropKeys ? A & {
@@ -719,6 +721,7 @@ export type WithPseudoProps<A> = {
     hoverStyle?: A | null;
     pressStyle?: A | null;
     focusStyle?: A | null;
+    focusWithinStyle?: A | null;
     focusVisibleStyle?: A | null;
     disabledStyle?: A | null;
     exitStyle?: A | null;
@@ -729,6 +732,7 @@ export type PseudoStyles = {
     hoverStyle?: ViewStyle;
     pressStyle?: ViewStyle;
     focusStyle?: ViewStyle;
+    focusWithinStyle?: ViewStyle;
     focusVisibleStyle?: ViewStyle;
     disabledStyle?: ViewStyle;
     enterStyle?: ViewStyle;
@@ -1436,6 +1440,7 @@ export type ViewStyleWithPseudos = TextStyle | (TextStyle & {
     hoverStyle?: TextStyle;
     pressStyle?: TextStyle;
     focusStyle?: TextStyle;
+    focusWithinStyle?: TextStyle;
     focusVisibleStyle?: TextStyle;
     disabledStyle?: TextStyle;
 });
@@ -1648,7 +1653,7 @@ export type Narrow<A> = Try<A, [], NarrowRaw<A>>;
  * `StyleProp` copied from React Native:
  *  Exported to fix https://github.com/tamagui/tamagui/issues/1258
  */
-export type Falsy = undefined | null | false;
+export type Falsy = undefined | null | false | '';
 export interface RecursiveArray<T> extends Array<T | ReadonlyArray<T> | RecursiveArray<T>> {
 }
 /** Keep a brand of 'T' so that calls to `StyleSheet.flatten` can take `RegisteredStyle<T>` and return `T`. */

@@ -12,6 +12,8 @@ let selectors: Record<string, string> | null = null
 
 const groupPseudoToPseudoCSSMap = {
   press: 'active',
+  focusVisible: 'focus-visible',
+  focusWithin: 'focus-within',
 }
 
 const specificities = new Array(5)
@@ -51,7 +53,8 @@ export const createMediaStyle = (
   negate?: boolean,
   priority?: number
 ): MediaStyleObject => {
-  const [property, , identifier, pseudoIn, rules] = styleObject
+  const [propertyIn, , identifier, pseudoIn, rules] = styleObject
+  let property = propertyIn
   const enableMediaPropOrder = getSetting('mediaPropOrder')
   const isTheme = type === 'theme'
   const isPlatform = type === 'platform'

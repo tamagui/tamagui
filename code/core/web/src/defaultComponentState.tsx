@@ -6,6 +6,7 @@ export const defaultComponentState: TamaguiComponentState = {
   pressIn: false,
   focus: false,
   focusVisible: false,
+  focusWithin: false,
   unmounted: true,
   disabled: false,
 }
@@ -13,4 +14,9 @@ export const defaultComponentState: TamaguiComponentState = {
 export const defaultComponentStateMounted: TamaguiComponentState = {
   ...defaultComponentState,
   unmounted: false,
+}
+
+export const defaultComponentStateShouldEnter: TamaguiComponentState = {
+  ...defaultComponentState,
+  unmounted: 'should-enter',
 }

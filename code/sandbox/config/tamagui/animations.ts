@@ -1,15 +1,59 @@
-import { createAnimations } from '@tamagui/animations-css'
+import { createAnimations } from '@tamagui/animations-moti'
 
-const smoothBezier = 'cubic-bezier(0.215, 0.610, 0.355, 1.000)'
-
-const cssTransitions = {
-  '100ms': 'ease-in 100ms',
-  '200ms': 'ease-in 200ms',
-  quick: `${smoothBezier} 500ms`,
-  quicker: `${smoothBezier} 350ms`,
-  quickest: `${smoothBezier} 200ms`,
-  medium: 'ease-in 2000ms',
-  lazy: 'ease-in 2000ms',
-}
-
-export const animations = createAnimations(cssTransitions)
+export const animations = createAnimations({
+  '75ms': {
+    type: 'timing',
+    duration: 75,
+  },
+  '100ms': {
+    type: 'timing',
+    duration: 100,
+  },
+  '200ms': {
+    type: 'timing',
+    duration: 200,
+  },
+  superBouncy: {
+    damping: 5,
+    mass: 0.7,
+    stiffness: 200,
+  },
+  bouncy: {
+    damping: 9,
+    mass: 0.9,
+    stiffness: 150,
+  },
+  medium: {
+    damping: 15,
+    stiffness: 120,
+    mass: 1,
+  },
+  lazy: {
+    damping: 18,
+    stiffness: 50,
+  },
+  slow: {
+    damping: 15,
+    stiffness: 40,
+  },
+  quick: {
+    damping: 20,
+    mass: 1.2,
+    stiffness: 250,
+  },
+  tooltip: {
+    damping: 10,
+    mass: 0.9,
+    stiffness: 100,
+  },
+  quicker: {
+    damping: 20,
+    mass: 0.7,
+    stiffness: 250,
+  },
+  quickest: {
+    damping: 5,
+    mass: 0.2,
+    stiffness: 300,
+  },
+})

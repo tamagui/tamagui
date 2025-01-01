@@ -3,13 +3,6 @@
   "workbench.preferredLightColorTheme": "Min Light",
 
   "typescript.tsdk": "node_modules/typescript/lib",
-  "search.exclude": {
-    "**/node_modules": true,
-    "**/bower_components": true,
-    "**/*.code-search": true,
-    "**/.tamagui": true,
-    "**/.next": true
-  },
   "editor.tabCompletion": "on",
   "diffEditor.codeLens": true,
   "explorer.fileNesting.enabled": true,
@@ -34,17 +27,5 @@
   },
   "[typescriptreact]": {
     "editor.defaultFormatter": "biomejs.biome"
-  },
-  "cSpell.words": [
-    "Bento",
-    "chromeless",
-    "deopt",
-    "Lucide",
-    "tamagui",
-    "Unflattened",
-    "unselectable"
-  ],
-  "prettier.requireConfig": false,
-  "prettier.singleQuote": true,
-  "prettier.semi": false
+  }
 }
