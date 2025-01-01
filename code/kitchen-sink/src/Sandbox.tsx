@@ -1,6 +1,7 @@
 import { AnimationsPresenceDemo } from '@tamagui/demos'
 import { useState } from 'react'
 import { Button, styled } from 'tamagui'
+
 const StyledButton = styled(Button, {
   animation: 'quick',
 })
@@ -18,7 +19,7 @@ function TestButton() {
         {isDisabled ? 'Enable' : 'Disable'}
       </Button>
 
-      <StyledButton disabled={isDisabled}>
+      <StyledButton onPress={() => setIsDisabled(!isDisabled)} disabled={isDisabled}>
         State: {isDisabled ? 'Disabled' : 'Enabled'}
       </StyledButton>
     </>

@@ -7658,7 +7658,7 @@ __metadata:
     react-native-screens: "npm:~4.4.0"
     react-native-svg: "npm:15.8.0"
     react-native-web: "npm:^0.19.0"
-    solito: "npm:^4.2.2"
+    solito: "npm:^4.3.0"
     tamagui: "npm:1.121.4"
     tilg: "npm:0.1.1"
     webpack: "npm:^5.88.2"
@@ -8172,7 +8172,7 @@ __metadata:
     "@tamagui/lucide-icons": "npm:1.121.4"
     "@tamagui/toast": "npm:1.121.4"
     expo-image: "npm:^1.5.1"
-    solito: "npm:^4.2.2"
+    solito: "npm:^4.3.0"
     tamagui: "npm:1.121.4"
   languageName: unknown
   linkType: soft
@@ -15711,15 +15711,6 @@ __metadata:
   dependencies:
     invariant: "npm:^2.2.4"
   checksum: 10/0f701361d411004a58a6440dfbb3bc541f7d1750ca628654128dd3d5621f5768b60b48d0ef4cc90c036748e507967023c813fe100f9fc979b7af66fbbc563e8d
-  languageName: node
-  linkType: hard
-
-"expo-modules-core@npm:^1.12.24":
-  version: 1.12.25
-  resolution: "expo-modules-core@npm:1.12.25"
-  dependencies:
-    invariant: "npm:^2.2.4"
-  checksum: 10/c7a61386b4ddcf3445220ff7e5a1186d1ace240fdb00927866408380eec13479f482b63a729e723c7564055b947c3f34b22d76b95de70828d6b36064f7006612
   languageName: node
   linkType: hard
 
@@ -24914,7 +24905,6 @@ __metadata:
     "@types/react": "npm:^18.3.11"
     "@vxrn/color-scheme": "npm:^1.1.377"
     expo: "npm:^52.0.23"
-    expo-modules-core: "npm:^1.12.24"
     one: "npm:1.1.377"
     react-native: "npm:^0.76.5"
     react-native-reanimated: "npm:~3.16.1"
@@ -25554,12 +25544,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"solito@npm:^4.2.2":
-  version: 4.2.2
-  resolution: "solito@npm:4.2.2"
+"solito@npm:^4.3.0":
+  version: 4.3.0
+  resolution: "solito@npm:4.3.0"
   dependencies:
     typescript: "npm:^5.0.4"
-  checksum: 10/39e410a8c75e6d3e66967e5aaff73efe299681936f46f8fb295050e1b2feed94b7656a42a6017eb18decd9493488c314f5d0bc987419d7c16243a6343e63fe4a
+  checksum: 10/b58eb9b0ec6a027042ebf68bd218534c620b2f420f81460416a064402cfd7b2ce2fbc6a6dae2c74443e69b064104e5288a426b8155a2ccdabc0c29b4ff637786
   languageName: node
   linkType: hard
 
