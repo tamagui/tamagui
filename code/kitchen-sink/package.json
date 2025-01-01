@@ -29,8 +29,8 @@
     "test": "yarn test:web"
   },
   "dependencies": {
-    "@dominicstop/ts-event-emitter": "^1.1.0",
-    "@react-native-async-storage/async-storage": "1.23.1",
+    "@dominicstop/ts-event-emitter": "1.1.0",
+    "@react-native-async-storage/async-storage": "^2.1.0",
     "@react-navigation/native": "^7.0.14",
     "@react-navigation/native-stack": "^7.2.0",
     "@tamagui/animations-reanimated": "1.121.4",
