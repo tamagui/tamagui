@@ -231,23 +231,28 @@ export function createNonNativeContextMenu(param: Parameters<typeof createMenu>[
       const { __scopeContextMenu, style, disabled = false, ...triggerProps } = props
       const context = useContextMenuContext(__scopeContextMenu)
       const pointRef = React.useRef<Point>({ x: 0, y: 0 })
-      const virtualRef = React.useRef({
-        getBoundingClientRect: () =>
-          isWeb
-            ? DOMRect.fromRect({ width: 0, height: 0, ...pointRef.current })
-            : {
-                width: 0,
-                height: 0,
-                top: 0,
-                left: 0,
-                ...pointRef.current,
-              },
+      const virtualRef = React.useMemo(
+        () => ({
+          current: {
+            getBoundingClientRect: () =>
+              isWeb
+                ? DOMRect.fromRect({ width: 0, height: 0, ...pointRef.current })
+                : {
+                    width: 0,
+                    height: 0,
+                    top: 0,
+                    left: 0,
+                    ...pointRef.current,
+                  },
 
-        ...(!isWeb && {
-          measure: (c) => c(pointRef.current.x, pointRef.current.y, 0, 0),
-          measureInWindow: (c) => c(pointRef.current.x, pointRef.current.y, 0, 0),
+            ...(!isWeb && {
+              measure: (c) => c(pointRef.current.x, pointRef.current.y, 0, 0),
+              measureInWindow: (c) => c(pointRef.current.x, pointRef.current.y, 0, 0),
+            }),
+          },
         }),
-      })
+        [pointRef.current.x, pointRef.current.y]
+      )
       const longPressTimerRef = React.useRef(0)
       const clearLongPress = React.useCallback(
         () => window.clearTimeout(longPressTimerRef.current),

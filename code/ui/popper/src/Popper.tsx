@@ -47,6 +47,7 @@ export type PopperContextValue = UseFloatingReturn & {
   arrowRef: any
   onArrowSize?: (val: number) => void
   hasFloating: boolean
+  show: boolean
   arrowStyle?: Partial<Coords> & {
     centerOffset: number
   }
@@ -110,6 +111,7 @@ export function Popper(props: ScopedPopperProps<PopperProps>) {
   const [arrowEl, setArrow] = React.useState<any>(null)
   const [arrowSize, setArrowSize] = React.useState(0)
   const offsetOptions = offset ?? arrowSize
+  const [isPositionCalculated, setIsPositionCalculated] = React.useState(false)
 
   const floating = useFloating({
     strategy,
@@ -132,6 +134,16 @@ export function Popper(props: ScopedPopperProps<PopperProps>) {
       arrowEl ? arrow({ element: arrowEl }) : (null as any),
       typeof offsetOptions !== 'undefined' ? offsetFn(offsetOptions) : (null as any),
       checkFloating,
+      process.env.TAMAGUI_TARGET === 'native' && {
+        name: 'isPositionCalculated',
+        fn() {
+          return {
+            data: {
+              isPositionCalculated: setIsPositionCalculated(true),
+            },
+          }
+        },
+      },
     ].filter(Boolean),
   })
 
@@ -141,6 +153,24 @@ export function Popper(props: ScopedPopperProps<PopperProps>) {
     // @ts-expect-error this comes from Tooltip for example
     open,
   } = floating
+
+  const isPositionCalculatedQuickRef = React.useRef(
+    process.env.TAMAGUI_TARGET !== 'native'
+  )
+
+  if (process.env.TAMAGUI_TARGET === 'native') {
+    const prevRef = React.useRef<any>(refs.reference.current)
+
+    if (isPositionCalculatedQuickRef.current !== isPositionCalculated) {
+      isPositionCalculatedQuickRef.current = isPositionCalculated
+    }
+
+    if (prevRef.current !== refs.reference.current) {
+      prevRef.current = refs.reference.current
+      setIsPositionCalculated(false)
+      isPositionCalculatedQuickRef.current = false
+    }
+  }
 
   // leaving this here as reference, seems we don't need it anymore at least as used currently
   if (process.env.TAMAGUI_TARGET === 'web') {
@@ -195,6 +225,7 @@ export function Popper(props: ScopedPopperProps<PopperProps>) {
     onArrowSize: setArrowSize,
     scope: __scopePopper,
     hasFloating: middlewareData.checkFloating?.hasFloating,
+    show: isPositionCalculatedQuickRef.current,
     ...floating,
   }
 
@@ -220,10 +251,10 @@ export const PopperAnchor = YStack.extractable(
       const composedRefs = useComposedRefs(forwardedRef, ref, refs.setReference as any)
 
       React.useEffect(() => {
-        if (virtualRef) {
+        if (virtualRef?.current) {
           refs.setReference(virtualRef.current)
         }
-      }, [virtualRef])
+      }, [virtualRef?.current])
 
       // if (virtualRef) {
       //   return null
@@ -296,6 +327,7 @@ export const PopperContent = React.forwardRef<
     update,
     floatingStyles,
     hasFloating,
+    show,
   } = usePopperContext(__scopePopper)
   const contentRefs = useComposedRefs<any>(refs.setFloating, forwardedRef)
 
@@ -322,7 +354,6 @@ export const PopperContent = React.forwardRef<
   }, [enableAnimationForPositionChange, x, y])
 
   // default to not showing if positioned at 0, 0
-  let show = true
 
   const frameProps = {
     ref: refs.setFloating,

@@ -12,6 +12,7 @@ export type PopperContextValue = UseFloatingReturn & {
     arrowRef: any;
     onArrowSize?: (val: number) => void;
     hasFloating: boolean;
+    show: boolean;
     arrowStyle?: Partial<Coords> & {
         centerOffset: number;
     };
