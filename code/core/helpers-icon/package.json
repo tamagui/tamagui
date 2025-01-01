@@ -30,6 +30,6 @@
   "devDependencies": {
     "@tamagui/build": "1.121.4",
     "react": "*",
-    "react-native-svg": "^15.7.1"
+    "react-native-svg": "15.8.0"
   }
 }

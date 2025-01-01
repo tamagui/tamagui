@@ -6696,8 +6696,8 @@ __metadata:
     react-dropzone: "npm:^14.2.3"
     react-hook-form: "npm:^7.51.0"
     react-native: "npm:^0.76.5"
-    react-native-safe-area-context: "npm:4.11.0"
-    react-native-svg: "npm:^15.7.1"
+    react-native-safe-area-context: "npm:4.12.0"
+    react-native-svg: "npm:15.8.0"
     react-native-web: "npm:^0.19.0"
     swr: "npm:^2.2.5"
     tamagui: "npm:1.121.4"
@@ -7208,7 +7208,7 @@ __metadata:
     react-hotkeys-hook: "npm:^4.5.0"
     react-native: "npm:^0.76.5"
     react-native-reanimated: "npm:~3.16.1"
-    react-native-svg: "npm:^15.7.1"
+    react-native-svg: "npm:15.8.0"
     stripe: "npm:^9.1.0"
     swr: "npm:^2.2.5"
     tamagui: "npm:1.121.4"
@@ -7486,7 +7486,7 @@ __metadata:
     "@tamagui/build": "npm:1.121.4"
     "@tamagui/core": "npm:1.121.4"
     react: "npm:*"
-    react-native-svg: "npm:^15.7.1"
+    react-native-svg: "npm:15.8.0"
   peerDependencies:
     react: "*"
     react-native-svg: ">=12"
@@ -7616,12 +7616,13 @@ __metadata:
     mini-css-extract-plugin: "npm:^2.9.1"
     one: "npm:1.1.377"
     pod-install: "npm:^0.3.2"
+    react: "npm:react@18.3.1"
     react-native: "npm:^0.76.5"
     react-native-gesture-handler: "npm:~2.20.2"
     react-native-reanimated: "npm:~3.16.1"
-    react-native-safe-area-context: "npm:4.11.0"
+    react-native-safe-area-context: "npm:4.12.0"
     react-native-screens: "npm:~4.4.0"
-    react-native-svg: "npm:^15.7.1"
+    react-native-svg: "npm:15.8.0"
     react-native-web: "npm:^0.19.0"
     solito: "npm:^4.2.2"
     tamagui: "npm:1.121.4"
@@ -7713,7 +7714,7 @@ __metadata:
     lucide-static: "npm:^0.447.0"
     prop-types: "npm:^15.7.2"
     react: "npm:*"
-    react-native-svg: "npm:^15.7.1"
+    react-native-svg: "npm:15.8.0"
     uppercamelcase: "npm:^3.0.0"
   peerDependencies:
     react: "*"
@@ -8480,7 +8481,7 @@ __metadata:
     react-hook-form: "npm:^7.51.0"
     react-native: "npm:^0.76.5"
     react-native-reanimated: "npm:~3.16.1"
-    react-native-svg: "npm:^15.7.1"
+    react-native-svg: "npm:15.8.0"
     tamagui: "npm:1.121.4"
     vite: "npm:^6.0.6"
     vite-plugin-inspect: "npm:^0.8.4"
@@ -23623,13 +23624,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-safe-area-context@npm:4.11.0":
-  version: 4.11.0
-  resolution: "react-native-safe-area-context@npm:4.11.0"
+"react-native-safe-area-context@npm:4.12.0":
+  version: 4.12.0
+  resolution: "react-native-safe-area-context@npm:4.12.0"
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 10/f2e616ad3087ebf1ad34f90f4eadc2d6865d3d56bba83bcfb9d04020b4344d892e347b7f55dcd996c4d2edf21b589a5ce710a52e62a7bd86597ed34d130599b2
+  checksum: 10/1db86f38c20c8b22ea274ea895b3cedbb1f8d8260d7f726ab4ee315f5e1e611ba3dde89c43dcb3ccccf97dfc3e7d8b11b79ffe4a6369697b6fed3bd80eaaf7c5
   languageName: node
   linkType: hard
 
@@ -23646,9 +23647,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-svg@npm:^15.7.1":
-  version: 15.7.1
-  resolution: "react-native-svg@npm:15.7.1"
+"react-native-svg@npm:15.8.0":
+  version: 15.8.0
+  resolution: "react-native-svg@npm:15.8.0"
   dependencies:
     css-select: "npm:^5.1.0"
     css-tree: "npm:^1.1.3"
@@ -23656,7 +23657,7 @@ __metadata:
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 10/343d2603b0bd54d24303a09c37698612e208b83e449c92d108aaa6d7826a7ac39fe2bad0b439bff789a24d5f54280e3eb218202006658b8a7e117b2d1d8ccfeb
+  checksum: 10/9a60d1f33539c41ca50b2c21e6d8909e52a3bdf67b29b9231c7ffe72120fc8cb6d7fca45723bd9219b993202ade2343c97c7e4f53de7ee2446279ac91426b096
   languageName: node
   linkType: hard
 
@@ -23929,7 +23930,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react@npm:*, react@npm:^18.3.1":
+"react@npm:*, react@npm:^18.3.1, react@npm:react@18.3.1":
   version: 18.3.1
   resolution: "react@npm:18.3.1"
   dependencies:
@@ -24883,9 +24884,9 @@ __metadata:
     one: "npm:1.1.377"
     react-native: "npm:^0.76.5"
     react-native-reanimated: "npm:~3.16.1"
-    react-native-safe-area-context: "npm:4.11.0"
+    react-native-safe-area-context: "npm:4.12.0"
     react-native-screens: "npm:~4.4.0"
-    react-native-svg: "npm:^15.7.1"
+    react-native-svg: "npm:15.8.0"
     react-native-web: "npm:^0.19.0"
     tamagui: "npm:1.121.4"
     vite: "npm:^6.0.6"
