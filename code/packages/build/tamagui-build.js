@@ -18,6 +18,8 @@ const skipJS = !!(process.env.SKIP_JS || false)
 const shouldSkipTypes = !!(
   process.argv.includes('--skip-types') || process.env.SKIP_TYPES
 )
+
+const shouldSkipNative = !!process.argv.includes('--skip-native')
 const shouldSkipMJS = !!process.argv.includes('--skip-mjs')
 const shouldBundleFlag = !!process.argv.includes('--bundle')
 const shouldBundleNodeModules = !!process.argv.includes('--bundle-modules')
@@ -430,14 +432,14 @@ async function buildJs() {
       : null,
 
     // native output to cjs
-    pkgMain
+    pkgMain && !shouldSkipNative
       ? esbuildWriteIfChanged(cjsConfig, {
           platform: 'native',
         })
       : null,
 
     // for tests to load native-mode from node
-    bundleNative
+    bundleNative && !shouldSkipNative
       ? esbuildWriteIfChanged(
           {
             ...esbuildBundleProps,
@@ -450,7 +452,7 @@ async function buildJs() {
       : null,
 
     // for tests to load native-mode from node
-    bundleNativeTest
+    bundleNativeTest && !shouldSkipNative
       ? esbuildWriteIfChanged(
           {
             ...esbuildBundleProps,
@@ -472,7 +474,7 @@ async function buildJs() {
       : null,
 
     // native output to esm
-    pkgModule
+    pkgModule && !shouldSkipNative
       ? esbuildWriteIfChanged(esmConfig, {
           platform: 'native',
         })
@@ -500,7 +502,7 @@ async function buildJs() {
       : null,
 
     // jsx native
-    pkgModuleJSX
+    pkgModuleJSX && !shouldSkipNative
       ? esbuildWriteIfChanged(
           {
             // only diff is jsx preserve and outdir
