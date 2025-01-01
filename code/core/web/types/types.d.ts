@@ -272,7 +272,7 @@ export type SpacerUniqueProps = {
 };
 export interface SpacerStyleProps extends Omit<StackStyleBase, keyof SpacerUniqueProps>, SpacerUniqueProps {
 }
-export type SpacerProps = WithThemeShorthandsPseudosMedia<SpacerStyleProps>;
+export type SpacerProps = WithThemeShorthandsPseudosMediaRem<SpacerStyleProps>;
 type AllowedValueSettingBase = boolean | 'strict' | 'somewhat-strict' | 'strict-web' | 'somewhat-strict-web';
 type AllowedStyleValuesSettingSize = AllowedValueSettingBase | 'number' | 'percent';
 type AllowedStyleValuesSettingZIndex = AllowedValueSettingBase | 'number';
@@ -672,6 +672,9 @@ type DefaultFont = TamaguiSettings['defaultFont'];
 export type Fonts = DefaultFont extends string ? TamaguiConfig['fonts'][DefaultFont] : never;
 export type Font = ParseFont<Fonts>;
 export type GetTokenFontKeysFor<A extends 'size' | 'weight' | 'letterSpacing' | 'family' | 'lineHeight' | 'transform' | 'style' | 'color'> = keyof TamaguiConfig['fonts']['body'][A];
+export type WithRem<T extends object> = {
+    [K in keyof T]: Extract<T[K], number> extends never ? T[K] : `${number}rem` | T[K];
+};
 export type FontTokens = GetTokenString<keyof TamaguiConfig['fonts']>;
 export type FontFamilyTokens = GetTokenString<GetTokenFontKeysFor<'family'>>;
 export type FontSizeTokens = GetTokenString<GetTokenFontKeysFor<'size'>> | number;
@@ -695,6 +698,7 @@ export type ParseFont<A extends GenericFont> = {
 };
 export type TokenPrefixedIfExists<A> = A extends Object ? TokenPrefixed<A> : {};
 export type ThemeValueByCategory<K extends string | number | symbol> = K extends 'theme' ? ThemeTokens : K extends 'size' ? SizeTokens : K extends 'font' ? FontTokens : K extends 'fontSize' ? FontSizeTokens : K extends 'space' ? SpaceTokens : K extends 'color' ? ColorTokens : K extends 'zIndex' ? ZIndexTokens : K extends 'lineHeight' ? FontLineHeightTokens : K extends 'fontWeight' ? FontWeightTokens : K extends 'letterSpacing' ? FontLetterSpacingTokens : K extends keyof Tokens ? GetTokenString<keyof Tokens[K]> : never;
+export type WithThemeShorthandsPseudosMediaRem<A extends Object, Variants = {}> = WithRem<WithThemeShorthandsAndPseudos<A, Variants>> & WithRem<WithMediaProps<WithThemeShorthandsAndPseudos<A, Variants>>>;
 export type FontKeys = 'fontFamily';
 export type FontSizeKeys = 'fontSize';
 export type FontWeightKeys = 'fontWeight';
@@ -1263,14 +1267,14 @@ type A11yDeprecated = {
 export interface StackNonStyleProps extends A11yDeprecated, Omit<ViewProps, 'hitSlop' | 'pointerEvents' | 'display' | 'children' | keyof TamaguiComponentPropsBaseBase | RNOnlyProps | keyof ExtendBaseStackProps | 'style'>, ExtendBaseStackProps, TamaguiComponentPropsBase {
     style?: StyleProp<LooseCombinedObjects<React.CSSProperties, ViewStyle>>;
 }
-export type StackStyle = WithThemeShorthandsPseudosMedia<StackStyleBase>;
+export type StackStyle = WithThemeShorthandsPseudosMediaRem<StackStyleBase>;
 export type StackProps = StackNonStyleProps & StackStyle;
 export interface TextNonStyleProps extends A11yDeprecated, Omit<ReactTextProps, 'children' | keyof WebOnlyPressEvents | RNOnlyProps | keyof ExtendBaseTextProps | 'style'>, ExtendBaseTextProps, TamaguiComponentPropsBase {
     style?: StyleProp<LooseCombinedObjects<React.CSSProperties, RNTextStyle>>;
     /** @deprecated use userSelect instead */
     selectable?: boolean;
 }
-export type TextStyle = WithThemeShorthandsPseudosMedia<TextStylePropsBase>;
+export type TextStyle = WithThemeShorthandsPseudosMediaRem<TextStylePropsBase>;
 export type TextProps = TextNonStyleProps & TextStyle;
 export interface ThemeableProps {
     theme?: ThemeName | null;
@@ -1284,7 +1288,7 @@ export type StyleableOptions = {
     staticConfig?: Partial<StaticConfig>;
 };
 export type Styleable<Props, Ref, NonStyledProps, BaseStyles extends Object, VariantProps, ParentStaticProperties> = <CustomProps extends Object | void = void, MergedProps = CustomProps extends void ? Props : Omit<Props, keyof CustomProps> & CustomProps, FunctionDef extends FunctionComponent<MergedProps> = FunctionComponent<MergedProps>>(a: FunctionDef, options?: StyleableOptions) => TamaguiComponent<MergedProps, Ref, NonStyledProps & CustomProps, BaseStyles, VariantProps, ParentStaticProperties>;
-export type GetFinalProps<NonStyleProps, StylePropsBase, Variants> = Omit<NonStyleProps, keyof StylePropsBase | keyof Variants> & (StylePropsBase extends Object ? WithThemeShorthandsPseudosMedia<StylePropsBase, Variants> : {});
+export type GetFinalProps<NonStyleProps, StylePropsBase, Variants> = Omit<NonStyleProps, keyof StylePropsBase | keyof Variants> & (StylePropsBase extends Object ? WithThemeShorthandsPseudosMediaRem<StylePropsBase, Variants> : {});
 export type TamaguiComponent<Props = any, Ref = any, NonStyledProps = {}, BaseStyles extends Object = {}, Variants = {}, ParentStaticProperties = {}> = ForwardRefExoticComponent<(Props extends TamaDefer ? GetFinalProps<NonStyledProps, BaseStyles, Variants> : Props) & RefAttributes<Ref>> & StaticComponentObject<Props, Ref, NonStyledProps, BaseStyles, Variants, ParentStaticProperties> & Omit<ParentStaticProperties, 'staticConfig' | 'extractable' | 'styleable'> & {
     __tama: [Props, Ref, NonStyledProps, BaseStyles, Variants, ParentStaticProperties];
 };
@@ -1465,7 +1469,7 @@ export type GetVariantProps<A extends StylableComponent, IsText extends boolean 
         infer VariantProps,
         any
     ];
-} ? Props extends TamaDefer ? GetFinalProps<NonStyledProps, BaseStyles, VariantProps> : Props : WithThemeShorthandsPseudosMedia<IsText extends true ? TextStylePropsBase : StackStyleBase>;
+} ? Props extends TamaDefer ? GetFinalProps<NonStyledProps, BaseStyles, VariantProps> : Props : WithThemeShorthandsPseudosMediaRem<IsText extends true ? TextStylePropsBase : StackStyleBase>;
 export type VariantDefinitionFromProps<MyProps, Val> = MyProps extends Object ? {
     [propName: string]: VariantSpreadFunction<MyProps, Val> | ({
         [Key in SpreadKeys]?: Key extends '...fontSize' ? FontSizeVariantSpreadFunction<MyProps> : Key extends '...size' ? SizeVariantSpreadFunction<MyProps> : Key extends '...space' ? SpaceVariantSpreadFunction<MyProps> : Key extends '...color' ? ColorVariantSpreadFunction<MyProps> : Key extends '...lineHeight' ? FontLineHeightVariantSpreadFunction<MyProps> : Key extends '...fontTransform' ? FontTransformVariantSpreadFunction<MyProps> : Key extends '...fontStyle' ? FontStyleVariantSpreadFunction<MyProps> : Key extends '...letterSpacing' ? FontLetterSpacingVariantSpreadFunction<MyProps> : Key extends '...zIndex' ? ZIndexVariantSpreadFunction<MyProps> : Key extends '...radius' ? RadiusVariantSpreadFunction<MyProps> : Key extends '...theme' ? ThemeVariantSpreadFunction<MyProps> : never;
