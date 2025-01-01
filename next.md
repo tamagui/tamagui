@@ -2,6 +2,7 @@
 
 - popover trigger should send an event to close tooltips automatically on open
   - closeTooltips() helper
+  - tooltip prop `closeOnGlobalPress`
 
 - we should add a docs page on testing tamagui:
 
