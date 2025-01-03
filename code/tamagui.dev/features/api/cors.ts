@@ -1,4 +1,4 @@
-import { setCurrentRequestHeaders } from 'one/headers'
+import { setCurrentRequestHeaders } from 'one/server'
 
 export const setupCors = (req: Request) => {
   const origin = req.headers.get('origin')

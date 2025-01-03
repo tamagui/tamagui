@@ -624,12 +624,6 @@ export const PurchaseModal = ({
               />
             </Dialog.Close>
           </Unspaced>
-
-          <XStack theme="yellow" bg="$color1" w="100%" py="$2" ai="center" jc="center">
-            <Paragraph>
-              Black Friday pricing active: saving $50 on every product
-            </Paragraph>
-          </XStack>
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog>
