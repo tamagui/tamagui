@@ -17,6 +17,8 @@ const Test = styled(View, {
 
   $md: {
     '$platform-web': {
+      position: 'fixed',
+      gridColumnGap: 12,
       backgroundColor: 'green',
     },
   },

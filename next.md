@@ -62,6 +62,8 @@ testEnvironmentOptions: {
 
 uniswap:
 
+- enter/exit in media not overriding
+
 - Checkbox disabled prop not disabling on native
 
 - if Popover can not be portaled that would be useful for some use cases
@@ -77,17 +79,15 @@ https://linear.app/uniswap/issue/WEB-4733/tamagui-transform-needs-array-to-work-
 
 - bug: if you name a file `polyfill-native.ts` tamagui-biuld doesnt output the .native files properly
 
-- need to fix web types inside platform web inside media query:
-  - $sm={{ "$platform-web": { position: 'fixed' }}
 - When using <Adapt.Contents />  inside an Adapt when="sm"  it seems to hide the children before fully closed
   - https://uniswapteam.slack.com/archives/C07AHFK2QRK/p1723409606028379
+
 - When opening a fit Sheet while keyboard is active (at least on ios) the height of the sheet is off
   - https://uniswapteam.slack.com/archives/C07AHFK2QRK/p1723475036176189
+  
 - AnimatePresence leaving things in DOM
   - https://uniswapteam.slack.com/archives/C07AHFK2QRK/p1723148309745679
-- enter/exit in media not overriding
-- not accepting number type in media query: "$platform-web" :{ gridColumnGap: 12 }
-- for some reason "$platform-web" :{ gridTemplateRows } not accepted in media uery only
+
 
 
 a way to set styles for children:
@@ -160,9 +160,6 @@ const Context = createStyledContext({
   },
 })
 
-
-- seems like vite plugin in basic vxrn app on features/home/HomeLayout.tsx
-  - when tamaguiExtract is on, it seems to get stale source code after one save
 
 - useDidFinishSSR can avoid re-renders when disableSSR: true
   - make it export a `disable()` helper we call from tamagui
