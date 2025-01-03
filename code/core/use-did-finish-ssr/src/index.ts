@@ -6,12 +6,16 @@ export function useDidFinishSSR<A = boolean>(value?: A): A | false {
     return value ?? true
   }
 
-  const [cur, setCur] = React.useState<any>(value)
-  React.useEffect(() => {
-    setCur(value ?? true)
-  }, [])
-  return cur ?? false
+  return React.useSyncExternalStore(
+    subscribe,
+    () => value ?? true,
+    () => {
+      return false as any
+    }
+  )
 }
+
+const subscribe = () => () => {}
 
 type FunctionOrValue<Value> = Value extends () => infer X ? X : Value
 
