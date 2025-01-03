@@ -29,6 +29,8 @@ import type { TamaguiComponentState } from './interfaces/TamaguiComponentState'
 import type { WebOnlyPressEvents } from './interfaces/WebOnlyPressEvents'
 import type { TamaguiComponentPropsBaseBase } from './interfaces/TamaguiComponentPropsBaseBase'
 import type { SizeKeys, SpaceKeys, ColorKeys } from './interfaces/KeyTypes'
+import { styled } from './styled'
+import { Text } from './views/Text'
 
 export * from './interfaces/KeyTypes'
 export * from './interfaces/TamaguiComponentState'
@@ -872,19 +874,21 @@ export type WithMediaProps<A> = {
     | PlatformMediaKeys]?: Key extends MediaPropKeys
     ? A & {
         // TODO we can support $theme- inside media queries here if we change to ThemeMediaKeys | PlatformMediaKeys
-        [Key in PlatformMediaKeys]?: A
+        [Key in PlatformMediaKeys]?: AddWebOnlyStyleProps<A>
       }
     : Key extends `$platform-web`
-      ? {
-          [SubKey in keyof A | keyof CSSProperties]?: SubKey extends keyof CSSProperties
-            ? CSSProperties[SubKey]
-            : SubKey extends keyof A
-              ? A[SubKey]
-              : SubKey extends keyof WebOnlyValidStyleValues
-                ? WebOnlyValidStyleValues[SubKey]
-                : never
-        }
+      ? AddWebOnlyStyleProps<A>
       : A
+}
+
+type AddWebOnlyStyleProps<A> = {
+  [SubKey in keyof A | keyof CSSProperties]?: SubKey extends keyof CSSProperties
+    ? CSSProperties[SubKey]
+    : SubKey extends keyof A
+      ? A[SubKey]
+      : SubKey extends keyof WebOnlyValidStyleValues
+        ? WebOnlyValidStyleValues[SubKey]
+        : never
 }
 
 export type WebOnlyValidStyleValues = {
@@ -1098,8 +1102,6 @@ export type SpaceTokens =
   | SpecificTokensSpecial
   | GetTokenString<keyof Tokens['space']>
   | ThemeValueFallbackSpace
-  // TODO can remove / refactor but need to verify
-  | boolean
 
 export type ColorTokens =
   | SpecificTokensSpecial
@@ -1770,7 +1772,7 @@ interface ExtraBaseProps {
   /**
    * @deprecated Use `gap`
    */
-  space?: SpaceValue
+  space?: SpaceValue | boolean
   /**
    * @deprecated Use `gap`
    */

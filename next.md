@@ -1,3 +1,36 @@
+---
+
+- `background` prop + linear-gradient + background-image
+
+<Skeleton />
+
+<Skeleton />
+  <Skeleton.Gradient />
+</Skeleton>
+
+```tsx
+const Skeleton = styled(Stack, {
+  animation: {
+    name: 'quick',
+    loop: true
+  },
+  enterStyle: {
+    x: '100%',
+  },
+  exitStyle: {
+    x: '-100%',
+  },
+  background: `linear-gradient(to left, $background, $color, $background)`,
+})
+```
+
+
+- beef up tests:
+  - native
+  - native/web performance
+  - nextjs (can add to code/next-site), esp light/dark/animations
+  - $group $platform $theme styling
+
 - reanimated animate presence is making me set `opacity: 1` type default values
 
 - popover trigger should send an event to close tooltips automatically on open
@@ -17,44 +50,17 @@ testEnvironmentOptions: {
 - deeply nested themeInverse needs a fix see kitchen sink squares
 - nan issue: nan start or end NaN 22 bytes: 0-22 [ 'bytes: 0', '22' ]
 
-@natew
-
 - button media queries break due to useStyle hook
 - algolia creds
 - can skip a ton of CSS by disabling prefers color theme setting
   - so long as they use next-theme, or vxrn/color-scheme
-
-@jsherrard
 
 - uniswap/tamagui fixes, see uniswap section
   - the platform-web type issues should be relatively easy
   - fix customization https://discord.com/channels/909986013848412191/1206456825583632384/1274853294195605525
 
 
-we can turn this pattern:
-
-```
-<style
-        // @ts-ignore
-        precedence="default"
-        key="tamagui-css"
-        // @ts-ignore
-        href="tamagui-css"
-      >
-        {config.getCSS()}
-      </style>
-```
-
-into just `{config.getStyleTag()}`
-
-site:
-
-- clicking links fast will crash
-
 uniswap:
-
-- remove boolean for SpaceTokens
-  - why is a boolean value allowed for SpaceTokens? I see there's a TODO in the tamagui repo. Is there a way for us to restrict that typecheck in our codebase? Seems really bad if it leads to a crash
 
 - Checkbox disabled prop not disabling on native
 
@@ -69,33 +75,8 @@ it looks like transform does not work - console is logging [moti]: Invalid trans
 
 https://linear.app/uniswap/issue/WEB-4733/tamagui-transform-needs-array-to-work-but-type-expects-string
 
-- this isnt applying display flex on lg:
-
-
-const Layout = styled(Flex, {
-  width: '100%',
-  maxWidth: 1280,
-
-  '$platform-web': {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(4, 1fr)',
-    gridTemplateRows: 'repeat(4, 1fr)',
-    gridColumnGap: '16px',
-    gridRowGap: '16px',
-  },
-
-  $lg: {
-    '$platform-web': {
-      display: 'flex',
-      flexDirection: 'column',
-    },
-  },
-})
-
-
 - bug: if you name a file `polyfill-native.ts` tamagui-biuld doesnt output the .native files properly
 
-- // @ts-expect-error TODO tamagui needs to add gridArea type
 - need to fix web types inside platform web inside media query:
   - $sm={{ "$platform-web": { position: 'fixed' }}
 - When using <Adapt.Contents />  inside an Adapt when="sm"  it seems to hide the children before fully closed
@@ -107,13 +88,6 @@ const Layout = styled(Flex, {
 - enter/exit in media not overriding
 - not accepting number type in media query: "$platform-web" :{ gridColumnGap: 12 }
 - for some reason "$platform-web" :{ gridTemplateRows } not accepted in media uery only
-- can't use `mt="1rem"` on web, tried adding allowedStyleValues: 'somewhat-strict-web', still not
-
-postable:
-
-- bring back copy paste on theme tab
-- simplification spree
-
 
 
 a way to set styles for children:
@@ -149,80 +123,6 @@ const example = (
   </Button>
 )
 ```
-
----
-
-v2:
-
-  - // TODO validate these are supported in...
-  - // TODO remove in v2
-  - // TODO can remove 'web'
-  - TODO remove this on v2
-  - Text weirdness fixes (explore)
-    - remove suppressHighlighting / margin 0 default from Text
-    - fix display: inline issue
-    - see what react-strict-dom is doing
-    - move it to <div><span> where div is flex, span is text only props
-        <div {...nonTextStyleProps}>
-          <span {...textStylePropsOnly} style={{ display: 'contents' }}>
-
-          </span>
-        </div>
-  - we have some random web-only props accepts on flat props, we should:
-    - either implement them universally if easy
-    - or else remove them (in favor of $platform-web)
-  - `$platform-` prefixes should go away in favor of just `$web`, `$native` etc
-  - textAlignVertical is deprecated but make sure we map back from textAlign to textAlignVertical on v2 and then remove it
-  - remove Provider need just global config once
-  - @tamagui/cli => tamagui
-    - `tamagui build` document/announce
-    - `tamagui lint` fix check and document/announce
-  - remove deprecated second argument styled acceptsClassName
-    - styled(View, { acceptsClassName }, { acceptsClassName })
-  - deprecrate and remove mediaPropOrder
-  - tamagui => @tamagui/ui
-    - new Button, Input (nice, can be v3), Image (image-next), ScrollView
-    - note many are headless
-    - fullscreen => inset={0}
-      - deprecate fullscreen, make sure inset works
-  - remove spacer / space / separator
-  - remove the accumulation of styleProps in propMapper
-  - remove disableRootThemeClass from settings, change to disableRootThemeClassName
-  - defaults onlyAllowShorthands to true, themeClassNameOnRoot to true
-  - Cleanup Select/ListItem
-    - remove SizableStack (maybe rename to Surface), redo/remove ThemeableStack
-    - v2-3 ListItem simplification esp for performance of Select
-    - fix Select hover/type/performance
-  - remove deprecated
-  - document react 19 mode - process.env.TAMAGUI_REACT_19
-  - react 0.74 alignment:
-    - https://reactnative.dev/blog/2024/04/22/release-0.74
-    - position: 'static'
-  - web alignment, accessibility props, "focusable" => tabIndex
-  - move to react native flex compat, `styleCompat` default to react-native
-    - web alignment?
-  - move to web compat style apis
-  - no more `as const` needed (ts5) typescript const generic
-  - remove deprecated flat settings, prefer createTamagui({ settings: {} })
-  - AnimatePresence: remove deprecated props in favor of `custom`
-  - remove nativeID, maybe testID
-  - remove `dataSet` in favor of `data-` attributes
-  - deprecate shadow style props before v2 release and remove in v2
-    - "shadow*" style props are deprecated. Use "boxShadow".
-  - remove as much of `// TODO: remove this in the future when react native a11y API is removed` as possible
-    - "Enhance with native semantics" can probably go away right
-
-potential
-
-  - deprecate shadow props separated in favor of boxShadow, implement boxShadow
-  - sync AnimatePresence with latest changes from framer-motion
-  - group => container
-
-stretch
-
-  - @tamagui/core => @tamagui/style
-    - styled()
-    - @tamagui/style just style({}) export, takes TextProps
 
 ---
 
@@ -299,12 +199,6 @@ const Context = createStyledContext({
     - <View>{(props, style, state) => {}}</View>
     - makes for easy interop, where asChild is more opaque
     - sets disableClassName true
-
-- we need to beef up tests:
-  - native in general
-  - native/web performance
-  - nextjs (can add to code/next-site), esp light/dark/animations
-  - $group $platform $theme styling
 
 - uniswap //@ts-expect-error TODO in homepage
 - bug in useMedia + compiler
@@ -425,10 +319,6 @@ Nate:
 
 - add $mouse to takeout
 
-- bug in generated icon props
-
-  - https://discord.com/channels/909986013848412191/1178185816426680370/1199854688233857136
-
 - compiler - no need to setup any separate package
 
 - Remove the need for Text
@@ -466,13 +356,6 @@ studio:
 
 - check usePropsAndStyle with group props
 
-- studio: the accent color need an accent color that reverses back
-- studio: make the scales "anchor" around the selected color better
-  - exact color should be at the 14 position always
-- studio: add outline, outlineHover, etc
-- studio: add partial transparent for each color step?
-
-- // TODO breaks next.js themes page
 - alt themes don't change color1-9 so you can't do color2 and then make the alt theme make it more subtle, but they should
 
 - disableClassName breaking css animation
@@ -492,7 +375,6 @@ studio:
 Web:
 
 - createTamagui({ settings: { webMode: true } })
-- No Text/Stack, just `styled.div` ?
 - avoids console warning on Text
 - `@tamagui/style` separate from core
 - instead of validStyleProps use validNONStyleProps
@@ -522,7 +404,7 @@ type StackStyle = {
   focus?: ViewStyle
 }
 
-const mySubStyle: StackStyle = style(Stack, {
+const mySubStyle: StackStyle = style({
   backgroundColor: 'red', // optimizes on web to _bg-red
 
   pressStyle: {
@@ -539,21 +421,9 @@ const MyComponent = (props: { accentedStyle?: StackStyle }) => {
 
 ```
 
----
-
 config: {
-settings: {
-styleStrategy: { type: 'prop', prop: 'sx', acceptFlatStyles: true }
+  styleStrategy: { type: 'prop', prop: 'sx', acceptFlatStyles: true }
 }
-}
-
----
-
-HEADLESS=1
-
-- env HEADLESS sets unstyled: true by default
-- createX
-- eject command
 
 ---
 
@@ -606,7 +476,6 @@ Studio:
 CLI:
 
 - `tama upgrade` - official tamagui upgrade that works across bundlers
-- `tama doctor` - checks dependencies to be consistent
 - `tamagui [clone|eject] Sheet ./packages/sheet`
   - clones the sheet package into your repo somewhere
 
@@ -635,8 +504,6 @@ Maintenance:
 ---
 
 # Backlog
-
-- move simple-web to themeBuilder
 
 - Popover.Close inside Sheet
 
@@ -730,46 +597,21 @@ Ali:
 
 ---
 
-2.0
-
-- remove from web (can keep in core or make pluggable):
-  - themeable
-  - space
-  - can have an env setting to exclude all the theme generation stuff if you are using the pre-build: `getThemeCSSRules`
-- replace all RN stuff left in tamagui: Image, Input, Spinner, etc
-- Accessibility + RTL
-- tag="a" should get the typed props of a link
-
----
-
 - react native pressable in pressable
-
-- tama sync
-  - make it easy to have a template repo that people sync to
-  - includes the git sync stuff from cli now
-  - copies/diffs/merges every file there just based on heuristics
-  - somehow choose "merge/overwrite/diff"
-  - smart defaults
-    - package.json etc
-    - binary assets overwrite (if not changed, else prompt)
-- setup script can power `tama sync` to sync the repo to its parent repo
 
 - site web fonts (can also be a feature of font bundles)
 
   - https://www.lydiahallie.io/blog/optimizing-webfonts-in-nextjs-13
   - https://simonhearne.com/2021/layout-shifts-webfonts/#reduce-layout-shift-with-f-mods
 
-- drag on switch
 - prebuild option
   - de-dupes css
   - fixes next.js next load css
   - simplifies initial setup and need for plugins
 - site snack + demo embed on all pages floating that scales up on hover on large screengrid or augment
-- lighthouse score ci
 - pass Size down context (see Group) is this just Themes but for individual props (css variable direct support <Theme set={{ size: '$4' }}> ?)?
 - kitchen sink snack on site
 - what works for compilation / examples
-- @tamagui/sx
 - @tamagui/tailwind
 - pass Size down context (see Group) but really this is just Themes but for individual props (css variable direct support <Theme set={{ size: '$4' }}> ?)
 - native props on more components
@@ -795,13 +637,9 @@ Ali:
 - try using react-native-web $css object support for classnames
 - animation accept useAnimatedStyle
 - Switch gesture
-- loadFont, loadAnimations
-- <Debug><...><Debug/> turns on debugging for all in tree and shows them nested
 - <Icon />
   - use theme values and size values
   - can swap for other icon packs (use createTamagui({ icons }))
-- <Autocomplete />
-- <Select.SearchInput />
 - <Text fontSize="parent" />
 - <UL /> <LI /> <OL />
 - hoverStyle={{ [XStack]: {} }}
@@ -816,8 +654,6 @@ Ali:
     - see Switch
   - radio may be List.Radio just combines List, Label, Drawer
     - can use Switch or check or custom
-- focusWithinStyle
-- accessibility upgrades (focus rings etc)
 - skeleton just using Theme / variables
 
 ---
@@ -836,30 +672,6 @@ Ali:
     - Zeego uses
     - @react-native-menu/menu
     - https://github.com/nandorojo/zeego/blob/master/packages/zeego/src/menu/create-android-menu/index.android.tsx
-
----
-
-<Skeleton />
-
-<Skeleton />
-  <Skeleton.Gradient />
-</Skeleton>
-
-```tsx
-const Skeleton = styled(Stack, {
-  animation: {
-    name: 'quick',
-    loop: true
-  },
-  enterStyle: {
-    x: '100%',
-  },
-  exitStyle: {
-    x: '-100%',
-  },
-  background: `linear-gradient(to left, $background, $color, $background)`,
-})
-```
 
 -
 

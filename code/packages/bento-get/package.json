@@ -19,8 +19,8 @@
     "dist"
   ],
   "scripts": {
-    "build": "tamagui-build",
-    "watch": "tamagui-build --watch",
+    "build": "tamagui-build --skip-types",
+    "watch": "yarn build --watch",
     "lint": "biome check src",
     "lint:fix": "biome check --write src",
     "clean": "tamagui-build clean",
@@ -62,6 +62,7 @@
   "devDependencies": {
     "@tamagui/build": "1.121.5",
     "@types/copy-paste": "^1.1.33",
+    "@types/ink": "^2.0.3",
     "@types/react": "npm:@types/react@18.2.55"
   }
 }

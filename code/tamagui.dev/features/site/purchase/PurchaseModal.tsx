@@ -139,7 +139,7 @@ export const PurchaseModal = ({
 
       <Dialog.Adapt when="sm">
         <Sheet zIndex={200000} modal dismissOnSnapToBottom animation="medium">
-          <Sheet.Frame bg="$color2" padding={0} gap>
+          <Sheet.Frame bg="$color2" padding={0} gap="$4">
             <Sheet.ScrollView>
               <Dialog.Adapt.Contents />
             </Sheet.ScrollView>
