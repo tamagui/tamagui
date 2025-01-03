@@ -1,28 +1,28 @@
+- config/v4
+  - focus styles in the default v3 config are kind of wack
+  - must pass in colors separately but it exports the defaults still
+  - remove: shouldAddPrefersColorThemes, themeClassNameOnRoot
+
+- move @tamagui/react-native-media-driver into core and recommend using it from there
+
 ---
 
-- `background` prop + linear-gradient + background-image
+v3
 
-<Skeleton />
-
-<Skeleton />
-  <Skeleton.Gradient />
-</Skeleton>
-
-```tsx
-const Skeleton = styled(Stack, {
-  animation: {
-    name: 'quick',
-    loop: true
-  },
-  enterStyle: {
-    x: '100%',
-  },
-  exitStyle: {
-    x: '-100%',
-  },
-  background: `linear-gradient(to left, $background, $color, $background)`,
-})
-```
+  - `background` prop + linear-gradient + background-image (see *Skeleton)
+  - can we remove the need for separate Text/View?
+      - seems like we could scan just the direct descendents?
+      https://github.com/facebook/react-strict-dom/blob/429e2fe1cb9370c59378d9ba1f4a40676bef7555/packages/react-strict-dom/src/native/modules/createStrictDOMComponent.js#L529
+  - light-dark()
+    - this is an official css thing so would be easy-ish to implement
+  - run over components and review for removing some assumptions about `size`
+  - disableInjectCSS should maybe just be automated better or defaulted on
+  - flat vs style mode, style moves all tamagui styles into `style` besides the other psuedos like hover, enter, etc
+  - no react-native deps across the ui kit on web
+  - html.div, styled('div'), styled(html.div)
+  - zero runtime mode
+    - all functional styles pre-generate the styles across the possible tokens (if :number it uses SizeTokens, probably have to disallow string and '...' types but could have a way to define the values at build-time)
+  - `<Theme values={{}} />` dynamic override
 
 
 - beef up tests:
@@ -126,21 +126,6 @@ const example = (
 
 ---
 
-v3
-
-  - light-dark()
-    - this is an official css thing so would be easy-ish to implement
-  - run over components and review for removing some assumptions about `size`
-  - disableInjectCSS should maybe just be automated better or defaulted on
-  - flat vs style mode, style moves all tamagui styles into `style` besides the other psuedos like hover, enter, etc
-  - no react-native deps across the ui kit on web
-  - html.div, styled('div'), styled(html.div)
-  - zero runtime mode
-    - all functional styles pre-generate the styles across the possible tokens (if :number it uses SizeTokens, probably have to disallow string and '...' types but could have a way to define the values at build-time)
-  - `<Theme values={{}} />` dynamic override
-
----
-
 v4 and beyond
 
 - flatMode - no nested objects, everything in flat props
@@ -161,21 +146,8 @@ const Context = createStyledContext({
 })
 
 
-- useDidFinishSSR can avoid re-renders when disableSSR: true
-  - make it export a `disable()` helper we call from tamagui
-
 - Select is using focusScope which React.Children.only erroring in most usages
   - we should try and redo FocusScope to not cloneElement at all and instead wrap with an element + display: contents
-
-- config/v4
-
-  - remove $mono and inter default fonts use system defaults
-    - can also export the existing font config as an option for migration
-  - must pass in colors separately but it exports the defaults still
-  - remove: shouldAddPrefersColorThemes, themeClassNameOnRoot
-  - focus styles in the default v3 config are kind of wack
-  - automatically handles tree shaking process.env for themes
-  - remove some shorthands (shac, less often used ones)
 
 ---
 
@@ -189,29 +161,15 @@ const Context = createStyledContext({
 
 - small win: `useTheme()` could take a theme name to use a diff theme than the current one
 
-- very long classnames could be much shorter:
- - `_borderBottomRightRadius-_platformweb_5037`
-
-- any tamagui component accepts a function callback to handle passing down styles:
-    - <View>{(props, style, state) => {}}</View>
-    - makes for easy interop, where asChild is more opaque
-    - sets disableClassName true
-
-- uniswap //@ts-expect-error TODO in homepage
 - bug in useMedia + compiler
   - https://app.graphite.dev/github/pr/Uniswap/universe/10626/fix-web-toast-alignment
 
 /theme
 
-- generate short url on load
 - randomize button for palettes
 - OG image of theme card (use the tree one we used for the list of themes in studio)
 - save
 - use on bento
-
-- can we remove the need for separate Text/View?
-    - seems like we could scan just the direct descendents?
-    https://github.com/facebook/react-strict-dom/blob/429e2fe1cb9370c59378d9ba1f4a40676bef7555/packages/react-strict-dom/src/native/modules/createStrictDOMComponent.js#L529
 
 - AnimatePresence refactor:
   - https://x.com/mattgperry/status/1816842995758498017?s=46&t=5wFlU_OsfjJ0sQPMFbtG0A
@@ -233,11 +191,7 @@ const Context = createStyledContext({
   - https://codesandbox.io/p/sandbox/floating-ui-react-scale-transform-origin-qv0t1c?file=%2Fsrc%2FApp.tsx%3A43%2C25
 - Setting default props for any style in a parent (variables dynamic / themes dynamic down the tree)
 
-Nate:
-
 - Popover click outside prop
-
----
 
 - data-disable-theme is being passed down on web snapshots
 - activeTheme props for all components
@@ -250,32 +204,7 @@ Nate:
 - Sometimes press getting stuck still on uniswap moonpay flow
 - Text vertical align issue: https://github.com/Uniswap/universe/pull/6730
 
----
-
-- ( Pending PRs ) RSD / web alignment
-  - follow what RSD is doing + dont go beyond native support eg aspect-ratio
-  - simple version is good
-  - lower priority - em/rem, other nice web styles that rsd/tailwind has
-- RSC support
-  - just simple views like View/Text/etc + no need for nesting themes
-  - need to remove context
-- v2 / headless
-
-  - ( Pending PR ) deprecate some createTamagui settings that should move into settings
-  - ListItem/Button simplify APIs
-  - ( Pending PR ) Image/Input deprecations for web alignment
-
-- native tests (detox?)
-- 0-runtime mode
-- @tamagui/kit - includes native versions of many things
-- remove RNW - Input, Image
-
----
-
 - Popper arrow logic is bad, needs unstyled support and not to do weird shifting of sizes
-
----
-
 
 - No need for View + Text (just Element and we can extend it later)
 
@@ -291,10 +220,6 @@ Nate:
 - Adapt needs public API to support any adaptation
 
 - Select Virtualization
-
-- style()
-
-- i think acceptTokens + compiler not working (see selectionColor)
 
 - settings page in takeout SSR hydration issue due to useThemeSetting
 
@@ -322,20 +247,10 @@ Nate:
 
 - popovers work with no js
 
-- TODO
-  - process.env.TAMAGUI_TARGET === 'native' ? false : props['data-disable-theme']
-  - this looks wrong? shouldnt it be the same as on native? we may be doubling them on accident
 - Select `ListItemFrame` area is messy/slow due to inline styles and complex components
 - propMode
 
 - make styled() only not accept most non-style props
-
-studio: add outlineColor and the pseudos
-studio: export for takeout option
-
-outlineWidth get smaller at smaller size
-
-studio:
 
 - Scale / ScaleSelect
   should be a Menu with mini visualizations of the lum/sat scales for each
@@ -447,29 +362,6 @@ Performance:
 
 ---
 
-Studio:
-
-- Scales
-  - All color scales should have an option/check to turn on/off their control over saturation
-  - In fact split out saturation scales
-  - Remove luminosity slider for base theme just keep for contrast
-  - Customize scale popover lets you name a new one, change the values
-- Contrast
-  - needs to be able to pick the foreground color manually
-  - by default it picks a nice contrast (opposite scale end) foreground
-  -
-- Mask themes
-  - Need to be fixed in general and improved defaults
-- Final Step
-
-  - Add a final preview set where you can choose any theme for every box section, that way you can preview you main theme + contrast, but also your sub-themes on some boxes, getting very interesting combos
-  - Needs to have a overview view of the themes you generated, a grid of cards showing their names, palette, scales, etc, this will be re-used on the purchase page for free/pro themes
-
-- Post-release
-  - Sharing your themes should be a thing, hit publish and it makes the final step overview screen + other users can load it into their studio = more sharing on twitter etc
-
----
-
 CLI:
 
 - `tama upgrade` - official tamagui upgrade that works across bundlers
@@ -488,15 +380,6 @@ Components:
 
 - Menu
 - DatePicker
-
----
-
-Maintenance:
-
-- biome checks for react hooks early returns
-- deprecate rnw-lite when we can after making sure all tests / animation drivers pass on rnw
-- TODO this could definitely be done better by at the very minimum
-  - this entire proxy could be removed in favor of the proxy we make on initial theme creation, and just having a way to subscribeThemeGet(theme, (key, val) => any) at the useThemeWithState callsite
 
 ---
 
@@ -543,63 +426,9 @@ Maintenance:
   - all instances of $true can become getConfig().defaultSize
   - remove the validation in createTamagui that enforces the keys
 
-- relative sizing first class (and relative color)
-
-  - add `defaultSize`, and `defaultColor`
-  - add `relative()` helpers
-
 - bug: inputs rendering twice due to focusableInputHOC, if you remove that it doesn't, this is due to styled() + how it determines ComponentIn and grabs the component
 
-- document `unstyled` prop for components
-
-- docs for `@tamagui/font` and `@tamagui/theme`
-
-- https://github.com/tamagui/tamagui/pull/765
-
 - getVariableValue(props.fontFamily) doesn't look right
-
-support new RN props:
-https://reactnative.dev/blog/2023/01/12/version-071#web-inspired-props-for-accessibility-styles-and-events
-
-Ali:
-
-- [ ] document keyboard avoiding view in `Sheet.mdx`
-- [ ] input bug
-- [ ] @tamagui/change-animation-driver document
-- [ ] Disable warning ENV + configuration.md docs
-  - [ ] (nate) make focusStyle border darker
-- [ ] bezier on css animations
-  - [ ] disablePassBorderRadius feels like a weird thing to need by default
-    - change Group's disablePassBorderRadius to something else - perhaps the negation, passBorderRadius? i'm not sure. what do you think about this @natew
-      alternatively we could have disablePassBorderRadius default to true only on Tabs.List. but then overriding it would feel awkward (having to pass disablePassBorderRadius={false})
-  - [ ] and document on styled() page
-- native component modes
-  - [ ] `RadioGroup`, `Select` native (web)
-  - [ ] `Switch` native (mobile)
-
----
-
-1.X
-
-- web forms events bubble
-- vertical slider native can be janky
-- accessibility keyboard navigation (Menu component potentially)
-- test: useMedia, reanimated, re-renders (mount, on hover, etc), render time ms
-- CD on github
-- home page sponsors with sizing and better logos
-  - https://github.com/JamesIves/github-sponsors-readme-action
-- keyboard search select bug
-- createThemes accepts array not object
-- site \_app has t_unmounted helper, move that into tamagui proper
-
----
-
-- react native pressable in pressable
-
-- site web fonts (can also be a feature of font bundles)
-
-  - https://www.lydiahallie.io/blog/optimizing-webfonts-in-nextjs-13
-  - https://simonhearne.com/2021/layout-shifts-webfonts/#reduce-layout-shift-with-f-mods
 
 - prebuild option
   - de-dupes css
@@ -608,11 +437,8 @@ Ali:
 - site snack + demo embed on all pages floating that scales up on hover on large screengrid or augment
 - pass Size down context (see Group) is this just Themes but for individual props (css variable direct support <Theme set={{ size: '$4' }}> ?)?
 - kitchen sink snack on site
-- what works for compilation / examples
 - @tamagui/tailwind
 - pass Size down context (see Group) but really this is just Themes but for individual props (css variable direct support <Theme set={{ size: '$4' }}> ?)
-- native props on more components
-- space => gap
 - <ActionSheet />
 - check deps are matching in compiler startup
 - can optimize useMedia / many hooks:
@@ -643,7 +469,6 @@ Ali:
 - <List.Section /> see (https://developer.apple.com/documentation/swiftui/list Section)
 - <GradientText /> can work native with
   - https://github.com/react-native-masked-view/masked-view
-- react-native-skia / svg image support
 - beforeStyle, afterStyle could work ...
   - only if we can do with pseudos:
     - focusStyle={{ after: { fullscreen: true, border... } }}
@@ -653,57 +478,20 @@ Ali:
     - can use Switch or check or custom
 - skeleton just using Theme / variables
 
----
-
-<Menu />
-
-- https://www.radix-ui.com/docs/primitives/components/dropdown-menu
-- basically a popover + mouse helpers + built in item element
-- don't need sub-menu for first iteration but... could if it's easier to at once
-- floating-ui has helpers for this too
-- `native` prop to do ContextMenu in iOS
-  - ios:
-    - Zeego uses react-native-ios-context-menu
-    - https://github.com/nandorojo/zeego/blob/master/packages/zeego/src/menu/create-ios-menu/index.ios.tsx
-  - android:
-    - Zeego uses
-    - @react-native-menu/menu
-    - https://github.com/nandorojo/zeego/blob/master/packages/zeego/src/menu/create-android-menu/index.android.tsx
-
--
-
-# Themes
-
-Component themes could force set the actual properties even if they aren't set by the component themselves....
+*Skeleton
 
 ```tsx
-themes.dark_Button = {
-  borderWidth: 1,
-  borderColor: 'red',
-
-  // is this doable?
-  beforeStyle: [{}],
-}
+const Skeleton = styled(Stack, {
+  animation: {
+    name: 'quick',
+    loop: true
+  },
+  enterStyle: {
+    x: '100%',
+  },
+  exitStyle: {
+    x: '-100%',
+  },
+  background: `linear-gradient(to left, $background, $color, $background)`,
+})
 ```
-
-=
-
-# Winamp Re-skinability
-
-Themes can completely transform the look and feel, a button could have multiple shadows/reflections in one theme, but be totally flat in another.
-
-- 3.0 - single forward pass generates the css alongside the style object
-
-  - in general we need a better system for controlling if we apply active theme or not, or letting consumers control the active styling in general on things
-    - perhaps we do active theme by default (unless unstyled: true)
-    - <ToggleGroup activeItemProps={{ active: true }}>
-    - <ToggleGroup.Item /> then would recieve active={true}?
-    - defaults to theme: 'active'
-
-- `import { _ } from '@tamagui/core'`
-  - `<_.view />` `<_.text />`
-  - put it on globalThis and override type for super quick authoring
-  - can extend with your own
-    - `<_.p />` `<_.a />` `<.img />` etc
-  - can proxy to itself allowing for naming?
-    - `<_.view.my-thing />`
