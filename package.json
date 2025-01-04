@@ -103,20 +103,8 @@
     "next-site": "yarn workspace @tamagui/next-site dev",
     "reset-package-json": "RESET_PACKAGE_JSON=true node -e \"require('./scripts/multi-react-version-tests.js').resetPackageJson()\""
   },
-  "resolutions": {
-    "@expo/config-plugins": "9.0.12"
-  },
   "profile": {
     "//": "run 'yarn profile x' to toggle it on/off",
-    "react-19": {
-      "applied": false,
-      "resolutions": {
-        "@react-three/fiber": "9.0.0-alpha.6",
-        "react": "19.0.0-rc-fb9a90fa48-20240614",
-        "react-dom": "19.0.0-rc-fb9a90fa48-20240614",
-        "react-native-reanimated": "3.13.0-rc.1"
-      }
-    },
     "one": {
       "applied": false,
       "resolutions": {

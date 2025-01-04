@@ -109,9 +109,10 @@ export function createSwitch<
           unstyled={unstyled}
           {...(unstyled === false && {
             size,
-            ...(!disableActiveTheme && {
-              theme: checked ? 'active' : null,
-            }),
+            ...(!disableActiveTheme &&
+              !unstyled && {
+                theme: checked ? 'active' : null,
+              }),
           })}
           alignSelf={initialChecked ? 'flex-end' : 'flex-start'}
           x={x}
@@ -199,10 +200,11 @@ export function createSwitch<
             tag="button"
             {...(isWeb && { type: 'button' })}
             {...(switchProps as any)}
-            {...(!disableActiveTheme && {
-              theme: checked ? 'active' : null,
-              themeShallow: true,
-            })}
+            {...(!disableActiveTheme &&
+              !props.unstyled && {
+                theme: checked ? 'active' : null,
+                themeShallow: true,
+              })}
             // expected variants
             checked={checked}
             disabled={switchProps.disabled}

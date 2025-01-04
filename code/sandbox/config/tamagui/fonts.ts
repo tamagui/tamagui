@@ -34,8 +34,22 @@ const body = createMainFont(
   }
 )
 
+const heading = createMainFont(
+  {
+    weight: {
+      1: '400',
+      7: '600',
+    },
+  },
+  {
+    sizeSize: (size) => Math.round(size * 1),
+    sizeLineHeight: (size) => Math.round(size * 1.1 + (size >= 12 ? 10 : 4)),
+  }
+)
+
 export const fonts = {
   body,
+  heading,
 }
 
 function createMainFont<A extends GenericFont>(
@@ -59,7 +73,9 @@ function createMainFont<A extends GenericFont>(
     family: isWeb
       ? '-apple-system, Inter, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif'
       : 'System',
-    lineHeight: Object.fromEntries(Object.entries(size).map(([k, v]) => [k, sizeLineHeight(v)])),
+    lineHeight: Object.fromEntries(
+      Object.entries(size).map(([k, v]) => [k, sizeLineHeight(v)])
+    ),
     weight: {
       4: '300',
     },

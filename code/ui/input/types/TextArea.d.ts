@@ -342,6 +342,7 @@ export declare const TextArea: import("@tamagui/web").TamaguiComponent<import("@
         pressStyle: boolean;
         focusStyle: boolean;
         disabledStyle: boolean;
+        focusWithinStyle: boolean;
     };
     name?: undefined;
     tag?: undefined;

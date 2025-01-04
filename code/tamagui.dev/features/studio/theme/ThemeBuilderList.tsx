@@ -468,7 +468,7 @@ function CreateDialog(
     <Dialog modal {...props}>
       <Adapt when="sm" platform="touch">
         <Sheet zIndex={200000} modal dismissOnSnapToBottom>
-          <Sheet.Frame padding="$4" gap>
+          <Sheet.Frame padding="$4" gap="$4">
             <Adapt.Contents />
           </Sheet.Frame>
           <Sheet.Overlay
@@ -533,7 +533,7 @@ function CreateDialog(
               />
             </Fieldset>
 
-            <XStack alignSelf="flex-end" gap>
+            <XStack alignSelf="flex-end" gap="$4">
               <Form.Trigger>
                 <Button
                   themeInverse={!disabled}

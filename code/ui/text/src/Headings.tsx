@@ -24,6 +24,10 @@ export const H1 = styled(Heading, {
         size: '$10',
       },
     },
+  } as const,
+
+  defaultVariants: {
+    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
   },
 })
 
@@ -37,6 +41,10 @@ export const H2 = styled(Heading, {
         size: '$9',
       },
     },
+  } as const,
+
+  defaultVariants: {
+    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
   },
 })
 
@@ -50,6 +58,10 @@ export const H3 = styled(Heading, {
         size: '$8',
       },
     },
+  } as const,
+
+  defaultVariants: {
+    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
   },
 })
 
@@ -63,6 +75,10 @@ export const H4 = styled(Heading, {
         size: '$7',
       },
     },
+  } as const,
+
+  defaultVariants: {
+    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
   },
 })
 
@@ -76,6 +92,10 @@ export const H5 = styled(Heading, {
         size: '$6',
       },
     },
+  } as const,
+
+  defaultVariants: {
+    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
   },
 })
 
@@ -89,5 +109,9 @@ export const H6 = styled(Heading, {
         size: '$5',
       },
     },
+  } as const,
+
+  defaultVariants: {
+    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
   },
 })

@@ -1,9 +1,8 @@
 import { createMedia } from '@tamagui/react-native-media-driver'
 import { shorthands } from '@tamagui/shorthands/v2'
 import { createTamagui } from 'tamagui'
-import { fonts } from './fonts'
+import { tokens, fonts } from '@tamagui/config/v3'
 import * as themes from './themesOut'
-import { tokens } from './tokens'
 import { animations } from './animations'
 
 const selectionStyles = (theme) =>
@@ -60,7 +59,7 @@ declare module 'tamagui' {
   interface TamaguiCustomConfig extends Conf {}
 
   interface TypeOverride {
-    groupNames(): 'card'
+    groupNames(): 'card' | 'other'
   }
 }
 

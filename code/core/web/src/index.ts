@@ -22,6 +22,7 @@ export * from './interfaces/GetRef'
 
 export {
   setConfig,
+  getSetting,
   setupDev,
   getConfig,
   getThemes,

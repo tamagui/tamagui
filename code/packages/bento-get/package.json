@@ -1,6 +1,6 @@
 {
   "name": "bento-get",
-  "version": "1.121.4",
+  "version": "1.121.6",
   "license": "MIT",
   "bin": "dist/cli.js",
   "type": "module",
@@ -19,8 +19,8 @@
     "dist"
   ],
   "scripts": {
-    "build": "tamagui-build",
-    "watch": "tamagui-build --watch",
+    "build": "tamagui-build --skip-types",
+    "watch": "yarn build --watch",
     "lint": "biome check src",
     "lint:fix": "biome check --write src",
     "clean": "tamagui-build clean",
@@ -60,8 +60,9 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@tamagui/build": "1.121.4",
+    "@tamagui/build": "1.121.6",
     "@types/copy-paste": "^1.1.33",
+    "@types/ink": "^2.0.3",
     "@types/react": "npm:@types/react@18.2.55"
   }
 }
