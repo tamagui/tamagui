@@ -3,7 +3,6 @@ import type { Coords, OffsetOptions, Placement, Strategy, UseFloatingReturn } fr
 import { flip, shift } from '@tamagui/floating';
 import type { SizableStackProps, YStackProps } from '@tamagui/stacks';
 import * as React from 'react';
-import type { View } from 'react-native';
 type ShiftProps = typeof shift extends (options: infer Opts) => void ? Opts : never;
 type FlipProps = typeof flip extends (options: infer Opts) => void ? Opts : never;
 export type PopperContextValue = UseFloatingReturn & {
@@ -37,125 +36,46 @@ export type PopperSetupOptions = {
 };
 export declare function setupPopper(options?: PopperSetupOptions): void;
 export declare function Popper(props: ScopedPopperProps<PopperProps>): import("react/jsx-runtime").JSX.Element;
-type PopperAnchorRef = HTMLElement | View;
-export type PopperAnchorProps = YStackProps & {
+export type PopperAnchorExtraProps = {
     virtualRef?: React.RefObject<any>;
 };
-export declare const PopperAnchor: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "fullscreen"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+export type PopperAnchorProps = YStackProps;
+export declare const PopperAnchor: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | SizeTokens | undefined;
-    inset?: number | SizeTokens | {
-        top?: number;
-        bottom?: number;
-        left?: number;
-        right?: number;
-    } | null | undefined;
     fullscreen?: boolean | undefined;
-} & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
-    elevation?: number | SizeTokens | undefined;
-    inset?: number | SizeTokens | {
-        top?: number;
-        bottom?: number;
-        left?: number;
-        right?: number;
-    } | null | undefined;
-    fullscreen?: boolean | undefined;
-} & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {
-    elevation?: number | SizeTokens | undefined;
-    inset?: number | SizeTokens | {
-        top?: number;
-        bottom?: number;
-        left?: number;
-        right?: number;
-    } | null | undefined;
-    fullscreen?: boolean | undefined;
-}>> & {
-    virtualRef?: React.RefObject<any>;
-} & {
+}>, "__scopePopper" | "virtualRef"> & PopperAnchorExtraProps & {
     __scopePopper?: string | undefined;
-} & React.RefAttributes<PopperAnchorRef>>;
-type PopperContentElement = HTMLElement | View;
-export type PopperContentProps = SizableStackProps & {
+}, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & PopperAnchorExtraProps & {
+    __scopePopper?: string | undefined;
+}, import("@tamagui/core").StackStyleBase, {
+    elevation?: number | SizeTokens | undefined;
+    fullscreen?: boolean | undefined;
+}, import("@tamagui/core").StaticConfigPublic>;
+export type PopperContentExtraProps = {
     enableAnimationForPositionChange?: boolean;
 };
+export type PopperContentProps = SizableStackProps & PopperContentExtraProps;
 export declare const PopperContentFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     size?: SizeTokens | undefined;
     elevation?: number | SizeTokens | undefined;
-    inset?: number | SizeTokens | {
-        top?: number;
-        bottom?: number;
-        left?: number;
-        right?: number;
-    } | null | undefined;
     fullscreen?: boolean | undefined;
-    circular?: boolean | undefined;
-    hoverTheme?: boolean | undefined;
-    pressTheme?: boolean | undefined;
-    focusTheme?: boolean | undefined;
-    elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined;
     unstyled?: boolean | undefined;
-    transparent?: boolean | undefined;
-    backgrounded?: boolean | undefined;
-    radiused?: boolean | undefined;
-    padded?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
-export declare const PopperContent: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | "elevation" | keyof import("@tamagui/core").StackStyleBase | "fullscreen" | "circular" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "unstyled"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
-    size?: import("@tamagui/core").SizeTokens | undefined;
-    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number;
-        bottom?: number;
-        left?: number;
-        right?: number;
-    } | null | undefined;
+export declare const PopperContent: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+    size?: SizeTokens | undefined;
+    elevation?: number | SizeTokens | undefined;
     fullscreen?: boolean | undefined;
-    circular?: boolean | undefined;
-    hoverTheme?: boolean | undefined;
-    pressTheme?: boolean | undefined;
-    focusTheme?: boolean | undefined;
-    elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined;
     unstyled?: boolean | undefined;
-} & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
-    size?: import("@tamagui/core").SizeTokens | undefined;
-    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number;
-        bottom?: number;
-        left?: number;
-        right?: number;
-    } | null | undefined;
-    fullscreen?: boolean | undefined;
-    circular?: boolean | undefined;
-    hoverTheme?: boolean | undefined;
-    pressTheme?: boolean | undefined;
-    focusTheme?: boolean | undefined;
-    elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined;
-    unstyled?: boolean | undefined;
-} & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {
-    size?: import("@tamagui/core").SizeTokens | undefined;
-    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    inset?: number | import("@tamagui/core").SizeTokens | {
-        top?: number;
-        bottom?: number;
-        left?: number;
-        right?: number;
-    } | null | undefined;
-    fullscreen?: boolean | undefined;
-    circular?: boolean | undefined;
-    hoverTheme?: boolean | undefined;
-    pressTheme?: boolean | undefined;
-    focusTheme?: boolean | undefined;
-    elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined;
-    unstyled?: boolean | undefined;
-}>> & {
-    enableAnimationForPositionChange?: boolean;
-} & {
+}>, "__scopePopper" | "enableAnimationForPositionChange"> & PopperContentExtraProps & {
     __scopePopper?: string | undefined;
-} & React.RefAttributes<PopperContentElement>>;
+}, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & PopperContentExtraProps & {
+    __scopePopper?: string | undefined;
+}, import("@tamagui/core").StackStyleBase, {
+    size?: SizeTokens | undefined;
+    elevation?: number | SizeTokens | undefined;
+    fullscreen?: boolean | undefined;
+    unstyled?: boolean | undefined;
+}, import("@tamagui/core").StaticConfigPublic>;
 export type PopperArrowExtraProps = {
     offset?: number;
     size?: SizeTokens;
@@ -164,22 +84,10 @@ export type PopperArrowExtraProps = {
 export type PopperArrowProps = YStackProps & PopperArrowExtraProps;
 export declare const PopperArrow: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | SizeTokens | undefined;
-    inset?: number | SizeTokens | {
-        top?: number;
-        bottom?: number;
-        left?: number;
-        right?: number;
-    } | null | undefined;
     fullscreen?: boolean | undefined;
     unstyled?: boolean | undefined;
 }>, keyof PopperArrowExtraProps> & PopperArrowExtraProps, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & PopperArrowExtraProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | SizeTokens | undefined;
-    inset?: number | SizeTokens | {
-        top?: number;
-        bottom?: number;
-        left?: number;
-        right?: number;
-    } | null | undefined;
     fullscreen?: boolean | undefined;
     unstyled?: boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;

@@ -122,7 +122,7 @@ export function StepComponentThemesActions() {
   const setShow = (val: boolean) => (store.showAddThemeMenu = val)
 
   return (
-    <XStack ai="center" space>
+    <XStack ai="center" gap="$4">
       <AddDropdown open={show} onOpenChange={setShow}>
         <YGroup>
           <AddDropdown.Title>Palette Themes</AddDropdown.Title>

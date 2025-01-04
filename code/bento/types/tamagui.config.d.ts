@@ -680,7 +680,7 @@ declare const appConfig: import("@tamagui/web").TamaguiInternalConfig<{
         $19: import("@tamagui/web").Variable<number>;
         $20: import("@tamagui/web").Variable<number>;
     };
-}, "color" | "size" | "space" | "radius" | "zIndex">, import("@tamagui/themes/v3-themes").ThemesOut, {
+}, "color" | "zIndex" | "size" | "space" | "radius">, import("@tamagui/themes/v3-themes").ThemesOut, {
     readonly ussel: "userSelect";
     readonly cur: "cursor";
     readonly pe: "pointerEvents";
@@ -869,7 +869,7 @@ declare const appConfig: import("@tamagui/web").TamaguiInternalConfig<{
         };
     };
     silkscreen: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 2 | 9 | 15 | 1 | 10 | 5 | 14 | 11 | 12 | 16 | 3 | 4 | 6 | 7 | 8 | 13>;
-}, boolean | undefined, {
+}, {
     mediaQueryDefaultActive: {
         xl: boolean;
         lg: boolean;
@@ -881,7 +881,6 @@ declare const appConfig: import("@tamagui/web").TamaguiInternalConfig<{
     defaultFont: string;
     fastSchemeChange: true;
     shouldAddPrefersColorThemes: true;
-    themeClassNameOnRoot: true;
 }>;
 export type AppConfig = typeof appConfig;
 declare module 'tamagui' {

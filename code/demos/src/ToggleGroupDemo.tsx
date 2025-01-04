@@ -5,12 +5,12 @@ import { Label, ToggleGroup, XStack, YStack } from 'tamagui'
 export function ToggleGroupDemo() {
   return (
     <YStack paddingHorizontal="$4">
-      <XStack alignItems="center" space="$10">
-        <YStack alignItems="center" space="$6">
+      <XStack alignItems="center" gap="$10">
+        <YStack alignItems="center" gap="$6">
           <ToggleGroupComponent type="single" size="$3" orientation="horizontal" />
           <ToggleGroupComponent type="multiple" size="$4" orientation="horizontal" />
         </YStack>
-        <XStack alignItems="center" space="$6">
+        <XStack alignItems="center" gap="$6">
           <ToggleGroupComponent type="single" size="$3" orientation="vertical" />
           <ToggleGroupComponent type="multiple" size="$4" orientation="vertical" />
         </XStack>
@@ -30,7 +30,7 @@ function ToggleGroupComponent(props: {
       flexDirection={props.orientation === 'horizontal' ? 'row' : 'column'}
       alignItems="center"
       justifyContent="center"
-      space="$4"
+      gap="$4"
     >
       <Label paddingRight="$0" justifyContent="flex-end" size={props.size} htmlFor={id}>
         {props.type === 'single' ? 'Single' : 'Multiple'}

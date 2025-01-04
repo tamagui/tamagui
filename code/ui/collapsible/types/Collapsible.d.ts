@@ -1,5 +1,5 @@
 import type { AnimatePresenceProps } from '@tamagui/animate-presence';
-import type { ThemeableStackProps } from '@tamagui/stacks';
+import type { YStackProps } from '@tamagui/stacks';
 import type { GetProps, StackProps } from '@tamagui/web';
 import { Stack } from '@tamagui/web';
 import * as React from 'react';
@@ -19,7 +19,7 @@ export interface CollapsibleContentExtraProps extends AnimatePresenceProps {
      */
     forceMount?: true;
 }
-interface CollapsibleContentProps extends CollapsibleContentExtraProps, ThemeableStackProps {
+interface CollapsibleContentProps extends CollapsibleContentExtraProps, YStackProps {
 }
 declare const CollapsibleContentFrame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {}, import("@tamagui/web").StaticConfigPublic>;
 declare const CollapsibleContent: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {}>, keyof CollapsibleContentExtraProps> & CollapsibleContentExtraProps, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps & CollapsibleContentExtraProps, import("@tamagui/web").StackStyleBase, {}, import("@tamagui/web").StaticConfigPublic>;

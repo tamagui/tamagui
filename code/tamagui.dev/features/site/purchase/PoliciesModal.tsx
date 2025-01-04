@@ -17,7 +17,7 @@ export const TakeoutPoliciesModal = () => {
     >
       <Dialog.Adapt when="sm">
         <Sheet zIndex={200000} modal dismissOnSnapToBottom>
-          <Sheet.Frame padding="$4" space>
+          <Sheet.Frame padding="$4" gap="$4">
             <Sheet.ScrollView>
               <Dialog.Adapt.Contents />
             </Sheet.ScrollView>
@@ -57,7 +57,7 @@ export const TakeoutPoliciesModal = () => {
           maw={900}
         >
           <ScrollView>
-            <YStack $gtSm={{ maxHeight: '90vh' }} space>
+            <YStack $gtSm={{ maxHeight: '90vh' }} gap="$4">
               <Paragraph>
                 <Link href="/takeout-policy">Permalink to policies</Link>.
               </Paragraph>
@@ -95,7 +95,7 @@ export const BentoPoliciesModal = () => {
     >
       <Dialog.Adapt when="sm">
         <Sheet zIndex={200000} modal dismissOnSnapToBottom>
-          <Sheet.Frame padding="$4" space>
+          <Sheet.Frame padding="$4" gap="$4">
             <Sheet.ScrollView>
               <Dialog.Adapt.Contents />
             </Sheet.ScrollView>
@@ -135,7 +135,7 @@ export const BentoPoliciesModal = () => {
           maw={900}
         >
           <ScrollView>
-            <YStack $gtSm={{ maxHeight: '90vh' }} space>
+            <YStack $gtSm={{ maxHeight: '90vh' }} gap="$4">
               <Paragraph>
                 <Link href="/bento-policy">Permalink to policies</Link>.
               </Paragraph>

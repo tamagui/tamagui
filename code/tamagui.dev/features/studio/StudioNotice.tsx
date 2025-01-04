@@ -333,6 +333,6 @@ const NoticeFrame = styled(YStack, {
   py: '$3',
   bg: '$background',
   br: '$4',
-  space: '$3',
+  gap: '$3',
   pos: 'relative',
 })

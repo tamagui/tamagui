@@ -140,7 +140,7 @@ const ThemeBuilderModal = memo(() => {
           }}
         ></Button>
 
-        <YStack gap="$4" separator={<Separator bw={1} />} f={1}>
+        <YStack gap="$4" f={1}>
           <AnimatePresence exitBeforeEnter custom={{ going: store.direction }}>
             <Section
               f={1}
@@ -190,7 +190,7 @@ const StudioThemeBuilderBottomBar = memo(() => {
   return (
     <XStack p="$4" py="$3" ai="center" bc="$borderColor" btw={1} zi={100} bg="$color2">
       <CurrentStepActionBar />
-      <Spacer flex />
+      <Spacer flex={1} />
       <ThemeStudioStepButtonsBar />
     </XStack>
   )

@@ -1,5 +1,5 @@
-import React from "react";import '@tamagui/polyfill-dev';
-
+import React from 'react'
+import '@tamagui/polyfill-dev'
 
 import {
   Button,
@@ -13,89 +13,88 @@ import {
   YStack,
   getMedia,
   styled,
-  useThemeName } from
-'tamagui';
+  useThemeName,
+} from 'tamagui'
 
-import config from '../tamagui.config';
+import config from '../tamagui.config'
 
 // import '@tamagui/core/reset.css'
 // import './wdyr'
 
 // webpack fix..
 if (typeof require !== 'undefined') {
-  globalThis['React'] = require('react');
+  globalThis['React'] = require('react')
 }
 
 // TODO: extract the use cases
 export function UseCases() {
-  const [theme, setTheme] = React.useState('blue');
+  const [theme, setTheme] = React.useState('blue')
 
-  const memoized = React.useMemo(() => <Square size={100} bg="$background" />, []);
+  const memoized = React.useMemo(() => <Square size={100} bg="$background" />, [])
 
   return (
-    <Theme name={(theme as any)}>
+    <Theme name={theme as any}>
       <YStack>
         <Button
           onPress={() => {
             setTheme((prev) => {
-              return prev === 'blue' ? 'red' : 'blue';
-            });
-          }}>
-
+              return prev === 'blue' ? 'red' : 'blue'
+            })
+          }}
+        >
           Change ({theme})
         </Button>
 
         {memoized}
       </YStack>
-    </Theme>);
-
+    </Theme>
+  )
 }
 
 const CustomButtonFrame = styled(ButtonFrame, {
-  variants: ({
+  variants: {
     backgrounded: {
       true: {
         // not intellisensing...
-        backgroundColor: '$background'
-      }
-    }
-  } as const),
+        backgroundColor: '$background',
+      },
+    },
+  } as const,
 
   defaultVariants: {
-
-
-
     // <---- none of these are applied as default variants
     // big: true,
     // primary: true,
-  } });function AnimationChangeTest() {
-  const [animation, setanimation] = React.useState(('lazy' as any));
+  },
+})
+function AnimationChangeTest() {
+  const [animation, setanimation] = React.useState('lazy' as any)
   return (
     <>
       <Square animation={animation} size={100} bc="red" hoverStyle={{ scale: 2 }} />
       <Button onPress={() => setanimation(animation === 'lazy' ? 'quick' : 'lazy')}>
         {animation}
       </Button>
-    </>);
-
+    </>
+  )
 }
 
 export const StyledSizableText = styled(SizableText, {
   name: 'TextSizableText',
-  variants: ({
+  variants: {
     muted: {
       true: {
-        color: 'red'
-      }
-    }
-  } as const)
-});
+        color: 'red',
+      },
+    },
+  } as const,
+})
 
 export const Sandbox = () => {
   // const scheme = useColorScheme()
-  const [theme, setTheme] = React.useState('light');
+  const [theme, setTheme] = React.useState('light')
 
-  const [x, setX] = React.useState(0);
+  const [x, setX] = React.useState(0)
 
   return (
     <TamaguiProvider config={config} defaultTheme={theme}>
@@ -106,19 +105,19 @@ export const Sandbox = () => {
         style={{
           position: 'absolute',
           top: 30,
-          left: 20
+          left: 20,
         }}
-        onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}>
-
+        onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+      >
         Scheme
       </button>
 
       <style
         type="text/css"
         dangerouslySetInnerHTML={{
-          __html: `html, body { overflow: hidden; height: 100vh; width: 100vw; }`
-        }} />
-
+          __html: `html, body { overflow: hidden; height: 100vh; width: 100vw; }`,
+        }}
+      />
 
       <div style={{ overflow: 'scroll', maxHeight: '100vh' }}>
         <div
@@ -131,9 +130,9 @@ export const Sandbox = () => {
             alignItems: 'center',
             justifyContent: 'center',
             minHeight: '120vh',
-            overflow: 'hidden'
-          }}>
-
+            overflow: 'hidden',
+          }}
+        >
           {/* <SelectDemo /> */}
 
           <Header data-hello="world">
@@ -175,10 +174,10 @@ export const Sandbox = () => {
 
           <Button
             onPress={async () => {
-              await import('./SecondPage');
-              console.log(`loaded (not navigating)`);
-            }}>
-
+              await import('./SecondPage')
+              console.log(`loaded (not navigating)`)
+            }}
+          >
             Load Second Page
           </Button>
 
@@ -232,7 +231,7 @@ export const Sandbox = () => {
           {/* <SheetDemo /> */}
 
           {/* space */}
-          {/* <YStack  space="$2" $gtSm={{ space: '$10' }}>
+          {/* <YStack  gap="$2" $gtSm={{ gap: '$10' }}>
              <Circle bc="red" size="$10" />
              <Circle bc="red" size="$10" />
              <Circle bc="red" size="$10" />
@@ -284,7 +283,7 @@ export const Sandbox = () => {
           {/* <SheetDemo2 /> */}
           {/* <SheetDemo /> */}
           {/* <SwitchDemo /> */}
-          {/* <XStack space>
+          {/* <XStack gap="$4">
             <Square size={50} bc="red" />
             <Square $sm={{ display: 'none' }} size={50} bc="red" />
             <Square size={50} bc="red" />
@@ -293,9 +292,9 @@ export const Sandbox = () => {
             </XStack> */}
         </div>
       </div>
-    </TamaguiProvider>);
-
-};
+    </TamaguiProvider>
+  )
+}
 
 // function Test() {
 //   return null
@@ -381,30 +380,30 @@ export const Sandbox = () => {
 // })
 
 function PerformanceTest() {
-  const [t, setT] = React.useState(('pink' as any));
+  const [t, setT] = React.useState('pink' as any)
   return (
     <YStack theme={t}>
       <Square onPress={() => setT('blue')} size={100} bg="$color10" />
-    </YStack>);
-
+    </YStack>
+  )
 }
 
 function UseThemeNameTest() {
-  const [name, setname] = React.useState('blue');
+  const [name, setname] = React.useState('blue')
 
   return (
-    <Theme name={(name as any)}>
+    <Theme name={name as any}>
       <Button onPress={() => setname('red')}>Change</Button>
       <Square accessibilityElementsHidden bg="$background" />
       <UseThemeNameChildTest />
-    </Theme>);
-
+    </Theme>
+  )
 }
 
 function UseThemeNameChildTest() {
-  const name = useThemeName();
+  const name = useThemeName()
 
-  return <H1>{name}</H1>;
+  return <H1>{name}</H1>
 }
 
 function ThemeInverseReverseTest() {
@@ -420,6 +419,6 @@ function ThemeInverseReverseTest() {
           </Theme>
         </Theme>
       </Theme>
-    </>);
-
+    </>
+  )
 }

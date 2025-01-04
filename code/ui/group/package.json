@@ -39,6 +39,7 @@
     "@tamagui/core": "1.121.6",
     "@tamagui/create-context": "1.121.6",
     "@tamagui/helpers": "1.121.6",
+    "@tamagui/spacer": "1.121.6",
     "@tamagui/stacks": "1.121.6",
     "@tamagui/use-controllable-state": "1.121.6"
   },
