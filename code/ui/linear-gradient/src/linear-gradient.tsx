@@ -1,6 +1,10 @@
 export type { LinearGradientProps, LinearGradientPoint } from 'expo-linear-gradient'
 import { normalizeColor } from '@tamagui/core'
-import type { LinearGradientProps, LinearGradientPoint } from 'expo-linear-gradient'
+import type {
+  LinearGradientProps,
+  LinearGradientPoint,
+  NativeLinearGradientPoint,
+} from 'expo-linear-gradient'
 
 // copied from https://raw.githubusercontent.com/expo/expo/main/packages/expo-linear-gradient/src/LinearGradient.web.tsx
 
@@ -24,8 +28,8 @@ export function LinearGradient({
       // @ts-expect-error ok
       colors,
       locations,
-      start,
-      end,
+      start ? (Array.isArray(start) ? start : [start.x, start.y]) : undefined,
+      end ? (Array.isArray(end) ? end : [end.x, end.y]) : undefined,
       width,
       height
     )
@@ -62,8 +66,8 @@ export function LinearGradient({
 function getLinearGradientBackgroundImage(
   colors: number[] | string[],
   locations?: number[] | null,
-  startPoint?: LinearGradientPoint | null,
-  endPoint?: LinearGradientPoint | null,
+  startPoint?: NativeLinearGradientPoint | null,
+  endPoint?: NativeLinearGradientPoint | null,
   width = 1,
   height = 1
 ) {
@@ -79,10 +83,10 @@ function getLinearGradientBackgroundImage(
 function calculatePseudoAngle(
   width: number,
   height: number,
-  startPoint?: LinearGradientPoint | null,
-  endPoint?: LinearGradientPoint | null
+  startPoint?: NativeLinearGradientPoint | null,
+  endPoint?: NativeLinearGradientPoint | null
 ) {
-  const getControlPoints = (): LinearGradientPoint[] => {
+  const getControlPoints = () => {
     let correctedStartPoint: LinearGradientPoint = [0, 0]
     if (Array.isArray(startPoint)) {
       correctedStartPoint = [
@@ -97,7 +101,7 @@ function calculatePseudoAngle(
         endPoint[1] != null ? endPoint[1] : 1.0,
       ]
     }
-    return [correctedStartPoint, correctedEndPoint]
+    return [correctedStartPoint, correctedEndPoint] as const
   }
 
   const [start, end] = getControlPoints()

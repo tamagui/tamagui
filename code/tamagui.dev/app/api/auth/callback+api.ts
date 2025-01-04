@@ -10,7 +10,7 @@ export const GET: Endpoint = async (req) => {
     return Response.error()
   }
 
-  // this handles setting cookies via setCurrentRequestHeaders
+  // this handles setting cookies via setResponseHeaders
   const supabase = getSupabaseServerClient(req)
   const { error } = await supabase.auth.exchangeCodeForSession(code)
 

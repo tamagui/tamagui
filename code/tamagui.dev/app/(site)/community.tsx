@@ -111,7 +111,7 @@ export default function Community({ frontmatters }) {
               Figma Design Kit
             </H2>
             <Spacer size="$6" />
-            <YStack ai="center" gap>
+            <YStack ai="center" gap="$4">
               <Link href="https://www.figma.com/community/file/1326593766534421119">
                 <YStack
                   target="_blank"
@@ -145,7 +145,7 @@ export default function Community({ frontmatters }) {
 
         <Spacer />
 
-        <FlatBubbleCard bw={0.5} gap>
+        <FlatBubbleCard bw={0.5} gap="$4">
           <H3 id="starter-repos" ta="center">
             Starter repos & Guides
           </H3>

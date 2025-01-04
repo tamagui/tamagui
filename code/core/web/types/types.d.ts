@@ -48,6 +48,7 @@ export type ComponentContextI = {
     language: LanguageContextType | null;
     animationDriver: AnimationDriver | null;
     groups: GroupContextType;
+    setParentFocusState: ((next?: Partial<TamaguiComponentState> | undefined) => void) | null;
 };
 type ComponentGroupEvent = {
     pseudo?: PseudoGroupState;
@@ -64,6 +65,7 @@ type PseudoGroupState = {
     press?: boolean;
     focus?: boolean;
     focusVisible?: boolean;
+    focusWithin?: boolean;
 };
 export type GroupState = {
     pseudo?: PseudoGroupState;
@@ -518,14 +520,15 @@ export interface TypeOverride {
     groupNames(): 1;
 }
 export type GroupNames = ReturnType<TypeOverride['groupNames']> extends 1 ? never : ReturnType<TypeOverride['groupNames']>;
-type ParentMediaStates = 'hover' | 'press' | 'focus' | 'focusVisible';
+type ParentMediaStates = 'hover' | 'press' | 'focus' | 'focusVisible' | 'focusWithin';
 export type GroupMediaKeys = `$group-${GroupNames}` | `$group-${GroupNames}-${ParentMediaStates}` | `$group-${GroupNames}-${MediaQueryKey}` | `$group-${GroupNames}-${MediaQueryKey}-${ParentMediaStates}` | `$group-${ParentMediaStates}` | `$group-${MediaQueryKey}` | `$group-${MediaQueryKey}-${ParentMediaStates}`;
 export type WithMediaProps<A> = {
     [Key in MediaPropKeys | GroupMediaKeys | ThemeMediaKeys | PlatformMediaKeys]?: Key extends MediaPropKeys ? A & {
-        [Key in PlatformMediaKeys]?: A;
-    } : Key extends `$platform-web` ? {
-        [SubKey in keyof A | keyof CSSProperties]?: SubKey extends keyof CSSProperties ? CSSProperties[SubKey] : SubKey extends keyof A ? A[SubKey] : SubKey extends keyof WebOnlyValidStyleValues ? WebOnlyValidStyleValues[SubKey] : never;
-    } : A;
+        [Key in PlatformMediaKeys]?: AddWebOnlyStyleProps<A>;
+    } : Key extends `$platform-web` ? AddWebOnlyStyleProps<A> : A;
+};
+type AddWebOnlyStyleProps<A> = {
+    [SubKey in keyof A | keyof CSSProperties]?: SubKey extends keyof CSSProperties ? CSSProperties[SubKey] : SubKey extends keyof A ? A[SubKey] : SubKey extends keyof WebOnlyValidStyleValues ? WebOnlyValidStyleValues[SubKey] : never;
 };
 export type WebOnlyValidStyleValues = {
     position: '-webkit-sticky' | 'fixed' | 'static' | 'sticky';
@@ -591,7 +594,7 @@ export type SpecificTokensSpecial = TamaguiSettings extends {
     autocompleteSpecificTokens: infer Val;
 } ? Val extends 'except-special' | undefined ? never : SpecificTokens : SpecificTokens;
 export type SizeTokens = SpecificTokensSpecial | ThemeValueFallbackSize | GetTokenString<keyof Tokens['size']>;
-export type SpaceTokens = SpecificTokensSpecial | GetTokenString<keyof Tokens['space']> | ThemeValueFallbackSpace | boolean;
+export type SpaceTokens = SpecificTokensSpecial | GetTokenString<keyof Tokens['space']> | ThemeValueFallbackSpace;
 export type ColorTokens = SpecificTokensSpecial | GetTokenString<keyof Tokens['color']> | GetTokenString<keyof ThemeParsed> | CSSColorNames;
 export type ZIndexTokens = SpecificTokensSpecial | GetTokenString<keyof Tokens['zIndex']> | number;
 export type RadiusTokens = SpecificTokensSpecial | GetTokenString<keyof Tokens['radius']> | number;
@@ -655,6 +658,7 @@ export type WithPseudoProps<A> = {
     hoverStyle?: A | null;
     pressStyle?: A | null;
     focusStyle?: A | null;
+    focusWithinStyle?: A | null;
     focusVisibleStyle?: A | null;
     disabledStyle?: A | null;
     exitStyle?: A | null;
@@ -665,6 +669,7 @@ export type PseudoStyles = {
     hoverStyle?: ViewStyle;
     pressStyle?: ViewStyle;
     focusStyle?: ViewStyle;
+    focusWithinStyle?: ViewStyle;
     focusVisibleStyle?: ViewStyle;
     disabledStyle?: ViewStyle;
     enterStyle?: ViewStyle;
@@ -817,6 +822,21 @@ export interface ExtendBaseTextProps {
 }
 interface ExtraBaseProps {
     /**
+<<<<<<< HEAD
+=======
+     * @deprecated Use `gap`
+     */
+    space?: SpaceValue | boolean;
+    /**
+     * @deprecated Use `gap`
+     */
+    spaceDirection?: SpaceDirection;
+    /**
+     * @deprecated can implement your own hook or component
+     */
+    separator?: ReactNode;
+    /**
+>>>>>>> master
      * Animations are defined using `createTamagui` typically in a tamagui.config.ts file.
      * Pass a string animation here and it uses an animation driver to execute it.
      *
@@ -1082,6 +1102,7 @@ export type ViewStyleWithPseudos = TextStyle | (TextStyle & {
     hoverStyle?: TextStyle;
     pressStyle?: TextStyle;
     focusStyle?: TextStyle;
+    focusWithinStyle?: TextStyle;
     focusVisibleStyle?: TextStyle;
     disabledStyle?: TextStyle;
 });

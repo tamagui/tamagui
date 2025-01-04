@@ -15,7 +15,7 @@ export type * from './interfaces/TamaguiComponentState';
 export type * from './interfaces/TamaguiComponentEvents';
 export type * from './interfaces/TamaguiComponentPropsBaseBase';
 export * from './interfaces/GetRef';
-export { setConfig, setupDev, getConfig, getThemes, getTokens, updateConfig, getToken, getTokenValue, } from './config';
+export { setConfig, getSetting, setupDev, getConfig, getThemes, getTokens, updateConfig, getToken, getTokenValue, } from './config';
 export { setNonce } from './helpers/insertStyleRule';
 export * from './constants/constants';
 export * from './contexts/ComponentContext';

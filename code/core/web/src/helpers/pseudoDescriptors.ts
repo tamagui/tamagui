@@ -20,6 +20,11 @@ export const pseudoDescriptorsBase = {
     name: 'focus',
     priority: 3,
   },
+  focusWithinStyle: {
+    name: 'focus-within',
+    priority: 3,
+    stateKey: 'focusWithin',
+  },
   disabledStyle: {
     name: 'disabled',
     priority: 4,
@@ -32,6 +37,7 @@ export const pseudoPriorities = {
   press: 2,
   focus: 3,
   focusVisible: 3,
+  focusWithin: 3,
   disabled: 4,
 }
 
@@ -40,6 +46,7 @@ export const pseudoDescriptors: Record<
   | 'pressStyle'
   | 'focusStyle'
   | 'focusVisibleStyle'
+  | 'focusWithinStyle'
   | 'enterStyle'
   | 'exitStyle',
   PseudoDescriptor

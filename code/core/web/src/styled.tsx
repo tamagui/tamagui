@@ -157,7 +157,7 @@ export function styled<
               }
             }
           }
-          if (!(key in defaultProps)) {
+          if (!(key in defaultProps) && (!defaultVariants || !(key in defaultVariants))) {
             parentDefaultProps ||= {}
             parentDefaultProps[key] = pdp[key]
           }

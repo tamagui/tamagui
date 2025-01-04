@@ -372,6 +372,7 @@ export declare const styledBody: ({
         pressStyle: boolean;
         focusStyle: boolean;
         disabledStyle: boolean;
+        focusWithinStyle: boolean;
     };
     name?: undefined;
     tag?: undefined;

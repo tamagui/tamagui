@@ -139,7 +139,7 @@ export const PurchaseModal = ({
 
       <Dialog.Adapt when="sm">
         <Sheet zIndex={200000} modal dismissOnSnapToBottom animation="medium">
-          <Sheet.Frame bg="$color2" padding={0} gap>
+          <Sheet.Frame bg="$color2" padding={0} gap="$4">
             <Sheet.ScrollView>
               <Dialog.Adapt.Contents />
             </Sheet.ScrollView>
@@ -620,12 +620,6 @@ export const PurchaseModal = ({
               />
             </Dialog.Close>
           </Unspaced>
-
-          <XStack theme="yellow" bg="$color1" w="100%" py="$2" ai="center" jc="center">
-            <Paragraph>
-              Black Friday pricing active: saving $50 on every product
-            </Paragraph>
-          </XStack>
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog>

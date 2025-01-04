@@ -5,6 +5,7 @@ export declare const useConfiguration: () => {
     disableSSR?: boolean;
     inText: boolean;
     language: import("../views/FontLanguage.types").LanguageContextType | null;
+    setParentFocusState: ((next?: Partial<import("..").TamaguiComponentState> | undefined) => void) | null;
     unset?: import("..").BaseStyleProps | undefined;
     reactNative?: any;
     selectionStyles?: ((theme: Record<string, string>) => null | {

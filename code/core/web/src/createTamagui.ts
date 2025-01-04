@@ -137,7 +137,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
       }
     }
 
-    if (isWeb) {
+    if (process.env.TAMAGUI_TARGET === 'web') {
       for (const key in fontsParsed) {
         const fontParsed = fontsParsed[key]
         const [name, language] = key.includes('_') ? key.split('_') : [key]
@@ -204,31 +204,35 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   let lastCSSInsertedRulesIndex = -1
 
   const getCSS: GetCSS = (opts = {}) => {
-    const { separator = '\n', sinceLastCall, exclude } = opts
-    if (sinceLastCall && lastCSSInsertedRulesIndex >= 0) {
-      // after first run with sinceLastCall
-      const rules = getAllRules()
-      lastCSSInsertedRulesIndex = rules.length
-      return rules.slice(lastCSSInsertedRulesIndex).join(separator)
+    if (process.env.TAMAGUI_TARGET === 'web') {
+      const { separator = '\n', sinceLastCall, exclude } = opts
+      if (sinceLastCall && lastCSSInsertedRulesIndex >= 0) {
+        // after first run with sinceLastCall
+        const rules = getAllRules()
+        lastCSSInsertedRulesIndex = rules.length
+        return rules.slice(lastCSSInsertedRulesIndex).join(separator)
+      }
+
+      // set so next time getNewCSS will trigger only new rules
+      lastCSSInsertedRulesIndex = 0
+
+      const runtimeStyles = getAllRules().join(separator)
+
+      if (exclude === 'design-system') {
+        return runtimeStyles
+      }
+
+      const designSystem = `._ovs-contain {overscroll-behavior:contain;}
+  .is_Text .is_Text {display:inline-flex;}
+  ._dsp_contents {display:contents;}
+  ${themeConfig.cssRuleSets.join(separator)}`
+
+      return `${designSystem}
+  ${exclude ? '' : themeConfig.getThemeRulesSets().join(separator)}
+  ${runtimeStyles}`
+    } else {
+      return ''
     }
-
-    // set so next time getNewCSS will trigger only new rules
-    lastCSSInsertedRulesIndex = 0
-
-    const runtimeStyles = getAllRules().join(separator)
-
-    if (exclude === 'design-system') {
-      return runtimeStyles
-    }
-
-    const designSystem = `._ovs-contain {overscroll-behavior:contain;}
-.is_Text .is_Text {display:inline-flex;}
-._dsp_contents {display:contents;}
-${themeConfig.cssRuleSets.join(separator)}`
-
-    return `${designSystem}
-${exclude ? '' : themeConfig.getThemeRulesSets().join(separator)}
-${runtimeStyles}`
   }
 
   const getNewCSS: GetCSS = (opts) => getCSS({ ...opts, sinceLastCall: true })

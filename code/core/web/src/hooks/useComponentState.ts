@@ -1,4 +1,5 @@
 import { isServer, isWeb } from '@tamagui/constants'
+import { useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
 import { useRef, useState } from 'react'
 import {
   defaultComponentState,
@@ -20,7 +21,6 @@ import type {
   UseAnimationHook,
 } from '../types'
 import { getSetting } from '../config'
-import { useIsHydrated } from './useIsHydrated'
 
 export const useComponentState = (
   props: StackProps | TextProps | Record<string, any>,
@@ -28,7 +28,7 @@ export const useComponentState = (
   staticConfig: StaticConfig,
   config: TamaguiInternalConfig
 ) => {
-  const isHydrated = useIsHydrated()
+  const isHydrated = useDidFinishSSR()
   const useAnimations = animationDriver?.useAnimations as UseAnimationHook | undefined
 
   const stateRef = useRef<TamaguiComponentStateRef>(

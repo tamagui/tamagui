@@ -91,6 +91,7 @@ export function createExtractor(
   const componentState: TamaguiComponentState = {
     focus: false,
     focusVisible: false,
+    focusWithin: false,
     hover: false,
     unmounted: true,
     press: false,
@@ -567,6 +568,7 @@ export function createExtractor(
           'name',
           'focusStyle',
           'focusVisibleStyle',
+          'focusWithinStyle',
           'disabledStyle',
           'hoverStyle',
           'pressStyle',
@@ -850,7 +852,13 @@ export function createExtractor(
             'disableOptimization',
 
             ...(!isTargetingHTML
-              ? ['pressStyle', 'focusStyle', 'focusVisibleStyle', 'disabledStyle']
+              ? [
+                  'pressStyle',
+                  'focusStyle',
+                  'focusVisibleStyle',
+                  'focusWithinStyle',
+                  'disabledStyle',
+                ]
               : []),
 
             // when using a non-CSS driver, de-opt on enterStyle/exitStyle
