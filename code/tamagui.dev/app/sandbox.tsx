@@ -1,7 +1,13 @@
 import { styled, View } from '@tamagui/web'
 
 export default function Sandbox() {
-  return <Test />
+  return (
+    <Test
+      $platform-web={{
+        position: 'fixed',
+      }}
+    />
+  )
 }
 
 const Test = styled(View, {
@@ -11,6 +17,8 @@ const Test = styled(View, {
 
   $md: {
     '$platform-web': {
+      position: 'fixed',
+      gridColumnGap: 12,
       backgroundColor: 'green',
     },
   },

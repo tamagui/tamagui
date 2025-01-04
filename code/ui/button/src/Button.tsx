@@ -277,7 +277,7 @@ function useButton<Props extends ButtonProps>(
 
   const inner = spacedChildren({
     // a bit arbitrary but scaling to font size is necessary so long as button does
-    space: spaceSize,
+    space: spaceSize === false ? 0 : spaceSize == true ? '$true' : spaceSize,
     spaceFlex,
     ensureKeys: true,
     separator,

@@ -1,3 +1,4 @@
+// @ts-ignore
 import { Alert } from '@inkjs/ui'
 import { Box, Text } from 'ink'
 import React from 'react'

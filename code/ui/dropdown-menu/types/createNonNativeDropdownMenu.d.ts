@@ -68,26 +68,26 @@ export declare function createNonNativeDropdownMenu(params: Parameters<typeof cr
     };
     Trigger: import("tamagui").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
         elevation?: number | import("tamagui").SizeTokens | undefined;
-        fullscreen?: boolean | undefined;
         inset?: number | import("tamagui").SizeTokens | {
             top?: number;
             bottom?: number;
             left?: number;
             right?: number;
-        } | undefined;
+        } | null | undefined;
+        fullscreen?: boolean | undefined;
     }>, keyof DropdownMenuTriggerProps | "__scopeDropdownMenu"> & DropdownMenuTriggerProps & {
         __scopeDropdownMenu?: string;
     }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & DropdownMenuTriggerProps & {
         __scopeDropdownMenu?: string;
     }, import("@tamagui/core").StackStyleBase, {
         elevation?: number | import("tamagui").SizeTokens | undefined;
-        fullscreen?: boolean | undefined;
         inset?: number | import("tamagui").SizeTokens | {
             top?: number;
             bottom?: number;
             left?: number;
             right?: number;
-        } | undefined;
+        } | null | undefined;
+        fullscreen?: boolean | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
     Portal: {
         (props: ScopedProps<DropdownMenuPortalProps>): import("react/jsx-runtime").JSX.Element;
@@ -267,26 +267,26 @@ export declare function createNonNativeDropdownMenu(params: Parameters<typeof cr
     };
     SubTrigger: import("tamagui").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
         elevation?: number | import("tamagui").SizeTokens | undefined;
-        fullscreen?: boolean | undefined;
         inset?: number | import("tamagui").SizeTokens | {
             top?: number;
             bottom?: number;
             left?: number;
             right?: number;
-        } | undefined;
+        } | null | undefined;
+        fullscreen?: boolean | undefined;
     }>, "__scopeDropdownMenu" | keyof DropdownMenuSubTriggerProps> & DropdownMenuSubTriggerProps & {
         __scopeDropdownMenu?: string;
     }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & DropdownMenuSubTriggerProps & {
         __scopeDropdownMenu?: string;
     }, import("@tamagui/core").StackStyleBase, {
         elevation?: number | import("tamagui").SizeTokens | undefined;
-        fullscreen?: boolean | undefined;
         inset?: number | import("tamagui").SizeTokens | {
             top?: number;
             bottom?: number;
             left?: number;
             right?: number;
-        } | undefined;
+        } | null | undefined;
+        fullscreen?: boolean | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
     SubContent: React.ForwardRefExoticComponent<DropdownMenuSubContentProps & {
         __scopeDropdownMenu?: string;

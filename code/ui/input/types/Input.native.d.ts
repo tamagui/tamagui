@@ -360,6 +360,7 @@ export declare const Input: import("@tamagui/core").TamaguiComponent<Omit<import
         pressStyle: boolean;
         focusStyle: boolean;
         disabledStyle: boolean;
+        focusWithinStyle: boolean;
     };
     name?: undefined;
     tag?: undefined;

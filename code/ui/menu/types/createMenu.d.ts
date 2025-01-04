@@ -185,15 +185,15 @@ export declare function createMenu({ Item: _Item, Title: _Title, SubTitle: _SubT
         Label: TamaguiComponent;
         Item: TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
             elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-            transparent?: boolean | undefined;
-            fullscreen?: boolean | undefined;
-            circular?: boolean | undefined;
             inset?: number | import("@tamagui/core").SizeTokens | {
                 top?: number;
                 bottom?: number;
                 left?: number;
                 right?: number;
-            } | undefined;
+            } | null | undefined;
+            transparent?: boolean | undefined;
+            fullscreen?: boolean | undefined;
+            circular?: boolean | undefined;
             hoverTheme?: boolean | undefined;
             pressTheme?: boolean | undefined;
             focusTheme?: boolean | undefined;
@@ -209,15 +209,15 @@ export declare function createMenu({ Item: _Item, Title: _Title, SubTitle: _SubT
             __scopeMenu?: string;
         }, import("@tamagui/core").StackStyleBase, {
             elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-            transparent?: boolean | undefined;
-            fullscreen?: boolean | undefined;
-            circular?: boolean | undefined;
             inset?: number | import("@tamagui/core").SizeTokens | {
                 top?: number;
                 bottom?: number;
                 left?: number;
                 right?: number;
-            } | undefined;
+            } | null | undefined;
+            transparent?: boolean | undefined;
+            fullscreen?: boolean | undefined;
+            circular?: boolean | undefined;
             hoverTheme?: boolean | undefined;
             pressTheme?: boolean | undefined;
             focusTheme?: boolean | undefined;
@@ -230,15 +230,15 @@ export declare function createMenu({ Item: _Item, Title: _Title, SubTitle: _SubT
         }, import("@tamagui/core").StaticConfigPublic>;
         CheckboxItem: TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
             elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-            transparent?: boolean | undefined;
-            fullscreen?: boolean | undefined;
-            circular?: boolean | undefined;
             inset?: number | import("@tamagui/core").SizeTokens | {
                 top?: number;
                 bottom?: number;
                 left?: number;
                 right?: number;
-            } | undefined;
+            } | null | undefined;
+            transparent?: boolean | undefined;
+            fullscreen?: boolean | undefined;
+            circular?: boolean | undefined;
             hoverTheme?: boolean | undefined;
             pressTheme?: boolean | undefined;
             focusTheme?: boolean | undefined;
@@ -254,15 +254,15 @@ export declare function createMenu({ Item: _Item, Title: _Title, SubTitle: _SubT
             __scopeMenu?: string;
         }, import("@tamagui/core").StackStyleBase, {
             elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-            transparent?: boolean | undefined;
-            fullscreen?: boolean | undefined;
-            circular?: boolean | undefined;
             inset?: number | import("@tamagui/core").SizeTokens | {
                 top?: number;
                 bottom?: number;
                 left?: number;
                 right?: number;
-            } | undefined;
+            } | null | undefined;
+            transparent?: boolean | undefined;
+            fullscreen?: boolean | undefined;
+            circular?: boolean | undefined;
             hoverTheme?: boolean | undefined;
             pressTheme?: boolean | undefined;
             focusTheme?: boolean | undefined;
@@ -280,15 +280,15 @@ export declare function createMenu({ Item: _Item, Title: _Title, SubTitle: _SubT
         }, {}, {}, {}>;
         RadioItem: TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
             elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-            transparent?: boolean | undefined;
-            fullscreen?: boolean | undefined;
-            circular?: boolean | undefined;
             inset?: number | import("@tamagui/core").SizeTokens | {
                 top?: number;
                 bottom?: number;
                 left?: number;
                 right?: number;
-            } | undefined;
+            } | null | undefined;
+            transparent?: boolean | undefined;
+            fullscreen?: boolean | undefined;
+            circular?: boolean | undefined;
             hoverTheme?: boolean | undefined;
             pressTheme?: boolean | undefined;
             focusTheme?: boolean | undefined;
@@ -304,15 +304,15 @@ export declare function createMenu({ Item: _Item, Title: _Title, SubTitle: _SubT
             __scopeMenu?: string;
         }, import("@tamagui/core").StackStyleBase, {
             elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-            transparent?: boolean | undefined;
-            fullscreen?: boolean | undefined;
-            circular?: boolean | undefined;
             inset?: number | import("@tamagui/core").SizeTokens | {
                 top?: number;
                 bottom?: number;
                 left?: number;
                 right?: number;
-            } | undefined;
+            } | null | undefined;
+            transparent?: boolean | undefined;
+            fullscreen?: boolean | undefined;
+            circular?: boolean | undefined;
             hoverTheme?: boolean | undefined;
             pressTheme?: boolean | undefined;
             focusTheme?: boolean | undefined;
@@ -331,38 +331,38 @@ export declare function createMenu({ Item: _Item, Title: _Title, SubTitle: _SubT
         Separator: TamaguiComponent;
         Arrow: TamaguiComponent<ScopedProps<MenuArrowProps>, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & (PopperPrimitive.PopperArrowExtraProps & TamaguiElement), import("@tamagui/core").StackStyleBase, {
             elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-            fullscreen?: boolean | undefined;
             inset?: number | import("@tamagui/core").SizeTokens | {
                 top?: number;
                 bottom?: number;
                 left?: number;
                 right?: number;
-            } | undefined;
+            } | null | undefined;
+            fullscreen?: boolean | undefined;
             unstyled?: boolean | undefined;
         }, import("@tamagui/core").StaticConfigPublic>;
         Sub: React.FC<ScopedProps<MenuSubProps>>;
         SubTrigger: TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
             elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-            fullscreen?: boolean | undefined;
             inset?: number | import("@tamagui/core").SizeTokens | {
                 top?: number;
                 bottom?: number;
                 left?: number;
                 right?: number;
-            } | undefined;
+            } | null | undefined;
+            fullscreen?: boolean | undefined;
         }>, "__scopeMenu" | keyof MenuSubTriggerProps> & MenuSubTriggerProps & {
             __scopeMenu?: string;
         }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & MenuSubTriggerProps & {
             __scopeMenu?: string;
         }, import("@tamagui/core").StackStyleBase, {
             elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-            fullscreen?: boolean | undefined;
             inset?: number | import("@tamagui/core").SizeTokens | {
                 top?: number;
                 bottom?: number;
                 left?: number;
                 right?: number;
-            } | undefined;
+            } | null | undefined;
+            fullscreen?: boolean | undefined;
         }, import("@tamagui/core").StaticConfigPublic>;
         SubContent: React.ForwardRefExoticComponent<MenuSubContentProps & {
             __scopeMenu?: string;
