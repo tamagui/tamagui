@@ -86,15 +86,15 @@ export declare const DropdownMenu: ({
     };
     readonly Item: import("tamagui").TamaguiComponent<Omit<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
         elevation?: number | import("tamagui").SizeTokens | undefined;
-        transparent?: boolean | undefined;
-        fullscreen?: boolean | undefined;
-        circular?: boolean | undefined;
         inset?: number | import("tamagui").SizeTokens | {
             top?: number;
             bottom?: number;
             left?: number;
             right?: number;
-        } | undefined;
+        } | null | undefined;
+        transparent?: boolean | undefined;
+        fullscreen?: boolean | undefined;
+        circular?: boolean | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
         focusTheme?: boolean | undefined;
@@ -114,15 +114,15 @@ export declare const DropdownMenu: ({
         __scopeDropdownMenu?: string;
     }, import("@tamagui/web").StackStyleBase, {
         elevation?: number | import("tamagui").SizeTokens | undefined;
-        transparent?: boolean | undefined;
-        fullscreen?: boolean | undefined;
-        circular?: boolean | undefined;
         inset?: number | import("tamagui").SizeTokens | {
             top?: number;
             bottom?: number;
             left?: number;
             right?: number;
-        } | undefined;
+        } | null | undefined;
+        transparent?: boolean | undefined;
+        fullscreen?: boolean | undefined;
+        circular?: boolean | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
         focusTheme?: boolean | undefined;
@@ -135,15 +135,15 @@ export declare const DropdownMenu: ({
     }, import("@tamagui/web").StaticConfigPublic> | {
         (props: Omit<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
             elevation?: number | import("tamagui").SizeTokens | undefined;
-            transparent?: boolean | undefined;
-            fullscreen?: boolean | undefined;
-            circular?: boolean | undefined;
             inset?: number | import("tamagui").SizeTokens | {
                 top?: number;
                 bottom?: number;
                 left?: number;
                 right?: number;
-            } | undefined;
+            } | null | undefined;
+            transparent?: boolean | undefined;
+            fullscreen?: boolean | undefined;
+            circular?: boolean | undefined;
             hoverTheme?: boolean | undefined;
             pressTheme?: boolean | undefined;
             focusTheme?: boolean | undefined;
@@ -172,15 +172,15 @@ export declare const DropdownMenu: ({
     };
     readonly CheckboxItem: import("tamagui").TamaguiComponent<Omit<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
         elevation?: number | import("tamagui").SizeTokens | undefined;
-        transparent?: boolean | undefined;
-        fullscreen?: boolean | undefined;
-        circular?: boolean | undefined;
         inset?: number | import("tamagui").SizeTokens | {
             top?: number;
             bottom?: number;
             left?: number;
             right?: number;
-        } | undefined;
+        } | null | undefined;
+        transparent?: boolean | undefined;
+        fullscreen?: boolean | undefined;
+        circular?: boolean | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
         focusTheme?: boolean | undefined;
@@ -200,15 +200,15 @@ export declare const DropdownMenu: ({
         __scopeDropdownMenu?: string;
     }, import("@tamagui/web").StackStyleBase, {
         elevation?: number | import("tamagui").SizeTokens | undefined;
-        transparent?: boolean | undefined;
-        fullscreen?: boolean | undefined;
-        circular?: boolean | undefined;
         inset?: number | import("tamagui").SizeTokens | {
             top?: number;
             bottom?: number;
             left?: number;
             right?: number;
-        } | undefined;
+        } | null | undefined;
+        transparent?: boolean | undefined;
+        fullscreen?: boolean | undefined;
+        circular?: boolean | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
         focusTheme?: boolean | undefined;
@@ -221,15 +221,15 @@ export declare const DropdownMenu: ({
     }, import("@tamagui/web").StaticConfigPublic> | {
         (props: Omit<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
             elevation?: number | import("tamagui").SizeTokens | undefined;
-            transparent?: boolean | undefined;
-            fullscreen?: boolean | undefined;
-            circular?: boolean | undefined;
             inset?: number | import("tamagui").SizeTokens | {
                 top?: number;
                 bottom?: number;
                 left?: number;
                 right?: number;
-            } | undefined;
+            } | null | undefined;
+            transparent?: boolean | undefined;
+            fullscreen?: boolean | undefined;
+            circular?: boolean | undefined;
             hoverTheme?: boolean | undefined;
             pressTheme?: boolean | undefined;
             focusTheme?: boolean | undefined;
@@ -260,15 +260,15 @@ export declare const DropdownMenu: ({
     };
     readonly RadioItem: import("tamagui").TamaguiComponent<Omit<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
         elevation?: number | import("tamagui").SizeTokens | undefined;
-        transparent?: boolean | undefined;
-        fullscreen?: boolean | undefined;
-        circular?: boolean | undefined;
         inset?: number | import("tamagui").SizeTokens | {
             top?: number;
             bottom?: number;
             left?: number;
             right?: number;
-        } | undefined;
+        } | null | undefined;
+        transparent?: boolean | undefined;
+        fullscreen?: boolean | undefined;
+        circular?: boolean | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
         focusTheme?: boolean | undefined;
@@ -288,15 +288,15 @@ export declare const DropdownMenu: ({
         __scopeDropdownMenu?: string;
     }, import("@tamagui/web").StackStyleBase, {
         elevation?: number | import("tamagui").SizeTokens | undefined;
-        transparent?: boolean | undefined;
-        fullscreen?: boolean | undefined;
-        circular?: boolean | undefined;
         inset?: number | import("tamagui").SizeTokens | {
             top?: number;
             bottom?: number;
             left?: number;
             right?: number;
-        } | undefined;
+        } | null | undefined;
+        transparent?: boolean | undefined;
+        fullscreen?: boolean | undefined;
+        circular?: boolean | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
         focusTheme?: boolean | undefined;
@@ -434,7 +434,7 @@ export declare const DropdownMenu: ({
         (props: import("react-native").ImageProps & import("react").RefAttributes<import("react-native").Image> & import("@tamagui/menu/types/createNativeMenu/createNativeMenuTypes").MenuItemCommonProps & {
             source: import("react-native").ImageProps["source"];
             ios?: {
-                style?: ImageOptions;
+                style?: import("react-native-ios-utilities").ImageOptions;
                 lazy?: boolean;
             };
         } & {

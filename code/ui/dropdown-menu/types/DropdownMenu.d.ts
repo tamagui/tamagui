@@ -87,15 +87,15 @@ export declare function createDropdownMenu(params: Parameters<typeof createMenu>
     };
     readonly Item: import("@tamagui/core").TamaguiComponent<Omit<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-        transparent?: boolean | undefined;
-        fullscreen?: boolean | undefined;
-        circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
             top?: number;
             bottom?: number;
             left?: number;
             right?: number;
-        } | undefined;
+        } | null | undefined;
+        transparent?: boolean | undefined;
+        fullscreen?: boolean | undefined;
+        circular?: boolean | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
         focusTheme?: boolean | undefined;
@@ -115,15 +115,15 @@ export declare function createDropdownMenu(params: Parameters<typeof createMenu>
         __scopeDropdownMenu?: string;
     }, import("@tamagui/core").StackStyleBase, {
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-        transparent?: boolean | undefined;
-        fullscreen?: boolean | undefined;
-        circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
             top?: number;
             bottom?: number;
             left?: number;
             right?: number;
-        } | undefined;
+        } | null | undefined;
+        transparent?: boolean | undefined;
+        fullscreen?: boolean | undefined;
+        circular?: boolean | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
         focusTheme?: boolean | undefined;
@@ -136,15 +136,15 @@ export declare function createDropdownMenu(params: Parameters<typeof createMenu>
     }, import("@tamagui/core").StaticConfigPublic> | {
         (props: Omit<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
             elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-            transparent?: boolean | undefined;
-            fullscreen?: boolean | undefined;
-            circular?: boolean | undefined;
             inset?: number | import("@tamagui/core").SizeTokens | {
                 top?: number;
                 bottom?: number;
                 left?: number;
                 right?: number;
-            } | undefined;
+            } | null | undefined;
+            transparent?: boolean | undefined;
+            fullscreen?: boolean | undefined;
+            circular?: boolean | undefined;
             hoverTheme?: boolean | undefined;
             pressTheme?: boolean | undefined;
             focusTheme?: boolean | undefined;
@@ -173,15 +173,15 @@ export declare function createDropdownMenu(params: Parameters<typeof createMenu>
     };
     readonly CheckboxItem: import("@tamagui/core").TamaguiComponent<Omit<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-        transparent?: boolean | undefined;
-        fullscreen?: boolean | undefined;
-        circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
             top?: number;
             bottom?: number;
             left?: number;
             right?: number;
-        } | undefined;
+        } | null | undefined;
+        transparent?: boolean | undefined;
+        fullscreen?: boolean | undefined;
+        circular?: boolean | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
         focusTheme?: boolean | undefined;
@@ -201,15 +201,15 @@ export declare function createDropdownMenu(params: Parameters<typeof createMenu>
         __scopeDropdownMenu?: string;
     }, import("@tamagui/core").StackStyleBase, {
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-        transparent?: boolean | undefined;
-        fullscreen?: boolean | undefined;
-        circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
             top?: number;
             bottom?: number;
             left?: number;
             right?: number;
-        } | undefined;
+        } | null | undefined;
+        transparent?: boolean | undefined;
+        fullscreen?: boolean | undefined;
+        circular?: boolean | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
         focusTheme?: boolean | undefined;
@@ -222,15 +222,15 @@ export declare function createDropdownMenu(params: Parameters<typeof createMenu>
     }, import("@tamagui/core").StaticConfigPublic> | {
         (props: Omit<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
             elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-            transparent?: boolean | undefined;
-            fullscreen?: boolean | undefined;
-            circular?: boolean | undefined;
             inset?: number | import("@tamagui/core").SizeTokens | {
                 top?: number;
                 bottom?: number;
                 left?: number;
                 right?: number;
-            } | undefined;
+            } | null | undefined;
+            transparent?: boolean | undefined;
+            fullscreen?: boolean | undefined;
+            circular?: boolean | undefined;
             hoverTheme?: boolean | undefined;
             pressTheme?: boolean | undefined;
             focusTheme?: boolean | undefined;
@@ -261,15 +261,15 @@ export declare function createDropdownMenu(params: Parameters<typeof createMenu>
     };
     readonly RadioItem: import("@tamagui/core").TamaguiComponent<Omit<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-        transparent?: boolean | undefined;
-        fullscreen?: boolean | undefined;
-        circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
             top?: number;
             bottom?: number;
             left?: number;
             right?: number;
-        } | undefined;
+        } | null | undefined;
+        transparent?: boolean | undefined;
+        fullscreen?: boolean | undefined;
+        circular?: boolean | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
         focusTheme?: boolean | undefined;
@@ -289,15 +289,15 @@ export declare function createDropdownMenu(params: Parameters<typeof createMenu>
         __scopeDropdownMenu?: string;
     }, import("@tamagui/core").StackStyleBase, {
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-        transparent?: boolean | undefined;
-        fullscreen?: boolean | undefined;
-        circular?: boolean | undefined;
         inset?: number | import("@tamagui/core").SizeTokens | {
             top?: number;
             bottom?: number;
             left?: number;
             right?: number;
-        } | undefined;
+        } | null | undefined;
+        transparent?: boolean | undefined;
+        fullscreen?: boolean | undefined;
+        circular?: boolean | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
         focusTheme?: boolean | undefined;
@@ -435,7 +435,7 @@ export declare function createDropdownMenu(params: Parameters<typeof createMenu>
         (props: import("react-native").ImageProps & React.RefAttributes<import("react-native").Image> & import("@tamagui/menu/types/createNativeMenu/createNativeMenuTypes").MenuItemCommonProps & {
             source: import("react-native").ImageProps["source"];
             ios?: {
-                style?: ImageOptions;
+                style?: import("react-native-ios-utilities").ImageOptions;
                 lazy?: boolean;
             };
         } & {
