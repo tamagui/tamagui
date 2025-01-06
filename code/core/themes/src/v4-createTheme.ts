@@ -1,4 +1,4 @@
-import { createThemeBuilder } from '@tamagui/theme-builder'
+import { createThemeBuilder, type ThemeBuilder } from '@tamagui/theme-builder'
 import { parseToHsla } from 'color2k'
 import { getThemeSuitePalettes } from './getThemeSuitePalettes'
 import type { BuildPalettes, BuildTemplates, BuildThemeSuiteProps } from './types'
@@ -21,11 +21,12 @@ type ColorDefs = Colors | ColorsByScheme
 export type CreateThemesProps<
   SubThemes extends SimpleThemesDefinition = SimpleThemesDefinition,
   ComponentThemes extends SimpleThemesDefinition = SimpleThemesDefinition,
+  Templates extends BuildTemplates = typeof defaultTemplates,
 > = {
   base: BaseThemeDefinition
   accent: BaseThemeDefinition
   subThemes?: SubThemes
-  templates?: BuildTemplates
+  templates?: Templates
   componentThemes?: ComponentThemes
   colorsToTheme?: (props: {
     colors: string[]
@@ -44,10 +45,10 @@ export function createThemesWithSubThemes<
     componentThemes = defaultComponentThemes as unknown as any,
   } = props
 
-  const builder = createBuilder({
+  const builder = createSimpleThemeBuilder({
     componentThemes,
     palettes: createPalettes(getThemesPalettes(props)),
-    templates,
+    templates: templates as typeof defaultTemplates,
     subThemes: Object.fromEntries(
       Object.entries(subThemes || {}).map(([name, value]) => {
         return [
@@ -61,12 +62,19 @@ export function createThemesWithSubThemes<
     ) as Record<keyof SubThemes, any>,
   })
 
-  return builder
+  return builder.themes
 }
 
 // for studio
-export function createThemes(props: CreateThemesProps) {
-  return createThemesWithSubThemes(props).build()
+// allows more detailed configuration, used by studio
+// eventually we should merge this down into simple and have it handle what we need
+export function createThemes(props: BuildThemeSuiteProps) {
+  const palettes = createPalettes(props.palettes)
+  return createSimpleThemeBuilder({
+    palettes,
+    templates: props.templates,
+    componentThemes: defaultComponentThemes,
+  })
 }
 
 function getColorsByScheme(colors: Colors): ColorsByScheme {
@@ -128,21 +136,6 @@ function getThemesPalettes(props: CreateThemesProps): BuildPalettes {
   }
 }
 
-// allows more detailed configuration, used by studio
-// eventually we should merge this down into simple and have it handle what we need
-export function createThemesFromStudio(props: BuildThemeSuiteProps) {
-  const palettes = createPalettes(props.palettes)
-  const themeBuilder = createBuilder({
-    palettes,
-    templates: props.templates,
-    componentThemes: defaultComponentThemes,
-  })
-  return {
-    themeBuilder,
-    themes: themeBuilder.build(),
-  }
-}
-
 const defaultPalettes: SimplePaletteDefinitions = createPalettes(
   getThemesPalettes({
     base: {
@@ -155,7 +148,7 @@ const defaultPalettes: SimplePaletteDefinitions = createPalettes(
 )
 
 // a simpler API surface
-export function createBuilder<
+export function createSimpleThemeBuilder<
   Templates extends BuildTemplates,
   Palettes extends SimplePaletteDefinitions,
   SubThemes extends Record<
@@ -178,7 +171,19 @@ export function createBuilder<
   templates?: Templates
   subThemes?: SubThemes
   componentThemes?: ComponentThemes
-}) {
+}): {
+  themeBuilder: ThemeBuilder<any>
+  themes: {
+    [Key in
+      | 'light'
+      | 'dark'
+      | (keyof SubThemes extends string
+          ? `${'light' | 'dark'}_${keyof SubThemes}`
+          : never)]: {
+      [ThemeKey in keyof Templates['light_base']]: string
+    }
+  }
+} {
   // start theme-builder
   const themeBuilder = createThemeBuilder()
     .addPalettes(palettes)
@@ -218,7 +223,10 @@ export function createBuilder<
       avoidNestingWithin: Object.keys(subThemes),
     })
 
-  return themeBuilder
+  return {
+    themeBuilder,
+    themes: themeBuilder.build() as any,
+  }
 }
 
 export const getComponentThemes = (components: SimpleThemesDefinition) => {

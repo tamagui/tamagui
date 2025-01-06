@@ -112,7 +112,7 @@ const darkPalettes = objectFromEntries(
  * Default themes for the tamagui.dev site
  * If you'd like to create your own themes, use `createThemesWithSubThemes`
  */
-const themeBuilder = createThemesWithSubThemes({
+const baseThemes = createThemesWithSubThemes({
   base: {
     colors: {
       dark: [color.black1, color.black12],
@@ -239,7 +239,7 @@ const dark_tan = {
 }
 
 export const tamaguiThemes = {
-  ...themeBuilder.build(),
+  ...baseThemes,
   dark_tan,
   light_tan,
 }
