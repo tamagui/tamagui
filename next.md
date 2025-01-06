@@ -21,6 +21,22 @@
 
 v3
 
+"flat mode"
+
+```tsx
+<Stack width={[100, 200]} />
+<Stack width={{ web: 50, native: 200, group-sm: 200 }} />
+```
+
+  - removes all nested object style props instead you always use the value
+ - `core-nested`, `core-flat`, `core-tailwind`:
+
+```tsx
+createCore<CustomTypes>({
+  propMapper(propsIn) { return propsOut }
+})
+```
+
   - `background` prop + linear-gradient + background-image (see *Skeleton)
   - can we remove the need for separate Text/View?
       - seems like we could scan just the direct descendents?
