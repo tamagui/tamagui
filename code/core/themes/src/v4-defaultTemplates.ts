@@ -1,6 +1,26 @@
 import { objectFromEntries, objectKeys } from './helpers'
 import type { BuildTemplates } from './types'
 
+const lightShadowColor = 'rgba(0,0,0,0.04)'
+const lightShadowColorStrong = 'rgba(0,0,0,0.085)'
+const darkShadowColor = 'rgba(0,0,0,0.2)'
+const darkShadowColorStrong = 'rgba(0,0,0,0.3)'
+
+const shadows = {
+  light: {
+    shadowColor: lightShadowColorStrong,
+    shadowColorHover: lightShadowColorStrong,
+    shadowColorPress: lightShadowColor,
+    shadowColorFocus: lightShadowColor,
+  },
+  dark: {
+    shadowColor: darkShadowColorStrong,
+    shadowColorHover: darkShadowColorStrong,
+    shadowColorPress: darkShadowColor,
+    shadowColorFocus: darkShadowColor,
+  },
+}
+
 const getTemplates = () => {
   const lightTemplates = getBaseTemplates('light')
   const darkTemplates = getBaseTemplates('dark')
@@ -34,6 +54,8 @@ const getBaseTemplates = (scheme: 'dark' | 'light') => {
   const base = {
     accentBackground: 0,
     accentColor: -0,
+
+    ...(isLight ? shadows.light : shadows.dark),
 
     background0: 1,
     background025: 2,

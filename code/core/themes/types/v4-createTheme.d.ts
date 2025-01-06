@@ -33,8 +33,6 @@ export type CreateThemesProps<SubThemes extends SimpleThemesDefinition = SimpleT
     }) => Record<string, string>;
 };
 export declare function createThemesWithSubThemes<SubThemes extends SimpleThemesDefinition, ComponentThemes extends SimpleThemesDefinition>(props: CreateThemesProps<SubThemes, ComponentThemes>): { [Key in "light" | "dark" | (keyof SubThemes extends string ? `light_${string & keyof SubThemes}` | `dark_${string & keyof SubThemes}` : never)]: {
-    accentBackground: string;
-    accentColor: string;
     background0: string;
     background025: string;
     background05: string;
@@ -70,6 +68,12 @@ export declare function createThemesWithSubThemes<SubThemes extends SimpleThemes
     colorTransparent: string;
     placeholderColor: string;
     outlineColor: string;
+    shadowColor: string;
+    shadowColorHover: string;
+    shadowColorPress: string;
+    shadowColorFocus: string;
+    accentBackground: string;
+    accentColor: string;
 }; };
 export declare function createThemes(props: BuildThemeSuiteProps): {
     themeBuilder: ThemeBuilder<any>;

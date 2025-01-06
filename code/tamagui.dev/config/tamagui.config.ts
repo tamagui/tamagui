@@ -54,6 +54,7 @@ const fixTypescript55Bug = {
 }
 
 const config = {
+  fonts,
   animations,
   themes: maybeThemes,
   media,
@@ -70,9 +71,7 @@ const config = {
     }),
     allowedStyleValues: 'somewhat-strict-web',
     autocompleteSpecificTokens: 'except-special',
-    // mediaPropOrder: true,
   },
-  fonts,
 } satisfies CreateTamaguiProps
 
 // for site responsive demo, we want no types here

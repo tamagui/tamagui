@@ -118,6 +118,16 @@ const baseThemes = createThemesWithSubThemes({
       dark: [color.black1, color.black12],
       light: [color.white1, color.white12],
     },
+
+    // TODO
+    // @ts-ignore
+    nonInherited: {
+      dark: {
+        gray1: '',
+        shadowColor: '',
+        // ...
+      },
+    },
   },
   accent: {
     colors: ['#ECD20A', '#424035'],
