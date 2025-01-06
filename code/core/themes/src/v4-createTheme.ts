@@ -8,39 +8,60 @@ export { getThemeSuitePalettes, PALETTE_BACKGROUND_OFFSET } from './getThemeSuit
 export type * from './types'
 export { defaultTemplates } from './v4-defaultTemplates'
 
-type SimpleThemeDefinitions<TemplateName extends string = string> = {
-  [ComponentName: string]: TemplateName
-}
+type SimpleThemeDefinition = { colors?: ColorDefs; template?: string }
+type BaseThemeDefinition = { colors: ColorDefs; template?: string }
 
+type SimpleThemesDefinition = Record<string, SimpleThemeDefinition>
 type SimplePaletteDefinitions = Record<string, string[]>
 
 type Colors = string[]
 type ColorsByScheme = { light: Colors; dark: Colors }
 type ColorDefs = Colors | ColorsByScheme
 
-export function createThemes<
-  ComponentThemes extends SimpleThemeDefinitions,
-  SubThemes extends Record<string, ColorDefs>,
->({
-  base,
-  accent,
-  subThemes,
-  componentThemes = defaultComponentThemes as unknown as any,
-}: {
-  base: ColorDefs
-  accent: ColorDefs
+export type CreateThemesProps<
+  SubThemes extends SimpleThemesDefinition = SimpleThemesDefinition,
+  ComponentThemes extends SimpleThemesDefinition = SimpleThemesDefinition,
+> = {
+  base: BaseThemeDefinition
+  accent: BaseThemeDefinition
   subThemes?: SubThemes
+  templates?: BuildTemplates
   componentThemes?: ComponentThemes
   colorsToTheme?: (props: {
     colors: string[]
     name: string
     scheme?: 'light' | 'dark'
   }) => Record<string, string>
-}) {
-  return buildThemes({
+}
+
+export function createThemes<
+  SubThemes extends SimpleThemesDefinition,
+  ComponentThemes extends SimpleThemesDefinition,
+>(props: CreateThemesProps<SubThemes, ComponentThemes>) {
+  const {
+    subThemes,
+    templates,
+    componentThemes = defaultComponentThemes as unknown as any,
+  } = props
+
+  const builder = createBuilder({
     componentThemes,
-    palettes: createPalettes(getBuildPalettes(colors)),
+    palettes: createPalettes(getThemesPalettes(props)),
+    templates,
+    subThemes: Object.fromEntries(
+      Object.entries(subThemes || {}).map(([name, value]) => {
+        return [
+          name,
+          {
+            palette: name,
+            template: value.template || 'base',
+          },
+        ]
+      })
+    ) as any,
   })
+
+  return builder.build()
 }
 
 function getColorsByScheme(colors: Colors): ColorsByScheme {
@@ -64,16 +85,20 @@ function getAnchors(colorsByScheme: ColorsByScheme) {
   })
 }
 
-function getBuildPalettes(colors: CreateThemeColors): BuildPalettes {
-  const base = Array.isArray(colors.base) ? getColorsByScheme(colors.base) : colors.base
-  const accent = Array.isArray(colors.accent)
-    ? getColorsByScheme(colors.accent)
-    : colors.accent
+const coerceToScheme = (def: ColorDefs) => {
+  return Array.isArray(def) ? getColorsByScheme(def) : def
+}
+
+function getThemesPalettes(props: CreateThemesProps): BuildPalettes {
+  const base = coerceToScheme(props.base.colors)
+  const accent = coerceToScheme(props.accent.colors)
+
+  const baseAnchors = getAnchors(base)
 
   return {
     base: {
       name: 'base',
-      anchors: getAnchors(base),
+      anchors: baseAnchors,
     },
     ...(accent && {
       accent: {
@@ -81,6 +106,20 @@ function getBuildPalettes(colors: CreateThemeColors): BuildPalettes {
         anchors: getAnchors(accent),
       },
     }),
+    ...(props.subThemes &&
+      Object.fromEntries(
+        Object.entries(props.subThemes).map(([key, value]) => {
+          return [
+            key,
+            {
+              name: key,
+              anchors: value.colors
+                ? getAnchors(coerceToScheme(value.colors))
+                : baseAnchors,
+            },
+          ]
+        })
+      )),
   }
 }
 
@@ -88,28 +127,42 @@ function getBuildPalettes(colors: CreateThemeColors): BuildPalettes {
 // eventually we should merge this down into simple and have it handle what we need
 export function createThemesFromStudio(props: BuildThemeSuiteProps) {
   const palettes = createPalettes(props.palettes)
-  return buildThemes({
+  const themeBuilder = createBuilder({
     palettes,
     templates: props.templates,
     componentThemes: defaultComponentThemes,
   })
+  return {
+    themeBuilder,
+    themes: themeBuilder.build(),
+  }
 }
 
 const defaultPalettes: SimplePaletteDefinitions = createPalettes(
-  getBuildPalettes({
-    base: ['#fff', '#000'],
-    accent: ['darkred', 'lightred'],
+  getThemesPalettes({
+    base: {
+      colors: ['#fff', '#000'],
+    },
+    accent: {
+      colors: ['#ff0000', '#ff9999'],
+    },
   })
 )
 
 // a simpler API surface
-export function buildThemes<
+export function createBuilder<
   Templates extends BuildTemplates,
   Palettes extends SimplePaletteDefinitions,
-  ComponentThemes extends SimpleThemeDefinitions<
-    keyof Templates extends string ? keyof Templates : string
+  SubThemes extends Record<
+    string,
+    {
+      template: keyof Templates extends string ? keyof Templates : never
+      palette?: string
+    }
   >,
+  ComponentThemes extends SimpleThemesDefinition,
 >({
+  subThemes = {} as unknown as SubThemes,
   templates = defaultTemplates as unknown as Templates,
   palettes = defaultPalettes as unknown as Palettes,
   componentThemes = templates === (defaultTemplates as any)
@@ -118,22 +171,9 @@ export function buildThemes<
 }: {
   palettes?: Palettes
   templates?: Templates
+  subThemes?: SubThemes
   componentThemes?: ComponentThemes
 }) {
-  const { base, ...subTemplates } = templates
-  const subTemplateNames = Object.keys(subTemplates)
-
-  const subThemes = Object.fromEntries(
-    subTemplateNames.map((key) => {
-      return [
-        key,
-        {
-          template: key,
-        },
-      ]
-    })
-  )
-
   // start theme-builder
   const themeBuilder = createThemeBuilder()
     .addPalettes(palettes)
@@ -166,27 +206,24 @@ export function buildThemes<
           }
         : {}
     )
-    .addChildThemes(subThemes)
-    .addChildThemes(componentThemes ? getComponentThemes(componentThemes) : {}, {
-      avoidNestingWithin: subTemplateNames,
+    .addChildThemes(subThemes, {
+      avoidNestingWithin: ['accent'],
+    })
+    .addComponentThemes(componentThemes ? getComponentThemes(componentThemes) : {}, {
+      avoidNestingWithin: Object.keys(subThemes),
     })
 
-  const themes = themeBuilder.build()
-
-  return {
-    themes,
-    themeBuilder,
-  }
+  return themeBuilder
 }
 
-export const getComponentThemes = (components: SimpleThemeDefinitions) => {
+export const getComponentThemes = (components: SimpleThemesDefinition) => {
   return Object.fromEntries(
-    Object.entries(components).map(([componentName, templateName]) => {
+    Object.entries(components).map(([componentName, { template }]) => {
       return [
         componentName,
         {
           parent: '',
-          template: templateName,
+          template: template || 'base',
         },
       ]
     })
@@ -194,25 +231,25 @@ export const getComponentThemes = (components: SimpleThemeDefinitions) => {
 }
 
 export const defaultComponentThemes = {
-  ListItem: 'surface1',
-  SelectTrigger: 'surface1',
-  Card: 'surface1',
-  Button: 'surface3',
-  Checkbox: 'surface2',
-  Switch: 'surface2',
-  SwitchThumb: 'inverseSurface1',
-  TooltipContent: 'surface2',
-  Progress: 'surface1',
-  RadioGroupItem: 'surface2',
-  TooltipArrow: 'surface1',
-  SliderTrackActive: 'surface3',
-  SliderTrack: 'surface1',
-  SliderThumb: 'inverseSurface1',
-  Tooltip: 'inverseSurface1',
-  ProgressIndicator: 'inverseSurface1',
-  Input: 'surface1',
-  TextArea: 'surface1',
-} as const
+  ListItem: { template: 'surface1' },
+  SelectTrigger: { template: 'surface1' },
+  Card: { template: 'surface1' },
+  Button: { template: 'surface3' },
+  Checkbox: { template: 'surface2' },
+  Switch: { template: 'surface2' },
+  SwitchThumb: { template: 'inverse' },
+  TooltipContent: { template: 'surface2' },
+  Progress: { template: 'surface1' },
+  RadioGroupItem: { template: 'surface2' },
+  TooltipArrow: { template: 'surface1' },
+  SliderTrackActive: { template: 'surface3' },
+  SliderTrack: { template: 'surface1' },
+  SliderThumb: { template: 'inverse' },
+  Tooltip: { template: 'inverse' },
+  ProgressIndicator: { template: 'inverse' },
+  Input: { template: 'surface1' },
+  TextArea: { template: 'surface1' },
+} satisfies SimpleThemesDefinition
 
 export function createPalettes(palettes: BuildPalettes): SimplePaletteDefinitions {
   const accentPalettes = palettes.accent ? getThemeSuitePalettes(palettes.accent) : null

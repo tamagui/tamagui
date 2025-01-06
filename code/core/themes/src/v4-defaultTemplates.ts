@@ -109,11 +109,18 @@ const getBaseTemplates = (scheme: 'dark' | 'light') => {
     borderColorPress: base.borderColorPress + 3,
   }
 
+  const inverse = Object.fromEntries(
+    Object.entries(base).map(([key, index]) => {
+      return [key, -index]
+    })
+  )
+
   return {
     base,
     surface1,
     surface2,
     surface3,
+    inverse,
   } satisfies BuildTemplates
 }
 

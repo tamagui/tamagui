@@ -114,47 +114,64 @@ const darkPalettes = objectFromEntries(
  */
 export const themes = createThemes({
   base: {
-    dark: [color.black1, color.black12],
-    light: [color.white1, color.white12],
+    colors: {
+      dark: [color.black1, color.black12],
+      light: [color.white1, color.white12],
+    },
   },
-  accent: ['#ECD20A', '#424035'],
+  accent: {
+    colors: ['#ECD20A', '#424035'],
+  },
   subThemes: {
     gray: {
-      dark: darkPalettes.dark_gray,
-      light: lightPalettes.light_gray,
+      colors: {
+        dark: darkPalettes.dark_gray,
+        light: lightPalettes.light_gray,
+      },
     },
     blue: {
-      dark: darkPalettes.dark_blue,
-      light: lightPalettes.light_blue,
+      colors: {
+        dark: darkPalettes.dark_blue,
+        light: lightPalettes.light_blue,
+      },
     },
     orange: {
-      dark: darkPalettes.dark_orange,
-      light: lightPalettes.light_orange,
+      colors: {
+        dark: darkPalettes.dark_orange,
+        light: lightPalettes.light_orange,
+      },
     },
     red: {
-      dark: darkPalettes.dark_red,
-      light: lightPalettes.light_red,
+      colors: {
+        dark: darkPalettes.dark_red,
+        light: lightPalettes.light_red,
+      },
     },
     yellow: {
-      dark: darkPalettes.dark_yellow,
-      light: lightPalettes.light_yellow,
+      colors: {
+        dark: darkPalettes.dark_yellow,
+        light: lightPalettes.light_yellow,
+      },
     },
     green: {
-      dark: darkPalettes.dark_green,
-      light: lightPalettes.light_green,
+      colors: {
+        dark: darkPalettes.dark_green,
+        light: lightPalettes.light_green,
+      },
     },
     purple: {
-      dark: darkPalettes.dark_purple,
-      light: lightPalettes.light_purple,
+      colors: {
+        dark: darkPalettes.dark_purple,
+        light: lightPalettes.light_purple,
+      },
     },
     pink: {
-      dark: darkPalettes.dark_pink,
-      light: lightPalettes.light_pink,
+      colors: {
+        dark: darkPalettes.dark_pink,
+        light: lightPalettes.light_pink,
+      },
     },
   },
 })
-
-type x = typeof themes
-type y = x['themes']['dark']
 
 console.log('themes', themes)

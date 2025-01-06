@@ -66,7 +66,7 @@ export async function generateThemeBuilderCode({
     .addChildThemes(defaultSubThemes)
     ${
       includeComponentThemes
-        ? `.addChildThemes(defaultComponentThemes, {
+        ? `.addComponentThemes(defaultComponentThemes, {
       avoidNestingWithin: [
         'alt1',
         'alt2',
