@@ -147,7 +147,7 @@ export const DropTamaguiConfig = () => {
                     <Button
                       als="flex-end"
                       icon={X}
-                      theme="red_active"
+                      theme="red"
                       onPress={() => config.setItem('')}
                     >
                       Clear config

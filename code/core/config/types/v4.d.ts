@@ -1,12 +1,8 @@
-export { animations } from './v3-animations';
-export { tokens, themes } from '@tamagui/themes/v3-themes';
-export { shorthands } from '@tamagui/shorthands/v2';
+export { shorthands } from '@tamagui/shorthands/v3';
+export { tokens } from '@tamagui/themes/v3-themes';
 export { fonts } from './fonts';
 export { media, mediaQueryDefaultActive } from './media';
-export declare const selectionStyles: (theme: any) => {
-    backgroundColor: any;
-    color: any;
-} | null;
+export { animations } from './v4-animations';
 export declare const config: {
     animations: import("@tamagui/web").AnimationDriver<{
         '75ms': string;
@@ -22,8 +18,10 @@ export declare const config: {
         quickest: string;
         tooltip: string;
     }>;
-    themes: import("@tamagui/themes/v3-themes").ThemesOut;
     media: {
+        '2xl': {
+            maxWidth: number;
+        };
         xl: {
             maxWidth: number;
         };
@@ -41,21 +39,6 @@ export declare const config: {
         };
         xxs: {
             maxWidth: number;
-        };
-        gtXs: {
-            minWidth: number;
-        };
-        gtSm: {
-            minWidth: number;
-        };
-        gtMd: {
-            minWidth: number;
-        };
-        gtLg: {
-            minWidth: number;
-        };
-        gtXl: {
-            minWidth: number;
         };
     };
     shorthands: {
@@ -817,80 +800,16 @@ export declare const config: {
         };
     }, "size" | "color" | "space" | "radius" | "zIndex">;
     fonts: {
-        heading: import("@tamagui/web").FillInFont<{
-            size: {
-                5: number;
-                6: number;
-                9: number;
-                10: number;
-            };
-            transform: {
-                6: "uppercase";
-                7: "none";
-            };
-            weight: {
-                6: string;
-                7: string;
-            };
-            color: {
-                6: string;
-                7: string;
-            };
-            letterSpacing: {
-                5: number;
-                6: number;
-                7: number;
-                8: number;
-                9: number;
-                10: number;
-                12: number;
-                14: number;
-                15: number;
-            };
-            face: {
-                700: {
-                    normal: string;
-                };
-                800: {
-                    normal: string;
-                };
-                900: {
-                    normal: string;
-                };
-            };
-        }, 2 | 9 | 15 | 1 | 10 | 5 | 14 | 11 | 12 | 16 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
         body: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 2 | 9 | 15 | 1 | 10 | 5 | 14 | 11 | 12 | 16 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
-        mono: {
-            weight: {
-                1: string;
-            };
-            size: {
-                1: number;
-                2: number;
-                3: number;
-                4: number;
-                5: number;
-                6: number;
-                7: number;
-                8: number;
-                9: number;
-                10: number;
-                11: number;
-                12: number;
-                13: number;
-                14: number;
-                15: number;
-                16: number;
-            };
-        };
-        silkscreen: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 2 | 9 | 15 | 1 | 10 | 5 | 14 | 11 | 12 | 16 | 3 | 4 | 6 | 7 | 8 | 13>;
+        heading: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 2 | 9 | 15 | 1 | 10 | 5 | 14 | 11 | 12 | 16 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
     };
-    selectionStyles: (theme: any) => {
-        backgroundColor: any;
-        color: any;
+    selectionStyles: (theme: Record<string, string>) => {
+        backgroundColor: string;
+        color: string;
     } | null;
     settings: {
         mediaQueryDefaultActive: {
+            '2xl': boolean;
             xl: boolean;
             lg: boolean;
             md: boolean;
@@ -901,6 +820,7 @@ export declare const config: {
         defaultFont: string;
         fastSchemeChange: true;
         shouldAddPrefersColorThemes: true;
+        allowedStyleValues: "somewhat-strict-web";
         themeClassNameOnRoot: true;
     };
 };

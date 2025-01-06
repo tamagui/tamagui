@@ -129,6 +129,18 @@ const baseThemes = createThemesWithSubThemes({
     alt2: {
       template: 'surface2',
     },
+    surface1: {
+      template: 'surface1',
+    },
+    surface2: {
+      template: 'surface2',
+    },
+    surface3: {
+      template: 'surface3',
+    },
+    surface4: {
+      template: 'surface4',
+    },
     gray: {
       colors: {
         dark: darkPalettes.dark_gray,
