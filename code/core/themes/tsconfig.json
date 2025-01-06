@@ -4,7 +4,6 @@
     "composite": true
   },
   "exclude": [
-    "generate.ts",
     "types",
     "v2.d.ts",
     "v2.js",

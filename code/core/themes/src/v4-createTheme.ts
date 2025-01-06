@@ -34,7 +34,7 @@ export type CreateThemesProps<
   }) => Record<string, string>
 }
 
-export function createThemes<
+export function createThemesWithSubThemes<
   SubThemes extends SimpleThemesDefinition,
   ComponentThemes extends SimpleThemesDefinition,
 >(props: CreateThemesProps<SubThemes, ComponentThemes>) {
@@ -58,10 +58,15 @@ export function createThemes<
           },
         ]
       })
-    ) as any,
+    ) as Record<keyof SubThemes, any>,
   })
 
-  return builder.build()
+  return builder
+}
+
+// for studio
+export function createThemes(props: CreateThemesProps) {
+  return createThemesWithSubThemes(props).build()
 }
 
 function getColorsByScheme(colors: Colors): ColorsByScheme {
