@@ -1,7 +1,8 @@
 import type { CreateTamaguiProps } from '@tamagui/core'
 import { setupDev } from '@tamagui/core'
 import { shorthands } from '@tamagui/shorthands/v2'
-import { tokens, tamaguiThemes } from '@tamagui/config/v4'
+import { tokens } from '@tamagui/config/v4'
+import { tamaguiThemes } from '@tamagui/themes/v4'
 import { createTamagui } from 'tamagui'
 import { animations } from './animations'
 import {
