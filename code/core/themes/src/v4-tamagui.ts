@@ -123,6 +123,12 @@ const baseThemes = createThemesWithSubThemes({
     colors: ['#ECD20A', '#424035'],
   },
   subThemes: {
+    alt1: {
+      template: 'surface1',
+    },
+    alt2: {
+      template: 'surface2',
+    },
     gray: {
       colors: {
         dark: darkPalettes.dark_gray,
