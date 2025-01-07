@@ -444,7 +444,6 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     //   portal: true,
     // })
 
-
     let contents = (
       <ParentSheetContext.Provider value={nextParentContext}>
         <SheetProvider {...providerProps}>
