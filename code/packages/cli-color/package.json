@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/cli-color",
-  "version": "1.121.6",
+  "version": "1.121.7",
   "main": "dist/cjs",
   "module": "dist/esm",
   "types": "./types/index.d.ts",
@@ -26,7 +26,7 @@
     }
   },
   "devDependencies": {
-    "@tamagui/build": "1.121.6"
+    "@tamagui/build": "1.121.7"
   },
   "publishConfig": {
     "access": "public"
