@@ -3,7 +3,7 @@ import * as proc from 'node:child_process'
 import { join } from 'node:path'
 import { promisify } from 'node:util'
 
-import { lstat, rm, symlink, unlink } from 'fs-extra'
+import { copy, lstat, rm, symlink, unlink } from 'fs-extra'
 import pMap from 'p-map'
 
 const exec = promisify(proc.exec)
@@ -217,9 +217,9 @@ async function format() {
       const rootBiome = toAbsolute(
         join(location, ...new Array(distanceToRoot).fill(0).map(() => '..'), 'biome.json')
       )
-      console.info(`Symlink ${rootBiome} -> ${biomeFile}`)
+      console.info(`Copy ${rootBiome} -> ${biomeFile}`)
       await unlink(biomeFile)
-      await symlink(rootBiome, biomeFile)
+      await copy(rootBiome, biomeFile)
     },
     {
       concurrency: 1,
