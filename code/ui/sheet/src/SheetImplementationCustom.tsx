@@ -444,7 +444,6 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     //   portal: true,
     // })
 
-    console.warn('animatedStyle', animatedStyle)
 
     let contents = (
       <ParentSheetContext.Provider value={nextParentContext}>
