@@ -17,7 +17,7 @@
     "@tamagui/babel-plugin-fully-specified": "1.121.6",
     "@types/fs-extra": "^9.0.13",
     "chokidar": "^3.5.2",
-    "esbuild": "^0.24.0",
+    "esbuild": "^0.24.2",
     "esbuild-plugin-es5": "^2.1.1",
     "esbuild-register": "^3.6.0",
     "execa": "^5.0.0",

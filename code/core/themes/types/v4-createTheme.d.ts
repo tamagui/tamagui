@@ -42,7 +42,7 @@ export declare function createThemesWithSubThemes<Extra extends ExtraThemeValues
 export declare function createSimpleThemeBuilder<Extra extends ExtraThemeValuesByScheme, Templates extends BuildTemplates, Palettes extends SimplePaletteDefinitions, SubThemes extends Record<string, {
     template: keyof Templates extends string ? keyof Templates : never;
     palette?: string;
-}>, ComponentThemes extends SimpleThemesDefinition>({ extra, subThemes, templates, palettes, componentThemes, }: {
+}>, ComponentThemes extends SimpleThemesDefinition>(props: {
     palettes?: Palettes;
     templates?: Templates;
     subThemes?: SubThemes;

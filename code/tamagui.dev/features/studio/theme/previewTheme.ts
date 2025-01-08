@@ -1,4 +1,4 @@
-import { createThemesFromStudio } from '@tamagui/themes/v4'
+import { createThemes } from '@tamagui/themes/v4'
 import type { ThemeName } from 'tamagui'
 import { mutateThemes } from 'tamagui'
 import type { BuildThemeSuiteProps } from './types'
@@ -32,7 +32,7 @@ export async function updatePreviewTheme(
   // async lock
   running.set(args.id, cacheKey)
 
-  const { themes } = createThemesFromStudio(args)
+  const { themes } = createThemes(args)
 
   // async stale check
   if (running.get(args.id) !== cacheKey) {

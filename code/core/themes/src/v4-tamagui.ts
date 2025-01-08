@@ -176,9 +176,6 @@ const baseThemes = createThemesWithSubThemes({
     surface3: {
       template: 'surface3',
     },
-    surface4: {
-      template: 'surface4',
-    },
     gray: {
       palette: {
         dark: darkPalettes.dark_gray,

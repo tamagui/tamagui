@@ -64,7 +64,7 @@ export function createThemesWithSubThemes<
 >(props: CreateThemesProps<Extra, SubThemes, ComponentThemes>) {
   const {
     subThemes,
-    templates,
+    templates = defaultTemplates,
     componentThemes = defaultComponentThemes as unknown as any,
   } = props
 
@@ -102,15 +102,7 @@ export function createSimpleThemeBuilder<
     }
   >,
   ComponentThemes extends SimpleThemesDefinition,
->({
-  extra,
-  subThemes = {} as unknown as SubThemes,
-  templates = defaultTemplates as unknown as Templates,
-  palettes = defaultPalettes as unknown as Palettes,
-  componentThemes = templates === (defaultTemplates as any)
-    ? (defaultComponentThemes as unknown as ComponentThemes)
-    : undefined,
-}: {
+>(props: {
   palettes?: Palettes
   templates?: Templates
   subThemes?: SubThemes
@@ -129,6 +121,16 @@ export function createSimpleThemeBuilder<
     }
   }
 } {
+  const {
+    extra,
+    subThemes = {} as unknown as SubThemes,
+    templates = defaultTemplates as unknown as Templates,
+    palettes = defaultPalettes as unknown as Palettes,
+    componentThemes = templates === (defaultTemplates as any)
+      ? (defaultComponentThemes as unknown as ComponentThemes)
+      : undefined,
+  } = props
+
   // start theme-builder
   const themeBuilder = createThemeBuilder()
     .addPalettes(palettes)
@@ -209,7 +211,7 @@ function getAnchors(Schemepalette: SchemePalette) {
   })
 }
 
-const coerceSimplePaletteToSchemePalette = (def: Palette) => {
+function coerceSimplePaletteToSchemePalette(def: Palette) {
   return Array.isArray(def) ? SchemegetPalette(def) : def
 }
 
