@@ -70,12 +70,6 @@ const TRIGGER_NAME = 'TabsTrigger'
 const TabsTriggerFrame = styled(ThemeableStack, {
   name: TRIGGER_NAME,
   tag: 'button',
-  justifyContent: 'center',
-  alignItems: 'center',
-  flexWrap: 'nowrap',
-  flexDirection: 'row',
-  cursor: 'pointer',
-  userSelect: 'none',
 
   variants: {
     size: {
@@ -102,7 +96,14 @@ const TabsTriggerFrame = styled(ThemeableStack, {
 
     unstyled: {
       false: {
+        borderWidth: 0,
         backgroundColor: '$background',
+        userSelect: 'none',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexWrap: 'nowrap',
+        flexDirection: 'row',
+        cursor: 'pointer',
 
         pressStyle: {
           backgroundColor: '$backgroundPress',
