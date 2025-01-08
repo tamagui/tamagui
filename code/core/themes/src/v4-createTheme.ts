@@ -68,6 +68,8 @@ export function createThemesWithSubThemes<
     componentThemes = defaultComponentThemes as unknown as any,
   } = props
 
+  console.log('go', getThemesPalettes(props), createPalettes(getThemesPalettes(props)))
+
   const builder = createSimpleThemeBuilder({
     extra: props.base.extra,
     componentThemes,
@@ -190,7 +192,7 @@ export function createThemes(props: BuildThemeSuiteProps) {
   })
 }
 
-function SchemegetPalette(colors: SinglePalette): SchemePalette {
+function getSchemePalette(colors: SinglePalette): SchemePalette {
   return {
     light: colors,
     dark: colors.toReversed(),
@@ -212,7 +214,7 @@ function getAnchors(Schemepalette: SchemePalette) {
 }
 
 function coerceSimplePaletteToSchemePalette(def: Palette) {
-  return Array.isArray(def) ? SchemegetPalette(def) : def
+  return Array.isArray(def) ? getSchemePalette(def) : def
 }
 
 function getThemesPalettes(props: CreateThemesProps): BuildPalettes {
