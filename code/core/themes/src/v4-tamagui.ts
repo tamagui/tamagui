@@ -108,30 +108,58 @@ const darkPalettes = objectFromEntries(
   )
 )
 
+const lightShadowColor = 'rgba(0,0,0,0.04)'
+const lightShadowColorStrong = 'rgba(0,0,0,0.085)'
+const darkShadowColor = 'rgba(0,0,0,0.2)'
+const darkShadowColorStrong = 'rgba(0,0,0,0.3)'
+
+const shadows = {
+  light: {
+    shadowColor: lightShadowColorStrong,
+    shadowColorHover: lightShadowColorStrong,
+    shadowColorPress: lightShadowColor,
+    shadowColorFocus: lightShadowColor,
+  },
+  dark: {
+    shadowColor: darkShadowColorStrong,
+    shadowColorHover: darkShadowColorStrong,
+    shadowColorPress: darkShadowColor,
+    shadowColorFocus: darkShadowColor,
+  },
+}
+
+const nonInherited = {
+  light: {
+    ...lightColors,
+    ...shadows.light,
+  },
+  dark: {
+    ...darkColors,
+    ...shadows.dark,
+  },
+}
+
 /**
  * Default themes for the tamagui.dev site
  * If you'd like to create your own themes, use `createThemesWithSubThemes`
  */
 const baseThemes = createThemesWithSubThemes({
   base: {
-    colors: {
+    palette: {
       dark: [color.black1, color.black12],
       light: [color.white1, color.white12],
     },
 
-    // TODO
-    // @ts-ignore
-    nonInherited: {
-      dark: {
-        gray1: '',
-        shadowColor: '',
-        // ...
-      },
+    extra: {
+      dark: nonInherited.dark,
+      light: nonInherited.light,
     },
   },
+
   accent: {
-    colors: ['#ECD20A', '#424035'],
+    palette: ['#ECD20A', '#424035'],
   },
+
   subThemes: {
     alt1: {
       template: 'surface1',
@@ -152,49 +180,49 @@ const baseThemes = createThemesWithSubThemes({
       template: 'surface4',
     },
     gray: {
-      colors: {
+      palette: {
         dark: darkPalettes.dark_gray,
         light: lightPalettes.light_gray,
       },
     },
     blue: {
-      colors: {
+      palette: {
         dark: darkPalettes.dark_blue,
         light: lightPalettes.light_blue,
       },
     },
     orange: {
-      colors: {
+      palette: {
         dark: darkPalettes.dark_orange,
         light: lightPalettes.light_orange,
       },
     },
     red: {
-      colors: {
+      palette: {
         dark: darkPalettes.dark_red,
         light: lightPalettes.light_red,
       },
     },
     yellow: {
-      colors: {
+      palette: {
         dark: darkPalettes.dark_yellow,
         light: lightPalettes.light_yellow,
       },
     },
     green: {
-      colors: {
+      palette: {
         dark: darkPalettes.dark_green,
         light: lightPalettes.light_green,
       },
     },
     purple: {
-      colors: {
+      palette: {
         dark: darkPalettes.dark_purple,
         light: lightPalettes.light_purple,
       },
     },
     pink: {
-      colors: {
+      palette: {
         dark: darkPalettes.dark_pink,
         light: lightPalettes.light_pink,
       },

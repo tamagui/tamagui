@@ -4,25 +4,31 @@ import { defaultTemplates } from './v4-defaultTemplates';
 export { getThemeSuitePalettes, PALETTE_BACKGROUND_OFFSET } from './getThemeSuitePalettes';
 export type * from './types';
 export { defaultTemplates } from './v4-defaultTemplates';
+type ExtraThemeValues = Record<string, string>;
+type ExtraThemeValuesByScheme<Values extends ExtraThemeValues = ExtraThemeValues> = {
+    dark: Values;
+    light: Values;
+};
 type SimpleThemeDefinition = {
-    colors?: ColorDefs;
+    palette?: Palette;
     template?: string;
 };
-type BaseThemeDefinition = {
-    colors: ColorDefs;
+type BaseThemeDefinition<Extra extends ExtraThemeValuesByScheme> = {
+    palette: Palette;
     template?: string;
+    extra?: Extra;
 };
 type SimpleThemesDefinition = Record<string, SimpleThemeDefinition>;
 type SimplePaletteDefinitions = Record<string, string[]>;
-type Colors = string[];
-type ColorsByScheme = {
-    light: Colors;
-    dark: Colors;
+type SinglePalette = string[];
+type SchemePalette = {
+    light: SinglePalette;
+    dark: SinglePalette;
 };
-type ColorDefs = Colors | ColorsByScheme;
-export type CreateThemesProps<SubThemes extends SimpleThemesDefinition = SimpleThemesDefinition, ComponentThemes extends SimpleThemesDefinition = SimpleThemesDefinition, Templates extends BuildTemplates = typeof defaultTemplates> = {
-    base: BaseThemeDefinition;
-    accent: BaseThemeDefinition;
+type Palette = SinglePalette | SchemePalette;
+export type CreateThemesProps<Extra extends ExtraThemeValuesByScheme = ExtraThemeValuesByScheme, SubThemes extends SimpleThemesDefinition = SimpleThemesDefinition, ComponentThemes extends SimpleThemesDefinition = SimpleThemesDefinition, Templates extends BuildTemplates = typeof defaultTemplates> = {
+    base: BaseThemeDefinition<Extra>;
+    accent: BaseThemeDefinition<Extra>;
     subThemes?: SubThemes;
     templates?: Templates;
     componentThemes?: ComponentThemes;
@@ -32,79 +38,42 @@ export type CreateThemesProps<SubThemes extends SimpleThemesDefinition = SimpleT
         scheme?: 'light' | 'dark';
     }) => Record<string, string>;
 };
-export declare function createThemesWithSubThemes<SubThemes extends SimpleThemesDefinition, ComponentThemes extends SimpleThemesDefinition>(props: CreateThemesProps<SubThemes, ComponentThemes>): { [Key in "light" | "dark" | (keyof SubThemes extends string ? `light_${string & keyof SubThemes}` | `dark_${string & keyof SubThemes}` : never)]: {
-    background0: string;
-    background025: string;
-    background05: string;
-    background075: string;
-    color1: string;
-    color2: string;
-    color3: string;
-    color4: string;
-    color5: string;
-    color6: string;
-    color7: string;
-    color8: string;
-    color9: string;
-    color10: string;
-    color11: string;
-    color12: string;
-    color0: string;
-    color025: string;
-    color05: string;
-    color075: string;
-    background: string;
-    backgroundHover: string;
-    backgroundPress: string;
-    backgroundFocus: string;
-    borderColor: string;
-    borderColorHover: string;
-    borderColorPress: string;
-    borderColorFocus: string;
-    color: string;
-    colorHover: string;
-    colorPress: string;
-    colorFocus: string;
-    colorTransparent: string;
-    placeholderColor: string;
-    outlineColor: string;
-    shadowColor: string;
-    shadowColorHover: string;
-    shadowColorPress: string;
-    shadowColorFocus: string;
-    accentBackground: string;
-    accentColor: string;
-}; };
+export declare function createThemesWithSubThemes<Extra extends ExtraThemeValuesByScheme, SubThemes extends SimpleThemesDefinition, ComponentThemes extends SimpleThemesDefinition>(props: CreateThemesProps<Extra, SubThemes, ComponentThemes>): { [Key in "light" | "dark" | (keyof SubThemes extends string ? `light_${string & keyof SubThemes}` | `dark_${string & keyof SubThemes}` : never)]: { [ThemeKey in "borderColor" | "borderColorHover" | "borderColorPress" | "borderColorFocus" | "color" | "shadowColor" | "shadowColorHover" | "shadowColorPress" | "shadowColorFocus" | "colorHover" | "colorFocus" | "colorPress" | "color1" | "color2" | "color3" | "color4" | "color5" | "color6" | "color7" | "color8" | "color9" | "color10" | "color11" | "color12" | "background" | "backgroundHover" | "backgroundPress" | "backgroundFocus" | "colorTransparent" | "placeholderColor" | "outlineColor" | "accentBackground" | "accentColor" | "background0" | "background025" | "background05" | "background075" | "color0" | "color025" | "color05" | "color075" | keyof Extra["dark"]]: string; }; };
+export declare function createSimpleThemeBuilder<Extra extends ExtraThemeValuesByScheme, Templates extends BuildTemplates, Palettes extends SimplePaletteDefinitions, SubThemes extends Record<string, {
+    template: keyof Templates extends string ? keyof Templates : never;
+    palette?: string;
+}>, ComponentThemes extends SimpleThemesDefinition>({ extra, subThemes, templates, palettes, componentThemes, }: {
+    palettes?: Palettes;
+    templates?: Templates;
+    subThemes?: SubThemes;
+    componentThemes?: ComponentThemes;
+    extra?: Extra;
+}): {
+    themeBuilder: ThemeBuilder<any>;
+    themes: {
+        [Key in 'light' | 'dark' | (keyof SubThemes extends string ? `${'light' | 'dark'}_${keyof SubThemes}` : never)]: {
+            [ThemeKey in keyof Templates['light_base'] | keyof Extra['dark']]: string;
+        };
+    };
+};
 export declare function createThemes(props: BuildThemeSuiteProps): {
     themeBuilder: ThemeBuilder<any>;
     themes: {
         [x: `light_${string}`]: {
             [x: string]: string;
+            [x: number]: string;
         };
         [x: `dark_${string}`]: {
             [x: string]: string;
+            [x: number]: string;
         };
         light: {
             [x: string]: string;
+            [x: number]: string;
         };
         dark: {
             [x: string]: string;
-        };
-    };
-};
-export declare function createSimpleThemeBuilder<Templates extends BuildTemplates, Palettes extends SimplePaletteDefinitions, SubThemes extends Record<string, {
-    template: keyof Templates extends string ? keyof Templates : never;
-    palette?: string;
-}>, ComponentThemes extends SimpleThemesDefinition>({ subThemes, templates, palettes, componentThemes, }: {
-    palettes?: Palettes;
-    templates?: Templates;
-    subThemes?: SubThemes;
-    componentThemes?: ComponentThemes;
-}): {
-    themeBuilder: ThemeBuilder<any>;
-    themes: {
-        [Key in 'light' | 'dark' | (keyof SubThemes extends string ? `${'light' | 'dark'}_${keyof SubThemes}` : never)]: {
-            [ThemeKey in keyof Templates['light_base']]: string;
+            [x: number]: string;
         };
     };
 };

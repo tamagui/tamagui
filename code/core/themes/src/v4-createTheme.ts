@@ -8,23 +8,45 @@ export { getThemeSuitePalettes, PALETTE_BACKGROUND_OFFSET } from './getThemeSuit
 export type * from './types'
 export { defaultTemplates } from './v4-defaultTemplates'
 
-type SimpleThemeDefinition = { colors?: ColorDefs; template?: string }
-type BaseThemeDefinition = { colors: ColorDefs; template?: string }
+type ExtraThemeValues = Record<string, string>
+type ExtraThemeValuesByScheme<Values extends ExtraThemeValues = ExtraThemeValues> = {
+  dark: Values
+  light: Values
+}
+
+type SimpleThemeDefinition = { palette?: Palette; template?: string }
+type BaseThemeDefinition<Extra extends ExtraThemeValuesByScheme> = {
+  palette: Palette
+  template?: string
+  extra?: Extra
+}
 
 type SimpleThemesDefinition = Record<string, SimpleThemeDefinition>
 type SimplePaletteDefinitions = Record<string, string[]>
 
-type Colors = string[]
-type ColorsByScheme = { light: Colors; dark: Colors }
-type ColorDefs = Colors | ColorsByScheme
+type SinglePalette = string[]
+type SchemePalette = { light: SinglePalette; dark: SinglePalette }
+type Palette = SinglePalette | SchemePalette
+
+const defaultPalettes: SimplePaletteDefinitions = createPalettes(
+  getThemesPalettes({
+    base: {
+      palette: ['#fff', '#000'],
+    },
+    accent: {
+      palette: ['#ff0000', '#ff9999'],
+    },
+  })
+)
 
 export type CreateThemesProps<
+  Extra extends ExtraThemeValuesByScheme = ExtraThemeValuesByScheme,
   SubThemes extends SimpleThemesDefinition = SimpleThemesDefinition,
   ComponentThemes extends SimpleThemesDefinition = SimpleThemesDefinition,
   Templates extends BuildTemplates = typeof defaultTemplates,
 > = {
-  base: BaseThemeDefinition
-  accent: BaseThemeDefinition
+  base: BaseThemeDefinition<Extra>
+  accent: BaseThemeDefinition<Extra>
   subThemes?: SubThemes
   templates?: Templates
   componentThemes?: ComponentThemes
@@ -36,9 +58,10 @@ export type CreateThemesProps<
 }
 
 export function createThemesWithSubThemes<
+  Extra extends ExtraThemeValuesByScheme,
   SubThemes extends SimpleThemesDefinition,
   ComponentThemes extends SimpleThemesDefinition,
->(props: CreateThemesProps<SubThemes, ComponentThemes>) {
+>(props: CreateThemesProps<Extra, SubThemes, ComponentThemes>) {
   const {
     subThemes,
     templates,
@@ -46,6 +69,7 @@ export function createThemesWithSubThemes<
   } = props
 
   const builder = createSimpleThemeBuilder({
+    extra: props.base.extra,
     componentThemes,
     palettes: createPalettes(getThemesPalettes(props)),
     templates: templates as typeof defaultTemplates,
@@ -65,90 +89,9 @@ export function createThemesWithSubThemes<
   return builder.themes
 }
 
-// for studio
-// allows more detailed configuration, used by studio
-// eventually we should merge this down into simple and have it handle what we need
-export function createThemes(props: BuildThemeSuiteProps) {
-  const palettes = createPalettes(props.palettes)
-  return createSimpleThemeBuilder({
-    palettes,
-    templates: props.templates,
-    componentThemes: defaultComponentThemes,
-  })
-}
-
-function getColorsByScheme(colors: Colors): ColorsByScheme {
-  return {
-    light: colors,
-    dark: colors.toReversed(),
-  }
-}
-
-function getAnchors(colorsByScheme: ColorsByScheme) {
-  return colorsByScheme.light.map((lcolor, index) => {
-    const dcolor = colorsByScheme.dark[index]
-    const [lhue, lsat, llum] = parseToHsla(lcolor)
-    const [dhue, dsat, dlum] = parseToHsla(dcolor)
-    return {
-      index,
-      hue: { light: lhue, dark: dhue },
-      sat: { light: lsat, dark: dsat },
-      lum: { light: llum, dark: dlum },
-    } as const
-  })
-}
-
-const coerceToScheme = (def: ColorDefs) => {
-  return Array.isArray(def) ? getColorsByScheme(def) : def
-}
-
-function getThemesPalettes(props: CreateThemesProps): BuildPalettes {
-  const base = coerceToScheme(props.base.colors)
-  const accent = coerceToScheme(props.accent.colors)
-
-  const baseAnchors = getAnchors(base)
-
-  return {
-    base: {
-      name: 'base',
-      anchors: baseAnchors,
-    },
-    ...(accent && {
-      accent: {
-        name: 'accent',
-        anchors: getAnchors(accent),
-      },
-    }),
-    ...(props.subThemes &&
-      Object.fromEntries(
-        Object.entries(props.subThemes).map(([key, value]) => {
-          return [
-            key,
-            {
-              name: key,
-              anchors: value.colors
-                ? getAnchors(coerceToScheme(value.colors))
-                : baseAnchors,
-            },
-          ]
-        })
-      )),
-  }
-}
-
-const defaultPalettes: SimplePaletteDefinitions = createPalettes(
-  getThemesPalettes({
-    base: {
-      colors: ['#fff', '#000'],
-    },
-    accent: {
-      colors: ['#ff0000', '#ff9999'],
-    },
-  })
-)
-
 // a simpler API surface
 export function createSimpleThemeBuilder<
+  Extra extends ExtraThemeValuesByScheme,
   Templates extends BuildTemplates,
   Palettes extends SimplePaletteDefinitions,
   SubThemes extends Record<
@@ -160,6 +103,7 @@ export function createSimpleThemeBuilder<
   >,
   ComponentThemes extends SimpleThemesDefinition,
 >({
+  extra,
   subThemes = {} as unknown as SubThemes,
   templates = defaultTemplates as unknown as Templates,
   palettes = defaultPalettes as unknown as Palettes,
@@ -171,6 +115,7 @@ export function createSimpleThemeBuilder<
   templates?: Templates
   subThemes?: SubThemes
   componentThemes?: ComponentThemes
+  extra?: Extra
 }): {
   themeBuilder: ThemeBuilder<any>
   themes: {
@@ -180,7 +125,7 @@ export function createSimpleThemeBuilder<
       | (keyof SubThemes extends string
           ? `${'light' | 'dark'}_${keyof SubThemes}`
           : never)]: {
-      [ThemeKey in keyof Templates['light_base']]: string
+      [ThemeKey in keyof Templates['light_base'] | keyof Extra['dark']]: string
     }
   }
 } {
@@ -192,10 +137,12 @@ export function createSimpleThemeBuilder<
       light: {
         template: 'base',
         palette: 'light',
+        nonInheritedValues: extra?.light,
       },
       dark: {
         template: 'base',
         palette: 'dark',
+        nonInheritedValues: extra?.dark,
       },
     })
     .addChildThemes(
@@ -226,6 +173,77 @@ export function createSimpleThemeBuilder<
   return {
     themeBuilder,
     themes: themeBuilder.build() as any,
+  }
+}
+
+// for studio
+// allows more detailed configuration, used by studio
+// eventually we should merge this down into simple and have it handle what we need
+export function createThemes(props: BuildThemeSuiteProps) {
+  const palettes = createPalettes(props.palettes)
+  return createSimpleThemeBuilder({
+    palettes,
+    templates: props.templates,
+    componentThemes: defaultComponentThemes,
+  })
+}
+
+function SchemegetPalette(colors: SinglePalette): SchemePalette {
+  return {
+    light: colors,
+    dark: colors.toReversed(),
+  }
+}
+
+function getAnchors(Schemepalette: SchemePalette) {
+  return Schemepalette.light.map((lcolor, index) => {
+    const dcolor = Schemepalette.dark[index]
+    const [lhue, lsat, llum] = parseToHsla(lcolor)
+    const [dhue, dsat, dlum] = parseToHsla(dcolor)
+    return {
+      index,
+      hue: { light: lhue, dark: dhue },
+      sat: { light: lsat, dark: dsat },
+      lum: { light: llum, dark: dlum },
+    } as const
+  })
+}
+
+const coerceSimplePaletteToSchemePalette = (def: Palette) => {
+  return Array.isArray(def) ? SchemegetPalette(def) : def
+}
+
+function getThemesPalettes(props: CreateThemesProps): BuildPalettes {
+  const base = coerceSimplePaletteToSchemePalette(props.base.palette)
+  const accent = coerceSimplePaletteToSchemePalette(props.accent.palette)
+
+  const baseAnchors = getAnchors(base)
+
+  return {
+    base: {
+      name: 'base',
+      anchors: baseAnchors,
+    },
+    ...(accent && {
+      accent: {
+        name: 'accent',
+        anchors: getAnchors(accent),
+      },
+    }),
+    ...(props.subThemes &&
+      Object.fromEntries(
+        Object.entries(props.subThemes).map(([key, value]) => {
+          return [
+            key,
+            {
+              name: key,
+              anchors: value.palette
+                ? getAnchors(coerceSimplePaletteToSchemePalette(value.palette))
+                : baseAnchors,
+            },
+          ]
+        })
+      )),
   }
 }
 
