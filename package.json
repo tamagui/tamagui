@@ -20,6 +20,11 @@
     "./code/tamagui.dev",
     "./code/ui/**/*"
   ],
+  "resolutions": {
+    "@react-navigation/native": "6.1.18",
+    "@react-navigation/native-stack": "6.9.26",
+    "@react-navigation/elements": "1.3.31"
+  },
   "scripts": {
     "docs": "yarn workspace @tamagui/one-docs dev",
     "docs:build": "yarn workspace @tamagui/one-docs build:prod",
