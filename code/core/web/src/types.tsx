@@ -1337,7 +1337,7 @@ export type WithThemeShorthandsPseudosMedia<
  * Base style-only props (no media, pseudo):
  */
 
-export type SpaceValue = number | SpaceTokens | ThemeValueFallback
+export type SpaceValue = boolean | number | SpaceTokens | ThemeValueFallback
 
 type Px = `${string | number}px`
 type PxOrPct = Px | `${string | number}%`

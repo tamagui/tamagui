@@ -1,12 +1,9 @@
 import type { TamaguiOptions } from '@tamagui/static'
 import type { Plugin } from 'vite'
 import { transformWithEsbuild } from 'vite'
-import { tamaguiOptions, Static, loadTamaguiBuildConfig } from './loadTamagui'
 import { tamaguiExtractPlugin } from './extract'
-import { version } from 'vite'
-import { dirname, join } from 'node:path'
+import { Static, loadTamaguiBuildConfig, tamaguiOptions } from './loadTamagui'
 
-const isVite6 = version.startsWith('6.')
 const resolve = (name: string) => import.meta.resolve?.(name).replace('file://', '')
 
 export function tamaguiPlugin({
