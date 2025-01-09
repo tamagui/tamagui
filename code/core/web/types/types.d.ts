@@ -746,7 +746,7 @@ export type WithThemeShorthandsPseudosMedia<A extends Object, Variants = {}> = W
 /**
  * Base style-only props (no media, pseudo):
  */
-export type SpaceValue = number | SpaceTokens | ThemeValueFallback;
+export type SpaceValue = boolean | number | SpaceTokens | ThemeValueFallback;
 type Px = `${string | number}px`;
 type PxOrPct = Px | `${string | number}%`;
 type TwoValueTransformOrigin = `${PxOrPct | 'left' | 'center' | 'right'} ${PxOrPct | 'top' | 'center' | 'bottom'}`;
