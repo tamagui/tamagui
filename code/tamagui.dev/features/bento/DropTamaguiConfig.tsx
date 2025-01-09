@@ -60,7 +60,7 @@ export const DropTamaguiConfig = () => {
   return (
     <>
       <TooltipSimple label="Upload your Tamagui Config">
-        <Theme name={config ? 'green' : 'active'}>
+        <Theme name={config ? 'green' : 'accent'}>
           <Button
             als="flex-end"
             br="$10"

@@ -506,7 +506,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['bento'] }) => 
               >
                 <YStack br="$4" shac="rgba(0,0,0,0.2)" shar="$8">
                   <ThemeTintAlt>
-                    <Theme name="surface4">
+                    <Theme name="surface3">
                       <LocationNotification />
                     </Theme>
                   </ThemeTintAlt>

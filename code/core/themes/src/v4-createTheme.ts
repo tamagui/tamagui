@@ -63,6 +63,7 @@ export function createThemesWithSubThemes<
   ComponentThemes extends SimpleThemesDefinition,
 >(props: CreateThemesProps<Extra, SubThemes, ComponentThemes>) {
   const {
+    accent,
     subThemes,
     templates = defaultTemplates,
     componentThemes = defaultComponentThemes as unknown as any,
@@ -75,6 +76,7 @@ export function createThemesWithSubThemes<
     componentThemes,
     palettes: createPalettes(getThemesPalettes(props)),
     templates: templates as typeof defaultTemplates,
+    accentTheme: !!accent,
     subThemes: Object.fromEntries(
       Object.entries(subThemes || {}).map(([name, value]) => {
         return [
@@ -103,9 +105,11 @@ export function createSimpleThemeBuilder<
       palette?: string
     }
   >,
+  HasAccent extends boolean,
   ComponentThemes extends SimpleThemesDefinition,
 >(props: {
   palettes?: Palettes
+  accentTheme?: HasAccent
   templates?: Templates
   subThemes?: SubThemes
   componentThemes?: ComponentThemes
@@ -116,8 +120,9 @@ export function createSimpleThemeBuilder<
     [Key in
       | 'light'
       | 'dark'
+      | (HasAccent extends true ? 'light_accent' | 'dark_accent' : never)
       | (keyof SubThemes extends string
-          ? `${'light' | 'dark'}_${keyof SubThemes}`
+          ? `${'light' | 'dark'}_${HasAccent extends true ? `_accent` | '' : ''}${keyof SubThemes}`
           : never)]: {
       [ThemeKey in keyof Templates['light_base'] | keyof Extra['dark']]: string
     }

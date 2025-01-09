@@ -63,7 +63,7 @@ export function Panel({
     // })
     await navigator.clipboard.writeText(compString)
     toastController.show('Copied successfully', {
-      theme: 'green_alt2',
+      theme: 'green',
     })
   }
 

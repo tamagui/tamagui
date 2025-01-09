@@ -1,12 +1,12 @@
 import type { Provider } from '@supabase/supabase-js'
 import { ThemeTint } from '@tamagui/logo'
 import { CheckCircle, LogOut, Star } from '@tamagui/lucide-icons'
+import { useRouter } from 'one'
 import { useState } from 'react'
 import {
   Avatar,
   Button,
   H3,
-  Input,
   Paragraph,
   Separator,
   SizableText,
@@ -14,7 +14,6 @@ import {
   XStack,
   YStack,
 } from 'tamagui'
-import { useRouter } from 'one'
 import { Container } from '~/components/Containers'
 import { ButtonLink, Link } from '~/components/Link'
 import { Notice } from '~/components/Notice'
@@ -395,7 +394,7 @@ const SponsorButton = () => {
   return (
     <ButtonLink
       href="https://github.com/sponsors/natew"
-      theme="pink_alt1"
+      theme="pink"
       icon={<Star />}
       size="$3"
     >

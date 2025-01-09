@@ -297,4 +297,4 @@ export const tamaguiThemes = {
   light_tan,
 }
 
-console.log('themes', tamaguiThemes)
+console.log('themes', tamaguiThemes.dark_accent)
