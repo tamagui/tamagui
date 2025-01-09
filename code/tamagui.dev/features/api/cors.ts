@@ -1,10 +1,10 @@
-import { setResponseHeaders } from 'one/headers'
+import { setCurrentRequestHeaders } from 'one/headers'
 
 export const setupCors = (req: Request) => {
   const origin = req.headers.get('origin')
 
   if (isValidOrigin(origin)) {
-    setResponseHeaders((headers) => {
+    setCurrentRequestHeaders((headers) => {
       headers.set('Access-Control-Allow-Origin', origin)
       headers.set('Access-Control-Allow-Credentials', 'true')
       headers.set('Allow', 'GET, POST, PUT, DELETE, PATCH')

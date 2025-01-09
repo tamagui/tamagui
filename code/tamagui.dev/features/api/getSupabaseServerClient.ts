@@ -3,7 +3,7 @@ import {
   parseCookieHeader,
   serializeCookieHeader,
 } from '@supabase/ssr'
-import { setResponseHeaders } from 'one/headers'
+import { setCurrentRequestHeaders } from 'one/headers'
 
 export function getSupabaseServerClient(request: Request) {
   if (!import.meta.env.NEXT_PUBLIC_SUPABASE_URL) {
@@ -32,7 +32,7 @@ export function getSupabaseServerClient(request: Request) {
         },
 
         setAll(cookiesToSet) {
-          setResponseHeaders((headers) => {
+          setCurrentRequestHeaders((headers) => {
             cookiesToSet.forEach(({ name, value, options }) =>
               headers.append('Set-Cookie', serializeCookieHeader(name, value, options))
             )
