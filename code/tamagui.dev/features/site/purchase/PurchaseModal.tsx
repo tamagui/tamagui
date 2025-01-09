@@ -7,6 +7,7 @@ import {
   Dialog,
   H3,
   H4,
+  H5,
   Paragraph,
   RadioGroup,
   ScrollView,
@@ -197,7 +198,7 @@ export const PurchaseModal = ({
                   isActive={currentTab === 'takeout'}
                   value="takeout"
                 >
-                  <TakeoutLogo scale={0.11} />
+                  <TakeoutLogo scale={0.15} />
                 </Tab>
               </YStack>
               <Separator vertical bc="$color4" mb={2} mx={-1} />
@@ -640,6 +641,8 @@ function Tab({
     <Tabs.Tab
       group="takeoutBody"
       unstyled
+      ai="center"
+      jc="center"
       ov="hidden"
       py="$4"
       btrr={end ? '$3' : 0}
