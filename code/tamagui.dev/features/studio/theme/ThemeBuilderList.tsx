@@ -339,7 +339,7 @@ function ThemeSuiteCard({ themeSuite }: { themeSuite: ThemeSuiteItem }) {
                   <Button>Cancel</Button>
                 </AlertDialog.Cancel>
                 <AlertDialog.Action asChild>
-                  <Button theme="red_active" onPress={() => handleDeleteTheme()}>
+                  <Button theme="red" onPress={() => handleDeleteTheme()}>
                     Delete
                   </Button>
                 </AlertDialog.Action>

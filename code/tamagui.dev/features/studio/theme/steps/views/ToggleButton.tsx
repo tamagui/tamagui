@@ -11,7 +11,7 @@ export const ToggleButton = styled(Button, {
   variants: {
     active: {
       true: {
-        theme: 'active',
+        theme: 'accent',
       },
       false: {
         chromeless: true,

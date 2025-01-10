@@ -31,7 +31,7 @@ export function ProductCard({ product, children, ...props }) {
       <Stack
         group="card"
         tag="a"
-        theme="surface4"
+        theme="surface3"
         animation="quickest"
         bg="$background"
         f={1}

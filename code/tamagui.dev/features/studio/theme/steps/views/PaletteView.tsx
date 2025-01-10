@@ -5,6 +5,7 @@ import {
   ArrowRight,
   ArrowUpDown,
 } from '@tamagui/lucide-icons'
+import { PALETTE_BACKGROUND_OFFSET, getThemeSuitePalettes } from '@tamagui/themes/v4'
 import { Store, getStore, useStore } from '@tamagui/use-store'
 import { parseToHsla } from 'color2k'
 import { memo } from 'react'
@@ -19,17 +20,12 @@ import {
   YStack,
   useThemeName,
 } from 'tamagui'
-
 import type { HSLA } from '~/features/studio/colors/ColorPicker'
 import { ColorPickerContents } from '~/features/studio/colors/ColorPicker'
 import { useDoublePress } from '~/features/studio/hooks/useDoublePress'
 import { rootStore } from '../../../state/RootStore'
 import { toastController } from '../../../ToastProvider'
 import { defaultScaleGrouped } from '../../constants/defaultScaleGrouped'
-import {
-  PALETTE_BACKGROUND_OFFSET,
-  getThemeSuitePalettes,
-} from '../../helpers/getThemeSuitePalettes'
 import type { BuildPalette, BuildThemeAnchor } from '../../types'
 import { XLabeledItem } from '../../views/XLabeledItem'
 

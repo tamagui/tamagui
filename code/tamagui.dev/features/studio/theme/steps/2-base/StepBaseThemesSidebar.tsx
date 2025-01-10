@@ -45,7 +45,7 @@ const Contents = ({
   hasAccent: boolean
 }) => {
   const themeBuilder = useThemeBuilderStore()
-  const { selectedSchemes } = themeBuilder
+  const { schemes } = themeBuilder
   const procedureStore = useStore(StudioProcedureStore)
 
   const [showAccent, setShowAccent] = useState(false)
@@ -54,7 +54,7 @@ const Contents = ({
   return (
     <>
       <XStack pos="absolute" t="$4" l={30} zi={1000} gap="$4" scale={0.75}>
-        {procedureStore.loading.buildThemeSuite ? <Spinner size="small" /> : null}
+        {procedureStore.loading.createThemes ? <Spinner size="small" /> : null}
       </XStack>
 
       <XStack pos="absolute" t="$4" r="$4" zi={1000}>
@@ -75,7 +75,7 @@ const Contents = ({
 
       {/* offset a bit to cover the overlap edge */}
       <YStack ai="center" f={1} x={-20} w="calc(100% + 20px)">
-        {selectedSchemes.light && (
+        {schemes.light && (
           <Theme name="light">
             <Theme name={themeName}>
               <YStack h="50%" gap="$3" ai="center" jc="center" px="$4" pl={60}>
@@ -93,7 +93,7 @@ const Contents = ({
             </Theme>
           </Theme>
         )}
-        {selectedSchemes.dark && (
+        {schemes.dark && (
           <Theme name="dark">
             <Theme name={themeName}>
               <YStack h="50%" gap="$3" ai="center" jc="center" px="$4" pl={60}>

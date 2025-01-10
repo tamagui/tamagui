@@ -8,7 +8,7 @@ export function StudioToggleThemeBuilderScheme() {
   return (
     <XGroup bc="transparent" ai="center" jc="center">
       <Button
-        theme={rootStore.scheme === 'light' ? 'active' : null}
+        theme={rootStore.scheme === 'light' ? 'accent' : null}
         onPress={() => {
           rootStore.theme = 'light'
         }}
@@ -18,7 +18,7 @@ export function StudioToggleThemeBuilderScheme() {
         Light
       </Button>
       <Button
-        theme={rootStore.scheme === 'dark' ? 'active' : null}
+        theme={rootStore.scheme === 'dark' ? 'accent' : null}
         onPress={() => {
           rootStore.theme = 'dark'
         }}

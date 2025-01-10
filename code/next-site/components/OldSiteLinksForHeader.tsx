@@ -518,7 +518,7 @@ const SlidingPopoverContent = () => {
 
   return (
     <Popover.Content
-      theme="surface4"
+      theme="surface3"
       enableAnimationForPositionChange
       animation="quicker"
       bg="$background"

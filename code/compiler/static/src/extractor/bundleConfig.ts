@@ -148,7 +148,7 @@ export async function bundleConfig(props: TamaguiOptions) {
                 entryPoints: [configEntry],
                 external,
                 outfile: configOutPath,
-                target: 'node16',
+                target: 'node20',
                 ...esbuildExtraOptions,
               },
               props.platform || 'web'
@@ -161,7 +161,7 @@ export async function bundleConfig(props: TamaguiOptions) {
               resolvePlatformSpecificEntries: true,
               external,
               outfile: componentOutPaths[i],
-              target: 'node16',
+              target: 'node20',
               ...esbuildExtraOptions,
             },
             props.platform || 'web'
@@ -225,6 +225,7 @@ export async function bundleConfig(props: TamaguiOptions) {
     loadedConfig = config
 
     if (props.outputCSS) {
+      console.log('wtf', props.outputCSS, config)
       await writeTamaguiCSS(props.outputCSS, config)
     }
 

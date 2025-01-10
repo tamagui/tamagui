@@ -15,5 +15,5 @@ export const defaultThemeSuiteItem = {
   componentThemes: defaultComponentThemes,
   palettes: defaultPalettes,
   templates: defaultTemplates,
-  selectedSchemes: defaultSelectedSchemes,
+  schemes: defaultSelectedSchemes,
 } satisfies ThemeSuiteItemData

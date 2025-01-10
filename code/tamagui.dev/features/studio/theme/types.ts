@@ -7,7 +7,7 @@ export type ThemeSuiteItem = {
   name: string
   createdAt: number
   updatedAt: number
-  selectedSchemes: { light: boolean; dark: boolean }
+  schemes: { light: boolean; dark: boolean }
   baseTheme: BuildTheme
   subThemes: BuildSubTheme[]
   palettes: Record<string, BuildPalette>

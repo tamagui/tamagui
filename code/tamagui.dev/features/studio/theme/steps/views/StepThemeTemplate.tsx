@@ -12,21 +12,20 @@ import {
   useEvent,
   useThemeName,
 } from 'tamagui'
-
 import { ThemeSwitch } from '~/features/studio/bar/StudioBar'
 import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
 import { StudioPaletteBar } from '../../../StudioPaletteBar'
 import { Checkerboard } from '../../../components/Checkerboard'
 import { Select } from '../../../components/Select'
 import { defaultScaleGrouped } from '../../constants/defaultScaleGrouped'
-import { getFinalPalettes } from '../../helpers/getFinalPalettes'
+import { createPalettes } from '@tamagui/themes/v4'
 import type { BuildTheme } from '../../types'
 
 export const StepThemeTemplate = memo(({ buildTheme }: { buildTheme: BuildTheme }) => {
   const isDark = useThemeName().startsWith('dark')
   const scheme = isDark ? 'dark' : 'light'
   const themeBuilderStore = useThemeBuilderStore()
-  const palettes = getFinalPalettes(themeBuilderStore.palettes)
+  const palettes = createPalettes(themeBuilderStore.palettes)
   const template =
     themeBuilderStore.templates[buildTheme.template || 'base'] ||
     themeBuilderStore.templates.base

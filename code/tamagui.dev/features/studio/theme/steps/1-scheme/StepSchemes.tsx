@@ -30,7 +30,7 @@ export function StepSchemes() {
           label="Light"
           value="light"
           id="light"
-          active={store.selectedSchemes.light}
+          active={store.schemes.light}
         />
         <Option
           onChange={(val) => {
@@ -43,7 +43,7 @@ export function StepSchemes() {
           label="Dark"
           value="dark"
           id="dark"
-          active={store.selectedSchemes.dark}
+          active={store.schemes.dark}
         />
       </XStack>
 
