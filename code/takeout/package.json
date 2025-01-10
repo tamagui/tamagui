@@ -30,7 +30,7 @@
     "expo-apple-authentication": "~6.4.1",
     "expo-crypto": "~13.0.2",
     "jsonwebtoken": "^9.0.2",
-    "one": "1.1.395",
+    "one": "1.1.396",
     "postmark": "^3.0.18",
     "react-hook-form": "^7.51.0",
     "react-native": "^0.76.5",
