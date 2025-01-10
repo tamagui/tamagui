@@ -1,4 +1,5 @@
 import { isServer, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
 import React from 'react'
 import { getConfig, getSetting } from '../config'
 import { matchMedia } from '../helpers/matchMedia'
@@ -204,7 +205,8 @@ const CurrentKeysMap = new WeakMap<any, ComponentMediaKeys>()
 export function useMedia(cc?: ComponentContextI, debug?: DebugProp): UseMediaState {
   // performance boost to avoid using context twice
   const disableSSR = getSetting('disableSSR') || getDisableSSR(cc)
-  const initialState = disableSSR || !isWeb ? mediaState : initState
+  const isHydrated = useDidFinishSSR()
+  const initialState = isHydrated || disableSSR || !isWeb ? mediaState : initState
   const [state, setState] = React.useState<ComponentMediaQueryState>(initialState)
 
   if (!CurrentKeysMap.get(setState)) {

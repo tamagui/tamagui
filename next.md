@@ -9,11 +9,12 @@
 
 v3
 
-"flat mode"
+generic function to allow new syntaxes, eg flat mode
 
 ```tsx
 <Stack width={[100, 200]} />
 <Stack width={{ web: 50, native: 200, group-sm: 200 }} />
+<Stack width="web:100, group-med:10px" />?
 ```
 
   - removes all nested object style props instead you always use the value

@@ -1,5 +1,5 @@
 import { Check, X } from '@tamagui/lucide-icons'
-import { useMemo, useState } from 'react'
+import { startTransition, useEffect, useMemo, useState } from 'react'
 import type { TabsProps } from 'tamagui'
 import {
   AnimatePresence,
@@ -51,13 +51,27 @@ function getPriceDescription(price: TakeoutPageProps['starter']['prices'][number
   )
 }
 
-export const PurchaseModal = ({
-  starter,
-  bento,
-  defaultValue,
-}: Omit<TakeoutPageProps, 'takeoutPlusBentoCoupon'> & {
+type PurchaseModalProps = Omit<TakeoutPageProps, 'takeoutPlusBentoCoupon'> & {
   defaultValue: 'takeout' | 'bento'
-}) => {
+}
+
+export const PurchaseModal = (props: PurchaseModalProps) => {
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    startTransition(() => {
+      setMounted(true)
+    })
+  }, [])
+
+  if (!mounted) {
+    return null
+  }
+
+  return <PurchaseModalContents {...props} />
+}
+
+const PurchaseModalContents = ({ starter, bento, defaultValue }: PurchaseModalProps) => {
   const store = useTakeoutStore()
 
   // const prices = products.prices
