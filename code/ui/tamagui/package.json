@@ -10,7 +10,7 @@
     "setup.js"
   ],
   "source": "src/index.ts",
-  "types": "./src/index.ts",
+  "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
   "module:jsx": "dist/jsx",
@@ -27,8 +27,8 @@
     "native.d.ts"
   ],
   "scripts": {
-    "build": "tamagui-build --skip-types",
-    "watch": "tamagui-build --skip-types --watch",
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build",
     "lint": "biome check src",
@@ -43,14 +43,14 @@
         "import": "./dist/esm/index.native.js",
         "require": "./dist/cjs/index.native.js"
       },
-      "types": "./src/index.ts",
+      "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/cjs/index.native.js"
     },
     "./react-native-web": {
       "react-native": "./dist/cjs/react-native-web.native.js",
-      "types": "./src/react-native-web.ts",
+      "types": "./types/index.d.ts",
       "import": "./dist/esm/react-native-web.mjs",
       "require": "./dist/cjs/react-native-web.cjs"
     },
@@ -59,17 +59,17 @@
         "import": "./dist/esm/index.native.js",
         "require": "./dist/cjs/index.native.js"
       },
-      "types": "./src/index.ts",
+      "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs"
     },
     "./native": {
-      "types": "./src/index.ts",
+      "types": "./types/index.d.ts",
       "require": "./dist/native.js",
       "react-native": "./dist/native.native.js"
     },
     "./native-test": {
-      "types": "./src/index.ts",
+      "types": "./types/index.d.ts",
       "require": "./dist/test.cjs",
       "react-native": "./dist/test.native.js"
     },
@@ -78,7 +78,7 @@
         "import": "./dist/esm/linear-gradient.native.js",
         "require": "./dist/cjs/linear-gradient.native.js"
       },
-      "types": "./src/linear-gradient.ts",
+      "types": "./types/linear-gradient.d.ts",
       "import": "./dist/esm/linear-gradient.mjs",
       "require": "./dist/cjs/linear-gradient.cjs"
     }

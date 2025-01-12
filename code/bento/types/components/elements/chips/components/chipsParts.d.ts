@@ -5,7 +5,7 @@ type ChipIconProps = {
     size?: SizeTokens;
     children: React.ReactNode;
 };
-export declare const Chip: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | "unstyled" | keyof import("@tamagui/web").StackStyleBase | "rounded" | "pressable"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+export declare const Chip: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | keyof import("@tamagui/web").StackStyleBase | "unstyled" | "rounded" | "pressable"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
     size?: SizeTokens | undefined;
     unstyled?: boolean | undefined;
     rounded?: boolean | undefined;
