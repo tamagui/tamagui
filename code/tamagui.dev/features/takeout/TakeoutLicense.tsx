@@ -121,7 +121,7 @@ const Ul = styled(YStack, {
   paddingLeft: 20,
 })
 
-const Li = styled(YStack, {
+const Li = styled(Paragraph, {
   name: 'li',
   tag: 'li',
   // @ts-ignore˝

@@ -680,7 +680,7 @@ declare const appConfig: import("@tamagui/web").TamaguiInternalConfig<{
         $19: import("@tamagui/web").Variable<number>;
         $20: import("@tamagui/web").Variable<number>;
     };
-}, "color" | "size" | "space" | "radius" | "zIndex">, import("@tamagui/themes/v3-themes").ThemesOut, {
+}, "color" | "zIndex" | "size" | "space" | "radius">, import("@tamagui/themes/v3-themes").ThemesOut, {
     readonly ussel: "userSelect";
     readonly cur: "cursor";
     readonly pe: "pointerEvents";

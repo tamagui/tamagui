@@ -23,7 +23,7 @@ between sub-components' positions, spacing and style.
 All of this ideally delivered in a simple API that still allows complete
 customization.
 
-Tamagui allows for building a button with "compound components," a concept
+Tamagui allows for building a button with "compound components", a concept
 popularized by [Radix](https://www.radix-ui.com/). With the introduction of
 `createStyledContext` in version 1.28 this pattern has become especially easy,
 so we wrote this guide to show off building more advanced compound component
@@ -37,7 +37,7 @@ And why do they exist? Well, we'll explain that and more in this guide.
 
 Keep in mind that this is an advanced use case. Usually you can just grab
 Tamagui components off the shelf and use them with inline styles. But sometimes
-you need components that want for multiple related children.
+you need components that want multiple related children.
 
 <Notice>
   This guide is more of a primer on designing compound components, teaching
@@ -170,12 +170,12 @@ export default () => (
 ```
 
 This may only be a ~hundred lines of code, but there's a lot to take in. And
-behind the scenes, there's a lot going on behind to make this possible.
+behind the scenes, there's a lot going on to make this possible.
 
 ### From the Start
 
 This guide will build up to this complete example from the ground up, which
-should help explain both why many pattern exist, and also how they work.
+should help explain both why many patterns exist, and also how they work.
 
 We start with the assumption that we have a design system set up with a tokens
 that use keys `sm`, `md`, and `lg` and a few themes:
@@ -738,7 +738,7 @@ say changing out `children` + `cloneElement` for something like
 ### Conclusion
 
 We hope this has been helpful in explaining a variety of Tamagui features and
-some of the benefits of and ideas behind compound components.
+some of the benefits and ideas behind compound components.
 
 There's certainly further you can go in building out your Button, but we think
 that in under 150 lines of code you're getting a nearly ideal API, fully typed
@@ -748,7 +748,7 @@ If you are working on a smaller app, say one that shows only a few buttons at a
 time or with a small set of button variations, then abstracting your Button into
 a single functional Button component is totally fine.
 
-But we'd that encourage you to give the compound component API a try and see
+But we'd encourage you to give the compound component API a try and see
 how you like it.
 
 With the new Tamagui APIs, we look forward to never having to carefully add a

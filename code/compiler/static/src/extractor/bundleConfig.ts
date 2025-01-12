@@ -225,7 +225,6 @@ export async function bundleConfig(props: TamaguiOptions) {
     loadedConfig = config
 
     if (props.outputCSS) {
-      console.log('wtf', props.outputCSS, config)
       await writeTamaguiCSS(props.outputCSS, config)
     }
 

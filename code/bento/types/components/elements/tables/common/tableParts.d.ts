@@ -3,7 +3,7 @@ type AlignCells = {
     y: 'center' | 'start' | 'end';
     x: 'center' | 'start' | 'end';
 };
-export declare const Table: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | "transparent" | "circular" | keyof import("@tamagui/web").StackStyleBase | "fullscreen" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless" | "cellWidth" | "cellHeight" | "alignHeaderCells" | "alignCells"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+export declare const Table: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/web").StackStyleBase | "fullscreen" | "transparent" | "circular" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless" | "cellWidth" | "cellHeight" | "alignHeaderCells" | "alignCells"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
     elevation?: number | SizeTokens | undefined;
     inset?: number | SizeTokens | {
         top?: number;
@@ -11,9 +11,9 @@ export declare const Table: import("react").ForwardRefExoticComponent<Omit<impor
         left?: number;
         right?: number;
     } | null | undefined;
+    fullscreen?: boolean | undefined;
     transparent?: boolean | undefined;
     circular?: boolean | undefined;
-    fullscreen?: boolean | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
     focusTheme?: boolean | undefined;
@@ -35,9 +35,9 @@ export declare const Table: import("react").ForwardRefExoticComponent<Omit<impor
         left?: number;
         right?: number;
     } | null | undefined;
+    fullscreen?: boolean | undefined;
     transparent?: boolean | undefined;
     circular?: boolean | undefined;
-    fullscreen?: boolean | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
     focusTheme?: boolean | undefined;
@@ -59,9 +59,9 @@ export declare const Table: import("react").ForwardRefExoticComponent<Omit<impor
         left?: number;
         right?: number;
     } | null | undefined;
+    fullscreen?: boolean | undefined;
     transparent?: boolean | undefined;
     circular?: boolean | undefined;
-    fullscreen?: boolean | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
     focusTheme?: boolean | undefined;
@@ -83,9 +83,9 @@ export declare const Table: import("react").ForwardRefExoticComponent<Omit<impor
         left?: number;
         right?: number;
     } | null | undefined;
+    fullscreen?: boolean | undefined;
     transparent?: boolean | undefined;
     circular?: boolean | undefined;
-    fullscreen?: boolean | undefined;
     hoverTheme?: boolean | undefined;
     pressTheme?: boolean | undefined;
     focusTheme?: boolean | undefined;
@@ -108,9 +108,9 @@ export declare const Table: import("react").ForwardRefExoticComponent<Omit<impor
             left?: number;
             right?: number;
         } | null | undefined;
+        fullscreen?: boolean | undefined;
         transparent?: boolean | undefined;
         circular?: boolean | undefined;
-        fullscreen?: boolean | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
         focusTheme?: boolean | undefined;
@@ -176,9 +176,9 @@ export declare const Table: import("react").ForwardRefExoticComponent<Omit<impor
             left?: number;
             right?: number;
         } | null | undefined;
+        fullscreen?: boolean | undefined;
         transparent?: boolean | undefined;
         circular?: boolean | undefined;
-        fullscreen?: boolean | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
         focusTheme?: boolean | undefined;
@@ -198,9 +198,9 @@ export declare const Table: import("react").ForwardRefExoticComponent<Omit<impor
             left?: number;
             right?: number;
         } | null | undefined;
+        fullscreen?: boolean | undefined;
         transparent?: boolean | undefined;
         circular?: boolean | undefined;
-        fullscreen?: boolean | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
         focusTheme?: boolean | undefined;
@@ -223,9 +223,9 @@ export declare const Table: import("react").ForwardRefExoticComponent<Omit<impor
             left?: number;
             right?: number;
         } | null | undefined;
+        fullscreen?: boolean | undefined;
         transparent?: boolean | undefined;
         circular?: boolean | undefined;
-        fullscreen?: boolean | undefined;
         hoverTheme?: boolean | undefined;
         pressTheme?: boolean | undefined;
         focusTheme?: boolean | undefined;

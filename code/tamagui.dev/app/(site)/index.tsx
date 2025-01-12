@@ -15,6 +15,7 @@ import { HomeThemes } from '~/features/site/home/HomeThemes'
 import { HomeTypography } from '~/features/site/home/HomeTypography'
 import { HomeSection, SectionTinted, TintSection } from '~/features/site/home/TintSection'
 import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
+import { useInsertionEffect, useLayoutEffect } from 'react'
 
 export async function loader() {
   const { getCompilationExamples } = await import('@tamagui/mdx-2')

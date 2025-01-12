@@ -69,8 +69,6 @@ export function createThemesWithSubThemes<
     componentThemes = defaultComponentThemes as unknown as any,
   } = props
 
-  console.log('go', getThemesPalettes(props), createPalettes(getThemesPalettes(props)))
-
   const builder = createSimpleThemeBuilder({
     extra: props.base.extra,
     componentThemes,
@@ -204,18 +202,25 @@ function getSchemePalette(colors: SinglePalette): SchemePalette {
   }
 }
 
-function getAnchors(Schemepalette: SchemePalette) {
-  return Schemepalette.light.map((lcolor, index) => {
-    const dcolor = Schemepalette.dark[index]
+function getAnchors(palette: SchemePalette) {
+  const maxIndex = 12
+  const numItems = palette.light.length
+
+  return palette.light.map((lcolor, index) => {
+    const dcolor = palette.dark[index]
     const [lhue, lsat, llum] = parseToHsla(lcolor)
     const [dhue, dsat, dlum] = parseToHsla(dcolor)
     return {
-      index,
+      index: spreadIndex(maxIndex, numItems, index),
       hue: { light: lhue, dark: dhue },
       sat: { light: lsat, dark: dsat },
       lum: { light: llum, dark: dlum },
     } as const
   })
+}
+
+function spreadIndex(maxIndex: number, numItems: number, index: number) {
+  return (index / (numItems - 1)) * maxIndex
 }
 
 function coerceSimplePaletteToSchemePalette(def: Palette) {
@@ -305,7 +310,7 @@ export function createPalettes(palettes: BuildPalettes): SimplePaletteDefinition
 
       const bgOffset = 7
 
-      return [
+      const out = [
         [
           name === 'base' ? 'light' : `light_${name}`,
           [
@@ -323,6 +328,10 @@ export function createPalettes(palettes: BuildPalettes): SimplePaletteDefinition
           ],
         ],
       ] as const
+
+      console.log(name, palette, out)
+
+      return out
     })
   )
 
