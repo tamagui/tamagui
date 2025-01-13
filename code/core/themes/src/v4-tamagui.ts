@@ -65,7 +65,7 @@ const lightColors = {
   ...colorTokens.light.yellow,
 }
 
-const color = {
+const white = {
   white1: '#fff',
   white2: '#f8f8f8',
   white3: 'hsl(0, 0%, 96.3%)',
@@ -78,6 +78,9 @@ const color = {
   white10: 'hsl(0, 0%, 50.3%)',
   white11: 'hsl(0, 0%, 42.5%)',
   white12: 'hsl(0, 0%, 9.0%)',
+}
+
+const black = {
   black1: '#050505',
   black2: '#151515',
   black3: '#191919',
@@ -90,6 +93,11 @@ const color = {
   black10: '#626262',
   black11: '#a5a5a5',
   black12: '#fff',
+}
+
+const color = {
+  ...white,
+  ...black,
   ...postfixObjKeys(lightColors, 'Light'),
   ...postfixObjKeys(darkColors, 'Dark'),
 }
@@ -113,29 +121,20 @@ const lightShadowColorStrong = 'rgba(0,0,0,0.085)'
 const darkShadowColor = 'rgba(0,0,0,0.2)'
 const darkShadowColorStrong = 'rgba(0,0,0,0.3)'
 
-const shadows = {
+const nonInherited = {
   light: {
+    ...lightColors,
     shadowColor: lightShadowColorStrong,
     shadowColorHover: lightShadowColorStrong,
     shadowColorPress: lightShadowColor,
     shadowColorFocus: lightShadowColor,
   },
   dark: {
+    ...darkColors,
     shadowColor: darkShadowColorStrong,
     shadowColorHover: darkShadowColorStrong,
     shadowColorPress: darkShadowColor,
     shadowColorFocus: darkShadowColor,
-  },
-}
-
-const nonInherited = {
-  light: {
-    ...lightColors,
-    ...shadows.light,
-  },
-  dark: {
-    ...darkColors,
-    ...shadows.dark,
   },
 }
 
@@ -146,8 +145,8 @@ const nonInherited = {
 const baseThemes = createThemesWithSubThemes({
   base: {
     palette: {
-      dark: [color.black1, color.black12],
-      light: [color.white1, color.white12],
+      dark: Object.values(black),
+      light: Object.values(white),
     },
 
     extra: {
