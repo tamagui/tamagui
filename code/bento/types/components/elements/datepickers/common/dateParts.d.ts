@@ -22,7 +22,7 @@ export declare const DatePicker: ((props: DatePickerProps) => import("react/jsx-
     } & import("react").RefAttributes<import("tamagui").TamaguiElement>>;
     Content: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/web").TamaguiComponentPropsBaseBase & import("tamagui").PopoverContentTypeProps & {
         __scopePopover?: string | undefined;
-    } & import("react").RefAttributes<HTMLElement | import("react-native").View>, "unstyled" | keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+    } & import("react").RefAttributes<HTMLElement | import("react-native").View>, keyof import("@tamagui/web").StackStyleBase | "unstyled"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
         unstyled?: boolean | undefined;
     } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
         unstyled?: boolean | undefined;

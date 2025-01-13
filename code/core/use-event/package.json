@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/use-event",
-  "version": "1.121.8",
+  "version": "1.121.9",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -18,11 +18,11 @@
     "clean:build": "tamagui-build clean:build"
   },
   "devDependencies": {
-    "@tamagui/build": "1.121.8",
+    "@tamagui/build": "1.121.9",
     "react": "*"
   },
   "dependencies": {
-    "@tamagui/constants": "1.121.8"
+    "@tamagui/constants": "1.121.9"
   },
   "exports": {
     "./package.json": "./package.json",

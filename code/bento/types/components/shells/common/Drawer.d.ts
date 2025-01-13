@@ -24,8 +24,8 @@ export declare const Drawer: (({ open, onOpenChange, children, portalToRoot, ...
             left?: number;
             right?: number;
         } | null | undefined;
-        unstyled?: boolean | undefined;
         fullscreen?: boolean | undefined;
+        unstyled?: boolean | undefined;
     }>, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & void, import("@tamagui/web").StackStyleBase, {
         elevation?: number | import("tamagui").SizeTokens | undefined;
         inset?: number | import("tamagui").SizeTokens | {
@@ -34,8 +34,8 @@ export declare const Drawer: (({ open, onOpenChange, children, portalToRoot, ...
             left?: number;
             right?: number;
         } | null | undefined;
-        unstyled?: boolean | undefined;
         fullscreen?: boolean | undefined;
+        unstyled?: boolean | undefined;
     }, import("@tamagui/web").StaticConfigPublic>;
     Overlay: import("tamagui").TamaguiComponent<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
         elevation?: number | import("tamagui").SizeTokens | undefined;
@@ -45,8 +45,8 @@ export declare const Drawer: (({ open, onOpenChange, children, portalToRoot, ...
             left?: number;
             right?: number;
         } | null | undefined;
-        unstyled?: boolean | undefined;
         fullscreen?: boolean | undefined;
+        unstyled?: boolean | undefined;
     }>, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & void, import("@tamagui/web").StackStyleBase, {
         elevation?: number | import("tamagui").SizeTokens | undefined;
         inset?: number | import("tamagui").SizeTokens | {
@@ -55,8 +55,8 @@ export declare const Drawer: (({ open, onOpenChange, children, portalToRoot, ...
             left?: number;
             right?: number;
         } | null | undefined;
-        unstyled?: boolean | undefined;
         fullscreen?: boolean | undefined;
+        unstyled?: boolean | undefined;
     }, import("@tamagui/web").StaticConfigPublic>;
     Swipeable: React.ForwardRefExoticComponent<Omit<Omit<import("tamagui").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {}>> & {
         onDismiss: () => void;
