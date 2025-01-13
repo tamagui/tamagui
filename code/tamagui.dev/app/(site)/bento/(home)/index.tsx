@@ -1,49 +1,23 @@
 import { assertIsError } from '@tamagui/assert'
-import { LocationNotification, listingData } from '@tamagui/bento/data'
+import { LocationNotification } from '@tamagui/bento/data'
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import {
   AlertCircle,
-  BadgeAlert,
-  Banana,
-  BellDot,
-  Calendar,
-  CheckCircle,
-  CheckSquare,
   ChevronDown,
-  CircleUserRound,
-  Cog,
-  FormInput,
   Globe,
-  Image,
-  Layout,
   Leaf,
-  List,
-  MessageSquareShare,
-  MousePointerClick,
-  NotebookTabs,
-  PanelLeft,
-  PanelTop,
   Puzzle,
-  RectangleHorizontal,
   Search,
-  ShoppingBag,
   ShoppingCart,
-  Table,
-  TextCursorInput,
-  ToggleRight,
 } from '@tamagui/lucide-icons'
 import { useStore } from '@tamagui/use-store'
-import { useMemo, useRef, useState } from 'react'
 import {
   Button,
   Circle,
   EnsureFlexed,
   H3,
   H4,
-  H5,
-  Input,
   Paragraph,
-  ScrollView,
   Spacer,
   Stack,
   Theme,
@@ -54,7 +28,6 @@ import { useLoader } from 'one'
 import { CodeInline } from '~/components/Code'
 import { ContainerLarge } from '~/components/Containers'
 import { HeadInfo } from '~/components/HeadInfo'
-import { Link } from '~/components/Link'
 import { BentoLogo } from '~/features/bento/BentoLogo'
 import { BentoPageFrame } from '~/features/bento/BentoPageFrame'
 import type { ProComponentsProps } from '~/features/bento/types'
@@ -64,6 +37,7 @@ import { PurchaseModal } from '~/features/site/purchase/PurchaseModal'
 import { getProductsForServerSideRendering } from '~/features/site/purchase/server-helpers'
 import { useTakeoutStore } from '~/features/site/purchase/useTakeoutStore'
 import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
+import { BentoPreview, BentoStore } from './(preview-section)/preview'
 
 export const loader = async () => {
   try {
@@ -74,11 +48,6 @@ export const loader = async () => {
     console.error(`Error getting props`, err.message)
     return { bento: null, fontsPack: null, iconsPack: null, starter: null }
   }
-}
-
-class BentoStore {
-  heroVisible = true
-  heroHeight = 800
 }
 
 export default function BentoPage() {
@@ -154,7 +123,7 @@ export default function BentoPage() {
             <Intermediate />
           </Theme>
         </YStack>
-        <Body />
+        <BentoPreview />
       </BentoPageFrame>
     </>
   )
@@ -337,20 +306,6 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['bento'] }) => 
                     {/* $199 */}
                     <Button
                       iconAfter={<ShoppingCart y={-0.5} x={-1} />}
-                      // iconAfter={
-                      //   <YStack
-                      //     zi={100}
-                      //     bg="red"
-                      //     style={{
-                      //       background: `url(/bento/bentoicon.svg)`,
-                      //       backgroundSize: 'contain',
-                      //     }}
-                      //     w={42}
-                      //     h={42}
-                      //     ml={-10}
-                      //     mr={-15}
-                      //   />
-                      // }
                       className="box-3d all ease-in-out ms100"
                       size="$3"
                       scaleSpace={0.75}
@@ -577,246 +532,3 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['bento'] }) => 
     </YStack>
   )
 }
-
-const Body = () => {
-  const inputRef = useRef<HTMLInputElement>()
-  const [filter, setFilter] = useState('')
-  const store = useStore(BentoStore)
-
-  const filteredSections = useMemo(() => {
-    if (!filter) return listingData.sections
-    return listingData.sections
-      .map(({ sectionName, parts }) => {
-        const filteredParts = parts.filter((part) => {
-          return part.name.toLowerCase().includes(filter.toLowerCase())
-        })
-        return filteredParts.length
-          ? {
-              sectionName,
-              parts: filteredParts,
-            }
-          : (undefined as never)
-      })
-      .filter(Boolean)
-  }, [filter])
-
-  return (
-    <YStack
-      theme="tan"
-      bg="$color1"
-      pos="relative"
-      contain="paint"
-      className="transform ease-in-out ms200"
-      // @ts-ignore
-      onTransitionEnd={() => {
-        if (!store.heroVisible) {
-          inputRef.current?.focus()
-        }
-      }}
-      pb="$8"
-      y={0}
-      minHeight={800}
-      {...(!store.heroVisible && {
-        y: -store.heroHeight + 20,
-        shadowColor: '$shadowColor',
-        shadowRadius: 20,
-      })}
-      zi={10000}
-    >
-      <YStack
-        fullscreen
-        zi={0}
-        $theme-light={{
-          bg: '$color5',
-        }}
-        $theme-dark={{ bg: '#000' }}
-      />
-      <YStack>
-        <ContainerLarge>
-          <Input
-            unstyled
-            ref={inputRef as any}
-            w="100%"
-            size="$5"
-            px="$3"
-            my="$3"
-            fow="200"
-            value={filter}
-            onChangeText={setFilter}
-            placeholder="Filter..."
-            placeholderTextColor="rgba(150,150,150,0.5)"
-            zi={100}
-          />
-        </ContainerLarge>
-
-        {filteredSections.map(({ sectionName, parts }) => {
-          return (
-            <YStack id={sectionName} key={sectionName} jc={'space-between'}>
-              <Theme name="tan">
-                <YStack pos="relative">
-                  <YStack
-                    fullscreen
-                    o={0.15}
-                    style={{
-                      background: 'linear-gradient(transparent, var(--background025))',
-                    }}
-                  />
-                  <ContainerLarge>
-                    <YStack py="$2" px="$3" pos="relative">
-                      <H3
-                        ff="$silkscreen"
-                        size="$3"
-                        fos={12}
-                        ls={3}
-                        tt="uppercase"
-                        color="$color10"
-                        f={2}
-                      >
-                        {`${sectionName[0].toUpperCase()}${sectionName.slice(1)}`}
-                      </H3>
-                    </YStack>
-                  </ContainerLarge>
-                </YStack>
-              </Theme>
-
-              <ScrollView
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                contentContainerStyle={{
-                  minWidth: '100%',
-                }}
-              >
-                <ContainerLarge>
-                  <Theme name="tan">
-                    <XStack
-                      gap="$5"
-                      f={4}
-                      fs={1}
-                      $gtMd={{
-                        maw: '100%',
-                        fw: store.heroVisible ? 'wrap' : 'nowrap',
-                        gap: 0,
-                      }}
-                    >
-                      {parts.map(({ name: partsName, numberOfComponents, route }) => (
-                        <SectionCard
-                          key={route + partsName + numberOfComponents.toString()}
-                          path={route}
-                          name={partsName}
-                          numberOfComponents={numberOfComponents}
-                          // preview={preview}
-                        />
-                      ))}
-
-                      {/* @ts-ignore */}
-                      <Spacer width="calc(50vw - 300px)" $gtMd={{ dsp: 'none' }} />
-                    </XStack>
-                  </Theme>
-                </ContainerLarge>
-              </ScrollView>
-            </YStack>
-          )
-        })}
-      </YStack>
-    </YStack>
-  )
-}
-
-const Null = () => null
-
-function SectionCard({
-  name,
-  numberOfComponents,
-  path,
-}: {
-  name: string
-  numberOfComponents: number
-  path: string
-}) {
-  const Icon = icons[name] ?? Null
-
-  return (
-    <Link href={(BASE_PATH + path) as any} asChild>
-      <YStack
-        tag="a"
-        ov="hidden"
-        // className="all ease-in ms100"
-        // elevation="$6"
-        // bg="$background025"
-        w={220}
-        h={130}
-        // br="$9"
-        cursor="pointer"
-        pos="relative"
-        hoverStyle={{
-          bg: `rgba(150,150,150,0.035)`,
-        }}
-        pressStyle={{
-          bg: 'rgba(150,150,150,0.05)',
-          y: 1,
-        }}
-        bg="rgba(150,150,150,0.025)"
-        mt="$3"
-        br="$6"
-        $gtMd={{
-          bg: 'rgba(255,255,255,0)',
-          w: 'calc(25% - 14px)',
-          br: '$6',
-          m: '$2',
-        }}
-      >
-        <YStack f={1} p="$4">
-          <Theme name="gray">
-            <H4 ff="$body" size="$4" fow="600" color="$color12">
-              {name}
-            </H4>
-          </Theme>
-
-          <H5 theme="alt1" size="$1" ls={1}>
-            {numberOfComponents} components
-          </H5>
-
-          <YStack
-            // className="mask-gradient-down"
-            pos="absolute"
-            t="$4"
-            r="$4"
-            rotate="20deg"
-            p="$2"
-            o={0.4}
-          >
-            <Icon size={25} color="$color10" />
-          </YStack>
-        </YStack>
-      </YStack>
-    </Link>
-  )
-}
-
-const icons = {
-  Inputs: TextCursorInput,
-  Checkboxes: CheckSquare,
-  Layouts: Layout,
-  RadioGroups: CheckCircle,
-  Switches: ToggleRight,
-  Textareas: FormInput,
-  'Image Pickers': Image,
-  List: List,
-  Avatars: CircleUserRound,
-  Buttons: RectangleHorizontal,
-  DatePickers: Calendar,
-  Tables: Table,
-  Chips: BadgeAlert,
-  Dialogs: MessageSquareShare,
-  Navbar: PanelTop,
-  Sidebar: PanelLeft,
-  Tabbar: NotebookTabs,
-  Microinteractions: MousePointerClick,
-  Slide: Banana,
-  Cart: ShoppingCart,
-  'Product Page': ShoppingBag,
-  Preferences: Cog,
-  'Event Reminders': BellDot,
-}
-
-const BASE_PATH = ' /bento'
