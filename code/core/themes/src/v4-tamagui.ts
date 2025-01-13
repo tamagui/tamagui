@@ -16,8 +16,6 @@ import {
   yellow,
   yellowDark,
 } from '@tamagui/colors'
-import { objectFromEntries } from './helpers'
-import { objectKeys, postfixObjKeys } from './utils'
 import { createThemesWithSubThemes } from './v4-createTheme'
 
 const colorTokens = {
@@ -41,28 +39,6 @@ const colorTokens = {
     red: redDark,
     yellow: yellowDark,
   },
-}
-
-const darkColors = {
-  ...colorTokens.dark.blue,
-  ...colorTokens.dark.gray,
-  ...colorTokens.dark.green,
-  ...colorTokens.dark.orange,
-  ...colorTokens.dark.pink,
-  ...colorTokens.dark.purple,
-  ...colorTokens.dark.red,
-  ...colorTokens.dark.yellow,
-}
-
-const lightColors = {
-  ...colorTokens.light.blue,
-  ...colorTokens.light.gray,
-  ...colorTokens.light.green,
-  ...colorTokens.light.orange,
-  ...colorTokens.light.pink,
-  ...colorTokens.light.purple,
-  ...colorTokens.light.red,
-  ...colorTokens.light.yellow,
 }
 
 const white = {
@@ -95,27 +71,6 @@ const black = {
   black12: '#fff',
 }
 
-const color = {
-  ...white,
-  ...black,
-  ...postfixObjKeys(lightColors, 'Light'),
-  ...postfixObjKeys(darkColors, 'Dark'),
-}
-
-const lightColorNames = objectKeys(colorTokens.light)
-const lightPalettes = objectFromEntries(
-  lightColorNames.map(
-    (key, index) => [`light_${key}`, Object.values(colorTokens.light[key])] as const
-  )
-)
-
-const darkColorNames = objectKeys(colorTokens.dark)
-const darkPalettes = objectFromEntries(
-  darkColorNames.map(
-    (key, index) => [`dark_${key}`, Object.values(colorTokens.dark[key])] as const
-  )
-)
-
 const lightShadowColor = 'rgba(0,0,0,0.04)'
 const lightShadowColorStrong = 'rgba(0,0,0,0.085)'
 const darkShadowColor = 'rgba(0,0,0,0.2)'
@@ -123,14 +78,28 @@ const darkShadowColorStrong = 'rgba(0,0,0,0.3)'
 
 const nonInherited = {
   light: {
-    ...lightColors,
+    ...colorTokens.light.blue,
+    ...colorTokens.light.gray,
+    ...colorTokens.light.green,
+    ...colorTokens.light.orange,
+    ...colorTokens.light.pink,
+    ...colorTokens.light.purple,
+    ...colorTokens.light.red,
+    ...colorTokens.light.yellow,
     shadowColor: lightShadowColorStrong,
     shadowColorHover: lightShadowColorStrong,
     shadowColorPress: lightShadowColor,
     shadowColorFocus: lightShadowColor,
   },
   dark: {
-    ...darkColors,
+    ...colorTokens.dark.blue,
+    ...colorTokens.dark.gray,
+    ...colorTokens.dark.green,
+    ...colorTokens.dark.orange,
+    ...colorTokens.dark.pink,
+    ...colorTokens.dark.purple,
+    ...colorTokens.dark.red,
+    ...colorTokens.dark.yellow,
     shadowColor: darkShadowColorStrong,
     shadowColorHover: darkShadowColorStrong,
     shadowColorPress: darkShadowColor,
@@ -162,50 +131,50 @@ const baseThemes = createThemesWithSubThemes({
   childrenThemes: {
     gray: {
       palette: {
-        dark: darkPalettes.dark_gray,
-        light: lightPalettes.light_gray,
+        dark: Object.values(colorTokens.dark.gray),
+        light: Object.values(colorTokens.light.gray),
       },
     },
     blue: {
       palette: {
-        dark: darkPalettes.dark_blue,
-        light: lightPalettes.light_blue,
+        dark: Object.values(colorTokens.dark.blue),
+        light: Object.values(colorTokens.light.blue),
       },
     },
     orange: {
       palette: {
-        dark: darkPalettes.dark_orange,
-        light: lightPalettes.light_orange,
+        dark: Object.values(colorTokens.dark.orange),
+        light: Object.values(colorTokens.light.orange),
       },
     },
     red: {
       palette: {
-        dark: darkPalettes.dark_red,
-        light: lightPalettes.light_red,
+        dark: Object.values(colorTokens.dark.red),
+        light: Object.values(colorTokens.light.red),
       },
     },
     yellow: {
       palette: {
-        dark: darkPalettes.dark_yellow,
-        light: lightPalettes.light_yellow,
+        dark: Object.values(colorTokens.dark.yellow),
+        light: Object.values(colorTokens.light.yellow),
       },
     },
     green: {
       palette: {
-        dark: darkPalettes.dark_green,
-        light: lightPalettes.light_green,
+        dark: Object.values(colorTokens.dark.green),
+        light: Object.values(colorTokens.light.green),
       },
     },
     purple: {
       palette: {
-        dark: darkPalettes.dark_purple,
-        light: lightPalettes.light_purple,
+        dark: Object.values(colorTokens.dark.purple),
+        light: Object.values(colorTokens.light.purple),
       },
     },
     pink: {
       palette: {
-        dark: darkPalettes.dark_pink,
-        light: lightPalettes.light_pink,
+        dark: Object.values(colorTokens.dark.pink),
+        light: Object.values(colorTokens.light.pink),
       },
     },
   },
