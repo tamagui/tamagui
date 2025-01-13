@@ -117,7 +117,7 @@
         "@vxrn/vite-flow": "portal:~/one/packages/vite-flow",
         "@vxrn/vite-native-client": "portal:~/one/packages/vite-native-client",
         "@vxrn/vite-native-hmr": "portal:~/one/packages/vite-native-hmr",
-        "@vxrn/vite-native-swc": "portal:~/one/packages/vite-native-swc",
+        "@vxrn/compiler": "portal:~/one/packages/compiler",
         "vxrn": "portal:~/one/packages/vxrn",
         "one": "portal:~/one/packages/one"
       }
