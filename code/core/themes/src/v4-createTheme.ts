@@ -41,13 +41,15 @@ const defaultPalettes: SimplePaletteDefinitions = createPalettes(
 
 export type CreateThemesProps<
   Extra extends ExtraThemeValuesByScheme = ExtraThemeValuesByScheme,
-  SubThemes extends SimpleThemesDefinition = SimpleThemesDefinition,
+  ChildrenThemes extends SimpleThemesDefinition = SimpleThemesDefinition,
+  GrandChildrenThemes extends SimpleThemesDefinition = SimpleThemesDefinition,
   ComponentThemes extends SimpleThemesDefinition = SimpleThemesDefinition,
   Templates extends BuildTemplates = typeof defaultTemplates,
 > = {
   base: BaseThemeDefinition<Extra>
   accent: BaseThemeDefinition<Extra>
-  subThemes?: SubThemes
+  childrenThemes?: ChildrenThemes
+  grandChildrenThemes?: GrandChildrenThemes
   templates?: Templates
   componentThemes?: ComponentThemes
   colorsToTheme?: (props: {
@@ -64,7 +66,8 @@ export function createThemesWithSubThemes<
 >(props: CreateThemesProps<Extra, SubThemes, ComponentThemes>) {
   const {
     accent,
-    subThemes,
+    childrenThemes,
+    grandChildrenThemes,
     templates = defaultTemplates,
     componentThemes = defaultComponentThemes as unknown as any,
   } = props
@@ -75,28 +78,44 @@ export function createThemesWithSubThemes<
     palettes: createPalettes(getThemesPalettes(props)),
     templates: templates as typeof defaultTemplates,
     accentTheme: !!accent,
-    subThemes: Object.fromEntries(
-      Object.entries(subThemes || {}).map(([name, value]) => {
-        return [
-          name,
-          {
-            palette: name,
-            template: value.template || 'base',
-          },
-        ]
-      })
-    ) as Record<keyof SubThemes, any>,
+    childrenThemes: normalizeSubThemes(childrenThemes),
+    grandChildrenThemes: normalizeSubThemes(grandChildrenThemes),
   })
 
   return builder.themes
 }
+
+function normalizeSubThemes<A extends SimpleThemesDefinition>(defs?: A) {
+  return Object.fromEntries(
+    Object.entries(defs || {}).map(([name, value]) => {
+      return [
+        name,
+        {
+          palette: name,
+          template: value.template || 'base',
+        },
+      ]
+    })
+  ) as Record<keyof A, any>
+}
+
+type NamesWithChildrenNames<ParentNames extends string, ChildNames> =
+  | ParentNames
+  | (ChildNames extends string ? `${ParentNames}_${ChildNames}` : never)
 
 // a simpler API surface
 export function createSimpleThemeBuilder<
   Extra extends ExtraThemeValuesByScheme,
   Templates extends BuildTemplates,
   Palettes extends SimplePaletteDefinitions,
-  SubThemes extends Record<
+  ChildrenThemes extends Record<
+    string,
+    {
+      template: keyof Templates extends string ? keyof Templates : never
+      palette?: string
+    }
+  >,
+  GrandChildrenThemes extends Record<
     string,
     {
       template: keyof Templates extends string ? keyof Templates : never
@@ -105,11 +124,15 @@ export function createSimpleThemeBuilder<
   >,
   HasAccent extends boolean,
   ComponentThemes extends SimpleThemesDefinition,
+  FullTheme = {
+    [ThemeKey in keyof Templates['light_base'] | keyof Extra['dark']]: string
+  },
 >(props: {
   palettes?: Palettes
   accentTheme?: HasAccent
   templates?: Templates
-  subThemes?: SubThemes
+  childrenThemes?: ChildrenThemes
+  grandChildrenThemes?: GrandChildrenThemes
   componentThemes?: ComponentThemes
   extra?: Extra
 }): {
@@ -119,16 +142,15 @@ export function createSimpleThemeBuilder<
       | 'light'
       | 'dark'
       | (HasAccent extends true ? 'light_accent' | 'dark_accent' : never)
-      | (keyof SubThemes extends string
-          ? `${'light' | 'dark'}_${HasAccent extends true ? `_accent` | '' : ''}${keyof SubThemes}`
-          : never)]: {
-      [ThemeKey in keyof Templates['light_base'] | keyof Extra['dark']]: string
-    }
+      | (keyof ChildrenThemes extends string
+          ? `${'light' | 'dark'}_${HasAccent extends true ? `accent_` | '' : ''}${NamesWithChildrenNames<keyof ChildrenThemes, keyof GrandChildrenThemes>}`
+          : never)]: FullTheme
   }
 } {
   const {
     extra,
-    subThemes = {} as unknown as SubThemes,
+    childrenThemes = null as unknown as ChildrenThemes,
+    grandChildrenThemes = null as unknown as GrandChildrenThemes,
     templates = defaultTemplates as unknown as Templates,
     palettes = defaultPalettes as unknown as Palettes,
     componentThemes = templates === (defaultTemplates as any)
@@ -137,7 +159,7 @@ export function createSimpleThemeBuilder<
   } = props
 
   // start theme-builder
-  const themeBuilder = createThemeBuilder()
+  let themeBuilder = createThemeBuilder()
     .addPalettes(palettes)
     .addTemplates(templates)
     .addThemes({
@@ -170,12 +192,27 @@ export function createSimpleThemeBuilder<
           }
         : {}
     )
-    .addChildThemes(subThemes, {
+
+  if (childrenThemes) {
+    themeBuilder = themeBuilder.addChildThemes(childrenThemes, {
       avoidNestingWithin: ['accent'],
+    }) as any
+  }
+
+  if (grandChildrenThemes) {
+    themeBuilder = themeBuilder.addChildThemes(grandChildrenThemes, {
+      avoidNestingWithin: ['accent'],
+    }) as any
+  }
+
+  if (componentThemes) {
+    themeBuilder = themeBuilder.addComponentThemes(getComponentThemes(componentThemes), {
+      // avoidNestingWithin: [
+      //   ...Object.keys(childrenThemes || {}),
+      //   ...Object.keys(grandChildrenThemes || {}),
+      // ],
     })
-    .addComponentThemes(componentThemes ? getComponentThemes(componentThemes) : {}, {
-      avoidNestingWithin: Object.keys(subThemes),
-    })
+  }
 
   return {
     themeBuilder,
@@ -203,10 +240,10 @@ function getSchemePalette(colors: SinglePalette): SchemePalette {
 }
 
 function getAnchors(palette: SchemePalette) {
-  const maxIndex = 12
+  const maxIndex = 11
   const numItems = palette.light.length
 
-  return palette.light.map((lcolor, index) => {
+  const anchors = palette.light.map((lcolor, index) => {
     const dcolor = palette.dark[index]
     const [lhue, lsat, llum] = parseToHsla(lcolor)
     const [dhue, dsat, dlum] = parseToHsla(dcolor)
@@ -217,10 +254,12 @@ function getAnchors(palette: SchemePalette) {
       lum: { light: llum, dark: dlum },
     } as const
   })
+
+  return anchors
 }
 
 function spreadIndex(maxIndex: number, numItems: number, index: number) {
-  return (index / (numItems - 1)) * maxIndex
+  return Math.round((index / (numItems - 1)) * maxIndex)
 }
 
 function coerceSimplePaletteToSchemePalette(def: Palette) {
@@ -233,6 +272,22 @@ function getThemesPalettes(props: CreateThemesProps): BuildPalettes {
 
   const baseAnchors = getAnchors(base)
 
+  function getSubThemesPalettes(defs: SimpleThemesDefinition) {
+    return Object.fromEntries(
+      Object.entries(defs).map(([key, value]) => {
+        return [
+          key,
+          {
+            name: key,
+            anchors: value.palette
+              ? getAnchors(coerceSimplePaletteToSchemePalette(value.palette))
+              : baseAnchors,
+          },
+        ]
+      })
+    )
+  }
+
   return {
     base: {
       name: 'base',
@@ -244,20 +299,8 @@ function getThemesPalettes(props: CreateThemesProps): BuildPalettes {
         anchors: getAnchors(accent),
       },
     }),
-    ...(props.subThemes &&
-      Object.fromEntries(
-        Object.entries(props.subThemes).map(([key, value]) => {
-          return [
-            key,
-            {
-              name: key,
-              anchors: value.palette
-                ? getAnchors(coerceSimplePaletteToSchemePalette(value.palette))
-                : baseAnchors,
-            },
-          ]
-        })
-      )),
+    ...(props.childrenThemes && getSubThemesPalettes(props.childrenThemes)),
+    ...(props.grandChildrenThemes && getSubThemesPalettes(props.grandChildrenThemes)),
   }
 }
 

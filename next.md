@@ -21,6 +21,10 @@
 
 v3
 
+remove component themes:
+ - just can set theme="surface2" and have "generic" themes
+ - remove `name` from styled() then too
+
 generic function to allow new syntaxes, eg flat mode
 
 ```tsx

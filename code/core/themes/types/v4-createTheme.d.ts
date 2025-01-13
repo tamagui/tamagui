@@ -26,10 +26,11 @@ type SchemePalette = {
     dark: SinglePalette;
 };
 type Palette = SinglePalette | SchemePalette;
-export type CreateThemesProps<Extra extends ExtraThemeValuesByScheme = ExtraThemeValuesByScheme, SubThemes extends SimpleThemesDefinition = SimpleThemesDefinition, ComponentThemes extends SimpleThemesDefinition = SimpleThemesDefinition, Templates extends BuildTemplates = typeof defaultTemplates> = {
+export type CreateThemesProps<Extra extends ExtraThemeValuesByScheme = ExtraThemeValuesByScheme, ChildrenThemes extends SimpleThemesDefinition = SimpleThemesDefinition, GrandChildrenThemes extends SimpleThemesDefinition = SimpleThemesDefinition, ComponentThemes extends SimpleThemesDefinition = SimpleThemesDefinition, Templates extends BuildTemplates = typeof defaultTemplates> = {
     base: BaseThemeDefinition<Extra>;
     accent: BaseThemeDefinition<Extra>;
-    subThemes?: SubThemes;
+    childrenThemes?: ChildrenThemes;
+    grandChildrenThemes?: GrandChildrenThemes;
     templates?: Templates;
     componentThemes?: ComponentThemes;
     colorsToTheme?: (props: {
@@ -38,23 +39,28 @@ export type CreateThemesProps<Extra extends ExtraThemeValuesByScheme = ExtraThem
         scheme?: 'light' | 'dark';
     }) => Record<string, string>;
 };
-export declare function createThemesWithSubThemes<Extra extends ExtraThemeValuesByScheme, SubThemes extends SimpleThemesDefinition, ComponentThemes extends SimpleThemesDefinition>(props: CreateThemesProps<Extra, SubThemes, ComponentThemes>): { [Key in "light" | "dark" | "light_accent" | "dark_accent" | (keyof SubThemes extends string ? `light_${string & keyof SubThemes}` | `light__accent${string & keyof SubThemes}` | `dark_${string & keyof SubThemes}` | `dark__accent${string & keyof SubThemes}` : never)]: { [ThemeKey in "borderColor" | "borderColorHover" | "borderColorPress" | "borderColorFocus" | "color" | "shadowColor" | "shadowColorHover" | "shadowColorPress" | "shadowColorFocus" | "colorHover" | "colorFocus" | "colorPress" | "color1" | "color2" | "color3" | "color4" | "color5" | "color6" | "color7" | "color8" | "color9" | "color10" | "color11" | "color12" | "background" | "backgroundHover" | "backgroundPress" | "backgroundFocus" | "colorTransparent" | "placeholderColor" | "outlineColor" | "accentBackground" | "accentColor" | "background0" | "background025" | "background05" | "background075" | "color0" | "color025" | "color05" | "color075" | keyof Extra["dark"]]: string; }; };
-export declare function createSimpleThemeBuilder<Extra extends ExtraThemeValuesByScheme, Templates extends BuildTemplates, Palettes extends SimplePaletteDefinitions, SubThemes extends Record<string, {
+export declare function createThemesWithSubThemes<Extra extends ExtraThemeValuesByScheme, SubThemes extends SimpleThemesDefinition, ComponentThemes extends SimpleThemesDefinition>(props: CreateThemesProps<Extra, SubThemes, ComponentThemes>): { [Key in "light" | "dark" | "light_accent" | "dark_accent" | (keyof SubThemes extends string ? `light_${string & keyof SubThemes}` | `light_accent_${string & keyof SubThemes}` | `light_${keyof ComponentThemes extends infer T ? T extends keyof ComponentThemes ? T extends string ? `${string & keyof SubThemes}_${T}` : never : never : never}` | `light_accent_${keyof ComponentThemes extends infer T_1 ? T_1 extends keyof ComponentThemes ? T_1 extends string ? `${string & keyof SubThemes}_${T_1}` : never : never : never}` | `dark_${string & keyof SubThemes}` | `dark_accent_${string & keyof SubThemes}` | `dark_${keyof ComponentThemes extends infer T_2 ? T_2 extends keyof ComponentThemes ? T_2 extends string ? `${string & keyof SubThemes}_${T_2}` : never : never : never}` | `dark_accent_${keyof ComponentThemes extends infer T_3 ? T_3 extends keyof ComponentThemes ? T_3 extends string ? `${string & keyof SubThemes}_${T_3}` : never : never : never}` : never)]: { [ThemeKey in "borderColor" | "borderColorHover" | "borderColorPress" | "borderColorFocus" | "color" | "shadowColor" | "shadowColorHover" | "shadowColorPress" | "shadowColorFocus" | "colorHover" | "colorFocus" | "colorPress" | "color1" | "color2" | "color3" | "color4" | "color5" | "color6" | "color7" | "color8" | "color9" | "color10" | "color11" | "color12" | "background" | "backgroundHover" | "backgroundPress" | "backgroundFocus" | "colorTransparent" | "placeholderColor" | "outlineColor" | "accentBackground" | "accentColor" | "background0" | "background025" | "background05" | "background075" | "color0" | "color025" | "color05" | "color075" | keyof Extra["dark"]]: string; }; };
+type NamesWithChildrenNames<ParentNames extends string, ChildNames> = ParentNames | (ChildNames extends string ? `${ParentNames}_${ChildNames}` : never);
+export declare function createSimpleThemeBuilder<Extra extends ExtraThemeValuesByScheme, Templates extends BuildTemplates, Palettes extends SimplePaletteDefinitions, ChildrenThemes extends Record<string, {
     template: keyof Templates extends string ? keyof Templates : never;
     palette?: string;
-}>, HasAccent extends boolean, ComponentThemes extends SimpleThemesDefinition>(props: {
+}>, GrandChildrenThemes extends Record<string, {
+    template: keyof Templates extends string ? keyof Templates : never;
+    palette?: string;
+}>, HasAccent extends boolean, ComponentThemes extends SimpleThemesDefinition, FullTheme = {
+    [ThemeKey in keyof Templates['light_base'] | keyof Extra['dark']]: string;
+}>(props: {
     palettes?: Palettes;
     accentTheme?: HasAccent;
     templates?: Templates;
-    subThemes?: SubThemes;
+    childrenThemes?: ChildrenThemes;
+    grandChildrenThemes?: GrandChildrenThemes;
     componentThemes?: ComponentThemes;
     extra?: Extra;
 }): {
     themeBuilder: ThemeBuilder<any>;
     themes: {
-        [Key in 'light' | 'dark' | (HasAccent extends true ? 'light_accent' | 'dark_accent' : never) | (keyof SubThemes extends string ? `${'light' | 'dark'}_${HasAccent extends true ? `_accent` | '' : ''}${keyof SubThemes}` : never)]: {
-            [ThemeKey in keyof Templates['light_base'] | keyof Extra['dark']]: string;
-        };
+        [Key in 'light' | 'dark' | (HasAccent extends true ? 'light_accent' | 'dark_accent' : never) | (keyof ChildrenThemes extends string ? `${'light' | 'dark'}_${HasAccent extends true ? `accent_` | '' : ''}${NamesWithChildrenNames<keyof ChildrenThemes, keyof GrandChildrenThemes>}` : never)]: FullTheme;
     };
 };
 export declare function createThemes(props: BuildThemeSuiteProps): {
@@ -68,11 +74,27 @@ export declare function createThemes(props: BuildThemeSuiteProps): {
             [x: string]: string;
             [x: number]: string;
         };
-        [x: `light__accent${string}`]: {
+        [x: `light_accent_${string}`]: {
             [x: string]: string;
             [x: number]: string;
         };
-        [x: `dark__accent${string}`]: {
+        [x: `light_${string}_${string}`]: {
+            [x: string]: string;
+            [x: number]: string;
+        };
+        [x: `light_accent_${string}_${string}`]: {
+            [x: string]: string;
+            [x: number]: string;
+        };
+        [x: `dark_accent_${string}`]: {
+            [x: string]: string;
+            [x: number]: string;
+        };
+        [x: `dark_${string}_${string}`]: {
+            [x: string]: string;
+            [x: number]: string;
+        };
+        [x: `dark_accent_${string}_${string}`]: {
             [x: string]: string;
             [x: number]: string;
         };

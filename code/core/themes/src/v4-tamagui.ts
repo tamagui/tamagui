@@ -104,7 +104,7 @@ const lightPalettes = objectFromEntries(
 const darkColorNames = objectKeys(colorTokens.dark)
 const darkPalettes = objectFromEntries(
   darkColorNames.map(
-    (key, index) => [`dark_${key}`, Object.values(colorTokens.light[key])] as const
+    (key, index) => [`dark_${key}`, Object.values(colorTokens.dark[key])] as const
   )
 )
 
@@ -160,22 +160,7 @@ const baseThemes = createThemesWithSubThemes({
     palette: ['#ECD20A', '#424035'],
   },
 
-  subThemes: {
-    alt1: {
-      template: 'surface1',
-    },
-    alt2: {
-      template: 'surface2',
-    },
-    surface1: {
-      template: 'surface1',
-    },
-    surface2: {
-      template: 'surface2',
-    },
-    surface3: {
-      template: 'surface3',
-    },
+  childrenThemes: {
     gray: {
       palette: {
         dark: darkPalettes.dark_gray,
@@ -223,6 +208,24 @@ const baseThemes = createThemesWithSubThemes({
         dark: darkPalettes.dark_pink,
         light: lightPalettes.light_pink,
       },
+    },
+  },
+
+  grandChildrenThemes: {
+    alt1: {
+      template: 'surface1',
+    },
+    alt2: {
+      template: 'surface2',
+    },
+    surface1: {
+      template: 'surface1',
+    },
+    surface2: {
+      template: 'surface2',
+    },
+    surface3: {
+      template: 'surface3',
     },
   },
 })
@@ -297,4 +300,4 @@ export const tamaguiThemes = {
   light_tan,
 }
 
-console.log('themes', tamaguiThemes.light)
+console.log('dark_Button', tamaguiThemes)
