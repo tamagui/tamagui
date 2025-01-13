@@ -51,10 +51,10 @@ export const AdaptContext = createStyledContext<AdaptParentContextI>({
   scopeName: '',
   portalName: '',
   platform: null as any,
-  setPlatform: null as any,
+  setPlatform: (x: AdaptPlatform) => {},
   when: null as any,
   setChildren: null as any,
-  setWhen: null as any,
+  setWhen: () => {},
 })
 
 export const ProvideAdaptContext = ({
