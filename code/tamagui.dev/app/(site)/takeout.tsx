@@ -43,7 +43,7 @@ import { HeadInfo } from '~/components/HeadInfo'
 import { useHoverGlow } from '~/components/HoverGlow'
 import { Link } from '~/components/Link'
 import { Footer } from '~/features/site/Footer'
-import { LoadCherryBomb, LoadMunro } from '~/features/site/fonts/LoadFonts'
+import { LoadMunro } from '~/features/site/fonts/LoadFonts'
 import { PurchaseModal } from '~/features/site/purchase/PurchaseModal'
 import { MunroP, PurchaseButton, isSafariMobile } from '~/features/site/purchase/helpers'
 import { getProductsForServerSideRendering } from '~/features/site/purchase/server-helpers'
@@ -69,7 +69,6 @@ export default function TakeoutPage() {
 
   return (
     <YStack maw="100%">
-      <LoadCherryBomb />
       <LoadMunro />
       <script src="https://cdn.paritydeals.com/banner.js" />
       <HeadInfo
@@ -91,9 +90,9 @@ export default function TakeoutPage() {
         r={0}
         t={-100}
         b={0}
-        style={{
-          background: 'linear-gradient(var(--color6), var(--color2))',
-        }}
+        // style={{
+        //   background: 'linear-gradient(var(--color6), var(--color2))',
+        // }}
         zi={-3}
       />
 
@@ -184,7 +183,7 @@ export default function TakeoutPage() {
               }}
               size="$4"
             >
-              Purchase
+              Buy
             </PurchaseButton>
           </YStack>
 
@@ -220,23 +219,9 @@ export default function TakeoutPage() {
             </YStack>
 
             <YStack mt={-580} $md={{ mt: -520 }} group="takeoutBody" f={1} gap="$5">
-              <FeaturesIconRow />
-
               <ThemeTintAlt>
-                <Paragraph
-                  fow="bold"
-                  ff="$munro"
-                  ls={5}
-                  className="text-wrap-balance"
-                  size="$10"
-                  color="$color11"
-                  $sm={{ size: '$7' }}
-                >
-                  A starter for user-based apps across all platforms.
-                </Paragraph>
-
                 <Paragraph className="text-wrap-balance" size="$7" $sm={{ size: '$7' }}>
-                  Takeout is a production-ready stack for any user-based app. It shares a
+                  Takeout is a production-ready stack for a user-based app. It shares a
                   large percent of code between native and web, while maintaining a high
                   bar for UX and performance. Building off our OSS starter (
                   <CodeInline>npm create tamagui</CodeInline>), we add Supabase, tRPC,
@@ -621,43 +606,6 @@ export default function TakeoutPage() {
                 </div>
               </YStack>
 
-              <ThemeTint>
-                <YStack
-                  p="$6"
-                  // className="blur-8"
-                  py="$8"
-                  gap="$5"
-                  br="$10"
-                  $sm={{
-                    px: '$4',
-                    mx: '$-4',
-                  }}
-                >
-                  <YStack
-                    pos="absolute"
-                    t={-400}
-                    o={0.2}
-                    r={-400}
-                    pe="none"
-                    w={1000}
-                    h={1000}
-                    scale={1.5}
-                  />
-                  <Paragraph fontFamily="$munro" tt="uppercase" ls={4} size="$4">
-                    The bot
-                  </Paragraph>
-                  <Paragraph size="$7" $sm={{ size: '$6' }} fow="400">
-                    The TamaguiBot sends updates every so often, after we test everything
-                    out, in a tidy PR with a changelog.
-                  </Paragraph>
-                  <Paragraph size="$7" $sm={{ size: '$6' }} fow="400">
-                    As you diverge, we can't be perfect at sending updates, but ultimately
-                    we think Takeout is valuable even just as a reference - we test
-                    upgrades across every feature in the repo.
-                  </Paragraph>
-                </YStack>
-              </ThemeTint>
-
               <Spacer />
 
               <YStack br="$12" p="$7" gap="$3">
@@ -915,7 +863,7 @@ const TakeoutHero = () => {
 
       <TakeoutLogo />
 
-      <YStack position="absolute" pe="none" top={300} r={0} $md={{ r: -150 }} zIndex={-1}>
+      <YStack position="absolute" pe="none" top={200} r={0} $md={{ r: -150 }} zIndex={-1}>
         {enable3d && (
           <Suspense fallback={null}>
             <ErrorBoundary noMessage>

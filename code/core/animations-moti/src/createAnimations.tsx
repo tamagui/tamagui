@@ -312,10 +312,13 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
 
       const moti = useMotify(motiProps)
 
-      if (process.env.NODE_ENV === 'development' && props['debug']) {
+      if (
+        process.env.NODE_ENV === 'development' &&
+        props['debug'] &&
+        props['debug'] !== 'profile'
+      ) {
         console.info(`useMotify(`, JSON.stringify(motiProps, null, 2) + ')', {
           'componentState.unmounted': componentState.unmounted,
-          animationProps,
           motiProps,
           moti,
           style: [dontAnimate, moti.style],

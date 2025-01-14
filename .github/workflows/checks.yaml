@@ -67,7 +67,7 @@ jobs:
         run: npx playwright install
 
       - uses: nick-fields/retry@v3
-        name: "Run tests
+        name: "Run tests"
         env:
           YARN_ENABLE_IMMUTABLE_INSTALLS: false
         with:
