@@ -8,7 +8,6 @@ import {
   CircleUserRound,
   Cog,
   FormInput,
-  Image,
   Layout,
   List,
   MessageSquareShare,
@@ -23,13 +22,13 @@ import {
   TextCursorInput,
   ToggleRight,
 } from '@tamagui/lucide-icons'
-import { H5 } from 'tamagui'
+import { H5, Image, ZStack } from 'tamagui'
 import { H4 } from 'tamagui'
 import { Theme } from 'tamagui'
 import { YStack } from 'tamagui'
 import { Link } from '~/components/Link'
 
-export function ComponentPreviewItem({
+export function ComponentItem({
   name,
   numberOfComponents,
   path,
@@ -58,14 +57,18 @@ export function ComponentPreviewItem({
         }}
         bg="rgba(150,150,150,0.025)"
         mt="$3"
-        br="$6"
+        // br="$6"
         $gtMd={{
           bg: 'rgba(255,255,255,0)',
           w: 'calc(25% - 14px)',
-          br: '$6',
+          br: '$4',
           m: '$2',
         }}
       >
+        <YStack bg={'$color2'} h={130} br="$4" ov="hidden" p={'$4'} className="relative">
+          
+        </YStack>
+
         <YStack f={1} p="$4">
           <Theme name="gray">
             <H4 ff="$body" size="$4" fow="600" color="$color12">
@@ -86,7 +89,7 @@ export function ComponentPreviewItem({
             p="$2"
             o={0.4}
           >
-            <Icon size={25} color="$color10" />
+            <Icon size={25} color="$color12" />
           </YStack>
         </YStack>
       </YStack>

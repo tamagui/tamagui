@@ -37,7 +37,7 @@ import { PurchaseModal } from '~/features/site/purchase/PurchaseModal'
 import { getProductsForServerSideRendering } from '~/features/site/purchase/server-helpers'
 import { useTakeoutStore } from '~/features/site/purchase/useTakeoutStore'
 import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
-import { BentoPreview, BentoStore } from './(preview-section)/preview'
+import { BentoComponent, BentoStore } from './(bento-component)/bento-component'
 
 export const loader = async () => {
   try {
@@ -123,7 +123,7 @@ export default function BentoPage() {
             <Intermediate />
           </Theme>
         </YStack>
-        <BentoPreview />
+        <BentoComponent />
       </BentoPageFrame>
     </>
   )

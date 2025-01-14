@@ -3,14 +3,14 @@ import { useMemo, useRef, useState } from 'react'
 import { listingData } from '@tamagui/bento/data'
 import { H3, Input, ScrollView, Spacer, Theme, XStack, YStack } from 'tamagui'
 import { ContainerLarge } from '~/components/Containers'
-import { ComponentPreviewItem } from './preview-item'
+import { ComponentItem } from './component-item'
 
 export class BentoStore {
   heroVisible = true
   heroHeight = 800
 }
 
-export const BentoPreview = () => {
+export const BentoComponent = () => {
   const inputRef = useRef<HTMLInputElement>()
   const [filter, setFilter] = useState('')
   const store = useStore(BentoStore)
@@ -131,7 +131,7 @@ export const BentoPreview = () => {
                       }}
                     >
                       {parts.map(({ name: partsName, numberOfComponents, route }) => (
-                        <ComponentPreviewItem
+                        <ComponentItem
                           key={route + partsName + numberOfComponents.toString()}
                           path={route}
                           name={partsName}
