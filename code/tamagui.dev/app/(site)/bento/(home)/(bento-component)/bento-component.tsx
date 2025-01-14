@@ -1,9 +1,9 @@
 import { useStore } from '@tamagui/use-store'
 import { useMemo, useRef, useState } from 'react'
-import { listingData } from '@tamagui/bento/data'
 import { H3, Input, ScrollView, Spacer, Theme, XStack, YStack } from 'tamagui'
 import { ContainerLarge } from '~/components/Containers'
 import { ComponentItem } from './component-item'
+import { listingData } from '@tamagui/bento/data'
 
 export class BentoStore {
   heroVisible = true
@@ -130,14 +130,15 @@ export const BentoComponent = () => {
                         gap: 0,
                       }}
                     >
-                      {parts.map(({ name: partsName, numberOfComponents, route }) => (
-                        <ComponentItem
-                          key={route + partsName + numberOfComponents.toString()}
-                          path={route}
-                          name={partsName}
-                          numberOfComponents={numberOfComponents}
-                        />
-                      ))}
+                      {parts.map((props) => {
+                        const { route, name, numberOfComponents } = props
+                        return (
+                          <ComponentItem
+                            key={route + name + numberOfComponents.toString()}
+                            {...props}
+                          />
+                        )
+                      })}
 
                       {/* @ts-ignore */}
                       <Spacer width="calc(50vw - 300px)" $gtMd={{ dsp: 'none' }} />

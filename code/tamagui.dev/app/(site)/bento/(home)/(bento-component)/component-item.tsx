@@ -22,25 +22,25 @@ import {
   TextCursorInput,
   ToggleRight,
 } from '@tamagui/lucide-icons'
-import { H5, Image, ZStack } from 'tamagui'
-import { H4 } from 'tamagui'
-import { Theme } from 'tamagui'
-import { YStack } from 'tamagui'
+import { H5, Image, H4, Theme, YStack } from 'tamagui'
 import { Link } from '~/components/Link'
 
 export function ComponentItem({
   name,
   numberOfComponents,
-  path,
+  route,
+  preview,
 }: {
   name: string
   numberOfComponents: number
-  path: string
+  route: string
+  preview: () => React.ReactNode
 }) {
   const Icon = icons[name] ?? Null
+  const href = BASE_PATH + route
 
   return (
-    <Link href={(BASE_PATH + path) as any} asChild>
+    <Link href={href as any} asChild>
       <YStack
         tag="a"
         ov="hidden"
@@ -65,8 +65,26 @@ export function ComponentItem({
           m: '$2',
         }}
       >
-        <YStack bg={'$color2'} h={130} br="$4" ov="hidden" p={'$4'} className="relative">
+        {/* Preview */}
+        <YStack
+          pointerEvents="none"
+          // bg={'$color3'}
+          h={172}
+          br="$4"
+          ov="hidden"
+          p={'$6'}
+          className="relative"
+          justifyContent="center"
+          alignItems="center"
+          borderWidth={1.5}
+          $theme-dark={{
+            borderColor: '$color1',
+          }}
           
+          borderColor="$color6"
+          // bg="$color4"
+        >
+          {preview?.()}
         </YStack>
 
         <YStack f={1} p="$4">
