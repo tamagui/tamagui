@@ -5,6 +5,7 @@ import { AnimatePresence, Tabs, YStack } from 'tamagui'
 import { Code } from './Code'
 import { useBashCommand, PACKAGE_MANAGERS } from '~/hooks/useBashCommand'
 import { Image } from '@tamagui/image-next'
+import { ScrollView } from 'react-native'
 
 export function RovingTabs({ className, children, code, size, ...rest }) {
   const { showTabs, transformedCommand, selectedPackageManager, setPackageManager } =
@@ -38,6 +39,32 @@ export function RovingTabs({ className, children, code, size, ...rest }) {
       setIntentIndicator(layout)
     }
   }
+
+  const codeContent = (
+    <ScrollView
+      style={{ width: '100%' }}
+      contentContainerStyle={{
+        minWidth: '100%',
+      }}
+      horizontal
+      showsHorizontalScrollIndicator={false}
+    >
+      <Code
+        p="$4"
+        backgroundColor="transparent"
+        f={1}
+        className={className}
+        size={size ?? '$5'}
+        lineHeight={size ?? '$5'}
+        {...(showTabs && {
+          whiteSpace: 'nowrap',
+        })}
+        {...rest}
+      >
+        {showTabs ? transformedCommand : children}
+      </Code>
+    </ScrollView>
+  )
 
   return (
     <>
@@ -98,22 +125,12 @@ export function RovingTabs({ className, children, code, size, ...rest }) {
             </YStack>
 
             <Tabs.Content value={selectedPackageManager} forceMount>
-              <Code
-                p="$4"
-                backgroundColor="transparent"
-                f={1}
-                className={className}
-                size={size ?? '$5'}
-                lineHeight={size ?? '$5'}
-                {...rest}
-              >
-                {transformedCommand}
-              </Code>
+              {codeContent}
             </Tabs.Content>
           </YStack>
         </Tabs>
       ) : (
-        children
+        codeContent
       )}
     </>
   )
