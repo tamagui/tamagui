@@ -76,12 +76,14 @@ export function ComponentItem({
           className="relative"
           justifyContent="center"
           alignItems="center"
-          borderWidth={1.5}
           $theme-dark={{
             borderColor: '$color1',
+            borderWidth: 1.5,
           }}
-          
-          borderColor="$color6"
+          $theme-light={{
+            bg: '$background025',
+          }}
+
           // bg="$color4"
         >
           {preview?.()}
