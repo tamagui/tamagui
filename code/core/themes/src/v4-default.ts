@@ -125,7 +125,7 @@ const baseThemes = createThemesWithSubThemes({
   },
 
   accent: {
-    palette: ['#d7c500', '#faed00'],
+    palette: ['#ECD20A', '#424035'],
   },
 
   childrenThemes: {
