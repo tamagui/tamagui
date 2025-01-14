@@ -305,17 +305,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['bento'] }) => 
                     ta: 'center',
                   }}
                 >
-                  Boost your React development with a suite
-                  of&nbsp;copy-paste&nbsp;primitives.&nbsp;
-                  <YStack
-                    my={-20}
-                    tag="span"
-                    dsp="inline-flex"
-                    y={3}
-                    $sm={{ scale: 0.8, y: 7 }}
-                  >
-                    <BentoIcon bright scale={1.2} />
-                  </YStack>
+                  Copy-paste styled components for React Native and web, free and paid.
                 </Paragraph>
               </XStack>
               <XStack
