@@ -9,7 +9,7 @@
     "name": "Nate Wienert"
   },
   "scripts": {
-    "test": "vitest --run --config ../../packages/vite-plugin-internal/src/vite.config.ts"
+    "_test": "vitest --run --config ../../packages/vite-plugin-internal/src/vite.config.ts"
   },
   "devDependencies": {
     "vitest": "^2.1.8",
