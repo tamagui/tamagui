@@ -17,6 +17,7 @@ import {
   yellowDark,
 } from '@tamagui/colors'
 import { createThemeSuite } from './v4-createTheme'
+import { light } from './generated-new'
 
 const colorTokens = {
   light: {
@@ -46,6 +47,36 @@ const lightShadowColorStrong = 'rgba(0,0,0,0.085)'
 const darkShadowColor = 'rgba(0,0,0,0.2)'
 const darkShadowColorStrong = 'rgba(0,0,0,0.3)'
 
+const darkPalette = [
+  '#050505',
+  '#151515',
+  '#191919',
+  '#232323',
+  '#282828',
+  '#323232',
+  '#424242',
+  '#494949',
+  '#545454',
+  '#626262',
+  '#a5a5a5',
+  '#fff',
+]
+
+const lightPalette = [
+  '#fff',
+  '#f8f8f8',
+  'hsl(0, 0%, 96.3%)',
+  'hsl(0, 0%, 94.1%)',
+  'hsl(0, 0%, 92.0%)',
+  'hsl(0, 0%, 90.0%)',
+  'hsl(0, 0%, 88.5%)',
+  'hsl(0, 0%, 81.0%)',
+  'hsl(0, 0%, 56.1%)',
+  'hsl(0, 0%, 50.3%)',
+  'hsl(0, 0%, 42.5%)',
+  'hsl(0, 0%, 9.0%)',
+]
+
 /**
  * Default themes for the tamagui.dev site
  * If you'd like to create your own themes, use `createThemeSuite`
@@ -53,34 +84,8 @@ const darkShadowColorStrong = 'rgba(0,0,0,0.3)'
 export const tamaguiThemes = createThemeSuite({
   base: {
     palette: {
-      dark: [
-        '#050505',
-        '#151515',
-        '#191919',
-        '#232323',
-        '#282828',
-        '#323232',
-        '#424242',
-        '#494949',
-        '#545454',
-        '#626262',
-        '#a5a5a5',
-        '#fff',
-      ],
-      light: [
-        '#fff',
-        '#f8f8f8',
-        'hsl(0, 0%, 96.3%)',
-        'hsl(0, 0%, 94.1%)',
-        'hsl(0, 0%, 92.0%)',
-        'hsl(0, 0%, 90.0%)',
-        'hsl(0, 0%, 88.5%)',
-        'hsl(0, 0%, 81.0%)',
-        'hsl(0, 0%, 56.1%)',
-        'hsl(0, 0%, 50.3%)',
-        'hsl(0, 0%, 42.5%)',
-        'hsl(0, 0%, 9.0%)',
-      ],
+      dark: darkPalette,
+      light: lightPalette,
     },
 
     // we set a bunch of colors like $red1 => $red1
@@ -115,6 +120,14 @@ export const tamaguiThemes = createThemeSuite({
         shadowColorFocus: darkShadowColor,
       },
     },
+  },
+
+  accent: {
+    palette: {
+      dark: lightPalette,
+      light: darkPalette,
+    },
+    template: 'inverse',
   },
 
   childrenThemes: {
@@ -168,7 +181,7 @@ export const tamaguiThemes = createThemeSuite({
     },
     tan: {
       palette: {
-        dark: [
+        light: [
           'hsla(40, 30%, 98%, 1)',
           'hsla(40, 24%, 94%, 1)',
           'hsla(38, 23%, 91%, 1)',
@@ -182,7 +195,7 @@ export const tamaguiThemes = createThemeSuite({
           'hsla(35, 18%, 37%, 1)',
           'hsla(35, 17%, 20%, 1)',
         ],
-        light: [
+        dark: [
           'hsla(30, 9%, 10%, 1)',
           'hsla(30, 10%, 12%, 1)',
           'hsla(31, 11%, 18%, 1)',

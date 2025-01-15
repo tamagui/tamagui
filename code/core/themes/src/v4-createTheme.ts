@@ -40,7 +40,7 @@ const defaultPalettes: SimplePaletteDefinitions = createPalettes(
 )
 
 export type CreateThemesProps<
-  Accent = void,
+  Accent extends BaseThemeDefinition<Extra> | void = void,
   Extra extends ExtraThemeValuesByScheme = ExtraThemeValuesByScheme,
   ChildrenThemes extends SimpleThemesDefinition = SimpleThemesDefinition,
   GrandChildrenThemes extends SimpleThemesDefinition = SimpleThemesDefinition,
@@ -64,7 +64,7 @@ export function createThemeSuite<
   Extra extends ExtraThemeValuesByScheme,
   SubThemes extends SimpleThemesDefinition,
   ComponentThemes extends SimpleThemesDefinition,
-  Accent = void,
+  Accent extends BaseThemeDefinition<Extra> | void = void,
 >(props: CreateThemesProps<Accent, Extra, SubThemes, ComponentThemes>) {
   const {
     accent,
@@ -375,8 +375,6 @@ export function createPalettes(palettes: BuildPalettes): SimplePaletteDefinition
           ],
         ],
       ] as const
-
-      console.log(name, palette, out)
 
       return out
     })
