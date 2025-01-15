@@ -1,5 +1,5 @@
-import { XStack, YStack } from 'tamagui'
 import { useLoader } from 'one'
+import { YStack } from 'tamagui'
 import { HeadInfo } from '~/components/HeadInfo'
 import { HomeAnimations } from '~/features/site/home/HomeAnimations'
 import { HomeCommunity } from '~/features/site/home/HomeCommunity'
@@ -15,7 +15,6 @@ import { HomeThemes } from '~/features/site/home/HomeThemes'
 import { HomeTypography } from '~/features/site/home/HomeTypography'
 import { HomeSection, SectionTinted, TintSection } from '~/features/site/home/TintSection'
 import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
-import { useInsertionEffect, useLayoutEffect } from 'react'
 
 export async function loader() {
   const { getCompilationExamples } = await import('@tamagui/mdx-2')
