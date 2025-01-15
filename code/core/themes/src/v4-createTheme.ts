@@ -8,6 +8,14 @@ export { getThemeSuitePalettes, PALETTE_BACKGROUND_OFFSET } from './getThemeSuit
 export type * from './types'
 export { defaultTemplates } from './v4-defaultTemplates'
 
+/**
+ * TODO
+ *
+ *  - we avoidNestingWithin accent, but sometimes want it eg v4-tamagui grandChildren
+ *    a good default would be to IF palette is set, dont nest, IF only template, nest
+ *    needs to update both runtime logic and types
+ */
+
 type ExtraThemeValues = Record<string, string>
 type ExtraThemeValuesByScheme<Values extends ExtraThemeValues = ExtraThemeValues> = {
   dark: Values
@@ -154,7 +162,7 @@ export function createSimpleThemeBuilder<
       | 'dark'
       | (HasAccent extends true ? 'light_accent' | 'dark_accent' : never)
       | (keyof ChildrenThemes extends string
-          ? `${'light' | 'dark'}_${HasAccent extends true ? `accent_` | '' : ''}${GrandChildrenThemes extends undefined
+          ? `${'light' | 'dark'}_${GrandChildrenThemes extends undefined
               ? keyof ChildrenThemes
               : NamesWithChildrenNames<keyof ChildrenThemes, keyof GrandChildrenThemes>}`
           : never)]: FullTheme
