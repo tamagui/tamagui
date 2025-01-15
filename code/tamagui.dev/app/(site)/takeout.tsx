@@ -43,7 +43,7 @@ import { HeadInfo } from '~/components/HeadInfo'
 import { useHoverGlow } from '~/components/HoverGlow'
 import { Link } from '~/components/Link'
 import { Footer } from '~/features/site/Footer'
-import { LoadMunro } from '~/features/site/fonts/LoadFonts'
+import { LoadCherryBomb, LoadMunro } from '~/features/site/fonts/LoadFonts'
 import { PurchaseModal } from '~/features/site/purchase/PurchaseModal'
 import { MunroP, PurchaseButton, isSafariMobile } from '~/features/site/purchase/helpers'
 import { getProductsForServerSideRendering } from '~/features/site/purchase/server-helpers'
@@ -70,6 +70,7 @@ export default function TakeoutPage() {
   return (
     <YStack maw="100%">
       <LoadMunro />
+      <LoadCherryBomb />
       <script src="https://cdn.paritydeals.com/banner.js" />
       <HeadInfo
         title="🥡 Tamagui Takeout"
@@ -109,37 +110,6 @@ export default function TakeoutPage() {
           zi={-3}
         />
       </ThemeTintAlt> */}
-
-      <ThemeTintAlt offset={0}>
-        <YStack
-          pos="absolute"
-          l={0}
-          r={0}
-          t={-100}
-          b={0}
-          style={{
-            background: 'linear-gradient(to bottom, var(--color1) 2%, transparent 20%)',
-          }}
-          zi={-1}
-        />
-        {/* linearGradient / background of */}
-        <ThemeNameEffect colorKey="$color1" />
-      </ThemeTintAlt>
-
-      <ThemeTintAlt offset={1}>
-        <YStack
-          pos="absolute"
-          l={0}
-          r={0}
-          t={-100}
-          b={0}
-          o={0.3}
-          style={{
-            background: 'linear-gradient(to right, transparent, var(--color7))',
-          }}
-          zi={-2}
-        />
-      </ThemeTintAlt>
 
       <YStack
         pe="none"
@@ -681,7 +651,7 @@ const points = {
 const TakeoutBox3D = lazy(() => import('../../features/takeout/TakeoutBox3D'))
 const TakeoutGallery = lazy(() => import('../../features/takeout/TakeoutGallery'))
 
-const heroHeight = 1050
+const heroHeight = 1000
 
 export type TakeoutPageProps = Awaited<
   ReturnType<typeof getProductsForServerSideRendering>
@@ -828,7 +798,7 @@ const TakeoutHero = () => {
 
   return (
     <YStack
-      y={heroHeight / 2 - 480}
+      y={heroHeight / 2 - 500}
       ai="center"
       jc="center"
       className="ease-in ms300 all"
@@ -1025,32 +995,32 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
         </SizableText>
       )}
 
-      <Theme name="accent">
-        <TakeoutCardFrame
-          bg="$color1"
-          className="blur-medium"
-          zi={100_000}
-          maw={310}
-          als="center"
-          shadowRadius={30}
-          shadowOffset={{ height: 20, width: 0 }}
-          shadowColor="$shadowColor"
-          x={-50}
-          y={50}
-          mah="calc(min(85vh, 800px))"
-          br="$8"
-          $md={{
-            x: -20,
-            y: 0,
-            mah: 'auto',
-            w: '100%',
-            maw: '100%',
-            mt: 100,
-          }}
-        >
-          <YStack zi={-1} fullscreen bg="$color5" o={0.5} />
+      {/* <Theme name="accent"> */}
+      <TakeoutCardFrame
+        bg="$color1"
+        className="blur-medium"
+        zi={100_000}
+        maw={310}
+        als="center"
+        shadowRadius={30}
+        shadowOffset={{ height: 20, width: 0 }}
+        shadowColor="$shadowColor"
+        x={-50}
+        y={50}
+        mah="calc(min(85vh, 800px))"
+        br="$8"
+        $md={{
+          x: -20,
+          y: 0,
+          mah: 'auto',
+          w: '100%',
+          maw: '100%',
+          mt: 100,
+        }}
+      >
+        <YStack zi={-1} fullscreen bg="$color5" o={0.5} />
 
-          {/* <ThemeTintAlt>
+        {/* <ThemeTintAlt>
             <LinearGradient
               pos="absolute"
               b={0}
@@ -1062,105 +1032,105 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
             />
           </ThemeTintAlt> */}
 
-          <YStack pos="absolute" b="$4" l="$4" r="$4" zi={100}>
-            {/* cant use buttonlink it breaks scroll on press if not enabled, conditionally use a link */}
-            {/* subscription ? `/account/items#${subscription.id}` : '' */}
-            <PurchaseButton
-              onPress={() => {
-                store.showPurchase = true
-              }}
-            >
-              Purchase
-            </PurchaseButton>
-          </YStack>
+        <YStack pos="absolute" b="$4" l="$4" r="$4" zi={100}>
+          {/* cant use buttonlink it breaks scroll on press if not enabled, conditionally use a link */}
+          {/* subscription ? `/account/items#${subscription.id}` : '' */}
+          <PurchaseButton
+            onPress={() => {
+              store.showPurchase = true
+            }}
+          >
+            Purchase
+          </PurchaseButton>
+        </YStack>
 
-          <ScrollView p="$6" disabled={media.md} showsVerticalScrollIndicator={false}>
-            <YStack gap="$2">
-              <ThemeTintAlt>
-                <MunroP color="$color11" size="$7" ls={2}>
-                  The Stack
-                </MunroP>
-              </ThemeTintAlt>
+        <ScrollView p="$6" disabled={media.md} showsVerticalScrollIndicator={false}>
+          <YStack gap="$2">
+            <ThemeTintAlt>
+              <MunroP color="$color11" size="$7" ls={2}>
+                The Stack
+              </MunroP>
+            </ThemeTintAlt>
 
-              <YStack>
-                <Row
-                  title="Template"
-                  description="Complete GitHub Template with a built-in bot to send PRs with updates."
-                  after="01"
-                />
+            <YStack>
+              <Row
+                title="Template"
+                description="Complete GitHub Template with a built-in bot to send PRs with updates."
+                after="01"
+              />
 
-                <Row
-                  title="Monorepo"
-                  description="Complete with Next.js, Vercel deploy, Expo and EAS."
-                  after="01"
-                />
+              <Row
+                title="Monorepo"
+                description="Complete with Next.js, Vercel deploy, Expo and EAS."
+                after="01"
+              />
 
-                <Row
-                  title="Screens"
-                  description="Tab bar, Stack view, Onboarding, Auth, Profile, Edit Profile, Account, Settings, Feed + more, well crafted layouts to adapt to web/native."
-                  after="08"
-                />
+              <Row
+                title="Screens"
+                description="Tab bar, Stack view, Onboarding, Auth, Profile, Edit Profile, Account, Settings, Feed + more, well crafted layouts to adapt to web/native."
+                after="08"
+              />
 
-                <Row
-                  title="Data & Auth"
-                  description="Supabase pre-configured with migrations, email and OAuth (Google + Apple) authentication, utilities, automatic setup and everything to get rolling immediately."
-                  after="01"
-                />
+              <Row
+                title="Data & Auth"
+                description="Supabase pre-configured with migrations, email and OAuth (Google + Apple) authentication, utilities, automatic setup and everything to get rolling immediately."
+                after="01"
+              />
 
-                <Row
-                  title="RPC"
-                  description="We've set up tRPC, which you can optionally use, that works alongside Zod to provide easy, type-safe APIs."
-                  after="01"
-                />
+              <Row
+                title="RPC"
+                description="We've set up tRPC, which you can optionally use, that works alongside Zod to provide easy, type-safe APIs."
+                after="01"
+              />
 
-                <Row
-                  title="Icons"
-                  description="~180k icons in total across +150 different packs, integrated with your theme color and sizes, tree-shakeable, from iconify.design"
-                  after="+150"
-                />
+              <Row
+                title="Icons"
+                description="~180k icons in total across +150 different packs, integrated with your theme color and sizes, tree-shakeable, from iconify.design"
+                after="+150"
+              />
 
-                <Row
-                  title="Fonts"
-                  description="All of Google fonts, more than +1500 font packages."
-                  after="+1500"
-                />
+              <Row
+                title="Fonts"
+                description="All of Google fonts, more than +1500 font packages."
+                after="+1500"
+              />
 
-                <Row
-                  title="Themes"
-                  description="Two all new themes - Pastel and Neon - that bring a muted or more bright feel."
-                  after="03"
-                />
+              <Row
+                title="Themes"
+                description="Two all new themes - Pastel and Neon - that bring a muted or more bright feel."
+                after="03"
+              />
 
-                <Row
-                  title="Deploy"
-                  description="Vercel and Expo EAS configured for you to ship as fast as possible."
-                  after="05"
-                />
+              <Row
+                title="Deploy"
+                description="Vercel and Expo EAS configured for you to ship as fast as possible."
+                after="05"
+              />
 
-                <Row
-                  title="Native"
-                  description="Tamagui native components like Sheet and Toast pre-configured, saving you setup and build."
-                  after="03"
-                />
+              <Row
+                title="Native"
+                description="Tamagui native components like Sheet and Toast pre-configured, saving you setup and build."
+                after="03"
+              />
 
-                <Row
-                  title="Form"
-                  description="Universal forms with react-hook-form, ts-form and zod, adaptable components for the most native look on web and native."
-                  after="01"
-                />
+              <Row
+                title="Form"
+                description="Universal forms with react-hook-form, ts-form and zod, adaptable components for the most native look on web and native."
+                after="01"
+              />
 
-                <Row
-                  title="Image Upload"
-                  description="Component and utilities for uploading images that adapt to the native image picker. Avatar upload with Supabase Storage + RLS included."
-                  after="01"
-                />
-              </YStack>
-
-              <Spacer f={1} minHeight={120} />
+              <Row
+                title="Image Upload"
+                description="Component and utilities for uploading images that adapt to the native image picker. Avatar upload with Supabase Storage + RLS included."
+                after="01"
+              />
             </YStack>
-          </ScrollView>
-        </TakeoutCardFrame>
-      </Theme>
+
+            <Spacer f={1} minHeight={120} />
+          </YStack>
+        </ScrollView>
+      </TakeoutCardFrame>
+      {/* </Theme> */}
     </div>
   )
 })
