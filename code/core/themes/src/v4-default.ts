@@ -16,7 +16,7 @@ import {
   yellow,
   yellowDark,
 } from '@tamagui/colors'
-import { createThemesWithSubThemes } from './v4-createTheme'
+import { createThemeSuite } from './v4-createTheme'
 
 const colorTokens = {
   light: {
@@ -109,9 +109,9 @@ const nonInherited = {
 
 /**
  * Default themes for the tamagui.dev site
- * If you'd like to create your own themes, use `createThemesWithSubThemes`
+ * If you'd like to create your own themes, use `createThemeSuite`
  */
-const baseThemes = createThemesWithSubThemes({
+const baseThemes = createThemeSuite({
   base: {
     palette: {
       dark: Object.values(black),

@@ -131,6 +131,20 @@ const getBaseTemplates = (scheme: 'dark' | 'light') => {
     borderColorPress: base.borderColorPress + 3,
   }
 
+  const alt1 = {
+    color: base.color - 1,
+    colorHover: base.colorHover - 1,
+    colorPress: base.colorPress - 1,
+    colorFocus: base.colorFocus - 1,
+  }
+
+  const alt2 = {
+    color: base.color - 2,
+    colorHover: base.colorHover - 2,
+    colorPress: base.colorPress - 2,
+    colorFocus: base.colorFocus - 2,
+  }
+
   const inverse = Object.fromEntries(
     Object.entries(base).map(([key, index]) => {
       return [key, -index]
@@ -142,6 +156,8 @@ const getBaseTemplates = (scheme: 'dark' | 'light') => {
     surface1,
     surface2,
     surface3,
+    alt1,
+    alt2,
     inverse,
   } satisfies BuildTemplates
 }

@@ -40,6 +40,7 @@ const defaultPalettes: SimplePaletteDefinitions = createPalettes(
 )
 
 export type CreateThemesProps<
+  Accent = void,
   Extra extends ExtraThemeValuesByScheme = ExtraThemeValuesByScheme,
   ChildrenThemes extends SimpleThemesDefinition = SimpleThemesDefinition,
   GrandChildrenThemes extends SimpleThemesDefinition = SimpleThemesDefinition,
@@ -47,7 +48,7 @@ export type CreateThemesProps<
   Templates extends BuildTemplates = typeof defaultTemplates,
 > = {
   base: BaseThemeDefinition<Extra>
-  accent: BaseThemeDefinition<Extra>
+  accent?: Accent
   childrenThemes?: ChildrenThemes
   grandChildrenThemes?: GrandChildrenThemes
   templates?: Templates
@@ -59,11 +60,12 @@ export type CreateThemesProps<
   }) => Record<string, string>
 }
 
-export function createThemesWithSubThemes<
+export function createThemeSuite<
   Extra extends ExtraThemeValuesByScheme,
   SubThemes extends SimpleThemesDefinition,
   ComponentThemes extends SimpleThemesDefinition,
->(props: CreateThemesProps<Extra, SubThemes, ComponentThemes>) {
+  Accent = void,
+>(props: CreateThemesProps<Accent, Extra, SubThemes, ComponentThemes>) {
   const {
     accent,
     childrenThemes,
@@ -77,7 +79,7 @@ export function createThemesWithSubThemes<
     componentThemes,
     palettes: createPalettes(getThemesPalettes(props)),
     templates: templates as typeof defaultTemplates,
-    accentTheme: !!accent,
+    accentTheme: !!accent as Accent extends void ? false : true,
     childrenThemes: normalizeSubThemes(childrenThemes),
     grandChildrenThemes: normalizeSubThemes(grandChildrenThemes),
   })
@@ -266,9 +268,11 @@ function coerceSimplePaletteToSchemePalette(def: Palette) {
   return Array.isArray(def) ? getSchemePalette(def) : def
 }
 
-function getThemesPalettes(props: CreateThemesProps): BuildPalettes {
+function getThemesPalettes(props: CreateThemesProps<any>): BuildPalettes {
   const base = coerceSimplePaletteToSchemePalette(props.base.palette)
-  const accent = coerceSimplePaletteToSchemePalette(props.accent.palette)
+  const accent = props.accent
+    ? coerceSimplePaletteToSchemePalette(props.accent.palette)
+    : null
 
   const baseAnchors = getAnchors(base)
 
