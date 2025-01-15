@@ -1,4 +1,13 @@
-import { Airplay, BluetoothConnected, Check, Upload, User } from '@tamagui/lucide-icons'
+import {
+  Airplay,
+  ArrowLeft,
+  ArrowRight,
+  BluetoothConnected,
+  Check,
+  Share,
+  Upload,
+  User,
+} from '@tamagui/lucide-icons'
 import React from 'react'
 import {
   Avatar,
@@ -45,8 +54,10 @@ const CardItem = ({ title, children }) => {
 
 const ComponentPreview = {
   Inputs: () => (
-    <YStack gap="$2" minWidth="100%">
-      <Text>Full Name</Text>
+    <YStack minWidth="100%">
+      <Label mt={0} mb={0}>
+        Full Name
+      </Label>
       <Input placeholder="Bento 🍱" />
     </YStack>
   ),
@@ -244,30 +255,56 @@ const ComponentPreview = {
   },
   Buttons: () => {
     return (
-      <ZStack h="100%" w="100%">
+      <ZStack>
         <Button
-          bottom={'$-4'}
-          right={'$-4'}
+          mb={'$-6'}
+          mr={'$-6'}
           alignSelf="center"
-          icon={BluetoothConnected}
+          icon={User}
           size="$4"
+          themeInverse
         >
-          Button
+          Follow
         </Button>
-
         <Button
-          top={'$-4'}
-          left={'$-4'}
+          theme={'active'}
+          mt={'$-6'}
+          ml={'$-6'}
           alignSelf="center"
-          icon={BluetoothConnected}
+          icon={Share}
           size="$4"
         >
-          Button
+          Share
         </Button>
       </ZStack>
     )
   },
-  // DatePickers: Calendar,
+
+  DatePickers: () => {
+    return (
+      <YStack
+        p="$4"
+        borderWidth={1}
+        w="100%"
+        borderColor="$borderColor"
+        $theme-light={{
+          borderColor: '$gray7',
+        }}
+        borderRadius="$4"
+      >
+        <XStack justifyContent="center" alignItems="center" w="100%">
+          <YStack gap="$1" alignItems="center" justifyContent="center" flex={1}>
+            <Text textAlign="center" fontSize="$1">
+              {new Date().getFullYear()}
+            </Text>
+            <Text textAlign="center" fontWeight="bold" fontSize="$3">
+              {new Date().toLocaleString('default', { month: 'long' })}
+            </Text>
+          </YStack>
+        </XStack>
+      </YStack>
+    )
+  },
   // Tables: Table,
   // Chips: BadgeAlert,
   // Dialogs: MessageSquareShare,
