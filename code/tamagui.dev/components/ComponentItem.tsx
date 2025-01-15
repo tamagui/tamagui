@@ -74,6 +74,9 @@ export function ComponentItem({
           br="$4"
           ov="hidden"
           p={'$6'}
+          $md={{
+            p: '$4',
+          }}
           className="relative"
           justifyContent="center"
           alignItems="center"
