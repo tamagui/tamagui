@@ -1,13 +1,4 @@
-import {
-  Airplay,
-  ArrowLeft,
-  ArrowRight,
-  BluetoothConnected,
-  Check,
-  Share,
-  Upload,
-  User,
-} from '@tamagui/lucide-icons'
+import { Check, Share, Upload, User } from '@tamagui/lucide-icons'
 import React from 'react'
 import {
   Avatar,
@@ -62,6 +53,39 @@ const ComponentPreview = {
     </YStack>
   ),
 
+  Layouts: () => {
+    return (
+      <YStack mt="$2" justifyContent="flex-start" h="100%" w="100%">
+        <YStack
+          gap="$4"
+          borderRadius="$4"
+          overflow="hidden"
+          borderWidth={1}
+          borderColor="$borderColor"
+          $theme-light={{
+            borderColor: '$gray6',
+          }}
+          justifyContent="flex-start"
+          alignItems="center"
+          w="100%"
+          bg="$background"
+          h={200}
+          p="$4"
+        >
+          <Text fontSize={'$1'} textAlign="center" fontWeight="bold">
+            Sign Up
+          </Text>
+          <XStack gap="$4" w="100%" justifyContent="space-between">
+            <View flex={1} h={20} bg="$gray4" borderRadius="$2" />
+            <View flex={1} h={20} bg="$gray4" borderRadius="$2" />
+          </XStack>
+          <View w="100%" h={20} bg="$gray4" borderRadius="$2" />
+          <View w="100%" h={'100%'} bg="$gray4" borderRadius="$2" />
+        </YStack>
+      </YStack>
+    )
+  },
+
   Checkboxes: () => {
     return (
       <YStack w="100%" gap="$3">
@@ -108,6 +132,9 @@ const ComponentPreview = {
         flexDirection="row"
         maxWidth="100%"
         borderColor="$borderColor"
+        $theme-light={{
+          borderColor: '$gray6',
+        }}
         borderWidth={1}
         paddingHorizontal="$4"
         paddingVertical="$3"
@@ -183,7 +210,7 @@ const ComponentPreview = {
         width="100%"
         borderWidth={1.5}
         borderStyle="dashed"
-        borderColor="$color5"
+        borderColor="$gray6"
         py="$5"
         justifyContent="center"
         alignItems="center"
@@ -226,6 +253,7 @@ const ComponentPreview = {
       </YStack>
     )
   },
+
   Avatars: () => {
     return (
       <View flexDirection="row">
@@ -253,6 +281,7 @@ const ComponentPreview = {
       </View>
     )
   },
+
   Buttons: () => {
     return (
       <ZStack>
@@ -283,7 +312,7 @@ const ComponentPreview = {
   DatePickers: () => {
     return (
       <YStack
-        p="$4"
+        // p="$4"
         borderWidth={1}
         w="100%"
         borderColor="$borderColor"
@@ -291,9 +320,26 @@ const ComponentPreview = {
           borderColor: '$gray7',
         }}
         borderRadius="$4"
+        mt="$10"
+        gap="$2"
+        bg="$background"
+        overflow="hidden"
       >
-        <XStack justifyContent="center" alignItems="center" w="100%">
-          <YStack gap="$1" alignItems="center" justifyContent="center" flex={1}>
+        <XStack
+          bg="$backgroundFocus"
+          justifyContent="center"
+          alignItems="center"
+          w="100%"
+        >
+          <YStack
+            p="$2"
+            gap="$1"
+            alignItems="center"
+            justifyContent="center"
+            flex={1}
+            borderBottomWidth={1}
+            borderColor="$borderColor"
+          >
             <Text textAlign="center" fontSize="$1">
               {new Date().getFullYear()}
             </Text>
@@ -302,11 +348,63 @@ const ComponentPreview = {
             </Text>
           </YStack>
         </XStack>
+
+        <XStack px="$2">
+          {['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'].map((day, index) => (
+            <Text key={index} flex={1} textAlign="center" fontSize={8}>
+              {day}
+            </Text>
+          ))}
+        </XStack>
+
+        <XStack px="$2" flexWrap="wrap">
+          {Array.from(
+            {
+              length: 15,
+            },
+            (_, i) => {
+              const date = new Date(
+                new Date().getFullYear(),
+                new Date().getMonth(),
+                i + 1
+              )
+              const dayOfWeek = date.getDay()
+              const offset = dayOfWeek === 0 ? 6 : dayOfWeek - 1
+
+              return (
+                <XStack
+                  key={i}
+                  w="14.28%"
+                  h={'$2'}
+                  justifyContent="center"
+                  alignItems="center"
+                  ml={i === 0 ? `${offset * 14.28}%` : 0}
+                >
+                  <Text fontSize={10}>{i + 1}</Text>
+                </XStack>
+              )
+            }
+          )}
+        </XStack>
       </YStack>
     )
   },
-  // Tables: Table,
-  // Chips: BadgeAlert,
+
+  Tables: () => {
+    return (
+      <YStack>
+        <XStack>
+          <View w="100%" h={20} bg="$background" />
+          <View w="100%" h={20} bg="$background" />
+          <View w="100%" h={20} bg="$background" />
+        </XStack>
+      </YStack>
+    )
+  },
+
+  Chips: () => {
+    return <YStack></YStack>
+  },
   // Dialogs: MessageSquareShare,
   // Navbar: PanelTop,
   // Sidebar: PanelLeft,
