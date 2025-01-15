@@ -64,14 +64,14 @@ export default function ThemePage() {
   }, [])
 
   return (
-    <>
+    <YStack>
       {loaded && <ThemeBuilderModal />}
 
       <PreviewTheme key={`${loaded}${themeName}`}>
         <StudioPreviewComponentsBar scrollView={document.documentElement} />
         <StudioPreviewComponents />
       </PreviewTheme>
-    </>
+    </YStack>
   )
 }
 
