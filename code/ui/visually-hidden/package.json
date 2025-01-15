@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/visually-hidden",
-  "version": "1.121.10",
+  "version": "1.121.11",
   "sideEffects": [
     "*.css"
   ],
@@ -36,10 +36,10 @@
     }
   },
   "dependencies": {
-    "@tamagui/web": "1.121.10"
+    "@tamagui/web": "1.121.11"
   },
   "devDependencies": {
-    "@tamagui/build": "1.121.10",
+    "@tamagui/build": "1.121.11",
     "react": "*"
   },
   "publishConfig": {
