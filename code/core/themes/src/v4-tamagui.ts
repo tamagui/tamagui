@@ -17,7 +17,6 @@ import {
   yellowDark,
 } from '@tamagui/colors'
 import { createThemeSuite } from './v4-createTheme'
-import { light } from './generated-new'
 
 const colorTokens = {
   light: {

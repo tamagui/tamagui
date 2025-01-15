@@ -40,10 +40,10 @@ const defaultPalettes: SimplePaletteDefinitions = createPalettes(
 )
 
 export type CreateThemesProps<
-  Accent extends BaseThemeDefinition<Extra> | void = void,
+  Accent extends BaseThemeDefinition<Extra> | undefined = undefined,
+  GrandChildrenThemes extends SimpleThemesDefinition | undefined = undefined,
   Extra extends ExtraThemeValuesByScheme = ExtraThemeValuesByScheme,
   ChildrenThemes extends SimpleThemesDefinition = SimpleThemesDefinition,
-  GrandChildrenThemes extends SimpleThemesDefinition = SimpleThemesDefinition,
   ComponentThemes extends SimpleThemesDefinition = SimpleThemesDefinition,
   Templates extends BuildTemplates = typeof defaultTemplates,
 > = {
@@ -64,8 +64,11 @@ export function createThemeSuite<
   Extra extends ExtraThemeValuesByScheme,
   SubThemes extends SimpleThemesDefinition,
   ComponentThemes extends SimpleThemesDefinition,
-  Accent extends BaseThemeDefinition<Extra> | void = void,
->(props: CreateThemesProps<Accent, Extra, SubThemes, ComponentThemes>) {
+  GrandChildrenThemes extends SimpleThemesDefinition | undefined = undefined,
+  Accent extends BaseThemeDefinition<Extra> | undefined = undefined,
+>(
+  props: CreateThemesProps<Accent, GrandChildrenThemes, Extra, SubThemes, ComponentThemes>
+) {
   const {
     accent,
     childrenThemes,
@@ -79,9 +82,13 @@ export function createThemeSuite<
     componentThemes,
     palettes: createPalettes(getThemesPalettes(props)),
     templates: templates as typeof defaultTemplates,
-    accentTheme: !!accent as Accent extends void ? false : true,
+    accentTheme: !!accent as Accent extends undefined ? false : true,
     childrenThemes: normalizeSubThemes(childrenThemes),
-    grandChildrenThemes: normalizeSubThemes(grandChildrenThemes),
+    grandChildrenThemes: (grandChildrenThemes
+      ? normalizeSubThemes(grandChildrenThemes)
+      : undefined) as GrandChildrenThemes extends undefined
+      ? undefined
+      : Record<keyof GrandChildrenThemes, any>,
   })
 
   return builder.themes
@@ -117,13 +124,15 @@ export function createSimpleThemeBuilder<
       palette?: string
     }
   >,
-  GrandChildrenThemes extends Record<
-    string,
-    {
-      template: keyof Templates extends string ? keyof Templates : never
-      palette?: string
-    }
-  >,
+  GrandChildrenThemes extends
+    | undefined
+    | Record<
+        string,
+        {
+          template: keyof Templates extends string ? keyof Templates : never
+          palette?: string
+        }
+      >,
   HasAccent extends boolean,
   ComponentThemes extends SimpleThemesDefinition,
   FullTheme = {
@@ -145,7 +154,9 @@ export function createSimpleThemeBuilder<
       | 'dark'
       | (HasAccent extends true ? 'light_accent' | 'dark_accent' : never)
       | (keyof ChildrenThemes extends string
-          ? `${'light' | 'dark'}_${HasAccent extends true ? `accent_` | '' : ''}${NamesWithChildrenNames<keyof ChildrenThemes, keyof GrandChildrenThemes>}`
+          ? `${'light' | 'dark'}_${HasAccent extends true ? `accent_` | '' : ''}${GrandChildrenThemes extends undefined
+              ? keyof ChildrenThemes
+              : NamesWithChildrenNames<keyof ChildrenThemes, keyof GrandChildrenThemes>}`
           : never)]: FullTheme
   }
 } {
@@ -268,7 +279,7 @@ function coerceSimplePaletteToSchemePalette(def: Palette) {
   return Array.isArray(def) ? getSchemePalette(def) : def
 }
 
-function getThemesPalettes(props: CreateThemesProps<any>): BuildPalettes {
+function getThemesPalettes(props: CreateThemesProps<any, any>): BuildPalettes {
   const base = coerceSimplePaletteToSchemePalette(props.base.palette)
   const accent = props.accent
     ? coerceSimplePaletteToSchemePalette(props.accent.palette)
