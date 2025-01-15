@@ -2,7 +2,7 @@ import { useStore } from '@tamagui/use-store'
 import { useMemo, useRef, useState } from 'react'
 import { H3, Input, ScrollView, Spacer, Theme, XStack, YStack } from 'tamagui'
 import { ContainerLarge } from '~/components/Containers'
-import { ComponentItem } from './component-item'
+import { ComponentItem } from './ComponentItem'
 import { listingData } from '@tamagui/bento/data'
 
 export class BentoStore {
@@ -10,7 +10,7 @@ export class BentoStore {
   heroHeight = 800
 }
 
-export const BentoComponent = () => {
+export const ComponentSection = () => {
   const inputRef = useRef<HTMLInputElement>()
   const [filter, setFilter] = useState('')
   const store = useStore(BentoStore)

@@ -31,13 +31,12 @@ import { HeadInfo } from '~/components/HeadInfo'
 import { BentoLogo } from '~/features/bento/BentoLogo'
 import { BentoPageFrame } from '~/features/bento/BentoPageFrame'
 import type { ProComponentsProps } from '~/features/bento/types'
-import { BentoIcon } from '~/features/icons/BentoIcon'
 import { LoadCherryBomb, LoadMunro } from '~/features/site/fonts/LoadFonts'
 import { PurchaseModal } from '~/features/site/purchase/PurchaseModal'
 import { getProductsForServerSideRendering } from '~/features/site/purchase/server-helpers'
 import { useTakeoutStore } from '~/features/site/purchase/useTakeoutStore'
 import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
-import { BentoComponent, BentoStore } from './(bento-component)/bento-component'
+import { ComponentSection, BentoStore } from '~/components/ComponentSection'
 
 export const loader = async () => {
   try {
@@ -123,7 +122,7 @@ export default function BentoPage() {
             <Intermediate />
           </Theme>
         </YStack>
-        <BentoComponent />
+        <ComponentSection />
       </BentoPageFrame>
     </>
   )

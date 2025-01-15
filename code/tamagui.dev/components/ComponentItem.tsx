@@ -24,19 +24,20 @@ import {
 } from '@tamagui/lucide-icons'
 import { H5, Image, H4, Theme, YStack } from 'tamagui'
 import { Link } from '~/components/Link'
+import ComponentPreview from './ComponentPreview'
 
 export function ComponentItem({
   name,
   numberOfComponents,
   route,
-  preview,
 }: {
   name: string
   numberOfComponents: number
   route: string
-  preview: () => React.ReactNode
 }) {
   const Icon = icons[name] ?? Null
+  const Preview = ComponentPreview[name] ?? Null
+
   const href = BASE_PATH + route
 
   return (
@@ -86,7 +87,8 @@ export function ComponentItem({
 
           // bg="$color4"
         >
-          {preview?.()}
+          <Preview />
+          {/* {preview?.()} */}
         </YStack>
 
         <YStack f={1} p="$4">
