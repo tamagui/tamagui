@@ -1,4 +1,11 @@
-import { Check, Share, Upload, User } from '@tamagui/lucide-icons'
+import {
+  Check,
+  CheckCircle,
+  CheckCircle2,
+  Share,
+  Upload,
+  User,
+} from '@tamagui/lucide-icons'
 import React from 'react'
 import {
   Avatar,
@@ -9,12 +16,25 @@ import {
   GroupFrame,
   Label,
   RadioGroup,
+  Separator,
+  styled,
   Switch,
   View,
   XStack,
   ZStack,
 } from 'tamagui'
 import { CardFrame, Input, Text, YStack } from 'tamagui'
+
+const Chip = styled(View, {
+  name: 'Chip',
+  flexDirection: 'row',
+  justifyContent: 'center',
+  alignItems: 'center',
+  borderRadius: 1000_000_000,
+  gap: '$2',
+  py: '$2',
+  px: '$3',
+})
 
 const CardItem = ({ title, children }) => {
   return (
@@ -311,101 +331,235 @@ const ComponentPreview = {
 
   DatePickers: () => {
     return (
-      <YStack
-        // p="$4"
-        borderWidth={1}
-        w="100%"
-        borderColor="$borderColor"
-        $theme-light={{
-          borderColor: '$gray7',
-        }}
-        borderRadius="$4"
-        mt="$10"
-        gap="$2"
-        bg="$background"
-        overflow="hidden"
-      >
-        <XStack
-          bg="$backgroundFocus"
-          justifyContent="center"
-          alignItems="center"
+      <YStack h="100%" w="100%" justifyContent="flex-start" alignItems="center">
+        <YStack
+          // p="$4"
+          borderWidth={1}
           w="100%"
+          borderColor="$borderColor"
+          $theme-light={{
+            borderColor: '$gray7',
+          }}
+          borderRadius="$4"
+          gap="$2"
+          bg="$background"
+          overflow="hidden"
         >
-          <YStack
-            p="$2"
-            gap="$1"
-            alignItems="center"
+          <XStack
+            bg="$backgroundFocus"
             justifyContent="center"
-            flex={1}
-            borderBottomWidth={1}
-            borderColor="$borderColor"
+            alignItems="center"
+            w="100%"
           >
-            <Text textAlign="center" fontSize="$1">
-              {new Date().getFullYear()}
-            </Text>
-            <Text textAlign="center" fontWeight="bold" fontSize="$3">
-              {new Date().toLocaleString('default', { month: 'long' })}
-            </Text>
-          </YStack>
-        </XStack>
+            <YStack
+              p="$3"
+              gap="$1"
+              alignItems="center"
+              justifyContent="center"
+              flex={1}
+              borderBottomWidth={1}
+              borderColor="$borderColor"
+            >
+              <Text textAlign="center" fontSize="$1">
+                {new Date().getFullYear()}
+              </Text>
+              <Text textAlign="center" fontWeight="bold" fontSize="$3">
+                {new Date().toLocaleString('default', { month: 'long' })}
+              </Text>
+            </YStack>
+          </XStack>
 
-        <XStack px="$2">
-          {['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'].map((day, index) => (
-            <Text key={index} flex={1} textAlign="center" fontSize={8}>
-              {day}
-            </Text>
-          ))}
-        </XStack>
+          <XStack px="$2">
+            {['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'].map((day, index) => (
+              <Text key={index} flex={1} textAlign="center" fontSize={8}>
+                {day}
+              </Text>
+            ))}
+          </XStack>
 
-        <XStack px="$2" flexWrap="wrap">
-          {Array.from(
-            {
-              length: 15,
-            },
-            (_, i) => {
-              const date = new Date(
-                new Date().getFullYear(),
-                new Date().getMonth(),
-                i + 1
-              )
-              const dayOfWeek = date.getDay()
-              const offset = dayOfWeek === 0 ? 6 : dayOfWeek - 1
+          <XStack px="$2" flexWrap="wrap">
+            {Array.from(
+              {
+                length: 15,
+              },
+              (_, i) => {
+                const date = new Date(
+                  new Date().getFullYear(),
+                  new Date().getMonth(),
+                  i + 1
+                )
+                const dayOfWeek = date.getDay()
+                const offset = dayOfWeek === 0 ? 6 : dayOfWeek - 1
 
-              return (
-                <XStack
-                  key={i}
-                  w="14.28%"
-                  h={'$2'}
-                  justifyContent="center"
-                  alignItems="center"
-                  ml={i === 0 ? `${offset * 14.28}%` : 0}
-                >
-                  <Text fontSize={10}>{i + 1}</Text>
-                </XStack>
-              )
-            }
-          )}
-        </XStack>
+                return (
+                  <XStack
+                    key={i}
+                    w="14.28%"
+                    h={'$2'}
+                    justifyContent="center"
+                    alignItems="center"
+                    ml={i === 0 ? `${offset * 14.28}%` : 0}
+                  >
+                    <Text fontSize={10}>{i + 1}</Text>
+                  </XStack>
+                )
+              }
+            )}
+          </XStack>
+        </YStack>
       </YStack>
     )
   },
 
   Tables: () => {
     return (
-      <YStack>
-        <XStack>
-          <View w="100%" h={20} bg="$background" />
-          <View w="100%" h={20} bg="$background" />
-          <View w="100%" h={20} bg="$background" />
-        </XStack>
+      <YStack h="100%" w="100%" justifyContent="flex-start" alignItems="center">
+        <YStack
+          w="100%"
+          h={200}
+          bg="$background"
+          borderRadius="$4"
+          overflow="hidden"
+          borderWidth={1}
+          borderColor={'$borderColor'}
+          $theme-light={{
+            borderColor: '$gray6',
+          }}
+        >
+          <XStack
+            bg="$backgroundPress"
+            borderBottomWidth={1}
+            borderColor={'$borderColor'}
+            $theme-light={{
+              borderColor: '$gray6',
+            }}
+          >
+            {Array(3)
+              .fill(0)
+              .map((_, index) => (
+                <View
+                  flex={1}
+                  h={'$2'}
+                  borderLeftWidth={1}
+                  borderRightWidth={1}
+                  borderColor={index === 1 ? '$borderColor' : 'transparent'}
+                  $theme-light={{
+                    borderColor: index === 1 ? '$gray6' : 'transparent',
+                  }}
+                  key={index}
+                />
+              ))}
+          </XStack>
+          <YStack w="100%">
+            {Array(10)
+              .fill(0)
+              .map((_, index) => (
+                <XStack
+                  borderBottomWidth={1}
+                  borderColor={'$borderColor'}
+                  key={index}
+                  h={'$1.5'}
+                >
+                  {Array(3)
+                    .fill(0)
+                    .map((_, index) => (
+                      <View
+                        key={index}
+                        borderLeftWidth={1}
+                        borderRightWidth={1}
+                        borderColor={index === 1 ? '$borderColor' : 'transparent'}
+                        $theme-light={{
+                          borderColor: index === 1 ? '$gray6' : 'transparent',
+                        }}
+                        flex={1}
+                        h="100%"
+                      />
+                    ))}
+                </XStack>
+              ))}
+          </YStack>
+        </YStack>
       </YStack>
     )
   },
 
   Chips: () => {
-    return <YStack></YStack>
+    return (
+      <YStack gap="$2" justifyContent="center" alignItems="center">
+        <Chip rotate={'5deg'} mr={'$-6'} alignSelf="center" bg="$green10">
+          <Text fontSize="$1" color="$white1">
+            Success
+          </Text>
+          <CheckCircle2 size={12} color="$white1" />
+        </Chip>
+
+        <Chip rotate={'-2deg'} ml={'$-6'} alignSelf="center" bg="$gray10">
+          <Text fontSize="$1" color="$white1">
+            Offline
+          </Text>
+        </Chip>
+
+        <Chip rotate={'-5deg'} gap="$2" mr={'$-6'} alignSelf="center" bg="$red10">
+          <Text fontSize="$1" color="$white1">
+            Online
+          </Text>
+        </Chip>
+      </YStack>
+    )
   },
-  // Dialogs: MessageSquareShare,
+
+  Dialogs: () => {
+    return (
+      <YStack
+        w="100%"
+        borderRadius="$4"
+        borderWidth={1}
+        borderColor={'$borderColor'}
+        $theme-light={{
+          borderColor: '$gray6',
+        }}
+        gap="$2"
+      >
+        <YStack w="100%" p="$2" py="$3" gap="$2">
+          <Text textAlign="center" fontSize="$2" fontWeight={'bold'}>
+            Dialog
+          </Text>
+          <Text textAlign="center" fontSize="$1" fontWeight={'300'}>
+            Hey, Hello there!
+          </Text>
+        </YStack>
+
+        <YStack justifyContent="space-between">
+          <Text
+            color="$red10"
+            p="$2"
+            textAlign="center"
+            fontSize={10}
+            borderTopWidth={1}
+            borderColor="$borderColor"
+            $theme-light={{
+              borderColor: '$gray6',
+            }}
+          >
+            Cancel
+          </Text>
+          <Text
+            borderTopWidth={1}
+            borderColor="$borderColor"
+            $theme-light={{
+              borderColor: '$gray6',
+            }}
+            textAlign="center"
+            fontSize={10}
+            p="$2"
+            color="$blue10"
+          >
+            Hi
+          </Text>
+        </YStack>
+      </YStack>
+    )
+  },
   // Navbar: PanelTop,
   // Sidebar: PanelLeft,
   // Tabbar: NotebookTabs,
