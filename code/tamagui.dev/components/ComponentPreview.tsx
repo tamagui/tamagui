@@ -1,11 +1,4 @@
-import {
-  Check,
-  CheckCircle,
-  CheckCircle2,
-  Share,
-  Upload,
-  User,
-} from '@tamagui/lucide-icons'
+import { Check, CheckCircle2, Share, Upload, User } from '@tamagui/lucide-icons'
 import React from 'react'
 import {
   Avatar,
@@ -24,6 +17,7 @@ import {
   ZStack,
 } from 'tamagui'
 import { CardFrame, Input, Text, YStack } from 'tamagui'
+import { BentoIcon } from '~/features/icons/BentoIcon'
 
 const Chip = styled(View, {
   name: 'Chip',
@@ -35,6 +29,48 @@ const Chip = styled(View, {
   py: '$2',
   px: '$3',
 })
+
+const WindowMacView = () => {
+  return (
+    <XStack
+      bg="$backgroundPress"
+      borderBottomWidth={1}
+      borderColor="$borderColor"
+      $theme-light={{
+        borderColor: '$gray6',
+      }}
+      p="$2"
+      gap="$2"
+    >
+      {['$red10', '$yellow10', '$green10'].map((color, index) => (
+        <View bg={color as any} h={6} w={6} borderRadius={1_000_000_000} key={index} />
+      ))}
+      <View flex={1} />
+    </XStack>
+  )
+}
+
+const WindowLayout = ({ children }) => {
+  return (
+    <YStack h="100%" w="100%" justifyContent="flex-start" alignItems="center">
+      <YStack
+        w="100%"
+        h={200}
+        bg="$background"
+        borderRadius="$4"
+        overflow="hidden"
+        borderWidth={1}
+        borderColor={'$borderColor'}
+        $theme-light={{
+          borderColor: '$gray6',
+        }}
+      >
+        <WindowMacView />
+        {children}
+      </YStack>
+    </YStack>
+  )
+}
 
 const CardItem = ({ title, children }) => {
   return (
@@ -75,23 +111,8 @@ const ComponentPreview = {
 
   Layouts: () => {
     return (
-      <YStack mt="$2" justifyContent="flex-start" h="100%" w="100%">
-        <YStack
-          gap="$4"
-          borderRadius="$4"
-          overflow="hidden"
-          borderWidth={1}
-          borderColor="$borderColor"
-          $theme-light={{
-            borderColor: '$gray6',
-          }}
-          justifyContent="flex-start"
-          alignItems="center"
-          w="100%"
-          bg="$background"
-          h={200}
-          p="$4"
-        >
+      <WindowLayout>
+        <YStack gap="$4" overflow="hidden" w="100%" bg="$background" p="$4">
           <Text fontSize={'$1'} textAlign="center" fontWeight="bold">
             Sign Up
           </Text>
@@ -102,7 +123,7 @@ const ComponentPreview = {
           <View w="100%" h={20} bg="$gray4" borderRadius="$2" />
           <View w="100%" h={'100%'} bg="$gray4" borderRadius="$2" />
         </YStack>
-      </YStack>
+      </WindowLayout>
     )
   },
 
@@ -243,34 +264,25 @@ const ComponentPreview = {
 
   List: () => {
     return (
-      <YStack
-        bw={1.5}
-        borderTopLeftRadius={'$4'}
-        borderTopRightRadius={'$4'}
-        ov="hidden"
-        p="$4"
-        borderColor="$borderColor"
-        width="100%"
-        bg="$background"
-        mb="$-8"
-        gap="$4"
-      >
-        {Array(3)
-          .fill(0)
-          .map((_, index) => {
-            return (
-              <View flexDirection="row" alignItems="center" key={index} gap="$2">
-                <User color="$gray8" />
+      <WindowLayout>
+        <YStack ov="hidden" p="$4" width="100%" mb="$-8" gap="$4">
+          {Array(3)
+            .fill(0)
+            .map((_, index) => {
+              return (
+                <View flexDirection="row" alignItems="center" key={index} gap="$2">
+                  <User color="$gray8" />
 
-                <View gap="$2" flex={1}>
-                  <View height={4} bg={'$gray8'} width="80%" />
-                  <View height={4} bg={'$gray8'} width="45%" />
-                  <View />
+                  <View gap="$2" flex={1}>
+                    <View height={4} bg={'$gray8'} width="80%" />
+                    <View height={4} bg={'$gray8'} width="45%" />
+                    <View />
+                  </View>
                 </View>
-              </View>
-            )
-          })}
-      </YStack>
+              )
+            })}
+        </YStack>
+      </WindowLayout>
     )
   },
 
@@ -413,73 +425,60 @@ const ComponentPreview = {
 
   Tables: () => {
     return (
-      <YStack h="100%" w="100%" justifyContent="flex-start" alignItems="center">
-        <YStack
-          w="100%"
-          h={200}
-          bg="$background"
-          borderRadius="$4"
-          overflow="hidden"
-          borderWidth={1}
+      <WindowLayout>
+        <XStack
+          bg="$backgroundPress"
+          borderBottomWidth={1}
           borderColor={'$borderColor'}
           $theme-light={{
             borderColor: '$gray6',
           }}
         >
-          <XStack
-            bg="$backgroundPress"
-            borderBottomWidth={1}
-            borderColor={'$borderColor'}
-            $theme-light={{
-              borderColor: '$gray6',
-            }}
-          >
-            {Array(3)
-              .fill(0)
-              .map((_, index) => (
-                <View
-                  flex={1}
-                  h={'$2'}
-                  borderLeftWidth={1}
-                  borderRightWidth={1}
-                  borderColor={index === 1 ? '$borderColor' : 'transparent'}
-                  $theme-light={{
-                    borderColor: index === 1 ? '$gray6' : 'transparent',
-                  }}
-                  key={index}
-                />
-              ))}
-          </XStack>
-          <YStack w="100%">
-            {Array(10)
-              .fill(0)
-              .map((_, index) => (
-                <XStack
-                  borderBottomWidth={1}
-                  borderColor={'$borderColor'}
-                  key={index}
-                  h={'$1.5'}
-                >
-                  {Array(3)
-                    .fill(0)
-                    .map((_, index) => (
-                      <View
-                        key={index}
-                        borderLeftWidth={1}
-                        borderRightWidth={1}
-                        borderColor={index === 1 ? '$borderColor' : 'transparent'}
-                        $theme-light={{
-                          borderColor: index === 1 ? '$gray6' : 'transparent',
-                        }}
-                        flex={1}
-                        h="100%"
-                      />
-                    ))}
-                </XStack>
-              ))}
-          </YStack>
+          {Array(3)
+            .fill(0)
+            .map((_, index) => (
+              <View
+                flex={1}
+                h={'$2'}
+                borderLeftWidth={1}
+                borderRightWidth={1}
+                borderColor={index === 1 ? '$borderColor' : 'transparent'}
+                $theme-light={{
+                  borderColor: index === 1 ? '$gray6' : 'transparent',
+                }}
+                key={index}
+              />
+            ))}
+        </XStack>
+        <YStack w="100%">
+          {Array(10)
+            .fill(0)
+            .map((_, index) => (
+              <XStack
+                borderBottomWidth={1}
+                borderColor={'$borderColor'}
+                key={index}
+                h={'$1.5'}
+              >
+                {Array(3)
+                  .fill(0)
+                  .map((_, index) => (
+                    <View
+                      key={index}
+                      borderLeftWidth={1}
+                      borderRightWidth={1}
+                      borderColor={index === 1 ? '$borderColor' : 'transparent'}
+                      $theme-light={{
+                        borderColor: index === 1 ? '$gray6' : 'transparent',
+                      }}
+                      flex={1}
+                      h="100%"
+                    />
+                  ))}
+              </XStack>
+            ))}
         </YStack>
-      </YStack>
+      </WindowLayout>
     )
   },
 
@@ -560,9 +559,93 @@ const ComponentPreview = {
       </YStack>
     )
   },
-  // Navbar: PanelTop,
-  // Sidebar: PanelLeft,
-  // Tabbar: NotebookTabs,
+  Navbar: () => {
+    return (
+      <WindowLayout>
+        <XStack
+          alignItems="center"
+          bg="$backgroundPress"
+          borderBottomWidth={1}
+          borderColor={'$borderColor'}
+          $theme-light={{
+            borderColor: '$gray6',
+          }}
+          p="$2"
+          gap="$2"
+        >
+          <BentoIcon />
+          <XStack px="$2" gap="$4" flex={1}>
+            {Array(3)
+              .fill(0)
+              .map((_, index) => (
+                <View bg="$color10" flex={1} h={6} key={index} />
+              ))}
+          </XStack>
+        </XStack>
+      </WindowLayout>
+    )
+  },
+
+  Sidebar: () => {
+    return (
+      <WindowLayout>
+        <YStack
+          alignItems="flex-start"
+          bg="$backgroundPress"
+          w="33%"
+          h="100%"
+          borderBottomWidth={1}
+          borderColor={'$borderColor'}
+          $theme-light={{
+            borderColor: '$gray6',
+          }}
+          justifyContent="flex-start"
+          p="$2"
+          gap="$4"
+        >
+          <BentoIcon />
+          <YStack h="100%" w="100%" gap="$3" flex={1}>
+            <View w="90%" bg="$color10" h={6} />
+            <View w="70%" bg="$color10" h={6} />
+            <View w="50%" bg="$color10" h={6} />
+            <View w="90%" bg="$color10" h={6} />
+          </YStack>
+        </YStack>
+      </WindowLayout>
+    )
+  },
+
+  Tabbar: () => {
+    return (
+      <WindowLayout>
+        <XStack
+          alignItems="center"
+          bg="$backgroundPress"
+          borderBottomWidth={1}
+          borderColor={'$borderColor'}
+          $theme-light={{
+            borderColor: '$gray6',
+          }}
+        >
+          {['Home', 'Explorer', 'Profile'].map((tab, index) => (
+            <View
+              flex={1}
+              p="$2"
+              key={index}
+              justifyContent="center"
+              alignItems="center"
+              borderBottomWidth={1}
+              borderColor={index === 0 ? '$accentColor' : 'transparent'}
+            >
+              <Text textAlign="center" fontSize={10}>
+                {tab}
+              </Text>
+            </View>
+          ))}
+        </XStack>
+      </WindowLayout>
+    )
+  },
   // Microinteractions: MousePointerClick,
   // Slide: Banana,
   // Cart: ShoppingCart,
