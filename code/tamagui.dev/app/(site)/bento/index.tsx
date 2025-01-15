@@ -253,7 +253,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['bento'] }) => 
           >
             <YStack
               className="ms200 ease-in all"
-              h={200}
+              h={180}
               $xxs={{
                 scale: 0.4,
               }}
@@ -269,7 +269,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['bento'] }) => 
               $md={{ mb: -100, scale: 0.72, transformOrigin: 'left top' }}
               $lg={{ scale: 0.9, y: 10 }}
             >
-              <BentoLogo />
+              <BentoLogo scale={0.94} />
             </YStack>
             <YStack
               // account for the left bar visual offset
@@ -496,7 +496,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['bento'] }) => 
               >
                 <YStack br="$4" shac="rgba(0,0,0,0.2)" shar="$8">
                   <ThemeTintAlt>
-                    <Theme name="surface4">
+                    <Theme name="surface3">
                       <LocationNotification />
                     </Theme>
                   </ThemeTintAlt>

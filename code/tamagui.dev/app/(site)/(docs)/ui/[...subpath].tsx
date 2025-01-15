@@ -1,6 +1,6 @@
 import { ThemeTint } from '@tamagui/logo'
 import { getMDXComponent } from 'mdx-bundler/client'
-import React from 'react'
+import React, { memo } from 'react'
 import type { LoaderProps } from 'one'
 import { useLoader } from 'one'
 import { HeadInfo } from '~/components/HeadInfo'
@@ -54,7 +54,6 @@ export async function loader(props: LoaderProps) {
 export default function DocComponentsPage() {
   const { frontmatter, code } = useLoader(loader)
   const Component = React.useMemo(() => getMDXComponent(code), [code])
-  const isTinted = useIsDocsTinted()
 
   // useEffect(() => {
   //   const url = new URL(location.href)
@@ -94,14 +93,19 @@ export default function DocComponentsPage() {
         />
       )} */}
       <MDXProvider frontmatter={frontmatter}>
-        <ThemeTint disable={!isTinted}>
+        <DocsThemeTint>
           <MDXTabs id="type" defaultValue="styled">
             <Component components={components as any} />
           </MDXTabs>
-        </ThemeTint>
+        </DocsThemeTint>
       </MDXProvider>
 
       <DocsQuickNav key={frontmatter.slug} />
     </>
   )
 }
+
+const DocsThemeTint = memo(({ children }: { children: any }) => {
+  const isTinted = useIsDocsTinted()
+  return <ThemeTint disable={!isTinted}>{children}</ThemeTint>
+})

@@ -1,5 +1,4 @@
 import { hsla, parseToHsla } from 'color2k'
-
 import type { BuildPalette } from './types'
 
 /**

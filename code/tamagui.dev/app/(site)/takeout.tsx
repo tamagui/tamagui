@@ -43,7 +43,7 @@ import { HeadInfo } from '~/components/HeadInfo'
 import { useHoverGlow } from '~/components/HoverGlow'
 import { Link } from '~/components/Link'
 import { Footer } from '~/features/site/Footer'
-import { LoadMunro } from '~/features/site/fonts/LoadFonts'
+import { LoadCherryBomb, LoadMunro } from '~/features/site/fonts/LoadFonts'
 import { PurchaseModal } from '~/features/site/purchase/PurchaseModal'
 import { MunroP, PurchaseButton, isSafariMobile } from '~/features/site/purchase/helpers'
 import { getProductsForServerSideRendering } from '~/features/site/purchase/server-helpers'
@@ -70,6 +70,7 @@ export default function TakeoutPage() {
   return (
     <YStack maw="100%">
       <LoadMunro />
+      <LoadCherryBomb />
       <script src="https://cdn.paritydeals.com/banner.js" />
       <HeadInfo
         title="🥡 Tamagui Takeout"
@@ -109,37 +110,6 @@ export default function TakeoutPage() {
           zi={-3}
         />
       </ThemeTintAlt> */}
-
-      <ThemeTintAlt offset={0}>
-        <YStack
-          pos="absolute"
-          l={0}
-          r={0}
-          t={-100}
-          b={0}
-          style={{
-            background: 'linear-gradient(to bottom, var(--color1) 2%, transparent 20%)',
-          }}
-          zi={-1}
-        />
-        {/* linearGradient / background of */}
-        <ThemeNameEffect colorKey="$color1" />
-      </ThemeTintAlt>
-
-      <ThemeTintAlt offset={1}>
-        <YStack
-          pos="absolute"
-          l={0}
-          r={0}
-          t={-100}
-          b={0}
-          o={0.3}
-          style={{
-            background: 'linear-gradient(to right, transparent, var(--color7))',
-          }}
-          zi={-2}
-        />
-      </ThemeTintAlt>
 
       <YStack
         pe="none"
@@ -221,12 +191,16 @@ export default function TakeoutPage() {
             <YStack mt={-580} $md={{ mt: -520 }} group="takeoutBody" f={1} gap="$5">
               <ThemeTintAlt>
                 <Paragraph className="text-wrap-balance" size="$7" $sm={{ size: '$7' }}>
-                  Takeout is a production-ready stack for a user-based app. It shares a
-                  large percent of code between native and web, while maintaining a high
-                  bar for UX and performance. Building off our OSS starter (
-                  <CodeInline>npm create tamagui</CodeInline>), we add Supabase, tRPC,
-                  Zod, custom themes, screens, a user system, and typed, themeable fonts
-                  and icons from{' '}
+                  Takeout is a production-ready stack that chooses reliable technology and
+                  gives you everything you need for most user-based apps.
+                </Paragraph>
+
+                <Paragraph className="text-wrap-balance" size="$7" $sm={{ size: '$7' }}>
+                  It shares a large percent of code between native and web, while
+                  maintaining a high bar for UX and performance. Building off our OSS
+                  starter (<CodeInline>npm create tamagui</CodeInline>), we add Supabase,
+                  tRPC, Zod, custom themes, screens, a user system and common flows, and
+                  typed, themeable fonts and icons via{' '}
                   <Link href="https://fonts.google.com" target="_blank">
                     Google Fonts
                   </Link>{' '}
@@ -234,8 +208,7 @@ export default function TakeoutPage() {
                   <Link href="https://icones.js.org" target="_blank">
                     icones.js.org
                   </Link>{' '}
-                  with <CodeInline>yarn&nbsp;add:icon</CodeInline> or{' '}
-                  <CodeInline>font</CodeInline>.
+                  with <CodeInline>yarn&nbsp;add:icon|font</CodeInline>.
                 </Paragraph>
               </ThemeTintAlt>
 
@@ -678,7 +651,7 @@ const points = {
 const TakeoutBox3D = lazy(() => import('../../features/takeout/TakeoutBox3D'))
 const TakeoutGallery = lazy(() => import('../../features/takeout/TakeoutGallery'))
 
-const heroHeight = 1050
+const heroHeight = 1000
 
 export type TakeoutPageProps = Awaited<
   ReturnType<typeof getProductsForServerSideRendering>
@@ -1022,7 +995,9 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
         </SizableText>
       )}
 
+      {/* <Theme name="accent"> */}
       <TakeoutCardFrame
+        bg="$color1"
         className="blur-medium"
         zi={100_000}
         maw={310}
@@ -1045,17 +1020,17 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
       >
         <YStack zi={-1} fullscreen bg="$color5" o={0.5} />
 
-        <ThemeTintAlt>
-          <LinearGradient
-            pos="absolute"
-            b={0}
-            l={0}
-            r={0}
-            h={200}
-            colors={['$background0', '$color5']}
-            zi={100}
-          />
-        </ThemeTintAlt>
+        {/* <ThemeTintAlt>
+            <LinearGradient
+              pos="absolute"
+              b={0}
+              l={0}
+              r={0}
+              h={200}
+              colors={['$background0', '$color5']}
+              zi={100}
+            />
+          </ThemeTintAlt> */}
 
         <YStack pos="absolute" b="$4" l="$4" r="$4" zi={100}>
           {/* cant use buttonlink it breaks scroll on press if not enabled, conditionally use a link */}
@@ -1155,6 +1130,7 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
           </YStack>
         </ScrollView>
       </TakeoutCardFrame>
+      {/* </Theme> */}
     </div>
   )
 })

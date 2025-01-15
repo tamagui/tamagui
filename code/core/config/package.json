@@ -69,6 +69,15 @@
       "types": "./types/v3.d.ts",
       "import": "./dist/esm/v3.mjs",
       "require": "./dist/cjs/v3.cjs"
+    },
+    "./v4": {
+      "react-native": {
+        "import": "./dist/esm/v4.native.js",
+        "require": "./dist/cjs/v4.native.js"
+      },
+      "types": "./types/v4.d.ts",
+      "import": "./dist/esm/v4.mjs",
+      "require": "./dist/cjs/v4.cjs"
     }
   },
   "dependencies": {

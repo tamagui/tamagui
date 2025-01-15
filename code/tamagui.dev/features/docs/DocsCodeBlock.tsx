@@ -141,9 +141,9 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
             >
               {isCollapsed ? 'Show code' : 'Hide code'}
             </Button>
-            {/* <TooltipSimple label="Toggle tint on/off">
+            <TooltipSimple label="Toggle tint on/off">
               <Button size="$3" onPress={toggleDocsTinted} zi={10} icon={Paintbrush} />
-            </TooltipSimple> */}
+            </TooltipSimple>
           </XStack>
         )}
 
