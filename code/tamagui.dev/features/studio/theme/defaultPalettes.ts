@@ -5,7 +5,7 @@ const defaultBasePaletteAnchors: BuildPalette['anchors'] = [
     index: 0,
     hue: { sync: true, light: 0, dark: 0 },
     sat: { sync: true, light: 0.15, dark: 0.15 },
-    lum: { light: 0.985, dark: 0.1 },
+    lum: { light: 1, dark: 0 },
   },
   {
     index: 9,

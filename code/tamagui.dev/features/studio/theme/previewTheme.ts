@@ -32,6 +32,7 @@ export async function updatePreviewTheme(
   // async lock
   running.set(args.id, cacheKey)
 
+  console.log('args', args)
   const { themes } = createThemes(args)
 
   // async stale check
