@@ -50,9 +50,9 @@ const WindowMacView = () => {
   )
 }
 
-const WindowLayout = ({ children }) => {
+const WindowLayout = ({ children, ...props }) => {
   return (
-    <YStack h="100%" w="100%" justifyContent="flex-start" alignItems="center">
+    <YStack h="100%" w="100%" justifyContent="flex-start" alignItems="center" {...props}>
       <YStack
         w="100%"
         h={200}
@@ -63,6 +63,7 @@ const WindowLayout = ({ children }) => {
         borderColor={'$borderColor'}
         $theme-light={{
           borderColor: '$gray6',
+          bg: '$gray3',
         }}
       >
         <WindowMacView />
@@ -265,7 +266,7 @@ const ComponentPreview = {
   List: () => {
     return (
       <WindowLayout>
-        <YStack ov="hidden" p="$4" width="100%" mb="$-8" gap="$4">
+        <YStack bg="$background" ov="hidden" p="$4" width="100%" mb="$-8" gap="$4">
           {Array(3)
             .fill(0)
             .map((_, index) => {
@@ -432,6 +433,7 @@ const ComponentPreview = {
           borderColor={'$borderColor'}
           $theme-light={{
             borderColor: '$gray6',
+            bg: '$gray4',
           }}
         >
           {Array(3)
@@ -450,7 +452,7 @@ const ComponentPreview = {
               />
             ))}
         </XStack>
-        <YStack w="100%">
+        <YStack w="100%" bg="$background">
           {Array(10)
             .fill(0)
             .map((_, index) => (
@@ -559,6 +561,7 @@ const ComponentPreview = {
       </YStack>
     )
   },
+
   Navbar: () => {
     return (
       <WindowLayout>
@@ -637,7 +640,7 @@ const ComponentPreview = {
               borderBottomWidth={1}
               borderColor={index === 0 ? '$accentColor' : 'transparent'}
             >
-              <Text textAlign="center" fontSize={10}>
+              <Text opacity={index === 0 ? 1 : 0.5} textAlign="center" fontSize={8}>
                 {tab}
               </Text>
             </View>
