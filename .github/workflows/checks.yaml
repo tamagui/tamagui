@@ -8,6 +8,7 @@ on:
       - '.vscode/**'
     branches:
       - master
+      - fix/*
 
 jobs:
   checks:

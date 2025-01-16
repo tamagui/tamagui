@@ -11,11 +11,7 @@
       "skipEnvToMeta": true
     }
   },
-  "files": [
-    "src",
-    "types",
-    "dist"
-  ],
+  "files": ["src", "types", "dist"],
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
@@ -30,8 +26,8 @@
         "require": "./dist/cjs/index.native.js"
       },
       "types": "./types/index.d.ts",
-      "require": "./dist/cjs/index.cjs",
-      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.js",
+      "import": "./dist/esm/index.js",
       "default": "./dist/cjs/index.native.js"
     }
   },
