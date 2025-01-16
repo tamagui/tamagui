@@ -1,6 +1,7 @@
 import {
   Check,
   CheckCircle2,
+  Mail,
   Share,
   ShoppingBag,
   ShoppingCart,
@@ -688,9 +689,9 @@ const ComponentPreview = {
     return (
       <WindowLayout>
         <XStack gap="$4" justifyContent="flex-start" p="$4">
-          <YStack flex={3} gap="$2">
+          <YStack flex={3} gap="$1.5">
             <View w={'100%'} bg="$gray8" aspectRatio={3 / 2} />
-            <XStack gap="$2">
+            <XStack gap="$1.5">
               {Array(4)
                 .fill(0)
                 .map((_, i) => (
@@ -720,8 +721,39 @@ const ComponentPreview = {
       </WindowLayout>
     )
   },
-  // Preferences: Cog,
-  // 'Event Reminders': BellDot,
+
+  Preferences: () => {
+    return (
+      <WindowLayout>
+        <YStack
+          m="$4"
+          p="$4"
+          br="$4"
+          gap="$2"
+          borderWidth={1}
+          borderColor={'$borderColor'}
+          $theme-light={{
+            borderColor: '$gray6',
+          }}
+          height={200}
+        >
+          <Mail />
+          <View w="100%" mt="$2" h={6} bg="$gray8" />
+          <View w="80%" h={6} bg="$gray8" />
+        </YStack>
+      </WindowLayout>
+    )
+  },
+
+  'Event Reminders': () => {
+    return (
+      <WindowLayout>
+        <YStack p="$4" gap="$4">
+          <View w="100%" h={6} bg="$gray8" />
+        </YStack>
+      </WindowLayout>
+    )
+  },
 }
 
 export default ComponentPreview
