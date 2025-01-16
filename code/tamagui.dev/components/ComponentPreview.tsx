@@ -1,6 +1,7 @@
 import {
   Check,
   CheckCircle2,
+  Laptop2,
   Mail,
   Share,
   ShoppingBag,
@@ -742,11 +743,8 @@ const ComponentPreview = {
           p="$4"
           br="$4"
           gap="$2"
-          borderWidth={1}
-          borderColor={'$borderColor'}
-          $theme-light={{
-            borderColor: '$gray6',
-          }}
+          borderWidth={1.5}
+          borderColor={'$gray8'}
           height={200}
         >
           <Mail />
@@ -759,11 +757,37 @@ const ComponentPreview = {
 
   'Event Reminders': () => {
     return (
-      <WindowLayout>
-        <YStack p="$4" gap="$4">
-          <View w="100%" h={6} bg="$gray8" />
+      <YStack
+        w="100%"
+        // h="100%"
+        bg="$background"
+        borderWidth={1}
+        borderColor={'$gray8'}
+        overflow="hidden"
+        br="$4"
+      >
+        <XStack
+          alignItems="center"
+          p="$2"
+          gap="$2"
+          borderBottomWidth={1}
+          borderColor={'$gray8'}
+        >
+          <Laptop2 size={16} />
+          <Text fontSize={10}>Status Tracker</Text>
+        </XStack>
+        <YStack p="$2" gap="$2">
+          {[1, 2].map((_, i) => (
+            <XStack key={i} alignItems="center" gap="$2">
+              <View bg="$gray8" h={'$2'} aspectRatio={1} borderRadius={1_000_000_000} />
+              <View flex={1} gap="$2">
+                <View bg="$gray8" h={6} w="80%" />
+                <View bg="$gray8" h={6} w="20%" />
+              </View>
+            </XStack>
+          ))}
         </YStack>
-      </WindowLayout>
+      </YStack>
     )
   },
 }
