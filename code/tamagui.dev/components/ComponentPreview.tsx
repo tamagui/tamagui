@@ -586,7 +586,7 @@ const ComponentPreview = {
           <BentoIcon />
           <XStack px="$2" gap="$4" flex={1}>
             {Array.from({ length: 3 }).map((_, index) => (
-              <View bg="$color10" flex={1} h={6} key={index} />
+              <View bg="$gray8" flex={1} h={6} key={index} />
             ))}
           </XStack>
         </XStack>
@@ -613,10 +613,10 @@ const ComponentPreview = {
         >
           <BentoIcon />
           <YStack h="100%" w="100%" gap="$3" flex={1}>
-            <View w="90%" bg="$color10" h={6} />
-            <View w="70%" bg="$color10" h={6} />
-            <View w="50%" bg="$color10" h={6} />
-            <View w="90%" bg="$color10" h={6} />
+            <View w="90%" bg="$gray8" h={6} />
+            <View w="70%" bg="$gray8" h={6} />
+            <View w="50%" bg="$gray8" h={6} />
+            <View w="90%" bg="$gray8" h={6} />
           </YStack>
         </YStack>
       </WindowLayout>
