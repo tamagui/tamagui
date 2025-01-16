@@ -655,6 +655,18 @@ const ComponentPreview = {
             </View>
           ))}
         </XStack>
+        <YStack
+          p="$4"
+          w="100%"
+          justifyContent="center"
+          alignItems="center"
+          bg="$background"
+          gap="$2"
+        >
+          <Text fontWeight="bold">Hero</Text>
+          <View w="100%" mt="$2" h={6} bg="$gray8" />
+          <View w="80%" h={6} bg="$gray8" />
+        </YStack>
       </WindowLayout>
     )
   },
