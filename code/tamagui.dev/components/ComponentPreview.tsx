@@ -1,27 +1,21 @@
 import {
-  ArrowLeft,
-  ArrowRight,
   Check,
   CheckCircle2,
   Laptop2,
   Mail,
   Share,
-  ShoppingBag,
   ShoppingCart,
   Upload,
   User,
 } from '@tamagui/lucide-icons'
-import React from 'react'
+
 import {
   Avatar,
   Button,
   Checkbox,
   getTokenValue,
-  Group,
-  GroupFrame,
   Label,
   RadioGroup,
-  Separator,
   styled,
   Switch,
   View,
@@ -118,7 +112,16 @@ const ComponentPreview = {
       <Label mt={0} mb={0}>
         Full Name
       </Label>
-      <Input placeholder="Bento 🍱" />
+      <View
+        bg="$background"
+        bw={1}
+        borderColor="$borderColor"
+        p="$2"
+        px="$3"
+        borderRadius="$4"
+      >
+        <Text color="$gray7">Bento 🍱</Text>
+      </View>
     </YStack>
   ),
 
@@ -689,7 +692,7 @@ const ComponentPreview = {
                 width={index === 1 ? '$2' : '$0.75'}
                 height="$0.75"
                 borderRadius="$5"
-                backgroundColor={index === 1 ? '$accentColor' : '$gray7'}
+                backgroundColor={index === 1 ? '$accentColor' : '$gray10'}
                 animation="200ms"
               />
             ))}
@@ -786,7 +789,7 @@ const ComponentPreview = {
         // h="100%"
         bg="$background"
         borderWidth={1}
-        borderColor={'$gray8'}
+        borderColor={'$borderColor'}
         overflow="hidden"
         br="$4"
       >
@@ -795,7 +798,8 @@ const ComponentPreview = {
           p="$2"
           gap="$2"
           borderBottomWidth={1}
-          borderColor={'$gray8'}
+          borderColor={'$borderColor'}
+          bg="$backgroundPress"
         >
           <Laptop2 size={16} />
           <Text fontSize={10}>Status Tracker</Text>
