@@ -1,7 +1,6 @@
-import Module from 'module'
-import { join } from 'path'
-
 import type { ThemeBuilder } from '@tamagui/theme-builder'
+import Module from 'node:module'
+import { join } from 'node:path'
 
 type ThemeBuilderInterceptOpts = {
   onComplete: (result: { themeBuilder: ThemeBuilder<any> }) => void
@@ -47,7 +46,11 @@ export async function generateThemes(inputFile: string) {
 
   try {
     const requiredThemes = require(inputFilePath)
-    const themes = requiredThemes['default'] || requiredThemes['themes']
+    const themes =
+      requiredThemes['default'] ||
+      requiredThemes['themes'] ||
+      requiredThemes[Object.keys(requiredThemes)[0]]
+
     const generatedThemes = generatedThemesToTypescript(themes)
 
     let tm: any
@@ -112,6 +115,10 @@ function generatedThemesToTypescript(themes: Record<string, any>) {
       dedupedThemes.set(key, theme)
       dedupedThemeToNames.set(key, [name])
     }
+  }
+
+  if (!themes) {
+    throw new Error(`Didn't find any themes exported or returned`)
   }
 
   const baseKeys = Object.entries(themes.light || themes[Object.keys(themes)[0]]) as [
