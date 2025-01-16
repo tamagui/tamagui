@@ -16,8 +16,6 @@ export async function getOptions({
   debug,
   loadTamaguiOptions,
 }: Partial<CLIUserOptions> = {}): Promise<CLIResolvedOptions> {
-  const tsConfigFilePath = join(root, tsconfigPath)
-  ensure(await fs.pathExists(tsConfigFilePath), `No tsconfig found: ${tsConfigFilePath}`)
   const dotDir = join(root, '.tamagui')
   let pkgJson = {}
   let config = ''
