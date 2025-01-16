@@ -53,7 +53,7 @@
     }
   },
   "dependencies": {
-    "@tamagui/web": "1.121.6"
+    "@tamagui/web": "1.121.11"
   },
   "devDependencies": {
     "@tamagui/build": "1.121.11"
