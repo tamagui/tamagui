@@ -1,4 +1,12 @@
-import { Check, CheckCircle2, Share, Upload, User } from '@tamagui/lucide-icons'
+import {
+  Check,
+  CheckCircle2,
+  Share,
+  ShoppingBag,
+  ShoppingCart,
+  Upload,
+  User,
+} from '@tamagui/lucide-icons'
 import React from 'react'
 import {
   Avatar,
@@ -651,8 +659,67 @@ const ComponentPreview = {
   },
   // Microinteractions: MousePointerClick,
   // Slide: Banana,
-  // Cart: ShoppingCart,
-  // 'Product Page': ShoppingBag,
+
+  Cart: () => {
+    return (
+      <WindowLayout>
+        <YStack gap="$4" p="$4">
+          <ShoppingCart rotate={'-16deg'} />
+          <YStack gap="$4">
+            {Array(3)
+              .fill(0)
+              .map((_, index) => (
+                <XStack gap="$2" key={index}>
+                  <View aspectRatio={1} bg="$gray8" h={'$1.5'} br="$2" />
+                  <YStack flex={1} gap="$2">
+                    <View bg="$gray8" h={6} width={'70%'} />
+                    <View bg="$gray8" h={6} width={'20%'} />
+                  </YStack>
+
+                  <View bg="$gray8" h={6} width={'10%'} />
+                </XStack>
+              ))}
+          </YStack>
+        </YStack>
+      </WindowLayout>
+    )
+  },
+  'Product Page': () => {
+    return (
+      <WindowLayout>
+        <XStack gap="$4" justifyContent="flex-start" p="$4">
+          <YStack flex={3} gap="$2">
+            <View w={'100%'} bg="$gray8" aspectRatio={3 / 2} />
+            <XStack gap="$2">
+              {Array(4)
+                .fill(0)
+                .map((_, i) => (
+                  <View key={i} bg="$gray8" flex={1} aspectRatio={1} />
+                ))}
+            </XStack>
+          </YStack>
+          <YStack gap="$2" flex={1}>
+            <Text fontSize={10}>Product</Text>
+
+            <XStack gap="$1.5">
+              {['$red10', '$blue10', '$green10'].map((color, index) => (
+                <View
+                  bg={color as any}
+                  h={6}
+                  w={6}
+                  borderRadius={1_000_000_000}
+                  key={index}
+                />
+              ))}
+            </XStack>
+
+            <View w="100%" mt="$2" h={6} bg="$gray8" />
+            <View w="80%" h={6} bg="$gray8" />
+          </YStack>
+        </XStack>
+      </WindowLayout>
+    )
+  },
   // Preferences: Cog,
   // 'Event Reminders': BellDot,
 }
