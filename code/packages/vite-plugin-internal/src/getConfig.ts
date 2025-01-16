@@ -2,10 +2,10 @@
 
 import react from '@vitejs/plugin-react-swc'
 import { join } from 'node:path'
-import { type Plugin, defineConfig } from 'vite'
+import { type Plugin, type UserConfig, defineConfig } from 'vite'
 import { requireResolve } from './requireResolve'
 
-export function getConfig(tamaguiPlugin: any) {
+export function getConfig(tamaguiPlugin: any): UserConfig {
   const isNative =
     !process.env.DISABLE_REACT_NATIVE &&
     !process.env.DISABLE_NATIVE_TEST &&

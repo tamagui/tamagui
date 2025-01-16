@@ -7,8 +7,8 @@
   "license": "MIT",
   "scripts": {
     "test:web": "DISABLE_REACT_NATIVE=1 TEST_ENVIRONMENT=jsdom TAMAGUI_TARGET=web vitest --run --config ../../packages/vite-plugin-internal/src/vite.config.ts **/*.web.test.tsx",
-    "test:native": "TAMAGUI_TARGET=native vitest --run --config ../../packages/vite-plugin-internal/src/vite.config.ts **/*.native.test.tsx",
-    "_test": "yarn test:native"
+    "test:native": "TAMAGUI_TARGET=native vitest --run --config **/*.native.test.tsx",
+    "test": "yarn test:native"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.6.3",
