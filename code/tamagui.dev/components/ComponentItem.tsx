@@ -69,7 +69,6 @@ export function ComponentItem({
         {/* Preview */}
         <YStack
           pointerEvents="none"
-          // bg={'$color3'}
           h={172}
           br="$4"
           ov="hidden"
@@ -87,11 +86,11 @@ export function ComponentItem({
           $theme-light={{
             bg: '$background025',
           }}
-
-          // bg="$color4"
+          hoverStyle={{
+            scale: 1.2,
+          }}
         >
           <Preview />
-          {/* {preview?.()} */}
         </YStack>
 
         <YStack f={1} p="$4">
@@ -106,7 +105,6 @@ export function ComponentItem({
           </H5>
 
           <YStack
-            // className="mask-gradient-down"
             pos="absolute"
             t="$4"
             r="$4"

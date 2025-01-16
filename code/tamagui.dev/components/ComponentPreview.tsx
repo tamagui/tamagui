@@ -1,4 +1,6 @@
 import {
+  ArrowLeft,
+  ArrowRight,
   Check,
   CheckCircle2,
   Laptop2,
@@ -277,21 +279,19 @@ const ComponentPreview = {
     return (
       <WindowLayout>
         <YStack bg="$background" ov="hidden" p="$4" width="100%" mb="$-8" gap="$4">
-          {Array(3)
-            .fill(0)
-            .map((_, index) => {
-              return (
-                <View flexDirection="row" alignItems="center" key={index} gap="$2">
-                  <User color="$gray8" />
+          {Array.from({ length: 3 }).map((_, index) => {
+            return (
+              <View flexDirection="row" alignItems="center" key={index} gap="$2">
+                <User color="$gray8" />
 
-                  <View gap="$2" flex={1}>
-                    <View height={4} bg={'$gray8'} width="80%" />
-                    <View height={4} bg={'$gray8'} width="45%" />
-                    <View />
-                  </View>
+                <View gap="$2" flex={1}>
+                  <View height={4} bg={'$gray8'} width="80%" />
+                  <View height={4} bg={'$gray8'} width="45%" />
+                  <View />
                 </View>
-              )
-            })}
+              </View>
+            )
+          })}
         </YStack>
       </WindowLayout>
     )
@@ -446,49 +446,43 @@ const ComponentPreview = {
             bg: '$gray4',
           }}
         >
-          {Array(3)
-            .fill(0)
-            .map((_, index) => (
-              <View
-                flex={1}
-                h={'$2'}
-                borderLeftWidth={1}
-                borderRightWidth={1}
-                borderColor={index === 1 ? '$borderColor' : 'transparent'}
-                $theme-light={{
-                  borderColor: index === 1 ? '$gray6' : 'transparent',
-                }}
-                key={index}
-              />
-            ))}
+          {Array.from({ length: 3 }).map((_, index) => (
+            <View
+              flex={1}
+              h={'$2'}
+              borderLeftWidth={1}
+              borderRightWidth={1}
+              borderColor={index === 1 ? '$borderColor' : 'transparent'}
+              $theme-light={{
+                borderColor: index === 1 ? '$gray6' : 'transparent',
+              }}
+              key={index}
+            />
+          ))}
         </XStack>
         <YStack w="100%" bg="$background">
-          {Array(10)
-            .fill(0)
-            .map((_, index) => (
-              <XStack
-                borderBottomWidth={1}
-                borderColor={'$borderColor'}
-                key={index}
-                h={'$1.5'}
-              >
-                {Array(3)
-                  .fill(0)
-                  .map((_, index) => (
-                    <View
-                      key={index}
-                      borderLeftWidth={1}
-                      borderRightWidth={1}
-                      borderColor={index === 1 ? '$borderColor' : 'transparent'}
-                      $theme-light={{
-                        borderColor: index === 1 ? '$gray6' : 'transparent',
-                      }}
-                      flex={1}
-                      h="100%"
-                    />
-                  ))}
-              </XStack>
-            ))}
+          {Array.from({ length: 10 }).map((_, index) => (
+            <XStack
+              borderBottomWidth={1}
+              borderColor={'$borderColor'}
+              key={index}
+              h={'$1.5'}
+            >
+              {Array.from({ length: 3 }).map((_, index) => (
+                <View
+                  key={index}
+                  borderLeftWidth={1}
+                  borderRightWidth={1}
+                  borderColor={index === 1 ? '$borderColor' : 'transparent'}
+                  $theme-light={{
+                    borderColor: index === 1 ? '$gray6' : 'transparent',
+                  }}
+                  flex={1}
+                  h="100%"
+                />
+              ))}
+            </XStack>
+          ))}
         </YStack>
       </WindowLayout>
     )
@@ -588,11 +582,9 @@ const ComponentPreview = {
         >
           <BentoIcon />
           <XStack px="$2" gap="$4" flex={1}>
-            {Array(3)
-              .fill(0)
-              .map((_, index) => (
-                <View bg="$color10" flex={1} h={6} key={index} />
-              ))}
+            {Array.from({ length: 3 }).map((_, index) => (
+              <View bg="$color10" flex={1} h={6} key={index} />
+            ))}
           </XStack>
         </XStack>
       </WindowLayout>
@@ -671,7 +663,42 @@ const ComponentPreview = {
       </WindowLayout>
     )
   },
-  // Microinteractions: MousePointerClick,
+  Microinteractions: () => {
+    return (
+      <YStack>
+        <View
+          flex={1}
+          flexDirection="row"
+          alignItems="center"
+          justifyContent="center"
+          gap="$2"
+        >
+          <View
+            flexDirection="row"
+            alignItems="center"
+            justifyContent="center"
+            gap="$3"
+            bg="$background"
+            height="$3"
+            paddingHorizontal="$4"
+            borderRadius="$8"
+          >
+            {Array.from({ length: 4 }).map((_, index) => (
+              <View
+                key={index}
+                width={index === 1 ? '$2' : '$0.75'}
+                height="$0.75"
+                borderRadius="$5"
+                backgroundColor={index === 1 ? '$accentColor' : '$gray7'}
+                animation="200ms"
+              />
+            ))}
+          </View>
+        </View>
+      </YStack>
+    )
+  },
+
   // Slide: Banana,
 
   Cart: () => {
@@ -680,24 +707,23 @@ const ComponentPreview = {
         <YStack gap="$4" p="$4">
           <ShoppingCart rotate={'-16deg'} />
           <YStack gap="$4">
-            {Array(3)
-              .fill(0)
-              .map((_, index) => (
-                <XStack gap="$2" key={index}>
-                  <View aspectRatio={1} bg="$gray8" h={'$1.5'} br="$2" />
-                  <YStack flex={1} gap="$2">
-                    <View bg="$gray8" h={6} width={'70%'} />
-                    <View bg="$gray8" h={6} width={'20%'} />
-                  </YStack>
+            {Array.from({ length: 3 }).map((_, index) => (
+              <XStack gap="$2" key={index}>
+                <View aspectRatio={1} bg="$gray8" h={'$1.5'} br="$2" />
+                <YStack flex={1} gap="$2">
+                  <View bg="$gray8" h={6} width={'70%'} />
+                  <View bg="$gray8" h={6} width={'20%'} />
+                </YStack>
 
-                  <View bg="$gray8" h={6} width={'10%'} />
-                </XStack>
-              ))}
+                <View bg="$gray8" h={6} width={'10%'} />
+              </XStack>
+            ))}
           </YStack>
         </YStack>
       </WindowLayout>
     )
   },
+
   'Product Page': () => {
     return (
       <WindowLayout>
@@ -705,11 +731,9 @@ const ComponentPreview = {
           <YStack flex={3} gap="$1.5">
             <View w={'100%'} bg="$gray8" aspectRatio={3 / 2} />
             <XStack gap="$1.5">
-              {Array(4)
-                .fill(0)
-                .map((_, i) => (
-                  <View key={i} bg="$gray8" flex={1} aspectRatio={1} />
-                ))}
+              {Array.from({ length: 4 }).map((_, i) => (
+                <View key={i} bg="$gray8" flex={1} aspectRatio={1} />
+              ))}
             </XStack>
           </YStack>
           <YStack gap="$2" flex={1}>
