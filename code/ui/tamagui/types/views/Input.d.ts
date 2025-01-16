@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-=======
-import React from 'react';
->>>>>>> master
 import type { GetProps } from '@tamagui/core';
 import { TextInput } from 'react-native';
 export declare const defaultStyles: {
@@ -102,10 +98,6 @@ export declare function useInputProps(props: InputProps, ref: any): {
     onBlur?: ((e: import("react-native").NativeSyntheticEvent<import("react-native").TextInputFocusEventData>) => void) | undefined | undefined;
     onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined | undefined;
     onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined | undefined;
-<<<<<<< HEAD
-=======
-    focusable?: boolean | undefined | undefined;
->>>>>>> master
     onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined | undefined;
     onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined | undefined;
     onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined | undefined;
@@ -150,11 +142,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
     importantForAccessibility?: ("auto" | "yes" | "no" | "no-hide-descendants") | undefined | undefined;
     'aria-hidden'?: boolean | undefined | undefined;
     'aria-modal'?: boolean | undefined | undefined;
-<<<<<<< HEAD
-    role?: "row" | "none" | "link" | "group" | "article" | "main" | "figure" | "img" | "table" | "button" | "form" | "meter" | "option" | "dialog" | "menu" | "summary" | "alert" | "checkbox" | "combobox" | "menubar" | "menuitem" | "progressbar" | "radio" | "radiogroup" | "scrollbar" | "spinbutton" | "switch" | "tab" | "tablist" | "timer" | "list" | "toolbar" | "alertdialog" | "application" | "banner" | "cell" | "columnheader" | "complementary" | "contentinfo" | "definition" | "directory" | "document" | "feed" | "grid" | "heading" | "listitem" | "log" | "marquee" | "math" | "navigation" | "note" | "presentation" | "region" | "rowgroup" | "rowheader" | "searchbox" | "separator" | "slider" | "status" | "tabpanel" | "term" | "tooltip" | "tree" | "treegrid" | "treeitem" | undefined;
-=======
-    role?: "row" | "none" | "link" | "group" | "separator" | "article" | "main" | "figure" | "img" | "table" | "button" | "form" | "meter" | "option" | "dialog" | "menu" | "summary" | "alert" | "checkbox" | "combobox" | "menubar" | "menuitem" | "progressbar" | "radio" | "radiogroup" | "scrollbar" | "spinbutton" | "switch" | "tab" | "tablist" | "timer" | "list" | "toolbar" | "grid" | "alertdialog" | "application" | "banner" | "cell" | "columnheader" | "complementary" | "contentinfo" | "definition" | "directory" | "document" | "feed" | "heading" | "listitem" | "log" | "marquee" | "math" | "navigation" | "note" | "presentation" | "region" | "rowgroup" | "rowheader" | "searchbox" | "slider" | "status" | "tabpanel" | "term" | "tooltip" | "tree" | "treegrid" | "treeitem" | undefined;
->>>>>>> master
+    role?: "row" | "none" | "link" | "group" | "article" | "main" | "figure" | "img" | "table" | "button" | "form" | "meter" | "option" | "dialog" | "menu" | "summary" | "alert" | "checkbox" | "combobox" | "menubar" | "menuitem" | "progressbar" | "radio" | "radiogroup" | "scrollbar" | "spinbutton" | "switch" | "tab" | "tablist" | "timer" | "list" | "toolbar" | "grid" | "alertdialog" | "application" | "banner" | "cell" | "columnheader" | "complementary" | "contentinfo" | "definition" | "directory" | "document" | "feed" | "heading" | "listitem" | "log" | "marquee" | "math" | "navigation" | "note" | "presentation" | "region" | "rowgroup" | "rowheader" | "searchbox" | "separator" | "slider" | "status" | "tabpanel" | "term" | "tooltip" | "tree" | "treegrid" | "treeitem" | undefined;
     accessibilityLabelledBy?: string | string[] | undefined | undefined;
     'aria-labelledby'?: string | undefined | undefined;
     accessibilityLiveRegion?: "none" | "polite" | "assertive" | undefined | undefined;
@@ -182,11 +170,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
     componentName?: string | undefined;
     tabIndex?: 0 | -1 | undefined;
     disableOptimization?: boolean | undefined;
-<<<<<<< HEAD
-    forceStyle?: "hover" | "press" | "focus" | "focusVisible" | undefined;
-=======
     forceStyle?: "hover" | "press" | "focus" | "focusVisible" | "focusWithin" | undefined;
->>>>>>> master
     disableClassName?: boolean | undefined;
     hitSlop?: ((number | import("@tamagui/core").Insets) & (number | import("react-native").Insets)) | null | undefined;
     needsOffscreenAlphaCompositing?: boolean | undefined | undefined;
@@ -194,10 +178,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
     collapsable?: boolean | undefined | undefined;
     collapsableChildren?: boolean | undefined | undefined;
     renderToHardwareTextureAndroid?: boolean | undefined | undefined;
-<<<<<<< HEAD
     focusable?: boolean | undefined | undefined;
-=======
->>>>>>> master
     shouldRasterizeIOS?: boolean | undefined | undefined;
     isTVSelectable?: boolean | undefined | undefined;
     hasTVPreferredFocus?: boolean | undefined | undefined;
@@ -276,19 +257,11 @@ export declare function useInputProps(props: InputProps, ref: any): {
     returnKeyLabel?: string | undefined | undefined;
     underlineColorAndroid?: import("react-native").ColorValue | undefined;
     showSoftInputOnFocus?: boolean | undefined | undefined;
-<<<<<<< HEAD
     ellipsis?: boolean | "unset" | undefined;
-=======
-    ellipse?: boolean | "unset" | undefined;
->>>>>>> master
     textDecorationDistance?: number | "unset" | undefined;
     textOverflow?: import("csstype").Property.TextOverflow | undefined;
     whiteSpace?: import("csstype").Property.WhiteSpace | undefined;
     wordWrap?: import("csstype").Property.WordWrap | undefined;
-<<<<<<< HEAD
-=======
-    textAlignVertical?: "unset" | "auto" | "center" | "bottom" | "top" | undefined;
->>>>>>> master
     color?: "unset" | import("react-native").OpaqueColorValue | import("@tamagui/core").GetThemeValueForKey<"color"> | undefined;
     borderColor?: "unset" | import("react-native").OpaqueColorValue | import("@tamagui/core").GetThemeValueForKey<"borderColor"> | undefined;
     shadowColor?: "unset" | import("react-native").OpaqueColorValue | import("@tamagui/core").GetThemeValueForKey<"shadowColor"> | undefined;
@@ -370,10 +343,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
     elevation?: number | "unset" | undefined;
     isolation?: "unset" | "auto" | "isolate" | undefined;
     boxShadow?: string | readonly import("react-native").BoxShadowValue[] | undefined;
-<<<<<<< HEAD
     filter?: string | readonly import("react-native").FilterFunction[] | undefined;
-=======
->>>>>>> master
     aspectRatio?: number | string | undefined | undefined;
     borderBottomWidth?: number | "unset" | import("@tamagui/core").GetThemeValueForKey<"borderBottomWidth"> | undefined;
     borderEndWidth?: number | "unset" | import("@tamagui/core").GetThemeValueForKey<"borderEndWidth"> | undefined;
@@ -400,10 +370,6 @@ export declare function useInputProps(props: InputProps, ref: any): {
     start?: "unset" | import("react-native").DimensionValue | undefined;
     top?: number | "unset" | import("react-native").Animated.AnimatedNode | import("@tamagui/core").GetThemeValueForKey<"top"> | null | undefined;
     direction?: "unset" | "inherit" | "ltr" | "rtl" | undefined;
-<<<<<<< HEAD
-=======
-    inset?: "unset" | import("react-native").DimensionValue | undefined;
->>>>>>> master
     shadowOffset?: "unset" | import("@tamagui/core").GetThemeValueForKey<"shadowOffset"> | Readonly<{
         width: number;
         height: number;
@@ -610,11 +576,8 @@ export declare function useInputProps(props: InputProps, ref: any): {
     rotation?: "unset" | import("react-native").AnimatableNumericValue | undefined;
     translateX?: "unset" | import("react-native").AnimatableNumericValue | undefined;
     translateY?: "unset" | import("react-native").AnimatableNumericValue | undefined;
-<<<<<<< HEAD
     textAlignVertical?: "unset" | "auto" | "center" | "bottom" | "top" | undefined;
     verticalAlign?: "unset" | "auto" | "bottom" | "top" | "middle" | undefined;
-=======
->>>>>>> master
     includeFontPadding?: boolean | "unset" | undefined;
     display?: "unset" | "inherit" | "flex" | "none" | "inline" | "block" | "contents" | "inline-flex" | undefined;
     x?: number | "unset" | import("@tamagui/core").GetThemeValueForKey<"x"> | undefined;
@@ -630,97 +593,26 @@ export declare function useInputProps(props: InputProps, ref: any): {
     rotateY?: "unset" | import("@tamagui/core").UnionableString | `${number}deg` | undefined;
     rotateX?: "unset" | import("@tamagui/core").UnionableString | `${number}deg` | undefined;
     rotateZ?: "unset" | import("@tamagui/core").UnionableString | `${number}deg` | undefined;
-<<<<<<< HEAD
     contain?: import("csstype").Property.Contain | undefined;
-=======
-    transition?: import("csstype").Property.Transition<string & {}> | undefined;
-    textWrap?: "unset" | "wrap" | "nowrap" | "balance" | "pretty" | "stable" | undefined;
-    contain?: import("csstype").Property.Contain | undefined;
-    touchAction?: import("csstype").Property.TouchAction | undefined;
->>>>>>> master
     cursor?: import("csstype").Property.Cursor | undefined;
     outlineColor?: "unset" | import("@tamagui/core").GetThemeValueForKey<"outlineColor"> | undefined;
     outlineOffset?: "unset" | import("@tamagui/core").SpaceValue | undefined;
     outlineStyle?: import("csstype").Property.OutlineStyle | undefined;
     outlineWidth?: "unset" | import("@tamagui/core").SpaceValue | undefined;
     userSelect?: import("csstype").Property.UserSelect | undefined;
-<<<<<<< HEAD
     backdropFilter?: import("csstype").Property.BackdropFilter | undefined;
     background?: import("csstype").Property.Background<0 | (string & {})> | undefined;
-=======
-    scrollbarWidth?: import("csstype").Property.ScrollbarWidth | undefined;
-    pointerEvents?: "unset" | "auto" | "box-none" | "none" | "box-only" | undefined;
-    transformOrigin?: "unset" | "center" | "left" | "right" | "bottom" | "top" | (`${number}%` | `${string}%` | `${string}px` | `${number}px`) | "center center" | "center bottom" | "center top" | `center ${number}%` | `center ${string}%` | `center ${string}px` | `center ${number}px` | "left center" | "left bottom" | "left top" | `left ${number}%` | `left ${string}%` | `left ${string}px` | `left ${number}px` | "right center" | "right bottom" | "right top" | `right ${number}%` | `right ${string}%` | `right ${string}px` | `right ${number}px` | `${number}% center` | `${number}% bottom` | `${number}% top` | `${number}% ${number}%` | `${number}% ${string}%` | `${number}% ${string}px` | `${number}% ${number}px` | `${string}% center` | `${string}% bottom` | `${string}% top` | `${string}% ${number}%` | `${string}% ${string}%` | `${string}% ${string}px` | `${string}% ${number}px` | `${string}px center` | `${string}px bottom` | `${string}px top` | `${string}px ${number}%` | `${string}px ${string}%` | `${string}px ${string}px` | `${string}px ${number}px` | `${number}px center` | `${number}px bottom` | `${number}px top` | `${number}px ${number}%` | `${number}px ${string}%` | `${number}px ${string}px` | `${number}px ${number}px` | `center center ${string}px` | `center center ${number}px` | `center bottom ${string}px` | `center bottom ${number}px` | `center top ${string}px` | `center top ${number}px` | `center ${number}% ${string}px` | `center ${number}% ${number}px` | `center ${string}% ${string}px` | `center ${string}% ${number}px` | `center ${string}px ${string}px` | `center ${string}px ${number}px` | `center ${number}px ${string}px` | `center ${number}px ${number}px` | `left center ${string}px` | `left center ${number}px` | `left bottom ${string}px` | `left bottom ${number}px` | `left top ${string}px` | `left top ${number}px` | `left ${number}% ${string}px` | `left ${number}% ${number}px` | `left ${string}% ${string}px` | `left ${string}% ${number}px` | `left ${string}px ${string}px` | `left ${string}px ${number}px` | `left ${number}px ${string}px` | `left ${number}px ${number}px` | `right center ${string}px` | `right center ${number}px` | `right bottom ${string}px` | `right bottom ${number}px` | `right top ${string}px` | `right top ${number}px` | `right ${number}% ${string}px` | `right ${number}% ${number}px` | `right ${string}% ${string}px` | `right ${string}% ${number}px` | `right ${string}px ${string}px` | `right ${string}px ${number}px` | `right ${number}px ${string}px` | `right ${number}px ${number}px` | `${number}% center ${string}px` | `${number}% center ${number}px` | `${number}% bottom ${string}px` | `${number}% bottom ${number}px` | `${number}% top ${string}px` | `${number}% top ${number}px` | `${number}% ${number}% ${string}px` | `${number}% ${number}% ${number}px` | `${number}% ${string}% ${string}px` | `${number}% ${string}% ${number}px` | `${number}% ${string}px ${string}px` | `${number}% ${string}px ${number}px` | `${number}% ${number}px ${string}px` | `${number}% ${number}px ${number}px` | `${string}% center ${string}px` | `${string}% center ${number}px` | `${string}% bottom ${string}px` | `${string}% bottom ${number}px` | `${string}% top ${string}px` | `${string}% top ${number}px` | `${string}% ${number}% ${string}px` | `${string}% ${number}% ${number}px` | `${string}% ${string}% ${string}px` | `${string}% ${string}% ${number}px` | `${string}% ${string}px ${string}px` | `${string}% ${string}px ${number}px` | `${string}% ${number}px ${string}px` | `${string}% ${number}px ${number}px` | `${string}px center ${string}px` | `${string}px center ${number}px` | `${string}px bottom ${string}px` | `${string}px bottom ${number}px` | `${string}px top ${string}px` | `${string}px top ${number}px` | `${string}px ${number}% ${string}px` | `${string}px ${number}% ${number}px` | `${string}px ${string}% ${string}px` | `${string}px ${string}% ${number}px` | `${string}px ${string}px ${string}px` | `${string}px ${string}px ${number}px` | `${string}px ${number}px ${string}px` | `${string}px ${number}px ${number}px` | `${number}px center ${string}px` | `${number}px center ${number}px` | `${number}px bottom ${string}px` | `${number}px bottom ${number}px` | `${number}px top ${string}px` | `${number}px top ${number}px` | `${number}px ${number}% ${string}px` | `${number}px ${number}% ${number}px` | `${number}px ${string}% ${string}px` | `${number}px ${string}% ${number}px` | `${number}px ${string}px ${string}px` | `${number}px ${string}px ${number}px` | `${number}px ${number}px ${string}px` | `${number}px ${number}px ${number}px` | undefined;
-    filter?: import("csstype").Property.Filter | undefined;
-    mixBlendMode?: import("csstype").Property.MixBlendMode | undefined;
->>>>>>> master
     backgroundImage?: import("csstype").Property.BackgroundImage | undefined;
     backgroundOrigin?: import("csstype").Property.BackgroundOrigin | undefined;
     backgroundPosition?: import("csstype").Property.BackgroundPosition<0 | (string & {})> | undefined;
     backgroundRepeat?: import("csstype").Property.BackgroundRepeat | undefined;
     backgroundSize?: import("csstype").Property.BackgroundSize<0 | (string & {})> | undefined;
-<<<<<<< HEAD
     containerType?: import("csstype").Property.ContainerType | undefined;
     boxSizing?: import("csstype").Property.BoxSizing | undefined;
     overflowX?: import("csstype").Property.BoxSizing | undefined;
     overflowY?: import("csstype").Property.BoxSizing | undefined;
     pointerEvents?: "unset" | "auto" | "box-none" | "none" | "box-only" | undefined;
     transformOrigin?: "unset" | "center" | "left" | "right" | "bottom" | "top" | (`${number}%` | `${string}%` | `${string}px` | `${number}px`) | "center center" | "center bottom" | "center top" | `center ${number}%` | `center ${string}%` | `center ${string}px` | `center ${number}px` | "left center" | "left bottom" | "left top" | `left ${number}%` | `left ${string}%` | `left ${string}px` | `left ${number}px` | "right center" | "right bottom" | "right top" | `right ${number}%` | `right ${string}%` | `right ${string}px` | `right ${number}px` | `${number}% center` | `${number}% bottom` | `${number}% top` | `${number}% ${number}%` | `${number}% ${string}%` | `${number}% ${string}px` | `${number}% ${number}px` | `${string}% center` | `${string}% bottom` | `${string}% top` | `${string}% ${number}%` | `${string}% ${string}%` | `${string}% ${string}px` | `${string}% ${number}px` | `${string}px center` | `${string}px bottom` | `${string}px top` | `${string}px ${number}%` | `${string}px ${string}%` | `${string}px ${string}px` | `${string}px ${number}px` | `${number}px center` | `${number}px bottom` | `${number}px top` | `${number}px ${number}%` | `${number}px ${string}%` | `${number}px ${string}px` | `${number}px ${number}px` | `center center ${string}px` | `center center ${number}px` | `center bottom ${string}px` | `center bottom ${number}px` | `center top ${string}px` | `center top ${number}px` | `center ${number}% ${string}px` | `center ${number}% ${number}px` | `center ${string}% ${string}px` | `center ${string}% ${number}px` | `center ${string}px ${string}px` | `center ${string}px ${number}px` | `center ${number}px ${string}px` | `center ${number}px ${number}px` | `left center ${string}px` | `left center ${number}px` | `left bottom ${string}px` | `left bottom ${number}px` | `left top ${string}px` | `left top ${number}px` | `left ${number}% ${string}px` | `left ${number}% ${number}px` | `left ${string}% ${string}px` | `left ${string}% ${number}px` | `left ${string}px ${string}px` | `left ${string}px ${number}px` | `left ${number}px ${string}px` | `left ${number}px ${number}px` | `right center ${string}px` | `right center ${number}px` | `right bottom ${string}px` | `right bottom ${number}px` | `right top ${string}px` | `right top ${number}px` | `right ${number}% ${string}px` | `right ${number}% ${number}px` | `right ${string}% ${string}px` | `right ${string}% ${number}px` | `right ${string}px ${string}px` | `right ${string}px ${number}px` | `right ${number}px ${string}px` | `right ${number}px ${number}px` | `${number}% center ${string}px` | `${number}% center ${number}px` | `${number}% bottom ${string}px` | `${number}% bottom ${number}px` | `${number}% top ${string}px` | `${number}% top ${number}px` | `${number}% ${number}% ${string}px` | `${number}% ${number}% ${number}px` | `${number}% ${string}% ${string}px` | `${number}% ${string}% ${number}px` | `${number}% ${string}px ${string}px` | `${number}% ${string}px ${number}px` | `${number}% ${number}px ${string}px` | `${number}% ${number}px ${number}px` | `${string}% center ${string}px` | `${string}% center ${number}px` | `${string}% bottom ${string}px` | `${string}% bottom ${number}px` | `${string}% top ${string}px` | `${string}% top ${number}px` | `${string}% ${number}% ${string}px` | `${string}% ${number}% ${number}px` | `${string}% ${string}% ${string}px` | `${string}% ${string}% ${number}px` | `${string}% ${string}px ${string}px` | `${string}% ${string}px ${number}px` | `${string}% ${number}px ${string}px` | `${string}% ${number}px ${number}px` | `${string}px center ${string}px` | `${string}px center ${number}px` | `${string}px bottom ${string}px` | `${string}px bottom ${number}px` | `${string}px top ${string}px` | `${string}px top ${number}px` | `${string}px ${number}% ${string}px` | `${string}px ${number}% ${number}px` | `${string}px ${string}% ${string}px` | `${string}px ${string}% ${number}px` | `${string}px ${string}px ${string}px` | `${string}px ${string}px ${number}px` | `${string}px ${number}px ${string}px` | `${string}px ${number}px ${number}px` | `${number}px center ${string}px` | `${number}px center ${number}px` | `${number}px bottom ${string}px` | `${number}px bottom ${number}px` | `${number}px top ${string}px` | `${number}px top ${number}px` | `${number}px ${number}% ${string}px` | `${number}px ${number}% ${number}px` | `${number}px ${string}% ${string}px` | `${number}px ${string}% ${number}px` | `${number}px ${string}px ${string}px` | `${number}px ${string}px ${number}px` | `${number}px ${number}px ${string}px` | `${number}px ${number}px ${number}px` | undefined;
-=======
-    backgroundClip?: import("csstype").Property.BackgroundClip | undefined;
-    backgroundBlendMode?: import("csstype").Property.BackgroundBlendMode | undefined;
-    backgroundAttachment?: import("csstype").Property.BackgroundAttachment | undefined;
-    background?: import("csstype").Property.Background<0 | (string & {})> | undefined;
-    clipPath?: import("csstype").Property.ClipPath | undefined;
-    caretColor?: import("csstype").Property.CaretColor | undefined;
-    transformStyle?: import("csstype").Property.TransformStyle | undefined;
-    mask?: import("csstype").Property.Mask<0 | (string & {})> | undefined;
-    maskImage?: import("csstype").Property.MaskImage | undefined;
-    textEmphasis?: import("csstype").Property.TextEmphasis | undefined;
-    borderImage?: import("csstype").Property.BorderImage | undefined;
-    float?: import("csstype").Property.Float | undefined;
-    content?: import("csstype").Property.Content | undefined;
-    overflowBlock?: import("csstype").Property.OverflowBlock | undefined;
-    overflowInline?: import("csstype").Property.OverflowInline | undefined;
-    maskBorder?: import("csstype").Property.MaskBorder | undefined;
-    maskBorderMode?: import("csstype").Property.MaskBorderMode | undefined;
-    maskBorderOutset?: import("csstype").Property.MaskBorderOutset<0 | (string & {})> | undefined;
-    maskBorderRepeat?: import("csstype").Property.MaskBorderRepeat | undefined;
-    maskBorderSlice?: import("csstype").Property.MaskBorderSlice | undefined;
-    maskBorderSource?: import("csstype").Property.MaskBorderSource | undefined;
-    maskBorderWidth?: import("csstype").Property.MaskBorderWidth<0 | (string & {})> | undefined;
-    maskClip?: import("csstype").Property.MaskClip | undefined;
-    maskComposite?: import("csstype").Property.MaskComposite | undefined;
-    maskMode?: import("csstype").Property.MaskMode | undefined;
-    maskOrigin?: import("csstype").Property.MaskOrigin | undefined;
-    maskPosition?: import("csstype").Property.MaskPosition<0 | (string & {})> | undefined;
-    maskRepeat?: import("csstype").Property.MaskRepeat | undefined;
-    maskSize?: import("csstype").Property.MaskSize<0 | (string & {})> | undefined;
-    maskType?: import("csstype").Property.MaskType | undefined;
-    gridRow?: import("csstype").Property.GridRow | undefined;
-    gridRowEnd?: import("csstype").Property.GridRowEnd | undefined;
-    gridRowGap?: import("csstype").Property.GridRowGap<0 | (string & {})> | undefined;
-    gridRowStart?: import("csstype").Property.GridRowStart | undefined;
-    gridColumn?: import("csstype").Property.GridColumn | undefined;
-    gridColumnEnd?: import("csstype").Property.GridColumnEnd | undefined;
-    gridColumnGap?: import("csstype").Property.GridColumnGap<0 | (string & {})> | undefined;
-    gridColumnStart?: import("csstype").Property.GridColumnStart | undefined;
-    gridTemplateColumns?: import("csstype").Property.GridTemplateColumns<0 | (string & {})> | undefined;
-    gridTemplateAreas?: import("csstype").Property.GridTemplateAreas | undefined;
-    backdropFilter?: import("csstype").Property.BackdropFilter | undefined;
-    containerType?: import("csstype").Property.ContainerType | undefined;
-    blockSize?: number | "unset" | import("@tamagui/core").SizeTokens | undefined;
-    inlineSize?: number | "unset" | import("@tamagui/core").SizeTokens | undefined;
-    minBlockSize?: number | "unset" | import("@tamagui/core").SizeTokens | undefined;
-    maxBlockSize?: number | "unset" | import("@tamagui/core").SizeTokens | undefined;
-    objectFit?: import("csstype").Property.ObjectFit | undefined;
-    verticalAlign?: import("csstype").Property.VerticalAlign<0 | (string & {})> | undefined;
-    minInlineSize?: number | "unset" | import("@tamagui/core").SizeTokens | undefined;
-    maxInlineSize?: number | "unset" | import("@tamagui/core").SizeTokens | undefined;
-    borderInlineColor?: "unset" | import("@tamagui/core").GetThemeValueForKey<"borderInlineColor"> | undefined;
-    borderInlineStartColor?: "unset" | import("@tamagui/core").GetThemeValueForKey<"borderInlineStartColor"> | undefined;
-    borderInlineEndColor?: "unset" | import("@tamagui/core").GetThemeValueForKey<"borderInlineEndColor"> | undefined;
->>>>>>> master
     borderBlockWidth?: number | "unset" | import("@tamagui/core").GetThemeValueForKey<"borderBlockWidth"> | undefined;
     borderBlockStartWidth?: number | "unset" | import("@tamagui/core").GetThemeValueForKey<"borderBlockStartWidth"> | undefined;
     borderBlockEndWidth?: number | "unset" | import("@tamagui/core").GetThemeValueForKey<"borderBlockEndWidth"> | undefined;
@@ -745,22 +637,13 @@ export declare function useInputProps(props: InputProps, ref: any): {
     paddingInline?: number | "unset" | import("@tamagui/core").GetThemeValueForKey<"paddingInline"> | undefined;
     paddingInlineStart?: number | "unset" | import("@tamagui/core").GetThemeValueForKey<"paddingInlineStart"> | undefined;
     paddingInlineEnd?: number | "unset" | import("@tamagui/core").GetThemeValueForKey<"paddingInlineEnd"> | undefined;
-<<<<<<< HEAD
     inset?: number | "unset" | import("@tamagui/core").SpaceTokens | undefined;
-=======
->>>>>>> master
     insetBlock?: number | "unset" | import("@tamagui/core").SpaceTokens | undefined;
     insetBlockStart?: number | "unset" | import("@tamagui/core").SpaceTokens | undefined;
     insetBlockEnd?: number | "unset" | import("@tamagui/core").SpaceTokens | undefined;
     insetInline?: number | "unset" | import("@tamagui/core").SpaceTokens | undefined;
     insetInlineStart?: number | "unset" | import("@tamagui/core").SpaceTokens | undefined;
     insetInlineEnd?: number | "unset" | import("@tamagui/core").SpaceTokens | undefined;
-<<<<<<< HEAD
-=======
-    space?: number | boolean | "unset" | import("@tamagui/core").GetThemeValueForKey<"space"> | undefined;
-    spaceDirection?: "unset" | import("@tamagui/core").SpaceDirection | undefined;
-    separator?: React.ReactNode;
->>>>>>> master
     animation?: (import("@tamagui/core").AnimationProp | null) | undefined;
     animateOnly?: string[] | "unset" | undefined;
     animatePresence?: boolean | "unset" | undefined;
@@ -801,8 +684,6 @@ export declare function useInputProps(props: InputProps, ref: any): {
         readonly placeholderTextColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
         readonly selectionColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
     }>>) | null | undefined;
-<<<<<<< HEAD
-=======
     focusWithinStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
         readonly placeholderTextColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
         readonly selectionColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
@@ -814,7 +695,6 @@ export declare function useInputProps(props: InputProps, ref: any): {
         readonly placeholderTextColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
         readonly selectionColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
     }>>) | null | undefined;
->>>>>>> master
     focusVisibleStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase & {
         readonly placeholderTextColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
         readonly selectionColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;

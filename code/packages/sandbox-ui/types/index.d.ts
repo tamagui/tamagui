@@ -7,15 +7,6 @@ export * from 'expo-constants';
 export declare const SimpleTest: import("tamagui").TamaguiComponent<import("@tamagui/web").TamaDefer, import("tamagui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {}, import("@tamagui/web").StaticConfigPublic>;
 export declare const Test14Component: import("tamagui").TamaguiComponent<import("@tamagui/web").TamaDefer, import("tamagui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
     elevation?: number | import("tamagui").SizeTokens | undefined;
-<<<<<<< HEAD
-=======
-    inset?: number | import("tamagui").SizeTokens | {
-        top?: number;
-        bottom?: number;
-        left?: number;
-        right?: number;
-    } | null | undefined;
->>>>>>> master
     fullbleed?: boolean | undefined;
     fullscreen?: boolean | undefined;
 }, import("@tamagui/web").StaticConfigPublic>;

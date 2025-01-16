@@ -28,7 +28,6 @@ export declare const DatePicker: ((props: DatePickerProps) => import("react/jsx-
         __scopePopper?: string | undefined;
     } & {
         __scopePopover?: string | undefined;
-<<<<<<< HEAD
     }, import("@tamagui/web").StackStyleBase, {
         elevation?: number | import("tamagui").SizeTokens | undefined;
         fullscreen?: boolean | undefined;
@@ -39,9 +38,6 @@ export declare const DatePicker: ((props: DatePickerProps) => import("react/jsx-
         size?: import("tamagui").SizeTokens | undefined;
         elevation?: number | import("tamagui").SizeTokens | undefined;
         fullscreen?: boolean | undefined;
-=======
-    } & import("react").RefAttributes<HTMLElement | import("react-native").View>, keyof import("@tamagui/web").StackStyleBase | "unstyled"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
->>>>>>> master
         unstyled?: boolean | undefined;
     } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
         size?: import("tamagui").SizeTokens | undefined;

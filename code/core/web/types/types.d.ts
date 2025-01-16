@@ -682,10 +682,6 @@ export type WithThemeShorthandsPseudosMedia<A extends Object, Variants = {}> = W
 /**
  * Base style-only props (no media, pseudo):
  */
-<<<<<<< HEAD
-=======
-export type SpaceValue = boolean | number | SpaceTokens | ThemeValueFallback;
->>>>>>> master
 type Px = `${string | number}px`;
 type PxOrPct = Px | `${string | number}%`;
 type TwoValueTransformOrigin = `${PxOrPct | 'left' | 'center' | 'right'} ${PxOrPct | 'top' | 'center' | 'bottom'}`;
@@ -826,21 +822,6 @@ export interface ExtendBaseTextProps {
 }
 interface ExtraBaseProps {
     /**
-<<<<<<< HEAD
-=======
-     * @deprecated Use `gap`
-     */
-    space?: SpaceValue | boolean;
-    /**
-     * @deprecated Use `gap`
-     */
-    spaceDirection?: SpaceDirection;
-    /**
-     * @deprecated can implement your own hook or component
-     */
-    separator?: ReactNode;
-    /**
->>>>>>> master
      * Animations are defined using `createTamagui` typically in a tamagui.config.ts file.
      * Pass a string animation here and it uses an animation driver to execute it.
      *
