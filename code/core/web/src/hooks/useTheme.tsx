@@ -137,7 +137,9 @@ export const useThemeWithState = (
 
   const themeProxied = React.useMemo(() => {
     // reset keys on new theme
-    keys.current = []
+    if (keys.current.length) {
+      keys.current = []
+    }
 
     if (!themeManager || !state?.theme) {
       return {}

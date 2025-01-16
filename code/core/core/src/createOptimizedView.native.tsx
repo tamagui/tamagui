@@ -25,7 +25,6 @@ export function createOptimizedView(
     accessibilityLabel,
     accessibilityLabelledBy,
     accessibilityLiveRegion,
-    accessibilityRole,
     accessibilityState,
     accessibilityValue,
     'aria-busy': ariaBusy,
@@ -43,9 +42,6 @@ export function createOptimizedView(
     'aria-valuetext': ariaValueText,
     focusable,
     id,
-    importantForAccessibility,
-    nativeID,
-    pointerEvents,
     role,
     tabIndex,
     // ...otherProps
@@ -87,39 +83,65 @@ export function createOptimizedView(
     }
   }
 
-  let style = Array.isArray(viewProps.style)
-    ? baseViews.StyleSheet.flatten(viewProps.style)
-    : viewProps.style
-  const newPointerEvents = style?.pointerEvents || pointerEvents
-
-  const finalProps = viewProps
-
-  const extras = {
-    accessibilityLiveRegion:
-      ariaLive === 'off' ? 'none' : (ariaLive ?? accessibilityLiveRegion),
-    accessibilityLabel: ariaLabel ?? accessibilityLabel,
-    focusable: tabIndex !== undefined ? !tabIndex : focusable,
-    accessibilityState: _accessibilityState,
-    accessibilityRole: role ? getAccessibilityRoleFromRole(role) : accessibilityRole,
-    accessibilityElementsHidden: ariaHidden ?? accessibilityElementsHidden,
-    accessibilityLabelledBy: _accessibilityLabelledBy,
-    accessibilityValue: _accessibilityValue,
-    importantForAccessibility:
-      ariaHidden === true ? 'no-hide-descendants' : importantForAccessibility,
-    nativeID: id ?? nativeID,
-    style,
-    pointerEvents: newPointerEvents,
+  if (Array.isArray(viewProps.style)) {
+    viewProps.style = baseViews.StyleSheet.flatten(viewProps.style)
   }
-  // avoid adding undefined props
-  for (const key in extras) {
-    if (extras[key] != null) {
-      finalProps[key] = extras[key]
+
+  if (viewProps.style?.pointerEvents) {
+    viewProps.pointerEvents = viewProps.style?.pointerEvents
+  }
+
+  if (id) {
+    viewProps.nativeID = id
+  }
+
+  if (ariaHidden === true) {
+    viewProps.importantForAccessibility = 'no-hide-descendants'
+  }
+
+  if (_accessibilityValue) {
+    viewProps.accessibilityValue = _accessibilityValue
+  }
+
+  if (role) {
+    viewProps.accessibilityRole = getAccessibilityRoleFromRole(role)
+  }
+
+  if (ariaLive === 'off') {
+    viewProps.accessibilityLiveRegion = 'none'
+  } else {
+    const alr = ariaLive ?? accessibilityLiveRegion
+    if (alr) {
+      viewProps.accessibilityLiveRegion = alr
     }
+  }
+
+  const al = ariaLabel ?? accessibilityLabel
+  if (al) {
+    viewProps.accessibilityLabel = al
+  }
+
+  const f = tabIndex !== undefined ? !tabIndex : focusable
+  if (f != null) {
+    viewProps.focusable = f
+  }
+
+  if (_accessibilityState != null) {
+    viewProps.accessibilityState = _accessibilityState
+  }
+
+  const ah = ariaHidden ?? accessibilityElementsHidden
+  if (ah != null) {
+    viewProps.accessibilityElementsHidden = ah
+  }
+
+  if (_accessibilityLabelledBy) {
+    viewProps.accessibilityLabelledBy = _accessibilityLabelledBy
   }
 
   // isInText is significantly faster than just providing it each time
   const isInText = React.useContext(TextAncestor)
-  const finalElement = React.createElement(ViewNativeComponent, finalProps, children)
+  const finalElement = React.createElement(ViewNativeComponent, viewProps, children)
 
   if (!isInText) {
     return finalElement

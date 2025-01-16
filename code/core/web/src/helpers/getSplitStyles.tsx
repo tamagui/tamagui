@@ -14,7 +14,7 @@ import {
   stylePropsTransform,
   tokenCategories,
   validPseudoKeys,
-  validStyles,
+  validStyles as validStylesView,
 } from '@tamagui/helpers'
 import React from 'react'
 
@@ -121,12 +121,12 @@ export const PROP_SPLIT = '-'
 //   dynamicThemeAccess,
 // }
 
-function isValidStyleKey(key: string, staticConfig: StaticConfig) {
-  const validStyleProps =
-    staticConfig.validStyles ||
-    (staticConfig.isText || staticConfig.isInput ? stylePropsText : validStyles)
-
-  return validStyleProps[key] || staticConfig.accept?.[key]
+function isValidStyleKey(
+  key: string,
+  validStyles: Record<string, boolean>,
+  accept?: Record<string, any>
+) {
+  return key in validStyles || accept?.[key]
 }
 
 export const getSplitStyles: StyleSplitter = (
@@ -186,6 +186,15 @@ export const getSplitStyles: StyleSplitter = (
   let className = (props.className as string) || '' // existing classNames
   let mediaStylesSeen = 0
 
+  const validStyles =
+    staticConfig.validStyles ||
+    (staticConfig.isText || staticConfig.isInput ? stylePropsText : validStylesView)
+
+  if (process.env.NODE_ENV === 'development' && debug === 'profile') {
+    // @ts-expect-error
+    time`split-styles-setup`
+  }
+
   /**
    * Not the biggest fan of creating an object but it is a nice API
    */
@@ -202,6 +211,11 @@ export const getSplitStyles: StyleSplitter = (
     viewProps,
     context,
     debug,
+  }
+
+  if (process.env.NODE_ENV === 'development' && debug === 'profile') {
+    // @ts-expect-error
+    time`style-state`
   }
 
   if (
@@ -234,13 +248,18 @@ export const getSplitStyles: StyleSplitter = (
     let keyInit = keyOg
     let valInit = props[keyInit]
 
-    if (process.env.NODE_ENV === 'test' && keyInit === 'jestAnimatedStyle') {
+    if (keyInit === 'children') {
+      viewProps[keyInit] = valInit
       continue
     }
 
     if (process.env.NODE_ENV === 'development' && debug === 'profile') {
       // @ts-expect-error
-      time`prop-${keyInit}`
+      time`before-prop-${keyInit}`
+    }
+
+    if (process.env.NODE_ENV === 'test' && keyInit === 'jestAnimatedStyle') {
+      continue
     }
 
     // for custom accept sub-styles
@@ -302,7 +321,13 @@ export const getSplitStyles: StyleSplitter = (
     }
 
     const valInitType = typeof valInit
-    const isValidStyleKeyInit = isValidStyleKey(keyInit, staticConfig)
+    let isValidStyleKeyInit = isValidStyleKey(keyInit, validStyles, accept)
+
+    // performance: we can avoid a lot of work here
+    if (isValidStyleKeyInit && valInitType === 'number') {
+      mergeStyle(styleState, keyInit, valInit)
+      continue
+    }
 
     // this is all for partially optimized (not flattened)... maybe worth removing?
     if (process.env.TAMAGUI_TARGET === 'web') {
@@ -487,11 +512,9 @@ export const getSplitStyles: StyleSplitter = (
      * for if there's a pseudo/media returned from it.
      */
 
-    const isShorthand = keyInit in shorthands
-
     let isVariant = !isValidStyleKeyInit && variants && keyInit in variants
 
-    const isStyleLikeKey = isShorthand || isValidStyleKeyInit || isVariant
+    const isStyleLikeKey = isValidStyleKeyInit || isVariant
 
     let isPseudo = keyInit in validPseudoKeys
     let isMedia: IsMediaType = !isStyleLikeKey && !isPseudo && isMediaKey(keyInit)
@@ -511,8 +534,7 @@ export const getSplitStyles: StyleSplitter = (
       }
     }
 
-    const isStyleProp =
-      isValidStyleKeyInit || isMediaOrPseudo || (isVariant && !noExpand) || isShorthand
+    const isStyleProp = isValidStyleKeyInit || isMediaOrPseudo || (isVariant && !noExpand)
 
     if (isStyleProp && (asChild === 'except-style' || asChild === 'except-style-web')) {
       continue
@@ -527,11 +549,7 @@ export const getSplitStyles: StyleSplitter = (
     const parentVariant = parentVariants?.[keyInit]
     const isHOCShouldPassThrough = Boolean(
       isHOC &&
-        (isShorthand ||
-          isValidStyleKeyInit ||
-          isMediaOrPseudo ||
-          parentVariant ||
-          keyInit in skipProps)
+        (isValidStyleKeyInit || isMediaOrPseudo || parentVariant || keyInit in skipProps)
     )
 
     const shouldPassThrough = shouldPassProp || isHOCShouldPassThrough
@@ -613,8 +631,7 @@ export const getSplitStyles: StyleSplitter = (
     const avoidPropMap = isMediaOrPseudo || (!isVariant && !isValidStyleKeyInit)
     const expanded = avoidPropMap ? null : propMapper(keyInit, valInit, styleState)
 
-    if (!avoidPropMap) {
-      if (!expanded) continue
+    if (expanded && !avoidPropMap) {
       const next = getPropMappedFontFamily(expanded)
       if (next) {
         styleState.fontFamily = next
@@ -647,26 +664,50 @@ export const getSplitStyles: StyleSplitter = (
       console.groupEnd()
     }
 
-    let key = keyInit
-    let val = valInit
-    const max = expanded ? expanded.length : 1
+    if (!expanded) {
+      viewProps[keyInit] = valInit
+      continue
+    }
+
+    const max = expanded.length
+
+    if (max === 1 && isValidStyleKeyInit) {
+      mergeStyle(styleState, keyInit, valInit)
+      continue
+    }
 
     // before we just made an array if avoidPropMap, but to avoid making extra arrays in a perf sensitive area
     // now we do this part more imperatively. saves making a nested array for each prop key on every component
     for (let i = 0; i < max; i++) {
-      if (expanded) {
-        const [k, v] = expanded[i]
-        key = k
-        val = v
-      }
+      const [key, val] = expanded[i]
 
       if (val == null) continue
       if (key in usedKeys) continue
 
-      isPseudo = key in validPseudoKeys
+      isValidStyleKeyInit = isValidStyleKey(key, validStyles, accept)
+
+      if (process.env.TAMAGUI_TARGET === 'native') {
+        if (key === 'pointerEvents') {
+          viewProps[key] = val
+          continue
+        }
+      }
+
+      if (
+        // is HOC we can just pass through the styles as props
+        // this fixes issues where style prop got merged with wrong priority
+        !isHOC &&
+        (isValidStyleKeyInit ||
+          (process.env.TAMAGUI_TARGET === 'native' && isAndroid && key === 'elevation'))
+      ) {
+        mergeStyle(styleState, key, val)
+        continue
+      }
+
+      isPseudo = !isValidStyleKeyInit && key in validPseudoKeys
       isMedia = !isPseudo && !isValidStyleKeyInit && isMediaKey(key)
       isMediaOrPseudo = Boolean(isMedia || isPseudo)
-      isVariant = variants && key in variants
+      isVariant = !isValidStyleKeyInit && variants && key in variants
 
       if (
         inlineProps?.has(key) ||
@@ -1044,24 +1085,6 @@ export const getSplitStyles: StyleSplitter = (
             }
           }
         }
-        continue
-      }
-
-      if (process.env.TAMAGUI_TARGET === 'native') {
-        if (key === 'pointerEvents') {
-          viewProps[key] = val
-          continue
-        }
-      }
-
-      if (
-        // is HOC we can just pass through the styles as props
-        // this fixes issues where style prop got merged with wrong priority
-        !isHOC &&
-        (isValidStyleKey(key, staticConfig) ||
-          (process.env.TAMAGUI_TARGET === 'native' && isAndroid && key === 'elevation'))
-      ) {
-        mergeStyle(styleState, key, val)
         continue
       }
 

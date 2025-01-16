@@ -1,8 +1,6 @@
 import { isAndroid } from '@tamagui/constants'
 import { tokenCategories } from '@tamagui/helpers'
-
 import { getConfig } from '../config'
-import { isDevTools } from '../constants/isDevTools'
 import type { Variable } from '../createVariable'
 import { getVariableValue, isVariable } from '../createVariable'
 import type {
@@ -14,9 +12,9 @@ import type {
   VariantSpreadFunction,
 } from '../types'
 import { expandStyle } from './expandStyle'
-import { normalizeStyle } from './normalizeStyle'
 import { getFontsForLanguage, getVariantExtras } from './getVariantExtras'
 import { isObj } from './isObj'
+import { normalizeStyle } from './normalizeStyle'
 import { pseudoDescriptors } from './pseudoDescriptors'
 import { skipProps } from './skipProps'
 
@@ -41,8 +39,10 @@ export const propMapper: PropMapper = (key, value, styleState) => {
   }
 
   // only used by compiler
-  if (styleProps.fallbackProps) {
-    styleState.props = styleProps.fallbackProps
+  if (process.env.IS_STATIC === 'is_static') {
+    if (styleProps.fallbackProps) {
+      styleState.props = styleProps.fallbackProps
+    }
   }
 
   const { variants } = staticConfig
@@ -473,7 +473,9 @@ function resolveVariableValue(
   valOrVar: Variable | any,
   resolveValues?: ResolveVariableAs
 ) {
-  if (resolveValues === 'none') return valOrVar
+  if (resolveValues === 'none') {
+    return valOrVar
+  }
   if (isVariable(valOrVar)) {
     if (resolveValues === 'value') {
       return valOrVar.val

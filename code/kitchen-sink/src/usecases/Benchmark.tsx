@@ -1,6 +1,6 @@
 import React from 'react'
-import { StyleSheet, View } from 'react-native'
-import { Button, Stack, Text, XStack, styled } from 'tamagui'
+import { Button, StyleSheet, View } from 'react-native'
+import { Stack, Text, XStack, styled } from 'tamagui'
 
 // disabling to avoid dep
 // import { ThemeProvider, createBox } from '@shopify/restyle'
@@ -12,14 +12,11 @@ import { TimedRender } from '../components/TimedRender'
 // import { CheckboxDemo } from '@tamagui/demos'
 
 export const Benchmark = () => {
-  return null
-  // return (
-  //   <>
-  //     <BenchmarkFrame name="checkbox">
-  //       <CheckboxDemo />
-  //     </BenchmarkFrame>
-  //   </>
-  // )
+  return (
+    <>
+      <BenchStyled />
+    </>
+  )
 }
 
 const BenchStyled = () => {
@@ -86,7 +83,7 @@ const BenchmarkFrame = ({ name, children }) => {
       <>
         <Text style={{ marginTop: 20 }}>{name}</Text>
         <Text>run: {x}</Text>
-        <Button onPress={() => setX(Math.random())}>Go</Button>
+        <Button title="Go" onPress={() => setX(Math.random())} />
       </>
 
       <TimedRender key={x}>{children}</TimedRender>
@@ -101,7 +98,7 @@ const BenchTama = () => {
     <BenchmarkFrame name="tamagui">
       <XStack>
         {iterArr.map((_, i) => (
-          <StyledStack key={i} />
+          <StyledStack debug="profile" key={i} />
         ))}
       </XStack>
     </BenchmarkFrame>

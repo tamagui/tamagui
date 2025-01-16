@@ -9,6 +9,11 @@ export function HomePage() {
       <XStack>
         <YStack maw={250}>
           <H4>One-off</H4>
+
+          <Link href="/sandbox">
+            <Paragraph>Sandbox</Paragraph>
+          </Link>
+
           <Link href="/sub/portal-missing-styles">
             <Paragraph>Missing styles on nav</Paragraph>
           </Link>

@@ -5,9 +5,7 @@
 
 import { isWeb } from '@tamagui/constants'
 import { stylePropsAll, stylePropsUnitless } from '@tamagui/helpers'
-
 import { getAllSelectors } from './insertStyleRule'
-import { isObj } from './isObj'
 
 // only doing this on web on native it accepts pixel values
 

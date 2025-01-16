@@ -30,7 +30,7 @@ export function normalizeStyle(style: Record<string, any>, disableNormalize = fa
     // expand react-native shorthands
     const out = expandStyle(key, value)
     if (out) {
-      Object.assign(res, Object.fromEntries(out))
+      Object.assign(res, out)
     } else {
       res[key] = value
     }

@@ -1007,6 +1007,8 @@ export function createComponent<
       )
     }
 
+    if (process.env.NODE_ENV === 'development' && time) time`use-children`
+
     if (useChildrenResult) {
       content = useChildrenResult
     } else {
