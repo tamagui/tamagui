@@ -18,7 +18,11 @@ import { normalizeStyle } from './normalizeStyle'
 import { pseudoDescriptors } from './pseudoDescriptors'
 import { skipProps } from './skipProps'
 
-export const propMapper: PropMapper = (key, value, styleState) => {
+export const propMapper: PropMapper = (key, value, styleState, disabled, map) => {
+  if (disabled) {
+    return map(key, value)
+  }
+
   lastFontFamilyToken = null
 
   if (!(process.env.TAMAGUI_TARGET === 'native' && isAndroid)) {
@@ -26,7 +30,7 @@ export const propMapper: PropMapper = (key, value, styleState) => {
     if (key === 'elevationAndroid') return
   }
 
-  const { conf, styleProps, fontFamily, staticConfig } = styleState
+  const { conf, styleProps, staticConfig } = styleState
 
   if (value === 'unset') {
     const unsetVal = conf.unset?.[key]
@@ -38,27 +42,7 @@ export const propMapper: PropMapper = (key, value, styleState) => {
     }
   }
 
-  // only used by compiler
-  if (process.env.IS_STATIC === 'is_static') {
-    if (styleProps.fallbackProps) {
-      styleState.props = styleProps.fallbackProps
-    }
-  }
-
   const { variants } = staticConfig
-
-  if (
-    process.env.NODE_ENV === 'development' &&
-    fontFamily &&
-    fontFamily[0] === '$' &&
-    !(fontFamily in conf.fontsParsed)
-  ) {
-    console.warn(
-      `Warning: no fontFamily "${fontFamily}" found in config: ${Object.keys(
-        conf.fontsParsed
-      ).join(', ')}`
-    )
-  }
 
   if (!styleProps.noExpand) {
     if (variants && key in variants) {
@@ -85,13 +69,20 @@ export const propMapper: PropMapper = (key, value, styleState) => {
   }
 
   if (value != null) {
-    const result = (styleProps.noExpand ? null : expandStyle(key, value)) || [
-      [key, value],
-    ]
     if (key === 'fontFamily' && lastFontFamilyToken) {
-      fontFamilyCache.set(result, lastFontFamilyToken)
+      styleState.fontFamily = lastFontFamilyToken
     }
-    return result
+
+    const expanded = styleProps.noExpand ? null : expandStyle(key, value)
+
+    if (expanded) {
+      console.log('expanded', key, value)
+      for (const [key, value] of expanded) {
+        map(key, value)
+      }
+    } else {
+      map(key, value)
+    }
   }
 }
 
@@ -183,7 +174,7 @@ const resolveVariants: StyleResolver = (
 
     // store any changed font family (only support variables for now)
     if (fontFamilyResult && fontFamilyResult[0] === '$') {
-      fontFamilyCache.set(next, getVariableValue(fontFamilyResult))
+      lastFontFamilyToken = getVariableValue(fontFamilyResult)
     }
 
     return next
@@ -216,9 +207,6 @@ const variableToFontNameCache = new WeakMap<Variable, string>()
 
 // special helper for special font family
 const fontFamilyCache = new WeakMap()
-export const getPropMappedFontFamily = (expanded?: any) => {
-  return expanded && fontFamilyCache.get(expanded)
-}
 
 const resolveTokensAndVariants: StyleResolver<Object> = (
   key, // we dont use key assume value is object instead

@@ -2150,8 +2150,9 @@ export type PropMapper = (
   key: string,
   value: any,
   state: GetStyleState,
-  subProps?: Record<string, any>
-) => PropMappedValue
+  disabled: boolean,
+  map: (key: string, val: any) => void
+) => void
 
 export type GenericVariantDefinitions = {
   [key: string]: {
