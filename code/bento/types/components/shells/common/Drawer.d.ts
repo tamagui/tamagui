@@ -18,19 +18,55 @@ export declare const Drawer: (({ open, onOpenChange, children, portalToRoot, ...
 }) => import("react/jsx-runtime").JSX.Element) & {
     Content: import("tamagui").TamaguiComponent<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
         elevation?: number | import("tamagui").SizeTokens | undefined;
+<<<<<<< HEAD
+=======
+        inset?: number | import("tamagui").SizeTokens | {
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
+        } | null | undefined;
+>>>>>>> master
         fullscreen?: boolean | undefined;
         unstyled?: boolean | undefined;
     }>, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & void, import("@tamagui/web").StackStyleBase, {
         elevation?: number | import("tamagui").SizeTokens | undefined;
+<<<<<<< HEAD
+=======
+        inset?: number | import("tamagui").SizeTokens | {
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
+        } | null | undefined;
+>>>>>>> master
         fullscreen?: boolean | undefined;
         unstyled?: boolean | undefined;
     }, import("@tamagui/web").StaticConfigPublic>;
     Overlay: import("tamagui").TamaguiComponent<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
         elevation?: number | import("tamagui").SizeTokens | undefined;
+<<<<<<< HEAD
+=======
+        inset?: number | import("tamagui").SizeTokens | {
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
+        } | null | undefined;
+>>>>>>> master
         fullscreen?: boolean | undefined;
         unstyled?: boolean | undefined;
     }>, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & void, import("@tamagui/web").StackStyleBase, {
         elevation?: number | import("tamagui").SizeTokens | undefined;
+<<<<<<< HEAD
+=======
+        inset?: number | import("tamagui").SizeTokens | {
+            top?: number;
+            bottom?: number;
+            left?: number;
+            right?: number;
+        } | null | undefined;
+>>>>>>> master
         fullscreen?: boolean | undefined;
         unstyled?: boolean | undefined;
     }, import("@tamagui/web").StaticConfigPublic>;

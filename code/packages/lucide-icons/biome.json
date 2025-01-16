@@ -5,9 +5,9 @@
   },
   "linter": {
     "enabled": true,
+    "ignore": ["**/*/generated-new.ts", "**/*/generated-v2.ts", ".tamagui"],
     "rules": {
       "correctness": {
-        "noUnusedImports": "error",
         "useExhaustiveDependencies": "off",
         "noInnerDeclarations": "off",
         "noUnnecessaryContinue": "off",
@@ -22,7 +22,6 @@
         "noDoubleEquals": "off",
         "noConsoleLog": "error",
         "noAssignInExpressions": "off",
-        "noShadowRestrictedNames": "off",
         "noRedeclare": "off"
       },
       "style": {
@@ -48,6 +47,7 @@
       },
       "complexity": {
         "noForEach": "off",
+        "noUselessTernary": "off",
         "noBannedTypes": "off",
         "noUselessFragments": "off",
         "useLiteralKeys": "off",
@@ -69,7 +69,8 @@
     "indentStyle": "space",
     "indentWidth": 2,
     "lineWidth": 90,
-    "lineEnding": "lf"
+    "lineEnding": "lf",
+    "ignore": ["**/*/generated-new.ts", "**/*/generated-v2.ts", ".tamagui"]
   },
   "javascript": {
     "formatter": {

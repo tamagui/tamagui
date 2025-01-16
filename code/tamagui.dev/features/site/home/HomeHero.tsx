@@ -459,8 +459,9 @@ const TextWithEffects = ({ text }: { text: string }) => {
   return (
     <>
       <span style={{ opacity: 0 }}>{text}</span>
+
       <YStack
-        animation="lazy"
+        // animation="lazy"
         fullscreen
         // {...(!show && {
         //   y: -10,

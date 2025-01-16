@@ -83,9 +83,6 @@ export const BentoLogo = ({
           f={1}
           ls={-21}
           lh={280}
-          $theme-dark={{
-            opacity: 0.5,
-          }}
           my={-45}
           fos={180}
           ussel="none"
@@ -93,7 +90,7 @@ export const BentoLogo = ({
           className="clip-text mask-gradient-down"
           style={{
             backgroundImage: 'linear-gradient(var(--color10), transparent)',
-            textShadow: `0 0 10px var(--color025), 0 0 8px rgba(255,255,255,0.44)`,
+            // textShadow: `0 0 10px var(--color025), 0 0 8px rgba(255,255,255,0.44)`,
             maskImage: `linear-gradient(transparent 20%, rgba(0, 0, 0, 1))`,
             // mixBlendMode: 'hard-light',
           }}
@@ -119,78 +116,15 @@ export const BentoLogo = ({
           lh={280}
           my={-45}
           fos={180}
+          $theme-dark={{
+            opacity: 1,
+          }}
           ussel="none"
           pe="none"
           className="clip-text mask-gradient-down bento-text-3"
         >
           {children}&nbsp;
         </H1>
-      </BentoLogoTheme>
-
-      <BentoLogoTheme offset={-2 + offsetAdjust}>
-        {!noShadow && (
-          <H1
-            className={`glow-shadow mask-gradient-up`}
-            pos="absolute"
-            t={0}
-            l={0}
-            zi={1100}
-            ff="$cherryBomb"
-            px="$3"
-            mx="$-3"
-            whiteSpace="pre"
-            $theme-dark={{
-              opacity: 0,
-            }}
-            color="$color8"
-            maw="100%"
-            f={1}
-            ls={-21}
-            lh={280}
-            my={-45}
-            fos={180}
-            ussel="none"
-            pe="none"
-            style={{
-              filter: noShadow ? '' : 'blur(2px)',
-            }}
-          >
-            {children}&nbsp;
-          </H1>
-        )}
-      </BentoLogoTheme>
-
-      <BentoLogoTheme offset={-3 + offsetAdjust}>
-        {!noShadow && (
-          <H1
-            className={`glow-shadow mask-gradient-up`}
-            pos="absolute"
-            t={0}
-            l={0}
-            zi={1100}
-            ff="$cherryBomb"
-            px="$3"
-            mx="$-3"
-            whiteSpace="pre"
-            $theme-light={{
-              opacity: 0,
-            }}
-            color="$color2"
-            maw="100%"
-            f={1}
-            ls={-21}
-            lh={280}
-            my={-45}
-            fos={180}
-            ussel="none"
-            pe="none"
-            style={{
-              filter: noShadow ? '' : 'blur(2px)',
-            }}
-          >
-            {children}&nbsp;
-          </H1>
-        )}
       </BentoLogoTheme>
 
       <BentoLogoTheme offset={-2 + offsetAdjust}>

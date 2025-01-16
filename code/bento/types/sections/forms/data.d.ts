@@ -6,10 +6,16 @@ export declare const paths: {
 }[];
 export declare const listingData: {
     sectionName: string;
-    parts: {
+    parts: ({
         name: string;
         numberOfComponents: number;
         route: string;
-    }[];
+        preview?: undefined;
+    } | {
+        name: string;
+        numberOfComponents: number;
+        route: string;
+        preview: () => import("react/jsx-runtime").JSX.Element;
+    })[];
 }[];
 //# sourceMappingURL=data.d.ts.map

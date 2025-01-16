@@ -470,7 +470,7 @@ export const Safari = memo(
                   <Spacer flex={1} />
                   <XStack ai="center" gap="$4">
                     <Star size={20} color="var(--purple10)" />
-                    <Paragraph theme="purple_alt2">4.55</Paragraph>
+                    <Paragraph theme="purple">4.55</Paragraph>
                   </XStack>
                 </XStack>
 

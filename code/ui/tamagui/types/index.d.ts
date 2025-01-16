@@ -1,5 +1,8 @@
 import './setup';
+<<<<<<< HEAD
 export * from '@tamagui/spacer';
+=======
+>>>>>>> master
 export * from '@tamagui/accordion';
 export * from '@tamagui/adapt';
 export * from '@tamagui/alert-dialog';
@@ -53,6 +56,11 @@ export * from './views/Input';
 export * from './views/Spinner';
 export * from './views/TextArea';
 export * from './views/Text';
+<<<<<<< HEAD
 export type { AnimationKeys, ColorTokens, CreateTamaguiConfig, CreateTamaguiProps, FontColorTokens, FontLanguages, FontLetterSpacingTokens, FontLineHeightTokens, FontSizeTokens, FontStyleTokens, FontTokens, FontTransformTokens, FontWeightTokens, GenericFont, GenericStackVariants, GenericTamaguiConfig, GenericTextVariants, GetAnimationKeys, GetProps, GetRef, GetThemeValueForKey, GroupNames, Longhands, Media, MediaPropKeys, MediaQueries, MediaQueryState, RadiusTokens, Shorthands, SizeTokens, SpaceTokens, SpecificTokens, StackNonStyleProps, ViewProps, StackProps, StaticConfig, Styleable, TamaguiBaseTheme, TamaguiBuildOptions, TamaguiComponent, TamaguiConfig, TamaguiCustomConfig, TamaguiElement, TamaguiInternalConfig, TamaguiProviderProps, TamaguiSettings, TamaguiTextElement, TextNonStyleProps, TextProps, ThemeKeys, ThemeName, ThemeParsed, ThemeProps, Themes, ThemeTokens, ThemeValueFallback, Token, Tokens, TypeOverride, Variable, VariantSpreadExtras, VariantSpreadFunction, ZIndexTokens, ViewStyle, TextStyle, } from '@tamagui/core';
 export { Configuration, ComponentContext, FontLanguage, Stack, Theme, View, createComponent, createFont, createShorthands, createStyledContext, createTokens, createVariable, getConfig, getMedia, getStylesAtomic, getThemes, getToken, getTokenValue, getTokens, getVariable, getVariableName, getVariableValue, insertFont, setConfig, setupDev, isChrome, isClient, isServer, isTamaguiComponent, isTamaguiElement, isTouchable, isVariable, isWeb, isWebTouchable, matchMedia, mediaObjectToString, mediaQueryConfig, mediaState, styled, themeable, useDidFinishSSR, useEvent, useGet, useIsTouchDevice, useIsomorphicLayoutEffect, useMedia, useProps, usePropsAndStyle, useStyle, useConfiguration, useTheme, useThemeName, variableToString, withStaticProperties, } from '@tamagui/core';
+=======
+export type { AnimationKeys, ColorTokens, CreateTamaguiConfig, CreateTamaguiProps, FontColorTokens, FontLanguages, FontLetterSpacingTokens, FontLineHeightTokens, FontSizeTokens, FontStyleTokens, FontTokens, FontTransformTokens, FontWeightTokens, GenericFont, GenericStackVariants, GenericTamaguiConfig, GenericTextVariants, GetAnimationKeys, GetProps, GetRef, GetThemeValueForKey, GroupNames, Longhands, Media, MediaPropKeys, MediaQueries, MediaQueryState, RadiusTokens, Shorthands, SizeTokens, SpacerProps, SpaceTokens, SpecificTokens, StackNonStyleProps, ViewProps, StackProps, StaticConfig, Styleable, TamaguiBaseTheme, TamaguiBuildOptions, TamaguiComponent, TamaguiConfig, TamaguiCustomConfig, TamaguiElement, TamaguiInternalConfig, TamaguiProviderProps, TamaguiSettings, TamaguiTextElement, TextNonStyleProps, TextProps, ThemeKeys, ThemeName, ThemeParsed, ThemeProps, Themes, ThemeTokens, ThemeValueFallback, Token, Tokens, TypeOverride, Variable, VariantSpreadExtras, VariantSpreadFunction, ZIndexTokens, ViewStyle, TextStyle, } from '@tamagui/core';
+export { Configuration, ComponentContext, FontLanguage, Spacer, Stack, Theme, Unspaced, View, createComponent, createFont, createShorthands, createStyledContext, createTheme, createTokens, createVariable, getConfig, getMedia, getStylesAtomic, getThemes, getToken, getTokenValue, getTokens, getVariable, setupReactNative, getVariableName, getVariableValue, insertFont, setConfig, setupDev, isChrome, isClient, isServer, isTamaguiComponent, isTamaguiElement, isTouchable, isVariable, isWeb, isWebTouchable, matchMedia, mediaObjectToString, mediaQueryConfig, mediaState, spacedChildren, styled, themeable, useDidFinishSSR, useEvent, useGet, useIsTouchDevice, useIsomorphicLayoutEffect, useMedia, useProps, usePropsAndStyle, useStyle, useConfiguration, useTheme, useThemeName, variableToString, withStaticProperties, } from '@tamagui/core';
+>>>>>>> master
 //# sourceMappingURL=index.d.ts.map

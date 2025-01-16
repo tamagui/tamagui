@@ -54,16 +54,50 @@ stretch
   - @tamagui/core => @tamagui/style
     - styled()
     - @tamagui/style just style({}) export, takes TextProps
-- config/v4
+
+- v4 config:
   - focus styles in the default v3 config are kind of wack
   - must pass in colors separately but it exports the defaults still
   - remove: shouldAddPrefersColorThemes, themeClassNameOnRoot
+  - createSystemFont into package
+  - v4 themes
+    - based on studio, allows passing in custom colors
+  - remove component themes by default instead just do:
+    - "surface1-3" and have components use that instead of name by default when not unstyled
+
+- v3: shorthands can also take values:
+  - {
+    block: { display: 'block' },
+    'inline-block': { display: 'inline-block' },
+  }
+
 
 - move @tamagui/react-native-media-driver into core and recommend using it from there
 
 ---
 
 v3
+
+remove component themes:
+ - just can set theme="surface2" and have "generic" themes
+ - remove `name` from styled() then too
+
+generic function to allow new syntaxes, eg flat mode
+
+```tsx
+<Stack width={[100, 200]} />
+<Stack width={{ web: 50, native: 200, group-sm: 200 }} />
+<Stack width="web:100, group-med:10px" />?
+```
+
+  - removes all nested object style props instead you always use the value
+ - `core-nested`, `core-flat`, `core-tailwind`:
+
+```tsx
+createCore<CustomTypes>({
+  propMapper(propsIn) { return propsOut }
+})
+```
 
   - `background` prop + linear-gradient + background-image (see *Skeleton)
   - can we remove the need for separate Text/View?

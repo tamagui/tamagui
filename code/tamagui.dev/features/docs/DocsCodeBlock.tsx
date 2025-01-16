@@ -141,9 +141,9 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
             >
               {isCollapsed ? 'Show code' : 'Hide code'}
             </Button>
-            {/* <TooltipSimple label="Toggle tint on/off">
+            <TooltipSimple label="Toggle tint on/off">
               <Button size="$3" onPress={toggleDocsTinted} zi={10} icon={Paintbrush} />
-            </TooltipSimple> */}
+            </TooltipSimple>
           </XStack>
         )}
 
@@ -208,25 +208,15 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                 </XStack>
               )}
 
-              <RovingTabs className={className} size={size} {...rest}>
-                <ScrollView
-                  style={{ width: '100%' }}
-                  contentContainerStyle={{ minWidth: '100%' }}
-                  horizontal
-                  showsHorizontalScrollIndicator={false}
-                >
-                  <Code
-                    p="$4"
-                    backgroundColor="transparent"
-                    f={1}
-                    className={className}
-                    size={size ?? '$5'}
-                    lineHeight={size ?? '$5'}
-                    {...rest}
-                  >
-                    {children}
-                  </Code>
-                </ScrollView>
+              <RovingTabs
+                className={className}
+                size={size}
+                {...rest}
+                {...(showTabs && {
+                  width: '100%',
+                })}
+              >
+                {children}
               </RovingTabs>
             </Pre>
 

@@ -209,7 +209,7 @@ export const ExampleAnimations = memo(() => {
             return (
               <ListItem
                 key={item.name}
-                theme={isActive ? 'active' : null}
+                theme={isActive ? 'accent' : null}
                 px="$4"
                 py="$2"
                 title={item.name}

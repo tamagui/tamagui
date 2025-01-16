@@ -12,10 +12,6 @@ import {
   tamaguiOptions,
 } from './loadTamagui'
 
-// some sort of weird esm compat
-
-const styleUpdateEvent = (fileId: string) => `tamagui-style-update:${fileId}`
-
 export function tamaguiExtractPlugin(optionsIn?: Partial<TamaguiOptions>): Plugin {
   if (optionsIn?.disable) {
     return {

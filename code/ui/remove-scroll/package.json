@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/remove-scroll",
-  "version": "1.121.6",
+  "version": "1.121.11",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -35,7 +35,7 @@
     "react-remove-scroll": "^2.6.0"
   },
   "devDependencies": {
-    "@tamagui/build": "1.121.6",
+    "@tamagui/build": "1.121.11",
     "react": "*"
   },
   "publishConfig": {

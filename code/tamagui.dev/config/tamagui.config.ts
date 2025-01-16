@@ -1,7 +1,8 @@
 import type { CreateTamaguiProps } from '@tamagui/core'
 import { setupDev } from '@tamagui/core'
 import { shorthands } from '@tamagui/shorthands/v2'
-import { tokens } from '@tamagui/themes/v3'
+import { tokens } from '@tamagui/config/v4'
+import { tamaguiThemes } from '@tamagui/themes/v4'
 import { createTamagui } from 'tamagui'
 import { animations } from './animations'
 import {
@@ -18,7 +19,6 @@ import {
 
 // testing tsconfig paths in compiler
 import { media, mediaQueryDefaultActive } from '~/config/media'
-import { themes } from './themes'
 
 setupDev({
   visualizer: true,
@@ -36,33 +36,12 @@ const fonts = {
   cherryBomb: cherryBombFont,
 }
 
-// Converts a union of two types into an intersection
-// i.e. A | B -> A & B
-type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (
-  k: infer I
-) => void
-  ? I
-  : never
-
-// Flattens two union types into a single type with optional values
-// i.e. FlattenUnion<{ a: number, c: number } | { b: string, c: number }> = { a?: number, b?: string, c: number }
-type FlattenUnion<T> = {
-  [K in keyof UnionToIntersection<T>]: K extends keyof T
-    ? T[K] extends any[]
-      ? T[K]
-      : T[K] extends object
-        ? FlattenUnion<T[K]>
-        : T[K]
-    : UnionToIntersection<T>[K] | undefined
-}
-
-export type Theme = FlattenUnion<(typeof themes)['light']>
-export type Themes = Record<keyof typeof themes, Theme>
+type Themes = typeof tamaguiThemes
 
 // avoid themes only on client bundle
 const maybeThemes =
   process.env.TAMAGUI_IS_SERVER || process.env.TAMAGUI_KEEP_THEMES
-    ? (themes as Themes)
+    ? (tamaguiThemes as Themes)
     : ({} as Themes)
 
 // for some reason just re-defining these fixes a bug where negative space tokens were dropped
@@ -75,6 +54,7 @@ const fixTypescript55Bug = {
 }
 
 const config = {
+  fonts,
   animations,
   themes: maybeThemes,
   media,
@@ -93,7 +73,6 @@ const config = {
     allowedStyleValues: 'somewhat-strict-web',
     autocompleteSpecificTokens: 'except-special',
   },
-  fonts,
 } satisfies CreateTamaguiProps
 
 // for site responsive demo, we want no types here

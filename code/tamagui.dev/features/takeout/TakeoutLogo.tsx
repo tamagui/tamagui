@@ -2,14 +2,14 @@ import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import { useDisableMotion } from '~/hooks/useDisableMotion'
 import { H1, YStack } from 'tamagui'
 
-export const TAKEOUT = ({ fontSize = 340, lineHeight = fontSize * 0.74, ...props }) => (
+export const TAKEOUT = ({ fontSize = 220, lineHeight = fontSize * 1.1, ...props }) => (
   <H1
     userSelect="none"
     color="transparent"
-    fontFamily="$cherryBomb"
+    fontFamily="$silkscreen"
     fontSize={fontSize}
     lineHeight={lineHeight}
-    letterSpacing={-18}
+    letterSpacing={-10}
     whiteSpace="nowrap"
     minWidth={970}
     ta="center"
@@ -39,8 +39,8 @@ export const TakeoutLogo = (props: { scale?: number }) => {
         }}
       >
         <>
-          <ThemeTintAlt>
-            <TAKEOUT className="text-3d" zi={1000} color="$color10" />
+          <ThemeTintAlt offset={-1}>
+            <TAKEOUT className="text-3d" zi={1000} color="$color9" />
           </ThemeTintAlt>
         </>
       </YStack>
@@ -53,36 +53,26 @@ export const TakeoutLogo = (props: { scale?: number }) => {
           clipPath: `polygon(0% 0%, 0% 100%, 100% 100%, 0% 0%, 100% 0, 0% 100%)`,
         }}
       >
-        <ThemeTintAlt offset={-1}>
-          <TAKEOUT className="font-outlined" zi={1000} color="var(--color8)" />
+        <ThemeTintAlt offset={11}>
+          <TAKEOUT className="font-outlined" zi={1000} color="var(--color10)" />
         </ThemeTintAlt>
 
         {!disableMotion && (
           <>
-            <ThemeTintAlt offset={1}>
-              {/* main color slices */}
-              <TAKEOUT
-                color="$color7"
-                className="clip-slice"
-                pos="absolute"
-                o={1}
-                zi={1001}
-              />
-            </ThemeTintAlt>
             {/* alt color slices */}
-            {/* <ThemeTintAlt>
+            <ThemeTintAlt offset={8}>
               <TAKEOUT
-                color="$color7"
-                className="clip-slice mix-blend slice-alt"
+                color="$color9"
+                className="clip-slice slice-alt"
                 pos="absolute"
                 o={1}
                 zi={1002}
               />
-            </ThemeTintAlt> */}
+            </ThemeTintAlt>
             <ThemeTintAlt offset={2}>
               {/* main color slices */}
               <TAKEOUT
-                color="$color7"
+                color="$color11"
                 className="clip-slice-2"
                 pos="absolute"
                 o={1}

@@ -174,7 +174,7 @@ export function BentoTable({
           <Paragraph size="$6" fow="bold">
             Lifetime access
           </Paragraph>
-          <Paragraph size="$3" theme="alt1">
+          <Paragraph f={1} ellipse size="$3" theme="alt1">
             {price?.metadata?.['is_lifetime']
               ? 'You own and can use the code forever, get updates forever.'
               : "You own and can use the code for life, get updates as long as you're subscribed."}

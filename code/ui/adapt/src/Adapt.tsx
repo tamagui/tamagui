@@ -51,10 +51,10 @@ export const AdaptContext = createStyledContext<AdaptParentContextI>({
   scopeName: '',
   portalName: '',
   platform: null as any,
-  setPlatform: null as any,
+  setPlatform: (x: AdaptPlatform) => {},
   when: null as any,
   setChildren: null as any,
-  setWhen: null as any,
+  setWhen: () => {},
 })
 
 export const ProvideAdaptContext = ({
@@ -172,13 +172,13 @@ export const Adapt = withStaticProperties(
     const enabled = useAdaptIsActiveGiven(props)
 
     useIsomorphicLayoutEffect(() => {
-      context?.setWhen((when || enabled) as AdaptWhen)
-      context?.setPlatform(platform || null)
+      context?.setWhen?.((when || enabled) as AdaptWhen)
+      context?.setPlatform?.(platform || null)
     }, [when, platform, context, enabled])
 
     useIsomorphicLayoutEffect(() => {
       return () => {
-        context?.setWhen(null)
+        context?.setWhen?.(null)
       }
     }, [])
 

@@ -132,14 +132,7 @@ export function PropsTable({
                         )}
 
                         {deprecated ? (
-                          <View
-                            w="$8"
-                            ai="center"
-                            theme="red_alt2"
-                            bg="$red2"
-                            bw={1}
-                            br="$2"
-                          >
+                          <View w="$8" ai="center" theme="red" bg="$red2" bw={1} br="$2">
                             <Paragraph tag="span" size="$2" fontWeight="300">
                               deprecated
                             </Paragraph>

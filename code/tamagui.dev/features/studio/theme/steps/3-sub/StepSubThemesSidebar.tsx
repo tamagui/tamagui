@@ -69,7 +69,7 @@ export function StepSubThemesSidebar() {
           bc="rgba(0, 0, 0, 0.25)"
           ai="center"
           jc="center"
-          opacity={procedureStore.loading.buildThemeSuite ? 1 : 0}
+          opacity={procedureStore.loading.createThemes ? 1 : 0}
           zi={100}
         >
           <Spinner />

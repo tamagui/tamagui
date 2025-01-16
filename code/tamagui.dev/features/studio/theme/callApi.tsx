@@ -7,7 +7,7 @@ type LoadingType = Procedure
 export class StudioProcedureStore {
   loading: Record<LoadingType, number> = {
     exportDemoComponent: 0,
-    buildThemeSuite: 0,
+    createThemes: 0,
     generateThemeBuilderCode: 0,
   }
 

@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/toast",
-  "version": "1.121.6",
+  "version": "1.121.11",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
@@ -36,26 +36,26 @@
     }
   },
   "dependencies": {
-    "@tamagui/animate-presence": "1.121.6",
-    "@tamagui/compose-refs": "1.121.6",
-    "@tamagui/constants": "1.121.6",
-    "@tamagui/core": "1.121.6",
-    "@tamagui/create-context": "1.121.6",
-    "@tamagui/dismissable": "1.121.6",
-    "@tamagui/helpers": "1.121.6",
-    "@tamagui/polyfill-dev": "1.121.6",
-    "@tamagui/portal": "1.121.6",
-    "@tamagui/stacks": "1.121.6",
-    "@tamagui/start-transition": "1.121.6",
-    "@tamagui/text": "1.121.6",
-    "@tamagui/use-controllable-state": "1.121.6",
-    "@tamagui/visually-hidden": "1.121.6"
+    "@tamagui/animate-presence": "1.121.11",
+    "@tamagui/compose-refs": "1.121.11",
+    "@tamagui/constants": "1.121.11",
+    "@tamagui/core": "1.121.11",
+    "@tamagui/create-context": "1.121.11",
+    "@tamagui/dismissable": "1.121.11",
+    "@tamagui/helpers": "1.121.11",
+    "@tamagui/polyfill-dev": "1.121.11",
+    "@tamagui/portal": "1.121.11",
+    "@tamagui/stacks": "1.121.11",
+    "@tamagui/start-transition": "1.121.11",
+    "@tamagui/text": "1.121.11",
+    "@tamagui/use-controllable-state": "1.121.11",
+    "@tamagui/visually-hidden": "1.121.11"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.121.6",
+    "@tamagui/build": "1.121.11",
     "burnt": "^0.12.2",
     "react": "*"
   },

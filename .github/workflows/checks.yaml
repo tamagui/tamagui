@@ -16,24 +16,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node.js 22.x
-        uses: actions/setup-node@v4
+      - name: Install
+        uses: ./.github/actions/install
         with:
-          node-version: 22.4
-          registry-url: 'https://registry.npmjs.org'
-
-      - name: Install yarn
-        run: npm i yarn -g
-
-      - name: Install Dependencies
-        run: yarn install
-        env:
-          # postinstall uses this
-          TRANSCRYPT_PASSWORD: ${{ secrets.transcrypt_password }}
-          SHOULD_UNLOCK_GIT_CRYPT: "1"
-
-      - name: Build JS
-        run: yarn build:js
+          transcrypt_password: ${{ secrets.transcrypt_password }}
 
       - name: Check
         run: yarn && yarn check
@@ -47,27 +33,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node.js 22.x
-        uses: actions/setup-node@v4
+      - name: Install
+        uses: ./.github/actions/install
         with:
-          node-version: 22.4
-          registry-url: 'https://registry.npmjs.org'
-
-      - name: Install yarn
-        run: npm i yarn -g
-
-      - name: Install Dependencies
-        run: yarn install
-        env:
-          # postinstall uses this
-          TRANSCRYPT_PASSWORD: ${{ secrets.transcrypt_password }}
-          SHOULD_UNLOCK_GIT_CRYPT: "1"
+          transcrypt_password: ${{ secrets.transcrypt_password }}
 
       - name: Install playwright
         run: npx playwright install
 
       - uses: nick-fields/retry@v3
-        name: "Run tests
+        name: "Run tests"
         env:
           YARN_ENABLE_IMMUTABLE_INSTALLS: false
         with:

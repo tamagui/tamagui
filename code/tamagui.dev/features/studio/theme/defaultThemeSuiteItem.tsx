@@ -1,7 +1,7 @@
 import { defaultBaseTheme } from './defaultBaseTheme'
 import { defaultPalettes } from './defaultPalettes'
 import type { ThemeSuiteItemData } from './types'
-import { defaultComponentThemes, defaultTemplates } from '@tamagui/themes/v3-themes'
+import { defaultComponentThemes, defaultTemplates } from '@tamagui/themes/v4'
 
 export const defaultSelectedSchemes = {
   dark: true,
@@ -15,5 +15,5 @@ export const defaultThemeSuiteItem = {
   componentThemes: defaultComponentThemes,
   palettes: defaultPalettes,
   templates: defaultTemplates,
-  selectedSchemes: defaultSelectedSchemes,
+  schemes: defaultSelectedSchemes,
 } satisfies ThemeSuiteItemData

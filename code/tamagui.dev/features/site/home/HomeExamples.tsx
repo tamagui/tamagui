@@ -72,7 +72,7 @@ export const HomeExamples = memo(
                     <Button
                       accessibilityLabel="See example"
                       onPress={() => setActiveIndex(i)}
-                      theme={i === activeIndex ? 'active' : null}
+                      theme={i === activeIndex ? 'accent' : null}
                       chromeless={i !== activeIndex}
                       borderRadius={0}
                       size="$3"

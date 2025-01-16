@@ -28,6 +28,8 @@ export default function App() {
         ? TestCases[useCaseComponentName]
         : Sandbox
 
+  console.log('rendering')
+
   return (
     <SandboxFrame centered={!!demoComponentName}>
       <Component />

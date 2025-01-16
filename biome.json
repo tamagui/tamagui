@@ -47,6 +47,7 @@
       },
       "complexity": {
         "noForEach": "off",
+        "noUselessTernary": "off",
         "noBannedTypes": "off",
         "noUselessFragments": "off",
         "useLiteralKeys": "off",
