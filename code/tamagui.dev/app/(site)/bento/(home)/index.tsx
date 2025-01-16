@@ -141,7 +141,7 @@ const Intermediate = () => {
       >
         <ThemeTintAlt offset={-1}>
           <IntermediateCard Icon={Globe} title="Universal">
-            Components that adapt well to all screen sizes and platforms.
+            Whether light or dark mode, native or web, or any screen size.
           </IntermediateCard>
         </ThemeTintAlt>
         <ThemeTintAlt offset={0}>
@@ -259,7 +259,7 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['bento'] }) => 
                 <Paragraph
                   className="pixelate"
                   ff="$munro"
-                  fos={28}
+                  fos={26}
                   lh={46}
                   color="$color11"
                   ls={1}
@@ -273,7 +273,8 @@ const Hero = ({ mainProduct }: { mainProduct: ProComponentsProps['bento'] }) => 
                     ta: 'center',
                   }}
                 >
-                  Copy-paste styled components for React Native and web, free and paid.
+                  Copy-paste styled components for React&nbsp;Native and web, free and
+                  paid.
                 </Paragraph>
               </XStack>
               <XStack

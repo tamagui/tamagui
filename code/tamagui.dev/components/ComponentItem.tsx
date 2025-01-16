@@ -25,6 +25,7 @@ import {
 import { H5, Image, H4, Theme, YStack } from 'tamagui'
 import { Link } from '~/components/Link'
 import ComponentPreview from './ComponentPreview'
+import { LinearGradient } from 'tamagui/linear-gradient'
 
 export function ComponentItem({
   name,
@@ -70,9 +71,9 @@ export function ComponentItem({
         <YStack
           pointerEvents="none"
           h={172}
-          br="$4"
+          br="$8"
           ov="hidden"
-          p={'$6'}
+          p="$6"
           $md={{
             p: '$4',
           }}
@@ -91,11 +92,17 @@ export function ComponentItem({
           }}
         >
           <Preview />
+          <LinearGradient
+            fullscreen
+            start={[1, 0]}
+            end={[0, 0.5]}
+            colors={['$background075', 'transparent']}
+          />
         </YStack>
 
         <YStack f={1} p="$4">
           <Theme name="gray">
-            <H4 ff="$body" size="$4" fow="600" color="$color12">
+            <H4 ff="$body" size="$5" fow="600" color="$color12">
               {name}
             </H4>
           </Theme>
@@ -104,15 +111,8 @@ export function ComponentItem({
             {numberOfComponents} components
           </H5>
 
-          <YStack
-            pos="absolute"
-            t="$4"
-            r="$4"
-            rotate="20deg"
-            p="$2"
-            o={0.4}
-          >
-            <Icon size={25} color="$color12" />
+          <YStack pos="absolute" t="$4" r="$4" rotate="20deg" p="$2" o={0.4}>
+            <Icon size={20} color="$color12" />
           </YStack>
         </YStack>
       </YStack>

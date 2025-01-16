@@ -342,7 +342,7 @@ const ComponentPreview = {
           Follow
         </Button>
         <Button
-          theme={'active'}
+          theme="accent"
           mt={'$-6'}
           ml={'$-6'}
           alignSelf="center"

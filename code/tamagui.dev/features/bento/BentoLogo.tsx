@@ -83,9 +83,6 @@ export const BentoLogo = ({
           f={1}
           ls={-21}
           lh={280}
-          $theme-dark={{
-            opacity: 0.5,
-          }}
           my={-45}
           fos={180}
           ussel="none"
@@ -119,6 +116,9 @@ export const BentoLogo = ({
           lh={280}
           my={-45}
           fos={180}
+          $theme-dark={{
+            opacity: 1,
+          }}
           ussel="none"
           pe="none"
           className="clip-text mask-gradient-down bento-text-3"
