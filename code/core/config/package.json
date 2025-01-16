@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/config",
-  "version": "1.121.10",
+  "version": "1.121.11",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -69,22 +69,31 @@
       "types": "./types/v3.d.ts",
       "import": "./dist/esm/v3.mjs",
       "require": "./dist/cjs/v3.cjs"
+    },
+    "./v4": {
+      "react-native": {
+        "import": "./dist/esm/v4.native.js",
+        "require": "./dist/cjs/v4.native.js"
+      },
+      "types": "./types/v4.d.ts",
+      "import": "./dist/esm/v4.mjs",
+      "require": "./dist/cjs/v4.cjs"
     }
   },
   "dependencies": {
-    "@tamagui/animations-css": "1.121.10",
-    "@tamagui/animations-moti": "1.121.10",
-    "@tamagui/animations-react-native": "1.121.10",
-    "@tamagui/colors": "1.121.10",
-    "@tamagui/font-inter": "1.121.10",
-    "@tamagui/font-silkscreen": "1.121.10",
-    "@tamagui/react-native-media-driver": "1.121.10",
-    "@tamagui/shorthands": "1.121.10",
-    "@tamagui/themes": "1.121.10",
-    "@tamagui/web": "1.121.10"
+    "@tamagui/animations-css": "1.121.11",
+    "@tamagui/animations-moti": "1.121.11",
+    "@tamagui/animations-react-native": "1.121.11",
+    "@tamagui/colors": "1.121.11",
+    "@tamagui/font-inter": "1.121.11",
+    "@tamagui/font-silkscreen": "1.121.11",
+    "@tamagui/react-native-media-driver": "1.121.11",
+    "@tamagui/shorthands": "1.121.11",
+    "@tamagui/themes": "1.121.11",
+    "@tamagui/web": "1.121.11"
   },
   "devDependencies": {
-    "@tamagui/build": "1.121.10"
+    "@tamagui/build": "1.121.11"
   },
   "publishConfig": {
     "access": "public"

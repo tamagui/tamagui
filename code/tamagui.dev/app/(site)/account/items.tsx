@@ -213,7 +213,7 @@ const SubscriptionDetail = ({ subscription }: SubscriptionDetailProps) => {
             <SizableText>
               Canceled at {dateFormatter.format(canceledAt)} -{' '}
               <SizableText
-                theme="blue_alt2"
+                theme="blue"
                 textDecorationLine="underline"
                 cursor="pointer"
                 userSelect="none"
@@ -645,12 +645,12 @@ const DiscordMember = ({
       </Avatar>
       <Paragraph>{`${username}${name ? ` (${name})` : ''}`}</Paragraph>
       {data && (
-        <Paragraph size="$1" theme="green_alt2">
+        <Paragraph size="$1" theme="green">
           {data.message}
         </Paragraph>
       )}
       {error && (
-        <Paragraph size="$1" theme="red_alt2">
+        <Paragraph size="$1" theme="red">
           {error.message}
         </Paragraph>
       )}
@@ -662,7 +662,7 @@ const GithubAppMessage = () => {
   const query = useLocalSearchParams<any>()
   const githubAppInstalled = !!query.github_app_installed
   if (!githubAppInstalled) return null
-  return <Paragraph theme="green_alt2"></Paragraph>
+  return <Paragraph theme="green">Github app is installed ✅</Paragraph>
 }
 
 const BentoGetKeyPanel = () => {
@@ -707,12 +707,12 @@ const BentoGetKeyPanel = () => {
           </Button>
         </XStack>
         <Form.Trigger>
-          <Button theme="blue_active">
+          <Button theme="accent">
             <Button.Text>{isLoading ? 'Loading' : 'Refresh'} Access Token</Button.Text>
             <Button.Icon>
               <>
                 {!isLoading && <RefreshCcw />}
-                {isLoading && <Spinner theme="blue_active" size="small" />}
+                {isLoading && <Spinner theme="blue" size="small" />}
               </>
             </Button.Icon>
           </Button>

@@ -1,17 +1,15 @@
 import { register } from 'esbuild-register/dist/node'
 
+import { esbuildIgnoreFilesRegex } from './extractor/bundle'
 import { requireTamaguiCore } from './helpers/requireTamaguiCore'
 import type { TamaguiPlatform } from './types'
-import { esbuildIgnoreFilesRegex } from './extractor/bundle'
 
 const nameToPaths = {}
 
 export const getNameToPaths = () => nameToPaths
 
 const Module = require('node:module')
-const packageJson = require('react-native-web/package.json')
 const proxyWorm = require('@tamagui/proxy-worm')
-const rnw = require('react-native-web')
 
 let isRegistered = false
 let og: any
@@ -84,11 +82,19 @@ export function registerRequire(
       return proxyWorm
     }
     if (path === 'react-native/package.json') {
-      return packageJson
+      return require('react-native-web/package.json')
     }
 
-    if (path === '@tamagui/react-native-web-lite' || path.startsWith('react-native')) {
-      return rnw
+    if (
+      path === '@tamagui/react-native-web-lite' ||
+      path === 'react-native' ||
+      path.startsWith('react-native/')
+    ) {
+      try {
+        return require('react-native')
+      } catch {
+        return require('@tamagui/react-native-web-lite')
+      }
     }
 
     if (path in knownIgnorableModules) {

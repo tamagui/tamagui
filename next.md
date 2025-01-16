@@ -1,13 +1,29 @@
-- config/v4
+- v4 config:
   - focus styles in the default v3 config are kind of wack
   - must pass in colors separately but it exports the defaults still
   - remove: shouldAddPrefersColorThemes, themeClassNameOnRoot
+  - createSystemFont into package
+  - v4 themes
+    - based on studio, allows passing in custom colors
+  - remove component themes by default instead just do:
+    - "surface1-3" and have components use that instead of name by default when not unstyled
+
+- v3: shorthands can also take values:
+  - {
+    block: { display: 'block' },
+    'inline-block': { display: 'inline-block' },
+  }
+
 
 - move @tamagui/react-native-media-driver into core and recommend using it from there
 
 ---
 
 v3
+
+remove component themes:
+ - just can set theme="surface2" and have "generic" themes
+ - remove `name` from styled() then too
 
 generic function to allow new syntaxes, eg flat mode
 

@@ -26,9 +26,7 @@ export const setTintIndex = (next: number) => {
   const val = next % numTints
   if (val === current) return
   current = val
-  React.startTransition(() => {
-    listeners.forEach((x) => x(val))
-  })
+  listeners.forEach((x) => x(val))
 }
 
 export const useTint = (altOffset = -1) => {
