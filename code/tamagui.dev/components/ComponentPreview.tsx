@@ -702,7 +702,54 @@ const ComponentPreview = {
     )
   },
 
-  // Slide: Banana,
+  Slide: () => {
+    return (
+      <XStack w="100%" h="100%">
+        <View
+          mt="10%"
+          w={100}
+          h={100}
+          rotate={'-16deg'}
+          borderWidth={2}
+          borderColor="$gray6"
+          bg="$background"
+          br="$4"
+          opacity={0.6}
+          scale={0.78}
+        />
+        <View
+          w={100}
+          h={100}
+          rotate={'-7deg'}
+          ml="-30%"
+          mb="10%"
+          borderWidth={2}
+          aspectRatio={1}
+          br="$4"
+          bg="$background"
+          borderColor="$gray6"
+          opacity={0.7}
+          scale={0.8}
+        />
+        <View
+          rotate={'4deg'}
+          w={100}
+          h={100}
+          ml="-30%"
+          mb="10%"
+          borderWidth={2}
+          aspectRatio={1}
+          br="$4"
+          bg="$background"
+          justifyContent="center"
+          borderColor="$gray6"
+          alignItems="center"
+        >
+          <BentoIcon />
+        </View>
+      </XStack>
+    )
+  },
 
   Cart: () => {
     return (
