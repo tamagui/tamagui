@@ -37,7 +37,7 @@ export const propMapper: PropMapper = (key, value, styleState, disabled, map) =>
     if (unsetVal != null) {
       value = unsetVal
     } else {
-      // if no unset found, return nothing
+      // if no unset found, do nothing
       return
     }
   }
@@ -48,7 +48,8 @@ export const propMapper: PropMapper = (key, value, styleState, disabled, map) =>
     if (variants && key in variants) {
       const variantValue = resolveVariants(key, value, styleProps, styleState, '')
       if (variantValue) {
-        return variantValue
+        variantValue.forEach(([key, value]) => map(key, value))
+        return
       }
     }
   }
