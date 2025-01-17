@@ -6228,6 +6228,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@shopify/restyle@npm:^2.4.4":
+  version: 2.4.4
+  resolution: "@shopify/restyle@npm:2.4.4"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 10/d421c8848be23f41ba42a35194dc87485ed333a767b6450497d57faf19adb7720fba637c1f202c3e45b4c2646088e7cd1b8c78dcd8ce5a060eed3e19238958e8
+  languageName: node
+  linkType: hard
+
 "@shuding/opentype.js@npm:1.4.0-beta.0":
   version: 1.4.0-beta.0
   resolution: "@shuding/opentype.js@npm:1.4.0-beta.0"
@@ -7916,6 +7926,7 @@ __metadata:
     "@react-native-async-storage/async-storage": "npm:^2.1.0"
     "@react-navigation/native": "npm:^7.0.14"
     "@react-navigation/native-stack": "npm:^7.2.0"
+    "@shopify/restyle": "npm:^2.4.4"
     "@tamagui/animations-reanimated": "npm:1.121.11"
     "@tamagui/babel-plugin": "npm:1.121.11"
     "@tamagui/cli": "npm:1.121.11"

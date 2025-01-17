@@ -3,8 +3,8 @@ import { Button, StyleSheet, View } from 'react-native'
 import { Stack, Text, XStack, styled } from 'tamagui'
 
 // disabling to avoid dep
-// import { ThemeProvider, createBox } from '@shopify/restyle'
-// const Box = createBox<any>()
+import { ThemeProvider, createBox } from '@shopify/restyle'
+const Box = createBox<any>()
 
 import { TimedRender } from '../components/TimedRender'
 // import { CheckboxDemo } from '@tamagui/demos'
@@ -22,7 +22,7 @@ const BenchStyled = () => {
     <>
       <BenchRN />
       <BenchTama />
-      {/* <BenchRestyle /> */}
+      <BenchRestyle />
     </>
   )
 }
@@ -103,19 +103,19 @@ const theme = {
   },
 }
 
-// const BenchRestyle = () => {
-//   return (
-//     <ThemeProvider theme={theme}>
-//       <BenchmarkFrame name="restyle">
-//         <View style={{ flexDirection: 'row' }}>
-//           {iterArr.map((_, i) => (
-//             <Box borderColor="red" borderWidth={2} padding="s" key={i} />
-//           ))}
-//         </View>
-//       </BenchmarkFrame>
-//     </ThemeProvider>
-//   )
-// }
+const BenchRestyle = () => {
+  return (
+    <ThemeProvider theme={theme}>
+      <BenchmarkFrame name="restyle">
+        <View style={{ flexDirection: 'row' }}>
+          {iterArr.map((_, i) => (
+            <Box borderColor="red" borderWidth={2} padding="s" key={i} />
+          ))}
+        </View>
+      </BenchmarkFrame>
+    </ThemeProvider>
+  )
+}
 
 const styles = StyleSheet.create({
   style: {
