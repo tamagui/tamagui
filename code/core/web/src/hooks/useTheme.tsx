@@ -1,12 +1,19 @@
-import React from 'react'
 import { isClient, isIos, isServer, isWeb } from '@tamagui/constants'
-
+import {
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+  type MutableRefObject,
+} from 'react'
 import { getConfig, getSetting } from '../config'
 import type { Variable } from '../createVariable'
 import { getVariable } from '../createVariable'
 import type { ThemeManagerState } from '../helpers/ThemeManager'
 import { ThemeManager, getHasThemeUpdatingProps } from '../helpers/ThemeManager'
-import { ThemeManagerIDContext } from '../helpers/ThemeManagerContext'
+import { ThemeManagerContext } from '../helpers/ThemeManagerContext'
 import { isEqualShallow } from '../helpers/createShallowSetState'
 import type {
   DebugProp,
@@ -31,16 +38,6 @@ export type ChangedThemeResponse = {
 }
 
 const emptyProps = { name: null }
-
-let cached: any
-function getDefaultThemeProxied() {
-  if (cached) return cached
-  const config = getConfig()
-  const name = config.themes.light ? 'light' : Object.keys(config.themes)[0]
-  const defaultTheme = config.themes[name]
-  cached = getThemeProxied({ theme: defaultTheme, name })
-  return cached
-}
 
 export type ThemeGettable<Val> = Val & {
   /**
@@ -87,39 +84,16 @@ export type UseThemeResult = {
 
 export const useTheme = (props: ThemeProps = emptyProps) => {
   const [_, theme] = useThemeWithState(props)
-  const res = theme || getDefaultThemeProxied()
+  const res = theme
   return res as UseThemeResult
 }
 
 export const useThemeWithState = (
   props: UseThemeWithStateProps
 ): [ChangedThemeResponse, ThemeParsed] => {
-  const keys = React.useRef<string[]>([])
+  const keys = useRef<string[] | null>(null)
 
-  const changedThemeState = useChangeThemeEffect(
-    props,
-    false,
-    keys.current,
-    !isServer
-      ? () => {
-          const next =
-            props.shouldUpdate?.() ?? (keys.current.length > 0 ? true : undefined)
-
-          if (
-            process.env.NODE_ENV === 'development' &&
-            typeof props.debug === 'string' &&
-            props.debug !== 'profile'
-          ) {
-            console.info(
-              `  🎨 useTheme() shouldUpdate? tracking keys ${keys.current.length} ${props.shouldUpdate?.()}`,
-              next
-            )
-          }
-
-          return next
-        }
-      : undefined
-  )
+  const changedThemeState = useChangeThemeEffect(props, false, keys)
 
   // @ts-expect-error
   if (process.env.NODE_ENV === 'development' && globalThis.time) time`theme-change-effect`
@@ -138,17 +112,17 @@ export const useThemeWithState = (
     }
   }
 
-  const themeProxied = React.useMemo(() => {
+  const themeProxied = useMemo(() => {
     // reset keys on new theme
-    if (keys.current.length) {
-      keys.current = []
+    if (keys.current) {
+      keys.current = null
     }
 
     if (!themeManager || !state?.theme) {
       return {}
     }
 
-    return getThemeProxied(state, props.deopt, themeManager, keys.current, props.debug)
+    return getThemeProxied(state, props.deopt, keys, themeManager, props.debug)
   }, [state?.theme, themeManager, props.deopt, props.debug])
 
   if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
@@ -166,11 +140,11 @@ export const useThemeWithState = (
   return [changedThemeState, themeProxied]
 }
 
-export function getThemeProxied(
+function getThemeProxied(
   { theme, name, scheme }: ThemeManagerState,
   deopt = false,
-  themeManager?: ThemeManager,
-  keys?: string[],
+  keys: MutableRefObject<string[] | null>,
+  themeManager: ThemeManager,
   debug?: DebugProp
 ): UseThemeResult {
   if (!theme) return {}
@@ -178,18 +152,17 @@ export function getThemeProxied(
   const config = getConfig()
 
   function track(key: string) {
-    if (keys && !keys.includes(key)) {
-      if (!keys.length) {
-        // tracking new key for first time, do an update check
-        setTimeout(() => {
-          themeManager?.selfUpdate()
-        })
-      }
+    if (!keys.current) {
+      keys.current = []
 
-      keys.push(key)
-      if (process.env.NODE_ENV === 'development' && debug) {
-        console.info(` 🎨 useTheme() tracking new key: ${key}`)
-      }
+      // tracking new key for first time, do an update check
+      setTimeout(() => {
+        themeManager?.selfUpdate()
+      })
+    }
+    keys.current.push(key)
+    if (process.env.NODE_ENV === 'development' && debug) {
+      console.info(` 🎨 useTheme() tracking new key: ${key}`)
     }
   }
 
@@ -357,19 +330,10 @@ const preventWarnSetState =
 export const useChangeThemeEffect = (
   props: UseThemeWithStateProps,
   isRoot = false,
-  keys?: string[],
-  shouldUpdate?: () => boolean | undefined
+  keys?: MutableRefObject<string[] | null>
 ): ChangedThemeResponse => {
   const { disable } = props
-  const parentManagerId = React.useContext(ThemeManagerIDContext)
-
-  // @ts-expect-error
-  if (process.env.NODE_ENV === 'development' && globalThis.time) time`theme0`
-
-  const parentManager = getThemeManager(parentManagerId)
-
-  // @ts-expect-error
-  if (process.env.NODE_ENV === 'development' && globalThis.time) time`theme1`
+  const parentManager = useContext(ThemeManagerContext)
 
   if ((!isRoot && !parentManager) || disable) {
     return {
@@ -391,16 +355,10 @@ export const useChangeThemeEffect = (
   //   }
   // }
 
-  const [themeState, setThemeState] = React.useState<ChangedThemeResponse>(createState)
-
-  // @ts-expect-error
-  if (process.env.NODE_ENV === 'development' && globalThis.time) time`theme2`
+  const [themeState, setThemeState] = useState<ChangedThemeResponse>(createState)
 
   const { state, mounted, isNewTheme, themeManager, prevState } = themeState
   const isInversingOnMount = Boolean(!themeState.mounted && props.inverse)
-
-  // @ts-expect-error
-  if (process.env.NODE_ENV === 'development' && globalThis.time) time`theme3`
 
   function getShouldUpdateTheme(
     manager = themeManager,
@@ -408,9 +366,9 @@ export const useChangeThemeEffect = (
     prevState: ThemeManagerState | undefined = state,
     forceShouldChange = false
   ) {
-    const forceUpdate = shouldUpdate?.()
-    if (!manager || (!forceShouldChange && forceUpdate === false)) return
-    if (!forceUpdate && !isNewTheme && !getHasThemeUpdatingProps(props)) {
+    const isTrackingTheme = !isServer && keys?.current
+    if (!manager) return
+    if (!isTrackingTheme && !isNewTheme && !getHasThemeUpdatingProps(props)) {
       return
     }
     const next = nextState || manager.getState(props, parentManager)
@@ -418,7 +376,7 @@ export const useChangeThemeEffect = (
       return next
     }
     if (!next) return
-    if (forceUpdate !== true && next.theme === prevState?.theme) {
+    if (next.theme === prevState?.theme) {
       return
     }
     return next
@@ -438,12 +396,9 @@ export const useChangeThemeEffect = (
     }
   }
 
-  // @ts-expect-error
-  if (process.env.NODE_ENV === 'development' && globalThis.time) time`theme4`
-
   if (!isServer) {
     if (process.env.TAMAGUI_TARGET === 'web') {
-      React.useLayoutEffect(() => {
+      useLayoutEffect(() => {
         // one homepage breaks on useTheme() in MetaTheme if this isnt set up
         if (themeManager && state && prevState && state !== prevState) {
           themeManager.notify()
@@ -452,7 +407,7 @@ export const useChangeThemeEffect = (
     }
 
     // listen for parent change + notify children change
-    React.useEffect(() => {
+    useEffect(() => {
       if (!themeManager) return
 
       // SSR safe inverse (because server can't know prefers scheme)
@@ -487,14 +442,14 @@ export const useChangeThemeEffect = (
         (name, manager, forced) => {
           const force =
             forced ||
-            shouldUpdate?.() ||
+            Boolean(!isServer && keys?.current) ||
             props.deopt ||
             // this fixes themeable() not updating with the new fastSchemeChange setting
             (process.env.TAMAGUI_TARGET === 'native'
               ? props['disable-child-theme']
               : undefined)
 
-          const shouldTryUpdate = force ?? Boolean(keys?.length || isNewTheme)
+          const shouldTryUpdate = force ?? Boolean(keys?.current?.length || isNewTheme)
 
           if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
             // prettier-ignore
@@ -534,7 +489,7 @@ export const useChangeThemeEffect = (
     ])
 
     if (process.env.NODE_ENV === 'development' && props.debug !== 'profile') {
-      React.useEffect(() => {
+      useEffect(() => {
         globalThis['TamaguiThemeManagers'] ??= new Set()
         globalThis['TamaguiThemeManagers'].add(themeManager)
         return () => {
@@ -543,9 +498,6 @@ export const useChangeThemeEffect = (
       }, [themeManager])
     }
   }
-
-  // @ts-expect-error
-  if (process.env.NODE_ENV === 'development' && globalThis.time) time`theme5`
 
   if (isWeb && isInversingOnMount) {
     return {
@@ -568,7 +520,7 @@ export const useChangeThemeEffect = (
   }
 
   function createState(prev?: ChangedThemeResponse, force = false): ChangedThemeResponse {
-    if (prev && shouldUpdate?.() === false && !force) {
+    if (prev && !force) {
       return prev
     }
 
@@ -591,7 +543,7 @@ export const useChangeThemeEffect = (
         // at all anymore. this forces updates onChangeTheme for all dynamic style accessed components
         // which is correct, potentially in the future we can avoid forceChange and just know to
         // update if keys.length is set + onChangeTheme called
-        const forceChange = force || Boolean(keys?.length)
+        const forceChange = force || Boolean(keys?.current?.length)
         const next = themeManager.getState(props, parentManager)
         const nextState = getShouldUpdateTheme(
           themeManager,
@@ -644,10 +596,17 @@ export const useChangeThemeEffect = (
       themeManager,
       isNewTheme,
       mounted,
-      inversed: props.inverse,
     }
 
-    const shouldReturnPrev = prev && !force && (!state || isEqualShallow(prev, response))
+    if (props.inverse) {
+      response.inversed = true
+    }
+
+    const shouldReturnPrev =
+      prev &&
+      !force &&
+      isEqualShallow(prev, response) &&
+      isEqualShallow(prev.state, state)
 
     if (prev && shouldReturnPrev) {
       return prev

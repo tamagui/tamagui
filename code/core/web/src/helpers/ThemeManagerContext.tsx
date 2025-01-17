@@ -1,3 +1,4 @@
 import React from 'react'
+import type { ThemeManager } from './ThemeManager'
 
-export const ThemeManagerIDContext = React.createContext<number>(1)
+export const ThemeManagerContext = React.createContext<ThemeManager | null>(null)

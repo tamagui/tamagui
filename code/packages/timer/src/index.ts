@@ -30,7 +30,6 @@ export function timer() {
 
       function time(strings: TemplateStringsArray, ...vars: any[]) {
         const elapsed = performance.now() - start
-        start = performance.now()
         const tag = templateToString(strings, ...vars)
         typesOfRuns.add(tag)
         runs++
@@ -43,6 +42,7 @@ export function timer() {
           })
           console.info(`${`${elapsed}ms`.slice(0, 6).padStart(7)} |`, result)
         }
+        start = performance.now()
       }
 
       let start = performance.now()

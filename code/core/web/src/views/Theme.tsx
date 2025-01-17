@@ -2,7 +2,7 @@ import { isWeb } from '@tamagui/constants'
 import type { MutableRefObject } from 'react'
 import React, { Children, cloneElement, forwardRef, isValidElement, useRef } from 'react'
 import { variableToString } from '../createVariable'
-import { ThemeManagerIDContext } from '../helpers/ThemeManagerContext'
+import { ThemeManagerContext } from '../helpers/ThemeManagerContext'
 import type { ChangedThemeResponse } from '../hooks/useTheme'
 import { useChangeThemeEffect } from '../hooks/useTheme'
 import type { ThemeProps } from '../types'
@@ -119,9 +119,9 @@ export function getThemedChildren(
   }
 
   const elementsWithContext = (
-    <ThemeManagerIDContext.Provider value={themeManager.id}>
+    <ThemeManagerContext.Provider value={themeManager}>
       {next}
-    </ThemeManagerIDContext.Provider>
+    </ThemeManagerContext.Provider>
   )
 
   if (forceClassName === false) {

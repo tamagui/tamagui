@@ -434,8 +434,6 @@ export interface ThemeProps {
   inverse?: boolean
   // on the web, for portals we need to re-insert className
   forceClassName?: boolean
-  // allows for forcing the auto-update behavior
-  shouldUpdate?: () => boolean | undefined
 
   // used internally for shallow themes
   shallow?: boolean
