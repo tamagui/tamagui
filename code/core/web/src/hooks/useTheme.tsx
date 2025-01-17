@@ -121,6 +121,9 @@ export const useThemeWithState = (
       : undefined
   )
 
+  // @ts-expect-error
+  if (process.env.NODE_ENV === 'development' && globalThis.time) time`theme-change-effect`
+
   const { themeManager, state } = changedThemeState
 
   if (process.env.NODE_ENV === 'development') {
@@ -359,7 +362,14 @@ export const useChangeThemeEffect = (
 ): ChangedThemeResponse => {
   const { disable } = props
   const parentManagerId = React.useContext(ThemeManagerIDContext)
+
+  // @ts-expect-error
+  if (process.env.NODE_ENV === 'development' && globalThis.time) time`theme0`
+
   const parentManager = getThemeManager(parentManagerId)
+
+  // @ts-expect-error
+  if (process.env.NODE_ENV === 'development' && globalThis.time) time`theme1`
 
   if ((!isRoot && !parentManager) || disable) {
     return {
@@ -383,8 +393,14 @@ export const useChangeThemeEffect = (
 
   const [themeState, setThemeState] = React.useState<ChangedThemeResponse>(createState)
 
+  // @ts-expect-error
+  if (process.env.NODE_ENV === 'development' && globalThis.time) time`theme2`
+
   const { state, mounted, isNewTheme, themeManager, prevState } = themeState
   const isInversingOnMount = Boolean(!themeState.mounted && props.inverse)
+
+  // @ts-expect-error
+  if (process.env.NODE_ENV === 'development' && globalThis.time) time`theme3`
 
   function getShouldUpdateTheme(
     manager = themeManager,
@@ -394,12 +410,15 @@ export const useChangeThemeEffect = (
   ) {
     const forceUpdate = shouldUpdate?.()
     if (!manager || (!forceShouldChange && forceUpdate === false)) return
+    if (!forceUpdate && !isNewTheme && !getHasThemeUpdatingProps(props)) {
+      return
+    }
     const next = nextState || manager.getState(props, parentManager)
     if (forceShouldChange) {
       return next
     }
     if (!next) return
-    if (forceUpdate !== true && !manager.getStateShouldChange(next, prevState)) {
+    if (forceUpdate !== true && next.theme === prevState?.theme) {
       return
     }
     return next
@@ -419,13 +438,18 @@ export const useChangeThemeEffect = (
     }
   }
 
+  // @ts-expect-error
+  if (process.env.NODE_ENV === 'development' && globalThis.time) time`theme4`
+
   if (!isServer) {
-    React.useLayoutEffect(() => {
-      // one homepage breaks on useTheme() in MetaTheme if this isnt set up
-      if (themeManager && state && prevState && state !== prevState) {
-        themeManager.notify()
-      }
-    }, [state])
+    if (process.env.TAMAGUI_TARGET === 'web') {
+      React.useLayoutEffect(() => {
+        // one homepage breaks on useTheme() in MetaTheme if this isnt set up
+        if (themeManager && state && prevState && state !== prevState) {
+          themeManager.notify()
+        }
+      }, [state])
+    }
 
     // listen for parent change + notify children change
     React.useEffect(() => {
@@ -519,6 +543,9 @@ export const useChangeThemeEffect = (
       }, [themeManager])
     }
   }
+
+  // @ts-expect-error
+  if (process.env.NODE_ENV === 'development' && globalThis.time) time`theme5`
 
   if (isWeb && isInversingOnMount) {
     return {
@@ -620,13 +647,7 @@ export const useChangeThemeEffect = (
       inversed: props.inverse,
     }
 
-    const shouldReturnPrev =
-      prev &&
-      !force &&
-      // isEqualShallow uses the second arg as the keys so this should compare without state first...
-      isEqualShallow(prev, response) &&
-      // ... and then compare just the state, because we make a new state obj but is likely the same
-      isEqualShallow(prev.state, state)
+    const shouldReturnPrev = prev && !force && (!state || isEqualShallow(prev, response))
 
     if (prev && shouldReturnPrev) {
       return prev

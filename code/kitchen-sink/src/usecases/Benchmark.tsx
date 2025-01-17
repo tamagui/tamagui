@@ -28,9 +28,10 @@ const BenchStyled = () => {
 }
 
 const StyledStack = styled(Stack, {
-  borderColor: 'red',
-  borderWidth: 2,
-  padding: 5,
+  backgroundColor: 'red',
+  paddingTop: 5,
+  paddingBottom: 5,
+  width: 20,
 })
 
 const BenchmarkFrame = ({ name, children }) => {
@@ -56,7 +57,7 @@ const BenchTama = () => {
     <BenchmarkFrame name="tamagui">
       <View style={{ flexDirection: 'row' }}>
         {iterArr.map((_, i) => (
-          <StyledStack debug="profile" key={i} />
+          <StyledStack key={i} />
         ))}
       </View>
     </BenchmarkFrame>
@@ -109,7 +110,13 @@ const BenchRestyle = () => {
       <BenchmarkFrame name="restyle">
         <View style={{ flexDirection: 'row' }}>
           {iterArr.map((_, i) => (
-            <Box borderColor="red" borderWidth={2} padding="s" key={i} />
+            <Box
+              backgroundColor="red"
+              paddingTop="s"
+              paddingBottom="s"
+              width={20}
+              key={i}
+            />
           ))}
         </View>
       </BenchmarkFrame>
@@ -119,9 +126,10 @@ const BenchRestyle = () => {
 
 const styles = StyleSheet.create({
   style: {
-    borderColor: 'red',
-    borderWidth: 2,
-    padding: 5,
+    backgroundColor: 'red',
+    paddingTop: 5,
+    paddingBottom: 5,
+    width: 20,
   },
 })
 

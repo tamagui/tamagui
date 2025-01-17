@@ -1179,18 +1179,11 @@ export function createExtractor(
 
               // for now passing empty props {}, a bit odd, need to at least document
               // for now we don't expose custom components so just noting behavior
-              out = propMapper(name, styleValue, propMapperStyleState)
+              propMapper(name, styleValue, propMapperStyleState, false, (key, val) => {
+                out ||= {}
+                out[key] = val
+              })
 
-              if (out) {
-                if (!Array.isArray(out)) {
-                  logger.warn(`Error expected array but got`, out)
-                  couldntParse = true
-                  shouldDeopt = true
-                } else {
-                  out = Object.fromEntries(out)
-                  keys = Object.keys(out)
-                }
-              }
               if (out) {
                 if (isTargetingHTML) {
                   // translate to DOM-compat
@@ -1201,7 +1194,6 @@ export function createExtractor(
                   // remove className - we dont use rnw styling
                   delete out.className
                 }
-
                 keys = Object.keys(out)
               }
 
@@ -1898,9 +1890,17 @@ export function createExtractor(
                       props: completeProps,
                     }
 
-                    let out = Object.fromEntries(
-                      propMapper(name, variantValues.get(name), styleState) || []
+                    let out: Record<string, any> = {}
+                    propMapper(
+                      name,
+                      variantValues.get(name),
+                      styleState,
+                      false,
+                      (key, val) => {
+                        out[key] = val
+                      }
                     )
+
                     if (out && isTargetingHTML) {
                       const cn = out.className
                       // translate to DOM-compat
