@@ -957,6 +957,9 @@ export function createExtractor(
                 if (!res) {
                   path.remove()
                 }
+
+                console.log('evaluated', res)
+
                 return res
               } catch (err: any) {
                 if (shouldPrintDebug) {
@@ -1171,10 +1174,11 @@ export function createExtractor(
             // if value can be evaluated, extract it and filter it out
             const styleValue = attemptEvalSafe(value)
 
+            console.log('attempint eval on', value, 'got', styleValue)
+
             // never flatten if a prop isn't a valid static attribute
             // only post prop-mapping
             if (!variants[name] && !isValidStyleKey(name, staticConfig)) {
-              let keys = [name]
               let out: any = null
 
               // for now passing empty props {}, a bit odd, need to at least document
@@ -1194,11 +1198,10 @@ export function createExtractor(
                   // remove className - we dont use rnw styling
                   delete out.className
                 }
-                keys = Object.keys(out)
               }
 
               let didInline = false
-              const attributes = keys.map((key) => {
+              const attributes = Object.keys(out).map((key) => {
                 const val = out[key]
                 const isStyle = isValidStyleKey(key, staticConfig)
                 if (isStyle) {

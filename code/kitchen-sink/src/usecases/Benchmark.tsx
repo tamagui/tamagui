@@ -1,6 +1,9 @@
+// debug
 import React from 'react'
-import { Button, StyleSheet, View } from 'react-native'
+import { Button, RefreshControlBase, StyleSheet, View } from 'react-native'
 import { Stack, Text, XStack, styled } from 'tamagui'
+
+// 123
 
 // disabling to avoid dep
 import { ThemeProvider, createBox } from '@shopify/restyle'
@@ -12,6 +15,10 @@ import { TimedRender } from '../components/TimedRender'
 export const Benchmark = () => {
   return (
     <>
+      <Stack
+        // debug="verbose"
+        style={[{ backgroundColor: 'red', width: 100, height: 100 }]}
+      />
       <BenchStyled />
     </>
   )
