@@ -405,7 +405,6 @@ export const useChangeThemeEffect = (
       useLayoutEffect(() => {
         // one homepage breaks on useTheme() in MetaTheme if this isnt set up
         if (themeManager && state && prevState && state !== prevState) {
-          console.warn('NOTIFY ON CHANGE', isRoot, state.name, props, themeManager.id)
           themeManager.notify()
         }
       }, [state])
