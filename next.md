@@ -15,8 +15,6 @@
   }
 
 
-- move @tamagui/react-native-media-driver into core and recommend using it from there
-
 ---
 
 v3
