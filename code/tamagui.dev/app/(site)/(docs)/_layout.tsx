@@ -13,7 +13,7 @@ import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
 import { loader } from './ui/[...subpath]'
 
 export default function DocsLayout() {
-  const { frontmatter } = useLoader(loader)
+  const frontmatter = useLoader(loader)?.frontmatter
   const { currentPath, next, previous, documentVersionPath } = useDocsMenu()
 
   const getMDXPath = (path: string) => {
@@ -22,7 +22,7 @@ export default function DocsLayout() {
       const parts = path.split('/')
       const componentName = parts[2]
 
-      const version = frontmatter.version || '1.0.0'
+      const version = frontmatter?.version || '1.0.0'
 
       return `/docs/components/${componentName}/${version}`
     }
