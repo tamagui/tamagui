@@ -135,6 +135,8 @@ export const getSplitStyles: StyleSplitter = (
   elementType,
   debug
 ) => {
+  if (props.reddish) debug = 'verbose'
+
   conf = conf || getConfig()
 
   // a bit icky, we need no normalize but not fully
@@ -603,9 +605,6 @@ export const getSplitStyles: StyleSplitter = (
       // which now has it's own unstyled + the child unstyled...
       // so *don't* skip applying the styles if its different from the parent one
       if (!isVariant) {
-        if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-          console.groupEnd()
-        }
         continue
       }
     }
@@ -613,9 +612,6 @@ export const getSplitStyles: StyleSplitter = (
     // after shouldPassThrough
     if (!noSkip) {
       if (keyInit in skipProps) {
-        if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-          console.groupEnd()
-        }
         continue
       }
     }
@@ -634,7 +630,7 @@ export const getSplitStyles: StyleSplitter = (
     const disablePropMap = isMediaOrPseudo || !isStyleLikeKey
 
     propMapper(keyInit, valInit, styleState, disablePropMap, (key, val) => {
-      if ((disablePropMap && !isMediaOrPseudo) || isHOC) {
+      if (!isHOC && disablePropMap && !isMediaOrPseudo) {
         viewProps[key] = val
         return
       }
@@ -646,7 +642,7 @@ export const getSplitStyles: StyleSplitter = (
       }
 
       if (val == null) return
-      if (key in usedKeys) return
+      // if (key in usedKeys) return
 
       if (process.env.TAMAGUI_TARGET === 'native') {
         if (key === 'pointerEvents') {
@@ -656,7 +652,7 @@ export const getSplitStyles: StyleSplitter = (
       }
 
       if (
-        isValidStyleKey(key, validStyles, accept) ||
+        (!isHOC && isValidStyleKey(key, validStyles, accept)) ||
         (process.env.TAMAGUI_TARGET === 'native' && isAndroid && key === 'elevation')
       ) {
         mergeStyle(styleState, key, val)

@@ -335,10 +335,11 @@ function getShouldUpdateTheme(
   nextState?: ThemeManagerState | null,
   forceShouldChange = false
 ) {
-  const isTrackingTheme = !isServer && keys?.current
+  if (isServer) return
   if (
-    !isTrackingTheme &&
-    (!themeState || themeState.isNewTheme) &&
+    !forceShouldChange &&
+    !keys?.current &&
+    (!themeState || !themeState.isNewTheme) &&
     !getHasThemeUpdatingProps(props)
   ) {
     return
@@ -360,6 +361,7 @@ export const useChangeThemeEffect = (
 ): ChangedThemeResponse => {
   const { disable } = props
   const parentManager = useContext(ThemeManagerContext)
+  const shouldAlwaysUpdate = props.needsUpdate?.() === true ? true : undefined
 
   if ((!isRoot && !parentManager) || disable) {
     return {
@@ -388,7 +390,14 @@ export const useChangeThemeEffect = (
 
   if (process.env.TAMAGUI_TARGET === 'native') {
     if (themeManager) {
-      const nextState = getShouldUpdateTheme(props, parentManager, keys, themeState)
+      const nextState = getShouldUpdateTheme(
+        props,
+        parentManager,
+        keys,
+        themeState,
+        undefined,
+        shouldAlwaysUpdate
+      )
       if (nextState) {
         const next = createState(themeState, undefined, nextState)
         if (next.state?.name !== themeState.state?.name) {
@@ -433,7 +442,14 @@ export const useChangeThemeEffect = (
         if (isRoot) globalThis['rtm'] = themeManager
       }
 
-      const updated = getShouldUpdateTheme(props, parentManager, keys, themeState)
+      const updated = getShouldUpdateTheme(
+        props,
+        parentManager,
+        keys,
+        themeState,
+        undefined,
+        shouldAlwaysUpdate
+      )
 
       if (updated) {
         setThemeState((prev) => createState(prev, undefined, updated))
@@ -557,7 +573,8 @@ export const useChangeThemeEffect = (
         // at all anymore. this forces updates onChangeTheme for all dynamic style accessed components
         // which is correct, potentially in the future we can avoid forceChange and just know to
         // update if keys.length is set + onChangeTheme called
-        const forceChange = force || (keys?.current ? true : undefined)
+        const forceChange =
+          force || shouldAlwaysUpdate || (keys?.current ? true : undefined)
 
         let nextState: ThemeManagerState | null | undefined = null
 

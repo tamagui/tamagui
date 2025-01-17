@@ -443,6 +443,7 @@ export interface ThemeProps {
 export type UseThemeWithStateProps = ThemeProps & {
   deopt?: boolean
   disable?: boolean
+  needsUpdate?: () => boolean
 }
 
 type ArrayIntersection<A extends any[]> = A[keyof A]

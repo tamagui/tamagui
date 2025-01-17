@@ -400,7 +400,7 @@ export function createComponent<
       themeStateProps.name = props.theme
     }
     if (typeof curStateRef.isListeningToTheme === 'boolean') {
-      themeStateProps.shouldUpdate = () => stateRef.current.isListeningToTheme
+      themeStateProps.needsUpdate = () => !!stateRef.current.isListeningToTheme
     }
     // on native we optimize theme changes if fastSchemeChange is enabled, otherwise deopt
     if (process.env.TAMAGUI_TARGET === 'native') {

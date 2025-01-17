@@ -1,3 +1,4 @@
+// debug
 import { Button, Theme, YStack, styled } from 'tamagui'
 
 const StyledButton = styled(Button, {
@@ -24,6 +25,8 @@ const StyledButton = styled(Button, {
     },
   } as const,
 })
+
+console.log('wtf', StyledButton.staticConfig)
 
 const DoubleStyledButtonNoVariants = styled(StyledButton, {})
 
