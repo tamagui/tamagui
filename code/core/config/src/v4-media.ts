@@ -1,5 +1,3 @@
-import { createMedia } from '@tamagui/react-native-media-driver'
-
 // note order is important!
 // earlier defined = less important
 
@@ -13,7 +11,7 @@ export const breakpoints = {
   xxs: 320,
 }
 
-export const media = createMedia({
+export const media = {
   // for site
   '2xl': { maxWidth: breakpoints['2xl'] },
   xl: { maxWidth: breakpoints.xl },
@@ -22,7 +20,7 @@ export const media = createMedia({
   sm: { maxWidth: breakpoints.sm },
   xs: { maxWidth: breakpoints.xs },
   xxs: { maxWidth: breakpoints.xxs },
-})
+} as const
 
 // all true to start to match mobile-first
 export const mediaQueryDefaultActive = {

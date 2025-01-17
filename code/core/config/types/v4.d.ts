@@ -19,26 +19,26 @@ export declare const config: {
         tooltip: string;
     }>;
     media: {
-        '2xl': {
-            maxWidth: number;
+        readonly '2xl': {
+            readonly maxWidth: number;
         };
-        xl: {
-            maxWidth: number;
+        readonly xl: {
+            readonly maxWidth: number;
         };
-        lg: {
-            maxWidth: number;
+        readonly lg: {
+            readonly maxWidth: number;
         };
-        md: {
-            maxWidth: number;
+        readonly md: {
+            readonly maxWidth: number;
         };
-        sm: {
-            maxWidth: number;
+        readonly sm: {
+            readonly maxWidth: number;
         };
-        xs: {
-            maxWidth: number;
+        readonly xs: {
+            readonly maxWidth: number;
         };
-        xxs: {
-            maxWidth: number;
+        readonly xxs: {
+            readonly maxWidth: number;
         };
     };
     shorthands: {
