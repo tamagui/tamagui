@@ -16,10 +16,10 @@ const verticalAlignMap = {
 export const webToNativeDynamicExpansion = {
   objectFit: (val: any) => {
     let resizeMode = resizeModeMap[val] || 'cover'
-    return { resizeMode }
+    return [['resizeMode', resizeMode]]
   },
   verticalAlign: (val: any) => {
-    return { textAlignVertical: verticalAlignMap[val] || 'auto' }
+    return [['textAlignVertical', verticalAlignMap[val] || 'auto']]
   },
 } as any
 
