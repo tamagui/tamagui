@@ -4,19 +4,34 @@ import { ChevronLeft, ChevronRight } from '@tamagui/lucide-icons'
 import type { ReactNode } from 'react'
 import { ScrollView } from 'react-native'
 import { EnsureFlexed, Paragraph, View, XStack, YStack } from 'tamagui'
-import { type Href, Slot } from 'one'
+import { type Href, Slot, useLoader } from 'one'
 import { Container } from '~/components/Containers'
 import { Link } from '~/components/Link'
 import { DocsMenuContents } from '~/features/docs/DocsMenuContents'
 import { useDocsMenu } from '~/features/docs/useDocsMenu'
 import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
+import { loader } from './ui/[...subpath]'
 
 export default function DocsLayout() {
+  const { frontmatter } = useLoader(loader)
   const { currentPath, next, previous, documentVersionPath } = useDocsMenu()
+
+  const getMDXPath = (path: string) => {
+    // If it's a UI component doc
+    if (path.startsWith('/ui/')) {
+      const parts = path.split('/')
+      const componentName = parts[2]
+
+      const version = frontmatter.version || '1.0.0'
+
+      return `/docs/components/${componentName}/${version}`
+    }
+    return `${path}${documentVersionPath}`
+  }
 
   const GITHUB_URL = 'https://github.com'
   const REPO_NAME = 'tamagui/tamagui'
-  const editUrl = `${GITHUB_URL}/${REPO_NAME}/edit/master/code/tamagui.dev/data${currentPath}${documentVersionPath}.mdx`
+  const editUrl = `${GITHUB_URL}/${REPO_NAME}/edit/master/code/tamagui.dev/data${getMDXPath(currentPath)}.mdx`
 
   return (
     <>
