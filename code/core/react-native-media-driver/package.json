@@ -1,6 +1,7 @@
 {
   "name": "@tamagui/react-native-media-driver",
   "version": "1.121.11",
+  "sideEffects": false,
   "source": "src/index.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -24,7 +25,6 @@
       "default": "./dist/cjs/index.native.js"
     }
   },
-  "sideEffects": true,
   "dependencies": {
     "@tamagui/web": "1.121.11"
   },

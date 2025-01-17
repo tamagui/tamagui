@@ -1,6 +1,4 @@
-import { createMedia } from "@tamagui/react-native-media-driver";
-
-export const media = createMedia({
+export const media = {
   xs: { maxWidth: 660 },
   sm: { maxWidth: 800 },
   md: { maxWidth: 1020 },
@@ -15,4 +13,4 @@ export const media = createMedia({
   tall: { minHeight: 820 },
   hoverNone: { hover: 'none' },
   pointerCoarse: { pointer: 'coarse' },
-});
+} as const
