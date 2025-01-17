@@ -7376,6 +7376,7 @@ __metadata:
   resolution: "@tamagui/core@workspace:code/core/core"
   dependencies:
     "@tamagui/build": "npm:1.121.11"
+    "@tamagui/react-native-media-driver": "npm:1.121.11"
     "@tamagui/react-native-use-pressable": "npm:1.121.11"
     "@tamagui/react-native-use-responder-events": "npm:1.121.11"
     "@tamagui/use-event": "npm:1.121.11"
